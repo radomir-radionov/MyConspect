@@ -1,0 +1,36 @@
+---
+description: MyConspect browse-only handbook — SSG, accordion topic pages, no extra features. Apply when working on this Next.js app.
+globs: "{app,components,lib}/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# MyConspect handbook
+
+Public study handbook. Browse-only. Parse `resources/*.md` at **build time**.
+
+## Product constraints
+
+- Routes: `/` tracks → `/[track]` topic cards → `/[track]/[topic]` one accordion page
+- Native `<details>`/`<summary>`. Full concept HTML on first load. Do **not** fetch on click
+- No per-concept URLs, progress, quiz, auth, localStorage, or SRS
+- SSG via `generateStaticParams`. `generateMetadata` on topic pages. `app/sitemap.ts` + `app/robots.ts`
+- TypeScript, no `any`. English UI copy
+
+## Content
+
+- Read **only** `resources/` numbered `*_*.md` files (see `lib/content/catalog.ts`)
+- Do not rewrite study notes unless the user asks. Do not add React to markdown
+- Skip personal/hub files that are not in the catalog (`0_me.md`, `0_interview.md`, `3_js.md`, …)
+
+## Example
+
+```tsx
+// ✅ accordion already in the document
+<details id={concept.id}>
+  <summary>{concept.title}</summary>
+  <div dangerouslySetInnerHTML={{ __html: concept.html }} />
+</details>
+
+// ❌ client fetch of the body
+onClick={() => fetch(`/api/concepts/${id}`)}
+```

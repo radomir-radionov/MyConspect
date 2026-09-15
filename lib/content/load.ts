@@ -1,0 +1,44 @@
+import fs from "node:fs";
+import path from "node:path";
+import { TOPICS, type Topic, getTopic, getTrack, isTrackId, topicsForTrack } from "./catalog";
+import { parseTopicMarkdown, type ParsedTopic } from "./parse";
+
+const RESOURCES_DIR = path.join(process.cwd(), "resources");
+
+export function resourcesDir(): string {
+  return RESOURCES_DIR;
+}
+
+export function readTopicFile(file: string): string {
+  const resolved = path.resolve(RESOURCES_DIR, file);
+  if (!resolved.startsWith(path.resolve(RESOURCES_DIR))) {
+    throw new Error(`Refusing to read outside resources/: ${file}`);
+  }
+  if (!fs.existsSync(resolved)) {
+    throw new Error(`Missing topic file in resources/: ${file}`);
+  }
+  return fs.readFileSync(resolved, "utf8");
+}
+
+export function loadParsedTopic(topic: Topic): ParsedTopic {
+  return parseTopicMarkdown(readTopicFile(topic.file));
+}
+
+export function loadTopicPage(track: string, slug: string): {
+  topic: Topic;
+  parsed: ParsedTopic;
+} | undefined {
+  const topic = getTopic(track, slug);
+  if (!topic) {
+    return undefined;
+  }
+  return { topic, parsed: loadParsedTopic(topic) };
+}
+
+export function assertCatalogFilesExist(): void {
+  for (const topic of TOPICS) {
+    readTopicFile(topic.file);
+  }
+}
+
+export { getTrack, isTrackId, topicsForTrack, TOPICS };
