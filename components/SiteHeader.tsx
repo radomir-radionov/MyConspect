@@ -1,33 +1,156 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { INSTRUCTIONS_HREF, type ChromeCopy } from "@/lib/content/nav";
 import { SITE_NAME } from "@/lib/site";
 
-type Crumb = { href?: string; label: string };
-
-export function SiteHeader({ crumbs }: { crumbs?: readonly Crumb[] }) {
+function SiteMark() {
   return (
-    <header className="border-b border-zinc-200 bg-white">
-      <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-4 sm:px-6">
-        <Link href="/" className="text-sm font-semibold tracking-tight text-zinc-900">
-          {SITE_NAME}
-        </Link>
-        {crumbs && crumbs.length > 0 ? (
-          <nav aria-label="Breadcrumb" className="text-sm text-zinc-600">
-            <ol className="flex flex-wrap items-center gap-1">
-              {crumbs.map((crumb, index) => (
-                <li key={`${crumb.label}-${index}`} className="flex items-center gap-1">
-                  {index > 0 ? <span aria-hidden="true">/</span> : null}
-                  {crumb.href ? (
-                    <Link className="underline-offset-2 hover:underline" href={crumb.href}>
-                      {crumb.label}
-                    </Link>
-                  ) : (
-                    <span className="text-zinc-900">{crumb.label}</span>
-                  )}
-                </li>
-              ))}
-            </ol>
-          </nav>
-        ) : null}
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="size-6 shrink-0 text-zinc-900"
+    >
+      <rect
+        x="4"
+        y="3"
+        width="16"
+        height="18"
+        rx="2.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
+      <path
+        d="M8 8h8M8 12h8M8 16h5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function SiteHeader({
+  query,
+  onQueryChange,
+  chrome,
+  navOpen,
+  onToggleNav,
+}: {
+  query: string;
+  onQueryChange: (value: string) => void;
+  chrome: ChromeCopy;
+  navOpen: boolean;
+  onToggleNav: () => void;
+}) {
+  const pathname = usePathname() ?? "/";
+  const onInstructions = pathname === INSTRUCTIONS_HREF;
+
+  return (
+    <header id="handbook-header" className="shrink-0 border-b border-zinc-200 bg-white">
+      <div className="grid h-14 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-[var(--chrome-inline)] lg:grid-cols-[minmax(0,1fr)_minmax(12rem,28rem)_minmax(0,1fr)]">
+        <div className="flex min-w-0 items-center gap-2">
+          <button
+            type="button"
+            className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-zinc-700 hover:bg-zinc-100 lg:hidden"
+            aria-expanded={navOpen}
+            aria-controls="handbook-sidebar"
+            onClick={onToggleNav}
+          >
+            <span className="sr-only">{navOpen ? chrome.closeMenu : chrome.openMenu}</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">
+              {navOpen ? (
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                />
+              ) : (
+                <path
+                  d="M4 7h16M4 12h16M4 17h16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                />
+              )}
+            </svg>
+          </button>
+          <Link
+            href="/"
+            className="flex shrink-0 items-center gap-2 text-sm font-semibold tracking-tight text-zinc-900"
+          >
+            <SiteMark />
+            <span className="hidden sm:inline">{SITE_NAME}</span>
+          </Link>
+        </div>
+        <div className="relative min-w-0 max-w-md justify-self-stretch lg:max-w-none lg:justify-self-center lg:w-full">
+          <label className="block min-w-0">
+            <span className="sr-only">{chrome.searchPlaceholder}</span>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400"
+            >
+              <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.75" />
+              <path
+                d="M16 16l4 4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+              />
+            </svg>
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => onQueryChange(event.target.value)}
+              placeholder={chrome.searchPlaceholder}
+              className={
+                query.length > 0
+                  ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-10 pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                  : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-3 pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+              }
+            />
+          </label>
+          {query.length > 0 ? (
+            <button
+              type="button"
+              aria-label={chrome.clearSearch}
+              title={chrome.clearSearch}
+              onClick={() => onQueryChange("")}
+              className="absolute top-1/2 right-1 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4">
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          ) : null}
+        </div>
+        <div className="flex justify-end">
+          <Link
+            href={INSTRUCTIONS_HREF}
+            aria-current={onInstructions ? "page" : undefined}
+            className={
+              onInstructions
+                ? "rounded-md px-2 py-1 text-sm font-medium text-zinc-900"
+                : "rounded-md px-2 py-1 text-sm text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+            }
+          >
+            {chrome.instructions}
+          </Link>
+        </div>
       </div>
     </header>
   );

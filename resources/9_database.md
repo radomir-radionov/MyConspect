@@ -36,26 +36,27 @@ interview-questions - https://sql-academy.org/ru/interview-questions
 
 Every major topic in `<details>` sections follows:
 
-**Definition** → **How it works** → **Cases** → **Pros / Cons** → **Example** → **Notes** → **Source**
+**Definition** → **How it works** → **When to use** → **Pluses and minuses** → **Examples** → **Thoughts** → **Sources**
 
 ### SQL (relational queries)
 
 **Definition:** Structured Query Language — declarative language for defining schemas and querying relational data. You describe _what_ you want; the optimizer decides _how_.
 
-| Pros                               | Cons                                       |
+**When to use:**
+
+Structured data with relationships, reporting, financial transactions, ad-hoc analytics.
+
+Unbounded nested documents with no joins — consider document stores or Postgres JSONB.
+
+**Pluses and minuses:**
+
+| +                               | −                                       |
 | ---------------------------------- | ------------------------------------------ |
 | Declarative, portable across RDBMS | Dialect differences (Postgres vs MySQL)    |
 | Mature ecosystem, strong joins     | Complex queries need careful indexing      |
 | ACID transactions                  | Single-node write ceiling without sharding |
 
-**When to use:** Structured data with relationships, reporting, financial transactions, ad-hoc analytics.
-
-**When NOT to use:** Unbounded nested documents with no joins — consider document stores or Postgres JSONB.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 SELECT u.email, COUNT(o.id) AS order_count
@@ -65,28 +66,27 @@ GROUP BY u.id, u.email
 HAVING COUNT(o.id) > 5;
 ```
 
-</details>
-
-**Source:** [PostgreSQL — SQL commands](https://www.postgresql.org/docs/current/sql-commands.html)
+**Sources:** [PostgreSQL — SQL commands](https://www.postgresql.org/docs/current/sql-commands.html)
 
 ### ORM (application layer)
 
 **Definition:** Object-Relational Mapping maps database tables to application objects and generates SQL from method calls — Prisma, Sequelize, TypeORM, Drizzle.
 
-| Pros                               | Cons                                     |
+**When to use:**
+
+Standard REST/GraphQL APIs, teams wanting schema-as-code, TypeScript backends.
+
+Heavy analytics, bulk ETL, performance-critical batch jobs — use raw SQL or a query builder.
+
+**Pluses and minuses:**
+
+| +                               | −                                     |
 | ---------------------------------- | ---------------------------------------- |
 | Less boilerplate, type-safe models | Abstraction leaks — know SQL anyway      |
 | Integrated migrations              | N+1 queries if relations are lazy-loaded |
 | Rapid CRUD development             | Complex reports may need raw SQL         |
 
-**When to use:** Standard REST/GraphQL APIs, teams wanting schema-as-code, TypeScript backends.
-
-**When NOT to use:** Heavy analytics, bulk ETL, performance-critical batch jobs — use raw SQL or a query builder.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 const users = await prisma.user.findMany({
@@ -95,26 +95,23 @@ const users = await prisma.user.findMany({
 });
 ```
 
-</details>
-
-**Source:** [Prisma documentation](https://www.prisma.io/docs)
+**Sources:** [Prisma documentation](https://www.prisma.io/docs)
 
 ### NoSQL (document & key-value)
 
 **Definition:** Non-relational databases optimized for flexible schemas, horizontal scale, or specialized access patterns — document (MongoDB), key-value (Redis), column, graph.
 
-| Pros                               | Cons                                   |
+**When to use:** Caching (Redis), flexible catalogs (MongoDB), sessions, rate limits — usually **alongside** Postgres, not instead of it.
+
+**Pluses and minuses:**
+
+| +                               | −                                   |
 | ---------------------------------- | -------------------------------------- |
 | Schema flexibility, fast iteration | Weaker default consistency             |
 | Horizontal scaling built-in        | No universal query language            |
 | Great for cache and nested docs    | Cross-document transactions are harder |
 
-**When to use:** Caching (Redis), flexible catalogs (MongoDB), sessions, rate limits — usually **alongside** Postgres, not instead of it.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Redis cache-aside
@@ -124,9 +121,9 @@ const user = await prisma.user.findUnique({ where: { id } });
 await redis.setex(`user:${id}`, 3600, JSON.stringify(user));
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MongoDB — Data modeling](https://www.mongodb.com/docs/manual/core/data-modeling-introduction/) · [Redis docs](https://redis.io/docs/)
+[MongoDB — Data modeling](https://www.mongodb.com/docs/manual/core/data-modeling-introduction/) · [Redis docs](https://redis.io/docs/)
 
 ---
 
@@ -143,20 +140,21 @@ await redis.setex(`user:${id}`, 3600, JSON.stringify(user));
 
 **How it works:** Client sends query via driver → connection pool → DB parses SQL → planner chooses index/seq scan → executor returns rows → transaction log ensures durability on commit.
 
-| Pros                       | Cons                                                  |
+**When to use:**
+
+OLTP (Postgres) for users/orders; Redis for cache; queue for async — polyglot persistence when measured need exists.
+
+Any app that must persist state beyond a single request — users, orders, sessions, analytics.
+
+**Pluses and minuses:**
+
+| +                       | −                                                  |
 | -------------------------- | ----------------------------------------------------- |
 | Central source of truth    | Operational complexity (backups, migrations, scaling) |
 | Queryable, auditable data  | Schema and access patterns must be designed upfront   |
 | ACID / consistency options | Wrong store choice is expensive to reverse            |
 
-**Cases:** OLTP (Postgres) for users/orders; Redis for cache; queue for async — polyglot persistence when measured need exists.
-
-**When to use:** Any app that must persist state beyond a single request — users, orders, sessions, analytics.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 -- Relational: structured, joinable
@@ -167,11 +165,11 @@ CREATE TABLE users (
 );
 ```
 
-</details>
+**Thoughts:** A database is not just storage — it is a concurrency coordinator. Choose based on access patterns, consistency needs, and team expertise, not hype.
 
-**Notes:** A database is not just storage — it is a concurrency coordinator. Choose based on access patterns, consistency needs, and team expertise, not hype.
+**Sources:**
 
-**Source:** [PostgreSQL — Introduction](https://www.postgresql.org/docs/current/tutorial.html)
+[PostgreSQL — Introduction](https://www.postgresql.org/docs/current/tutorial.html)
 
 ---
 
@@ -182,7 +180,9 @@ CREATE TABLE users (
 
 ### Database taxonomy
 
-**Definition:** Databases group by data model and consistency guarantees — not by a single "SQL vs NoSQL" axis.
+**Definition:**
+
+Databases group by data model and consistency guarantees — not by a single "SQL vs NoSQL" axis.
 
 | Type                   | Examples                        | Best for                                   |
 | ---------------------- | ------------------------------- | ------------------------------------------ |
@@ -194,16 +194,20 @@ CREATE TABLE users (
 | **Time-series**        | TimescaleDB, InfluxDB           | Metrics, IoT, monitoring                   |
 | **Search**             | [Elasticsearch](#elasticsearch) | Full-text search, log analytics            |
 
-| Pros (polyglot persistence)  | Cons                              |
+**When to use:** Start with one primary store (usually PostgreSQL). Add Redis/Mongo/queue only when measured pain justifies it.
+
+**Pluses and minuses:**
+
+| + (polyglot persistence)  | −                              |
 | ---------------------------- | --------------------------------- |
 | Right tool per workload      | More ops, sync, and failure modes |
 | Optimize read vs write paths | Data duplication across stores    |
 
-**When to use:** Start with one primary store (usually PostgreSQL). Add Redis/Mongo/queue only when measured pain justifies it.
+**Thoughts:** "NoSQL" means **Not Only SQL** — many teams run Postgres + Redis + a queue. See [DB selection matrix](#db-selection-matrix).
 
-**Notes:** "NoSQL" means **Not Only SQL** — many teams run Postgres + Redis + a queue. See [DB selection matrix](#db-selection-matrix).
+**Sources:**
 
-**Source:** [ByteByteGo — Database types](https://blog.bytebytego.com/p/understanding-database-types)
+[ByteByteGo — Database types](https://blog.bytebytego.com/p/understanding-database-types)
 
 ---
 
@@ -216,18 +220,17 @@ CREATE TABLE users (
 
 **Definition:** Four transactional guarantees — **Atomicity**, **Consistency**, **Isolation**, **Durability**.
 
-| Pros                                 | Cons                                         |
+**When to use:** Financial transfers, inventory, booking systems — anywhere partial updates are unacceptable.
+
+**Pluses and minuses:**
+
+| +                                 | −                                         |
 | ------------------------------------ | -------------------------------------------- |
 | Predictable state after failures     | Higher write latency vs eventual consistency |
 | Strong integrity for money/inventory | Harder to scale writes across regions        |
 | Familiar mental model for OLTP       | Long transactions block other work           |
 
-**When to use:** Financial transfers, inventory, booking systems — anywhere partial updates are unacceptable.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 BEGIN;
@@ -237,15 +240,15 @@ COMMIT;
 -- ROLLBACK on any error — neither update persists alone
 ```
 
-</details>
-
-**Notes:**
+**Thoughts:**
 
 - **Consistency** in ACID = constraints hold (FK, CHECK), not CAP consistency.
 - NoSQL systems often relax **I** (isolation) or **D** (durability) for scale — see BASE.
 - Keep transactions short; hold locks for milliseconds, not seconds.
 
-**Source:** [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
+**Sources:**
+
+[PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
 
 ---
 
@@ -256,20 +259,15 @@ COMMIT;
 
 ### CAP theorem
 
-**Definition:** In a distributed data store, you can guarantee at most **two** of three properties under network partition:
+**Definition:**
+
+In a distributed data store, you can guarantee at most **two** of three properties under network partition:
 
 1. **Consistency** — every read returns the latest write (or errors)
 2. **Availability** — every request gets a non-error response
 3. **Partition tolerance** — system works when nodes cannot talk
 
-| Pros (explicit trade-off)      | Cons                                        |
-| ------------------------------ | ------------------------------------------- |
-| Forces architectural honesty   | Oversimplified for real systems             |
-| Guides CP vs AP product choice | Partitions are rare but inevitable at scale |
-
-**When to use:** Designing multi-region or multi-node data layers — pick CP (strong consistency, may reject reads) or AP (always respond, may be stale).
-
-**Typical choices:**
+**How it works:**
 
 | System                   | Under partition | Trade-off                        |
 | ------------------------ | --------------- | -------------------------------- |
@@ -278,9 +276,20 @@ COMMIT;
 | etcd / ZooKeeper         | CP              | Consistency over availability    |
 | Cassandra                | AP              | Tunable consistency per query    |
 
-**Notes:** CAP assumes partition happens — the real question is behavior **during** and **after** recovery. See PACELC.
+**When to use:** Designing multi-region or multi-node data layers — pick CP (strong consistency, may reject reads) or AP (always respond, may be stale).
 
-**Source:** [CAP theorem (Wikipedia)](https://en.wikipedia.org/wiki/CAP_theorem)
+**Pluses and minuses:**
+
+| + (explicit trade-off)      | −                                        |
+| ------------------------------ | ------------------------------------------- |
+| Forces architectural honesty   | Oversimplified for real systems             |
+| Guides CP vs AP product choice | Partitions are rare but inevitable at scale |
+
+**Thoughts:** CAP assumes partition happens — the real question is behavior **during** and **after** recovery. See PACELC.
+
+**Sources:**
+
+[CAP theorem (Wikipedia)](https://en.wikipedia.org/wiki/CAP_theorem)
 
 ---
 
@@ -293,18 +302,22 @@ COMMIT;
 
 **Definition:** Extension of CAP — **if Partition**, choose **A** or **C**; **Else** (normal operation), choose **L**atency or **C**onsistency.
 
-| Pros                                   | Cons                                         |
+**When to use:** Explaining why read replicas return stale data even without network splits.
+
+**Pluses and minuses:**
+
+| +                                   | −                                         |
 | -------------------------------------- | -------------------------------------------- |
 | Models everyday latency vs consistency | Less famous than CAP — explain in interviews |
 | Explains async replication behavior    | Not a formal proof like CAP                  |
 
-**When to use:** Explaining why read replicas return stale data even without network splits.
+**Examples:** Postgres primary + async replica — no partition, but replica lag means reads can be **eventually consistent** (lower latency on replica) or you read from primary (higher latency, strong consistency).
 
-**Example:** Postgres primary + async replica — no partition, but replica lag means reads can be **eventually consistent** (lower latency on replica) or you read from primary (higher latency, strong consistency).
+**Thoughts:** Most production incidents are "PACELC without P" — replica lag, not split brain.
 
-**Notes:** Most production incidents are "PACELC without P" — replica lag, not split brain.
+**Sources:**
 
-**Source:** [PACELC (Daniel Abadi)](https://dbmsmusings.blogspot.com/2010/04/problems-with-cap-and-yahoos-little.html)
+[PACELC (Daniel Abadi)](https://dbmsmusings.blogspot.com/2010/04/problems-with-cap-and-yahoos-little.html)
 
 ---
 
@@ -317,18 +330,17 @@ COMMIT;
 
 **Definition:** Alternative to strict ACID for distributed systems — **Basically Available**, **Soft state**, **Eventually consistent**.
 
-| Pros                                   | Cons                                            |
+**When to use:** Social feeds, analytics counters, shopping carts at scale, cache layers — where brief inconsistency is acceptable.
+
+**Pluses and minuses:**
+
+| +                                   | −                                            |
 | -------------------------------------- | ----------------------------------------------- |
 | High availability and write throughput | Stale reads, conflict resolution needed         |
 | Scales horizontally easier             | Application must tolerate inconsistency windows |
 | Fits agile schema evolution            | Debugging "wrong" data is harder                |
 
-**When to use:** Social feeds, analytics counters, shopping carts at scale, cache layers — where brief inconsistency is acceptable.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Eventually consistent counter — two nodes may diverge briefly
@@ -336,11 +348,11 @@ await redis.incr("page:views:home");
 // Different readers may see different counts for milliseconds
 ```
 
-</details>
+**Thoughts:** BASE is a design choice, not a database feature. You can run "BASE-style" reads on top of ACID Postgres via read replicas.
 
-**Notes:** BASE is a design choice, not a database feature. You can run "BASE-style" reads on top of ACID Postgres via read replicas.
+**Sources:**
 
-**Source:** [ACID vs BASE](https://www.ibm.com/think/topics/acid-vs-base)
+[ACID vs BASE](https://www.ibm.com/think/topics/acid-vs-base)
 
 ---
 
@@ -351,7 +363,9 @@ await redis.incr("page:views:home");
 
 ### Transactions & isolation levels
 
-**Definition:** A transaction groups operations into one atomic unit. **Isolation levels** control what concurrent transactions can see from each other.
+**Definition:**
+
+A transaction groups operations into one atomic unit. **Isolation levels** control what concurrent transactions can see from each other.
 
 | Level            | Dirty read | Non-repeatable read | Phantom read      |
 | ---------------- | ---------- | ------------------- | ----------------- |
@@ -360,20 +374,19 @@ await redis.incr("page:views:home");
 | REPEATABLE READ  | No         | No                  | Possible (PG: no) |
 | SERIALIZABLE     | No         | No                  | No                |
 
-| Pros (higher isolation) | Cons                              |
-| ----------------------- | --------------------------------- |
-| Fewer anomalies         | More locking, retries, deadlocks  |
-| Easier reasoning        | Lower throughput under contention |
-
 **When to use:**
 
 - **READ COMMITTED** — Postgres default; good for most OLTP.
 - **SERIALIZABLE** — financial invariants, seat booking when race conditions matter.
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + (higher isolation) | −                              |
+| ----------------------- | --------------------------------- |
+| Fewer anomalies         | More locking, retries, deadlocks  |
+| Easier reasoning        | Lower throughput under contention |
+
+**Examples:**
 
 ```sql
 -- Postgres: explicit transaction
@@ -383,11 +396,11 @@ BEGIN ISOLATION LEVEL REPEATABLE READ;
 COMMIT;
 ```
 
-</details>
+**Thoughts:** Postgres uses **MVCC** (Multi-Version Concurrency Control) — readers don't block writers. Watch for **deadlocks** (`deadlock_detected`) and **serialization failures** (retry with backoff).
 
-**Notes:** Postgres uses **MVCC** (Multi-Version Concurrency Control) — readers don't block writers. Watch for **deadlocks** (`deadlock_detected`) and **serialization failures** (retry with backoff).
+**Sources:**
 
-**Source:** [PostgreSQL — Transaction isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
+[PostgreSQL — Transaction isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
 
 ---
 
@@ -400,7 +413,9 @@ COMMIT;
 
 **Definition:** Normalization organizes relations so each fact is stored once, reducing redundancy and insert/update/delete anomalies. Codd defined 1NF (1970) then 2NF/3NF (1971); Boyce–Codd (BCNF) followed in 1974. Informal target for OLTP: **3NF**.
 
-**How it works:** A **functional dependency** `X → Y` means the values of `X` determine `Y`. **Prime** attributes belong to some candidate key. Each form is stricter than the previous.
+**How it works:**
+
+A **functional dependency** `X → Y` means the values of `X` determine `Y`. **Prime** attributes belong to some candidate key. Each form is stricter than the previous.
 
 | Form     | Informal rule                                                                 | Typical fix                                      |
 | -------- | ----------------------------------------------------------------------------- | ------------------------------------------------ |
@@ -411,24 +426,25 @@ COMMIT;
 
 Kent (interview mnemonic): *each non-key field is a fact about the key, the whole key, and nothing but the key.*
 
-**Anomalies without it:** update the same city in many rows and miss one; cannot insert a course until a student enrolls; deleting the last student also deletes the course.
+update the same city in many rows and miss one; cannot insert a course until a student enrolls; deleting the last student also deletes the course.
 
-**Cases:** Schema design and “why so many tables?” interviews. Stop at 3NF for most apps. BCNF when overlapping keys still allow contradictory facts. 4NF+ (independent multi-valued facts) is rare in interviews.
+**When to use:**
 
-| Pros                              | Cons                                           |
+Schema design and “why so many tables?” interviews. Stop at 3NF for most apps. BCNF when overlapping keys still allow contradictory facts. 4NF+ (independent multi-valued facts) is rare in interviews.
+
+OLTP writes, money/inventory, shared reference data (`users`, `products`).
+
+Read models, checkout snapshots, caches — see [Normalization vs denormalization](#normalization-vs-denormalization). Postgres `ARRAY` / `JSONB` are valid when the value is a document, not a disguised 1:N table.
+
+**Pluses and minuses:**
+
+| +                              | −                                           |
 | --------------------------------- | ---------------------------------------------- |
 | One place to update a fact        | More JOINs and FKs at read time                |
 | Clear entities (user, order, sku) | SQL still allows arrays/JSONB that skip 1NF    |
 | Integrity via keys, not copies    | Over-normalize (6NF-style) explodes table count |
 
-**When to use:** OLTP writes, money/inventory, shared reference data (`users`, `products`).
-
-**When NOT to use as a religion:** Read models, checkout snapshots, caches — see [Normalization vs denormalization](#normalization-vs-denormalization). Postgres `ARRAY` / `JSONB` are valid when the value is a document, not a disguised 1:N table.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 -- UNF: repeating group in one cell
@@ -460,15 +476,15 @@ CREATE TABLE orders (
 );
 ```
 
-</details>
-
-**Notes:**
+**Thoughts:**
 
 - 2NF is automatic if every table has a **single-column** primary key — partial dependency needs a composite key.
 - BCNF ⊂ 3NF: a table can be 3NF (all non-prime attrs depend only on keys) but not BCNF if a **non-superkey** determines part of a key. Decomposition to BCNF is not always dependency-preserving.
 - “Normalized” in conversation usually means **3NF**, not 6NF.
 
-**Source:** [Database normalization (Wikipedia)](https://en.wikipedia.org/wiki/Database_normalization) · [First normal form](https://en.wikipedia.org/wiki/First_normal_form) · [BCNF](https://en.wikipedia.org/wiki/Boyce%E2%80%93Codd_normal_form) · Codd, *A Relational Model of Data for Large Shared Data Banks* (1970)
+**Sources:**
+
+[Database normalization (Wikipedia)](https://en.wikipedia.org/wiki/Database_normalization) · [First normal form](https://en.wikipedia.org/wiki/First_normal_form) · [BCNF](https://en.wikipedia.org/wiki/Boyce%E2%80%93Codd_normal_form) · Codd, *A Relational Model of Data for Large Shared Data Banks* (1970)
 
 ---
 
@@ -481,21 +497,25 @@ CREATE TABLE orders (
 
 **Definition:** **Normalization** splits data into related tables to reduce redundancy (forms: [1NF–3NF, BCNF](#normal-forms-1nf3nf-bcnf)). **Denormalization** duplicates data for faster reads.
 
-| Pros (normalized)         | Cons (normalized)              |
+**How it works:**
+
+OLTP, frequently updated entities, strong integrity (users, orders, payments).
+
+Read-heavy analytics, embedded documents (order snapshot at checkout), cache tables, CQRS read models.
+
+**Pluses and minuses:**
+
+| + (normalized)         | − (normalized)              |
 | ------------------------- | ------------------------------ |
 | No update anomalies       | More JOINs at read time        |
 | Smaller storage footprint | Complex queries for dashboards |
 
-| Pros (denormalized)           | Cons (denormalized)                    |
+| + (denormalized)           | − (denormalized)                    |
 | ----------------------------- | -------------------------------------- |
 | Faster reads, fewer JOINs     | Update anomalies — must sync copies    |
 | Better for read-heavy reports | More application logic for consistency |
 
-**When to normalize:** OLTP, frequently updated entities, strong integrity (users, orders, payments).
-
-**When to denormalize:** Read-heavy analytics, embedded documents (order snapshot at checkout), cache tables, CQRS read models.
-
-**Example (3NF vs snapshot):**
+**Examples:**
 
 ```sql
 -- 3NF — name lives once in products
@@ -518,9 +538,11 @@ CREATE TABLE order_items (
 );
 ```
 
-**Notes:** Target 3NF for writes. Denormalize **after** measuring slow queries, not upfront. Copies must be updated together or treated as immutable history.
+**Thoughts:** Target 3NF for writes. Denormalize **after** measuring slow queries, not upfront. Copies must be updated together or treated as immutable history.
 
-**Source:** [Use The Index, Luke — Analyzing](https://use-the-index-luke.com/sql/anatomy) · [Database normalization](https://en.wikipedia.org/wiki/Database_normalization)
+**Sources:**
+
+[Use The Index, Luke — Analyzing](https://use-the-index-luke.com/sql/anatomy) · [Database normalization](https://en.wikipedia.org/wiki/Database_normalization)
 
 ---
 
@@ -533,17 +555,16 @@ CREATE TABLE order_items (
 
 **Definition:** **Create, Read, Update, Delete** — the four basic persistence operations every data-backed API implements.
 
-| Pros                                       | Cons                                                 |
+**When to use:** REST resources, admin panels, simple entity management.
+
+**Pluses and minuses:**
+
+| +                                       | −                                                 |
 | ------------------------------------------ | ---------------------------------------------------- |
 | Universal vocabulary across stacks         | Hides complex domain operations behind generic verbs |
 | Maps cleanly to HTTP (POST/GET/PUT/DELETE) | Bulk/batch operations don't fit neatly               |
 
-**When to use:** REST resources, admin panels, simple entity management.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 // Repository pattern — one place for CRUD
@@ -555,11 +576,11 @@ type UserRepo = {
 };
 ```
 
-</details>
+**Thoughts:** Domain actions (`placeOrder`, `refundPayment`) often span multiple tables — don't force everything into generic CRUD controllers.
 
-**Notes:** Domain actions (`placeOrder`, `refundPayment`) often span multiple tables — don't force everything into generic CRUD controllers.
+**Sources:**
 
-**Source:** [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
+[MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
 
 ---
 
@@ -572,15 +593,17 @@ type UserRepo = {
 
 **Definition:** **Migrations** version schema changes (up/down). **Seeds** insert reference or test data.
 
-| Pros                                     | Cons                                               |
+**When to use:** Every team project with a shared database. Never alter production schema by hand.
+
+**Pluses and minuses:**
+
+| +                                     | −                                               |
 | ---------------------------------------- | -------------------------------------------------- |
 | Schema in version control alongside code | Bad migrations can lock large tables in production |
 | Reproducible environments                | Rollback complexity on data migrations             |
 | Team sync on schema changes              | Requires discipline in CI/CD                       |
 
-**When to use:** Every team project with a shared database. Never alter production schema by hand.
-
-**Example (Prisma):**
+**Examples:**
 
 ```prisma
 // schema.prisma
@@ -623,13 +646,13 @@ module.exports = {
 };
 ```
 
-**Notes:**
+**Thoughts:**
 
 - Prefer **backward-compatible** migrations (add column nullable → backfill → add NOT NULL).
 - Large table changes: use `CONCURRENTLY` indexes in Postgres, avoid blocking `ALTER` in peak hours.
 - Seeds are for dev/staging — never run destructive seeds in production.
 
-**Source:** [Prisma Migrate](https://www.prisma.io/docs/orm/prisma-migrate)
+**Sources:** [Prisma Migrate](https://www.prisma.io/docs/orm/prisma-migrate)
 
 ---
 
@@ -646,18 +669,17 @@ module.exports = {
 
 **Definition:** **Structured Query Language** — declarative language for defining and querying relational data. You describe _what_ data you want; the optimizer decides _how_.
 
-| Pros                               | Cons                                    |
+**When to use:** Structured data with relationships, reporting, transactions, ad-hoc analytics.
+
+**Pluses and minuses:**
+
+| +                               | −                                    |
 | ---------------------------------- | --------------------------------------- |
 | Declarative, portable across RDBMS | Dialect differences (Postgres vs MySQL) |
 | Mature ecosystem, tooling          | Complex queries become hard to maintain |
 | Strong consistency and joins       | Vertical scaling limits on single node  |
 
-**When to use:** Structured data with relationships, reporting, transactions, ad-hoc analytics.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 SELECT u.email, COUNT(o.id) AS order_count
@@ -670,11 +692,11 @@ ORDER BY order_count DESC
 LIMIT 10;
 ```
 
-</details>
+**Thoughts:** Apps connect via **drivers** (`pg`, `mysql2`). The query planner uses statistics — stale stats = bad plans. Always parameterize user input.
 
-**Notes:** Apps connect via **drivers** (`pg`, `mysql2`). The query planner uses statistics — stale stats = bad plans. Always parameterize user input.
+**Sources:**
 
-**Source:** [PostgreSQL — SQL commands](https://www.postgresql.org/docs/current/sql-commands.html)
+[PostgreSQL — SQL commands](https://www.postgresql.org/docs/current/sql-commands.html)
 
 ---
 
@@ -687,7 +709,9 @@ LIMIT 10;
 
 **Definition:** Combine rows from multiple tables based on related columns.
 
-**How it works:** Optimizer picks nested loop, hash join, or merge join based on stats and indexes. Join condition in `ON` filters matches; `WHERE` filters after join.
+**How it works:**
+
+Optimizer picks nested loop, hash join, or merge join based on stats and indexes. Join condition in `ON` filters matches; `WHERE` filters after join.
 
 | Join type      | Returns                                           |
 | -------------- | ------------------------------------------------- |
@@ -697,19 +721,20 @@ LIMIT 10;
 | **FULL OUTER** | All rows from both, NULLs where no match          |
 | **CROSS**      | Cartesian product — every left × every right      |
 
-| Pros                              | Cons                                               |
+**When to use:**
+
+INNER for required relationships; LEFT when optional related data (e.g. user without orders). `EXISTS` often beats `IN` for large subqueries.
+
+INNER for required relationships; LEFT when optional related data (e.g. user without orders).
+
+**Pluses and minuses:**
+
+| +                              | −                                               |
 | --------------------------------- | -------------------------------------------------- |
 | Normalized schema, no duplication | Expensive on large tables without indexes          |
 | Single query for related data     | Wrong join type = silent data loss (INNER vs LEFT) |
 
-**Cases:** INNER for required relationships; LEFT when optional related data (e.g. user without orders). `EXISTS` often beats `IN` for large subqueries.
-
-**When to use:** INNER for required relationships; LEFT when optional related data (e.g. user without orders).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 -- Users with at least one order (INNER)
@@ -727,11 +752,11 @@ SELECT u.id FROM users u
 WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);
 ```
 
-</details>
+**Thoughts:** Prefer `EXISTS` over `IN (SELECT ...)` for correlated checks. Avoid `SELECT *` in JOINs — fetch only needed columns.
 
-**Notes:** Prefer `EXISTS` over `IN (SELECT ...)` for correlated checks. Avoid `SELECT *` in JOINs — fetch only needed columns.
+**Sources:**
 
-**Source:** [Use The Index, Luke — Joins](https://use-the-index-luke.com/sql/join)
+[Use The Index, Luke — Joins](https://use-the-index-luke.com/sql/join)
 
 ---
 
@@ -755,26 +780,23 @@ WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);
 | **CHECK**            | Boolean expression per row (`price > 0`, `status IN ('open','closed')`) |
 | **DEFAULT**          | Value when insert omits column                                          |
 
-**FK actions:**
-
 | On delete/update         | Effect                               |
 | ------------------------ | ------------------------------------ |
 | `RESTRICT` / `NO ACTION` | Block if children exist              |
 | `CASCADE`                | Delete/update children automatically |
 | `SET NULL`               | Nullify FK in children               |
 
-| Pros                              | Cons                                          |
+**When to use:** Always FK `orders.user_id → users.id`. Use `CHECK` for enums and positive amounts. `ON DELETE CASCADE` for join tables; `RESTRICT` for orders referencing users.
+
+**Pluses and minuses:**
+
+| +                              | −                                          |
 | --------------------------------- | --------------------------------------------- |
 | Integrity even if app has bugs    | Migration order matters (parent before child) |
 | Self-documenting relationships    | `CASCADE` deletes can surprise                |
 | DB rejects bad data at write time | ORM may fight FK during bulk loads            |
 
-**Cases:** Always FK `orders.user_id → users.id`. Use `CHECK` for enums and positive amounts. `ON DELETE CASCADE` for join tables; `RESTRICT` for orders referencing users.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 CREATE TABLE orders (
@@ -788,11 +810,11 @@ CREATE TABLE orders (
 CREATE UNIQUE INDEX idx_users_email_lower ON users (lower(email));
 ```
 
-</details>
+**Thoughts:** Prisma maps `@relation` to FK. Add indexes on FK columns — Postgres does not auto-index FKs.
 
-**Notes:** Prisma maps `@relation` to FK. Add indexes on FK columns — Postgres does not auto-index FKs.
+**Sources:**
 
-**Source:** [PostgreSQL — Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
+[PostgreSQL — Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
 
 ---
 
@@ -805,7 +827,7 @@ CREATE UNIQUE INDEX idx_users_email_lower ON users (lower(email));
 
 **Definition:** **Upsert** inserts a row or updates it if a unique constraint conflicts — atomic "create or update".
 
-**How it works (PostgreSQL):**
+**How it works:**
 
 ```sql
 INSERT INTO users (email, name, updated_at)
@@ -821,14 +843,16 @@ RETURNING *;
 - `DO NOTHING` — skip silently (idempotent insert).
 - `DO UPDATE` — merge; `EXCLUDED` refers to the row that would have been inserted.
 
-| Pros                                           | Cons                                     |
+**When to use:** Sync external IDs, login "create if not exists", settings row per user, deduplicated event ingestion.
+
+**Pluses and minuses:**
+
+| +                                           | −                                     |
 | ---------------------------------------------- | ---------------------------------------- |
 | One round trip, race-safe vs check-then-insert | Must have matching unique index          |
 | Idempotent sync/import jobs                    | Easy to overwrite fields unintentionally |
 
-**Cases:** Sync external IDs, login "create if not exists", settings row per user, deduplicated event ingestion.
-
-**Example (Prisma upsert):**
+**Examples:**
 
 ```ts
 await prisma.user.upsert({
@@ -838,9 +862,11 @@ await prisma.user.upsert({
 });
 ```
 
-**Notes:** MySQL uses `ON DUPLICATE KEY UPDATE`. SQLite supports `ON CONFLICT` similarly. Without unique constraint, upsert is not available — add one first.
+**Thoughts:** MySQL uses `ON DUPLICATE KEY UPDATE`. SQLite supports `ON CONFLICT` similarly. Without unique constraint, upsert is not available — add one first.
 
-**Source:** [PostgreSQL — INSERT ON CONFLICT](https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT)
+**Sources:**
+
+[PostgreSQL — INSERT ON CONFLICT](https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT)
 
 ---
 
@@ -853,17 +879,16 @@ await prisma.user.upsert({
 
 **Definition:** **Aggregations** collapse rows (`COUNT`, `SUM`, `AVG`). **Window functions** compute across related rows without collapsing the result set.
 
-| Pros                           | Cons                                                              |
+**When to use:** Rankings, running totals, deduplication, pagination with stable sort.
+
+**Pluses and minuses:**
+
+| +                           | −                                                              |
 | ------------------------------ | ----------------------------------------------------------------- |
 | Powerful analytics in SQL      | Window functions are Postgres/SQL Server territory — know your DB |
 | Offloads work from application | Harder to read than imperative code                               |
 
-**When to use:** Rankings, running totals, deduplication, pagination with stable sort.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 -- Rank orders per user by amount
@@ -882,11 +907,11 @@ SELECT
 FROM payments;
 ```
 
-</details>
+**Thoughts:** `GROUP BY` requires all non-aggregated SELECT columns to be in GROUP BY (or wrapped in aggregate). Window functions run **after** WHERE/GROUP BY.
 
-**Notes:** `GROUP BY` requires all non-aggregated SELECT columns to be in GROUP BY (or wrapped in aggregate). Window functions run **after** WHERE/GROUP BY.
+**Sources:**
 
-**Source:** [PostgreSQL — Window functions](https://www.postgresql.org/docs/current/tutorial-window.html)
+[PostgreSQL — Window functions](https://www.postgresql.org/docs/current/tutorial-window.html)
 
 ---
 
@@ -897,7 +922,9 @@ FROM payments;
 
 ### Indexes
 
-**Definition:** Data structures (usually **B-tree** in Postgres) that speed up lookups at the cost of write overhead and storage.
+**Definition:**
+
+Data structures (usually **B-tree** in Postgres) that speed up lookups at the cost of write overhead and storage.
 
 | Index type           | Use case                                     |
 | -------------------- | -------------------------------------------- |
@@ -909,29 +936,28 @@ FROM payments;
 | **Composite**        | Multi-column (`user_id, created_at`)         |
 | **Covering**         | INCLUDE columns to avoid table lookup        |
 
-| Pros                                | Cons                                           |
+**When to use:** Columns in `WHERE`, `JOIN`, `ORDER BY` on large tables. Don't index low-cardinality columns alone (e.g. boolean `is_active`).
+
+**Pluses and minuses:**
+
+| +                                | −                                           |
 | ----------------------------------- | ---------------------------------------------- |
 | Dramatic read speedups              | Slow INSERT/UPDATE/DELETE on indexed columns   |
 | Enables efficient sorting/filtering | Wrong index = wasted space, planner may ignore |
 | Unique indexes enforce constraints  | Too many indexes confuse the optimizer         |
 
-**When to use:** Columns in `WHERE`, `JOIN`, `ORDER BY` on large tables. Don't index low-cardinality columns alone (e.g. boolean `is_active`).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 CREATE INDEX idx_orders_user_created ON orders (user_id, created_at DESC);
 CREATE INDEX idx_users_active_email ON users (email) WHERE deleted_at IS NULL;
 ```
 
-</details>
+**Thoughts:** Indexes don't help `LIKE '%foo%'` (leading wildcard). Use `EXPLAIN ANALYZE` to verify index usage. Drop unused indexes found in `pg_stat_user_indexes`.
 
-**Notes:** Indexes don't help `LIKE '%foo%'` (leading wildcard). Use `EXPLAIN ANALYZE` to verify index usage. Drop unused indexes found in `pg_stat_user_indexes`.
+**Sources:**
 
-**Source:** [Use The Index, Luke](https://use-the-index-luke.com/)
+[Use The Index, Luke](https://use-the-index-luke.com/)
 
 ---
 
@@ -944,34 +970,33 @@ CREATE INDEX idx_users_active_email ON users (email) WHERE deleted_at IS NULL;
 
 **Definition:** Analyze how the database executes a query — scan type, index usage, row estimates, actual timing.
 
-| Pros                                | Cons                                       |
+**When to use:** Slow endpoints, before adding indexes, after large data growth or schema change.
+
+**Pluses and minuses:**
+
+| +                                | −                                       |
 | ----------------------------------- | ------------------------------------------ |
 | Finds missing indexes and bad plans | Output requires practice to read           |
 | Cheaper than guessing in production | `ANALYZE` adds load — use on staging first |
 
-**When to use:** Slow endpoints, before adding indexes, after large data growth or schema change.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
 SELECT * FROM orders WHERE user_id = 42 AND status = 'pending';
 ```
 
-</details>
-
 Look for: `Seq Scan` on large tables (bad), `Index Scan` / `Index Only Scan` (good), large `rows` mismatch between estimate and actual (run `ANALYZE`).
 
-**Notes:**
+**Thoughts:**
 
 - **N+1 at SQL level** — app runs 1 query + N queries in a loop. Fix with JOIN or `WHERE id IN (...)`.
 - Avoid `SELECT *`; fetch columns you need.
 - Pagination: `OFFSET` is slow at depth — use keyset (`WHERE id > $cursor ORDER BY id LIMIT 20`).
 
-**Source:** [PostgreSQL — EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html)
+**Sources:**
+
+[PostgreSQL — EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html)
 
 ---
 
@@ -984,14 +1009,16 @@ Look for: `Seq Scan` on large tables (bad), `Index Scan` / `Index Only Scan` (go
 
 **Definition:** Attacker injects malicious SQL through unsanitized user input, bypassing auth or exfiltrating data.
 
-| Pros (of prevention)                  | Cons                                              |
+**When to use:** Always — any user-controlled value in a query.
+
+**Pluses and minuses:**
+
+| + (of prevention)                  | −                                              |
 | ------------------------------------- | ------------------------------------------------- |
 | Eliminates entire vulnerability class | Requires discipline — one raw string concat fails |
 | Parameterized queries are standard    | ORMs can still be misused (`$queryRaw` unsafe)    |
 
-**When to use:** Always — any user-controlled value in a query.
-
-**Example (vulnerable vs safe):**
+**Examples:**
 
 ```js
 // VULNERABLE — never do this
@@ -1006,9 +1033,11 @@ await prisma.user.findUnique({ where: { email } });
 
 Attack payload: `email = "' OR '1'='1' --"` turns WHERE into always-true.
 
-**Notes:** Also validate input type/length, use least-privilege DB roles (app user cannot `DROP TABLE`), and never expose raw SQL errors to clients. SQL injection is **not** XSS (SQL vs HTML/JS). Frontend escaping does not bind SQL parameters. See [Special — SQL injection](./7_special.md#sql-injection).
+**Thoughts:** Also validate input type/length, use least-privilege DB roles (app user cannot `DROP TABLE`), and never expose raw SQL errors to clients. SQL injection is **not** XSS (SQL vs HTML/JS). Frontend escaping does not bind SQL parameters. See [Special — SQL injection](./7_special.md#sql-injection).
 
-**Source:** [OWASP — SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
+**Sources:**
+
+[OWASP — SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
 
 ---
 
@@ -1019,7 +1048,9 @@ Attack payload: `email = "' OR '1'='1' --"` turns WHERE into always-true.
 
 ### Subqueries & CTEs
 
-**Definition:** A **subquery** nests a SELECT inside another query. A **CTE** (Common Table Expression) names a subquery with `WITH` for readability and reuse.
+**Definition:**
+
+A **subquery** nests a SELECT inside another query. A **CTE** (Common Table Expression) names a subquery with `WITH` for readability and reuse.
 
 | Feature        | Subquery        | CTE (`WITH`)                 |
 | -------------- | --------------- | ---------------------------- |
@@ -1029,10 +1060,7 @@ Attack payload: `email = "' OR '1'='1' --"` turns WHERE into always-true.
 
 **When to use:** CTEs for multi-step reports, org trees, readable pipelines. Subqueries for simple filters and `EXISTS` checks.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 WITH totals AS (
@@ -1047,9 +1075,7 @@ SELECT u.id FROM users u
 WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);
 ```
 
-</details>
-
-**Source:** [PostgreSQL — WITH queries](https://www.postgresql.org/docs/current/queries-with.html)
+**Sources:** [PostgreSQL — WITH queries](https://www.postgresql.org/docs/current/queries-with.html)
 
 </details>
 
@@ -1058,7 +1084,9 @@ WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);
 
 ### Prepared statements & placeholders
 
-**Definition:** A **prepared statement** sends SQL with placeholders (`$1`, `?`) once; values are bound separately — preventing SQL injection.
+**Definition:**
+
+A **prepared statement** sends SQL with placeholders (`$1`, `?`) once; values are bound separately — preventing SQL injection.
 
 | Approach                    | Safe? | Notes                              |
 | --------------------------- | ----- | ---------------------------------- |
@@ -1069,21 +1097,16 @@ WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);
 
 **When to use:** Every query with user-controlled values.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 await pool.query("SELECT * FROM users WHERE email = $1", [email]);
 await prisma.$queryRaw`SELECT * FROM users WHERE email = ${email}`;
 ```
 
-</details>
+**Thoughts:** Placeholders handle values only — never parameterize table or column names.
 
-**Notes:** Placeholders handle values only — never parameterize table or column names.
-
-**Source:** [OWASP — SQL Injection Prevention](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html)
+**Sources:** [OWASP — SQL Injection Prevention](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html)
 
 </details>
 
@@ -1094,15 +1117,17 @@ await prisma.$queryRaw`SELECT * FROM users WHERE email = ${email}`;
 
 **Definition:** Open-source RDBMS with strong ACID, extensibility (JSONB, PostGIS, pgvector), and advanced SQL (CTEs, window functions, advisory locks).
 
-| Pros                                 | Cons                                                               |
+**When to use:** Default choice for new backend projects — OLTP, mixed relational + JSON, full-text search (with extensions).
+
+**Pluses and minuses:**
+
+| +                                 | −                                                               |
 | ------------------------------------ | ------------------------------------------------------------------ |
 | Rich feature set, excellent JSONB    | Single-writer primary — write scaling needs sharding/read replicas |
 | Mature extensions ecosystem          | Tuning requires DBA knowledge at scale                             |
 | Strong community and hosting options | Connection limits — use pooling (PgBouncer)                        |
 
-**When to use:** Default choice for new backend projects — OLTP, mixed relational + JSON, full-text search (with extensions).
-
-**Example (JSONB + CTE):**
+**Examples:**
 
 ```sql
 -- JSONB query
@@ -1120,7 +1145,7 @@ WITH RECURSIVE tree AS (
 SELECT * FROM tree;
 ```
 
-**Notes:**
+**Thoughts:**
 
 - **Advisory locks** — app-level mutex: `SELECT pg_advisory_lock(123)`.
 - **LISTEN/NOTIFY** — lightweight pub/sub inside Postgres (not a replacement for Redis/Kafka).
@@ -1147,7 +1172,7 @@ CREATE DATABASE myapp;
 GRANT ALL PRIVILEGES ON SCHEMA public TO myapp_user;
 ```
 
-**Source:** [PostgreSQL documentation](https://www.postgresql.org/docs/current/)
+**Sources:** [PostgreSQL documentation](https://www.postgresql.org/docs/current/)
 
 ---
 
@@ -1164,19 +1189,23 @@ GRANT ALL PRIVILEGES ON SCHEMA public TO myapp_user;
 
 **Definition:** Non-relational databases optimized for flexible schemas, horizontal scale, or specialized access patterns — document, key-value, column, graph.
 
-| Pros                                  | Cons                                             |
+**When to use:** Rapidly evolving documents, high write throughput, embedded data, cache/session layers — not as default replacement for Postgres.
+
+**Pluses and minuses:**
+
+| +                                  | −                                             |
 | ------------------------------------- | ------------------------------------------------ |
 | Schema flexibility, fast iteration    | Weaker default consistency guarantees            |
 | Horizontal scaling built-in           | No universal query language                      |
 | Good fit for nested/hierarchical data | Joins and cross-document transactions are harder |
 
-**When to use:** Rapidly evolving documents, high write throughput, embedded data, cache/session layers — not as default replacement for Postgres.
+**Examples:** E-commerce product catalog with varying attributes per category — document store avoids sparse columns.
 
-**Example:** E-commerce product catalog with varying attributes per category — document store avoids sparse columns.
+**Thoughts:** "Schema-less" means schema is **in application code** — undocumented and harder to enforce. Define schemas (Mongoose, Zod) anyway.
 
-**Notes:** "Schema-less" means schema is **in application code** — undocumented and harder to enforce. Define schemas (Mongoose, Zod) anyway.
+**Sources:**
 
-**Source:** [MongoDB — Data modeling](https://www.mongodb.com/docs/manual/core/data-modeling-introduction/)
+[MongoDB — Data modeling](https://www.mongodb.com/docs/manual/core/data-modeling-introduction/)
 
 ---
 
@@ -1189,18 +1218,17 @@ GRANT ALL PRIVILEGES ON SCHEMA public TO myapp_user;
 
 **Definition:** Document-oriented database storing BSON (binary JSON) documents in collections.
 
-| Pros                              | Cons                                              |
+**When to use:** Content management, catalogs with variable fields, real-time analytics pipelines, mobile sync with embedded documents.
+
+**Pluses and minuses:**
+
+| +                              | −                                              |
 | --------------------------------- | ------------------------------------------------- |
 | Flexible nested documents         | Document size limit (16 MB)                       |
 | Horizontal sharding, replica sets | Multi-document ACID only since 4.0 (with caveats) |
 | Rich aggregation pipeline         | Memory usage for large aggregations               |
 
-**When to use:** Content management, catalogs with variable fields, real-time analytics pipelines, mobile sync with embedded documents.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Aggregation pipeline
@@ -1216,15 +1244,15 @@ db.orders.aggregate([
 ]);
 ```
 
-</details>
-
-**Notes:**
+**Thoughts:**
 
 - **Replica set** — primary + secondaries, automatic failover.
 - **Sharding** — partition by shard key; choose key carefully (avoid monotonic `_id` hot spots).
 - Embed vs reference: embed for data read together; reference for unbounded growth.
 
-**Source:** [MongoDB manual](https://www.mongodb.com/docs/manual/)
+**Sources:**
+
+[MongoDB manual](https://www.mongodb.com/docs/manual/)
 
 ---
 
@@ -1237,18 +1265,17 @@ db.orders.aggregate([
 
 **Definition:** ODM (Object Document Mapper) for MongoDB in Node.js — schemas, validation, middleware, population.
 
-| Pros                              | Cons                                            |
+**When to use:** Node.js apps with MongoDB needing validation, hooks, and typed models.
+
+**Pluses and minuses:**
+
+| +                              | −                                            |
 | --------------------------------- | ----------------------------------------------- |
 | Schema enforcement on flexible DB | Abstraction leaks — know MongoDB query language |
 | Middleware hooks (pre/post save)  | `populate()` can cause N+1                      |
 | TypeScript support via generics   | Heavy models for simple CRUD                    |
 
-**When to use:** Node.js apps with MongoDB needing validation, hooks, and typed models.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 const userSchema = new Schema(
@@ -1267,11 +1294,11 @@ const User = model("User", userSchema);
 await User.findOne({ email }).populate("orders");
 ```
 
-</details>
+**Thoughts:** Use `.lean()` for read-only queries (plain objects, faster). Index fields used in `find()` and `sort()`.
 
-**Notes:** Use `.lean()` for read-only queries (plain objects, faster). Index fields used in `find()` and `sort()`.
+**Sources:**
 
-**Source:** [Mongoose docs](https://mongoosejs.com/docs/guide.html)
+[Mongoose docs](https://mongoosejs.com/docs/guide.html)
 
 ---
 
@@ -1284,15 +1311,17 @@ await User.findOne({ email }).populate("orders");
 
 **Definition:** In-memory data structure store — strings, hashes, lists, sets, sorted sets, streams — with optional persistence and clustering.
 
-| Pros                                         | Cons                                             |
+**When to use:** Cache, session store, rate limiting, pub/sub, job queues (with Bull/BullMQ), real-time leaderboards.
+
+**Pluses and minuses:**
+
+| +                                         | −                                             |
 | -------------------------------------------- | ------------------------------------------------ |
 | Sub-millisecond latency                      | Data primarily in RAM — cost at scale            |
 | Rich primitives (TTL, pub/sub, leaderboards) | Not a primary database for durable business data |
 | Simple replication and clustering            | Persistence modes trade durability vs speed      |
 
-**When to use:** Cache, session store, rate limiting, pub/sub, job queues (with Bull/BullMQ), real-time leaderboards.
-
-**Example (cache-aside):**
+**Examples:**
 
 ```js
 async function getUser(id) {
@@ -1305,7 +1334,7 @@ async function getUser(id) {
 }
 ```
 
-**Notes:**
+**Thoughts:**
 
 - Set TTL on cache keys — unbounded keys = memory exhaustion.
 - `KEYS *` blocks production — use `SCAN`.
@@ -1325,7 +1354,7 @@ DEL mykey
 docker exec -it <container> redis-cli
 ```
 
-**Source:** [Redis documentation](https://redis.io/docs/)
+**Sources:** [Redis documentation](https://redis.io/docs/)
 
 ---
 
@@ -1347,19 +1376,13 @@ docker exec -it <container> redis-cli
 - **Analyzer** (index + search): character filters → **tokenizer** → token filters (`lowercase`, stop, stemmer, shingle n-grams).
 - **Mapping:** `text` = analyzed full-text; `keyword` = exact (ids, filters, sorts). Multi-fields can be both.
 
-**Query DSL:** `match` (analyzed); `match_phrase` + **`slop`**; `bool` (`must` / `should` / `filter` / `must_not`); **`boost`**; `function_score` only if you need scoring functions. Bulk: `client.bulk`.
+`match` (analyzed); `match_phrase` + **`slop`**; `bool` (`must` / `should` / `filter` / `must_not`); **`boost`**; `function_score` only if you need scoring functions. Bulk: `client.bulk`.
 
-**Cases:** Catalog search, ELK logs, autocomplete, geo + full-text — when Postgres `LIKE '%x%'` / FTS is too weak.
+**When to use:**
 
-| + | − |
-| --- | --- |
-| Relevance, morphology, scale, replicas | Eventual consistency vs primary DB |
-| Query DSL + official JS client | Ops, mapping changes, not a money SoT |
+Catalog search, ELK logs, autocomplete, geo + full-text — when Postgres `LIKE '%x%'` / FTS is too weak.
 
 **Example** (`@elastic/elasticsearch` v8 — `mappings` / `document` at top level, not nested `body`):
-
-<details>
-  <summary>Code</summary>
 
 ```js
 import { Client } from "@elastic/elasticsearch";
@@ -1399,13 +1422,22 @@ const { hits } = await client.search({
 console.log(hits.hits); // [{ _id, _score, _source }]
 ```
 
-</details>
+#### Common pitfalls
 
-**Common pitfalls:** v7 `body: { query }` vs v8 flattened fields. Mapping is sticky — plan `text` vs `keyword`. Search before refresh → 0 hits. Dual-write/outbox from Postgres/Mongo; ES is a **search replica**.
+v7 `body: { query }` vs v8 flattened fields. Mapping is sticky — plan `text` vs `keyword`. Search before refresh → 0 hits. Dual-write/outbox from Postgres/Mongo; ES is a **search replica**.
 
-**Key idea:** Tokenize at index time, score against the inverted index — keep money/orders in OLTP.
+**Pluses and minuses:**
 
-**Source:** [Elasticsearch 8.19 — text analysis](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/analysis.html) · [match_phrase](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/query-dsl-match-query-phrase.html) · [elasticsearch-js](https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/index.html)
+| + | − |
+| --- | --- |
+| Relevance, morphology, scale, replicas | Eventual consistency vs primary DB |
+| Query DSL + official JS client | Ops, mapping changes, not a money SoT |
+
+**Thoughts:** Tokenize at index time, score against the inverted index — keep money/orders in OLTP.
+
+**Sources:**
+
+[Elasticsearch 8.19 — text analysis](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/analysis.html) · [match_phrase](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/query-dsl-match-query-phrase.html) · [elasticsearch-js](https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/index.html)
 
 ---
 
@@ -1415,7 +1447,9 @@ console.log(hits.hits); // [{ _id, _score, _source }]
 
 ### DB selection matrix
 
-**Definition:** Decision guide for picking a data store per workload.
+**Definition:**
+
+Decision guide for picking a data store per workload.
 
 | Need                                  | Choose                                             | Avoid                                 |
 | ------------------------------------- | -------------------------------------------------- | ------------------------------------- |
@@ -1427,9 +1461,11 @@ console.log(hits.hits); // [{ _id, _score, _source }]
 | Graph traversals (friends-of-friends) | **Neo4j**                                          | Recursive SQL on deep trees           |
 | Time-series metrics                   | **TimescaleDB** / **InfluxDB**                     | Plain Postgres without partitioning   |
 
-**Notes:** Default stack for most Node apps: **Postgres + Redis + (optional) queue**. Add Mongo only when document model wins measurably.
+**Thoughts:** Default stack for most Node apps: **Postgres + Redis + (optional) queue**. Add Mongo only when document model wins measurably.
 
-**Source:** [ByteByteGo — Database types](https://blog.bytebytego.com/p/understanding-database-types)
+**Sources:**
+
+[ByteByteGo — Database types](https://blog.bytebytego.com/p/understanding-database-types)
 
 ---
 
@@ -1446,21 +1482,20 @@ console.log(hits.hits); // [{ _id, _score, _source }]
 
 **Definition:** **Object-Relational Mapping** — maps database tables to application objects, generating SQL from method calls.
 
-| Pros                             | Cons                                            |
+**How it works:** Heavy reporting, bulk ETL, performance-critical analytics — use raw SQL or query builder.
+
+**When to use:** Standard CRUD APIs, rapid development, teams that benefit from schema-as-code.
+
+**Pluses and minuses:**
+
+| +                             | −                                            |
 | -------------------------------- | ----------------------------------------------- |
 | Less boilerplate SQL             | Abstraction leaks — must know SQL anyway        |
 | Type-safe models (with TS)       | N+1 queries, inefficient generated SQL          |
 | Migrations integrated            | Hard to optimize complex reports                |
 | Database portability (in theory) | Portability breaks on dialect-specific features |
 
-**When to use:** Standard CRUD APIs, rapid development, teams that benefit from schema-as-code.
-
-**When to avoid:** Heavy reporting, bulk ETL, performance-critical analytics — use raw SQL or query builder.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 // TypeORM / Sequelize / Prisma — same idea
@@ -1470,11 +1505,11 @@ const user = await prisma.user.create({
 });
 ```
 
-</details>
+**Thoughts:** ORM is a **productivity tool**, not a performance guarantee. Profile queries in staging with real data volume.
 
-**Notes:** ORM is a **productivity tool**, not a performance guarantee. Profile queries in staging with real data volume.
+**Sources:**
 
-**Source:** [Prisma — Data model](https://www.prisma.io/docs/orm/prisma-schema/data-model)
+[Prisma — Data model](https://www.prisma.io/docs/orm/prisma-schema/data-model)
 
 ---
 
@@ -1487,19 +1522,18 @@ const user = await prisma.user.create({
 
 **Definition:** Next-gen ORM for Node.js/TypeScript — schema-first, type-safe client, migrations, and Prisma Studio.
 
-| Pros                                     | Cons                                         |
+**When to use:** New TypeScript backends, teams wanting schema-as-single-source-of-truth.
+
+**Pluses and minuses:**
+
+| +                                     | −                                         |
 | ---------------------------------------- | -------------------------------------------- |
 | Excellent TypeScript inference           | Raw SQL escape hatches needed for edge cases |
 | Declarative schema, clean migrations     | Cold start / bundle size in serverless       |
 | Relation queries with `include`/`select` | Not ideal for very dynamic schemas           |
 | Active ecosystem and docs                | Vendor coupling (mitigated by SQL export)    |
 
-**When to use:** New TypeScript backends, teams wanting schema-as-single-source-of-truth.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```prisma
 model User {
@@ -1527,15 +1561,15 @@ const users = await prisma.user.findMany({
 });
 ```
 
-</details>
-
-**Notes:**
+**Thoughts:**
 
 - Use `prisma.$transaction([...])` for multi-step atomicity.
 - `$queryRaw` with tagged template for safe parameterized raw SQL.
 - Connection pooling: use PgBouncer in transaction mode or Prisma Accelerate for serverless.
 
-**Source:** [Prisma documentation](https://www.prisma.io/docs)
+**Sources:**
+
+[Prisma documentation](https://www.prisma.io/docs)
 
 ---
 
@@ -1548,18 +1582,17 @@ const users = await prisma.user.findMany({
 
 **Definition:** Promise-based ORM for Node.js supporting Postgres, MySQL, SQLite, MSSQL — models, migrations, associations.
 
-| Pros                      | Cons                                  |
+**When to use:** Legacy Node projects, teams already on Sequelize, multi-DB portability requirements.
+
+**Pluses and minuses:**
+
+| +                      | −                                  |
 | ------------------------- | ------------------------------------- |
 | Mature, wide DB support   | Verbose API vs Prisma                 |
 | CLI for migrations/seeds  | TypeScript support weaker than Prisma |
 | Flexible hooks and scopes | Easy to write N+1 queries             |
 
-**When to use:** Legacy Node projects, teams already on Sequelize, multi-DB portability requirements.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const User = sequelize.define("User", { email: DataTypes.STRING });
@@ -1569,8 +1602,6 @@ Post.belongsTo(User);
 
 const users = await User.findAll({ include: Post });
 ```
-
-</details>
 
 #### Sequelize CLI commands
 
@@ -1584,9 +1615,9 @@ npx sequelize-cli migration:generate --name add-index-to-users
 npx sequelize-cli db:migrate:status
 ```
 
-**Notes:** Prefer `include` with `attributes` limit. Use `sequelize.transaction()` for multi-table updates.
+**Thoughts:** Prefer `include` with `attributes` limit. Use `sequelize.transaction()` for multi-table updates.
 
-**Source:** [Sequelize docs](https://sequelize.org/docs/v6/)
+**Sources:** [Sequelize docs](https://sequelize.org/docs/v6/)
 
 ---
 
@@ -1597,7 +1628,9 @@ npx sequelize-cli db:migrate:status
 
 ### Drizzle ORM
 
-**Definition:** Lightweight TypeScript ORM with SQL-like schema and queries, minimal runtime, and excellent type inference.
+**Definition:**
+
+Lightweight TypeScript ORM with SQL-like schema and queries, minimal runtime, and excellent type inference.
 
 |             | Prisma        | Drizzle            |
 | ----------- | ------------- | ------------------ |
@@ -1607,10 +1640,7 @@ npx sequelize-cli db:migrate:status
 
 **When to use:** TypeScript backends needing type safety with SQL transparency; serverless with tight bundle limits.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 import { drizzle } from "drizzle-orm/node-postgres";
@@ -1624,9 +1654,7 @@ export const users = pgTable("users", {
 const rows = await db.select().from(users).where(eq(users.email, "a@b.com"));
 ```
 
-</details>
-
-**Source:** [Drizzle ORM docs](https://orm.drizzle.team/docs/overview)
+**Sources:** [Drizzle ORM docs](https://orm.drizzle.team/docs/overview)
 
 </details>
 
@@ -1635,7 +1663,9 @@ const rows = await db.select().from(users).where(eq(users.email, "a@b.com"));
 
 ### Raw SQL vs ORM vs Query Builder
 
-**Definition:** Three ways to talk to the database from application code.
+**Definition:**
+
+Three ways to talk to the database from application code.
 
 | Approach                    | Best for                                 | Watch out for                               |
 | --------------------------- | ---------------------------------------- | ------------------------------------------- |
@@ -1650,9 +1680,11 @@ const rows = await db.select().from(users).where(eq(users.email, "a@b.com"));
 
 **When to use:** ORM for 80% of app code; raw SQL for the 20% that profiles slow; Knex when you need programmatic query composition without full ORM.
 
-**Notes:** Hybrid is normal — Prisma for CRUD + `$queryRaw` for reports. Never choose "ORM only" or "SQL only" as ideology.
+**Thoughts:** Hybrid is normal — Prisma for CRUD + `$queryRaw` for reports. Never choose "ORM only" or "SQL only" as ideology.
 
-**Source:** [Prisma — Raw queries](https://www.prisma.io/docs/orm/prisma-client/using-raw-sql)
+**Sources:**
+
+[Prisma — Raw queries](https://www.prisma.io/docs/orm/prisma-client/using-raw-sql)
 
 ---
 
@@ -1665,17 +1697,16 @@ const rows = await db.select().from(users).where(eq(users.email, "a@b.com"));
 
 **Definition:** One query loads N parent records, then N additional queries load each child — 1 + N round trips.
 
-| Pros (of fixing it)       | Cons                              |
+**When to use:** Always fix when listing entities with relations (users + posts, orders + items).
+
+**Pluses and minuses:**
+
+| + (of fixing it)       | −                              |
 | ------------------------- | --------------------------------- |
 | Massive latency reduction | Eager loading can over-fetch data |
 | Fewer DB connections used | JOIN queries can be complex       |
 
-**When to use:** Always fix when listing entities with relations (users + posts, orders + items).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 // BAD — N+1
@@ -1691,11 +1722,11 @@ const users = await prisma.user.findMany({ include: { posts: true } });
 // SELECT u.*, p.* FROM users u LEFT JOIN posts p ON p.author_id = u.id
 ```
 
-</details>
+**Thoughts:** Enable query logging in dev (`prisma.$on('query')`, Sequelize `logging: console.log`). One `include` with deep nesting can fetch too much — use `select` to limit columns.
 
-**Notes:** Enable query logging in dev (`prisma.$on('query')`, Sequelize `logging: console.log`). One `include` with deep nesting can fetch too much — use `select` to limit columns.
+**Sources:**
 
-**Source:** [Prisma — Relation queries](https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries)
+[Prisma — Relation queries](https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries)
 
 ---
 
@@ -1708,17 +1739,16 @@ const users = await prisma.user.findMany({ include: { posts: true } });
 
 **Definition:** Reuse open database connections instead of opening a new TCP + auth handshake per request.
 
-| Pros                                | Cons                                         |
+**When to use:** Every production Node app. Postgres default `max_connections` (~100) is easily exhausted without pooling.
+
+**Pluses and minuses:**
+
+| +                                | −                                         |
 | ----------------------------------- | -------------------------------------------- |
 | Lower latency, fewer DB connections | Pool misconfiguration = timeouts             |
 | Protects DB from connection storms  | Serverless needs external pooler (PgBouncer) |
 
-**When to use:** Every production Node app. Postgres default `max_connections` (~100) is easily exhausted without pooling.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 // node-postgres Pool
@@ -1729,15 +1759,15 @@ const pool = new Pool({ max: 20, connectionString: process.env.DATABASE_URL });
 // DATABASE_URL="postgresql://...?connection_limit=10"
 ```
 
-</details>
-
-**Notes:**
+**Thoughts:**
 
 - **PgBouncer** in transaction pooling mode for serverless/high-instance count.
 - Pool size ≈ `(CPU cores * 2) + spindle count` rule of thumb — measure, don't guess.
 - Always close pool on graceful shutdown.
 
-**Source:** [node-postgres — Pooling](https://node-postgres.com/features/pooling)
+**Sources:**
+
+[node-postgres — Pooling](https://node-postgres.com/features/pooling)
 
 ---
 
@@ -1754,18 +1784,17 @@ const pool = new Pool({ max: 20, connectionString: process.env.DATABASE_URL });
 
 **Definition:** SQL query builder for Node.js — fluent API, migrations, and seed support without full ORM mapping.
 
-| Pros                               | Cons                                  |
+**When to use:** Admin dashboards with dynamic filters, projects needing SQL transparency, legacy codebases between raw SQL and ORM.
+
+**Pluses and minuses:**
+
+| +                               | −                                  |
 | ---------------------------------- | ------------------------------------- |
 | Control over generated SQL         | No automatic relation mapping         |
 | Database-agnostic queries (mostly) | Migrations less ergonomic than Prisma |
 | Great for dynamic filters          | You manage models/types yourself      |
 
-**When to use:** Admin dashboards with dynamic filters, projects needing SQL transparency, legacy codebases between raw SQL and ORM.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const rows = await knex("orders")
@@ -1787,11 +1816,11 @@ exports.up = (knex) =>
   });
 ```
 
-</details>
+**Thoughts:** Knex uses parameterized bindings by default — safe from injection. Pair with `objection.js` if you want ORM on top of Knex.
 
-**Notes:** Knex uses parameterized bindings by default — safe from injection. Pair with `objection.js` if you want ORM on top of Knex.
+**Sources:**
 
-**Source:** [Knex.js documentation](https://knexjs.org/)
+[Knex.js documentation](https://knexjs.org/)
 
 ---
 
@@ -1806,7 +1835,9 @@ exports.up = (knex) =>
 
 ### Replication & read replicas
 
-**Definition:** Copy data from a **primary** (writer) to one or more **replicas** (readers) for scale and availability.
+**Definition:**
+
+Copy data from a **primary** (writer) to one or more **replicas** (readers) for scale and availability.
 
 | Sync replication               | Async replication                         |
 | ------------------------------ | ----------------------------------------- |
@@ -1814,15 +1845,17 @@ exports.up = (knex) =>
 | Stronger durability            | Possible replica lag (stale reads)        |
 | Higher write latency           | Better write performance                  |
 
-| Pros                            | Cons                                              |
+**When to use:** Read-heavy apps (feeds, dashboards), reporting off replica to protect primary.
+
+**Pluses and minuses:**
+
+| +                            | −                                              |
 | ------------------------------- | ------------------------------------------------- |
 | Scale read traffic horizontally | Replication lag — read-your-writes not guaranteed |
 | Failover for high availability  | Split-brain risk without proper tooling           |
 | Geographic read locality        | Replication is not backup — need separate backups |
 
-**When to use:** Read-heavy apps (feeds, dashboards), reporting off replica to protect primary.
-
-**Example routing:**
+**Examples:**
 
 ```mermaid
 flowchart LR
@@ -1835,9 +1868,11 @@ flowchart LR
   primary -->|async replication| replica
 ```
 
-**Notes:** After write, don't assume replica has data — use primary for critical reads or session stickiness. Tools: Patroni, AWS RDS Multi-AZ, MongoDB replica sets.
+**Thoughts:** After write, don't assume replica has data — use primary for critical reads or session stickiness. Tools: Patroni, AWS RDS Multi-AZ, MongoDB replica sets.
 
-**Source:** [PostgreSQL — Replication](https://www.postgresql.org/docs/current/high-availability.html)
+**Sources:**
+
+[PostgreSQL — Replication](https://www.postgresql.org/docs/current/high-availability.html)
 
 ---
 
@@ -1863,13 +1898,17 @@ flowchart LR
 | Single writer bottleneck remains | Cross-shard queries are painful |
 | Limited by single machine        | Rebalancing shards is complex   |
 
-**When to partition:** Time-series (by month), archival of old data, very large single-table maintenance.
+**How it works:**
 
-**When to shard:** Write throughput exceeds single node, multi-tenant isolation by `tenant_id`, global scale (Instagram, Uber scale).
+Time-series (by month), archival of old data, very large single-table maintenance.
 
-**Notes:** Choose **shard key** carefully — even distribution, locality for common queries. Most apps never need sharding; partitioning + read replicas + caching go far.
+Write throughput exceeds single node, multi-tenant isolation by `tenant_id`, global scale (Instagram, Uber scale).
 
-**Source:** [MongoDB — Sharding](https://www.mongodb.com/docs/manual/sharding/)
+**Thoughts:** Choose **shard key** carefully — even distribution, locality for common queries. Most apps never need sharding; partitioning + read replicas + caching go far.
+
+**Sources:**
+
+[MongoDB — Sharding](https://www.mongodb.com/docs/manual/sharding/)
 
 ---
 
@@ -1880,7 +1919,9 @@ flowchart LR
 
 ### Caching strategies
 
-**Definition:** Patterns for placing a fast cache layer (usually Redis) between app and database.
+**Definition:**
+
+Patterns for placing a fast cache layer (usually Redis) between app and database.
 
 | Pattern           | Flow                                       | Best for                      |
 | ----------------- | ------------------------------------------ | ----------------------------- |
@@ -1889,14 +1930,16 @@ flowchart LR
 | **Write-through** | Write to cache and DB synchronously        | Strong cache consistency      |
 | **Write-behind**  | Write to cache, async flush to DB          | High write throughput (risky) |
 
-| Pros                         | Cons                                 |
+**When to use:** Hot keys (user profile, product page), expensive aggregations, session data.
+
+**Pluses and minuses:**
+
+| +                         | −                                 |
 | ---------------------------- | ------------------------------------ |
 | Dramatically reduces DB load | Cache invalidation is hard           |
 | Lower p99 latency            | Stale data if TTL/invalidation wrong |
 
-**When to use:** Hot keys (user profile, product page), expensive aggregations, session data.
-
-**Example (invalidation on update):**
+**Examples:**
 
 ```js
 async function updateUser(id, data) {
@@ -1906,9 +1949,11 @@ async function updateUser(id, data) {
 }
 ```
 
-**Notes:** Cache stampede — use locking or probabilistic early expiry for hot keys. Never cache without TTL unless you have reliable invalidation.
+**Thoughts:** Cache stampede — use locking or probabilistic early expiry for hot keys. Never cache without TTL unless you have reliable invalidation.
 
-**Source:** [Redis — Caching patterns](https://redis.io/docs/manual/patterns/)
+**Sources:**
+
+[Redis — Caching patterns](https://redis.io/docs/manual/patterns/)
 
 ---
 
@@ -1919,7 +1964,9 @@ async function updateUser(id, data) {
 
 ### Message queues (Kafka / RabbitMQ)
 
-**Definition:** Async middleware for decoupling services — producers publish events; consumers process at their own pace.
+**Definition:**
+
+Async middleware for decoupling services — producers publish events; consumers process at their own pace.
 
 | Kafka                           | RabbitMQ                                |
 | ------------------------------- | --------------------------------------- |
@@ -1927,24 +1974,28 @@ async function updateUser(id, data) {
 | High throughput, event sourcing | Task queues, RPC patterns               |
 | Complex ops                     | Simpler for moderate scale              |
 
-| Pros                              | Cons                                                  |
+**When to use:** Microservice communication, background jobs (email, image processing), event notifications — **not** as primary data store.
+
+**Pluses and minuses:**
+
+| +                              | −                                                  |
 | --------------------------------- | ----------------------------------------------------- |
 | Decouples services in time        | At-least-once delivery — consumers must be idempotent |
 | Absorbs traffic spikes            | Operational overhead (cluster, monitoring)            |
 | Enables event-driven architecture | Debugging async flows is harder                       |
 
-**When to use:** Microservice communication, background jobs (email, image processing), event notifications — **not** as primary data store.
-
-**Example flow:**
+**Examples:**
 
 ```
 Order Service → [order.created] → Kafka → Inventory Service (reserve stock)
                                       → Email Service (send confirmation)
 ```
 
-**Notes:** Prefer queues over "database as message bus" (polling tables). Combine with **outbox pattern** for reliable delivery. See [System Design](./0_system_design.md).
+**Thoughts:** Prefer queues over "database as message bus" (polling tables). Combine with **outbox pattern** for reliable delivery. See [System Design](./0_system_design.md).
 
-**Source:** [Kafka documentation](https://kafka.apache.org/documentation/)
+**Sources:**
+
+[Kafka documentation](https://kafka.apache.org/documentation/)
 
 ---
 
@@ -1957,18 +2008,17 @@ Order Service → [order.created] → Kafka → Inventory Service (reserve stock
 
 **Definition:** Write business data and an **outbox event** in the same DB transaction; a separate process publishes events to the queue — guarantees at-least-once delivery without dual-write inconsistency.
 
-| Pros                                         | Cons                              |
+**When to use:** Microservices where DB write must reliably trigger downstream actions (payment → send email → update analytics).
+
+**Pluses and minuses:**
+
+| +                                         | −                              |
 | -------------------------------------------- | --------------------------------- |
 | Atomic: DB + event intent in one transaction | Extra table and publisher process |
 | No lost events on crash after commit         | Consumers still need idempotency  |
 | Works with any message broker                | Slight delivery delay             |
 
-**When to use:** Microservices where DB write must reliably trigger downstream actions (payment → send email → update analytics).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 BEGIN;
@@ -1979,11 +2029,11 @@ COMMIT;
 -- Outbox worker polls outbox, publishes to Kafka, marks published
 ```
 
-</details>
+**Thoughts:** Alternative: **Transactional outbox** with Debezium (CDC from outbox table). Don't call HTTP APIs inside DB transactions.
 
-**Notes:** Alternative: **Transactional outbox** with Debezium (CDC from outbox table). Don't call HTTP APIs inside DB transactions.
+**Sources:**
 
-**Source:** [Microservices.io — Transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html)
+[Microservices.io — Transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html)
 
 ---
 
@@ -2005,25 +2055,22 @@ COMMIT;
 | **PITR**                     | Base backup + continuous WAL archiving | Any timestamp in retention window       |
 | **Replica**                  | Live copy                              | Failover — not a substitute for backups |
 
-**Typical ops flow (PostgreSQL / RDS):**
-
 1. Enable automated daily snapshots + WAL archiving.
 2. Test restore quarterly on staging (untested backup = no backup).
 3. On incident: restore to new instance → verify → cut over DNS/connection string.
 4. PITR: `recovery_target_time = '2026-07-14 10:00:00'` for accidental `DELETE`.
 
-| Pros                                 | Cons                                 |
+**When to use:** `DROP TABLE` mistake → PITR to 5 minutes ago. Region outage → restore snapshot in another region. Replication lag ≠ backup — replica can propagate bad writes.
+
+**Pluses and minuses:**
+
+| +                                 | −                                 |
 | ------------------------------------ | ------------------------------------ |
 | PITR recovers from "oops" deletes    | WAL storage cost and complexity      |
 | Managed RDS/Cloud SQL simplify ops   | Restore time proportional to DB size |
 | Off-site backups survive region loss | RPO/RTO must be defined upfront      |
 
-**Cases:** `DROP TABLE` mistake → PITR to 5 minutes ago. Region outage → restore snapshot in another region. Replication lag ≠ backup — replica can propagate bad writes.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 # Logical backup (small/medium DBs)
@@ -2033,11 +2080,11 @@ pg_restore -d mydb_restored mydb.dump
 # RDS — enable automated backups + PITR in console; restore creates new instance
 ```
 
-</details>
+**Thoughts:** Define **RPO** (max acceptable data loss) and **RTO** (max downtime). Encrypt backups at rest. Secrets in dumps — treat backups as sensitive.
 
-**Notes:** Define **RPO** (max acceptable data loss) and **RTO** (max downtime). Encrypt backups at rest. Secrets in dumps — treat backups as sensitive.
+**Sources:**
 
-**Source:** [PostgreSQL — Backup and Restore](https://www.postgresql.org/docs/current/backup.html) · [PostgreSQL — Continuous archiving](https://www.postgresql.org/docs/current/continuous-archiving.html)
+[PostgreSQL — Backup and Restore](https://www.postgresql.org/docs/current/backup.html) · [PostgreSQL — Continuous archiving](https://www.postgresql.org/docs/current/continuous-archiving.html)
 
 ---
 
@@ -2052,11 +2099,13 @@ pg_restore -d mydb_restored mydb.dump
 
 ### Scaling PostgreSQL to millions of users (roadmap)
 
-**Definition:** Incremental scaling path from small OLTP to millions of users — interview and production planning.
+**Definition:**
+
+Incremental scaling path from small OLTP to millions of users — interview and production planning.
 
 See full version with diagram in [Interview Practice — Scaling PostgreSQL](#scaling-postgresql-to-millions-of-users).
 
-**Key stages:** indexes → query tuning → PgBouncer → Redis → read replicas → denormalize → partition → async queue → shard last.
+**How it works:** indexes → query tuning → PgBouncer → Redis → read replicas → denormalize → partition → async queue → shard last.
 
 </details>
 
@@ -2102,17 +2151,18 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **Definition:** `WHERE` filters **rows** before aggregation; `HAVING` filters **groups** after `GROUP BY`.
 
-**How it works:** SQL execution order — `FROM` → `WHERE` → `GROUP BY` → `HAVING` → `SELECT` → `ORDER BY` → `LIMIT`.
+**How it works:**
+
+SQL execution order — `FROM` → `WHERE` → `GROUP BY` → `HAVING` → `SELECT` → `ORDER BY` → `LIMIT`.
 
 | Clause   | Filters         | Can use aggregates?         |
 | -------- | --------------- | --------------------------- |
 | `WHERE`  | Individual rows | No (`COUNT(*)` invalid)     |
 | `HAVING` | Groups          | Yes (`HAVING COUNT(*) > 5`) |
 
-**Example:**
+**When to use:** "Authors with more than 5 books" → `HAVING`. "Books from 2020+" → `WHERE`.
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 SELECT author_id, COUNT(*) AS cnt
@@ -2122,11 +2172,7 @@ GROUP BY author_id
 HAVING COUNT(*) > 5;                -- group filter after
 ```
 
-</details>
-
-**Cases:** "Authors with more than 5 books" → `HAVING`. "Books from 2020+" → `WHERE`.
-
-**Source:** [PostgreSQL — SELECT](https://www.postgresql.org/docs/current/sql-select.html)
+**Sources:** [PostgreSQL — SELECT](https://www.postgresql.org/docs/current/sql-select.html)
 
 </details>
 
@@ -2137,16 +2183,18 @@ HAVING COUNT(*) > 5;                -- group filter after
 
 **Definition:** **INNER JOIN** returns only rows with matches in both tables. **LEFT JOIN** returns all left-table rows; right side is NULL when no match.
 
-**How it works:** Join condition in `ON` — `FROM users u LEFT JOIN orders o ON o.user_id = u.id` keeps every user even with zero orders.
+**How it works:**
+
+Join condition in `ON` — `FROM users u LEFT JOIN orders o ON o.user_id = u.id` keeps every user even with zero orders.
 
 | Join  | Use when                                               |
 | ----- | ------------------------------------------------------ |
 | INNER | Relationship required (only users with orders)         |
 | LEFT  | Optional relationship (all users, order total or NULL) |
 
-**Cases:** Wrong join type silently drops data — INNER when you meant LEFT loses users without orders.
+**When to use:** Wrong join type silently drops data — INNER when you meant LEFT loses users without orders.
 
-**Source:** [Use The Index, Luke — Joins](https://use-the-index-luke.com/sql/join)
+**Sources:** [Use The Index, Luke — Joins](https://use-the-index-luke.com/sql/join)
 
 </details>
 
@@ -2155,7 +2203,9 @@ HAVING COUNT(*) > 5;                -- group filter after
 
 ### 1NF vs 2NF vs 3NF vs BCNF?
 
-**Definition:** Normal forms are stacked rules that remove redundancy. Target for OLTP is **3NF**. Theory: [Normal forms (1NF–3NF, BCNF)](#normal-forms-1nf3nf-bcnf).
+**Definition:**
+
+Normal forms are stacked rules that remove redundancy. Target for OLTP is **3NF**. Theory: [Normal forms (1NF–3NF, BCNF)](#normal-forms-1nf3nf-bcnf).
 
 | Form     | Extra rule over the previous                                      |
 | -------- | ----------------------------------------------------------------- |
@@ -2166,9 +2216,9 @@ HAVING COUNT(*) > 5;                -- group filter after
 
 **How it works:** 2NF only bites on **composite** keys. Single-column PK tables that are 1NF are already 2NF. BCNF is 3NF plus “no leftover FDs from a non-key into a key.”
 
-**Cases:** “Why split `products` from `order_items`?” → 2NF/3NF. Checkout still copies `unit_price` → intentional denormalization, not a failed 3NF.
+**When to use:** “Why split `products` from `order_items`?” → 2NF/3NF. Checkout still copies `unit_price` → intentional denormalization, not a failed 3NF.
 
-**Source:** [Database normalization](https://en.wikipedia.org/wiki/Database_normalization)
+**Sources:** [Database normalization](https://en.wikipedia.org/wiki/Database_normalization)
 
 </details>
 
@@ -2177,7 +2227,9 @@ HAVING COUNT(*) > 5;                -- group filter after
 
 ### MongoDB embed vs reference?
 
-**Definition:** **Embed** nests related documents inside parent; **reference** stores `ObjectId` pointing to another collection.
+**Definition:**
+
+**Embed** nests related documents inside parent; **reference** stores `ObjectId` pointing to another collection.
 
 | Pattern   | Best for                         | Avoid when                                |
 | --------- | -------------------------------- | ----------------------------------------- |
@@ -2186,9 +2238,9 @@ HAVING COUNT(*) > 5;                -- group filter after
 
 **How it works:** Embedded doc updates with parent in one read; reference needs second query or `$lookup` (like JOIN).
 
-**Cases:** User address embedded; product category referenced. 16 MB document limit caps embedding.
+**When to use:** User address embedded; product category referenced. 16 MB document limit caps embedding.
 
-**Source:** [MongoDB — Data modeling](https://www.mongodb.com/docs/manual/core/data-modeling-introduction/)
+**Sources:** [MongoDB — Data modeling](https://www.mongodb.com/docs/manual/core/data-modeling-introduction/)
 
 </details>
 
@@ -2199,7 +2251,9 @@ HAVING COUNT(*) > 5;                -- group filter after
 
 **Definition:** One query loads N parents, then N separate queries load children — 1 + N round trips.
 
-**How it works:** ORM lazy-loading triggers query per row in a loop. Fix with eager `include`, JOIN, or `WHERE id IN (...)`.
+**How it works:**
+
+ORM lazy-loading triggers query per row in a loop. Fix with eager `include`, JOIN, or `WHERE id IN (...)`.
 
 | Fix        | Approach                            |
 | ---------- | ----------------------------------- |
@@ -2207,10 +2261,7 @@ HAVING COUNT(*) > 5;                -- group filter after
 | SQL        | `LEFT JOIN` or batch `IN`           |
 | DataLoader | Batch + cache per request (GraphQL) |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 // BAD
@@ -2222,9 +2273,7 @@ for (const u of users)
 const users = await prisma.user.findMany({ include: { posts: true } });
 ```
 
-</details>
-
-**Source:** [Prisma — Relation queries](https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries)
+**Sources:** [Prisma — Relation queries](https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries)
 
 </details>
 
@@ -2235,11 +2284,11 @@ const users = await prisma.user.findMany({ include: { posts: true } });
 
 **Definition:** Transaction guarantees — **Atomicity** (all or nothing), **Consistency** (constraints hold), **Isolation** (concurrent txs don't corrupt), **Durability** (committed survives crash).
 
-**Cases:** Bank transfer — debit and credit in one transaction; `ROLLBACK` on any failure.
+**When to use:** Bank transfer — debit and credit in one transaction; `ROLLBACK` on any failure.
 
-**Notes:** Postgres default isolation is READ COMMITTED. Keep transactions short.
+**Thoughts:** Postgres default isolation is READ COMMITTED. Keep transactions short.
 
-**Source:** [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
+**Sources:** [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
 
 </details>
 
@@ -2250,21 +2299,16 @@ const users = await prisma.user.findMany({ include: { posts: true } });
 
 **Definition:** `INSERT ... ON CONFLICT (unique_col) DO UPDATE` — insert or update atomically in PostgreSQL.
 
-**Cases:** Idempotent webhooks, sync user profile by email, settings row per user.
+**When to use:** Idempotent webhooks, sync user profile by email, settings row per user.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 INSERT INTO settings (user_id, theme) VALUES (1, 'dark')
 ON CONFLICT (user_id) DO UPDATE SET theme = EXCLUDED.theme;
 ```
 
-</details>
-
-**Source:** [PostgreSQL — ON CONFLICT](https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT)
+**Sources:** [PostgreSQL — ON CONFLICT](https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT)
 
 </details>
 
@@ -2275,9 +2319,9 @@ ON CONFLICT (user_id) DO UPDATE SET theme = EXCLUDED.theme;
 
 **Definition:** FK ensures referential integrity — cannot insert `orders.user_id = 999` if user 999 does not exist.
 
-**Cases:** `ON DELETE RESTRICT` prevents deleting user with orders; `CASCADE` deletes children with parent (use carefully).
+**When to use:** `ON DELETE RESTRICT` prevents deleting user with orders; `CASCADE` deletes children with parent (use carefully).
 
-**Source:** [PostgreSQL — Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
+**Sources:** [PostgreSQL — Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
 
 </details>
 
@@ -2288,11 +2332,11 @@ ON CONFLICT (user_id) DO UPDATE SET theme = EXCLUDED.theme;
 
 **Definition:** **Snapshot backup** restores to backup time. **PITR** replays WAL logs to recover to any second within retention.
 
-**Cases:** Accidental `DELETE` → PITR to minute before. Daily snapshot alone cannot recover midday mistake.
+**When to use:** Accidental `DELETE` → PITR to minute before. Daily snapshot alone cannot recover midday mistake.
 
-**Notes:** Test restores regularly. Replication is not backup.
+**Thoughts:** Test restores regularly. Replication is not backup.
 
-**Source:** [PostgreSQL — Backup](https://www.postgresql.org/docs/current/backup.html)
+**Sources:** [PostgreSQL — Backup](https://www.postgresql.org/docs/current/backup.html)
 
 </details>
 
@@ -2303,7 +2347,7 @@ ON CONFLICT (user_id) DO UPDATE SET theme = EXCLUDED.theme;
 
 **Definition:** Growing from a small OLTP database to millions of users is a **sequence of measured steps** — not immediate sharding.
 
-**How it works — typical roadmap:**
+**How it works:**
 
 | Stage | Action                                                                    | What it fixes                     |
 | ----- | ------------------------------------------------------------------------- | --------------------------------- |
@@ -2332,22 +2376,26 @@ flowchart LR
   app -->|async jobs| queue
 ```
 
-| Pros (incremental scale)               | Cons                                     |
-| -------------------------------------- | ---------------------------------------- |
-| Each step is reversible and measurable | Sharding adds cross-shard query pain     |
-| Most apps never need step 9            | Cache invalidation bugs cause stale data |
+**When to use:**
 
-**Cases:** 1M users ≠ 1M QPS — clarify read/write ratio and hot paths in interview. Start with `EXPLAIN ANALYZE` and connection pool metrics.
+1M users ≠ 1M QPS — clarify read/write ratio and hot paths in interview. Start with `EXPLAIN ANALYZE` and connection pool metrics.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Sharding before indexing — operational nightmare for little gain.
 - Reading replica right after write — stale data (read-your-writes violation).
 - `OFFSET 100000` pagination — use keyset (`WHERE id > $cursor`).
 
-**Key idea:** _"Indexes, pool, cache, replicas — sharding last."_
+**Pluses and minuses:**
 
-**Source:** [PostgreSQL — High availability](https://www.postgresql.org/docs/current/high-availability.html) · [Use The Index, Luke](https://use-the-index-luke.com/)
+| + (incremental scale)               | −                                     |
+| -------------------------------------- | ---------------------------------------- |
+| Each step is reversible and measurable | Sharding adds cross-shard query pain     |
+| Most apps never need step 9            | Cache invalidation bugs cause stale data |
+
+**Thoughts:** _"Indexes, pool, cache, replicas — sharding last."_
+
+**Sources:** [PostgreSQL — High availability](https://www.postgresql.org/docs/current/high-availability.html) · [Use The Index, Luke](https://use-the-index-luke.com/)
 
 </details>
 
@@ -2356,7 +2404,9 @@ flowchart LR
 
 ### Indexes you use every day (interview answer)
 
-**Definition:** Practical index patterns for typical Node/Postgres apps — what to say when asked "which indexes do you use daily?"
+**Definition:**
+
+Practical index patterns for typical Node/Postgres apps — what to say when asked "which indexes do you use daily?"
 
 | Pattern             | SQL                                              | Why                        |
 | ------------------- | ------------------------------------------------ | -------------------------- |
@@ -2366,14 +2416,13 @@ flowchart LR
 | JSONB field         | `GIN INDEX ON products USING gin(data)`          | `@>` / `?` queries on JSON |
 | Full-text           | `GIN ON to_tsvector('english', title)`           | Search, not `LIKE '%x%'`   |
 
-**How to verify:** `EXPLAIN (ANALYZE, BUFFERS)` — want `Index Scan` or `Index Only Scan`, not `Seq Scan` on large tables.
+**How it works:**
 
-**Write cost:** Every index slows `INSERT`/`UPDATE` — don't index low-cardinality columns alone (`status` with 3 values) unless partial.
+`EXPLAIN (ANALYZE, BUFFERS)` — want `Index Scan` or `Index Only Scan`, not `Seq Scan` on large tables.
 
-**Example:**
+Every index slows `INSERT`/`UPDATE` — don't index low-cardinality columns alone (`status` with 3 values) unless partial.
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```sql
 CREATE UNIQUE INDEX idx_users_email ON users (lower(email));
@@ -2381,9 +2430,7 @@ CREATE INDEX idx_orders_user_created ON orders (user_id, created_at DESC);
 CREATE INDEX idx_users_active_email ON users (email) WHERE deleted_at IS NULL;
 ```
 
-</details>
-
-**Source:** [PostgreSQL — Indexes](https://www.postgresql.org/docs/current/indexes.html)
+**Sources:** [PostgreSQL — Indexes](https://www.postgresql.org/docs/current/indexes.html)
 
 </details>
 
@@ -2394,11 +2441,9 @@ CREATE INDEX idx_users_active_email ON users (email) WHERE deleted_at IS NULL;
 
 **Definition:** In-memory data structure server — sub-ms latency for strings, hashes, lists, sets, sorted sets, streams.
 
-**How it works:** Key-value in RAM; optional RDB/AOF persistence; TTL auto-expires keys; single-threaded command processing (hot key = bottleneck).
+**How it works:**
 
-**Cases:** Cache-aside, sessions, rate limiting (`INCR` + TTL), pub/sub, Bull/BullMQ job queues, leaderboards (`ZADD`).
-
-**Pattern:**
+Key-value in RAM; optional RDB/AOF persistence; TTL auto-expires keys; single-threaded command processing (hot key = bottleneck).
 
 ```js
 const hit = await redis.get(`user:${id}`);
@@ -2407,9 +2452,11 @@ const user = await db.user.findUnique({ where: { id } });
 await redis.setex(`user:${id}`, 3600, JSON.stringify(user));
 ```
 
-**Not for:** Primary durable store for financial data without careful persistence config.
+Primary durable store for financial data without careful persistence config.
 
-**Source:** [Redis docs](https://redis.io/docs/)
+**When to use:** Cache-aside, sessions, rate limiting (`INCR` + TTL), pub/sub, Bull/BullMQ job queues, leaderboards (`ZADD`).
+
+**Sources:** [Redis docs](https://redis.io/docs/)
 
 </details>
 
@@ -2420,13 +2467,15 @@ await redis.setex(`user:${id}`, 3600, JSON.stringify(user));
 
 **Definition:** Lucene-based distributed search engine — JSON documents in **indexes**, split into **shards** across **nodes**.
 
-**How it works:** Analyzer (char filter → tokenizer → token filters) builds an inverted index. Query DSL (`match`, `match_phrase`, `bool`) scores hits. Replicas give HA; coordinating nodes route.
+**How it works:**
 
-**Cases:** Full-text product search, logs. Keep Postgres/Mongo as source of truth; sync into ES.
+Analyzer (char filter → tokenizer → token filters) builds an inverted index. Query DSL (`match`, `match_phrase`, `bool`) scores hits. Replicas give HA; coordinating nodes route.
 
-**Not for:** Primary transactional store.
+Primary transactional store.
 
-**Source:** [9_database.md — Elasticsearch](#elasticsearch)
+**When to use:** Full-text product search, logs. Keep Postgres/Mongo as source of truth; sync into ES.
+
+**Sources:** [9_database.md — Elasticsearch](#elasticsearch)
 
 </details>
 
@@ -2444,11 +2493,11 @@ await redis.setex(`user:${id}`, 3600, JSON.stringify(user));
 - **Dead letter queue (DLQ)** — failed messages for inspection/retry.
 - Delivery: **at-least-once** by default — consumers must be **idempotent**.
 
-**Cases:** Email sending, order processing, decouple microservices, absorb traffic spikes.
+RabbitMQ — task queues and routing; Kafka — high-throughput event log with replay.
 
-**vs Kafka:** RabbitMQ — task queues and routing; Kafka — high-throughput event log with replay.
+**When to use:** Email sending, order processing, decouple microservices, absorb traffic spikes.
 
-**Source:** [RabbitMQ tutorials](https://www.rabbitmq.com/tutorials)
+**Sources:** [RabbitMQ tutorials](https://www.rabbitmq.com/tutorials)
 
 </details>
 

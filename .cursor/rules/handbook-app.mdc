@@ -10,11 +10,11 @@ Public study handbook. Browse-only. Parse `resources/*.md` at **build time**.
 
 ## Product constraints
 
-- Routes: `/` tracks → `/[track]` topic cards → `/[track]/[topic]` one accordion page
+- Routes: `/` tracks → `/[track]` topic cards → `/[track]/[topic]`
 - Native `<details>`/`<summary>`. Full concept HTML on first load. Do **not** fetch on click
 - No per-concept URLs, progress, quiz, auth, localStorage, or SRS
 - SSG via `generateStaticParams`. `generateMetadata` on topic pages. `app/sitemap.ts` + `app/robots.ts`
-- TypeScript, no `any`. English UI copy
+- UI chrome: sticky header (icon, title, topic/concept search) and a track-grouped topic sidebar. Keep reading width on topic pages. English only.
 
 ## Content
 

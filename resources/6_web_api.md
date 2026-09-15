@@ -27,7 +27,7 @@ HTTP, REST, browser APIs, authentication, and real-time communication for fronte
 
 ### Sections
 
-Each `<details>` topic follows: **Definition** → **How it works** → **Cases** → **Pros / Cons** → **Example** → **Notes** → **Source**
+Each `<details>` topic follows: **Definition** → **How it works** → **When to use** → **Pluses and minuses** → **Examples** → **Thoughts** → **Sources**
 
 - [Resources](#resources)
 - [1. Core](#1-core) · [How the Internet works](#how-the-internet-works)
@@ -67,19 +67,20 @@ Application-layer request/response protocol for the Web. Full notes: [HTTP proto
 
 **Definition:** REST is an architectural style for distributed systems where resources are identified by URLs and manipulated via standard HTTP verbs and representations (usually JSON).
 
-| Pros                                 | Cons                                |
+**When to use:**
+
+CRUD APIs, public HTTP services, mobile/web clients sharing one backend.
+
+Complex nested queries with many round-trips — consider GraphQL; high-performance internal RPC — consider gRPC.
+
+**Pluses and minuses:**
+
+| +                                 | −                                |
 | ------------------------------------ | ----------------------------------- |
 | Simple, cache-friendly, tooling-rich | Over/under-fetching without GraphQL |
 | Language-agnostic clients            | Strict REST is rare in practice     |
 
-**When to use:** CRUD APIs, public HTTP services, mobile/web clients sharing one backend.
-
-**When NOT to use:** Complex nested queries with many round-trips — consider GraphQL; high-performance internal RPC — consider gRPC.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 GET    /books      → list
@@ -89,13 +90,13 @@ PUT    /books/3    → replace
 DELETE /books/3    → remove
 ```
 
-</details>
-
-**Source:** [ByteByteGo — REST API cheatsheet](https://blog.bytebytego.com/p/ep94-rest-api-cheatsheet)
+**Sources:** [ByteByteGo — REST API cheatsheet](https://blog.bytebytego.com/p/ep94-rest-api-cheatsheet)
 
 ### CORS (Cross-Origin Resource Sharing)
 
-**Definition:** CORS is a browser opt-in that lets a server allow cross-origin JavaScript to **read** a response. Full theory → [CORS](#cors).
+**Definition:**
+
+CORS is a browser opt-in that lets a server allow cross-origin JavaScript to **read** a response. Full theory → [CORS](#cors).
 
 ---
 
@@ -144,18 +145,15 @@ DELETE /books/3    → remove
 | Paint     | Rasterize pixels            |
 | Composite | Layer and display on GPU    |
 
-**Cases:** JS that reads layout (`offsetWidth`) then writes style forces **layout thrashing** — batch reads/writes. `defer` scripts run after HTML parse; `async` runs when downloaded.
+**When to use:** JS that reads layout (`offsetWidth`) then writes style forces **layout thrashing** — batch reads/writes. `defer` scripts run after HTML parse; `async` runs when downloaded.
 
-**Notes:** Canonical pipeline (fetch, dirty layout, paint order, rAF, progressive rendering) → [1_html.md — Browser & rendering](./1_html.md#browser--rendering). CSS triggers → [2_css.md](./2_css.md).
+**Pluses and minuses:**
 
-| Pros (understanding pipeline)  | Cons                               |
+| + (understanding pipeline)  | −                               |
 | ------------------------------ | ---------------------------------- |
 | Targeted perf fixes (LCP, CLS) | Many engine-specific optimizations |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!-- Critical CSS in <head> speeds first paint -->
@@ -163,9 +161,11 @@ DELETE /books/3    → remove
 <script src="app.js" defer></script>
 ```
 
-</details>
+**Thoughts:** Canonical pipeline (fetch, dirty layout, paint order, rAF, progressive rendering) → [1_html.md — Browser & rendering](./1_html.md#browser--rendering). CSS triggers → [2_css.md](./2_css.md).
 
-**Source:** [web.dev — How browsers work](https://web.dev/articles/howbrowserswork)
+**Sources:**
+
+[web.dev — How browsers work](https://web.dev/articles/howbrowserswork)
 
 ---
 
@@ -176,7 +176,9 @@ DELETE /books/3    → remove
 
 ### Internet, Web & DNS
 
-**Definition:** The Internet is a global network of computers; the Web is an HTTP-based system of linked documents accessed via browsers; DNS maps human-readable domain names to IP addresses.
+**Definition:**
+
+The Internet is a global network of computers; the Web is an HTTP-based system of linked documents accessed via browsers; DNS maps human-readable domain names to IP addresses.
 
 | Term     | Role                                       |
 | -------- | ------------------------------------------ |
@@ -187,10 +189,7 @@ DELETE /books/3    → remove
 
 **How it works:** Dual-stack clients query **AAAA** and **A**. **Happy Eyeballs** (RFC 8305) races connections and prefers working IPv6, falling back to IPv4 if IPv6 is slow or broken. Full addressing: [IPv4 & IPv6](#ipv4--ipv6). LAN vs public Internet, packets, and the page-load path: [How the Internet works](#how-the-internet-works). DNS is a **lookup** (cache → resolver → nameservers → IP); the browser then opens TCP/TLS to that IP — packets are not “sent to DNS as the destination.”
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 User types https://example.com
@@ -200,9 +199,9 @@ User types https://example.com
   → Server returns HTML; browser renders
 ```
 
-</details>
+**Sources:**
 
-**Source:** [Cloudflare — What is HTTP?](https://www.cloudflare.com/learning/ddos/glossary/hypertext-transfer-protocol-http/) · [MDN — HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) · [RFC 8305](https://www.rfc-editor.org/rfc/rfc8305.html)
+[Cloudflare — What is HTTP?](https://www.cloudflare.com/learning/ddos/glossary/hypertext-transfer-protocol-http/) · [MDN — HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) · [RFC 8305](https://www.rfc-editor.org/rfc/rfc8305.html)
 
 ---
 
@@ -224,17 +223,22 @@ User types https://example.com
 - **HTTP** is application-layer (OSI 7 / TCP/IP application). **TCP** is reliable ordered streams; **UDP** is datagrams (checksum, no handshake, no retransmission). **TLS** is **not** a third transport like TCP: HTTPS is HTTP **over TLS over TCP** (HTTP/3: HTTP over **QUIC over UDP**). Plain HTTP on a hop you control is readable; TLS encrypts the bytes on the wire. Details: [HTTPS](#https) · [TCP vs UDP](#tcp-vs-udp).
 - **Ports** (1–65535) select which **socket**/process gets the packet. OS **network service** binds a socket to an IP:port; a **network service** (daemon) is the app that speaks HTTP, SMTP, etc. Defaults: HTTP **80**, HTTPS **443**. Full table and `ss`/`netstat`: [Ports, sockets & network services](#ports-sockets--network-services).
 
-**Cases:** Explain “what happens when I open a URL”; why `localhost:8080` works on your machine but not from a phone on another network; why café Wi-Fi + HTTP is a MITM risk.
+**When to use:**
+
+Explain “what happens when I open a URL”; why `localhost:8080` works on your machine but not from a phone on another network; why café Wi-Fi + HTTP is a MITM risk.
+
+#### Common pitfalls
+
+Treating DNS as the HTTP destination. Calling TLS a replacement for TCP. Assuming LAN IPs are globally routable. Copying Linux `netstat -p` as “protocol” (`-p` is PID on Linux; protocol filter is BSD/macOS).
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
 | One mental model (packets + IP + port) | NAT and firewalls hide “just ping the LAN IP” |
 | Same tools on LAN and WAN (`ping`, `ss`) | “TLS/IP stack” as a peer of TCP/IP is a myth |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 https://example.com/index.html
@@ -246,15 +250,15 @@ https://example.com/index.html
   6. HTML packets return; browser parses and fetches /style.css the same way
 ```
 
-</details>
+**Thoughts:**
 
-**Common pitfalls:** Treating DNS as the HTTP destination. Calling TLS a replacement for TCP. Assuming LAN IPs are globally routable. Copying Linux `netstat -p` as “protocol” (`-p` is PID on Linux; protocol filter is BSD/macOS).
+*DNS finds the IP; TCP/TLS opens the pipe; HTTP is the conversation; IP+port is how packets find the right process.*
 
-**Key idea:** *DNS finds the IP; TCP/TLS opens the pipe; HTTP is the conversation; IP+port is how packets find the right process.*
+Layers: [OSI & TCP/IP models](#osi--tcpip-models). Addresses: [IP address](#ip-address) · [IPv4 & IPv6](#ipv4--ipv6). Packet capture: Wireshark/`tcpdump` in the OSI block. Host firewall: [15_devops.md — Firewall](./15_devops.md#firewall--packet-filter).
 
-**Notes:** Layers: [OSI & TCP/IP models](#osi--tcpip-models). Addresses: [IP address](#ip-address) · [IPv4 & IPv6](#ipv4--ipv6). Packet capture: Wireshark/`tcpdump` in the OSI block. Host firewall: [15_devops.md — Firewall](./15_devops.md#firewall--packet-filter).
+**Sources:**
 
-**Source:** [MDN — How the web works](https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works) · [MDN — How the Internet works](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work) · [MDN — Domain names](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_domain_name) · [Doka — Working with the network](https://doka.guide/tools/network/)
+[MDN — How the web works](https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works) · [MDN — How the Internet works](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work) · [MDN — Domain names](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_domain_name) · [Doka — Working with the network](https://doka.guide/tools/network/)
 
 ---
 
@@ -273,11 +277,13 @@ https://example.com/index.html
 - Server → persist, authorize, transform; optional background jobs (index, email).
 - DB → storage, replicas, backups — often more than one technology.
 
-**Cases:** Feeds, docs, auth. Full picture: [0_system_design.md — Client–server](./0_system_design.md#clientserver-architecture-why-a-backend). Messages, methods, proxies: [HTTP protocol](#http-protocol). The HTTP process on the server is the [web server](#web-server).
+**When to use:** Feeds, docs, auth. Full picture: [0_system_design.md — Client–server](./0_system_design.md#clientserver-architecture-why-a-backend). Messages, methods, proxies: [HTTP protocol](#http-protocol). The HTTP process on the server is the [web server](#web-server).
 
-**Key idea:** Architecture describes contracts between parts, not every module’s internals.
+**Thoughts:** Architecture describes contracts between parts, not every module’s internals.
 
-**Source:** [Doka — How web apps work](https://doka.guide/tools/web-app-works/)
+**Sources:**
+
+[Doka — How web apps work](https://doka.guide/tools/web-app-works/)
 
 ---
 
@@ -296,7 +302,9 @@ https://example.com/index.html
 2. **AJAX (Web 2.0)** — background HTTP (`XMLHttpRequest` / later `fetch`). Early pattern: server still returns a **chunk of HTML**; JS inserts it. Better UX, still couples markup to the API.
 3. **Data APIs** — first response is HTML (SSR) or a shell + embedded JSON; later actions send JSON. The client **re-renders** from data (React and similar), not by swapping HTML strings.
 
-**Cases:** Interview: name the three eras. Prefer JSON when multiple clients share one API; SSR HTML is still valid for first paint.
+**When to use:**
+
+Interview: name the three eras. Prefer JSON when multiple clients share one API; SSR HTML is still valid for first paint.
 
 | Data-only APIs                   | HTML fragments / full pages                |
 | -------------------------------- | ------------------------------------------ |
@@ -304,9 +312,11 @@ https://example.com/index.html
 | Smaller payloads                 | Markup and API version together            |
 | SSR optional for first HTML      | Harder to reuse on mobile / another UI     |
 
-**Key idea:** Modern apps exchange **state as data**; the client owns most of the View.
+**Thoughts:** Modern apps exchange **state as data**; the client owns most of the View.
 
-**Source:** [Doka — How web apps work](https://doka.guide/tools/web-app-works/) · Types: [MPA vs SPA](#12-types-of-web-apps) · AJAX: [3_js_async.md](./3_js_async.md)
+**Sources:**
+
+[Doka — How web apps work](https://doka.guide/tools/web-app-works/) · Types: [MPA vs SPA](#12-types-of-web-apps) · AJAX: [3_js_async.md](./3_js_async.md)
 
 ---
 
@@ -317,7 +327,9 @@ https://example.com/index.html
 
 ### IP address
 
-**Definition:** An IP address is a numeric identifier for a device on a network, used to route packets to the correct destination.
+**Definition:**
+
+An IP address is a numeric identifier for a device on a network, used to route packets to the correct destination.
 
 | Version | Size                         | Notes              |
 | ------- | ---------------------------- | ------------------ |
@@ -326,19 +338,16 @@ https://example.com/index.html
 
 **How it works:** Public unicast is globally routed. **Private** IPv4 (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) stays on the LAN unless NAT or a tunnel publishes it. Loopback: `127.0.0.1` / `::1`. Packets + LAN vs Internet: [How the Internet works](#how-the-internet-works). Formats, prefixes, URL literals, DNS `AAAA`, and Happy Eyeballs: [IPv4 & IPv6](#ipv4--ipv6).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 IPv4: 192.168.1.10
 IPv6: 2001:db8:85a3::8a2e:370:7334
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — IP address glossary](https://developer.mozilla.org/en-US/docs/Glossary/IP_Address)
+[MDN — IP address glossary](https://developer.mozilla.org/en-US/docs/Glossary/IP_Address)
 
 ---
 
@@ -349,7 +358,9 @@ IPv6: 2001:db8:85a3::8a2e:370:7334
 
 ### URI, URL & URN
 
-**Definition:** A **URI** identifies a resource. A **URL** is a URI that also says *how* to reach it (scheme + location). A **URN** names a resource without locating it (`urn:isbn:…`).
+**Definition:**
+
+A **URI** identifies a resource. A **URL** is a URI that also says *how* to reach it (scheme + location). A **URN** names a resource without locating it (`urn:isbn:…`).
 
 | Type | Identifies         | Includes access method |
 | ---- | ------------------ | ---------------------- |
@@ -357,7 +368,9 @@ IPv6: 2001:db8:85a3::8a2e:370:7334
 | URL  | Resource location  | Yes (`https://…`)      |
 | URN  | Resource name      | No (`urn:isbn:…`)      |
 
-**How it works:** An absolute HTTP(S) URL is `scheme ":" "//" authority path [ "?" query ] [ "#" fragment ]`. Authority is `[ userinfo "@" ] host [ ":" port ]` (RFC 3986). The browser resolves the host via [DNS](#internet-web--dns) to an IP, then opens TCP to the port.
+**How it works:**
+
+An absolute HTTP(S) URL is `scheme ":" "//" authority path [ "?" query ] [ "#" fragment ]`. Authority is `[ userinfo "@" ] host [ ":" port ]` (RFC 3986). The browser resolves the host via [DNS](#internet-web--dns) to an IP, then opens TCP to the port.
 
 | Part | Example | Role |
 | ---- | ------- | ---- |
@@ -370,11 +383,19 @@ IPv6: 2001:db8:85a3::8a2e:370:7334
 | Query | `?query=hi&category=js` | Starts at `?`; pairs `key=value` joined by `&`. Same key may repeat. Not the resource identity — filters, search, pagination. REST split: [query vs path params](#query-parameters--path-params). |
 | Fragment | `#kratko` | Starts at `#`. Client-only; **not sent to the server**. Scrolls to `id` / named anchor. |
 
-**Relative URLs:** No host — the browser fills scheme/host from the current document (or `<base href>`). Path without `/` is relative to the current path; `/…` is from the origin root; `../` goes up one path segment; `//host/path` is scheme-relative (keep `https`/`http`). The address bar resembles a file path; SSR may hide `index.html`, and client routing can show a virtual path via History API — [Files & file systems](./8_nodejs.md#files--file-systems).
+No host — the browser fills scheme/host from the current document (or `<base href>`). Path without `/` is relative to the current path; `/…` is from the origin root; `../` goes up one path segment; `//host/path` is scheme-relative (keep `https`/`http`). The address bar resembles a file path; SSR may hide `index.html`, and client routing can show a virtual path via History API — [Files & file systems](./8_nodejs.md#files--file-systems).
 
-**Subdomains:** One registered domain can front several services (`mail.google.com` vs `www.google.com`). `www` is just a common third-level name; most sites redirect `www` ↔ apex.
+One registered domain can front several services (`mail.google.com` vs `www.google.com`). `www` is just a common third-level name; most sites redirect `www` ↔ apex.
 
-**Cases:** Paste a full URL in the address bar; `<a href>` / `location`; REST resource IDs; `mailto:` contact links.
+**When to use:**
+
+Paste a full URL in the address bar; `<a href>` / `location`; REST resource IDs; `mailto:` contact links.
+
+#### Common pitfalls
+
+Putting secrets in query or userinfo; treating `#` as a server param; omitting encoding (`привет` must be percent-encoded on the wire); assuming extra ports are a security control (obscurity only — use auth). `www` vs apex are different hosts until DNS/redirects say otherwise.
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
@@ -382,10 +403,7 @@ IPv6: 2001:db8:85a3::8a2e:370:7334
 | Relative links survive domain moves | Fragment never reaches the API |
 | `URL` / `URLSearchParams` parse safely | Hand-splitting `?` / `&` breaks encoding |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 https://doka.guide/tools/url
@@ -393,8 +411,6 @@ https://doka.guide/search/?query=привет&category=html#results
 mailto:hi@doka.guide
 urn:isbn:978-0-393-04002-9
 ```
-
-</details>
 
 ```js
 const url = new URL('https://doka.guide');
@@ -405,11 +421,11 @@ page.href;
 // https://doka.guide/tools/url?q=url#kratko
 ```
 
-**Common pitfalls:** Putting secrets in query or userinfo; treating `#` as a server param; omitting encoding (`привет` must be percent-encoded on the wire); assuming extra ports are a security control (obscurity only — use auth). `www` vs apex are different hosts until DNS/redirects say otherwise.
+**Thoughts:** URL = *how to fetch* + *where*; DNS turns the host into an IP; query is extra input; hash stays in the browser.
 
-**Key idea:** URL = *how to fetch* + *where*; DNS turns the host into an IP; query is extra input; hash stays in the browser.
+**Sources:**
 
-**Source:** [MDN — URI](https://developer.mozilla.org/en-US/docs/Glossary/URI) · [MDN — URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) · [WHATWG URL](https://url.spec.whatwg.org/) · [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986) · [Doka — URL](https://doka.guide/tools/url/)
+[MDN — URI](https://developer.mozilla.org/en-US/docs/Glossary/URI) · [MDN — URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) · [WHATWG URL](https://url.spec.whatwg.org/) · [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986) · [Doka — URL](https://doka.guide/tools/url/)
 
 ---
 
@@ -420,7 +436,9 @@ page.href;
 
 ### Host vs domain
 
-**Definition:** A host is a machine (server) on the network with an IP address; a domain is a human-readable name that DNS maps to one or more hosts. In a URL the host sits in the authority; anatomy: [URI, URL & URN](#uri-url--urn).
+**Definition:**
+
+A host is a machine (server) on the network with an IP address; a domain is a human-readable name that DNS maps to one or more hosts. In a URL the host sits in the authority; anatomy: [URI, URL & URN](#uri-url--urn).
 
 | Term        | Meaning                                                       |
 | ----------- | ------------------------------------------------------------- |
@@ -428,19 +446,16 @@ page.href;
 | Domain      | Registered name (`example.com`)                               |
 | Web hosting | Service that stores and serves site files                     |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 Domain: google.com
 Host:   www.google.com → 142.250.185.78
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — Host glossary](https://developer.mozilla.org/en-US/docs/Glossary/Host)
+[MDN — Host glossary](https://developer.mozilla.org/en-US/docs/Glossary/Host)
 
 ---
 
@@ -451,7 +466,9 @@ Host:   www.google.com → 142.250.185.78
 
 ### Query parameters & path params
 
-**Definition:** Path parameters identify a resource in the URL path; query parameters filter, sort, or paginate without changing the resource identity. Full URL parts (scheme, host, fragment, relative links): [URI, URL & URN](#uri-url--urn). JS helpers: [URL / URLSearchParams](./3_js_browser.md#url--urlsearchparams).
+**Definition:**
+
+Path parameters identify a resource in the URL path; query parameters filter, sort, or paginate without changing the resource identity. Full URL parts (scheme, host, fragment, relative links): [URI, URL & URN](#uri-url--urn). JS helpers: [URL / URLSearchParams](./3_js_browser.md#url--urlsearchparams).
 
 | Style       | Example                       | Use case                 |
 | ----------- | ----------------------------- | ------------------------ |
@@ -459,19 +476,16 @@ Host:   www.google.com → 142.250.185.78
 | Query param | `/books?sort=title&page=2`    | Filtering, pagination    |
 | Both        | `/users/1/orders?status=open` | Nested resource + filter |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const params = new URLSearchParams({ page: '2', limit: '20' });
 fetch(`/api/books?${params}`);
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+[MDN — URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
 ---
 
@@ -484,7 +498,9 @@ fetch(`/api/books?${params}`);
 
 **Definition:** *API (Application Programming Interface)* is the set of features one program exposes to others: “talk to me this way — ask here, change things there.” It exists so modules, systems, and languages can communicate (JS client ↔ Python/Java server, exported functions, Gulp, Arduino SDK).
 
-**How it works:** A JS client cannot pass a native object to a Python/Java server. Both sides agree on a surface (URLs + HTTP methods, exported functions, SDK methods) and usually a wire format (JSON). That surface is the API.
+**How it works:**
+
+A JS client cannot pass a native object to a Python/Java server. Both sides agree on a surface (URLs + HTTP methods, exported functions, SDK methods) and usually a wire format (JSON). That surface is the API.
 
 | API type             | Where it runs             | Example                                         |
 | -------------------- | ------------------------- | ----------------------------------------------- |
@@ -508,27 +524,31 @@ fetch(`/api/books?${params}`);
 - **Понятность (clear)** — **Definition:** names of functions, methods, and URLs that match intent so callers make fewer mistakes.
 - **Полнота (complete)** — **Definition:** each action returns the right amount of data — not missing fields, not a dump of everything.
 
-**Cases:** Browser talking to a backend; one module used by the rest of an app; plugins consuming a host API (Gulp); hardware SDKs.
+**When to use:**
 
-**Example (HTTP surface):**
+Browser talking to a backend; one module used by the rest of an app; plugins consuming a host API (Gulp); hardware SDKs.
+
+#### Common pitfalls
+
+Treating “API” as only REST URLs; over/under-fetching from a poorly shaped contract; copying JSON-RPC 1.0 response shapes (`result` + `error: null`) into JSON-RPC 2.0.
+
+**Examples:**
 
 ```http
 POST /api/v1.0/users   → create user
 GET  /api/v1.0/users   → list users
 ```
 
-**Example (browser API):**
-
 ```js
 localStorage.setItem('key', 'value');
 console.log('debug');
 ```
 
-**Common pitfalls:** Treating “API” as only REST URLs; over/under-fetching from a poorly shaped contract; copying JSON-RPC 1.0 response shapes (`result` + `error: null`) into JSON-RPC 2.0.
+**Thoughts:** API is any published contract between programs — HTTP routes are one kind, not the only kind.
 
-**Key idea:** API is any published contract between programs — HTTP routes are one kind, not the only kind.
+**Sources:**
 
-**Source:** [Doka — What is an API](https://doka.guide/tools/api/) · [AWS — What is an API?](https://aws.amazon.com/what-is/api/) · [MDN — Web APIs](https://developer.mozilla.org/en-US/docs/Web/API)
+[Doka — What is an API](https://doka.guide/tools/api/) · [AWS — What is an API?](https://aws.amazon.com/what-is/api/) · [MDN — Web APIs](https://developer.mozilla.org/en-US/docs/Web/API)
 
 ---
 
@@ -541,25 +561,24 @@ console.log('debug');
 
 **Definition:** A CDN is a geographically distributed network of edge servers that cache and serve static content closer to users.
 
-| Pros                             | Cons                          |
+**Pluses and minuses:**
+
+| +                             | −                          |
 | -------------------------------- | ----------------------------- |
 | Lower latency, less origin load  | Cache invalidation complexity |
 | DDoS mitigation, TLS termination | Extra cost and configuration  |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <script src="https://cdn.example.com/lib/react.min.js"></script>
 ```
 
-</details>
+**Thoughts:** Edge HTML + HTTP/2/3/TLS 1.3 is the usual network fix for high TTFB. Full metric: [TTFB](#ttfb-time-to-first-byte).
 
-**Notes:** Edge HTML + HTTP/2/3/TLS 1.3 is the usual network fix for high TTFB. Full metric: [TTFB](#ttfb-time-to-first-byte).
+**Sources:**
 
-**Source:** [Cloudflare — What is a CDN?](https://www.cloudflare.com/learning/cdn/what-is-a-cdn/)
+[Cloudflare — What is a CDN?](https://www.cloudflare.com/learning/cdn/what-is-a-cdn/)
 
 ---
 
@@ -578,7 +597,9 @@ See also: [SOAP](#3-soap) · [RPC](#4-rpc) · [REST vs SOAP vs RPC](#5-rest-vs-s
 
 **Definition:** REST (Representational State Transfer) is a **style of communication** between components: all needed data is specified in the request (path, HTTP method, query, or body). It is one of the most common API styles on the internet.
 
-**How it works:** The URL stays a **noun**; CRUD lives in the HTTP method. Same address, different verb. Fielding also requires client–server, stateless, uniform interface, cacheable, layered (HATEOAS / code-on-demand optional and rare).
+**How it works:**
+
+The URL stays a **noun**; CRUD lives in the HTTP method. Same address, different verb. Fielding also requires client–server, stateless, uniform interface, cacheable, layered (HATEOAS / code-on-demand optional and rare).
 
 | CRUD       | HTTP                                               |
 | ---------- | -------------------------------------------------- |
@@ -587,18 +608,17 @@ See also: [SOAP](#3-soap) · [RPC](#4-rpc) · [REST vs SOAP vs RPC](#5-rest-vs-s
 | Update (U) | `PUT` (whole object) / `PATCH` (named fields only) |
 | Delete (D) | `DELETE`                                           |
 
-| Pros                         | Cons                              |
+**When to use:** Public web/CRUD APIs. Fix over/under-fetch with a **BFF**. Deeper mapping: [CRUD & REST mapping](#crud--rest-mapping).
+
+**Pluses and minuses:**
+
+| +                         | −                              |
 | ---------------------------- | --------------------------------- |
 | Most common style            | Bad design over- or under-fetches |
 | Built on HTTP                | Strict REST (HATEOAS) is rare     |
 | Easy to read (verbs + paths) | Many endpoints for nested data    |
 
-**Cases:** Public web/CRUD APIs. Fix over/under-fetch with a **BFF**. Deeper mapping: [CRUD & REST mapping](#crud--rest-mapping).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 GET /api/users/42 HTTP/1.1
@@ -608,11 +628,11 @@ Accept: application/json
 { "id": 42, "name": "Ada" }
 ```
 
-</details>
+**Thoughts:** Same address, different method — details in verb + params/body.
 
-**Key idea:** Same address, different method — details in verb + params/body.
+**Sources:**
 
-**Source:** [ByteByteGo — REST cheatsheet](https://blog.bytebytego.com/p/ep94-rest-api-cheatsheet) · [Doka — What is an API](https://doka.guide/tools/api/)
+[ByteByteGo — REST cheatsheet](https://blog.bytebytego.com/p/ep94-rest-api-cheatsheet) · [Doka — What is an API](https://doka.guide/tools/api/)
 
 ---
 
@@ -636,9 +656,11 @@ Accept: application/json
 | Layered system            | Proxies, CDN, gateway are OK        |
 | Code on demand (optional) | Server may send executable code     |
 
-**Cases:** Interview: name the six constraints. Practice is usually client–server + stateless + verbs. HATEOAS is rare.
+**When to use:** Interview: name the six constraints. Practice is usually client–server + stateless + verbs. HATEOAS is rare.
 
-**Source:** [Roy Fielding — REST dissertation](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
+**Sources:**
+
+[Roy Fielding — REST dissertation](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
 
 ---
 
@@ -649,7 +671,9 @@ Accept: application/json
 
 ### REST alternatives
 
-**Definition:** Other styles trade REST’s resource + HTTP-verb model for queries, streams, or remote procedures. Full notes: [SOAP](#3-soap) · [RPC](#4-rpc) · [REST vs SOAP vs RPC](#5-rest-vs-soap-vs-rpc) · [tRPC](#6-trpc).
+**Definition:**
+
+Other styles trade REST’s resource + HTTP-verb model for queries, streams, or remote procedures. Full notes: [SOAP](#3-soap) · [RPC](#4-rpc) · [REST vs SOAP vs RPC](#5-rest-vs-soap-vs-rpc) · [tRPC](#6-trpc).
 
 | Style     | Strength                         | Typical use                    |
 | --------- | -------------------------------- | ------------------------------ |
@@ -660,10 +684,7 @@ Accept: application/json
 | tRPC      | TS end-to-end types, no codegen  | TS fullstack / monorepo        |
 | SOAP      | XML envelopes, WS-*              | Legacy enterprise              |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```graphql
 query {
@@ -671,9 +692,9 @@ query {
 }
 ```
 
-</details>
+**Sources:**
 
-**Source:** [GraphQL](https://graphql.org/) · [gRPC](https://grpc.io/)
+[GraphQL](https://graphql.org/) · [gRPC](https://grpc.io/)
 
 ---
 
@@ -686,7 +707,9 @@ query {
 
 **Definition:** CRUD maps Create, Read, Update, and Delete operations to HTTP methods against resource URLs. In REST-style APIs the path stays a noun; the verb lives in the method.
 
-**How it works:** Same collection URL, different methods. `PUT` replaces the whole resource; `PATCH` applies a partial update and may not be idempotent (e.g. increment). Successful updates/deletes often return **204 No Content**.
+**How it works:**
+
+Same collection URL, different methods. `PUT` replaces the whole resource; `PATCH` applies a partial update and may not be idempotent (e.g. increment). Successful updates/deletes often return **204 No Content**.
 
 | Operation        | HTTP method | Example                                             |
 | ---------------- | ----------- | --------------------------------------------------- |
@@ -697,9 +720,9 @@ query {
 | Update (partial) | PATCH       | `PATCH /api/orders/42`                              |
 | Delete           | DELETE      | `DELETE /api/orders/42` → often **204**             |
 
-**Cases:** Shop/order APIs and any CRUD HTTP surface. Prefer REST when caching and HTTP semantics matter.
+**When to use:** Shop/order APIs and any CRUD HTTP surface. Prefer REST when caching and HTTP semantics matter.
 
-**Example (orders):**
+**Examples:**
 
 ```http
 POST   /api/orders/      → create; response often new id (42)
@@ -709,9 +732,11 @@ PATCH  /api/orders/42    → only sent fields
 DELETE /api/orders/42    → often 204 or deleted id
 ```
 
-**Key idea:** Address names the resource; HTTP method names the CRUD action.
+**Thoughts:** Address names the resource; HTTP method names the CRUD action.
 
-**Source:** [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods) · [Doka — What is an API](https://doka.guide/tools/api/)
+**Sources:**
+
+[MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods) · [Doka — What is an API](https://doka.guide/tools/api/)
 
 ---
 
@@ -722,7 +747,9 @@ DELETE /api/orders/42    → often 204 or deleted id
 
 ### REST vs RESTful
 
-**Definition:** REST describes the architectural constraints; RESTful describes an API that follows those constraints in practice (often partially).
+**Definition:**
+
+REST describes the architectural constraints; RESTful describes an API that follows those constraints in practice (often partially).
 
 | REST (theory)         | RESTful (practice)                        |
 | --------------------- | ----------------------------------------- |
@@ -730,19 +757,16 @@ DELETE /api/orders/42    → often 204 or deleted id
 | HATEOAS hypermedia    | Rarely implemented fully                  |
 | Strict resource nouns | Sometimes RPC-style paths                 |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 RESTful:  GET /users/1/orders
 Less REST: POST /users/1/getOrders   ← verb in URL
 ```
 
-</details>
+**Sources:**
 
-**Source:** [Roy Fielding — REST dissertation](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
+[Roy Fielding — REST dissertation](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
 
 ---
 
@@ -762,23 +786,22 @@ Less REST: POST /users/1/getOrders   ← verb in URL
 - **Cursor/keyset pagination** — `?cursor=eyJpZCI6MTIzfQ&limit=20` encodes last-seen sort key (`id` or `created_at`). Stable under inserts; no deep-offset penalty.
 - **Link headers** — `Link: <...?page=3>; rel="next"` (RFC 8288) or JSON `{ data, meta: { nextCursor, hasMore } }`.
 
-| Strategy                  | Pros                     | Cons                                                  |
+**When to use:**
+
+- Ship **v2** when removing fields or changing semantics; keep **v1** for a deprecation window.
+- Use **cursor** for infinite scroll and feeds; **offset** for admin tables with page numbers.
+- Always return **total count** only when cheap — counting millions of rows is expensive.
+
+**Pluses and minuses:**
+
+| Strategy                  | +                     | −                                                  |
 | ------------------------- | ------------------------ | ----------------------------------------------------- |
 | URL path version (`/v1/`) | Obvious in logs and docs | URL churn; multiple code paths                        |
 | Header version            | Clean URLs               | Harder to test in browser                             |
 | Offset pagination         | Easy to implement        | Slow `OFFSET` at scale; duplicates/skips on live data |
 | Cursor pagination         | Efficient, stable sort   | Cannot jump to arbitrary page number                  |
 
-**Cases:**
-
-- Ship **v2** when removing fields or changing semantics; keep **v1** for a deprecation window.
-- Use **cursor** for infinite scroll and feeds; **offset** for admin tables with page numbers.
-- Always return **total count** only when cheap — counting millions of rows is expensive.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 GET /api/v2/books?limit=20&cursor=eyJpZCI6MTAwfQ HTTP/1.1
@@ -791,11 +814,11 @@ Accept: application/json
 }
 ```
 
-</details>
+**Thoughts:** Version in URL is the most common interview answer. Never break clients silently — announce sunset dates and return `410 Gone` or deprecation headers (`Sunset`, `Deprecation`).
 
-**Notes:** Version in URL is the most common interview answer. Never break clients silently — announce sunset dates and return `410 Gone` or deprecation headers (`Sunset`, `Deprecation`).
+**Sources:**
 
-**Source:** [MDN — HTTP pagination patterns](https://developer.mozilla.org/en-US/docs/Web/HTTP) · [RFC 8288 — Web Linking](https://datatracker.ietf.org/doc/html/rfc8288)
+[MDN — HTTP pagination patterns](https://developer.mozilla.org/en-US/docs/Web/HTTP) · [RFC 8288 — Web Linking](https://datatracker.ietf.org/doc/html/rfc8288)
 
 ---
 
@@ -826,17 +849,6 @@ See also: [SOAP](#3-soap) · [REST](#2-rest) · [HTML vs XML](./1_html.md#html-v
 - **Namespaces (`xmlns`):** same local name (`table`) in two vocabularies. Prefix: `xmlns:classic="URI"` then `classic:table`. Default: `xmlns="URI"` on an element and descendants. The URI is an **identifier**, not a document the parser must fetch. Declaring a namespace does **not** by itself restrict tags to a schema — that is validation. `xmlns=""` undeclares the default namespace (Namespaces in XML 1.0). You can hoist prefix declarations onto the root.
 - Standalone **SVG as XML** needs `xmlns="http://www.w3.org/2000/svg"` on the outer `<svg>` or the UA will not treat it as SVG. Inline SVG in HTML serialization does **not** require `xmlns` (namespace is implied).
 
-**Cases:** SOAP / XML-RPC; RSS/Atom; SVG/MathML files; legacy enterprise interchange; when a schema (XSD) is the contract. Prefer JSON for new public HTTP APIs.
-
-| Pros | Cons |
-|------|------|
-| Same syntax everywhere; easy to round-trip between systems | Verbose (open + close tags) |
-| Human-readable tree; attributes + nested elements | All values are text unless a schema adds types |
-| Namespaces disambiguate mixed vocabularies | Namespaces are easy to get wrong |
-| Separates data from HTML (store XML, render HTML) | Must parse (`DOMParser`, backend XML libs) — unlike a JS object after `JSON.parse` |
-
-**XML vs HTML vs JSON (interview):**
-
 | | XML | HTML | JSON |
 |---|-----|------|------|
 | Tags | You invent them | Fixed vocabulary | No tags — objects/arrays |
@@ -845,10 +857,28 @@ See also: [SOAP](#3-soap) · [REST](#2-rest) · [HTML vs XML](./1_html.md#html-v
 | Types | Text (+ optional schema) | N/A | Number, bool, null, string, object, array |
 | In JS | Parse to DOM / tree | Browser already parsed | Native after `JSON.parse` |
 
-**Example:**
+**When to use:**
 
-<details>
-  <summary>Code</summary>
+SOAP / XML-RPC; RSS/Atom; SVG/MathML files; legacy enterprise interchange; when a schema (XSD) is the contract. Prefer JSON for new public HTTP APIs.
+
+#### Common pitfalls
+
+- Unclosed tags — the whole document is rejected.
+- Treating `xmlns` URIs as files you must host, or assuming `xmlns` validates elements.
+- Missing SVG `xmlns` on a `.svg` file opened as XML.
+- Assuming JSON “needs no parsing” in JS — the wire is still a string.
+- Confusing XML (syntax) with SOAP (envelope protocol on top of XML).
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Same syntax everywhere; easy to round-trip between systems | Verbose (open + close tags) |
+| Human-readable tree; attributes + nested elements | All values are text unless a schema adds types |
+| Namespaces disambiguate mixed vocabularies | Namespaces are easy to get wrong |
+| Separates data from HTML (store XML, render HTML) | Must parse (`DOMParser`, backend XML libs) — unlike a JS object after `JSON.parse` |
+
+**Examples:**
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -861,8 +891,6 @@ See also: [SOAP](#3-soap) · [REST](#2-rest) · [HTML vs XML](./1_html.md#html-v
   <pet category='dog "corgi"' />
 </petstore>
 ```
-
-</details>
 
 Namespace clash (`table` as HTML vs `table` as “cat furniture”) — prefixes on the root:
 
@@ -891,17 +919,11 @@ Film record (typical payload):
 </film>
 ```
 
-**Common pitfalls:**
+**Thoughts:** XML is a strict, self-describing tree for data; HTML is for pages; JSON is the usual API wire format today.
 
-- Unclosed tags — the whole document is rejected.
-- Treating `xmlns` URIs as files you must host, or assuming `xmlns` validates elements.
-- Missing SVG `xmlns` on a `.svg` file opened as XML.
-- Assuming JSON “needs no parsing” in JS — the wire is still a string.
-- Confusing XML (syntax) with SOAP (envelope protocol on top of XML).
+**Sources:**
 
-**Key idea:** XML is a strict, self-describing tree for data; HTML is for pages; JSON is the usual API wire format today.
-
-**Source:** [MDN — XML introduction](https://developer.mozilla.org/en-US/docs/Web/XML/Guides/XML_introduction) · [MDN — SVG namespaces](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/Namespaces_crash_course) · [Doka — XML](https://doka.guide/tools/xml/)
+[MDN — XML introduction](https://developer.mozilla.org/en-US/docs/Web/XML/Guides/XML_introduction) · [MDN — SVG namespaces](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/Namespaces_crash_course) · [Doka — XML](https://doka.guide/tools/xml/)
 
 ---
 
@@ -920,7 +942,9 @@ See also: [XML](#xml) · [REST](#2-rest) · [RPC](#4-rpc) · [REST vs SOAP vs RP
 
 **Definition:** SOAP (Simple Object Access Protocol) is a **data-exchange format**: every message follows a fixed structure, almost always XML (Envelope / Header / Body / Fault). REST is an architectural *style*; SOAP is a *format* — they are not the same kind of thing. XML syntax itself: [XML](#xml).
 
-**How it works:** Unlike REST, **which HTTP method you use does not matter** for the SOAP contract. The packet is nested XML:
+**How it works:**
+
+Unlike REST, **which HTTP method you use does not matter** for the SOAP contract. The packet is nested XML:
 
 ```text
 ┌─ SOAP-ENV:Envelope ─────────────────────────────────┐
@@ -942,15 +966,17 @@ See also: [XML](#xml) · [REST](#2-rest) · [RPC](#4-rpc) · [REST vs SOAP vs RP
 | **Body**     | содержит сообщение, которым обмениваются приложения             | Payload exchanged between apps            |
 | **Fault**    | необязательный элемент с ошибками обработки, если они были      | Optional processing errors (if any)       |
 
-| Pros                           | Cons                                      |
+**When to use:** Legacy enterprise SOAP. New public APIs almost always REST/JSON or RPC/gRPC.
+
+**Pluses and minuses:**
+
+| +                           | −                                      |
 | ------------------------------ | ----------------------------------------- |
 | Independent of transfer method | Verbose                                   |
 | Strict message structure       | Harder on the client than REST            |
 | WSDL / WS-* (enterprise)       | XML loses to JSON; SOAP-over-JSON is rare |
 
-**Cases:** Legacy enterprise SOAP. New public APIs almost always REST/JSON or RPC/gRPC.
-
-**Example (request):**
+**Examples:**
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -963,8 +989,6 @@ See also: [XML](#xml) · [REST](#2-rest) · [RPC](#4-rpc) · [REST vs SOAP vs RP
   </soap:Body>
 </soap:Envelope>
 ```
-
-**Example (response):**
 
 ```xml
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -985,9 +1009,11 @@ See also: [XML](#xml) · [REST](#2-rest) · [RPC](#4-rpc) · [REST vs SOAP vs RP
 </soap:Envelope>
 ```
 
-**Key idea:** SOAP wraps an operation in XML; REST maps CRUD to HTTP on a resource URL.
+**Thoughts:** SOAP wraps an operation in XML; REST maps CRUD to HTTP on a resource URL.
 
-**Source:** [MDN — SOAP glossary](https://developer.mozilla.org/en-US/docs/Glossary/SOAP) · [Doka — What is an API](https://doka.guide/tools/api/)
+**Sources:**
+
+[MDN — SOAP glossary](https://developer.mozilla.org/en-US/docs/Glossary/SOAP) · [Doka — What is an API](https://doka.guide/tools/api/)
 
 ---
 
@@ -1006,7 +1032,7 @@ See also: [REST](#2-rest) · [SOAP](#3-soap) · [XML](#xml) · [REST vs SOAP vs 
 
 **Definition:** RPC (Remote Procedure Call) is a style where the request message stores **both the action to execute and the data that action needs**. On the web that is roughly “call server functionality from the browser.” XML-RPC and JSON-RPC are common; JSON-RPC is easier to read. gRPC is typed RPC over Protobuf + HTTP/2. **tRPC** is TypeScript RPC: you call procedures as functions; types come from the server router, not from OpenAPI/GraphQL codegen.
 
-**How it works (Doka / JSON-RPC 1.0-shaped message):**
+**How it works:**
 
 | Field    | Request                                       | Response                                 |
 | -------- | --------------------------------------------- | ---------------------------------------- |
@@ -1016,7 +1042,7 @@ See also: [REST](#2-rest) · [SOAP](#3-soap) · [XML](#xml) · [REST vs SOAP vs 
 | `result` | —                                             | Return value, or `null` on error         |
 | `error`  | —                                             | Error code/message, or `null` on success |
 
-**How it works (JSON-RPC 2.0 spec):** `"jsonrpc": "2.0"`; `params` optional; omit `id` for a notification. Success has **only** `result`. Error has **only** `error` (`code`, `message`). Never both.
+`"jsonrpc": "2.0"`; `params` optional; omit `id` for a notification. Success has **only** `result`. Error has **only** `error` (`code`, `message`). Never both.
 
 |            | JSON-RPC                            | gRPC                      |
 | ---------- | ----------------------------------- | ------------------------- |
@@ -1026,15 +1052,23 @@ See also: [REST](#2-rest) · [SOAP](#3-soap) · [XML](#xml) · [REST vs SOAP vs 
 | Streaming  | Limited                             | Bidirectional             |
 | HTTP cache | Usually unused (POST + method name) | Not REST-cacheable either |
 
-| Pros                                  | Cons                          |
+**When to use:**
+
+Internal “call this procedure” APIs, batching. Prefer REST when intermediaries should cache GET. Prefer gRPC for typed internal services. Prefer tRPC when client and server share TypeScript.
+
+#### Common pitfalls
+
+Doka’s sample `"jsonrpc": "2.0"` with both `result` and `"error": null` is **1.0-shaped**. Spec 2.0 uses *either* `result` *or* `error`.
+
+**Pluses and minuses:**
+
+| +                                  | −                          |
 | ------------------------------------- | ----------------------------- |
 | Structured messages                   | Too much logic on the client  |
 | JSON is easy to read/write            | HTTP caching is unavailable   |
 | Fast when you need **batch** requests | URLs don’t describe resources |
 
-**Cases:** Internal “call this procedure” APIs, batching. Prefer REST when intermediaries should cache GET. Prefer gRPC for typed internal services. Prefer tRPC when client and server share TypeScript.
-
-**Example (request):**
+**Examples:**
 
 ```json
 {
@@ -1070,11 +1104,11 @@ See also: [REST](#2-rest) · [SOAP](#3-soap) · [XML](#xml) · [REST vs SOAP vs 
 }
 ```
 
-**Common pitfalls:** Doka’s sample `"jsonrpc": "2.0"` with both `result` and `"error": null` is **1.0-shaped**. Spec 2.0 uses *either* `result` *or* `error`.
+**Thoughts:** RPC names the procedure; REST names the resource.
 
-**Key idea:** RPC names the procedure; REST names the resource.
+**Sources:**
 
-**Source:** [JSON-RPC spec](https://www.jsonrpc.org/specification) · [gRPC](https://grpc.io/docs/what-is-grpc/introduction/) · [Doka — What is an API](https://doka.guide/tools/api/)
+[JSON-RPC spec](https://www.jsonrpc.org/specification) · [gRPC](https://grpc.io/docs/what-is-grpc/introduction/) · [Doka — What is an API](https://doka.guide/tools/api/)
 
 ---
 
@@ -1093,7 +1127,7 @@ See also: [REST](#2-rest) · [SOAP](#3-soap) · [XML](#xml) · [RPC](#4-rpc) · 
 
 **Definition:** In web work, “API” usually means HTTP to a server. REST, SOAP, and RPC are three different *ways* to shape that conversation — not three equal protocols. REST is a style; SOAP is a message format; RPC is “call this function remotely.” tRPC is one TypeScript implementation of RPC.
 
-**How it works — same job (get order 42):**
+**How it works:**
 
 |                             | REST                                              | SOAP                                      | RPC (JSON-RPC)                              | tRPC                                              |
 | --------------------------- | ------------------------------------------------- | ----------------------------------------- | ------------------------------------------- | ------------------------------------------------- |
@@ -1128,11 +1162,13 @@ GET /api/trpc/orders.get?input=%7B%22id%22%3A42%7D
 const order = await client.orders.get.query({ id: 42 });
 ```
 
-**Cases:** Interview: “REST is not SOAP’s opposite.” Pick REST for public HTTP; SOAP when the partner already speaks SOAP; RPC/gRPC for internal typed calls; tRPC when both sides are TypeScript.
+**When to use:** Interview: “REST is not SOAP’s opposite.” Pick REST for public HTTP; SOAP when the partner already speaks SOAP; RPC/gRPC for internal typed calls; tRPC when both sides are TypeScript.
 
-**Key idea:** REST = resource + verb. SOAP = envelope. RPC = method + params. tRPC = typed RPC functions over HTTP.
+**Thoughts:** REST = resource + verb. SOAP = envelope. RPC = method + params. tRPC = typed RPC functions over HTTP.
 
-**Source:** [Doka — What is an API](https://doka.guide/tools/api/) · [tRPC — concepts](https://trpc.io/docs/concepts) · [tRPC HTTP RPC spec](https://trpc.io/docs/rpc)
+**Sources:**
+
+[Doka — What is an API](https://doka.guide/tools/api/) · [tRPC — concepts](https://trpc.io/docs/concepts) · [tRPC HTTP RPC spec](https://trpc.io/docs/rpc)
 
 ---
 
@@ -1161,19 +1197,24 @@ See also: [RPC](#4-rpc) · [REST vs SOAP vs RPC](#5-rest-vs-soap-vs-rpc)
 - **Batching** (`httpBatchLink`): same-method parallel calls become one request — path `postById,relatedPosts`, `?batch=1&input={...}`; mixed success/error can return `207 Multi-Status`.
 - Can sit next to REST: REST keeps resource URLs; tRPC owns one RPC endpoint.
 
-| Pros | Cons |
+**When to use:**
+
+Next.js / Node fullstack in a TS monorepo. Prefer REST/OpenAPI when unknown clients, CDNs keyed on resource URLs, or non-TS consumers matter. Prefer gRPC when you need binary + HTTP/2 streaming across languages.
+
+#### Common pitfalls
+
+Calling `fetch('/api/trpc/users/123')` like REST — use `client.user.byId.query({ id: '123' })` (wire: `GET /api/trpc/user.byId?input=...`). Sharing only runtime code without the `AppRouter` type. Treating GET/POST as REST CRUD — verbs are transport; intent is in the procedure name (`getUser` vs `GET /users/:id`). Huge query inputs on GET (use `methodOverride: 'POST'` if the server allows it).
+
+**Pluses and minuses:**
+
+| + | − |
 | ---- | ---- |
 | End-to-end types, no codegen | Client and server must share TypeScript (`AppRouter`) |
 | Autocomplete; breaking API changes show up in the client | Poor default for public polyglot APIs (need REST/OpenAPI) |
 | Query GET + mutation POST; optional batching | Query input in the URL — size limits; cache is not REST-by-resource |
 | Adapters: fetch, Next.js `/api/trpc/*`, standalone | Inspecting the wire still looks like RPC, not REST resources |
 
-**Cases:** Next.js / Node fullstack in a TS monorepo. Prefer REST/OpenAPI when unknown clients, CDNs keyed on resource URLs, or non-TS consumers matter. Prefer gRPC when you need binary + HTTP/2 streaming across languages.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 import { initTRPC } from '@trpc/server';
@@ -1195,8 +1236,6 @@ const appRouter = t.router({
 export type AppRouter = typeof appRouter;
 ```
 
-</details>
-
 ```ts
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
 import type { AppRouter } from './server';
@@ -1209,11 +1248,11 @@ const post = await client.post.byId.query('1');
 await client.post.create.mutate({ title: 'Hello' });
 ```
 
-**Common pitfalls:** Calling `fetch('/api/trpc/users/123')` like REST — use `client.user.byId.query({ id: '123' })` (wire: `GET /api/trpc/user.byId?input=...`). Sharing only runtime code without the `AppRouter` type. Treating GET/POST as REST CRUD — verbs are transport; intent is in the procedure name (`getUser` vs `GET /users/:id`). Huge query inputs on GET (use `methodOverride: 'POST'` if the server allows it).
+**Thoughts:** tRPC is typed TypeScript RPC over HTTP, not REST with extra types.
 
-**Key idea:** tRPC is typed TypeScript RPC over HTTP, not REST with extra types.
+**Sources:**
 
-**Source:** [tRPC introduction](https://trpc.io/docs) · [tRPC — concepts](https://trpc.io/docs/concepts) · [tRPC HTTP RPC spec](https://trpc.io/docs/rpc)
+[tRPC introduction](https://trpc.io/docs) · [tRPC — concepts](https://trpc.io/docs/concepts) · [tRPC HTTP RPC spec](https://trpc.io/docs/rpc)
 
 ---
 
@@ -1238,7 +1277,7 @@ await client.post.create.mutate({ title: 'Hello' });
 - **Stateless, not sessionless:** each request is independent. Cookies (and other tokens) recreate a **session** so login/cart state can span requests.
 - HTTP/1.x messages are text. HTTP/2/3 keep the same **semantics** (methods, status, headers) inside binary frames. Current specs: [RFC 9110](https://httpwg.org/specs/rfc9110.html) (semantics), RFC 9112 (HTTP/1.1), RFC 9113 (HTTP/2), RFC 9114 (HTTP/3) — not the obsolete RFC 2616.
 
-**Message shape (HTTP/1.1):** start-line → headers → blank line → optional **body**. A body is signaled by `Content-Length` or `Transfer-Encoding` (e.g. `chunked`). HEAD responses have no body; many GET requests have none.
+start-line → headers → blank line → optional **body**. A body is signaled by `Content-Length` or `Transfer-Encoding` (e.g. `chunked`). HEAD responses have no body; many GET requests have none.
 
 | Start-line | Format | Example |
 | ---------- | ------ | ------- |
@@ -1271,7 +1310,15 @@ Typical body media types: `text/html`, `application/json`, `multipart/form-data`
 
 **Proxies** (application-layer hops): cache; filter (antivirus, parental control); load-balance; authenticate; log; sometimes detect abusive traffic. Reverse-proxy / LB detail: [0_system_design.md — Reverse proxy](./0_system_design.md#reverse-proxy).
 
-**Cases:** Every page load and `fetch`; REST APIs; static assets. Not for long bidirectional streams — [WebSocket](#websocket). Inspect with DevTools Network or `curl -v`.
+**When to use:**
+
+Every page load and `fetch`; REST APIs; static assets. Not for long bidirectional streams — [WebSocket](#websocket). Inspect with DevTools Network or `curl -v`.
+
+#### Common pitfalls
+
+Treating HTTP as “stateful” without cookies. Calling OPTIONS “data transformation.” Using `302` when you need `307` (keep POST). Enabling `TRACE` in production (cross-site tracing). Assuming HTTP/2 has a textual `GET / HTTP/2.0` on the wire.
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
@@ -1279,10 +1326,7 @@ Typical body media types: `text/html`, `application/json`, `multipart/form-data`
 | Extensible via headers | No built-in session — cookies/tokens |
 | Same verbs/status across HTTP/1.1, 2, 3 | HTTP/2+ framing is binary; DevTools still shows 1.1-style lines |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 GET / HTTP/1.1
@@ -1297,8 +1341,6 @@ Content-Length: 1256
 <!doctype html>…
 ```
 
-</details>
-
 ```bash
 curl -v http://example.com
 # *  TCP / connection
@@ -1306,13 +1348,15 @@ curl -v http://example.com
 # <  response (server)
 ```
 
-**Common pitfalls:** Treating HTTP as “stateful” without cookies. Calling OPTIONS “data transformation.” Using `302` when you need `307` (keep POST). Enabling `TRACE` in production (cross-site tracing). Assuming HTTP/2 has a textual `GET / HTTP/2.0` on the wire.
+**Thoughts:**
 
-**Key idea:** *The browser starts every HTTP exchange; methods and status codes are the contract; cookies add sessions on a stateless protocol.*
+*The browser starts every HTTP exchange; methods and status codes are the contract; cookies add sessions on a stateless protocol.*
 
-**Notes:** Structure: [HTTP request structure](#http-request-structure) · Headers: [HTTP headers](#http-headers) · Methods/status: [HTTP methods & status codes](#http-methods--status-codes) · Cookies: [HTTP cookies](#http-cookies) · JS: [HTTP in JavaScript](#http-in-javascript) · Server process: [Web server](#web-server) · Packets / DNS / LAN: [How the Internet works](#how-the-internet-works).
+Structure: [HTTP request structure](#http-request-structure) · Headers: [HTTP headers](#http-headers) · Methods/status: [HTTP methods & status codes](#http-methods--status-codes) · Cookies: [HTTP cookies](#http-cookies) · JS: [HTTP in JavaScript](#http-in-javascript) · Server process: [Web server](#web-server) · Packets / DNS / LAN: [How the Internet works](#how-the-internet-works).
 
-**Source:** [MDN — HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) · [MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages) · [MDN — Methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods) · [MDN — Status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status) · [Doka — HTTP](https://doka.guide/tools/http-protocol/)
+**Sources:**
+
+[MDN — HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) · [MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages) · [MDN — Methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods) · [MDN — Status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status) · [Doka — HTTP](https://doka.guide/tools/http-protocol/)
 
 ---
 
@@ -1342,17 +1386,22 @@ Message shape (HTTP/1.1 text; HTTP/2+ uses the same semantics in binary frames /
 | Blank line | end of head | end of head |
 | Body | optional (POST/PUT/PATCH) | optional (not for 204 / some 1xx) |
 
-**Cases:** Local preview of a built site; SPA `dist/` + `/api/` proxy; TLS termination; gzip/brotli for HTML/CSS/JS.
+**When to use:**
+
+Local preview of a built site; SPA `dist/` + `/api/` proxy; TLS termination; gzip/brotli for HTML/CSS/JS.
+
+#### Common pitfalls
+
+Treating `GET /path HTTP/2.0` as on-the-wire HTTP/2 — HTTP/2 has no textual request-line; DevTools still *shows* method + path. Using public-key crypto for the whole payload — TLS uses asymmetric crypto in the handshake, then **symmetric** session keys ([SSL/TLS handshake](#ssltls--https-handshake)). Compressing JPEGs/ZIP again ([HTTP compression](#http-compression-content-encoding)).
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
 | One place for TLS, compression, static files | Misconfigured proxy hides the real app error |
 | Modules cover cache, auth, reverse proxy | Dev `http-server` is not a production server |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 import { createServer } from 'node:http';
@@ -1363,17 +1412,17 @@ createServer((req, res) => {
 }).listen(8080);
 ```
 
-</details>
-
 Local static preview (not for production load): `npx serve` or `npx http-server` in the site folder → `http://127.0.0.1:8080` (loopback). LAN URL uses the machine’s LAN IP (e.g. `http://192.168.1.56:8080`). `browser-sync` can mirror scroll/navigation across devices on the same network.
 
-**Common pitfalls:** Treating `GET /path HTTP/2.0` as on-the-wire HTTP/2 — HTTP/2 has no textual request-line; DevTools still *shows* method + path. Using public-key crypto for the whole payload — TLS uses asymmetric crypto in the handshake, then **symmetric** session keys ([SSL/TLS handshake](#ssltls--https-handshake)). Compressing JPEGs/ZIP again ([HTTP compression](#http-compression-content-encoding)).
+**Thoughts:**
 
-**Key idea:** *The web server speaks HTTP; apps, caches, and TLS are features of that process or of a reverse proxy in front of it.*
+*The web server speaks HTTP; apps, caches, and TLS are features of that process or of a reverse proxy in front of it.*
 
-**Notes:** Protocol (client, proxy, messages): [HTTP protocol](#http-protocol). Listen port / `8080`: [Ports, sockets & network services](#ports-sockets--network-services).
+Protocol (client, proxy, messages): [HTTP protocol](#http-protocol). Listen port / `8080`: [Ports, sockets & network services](#ports-sockets--network-services).
 
-**Source:** [MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages) · [Doka — Web server](https://doka.guide/tools/web-server/) · [Node.js http](https://nodejs.org/api/http.html) · Proxy: [Reverse proxy](./0_system_design.md#reverse-proxy) · [Nginx](./10_build.md#nginx) · [Node `http`](./8_nodejs.md#http)
+**Sources:**
+
+[MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages) · [Doka — Web server](https://doka.guide/tools/web-server/) · [Node.js http](https://nodejs.org/api/http.html) · Proxy: [Reverse proxy](./0_system_design.md#reverse-proxy) · [Nginx](./10_build.md#nginx) · [Node `http`](./8_nodejs.md#http)
 
 ---
 
@@ -1384,7 +1433,9 @@ Local static preview (not for production load): `npx serve` or `npx http-server`
 
 ### HTTP & TCP/IP
 
-**Definition:** TCP/IP is the network stack; HTTP is an application protocol that runs on top of TCP, using its reliable byte stream for request/response messages.
+**Definition:**
+
+TCP/IP is the network stack; HTTP is an application protocol that runs on top of TCP, using its reliable byte stream for request/response messages.
 
 Layer names and why OSI still shows up in interviews: [OSI & TCP/IP models](#osi--tcpip-models).
 
@@ -1397,10 +1448,7 @@ Layer names and why OSI still shows up in interviews: [OSI & TCP/IP models](#osi
 
 Ports and listening sockets: [Ports, sockets & network services](#ports-sockets--network-services). End-to-end path: [How the Internet works](#how-the-internet-works).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 Client                    Server
@@ -1411,11 +1459,11 @@ Client                    Server
   |<--- HTTP 200 OK --------|
 ```
 
-</details>
+**Thoughts:** Handshake, UDP, TFO vs `initcwnd`, STUN/TURN → [TCP vs UDP](#tcp-vs-udp). HTTP/3 skips TCP and uses QUIC on UDP.
 
-**Notes:** Handshake, UDP, TFO vs `initcwnd`, STUN/TURN → [TCP vs UDP](#tcp-vs-udp). HTTP/3 skips TCP and uses QUIC on UDP.
+**Sources:**
 
-**Source:** [MDN — HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)
+[MDN — HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)
 
 ---
 
@@ -1426,7 +1474,9 @@ Client                    Server
 
 ### HTTPS
 
-**Definition:** HTTPS is HTTP encrypted with TLS, providing confidentiality, integrity, and server authentication via certificates.
+**Definition:**
+
+HTTPS is HTTP encrypted with TLS, providing confidentiality, integrity, and server authentication via certificates.
 
 | HTTP              | HTTPS                    |
 | ----------------- | ------------------------ |
@@ -1441,17 +1491,16 @@ Client                    Server
 - Confidentiality (eavesdroppers cannot read), integrity (tamper detection), authenticity (certificate chain to a trusted CA). Modern browsers treat many APIs as **secure-context** only (HTTPS).
 - After TCP connects, TLS runs **before** any HTTP headers/body. HTTP/2 and HTTP/3 still sit on this encrypted channel (HTTP/3 uses QUIC/UDP, not TCP).
 
-**Cases:** All production websites; cookies with `Secure`; mixed content blocked if page is HTTPS and subresource is HTTP.
+**When to use:** All production websites; cookies with `Secure`; mixed content blocked if page is HTTPS and subresource is HTTP.
 
-| Pros                                 | Cons                                               |
+**Pluses and minuses:**
+
+| +                                 | −                                               |
 | ------------------------------------ | -------------------------------------------------- |
 | Stops MiTM reading/changing traffic  | First visit pays TLS handshake latency             |
 | Required for modern browser features | Certificate misconfig / expiry takes the site down |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 https://example.com
@@ -1460,13 +1509,15 @@ https://example.com
   → Encrypted HTTP GET / HTTP response
 ```
 
-</details>
+**Thoughts:**
 
-**Key idea:** *HTTPS = HTTP + TLS handshake + encryption; the HTTP verbs and headers are the same, the wire is not.*
+*HTTPS = HTTP + TLS handshake + encryption; the HTTP verbs and headers are the same, the wire is not.*
 
-**Notes:** On public Wi-Fi, HTTP is a **MITM** (read/alter) risk. TLS certificates from a trusted CA stop a café attacker from swapping keys. Users who click through cert warnings undo that. HSTS reduces HTTP downgrade. Symmetric vs public-key vs hashes: [Special — Encryption](./7_special.md#encryption). What a cert contains and who signs it: [TLS certificates](#tls-certificates-x509--pki). See [Special — MITM](./7_special.md#man-in-the-middle-mitm).
+On public Wi-Fi, HTTP is a **MITM** (read/alter) risk. TLS certificates from a trusted CA stop a café attacker from swapping keys. Users who click through cert warnings undo that. HSTS reduces HTTP downgrade. Symmetric vs public-key vs hashes: [Special — Encryption](./7_special.md#encryption). What a cert contains and who signs it: [TLS certificates](#tls-certificates-x509--pki). See [Special — MITM](./7_special.md#man-in-the-middle-mitm).
 
-**Source:** [howhttps.works](https://howhttps.works/) · [MDN — TLS](https://developer.mozilla.org/en-US/docs/Glossary/TLS)
+**Sources:**
+
+[howhttps.works](https://howhttps.works/) · [MDN — TLS](https://developer.mozilla.org/en-US/docs/Glossary/TLS)
 
 ---
 
@@ -1477,7 +1528,9 @@ https://example.com
 
 ### HTTP method characteristics
 
-**Definition:** HTTP methods have semantic properties — safe (read-only), idempotent (repeatable without side effects), and cacheable.
+**Definition:**
+
+HTTP methods have semantic properties — safe (read-only), idempotent (repeatable without side effects), and cacheable.
 
 | Property   | Meaning                   | Methods                                      |
 | ---------- | ------------------------- | -------------------------------------------- |
@@ -1486,10 +1539,7 @@ https://example.com
 | Cacheable  | Response may be stored    | GET, HEAD (typically); POST/PATCH if freshness + `Content-Location` |
 | Neither    | Tunnel / side effects     | CONNECT (not safe, not idempotent, not cacheable) |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 GET /api/counter HTTP/1.1     ← safe, idempotent
@@ -1497,11 +1547,11 @@ POST /api/counter/increment   ← not safe, not idempotent
 PUT /api/settings/theme       ← idempotent replace
 ```
 
-</details>
+**Thoughts:** CONNECT/TRACE and status classes: [HTTP protocol](#http-protocol). Full method table: [HTTP methods & status codes](#http-methods--status-codes).
 
-**Notes:** CONNECT/TRACE and status classes: [HTTP protocol](#http-protocol). Full method table: [HTTP methods & status codes](#http-methods--status-codes).
+**Sources:**
 
-**Source:** [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods)
+[MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods)
 
 ---
 
@@ -1512,7 +1562,9 @@ PUT /api/settings/theme       ← idempotent replace
 
 ### SSL/TLS & HTTPS handshake
 
-**Definition:** TLS negotiates encryption keys and authenticates the server before HTTP data flows over a secure channel.
+**Definition:**
+
+TLS negotiates encryption keys and authenticates the server before HTTP data flows over a secure channel.
 
 | Key type                       | Purpose                              |
 | ------------------------------ | ------------------------------------ |
@@ -1529,27 +1581,22 @@ PUT /api/settings/theme       ← idempotent replace
 
 HSTS (`Strict-Transport-Security`) tells the browser to use HTTPS on future visits without an HTTP hop.
 
-**Cases:** Every `https://` navigation; `preconnect` to warm TCP+TLS; TLS termination at Nginx or a load balancer.
-
-| Pros                                             | Cons                                                  |
-| ------------------------------------------------ | ----------------------------------------------------- |
-| Fast bulk encryption after handshake             | Extra RTT(s) on cold connect                          |
-| Certificate proves you talk to the intended host | Wrong clock / missing intermediate CA fails handshake |
-
-**Handshake steps (interview):**
-
 1. TCP connection
 2. ClientHello / ServerHello + cert
 3. Browser validates with CA
 4. Symmetric session keys
 5. Encrypted HTTP begins
 
-**Key idea:** *TLS authenticates the server and sets keys; HTTP then runs inside that tunnel.*
+**When to use:** Every `https://` navigation; `preconnect` to warm TCP+TLS; TLS termination at Nginx or a load balancer.
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| +                                             | −                                                  |
+| ------------------------------------------------ | ----------------------------------------------------- |
+| Fast bulk encryption after handshake             | Extra RTT(s) on cold connect                          |
+| Certificate proves you talk to the intended host | Wrong clock / missing intermediate CA fails handshake |
+
+**Examples:**
 
 ```js
 // Node.js — enforce HTTPS in production
@@ -1558,9 +1605,11 @@ if (process.env.NODE_ENV === 'production' && !req.secure) {
 }
 ```
 
-</details>
+**Thoughts:** *TLS authenticates the server and sets keys; HTTP then runs inside that tunnel.*
 
-**Source:** [howhttps.works — TLS explained](https://howhttps.works/the-handshake/) · [MDN — TLS handshake](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Transport_Layer_Security)
+**Sources:**
+
+[howhttps.works — TLS explained](https://howhttps.works/the-handshake/) · [MDN — TLS handshake](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Transport_Layer_Security)
 
 ---
 
@@ -1582,9 +1631,7 @@ if (process.env.NODE_ENV === 'production' && !req.secure) {
 - Getting a cert: (1) public CA (Let’s Encrypt ACME / paid CA) after proving **domain control**; (2) **self-signed** (issuer = subject) for local/dev/intranet — browsers warn unless you install the issuer; (3) throwaway/fake names for lab only.
 - Chrome (2014+) pushed HTTPS; **July 2018** Chrome 68 labeled HTTP **Not secure**. Browsers did not generally *block* all HTTP sites. The padlock is a UI hint, not extra crypto.
 
-**Certificate authorities:** Organizations that sign certs after checks. Trust is the product: a discredited CA is dropped from root stores. Pick by inclusion in browser/OS stores, ACME automation, jurisdiction, price. **Let’s Encrypt** issues free **DV** certs via ACME (hosting often does this; otherwise Certbot or another ACME client).
-
-**Types (web, not VeriSign “Class 1–5” marketing):**
+Organizations that sign certs after checks. Trust is the product: a discredited CA is dropped from root stores. Pick by inclusion in browser/OS stores, ACME automation, jurisdiction, price. **Let’s Encrypt** issues free **DV** certs via ACME (hosting often does this; otherwise Certbot or another ACME client).
 
 | Kind | What the CA actually checked | Typical use |
 | ---- | ---------------------------- | ----------- |
@@ -1596,7 +1643,15 @@ if (process.env.NODE_ENV === 'production' && !req.secure) {
 
 DV/OV/EV differ in **identity vetting**, not cipher strength. Historical “Class 1–5” (VeriSign) and RU “физлицо / бизнес / EV” catalogs are vendor packaging; interview answer is **DV / OV / EV + wildcard/SAN**.
 
-**Cases:** Production HTTPS (CA-signed); local HTTPS (`mkcert` / self-signed); internal PKI with a company root on managed devices.
+**When to use:**
+
+Production HTTPS (CA-signed); local HTTPS (`mkcert` / self-signed); internal PKI with a company root on managed devices.
+
+#### Common pitfalls
+
+Treating `openssl req -new` output as a cert (it is a **CSR**). RSA key-exchange handshake story (“browser encrypts session key with the site’s public key”) — obsolete; TLS 1.3 uses (EC)DHE. Assuming EV is “stronger HTTPS.” Clicking through cert warnings. Wildcard does not automatically cover the registrable domain unless SAN includes it.
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
@@ -1604,10 +1659,7 @@ DV/OV/EV differ in **identity vetting**, not cipher strength. Historical “Clas
 | Let’s Encrypt + ACME is free and automated | Self-signed is untrusted on the public web |
 | Same TLS crypto for cheap DV as for EV | Compromised CA is an industry-level failure |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 # Private key (add -aes256 to passphrase-protect it)
@@ -1622,15 +1674,15 @@ openssl req -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \
   -out cert.pem -keyout key.pem
 ```
 
-</details>
+**Thoughts:**
 
-**Common pitfalls:** Treating `openssl req -new` output as a cert (it is a **CSR**). RSA key-exchange handshake story (“browser encrypts session key with the site’s public key”) — obsolete; TLS 1.3 uses (EC)DHE. Assuming EV is “stronger HTTPS.” Clicking through cert warnings. Wildcard does not automatically cover the registrable domain unless SAN includes it.
+*A CA signature on an X.509 cert lets the browser trust a public key for a hostname; TLS then uses that to authenticate the server and set symmetric keys.*
 
-**Key idea:** *A CA signature on an X.509 cert lets the browser trust a public key for a hostname; TLS then uses that to authenticate the server and set symmetric keys.*
+Handshake steps → [SSL/TLS handshake](#ssltls--https-handshake). MITM → [7_special.md](./7_special.md#man-in-the-middle-mitm). TLS termination at Nginx → [10_build.md — Nginx](./10_build.md#nginx).
 
-**Notes:** Handshake steps → [SSL/TLS handshake](#ssltls--https-handshake). MITM → [7_special.md](./7_special.md#man-in-the-middle-mitm). TLS termination at Nginx → [10_build.md — Nginx](./10_build.md#nginx).
+**Sources:**
 
-**Source:** [MDN — Certificate authority](https://developer.mozilla.org/en-US/docs/Glossary/Certificate_authority) · [MDN — TLS](https://developer.mozilla.org/en-US/docs/Glossary/TLS) · [Let’s Encrypt — Getting Started](https://letsencrypt.org/getting-started/) · [OpenSSL HOWTO certificates](https://github.com/openssl/openssl/blob/master/doc/HOWTO/certificates.txt) · [Doka — SSL-сертификаты](https://doka.guide/tools/ssl/) (trust model; handshake/CSR details above supersede the 2022 article)
+[MDN — Certificate authority](https://developer.mozilla.org/en-US/docs/Glossary/Certificate_authority) · [MDN — TLS](https://developer.mozilla.org/en-US/docs/Glossary/TLS) · [Let’s Encrypt — Getting Started](https://letsencrypt.org/getting-started/) · [OpenSSL HOWTO certificates](https://github.com/openssl/openssl/blob/master/doc/HOWTO/certificates.txt) · [Doka — SSL-сертификаты](https://doka.guide/tools/ssl/) (trust model; handshake/CSR details above supersede the 2022 article)
 
 ---
 
@@ -1650,12 +1702,15 @@ openssl req -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \
 - Headers: `Name: value` (name case-insensitive). Presence of a body is indicated by `Content-Length` or `Transfer-Encoding` (often `chunked`). `Content-Type` names the media type (`text/html`, `application/json`, `multipart/form-data`).
 - HTTP/2+ keeps the same fields as **pseudo-headers** (`:method`, `:path`, `:authority`, `:scheme`, `:status`) inside binary frames; version is not repeated on each message.
 
-**Cases:** Debug with DevTools / `curl -v`. GET should not send a request body; HEAD has no **response** body; POST/PUT/PATCH usually have a request body.
+**When to use:**
 
-**Example:**
+Debug with DevTools / `curl -v`. GET should not send a request body; HEAD has no **response** body; POST/PUT/PATCH usually have a request body.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+Forgetting `Host` on HTTP/1.1. Assuming HTTP/2 looks like `HTTP/2.0` on the wire. Confusing hop-by-hop `Transfer-Encoding` with end-to-end `Content-Encoding`.
+
+**Examples:**
 
 ```http
 POST /api/login HTTP/1.1
@@ -1665,8 +1720,6 @@ Authorization: Bearer eyJhbG…
 
 {"email":"user@example.com","password":"***"}
 ```
-
-</details>
 
 ```http
 HTTP/1.1 201 Created
@@ -1681,11 +1734,11 @@ curl -v http://example.com
 # * connection  > request  < response
 ```
 
-**Common pitfalls:** Forgetting `Host` on HTTP/1.1. Assuming HTTP/2 looks like `HTTP/2.0` on the wire. Confusing hop-by-hop `Transfer-Encoding` with end-to-end `Content-Encoding`.
+**Thoughts:** *Learn HTTP/1.1 text; HTTP/2/3 change framing, not methods, status codes, or header meaning.*
 
-**Key idea:** *Learn HTTP/1.1 text; HTTP/2/3 change framing, not methods, status codes, or header meaning.*
+**Sources:**
 
-**Source:** [MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages)
+[MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages)
 
 ---
 
@@ -1698,7 +1751,9 @@ curl -v http://example.com
 
 **Definition:** HTTP headers are key–value metadata lines that describe the request, response, or representation (body). New features are often just new headers both sides agree on.
 
-**How it works:** Send **general** headers first, then request- or response-only, then **representation/entity** headers (`Content-Type`, `Content-Length`, `Content-Encoding`). Names are case-insensitive. Custom headers are allowed. Typical jobs: `Host`, `Authorization`, cache (`Cache-Control`, `ETag`), language (`Accept-Language`), last modification.
+**How it works:**
+
+Send **general** headers first, then request- or response-only, then **representation/entity** headers (`Content-Type`, `Content-Length`, `Content-Encoding`). Names are case-insensitive. Custom headers are allowed. Typical jobs: `Host`, `Authorization`, cache (`Cache-Control`, `ETag`), language (`Accept-Language`), last modification.
 
 | Category | Role | Examples |
 | -------- | ---- | -------- |
@@ -1707,12 +1762,9 @@ curl -v http://example.com
 | Response | Server only | `Set-Cookie`, `ETag`, `Location`, `WWW-Authenticate` |
 | Representation (entity) | Body metadata | `Content-Type`, `Content-Length`, `Content-Encoding` |
 
-**Cases:** Negotiate encoding (`Accept-Encoding` / `Content-Encoding`) — [HTTP compression](#http-compression-content-encoding). Auth, cookies, CORS all live in headers.
+**When to use:** Negotiate encoding (`Accept-Encoding` / `Content-Encoding`) — [HTTP compression](#http-compression-content-encoding). Auth, cookies, CORS all live in headers.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 GET /api/data HTTP/1.1
@@ -1723,11 +1775,11 @@ User-Agent: MyApp/1.0
 Origin: https://app.example.com
 ```
 
-</details>
+**Thoughts:** *Start-line is the verb/status; headers are the control plane.*
 
-**Key idea:** *Start-line is the verb/status; headers are the control plane.*
+**Sources:**
 
-**Source:** [MDN — HTTP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers)
+[MDN — HTTP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers)
 
 ---
 
@@ -1753,17 +1805,22 @@ Origin: https://app.example.com
 | `br` | Brotli — usually smaller than gzip for text |
 | `zstd` | Zstandard — growing support |
 
-**Cases:** HTML, CSS, JS, JSON, SVG. Skip already-compressed types (JPEG, PNG, WebP, ZIP, most video). Images need format/size/quality work, not gzip-on-pixels.
+**When to use:**
+
+HTML, CSS, JS, JSON, SVG. Skip already-compressed types (JPEG, PNG, WebP, ZIP, most video). Images need format/size/quality work, not gzip-on-pixels.
+
+#### Common pitfalls
+
+Double-compressing (app + proxy both gzip). Treating Zopfli as a separate HTTP encoding — Zopfli emits **gzip-compatible** bytes. Hop-by-hop `Transfer-Encoding` (e.g. `chunked`) is not the same as end-to-end `Content-Encoding`.
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
 | Smaller text payloads, faster load | CPU on server; tiny bodies may grow |
 | Brotli often beats gzip on HTML/CSS/JS | Missing `Vary` poisons shared caches |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 GET /app.js HTTP/1.1
@@ -1776,13 +1833,11 @@ Content-Encoding: br
 Vary: Accept-Encoding
 ```
 
-</details>
+**Thoughts:** *Negotiate with `Accept-Encoding`; label the body with `Content-Encoding`; do not gzip JPEGs.*
 
-**Common pitfalls:** Double-compressing (app + proxy both gzip). Treating Zopfli as a separate HTTP encoding — Zopfli emits **gzip-compatible** bytes. Hop-by-hop `Transfer-Encoding` (e.g. `chunked`) is not the same as end-to-end `Content-Encoding`.
+**Sources:**
 
-**Key idea:** *Negotiate with `Accept-Encoding`; label the body with `Content-Encoding`; do not gzip JPEGs.*
-
-**Source:** [MDN — Content-Encoding](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding) · [MDN — Compression in HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Compression)
+[MDN — Content-Encoding](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding) · [MDN — Compression in HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Compression)
 
 ---
 
@@ -1793,7 +1848,9 @@ Vary: Accept-Encoding
 
 ### HTTP methods & status codes
 
-**Definition:** Methods express intent on a resource; status codes tell the client whether the request succeeded and how to proceed.
+**Definition:**
+
+Methods express intent on a resource; status codes tell the client whether the request succeeded and how to proceed.
 
 | Method | Purpose |
 | ------ | ------- |
@@ -1817,10 +1874,7 @@ Vary: Accept-Encoding
 
 Safe / idempotent / PUT vs POST: [HTTP method characteristics](#http-method-characteristics) · [PUT vs POST](#put-vs-post) · [PUT vs PATCH](#put-vs-patch). Overview: [HTTP protocol](#http-protocol).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 PUT /users/1 HTTP/1.1       → 200 OK or 404 Not Found
@@ -1828,9 +1882,9 @@ PATCH /users/1 HTTP/1.1     → partial field update
 OPTIONS /users HTTP/1.1     → Allow: GET, POST, OPTIONS
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods) · [MDN — HTTP status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status)
+[MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods) · [MDN — HTTP status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status)
 
 ---
 
@@ -1841,7 +1895,9 @@ OPTIONS /users HTTP/1.1     → Allow: GET, POST, OPTIONS
 
 ### PUT vs POST
 
-**Definition:** POST creates a new resource or triggers processing; PUT replaces a resource at a known URI and is idempotent.
+**Definition:**
+
+POST creates a new resource or triggers processing; PUT replaces a resource at a known URI and is idempotent.
 
 |             | POST                  | PUT                   |
 | ----------- | --------------------- | --------------------- |
@@ -1849,19 +1905,16 @@ OPTIONS /users HTTP/1.1     → Allow: GET, POST, OPTIONS
 | Typical use | Create, actions       | Full replace / upsert |
 | URI         | Collection (`/books`) | Specific (`/books/3`) |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 POST /books        → creates new book, returns 201 + Location
 PUT  /books/3      → replaces book 3 entirely (same result if repeated)
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) · [MDN — POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST)
+[MDN — PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) · [MDN — POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST)
 
 ---
 
@@ -1872,7 +1925,9 @@ PUT  /books/3      → replaces book 3 entirely (same result if repeated)
 
 ### PUT vs PATCH
 
-**Definition:** PUT replaces the entire resource; PATCH applies a partial modification.
+**Definition:**
+
+PUT replaces the entire resource; PATCH applies a partial modification.
 
 |                | PUT                     | PATCH               |
 | -------------- | ----------------------- | ------------------- |
@@ -1880,10 +1935,7 @@ PUT  /books/3      → replaces book 3 entirely (same result if repeated)
 | Idempotent     | Yes                     | Depends on server   |
 | Missing fields | Often cleared/nullified | Unchanged           |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 PATCH /users/1 HTTP/1.1
@@ -1892,11 +1944,11 @@ Content-Type: application/json
 { "email": "new@example.com" }
 ```
 
-</details>
-
 Only `email` changes; other fields remain.
 
-**Source:** [MDN — PATCH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH)
+**Sources:**
+
+[MDN — PATCH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH)
 
 ---
 
@@ -1907,7 +1959,9 @@ Only `email` changes; other fields remain.
 
 ### Idempotent requests
 
-**Definition:** An idempotent request produces the same server state no matter how many times it is repeated.
+**Definition:**
+
+An idempotent request produces the same server state no matter how many times it is repeated.
 
 | Method                    | Idempotent?     |
 | ------------------------- | --------------- |
@@ -1915,19 +1969,16 @@ Only `email` changes; other fields remain.
 | PUT, DELETE               | Yes (by design) |
 | POST, PATCH               | No (by default) |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 DELETE /files/report.pdf   ← deleting twice: 204 then 404 (state unchanged)
 POST   /files              ← each call may create another file
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — Idempotent glossary](https://developer.mozilla.org/en-US/docs/Glossary/Idempotent)
+[MDN — Idempotent glossary](https://developer.mozilla.org/en-US/docs/Glossary/Idempotent)
 
 ---
 
@@ -1938,7 +1989,9 @@ POST   /files              ← each call may create another file
 
 ### HTTP cookies
 
-**Definition:** Cookies are small name–value pairs the server sets via `Set-Cookie` and the browser sends back on subsequent requests to the same domain. A session cookie often holds an opaque token so the [web server](#web-server) / app can recognize an authorized user.
+**Definition:**
+
+Cookies are small name–value pairs the server sets via `Set-Cookie` and the browser sends back on subsequent requests to the same domain. A session cookie often holds an opaque token so the [web server](#web-server) / app can recognize an authorized user.
 
 | Use case    | Example cookie     |
 | ----------- | ------------------ |
@@ -1946,24 +1999,21 @@ POST   /files              ← each call may create another file
 | Preferences | `lang=en`          |
 | Analytics   | `_ga=GA1.2.…`      |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 Set-Cookie: sessionId=abc123; Path=/; HttpOnly; Secure; SameSite=Lax
 ```
 
-</details>
-
 ```js
 document.cookie; // readable unless HttpOnly
 ```
 
-**Notes:** Client-only prefs belong in Web Storage / IndexedDB, not cookies (cookies ride on every request). Compare APIs: [JS Browser — storage](./3_js_browser.md#browser-storage).
+**Thoughts:** Client-only prefs belong in Web Storage / IndexedDB, not cookies (cookies ride on every request). Compare APIs: [JS Browser — storage](./3_js_browser.md#browser-storage).
 
-**Source:** [MDN — HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies)
+**Sources:**
+
+[MDN — HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies)
 
 ---
 
@@ -1974,7 +2024,9 @@ document.cookie; // readable unless HttpOnly
 
 ### HttpOnly cookies
 
-**Definition:** The `HttpOnly` flag prevents client-side JavaScript from reading a cookie, reducing XSS token theft risk.
+**Definition:**
+
+The `HttpOnly` flag prevents client-side JavaScript from reading a cookie, reducing XSS token theft risk.
 
 | Flag     | Effect                               |
 | -------- | ------------------------------------ |
@@ -1982,18 +2034,15 @@ document.cookie; // readable unless HttpOnly
 | Secure   | Sent only over HTTPS                 |
 | SameSite | Limits cross-site sending            |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 Set-Cookie: token=xyz; HttpOnly; Secure; SameSite=Strict
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
+[MDN — Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
 
 ---
 
@@ -2022,8 +2071,6 @@ Set-Cookie: token=xyz; HttpOnly; Secure; SameSite=Strict
 | `public`       | Shared caches / CDN may store                          |
 | `immutable`    | Never revalidate (hashed filenames, long `max-age`)    |
 
-**HTTP cache vs application cache:**
-
 | Layer        | Who                                   | Example                                                                                |
 | ------------ | ------------------------------------- | -------------------------------------------------------------------------------------- |
 | HTTP / CDN   | Browser disk cache, Nginx, Cloudflare | `Cache-Control`, `ETag`, `304`                                                         |
@@ -2033,27 +2080,16 @@ HTTP headers do **not** replace a client cache: two `fetch` calls in React still
 
 Cached **images** skip the network. Cached **JS/CSS** still cost parse (and JS execution) — that is why code splitting exists ([10_build.md](./10_build.md#code-splitting)).
 
-**Cases:** Hashed asset filenames → `public, max-age=31536000, immutable`. User API → `private, no-store`. Repeat UI reads of the same GET → RTK Query / TanStack Query.
+**When to use:** Hashed asset filenames → `public, max-age=31536000, immutable`. User API → `private, no-store`. Repeat UI reads of the same GET → RTK Query / TanStack Query.
 
-**Key idea:** `Cache-Control` *is the HTTP/CDN layer; RTK Query is an in-memory client cache of JSON — they stack, they are not the same.*
+**Pluses and minuses:**
 
-| Strategy               | Behavior                           |
-| ---------------------- | ---------------------------------- |
-| Cache only             | Serve static assets from cache     |
-| Network only           | Always fetch (analytics)           |
-| Cache → network        | Offline-first fallback             |
-| Network → cache        | Fresh data, cache on success       |
-| Stale-while-revalidate | Serve stale, refresh in background |
-
-| Pros                                  | Cons                                 |
+| +                                  | −                                 |
 | ------------------------------------- | ------------------------------------ |
 | Faster repeat loads, less server load | Stale data if TTL too long           |
 | 304 saves bandwidth                   | Invalidation is hard for dynamic API |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 Cache-Control: public, max-age=3600
@@ -2064,9 +2100,21 @@ If-None-Match: "33a64df…"
 → 304 Not Modified
 ```
 
-</details>
+**Thoughts:**
 
-**Source:** [MDN — HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching)
+`Cache-Control` *is the HTTP/CDN layer; RTK Query is an in-memory client cache of JSON — they stack, they are not the same.*
+
+| Strategy               | Behavior                           |
+| ---------------------- | ---------------------------------- |
+| Cache only             | Serve static assets from cache     |
+| Network only           | Always fetch (analytics)           |
+| Cache → network        | Offline-first fallback             |
+| Network → cache        | Fresh data, cache on success       |
+| Stale-while-revalidate | Serve stale, refresh in background |
+
+**Sources:**
+
+[MDN — HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching)
 
 ---
 
@@ -2077,7 +2125,9 @@ If-None-Match: "33a64df…"
 
 ### HTTP in JavaScript
 
-**Definition:** Browsers expose several APIs for asynchronous HTTP without full page reloads (AJAX pattern). `fetch` is the global method used at the application level.
+**Definition:**
+
+Browsers expose several APIs for asynchronous HTTP without full page reloads (AJAX pattern). `fetch` is the global method used at the application level.
 
 | API              | Status               |
 | ---------------- | -------------------- |
@@ -2088,10 +2138,7 @@ If-None-Match: "33a64df…"
 
 **How it works:** `fetch(url, init)` returns `Promise<Response>`. Set `method` to an HTTP verb (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`, …). JSON bodies need `JSON.stringify` and usually `Content-Type: application/json`. Network failures reject; HTTP 4xx/5xx do **not** — check `res.ok`.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const res = await fetch('/api/save-text', {
@@ -2102,9 +2149,9 @@ const res = await fetch('/api/save-text', {
 if (!res.ok) throw new Error(`HTTP ${res.status}`);
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) · [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods)
+[MDN — Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) · [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods)
 
 ---
 
@@ -2124,22 +2171,21 @@ if (!res.ok) throw new Error(`HTTP ${res.status}`);
 - `FormData` — `fd.append('file', fileInput.files[0])`; pass `body: fd` — browser sets `Content-Type` with boundary automatically (do not set manually).
 - Timeouts — combine `AbortController` with `setTimeout(() => ac.abort(), 5000)`.
 
-| Feature           | Pros                                        | Cons                                        |
-| ----------------- | ------------------------------------------- | ------------------------------------------- |
-| `AbortController` | Cancels stale requests (search, navigation) | Must handle `AbortError` in catch           |
-| `FormData`        | Native multipart uploads                    | Less control than manual boundary           |
-| `fetch`           | Promise-based, streams via `res.body`       | No upload progress without `XMLHttpRequest` |
-
-**Cases:**
+**When to use:**
 
 - Debounced search — abort previous request when user types again.
 - React `useEffect` cleanup — abort fetch on unmount.
 - File upload — `FormData` + `POST`; for JSON use `JSON.stringify` + `Content-Type: application/json`.
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| Feature           | +                                        | −                                        |
+| ----------------- | ------------------------------------------- | ------------------------------------------- |
+| `AbortController` | Cancels stale requests (search, navigation) | Must handle `AbortError` in catch           |
+| `FormData`        | Native multipart uploads                    | Less control than manual boundary           |
+| `fetch`           | Promise-based, streams via `res.body`       | No upload progress without `XMLHttpRequest` |
+
+**Examples:**
 
 ```js
 const ac = new AbortController();
@@ -2166,11 +2212,11 @@ try {
 }
 ```
 
-</details>
+**Thoughts:** `credentials: 'include'` sends cookies cross-origin only if CORS allows credentials. Prefer `res.json()` only after checking status.
 
-**Notes:** `credentials: 'include'` sends cookies cross-origin only if CORS allows credentials. Prefer `res.json()` only after checking status.
+**Sources:**
 
-**Source:** [MDN — AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) · [MDN — FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData)
+[MDN — AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) · [MDN — FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData)
 
 ---
 
@@ -2190,23 +2236,22 @@ try {
 - Response includes `**Retry-After**` header (seconds or HTTP-date) telling client when to retry.
 - Edge/CDN (Cloudflare, API Gateway) or app middleware (Redis `INCR` + TTL) enforce limits.
 
-| Approach       | Pros                | Cons                  |
+**When to use:**
+
+- Public APIs — tiered limits (free vs paid).
+- Login endpoints — strict limits against brute force.
+- Client — respect `429` + `Retry-After`; exponential backoff with jitter.
+
+**Pluses and minuses:**
+
+| Approach       | +                | −                  |
 | -------------- | ------------------- | --------------------- |
 | IP-based       | Simple              | Shared NAT unfairness |
 | API key / user | Fair per tenant     | Requires auth         |
 | Token bucket   | Allows short bursts | More complex          |
 | Redis counter  | Distributed, fast   | Extra infrastructure  |
 
-**Cases:**
-
-- Public APIs — tiered limits (free vs paid).
-- Login endpoints — strict limits against brute force.
-- Client — respect `429` + `Retry-After`; exponential backoff with jitter.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 HTTP/1.1 429 Too Many Requests
@@ -2215,8 +2260,6 @@ Content-Type: application/json
 
 { "error": "rate_limit_exceeded", "limit": 100, "window": "1m" }
 ```
-
-</details>
 
 ```js
 // Client retry with backoff
@@ -2229,9 +2272,11 @@ async function fetchWithRetry(url, opts, retries = 3) {
 }
 ```
 
-**Notes:** Return **429**, not **403** — 403 means forbidden regardless of rate. Document limits in API docs (`X-RateLimit-Limit`, `X-RateLimit-Remaining` are common conventions). IP limits help brute force and Slowloris-from-one-host; they do **not** stop a large DDoS — that needs edge capacity. Incomplete slow requests need **read timeouts** as well as 429. See [Special — DoS / Slowloris](./7_special.md#denial-of-service-dos--ddos).
+**Thoughts:** Return **429**, not **403** — 403 means forbidden regardless of rate. Document limits in API docs (`X-RateLimit-Limit`, `X-RateLimit-Remaining` are common conventions). IP limits help brute force and Slowloris-from-one-host; they do **not** stop a large DDoS — that needs edge capacity. Incomplete slow requests need **read timeouts** as well as 429. See [Special — DoS / Slowloris](./7_special.md#denial-of-service-dos--ddos).
 
-**Source:** [MDN — 429 Too Many Requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) · [IETF — Retry-After](https://datatracker.ietf.org/doc/html/rfc7231#section-7.1.3)
+**Sources:**
+
+[MDN — 429 Too Many Requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) · [IETF — Retry-After](https://datatracker.ietf.org/doc/html/rfc7231#section-7.1.3)
 
 ---
 
@@ -2254,17 +2299,22 @@ async function fetchWithRetry(url, opts, retries = 3) {
 - HTTP **Basic**: server may send `401` + `WWW-Authenticate: Basic realm="…"`; client retries with `Authorization: Basic <base64(user:pass)>`. Base64 is **not** encryption — only use over HTTPS. Invalid creds → `401`; valid but not allowed → `403`.
 - App auth: credentials → session cookie or token in later `Authorization` headers. “Sign in with Google” authenticates at the IdP; your server gets a token, then issues its own session ([OAuth2 & OIDC](#oauth2--oidc-overview), [Sessions & JWT](#sessions--jwt)).
 
-**Cases:** Basic for staging dashboards behind TLS. Sessions/JWT/OAuth for real products.
+**When to use:**
+
+Basic for staging dashboards behind TLS. Sessions/JWT/OAuth for real products.
+
+#### Common pitfalls
+
+Calling Basic “encrypted.” Mixing Basic with session tokens as if they were the same scheme.
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
 | Basic is simple and widely supported | Credentials on every request; CSRF-prone vs cookie `SameSite` |
 | Clear 401 vs 403 | Password in Base64 is reversible |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 HTTP/1.1 401 Unauthorized
@@ -2274,15 +2324,13 @@ GET /admin HTTP/1.1
 Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 ```
 
-</details>
-
 (`aladdin:opensesame` in Base64 — MDN’s example, not a secret.)
 
-**Common pitfalls:** Calling Basic “encrypted.” Mixing Basic with session tokens as if they were the same scheme.
+**Thoughts:** *Identify → prove (authn) → grant (authz). Basic is `user:pass` in a header, not a session.*
 
-**Key idea:** *Identify → prove (authn) → grant (authz). Basic is `user:pass` in a header, not a session.*
+**Sources:**
 
-**Source:** [MDN — HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication) · Node: [identification vs auth](./8_nodejs.md#authentication-identification--authorization)
+[MDN — HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication) · Node: [identification vs auth](./8_nodejs.md#authentication-identification--authorization)
 
 ---
 
@@ -2295,7 +2343,7 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 
 **Definition:** **OAuth 2.0** is an authorization framework — delegated access without sharing passwords. **OpenID Connect (OIDC)** is an identity layer on top of OAuth2 that adds authenticated user info (`id_token`).
 
-**How it works (Authorization Code flow — most common for SPAs with PKCE):**
+**How it works:**
 
 1. App redirects user to **Authorization Server** (`/authorize?client_id=…&redirect_uri=…&scope=openid profile&code_challenge=…`).
 2. User authenticates and consents.
@@ -2315,19 +2363,21 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 | User info    | Via protected userinfo endpoint   | `id_token` claims + userinfo     |
 | Typical use  | "App can read my Google Calendar" | "Sign in with Google"            |
 
-| Pros                                        | Cons                                         |
-| ------------------------------------------- | -------------------------------------------- |
-| No password sharing with third parties      | Complex; easy to misconfigure                |
-| Standard flows, libraries (Passport, Auth0) | Token theft if stored in localStorage        |
-| Fine-grained scopes                         | Refresh token rotation required for security |
-
-**Cases:**
+**When to use:**
 
 - **Sign in with Google/GitHub** — OIDC Authorization Code + PKCE.
 - **Machine-to-machine** — Client Credentials flow (no user).
 - **Mobile/native** — PKCE mandatory; use system browser, not embedded WebView.
 
-**Example (token response):**
+**Pluses and minuses:**
+
+| +                                        | −                                         |
+| ------------------------------------------- | -------------------------------------------- |
+| No password sharing with third parties      | Complex; easy to misconfigure                |
+| Standard flows, libraries (Passport, Auth0) | Token theft if stored in localStorage        |
+| Fine-grained scopes                         | Refresh token rotation required for security |
+
+**Examples:**
 
 ```json
 {
@@ -2339,9 +2389,11 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 }
 ```
 
-**Notes:** OAuth2 is **not** authentication by itself — use OIDC for login. Store tokens in **HttpOnly cookies** or secure storage; validate `iss`, `aud`, `exp` on JWTs. Never put access tokens in URLs.
+**Thoughts:** OAuth2 is **not** authentication by itself — use OIDC for login. Store tokens in **HttpOnly cookies** or secure storage; validate `iss`, `aud`, `exp` on JWTs. Never put access tokens in URLs.
 
-**Source:** [OAuth 2.0 RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) · [OpenID Connect](https://openid.net/connect/) · [OAuth 2.0 for Browser-Based Apps (PKCE)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps)
+**Sources:**
+
+[OAuth 2.0 RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) · [OpenID Connect](https://openid.net/connect/) · [OAuth 2.0 for Browser-Based Apps (PKCE)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps)
 
 ---
 
@@ -2359,31 +2411,32 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 - **Session** — login → server creates session record (Redis/DB) → `Set-Cookie: sid=…; HttpOnly; Secure; SameSite=Lax` → each request sends cookie → server looks up session.
 - **JWT** — login → server signs payload → client sends `Authorization: Bearer <token>` → server verifies HMAC/RSA signature + `exp` without DB lookup (unless blocklist needed).
 
-| Approach       | Pros                            | Cons                                        |
+**When to use:** Session for traditional web apps with server-rendered pages. JWT for microservices and mobile APIs. Hybrid: session for web + JWT for API.
+
+**Pluses and minuses:**
+
+| Approach       | +                            | −                                        |
 | -------------- | ------------------------------- | ------------------------------------------- |
 | Session cookie | Easy revoke (delete session)    | Server state, sticky sessions in cluster    |
 | JWT            | Stateless, scales horizontally  | Hard to revoke; token size in every request |
 | JWT + refresh  | Short access, revocable refresh | More moving parts                           |
 
-**Cases:** Session for traditional web apps with server-rendered pages. JWT for microservices and mobile APIs. Hybrid: session for web + JWT for API.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 Set-Cookie: sid=abc123; HttpOnly; Secure; SameSite=Lax; Path=/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs…
 ```
 
-</details>
+**Thoughts:**
 
-**Notes:** JWT in `localStorage` is XSS-vulnerable — prefer HttpOnly cookie or memory + refresh. Always use `Secure`, `HttpOnly`, `SameSite` on session cookies.
+JWT in `localStorage` is XSS-vulnerable — prefer HttpOnly cookie or memory + refresh. Always use `Secure`, `HttpOnly`, `SameSite` on session cookies.
 
-**Key idea:** Sessions are easy to revoke; JWTs scale without a lookup — pick revoke vs scale, not “JWT is more secure.”
+Sessions are easy to revoke; JWTs scale without a lookup — pick revoke vs scale, not “JWT is more secure.”
 
-**Source:** [jwt.io](https://jwt.io/) · [MDN — HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
+**Sources:**
+
+[jwt.io](https://jwt.io/) · [MDN — HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
 
 ---
 
@@ -2402,11 +2455,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs…
 
 **How it works:** Cookies are sent on matching requests (~4 KB). `sessionStorage` / `localStorage` are ~5 MiB each, sync strings, never auto-sent. HttpOnly cookies are still sent to the server.
 
-**Cases:** Auth the server must see → cookie. Small client prefs → Web Storage. HTTP flags: [Secure & HttpOnly cookies](#secure--httponly-cookies).
+**When to use:** Auth the server must see → cookie. Small client prefs → Web Storage. HTTP flags: [Secure & HttpOnly cookies](#secure--httponly-cookies).
 
-**Key idea:** Do not use cookies as a general client database.
+**Thoughts:** Do not use cookies as a general client database.
 
-**Source:** [MDN — Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)
+**Sources:**
+
+[MDN — Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)
 
 ---
 
@@ -2421,12 +2476,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs…
 
 **How it works:** `indexedDB.open` → `onupgradeneeded` to create object stores → `transaction` + `objectStore`. Quotas are disk-based (not 5 MiB). Safari ITP can evict script-writable IDB after 7 days without interaction.
 
-**Cases:** Offline app data, files, anything too big or too frequent for sync Web Storage.
+**When to use:** Offline app data, files, anything too big or too frequent for sync Web Storage.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const request = indexedDB.open('myApp', 1);
@@ -2435,9 +2487,9 @@ request.onupgradeneeded = (e) => {
 };
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+[MDN — IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
 
 ---
 
@@ -2452,12 +2504,9 @@ request.onupgradeneeded = (e) => {
 
 **How it works:** Sync API; wrap writes in `try/catch`. Objects need `JSON.stringify`.
 
-**Cases:** Theme, locale, non-secret UI state.
+**When to use:** Theme, locale, non-secret UI state.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 try {
@@ -2469,9 +2518,9 @@ try {
 }
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — Window.localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+[MDN — Window.localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
 
 ---
 
@@ -2482,7 +2531,9 @@ try {
 
 ### Secure & HttpOnly cookies
 
-**Definition:** `Secure` limits cookie transmission to HTTPS; `HttpOnly` blocks JavaScript access — both harden session security.
+**Definition:**
+
+`Secure` limits cookie transmission to HTTPS; `HttpOnly` blocks JavaScript access — both harden session security.
 
 | Flag     | Protects against                                 |
 | -------- | ------------------------------------------------ |
@@ -2490,18 +2541,15 @@ try {
 | HttpOnly | XSS reading session cookies                      |
 | SameSite | CSRF (partial); some clickjacking/leak reduction |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 Set-Cookie: sid=abc; Secure; HttpOnly; SameSite=Lax; Max-Age=86400
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
+[MDN — Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
 
 ---
 
@@ -2532,9 +2580,7 @@ Each OSI layer talks to the layer below and offers a service to the layer above.
 | 2 Data link | frame | Neighbor delivery on one link; MAC; error detect | Ethernet, Wi-Fi (IEEE 802.11), PPP. IEEE 802 splits **MAC** + **LLC** |
 | 1 Physical | bit / symbol | Signals on a medium | Copper, fiber, radio; 802.15 Bluetooth PHY, DSL, GSM radio |
 
-**Why learn OSI:** interviews and ops still say **L4 load balancer** (IP+port) vs **L7** (HTTP path/headers). The names are OSI even when the stack is TCP/IP. It also maps “where did this break?” (cable vs switch vs routing vs TCP vs TLS vs HTTP).
-
-**TCP/IP (4) vs OSI (7):**
+interviews and ops still say **L4 load balancer** (IP+port) vs **L7** (HTTP path/headers). The names are OSI even when the stack is TCP/IP. It also maps “where did this break?” (cable vs switch vs routing vs TCP vs TLS vs HTTP).
 
 | TCP/IP | Maps to OSI | Examples |
 | ------ | ----------- | -------- |
@@ -2545,39 +2591,9 @@ Each OSI layer talks to the layer below and offers a service to the layer above.
 
 RFC 3439 (“Layering considered harmful”) is why real stacks are leaky: TLS sits between HTTP and TCP; HTTP/3 uses **QUIC over UDP**. Do not force every protocol into one OSI box.
 
-**Other models (historical):**
-
 - **DoD / TCP/IP** — the one that won; designed for a distributed packet network that is hard to kill (each packet routed independently).
 - **IPX/SPX** (Novell NetWare) — IPX routing + SPX transport; common on DOS LANs in the 1990s, weak on global WANs, almost gone.
 - **AppleTalk** — another vendor suite; same idea (layers), different protocols.
-
-**Cases:** Interview: “HTTP is application, TCP transport, IP internet.” Debugging: Wireshark/tcpdump. Design: L4 vs L7 LB ([load balancing](./0_system_design.md#load-balancing)).
-
-| + | − |
-| - | - |
-| Shared vocabulary (L2/L3/L4/L7) | OSI *protocols* never replaced TCP/IP |
-| Clean mental model for encapsulation | Strict 7-layer mapping of TLS/QUIC/RPC is forced |
-| Separates “medium” from “app” | Extra session/presentation layers are often just the app in TCP/IP |
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
-
-```
-Browser GET https://example.com
-  L7  HTTP request
-  L4  TCP segments (ports; order + retransmission)  — or QUIC/UDP for HTTP/3
-  L3  IP packets (src/dst addresses; routers pick a path per packet)
-  L2  Ethernet/Wi-Fi frames (MAC; FCS/CRC on the frame)
-  L1  bits on wire / radio
-```
-
-</details>
-
-Ethernet payload **MTU** is typically **1500** bytes, not a fixed “1446-byte frame.” TCP MSS on IPv4 Ethernet is often **1460** (1500 − 20 IP − 20 TCP); PPPoE and other headers shrink it further.
-
-**Packet capture (practice):**
 
 - **Wireshark** — GUI: packet list, decoded tree, hex/bytes. **Capture filters** (libpcap, at sniff time) vs **display filters** (after capture). Start/stop capture on an interface.
 - **tcpdump** — CLI; often needs root/admin. Stop with **SIGINT** (Ctrl+C). Write/read pcap:
@@ -2589,11 +2605,40 @@ tcpdump -r out.pcap
 tcpdump -n 'port 8080'
 ```
 
-**Common pitfalls:** Treating OSI as how browsers are implemented. Calling GraphQL/gRPC “session layer” — they are **application** protocols (RPC is only a *textbook* session example). Assuming IP is reliable. Equating UDP with “no integrity” — UDP still has a checksum; it just does not retransmit or reorder.
+**When to use:**
 
-**Key idea:** *OSI is the 7-layer dictionary; TCP/IP is the 4-layer stack the web runs on — HTTP over TCP (or QUIC) over IP over a link.*
+Interview: “HTTP is application, TCP transport, IP internet.” Debugging: Wireshark/tcpdump. Design: L4 vs L7 LB ([load balancing](./0_system_design.md#load-balancing)).
 
-**Source:** [Doka — OSI](https://doka.guide/tools/osi/) · [ISO/IEC 7498-1](https://www.iso.org/standard/20269.html) · [RFC 1122](https://www.rfc-editor.org/rfc/rfc1122) · [MDN — How the Internet works](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work) · [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) · [Wireshark capture filters](https://www.wireshark.org/docs/wsug_html_chunked/ChCapCaptureFilterSection.html) · TCP/UDP: [TCP vs UDP](#tcp-vs-udp) · HTTP stack: [HTTP & TCP/IP](#http--tcpip) · Sockets: [Ports, sockets & network services](#ports-sockets--network-services)
+#### Common pitfalls
+
+Treating OSI as how browsers are implemented. Calling GraphQL/gRPC “session layer” — they are **application** protocols (RPC is only a *textbook* session example). Assuming IP is reliable. Equating UDP with “no integrity” — UDP still has a checksum; it just does not retransmit or reorder.
+
+**Pluses and minuses:**
+
+| + | − |
+| - | - |
+| Shared vocabulary (L2/L3/L4/L7) | OSI *protocols* never replaced TCP/IP |
+| Clean mental model for encapsulation | Strict 7-layer mapping of TLS/QUIC/RPC is forced |
+| Separates “medium” from “app” | Extra session/presentation layers are often just the app in TCP/IP |
+
+**Examples:**
+
+```
+Browser GET https://example.com
+  L7  HTTP request
+  L4  TCP segments (ports; order + retransmission)  — or QUIC/UDP for HTTP/3
+  L3  IP packets (src/dst addresses; routers pick a path per packet)
+  L2  Ethernet/Wi-Fi frames (MAC; FCS/CRC on the frame)
+  L1  bits on wire / radio
+```
+
+Ethernet payload **MTU** is typically **1500** bytes, not a fixed “1446-byte frame.” TCP MSS on IPv4 Ethernet is often **1460** (1500 − 20 IP − 20 TCP); PPPoE and other headers shrink it further.
+
+**Thoughts:** *OSI is the 7-layer dictionary; TCP/IP is the 4-layer stack the web runs on — HTTP over TCP (or QUIC) over IP over a link.*
+
+**Sources:**
+
+[Doka — OSI](https://doka.guide/tools/osi/) · [ISO/IEC 7498-1](https://www.iso.org/standard/20269.html) · [RFC 1122](https://www.rfc-editor.org/rfc/rfc1122) · [MDN — How the Internet works](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work) · [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) · [Wireshark capture filters](https://www.wireshark.org/docs/wsug_html_chunked/ChCapCaptureFilterSection.html) · TCP/UDP: [TCP vs UDP](#tcp-vs-udp) · HTTP stack: [HTTP & TCP/IP](#http--tcpip) · Sockets: [Ports, sockets & network services](#ports-sockets--network-services)
 
 ---
 
@@ -2633,7 +2678,15 @@ tcpdump -n 'port 8080'
 | `2000::/3` | Currently allocated **global unicast** (public Internet) |
 | `fc00::/7` | Unique local (ULA, “private-ish”) |
 
-**Cases:** Dual-stack public sites (mobile / some regions are IPv6-heavy). WebRTC / VoIP: real public addresses reduce NAT/TURN. Local debug without ngrok when you have a global IPv6. Listen on `[::]` plus IPv4; publish a **static** AAAA.
+**When to use:**
+
+Dual-stack public sites (mobile / some regions are IPv6-heavy). WebRTC / VoIP: real public addresses reduce NAT/TURN. Local debug without ngrok when you have a global IPv6. Listen on `[::]` plus IPv4; publish a **static** AAAA.
+
+#### Common pitfalls
+
+Publishing an AAAA that does not answer (blackhole) — dual-stack users may still work via Happy Eyeballs; **IPv6-only** clients fail. Using `2001:db8::` or `3fff::` on real hosts. Treating `fe80::` as a public address. Putting IPv6 in a URL without `[]`. Identifying users by the full address instead of a `/64`. Assuming “nobody uses IPv6” — mobile share is large ([Google](https://www.google.com/intl/en/ipv6/statistics.html), [Cloudflare](https://www.cloudflare.com/ipv6/)).
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
@@ -2642,10 +2695,7 @@ tcpdump -n 'port 8080'
 | Unique host vs shared IPv4 hosting/CGNAT blocks | Privacy: don’t log 128 bits as a durable user key |
 | IPv6-only networks (some mobile / developing regions) | Need a global unicast address + working DNS |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 # URL (brackets required)
@@ -2659,15 +2709,13 @@ telnet 2001:db8:4ac7:fddd:8da3:981f:fbda:1e43 8080
 2001:db8::   # documentation prefix, compressed
 ```
 
-</details>
-
 Ship IPv6 on a site: (1) server address in **`2000::/3`**, (2) web server listens on IPv6, (3) stable (static) address, (4) **AAAA** in DNS. Nginx: `listen [::]:443 ssl;` plus an IPv4 `listen`.
 
-**Common pitfalls:** Publishing an AAAA that does not answer (blackhole) — dual-stack users may still work via Happy Eyeballs; **IPv6-only** clients fail. Using `2001:db8::` or `3fff::` on real hosts. Treating `fe80::` as a public address. Putting IPv6 in a URL without `[]`. Identifying users by the full address instead of a `/64`. Assuming “nobody uses IPv6” — mobile share is large ([Google](https://www.google.com/intl/en/ipv6/statistics.html), [Cloudflare](https://www.cloudflare.com/ipv6/)).
+**Thoughts:** IPv6 is 128-bit end-to-end addressing; for the web you need listen + static GUA + `AAAA`, and clients already prefer it via Happy Eyeballs.
 
-**Key idea:** IPv6 is 128-bit end-to-end addressing; for the web you need listen + static GUA + `AAAA`, and clients already prefer it via Happy Eyeballs.
+**Sources:**
 
-**Source:** [Doka — IPv6 for webdevs](https://doka.guide/tools/ipv6-for-webdevs/) · [MDN — IPv6](https://developer.mozilla.org/en-US/docs/Glossary/IPv6) · [IANA special-purpose IPv6](https://www.iana.org/assignments/iana-ipv6-special-registry) · [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986.html) · [RFC 5952](https://www.rfc-editor.org/rfc/rfc5952.html) · [RFC 8305](https://www.rfc-editor.org/rfc/rfc8305.html) · [RFC 9637](https://www.rfc-editor.org/rfc/rfc9637.html)
+[Doka — IPv6 for webdevs](https://doka.guide/tools/ipv6-for-webdevs/) · [MDN — IPv6](https://developer.mozilla.org/en-US/docs/Glossary/IPv6) · [IANA special-purpose IPv6](https://www.iana.org/assignments/iana-ipv6-special-registry) · [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986.html) · [RFC 5952](https://www.rfc-editor.org/rfc/rfc5952.html) · [RFC 8305](https://www.rfc-editor.org/rfc/rfc8305.html) · [RFC 9637](https://www.rfc-editor.org/rfc/rfc9637.html)
 
 ---
 
@@ -2678,7 +2726,9 @@ Ship IPv6 on a site: (1) server address in **`2000::/3`**, (2) web server listen
 
 ### SSL/TLS
 
-**Definition:** TLS (successor to SSL) encrypts network traffic and authenticates peers using certificates and negotiated cipher suites.
+**Definition:**
+
+TLS (successor to SSL) encrypts network traffic and authenticates peers using certificates and negotiated cipher suites.
 
 | Feature        | Role                               |
 | -------------- | ---------------------------------- |
@@ -2686,12 +2736,7 @@ Ship IPv6 on a site: (1) server address in **`2000::/3`**, (2) web server listen
 | Authentication | Certificate proves server identity |
 | Integrity      | Detect tampering                   |
 
-**Notes:** Certificate format, CAs, DV/OV/EV, Let’s Encrypt, OpenSSL → [TLS certificates](#tls-certificates-x509--pki). Handshake → [SSL/TLS handshake](#ssltls--https-handshake).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 Browser → supports TLS 1.3
@@ -2699,9 +2744,11 @@ Server  → presents cert signed by Let's Encrypt
 Both    → agree cipher suite, exchange keys
 ```
 
-</details>
+**Thoughts:** Certificate format, CAs, DV/OV/EV, Let’s Encrypt, OpenSSL → [TLS certificates](#tls-certificates-x509--pki). Handshake → [SSL/TLS handshake](#ssltls--https-handshake).
 
-**Source:** [MDN — TLS glossary](https://developer.mozilla.org/en-US/docs/Glossary/TLS)
+**Sources:**
+
+[MDN — TLS glossary](https://developer.mozilla.org/en-US/docs/Glossary/TLS)
 
 ---
 
@@ -2720,7 +2767,7 @@ Both    → agree cipher suite, exchange keys
 - **TCP (Transmission Control Protocol)** — connection-oriented. Retransmits lost segments, drops duplicates, delivers in order, ACKs the sender, and runs **congestion control** (start small, grow with available bandwidth).
 - **UDP (User Datagram Protocol)** — connectionless. No handshake, no delivery/order/duplicate guarantees. Header is **8 bytes** (source port, dest port, length, checksum). Checksum is optional in IPv4, required in IPv6. Apps that need reliability implement it themselves (or use TCP/QUIC).
 
-**TCP three-way handshake (ISNs, not “SYN = sequence number”):** SYN means **synchronize**. Each side picks a random **initial sequence number** (ISN).
+SYN means **synchronize**. Each side picks a random **initial sequence number** (ISN).
 
 1. Client → `SYN` with seq `x`.
 2. Server → `SYN-ACK` with seq `y`, ack `x + 1`.
@@ -2730,16 +2777,20 @@ Client may send data with/after the final ACK; the server waits until that ACK b
 
 Many origins on a page = many handshakes = extra RTTs. Mitigations: reuse connections (HTTP keep-alive, HTTP/2 multiplex), `<link rel="preconnect">` (DNS + TCP + TLS; not `dns-prefetch`, which is DNS only), fewer hosts.
 
-**TCP Fast Open vs initial window (do not mix them):**
-
 - **TFO (RFC 7413)** — after a prior visit, a **Fast Open cookie** lets the client put **application data in the SYN**. Server data in SYN-ACK is optional. SYN payload is limited to about **one MSS** (not 10 segments). Needs OS + stack support on both ends; middleboxes sometimes break it. HTTP/3/QUIC is the web’s usual 0-RTT path today.
 - **Initial congestion window (`initcwnd`, RFC 6928)** — after the handshake, sender may burst up to `min(10 * MSS, max(2 * MSS, 14600))` bytes in the first RTT (~10 × 1460 on Ethernet). That is **not** the TFO SYN limit.
 
 Critical rendering path is a **general** browser pipeline (parse HTML/CSS, first paint before all assets), not a Chromium-only feature.
 
-**UDP in the browser:** DNS (often), games, live A/V, **WebRTC**, **QUIC / HTTP/3**. Dropping a late frame is better than stalling for a retransmission. NAT (one public IP, many private hosts) plus firewalls make inbound UDP hard: **STUN** learns the public IP:port; **TURN** relays when symmetric NAT blocks peers; **ICE** tries STUN then TURN ([MDN WebRTC protocols](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols)). UDP datagrams can be dropped, duplicated, or reordered across networks; apps must handle that. Shared buffers / NAT bindings can interact badly with TCP on the same path — test real NAT, don’t assume LAN.
+DNS (often), games, live A/V, **WebRTC**, **QUIC / HTTP/3**. Dropping a late frame is better than stalling for a retransmission. NAT (one public IP, many private hosts) plus firewalls make inbound UDP hard: **STUN** learns the public IP:port; **TURN** relays when symmetric NAT blocks peers; **ICE** tries STUN then TURN ([MDN WebRTC protocols](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols)). UDP datagrams can be dropped, duplicated, or reordered across networks; apps must handle that. Shared buffers / NAT bindings can interact badly with TCP on the same path — test real NAT, don’t assume LAN.
 
-**Cases:** TCP — HTML/CSS/JS, files, HTTP/1.1 and HTTP/2, email, anything that must be complete and in order. UDP — DNS, streaming, WebRTC, HTTP/3 (QUIC adds reliability **on UDP**).
+current kernel; `initcwnd` ≈ 10; window scaling on; avoid slow-start after idle when it hurts keep-alive; consider TFO only if you control both ends; compress and cut bytes; closer POPs (lower RTT); reuse connections; see [HPBN — TCP](https://hpbn.co/building-blocks-of-tcp/).
+
+test behind NAT; cap send rate (often ≤ competing TCP); app-level congestion control; handle loss/dup/reorder/jitter; don’t blindly retransmit like TCP; keep UDP checksums; use ICE/STUN/TURN for peers.
+
+**When to use:**
+
+TCP — HTML/CSS/JS, files, HTTP/1.1 and HTTP/2, email, anything that must be complete and in order. UDP — DNS, streaming, WebRTC, HTTP/3 (QUIC adds reliability **on UDP**).
 
 | | TCP | UDP |
 | --- | --- | --- |
@@ -2749,20 +2800,26 @@ Critical rendering path is a **general** browser pipeline (parse HTML/CSS, first
 | Overhead | Higher (state, ACKs) | Low (8-byte header) |
 | Web | HTTP/1.1, HTTP/2, TLS over TCP | DNS, WebRTC, HTTP/3/QUIC |
 
-| Pros (TCP) | Cons (TCP) |
+#### Common pitfalls
+
+- Using `dns-prefetch` when you meant `preconnect`.
+- Calling TFO “10 × 1460 bytes” — that is `initcwnd`, not SYN data.
+- Assuming UDP “has no checksum” — enable it; required on IPv6.
+- Treating HTTP/3 as “unreliable HTTP” — QUIC restores reliability on UDP.
+
+**Pluses and minuses:**
+
+| + (TCP) | − (TCP) |
 | ---------- | ---------- |
 | Integrity and order | Handshake + ACKs add RTT |
 | Congestion control | Head-of-line blocking per connection (HTTP/2 still TCP HOL) |
 
-| Pros (UDP) | Cons (UDP) |
+| + (UDP) | − (UDP) |
 | ---------- | ---------- |
 | Low latency, small header | Loss, reorder, duplicates |
 | Good for real-time / QUIC | NAT/firewall pain; no cwnd |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!-- Warm DNS+TCP+TLS to a CDN you will actually use (limit count) -->
@@ -2770,30 +2827,21 @@ Critical rendering path is a **general** browser pipeline (parse HTML/CSS, first
 <link rel="dns-prefetch" href="https://analytics.example.com">
 ```
 
-</details>
-
 ```
 HTTP/1.1 & HTTP/2  → TCP (+ TLS)
 HTTP/3             → QUIC over UDP (crypto + 0-RTT in the transport)
 WebRTC media       → UDP + ICE/STUN/TURN
 ```
 
-**Common pitfalls:**
+**Thoughts:**
 
-- Using `dns-prefetch` when you meant `preconnect`.
-- Calling TFO “10 × 1460 bytes” — that is `initcwnd`, not SYN data.
-- Assuming UDP “has no checksum” — enable it; required on IPv6.
-- Treating HTTP/3 as “unreliable HTTP” — QUIC restores reliability on UDP.
+*TCP trades RTT and ACKs for a reliable ordered stream; UDP is a thin datagram — use it when latency beats completeness, or when QUIC implements reliability on top.*
 
-**TCP tuning checklist (server / stack):** current kernel; `initcwnd` ≈ 10; window scaling on; avoid slow-start after idle when it hurts keep-alive; consider TFO only if you control both ends; compress and cut bytes; closer POPs (lower RTT); reuse connections; see [HPBN — TCP](https://hpbn.co/building-blocks-of-tcp/).
+Layers → [OSI & TCP/IP models](#osi--tcpip-models). TLS after TCP → [SSL/TLS handshake](#ssltls--https-handshake). Hints → [preload, prefetch, preconnect](#preload-prefetch-preconnect--prerender) · [HTML resource hints](./1_html.md#link-rel-types--resource-hints). Handshake-only recap → [TCP three-way handshake](#tcp-three-way-handshake). Sockets / `ss` → [Ports, sockets & network services](#ports-sockets--network-services). Path → [How the Internet works](#how-the-internet-works).
 
-**UDP / real-time checklist:** test behind NAT; cap send rate (often ≤ competing TCP); app-level congestion control; handle loss/dup/reorder/jitter; don’t blindly retransmit like TCP; keep UDP checksums; use ICE/STUN/TURN for peers.
+**Sources:**
 
-**Key idea:** *TCP trades RTT and ACKs for a reliable ordered stream; UDP is a thin datagram — use it when latency beats completeness, or when QUIC implements reliability on top.*
-
-**Notes:** Layers → [OSI & TCP/IP models](#osi--tcpip-models). TLS after TCP → [SSL/TLS handshake](#ssltls--https-handshake). Hints → [preload, prefetch, preconnect](#preload-prefetch-preconnect--prerender) · [HTML resource hints](./1_html.md#link-rel-types--resource-hints). Handshake-only recap → [TCP three-way handshake](#tcp-three-way-handshake). Sockets / `ss` → [Ports, sockets & network services](#ports-sockets--network-services). Path → [How the Internet works](#how-the-internet-works).
-
-**Source:** [MDN — TCP](https://developer.mozilla.org/en-US/docs/Glossary/TCP) · [MDN — UDP](https://developer.mozilla.org/en-US/docs/Glossary/UDP) · [MDN — TCP handshake](https://developer.mozilla.org/en-US/docs/Glossary/TCP_handshake) · [MDN — preconnect](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preconnect) · [RFC 7413 TFO](https://datatracker.ietf.org/doc/html/rfc7413) · [RFC 6928 initcwnd](https://datatracker.ietf.org/doc/html/rfc6928) · [Doka — TCP и UDP](https://doka.guide/tools/tcp-udp/) (handshake/TFO numbers above supersede the 2022 article)
+[MDN — TCP](https://developer.mozilla.org/en-US/docs/Glossary/TCP) · [MDN — UDP](https://developer.mozilla.org/en-US/docs/Glossary/UDP) · [MDN — TCP handshake](https://developer.mozilla.org/en-US/docs/Glossary/TCP_handshake) · [MDN — preconnect](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preconnect) · [RFC 7413 TFO](https://datatracker.ietf.org/doc/html/rfc7413) · [RFC 6928 initcwnd](https://datatracker.ietf.org/doc/html/rfc6928) · [Doka — TCP и UDP](https://doka.guide/tools/tcp-udp/) (handshake/TFO numbers above supersede the 2022 article)
 
 ---
 
@@ -2813,17 +2861,22 @@ WebRTC media       → UDP + ICE/STUN/TURN
 - A 4-tuple (src IP, src port, dst IP, dst port) plus protocol identifies a connection. **Static routes** are configured; **dynamic** routes come from routing protocols. Hosts usually have a default gateway, not a full Internet map.
 - **Inspect:** `ping` (ICMP echo — reachability, not “HTTP is up”). Addresses: `ip addr` (Linux) / `ifconfig` (BSD/macOS) / `ipconfig /all` (Windows). Connections: prefer **`ss`** on Linux (`net-tools` `netstat` is legacy). Packet bytes: [tcpdump / Wireshark](#osi--tcpip-models). Filter: [firewall](./15_devops.md#firewall--packet-filter).
 
-**Cases:** “Why is my Node on 3000 not opening in the browser?” (wrong bind / firewall). “Who is listening on 443?” Security review of listening sockets.
+**When to use:**
+
+“Why is my Node on 3000 not opening in the browser?” (wrong bind / firewall). “Who is listening on 443?” Security review of listening sockets.
+
+#### Common pitfalls
+
+`netstat -L` / `-p tcp` from a macOS man page on Linux. `https://host:443` vs omitting the port. Treating `ping` success as “the website works.”
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
 | One port → one listening service | Ephemeral client ports clutter `ss` output |
 | IANA defaults hide `:80` / `:443` in the URL | Flag names differ (`netstat -p` PID vs protocol) |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 ping 8.8.8.8                 # ICMP; Google DNS — not HTTP
@@ -2837,13 +2890,11 @@ netstat -an                  # numeric sockets (most OS)
 netstat -p tcp               # macOS/BSD: filter TCP — NOT Linux (-p = PID/program)
 ```
 
-</details>
+**Thoughts:** *IP finds the host; the port finds the process; `ss`/`netstat` show the sockets the stack currently has.*
 
-**Common pitfalls:** `netstat -L` / `-p tcp` from a macOS man page on Linux. `https://host:443` vs omitting the port. Treating `ping` success as “the website works.”
+**Sources:**
 
-**Key idea:** *IP finds the host; the port finds the process; `ss`/`netstat` show the sockets the stack currently has.*
-
-**Source:** [IANA port registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml) · [ss(8)](https://man7.org/linux/man-pages/man8/ss.8.html) · [ip(8)](https://man7.org/linux/man-pages/man8/ip.8.html) · [Doka — Working with the network](https://doka.guide/tools/network/) · [How the Internet works](#how-the-internet-works)
+[IANA port registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml) · [ss(8)](https://man7.org/linux/man-pages/man8/ss.8.html) · [ip(8)](https://man7.org/linux/man-pages/man8/ip.8.html) · [Doka — Working with the network](https://doka.guide/tools/network/) · [How the Internet works](#how-the-internet-works)
 
 ---
 
@@ -2854,7 +2905,9 @@ netstat -p tcp               # macOS/BSD: filter TCP — NOT Linux (-p = PID/pro
 
 ### GraphQL
 
-**Definition:** GraphQL is a query language and runtime where clients request exactly the fields they need from a typed schema.
+**Definition:**
+
+GraphQL is a query language and runtime where clients request exactly the fields they need from a typed schema.
 
 | REST                 | GraphQL                    |
 | -------------------- | -------------------------- |
@@ -2864,18 +2917,17 @@ netstat -p tcp               # macOS/BSD: filter TCP — NOT Linux (-p = PID/pro
 
 **How it works:** Client sends a query document against a schema (`type Query { book(id: ID!): Book }`). The server resolves each field. Mutations change data; subscriptions push updates (often over WebSocket). Use persisted queries and complexity limits in production.
 
-**Cases:** Many clients needing different shapes of the same graph (mobile vs web). Informal **middle-end**: trim REST over-fetch without cloning endpoints — same idea as a [BFF](./0_system_design.md#bff-backend-for-frontend). Avoid as a cache-unfriendly replacement for a simple CRUD REST API.
+**When to use:** Many clients needing different shapes of the same graph (mobile vs web). Informal **middle-end**: trim REST over-fetch without cloning endpoints — same idea as a [BFF](./0_system_design.md#bff-backend-for-frontend). Avoid as a cache-unfriendly replacement for a simple CRUD REST API.
 
-| Pros                                                | Cons                                            |
+**Pluses and minuses:**
+
+| +                                                | −                                            |
 | --------------------------------------------------- | ----------------------------------------------- |
 | Client picks fields; one round-trip for nested data | Caching and HTTP semantics are harder than REST |
 | Strong schema / codegen (orval-like for GraphQL)    | N+1 resolvers without DataLoader                |
 | Introspection and playground DX                     | Auth at field level is extra work               |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```graphql
 query GetBook($id: ID!) {
@@ -2883,9 +2935,9 @@ query GetBook($id: ID!) {
 }
 ```
 
-</details>
+**Sources:**
 
-**Source:** [GraphQL — Introduction](https://graphql.org/learn/)
+[GraphQL — Introduction](https://graphql.org/learn/)
 
 ---
 
@@ -2900,7 +2952,9 @@ query GetBook($id: ID!) {
 
 ### WebSocket
 
-**Definition:** WebSocket upgrades an HTTP connection to a persistent full-duplex channel for real-time bidirectional messaging.
+**Definition:**
+
+WebSocket upgrades an HTTP connection to a persistent full-duplex channel for real-time bidirectional messaging.
 
 | HTTP polling      | WebSocket                      |
 | ----------------- | ------------------------------ |
@@ -2910,19 +2964,16 @@ query GetBook($id: ID!) {
 
 **How it works:** Browser sends `Upgrade: websocket`. Server responds `101 Switching Protocols`. After that, frames go both ways. Heartbeats detect dead peers. Scale with sticky sessions or a pub/sub bus (Redis) behind multiple Node processes.
 
-**Cases:** Chat, live dashboards, collaborative cursors. Prefer SSE when the server only needs to **push** (notifications). Prefer HTTP for request/response CRUD.
+**When to use:** Chat, live dashboards, collaborative cursors. Prefer SSE when the server only needs to **push** (notifications). Prefer HTTP for request/response CRUD.
 
-| Pros                       | Cons                                                                      |
+**Pluses and minuses:**
+
+| +                       | −                                                                      |
 | -------------------------- | ------------------------------------------------------------------------- |
 | Low-latency bidirectional  | Proxies, load balancers, and serverless timeouts fight long-lived sockets |
 | Less overhead than polling | Must handle reconnect, backpressure, auth on the socket                   |
 
-**Key idea:** Upgrade HTTP once, then speak frames — not a replacement for REST CRUD.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const ws = new WebSocket('wss://chat.example.com');
@@ -2930,9 +2981,11 @@ ws.onmessage = (e) => console.log(JSON.parse(e.data));
 ws.send(JSON.stringify({ type: 'join', room: 'general' }));
 ```
 
-</details>
+**Thoughts:** Upgrade HTTP once, then speak frames — not a replacement for REST CRUD.
 
-**Source:** [MDN — WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+**Sources:**
+
+[MDN — WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
 
 ---
 
@@ -2943,7 +2996,9 @@ ws.send(JSON.stringify({ type: 'join', room: 'general' }));
 
 ### Polling, long polling, SSE & WebSocket
 
-**Definition:** These patterns deliver server updates to clients with different trade-offs between simplicity, latency, and directionality.
+**Definition:**
+
+These patterns deliver server updates to clients with different trade-offs between simplicity, latency, and directionality.
 
 | Technique         | Direction       | Connection           |
 | ----------------- | --------------- | -------------------- |
@@ -2958,10 +3013,7 @@ ws.send(JSON.stringify({ type: 'join', room: 'general' }));
 | Data      | Binary + text      | Text only            |
 | Protocol  | `ws://` / `wss://` | HTTP                 |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Server-Sent Events
@@ -2969,9 +3021,9 @@ const es = new EventSource('/api/events');
 es.onmessage = (e) => console.log(e.data);
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
+[MDN — Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
 
 ---
 
@@ -2997,11 +3049,13 @@ Same stack (HTML, CSS, JS). Organization differs: **MPA** vs **SPA**, then where
 | **MPA** | Many HTML pages linked together                   | Full refresh; no “app-like” scroll/nav      |
 | **SPA** | One page; JS creates content, routes, fetches API | Bundle size, where to render, SEO, needs JS |
 
-**Cases:** Landing / docs → MPA static or SSG. Forum / shop with server templates → MPA dynamic HTML. Dashboard with instant screens → SPA (often + SSR/SSG).
+**When to use:** Landing / docs → MPA static or SSG. Forum / shop with server templates → MPA dynamic HTML. Dashboard with instant screens → SPA (often + SSR/SSG).
 
-**Key idea:** Pick by UX goal, not by fashion. Instant in-app nav wants SPA; simplest cacheable pages want static MPA.
+**Thoughts:** Pick by UX goal, not by fashion. Instant in-app nav wants SPA; simplest cacheable pages want static MPA.
 
-**Source:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/)
+**Sources:**
+
+[Doka — Types of web apps](https://doka.guide/tools/web-app-types/)
 
 ---
 
@@ -3016,18 +3070,17 @@ Same stack (HTML, CSS, JS). Organization differs: **MPA** vs **SPA**, then where
 
 **How it works:** Several `.html` files on disk. Optional: Pug (or similar) + Gulp/Rollup/Webpack to assemble, then upload static output. Browser, CDN, or Service Worker cache easily.
 
-**Cases:** Company landing, product brochure, few mostly-static pages, little interaction.
+**When to use:** Company landing, product brochure, few mostly-static pages, little interaction.
 
-| Pros                            | Cons                                                 |
+**Pluses and minuses:**
+
+| +                            | −                                                 |
 | ------------------------------- | ---------------------------------------------------- |
 | Simplest to build               | Hundreds/thousands of pages → unmaintainable by hand |
 | Excellent cache/CDN performance | Changing data needs a rebuild or another approach    |
 |                                 | Full reload on every click                           |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 /index.html
@@ -3036,11 +3089,11 @@ Same stack (HTML, CSS, JS). Organization differs: **MPA** vs **SPA**, then where
 nginx → GET /about.html → file from disk
 ```
 
-</details>
+**Thoughts:** Ship HTML that already exists. No server script per request.
 
-**Key idea:** Ship HTML that already exists. No server script per request.
+**Sources:**
 
-**Source:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/)
+[Doka — Types of web apps](https://doka.guide/tools/web-app-types/)
 
 ---
 
@@ -3055,16 +3108,20 @@ nginx → GET /about.html → file from disk
 
 **How it works:** User opens “friends”: (1) request hits server (2) query DB (3) assemble HTML from parts (4) send HTML. Next visit with new friends → different HTML. Static fragments can still be cached. Client JS stays small.
 
-**Cases:** Classic forums and shops. Large products historically used this (server-generated pages) before SPA shells.
+**When to use:** Classic forums and shops. Large products historically used this (server-generated pages) before SPA shells.
 
-| Pros                                      | Cons                                                 |
+**Pluses and minuses:**
+
+| +                                      | −                                                 |
 | ----------------------------------------- | ---------------------------------------------------- |
 | Logic stays on the server; smaller client | Full reload — no instant “app” UX                    |
 | Fresh data from DB                        | Scroll position lost; uncached pages wait on network |
 
-**Key idea:** HTML is assembled **per request** on the server — not a pre-made file.
+**Thoughts:** HTML is assembled **per request** on the server — not a pre-made file.
 
-**Source:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/)
+**Sources:**
+
+[Doka — Types of web apps](https://doka.guide/tools/web-app-types/)
 
 ---
 
@@ -3079,17 +3136,21 @@ nginx → GET /about.html → file from disk
 
 **How it works:** Instant screen changes; can show loaders while `fetch` runs. Rich ecosystem (UI libs, patterns). Split by **where the first paint is built**: browser (**CSR**) or server (**SSR**). Often needs frameworks.
 
-**Cases:** Complex client logic, app-like UX. Cached SPA JS can still change screens on a bad network; MPA waits for the next HTML.
+**When to use:** Complex client logic, app-like UX. Cached SPA JS can still change screens on a bad network; MPA waits for the next HTML.
 
-| Pros                             | Cons                                                                       |
+**Pluses and minuses:**
+
+| +                             | −                                                                       |
 | -------------------------------- | -------------------------------------------------------------------------- |
 | Instant in-app transitions       | Harder: tools, bundles, performance                                        |
 | Visual feedback while data loads | Needs JS — disabled JS = blank                                             |
 |                                  | Crawlers prefer static HTML (they *can* run JS now, but static still wins) |
 
-**Key idea:** The page stays; JS paints the next screen.
+**Thoughts:** The page stays; JS paints the next screen.
 
-**Source:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [MDN — SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA)
+**Sources:**
+
+[Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [MDN — SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA)
 
 ---
 
@@ -3104,17 +3165,21 @@ nginx → GET /about.html → file from disk
 
 **How it works:** Download JS → execute → render. Simplest SPA. Fine when the bundle is small. Weak devices / slow nets may bounce. Search engines execute JS today, but static HTML still indexes more reliably.
 
-**Cases:** Small SPAs, auth dashboards with low SEO need.
+**When to use:** Small SPAs, auth dashboards with low SEO need.
 
-| Pros                          | Cons                             |
+**Pluses and minuses:**
+
+| +                          | −                             |
 | ----------------------------- | -------------------------------- |
 | Simple SPA setup              | First paint blocked on JS        |
 | Fast start if the app is tiny | No JS → nothing                  |
 |                               | Large apps: slow TTI, weaker SEO |
 
-**Key idea:** First HTML is a shell; UI appears after JS.
+**Thoughts:** First HTML is a shell; UI appears after JS.
 
-**Source:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [Next.js rendering](./4_nextjs.md#4-rendering-strategies)
+**Sources:**
+
+[Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [Next.js rendering](./4_nextjs.md#4-rendering-strategies)
 
 ---
 
@@ -3129,22 +3194,26 @@ nginx → GET /about.html → file from disk
 
 **How it works:** Node (typical) runs the same UI on the server. Next.js (React) / Nuxt (Vue) are the usual starters. Custom SSR is hard (data loading, correct render, infra). Extra server = extra ops.
 
-**Cases:** SEO + first paint that must not wait on the bundle. Personalized pages (session) — see Next.js `cookies()` / `force-dynamic`.
+**When to use:** SEO + first paint that must not wait on the bundle. Personalized pages (session) — see Next.js `cookies()` / `force-dynamic`.
 
-| Pros                                   | Cons                   |
+**Pluses and minuses:**
+
+| +                                   | −                   |
 | -------------------------------------- | ---------------------- |
 | HTML immediately; better UX and search | Server + infra         |
 | Same app can hydrate into SPA          | DIY SSR is error-prone |
 
-**Example (Next.js App Router — dynamic):**
+**Examples:**
 
 ```ts
 export const dynamic = 'force-dynamic';
 ```
 
-**Key idea:** First bytes are real content, not an empty shell.
+**Thoughts:** First bytes are real content, not an empty shell.
 
-**Source:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [Next.js — rendering](https://nextjs.org/docs/app/getting-started/caching)
+**Sources:**
+
+[Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [Next.js — rendering](https://nextjs.org/docs/app/getting-started/caching)
 
 ---
 
@@ -3159,14 +3228,16 @@ export const dynamic = 'force-dynamic';
 
 **How it works:** Blog posts → HTML pages at build. Doka itself is SSG. **Jamstack** = JavaScript + APIs + Markup (Doka: Markdown as the typical content source). React/etc. “wake up” the page; APIs fetch extra data.
 
-**Cases:** Blogs, docs, marketing. Next.js: `generateStaticParams` prerenders dynamic routes at build.
+**When to use:** Blogs, docs, marketing. Next.js: `generateStaticParams` prerenders dynamic routes at build.
 
-| Pros                 | Cons                             |
+**Pluses and minuses:**
+
+| +                 | −                             |
 | -------------------- | -------------------------------- |
 | Static + SPA UX      | Frozen until next build (or ISR) |
 | CDN cache, great SEO | Not for per-user dashboards      |
 
-**Example (Next.js App Router):**
+**Examples:**
 
 ```ts
 export async function generateStaticParams() {
@@ -3175,9 +3246,11 @@ export async function generateStaticParams() {
 }
 ```
 
-**Key idea:** HTML exists **before** the request (build time), unlike classic PHP-per-request MPA.
+**Thoughts:** HTML exists **before** the request (build time), unlike classic PHP-per-request MPA.
 
-**Source:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [Next.js — generateStaticParams](https://nextjs.org/docs/app/api-reference/functions/generate-static-params)
+**Sources:**
+
+[Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [Next.js — generateStaticParams](https://nextjs.org/docs/app/api-reference/functions/generate-static-params)
 
 ---
 
@@ -3202,7 +3275,7 @@ Chrome `beforeinstallprompt` ([web.dev](https://web.dev/articles/install-criteri
 
 **History (short):** Term coined **2015** by Alex Russell and Frances Berriman (*Progressive Web Apps: Escaping Tabs Without Losing Our Soul*). Idea older: Palm webOS, Firefox OS, ChromeOS; Jobs (2007) described web-delivered apps before the App Store. Community PWA logo: Diego Gonzalez (2017 contest).
 
-**Cases:** Layer on any MPA/SPA. Gradual: add manifest first, then SW for offline. Optional: wrap in a thin native shell for Play/App Store.
+**When to use:** Layer on any MPA/SPA. Gradual: add manifest first, then SW for offline. Optional: wrap in a thin native shell for Play/App Store.
 
 **Notes (Doka):** Install and offline are **not** required to “count as PWA.” A tab-only site with push/sensors is still progressive. Video-call apps need a network. PWA is an umbrella for practices + optional install rules — not a strict product type.
 
@@ -3218,16 +3291,11 @@ Chrome `beforeinstallprompt` ([web.dev](https://web.dev/articles/install-criteri
 | HTML/CSS/JS — no proprietary SDK; debug in DevTools                                 |                                                                        |
 | Web stays backward compatible                                                       |                                                                        |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <link rel="manifest" href="/manifest.json" />
 ```
-
-</details>
 
 ```json
 {
@@ -3250,9 +3318,9 @@ if ('serviceWorker' in navigator) {
 
 **Common pitfalls:** Treating SW as required for *install* (outdated). Expecting Chrome’s install banner in Safari. Caching forever without a versioned SW activate step.
 
-**Key idea:** PWA = website + optional native capabilities. Install ≠ offline.
+**Thoughts:** PWA = website + optional native capabilities. Install ≠ offline.
 
-**Source:** [Doka — PWA](https://doka.guide/tools/pwa/) · [web.dev — install criteria](https://web.dev/articles/install-criteria) · [MDN — Progressive Web Apps](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
+**Sources:** [Doka — PWA](https://doka.guide/tools/pwa/) · [web.dev — install criteria](https://web.dev/articles/install-criteria) · [MDN — Progressive Web Apps](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 
 ---
 
@@ -3263,7 +3331,9 @@ if ('serviceWorker' in navigator) {
 
 ### Compare: MPA, SPA, CSR, SSR, SSG, PWA
 
-**Definition:** Choose by **reload vs JS routing** (MPA/SPA) and **when HTML is built** (CSR/SSR/SSG). PWA is an enhancement, not a fifth architecture.
+**Definition:**
+
+Choose by **reload vs JS routing** (MPA/SPA) and **when HTML is built** (CSR/SSR/SSG). PWA is an enhancement, not a fifth architecture.
 
 |                 | First view           | Navigation             | SEO       | Offline        |
 | --------------- | -------------------- | ---------------------- | --------- | -------------- |
@@ -3274,11 +3344,13 @@ if ('serviceWorker' in navigator) {
 | **SSG**         | Build-time HTML      | Reload or hydrated SPA | Excellent | Static cache   |
 | **PWA**         | Depends on base      | Depends on base        | Varies    | Service worker |
 
-**Cases:** Bad network: SPA can still change screens from cached JS; MPA waits for the next HTML. SPA can still be slow if the bundle is huge.
+**When to use:** Bad network: SPA can still change screens from cached JS; MPA waits for the next HTML. SPA can still be slow if the bundle is huge.
 
-**Key idea:** MPA vs SPA is navigation. CSR/SSR/SSG is *when* HTML exists.
+**Thoughts:** MPA vs SPA is navigation. CSR/SSR/SSG is *when* HTML exists.
 
-**Source:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/)
+**Sources:**
+
+[Doka — Types of web apps](https://doka.guide/tools/web-app-types/)
 
 ---
 
@@ -3320,18 +3392,23 @@ if ('serviceWorker' in navigator) {
 | `Access-Control-Request-Method` | Method of the planned actual request |
 | `Access-Control-Request-Headers` | Non-safelisted headers of the actual request |
 
-| Pros | Cons |
+**When to use:**
+
+SPA on `https://app.example.com` calling `https://api.example.com`; public unauthenticated API with `*`; cookie/session API with an origin allowlist + credentials.
+
+#### Common pitfalls
+
+Treating CORS as a firewall (the simple request already ran). `Allow-Headers` vs `Expose-Headers`. `*` + cookies. Assuming `*` “causes CSRF” — form CSRF does not need CORS; CORS does not stop cookie-based CSRF. See [CSRF](./7_special.md#csrf-cross-site-request-forgery).
+
+**Pluses and minuses:**
+
+| + | − |
 | ---- | ---- |
 | Lets SPAs call a separate API origin with server consent | Easy to misconfigure (`*`, missing preflight, wrong header names) |
 | Preflight can reject unsafe methods/headers before the real call | Browser-only — curl/Postman/server-to-server ignore CORS |
 | Standard `Access-Control-*` headers | Does **not** replace CSRF protection |
 
-**Cases:** SPA on `https://app.example.com` calling `https://api.example.com`; public unauthenticated API with `*`; cookie/session API with an origin allowlist + credentials.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 OPTIONS / HTTP/1.1
@@ -3340,8 +3417,6 @@ Origin: https://doka.guide
 Access-Control-Request-Method: PUT
 Access-Control-Request-Headers: content-type, authorization
 ```
-
-</details>
 
 ```http
 HTTP/1.1 204 No Content
@@ -3358,11 +3433,11 @@ await fetch('https://api.example.com/data', {
 });
 ```
 
-**Common pitfalls:** Treating CORS as a firewall (the simple request already ran). `Allow-Headers` vs `Expose-Headers`. `*` + cookies. Assuming `*` “causes CSRF” — form CSRF does not need CORS; CORS does not stop cookie-based CSRF. See [CSRF](./7_special.md#csrf-cross-site-request-forgery).
+**Thoughts:** The server still receives many cross-origin requests; CORS only decides whether **page JS** may read the response.
 
-**Key idea:** The server still receives many cross-origin requests; CORS only decides whether **page JS** may read the response.
+**Sources:**
 
-**Source:** [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) · [Doka — CORS](https://doka.guide/tools/cors/)
+[MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) · [Doka — CORS](https://doka.guide/tools/cors/)
 
 ---
 
@@ -3375,7 +3450,9 @@ await fetch('https://api.example.com/data', {
 
 **Definition:** CSP is an HTTP header that lists trusted sources for scripts, styles, images, and other content — a backup defense if XSS encoding fails.
 
-**How it works:** Browser blocks loads and inline script that are not in the policy. Strict CSP uses **nonces or hashes** for allowed scripts and disables `eval` / inline handlers. `default-src` fills in missing fetch directives.
+**How it works:**
+
+Browser blocks loads and inline script that are not in the policy. Strict CSP uses **nonces or hashes** for allowed scripts and disables `eval` / inline handlers. `default-src` fills in missing fetch directives.
 
 | Directive         | Controls                                                                    |
 | ----------------- | --------------------------------------------------------------------------- |
@@ -3386,24 +3463,21 @@ await fetch('https://api.example.com/data', {
 | `default-src`     | Fallback for unspecified fetch types                                        |
 | `frame-ancestors` | Who may embed this page (clickjacking) — **HTTP header only**, not `<meta>` |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```http
 Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.example.com; frame-ancestors 'self'
 ```
 
-</details>
-
 ```html
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
 ```
 
-**Notes:** `'unsafe-inline'` largely defeats XSS protection. `<meta>` CSP cannot set `frame-ancestors` or some other document directives. See [HTML — CSP](./1_html.md) · [Special — CSP](./7_special.md#content-security-policy-csp) · [Special — XSS](./7_special.md#xss-cross-site-scripting).
+**Thoughts:** `'unsafe-inline'` largely defeats XSS protection. `<meta>` CSP cannot set `frame-ancestors` or some other document directives. See [HTML — CSP](./1_html.md) · [Special — CSP](./7_special.md#content-security-policy-csp) · [Special — XSS](./7_special.md#xss-cross-site-scripting).
 
-**Source:** [MDN — CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)
+**Sources:**
+
+[MDN — CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)
 
 ---
 
@@ -3416,7 +3490,9 @@ Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.examp
 
 **Definition:** XSS injects script that runs in **your origin** in another user's browser — session theft, actions as the user, or keylogging.
 
-**How it works:** Untrusted data is parsed as HTML/JS. **Reflected** — query/body echoed in that response. **Stored** — saved and replayed for later viewers (including XSS keyloggers). **DOM** — client JS writes untrusted strings into the DOM.
+**How it works:**
+
+Untrusted data is parsed as HTML/JS. **Reflected** — query/body echoed in that response. **Stored** — saved and replayed for later viewers (including XSS keyloggers). **DOM** — client JS writes untrusted strings into the DOM.
 
 | Type      | Vector                                  |
 | --------- | --------------------------------------- |
@@ -3424,21 +3500,18 @@ Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.examp
 | Reflected | URL/query echoed in response            |
 | DOM-based | Client JS writes untrusted input to DOM |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 element.innerHTML = userInput; // parses tags
 element.textContent = userInput; // text only
 ```
 
-</details>
-
 Encode for the **output context** (HTML vs URL). `encodeURIComponent` is for URLs, not HTML. CSP + HttpOnly cookies are extra layers. Full catalog: [Special — XSS](./7_special.md#xss-cross-site-scripting).
 
-**Source:** [OWASP — XSS](https://owasp.org/www-community/attacks/xss/)
+**Sources:**
+
+[OWASP — XSS](https://owasp.org/www-community/attacks/xss/)
 
 ---
 
@@ -3451,13 +3524,11 @@ Encode for the **output context** (HTML vs URL). `encodeURIComponent` is for URL
 
 **Definition:** CSRF tricks a logged-in user's browser into sending an authenticated request to a site where they already have a session — the server trusts the cookie and performs the action.
 
-**How it works (attack):**
+**How it works:**
 
 1. User is logged into `bank.com` (session cookie set).
 2. User visits `evil.com` which contains `<form action="https://bank.com/transfer" method="POST">` or `<img src="https://bank.com/transfer?to=attacker&amount=1000">`.
 3. Browser automatically attaches `bank.com` cookies → server treats request as legitimate.
-
-**Mitigations:**
 
 | Defense                       | How                                                                                      |
 | ----------------------------- | ---------------------------------------------------------------------------------------- |
@@ -3467,18 +3538,20 @@ Encode for the **output context** (HTML vs URL). `encodeURIComponent` is for URL
 | **Origin/Referer check**      | Reject if header missing or wrong                                                        |
 | **Re-auth for sensitive ops** | Password/2FA for transfers                                                               |
 
-| Pros (SameSite + token)         | Cons                                                        |
-| ------------------------------- | ----------------------------------------------------------- |
-| Blocks most browser-driven CSRF | SameSite=None needed for some OAuth flows (requires Secure) |
-| Token pattern well-understood   | SPA + cookie auth needs careful CORS/credentials setup      |
-
-**Cases:**
+**When to use:**
 
 - Cookie-based session APIs — CSRF token or `SameSite=Strict` for mutations.
 - JWT in `Authorization` header only — **not** vulnerable to classic CSRF (browser does not auto-send custom headers).
 - `GET` must never change state — CSRF often exploits state-changing GET.
 
-**Example (double-submit cookie pattern):**
+**Pluses and minuses:**
+
+| + (SameSite + token)         | −                                                        |
+| ------------------------------- | ----------------------------------------------------------- |
+| Blocks most browser-driven CSRF | SameSite=None needed for some OAuth flows (requires Secure) |
+| Token pattern well-understood   | SPA + cookie auth needs careful CORS/credentials setup      |
+
+**Examples:**
 
 ```html
 <meta name="csrf-token" content="random-token-from-server">
@@ -3496,9 +3569,11 @@ fetch('/api/transfer', {
 });
 ```
 
-**Notes:** CORS does **not** protect against CSRF — CSRF is a cookie auto-send problem. `SameSite=Lax` is a strong default for session cookies. Authentication (“session is valid”) is not the same as authorizing **this** mutation — use a CSRF token. Cookie `HttpOnly` does not stop CSRF. See [Special — CSRF](./7_special.md#csrf-cross-site-request-forgery).
+**Thoughts:** CORS does **not** protect against CSRF — CSRF is a cookie auto-send problem. `SameSite=Lax` is a strong default for session cookies. Authentication (“session is valid”) is not the same as authorizing **this** mutation — use a CSRF token. Cookie `HttpOnly` does not stop CSRF. See [Special — CSRF](./7_special.md#csrf-cross-site-request-forgery).
 
-**Source:** [OWASP — CSRF](https://owasp.org/www-community/attacks/csrf) · [MDN — SameSite cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#samesitesamesite-value)
+**Sources:**
+
+[OWASP — CSRF](https://owasp.org/www-community/attacks/csrf) · [MDN — SameSite cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#samesitesamesite-value)
 
 ---
 
@@ -3511,7 +3586,9 @@ fetch('/api/transfer', {
 
 **Definition:** Attacker overlays a transparent iframe of your site so the user clicks **your** UI while looking at a decoy.
 
-**How it works:** Authenticated cookies apply inside the iframe. No XSS required.
+**How it works:**
+
+Authenticated cookies apply inside the iframe. No XSS required.
 
 | Defense                                  | Notes                                                        |
 | ---------------------------------------- | ------------------------------------------------------------ |
@@ -3523,9 +3600,11 @@ X-Frame-Options: SAMEORIGIN
 Content-Security-Policy: frame-ancestors 'self'
 ```
 
-**Notes:** Header-only for XFO (not `<meta>`). SameSite does not replace framing policy. See [Special — Clickjacking](./7_special.md#clickjacking).
+**Thoughts:** Header-only for XFO (not `<meta>`). SameSite does not replace framing policy. See [Special — Clickjacking](./7_special.md#clickjacking).
 
-**Source:** [MDN — X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options)
+**Sources:**
+
+[MDN — X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options)
 
 ---
 
@@ -3536,7 +3615,9 @@ Content-Security-Policy: frame-ancestors 'self'
 
 ### JSONP
 
-**Definition:** JSONP bypasses SOP by loading cross-origin data via a `<script>` tag that calls a callback function — legacy technique, largely replaced by CORS.
+**Definition:**
+
+JSONP bypasses SOP by loading cross-origin data via a `<script>` tag that calls a callback function — legacy technique, largely replaced by CORS.
 
 | JSONP                      | CORS                         |
 | -------------------------- | ---------------------------- |
@@ -3544,10 +3625,7 @@ Content-Security-Policy: frame-ancestors 'self'
 | No standard error handling | Standard HTTP semantics      |
 | Trust-based                | Header-based permission      |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <script src="https://api.example.com/data?callback=handleData"></script>
@@ -3556,9 +3634,9 @@ Content-Security-Policy: frame-ancestors 'self'
 </script>
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — CORS (prefer over JSONP)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+[MDN — CORS (prefer over JSONP)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
 
 ---
 
@@ -3573,7 +3651,9 @@ Content-Security-Policy: frame-ancestors 'self'
 
 ### Service Workers
 
-**Definition:** A service worker is a background script that intercepts network requests and enables offline caching, push notifications, and background sync.
+**Definition:**
+
+A service worker is a background script that intercepts network requests and enables offline caching, push notifications, and background sync.
 
 | Capability         | Use case           |
 | ------------------ | ------------------ |
@@ -3581,10 +3661,7 @@ Content-Security-Policy: frame-ancestors 'self'
 | Cache API          | Asset precaching   |
 | Push API           | Notifications      |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 navigator.serviceWorker.register('/sw.js');
@@ -3595,9 +3672,9 @@ self.addEventListener('fetch', (event) => {
 });
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
+[MDN — Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 
 ---
 
@@ -3608,7 +3685,9 @@ self.addEventListener('fetch', (event) => {
 
 ### Web Workers
 
-**Definition:** Web Workers run JavaScript on a background thread so CPU-heavy work does not block the main UI thread.
+**Definition:**
+
+Web Workers run JavaScript on a background thread so CPU-heavy work does not block the main UI thread.
 
 | Type           | Scope                         |
 | -------------- | ----------------------------- |
@@ -3616,10 +3695,7 @@ self.addEventListener('fetch', (event) => {
 | Shared         | Multiple scripts/windows      |
 | Service Worker | Proxy between app and network |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const worker = new Worker('hash-worker.js');
@@ -3627,9 +3703,9 @@ worker.postMessage(largeBuffer);
 worker.onmessage = (e) => console.log('hash:', e.data);
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — Web Workers API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API)
+[MDN — Web Workers API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API)
 
 ---
 
@@ -3640,7 +3716,9 @@ worker.onmessage = (e) => console.log('hash:', e.data);
 
 ### Worklets
 
-**Definition:** Worklets are lightweight parallel execution contexts for specific tasks like audio processing (`AudioWorklet`) or painting (`PaintWorklet`).
+**Definition:**
+
+Worklets are lightweight parallel execution contexts for specific tasks like audio processing (`AudioWorklet`) or painting (`PaintWorklet`).
 
 | Worklet          | Purpose                   |
 | ---------------- | ------------------------- |
@@ -3648,19 +3726,16 @@ worker.onmessage = (e) => console.log('hash:', e.data);
 | PaintWorklet     | Programmatic CSS painting |
 | AnimationWorklet | Scroll-linked animations  |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 await audioContext.audioWorklet.addModule('processor.js');
 const node = new AudioWorkletNode(audioContext, 'gain-processor');
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — Worklet](https://developer.mozilla.org/en-US/docs/Web/API/Worklet)
+[MDN — Worklet](https://developer.mozilla.org/en-US/docs/Web/API/Worklet)
 
 ---
 
@@ -3671,7 +3746,9 @@ const node = new AudioWorkletNode(audioContext, 'gain-processor');
 
 ### History API
 
-**Definition:** The History API lets SPAs manipulate the browser URL and history stack without full page reloads.
+**Definition:**
+
+The History API lets SPAs manipulate the browser URL and history stack without full page reloads.
 
 | Method           | Effect                      |
 | ---------------- | --------------------------- |
@@ -3679,10 +3756,7 @@ const node = new AudioWorkletNode(audioContext, 'gain-processor');
 | `replaceState`   | Replace current entry       |
 | `popstate` event | User navigates back/forward |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 history.pushState({ page: 'settings' }, '', '/settings');
@@ -3691,9 +3765,9 @@ window.addEventListener('popstate', (e) => {
 });
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
+[MDN — History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
 
 ---
 
@@ -3704,7 +3778,9 @@ window.addEventListener('popstate', (e) => {
 
 ### TCP three-way handshake
 
-**Definition:** TCP opens a connection with SYN → SYN-ACK → ACK so both sides agree on initial sequence numbers before the byte stream.
+**Definition:**
+
+TCP opens a connection with SYN → SYN-ACK → ACK so both sides agree on initial sequence numbers before the byte stream.
 
 | Step | Packet  | Meaning                          |
 | ---- | ------- | -------------------------------- |
@@ -3714,10 +3790,7 @@ window.addEventListener('popstate', (e) => {
 
 Full UDP comparison, TFO vs `initcwnd`, `preconnect`, STUN/TURN → [TCP vs UDP](#tcp-vs-udp).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 Client → SYN (seq=100)
@@ -3726,9 +3799,9 @@ Client → ACK (ack=301)
 → Data can flow both ways
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — TCP handshake](https://developer.mozilla.org/en-US/docs/Glossary/TCP_handshake)
+[MDN — TCP handshake](https://developer.mozilla.org/en-US/docs/Glossary/TCP_handshake)
 
 ---
 
@@ -3739,17 +3812,16 @@ Client → ACK (ack=301)
 
 ### Throttling & debouncing
 
-**Definition:** Throttling limits how often a function runs; debouncing waits until calls stop before executing once.
+**Definition:**
+
+Throttling limits how often a function runs; debouncing waits until calls stop before executing once.
 
 | Technique | Behavior                  | Use case                      |
 | --------- | ------------------------- | ----------------------------- |
 | Throttle  | At most once per interval | Scroll, resize handlers       |
 | Debounce  | Run after pause in calls  | Search input, form validation |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function debounce(fn, delay = 250) {
@@ -3771,9 +3843,9 @@ function throttle(fn, delay = 250) {
 }
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — setTimeout patterns](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout)
+[MDN — setTimeout patterns](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout)
 
 ---
 
@@ -3784,17 +3856,16 @@ function throttle(fn, delay = 250) {
 
 ### Axios interceptors
 
-**Definition:** Axios interceptors are middleware hooks that transform or inspect requests and responses before they reach your application code.
+**Definition:**
+
+Axios interceptors are middleware hooks that transform or inspect requests and responses before they reach your application code.
 
 | Interceptor | Typical use                      |
 | ----------- | -------------------------------- |
 | Request     | Attach auth token, log           |
 | Response    | Unwrap data, handle 401 globally |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 import axios from 'axios';
@@ -3813,9 +3884,9 @@ axios.interceptors.response.use(
 );
 ```
 
-</details>
+**Sources:**
 
-**Source:** [Axios — Interceptors](https://axios-http.com/docs/interceptors)
+[Axios — Interceptors](https://axios-http.com/docs/interceptors)
 
 ---
 
@@ -3826,7 +3897,9 @@ axios.interceptors.response.use(
 
 ### Progressive rendering
 
-**Definition:** Progressive rendering displays meaningful content before all assets finish loading, improving perceived performance.
+**Definition:**
+
+Progressive rendering displays meaningful content before all assets finish loading, improving perceived performance.
 
 | Technique                      | Effect                       |
 | ------------------------------ | ---------------------------- |
@@ -3834,19 +3907,16 @@ axios.interceptors.response.use(
 | Critical CSS                   | Inline above-the-fold styles |
 | Code splitting                 | Load JS chunks on demand     |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <img src="hero.jpg" loading="lazy" alt="Hero">
 <link rel="preload" href="font.woff2" as="font" crossorigin>
 ```
 
-</details>
+**Sources:**
 
-**Source:** [web.dev — Fast load times](https://web.dev/explore/fast)
+[web.dev — Fast load times](https://web.dev/explore/fast)
 
 ---
 
@@ -3859,9 +3929,9 @@ axios.interceptors.response.use(
 
 **Definition:** Full taxonomy (MPA static/dynamic, SPA, CSR, SSR, SSG, PWA, compare) lives in [Types of web apps](#12-types-of-web-apps).
 
-**Short answer:** SPA = one page, JS routes. CSR = first paint in the browser. SSR = first HTML from the server. SSG = HTML at build. **PWA** = progressive enhancement (install + APIs). Chromium install = HTTPS + manifest; Service Worker is for offline/push, not required for the install prompt. Full notes: [PWA](#pwa-progressive-web-app).
+**How it works:** SPA = one page, JS routes. CSR = first paint in the browser. SSR = first HTML from the server. SSG = HTML at build. **PWA** = progressive enhancement (install + APIs). Chromium install = HTTPS + manifest; Service Worker is for offline/push, not required for the install prompt. Full notes: [PWA](#pwa-progressive-web-app).
 
-**Example (PWA manifest):**
+**Examples:**
 
 ```json
 {
@@ -3872,7 +3942,9 @@ axios.interceptors.response.use(
 }
 ```
 
-**Source:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [MDN — Progressive Web Apps](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
+**Sources:**
+
+[Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [MDN — Progressive Web Apps](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 
 ---
 
@@ -3883,7 +3955,9 @@ axios.interceptors.response.use(
 
 ### Core Web Vitals
 
-**Definition:** Google’s page-experience metrics (2020+). **Core** set is **LCP** (main content painted), **INP** (click/tap/key → next paint), **CLS** (unexpected layout jump). A URL **passes** when **all three** are “good” at **p75**, **mobile and desktop scored separately**. **FCP** and **TTFB** are diagnostic, not Core, not ranking.
+**Definition:**
+
+Google’s page-experience metrics (2020+). **Core** set is **LCP** (main content painted), **INP** (click/tap/key → next paint), **CLS** (unexpected layout jump). A URL **passes** when **all three** are “good” at **p75**, **mobile and desktop scored separately**. **FCP** and **TTFB** are diagnostic, not Core, not ranking.
 
 | Metric | Question | 🟢 Good | 🟡 Needs improvement | 🔴 Poor |
 | ------ | -------- | ------- | -------------------- | ------- |
@@ -3902,17 +3976,11 @@ Thresholds are the same on phone and desktop; **samples are not**. Ranking uses 
 
 Lab ≠ field: INP needs real input; CLS in the field includes scroll/banners; LCP element and cache differ. Workflow: field first → lab slice (not “make LCP better”) → re-check all three. Slow hero → [LCP](#lcp-largest-contentful-paint); dead buttons → [INP](#inp-interaction-to-next-paint); jump → [1_html.md — CLS](./1_html.md#cls-cumulative-layout-shift); blank screen → [FCP](#first-contentful-paint-fcp) / [TTFB](#ttfb-time-to-first-byte). Start **mobile**, high-traffic URLs.
 
-**Cases:** SEO ranking, incident triage, Lighthouse CI budgets, tickets with a numeric p75 target.
+**When to use:**
 
-| + | − |
-| --- | --- |
-| Shared language with SEO | Lab green ≠ Search Console green |
-| Attribution names the element/script | 28-day CrUX lag; mean hides the tail |
+SEO ranking, incident triage, Lighthouse CI budgets, tickets with a numeric p75 target.
 
 **Example** — field (`web-vitals`). Flush on `visibilitychange` → `hidden` via `sendBeacon` (`unload` breaks **bfcache**). Report **p75**, not the average.
-
-<details>
-  <summary>Code</summary>
 
 ```js
 import { onCLS, onINP, onLCP } from 'web-vitals';
@@ -3926,8 +3994,6 @@ onINP(send);
 onLCP(send);
 ```
 
-</details>
-
 ```js
 import { onLCP, onINP, onCLS } from 'web-vitals/attribution';
 onLCP(({ attribution }) => console.log(attribution)); // TTFB, load delay/duration, render delay
@@ -3937,15 +4003,26 @@ onCLS(({ attribution }) => console.log(attribution.largestShiftTarget));
 
 Next.js: [4_nextjs.md — CWV](./4_nextjs.md#core-web-vitals-on-vercel). HTML levers: [1_html.md](./1_html.md#core-web-vitals--html-developer-impact). DevTools: [11_vsc_browser.md](./11_vsc_browser.md#devtools--core-web-vitals).
 
-**Common pitfalls:** Trusting Lighthouse while Search Console is red. Expecting CrUX next day. Optimizing the **mean**. Calling **FID** Core. Treating **TBT** as INP. Preloading everything. Analytics on `unload`.
+#### Common pitfalls
 
-**Key idea:** Lab = how to reproduce; field p75 = whether users (and ranking) care.
+Trusting Lighthouse while Search Console is red. Expecting CrUX next day. Optimizing the **mean**. Calling **FID** Core. Treating **TBT** as INP. Preloading everything. Analytics on `unload`.
 
-**Source:** [web.dev — Vitals](https://web.dev/articles/vitals) · [web.dev — INP](https://web.dev/articles/inp) · [Search — CWV](https://developers.google.com/search/docs/appearance/core-web-vitals) · [web-vitals](https://github.com/GoogleChrome/web-vitals)
+**Pluses and minuses:**
 
-**See also:** [LCP](#lcp-largest-contentful-paint) · [FCP](#first-contentful-paint-fcp) · [TTFB](#ttfb-time-to-first-byte) · [INP](#inp-interaction-to-next-paint)
+| + | − |
+| --- | --- |
+| Shared language with SEO | Lab green ≠ Search Console green |
+| Attribution names the element/script | 28-day CrUX lag; mean hides the tail |
+
+**Thoughts:** Lab = how to reproduce; field p75 = whether users (and ranking) care.
+
+**See also:**
+
+[LCP](#lcp-largest-contentful-paint) · [FCP](#first-contentful-paint-fcp) · [TTFB](#ttfb-time-to-first-byte) · [INP](#inp-interaction-to-next-paint)
 
 ---
+
+**Sources:** [web.dev — Vitals](https://web.dev/articles/vitals) · [web.dev — INP](https://web.dev/articles/inp) · [Search — CWV](https://developers.google.com/search/docs/appearance/core-web-vitals) · [web-vitals](https://github.com/GoogleChrome/web-vitals)
 
 </details>
 
@@ -3954,11 +4031,15 @@ Next.js: [4_nextjs.md — CWV](./4_nextjs.md#core-web-vitals-on-vercel). HTML le
 
 ### LCP (Largest Contentful Paint)
 
-**Definition:** LCP is the time from navigation start until the **largest content element in the viewport** is painted. The browser picks the element (hero image, article cover, large text block, video poster) — you cannot assign it by hand. Inspect it in PageSpeed Insights or the Performance panel.
+**Definition:**
+
+LCP is the time from navigation start until the **largest content element in the viewport** is painted. The browser picks the element (hero image, article cover, large text block, video poster) — you cannot assign it by hand. Inspect it in PageSpeed Insights or the Performance panel.
 
 Good: **≤ 2.5 s**. Poor: **> 4 s**. Field “pass” is p75 (see [Core Web Vitals](#core-web-vitals)). Until that paint, the user cannot tell they landed on the right page; slow LCP raises bounce risk.
 
-**How it works:** Google splits LCP into four consecutive sub-parts (no gaps). On a **well-optimized** page the *typical* share is ~40% TTFB, &lt;10% resource load delay, ~40% resource load duration, &lt;10% element render delay — real sites vary; fix the slice that is large in *your* attribution (`web-vitals/attribution`: `timeToFirstByte`, `resourceLoadDelay`, `resourceLoadDuration`, `elementRenderDelay`).
+**How it works:**
+
+Google splits LCP into four consecutive sub-parts (no gaps). On a **well-optimized** page the *typical* share is ~40% TTFB, &lt;10% resource load delay, ~40% resource load duration, &lt;10% element render delay — real sites vary; fix the slice that is large in *your* attribution (`web-vitals/attribution`: `timeToFirstByte`, `resourceLoadDelay`, `resourceLoadDuration`, `elementRenderDelay`).
 
 | Sub-part | What it is | Typical share (optimized) |
 | -------- | ---------- | -------------------------- |
@@ -3969,16 +4050,9 @@ Good: **≤ 2.5 s**. Poor: **> 4 s**. Field “pass” is p75 (see [Core Web Vit
 
 Text-only LCP (no extra file) has **no** resource delay/duration — only TTFB + render delay.
 
-**Cases:** Product hero, article cover, marketing landing. Confirm the weak slice with CrUX / attribution before shrinking files “just in case.”
+Extra redirects, slow origin, no CDN/cache on HTML. Details: [TTFB](#ttfb-time-to-first-byte). Until the first byte, the browser cannot parse or discover the LCP URL.
 
-| + | − |
-| --- | --- |
-| Maps to a visible “main content” moment | LCP element changes with viewport / cache |
-| Four named slices for tickets | Lab cold cache ≠ field warm cache |
-
-**TTFB:** Extra redirects, slow origin, no CDN/cache on HTML. Details: [TTFB](#ttfb-time-to-first-byte). Until the first byte, the browser cannot parse or discover the LCP URL.
-
-**Resource load delay:** Put the LCP image in HTML as `<img src>` so the preload scanner finds it — not JS-injected, not `data-src`. Do **not** use `loading="lazy"` on it. Set `fetchpriority="high"` on **1–2** resources (in-viewport images otherwise start Low until layout). Cross-origin: `<link rel="preconnect">`, or same origin. CSS `background-image` is discovered only after CSS — prefer `<img>`, or preload:
+Put the LCP image in HTML as `<img src>` so the preload scanner finds it — not JS-injected, not `data-src`. Do **not** use `loading="lazy"` on it. Set `fetchpriority="high"` on **1–2** resources (in-viewport images otherwise start Low until layout). Cross-origin: `<link rel="preconnect">`, or same origin. CSS `background-image` is discovered only after CSS — prefer `<img>`, or preload:
 
 ```html
 <link rel="preload" as="image" href="hero.avif" fetchpriority="high" />
@@ -3993,9 +4067,9 @@ Text-only LCP (no extra file) has **no** resource delay/duration — only TTFB +
 
 Next.js: `priority` on `next/image` disables lazy loading and raises fetch priority; in **Next.js 16** prefer `preload` (`priority` is deprecated). → [4_nextjs.md](./4_nextjs.md#core-web-vitals-on-vercel).
 
-**Resource load duration:** Photos → raster **AVIF → WebP → JPEG** via `<picture>`, not SVG. Serve `srcset`/`sizes`. Image CDNs can pick format/size from Client Hints / UA. Long `Cache-Control` on static files; sort/strip cache-busting query junk; avoid `Set-Cookie` on cacheable responses. Demote competing work: `fetchpriority="low"` on non-LCP carousel slides; `defer`/`async` third-party scripts. Tiny icons: `data:` URL or **inline `<svg>`** (SVGO); base64 is ~⅓ larger and shares the document cache — not for heroes. Field data often shows TTFB/delays dominate — check before encoding marathons.
+Photos → raster **AVIF → WebP → JPEG** via `<picture>`, not SVG. Serve `srcset`/`sizes`. Image CDNs can pick format/size from Client Hints / UA. Long `Cache-Control` on static files; sort/strip cache-busting query junk; avoid `Set-Cookie` on cacheable responses. Demote competing work: `fetchpriority="low"` on non-LCP carousel slides; `defer`/`async` third-party scripts. Tiny icons: `data:` URL or **inline `<svg>`** (SVGO); base64 is ~⅓ larger and shares the document cache — not for heroes. Field data often shows TTFB/delays dominate — check before encoding marathons.
 
-**Element render delay:** Shrink render-blocking CSS (critical inline, Coverage for unused). Avoid sync JS in `<head>` (`defer`/`async` or end of `body`). SSR/SSG so the LCP node is in the first HTML. Long Tasks after the image arrives delay paint. Text LCP: `font-display: swap` + preload the critical font.
+Shrink render-blocking CSS (critical inline, Coverage for unused). Avoid sync JS in `<head>` (`defer`/`async` or end of `body`). SSR/SSG so the LCP node is in the first HTML. Long Tasks after the image arrives delay paint. Text LCP: `font-display: swap` + preload the critical font.
 
 Async non-critical CSS (FOUC risk):
 
@@ -4009,10 +4083,38 @@ Async non-critical CSS (FOUC risk):
 <noscript><link rel="stylesheet" href="non-critical.css" /></noscript>
 ```
 
-**Example:**
+[Speculation Rules](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/speculationrules) can prerender a likely next URL so LCP on that navigation is near-zero (similar to **bfcache** restore). Chromium-only at writing; Safari/Firefox lag. `eagerness`: `immediate` / `eager` / `moderate` / `conservative` — earlier speculation wastes more if the user never clicks.
 
-<details>
-  <summary>Code</summary>
+```html
+<script type="speculationrules">
+  {
+    "prerender": [
+      { "where": { "href_matches": "/*" }, "eagerness": "moderate" }
+    ]
+  }
+</script>
+```
+
+**When to use:**
+
+Product hero, article cover, marketing landing. Confirm the weak slice with CrUX / attribution before shrinking files “just in case.”
+
+#### Common pitfalls
+
+- `loading="lazy"` or JS/`data-src` on the hero (preload scanner never sees a real `src`).
+- `fetchpriority="high"` on many assets (the signal becomes noise).
+- CSS-only hero with no `preload`.
+- Preloading everything and starving the real LCP request.
+- Optimizing file size when attribution shows TTFB or render delay.
+
+**Pluses and minuses:**
+
+| + | − |
+| --- | --- |
+| Maps to a visible “main content” moment | LCP element changes with viewport / cache |
+| Four named slices for tickets | Lab cold cache ≠ field warm cache |
+
+**Examples:**
 
 ```html
 <img
@@ -4038,33 +4140,13 @@ Async non-critical CSS (FOUC risk):
 </picture>
 ```
 
-</details>
-
-**Deeper (MPA):** [Speculation Rules](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/speculationrules) can prerender a likely next URL so LCP on that navigation is near-zero (similar to **bfcache** restore). Chromium-only at writing; Safari/Firefox lag. `eagerness`: `immediate` / `eager` / `moderate` / `conservative` — earlier speculation wastes more if the user never clicks.
-
-```html
-<script type="speculationrules">
-  {
-    "prerender": [
-      { "where": { "href_matches": "/*" }, "eagerness": "moderate" }
-    ]
-  }
-</script>
-```
-
-**Common pitfalls:**
-
-- `loading="lazy"` or JS/`data-src` on the hero (preload scanner never sees a real `src`).
-- `fetchpriority="high"` on many assets (the signal becomes noise).
-- CSS-only hero with no `preload`.
-- Preloading everything and starving the real LCP request.
-- Optimizing file size when attribution shows TTFB or render delay.
-
-**Key idea:** You do not pick the LCP node — you make whatever the browser chose appear fast by cutting TTFB, discovery delay, bytes, then main-thread/CSS/font wait.
+**Thoughts:** You do not pick the LCP node — you make whatever the browser chose appear fast by cutting TTFB, discovery delay, bytes, then main-thread/CSS/font wait.
 
 **See also:** [Core Web Vitals](#core-web-vitals) · [TTFB](#ttfb-time-to-first-byte) · [FCP](#first-contentful-paint-fcp) · [INP](#inp-interaction-to-next-paint) · HTML → [1_html.md](./1_html.md#core-web-vitals--html-developer-impact) · [img](./1_html.md#img-element-and-responsive-images) · [DevTools](./11_vsc_browser.md#devtools--core-web-vitals)
 
-**Source:** [web.dev — Optimize LCP](https://web.dev/articles/optimize-lcp) · [web.dev — LCP](https://web.dev/articles/lcp) · [web.dev — Fetch Priority](https://web.dev/articles/fetch-priority)
+**Sources:**
+
+[web.dev — Optimize LCP](https://web.dev/articles/optimize-lcp) · [web.dev — LCP](https://web.dev/articles/lcp) · [web.dev — Fetch Priority](https://web.dev/articles/fetch-priority)
 
 ---
 
@@ -4084,44 +4166,43 @@ Async non-critical CSS (FOUC risk):
 - Score at the **75th percentile**, mobile and desktop separately. **Good:** ≤ 1.8 s. **Needs improvement:** 1.8–3 s. **Poor:** > 3 s.
 - A good FCP can still leave the user waiting: the main content (**LCP**) and input snappiness (**INP**) may arrive much later.
 
-**Cases:** Long white screen. When LCP is bad, FCP tells you “nothing painted yet” vs “wrong largest element.” Same early levers as LCP/TTFB.
+- Cut render-blocking CSS/JS; minify CSS; drop unused CSS.
+- Lower TTFB; add `<link rel="preconnect">` (DNS + TCP + TLS); remove extra redirects.
+- `<link rel="preload">` for files needed for first paint; optimize fonts (`font-display`, subset unused glyphs).
+- Smaller page weight; HTTP caching.
+
+**When to use:**
+
+Long white screen. When LCP is bad, FCP tells you “nothing painted yet” vs “wrong largest element.” Same early levers as LCP/TTFB.
+
+#### Common pitfalls
+
+- Calling FCP a Core Web Vital or treating it as “page ready.”
+- Optimizing a splash logo so FCP looks good while LCP stays late.
+
+**Pluses and minuses:**
 
 | + | − |
 | --- | --- |
 | Earliest user-visible load signal | Not Core Web Vitals / not ranking |
 | Shares the critical path with LCP | First logo or line of text ≠ usable page |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 import { onFCP } from 'web-vitals';
 onFCP(console.log);
 ```
 
-</details>
-
 Prefer `web-vitals` over a raw `PerformanceObserver` on `paint`: field FCP also handles background tabs, bfcache restores, iframes, and prerender (`activationStart`).
 
-**How to improve first paint:**
-
-- Cut render-blocking CSS/JS; minify CSS; drop unused CSS.
-- Lower TTFB; add `<link rel="preconnect">` (DNS + TCP + TLS); remove extra redirects.
-- `<link rel="preload">` for files needed for first paint; optimize fonts (`font-display`, subset unused glyphs).
-- Smaller page weight; HTTP caching.
-
-**Common pitfalls:**
-
-- Calling FCP a Core Web Vital or treating it as “page ready.”
-- Optimizing a splash logo so FCP looks good while LCP stays late.
-
-**Key idea:** FCP = first content pixels. Fix TTFB and blocking resources; still measure LCP and INP.
+**Thoughts:** FCP = first content pixels. Fix TTFB and blocking resources; still measure LCP and INP.
 
 **See also:** [Core Web Vitals](#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [TTFB](#ttfb-time-to-first-byte) · [INP](#inp-interaction-to-next-paint) · [preload, prefetch, preconnect](#preload-prefetch-preconnect--prerender) · [HTML — first paint](./1_html.md#what-happens-on-first-page-render)
 
-**Source:** [web.dev — FCP](https://web.dev/articles/fcp) · [web.dev — Vitals](https://web.dev/articles/vitals)
+**Sources:**
+
+[web.dev — FCP](https://web.dev/articles/fcp) · [web.dev — Vitals](https://web.dev/articles/vitals)
 
 ---
 
@@ -4134,7 +4215,9 @@ Prefer `web-vitals` over a raw `PerformanceObserver` on `paint`: field FCP also 
 
 **Definition:** TTFB is the time from starting navigation until the browser receives the **first byte** of the response. It is a **diagnostic** metric (not a Core Web Vital) for connection setup and origin/CDN responsiveness.
 
-**How it works:** TTFB is the sum of:
+**How it works:**
+
+TTFB is the sum of:
 
 - redirects (each 301/302 is another round trip);
 - service worker startup, if one controls the page;
@@ -4166,17 +4249,22 @@ Measure in PageSpeed Insights, DevTools **Network** (Waiting / TTFB), `web-vital
 - **103 Early Hints:** while the origin prepares the final response, send `Link` hints so the browser can start critical assets. Some CDNs (e.g. Cloudflare) emit 103 before origin HTML exists. Adoption is still uneven.
 - Origin health (memory, runtime). Break down origin time with `Server-Timing`; those marks show up in the browser via **Navigation Timing** (`PerformanceNavigationTiming`).
 
-**Cases:** Slow LCP with a late document; users far from origin; SSR that waits on DB/API before sending any HTML.
+**When to use:**
+
+Slow LCP with a late document; users far from origin; SSR that waits on DB/API before sending any HTML.
+
+#### Common pitfalls
+
+Unique analytics query params bypassing CDN cache. Extra 301/302 hops. Edge SSR next to a distant database (worse TTFB than regional Node). Assuming cached personalized HTML is safe. Treating TTFB as a substitute for LCP.
+
+**Pluses and minuses:**
 
 | + | − |
 | --- | --- |
 | Explains stalled FCP/LCP before parse | Not a Core Web Vital; chasing TTFB alone misses JS/images |
 | Attribution splits DNS vs connect vs request | 103 Early Hints can make “first byte” the interim response, not final HTML |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 import { onTTFB } from 'web-vitals';
@@ -4192,21 +4280,19 @@ onTTFB((metric) => {
 });
 ```
 
-</details>
-
 ```http
 Server-Timing: db;dur=53, app;dur=47.2;desc="render"
 103 Early Hints
 Link: </hero.webp>; rel=preload; as=image
 ```
 
-**Common pitfalls:** Unique analytics query params bypassing CDN cache. Extra 301/302 hops. Edge SSR next to a distant database (worse TTFB than regional Node). Assuming cached personalized HTML is safe. Treating TTFB as a substitute for LCP.
-
-**Key idea:** First byte unblocks parse. Fix CDN, redirects, and origin work — then still optimize LCP after HTML starts.
+**Thoughts:** First byte unblocks parse. Fix CDN, redirects, and origin work — then still optimize LCP after HTML starts.
 
 **See also:** [Core Web Vitals](#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [FCP](#first-contentful-paint-fcp) · [INP](#inp-interaction-to-next-paint) · [CDN](#cdn-content-delivery-network)
 
-**Source:** [web.dev — TTFB](https://web.dev/articles/ttfb) · [web.dev — Optimize TTFB](https://web.dev/articles/optimize-ttfb) · [web-vitals `onTTFB`](https://github.com/GoogleChrome/web-vitals) · [MDN — Server-Timing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing) · [MDN — 103 Early Hints](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103)
+**Sources:**
+
+[web.dev — TTFB](https://web.dev/articles/ttfb) · [web.dev — Optimize TTFB](https://web.dev/articles/optimize-ttfb) · [web-vitals `onTTFB`](https://github.com/GoogleChrome/web-vitals) · [MDN — Server-Timing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing) · [MDN — 103 Early Hints](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103)
 
 ---
 
@@ -4217,7 +4303,9 @@ Link: </hero.webp>; rel=preload; as=image
 
 ### INP (Interaction to Next Paint)
 
-**Definition:** Field metric for responsiveness: time from a click, tap, or key press until the browser paints the next frame that can show a visible response. **Good** ≤ 200 ms, **needs improvement** ≤ 500 ms, **poor** > 500 ms — at the **75th percentile** of page views, mobile and desktop separately.
+**Definition:**
+
+Field metric for responsiveness: time from a click, tap, or key press until the browser paints the next frame that can show a visible response. **Good** ≤ 200 ms, **needs improvement** ≤ 500 ms, **poor** > 500 ms — at the **75th percentile** of page views, mobile and desktop separately.
 
 INP does **not** wait for network or later async UI. It measures how long the **next paint is blocked**. Slow feedback looks like the action failed (double-add to cart, abandoned checkout).
 
@@ -4235,7 +4323,7 @@ Three phases (sum = interaction latency):
 | **Processing duration** | Handlers + other sync work | Heavy click handlers, large React commit |
 | **Presentation delay** | Handlers done → updated frame | Layout/paint, third-party JS, huge DOM |
 
-**INP vs FID:** FID (Core Vital until **March 2024**) measured only the **first** interaction and only **input delay**. INP replaced it: all clicks/taps/keys, full path to next paint. Lab Lighthouse with no user reports **TBT**, not INP.
+FID (Core Vital until **March 2024**) measured only the **first** interaction and only **input delay**. INP replaced it: all clicks/taps/keys, full path to next paint. Lab Lighthouse with no user reports **TBT**, not INP.
 
 What makes INP worse:
 
@@ -4245,35 +4333,7 @@ What makes INP worse:
 - Large / deep DOM (Lighthouse warns ~800 nodes, severe ~1400).
 - Client `innerHTML` of big markup (one long parse/insert; preload scanner misses nested resources → also LCP).
 
-**Cases:** Search, cart, checkout, filters, autocomplete. Measure field first (`web-vitals` attribution: `inputDelay`, `processingDuration`, `presentationDelay`).
-
-| + | − |
-| --- | --- |
-| Matches post-load UX (most of the session) | No INP if nobody clicked/tapped/typed |
-| Attribution names control + phase | Lab INP depends on which clicks you perform |
-| Shared language with SEO | Scroll/hover jank is out of scope |
-
-**Fix order — ship less JS first.** Parse + execute happens on the main thread. Big bundles hurt INP and can delay LCP.
-
-1. **Measure** — `webpack-bundle-analyzer` / `@next/bundle-analyzer`.
-2. **Code split** — per route; `import()` / `React.lazy` / `next/dynamic` for charts, editors, modals. See [10_build.md](./10_build.md#code-splitting).
-3. **Tree-shake** — named ESM (`lodash-es`, `date-fns`), not `import _ from 'lodash'` / Moment. [10_build.md](./10_build.md#tree-shaking).
-4. **Barrel files** — `export *` from `index.ts` can pull a whole UI kit. Next: [`optimizePackageImports`](./4_nextjs.md#optimizepackageimports) (Next docs still mark it experimental; Turbopack often analyzes imports itself).
-5. **Server work** — RSC instead of client Markdown, etc. Best JS is JS never sent. Then lighter libs, Brotli, CI bundle budget.
-
-Other techniques:
-
-- Debounce `input`; throttle `scroll`/`resize`.
-- Abort stale `fetch` with `AbortController` — [3_js_async.md](./3_js_async.md#abortcontroller).
-- Prefer one-shot `setTimeout` over leftover `setInterval`; move heavy timer work to a Worker.
-- Animate `transform`/`opacity` in CSS; JS on `width`/`top`/`box-shadow` forces layout — [2_css.md](./2_css.md).
-- Batch DOM: **all reads, then all writes**.
-- Smaller DOM: fragments, flatter trees, don’t render hidden tabs until needed; `content-visibility: auto` — [2_css.md](./2_css.md#contain--content-visibility).
-- Cheaper selectors (long chains cost more style recalc on a big DOM).
-- Smaller JS files (~100 KB as a rule of thumb); `type="module"` parses as separate chunks so input can run between them.
-- `touch-action: manipulation` on buttons — skips the historical ~300 ms double-tap-zoom wait.
-
-**React:** `useTransition` / `useDeferredValue` mark heavy updates as non-urgent. Split hydration with `<Suspense>`; RSC skip hydration. React **19.2** `<Activity mode="hidden">` keeps state/DOM, tears down Effects, hides with `display: none`. Details — [4_react.md](./4_react.md#web-vitals-in-react-apps).
+`useTransition` / `useDeferredValue` mark heavy updates as non-urgent. Split hydration with `<Suspense>`; RSC skip hydration. React **19.2** `<Activity mode="hidden">` keeps state/DOM, tears down Effects, hides with `display: none`. Details — [4_react.md](./4_react.md#web-vitals-in-react-apps).
 
 **Yield long work** after paint-critical UI. `scheduler.yield()` (Chrome 129+, Firefox 142+; **not Safari**) continues with Scheduler priority; `setTimeout(0)` goes to the end of the macrotask queue. Do **not** rely on `navigator.scheduling.isInputPending()` (can be `false` after a click).
 
@@ -4306,20 +4366,51 @@ async function runJobs(jobQueue, deadline = 50) {
 
 Web Workers for **pure** CPU (sort, parse) — no DOM. Comlink wraps `postMessage`; large payloads: transfer `ArrayBuffer`.
 
-**Third-party / tag managers:** often dominate presentation delay. Workers cannot run GTM as-is (needs DOM). **Partytown** proxies DOM to the main thread; Next `next/script` `strategy="worker"` needs `experimental.nextScriptWorkers`. Prefer `lazyOnload`; drop unused tags. Tag cost: pixels (HTTP only) < custom templates < Custom HTML (layout). Keep the GTM container small (hard cap 300 KB). Facade for embeds (`lite-youtube-embed`); `loading="lazy"` + `width`/`height` on iframes (CLS).
+often dominate presentation delay. Workers cannot run GTM as-is (needs DOM). **Partytown** proxies DOM to the main thread; Next `next/script` `strategy="worker"` needs `experimental.nextScriptWorkers`. Prefer `lazyOnload`; drop unused tags. Tag cost: pixels (HTTP only) < custom templates < Custom HTML (layout). Keep the GTM container small (hard cap 300 KB). Facade for embeds (`lite-youtube-embed`); `loading="lazy"` + `width`/`height` on iframes (CLS).
 
-**Example:**
+**When to use:**
 
-<details>
-  <summary>Code</summary>
+Search, cart, checkout, filters, autocomplete. Measure field first (`web-vitals` attribution: `inputDelay`, `processingDuration`, `presentationDelay`).
+
+**Fix order — ship less JS first.** Parse + execute happens on the main thread. Big bundles hurt INP and can delay LCP.
+
+1. **Measure** — `webpack-bundle-analyzer` / `@next/bundle-analyzer`.
+2. **Code split** — per route; `import()` / `React.lazy` / `next/dynamic` for charts, editors, modals. See [10_build.md](./10_build.md#code-splitting).
+3. **Tree-shake** — named ESM (`lodash-es`, `date-fns`), not `import _ from 'lodash'` / Moment. [10_build.md](./10_build.md#tree-shaking).
+4. **Barrel files** — `export *` from `index.ts` can pull a whole UI kit. Next: [`optimizePackageImports`](./4_nextjs.md#optimizepackageimports) (Next docs still mark it experimental; Turbopack often analyzes imports itself).
+5. **Server work** — RSC instead of client Markdown, etc. Best JS is JS never sent. Then lighter libs, Brotli, CI bundle budget.
+
+Other techniques:
+
+- Debounce `input`; throttle `scroll`/`resize`.
+- Abort stale `fetch` with `AbortController` — [3_js_async.md](./3_js_async.md#abortcontroller).
+- Prefer one-shot `setTimeout` over leftover `setInterval`; move heavy timer work to a Worker.
+- Animate `transform`/`opacity` in CSS; JS on `width`/`top`/`box-shadow` forces layout — [2_css.md](./2_css.md).
+- Batch DOM: **all reads, then all writes**.
+- Smaller DOM: fragments, flatter trees, don’t render hidden tabs until needed; `content-visibility: auto` — [2_css.md](./2_css.md#contain--content-visibility).
+- Cheaper selectors (long chains cost more style recalc on a big DOM).
+- Smaller JS files (~100 KB as a rule of thumb); `type="module"` parses as separate chunks so input can run between them.
+- `touch-action: manipulation` on buttons — skips the historical ~300 ms double-tap-zoom wait.
+
+#### Common pitfalls
+
+Yield/Workers before cutting unused JS. Treating FID or TBT as INP. Counting scroll/hover as INP. `isInputPending()` instead of yielding. GTM Custom HTML for above-the-fold UI. Duplicate tags in HTML **and** the tag manager.
+
+**Pluses and minuses:**
+
+| + | − |
+| --- | --- |
+| Matches post-load UX (most of the session) | No INP if nobody clicked/tapped/typed |
+| Attribution names control + phase | Lab INP depends on which clicks you perform |
+| Shared language with SEO | Scroll/hover jank is out of scope |
+
+**Examples:**
 
 ```tsx
 import dynamic from 'next/dynamic';
 
 const HeavyChart = dynamic(() => import('./heavy-chart'), { ssr: false });
 ```
-
-</details>
 
 ```js
 let controller;
@@ -4347,13 +4438,13 @@ boxes.forEach((box, i) => {
 });
 ```
 
-**Common pitfalls:** Yield/Workers before cutting unused JS. Treating FID or TBT as INP. Counting scroll/hover as INP. `isInputPending()` instead of yielding. GTM Custom HTML for above-the-fold UI. Duplicate tags in HTML **and** the tag manager.
-
-**Key idea:** Paint a response **now** (spinner, optimistic UI); keep the main thread free of long JS.
+**Thoughts:** Paint a response **now** (spinner, optimistic UI); keep the main thread free of long JS.
 
 **See also:** [Core Web Vitals](#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [4_react.md — Web Vitals](./4_react.md#web-vitals-in-react-apps) · [4_nextjs.md — CWV](./4_nextjs.md#core-web-vitals-on-vercel)
 
-**Source:** [web.dev — INP](https://web.dev/articles/inp) · [web.dev — Optimize long tasks](https://web.dev/articles/optimize-long-tasks) · [MDN — Scheduler.yield](https://developer.mozilla.org/en-US/docs/Web/API/Scheduler/yield) · [React `<Activity>`](https://react.dev/reference/react/Activity)
+**Sources:**
+
+[web.dev — INP](https://web.dev/articles/inp) · [web.dev — Optimize long tasks](https://web.dev/articles/optimize-long-tasks) · [MDN — Scheduler.yield](https://developer.mozilla.org/en-US/docs/Web/API/Scheduler/yield) · [React `<Activity>`](https://react.dev/reference/react/Activity)
 
 ---
 
@@ -4364,7 +4455,9 @@ boxes.forEach((box, i) => {
 
 ### preload, prefetch, preconnect & prerender
 
-**Definition:** Resource hints tell the browser to fetch or connect early, speeding up current or future navigation.
+**Definition:**
+
+Resource hints tell the browser to fetch or connect early, speeding up current or future navigation.
 
 | Hint         | When              | Purpose                          |
 | ------------ | ----------------- | -------------------------------- |
@@ -4373,10 +4466,7 @@ boxes.forEach((box, i) => {
 | `preconnect` | Early             | DNS + TCP + TLS to origin        |
 | `prerender`  | Future page       | Render entire page in background |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <link rel="preload" href="/app.js" as="script">
@@ -4384,9 +4474,9 @@ boxes.forEach((box, i) => {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 ```
 
-</details>
+**Sources:**
 
-**Source:** [MDN — rel=preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload)
+[MDN — rel=preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload)
 
 ---
 
@@ -4397,7 +4487,9 @@ boxes.forEach((box, i) => {
 
 ### PRPL pattern
 
-**Definition:** PRPL (Push, Render, Pre-cache, Lazy-load) is a performance pattern for fast interactive web apps.
+**Definition:**
+
+PRPL (Push, Render, Pre-cache, Lazy-load) is a performance pattern for fast interactive web apps.
 
 | Step      | Goal                           |
 | --------- | ------------------------------ |
@@ -4406,10 +4498,7 @@ boxes.forEach((box, i) => {
 | Pre-cache | Cache likely-needed assets     |
 | Lazy-load | Defer non-critical code/assets |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!-- Push critical route -->
@@ -4418,9 +4507,9 @@ boxes.forEach((box, i) => {
 <img loading="lazy" src="/gallery/photo-9.jpg">
 ```
 
-</details>
+**Sources:**
 
-**Source:** [web.dev — PRPL pattern](https://web.dev/articles/apply-instant-loading-with-prpl)
+[web.dev — PRPL pattern](https://web.dev/articles/apply-instant-loading-with-prpl)
 
 ---
 
@@ -4445,18 +4534,23 @@ boxes.forEach((box, i) => {
 - **Analytics:** load the vendor script `async`; send events after consent (GDPR). Prefer server-side events for revenue so ad-blockers do not drop conversions.
 - **SDKs:** wrap in an adapter (`lib/payments.ts`) so swapping vendors does not leak into UI. Lazy-load heavy SDKs (`next/dynamic`) so they do not hurt INP/LCP.
 
-| Pros                                          | Cons                                        |
+**When to use:**
+
+SaaS checkout, marketing funnels, “Sign in with Google.” Skip loading analytics on the first paint of a landing hero if LCP is the goal.
+
+#### Common pitfalls
+
+Putting secret keys in the browser. Trusting client-reported `amount`. Blocking render on `gtag.js`. Skipping webhook signature checks.
+
+**Pluses and minuses:**
+
+| +                                          | −                                        |
 | --------------------------------------------- | ------------------------------------------- |
 | PCI / tracking compliance is the vendor's job | Script size, privacy, and CSP `script-src`  |
 | Webhooks keep your DB in sync                 | Webhook signature verification is mandatory |
 | Faster than building billing yourself         | Vendor lock-in and sandbox vs live keys     |
 
-**Cases:** SaaS checkout, marketing funnels, “Sign in with Google.” Skip loading analytics on the first paint of a landing hero if LCP is the goal.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 // Server — confirm after webhook, never trust the client amount alone
@@ -4470,13 +4564,11 @@ export async function POST(req: Request) {
 }
 ```
 
-</details>
+**Thoughts:** Client SDK for UX; server + signed webhooks for truth.
 
-**Common pitfalls:** Putting secret keys in the browser. Trusting client-reported `amount`. Blocking render on `gtag.js`. Skipping webhook signature checks.
+**Sources:**
 
-**Key idea:** Client SDK for UX; server + signed webhooks for truth.
-
-**Source:** [Stripe webhooks](https://docs.stripe.com/webhooks) · [web.dev third-party](https://web.dev/articles/optimizing-content-efficiency-loading-third-party-javascript)
+[Stripe webhooks](https://docs.stripe.com/webhooks) · [web.dev third-party](https://web.dev/articles/optimizing-content-efficiency-loading-third-party-javascript)
 
 ---
 
@@ -4555,9 +4647,9 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 HTTP sits at the **application layer** — it assumes TCP (reliable delivery) and IP (routing) below it.
 
-**Cases:** Interview answer: "HTTP is application layer on top of TCP." TLS encrypts at presentation/session in OSI terms but is usually drawn between HTTP and TCP.
+**When to use:** Interview answer: "HTTP is application layer on top of TCP." TLS encrypts at presentation/session in OSI terms but is usually drawn between HTTP and TCP.
 
-**Source:** [OSI & TCP/IP models](#osi--tcpip-models) · [MDN — How the Internet works](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work)
+**Sources:** [OSI & TCP/IP models](#osi--tcpip-models) · [MDN — How the Internet works](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work)
 
 ---
 
@@ -4572,11 +4664,11 @@ HTTP sits at the **application layer** — it assumes TCP (reliable delivery) an
 
 **How it works:** File or page → split into packets → each packet is forwarded toward the dest IP → the dest kernel demuxes by **port** to a service → bytes are reassembled. Inspect with `ping`, `ip addr`/`ifconfig`, `ss`/`netstat`; capture with tcpdump/Wireshark. Full notes: [How the Internet works](#how-the-internet-works) · [Ports, sockets & network services](#ports-sockets--network-services).
 
-**Cases:** Interview: “What happens when I type a URL?” Answer DNS → TCP → TLS → HTTP, not “packets go to DNS and DNS rewrites them.”
+**When to use:** Interview: “What happens when I type a URL?” Answer DNS → TCP → TLS → HTTP, not “packets go to DNS and DNS rewrites them.”
 
-**Key idea:** *Addressing and NAT differ; the packet model does not.*
+**Thoughts:** *Addressing and NAT differ; the packet model does not.*
 
-**Source:** [How the Internet works](#how-the-internet-works)
+**Sources:** [How the Internet works](#how-the-internet-works)
 
 ---
 
@@ -4604,11 +4696,11 @@ HTTP sits at the **application layer** — it assumes TCP (reliable delivery) an
 
 **How it works:** Compress zeros with `::` once. In URLs wrap literals: `https://[2001:db8::1]:443/`. Prefix `/64` is one LAN. Loopback `::1`. Docs: `2001:db8::/32`, `3fff::/20`. Public GUA is in `2000::/3`. Enable a site: listen on IPv6 + static address + AAAA.
 
-**Cases:** “Why WebRTC needs TURN on IPv4” (NAT); “why mobile users hit IPv6”; “why a bad AAAA hurts IPv6-only networks.”
+**When to use:** “Why WebRTC needs TURN on IPv4” (NAT); “why mobile users hit IPv6”; “why a bad AAAA hurts IPv6-only networks.”
 
-**Key idea:** Dual-stack = A + AAAA + a server that actually answers on both.
+**Thoughts:** Dual-stack = A + AAAA + a server that actually answers on both.
 
-**Source:** [IPv4 & IPv6](#ipv4--ipv6)
+**Sources:** [IPv4 & IPv6](#ipv4--ipv6)
 
 ---
 
@@ -4623,11 +4715,11 @@ HTTP sits at the **application layer** — it assumes TCP (reliable delivery) an
 
 **How it works:** Scheme selects the protocol (`https`, `mailto`). Host is looked up by DNS. Default ports (80 / 443) are omitted. `?` starts query pairs (`&`-separated). `#` is a client fragment — not on the HTTP request. Relative URLs inherit the current origin.
 
-**Cases:** Address bar; `<a href>`; REST paths vs `?page=2`; in-page `#id`.
+**When to use:** Address bar; `<a href>`; REST paths vs `?page=2`; in-page `#id`.
 
-**Key idea:** Query is extra input to the server; hash never leaves the browser.
+**Thoughts:** Query is extra input to the server; hash never leaves the browser.
 
-**Source:** [URI, URL & URN](#uri-url--urn)
+**Sources:** [URI, URL & URN](#uri-url--urn)
 
 ---
 
@@ -4647,11 +4739,11 @@ HTTP sits at the **application layer** — it assumes TCP (reliable delivery) an
 | RPC   | Request holds the action *and* its data (`method` + `params` + `id`)        | Structure, JSON, good batches  | Logic on client; no HTTP cache         |
 | tRPC  | TS procedures inferred from `AppRouter`; query GET / mutation POST          | End-to-end types, no codegen   | TS-to-TS; not a public resource API    |
 
-**Cases:** REST for public CRUD and caching. SOAP for legacy enterprise. JSON-RPC when you want procedure calls / batches. tRPC when client and server share TypeScript.
+**When to use:** REST for public CRUD and caching. SOAP for legacy enterprise. JSON-RPC when you want procedure calls / batches. tRPC when client and server share TypeScript.
 
-**Notes:** Full compare: [REST vs SOAP vs RPC](#5-rest-vs-soap-vs-rpc) · [tRPC](#6-trpc) · [XML](#xml). Don’t treat SOAP as “the opposite of REST.” JSON-RPC 2.0 success/error are mutually exclusive. tRPC is RPC, not REST — procedure names carry intent.
+**Thoughts:** Full compare: [REST vs SOAP vs RPC](#5-rest-vs-soap-vs-rpc) · [tRPC](#6-trpc) · [XML](#xml). Don’t treat SOAP as “the opposite of REST.” JSON-RPC 2.0 success/error are mutually exclusive. tRPC is RPC, not REST — procedure names carry intent.
 
-**Source:** [Doka — What is an API](https://doka.guide/tools/api/) · [JSON-RPC spec](https://www.jsonrpc.org/specification) · [tRPC — concepts](https://trpc.io/docs/concepts)
+**Sources:** [Doka — What is an API](https://doka.guide/tools/api/) · [JSON-RPC spec](https://www.jsonrpc.org/specification) · [tRPC — concepts](https://trpc.io/docs/concepts)
 
 ---
 
@@ -4666,11 +4758,11 @@ HTTP sits at the **application layer** — it assumes TCP (reliable delivery) an
 
 **How it works:** XML needs one root, closed tags, quoted attributes, optional `<?xml …?>` at the top. Namespaces (`xmlns`) split the same local name into different vocabularies. HTML parsers forgive errors; XML and JSON do not.
 
-**Cases:** XML for SOAP, RSS, SVG files, legacy enterprise. JSON for new APIs. HTML for documents in the browser.
+**When to use:** XML for SOAP, RSS, SVG files, legacy enterprise. JSON for new APIs. HTML for documents in the browser.
 
-**Key idea:** Same tree-shaped markup as HTML, but for data — not for rendering.
+**Thoughts:** Same tree-shaped markup as HTML, but for data — not for rendering.
 
-**Source:** [XML](#xml)
+**Sources:** [XML](#xml)
 
 ---
 
@@ -4697,9 +4789,9 @@ PATCH idempotency depends on server implementation. `TRACE` is safe and idempote
 
 **How it works:** Repeating `PUT /users/1` with the same body leaves the same state. Repeating `POST /users` may create multiple users. Retries on network failure should use idempotent methods or **idempotency keys** on POST.
 
-**Cases:** Use PUT for upsert-by-ID; POST for create; DELETE safe to retry if server treats missing resource as success (204/404).
+**When to use:** Use PUT for upsert-by-ID; POST for create; DELETE safe to retry if server treats missing resource as success (204/404).
 
-**Source:** [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) · [MDN — Idempotent](https://developer.mozilla.org/en-US/docs/Glossary/Idempotent)
+**Sources:** [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) · [MDN — Idempotent](https://developer.mozilla.org/en-US/docs/Glossary/Idempotent)
 
 ---
 
@@ -4714,11 +4806,11 @@ PATCH idempotency depends on server implementation. `TRACE` is safe and idempote
 
 **How it works:** HTTP/1.1 messages = start-line + headers + blank line + optional body. Production servers add modules: TLS, gzip/brotli, reverse proxy, cache. Nginx/Apache/Caddy often sit in front of Node.
 
-**Cases:** `npx serve` / `http-server` for local static files; Nginx for TLS + static + `/api/` proxy.
+**When to use:** `npx serve` / `http-server` for local static files; Nginx for TLS + static + `/api/` proxy.
 
-**Notes:** Full block: [Web server](#web-server) · Compression: [Content-Encoding](#http-compression-content-encoding) · TLS: [HTTPS handshake](#ssltls--https-handshake).
+**Thoughts:** Full block: [Web server](#web-server) · Compression: [Content-Encoding](#http-compression-content-encoding) · TLS: [HTTPS handshake](#ssltls--https-handshake).
 
-**Source:** [MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages) · [Doka — Web server](https://doka.guide/tools/web-server/)
+**Sources:** [MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages) · [Doka — Web server](https://doka.guide/tools/web-server/)
 
 ---
 
@@ -4749,9 +4841,9 @@ PATCH idempotency depends on server implementation. `TRACE` is safe and idempote
 | **500** Internal Server Error               | Server bug                    | Unhandled exception                   |
 | **502/503/504** Gateway/Unavailable/Timeout | Upstream/down/overloaded      | Load balancer, deploy                 |
 
-**Cases:** Return **401** when credentials missing/invalid; **403** when user is known but lacks permission. Use **201** + `Location` on create.
+**When to use:** Return **401** when credentials missing/invalid; **403** when user is known but lacks permission. Use **201** + `Location` on create.
 
-**Source:** [MDN — HTTP status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+**Sources:** [MDN — HTTP status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
 
 ---
 
@@ -4775,11 +4867,11 @@ PATCH idempotency depends on server implementation. `TRACE` is safe and idempote
 | Layered system            | Client may talk through proxies, CDN, gateway                    |
 | Code on demand (optional) | Server may send executable code                                  |
 
-**Cases:** Use **nouns** in paths (`/users/1/orders`), not verbs (`/getOrders`). Return appropriate status codes, not always 200 with `{ error: true }`.
+**When to use:** Use **nouns** in paths (`/users/1/orders`), not verbs (`/getOrders`). Return appropriate status codes, not always 200 with `{ error: true }`.
 
-**Notes:** HATEOAS (hypermedia links in responses) is rare in practice but is the "R" in REST theory.
+**Thoughts:** HATEOAS (hypermedia links in responses) is rare in practice but is the "R" in REST theory.
 
-**Source:** [Roy Fielding — REST](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
+**Sources:** [Roy Fielding — REST](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
 
 ---
 
@@ -4794,7 +4886,7 @@ See **REST → REST versioning & pagination** for full notes.
 
 **Short answer:** Version via URL path (`/v2/`) or `Accept` header. Paginate with **cursor** for feeds (efficient) or **offset** for page numbers (simple). Return `nextCursor` / `Link` headers and bound `limit` (max 100).
 
-**Source:** [RFC 8288 — Web Linking](https://datatracker.ietf.org/doc/html/rfc8288)
+**Sources:** [RFC 8288 — Web Linking](https://datatracker.ietf.org/doc/html/rfc8288)
 
 ---
 
@@ -4820,11 +4912,11 @@ See **REST → REST versioning & pagination** for full notes.
 
 Conditional request: client sends `If-None-Match: "etag"` → server returns **304** with empty body if unchanged.
 
-**Cases:** Static assets with hash in filename → `max-age=31536000, immutable`. API user data → `private, no-store` or short `max-age`. App-level cache (RTK Query) is separate — see [HTTP caching](#7-http).
+**When to use:** Static assets with hash in filename → `max-age=31536000, immutable`. API user data → `private, no-store` or short `max-age`. App-level cache (RTK Query) is separate — see [HTTP caching](#7-http).
 
-**Key idea:** `max-age` *is freshness;* `no-cache` *means revalidate;* `no-store` *means do not write a cache.*
+**Thoughts:** `max-age` *is freshness;* `no-cache` *means revalidate;* `no-store` *means do not write a cache.*
 
-**Source:** [MDN — HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching)
+**Sources:** [MDN — HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching)
 
 ---
 
@@ -4844,16 +4936,16 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 3. Non-simple → `OPTIONS` preflight (`Access-Control-Request-Method` / `Headers`); then the real request.
 4. Credentials need `Allow-Credentials: true` and a **concrete** origin — not `*`.
 
-**Cases:** SPA + API on another origin; curl/Postman have **no** CORS. Full headers and pitfalls → [CORS](#cors).
+**When to use:** SPA + API on another origin; curl/Postman have **no** CORS. Full headers and pitfalls → [CORS](#cors).
 
-**Key idea:** *The server often still receives the request; the browser hides the response from page JS without matching* `Access-Control-*` *headers.*
+**Thoughts:** *The server often still receives the request; the browser hides the response from page JS without matching* `Access-Control-*` *headers.*
 
 | Pros                                             | Cons                                    |
 | ------------------------------------------------ | --------------------------------------- |
 | Protects users from malicious sites reading data | Misconfiguration blocks legitimate SPAs |
 | Explicit server consent                          | Easy to over-allow `*` in dev           |
 
-**Source:** [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
+**Sources:** [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
 
 ---
 
@@ -4868,9 +4960,9 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 
 **How it works:** Authorization Code + PKCE for SPAs → exchange code for `access_token` (API) + `id_token` (identity JWT with `sub`, `email`).
 
-**Cases:** "Sign in with Google" = OIDC. "App reads my calendar" = OAuth2 scopes. Never use Implicit flow for new apps.
+**When to use:** "Sign in with Google" = OIDC. "App reads my calendar" = OAuth2 scopes. Never use Implicit flow for new apps.
 
-**Source:** [OpenID Connect](https://openid.net/connect/)
+**Sources:** [OpenID Connect](https://openid.net/connect/)
 
 ---
 
@@ -4892,9 +4984,9 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 
 **How it works:** Session — cookie holds opaque ID; server loads user. JWT — server verifies signature and `exp` on each request.
 
-**Cases:** Session for monolith web apps. JWT for microservices and mobile. Prefer **HttpOnly cookie** for either when possible.
+**When to use:** Session for monolith web apps. JWT for microservices and mobile. Prefer **HttpOnly cookie** for either when possible.
 
-**Source:** [jwt.io](https://jwt.io/) · [OWASP — Session Management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
+**Sources:** [jwt.io](https://jwt.io/) · [OWASP — Session Management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
 
 ---
 
@@ -4909,9 +5001,9 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 
 **Mitigations:** CSRF token (synchronizer token), `SameSite=Lax/Strict` cookies, require custom headers for API mutations, never change state on GET. `HttpOnly` does not stop CSRF.
 
-**Cases:** Cookie session + form POST → token required. JWT in `Authorization` header only → not CSRF-vulnerable.
+**When to use:** Cookie session + form POST → token required. JWT in `Authorization` header only → not CSRF-vulnerable.
 
-**Source:** [OWASP — CSRF](https://owasp.org/www-community/attacks/csrf)
+**Sources:** [OWASP — CSRF](https://owasp.org/www-community/attacks/csrf)
 
 ---
 
@@ -4926,7 +5018,7 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 
 **Mitigations:** CSP `frame-ancestors 'none'` or `'self'`; `X-Frame-Options: DENY` or `SAMEORIGIN`. Do not use `ALLOW-FROM` (obsolete). XFO is HTTP-header only.
 
-**Source:** [MDN — X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options)
+**Sources:** [MDN — X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options)
 
 ---
 
@@ -4941,7 +5033,7 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 
 **How it works:** Counter per IP/API key in Redis or edge proxy. Client backs off exponentially with jitter.
 
-**Source:** [MDN — 429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429)
+**Sources:** [MDN — 429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429)
 
 ---
 
@@ -4954,10 +5046,7 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 
 **Definition:** `AbortController` cancels in-flight `fetch` — useful for timeouts, debounced search, and React cleanup.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const ac = new AbortController();
@@ -4965,9 +5054,7 @@ fetch('/api/search?q=ab', { signal: ac.signal });
 ac.abort(); // throws AbortError in catch
 ```
 
-</details>
-
-**Source:** [MDN — AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+**Sources:** [MDN — AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
 
 ---
 
@@ -4989,11 +5076,11 @@ ac.abort(); // throws AbortError in catch
 | **Cacheable**  | Yes (by default)               | No                                |
 | **Example**    | `GET /api/users/1`             | `POST /api/users`                 |
 
-**Key idea:** *GET = read (bookmarkable, cacheable); POST = write/action (not idempotent by default).*
+**Thoughts:** *GET = read (bookmarkable, cacheable); POST = write/action (not idempotent by default).*
 
 **See also:** [CRUD & REST mapping](#2-rest) · [PUT vs POST](#put-vs-post)
 
-**Source:** [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
+**Sources:** [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
 
 ---
 
@@ -5020,11 +5107,11 @@ ac.abort(); // throws AbortError in catch
 
 **Frontend ↔ API contract:** Client expects JSON shape; server must match status codes and `Content-Type`.
 
-**Key idea:** *Network errors reject; HTTP errors don't — always check* `res.ok` *and validate JSON shape.*
+**Thoughts:** *Network errors reject; HTTP errors don't — always check* `res.ok` *and validate JSON shape.*
 
 **See also:** [Fetch API](#fetch-api) · [CORS](#cors)
 
-**Source:** [MDN — Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+**Sources:** [MDN — Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 
 ---
 
@@ -5047,9 +5134,9 @@ ac.abort(); // throws AbortError in catch
 | Versioning      | `/v2/` path or `Accept` header                                           |
 | Breaking change | Removing field, changing type, renaming endpoint                         |
 
-**Cases:** Frontend and backend teams agree on `UserDto` before implementation. Codegen keeps types in sync.
+**When to use:** Frontend and backend teams agree on `UserDto` before implementation. Codegen keeps types in sync.
 
-**Key idea:** *Contract = API is a product — version it, document it, validate at boundaries.*
+**Thoughts:** *Contract = API is a product — version it, document it, validate at boundaries.*
 
 **See also:** [REST & RESTful API principles](#2-rest)
 
@@ -5071,9 +5158,9 @@ ac.abort(); // throws AbortError in catch
 | SSE           | Server push over HTTP    | One-way only                   |
 | WebSocket     | Full duplex, low latency | Connection management, proxies |
 
-**Cases:** Chat/games → WebSocket. Live notifications read-only → SSE. Rare updates → polling is fine.
+**When to use:** Chat/games → WebSocket. Live notifications read-only → SSE. Rare updates → polling is fine.
 
-**Source:** [MDN — WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) · [MDN — SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
+**Sources:** [MDN — WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) · [MDN — SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
 
 ---
 
@@ -5090,7 +5177,7 @@ ac.abort(); // throws AbortError in catch
 
 **See:** [Client–server architecture](#client-server-architecture) · [Evolution of web apps](#evolution-of-web-apps) · [0_system_design.md](./0_system_design.md#clientserver-architecture-why-a-backend)
 
-**Source:** [Doka — How web apps work](https://doka.guide/tools/web-app-works/)
+**Sources:** [Doka — How web apps work](https://doka.guide/tools/web-app-works/)
 
 ---
 
@@ -5111,9 +5198,9 @@ ac.abort(); // throws AbortError in catch
 | SSR         | Server HTML, then hydrate   | Instant after boot     |
 | SSG         | Build time                  | Reload or hydrated SPA |
 
-**Notes:** Do not treat PWA as a separate architecture. Install vs offline: [PWA](#pwa-progressive-web-app). Taxonomy: [Types of web apps](#12-types-of-web-apps).
+**Thoughts:** Do not treat PWA as a separate architecture. Install vs offline: [PWA](#pwa-progressive-web-app). Taxonomy: [Types of web apps](#12-types-of-web-apps).
 
-**Source:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/)
+**Sources:** [Doka — Types of web apps](https://doka.guide/tools/web-app-types/)
 
 ---
 
@@ -5132,9 +5219,9 @@ ac.abort(); // throws AbortError in catch
 
 **Cons:** no big PWA catalog; fragmented APIs; iOS WebKit in every browser.
 
-**Notes:** Install/offline are not mandatory for the *official* definition. See [PWA](#pwa-progressive-web-app).
+**Thoughts:** Install/offline are not mandatory for the *official* definition. See [PWA](#pwa-progressive-web-app).
 
-**Source:** [Doka — PWA](https://doka.guide/tools/pwa/) · [web.dev — install criteria](https://web.dev/articles/install-criteria)
+**Sources:** [Doka — PWA](https://doka.guide/tools/pwa/) · [web.dev — install criteria](https://web.dev/articles/install-criteria)
 
 ---
 
@@ -5149,7 +5236,7 @@ ac.abort(); // throws AbortError in catch
 
 **How it works:** Supporting Web Vital (not Core, not ranking). Good ≤ 1.8 s p75; poor > 3 s. Slow FCP usually implies slow LCP (shared TTFB + blocking CSS). INP can still be late.
 
-**Key idea:** Fix first paint with TTFB + render-blocking resources; still measure LCP and INP.
+**Thoughts:** Fix first paint with TTFB + render-blocking resources; still measure LCP and INP.
 
 **See also:** [First Contentful Paint (FCP)](#first-contentful-paint-fcp)
 
@@ -5166,7 +5253,7 @@ ac.abort(); // throws AbortError in catch
 
 **How it works:** Core Web Vital. Good ≤ 2.5 s p75; poor > 4 s. Four slices: TTFB, resource load delay, resource load duration, element render delay. Do not lazy-load the hero; use `fetchpriority="high"` on 1–2 resources.
 
-**Key idea:** Discover the LCP resource in HTML early; then cut TTFB, bytes, and render-blocking CSS/JS.
+**Thoughts:** Discover the LCP resource in HTML early; then cut TTFB, bytes, and render-blocking CSS/JS.
 
 **See also:** [LCP (Largest Contentful Paint)](#lcp-largest-contentful-paint)
 
@@ -5183,7 +5270,7 @@ ac.abort(); // throws AbortError in catch
 
 **How it works:** INP = click/tap/key → next paint for (almost) the worst interaction on the visit (one outlier dropped per 50). Phases: input delay + processing + presentation. Good ≤ 200 ms p75; poor > 500 ms. Lighthouse without a user reports **TBT**, not INP.
 
-**Key idea:** Cut main-thread JS; show UI first, then yield (`scheduler.yield()` + `setTimeout` fallback).
+**Thoughts:** Cut main-thread JS; show UI first, then yield (`scheduler.yield()` + `setTimeout` fallback).
 
 **See also:** [INP (Interaction to Next Paint)](#inp-interaction-to-next-paint)
 
@@ -5200,7 +5287,7 @@ ac.abort(); // throws AbortError in catch
 
 **How it works:** Checkout Session → customer pays → `checkout.session.completed` webhook with `Stripe-Signature` → verify → mark order paid. Use idempotency keys on create.
 
-**Key idea:** Client SDK for UX; webhook for the ledger.
+**Thoughts:** Client SDK for UX; webhook for the ledger.
 
 **See also:** [Payments, analytics & third-party SDKs](#15-integrations)
 
@@ -5217,7 +5304,7 @@ ac.abort(); // throws AbortError in catch
 
 **How it works:** Default Lighthouse has no user → **INP** is missing; **TBT** is only a proxy. Field **CLS** includes scroll and late shifts. Field **LCP** uses real viewports and warm caches. After a fix, wait for the rolling window. Debug in DevTools; ship based on RUM/`web-vitals`.
 
-**Key idea:** Lab = reproduce. Field p75 = users and ranking.
+**Thoughts:** Lab = reproduce. Field p75 = users and ranking.
 
 **See also:** [Core Web Vitals](#core-web-vitals)
 
@@ -5234,7 +5321,7 @@ ac.abort(); // throws AbortError in catch
 
 **How it works:** Ranking uses **CrUX**, not Lighthouse. INP replaced **FID** on 12 Mar 2024 (full click→next paint, all interactions). Same thresholds on phone and desktop; look at both slices.
 
-**Key idea:** LCP = saw main content; INP = UI reacted; CLS = layout stayed put.
+**Thoughts:** LCP = saw main content; INP = UI reacted; CLS = layout stayed put.
 
 **See also:** [Core Web Vitals](#core-web-vitals)
 
@@ -5251,7 +5338,7 @@ ac.abort(); // throws AbortError in catch
 
 **How it works:** Redirects + SW start + DNS + TLS + origin until first byte. No first byte → nothing to parse → FCP/LCP wait. Low TTFB still does not guarantee a good LCP.
 
-**Key idea:** Fix network (CDN, fewer redirects) and origin (stream/SSG/ISR, `Server-Timing`). Then optimize paint.
+**Thoughts:** Fix network (CDN, fewer redirects) and origin (stream/SSG/ISR, `Server-Timing`). Then optimize paint.
 
 **See also:** [TTFB](#ttfb-time-to-first-byte)
 

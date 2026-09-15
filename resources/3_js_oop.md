@@ -21,7 +21,7 @@ Covers objects, prototypes, classes, property descriptors, Proxy/Reflect, `this`
 
 ### Sections
 
-> Theory `<details>` blocks follow: **Definition** · **How it works** · **Cases** · **Pros | Cons** · **Example** · pitfalls where relevant.
+> Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
 - [Objects & references](#objects-references)
 - [Prototypes](#prototypes)
@@ -40,19 +40,20 @@ Topics also covered: **Proxy/Reflect**, **factory & module patterns**, **constru
 
 **Definition:** Primitives are copied by value; objects are copied by reference — the variable holds a pointer to shared memory, not the object itself.
 
-| Pros (reference semantics) | Cons |
+**When to use:**
+
+Understand before `Object.assign`, spread, or passing config objects.
+
+When you need an independent copy — use spread/`Object.assign` (shallow) or `structuredClone` (deep).
+
+**Pluses and minuses:**
+
+| + (reference semantics) | − |
 |----------------------------|------|
 | Efficient passing of large structures | Mutations visible across aliases |
 | Shared state when intended | Accidental mutation bugs |
 
-**When to use:** Understand before `Object.assign`, spread, or passing config objects.
-
-**When NOT to use:** When you need an independent copy — use spread/`Object.assign` (shallow) or `structuredClone` (deep).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const a = { x: 1 };
@@ -65,9 +66,7 @@ c.x = 3;
 console.log(a.x); // 2 — shallow copy, top-level independent
 ```
 
-</details>
-
-**Source:** [javascript.info/object-copy](https://learn.javascript.ru/object-copy)
+**Sources:** [javascript.info/object-copy](https://learn.javascript.ru/object-copy)
 
 <a name="prototypes"></a>
 
@@ -75,17 +74,16 @@ console.log(a.x); // 2 — shallow copy, top-level independent
 
 **Definition:** Every object has an internal `[[Prototype]]` link. Property lookup walks the chain until the property is found or the chain ends at `null`.
 
-| Pros | Cons |
+**When to use:** Shared behavior without duplicating methods; `Object.create` for delegation.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Memory-efficient shared methods | Lookup cost grows with chain depth |
 | Flexible runtime extension | Single inheritance only |
 
-**When to use:** Shared behavior without duplicating methods; `Object.create` for delegation.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const animal = { eats: true };
@@ -96,9 +94,7 @@ console.log(rabbit.eats);  // true — inherited
 console.log(rabbit.jumps); // true — own
 ```
 
-</details>
-
-**Source:** [javascript.info/prototypes](https://learn.javascript.ru/prototypes)
+**Sources:** [javascript.info/prototypes](https://learn.javascript.ru/prototypes)
 
 <a name="classes"></a>
 
@@ -108,20 +104,21 @@ console.log(rabbit.jumps); // true — own
 
 **How it works:** `this` inside a method is the instance the method was called on — so two `History` objects each keep their own `records`. Call without `new` → `TypeError`. Methods live on the prototype (shared); fields are per instance.
 
-| Pros | Cons |
+**When to use:**
+
+Domain models, several instances of the same entity, methods that must not leak (`addRecord`).
+
+Simple data bags — plain objects, factories, or composition may be simpler.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Familiar OOP syntax | Still prototype-based under the hood |
 | `extends` / `super` built-in | TDZ until class is defined |
 | Strict mode by default | Cannot be called without `new` |
 
-**When to use:** Domain models, several instances of the same entity, methods that must not leak (`addRecord`).
-
-**When NOT to use:** Simple data bags — plain objects, factories, or composition may be simpler.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 class User {
@@ -137,9 +134,9 @@ const u = new User('Alice');
 console.log(u.greet()); // 'Hi, Alice'
 ```
 
-</details>
+**Sources:**
 
-**Source:** [javascript.info/class](https://learn.javascript.ru/class) · [Doka — OOP](https://doka.guide/tools/oop/) · [MDN Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+[javascript.info/class](https://learn.javascript.ru/class) · [Doka — OOP](https://doka.guide/tools/oop/) · [MDN Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
 
 ---
 
@@ -160,14 +157,15 @@ console.log(u.greet()); // 'Hi, Alice'
 - Arrow functions ignore these rules — `this` is captured from enclosing lexical scope at creation time.
 - `bind` creates a new function with permanently fixed `this` (and optional partial args).
 
-| Pros | Cons |
-|------|------|
-| Explicit rules once learned | Easy to lose context in callbacks |
-| `bind`/`call` fix context | Arrow `this` surprises in class methods if misused |
+**When to use:**
 
-**Cases:** Class methods as event handlers → arrow class fields or `bind`; borrowing methods → `fn.call(ctx)`; constructors → `new`.
+Class methods as event handlers → arrow class fields or `bind`; borrowing methods → `fn.call(ctx)`; constructors → `new`.
 
-**Common pitfalls:** `const g = obj.method; g()` loses receiver; nested object `obj.inner.method()` binds to `inner`, not `outer`; `setTimeout(obj.method)` without bind.
+Debug class methods passed as callbacks — bind or use arrow class fields.
+
+#### Common pitfalls
+
+`const g = obj.method; g()` loses receiver; nested object `obj.inner.method()` binds to `inner`, not `outer`; `setTimeout(obj.method)` without bind.
 
 | Priority | Rule | `this` value |
 |----------|------|--------------|
@@ -176,14 +174,14 @@ console.log(u.greet()); // 'Hi, Alice'
 | 3 | Method call `obj.method()` | `obj` |
 | 4 | Plain call / lost context | `undefined` (strict) or `globalThis` |
 
-**When to use:** Debug class methods passed as callbacks — bind or use arrow class fields.
+**Pluses and minuses:**
 
-**Key idea:** `this` follows the call site, except arrows which close over the outer `this`. Classes need `this` so `addRecord` updates *this* instance when several exist — see [Constructor injection](#constructor-injection).
+| + | − |
+|------|------|
+| Explicit rules once learned | Easy to lose context in callbacks |
+| `bind`/`call` fix context | Arrow `this` surprises in class methods if misused |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const user = {
@@ -198,9 +196,9 @@ user.greet(); // 'Alice'
 g.call(user); // 'Alice'
 ```
 
-</details>
+**Thoughts:** `this` follows the call site, except arrows which close over the outer `this`. Classes need `this` so `addRecord` updates *this* instance when several exist — see [Constructor injection](#constructor-injection).
 
-**Source:** [javascript.info/bind](https://learn.javascript.ru/bind)
+**Sources:** [javascript.info/bind](https://learn.javascript.ru/bind)
 
 </details>
 
@@ -217,15 +215,13 @@ g.call(user); // 'Alice'
 - Property access: own keys first, then prototype chain lookup for reads; writes always create/change own properties.
 - Keys are strings or symbols; array indices are string keys `"0"`, `"1"`, …
 
-| Pros | Cons |
-|------|------|
-| Flexible key-value records | Reference semantics — aliases share mutations |
-| Prototype sharing for methods | No built-in deep equality |
-| `Object.*` static helpers | `for...in` includes inherited enumerable keys |
+**When to use:**
 
-**Cases:** Config/state objects; method bags on prototypes; `Object.create(null)` for pure dictionaries (no `toString` pollution).
+Config/state objects; method bags on prototypes; `Object.create(null)` for pure dictionaries (no `toString` pollution).
 
-**Common pitfalls:** Shallow copy still shares nested objects; `delete` only removes own properties; comparing `{a:1} === {a:1}` is always false.
+#### Common pitfalls
+
+Shallow copy still shares nested objects; `delete` only removes own properties; comparing `{a:1} === {a:1}` is always false.
 
 | Objects | Arrays |
 |---------|--------|
@@ -233,12 +229,15 @@ g.call(user); // 'Alice'
 | General-purpose records | Ordered collections with array methods |
 | Not iterable by default | Iterable (`for...of`) |
 
-**Key idea:** Objects are stored and copied **by reference**; primitives are copied **by value**.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Flexible key-value records | Reference semantics — aliases share mutations |
+| Prototype sharing for methods | No built-in deep equality |
+| `Object.*` static helpers | `for...in` includes inherited enumerable keys |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const user = { name: 'John', age: 30 };
@@ -251,13 +250,17 @@ console.log(user.name); // 'Jane' — same reference
 delete user.age; // remove property
 ```
 
-</details>
+**Thoughts:** Objects are stored and copied **by reference**; primitives are copied **by value**.
 
-**Source:** [javascript.info/object](https://learn.javascript.ru/object)
+**Sources:**
+
+[javascript.info/object](https://learn.javascript.ru/object)
 
 #### Object types in JavaScript
 
-**Definition:** Objects fall into several categories depending on their origin.
+**Definition:**
+
+Objects fall into several categories depending on their origin.
 
 | Type | Examples |
 |------|----------|
@@ -266,13 +269,17 @@ delete user.age; // remove property
 | **Custom** | Created via literals, constructors, or classes |
 | **Prototype** | Template objects shared via the prototype chain |
 
-**When NOT to use:** Avoid extending native prototypes (`Array.prototype.myMethod = ...`) except for polyfills — risks naming collisions.
+**When to use:** Avoid extending native prototypes (`Array.prototype.myMethod = ...`) except for polyfills — risks naming collisions.
 
-**Source:** [javascript.info/object](https://learn.javascript.ru/object)
+**Sources:**
+
+[javascript.info/object](https://learn.javascript.ru/object)
 
 #### Property existence: `in` vs `hasOwnProperty`
 
-**Definition:** The `in` operator checks the full prototype chain; `hasOwnProperty` / `Object.hasOwn()` check only own properties.
+**Definition:**
+
+The `in` operator checks the full prototype chain; `hasOwnProperty` / `Object.hasOwn()` check only own properties.
 
 | Method | Checks prototype chain? |
 |--------|-------------------------|
@@ -280,10 +287,7 @@ delete user.age; // remove property
 | `obj.hasOwnProperty('key')` | No (own only) |
 | `Object.hasOwn(obj, 'key')` | No (own only, modern) |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const obj = { a: 1 };
@@ -294,13 +298,15 @@ console.log(obj.hasOwnProperty('a'));        // true
 console.log(obj.hasOwnProperty('toString')); // false
 ```
 
-</details>
+**Sources:**
 
-**Source:** [javascript.info/object-keys](https://learn.javascript.ru/object-keys)
+[javascript.info/object-keys](https://learn.javascript.ru/object-keys)
 
 #### Object static methods
 
-**Definition:** `Object.keys`, `Object.values`, `Object.entries`, and `Object.is` operate on own enumerable properties.
+**Definition:**
+
+`Object.keys`, `Object.values`, `Object.entries`, and `Object.is` operate on own enumerable properties.
 
 | Method | Returns |
 |--------|---------|
@@ -309,12 +315,7 @@ console.log(obj.hasOwnProperty('toString')); // false
 | `Object.entries(obj)` | Array of `[key, value]` pairs |
 | `Object.is(a, b)` | Strict equality; `NaN === NaN` is `true` |
 
-**Key idea:** Unlike `for...in`, these methods skip inherited properties.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const user = { name: 'Ann', age: 25 };
@@ -326,13 +327,17 @@ for (const [key, value] of Object.entries(user)) {
 console.log(Object.is(NaN, NaN)); // true
 ```
 
-</details>
+**Thoughts:** Unlike `for...in`, these methods skip inherited properties.
 
-**Source:** [javascript.info/object-keys](https://learn.javascript.ru/object-keys)
+**Sources:**
+
+[javascript.info/object-keys](https://learn.javascript.ru/object-keys)
 
 #### Object comparison
 
-**Definition:** `==` and `===` compare objects by reference — two objects are equal only if they are the same object in memory.
+**Definition:**
+
+`==` and `===` compare objects by reference — two objects are equal only if they are the same object in memory.
 
 | Approach | Use case |
 |----------|----------|
@@ -340,10 +345,7 @@ console.log(Object.is(NaN, NaN)); // true
 | `Object.is(a, b)` | Strict compare with correct `NaN` handling |
 | Custom function | Compare specific fields (id, name, etc.) |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const a = { x: 1 };
@@ -354,9 +356,9 @@ console.log(a === b); // false — different objects
 console.log(a === c); // true — same reference
 ```
 
-</details>
+**Sources:**
 
-**Source:** [javascript.info/object-copy](https://learn.javascript.ru/object-copy)
+[javascript.info/object-copy](https://learn.javascript.ru/object-copy)
 
 #### Global object
 
@@ -364,18 +366,13 @@ console.log(a === c); // true — same reference
 
 **When to use:** Rarely — prefer modules. In non-module scripts, `var` declarations become global properties.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 console.log(globalThis === window); // true in browser
 ```
 
-</details>
-
-**Source:** [javascript.info/global-object](https://learn.javascript.ru/global-object)
+**Sources:** [javascript.info/global-object](https://learn.javascript.ru/global-object)
 
 </details>
 
@@ -393,15 +390,13 @@ console.log(globalThis === window); // true in browser
 - `new Fn()` runs constructor, links `[[Prototype]]` to `Fn.prototype`, returns instance.
 - `class` desugars to constructor + prototype methods.
 
-| Pros | Cons |
-|------|------|
-| Many patterns for different needs | Inconsistent style across codebase if mixed |
-| `Object.create` for pure delegation | Constructors easy to forget `new` (classes fix this) |
-| Factory functions avoid `new` | Singleton IIFE harder to test |
+**When to use:**
 
-**Cases:** Literals for DTOs; `Object.create` for inheritance without constructors; classes for domain models; factory functions for conditional creation.
+Literals for DTOs; `Object.create` for inheritance without constructors; classes for domain models; factory functions for conditional creation.
 
-**Common pitfalls:** Forgetting `new` on constructor pollutes global or returns `undefined`; `Object.assign` mutates target — use `{}` as first arg for copy.
+#### Common pitfalls
+
+Forgetting `new` on constructor pollutes global or returns `undefined`; `Object.assign` mutates target — use `{}` as first arg for copy.
 
 | # | Pattern | Notes |
 |---|---------|-------|
@@ -414,10 +409,15 @@ console.log(globalThis === window); // true in browser
 | 7 | Singleton IIFE | One instance only |
 | 8 | `Object.assign(target, ...sources)` | Copy properties to target |
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Many patterns for different needs | Inconsistent style across codebase if mixed |
+| `Object.create` for pure delegation | Constructors easy to forget `new` (classes fix this) |
+| Factory functions avoid `new` | Singleton IIFE harder to test |
+
+**Examples:**
 
 ```js
 // Literal
@@ -444,9 +444,7 @@ const e = new Employee('dev');
 const copy = Object.assign({}, literal);
 ```
 
-</details>
-
-**Source:** [javascript.info/object](https://learn.javascript.ru/object) · [javascript.info/object-copy](https://learn.javascript.ru/object-copy)
+**Sources:** [javascript.info/object](https://learn.javascript.ru/object) · [javascript.info/object-copy](https://learn.javascript.ru/object-copy)
 
 </details>
 
@@ -463,14 +461,13 @@ const copy = Object.assign({}, literal);
 - Otherwise engine tries `valueOf` then `toString` (order swaps for `hint === 'string'`).
 - In `if (obj)` any object is truthy regardless of content.
 
-| Pros | Cons |
-|------|------|
-| Custom coercion for value objects | Easy to create surprising `+` / `==` behavior |
-| `Symbol.toPrimitive` centralizes logic | Default `toString` often `[object Object]` |
+**When to use:**
 
-**Cases:** Value objects (Money, Date-like); debugging with meaningful `toString`; avoid custom coercion unless necessary.
+Value objects (Money, Date-like); debugging with meaningful `toString`; avoid custom coercion unless necessary.
 
-**Common pitfalls:** `{} + 1` → `"[object Object]1"`; relying on `valueOf` for string concat; `==` between object and primitive uses `default` hint.
+#### Common pitfalls
+
+`{} + 1` → `"[object Object]1"`; relying on `valueOf` for string concat; `==` between object and primitive uses `default` hint.
 
 | Hint | Conversion order |
 |------|------------------|
@@ -478,12 +475,14 @@ const copy = Object.assign({}, literal);
 | `string` | `toString` → `valueOf` |
 | `default` | `valueOf` → `toString` |
 
-**Key idea:** In boolean context, any object is `true`. `alert(obj)` coerces to string.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Custom coercion for value objects | Easy to create surprising `+` / `==` behavior |
+| `Symbol.toPrimitive` centralizes logic | Default `toString` often `[object Object]` |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const obj = {
@@ -499,11 +498,13 @@ console.log(`${obj}`);   // 'value: 42'
 console.log(obj + '');   // 'value: 42' (hint: default)
 ```
 
-</details>
+**Thoughts:**
 
-**Notes:** `obj1 + obj2` converts both with `hint: 'default'`. `==` uses `hint: 'default'` for objects.
+In boolean context, any object is `true`. `alert(obj)` coerces to string.
 
-**Source:** [javascript.info/object-toprimitive](https://learn.javascript.ru/object-toprimitive)
+`obj1 + obj2` converts both with `hint: 'default'`. `==` uses `hint: 'default'` for objects.
+
+**Sources:** [javascript.info/object-toprimitive](https://learn.javascript.ru/object-toprimitive)
 
 </details>
 
@@ -520,14 +521,15 @@ console.log(obj + '');   // 'value: 42' (hint: default)
 - Method syntax `obj.fn()` sets `this` to `obj`; extracted reference loses that link.
 - Arrow functions close over outer `this` from lexical environment — no own binding.
 
-| Pros | Cons |
-|------|------|
-| Flexible receiver for shared functions | Context loss is a top JS bug source |
-| Explicit `call`/`bind` when needed | Arrow in object literal does not bind to object |
+**When to use:**
 
-**Cases:** DOM handlers (often `this` = element); class instance methods; module-level arrows for stable `this` in React class components (legacy).
+DOM handlers (often `this` = element); class instance methods; module-level arrows for stable `this` in React class components (legacy).
 
-**Common pitfalls:** `map(user.getName)` loses `user`; `this` in nested function inside method is `undefined` (strict) unless arrow or bind.
+Understand before debugging lost context in callbacks, event handlers, and class methods.
+
+#### Common pitfalls
+
+`map(user.getName)` loses `user`; `this` in nested function inside method is `undefined` (strict) unless arrow or bind.
 
 | Context | `this` refers to |
 |---------|------------------|
@@ -538,12 +540,14 @@ console.log(obj + '');   // 'value: 42' (hint: default)
 | Global (strict) | `undefined` |
 | Constructor (`new`) | Newly created instance |
 
-**When to use:** Understand before debugging lost context in callbacks, event handlers, and class methods.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Flexible receiver for shared functions | Context loss is a top JS bug source |
+| Explicit `call`/`bind` when needed | Arrow in object literal does not bind to object |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const obj = {
@@ -558,8 +562,6 @@ fn(); // undefined (strict) — context lost
 obj.getValue(); // 42
 ```
 
-</details>
-
 #### Lost context scenarios
 
 | Scenario | Risk |
@@ -569,7 +571,7 @@ obj.getValue(); // 42
 | Event handlers | `this` may be the DOM element |
 | Class methods as callbacks | Need bind or arrow fields |
 
-**Source:** [javascript.info/object-methods](https://learn.javascript.ru/object-methods) · [javascript.info/bind](https://learn.javascript.ru/bind)
+**Sources:** [javascript.info/object-methods](https://learn.javascript.ru/object-methods) · [javascript.info/bind](https://learn.javascript.ru/bind)
 
 </details>
 
@@ -586,15 +588,15 @@ obj.getValue(); // 42
 - `apply` takes args as array-like; `call` spreads them.
 - `bind` returns new function; bound `this` cannot be overridden by further `bind`/`call`.
 
-| Pros | Cons |
-|------|------|
-| Borrow methods across objects | `bind` creates new function each time (memory) |
-| Partial application via `bind` | Easy to overuse instead of arrows/closures |
-| `apply` for spread-before-`...` legacy | `null`/`undefined` first arg → global (non-strict) |
+**When to use:**
 
-**Cases:** `Array.prototype.slice.call(arguments)` (legacy); method borrowing; fixing handler context; `Math.max.apply(null, arr)`.
+`Array.prototype.slice.call(arguments)` (legacy); method borrowing; fixing handler context; `Math.max.apply(null, arr)`.
 
-**Common pitfalls:** Forgetting bound functions cannot be used as constructors; assuming `bind` copies method — still shared on prototype.
+`bind` for callbacks needing stable context; `call`/`apply` for immediate invocation with a specific `this`.
+
+#### Common pitfalls
+
+Forgetting bound functions cannot be used as constructors; assuming `bind` copies method — still shared on prototype.
 
 | Method | Invokes now? | Arguments |
 |--------|--------------|-----------|
@@ -602,12 +604,15 @@ obj.getValue(); // 42
 | `fn.apply(ctx, [a, b])` | Yes | Array-like |
 | `fn.bind(ctx, a)` | No — returns bound fn | Partial application supported |
 
-**When to use:** `bind` for callbacks needing stable context; `call`/`apply` for immediate invocation with a specific `this`.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Borrow methods across objects | `bind` creates new function each time (memory) |
+| Partial application via `bind` | Easy to overuse instead of arrows/closures |
+| `apply` for spread-before-`...` legacy | `null`/`undefined` first arg → global (non-strict) |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function greet(greeting, punct) {
@@ -623,11 +628,9 @@ const bound = greet.bind(user, 'Hey');
 bound('?'); // 'Hey, Alice?'
 ```
 
-</details>
+**Thoughts:** Passing `null`/`undefined` to `call`/`apply`/`bind` falls back to default binding. A function bound with `bind()` cannot be re-bound.
 
-**Notes:** Passing `null`/`undefined` to `call`/`apply`/`bind` falls back to default binding. A function bound with `bind()` cannot be re-bound.
-
-**Source:** [javascript.info/bind](https://learn.javascript.ru/bind)
+**Sources:** [javascript.info/bind](https://learn.javascript.ru/bind)
 
 </details>
 
@@ -650,15 +653,13 @@ bound('?'); // 'Hey, Alice?'
 - Read: walk chain until key found or `null`; write/delete: always affect own object only.
 - Functions have `.prototype` used only when called with `new`.
 
-| Pros | Cons |
-|------|------|
-| Shared methods — memory efficient | Deeper chains = slower lookup |
-| Runtime extension of behavior | Single inheritance only |
-| `Object.create` for delegation | `__proto__` is legacy — prefer `getPrototypeOf` |
+**When to use:**
 
-**Cases:** Shared behavior via `Constructor.prototype`; `Object.create` for classical inheritance; built-in types (`Array.prototype`).
+Shared behavior via `Constructor.prototype`; `Object.create` for classical inheritance; built-in types (`Array.prototype`).
 
-**Common pitfalls:** Setting `Child.prototype = Parent.prototype` breaks `instanceof`; modifying `__proto__` at runtime is slow; shadowing inherited property hides but does not remove prototype value.
+#### Common pitfalls
+
+Setting `Child.prototype = Parent.prototype` breaks `instanceof`; modifying `__proto__` at runtime is slow; shadowing inherited property hides but does not remove prototype value.
 
 | Term | Meaning |
 |------|---------|
@@ -667,12 +668,15 @@ bound('?'); // 'Hey, Alice?'
 | `.prototype` | Property on **functions** — used by `new` |
 | Prototype object | The object referenced by `[[Prototype]]` |
 
-**Key idea:** Prototypes are for **reading** only. Write/delete operations apply to the object itself.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Shared methods — memory efficient | Deeper chains = slower lookup |
+| Runtime extension of behavior | Single inheritance only |
+| `Object.create` for delegation | `__proto__` is legacy — prefer `getPrototypeOf` |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const animal = { eats: true };
@@ -684,25 +688,24 @@ console.log(rabbit.eats);  // true — found on animal
 console.log(rabbit.jumps); // true — own property
 ```
 
-</details>
+**Thoughts:** Prototypes are for **reading** only. Write/delete operations apply to the object itself.
 
-**Source:** [javascript.info/prototypes](https://learn.javascript.ru/prototypes)
+**Sources:**
+
+[javascript.info/prototypes](https://learn.javascript.ru/prototypes)
 
 #### `F.prototype` and `new`
 
 **Definition:** When a function is called with `new`, the new object's `[[Prototype]]` is set to `Function.prototype` (if it is an object).
 
-**Steps of `new`:**
+**How it works:**
 
 1. Create empty object
 2. Set `[[Prototype]]` to `Constructor.prototype`
 3. Call constructor with `this` = new object
 4. Return object (or constructor's return value if it's an object)
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function Person(name) {
@@ -717,9 +720,9 @@ console.log(p.sayHi()); // 'Hi, Ann'
 console.log(p.__proto__ === Person.prototype); // true
 ```
 
-</details>
+**Sources:**
 
-**Source:** [javascript.info/function-prototype](https://learn.javascript.ru/function-prototype)
+[javascript.info/function-prototype](https://learn.javascript.ru/function-prototype)
 
 #### Prototype limitations
 
@@ -730,24 +733,15 @@ console.log(p.__proto__ === Person.prototype); // true
 | Single parent | Only one `[[Prototype]]` per object |
 | Read-only chain | Writes never go up the prototype chain |
 
-**Source:** [javascript.info/prototypes](https://learn.javascript.ru/prototypes)
+[javascript.info/prototypes](https://learn.javascript.ru/prototypes)
 
 #### Built-in prototypes
 
 **Definition:** Native constructors (`Array`, `Date`, `Object`, etc.) store methods on their `.prototype`. Primitives use wrapper prototypes (`String.prototype`, etc.).
 
-**Key idea:** `{ }` is shorthand for `new Object()` — inheriting from `Object.prototype` (`toString`, `hasOwnProperty`, etc.).
-
-| Object stores | Prototype stores |
-|---------------|------------------|
-| Data (array items, properties) | Methods (`push`, `toString`, etc.) |
-
 **When to use:** Polyfilling — the only approved case for modifying native prototypes.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const arr = [1, 2, 3];
@@ -757,18 +751,23 @@ const obj = {};
 console.log(obj.toString()); // '[object Object]'
 ```
 
-</details>
+**Thoughts:**
 
-**Source:** [javascript.info/native-prototypes](https://learn.javascript.ru/native-prototypes)
+`{ }` is shorthand for `new Object()` — inheriting from `Object.prototype` (`toString`, `hasOwnProperty`, etc.).
+
+| Object stores | Prototype stores |
+|---------------|------------------|
+| Data (array items, properties) | Methods (`push`, `toString`, etc.) |
+
+**Sources:**
+
+[javascript.info/native-prototypes](https://learn.javascript.ru/native-prototypes)
 
 #### Borrowing from prototypes
 
 **Definition:** Any object can use a method from another prototype by assigning it directly.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const pseudo = { 0: 'Hello', 1: 'world!', length: 2 };
@@ -777,9 +776,7 @@ pseudo.join = Array.prototype.join;
 console.log(pseudo.join(',')); // 'Hello,world!'
 ```
 
-</details>
-
-**Source:** [javascript.info/prototypes](https://learn.javascript.ru/prototypes)
+**Sources:** [javascript.info/prototypes](https://learn.javascript.ru/prototypes)
 
 </details>
 
@@ -795,15 +792,15 @@ console.log(pseudo.join(',')); // 'Hello,world!'
 - `Object.create(proto)` allocates object with `[[Prototype]]` = `proto`; optional second arg defines own properties with descriptors.
 - `getPrototypeOf` / `setPrototypeOf` read/write the link; `setPrototypeOf` deoptimizes engines — avoid in hot loops.
 
-| Pros | Cons |
-|------|------|
-| Clean delegation without constructors | `setPrototypeOf` hurts performance |
-| `Object.create(null)` — no inherited pollution | Descriptors in second arg verbose |
-| Explicit prototype in tests/mocks | Changing proto breaks `instanceof` assumptions |
+**When to use:**
 
-**Cases:** `Object.create(null)` for map-like dicts; prototype-based inheritance; test doubles with custom proto chain.
+`Object.create(null)` for map-like dicts; prototype-based inheritance; test doubles with custom proto chain.
 
-**Common pitfalls:** Using `setPrototypeOf` on every instance in constructor; confusing `Object.create(Fn.prototype)` with `new Fn()`.
+`Object.create` for clean delegation without constructors; `Object.create(null)` for dictionary objects without inherited keys.
+
+#### Common pitfalls
+
+Using `setPrototypeOf` on every instance in constructor; confusing `Object.create(Fn.prototype)` with `new Fn()`.
 
 | Method | Purpose |
 |--------|---------|
@@ -811,12 +808,15 @@ console.log(pseudo.join(',')); // 'Hello,world!'
 | `Object.getPrototypeOf(obj)` | Read `[[Prototype]]` |
 | `Object.setPrototypeOf(obj, proto)` | Write `[[Prototype]]` (slow — avoid in hot paths) |
 
-**When to use:** `Object.create` for clean delegation without constructors; `Object.create(null)` for dictionary objects without inherited keys.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Clean delegation without constructors | `setPrototypeOf` hurts performance |
+| `Object.create(null)` — no inherited pollution | Descriptors in second arg verbose |
+| Explicit prototype in tests/mocks | Changing proto breaks `instanceof` assumptions |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const animal = {
@@ -831,9 +831,7 @@ const rabbit = Object.create(animal, {
 rabbit.walk(); // 'walking' — inherited
 ```
 
-</details>
-
-**Source:** [javascript.info/prototype-methods](https://learn.javascript.ru/prototype-methods)
+**Sources:** [javascript.info/prototype-methods](https://learn.javascript.ru/prototype-methods)
 
 </details>
 
@@ -850,25 +848,28 @@ rabbit.walk(); // 'walking' — inherited
 - `Symbol.hasInstance` on constructor can customize behavior.
 - `null` prototype objects only `instanceof Object` if chain reaches `Object.prototype`.
 
-| Pros | Cons |
+**When to use:**
+
+Type checks in polymorphic code; verifying API response shapes; custom `@@hasInstance` for branded types.
+
+#### Common pitfalls
+
+`instanceof` with arrow functions (no `.prototype`); checking plain object literals — always `instanceof Object`; cross-frame `Array` checks fail.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Works across inheritance | Breaks if `prototype` is changed |
+| Checks prototype chain | Not reliable across realms (iframes) |
+
+| + | − |
 |------|------|
 | Works with subclass chains | Fails across iframes/realms (different prototypes) |
 | Duck typing alternative | Breaks if `prototype` replaced |
 | Familiar OOP check | Not for primitive values |
 
-**Cases:** Type checks in polymorphic code; verifying API response shapes; custom `@@hasInstance` for branded types.
-
-**Common pitfalls:** `instanceof` with arrow functions (no `.prototype`); checking plain object literals — always `instanceof Object`; cross-frame `Array` checks fail.
-
-| Pros | Cons |
-|------|------|
-| Works across inheritance | Breaks if `prototype` is changed |
-| Checks prototype chain | Not reliable across realms (iframes) |
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 class Animal {}
@@ -880,9 +881,7 @@ console.log(r instanceof Animal);  // true — chain includes Animal.prototype
 console.log(r instanceof Object);  // true
 ```
 
-</details>
-
-**Source:** [javascript.info/instanceof](https://learn.javascript.ru/instanceof)
+**Sources:** [javascript.info/instanceof](https://learn.javascript.ru/instanceof)
 
 </details>
 
@@ -899,29 +898,32 @@ console.log(r instanceof Object);  // true
 - `super` in derived class must be called before `this` use in constructor.
 - Some builtins (e.g. certain DOM types) cannot be subclassed reliably.
 
-| Pros | Cons |
+**When to use:**
+
+`class ValidationError extends Error`; `class TypedArray extends Array` for typed collections; framework element subclasses.
+
+Custom `Error` subclasses, extended `Array`/`Map` with domain methods.
+
+Modifying `Array.prototype` globally (polyfill only).
+
+#### Common pitfalls
+
+Forgetting `super()` in derived constructor; assuming `JSON.stringify` handles custom classes; mutating built-in `.prototype` globally.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Reuse native behavior | Easy to break internal slots if misused |
+| Custom error types | Some builtins cannot be subclassed reliably |
+
+| + | − |
 |------|------|
 | Domain-specific array/map types | Wrong subclassing breaks `length` / iterators |
 | Custom `Error` with stack/status | Engine-specific edge cases |
 | Native methods still work | `Array.from` on subclass needs care |
 
-**Cases:** `class ValidationError extends Error`; `class TypedArray extends Array` for typed collections; framework element subclasses.
-
-**Common pitfalls:** Forgetting `super()` in derived constructor; assuming `JSON.stringify` handles custom classes; mutating built-in `.prototype` globally.
-
-| Pros | Cons |
-|------|------|
-| Reuse native behavior | Easy to break internal slots if misused |
-| Custom error types | Some builtins cannot be subclassed reliably |
-
-**When to use:** Custom `Error` subclasses, extended `Array`/`Map` with domain methods.
-
-**When NOT to use:** Modifying `Array.prototype` globally (polyfill only).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 class HttpError extends Error {
@@ -942,9 +944,7 @@ const arr = new FilteredArray(-1, 2, 3);
 console.log(arr.filterPositive()); // [2, 3]
 ```
 
-</details>
-
-**Source:** [javascript.info/extend-natives](https://learn.javascript.ru/extend-natives)
+**Sources:** [javascript.info/extend-natives](https://learn.javascript.ru/extend-natives)
 
 </details>
 
@@ -967,15 +967,16 @@ console.log(arr.filterPositive()); // [2, 3]
 - Instance methods live on `Name.prototype` (non-enumerable); static methods on `Name` itself.
 - Calling class without `new` throws `TypeError`.
 
-| Pros | Cons |
-|------|------|
-| Familiar syntax, `extends`/`super` | Still prototypes underneath — surprises in debugging |
-| Strict by default | TDZ — cannot use before declaration |
-| Clear constructor/method split | Not hoisted like `function` declarations |
+1. Creates function `User` from `constructor` (or empty if missing)
+2. Stores methods like `sayHi` on `User.prototype`
 
-**Cases:** Domain entities; React class components (legacy); service classes with instance state.
+**When to use:**
 
-**Common pitfalls:** Using class before declaration (TDZ); expecting `class` to hoist like `function`; thinking private `#` fields are on prototype (they are per-instance).
+Domain entities; React class components (legacy); service classes with instance state.
+
+#### Common pitfalls
+
+Using class before declaration (TDZ); expecting `class` to hoist like `function`; thinking private `#` fields are on prototype (they are per-instance).
 
 | Feature | Behavior |
 |---------|----------|
@@ -984,12 +985,15 @@ console.log(arr.filterPositive()); // [2, 3]
 | Call without `new` | TypeError |
 | Hoisting | Hoisted but in TDZ until definition |
 
-**Key idea:** Classes are prototype inheritance with cleaner syntax — not a new object model.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Familiar syntax, `extends`/`super` | Still prototypes underneath — surprises in debugging |
+| Strict by default | TDZ — cannot use before declaration |
+| Clear constructor/method split | Not hoisted like `function` declarations |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // ES5 constructor
@@ -1013,18 +1017,17 @@ class BikeClass {
 }
 ```
 
-</details>
+**Thoughts:** Classes are prototype inheritance with cleaner syntax — not a new object model.
 
-**What `class User { ... }` does:**
+**Sources:**
 
-1. Creates function `User` from `constructor` (or empty if missing)
-2. Stores methods like `sayHi` on `User.prototype`
-
-**Source:** [javascript.info/class](https://learn.javascript.ru/class)
+[javascript.info/class](https://learn.javascript.ru/class)
 
 #### Class declarations vs expressions
 
-**Definition:** Classes can be declared or expressed, named or anonymous — similar to functions.
+**Definition:**
+
+Classes can be declared or expressed, named or anonymous — similar to functions.
 
 | Form | Example |
 |------|---------|
@@ -1032,12 +1035,9 @@ class BikeClass {
 | Expression | `const Foo = class {}` |
 | Named expression | `const Foo = class Bar {}` — `Bar` visible inside body only |
 
-**Hoisting:** Classes are hoisted but uninitialized — `new Rectangle()` before `class Rectangle {}` throws `ReferenceError`.
+**How it works:** Classes are hoisted but uninitialized — `new Rectangle()` before `class Rectangle {}` throws `ReferenceError`.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Named expression
@@ -1050,9 +1050,7 @@ const Rect = class Rectangle {
 console.log(Rect.name); // 'Rectangle'
 ```
 
-</details>
-
-**Source:** [javascript.info/class](https://learn.javascript.ru/class)
+**Sources:** [javascript.info/class](https://learn.javascript.ru/class)
 
 </details>
 
@@ -1068,15 +1066,15 @@ console.log(Rect.name); // 'Rectangle'
 - `static` keyword defines properties on the constructor function object, not on instances.
 - Accessed as `ClassName.method()`; inherited statics available on subclasses via prototype chain of constructor.
 
-| Pros | Cons |
-|------|------|
-| Namespace for utilities | Can become grab-bag if overused |
-| Factory methods (`User.createGuest()`) | Harder to mock than instance methods in tests |
-| Counters/constants on class | Static-only state is global-like |
+**When to use:**
 
-**Cases:** Comparison/sort helpers; named constructors; parsing factories; constants scoped to type.
+Comparison/sort helpers; named constructors; parsing factories; constants scoped to type.
 
-**Common pitfalls:** Calling static method on instance (`user.createGuest()` — undefined); static block (ES2022) runs once — side effects persist.
+Comparison utilities, factories, constants — anything not tied to a single instance.
+
+#### Common pitfalls
+
+Calling static method on instance (`user.createGuest()` — undefined); static block (ES2022) runs once — side effects persist.
 
 | Static | Instance |
 |--------|----------|
@@ -1084,12 +1082,15 @@ console.log(Rect.name); // 'Rectangle'
 | Class-level utilities | Per-object behavior |
 | Factory methods, counters | Instance state |
 
-**When to use:** Comparison utilities, factories, constants — anything not tied to a single instance.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Namespace for utilities | Can become grab-bag if overused |
+| Factory methods (`User.createGuest()`) | Harder to mock than instance methods in tests |
+| Counters/constants on class | Static-only state is global-like |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 class Article {
@@ -1109,9 +1110,7 @@ class Article {
 Article.compare(new Article('A'), new Article('B'));
 ```
 
-</details>
-
-**Source:** [javascript.info/static-properties-methods](https://learn.javascript.ru/static-properties-methods)
+**Sources:** [javascript.info/static-properties-methods](https://learn.javascript.ru/static-properties-methods)
 
 </details>
 
@@ -1127,22 +1126,25 @@ Article.compare(new Article('A'), new Article('B'));
 - `#field` is stored per instance in a private slot — only accessible inside class body syntactically.
 - Truly private at runtime (not just naming convention); `#` in object literal outside class is syntax error.
 
-| Pros | Cons |
+**When to use:**
+
+Internal state (`#balance`); hiding implementation details; preventing external mutation.
+
+#### Common pitfalls
+
+Trying to access `#x` from outside or from a subclass that did not declare it; expecting `#` on plain objects; serializing class instances drops private fields.
+
+Chrome DevTools (and some other consoles) may **read `#` fields for debugging** — that is a DevTools exception, not a language feature. App code still throws `SyntaxError`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Real encapsulation | SyntaxError if accessed outside — no runtime undefined |
 | No `_prefix` convention | Cannot access from subclasses in separate files without getters |
 | Works with getters for controlled exposure | DevTools support varies |
 
-**Cases:** Internal state (`#balance`); hiding implementation details; preventing external mutation.
-
-**Common pitfalls:** Trying to access `#x` from outside or from a subclass that did not declare it; expecting `#` on plain objects; serializing class instances drops private fields.
-
-Chrome DevTools (and some other consoles) may **read `#` fields for debugging** — that is a DevTools exception, not a language feature. App code still throws `SyntaxError`.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 class Account {
@@ -1163,9 +1165,7 @@ console.log(acc.getBalance()); // 100
 // acc.#balance — SyntaxError
 ```
 
-</details>
-
-**Source:** [javascript.info/private-protected-properties-methods](https://learn.javascript.ru/private-protected-properties-methods) · [MDN — private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements)
+**Sources:** [javascript.info/private-protected-properties-methods](https://learn.javascript.ru/private-protected-properties-methods) · [MDN — private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements)
 
 </details>
 
@@ -1182,15 +1182,13 @@ console.log(acc.getBalance()); // 100
 - `super()` in constructor calls `Parent` as constructor with current `this`.
 - `super.method()` uses home object mechanism to call parent version.
 
-| Pros | Cons |
-|------|------|
-| Built-in `extends`/`super` | Single inheritance only |
-| `instanceof` works through chain | Deep hierarchies fragile |
-| Method override with parent call | Must call `super()` before `this` in derived constructor |
+**When to use:**
 
-**Cases:** `Dog extends Animal`; extending built-ins; overriding with `super.method()` for extension not replacement.
+`Dog extends Animal`; extending built-ins; overriding with `super.method()` for extension not replacement.
 
-**Common pitfalls:** Using `this` before `super()` in derived constructor; forgetting `super()` when derived class has constructor; diamond problem — JS has no multiple inheritance.
+#### Common pitfalls
+
+Using `this` before `super()` in derived constructor; forgetting `super()` when derived class has constructor; diamond problem — JS has no multiple inheritance.
 
 | Use case | Syntax |
 |----------|--------|
@@ -1198,12 +1196,15 @@ console.log(acc.getBalance()); // 100
 | Call parent method | `super.method()` in override |
 | Static inheritance | `super` in static methods |
 
-**Key idea:** In a derived constructor, `this` is inaccessible before `super()` — runtime error.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Built-in `extends`/`super` | Single inheritance only |
+| `instanceof` works through chain | Deep hierarchies fragile |
+| Method override with parent call | Must call `super()` before `this` in derived constructor |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 class Animal {
@@ -1229,11 +1230,13 @@ const d = new Dog('Rex', 'lab');
 console.log(d.speak());
 ```
 
-</details>
+**Thoughts:**
 
-**Notes:** JavaScript has single inheritance. For multiple behavior sources, use composition or mixins.
+In a derived constructor, `this` is inaccessible before `super()` — runtime error.
 
-**Source:** [javascript.info/class-inheritance](https://learn.javascript.ru/class-inheritance)
+JavaScript has single inheritance. For multiple behavior sources, use composition or mixins.
+
+**Sources:** [javascript.info/class-inheritance](https://learn.javascript.ru/class-inheritance)
 
 </details>
 
@@ -1250,26 +1253,29 @@ console.log(d.speak());
 - Descriptor form: `{ get, set, enumerable, configurable }` — no `value`/`writable` with accessors.
 - Setters often validate and store in private `#field` or `_field`.
 
-| Pros | Cons |
-|------|------|
-| Validation on assignment | Harder to trace in debugger than methods |
-| Computed read-only properties | Infinite recursion if setter calls itself |
-| Backward-compatible API evolution | Slight perf cost vs data properties |
+**When to use:**
 
-**Cases:** Lazy computed values; input validation; exposing read-only derived state; compatibility when renaming internal field.
+Lazy computed values; input validation; exposing read-only derived state; compatibility when renaming internal field.
 
-**Common pitfalls:** `get name() { return this.name }` — infinite loop; forgetting setter when adding getter for writable API; enumerable getters show in `for...in`.
+#### Common pitfalls
 
-| Pros | Cons |
+`get name() { return this.name }` — infinite loop; forgetting setter when adding getter for writable API; enumerable getters show in `for...in`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Validation on set | Slight overhead vs plain properties |
 | Computed values on get | Can complicate debugging |
 | Encapsulation with private `#` fields | Overuse adds boilerplate |
 
-**Example:**
+| + | − |
+|------|------|
+| Validation on assignment | Harder to trace in debugger than methods |
+| Computed read-only properties | Infinite recursion if setter calls itself |
+| Backward-compatible API evolution | Slight perf cost vs data properties |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 class User {
@@ -1294,9 +1300,7 @@ u.name = '  Bob  ';
 console.log(u.name); // 'Bob'
 ```
 
-</details>
-
-**Source:** [javascript.info/property-accessors](https://learn.javascript.ru/property-accessors)
+**Sources:** [javascript.info/property-accessors](https://learn.javascript.ru/property-accessors)
 
 </details>
 
@@ -1312,15 +1316,13 @@ console.log(u.name); // 'Bob'
 - Copy method objects onto `Class.prototype` via `Object.assign` or helper function.
 - No `super` chain between mixin and class — methods merge flatly; name collisions last wins.
 
-| Pros | Cons |
-|------|------|
-| Share behavior without inheritance | Method name collisions |
-| Multiple behaviors on one class | No `super` to mixin |
-| Works with unrelated classes | Harder to trace than composition |
+**When to use:**
 
-**Cases:** Cross-cutting concerns (serialization, event emitter); legacy code sharing; when `extends` is wrong semantically.
+Cross-cutting concerns (serialization, event emitter); legacy code sharing; when `extends` is wrong semantically.
 
-**Common pitfalls:** Two mixins defining same method; mixin assuming `this` shape without contract; prefer composition (`has-a`) for new code.
+#### Common pitfalls
+
+Two mixins defining same method; mixin assuming `this` shape without contract; prefer composition (`has-a`) for new code.
 
 | Approach | When |
 |----------|------|
@@ -1328,10 +1330,15 @@ console.log(u.name); // 'Bob'
 | Mixin (`Object.assign` to prototype) | Share behavior across unrelated classes |
 | Composition | `has-a` — preferred for flexibility |
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Share behavior without inheritance | Method name collisions |
+| Multiple behaviors on one class | No `super` to mixin |
+| Works with unrelated classes | Harder to trace than composition |
+
+**Examples:**
 
 ```js
 const sayHi = {
@@ -1352,11 +1359,11 @@ const u = new User('Ann');
 console.log(u.sayHi()); // 'Hi, Ann'
 ```
 
-</details>
+**Thoughts:** Without interfaces, mixins are untyped feature bags. TypeScript `implements` makes composition readable.
 
-**Source:** [javascript.info/mixins](https://learn.javascript.ru/mixins) · [Doka — OOP](https://doka.guide/tools/oop/)
+**Sources:**
 
-**Notes:** Without interfaces, mixins are untyped feature bags. TypeScript `implements` makes composition readable.
+[javascript.info/mixins](https://learn.javascript.ru/mixins) · [Doka — OOP](https://doka.guide/tools/oop/)
 
 ---
 
@@ -1378,18 +1385,23 @@ console.log(u.sayHi()); // 'Hi, Ann'
 - Tests pass fakes: `new DailyAmount(budgetStub, historyStub)`.
 - This is manual DIP. JS has no interfaces, so the "abstraction" is a duck-typed shape unless you add TypeScript.
 
-| Pros | Cons |
+**When to use:**
+
+Domain services that combine entities (`DailyAmount`); any class that would otherwise `import` a concrete logger/DB.
+
+#### Common pitfalls
+
+Constructing deps inside the class (hidden coupling); circular `new` between two classes; injecting concretions when a small interface would do (TS).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Testable; swap implementations | Wiring at the composition root |
 | Clear ownership of collaborators | Easy to pass too many deps (god constructor) |
 | Matches domain relation direction | Without types, nothing checks the shape |
 
-**Cases:** Domain services that combine entities (`DailyAmount`); any class that would otherwise `import` a concrete logger/DB.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 class DailyAmount {
@@ -1405,13 +1417,9 @@ class DailyAmount {
 const daily = new DailyAmount(new Budget(10000, 10), new History());
 ```
 
-</details>
+**Thoughts:** High-level policy receives tools; it does not build them.
 
-**Common pitfalls:** Constructing deps inside the class (hidden coupling); circular `new` between two classes; injecting concretions when a small interface would do (TS).
-
-**Key idea:** High-level policy receives tools; it does not build them.
-
-**Source:** [Doka — OOP](https://doka.guide/tools/oop/) · [7_special.md — DIP](./7_special.md#9-solid--principles)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [7_special.md — DIP](./7_special.md#9-solid--principles)
 
 </details>
 
@@ -1434,15 +1442,13 @@ const daily = new DailyAmount(new Budget(10000, 10), new History());
 - `Object.defineProperty` / `defineProperties` set descriptors explicitly; assignment uses defaults (`writable: true`, etc.).
 - `Object.getOwnPropertyDescriptor` reads current descriptor.
 
-| Pros | Cons |
-|------|------|
-| Fine-grained control (immutable id) | Verbose API |
-| Hide internal props (`enumerable: false`) | Easy to forget `configurable: false` for true lock |
-| Accessors for computed/validated fields | Mixing data and accessor descriptors on same key forbidden |
+**When to use:**
 
-**Cases:** Read-only `id`; non-enumerable internal slots; library defining non-writable global polyfills.
+Read-only `id`; non-enumerable internal slots; library defining non-writable global polyfills.
 
-**Common pitfalls:** Assuming `const obj` makes properties immutable; `writable: false` still allows change if `configurable: true` (redefine); shallow freeze only top level.
+#### Common pitfalls
+
+Assuming `const obj` makes properties immutable; `writable: false` still allows change if `configurable: true` (redefine); shallow freeze only top level.
 
 | Descriptor | Type | Controls |
 |------------|------|----------|
@@ -1452,10 +1458,15 @@ const daily = new DailyAmount(new Budget(10000, 10), new History());
 | `configurable` | Data / Accessor | Can delete or redefine? |
 | `get` / `set` | Accessor | Read/write functions |
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Fine-grained control (immutable id) | Verbose API |
+| Hide internal props (`enumerable: false`) | Easy to forget `configurable: false` for true lock |
+| Accessors for computed/validated fields | Mixing data and accessor descriptors on same key forbidden |
+
+**Examples:**
 
 ```js
 const obj = {};
@@ -1471,9 +1482,9 @@ obj.id = 2;
 console.log(obj.id); // 1 — not writable
 ```
 
-</details>
+**Sources:**
 
-**Source:** [javascript.info/property-descriptors](https://learn.javascript.ru/property-descriptors) · [MDN defineProperty](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
+[javascript.info/property-descriptors](https://learn.javascript.ru/property-descriptors) · [MDN defineProperty](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
 
 #### `Object.preventExtensions`, `Object.seal`, `Object.freeze`
 
@@ -1492,18 +1503,23 @@ console.log(obj.id); // 1 — not writable
 | `seal()` | No | No | Yes | No |
 | `freeze()` | No | No | No | No |
 
-| Pros | Cons |
+**When to use:**
+
+`freeze` exported config; `seal` prevent shape changes; `preventExtensions` harden object before passing to untrusted code.
+
+#### Common pitfalls
+
+Assuming `freeze` deep-clones; mutating nested object after parent freeze; `const obj = freeze({})` — binding frozen but could reassign variable if `let`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Simple runtime immutability | Shallow only |
 | `freeze` for config constants | Cannot unfreeze |
 | No library needed for basic cases | Deep freeze needs recursion or Immer |
 
-**Cases:** `freeze` exported config; `seal` prevent shape changes; `preventExtensions` harden object before passing to untrusted code.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const sealed = Object.seal({ a: 1, nested: { b: 2 } });
@@ -1517,11 +1533,7 @@ frozen.x = 2;           // fails
 console.log(Object.isFrozen(frozen)); // true
 ```
 
-</details>
-
-**Common pitfalls:** Assuming `freeze` deep-clones; mutating nested object after parent freeze; `const obj = freeze({})` — binding frozen but could reassign variable if `let`.
-
-**Source:** [javascript.info/property-descriptors](https://learn.javascript.ru/property-descriptors)
+**Sources:** [javascript.info/property-descriptors](https://learn.javascript.ru/property-descriptors)
 
 </details>
 
@@ -1538,24 +1550,6 @@ console.log(Object.isFrozen(frozen)); // true
 - Deep: recursively clone reachable own properties; `structuredClone` uses structured clone algorithm.
 - `JSON` round-trip drops non-JSON types and breaks on cycles.
 
-| Pros | Cons |
-|------|------|
-| Spread/`assign` fast for flat clones | Shallow copies hide nested sharing bugs |
-| `structuredClone` native deep clone | No functions, symbols in clone |
-| JSON clone simple for plain data | JSON loses `Date`, `undefined`, `BigInt` |
-
-**Cases:** Immutable updates (shallow + replace nested); API payload clone; state snapshot before mutation.
-
-**Common pitfalls:** `{...obj}` then mutating `copy.nested` affects original; `structuredClone` on DOM nodes throws; JSON clone turns `Date` to string.
-
-| Strategy | Nested objects | Methods / symbols |
-|----------|----------------|-----------------|
-| Spread / `Object.assign` | Shared (shallow) | Copied (enumerable own) |
-| `structuredClone()` | Cloned (deep) | Most types; no functions |
-| `JSON.parse(JSON.stringify())` | Cloned | Loses functions, `undefined`, `Date` precision |
-
-**JSON serialization limitations:**
-
 | Type | `JSON.stringify` behavior |
 |------|---------------------------|
 | `undefined`, functions, symbols | Removed |
@@ -1565,10 +1559,29 @@ console.log(Object.isFrozen(frozen)); // true
 | `Date` | ISO string |
 | `Map`, `Set` | `{}` |
 
-**Example:**
+**When to use:**
 
-<details>
-  <summary>Code</summary>
+Immutable updates (shallow + replace nested); API payload clone; state snapshot before mutation.
+
+#### Common pitfalls
+
+`{...obj}` then mutating `copy.nested` affects original; `structuredClone` on DOM nodes throws; JSON clone turns `Date` to string.
+
+| Strategy | Nested objects | Methods / symbols |
+|----------|----------------|-----------------|
+| Spread / `Object.assign` | Shared (shallow) | Copied (enumerable own) |
+| `structuredClone()` | Cloned (deep) | Most types; no functions |
+| `JSON.parse(JSON.stringify())` | Cloned | Loses functions, `undefined`, `Date` precision |
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Spread/`assign` fast for flat clones | Shallow copies hide nested sharing bugs |
+| `structuredClone` native deep clone | No functions, symbols in clone |
+| JSON clone simple for plain data | JSON loses `Date`, `undefined`, `BigInt` |
+
+**Examples:**
 
 ```js
 const original = { a: 1, nested: { b: 2 } };
@@ -1582,9 +1595,7 @@ deep.nested.b = 0;
 console.log(original.nested.b); // 99 — independent
 ```
 
-</details>
-
-**Source:** [javascript.info/object-copy](https://learn.javascript.ru/object-copy) · [MDN structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
+**Sources:** [javascript.info/object-copy](https://learn.javascript.ru/object-copy) · [MDN structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
 
 </details>
 
@@ -1601,20 +1612,25 @@ console.log(original.nested.b); // 99 — independent
 - `for...in` enumerates **enumerable** keys on object and prototypes — order: own string keys (insertion), then inherited.
 - `Object.keys` / `hasOwn` / `Object.hasOwn` restrict to own properties.
 
-| Pros | Cons |
+It is inherited from `Object.prototype` with `{ enumerable: false }`.
+
+**When to use:**
+
+`'length' in arr`; prototype polling; own-key iteration → `Object.keys` or `for...of` on entries.
+
+#### Common pitfalls
+
+`for...in` on arrays iterates indices + maybe inherited; object without `hasOwn` check lists prototype keys; `obj.hasOwnProperty` fails if null prototype without `Object.hasOwn`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | `in` detects inherited methods | `for...in` pulls inherited enumerable props |
 | `for...in` simple iteration | Must filter with `hasOwn` |
 | `Object.hasOwn` modern own check | `hasOwnProperty` can be shadowed |
 
-**Cases:** `'length' in arr`; prototype polling; own-key iteration → `Object.keys` or `for...of` on entries.
-
-**Common pitfalls:** `for...in` on arrays iterates indices + maybe inherited; object without `hasOwn` check lists prototype keys; `obj.hasOwnProperty` fails if null prototype without `Object.hasOwn`.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const obj = { a: 1, b: 2 };
@@ -1626,11 +1642,7 @@ for (const key in obj) {
 }
 ```
 
-</details>
-
-**Why `hasOwnProperty` is not listed by `for...in`:** It is inherited from `Object.prototype` with `{ enumerable: false }`.
-
-**Source:** [javascript.info/object-keys](https://learn.javascript.ru/object-keys)
+**Sources:** [javascript.info/object-keys](https://learn.javascript.ru/object-keys)
 
 </details>
 
@@ -1647,27 +1659,28 @@ for (const key in obj) {
 - Generational GC assumes most objects die young — nursery collected more often.
 - Closures keep outer variables alive while inner function is reachable.
 
-| Pros | Cons |
-|------|------|
-| Automatic memory management | Pauses (mitigated by incremental GC) |
-| No manual free() | Memory leaks still possible |
-| WeakRef/WeakMap for caches | Unpredictable collection timing |
+**When to use:**
 
-**Cases:** Drop references (`obj = null`) when done; avoid global caches without bounds; `WeakMap` for metadata on DOM nodes.
+Drop references (`obj = null`) when done; avoid global caches without bounds; `WeakMap` for metadata on DOM nodes.
 
-**Common pitfalls:** Closures holding large outer scope; detached DOM nodes still referenced by JS; `setInterval` holding callback forever; forgetting event listener removal.
+#### Common pitfalls
+
+Closures holding large outer scope; detached DOM nodes still referenced by JS; `setInterval` holding callback forever; forgetting event listener removal.
 
 | Phase | Action |
 |-------|--------|
 | **Mark** | Traverse from roots; mark reachable objects |
 | **Sweep** | Delete unmarked (unreachable) objects |
 
-**Key idea:** Outgoing references do not keep an object alive — only **incoming** references from reachable objects matter.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Automatic memory management | Pauses (mitigated by incremental GC) |
+| No manual free() | Memory leaks still possible |
+| WeakRef/WeakMap for caches | Unpredictable collection timing |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 let user = { name: 'John' };
@@ -1677,8 +1690,6 @@ user = null;
 // { name: 'John' } is unreachable — GC will reclaim it
 ```
 
-</details>
-
 #### GC optimizations
 
 | Technique | Purpose |
@@ -1687,7 +1698,9 @@ user = null;
 | Incremental collection | Spread GC across small steps |
 | Idle-time collection | Run GC when CPU is idle |
 
-**Source:** [javascript.info/garbage-collection](https://learn.javascript.ru/garbage-collection)
+**Thoughts:** Outgoing references do not keep an object alive — only **incoming** references from reachable objects matter.
+
+**Sources:** [javascript.info/garbage-collection](https://learn.javascript.ru/garbage-collection)
 
 </details>
 
@@ -1704,29 +1717,32 @@ user = null;
 - `FinalizationRegistry` registers cleanup callback when target is GC'd — timing not guaranteed.
 - Do not rely on finalizers for critical cleanup — use explicit `dispose()`.
 
-| Pros | Cons |
+**When to use:**
+
+Image/asset cache; native handle wrappers; memory profiling.
+
+Large-object caches, native addon wrappers, advanced memory management.
+
+Normal app logic — use `WeakMap` for metadata keyed by objects.
+
+#### Common pitfalls
+
+Using WeakRef as only lifecycle management; assuming finalizer runs promptly; strong references in finalizer callback preventing GC.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Cache without memory leaks | Non-deterministic cleanup timing |
+| External metadata for objects | Overkill for most apps |
+
+| + | − |
 |------|------|
 | Cache large objects without leaking | `deref()` may return undefined anytime |
 | Observe GC for diagnostics | Finalization order non-deterministic |
 | Complements `WeakMap` | Overkill for typical apps |
 
-**Cases:** Image/asset cache; native handle wrappers; memory profiling.
-
-**Common pitfalls:** Using WeakRef as only lifecycle management; assuming finalizer runs promptly; strong references in finalizer callback preventing GC.
-
-| Pros | Cons |
-|------|------|
-| Cache without memory leaks | Non-deterministic cleanup timing |
-| External metadata for objects | Overkill for most apps |
-
-**When to use:** Large-object caches, native addon wrappers, advanced memory management.
-
-**When NOT to use:** Normal app logic — use `WeakMap` for metadata keyed by objects.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const registry = new FinalizationRegistry((heldValue) => {
@@ -1739,9 +1755,7 @@ registry.register(obj, 'session-1');
 obj = null; // eventually GC + callback
 ```
 
-</details>
-
-**Source:** [javascript.info/weakref-finalizationregistry](https://learn.javascript.ru/weakref-finalizationregistry)
+**Sources:** [javascript.info/weakref-finalizationregistry](https://learn.javascript.ru/weakref-finalizationregistry)
 
 </details>
 
@@ -1761,18 +1775,23 @@ obj = null; // eventually GC + callback
 - `Reflect.get(target, prop, receiver)` forwards to target with correct `this` for getters.
 - Default: no trap → operation forwarded to target unchanged.
 
-| Pros | Cons |
+**When to use:**
+
+Input validation; observable state; negative array index wrapper; mocking in tests; `Proxy.revocable` for capability security.
+
+#### Common pitfalls
+
+Forgetting `return true` from `set` trap (strict mode error); proxying arrays — some methods use internal slots; deep reactivity needs nested proxies; `JSON.stringify` on proxy serializes target.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Validation, logging, reactivity (Vue 3) | Slight overhead; mental overhead |
 | Virtual properties without storage | Hard to debug stack traces |
 | Revocable proxies (`Proxy.revocable`) | Cannot proxy all internal slots equally |
 
-**Cases:** Input validation; observable state; negative array index wrapper; mocking in tests; `Proxy.revocable` for capability security.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const user = new Proxy({}, {
@@ -1796,11 +1815,7 @@ user.age = 30;
 console.log(user.fullName); // 'Ann Lee'
 ```
 
-</details>
-
-**Common pitfalls:** Forgetting `return true` from `set` trap (strict mode error); proxying arrays — some methods use internal slots; deep reactivity needs nested proxies; `JSON.stringify` on proxy serializes target.
-
-**Source:** [javascript.info/proxy](https://learn.javascript.ru/proxy) · [MDN Reflect](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect)
+**Sources:** [javascript.info/proxy](https://learn.javascript.ru/proxy) · [MDN Reflect](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect)
 
 </details>
 
@@ -1818,18 +1833,23 @@ console.log(user.fullName); // 'Ann Lee'
 - ES modules: `export` public API; top-level scope is module-private by default.
 - Grow from factory → `class` when you need `this` (several instances) or methods that must stay on the entity (`addRecord`).
 
-| Pros | Cons |
+**When to use:**
+
+Factory when creation logic branches; module for singleton config, counters, private caches; ES modules for all new app code.
+
+#### Common pitfalls
+
+Factory returning new function each call breaks `===` identity checks; IIFE module state is singleton — test pollution; confusing factory with constructor (`new` not needed).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Factory flexible — plain objects, no `new` | No `instanceof` without shared prototype |
 | Module hides implementation | IIFE modules harder to tree-shake |
 | ES modules standard, static analysis | Over-factorying simple literals |
 
-**Cases:** Factory when creation logic branches; module for singleton config, counters, private caches; ES modules for all new app code.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Factory — same-shaped objects without `new`
@@ -1860,11 +1880,7 @@ const authModule = (() => {
 // export function login(t) { token = t; }
 ```
 
-</details>
-
-**Common pitfalls:** Factory returning new function each call breaks `===` identity checks; IIFE module state is singleton — test pollution; confusing factory with constructor (`new` not needed).
-
-**Source:** [javascript.info/modules-intro](https://learn.javascript.ru/modules-intro) · [MDN modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) · [Doka — OOP](https://doka.guide/tools/oop/)
+**Sources:** [javascript.info/modules-intro](https://learn.javascript.ru/modules-intro) · [MDN modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) · [Doka — OOP](https://doka.guide/tools/oop/)
 
 </details>
 
@@ -1900,7 +1916,9 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 ### Four OOP principles in JavaScript?
 
-**Definition:** Classic OOP pillars map to JS patterns — not all via `class`.
+**Definition:**
+
+Classic OOP pillars map to JS patterns — not all via `class`.
 
 | Principle | In JS | Example |
 |-----------|-------|---------|
@@ -1911,12 +1929,9 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **How it works:** JS uses prototypes under the hood; classes are syntax sugar. Encapsulation is often closures/modules rather than access modifiers alone.
 
-**Cases:** Use inheritance for true `is-a`; encapsulation via modules + private fields; polymorphism via shared method interface (duck typing).
+**When to use:** Use inheritance for true `is-a`; encapsulation via modules + private fields; polymorphism via shared method interface (duck typing).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 class Shape {
@@ -1929,9 +1944,7 @@ class Circle extends Shape {
 [ new Circle(2), new Circle(3) ].forEach(s => console.log(s.area()));
 ```
 
-</details>
-
-**Source:** [javascript.info/class](https://learn.javascript.ru/class) · [Doka — OOP](https://doka.guide/tools/oop/)
+**Sources:** [javascript.info/class](https://learn.javascript.ru/class) · [Doka — OOP](https://doka.guide/tools/oop/)
 
 </details>
 
@@ -1944,12 +1957,9 @@ class Circle extends Shape {
 
 **How it works:** `class History { ... }` creates a constructor function and puts methods on `History.prototype`. Each `new History()` is an instance; methods use `this` so they mutate *that* instance. Factories (`createSpending`) are enough for small same-shaped objects; classes win when behavior and several instances matter.
 
-**Cases:** Interview opener for OOP. Follow with prototype sugar, `this` rules, and why JS still lacks interfaces.
+**When to use:** Interview opener for OOP. Follow with prototype sugar, `this` rules, and why JS still lacks interfaces.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 class Record {
@@ -1963,11 +1973,9 @@ const spending = new Record(100);
 console.log(spending.amount); // 100 — instance is a normal object
 ```
 
-</details>
+**Thoughts:** Class = blueprint; instance = house. In JS the blueprint is still a prototype chain.
 
-**Key idea:** Class = blueprint; instance = house. In JS the blueprint is still a prototype chain.
-
-**Source:** [Doka — OOP](https://doka.guide/tools/oop/) · [MDN Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [MDN Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
 
 </details>
 
@@ -1985,12 +1993,15 @@ console.log(spending.amount); // 100 — instance is a normal object
 3. `new Fn()` sets instance `[[Prototype]]` to `Fn.prototype` and runs constructor.
 4. Methods on `Fn.prototype` are shared by all instances.
 
-**Cases:** ES5 `Animal.prototype.method`; ES6 `class` desugars to same model; `Object.create(proto)` without constructor.
+**When to use:**
 
-**Example:**
+ES5 `Animal.prototype.method`; ES6 `class` desugars to same model; `Object.create(proto)` without constructor.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+Setting `Child.prototype = Parent.prototype` (no `Child` in chain); confusing `__proto__` with `prototype` on functions.
+
+**Examples:**
 
 ```js
 function Animal(name) { this.name = name; }
@@ -2001,13 +2012,9 @@ console.log(a.speak()); // 'Cat' — from Animal.prototype
 console.log(Object.getPrototypeOf(a) === Animal.prototype); // true
 ```
 
-</details>
-
 `new` steps: create object → link prototype → call constructor with `this` → return object (unless constructor returns object).
 
-**Common pitfalls:** Setting `Child.prototype = Parent.prototype` (no `Child` in chain); confusing `__proto__` with `prototype` on functions.
-
-**Source:** [javascript.info/prototypes](https://learn.javascript.ru/prototypes)
+**Sources:** [javascript.info/prototypes](https://learn.javascript.ru/prototypes)
 
 </details>
 
@@ -2016,7 +2023,9 @@ console.log(Object.getPrototypeOf(a) === Animal.prototype); // true
 
 ### Class vs constructor function?
 
-**Definition:** Both create objects with shared prototype methods; `class` is syntactic sugar with stricter rules.
+**Definition:**
+
+Both create objects with shared prototype methods; `class` is syntactic sugar with stricter rules.
 
 | | Constructor function | ES6 class |
 |---|---------------------|-----------|
@@ -2029,12 +2038,15 @@ console.log(Object.getPrototypeOf(a) === Animal.prototype); // true
 
 **How it works:** `class User {}` creates function `User` and puts methods on `User.prototype` — same as writing constructor + `User.prototype.method`.
 
-**Cases:** Legacy codebases use constructors; new code prefers `class` for clarity and `extends`; factory functions when `new` is undesirable.
+**When to use:**
 
-**Example:**
+Legacy codebases use constructors; new code prefers `class` for clarity and `extends`; factory functions when `new` is undesirable.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+Calling class without `new`; expecting class hoisting like `function`; `typeof MyClass === 'function'` surprises newcomers.
+
+**Examples:**
 
 ```js
 // ES5
@@ -2048,11 +2060,7 @@ class UserES6 {
 }
 ```
 
-</details>
-
-**Common pitfalls:** Calling class without `new`; expecting class hoisting like `function`; `typeof MyClass === 'function'` surprises newcomers.
-
-**Source:** [javascript.info/class](https://learn.javascript.ru/class)
+**Sources:** [javascript.info/class](https://learn.javascript.ru/class)
 
 </details>
 
@@ -2061,7 +2069,9 @@ class UserES6 {
 
 ### Composition vs inheritance?
 
-**Definition:** **Inheritance** — `is-a` (subtype shares prototype chain). **Composition** — `has-a` (object embeds or receives behavior from other objects/functions).
+**Definition:**
+
+**Inheritance** — `is-a` (subtype shares prototype chain). **Composition** — `has-a` (object embeds or receives behavior from other objects/functions).
 
 | | Inheritance | Composition |
 |---|-------------|-------------|
@@ -2071,12 +2081,15 @@ class UserES6 {
 
 **How it works:** Composition favors injecting dependencies or merging capability objects; inheritance sets fixed prototype chain at class definition time.
 
-**Cases:** Inheritance when subtype truly substitutes parent; composition for feature mixing, testing (mock dependencies), avoiding deep hierarchies.
+**When to use:**
 
-**Example:**
+Inheritance when subtype truly substitutes parent; composition for feature mixing, testing (mock dependencies), avoiding deep hierarchies.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+Deep inheritance trees in JS; "god object" composing too many unrelated traits; using `extends` for code reuse only (prefer composition).
+
+**Examples:**
 
 ```js
 // Composition
@@ -2088,11 +2101,7 @@ class Animal { speak() { return 'sound'; } }
 class Dog extends Animal { speak() { return 'woof'; } }
 ```
 
-</details>
-
-**Common pitfalls:** Deep inheritance trees in JS; "god object" composing too many unrelated traits; using `extends` for code reuse only (prefer composition).
-
-**Source:** [javascript.info/mixins](https://learn.javascript.ru/mixins)
+**Sources:** [javascript.info/mixins](https://learn.javascript.ru/mixins)
 
 </details>
 
@@ -2119,12 +2128,15 @@ class Dog extends Animal { speak() { return 'woof'; } }
 | `structuredClone` + replace | deep copy new tree | old tree unchanged |
 | Immer | logical immutability | produces new state |
 
-**Cases:** Redux state; frozen config; read-only API response exposure; defensive copies before passing to untrusted code.
+**When to use:**
 
-**Example:**
+Redux state; frozen config; read-only API response exposure; defensive copies before passing to untrusted code.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+`freeze` does not freeze nested objects; `const` ≠ immutable object; thinking `JSON.parse(JSON.stringify(o))` preserves all types.
+
+**Examples:**
 
 ```js
 const config = Object.freeze({ api: 'https://api.example.com' });
@@ -2134,13 +2146,9 @@ const next = structuredClone(state);
 next.user.name = 'Bob'; // new tree, state unchanged
 ```
 
-</details>
-
 Deep freeze requires recursive `Object.freeze` on nested objects or use Immer.
 
-**Common pitfalls:** `freeze` does not freeze nested objects; `const` ≠ immutable object; thinking `JSON.parse(JSON.stringify(o))` preserves all types.
-
-**Source:** [javascript.info/property-descriptors](https://learn.javascript.ru/property-descriptors)
+**Sources:** [javascript.info/property-descriptors](https://learn.javascript.ru/property-descriptors)
 
 </details>
 
@@ -2153,12 +2161,9 @@ Deep freeze requires recursive `Object.freeze` on nested objects or use Immer.
 
 **How it works:** Handler traps (`get`, `set`, `has`, …) run before default behavior; use `Reflect` inside traps for correct forwarding.
 
-**Cases:** Validate assignments; implement `negativeIndex` array wrapper; Vue 3 reactivity; test mocks.
+**When to use:** Validate assignments; implement `negativeIndex` array wrapper; Vue 3 reactivity; test mocks.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const arr = new Proxy([], {
@@ -2173,11 +2178,9 @@ arr.push(10, 20, 30);
 console.log(arr[-1]); // 30
 ```
 
-</details>
-
 See **Advanced topics → Proxy and Reflect** for full trap list and pitfalls.
 
-**Source:** [javascript.info/proxy](https://learn.javascript.ru/proxy)
+**Sources:** [javascript.info/proxy](https://learn.javascript.ru/proxy)
 
 </details>
 

@@ -13,3 +13,4 @@ export function siteUrl(): string {
 export const SITE_NAME = "MyConspect";
 export const SITE_DESCRIPTION =
   "A browse-only study handbook of frontend, backend, and related concepts.";
+

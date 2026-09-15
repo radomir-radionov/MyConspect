@@ -73,11 +73,13 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 - [Interview Practice](#interview-practice)
 - [Quick fixes](#quick-fixes)
 
-> Theory `<details>` blocks follow: **Definition** · **How it works** · **Cases** · **Pros | Cons** · **Example** · pitfalls where relevant.
+> Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
 ### Cascade & specificity
 
-**Definition:** The cascade resolves conflicting rules by origin, importance, specificity, and source order; inheritance passes some properties from parent to child.
+**Definition:**
+
+The cascade resolves conflicting rules by origin, importance, specificity, and source order; inheritance passes some properties from parent to child.
 
 | Concept | Role |
 |---------|------|
@@ -86,14 +88,13 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 | **Inheritance** | `color`, `font-*`, `line-height` flow down; layout props do not |
 | **`@layer`** | Explicit layer order beats specificity among author styles |
 
-**When to use:** Every stylesheet — understanding cascade prevents specificity wars and `!important` hacks.
+**When to use:**
 
-**When NOT to use:** Inline `style=""` and ID selectors for styling — they raise specificity and hurt maintainability.
+Every stylesheet — understanding cascade prevents specificity wars and `!important` hacks.
 
-**Example:**
+Inline `style=""` and ID selectors for styling — they raise specificity and hurt maintainability.
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 @layer reset, components, utilities;
@@ -105,15 +106,15 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 .card .button { background: #1d4ed8; } /* wins: unlayered beats layered */
 ```
 
-</details>
+**Thoughts:** Render pipeline — CSS builds the CSSOM before layout → [1_html.md](./1_html.md).
 
-**Notes:** Render pipeline — CSS builds the CSSOM before layout → [1_html.md](./1_html.md).
-
-**Source:** [MDN — Cascade](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade) · [Specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity)
+**Sources:** [MDN — Cascade](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade) · [Specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity)
 
 ### Box model & layout
 
-**Definition:** Every element is a box (content → padding → border → margin); layout systems position and distribute those boxes in 1D (flex) or 2D (grid).
+**Definition:**
+
+Every element is a box (content → padding → border → margin); layout systems position and distribute those boxes in 1D (flex) or 2D (grid).
 
 | System | Best for |
 |--------|----------|
@@ -124,10 +125,7 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 
 **When to use:** Flex for components; Grid for page structure; both together in production layouts.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 *, *::before, *::after { box-sizing: border-box; }
@@ -147,15 +145,15 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 }
 ```
 
-</details>
+**Thoughts:** Layout changes trigger reflow in the render pipeline → [1_html.md](./1_html.md).
 
-**Notes:** Layout changes trigger reflow in the render pipeline → [1_html.md](./1_html.md).
-
-**Source:** [MDN — Box model](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model) · [Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout) · [Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout)
+**Sources:** [MDN — Box model](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model) · [Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout) · [Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout)
 
 ### Responsive & modern CSS
 
-**Definition:** Responsive CSS adapts layouts to viewport and container size using fluid units, media/container queries, and modern features like custom properties and nesting.
+**Definition:**
+
+Responsive CSS adapts layouts to viewport and container size using fluid units, media/container queries, and modern features like custom properties and nesting.
 
 | Feature | Purpose |
 |---------|---------|
@@ -167,10 +165,7 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 
 **When to use:** Mobile-first `min-width` queries; `@container` for reusable components in sidebars and dashboards.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 :root {
@@ -189,9 +184,7 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 }
 ```
 
-</details>
-
-**Source:** [web.dev — Learn CSS](https://web.dev/learn/css/) · [MDN — Container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries)
+**Sources:** [web.dev — Learn CSS](https://web.dev/learn/css/) · [MDN — Container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries)
 
 ### Why CSS styles don't apply
 
@@ -213,7 +206,9 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 
 ### Ways to add CSS
 
-**Definition:** CSS can be linked externally, embedded in `<style>`, or applied inline on elements; external stylesheets are the production default.
+**Definition:**
+
+CSS can be linked externally, embedded in `<style>`, or applied inline on elements; external stylesheets are the production default.
 
 | Method | Syntax | Use case |
 |--------|--------|----------|
@@ -221,9 +216,9 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 | **Internal** | `<style>` in `<head>` | Single-page prototypes, critical CSS |
 | **Inline** | `style="..."` on element | Avoid except dynamic one-offs; specificity 1000 |
 
-**Loading performance:** prefer `<link rel="stylesheet">` over CSS `@import` — `@import` blocks parallel downloads and adds a serial request chain. Preload critical CSS: `<link rel="preload" href="critical.css" as="style">`.
+**How it works:** prefer `<link rel="stylesheet">` over CSS `@import` — `@import` blocks parallel downloads and adds a serial request chain. Preload critical CSS: `<link rel="preload" href="critical.css" as="style">`.
 
-**Source:** [MDN — Using CSS](https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_is_structured)
+**Sources:** [MDN — Using CSS](https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_is_structured)
 
 </details>
 
@@ -240,18 +235,17 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 - `@import` inside `<style>` or late-loaded CSS delays everything it pulls in.
 - Nested `@import` chains multiply latency; order depends on source position.
 
-| Pros | Cons |
+**When to use:** Avoid in production — use `<link rel="stylesheet">`, bundler entry (`import './base.css'`), or `@layer` for ordering. Legacy exception: print-only `@import url("print.css") print;` when isolated.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Split files without HTML changes | Blocks parallel fetch vs `<link>` |
 | Works in plain CSS projects | Hard to trace in DevTools cascade |
 | | Bundlers may duplicate if mixed with JS imports |
 
-**Cases:** Avoid in production — use `<link rel="stylesheet">`, bundler entry (`import './base.css'`), or `@layer` for ordering. Legacy exception: print-only `@import url("print.css") print;` when isolated.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 /* Anti-pattern — blocks rendering */
@@ -263,9 +257,7 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 /* <link rel="stylesheet" href="components.css"> */
 ```
 
-</details>
-
-**Source:** [MDN — @import](https://developer.mozilla.org/en-US/docs/Web/CSS/@import)
+**Sources:** [MDN — @import](https://developer.mozilla.org/en-US/docs/Web/CSS/@import)
 
 </details>
 
@@ -276,10 +268,7 @@ Covers cascade, selectors, box model, flexbox, grid, responsive design, motion, 
 
 **Definition:** A CSS rule pairs a selector with a declaration block of `property: value` pairs that style matching elements.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 selector {
@@ -288,12 +277,10 @@ selector {
 }
 ```
 
-</details>
-
 Multiple selectors (grouping): `h1, .price { color: navy; }`  
 Chaining (AND): `.card.featured { }` — element must match all parts.
 
-**Source:** [MDN — CSS syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/Syntax)
+**Sources:** [MDN — CSS syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/Syntax)
 
 </details>
 
@@ -302,7 +289,9 @@ Chaining (AND): `.card.featured { }` — element must match all parts.
 
 ### Global keywords
 
-**Definition:** CSS global keywords (`inherit`, `initial`, `unset`, `revert`) control how property values reset or cascade.
+**Definition:**
+
+CSS global keywords (`inherit`, `initial`, `unset`, `revert`) control how property values reset or cascade.
 
 | Keyword | Behavior |
 |---------|----------|
@@ -319,17 +308,16 @@ Chaining (AND): `.card.featured { }` — element must match all parts.
 - `unset` — inheritable properties → `inherit`; others → `initial`.
 - `revert` — UA stylesheet value for that element/property.
 
-| Pros | Cons |
+**When to use:** `all: unset` on buttons before custom styling; `color: revert` to restore UA link colors; `display: revert` to undo author overrides on semantic elements.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Reset without duplicating rules | `initial` ≠ element default (e.g. `display` on `<div>`) |
 | `all: unset` strips author styles fast | `revert` support still maturing in older browsers |
 
-**Cases:** `all: unset` on buttons before custom styling; `color: revert` to restore UA link colors; `display: revert` to undo author overrides on semantic elements.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 button {
@@ -340,9 +328,7 @@ button {
 a { color: revert; }
 ```
 
-</details>
-
-**Source:** [MDN — CSS values](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units)
+**Sources:** [MDN — CSS values](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units)
 
 </details>
 
@@ -351,14 +337,13 @@ a { color: revert; }
 
 ### Code style — property order
 
-**Definition:** Grouping CSS properties in a consistent order (position → box → typography → decoration → animation) improves readability and review speed.
+**Definition:**
+
+Grouping CSS properties in a consistent order (position → box → typography → decoration → animation) improves readability and review speed.
 
 Group properties for readability (positioning → box model → typography → decoration → animation → misc):
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .card {
@@ -390,13 +375,13 @@ Group properties for readability (positioning → box model → typography → d
 }
 ```
 
-</details>
+**Sources:**
 
-**Sources:** [Netology CSS codestyle](https://netology-university.bitbucket.io/codestyle/css/) · [CSS for JS](https://learn.javascript.ru/css-for-js)
+[Netology CSS codestyle](https://netology-university.bitbucket.io/codestyle/css/) · [CSS for JS](https://learn.javascript.ru/css-for-js)
 
 > `float` in older style guides is legacy — prefer Flexbox/Grid for layout.
 
-**Source:** [Netology CSS codestyle](https://netology-university.bitbucket.io/codestyle/css/)
+[Netology CSS codestyle](https://netology-university.bitbucket.io/codestyle/css/)
 
 </details>
 
@@ -405,7 +390,9 @@ Group properties for readability (positioning → box model → typography → d
 
 ### Reset.css vs Normalize.css
 
-**Definition:** Reset strips browser defaults to a blank slate; Normalize preserves useful defaults while fixing cross-browser inconsistencies.
+**Definition:**
+
+Reset strips browser defaults to a blank slate; Normalize preserves useful defaults while fixing cross-browser inconsistencies.
 
 * **Reset** — strips most default browser styles to a blank slate
 * **Normalize** — preserves useful defaults, fixes cross-browser inconsistencies
@@ -414,7 +401,7 @@ Modern projects often use a minimal reset or framework base (Tailwind Preflight,
 
 ---
 
-**Source:** [Normalize.css](https://necolas.github.io/normalize.css/)
+**Sources:** [Normalize.css](https://necolas.github.io/normalize.css/)
 
 </details>
 
@@ -427,7 +414,9 @@ Modern projects often use a minimal reset or framework base (Tailwind Preflight,
 
 ### Selector types
 
-**Definition:** CSS selectors target elements by type, class, ID, attribute, or pseudo-class/element; each type contributes to specificity.
+**Definition:**
+
+CSS selectors target elements by type, class, ID, attribute, or pseudo-class/element; each type contributes to specificity.
 
 | Type | Example | Specificity |
 |------|---------|-------------|
@@ -439,7 +428,7 @@ Modern projects often use a minimal reset or framework base (Tailwind Preflight,
 | Pseudo-class | `:hover`, `:nth-child(2)` | 0,1,0 |
 | Pseudo-element | `::before`, `::selection` | 0,0,1 (acts like type) |
 
-**Source:** [MDN — Selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors)
+**Sources:** [MDN — Selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors)
 
 </details>
 
@@ -448,7 +437,9 @@ Modern projects often use a minimal reset or framework base (Tailwind Preflight,
 
 ### Combinators
 
-**Definition:** Combinators define relationships between selectors — descendant, child, adjacent sibling, and general sibling.
+**Definition:**
+
+Combinators define relationships between selectors — descendant, child, adjacent sibling, and general sibling.
 
 | Combinator | Meaning | Example |
 |------------|---------|---------|
@@ -457,7 +448,7 @@ Modern projects often use a minimal reset or framework base (Tailwind Preflight,
 | Adjacent `+` | Immediate next sibling | `h2 + p` |
 | General `~` | Any following sibling | `h2 ~ p` |
 
-**Source:** [MDN — Combinators](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+**Sources:** [MDN — Combinators](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 
 </details>
 
@@ -466,7 +457,9 @@ Modern projects often use a minimal reset or framework base (Tailwind Preflight,
 
 ### Class vs ID
 
-**Definition:** Classes are reusable styling hooks; IDs are unique per page and carry higher specificity — prefer classes for styling.
+**Definition:**
+
+Classes are reusable styling hooks; IDs are unique per page and carry higher specificity — prefer classes for styling.
 
 * **ID** — unique per page; high specificity; prefer for JS hooks or fragment targets, not styling
 * **Class** — reusable; kebab-case (`card-title`); multiple per element (space-separated)
@@ -477,27 +470,24 @@ Modern projects often use a minimal reset or framework base (Tailwind Preflight,
 - Class selector (`.nav`) — specificity `(0,1,0)`; reusable; multiple per element.
 - IDs valid for fragment targets (`#section`), `aria-labelledby`, `label for=`; classes for styling hooks.
 
-| Pros (class) | Cons (ID for styling) |
+**When to use:** Style with classes; reserve IDs for anchors and ARIA references. Avoid `#id .class` chains to win specificity — flatten selectors or use `@layer` instead.
+
+**Pluses and minuses:**
+
+| + (class) | − (ID for styling) |
 |--------------|----------------------|
 | Low specificity, easy overrides | IDs create specificity wars |
 | Composable modifiers (`btn--primary`) | One per page — brittle for components |
 | Team-friendly naming conventions | Hard to refactor at scale |
 
-**Cases:** Style with classes; reserve IDs for anchors and ARIA references. Avoid `#id .class` chains to win specificity — flatten selectors or use `@layer` instead.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <header id="main-header" class="site-header">...</header>
 <nav class="nav nav--compact">...</nav>
 ```
 
-</details>
-
-**Source:** [MDN — ID selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors)
+**Sources:** [MDN — ID selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors)
 
 </details>
 
@@ -508,10 +498,7 @@ Modern projects often use a minimal reset or framework base (Tailwind Preflight,
 
 **Definition:** `:is()`, `:where()`, `:not()`, and `:has()` group or filter selectors with different specificity rules.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 /* :is() — groups selectors; specificity = highest argument */
@@ -528,9 +515,7 @@ li:not(:last-child) { border-bottom: 1px solid #eee; }
 .form:has(:invalid) .submit { opacity: 0.5; }
 ```
 
-</details>
-
-**Source:** [MDN — :has()](https://developer.mozilla.org/en-US/docs/Web/CSS/:has)
+**Sources:** [MDN — :has()](https://developer.mozilla.org/en-US/docs/Web/CSS/:has)
 
 </details>
 
@@ -539,30 +524,17 @@ li:not(:last-child) { border-bottom: 1px solid #eee; }
 
 ### Specificity calculation
 
-**Definition:** Specificity is a tuple score (inline, IDs, classes/attributes/pseudo-classes, types/pseudo-elements) that decides which rule wins in the cascade.
+**Definition:**
+
+Specificity is a tuple score (inline, IDs, classes/attributes/pseudo-classes, types/pseudo-elements) that decides which rule wins in the cascade.
 
 Count (inline, IDs, classes/attributes/pseudo-classes, types/pseudo-elements):
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
-
-```
-#nav .item a:hover     →  1,1,2
-.btn.btn--primary     →  0,2,0
-p                     →  0,0,1
-style="" attribute    →  1000 (inline)
-!important             →  beats normal declarations in same origin
-```
-
-</details>
-
-**Tie-breaker:** later rule in source order wins.
+later rule in source order wins.
 
 > The old "1-10-100" mental model is a simplification. Use real specificity tuples or DevTools "Computed" panel.
-
-**Edge cases:**
 
 | Selector | Specificity note |
 |----------|------------------|
@@ -571,7 +543,7 @@ style="" attribute    →  1000 (inline)
 | `:where(.a, #x)` | Always `(0,0,0)` |
 | `::before` | Counts as a type pseudo-element `(0,0,1)` |
 
-**`!important` + `@layer`:** within the same origin, unlayered styles beat layered styles regardless of specificity. Among layered styles, layer order wins first, then specificity. `!important` inversions apply per origin — author `!important` beats author normal, but user `!important` can beat author `!important`.
+within the same origin, unlayered styles beat layered styles regardless of specificity. Among layered styles, layer order wins first, then specificity. `!important` inversions apply per origin — author `!important` beats author normal, but user `!important` can beat author `!important`.
 
 ```
 Cascade resolution (simplified):
@@ -581,7 +553,17 @@ Cascade resolution (simplified):
   4. Source order
 ```
 
-**Source:** [MDN — Specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity)
+**Examples:**
+
+```
+#nav .item a:hover     →  1,1,2
+.btn.btn--primary     →  0,2,0
+p                     →  0,0,1
+style="" attribute    →  1000 (inline)
+!important             →  beats normal declarations in same origin
+```
+
+**Sources:** [MDN — Specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity)
 
 </details>
 
@@ -590,7 +572,9 @@ Cascade resolution (simplified):
 
 ### Cascade origins
 
-**Definition:** The cascade resolves conflicts across user-agent, user, and author stylesheets before specificity and source order.
+**Definition:**
+
+The cascade resolves conflicts across user-agent, user, and author stylesheets before specificity and source order.
 
 | Origin | Source | Typical examples |
 |--------|--------|------------------|
@@ -602,7 +586,7 @@ Cascade resolution (simplified):
 
 **`revert`** rolls back to the UA stylesheet for that property; `revert-layer` rolls back within the current `@layer`.
 
-**Source:** [MDN — Cascade](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade)
+**Sources:** [MDN — Cascade](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade)
 
 </details>
 
@@ -620,18 +604,17 @@ Cascade resolution (simplified):
 - `inherit` keyword forces inheritance even on non-inheritable properties.
 - `initial` / `unset` / `revert` interact with inheritance per property rules.
 
-| Pros | Cons |
+**When to use:** Set `font-family` / `color` on `body` or `:root`; use `color: inherit` on buttons/links; don't expect `width` or `margin` to flow down — set explicitly or use layout containers.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Typography/color theming from `:root` | Easy to forget what inherits vs what doesn't |
 | Custom properties cascade naturally | Inherited `visibility: hidden` hides all descendants |
 | Less duplication for text styles | Layout props must be set per element |
 
-**Cases:** Set `font-family` / `color` on `body` or `:root`; use `color: inherit` on buttons/links; don't expect `width` or `margin` to flow down — set explicitly or use layout containers.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 :root {
@@ -646,9 +629,7 @@ Cascade resolution (simplified):
 }
 ```
 
-</details>
-
-**Source:** [MDN — Inheritance](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Inheritance)
+**Sources:** [MDN — Inheritance](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Inheritance)
 
 </details>
 
@@ -657,14 +638,13 @@ Cascade resolution (simplified):
 
 ### @layer (cascade layers)
 
-**Definition:** `@layer` declares explicit cascade layers so resets, components, and utilities stack in a predictable order.
+**Definition:**
+
+`@layer` declares explicit cascade layers so resets, components, and utilities stack in a predictable order.
 
 Control cascade order explicitly — useful for design systems, resets, and utilities:
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 @layer reset, base, components, utilities;
@@ -678,11 +658,9 @@ Control cascade order explicitly — useful for design systems, resets, and util
 }
 ```
 
-</details>
-
 Unlayered styles beat layered styles. Later layers beat earlier layers within the same origin.
 
-**Source:** [MDN — @layer](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer)
+**Sources:** [MDN — @layer](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer)
 
 </details>
 
@@ -691,7 +669,9 @@ Unlayered styles beat layered styles. Later layers beat earlier layers within th
 
 ### Pseudo-classes
 
-**Definition:** Pseudo-classes select elements in a particular state or structural position (`:hover`, `:nth-child`, `:focus-visible`).
+**Definition:**
+
+Pseudo-classes select elements in a particular state or structural position (`:hover`, `:nth-child`, `:focus-visible`).
 
 | Category | Selectors | Use case |
 |----------|-----------|----------|
@@ -704,26 +684,19 @@ Unlayered styles beat layered styles. Later layers beat earlier layers within th
 | **Navigation** | `:target` | URL fragment highlight |
 | **Parent** | `:has(.error)` | Style parent based on descendant |
 
-**`:nth-child` vs `:nth-of-type`:**
+**How it works:** `:focus` fires on any focus (including mouse click); `:focus-visible` only when the UA determines focus should be visible (keyboard). Use `:focus-visible` for outline rings; never remove `:focus` without a replacement.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <div><p>A</p><span>B</span><p>C</p></div>
 ```
 
-</details>
-
 * `p:nth-child(2)` — no match (`span` is 2nd child)
 * `p:nth-of-type(1)` — matches first `<p>` (A)
 * `p:nth-of-type(2)` — matches second `<p>` (C)
 
-**`:focus` vs `:focus-visible`:** `:focus` fires on any focus (including mouse click); `:focus-visible` only when the UA determines focus should be visible (keyboard). Use `:focus-visible` for outline rings; never remove `:focus` without a replacement.
-
-**Source:** [MDN — Pseudo-classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes)
+**Sources:** [MDN — Pseudo-classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes)
 
 </details>
 
@@ -732,7 +705,9 @@ Unlayered styles beat layered styles. Later layers beat earlier layers within th
 
 ### Pseudo-elements
 
-**Definition:** Pseudo-elements style generated sub-parts of an element (`::before`, `::after`, `::selection`).
+**Definition:**
+
+Pseudo-elements style generated sub-parts of an element (`::before`, `::after`, `::selection`).
 
 Target sub-parts of an element (use `::`):
 
@@ -741,10 +716,7 @@ Target sub-parts of an element (use `::`):
 * `::selection` — user-selected text
 * `::placeholder` — input placeholder text
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .tooltip::after {
@@ -753,9 +725,7 @@ Target sub-parts of an element (use `::`):
 }
 ```
 
-</details>
-
-**Source:** [MDN — Pseudo-elements](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements)
+**Sources:** [MDN — Pseudo-elements](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements)
 
 </details>
 
@@ -764,22 +734,11 @@ Target sub-parts of an element (use `::`):
 
 ### attr() function
 
-**Definition:** The `attr()` function reads an HTML attribute value for use in CSS, commonly in `content` on pseudo-elements.
+**Definition:**
+
+The `attr()` function reads an HTML attribute value for use in CSS, commonly in `content` on pseudo-elements.
 
 Reads an HTML attribute value for use in CSS (common with `content`):
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
-
-```css
-a[href^="http"]::after {
-  content: " (" attr(href) ")";
-}
-```
-
-</details>
 
 **How it works:**
 
@@ -787,15 +746,25 @@ a[href^="http"]::after {
 - Typed `attr()` (CSS Values Level 5) allows `type(<color>)`, `type(<length>)`, etc. — check browser support.
 - Empty/missing attributes yield empty string in `content`.
 
-| Pros | Cons |
+**When to use:** External link hints in print; decorative labels from `data-*`; counter badges. Always pair decorative `attr()` content with accessible names.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | DRY tooltips/labels from HTML data | Limited property support without typed `attr()` |
 | No JS for decorative pseudo-content | Screen readers may not read `::after` content — add `aria-label` |
 | Good for print link expansion | Security: never inject unescaped user HTML via attributes |
 
-**Cases:** External link hints in print; decorative labels from `data-*`; counter badges. Always pair decorative `attr()` content with accessible names.
+**Examples:**
 
-**Source:** [MDN — attr()](https://developer.mozilla.org/en-US/docs/Web/CSS/attr)
+```css
+a[href^="http"]::after {
+  content: " (" attr(href) ")";
+}
+```
+
+**Sources:** [MDN — attr()](https://developer.mozilla.org/en-US/docs/Web/CSS/attr)
 
 </details>
 
@@ -808,16 +777,17 @@ a[href^="http"]::after {
 
 ### CSS box model
 
-**Definition:** Every element is a rectangular box: content, padding, border, and margin — the foundation of layout sizing.
+**Definition:**
+
+Every element is a rectangular box: content, padding, border, and margin — the foundation of layout sizing.
 
 Every element is a rectangular box: **content → padding → border → margin**.
 
 By default, `width` / `height` apply to the **content box** only; padding and border add to total size.
 
-**Example:**
+**How it works:** [Introduction to the CSS box model](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Introduction_to_the_CSS_box_model)
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 ┌──────────── margin ────────────┐
@@ -829,11 +799,7 @@ By default, `width` / `height` apply to the **content box** only; padding and bo
 └────────────────────────────────┘
 ```
 
-</details>
-
-**MDN:** [Introduction to the CSS box model](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Introduction_to_the_CSS_box_model)
-
-**Source:** [MDN — Box model](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Introduction_to_the_CSS_box_model)
+**Sources:** [MDN — Box model](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Introduction_to_the_CSS_box_model)
 
 </details>
 
@@ -844,18 +810,13 @@ By default, `width` / `height` apply to the **content box** only; padding and bo
 
 **Definition:** `box-sizing` controls whether `width`/`height` include padding and border (`border-box`) or content only (`content-box`).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 *, *::before, *::after {
   box-sizing: border-box;
 }
 ```
-
-</details>
 
 | Value | `width` includes |
 |-------|------------------|
@@ -864,7 +825,7 @@ By default, `width` / `height` apply to the **content box** only; padding and bo
 
 Use `border-box` globally to make sizing predictable. `padding-box` exists but is rarely used.
 
-**Source:** [MDN — box-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing)
+**Sources:** [MDN — box-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing)
 
 </details>
 
@@ -873,22 +834,24 @@ Use `border-box` globally to make sizing predictable. `padding-box` exists but i
 
 ### Margin & padding
 
-**Definition:** Padding is space inside the border; margin is space outside. Vertical margins between block siblings can collapse.
+**Definition:**
+
+Padding is space inside the border; margin is space outside. Vertical margins between block siblings can collapse.
 
 * **Padding** — space inside border; affects background; does not collapse
 * **Margin** — space outside border; can collapse
 
-**Margin collapsing:** vertical margins of adjacent block siblings collapse to the larger value. Does not apply to flex/grid items, floated elements, or horizontal margins.
+**How it works:**
 
-**Additional collapse cases:**
+vertical margins of adjacent block siblings collapse to the larger value. Does not apply to flex/grid items, floated elements, or horizontal margins.
 
 * **Parent + first/last child** — top margin of first child can collapse with parent's top margin; same for bottom
 * **Empty block** — top and bottom margins of an empty block collapse into one
 * **Prevention** — padding/border on parent, `overflow: auto`, `display: flow-root`, or flex/grid on parent stops collapse
 
-**Negative margins:** pull elements visually; can break layout — use sparingly.
+pull elements visually; can break layout — use sparingly.
 
-**Source:** [MDN — margin](https://developer.mozilla.org/en-US/docs/Web/CSS/margin)
+**Sources:** [MDN — margin](https://developer.mozilla.org/en-US/docs/Web/CSS/margin)
 
 </details>
 
@@ -897,7 +860,9 @@ Use `border-box` globally to make sizing predictable. `padding-box` exists but i
 
 ### Containing block
 
-**Definition:** The containing block is the reference box used to compute an element's position and percentage-based sizes.
+**Definition:**
+
+The containing block is the reference box used to compute an element's position and percentage-based sizes.
 
 The **containing block** is the box used to calculate an element's size and position (`top`, `left`, `width`, `height`, percentages).
 
@@ -908,25 +873,22 @@ The **containing block** is the box used to calculate an element's size and posi
 | `fixed` | Viewport (or transform/filter ancestor in some browsers) |
 | `sticky` | Nearest scroll ancestor's content box |
 
-**Interview trap:** `position: relative` on parent does not change flow, but it **does** become the containing block for `position: absolute` children.
+**How it works:**
 
-**Example:**
+`position: relative` on parent does not change flow, but it **does** become the containing block for `position: absolute` children.
 
-<details>
-  <summary>Code</summary>
+[Containing block](https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block)
+
+**Examples:**
 
 ```css
 .parent { position: relative; }
 .child  { position: absolute; inset: 0; } /* fills .parent, not viewport */
 ```
 
-</details>
-
 Percentage `width`/`height` resolve against the containing block's width/height — if the containing block has no explicit height, `height: 100%` fails.
 
-**MDN:** [Containing block](https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block)
-
-**Source:** [MDN — Containing block](https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block)
+**Sources:** [MDN — Containing block](https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block)
 
 </details>
 
@@ -935,7 +897,9 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 
 ### Intrinsic & extrinsic sizing
 
-**Definition:** Intrinsic sizing derives size from content (`min-content`, `max-content`); extrinsic sizing is imposed from outside (`width`, `flex`).
+**Definition:**
+
+Intrinsic sizing derives size from content (`min-content`, `max-content`); extrinsic sizing is imposed from outside (`width`, `flex`).
 
 | Keyword | Meaning |
 |---------|---------|
@@ -944,10 +908,9 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 | `fit-content` | `min(max-content, max(min-content, stretch))` — shrink but not below min-content |
 | `auto` | Browser-dependent; in flex/grid often means `minmax(auto, max-content)` |
 
-**Example:**
+**How it works:** default `min-width: auto` on flex items prevents shrinking below content — use `min-width: 0` or `minmax(0, 1fr)` in grid to allow truncation.
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .sidebar { width: min(240px, 25vw); }
@@ -955,13 +918,9 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 .grid-col { grid-template-columns: minmax(0, 1fr); } /* allow shrink below content */
 ```
 
-</details>
-
 **Extrinsic sizing** — size imposed from outside (`width: 300px`, `flex: 1`). **Intrinsic sizing** — size derived from content (`width: max-content`, `width: auto` on inline-block).
 
-**Flex/grid trap:** default `min-width: auto` on flex items prevents shrinking below content — use `min-width: 0` or `minmax(0, 1fr)` in grid to allow truncation.
-
-**Source:** [MDN — min-content](https://developer.mozilla.org/en-US/docs/Web/CSS/min-content)
+**Sources:** [MDN — min-content](https://developer.mozilla.org/en-US/docs/Web/CSS/min-content)
 
 </details>
 
@@ -972,9 +931,7 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 
 **Definition:** A BFC is an isolated layout region where block boxes stack vertically and floats are contained.
 
-**Key idea:** An isolated layout region where block boxes stack vertically and floats are contained.
-
-**Creates a BFC:**
+**How it works:**
 
 * `overflow` other than `visible` (`auto`, `hidden`, `scroll`)
 * `display: flow-root` (preferred — no side effects)
@@ -982,16 +939,11 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 * `position: absolute` / `fixed`
 * `float` other than `none`
 
-**Why it matters:**
-
 * Contains floated children (prevents parent height collapse)
 * Prevents margin collapsing with outside elements
 * Isolates layout for independent z-index stacking
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .clear-float-context {
@@ -999,9 +951,9 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 }
 ```
 
-</details>
+**Thoughts:** An isolated layout region where block boxes stack vertically and floats are contained.
 
-**Source:** [MDN — BFC](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context)
+**Sources:** [MDN — BFC](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context)
 
 </details>
 
@@ -1010,7 +962,9 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 
 ### display
 
-**Definition:** The `display` property defines how an element participates in layout — block, inline, flex, grid, or none.
+**Definition:**
+
+The `display` property defines how an element participates in layout — block, inline, flex, grid, or none.
 
 | Value | Behavior |
 |-------|----------|
@@ -1023,7 +977,7 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 | `contents` | Box disappears; children remain |
 | `flow-root` | Creates BFC; contains floats |
 
-**Source:** [MDN — display](https://developer.mozilla.org/en-US/docs/Web/CSS/display)
+**Sources:** [MDN — display](https://developer.mozilla.org/en-US/docs/Web/CSS/display)
 
 </details>
 
@@ -1040,18 +994,17 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 - Useful for semantic wrappers (`<li>` around flex children, table fixups) without extra layout boxes.
 - Pseudo-elements (`::before`/`::after`) on the `contents` element may still generate boxes.
 
-| Pros | Cons |
+**When to use:** List item wrappers in flex/grid layouts; table accessibility fixes. **Avoid** on interactive or landmark elements (`<button>`, `<nav>`, `<main>`) — use a real layout value or add explicit ARIA roles on children.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Semantic HTML without layout penalty | **Accessibility:** element removed from a11y tree in many browsers |
 | Fixes table/flex participation issues | No box = no `background`, `border`, `padding` on wrapper |
 | Cleaner grid/flex item lists | Unpredictable with positioned descendants |
 
-**Cases:** List item wrappers in flex/grid layouts; table accessibility fixes. **Avoid** on interactive or landmark elements (`<button>`, `<nav>`, `<main>`) — use a real layout value or add explicit ARIA roles on children.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 /* Semantic <li> wrappers in a flex toolbar */
@@ -1063,9 +1016,7 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 /* Prefer restructuring markup or use role="listitem" on children if needed */
 ```
 
-</details>
-
-**Source:** [MDN — display: contents](https://developer.mozilla.org/en-US/docs/Web/CSS/display#contents)
+**Sources:** [MDN — display: contents](https://developer.mozilla.org/en-US/docs/Web/CSS/display#contents)
 
 </details>
 
@@ -1074,7 +1025,9 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 
 ### visibility vs display
 
-**Definition:** `display: none` removes an element from layout; `visibility: hidden` keeps its space but hides painting.
+**Definition:**
+
+`display: none` removes an element from layout; `visibility: hidden` keeps its space but hides painting.
 
 | Property | In layout? | Painted? | Events? |
 |----------|------------|----------|---------|
@@ -1082,7 +1035,7 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 | `visibility: hidden` | Yes | No | No |
 | `opacity: 0` | Yes | No* | Yes (unless `pointer-events: none`) |
 
-**Source:** [MDN — visibility](https://developer.mozilla.org/en-US/docs/Web/CSS/visibility)
+**Sources:** [MDN — visibility](https://developer.mozilla.org/en-US/docs/Web/CSS/visibility)
 
 </details>
 
@@ -1093,10 +1046,7 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 
 **Definition:** `overflow` clips or scrolls overflowing content; `aspect-ratio` and `object-fit` control media box proportions.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .scroll-panel {
@@ -1112,9 +1062,7 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 }
 ```
 
-</details>
-
-**Source:** [MDN — object-fit](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
+**Sources:** [MDN — object-fit](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
 
 </details>
 
@@ -1123,14 +1071,13 @@ Percentage `width`/`height` resolve against the containing block's width/height 
 
 ### Logical properties
 
-**Definition:** Logical properties (`margin-inline`, `padding-block`) map to physical sides based on writing direction for i18n-friendly CSS.
+**Definition:**
+
+Logical properties (`margin-inline`, `padding-block`) map to physical sides based on writing direction for i18n-friendly CSS.
 
 Write direction-aware styles (RTL, vertical writing):
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .card {
@@ -1140,11 +1087,9 @@ Write direction-aware styles (RTL, vertical writing):
 }
 ```
 
-</details>
-
 Prefer logical properties in new code over physical `left`/`right` when supporting i18n.
 
-**Source:** [MDN — Logical properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values)
+**Sources:** [MDN — Logical properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values)
 
 </details>
 
@@ -1153,14 +1098,13 @@ Prefer logical properties in new code over physical `left`/`right` when supporti
 
 ### scrollbar-gutter
 
-**Definition:** `scrollbar-gutter: stable` reserves scrollbar space to prevent layout shift when scrollbars appear.
+**Definition:**
+
+`scrollbar-gutter: stable` reserves scrollbar space to prevent layout shift when scrollbars appear.
 
 Reserves space for scrollbar to prevent layout shift:
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 html {
@@ -1168,13 +1112,11 @@ html {
 }
 ```
 
-</details>
-
 Values: `auto` | `stable` | `stable both-edges`
 
 ---
 
-**Source:** [MDN — scrollbar-gutter](https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-gutter)
+**Sources:** [MDN — scrollbar-gutter](https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-gutter)
 
 </details>
 
@@ -1187,7 +1129,9 @@ Values: `auto` | `stable` | `stable both-edges`
 
 ### Positioning
 
-**Definition:** `position` removes elements from normal flow (`absolute`, `fixed`) or offsets them (`relative`, `sticky`).
+**Definition:**
+
+`position` removes elements from normal flow (`absolute`, `fixed`) or offsets them (`relative`, `sticky`).
 
 | Value | Containing block | Scroll behavior |
 |-------|------------------|-----------------|
@@ -1197,11 +1141,13 @@ Values: `auto` | `stable` | `stable both-edges`
 | `fixed` | Viewport | Fixed to viewport |
 | `sticky` | Nearest scroll ancestor | Sticks within parent bounds |
 
-**sticky requirements:** ancestor must not have `overflow: hidden`; `top`/`bottom`/`left`/`right` must be set; parent must be tall enough to scroll.
+**How it works:**
 
-**sticky vs fixed:** `fixed` is always viewport-relative; `sticky` toggles between relative and fixed within its container's scroll range.
+ancestor must not have `overflow: hidden`; `top`/`bottom`/`left`/`right` must be set; parent must be tall enough to scroll.
 
-**Source:** [MDN — position](https://developer.mozilla.org/en-US/docs/Web/CSS/position)
+`fixed` is always viewport-relative; `sticky` toggles between relative and fixed within its container's scroll range.
+
+**Sources:** [MDN — position](https://developer.mozilla.org/en-US/docs/Web/CSS/position)
 
 </details>
 
@@ -1210,13 +1156,15 @@ Values: `auto` | `stable` | `stable both-edges`
 
 ### Stacking context & z-index
 
-**Definition:** A stacking context layers painted elements; `z-index` only compares within the same context.
+**Definition:**
+
+A stacking context layers painted elements; `z-index` only compares within the same context.
 
 `z-index` only works on **positioned** elements (`relative`, `absolute`, `fixed`, `sticky`) or flex/grid children.
 
-**Paint (simplified, per box):** `background-color` → `background-image` → `border` → descendants → `outline`. Full stacking list below. Render pipeline → [1_html.md](./1_html.md).
+**How it works:**
 
-**Stacking order (within one stacking context, back → front):**
+`background-color` → `background-image` → `border` → descendants → `outline`. Full stacking list below. Render pipeline → [1_html.md](./1_html.md).
 
 ```
 1. Stacking contexts with negative z-index
@@ -1228,8 +1176,6 @@ Values: `auto` | `stable` | `stable both-edges`
 7. Stacking contexts with z-index: auto that created a context (opacity, transform, etc.)
 ```
 
-**Creates a new stacking context:**
-
 * `position` + `z-index` (not `auto`) on positioned/flex/grid item
 * `opacity < 1`
 * `transform`, `filter`, `perspective`, `clip-path`
@@ -1237,7 +1183,18 @@ Values: `auto` | `stable` | `stable both-edges`
 * `isolation: isolate`
 * `mix-blend-mode` other than `normal`
 
-**Pitfall — child cannot escape parent context:**
+move overlay/tooltip to a top-level portal, or ensure parent does not create an unintended stacking context.
+
+**`isolation: isolate`** — force a new stacking context without side effects (useful for blend modes / z-index scoping).
+
+```css
+.overlay { mix-blend-mode: multiply; }
+.hero    { background-blend-mode: overlay; }
+```
+
+**When to use:**
+
+#### Pitfall
 
 ```
 ┌─ .modal-backdrop (z-index: 100, creates context) ─┐
@@ -1247,30 +1204,14 @@ Values: `auto` | `stable` | `stable both-edges`
 └──────────────────────────────────────────────────────┘
 ```
 
-**Fix:** move overlay/tooltip to a top-level portal, or ensure parent does not create an unintended stacking context.
-
-**`isolation: isolate`** — force a new stacking context without side effects (useful for blend modes / z-index scoping).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .card { isolation: isolate; }
 .tooltip { z-index: 1; } /* competes only within .card */
 ```
 
-</details>
-
-**Blend modes (brief):**
-
-```css
-.overlay { mix-blend-mode: multiply; }
-.hero    { background-blend-mode: overlay; }
-```
-
-**Source:** [MDN — Stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context)
+**Sources:** [MDN — Stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context)
 
 </details>
 
@@ -1281,7 +1222,9 @@ Values: `auto` | `stable` | `stable both-edges`
 
 **Definition:** One-dimensional layout: distribute space along a **main axis** (`row` or `column`).
 
-**How it works:** `display: flex` / `inline-flex`. Main axis = `flex-direction`; cross axis is perpendicular. Items size with `flex` (`grow shrink basis`). Default `min-width: auto` (min-content) — set `min-width: 0` (column: `min-height: 0`) so items can shrink. `justify-self` does **not** apply to flex items — use `align-self` or `margin: auto`.
+**How it works:**
+
+`display: flex` / `inline-flex`. Main axis = `flex-direction`; cross axis is perpendicular. Items size with `flex` (`grow shrink basis`). Default `min-width: auto` (min-content) — set `min-width: 0` (column: `min-height: 0`) so items can shrink. `justify-self` does **not** apply to flex items — use `align-self` or `margin: auto`.
 
 | Container | Role |
 |-----------|------|
@@ -1301,17 +1244,22 @@ Values: `auto` | `stable` | `stable both-edges`
 | `align-self` | Override `align-items` |
 | `order` | Visual reorder only — **not** tab order |
 
-**Cases:** Toolbars, nav, card rows, centering, sidebar + main.
+**When to use:**
+
+Toolbars, nav, card rows, centering, sidebar + main.
+
+#### Common pitfalls
+
+Overflow without `min-width: 0`. `order` vs a11y. Column flex: `justify-content` is **vertical**.
+
+**Pluses and minuses:**
 
 | + | − |
 | --- | --- |
 | Content-driven 1D alignment | Nested 2D layouts fight Flex — use Grid |
 | `gap` + `margin: auto` for leftover space | `min-width: auto` overflows text unless reset |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .toolbar {
@@ -1328,13 +1276,9 @@ Values: `auto` | `stable` | `stable both-edges`
 .nav .logo { margin-inline-end: auto; } /* leftover space → links right */
 ```
 
-</details>
+**Thoughts:** One axis at a time — Flex for rows/columns; Grid when you need both.
 
-**Common pitfalls:** Overflow without `min-width: 0`. `order` vs a11y. Column flex: `justify-content` is **vertical**.
-
-**Key idea:** One axis at a time — Flex for rows/columns; Grid when you need both.
-
-**Source:** [MDN — Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout)
+**Sources:** [MDN — Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout)
 
 </details>
 
@@ -1345,21 +1289,28 @@ Values: `auto` | `stable` | `stable both-edges`
 
 **Definition:** Two-dimensional layout: rows **and** columns on one container.
 
-**How it works:** `display: grid` / `inline-grid`. Explicit tracks = `grid-template-columns` / `rows` / `areas`. Overflowing items create an **implicit** grid (`grid-auto-rows` / `columns` / `flow`). `fr` = share of free space; `minmax(min, max)` bounds a track — use `minmax(0, 1fr)` so tracks can shrink below content. Items: `grid-column` / `grid-row` / `grid-area`, `justify-self` / `align-self`. Align cells with `justify-items` / `align-items`; align the whole grid with `justify-content` / `align-content`. `gap` for gutters.
+**How it works:**
+
+`display: grid` / `inline-grid`. Explicit tracks = `grid-template-columns` / `rows` / `areas`. Overflowing items create an **implicit** grid (`grid-auto-rows` / `columns` / `flow`). `fr` = share of free space; `minmax(min, max)` bounds a track — use `minmax(0, 1fr)` so tracks can shrink below content. Items: `grid-column` / `grid-row` / `grid-area`, `justify-self` / `align-self`. Align cells with `justify-items` / `align-items`; align the whole grid with `justify-content` / `align-content`. `gap` for gutters.
 
 `repeat(auto-fit|auto-fill, minmax(280px, 1fr))`: **auto-fill** keeps empty tracks; **auto-fit** collapses them so remaining columns stretch. Areas: same cell count per row, rectangles only (no L-shapes), `.` for empty cells.
 
-**Cases:** Page shells, dashboards, card matrices. Nested `subgrid` inherits parent tracks (align card title/body/footer across a row).
+**When to use:**
+
+Page shells, dashboards, card matrices. Nested `subgrid` inherits parent tracks (align card title/body/footer across a row).
+
+#### Common pitfalls
+
+`1fr` that won’t shrink (use `minmax(0, 1fr)`). L-shaped `grid-template-areas`. Mixing Flex 2D nesting instead of Grid.
+
+**Pluses and minuses:**
 
 | + | − |
 | --- | --- |
 | 2D template + named areas | Overkill for a single toolbar row |
 | `auto-fit` / `fr` without media queries | Implicit tracks surprise if `auto-flow` unset |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .cards {
@@ -1394,13 +1345,9 @@ Values: `auto` | `stable` | `stable both-edges`
 }
 ```
 
-</details>
+**Thoughts:** Grid owns the 2D shell; Flex owns 1D alignment inside cells.
 
-**Common pitfalls:** `1fr` that won’t shrink (use `minmax(0, 1fr)`). L-shaped `grid-template-areas`. Mixing Flex 2D nesting instead of Grid.
-
-**Key idea:** Grid owns the 2D shell; Flex owns 1D alignment inside cells.
-
-**Source:** [MDN — Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout)
+**Sources:** [MDN — Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout)
 
 </details>
 
@@ -1409,7 +1356,9 @@ Values: `auto` | `stable` | `stable both-edges`
 
 ### Flex vs Grid — when to use which
 
-**Definition:** Flexbox excels at 1D component rows; Grid excels at 2D page shells and card matrices.
+**Definition:**
+
+Flexbox excels at 1D component rows; Grid excels at 2D page shells and card matrices.
 
 | | Flexbox | Grid |
 |---|---------|------|
@@ -1420,7 +1369,7 @@ Values: `auto` | `stable` | `stable both-edges`
 
 Use both together: Grid for page shell, Flexbox inside cells.
 
-**Source:** [web.dev — Flexbox vs Grid](https://web.dev/learn/css/grid/#grid-or-flexbox)
+**Sources:** [web.dev — Flexbox vs Grid](https://web.dev/learn/css/grid/#grid-or-flexbox)
 
 </details>
 
@@ -1429,13 +1378,11 @@ Use both together: Grid for page shell, Flexbox inside cells.
 
 ### Float (legacy)
 
-**Definition:** Floats pull elements out of flow for text wrapping; legacy for layout — prefer flex or grid.
+**Definition:**
+
+Floats pull elements out of flow for text wrapping; legacy for layout — prefer flex or grid.
 
 Floats (`float: left/right`) pull elements out of flow; text wraps around them. Historically used for multi-column layouts.
-
-**Problems:** collapsed parent height, clearing needed (`clearfix`, `overflow: hidden`, `display: flow-root`).
-
-**Today:** use Flexbox or Grid. Floats remain valid for text-wrapping around images.
 
 **How it works:**
 
@@ -1443,18 +1390,21 @@ Floats (`float: left/right`) pull elements out of flow; text wraps around them. 
 - Parent often collapses to zero height unless it creates a BFC (`flow-root`, `overflow`, flex/grid).
 - Clearing (`clear`, clearfix, `display: flow-root` on parent) stops following content from wrapping.
 
-| Pros | Cons |
+collapsed parent height, clearing needed (`clearfix`, `overflow: hidden`, `display: flow-root`).
+
+use Flexbox or Grid. Floats remain valid for text-wrapping around images.
+
+**When to use:** Image with text wrap; `shape-outside` for non-rectangular wrap. **Not** for page columns, nav bars, or card grids — use flex/grid.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Natural text wrap around images | Collapsed parent height without BFC |
 | Still valid for magazine-style wrap | Clearing hacks (`clearfix`) add complexity |
 | Works without flex/grid support | Multi-column layouts fragile vs Grid |
 
-**Cases:** Image with text wrap; `shape-outside` for non-rectangular wrap. **Not** for page columns, nav bars, or card grids — use flex/grid.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .figure {
@@ -1470,9 +1420,7 @@ Floats (`float: left/right`) pull elements out of flow; text wraps around them. 
 }
 ```
 
-</details>
-
-**Source:** [MDN — float](https://developer.mozilla.org/en-US/docs/Web/CSS/float)
+**Sources:** [MDN — float](https://developer.mozilla.org/en-US/docs/Web/CSS/float)
 
 </details>
 
@@ -1483,10 +1431,26 @@ Floats (`float: left/right`) pull elements out of flow; text wraps around them. 
 
 **Definition:** Common patterns for horizontal, vertical, and full centering using margin, flex, grid, or absolute positioning.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+percentage height requires explicit height on every ancestor up to the containing block. Prefer `min-height: 100dvh` on `html, body` for full-viewport layouts.
+
+```css
+html, body {
+  min-height: 100%;
+}
+/* or */
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+```
+
+---
+
+**Examples:**
 
 ```css
 /* Horizontal — block element */
@@ -1518,26 +1482,7 @@ Floats (`float: left/right`) pull elements out of flow; text wraps around them. 
 }
 ```
 
-</details>
-
-**Height 100% chain:** percentage height requires explicit height on every ancestor up to the containing block. Prefer `min-height: 100dvh` on `html, body` for full-viewport layouts.
-
-```css
-html, body {
-  min-height: 100%;
-}
-/* or */
-html {
-  height: 100%;
-}
-body {
-  min-height: 100%;
-}
-```
-
----
-
-**Source:** [CSS for JS](https://learn.javascript.ru/css-for-js)
+**Sources:** [CSS for JS](https://learn.javascript.ru/css-for-js)
 
 </details>
 
@@ -1550,7 +1495,9 @@ body {
 
 ### Responsive vs adaptive
 
-**Definition:** Responsive layouts scale fluidly; adaptive layouts switch at discrete breakpoints.
+**Definition:**
+
+Responsive layouts scale fluidly; adaptive layouts switch at discrete breakpoints.
 
 | Approach | Behavior |
 |----------|----------|
@@ -1559,7 +1506,7 @@ body {
 
 Modern practice: **mobile-first responsive** with breakpoints as enhancement.
 
-**Source:** [web.dev — Responsive](https://web.dev/learn/design/responsive)
+**Sources:** [web.dev — Responsive](https://web.dev/learn/design/responsive)
 
 </details>
 
@@ -1570,33 +1517,9 @@ Modern practice: **mobile-first responsive** with breakpoints as enhancement.
 
 **Definition:** Media queries apply CSS based on viewport features — width, motion preference, color scheme, pointer type.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
-
-```css
-/* Mobile-first: base styles, then enhance */
-.card-grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 640px) {
-  .card-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 1024px) {
-  .card-grid { grid-template-columns: repeat(3, 1fr); }
-}
-```
-
-</details>
-
-**Common breakpoints (guideline, not law):** 640px · 768px · 1024px · 1280px — tune to your content.
-
-**Feature queries:**
+640px · 768px · 1024px · 1280px — tune to your content.
 
 ```css
 @supports (display: grid) {
@@ -1612,16 +1535,12 @@ Modern practice: **mobile-first responsive** with breakpoints as enhancement.
 }
 ```
 
-**User preference media features:**
-
 | Feature | Values | Use case |
 |---------|--------|----------|
 | `prefers-reduced-motion` | `reduce` | Disable/limit animations |
 | `prefers-color-scheme` | `light` \| `dark` | Theme switching |
 | `prefers-contrast` | `more` \| `less` | High-contrast UI |
 | `prefers-reduced-transparency` | `reduce` | Solid backgrounds over glass |
-
-**Input / device media features:**
 
 | Feature | Values | Use case |
 |---------|--------|----------|
@@ -1648,7 +1567,26 @@ Modern practice: **mobile-first responsive** with breakpoints as enhancement.
 }
 ```
 
-**Source:** [MDN — Media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries)
+**Examples:**
+
+```css
+/* Mobile-first: base styles, then enhance */
+.card-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+```
+
+**Sources:** [MDN — Media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries)
 
 </details>
 
@@ -1657,39 +1595,13 @@ Modern practice: **mobile-first responsive** with breakpoints as enhancement.
 
 ### Container queries
 
-**Definition:** Container queries style elements based on their parent container's size, not the viewport.
+**Definition:**
+
+Container queries style elements based on their parent container's size, not the viewport.
 
 Style based on **parent container size**, not viewport — essential for reusable components in sidebars, split views, etc.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
-
-```css
-.card-container {
-  container-type: inline-size;
-  container-name: card;
-}
-
-@container card (min-width: 400px) {
-  .card {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-  }
-}
-
-/* Shorthand */
-@container (min-width: 30rem) {
-  .widget { padding: 2rem; }
-}
-```
-
-</details>
-
-**When to use:** component adapts to its slot; media queries when layout depends on viewport (nav, page grid).
-
-**`container-type`:**
+**How it works:**
 
 | Value | Queries on |
 |-------|------------|
@@ -1714,9 +1626,32 @@ Style based on **parent container size**, not viewport — essential for reusabl
 }
 ```
 
-**Container queries vs media queries:** use `@container` when a **component** must adapt to its parent (sidebar widget, dashboard panel); use `@media` when layout depends on **viewport** (global nav, page grid).
+use `@container` when a **component** must adapt to its parent (sidebar widget, dashboard panel); use `@media` when layout depends on **viewport** (global nav, page grid).
 
-**Source:** [MDN — Container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries)
+**When to use:** component adapts to its slot; media queries when layout depends on viewport (nav, page grid).
+
+**Examples:**
+
+```css
+.card-container {
+  container-type: inline-size;
+  container-name: card;
+}
+
+@container card (min-width: 400px) {
+  .card {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+  }
+}
+
+/* Shorthand */
+@container (min-width: 30rem) {
+  .widget { padding: 2rem; }
+}
+```
+
+**Sources:** [MDN — Container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries)
 
 </details>
 
@@ -1725,7 +1660,9 @@ Style based on **parent container size**, not viewport — essential for reusabl
 
 ### Units
 
-**Definition:** CSS length units (`px`, `rem`, `%`, `vw`, `fr`, `dvh`) resolve relative to different reference boxes.
+**Definition:**
+
+CSS length units (`px`, `rem`, `%`, `vw`, `fr`, `dvh`) resolve relative to different reference boxes.
 
 | Unit | Meaning | Pitfalls |
 |------|---------|----------|
@@ -1738,28 +1675,9 @@ Style based on **parent container size**, not viewport — essential for reusabl
 | `fr` | Grid free space fraction | Grid only |
 | `dvh` | Dynamic viewport height | Adapts when mobile browser chrome shows/hides |
 
-**Fluid sizing with clamp:**
+**How it works:**
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
-
-```css
-h1 {
-  font-size: clamp(1.5rem, 2vw + 1rem, 3rem);
-}
-
-.section {
-  padding: clamp(1rem, 5vw, 4rem);
-}
-```
-
-</details>
-
-**Font size:** prefer `rem` for consistency; `em` when sizing relative to parent component (buttons inside a card).
-
-**Math functions:**
+prefer `rem` for consistency; `em` when sizing relative to parent component (buttons inside a card).
 
 ```css
 .sidebar {
@@ -1773,7 +1691,19 @@ h1 {
 
 ---
 
-**Source:** [MDN — CSS values](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)
+**Examples:**
+
+```css
+h1 {
+  font-size: clamp(1.5rem, 2vw + 1rem, 3rem);
+}
+
+.section {
+  padding: clamp(1rem, 5vw, 4rem);
+}
+```
+
+**Sources:** [MDN — CSS values](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)
 
 </details>
 
@@ -1784,12 +1714,17 @@ h1 {
 
 **Definition:** Custom properties (`--name`) are live CSS variables that cascade and inherit, enabling runtime theming.
 
-**What they are:** Variables defined with `--name`, used with `var()`. Cascade and inherit like normal properties.
+**How it works:**
 
-**Example:**
+Variables defined with `--name`, used with `var()`. Cascade and inherit like normal properties.
 
-<details>
-  <summary>Code</summary>
+`var(--missing, fallback-value)`
+
+set on `:root` for global; on a component class for local theming.
+
+custom properties are live in the browser — runtime theming, media queries, and JS updates (`element.style.setProperty('--x', val)`).
+
+**Examples:**
 
 ```css
 :root {
@@ -1813,15 +1748,7 @@ h1 {
 }
 ```
 
-</details>
-
-**Fallback:** `var(--missing, fallback-value)`
-
-**Scope:** set on `:root` for global; on a component class for local theming.
-
-**vs Sass variables:** custom properties are live in the browser — runtime theming, media queries, and JS updates (`element.style.setProperty('--x', val)`).
-
-**Source:** [MDN — Custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+**Sources:** [MDN — Custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
 
 </details>
 
@@ -1830,14 +1757,13 @@ h1 {
 
 ### Native CSS nesting
 
-**Definition:** Native nesting lets you write descendant and pseudo selectors inside a rule block without a preprocessor.
+**Definition:**
+
+Native nesting lets you write descendant and pseudo selectors inside a rule block without a preprocessor.
 
 Supported in modern browsers (2023+). No preprocessor required:
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .card {
@@ -1853,11 +1779,9 @@ Supported in modern browsers (2023+). No preprocessor required:
 }
 ```
 
-</details>
-
 ---
 
-**Source:** [MDN — Nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting)
+**Sources:** [MDN — Nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting)
 
 </details>
 
@@ -1872,10 +1796,9 @@ Supported in modern browsers (2023+). No preprocessor required:
 
 **Definition:** Scroll-related properties control smooth scrolling, scroll chaining, and anchor offset for fixed headers.
 
-**Example:**
+**How it works:** `-webkit-overflow-scrolling: touch` (momentum scroll on old iOS) — no longer needed on modern Safari.
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 html {
@@ -1888,17 +1811,13 @@ html {
 }
 ```
 
-</details>
-
 | Property | Values | Use case |
 |----------|--------|----------|
 | `scroll-behavior` | `auto` \| `smooth` | Smooth anchor navigation |
 | `overscroll-behavior` | `auto` \| `contain` \| `none` | Prevent pull-to-refresh / bounce chaining |
 | `scroll-padding-top` | length | Offset for fixed headers on anchor scroll |
 
-**Legacy:** `-webkit-overflow-scrolling: touch` (momentum scroll on old iOS) — no longer needed on modern Safari.
-
-**Source:** [MDN — overscroll-behavior](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior)
+**Sources:** [MDN — overscroll-behavior](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior)
 
 </details>
 
@@ -1909,10 +1828,7 @@ html {
 
 **Definition:** `touch-action` and pointer media queries adapt interaction for touch vs mouse devices.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .carousel {
@@ -1924,8 +1840,6 @@ html {
 }
 ```
 
-</details>
-
 | `touch-action` | Effect |
 |----------------|--------|
 | `auto` | Browser handles all gestures |
@@ -1935,7 +1849,7 @@ html {
 
 Pair with media queries: `@media (pointer: coarse)` for larger hit areas on touch devices.
 
-**Source:** [MDN — touch-action](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action)
+**Sources:** [MDN — touch-action](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action)
 
 </details>
 
@@ -1944,14 +1858,13 @@ Pair with media queries: `@media (pointer: coarse)` for larger hit areas on touc
 
 ### Safe areas & viewport units
 
-**Definition:** Safe-area insets and dynamic viewport units (`dvh`) handle notched devices and mobile browser chrome.
+**Definition:**
+
+Safe-area insets and dynamic viewport units (`dvh`) handle notched devices and mobile browser chrome.
 
 Notched devices and mobile browser chrome need extra padding:
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .header {
@@ -1965,8 +1878,6 @@ Notched devices and mobile browser chrome need extra padding:
 }
 ```
 
-</details>
-
 | Viewport unit | Behavior |
 |---------------|----------|
 | `vh` / `vw` | Static viewport — `100vh` can overflow on mobile |
@@ -1976,7 +1887,7 @@ Notched devices and mobile browser chrome need extra padding:
 
 Enable safe-area: `<meta name="viewport" content="width=device-width, viewport-fit=cover">`
 
-**Source:** [MDN — viewport units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#viewport-percentage_lengths)
+**Sources:** [MDN — viewport units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#viewport-percentage_lengths)
 
 </details>
 
@@ -1993,10 +1904,15 @@ Enable safe-area: `<meta name="viewport" content="width=device-width, viewport-f
 
 **Definition:** `@font-face` and `font-display` control how web fonts load and swap to avoid invisible text.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+single file, `font-weight: 100 900` range, `font-variation-settings`.
+
+`font-family: "Inter", system-ui, sans-serif;` — always end with generic family.
+
+Match fallback metrics with `size-adjust`, `ascent-override`, `descent-override`, `line-gap-override` so the swap does not shift layout. CLS (FOIT/FOUT, preload, WOFF2, `unicode-range`) → [1_html.md — CLS](./1_html.md#cls-cumulative-layout-shift).
+
+**Examples:**
 
 ```css
 @font-face {
@@ -2007,21 +1923,13 @@ Enable safe-area: `<meta name="viewport" content="width=device-width, viewport-f
 }
 ```
 
-</details>
-
 | `font-display` | Behavior |
 |----------------|----------|
 | `swap` | Text visible immediately; may FOUT |
 | `optional` | Short block period; may keep fallback on slow networks |
 | `block` | Invisible text during load (FOIT) — avoid |
 
-**Variable fonts:** single file, `font-weight: 100 900` range, `font-variation-settings`.
-
-**Stack:** `font-family: "Inter", system-ui, sans-serif;` — always end with generic family.
-
-Match fallback metrics with `size-adjust`, `ascent-override`, `descent-override`, `line-gap-override` so the swap does not shift layout. CLS (FOIT/FOUT, preload, WOFF2, `unicode-range`) → [1_html.md — CLS](./1_html.md#cls-cumulative-layout-shift).
-
-**Source:** [MDN — @font-face](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face)
+**Sources:** [MDN — @font-face](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face)
 
 </details>
 
@@ -2032,10 +1940,36 @@ Match fallback metrics with `size-adjust`, `ascent-override`, `descent-override`
 
 **Definition:** Typography properties control font size, line height, truncation, wrapping, and text rendering quality.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+```css
+/* Single-line ellipsis */
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Multi-line clamp — see .truncate above */
+```
+
+| Property | Effect |
+|----------|--------|
+| `overflow-wrap: break-word` | Break long words at arbitrary points if needed |
+| `word-break: break-all` | Break anywhere (URLs, codes) |
+| `hyphens: auto` | Language-aware hyphenation (`lang` attribute required) |
+
+**When to use:**
+
+#### `white-space` pitfalls
+
+| Value | Behavior |
+|-------|----------|
+| `normal` | Collapse whitespace; wrap |
+| `nowrap` | No wrap — needs `overflow: hidden` + ellipsis |
+| `pre-wrap` | Preserve whitespace; wrap |
+
+**Examples:**
 
 ```css
 body {
@@ -2058,43 +1992,12 @@ body {
 }
 ```
 
-</details>
-
 * `line-height` — unitless preferred (1.5 scales with font-size)
 * `line-clamp` — truncate multi-line text (use with `overflow: hidden`)
 * `text-rendering: optimizeLegibility` — better kerning/ligatures; minor perf cost
 * `text-decoration-skip-ink: auto` — underline skips glyph descenders
 
-**Text overflow:**
-
-```css
-/* Single-line ellipsis */
-.ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Multi-line clamp — see .truncate above */
-```
-
-**Word breaking:**
-
-| Property | Effect |
-|----------|--------|
-| `overflow-wrap: break-word` | Break long words at arbitrary points if needed |
-| `word-break: break-all` | Break anywhere (URLs, codes) |
-| `hyphens: auto` | Language-aware hyphenation (`lang` attribute required) |
-
-**`white-space` pitfalls:**
-
-| Value | Behavior |
-|-------|----------|
-| `normal` | Collapse whitespace; wrap |
-| `nowrap` | No wrap — needs `overflow: hidden` + ellipsis |
-| `pre-wrap` | Preserve whitespace; wrap |
-
-**Source:** [MDN — Typography](https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text)
+**Sources:** [MDN — Typography](https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text)
 
 </details>
 
@@ -2111,18 +2014,17 @@ body {
 - `text-wrap: pretty` — prefers breaks that avoid single-word last lines (orphans) in paragraphs.
 - `text-wrap: wrap` — default wrapping behavior.
 
-| Pros | Cons |
+**When to use:** `balance` on `h1`–`h3` and card titles; `pretty` on article body copy; keep `nowrap` + ellipsis for table cells and badges.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Better typography without JS | `balance` can be costly on long text — use on headings only |
 | Progressive enhancement | Check caniuse — growing support in Chromium/Safari/Firefox |
 | Pairs with `text-wrap: nowrap` + ellipsis for UI | Not a substitute for manual `<wbr>` in URLs |
 
-**Cases:** `balance` on `h1`–`h3` and card titles; `pretty` on article body copy; keep `nowrap` + ellipsis for table cells and badges.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 h1, h2, h3 {
@@ -2134,9 +2036,7 @@ article p {
 }
 ```
 
-</details>
-
-**Source:** [MDN — text-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap)
+**Sources:** [MDN — text-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap)
 
 </details>
 
@@ -2147,10 +2047,7 @@ article p {
 
 **Definition:** Modern color formats (`rgb()`, `hsl()`, `oklch()`, `color-mix()`) support perceptually uniform theming.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .keyword   { color: navy; }
@@ -2163,11 +2060,9 @@ article p {
 .current   { border-color: currentColor; }
 ```
 
-</details>
-
 **Prefer `oklch` / `hsl` for theming** — easier to adjust lightness/saturation than hex.
 
-**Source:** [MDN — color](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
+**Sources:** [MDN — color](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
 
 </details>
 
@@ -2178,10 +2073,7 @@ article p {
 
 **Definition:** CSS gradients (`linear-gradient`, `radial-gradient`) create smooth color transitions without image assets.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .hero {
@@ -2203,9 +2095,7 @@ article p {
 }
 ```
 
-</details>
-
-**Source:** [MDN — gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient)
+**Sources:** [MDN — gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient)
 
 </details>
 
@@ -2216,10 +2106,7 @@ article p {
 
 **Definition:** Dark mode uses `prefers-color-scheme` and custom properties to swap color tokens at runtime.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 :root {
@@ -2241,9 +2128,7 @@ body {
 }
 ```
 
-</details>
-
-**Source:** [MDN — prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
+**Sources:** [MDN — prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
 
 </details>
 
@@ -2260,18 +2145,17 @@ body {
 - `color-scheme: dark` — hint dark-native UI chrome even if tokens are custom.
 - `light-dark(light-value, dark-value)` — one declaration for both themes without duplicating rules.
 
-| Pros | Cons |
+**When to use:** Set `color-scheme: light dark` on `:root`; use `light-dark()` for borders and surfaces; combine with `prefers-color-scheme` for complex token swaps.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Native form control theming | `light-dark()` needs `color-scheme` set on root |
 | Less `@media` duplication | Not a full design-token system — pair with custom properties |
 | Scrollbar/UI chrome matches theme | Test contrast in both schemes |
 
-**Cases:** Set `color-scheme: light dark` on `:root`; use `light-dark()` for borders and surfaces; combine with `prefers-color-scheme` for complex token swaps.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 :root {
@@ -2288,9 +2172,7 @@ body {
 }
 ```
 
-</details>
-
-**Source:** [MDN — color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme) · [light-dark()](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark)
+**Sources:** [MDN — color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme) · [light-dark()](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark)
 
 </details>
 
@@ -2303,14 +2185,13 @@ body {
 
 ### Background
 
-**Definition:** Background longhands control color, image, size, position, repeat, clip, and origin independently.
+**Definition:**
+
+Background longhands control color, image, size, position, repeat, clip, and origin independently.
 
 Prefer longhands when overriding a single sub-property — `background:` shorthand resets all sub-properties.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .hero {
@@ -2324,8 +2205,6 @@ Prefer longhands when overriding a single sub-property — `background:` shortha
   background-origin: padding-box;
 }
 ```
-
-</details>
 
 | Property | Purpose |
 |----------|---------|
@@ -2345,7 +2224,7 @@ Multiple backgrounds stack first-declared on top:
 }
 ```
 
-**Source:** [MDN — background](https://developer.mozilla.org/en-US/docs/Web/CSS/background)
+**Sources:** [MDN — background](https://developer.mozilla.org/en-US/docs/Web/CSS/background)
 
 </details>
 
@@ -2356,10 +2235,15 @@ Multiple backgrounds stack first-declared on top:
 
 **Definition:** Borders affect layout; outlines do not. `box-shadow` paints multiple layered shadows on the box.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+| | `box-shadow` | `filter: drop-shadow()` |
+|---|--------------|-------------------------|
+| Follows | Box (including border-radius) | Alpha shape of content |
+| SVG/images | Rectangular box only | Follows non-transparent pixels |
+| Performance | Paint | Composite |
+
+**Examples:**
 
 ```css
 .card {
@@ -2373,8 +2257,6 @@ Multiple backgrounds stack first-declared on top:
 }
 ```
 
-</details>
-
 | Property | Notes |
 |----------|-------|
 | `border` | Shorthand — sets width, style, color on all sides |
@@ -2382,15 +2264,7 @@ Multiple backgrounds stack first-declared on top:
 | `outline` | Does not affect layout (unlike border); use for focus |
 | `box-shadow` | Multiple layers comma-separated; `inset` for inner shadow |
 
-**`box-shadow` vs `filter: drop-shadow()`:**
-
-| | `box-shadow` | `filter: drop-shadow()` |
-|---|--------------|-------------------------|
-| Follows | Box (including border-radius) | Alpha shape of content |
-| SVG/images | Rectangular box only | Follows non-transparent pixels |
-| Performance | Paint | Composite |
-
-**Source:** [MDN — box-shadow](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow)
+**Sources:** [MDN — box-shadow](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow)
 
 </details>
 
@@ -2407,10 +2281,9 @@ Multiple backgrounds stack first-declared on top:
 
 **Definition:** Native form controls can be restyled with `appearance: none`, `accent-color`, and pseudo-element selectors.
 
-**Example:**
+**How it works:** fully custom `<select>` dropdowns still inconsistent — use native `<select>` with `appearance: none` + custom arrow, or build a custom component with ARIA for full control.
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .input {
@@ -2439,8 +2312,6 @@ input[type="file"]::file-selector-button {
 }
 ```
 
-</details>
-
 | Technique | Applies to |
 |-----------|------------|
 | `appearance: none` | Remove OS chrome — rebuild with CSS |
@@ -2448,9 +2319,7 @@ input[type="file"]::file-selector-button {
 | `::placeholder` | Placeholder text color |
 | `:focus-visible` | Custom focus ring |
 
-**Cross-browser limits:** fully custom `<select>` dropdowns still inconsistent — use native `<select>` with `appearance: none` + custom arrow, or build a custom component with ARIA for full control.
-
-**Source:** [MDN — appearance](https://developer.mozilla.org/en-US/docs/Web/CSS/appearance)
+**Sources:** [MDN — appearance](https://developer.mozilla.org/en-US/docs/Web/CSS/appearance)
 
 </details>
 
@@ -2459,7 +2328,9 @@ input[type="file"]::file-selector-button {
 
 ### Pure CSS toggle (no JavaScript)
 
-**Definition:** A hidden checkbox plus sibling selectors (`:checked +`) can drive a toggle UI without JavaScript.
+**Definition:**
+
+A hidden checkbox plus sibling selectors (`:checked +`) can drive a toggle UI without JavaScript.
 
 iOS-style switch using hidden checkbox + sibling selector:
 
@@ -2470,10 +2341,7 @@ iOS-style switch using hidden checkbox + sibling selector:
 </label>
 ```
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .switch__input {
@@ -2520,11 +2388,9 @@ iOS-style switch using hidden checkbox + sibling selector:
 }
 ```
 
-</details>
-
 Uses `:checked` + adjacent sibling `+`. Keep native `<input type="checkbox">` for accessibility and form submission.
 
-**Source:** [CSS for JS — forms](https://learn.javascript.ru/css-for-js)
+**Sources:** [CSS for JS — forms](https://learn.javascript.ru/css-for-js)
 
 </details>
 
@@ -2541,10 +2407,18 @@ Uses `:checked` + adjacent sibling `+`. Keep native `<input type="checkbox">` fo
 
 **Definition:** `@media print` hides chrome, adjusts typography, and controls page breaks for printable output.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+```css
+@page {
+  margin: 2cm;
+  size: A4 portrait;
+}
+```
+
+Avoid dark backgrounds in print — wastes ink; expand URLs only when useful.
+
+**Examples:**
 
 ```css
 @media print {
@@ -2564,26 +2438,13 @@ Uses `:checked` + adjacent sibling `+`. Keep native `<input type="checkbox">` fo
 }
 ```
 
-</details>
-
 | Property | Purpose |
 |----------|---------|
 | `break-before` / `break-after` | Force or avoid page breaks |
 | `break-inside: avoid` | Keep block on one page |
 | `print-color-adjust: exact` | Print background colors as designed |
 
-**`@page` rule:**
-
-```css
-@page {
-  margin: 2cm;
-  size: A4 portrait;
-}
-```
-
-Avoid dark backgrounds in print — wastes ink; expand URLs only when useful.
-
-**Source:** [MDN — Print](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries#printing)
+**Sources:** [MDN — Print](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries#printing)
 
 </details>
 
@@ -2600,10 +2461,28 @@ Avoid dark backgrounds in print — wastes ink; expand URLs only when useful.
 
 **Definition:** `transform` applies 2D/3D transforms without triggering layout — ideal for GPU-composited animation.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+- `transform` applies a 2D/3D matrix to the element without changing layout flow (element still occupies original space unless combined with positioning).
+- Functions compose right-to-left: `translateX(10px) rotate(45deg)` — rotate then translate in transformed space.
+- `transform-origin` sets pivot point; `perspective` on parent enables 3D depth.
+- Promotes element to compositor layer — repaints skip layout.
+
+`transform` and `opacity` promote to compositor layer — smooth 60fps animations.
+
+`translate()` does not trigger layout; `top`/`left` changes do. Always animate `transform`/`opacity` when possible.
+
+**When to use:** Hover lift (`translateY`), spinners (`rotate`), scale on press, parallax (sparingly). Animate `transform` + `opacity` — never `top`/`left`/`width` for motion (those cause reflow and can raise [CLS](./1_html.md#cls-cumulative-layout-shift)).
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| GPU-composited — smooth 60fps | Does not affect document flow (ghost space remains) |
+| No layout/reflow on change | 3D transforms can cause blurry text on subpixel layers |
+| Composable functions | `transform` on parent creates containing block for `fixed` children |
+
+**Examples:**
 
 ```css
 .card:hover {
@@ -2620,28 +2499,7 @@ Avoid dark backgrounds in print — wastes ink; expand URLs only when useful.
 }
 ```
 
-</details>
-
-**GPU-friendly:** `transform` and `opacity` promote to compositor layer — smooth 60fps animations.
-
-**translate vs absolute positioning for animation:** `translate()` does not trigger layout; `top`/`left` changes do. Always animate `transform`/`opacity` when possible.
-
-**How it works:**
-
-- `transform` applies a 2D/3D matrix to the element without changing layout flow (element still occupies original space unless combined with positioning).
-- Functions compose right-to-left: `translateX(10px) rotate(45deg)` — rotate then translate in transformed space.
-- `transform-origin` sets pivot point; `perspective` on parent enables 3D depth.
-- Promotes element to compositor layer — repaints skip layout.
-
-| Pros | Cons |
-|------|------|
-| GPU-composited — smooth 60fps | Does not affect document flow (ghost space remains) |
-| No layout/reflow on change | 3D transforms can cause blurry text on subpixel layers |
-| Composable functions | `transform` on parent creates containing block for `fixed` children |
-
-**Cases:** Hover lift (`translateY`), spinners (`rotate`), scale on press, parallax (sparingly). Animate `transform` + `opacity` — never `top`/`left`/`width` for motion (those cause reflow and can raise [CLS](./1_html.md#cls-cumulative-layout-shift)).
-
-**Source:** [MDN — transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform)
+**Sources:** [MDN — transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform)
 
 </details>
 
@@ -2652,10 +2510,26 @@ Avoid dark backgrounds in print — wastes ink; expand URLs only when useful.
 
 **Definition:** `transition` animates property changes over time with duration, easing, and delay.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+- Browser interpolates from computed start value to end value when a property changes (class toggle, `:hover`, JS `style` change).
+- Shorthand: `transition: property duration timing-function delay` — comma-separate for multiple properties.
+- Only **animatable** properties transition; `display` generally does not (use `@starting-style` or `allow-discrete` where supported).
+- `transition-behavior: allow-discrete` enables discrete transitions for `display`, `visibility`, etc. (modern browsers).
+
+`transition: all` — lists every property; can animate expensive properties accidentally.
+
+**When to use:** Hover color/shadow changes; drawer `transform`; opacity fades. List explicit properties — `transition: opacity 0.2s, transform 0.2s`.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Simple micro-interactions without JS | `transition: all` accidentally animates layout props |
+| Composable easing per property | No control over mid-animation without JS |
+| Respects `prefers-reduced-motion` if you gate it | Long durations on layout props cause jank |
+
+**Examples:**
 
 ```css
 .button {
@@ -2668,28 +2542,9 @@ Avoid dark backgrounds in print — wastes ink; expand URLs only when useful.
 }
 ```
 
-</details>
-
 Shorthand: `transition: property duration timing-function delay`
 
-**Avoid:** `transition: all` — lists every property; can animate expensive properties accidentally.
-
-**How it works:**
-
-- Browser interpolates from computed start value to end value when a property changes (class toggle, `:hover`, JS `style` change).
-- Shorthand: `transition: property duration timing-function delay` — comma-separate for multiple properties.
-- Only **animatable** properties transition; `display` generally does not (use `@starting-style` or `allow-discrete` where supported).
-- `transition-behavior: allow-discrete` enables discrete transitions for `display`, `visibility`, etc. (modern browsers).
-
-| Pros | Cons |
-|------|------|
-| Simple micro-interactions without JS | `transition: all` accidentally animates layout props |
-| Composable easing per property | No control over mid-animation without JS |
-| Respects `prefers-reduced-motion` if you gate it | Long durations on layout props cause jank |
-
-**Cases:** Hover color/shadow changes; drawer `transform`; opacity fades. List explicit properties — `transition: opacity 0.2s, transform 0.2s`.
-
-**Source:** [MDN — transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition)
+**Sources:** [MDN — transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition)
 
 </details>
 
@@ -2700,10 +2555,26 @@ Shorthand: `transition: property duration timing-function delay`
 
 **Definition:** `@keyframes` defines multi-step animations applied via the `animation` shorthand.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+- `@keyframes` defines intermediate steps (`from`/`to` or `0%`/`100%`); `animation` shorthand applies them.
+- `animation-fill-mode: forwards` keeps final keyframe state after end; `both` applies before and after.
+- `animation-iteration-count: infinite` for loaders; `animation-play-state: paused` for hover control.
+- Unlike `transition`, runs without a trigger property change — starts on load or when `animation-name` is set.
+
+`animation-name` · `duration` · `timing-function` · `delay` · `iteration-count` · `direction` · `fill-mode` · `play-state`
+
+**When to use:** Loaders (`infinite rotate`), entrance effects (`fade-in forwards`), attention pulses. Prefer `transform`/`opacity` keyframes; gate with `@media (prefers-reduced-motion: reduce)`.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Multi-step, looping, bidirectional | Harder to reverse mid-flight than transitions |
+| Independent of property triggers | Animating layout props (`width`, `top`) causes reflow |
+| `animation-timeline` for scroll-driven | Many simultaneous animations → GPU memory pressure |
+
+**Examples:**
 
 ```css
 @keyframes fade-in {
@@ -2716,26 +2587,7 @@ Shorthand: `transition: property duration timing-function delay`
 }
 ```
 
-</details>
-
-**Properties:** `animation-name` · `duration` · `timing-function` · `delay` · `iteration-count` · `direction` · `fill-mode` · `play-state`
-
-**How it works:**
-
-- `@keyframes` defines intermediate steps (`from`/`to` or `0%`/`100%`); `animation` shorthand applies them.
-- `animation-fill-mode: forwards` keeps final keyframe state after end; `both` applies before and after.
-- `animation-iteration-count: infinite` for loaders; `animation-play-state: paused` for hover control.
-- Unlike `transition`, runs without a trigger property change — starts on load or when `animation-name` is set.
-
-| Pros | Cons |
-|------|------|
-| Multi-step, looping, bidirectional | Harder to reverse mid-flight than transitions |
-| Independent of property triggers | Animating layout props (`width`, `top`) causes reflow |
-| `animation-timeline` for scroll-driven | Many simultaneous animations → GPU memory pressure |
-
-**Cases:** Loaders (`infinite rotate`), entrance effects (`fade-in forwards`), attention pulses. Prefer `transform`/`opacity` keyframes; gate with `@media (prefers-reduced-motion: reduce)`.
-
-**Source:** [MDN — @keyframes](https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes)
+**Sources:** [MDN — @keyframes](https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes)
 
 </details>
 
@@ -2746,10 +2598,7 @@ Shorthand: `transition: property duration timing-function delay`
 
 **Definition:** `transitionend` and `animationend` fire when CSS animations complete — useful for DOM cleanup in JS.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 el.addEventListener('transitionend', (e) => {
@@ -2759,13 +2608,11 @@ el.addEventListener('transitionend', (e) => {
 el.addEventListener('animationend', () => { /* keyframes done */ });
 ```
 
-</details>
-
 Check `e.target === el` to avoid bubbling from children.
 
 ---
 
-**Source:** [MDN — transitionend](https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionend_event)
+**Sources:** [MDN — transitionend](https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionend_event)
 
 </details>
 
@@ -2780,10 +2627,24 @@ Check `e.target === el` to avoid bubbling from children.
 
 **Definition:** CSS `filter` applies graphical effects (blur, brightness, grayscale) to an element's rendered output.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+- `filter` applies graphical effects to the **entire element** (including children) as a single bitmap.
+- Functions chain left-to-right: `filter: contrast(1.2) brightness(0.9)`.
+- `filter: opacity()` differs from `opacity` property — filter opacity does not create stacking context the same way.
+- `drop-shadow()` follows alpha shape — better for icons than `box-shadow` on transparent PNGs.
+
+**When to use:** Image hover effects (`brightness`, `saturate`); disabled state (`grayscale`); icon shadows (`drop-shadow`). Avoid animating `filter: blur()` on full-screen overlays on mobile.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| GPU-composited in many cases | Expensive on large elements (full repaint) |
+| `drop-shadow` follows transparency | Chained filters multiply cost |
+| No layout impact | `filter` on parent affects all descendants |
+
+**Examples:**
 
 ```css
 .blur-bg   { filter: blur(4px); }
@@ -2792,26 +2653,9 @@ Check `e.target === el` to avoid bubbling from children.
 .combined  { filter: contrast(1.2) saturate(1.1); }
 ```
 
-</details>
-
 Functions: `blur()` · `brightness()` · `contrast()` · `grayscale()` · `hue-rotate()` · `invert()` · `opacity()` · `saturate()` · `sepia()` · `drop-shadow()`
 
-**How it works:**
-
-- `filter` applies graphical effects to the **entire element** (including children) as a single bitmap.
-- Functions chain left-to-right: `filter: contrast(1.2) brightness(0.9)`.
-- `filter: opacity()` differs from `opacity` property — filter opacity does not create stacking context the same way.
-- `drop-shadow()` follows alpha shape — better for icons than `box-shadow` on transparent PNGs.
-
-| Pros | Cons |
-|------|------|
-| GPU-composited in many cases | Expensive on large elements (full repaint) |
-| `drop-shadow` follows transparency | Chained filters multiply cost |
-| No layout impact | `filter` on parent affects all descendants |
-
-**Cases:** Image hover effects (`brightness`, `saturate`); disabled state (`grayscale`); icon shadows (`drop-shadow`). Avoid animating `filter: blur()` on full-screen overlays on mobile.
-
-**Source:** [MDN — filter](https://developer.mozilla.org/en-US/docs/Web/CSS/filter)
+**Sources:** [MDN — filter](https://developer.mozilla.org/en-US/docs/Web/CSS/filter)
 
 </details>
 
@@ -2822,10 +2666,24 @@ Functions: `blur()` · `brightness()` · `contrast()` · `grayscale()` · `hue-r
 
 **Definition:** `clip-path` masks element shape; `shape-outside` lets floated content wrap around non-rectangular boxes.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+- `clip-path` masks visible area — content outside path is clipped, not scrolled.
+- Basic shapes: `circle()`, `ellipse()`, `inset()`, `polygon()`, `path()`; `clip-path: url(#svg)` for complex SVG paths.
+- `shape-outside` affects float wrap geometry only — element must be floated.
+- `clip-path` triggers paint; animating complex paths can be costly.
+
+**When to use:** Circular avatars (`circle(50%)`); diagonal section dividers (`polygon`); floated images with text wrap (`shape-outside`). Prefer `border-radius` when a circle suffices.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Non-rectangular avatars and heroes | Complex `polygon()` hard to maintain — use SVG |
+| `shape-outside` for magazine layouts | `clip-path` does not affect hit-testing uniformly in all browsers |
+| Animate with `@keyframes` on simple shapes | Float + `shape-outside` is legacy pattern |
+
+**Examples:**
 
 ```css
 .avatar {
@@ -2845,24 +2703,7 @@ Functions: `blur()` · `brightness()` · `contrast()` · `grayscale()` · `hue-r
 }
 ```
 
-</details>
-
-**How it works:**
-
-- `clip-path` masks visible area — content outside path is clipped, not scrolled.
-- Basic shapes: `circle()`, `ellipse()`, `inset()`, `polygon()`, `path()`; `clip-path: url(#svg)` for complex SVG paths.
-- `shape-outside` affects float wrap geometry only — element must be floated.
-- `clip-path` triggers paint; animating complex paths can be costly.
-
-| Pros | Cons |
-|------|------|
-| Non-rectangular avatars and heroes | Complex `polygon()` hard to maintain — use SVG |
-| `shape-outside` for magazine layouts | `clip-path` does not affect hit-testing uniformly in all browsers |
-| Animate with `@keyframes` on simple shapes | Float + `shape-outside` is legacy pattern |
-
-**Cases:** Circular avatars (`circle(50%)`); diagonal section dividers (`polygon`); floated images with text wrap (`shape-outside`). Prefer `border-radius` when a circle suffices.
-
-**Source:** [MDN — clip-path](https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path)
+**Sources:** [MDN — clip-path](https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path)
 
 </details>
 
@@ -2873,10 +2714,7 @@ Functions: `blur()` · `brightness()` · `contrast()` · `grayscale()` · `hue-r
 
 **Definition:** `backdrop-filter` blurs or filters content behind semi-transparent elements (glass morphism).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .glass {
@@ -2885,9 +2723,7 @@ Functions: `blur()` · `brightness()` · `contrast()` · `grayscale()` · `hue-r
 }
 ```
 
-</details>
-
-**Source:** [MDN — backdrop-filter](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter)
+**Sources:** [MDN — backdrop-filter](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter)
 
 </details>
 
@@ -2896,14 +2732,13 @@ Functions: `blur()` · `brightness()` · `contrast()` · `grayscale()` · `hue-r
 
 ### SVG styling
 
-**Definition:** SVG elements use `fill` and `stroke` instead of `background` and `border`.
+**Definition:**
+
+SVG elements use `fill` and `stroke` instead of `background` and `border`.
 
 SVG uses `fill`, `stroke`, `stroke-width` instead of `background`/`border`:
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .icon {
@@ -2912,9 +2747,7 @@ SVG uses `fill`, `stroke`, `stroke-width` instead of `background`/`border`:
 }
 ```
 
-</details>
-
-**Source:** [MDN — SVG styling](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Fills_and_Strokes)
+**Sources:** [MDN — SVG styling](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Fills_and_Strokes)
 
 </details>
 
@@ -2925,10 +2758,7 @@ SVG uses `fill`, `stroke`, `stroke-width` instead of `background`/`border`:
 
 **Definition:** Scroll snap aligns scroll positions to defined points for carousels and paginated scroll areas.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .carousel {
@@ -2944,9 +2774,7 @@ SVG uses `fill`, `stroke`, `stroke-width` instead of `background`/`border`:
 }
 ```
 
-</details>
-
-**Source:** [MDN — scroll-snap](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll_snap)
+**Sources:** [MDN — scroll-snap](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll_snap)
 
 </details>
 
@@ -2957,10 +2785,7 @@ SVG uses `fill`, `stroke`, `stroke-width` instead of `background`/`border`:
 
 **Definition:** `pointer-events` controls hit testing; `:focus-visible` provides keyboard-only focus rings.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .overlay {
@@ -2977,13 +2802,11 @@ SVG uses `fill`, `stroke`, `stroke-width` instead of `background`/`border`:
 }
 ```
 
-</details>
-
 Use `:focus-visible` instead of `:focus` for keyboard-only focus rings.
 
 ---
 
-**Source:** [MDN — :focus-visible](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible)
+**Sources:** [MDN — :focus-visible](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible)
 
 </details>
 
@@ -2998,14 +2821,29 @@ Features worth knowing for interviews and new projects.
 
 ### @starting-style
 
-**Definition:** `@starting-style` defines entry styles for elements when they first appear (dialogs, popovers).
+**Definition:**
+
+`@starting-style` defines entry styles for elements when they first appear (dialogs, popovers).
 
 Entry animations for elements when they first appear (popover, dialog):
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+- `@starting-style` defines the "before" state for elements entering the document or toggling `display` / `[open]` / popover states.
+- Pairs with `transition` — browser interpolates from starting-style to normal rule on entry.
+- Replaces JS `requestAnimationFrame` hacks for first-paint animations on `<dialog>`, `[popover]`, accordions.
+
+**When to use:** Dialog/modal fade-in; popover scale entrance; list item expand. Combine with `@media (prefers-reduced-motion: reduce)`.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Pure CSS enter animations | Requires `transition-behavior: allow-discrete` for `display` in some cases |
+| Works with popover/dialog APIs | Browser support still rolling out — check caniuse |
+| No flash of unstyled final state | Exit animations still need separate rules or View Transitions |
+
+**Examples:**
 
 ```css
 .dialog {
@@ -3022,23 +2860,7 @@ Entry animations for elements when they first appear (popover, dialog):
 }
 ```
 
-</details>
-
-**How it works:**
-
-- `@starting-style` defines the "before" state for elements entering the document or toggling `display` / `[open]` / popover states.
-- Pairs with `transition` — browser interpolates from starting-style to normal rule on entry.
-- Replaces JS `requestAnimationFrame` hacks for first-paint animations on `<dialog>`, `[popover]`, accordions.
-
-| Pros | Cons |
-|------|------|
-| Pure CSS enter animations | Requires `transition-behavior: allow-discrete` for `display` in some cases |
-| Works with popover/dialog APIs | Browser support still rolling out — check caniuse |
-| No flash of unstyled final state | Exit animations still need separate rules or View Transitions |
-
-**Cases:** Dialog/modal fade-in; popover scale entrance; list item expand. Combine with `@media (prefers-reduced-motion: reduce)`.
-
-**Source:** [MDN — @starting-style](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style)
+**Sources:** [MDN — @starting-style](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style)
 
 </details>
 
@@ -3047,14 +2869,30 @@ Entry animations for elements when they first appear (popover, dialog):
 
 ### CSS anchor positioning
 
-**Definition:** Anchor positioning places popovers relative to an anchor element without JavaScript measurements.
+**Definition:**
+
+Anchor positioning places popovers relative to an anchor element without JavaScript measurements.
 
 Position popovers/tooltips relative to an anchor element without JS measurements:
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+- Anchor element declares `anchor-name: --trigger`; positioned element references it via `position-anchor: --trigger`.
+- `anchor()` function places edges relative to anchor: `top: anchor(bottom)`, `left: anchor(center)`.
+- `position-area` / `inset-area` shorthand maps to logical sides (block-start, inline-end, etc.).
+- `anchor-size()` can size popover to anchor width.
+
+**When to use:** Tooltips, dropdown menus, popovers anchored to buttons. Provide JS fallback or `@supports (anchor-name: --x)` progressive enhancement.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| No JS `getBoundingClientRect` for tooltips | Chromium-first — verify Firefox/Safari support |
+| Scroll/resize aware by default | Fallback positioning logic still needed for viewport edges |
+| Works with `position: fixed` popovers | Naming collisions if `--anchor` names reused |
+
+**Examples:**
 
 ```css
 .anchor {
@@ -3068,24 +2906,7 @@ Position popovers/tooltips relative to an anchor element without JS measurements
 }
 ```
 
-</details>
-
-**How it works:**
-
-- Anchor element declares `anchor-name: --trigger`; positioned element references it via `position-anchor: --trigger`.
-- `anchor()` function places edges relative to anchor: `top: anchor(bottom)`, `left: anchor(center)`.
-- `position-area` / `inset-area` shorthand maps to logical sides (block-start, inline-end, etc.).
-- `anchor-size()` can size popover to anchor width.
-
-| Pros | Cons |
-|------|------|
-| No JS `getBoundingClientRect` for tooltips | Chromium-first — verify Firefox/Safari support |
-| Scroll/resize aware by default | Fallback positioning logic still needed for viewport edges |
-| Works with `position: fixed` popovers | Naming collisions if `--anchor` names reused |
-
-**Cases:** Tooltips, dropdown menus, popovers anchored to buttons. Provide JS fallback or `@supports (anchor-name: --x)` progressive enhancement.
-
-**Source:** [MDN — Anchor positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning)
+**Sources:** [MDN — Anchor positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning)
 
 </details>
 
@@ -3094,14 +2915,30 @@ Position popovers/tooltips relative to an anchor element without JS measurements
 
 ### Scroll-driven animations
 
-**Definition:** Scroll-driven animations tie keyframe progress to scroll position instead of time.
+**Definition:**
+
+Scroll-driven animations tie keyframe progress to scroll position instead of time.
 
 Animate tied to scroll progress (no JS scroll listeners):
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+- `animation-timeline` binds keyframe progress to scroll or view progress instead of time.
+- `scroll()` — tied to scroll container; `view()` — tied to element visibility in scrollport.
+- `animation-range` maps scroll/view intervals to keyframe `0%`–`100%` (`entry`, `exit`, `cover`, `contain`).
+- Runs on compositor — no `scroll` event listeners for parallax/reveal effects.
+
+**When to use:** Scroll-reveal sections; progress bars tied to scroll; header shrink on scroll. Fallback: `IntersectionObserver` + class toggle.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| No scroll JS — better performance | Limited browser support — progressive enhancement required |
+| Smooth parallax and reveal | Harder to debug than time-based animations |
+| Respects `prefers-reduced-motion` if gated | Complex ranges need experimentation |
+
+**Examples:**
 
 ```css
 @keyframes reveal {
@@ -3116,24 +2953,7 @@ Animate tied to scroll progress (no JS scroll listeners):
 }
 ```
 
-</details>
-
-**How it works:**
-
-- `animation-timeline` binds keyframe progress to scroll or view progress instead of time.
-- `scroll()` — tied to scroll container; `view()` — tied to element visibility in scrollport.
-- `animation-range` maps scroll/view intervals to keyframe `0%`–`100%` (`entry`, `exit`, `cover`, `contain`).
-- Runs on compositor — no `scroll` event listeners for parallax/reveal effects.
-
-| Pros | Cons |
-|------|------|
-| No scroll JS — better performance | Limited browser support — progressive enhancement required |
-| Smooth parallax and reveal | Harder to debug than time-based animations |
-| Respects `prefers-reduced-motion` if gated | Complex ranges need experimentation |
-
-**Cases:** Scroll-reveal sections; progress bars tied to scroll; header shrink on scroll. Fallback: `IntersectionObserver` + class toggle.
-
-**Source:** [MDN — scroll-driven animations](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations)
+**Sources:** [MDN — scroll-driven animations](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations)
 
 </details>
 
@@ -3142,23 +2962,11 @@ Animate tied to scroll progress (no JS scroll listeners):
 
 ### @scope
 
-**Definition:** `@scope` limits selector reach to a subtree for encapsulation without Shadow DOM.
+**Definition:**
+
+`@scope` limits selector reach to a subtree for encapsulation without Shadow DOM.
 
 Limit selector reach to a subtree (native encapsulation without Shadow DOM):
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
-
-```css
-@scope (.card) {
-  :scope { padding: 1rem; }
-  img { border-radius: 8px; } /* only images inside .card */
-}
-```
-
-</details>
 
 **How it works:**
 
@@ -3167,15 +2975,26 @@ Limit selector reach to a subtree (native encapsulation without Shadow DOM):
 - `@scope (.a) to (.b)` sets an optional upper boundary — selectors don't escape past `.b`.
 - Specificity unchanged — scope only affects **reach**, not weight.
 
-| Pros | Cons |
+**When to use:** Card component styles without BEM prefixes; design-system widgets in CMS content. Prefer CSS Modules/Shadow DOM when hard isolation is required.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Component isolation without build tools | No style encapsulation against global `!important` |
 | Flat selectors inside scope (`img` not `.card img`) | Browser support still maturing |
 | Pairs with cascade layers | Overlapping scopes need careful root choice |
 
-**Cases:** Card component styles without BEM prefixes; design-system widgets in CMS content. Prefer CSS Modules/Shadow DOM when hard isolation is required.
+**Examples:**
 
-**Source:** [MDN — @scope](https://developer.mozilla.org/en-US/docs/Web/CSS/@scope)
+```css
+@scope (.card) {
+  :scope { padding: 1rem; }
+  img { border-radius: 8px; } /* only images inside .card */
+}
+```
+
+**Sources:** [MDN — @scope](https://developer.mozilla.org/en-US/docs/Web/CSS/@scope)
 
 </details>
 
@@ -3192,14 +3011,15 @@ Stub sections — expand as needed. MDN links for deep dives.
 
 ### Multi-column layout
 
-**Definition:** CSS multi-column layout flows text across columns like magazine layouts.
+**Definition:**
+
+CSS multi-column layout flows text across columns like magazine layouts.
 
 CSS columns for magazine-style text flow:
 
-**Example:**
+**How it works:** [Using multi-column layouts](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_multicol_layout)
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .article {
@@ -3210,11 +3030,7 @@ CSS columns for magazine-style text flow:
 .break { break-inside: avoid; }
 ```
 
-</details>
-
-**MDN:** [Using multi-column layouts](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_multicol_layout)
-
-**Source:** [MDN — Multicol](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_multicol_layout)
+**Sources:** [MDN — Multicol](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_multicol_layout)
 
 </details>
 
@@ -3223,22 +3039,11 @@ CSS columns for magazine-style text flow:
 
 ### View Transitions API
 
-**Definition:** View transitions animate shared elements and page state changes in SPAs.
+**Definition:**
+
+View transitions animate shared elements and page state changes in SPAs.
 
 Animate DOM state changes (SPA route changes, shared element transitions):
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
-
-```css
-.card { view-transition-name: hero; }
-::view-transition-old(hero) { animation: fade-out 0.2s; }
-::view-transition-new(hero) { animation: fade-in 0.2s; }
-```
-
-</details>
 
 **How it works:**
 
@@ -3247,17 +3052,27 @@ Animate DOM state changes (SPA route changes, shared element transitions):
 - `::view-transition-old()` / `::view-transition-new()` pseudo-elements style crossfade layers.
 - Default crossfade applies; custom keyframes override per named transition.
 
-| Pros | Cons |
+[View Transitions](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API)
+
+**When to use:** SPA page transitions; card-to-detail hero morph; theme toggle crossfade. Respect `prefers-reduced-motion` — skip or shorten transitions.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | SPA route transitions without FLIP JS | Requires JS API call — not pure CSS alone |
 | Shared-element hero animations | Single transition at a time — no parallel VTs |
 | Works with MPA via `@view-transition` rule (emerging) | Large DOM snapshots can be slow on low-end devices |
 
-**Cases:** SPA page transitions; card-to-detail hero morph; theme toggle crossfade. Respect `prefers-reduced-motion` — skip or shorten transitions.
+**Examples:**
 
-**MDN:** [View Transitions](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API)
+```css
+.card { view-transition-name: hero; }
+::view-transition-old(hero) { animation: fade-out 0.2s; }
+::view-transition-new(hero) { animation: fade-in 0.2s; }
+```
 
-**Source:** [MDN — View Transitions](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API)
+**Sources:** [MDN — View Transitions](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API)
 
 </details>
 
@@ -3266,14 +3081,32 @@ Animate DOM state changes (SPA route changes, shared element transitions):
 
 ### @property registered custom properties
 
-**Definition:** `@property` registers typed custom properties that can be animated.
+**Definition:**
+
+`@property` registers typed custom properties that can be animated.
 
 Make CSS variables animatable and typed:
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+- `@property --name` registers a custom property with `syntax`, `inherits`, and `initial-value`.
+- Browser validates assignments — invalid values fall back to `initial-value` instead of invalidating the whole property.
+- Registered properties with typed `syntax` can be **animated** in `@keyframes` (e.g. `--angle` from `0deg` to `360deg`).
+- Unregistered `--vars` are treated as strings — no interpolation.
+
+[@property](https://developer.mozilla.org/en-US/docs/Web/CSS/@property)
+
+**When to use:** Animated conic gradients (`--angle`); theme tokens with validation; color transitions on custom properties. Pair with `@supports` or progressive enhancement.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Animatable gradients, colors, lengths via `--vars` | Verbose registration per property |
+| Type safety for design tokens | `syntax` types must match assignments exactly |
+| Enables Houdini-style extensibility | Fallback needed for browsers without `@property` |
+
+**Examples:**
 
 ```css
 @property --angle {
@@ -3283,26 +3116,7 @@ Make CSS variables animatable and typed:
 }
 ```
 
-</details>
-
-**How it works:**
-
-- `@property --name` registers a custom property with `syntax`, `inherits`, and `initial-value`.
-- Browser validates assignments — invalid values fall back to `initial-value` instead of invalidating the whole property.
-- Registered properties with typed `syntax` can be **animated** in `@keyframes` (e.g. `--angle` from `0deg` to `360deg`).
-- Unregistered `--vars` are treated as strings — no interpolation.
-
-| Pros | Cons |
-|------|------|
-| Animatable gradients, colors, lengths via `--vars` | Verbose registration per property |
-| Type safety for design tokens | `syntax` types must match assignments exactly |
-| Enables Houdini-style extensibility | Fallback needed for browsers without `@property` |
-
-**Cases:** Animated conic gradients (`--angle`); theme tokens with validation; color transitions on custom properties. Pair with `@supports` or progressive enhancement.
-
-**MDN:** [@property](https://developer.mozilla.org/en-US/docs/Web/CSS/@property)
-
-**Source:** [MDN — @property](https://developer.mozilla.org/en-US/docs/Web/CSS/@property)
+**Sources:** [MDN — @property](https://developer.mozilla.org/en-US/docs/Web/CSS/@property)
 
 </details>
 
@@ -3311,14 +3125,15 @@ Make CSS variables animatable and typed:
 
 ### Relative color syntax
 
-**Definition:** Relative color syntax derives new colors from existing values (`oklch(from var(--brand) ...)`).
+**Definition:**
+
+Relative color syntax derives new colors from existing values (`oklch(from var(--brand) ...)`).
 
 Derive colors from existing values:
 
-**Example:**
+**How it works:** [Relative colors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors)
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .theme {
@@ -3327,11 +3142,7 @@ Derive colors from existing values:
 }
 ```
 
-</details>
-
-**MDN:** [Relative colors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors)
-
-**Source:** [MDN — Relative colors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors)
+**Sources:** [MDN — Relative colors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors)
 
 </details>
 
@@ -3340,11 +3151,13 @@ Derive colors from existing values:
 
 ### Table and list styling
 
-**Definition:** Tables and lists have dedicated properties for borders, spacing, and markers.
+**Definition:**
+
+Tables and lists have dedicated properties for borders, spacing, and markers.
 
 `border-collapse`, `table-layout: fixed`, `list-style-type`, `list-style-position`. Use semantic `<table>` for tabular data; style with `thead`/`tbody` for zebra rows.
 
-**Source:** [MDN — table-layout](https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout)
+**Sources:** [MDN — table-layout](https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout)
 
 </details>
 
@@ -3353,11 +3166,13 @@ Derive colors from existing values:
 
 ### Writing-mode and RTL
 
-**Definition:** `writing-mode` and `direction` control text flow; pair with logical properties for RTL support.
+**Definition:**
+
+`writing-mode` and `direction` control text flow; pair with logical properties for RTL support.
 
 `writing-mode: vertical-rl`, `direction: rtl` — pair with logical properties (`margin-inline`, `padding-block`). See **Logical properties** in Box Model section.
 
-**Source:** [MDN — writing-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/writing-mode)
+**Sources:** [MDN — writing-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/writing-mode)
 
 </details>
 
@@ -3372,14 +3187,19 @@ Derive colors from existing values:
 
 ### BEM (Block Element Modifier)
 
-**Definition:** BEM is a naming convention: `block__element--modifier` for predictable, low-specificity CSS.
+**Definition:**
+
+BEM is a naming convention: `block__element--modifier` for predictable, low-specificity CSS.
 
 Naming convention for modular CSS:
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+predictable specificity, reusable blocks, team consistency
+
+verbose class names; not required if using CSS Modules or scoped frameworks
+
+**Examples:**
 
 ```
 block__element--modifier
@@ -3392,18 +3212,13 @@ block__element--modifier
 </button>
 ```
 
-</details>
-
 | Part | Separator | Example |
 |------|-----------|---------|
 | Block | — | `button` |
 | Element | `__` | `button__icon` |
 | Modifier | `--` | `button--primary` |
 
-**Pros:** predictable specificity, reusable blocks, team consistency  
-**Cons:** verbose class names; not required if using CSS Modules or scoped frameworks
-
-**Source:** [getbem.com](http://getbem.com/)
+**Sources:** [getbem.com](http://getbem.com/)
 
 </details>
 
@@ -3412,14 +3227,19 @@ block__element--modifier
 
 ### CSS preprocessors (Sass/SCSS, Less)
 
-**Definition:** Preprocessors compile Sass/Less to CSS, adding variables, mixins, and nesting at build time.
+**Definition:**
+
+Preprocessors compile Sass/Less to CSS, adding variables, mixins, and nesting at build time.
 
 Compile to CSS. Historically added variables, nesting, mixins, imports.
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+native custom properties and nesting reduce the need for preprocessors. Sass still useful for `@mixin`, `@function`, and large design-token pipelines.
+
+SCSS uses `{}` syntax (CSS-compatible); indented Sass syntax is less common.
+
+**Examples:**
 
 ```scss
 $primary: #2563eb;
@@ -3439,13 +3259,7 @@ $primary: #2563eb;
 }
 ```
 
-</details>
-
-**Today:** native custom properties and nesting reduce the need for preprocessors. Sass still useful for `@mixin`, `@function`, and large design-token pipelines.
-
-**Sass vs SCSS:** SCSS uses `{}` syntax (CSS-compatible); indented Sass syntax is less common.
-
-**Source:** [Sass](https://sass-lang.com/)
+**Sources:** [Sass](https://sass-lang.com/)
 
 </details>
 
@@ -3454,7 +3268,9 @@ $primary: #2563eb;
 
 ### PostCSS & Autoprefixer
 
-**Definition:** PostCSS transforms CSS with plugins; Autoprefixer adds vendor prefixes from Browserslist config.
+**Definition:**
+
+PostCSS transforms CSS with plugins; Autoprefixer adds vendor prefixes from Browserslist config.
 
 PostCSS transforms CSS with plugins. **Autoprefixer** adds vendor prefixes from [Browserslist](https://browsersl.ist/) config — do not hand-write `-webkit-` prefixes in 2025.
 
@@ -3465,18 +3281,17 @@ PostCSS transforms CSS with plugins. **Autoprefixer** adds vendor prefixes from 
 - Other plugins: `postcss-preset-env` (stage features), `cssnano` (minify), `postcss-nesting`, custom transforms.
 - Runs at build time in Vite/Webpack — zero runtime cost.
 
-| Pros | Cons |
+**When to use:** Autoprefixer for all production builds; `postcss-preset-env` for nesting/`color-mix` polyfills; `cssnano` for production minification. Set Browserslist in `package.json` — single source of truth.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Write modern CSS; ship compatible CSS | Extra build step and config |
 | Autoprefixer eliminates manual prefixes | Plugin order matters — can break if misconfigured |
 | Ecosystem of transforms | Debugging generated CSS harder than source |
 
-**Cases:** Autoprefixer for all production builds; `postcss-preset-env` for nesting/`color-mix` polyfills; `cssnano` for production minification. Set Browserslist in `package.json` — single source of truth.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```json
 // package.json
@@ -3494,9 +3309,7 @@ export default {
 };
 ```
 
-</details>
-
-**Source:** [PostCSS](https://postcss.org/) · [Autoprefixer](https://github.com/postcss/autoprefixer)
+**Sources:** [PostCSS](https://postcss.org/) · [Autoprefixer](https://github.com/postcss/autoprefixer)
 
 </details>
 
@@ -3505,7 +3318,9 @@ export default {
 
 ### CSS Modules
 
-**Definition:** CSS Modules scope class names at build time to prevent global style collisions.
+**Definition:**
+
+CSS Modules scope class names at build time to prevent global style collisions.
 
 Scope class names at build time — `import styles from './Button.module.css'` → unique hashes prevent global collisions.
 
@@ -3516,18 +3331,17 @@ Scope class names at build time — `import styles from './Button.module.css'` �
 - `:global(.foo)` escapes scoping for third-party overrides; `:local` is default.
 - Composition: `composes: primary from './theme.module.css'`.
 
-| Pros | Cons |
+**When to use:** React/Vue/Svelte component styles; design-system primitives; replacing BEM in SPAs. Pair with CSS custom properties for theming across modules.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | No global namespace collisions | Class names unreadable in DevTools |
 | Co-located styles with components | Dynamic class names need `styles[variant]` pattern |
 | Works with any framework | No true DOM encapsulation — globals can still leak in |
 
-**Cases:** React/Vue/Svelte component styles; design-system primitives; replacing BEM in SPAs. Pair with CSS custom properties for theming across modules.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 /* Button.module.css */
@@ -3540,9 +3354,7 @@ import styles from './Button.module.css';
 <button className={styles.primary}>Submit</button>
 ```
 
-</details>
-
-**Source:** [CSS Modules](https://github.com/css-modules/css-modules)
+**Sources:** [CSS Modules](https://github.com/css-modules/css-modules)
 
 </details>
 
@@ -3553,10 +3365,17 @@ import styles from './Button.module.css';
 
 **Definition:** Tailwind applies atomic utility classes in HTML for rapid, token-consistent styling.
 
-**Example:**
+**How it works:** Tailwind utilities have equal specificity — order in generated CSS matters, not HTML class order. Use `tailwind-merge` or arbitrary variants for conflicts.
 
-<details>
-  <summary>Code</summary>
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Fast prototyping | HTML verbosity |
+| Consistent design tokens | Learning curve |
+| Purged unused CSS in prod | Class precedence issues with dynamic classes |
+
+**Examples:**
 
 ```html
 <button class="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
@@ -3564,17 +3383,7 @@ import styles from './Button.module.css';
 </button>
 ```
 
-</details>
-
-| Pros | Cons |
-|------|------|
-| Fast prototyping | HTML verbosity |
-| Consistent design tokens | Learning curve |
-| Purged unused CSS in prod | Class precedence issues with dynamic classes |
-
-**Class precedence:** Tailwind utilities have equal specificity — order in generated CSS matters, not HTML class order. Use `tailwind-merge` or arbitrary variants for conflicts.
-
-**Source:** [Learn Tailwind — responsive card](https://www.freecodecamp.org/news/learn-tailwind-css-by-building-a-responsive-product-card/)
+**Sources:** [Learn Tailwind — responsive card](https://www.freecodecamp.org/news/learn-tailwind-css-by-building-a-responsive-product-card/)
 
 </details>
 
@@ -3583,11 +3392,13 @@ import styles from './Button.module.css';
 
 ### Bootstrap
 
-**Definition:** Bootstrap is a component framework with grid, utilities, and optional JS widgets.
+**Definition:**
+
+Bootstrap is a component framework with grid, utilities, and optional JS widgets.
 
 Component framework with grid, utilities, and JS widgets. Good for rapid MVPs; learn underlying CSS to avoid fighting the framework.
 
-**Source:** [Bootstrap](https://getbootstrap.com/docs/)
+**Sources:** [Bootstrap](https://getbootstrap.com/docs/)
 
 </details>
 
@@ -3596,7 +3407,9 @@ Component framework with grid, utilities, and JS widgets. Good for rapid MVPs; l
 
 ### CSS methodologies comparison
 
-**Definition:** Methodologies (BEM, OOCSS, SMACSS, ITCSS) organize CSS for maintainability and team scale.
+**Definition:**
+
+Methodologies (BEM, OOCSS, SMACSS, ITCSS) organize CSS for maintainability and team scale.
 
 | Method | Idea |
 |--------|------|
@@ -3607,7 +3420,7 @@ Component framework with grid, utilities, and JS widgets. Good for rapid MVPs; l
 
 ---
 
-**Source:** [CSS-Tricks — methodologies](https://css-tricks.com/poll-results-what-css-methodology-do-you-use/)
+**Sources:** [CSS-Tricks — methodologies](https://css-tricks.com/poll-results-what-css-methodology-do-you-use/)
 
 </details>
 
@@ -3620,7 +3433,9 @@ Component framework with grid, utilities, and JS widgets. Good for rapid MVPs; l
 
 ### Reflow, repaint, composite
 
-**Definition:** Style changes trigger style recalc, layout (reflow), paint, or composite — with different performance costs.
+**Definition:**
+
+Style changes trigger style recalc, layout (reflow), paint, or composite — with different performance costs.
 
 When CSS changes, the browser pays different costs:
 
@@ -3631,13 +3446,11 @@ When CSS changes, the browser pays different costs:
 | **Paint** | `color`, `background`, `box-shadow`, `visibility` | Medium |
 | **Composite** | `transform`, `opacity`, `filter` | Low (GPU) |
 
-**Rule:** animate `transform` and `opacity`; avoid layout properties in animation loops. Batch DOM reads/writes in JS to avoid layout thrashing.
+**How it works:**
 
-**Notes:** Full pipeline, dirty/global layout, rAF vs interval → [1_html.md — Browser & rendering](./1_html.md#browser--rendering). Property → layout/paint/composite → [CSS Triggers](https://csstriggers.com/). Field metrics (LCP / INP / CLS) → [6_web_api.md — Core Web Vitals](./6_web_api.md#core-web-vitals). INP phases/fixes → [6_web_api.md — INP](./6_web_api.md#inp-interaction-to-next-paint). Layout-shift metric → [CLS](./1_html.md#cls-cumulative-layout-shift).
+animate `transform` and `opacity`; avoid layout properties in animation loops. Batch DOM reads/writes in JS to avoid layout thrashing.
 
-**Layout reflow triggers (non-exhaustive):** `width`, `height`, `min-*`, `max-*`, `margin`, `padding`, `border`, `font-size`, `line-height`, `display`, `position`, `top`/`left`, `flex-*`, `grid-*`, DOM insert/remove, reading `offsetHeight`/`getBoundingClientRect()` after a write.
-
-**Decision tree:**
+`width`, `height`, `min-*`, `max-*`, `margin`, `padding`, `border`, `font-size`, `line-height`, `display`, `position`, `top`/`left`, `flex-*`, `grid-*`, DOM insert/remove, reading `offsetHeight`/`getBoundingClientRect()` after a write.
 
 ```
 Need to animate?
@@ -3646,7 +3459,9 @@ Need to animate?
 └─ width / height / margin / top → Layout (expensive — avoid in loops)
 ```
 
-**Source:** [web.dev — Rendering performance](https://web.dev/articles/critical-rendering-path)
+**Thoughts:** Full pipeline, dirty/global layout, rAF vs interval → [1_html.md — Browser & rendering](./1_html.md#browser--rendering). Property → layout/paint/composite → [CSS Triggers](https://csstriggers.com/). Field metrics (LCP / INP / CLS) → [6_web_api.md — Core Web Vitals](./6_web_api.md#core-web-vitals). INP phases/fixes → [6_web_api.md — INP](./6_web_api.md#inp-interaction-to-next-paint). Layout-shift metric → [CLS](./1_html.md#cls-cumulative-layout-shift).
+
+**Sources:** [web.dev — Rendering performance](https://web.dev/articles/critical-rendering-path)
 
 </details>
 
@@ -3655,13 +3470,15 @@ Need to animate?
 
 ### Critical CSS
 
-**Definition:** Critical CSS inlines above-the-fold styles to reduce render-blocking and improve first paint.
+**Definition:**
+
+Critical CSS inlines above-the-fold styles to reduce render-blocking and improve first paint.
 
 Inline or preload CSS required for **above-the-fold** content to reduce render-blocking.
 
 Benefits: faster first paint, better LCP, improved mobile performance.
 
-**Source:** [web.dev — Extract critical CSS](https://web.dev/articles/extract-critical-css)
+**Sources:** [web.dev — Extract critical CSS](https://web.dev/articles/extract-critical-css)
 
 </details>
 
@@ -3670,15 +3487,15 @@ Benefits: faster first paint, better LCP, improved mobile performance.
 
 ### Compositor layers & GPU
 
-**Definition:** Compositor layers isolate GPU-friendly properties (`transform`, `opacity`) for smooth animation.
+**Definition:**
+
+Compositor layers isolate GPU-friendly properties (`transform`, `opacity`) for smooth animation.
 
 Properties that typically composite on GPU (no layout/paint): `transform`, `opacity`, `filter`, `will-change`.
 
-**Compositor layer triggers:** `transform`, `opacity < 1`, `filter`, `will-change`, `position: fixed`, video/canvas, etc.
+**How it works:**
 
-**Pitfall:** too many layers → high memory use → crashes on mobile. Do not sprinkle `will-change` everywhere; apply before animation, remove after.
-
-**`will-change` guidelines:**
+`transform`, `opacity < 1`, `filter`, `will-change`, `position: fixed`, video/canvas, etc.
 
 | Do | Don't |
 |----|-------|
@@ -3686,7 +3503,13 @@ Properties that typically composite on GPU (no layout/paint): `transform`, `opac
 | Use `will-change: transform` for hover lifts | Use `will-change: auto` everywhere "just in case" |
 | Remove after `transitionend` / `animationend` | Expect it to fix layout bugs |
 
-**Source:** [web.dev — Layers](https://web.dev/articles/stick-to-compositor-only-properties-and-manage-layer-count)
+**When to use:**
+
+#### Pitfall
+
+too many layers → high memory use → crashes on mobile. Do not sprinkle `will-change` everywhere; apply before animation, remove after.
+
+**Sources:** [web.dev — Layers](https://web.dev/articles/stick-to-compositor-only-properties-and-manage-layer-count)
 
 </details>
 
@@ -3697,27 +3520,7 @@ Properties that typically composite on GPU (no layout/paint): `transform`, `opac
 
 **Definition:** `contain` isolates layout/paint; `content-visibility: auto` skips rendering off-screen content.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
-
-```css
-.card-list-item {
-  contain: layout style paint;
-}
-
-.below-fold {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 500px;
-}
-```
-
-</details>
-
-`content-visibility: auto` skips rendering off-screen content — major perf win for long lists.
-
-**Pattern for long pages:**
+**How it works:**
 
 ```css
 .section {
@@ -3736,7 +3539,22 @@ Browser skips layout/paint for off-screen sections; `contain-intrinsic-size` res
 | `size` | Size as if empty (use carefully) |
 | `strict` | `layout style paint size` |
 
-**Source:** [MDN — content-visibility](https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility) · INP / large DOM: [6_web_api.md](./6_web_api.md#inp-interaction-to-next-paint)
+**Examples:**
+
+```css
+.card-list-item {
+  contain: layout style paint;
+}
+
+.below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+```
+
+`content-visibility: auto` skips rendering off-screen content — major perf win for long lists.
+
+**Sources:** [MDN — content-visibility](https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility) · INP / large DOM: [6_web_api.md](./6_web_api.md#inp-interaction-to-next-paint)
 
 </details>
 
@@ -3745,7 +3563,9 @@ Browser skips layout/paint for off-screen sections; `contain-intrinsic-size` res
 
 ### CSS sprites (historical)
 
-**Definition:** Sprites pack multiple icons in one image, positioned via `background-position` — largely replaced by SVG.
+**Definition:**
+
+Sprites pack multiple icons in one image, positioned via `background-position` — largely replaced by SVG.
 
 One image, multiple icons via `background-position`. Less relevant with HTTP/2, SVG icons, and icon fonts — but still valid for legacy sprite sheets.
 
@@ -3755,18 +3575,17 @@ One image, multiple icons via `background-position`. Less relevant with HTTP/2, 
 - Each icon element sets `background-image: url(sprite.png)`, fixed `width`/`height`, and negative `background-position` to show the correct tile.
 - HTTP/1.1 reduced requests — one image vs many; HTTP/2 reduces this advantage.
 
-| Pros | Cons |
+**When to use:** Legacy enterprise sites; email templates (limited SVG support). **Today:** inline SVG, SVG sprites (`<symbol>` + `<use>`), or icon fonts — not raster sprites.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Fewer HTTP requests on HTTP/1 | Painful to maintain — pixel math on every icon add |
 | Consistent icon sizing in one asset | Retina requires `@2x` sprite sheets |
 | No JS required | SVG icons + icon components are the modern default |
 
-**Cases:** Legacy enterprise sites; email templates (limited SVG support). **Today:** inline SVG, SVG sprites (`<symbol>` + `<use>`), or icon fonts — not raster sprites.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .icon-home {
@@ -3779,9 +3598,7 @@ One image, multiple icons via `background-position`. Less relevant with HTTP/2, 
 }
 ```
 
-</details>
-
-**Source:** [MDN — background-position](https://developer.mozilla.org/en-US/docs/Web/CSS/background-position)
+**Sources:** [MDN — background-position](https://developer.mozilla.org/en-US/docs/Web/CSS/background-position)
 
 </details>
 
@@ -3790,14 +3607,13 @@ One image, multiple icons via `background-position`. Less relevant with HTTP/2, 
 
 ### Shorthand pitfalls
 
-**Definition:** CSS shorthands reset omitted sub-properties to initial values — use longhands when overriding one sub-property.
+**Definition:**
+
+CSS shorthands reset omitted sub-properties to initial values — use longhands when overriding one sub-property.
 
 Shorthand resets unspecified sub-properties to initial values:
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 /* Dangerous — resets background-image, position, etc. */
@@ -3807,11 +3623,9 @@ background: #fff;
 background-color: #fff;
 ```
 
-</details>
-
 ---
 
-**Source:** [MDN — Shorthand properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties)
+**Sources:** [MDN — Shorthand properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties)
 
 </details>
 
@@ -3822,10 +3636,7 @@ background-color: #fff;
 
 **Definition:** Accessible CSS respects motion preferences, preserves focus indicators, and maintains sufficient contrast.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 /* Respect motion preferences */
@@ -3859,13 +3670,11 @@ background-color: #fff;
 /* Sufficient contrast — aim WCAG AA: 4.5:1 body text, 3:1 large text */
 ```
 
-</details>
-
 Never remove focus indicators without a `:focus-visible` replacement.
 
 ---
 
-**Source:** [MDN — Accessibility](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
+**Sources:** [MDN — Accessibility](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
 
 </details>
 
@@ -4073,7 +3882,7 @@ Try answering before opening solutions.
 - `visibility: hidden` — box participates in layout; not painted; descendants can override with `visibility: visible`.
 - `opacity: 0` — still in layout and a11y tree; receives pointer events unless `pointer-events: none`.
 
-**Cases:** Hide modals off-screen → `display: none` or `hidden` attribute; preserve layout while loading → `visibility: hidden`; fade transitions → `opacity` + `pointer-events: none`.
+**When to use:** Hide modals off-screen → `display: none` or `hidden` attribute; preserve layout while loading → `visibility: hidden`; fade transitions → `opacity` + `pointer-events: none`.
 
 </details>
 
@@ -4091,7 +3900,7 @@ Try answering before opening solutions.
 - `!important` flips importance within same origin — author `!important` beats author normal.
 - `@layer` order beats specificity among layered author styles; unlayered beats layered.
 
-**Cases:** Prefer low-specificity classes + `@layer` over IDs/`!important`; use `:where()` for resets; `:is(.a, #x)` inherits `#x` specificity — avoid accidental weight.
+**When to use:** Prefer low-specificity classes + `@layer` over IDs/`!important`; use `:where()` for resets; `:is(.a, #x)` inherits `#x` specificity — avoid accidental weight.
 
 </details>
 
@@ -4108,7 +3917,7 @@ Try answering before opening solutions.
 - `dvh`/`svh`/`lvh` — dynamic/small/large viewport units adapt to mobile chrome.
 - `%` height requires explicit height on every ancestor — percentage resolves against containing block.
 
-**Cases:** Full-screen hero → `min-height: 100dvh`; fluid type → `clamp(1rem, 2vw + 0.5rem, 2rem)` not raw `vw`; child `height: 100%` → set `html, body { height: 100% }` chain.
+**When to use:** Full-screen hero → `min-height: 100dvh`; fluid type → `clamp(1rem, 2vw + 0.5rem, 2rem)` not raw `vw`; child `height: 100%` → set `html, body { height: 100% }` chain.
 
 </details>
 
@@ -4125,7 +3934,7 @@ Try answering before opening solutions.
 - `em` — relative to **element's own** `font-size`; compounds in nested components.
 - `px` — absolute; ignores user browser font-size settings unless root is in `px`.
 
-**Cases:** Body/heading scale → `rem`; button padding relative to button text → `em`; borders/shadows → `px` is fine.
+**When to use:** Body/heading scale → `rem`; button padding relative to button text → `em`; borders/shadows → `px` is fine.
 
 </details>
 
@@ -4142,7 +3951,7 @@ Try answering before opening solutions.
 - `background: #fff` wipes `background-image`, `background-position`, etc.
 - `font: 400 1rem/1.5 sans-serif` resets `font-stretch`, `font-variant`, etc.
 
-**Cases:** Override only `background-color` → use longhand; set full font stack once with shorthand on `body`, then longhand tweaks on children.
+**When to use:** Override only `background-color` → use longhand; set full font stack once with shorthand on `body`, then longhand tweaks on children.
 
 </details>
 
@@ -4160,7 +3969,7 @@ Try answering before opening solutions.
 - **SMACSS** — categorize: base, layout, module, state, theme.
 - **ITCSS** — inverted triangle: generics → elements → objects → components → utilities (increasing specificity).
 
-**Cases:** Large teams → BEM or ITCSS; utility-heavy SPAs → Tailwind replaces much of BEM; CSS Modules scopes without verbose names.
+**When to use:** Large teams → BEM or ITCSS; utility-heavy SPAs → Tailwind replaces much of BEM; CSS Modules scopes without verbose names.
 
 </details>
 
@@ -4178,7 +3987,7 @@ Try answering before opening solutions.
 - Autoprefixer handles vendor prefixes from Browserslist — not manual sniffing.
 - Feature detection, not browser detection (`user-agent` sniffing).
 
-**Cases:** Grid layout with flex fallback; `backdrop-filter` glass effect behind solid fallback; container queries with media query fallback.
+**When to use:** Grid layout with flex fallback; `backdrop-filter` glass effect behind solid fallback; container queries with media query fallback.
 
 </details>
 
@@ -4195,7 +4004,7 @@ Try answering before opening solutions.
 - Any ancestor with `overflow: hidden|auto|scroll` (not `visible`) becomes the scroll container — sticky may stick inside a small box instead of viewport.
 - Sticky element needs room to scroll within parent — parent must be taller than sticky child.
 
-**Cases:** Debug checklist: (1) set `top: 0`; (2) check ancestor `overflow`; (3) ensure scroll container has height; (4) no `display: table` parent quirks.
+**When to use:** Debug checklist: (1) set `top: 0`; (2) check ancestor `overflow`; (3) ensure scroll container has height; (4) no `display: table` parent quirks.
 
 </details>
 
@@ -4212,7 +4021,7 @@ Try answering before opening solutions.
 - `currentColor` on `fill` or `stroke` syncs with `color` — easy theme integration.
 - External SVG via `<img>` cannot be styled with CSS — use inline SVG or `mask-image`.
 
-**Cases:** Icon systems → inline SVG + `fill: currentColor`; hover states via CSS on `.icon path`; sprites with `<symbol>` + `<use>`.
+**When to use:** Icon systems → inline SVG + `fill: currentColor`; hover states via CSS on `.icon path`; sprites with `<symbol>` + `<use>`.
 
 </details>
 
@@ -4221,14 +4030,17 @@ Try answering before opening solutions.
 
 ### px vs em vs rem?
 
-**Definition:** Use `rem` for global typography and spacing; `em` for component-internal scaling (button padding relative to button font-size).
+**Definition:**
+
+Use `rem` for global typography and spacing; `em` for component-internal scaling (button padding relative to button font-size).
+
 * **px** — absolute CSS pixels; fine for borders/shadows; poor for accessible root scaling
 * **em** — relative to **element's** `font-size`; compounds when nested
 * **rem** — relative to **root** `font-size`; predictable spacing/type scale
 
 **How it works:** `px` is absolute CSS pixels; `em` compounds from parent `font-size`; `rem` always references `<html>` font-size — one source of truth for type/spacing scales.
 
-**Cases:** Global typography → `rem`; component-internal padding → `em`; hairline borders → `px`.
+**When to use:** Global typography → `rem`; component-internal padding → `em`; hairline borders → `px`.
 
 </details>
 
@@ -4239,10 +4051,11 @@ Try answering before opening solutions.
 
 **Definition:** Every element (and pseudo-elements if included) uses `border-box` sizing: `width`/`height` include padding and border. Prevents padding from blowing out fixed layouts. Standard reset pattern:
 
-**Example:**
+**How it works:** `border-box` includes padding and border in `width`/`height` — a 200px box with 20px padding stays 200px total, not 240px.
 
-<details>
-  <summary>Code</summary>
+**When to use:** Universal reset on `*, *::before, *::after`; alternative: set on `html { box-sizing: border-box }` and `inherit` on children.
+
+**Examples:**
 
 ```css
 *, *::before, *::after {
@@ -4250,13 +4063,7 @@ Try answering before opening solutions.
 }
 ```
 
-</details>
-
 Does not affect margin. Inherited by descendants if you set it on `html` instead of `*`.
-
-**How it works:** `border-box` includes padding and border in `width`/`height` — a 200px box with 20px padding stays 200px total, not 240px.
-
-**Cases:** Universal reset on `*, *::before, *::after`; alternative: set on `html { box-sizing: border-box }` and `inherit` on children.
 
 </details>
 
@@ -4266,10 +4073,12 @@ Does not affect margin. Inherited by descendants if you set it on `html` instead
 ### How do you adapt a page for print?
 
 **Definition:** Use `print` media query; avoid dark backgrounds; expand links if useful; control page breaks with `break-before` / `break-after`. Full conspect: **Print & Paged Media**.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**How it works:** `@media print` applies only when printing or PDF export; hide non-essential UI; force light backgrounds for ink savings; `break-*` controls pagination.
+
+**When to use:** Hide nav/ads; expand `href` in links; set `12pt` body font; `break-inside: avoid` on figures/tables.
+
+**Examples:**
 
 ```css
 @media print {
@@ -4282,18 +4091,15 @@ Does not affect margin. Inherited by descendants if you set it on `html` instead
 
 </details>
 
-**How it works:** `@media print` applies only when printing or PDF export; hide non-essential UI; force light backgrounds for ink savings; `break-*` controls pagination.
-
-**Cases:** Hide nav/ads; expand `href` in links; set `12pt` body font; `break-inside: avoid` on figures/tables.
-
-</details>
-
 <details>
   <summary>How do you customize native form element styles?</summary>
 
 ### How do you customize native form element styles?
 
-**Definition:** Fully styling `<select>` still limited cross-browser — consider custom dropdown component for full control. Full conspect: **Form & Native Control Styling**.
+**Definition:**
+
+Fully styling `<select>` still limited cross-browser — consider custom dropdown component for full control. Full conspect: **Form & Native Control Styling**.
+
 * `appearance: none` — remove OS default chrome (then rebuild with CSS)
 * `accent-color` — checkboxes, radios, range inputs
 * `::placeholder` — placeholder text
@@ -4302,7 +4108,7 @@ Does not affect margin. Inherited by descendants if you set it on `html` instead
 
 **How it works:** `appearance: none` strips OS chrome — you rebuild borders/arrows; `accent-color` tints native controls; dropdown list styling remains OS-controlled.
 
-**Cases:** Custom checkbox/radio with `appearance: none` + pseudo-elements; `<select>` closed state only — full control needs custom component with ARIA.
+**When to use:** Custom checkbox/radio with `appearance: none` + pseudo-elements; `<select>` closed state only — full control needs custom component with ARIA.
 
 </details>
 
@@ -4311,7 +4117,9 @@ Does not affect margin. Inherited by descendants if you set it on `html` instead
 
 ### What is progressive rendering?
 
-**Definition:** Deliver content in stages so users see something fast — CSS/media techniques on top of the HTML critical path.
+**Definition:**
+
+Deliver content in stages so users see something fast — CSS/media techniques on top of the HTML critical path.
 
 1. **Critical CSS** inlined for above-the-fold
 2. **Async/defer** non-critical CSS
@@ -4323,9 +4131,9 @@ Goal: improve FCP/LCP without blocking render on the full CSS bundle.
 
 **How it works:** Browser paints incrementally — critical CSS blocks first paint; deferring the rest and lazy content lets users see a shell faster.
 
-**Cases:** Inline critical CSS for above-fold; async load rest; `content-visibility: auto` on long pages; skeleton placeholders.
+**When to use:** Inline critical CSS for above-fold; async load rest; `content-visibility: auto` on long pages; skeleton placeholders.
 
-**Notes:** Pipeline definition and interview answer → [1_html.md — Progressive rendering](./1_html.md#browser--rendering).
+**Thoughts:** Pipeline definition and interview answer → [1_html.md — Progressive rendering](./1_html.md#browser--rendering).
 
 </details>
 
@@ -4335,10 +4143,12 @@ Goal: improve FCP/LCP without blocking render on the full CSS bundle.
 ### Lazy-loading media on a page?
 
 **Definition:** CSS-only background images: Intersection Observer in JS, or `content-visibility` for sections. Responsive images: `srcset` + `sizes`. Fonts: `font-display: swap`, subset fonts, preload only critical weights.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**How it works:** `loading="lazy"` defers off-screen image/iframe fetch until near viewport; `decoding="async"` avoids blocking main thread; fonts via `font-display: swap` + preload critical weights only.
+
+**When to use:** Below-fold images; hero image `fetchpriority="high"` + no lazy; background images need `IntersectionObserver` or `content-visibility`.
+
+**Examples:**
 
 ```html
 <img src="photo.jpg" loading="lazy" decoding="async" alt="...">
@@ -4347,18 +4157,15 @@ Goal: improve FCP/LCP without blocking render on the full CSS bundle.
 
 </details>
 
-**How it works:** `loading="lazy"` defers off-screen image/iframe fetch until near viewport; `decoding="async"` avoids blocking main thread; fonts via `font-display: swap` + preload critical weights only.
-
-**Cases:** Below-fold images; hero image `fetchpriority="high"` + no lazy; background images need `IntersectionObserver` or `content-visibility`.
-
-</details>
-
 <details>
   <summary>How do you review and fix bad CSS?</summary>
 
 ### How do you review and fix bad CSS?
 
-**Definition:** Checklist for live coding / code review:.
+**Definition:**
+
+Checklist for live coding / code review:.
+
 1. **Specificity wars** — replace IDs/`!important` with simpler selectors or `@layer`
 2. **Magic numbers** — use custom properties or spacing scale
 3. **Float layouts** — migrate to flex/grid
@@ -4370,7 +4177,7 @@ Goal: improve FCP/LCP without blocking render on the full CSS bundle.
 
 **How it works:** Interview code review tests whether you spot maintainability, performance, and a11y issues — not just "does it look right."
 
-**Cases:** Live coding — narrate each fix; prefer `@layer` over `!important`; migrate floats to grid; add `min-width: 0` on flex text overflow.
+**When to use:** Live coding — narrate each fix; prefer `@layer` over `!important`; migrate floats to grid; add `min-width: 0` on flex text overflow.
 
 </details>
 
@@ -4380,11 +4187,14 @@ Goal: improve FCP/LCP without blocking render on the full CSS bundle.
 ### Faux bold and faux italic fonts?
 
 **Definition:** When the browser synthesizes bold/italic because the exact font weight/style file is missing. Looks worse than real font files.
-**Fix:** load the actual `font-weight` / `font-style` variants in `@font-face`, or use a variable font with full axis range. Avoid `font-weight: 700` if only `400` is loaded.
 
-**How it works:** Browser synthesizes bold/italic when the requested weight/style file is missing — slanted geometry, not true italic glyphs.
+**How it works:**
 
-**Cases:** Load `font-weight: 400 700` range in variable font; or separate `@font-face` per weight; check DevTools → Computed → rendered font.
+Browser synthesizes bold/italic when the requested weight/style file is missing — slanted geometry, not true italic glyphs.
+
+load the actual `font-weight` / `font-style` variants in `@font-face`, or use a variable font with full axis range. Avoid `font-weight: 700` if only `400` is loaded.
+
+**When to use:** Load `font-weight: 400 700` range in variable font; or separate `@font-face` per weight; check DevTools → Computed → rendered font.
 
 </details>
 
@@ -4393,7 +4203,10 @@ Goal: improve FCP/LCP without blocking render on the full CSS bundle.
 
 ### Image formats that support animation?
 
-**Definition:** CSS `animation` / `@keyframes` animates properties — not the same as animated image formats.
+**Definition:**
+
+CSS `animation` / `@keyframes` animates properties — not the same as animated image formats.
+
 * **GIF** — legacy, 256 colors, large files
 * **APNG** — PNG-based, better quality than GIF
 * **WebP** — animated WebP, good compression
@@ -4401,7 +4214,7 @@ Goal: improve FCP/LCP without blocking render on the full CSS bundle.
 
 **How it works:** Distinct from CSS `@keyframes` — these are raster/vector **file formats** with multiple frames. `<img>` or `<video>` displays them; CSS animates properties on elements, not file frames.
 
-**Cases:** Short loops → WebP/APNG; best compression → AVIF; legacy email → GIF; complex motion → prefer `<video>` or Lottie.
+**When to use:** Short loops → WebP/APNG; best compression → AVIF; legacy email → GIF; complex motion → prefer `<video>` or Lottie.
 
 </details>
 
@@ -4411,10 +4224,12 @@ Goal: improve FCP/LCP without blocking render on the full CSS bundle.
 ### How do you reuse inline SVG icons?
 
 **Definition:** Define once, reference with `<use>`:.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**How it works:** `<symbol>` defines geometry once; `<use href="#id">` instances reference it — one DOM definition, many renders. `currentColor` on `fill` inherits text `color`.
+
+**When to use:** Icon button → `<svg class="icon"><use href="#icon-close"/></svg>`; React → wrap in component; large sets → SVGO-optimized sprite or icon font alternative.
+
+**Examples:**
 
 ```html
 <svg style="display:none">
@@ -4426,13 +4241,7 @@ Goal: improve FCP/LCP without blocking render on the full CSS bundle.
 <svg class="icon"><use href="#icon-close"/></svg>
 ```
 
-</details>
-
 Style with `fill: currentColor`. For many icons, use an SVG sprite sheet or icon component library.
-
-**How it works:** `<symbol>` defines geometry once; `<use href="#id">` instances reference it — one DOM definition, many renders. `currentColor` on `fill` inherits text `color`.
-
-**Cases:** Icon button → `<svg class="icon"><use href="#icon-close"/></svg>`; React → wrap in component; large sets → SVGO-optimized sprite or icon font alternative.
 
 </details>
 
@@ -4445,7 +4254,7 @@ Style with `fill: currentColor`. For many icons, use an SVG sprite sheet or icon
 
 **How it works:** BFC is an independent layout region — floats don't escape; margins of adjacent blocks collapse only within the same BFC; `flow-root` is the modern clearfix replacement.
 
-**Cases:** Contain floats → `display: flow-root` on parent; prevent margin collapse between siblings → separate BFCs; isolate z-index stacking.
+**When to use:** Contain floats → `display: flow-root` on parent; prevent margin collapse between siblings → separate BFCs; isolate z-index stacking.
 
 </details>
 
@@ -4458,7 +4267,7 @@ Style with `fill: currentColor`. For many icons, use an SVG sprite sheet or icon
 
 **How it works:** Style change → recalc → layout (if geometry) → paint (if pixels) → composite (if layers). Each step costs more than the previous for large pages.
 
-**Cases:** Animate `transform`/`opacity` only; batch DOM reads/writes; `will-change` sparingly — overuse creates memory pressure.
+**When to use:** Animate `transform`/`opacity` only; batch DOM reads/writes; `will-change` sparingly — overuse creates memory pressure.
 
 </details>
 
@@ -4471,7 +4280,7 @@ Style with `fill: currentColor`. For many icons, use an SVG sprite sheet or icon
 
 **How it works:** Flex default `min-width: auto` = content minimum size — long unbroken strings refuse to shrink, overflowing the flex container.
 
-**Cases:** Truncate text in sidebar → `min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap` on flex child.
+**When to use:** Truncate text in sidebar → `min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap` on flex child.
 
 </details>
 
@@ -4484,7 +4293,7 @@ Style with `fill: currentColor`. For many icons, use an SVG sprite sheet or icon
 
 **How it works:** Items beyond `grid-template-columns` flow into implicit tracks sized by `grid-auto-rows`/`grid-auto-columns` (default `auto`).
 
-**Cases:** Fixed 3-column layout → explicit template; unknown item count list → `grid-auto-flow: row` with `grid-auto-rows: minmax(100px, auto)`.
+**When to use:** Fixed 3-column layout → explicit template; unknown item count list → `grid-auto-flow: row` with `grid-auto-rows: minmax(100px, auto)`.
 
 </details>
 
@@ -4493,28 +4302,26 @@ Style with `fill: currentColor`. For many icons, use an SVG sprite sheet or icon
 
 ### How to avoid loading cached CSS/JS files after deploy?
 
-**Definition:** 1. **Content hash in filename** (best) — `main.a1b2c3d4.css` via Webpack/Vite build
+**Definition:**
+
+1. **Content hash in filename** (best) — `main.a1b2c3d4.css` via Webpack/Vite build
+
 2. **Query string** — `styles.css?v=1.2.3` (weaker; some proxies ignore query strings)
 3. **`Cache-Control` headers** — `max-age` for static assets; `no-cache` for `index.html`
 4. **Service worker** — update cache on new deploy.
 **Cache busting** — change the URL when file content changes so browsers fetch the new file:
 
-**Example:**
+**How it works:** Browsers cache by URL — same URL = cached file even after deploy. Content hash in filename changes URL when bytes change.
 
-<details>
-  <summary>Code</summary>
+**When to use:** Vite/Webpack emit `main.[hash].css`; `index.html` gets `no-cache` header; query `?v=` is weaker (some CDNs ignore query strings).
+
+**Examples:**
 
 ```html
 <link rel="stylesheet" href="/assets/main.css?v=BUILD_ID">
 ```
 
-</details>
-
 Production builds should fingerprint hashed filenames automatically. Never rely on manual cache clear for users.
-
-**How it works:** Browsers cache by URL — same URL = cached file even after deploy. Content hash in filename changes URL when bytes change.
-
-**Cases:** Vite/Webpack emit `main.[hash].css`; `index.html` gets `no-cache` header; query `?v=` is weaker (some CDNs ignore query strings).
 
 </details>
 
@@ -4527,7 +4334,7 @@ Production builds should fingerprint hashed filenames automatically. Never rely 
 
 **How it works:** Percentage `width`/`height`/`top`/`left` resolve against the containing block's dimensions — wrong ancestor = wrong percentages.
 
-**Cases:** `position: absolute` child → nearest `position` ≠ `static` ancestor; `transform` on ancestor makes it containing block for `fixed` too.
+**When to use:** `position: absolute` child → nearest `position` ≠ `static` ancestor; `transform` on ancestor makes it containing block for `fixed` too.
 
 </details>
 
@@ -4540,7 +4347,7 @@ Production builds should fingerprint hashed filenames automatically. Never rely 
 
 **How it works:** `min-width: auto` prevents shrinking below intrinsic content width — flex item won't compress for ellipsis/truncation.
 
-**Cases:** Same as flex overflow — grid `minmax(0, 1fr)` solves equivalent issue in grid tracks.
+**When to use:** Same as flex overflow — grid `minmax(0, 1fr)` solves equivalent issue in grid tracks.
 
 </details>
 
@@ -4553,7 +4360,7 @@ Production builds should fingerprint hashed filenames automatically. Never rely 
 
 **How it works:** With 3 items in a 5-column capable row — `auto-fill` leaves 2 empty tracks; `auto-fit` collapses empties so 3 items expand to fill width.
 
-**Cases:** Card grid that grows → `auto-fit`; fixed column count feel with gaps → `auto-fill`.
+**When to use:** Card grid that grows → `auto-fit`; fixed column count feel with gaps → `auto-fill`.
 
 </details>
 
@@ -4566,7 +4373,7 @@ Production builds should fingerprint hashed filenames automatically. Never rely 
 
 **How it works:** `min-content` = longest word; `max-content` = no wrapping; extrinsic sizes override unless `min-width: auto` prevents shrink.
 
-**Cases:** Shrink-to-fit sidebar → `min-width: 0`; image max → `max-width: 100%; height: auto`.
+**When to use:** Shrink-to-fit sidebar → `min-width: 0`; image max → `max-width: 100%; height: auto`.
 
 </details>
 
@@ -4579,7 +4386,7 @@ Production builds should fingerprint hashed filenames automatically. Never rely 
 
 **How it works:** Mobile browsers resize viewport when URL bar collapses — `vh` doesn't update mid-session; `dvh` tracks the dynamic visible area.
 
-**Cases:** Full-screen modal/hero → `min-height: 100dvh`; safe area → `padding-bottom: env(safe-area-inset-bottom)`.
+**When to use:** Full-screen modal/hero → `min-height: 100dvh`; safe area → `padding-bottom: env(safe-area-inset-bottom)`.
 
 </details>
 
@@ -4589,10 +4396,12 @@ Production builds should fingerprint hashed filenames automatically. Never rely 
 ### How does @supports work?
 
 **Definition:** Feature query — applies CSS only if the browser supports a property/value. Progressive enhancement, not browser sniffing:.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**How it works:** `@supports (property: value)` wraps rules applied only if the browser parses and supports that declaration — feature detection, not UA sniffing.
+
+**When to use:** Grid enhancement over flex fallback; `backdrop-filter` with solid background fallback; `container-type: inline-size` progressive enhancement.
+
+**Examples:**
 
 ```css
 @supports (display: grid) {
@@ -4600,13 +4409,7 @@ Production builds should fingerprint hashed filenames automatically. Never rely 
 }
 ```
 
-</details>
-
 Combine with Autoprefixer + Browserslist for prefixes; use `@supports` for optional enhancements (grid, `backdrop-filter`, container queries).
-
-**How it works:** `@supports (property: value)` wraps rules applied only if the browser parses and supports that declaration — feature detection, not UA sniffing.
-
-**Cases:** Grid enhancement over flex fallback; `backdrop-filter` with solid background fallback; `container-type: inline-size` progressive enhancement.
 
 </details>
 
@@ -4619,7 +4422,7 @@ Combine with Autoprefixer + Browserslist for prefixes; use `@supports` for optio
 
 **How it works:** Each stacking context is an isolated z-order group — child `z-index: 9999` cannot escape above a sibling context with lower parent `z-index`.
 
-**Cases:** Modal overlay → `isolation: isolate` on wrapper; debug z-index wars in DevTools Layers panel.
+**When to use:** Modal overlay → `isolation: isolate` on wrapper; debug z-index wars in DevTools Layers panel.
 
 </details>
 
@@ -4632,7 +4435,7 @@ Combine with Autoprefixer + Browserslist for prefixes; use `@supports` for optio
 
 **How it works:** `box-shadow` paints on the border box; `filter: drop-shadow()` follows non-transparent pixels — hollow icons get correct shadow shape.
 
-**Cases:** Rectangular cards → `box-shadow`; PNG/SVG icons with transparency → `drop-shadow()`; multiple shadows → comma-separated `box-shadow`.
+**When to use:** Rectangular cards → `box-shadow`; PNG/SVG icons with transparency → `drop-shadow()`; multiple shadows → comma-separated `box-shadow`.
 
 </details>
 
@@ -4645,7 +4448,7 @@ Combine with Autoprefixer + Browserslist for prefixes; use `@supports` for optio
 
 **How it works:** Closed `<select>` is stylable; open dropdown is a native OS widget — `<option>` styling varies by platform.
 
-**Cases:** Brand the closed trigger → `appearance: none` + custom arrow; full design control → build custom listbox with `role="listbox"` and keyboard nav.
+**When to use:** Brand the closed trigger → `appearance: none` + custom arrow; full design control → build custom listbox with `role="listbox"` and keyboard nav.
 
 </details>
 
@@ -4658,7 +4461,9 @@ Combine with Autoprefixer + Browserslist for prefixes; use `@supports` for optio
 
 **How it works:** Checkbox remains in tab order and exposes state to assistive tech; visually hidden with `sr-only` or `opacity: 0`; `:checked` pseudo drives sibling styles.
 
-**Cases:** iOS-style toggle; accordion with `<details>`; tab panels with `:target` or radio inputs.
+**When to use:**
+
+iOS-style toggle; accordion with `<details>`; tab panels with `:target` or radio inputs.
 
 </details>
 
@@ -4687,7 +4492,10 @@ p.error { color: green; }
 
 ### Answer
 
-**Definition:** Comparison:.
+**Definition:**
+
+Comparison:.
+
 **Purple** — selector `.alert.error` has specificity `(0, 2, 1)` (two classes + one type).
 
 | Selector | Specificity |
@@ -4719,14 +4527,18 @@ Build a full-viewport overlay with a centered dialog. No absolute positioning on
 
 ### Solution
 
-**Definition:** .dialog {
-  width: min(90vw, 400px);
+**Definition:**
+
+.dialog {
+
+width: min(90vw, 400px);
   padding: 1.5rem;
   border-radius: 12px;
   background: #fff;
 }
 ```.
-**Example:**
+
+**Examples:**
 
 ```css
 .overlay {
@@ -4737,7 +4549,7 @@ Build a full-viewport overlay with a centered dialog. No absolute positioning on
   background: rgb(0 0 0 / 50%);
 }
 
-**Grid alternative:** `display: grid; place-items: center;` on `.overlay`.
+**How it works:** `display: grid; place-items: center;` on `.overlay`.
 
 </details>
 
@@ -4760,13 +4572,17 @@ Cards should auto-fit: minimum 260px wide, grow to fill the row, 1.5rem gap.
 
 ### Solution
 
-**Definition:** .card {
-  padding: 1rem;
+**Definition:**
+
+.card {
+
+padding: 1rem;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
 }
 ```.
-**Example:**
+
+**Examples:**
 
 ```css
 .cards {
@@ -4802,12 +4618,16 @@ Classic page shell: header and footer full width; sidebar 240px; main fills rema
 
 ### Solution
 
-**Definition:** .header  { grid-area: header; }
+**Definition:**
+
+.header  { grid-area: header; }
+
 .sidebar { grid-area: sidebar; }
 .main    { grid-area: main; min-width: 0; }
 .footer  { grid-area: footer; }
 ```.
-**Example:**
+
+**Examples:**
 
 ```css
 .app {
@@ -4854,13 +4674,17 @@ Main content overflows horizontally instead of shrinking. Fix with CSS only.
 
 ### Solution
 
-**Definition:** .main p {
-  overflow: hidden;
+**Definition:**
+
+.main p {
+
+overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 ```.
-**Example:**
+
+**Examples:**
 
 ```css
 .main {
@@ -4900,13 +4724,22 @@ div.container div.box div.title {
 
 ### Solution
 
-**Definition:** .header {
-  background-color: #fff;
-}.
-**Example:**
+**Definition:**
 
-<details>
-  <summary>Code</summary>
+.header {
+
+background-color: #fff;
+}.
+
+**How it works:**
+
+1. Removed `#id` + `!important` — use class `.header`
+2. Replaced float layout with Grid
+3. Flattened `.container .box .title` → BEM `.card__title`
+4. Magic numbers → custom properties and `rem`
+5. Added `box-sizing: border-box` in global reset (see Fundamentals)
+
+**Examples:**
 
 ```css
 :root {
@@ -4932,16 +4765,6 @@ div.container div.box div.title {
 
 </details>
 
-**Changes:**
-
-1. Removed `#id` + `!important` — use class `.header`
-2. Replaced float layout with Grid
-3. Flattened `.container .box .title` → BEM `.card__title`
-4. Magic numbers → custom properties and `rem`
-5. Added `box-sizing: border-box` in global reset (see Fundamentals)
-
-</details>
-
 ---
 
 ### Task 7 — Dark theme with CSS custom properties
@@ -4953,18 +4776,21 @@ Implement light/dark theme toggle-ready tokens. Dark mode via `prefers-color-sch
 
 ### Solution
 
-**Definition:** @media (prefers-color-scheme: dark) {
-  :root {
+**Definition:**
+
+@media (prefers-color-scheme: dark) {
+
+:root {
     --bg: #111827;
     --text: #f9fafb;
     --border: #374151;
     --accent: #60a5fa;
   }
 }.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**How it works:** set `document.documentElement.dataset.theme = "dark"` and use `[data-theme="dark"] { --bg: ... }`.
+
+**Examples:**
 
 ```css
 :root {
@@ -4991,10 +4817,6 @@ body {
 
 </details>
 
-**JS toggle:** set `document.documentElement.dataset.theme = "dark"` and use `[data-theme="dark"] { --bg: ... }`.
-
-</details>
-
 ---
 
 ### Task 8 — Detect transition end in JavaScript
@@ -5010,8 +4832,11 @@ Fade out an element, then remove it from the DOM when the fade completes.
 
 ### Solution
 
-**Definition:** function dismissToast(el) {
-  const onEnd = (e) => {
+**Definition:**
+
+function dismissToast(el) {
+
+const onEnd = (e) => {
     if (e.target !== el || e.propertyName !== "opacity") return;
     el.removeEventListener("transitionend", onEnd);
     el.remove();
@@ -5019,10 +4844,8 @@ Fade out an element, then remove it from the DOM when the fade completes.
   el.addEventListener("transitionend", onEnd);
   el.classList.add("is-hiding");
 }.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .toast {
@@ -5039,8 +4862,6 @@ const toast = document.getElementById("toast");
 
 dismissToast(toast);
 ```
-
-</details>
 
 Check `propertyName` and `e.target` to ignore bubbled events from children.
 
@@ -5065,15 +4886,19 @@ Top bar 48px fixed height. Header below it should stick when scrolling, staying 
 
 ### Solution
 
-**Definition:** .sticky-header {
-  position: sticky;
+**Definition:**
+
+.sticky-header {
+
+position: sticky;
   top: 48px; /* offset = topbar height */
   z-index: 10;
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
 }
 ```.
-**Example:**
+
+**Examples:**
 
 ```css
 .topbar {
@@ -5082,7 +4907,7 @@ Top bar 48px fixed height. Header below it should stick when scrolling, staying 
   color: #fff;
 }
 
-**Common failures:** `overflow: hidden` on `.page` parent, missing `top`, or `top: 0` causing overlap with topbar.
+**How it works:** `overflow: hidden` on `.page` parent, missing `top`, or `top: 0` causing overlap with topbar.
 
 </details>
 
@@ -5101,8 +4926,11 @@ Show tooltip text on hover/focus without JavaScript. Use `data-tip` attribute.
 
 ### Solution
 
-**Definition:** .tip::after {
-  content: attr(data-tip);
+**Definition:**
+
+.tip::after {
+
+content: attr(data-tip);
   position: absolute;
   bottom: calc(100% + 6px);
   left: 50%;
@@ -5117,10 +4945,8 @@ Show tooltip text on hover/focus without JavaScript. Use `data-tip` attribute.
   pointer-events: none;
   transition: opacity 0.15s ease;
 }.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .tip {
@@ -5132,8 +4958,6 @@ Show tooltip text on hover/focus without JavaScript. Use `data-tip` attribute.
   opacity: 1;
 }
 ```
-
-</details>
 
 Uses `attr()` pseudo-element content. Include `aria-label` for screen readers.
 
@@ -5160,7 +4984,10 @@ p { color: green; }
 
 ### Answer
 
-**Definition:** `:where(.a, .b, #x)` has **zero** specificity → `(0, 0, 0)`, loses to `p` at `(0, 0, 1)` for properties where both match... but here `p` is `(0,0,1)` and `:is` is `(1,0,0)`, so **blue wins**.
+**Definition:**
+
+`:where(.a, .b, #x)` has **zero** specificity → `(0, 0, 0)`, loses to `p` at `(0, 0, 1)` for properties where both match... but here `p` is `(0,0,1)` and `:is` is `(1,0,0)`, so **blue wins**.
+
 **Blue** — `:is(.a, .b, #x)` takes the specificity of its highest argument: `#x` → `(1, 0, 0)`.
 
 `:where()` is useful for reset styles that should not raise specificity.
@@ -5192,10 +5019,8 @@ A flex row has a fixed sidebar and a main area. Long title text overflows instea
 ### Solution
 
 **Definition:** Without `min-width: 0`, flex item won't shrink below content width.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .title {
@@ -5206,8 +5031,6 @@ A flex row has a fixed sidebar and a main area. Long title text overflows instea
   white-space: nowrap;
 }
 ```
-
-</details>
 
 </details>
 
@@ -5222,12 +5045,16 @@ Build a dashboard: header spans full width, 200px sidebar left, main fills cente
 
 ### Solution
 
-**Definition:** .header { grid-area: head; }
+**Definition:**
+
+.header { grid-area: head; }
+
 .sidebar { grid-area: nav; }
 .content { grid-area: main; min-width: 0; }
 .footer { grid-area: foot; }
 ```.
-**Example:**
+
+**Examples:**
 
 ```css
 .dashboard {
@@ -5264,15 +5091,16 @@ A `.card` component should stack image above text when narrow, but show side-by-
 
 ### Solution
 
-**Definition:** .card {
-  display: flex;
+**Definition:**
+
+.card {
+
+display: flex;
   flex-direction: column;
   gap: 1rem;
 }.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .card-wrap {
@@ -5292,8 +5120,6 @@ A `.card` component should stack image above text when narrow, but show side-by-
   }
 }
 ```
-
-</details>
 
 Resize `.slot` width to verify — component adapts to parent, not viewport.
 
@@ -5340,7 +5166,8 @@ Why does the tooltip not appear above the modal overlay?
 ### Answer
 
 **Definition:** `.modal` creates a **new stacking context** (`transform: translateZ(0)`). `.tooltip`'s `z-index: 9999` only competes **inside** `.modal` — it cannot paint above `.overlay`'s siblings outside that context.
-**Fixes:**
+
+**How it works:**
 
 1. Remove unnecessary `transform` on `.modal` if not needed
 2. Move tooltip to document root (portal)
@@ -5373,10 +5200,7 @@ Why does the tooltip not appear above the modal overlay?
 
 ### Custom scrollbar
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```css
 .scrollable::-webkit-scrollbar { width: 8px; }
@@ -5387,8 +5211,6 @@ Why does the tooltip not appear above the modal overlay?
 /* Firefox */
 .scrollable { scrollbar-width: thin; scrollbar-color: #ccc transparent; }
 ```
-
-</details>
 
 </details>
 

@@ -209,9 +209,13 @@ export function hrefForFile(filename: string): string | undefined {
   if (!topic) {
     return undefined;
   }
-  return `/${topic.track}/${topic.slug}`;
+  return topicHref(topic);
 }
 
 export function topicHref(topic: Topic): string {
   return `/${topic.track}/${topic.slug}`;
+}
+
+export function trackHref(track: TrackId): string {
+  return `/${track}`;
 }

@@ -33,27 +33,34 @@ Covers asynchronous JavaScript: event loop, timers, promises, `async/await`, and
 - [Practice](#practice)
 - [Interview Practice](#interview-practice)
 
-Each topic: **Definition** · **How it works** · **Cases** · **Pros/Cons** · **Examples**
+Each topic: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**.
 
 ### Event loop
 
 **Definition:** JavaScript is single-threaded; the event loop moves callbacks from task queues to the call stack when the stack is empty.
 
-**How it works:** The running script is a **task**. When it finishes, the engine runs a **microtask checkpoint** (drain the entire microtask queue, including microtasks those callbacks enqueue). Then it takes **one** task (`setTimeout`, I/O, UI event). Browsers may render between tasks. Infinite microtasks never return to the browser — paint and timers starve.
+**How it works:**
 
-| Pros | Cons |
+The running script is a **task**. When it finishes, the engine runs a **microtask checkpoint** (drain the entire microtask queue, including microtasks those callbacks enqueue). Then it takes **one** task (`setTimeout`, I/O, UI event). Browsers may render between tasks. Infinite microtasks never return to the browser — paint and timers starve.
+
+current task (sync) → all microtasks → next task (macrotask) → (possibly render) → repeat.
+
+**When to use:**
+
+Debug `setTimeout(0)` vs `Promise.resolve().then()` ordering, UI freezes, promise chains.
+
+#### Common pitfalls
+
+Treating `setTimeout(fn, 0)` as “next line.” Recursive `queueMicrotask` / `.then` loops. Confusing Node `process.nextTick` (before promise microtasks) with the browser.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | No race conditions on shared memory | CPU-bound code blocks UI |
 | Predictable ordering with microtasks | Easy to starve rendering with infinite microtasks |
 
-**Cases:** Debug `setTimeout(0)` vs `Promise.resolve().then()` ordering, UI freezes, promise chains.
-
-**Execution order:** current task (sync) → all microtasks → next task (macrotask) → (possibly render) → repeat.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 console.log('1');
@@ -63,33 +70,32 @@ console.log('4');
 // 1, 4, 3, 2
 ```
 
-</details>
+**Thoughts:**
 
-**Common pitfalls:** Treating `setTimeout(fn, 0)` as “next line.” Recursive `queueMicrotask` / `.then` loops. Confusing Node `process.nextTick` (before promise microtasks) with the browser.
+After every task, empty the microtask queue before the next timer or paint.
 
-**Key idea:** After every task, empty the microtask queue before the next timer or paint.
+`MutationObserver` and promise callbacks are microtasks. Node `process.nextTick` runs before other microtasks.
 
-**Notes:** `MutationObserver` and promise callbacks are microtasks. Node `process.nextTick` runs before other microtasks.
-
-**Source:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop) · [MDN microtask guide](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide)
+**Sources:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop) · [MDN microtask guide](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide)
 
 ### Promises
 
 **Definition:** A Promise represents a future value; states: `pending` → `fulfilled` or `rejected`. `.then` handlers run as microtasks.
 
-| Pros | Cons |
+**When to use:**
+
+Parallel requests (`Promise.all`), library APIs, wrapping callbacks.
+
+Sequential logic — prefer `async/await` for readability.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Composable chains, clear error propagation | Verbose vs `async/await` |
 | `Promise.all` for parallelism | `.then` throw skips to outer `.catch` only |
 
-**When to use:** Parallel requests (`Promise.all`), library APIs, wrapping callbacks.
-
-**When NOT to use:** Sequential logic — prefer `async/await` for readability.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function delay(ms) {
@@ -100,29 +106,28 @@ await delay(100);
 const [a, b] = await Promise.all([fetch('/a'), fetch('/b')]);
 ```
 
-</details>
+**Thoughts:** Errors thrown inside `.then` reject the chain. Always return promises from `.then` or use `async` handlers.
 
-**Notes:** Errors thrown inside `.then` reject the chain. Always return promises from `.then` or use `async` handlers.
-
-**Source:** [javascript.info/promise-basics](https://learn.javascript.ru/promise-basics)
+**Sources:** [javascript.info/promise-basics](https://learn.javascript.ru/promise-basics)
 
 ### async/await
 
 **Definition:** `async` functions always return a Promise; `await` pauses within the function until a Promise settles.
 
-| Pros | Cons |
+**When to use:**
+
+Default for async logic in modern codebases.
+
+Independent parallel requests — use `Promise.all([a(), b()])`, not sequential `await`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Readable sequential async code | Easy to forget `await` |
 | `try/catch` for errors | Sequential awaits are slower than `Promise.all` |
 
-**When to use:** Default for async logic in modern codebases.
-
-**When NOT to use:** Independent parallel requests — use `Promise.all([a(), b()])`, not sequential `await`.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 async function fetchUserPosts(userId) {
@@ -139,11 +144,11 @@ async function fetchUserPosts(userId) {
 }
 ```
 
-</details>
+**Thoughts:** Stale closures in React `useEffect` — see [4_react.md](./4_react.md).
 
-**Notes:** Stale closures in React `useEffect` — see [4_react.md](./4_react.md).
+**Sources:**
 
-**Source:** [javascript.info/async-await](https://learn.javascript.ru/async-await)
+[javascript.info/async-await](https://learn.javascript.ru/async-await)
 
 ---
 
@@ -172,13 +177,7 @@ async function fetchUserPosts(userId) {
 | **Web APIs / Node APIs** | Timers, I/O, DOM events, `fetch` |
 | **Task queues** | Hold callbacks ready to run |
 
-| Pros | Cons |
-|------|------|
-| Simple concurrency model — no locks on JS heap | CPU-heavy sync code blocks everything |
-| Microtasks give predictable promise ordering | Infinite microtasks starve macrotasks and rendering |
-| Works identically in browser and Node (mostly) | Node has extra `process.nextTick` priority |
-
-**Cases:**
+**When to use:**
 
 | Situation | What to check |
 |-----------|---------------|
@@ -187,10 +186,21 @@ async function fetchUserPosts(userId) {
 | Promise vs timer order | Microtasks always before next macrotask |
 | Debugging async flow | Use [JSV9000](https://www.jsv9000.app/) or [Loupe](http://latentflip.com/loupe/) |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Assuming `setTimeout(fn, 0)` runs right after the current line — microtasks run first.
+- Scheduling unbounded `Promise.resolve().then(...)` chains — blocks rendering and timers.
+- Confusing browser event loop with Node phases — see [8_nodejs.md](./8_nodejs.md).
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Simple concurrency model — no locks on JS heap | CPU-heavy sync code blocks everything |
+| Microtasks give predictable promise ordering | Infinite microtasks starve macrotasks and rendering |
+| Works identically in browser and Node (mostly) | Node has extra `process.nextTick` priority |
+
+**Examples:**
 
 ```js
 console.log('sync');
@@ -199,15 +209,7 @@ Promise.resolve().then(() => console.log('microtask'));
 // sync → microtask → macrotask
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Assuming `setTimeout(fn, 0)` runs right after the current line — microtasks run first.
-- Scheduling unbounded `Promise.resolve().then(...)` chains — blocks rendering and timers.
-- Confusing browser event loop with Node phases — see [8_nodejs.md](./8_nodejs.md).
-
-**Source:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop) · [JSV9000 visualizer](https://www.jsv9000.app/) · [Loupe](http://latentflip.com/loupe/)
+**Sources:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop) · [JSV9000 visualizer](https://www.jsv9000.app/) · [Loupe](http://latentflip.com/loupe/)
 
 </details>
 
@@ -232,13 +234,7 @@ Promise.resolve().then(() => console.log('microtask'));
 | **Execution** | Run function body; nested calls push onto stack |
 | **Teardown** | Pop context when function returns |
 
-| Pros | Cons |
-|------|------|
-| Simple mental model for sync flow | Deep recursion can overflow |
-| Stack traces map directly to call order | No parallel JS execution on one thread |
-| Fast push/pop for function calls | Async callbacks run later — not on the same stack frame |
-
-**Cases:**
+**When to use:**
 
 | Situation | Implication |
 |-----------|---------------|
@@ -247,10 +243,20 @@ Promise.resolve().then(() => console.log('microtask'));
 | `async` functions | `await` suspends function but does not block the stack — continuation runs as microtask |
 | Event handlers | Each invocation gets a fresh stack frame |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Expecting `async`/`await` to block the thread — only that function pauses; other code keeps running.
+- Infinite recursion without tail-call optimization in JS (not guaranteed) — stack overflow.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Simple mental model for sync flow | Deep recursion can overflow |
+| Stack traces map directly to call order | No parallel JS execution on one thread |
+| Fast push/pop for function calls | Async callbacks run later — not on the same stack frame |
+
+**Examples:**
 
 ```js
 function greet(name) {
@@ -266,14 +272,7 @@ main();
 // Stack: main → greet('Alice') → pop → greet('Bob') → pop → pop
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Expecting `async`/`await` to block the thread — only that function pauses; other code keeps running.
-- Infinite recursion without tail-call optimization in JS (not guaranteed) — stack overflow.
-
-**Source:** [javascript.info/call-stack](https://learn.javascript.ru/call-stack)
+**Sources:** [javascript.info/call-stack](https://learn.javascript.ru/call-stack)
 
 </details>
 
@@ -297,13 +296,7 @@ main();
 | **Microtask** | `Promise.then/catch/finally`, `queueMicrotask`, `MutationObserver`, `async/await` continuations | Higher — drain all before next macrotask |
 | **Macrotask** | `setTimeout`, `setInterval`, I/O, UI events, `message` event | Lower — one per loop iteration |
 
-| Pros | Cons |
-|------|------|
-| Microtasks batch promise reactions efficiently | Long microtask chains block timers and UI |
-| Macrotasks yield to rendering (browser) | Harder to reason about mixed timer/promise code |
-| Clear priority: promises before `setTimeout` | Node `nextTick` can starve I/O if abused |
-
-**Cases:**
+**When to use:**
 
 | Use microtasks | Use macrotasks |
 |----------------|----------------|
@@ -311,10 +304,21 @@ main();
 | DOM observation (`MutationObserver`) | Debounced UI updates (often `setTimeout`) |
 | Breaking up sync work without blocking paint | Animation frames (`requestAnimationFrame` — separate queue) |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- `requestAnimationFrame` is **not** a microtask — runs before paint, separate from both queues.
+- Recursive `queueMicrotask` or promise chains — can freeze the page.
+- Assuming `setInterval` fires exactly on interval — delayed if main thread is busy.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Microtasks batch promise reactions efficiently | Long microtask chains block timers and UI |
+| Macrotasks yield to rendering (browser) | Harder to reason about mixed timer/promise code |
+| Clear priority: promises before `setTimeout` | Node `nextTick` can starve I/O if abused |
+
+**Examples:**
 
 ```js
 Promise.resolve().then(() => console.log('micro 1'));
@@ -323,15 +327,7 @@ setTimeout(() => console.log('macro'), 0);
 // micro 1, micro 2, macro
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- `requestAnimationFrame` is **not** a microtask — runs before paint, separate from both queues.
-- Recursive `queueMicrotask` or promise chains — can freeze the page.
-- Assuming `setInterval` fires exactly on interval — delayed if main thread is busy.
-
-**Source:** [MDN queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask) · [MDN MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
+**Sources:** [MDN queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask) · [MDN MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
 
 </details>
 
@@ -350,20 +346,12 @@ setTimeout(() => console.log('macro'), 0);
 - Browser: after macrotask, may run **render steps** (style, layout, paint) if enough time passed (~16ms for 60fps).
 - Loop repeats until all queues are empty and no new work arrives.
 
-**Rules:**
-
 - Sync code always runs first.
 - All pending microtasks run before the next macrotask.
 - A microtask that schedules another microtask — the new one also runs in the same turn.
 - Browser may have separate render queues between macrotasks.
 
-| Pros | Cons |
-|------|------|
-| Deterministic ordering for interview puzzles | Real apps mix many sources — hard to trace |
-| Microtasks keep promise chains atomic per turn | Render can be delayed by microtask storms |
-| One macrotask per turn allows paint opportunities | Order differs slightly in Node vs browser |
-
-**Cases:**
+**When to use:**
 
 | Situation | Expected behavior |
 |-----------|-------------------|
@@ -372,10 +360,20 @@ setTimeout(() => console.log('macro'), 0);
 | `Promise.then` inside `setTimeout` | Macro runs first, then its microtasks |
 | Performance tuning | Keep microtask queues short |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Forgetting that `setTimeout` inside a microtask still schedules a **future** macrotask (4 runs after 2 and 6).
+- `new Promise(executor)` runs the executor **synchronously** — only `.then` is async.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Deterministic ordering for interview puzzles | Real apps mix many sources — hard to trace |
+| Microtasks keep promise chains atomic per turn | Render can be delayed by microtask storms |
+| One macrotask per turn allows paint opportunities | Order differs slightly in Node vs browser |
+
+**Examples:**
 
 ```js
 console.log(1);
@@ -388,14 +386,7 @@ console.log(7);
 // 1, 7, 3, 5, 2, 6, 4
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Forgetting that `setTimeout` inside a microtask still schedules a **future** macrotask (4 runs after 2 and 6).
-- `new Promise(executor)` runs the executor **synchronously** — only `.then` is async.
-
-**Source:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop)
+**Sources:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop)
 
 </details>
 
@@ -423,13 +414,7 @@ console.log(7);
 | **Examples** | `console.log`, arithmetic | `setTimeout`, `fetch`, `fs.readFile` |
 | **Ordering** | Strict top-to-bottom | Completion order depends on queues |
 
-| Pros | Cons |
-|------|------|
-| Sync: simple reasoning, immediate results | Sync I/O blocks UI and server throughput |
-| Async: responsive UI, concurrent I/O | Harder debugging, callback/promise complexity |
-| Mix both in same app | Easy to accidentally block with sync work |
-
-**Cases:**
+**When to use:**
 
 | Use sync | Use async |
 |----------|-----------|
@@ -437,10 +422,20 @@ console.log(7);
 | Short DOM reads in event handler | Long operations, multi-step I/O |
 | Validation before async call | Anything that should not freeze the UI |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Treating `fetch` as sync — it returns a Promise immediately; body is async.
+- `fs.readFileSync` in Node on main thread — blocks entire process.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Sync: simple reasoning, immediate results | Sync I/O blocks UI and server throughput |
+| Async: responsive UI, concurrent I/O | Harder debugging, callback/promise complexity |
+| Mix both in same app | Easy to accidentally block with sync work |
+
+**Examples:**
 
 ```js
 console.log('A');
@@ -449,14 +444,7 @@ console.log('C');
 // A, C, B
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Treating `fetch` as sync — it returns a Promise immediately; body is async.
-- `fs.readFileSync` in Node on main thread — blocks entire process.
-
-**Source:** [javascript.info/intro](https://learn.javascript.ru/intro)
+**Sources:** [javascript.info/intro](https://learn.javascript.ru/intro)
 
 </details>
 
@@ -475,14 +463,7 @@ console.log('C');
 - Error-first convention in Node: `(err, data) => { if (err) ... }`.
 - No built-in composition — manual wiring for sequential and parallel flows.
 
-| Pros | Cons |
-|------|------|
-| Simple, universal | Callback hell with nested logic |
-| No extra types | Hard to compose and handle errors |
-| Works in all environments | Inversion of control — caller loses flow |
-| Fine for one-shot events | Parallel + error handling gets verbose |
-
-**Cases:**
+**When to use:**
 
 | Use callbacks | Prefer promises/`async` |
 |---------------|-------------------------|
@@ -491,10 +472,22 @@ console.log('C');
 | Simple `setTimeout` delays | Parallel fetches with error aggregation |
 | Libraries that expose callback API | Need `try/catch` style errors |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Forgetting to handle errors — silent failures.
+- Callback called twice — guard with a flag or promisify.
+- `forEach` with async callbacks — does not await; use `for...of` or `Promise.all`.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Simple, universal | Callback hell with nested logic |
+| No extra types | Hard to compose and handle errors |
+| Works in all environments | Inversion of control — caller loses flow |
+| Fine for one-shot events | Parallel + error handling gets verbose |
+
+**Examples:**
 
 ```js
 function loadData(url, onSuccess, onError) {
@@ -511,15 +504,7 @@ fs.readFile('file.txt', (err, data) => {
 });
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Forgetting to handle errors — silent failures.
-- Callback called twice — guard with a flag or promisify.
-- `forEach` with async callbacks — does not await; use `for...of` or `Promise.all`.
-
-**Source:** [javascript.info/callbacks](https://learn.javascript.ru/callbacks)
+**Sources:** [javascript.info/callbacks](https://learn.javascript.ru/callbacks)
 
 </details>
 
@@ -538,8 +523,6 @@ fs.readFile('file.txt', (err, data) => {
 - In React, side effects belong in `useEffect` or event handlers, not render.
 - Tests mock side effects (fetch, timers) to keep units isolated. Jest: stub `global.fetch` to a `{ json }` Response — [Jest first tests](./7_special.md#jest--first-tests-node-vs-jsdom). Stub vs mock vs spy: [Test doubles](./7_special.md#test-doubles-stubs-mocks-spies).
 
-**Common async side effects:**
-
 | Operation | Example |
 |-----------|---------|
 | API call | `fetch('/api')` |
@@ -547,13 +530,7 @@ fs.readFile('file.txt', (err, data) => {
 | Timer | `Date.now()`, `setTimeout` |
 | Logging | `console.log` |
 
-| Pros | Cons |
-|------|------|
-| Side effects are how apps do real work | Harder to test and reason about |
-| Async effects keep UI responsive | Race conditions if order not managed |
-| Clear separation in well-structured code | Easy to scatter effects across codebase |
-
-**Cases:**
+**When to use:**
 
 | Situation | Approach |
 |-----------|----------|
@@ -562,10 +539,21 @@ fs.readFile('file.txt', (err, data) => {
 | React data loading | `useEffect` + cleanup (`AbortController`) |
 | Redux/reducers | Keep reducers pure — effects in thunks/sagas |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Fire-and-forget `fetch` without error handling.
+- Stale closure reading old state after async gap — common in React `useEffect`.
+- Multiple concurrent effects updating same DOM — race to last write wins.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Side effects are how apps do real work | Harder to test and reason about |
+| Async effects keep UI responsive | Race conditions if order not managed |
+| Clear separation in well-structured code | Easy to scatter effects across codebase |
+
+**Examples:**
 
 ```js
 async function refreshUI() {
@@ -574,15 +562,7 @@ async function refreshUI() {
 }
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Fire-and-forget `fetch` without error handling.
-- Stale closure reading old state after async gap — common in React `useEffect`.
-- Multiple concurrent effects updating same DOM — race to last write wins.
-
-**Source:** [javascript.info/intro](https://learn.javascript.ru/intro)
+**Sources:** [javascript.info/intro](https://learn.javascript.ru/intro)
 
 </details>
 
@@ -600,14 +580,7 @@ async function refreshUI() {
 - **Today:** payload is usually **JSON**; the client renders. `fetch` returns a Promise; XHR uses `onload` / `onerror`.
 - CORS, cookies, and auth headers apply — see [Web API — CORS](./6_web_api.md#cors).
 
-| Pros | Cons |
-|------|------|
-| Responsive SPAs | Error handling and caching complexity |
-| Partial updates | CORS and auth concerns |
-| Better UX than full page reloads | SEO/hydration concerns without SSR |
-| Standard `fetch` API in modern browsers | XHR legacy APIs still in old code |
-
-**Cases:**
+**When to use:**
 
 | Use AJAX/`fetch` | Consider alternatives |
 |------------------|----------------------|
@@ -616,10 +589,22 @@ async function refreshUI() {
 | Search autocomplete | Server-Sent Events for one-way push |
 | Dashboard polling | WebSocket or SSE for real-time |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Forgetting `res.ok` check — `fetch` does not reject on 404/500.
+- No timeout by default — wrap with `AbortController`.
+- Parsing JSON before checking status.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Responsive SPAs | Error handling and caching complexity |
+| Partial updates | CORS and auth concerns |
+| Better UX than full page reloads | SEO/hydration concerns without SSR |
+| Standard `fetch` API in modern browsers | XHR legacy APIs still in old code |
+
+**Examples:**
 
 ```js
 const res = await fetch('/api/items');
@@ -627,15 +612,7 @@ if (!res.ok) throw new Error(`HTTP ${res.status}`);
 const items = await res.json();
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Forgetting `res.ok` check — `fetch` does not reject on 404/500.
-- No timeout by default — wrap with `AbortController`.
-- Parsing JSON before checking status.
-
-**Source:** [MDN AJAX](https://developer.mozilla.org/en-US/docs/Glossary/AJAX) · [MDN Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) · history: [6_web_api.md — Evolution](./6_web_api.md#evolution-of-web-apps)
+**Sources:** [MDN AJAX](https://developer.mozilla.org/en-US/docs/Glossary/AJAX) · [MDN Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) · history: [6_web_api.md — Evolution](./6_web_api.md#evolution-of-web-apps)
 
 </details>
 
@@ -654,13 +631,7 @@ const items = await res.json();
 - All three compile down to the same event-loop queues — syntax sugar, not new concurrency.
 - Promises and `async/await` interoperate — `await` works on any thenable.
 
-| Pattern | Pros | Cons |
-|---------|------|------|
-| Callback | Simple, universal | Callback hell, weak error handling |
-| Promise | Composable, chainable | Verbose for sequential logic |
-| async/await | Readable, `try/catch` | Easy sequential trap; needs `Promise.all` for parallelism |
-
-**Cases:**
+**When to use:**
 
 | Pattern | Best for |
 |---------|----------|
@@ -668,10 +639,21 @@ const items = await res.json();
 | Promises | Parallel batches (`Promise.all`), library APIs |
 | async/await | Default for sequential application logic |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Mixing callbacks and promises without promisifying — double error paths.
+- `async` function without `await` still returns Promise — easy to forget `await` on call site.
+- Sequential `await` in loop when `Promise.all` would work.
+
+**Pluses and minuses:**
+
+| Pattern | + | − |
+|---------|------|------|
+| Callback | Simple, universal | Callback hell, weak error handling |
+| Promise | Composable, chainable | Verbose for sequential logic |
+| async/await | Readable, `try/catch` | Easy sequential trap; needs `Promise.all` for parallelism |
+
+**Examples:**
 
 ```js
 // Promise chain
@@ -690,15 +672,7 @@ try {
 }
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Mixing callbacks and promises without promisifying — double error paths.
-- `async` function without `await` still returns Promise — easy to forget `await` on call site.
-- Sequential `await` in loop when `Promise.all` would work.
-
-**Source:** [javascript.info/async](https://learn.javascript.ru/async)
+**Sources:** [javascript.info/async](https://learn.javascript.ru/async)
 
 </details>
 
@@ -728,14 +702,7 @@ try {
 | `.catch(onRejected)` | Handle rejection |
 | `.finally(onFinally)` | Run cleanup regardless of outcome |
 
-| Pros | Cons |
-|------|------|
-| Composable chains | Verbose vs `async/await` |
-| Clear settled state machine | Executor errors need outer `try/catch` or `.catch` on returned promise |
-| `Promise.all` for parallelism | Forgetting `return` in `.then` breaks chain |
-| Universal interop (`thenable`) | `.then` second arg rarely used — prefer `.catch` |
-
-**Cases:**
+**When to use:**
 
 | Use promises | Use `async/await` instead |
 |--------------|---------------------------|
@@ -744,10 +711,22 @@ try {
 | Parallel `Promise.all` batches | Readable control flow |
 | When you need `.finally` cleanup | Loops with conditionals |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Not returning promise from `.then` — next `.then` gets `undefined`.
+- Using second arg of `.then` instead of `.catch` — misses throws in fulfillment handler.
+- `new Promise` anti-pattern when value already exists — use `Promise.resolve(x)`.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Composable chains | Verbose vs `async/await` |
+| Clear settled state machine | Executor errors need outer `try/catch` or `.catch` on returned promise |
+| `Promise.all` for parallelism | Forgetting `return` in `.then` breaks chain |
+| Universal interop (`thenable`) | `.then` second arg rarely used — prefer `.catch` |
+
+**Examples:**
 
 ```js
 const promise = new Promise((resolve, reject) => {
@@ -760,15 +739,7 @@ promise
   .finally(() => console.log('done'));
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Not returning promise from `.then` — next `.then` gets `undefined`.
-- Using second arg of `.then` instead of `.catch` — misses throws in fulfillment handler.
-- `new Promise` anti-pattern when value already exists — use `Promise.resolve(x)`.
-
-**Source:** [MDN Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) · [javascript.info/promise-basics](https://learn.javascript.ru/promise-basics)
+**Sources:** [MDN Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) · [javascript.info/promise-basics](https://learn.javascript.ru/promise-basics)
 
 </details>
 
@@ -794,13 +765,7 @@ promise
 | `fulfilled` | Completed successfully |
 | `rejected` | Failed with a reason |
 
-| Pros | Cons |
-|------|------|
-| Immutable settled value — safe to pass around | Cannot cancel native Promise (use `AbortSignal`) |
-| Chain encodes pipeline clearly | Long chains hard to debug without labels |
-| Errors propagate to nearest `.catch` | Swallowed errors if `.catch` missing at end |
-
-**Cases:**
+**When to use:**
 
 | Situation | Pattern |
 |-----------|---------|
@@ -809,10 +774,21 @@ promise
 | Recover from error | `.catch(() => fallback)` then continue chain |
 | Stop chain on error | Let rejection propagate — no recovery `.catch` |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Throwing in `.then` without `.catch` — unhandled rejection.
+- `async` handler in `.then` returns Promise — must return it explicitly if nested.
+- Assuming `.then` runs immediately — always microtask after current sync code.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Immutable settled value — safe to pass around | Cannot cancel native Promise (use `AbortSignal`) |
+| Chain encodes pipeline clearly | Long chains hard to debug without labels |
+| Errors propagate to nearest `.catch` | Swallowed errors if `.catch` missing at end |
+
+**Examples:**
 
 ```js
 Promise.resolve(1)
@@ -823,15 +799,7 @@ Promise.resolve(1)
 // 42
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Throwing in `.then` without `.catch` — unhandled rejection.
-- `async` handler in `.then` returns Promise — must return it explicitly if nested.
-- Assuming `.then` runs immediately — always microtask after current sync code.
-
-**Source:** [javascript.info/promise-chaining](https://learn.javascript.ru/promise-chaining)
+**Sources:** [javascript.info/promise-chaining](https://learn.javascript.ru/promise-chaining)
 
 </details>
 
@@ -858,14 +826,7 @@ Promise.resolve(1)
 | `Promise.allSettled` | all settle | never |
 | `Promise.any` | first fulfill | all reject |
 
-| Pros | Cons |
-|------|------|
-| `all` — fast fail, ordered results | One failure loses all results |
-| `allSettled` — inspect every outcome | More verbose result parsing |
-| `race` — timeouts, first responder | First reject wins — not always desired |
-| `any` — redundant mirrors/CDNs | All-fail case needs `AggregateError` handling |
-
-**Cases:**
+**When to use:**
 
 | Method | Use when |
 |--------|----------|
@@ -874,10 +835,22 @@ Promise.resolve(1)
 | `Promise.race` | Timeout wrapper, fastest CDN wins |
 | `Promise.any` | First successful mirror; fallback pool |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- `Promise.all` with sequential `await` inside loop — use `map` + `all` instead.
+- `race` for timeout — losing request still runs; cancel with `AbortController`.
+- `allSettled` result order matches input order, not completion order.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| `all` — fast fail, ordered results | One failure loses all results |
+| `allSettled` — inspect every outcome | More verbose result parsing |
+| `race` — timeouts, first responder | First reject wins — not always desired |
+| `any` — redundant mirrors/CDNs | All-fail case needs `AggregateError` handling |
+
+**Examples:**
 
 ```js
 var p1 = new Promise(resolve => setTimeout(() => resolve('one'), 500));
@@ -892,15 +865,7 @@ const timeout = (ms) => new Promise((_, reject) =>
 await Promise.race([fetch('/api'), timeout(5000)]);
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- `Promise.all` with sequential `await` inside loop — use `map` + `all` instead.
-- `race` for timeout — losing request still runs; cancel with `AbortController`.
-- `allSettled` result order matches input order, not completion order.
-
-**Source:** [javascript.info/promise-api](https://learn.javascript.ru/promise-api)
+**Sources:** [javascript.info/promise-api](https://learn.javascript.ru/promise-api)
 
 </details>
 
@@ -919,13 +884,7 @@ await Promise.race([fetch('/api'), timeout(5000)]);
 - Loses multi-callback semantics (e.g. `progress` callbacks) unless extended.
 - Result is composable with `await` and `Promise.all`.
 
-| Pros | Cons |
-|------|------|
-| Unified async style | Loses multi-callback semantics |
-| Composable with `await` | Must handle error-first convention correctly |
-| One-time wrapper, reuse everywhere | Some APIs use success-only callbacks |
-
-**Cases:**
+**When to use:**
 
 | Situation | Approach |
 |-----------|----------|
@@ -934,10 +893,21 @@ await Promise.race([fetch('/api'), timeout(5000)]);
 | Library with callback + promise versions | Use promise version when available |
 | Custom event completion | `new Promise` + `once` listener |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Promisifying function that calls callback multiple times — only first settle counts.
+- Wrong callback signature (success-only vs error-first).
+- Not binding `this` for methods — use `promisify(fs.readFile.bind(fs))` or `fs.promises`.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Unified async style | Loses multi-callback semantics |
+| Composable with `await` | Must handle error-first convention correctly |
+| One-time wrapper, reuse everywhere | Some APIs use success-only callbacks |
+
+**Examples:**
 
 ```js
 function promisify(fn) {
@@ -956,15 +926,7 @@ const readFile = promisify(fs.readFile);
 const data = await readFile('file.txt', 'utf8');
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Promisifying function that calls callback multiple times — only first settle counts.
-- Wrong callback signature (success-only vs error-first).
-- Not binding `this` for methods — use `promisify(fs.readFile.bind(fs))` or `fs.promises`.
-
-**Source:** [javascript.info/promisify](https://learn.javascript.ru/promisify)
+**Sources:** [javascript.info/promisify](https://learn.javascript.ru/promisify)
 
 </details>
 
@@ -989,13 +951,7 @@ const data = await readFile('file.txt', 'utf8');
 | `try/catch` + `await` | `async` functions |
 | `.finally()` | Cleanup in both success and failure paths |
 
-| Pros | Cons |
-|------|------|
-| `try/catch` reads like sync code | `try/catch` per `await` is verbose |
-| `.catch` at end of chain — one handler | Easy to forget handler on fire-and-forget promise |
-| `.finally` for shared cleanup | `.finally` does not suppress rejection |
-
-**Cases:**
+**When to use:**
 
 | Situation | Pattern |
 |-----------|---------|
@@ -1004,10 +960,21 @@ const data = await readFile('file.txt', 'utf8');
 | Always close resource | `try { ... } finally { cleanup() }` |
 | Re-throw after log | `catch (e) { log(e); throw e; }` |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- `try/catch` without `await` — `fetch()` returns pending promise; errors not caught.
+- Empty `catch` swallowing errors — hides bugs.
+- `return` in `catch` without rethrow — caller sees success with `undefined`.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| `try/catch` reads like sync code | `try/catch` per `await` is verbose |
+| `.catch` at end of chain — one handler | Easy to forget handler on fire-and-forget promise |
+| `.finally` for shared cleanup | `.finally` does not suppress rejection |
+
+**Examples:**
 
 ```js
 const processData = async () => {
@@ -1025,15 +992,7 @@ fetchData()
   .catch(error => console.error('Error:', error));
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- `try/catch` without `await` — `fetch()` returns pending promise; errors not caught.
-- Empty `catch` swallowing errors — hides bugs.
-- `return` in `catch` without rethrow — caller sees success with `undefined`.
-
-**Source:** [javascript.info/try-catch](https://learn.javascript.ru/try-catch)
+**Sources:** [javascript.info/try-catch](https://learn.javascript.ru/try-catch)
 
 </details>
 
@@ -1056,14 +1015,7 @@ fetchData()
 - `await` works on thenables, not only native Promises.
 - Top-level `await` allowed in ES modules — see [Top-level await](#top-level-await).
 
-| Pros | Cons |
-|------|------|
-| Readable sequential code | Forgetting `await` silently breaks logic |
-| Native `try/catch` | Sequential loops are slow without batching |
-| Familiar control flow (`if`, `for`) | Debugging async stacks can be harder |
-| Interops with promises | Cannot use `await` in non-`async` functions (except TLA in modules) |
-
-**Cases:**
+**When to use:**
 
 | Use async/await | Use raw promises |
 |-----------------|------------------|
@@ -1071,10 +1023,22 @@ fetchData()
 | Sequential steps with branches | `Promise.race` one-liners |
 | `try/catch` error handling | Callback-style interop |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Missing `await` — `const x = fetch()` is a Promise, not data.
+- `async` IIFE forgotten — top-level await only in modules.
+- `forEach` with `async` callback — does not await iterations.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Readable sequential code | Forgetting `await` silently breaks logic |
+| Native `try/catch` | Sequential loops are slow without batching |
+| Familiar control flow (`if`, `for`) | Debugging async stacks can be harder |
+| Interops with promises | Cannot use `await` in non-`async` functions (except TLA in modules) |
+
+**Examples:**
 
 ```js
 async function load() {
@@ -1086,15 +1050,7 @@ async function load() {
 load().then(data => console.log(data));
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Missing `await` — `const x = fetch()` is a Promise, not data.
-- `async` IIFE forgotten — top-level await only in modules.
-- `forEach` with `async` callback — does not await iterations.
-
-**Source:** [javascript.info/async-await](https://learn.javascript.ru/async-await)
+**Sources:** [javascript.info/async-await](https://learn.javascript.ru/async-await)
 
 </details>
 
@@ -1113,13 +1069,7 @@ load().then(data => console.log(data));
 - `for await` and sequential `await` in loop — one at a time by design.
 - Use `Promise.all` for independent I/O; sequential when each step needs previous result.
 
-| Pros | Cons |
-|------|------|
-| Sequential: simple dependencies | Sequential: sum of latencies |
-| Parallel: min latency for independent work | Parallel: all fail if `Promise.all` and one rejects |
-| `allSettled` for partial success | More memory — all requests in flight |
-
-**Cases:**
+**When to use:**
 
 | Pattern | When |
 |---------|------|
@@ -1128,10 +1078,21 @@ load().then(data => console.log(data));
 | `Promise.allSettled` | Independent, OK if some fail |
 | `map` + `all` | N parallel items with order preserved |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- `await` inside `for` loop — N × latency; batch with `Promise.all`.
+- Starting promises but awaiting one-by-one — still sequential if second await waits for first's completion only after first started late.
+- `Promise.all` when one failure should not cancel others — use `allSettled`.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Sequential: simple dependencies | Sequential: sum of latencies |
+| Parallel: min latency for independent work | Parallel: all fail if `Promise.all` and one rejects |
+| `allSettled` for partial success | More memory — all requests in flight |
+
+**Examples:**
 
 ```js
 // Sequential — B waits for A
@@ -1145,15 +1106,7 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 const results = await Promise.all(ids.map(id => fetchItem(id)));
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- `await` inside `for` loop — N × latency; batch with `Promise.all`.
-- Starting promises but awaiting one-by-one — still sequential if second await waits for first's completion only after first started late.
-- `Promise.all` when one failure should not cancel others — use `allSettled`.
-
-**Source:** [javascript.info/promise-api](https://learn.javascript.ru/promise-api)
+**Sources:** [javascript.info/promise-api](https://learn.javascript.ru/promise-api)
 
 </details>
 
@@ -1172,14 +1125,7 @@ const results = await Promise.all(ids.map(id => fetchItem(id)));
 - Works on streams (Node readable), paginated APIs, Web Streams `ReadableStream`.
 - Must be inside `async` function or top-level module (with TLA).
 
-| Pros | Cons |
-|------|------|
-| Stream large async data | Sequential — slower than parallel |
-| Clean syntax vs manual `.then` chains | Requires async function context |
-| Backpressure with streams (Node) | Error handling needs `try/catch` around loop |
-| Memory-efficient pagination | Not for unrelated parallel fetches |
-
-**Cases:**
+**When to use:**
 
 | Use `for await...of` | Use `Promise.all` |
 |----------------------|-------------------|
@@ -1187,10 +1133,22 @@ const results = await Promise.all(ids.map(id => fetchItem(id)));
 | Paginated API (page depends on cursor) | Fixed list of known URLs |
 | WebSocket message stream | Batch processing with concurrency limit |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Using `for await` on non-async iterable — runtime error.
+- Not breaking loop on error — entire stream fails unless handled per iteration.
+- Parallelizing with `for await` — wrong tool; use concurrent workers + queue.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Stream large async data | Sequential — slower than parallel |
+| Clean syntax vs manual `.then` chains | Requires async function context |
+| Backpressure with streams (Node) | Error handling needs `try/catch` around loop |
+| Memory-efficient pagination | Not for unrelated parallel fetches |
+
+**Examples:**
 
 ```js
 async function* generateIds() {
@@ -1207,15 +1165,7 @@ async function* generateIds() {
 })();
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Using `for await` on non-async iterable — runtime error.
-- Not breaking loop on error — entire stream fails unless handled per iteration.
-- Parallelizing with `for await` — wrong tool; use concurrent workers + queue.
-
-**Source:** [javascript.info/async-iterators-generators](https://learn.javascript.ru/async-iterators-generators)
+**Sources:** [javascript.info/async-iterators-generators](https://learn.javascript.ru/async-iterators-generators)
 
 </details>
 
@@ -1235,14 +1185,7 @@ async function* generateIds() {
 - `AbortSignal.timeout(ms)` — shorthand for timeout abort (modern browsers/Node).
 - Compose: one signal can abort multiple fetches; React cleanup calls `abort()` on unmount.
 
-| Pros | Cons |
-|------|------|
-| Cancels in-flight requests | Not all APIs support `AbortSignal` |
-| Composable with timeouts | Must wire signal into each call |
-| Prevents stale responses updating UI | Aborted fetch still rejects — handle `AbortError` |
-| Standard across fetch ecosystem | Older libraries need manual cancellation |
-
-**Cases:**
+**When to use:**
 
 | Situation | Pattern |
 |-----------|---------|
@@ -1251,10 +1194,22 @@ async function* generateIds() {
 | Request timeout | `AbortSignal.timeout(5000)` or manual timer |
 | Race winner | Abort losers after `Promise.race` |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Treating `AbortError` as real failure — often expected on navigation.
+- Not aborting on component unmount — setState on unmounted component warning.
+- Single-use controller — create new one per request.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Cancels in-flight requests | Not all APIs support `AbortSignal` |
+| Composable with timeouts | Must wire signal into each call |
+| Prevents stale responses updating UI | Aborted fetch still rejects — handle `AbortError` |
+| Standard across fetch ecosystem | Older libraries need manual cancellation |
+
+**Examples:**
 
 ```js
 const controller = new AbortController();
@@ -1270,17 +1225,9 @@ try {
 }
 ```
 
-</details>
+**Thoughts:** Aborting stale search `fetch` reduces main-thread work and races — helps **INP**. [6_web_api.md — INP](./6_web_api.md#inp-interaction-to-next-paint).
 
-**Common pitfalls:**
-
-- Treating `AbortError` as real failure — often expected on navigation.
-- Not aborting on component unmount — setState on unmounted component warning.
-- Single-use controller — create new one per request.
-
-**Notes:** Aborting stale search `fetch` reduces main-thread work and races — helps **INP**. [6_web_api.md — INP](./6_web_api.md#inp-interaction-to-next-paint).
-
-**Source:** [javascript.info/fetch-abort](https://learn.javascript.ru/fetch-abort) — full Fetch details in [6_web_api.md](./6_web_api.md)
+**Sources:** [javascript.info/fetch-abort](https://learn.javascript.ru/fetch-abort) — full Fetch details in [6_web_api.md](./6_web_api.md)
 
 </details>
 
@@ -1310,14 +1257,7 @@ try {
 | `clearTimeout(id)` | Cancel a `setTimeout` |
 | `clearInterval(id)` | Cancel a `setInterval` |
 
-| Pros | Cons |
-|------|------|
-| Simple deferral and scheduling | Not precise for animations (use `rAF`) |
-| Works everywhere | `setInterval` stacks up if handler is slow |
-| Good for debounce/throttle base | Minimum delay clamping surprises nested timers |
-| Macrotask — allows paint between | No cancellation of in-flight callback mid-run |
-
-**Cases:**
+**When to use:**
 
 | Use | Prefer instead |
 |-----|----------------|
@@ -1326,10 +1266,23 @@ try {
 | Polling | WebSocket/SSE for server push |
 | `sleep` in async code | `await new Promise(r => setTimeout(r, ms))` |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- `this` in timer callback — use arrow function or `.bind`.
+- Forgetting `clearInterval` on SPA route change — leaks and stale updates.
+- Assuming exact timing — event loop load adds jitter.
+- Leftover `setInterval` (polling, autosave) regularly steals the main thread — worse for **INP** than a one-shot `setTimeout`. [6_web_api.md — INP](./6_web_api.md#inp-interaction-to-next-paint).
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Simple deferral and scheduling | Not precise for animations (use `rAF`) |
+| Works everywhere | `setInterval` stacks up if handler is slow |
+| Good for debounce/throttle base | Minimum delay clamping surprises nested timers |
+| Macrotask — allows paint between | No cancellation of in-flight callback mid-run |
+
+**Examples:**
 
 ```js
 const id = setTimeout(() => console.log('later'), 1000);
@@ -1343,16 +1296,7 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 await sleep(1000);
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- `this` in timer callback — use arrow function or `.bind`.
-- Forgetting `clearInterval` on SPA route change — leaks and stale updates.
-- Assuming exact timing — event loop load adds jitter.
-- Leftover `setInterval` (polling, autosave) regularly steals the main thread — worse for **INP** than a one-shot `setTimeout`. [6_web_api.md — INP](./6_web_api.md#inp-interaction-to-next-paint).
-
-**Source:** [javascript.info/settimeout-setinterval](https://learn.javascript.ru/settimeout-setinterval)
+**Sources:** [javascript.info/settimeout-setinterval](https://learn.javascript.ru/settimeout-setinterval)
 
 </details>
 
@@ -1370,17 +1314,16 @@ await sleep(1000);
 - Without `timeout`, a busy page **may never** call you.
 - Not available in Node. Prefer `scheduler.yield()` / chunking work if you need wider support; rAF for visual frames.
 
-| Pros | Cons |
+**When to use:** Defer non-critical JS; contrast with rAF (must run before paint) and microtasks (run before the next macrotask **and** can delay paint if they never drain).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Low-priority work (analytics, prefetch) | Can starve without `timeout` |
 | Cooperates with rendering | Not a substitute for Web Workers on CPU-heavy jobs |
 
-**Cases:** Defer non-critical JS; contrast with rAF (must run before paint) and microtasks (run before the next macrotask **and** can delay paint if they never drain).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 requestIdleCallback((deadline) => {
@@ -1390,11 +1333,9 @@ requestIdleCallback((deadline) => {
 }, { timeout: 2000 });
 ```
 
-</details>
+**Thoughts:** *Idle work runs when the browser is not painting; a never-ending microtask queue never reaches idle or paint.*
 
-**Key idea:** *Idle work runs when the browser is not painting; a never-ending microtask queue never reaches idle or paint.*
-
-**Source:** [MDN — requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback) · [IdleDeadline](https://developer.mozilla.org/en-US/docs/Web/API/IdleDeadline)
+**Sources:** [MDN — requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback) · [IdleDeadline](https://developer.mozilla.org/en-US/docs/Web/API/IdleDeadline)
 
 </details>
 
@@ -1405,9 +1346,9 @@ requestIdleCallback((deadline) => {
 
 **Definition:** Syntax, `stringify`/`parse`, and pitfalls: [JS Core — JSON](./3_js_core.md#json). Config comments → [YAML](./10_build.md#yaml).
 
-**How it works (async):** `await res.json()` parses the fetch body (same as `JSON.parse` on the text). Send with `JSON.stringify(body)` and `Content-Type: application/json`.
+**How it works:** `await res.json()` parses the fetch body (same as `JSON.parse` on the text). Send with `JSON.stringify(body)` and `Content-Type: application/json`.
 
-**Key idea:** *Fetch delivers JSON text; Core JSON APIs turn it into values.*
+**Thoughts:** *Fetch delivers JSON text; Core JSON APIs turn it into values.*
 
 </details>
 
@@ -1425,9 +1366,9 @@ requestIdleCallback((deadline) => {
 - DOM events, `requestAnimationFrame`, `requestIdleCallback` → [3_js_browser.md](./3_js_browser.md)
 - React async patterns, stale closures → [4_react.md](./4_react.md)
 
-**Cases:** Follow these links when async code touches networking, server runtime, UI timing, or framework lifecycle.
+**When to use:** Follow these links when async code touches networking, server runtime, UI timing, or framework lifecycle.
 
-**Source:** See linked docs above.
+**Sources:** See linked docs above.
 
 </details>
 
@@ -1456,14 +1397,7 @@ requestIdleCallback((deadline) => {
 | `Promise.then` | Both | Standard microtask |
 | `process.nextTick` | Node only | Above other microtasks |
 
-| Pros | Cons |
-|------|------|
-| Explicit microtask scheduling | Easy to starve macrotasks if recursive |
-| `nextTick` runs before promise handlers in Node | `nextTick` not available in browser |
-| Break up sync work without `setTimeout(0)` | Overuse blocks I/O and timers |
-| Predictable ordering within microtask tier | Differs between Node and browser |
-
-**Cases:**
+**When to use:**
 
 | Use | Avoid |
 |-----|-------|
@@ -1471,10 +1405,22 @@ requestIdleCallback((deadline) => {
 | Node: defer callback before I/O phase | `nextTick` recursion instead of `setImmediate` for heavy work |
 | Polyfill promise reaction timing | Replacing `Promise.then` for readability |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Infinite `process.nextTick` chain in Node — blocks I/O indefinitely.
+- Assuming `queueMicrotask` runs before `Promise.then` — same queue, order of scheduling matters.
+- Using `setTimeout(0)` when microtask is enough — adds unnecessary macrotask delay.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Explicit microtask scheduling | Easy to starve macrotasks if recursive |
+| `nextTick` runs before promise handlers in Node | `nextTick` not available in browser |
+| Break up sync work without `setTimeout(0)` | Overuse blocks I/O and timers |
+| Predictable ordering within microtask tier | Differs between Node and browser |
+
+**Examples:**
 
 ```js
 console.log('sync');
@@ -1491,15 +1437,7 @@ setTimeout(() => console.log('macrotask'), 0);
 // sync → nextTick (Node) → microtask → promise microtask → macrotask
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Infinite `process.nextTick` chain in Node — blocks I/O indefinitely.
-- Assuming `queueMicrotask` runs before `Promise.then` — same queue, order of scheduling matters.
-- Using `setTimeout(0)` when microtask is enough — adds unnecessary macrotask delay.
-
-**Source:** [MDN queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask) · [Node process.nextTick](https://nodejs.org/api/process.html#processnexttickcallback-args) · [8_nodejs.md](./8_nodejs.md)
+**Sources:** [MDN queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask) · [Node process.nextTick](https://nodejs.org/api/process.html#processnexttickcallback-args) · [8_nodejs.md](./8_nodejs.md)
 
 </details>
 
@@ -1530,13 +1468,7 @@ setTimeout(() => console.log('macrotask'), 0);
 | Node (modern) | Warning or process exit |
 | `async` main without catch | Unhandled rejection on returned promise |
 
-| Pros | Cons |
-|------|------|
-| Surfaces forgotten error paths | Can crash production if uncaught |
-| Global handlers for logging/monitoring | Easy to miss fire-and-forget promises |
-| Forces explicit error strategy | Async stack traces can be unclear |
-
-**Cases:**
+**When to use:**
 
 | Situation | Fix |
 |-----------|-----|
@@ -1545,10 +1477,21 @@ setTimeout(() => console.log('macrotask'), 0);
 | Express route handlers | Wrap in try/catch or error middleware |
 | Global monitoring | `unhandledrejection` listener → report to Sentry |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- `async` function return value ignored — rejection unhandled at call site.
+- `.then(fn)` without `.catch` — rejection in `fn` propagates but outer promise needs handler.
+- Swallowing in global handler without fixing root cause.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Surfaces forgotten error paths | Can crash production if uncaught |
+| Global handlers for logging/monitoring | Easy to miss fire-and-forget promises |
+| Forces explicit error strategy | Async stack traces can be unclear |
+
+**Examples:**
 
 ```js
 // Unhandled — logs error / may crash Node
@@ -1571,15 +1514,7 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- `async` function return value ignored — rejection unhandled at call site.
-- `.then(fn)` without `.catch` — rejection in `fn` propagates but outer promise needs handler.
-- Swallowing in global handler without fixing root cause.
-
-**Source:** [MDN unhandledrejection](https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event) · [Node unhandledRejection](https://nodejs.org/api/process.html#event-unhandledrejection)
+**Sources:** [MDN unhandledrejection](https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event) · [Node unhandledRejection](https://nodejs.org/api/process.html#event-unhandledrejection)
 
 </details>
 
@@ -1601,13 +1536,7 @@ window.addEventListener('unhandledrejection', (event) => {
 - Use for: loading config, WASM init, conditional imports.
 - Downside: serializes module load chain — can slow app startup.
 
-| Pros | Cons |
-|------|------|
-| No async IIFE wrapper | Blocks dependent module imports |
-| Clean config/bootstrap | Not in CJS without dynamic `import()` |
-| Natural for module init | Overuse hurts parallel loading |
-
-**Cases:**
+**When to use:**
 
 | Good use | Avoid |
 |----------|-------|
@@ -1615,10 +1544,21 @@ window.addEventListener('unhandledrejection', (event) => {
 | Dynamic `await import()` based on env | Replacing all lazy loading with TLA |
 | WASM `await init()` | CJS `require` contexts |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- TLA in deep dependency tree — unexpected startup delay.
+- Using in shared module imported by many — bottleneck.
+- Classic script or CJS — `SyntaxError`; use async IIFE or dynamic import.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| No async IIFE wrapper | Blocks dependent module imports |
+| Clean config/bootstrap | Not in CJS without dynamic `import()` |
+| Natural for module init | Overuse hurts parallel loading |
+
+**Examples:**
 
 ```js
 // config.mjs
@@ -1630,15 +1570,7 @@ import { config } from './config.mjs';
 console.log(config.apiUrl);
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- TLA in deep dependency tree — unexpected startup delay.
-- Using in shared module imported by many — bottleneck.
-- Classic script or CJS — `SyntaxError`; use async IIFE or dynamic import.
-
-**Source:** [MDN top-level await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await) · [javascript.info/modules](https://learn.javascript.ru/modules-intro)
+**Sources:** [MDN top-level await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await) · [javascript.info/modules](https://learn.javascript.ru/modules-intro)
 
 </details>
 
@@ -1660,13 +1592,7 @@ console.log(config.apiUrl);
 - `resolve`/`reject` callable multiple times — only first counts (standard promise rules).
 - Cleaner for deferred patterns, event-to-promise bridges, tests.
 
-| Pros | Cons |
-|------|------|
-| Avoids awkward executor pattern | ES2024 — check target environment support |
-| Clearer deferred/event APIs | Still need `.catch` for unhandled rejections |
-| Same semantics as `new Promise` | Polyfill needed for older runtimes |
-
-**Cases:**
+**When to use:**
 
 | Use | Example |
 |-----|---------|
@@ -1675,10 +1601,21 @@ console.log(config.apiUrl);
 | Test fixtures | Resolve promise from outside test body |
 | Queue with backpressure | Resolve when slot available |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+- Forgetting to call `resolve` or `reject` — promise hangs forever.
+- Calling both — first wins; second ignored.
+- No native support in older Node — use polyfill or manual pattern.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Avoids awkward executor pattern | ES2024 — check target environment support |
+| Clearer deferred/event APIs | Still need `.catch` for unhandled rejections |
+| Same semantics as `new Promise` | Polyfill needed for older runtimes |
+
+**Examples:**
 
 ```js
 const { promise, resolve, reject } = Promise.withResolvers();
@@ -1695,15 +1632,7 @@ function once(emitter, event) {
 }
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- Forgetting to call `resolve` or `reject` — promise hangs forever.
-- Calling both — first wins; second ignored.
-- No native support in older Node — use polyfill or manual pattern.
-
-**Source:** [MDN Promise.withResolvers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/withResolvers)
+**Sources:** [MDN Promise.withResolvers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/withResolvers)
 
 </details>
 
@@ -2065,12 +1994,9 @@ Node: `process.nextTick` runs before other microtasks.
 | Microtasks batch related async work | Long microtask queues delay UI |
 | One macro per turn allows paint | Node phases add complexity |
 
-**Cases:** Interview output questions; debugging "why did this run first?"; avoiding UI jank.
+**When to use:** Interview output questions; debugging "why did this run first?"; avoiding UI jank.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 console.log(1);
@@ -2080,16 +2006,14 @@ console.log(4);
 // 1, 4, 3, 2
 ```
 
-</details>
-
 **Common pitfalls:**
 
 - `new Promise(executor)` — executor is sync; only `.then` is microtask.
 - `setTimeout` inside microtask still waits for next macrotask turn.
 
-**Key idea:** *Sync → drain all microtasks → one macrotask → (browser may paint) → micros spawned by that macrotask → … Infinite micros starve paint and idle callbacks.*
+**Thoughts:** *Sync → drain all microtasks → one macrotask → (browser may paint) → micros spawned by that macrotask → … Infinite micros starve paint and idle callbacks.*
 
-**Source:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop)
+**Sources:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop)
 
 </details>
 
@@ -2122,13 +2046,13 @@ console.log('F');
 4. Drain micros: `C`.
 5. Next macro: `E`.
 
-**Cases:** Interview output puzzles. Comment each line: sync / micro / macro.
+**When to use:** Interview output puzzles. Comment each line: sync / micro / macro.
 
-**Key idea:** *After each macrotask, empty the microtask queue again before the next timer.*
+**Thoughts:** *After each macrotask, empty the microtask queue again before the next timer.*
 
 **See also:** [Explain the event loop order](#interview-practice)
 
-**Source:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop)
+**Sources:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop)
 
 </details>
 
@@ -2157,12 +2081,9 @@ console.log('F');
 | Callbacks universal for events | Callback hell for sequential steps |
 | Promises work with `await` | Promisifying loses multi-callback APIs |
 
-**Cases:** Events → callbacks; app logic → promises/`async`; legacy Node → promisify.
+**When to use:** Events → callbacks; app logic → promises/`async`; legacy Node → promisify.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Callback
@@ -2177,9 +2098,7 @@ readFilePromise('a.txt')
   .catch(console.error);
 ```
 
-</details>
-
-**Source:** [javascript.info/promise-basics](https://learn.javascript.ru/promise-basics) · [javascript.info/callbacks](https://learn.javascript.ru/callbacks)
+**Sources:** [javascript.info/promise-basics](https://learn.javascript.ru/promise-basics) · [javascript.info/callbacks](https://learn.javascript.ru/callbacks)
 
 </details>
 
@@ -2211,7 +2130,7 @@ readFilePromise('a.txt')
 | `race` — timeouts | Loser requests may still run |
 | `any` — redundant sources | Rare; `AggregateError` handling |
 
-**Cases:**
+**When to use:**
 
 | Method | Use when |
 |--------|----------|
@@ -2220,10 +2139,7 @@ readFilePromise('a.txt')
 | `race` | 5s timeout on `fetch` |
 | `any` | Try CDN mirrors until one succeeds |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const results = await Promise.allSettled([
@@ -2236,14 +2152,12 @@ results.forEach(r => {
 });
 ```
 
-</details>
-
 **Common pitfalls:**
 
 - `all` when partial success is OK — use `allSettled`.
 - `race` for timeout without `AbortController` — request continues in background.
 
-**Source:** [javascript.info/promise-api](https://learn.javascript.ru/promise-api)
+**Sources:** [javascript.info/promise-api](https://learn.javascript.ru/promise-api)
 
 </details>
 
@@ -2272,12 +2186,9 @@ results.forEach(r => {
 | Parallel: minimal wait | `all`: one failure fails batch |
 | `allSettled` for partial success | Harder to read than sync-looking code |
 
-**Cases:** Sequential when step 2 needs step 1 output; parallel for independent API calls.
+**When to use:** Sequential when step 2 needs step 1 output; parallel for independent API calls.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Sequential — B waits for A
@@ -2288,14 +2199,12 @@ const b = await fetchB();
 const [a, b] = await Promise.all([fetchA(), fetchB()]);
 ```
 
-</details>
-
 **Common pitfalls:**
 
 - Sequential `await` in `for` loop over 100 items — 100 round trips.
 - Forgetting that `fetchA()` without await still starts the request — good for parallel if you collect promises first.
 
-**Source:** [javascript.info/async-await](https://learn.javascript.ru/async-await)
+**Sources:** [javascript.info/async-await](https://learn.javascript.ru/async-await)
 
 </details>
 
@@ -2320,12 +2229,9 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 | Interops with `.then` chains | Stack traces cross async boundaries |
 | `try/catch` inside async fn | Returned promise needs its own `.catch` |
 
-**Cases:** Always treat call result as Promise unless you `await` immediately.
+**When to use:** Always treat call result as Promise unless you `await` immediately.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 async function getValue() {
@@ -2340,14 +2246,12 @@ async function fail() {
 fail().catch(console.error); // required or unhandled rejection
 ```
 
-</details>
-
 **Common pitfalls:**
 
 - `const x = asyncFn()` — `x` is Promise, not resolved value.
 - `async` arrow in `map` without `Promise.all` — concurrent but unhandled rejections.
 
-**Source:** [javascript.info/async-await](https://learn.javascript.ru/async-await)
+**Sources:** [javascript.info/async-await](https://learn.javascript.ru/async-await)
 
 </details>
 
@@ -2370,12 +2274,9 @@ fail().catch(console.error); // required or unhandled rejection
 | Surfaces missing error paths | Can crash Node in production |
 | Monitor with global listener | Fire-and-forget promises easy to miss |
 
-**Cases:** Every `fetch`, `async` route handler, and fire-and-forget task needs a handler.
+**When to use:** Every `fetch`, `async` route handler, and fire-and-forget task needs a handler.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Bad
@@ -2386,9 +2287,7 @@ load();
 load().catch(console.error);
 ```
 
-</details>
-
-**Source:** [MDN unhandledrejection](https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event)
+**Sources:** [MDN unhandledrejection](https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event)
 
 </details>
 
@@ -2412,12 +2311,9 @@ load().catch(console.error);
 | Prevents race conditions in UI | Must distinguish `AbortError` from real errors |
 | Standard across fetch | One-shot — new controller per request |
 
-**Cases:** Search autocomplete, route change, request timeout, `Promise.race` cleanup.
+**When to use:** Search autocomplete, route change, request timeout, `Promise.race` cleanup.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const ac = new AbortController();
@@ -2425,9 +2321,7 @@ fetch('/api', { signal: ac.signal });
 ac.abort(); // AbortError
 ```
 
-</details>
-
-**Source:** [javascript.info/fetch-abort](https://learn.javascript.ru/fetch-abort)
+**Sources:** [javascript.info/fetch-abort](https://learn.javascript.ru/fetch-abort)
 
 </details>
 

@@ -1,7 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { TOPICS, type Topic, getTopic, getTrack, isTrackId, topicsForTrack } from "./catalog";
-import { parseTopicMarkdown, type ParsedTopic } from "./parse";
+import {
+  parseTopicMarkdown,
+  parseTopicOutline,
+  type ConceptOutline,
+  type ParsedTopic,
+} from "./parse";
 
 const RESOURCES_DIR = path.join(process.cwd(), "resources");
 
@@ -20,19 +25,29 @@ export function readTopicFile(file: string): string {
   return fs.readFileSync(resolved, "utf8");
 }
 
-export function loadParsedTopic(topic: Topic): ParsedTopic {
+export function loadTopicOutline(topic: Topic): readonly ConceptOutline[] {
+  return parseTopicOutline(readTopicFile(topic.file));
+}
+
+export async function loadParsedTopic(topic: Topic): Promise<ParsedTopic> {
   return parseTopicMarkdown(readTopicFile(topic.file));
 }
 
-export function loadTopicPage(track: string, slug: string): {
-  topic: Topic;
-  parsed: ParsedTopic;
-} | undefined {
+export async function loadTopicPage(
+  track: string,
+  slug: string,
+): Promise<
+  | {
+      topic: Topic;
+      parsed: ParsedTopic;
+    }
+  | undefined
+> {
   const topic = getTopic(track, slug);
   if (!topic) {
     return undefined;
   }
-  return { topic, parsed: loadParsedTopic(topic) };
+  return { topic, parsed: await loadParsedTopic(topic) };
 }
 
 export function assertCatalogFilesExist(): void {

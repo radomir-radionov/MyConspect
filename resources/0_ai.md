@@ -4,7 +4,7 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 
 ### Related docs
 
-* [Interview hub](./0_interview.md) · [MVP & judgment](./0_mvp.md) · [RTK setup](./RTK.md) · [TypeScript](./5_ts.md) · [Next.js](./4_nextjs.md)
+* [Interview hub](./0_interview.md) · [MVP & judgment](./0_mvp.md) · [RTK setup](#rtk-rust-token-killer) · [TypeScript](./5_ts.md) · [Next.js](./4_nextjs.md)
 
 ### Main concepts
 
@@ -30,18 +30,25 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 
 **How it works:** The model sees open files + the prompt. It does **not** know last week's Next.js API unless you inject docs (**Context7**, **Ref.tools**). **RTK** shrinks terminal output so git/test logs fit in context. Treat generated code like a junior PR: run it, type-check it, do not paste secrets.
 
-| Pros | Cons |
+**When to use:**
+
+Scaffold a Server Action from an existing one. Explain a failing test. **When NOT:** novel crypto, production incident without reading logs yourself.
+
+#### Common pitfalls
+
+Accepting `cookies()` as sync (Next 16). Committing `.env`. Asking the model to "remember" a CVE instead of fetching the advisory.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Faster boilerplate, tests, refactors | Confident wrong APIs if docs are stale |
 | Good at local patterns in the repo | Can over-edit unrelated files |
 | Agents + MCP (Context7) beat memory | You must still design and review |
 
-**Cases:** Scaffold a Server Action from an existing one. Explain a failing test. **When NOT:** novel crypto, production incident without reading logs yourself.
+**Examples:**
 
-**Example:** Prompt shape that stays honest:
-
-<details>
-  <summary>Code</summary>
+Prompt shape that stays honest:
 
 ```
 Use Context7 for Next.js 16 cookies() (async).
@@ -49,13 +56,9 @@ Add a Server Action that sets the session cookie.
 Do not invent APIs. Show the docs snippet you used.
 ```
 
-</details>
+**Thoughts:** AI drafts; you verify against docs and tests.
 
-**Common pitfalls:** Accepting `cookies()` as sync (Next 16). Committing `.env`. Asking the model to "remember" a CVE instead of fetching the advisory.
-
-**Key idea:** AI drafts; you verify against docs and tests.
-
-**Source:** [Cursor](https://cursor.com/) · [GitHub Copilot](https://github.com/features/copilot) · [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
+**Sources:** [Cursor](https://cursor.com/) · [GitHub Copilot](https://github.com/features/copilot) · [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
 
 </details>
 
@@ -66,7 +69,9 @@ Do not invent APIs. Show the docs snippet you used.
 
 **Definition:** Design the **product, architecture, and workflow around a model** from day one — intelligence is how value is delivered, not a later add-on. Google framed this as the shift from *mobile-first* to *AI-first* (Sundar Pichai, 2016).
 
-**How it works:** Three labels that people mix up:
+**How it works:**
+
+Three labels that people mix up:
 
 | Label | What changes | Litmus test |
 |-------|----------------|-------------|
@@ -76,18 +81,25 @@ Do not invent APIs. Show the docs snippet you used.
 
 AI-first design starts with: what must the model **know**, **decide**, and **do**; what only a human can own; where feedback trains the next run. UI, APIs, storage, and permissions wrap that loop — they are not the core.
 
-**Cases:** Coding agents, meeting notes that only exist because of the transcript model, support that resolves tickets without a scripted tree. **When NOT:** You already have PMF and AI is a compounding feature (Linear, Notion). Do not slap “AI-first” on a side-panel chatbot.
+**When to use:**
 
-| Pros | Cons |
+Coding agents, meeting notes that only exist because of the transcript model, support that resolves tickets without a scripted tree. **When NOT:** You already have PMF and AI is a compounding feature (Linear, Notion). Do not slap “AI-first” on a side-panel chatbot.
+
+#### Common pitfalls
+
+Calling a bolted-on chatbot “AI-first.” Skipping evals because “it’s just an MVP.” Confusing **AI-augmented engineering** (this file’s Cursor/Copilot block) with an AI-first *product*. No fallback when the provider is down.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | New UX (generate, classify, act) that rules cannot express | Quality, latency, and cost *are* the product — a model regression is a P0 |
 | Data + evals become a moat | Needs retrieval, evals, fallbacks, human override from the start |
 | Pricing can follow outcomes, not seats | Easy to fake with a chatbot; trust fails if users cannot override |
 
-**Example:** The shipped feature *is* the model + tools loop (Vercel AI SDK). Strip this route and there is nothing to sell:
+**Examples:**
 
-<details>
-  <summary>Code</summary>
+The shipped feature *is* the model + tools loop (Vercel AI SDK). Strip this route and there is nothing to sell:
 
 ```ts
 import {
@@ -120,13 +132,9 @@ export async function POST(req: Request) {
 }
 ```
 
-</details>
+**Thoughts:** If you can remove the model and the product still ships value, you are AI-enabled — not AI-first.
 
-**Common pitfalls:** Calling a bolted-on chatbot “AI-first.” Skipping evals because “it’s just an MVP.” Confusing **AI-augmented engineering** (this file’s Cursor/Copilot block) with an AI-first *product*. No fallback when the provider is down.
-
-**Key idea:** If you can remove the model and the product still ships value, you are AI-enabled — not AI-first.
-
-**Source:** [Google — from mobile-first to AI-first](https://blog.google/intl/en-ca/products/explore-get-answers/a-personal-google-just-for-you/) · [AI-first vs AI-enabled](https://www.institutepm.com/knowledge-hub/ai-first-vs-ai-enabled-strategy) · [AI SDK](https://ai-sdk.dev/)
+**Sources:** [Google — from mobile-first to AI-first](https://blog.google/intl/en-ca/products/explore-get-answers/a-personal-google-just-for-you/) · [AI-first vs AI-enabled](https://www.institutepm.com/knowledge-hub/ai-first-vs-ai-enabled-strategy) · [AI SDK](https://ai-sdk.dev/)
 
 </details>
 
@@ -279,22 +287,22 @@ vercel skills - https://github.com/vercel-labs/agent-skills/tree/main
 
 ## RTK (Rust Token Killer)
 
-[rtk-ai/rtk](https://github.com/rtk-ai/rtk) — CLI proxy that compresses shell output before it enters the AI context (~60–90% token savings on `git`, `rg`, `cat`, test runners, etc.).
+[rtk-ai/rtk](https://github.com/rtk-ai/rtk) — CLI proxy that compresses shell output before it enters the AI context (~60–90% token savings on `git`, `rg`, `cat`, test runners, etc.). Site: [rtk-ai.app](https://www.rtk-ai.app).
 
-**Full step-by-step guide:** [RTK.md](./RTK.md)
+The Cursor hook is **machine-wide** (`rtk init -g --agent cursor`). After that, Shell calls like `git status` are rewritten to `rtk git status`. Built-in Cursor tools (`Read`, `Grep`, `Glob`) skip the hook — use `rtk read` / `rtk rg` when output is large. Full output: `rtk proxy git diff`. Savings: `rtk gain`.
 
 ### Quick checklist (once per machine)
 
 | Step | Command / action |
 |------|------------------|
 | 1 | `brew install rtk` (or [install.sh](https://github.com/rtk-ai/rtk)) |
-| 2 | `which rtk && rtk --version` |
+| 2 | `which rtk && rtk --version` (`rtk 0.40.0+`; not crates.io “Rust Type Kit”) |
 | 3 | `rtk init -g --agent cursor` |
 | 4 | `rtk init -g --agent cursor --show` → `[ok] Cursor hook` |
 | 5 | Restart Cursor |
 | 6 | `rtk git status && rtk gain` |
 
-**Already in repo (after clone):** `RTK.md` · `AGENTS.md` · `.rtk/filters.toml`
+**Already in repo (after clone):** `AGENTS.md` · `.rtk/filters.toml`
 
 ### Comparison with Context7 / Ref.tools
 

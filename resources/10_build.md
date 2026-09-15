@@ -25,6 +25,8 @@ Covers CI/CD, package management, bundlers, code quality, Docker, infrastructure
 
 ### Sections
 
+> Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
+
 - [CI/CD](#ci-cd)
 - [Package management](#packages)
 - [Task runners](#task-runners)
@@ -42,18 +44,17 @@ Covers CI/CD, package management, bundlers, code quality, Docker, infrastructure
 
 **Definition:** Automated pipeline that builds, tests, and validates every code change merged into a shared repository — catching integration errors before production.
 
-| Pros | Cons |
+**When to use:** Every team with more than one developer; mandatory for production apps.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Detects broken builds early | Initial pipeline setup cost |
 | Enforces lint and test gates | Flaky tests block the team |
 | Enables trunk-based development | Requires small, frequent PRs |
 
-**When to use:** Every team with more than one developer; mandatory for production apps.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```yaml
 # .github/workflows/ci.yml
@@ -70,13 +71,13 @@ jobs:
       - run: npm run lint && npm test && npm run build
 ```
 
-</details>
-
-**Source:** [GitHub Actions docs](https://docs.github.com/en/actions) · [ByteByteGo — CI/CD](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
+**Sources:** [GitHub Actions docs](https://docs.github.com/en/actions) · [ByteByteGo — CI/CD](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
 
 ### Vite & Webpack (bundlers)
 
-**Definition:** **Webpack** is a mature, highly configurable module bundler with loaders and plugins. **Vite** uses native ESM in dev (esbuild) and Rollup for production — default for modern React/Vue/Svelte apps.
+**Definition:**
+
+**Webpack** is a mature, highly configurable module bundler with loaders and plugins. **Vite** uses native ESM in dev (esbuild) and Rollup for production — default for modern React/Vue/Svelte apps.
 
 | | Webpack | Vite |
 |---|---------|------|
@@ -87,10 +88,7 @@ jobs:
 
 **When to use:** Vite for new projects; Webpack for legacy codebases or Module Federation micro-frontends.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 // vite.config.ts
@@ -104,26 +102,23 @@ export default defineConfig({
 });
 ```
 
-</details>
-
-**Source:** [vite.dev](https://vite.dev/) · [webpack.js.org](https://webpack.js.org/)
+**Sources:** [vite.dev](https://vite.dev/) · [webpack.js.org](https://webpack.js.org/)
 
 ### Docker (containers)
 
 **Definition:** Platform for developing, shipping, and running applications in lightweight, isolated **containers** — packaging code, runtime, and dependencies into reproducible images.
 
-| Pros | Cons |
+**When to use:** Microservices, CI/CD pipelines, local dev parity, cloud deployment.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Consistent dev/staging/prod | Learning curve (networking, volumes) |
 | Fast startup vs VMs | Native modules must match container arch |
 | Portable deployments | Image bloat without multi-stage builds |
 
-**When to use:** Microservices, CI/CD pipelines, local dev parity, cloud deployment.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```dockerfile
 FROM node:20-alpine AS builder
@@ -139,9 +134,9 @@ COPY --from=builder /app/dist ./dist
 CMD ["node", "dist/index.js"]
 ```
 
-</details>
+**Sources:**
 
-**Source:** [docs.docker.com](https://docs.docker.com/)
+[docs.docker.com](https://docs.docker.com/)
 
 ---
 
@@ -156,7 +151,9 @@ CMD ["node", "dist/index.js"]
 
 **Definition:** **CI/CD** means **Continuous Integration / Continuous Delivery** — a way of working where build, test, and publish (and often deploy) are automated so every change can be integrated and shipped with a short feedback loop. **Continuous Deployment** is a stricter variant: passing CI ships to production with no human gate. See [CI vs CD](#ci-vs-cd--comparison).
 
-**How it works:** Agile iterations get faster when each slice of the cycle is automated (process: [7_special.md — Agile](./7_special.md#agile)). Tooling sits on **Git**, server/container infra, and team chat/PRs. Solo projects benefit too — not only large product teams.
+**How it works:**
+
+Agile iterations get faster when each slice of the cycle is automated (process: [7_special.md — Agile](./7_special.md#agile)). Tooling sits on **Git**, server/container infra, and team chat/PRs. Solo projects benefit too — not only large product teams.
 
 Principles:
 
@@ -177,19 +174,26 @@ Product loop (stages can be skipped or merged):
 | **Operate** | Support and monitoring. Helpdesk/chatbots are not CI tools; they often expose APIs. Observability: [15_devops.md](./15_devops.md). |
 | **Plan** | Feedback → backlog → next iteration. The loop closes. |
 
-**Cases:** Every production app; also useful for one-person repos (PR checks, preview deploys).
+**When to use:**
 
-| Pros | Cons |
+Every production app; also useful for one-person repos (PR checks, preview deploys).
+
+#### Common pitfalls
+
+Treating CI/CD as a Swiss army knife for every process; skipping a shared lockfile/image so local and CI diverge; calling “CD” without saying **delivery** vs **deployment**.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Faster ship and fix cycle | Over-engineering pipelines if the team is inexperienced |
 | Less manual toil; fewer integration bugs | Tools do not fix team communication |
 | Fast feedback (PR red/green) | Everyone must share the same toolchain and secrets model |
 | Easy to re-prioritize when the plan is flexible | Flaky tests and slow jobs become a bottleneck |
 
-**Example:** GitHub Actions is a CI/CD platform: an **event** (push, PR, schedule, `workflow_dispatch`) starts a **workflow** (YAML in `.github/workflows/`). **Jobs** run on **runners** (hosted Ubuntu/Windows/macOS or self-hosted); **steps** run scripts or reusable **actions**.
+**Examples:**
 
-<details>
-  <summary>Code</summary>
+GitHub Actions is a CI/CD platform: an **event** (push, PR, schedule, `workflow_dispatch`) starts a **workflow** (YAML in `.github/workflows/`). **Jobs** run on **runners** (hosted Ubuntu/Windows/macOS or self-hosted); **steps** run scripts or reusable **actions**.
 
 ```yaml
 # .github/workflows/ci.yml
@@ -206,13 +210,9 @@ jobs:
       - run: npm run lint && npm test && npm run build
 ```
 
-</details>
+**Thoughts:** Automate the path from commit to a known-good artifact (and optionally to prod) so the Agile loop stays short and repeatable.
 
-**Common pitfalls:** Treating CI/CD as a Swiss army knife for every process; skipping a shared lockfile/image so local and CI diverge; calling “CD” without saying **delivery** vs **deployment**.
-
-**Key idea:** Automate the path from commit to a known-good artifact (and optionally to prod) so the Agile loop stays short and repeatable.
-
-**Source:** [GitHub Actions — Understanding GitHub Actions](https://docs.github.com/en/actions/get-started/understand-github-actions) · [Doka — CI/CD](https://doka.guide/tools/ci-cd/)
+**Sources:** [GitHub Actions — Understanding GitHub Actions](https://docs.github.com/en/actions/get-started/understand-github-actions) · [Doka — CI/CD](https://doka.guide/tools/ci-cd/)
 
 </details>
 
@@ -223,18 +223,17 @@ jobs:
 
 **Definition:** Automated process that builds, tests, and validates every code change merged into a shared repository — catching integration errors early. Full loop: [What is CI/CD](#what-is-cicd).
 
-| Pros | Cons |
+**When to use:** Every team with more than one developer; mandatory for production apps.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Detects broken builds before merge | Initial pipeline setup cost |
 | Enforces test coverage and lint gates | Flaky tests block the team |
 | Enables trunk-based development | Requires discipline around small PRs |
 
-**When to use:** Every team with more than one developer; mandatory for production apps.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```yaml
 # .github/workflows/ci.yml
@@ -253,11 +252,9 @@ jobs:
       - run: npm run build
 ```
 
-</details>
+**Thoughts:** CI scope = build + test + lint. It does **not** necessarily deploy. Keep pipelines fast (< 10 min); split slow E2E / visual / Lighthouse into a separate job — [system tests](./7_special.md#system-testing).
 
-**Notes:** CI scope = build + test + lint. It does **not** necessarily deploy. Keep pipelines fast (< 10 min); split slow E2E / visual / Lighthouse into a separate job — [system tests](./7_special.md#system-testing).
-
-**Source:** [ByteByteGo — CI/CD crash course](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
+**Sources:** [ByteByteGo — CI/CD crash course](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
 
 </details>
 
@@ -268,17 +265,16 @@ jobs:
 
 **Definition:** Every change that passes CI produces a **deployable artifact**; production release is a manual (or approval-gated) step.
 
-| Pros | Cons |
+**When to use:** Regulated industries, staged rollouts, teams that want automation but retain release control.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Always-ready release candidate | Still requires human gate for prod |
 | Reduces release-day surprises | Artifact storage and versioning needed |
 
-**When to use:** Regulated industries, staged rollouts, teams that want automation but retain release control.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```yaml
 # Deploy to staging automatically; prod requires manual approval
@@ -290,11 +286,9 @@ jobs:
       - run: npx vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
 ```
 
-</details>
+**Thoughts:** CDelivery ≠ CDployment. The artifact (Docker image, static bundle, npm package) should be immutable — promote the same artifact through environments.
 
-**Notes:** CDelivery ≠ CDployment. The artifact (Docker image, static bundle, npm package) should be immutable — promote the same artifact through environments.
-
-**Source:** [ByteByteGo — CI/CD](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
+**Sources:** [ByteByteGo — CI/CD](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
 
 </details>
 
@@ -305,17 +299,19 @@ jobs:
 
 **Definition:** Every change that passes CI is **automatically deployed to production** without manual intervention.
 
-| Pros | Cons |
+**When to use:** Mature teams with strong test coverage, feature flags, and automated rollback (canary, blue-green).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Fastest time-to-market | Requires high test confidence |
 | Small, low-risk incremental changes | Rollback strategy must be automated |
 | Eliminates release bottlenecks | Feature flags often required for incomplete work |
 
-**When to use:** Mature teams with strong test coverage, feature flags, and automated rollback (canary, blue-green).
+**Thoughts:** CD extends CI. Many teams say "CD" but mean CDelivery. Clarify in architecture docs which model you use.
 
-**Notes:** CD extends CI. Many teams say "CD" but mean CDelivery. Clarify in architecture docs which model you use.
-
-**Source:** [ByteByteGo — CI/CD](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
+**Sources:** [ByteByteGo — CI/CD](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
 
 </details>
 
@@ -331,7 +327,7 @@ jobs:
 | **Deployment** | None | Manual / gated | Automatic |
 | **Risk** | Low | Medium | High without safeguards |
 
-**Source:** [ByteByteGo — CI/CD](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
+**Sources:** [ByteByteGo — CI/CD](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
 
 </details>
 
@@ -340,7 +336,9 @@ jobs:
 
 ### CI/CD pipeline stages
 
-**Definition:** The **machine** path from git event to artifact/deploy. The wider **product** loop (plan → code → operate) is in [What is CI/CD](#what-is-cicd).
+**Definition:**
+
+The **machine** path from git event to artifact/deploy. The wider **product** loop (plan → code → operate) is in [What is CI/CD](#what-is-cicd).
 
 ```mermaid
 flowchart LR
@@ -354,11 +352,11 @@ flowchart LR
 
 **How it works:** Typical frontend pipeline: `install → lint → typecheck → unit tests → build → (E2E) → deploy`. Cache `node_modules` and build output between runs. Keep the PR job fast (`< 10 min`); park slow E2E/visual in a separate job.
 
-**Cases:** PR checks on every change; staging on `main`; production on tag or after approval (CDelivery) vs auto (CD).
+**When to use:** PR checks on every change; staging on `main`; production on tag or after approval (CDelivery) vs auto (CD).
 
-**Key idea:** One immutable artifact promoted through environments — do not rebuild differently for prod.
+**Thoughts:** One immutable artifact promoted through environments — do not rebuild differently for prod.
 
-**Source:** [GitHub Actions — Workflows](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
+**Sources:** [GitHub Actions — Workflows](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
 
 </details>
 
@@ -380,18 +378,29 @@ flowchart LR
 - `${{ }}` is **not** YAML — GitHub substitutes after parse. Contexts: `github`, `env`, `vars`, `secrets`, `matrix`, `needs` (outputs of **this** job’s `needs:`), `inputs`. Runner env (`$GITHUB_REF`) exists only after dispatch; use contexts in `if:` **before** the runner starts.
 - `steps:` run in order. `uses:` calls an action (pin SHA for supply-chain safety). `run:` is a shell; `|` for multi-line.
 
-**Cases:** PR gates on `main`. Matrix Node versions. Cron. Checkout → `npm ci` → test → build → deploy.
+**When to use:**
 
-| Pros | Cons |
+PR gates on `main`. Matrix Node versions. Cron. Checkout → `npm ci` → test → build → deploy.
+
+#### Common pitfalls
+
+- Retired runner labels (`ubuntu-18.04`, `windows-2016`, `macos-10.15`) and Node 10/12/14 — use current images and LTS Node.
+- Matrix key mismatch (`matrix.node` vs `node-version` in `with:`).
+- `needs` context is outputs of **prerequisite** jobs, not dependents.
+- `npm install` in CI → `npm ci` with a lockfile.
+- Cron treated as local time (it is UTC).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Native GitHub PRs, secrets, environments | Minutes + YAML lock-in |
 | Matrix + reusable actions | `-latest` OS labels move; pin when needed |
 | Same repo as the code | Public actions are a supply-chain surface — pin versions/SHAs |
 
-**Example:** Node CI on push/PR to `main`, matrix OS + Node:
+**Examples:**
 
-<details>
-  <summary>Code</summary>
+Node CI on push/PR to `main`, matrix OS + Node:
 
 ```yaml
 # .github/workflows/test.yml
@@ -422,21 +431,11 @@ jobs:
           npm test
 ```
 
-</details>
-
 Split deploy with `needs: [test]` on another job. Secrets: `${{ secrets.* }}`, never in the repo.
 
-**Common pitfalls:**
+**Thoughts:** Event → jobs (`needs`, matrix, `runs-on`) → ordered `uses`/`run` steps; `${{ }}` reads contexts GitHub fills in.
 
-- Retired runner labels (`ubuntu-18.04`, `windows-2016`, `macos-10.15`) and Node 10/12/14 — use current images and LTS Node.
-- Matrix key mismatch (`matrix.node` vs `node-version` in `with:`).
-- `needs` context is outputs of **prerequisite** jobs, not dependents.
-- `npm install` in CI → `npm ci` with a lockfile.
-- Cron treated as local time (it is UTC).
-
-**Key idea:** Event → jobs (`needs`, matrix, `runs-on`) → ordered `uses`/`run` steps; `${{ }}` reads contexts GitHub fills in.
-
-**Source:** [Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax) · [Events / cron](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows) · [Contexts](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts) · [Runner images](https://github.com/actions/runner-images)
+**Sources:** [Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax) · [Events / cron](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows) · [Contexts](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts) · [Runner images](https://github.com/actions/runner-images)
 
 </details>
 
@@ -458,18 +457,29 @@ Split deploy with `needs: [test]` on another job. Secrets: `${{ secrets.* }}`, n
 - Anchors `&name` mark a node; aliases `*name` reuse it (like a named copy / JS spread of a value). Merge key `<<: *name` copies mapping keys; later keys override. `<<` is a **YAML 1.1** feature (dropped in 1.2); GitHub Actions, Compose, and many parsers still support it.
 - A document root may be a mapping, sequence, or scalar.
 
-**Cases:** GitHub Actions / GitLab CI; Docker Compose; ESLint/Prettier config; Kubernetes manifests; OpenAPI specs.
+YAML allows comments; JSON does not. YAML strings may be unquoted; JSON strings must use double quotes. JSON (RFC 8259) also allows a scalar root; YAML is still preferred for human-edited configs. JSON is the interchange format for APIs (`JSON.parse` / `stringify`) — see [JSON](./3_js_async.md#json).
 
-| Pros | Cons |
+**When to use:**
+
+GitHub Actions / GitLab CI; Docker Compose; ESLint/Prettier config; Kubernetes manifests; OpenAPI specs.
+
+#### Common pitfalls
+
+- Tabs for indent → parse error. Configure the editor / a YAML linter.
+- Inconsistent indent between siblings.
+- Unquoted `true` / `false` / `null` / numbers become typed values, not strings.
+- YAML 1.1: `yes`, `no`, `on`, `off`, `NO` may parse as booleans.
+- Forgetting the space after `-` or `:`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Comments; unquoted strings; readable nesting | Indent errors fail the whole file; tabs vs spaces |
 | Anchors cut duplication | YAML 1.1 vs 1.2 type surprises (`yes`/`NO` as bools in 1.1) |
 | Root can be any node type | Merge `<<` not in YAML 1.2 core — parser-dependent |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```yaml
 # pet config — mapping + sequence + scalars
@@ -495,8 +505,6 @@ cat2:
   age: 7                 # overrides base.age
 ```
 
-</details>
-
 Equivalent after merge: `cat1` → `{ name: cool cat, age: 2 }`; `cat2` → `{ name: cool cat, age: 7 }`.
 
 GitHub Actions (minimal workflow — `.github/workflows/*.yml` or `*.yaml`):
@@ -514,19 +522,9 @@ jobs:
 
 `${{ }}` is **GitHub expression syntax**, not YAML — the runner substitutes it after the file is parsed.
 
-**YAML vs JSON:** YAML allows comments; JSON does not. YAML strings may be unquoted; JSON strings must use double quotes. JSON (RFC 8259) also allows a scalar root; YAML is still preferred for human-edited configs. JSON is the interchange format for APIs (`JSON.parse` / `stringify`) — see [JSON](./3_js_async.md#json).
+**Thoughts:** YAML is indented JSON-with-comments for humans — spaces, not tabs; quote anything that looks like a type.
 
-**Common pitfalls:**
-
-- Tabs for indent → parse error. Configure the editor / a YAML linter.
-- Inconsistent indent between siblings.
-- Unquoted `true` / `false` / `null` / numbers become typed values, not strings.
-- YAML 1.1: `yes`, `no`, `on`, `off`, `NO` may parse as booleans.
-- Forgetting the space after `-` or `:`.
-
-**Key idea:** YAML is indented JSON-with-comments for humans — spaces, not tabs; quote anything that looks like a type.
-
-**Source:** [YAML 1.2.2 spec](https://yaml.org/spec/1.2.2/) · [GitHub Actions — YAML syntax](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#about-yaml-syntax-for-workflows) · [GitHub Actions — anchors](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows#yaml-anchors-and-aliases) · [eemeli/yaml — 1.1 vs 1.2](https://eemeli.org/yaml/#version-differences)
+**Sources:** [YAML 1.2.2 spec](https://yaml.org/spec/1.2.2/) · [GitHub Actions — YAML syntax](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#about-yaml-syntax-for-workflows) · [GitHub Actions — anchors](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows#yaml-anchors-and-aliases) · [eemeli/yaml — 1.1 vs 1.2](https://eemeli.org/yaml/#version-differences)
 
 </details>
 
@@ -541,18 +539,17 @@ jobs:
 
 **Definition:** Default package manager for Node.js. Manages dependencies via `package.json` and `package-lock.json`.
 
-| Pros | Cons |
+**When to use:** Default choice; required when tooling only documents npm workflows.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Universal, ships with Node | Slower installs than pnpm on large monorepos |
 | Massive registry (npmjs.com) | Flat `node_modules` can cause phantom deps |
 | `npm ci` for reproducible CI | Breaking changes in npm major versions |
 
-**When to use:** Default choice; required when tooling only documents npm workflows.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```json
 {
@@ -562,15 +559,13 @@ jobs:
 }
 ```
 
-</details>
-
 ```bash
 npm install          # update lockfile (local dev)
 npm ci               # clean install from lockfile (CI)
 npm install -D eslint  # add devDependency (-D = --save-dev)
 ```
 
-**Notes:**
+**Thoughts:**
 
 | Field | Purpose |
 |-------|---------|
@@ -581,7 +576,7 @@ npm install -D eslint  # add devDependency (-D = --save-dev)
 
 Use `npm ci` in CI — never `npm install`. Never commit `node_modules`.
 
-**Source:** [npm docs](https://docs.npmjs.com/)
+**Sources:** [npm docs](https://docs.npmjs.com/)
 
 </details>
 
@@ -592,18 +587,17 @@ Use `npm ci` in CI — never `npm install`. Never commit `node_modules`.
 
 **Definition:** Alternative package manager by Meta. Yarn Classic (v1) uses `yarn.lock`; Yarn Berry (v2+) uses Plug'n'Play (PnP) optionally.
 
-| Pros | Cons |
+**When to use:** Existing Yarn monorepos; teams standardized on Yarn workspaces.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Deterministic installs via lockfile | Berry PnP breaks some tools expecting `node_modules` |
 | Workspaces for monorepos | Two major versions (Classic vs Berry) cause confusion |
 | `yarn dlx` for one-off commands | Smaller default mindshare than npm |
 
-**When to use:** Existing Yarn monorepos; teams standardized on Yarn workspaces.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```json
 // package.json — workspaces
@@ -613,16 +607,14 @@ Use `npm ci` in CI — never `npm install`. Never commit `node_modules`.
 }
 ```
 
-</details>
-
 ```bash
 yarn install
 yarn workspace @myapp/web build
 ```
 
-**Notes:** Most new projects choose pnpm over Yarn Classic. If starting fresh with Yarn, use Berry (v4) with `nodeLinker: node-modules` unless you want PnP.
+**Thoughts:** Most new projects choose pnpm over Yarn Classic. If starting fresh with Yarn, use Berry (v4) with `nodeLinker: node-modules` unless you want PnP.
 
-**Source:** [yarnpkg.com](https://yarnpkg.com/)
+**Sources:** [yarnpkg.com](https://yarnpkg.com/)
 
 </details>
 
@@ -633,18 +625,17 @@ yarn workspace @myapp/web build
 
 **Definition:** Fast, disk-efficient package manager using a content-addressable global store and hard-linked `node_modules`.
 
-| Pros | Cons |
+**When to use:** New monorepos, large teams, when phantom dependency bugs are a concern.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Fastest installs; saves disk space | Some tools assume npm flat layout |
 | Strict dependency resolution (no phantom deps) | Occasional peer-dep resolution quirks |
 | First-class monorepo workspaces | Less universal in legacy CI templates |
 
-**When to use:** New monorepos, large teams, when phantom dependency bugs are a concern.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 pnpm install
@@ -652,17 +643,15 @@ pnpm add -D vitest
 pnpm --filter @myapp/web dev   # run script in one workspace package
 ```
 
-</details>
-
 ```yaml
 # .npmrc
 strict-peer-dependencies=true
 auto-install-peers=true
 ```
 
-**Notes:** pnpm's strictness catches bugs npm silently allows — e.g. importing a package you didn't declare. Prefer pnpm for Turborepo / Nx monorepos.
+**Thoughts:** pnpm's strictness catches bugs npm silently allows — e.g. importing a package you didn't declare. Prefer pnpm for Turborepo / Nx monorepos.
 
-**Source:** [pnpm.io](https://pnpm.io/)
+**Sources:** [pnpm.io](https://pnpm.io/)
 
 </details>
 
@@ -687,7 +676,7 @@ auto-install-peers=true
 
 ---
 
-**Source:** [pnpm — Feature comparison](https://pnpm.io/feature-comparison)
+**Sources:** [pnpm — Feature comparison](https://pnpm.io/feature-comparison)
 
 </details>
 
@@ -702,18 +691,17 @@ auto-install-peers=true
 
 **Definition:** Commands defined in `package.json` `scripts` field, executed via `npm run <name>`. The modern default for automating dev workflows.
 
-| Pros | Cons |
+**When to use:** Always — primary task runner for JS projects.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Zero extra dependencies | Complex orchestration gets verbose |
 | Cross-platform with `cross-env`, `rimraf` | No built-in streaming/file watching |
 | `pre`/`post` hooks for lifecycle | `pre` hooks can surprise newcomers |
 
-**When to use:** Always — primary task runner for JS projects.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```json
 {
@@ -728,17 +716,15 @@ auto-install-peers=true
 }
 ```
 
-</details>
-
 ```bash
 npm run dev          # runs "dev" script
 npm test             # "test" is special — no "run" needed
 npm run lint -- --fix  # pass args after --
 ```
 
-**Notes:** `prepare` runs after `npm install` — use for git hooks (husky), not heavy builds. Prefer dedicated tools (Vite, Turborepo) over chaining many shell commands.
+**Thoughts:** `prepare` runs after `npm install` — use for git hooks (husky), not heavy builds. Prefer dedicated tools (Vite, Turborepo) over chaining many shell commands.
 
-**Source:** [npm — scripts](https://docs.npmjs.com/cli/v10/using-npm/scripts)
+**Sources:** [npm — scripts](https://docs.npmjs.com/cli/v10/using-npm/scripts)
 
 </details>
 
@@ -749,18 +735,22 @@ npm run lint -- --fix  # pass args after --
 
 **Definition:** Legacy streaming task runner that pipes files through plugins (SCSS → CSS, image optimization).
 
-| Pros | Cons |
+**When to use:** Maintaining legacy codebases only. New projects: use npm scripts + bundler plugins.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Fine-grained file stream control | Largely superseded by bundler plugins |
 | Large plugin ecosystem (legacy) | Imperative task files age poorly |
 
-**When to use:** Maintaining legacy codebases only. New projects: use npm scripts + bundler plugins.
+**Thoughts:**
 
-**Notes:** If you see a `gulpfile.js`, plan migration to Vite/Webpack loaders rather than extending Gulp.
+If you see a `gulpfile.js`, plan migration to Vite/Webpack loaders rather than extending Gulp.
 
 ---
 
-**Source:** [gulpjs.com](https://gulpjs.com/)
+**Sources:** [gulpjs.com](https://gulpjs.com/)
 
 </details>
 
@@ -780,9 +770,9 @@ npm run lint -- --fix  # pass args after --
 | **Compiler / transpiler** | Source code | Transformed source code | Syntax downleveling, type stripping |
 | **Bundler** | Many modules | Few optimized files | Dependency graph, code splitting, minification |
 
-**Notes:** Modern stacks combine both — TypeScript (type-check) + esbuild (emit) + Rollup (bundle). Don't conflate "Babel" with "Webpack."
+**Thoughts:** Modern stacks combine both — TypeScript (type-check) + esbuild (emit) + Rollup (bundle). Don't conflate "Babel" with "Webpack."
 
-**Source:** [Webpack — Concepts](https://webpack.js.org/concepts/)
+**Sources:** [Webpack — Concepts](https://webpack.js.org/concepts/)
 
 </details>
 
@@ -793,18 +783,17 @@ npm run lint -- --fix  # pass args after --
 
 **Definition:** JavaScript compiler that transforms modern syntax (ES2024) into backward-compatible code for older browsers.
 
-| Pros | Cons |
+**When to use:** Legacy browser support; custom AST transforms; libraries publishing to both ESM and CJS.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Massive plugin ecosystem | Slower than esbuild/swc |
 | `@babel/preset-env` targets browserslist | Config complexity |
 | JSX transform for non-ESBuild setups | Polyfill confusion (use `core-js` deliberately) |
 
-**When to use:** Legacy browser support; custom AST transforms; libraries publishing to both ESM and CJS.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // babel.config.js
@@ -816,11 +805,9 @@ module.exports = {
 };
 ```
 
-</details>
+**Thoughts:** Vite uses esbuild for transpilation by default — Babel only needed for exotic plugins. `@babel/preset-env` with `useBuiltIns: 'usage'` adds polyfills automatically; prefer explicit `core-js` imports to avoid bundle bloat.
 
-**Notes:** Vite uses esbuild for transpilation by default — Babel only needed for exotic plugins. `@babel/preset-env` with `useBuiltIns: 'usage'` adds polyfills automatically; prefer explicit `core-js` imports to avoid bundle bloat.
-
-**Source:** [babeljs.io](https://babeljs.io/)
+**Sources:** [babeljs.io](https://babeljs.io/)
 
 </details>
 
@@ -831,18 +818,17 @@ module.exports = {
 
 **Definition:** Type-checks `.ts` files and optionally emits JavaScript. `tsc` is the type checker; emit is often delegated to esbuild/swc for speed.
 
-| Pros | Cons |
+**When to use:** Every non-trivial TS project. Run `tsc --noEmit` in CI even when Vite/esbuild handles emit.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Static type safety at scale | Slower emit than esbuild |
 | `.d.ts` generation for libraries | Config (`tsconfig.json`) has many options |
 | Project references for monorepos | `tsc --noEmit` still needed even when Vite emits |
 
-**When to use:** Every non-trivial TS project. Run `tsc --noEmit` in CI even when Vite/esbuild handles emit.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```json
 // tsconfig.json
@@ -857,16 +843,16 @@ module.exports = {
 }
 ```
 
-</details>
-
 ```json
 // package.json — separate type-check from build
 { "scripts": { "typecheck": "tsc -b", "build": "vite build" } }
 ```
 
-**Notes:** `moduleResolution: "bundler"` (TS 5+) matches Vite/Webpack behavior. Libraries publishing to npm need `declaration: true` and separate `tsconfig.build.json`.
+**Thoughts:** `moduleResolution: "bundler"` (TS 5+) matches Vite/Webpack behavior. Libraries publishing to npm need `declaration: true` and separate `tsconfig.build.json`.
 
-**Source:** [typescriptlang.org](https://www.typescriptlang.org/)
+**Sources:**
+
+[typescriptlang.org](https://www.typescriptlang.org/)
 
 ---
 
@@ -883,17 +869,19 @@ module.exports = {
 
 **Definition:** Process of resolving a module dependency graph and combining (or chunking) files into optimized output for the browser or Node.
 
-| Pros | Cons |
+**When to use:** All non-trivial web apps. Even with HTTP/2, bundling enables transforms and optimization.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Fewer HTTP requests | Initial bundle can grow large |
 | Enables minification, tree shaking | Build step adds complexity |
 | Transforms non-JS assets (CSS, images) | Cache invalidation on any change (without splitting) |
 
-**When to use:** All non-trivial web apps. Even with HTTP/2, bundling enables transforms and optimization.
+**Thoughts:** Native ESM in browsers reduces bundling need for dev (Vite), but production still bundles for optimization.
 
-**Notes:** Native ESM in browsers reduces bundling need for dev (Vite), but production still bundles for optimization.
-
-**Source:** [Vite — Features](https://vite.dev/guide/features.html)
+**Sources:** [Vite — Features](https://vite.dev/guide/features.html)
 
 </details>
 
@@ -904,15 +892,17 @@ module.exports = {
 
 **Definition:** Web app that loads one HTML shell and handles routing client-side without full page reloads.
 
-| Pros | Cons |
+**When to use:** Dashboards, admin panels, apps behind auth. Prefer SSR/SSG (Next.js) for public SEO-critical pages. Types: [6_web_api.md — Types of web apps](./6_web_api.md#types-of-web-apps). PWA (install vs offline): [6_web_api.md — PWA](./6_web_api.md#pwa-progressive-web-app).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Fast navigation after initial load | Large initial JS payload |
 | Rich client interactivity | SEO requires extra work (SSR/SSG) |
 | Simpler deployment (static files) | Time-to-interactive on slow devices |
 
-**When to use:** Dashboards, admin panels, apps behind auth. Prefer SSR/SSG (Next.js) for public SEO-critical pages. Types: [6_web_api.md — Types of web apps](./6_web_api.md#types-of-web-apps). PWA (install vs offline): [6_web_api.md — PWA](./6_web_api.md#pwa-progressive-web-app).
-
-**Source:** [MDN — SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA)
+**Sources:** [MDN — SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA)
 
 </details>
 
@@ -921,22 +911,23 @@ module.exports = {
 
 ### Code splitting
 
-**Definition:** Technique of splitting the bundle into smaller chunks loaded on demand — reducing initial payload.
+**Definition:**
+
+Technique of splitting the bundle into smaller chunks loaded on demand — reducing initial payload.
 
 HTTP **cache** already skips the network for repeat images (and often JS/CSS). Scripts still **parse and execute** even from cache; large JS is expensive. Code splitting ships only the code for the current route, then loads the rest when needed.
 
-| Pros | Cons |
+**When to use:** Any app with routes or heavy optional features (charts, editors, admin sections).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Faster initial load | More HTTP requests (mitigated by HTTP/2) |
 | Route-based lazy loading | Loading states / Suspense needed |
 | Parallel chunk downloads | Complexity in cache strategy |
 
-**When to use:** Any app with routes or heavy optional features (charts, editors, admin sections).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```tsx
 import { lazy, Suspense } from 'react';
@@ -952,16 +943,14 @@ function App() {
 }
 ```
 
-</details>
-
 ```js
 // Webpack / Vite — dynamic import creates a separate chunk automatically
 const module = await import('./heavy-lib');
 ```
 
-**Notes:** Split at route boundaries first, then heavy libraries. Analyze with `rollup-plugin-visualizer` or Webpack Bundle Analyzer. Avoid splitting tiny modules — overhead exceeds savings. Smaller initial JS also improves **INP** — [6_web_api.md](./6_web_api.md#inp-interaction-to-next-paint).
+**Thoughts:** Split at route boundaries first, then heavy libraries. Analyze with `rollup-plugin-visualizer` or Webpack Bundle Analyzer. Avoid splitting tiny modules — overhead exceeds savings. Smaller initial JS also improves **INP** — [6_web_api.md](./6_web_api.md#inp-interaction-to-next-paint).
 
-**Source:** [MDN — Code splitting](https://developer.mozilla.org/en-US/docs/Glossary/Code_splitting) · why payload grew: [Doka — How web apps work](https://doka.guide/tools/web-app-works/)
+**Sources:** [MDN — Code splitting](https://developer.mozilla.org/en-US/docs/Glossary/Code_splitting) · why payload grew: [Doka — How web apps work](https://doka.guide/tools/web-app-works/)
 
 </details>
 
@@ -972,18 +961,17 @@ const module = await import('./heavy-lib');
 
 **Definition:** Dead-code elimination — removing unused exports from the final bundle. Requires ESM `import`/`export` static analysis.
 
-| Pros | Cons |
+**When to use:** Always in production builds. Audit with bundle analyzer.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Smaller production bundles | Broken by side-effectful modules |
 | No runtime cost | CommonJS modules shake poorly |
 | Works automatically with modern bundlers | Barrel files (`index.ts` re-exports) can defeat it |
 
-**When to use:** Always in production builds. Audit with bundle analyzer.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```json
 // package.json — mark side-effect-free for better shaking
@@ -992,8 +980,6 @@ const module = await import('./heavy-lib');
 // or list files with side effects
 { "sideEffects": ["*.css", "./src/polyfills.ts"] }
 ```
-
-</details>
 
 ```js
 // Bad — imports entire library
@@ -1004,7 +990,7 @@ _.debounce(fn, 300);
 import debounce from 'lodash/debounce';
 ```
 
-**Notes:** `sideEffects: false` tells bundlers they can drop unused modules entirely. CSS imports are side effects — list them explicitly. Barrel `export *` files can defeat shaking and bloat the client bundle (hurts **INP**) — [6_web_api.md — INP](./6_web_api.md#inp-interaction-to-next-paint).
+**Thoughts:** `sideEffects: false` tells bundlers they can drop unused modules entirely. CSS imports are side effects — list them explicitly. Barrel `export *` files can defeat shaking and bloat the client bundle (hurts **INP**) — [6_web_api.md — INP](./6_web_api.md#inp-interaction-to-next-paint).
 
 </details>
 
@@ -1015,11 +1001,6 @@ import debounce from 'lodash/debounce';
 
 **Definition:** Files mapping minified/transpiled code back to original source for debugging.
 
-| Pros | Cons |
-|------|------|
-| Debug production issues with real line numbers | Increase build time and artifact size |
-| Error monitoring (Sentry) uses them | Expose source code if published publicly |
-
 **When to use:**
 
 | Environment | Recommended |
@@ -1028,10 +1009,14 @@ import debounce from 'lodash/debounce';
 | Production (with monitoring) | `hidden-source-map` (not referenced in bundle) |
 | Production (no monitoring) | `false` |
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Debug production issues with real line numbers | Increase build time and artifact size |
+| Error monitoring (Sentry) uses them | Expose source code if published publicly |
+
+**Examples:**
 
 ```ts
 // vite.config.ts
@@ -1042,9 +1027,7 @@ export default defineConfig({
 });
 ```
 
-</details>
-
-**Notes:** Upload source maps to Sentry/Datadog in CI, then delete from public CDN. Never deploy `source-map` (inline reference) to production — exposes business logic.
+**Thoughts:** Upload source maps to Sentry/Datadog in CI, then delete from public CDN. Never deploy `source-map` (inline reference) to production — exposes business logic.
 
 </details>
 
@@ -1060,11 +1043,13 @@ export default defineConfig({
 | **Build-time** | At `vite build` / `webpack` | Yes, if prefixed (`VITE_`, `NEXT_PUBLIC_`) | `VITE_API_URL` |
 | **Runtime** | At server/container start | Injected by server, not in JS bundle | Docker `ENV`, K8s ConfigMap |
 
-**Notes:** Never put secrets in `VITE_*` or `NEXT_PUBLIC_*` — they are embedded in the client bundle. Use server-side env for API keys.
+**Thoughts:**
+
+Never put secrets in `VITE_*` or `NEXT_PUBLIC_*` — they are embedded in the client bundle. Use server-side env for API keys.
 
 ---
 
-**Source:** [Vite — Env variables](https://vite.dev/guide/env-and-mode.html)
+**Sources:** [Vite — Env variables](https://vite.dev/guide/env-and-mode.html)
 
 </details>
 
@@ -1079,18 +1064,17 @@ export default defineConfig({
 
 **Definition:** Mature, highly configurable module bundler. Uses loaders for file transforms and plugins for optimization.
 
-| Pros | Cons |
+**When to use:** Legacy apps, micro-frontends (Module Federation), complex custom loader chains.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Largest plugin/loader ecosystem | Slow dev server vs Vite |
 | Module Federation for micro-frontends | Complex configuration |
 | Handles any asset type | Steep learning curve |
 
-**When to use:** Legacy apps, micro-frontends (Module Federation), complex custom loader chains.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // webpack.config.js (minimal)
@@ -1108,9 +1092,7 @@ module.exports = {
 };
 ```
 
-</details>
-
-**Notes:**
+**Thoughts:**
 
 | Concept | Role |
 |---------|------|
@@ -1120,7 +1102,7 @@ module.exports = {
 
 CRA used Webpack internally (deprecated). Prefer Vite for new React apps.
 
-**Source:** [webpack.js.org](https://webpack.js.org/)
+**Sources:** [webpack.js.org](https://webpack.js.org/)
 
 </details>
 
@@ -1131,18 +1113,17 @@ CRA used Webpack internally (deprecated). Prefer Vite for new React apps.
 
 **Definition:** ESM-first bundler optimized for libraries. Produces clean, tree-shakeable output.
 
-| Pros | Cons |
+**When to use:** Publishing npm libraries, design systems, utility packages.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Best-in-class library output | Less suited for complex app dev servers |
 | Native ESM support | Plugin ecosystem smaller than Webpack |
 | Used internally by Vite for production | No HMR (used as build step, not dev server) |
 
-**When to use:** Publishing npm libraries, design systems, utility packages.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // rollup.config.js
@@ -1159,11 +1140,9 @@ export default {
 };
 ```
 
-</details>
+**Thoughts:** Mark `react`, `react-dom` as `external` in libraries — don't bundle them. Ship both ESM and CJS for maximum compatibility, or ESM-only for modern consumers.
 
-**Notes:** Mark `react`, `react-dom` as `external` in libraries — don't bundle them. Ship both ESM and CJS for maximum compatibility, or ESM-only for modern consumers.
-
-**Source:** [rollupjs.org](https://rollupjs.org/)
+**Sources:** [rollupjs.org](https://rollupjs.org/)
 
 </details>
 
@@ -1174,18 +1153,17 @@ export default {
 
 **Definition:** Extremely fast JavaScript/CSS bundler and minifier written in Go. Used as the transpilation layer inside Vite and other tools.
 
-| Pros | Cons |
+**When to use:** Dev transpilation (via Vite), fast production minification, custom build scripts.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | 10–100× faster than Webpack/Babel | Limited plugin API |
 | Built-in TS/JSX transform | No type checking (pair with `tsc`) |
 | Built-in minification | Some edge-case incompatibilities |
 
-**When to use:** Dev transpilation (via Vite), fast production minification, custom build scripts.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // build.mjs
@@ -1201,11 +1179,9 @@ await esbuild.build({
 });
 ```
 
-</details>
+**Thoughts:** esbuild strips types but doesn't check them. Always run `tsc --noEmit` separately. For libraries, prefer Rollup for finer output control.
 
-**Notes:** esbuild strips types but doesn't check them. Always run `tsc --noEmit` separately. For libraries, prefer Rollup for finer output control.
-
-**Source:** [esbuild.github.io](https://esbuild.github.io/)
+**Sources:** [esbuild.github.io](https://esbuild.github.io/)
 
 </details>
 
@@ -1216,18 +1192,17 @@ await esbuild.build({
 
 **Definition:** Dev server using native ESM + esbuild pre-bundling; Rollup for production builds. Default toolchain for modern React/Vue/Svelte apps.
 
-| Pros | Cons |
+**When to use:** New SPAs, replacing CRA, library docs sites, any greenfield frontend.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Instant cold start, fast HMR | Plugin ecosystem smaller than Webpack for exotic loaders |
 | Sensible defaults | Legacy CJS-heavy deps may need `optimizeDeps` tuning |
 | First-class TypeScript support | Different mental model from Webpack |
 
-**When to use:** New SPAs, replacing CRA, library docs sites, any greenfield frontend.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```ts
 // vite.config.ts
@@ -1253,15 +1228,13 @@ export default defineConfig({
 });
 ```
 
-</details>
-
-**Notes:**
+**Thoughts:**
 
 - In Docker: `host: '0.0.0.0'` — binding `localhost` only listens inside the container.
 - Path aliases: configure in both `vite.config.ts` (`resolve.alias`) and `tsconfig.json` (`paths`).
 - CRA migration: remove `react-scripts`, add `vite`, `@vitejs/plugin-react`, move `index.html` to root.
 
-**Source:** [vite.dev](https://vite.dev/)
+**Sources:** [vite.dev](https://vite.dev/)
 
 </details>
 
@@ -1272,28 +1245,25 @@ export default defineConfig({
 
 **Definition:** Rust-based incremental bundler built into Next.js (successor direction for Webpack in the Next ecosystem).
 
-| Pros | Cons |
+**When to use:** Next.js 15+ projects with `next dev --turbopack`. Not a Vite replacement for non-Next apps.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Very fast dev builds in Next.js | Next.js-only (not a standalone app bundler) |
 | Incremental computation | Still maturing vs Webpack feature parity |
 | Integrated with Next dev server | Less relevant outside Next.js |
 
-**When to use:** Next.js 15+ projects with `next dev --turbopack`. Not a Vite replacement for non-Next apps.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 next dev --turbopack
 ```
 
-</details>
+**Thoughts:** Turbopack ≠ Turborepo. Turborepo is a monorepo task orchestrator; Turbopack is a bundler. Use Turbopack for Next dev speed; use Turborepo for caching `build`/`test` across packages.
 
-**Notes:** Turbopack ≠ Turborepo. Turborepo is a monorepo task orchestrator; Turbopack is a bundler. Use Turbopack for Next dev speed; use Turborepo for caching `build`/`test` across packages.
-
-**Source:** [nextjs.org — Turbopack](https://nextjs.org/docs/architecture/turbopack)
+**Sources:** [nextjs.org — Turbopack](https://nextjs.org/docs/architecture/turbopack)
 
 </details>
 
@@ -1302,7 +1272,9 @@ next dev --turbopack
 
 ### Webpack vs Vite
 
-**Definition:** Side-by-side comparison of the two most common frontend bundlers in production today.
+**Definition:**
+
+Side-by-side comparison of the two most common frontend bundlers in production today.
 
 | Aspect | Webpack | Vite |
 |--------|---------|------|
@@ -1312,12 +1284,9 @@ next dev --turbopack
 | Config | High | Low |
 | Module Federation | Yes | Limited |
 
-**When to use Webpack:** Legacy apps, Module Federation. **Vite:** New SPAs, CRA migration.
+**How it works:** Legacy apps, Module Federation. **Vite:** New SPAs, CRA migration.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Webpack
@@ -1332,9 +1301,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({ plugins: [react()] });
 ```
 
-</details>
-
-**Source:** [Vite — Why Vite](https://vite.dev/guide/why.html) · [Webpack concepts](https://webpack.js.org/concepts/)
+**Sources:** [Vite — Why Vite](https://vite.dev/guide/why.html) · [Webpack concepts](https://webpack.js.org/concepts/)
 
 </details>
 
@@ -1352,7 +1319,7 @@ export default defineConfig({ plugins: [react()] });
 
 ---
 
-**Source:** [Vite — Why Vite](https://vite.dev/guide/why.html)
+**Sources:** [Vite — Why Vite](https://vite.dev/guide/why.html)
 
 </details>
 
@@ -1363,18 +1330,17 @@ export default defineConfig({ plugins: [react()] });
 
 **Definition:** Build system for JavaScript monorepos — caches task outputs and runs `build`/`test`/`lint` in parallel across packages.
 
-| Pros | Cons |
+**When to use:** Monorepos with multiple apps/packages. Pair with pnpm workspaces.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Remote caching speeds CI | Monorepo-specific |
 | Simple `turbo.json` pipeline | Requires workspace setup |
 | Works with Vite/Next per package | Not a bundler |
 
-**When to use:** Monorepos with multiple apps/packages. Pair with pnpm workspaces.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```json
 {
@@ -1385,11 +1351,9 @@ export default defineConfig({ plugins: [react()] });
 }
 ```
 
-</details>
+**Thoughts:** Turborepo ≠ Turbopack. Turborepo orchestrates tasks; Turbopack is Next.js's bundler.
 
-**Notes:** Turborepo ≠ Turbopack. Turborepo orchestrates tasks; Turbopack is Next.js's bundler.
-
-**Source:** [turbo.build](https://turbo.build/repo/docs)
+**Sources:** [turbo.build](https://turbo.build/repo/docs)
 
 </details>
 
@@ -1411,18 +1375,17 @@ Why write tests and AAA: [7_special.md — Why write tests](./7_special.md#why-w
 | **Formatter** | Visual layout (indent, quotes, line width) | Opinionated, minimal | Prettier, dprint |
 | **Linter** | Logic errors, bad patterns, best practices | Highly configurable | ESLint, Biome |
 
-| Pros (using both) | Cons |
+**When to use:** Every project. Run formatter first, then linter. Disable ESLint formatting rules that conflict with Prettier via `eslint-config-prettier`.
+
+**Pluses and minuses:**
+
+| + (using both) | − |
 |-------------------|------|
 | Consistent style + fewer bugs | Rule overlap causes conflicts |
 | Automatable in CI and pre-commit | Initial setup time |
 | Onboarding — no style debates | False positives without tuning |
 
-**When to use:** Every project. Run formatter first, then linter. Disable ESLint formatting rules that conflict with Prettier via `eslint-config-prettier`.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 # Typical pre-commit order
@@ -1430,9 +1393,7 @@ prettier --write .
 eslint . --fix
 ```
 
-</details>
-
-**Notes:** Don't use ESLint for formatting — that's Prettier's job. Biome combines both but ecosystem is younger than ESLint + Prettier.
+**Thoughts:** Don't use ESLint for formatting — that's Prettier's job. Biome combines both but ecosystem is younger than ESLint + Prettier.
 
 </details>
 
@@ -1443,18 +1404,17 @@ eslint . --fix
 
 **Definition:** Pluggable static analysis tool for JavaScript/TypeScript. Enforces code quality rules and catches bugs before runtime.
 
-| Pros | Cons |
+**When to use:** All JS/TS projects. Extend framework presets (`eslint-config-next`, `@typescript-eslint`).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Huge plugin ecosystem (React, import, a11y) | Configuration can be overwhelming |
 | Autofix for many rules | False positives without rule tuning |
 | Flat config (ESLint 9+) simplifies setup | Migration from `.eslintrc` ongoing |
 
-**When to use:** All JS/TS projects. Extend framework presets (`eslint-config-next`, `@typescript-eslint`).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // eslint.config.js (flat config, ESLint 9+)
@@ -1472,15 +1432,13 @@ export default tseslint.config(
 );
 ```
 
-</details>
-
-**Notes:**
+**Thoughts:**
 
 - Use `typescript-eslint` with `strict` or `recommended-type-checked` for maximum value.
 - `eslint-plugin-import` catches wrong import paths; `eslint-plugin-jsx-a11y` for accessibility.
 - Run in CI with `--max-warnings 0` once the codebase is clean.
 
-**Source:** [eslint.org](https://eslint.org/)
+**Sources:** [eslint.org](https://eslint.org/)
 
 </details>
 
@@ -1491,18 +1449,17 @@ export default tseslint.config(
 
 **Definition:** Opinionated code formatter. Enforces consistent style with zero configuration.
 
-| Pros | Cons |
+**When to use:** Every project. Pair with `eslint-config-prettier` to turn off conflicting ESLint style rules.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Zero config, team-wide consistency | Cannot customize much (by design) |
 | Supports JS, TS, CSS, HTML, JSON, MD | May format generated files (use `.prettierignore`) |
 | Editor integration | Long lines in JSX can be ugly |
 
-**When to use:** Every project. Pair with `eslint-config-prettier` to turn off conflicting ESLint style rules.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```json
 // .prettierrc
@@ -1514,16 +1471,16 @@ export default tseslint.config(
 }
 ```
 
-</details>
-
 ```json
 // package.json
 { "scripts": { "format": "prettier --write .", "format:check": "prettier --check ." } }
 ```
 
-**Notes:** Add `format:check` to CI (don't write in CI). Use `.prettierignore` for `dist/`, `coverage/`, generated GraphQL types.
+**Thoughts:** Add `format:check` to CI (don't write in CI). Use `.prettierignore` for `dist/`, `coverage/`, generated GraphQL types.
 
-**Source:** [prettier.io](https://prettier.io/)
+**Sources:**
+
+[prettier.io](https://prettier.io/)
 
 ---
 
@@ -1553,16 +1510,24 @@ docker run --detach --name welcome --publish 8080:80 docker/welcome-to-docker
 # then http://localhost:8080  —  docker rm --force welcome
 ```
 
-**Cases:** Server deploy; CI images; frontend — bundle/lint/test, asset pipelines, try a CMS/framework without installing Node/DB/nginx on the host, reproducible demos, editor + toolchains in a container.
+**When to use:**
 
-| Pros | Cons |
+Server deploy; CI images; frontend — bundle/lint/test, asset pipelines, try a CMS/framework without installing Node/DB/nginx on the host, reproducible demos, editor + toolchains in a container.
+
+#### Common pitfalls
+
+Binding the app to `127.0.0.1` inside the container (host cannot reach it — listen on `0.0.0.0`). Treating `EXPOSE` as publish (`-p` still required). Letting stopped containers pile up (`docker ps -a`) until names collide.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Same env on laptop, CI, prod | Networking, volumes, and Desktop VM have a learning curve |
 | Seconds to start vs a full VM | Shared kernel — not a VM; native modules must match **container** arch |
 | One process per container; Compose for stacks | Image bloat without multi-stage + `.dockerignore` |
 | Recipe in git (Dockerfile) | Harder to debug than a local process |
 
-**Example — one-off tools (no local install):**
+**Examples:**
 
 ```bash
 docker run --name some-wordpress -p 8080:80 -d wordpress
@@ -1571,11 +1536,9 @@ docker run --name some-drupal -p 8080:80 -d drupal
 docker run --rm -v "$PWD":/imgs dpokidov/imagemagick /imgs/in.png -resize 100x100 /imgs/out.png
 ```
 
-**Common pitfalls:** Binding the app to `127.0.0.1` inside the container (host cannot reach it — listen on `0.0.0.0`). Treating `EXPOSE` as publish (`-p` still required). Letting stopped containers pile up (`docker ps -a`) until names collide.
+**Thoughts:** Ship the **environment with the app**. Engine = daemon + API + CLI; image is the template, container is the running (or stopped) instance.
 
-**Key idea:** Ship the **environment with the app**. Engine = daemon + API + CLI; image is the template, container is the running (or stopped) instance.
-
-**Source:** [Docker Engine](https://docs.docker.com/engine/) · [Overview](https://docs.docker.com/get-started/docker-overview/) · [Run an app](https://docs.docker.com/get-started/tutorials/run-an-app/)
+**Sources:** [Docker Engine](https://docs.docker.com/engine/) · [Overview](https://docs.docker.com/get-started/docker-overview/) · [Run an app](https://docs.docker.com/get-started/tutorials/run-an-app/)
 
 </details>
 
@@ -1592,7 +1555,7 @@ docker run --rm -v "$PWD":/imgs dpokidov/imagemagick /imgs/in.png -resize 100x10
 | **Portability** | High (with arch match) | High |
 | **Use case** | Microservices, CI | Legacy apps, diff OS |
 
-**Source:** [Docker — Containers](https://www.docker.com/resources/what-container/)
+**Sources:** [Docker — Containers](https://www.docker.com/resources/what-container/)
 
 </details>
 
@@ -1629,9 +1592,9 @@ flowchart LR
   net[Network] <--> container
 ```
 
-**Key idea:** Image layers stack (union FS); only the container’s top layer is writable. Persist data in volumes, wire services with a bridge network.
+**Thoughts:** Image layers stack (union FS); only the container’s top layer is writable. Persist data in volumes, wire services with a bridge network.
 
-**Source:** [Concepts](https://docs.docker.com/get-started/docker-concepts/) · [Networking](https://docs.docker.com/engine/network/)
+**Sources:** [Concepts](https://docs.docker.com/get-started/docker-concepts/) · [Networking](https://docs.docker.com/engine/network/)
 
 </details>
 
@@ -1652,36 +1615,9 @@ flowchart LR
 - Build: `docker build [OPTIONS] PATH | URL | -`. Then `docker run` starts a **container** (writable layer + process) from the image.
 - Official guidance: one concern per container, no unused packages, pin base tags, sort multi-line `RUN` args, use `.dockerignore`, multi-stage for prod, `--no-cache` / `--pull` when you need a clean rebuild (cache is for reuse, not for every layer forever).
 
-**Cases:** Reproducible Node/nginx images; CI artifacts; CLI tools packaged as `ENTRYPOINT`; multi-stage SPA (build in Node, serve with nginx).
+`CMD ["node","app.js"]` (JSON array, double quotes) is PID 1 and gets `SIGTERM`. Shell form `CMD node app.js` runs via `/bin/sh -c`, so the shell is PID 1 and the app may miss stop signals.
 
-| Pros | Cons |
-|------|------|
-| Same runtime on laptop and server | Bad layer order → slow rebuilds |
-| Cache + multi-stage keep images small | `latest` tags and huge context bloat CI |
-| Recipe is versioned with the app | Secrets in `ARG`/`ENV` leak into image history |
-
-#### Instructions
-
-| Instruction | Role |
-|-------------|------|
-| `FROM` | Base image / new stage. Pin a tag (`node:20-alpine`), not bare `node` (`latest`). `AS name` for multi-stage. |
-| `RUN` | Shell command **at build time** — install packages, compile. Chain with `&&` in one `RUN` to cut layers. |
-| `COPY` | Copy from **build context** into the image. Prefer this. `COPY --from=stage` copies from another stage/image. |
-| `ADD` | Like `COPY`, plus remote URLs and auto-extract of local archives — easy to misuse; avoid unless you need that. |
-| `WORKDIR` | Working directory for later `RUN`/`COPY`/`CMD`/`ENTRYPOINT`. Created if missing. |
-| `ENV` | Env vars in the **image** (available at runtime and later build steps). |
-| `ARG` | **Build-time** vars (`docker build --build-arg KEY=val`). Not in the running container unless you copy into `ENV`. Visible in `docker history` — not for secrets. |
-| `USER` | UID/GID for later `RUN`/`CMD`/`ENTRYPOINT`. Create the user first; official `node` image already has `USER node`. |
-| `EXPOSE` | **Documents** the listen port. Does **not** publish to the host. Publish with `docker run -p host:container` or Compose `ports`. `-P` maps all `EXPOSE`d ports to random host ports. |
-| `VOLUME` | Declares a mount point (anonymous volume unless you mount something at run). Host path is **not** set in the Dockerfile — [Volumes](#volumes). |
-| `CMD` | Default command. Overridden by args after `docker run IMAGE …`. Only the last `CMD` counts. |
-| `ENTRYPOINT` | Main executable. `docker run` args are **appended** (exec form). Use with `CMD` for default flags. |
-| `HEALTHCHECK` | How the daemon probes liveness (`CMD` inside the container). |
-| `LABEL` | Image metadata. `STOPSIGNAL` / `SHELL` — stop signal and default shell. |
-
-**Exec vs shell form:** `CMD ["node","app.js"]` (JSON array, double quotes) is PID 1 and gets `SIGTERM`. Shell form `CMD node app.js` runs via `/bin/sh -c`, so the shell is PID 1 and the app may miss stop signals.
-
-**`ENTRYPOINT` vs `CMD`:** Treat the image as a binary → `ENTRYPOINT` (exec) + `CMD` as default args. Treat it as a generic box with a default process → `CMD` only (easy to override). `docker run image sh` replaces `CMD`, not exec-form `ENTRYPOINT`.
+Treat the image as a binary → `ENTRYPOINT` (exec) + `CMD` as default args. Treat it as a generic box with a default process → `CMD` only (easy to override). `docker run image sh` replaces `CMD`, not exec-form `ENTRYPOINT`.
 
 ```dockerfile
 ENTRYPOINT ["yaspeller"]
@@ -1725,7 +1661,48 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
-**Example — Node app (dev-shaped, cache-friendly):**
+**When to use:**
+
+Reproducible Node/nginx images; CI artifacts; CLI tools packaged as `ENTRYPOINT`; multi-stage SPA (build in Node, serve with nginx).
+
+#### Instructions
+
+| Instruction | Role |
+|-------------|------|
+| `FROM` | Base image / new stage. Pin a tag (`node:20-alpine`), not bare `node` (`latest`). `AS name` for multi-stage. |
+| `RUN` | Shell command **at build time** — install packages, compile. Chain with `&&` in one `RUN` to cut layers. |
+| `COPY` | Copy from **build context** into the image. Prefer this. `COPY --from=stage` copies from another stage/image. |
+| `ADD` | Like `COPY`, plus remote URLs and auto-extract of local archives — easy to misuse; avoid unless you need that. |
+| `WORKDIR` | Working directory for later `RUN`/`COPY`/`CMD`/`ENTRYPOINT`. Created if missing. |
+| `ENV` | Env vars in the **image** (available at runtime and later build steps). |
+| `ARG` | **Build-time** vars (`docker build --build-arg KEY=val`). Not in the running container unless you copy into `ENV`. Visible in `docker history` — not for secrets. |
+| `USER` | UID/GID for later `RUN`/`CMD`/`ENTRYPOINT`. Create the user first; official `node` image already has `USER node`. |
+| `EXPOSE` | **Documents** the listen port. Does **not** publish to the host. Publish with `docker run -p host:container` or Compose `ports`. `-P` maps all `EXPOSE`d ports to random host ports. |
+| `VOLUME` | Declares a mount point (anonymous volume unless you mount something at run). Host path is **not** set in the Dockerfile — [Volumes](#volumes). |
+| `CMD` | Default command. Overridden by args after `docker run IMAGE …`. Only the last `CMD` counts. |
+| `ENTRYPOINT` | Main executable. `docker run` args are **appended** (exec form). Use with `CMD` for default flags. |
+| `HEALTHCHECK` | How the daemon probes liveness (`CMD` inside the container). |
+| `LABEL` | Image metadata. `STOPSIGNAL` / `SHELL` — stop signal and default shell. |
+
+#### Common pitfalls
+
+- `EXPOSE 8080` ≠ `http://localhost:8080` — you still need `-p 8080:8080` (and the app must listen on `0.0.0.0`).
+- `sudo` in `RUN` — official bases already run as root; `sudo` often is not installed.
+- `USER alice` without creating `alice` → build/run fails.
+- Baking passwords into `ENV`/`ARG`; use runtime env, Compose secrets, or BuildKit `--secret`, not `docker history`-visible args.
+- `COPY . .` without `.dockerignore` (sends `.git`, `node_modules`, `.env`).
+- Shell-form `ENTRYPOINT` ignoring `CMD` and `docker run` args; app not PID 1 → `docker stop` waits then `SIGKILL`.
+- Unpinned `FROM node` and unnecessary packages (editors in a runtime image).
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Same runtime on laptop and server | Bad layer order → slow rebuilds |
+| Cache + multi-stage keep images small | `latest` tags and huge context bloat CI |
+| Recipe is versioned with the app | Secrets in `ARG`/`ENV` leak into image history |
+
+**Examples:**
 
 ```dockerfile
 # syntax=docker/dockerfile:1
@@ -1740,19 +1717,9 @@ EXPOSE 3000
 CMD ["node", "app.js"]
 ```
 
-**Common pitfalls:**
+**Thoughts:** Dockerfile = layered recipe; keep containers **stateless** (data in volumes), one concern per image, slim final stage.
 
-- `EXPOSE 8080` ≠ `http://localhost:8080` — you still need `-p 8080:8080` (and the app must listen on `0.0.0.0`).
-- `sudo` in `RUN` — official bases already run as root; `sudo` often is not installed.
-- `USER alice` without creating `alice` → build/run fails.
-- Baking passwords into `ENV`/`ARG`; use runtime env, Compose secrets, or BuildKit `--secret`, not `docker history`-visible args.
-- `COPY . .` without `.dockerignore` (sends `.git`, `node_modules`, `.env`).
-- Shell-form `ENTRYPOINT` ignoring `CMD` and `docker run` args; app not PID 1 → `docker stop` waits then `SIGKILL`.
-- Unpinned `FROM node` and unnecessary packages (editors in a runtime image).
-
-**Key idea:** Dockerfile = layered recipe; keep containers **stateless** (data in volumes), one concern per image, slim final stage.
-
-**Source:** [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) · [Best practices](https://docs.docker.com/build/building/best-practices/) · [Build context](https://docs.docker.com/build/concepts/context/)
+**Sources:** [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) · [Best practices](https://docs.docker.com/build/building/best-practices/) · [Build context](https://docs.docker.com/build/concepts/context/)
 
 </details>
 
@@ -1763,7 +1730,9 @@ CMD ["node", "app.js"]
 
 **Definition:** A container is a **running or stopped instance** of an image: namespaces + cgroups + a writable layer. The image stays read-only; PID 1 is usually `ENTRYPOINT` + `CMD`.
 
-**How it works:** Interview sequence: create → start (running) → optional pause/unpause → stop or kill → restart or remove.
+**How it works:**
+
+Interview sequence: create → start (running) → optional pause/unpause → stop or kill → restart or remove.
 
 ```mermaid
 flowchart LR
@@ -1799,13 +1768,17 @@ flowchart LR
 
 Restart policies (`--restart` / Compose `restart:`): `no` (default), `on-failure[:n]`, `always`, `unless-stopped`. Manual `stop` suppresses `always` until you start again. Exited containers stay in `docker ps -a` — a name conflict means an old stopped container still exists.
 
-**Cases:** Interview “describe the lifecycle”; K8s `SIGTERM` + Node graceful shutdown — [8_nodejs.md — SIGTERM](./8_nodejs.md#graceful-shutdown--sigterm).
+**When to use:**
 
-**Common pitfalls:** `rm` on a running container without `-f` fails; `pause` ≠ `stop` (process still exists); `docker compose down` keeps named volumes unless `-v`.
+Interview “describe the lifecycle”; K8s `SIGTERM` + Node graceful shutdown — [8_nodejs.md — SIGTERM](./8_nodejs.md#graceful-shutdown--sigterm).
 
-**Key idea:** Image is immutable; the writable layer and process are ephemeral — persist with volumes.
+#### Common pitfalls
 
-**Source:** [Running containers](https://docs.docker.com/get-started/docker-concepts/running-containers/) · [docker container CLI](https://docs.docker.com/reference/cli/docker/container/) · [Restart policies](https://docs.docker.com/engine/containers/start-containers-automatically/)
+`rm` on a running container without `-f` fails; `pause` ≠ `stop` (process still exists); `docker compose down` keeps named volumes unless `-v`.
+
+**Thoughts:** Image is immutable; the writable layer and process are ephemeral — persist with volumes.
+
+**Sources:** [Running containers](https://docs.docker.com/get-started/docker-concepts/running-containers/) · [docker container CLI](https://docs.docker.com/reference/cli/docker/container/) · [Restart policies](https://docs.docker.com/engine/containers/start-containers-automatically/)
 
 </details>
 
@@ -1828,18 +1801,24 @@ Restart policies (`--restart` / Compose `restart:`): `no` (default), `on-failure
 
 From the app’s view every type is just a directory or file. Overlay rule: mounting onto a **non-empty** container path **hides** the image files there (USB into `/mnt`). Exception: an **empty named volume** is **pre-filled** from the image (unless `volume-nocopy`).
 
-**Cases:** Persist Postgres; live-reload `./src`; keep credentials off the writable layer.
+**When to use:**
+
+Persist Postgres; live-reload `./src`; keep credentials off the writable layer.
+
+#### Common pitfalls
+
+Calling a bind mount a “volume”; storing prod data only in the writable layer; expecting macOS/Windows binds to be as fast as Linux volumes (Desktop uses a Linux VM).
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
 | Same path API inside the container | Different overlay, security, and portability rules per type |
 | Volumes do not bloat the image | Writable layer is slow and hard to extract |
 
-**Common pitfalls:** Calling a bind mount a “volume”; storing prod data only in the writable layer; expecting macOS/Windows binds to be as fast as Linux volumes (Desktop uses a Linux VM).
+**Thoughts:** Persist with **volumes**; edit host files with **bind mounts**; keep ephemeral/sensitive scratch in **tmpfs**.
 
-**Key idea:** Persist with **volumes**; edit host files with **bind mounts**; keep ephemeral/sensitive scratch in **tmpfs**.
-
-**Source:** [Docker — Storage](https://docs.docker.com/engine/storage/)
+**Sources:** [Docker — Storage](https://docs.docker.com/engine/storage/)
 
 </details>
 
@@ -1859,7 +1838,15 @@ From the app’s view every type is just a directory or file. Overlay rule: moun
 - SELinux `z` (shared among containers) and `Z` (private) exist only on `-v`. Never use `Z` on `/usr` or `/home`.
 - The path is on the **daemon** host. Desktop proxies native paths into the Linux VM.
 
-**Cases:** Share source / build artifacts; Docker’s own DNS via host `/etc/resolv.conf`; write generated files onto the host.
+**When to use:**
+
+Share source / build artifacts; Docker’s own DNS via host `/etc/resolv.conf`; write generated files onto the host.
+
+#### Common pitfalls
+
+Binding over `/usr` and breaking the image; `Z` on `/home`; Windows vs Unix paths; expecting `--mount` to auto-create the host dir.
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
@@ -1867,10 +1854,7 @@ From the app’s view every type is just a directory or file. Overlay rule: moun
 | Simple local DX | Container can mutate host files (`ro` / `readonly` to prevent) |
 | | Slow / missing FS events on Docker Desktop |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 docker run -d -it --name devtest \
@@ -1881,8 +1865,6 @@ docker run -d -it --name devtest -v "$(pwd)"/target:/app node:lts
 
 docker run --mount type=bind,src="$(pwd)"/target,dst=/app,readonly node:lts
 ```
-
-</details>
 
 ```json
 "Mounts": [{
@@ -1904,11 +1886,9 @@ services:
         target: /opt/app/static
 ```
 
-**Common pitfalls:** Binding over `/usr` and breaking the image; `Z` on `/home`; Windows vs Unix paths; expecting `--mount` to auto-create the host dir.
+**Thoughts:** A bind mount is a **host path glued into the container** — right for local source, risky for prod data.
 
-**Key idea:** A bind mount is a **host path glued into the container** — right for local source, risky for prod data.
-
-**Source:** [Docker — Bind mounts](https://docs.docker.com/engine/storage/bind-mounts/)
+**Sources:** [Docker — Bind mounts](https://docs.docker.com/engine/storage/bind-mounts/)
 
 </details>
 
@@ -1928,7 +1908,34 @@ services:
 - Dockerfile `VOLUME` only declares a mount point — you cannot set a host path there. Writes **after** `VOLUME` during build: discarded on the **legacy** builder; **kept with BuildKit**.
 - Compose top-level `volumes:` creates/attaches named volumes; `external: true` = already exists.
 
-**Cases:** DB data; share one dataset across containers; backup/migrate; high I/O on Docker Desktop (volume on the Linux VM); native Linux FS semantics for databases.
+Plugins or `local` + kernel mount options (NFS, CIFS). Driver options require `--mount`, not `-v`. Quote CSV-like `volume-opt` values.
+
+```bash
+docker service create -d --name nfs-service \
+  --mount 'type=volume,source=nfsvolume,target=/app,volume-driver=local,volume-opt=type=nfs,volume-opt=device=:/var/docker-nfs,volume-opt=o=addr=10.0.0.10' \
+  nginx:latest
+```
+
+**Backup / restore** (`--volumes-from` reuses another container’s volumes):
+
+```bash
+docker run -v /dbdata --name dbstore ubuntu /bin/bash
+docker run --rm --volumes-from dbstore -v "$(pwd)":/backup ubuntu tar cvf /backup/backup.tar /dbdata
+
+docker run -v /dbdata --name dbstore2 ubuntu /bin/bash
+docker run --rm --volumes-from dbstore2 -v "$(pwd)":/backup ubuntu \
+  bash -c "cd /dbdata && tar xvf /backup/backup.tar --strip 1"
+```
+
+**When to use:**
+
+DB data; share one dataset across containers; backup/migrate; high I/O on Docker Desktop (volume on the Linux VM); native Linux FS semantics for databases.
+
+#### Common pitfalls
+
+`compose down -v` deletes named volumes; anonymous volumes from image `VOLUME`; expecting Finder/Explorer UX; `RUN` after `VOLUME` on the legacy builder.
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
@@ -1936,7 +1943,7 @@ services:
 | Drivers: NFS, remote, extra processing | Unused volumes pile up until `prune` |
 | Empty volume can be pre-filled from the image | Not for live-editing a host source tree |
 
-**Example — CLI:**
+**Examples:**
 
 ```bash
 docker volume create my-vol
@@ -1974,30 +1981,9 @@ volumes:
   #   external: true
 ```
 
-**Drivers:** Plugins or `local` + kernel mount options (NFS, CIFS). Driver options require `--mount`, not `-v`. Quote CSV-like `volume-opt` values.
+**Thoughts:** Volumes are the **default production persistence** — Docker owns the bytes; containers only mount a path.
 
-```bash
-docker service create -d --name nfs-service \
-  --mount 'type=volume,source=nfsvolume,target=/app,volume-driver=local,volume-opt=type=nfs,volume-opt=device=:/var/docker-nfs,volume-opt=o=addr=10.0.0.10' \
-  nginx:latest
-```
-
-**Backup / restore** (`--volumes-from` reuses another container’s volumes):
-
-```bash
-docker run -v /dbdata --name dbstore ubuntu /bin/bash
-docker run --rm --volumes-from dbstore -v "$(pwd)":/backup ubuntu tar cvf /backup/backup.tar /dbdata
-
-docker run -v /dbdata --name dbstore2 ubuntu /bin/bash
-docker run --rm --volumes-from dbstore2 -v "$(pwd)":/backup ubuntu \
-  bash -c "cd /dbdata && tar xvf /backup/backup.tar --strip 1"
-```
-
-**Common pitfalls:** `compose down -v` deletes named volumes; anonymous volumes from image `VOLUME`; expecting Finder/Explorer UX; `RUN` after `VOLUME` on the legacy builder.
-
-**Key idea:** Volumes are the **default production persistence** — Docker owns the bytes; containers only mount a path.
-
-**Source:** [Docker — Volumes](https://docs.docker.com/engine/storage/volumes/) · [Dockerfile `VOLUME`](https://docs.docker.com/reference/dockerfile/#volume)
+**Sources:** [Docker — Volumes](https://docs.docker.com/engine/storage/volumes/) · [Dockerfile `VOLUME`](https://docs.docker.com/reference/dockerfile/#volume)
 
 </details>
 
@@ -2016,17 +2002,16 @@ docker run --rm --volumes-from dbstore2 -v "$(pwd)":/backup ubuntu \
 - `--tmpfs /app` is shorter (`size=64m`, `mode=1777`, `noexec`, …). Swarm services need `--mount`.
 - Overlay: tmpfs on a non-empty container path **hides** image files.
 
-**Cases:** Keys/certs in memory; lots of non-persistent writes without the writable layer.
+**When to use:** Keys/certs in memory; lots of non-persistent writes without the writable layer.
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
 | Fast; nothing left on disk by design | Linux only; one container; can OOM |
 | Better than baking secrets into the image | Can still hit swap |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 docker run -d -it --name tmptest \
@@ -2036,11 +2021,9 @@ docker run -d -it --name tmptest \
 docker run -d -it --name tmptest --tmpfs /app node:lts
 ```
 
-</details>
+**Thoughts:** tmpfs = **RAM scratch for one Linux container**, not a backup target.
 
-**Key idea:** tmpfs = **RAM scratch for one Linux container**, not a backup target.
-
-**Source:** [Docker — tmpfs](https://docs.docker.com/engine/storage/tmpfs/) · [Storage — named pipes](https://docs.docker.com/engine/storage/#named-pipes)
+**Sources:** [Docker — tmpfs](https://docs.docker.com/engine/storage/tmpfs/) · [Storage — named pipes](https://docs.docker.com/engine/storage/#named-pipes)
 
 </details>
 
@@ -2060,94 +2043,6 @@ docker run -d -it --name tmptest --tmpfs /app node:lts
 - Docker Desktop (Mac/Windows) ships Compose. Linux: install Compose v2 with Engine. Use **`docker compose`** (v2, Docker CLI plugin). Hyphenated `docker-compose` is the old v1 Python tool.
 - Top-level **`version`** is **obsolete** (warning only). Compose always validates against the current Compose Specification schema.
 - Other top-level keys: **`services`** (required), **`networks`**, **`volumes`**, **`configs`** (non-secret runtime files, no rebuild), **`secrets`** (sensitive files mounted into containers), **`name`**, **`include`**.
-
-**Cases:** Local full stack (app + DB + Redis), integration tests, small VPS / staging. Production at scale → Kubernetes (or Swarm `docker stack deploy` for `deploy.*` replica/placement semantics). Samples: [Awesome Compose](https://github.com/docker/awesome-compose).
-
-| Pros | Cons |
-|------|------|
-| One command for the whole stack | Not a cluster scheduler; no auto-scale like K8s |
-| Declarative, git-friendly YAML | `depends_on` waits for **start**, not “ready” (use healthchecks) |
-| DNS by service name; named volumes persist | `deploy.replicas` is Swarm/stack; local Compose uses `--scale` |
-
-**Example — WordPress + MySQL (two services, named volume):**
-
-```yaml
-# compose.yaml
-services:
-  db:
-    image: mysql:8.0
-    restart: always
-    volumes:
-      - db_data:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
-      MYSQL_ROOT_PASSWORD: somewordpress
-
-  wordpress:
-    image: wordpress:latest
-    restart: always
-    ports:
-      - "8000:80"
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
-    depends_on:
-      - db
-
-volumes:
-  db_data:
-```
-
-```bash
-docker compose up -d          # pull/build, create nets/volumes, start
-# site: http://localhost:8000
-docker compose down            # stop + remove containers and networks
-docker compose down -v         # also remove named volumes (DB data gone)
-```
-
-**Example — app + Postgres (build + named volume):**
-
-```yaml
-services:
-  api:
-    build:
-      context: ./services/api
-      dockerfile: Dockerfile.local
-    ports:
-      - "${HOST_API_PORT:-4000}:4000"
-    environment:
-      DATABASE_URL: postgres://postgres:secret@database:5432/app
-    env_file:
-      - ./services/api/.env
-    volumes:
-      - ./services/api/src:/app/src
-    depends_on:
-      - database
-
-  database:
-    image: postgres:16-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: app
-    ports:
-      - "${HOST_DB_PORT:-5555}:5432"
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-
-volumes:
-  pg_data:
-```
-
-#### Services
-
-Each key under `services` is an atomic unit: `image` and/or `build`, `ports`, `environment` / `env_file`, `volumes`, `networks`, `command` (overrides image `CMD` at **runtime**), `restart`, `depends_on`.
-
-**Build:**
 
 ```yaml
 services:
@@ -2178,7 +2073,7 @@ services:
     command: /bin/sh -c "while sleep 1000; do :; done"
 ```
 
-**`deploy` (Compose Deploy Spec):** `mode` (`replicated` / `global` / jobs), `replicas`, `resources.limits` / `reservations`, placement, rolling `update_config`. These describe **platform** deployment (Swarm `docker stack deploy`). Compose on a single engine does **not** spawn six replicas just because `deploy.replicas: 6` is in the file. Scale locally with `docker compose up --scale frontend=6`.
+`mode` (`replicated` / `global` / jobs), `replicas`, `resources.limits` / `reservations`, placement, rolling `update_config`. These describe **platform** deployment (Swarm `docker stack deploy`). Compose on a single engine does **not** spawn six replicas just because `deploy.replicas: 6` is in the file. Scale locally with `docker compose up --scale frontend=6`.
 
 **Resources** are a **hard cap** (`limits`) vs a **guarantee** (`reservations`) — they do **not** add up to a “peak”:
 
@@ -2251,7 +2146,11 @@ networks:
   express-mongo:
 ```
 
-**Common pitfalls:**
+**When to use:**
+
+Local full stack (app + DB + Redis), integration tests, small VPS / staging. Production at scale → Kubernetes (or Swarm `docker stack deploy` for `deploy.*` replica/placement semantics). Samples: [Awesome Compose](https://github.com/docker/awesome-compose).
+
+#### Common pitfalls
 
 - `docker-compose` (v1) vs `docker compose` (v2).
 - Putting `version: "3.9"` thinking it selects a schema — it is ignored.
@@ -2259,9 +2158,93 @@ networks:
 - `depends_on` without `healthcheck` / `condition: service_healthy` — app starts before MySQL accepts connections.
 - Binding DB data as a host folder on Docker Desktop can be slower/permission-awkward vs a named volume.
 
-**Key idea:** Compose is the YAML + CLI for a whole app: services on networks, data in volumes, one `up` / `down`.
+**Pluses and minuses:**
 
-**Source:** [Compose application model](https://docs.docker.com/compose/intro/compose-application-model/) · [Compose file](https://docs.docker.com/reference/compose-file/) · [Deploy spec](https://docs.docker.com/reference/compose-file/deploy/)
+| + | − |
+|------|------|
+| One command for the whole stack | Not a cluster scheduler; no auto-scale like K8s |
+| Declarative, git-friendly YAML | `depends_on` waits for **start**, not “ready” (use healthchecks) |
+| DNS by service name; named volumes persist | `deploy.replicas` is Swarm/stack; local Compose uses `--scale` |
+
+**Examples:**
+
+```yaml
+# compose.yaml
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: somewordpress
+
+  wordpress:
+    image: wordpress:latest
+    restart: always
+    ports:
+      - "8000:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+```
+
+```bash
+docker compose up -d          # pull/build, create nets/volumes, start
+# site: http://localhost:8000
+docker compose down            # stop + remove containers and networks
+docker compose down -v         # also remove named volumes (DB data gone)
+```
+
+```yaml
+services:
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile.local
+    ports:
+      - "${HOST_API_PORT:-4000}:4000"
+    environment:
+      DATABASE_URL: postgres://postgres:secret@database:5432/app
+    env_file:
+      - ./services/api/.env
+    volumes:
+      - ./services/api/src:/app/src
+    depends_on:
+      - database
+
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: app
+    ports:
+      - "${HOST_DB_PORT:-5555}:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
+```
+
+#### Services
+
+Each key under `services` is an atomic unit: `image` and/or `build`, `ports`, `environment` / `env_file`, `volumes`, `networks`, `command` (overrides image `CMD` at **runtime**), `restart`, `depends_on`.
+
+**Thoughts:** Compose is the YAML + CLI for a whole app: services on networks, data in volumes, one `up` / `down`.
+
+**Sources:** [Compose application model](https://docs.docker.com/compose/intro/compose-application-model/) · [Compose file](https://docs.docker.com/reference/compose-file/) · [Deploy spec](https://docs.docker.com/reference/compose-file/deploy/)
 
 </details>
 
@@ -2300,7 +2283,7 @@ export default defineConfig({
 });
 ```
 
-**Notes:** On macOS/Windows Docker Desktop, bind-mount performance is slow — use delegated/consistent flags or sync tools (Mutagen). On Linux, native mounts are fast.
+**Thoughts:** On macOS/Windows Docker Desktop, bind-mount performance is slow — use delegated/consistent flags or sync tools (Mutagen). On Linux, native mounts are fast.
 
 </details>
 <details>
@@ -2387,7 +2370,7 @@ docker compose logs -f api
 docker run -p HOST:CONTAINER myimage   # e.g. -p 5555:5432
 ```
 
-**Source:** [Docker CLI](https://docs.docker.com/reference/cli/docker/)
+**Sources:** [Docker CLI](https://docs.docker.com/reference/cli/docker/)
 
 </details>
 
@@ -2402,11 +2385,11 @@ docker run -p HOST:CONTAINER myimage   # e.g. -p 5555:5432
 | **Docker Swarm** | Built-in Docker clustering (declining adoption) |
 | **Kubernetes** | Production container orchestration at scale |
 
-**Notes:** Kubernetes is not part of Docker. Use Compose for dev; K8s (or managed: EKS, GKE, ECS) for production scale, rolling deploys, and self-healing.
+**Thoughts:** Kubernetes is not part of Docker. Use Compose for dev; K8s (or managed: EKS, GKE, ECS) for production scale, rolling deploys, and self-healing.
 
 ---
 
-**Source:** [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/)
+**Sources:** [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/)
 
 </details>
 
@@ -2429,24 +2412,6 @@ docker run -p HOST:CONTAINER myimage   # e.g. -p 5555:5432
 | **Data** | Shared database (usually) | Database per service |
 | **Team** | One team, one codebase | Teams per service |
 
-**Monolith — pros / cons:**
-
-| Pros | Cons |
-|------|------|
-| Simple to develop and deploy initially | Grows complex; tight coupling |
-| Easy local debugging | Single point of failure |
-| No network latency between modules | Scaling is all-or-nothing |
-| Transactions across modules are easy | Deploy risk increases with size |
-
-**Microservices — pros / cons:**
-
-| Pros | Cons |
-|------|------|
-| Independent deploy and scale | Distributed system complexity |
-| Technology diversity per service | Network latency, partial failures |
-| Team autonomy | Data consistency challenges (sagas, events) |
-| Fault isolation | Operational overhead (observability, CI/CD × N) |
-
 **When to use:**
 
 | Choose monolith | Choose microservices |
@@ -2456,11 +2421,29 @@ docker run -p HOST:CONTAINER myimage   # e.g. -p 5555:5432
 | Unclear domain boundaries | Different scaling needs per service |
 | Speed of iteration matters most | Mature DevOps / platform team exists |
 
-**Notes:** Start monolith, extract services when boundaries are clear and pain is real — not preemptively. "Microservices" without observability (tracing, logging, metrics) is a distributed monolith nightmare.
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Simple to develop and deploy initially | Grows complex; tight coupling |
+| Easy local debugging | Single point of failure |
+| No network latency between modules | Scaling is all-or-nothing |
+| Transactions across modules are easy | Deploy risk increases with size |
+
+| + | − |
+|------|------|
+| Independent deploy and scale | Distributed system complexity |
+| Technology diversity per service | Network latency, partial failures |
+| Team autonomy | Data consistency challenges (sagas, events) |
+| Fault isolation | Operational overhead (observability, CI/CD × N) |
+
+**Thoughts:**
+
+Start monolith, extract services when boundaries are clear and pain is real — not preemptively. "Microservices" without observability (tracing, logging, metrics) is a distributed monolith nightmare.
 
 ---
 
-**Source:** [ByteByteGo — Microservices](https://blog.bytebytego.com/p/a-beginners-guide-to-microservices)
+**Sources:** [ByteByteGo — Microservices](https://blog.bytebytego.com/p/a-beginners-guide-to-microservices)
 
 </details>
 
@@ -2475,19 +2458,18 @@ docker run -p HOST:CONTAINER myimage   # e.g. -p 5555:5432
 
 **Definition:** High-performance web server, reverse proxy, load balancer, and HTTP cache.
 
-| Pros | Cons |
+**When to use:** Serve static SPA builds, reverse proxy to Node/Go APIs, TLS termination, load balance across app instances.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Extremely fast static file serving | Config syntax is unique |
 | Reverse proxy to upstream apps | SSL termination config can be tricky |
 | Load balancing, rate limiting | Not a replacement for app-level auth |
 | Low memory footprint | |
 
-**When to use:** Serve static SPA builds, reverse proxy to Node/Go APIs, TLS termination, load balance across app instances.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```nginx
 server {
@@ -2509,11 +2491,9 @@ server {
 }
 ```
 
-</details>
+**Thoughts:** `try_files ... /index.html` is required for client-side routing SPAs. In production, terminate TLS at Nginx or a cloud load balancer, not in Node. What a web server is (HTTP, modules, gzip) → [6_web_api.md — Web server](./6_web_api.md#web-server). Full config / `reload` vs `restart` / FastCGI → [15_devops.md — Nginx configuration](./15_devops.md#nginx-configuration). Apache (`.htaccess`, `Require`) → [15_devops.md — Apache](./15_devops.md#apache-http-server).
 
-**Notes:** `try_files ... /index.html` is required for client-side routing SPAs. In production, terminate TLS at Nginx or a cloud load balancer, not in Node. What a web server is (HTTP, modules, gzip) → [6_web_api.md — Web server](./6_web_api.md#web-server). Full config / `reload` vs `restart` / FastCGI → [15_devops.md — Nginx configuration](./15_devops.md#nginx-configuration). Apache (`.htaccess`, `Require`) → [15_devops.md — Apache](./15_devops.md#apache-http-server).
-
-**Source:** [nginx.org](https://nginx.org/)
+**Sources:** [nginx.org](https://nginx.org/)
 
 </details>
 
@@ -2524,19 +2504,18 @@ server {
 
 **Definition:** In-memory data store used as database, cache, session store, message broker, and streaming engine.
 
-| Pros | Cons |
+**When to use:** Session storage, API response caching, rate limiting, pub/sub, leaderboards, real-time features.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Sub-millisecond latency | Data loss risk without persistence config |
 | Versatile (cache, pub/sub, queues) | Memory-bound — expensive at scale |
 | Simple key-value API | Not a replacement for a primary database |
 | TTL-based expiration | Cluster mode adds complexity |
 
-**When to use:** Session storage, API response caching, rate limiting, pub/sub, leaderboards, real-time features.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 import { createClient } from 'redis';
@@ -2549,11 +2528,9 @@ await redis.set('user:123', JSON.stringify(user), { EX: 300 });
 const cached = await redis.get('user:123');
 ```
 
-</details>
+**Thoughts:** Always set TTL on cache keys. Use Redis for ephemeral data; Postgres/MySQL for source of truth. Enable AOF/RDB persistence if data must survive restarts.
 
-**Notes:** Always set TTL on cache keys. Use Redis for ephemeral data; Postgres/MySQL for source of truth. Enable AOF/RDB persistence if data must survive restarts.
-
-**Source:** [redis.io](https://redis.io/)
+**Sources:** [redis.io](https://redis.io/)
 
 </details>
 
@@ -2564,18 +2541,20 @@ const cached = await redis.get('user:123');
 
 **Definition:** Software intermediary that routes messages between producers and consumers — enabling asynchronous, decoupled communication.
 
-| Pros | Cons |
+**When to use:** Microservices communication, background job processing, event-driven systems, fan-out notifications.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Decouples services | Added infrastructure complexity |
 | Handles traffic spikes (buffering) | Message ordering guarantees vary |
 | Enables event-driven architecture | Debugging async flows is harder |
 | Reliable delivery with persistence | Operational overhead |
 
-**When to use:** Microservices communication, background job processing, event-driven systems, fan-out notifications.
+**Thoughts:** Prefer a message broker when you need guaranteed delivery, buffering, or multiple consumers. Use direct HTTP for synchronous request/response with simple coupling.
 
-**Notes:** Prefer a message broker when you need guaranteed delivery, buffering, or multiple consumers. Use direct HTTP for synchronous request/response with simple coupling.
-
-**Source:** [RabbitMQ tutorials](https://www.rabbitmq.com/tutorials)
+**Sources:** [RabbitMQ tutorials](https://www.rabbitmq.com/tutorials)
 
 </details>
 
@@ -2584,7 +2563,9 @@ const cached = await redis.get('user:123');
 
 ### RabbitMQ
 
-**Definition:** Open-source message broker implementing AMQP. Routes messages from producers to consumers via exchanges and queues.
+**Definition:**
+
+Open-source message broker implementing AMQP. Routes messages from producers to consumers via exchanges and queues.
 
 | Concept | Definition |
 |---------|------------|
@@ -2594,19 +2575,18 @@ const cached = await redis.get('user:123');
 | **Binding** | Link between exchange and queue with routing key |
 | **Consumer** | Subscribes to a queue and processes messages |
 
-| Pros | Cons |
+**When to use:** Task queues, event broadcasting, work distribution, reliable async processing.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Mature, battle-tested | Erlang-based — niche ops knowledge |
 | Flexible routing (4 exchange types) | Slower than Redis pub/sub for simple cases |
 | Message acknowledgment & durability | Clustering setup is non-trivial |
 | Management UI | |
 
-**When to use:** Task queues, event broadcasting, work distribution, reliable async processing.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 import amqp from 'amqplib';
@@ -2628,11 +2608,9 @@ channel.consume('tasks', (msg) => {
 });
 ```
 
-</details>
+**Thoughts:** Use `durable: true` queues and `persistent: true` messages for reliability. Dead-letter exchanges (DLX) handle poison messages.
 
-**Notes:** Use `durable: true` queues and `persistent: true` messages for reliability. Dead-letter exchanges (DLX) handle poison messages.
-
-**Source:** [rabbitmq.com](https://www.rabbitmq.com/)
+**Sources:** [rabbitmq.com](https://www.rabbitmq.com/)
 
 </details>
 
@@ -2641,7 +2619,9 @@ channel.consume('tasks', (msg) => {
 
 ### Kafka vs RabbitMQ vs BullMQ
 
-**Definition:** Three ways to decouple producers from consumers. Pick by **delivery model**, not by hype.
+**Definition:**
+
+Three ways to decouple producers from consumers. Pick by **delivery model**, not by hype.
 
 | | RabbitMQ | Kafka | BullMQ |
 |---|----------|-------|--------|
@@ -2651,17 +2631,19 @@ channel.consume('tasks', (msg) => {
 | Throughput | Thousands–tens of k msg/s | Hundreds of k+ | Fine for typical Node jobs |
 | Ops | Erlang broker | Cluster, disk, partition key | Redis you already run |
 
-| Pros | Cons |
+**When to use:** Email/worker jobs → BullMQ. Complex routing + ack → RabbitMQ. Event log many teams consume at their own pace → Kafka. AWS managed: SQS ≈ queue, Kinesis/MSK ≈ log.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Rabbit: flexible routing, ack/nack | Not a replay log |
 | Kafka: replay, huge throughput, event sourcing | Operationally heavy; not a simple task queue |
 | BullMQ: tiny ops if Redis exists | Redis is the SPOF unless clustered |
 
-**Cases:** Email/worker jobs → BullMQ. Complex routing + ack → RabbitMQ. Event log many teams consume at their own pace → Kafka. AWS managed: SQS ≈ queue, Kinesis/MSK ≈ log.
+**Thoughts:** Queue = consume and forget. Log = consume and remember (offset).
 
-**Key idea:** Queue = consume and forget. Log = consume and remember (offset).
-
-**Source:** [Kafka intro](https://kafka.apache.org/intro) · [BullMQ](https://docs.bullmq.io/)
+**Sources:** [Kafka intro](https://kafka.apache.org/intro) · [BullMQ](https://docs.bullmq.io/)
 
 </details>
 
@@ -2676,19 +2658,18 @@ channel.consume('tasks', (msg) => {
 
 **Definition:** Open-source tool for developing, documenting, and testing UI components in isolation — outside the main application.
 
-| Pros | Cons |
+**When to use:** Design systems, component libraries, teams with designers reviewing UI states.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Develop components without running full app | Maintenance overhead (stories drift from code) |
 | Visual documentation for design system | Separate build config |
 | Interaction testing with `@storybook/test` | Can slow CI if not parallelized |
 | Chromatic integration for visual regression | |
 
-**When to use:** Design systems, component libraries, teams with designers reviewing UI states.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```tsx
 // Button.stories.tsx
@@ -2707,11 +2688,9 @@ export const Primary: Story = { args: { variant: 'primary', children: 'Click me'
 export const Disabled: Story = { args: { variant: 'primary', children: 'Disabled', disabled: true } };
 ```
 
-</details>
+**Thoughts:** Integrate Storybook build into CI to catch broken stories. Use Chromatic or Lost Pixel for visual regression. Co-locate stories with components (`Button.stories.tsx` next to `Button.tsx`).
 
-**Notes:** Integrate Storybook build into CI to catch broken stories. Use Chromatic or Lost Pixel for visual regression. Co-locate stories with components (`Button.stories.tsx` next to `Button.tsx`).
-
-**Source:** [storybook.js.org](https://storybook.js.org/)
+**Sources:** [storybook.js.org](https://storybook.js.org/)
 
 </details>
 
@@ -2722,19 +2701,18 @@ export const Disabled: Story = { args: { variant: 'primary', children: 'Disabled
 
 **Definition:** OpenAPI Specification (OAS) is a machine-readable format for describing REST API endpoints. Swagger is the tooling ecosystem (UI, Editor, Codegen) built around OAS.
 
-| Pros | Cons |
+**When to use:** REST APIs with multiple consumers, frontend/backend team separation, public APIs.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Single source of truth for API contract | Spec can drift from implementation |
 | Auto-generated docs (Swagger UI) | Codegen output needs cleanup |
 | Client SDK generation | Not ideal for non-REST protocols (GraphQL, gRPC) |
 | Contract testing between frontend/backend | |
 
-**When to use:** REST APIs with multiple consumers, frontend/backend team separation, public APIs.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```yaml
 # openapi.yaml
@@ -2767,16 +2745,16 @@ components:
         name: { type: string }
 ```
 
-</details>
-
 ```bash
 # Generate TypeScript client
 npx openapi-typescript openapi.yaml -o src/api/schema.d.ts
 ```
 
-**Notes:** Generate types from the spec, don't hand-write API types. Validate server responses against the spec in integration tests. Swagger UI is for exploration; OpenAPI spec is the contract.
+**Thoughts:** Generate types from the spec, don't hand-write API types. Validate server responses against the spec in integration tests. Swagger UI is for exploration; OpenAPI spec is the contract.
 
-**Source:** [swagger.io/specification](https://swagger.io/specification/)
+**Sources:**
+
+[swagger.io/specification](https://swagger.io/specification/)
 
 ---
 
@@ -2820,7 +2798,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **How it works:** Git event → pipeline (lint/test/build) → artifact → staging → gated or automatic prod. Wider loop also includes operate and plan. Clarify “CD” as delivery vs deployment.
 
-**Source:** [GitHub Actions — Understanding GitHub Actions](https://docs.github.com/en/actions/get-started/understand-github-actions)
+**Sources:** [GitHub Actions — Understanding GitHub Actions](https://docs.github.com/en/actions/get-started/understand-github-actions)
 
 </details>
 
@@ -2829,7 +2807,9 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 ### CI vs CD vs Continuous Delivery?
 
-**Definition:** **CI** — automated build + test on each change. **Continuous Delivery** — deployable artifact, manual prod gate. **Continuous Deployment** — auto-deploy to prod.
+**Definition:**
+
+**CI** — automated build + test on each change. **Continuous Delivery** — deployable artifact, manual prod gate. **Continuous Deployment** — auto-deploy to prod.
 
 | Model | Deployment |
 |-------|------------|
@@ -2837,7 +2817,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 | Continuous Delivery | Manual / approval |
 | Continuous Deployment | Automatic |
 
-**Source:** [ByteByteGo — CI/CD](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
+**Sources:** [ByteByteGo — CI/CD](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
 
 </details>
 
@@ -2850,7 +2830,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **How it works:** YAML adds comments, optional quotes, indentation instead of `{}`/`[]`, and anchors. Indent with spaces (never tabs). `<<: *anchor` merge is YAML 1.1 — still common in CI.
 
-**Source:** [YAML 1.2.2 spec](https://yaml.org/spec/1.2.2/)
+**Sources:** [YAML 1.2.2 spec](https://yaml.org/spec/1.2.2/)
 
 </details>
 
@@ -2861,7 +2841,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **Definition:** Webpack bundles the entire app — flexible but slow HMR. Vite serves native ESM in dev and Rollup for prod — faster DX.
 
-**Source:** [vite.dev](https://vite.dev/) · [webpack.js.org](https://webpack.js.org/)
+**Sources:** [vite.dev](https://vite.dev/) · [webpack.js.org](https://webpack.js.org/)
 
 </details>
 
@@ -2870,7 +2850,9 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 ### dev vs prod build?
 
-**Definition:** Dev optimizes feedback speed; prod optimizes size, caching, and runtime.
+**Definition:**
+
+Dev optimizes feedback speed; prod optimizes size, caching, and runtime.
 
 | Dev | Prod |
 |-----|------|
@@ -2878,7 +2860,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 | Inline source maps | Hashed filenames |
 | No minification | Code splitting |
 
-**Source:** [Vite — Building for production](https://vite.dev/guide/build.html)
+**Sources:** [Vite — Building for production](https://vite.dev/guide/build.html)
 
 </details>
 
@@ -2889,7 +2871,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **Definition:** Dead-code elimination — bundler removes unused ES module exports.
 
-**Source:** [Webpack — Tree shaking](https://webpack.js.org/guides/tree-shaking/)
+**Sources:** [Webpack — Tree shaking](https://webpack.js.org/guides/tree-shaking/)
 
 </details>
 
@@ -2900,7 +2882,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **Definition:** Filesystem layers come from `FROM`, `RUN`, `COPY`, and `ADD`. Copy `package*.json` before source for cache hits. Multi-stage builds produce slim runtime images. Full notes: [Dockerfile](#dockerfile).
 
-**Source:** [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) · [Best practices](https://docs.docker.com/build/building/best-practices/)
+**Sources:** [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) · [Best practices](https://docs.docker.com/build/building/best-practices/)
 
 </details>
 
@@ -2913,7 +2895,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **How it works:** Exec form JSON arrays. `docker run image extra` **replaces** `CMD` and **appends** to exec-form `ENTRYPOINT`. Shell-form `ENTRYPOINT` ignores extra args and often is not PID 1.
 
-**Key idea:** CLI-tool image → `ENTRYPOINT` + overridable `CMD`. App with an easy override → `CMD` only.
+**Thoughts:** CLI-tool image → `ENTRYPOINT` + overridable `CMD`. App with an easy override → `CMD` only.
 
 </details>
 
@@ -2924,7 +2906,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **Definition:** Create → start (running) → optional pause → stop (`SIGTERM` then `SIGKILL`) → remove. `docker run` = create + start. Full notes: [Container lifecycle](#container-lifecycle).
 
-**Key idea:** Stopped containers still occupy a name until `docker rm` / `--rm`.
+**Thoughts:** Stopped containers still occupy a name until `docker rm` / `--rm`.
 
 </details>
 
@@ -2937,9 +2919,9 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **How it works:** Empty named volume ← copy image files in; bind/tmpfs ← **hide** files at that path. Full notes: [Docker storage mounts](#docker-storage-mounts).
 
-**Key idea:** Prod data → volumes. Laptop source → bind. Secrets/scratch → tmpfs.
+**Thoughts:** Prod data → volumes. Laptop source → bind. Secrets/scratch → tmpfs.
 
-**Source:** [Docker — Storage](https://docs.docker.com/engine/storage/)
+**Sources:** [Docker — Storage](https://docs.docker.com/engine/storage/)
 
 </details>
 
@@ -2952,7 +2934,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **How it works:** `services` required; `version` obsolete. Service names are DNS. `depends_on` ≠ ready. Local scale: `--scale`, not Swarm `deploy.replicas`.
 
-**Key idea:** One file, one project — not Kubernetes.
+**Thoughts:** One file, one project — not Kubernetes.
 
 </details>
 
@@ -2963,7 +2945,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **Definition:** Lockfile with exact dependency tree for reproducible installs. Use `npm ci` in CI, `npm install` in local dev.
 
-**Source:** [npm — package-lock.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-lock-json)
+**Sources:** [npm — package-lock.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-lock-json)
 
 </details>
 

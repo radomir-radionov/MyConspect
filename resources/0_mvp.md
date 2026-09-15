@@ -55,9 +55,9 @@ Questions on engineering judgment — common in senior and full-stack interviews
 - Versioning rules: additive changes are safe; removing/renaming fields is breaking.
 - Runtime validation (Zod) at boundaries where types are erased.
 
-**Cases:** REST API DTOs · Kafka event schemas · GraphQL schema as contract.
+**When to use:** REST API DTOs · Kafka event schemas · GraphQL schema as contract.
 
-**Key idea:** *Contract = both sides know what to send and expect — types and docs enforce it.*
+**Thoughts:** *Contract = both sides know what to send and expect — types and docs enforce it.*
 
 **See also:** [6_web_api.md — REST contract](./6_web_api.md#interview-practice) · [5_ts.md](./5_ts.md)
 
@@ -78,7 +78,7 @@ Questions on engineering judgment — common in senior and full-stack interviews
 
 **Interview framing:** Distinguish **vertical** (bigger server) vs **horizontal** (more instances + load balancer). Mention caching, CDN, async queues, DB read replicas.
 
-**Key idea:** *Scale when you have evidence of need — but design so you're not blocked when growth arrives.*
+**Thoughts:** *Scale when you have evidence of need — but design so you're not blocked when growth arrives.*
 
 **See also:** [0_system_design.md — Load balancing, caching](./0_system_design.md#interview-practice)
 
@@ -98,7 +98,7 @@ Questions on engineering judgment — common in senior and full-stack interviews
 | Fewer integration bugs | Frontend/backend share generated types |
 | Faster onboarding | IDE autocomplete explains the codebase |
 
-**Key idea:** *Types scale communication — critical when more than one person touches the code.*
+**Thoughts:** *Types scale communication — critical when more than one person touches the code.*
 
 **See also:** [5_ts.md — Why TypeScript in large projects](./5_ts.md#interview-practice)
 
@@ -128,7 +128,7 @@ Questions on engineering judgment — common in senior and full-stack interviews
 | Typed API boundary | OpenAPI + orval + Zod |
 | Simple global state | Zustand over Redux if team is small |
 
-**Key idea:** *Best tool = fits constraints and team — not the trendiest name on Twitter.*
+**Thoughts:** *Best tool = fits constraints and team — not the trendiest name on Twitter.*
 
 </details>
 
@@ -152,7 +152,7 @@ Questions on engineering judgment — common in senior and full-stack interviews
 - Compliance, security, or uptime SLAs apply
 - The bet is **[AI-first](./0_ai.md#ai-first-approach)** — a clickable UI without a model loop + evals is a demo, not an MVP
 
-**Key idea:** *MVP = validate; architecture = sustain — don't gold-plate before you know what to build.*
+**Thoughts:** *MVP = validate; architecture = sustain — don't gold-plate before you know what to build.*
 
 </details>
 
@@ -175,7 +175,7 @@ Questions on engineering judgment — common in senior and full-stack interviews
 
 **Principles:** SOLID, small functions, meaningful names, tests at boundaries, delete dead code.
 
-**Key idea:** *Good code is working code your teammate can change confidently.*
+**Thoughts:** *Good code is working code your teammate can change confidently.*
 
 **See also:** [0_system_design.md §7 — SOLID](./0_system_design.md#7-principles--patterns)
 
@@ -195,8 +195,8 @@ Questions on engineering judgment — common in senior and full-stack interviews
 | Onboarding and incident speed | Docs rot if not next to the change |
 | ADRs stop re-litigating decisions | Over-documenting an MVP wastes time |
 
-**Cases:** New hire day-one. 3am rollback. Interview: “I write ADRs for irreversible choices and keep OpenAPI as the contract.”
+**When to use:** New hire day-one. 3am rollback. Interview: “I write ADRs for irreversible choices and keep OpenAPI as the contract.”
 
-**Key idea:** Docs live next to the code that they describe.
+**Thoughts:** Docs live next to the code that they describe.
 
 </details>

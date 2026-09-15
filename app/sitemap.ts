@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { TRACKS, TOPICS, topicHref } from "@/lib/content/catalog";
+import { INSTRUCTIONS_HREF } from "@/lib/content/nav";
 import { siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -27,5 +28,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [home, ...tracks, ...topics];
+  const instructions: MetadataRoute.Sitemap[number] = {
+    url: `${base}${INSTRUCTIONS_HREF}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.4,
+  };
+
+  return [home, instructions, ...tracks, ...topics];
 }

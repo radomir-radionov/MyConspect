@@ -247,11 +247,11 @@ cat (Get-PSReadlineOption).HistorySavePath
 - If it is fast locally: CPU throttle 4× / 6×, or remote-debug a real Android phone.
 - **Application → Back/forward cache → Test** — whether the page can use **bfcache** (instant restore on Back/Forward; LCP/FCP/CLS often ~0). Chrome lists blockers. `unload` / `beforeunload` often break it — use `pagehide`. `Cache-Control: no-store` can too.
 
-**Cases:** Local reproduction of a field INP/CLS/LCP regression before writing a ticket.
+**When to use:** Local reproduction of a field INP/CLS/LCP regression before writing a ticket.
 
-**Key idea:** DevTools explains *why*; CrUX p75 decides *if it shipped*.
+**Thoughts:** DevTools explains *why*; CrUX p75 decides *if it shipped*.
 
-**Source:** [web.dev — TBT](https://web.dev/articles/tbt) · [Chrome DevTools Performance](https://developer.chrome.com/docs/devtools/performance)
+**Sources:** [web.dev — TBT](https://web.dev/articles/tbt) · [Chrome DevTools Performance](https://developer.chrome.com/docs/devtools/performance)
 
 </details>
 

@@ -1,11 +1,18 @@
 import { marked } from "marked";
 import sanitizeHtml from "sanitize-html";
 import { hrefForFile } from "./catalog";
+import { structureConceptBody } from "./concept-slots";
+import { highlightMarkdownFences } from "./highlight";
 
 export type Concept = {
   readonly id: string;
   readonly title: string;
   readonly html: string;
+};
+
+export type ConceptBlock = {
+  readonly title: string;
+  readonly body: string;
 };
 
 export type ParsedTopic = {
@@ -30,8 +37,9 @@ const SKIP_TITLES = new Set([
 const CONCEPT_MARKERS = [
   "**Definition:**",
   "**How it works:**",
-  "**Key idea:**",
   "**When to use:**",
+  "**Thoughts:**",
+  "**Key idea:**",
 ];
 
 marked.setOptions({ gfm: true, breaks: false });
@@ -70,19 +78,31 @@ const SANITIZE: sanitizeHtml.IOptions = {
     img: ["src", "alt", "title", "width", "height"],
     td: ["colspan", "rowspan", "align"],
     th: ["colspan", "rowspan", "align"],
-    code: ["class"],
-    pre: ["class"],
+    code: ["class", "style"],
+    pre: ["class", "style", "tabindex"],
+    span: ["class", "style"],
     "*": ["id", "class"],
   },
   allowedSchemes: ["http", "https", "mailto"],
   allowProtocolRelative: false,
+  parseStyleAttributes: false,
 };
 
-export function parseTopicMarkdown(markdown: string): ParsedTopic {
+export type ConceptOutline = {
+  readonly id: string;
+  readonly title: string;
+};
+
+export function parseTopicOutline(markdown: string): readonly ConceptOutline[] {
+  const rewritten = rewriteNoteLinks(markdown);
+  return outlineFromBlocks(collectConceptBlocks(rewritten));
+}
+
+export async function parseTopicMarkdown(markdown: string): Promise<ParsedTopic> {
   const rewritten = rewriteNoteLinks(markdown);
   const title = extractH1(rewritten) ?? "Topic";
   const description = extractDescription(rewritten);
-  const concepts = collectConcepts(rewritten);
+  const concepts = await collectConcepts(rewritten);
   return { title, description, concepts };
 }
 
@@ -158,16 +178,15 @@ function extractDescription(markdown: string): string {
   return text.slice(0, 280) || "Study notes.";
 }
 
-function collectConcepts(markdown: string): Concept[] {
-  const usedIds = new Set<string>();
-  const concepts: Concept[] = [];
+export function collectConceptBlocks(markdown: string): ConceptBlock[] {
+  const blocks: ConceptBlock[] = [];
 
   for (const block of extractTopLevelDetails(markdown)) {
     const title = stripMd(block.title);
     if (shouldSkipTitle(title) || !looksLikeConcept(block.body, title)) {
       continue;
     }
-    concepts.push(toConcept(title, block.body, usedIds));
+    blocks.push({ title, body: stripDuplicateTitleHeading(title, block.body) });
   }
 
   const leftover = maskTopLevelDetails(markdown);
@@ -175,18 +194,34 @@ function collectConcepts(markdown: string): Concept[] {
     if (shouldSkipTitle(heading.title) || !looksLikeConcept(heading.body, heading.title)) {
       continue;
     }
-    concepts.push(toConcept(heading.title, heading.body, usedIds));
+    blocks.push({
+      title: heading.title,
+      body: stripDuplicateTitleHeading(heading.title, heading.body),
+    });
   }
 
+  return blocks;
+}
+
+async function collectConcepts(markdown: string): Promise<Concept[]> {
+  const usedIds = new Set<string>();
+  const concepts: Concept[] = [];
+  for (const block of collectConceptBlocks(markdown)) {
+    concepts.push({
+      id: uniqueId(slugify(block.title), usedIds),
+      title: block.title,
+      html: await renderHtml(block.body),
+    });
+  }
   return concepts;
 }
 
-function toConcept(title: string, body: string, usedIds: Set<string>): Concept {
-  return {
-    id: uniqueId(slugify(title), usedIds),
-    title,
-    html: renderHtml(body),
-  };
+function outlineFromBlocks(blocks: readonly ConceptBlock[]): ConceptOutline[] {
+  const usedIds = new Set<string>();
+  return blocks.map((block) => ({
+    id: uniqueId(slugify(block.title), usedIds),
+    title: block.title,
+  }));
 }
 
 function uniqueId(base: string, used: Set<string>): string {
@@ -371,9 +406,33 @@ function stripFirstSummary(inner: string): string {
   return inner.replace(/<summary\b[^>]*>[\s\S]*?<\/summary>/i, "").trim();
 }
 
-function renderHtml(markdown: string): string {
-  const parsed = marked.parse(markdown, { async: false });
+function normalizeTitle(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[–—−]/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function stripDuplicateTitleHeading(title: string, body: string): string {
+  const match = body.match(/^(?:\s*\n)*#{2,3}\s+(.+?)(?:\n+|$)/);
+  if (!match) {
+    return body;
+  }
+  if (normalizeTitle(stripMd(match[1])) !== normalizeTitle(title)) {
+    return body;
+  }
+  return body.slice(match[0].length);
+}
+
+async function renderFragment(markdown: string): Promise<string> {
+  const withCode = await highlightMarkdownFences(markdown);
+  const parsed = marked.parse(withCode, { async: false });
   return sanitizeHtml(parsed, SANITIZE);
+}
+
+async function renderHtml(markdown: string): Promise<string> {
+  return structureConceptBody(markdown, renderFragment);
 }
 
 function stripMd(value: string): string {

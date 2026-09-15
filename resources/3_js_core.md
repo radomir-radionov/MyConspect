@@ -21,6 +21,8 @@ Covers ECMAScript fundamentals: types, scope, operators, control flow, functions
 
 ### Sections
 
+> Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
+
 - [Core](#core) · [Memory: stack and heap](#memory-stack-heap)
 - [Data types](#data-types)
 - [Scope & closures](#scope-closures)
@@ -36,19 +38,23 @@ Topics also covered: **plain objects**, **strings**, **Symbol**, **JSON**, **sta
 
 **Definition:** JavaScript is dynamically typed; values have runtime types and may coerce implicitly. See **Data types** for the full type table, interesting cases, and coercion traps.
 
-| Approach                        | Pros                       | Cons                                           |
+**When to use:** `===` by default; `value == null` only when you mean null or undefined; `Map` when keys are non-strings.
+
+**Pluses and minuses:**
+
+| Approach                        | +                       | −                                           |
 | ------------------------------- | -------------------------- | ---------------------------------------------- |
 | `===` / `!==`                   | Predictable comparisons    | Verbose when null-checking both null/undefined |
 | `==` / `!=`                     | Shorter legacy null checks | Surprising coercion (`'' == 0`)                |
 | Explicit `Number()`, `String()` | Clear intent               | Extra boilerplate                              |
 
-**When to use:** `===` by default; `value == null` only when you mean null or undefined; `Map` when keys are non-strings.
-
-**Source:** [javascript.info/types](https://learn.javascript.ru/types) · [comparison](https://learn.javascript.ru/comparison)
+**Sources:** [javascript.info/types](https://learn.javascript.ru/types) · [comparison](https://learn.javascript.ru/comparison)
 
 ### Functions & scope
 
-**Definition:** Functions are first-class values with lexical scope; closures retain outer bindings. `this` is set by call site (except arrow functions).
+**Definition:**
+
+Functions are first-class values with lexical scope; closures retain outer bindings. `this` is set by call site (except arrow functions).
 
 | Concept       | Key rule                                           |
 | ------------- | -------------------------------------------------- |
@@ -59,10 +65,7 @@ Topics also covered: **plain objects**, **strings**, **Symbol**, **JSON**, **sta
 
 **When to use:** Closures for factories and encapsulation; `const` by default; arrow functions for callbacks that need outer `this`.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function makeAdder(n) {
@@ -72,13 +75,13 @@ const add5 = makeAdder(5);
 add5(3); // 8
 ```
 
-</details>
-
-**Source:** [javascript.info/closure](https://learn.javascript.ru/closure) · [arrow-functions](https://learn.javascript.ru/arrow-functions-basics)
+**Sources:** [javascript.info/closure](https://learn.javascript.ru/closure) · [arrow-functions](https://learn.javascript.ru/arrow-functions-basics)
 
 ### Modules & iterators
 
-**Definition:** ESM (`import`/`export`) provides static modules; iterables expose `Symbol.iterator` for `for...of`, spread, and destructuring.
+**Definition:**
+
+ESM (`import`/`export`) provides static modules; iterables expose `Symbol.iterator` for `for...of`, spread, and destructuring.
 
 | Feature     | Use when                                          |
 | ----------- | ------------------------------------------------- |
@@ -87,10 +90,7 @@ add5(3); // 8
 | Generators  | Lazy sequences, custom iteration protocol         |
 | `Map`/`Set` | Non-string keys, uniqueness, frequent add/delete  |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // math.js
@@ -105,61 +105,55 @@ function* range(n) {
 for (const x of range(3)) console.log(x); // 0, 1, 2
 ```
 
-</details>
-
-**Source:** [javascript.info/modules-intro](https://learn.javascript.ru/modules-intro) · [iterable](https://learn.javascript.ru/iterable)
+**Sources:** [javascript.info/modules-intro](https://learn.javascript.ru/modules-intro) · [iterable](https://learn.javascript.ru/iterable)
 
 ### JavaScript vs ECMAScript
 
 **Definition:** ECMAScript is the language specification (ECMA-262); JavaScript is an implementation that conforms to it (V8, SpiderMonkey, JavaScriptCore).
 
-| Pros (JS ecosystem)                   | Cons                                 |
+**When to use:** Default language for web UI, SSR, tooling, and full-stack JS teams.
+
+**Pluses and minuses:**
+
+| + (JS ecosystem)                   | −                                 |
 | ------------------------------------- | ------------------------------------ |
 | Runs everywhere (browser, Node, Deno) | Implementation quirks across engines |
 | Massive ecosystem                     | Dynamic typing footguns              |
 
-**When to use:** Default language for web UI, SSR, tooling, and full-stack JS teams.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // .mjs = ES module file (strict mode by default)
 export const version = "ES2024";
 ```
 
-</details>
+**Thoughts:** Engines parse the whole script (syntax errors abort before any line runs) then JIT: interpreter first, optimizing compiler for hot paths. “JS is interpreted” is oversimplified — see [JavaScript engine pipeline](#javascript-engine-pipeline).
 
-**Notes:** Engines parse the whole script (syntax errors abort before any line runs) then JIT: interpreter first, optimizing compiler for hot paths. “JS is interpreted” is oversimplified — see [JavaScript engine pipeline](#javascript-engine-pipeline).
-
-**Source:** [javascript.info/intro](https://learn.javascript.ru/intro)
+**Sources:** [javascript.info/intro](https://learn.javascript.ru/intro)
 
 ### Strict mode
 
 **Definition:** `"use strict"` enables a restricted variant that catches silent errors and disables unsafe features.
 
-| Pros                        | Cons                     |
+**When to use:** All new modules (ESM is strict by default); enable in legacy IIFE wrappers.
+
+**Pluses and minuses:**
+
+| +                        | −                     |
 | --------------------------- | ------------------------ |
 | Prevents accidental globals | May break legacy scripts |
 | Safer `this` in functions   | Slightly stricter syntax |
 
-**When to use:** All new modules (ESM is strict by default); enable in legacy IIFE wrappers.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 "use strict";
 // mistypedVar = 1; // ReferenceError
 ```
 
-</details>
+**Sources:**
 
-**Source:** [javascript.info/strict-mode](https://learn.javascript.ru/strict-mode)
+[javascript.info/strict-mode](https://learn.javascript.ru/strict-mode)
 
 ---
 
@@ -172,7 +166,9 @@ export const version = "ES2024";
 
 ### JavaScript & ECMAScript
 
-**Definition:** ECMAScript is the standardized language spec; JavaScript is a conforming implementation with host APIs (DOM in browsers, `fs` in Node).
+**Definition:**
+
+ECMAScript is the standardized language spec; JavaScript is a conforming implementation with host APIs (DOM in browsers, `fs` in Node).
 
 | Trait     | Detail                                    |
 | --------- | ----------------------------------------- |
@@ -181,14 +177,7 @@ export const version = "ES2024";
 | Execution | JIT compilation in modern engines         |
 | Modules   | `.mjs` or `type="module"` for ESM         |
 
-**Key idea:** Host environments add APIs; the language itself is defined by ECMA-262.
-
-**Notes:** Brendan Eich created the first engine (SpiderMonkey) in 1995. Today V8, SpiderMonkey, and JavaScriptCore all implement the same spec with minor edge-case differences.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // ECMAScript module — strict by default
@@ -197,9 +186,13 @@ export function greet(name) {
 }
 ```
 
-</details>
+**Thoughts:**
 
-**Source:** [javascript.info/intro](https://learn.javascript.ru/intro)
+Host environments add APIs; the language itself is defined by ECMA-262.
+
+Brendan Eich created the first engine (SpiderMonkey) in 1995. Today V8, SpiderMonkey, and JavaScriptCore all implement the same spec with minor edge-case differences.
+
+**Sources:** [javascript.info/intro](https://learn.javascript.ru/intro)
 
 </details>
 
@@ -208,7 +201,9 @@ export function greet(name) {
 
 ### Strict mode
 
-**Definition:** `"use strict"` opts into stricter parsing and runtime behavior: no accidental globals, duplicate params forbidden, `delete` on non-configurable properties throws.
+**Definition:**
+
+`"use strict"` opts into stricter parsing and runtime behavior: no accidental globals, duplicate params forbidden, `delete` on non-configurable properties throws.
 
 | Restricted            | Effect                                  |
 | --------------------- | --------------------------------------- |
@@ -219,10 +214,7 @@ export function greet(name) {
 
 **When to use:** All new code. Place at top of script or first line of function for local strict mode.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 "use strict";
@@ -231,9 +223,7 @@ function demo() {
 }
 ```
 
-</details>
-
-**Source:** [javascript.info/strict-mode](https://learn.javascript.ru/strict-mode)
+**Sources:** [javascript.info/strict-mode](https://learn.javascript.ru/strict-mode)
 
 </details>
 
@@ -259,23 +249,26 @@ function demo() {
 | Profiler            | Finds hot functions       |
 | Optimizing compiler | Emits faster machine code |
 
-**Cases:** Interview “interpreted vs compiled”; explain why syntax errors vs `ReferenceError` differ; why hot loops get faster after warmup.
+**When to use:**
+
+Interview “interpreted vs compiled”; explain why syntax errors vs `ReferenceError` differ; why hot loops get faster after warmup.
+
+#### Common pitfalls
+
+Calling JS “just interpreted” or “just compiled”; mixing engine JIT with Babel transpile.
+
+**Pluses and minuses:**
 
 | + | − |
 | --- | --- |
 | Fast startup + later peak speed | Type speculation can deoptimize |
 | Syntax errors fail the whole parse | “Interpreted” / “compiled” labels confuse |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```text
 Source → Parser → AST → Interpreter (bytecode) → Profiler → Compiler (optimized code)
 ```
-
-</details>
 
 ```js
 console.log("this never runs");
@@ -291,9 +284,9 @@ function praise(name) {
 }
 ```
 
-**Common pitfalls:** Calling JS “just interpreted” or “just compiled”; mixing engine JIT with Babel transpile.
+**Thoughts:**
 
-**Key idea:** JIT combines fast startup (interpreter) with peak performance (compiler). Babel transpiles modern syntax to older ECMAScript for older runtimes — it is not the same as the engine JIT.
+JIT combines fast startup (interpreter) with peak performance (compiler). Babel transpiles modern syntax to older ECMAScript for older runtimes — it is not the same as the engine JIT.
 
 | Engine         | Host               |
 | -------------- | ------------------ |
@@ -301,7 +294,7 @@ function praise(name) {
 | SpiderMonkey   | Firefox            |
 | JavaScriptCore | Safari             |
 
-**Source:** [javascript.info/intro](https://learn.javascript.ru/intro) · [MDN — interpreted vs compiled](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [MDN JIT](https://developer.mozilla.org/en-US/docs/Glossary/Just_in_time_compilation) · [V8 blog](https://v8.dev/blog)
+**Sources:** [javascript.info/intro](https://learn.javascript.ru/intro) · [MDN — interpreted vs compiled](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [MDN JIT](https://developer.mozilla.org/en-US/docs/Glossary/Just_in_time_compilation) · [V8 blog](https://v8.dev/blog)
 
 </details>
 
@@ -326,17 +319,20 @@ function praise(name) {
 - **Heap:** needed when size is not known at frame-build time (arrays that `.push`, objects, closures) or data must outlive the function. The stack slot stores a **fixed-size reference** (address); the payload lives on the heap. Modify the array via that address. GC later reclaims unreachable heap objects — [Garbage collection](#garbage-collection-overview). MDN: JS allocates on create and frees unused objects; unlike C there is no `malloc`/`free`.
 - **JS caveat:** dynamic types mean the engine *guesses* how much stack to reserve; guesses can be wrong (deopt). “Primitives on stack, objects on heap” is a teaching model, not a guaranteed V8 layout (small ints may be tagged pointers; large strings are heap).
 
-**Cases:** Why `Maximum call stack size exceeded`; why objects/arrays are shared by reference; why locals vanish after return; reading a stack trace.
+**When to use:**
+
+Why `Maximum call stack size exceeded`; why objects/arrays are shared by reference; why locals vanish after return; reading a stack trace.
 
 | | Stack | Heap |
 | --- | --- | --- |
 | **+** | Tiny alloc/free (move a pointer); cache-friendly frames | Arbitrary size; data can outlive the caller |
 | **−** | Fixed-ish size; LIFO only; overflow | Slower alloc; GC; leaks via leftover refs |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+Treating the diagram as physical RAM layout; assuming JS always knows stack slot sizes; putting huge or growing data “on the stack” in your head — it is a heap object plus a reference; confusing call-stack overflow with heap OOM (`JavaScript heap out of memory` in Node).
+
+**Examples:**
 
 ```js
 function countDogs(happyDogs) {
@@ -355,8 +351,6 @@ logDogs();
 // frames: logDogs → countDogs(20) → pop → countDogs(9) → throw → unwind
 ```
 
-</details>
-
 ```js
 function createDogArray() {
   const dogs = ["🐶", "🐶", "🐶"]; // payload on heap; `dogs` on the frame is a ref
@@ -364,24 +358,26 @@ function createDogArray() {
 }
 ```
 
-**Common pitfalls:** Treating the diagram as physical RAM layout; assuming JS always knows stack slot sizes; putting huge or growing data “on the stack” in your head — it is a heap object plus a reference; confusing call-stack overflow with heap OOM (`JavaScript heap out of memory` in Node).
+**Thoughts:** *Frames are cheap LIFO; anything with unknown or lasting size is a heap object behind a pointer — GC, not `free()`.*
 
-**Key idea:** *Frames are cheap LIFO; anything with unknown or lasting size is a heap object behind a pointer — GC, not `free()`.*
-
-**Source:** [Doka — how memory works](https://doka.guide/js/how-the-memory-works/) · [MDN Memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management) · [javascript.info/garbage-collection](https://learn.javascript.ru/garbage-collection)
+**Sources:** [Doka — how memory works](https://doka.guide/js/how-the-memory-works/) · [MDN Memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management) · [javascript.info/garbage-collection](https://learn.javascript.ru/garbage-collection)
 
 </details>
 
 ### Core advanced
 
-**Definition:** Extended language topics beyond syntax: paradigms, team methodologies, glossary, and debugging APIs.
+**Definition:**
+
+Extended language topics beyond syntax: paradigms, team methodologies, glossary, and debugging APIs.
 
 <details>
   <summary>js paradigms</summary>
 
 ### Programming paradigms
 
-**Definition:** Paradigms describe how you structure logic: imperative (how), declarative (what), functional (pure transforms), OOP (objects), event-driven (handlers).
+**Definition:**
+
+Paradigms describe how you structure logic: imperative (how), declarative (what), functional (pure transforms), OOP (objects), event-driven (handlers).
 
 | Paradigm     | JS example                         |
 | ------------ | ---------------------------------- |
@@ -394,22 +390,17 @@ function createDogArray() {
 | Reactive     | RxJS streams, React/MobX state sync |
 | Async        | Promises, `async/await`            |
 
-**Example:**
+**How it works:** Императив = *как* (цикл). Декларатив = *что* (`filter`, JSX). ФП — чистые функции. ООП — объекты. JS — всё сразу.
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const odds = [1, 2, 3, 4].filter((n) => n % 2 !== 0); // declarative
 ```
 
-</details>
+**Thoughts:** Full map (procedural, logic, reactive, composition vs inheritance): [Special — paradigms](./7_special.md#1-programming-fundamentals) · [Reactive programming](./7_special.md#reactive-programming--reactivity).
 
-**Notes:** Full map (procedural, logic, reactive, composition vs inheritance): [Special — paradigms](./7_special.md#1-programming-fundamentals) · [Reactive programming](./7_special.md#reactive-programming--reactivity).
-
-**RU:** Императив = *как* (цикл). Декларатив = *что* (`filter`, JSX). ФП — чистые функции. ООП — объекты. JS — всё сразу.
-
-**Source:** [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/)
+**Sources:** [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/)
 
 </details>
 
@@ -418,7 +409,9 @@ const odds = [1, 2, 3, 4].filter((n) => n % 2 !== 0); // declarative
 
 ### Development methodologies
 
-**Definition:** Methodologies are structured practices for organizing code and teams — distinct from language paradigms.
+**Definition:**
+
+Methodologies are structured practices for organizing code and teams — distinct from language paradigms.
 
 | Category         | Examples                                                |
 | ---------------- | ------------------------------------------------------- |
@@ -428,7 +421,7 @@ const odds = [1, 2, 3, 4].filter((n) => n % 2 !== 0); // declarative
 | Principles       | DRY, KISS, SOLID, YAGNI                                 |
 | Frontend         | Component-driven, mobile-first, progressive enhancement |
 
-**Source:** [MDN JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
+**Sources:** [MDN JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
 
 </details>
 
@@ -437,7 +430,9 @@ const odds = [1, 2, 3, 4].filter((n) => n % 2 !== 0); // declarative
 
 ### Paradigms vs methodologies
 
-**Definition:** Paradigms shape how you think about problems; methodologies shape how you organize projects and collaborate.
+**Definition:**
+
+Paradigms shape how you think about problems; methodologies shape how you organize projects and collaborate.
 
 |          | Paradigm               | Methodology                        |
 | -------- | ---------------------- | ---------------------------------- |
@@ -453,7 +448,9 @@ Both work together: choose paradigms for problem-solving style, methodologies fo
 
 ### Glossary
 
-**Definition:** Common terms used throughout JS core documentation.
+**Definition:**
+
+Common terms used throughout JS core documentation.
 
 | Term          | Meaning                                          |
 | ------------- | ------------------------------------------------ |
@@ -465,7 +462,7 @@ Both work together: choose paradigms for problem-solving style, methodologies fo
 | Normalizer    | Function that standardizes data shape            |
 | Minification  | Remove whitespace/comments to shrink bundle size |
 
-**Source:** [MDN Glossary](https://developer.mozilla.org/en-US/docs/Glossary)
+**Sources:** [MDN Glossary](https://developer.mozilla.org/en-US/docs/Glossary)
 
 </details>
 
@@ -476,10 +473,7 @@ Both work together: choose paradigms for problem-solving style, methodologies fo
 
 **Definition:** Browser/Node debugging API for logging, timing, and inspecting objects.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 console.log("info", { a: 1 });
@@ -490,9 +484,7 @@ console.timeEnd("fetch");
 console.dir(document.body, { depth: 1 });
 ```
 
-</details>
-
-**Source:** [MDN console](https://developer.mozilla.org/en-US/docs/Web/API/console)
+**Sources:** [MDN console](https://developer.mozilla.org/en-US/docs/Web/API/console)
 
 </details>
 
@@ -501,7 +493,9 @@ console.dir(document.body, { depth: 1 });
 
 ### Operators
 
-**Definition:** Operators perform actions on operands — arithmetic, assignment, comparison, logical, and more.
+**Definition:**
+
+Operators perform actions on operands — arithmetic, assignment, comparison, logical, and more.
 
 | Type       | Operators |
 | ---------- | --------- |
@@ -512,7 +506,7 @@ console.dir(document.body, { depth: 1 });
 | Bitwise    | `&`, `\|`, `^`, `~`, `<<`, `>>`, `>>>` |
 | Ternary    | `cond ? a : b` |
 
-**Source:** [MDN Operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators)
+**Sources:** [MDN Operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators)
 
 </details>
 
@@ -521,7 +515,9 @@ console.dir(document.body, { depth: 1 });
 
 ### Expressions
 
-**Definition:** An expression evaluates to a value; statements perform actions and may contain expressions.
+**Definition:**
+
+An expression evaluates to a value; statements perform actions and may contain expressions.
 
 | Expression type | Example                   |
 | --------------- | ------------------------- |
@@ -530,7 +526,7 @@ console.dir(document.body, { depth: 1 });
 | Logical         | `true && false` → `false` |
 | Assignment      | `x = 10` → `10`           |
 
-**Key idea:** Every expression produces a value (except thrown errors).
+**Thoughts:** Every expression produces a value (except thrown errors).
 
 </details>
 
@@ -549,17 +545,16 @@ console.dir(document.body, { depth: 1 });
 - `++`/`--` prefix returns new value; postfix returns old value then updates.
 - `%` is remainder, not mathematical modulo for negatives.
 
-| Pros | Cons |
+**When to use:** Use `Number(x)` or `+x` for explicit coerce; always pass radix to `parseInt(s, 10)`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | `**` for exponentiation | `+` dual role causes bugs |
 | Unary `+` quick coerce | Floating-point rounding (IEEE-754) |
 
-**Cases:** Use `Number(x)` or `+x` for explicit coerce; always pass radix to `parseInt(s, 10)`.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 "5" + 1;  // '51' (string concat)
@@ -570,9 +565,7 @@ Number.isFinite(42); // true
 1n + 2n;  // 3n — bigint, cannot mix with number without conversion
 ```
 
-</details>
-
-**Source:** [javascript.info/operators](https://learn.javascript.ru/operators) · [number](https://learn.javascript.ru/number)
+**Sources:** [javascript.info/operators](https://learn.javascript.ru/operators) · [number](https://learn.javascript.ru/number)
 
 </details>
 
@@ -589,26 +582,23 @@ Number.isFinite(42); // true
 - `&` AND, `|` OR, `^` XOR, `~` NOT, shifts move bits left/right.
 - `>>>` unsigned right shift fills with zero.
 
-| Pros | Cons |
+**When to use:** Permission flags, hash tricks, performance-critical libs. Most app code never needs bitwise ops.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Fast flags and masks | Rare in typical app code |
 | Low-level bit tricks | 32-bit limit on bitwise ops |
 
-**Cases:** Permission flags, hash tricks, performance-critical libs. Most app code never needs bitwise ops.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 5 & 1;   // 1 — odd check
 1 << 3;  // 8 — multiply by 8 via shift
 ```
 
-</details>
-
-**Source:** [javascript.info/bitwise-operators](https://learn.javascript.ru/bitwise-operators)
+**Sources:** [javascript.info/bitwise-operators](https://learn.javascript.ru/bitwise-operators)
 
 </details>
 
@@ -626,18 +616,17 @@ Number.isFinite(42); // true
 - Relational `>`, `<`, `>=`, `<=` — usually convert to numbers; strings compare lexicographically when both are strings.
 - `Object.is` for edge cases (`NaN`, signed zero) — see **Advanced → Object.is**.
 
-| Approach | Pros | Cons |
+**When to use:** Default `===`; `value == null` for null/undefined; numeric sort comparators return negative/zero/positive.
+
+**Pluses and minuses:**
+
+| Approach | + | − |
 |----------|------|------|
 | `===` | Predictable | Verbose null checks |
 | `==` | `null == undefined` | Footguns (`'' == 0`) |
 | `Object.is` | Correct `NaN` | Niche |
 
-**Cases:** Default `===`; `value == null` for null/undefined; numeric sort comparators return negative/zero/positive.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 null === undefined; // false
@@ -646,9 +635,7 @@ null == undefined;  // true
 "2" > 12;           // false — number compare
 ```
 
-</details>
-
-**Source:** [javascript.info/comparison](https://learn.javascript.ru/comparison)
+**Sources:** [javascript.info/comparison](https://learn.javascript.ru/comparison)
 
 </details>
 
@@ -666,17 +653,16 @@ null == undefined;  // true
 - Ternary nests but prefer `if` for readability when complex.
 - `switch` uses `===` against each `case` (see loops section).
 
-| Pros | Cons |
+**When to use:** `if` for multi-line branches; ternary for simple assign/render; early `return` to flatten logic.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Clear control flow | Deep nesting hard to read |
 | Ternary handy in JSX/assignments | Easy to omit braces and introduce bugs |
 
-**Cases:** `if` for multi-line branches; ternary for simple assign/render; early `return` to flatten logic.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const age = 20;
@@ -691,9 +677,7 @@ if (age >= 18) {
 }
 ```
 
-</details>
-
-**Source:** [javascript.info/ifelse](https://learn.javascript.ru/ifelse)
+**Sources:** [javascript.info/ifelse](https://learn.javascript.ru/ifelse)
 
 </details>
 
@@ -711,17 +695,16 @@ if (age >= 18) {
 - Combine with care: `a ?? b || c` needs parentheses per language rules.
 - `!.` is logical NOT; `!!x` coerces to boolean.
 
-| Pros | Cons |
+**When to use:** API optional fields, chained config, default only for nullish (`??`), not all falsy (`||`).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Safe deep access without nested `if` | Can hide data bugs (silent `undefined`) |
 | `??` preserves `0` and `''` | Mixing `??` and `||` needs parens |
 
-**Cases:** API optional fields, chained config, default only for nullish (`??`), not all falsy (`||`).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const user = null;
@@ -733,9 +716,7 @@ user?.profile?.name; // undefined — no throw
 const port = config.port ?? 3000;
 ```
 
-</details>
-
-**Source:** [javascript.info/optional-chaining](https://learn.javascript.ru/optional-chaining) · [nullish-coalescing](https://learn.javascript.ru/nullish-coalescing-operator)
+**Sources:** [javascript.info/optional-chaining](https://learn.javascript.ru/optional-chaining) · [nullish-coalescing](https://learn.javascript.ru/nullish-coalescing-operator)
 
 </details>
 
@@ -761,17 +742,16 @@ const port = config.port ?? 3000;
 | `??` | Right only if left is nullish |
 | `!` | Boolean |
 
-| Pros | Cons |
+**When to use:** `??` for config defaults; `||` when any falsy should fallback; `&&` for conditional execution.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Concise defaults and guards | `||` treats `0`/`''` as missing |
 | Short-circuit avoids extra work | `??`/`||` mixing needs parentheses |
 
-**Cases:** `??` for config defaults; `||` when any falsy should fallback; `&&` for conditional execution.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 0 || "default";  // 'default'
@@ -780,9 +760,7 @@ name && greet(name);
 config.debug ?? false;
 ```
 
-</details>
-
-**Source:** [javascript.info/logical-operators](https://learn.javascript.ru/logical-operators) · [nullish-coalescing](https://learn.javascript.ru/nullish-coalescing-operator)
+**Sources:** [javascript.info/logical-operators](https://learn.javascript.ru/logical-operators) · [nullish-coalescing](https://learn.javascript.ru/nullish-coalescing-operator)
 
 </details>
 
@@ -811,18 +789,17 @@ config.debug ?? false;
 | `for...in` | Object keys (with `hasOwn`) |
 | `switch` | Many discrete equal values |
 
-| Pros | Cons |
+**When to use:** Arrays → `for...of` or `map`; objects → `Object.entries` + `for...of`; enums → `switch`; async loops → see [3_js_async.md](./3_js_async.md).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | `for...of` clean on iterables | `for...in` on arrays is buggy |
 | `switch` readable for enums | Fall-through footguns |
 | `break`/`continue` control flow | Labels rarely needed |
 
-**Cases:** Arrays → `for...of` or `map`; objects → `Object.entries` + `for...of`; enums → `switch`; async loops → see [3_js_async.md](./3_js_async.md).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 for (let i = 0; i < 3; i++) console.log(i);
@@ -847,9 +824,9 @@ switch (status) {
 }
 ```
 
-</details>
+**Sources:**
 
-**Source:** [javascript.info/while-for](https://learn.javascript.ru/while-for) · [switch](https://learn.javascript.ru/switch)
+[javascript.info/while-for](https://learn.javascript.ru/while-for) · [switch](https://learn.javascript.ru/switch)
 
 <details>
   <summary>for...in vs for...of — extended</summary>
@@ -858,10 +835,7 @@ switch (status) {
 
 **Definition:** `for...in` walks enumerable keys (including inherited); `for...of` consumes iterable values.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 for (const key in obj) {
@@ -870,9 +844,7 @@ for (const key in obj) {
 for (const ch of "hi") console.log(ch);
 ```
 
-</details>
-
-**Source:** [javascript.info/array#loops](https://learn.javascript.ru/array#loops)
+**Sources:** [javascript.info/array#loops](https://learn.javascript.ru/array#loops)
 
 </details>
 
@@ -883,10 +855,7 @@ for (const ch of "hi") console.log(ch);
 
 **Definition:** Without `break`, execution falls through to the next `case`. Use `break` unless fall-through is intentional.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 switch (x) {
@@ -901,9 +870,7 @@ switch (x) {
 }
 ```
 
-</details>
-
-**Source:** [javascript.info/switch](https://learn.javascript.ru/switch)
+**Sources:** [javascript.info/switch](https://learn.javascript.ru/switch)
 
 </details>
 
@@ -928,18 +895,6 @@ switch (x) {
 - **Type checks:** `typeof` for primitives (with `null` bug); `Array.isArray`, `Number.isNaN`, `Object.prototype.toString.call` for specifics.
 - Object property keys (except `Symbol`) stringify — `{[obj]: 1}` uses `obj.toString()`.
 
-| Pros (primitives) | Cons (primitives) |
-|-------------------|-------------------|
-| Predictable copy semantics | No methods without boxing |
-| Thread-safe in single-threaded JS | `number` has IEEE-754 limits |
-
-| Pros (objects) | Cons (objects) |
-|--------------|----------------|
-| Mutable, extensible | Shared references cause bugs |
-| Rich APIs (arrays, dates) | `typeof` too coarse for subtypes |
-
-**Cases (when to use which check):**
-
 | Situation | Use |
 |-----------|-----|
 | Is it `null`? | `value === null` (not `typeof`) |
@@ -960,11 +915,9 @@ switch (x) {
 | `object`    | `'object'`    | Arrays, dates, plain objects, etc.            |
 | `function`  | `'function'`  | Callable object — only `typeof` distinguishes |
 
-**Stack vs heap:** Teaching model — frame slots hold primitives or **references**; objects/arrays live on the heap. Not a guaranteed engine layout. Full model: [Memory: stack and heap](#memory-stack-heap).
+Teaching model — frame slots hold primitives or **references**; objects/arrays live on the heap. Not a guaranteed engine layout. Full model: [Memory: stack and heap](#memory-stack-heap).
 
-**Boxing:** Primitives temporarily wrap in object wrappers when you access `.method()` — e.g. `'hi'.toUpperCase()`. Avoid `new String()` / `new Number()` — creates object wrappers that break `===` checks.
-
-**Type checks:**
+Primitives temporarily wrap in object wrappers when you access `.method()` — e.g. `'hi'.toUpperCase()`. Avoid `new String()` / `new Number()` — creates object wrappers that break `===` checks.
 
 ```js
 value === null;                    // null only (not undefined)
@@ -975,7 +928,19 @@ Number.isFinite(value);            // finite number (excludes NaN, ±Infinity)
 Object.prototype.toString.call(v); // '[object Array]', '[object Date]', …
 ```
 
-**Example — reference vs value:**
+**Pluses and minuses:**
+
+| + (primitives) | − (primitives) |
+|-------------------|-------------------|
+| Predictable copy semantics | No methods without boxing |
+| Thread-safe in single-threaded JS | `number` has IEEE-754 limits |
+
+| + (objects) | − (objects) |
+|--------------|----------------|
+| Mutable, extensible | Shared references cause bugs |
+| Rich APIs (arrays, dates) | `typeof` too coarse for subtypes |
+
+**Examples:**
 
 ```js
 const a = { x: 1 };
@@ -1071,7 +1036,7 @@ s === 'hi';               // false — object wrapper vs primitive
 | Frequent add/delete | Literal config / DTO shapes |
 | `.size` needed      | Prototype chain / methods   |
 
-**Source:** [javascript.info/types](https://learn.javascript.ru/types) · [map-set](https://learn.javascript.ru/map-set)
+**Sources:** [javascript.info/types](https://learn.javascript.ru/types) · [map-set](https://learn.javascript.ru/map-set)
 
 </details>
 
@@ -1089,14 +1054,6 @@ s === 'hi';               // false — object wrapper vs primitive
 - **To boolean:** `Boolean(x)`, `!!x`, or any logical/`if` context — uses falsy list.
 - **`==`** coerces both sides before compare; **`===`** does not.
 - `null` and `undefined` are only equal to each other with `==`.
-
-| Approach | Pros | Cons |
-|----------|------|------|
-| `===` + explicit `Number()` | Predictable | More verbose |
-| `==` | Shorter null checks | Surprising coercion |
-| `??` | Only nullish fallback | Must parenthesize with `\|\|` |
-
-**Cases (when to use):**
 
 | Use | Avoid |
 |-----|-------|
@@ -1116,10 +1073,28 @@ s === 'hi';               // false — object wrapper vs primitive
 | `String(123)`       | `'123'`                                                    |
 | `parseInt('08', 10)`| `8` — always pass radix                                    |
 
-**Example:**
+**When to use:**
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+```js
+[] + [];                  // '' 
+[] + {};                  // '[object Object]'
+"5" + 1;                  // '51' — string concat wins
+"5" - 1;                  // 4 — numeric coercion
+isNaN("hello");           // true — coerces first (footgun)
+Number.isNaN("hello");    // false — no coercion
+```
+
+**Pluses and minuses:**
+
+| Approach | + | − |
+|----------|------|------|
+| `===` + explicit `Number()` | Predictable | More verbose |
+| `==` | Shorter null checks | Surprising coercion |
+| `??` | Only nullish fallback | Must parenthesize with `\|\|` |
+
+**Examples:**
 
 ```js
 String(true);             // 'true'
@@ -1133,20 +1108,7 @@ null === undefined;       // false
 '' === 0;                 // false
 ```
 
-</details>
-
-**Common pitfalls:**
-
-```js
-[] + [];                  // '' 
-[] + {};                  // '[object Object]'
-"5" + 1;                  // '51' — string concat wins
-"5" - 1;                  // 4 — numeric coercion
-isNaN("hello");           // true — coerces first (footgun)
-Number.isNaN("hello");    // false — no coercion
-```
-
-**Source:** [javascript.info/type-conversions](https://learn.javascript.ru/type-conversions) · [comparison](https://learn.javascript.ru/comparison)
+**Sources:** [javascript.info/type-conversions](https://learn.javascript.ru/type-conversions) · [comparison](https://learn.javascript.ru/comparison)
 
 </details>
 
@@ -1165,14 +1127,7 @@ Number.isNaN("hello");    // false — no coercion
 - Iterable via `Symbol.iterator` — works with `for...of`, spread, destructuring.
 - `Array.isArray()` is the reliable type check (`typeof []` is `'object'`).
 
-| Pros | Cons |
-|------|------|
-| Rich built-in API | Mutating methods can surprise callers |
-| Ordered, indexable | No built-in immutability |
-| JSON-serializable | `sort()` default is lexicographic, not numeric |
-| Works with HOFs (`map`, `filter`, `reduce`) | Large arrays + frequent `shift`/`unshift` are O(n) |
-
-**Cases:**
+**When to use:**
 
 | Use `Array` | Use `Set` instead |
 |-------------|-------------------|
@@ -1187,6 +1142,15 @@ Number.isNaN("hello");    // false — no coercion
 
 ---
 
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Rich built-in API | Mutating methods can surprise callers |
+| Ordered, indexable | No built-in immutability |
+| JSON-serializable | `sort()` default is lexicographic, not numeric |
+| Works with HOFs (`map`, `filter`, `reduce`) | Large arrays + frequent `shift`/`unshift` are O(n) |
+
 ### Creating & copying arrays
 
 **Definition:** Ways to instantiate arrays and duplicate them without mutating the original.
@@ -1198,13 +1162,7 @@ Number.isNaN("hello");    // false — no coercion
 - `Array.from(iterable, mapFn?)` — copies iterables or array-likes.
 - `[...arr]`, `arr.slice()`, `arr.concat()` — **shallow** copies (nested objects still shared).
 
-| Pros | Cons |
-|------|------|
-| Spread is concise | Shallow copy only |
-| `Array.from` handles array-likes | `new Array(3)` creates holes, not `[0,0,0]` |
-| `slice`/`concat` non-mutating | Deep clone needs `structuredClone` or manual walk |
-
-**Cases:**
+**When to use:**
 
 | Need | Method |
 |------|--------|
@@ -1213,10 +1171,15 @@ Number.isNaN("hello");    // false — no coercion
 | Generate sequence | `Array.from({ length: n }, (_, i) => i)` |
 | Merge arrays | `[...a, ...b]` or `a.concat(b)` |
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Spread is concise | Shallow copy only |
+| `Array.from` handles array-likes | `new Array(3)` creates holes, not `[0,0,0]` |
+| `slice`/`concat` non-mutating | Deep clone needs `structuredClone` or manual walk |
+
+**Examples:**
 
 ```js
 const a = [1, 2, 3];
@@ -1226,8 +1189,6 @@ const copy = [...a];                  // shallow copy
 const slice = a.slice(0, 2);          // [1, 2] — non-mutating
 const merged = a.concat([4, 5]);      // [1, 2, 3, 4, 5]
 ```
-
-</details>
 
 ---
 
@@ -1241,17 +1202,11 @@ const merged = a.concat([4, 5]);      // [1, 2, 3, 4, 5]
 - Non-mutating methods allocate new arrays; safe for immutable/React patterns.
 - ES2023 added `toSorted`, `toReversed`, `toSpliced`, `with` as non-mutating alternatives.
 
-| Pros (mutating) | Cons (mutating) |
-|-----------------|-----------------|
-| No extra allocation | Surprises callers holding same reference |
-| Faster for large in-place edits | Breaks time-travel / Redux expectations |
+In React/Redux or when passing arrays around, prefer non-mutating methods or copy first (`[...arr]` then mutate the copy).
 
-| Pros (non-mutating) | Cons (non-mutating) |
-|---------------------|---------------------|
-| Predictable, debuggable | Extra memory for new arrays |
-| Works with React state | Slightly more verbose |
+---
 
-**Cases:**
+**When to use:**
 
 | Mutating (changes original) | Non-mutating (returns new) |
 |-----------------------------|----------------------------|
@@ -1259,9 +1214,17 @@ const merged = a.concat([4, 5]);      // [1, 2, 3, 4, 5]
 | `splice`, `sort`, `reverse`, `fill` | `flat`, `flatMap`, `toSorted`, `toReversed` |
 | `copyWithin` | `reduce`, `find`, `some`, `every` |
 
-**Rule of thumb:** In React/Redux or when passing arrays around, prefer non-mutating methods or copy first (`[...arr]` then mutate the copy).
+**Pluses and minuses:**
 
----
+| + (mutating) | − (mutating) |
+|-----------------|-----------------|
+| No extra allocation | Surprises callers holding same reference |
+| Faster for large in-place edits | Breaks time-travel / Redux expectations |
+
+| + (non-mutating) | − (non-mutating) |
+|---------------------|---------------------|
+| Predictable, debuggable | Extra memory for new arrays |
+| Works with React state | Slightly more verbose |
 
 ### Transformation & search
 
@@ -1286,14 +1249,16 @@ const merged = a.concat([4, 5]);      // [1, 2, 3, 4, 5]
 | `includes(val)` | Boolean | SameValueZero (`NaN` matches `NaN`) |
 | `indexOf` / `lastIndexOf` | Index or `-1` | Strict equality, no `NaN` match |
 
-| Pros | Cons |
+**When to use:** Use `map`+`filter` for pipelines; `reduce` for aggregation; `find` for first match; `some`/`every` for predicates; avoid `forEach` when you need `break` or a return value.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Declarative, chainable | Callback overhead vs raw `for` |
 | Built-in edge cases handled | Easy to nest too deeply |
 
-**Cases:** Use `map`+`filter` for pipelines; `reduce` for aggregation; `find` for first match; `some`/`every` for predicates; avoid `forEach` when you need `break` or a return value.
-
-**Example — pipeline:**
+**Examples:**
 
 ```js
 const users = [
@@ -1307,8 +1272,6 @@ const adultNames = users
   .map((u) => u.name);
 // ['Ann', 'Cal']
 ```
-
-**Example — `reduce`:**
 
 ```js
 [1, 2, 3].reduce((sum, n) => sum + n, 0); // 6
@@ -1336,24 +1299,21 @@ const adultNames = users
 | `unshift(...items)` | Add to start | New `length` (O(n)) |
 | `splice(start, deleteCount, ...items)` | Remove/insert at index | Array of removed items |
 
-| Pros | Cons |
+**When to use:** Queue → `push`+`shift` (or use deque pattern); stack → `push`+`pop`; middle edit → `splice` or `toSpliced` (immutable).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | `push`/`pop` are fast | `shift`/`unshift` slow on large arrays |
 | `splice` is versatile | Easy to misuse and confuse callers |
 
-**Cases:** Queue → `push`+`shift` (or use deque pattern); stack → `push`+`pop`; middle edit → `splice` or `toSpliced` (immutable).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const arr = [1, 2, 3];
 arr.splice(1, 1, 99); // removes 2, inserts 99 → [1, 99, 3]
 ```
-
-</details>
 
 ---
 
@@ -1367,17 +1327,16 @@ arr.splice(1, 1, 99); // removes 2, inserts 99 → [1, 99, 3]
 - `flat(depth?)` shallow-flattens one level by default; `Infinity` for full flatten.
 - `for...of` iterates values; `for...in` iterates keys (avoid on arrays).
 
-| Pros | Cons |
+**When to use:** Numeric sort → `sort((a,b) => a - b)`; nested API data → `flatMap`; iteration → `for...of` or `map`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | `sort` in-place saves memory | Default string sort surprises |
 | `flat`/`flatMap` clean nested data | `flat` allocates new array |
 
-**Cases:** Numeric sort → `sort((a,b) => a - b)`; nested API data → `flatMap`; iteration → `for...of` or `map`.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 [10, 1, 2].sort();                    // [1, 10, 2] — string sort!
@@ -1389,8 +1348,6 @@ arr.splice(1, 1, 99); // removes 2, inserts 99 → [1, 99, 3]
 for (const n of [1, 2, 3]) { }        // prefer over for...in on arrays
 for (const [i, v] of arr.entries()) { }
 ```
-
-</details>
 
 ---
 
@@ -1414,7 +1371,7 @@ grid[0][0].id = 99; // mutates shared inner object
 for (const k in [1, 2]) { } // may iterate non-index keys
 ```
 
-**Source:** [javascript.info/array](https://learn.javascript.ru/array) · [array-methods](https://learn.javascript.ru/array-methods)
+**Sources:** [javascript.info/array](https://learn.javascript.ru/array) · [array-methods](https://learn.javascript.ru/array-methods)
 
 </details>
 
@@ -1423,7 +1380,9 @@ for (const k in [1, 2]) { } // may iterate non-index keys
 
 ### Map, Set, WeakMap, WeakSet
 
-**Definition:** Four built-in collection types beyond plain objects and arrays. `Map` is a key→value store; `Set` is a bag of unique values. `WeakMap` and `WeakSet` are like their strong counterparts but hold **weak** references to object keys/values so garbage collection can reclaim them when nothing else references those objects.
+**Definition:**
+
+Four built-in collection types beyond plain objects and arrays. `Map` is a key→value store; `Set` is a bag of unique values. `WeakMap` and `WeakSet` are like their strong counterparts but hold **weak** references to object keys/values so garbage collection can reclaim them when nothing else references those objects.
 
 |                       | `Map`                          | `Set`               | `WeakMap`               | `WeakSet`               |
 | --------------------- | ------------------------------ | ------------------- | ----------------------- | ----------------------- |
@@ -1435,7 +1394,9 @@ for (const k in [1, 2]) { } // may iterate non-index keys
 | GC                    | Strong refs — keeps keys alive | Strong refs         | Weak refs on **keys**   | Weak refs on **values** |
 | Serialization         | No `JSON.stringify`            | No `JSON.stringify` | No                      | No                      |
 
-**Key idea:** Use `Map`/`Set` when you need collection semantics (any key type, uniqueness, `.size`, iteration). Use `WeakMap`/`WeakSet` for **side metadata** attached to objects without preventing those objects from being collected.
+**Thoughts:**
+
+Use `Map`/`Set` when you need collection semantics (any key type, uniqueness, `.size`, iteration). Use `WeakMap`/`WeakSet` for **side metadata** attached to objects without preventing those objects from being collected.
 
 ---
 
@@ -1451,13 +1412,6 @@ for (const k in [1, 2]) { } // may iterate non-index keys
 - API: `set`, `get`, `has`, `delete`, `clear`, `size`, `keys`, `values`, `entries`, `forEach`.
 - Object keys are stored **by reference**, not by stringified form — two different `{id:1}` objects are two different keys.
 
-| Pros                                                   | Cons                                                             |
-| ------------------------------------------------------ | ---------------------------------------------------------------- |
-| Any key type (objects, functions)                      | No JSON serialization                                            |
-| Predictable iteration order                            | Slightly more memory than plain object for string-key-only cases |
-| `.size` in O(1)                                        | No prototype chain / no inherited keys                           |
-| Frequent `set`/`delete` without key-stringify overhead | Less familiar to readers expecting `{}`                          |
-
 **When to use:**
 
 | Use `Map`                                                             | Use plain `Object`                             |
@@ -1467,10 +1421,16 @@ for (const k in [1, 2]) { } // may iterate non-index keys
 | Need `.size` or insertion-order iteration                             | Need `Object.keys` / spread ergonomics         |
 | Keys should not collide via `toString()` (`{}` → `"[object Object]"`) | Prototype methods or `hasOwnProperty` patterns |
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| +                                                   | −                                                             |
+| ------------------------------------------------------ | ---------------------------------------------------------------- |
+| Any key type (objects, functions)                      | No JSON serialization                                            |
+| Predictable iteration order                            | Slightly more memory than plain object for string-key-only cases |
+| `.size` in O(1)                                        | No prototype chain / no inherited keys                           |
+| Frequent `set`/`delete` without key-stringify overhead | Less familiar to readers expecting `{}`                          |
+
+**Examples:**
 
 ```js
 const user = { id: 1 };
@@ -1494,8 +1454,6 @@ m.set(NaN, "not a number");
 m.get(NaN); // 'not a number'
 ```
 
-</details>
-
 ---
 
 ### Set
@@ -1509,12 +1467,6 @@ m.get(NaN); // 'not a number'
 - Uniqueness is by value (SameValueZero), not by reference identity for primitives.
 - Two different object references are always distinct entries.
 
-| Pros                                  | Cons                               |
-| ------------------------------------- | ---------------------------------- |
-| O(1) average `has` / `add` / `delete` | No index access (`set[0]` invalid) |
-| Deduplication in one line             | No key→value mapping               |
-| Iterable, spread-friendly             | Objects compared by reference only |
-
 **When to use:**
 
 | Use `Set`                                  | Use `Array`                                  |
@@ -1523,10 +1475,15 @@ m.get(NaN); // 'not a number'
 | Fast membership checks in a loop           | Need `map`/`filter`/`reduce` on indexed data |
 | Tag lists, visited nodes, permission flags | JSON-serializable list                       |
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| +                                  | −                               |
+| ------------------------------------- | ---------------------------------- |
+| O(1) average `has` / `add` / `delete` | No index access (`set[0]` invalid) |
+| Deduplication in one line             | No key→value mapping               |
+| Iterable, spread-friendly             | Objects compared by reference only |
+
+**Examples:**
 
 ```js
 const tags = new Set(["js", "react", "js"]); // {'js', 'react'}
@@ -1549,8 +1506,6 @@ s.add({ id: 1 });
 s.size; // 2 — two different object references
 ```
 
-</details>
-
 ---
 
 ### WeakMap
@@ -1564,12 +1519,6 @@ s.size; // 2 — two different object references
 - Typical pattern: private/side data on objects you do not own (DOM nodes, class instances).
 - If the key is collected, `get(key)` would not be callable anyway; the entry disappears silently.
 
-| Pros                                                        | Cons                                         |
-| ----------------------------------------------------------- | -------------------------------------------- |
-| No memory leaks from cached metadata on short-lived objects | Cannot iterate or get `.size`                |
-| Good for libraries attaching data to foreign objects        | Keys must be objects                         |
-| Hides data from `Object.keys` / serialization               | Cannot inspect contents for debugging easily |
-
 **When to use:**
 
 | Use `WeakMap`                                           | Use `Map` instead                |
@@ -1579,10 +1528,15 @@ s.size; // 2 — two different object references
 | Private fields pattern before `#` or `Symbol`           | Need `.size` or `clear()`        |
 | Instance → computed cache that should die with instance | Long-lived registry of all items |
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| +                                                        | −                                         |
+| ----------------------------------------------------------- | -------------------------------------------- |
+| No memory leaks from cached metadata on short-lived objects | Cannot iterate or get `.size`                |
+| Good for libraries attaching data to foreign objects        | Keys must be objects                         |
+| Hides data from `Object.keys` / serialization               | Cannot inspect contents for debugging easily |
+
+**Examples:**
 
 ```js
 const privateData = new WeakMap();
@@ -1611,8 +1565,6 @@ function track(el, handler) {
 }
 ```
 
-</details>
-
 ---
 
 ### WeakSet
@@ -1625,12 +1577,6 @@ function track(el, handler) {
 - `add` returns the set (like `Set`).
 - Useful as a **tag set**: "have we already processed this object?"
 
-| Pros                                           | Cons                         |
-| ---------------------------------------------- | ---------------------------- |
-| Automatic cleanup when objects go away         | No way to list members       |
-| Cheap "seen this object?" checks               | Objects only                 |
-| Avoids leaking memory in long-lived registries | Cannot serialize or snapshot |
-
 **When to use:**
 
 | Use `WeakSet`                              | Use `Set` instead                  |
@@ -1639,10 +1585,15 @@ function track(el, handler) {
 | Opt-out / blocklist of object instances    | Need to iterate or count members   |
 | Prevent double-registration of same object | Persist membership across sessions |
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| +                                           | −                         |
+| ---------------------------------------------- | ---------------------------- |
+| Automatic cleanup when objects go away         | No way to list members       |
+| Cheap "seen this object?" checks               | Objects only                 |
+| Avoids leaking memory in long-lived registries | Cannot serialize or snapshot |
+
+**Examples:**
 
 ```js
 const processed = new WeakSet();
@@ -1666,8 +1617,6 @@ function deepWalk(obj, seen = new WeakSet()) {
   }
 }
 ```
-
-</details>
 
 ---
 
@@ -1701,7 +1650,7 @@ obj = null; // eventually GC removes the entry
 new Set([{ a: 1 }, { a: 1 }]).size; // 2
 ```
 
-**Source:** [javascript.info/map-set](https://learn.javascript.ru/map-set) · [weakmap-weakset](https://learn.javascript.ru/weakmap-weakset) · [MDN Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+**Sources:** [javascript.info/map-set](https://learn.javascript.ru/map-set) · [weakmap-weakset](https://learn.javascript.ru/weakmap-weakset) · [MDN Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 
 </details>
 
@@ -1729,18 +1678,23 @@ new Set([{ a: 1 }, { a: 1 }]).size; // 2
 | `Object.hasOwn(obj, prop)` | Boolean (own prop) |
 | `Object.freeze(obj)` | Frozen object (shallow) |
 
-| Pros | Cons |
+| | `key in obj` | `Object.hasOwn(obj, key)` |
+|---|--------------|---------------------------|
+| Own property | yes | yes |
+| Inherited property | yes | no |
+| Use when | Need to know if property exists anywhere | Need own keys only (safe `for...in` filter) |
+
+**When to use:** Config objects, API payloads, maps with string keys. Use `Map` for non-string keys; see [3_js_oop.md](./3_js_oop.md) for prototypes, descriptors, and deep object patterns.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | JSON-friendly DTOs | Keys always stringify to string/Symbol |
 | Literal syntax is concise | Shared references on shallow copy |
 | `Object.entries` + `fromEntries` for transforms | No guaranteed iteration order before ES2015 (now insertion order for string keys) |
 
-**Cases:** Config objects, API payloads, maps with string keys. Use `Map` for non-string keys; see [3_js_oop.md](./3_js_oop.md) for prototypes, descriptors, and deep object patterns.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const user = { name: "Ann", age: 30 };
@@ -1756,17 +1710,7 @@ const pairs = Object.fromEntries(
 );
 ```
 
-</details>
-
-**`in` vs `hasOwn`:**
-
-| | `key in obj` | `Object.hasOwn(obj, key)` |
-|---|--------------|---------------------------|
-| Own property | yes | yes |
-| Inherited property | yes | no |
-| Use when | Need to know if property exists anywhere | Need own keys only (safe `for...in` filter) |
-
-**Source:** [javascript.info/object](https://learn.javascript.ru/object) · [object-keys](https://learn.javascript.ru/keys-values-entries)
+**Sources:** [javascript.info/object](https://learn.javascript.ru/object) · [object-keys](https://learn.javascript.ru/keys-values-entries)
 
 </details>
 
@@ -1784,18 +1728,17 @@ const pairs = Object.fromEntries(
 - Escape sequences: `\n`, `\t`, `\u{1F600}` (unicode).
 - Common methods: `slice`, `includes`, `startsWith`, `trim`, `split`, `replace`, `replaceAll`.
 
-| Pros | Cons |
+**When to use:** User-facing text, URL building, `split`/`join` parsing, regex on strings. Use `trim()` on form input; `includes` for simple search before RegExp.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Immutable — safe to share | Concat in loops can be slow (use `join` or array + join) |
 | Rich string API | UTF-16 — surrogate pairs affect `.length` |
 | Templates readable for HTML/SQL | Tagged templates advanced (see MDN) |
 
-**Cases:** User-facing text, URL building, `split`/`join` parsing, regex on strings. Use `trim()` on form input; `includes` for simple search before RegExp.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const name = "Ann";
@@ -1810,9 +1753,7 @@ line 2`;
 "hello".replaceAll("l", "L"); // 'heLLo'
 ```
 
-</details>
-
-**Source:** [javascript.info/string](https://learn.javascript.ru/string) · [template-strings](https://learn.javascript.ru/template-strings)
+**Sources:** [javascript.info/string](https://learn.javascript.ru/string) · [template-strings](https://learn.javascript.ru/template-strings)
 
 </details>
 
@@ -1831,18 +1772,17 @@ line 2`;
 - Use `Object.getOwnPropertySymbols(obj)` or `Reflect.ownKeys` to list them.
 - Well-known symbols: `Symbol.iterator`, `Symbol.toStringTag`, `Symbol.hasInstance`.
 
-| Pros | Cons |
+**When to use:** Private-ish object metadata, library extension points, defining custom iterables. Prefer `class` private fields `#x` for true class privacy in modern code.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Guaranteed unique keys | Not JSON-serializable |
 | Hides internal properties | Harder to debug/inspect |
 | Powers iteration protocol | Easy to overuse |
 
-**Cases:** Private-ish object metadata, library extension points, defining custom iterables. Prefer `class` private fields `#x` for true class privacy in modern code.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const id = Symbol("id");
@@ -1853,9 +1793,7 @@ user[id];                             // 42
 Symbol.for("app") === Symbol.for("app"); // true — global registry
 ```
 
-</details>
-
-**Source:** [javascript.info/symbol](https://learn.javascript.ru/symbol)
+**Sources:** [javascript.info/symbol](https://learn.javascript.ru/symbol)
 
 </details>
 
@@ -1893,19 +1831,28 @@ Throws **`TypeError`:** circular references, `BigInt` (unless you add `toJSON`).
 
 **`JSON.parse(text[, reviver])`** — JSON string → JS value. Invalid JSON → **`SyntaxError`**. Wrap untrusted input in `try/catch`. `reviver(key, value)` runs depth-first; return `undefined` to delete a property. Use it to revive `Date` from ISO strings.
 
-| Pros | Cons |
+**When to use:**
+
+REST/API payloads, `localStorage` strings, npm `package.json` and other config, app state sent to a backend. Alternatives: **XML**, **YAML** (comments), Protobuf/MessagePack (size). Deep-clone JSON-safe data with a round-trip; use `structuredClone` for cycles/`Date`/`Map`. JSON5 exists as a looser dialect — not the language standard.
+
+#### Common pitfalls
+
+- Keys/strings must use **double quotes**; trailing commas and JS comments are invalid.
+- `undefined` in an object is dropped; in an array it becomes `null`.
+- `JSON.parse(JSON.stringify(obj))` loses functions, `undefined`, symbols, turns `Date` into a string, throws on cycles.
+- `JSON.parse` does not run JS — no `new Date(...)` inside the text.
+- Network APIs (e.g. OpenWeather) return JSON; still parse/validate at the boundary.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Universal API / config format | Not a full clone (types, functions, `undefined` lost) |
 | Built-in, fast, human-readable | Circular refs / `BigInt` throw |
 | Pretty-print with `space` | No comments in standard JSON (`//` is invalid) |
 | Most languages have libraries | No schema validation built-in |
 
-**Cases:** REST/API payloads, `localStorage` strings, npm `package.json` and other config, app state sent to a backend. Alternatives: **XML**, **YAML** (comments), Protobuf/MessagePack (size). Deep-clone JSON-safe data with a round-trip; use `structuredClone` for cycles/`Date`/`Map`. JSON5 exists as a looser dialect — not the language standard.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const hero = {
@@ -1930,19 +1877,9 @@ JSON.stringify([undefined]); // '[null]'
 JSON.parse("{ invalid");     // SyntaxError
 ```
 
-</details>
+**Thoughts:** *JSON is a strict data subset of JS object syntax — stringify to send, parse to use, and never treat it as a full object clone.*
 
-**Common pitfalls:**
-
-- Keys/strings must use **double quotes**; trailing commas and JS comments are invalid.
-- `undefined` in an object is dropped; in an array it becomes `null`.
-- `JSON.parse(JSON.stringify(obj))` loses functions, `undefined`, symbols, turns `Date` into a string, throws on cycles.
-- `JSON.parse` does not run JS — no `new Date(...)` inside the text.
-- Network APIs (e.g. OpenWeather) return JSON; still parse/validate at the boundary.
-
-**Key idea:** *JSON is a strict data subset of JS object syntax — stringify to send, parse to use, and never treat it as a full object clone.*
-
-**Source:** [Doka — JSON](https://doka.guide/js/json/) · [javascript.info/json](https://javascript.info/json) · [MDN stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) · [MDN parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)
+**Sources:** [Doka — JSON](https://doka.guide/js/json/) · [javascript.info/json](https://javascript.info/json) · [MDN stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) · [MDN parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)
 
 </details>
 
@@ -1959,25 +1896,22 @@ JSON.parse("{ invalid");     // SyntaxError
 - In strict mode, bare `this` at top level is `undefined`, not global — use `globalThis` when you truly need global.
 - Prefer module scope or explicit exports over polluting global.
 
-| Pros | Cons |
+**When to use:** Library UMD bundles, test setup, rare polyfills. Avoid attaching app state to `globalThis`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Cross-environment API | Global pollution anti-pattern |
 | Polyfill-friendly | |
 
-**Cases:** Library UMD bundles, test setup, rare polyfills. Avoid attaching app state to `globalThis`.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 globalThis.setTimeout(fn, 0); // works in browser and Node
 ```
 
-</details>
-
-**Source:** [MDN globalThis](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis)
+**Sources:** [MDN globalThis](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis)
 
 </details>
 
@@ -2008,13 +1942,7 @@ globalThis.setTimeout(fn, 0); // works in browser and Node
 | Redeclare in same scope | yes | no | no |
 | Reassign | yes         | yes   | no (binding) |
 
-| Pros (`const`/`let`) | Cons (`var`) |
-|----------------------|--------------|
-| Block scope limits leaks | Function scope ignores `{}` blocks |
-| TDZ catches use-before-declare bugs | Hoisted `undefined` hides mistakes |
-| No accidental redeclaration | Loop closure bugs with `var` + async |
-
-**Cases:**
+**When to use:**
 
 | Use | Avoid |
 |-----|-------|
@@ -2023,6 +1951,14 @@ globalThis.setTimeout(fn, 0); // works in browser and Node
 | Block scope in `if`/`for` for temporary bindings | Relying on hoisting for logic flow |
 
 ---
+
+**Pluses and minuses:**
+
+| + (`const`/`let`) | − (`var`) |
+|----------------------|--------------|
+| Block scope limits leaks | Function scope ignores `{}` blocks |
+| TDZ catches use-before-declare bugs | Hoisted `undefined` hides mistakes |
+| No accidental redeclaration | Loop closure bugs with `var` + async |
 
 ### Scope types
 
@@ -2034,12 +1970,9 @@ globalThis.setTimeout(fn, 0); // works in browser and Node
 - **Function** — parameters and `var`/`let`/`const` inside function body.
 - **Block** — `let`/`const` inside `{}`, `if`, `for`, `while`.
 
-| Pros (block scope) | Cons |
-|--------------------|------|
-| Limits variable lifetime | Must choose correct keyword |
-| Prevents leak from `if`/`for` | |
+**When to use:**
 
-**Cases:** Use block scope for temporaries; function scope only via `var` (legacy).
+Use block scope for temporaries; function scope only via `var` (legacy).
 
 | Scope    | Created by                        | Example |
 | -------- | --------------------------------- | ------- |
@@ -2062,6 +1995,13 @@ function outer() {
 
 ---
 
+**Pluses and minuses:**
+
+| + (block scope) | − |
+|--------------------|------|
+| Limits variable lifetime | Must choose correct keyword |
+| Prevents leak from `if`/`for` | |
+
 ### Hoisting & TDZ
 
 **Definition:** Engine registers declarations before executing statements; `let`/`const` stay in TDZ until their line.
@@ -2073,11 +2013,13 @@ function outer() {
 - Accessing `let`/`const` before declaration → `ReferenceError` (TDZ).
 - `typeof undeclaredVar` is safe; `typeof letBeforeDeclare` in TDZ throws.
 
-| Pros (TDZ) | Cons |
-|------------|------|
-| Catches bugs early | Surprises developers from other languages |
+Each function call gets a context (variable environment, `this`, call stack frame). The **lexical environment** is where closures get their outer bindings from — determined by **where code is written**, not where it runs.
 
-**Cases:** Never use variables before declaration; use function declarations if you need hoisted helpers.
+---
+
+**When to use:**
+
+Never use variables before declaration; use function declarations if you need hoisted helpers.
 
 | Declaration            | Hoisted as          |
 | ---------------------- | ------------------- |
@@ -2098,9 +2040,11 @@ var a = 1;
 let b = 2;
 ```
 
-**Execution context:** Each function call gets a context (variable environment, `this`, call stack frame). The **lexical environment** is where closures get their outer bindings from — determined by **where code is written**, not where it runs.
+**Pluses and minuses:**
 
----
+| + (TDZ) | − |
+|------------|------|
+| Catches bugs early | Surprises developers from other languages |
 
 ### `var` loop pitfall vs `let`
 
@@ -2111,17 +2055,18 @@ let b = 2;
 - `var i` is function-scoped — all closures share the same `i` after loop ends.
 - `let i` is block-scoped per iteration — each async callback captures its own `i`.
 
-| Pros (`let` in loops) | Cons (`var` in loops) |
+camelCase; letters, digits, `$`, `_`; cannot start with digit; avoid reserved words.
+
+**When to use:** Always `let` in `for` loops with closures; use `for...of` when you don't need index.
+
+**Pluses and minuses:**
+
+| + (`let` in loops) | − (`var` in loops) |
 |-----------------------|------------------------|
 | Correct async callbacks | — |
 | Per-iteration capture | `var` causes classic interview bug |
 
-**Cases:** Always `let` in `for` loops with closures; use `for...of` when you don't need index.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // var — one shared binding
@@ -2135,11 +2080,7 @@ for (let i = 0; i < 3; i++) {
 }
 ```
 
-</details>
-
-**Naming:** camelCase; letters, digits, `$`, `_`; cannot start with digit; avoid reserved words.
-
-**Source:** [javascript.info/variables](https://learn.javascript.ru/variables) · [let-const](https://learn.javascript.ru/let-const) · [closure](https://learn.javascript.ru/closure)
+**Sources:** [javascript.info/variables](https://learn.javascript.ru/variables) · [let-const](https://learn.javascript.ru/let-const) · [closure](https://learn.javascript.ru/closure)
 
 </details>
 
@@ -2157,13 +2098,7 @@ for (let i = 0; i < 3; i++) {
 - Spread in literals creates shallow copies — nested objects are still shared references.
 - Function rest parameters replace `arguments` object in modern code.
 
-| Pros | Cons |
-|------|------|
-| Concise unpacking | Easy to shadow outer variable names |
-| Immutable-style updates with spread | Shallow only — nested refs shared |
-| Replaces `arguments` | Rest must be last position |
-
-**Cases:**
+**When to use:**
 
 | Feature | Use when |
 |---------|----------|
@@ -2173,10 +2108,32 @@ for (let i = 0; i < 3; i++) {
 | Spread merge | Immutable object/array updates |
 | Rest parameters | Variadic functions (`sum(...nums)`) |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+```js
+// Pitfall: nested destructuring — undefined parent throws
+const { address: { city } } = {}; // TypeError
+
+// Pitfall: spread is shallow
+const inner = { x: 1 };
+const outer = { ...inner };
+outer.x = 2;
+inner.x; // still 1 — but:
+const nested = { data: inner };
+const clone = { ...nested };
+clone.data.x = 99;
+inner.x; // 99 — shared nested reference
+```
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Concise unpacking | Easy to shadow outer variable names |
+| Immutable-style updates with spread | Shallow only — nested refs shared |
+| Replaces `arguments` | Rest must be last position |
+
+**Examples:**
 
 ```js
 // Array
@@ -2199,26 +2156,7 @@ const merged = { ...defaults, ...userOverrides };
 const copy = [...arr, newItem];
 ```
 
-</details>
-
-**Common pitfalls:**
-
-```js
-// Pitfall: nested destructuring — undefined parent throws
-const { address: { city } } = {}; // TypeError
-
-// Pitfall: spread is shallow
-const inner = { x: 1 };
-const outer = { ...inner };
-outer.x = 2;
-inner.x; // still 1 — but:
-const nested = { data: inner };
-const clone = { ...nested };
-clone.data.x = 99;
-inner.x; // 99 — shared nested reference
-```
-
-**Source:** [javascript.info/destructuring-assignment](https://learn.javascript.ru/destructuring-assignment) · [rest-parameters-spread](https://learn.javascript.ru/rest-parameters-spread)
+**Sources:** [javascript.info/destructuring-assignment](https://learn.javascript.ru/destructuring-assignment) · [rest-parameters-spread](https://learn.javascript.ru/rest-parameters-spread)
 
 </details>
 
@@ -2236,13 +2174,7 @@ inner.x; // 99 — shared nested reference
 - Closures enable factories, private state, partial application, and module patterns.
 - `let` in loops creates per-iteration bindings; `var` shares one binding (classic async loop bug).
 
-| Pros | Cons |
-|------|------|
-| Data privacy without classes | Memory — outer vars kept alive by closure |
-| Factories and configurators | Accidental capture of loop `var` |
-| Partial application, decorators | Harder debugging if over-nested |
-
-**Cases:**
+**When to use:**
 
 | Use closures | Avoid |
 |--------------|-------|
@@ -2250,47 +2182,7 @@ inner.x; // 99 — shared nested reference
 | Event handlers needing outer state | Creating closures in hot loops without need |
 | `makeFilter(min)` style factories | Replacing simple data with functions |
 
-**Example — counter factory:**
-
-```js
-function createCounter(start = 0) {
-  let count = start;
-  return {
-    increment: () => ++count,
-    get: () => count,
-  };
-}
-const c = createCounter(10);
-c.increment(); // 11
-```
-
-**Example — configured filter:**
-
-```js
-function makeFilter(min) {
-  return (arr) => arr.filter((n) => n >= min);
-}
-const over5 = makeFilter(5);
-over5([1, 6, 3, 8]); // [6, 8]
-```
-
-**Example — once wrapper:**
-
-```js
-function once(fn) {
-  let called = false;
-  let result;
-  return (...args) => {
-    if (!called) {
-      called = true;
-      result = fn(...args);
-    }
-    return result;
-  };
-}
-```
-
-**Common pitfalls:**
+#### Common pitfalls
 
 ```js
 // Pitfall: stale closure over mutable outer let
@@ -2309,7 +2201,51 @@ function big() {
 }
 ```
 
-**Source:** [javascript.info/closure](https://learn.javascript.ru/closure) · [garbage-collection](https://learn.javascript.ru/garbage-collection)
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Data privacy without classes | Memory — outer vars kept alive by closure |
+| Factories and configurators | Accidental capture of loop `var` |
+| Partial application, decorators | Harder debugging if over-nested |
+
+**Examples:**
+
+```js
+function createCounter(start = 0) {
+  let count = start;
+  return {
+    increment: () => ++count,
+    get: () => count,
+  };
+}
+const c = createCounter(10);
+c.increment(); // 11
+```
+
+```js
+function makeFilter(min) {
+  return (arr) => arr.filter((n) => n >= min);
+}
+const over5 = makeFilter(5);
+over5([1, 6, 3, 8]); // [6, 8]
+```
+
+```js
+function once(fn) {
+  let called = false;
+  let result;
+  return (...args) => {
+    if (!called) {
+      called = true;
+      result = fn(...args);
+    }
+    return result;
+  };
+}
+```
+
+**Sources:** [javascript.info/closure](https://learn.javascript.ru/closure) · [garbage-collection](https://learn.javascript.ru/garbage-collection)
 
 </details>
 
@@ -2332,13 +2268,15 @@ function big() {
 - **Callbacks** are functions passed to run later (sync in `sort`, async in `setTimeout`).
 - `this` is set by **call site** for regular functions; **lexical** for arrows (see below).
 
-| Pros | Cons |
+---
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | First-class — flexible composition | `this` binding confuses beginners |
 | Closures for encapsulation | Callback nesting without promises |
 | Arrow syntax for short callbacks | Arrows unsuitable as methods/constructors |
-
----
 
 ### Function declaration vs expression
 
@@ -2358,27 +2296,26 @@ function big() {
 | Name     | Required                 | Optional (NFE for recursion) |
 | `this`   | Dynamic                  | Dynamic (unless arrow) |
 
-| Pros (declaration) | Cons (declaration) |
-|--------------------|--------------------|
-| Hoisting simplifies top-down scripts | Cannot conditionally declare in block (legacy quirks) |
-| Clear named entry points | Less flexible than expressions |
-
-| Pros (expression) | Cons (expression) |
-|-------------------|-------------------|
-| Assign to `const`, pass inline | Not hoisted — order matters |
-| Conditional creation | Anonymous stacks harder to read |
-
-**Cases:**
+**When to use:**
 
 | Declaration | Expression / arrow |
 |-------------|-------------------|
 | Top-level helpers, hoisting needed | Callbacks, assignments, conditional creation |
 | Named stack traces | IIFE, module exports |
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + (declaration) | − (declaration) |
+|--------------------|--------------------|
+| Hoisting simplifies top-down scripts | Cannot conditionally declare in block (legacy quirks) |
+| Clear named entry points | Less flexible than expressions |
+
+| + (expression) | − (expression) |
+|-------------------|-------------------|
+| Assign to `const`, pass inline | Not hoisted — order matters |
+| Conditional creation | Anonymous stacks harder to read |
+
+**Examples:**
 
 ```js
 // Declaration — hoisted
@@ -2397,8 +2334,6 @@ const double = function (n) {
   return n * 2;
 };
 ```
-
-</details>
 
 ---
 
@@ -2422,13 +2357,7 @@ const double = function (n) {
 | Hoisting    | No      | Declaration: yes |
 | Methods     | Poor choice for object methods | Use for `obj.method()` |
 
-| Pros | Cons |
-|------|------|
-| Short syntax for callbacks | Wrong `this` as object method |
-| Fixes `this` in class handlers | No `arguments`, no `new` |
-| Implicit return for one-liners | Debugging anonymous stacks |
-
-**Cases:**
+**When to use:**
 
 | Use arrows | Use regular `function` |
 |------------|----------------------|
@@ -2436,7 +2365,16 @@ const double = function (n) {
 | Lexical `this` in class field handlers | Constructors, generators |
 | Short one-liners | When you need `arguments` |
 
-**Example:**
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Short syntax for callbacks | Wrong `this` as object method |
+| Fixes `this` in class handlers | No `arguments`, no `new` |
+| Implicit return for one-liners | Debugging anonymous stacks |
+
+**Examples:**
+
 const add = (a, b) => a + b;
 
 const obj = {
@@ -2470,15 +2408,18 @@ const obj = {
 | Async callback | `setTimeout`, event handlers   |
 | Error-first    | Node-style `(err, data)`       |
 
-| Pros | Cons |
+**When to use:** Array methods, event APIs, legacy Node APIs. Prefer `async/await` for new async chains (see [3_js_async.md](./3_js_async.md)).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Simple async before Promises | Deep nesting ("callback hell") |
 | Flexible control flow | Inversion of control — harder to trace |
 | Works everywhere (DOM, Node) | Error handling scattered |
 
-**Cases:** Array methods, event APIs, legacy Node APIs. Prefer `async/await` for new async chains (see [3_js_async.md](./3_js_async.md)).
+**Examples:**
 
-**Example:**
 [1, 2, 3].map((n) => n * 2);
 
 function load(done) {
@@ -2508,21 +2449,22 @@ load((err, data) => {
 | Predictable, testable     | `console.log`, DOM, I/O   |
 | Referentially transparent | `Date.now()`, `Math.random()` |
 
-| Pros (pure) | Cons (pure) |
+**When to use:** Use pure functions for reducers, selectors, utilities, anything you memoize. Keep impure I/O in thin wrappers at app boundaries. Even **reading** `Date.now()` / `Math.random()` is impure — external code may mutate hidden state.
+
+**Pluses and minuses:**
+
+| + (pure) | − (pure) |
 |-------------|-------------|
 | Easy to test and memoize | I/O must live at edges |
 | Safe to parallelize/reorder | Can feel verbose for UI |
 
-| Pros (impure) | Cons (impure) |
+| + (impure) | − (impure) |
 |---------------|---------------|
 | Natural for I/O and UI | Harder to reason about order |
 | Direct state updates | Breaks caching assumptions |
 
-**Cases:** Use pure functions for reducers, selectors, utilities, anything you memoize. Keep impure I/O in thin wrappers at app boundaries. Even **reading** `Date.now()` / `Math.random()` is impure — external code may mutate hidden state.
+**Examples:**
 
-**See also:** [7_special.md — Pure functions & side effects](./7_special.md) · [Functional core, imperative shell](./7_special.md#functional-core-imperative-shell)
-
-**Example:**
 const add = (a, b) => a + b; // pure
 
 let total = 0;
@@ -2538,6 +2480,8 @@ const greet = (name) => {
 ---
 
 ### `this` binding rules
+
+**See also:** [7_special.md — Pure functions & side effects](./7_special.md) · [Functional core, imperative shell](./7_special.md#functional-core-imperative-shell)
 
 **Definition:** For regular functions, `this` is determined by **how** the function is called, not where it is defined. Arrow functions inherit `this` lexically.
 
@@ -2558,14 +2502,17 @@ const greet = (name) => {
 | `call`/`apply`/`bind` | explicit     |
 | Arrow                 | lexical (outer `this`) |
 
-| Pros (dynamic `this`) | Cons |
+**When to use:** Object methods → regular `function` or method shorthand; React class handlers → `bind` or arrows; utilities with no `this` → arrows or strict bare calls.
+
+**Pluses and minuses:**
+
+| + (dynamic `this`) | − |
 |-----------------------|------|
 | Flexible method reuse | Context loss when extracting methods |
 | OOP patterns | Confusing in callbacks without arrows/bind |
 
-**Cases:** Object methods → regular `function` or method shorthand; React class handlers → `bind` or arrows; utilities with no `this` → arrows or strict bare calls.
+**Examples:**
 
-**Example — context loss:**
 const obj = { x: 10, getX() { return this.x; } };
 const getX = obj.getX;
 getX(); // undefined (strict)
@@ -2581,7 +2528,7 @@ function greet(name = "Guest", ...tags) {
 }
 ```
 
-**Source:** [javascript.info/function-basics](https://learn.javascript.ru/function-basics) · [function-expressions](https://learn.javascript.ru/function-expressions) · [arrow-functions-basics](https://learn.javascript.ru/arrow-functions-basics) · [callbacks](https://learn.javascript.ru/callbacks) · [object-methods](https://learn.javascript.ru/object-methods)
+**Sources:** [javascript.info/function-basics](https://learn.javascript.ru/function-basics) · [function-expressions](https://learn.javascript.ru/function-expressions) · [arrow-functions-basics](https://learn.javascript.ru/arrow-functions-basics) · [callbacks](https://learn.javascript.ru/callbacks) · [object-methods](https://learn.javascript.ru/object-methods)
 
 </details>
 
@@ -2604,14 +2551,17 @@ Topics beyond declarations and arrows: HOFs, memoization, currying, `new`, IIFE,
 - **Returns function:** decorators wrap behavior (`timed(fn)`, `memoize(fn)`).
 - Enables composition without duplicating control-flow logic.
 
-| Pros | Cons |
+**When to use:** Array methods, middleware, decorators, event wiring, `once`/`debounce` wrappers.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Reusable patterns (`map`, decorators) | Can obscure flow if over-nested |
 | Declarative pipelines | Harder stack traces |
 
-**Cases:** Array methods, middleware, decorators, event wiring, `once`/`debounce` wrappers.
+**Examples:**
 
-**Example:**
 const evens = [1, 2, 3, 4].filter((n) => n % 2 === 0).map((n) => n * 2);
 
 function timed(fn) {
@@ -2637,14 +2587,17 @@ function timed(fn) {
 - Only correct for **pure** functions — impure caches return stale/wrong data.
 - Key strategy matters: `JSON.stringify(args)` fails for functions, circular refs.
 
-| Pros | Cons |
+**When to use:** Fibonacci, API response transforms, React `useMemo`-style logic. Avoid for unbounded inputs or functions with side effects.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Big speedup on expensive pure calls | Memory grows with unique keys |
 | Transparent to callers | Wrong if function is impure |
 
-**Cases:** Fibonacci, API response transforms, React `useMemo`-style logic. Avoid for unbounded inputs or functions with side effects.
+**Examples:**
 
-**Example:**
 function memoize(fn) {
   const cache = new Map();
   return (...args) => {
@@ -2670,14 +2623,17 @@ function memoize(fn) {
 - `compose` applies right-to-left; `pipe` (not built-in) applies left-to-right.
 - Useful for building configured functions without many parameters.
 
-| Pros | Cons |
+**When to use:** Currying — optional params, FP libs; Composition — transform pipelines (`parse → validate → format`).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Partial application, reusable config | Extra function layers |
 | Clean pipelines | Steeper learning curve |
 
-**Cases:** Currying — optional params, FP libs; Composition — transform pipelines (`parse → validate → format`).
+**Examples:**
 
-**Example:**
 const curry = (f) =>
   function curried(...args) {
     return args.length >= f.length
@@ -2710,14 +2666,17 @@ compose(double, inc)(3); // 8
 3. Call `Fn` with `this` = new object.
 4. If `Fn` returns an object, use that; else return the new object.
 
-| Pros | Cons |
+**When to use:** Legacy constructors, interviews. Prefer `class` syntax for new code.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Familiar OOP pattern | Easy to forget `new` |
 | Prototype methods shared | `this` binding pitfalls |
 
-**Cases:** Legacy constructors, interviews. Prefer `class` syntax for new code.
+**Examples:**
 
-**Example:**
 function User(name) {
   this.name = name;
 }
@@ -2738,14 +2697,17 @@ const u = new User("Ann");
 - Name `fact` visible **inside** the function body for self-calls.
 - Outer scope uses the `const` variable name, not `fact` (in strict mode).
 
-| Pros | Cons |
+**When to use:** Recursive helpers assigned to `const`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Recursion without polluting outer scope | Slightly more syntax |
 | Better stack traces than anonymous | IE legacy quirks (historical) |
 
-**Cases:** Recursive helpers assigned to `const`.
+**Examples:**
 
-**Example:**
 const factorial = function fact(n) {
   return n <= 1 ? 1 : n * fact(n - 1);
 };
@@ -2762,14 +2724,17 @@ const factorial = function fact(n) {
 - Function expression wrapped in `()` then called with `()`.
 - Creates local bindings that disappear after the IIFE returns (unless closed over).
 
-| Pros | Cons |
+**When to use:** Legacy module pattern, one-time setup. Prefer `const`/`let` blocks and ESM today.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Private scope before block scope | Extra syntax noise |
 | One-off initialization | Less needed with ESM |
 
-**Cases:** Legacy module pattern, one-time setup. Prefer `const`/`let` blocks and ESM today.
+**Examples:**
 
-**Example:**
 (function () {
   const secret = 42;
   // secret not visible outside
@@ -2789,14 +2754,17 @@ const factorial = function fact(n) {
 - `yield*` delegates to another iterable.
 - Generators are pausable — state preserved between `.next()` calls.
 
-| Pros | Cons |
+**When to use:** Infinite IDs, paginated fetch loops, custom iterables. Use arrays/`async` iterators for most app code.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Lazy infinite sequences | Harder mental model |
 | Custom iteration | Not for simple list transforms |
 
-**Cases:** Infinite IDs, paginated fetch loops, custom iterables. Use arrays/`async` iterators for most app code.
+**Examples:**
 
-**Example:**
 function* range(n) {
   for (let i = 0; i < n; i++) yield i;
 }
@@ -2817,14 +2785,17 @@ gen.next(); // { value: 0, done: false }
 - Without tail-call optimization (limited in JS engines), deep recursion overflows stack.
 - Often rewriteable as `while` loop with explicit stack for trees.
 
-| Pros | Cons |
+**When to use:** Tree walk, factorial (toy), nested JSON transform. Prefer iteration for very deep or hot paths.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Natural for trees, nested structures | Stack overflow on deep recursion |
 | Elegant divide-and-conquer | Often slower than iteration |
 
-**Cases:** Tree walk, factorial (toy), nested JSON transform. Prefer iteration for very deep or hot paths.
+**Examples:**
 
-**Example:**
 function pow(x, n) {
   if (n === 1) return x;
   return x * pow(x, n - 1);
@@ -2843,27 +2814,24 @@ function pow(x, n) {
 - Cannot see lexical variables from the calling scope — only globals.
 - JIT cannot optimize as well as static functions.
 
-| Pros | Cons |
+**When to use:** Almost never in app code. Prefer static functions, parsers, or sandboxed VMs.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Dynamic code from templates (rare) | Security hole with user input |
 | | No closure access |
 | | Same as `eval` risks |
 
-**Cases:** Almost never in app code. Prefer static functions, parsers, or sandboxed VMs.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const sum = new Function("a", "b", "return a + b");
 sum(1, 2); // 3
 ```
 
-</details>
-
-**Source:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators) · [currying-partials](https://learn.javascript.ru/currying-partials) · [constructor-new](https://learn.javascript.ru/constructor-new) · [generators](https://learn.javascript.ru/generators) · [recursion](https://learn.javascript.ru/recursion)
+**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators) · [currying-partials](https://learn.javascript.ru/currying-partials) · [constructor-new](https://learn.javascript.ru/constructor-new) · [generators](https://learn.javascript.ru/generators) · [recursion](https://learn.javascript.ru/recursion)
 
 </details>
 
@@ -2888,18 +2856,17 @@ sum(1, 2); // 3
 | Args format | comma-separated | array | preset + later args |
 | Returns | function result | function result | new function |
 
-| Pros | Cons |
+**When to use:** `obj.method.bind(obj)` for callbacks; `func.apply(ctx, argsArray)`; borrow array methods on array-likes; polyfills.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Fix context loss on extracted methods | Easy to over-bind |
 | Borrow methods (`Array.prototype.slice.call(arguments)`) | Bound fn has no `prototype` for `new` |
 | Partial application without curry lib | `this` mental overhead |
 
-**Cases:** `obj.method.bind(obj)` for callbacks; `func.apply(ctx, argsArray)`; borrow array methods on array-likes; polyfills.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function greet(greeting, punct) {
@@ -2917,9 +2884,7 @@ sayHi("?"); // 'Hi, Ann?'
 const getX = obj.getX.bind(obj);
 ```
 
-</details>
-
-**Source:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators) · see also [3_js_oop.md](./3_js_oop.md#call-apply-bind)
+**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators) · see also [3_js_oop.md](./3_js_oop.md#call-apply-bind)
 
 </details>
 
@@ -2942,17 +2907,16 @@ const getX = obj.getX.bind(obj);
 | Use for | Search, resize layout | Scroll, pointer move |
 | Risk | Feels laggy if delay too high | May skip final state |
 
-| Pros | Cons |
+**When to use:** Debounce — API search on keystroke; throttle — infinite scroll position updates.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Cuts expensive handler calls | Timing tuning needed |
 | Standard interview pattern | `this` must be forwarded in wrappers |
 
-**Cases:** Debounce — API search on keystroke; throttle — infinite scroll position updates.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function debounce(fn, delay) {
@@ -2975,9 +2939,7 @@ function throttle(fn, delay) {
 }
 ```
 
-</details>
-
-**Source:** [javascript.info/task/debounce](https://learn.javascript.ru/task/debounce) · [task/throttle](https://learn.javascript.ru/task/throttle)
+**Sources:** [javascript.info/task/debounce](https://learn.javascript.ru/task/debounce) · [task/throttle](https://learn.javascript.ru/task/throttle)
 
 </details>
 
@@ -3000,14 +2962,7 @@ function throttle(fn, delay) {
 - **Top-level `await`:** allowed in ES modules.
 - Browser: `<script type="module">` or `.mjs`; bundlers resolve for production.
 
-| Pros | Cons |
-|------|------|
-| Tree-shaking (dead code elimination) | Needs bundler or `type="module"` in browser |
-| Clear static dependency graph | CORS on cross-origin scripts |
-| No accidental globals | No synchronous `require` in browser |
-| `import()` for code splitting | Slightly different semantics than CJS in Node |
-
-**Cases:**
+**When to use:**
 
 | ESM | CommonJS (`require`) |
 |-----|---------------------|
@@ -3015,10 +2970,23 @@ function throttle(fn, delay) {
 | Bundled front-end | Some tooling still CJS-only |
 | Dynamic `import()` for lazy routes | Sync config loads in old Node |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+```js
+// import must be at top level (not inside if) — use import() for conditional
+// import { x } from './mod.js'; // x is live binding, not a copy
+```
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Tree-shaking (dead code elimination) | Needs bundler or `type="module"` in browser |
+| Clear static dependency graph | CORS on cross-origin scripts |
+| No accidental globals | No synchronous `require` in browser |
+| `import()` for code splitting | Slightly different semantics than CJS in Node |
+
+**Examples:**
 
 ```js
 // math.js
@@ -3035,16 +3003,7 @@ import multiply, { PI, add } from "./math.js";
 const heavy = await import("./heavy.js"); // dynamic — returns Promise
 ```
 
-</details>
-
-**Common pitfalls:**
-
-```js
-// import must be at top level (not inside if) — use import() for conditional
-// import { x } from './mod.js'; // x is live binding, not a copy
-```
-
-**Source:** [javascript.info/modules-intro](https://learn.javascript.ru/modules-intro)
+**Sources:** [javascript.info/modules-intro](https://learn.javascript.ru/modules-intro)
 
 </details>
 
@@ -3073,13 +3032,7 @@ const heavy = await import("./heavy.js"); // dynamic — returns Promise
 | `Map`, `Set` | `Map` iterates entries as `[key, value]` |
 | `arguments`, DOM collections | Array-like; use `Array.from` |
 
-| Pros | Cons |
-|------|------|
-| Uniform loop syntax | Custom iterables rarely needed |
-| Lazy generators save memory | Generator debugging is harder |
-| Composable with spread | Array-likes easy to misuse |
-
-**Cases:**
+**When to use:**
 
 | Need | Approach |
 |------|----------|
@@ -3088,7 +3041,15 @@ const heavy = await import("./heavy.js"); // dynamic — returns Promise
 | Lazy sequence | `function*` generator |
 | Custom collection API | Implement `Symbol.iterator` |
 
-**Example — custom iterable:**
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Uniform loop syntax | Custom iterables rarely needed |
+| Lazy generators save memory | Generator debugging is harder |
+| Composable with spread | Array-likes easy to misuse |
+
+**Examples:**
 
 ```js
 const iterable = {
@@ -3106,8 +3067,6 @@ const iterable = {
 for (const n of iterable) console.log(n); // 1, 2, 3
 ```
 
-**Example — generator:**
-
 ```js
 function* idGenerator() {
   let id = 1;
@@ -3118,14 +3077,12 @@ gen.next().value; // 1
 [...idGenerator()].slice(0, 3); // [1, 2, 3] — careful with infinite!
 ```
 
-**Example — Array.from:**
-
 ```js
 Array.from("hi"); // ['h', 'i']
 Array.from({ length: 3 }, (_, i) => i); // [0, 1, 2]
 ```
 
-**Source:** [javascript.info/iterable](https://learn.javascript.ru/iterable) · [generators](https://learn.javascript.ru/generators) · [array](https://learn.javascript.ru/array)
+**Sources:** [javascript.info/iterable](https://learn.javascript.ru/iterable) · [generators](https://learn.javascript.ru/generators) · [array](https://learn.javascript.ru/array)
 
 </details>
 
@@ -3148,17 +3105,16 @@ Array.from({ length: 3 }, (_, i) => i); // [0, 1, 2]
 - **Closures** keep outer variables alive while inner functions exist.
 - Common leak patterns: forgotten timers, DOM refs in closures, global caches without eviction.
 
-| Pros | Cons |
+**When to use:** Use `WeakMap` for DOM metadata; clear `setInterval`/listeners on teardown; avoid holding huge arrays in module-level closures.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | No manual memory management | Pauses (GC stops-the-world in some engines) |
 | WeakMap for side metadata | Leaks still possible via strong refs |
 
-**Cases:** Use `WeakMap` for DOM metadata; clear `setInterval`/listeners on teardown; avoid holding huge arrays in module-level closures.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function leak() {
@@ -3169,11 +3125,9 @@ function leak() {
 // Fix: remove listener, null refs, or use WeakMap for element metadata
 ```
 
-</details>
-
 See [Memory: stack and heap](#memory-stack-heap) for where objects live; [3_js_oop.md](./3_js_oop.md) for GC + closures in depth.
 
-**Source:** [javascript.info/garbage-collection](https://learn.javascript.ru/garbage-collection)
+**Sources:** [javascript.info/garbage-collection](https://learn.javascript.ru/garbage-collection)
 
 </details>
 
@@ -3197,17 +3151,16 @@ See [Memory: stack and heap](#memory-stack-heap) for where objects live; [3_js_o
 | `Object.is` | true | false | no |
 | `==` | false | true | yes |
 
-| Pros (`Object.is`) | Cons |
+**When to use:** `Object.is` for `NaN` checks; `===` everywhere else; `Number.isNaN(x)` for single-value `NaN` test without coercion.
+
+**Pluses and minuses:**
+
+| + (`Object.is`) | − |
 |--------------------|------|
 | Correct `NaN` checks | Rarely needed vs `===` |
 | Distinguishes `+0`/`-0` | Not used by `Map`/`Set` (SameValueZero) |
 
-**Cases:** `Object.is` for `NaN` checks; `===` everywhere else; `Number.isNaN(x)` for single-value `NaN` test without coercion.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 NaN === NaN;              // false
@@ -3220,9 +3173,7 @@ m.set(NaN, "val");
 m.get(NaN);               // 'val' — SameValueZero
 ```
 
-</details>
-
-**Source:** [MDN Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
+**Sources:** [MDN Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
 
 </details>
 
@@ -3239,16 +3190,16 @@ m.get(NaN);               // 'val' — SameValueZero
 2. Async callbacks go to **macrotask** queue (`setTimeout`, I/O) or **microtask** queue (Promises, `queueMicrotask`).
 3. When stack is empty, all microtasks run, then one macrotask, repeat.
 
-| Pros | Cons |
+**When to use:** Understand why `Promise.then` runs before `setTimeout(0)`; offload heavy work to Web Workers (browser) or worker threads (Node).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Simple concurrency model | CPU-heavy work blocks UI |
 | No locks/mutexes in app code | Microtask starvation if chaining infinitely |
 
-**Cases:** Understand why `Promise.then` runs before `setTimeout(0)`; offload heavy work to Web Workers (browser) or worker threads (Node).
-
-**Notes:** Full treatment in [3_js_async.md](./3_js_async.md#event-loop).
-
-**Example (ordering):**
+**Examples:**
 
 ```js
 console.log("1");
@@ -3258,7 +3209,9 @@ console.log("4");
 // 1, 4, 3, 2 — microtasks before next macrotask
 ```
 
-**Source:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop)
+**Thoughts:** Full treatment in [3_js_async.md](./3_js_async.md#event-loop).
+
+**Sources:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop)
 
 </details>
 
@@ -3276,17 +3229,16 @@ console.log("4");
 - Uncaught errors propagate up the call stack until caught or crash.
 - `throw new Error('msg')` — prefer `Error` objects over strings.
 
-| Pros | Cons |
+**When to use:** JSON parse, user input validation, API boundary wrappers. Log + re-throw at top level; handle expected errors locally.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Local recovery without crashing | Easy to swallow errors silently |
 | `finally` guarantees cleanup | try/catch has minor perf cost in hot paths |
 
-**Cases:** JSON parse, user input validation, API boundary wrappers. Log + re-throw at top level; handle expected errors locally.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 try {
@@ -3305,9 +3257,7 @@ class ValidationError extends Error {
 }
 ```
 
-</details>
-
-**Source:** [javascript.info/try-catch](https://learn.javascript.ru/try-catch)
+**Sources:** [javascript.info/try-catch](https://learn.javascript.ru/try-catch)
 
 </details>
 
@@ -3326,18 +3276,17 @@ class ValidationError extends Error {
 - `Reflect.get(obj, prop)` matches default `obj[prop]` behavior — use inside traps.
 - Common traps: `get`, `set`, `has`, `deleteProperty`, `apply` (for functions).
 
-| Pros | Cons |
+**When to use:** ORM-like accessors, immutable wrappers, test mocks. Vue-style **Proxy reactivity** answers “how do I notice a field write?”. **Signals** (below) answer “how do I propagate a change that was already noticed?” — different layers, not rivals.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Validation, logging, reactivity (Vue 3) | Performance overhead |
 | Virtual properties | Harder debugging |
 | Revocable proxies | Overkill for simple objects |
 
-**Cases:** ORM-like accessors, immutable wrappers, test mocks. Vue-style **Proxy reactivity** answers “how do I notice a field write?”. **Signals** (below) answer “how do I propagate a change that was already noticed?” — different layers, not rivals.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const target = { message1: "hello", message2: "world" };
@@ -3350,11 +3299,9 @@ const proxy = new Proxy(target, {
 proxy.message1; // logs, then "hello"
 ```
 
-</details>
+**Thoughts:** Language `Proxy` vs GoF **Proxy pattern** (same interface, control access) — [7_special.md](./7_special.md#proxy). Traps must respect invariants (e.g. non-writable own data properties).
 
-**Notes:** Language `Proxy` vs GoF **Proxy pattern** (same interface, control access) — [7_special.md](./7_special.md#proxy). Traps must respect invariants (e.g. non-writable own data properties).
-
-**Source:** [MDN `Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) · [javascript.info/proxy](https://learn.javascript.ru/proxy)
+**Sources:** [MDN `Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) · [javascript.info/proxy](https://learn.javascript.ru/proxy)
 
 </details>
 
@@ -3366,8 +3313,6 @@ proxy.message1; // logs, then "hello"
 ### Signals (TC39)
 
 **Definition:** A **signal** is a first-class cell of state that notifies dependents of changes. You read with `.get()`, write with `.set()`, and the engine builds a DAG of who depends on whom. The TC39 proposal standardizes that **graph + auto-tracking**, not an app-facing `effect()` API. Stage 1 since April 2024.
-
-**Problem it solves:** Imperative `let light = "red"` plus a manual `render()` couples state to the DOM and recomputes even when the visible result did not change. Pub/sub fixes “who to tell” but you still subscribe by hand, and `render` must know it depends on `light` even if it only cares about `message`. Signals make the graph automatic.
 
 **How it works:**
 
@@ -3391,15 +3336,25 @@ set() paints left → right.  get() recomputes right ← left, only if asked.
 | `dirty` | must recompute | run callback, then `equals` |
 | `computing` | callback running | reading self → error |
 
-| Pros | Cons |
+Imperative `let light = "red"` plus a manual `render()` couples state to the DOM and recomputes even when the visible result did not change. Pub/sub fixes “who to tell” but you still subscribe by hand, and `render` must know it depends on `light` even if it only cares about `message`. Signals make the graph automatic.
+
+**When to use:**
+
+Fine-grained UI state (Angular `signal()`, Vue `ref()`, Solid `createSignal()`, Svelte 5 `$state()`, Preact, Qwik, MobX). Shared reactive *models* across frameworks if the primitive ships. Not for one-shot events (click, socket) — use events. Not RxJS: a signal is one **current** value, not a stream over time. **`AbortSignal` is unrelated.**
+
+#### Common pitfalls
+
+Treating `.get`/`.set` as Vue `.value` “compat” — authors avoided that on purpose. Scheduling work inside `notify`. Forgetting `unwatch()`. Reading a real dependency inside `untrack` (graph goes stale). Assuming one global effect scheduler.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Auto subscriptions, no manual pub/sub | Not in the language yet (Stage 1) |
 | Lazy + memoized; `equals` stops wasted work | Scheduling (when to run effects) is framework-specific |
 | Glitch-free DAG vs naive notify storms | `untrack` / frozen `notify` are easy to misuse |
 
-**Cases:** Fine-grained UI state (Angular `signal()`, Vue `ref()`, Solid `createSignal()`, Svelte 5 `$state()`, Preact, Qwik, MobX). Shared reactive *models* across frameworks if the primitive ships. Not for one-shot events (click, socket) — use events. Not RxJS: a signal is one **current** value, not a stream over time. **`AbortSignal` is unrelated.**
-
-**Example — State + Computed (traffic light):**
+**Examples:**
 
 ```js
 const light = new Signal.State("red");
@@ -3419,8 +3374,6 @@ message.get();
 // → message stays "stop", DOM would not need a write
 ```
 
-**Example — dynamic dependencies:**
-
 ```js
 const showDetails = new Signal.State(false);
 const name = new Signal.State("Pumpkin");
@@ -3437,8 +3390,6 @@ showDetails.set(true);
 label.get();          // "Pumpkin: new" — now sources include details
 ```
 
-**Example — diamond (glitch-free vs pub/sub):**
-
 ```js
 const light = new Signal.State("red");
 const cars = new Signal.Computed(() => light.get() === "green");
@@ -3453,8 +3404,6 @@ board.get();
 // Signals: both parents dirty; board pulled once after they settle.
 ```
 
-**Example — custom `equals` (compare once, at write):**
-
 ```js
 const list = new Signal.State([1, 2, 3], {
   equals: (prev, next) => prev.length === next.length,
@@ -3462,8 +3411,6 @@ const list = new Signal.State([1, 2, 3], {
 list.set([9, 8, 7]); // length 3 === 3 → no dirty paint
 list.set([1]);       // length changed → sinks dirty
 ```
-
-**Example — Watcher as a toy `effect` (library code, not app code):**
 
 ```js
 let pending = false;
@@ -3498,8 +3445,6 @@ effect(() => {
 
 `notify` runs **inside** `set()` — only schedule, never recompute there. After the microtask, `getPending()` is the live dirty list.
 
-**Example — `untrack` (unsafe if the result actually depends on that read):**
-
 ```js
 const debugMode = new Signal.State(false);
 const items = new Signal.State([1, 2]);
@@ -3513,11 +3458,9 @@ const total = new Signal.Computed(() => {
 // debugMode flips do not dirty total — by design
 ```
 
-**Common pitfalls:** Treating `.get`/`.set` as Vue `.value` “compat” — authors avoided that on purpose. Scheduling work inside `notify`. Forgetting `unwatch()`. Reading a real dependency inside `untrack` (graph goes stale). Assuming one global effect scheduler.
+**Thoughts:** `set()` only colors the graph; `get()` is the only place work happens; effects stay in frameworks because **when** to rerun is not one size.
 
-**Key idea:** `set()` only colors the graph; `get()` is the only place work happens; effects stay in frameworks because **when** to rerun is not one size.
-
-**Source:** [proposal-signals README](https://github.com/proposal-signals/proposal-signals) · [signal-polyfill](https://github.com/proposal-signals/signal-polyfill) · Doka — Signals (Rusakov, 31 Aug 2026)
+**Sources:** [proposal-signals README](https://github.com/proposal-signals/proposal-signals) · [signal-polyfill](https://github.com/proposal-signals/signal-polyfill) · Doka — Signals (Rusakov, 31 Aug 2026)
 
 </details>
 
@@ -3534,18 +3477,17 @@ const total = new Signal.Computed(() => {
 - Call `.format(value)` per value — caches locale data internally.
 - `Intl.Collator` for locale-aware string sort; `Intl.DateTimeFormat` for dates.
 
-| Pros | Cons |
+**When to use:** Currency display, date in user's locale, sorting names per language rules.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Correct locale rules | Bundle size N/A (built-in) |
 | Better than manual formatting | Options API verbose |
 | Timezone/locale aware | Must pass correct locale string |
 
-**Cases:** Currency display, date in user's locale, sorting names per language rules.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(99.9);
@@ -3554,9 +3496,7 @@ new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(99
 new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date());
 ```
 
-</details>
-
-**Source:** [javascript.info/intl](https://learn.javascript.ru/intl)
+**Sources:** [javascript.info/intl](https://learn.javascript.ru/intl)
 
 </details>
 
@@ -3579,17 +3519,16 @@ new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date());
 | `structuredClone`        | Deep (no functions/DOM) |
 | `JSON` round-trip        | Deep with data loss     |
 
-| Pros (`structuredClone`) | Cons |
+**When to use:** Shallow — React state patch; Deep — clone config trees; JSON — quick DTO copy when types are simple.
+
+**Pluses and minuses:**
+
+| + (`structuredClone`) | − |
 |----------------------------|------|
 | Native, handles cycles | No functions/symbols |
 | Safer than JSON hack | Not in very old browsers |
 
-**Cases:** Shallow — React state patch; Deep — clone config trees; JSON — quick DTO copy when types are simple.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const original = { a: { b: 1 } };
@@ -3600,9 +3539,7 @@ original.a.b; // 99 — nested shared in shallow
 deep.a.b;     // 1 — independent
 ```
 
-</details>
-
-**Source:** [MDN structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
+**Sources:** [MDN structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
 
 </details>
 
@@ -3619,18 +3556,17 @@ deep.a.b;     // 1 — independent
 - Methods: `.test(str)`, `.exec(str)` (with capture groups), `str.match`, `str.replace`, `str.split`.
 - Capturing groups `(...)` and non-capturing `(?:...)`.
 
-| Pros | Cons |
+**When to use:** Input validation (email-ish), extract tokens, replace patterns. Prefer dedicated parsers for complex formats (HTML, JSON).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Powerful text parsing | Hard to read/maintain |
 | Built-in, fast | Catastrophic backtracking risk |
 | | Unicode edge cases |
 
-**Cases:** Input validation (email-ish), extract tokens, replace patterns. Prefer dedicated parsers for complex formats (HTML, JSON).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 /^\w+@\w+\.\w+$/.test("a@b.co"); // basic email shape
@@ -3638,9 +3574,7 @@ deep.a.b;     // 1 — independent
 const m = /(\d+)-(\d+)/.exec("2024-07"); // groups
 ```
 
-</details>
-
-**Source:** [javascript.info/regular-expressions](https://learn.javascript.ru/regular-expressions)
+**Sources:** [javascript.info/regular-expressions](https://learn.javascript.ru/regular-expressions)
 
 </details>
 
@@ -3656,15 +3590,17 @@ const m = /(\d+)-(\d+)/.exec("2024-07"); // groups
 - Parses and runs string as JS in current scope — can access local variables.
 - Prevents JIT optimization; same security risks as `new Function` with user input.
 
-| Pros | Cons |
+**When to use:** Do not use with user input. Prefer `JSON.parse`, template engines, or proper parsers.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Rare dynamic DSL cases | Security vulnerability |
 | | Breaks optimization |
 | | Hard to debug |
 
-**Cases:** Do not use with user input. Prefer `JSON.parse`, template engines, or proper parsers.
-
-**Source:** [javascript.info/eval](https://learn.javascript.ru/eval)
+**Sources:** [javascript.info/eval](https://learn.javascript.ru/eval)
 
 </details>
 
@@ -3681,17 +3617,16 @@ const m = /(\d+)-(\d+)/.exec("2024-07"); // groups
 - Preserves `this` when wrapper is used as method if you forward `this`.
 - Combine with `call`/`bind` for partial application.
 
-| Pros | Cons |
+**When to use:** `timed`, `once`, `debounce`, `memoize`, API auth guards.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | DRY for logging, timing, auth | Stack depth increases |
 | Composable wrappers | Order of decorators matters |
 
-**Cases:** `timed`, `once`, `debounce`, `memoize`, API auth guards.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function timed(fn) {
@@ -3704,9 +3639,7 @@ function timed(fn) {
 }
 ```
 
-</details>
-
-**Source:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
+**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
 
 </details>
 
@@ -3719,7 +3652,9 @@ function timed(fn) {
 
 ### Interview Practice
 
-**Definition:** Curated Q&A and coding tasks covering types, scope, functions, and common interview traps.
+**Definition:**
+
+Curated Q&A and coding tasks covering types, scope, functions, and common interview traps.
 
 Questions from [0_interview.md](0_interview.md). Try answering before opening solutions.
 
@@ -3761,7 +3696,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 Full pipeline: [JavaScript engine pipeline](#javascript-engine-pipeline). Memory model for frames vs objects: [Memory: stack and heap](#memory-stack-heap).
 
-**Source:** [MDN — What is JavaScript](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [Doka — memory](https://doka.guide/js/how-the-memory-works/)
+**Sources:** [MDN — What is JavaScript](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [Doka — memory](https://doka.guide/js/how-the-memory-works/)
 
 </details>
 
@@ -3781,7 +3716,7 @@ Full pipeline: [JavaScript engine pipeline](#javascript-engine-pipeline). Memory
 
 See **Data types** for the full type table, `typeof` quirks, type-check patterns, and interesting edge cases (NaN, object keys, coercion).
 
-**Source:** [javascript.info/types](https://learn.javascript.ru/types)
+**Sources:** [javascript.info/types](https://learn.javascript.ru/types)
 
 </details>
 
@@ -3790,7 +3725,9 @@ See **Data types** for the full type table, `typeof` quirks, type-check patterns
 
 ### var vs let vs const?
 
-**Definition:** `var` is function-scoped; `let`/`const` are block-scoped with TDZ; `const` prevents rebinding.
+**Definition:**
+
+`var` is function-scoped; `let`/`const` are block-scoped with TDZ; `const` prevents rebinding.
 
 |          | `var`                      | `let`                 | `const`                               |
 | -------- | -------------------------- | --------------------- | ------------------------------------- |
@@ -3800,7 +3737,7 @@ See **Data types** for the full type table, `typeof` quirks, type-check patterns
 
 Prefer `const` by default; `let` when rebinding; avoid `var` in new code.
 
-**Source:** [javascript.info/let-const](https://learn.javascript.ru/let-const)
+**Sources:** [javascript.info/let-const](https://learn.javascript.ru/let-const)
 
 </details>
 
@@ -3811,10 +3748,7 @@ Prefer `const` by default; `let` when rebinding; avoid `var` in new code.
 
 **Definition:** Hoisting registers declarations before execution; TDZ blocks access to `let`/`const` until their declaration line.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 console.log(a); // undefined (var)
@@ -3823,9 +3757,7 @@ console.log(b); // ReferenceError — TDZ
 let b = 2;
 ```
 
-</details>
-
-**Source:** [javascript.info/var](https://learn.javascript.ru/var)
+**Sources:** [javascript.info/var](https://learn.javascript.ru/var)
 
 </details>
 
@@ -3834,14 +3766,13 @@ let b = 2;
 
 ### What is a closure?
 
-**Definition:** A function that retains access to outer lexical bindings after the outer function returns.
+**Definition:**
+
+A function that retains access to outer lexical bindings after the outer function returns.
 
 See **Scope & closures → closures** for loop/`var` pitfalls and GC.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function makeAdder(x) {
@@ -3851,9 +3782,7 @@ const add5 = makeAdder(5);
 add5(3); // 8
 ```
 
-</details>
-
-**Source:** [javascript.info/closure](https://learn.javascript.ru/closure)
+**Sources:** [javascript.info/closure](https://learn.javascript.ru/closure)
 
 </details>
 
@@ -3864,11 +3793,13 @@ add5(3); // 8
 
 **Definition:** `this` is determined by call site (except arrows). Extracting a method loses its receiver.
 
-**Context loss:** `const fn = obj.method; fn()` — `this` is not `obj`.
+**How it works:**
 
-**Fix:** `fn.bind(obj)`, `obj.method()`, arrow wrapper, or `call`/`apply`.
+`const fn = obj.method; fn()` — `this` is not `obj`.
 
-**Source:** [javascript.info/object-methods](https://learn.javascript.ru/object-methods)
+`fn.bind(obj)`, `obj.method()`, arrow wrapper, or `call`/`apply`.
+
+**Sources:** [javascript.info/object-methods](https://learn.javascript.ru/object-methods)
 
 </details>
 
@@ -3879,10 +3810,7 @@ add5(3); // 8
 
 **Definition:** All set `this`. `call`/`apply` invoke immediately; `bind` returns a new function with fixed `this`.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 fn.call(ctx, 1, 2);
@@ -3891,9 +3819,7 @@ const bound = fn.bind(ctx, 1);
 bound(2); // same as fn.call(ctx, 1, 2)
 ```
 
-</details>
-
-**Source:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
+**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
 
 </details>
 
@@ -3904,12 +3830,9 @@ bound(2); // same as fn.call(ctx, 1, 2)
 
 **Definition:** Writable `Signal.State` + lazy `Signal.Computed`. Reads during a Computed callback auto-register sources. `set()` paints the graph (`dirty` / `checked`); `get()` lazily recomputes. Default compare is `Object.is`.
 
-**Why no `effect()`:** `Watcher.notify` is synchronous inside `set()`. React, Angular, and Solid disagree on **when** side effects should run. The standard gives a frozen notify hook; frameworks schedule (microtask, render phase, zone-less CD). `AbortSignal` is a different API.
+**How it works:** `Watcher.notify` is synchronous inside `set()`. React, Angular, and Solid disagree on **when** side effects should run. The standard gives a frozen notify hook; frameworks schedule (microtask, render phase, zone-less CD). `AbortSignal` is a different API.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const n = new Signal.State(0);
@@ -3919,11 +3842,9 @@ n.set(1);
 doubled.get(); // 2 — lazy recompute on pull
 ```
 
-</details>
-
 See **Advanced → Signals (TC39)** for dynamic deps, diamond, Watcher `effect`, `equals`, `untrack`.
 
-**Source:** [proposal-signals](https://github.com/proposal-signals/proposal-signals)
+**Sources:** [proposal-signals](https://github.com/proposal-signals/proposal-signals)
 
 </details>
 
@@ -3934,7 +3855,9 @@ See **Advanced → Signals (TC39)** for dynamic deps, diamond, Watcher `effect`,
 
 **Definition:** `typeof null === "object"` is a language bug from the first JS implementation (null tagged as object). `===` compares without coercion; `==` applies Abstract Equality (ToNumber, ToPrimitive).
 
-**How it works:** Prefer `===` / `!==`. The useful `==` exception: `value == null` is true for both `null` and `undefined` only. `Number.isNaN` does not coerce; global `isNaN` does.
+**How it works:**
+
+Prefer `===` / `!==`. The useful `==` exception: `value == null` is true for both `null` and `undefined` only. `Number.isNaN` does not coerce; global `isNaN` does.
 
 | Pitfall | Result | Prefer |
 |---------|--------|--------|
@@ -3942,11 +3865,13 @@ See **Advanced → Signals (TC39)** for dynamic deps, diamond, Watcher `effect`,
 | `[] == false` | `true` | `===` |
 | `isNaN("hello")` | `true` | `Number.isNaN` |
 
-**Key idea:** `===` by default; `== null` only for nullish; never trust `typeof` for null.
+**Thoughts:**
+
+`===` by default; `== null` only for nullish; never trust `typeof` for null.
 
 See **Data types → Interesting cases** and **Data types → Type conversions**.
 
-**Source:** [javascript.info/comparison](https://learn.javascript.ru/comparison) · [MDN Equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness)
+**Sources:** [javascript.info/comparison](https://learn.javascript.ru/comparison) · [MDN Equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness)
 
 </details>
 
@@ -3955,7 +3880,9 @@ See **Data types → Interesting cases** and **Data types → Type conversions**
 
 ### Map/Set vs WeakMap/WeakSet?
 
-**Definition:** `Map`/`Set` hold **strong** references, are iterable, and expose `.size`. `WeakMap`/`WeakSet` hold **weak** references to objects so entries disappear when the object is no longer reachable elsewhere.
+**Definition:**
+
+`Map`/`Set` hold **strong** references, are iterable, and expose `.size`. `WeakMap`/`WeakSet` hold **weak** references to objects so entries disappear when the object is no longer reachable elsewhere.
 
 | | `Map` / `Set` | `WeakMap` / `WeakSet` |
 |---|---------------|------------------------|
@@ -3965,11 +3892,13 @@ See **Data types → Interesting cases** and **Data types → Type conversions**
 | GC | Keeps keys/values alive | Lets object keys/values be collected |
 | Typical use | Caches, indexes, dedupe | Private metadata, DOM tags, "seen" sets |
 
-**When to use:** `Map` when keys are non-strings or you need iteration/size; `Set` for uniqueness. `WeakMap` for per-object side data without memory leaks; `WeakSet` to mark processed object references.
+**When to use:**
+
+`Map` when keys are non-strings or you need iteration/size; `Set` for uniqueness. `WeakMap` for per-object side data without memory leaks; `WeakSet` to mark processed object references.
 
 See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfalls, and examples.
 
-**Source:** [javascript.info/weakmap-weakset](https://learn.javascript.ru/weakmap-weakset)
+**Sources:** [javascript.info/weakmap-weakset](https://learn.javascript.ru/weakmap-weakset)
 
 </details>
 
@@ -3980,10 +3909,13 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 
 **Definition:** Shallow copy shares nested references; deep copy clones the full tree.
 
-**Shallow:** `Object.assign`, spread, `arr.slice()`.  
-**Deep:** `structuredClone()` (modern), `JSON` round-trip (limited), or recursive walk.
+**How it works:**
 
-**Source:** [MDN structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
+`Object.assign`, spread, `arr.slice()`.
+
+`structuredClone()` (modern), `JSON` round-trip (limited), or recursive walk.
+
+**Sources:** [MDN structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
 
 </details>
 
@@ -3992,7 +3924,9 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 
 ### `map`, `forEach`, `reduce` — how do they work?
 
-**Definition:** Array higher-order methods that iterate with a callback `(element, index, array)`.
+**Definition:**
+
+Array higher-order methods that iterate with a callback `(element, index, array)`.
 
 | Method | Returns | Use |
 |--------|---------|-----|
@@ -4006,10 +3940,7 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 - `forEach` — like `map` but discards return; use `for...of` if you need `break`.
 - `reduce` — callback `(acc, item) => nextAcc`; provide `init` on possibly empty arrays.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 [1, 2, 3].map((n) => n * 2);           // [2, 4, 6]
@@ -4017,9 +3948,7 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 [1, 2, 3].reduce((sum, n) => sum + n, 0); // 6
 ```
 
-</details>
-
-**Key idea:** *`map` transforms, `forEach` acts, `reduce` aggregates.*
+**Thoughts:** *`map` transforms, `forEach` acts, `reduce` aggregates.*
 
 **See also:** [Transformation & search](#transformation--search) (full theory)
 
@@ -4030,7 +3959,9 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 
 ### `reduce` vs `map` — when to use which?
 
-**Definition:** `map` always returns an array of the same length; `reduce` returns any type — number, object, Map, etc.
+**Definition:**
+
+`map` always returns an array of the same length; `reduce` returns any type — number, object, Map, etc.
 
 | | `map` | `reduce` |
 |---|-------|----------|
@@ -4038,11 +3969,13 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 | Best for | Transform each item | Aggregate, group, build object |
 | Chainable | Yes (`map().filter()`) | Usually terminal |
 
-**When to use `reduce`:** Sum, count, group-by, flatten, build `{ subtotal, tax, total }` object from cart items.
+**How it works:**
 
-**When to use `map`:** Rename fields, format display values, extract IDs.
+Sum, count, group-by, flatten, build `{ subtotal, tax, total }` object from cart items.
 
-**Key idea:** *If you need one value or object from an array, reach for `reduce`.*
+Rename fields, format display values, extract IDs.
+
+**Thoughts:** *If you need one value or object from an array, reach for `reduce`.*
 
 </details>
 
@@ -4063,9 +3996,9 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 - First argument to callback is `acc`; return value becomes `acc` for next step.
 - Without `init` on non-empty array, first element is used as initial `acc` (risky on empty arrays → `TypeError`).
 
-**Cases:** Sum · max value · `{ count, total }` object · `Map` of grouped items.
+**When to use:** Sum · max value · `{ count, total }` object · `Map` of grouped items.
 
-**Key idea:** *Always pass an initial value when the array might be empty.*
+**Thoughts:** *Always pass an initial value when the array might be empty.*
 
 </details>
 
@@ -4076,13 +4009,11 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 
 **Definition:** Use `reduce` to fold values; apply business rules inside the callback.
 
-**Simple sum:**
+**How it works:**
 
 ```js
 const total = prices.reduce((sum, p) => sum + p, 0);
 ```
-
-**Sum with per-item discount:**
 
 ```js
 const items = [
@@ -4098,7 +4029,7 @@ const total = items.reduce((sum, item) => {
 // 100*0.9 + 200*0.8 = 250
 ```
 
-**Key idea:** *Keep aggregation logic pure — same input always gives same output.*
+**Thoughts:** *Keep aggregation logic pure — same input always gives same output.*
 
 </details>
 
@@ -4109,7 +4040,7 @@ const total = items.reduce((sum, item) => {
 
 **Definition:** A **pure function** returns the same output for the same input and has no side effects (no mutating external state, no I/O).
 
-**Why avoid mutations in React/Redux:**
+**How it works:**
 
 - React compares state by reference — mutating `state.push(x)` does not trigger re-render.
 - Shared references cause bugs when one consumer mutates data another relies on.
@@ -4120,7 +4051,7 @@ const total = items.reduce((sum, item) => {
 | `(arr) => [...arr, x]` | `arr.push(x); return arr` |
 | `reduce` with no external writes | `fetch`, `console.log`, `Date.now()` |
 
-**Key idea:** *Prefer `map`/`filter`/`reduce` and spread over `push`/`splice` on shared data.*
+**Thoughts:** *Prefer `map`/`filter`/`reduce` and spread over `push`/`splice` on shared data.*
 
 **See also:** [Pure vs impure functions](#pure-vs-impure-functions)
 
@@ -4481,7 +4412,7 @@ console.log(Object.keys(a));
 | `{a:1} === {a:1}`        | `false`                 | Reference compare              |
 | `Object.keys(a)`         | `['[object Object]']`   | Object keys stringify          |
 
-**Source:** [javascript.info/types](https://learn.javascript.ru/types)
+**Sources:** [javascript.info/types](https://learn.javascript.ru/types)
 
 </details>
 
@@ -4490,14 +4421,13 @@ console.log(Object.keys(a));
 
 ### call / apply / bind
 
-**Definition:** Set `this` and optionally partial-apply arguments.
+**Definition:**
+
+Set `this` and optionally partial-apply arguments.
 
 See **Functions → call, apply & bind** for full notes (definition, how it works, cases, pros/cons).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const f = (a, b, c) => a + b + c;
@@ -4507,9 +4437,7 @@ f.call(null, 1, 2, 3); // 6
 f.apply(null, [1, 2, 3]); // 6
 ```
 
-</details>
-
-**Source:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
+**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
 
 </details>
 
@@ -4518,7 +4446,9 @@ f.apply(null, [1, 2, 3]); // 6
 
 ### Junior — General (core subset)
 
-**Definition:** Entry-level interview questions on strict mode, typing, mutability, and debugging.
+**Definition:**
+
+Entry-level interview questions on strict mode, typing, mutability, and debugging.
 
 7. What does the `use strict` directive mean?
 8. How does JS differ on front-end vs back-end?
@@ -4534,7 +4464,9 @@ f.apply(null, [1, 2, 3]); // 6
 
 ### Junior — JS Core
 
-**Definition:** Fundamental language questions: types, arrays, operators, scope, and collections.
+**Definition:**
+
+Fundamental language questions: types, arrays, operators, scope, and collections.
 
 15. What data types exist in JS?
 16. How to check if a value is an array?
@@ -4560,7 +4492,9 @@ f.apply(null, [1, 2, 3]); // 6
 
 ### Junior — Functions
 
-**Definition:** Function forms, hoisting, closures, `this`, and method binding.
+**Definition:**
+
+Function forms, hoisting, closures, `this`, and method binding.
 
 31. Function declaration vs function expression?
 32. What is an anonymous function?
@@ -4581,7 +4515,9 @@ f.apply(null, [1, 2, 3]); // 6
 
 ### Middle — JS Core
 
-**Definition:** Intermediate topics: prototypes, coercion, GC, promises, descriptors, typed arrays, symbols.
+**Definition:**
+
+Intermediate topics: prototypes, coercion, GC, promises, descriptors, typed arrays, symbols.
 
 10. JS types — what logs when reassigning object reference?
 11. What is the temporal dead zone?
@@ -4617,7 +4553,9 @@ f.apply(null, [1, 2, 3]); // 6
 
 ### JS Core (patterns)
 
-**Definition:** Architecture patterns beyond syntax: class-free OOP, async disposer, RegExp discipline.
+**Definition:**
+
+Architecture patterns beyond syntax: class-free OOP, async disposer, RegExp discipline.
 
 8. Class-free OOP pattern.
 9. Async disposer pattern.
@@ -4630,7 +4568,9 @@ f.apply(null, [1, 2, 3]); // 6
 
 ### Middle — Functions
 
-**Definition:** Advanced function techniques: currying, memoization, composition, and arrow tracing.
+**Definition:**
+
+Advanced function techniques: currying, memoization, composition, and arrow tracing.
 
 40. Explain currying with a practical example.
 41. Memoization — when to apply?
@@ -4644,7 +4584,9 @@ f.apply(null, [1, 2, 3]); // 6
 
 ### Junior — Practice tasks
 
-**Definition:** Hands-on exercises: object copy, clone, variable swap, and a small CRUD project.
+**Definition:**
+
+Hands-on exercises: object copy, clone, variable swap, and a small CRUD project.
 
 135. Ways to copy a simple object `{ a: 1, b: 2, c: 3 }`?
 136. Implement deep clone.
@@ -4659,7 +4601,9 @@ f.apply(null, [1, 2, 3]); // 6
 
 ### Middle — Practice tasks (core)
 
-**Definition:** Utility implementations: query parsing and set operations on arrays.
+**Definition:**
+
+Utility implementations: query parsing and set operations on arrays.
 
 145. URL query string to JSON (`queryObjectify`).
 146. Intersection of two arrays.
@@ -4671,7 +4615,9 @@ f.apply(null, [1, 2, 3]); // 6
 
 ### Practice tasks
 
-**Definition:** Recursive implementations of standard library patterns.
+**Definition:**
+
+Recursive implementations of standard library patterns.
 
 44. Implement `reduce` using recursion.
 

@@ -81,6 +81,8 @@ GitHub UI: **Settings → SSH and GPG keys → New SSH key** — paste the **`.p
 
 ### Sections
 
+> Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
+
 - [Fundamentals](#fundamentals)
 - [Workflow](#workflow) — [Git CLI daily loop](#workflow)
 - [Branching & merge](#branching)
@@ -94,7 +96,9 @@ GitHub UI: **Settings → SSH and GPG keys → New SSH key** — paste the **`.p
 
 ### Git internals & DAG
 
-**Definition:** Git stores project history as a **directed acyclic graph (DAG)** of immutable **commit** objects. Each commit points to a **tree** (directory snapshot) and one or more parent commits. Objects are content-addressed by **SHA-1** hashes and live in `.git/objects/`.
+**Definition:**
+
+Git stores project history as a **directed acyclic graph (DAG)** of immutable **commit** objects. Each commit points to a **tree** (directory snapshot) and one or more parent commits. Objects are content-addressed by **SHA-1** hashes and live in `.git/objects/`.
 
 | Object | Contains |
 |--------|----------|
@@ -111,10 +115,7 @@ GitHub UI: **Settings → SSH and GPG keys → New SSH key** — paste the **`.p
 
 **When to use:** Understanding internals helps with recovery (`reflog`), conflict resolution, and knowing why `rebase` rewrites history. Object IDs are **cryptographic hashes of content** (collision-resistant addressing). That is integrity, not password hashing — [Encryption](./7_special.md#encryption).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git cat-file -t HEAD          # type: commit
@@ -122,13 +123,13 @@ git cat-file -p HEAD          # pretty-print commit object
 git log --graph --oneline --all
 ```
 
-</details>
-
-**Source:** [Pro Git — Git Internals](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) · [git-scm.com](https://git-scm.com/)
+**Sources:** [Pro Git — Git Internals](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) · [git-scm.com](https://git-scm.com/)
 
 ### Daily workflow
 
-**Definition:** The standard edit → stage → commit cycle moves changes through the three trees. `git add` copies changes from working directory to index; `git commit` freezes the index into a new commit in the repository.
+**Definition:**
+
+The standard edit → stage → commit cycle moves changes through the three trees. `git add` copies changes from working directory to index; `git commit` freezes the index into a new commit in the repository.
 
 | State | Description |
 |-------|-------------|
@@ -139,10 +140,7 @@ git log --graph --oneline --all
 
 **When to use:** Every day — feature work, bug fixes, documentation updates. Stage selectively with `git add -p` for atomic commits. Full command loop: [Git CLI daily workflow](#workflow).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git status
@@ -151,13 +149,13 @@ git add -p path/to/file           # stage hunks interactively
 git commit -m "feat: add login form"
 ```
 
-</details>
-
-**Source:** [Pro Git — Recording Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
+**Sources:** [Pro Git — Recording Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
 
 ### Branching & merge
 
-**Definition:** A **branch** is a movable pointer to a commit. **Merge** combines branch histories (optionally creating a merge commit); **rebase** replays commits onto another base for a linear history.
+**Definition:**
+
+A **branch** is a movable pointer to a commit. **Merge** combines branch histories (optionally creating a merge commit); **rebase** replays commits onto another base for a linear history.
 
 | | `git merge` | `git rebase` |
 |---|-------------|--------------|
@@ -166,14 +164,13 @@ git commit -m "feat: add login form"
 | Rewrites SHAs | No | Yes |
 | Safe on shared branches | Yes | **No** — rewrites history |
 
-**When to use:** Branch for every feature/fix. Merge into shared branches after review. Rebase **local/private** branches before opening a PR.
+**When to use:**
 
-**When NOT to use:** Never rebase commits others have already pulled. Never `reset --hard` on shared branches.
+Branch for every feature/fix. Merge into shared branches after review. Rebase **local/private** branches before opening a PR.
 
-**Example:**
+Never rebase commits others have already pulled. Never `reset --hard` on shared branches.
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git switch -c feature/login
@@ -183,9 +180,9 @@ git rebase origin/main          # update feature branch (local only)
 git switch main && git merge feature/login
 ```
 
-</details>
+**Sources:**
 
-**Source:** [Pro Git — Branching](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) · [Pro Git — Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+[Pro Git — Branching](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) · [Pro Git — Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
 
 ---
 
@@ -198,7 +195,9 @@ git switch main && git merge feature/login
 
 ### Version control types
 
-**Definition:** Version control tracks file changes over time so teams can collaborate, revert, and audit history.
+**Definition:**
+
+Version control tracks file changes over time so teams can collaborate, revert, and audit history.
 
 | Type | Example | Characteristic |
 |------|---------|----------------|
@@ -208,7 +207,7 @@ git switch main && git merge feature/login
 
 **When to use:** Distributed VCS (Git) for modern software teams — offline work, cheap branching, full local history.
 
-**Source:** [Atlassian — What is version control](https://www.atlassian.com/git/tutorials/what-is-version-control)
+**Sources:** [Atlassian — What is version control](https://www.atlassian.com/git/tutorials/what-is-version-control)
 
 </details>
 
@@ -217,7 +216,9 @@ git switch main && git merge feature/login
 
 ### Three trees
 
-**Definition:** Git manages three distinct trees. Understanding them is the key to understanding every Git command.
+**Definition:**
+
+Git manages three distinct trees. Understanding them is the key to understanding every Git command.
 
 | Tree | Location | Role |
 |------|----------|------|
@@ -227,10 +228,7 @@ git switch main && git merge feature/login
 
 **When to use:** Always — every `add`, `commit`, `diff`, and `restore` command moves data between these trees.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 # Two-step commit: working → index → repository
@@ -238,9 +236,7 @@ git add file.ts                   # working → index
 git commit -m "feat: update file" # index → repository
 ```
 
-</details>
-
-**Source:** [Pro Git — The Three Trees](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
+**Sources:** [Pro Git — The Three Trees](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
 
 </details>
 
@@ -249,7 +245,9 @@ git commit -m "feat: update file" # index → repository
 
 ### File states
 
-**Definition:** Every tracked file is in one of four states relative to the last commit.
+**Definition:**
+
+Every tracked file is in one of four states relative to the last commit.
 
 | State | Description |
 |-------|-------------|
@@ -260,10 +258,7 @@ git commit -m "feat: update file" # index → repository
 
 **When to use:** Check with `git status` before every commit to know what will be included.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git status -s
@@ -272,9 +267,7 @@ git status -s
 # ?? new.ts     — untracked
 ```
 
-</details>
-
-**Source:** [Pro Git — File Status Lifecycle](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
+**Sources:** [Pro Git — File Status Lifecycle](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
 
 </details>
 
@@ -283,7 +276,9 @@ git status -s
 
 ### Object model
 
-**Definition:** Git stores **snapshots**, not diffs. Four object types live in `.git/objects/`. Each object is addressed by a **SHA-1 hash**. Commits form a **DAG** via parent pointers and are **immutable**.
+**Definition:**
+
+Git stores **snapshots**, not diffs. Four object types live in `.git/objects/`. Each object is addressed by a **SHA-1 hash**. Commits form a **DAG** via parent pointers and are **immutable**.
 
 | Object | Contains |
 |--------|----------|
@@ -294,10 +289,7 @@ git status -s
 
 **When to use:** Useful when inspecting history at the plumbing level or debugging corrupt repos with `git fsck`.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git rev-parse HEAD                # commit SHA
@@ -305,9 +297,7 @@ git cat-file -p HEAD^{tree}       # root tree of HEAD
 git ls-tree HEAD                  # list files in HEAD tree
 ```
 
-</details>
-
-**Source:** [Pro Git — Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)
+**Sources:** [Pro Git — Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)
 
 </details>
 
@@ -316,7 +306,9 @@ git ls-tree HEAD                  # list files in HEAD tree
 
 ### Pointers (refs)
 
-**Definition:** Refs are labels that point to commits. Branches move; tags stay fixed.
+**Definition:**
+
+Refs are labels that point to commits. Branches move; tags stay fixed.
 
 | Ref | Meaning |
 |-----|---------|
@@ -328,19 +320,14 @@ git ls-tree HEAD                  # list files in HEAD tree
 
 **When to use:** `ORIG_HEAD` for undoing a bad merge; detached HEAD when checking out a specific commit for inspection.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git switch --detach abc1234         # detached HEAD at commit
 git switch main                     # re-attach HEAD to branch
 ```
 
-</details>
-
-**Source:** [Pro Git — Git References](https://git-scm.com/book/en/v2/Git-Internals-Git-References)
+**Sources:** [Pro Git — Git References](https://git-scm.com/book/en/v2/Git-Internals-Git-References)
 
 </details>
 
@@ -349,7 +336,9 @@ git switch main                     # re-attach HEAD to branch
 
 ### Git vs GitHub
 
-**Definition:** Git is the version control tool; GitHub/GitLab/Bitbucket are hosting and collaboration platforms built on top of Git.
+**Definition:**
+
+Git is the version control tool; GitHub/GitLab/Bitbucket are hosting and collaboration platforms built on top of Git.
 
 | | Git | GitHub / GitLab / Bitbucket |
 |---|-----|----------------------------|
@@ -359,7 +348,7 @@ git switch main                     # re-attach HEAD to branch
 
 **When to use:** Git for all local version control; remote platform for team coordination, PRs, and CI/CD.
 
-**Source:** [GitHub Docs — Using Git](https://docs.github.com/en/get-started/using-git)
+**Sources:** [GitHub Docs — Using Git](https://docs.github.com/en/get-started/using-git)
 
 </details>
 
@@ -376,7 +365,9 @@ git switch main                     # re-attach HEAD to branch
 
 **Definition:** Git CLI is the terminal interface to Git — the portable tool on servers and CI where there is no GUI. GUIs (GitHub Desktop, GitKraken, Sourcetree, Fork, Tower, Sublime Merge) are optional; the same commands run everywhere.
 
-**How it works:** Teams share a **remote** repository (hosted copy, not “deleted”). Each developer clones it, works on a **branch**, stages, commits, pushes for review, then merges and deletes the branch.
+**How it works:**
+
+Teams share a **remote** repository (hosted copy, not “deleted”). Each developer clones it, works on a **branch**, stages, commits, pushes for review, then merges and deletes the branch.
 
 Typical loop:
 
@@ -392,18 +383,31 @@ A **conflict** is when two people changed the same lines — Git cannot pick a w
 
 Child branches keep the history of the parent **at the moment they were created**. Later parent commits are not inherited until you merge (or rebase) them in; child commits stay off the parent until you merge the other way.
 
-**Cases:** Daily feature work; SSH sessions and CI; teaching a shared command vocabulary.
+**When to use:**
 
-| Pros | Cons |
+Daily feature work; SSH sessions and CI; teaching a shared command vocabulary.
+
+#### Common pitfalls
+
+* `git pull --all` fetches **all remotes**; it still only **integrates into the current branch** (merge or rebase of that branch’s upstream). It does not update every local branch.
+* `git add .` is relative to the **current directory**. `git add --all` / `-A` updates the index for the **whole working tree** (additions, modifications, deletions).
+* Bare `git push` needs a configured upstream (`push.default` is `simple` since Git 2.0). Git prints `git push -u origin <branch>` when missing.
+* `git switch` exists since **Git 2.23**; `checkout` still works but also does restore/detach work. Prefer `switch` / `restore`.
+* On case-insensitive disks (`core.ignorecase`, typical macOS/Windows), renaming `Git-CLI` → `git-cli` may look like a no-op. Use `git mv`:
+
+```bash
+git mv Git-CLI tmp && git mv tmp git-cli
+```
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Same commands on every OS and server | Easy to run destructive flags (`reset --hard`) |
 | Scriptable, works without a GUI | New-branch `push` fails until upstream is set |
 | Precise staging (`add -p`) | Case-only renames can be invisible on macOS/Windows |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 # First copy of the remote (SSH or HTTPS)
@@ -434,23 +438,9 @@ git merge new-user-profile
 git branch -d new-user-profile      # delete after it is merged
 ```
 
-</details>
+**Thoughts:** Clone → branch → stage → commit → push → merge → delete branch. GUI is comfort; CLI is the contract.
 
-**Common pitfalls:**
-
-* `git pull --all` fetches **all remotes**; it still only **integrates into the current branch** (merge or rebase of that branch’s upstream). It does not update every local branch.
-* `git add .` is relative to the **current directory**. `git add --all` / `-A` updates the index for the **whole working tree** (additions, modifications, deletions).
-* Bare `git push` needs a configured upstream (`push.default` is `simple` since Git 2.0). Git prints `git push -u origin <branch>` when missing.
-* `git switch` exists since **Git 2.23**; `checkout` still works but also does restore/detach work. Prefer `switch` / `restore`.
-* On case-insensitive disks (`core.ignorecase`, typical macOS/Windows), renaming `Git-CLI` → `git-cli` may look like a no-op. Use `git mv`:
-
-```bash
-git mv Git-CLI tmp && git mv tmp git-cli
-```
-
-**Key idea:** Clone → branch → stage → commit → push → merge → delete branch. GUI is comfort; CLI is the contract.
-
-**Source:** [Pro Git — Recording Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository) · [git-switch](https://git-scm.com/docs/git-switch) · [git-add](https://git-scm.com/docs/git-add) · [git-push](https://git-scm.com/docs/git-push) · [git-pull](https://git-scm.com/docs/git-pull)
+**Sources:** [Pro Git — Recording Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository) · [git-switch](https://git-scm.com/docs/git-switch) · [git-add](https://git-scm.com/docs/git-add) · [git-push](https://git-scm.com/docs/git-push) · [git-pull](https://git-scm.com/docs/git-pull)
 
 </details>
 
@@ -463,10 +453,7 @@ git mv Git-CLI tmp && git mv tmp git-cli
 
 **When to use:** On first Git install on a new machine.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git config --global user.name "Your Name"
@@ -481,9 +468,7 @@ git config --global core.autocrlf true
 git config --global core.autocrlf input
 ```
 
-</details>
-
-**Source:** [Pro Git — First-Time Git Setup](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
+**Sources:** [Pro Git — First-Time Git Setup](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
 
 </details>
 
@@ -492,7 +477,9 @@ git config --global core.autocrlf input
 
 ### Vim in Git output
 
-**Definition:** Long output (`git log -p`, interactive rebase) opens Vim as the default pager/editor.
+**Definition:**
+
+Long output (`git log -p`, interactive rebase) opens Vim as the default pager/editor.
 
 | Key / command | Action |
 |---------------|--------|
@@ -504,7 +491,7 @@ git config --global core.autocrlf input
 
 **When to use:** Whenever Git opens an editor for commit messages or interactive rebase.
 
-**Source:** [Pro Git — Git Configuration](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration)
+**Sources:** [Pro Git — Git Configuration](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration)
 
 </details>
 
@@ -513,7 +500,9 @@ git config --global core.autocrlf input
 
 ### Commit conventions
 
-**Definition:** Structured commit messages make history searchable and enable automated changelogs. Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+**Definition:**
+
+Structured commit messages make history searchable and enable automated changelogs. Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 | Prefix | When to use | Example |
 |--------|-------------|---------|
@@ -528,19 +517,14 @@ git config --global core.autocrlf input
 
 **When to use:** Every commit on team projects. Use imperative mood: `add feature` not `added feature`.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git commit -m "feat!: remove legacy auth endpoint"
 # Breaking change: append ! or add BREAKING CHANGE: in footer
 ```
 
-</details>
-
-**Source:** [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) · [Commit style guide (Eric VonB)](https://gist.github.com/ericavonb/3c79e5035567c8ef3267)
+**Sources:** [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) · [Commit style guide (Eric VonB)](https://gist.github.com/ericavonb/3c79e5035567c8ef3267)
 
 </details>
 
@@ -553,10 +537,7 @@ git commit -m "feat!: remove legacy auth endpoint"
 
 **When to use:** `init` for new projects; `clone` when joining an existing project or setting up CI. Daily loop: [Git CLI daily workflow](#workflow).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git init                          # init in current directory
@@ -569,9 +550,7 @@ git clone https://github.com/user/repo.git .   # into current dir
 git clone --depth 1 URL           # shallow clone (CI)
 ```
 
-</details>
-
-**Source:** [Pro Git — Getting a Git Repository](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository)
+**Sources:** [Pro Git — Getting a Git Repository](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository)
 
 </details>
 
@@ -584,10 +563,7 @@ git clone --depth 1 URL           # shallow clone (CI)
 
 **When to use:** Before every commit and when reviewing PRs locally.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git status
@@ -600,9 +576,7 @@ git diff main...feature           # changes on feature since divergence
 git diff --name-only main feature
 ```
 
-</details>
-
-**Source:** [Pro Git — Viewing Your Commit History](https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History)
+**Sources:** [Pro Git — Viewing Your Commit History](https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History)
 
 </details>
 
@@ -615,10 +589,7 @@ git diff --name-only main feature
 
 **When to use:** Before every commit. Use `-p` for selective hunk staging.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git add path/to/file
@@ -629,9 +600,7 @@ git add -p                        # interactive hunk staging
 git add -i                        # interactive shell
 ```
 
-</details>
-
-**Source:** [Pro Git — Recording Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
+**Sources:** [Pro Git — Recording Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
 
 </details>
 
@@ -642,14 +611,11 @@ git add -i                        # interactive shell
 
 **Definition:** Unstage with `restore --staged` or `reset`; discard working changes with `restore`. `reset --hard` and `clean` permanently destroy uncommitted work.
 
+**How it works:** `git reset --hard` permanently discards all uncommitted changes in tracked files. `git clean -df` removes untracked files — also irreversible.
+
 **When to use:** Unstage when you added too much; discard when you want to throw away local edits. **Never** use `--hard` unless you are certain.
 
-**Danger:** `git reset --hard` permanently discards all uncommitted changes in tracked files. `git clean -df` removes untracked files — also irreversible.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git restore --staged file         # unstage (modern)
@@ -660,9 +626,7 @@ git clean -df                     # remove untracked files/dirs
 git reset --hard                  # DANGER: discard all uncommitted changes
 ```
 
-</details>
-
-**Source:** [Pro Git — Undoing Things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things)
+**Sources:** [Pro Git — Undoing Things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things)
 
 </details>
 
@@ -675,10 +639,7 @@ git reset --hard                  # DANGER: discard all uncommitted changes
 
 **When to use:** When a logical unit of work is complete and staged. Amend only unpushed commits. Bare `git commit` opens the configured editor; `-m` is for a short one-line message.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git commit                        # editor for the message
@@ -688,9 +649,7 @@ git commit --amend -m "new message"   # rewrite last commit (unpushed only!)
 git commit --signoff              # DCO sign-off line
 ```
 
-</details>
-
-**Source:** [Pro Git — Recording Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
+**Sources:** [Pro Git — Recording Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
 
 </details>
 
@@ -703,10 +662,7 @@ git commit --signoff              # DCO sign-off line
 
 **When to use:** Urgent context switch, pull with dirty working tree, or saving experiments.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git stash
@@ -720,9 +676,7 @@ git stash drop stash@{0}
 git stash branch feature/wip stash@{0}
 ```
 
-</details>
-
-**Source:** [Pro Git — Stashing and Cleaning](https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning)
+**Sources:** [Pro Git — Stashing and Cleaning](https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning)
 
 </details>
 
@@ -735,10 +689,7 @@ git stash branch feature/wip stash@{0}
 
 **When to use:** Debugging regressions, understanding code ownership, preparing release notes.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git log --oneline -10
@@ -753,11 +704,9 @@ git show HEAD~2:path/file         # file content at commit
 git blame file.ts -L 10,20
 ```
 
-</details>
-
 Press `q` to exit long pager output.
 
-**Source:** [Pro Git — Viewing the Commit History](https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History)
+**Sources:** [Pro Git — Viewing the Commit History](https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History)
 
 </details>
 
@@ -768,12 +717,15 @@ Press `q` to exit long pager output.
 
 **Definition:** `git rm` stops tracking and deletes files; `git mv` renames with history preserved. `--cached` removes from index only.
 
-**When to use:** Deleting features, renaming modules, untracking secrets accidentally added.
+**When to use:**
 
-**Example:**
+Deleting features, renaming modules, untracking secrets accidentally added.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+A case-only rename in Finder/Explorer often produces an empty commit. Two-step `git mv` (or `git mv -f Old old` on some setups) records the change.
+
+**Examples:**
 
 ```bash
 git rm file.txt
@@ -785,11 +737,7 @@ git mv old.txt new.txt
 git mv Git-CLI tmp && git mv tmp git-cli
 ```
 
-</details>
-
-**Common pitfalls:** A case-only rename in Finder/Explorer often produces an empty commit. Two-step `git mv` (or `git mv -f Old old` on some setups) records the change.
-
-**Source:** [Pro Git — Recording Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
+**Sources:** [Pro Git — Recording Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
 
 </details>
 
@@ -808,10 +756,7 @@ git mv Git-CLI tmp && git mv tmp git-cli
 
 **When to use:** One branch per feature, fix, or experiment. Delete after merge.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git branch
@@ -825,9 +770,7 @@ git branch --no-merged
 git branch -a                       # include remotes
 ```
 
-</details>
-
-**Source:** [Pro Git — Branching](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)
+**Sources:** [Pro Git — Branching](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)
 
 </details>
 
@@ -840,10 +783,7 @@ git branch -a                       # include remotes
 
 **When to use:** Daily branch switching. Use `--detach` only for temporary inspection.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git switch main                   # switch branch (modern)
@@ -854,9 +794,7 @@ git switch -c fix abc123          # branch from specific commit
 git switch --detach abc123        # detached HEAD at commit
 ```
 
-</details>
-
-**Source:** [git-scm.com — git-switch](https://git-scm.com/docs/git-switch) · [git-checkout](https://git-scm.com/docs/git-checkout)
+**Sources:** [git-scm.com — git-switch](https://git-scm.com/docs/git-switch) · [git-checkout](https://git-scm.com/docs/git-checkout)
 
 </details>
 
@@ -865,7 +803,9 @@ git switch --detach abc123        # detached HEAD at commit
 
 ### Merge
 
-**Definition:** `git merge` integrates another branch into the current branch. Creates a merge commit unless fast-forward is possible.
+**Definition:**
+
+`git merge` integrates another branch into the current branch. Creates a merge commit unless fast-forward is possible.
 
 | Strategy | Result | When |
 |----------|--------|------|
@@ -876,10 +816,7 @@ git switch --detach abc123        # detached HEAD at commit
 
 **When to use:** Integrating completed features into the current branch after review. Same command both ways: merge `main` **into** a feature branch to pick up new parent commits, or merge the feature **into** `main` to land the work. `git merge <name>` always merges **that** branch into **HEAD**.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git merge feature                   # merge named branch into current
@@ -889,9 +826,7 @@ git merge feature --squash          # squash into one commit (manual commit afte
 git merge --abort
 ```
 
-</details>
-
-**Source:** [Pro Git — Basic Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
+**Sources:** [Pro Git — Basic Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
 
 </details>
 
@@ -902,16 +837,15 @@ git merge --abort
 
 **Definition:** `git rebase` replays commits from one branch onto another base, producing a linear history with new commit SHAs.
 
-**When to use:** Update a **local/private** feature branch onto latest `main` before opening a PR. Clean up WIP commits with interactive rebase.
+**How it works:** Rebase **rewrites history**. Force-pushing a rebased branch overwrites remote commits teammates may have based work on. Golden rule: never rebase commits that others have pulled.
 
-**When NOT to use:** On any branch others have pulled. Never rebase `main` or shared release branches.
+**When to use:**
 
-**Danger:** Rebase **rewrites history**. Force-pushing a rebased branch overwrites remote commits teammates may have based work on. Golden rule: never rebase commits that others have pulled.
+Update a **local/private** feature branch onto latest `main` before opening a PR. Clean up WIP commits with interactive rebase.
 
-**Example:**
+On any branch others have pulled. Never rebase `main` or shared release branches.
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git rebase main
@@ -922,11 +856,9 @@ git rebase --continue
 git pull --rebase origin main
 ```
 
-</details>
-
 Interactive rebase actions: `pick`, `reword`, `squash`, `fixup`, `drop`.
 
-**Source:** [Pro Git — Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+**Sources:** [Pro Git — Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
 
 </details>
 
@@ -935,7 +867,9 @@ Interactive rebase actions: `pick`, `reword`, `squash`, `fixup`, `drop`.
 
 ### Merge vs rebase
 
-**Definition:** Two strategies for integrating branch histories — merge preserves topology; rebase linearizes.
+**Definition:**
+
+Two strategies for integrating branch histories — merge preserves topology; rebase linearizes.
 
 | | `git merge` | `git rebase` |
 |---|-------------|--------------|
@@ -947,10 +881,7 @@ Interactive rebase actions: `pick`, `reword`, `squash`, `fixup`, `drop`.
 
 **When to use:** Merge for shared branches; rebase for private feature branches before PR.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 # Update feature branch with latest main (rebase — clean history)
@@ -962,9 +893,7 @@ git rebase origin/main
 git merge origin/main
 ```
 
-</details>
-
-**Source:** [Pro Git — Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+**Sources:** [Pro Git — Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
 
 </details>
 
@@ -977,10 +906,7 @@ git merge origin/main
 
 **When to use:** Backporting a fix, bringing one commit without merging entire branch.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git cherry-pick abc123
@@ -990,9 +916,7 @@ git cherry-pick --abort
 git cherry-pick --continue
 ```
 
-</details>
-
-**Source:** [Pro Git — Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+**Sources:** [Pro Git — Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
 
 </details>
 
@@ -1005,10 +929,7 @@ git cherry-pick --continue
 
 **When to use:** Release versioning (`v1.0.0`). Lightweight tags for temporary bookmarks.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git tag v1.0.0                      # lightweight
@@ -1018,9 +939,7 @@ git push origin v1.0.1
 git push origin --tags
 ```
 
-</details>
-
-**Source:** [Pro Git — Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
+**Sources:** [Pro Git — Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
 
 </details>
 
@@ -1029,7 +948,9 @@ git push origin --tags
 
 ### Git Flow
 
-**Definition:** A branching model with long-running `main` and `develop` branches plus short-lived feature, release, and hotfix branches.
+**Definition:**
+
+A branching model with long-running `main` and `develop` branches plus short-lived feature, release, and hotfix branches.
 
 | Branch | Purpose |
 |--------|---------|
@@ -1041,7 +962,7 @@ git push origin --tags
 
 **When to use:** Scheduled releases with version numbers. Heavy for continuous deployment teams.
 
-**Source:** [Atlassian — Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+**Sources:** [Atlassian — Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 
 </details>
 
@@ -1050,7 +971,9 @@ git push origin --tags
 
 ### GitHub Flow & trunk-based
 
-**Definition:** Simpler models optimized for continuous integration and deployment.
+**Definition:**
+
+Simpler models optimized for continuous integration and deployment.
 
 | Model | Pattern |
 |-------|---------|
@@ -1059,7 +982,7 @@ git push origin --tags
 
 **When to use:** Teams deploying multiple times per day. Prefer trunk-based over Git Flow for CI/CD pipelines. How this sits in the delivery loop: [10_build.md — What is CI/CD](./10_build.md#what-is-cicd).
 
-**Source:** [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow) · [trunkbaseddevelopment.com](https://trunkbaseddevelopment.com/)
+**Sources:** [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow) · [trunkbaseddevelopment.com](https://trunkbaseddevelopment.com/)
 
 </details>
 
@@ -1072,16 +995,11 @@ git push origin --tags
 
 **When to use:** Clean up WIP commits (`wip`, `fix typo`) into one logical commit before opening a PR. Only on unpushed or private history.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git rebase -i origin/main
 ```
-
-</details>
 
 In the editor:
 
@@ -1099,7 +1017,7 @@ reword jkl3456 feat: add login form
 | `pick` | Keep as-is |
 | `drop` | Remove commit |
 
-**Source:** [Pro Git — Rewriting History](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History)
+**Sources:** [Pro Git — Rewriting History](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History)
 
 </details>
 
@@ -1118,10 +1036,7 @@ reword jkl3456 feat: add login form
 
 **When to use:** Daily push/pull. Prefer SSH after key setup ([SSH setup](#ssh-setup); protocol: [DevOps — SSH](./15_devops.md#ssh)).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git remote -v
@@ -1139,9 +1054,7 @@ git pull --rebase origin main
 git branch --set-upstream-to=origin/main
 ```
 
-</details>
-
-**Source:** [Pro Git — Working with Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)
+**Sources:** [Pro Git — Working with Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)
 
 </details>
 
@@ -1150,7 +1063,9 @@ git branch --set-upstream-to=origin/main
 
 ### Fetch vs pull vs push
 
-**Definition:** `fetch` downloads remote changes without merging; `pull` fetches and integrates; `push` sends local commits to remote.
+**Definition:**
+
+`fetch` downloads remote changes without merging; `pull` fetches and integrates; `push` sends local commits to remote.
 
 | Command | Fetch remote? | Update local branch? | Merge/rebase? |
 |---------|---------------|----------------------|---------------|
@@ -1160,10 +1075,7 @@ git branch --set-upstream-to=origin/main
 
 **When to use:** `fetch` when you want to inspect remote changes before integrating: `git log main..origin/main`. `git pull --all` fetches every remote, then still only integrates the **current** branch.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git fetch origin
@@ -1173,9 +1085,7 @@ git log main..origin/main         # what's new on remote
 git merge origin/main             # integrate after review
 ```
 
-</details>
-
-**Source:** [Pro Git — Working with Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)
+**Sources:** [Pro Git — Working with Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)
 
 </details>
 
@@ -1188,10 +1098,7 @@ git merge origin/main             # integrate after review
 
 **When to use:** Before starting new work on a forked open-source project.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git remote add upstream git@github.com:original/repo.git
@@ -1201,9 +1108,7 @@ git merge upstream/main
 git push origin main
 ```
 
-</details>
-
-**Source:** [GitHub — Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)
+**Sources:** [GitHub — Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)
 
 </details>
 
@@ -1216,20 +1121,15 @@ git push origin main
 
 **When to use:** After rebasing your own feature branch before PR update. Never on shared branches.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git push --force-with-lease origin feature/foo
 ```
 
-</details>
-
 Enable **protected branches** on `main` to block force pushes entirely.
 
-**Source:** [git-scm.com — git-push](https://git-scm.com/docs/git-push)
+**Sources:** [git-scm.com — git-push](https://git-scm.com/docs/git-push)
 
 </details>
 
@@ -1244,7 +1144,9 @@ Enable **protected branches** on `main` to block force pushes entirely.
 
 ### Undo commits & reset
 
-**Definition:** `git reset` moves the branch pointer and optionally resets index/working tree. `git revert` creates a new commit that undoes a previous one — safe for shared history.
+**Definition:**
+
+`git reset` moves the branch pointer and optionally resets index/working tree. `git revert` creates a new commit that undoes a previous one — safe for shared history.
 
 | Mode | Branch | Index | Working tree |
 |------|--------|-------|--------------|
@@ -1252,14 +1154,11 @@ Enable **protected branches** on `main` to block force pushes entirely.
 | `--mixed` (default) | moves back | reset | unchanged |
 | `--hard` | moves back | reset | reset |
 
+**How it works:** `git reset --hard` permanently destroys uncommitted changes and moves the branch pointer. On shared branches, use `revert` instead.
+
 **When to use:** `reset` for unpushed local commits only. `revert` for pushed/shared commits.
 
-**Danger:** `git reset --hard` permanently destroys uncommitted changes and moves the branch pointer. On shared branches, use `revert` instead.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 # Pushed commits — use revert (safe)
@@ -1275,9 +1174,7 @@ git reset --keep HEAD~1           # safer hard reset; aborts if working tree con
 git reset --hard abc123
 ```
 
-</details>
-
-**Source:** [Pro Git — Reset Demystified](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) · [Pro Git — Undoing Things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things)
+**Sources:** [Pro Git — Reset Demystified](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) · [Pro Git — Undoing Things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things)
 
 </details>
 
@@ -1286,7 +1183,9 @@ git reset --hard abc123
 
 ### Revert vs reset
 
-**Definition:** Two ways to undo history — revert is non-destructive; reset rewrites branch position.
+**Definition:**
+
+Two ways to undo history — revert is non-destructive; reset rewrites branch position.
 
 | | `revert` | `reset` |
 |---|----------|---------|
@@ -1296,7 +1195,7 @@ git reset --hard abc123
 
 **When to use:** Always prefer `revert` on `main` or any branch teammates use.
 
-**Source:** [Pro Git — Undoing Things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things)
+**Sources:** [Pro Git — Undoing Things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things)
 
 </details>
 
@@ -1309,19 +1208,14 @@ git reset --hard abc123
 
 **When to use:** Accidental deletion, need to restore one file from a known good commit.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git restore --source=abc123 -- path/file
 git checkout abc123 -- path/file  # classic equivalent
 ```
 
-</details>
-
-**Source:** [git-scm.com — git-restore](https://git-scm.com/docs/git-restore)
+**Sources:** [git-scm.com — git-restore](https://git-scm.com/docs/git-restore)
 
 </details>
 
@@ -1334,10 +1228,7 @@ git checkout abc123 -- path/file  # classic equivalent
 
 **When to use:** After accidental `reset --hard`, deleted branch, or failed rebase.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git reflog -20
@@ -1345,9 +1236,7 @@ git reflog show feature-branch
 # find SHA → git branch recovered abc123
 ```
 
-</details>
-
-**Source:** [Pro Git — Reflog](https://git-scm.com/book/en/v2/Git-Internals-The-Ref-Log)
+**Sources:** [Pro Git — Reflog](https://git-scm.com/book/en/v2/Git-Internals-The-Ref-Log)
 
 </details>
 
@@ -1356,7 +1245,9 @@ git reflog show feature-branch
 
 ### Recovery playbook
 
-**Definition:** Quick reference for common disaster scenarios.
+**Definition:**
+
+Quick reference for common disaster scenarios.
 
 | Situation | Command |
 |-----------|---------|
@@ -1371,7 +1262,7 @@ git reflog show feature-branch
 
 **When to use:** Bookmark this table — you will need it at 5 PM on a Friday.
 
-**Source:** [Pro Git — Undoing Things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things)
+**Sources:** [Pro Git — Undoing Things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things)
 
 </details>
 
@@ -1384,10 +1275,7 @@ git reflog show feature-branch
 
 **When to use:** During `merge`, `rebase`, or `cherry-pick` when both sides edited the same region.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git merge feature
@@ -1401,9 +1289,7 @@ git add file
 git commit -m "fix: resolve merge conflict"
 ```
 
-</details>
-
-**Source:** [Pro Git — Basic Merge Conflicts](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
+**Sources:** [Pro Git — Basic Merge Conflicts](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
 
 </details>
 
@@ -1416,10 +1302,7 @@ git commit -m "fix: resolve merge conflict"
 
 **When to use:** Regression with unknown cause — "it worked last week."
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git bisect start
@@ -1432,9 +1315,7 @@ git bisect reset
 git bisect run npm test
 ```
 
-</details>
-
-**Source:** [Pro Git — Debugging with Git](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git)
+**Sources:** [Pro Git — Debugging with Git](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git)
 
 </details>
 
@@ -1447,10 +1328,7 @@ git bisect run npm test
 
 **When to use:** Hotfix while feature work is in progress — no stash/switch needed.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git worktree add ../hotfix hotfix-branch
@@ -1458,9 +1336,7 @@ git worktree list
 git worktree remove ../hotfix
 ```
 
-</details>
-
-**Source:** [git-scm.com — git-worktree](https://git-scm.com/docs/git-worktree)
+**Sources:** [git-scm.com — git-worktree](https://git-scm.com/docs/git-worktree)
 
 </details>
 
@@ -1479,7 +1355,7 @@ git worktree remove ../hotfix
 
 **When to use:** Every change to shared branches (`main`, `develop`).
 
-**Example workflow:**
+**Examples:**
 
 1. **Create branch** from `main` / `develop`
 2. **Commit** atomically with clear messages
@@ -1493,7 +1369,7 @@ git worktree remove ../hotfix
 
 PRs enable discussion before code lands on shared branches. Push additional commits during review; they appear in the PR automatically.
 
-**Source:** [GitHub — About pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
+**Sources:** [GitHub — About pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
 
 </details>
 
@@ -1504,7 +1380,9 @@ PRs enable discussion before code lands on shared branches. Push additional comm
 
 **Definition:** Team conventions that keep repository history clean, secure, and reviewable.
 
-**When to use:** Always on team projects.
+**When to use:**
+
+Always on team projects.
 
 | Practice | Why |
 |----------|-----|
@@ -1518,7 +1396,7 @@ PRs enable discussion before code lands on shared branches. Push additional comm
 | Signed commits | Verify authorship on sensitive repos |
 | Delete merged branches | Reduce clutter locally and remotely |
 
-**Source:** [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+**Sources:** [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 </details>
 
@@ -1527,7 +1405,9 @@ PRs enable discussion before code lands on shared branches. Push additional comm
 
 ### Practical scenarios
 
-**Definition:** End-to-end recipes for common real-world Git situations.
+**Definition:**
+
+End-to-end recipes for common real-world Git situations.
 
 #### First repository setup
 
@@ -1592,7 +1472,7 @@ git rebase -i origin/main
 git push --force-with-lease origin feature/foo
 ```
 
-**Source:** [Pro Git book](https://git-scm.com/book/en/v2)
+**Sources:** [Pro Git book](https://git-scm.com/book/en/v2)
 
 </details>
 
@@ -1601,7 +1481,9 @@ git push --force-with-lease origin feature/foo
 
 ### Quick fixes
 
-**Definition:** Short solutions for recurring Git annoyances.
+**Definition:**
+
+Short solutions for recurring Git annoyances.
 
 #### Pull with merge instead of rebase
 
@@ -1624,7 +1506,7 @@ git revert -m 1 cc831fe
 
 Use SSH keys or credential helper: [GitHub credential caching](https://docs.github.com/en/get-started/git-basics/caching-your-github-credentials-in-git).
 
-**Source:** [GitHub Docs](https://docs.github.com/en/get-started/using-git)
+**Sources:** [GitHub Docs](https://docs.github.com/en/get-started/using-git)
 
 </details>
 
@@ -1637,10 +1519,7 @@ Use SSH keys or credential helper: [GitHub credential caching](https://docs.gith
 
 **When to use:** Production repos, open-source projects requiring verified commits, protected branch rules.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git config --global user.signingkey KEY_ID
@@ -1648,11 +1527,9 @@ git config --global commit.gpgsign true
 git commit -S -m "feat: secure change"
 ```
 
-</details>
-
 Verify on merge in protected branch rules. SSH signing also supported in Git 2.34+.
 
-**Source:** [GitHub — Signing commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits)
+**Sources:** [GitHub — Signing commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits)
 
 </details>
 
@@ -1671,10 +1548,7 @@ Verify on merge in protected branch rules. SSH signing also supported in Git 2.3
 
 **When to use:** From project day one — before first commit.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 node_modules/
@@ -1687,15 +1561,13 @@ build/
 .DS_Store
 ```
 
-</details>
-
 * Typical ignores: installable deps (`node_modules`), build output, IDE folders (`.idea`), secrets (`.env`, keys)
 * One pattern per line; `#` for comments
 * `!` negates: `*.log` then `!important.log`
 * Global ignore: `git config --global core.excludesfile ~/.gitignore_global`
 * Already tracked file: `git rm --cached file` then add to `.gitignore`
 
-**Source:** [git-scm.com — gitignore](https://git-scm.com/docs/gitignore)
+**Sources:** [git-scm.com — gitignore](https://git-scm.com/docs/gitignore)
 
 </details>
 
@@ -1706,11 +1578,11 @@ build/
 
 **Definition:** Desktop clients visualize history, staging, and branches. They wrap the same Git operations as the CLI.
 
-**Cases:** Local day-to-day work. Use CLI on servers, CI, and when teaching a shared command set. Daily command loop: [Git CLI daily workflow](#workflow).
+**When to use:** Local day-to-day work. Use CLI on servers, CI, and when teaching a shared command set. Daily command loop: [Git CLI daily workflow](#workflow).
 
-**Example clients:** GitHub Desktop, Sourcetree, GitKraken, Fork, Tower, Sublime Merge (licensing varies). VS Code Source Control and GitLens are in-editor GUIs.
+**Examples:** GitHub Desktop, Sourcetree, GitKraken, Fork, Tower, Sublime Merge (licensing varies). VS Code Source Control and GitLens are in-editor GUIs.
 
-**Key idea:** Learn CLI; pick a GUI for comfort, not as a substitute on headless machines.
+**Thoughts:** Learn CLI; pick a GUI for comfort, not as a substitute on headless machines.
 
 </details>
 
@@ -1723,10 +1595,7 @@ build/
 
 **When to use:** Team projects with mixed OS environments.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```
 * text=auto eol=lf
@@ -1737,8 +1606,6 @@ build/
 *.png  binary
 ```
 
-</details>
-
 Renormalize after adding rules:
 
 ```bash
@@ -1746,7 +1613,7 @@ git add --renormalize .
 git commit -m "chore: normalize line endings"
 ```
 
-**Source:** [git-scm.com — gitattributes](https://git-scm.com/docs/gitattributes)
+**Sources:** [git-scm.com — gitattributes](https://git-scm.com/docs/gitattributes)
 
 </details>
 
@@ -1755,7 +1622,9 @@ git commit -m "chore: normalize line endings"
 
 ### Line endings (CRLF vs LF)
 
-**Definition:** Windows uses CRLF (`\r\n`); Unix uses LF (`\n`). Mismatched line endings cause merge conflicts on every pull.
+**Definition:**
+
+Windows uses CRLF (`\r\n`); Unix uses LF (`\n`). Mismatched line endings cause merge conflicts on every pull.
 
 | OS | Default | Git setting |
 |----|---------|-------------|
@@ -1764,10 +1633,7 @@ git commit -m "chore: normalize line endings"
 
 **When to use:** Fix team-wide before conflicts multiply (see interview Q1).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 # .gitattributes: * text=auto eol=lf
@@ -1775,9 +1641,7 @@ git add --renormalize .
 git commit -m "chore: normalize line endings to LF"
 ```
 
-</details>
-
-**Source:** [Pro Git — Customizing Git — Git Attributes](https://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes)
+**Sources:** [Pro Git — Customizing Git — Git Attributes](https://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes)
 
 </details>
 
@@ -1786,7 +1650,9 @@ git commit -m "chore: normalize line endings to LF"
 
 ### Git hooks
 
-**Definition:** Scripts that run automatically at Git lifecycle events. Live in `.git/hooks/` or via tools like Husky.
+**Definition:**
+
+Scripts that run automatically at Git lifecycle events. Live in `.git/hooks/` or via tools like Husky.
 
 | Hook | When | Typical use |
 |------|------|-------------|
@@ -1796,7 +1662,7 @@ git commit -m "chore: normalize line endings to LF"
 
 **When to use:** Enforce code quality gates before changes reach remote.
 
-**Example (Husky + lint-staged):**
+**Examples:**
 
 ```json
 {
@@ -1806,7 +1672,7 @@ git commit -m "chore: normalize line endings to LF"
 }
 ```
 
-**Source:** [Pro Git — Git Hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks)
+**Sources:** [Pro Git — Git Hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks)
 
 </details>
 
@@ -1819,10 +1685,7 @@ git commit -m "chore: normalize line endings to LF"
 
 **When to use:** Vendoring dependencies or monorepo-adjacent shared libraries. Prefer package managers when possible.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git submodule add URL path
@@ -1830,9 +1693,7 @@ git submodule update --init --recursive
 git clone --recurse-submodules URL
 ```
 
-</details>
-
-**Source:** [Pro Git — Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
+**Sources:** [Pro Git — Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
 
 </details>
 
@@ -1851,10 +1712,7 @@ git clone --recurse-submodules URL
 
 **When to use:** Release packaging, contributor reports, debugging corrupt repos.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 git archive -o project.zip HEAD
@@ -1862,9 +1720,7 @@ git shortlog -sn                    # commit counts per author
 git fsck                            # verify repository integrity
 ```
 
-</details>
-
-**Source:** [git-scm.com](https://git-scm.com/docs)
+**Sources:** [git-scm.com](https://git-scm.com/docs)
 
 </details>
 
@@ -1875,7 +1731,9 @@ git fsck                            # verify repository integrity
 
 **Definition:** A single repository containing multiple packages or applications.
 
-**When to use:** Shared codebases with coordinated releases. Use path filters in CI to avoid building everything.
+**When to use:**
+
+Shared codebases with coordinated releases. Use path filters in CI to avoid building everything.
 
 | Strategy | Tool / pattern |
 |----------|----------------|
@@ -1883,7 +1741,7 @@ git fsck                            # verify repository integrity
 | Sparse checkout | Clone only needed folders |
 | Build orchestration | Nx, Turborepo, Lerna |
 
-**Source:** [Nx](https://nx.dev/) · [Turborepo](https://turbo.build/)
+**Sources:** [Nx](https://nx.dev/) · [Turborepo](https://turbo.build/)
 
 </details>
 
@@ -1892,7 +1750,9 @@ git fsck                            # verify repository integrity
 
 ### Alternative VCS
 
-**Definition:** Other version control systems with different trade-offs.
+**Definition:**
+
+Other version control systems with different trade-offs.
 
 | System | Model | Trade-off |
 |--------|-------|-----------|
@@ -1903,7 +1763,7 @@ git fsck                            # verify repository integrity
 
 **When to use:** Git for web/frontend. SVN/Perforce in legacy enterprise or game studios.
 
-**Source:** [Atlassian — Git glossary](https://www.atlassian.com/git/glossary)
+**Sources:** [Atlassian — Git glossary](https://www.atlassian.com/git/glossary)
 
 </details>
 
@@ -1916,10 +1776,7 @@ git fsck                            # verify repository integrity
 
 **When to use:** Every team project — run lint/test on every PR; deploy tags to production.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```yaml
 # GitHub Actions — shallow fetch
@@ -1933,13 +1790,11 @@ on:
     tags: ['v*']
 ```
 
-</details>
-
 * Cache `node_modules` keyed on lockfile hash
 * Run lint/test on every PR
 * Deploy `main` to staging; tags to production
 
-**Source:** [GitHub Actions — checkout](https://github.com/actions/checkout)
+**Sources:** [GitHub Actions — checkout](https://github.com/actions/checkout)
 
 </details>
 
@@ -2314,10 +2169,7 @@ Team on Windows + Mac — prevent CRLF conflicts.
 
 **Definition:** `ls` lists directory contents with optional flags for format and sorting.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 ls
@@ -2330,8 +2182,6 @@ ls /d/projects          # Windows path
 
 </details>
 
-</details>
-
 <details>
   <summary>Navigate</summary>
 
@@ -2339,10 +2189,7 @@ ls /d/projects          # Windows path
 
 **Definition:** `cd` changes the current working directory. `Tab` autocompletes paths.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 cd projects
@@ -2355,8 +2202,6 @@ cd !$                   # last argument of previous command
 
 </details>
 
-</details>
-
 <details>
   <summary>Create files and folders</summary>
 
@@ -2364,10 +2209,7 @@ cd !$                   # last argument of previous command
 
 **Definition:** `mkdir` creates directories; `touch` creates empty files.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 mkdir project
@@ -2378,8 +2220,6 @@ touch index.html css/style.css
 
 </details>
 
-</details>
-
 <details>
   <summary>Copy, move, delete</summary>
 
@@ -2387,10 +2227,7 @@ touch index.html css/style.css
 
 **Definition:** `cp` copies files/directories; `mv` moves or renames; `rm` deletes.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 cp index.html catalog.html
@@ -2404,8 +2241,6 @@ rm -rf old/
 
 </details>
 
-</details>
-
 <details>
   <summary>Useful one-liners</summary>
 
@@ -2413,10 +2248,7 @@ rm -rf old/
 
 **Definition:** Common shell commands for inspection and cleanup.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 pwd
@@ -2429,8 +2261,6 @@ rm -rf node_modules && npm i
 
 </details>
 
-</details>
-
 <details>
   <summary>Shell aliases</summary>
 
@@ -2438,7 +2268,7 @@ rm -rf node_modules && npm i
 
 **Definition:** Shortcuts for frequently used commands, defined in shell profile.
 
-**Example:**
+**Examples:**
 
 Add to `~/.bash_profile` (macOS/Linux) or `C:/Users/NAME/.bash_profile` (Windows):
 

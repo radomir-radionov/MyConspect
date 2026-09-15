@@ -32,17 +32,17 @@ Prefer official docs. If docs conflict with memory, trust the fetched docs.
 
 ## 3. Topic blocks
 
-Wrap each concept in `<details><summary>...</summary>`.
+Wrap each concept in `<details><summary>...</summary>`. Markers must be `**Label:**` (colon inside the bold). Live preview: `/instructions`.
 
-Inside each block, in this order:
+**Definition:** is required. Every other section is optional — include only the blocks that add value, in this order:
 
-1. **Definition:** one clear sentence
-2. **How it works:** bullets or short paragraphs
-3. **Cases:** when to use it
-4. Pros | Cons (if relevant) — two-column table, **or** `+` / `−` lists when a table is overkill
-5. **Example:** fenced code aligned with verified docs
-6. **Common pitfalls** (if relevant)
-7. **Key idea:** one-line takeaway
+1. **Definition:** one sentence that stands alone
+2. **How it works:** mechanics and rules (bullets)
+3. **When to use:** fit and when to skip (`**Cases:**` also maps here). Optional `**Common pitfalls:**` folds into this block
+4. **Pluses and minuses:** two-column `+` / `−` or Pros | Cons table
+5. **Examples:** smallest snippet that proves the point (`**Example:**` also maps here)
+6. **Thoughts:** interview takeaway (`**Key idea:**` still maps here)
+7. **Sources:** canonical docs URLs (`**Source:**` also maps here)
 
 ## 4. Related-file updates
 
@@ -64,4 +64,45 @@ For the full search-and-patch sequence, follow `.cursor/skills/update-conspect/S
 
 ## Canonical example
 
-Match the pattern in `resources/3_js_browser.md`.
+Match `/instructions`. Shape of one concept:
+
+````markdown
+<details>
+<summary>React</summary>
+
+**Definition:** React is a JavaScript library for building user interfaces from reusable components. It manages the view layer only — routing, data fetching, and global conventions come from frameworks or third-party libraries.
+
+**How it works:**
+- You describe UI as a function of state; React reconciles the virtual DOM and commits updates to the host (e.g. the browser via React DOM).
+- Components re-render when state or props change; hooks encapsulate state and side effects.
+- The renderer (`react-dom`, React Native, etc.) is separate from the core `react` package.
+
+**When to use:** SPAs, design systems, embeddable widgets (`createRoot` on a node), Next.js / React Router apps, React Native / Expo. Skip for static pages with no interactivity — plain HTML or a lighter library may be enough.
+
+**Pluses and minuses:**
+
+| + | − |
+| --- | --- |
+| Component model scales from widgets to full apps. | Not batteries-included — router and data layer are extra choices. |
+| Large ecosystem, DevTools, and hiring pool. | Learning curve: hooks, concurrent features, RSC mental model. |
+
+**Examples:**
+
+```tsx
+import { useState } from 'react';
+import { createRoot } from 'react-dom/client';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
+}
+
+createRoot(document.getElementById('root')!).render(<Counter />);
+```
+
+**Thoughts:** Treat React as a UI runtime, not a full framework — that framing helps in system-design and “React vs Next” interview questions.
+
+**Sources:** [react.dev](https://react.dev/)
+
+</details>
+````

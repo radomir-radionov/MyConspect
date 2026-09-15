@@ -34,10 +34,13 @@ Full Docker / Compose / multi-stage notes live in [10_build.md — Docker](./10_
 
 **How it works:** Engine = `dockerd` + API + `docker` CLI. Build layers (`FROM`, `COPY`, `RUN`). Multi-stage: compile in a builder, copy artifacts into a slim runtime. Engine, Hub, networks, CLI, lifecycle: [10_build.md — Docker](./10_build.md#docker) · [Dockerfile](./10_build.md#dockerfile) · [container lifecycle](./10_build.md#container-lifecycle) · [Compose](./10_build.md).
 
-**Example:**
+**When to use:**
 
-<details>
-  <summary>Code</summary>
+#### Pitfalls
+
+running as root, baking secrets into image, no `.dockerignore`, huge context.
+
+**Examples:**
 
 ```dockerfile
 FROM node:20-alpine AS builder
@@ -54,11 +57,7 @@ ENV NODE_ENV=production
 CMD ["node", "dist/index.js"]
 ```
 
-</details>
-
-**Pitfalls:** running as root, baking secrets into image, no `.dockerignore`, huge context.
-
-**Key idea:** Image = recipe. Container = process. Persist with [volumes](./10_build.md#volumes), not the writable layer. Lifecycle: [10_build.md — Container lifecycle](./10_build.md#container-lifecycle). What an OS process is: [Processes, multitasking & interrupts](./0_system_design.md#processes-multitasking).
+**Thoughts:** Image = recipe. Container = process. Persist with [volumes](./10_build.md#volumes), not the writable layer. Lifecycle: [10_build.md — Container lifecycle](./10_build.md#container-lifecycle). What an OS process is: [Processes, multitasking & interrupts](./0_system_design.md#processes-multitasking).
 
 </details>
 
@@ -99,7 +98,9 @@ volumes:
 
 **Definition:** Hosted CI that runs jobs on git events (push, PR). YAML describes stages: install → test → build → deploy. Concept and product loop: [10_build.md — What is CI/CD](./10_build.md#what-is-cicd). YAML syntax: [10_build.md — YAML](./10_build.md#yaml). Full GitHub Actions syntax (triggers, cron, `needs`, matrix, contexts): [10_build.md — GitHub Actions](./10_build.md#github-actions).
 
-**How it works:** A runner checks out the repo, executes steps, uploads artifacts. Secrets come from the platform vault, not the repo. Matrix builds test Node versions in parallel.
+**How it works:**
+
+A runner checks out the repo, executes steps, uploads artifacts. Secrets come from the platform vault, not the repo. Matrix builds test Node versions in parallel.
 
 | | GitHub Actions | GitLab CI | CircleCI |
 |---|---------------|-----------|----------|
@@ -107,17 +108,16 @@ volumes:
 | Native git | GitHub PRs, environments | GitLab MR pipelines | Orbs + GitHub/Bitbucket |
 | Typical use | Most JS OSS and startups | GitLab-hosted companies | Older enterprise setups |
 
-| Pros | Cons |
+**When to use:** PR checks (`npm ci`, `tsc --noEmit`, tests). Production deploy on `main` after tests. Prefer `npm ci` over `npm install` in CI.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Same mental model: jobs + artifacts + secrets | Vendor lock-in on YAML helpers |
 | Preview deploys from PR (Vercel/Netlify) | Self-hosted runners need hardening |
 
-**Cases:** PR checks (`npm ci`, `tsc --noEmit`, tests). Production deploy on `main` after tests. Prefer `npm ci` over `npm install` in CI.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```yaml
 # .github/workflows/ci.yml
@@ -134,11 +134,9 @@ jobs:
       - run: npm test
 ```
 
-</details>
+**Thoughts:** CI is a repeatable machine — `npm ci` + secrets + fail-closed deploys.
 
-**Key idea:** CI is a repeatable machine — `npm ci` + secrets + fail-closed deploys.
-
-**Source:** [GitHub Actions](https://docs.github.com/en/actions) · [GitLab CI](https://docs.gitlab.com/ee/ci/) · [CircleCI](https://circleci.com/docs/)
+**Sources:** [GitHub Actions](https://docs.github.com/en/actions) · [GitLab CI](https://docs.gitlab.com/ee/ci/) · [CircleCI](https://circleci.com/docs/)
 
 </details>
 
@@ -162,17 +160,22 @@ jobs:
 - **Deployment** — owns ReplicaSets; rolling updates and rollbacks (`kubectl rollout undo`).
 - **Service** — virtual IP + kube-proxy / ClusterIP / LoadBalancer so clients do not chase Pod IPs.
 
-| Pros | Cons |
+**When to use:**
+
+Multi-replica Node APIs, cron via CronJob. Skip K8s for a hobby Next.js on Vercel.
+
+#### Common pitfalls
+
+Putting a database in a Deployment without a Volume. Hitting Pod IP from another service instead of the Service DNS.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Self-heal and roll out without SSH | YAML and networking (CNI, Ingress) are a career |
 | Same API on GKE/EKS/AKS | Overkill for a single VPS + Docker Compose |
 
-**Cases:** Multi-replica Node APIs, cron via CronJob. Skip K8s for a hobby Next.js on Vercel.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```yaml
 apiVersion: apps/v1
@@ -197,13 +200,9 @@ spec:
   ports: [{ port: 80, targetPort: 3000 }]
 ```
 
-</details>
+**Thoughts:** Deployment = desired replicas + rollouts. Service = stable address. Pods die.
 
-**Common pitfalls:** Putting a database in a Deployment without a Volume. Hitting Pod IP from another service instead of the Service DNS.
-
-**Key idea:** Deployment = desired replicas + rollouts. Service = stable address. Pods die.
-
-**Source:** [kubernetes.io — Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) · [Services](https://kubernetes.io/docs/concepts/services-networking/service/)
+**Sources:** [kubernetes.io — Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) · [Services](https://kubernetes.io/docs/concepts/services-networking/service/)
 
 </details>
 
@@ -218,7 +217,9 @@ spec:
 
 **Definition:** Three signals: **logs** (what happened), **metrics** (how much, how fast), **traces** (the path of one request across services). **OpenTelemetry (OTel)** is the vendor-neutral API/SDK + Collector that exports all three.
 
-**How it works:** App SDK creates spans (`trace_id` + `span_id`). Collector receives OTLP (gRPC 4317 / HTTP 4318), batches, exports to Jaeger/Tempo (traces), Prometheus (metrics), Loki/ELK (logs). Grafana dashboards query those backends. Structured logs are JSON with the same `trace_id` so you can jump from a span to log lines.
+**How it works:**
+
+App SDK creates spans (`trace_id` + `span_id`). Collector receives OTLP (gRPC 4317 / HTTP 4318), batches, exports to Jaeger/Tempo (traces), Prometheus (metrics), Loki/ELK (logs). Grafana dashboards query those backends. Structured logs are JSON with the same `trace_id` so you can jump from a span to log lines.
 
 | Signal | Question | Typical backend |
 |--------|----------|-----------------|
@@ -226,17 +227,22 @@ spec:
 | Metrics | Is p99 latency up? | Prometheus + Grafana |
 | Traces | Which service was slow on this request? | Jaeger, Tempo, X-Ray |
 
-| Pros | Cons |
+**When to use:**
+
+Microservices, serverless (X-Ray / OTel), SLOs. Start with structured JSON logs + one RED dashboard (Rate, Errors, Duration) before full tracing.
+
+#### Common pitfalls
+
+`console.log` strings without request id. High-cardinality labels (`user_id` on every metric). Tracing 100% of traffic in prod without sampling.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | One instrumentation, swap vendors | Collector is another moving part |
 | Trace-id ties logs to a user request | Cardinality explosions in metrics labels |
 
-**Cases:** Microservices, serverless (X-Ray / OTel), SLOs. Start with structured JSON logs + one RED dashboard (Rate, Errors, Duration) before full tracing.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 import { trace } from '@opentelemetry/api';
@@ -251,13 +257,9 @@ await tracer.startActiveSpan('charge', async (span) => {
 });
 ```
 
-</details>
+**Thoughts:** Logs tell stories; metrics tell trends; traces tell the path. Correlate with `trace_id`.
 
-**Common pitfalls:** `console.log` strings without request id. High-cardinality labels (`user_id` on every metric). Tracing 100% of traffic in prod without sampling.
-
-**Key idea:** Logs tell stories; metrics tell trends; traces tell the path. Correlate with `trace_id`.
-
-**Source:** [opentelemetry.io](https://opentelemetry.io/docs/) · [Prometheus](https://prometheus.io/docs/introduction/overview/)
+**Sources:** [opentelemetry.io](https://opentelemetry.io/docs/) · [Prometheus](https://prometheus.io/docs/introduction/overview/)
 
 </details>
 
@@ -282,17 +284,16 @@ await tracer.startActiveSpan('charge', async (span) => {
 4. **`try_files`** checks files in order; last argument is a fallback URI, named location, or `=404`. SPAs use `try_files $uri /index.html` so client routes do not 404.
 5. **`proxy_pass`** forwards to an upstream. Set `Host` and `X-Real-IP` so the app sees the original client.
 
-| Pros | Cons |
+**When to use:** React/Vite `dist/` behind Nginx; `/api/` to Node; CORS headers on the proxy if the API is another origin.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Fast static files + one entry for TLS | Config syntax is easy to get wrong |
 | SPA fallback without Node serving HTML | `proxy_pass` trailing slash changes URI rewrite |
 
-**Cases:** React/Vite `dist/` behind Nginx; `/api/` to Node; CORS headers on the proxy if the API is another origin.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```nginx
 server {
@@ -312,13 +313,13 @@ server {
 }
 ```
 
-</details>
+**Thoughts:**
 
-**Key idea:** *Nginx maps URL → `location` → file (`root` + `try_files`) or upstream (`proxy_pass`) — that is how the server “knows which resource to send.”*
+*Nginx maps URL → `location` → file (`root` + `try_files`) or upstream (`proxy_pass`) — that is how the server “knows which resource to send.”*
 
-**Notes:** Same pattern in [10_build.md — Nginx](./10_build.md). Config syntax, FastCGI, systemd → [Nginx configuration](#nginx-configuration). Apache equivalent → [Apache HTTP Server](#apache-http-server). HTTP semantics / compression / Basic auth → [6_web_api.md — Web server](./6_web_api.md#web-server). CORS is browser-only → [3_js_browser.md](./3_js_browser.md#cors-same-origin).
+Same pattern in [10_build.md — Nginx](./10_build.md). Config syntax, FastCGI, systemd → [Nginx configuration](#nginx-configuration). Apache equivalent → [Apache HTTP Server](#apache-http-server). HTTP semantics / compression / Basic auth → [6_web_api.md — Web server](./6_web_api.md#web-server). CORS is browser-only → [3_js_browser.md](./3_js_browser.md#cors-same-origin).
 
-**Source:** [nginx.org — try_files](https://nginx.org/en/docs/http/ngx_http_core_module.html#try_files) · [Serve static content](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/)
+**Sources:** [nginx.org — try_files](https://nginx.org/en/docs/http/ngx_http_core_module.html#try_files) · [Serve static content](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/)
 
 </details>
 
@@ -338,17 +339,22 @@ server {
 - systemd: `systemctl start|stop|reload|restart|enable|status nginx`. **`reload` = nginx config**, not `daemon-reload` (that one reloads the **unit file**).
 - Prefer `reload` after config edits (keep live connections). `restart` drops them (stop then start).
 
-| Pros | Cons |
+**When to use:**
+
+Node/Next on `localhost:3000` behind a domain; static HTML; PHP via FastCGI; images from disk, rest to an app.
+
+#### Common pitfalls
+
+Treating `systemctl reload nginx` as a systemd-unit reload. Putting `root` on `location /images/` vs `alias` (path join differs). HTTPS in prod is `:443` + certs (Mozilla SSL Configuration Generator), not only `:80`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Event-driven, cheap static + TLS | Easy to misread `proxy_pass` trailing `/` |
 | Graceful reload without downtime | Regex `location` order is easy to get wrong |
 
-**Cases:** Node/Next on `localhost:3000` behind a domain; static HTML; PHP via FastCGI; images from disk, rest to an app.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```nginx
 # Static + reverse proxy (Node / Next / Express on :3000)
@@ -411,15 +417,11 @@ nginx -s reload          # or: sudo systemctl reload nginx
 sudo systemctl status nginx
 ```
 
-</details>
-
-**Common pitfalls:** Treating `systemctl reload nginx` as a systemd-unit reload. Putting `root` on `location /images/` vs `alias` (path join differs). HTTPS in prod is `:443` + certs (Mozilla SSL Configuration Generator), not only `:80`.
-
-**Key idea:** *Simple directives end with `;`; blocks are contexts. URI → longest `location` → file or upstream; apply with `-t` then `reload`, not a hard restart.*
+**Thoughts:** *Simple directives end with `;`; blocks are contexts. URI → longest `location` → file or upstream; apply with `-t` then `reload`, not a hard restart.*
 
 **See also:** [Reverse proxy](#nginx--deployment) · [Apache HTTP Server](#apache-http-server) · [10_build.md — Nginx](./10_build.md)
 
-**Source:** [nginx.org — Beginner’s Guide](https://nginx.org/en/docs/beginners_guide.html) · [Controlling nginx](https://nginx.org/en/docs/control.html)
+**Sources:** [nginx.org — Beginner’s Guide](https://nginx.org/en/docs/beginners_guide.html) · [Controlling nginx](https://nginx.org/en/docs/control.html)
 
 </details>
 
@@ -440,18 +442,23 @@ sudo systemctl status nginx
 - Control: `httpd -t` or `apachectl configtest`. `httpd -S` dumps vhosts. `apachectl -k stop|graceful-stop|restart|graceful`. systemd unit is often `httpd` (RHEL) or `apache2` (Debian). Windows: `httpd.exe -k shutdown|restart` when run as a service/console.
 - Stacks: **AMP / XAMPP** = Apache + MySQL/MariaDB + Perl/PHP/Python for local installs.
 
-| Pros | Cons |
+**When to use:**
+
+Classic LAMP; per-folder rules on shared hosting; `mod_alias` / `mod_rewrite` URL mapping; `mod_status` at `/status`; PHP via `proxy:fcgi` (php-fpm).
+
+#### Common pitfalls
+
+Copying `Order Deny,Allow` from 2.2 into 2.4. Assuming directive names are case-sensitive. Using `SetEnv` and expecting `${VAR}` in `httpd.conf`. Leaving `Require all granted` on `/server-status` on the public internet. `reload` vs `restart`: graceful finishes current requests; restart/`stop` does not.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | `.htaccess` without root access (shared hosting) | `.htaccess` on every request is slower |
 | Huge module ecosystem, virtual hosts | Prefork MPM: one thread/process per connection (slowloris-sensitive) |
 | Familiar on legacy PHP hosts | Mix of 2.2 vs 2.4 auth syntax in old tutorials |
 
-**Cases:** Classic LAMP; per-folder rules on shared hosting; `mod_alias` / `mod_rewrite` URL mapping; `mod_status` at `/status`; PHP via `proxy:fcgi` (php-fpm).
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```apache
 Include /etc/apache2/virtual-hosts/*.conf
@@ -500,15 +507,11 @@ sudo systemctl reload httpd   # graceful; Debian: apache2
 sudo apachectl -k graceful
 ```
 
-</details>
-
-**Common pitfalls:** Copying `Order Deny,Allow` from 2.2 into 2.4. Assuming directive names are case-sensitive. Using `SetEnv` and expecting `${VAR}` in `httpd.conf`. Leaving `Require all granted` on `/server-status` on the public internet. `reload` vs `restart`: graceful finishes current requests; restart/`stop` does not.
-
-**Key idea:** *Containers (`<Directory>` / `<VirtualHost>`) scope directives; `.htaccess` is optional per-dir override; 2.4 auth is `Require`; test with `-t`, apply with graceful reload.*
+**Thoughts:** *Containers (`<Directory>` / `<VirtualHost>`) scope directives; `.htaccess` is optional per-dir override; 2.4 auth is `Require`; test with `-t`, apply with graceful reload.*
 
 **See also:** [Nginx configuration](#nginx-configuration) · reverse proxy in [0_system_design.md](./0_system_design.md) · [10_build.md](./10_build.md)
 
-**Source:** [httpd.apache.org — Configuration Files](https://httpd.apache.org/docs/current/configuring.html) · [Stopping and Restarting](https://httpd.apache.org/docs/current/stopping.html) · [Access Control](https://httpd.apache.org/docs/2.4/howto/access.html)
+**Sources:** [httpd.apache.org — Configuration Files](https://httpd.apache.org/docs/current/configuring.html) · [Stopping and Restarting](https://httpd.apache.org/docs/current/stopping.html) · [Access Control](https://httpd.apache.org/docs/2.4/howto/access.html)
 
 </details>
 
@@ -541,8 +544,6 @@ sudo apachectl -k graceful
 | **State** | **Stateless** — persist to DB/S3/DynamoDB, not `/tmp` across invocations |
 | **Env vars** | Config + secrets (use Secrets Manager for sensitive values) |
 
-**Common triggers:**
-
 | Trigger | Use case |
 |---------|----------|
 | API Gateway | REST/HTTP API backend |
@@ -551,16 +552,18 @@ sudo apachectl -k graceful
 | EventBridge | Cron (`rate(5 minutes)`) |
 | SNS | Fan-out notifications |
 
-**Typical stack:**
-
 ```
 Client → API Gateway → Lambda → DynamoDB / RDS / S3
                              → SQS (async downstream)
 ```
 
-**Mitigate cold starts:** Provisioned concurrency, smaller bundles, Node 20+ runtime, avoid huge dependencies, keep handler outside heavy init when possible.
+Provisioned concurrency, smaller bundles, Node 20+ runtime, avoid huge dependencies, keep handler outside heavy init when possible.
 
-**Example (Node.js handler):**
+CloudWatch Logs (automatic), X-Ray tracing, structured JSON logs via Lambda Powertools.
+
+*"Used Lambda behind API Gateway for event-driven endpoints — pay per request, no server management. Watch cold starts, keep functions stateless, env vars for config, IAM roles for least-privilege access to S3/SQS."*
+
+**Examples:**
 
 ```js
 export const handler = async (event) => {
@@ -574,11 +577,7 @@ export const handler = async (event) => {
 };
 ```
 
-**Observability:** CloudWatch Logs (automatic), X-Ray tracing, structured JSON logs via Lambda Powertools.
-
-**Interview answer:** *"Used Lambda behind API Gateway for event-driven endpoints — pay per request, no server management. Watch cold starts, keep functions stateless, env vars for config, IAM roles for least-privilege access to S3/SQS."*
-
-**Source:** [AWS Lambda — Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) · [Lambda runtime environment](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html)
+**Sources:** [AWS Lambda — Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) · [Lambda runtime environment](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html)
 
 </details>
 
@@ -587,7 +586,9 @@ export const handler = async (event) => {
 
 ### AWS services map (interview)
 
-**Definition:** Quick map of AWS services commonly asked on fullstack/backend interviews.
+**Definition:**
+
+Quick map of AWS services commonly asked on fullstack/backend interviews.
 
 | Service | Role |
 |---------|------|
@@ -607,9 +608,9 @@ export const handler = async (event) => {
 
 **How it works:** IAM role attached to Lambda grants `s3:GetObject`, `sqs:SendMessage`, etc. — never embed long-lived keys in code.
 
-**Cases:** Serverless API (API GW + Lambda + DynamoDB); file pipeline (S3 trigger → Lambda resize → S3); async workers (SQS → Lambda).
+**When to use:** Serverless API (API GW + Lambda + DynamoDB); file pipeline (S3 trigger → Lambda resize → S3); async workers (SQS → Lambda).
 
-**Source:** [AWS documentation](https://docs.aws.amazon.com/)
+**Sources:** [AWS documentation](https://docs.aws.amazon.com/)
 
 </details>
 
@@ -634,7 +635,27 @@ export const handler = async (event) => {
 - **Host-based / “by IP”:** OpenSSH `HostbasedAuthentication` (rhosts-style) is weak. An **IP allowlist** is not identity — NAT and shared IPv4 mean many users can sit behind one address. Use keys, then optionally restrict *who* may connect (`AllowUsers`, firewall) as defense in depth.
 - **Do not copy the private key** between machines. Copy only `*.pub`. Protect the private key with a passphrase; use `ssh-agent` so you type it once per session.
 
-**Cases:** VPS / hosting shells; Git remotes (`git@github.com:…`); `scp`/`sftp`; local (`-L`) / remote (`-R`) / SOCKS (`-D`) forwarding. In Kubernetes you apply YAML — you do not SSH into Pods as the normal deploy path ([Pod vs Deployment](#pod-vs-deployment-vs-service)).
+```
+# /etc/ssh/sshd_config — then: sudo systemctl restart sshd   (or ssh.service)
+PubkeyAuthentication yes
+PasswordAuthentication no          # disables password login for everyone
+PermitRootLogin prohibit-password  # OpenSSH default: root by key only, not password
+# PermitRootLogin no               # blocks ALL root SSH (keys too) — use a sudo user instead
+```
+
+`PermitRootLogin no` is **not** “turn off password for root.” It forbids root over SSH entirely. To keep root+keys but drop passwords, use `prohibit-password` plus `PasswordAuthentication no`.
+
+generate a dedicated Ed25519 key, paste `id_ed25519.pub` under **Settings → SSH and GPG keys → New SSH key**, or `gh ssh-key add ~/.ssh/id_ed25519.pub`. Git-side steps: [Git — SSH setup](./0_git.md#ssh-setup).
+
+**When to use:**
+
+VPS / hosting shells; Git remotes (`git@github.com:…`); `scp`/`sftp`; local (`-L`) / remote (`-R`) / SOCKS (`-D`) forwarding. In Kubernetes you apply YAML — you do not SSH into Pods as the normal deploy path ([Pod vs Deployment](#pod-vs-deployment-vs-service)).
+
+#### Common pitfalls
+
+Treating `id_rsa` as the modern default. Moving `/tmp/*.pub` **onto** `authorized_keys` (wipes other keys). World-writable `~/.ssh`. Sharing the **private** key. Setting `PermitRootLogin no` before a sudo user + key exists (lockout). Skipping host-key verification.
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
@@ -642,7 +663,7 @@ export const handler = async (event) => {
 | Key auth: no password on the wire | Loose `~/.ssh` modes → sshd **ignores** `authorized_keys` (`StrictModes`) |
 | Ed25519 keys are short and strong | Root + password on the internet is an instant brute-force target |
 
-**Example — keys and first login:**
+**Examples:**
 
 ```bash
 # Prefer Ed25519 (GitHub and current OpenSSH). Default files: ~/.ssh/id_ed25519 + .pub
@@ -669,25 +690,9 @@ chmod 600 ~/.ssh/authorized_keys
 ssh root@192.0.2.50   # should not ask the account password (passphrase for the key still may)
 ```
 
-**sshd hardening (after keys work):**
+**Thoughts:** *SSH encrypts the session; identity is a private key the server never stores — put only the public half in `authorized_keys`, then disable passwords.*
 
-```
-# /etc/ssh/sshd_config — then: sudo systemctl restart sshd   (or ssh.service)
-PubkeyAuthentication yes
-PasswordAuthentication no          # disables password login for everyone
-PermitRootLogin prohibit-password  # OpenSSH default: root by key only, not password
-# PermitRootLogin no               # blocks ALL root SSH (keys too) — use a sudo user instead
-```
-
-`PermitRootLogin no` is **not** “turn off password for root.” It forbids root over SSH entirely. To keep root+keys but drop passwords, use `prohibit-password` plus `PasswordAuthentication no`.
-
-**GitHub:** generate a dedicated Ed25519 key, paste `id_ed25519.pub` under **Settings → SSH and GPG keys → New SSH key**, or `gh ssh-key add ~/.ssh/id_ed25519.pub`. Git-side steps: [Git — SSH setup](./0_git.md#ssh-setup).
-
-**Common pitfalls:** Treating `id_rsa` as the modern default. Moving `/tmp/*.pub` **onto** `authorized_keys` (wipes other keys). World-writable `~/.ssh`. Sharing the **private** key. Setting `PermitRootLogin no` before a sudo user + key exists (lockout). Skipping host-key verification.
-
-**Key idea:** *SSH encrypts the session; identity is a private key the server never stores — put only the public half in `authorized_keys`, then disable passwords.*
-
-**Source:** [OpenSSH ssh(1)](https://github.com/openssh/openssh-portable/blob/master/ssh.1) · [sshd(8)](https://github.com/openssh/openssh-portable/blob/master/sshd.8) · [RFC 4251](https://www.rfc-editor.org/rfc/rfc4251) · [GitHub — generating an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) · [GitHub — adding a key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+**Sources:** [OpenSSH ssh(1)](https://github.com/openssh/openssh-portable/blob/master/ssh.1) · [sshd(8)](https://github.com/openssh/openssh-portable/blob/master/sshd.8) · [RFC 4251](https://www.rfc-editor.org/rfc/rfc4251) · [GitHub — generating an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) · [GitHub — adding a key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
 </details>
 
@@ -714,7 +719,15 @@ PermitRootLogin prohibit-password  # OpenSSH default: root by key only, not pass
 - **Inspect:** `top` — live CPU, RAM, swap, all processes (`q` quit, `?` help). Linux often uses `htop` (ncurses, cross-platform including macOS). `ps` = process status: `ps -A` (same as `-e`) all processes; `ps -Af` full-format listing. PID is in the PID column.
 - **Signals:** `kill PID` sends **SIGTERM** (15) by default — catchable, used for graceful exit. `kill -9 PID` / `kill -KILL PID` sends **SIGKILL**, which **cannot be caught, blocked, or ignored**. `sudo` is needed only if you do not own the process — not because `-9` is special.
 
-**Cases:** Long `ping` / logs in the background while you keep using the shell. Archive a large tree with low niceness so a DB keeps CPU. Find a runaway Node PID with `ps`/`top` and `kill` it. Deploy path: SIGTERM first (K8s / `docker stop`), SIGKILL only after the grace period — [Node SIGTERM](./8_nodejs.md#graceful-shutdown--sigterm).
+**When to use:**
+
+Long `ping` / logs in the background while you keep using the shell. Archive a large tree with low niceness so a DB keeps CPU. Find a runaway Node PID with `ps`/`top` and `kill` it. Deploy path: SIGTERM first (K8s / `docker stop`), SIGKILL only after the grace period — [Node SIGTERM](./8_nodejs.md#graceful-shutdown--sigterm).
+
+#### Common pitfalls
+
+Calling foreground/background “process priority” (that is `nice`). Assuming default `kill` is SIGKILL — it is SIGTERM. Believing the program must “handle SIGKILL” to die — SIGKILL is forced by the kernel. Using `kill -9` first and leaking connections. Mixing up job id `[1]` with PID. `renice -n` on util-linux is **absolute** niceness by default, not a delta (POSIX relative mode needs `POSIXLY_CORRECT` or `--relative`).
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
@@ -722,10 +735,7 @@ PermitRootLogin prohibit-password  # OpenSSH default: root by key only, not pass
 | SIGTERM lets the app drain work | SIGKILL skips cleanup (locks, temp files, connections) |
 | Job control is per-terminal and fast | `jobs`/`fg`/`bg` do not see processes started elsewhere |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 # Background (job number + PID). -i = ping interval in seconds
@@ -756,13 +766,9 @@ kill 22495     # SIGTERM — prefer this
 kill -9 22495  # SIGKILL — last resort; sudo only if not your process
 ```
 
-</details>
+**Thoughts:** *Identify with PID; job-control (`&` / `fg` / `bg` / Ctrl+Z) is only this shell; `nice` is CPU share; default `kill` is SIGTERM — SIGKILL (`-9`) cannot be handled.*
 
-**Common pitfalls:** Calling foreground/background “process priority” (that is `nice`). Assuming default `kill` is SIGKILL — it is SIGTERM. Believing the program must “handle SIGKILL” to die — SIGKILL is forced by the kernel. Using `kill -9` first and leaking connections. Mixing up job id `[1]` with PID. `renice -n` on util-linux is **absolute** niceness by default, not a delta (POSIX relative mode needs `POSIXLY_CORRECT` or `--relative`).
-
-**Key idea:** *Identify with PID; job-control (`&` / `fg` / `bg` / Ctrl+Z) is only this shell; `nice` is CPU share; default `kill` is SIGTERM — SIGKILL (`-9`) cannot be handled.*
-
-**Source:** [kill(1)](https://man7.org/linux/man-pages/man1/kill.1.html) · [signal(7)](https://man7.org/linux/man-pages/man7/signal.7.html) · [nice(1)](https://man7.org/linux/man-pages/man1/nice.1.html) · [renice(1)](https://man7.org/linux/man-pages/man1/renice.1.html) · [ps(1)](https://man7.org/linux/man-pages/man1/ps.1.html) · [htop](https://htop.dev/)
+**Sources:** [kill(1)](https://man7.org/linux/man-pages/man1/kill.1.html) · [signal(7)](https://man7.org/linux/man-pages/man7/signal.7.html) · [nice(1)](https://man7.org/linux/man-pages/man1/nice.1.html) · [renice(1)](https://man7.org/linux/man-pages/man1/renice.1.html) · [ps(1)](https://man7.org/linux/man-pages/man1/ps.1.html) · [htop](https://htop.dev/)
 
 </details>
 
@@ -779,17 +785,22 @@ kill -9 22495  # SIGKILL — last resort; sudo only if not your process
 - Typical web host: allow 22/80/443, drop the rest. ICMP echo can be rejected so `ping` fails while HTTP still works.
 - Host sockets and ports: [6_web_api.md — Ports](./6_web_api.md#ports-sockets--network-services). Path of a request: [How the Internet works](./6_web_api.md#how-the-internet-works).
 
-**Cases:** Hide a Node port from the Internet (bind `127.0.0.1` **and** firewall). Block scanners. Do not use a random `iptables` one-liner on a remote SSH box without a allow-22 rule — you can lock yourself out.
+**When to use:**
+
+Hide a Node port from the Internet (bind `127.0.0.1` **and** firewall). Block scanners. Do not use a random `iptables` one-liner on a remote SSH box without a allow-22 rule — you can lock yourself out.
+
+#### Common pitfalls
+
+`- j REJECT` (invalid). Filtering ICMP and thinking the host is “offline” for HTTP. Forgetting IPv6 (`ip6tables` / `nft` inet).
+
+**Pluses and minuses:**
 
 | + | − |
 | - | - |
 | Cheap host-level control | Easy to lock out SSH |
 | Kernel-speed | `iptables` vs `nftables` vs cloud SG overlap |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```bash
 # Reject inbound ping (ICMP echo-request). No space in -j.
@@ -799,13 +810,9 @@ sudo iptables -L
 # Modern Linux prefers nftables; cloud VMs also use security groups — both must allow 443.
 ```
 
-</details>
+**Thoughts:** *The kernel filters packets; the CLI only writes the rules — keep SSH allowed before you experiment.*
 
-**Common pitfalls:** `- j REJECT` (invalid). Filtering ICMP and thinking the host is “offline” for HTTP. Forgetting IPv6 (`ip6tables` / `nft` inet).
-
-**Key idea:** *The kernel filters packets; the CLI only writes the rules — keep SSH allowed before you experiment.*
-
-**Source:** [iptables(8)](https://man7.org/linux/man-pages/man8/iptables.8.html) · [nftables](https://wiki.nftables.org/) · [Doka — Working with the network](https://doka.guide/tools/network/)
+**Sources:** [iptables(8)](https://man7.org/linux/man-pages/man8/iptables.8.html) · [nftables](https://wiki.nftables.org/) · [Doka — Working with the network](https://doka.guide/tools/network/)
 
 </details>
 
@@ -855,13 +862,13 @@ sudo iptables -L
 5. **API:** `location /api/` + `proxy_pass` forwards to Node; Node’s router (Express/Fastify) then matches `/users/:id`.
 6. Response headers include `Content-Type` (from extension or the app). CORS headers may be added here — they do not apply to Postman.
 
-**Cases:** Production SPA + API on one domain; `index.html` fallback for client-side routing.
+**When to use:** Production SPA + API on one domain; `index.html` fallback for client-side routing.
 
-**Key idea:** *The browser asks for a URL; Nginx `location` + `try_files`/`proxy_pass` (or the app router) pick the bytes to return.*
+**Thoughts:** *The browser asks for a URL; Nginx `location` + `try_files`/`proxy_pass` (or the app router) pick the bytes to return.*
 
 **See also:** [Reverse proxy](#nginx--deployment) · [Apache HTTP Server](#apache-http-server)
 
-**Source:** [nginx.org — location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location)
+**Sources:** [nginx.org — location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location)
 
 </details>
 
@@ -874,9 +881,9 @@ sudo iptables -L
 
 **How it works:** Nginx: event-driven workers, `nginx -t` then `reload` (HUP, keep connections). Apache: MPM (event/worker/prefork), `httpd -t`, `apachectl -k graceful`. Apache 2.4 access is `Require`, not 2.2 `Order`/`Allow`. Nginx has no `.htaccess`; you edit the main config (or included snippets).
 
-**Cases:** Nginx in front of Node/SPA; Apache on LAMP / shared hosting that only allows `.htaccess`.
+**When to use:** Nginx in front of Node/SPA; Apache on LAMP / shared hosting that only allows `.htaccess`.
 
-**Key idea:** *Nginx = contexts + `location`; Apache = tagged containers + optional `.htaccess`; always syntax-check, then graceful reload.*
+**Thoughts:** *Nginx = contexts + `location`; Apache = tagged containers + optional `.htaccess`; always syntax-check, then graceful reload.*
 
 **See also:** [Nginx configuration](#nginx-configuration) · [Apache HTTP Server](#apache-http-server)
 
@@ -946,7 +953,7 @@ Never commit secrets. Use CI secret store, vault, or platform env vars (Vercel/G
 - Pair with SQS for retries and DLQ.
 - When **not** to use Lambda — long-running processes, persistent WebSockets at huge scale, very low-latency always-warm APIs (consider ECS).
 
-**Source:** [AWS Lambda DG](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+**Sources:** [AWS Lambda DG](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
 
 </details>
 
@@ -968,7 +975,7 @@ See [AWS services map](#aws-services-map-interview).
 
 **Definition:** Logs = events. Metrics = aggregates over time. Traces = one request across services (`trace_id`). OpenTelemetry exports all three; Prometheus/Grafana for metrics; Jaeger/Tempo for traces.
 
-**Key idea:** Correlate with `trace_id` — do not grep three tools separately.
+**Thoughts:** Correlate with `trace_id` — do not grep three tools separately.
 
 **See also:** [Logs, traces, metrics](#observability)
 
@@ -981,7 +988,7 @@ See [AWS services map](#aws-services-map-interview).
 
 **Definition:** **Pod** is the running container(s). **Deployment** keeps N replicas and rolls out new images. **Service** is a stable DNS/IP in front of changing Pods.
 
-**Key idea:** You apply a Deployment + Service; you do not SSH into Pods.
+**Thoughts:** You apply a Deployment + Service; you do not SSH into Pods.
 
 **See also:** [Pod, Service, Deployment](#kubernetes-interview-basics)
 
@@ -996,7 +1003,7 @@ See [AWS services map](#aws-services-map-interview).
 
 **How it works:** Ed25519 (or RSA) via `ssh-keygen`; install `.pub` with `ssh-copy-id`. Then `PasswordAuthentication no`. `PermitRootLogin prohibit-password` allows root **keys** only; `PermitRootLogin no` blocks root SSH completely.
 
-**Key idea:** Keys first, then disable passwords — full notes: [SSH](#ssh).
+**Thoughts:** Keys first, then disable passwords — full notes: [SSH](#ssh).
 
 </details>
 
@@ -1007,7 +1014,7 @@ See [AWS services map](#aws-services-map-interview).
 
 **Definition:** **PID** is the process identifier. `kill PID` sends **SIGTERM** (graceful, catchable). `kill -9 PID` sends **SIGKILL**, which the kernel applies and the process cannot handle.
 
-**Key idea:** Prefer SIGTERM; SIGKILL is last resort. Full notes: [Unix process management](#unix-process-management).
+**Thoughts:** Prefer SIGTERM; SIGKILL is last resort. Full notes: [Unix process management](#unix-process-management).
 
 </details>
 
@@ -1020,7 +1027,7 @@ See [AWS services map](#aws-services-map-interview).
 
 **How it works:** Example — reject ping without touching HTTP: `iptables -A INPUT -p icmp --icmp-type echo-request -j REJECT`. Keep SSH allowed. Full notes: [Firewall / packet filter](#firewall--packet-filter).
 
-**Key idea:** Filter in the kernel; CLI is just the config.
+**Thoughts:** Filter in the kernel; CLI is just the config.
 
 </details>
 

@@ -27,7 +27,7 @@ Covers document structure, browser rendering, semantics, forms, media, performan
 
 ### Sections
 
-> Theory `<details>` blocks follow: **Definition** · **How it works** · **Cases** · **Pros | Cons** · **Example** · pitfalls where relevant.
+> Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
 - [HTML structure](#html-structure)
 - [Browser rendering pipeline](#browser-rendering-pipeline)
@@ -154,19 +154,26 @@ It is often classified as a **domain-specific language (DSL)** for hypertext doc
 | **Element** | Live DOM node — opening tag + content + closing tag (or void tag) |
 | **Attribute** | Key/value metadata on an element (`href`, `class`, `alt`) |
 
-**Cases:** Every web page · email HTML · SSR/SSG output · component templates.
+**When to use:**
 
-| Pros | Cons |
+Every web page · email HTML · SSR/SSG output · component templates.
+
+Every web page starts with HTML — it is the structural foundation for CSS and JavaScript.
+
+#### Common pitfalls
+
+- Confusing tags (syntax) with elements (DOM nodes).
+- Omitting `lang` on `<html>`.
+- Void elements written with closing tags (invalid for some).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Universal web foundation | Not Turing-complete alone |
 | Semantic elements aid a11y/SEO | Invalid markup relies on error recovery |
 
-**When to use:** Every web page starts with HTML — it is the structural foundation for CSS and JavaScript.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!DOCTYPE html>
@@ -181,17 +188,9 @@ It is often classified as a **domain-specific language (DSL)** for hypertext doc
 </html>
 ```
 
-</details>
+**Thoughts:** Void elements (`<img>`, `<br>`, `<input>`, `<meta>`, `<link>`) have no closing tag. Validate with [validator.w3.org](https://validator.w3.org/).
 
-**Common pitfalls:**
-
-- Confusing tags (syntax) with elements (DOM nodes).
-- Omitting `lang` on `<html>`.
-- Void elements written with closing tags (invalid for some).
-
-**Notes:** Void elements (`<img>`, `<br>`, `<input>`, `<meta>`, `<link>`) have no closing tag. Validate with [validator.w3.org](https://validator.w3.org/).
-
-**Source:** [MDN — HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) · [WHATWG HTML Living Standard](https://html.spec.whatwg.org/)
+**Sources:** [MDN — HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) · [WHATWG HTML Living Standard](https://html.spec.whatwg.org/)
 
 <a name="browser-rendering-pipeline"></a>
 
@@ -218,19 +217,26 @@ It is often classified as a **domain-specific language (DSL)** for hypertext doc
 | Paint | Pixels per layer | [2_css.md](./2_css.md) |
 | Composite | Final frame | — |
 
-**Cases:** First page load · dynamic DOM updates · CSS animations triggering paint/composite only.
+**When to use:**
 
-| Pros | Cons |
+First page load · dynamic DOM updates · CSS animations triggering paint/composite only.
+
+Understanding this pipeline explains parser-blocking scripts, render-blocking CSS, CLS, and LCP.
+
+#### Common pitfalls
+
+- Parser-blocking scripts in `<head>` without `defer`.
+- Images without dimensions causing layout shift.
+- Animating layout properties instead of `transform`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Clear optimization mental model | Cross-file concerns (HTML/CSS/JS) |
 | Measurable via DevTools Performance | Easy to mis-attribute bottlenecks |
 
-**When to use:** Understanding this pipeline explains parser-blocking scripts, render-blocking CSS, CLS, and LCP.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <head>
@@ -242,17 +248,9 @@ It is often classified as a **domain-specific language (DSL)** for hypertext doc
 </body>
 ```
 
-</details>
+**Thoughts:** Script loading details → [3_js_browser.md](./3_js_browser.md). CSS layout/paint triggers → [2_css.md](./2_css.md). Property → layout/paint/composite map → [csstriggers.com](https://csstriggers.com/).
 
-**Common pitfalls:**
-
-- Parser-blocking scripts in `<head>` without `defer`.
-- Images without dimensions causing layout shift.
-- Animating layout properties instead of `transform`.
-
-**Notes:** Script loading details → [3_js_browser.md](./3_js_browser.md). CSS layout/paint triggers → [2_css.md](./2_css.md). Property → layout/paint/composite map → [csstriggers.com](https://csstriggers.com/).
-
-**Source:** [web.dev — Critical rendering path](https://web.dev/articles/critical-rendering-path) · [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/how_browsers_work) · [Doka — How the browser renders pages](https://doka.guide/js/how-the-browser-renders-pages/)
+**Sources:** [web.dev — Critical rendering path](https://web.dev/articles/critical-rendering-path) · [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/how_browsers_work) · [Doka — How the browser renders pages](https://doka.guide/js/how-the-browser-renders-pages/)
 
 <a name="forms--semantics"></a>
 
@@ -273,19 +271,26 @@ It is often classified as a **domain-specific language (DSL)** for hypertext doc
 | User action | `<button type="button">` | `<div class="btn">` |
 | Form field | `<label for>` + `<input name>` | Placeholder-only inputs |
 
-**Cases:** Marketing sites (semantics) · login/checkout forms · native `<dialog>` modals.
+**When to use:**
 
-| Pros | Cons |
+Marketing sites (semantics) · login/checkout forms · native `<dialog>` modals.
+
+Always — semantics improve accessibility, SEO, and maintainability without extra JavaScript.
+
+#### Common pitfalls
+
+- `<div class="btn">` instead of `<button>`.
+- Form inputs without `name` (silently dropped on submit).
+- Placeholder as the only visible label.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Free accessibility and SEO wins | Custom designs may tempt non-semantic markup |
 | Native form validation | Complex widgets may still need ARIA |
 
-**When to use:** Always — semantics improve accessibility, SEO, and maintainability without extra JavaScript.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <main>
@@ -297,15 +302,7 @@ It is often classified as a **domain-specific language (DSL)** for hypertext doc
 </main>
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- `<div class="btn">` instead of `<button>`.
-- Form inputs without `name` (silently dropped on submit).
-- Placeholder as the only visible label.
-
-**Source:** [MDN — Semantics](https://developer.mozilla.org/en-US/docs/Glossary/Semantics) · [MDN — Forms](https://developer.mozilla.org/en-US/docs/Learn/Forms)
+**Sources:** [MDN — Semantics](https://developer.mozilla.org/en-US/docs/Glossary/Semantics) · [MDN — Forms](https://developer.mozilla.org/en-US/docs/Learn/Forms)
 
 ### Element, tag, and attribute
 
@@ -349,7 +346,9 @@ Void elements have no closing tag and no content: `<img>`, `<br>`, `<input>`, `<
 
 ### What happens when you enter a URL?
 
-**Definition:** Entering a URL triggers a chain from DNS resolution through HTTP to HTML parsing and the full browser rendering pipeline.
+**Definition:**
+
+Entering a URL triggers a chain from DNS resolution through HTTP to HTML parsing and the full browser rendering pipeline.
 
 | Step | Action |
 |------|--------|
@@ -361,7 +360,7 @@ Void elements have no closing tag and no content: `<img>`, `<br>`, `<input>`, `<
 | Parse | HTML → DOM; CSS → CSSOM |
 | Render | Render tree → layout → paint → **GPU compositing** |
 
-**How it works (spoken interview path):**
+**How it works:**
 
 1. **Parse the URL** — scheme (`http`/`https`), host, port, path, query, hash. Hash is not sent to the server.
 2. **Reuse or fetch** — browser HTTP cache may return a stored HTML document (`Cache-Control` / `ETag`). If not, resolve the host to an IP.
@@ -373,28 +372,25 @@ Void elements have no closing tag and no content: `<img>`, `<br>`, `<input>`, `<
 8. **Render tree** — merge DOM + CSSOM; skip `display: none`.
 9. **Layout** — geometry (where / how big). **Paint** — pixels (color, text, shadows). **Compositing** — GPU stacks layers into the frame (`transform` / `opacity` stay on the compositor — this is what makes cheap animations).
 
-| Pros | Cons |
-|------|------|
-| Predictable critical path | Many network hops on cold start |
-| Cacheable at each layer | Hard to debug without DevTools |
+**When to use:**
 
-**Cases:** Full page load · SPA client navigation (History API skips full reload) · prefetch/prerender hints.
+Full page load · SPA client navigation (History API skips full reload) · prefetch/prerender hints.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Assuming DNS is instant (TTL, cache misses).
 - Ignoring TLS handshake cost on first visit.
 - Measuring only TTFB, not LCP/CLS.
 - Animating `top`/`left`/`width` (layout) instead of `transform`/`opacity` (compositor / GPU).
 
-**Key idea:** *URL → caches/DNS → TCP → TLS if HTTPS → HTTP HTML → DOM+CSSOM → render tree → layout → paint → GPU composite.*
+**Pluses and minuses:**
 
-**Notes:** CSSOM and paint stages → [2_css.md](./2_css.md). DOM APIs after parse → [3_js_browser.md](./3_js_browser.md). HTTP/TLS/cache → [6_web_api.md](./6_web_api.md).
+| + | − |
+|------|------|
+| Predictable critical path | Many network hops on cold start |
+| Cacheable at each layer | Hard to debug without DevTools |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!DOCTYPE html>
@@ -404,9 +400,13 @@ Void elements have no closing tag and no content: `<img>`, `<br>`, `<input>`, `<
 </html>
 ```
 
-</details>
+**Thoughts:**
 
-**Source:** [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/How_browsers_work)
+*URL → caches/DNS → TCP → TLS if HTTPS → HTTP HTML → DOM+CSSOM → render tree → layout → paint → GPU composite.*
+
+CSSOM and paint stages → [2_css.md](./2_css.md). DOM APIs after parse → [3_js_browser.md](./3_js_browser.md). HTTP/TLS/cache → [6_web_api.md](./6_web_api.md).
+
+**Sources:** [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/How_browsers_work)
 
 </details>
 
@@ -415,7 +415,9 @@ Void elements have no closing tag and no content: `<img>`, `<br>`, `<input>`, `<
 
 ### How DNS works
 
-**Definition:** DNS (Domain Name System) maps human-readable domain names to IP addresses so the browser can open a network connection.
+**Definition:**
+
+DNS (Domain Name System) maps human-readable domain names to IP addresses so the browser can open a network connection.
 
 | Lookup order | Cache layer |
 |--------------|-------------|
@@ -431,30 +433,30 @@ Void elements have no closing tag and no content: `<img>`, `<br>`, `<input>`, `<
 - Returns A/AAAA records (IP); CNAME chains add latency.
 - `dns-prefetch` / `preconnect` warm DNS and TCP/TLS early.
 
-| Pros | Cons |
-|------|------|
-| Human-readable hostnames | Extra lookup latency |
-| Distributed, cacheable | Misconfigured TTL causes stale IPs |
+**When to use:**
 
-**Cases:** First visit · CDN CNAME · split-horizon internal DNS.
+First visit · CDN CNAME · split-horizon internal DNS.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Hard-coding IPs instead of hostnames.
 - Forgetting `preconnect` for third-party origins.
 - Long CNAME chains without monitoring.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Human-readable hostnames | Extra lookup latency |
+| Distributed, cacheable | Misconfigured TTL causes stale IPs |
+
+**Examples:**
 
 ```html
 <!-- Browser resolves example.com → 93.184.216.34 before fetching -->
 ```
 
-</details>
-
-**Source:** [MDN — DNS](https://developer.mozilla.org/en-US/docs/Glossary/DNS)
+**Sources:** [MDN — DNS](https://developer.mozilla.org/en-US/docs/Glossary/DNS)
 
 </details>
 
@@ -463,7 +465,9 @@ Void elements have no closing tag and no content: `<img>`, `<br>`, `<input>`, `<
 
 ### How the browser fetches HTML
 
-**Definition:** After DNS resolves, the browser opens a TCP/TLS connection, sends an HTTP request, and receives an HTML document stream to parse.
+**Definition:**
+
+After DNS resolves, the browser opens a TCP/TLS connection, sends an HTTP request, and receives an HTML document stream to parse.
 
 | Phase | What happens |
 |-------|--------------|
@@ -480,22 +484,24 @@ Void elements have no closing tag and no content: `<img>`, `<br>`, `<input>`, `<
 - Preload scanner discovers linked resources in parallel.
 - Linked assets are extra requests: `<link rel="stylesheet">`, `<img src>`, `<script src>`, fonts, etc. Images are typically non-blocking; classic scripts are parser-blocking.
 
-| Pros | Cons |
-|------|------|
-| Streaming parse starts early | Large HTML still blocks first paint |
-| HTTP/2 multiplexing | Head-of-line blocking on HTTP/1.1 |
+**When to use:**
 
-**Cases:** Same-origin HTML · CDN edge cache hit · `304 Not Modified` revalidation.
+Same-origin HTML · CDN edge cache hit · `304 Not Modified` revalidation.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Giant inline JSON in HTML bloating TTFB.
 - Missing `Content-Type: text/html; charset=utf-8`.
 - No compression (gzip/Brotli) on HTML.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Streaming parse starts early | Large HTML still blocks first paint |
+| HTTP/2 multiplexing | Head-of-line blocking on HTTP/1.1 |
+
+**Examples:**
 
 ```html
 <!DOCTYPE html>
@@ -511,11 +517,9 @@ Void elements have no closing tag and no content: `<img>`, `<br>`, `<input>`, `<
 </html>
 ```
 
-</details>
-
 The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index.js`.
 
-**Source:** [MDN — HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP) · [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/how_browsers_work)
+**Sources:** [MDN — HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP) · [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/how_browsers_work)
 
 </details>
 
@@ -524,7 +528,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 
 ### What is the DOM?
 
-**Definition:** The DOM (Document Object Model) is the browser's live in-memory tree representation of the HTML document. HTML is the source; parsing builds the DOM.
+**Definition:**
+
+The DOM (Document Object Model) is the browser's live in-memory tree representation of the HTML document. HTML is the source; parsing builds the DOM.
 
 | Concept | Description |
 |---------|-------------|
@@ -539,24 +545,24 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 - HTML source ≠ DOM after JS changes.
 - Classic `<script src>` mid-document: parser has only built nodes **above** the tag. `getElementById` for a later `<img>` is `null` unless you use `defer`/`async`/`module` or move the script after the markup.
 
-| Pros | Cons |
-|------|------|
-| Standard API across browsers | Verbose vs frameworks |
-| Live updates | Frequent writes cause layout thrashing |
+**When to use:**
 
-**Cases:** Static pages · client-rendered SPAs · `innerHTML` updates.
+Static pages · client-rendered SPAs · `innerHTML` updates.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Confusing HTML file with runtime DOM.
 - `innerHTML` with untrusted input (XSS).
 - Assuming whitespace text nodes don't exist.
-**Notes:** DOM manipulation and events → [3_js_browser.md](./3_js_browser.md).
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Standard API across browsers | Verbose vs frameworks |
+| Live updates | Frequent writes cause layout thrashing |
+
+**Examples:**
 
 ```html
 <!-- image is null: parser stopped at the script -->
@@ -572,9 +578,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 <img id="image" src="/hello.jpg" alt="Hello" />
 ```
 
-</details>
+**Thoughts:** DOM manipulation and events → [3_js_browser.md](./3_js_browser.md).
 
-**Source:** [MDN — DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) · [MDN — script](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
+**Sources:** [MDN — DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) · [MDN — script](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
 
 </details>
 
@@ -583,7 +589,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 
 ### How the DOM tree is built (HTML parsing)
 
-**Definition:** The browser parses HTML top-to-bottom: tokenization converts bytes to tokens, then tree construction creates DOM nodes. Classic scripts without `async`/`defer`/`type="module"` block parsing.
+**Definition:**
+
+The browser parses HTML top-to-bottom: tokenization converts bytes to tokens, then tree construction creates DOM nodes. Classic scripts without `async`/`defer`/`type="module"` block parsing.
 
 | Step | Action |
 |------|--------|
@@ -599,32 +607,32 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 - **Parser-blocking** `<script>` without `async`/`defer`/`module` pauses tree build.
 - Preload scanner fetches CSS/images/scripts early.
 
-| Pros | Cons |
-|------|------|
-| Forgiving error recovery | Invalid HTML may differ across engines |
-| Incremental build | Blocking scripts delay DOMContentLoaded |
+**When to use:**
 
-**Cases:** Document with deferred scripts · inline script mid-body · malformed HTML (error recovery).
+Document with deferred scripts · inline script mid-body · malformed HTML (error recovery).
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - `<script>` in `<head>` without `defer` blocks entire parse.
 - `document.write` during parse (legacy anti-pattern).
 - Relying on implicit optional tags for layout.
-**Notes:** `async`/`defer` script behavior → [3_js_browser.md](./3_js_browser.md).
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Forgiving error recovery | Invalid HTML may differ across engines |
+| Incremental build | Blocking scripts delay DOMContentLoaded |
+
+**Examples:**
 
 ```html
 <html><body><h1>Hello</h1><p>Text</p></body></html>
 ```
 
-</details>
+**Thoughts:** `async`/`defer` script behavior → [3_js_browser.md](./3_js_browser.md).
 
-**Source:** [WHATWG — Parsing](https://html.spec.whatwg.org/multipage/parsing.html)
+**Sources:** [WHATWG — Parsing](https://html.spec.whatwg.org/multipage/parsing.html)
 
 </details>
 
@@ -633,7 +641,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 
 ### What is the CSSOM?
 
-**Definition:** The CSSOM (CSS Object Model) is the browser's object representation of parsed CSS rules. The DOM holds structure; the CSSOM holds computed style information.
+**Definition:**
+
+The CSSOM (CSS Object Model) is the browser's object representation of parsed CSS rules. The DOM holds structure; the CSSOM holds computed style information.
 
 | Model | Holds |
 |-------|-------|
@@ -649,33 +659,33 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 - Render-blocking: CSS in `<head>` delays first paint (avoids FOUC). Prefer **critical CSS** first (shared + page-specific above-the-fold).
 - Waiting for CSS need not stop HTML parse (preload scanner), but **it blocks JS**: scripts often query computed styles / selectors.
 
-| Pros | Cons |
-|------|------|
-| Separates structure from presentation | `@import` blocks parallel fetch |
-| Cacheable CSS files | Large CSS delays first paint |
+**When to use:**
 
-**Cases:** External stylesheet · inline `<style>` · `@import` chains (slower).
+External stylesheet · inline `<style>` · `@import` chains (slower).
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - `@import` inside CSS (serial loading).
 - Missing `<link rel="stylesheet">` in `<head>`.
 - Assuming DOM order alone determines paint order.
-**Notes:** CSS cascade and specificity → [2_css.md](./2_css.md).
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Separates structure from presentation | `@import` blocks parallel fetch |
+| Cacheable CSS files | Large CSS delays first paint |
+
+**Examples:**
 
 ```html
 <head><link rel="stylesheet" href="/styles.css" /></head>
 <body><h1>Hello</h1></body>
 ```
 
-</details>
+**Thoughts:** CSS cascade and specificity → [2_css.md](./2_css.md).
 
-**Source:** [MDN — CSSOM](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model) · [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/how_browsers_work)
+**Sources:** [MDN — CSSOM](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model) · [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/how_browsers_work)
 
 </details>
 
@@ -684,7 +694,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 
 ### What is the Render Tree?
 
-**Definition:** The render tree combines the DOM and CSSOM into a tree of boxes ready for layout and paint. Elements with `display: none` are excluded. WebKit/Blink call it the render tree; Gecko uses **frame tree**.
+**Definition:**
+
+The render tree combines the DOM and CSSOM into a tree of boxes ready for layout and paint. Elements with `display: none` are excluded. WebKit/Blink call it the render tree; Gecko uses **frame tree**.
 
 | Input | Output |
 |-------|--------|
@@ -699,24 +711,24 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 - `visibility: hidden` stays in tree (invisible, still occupies space).
 - Output: boxes ready for layout.
 
-| Pros | Cons |
-|------|------|
-| Only visible work is laid out | Easy to confuse `hidden` vs `display:none` |
-| Merges DOM + styles | Pseudo-elements add extra boxes |
+**When to use:**
 
-**Cases:** Hidden modals (`display:none`) · off-screen menus · `content-visibility: auto`.
+Hidden modals (`display:none`) · off-screen menus · `content-visibility: auto`.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - `visibility:hidden` still affects layout/CLS.
 - `aria-hidden` does not remove from render tree.
 - `display:none` children still in DOM (queryable).
-**Notes:** `display: none` vs `visibility: hidden` → [2_css.md](./2_css.md).
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Only visible work is laid out | Easy to confuse `hidden` vs `display:none` |
+| Merges DOM + styles | Pseudo-elements add extra boxes |
+
+**Examples:**
 
 ```html
 <body>
@@ -725,9 +737,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 </body>
 ```
 
-</details>
+**Thoughts:** `display: none` vs `visibility: hidden` → [2_css.md](./2_css.md).
 
-**Source:** [web.dev — Render tree](https://web.dev/articles/critical-rendering-path/constructing-the-object-model)
+**Sources:** [web.dev — Render tree](https://web.dev/articles/critical-rendering-path/constructing-the-object-model)
 
 </details>
 
@@ -736,7 +748,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 
 ### Layout (Reflow)
 
-**Definition:** Layout (reflow) computes the geometry of every visible element — width, height, position, and margins — on the page.
+**Definition:**
+
+Layout (reflow) computes the geometry of every visible element — width, height, position, and margins — on the page.
 
 | Property change | Triggers reflow? |
 |-----------------|-----------------|
@@ -752,33 +766,33 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 - Triggers: size changes, font load, DOM insert/remove, reading layout after write.
 - Flexbox/Grid/table algorithms run here.
 
-| Pros | Cons |
-|------|------|
-| Accurate geometry | Most expensive rendering stage |
-| Required for readable text flow | Layout thrashing if read/write interleaved |
+**When to use:**
 
-**Cases:** Initial page layout · responsive resize · dynamic content injection.
+Initial page layout · responsive resize · dynamic content injection.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Animating `width`/`height`/`top`/`left` (triggers layout every frame).
 - Reading `offsetHeight` then writing style in a loop.
 - Images without dimensions causing reflow on load.
-**Notes:** Box model and layout modes → [2_css.md](./2_css.md).
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Accurate geometry | Most expensive rendering stage |
+| Required for readable text flow | Layout thrashing if read/write interleaved |
+
+**Examples:**
 
 ```html
 <div>One</div>
 <div>Two</div>
 ```
 
-</details>
+**Thoughts:** Box model and layout modes → [2_css.md](./2_css.md).
 
-**Source:** [MDN — Reflow](https://developer.mozilla.org/en-US/docs/Glossary/Reflow)
+**Sources:** [MDN — Reflow](https://developer.mozilla.org/en-US/docs/Glossary/Reflow)
 
 </details>
 
@@ -787,7 +801,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 
 ### Paint
 
-**Definition:** Paint rasterizes the visual appearance of each box — text, backgrounds, borders, and shadows — into bitmap layers.
+**Definition:**
+
+Paint rasterizes the visual appearance of each box — text, backgrounds, borders, and shadows — into bitmap layers.
 
 | Stage | Answers |
 |-------|---------|
@@ -803,32 +819,32 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 - Simplified order (back → front, within a stacking context): `background-color` → `background-image` → `border` → descendants → `outline`. Full order → [2_css.md — stacking context](./2_css.md).
 - `overflow:hidden` and stacking contexts create clip boundaries.
 
-| Pros | Cons |
-|------|------|
-| Necessary for visual fidelity | Large paint areas are costly |
-| Layer splitting helps | `will-change` overuse wastes memory |
+**When to use:**
 
-**Cases:** Text rendering · box shadows · `border-radius` · large `box-shadow` repaints.
+Text rendering · box shadows · `border-radius` · large `box-shadow` repaints.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Huge `box-shadow` on scrolling containers.
 - Frequent `background` changes on large elements.
 - Assuming `opacity` always avoids paint (depends on layer).
-**Notes:** Paint cost and `will-change` → [2_css.md](./2_css.md).
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Necessary for visual fidelity | Large paint areas are costly |
+| Layer splitting helps | `will-change` overuse wastes memory |
+
+**Examples:**
 
 ```html
 <p class="hero">Styled text</p>
 ```
 
-</details>
+**Thoughts:** Paint cost and `will-change` → [2_css.md](./2_css.md).
 
-**Source:** [MDN — Repaint](https://developer.mozilla.org/en-US/docs/Glossary/Repaint)
+**Sources:** [MDN — Repaint](https://developer.mozilla.org/en-US/docs/Glossary/Repaint)
 
 </details>
 
@@ -837,7 +853,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 
 ### Compositing
 
-**Definition:** Compositing merges painted layers into the final frame on the GPU. Elements with `transform`, `opacity`, or `will-change` may be promoted to their own layer.
+**Definition:**
+
+Compositing merges painted layers into the final frame on the GPU. Elements with `transform`, `opacity`, or `will-change` may be promoted to their own layer.
 
 | Change type | Typical cost |
 |-------------|--------------|
@@ -853,32 +871,32 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 - Compositor-only changes skip layout and often skip paint.
 - Check which CSS properties trigger layout/paint/composite: [CSS Triggers](https://csstriggers.com/).
 
-| Pros | Cons |
-|------|------|
-| Smooth 60fps animations | Extra layers use GPU memory |
-| Skips layout for transforms | Over-promotion causes layer explosion |
+**When to use:**
 
-**Cases:** `transform` animations · fixed headers · video overlays.
+`transform` animations · fixed headers · video overlays.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Animating `margin` instead of `transform`.
 - `will-change: transform` on everything.
 - Ignoring mobile GPU memory limits.
-**Notes:** GPU-friendly animations → [2_css.md](./2_css.md).
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Smooth 60fps animations | Extra layers use GPU memory |
+| Skips layout for transforms | Over-promotion causes layer explosion |
+
+**Examples:**
 
 ```html
 <div class="animated-card">Compositor-friendly</div>
 ```
 
-</details>
+**Thoughts:** GPU-friendly animations → [2_css.md](./2_css.md).
 
-**Source:** [MDN — Composite](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Composite)
+**Sources:** [MDN — Composite](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Composite)
 
 </details>
 
@@ -887,7 +905,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 
 ### Layout vs Paint vs Compositing
 
-**Definition:** These three rendering stages answer different questions. Understanding which CSS properties trigger which stage helps optimize animations and avoid jank.
+**Definition:**
+
+These three rendering stages answer different questions. Understanding which CSS properties trigger which stage helps optimize animations and avoid jank.
 
 | Stage | Answers | Typical triggers |
 |-------|---------|------------------|
@@ -907,27 +927,25 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 | Paint | Medium | `color`, `background`, `box-shadow` |
 | Composite | Lowest | `transform`, `opacity` |
 
-**Cases:** Hover color change (paint) · accordion height (layout) · slide-in panel (`transform`, composite).
+**When to use:**
 
-**Common pitfalls:**
+Hover color change (paint) · accordion height (layout) · slide-in panel (`transform`, composite).
+
+#### Common pitfalls
 
 - Using `top`/`left` for animations instead of `transform`.
 - One property change triggering all three stages.
 - Not profiling before micro-optimizing.
-**Notes:** Full CSS performance guide → [2_css.md](./2_css.md).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <div id="box">Content</div>
 ```
 
-</details>
+**Thoughts:** Full CSS performance guide → [2_css.md](./2_css.md).
 
-**Source:** [web.dev — Rendering performance](https://web.dev/articles/rendering-performance)
+**Sources:** [web.dev — Rendering performance](https://web.dev/articles/rendering-performance)
 
 </details>
 
@@ -944,22 +962,30 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 - **Incremental** — a style/DOM change dirties that node; children are dirtied because their size/position may depend on the parent.
 - Stay in **normal flow** when possible so siblings do not force extra passes.
 
-**Cases:** Window resize (global) · toggling a sidebar width (dirty subtree) · injecting a list item.
+**When to use:**
+
+Window resize (global) · toggling a sidebar width (dirty subtree) · injecting a list item.
+
+#### Common pitfalls
+
+Reading `offsetHeight` after a write forces a synchronous (often global-feeling) reflow.
+
+**Pluses and minuses:**
 
 | + | − |
 |---|---|
 | Incremental avoids full-tree work | Dirty parent still walks all children |
 | Flow layout is one-pass for independent boxes | Out-of-flow / percentage sizes can cascade dirtiness |
 
-**Example:** Changing one card's `padding` relayouts that card and its nested content, not necessarily the whole page.
+**Examples:** Changing one card's `padding` relayouts that card and its nested content, not necessarily the whole page.
 
-**Common pitfalls:** Reading `offsetHeight` after a write forces a synchronous (often global-feeling) reflow.
+**Thoughts:**
 
-**Key idea:** *Dirty = changed node + descendants; window resize is global.*
+*Dirty = changed node + descendants; window resize is global.*
 
-**Notes:** CSS property cost table → [2_css.md — Reflow, repaint, composite](./2_css.md).
+CSS property cost table → [2_css.md — Reflow, repaint, composite](./2_css.md).
 
-**Source:** [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/how_browsers_work) · [Doka — How the browser renders pages](https://doka.guide/js/how-the-browser-renders-pages/)
+**Sources:** [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/how_browsers_work) · [Doka — How the browser renders pages](https://doka.guide/js/how-the-browser-renders-pages/)
 
 </details>
 
@@ -977,17 +1003,20 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 - Target ~60 fps (~16 ms/frame). `requestAnimationFrame(cb)` runs `cb` **before the next paint**, aligned with the display.
 - `setInterval(fn, 1000/60)` is not synced to the pipeline: frames can be uneven, and a hidden tab may **catch up** by firing many callbacks at once.
 
-**Cases:** Canvas/JS animation loops · measuring layout then mutating in rAF · avoiding layout thrashing.
+**When to use:**
+
+Canvas/JS animation loops · measuring layout then mutating in rAF · avoiding layout thrashing.
 
 | + rAF | − `setInterval` for visuals |
 |--------|-----------------------------|
 | Before paint, pauses in background | Unrelated to paint phase |
 | Close to refresh rate | Catch-up bursts after inactive tab |
 
-**Example:**
+#### Common pitfalls
 
-<details>
-  <summary>Code</summary>
+Animating `left`/`top`/`margin`/`background` every frame (layout/paint). Prefer `transform` and `opacity`.
+
+**Examples:**
 
 ```js
 function animate(ts) {
@@ -997,15 +1026,13 @@ function animate(ts) {
 requestAnimationFrame(animate);
 ```
 
-</details>
+**Thoughts:**
 
-**Common pitfalls:** Animating `left`/`top`/`margin`/`background` every frame (layout/paint). Prefer `transform` and `opacity`.
+*One cycle = one animation frame; tell the browser with `requestAnimationFrame`, not a 16 ms interval.*
 
-**Key idea:** *One cycle = one animation frame; tell the browser with `requestAnimationFrame`, not a 16 ms interval.*
+API details → [3_js_browser.md — requestAnimationFrame](./3_js_browser.md#request-animation-frame).
 
-**Notes:** API details → [3_js_browser.md — requestAnimationFrame](./3_js_browser.md#request-animation-frame).
-
-**Source:** [MDN — requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) · [MDN — CSS vs JS animation performance](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/CSS_JavaScript_animation_performance)
+**Sources:** [MDN — requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) · [MDN — CSS vs JS animation performance](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/CSS_JavaScript_animation_performance)
 
 </details>
 
@@ -1022,22 +1049,30 @@ requestAnimationFrame(animate);
 - Ship **critical CSS** first; defer the rest. `defer`/`async`/`type="module"` keep scripts off the parser-critical path.
 - Below-fold: `loading="lazy"`, `content-visibility: auto`, skeletons while data loads.
 
-**Cases:** Long articles · marketing LCP hero · SSR HTML that hydrates later.
+**When to use:**
+
+Long articles · marketing LCP hero · SSR HTML that hydrates later.
+
+#### Common pitfalls
+
+One giant CSS file in `<head>`; parser-blocking bundle before content.
+
+**Pluses and minuses:**
 
 | + | − |
 |---|---|
 | Faster FCP/LCP perception | Extra split CSS/JS complexity |
 | Streaming HTML starts parse early | Incomplete CSS still delays first styled paint |
 
-**Example:** Inline above-the-fold CSS in `<head>`; `<script defer>` for the app; `loading="lazy"` on below-fold images.
+**Examples:** Inline above-the-fold CSS in `<head>`; `<script defer>` for the app; `loading="lazy"` on below-fold images.
 
-**Common pitfalls:** One giant CSS file in `<head>`; parser-blocking bundle before content.
+**Thoughts:**
 
-**Key idea:** *Paint something useful ASAP — critical CSS + non-blocking JS + lazy below-fold.*
+*Paint something useful ASAP — critical CSS + non-blocking JS + lazy below-fold.*
 
-**Notes:** CSS techniques → [2_css.md — progressive rendering](./2_css.md). Script loading → [3_js_browser.md](./3_js_browser.md).
+CSS techniques → [2_css.md — progressive rendering](./2_css.md). Script loading → [3_js_browser.md](./3_js_browser.md).
 
-**Source:** [MDN — Critical rendering path](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Critical_rendering_path) · [web.dev — Critical rendering path](https://web.dev/articles/critical-rendering-path)
+**Sources:** [MDN — Critical rendering path](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Critical_rendering_path) · [web.dev — Critical rendering path](https://web.dev/articles/critical-rendering-path)
 
 </details>
 
@@ -1046,7 +1081,9 @@ requestAnimationFrame(animate);
 
 ### First render — full pipeline
 
-**Definition:** The critical rendering path is the sequence from receiving HTML/CSS/JS to the first painted frame. Parser-blocking resources delay time-to-first-paint.
+**Definition:**
+
+The critical rendering path is the sequence from receiving HTML/CSS/JS to the first painted frame. Parser-blocking resources delay time-to-first-paint.
 
 | # | Step |
 |---|------|
@@ -1064,24 +1101,24 @@ requestAnimationFrame(animate);
 - First Contentful Paint (FCP) / LCP mark user-visible milestones. Full FCP: [6_web_api.md](./6_web_api.md#first-contentful-paint-fcp).
 - Parser-blocking CSS in `<head>` delays first paint (browser waits for CSSOM). Parser-blocking JS without `defer` pauses HTML parse.
 
-| Pros | Cons |
-|------|------|
-| Clear optimization targets (CRP) | Many moving parts across HTML/CSS/JS |
-| Measurable via Web Vitals | Over-inlining bloats HTML |
+**When to use:**
 
-**Cases:** Marketing landing (optimize LCP hero) · dashboard (defer non-critical JS) · SSR + hydration.
+Marketing landing (optimize LCP hero) · dashboard (defer non-critical JS) · SSR + hydration.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Render-blocking scripts in `<head>` without `defer`.
 - Hero image without `width`/`height` or `fetchpriority`.
 - CSS loaded at bottom of `<body>` causing FOUC.
-**Notes:** Script loading → [3_js_browser.md](./3_js_browser.md). CSS blocking → [2_css.md](./2_css.md).
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Clear optimization targets (CRP) | Many moving parts across HTML/CSS/JS |
+| Measurable via Web Vitals | Over-inlining bloats HTML |
+
+**Examples:**
 
 ```html
 <!DOCTYPE html>
@@ -1095,9 +1132,9 @@ requestAnimationFrame(animate);
 </html>
 ```
 
-</details>
+**Thoughts:** Script loading → [3_js_browser.md](./3_js_browser.md). CSS blocking → [2_css.md](./2_css.md).
 
-**Source:** [web.dev — Critical rendering path](https://web.dev/articles/critical-rendering-path)
+**Sources:** [web.dev — Critical rendering path](https://web.dev/articles/critical-rendering-path)
 
 </details>
 
@@ -1112,7 +1149,9 @@ requestAnimationFrame(animate);
 
 ### Basic HTML document structure
 
-**Definition:** A valid HTML5 document has a DOCTYPE, root `<html>` with `lang`, a `<head>` for metadata, and a `<body>` for visible content.
+**Definition:**
+
+A valid HTML5 document has a DOCTYPE, root `<html>` with `lang`, a `<head>` for metadata, and a `<body>` for visible content.
 
 | Part | Role |
 |------|------|
@@ -1128,22 +1167,24 @@ requestAnimationFrame(animate);
 - `<head>`: charset, viewport, title, linked resources.
 - `<body>`: visible flow content only.
 
-| Pros | Cons |
-|------|------|
-| Valid skeleton aids a11y/SEO | Boilerplate easy to omit in snippets |
-| `lang` helps screen readers | Wrong `lang` hurts pronunciation |
+**When to use:**
 
-**Cases:** Static site · SPA shell (`<div id="app">`) · AMP-like minimal docs.
+Static site · SPA shell (`<div id="app">`) · AMP-like minimal docs.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Missing `<meta charset>` (encoding bugs).
 - Multiple `<main>` or none.
 - Placing visible content in `<head>`.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Valid skeleton aids a11y/SEO | Boilerplate easy to omit in snippets |
+| `lang` helps screen readers | Wrong `lang` hurts pronunciation |
+
+**Examples:**
 
 ```html
 <!DOCTYPE html>
@@ -1158,9 +1199,7 @@ requestAnimationFrame(animate);
 </html>
 ```
 
-</details>
-
-**Source:** [MDN — Getting started](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
+**Sources:** [MDN — Getting started](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
 
 </details>
 
@@ -1169,7 +1208,9 @@ requestAnimationFrame(animate);
 
 ### DOCTYPE
 
-**Definition:** The `<!DOCTYPE html>` declaration tells the browser to use HTML5 standards mode. Without it, browsers may enter quirks mode with inconsistent layout behavior.
+**Definition:**
+
+The `<!DOCTYPE html>` declaration tells the browser to use HTML5 standards mode. Without it, browsers may enter quirks mode with inconsistent layout behavior.
 
 | Mode | Trigger | Effect |
 |------|---------|--------|
@@ -1187,26 +1228,24 @@ requestAnimationFrame(animate);
 | Standards | `<!DOCTYPE html>` | Spec-compliant layout |
 | Quirks | Missing/invalid DOCTYPE | Legacy box model bugs |
 
-**Cases:** New HTML5 pages · legacy pages missing DOCTYPE (quirks).
+**When to use:**
 
-**Common pitfalls:**
+New HTML5 pages · legacy pages missing DOCTYPE (quirks).
+
+#### Common pitfalls
 
 - Uppercase `<!DOCTYPE HTML>` still works but inconsistent style.
 - XML-style `<!DOCTYPE html />` is wrong.
 - XHTML doctypes on HTML5 pages.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!DOCTYPE html>
 <html lang="en"><body></body></html>
 ```
 
-</details>
-
-**Source:** [MDN — DOCTYPE](https://developer.mozilla.org/en-US/docs/Glossary/Doctype)
+**Sources:** [MDN — DOCTYPE](https://developer.mozilla.org/en-US/docs/Glossary/Doctype)
 
 </details>
 
@@ -1219,11 +1258,11 @@ requestAnimationFrame(animate);
 
 **How it works:** XML is strict (one root, closed tags, quoted attributes). HTML5 parsers recover from errors. `DOCTYPE` is HTML’s mode switch; XML’s optional `<?xml …?>` is encoding/version meta. Full syntax, namespaces, SVG `xmlns`: [6_web_api.md — XML](./6_web_api.md#xml).
 
-**Cases:** Interview “how is XML not HTML?” · why a `.svg` file needs `xmlns` but inline SVG in HTML often does not.
+**When to use:** Interview “how is XML not HTML?” · why a `.svg` file needs `xmlns` but inline SVG in HTML often does not.
 
-**Key idea:** HTML displays; XML (and JSON) carry data.
+**Thoughts:** HTML displays; XML (and JSON) carry data.
 
-**Source:** [MDN — XML introduction](https://developer.mozilla.org/en-US/docs/Web/XML/Guides/XML_introduction)
+**Sources:** [MDN — XML introduction](https://developer.mozilla.org/en-US/docs/Web/XML/Guides/XML_introduction)
 
 </details>
 
@@ -1232,7 +1271,9 @@ requestAnimationFrame(animate);
 
 ### Meta tags
 
-**Definition:** Meta elements live in `<head>` and provide document metadata — charset, viewport, description, and robots directives.
+**Definition:**
+
+Meta elements live in `<head>` and provide document metadata — charset, viewport, description, and robots directives.
 
 | Meta | Purpose |
 |------|---------|
@@ -1255,17 +1296,17 @@ requestAnimationFrame(animate);
 | `description` | Search snippet |
 | `robots` | Crawl directives |
 
-**Cases:** Public pages (SEO meta) · `noindex` staging · `theme-color` PWA.
+**When to use:**
 
-**Common pitfalls:**
+Public pages (SEO meta) · `noindex` staging · `theme-color` PWA.
+
+#### Common pitfalls
 
 - Duplicate `viewport` tags.
 - `keywords` meta (ignored by major engines).
 - `refresh` redirect (bad for a11y; use HTTP redirect).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <meta charset="UTF-8" />
@@ -1274,9 +1315,7 @@ requestAnimationFrame(animate);
 <meta name="robots" content="index, follow" />
 ```
 
-</details>
-
-**Source:** [Google — Special tags](https://developers.google.com/search/docs/crawling-indexing/special-tags)
+**Sources:** [Google — Special tags](https://developers.google.com/search/docs/crawling-indexing/special-tags)
 
 </details>
 
@@ -1301,7 +1340,9 @@ requestAnimationFrame(animate);
 | `preload` | High-priority fetch for current page |
 | `prefetch` | Low-priority fetch for next navigation |
 
-**Cases:** Critical font preload · CDN preconnect · next-page prefetch.
+**When to use:**
+
+Critical font preload · CDN preconnect · next-page prefetch.
 
 | `rel` | When |
 |------|------|
@@ -1309,16 +1350,13 @@ requestAnimationFrame(animate);
 | `preconnect` | Third-party origin |
 | `preload` | LCP image/font |
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Preloading everything (bandwidth waste).
 - `preload` without matching `as` type.
 - `preconnect` to origins never used.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <link rel="stylesheet" href="/app.css" />
@@ -1328,11 +1366,9 @@ requestAnimationFrame(animate);
 <script src="https://cdn.example.com/lib.js" integrity="sha384-..." crossorigin="anonymous"></script>
 ```
 
-</details>
+**Thoughts:** Why `preconnect` exists (TCP+TLS RTT) → [TCP vs UDP](./6_web_api.md#tcp-vs-udp).
 
-**Notes:** Why `preconnect` exists (TCP+TLS RTT) → [TCP vs UDP](./6_web_api.md#tcp-vs-udp).
-
-**Source:** [MDN — link types](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel)
+**Sources:** [MDN — link types](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel)
 
 </details>
 
@@ -1355,17 +1391,24 @@ requestAnimationFrame(animate);
 | `apple-touch-icon` | iOS home screen |
 | `mask-icon` | Safari pinned tab |
 
-**Cases:** Browser tab branding · PWA install · dark/light favicon via `media` attribute on `<link>`.
+**When to use:**
 
-| Pros | Cons |
+Browser tab branding · PWA install · dark/light favicon via `media` attribute on `<link>`.
+
+#### Common pitfalls
+
+- 404 on `/favicon.ico` when only PNG linked.
+- Single 16×16 icon blurry on retina.
+- Manifest `icons` missing 192×512 for Android install.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Professional polish in tabs/bookmarks | Many sizes to maintain |
 | SVG one file scales | Older IE ignored SVG favicons |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -1373,15 +1416,7 @@ requestAnimationFrame(animate);
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- 404 on `/favicon.ico` when only PNG linked.
-- Single 16×16 icon blurry on retina.
-- Manifest `icons` missing 192×512 for Android install.
-
-**Source:** [MDN — link rel icon](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#icon)
+**Sources:** [MDN — link rel icon](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#icon)
 
 </details>
 
@@ -1404,17 +1439,24 @@ requestAnimationFrame(animate);
 | `preconnect` | Full connection | Critical CDN/fonts |
 | `modulepreload` | Module fetch | ESM entry point |
 
-**Cases:** Analytics domain dns-prefetch · Google Fonts preconnect · `modulepreload` for `app.mjs`.
+**When to use:**
 
-| Pros | Cons |
+Analytics domain dns-prefetch · Google Fonts preconnect · `modulepreload` for `app.mjs`.
+
+#### Common pitfalls
+
+- `preconnect` to origins never used on page.
+- `modulepreload` without matching `crossorigin` on CORS modules.
+- Replacing all `preconnect` with `dns-prefetch` when full connection warmup needed.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Cuts connection latency | Over-hinting wastes bandwidth |
 | Faster ESM startup | `modulepreload` needs `crossorigin` if CORS |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <link rel="dns-prefetch" href="https://analytics.example.com" />
@@ -1422,15 +1464,7 @@ requestAnimationFrame(animate);
 <link rel="modulepreload" href="/app.mjs" crossorigin />
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- `preconnect` to origins never used on page.
-- `modulepreload` without matching `crossorigin` on CORS modules.
-- Replacing all `preconnect` with `dns-prefetch` when full connection warmup needed.
-
-**Source:** [MDN — dns-prefetch](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/dns-prefetch) · [modulepreload](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload)
+**Sources:** [MDN — dns-prefetch](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/dns-prefetch) · [modulepreload](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload)
 
 </details>
 
@@ -1439,7 +1473,9 @@ requestAnimationFrame(animate);
 
 ### base element
 
-**Definition:** The `<base>` element sets the default URL and target for all relative links on the page. Use sparingly — one per document, must be in `<head>`.
+**Definition:**
+
+The `<base>` element sets the default URL and target for all relative links on the page. Use sparingly — one per document, must be in `<head>`.
 
 | Attribute | Effect |
 |-----------|--------|
@@ -1452,30 +1488,30 @@ requestAnimationFrame(animate);
 - Optional `target` sets default link target.
 - Affects entire document — use sparingly.
 
-| Pros | Cons |
-|------|------|
-| Portable relative paths | Breaks fragment-only links if mis-set |
-| One place to change base URL | Hard to debug unexpected resolves |
+**When to use:**
 
-**Cases:** Email HTML templates · embedded docs in iframe · mirror sites.
+Email HTML templates · embedded docs in iframe · mirror sites.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - Multiple `<base>` elements (invalid).
 - `<base>` after relative URLs already parsed.
 - `target="_blank"` on base affecting all links.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Portable relative paths | Breaks fragment-only links if mis-set |
+| One place to change base URL | Hard to debug unexpected resolves |
+
+**Examples:**
 
 ```html
 <base href="https://example.com/assets/" target="_blank" />
 ```
 
-</details>
-
-**Source:** [MDN — base](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base)
+**Sources:** [MDN — base](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base)
 
 </details>
 
@@ -1484,7 +1520,9 @@ requestAnimationFrame(animate);
 
 ### Absolute vs relative paths
 
-**Definition:** URLs in HTML can be relative to the current document or absolute. Relative paths are portable; absolute URLs are required for external resources.
+**Definition:**
+
+URLs in HTML can be relative to the current document or absolute. Relative paths are portable; absolute URLs are required for external resources.
 
 | Type | Example | Use case |
 |------|---------|----------|
@@ -1504,17 +1542,17 @@ requestAnimationFrame(animate);
 | Relative | `../css/app.css` | Nested paths |
 | Absolute | `https://cdn.../x.js` | External CDN |
 
-**Cases:** Same-repo assets (`/css/app.css`) · sibling dir (`../img/x`) · CDN (`https://cdn...`).
+**When to use:**
 
-**Common pitfalls:**
+Same-repo assets (`/css/app.css`) · sibling dir (`../img/x`) · CDN (`https://cdn...`).
+
+#### Common pitfalls
 
 - Broken paths when moving files without updating `../`.
 - Protocol-relative `//cdn...` (deprecated pattern).
 - Relative paths in emails (unreliable).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <img src="/images/logo.png" alt="Logo" />
@@ -1522,9 +1560,7 @@ requestAnimationFrame(animate);
 <script src="https://cdn.example.com/lib.js"></script>
 ```
 
-</details>
-
-**Source:** [MDN — Links](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
+**Sources:** [MDN — Links](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
 
 </details>
 
@@ -1533,7 +1569,9 @@ requestAnimationFrame(animate);
 
 ### Comments & HTML entities
 
-**Definition:** HTML comments are not rendered. Entities represent special characters that would otherwise break markup or are not on the keyboard.
+**Definition:**
+
+HTML comments are not rendered. Entities represent special characters that would otherwise break markup or are not on the keyboard.
 
 | Entity | Character |
 |--------|-----------|
@@ -1554,26 +1592,24 @@ requestAnimationFrame(animate);
 | `&lt;` / `&gt;` | `<` / `>` |
 | `&nbsp;` | non-breaking space |
 
-**Cases:** Template notes in source · displaying `<` in code samples · copyright symbols.
+**When to use:**
 
-**Common pitfalls:**
+Template notes in source · displaying `<` in code samples · copyright symbols.
+
+#### Common pitfalls
 
 - Unescaped `&` in URLs/attributes.
 - `&nbsp;` for layout spacing (use CSS).
 - Comments with `--` inside (invalid).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!-- This is a comment; not rendered -->
 <p>&copy; 2025 &mdash; Price: &euro;10 &lt; &euro;20</p>
 ```
 
-</details>
-
-**Source:** [MDN — Entities](https://developer.mozilla.org/en-US/docs/Glossary/Entity)
+**Sources:** [MDN — Entities](https://developer.mozilla.org/en-US/docs/Glossary/Entity)
 
 </details>
 
@@ -1588,7 +1624,9 @@ requestAnimationFrame(animate);
 
 ### Why semantics matter
 
-**Definition:** Semantic markup uses elements for their intended meaning, not just visual appearance. It improves accessibility, SEO, and maintainability.
+**Definition:**
+
+Semantic markup uses elements for their intended meaning, not just visual appearance. It improves accessibility, SEO, and maintainability.
 
 | Benefit | How semantics help |
 |---------|-------------------|
@@ -1609,17 +1647,17 @@ requestAnimationFrame(animate);
 | SEO | Heading hierarchy signals topics |
 | Maintainability | Meaning survives CSS refactors |
 
-**Cases:** Public content sites · forms · design systems with native widgets.
+**When to use:**
 
-**Common pitfalls:**
+Public content sites · forms · design systems with native widgets.
+
+#### Common pitfalls
 
 - `<div class="btn">` instead of `<button>`.
 - Div-soup layouts with no landmarks.
 - ARIA roles duplicating native elements.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <nav aria-label="Main">
@@ -1628,9 +1666,7 @@ requestAnimationFrame(animate);
 <main><article><h1>Post</h1></article></main>
 ```
 
-</details>
-
-**Source:** [MDN — Semantics](https://developer.mozilla.org/en-US/docs/Glossary/Semantics)
+**Sources:** [MDN — Semantics](https://developer.mozilla.org/en-US/docs/Glossary/Semantics)
 
 </details>
 
@@ -1639,7 +1675,9 @@ requestAnimationFrame(animate);
 
 ### Landmark elements
 
-**Definition:** Landmark elements define major page regions so assistive technology and search engines can navigate the document outline.
+**Definition:**
+
+Landmark elements define major page regions so assistive technology and search engines can navigate the document outline.
 
 | Element | Purpose |
 |---------|---------|
@@ -1662,17 +1700,17 @@ requestAnimationFrame(animate);
 | `<nav>` | Navigation link groups |
 | `<aside>` | Tangential content |
 
-**Cases:** Marketing site · blog (`article`) · app shell with `aside` sidebar.
+**When to use:**
 
-**Common pitfalls:**
+Marketing site · blog (`article`) · app shell with `aside` sidebar.
+
+#### Common pitfalls
 
 - Multiple `<main>` elements.
 - `<section>` without heading (anonymous region).
 - `<header>`/`<footer>` inside every card (over-nesting).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <header><p>Site title</p></header>
@@ -1681,9 +1719,7 @@ requestAnimationFrame(animate);
 <footer><p>&copy; 2025</p></footer>
 ```
 
-</details>
-
-**Source:** [MDN — Landmarks](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/landmark_role)
+**Sources:** [MDN — Landmarks](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/landmark_role)
 
 </details>
 
@@ -1692,7 +1728,9 @@ requestAnimationFrame(animate);
 
 ### Heading hierarchy
 
-**Definition:** Headings (`h1`–`h6`) create a logical document outline. Use one `<h1>` per page and do not skip levels.
+**Definition:**
+
+Headings (`h1`–`h6`) create a logical document outline. Use one `<h1>` per page and do not skip levels.
 
 | Rule | Reason |
 |------|--------|
@@ -1712,17 +1750,17 @@ requestAnimationFrame(animate);
 | One `h1` | Clear page topic |
 | No skipped levels | Predictable SR outline |
 
-**Cases:** Article page · settings page with sections · modal with its own `h2`.
+**When to use:**
 
-**Common pitfalls:**
+Article page · settings page with sections · modal with its own `h2`.
+
+#### Common pitfalls
 
 - Choosing heading level for font size (use CSS).
 - Empty sections with headings only.
 - `h1` in every component on SPA pages.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <h1>Product catalog</h1>
@@ -1730,9 +1768,7 @@ requestAnimationFrame(animate);
     <h3>Phones</h3>
 ```
 
-</details>
-
-**Source:** [MDN — Headings](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
+**Sources:** [MDN — Headings](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
 
 </details>
 
@@ -1741,7 +1777,9 @@ requestAnimationFrame(animate);
 
 ### Figure and navigation patterns
 
-**Definition:** The `<figure>` element groups self-contained content with an optional `<figcaption>`. `<nav>` wraps navigation link lists.
+**Definition:**
+
+The `<figure>` element groups self-contained content with an optional `<figcaption>`. `<nav>` wraps navigation link lists.
 
 | Element | Use |
 |---------|-----|
@@ -1760,17 +1798,17 @@ requestAnimationFrame(animate);
 | `<figure>` | Self-contained media + caption |
 | `<nav>` | Link groups for navigation |
 
-**Cases:** Charts with captions · image galleries · footer vs main nav.
+**When to use:**
 
-**Common pitfalls:**
+Charts with captions · image galleries · footer vs main nav.
+
+#### Common pitfalls
 
 - `<nav>` around every link group (overuse).
 - Figcaption missing for informative images in figure.
-- Navigation built from `<div onclick>`. 
-**Example:**
+- Navigation built from `<div onclick>`.
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <figure>
@@ -1785,9 +1823,7 @@ requestAnimationFrame(animate);
 </nav>
 ```
 
-</details>
-
-**Source:** [MDN — figure](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figure)
+**Sources:** [MDN — figure](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figure)
 
 </details>
 
@@ -1796,7 +1832,9 @@ requestAnimationFrame(animate);
 
 ### Text semantics
 
-**Definition:** Phrasing elements convey meaning for text — emphasis, abbreviations, quotations, code, and dates.
+**Definition:**
+
+Phrasing elements convey meaning for text — emphasis, abbreviations, quotations, code, and dates.
 
 | Element | Meaning |
 |---------|---------|
@@ -1818,17 +1856,17 @@ requestAnimationFrame(animate);
 | `<em>` | Stress emphasis |
 | `<time datetime>` | Machine-readable date |
 
-**Cases:** Warnings (`strong`) · emphasized phrase (`em`) · publish dates (`time`).
+**When to use:**
 
-**Common pitfalls:**
+Warnings (`strong`) · emphasized phrase (`em`) · publish dates (`time`).
+
+#### Common pitfalls
 
 - Using headings for bold text.
 - `abbr` without `title` (still OK if expanded in text).
 - `code` for non-code bold styling.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <p><strong>Warning:</strong> <em>Do not</em> skip heading levels.</p>
@@ -1836,9 +1874,7 @@ requestAnimationFrame(animate);
 <time datetime="2025-07-02">July 2, 2025</time>
 ```
 
-</details>
-
-**Source:** [MDN — strong](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/strong)
+**Sources:** [MDN — strong](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/strong)
 
 </details>
 
@@ -1847,7 +1883,9 @@ requestAnimationFrame(animate);
 
 ### details and summary (native disclosure)
 
-**Definition:** The `<details>` and `<summary>` elements provide native expand/collapse UI without JavaScript.
+**Definition:**
+
+The `<details>` and `<summary>` elements provide native expand/collapse UI without JavaScript.
 
 | Element | Role |
 |---------|------|
@@ -1865,28 +1903,29 @@ requestAnimationFrame(animate);
 | `<details>` | Expand/collapse container |
 | `<summary>` | Toggle label |
 
-**Cases:** FAQ accordions · optional form sections · help panels.
+**When to use:**
 
-**Common pitfalls:**
+FAQ accordions · optional form sections · help panels.
+
+#### Common pitfalls
 
 - Nesting interactive elements inside `<summary>`.
 - Using for primary navigation (use `<nav>`).
 - Hiding critical content collapsed by default without hint.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <details>
   <summary>Shipping info</summary>
   <p>Free shipping on orders over $50.</p>
-</details>
 ```
 
 </details>
 
-**Source:** [MDN — details](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details)
+**Sources:**
+
+[MDN — details](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details)
 
 </details>
 
@@ -1895,7 +1934,9 @@ requestAnimationFrame(animate);
 
 ### Lists
 
-**Definition:** HTML provides three list types for unordered, ordered, and definition-style content.
+**Definition:**
+
+HTML provides three list types for unordered, ordered, and definition-style content.
 
 | Element | Type |
 |---------|------|
@@ -1915,17 +1956,17 @@ requestAnimationFrame(animate);
 | `<ol>` | Ordered |
 | `<dl>` | Term/definition |
 
-**Cases:** Nav menus (`ul` + `li` + `a`) · step instructions (`ol`) · glossaries (`dl`).
+**When to use:**
 
-**Common pitfalls:**
+Nav menus (`ul` + `li` + `a`) · step instructions (`ol`) · glossaries (`dl`).
+
+#### Common pitfalls
 
 - `<div>` bullets instead of list markup.
 - Empty `<li>` for spacing.
 - Using tables for non-tabular lists.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <ul><li>Item one</li><li>Item two</li></ul>
@@ -1933,9 +1974,7 @@ requestAnimationFrame(animate);
 <dl><dt>HTML</dt><dd>Hypertext Markup Language</dd></dl>
 ```
 
-</details>
-
-**Source:** [MDN — Lists](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul)
+**Sources:** [MDN — Lists](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul)
 
 </details>
 
@@ -1950,7 +1989,9 @@ requestAnimationFrame(animate);
 
 ### Block vs inline elements
 
-**Definition:** Block-level elements stack vertically and accept full box model sizing. Inline elements flow with text and typically contain only phrasing content.
+**Definition:**
+
+Block-level elements stack vertically and accept full box model sizing. Inline elements flow with text and typically contain only phrasing content.
 
 | Type | Behavior | Examples |
 |------|----------|----------|
@@ -1968,26 +2009,24 @@ requestAnimationFrame(animate);
 | Block | Stacks vertically | `div`, `p`, `section` |
 | Inline | Flows with text | `span`, `a`, `em` |
 
-**Cases:** Paragraphs (`p`) · inline emphasis (`span`, `a`) · `display` CSS can change presentation.
+**When to use:**
 
-**Common pitfalls:**
+Paragraphs (`p`) · inline emphasis (`span`, `a`) · `display` CSS can change presentation.
+
+#### Common pitfalls
 
 - Block elements inside `p` (auto-closes `p`).
 - Interactive block-in-inline invalid nesting.
 - Assuming `display` changes HTML category.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <div><p>Block paragraph</p></div>
 <p>Inline <span>wrapper</span> inside text.</p>
 ```
 
-</details>
-
-**Source:** [MDN — Block-level elements](https://developer.mozilla.org/en-US/docs/Glossary/Block-level_content)
+**Sources:** [MDN — Block-level elements](https://developer.mozilla.org/en-US/docs/Glossary/Block-level_content)
 
 </details>
 
@@ -1996,7 +2035,9 @@ requestAnimationFrame(animate);
 
 ### Links (anchor element)
 
-**Definition:** The `<a>` element creates hyperlinks for navigation. Use `<button>` for in-page actions, not links.
+**Definition:**
+
+The `<a>` element creates hyperlinks for navigation. Use `<button>` for in-page actions, not links.
 
 | Attribute | Purpose |
 |-----------|---------|
@@ -2018,26 +2059,24 @@ requestAnimationFrame(animate);
 | `rel` | `noopener` for `_blank` |
 | `download` | Save as file |
 
-**Cases:** Internal routes · external docs · skip links (`href="#main"`).
+**When to use:**
 
-**Common pitfalls:**
+Internal routes · external docs · skip links (`href="#main"`).
+
+#### Common pitfalls
 
 - `<a>` without `href` (not keyboard focusable).
 - `javascript:void(0)` hrefs.
 - Using `<a>` for buttons (use `<button>`).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <a href="/about" target="_blank" rel="noopener noreferrer">About</a>
 <a href="mailto:hi@example.com">Email</a>
 ```
 
-</details>
-
-**Source:** [MDN — a](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) · [URI, URL & URN](./6_web_api.md#uri-url--urn)
+**Sources:** [MDN — a](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) · [URI, URL & URN](./6_web_api.md#uri-url--urn)
 
 </details>
 
@@ -2046,7 +2085,9 @@ requestAnimationFrame(animate);
 
 ### Tables
 
-**Definition:** Tables present tabular data with header and body row groups. Use `scope` on `<th>` for accessibility.
+**Definition:**
+
+Tables present tabular data with header and body row groups. Use `scope` on `<th>` for accessibility.
 
 | Element | Role |
 |---------|------|
@@ -2067,17 +2108,17 @@ requestAnimationFrame(animate);
 | `<th scope>` | Header cell |
 | `<td>` | Data cell |
 
-**Cases:** Financial reports · comparison matrices · data grids (consider ARIA for complex).
+**When to use:**
 
-**Common pitfalls:**
+Financial reports · comparison matrices · data grids (consider ARIA for complex).
+
+#### Common pitfalls
 
 - Layout tables (use CSS Grid/Flex).
 - Missing headers on data tables.
 - `th` without `scope` in simple tables (still better with scope).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <table>
@@ -2087,9 +2128,7 @@ requestAnimationFrame(animate);
 </table>
 ```
 
-</details>
-
-**Source:** [MDN — table](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table)
+**Sources:** [MDN — table](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table)
 
 </details>
 
@@ -2098,7 +2137,9 @@ requestAnimationFrame(animate);
 
 ### iframe and embed security
 
-**Definition:** The `<iframe>` embeds another document. Restrict capabilities with `sandbox`, set `title` for accessibility, and control referrer with `referrerpolicy`.
+**Definition:**
+
+The `<iframe>` embeds another document. Restrict capabilities with `sandbox`, set `title` for accessibility, and control referrer with `referrerpolicy`.
 
 | Attribute | Purpose |
 |-----------|---------|
@@ -2118,17 +2159,17 @@ requestAnimationFrame(animate);
 | `referrerpolicy` | Referer control |
 | `title` | Accessible name |
 
-**Cases:** Payment widgets · video embeds · isolated third-party content.
+**When to use:**
 
-**Common pitfalls:**
+Payment widgets · video embeds · isolated third-party content.
+
+#### Common pitfalls
 
 - Missing `sandbox` on untrusted embeds.
 - `allow-scripts allow-same-origin` together negates isolation.
 - No `title` (SR users hear "frame" only).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <iframe
@@ -2139,9 +2180,7 @@ requestAnimationFrame(animate);
 ></iframe>
 ```
 
-</details>
-
-**Source:** [MDN — iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe)
+**Sources:** [MDN — iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe)
 
 </details>
 
@@ -2150,7 +2189,9 @@ requestAnimationFrame(animate);
 
 ### Miscellaneous elements
 
-**Definition:** HTML includes specialized elements for suggestions, progress, output, and no-JS fallbacks.
+**Definition:**
+
+HTML includes specialized elements for suggestions, progress, output, and no-JS fallbacks.
 
 | Element | Purpose |
 |---------|---------|
@@ -2172,17 +2213,17 @@ requestAnimationFrame(animate);
 | `<progress>` | Completion indicator |
 | `<noscript>` | No-JS fallback |
 
-**Cases:** Autocomplete suggestions · upload progress · critical content fallback.
+**When to use:**
 
-**Common pitfalls:**
+Autocomplete suggestions · upload progress · critical content fallback.
+
+#### Common pitfalls
 
 - Confusing `<meter>` with `<progress>`.
 - Relying on `<noscript>` for essential functionality only.
 - `datalist` as sole validation (not enforced).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <input list="browsers" name="browser" />
@@ -2193,9 +2234,7 @@ requestAnimationFrame(animate);
 <noscript><p>Enable JavaScript for full experience.</p></noscript>
 ```
 
-</details>
-
-**Source:** [MDN — datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist)
+**Sources:** [MDN — datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist)
 
 </details>
 
@@ -2210,7 +2249,9 @@ requestAnimationFrame(animate);
 
 ### Form structure
 
-**Definition:** A form wraps controls that collect user input and submit data to a server. Every submitting control needs a `name` attribute.
+**Definition:**
+
+A form wraps controls that collect user input and submit data to a server. Every submitting control needs a `name` attribute.
 
 | Element | Role |
 |---------|------|
@@ -2232,19 +2273,17 @@ requestAnimationFrame(animate);
 | `<label for>` | Accessible name |
 | `<button type="submit">` | Submit |
 
-**Cases:** Login · multi-step wizard · search (`method="get"`).
+**When to use:**
 
-**Common pitfalls:**
+Login · multi-step wizard · search (`method="get"`).
+
+#### Common pitfalls
 
 - Inputs without `name` (not submitted).
 - Placeholder-only labels.
 - Nested forms (invalid).
-**Notes:** FormData and JS submission → [3_js_browser.md](./3_js_browser.md).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <form action="/api/login" method="post" novalidate>
@@ -2259,9 +2298,9 @@ requestAnimationFrame(animate);
 </form>
 ```
 
-</details>
+**Thoughts:** FormData and JS submission → [3_js_browser.md](./3_js_browser.md).
 
-**Source:** [MDN — Forms](https://developer.mozilla.org/en-US/docs/Learn/Forms)
+**Sources:** [MDN — Forms](https://developer.mozilla.org/en-US/docs/Learn/Forms)
 
 </details>
 
@@ -2285,23 +2324,24 @@ requestAnimationFrame(animate);
 | `checkbox`, `radio` | Boolean / single choice |
 | `date`, `file` | Date picker / file upload |
 
-**Cases:** Email signup · quantity stepper · file upload with `accept`.
+**When to use:**
 
-| Pros | Cons |
-|------|------|
-| Native validation and mobile keyboards | Limited styling vs custom widgets |
-| Accessible by default | `type="number"` quirks for some formats |
+Email signup · quantity stepper · file upload with `accept`.
 
-**Common pitfalls:**
+#### Common pitfalls
 
 - `type="number"` for credit cards (use `text` + `inputmode`).
 - Missing `name` on inputs.
 - `placeholder` as only label.
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| Native validation and mobile keyboards | Limited styling vs custom widgets |
+| Accessible by default | `type="number"` quirks for some formats |
+
+**Examples:**
 
 ```html
 <input type="email" name="email" required />
@@ -2309,9 +2349,7 @@ requestAnimationFrame(animate);
 <input type="file" name="avatar" accept="image/png,image/jpeg" />
 ```
 
-</details>
-
-**Source:** [MDN — input types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
+**Sources:** [MDN — input types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
 
 </details>
 
@@ -2334,17 +2372,24 @@ requestAnimationFrame(animate);
 | `<textarea>` | `name`, `rows`, `maxlength` |
 | `<button>` | `type`, `formaction` |
 
-**Cases:** Country picker · comment field · cancel button (`type="button"`) alongside submit.
+**When to use:**
 
-| Pros | Cons |
+Country picker · comment field · cancel button (`type="button"`) alongside submit.
+
+#### Common pitfalls
+
+- `<button>` without `type` accidentally submits parent form.
+- Putting textarea content in `value` attribute (ignored).
+- Empty placeholder option without accessible label on required `<select>`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Native keyboard/accessibility | Limited styling vs custom dropdowns |
 | No JS required for basic submit | `<button>` defaults to submit in forms |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <label for="country">Country</label>
@@ -2360,15 +2405,7 @@ requestAnimationFrame(animate);
 <button type="button">Cancel</button>
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- `<button>` without `type` accidentally submits parent form.
-- Putting textarea content in `value` attribute (ignored).
-- Empty placeholder option without accessible label on required `<select>`.
-
-**Source:** [MDN — select](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) · [textarea](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) · [button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button)
+**Sources:** [MDN — select](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) · [textarea](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) · [button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button)
 
 </details>
 
@@ -2377,7 +2414,9 @@ requestAnimationFrame(animate);
 
 ### Constraint Validation API
 
-**Definition:** HTML5 provides built-in client-side validation via attributes and the Constraint Validation API in JavaScript.
+**Definition:**
+
+HTML5 provides built-in client-side validation via attributes and the Constraint Validation API in JavaScript.
 
 | Attribute / API | Behavior |
 |-----------------|----------|
@@ -2398,27 +2437,25 @@ requestAnimationFrame(animate);
 | `setCustomValidity` | Custom message |
 | `reportValidity` | Show native UI |
 
-**Cases:** Client-side format checks · custom async username check · `novalidate` + JS-only validation.
+**When to use:**
 
-**Common pitfalls:**
+Client-side format checks · custom async username check · `novalidate` + JS-only validation.
+
+#### Common pitfalls
 
 - Client validation only (must re-validate server-side).
 - `setCustomValidity('')` to clear — empty string means valid.
 - `novalidate` forgotten when relying on custom UI.
-**Notes:** Async validation with JS → [3_js_browser.md](./3_js_browser.md).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <input type="text" name="code" pattern="[A-Z]{2}-\d{4}" title="Format: AB-1234" required />
 ```
 
-</details>
+**Thoughts:** Async validation with JS → [3_js_browser.md](./3_js_browser.md).
 
-**Source:** [MDN — Constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation)
+**Sources:** [MDN — Constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation)
 
 </details>
 
@@ -2427,7 +2464,9 @@ requestAnimationFrame(animate);
 
 ### Form submission attributes
 
-**Definition:** Submit buttons can override form defaults with `formaction`, `formmethod`, `formenctype`, and `formnovalidate`.
+**Definition:**
+
+Submit buttons can override form defaults with `formaction`, `formmethod`, `formenctype`, and `formnovalidate`.
 
 | Attribute | Overrides |
 |-----------|-----------|
@@ -2447,17 +2486,17 @@ requestAnimationFrame(animate);
 | `formaction` | `action` URL |
 | `formnovalidate` | Skip validation |
 
-**Cases:** Save draft vs publish · delete with `formmethod="post"` · button outside form via `form="id"`.
+**When to use:**
 
-**Common pitfalls:**
+Save draft vs publish · delete with `formmethod="post"` · button outside form via `form="id"`.
+
+#### Common pitfalls
 
 - Multiple submit buttons without distinct `formaction`.
 - `GET` forms leaking sensitive data in URL.
 - Missing `enctype="multipart/form-data"` for file uploads.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <form action="/publish" method="post">
@@ -2466,9 +2505,7 @@ requestAnimationFrame(animate);
 </form>
 ```
 
-</details>
-
-**Source:** [MDN — button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button)
+**Sources:** [MDN — button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button)
 
 </details>
 
@@ -2477,7 +2514,9 @@ requestAnimationFrame(animate);
 
 ### dialog element (native modal)
 
-**Definition:** The `<dialog>` element provides a native modal with backdrop, focus trap, and top-layer rendering — no z-index fights.
+**Definition:**
+
+The `<dialog>` element provides a native modal with backdrop, focus trap, and top-layer rendering — no z-index fights.
 
 | Method | Behavior |
 |--------|----------|
@@ -2496,17 +2535,17 @@ requestAnimationFrame(animate);
 | `showModal()` | Modal + backdrop |
 | `close()` | Returns `returnValue` |
 
-**Cases:** Confirm delete · login modal · non-modal `show()` panels.
+**When to use:**
 
-**Common pitfalls:**
+Confirm delete · login modal · non-modal `show()` panels.
+
+#### Common pitfalls
 
 - Opening without focus management for custom content.
 - Stacking multiple modals without UX plan.
 - Replacing with `<div role="dialog">` when native works.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <dialog id="confirm">
@@ -2517,9 +2556,7 @@ requestAnimationFrame(animate);
 <button type="button" onclick="confirm.showModal()">Open</button>
 ```
 
-</details>
-
-**Source:** [MDN — dialog](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog)
+**Sources:** [MDN — dialog](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog)
 
 </details>
 
@@ -2528,7 +2565,9 @@ requestAnimationFrame(animate);
 
 ### Accessible form patterns
 
-**Definition:** Accessible forms associate every control with a label, group related fields, and announce errors clearly.
+**Definition:**
+
+Accessible forms associate every control with a label, group related fields, and announce errors clearly.
 
 | Pattern | Implementation |
 |---------|----------------|
@@ -2548,17 +2587,17 @@ requestAnimationFrame(animate);
 | Label | `<label for="id">` |
 | Errors | `aria-describedby` + `role="alert"` |
 
-**Cases:** Registration form · inline validation · multi-field address group.
+**When to use:**
 
-**Common pitfalls:**
+Registration form · inline validation · multi-field address group.
+
+#### Common pitfalls
 
 - `aria-label` hiding visible label redundancy incorrectly.
 - Error only by color (no text).
 - `autocomplete` off on login fields (hurts password managers).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <label for="phone">Phone</label>
@@ -2566,9 +2605,7 @@ requestAnimationFrame(animate);
 <span id="phone-hint">Include country code.</span>
 ```
 
-</details>
-
-**Source:** [MDN — Accessible forms](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation)
+**Sources:** [MDN — Accessible forms](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation)
 
 </details>
 
@@ -2592,17 +2629,24 @@ requestAnimationFrame(animate);
 | `street-address` | Address line |
 | `cc-number` | Payment card |
 
-**Cases:** Login forms · checkout/shipping · one-time codes (`autocomplete="one-time-code"`).
+**When to use:**
 
-| Pros | Cons |
+Login forms · checkout/shipping · one-time codes (`autocomplete="one-time-code"`).
+
+#### Common pitfalls
+
+- `autocomplete="email"` on a name field.
+- Disabling autocomplete on login (frustrates users).
+- Custom `name` attributes without matching autocomplete tokens.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Faster form completion | Wrong token mis-fills fields |
 | Password manager integration | `off` often ignored for passwords |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <input name="email" type="email" autocomplete="email" />
@@ -2610,15 +2654,7 @@ requestAnimationFrame(animate);
 <input name="otp" autocomplete="one-time-code" />
 ```
 
-</details>
-
-**Common pitfalls:**
-
-- `autocomplete="email"` on a name field.
-- Disabling autocomplete on login (frustrates users).
-- Custom `name` attributes without matching autocomplete tokens.
-
-**Source:** [MDN — autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete)
+**Sources:** [MDN — autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete)
 
 </details>
 
@@ -2633,7 +2669,9 @@ requestAnimationFrame(animate);
 
 ### img element and responsive images
 
-**Definition:** The `<img>` element embeds images. Use `alt`, explicit dimensions, `srcset`/`sizes`, and `loading` for performance and accessibility.
+**Definition:**
+
+The `<img>` element embeds images. Use `alt`, explicit dimensions, `srcset`/`sizes`, and `loading` for performance and accessibility.
 
 | Attribute | Purpose |
 |-----------|---------|
@@ -2654,17 +2692,17 @@ requestAnimationFrame(animate);
 | `srcset`/`sizes` | Responsive selection |
 | `loading="lazy"` | Defer off-screen |
 
-**Cases:** Hero LCP image · lazy below-fold · retina `srcset`.
+**When to use:**
 
-**Common pitfalls:**
+Hero LCP image · lazy below-fold · retina `srcset`.
+
+#### Common pitfalls
 
 - Missing `alt` on content images.
 - `loading="lazy"` on LCP hero.
 - No dimensions → layout shift on load.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <img
@@ -2679,9 +2717,7 @@ requestAnimationFrame(animate);
 />
 ```
 
-</details>
-
-**Source:** [MDN — Responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+**Sources:** [MDN — Responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
 
 </details>
 
@@ -2690,7 +2726,9 @@ requestAnimationFrame(animate);
 
 ### picture element
 
-**Definition:** The `<picture>` element provides art direction and modern format fallbacks (AVIF → WebP → JPEG).
+**Definition:**
+
+The `<picture>` element provides art direction and modern format fallbacks (AVIF → WebP → JPEG).
 
 | Use case | Approach |
 |----------|----------|
@@ -2708,17 +2746,17 @@ requestAnimationFrame(animate);
 | Format fallback | `<source type="image/avif">` |
 | Art direction | `<source media="(max-width: 600px)">` |
 
-**Cases:** AVIF with JPEG fallback · mobile crop vs desktop crop.
+**When to use:**
 
-**Common pitfalls:**
+AVIF with JPEG fallback · mobile crop vs desktop crop.
+
+#### Common pitfalls
 
 - Forgetting required `<img>` fallback.
 - Same `srcset` on all sources (no benefit).
 - `picture` for simple resize (use `img srcset` only).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <picture>
@@ -2728,9 +2766,7 @@ requestAnimationFrame(animate);
 </picture>
 ```
 
-</details>
-
-**Source:** [MDN — picture](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture)
+**Sources:** [MDN — picture](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture)
 
 </details>
 
@@ -2739,7 +2775,9 @@ requestAnimationFrame(animate);
 
 ### video and audio
 
-**Definition:** The `<video>` and `<audio>` elements embed media with native controls. Provide multiple formats and captions for accessibility.
+**Definition:**
+
+The `<video>` and `<audio>` elements embed media with native controls. Provide multiple formats and captions for accessibility.
 
 | Attribute | Notes |
 |-----------|-------|
@@ -2760,17 +2798,17 @@ requestAnimationFrame(animate);
 | `poster` | Video thumbnail |
 | `<track>` | Captions/subtitles |
 
-**Cases:** Product demo video · podcast player · background video (prefer CSS, muted, `playsinline`).
+**When to use:**
 
-**Common pitfalls:**
+Product demo video · podcast player · background video (prefer CSS, muted, `playsinline`).
+
+#### Common pitfalls
 
 - Autoplay with sound (blocked by browsers).
 - No captions on speech content.
 - Single format without fallback source.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <video controls preload="metadata" poster="thumb.jpg">
@@ -2780,9 +2818,7 @@ requestAnimationFrame(animate);
 </video>
 ```
 
-</details>
-
-**Source:** [MDN — video](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video)
+**Sources:** [MDN — video](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video)
 
 </details>
 
@@ -2791,7 +2827,9 @@ requestAnimationFrame(animate);
 
 ### canvas vs SVG
 
-**Definition:** `<canvas>` is a bitmap surface drawn via JavaScript. `<svg>` is vector markup in the DOM — scalable and accessible.
+**Definition:**
+
+`<canvas>` is a bitmap surface drawn via JavaScript. `<svg>` is vector markup in the DOM — scalable and accessible.
 
 | | `<canvas>` | `<svg>` |
 |---|-----------|---------|
@@ -2811,28 +2849,26 @@ requestAnimationFrame(animate);
 | Model | Bitmap | Vector DOM |
 | A11y | Needs fallback text | DOM accessible |
 
-**Cases:** Chart.js on canvas · inline icon SVG · game sprites on canvas.
+**When to use:**
 
-**Common pitfalls:**
+Chart.js on canvas · inline icon SVG · game sprites on canvas.
+
+#### Common pitfalls
 
 - Icon fonts instead of SVG (a11y, scaling).
 - Canvas charts without text alternative.
 - Huge SVGs not optimized (SVGO).
-**Notes:** Canvas drawing API → [3_js_browser.md](./3_js_browser.md). Standalone `.svg` files are XML: set `xmlns="http://www.w3.org/2000/svg"` on the outer `<svg>` or the browser will not treat the file as SVG. Inline SVG in HTML does not need `xmlns`. Namespaces: [6_web_api.md — XML](./6_web_api.md#xml).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <canvas id="chart" width="400" height="200"></canvas>
 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20v-6h4v6z"/></svg>
 ```
 
-</details>
+**Thoughts:** Canvas drawing API → [3_js_browser.md](./3_js_browser.md). Standalone `.svg` files are XML: set `xmlns="http://www.w3.org/2000/svg"` on the outer `<svg>` or the browser will not treat the file as SVG. Inline SVG in HTML does not need `xmlns`. Namespaces: [6_web_api.md — XML](./6_web_api.md#xml).
 
-**Source:** [MDN — canvas](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas)
+**Sources:** [MDN — canvas](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas)
 
 </details>
 
@@ -2847,7 +2883,9 @@ requestAnimationFrame(animate);
 
 ### async vs defer vs module
 
-**Definition:** Script loading attributes control when JavaScript downloads and executes relative to HTML parsing.
+**Definition:**
+
+Script loading attributes control when JavaScript downloads and executes relative to HTML parsing.
 
 | Attribute | Download | Execute | Order |
 |-----------|----------|---------|-------|
@@ -2869,19 +2907,17 @@ requestAnimationFrame(animate);
 | `async` | Not guaranteed | At execute time |
 | `module` | Preserved | No |
 
-**Cases:** App bundle → `defer` · analytics → `async` · ES app → `module`.
+**When to use:**
 
-**Common pitfalls:**
+App bundle → `defer` · analytics → `async` · ES app → `module`.
+
+#### Common pitfalls
 
 - Two `async` scripts with dependencies.
 - Module scripts need CORS on cross-origin `src`.
 - Inline script assuming deferred external already ran.
-**Notes:** Full script loading guide → [3_js_browser.md](./3_js_browser.md).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <script src="app.js" defer></script>
@@ -2889,9 +2925,9 @@ requestAnimationFrame(animate);
 <script type="module" src="app.mjs"></script>
 ```
 
-</details>
+**Thoughts:** Full script loading guide → [3_js_browser.md](./3_js_browser.md).
 
-**Source:** [MDN — Script loading](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
+**Sources:** [MDN — Script loading](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
 
 </details>
 
@@ -2900,7 +2936,9 @@ requestAnimationFrame(animate);
 
 ### Page load optimization (HTML-level)
 
-**Definition:** HTML-level optimizations reduce transfer size, prevent layout shift, and avoid parser-blocking resources.
+**Definition:**
+
+HTML-level optimizations reduce transfer size, prevent layout shift, and avoid parser-blocking resources.
 
 | Technique | Benefit |
 |-----------|---------|
@@ -2921,17 +2959,17 @@ requestAnimationFrame(animate);
 | `defer` scripts | Non-blocking JS |
 | Resource hints | Faster critical fetch |
 
-**Cases:** Landing page LCP · blog with many images · third-party script budgeting.
+**When to use:**
 
-**Common pitfalls:**
+Landing page LCP · blog with many images · third-party script budgeting.
+
+#### Common pitfalls
 
 - Preloading too many assets.
 - Render-blocking CSS at bottom.
 - Third-party scripts without `async`/`defer`.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <link rel="preconnect" href="https://cdn.example.com" />
@@ -2939,9 +2977,7 @@ requestAnimationFrame(animate);
 <script src="/app.js" defer></script>
 ```
 
-</details>
-
-**Source:** [web.dev — Performance](https://web.dev/explore/performance)
+**Sources:** [web.dev — Performance](https://web.dev/explore/performance)
 
 </details>
 
@@ -2950,7 +2986,9 @@ requestAnimationFrame(animate);
 
 ### Core Web Vitals — HTML developer impact
 
-**Definition:** Core Web Vitals measure real-user experience. HTML choices directly affect LCP, INP, and CLS.
+**Definition:**
+
+Core Web Vitals measure real-user experience. HTML choices directly affect LCP, INP, and CLS.
 
 | Metric | What it measures | HTML levers |
 |--------|------------------|-------------|
@@ -2967,31 +3005,28 @@ requestAnimationFrame(animate);
 - **FCP** — first content paint (text/image/SVG/canvas); supporting vital, not ranking. Full notes: [6_web_api.md](./6_web_api.md#first-contentful-paint-fcp).
 - HTML levers: dimensions, `fetchpriority`, script loading, semantic buttons.
 
-**Cases:** Optimize hero for LCP · reserve ad/embed space for CLS · use `<button>` for INP.
+**When to use:**
 
-**Common pitfalls:**
+Optimize hero for LCP · reserve ad/embed space for CLS · use `<button>` for INP.
+
+#### Common pitfalls
 
 - Lazy-loading LCP image.
 - Injecting content above existing without reserved space.
 - `<div onclick>` instead of `<button>`.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <link rel="preload" as="image" href="/hero.webp" fetchpriority="high" />
 <img src="/hero.webp" alt="Hero" width="1200" height="630" fetchpriority="high" />
 ```
 
-</details>
-
-**Key idea:** Core Web Vitals are **LCP, INP, CLS**. TTFB and FCP explain a slow first paint / LCP; they are not Core Vitals.
+**Thoughts:** Core Web Vitals are **LCP, INP, CLS**. TTFB and FCP explain a slow first paint / LCP; they are not Core Vitals.
 
 **See also:** Measure / lab vs field / RUM → [6_web_api.md — Core Web Vitals](./6_web_api.md#core-web-vitals). LCP sub-parts → [6_web_api.md — LCP](./6_web_api.md#lcp-largest-contentful-paint). INP → [6_web_api.md](./6_web_api.md#inp-interaction-to-next-paint). TTFB → [6_web_api.md](./6_web_api.md#ttfb-time-to-first-byte). FCP → [6_web_api.md](./6_web_api.md#first-contentful-paint-fcp). Next.js levers → [4_nextjs.md](./4_nextjs.md#core-web-vitals-on-vercel).
 
-**Source:** [web.dev — Vitals](https://web.dev/articles/vitals)
+**Sources:** [web.dev — Vitals](https://web.dev/articles/vitals)
 
 </details>
 
@@ -3010,36 +3045,11 @@ requestAnimationFrame(animate);
 - **Expected** shifts are excluded: discrete input (click/tap) has a **500ms** grace (`hadRecentInput`). Continuous gestures (scroll, pinch) do **not** get that exclusion.
 - Lab (Lighthouse) ≠ field (CrUX). Debug: DevTools **Performance → Layout Shifts**. Measurement / RUM: [6_web_api.md — Core Web Vitals](./6_web_api.md#core-web-vitals).
 
-**Causes:**
-
 - Images/video without `width`/`height` (or CSS `aspect-ratio`) — laid out as empty, then neighbors jump when the file arrives.
 - Ads, widgets, iframes with unknown height, especially async.
 - Inserts **above** already-visible content: cookie banners, recommendation rails, error toasts at render. Same-size insert near the **top** of the viewport scores worse than one near the bottom.
 - Web fonts: fallback metrics ≠ custom metrics → reflow. **FOIT** (text hidden until the font loads) vs **FOUT** (fallback text, then swap). CSS: [Font loading](./2_css.md#font-loading).
 - Animating `top` / `left` / `margin` / `width` instead of `transform` — layout recalc can move siblings. CSS: [transform](./2_css.md#transform).
-
-**Cases:** Late media, third-party embeds, consent UI, infinite scroll, custom fonts.
-
-| + | − |
-| --- | --- |
-| Stable tap targets, fewer misclicks | Cookie/ad slots must exist before first paint |
-| Reserving space is cheaper than chasing a bad field score | Overlay vs in-flow: overlays avoid CLS but can hide LCP/content |
-
-**Example — reserve image space (intrinsic ratio + fluid CSS):**
-
-```html
-<img src="cat.jpg" alt="Cat" width="800" height="600" />
-<style>
-  img {
-    height: auto;
-    width: 100%;
-  }
-</style>
-```
-
-`srcset` / `<picture>`: keep the **same aspect ratio** across candidates; set `width`/`height` on `<img>` (and on `<source>` in modern browsers). Next.js `<Image>` requires `width`+`height` or `fill`; static import fills dimensions. Framework notes: [4_nextjs.md](./4_nextjs.md#core-web-vitals-on-vercel).
-
-**Fonts:**
 
 - Always a generic fallback: `"Google Sans", sans-serif` — never a lone custom family (browser-default metrics diverge more).
 - Match fallback to the webfont with `@font-face` **`size-adjust`**, `ascent-override`, `descent-override`, `line-gap-override`.
@@ -3060,18 +3070,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-**Ads, embeds, consent, late content:**
-
 - Container `min-height` or `aspect-ratio` for the **likely** slot; media queries for breakpoint sizes. `<iframe width height>` when known.
 - Cookie banners: reserve the slot (or overlay). On mobile they can also become the **LCP** element. `preconnect` / `dns-prefetch` if third-party.
 - Do not inject above the viewport without a user gesture. Prefer below-the-fold, overlay, or a fixed-size slot.
 - Infinite feed: swap inside a **fixed-size** carousel; prefetch **before** the user reaches the end (500ms post-interaction exclusion); or **“Load more”** so the change is expected.
 
-**Motion:** animate `transform` (`translate` / `scale` / `rotate`) and `opacity`. Those run after layout.
+animate `transform` (`translate` / `scale` / `rotate`) and `opacity`. Those run after layout.
 
-**bfcache:** back/forward cache restores the whole page instantly; LCP/FCP/CLS on that navigation are often ~0. web.dev: ~**10%** of desktop and ~**20%** of mobile navigations are back/forward. Common blockers: `unload` (use `pagehide`) and `Cache-Control: no-store`. DevTools → Application → Back/forward cache → Test. [11_vsc_browser.md](./11_vsc_browser.md#devtools--core-web-vitals).
+back/forward cache restores the whole page instantly; LCP/FCP/CLS on that navigation are often ~0. web.dev: ~**10%** of desktop and ~**20%** of mobile navigations are back/forward. Common blockers: `unload` (use `pagehide`) and `Cache-Control: no-store`. DevTools → Application → Back/forward cache → Test. [11_vsc_browser.md](./11_vsc_browser.md#devtools--core-web-vitals).
 
-**Common pitfalls:**
+**When to use:**
+
+Late media, third-party embeds, consent UI, infinite scroll, custom fonts.
+
+#### Common pitfalls
 
 - Treating CLS as a sum of all shifts (it is the **max session window**).
 - Counting shifts after a click as unexpected (500ms exclusion).
@@ -3079,9 +3091,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 - `font-family` without a generic fallback; `font-display: block` FOIT.
 - Auto-appending infinite-scroll items in view without reserved space.
 
-**Key idea:** Reserve space **before** late content arrives; do not shove new boxes into the current viewport unless the user just asked for them.
+**Pluses and minuses:**
 
-**Source:** [web.dev — CLS](https://web.dev/articles/cls) · [web.dev — Optimize CLS](https://web.dev/articles/optimize-cls) · [web.dev — Vitals](https://web.dev/articles/vitals) · [Next.js fonts](https://nextjs.org/docs/app/getting-started/fonts) · [Next.js Image](https://nextjs.org/docs/app/api-reference/components/image)
+| + | − |
+| --- | --- |
+| Stable tap targets, fewer misclicks | Cookie/ad slots must exist before first paint |
+| Reserving space is cheaper than chasing a bad field score | Overlay vs in-flow: overlays avoid CLS but can hide LCP/content |
+
+**Examples:**
+
+```html
+<img src="cat.jpg" alt="Cat" width="800" height="600" />
+<style>
+  img {
+    height: auto;
+    width: 100%;
+  }
+</style>
+```
+
+`srcset` / `<picture>`: keep the **same aspect ratio** across candidates; set `width`/`height` on `<img>` (and on `<source>` in modern browsers). Next.js `<Image>` requires `width`+`height` or `fill`; static import fills dimensions. Framework notes: [4_nextjs.md](./4_nextjs.md#core-web-vitals-on-vercel).
+
+**Thoughts:** Reserve space **before** late content arrives; do not shove new boxes into the current viewport unless the user just asked for them.
+
+**Sources:** [web.dev — CLS](https://web.dev/articles/cls) · [web.dev — Optimize CLS](https://web.dev/articles/optimize-cls) · [web.dev — Vitals](https://web.dev/articles/vitals) · [Next.js fonts](https://nextjs.org/docs/app/getting-started/fonts) · [Next.js Image](https://nextjs.org/docs/app/api-reference/components/image)
 
 </details>
 
@@ -3090,7 +3123,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ### Flash of Unstyled Content (FOUC)
 
-**Definition:** FOUC occurs when HTML renders before CSS is applied. Keep critical CSS in `<head>` — render-blocking CSS is intentional.
+**Definition:**
+
+FOUC occurs when HTML renders before CSS is applied. Keep critical CSS in `<head>` — render-blocking CSS is intentional.
 
 | Strategy | Effect |
 |----------|--------|
@@ -3109,19 +3144,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 | CSS in `<head>` | Styles before first paint |
 | Inline critical CSS | Fast above-fold |
 
-**Cases:** Slow CSS CDN · web fonts · CSS loaded via JS (anti-pattern).
+**When to use:**
 
-**Common pitfalls:**
+Slow CSS CDN · web fonts · CSS loaded via JS (anti-pattern).
+
+#### Common pitfalls
 
 - `@import` chains delaying CSS.
 - Hiding body with `opacity:0` until load (bad for LCP).
 - Loading styles at end of body.
-**Notes:** `font-display` and critical CSS → [2_css.md](./2_css.md).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <head>
@@ -3130,9 +3163,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 </head>
 ```
 
-</details>
+**Thoughts:** `font-display` and critical CSS → [2_css.md](./2_css.md).
 
-**Source:** [MDN — FOUC](https://developer.mozilla.org/en-US/docs/Glossary/FOUC)
+**Sources:** [MDN — FOUC](https://developer.mozilla.org/en-US/docs/Glossary/FOUC)
 
 </details>
 
@@ -3141,7 +3174,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ### Caching (historical note: ApplicationCache)
 
-**Definition:** ApplicationCache (appcache) was an HTML5 offline API — deprecated and removed. Use Service Workers and HTTP cache headers instead.
+**Definition:**
+
+ApplicationCache (appcache) was an HTML5 offline API — deprecated and removed. Use Service Workers and HTTP cache headers instead.
 
 | Approach | Status |
 |----------|--------|
@@ -3161,26 +3196,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 | Service Workers | Modern |
 | HTTP cache | Standard |
 
-**Cases:** Static asset caching (HTTP headers) · offline SPA (Service Worker).
+**When to use:**
 
-**Common pitfalls:**
+Static asset caching (HTTP headers) · offline SPA (Service Worker).
+
+#### Common pitfalls
 
 - Copying appcache examples from old tutorials.
 - No cache busting on deployed HTML.
 - Confusing browser cache with CDN edge cache.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!-- Modern: link manifest for PWA, HTTP headers for caching -->
 <link rel="manifest" href="/manifest.webmanifest" />
 ```
 
-</details>
-
-**Source:** [MDN — HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching)
+**Sources:** [MDN — HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching)
 
 </details>
 
@@ -3197,7 +3230,9 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 
 ### Web accessibility overview
 
-**Definition:** Web accessibility (a11y) means people with disabilities can perceive, understand, navigate, and interact with the web. Foundation: WCAG (POUR).
+**Definition:**
+
+Web accessibility (a11y) means people with disabilities can perceive, understand, navigate, and interact with the web. Foundation: WCAG (POUR).
 
 | Principle | Meaning |
 |-----------|---------|
@@ -3217,17 +3252,17 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 | Perceivable | Alt text, contrast |
 | Operable | Keyboard access |
 
-**Cases:** Public sites (legal requirements) · internal tools · component libraries.
+**When to use:**
 
-**Common pitfalls:**
+Public sites (legal requirements) · internal tools · component libraries.
+
+#### Common pitfalls
 
 - ARIA-only fixes without native HTML.
 - Color-only error states.
 - Removing focus outlines without replacement.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <html lang="en">
@@ -3238,9 +3273,7 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 </html>
 ```
 
-</details>
-
-**Source:** [MDN — Accessibility](https://developer.mozilla.org/en-US/docs/Learn/Accessibility)
+**Sources:** [MDN — Accessibility](https://developer.mozilla.org/en-US/docs/Learn/Accessibility)
 
 </details>
 
@@ -3249,7 +3282,9 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 
 ### Semantic HTML first
 
-**Definition:** Prefer native HTML elements over ARIA when possible. The first rule of ARIA: don't use ARIA if a native element exists.
+**Definition:**
+
+Prefer native HTML elements over ARIA when possible. The first rule of ARIA: don't use ARIA if a native element exists.
 
 | Need | Use | Avoid |
 |------|-----|-------|
@@ -3268,27 +3303,29 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 | Action | `<button>` | `<div onclick>` |
 | Nav | `<nav>` + `<a>` | div soup |
 
-**Cases:** Custom tabs (ARIA) vs native `<details>` · modal (`<dialog>`).
+**When to use:**
 
-**Common pitfalls:**
+Custom tabs (ARIA) vs native `<details>` · modal (`<dialog>`).
+
+#### Common pitfalls
 
 - `role="button"` on divs.
 - Redundant `role="navigation"` on `<nav>`.
 - ARIA overriding native semantics incorrectly.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <nav aria-label="Main"><a href="/">Home</a></nav>
 <button type="button">Open settings</button>
-<details><summary>More info</summary><p>Details here.</p></details>
+<details><summary>More info</summary><p>Details here.</p>
 ```
 
 </details>
 
-**Source:** [MDN — ARIA — don't overuse](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides)
+**Sources:**
+
+[MDN — ARIA — don't overuse](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides)
 
 </details>
 
@@ -3297,7 +3334,9 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 
 ### Key accessibility checklist
 
-**Definition:** A practical checklist for HTML accessibility covering semantics, contrast, labels, headings, and keyboard support.
+**Definition:**
+
+A practical checklist for HTML accessibility covering semantics, contrast, labels, headings, and keyboard support.
 
 | Check | Implementation |
 |-------|----------------|
@@ -3318,17 +3357,17 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 | Labels | `<label for>` |
 | Images | Meaningful `alt` |
 
-**Cases:** Pre-release audit · PR review checklist · VPAT documentation.
+**When to use:**
 
-**Common pitfalls:**
+Pre-release audit · PR review checklist · VPAT documentation.
+
+#### Common pitfalls
 
 - Automated tools only (miss ~30–50% of issues).
 - Skip links missing on content-heavy pages.
 - Icon buttons without accessible name.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <label for="search">Search</label>
@@ -3336,9 +3375,7 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 <img src="decorative.svg" alt="" />
 ```
 
-</details>
-
-**Source:** [WCAG Quick Reference](https://www.w3.org/WAI/WCAG21/quickref/)
+**Sources:** [WCAG Quick Reference](https://www.w3.org/WAI/WCAG21/quickref/)
 
 </details>
 
@@ -3347,7 +3384,9 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 
 ### ARIA — when and how
 
-**Definition:** ARIA (Accessible Rich Internet Applications) adds semantics when HTML alone is insufficient — tabs, live regions, expanded states.
+**Definition:**
+
+ARIA (Accessible Rich Internet Applications) adds semantics when HTML alone is insufficient — tabs, live regions, expanded states.
 
 | Pattern | ARIA |
 |---------|------|
@@ -3367,17 +3406,17 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 | Live updates | `aria-live="polite"` |
 | Described errors | `aria-describedby` |
 
-**Cases:** Tab panels · live search results · custom sliders.
+**When to use:**
 
-**Common pitfalls:**
+Tab panels · live search results · custom sliders.
+
+#### Common pitfalls
 
 - `aria-label` duplicating visible text incorrectly.
 - Missing `aria-controls` on tabs.
 - `aria-hidden="true"` on focusable elements.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <div role="tablist">
@@ -3387,9 +3426,7 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 <div aria-live="polite" id="status"></div>
 ```
 
-</details>
-
-**Source:** [MDN — ARIA](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
+**Sources:** [MDN — ARIA](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
 
 </details>
 
@@ -3398,7 +3435,9 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 
 ### Screen readers
 
-**Definition:** A screen reader converts on-screen content to speech or braille. Test with VoiceOver, NVDA, JAWS, or TalkBack.
+**Definition:**
+
+A screen reader converts on-screen content to speech or braille. Test with VoiceOver, NVDA, JAWS, or TalkBack.
 
 | Test area | What to verify |
 |-----------|----------------|
@@ -3418,17 +3457,17 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 | Headings | Logical outline |
 | Forms | Labels announced |
 
-**Cases:** Form submission flow · modal open/close · dynamic list updates.
+**When to use:**
 
-**Common pitfalls:**
+Form submission flow · modal open/close · dynamic list updates.
+
+#### Common pitfalls
 
 - `display:none` content still in DOM but not always read (varies).
 - Unlabeled icon buttons.
 - Reading order ≠ visual order (CSS reorder).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <main>
@@ -3437,9 +3476,7 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 </main>
 ```
 
-</details>
-
-**Source:** [MDN — Screen readers](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/screen_reader_support)
+**Sources:** [MDN — Screen readers](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/screen_reader_support)
 
 </details>
 
@@ -3464,18 +3501,24 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 - Why teams invest: law, ethics, reach, SEO, reputation, innovation.
 - Overlays that “fix” a11y on top of broken HTML usually fail and can add barriers. WCAG conformance is not a substitute for testing with people.
 
-| Pros | Cons |
+**When to use:**
+
+Public sites, checkout, design systems. Not: treating a11y as a last-sprint overlay.
+
+#### Common pitfalls
+
+Equating a11y with “screen readers only”; separate “blind versions” of a site (old GOST idea — WCAG 2.1+ prefers one flexible site); postponing a11y to QA.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Legal and ethical baseline; helps more users than “disabled only” | Needs time, training, and ongoing checks as the product changes |
 | Semantic HTML covers most cases | Hard to measure AT users via analytics (OS Accessibility APIs) |
 
-**Cases:** Public sites, checkout, design systems. Not: treating a11y as a last-sprint overlay.
+**Thoughts:** *Barriers are in the product; POUR + native HTML is the default, ARIA is the exception.*
 
-**Common pitfalls:** Equating a11y with “screen readers only”; separate “blind versions” of a site (old GOST idea — WCAG 2.1+ prefers one flexible site); postponing a11y to QA.
-
-**Key idea:** *Barriers are in the product; POUR + native HTML is the default, ARIA is the exception.*
-
-**Source:** [Doka — What is accessibility](https://doka.guide/a11y/a11y-overview/) · [W3C WAI](https://www.w3.org/WAI/) · [MDN — Accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
+**Sources:** [Doka — What is accessibility](https://doka.guide/a11y/a11y-overview/) · [W3C WAI](https://www.w3.org/WAI/) · [MDN — Accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
 
 </details>
 
@@ -3497,16 +3540,21 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 - Trees **differ by browser** (role names, name computation). DevTools show a **preview**, not what NVDA/VoiceOver actually speak — and they lag on live updates.
 - **AOM** (Accessibility Object Model) is experimental; there is no stable JS API to read/write the tree in production.
 
-**Cases:** Debugging “why isn’t this announced?”; custom widgets; interviews.
+**When to use:**
 
-| Pros | Cons |
+Debugging “why isn’t this announced?”; custom widgets; interviews.
+
+#### Common pitfalls
+
+Trusting DevTools only; `role="link"` on a `<span>` without keyboard/activation; assuming decorative `<div>`s always appear.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Explains AT output | DevTools ≠ real SR; engine differences |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <main>
@@ -3518,15 +3566,11 @@ Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) �
 </main>
 ```
 
-</details>
-
 Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products”; `textbox` named “Address”, described by the hint; `button` “Buy”, focusable.
 
-**Common pitfalls:** Trusting DevTools only; `role="link"` on a `<span>` without keyboard/activation; assuming decorative `<div>`s always appear.
+**Thoughts:** *AT sees a pruned semantic tree, not your CSS layout.*
 
-**Key idea:** *AT sees a pruned semantic tree, not your CSS layout.*
-
-**Source:** [MDN — Accessibility tree](https://developer.mozilla.org/en-US/docs/Glossary/Accessibility_tree) · [Doka — Accessibility tree](https://doka.guide/a11y/a11y-tree/) · [Chrome a11y DevTools](https://developer.chrome.com/docs/devtools/accessibility/reference)
+**Sources:** [MDN — Accessibility tree](https://developer.mozilla.org/en-US/docs/Glossary/Accessibility_tree) · [Doka — Accessibility tree](https://doka.guide/a11y/a11y-tree/) · [Chrome a11y DevTools](https://developer.chrome.com/docs/devtools/accessibility/reference)
 
 </details>
 
@@ -3548,16 +3592,21 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 - Description algorithm: `aria-describedby` → `aria-description` → native caption-like text → `title`.
 - Naming rules: short; visible when possible; don’t repeat the role (“Submit button”); put the verb/destination first; keep names stable across pages; update names when UI changes; translate names and ARIA strings.
 
-**Cases:** Icon buttons, inputs, tables, figures, custom widgets.
+**When to use:**
 
-| Pros | Cons |
+Icon buttons, inputs, tables, figures, custom widgets.
+
+#### Common pitfalls
+
+`placeholder` as the label; `aria-label` that disagrees with visible text (WCAG 2.5.3 Label in Name); empty `<button>`; claiming a table without `<caption>` is “decorative” — it is still a `table`; it just lacks a strong accessible name.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Native HTML names stay translatable and visible | `aria-labelledby` silently replaces visible text |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <label for="email">Email</label>
@@ -3567,13 +3616,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 <button aria-label="Close">×</button>
 ```
 
-</details>
+**Thoughts:** *Name = purpose; description = extra; ARIA name wins over HTML.*
 
-**Common pitfalls:** `placeholder` as the label; `aria-label` that disagrees with visible text (WCAG 2.5.3 Label in Name); empty `<button>`; claiming a table without `<caption>` is “decorative” — it is still a `table`; it just lacks a strong accessible name.
-
-**Key idea:** *Name = purpose; description = extra; ARIA name wins over HTML.*
-
-**Source:** [AccName](https://www.w3.org/TR/accname-1.2/) · [MDN — aria-labelledby](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-labelledby) · [Doka — Accessible name](https://doka.guide/a11y/accessible-name-and-description/)
+**Sources:** [AccName](https://www.w3.org/TR/accname-1.2/) · [MDN — aria-labelledby](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-labelledby) · [Doka — Accessible name](https://doka.guide/a11y/accessible-name-and-description/)
 
 </details>
 
@@ -3596,13 +3641,19 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 - One `<h1>` and no skipped levels is a strong authoring practice (MDN); don’t pick heading level for visual size.
 - Debug: Chrome/Firefox accessibility inspector, axe, Lighthouse, [W3C HTML checker](https://validator.w3.org/). Keyboard must be manual.
 
-**Cases:** Every page. Custom tabs/dialogs only when HTML has no equivalent — follow [ARIA APG](https://www.w3.org/WAI/ARIA/apg/).
+**When to use:**
 
-**Common pitfalls:** `placeholder` instead of `<label>` (majority of sites historically); icon-only controls without a name; heading soup.
+Every page. Custom tabs/dialogs only when HTML has no equivalent — follow [ARIA APG](https://www.w3.org/WAI/ARIA/apg/).
 
-**Key idea:** *Semantics + honest text first; ARIA last; tools don’t replace keyboard + SR.*
+#### Common pitfalls
 
-**Source:** [Doka — Accessible HTML](https://doka.guide/a11y/html/) · [ARIA APG](https://www.w3.org/WAI/ARIA/apg/) · [MDN — HTML: A good basis for accessibility](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML)
+`placeholder` instead of `<label>` (majority of sites historically); icon-only controls without a name; heading soup.
+
+**Thoughts:** *Semantics + honest text first; ARIA last; tools don’t replace keyboard + SR.*
+
+**Sources:**
+
+[Doka — Accessible HTML](https://doka.guide/a11y/html/) · [ARIA APG](https://www.w3.org/WAI/ARIA/apg/) · [MDN — HTML: A good basis for accessibility](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML)
 
 </details>
 
@@ -3623,12 +3674,15 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 - Multilingual sites: translate visible text **and** `title`, `alt`, `placeholder`, `label`, `aria-label`, `aria-placeholder`, `aria-roledescription`, `aria-valuetext`, and CSS `content` strings.
 - Alternate language URLs: `<link rel="alternate" hreflang="fr">` (SEO) and/or `<a rel="alternate" hreflang="fr">` so AT knows the target language.
 
-**Cases:** Mixed-language articles, i18n apps, Hebrew/Arabic UI. Full i18n/SEO: [Internationalization](#internationalization-i18n).
+**When to use:**
 
-**Example:**
+Mixed-language articles, i18n apps, Hebrew/Arabic UI. Full i18n/SEO: [Internationalization](#internationalization-i18n).
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+Styling language with CSS classes only; leaving `aria-label` untranslated; `hreflang` without matching `lang` on the target page.
+
+**Examples:**
 
 ```html
 <html lang="en">
@@ -3636,13 +3690,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 <p lang="he" dir="rtl">לחיים</p>
 ```
 
-</details>
+**Thoughts:** *Wrong `lang` = wrong voice; mark the page and every foreign snippet.*
 
-**Common pitfalls:** Styling language with CSS classes only; leaving `aria-label` untranslated; `hreflang` without matching `lang` on the target page.
-
-**Key idea:** *Wrong `lang` = wrong voice; mark the page and every foreign snippet.*
-
-**Source:** [MDN — lang](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang) · [Doka — Page language](https://doka.guide/a11y/language/) · [Language subtag lookup](https://r12a.github.io/app-subtags/)
+**Sources:** [MDN — lang](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang) · [Doka — Page language](https://doka.guide/a11y/language/) · [Language subtag lookup](https://r12a.github.io/app-subtags/)
 
 </details>
 
@@ -3666,12 +3716,15 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 - One visible `<label>` per control; extra names via `aria-labelledby` / `aria-label` (they **override** `<label>`). `aria-describedby` **adds** hint text — keep the label.
 - Search boxes: visually hidden label (`.visually-hidden`) **or** `aria-label` — not both plus `title`.
 
-**Cases:** Login, checkout, filters. Not: reinventing checkbox with `<div>`.
+**When to use:**
 
-**Example:**
+Login, checkout, filters. Not: reinventing checkbox with `<div>`.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+`<div for>` (invalid); color-only required markers; sound-only errors; tiny hit targets; clearing field data immediately (except sensitive financial flows).
+
+**Examples:**
 
 ```html
 <form>
@@ -3684,13 +3737,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 </form>
 ```
 
-</details>
+**Thoughts:** *Native control + visible label + described errors; ARIA only to wire hints.*
 
-**Common pitfalls:** `<div for>` (invalid); color-only required markers; sound-only errors; tiny hit targets; clearing field data immediately (except sensitive financial flows).
-
-**Key idea:** *Native control + visible label + described errors; ARIA only to wire hints.*
-
-**Source:** [MDN — How to structure a web form](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form) · [Doka — Accessible forms](https://doka.guide/a11y/forms/) · [MDN — aria-invalid](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-invalid)
+**Sources:** [MDN — How to structure a web form](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form) · [Doka — Accessible forms](https://doka.guide/a11y/forms/) · [MDN — aria-invalid](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-invalid)
 
 </details>
 
@@ -3728,12 +3777,15 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 - Decorative SVG inside a named button: `aria-hidden="true"` on the SVG so the path data is not read.
 - Don’t put `aria-hidden="true"` or `role="presentation"` on **visible, focusable** controls.
 
-**Cases:** Icon+text buttons; skip-link off-screen until focus; closed dialog (`hidden` / `inert`).
+**When to use:**
 
-**Example:**
+Icon+text buttons; skip-link off-screen until focus; closed dialog (`hidden` / `inert`).
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+`aria-hidden` on a parent of a focused button; combining hidden `<label>` + `aria-label` + `title` (triple announcement).
+
+**Examples:**
 
 ```html
 <button type="submit">
@@ -3743,13 +3795,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 <p hidden>Not shown to anyone.</p>
 ```
 
-</details>
+**Thoughts:** *`display:none`/`hidden` = nobody; `aria-hidden` = sighted only; `.sr-only` = AT only.*
 
-**Common pitfalls:** `aria-hidden` on a parent of a focused button; combining hidden `<label>` + `aria-label` + `title` (triple announcement).
-
-**Key idea:** *`display:none`/`hidden` = nobody; `aria-hidden` = sighted only; `.sr-only` = AT only.*
-
-**Source:** [MDN — aria-hidden](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-hidden) · [MDN — hidden](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) · [Doka — Hiding content](https://doka.guide/a11y/hiding-content/)
+**Sources:** [MDN — aria-hidden](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-hidden) · [MDN — hidden](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) · [Doka — Hiding content](https://doka.guide/a11y/hiding-content/)
 
 </details>
 
@@ -3771,12 +3819,15 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 - Emoji: OS names vary; wrap with `role="img"` + `aria-label` only if the name must be exact.
 - AI image description in SRs is a fallback — authors still own `alt`.
 
-**Cases:** Content photos, charts, logos, icon buttons, decorative flourishes.
+**When to use:**
 
-**Example:**
+Content photos, charts, logos, icon buttons, decorative flourishes.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+Missing `alt`; empty `alt` on informative images; repeating `figcaption` in `alt`; putting URLs/emoji in `alt`; describing a logo instead of the link target.
+
+**Examples:**
 
 ```html
 <img src="chart.png" alt="Q3 revenue rose 12%. Details after the figure." aria-describedby="chart-desc" />
@@ -3791,13 +3842,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 </svg>
 ```
 
-</details>
+**Thoughts:** *Decorative = `alt=""`; content = describe meaning; controls = name the action.*
 
-**Common pitfalls:** Missing `alt`; empty `alt` on informative images; repeating `figcaption` in `alt`; putting URLs/emoji in `alt`; describing a logo instead of the link target.
-
-**Key idea:** *Decorative = `alt=""`; content = describe meaning; controls = name the action.*
-
-**Source:** [MDN — alt](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/alt) · [WAI — Images tutorial](https://www.w3.org/WAI/tutorials/images/) · [Doka — Describing images](https://doka.guide/a11y/images/) · [MDN — SVG in HTML](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/SVG_in_HTML)
+**Sources:** [MDN — alt](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/alt) · [WAI — Images tutorial](https://www.w3.org/WAI/tutorials/images/) · [Doka — Describing images](https://doka.guide/a11y/images/) · [MDN — SVG in HTML](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/SVG_in_HTML)
 
 </details>
 
@@ -3812,7 +3859,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### SEO fundamentals for developers
 
-**Definition:** SEO improves visibility in organic search. Developers affect crawlability, indexing, structure, performance, and mobile-friendliness.
+**Definition:**
+
+SEO improves visibility in organic search. Developers affect crawlability, indexing, structure, performance, and mobile-friendliness.
 
 | Factor | HTML implementation |
 |--------|---------------------|
@@ -3832,17 +3881,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | Title | Unique per page |
 | Canonical | Duplicate content |
 
-**Cases:** Marketing pages · docs sites · SPA with SSR/prerender for indexable HTML.
+**When to use:**
 
-**Common pitfalls:**
+Marketing pages · docs sites · SPA with SSR/prerender for indexable HTML.
+
+#### Common pitfalls
 
 - Empty or duplicate `<title>` on SPA routes.
 - Blocking content behind JS with no SSR.
 - `noindex` left on production.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <head>
@@ -3852,9 +3901,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 </head>
 ```
 
-</details>
-
-**Source:** [Google Search Central](https://developers.google.com/search/docs)
+**Sources:** [Google Search Central](https://developers.google.com/search/docs)
 
 </details>
 
@@ -3863,7 +3910,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Open Graph & Twitter cards
 
-**Definition:** Open Graph and Twitter Card meta tags control how links appear when shared on social platforms.
+**Definition:**
+
+Open Graph and Twitter Card meta tags control how links appear when shared on social platforms.
 
 | Tag | Purpose |
 |-----|---------|
@@ -3883,17 +3932,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | `og:title` | Share title |
 | `og:image` | Preview image |
 
-**Cases:** Blog share cards · product pages · `summary_large_image`.
+**When to use:**
 
-**Common pitfalls:**
+Blog share cards · product pages · `summary_large_image`.
+
+#### Common pitfalls
 
 - Relative `og:image` URLs.
 - Image smaller than 1200×630 for large cards.
 - Missing `og:url` canonical.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <meta property="og:title" content="Page title" />
@@ -3902,9 +3951,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 <meta name="twitter:card" content="summary_large_image" />
 ```
 
-</details>
-
-**Source:** [ogp.me](https://ogp.me/)
+**Sources:** [ogp.me](https://ogp.me/)
 
 </details>
 
@@ -3913,7 +3960,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Structured data (JSON-LD)
 
-**Definition:** JSON-LD embeds machine-readable structured data for search rich results — articles, products, FAQs, breadcrumbs.
+**Definition:**
+
+JSON-LD embeds machine-readable structured data for search rich results — articles, products, FAQs, breadcrumbs.
 
 | Format | Notes |
 |--------|-------|
@@ -3932,17 +3981,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | JSON-LD | Preferred by Google |
 | Microdata | Attributes on HTML |
 
-**Cases:** Rich snippets · product prices · FAQ accordions in SERP.
+**When to use:**
 
-**Common pitfalls:**
+Rich snippets · product prices · FAQ accordions in SERP.
+
+#### Common pitfalls
 
 - Markup doesn't match visible content (spam penalty).
 - Invalid JSON syntax.
 - Wrong `@type` for content.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <script type="application/ld+json">
@@ -3956,9 +4005,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 </script>
 ```
 
-</details>
-
-**Source:** [schema.org](https://schema.org/) · [Google structured data](https://developers.google.com/search/docs/appearance/structured-data)
+**Sources:** [schema.org](https://schema.org/) · [Google structured data](https://developers.google.com/search/docs/appearance/structured-data)
 
 </details>
 
@@ -3967,7 +4014,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Internationalization (i18n)
 
-**Definition:** i18n makes content accessible across languages and writing directions. Set `lang` on `<html>` and use `hreflang` for regional variants.
+**Definition:**
+
+i18n makes content accessible across languages and writing directions. Set `lang` on `<html>` and use `hreflang` for regional variants.
 
 | Technique | Implementation |
 |-----------|----------------|
@@ -3986,19 +4035,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | Page lang | `<html lang>` |
 | RTL | `dir="rtl"` |
 
-**Cases:** Multi-language site · RTL layout · `lang` on inline foreign phrases.
+**When to use:**
 
-**Common pitfalls:**
+Multi-language site · RTL layout · `lang` on inline foreign phrases.
+
+#### Common pitfalls
 
 - Wrong `lang` (bad pronunciation).
 - `hreflang` without reciprocal links.
 - Hard-coded LTR margins in CSS.
-**Notes:** CSS logical properties for RTL → [2_css.md](./2_css.md).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <html lang="en">
@@ -4006,9 +4053,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 <link rel="alternate" hreflang="x-default" href="https://example.com/" />
 ```
 
-</details>
+**Thoughts:** CSS logical properties for RTL → [2_css.md](./2_css.md).
 
-**Source:** [MDN — lang](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang)
+**Sources:** [MDN — lang](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang)
 
 </details>
 
@@ -4023,7 +4070,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Web Components (all three specs)
 
-**Definition:** Web Components combine Custom Elements, Shadow DOM, and HTML Templates for reusable, encapsulated UI.
+**Definition:**
+
+Web Components combine Custom Elements, Shadow DOM, and HTML Templates for reusable, encapsulated UI.
 
 | Technology | Purpose |
 |------------|---------|
@@ -4042,19 +4091,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | Custom Elements | New tags |
 | Shadow DOM | Encapsulation |
 
-**Cases:** Design system primitives · embeddable widgets · framework-agnostic components.
+**When to use:**
 
-**Common pitfalls:**
+Design system primitives · embeddable widgets · framework-agnostic components.
+
+#### Common pitfalls
 
 - Shadow DOM breaking global form styles unexpectedly.
 - Not projecting content with slots.
 - Closed shadow roots blocking legitimate testing.
-**Notes:** Custom Elements JS API → [3_js_browser.md](./3_js_browser.md).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <template id="card-tpl">
@@ -4069,9 +4116,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 </user-card>
 ```
 
-</details>
+**Thoughts:** Custom Elements JS API → [3_js_browser.md](./3_js_browser.md).
 
-**Source:** [MDN — Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
+**Sources:** [MDN — Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
 
 </details>
 
@@ -4080,7 +4127,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Popover API
 
-**Definition:** The Popover API provides native top-layer overlays with light-dismiss and focus management via the `popover` attribute.
+**Definition:**
+
+The Popover API provides native top-layer overlays with light-dismiss and focus management via the `popover` attribute.
 
 | Value | Behavior |
 |-------|----------|
@@ -4098,17 +4147,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | `auto` | Outside click closes |
 | `manual` | JS-controlled |
 
-**Cases:** Menus · tooltips · teaching UI without z-index wars.
+**When to use:**
 
-**Common pitfalls:**
+Menus · tooltips · teaching UI without z-index wars.
+
+#### Common pitfalls
 
 - Nesting popovers without focus plan.
 - Replacing accessible menu patterns incorrectly.
 - Browser support check before production.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <button popovertarget="menu" popovertargetaction="toggle">Open</button>
@@ -4117,9 +4166,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 </div>
 ```
 
-</details>
-
-**Source:** [MDN — Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API)
+**Sources:** [MDN — Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API)
 
 </details>
 
@@ -4128,7 +4175,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### inert, hidden, contenteditable
 
-**Definition:** These global attributes control visibility, interactivity, and inline editing behavior.
+**Definition:**
+
+These global attributes control visibility, interactivity, and inline editing behavior.
 
 | Attribute | Behavior |
 |-----------|----------|
@@ -4147,17 +4196,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | `hidden` | Not displayed |
 | `inert` | No interaction |
 
-**Cases:** Modal backdrop (`inert` on main) · toggle sections (`hidden`) · rich text editor.
+**When to use:**
 
-**Common pitfalls:**
+Modal backdrop (`inert` on main) · toggle sections (`hidden`) · rich text editor.
+
+#### Common pitfalls
 
 - `aria-hidden` instead of `inert` for modal siblings (focus leak).
 - `contenteditable` without sanitization on paste.
 - `hidden` elements still in tab order if focusable children exist.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <div hidden>Not visible</div>
@@ -4165,9 +4214,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 <p contenteditable="true">Editable paragraph</p>
 ```
 
-</details>
-
-**Source:** [MDN — inert](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert)
+**Sources:** [MDN — inert](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert)
 
 </details>
 
@@ -4176,7 +4223,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Progressive enhancement vs graceful degradation
 
-**Definition:** Progressive enhancement starts with working baseline HTML and layers CSS/JS. Graceful degradation builds full experience with fallbacks.
+**Definition:**
+
+Progressive enhancement starts with working baseline HTML and layers CSS/JS. Graceful degradation builds full experience with fallbacks.
 
 | Approach | Strategy |
 |----------|----------|
@@ -4194,17 +4243,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | PE | HTML first |
 | GD | Full + fallback |
 
-**Cases:** Form works with POST · search works without JS autocomplete · `<noscript>` notice.
+**When to use:**
 
-**Common pitfalls:**
+Form works with POST · search works without JS autocomplete · `<noscript>` notice.
+
+#### Common pitfalls
 
 - Empty `<body>` until JS loads (no PE).
 - Essential actions only via JS click handlers.
 - Assuming fast JS on all devices.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <form action="/search" method="get">
@@ -4215,9 +4264,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 <!-- JS can enhance with autocomplete, no-JS still works -->
 ```
 
-</details>
-
-**Source:** [MDN — Progressive enhancement](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement)
+**Sources:** [MDN — Progressive enhancement](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement)
 
 </details>
 
@@ -4226,7 +4273,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Feature detection vs user-agent sniffing
 
-**Definition:** Feature detection checks whether a capability exists. User-agent sniffing parses browser strings — brittle and discouraged.
+**Definition:**
+
+Feature detection checks whether a capability exists. User-agent sniffing parses browser strings — brittle and discouraged.
 
 | Technique | Reliability |
 |-----------|-------------|
@@ -4244,26 +4293,24 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | Feature detection | Good |
 | UA sniffing | Poor |
 
-**Cases:** Polyfill dialog · progressive `popover` · CSS grid fallback.
+**When to use:**
 
-**Common pitfalls:**
+Polyfill dialog · progressive `popover` · CSS grid fallback.
+
+#### Common pitfalls
 
 - Blocking browsers by version string.
 - Sniffing mobile UA for responsive layout (use CSS).
 - Detecting Safari by UA for polyfills (false positives).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!-- Prefer @supports in CSS and feature checks in JS -->
 <!-- Never gate on browser name/version strings -->
 ```
 
-</details>
-
-**Source:** [MDN — Feature detection](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection)
+**Sources:** [MDN — Feature detection](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection)
 
 </details>
 
@@ -4272,7 +4319,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### HTML validation
 
-**Definition:** Validation checks HTML against the spec. Invalid HTML may render but causes accessibility, SEO, and maintenance issues.
+**Definition:**
+
+Validation checks HTML against the spec. Invalid HTML may render but causes accessibility, SEO, and maintenance issues.
 
 | Type | Checks |
 |------|--------|
@@ -4290,17 +4339,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | Syntax | Well-formed tags |
 | Logic | Heading order, unique IDs |
 
-**Cases:** CI HTML lint · pre-release audit · email HTML (stricter clients).
+**When to use:**
 
-**Common pitfalls:**
+CI HTML lint · pre-release audit · email HTML (stricter clients).
+
+#### Common pitfalls
 
 - Duplicate `id` values (invalid, breaks labels).
 - Unclosed tags relying on browser fixes.
 - Custom elements without hyphen (invalid CE name).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!DOCTYPE html>
@@ -4310,9 +4359,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 </html>
 ```
 
-</details>
-
-**Source:** [W3C Validator](https://validator.w3.org/)
+**Sources:** [W3C Validator](https://validator.w3.org/)
 
 </details>
 
@@ -4321,7 +4368,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Cross-browser compatibility
 
-**Definition:** HTML features vary by browser support. Check caniuse.com before using new APIs; use polyfills or progressive enhancement.
+**Definition:**
+
+HTML features vary by browser support. Check caniuse.com before using new APIs; use polyfills or progressive enhancement.
 
 | Tool | Purpose |
 |------|---------|
@@ -4339,17 +4388,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | caniuse.com | Support matrix |
 | PE | Baseline without new APIs |
 
-**Cases:** Native `<dialog>` with fallback · `input type="date"` varying UI.
+**When to use:**
 
-**Common pitfalls:**
+Native `<dialog>` with fallback · `input type="date"` varying UI.
+
+#### Common pitfalls
 
 - Shipping features without support matrix.
 - Polyfill without feature detect gate.
 - Testing only Chrome.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <dialog id="modal">
@@ -4357,9 +4406,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 </dialog>
 ```
 
-</details>
-
-**Source:** [caniuse.com](https://caniuse.com/)
+**Sources:** [caniuse.com](https://caniuse.com/)
 
 </details>
 
@@ -4368,7 +4415,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### HTML5 as an open web platform
 
-**Definition:** HTML5 is part of a broader platform: HTML + CSS + JavaScript + DOM APIs. Markup provides structure; behavior and presentation come from JS and CSS.
+**Definition:**
+
+HTML5 is part of a broader platform: HTML + CSS + JavaScript + DOM APIs. Markup provides structure; behavior and presentation come from JS and CSS.
 
 | Layer | Role |
 |-------|------|
@@ -4388,17 +4437,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | CSS | Presentation |
 | JS | Behavior |
 
-**Cases:** PWA (HTML+manifest+SW) · media pages · web components.
+**When to use:**
 
-**Common pitfalls:**
+PWA (HTML+manifest+SW) · media pages · web components.
+
+#### Common pitfalls
 
 - Treating HTML as obsolete in SPAs.
 - Inline styles/scripts instead of separation.
 - Ignoring semantic HTML in component frameworks.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!DOCTYPE html>
@@ -4408,9 +4457,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 </html>
 ```
 
-</details>
-
-**Source:** [WHATWG HTML Living Standard](https://html.spec.whatwg.org/)
+**Sources:** [WHATWG HTML Living Standard](https://html.spec.whatwg.org/)
 
 </details>
 
@@ -4419,7 +4466,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### ES module import maps
 
-**Definition:** Import maps let browsers resolve bare module specifiers to URLs without a bundler.
+**Definition:**
+
+Import maps let browsers resolve bare module specifiers to URLs without a bundler.
 
 | Key | Maps to |
 |-----|---------|
@@ -4437,17 +4486,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | `imports` | Bare specifier → URL |
 | `scopes` | Path-specific overrides |
 
-**Cases:** No-bundler prototypes · CDN bare imports · scoped mappings.
+**When to use:**
 
-**Common pitfalls:**
+No-bundler prototypes · CDN bare imports · scoped mappings.
+
+#### Common pitfalls
 
 - Import map after module scripts (must be first).
 - Missing CORS on mapped CDN URLs.
 - Production without fallback for unsupported browsers.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <script type="importmap">
@@ -4461,9 +4510,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 <script type="module" src="/app.mjs"></script>
 ```
 
-</details>
-
-**Source:** [MDN — import maps](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap)
+**Sources:** [MDN — import maps](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap)
 
 </details>
 
@@ -4472,7 +4519,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Web App Manifest (PWA)
 
-**Definition:** The Web App Manifest defines installable PWA metadata — name, icons, `start_url`, `display`, and theme colors.
+**Definition:**
+
+The Web App Manifest defines installable PWA metadata — name, icons, `start_url`, `display`, and theme colors.
 
 | Field | Purpose |
 |-------|---------|
@@ -4491,26 +4540,24 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | `icons` | Install icons |
 | `display` | `standalone` vs `browser` |
 
-**Cases:** Add to home screen · standalone display · themed splash.
+**When to use:**
 
-**Common pitfalls:**
+Add to home screen · standalone display · themed splash.
+
+#### Common pitfalls
 
 - Manifest not served with correct MIME type.
 - Missing 192/512 icons.
 - `start_url` not cacheable.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <link rel="manifest" href="/manifest.webmanifest" />
 <meta name="theme-color" content="#1a1a2e" />
 ```
 
-</details>
-
-**Source:** [MDN — Web app manifest](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest)
+**Sources:** [MDN — Web app manifest](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest)
 
 </details>
 
@@ -4519,7 +4566,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Obsolete elements — do not use
 
-**Definition:** Obsolete elements still parse in browsers but should not be used — replace with CSS or modern alternatives.
+**Definition:**
+
+Obsolete elements still parse in browsers but should not be used — replace with CSS or modern alternatives.
 
 | Obsolete | Replacement |
 |----------|-------------|
@@ -4539,27 +4588,25 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | `<font>` | CSS `color`/`font-family` |
 | `<center>` | CSS `text-align` |
 
-**Cases:** Migrating legacy sites · sanitizing old CMS output.
+**When to use:**
 
-**Common pitfalls:**
+Migrating legacy sites · sanitizing old CMS output.
+
+#### Common pitfalls
 
 - Copying W3Schools-era examples.
 - `u` for non-proper names (prefer CSS).
 - Table layout tags (`width` on table).
-**Notes:** CSS replacements → [2_css.md](./2_css.md).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <p class="centered">Use CSS instead of obsolete tags.</p>
 ```
 
-</details>
+**Thoughts:** CSS replacements → [2_css.md](./2_css.md).
 
-**Source:** [MDN — Obsolete features](https://developer.mozilla.org/en-US/docs/Web/HTML/Element#obsolete_and_deprecated_elements)
+**Sources:** [MDN — Obsolete features](https://developer.mozilla.org/en-US/docs/Web/HTML/Element#obsolete_and_deprecated_elements)
 
 </details>
 
@@ -4568,7 +4615,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### HTML security basics (XSS)
 
-**Definition:** HTML is the first line of defense against XSS. Escape user input, avoid inline handlers, and use CSP and SRI.
+**Definition:**
+
+HTML is the first line of defense against XSS. Escape user input, avoid inline handlers, and use CSP and SRI.
 
 | Risk | Safe practice |
 |------|---------------|
@@ -4588,28 +4637,26 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | `innerHTML` injection | `textContent` / sanitize |
 | Inline handlers | CSP + addEventListener |
 
-**Cases:** User-generated comments · CMS content · third-party widgets.
+**When to use:**
 
-**Common pitfalls:**
+User-generated comments · CMS content · third-party widgets.
+
+#### Common pitfalls
 
 - `innerHTML` with user input.
 - `target="_blank"` without `noopener`.
 - CDN scripts without SRI.
-**Notes:** DOM XSS patterns → [3_js_browser.md](./3_js_browser.md). Stored vs reflected, CSP, clickjacking → [7_special.md](./7_special.md#14-common-web-attacks) · [6_web_api.md](./6_web_api.md#security).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <a href="https://external.com" target="_blank" rel="noopener noreferrer">External</a>
 <script src="https://cdn.example.com/lib.js" integrity="sha384-..." crossorigin="anonymous"></script>
 ```
 
-</details>
+**Thoughts:** DOM XSS patterns → [3_js_browser.md](./3_js_browser.md). Stored vs reflected, CSP, clickjacking → [7_special.md](./7_special.md#14-common-web-attacks) · [6_web_api.md](./6_web_api.md#security).
 
-**Source:** [MDN — XSS](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting)
+**Sources:** [MDN — XSS](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting)
 
 </details>
 
@@ -4624,7 +4671,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Common attributes
 
-**Definition:** Attributes provide metadata and behavior on HTML elements — global attributes work on any element; others are element-specific.
+**Definition:**
+
+Attributes provide metadata and behavior on HTML elements — global attributes work on any element; others are element-specific.
 
 | Attribute | Element(s) | Purpose |
 |-----------|-----------|---------|
@@ -4644,17 +4693,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | `src` | Resource URL |
 | `name` | Form field key |
 
-**Cases:** Image `src`+`alt` · link `href` · form control `name`.
+**When to use:**
 
-**Common pitfalls:**
+Image `src`+`alt` · link `href` · form control `name`.
+
+#### Common pitfalls
 
 - `id` reused on page.
 - `class` for JS-only hooks (prefer `data-*`).
 - Missing `alt` when using `src` on img.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <img src="/logo.png" alt="Logo" class="brand" id="site-logo" />
@@ -4662,9 +4711,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 <input id="email" name="email" type="email" required />
 ```
 
-</details>
-
-**Source:** [MDN — Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes)
+**Sources:** [MDN — Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes)
 
 </details>
 
@@ -4673,7 +4720,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### class vs id
 
-**Definition:** `class` can appear on many elements for shared styling. `id` must be unique per page — used for anchors, label association, and unique targets.
+**Definition:**
+
+`class` can appear on many elements for shared styling. `id` must be unique per page — used for anchors, label association, and unique targets.
 
 | | `class` | `id` |
 |---|---------|------|
@@ -4691,17 +4740,17 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 |---|---------|------|
 | Count | Many | One per page |
 
-**Cases:** Shared card style (`class`) · skip link target (`id="main"`).
+**When to use:**
 
-**Common pitfalls:**
+Shared card style (`class`) · skip link target (`id="main"`).
+
+#### Common pitfalls
 
 - Duplicate ids (invalid).
 - Styling with ids (high specificity).
 - Auto-generated ids colliding in loops.
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <p class="intro highlight">Shared classes</p>
@@ -4709,9 +4758,7 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 <label for="email">Email</label>
 ```
 
-</details>
-
-**Source:** [MDN — id](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id)
+**Sources:** [MDN — id](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id)
 
 </details>
 
@@ -4720,7 +4767,9 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 
 ### Global attributes
 
-**Definition:** Global attributes can be used on any HTML element — `class`, `id`, `hidden`, `inert`, `tabindex`, `data-*`, and all `aria-*` attributes.
+**Definition:**
+
+Global attributes can be used on any HTML element — `class`, `id`, `hidden`, `inert`, `tabindex`, `data-*`, and all `aria-*` attributes.
 
 | Attribute | Purpose |
 |-----------|---------|
@@ -4738,25 +4787,23 @@ Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products
 | `data-*` | Custom data |
 | `aria-*` | Accessibility |
 
-**Cases:** `data-user-id` for JS · `aria-label` on icon buttons · `inert` during modal.
+**When to use:**
 
-**Common pitfalls:**
+`data-user-id` for JS · `aria-label` on icon buttons · `inert` during modal.
+
+#### Common pitfalls
 
 - `tabindex="1"` positive values (avoid).
 - `title` as primary label (unreliable).
 - Invalid `data-*` names (uppercase).
-**Example:**
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <div data-user-id="42" aria-label="User profile card" tabindex="0"></div>
 ```
 
-</details>
-
-**Source:** [MDN — Global attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes)
+**Sources:** [MDN — Global attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes)
 
 </details>
 
@@ -4825,13 +4872,13 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 | Parse | HTML → DOM; CSS → CSSOM (blocking CSS/JS delay this) |
 | Render | Render tree → layout → paint → composite on GPU |
 
-**Cases:** Cold first visit · cached DNS/TLS · SPA client navigation (History API skips full reload).
+**When to use:** Cold first visit · cached DNS/TLS · SPA client navigation (History API skips full reload).
 
-**Key idea:** *The browser does not paint until it has enough DOM and CSSOM to build a render tree; compositing on the GPU is why `transform`/`opacity` animations stay cheap.*
+**Thoughts:** *The browser does not paint until it has enough DOM and CSSOM to build a render tree; compositing on the GPU is why `transform`/`opacity` animations stay cheap.*
 
 **See also:** [What happens when you enter a URL?](#browser--rendering) (full theory)
 
-**Source:** [MDN — How the Internet works](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/How_does_the_Internet_work)
+**Sources:** [MDN — How the Internet works](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/How_does_the_Internet_work)
 
 </details>
 
@@ -4851,13 +4898,13 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 5. Root → TLD → authoritative nameserver
 6. IP returned; browser opens TCP connection
 
-**Cases:** First visit · CDN CNAME · `dns-prefetch` / `preconnect` for performance.
+**When to use:** First visit · CDN CNAME · `dns-prefetch` / `preconnect` for performance.
 
-**Key idea:** *DNS lookup adds latency on cold starts — caches and prefetch help.*
+**Thoughts:** *DNS lookup adds latency on cold starts — caches and prefetch help.*
 
 **See also:** [How DNS works](#browser--rendering) (full theory)
 
-**Source:** [MDN — DNS](https://developer.mozilla.org/en-US/docs/Glossary/DNS)
+**Sources:** [MDN — DNS](https://developer.mozilla.org/en-US/docs/Glossary/DNS)
 
 </details>
 
@@ -4875,9 +4922,9 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 - Parser consumes the HTML stream incrementally — it does not wait for the full file.
 - Parser-blocking scripts (`<script>` without `async`/`defer`) pause HTML parsing.
 
-**Cases:** Static file from CDN · SSR HTML from Node/Next.js · chunked transfer encoding.
+**When to use:** Static file from CDN · SSR HTML from Node/Next.js · chunked transfer encoding.
 
-**Key idea:** *HTML parsing starts as soon as bytes arrive — streaming reduces time-to-first-byte impact.*
+**Thoughts:** *HTML parsing starts as soon as bytes arrive — streaming reduces time-to-first-byte impact.*
 
 **See also:** [How the browser gets HTML](#browser--rendering)
 
@@ -4897,9 +4944,9 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 - DOM is **live** — JS mutations (`appendChild`, `textContent`) update the tree instantly.
 - Invalid HTML is corrected by the parser (e.g. auto-closing tags).
 
-**Cases:** `document.querySelector` · React commits minimal DOM updates · accessibility tree derived from DOM.
+**When to use:** `document.querySelector` · React commits minimal DOM updates · accessibility tree derived from DOM.
 
-**Key idea:** *DOM is structure; it does not include computed styles (that's CSSOM).*
+**Thoughts:** *DOM is structure; it does not include computed styles (that's CSSOM).*
 
 **See also:** [DOM tree construction](#browser--rendering) · [3_js_browser.md](./3_js_browser.md)
 
@@ -4919,13 +4966,13 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 - Render-blocking: CSS in `<head>` delays first render (browser waits to avoid FOUC).
 - `display: none` elements exist in DOM but are excluded from render tree.
 
-**Cases:** External stylesheet · critical CSS inlined · `@media` queries filter rules.
+**When to use:** External stylesheet · critical CSS inlined · `@media` queries filter rules.
 
-**Key idea:** *No CSSOM → no styled render tree → blank or unstyled flash.*
+**Thoughts:** *No CSSOM → no styled render tree → blank or unstyled flash.*
 
 **See also:** [What is the CSSOM?](#browser--rendering)
 
-**Source:** [MDN — CSSOM](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model)
+**Sources:** [MDN — CSSOM](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model)
 
 </details>
 
@@ -4943,13 +4990,13 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 3. Skip non-visible nodes (`display: none`, `<head>`, etc.).
 4. Output: boxes with geometry and paint info.
 
-**Cases:** Understanding why hidden elements don't affect layout but `visibility:hidden` does.
+**When to use:** Understanding why hidden elements don't affect layout but `visibility:hidden` does.
 
-**Key idea:** *Render tree = what you see, not the full DOM.*
+**Thoughts:** *Render tree = what you see, not the full DOM.*
 
 **See also:** [What is the Render Tree?](#browser--rendering)
 
-**Source:** [web.dev — Render tree](https://web.dev/articles/critical-rendering-path/constructing-the-object-model)
+**Sources:** [web.dev — Render tree](https://web.dev/articles/critical-rendering-path/constructing-the-object-model)
 
 </details>
 
@@ -4967,9 +5014,9 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 - `transform` and `opacity` typically skip layout (compositor-only).
 - Layout thrashing: interleaving reads (`offsetHeight`) and writes in a loop forces repeated reflows.
 
-**Cases:** Initial page layout · responsive resize · dynamic list injection.
+**When to use:** Initial page layout · responsive resize · dynamic list injection.
 
-**Key idea:** *Layout is expensive — batch DOM reads and writes; prefer `transform` for animations.*
+**Thoughts:** *Layout is expensive — batch DOM reads and writes; prefer `transform` for animations.*
 
 **See also:** [Layout (Reflow)](#browser--rendering) · [2_css.md](./2_css.md)
 
@@ -4988,13 +5035,13 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 - Large `box-shadow` or `border-radius` areas increase paint cost.
 - Some properties trigger repaint without layout (`color`, `background`).
 
-**Cases:** Text rendering · repainting on hover color change · `will-change` hints.
+**When to use:** Text rendering · repainting on hover color change · `will-change` hints.
 
-**Key idea:** *Paint answers "what does it look like?" after layout answers "where and how big?"*
+**Thoughts:** *Paint answers "what does it look like?" after layout answers "where and how big?"*
 
 **See also:** [Paint](#browser--rendering)
 
-**Source:** [MDN — Repaint](https://developer.mozilla.org/en-US/docs/Glossary/Repaint)
+**Sources:** [MDN — Repaint](https://developer.mozilla.org/en-US/docs/Glossary/Repaint)
 
 </details>
 
@@ -5011,13 +5058,13 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 - Compositor-only changes skip layout and often skip full repaint.
 - Over-promoting layers (`will-change` everywhere) wastes memory.
 
-**Cases:** Smooth `transform`/`opacity` animations · parallax · fixed headers.
+**When to use:** Smooth `transform`/`opacity` animations · parallax · fixed headers.
 
-**Key idea:** *Composite is the cheapest stage — animate with `transform`, not `top`/`left`.*
+**Thoughts:** *Composite is the cheapest stage — animate with `transform`, not `top`/`left`.*
 
 **See also:** [Compositing](#browser--rendering)
 
-**Source:** [MDN — Composite](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Composite)
+**Sources:** [MDN — Composite](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Composite)
 
 </details>
 
@@ -5036,7 +5083,7 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 
 **How it works:** Layout → paint → composite (simplified). Composite-only changes are fastest.
 
-**Key idea:** *Know which properties trigger which stage — critical for performance interviews.*
+**Thoughts:** *Know which properties trigger which stage — critical for performance interviews.*
 
 **See also:** [Layout vs Paint vs Compositing](#browser--rendering)
 
@@ -5062,13 +5109,13 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 8. DOMContentLoaded → load event → lazy resources
 ```
 
-**Cases:** Render-blocking CSS delays FCP · parser-blocking scripts delay DOM · images without dimensions cause CLS.
+**When to use:** Render-blocking CSS delays FCP · parser-blocking scripts delay DOM · images without dimensions cause CLS.
 
-**Key idea:** *Critical rendering path = minimum steps from HTML to first paint.*
+**Thoughts:** *Critical rendering path = minimum steps from HTML to first paint.*
 
 **See also:** [Browser rendering pipeline](#browser-rendering-pipeline) · [3_js_browser.md — Script loading](./3_js_browser.md#script-loading) · [FCP](./6_web_api.md#first-contentful-paint-fcp)
 
-**Source:** [web.dev — Critical rendering path](https://web.dev/articles/critical-rendering-path)
+**Sources:** [web.dev — Critical rendering path](https://web.dev/articles/critical-rendering-path)
 
 </details>
 
@@ -5087,13 +5134,13 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 - **`async`** — download in parallel, run as soon as ready (order not guaranteed); can still interrupt parse at execute time.
 - **Critical CSS** — inline above-the-fold rules in `<head>` so first paint does not wait on a large stylesheet; load the rest asynchronously.
 
-**Cases:** App bundle in `<head>` without `defer` · huge CSS file · webfonts without `font-display`.
+**When to use:** App bundle in `<head>` without `defer` · huge CSS file · webfonts without `font-display`.
 
-**Key idea:** *CSS blocks first paint; undefferred JS blocks HTML parse — use `defer`/`module` and keep critical CSS small.*
+**Thoughts:** *CSS blocks first paint; undefferred JS blocks HTML parse — use `defer`/`module` and keep critical CSS small.*
 
 **See also:** [async vs defer vs module](#performance--resource-loading) · [3_js_browser.md — Script loading](./3_js_browser.md#script-loading) · [2_css.md](./2_css.md) critical CSS
 
-**Source:** [web.dev — Render blocking CSS](https://web.dev/articles/critical-rendering-path/render-blocking-css) · [MDN — script](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
+**Sources:** [web.dev — Render blocking CSS](https://web.dev/articles/critical-rendering-path/render-blocking-css) · [MDN — script](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
 
 </details>
 
@@ -5106,7 +5153,7 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 
 **How it works:** Children are dirtied because their geometry often depends on the parent. Stay in normal flow so independent boxes can be sized in one pass.
 
-**Key idea:** *Dirty = mutated node + kids; resize is global and expensive.*
+**Thoughts:** *Dirty = mutated node + kids; resize is global and expensive.*
 
 **See also:** [Global vs incremental layout](#browser--rendering)
 
@@ -5125,11 +5172,11 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 - Intervals can fire between paints (jank) or **catch up** after an inactive tab (many frames at once).
 - Animate `transform`/`opacity`, not `left`/`top`/`margin`.
 
-**Key idea:** *Tell the compositor when the next frame is — do not guess 16 ms.*
+**Thoughts:** *Tell the compositor when the next frame is — do not guess 16 ms.*
 
 **See also:** [Reflow, repaint, and animation frames](#browser--rendering) · [3_js_browser.md](./3_js_browser.md#request-animation-frame)
 
-**Source:** [MDN — requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
+**Sources:** [MDN — requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
 
 </details>
 
@@ -5142,7 +5189,7 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 
 **How it works:** Parser builds DOM incrementally; styled first paint still needs CSSOM. Approaches: critical CSS, `defer`/`async`, `content-visibility: auto`, `loading="lazy"`, skeletons.
 
-**Key idea:** *First useful paint beats waiting for everything.*
+**Thoughts:** *First useful paint beats waiting for everything.*
 
 **See also:** [Progressive rendering](#browser--rendering) · [2_css.md](./2_css.md)
 
@@ -5170,7 +5217,7 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 | `defer` | No until end of parse |
 | `async` | Yes, when ready |
 
-**Cases:** App bundle (`defer`) · analytics (`async`) · ESM app (`module`).
+**When to use:** App bundle (`defer`) · analytics (`async`) · ESM app (`module`).
 
 **Common pitfalls:**
 
@@ -5190,10 +5237,7 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 
 **Modern practice:** put CSS in `<head>`; put app scripts in `<head>` with `defer` or `type="module"`. Use `async` only for independent scripts (analytics). Avoid parser-blocking scripts without attributes.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <script src="app.js" defer></script>
@@ -5201,9 +5245,7 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 <script type="module" src="app.mjs"></script>
 ```
 
-</details>
-
-**Source:** [3_js_browser.md](./3_js_browser.md) · [MDN — script](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
+**Sources:** [3_js_browser.md](./3_js_browser.md) · [MDN — script](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
 
 </details>
 
@@ -5225,7 +5267,7 @@ Parse URL → HTTP cache? → hosts / DNS caches → IP
 | `innerHTML` | High with untrusted input |
 | `textContent` | Low |
 
-**Cases:** Render template (`innerHTML` sanitized) · set user name (`textContent`) · copy visible text (`innerText`).
+**When to use:** Render template (`innerHTML` sanitized) · set user name (`textContent`) · copy visible text (`innerText`).
 
 **Common pitfalls:**
 
@@ -5249,7 +5291,7 @@ el.textContent = "<b>bold</b>";  // literal "<b>bold</b>"
 
 Never assign unsanitized user input to `innerHTML`. Prefer `textContent` for user data.
 
-**Source:** [3_js_browser.md](./3_js_browser.md) · [MDN — textContent](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
+**Sources:** [3_js_browser.md](./3_js_browser.md) · [MDN — textContent](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
 
 </details>
 
@@ -5271,7 +5313,7 @@ Never assign unsanitized user input to `innerHTML`. Prefer `textContent` for use
 | Perceivable | `alt`, contrast |
 | Operable | `<button>`, keyboard |
 
-**Cases:** Public sector compliance · ecommerce checkout · form-heavy apps.
+**When to use:** Public sector compliance · ecommerce checkout · form-heavy apps.
 
 **Common pitfalls:**
 
@@ -5297,10 +5339,7 @@ Web accessibility means people with disabilities can perceive, operate, understa
 
 **See also:** [Accessibility](#accessibility) (tree, names, forms, images).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <html lang="en">
@@ -5311,9 +5350,7 @@ Web accessibility means people with disabilities can perceive, operate, understa
 </html>
 ```
 
-</details>
-
-**Source:** [MDN — Accessibility](https://developer.mozilla.org/en-US/docs/Learn/Accessibility)
+**Sources:** [MDN — Accessibility](https://developer.mozilla.org/en-US/docs/Learn/Accessibility)
 
 </details>
 
@@ -5335,7 +5372,7 @@ Web accessibility means people with disabilities can perceive, operate, understa
 
 **Answer — images:** Meaningful vs decorative. Omit `alt` → SR may read `src`. Don’t start with “picture”. Logo in a home link → `alt="Home"`, not “logo”. Duplicate nearby text → `alt=""`. Charts → short `alt` + long description.
 
-**Source:** [Hiding content](#hiding-content-from-at-vs-visually) · [Image text alternatives](#image-text-alternatives)
+**Sources:** [Hiding content](#hiding-content-from-at-vs-visually) · [Image text alternatives](#image-text-alternatives)
 
 </details>
 
@@ -5357,7 +5394,7 @@ Web accessibility means people with disabilities can perceive, operate, understa
 | Landmarks | `<nav>`, `<main>` |
 | Controls | `<button>` not div |
 
-**Cases:** Blog layout · dashboard · marketing landing.
+**When to use:** Blog layout · dashboard · marketing landing.
 
 **Common pitfalls:**
 
@@ -5376,10 +5413,7 @@ Web accessibility means people with disabilities can perceive, operate, understa
 6. Prefer native widgets: `<details>`, `<dialog>` over div-based components
 7. One `<main>` per page
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <header><nav><a href="/">Home</a></nav></header>
@@ -5387,9 +5421,7 @@ Web accessibility means people with disabilities can perceive, operate, understa
 <footer><p>&copy; 2025</p></footer>
 ```
 
-</details>
-
-**Source:** [MDN — Semantics](https://developer.mozilla.org/en-US/docs/Glossary/Semantics)
+**Sources:** [MDN — Semantics](https://developer.mozilla.org/en-US/docs/Glossary/Semantics)
 
 </details>
 
@@ -5411,7 +5443,7 @@ Web accessibility means people with disabilities can perceive, operate, understa
 | `open` | `#shadow-root (open)` |
 | `closed` | Hidden from `element.shadowRoot` |
 
-**Cases:** Web components · design system buttons · browser built-ins (video controls).
+**When to use:** Web components · design system buttons · browser built-ins (video controls).
 
 **Common pitfalls:**
 
@@ -5433,10 +5465,7 @@ Web accessibility means people with disabilities can perceive, operate, understa
 
 Part of **Web Components** (with Custom Elements and `<template>`/`<slot>`). Enables reusable, framework-agnostic components.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <user-card>
@@ -5448,9 +5477,7 @@ Part of **Web Components** (with Custom Elements and `<template>`/`<slot>`). Ena
 </user-card>
 ```
 
-</details>
-
-**Source:** [3_js_browser.md](./3_js_browser.md) · [MDN — Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM)
+**Sources:** [3_js_browser.md](./3_js_browser.md) · [MDN — Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM)
 
 </details>
 
@@ -5472,7 +5499,7 @@ Part of **Web Components** (with Custom Elements and `<template>`/`<slot>`). Ena
 | Native in HTML | SSR/hydration complexity |
 | Encapsulation with Shadow DOM | Learning curve |
 
-**Cases:** `<user-card>` in design system · embeddable widget · gradual migration from legacy.
+**When to use:** `<user-card>` in design system · embeddable widget · gradual migration from legacy.
 
 **Common pitfalls:**
 
@@ -5497,10 +5524,7 @@ customElements.define("user-card", UserCard);
 
 Use when: repeating UI patterns, needing encapsulation (Shadow DOM), or building design-system primitives that work in React, Vue, or plain HTML.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <user-card name="Ada">
@@ -5509,9 +5533,7 @@ Use when: repeating UI patterns, needing encapsulation (Shadow DOM), or building
 </user-card>
 ```
 
-</details>
-
-**Source:** [3_js_browser.md](./3_js_browser.md) · [MDN — Custom Elements](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements)
+**Sources:** [3_js_browser.md](./3_js_browser.md) · [MDN — Custom Elements](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements)
 
 </details>
 
@@ -5533,7 +5555,7 @@ Use when: repeating UI patterns, needing encapsulation (Shadow DOM), or building
 | HTML whitespace minify | Negligible |
 | Image optimization | High |
 
-**Cases:** Minify in build pipeline (minor) · fix inline spacing with CSS not NBSP.
+**When to use:** Minify in build pipeline (minor) · fix inline spacing with CSS not NBSP.
 
 **Common pitfalls:**
 
@@ -5550,19 +5572,14 @@ Use when: repeating UI patterns, needing encapsulation (Shadow DOM), or building
 
 Focus performance effort on: image dimensions, `srcset`, render-blocking scripts, LCP image `fetchpriority`, CLS prevention.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <img src="hero.webp" alt="Hero" width="1200" height="630" fetchpriority="high" />
 <script src="/app.js" defer></script>
 ```
 
-</details>
-
-**Source:** [web.dev — Vitals](https://web.dev/articles/vitals)
+**Sources:** [web.dev — Vitals](https://web.dev/articles/vitals)
 
 </details>
 
@@ -5579,7 +5596,7 @@ Focus performance effort on: image dimensions, `srcset`, render-blocking scripts
 
 **Answer:** Visual stability metric. Reserve `width`/`height` or `aspect-ratio` for images, video, ads, iframes; do not inject banners above in-view content; match font fallback metrics (`size-adjust`); animate `transform` not `top`/`margin`. Full notes: [CLS](#cls-cumulative-layout-shift).
 
-**Source:** [web.dev — CLS](https://web.dev/articles/cls)
+**Sources:** [web.dev — CLS](https://web.dev/articles/cls)
 
 </details>
 
@@ -5601,7 +5618,7 @@ Focus performance effort on: image dimensions, `srcset`, render-blocking scripts
 | `2d` | Shapes, text, 2D charts |
 | `webgl2` | 3D, GPU compute |
 
-**Cases:** Charts (`2d`) · games (`webgl2`) · image filters (`2d`).
+**When to use:** Charts (`2d`) · games (`webgl2`) · image filters (`2d`).
 
 **Common pitfalls:**
 
@@ -5625,19 +5642,14 @@ const gl    = canvas.getContext("webgl2");
 
 `<canvas>` content is bitmap-based and requires JS to draw. `<svg>` is vector DOM markup — better for icons and accessibility.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <canvas id="chart" width="400" height="200"></canvas>
 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20v-6h4v6z"/></svg>
 ```
 
-</details>
-
-**Source:** [MDN — canvas](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas)
+**Sources:** [MDN — canvas](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas)
 
 </details>
 
@@ -5659,7 +5671,7 @@ const gl    = canvas.getContext("webgl2");
 | Inline sprite | No extra HTTP |
 | External sprite | Cacheable |
 
-**Cases:** Icon systems · multi-color icons · external CDN sprite.
+**When to use:** Icon systems · multi-color icons · external CDN sprite.
 
 **Common pitfalls:**
 
@@ -5684,7 +5696,7 @@ Use an **SVG sprite** with `<symbol>` and `<use>`:
 
 External sprites: `<use href="/icons.svg#icon-home">` (watch CORS). Prefer sprites over icon fonts for accessibility and sharp scaling.
 
-**Source:** [MDN — SVG use](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/use)
+**Sources:** [MDN — SVG use](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/use)
 
 </details>
 
@@ -5706,7 +5718,7 @@ External sprites: `<use href="/icons.svg#icon-home">` (watch CORS). Prefer sprit
 | SVGO | Smaller file |
 | `viewBox` | Responsive scale |
 
-**Cases:** Icon font migration · hero illustrations · animated SVG.
+**When to use:** Icon font migration · hero illustrations · animated SVG.
 
 **Common pitfalls:**
 
@@ -5723,18 +5735,13 @@ External sprites: `<use href="/icons.svg#icon-home">` (watch CORS). Prefer sprit
 4. Use `currentColor` so icons inherit text color
 5. Combine into a sprite sheet for many icons
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg>
 ```
 
-</details>
-
-**Source:** [SVGO](https://github.com/svg/svgo)
+**Sources:** [SVGO](https://github.com/svg/svgo)
 
 </details>
 
@@ -5756,7 +5763,7 @@ External sprites: `<use href="/icons.svg#icon-home">` (watch CORS). Prefer sprit
 | Format | HTML attrs |
 | Server | `fetch` + `setCustomValidity` |
 
-**Cases:** Username availability · email domain check · coupon code validation.
+**When to use:** Username availability · email domain check · coupon code validation.
 
 **Common pitfalls:**
 
@@ -5780,10 +5787,7 @@ usernameInput.addEventListener("blur", async () => {
 
 Pair with `aria-describedby` pointing to an error message element with `role="alert"`.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <label for="username">Username</label>
@@ -5791,9 +5795,7 @@ Pair with `aria-describedby` pointing to an error message element with `role="al
 <span id="username-error" role="alert"></span>
 ```
 
-</details>
-
-**Source:** [MDN — Constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation)
+**Sources:** [MDN — Constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation)
 
 </details>
 
@@ -5815,7 +5817,7 @@ Pair with `aria-describedby` pointing to an error message element with `role="al
 | `script-src` | JS sources |
 | `default-src` | Fallback |
 
-**Cases:** Strict `script-src 'self'` · nonce for inline boot script · `frame-ancestors` against clickjacking.
+**When to use:** Strict `script-src 'self'` · nonce for inline boot script · `frame-ancestors` against clickjacking.
 
 **Common pitfalls:**
 
@@ -5841,19 +5843,14 @@ Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-abc123'
 
 Primary defense against XSS injection through markup.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-abc123'" />
 <script nonce="abc123">/* allowed inline script */</script>
 ```
 
-</details>
-
-**Source:** [MDN — CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)
+**Sources:** [MDN — CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)
 
 </details>
 
@@ -5875,7 +5872,7 @@ Primary defense against XSS injection through markup.
 | `<a href>` | Navigate |
 | `<button>` | Submit if in form |
 
-**Cases:** Nav link (`a`) · form submit (`button type=submit`) · open modal (`button type=button`).
+**When to use:** Nav link (`a`) · form submit (`button type=submit`) · open modal (`button type=button`).
 
 **Common pitfalls:**
 
@@ -5894,10 +5891,7 @@ Primary defense against XSS injection through markup.
 
 Using `<a>` for JS actions or `<button>` for navigation breaks UX, accessibility, and keyboard behavior.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <a href="/about">About page</a>
@@ -5905,9 +5899,7 @@ Using `<a>` for JS actions or `<button>` for navigation breaks UX, accessibility
 <button type="submit">Submit form</button>
 ```
 
-</details>
-
-**Source:** [MDN — a](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a)
+**Sources:** [MDN — a](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a)
 
 </details>
 
@@ -5929,7 +5921,7 @@ Using `<a>` for JS actions or `<button>` for navigation breaks UX, accessibility
 | `strong`/`em` | Yes |
 | `b`/`i` | No |
 
-**Cases:** Warning (`strong`) · emphasized word (`em`) · keyword visual (`b` in abstract).
+**When to use:** Warning (`strong`) · emphasized word (`em`) · keyword visual (`b` in abstract).
 
 **Common pitfalls:**
 
@@ -5945,18 +5937,13 @@ Using `<a>` for JS actions or `<button>` for navigation breaks UX, accessibility
 
 Use semantic elements by default; use `<b>`/`<i>` only for stylistic offset without semantic weight (e.g. keywords in a summary).
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <p><strong>Warning:</strong> <em>Do not</em> skip heading levels. <b>Keywords</b> in summary.</p>
 ```
 
-</details>
-
-**Source:** [MDN — strong](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/strong)
+**Sources:** [MDN — strong](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/strong)
 
 </details>
 
@@ -5977,7 +5964,7 @@ Use semantic elements by default; use `<b>`/`<i>` only for stylistic offset with
 |---|------|-----|
 | Nature | Static source | Live runtime tree |
 
-**Cases:** Static page · SPA hydration · `document.querySelector` updates.
+**When to use:** Static page · SPA hydration · `document.querySelector` updates.
 
 **Common pitfalls:**
 
@@ -5996,18 +5983,13 @@ document.querySelector("h1").textContent = "Updated";
 
 HTML = static structure definition. DOM = runtime object graph. JS APIs mutate the DOM; the browser re-renders.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <body><h1 id="title">Hello</h1></body>
 ```
 
-</details>
-
-**Source:** [3_js_browser.md](./3_js_browser.md) · [MDN — DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)
+**Sources:** [3_js_browser.md](./3_js_browser.md) · [MDN — DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)
 
 </details>
 
@@ -6029,7 +6011,7 @@ HTML = static structure definition. DOM = runtime object graph. JS APIs mutate t
 | Standards | `box-sizing` per CSS spec |
 | Quirks | Content box quirks |
 
-**Cases:** Legacy pages without DOCTYPE · iframe inheriting quirks · HTML email (limited).
+**When to use:** Legacy pages without DOCTYPE · iframe inheriting quirks · HTML email (limited).
 
 **Common pitfalls:**
 
@@ -6048,19 +6030,14 @@ Browsers may enter **quirks mode** — emulates legacy IE bugs (wrong box model,
 
 This triggers **standards mode** (no quirks) in all modern browsers.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <!DOCTYPE html>
 <html lang="en"><body></body></html>
 ```
 
-</details>
-
-**Source:** [MDN — DOCTYPE](https://developer.mozilla.org/en-US/docs/Glossary/Doctype)
+**Sources:** [MDN — DOCTYPE](https://developer.mozilla.org/en-US/docs/Glossary/Doctype)
 
 </details>
 

@@ -20,7 +20,7 @@ The user is changing this app (routes, parser, catalog, UI, SEO), not the conspe
 - Catalog: `lib/content/catalog.ts` (tracks + public topics)
 - Parser: `lib/content/parse.ts` (top-level `<details>`, plus `##`/`###` blocks with **Definition:**)
 - Load: `lib/content/load.ts`
-- Routes: `app/page.tsx`, `app/[track]/page.tsx`, `app/[track]/[topic]/page.tsx`
+- Routes: `/` tracks → `/[track]` topic cards → `/[track]/[topic]`
 - SEO: `generateMetadata`, `app/sitemap.ts`, `app/robots.ts`
 
 ## Product rules
@@ -48,9 +48,11 @@ The user is changing this app (routes, parser, catalog, UI, SEO), not the conspe
 
 ## UI
 
+- Docs shell: sticky header + track-grouped topic sidebar (`components/HandbookShell.tsx`)
+- Topic search lists only matching topics in the sidebar. Tracks and topic concept lists stay collapsed until opened. Search opens the found accordion in the main pane and restores the previous page when cleared
 - Card grids for tracks and topics (`components/CardGrid.tsx`)
-- Simple typography; readable `pre`/`code` in `app/globals.css`
-- English copy
+- Simple typography; fenced code uses Shiki (VS Code `dark-plus`) in `lib/content/highlight.ts`
+- English UI chrome in `lib/content/nav.ts`; nav tree + concept titles in `lib/content/handbook-nav.ts`; study notes stay in `resources/`
 
 ## Verify
 

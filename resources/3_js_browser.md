@@ -22,7 +22,7 @@ Covers the browser environment, DOM manipulation, events, storage, CORS, observe
 
 ### Sections
 
-> Theory `<details>` blocks follow: **Definition** · **How it works** · **Cases** · **Pros | Cons** · **Example** · pitfalls where relevant.
+> Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
 - [Script loading](#script-loading)
 - [DOM, BOM & events](#dom-bom-events)
@@ -52,29 +52,30 @@ Topics also covered: **cookies / Web Storage / IndexedDB / localForage**, **CORS
 - `async`: download parallel, execute when ready (order not guaranteed), may block parse at execution.
 - `type="module"`: deferred by default, strict mode, `import`/`export`.
 
-| Pros | Cons |
+**When to use:**
+
+App bundle → `defer`; analytics/ads → `async`; ES app → `type="module"`.
+
+#### Common pitfalls
+
+Two `async` scripts depending on each other; inline script before deferred external assuming it ran; module CORS requirements for cross-origin `src`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | `defer` preserves order, non-blocking | Still executes on main thread |
 | `async` for independent scripts | Order unpredictable |
 | Modules tree-shake, strict | Older browsers need nomodule fallback |
 
-**Cases:** App bundle → `defer`; analytics/ads → `async`; ES app → `type="module"`.
-
-**Common pitfalls:** Two `async` scripts depending on each other; inline script before deferred external assuming it ran; module CORS requirements for cross-origin `src`.
-
-**Key idea:** Place non-critical scripts at the end of `<body>` or use `async` / `defer` to avoid blocking render.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <script src="app.js" defer></script>
 <script src="analytics.js" async></script>
 ```
 
-</details>
+**Thoughts:** Place non-critical scripts at the end of `<body>` or use `async` / `defer` to avoid blocking render.
 
 ### async & defer
 
@@ -85,10 +86,7 @@ Topics also covered: **cookies / Web Storage / IndexedDB / localForage**, **CORS
 | `async` | parallel | first-ready-first-run | ads, analytics, independent scripts |
 | `type="module"` | parallel | defer-like, strict mode by default | ES modules |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <script src="a.js" defer></script>
@@ -96,9 +94,7 @@ Topics also covered: **cookies / Web Storage / IndexedDB / localForage**, **CORS
 <script src="tracker.js" async></script>
 ```
 
-</details>
-
-**Source:** [javascript.info/script-async-defer](https://learn.javascript.ru/script-async-defer)
+**Sources:** [javascript.info/script-async-defer](https://learn.javascript.ru/script-async-defer)
 
 </details>
 
@@ -111,7 +107,9 @@ Topics also covered: **cookies / Web Storage / IndexedDB / localForage**, **CORS
 
 ### DOM
 
-**Definition:** The DOM is a live **node tree** the browser builds from HTML/XML. JS reads and mutates it through `document` — it is not the source file.
+**Definition:**
+
+The DOM is a live **node tree** the browser builds from HTML/XML. JS reads and mutates it through `document` — it is not the source file.
 
 **Sequence** (parse → mutate):
 
@@ -137,20 +135,27 @@ Topics also covered: **cookies / Web Storage / IndexedDB / localForage**, **CORS
 | `childNodes` / `nextSibling` | all nodes (often whitespace text) |
 | `getElementById` / `querySelector` / `querySelectorAll` | id / first CSS match / all matches |
 
-**Attributes vs properties:** HTML string vs live JS field. Form state (`checked`, `value`, `disabled`) → **property**. `getAttribute` stays the original markup. `href` attribute is the raw string; `.href` is the resolved URL. `data-*` → `elem.dataset`.
+**How it works:**
 
-**How it works:** Writes update the live tree immediately; mixed read/write loops can layout-thrash. Live collections change as the tree changes.
+Writes update the live tree immediately; mixed read/write loops can layout-thrash. Live collections change as the tree changes.
 
-**Cases:** Mount UI; read/update attrs and properties; build lists.
+HTML string vs live JS field. Form state (`checked`, `value`, `disabled`) → **property**. `getAttribute` stays the original markup. `href` attribute is the raw string; `.href` is the resolved URL. `data-*` → `elem.dataset`.
+
+**When to use:**
+
+Mount UI; read/update attrs and properties; build lists.
+
+#### Common pitfalls
+
+`innerHTML` + user input (XSS); `checked`/`value` attribute vs property; assuming `firstChild` is an element.
+
+**Pluses and minuses:**
 
 | + | − |
 | --- | --- |
 | Standard live tree, CSS selectors | Verbose vs VDOM; live lists surprise |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 document.title = 'My App';
@@ -163,29 +168,19 @@ box.checked = false;
 box.getAttribute('checked'); // still "checked" if it was in HTML
 ```
 
-</details>
-
-**Common pitfalls:** `innerHTML` + user input (XSS); `checked`/`value` attribute vs property; assuming `firstChild` is an element.
-
-**Key idea:** Mutate the **runtime tree**, not the HTML file.
+**Thoughts:** Mutate the **runtime tree**, not the HTML file.
 
 **See also:** [DOM navigation](#dom-navigation) · [DOM methods & props](#dom-methods--props) · [HTMLCollection vs NodeList](#htmlcollection-vs-nodelist) · [innerHTML vs outerHTML](#innerhtml-vs-outerhtml)
 
-**Source:** [MDN DOM](https://developer.mozilla.org/en-US/docs/Glossary/DOM) · [Node.nodeType](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType)
+**Sources:** [MDN DOM](https://developer.mozilla.org/en-US/docs/Glossary/DOM) · [Node.nodeType](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType)
 
 ### shadow dom
 
 **Definition:** A private, isolated DOM subtree attached to a host element — separate from the page's normal (light) DOM.
 
-**Why we need it:** Without it, all components share one global DOM and CSS scope — styles leak, selectors clash, and internals are exposed. Shadow DOM gives **encapsulation**: scoped styles, hidden markup, and safe reuse across pages.
+**How it works:**
 
-**When to use:** Web Components, embeddable widgets, third-party UI on unknown pages.
-
-**When NOT to use:** React/Vue apps (they handle encapsulation differently); when you want global page styles to affect the component.
-
-**Source:** [learn.javascript.ru/shadow-dom](https://learn.javascript.ru/shadow-dom)
-
-**Light tree vs shadow tree:**
+Without it, all components share one global DOM and CSS scope — styles leak, selectors clash, and internals are exposed. Shadow DOM gives **encapsulation**: scoped styles, hidden markup, and safe reuse across pages.
 
 - **Light tree** — normal DOM subtree from HTML children
 - **Shadow tree** — hidden subtree, not reflected in HTML source
@@ -201,9 +196,19 @@ Shadow DOM elements:
 - Invisible to `querySelector` from the main document
 - Styled only by styles inside the shadow tree
 
+**When to use:**
+
+Web Components, embeddable widgets, third-party UI on unknown pages.
+
+React/Vue apps (they handle encapsulation differently); when you want global page styles to affect the component.
+
+**Sources:** [learn.javascript.ru/shadow-dom](https://learn.javascript.ru/shadow-dom)
+
 ### Page lifecycle events
 
-**Definition:** Browser fires events as the page loads and unloads. Use them to initialize UI or warn users about unsaved data.
+**Definition:**
+
+Browser fires events as the page loads and unloads. Use them to initialize UI or warn users about unsaved data.
 
 | Event | Fires when | Target |
 |-------|-----------|--------|
@@ -212,12 +217,9 @@ Shadow DOM elements:
 | `beforeunload` | User is leaving the page | `window` |
 | `unload` | Page is being unloaded | `window` |
 
-**Key difference:** `DOMContentLoaded` — init UI early; `load` — wait for all assets.
+**How it works:** `DOMContentLoaded` — init UI early; `load` — wait for all assets.
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 document.addEventListener('DOMContentLoaded', () => {
@@ -229,16 +231,11 @@ window.addEventListener('load', () => {
 });
 ```
 
-</details>
-
-**Source:** [javascript.info/onload-ondomcontentloaded](https://learn.javascript.ru/onload-ondomcontentloaded)
+**Sources:** [javascript.info/onload-ondomcontentloaded](https://learn.javascript.ru/onload-ondomcontentloaded)
 
 ### Creating & appending elements
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const li = document.createElement('li');
@@ -246,8 +243,6 @@ li.textContent = 'New item';
 li.classList.add('active');
 document.querySelector('ul').append(li);
 ```
-
-</details>
 
 ### HTMLCollection vs NodeList
 
@@ -258,10 +253,7 @@ document.querySelector('ul').append(li);
 | **Access** | index, name, id | index only |
 | **From** | `getElementsBy*` | `querySelectorAll`, `childNodes` |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const live = document.getElementsByClassName('item');   // live
@@ -272,8 +264,6 @@ live.length;  // decreased
 snap.length;  // unchanged
 ```
 
-</details>
-
 **Note:** Neither is a real array — use `Array.from()` or spread to iterate with array methods.
 
 ### innerHTML vs outerHTML
@@ -283,10 +273,7 @@ snap.length;  // unchanged
 | `innerHTML` | HTML **inside** the element (children only) |
 | `outerHTML` | HTML **including** the element itself |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```html
 <div id="box"><span>Hi</span></div>
@@ -296,8 +283,6 @@ snap.length;  // unchanged
 box.innerHTML;  // '<span>Hi</span>'
 box.outerHTML;  // '<div id="box"><span>Hi</span></div>'
 ```
-
-</details>
 
 **Warning:** `innerHTML` parses HTML strings — sanitize user input to prevent XSS. Types and encoding: [Special — XSS](./7_special.md#xss-cross-site-scripting).
 
@@ -309,17 +294,12 @@ box.outerHTML;  // '<div id="box"><span>Hi</span></div>'
 | **Access** | implicit global | `document` or `window.document` |
 | **APIs** | `alert()`, `location`, `setTimeout` | `getElementById`, `createElement`, `querySelector` |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 window.innerWidth;              // viewport size
 document.querySelector('h1');   // DOM query
 ```
-
-</details>
 
 </details>
 
@@ -335,18 +315,6 @@ document.querySelector('h1');   // DOM query
 - Tree links: `parentNode`, `childNodes`, `nextSibling`, etc.; element-only variants skip text nodes.
 - `querySelector(All)` runs selector engine on subtree; `getElementsBy*` returns live HTMLCollection.
 
-| Pros | Cons |
-|------|------|
-| Direct traversal fast for known structure | `childNodes` includes text nodes |
-| `querySelector` flexible | Live collections update during iteration |
-| `closest()` for delegation targets | Deep walks manual and brittle |
-
-**Cases:** Walk to parent form; find next sibling element; scoped `el.querySelector('.title')`.
-
-**Common pitfalls:** `firstChild` vs `firstElementChild`; modifying live collection while looping; assuming `children[0]` exists.
-
-**Traversal properties:**
-
 | Direction | All nodes | Elements only |
 |-----------|-----------|---------------|
 | Parent | `parentNode` | `parentElement` |
@@ -356,8 +324,6 @@ document.querySelector('h1');   // DOM query
 | Previous | `previousSibling` | `previousElementSibling` |
 | Next | `nextSibling` | `nextElementSibling` |
 
-**Query methods:**
-
 | Method | Scope | Returns | Live? |
 |--------|-------|---------|-------|
 | `getElementById(id)` | document | element or `null` | — |
@@ -366,12 +332,23 @@ document.querySelector('h1');   // DOM query
 | `querySelector(sel)` | element | first match or `null` | — |
 | `querySelectorAll(sel)` | element | NodeList | static |
 
-**Key idea:** `getElementsBy*` returns **live** collections; `querySelectorAll` returns a **snapshot**.
+**When to use:**
 
-**Example:**
+Walk to parent form; find next sibling element; scoped `el.querySelector('.title')`.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+`firstChild` vs `firstElementChild`; modifying live collection while looping; assuming `children[0]` exists.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Direct traversal fast for known structure | `childNodes` includes text nodes |
+| `querySelector` flexible | Live collections update during iteration |
+| `closest()` for delegation targets | Deep walks manual and brittle |
+
+**Examples:**
 
 ```js
 const list = document.querySelector('.list');
@@ -380,7 +357,7 @@ list.querySelectorAll('li.active');   // static NodeList
 list.getElementsByTagName('li');      // live HTMLCollection
 ```
 
-</details>
+**Thoughts:** `getElementsBy*` returns **live** collections; `querySelectorAll` returns a **snapshot**.
 
 </details>
 
@@ -397,35 +374,7 @@ list.getElementsByTagName('li');      // live HTMLCollection
 - `dataset` maps `data-*` attributes to camelCase JS properties.
 - `forms` collection indexes `<form>` elements; `requestSubmit()` fires submit event + validation.
 
-| Pros | Cons |
-|------|------|
-| `dataset` clean custom data API | All `data-*` values are strings |
-| `requestSubmit()` respects constraints | `submit()` bypasses handlers |
-| Scoped query on elements | `getElementsBy*` live collections confuse |
-
-**Cases:** Read `data-id` for delegation; programmatic form submit with validation; find first matching child.
-
-**Common pitfalls:** `dataset` sets string only; `getAttribute('value')` vs `input.value` differ; multiple forms — `document.forms[name]`.
-
-**Finding elements:**
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
-
-```js
-document.getElementById('app');
-document.getElementsByClassName('card');
-document.querySelector('.card.active');
-document.querySelectorAll('li');
-```
-
-</details>
-
-**`querySelector` vs `getElementsBy*`:** `querySelector(All)` works on any element and accepts full CSS selectors; `getElementsBy*` only searches descendants and returns live collections.
-
-**Traversal:** `parentNode`, `childNodes`, `firstChild`, `lastChild`, `previousSibling`, `nextSibling`.
+`parentNode`, `childNodes`, `firstChild`, `lastChild`, `previousSibling`, `nextSibling`.
 
 #### `.forms` property
 
@@ -460,6 +409,33 @@ el.dataset.role;    // "admin"
 el.dataset.score = '100'; // sets data-score="100"
 ```
 
+**When to use:**
+
+Read `data-id` for delegation; programmatic form submit with validation; find first matching child.
+
+#### Common pitfalls
+
+`dataset` sets string only; `getAttribute('value')` vs `input.value` differ; multiple forms — `document.forms[name]`.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| `dataset` clean custom data API | All `data-*` values are strings |
+| `requestSubmit()` respects constraints | `submit()` bypasses handlers |
+| Scoped query on elements | `getElementsBy*` live collections confuse |
+
+**Examples:**
+
+```js
+document.getElementById('app');
+document.getElementsByClassName('card');
+document.querySelector('.card.active');
+document.querySelectorAll('li');
+```
+
+**`querySelector` vs `getElementsBy*`:** `querySelector(All)` works on any element and accepts full CSS selectors; `getElementsBy*` only searches descendants and returns live collections.
+
 </details>
 	
 
@@ -475,18 +451,6 @@ el.dataset.score = '100'; // sets data-score="100"
 - `window` is global object in browsers; `document`, `location`, `history`, `navigator` are properties.
 - BOM APIs are browser-specific (not in ECMAScript spec); DOM is separate but accessed via `window.document`.
 
-| Pros | Cons |
-|------|------|
-| Unified `window` entry point | Not available in Node (different globals) |
-| `location` for navigation | Direct `location` assignment full page reload |
-| `history` for SPA routing | History state size limits |
-
-**Cases:** Redirect via `location.href`; read `navigator.userAgent` (feature detect better); `history.pushState` for SPA.
-
-**Common pitfalls:** Treating BOM as part of ECMAScript; `window.open` blocked by pop-up blockers; `navigator` fields spoofable.
-
-**Key objects:**
-
 | Object | Purpose |
 |--------|---------|
 | `window` | Global scope, dialogs, viewport size |
@@ -495,10 +459,23 @@ el.dataset.score = '100'; // sets data-score="100"
 | `history` | Back/forward navigation |
 | `screen` | Screen dimensions |
 
-**Example:**
+**When to use:**
 
-<details>
-  <summary>Code</summary>
+Redirect via `location.href`; read `navigator.userAgent` (feature detect better); `history.pushState` for SPA.
+
+#### Common pitfalls
+
+Treating BOM as part of ECMAScript; `window.open` blocked by pop-up blockers; `navigator` fields spoofable.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Unified `window` entry point | Not available in Node (different globals) |
+| `location` for navigation | Direct `location` assignment full page reload |
+| `history` for SPA routing | History state size limits |
+
+**Examples:**
 
 ```js
 location.href = 'https://example.com';
@@ -506,9 +483,7 @@ navigator.userAgent;
 history.back();
 ```
 
-</details>
-
-**Source:** [learn.javascript.ru/browser-environment](https://learn.javascript.ru/browser-environment)
+**Sources:** [learn.javascript.ru/browser-environment](https://learn.javascript.ru/browser-environment)
 
 <a name="dom-vs-bom"></a>
 
@@ -536,19 +511,7 @@ history.back();
 - `addEventListener(type, handler, options)` registers; multiple handlers per event allowed.
 - Handler receives event as first argument; `this` is `currentTarget` for non-arrow functions.
 
-| Pros | Cons |
-|------|------|
-| Declarative UI reactions | Forgetting `removeEventListener` leaks memory |
-| `addEventListener` flexible options | Inline handlers mix concerns |
-| Event object rich metadata | Too many listeners hurt performance |
-
-**Cases:** Click/key handlers; form `submit`; `DOMContentLoaded` init; custom events for decoupling.
-
-**Common pitfalls:** Arrow vs function `this` difference; assuming `target` === `currentTarget`; duplicate listeners on re-render without cleanup.
-
-**Event categories:** Mouse, Keyboard, Form, Document/Window, Touch.
-
-**Common events:**
+Mouse, Keyboard, Form, Document/Window, Touch.
 
 | Event | Trigger |
 |-------|---------|
@@ -561,18 +524,29 @@ history.back();
 | `submit` | Form submitted |
 | `DOMContentLoaded` | DOM fully parsed |
 
-**3 ways to assign handlers:**
-
 | Method | Example | Notes |
 |--------|---------|-------|
 | HTML attribute | `onclick="..."` | Avoid — mixes HTML & JS |
 | DOM property | `elem.onclick = fn` | Only one handler per event |
 | `addEventListener` | `elem.addEventListener('click', fn)` | Preferred — multiple handlers, options |
 
-**Example:**
+**When to use:**
 
-<details>
-  <summary>Code</summary>
+Click/key handlers; form `submit`; `DOMContentLoaded` init; custom events for decoupling.
+
+#### Common pitfalls
+
+Arrow vs function `this` difference; assuming `target` === `currentTarget`; duplicate listeners on re-render without cleanup.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Declarative UI reactions | Forgetting `removeEventListener` leaks memory |
+| `addEventListener` flexible options | Inline handlers mix concerns |
+| Event object rich metadata | Too many listeners hurt performance |
+
+**Examples:**
 
 ```js
 button.addEventListener('click', (e) => {
@@ -580,13 +554,13 @@ button.addEventListener('click', (e) => {
 });
 ```
 
-</details>
-
 ### Event object
 
 **Definition:** The browser passes an `event` object as the first argument to every handler.
 
-**Common properties:** `type`, `target`, `currentTarget`, `clientX`/`clientY` (mouse), `key` (keyboard).
+**How it works:**
+
+`type`, `target`, `currentTarget`, `clientX`/`clientY` (mouse), `key` (keyboard).
 
 ```js
 link.addEventListener('click', (e) => {
@@ -606,7 +580,7 @@ const handler = {
 elem.addEventListener('click', handler);
 ```
 
-**Source:** [javascript.info/events](https://learn.javascript.ru/events) · [default-browser-action](https://learn.javascript.ru/default-browser-action)
+**Sources:** [javascript.info/events](https://learn.javascript.ru/events) · [default-browser-action](https://learn.javascript.ru/default-browser-action)
 
 </details>
 
@@ -617,7 +591,9 @@ elem.addEventListener('click', handler);
 
 ### Event phases
 
-**Definition:** Every event travels through 3 phases: **capturing** (top → target), **target**, **bubbling** (target → top). Default handlers run on the **bubble** phase.
+**Definition:**
+
+Every event travels through 3 phases: **capturing** (top → target), **target**, **bubbling** (target → top). Default handlers run on the **bubble** phase.
 
 <img width="688" alt="image" src="https://github.com/Way-to-Front-end-Developer/Core/assets/66359081/cae585f8-2239-4d66-a49c-53c34560312d">
 
@@ -627,15 +603,21 @@ elem.addEventListener('click', handler);
 - Target: handlers on target element (both capture-flag and bubble-flag run in registration order on target).
 - Bubble: target → … → window (default `capture: false`).
 
-| Pros | Cons |
-|------|------|
-| Capture for early interception | Easy to forget which phase handler uses |
-| Bubble enables delegation | Stopping propagation affects other listeners |
-| `eventPhase` introspection | Three phases mental overhead |
+| Property | Meaning |
+|----------|---------|
+| `event.target` | Element that triggered the event (doesn't change) |
+| `event.currentTarget` | Element whose handler is running now (`this`) |
+| `event.eventPhase` | `1` capturing, `2` target, `3` bubbling |
 
-**Cases:** Delegation on bubble (default); focus trap on capture; analytics on capture before `stopPropagation`.
+pass `{ capture: true }` as third argument to `addEventListener`.
 
-**Common pitfalls:** Parent capture handler stopping before child runs; confusing `target` (clicked node) with `currentTarget` (node with listener).
+**When to use:**
+
+Delegation on bubble (default); focus trap on capture; analytics on capture before `stopPropagation`.
+
+#### Common pitfalls
+
+Parent capture handler stopping before child runs; confusing `target` (clicked node) with `currentTarget` (node with listener).
 
 | Phase | Direction | Default? |
 |-------|-----------|----------|
@@ -643,27 +625,20 @@ elem.addEventListener('click', handler);
 | Target | on the element itself | — |
 | Bubbling | target → `window` | **yes** |
 
-**Key properties:**
+**Pluses and minuses:**
 
-| Property | Meaning |
-|----------|---------|
-| `event.target` | Element that triggered the event (doesn't change) |
-| `event.currentTarget` | Element whose handler is running now (`this`) |
-| `event.eventPhase` | `1` capturing, `2` target, `3` bubbling |
+| + | − |
+|------|------|
+| Capture for early interception | Easy to forget which phase handler uses |
+| Bubble enables delegation | Stopping propagation affects other listeners |
+| `eventPhase` introspection | Three phases mental overhead |
 
-**Capturing handlers:** pass `{ capture: true }` as third argument to `addEventListener`.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 parent.addEventListener('click', handler, { capture: true }); // runs on way down
 child.addEventListener('click', handler);                     // runs on way up (bubble)
 ```
-
-</details>
 
 </details>
 
@@ -682,41 +657,40 @@ child.addEventListener('click', handler);                     // runs on way up 
 - `stopPropagation()` stops further propagation; `stopImmediatePropagation()` also blocks other handlers on same element.
 - `passive: true` tells browser listener won't `preventDefault` — scroll performance.
 
-| Pros | Cons |
+`removeEventListener(event, sameFn, capture)` — must pass the **same function reference**.
+
+regular functions → `this` is `currentTarget`; arrow functions → inherit outer `this`.
+
+<img width="642" alt="image" src="https://github.com/Way-to-Front-end-Developer/Core/assets/66359081/0d37f5f7-4c42-49d6-9100-6520df837439">
+
+**When to use:**
+
+List click delegation; prevent form full page submit; stop modal click bubbling to overlay.
+
+#### Common pitfalls
+
+`stopPropagation` on child blocks parent delegation; rebinding new arrow fn each render prevents removal; passive + `preventDefault` ignored.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Delegation — one listener for many children | Wrong `target` if nested elements inside `li` |
 | `once: true` auto cleanup | `removeEventListener` needs same function reference |
 | Passive listeners smoother scroll | Cannot preventDefault in passive listener |
 
-**Cases:** List click delegation; prevent form full page submit; stop modal click bubbling to overlay.
-
-**Common pitfalls:** `stopPropagation` on child blocks parent delegation; rebinding new arrow fn each render prevents removal; passive + `preventDefault` ignored.
-
-**addEventListener signature:**
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 elem.addEventListener(event, handler, options);
 // options: { capture, once, passive }
 ```
 
-</details>
-
 | Option | Effect |
 |--------|--------|
 | `capture: true` | Run during capturing phase |
 | `once: true` | Auto-remove after first call |
 | `passive: true` | Won't call `preventDefault()` (better scroll perf) |
-
-**Removing handlers:** `removeEventListener(event, sameFn, capture)` — must pass the **same function reference**.
-
-**`this` in handlers:** regular functions → `this` is `currentTarget`; arrow functions → inherit outer `this`.
-
-<img width="642" alt="image" src="https://github.com/Way-to-Front-end-Developer/Core/assets/66359081/0d37f5f7-4c42-49d6-9100-6520df837439">
 
 ### Event object methods
 
@@ -766,7 +740,7 @@ list.addEventListener('click', (e) => {
 });
 ```
 
-**Source:** [javascript.info/event-delegation](https://learn.javascript.ru/event-delegation)
+**Sources:** [javascript.info/event-delegation](https://learn.javascript.ru/event-delegation)
 
 </details>
 
@@ -783,30 +757,50 @@ list.addEventListener('click', (e) => {
 - Moving existing node removes it from old parent — single parent rule.
 - `innerHTML` parses HTML string; `textContent` escapes and is safe for text.
 
-| Pros | Cons |
+appending an existing node **moves** it (doesn't copy).
+
+#### Legacy methods (old code)
+
+`appendChild`, `removeChild`, `insertBefore`, `replaceChild` — still work but prefer modern methods above.
+
+#### Changing appearance
+
+Prefer **CSS classes** over inline styles. Use JS only when CSS isn't enough.
+
+```js
+el.classList.add('active');
+el.classList.toggle('hidden');
+el.setAttribute('disabled', '');
+el.style.color = 'red'; // last resort
+```
+
+`hasAttribute`, `getAttribute`, `setAttribute`, `removeAttribute`.
+
+**When to use:**
+
+Build list items; replace banner; sanitize then `textContent` for user text.
+
+#### Common pitfalls
+
+`innerHTML` with user strings; appending in loop causes N reflows (use `DocumentFragment`); `appendChild` same as move not copy.
+
+#### Creating nodes
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Modern insert methods readable | Many reflows if inserting one-by-one |
 | `replaceWith` atomic swap | `innerHTML` XSS if untrusted |
 | `cloneNode(true)` deep copy | Moved nodes leave old references stale |
 
-**Cases:** Build list items; replace banner; sanitize then `textContent` for user text.
-
-**Common pitfalls:** `innerHTML` with user strings; appending in loop causes N reflows (use `DocumentFragment`); `appendChild` same as move not copy.
-
-#### Creating nodes
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const div = document.createElement('div');
 const text = document.createTextNode('Hello');
 const comment = document.createComment('note');
 ```
-
-</details>
 
 #### Inserting nodes
 
@@ -846,25 +840,6 @@ node.remove();              // remove from DOM
 node.cloneNode(true);       // deep clone (with children)
 ```
 
-**Moving nodes:** appending an existing node **moves** it (doesn't copy).
-
-#### Legacy methods (old code)
-
-`appendChild`, `removeChild`, `insertBefore`, `replaceChild` — still work but prefer modern methods above.
-
-#### Changing appearance
-
-Prefer **CSS classes** over inline styles. Use JS only when CSS isn't enough.
-
-```js
-el.classList.add('active');
-el.classList.toggle('hidden');
-el.setAttribute('disabled', '');
-el.style.color = 'red'; // last resort
-```
-
-**Attribute methods:** `hasAttribute`, `getAttribute`, `setAttribute`, `removeAttribute`.
-
 </details>
 
 <details>
@@ -887,24 +862,21 @@ el.style.color = 'red'; // last resort
 | **Performance** | faster | slower (triggers reflow) |
 | **Use for** | reading/writing text | display text to user |
 
-| Pros | Cons |
+**When to use:** Set label text → `textContent`; read displayed text → `innerText`; read input → `.value`; confirm delete → `confirm` or custom modal.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | `textContent` fast and predictable | `innerText` slower |
 | `.value` correct for inputs | Blocking dialogs freeze UI |
 | `requestSubmit()` proper validation | `alert` not stylable |
 
-**Cases:** Set label text → `textContent`; read displayed text → `innerText`; read input → `.value`; confirm delete → `confirm` or custom modal.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 el.textContent = 'Hello'; // preferred for setting text
 ```
-
-</details>
 
 ### Forms
 
@@ -926,7 +898,7 @@ form.requestSubmit(); // triggers validation
 
 **Common pitfalls:** `textarea.innerHTML` vs `textarea.value`; using `innerText` in hot loops; `confirm` in async code blocks main thread.
 
-**Source:** [javascript.info/forms-controls](https://learn.javascript.ru/forms-controls)
+**Sources:** [javascript.info/forms-controls](https://learn.javascript.ru/forms-controls)
 
 </details>
 
@@ -943,22 +915,37 @@ form.requestSubmit(); // triggers validation
 - `observe(target, { childList, attributes, subtree, characterData })` filters what to watch.
 - `disconnect()` stops observation; `takeRecords()` flushes pending.
 
-| Pros | Cons |
+child nodes added/removed, attribute changes, text content changes.
+
+**When to use:**
+
+Widget injected by ad script; contenteditable sync; attribute changes on custom element.
+
+third-party scripts modifying DOM, lazy-loaded content, Web Components.
+
+#### MutationObserver vs ResizeObserver
+
+| | MutationObserver | ResizeObserver |
+|---|------------------|----------------|
+| **Watches** | DOM tree changes (nodes, attrs, text) | Element size changes |
+| **When to use** | Dynamic content injection, third-party widgets | Responsive components, charts |
+| **Performance** | Can fire often — narrow `subtree`/`attributes` | Fires on layout changes only |
+
+See also [IntersectionObserver and ResizeObserver](#intersection-resize-observer).
+
+#### Common pitfalls
+
+Observing entire `document.body` with `subtree: true`; infinite loop if callback mutates observed subtree; forgetting `disconnect`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | React to third-party DOM changes | Can fire very frequently |
 | Async batched — not synchronous | Narrow options or performance suffers |
 | No polling needed | Not for size changes — use ResizeObserver |
 
-**Cases:** Widget injected by ad script; contenteditable sync; attribute changes on custom element.
-
-**Common pitfalls:** Observing entire `document.body` with `subtree: true`; infinite loop if callback mutates observed subtree; forgetting `disconnect`.
-
-**Watches:** child nodes added/removed, attribute changes, text content changes.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const observer = new MutationObserver((mutations) => {
@@ -976,21 +963,7 @@ observer.observe(document.querySelector('#app'), {
 observer.disconnect(); // cleanup when done
 ```
 
-</details>
-
-**When to use:** third-party scripts modifying DOM, lazy-loaded content, Web Components.
-
-#### MutationObserver vs ResizeObserver
-
-| | MutationObserver | ResizeObserver |
-|---|------------------|----------------|
-| **Watches** | DOM tree changes (nodes, attrs, text) | Element size changes |
-| **When to use** | Dynamic content injection, third-party widgets | Responsive components, charts |
-| **Performance** | Can fire often — narrow `subtree`/`attributes` | Fires on layout changes only |
-
-See also [IntersectionObserver and ResizeObserver](#intersection-resize-observer).
-
-**Source:** [javascript.info/mutation-observer](https://learn.javascript.ru/mutation-observer)
+**Sources:** [javascript.info/mutation-observer](https://learn.javascript.ru/mutation-observer)
 
 </details>
 
@@ -1012,18 +985,23 @@ See also [IntersectionObserver and ResizeObserver](#intersection-resize-observer
 | **Use for** | Registration, checkout, search | Confirmations, errors, quick input |
 | **UX** | Part of page flow | Blocks page until dismissed |
 
-| Pros | Cons |
+**When to use:**
+
+Checkout → form; delete confirm → modal or `confirm`; search bar → inline form.
+
+#### Common pitfalls
+
+Modal without focus trap; nested `<form>` invalid; form in modal without proper `aria-modal`.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Semantic HTML, accessible | Modals overused hurt UX |
 | Native validation | Custom modals need a11y work |
 | Fits multi-field workflows | Forms heavy for single yes/no |
 
-**Cases:** Checkout → form; delete confirm → modal or `confirm`; search bar → inline form.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 // Form submit via fetch
@@ -1038,11 +1016,7 @@ dlg.showModal();
 dlg.close('confirmed');
 ```
 
-</details>
-
-**Common pitfalls:** Modal without focus trap; nested `<form>` invalid; form in modal without proper `aria-modal`.
-
-**Source:** [form vs modal](https://thecontentauthority.com/blog/form-vs-modal)
+**Sources:** [form vs modal](https://thecontentauthority.com/blog/form-vs-modal)
 
 </details>
 
@@ -1060,18 +1034,25 @@ dlg.close('confirmed');
 - `matchMedia('(max-width: 768px)')` returns `MediaQueryList` with `matches` boolean.
 - `change` event fires when query result flips (resize, orientation, `prefers-color-scheme`).
 
-| Pros | Cons |
+**When to use:**
+
+Toggle mobile nav in JS; respect `prefers-reduced-motion` for animations; dark mode sync.
+
+conditional logic based on viewport, dark mode, reduced motion.
+
+#### Common pitfalls
+
+Listening `resize` instead of `matchMedia.change`; hardcoding breakpoints different from CSS; not removing listener.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Same queries as CSS | JS listeners add overhead vs pure CSS |
 | `prefers-reduced-motion` etc. | Duplicate logic CSS + JS if not careful |
 | No polling window size | `matchMedia` not supported in very old IE |
 
-**Cases:** Toggle mobile nav in JS; respect `prefers-reduced-motion` for animations; dark mode sync.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const mq = window.matchMedia('(max-width: 768px)');
@@ -1084,12 +1065,6 @@ mq.addEventListener('change', (e) => {
   console.log('Viewport changed:', e.matches);
 });
 ```
-
-</details>
-
-**Common pitfalls:** Listening `resize` instead of `matchMedia.change`; hardcoding breakpoints different from CSS; not removing listener.
-
-**When to use:** conditional logic based on viewport, dark mode, reduced motion.
 
 </details>
 
@@ -1112,24 +1087,27 @@ mq.addEventListener('change', (e) => {
 - File input `files` is `FileList`; drag-drop `dataTransfer.files`.
 - `FileReader` async reads file as text, data URL, or ArrayBuffer via events.
 
-| Pros | Cons |
-|------|------|
-| `FormData` easy uploads | Large files block if read fully to memory |
-| `FileReader` flexible formats | Event-based API verbose |
-| Works with fetch/XHR | No built-in progress on fetch (XHR has progress) |
+**When to use:**
 
-**Cases:** Avatar upload; CSV import; drag-drop text file preview.
+Avatar upload; CSV import; drag-drop text file preview.
 
-**Common pitfalls:** Forgetting `enctype` not needed with fetch FormData; reading huge file with `readAsDataURL`; not revoking object URLs.
+#### Common pitfalls
+
+Forgetting `enctype` not needed with fetch FormData; reading huge file with `readAsDataURL`; not revoking object URLs.
 
 #### FormData
 
 Collects key/value pairs from a form (including files) for `fetch` or `XHR`.
 
-**Example:**
+**Pluses and minuses:**
 
-<details>
-  <summary>Code</summary>
+| + | − |
+|------|------|
+| `FormData` easy uploads | Large files block if read fully to memory |
+| `FileReader` flexible formats | Event-based API verbose |
+| Works with fetch/XHR | No built-in progress on fetch (XHR has progress) |
+
+**Examples:**
 
 ```js
 const form = document.querySelector('form');
@@ -1139,8 +1117,6 @@ data.append('avatar', fileInput.files[0]);
 
 await fetch('/upload', { method: 'POST', body: data });
 ```
-
-</details>
 
 #### File input
 
@@ -1163,7 +1139,7 @@ reader.readAsDataURL(file);    // base64
 reader.readAsArrayBuffer(file); // binary
 ```
 
-**Source:** [javascripttutorial FormData](https://www.javascripttutorial.net/web-apis/javascript-formdata/) · [MDN FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader)
+**Sources:** [javascripttutorial FormData](https://www.javascripttutorial.net/web-apis/javascript-formdata/) · [MDN FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader)
 
 </details>
 
@@ -1174,10 +1150,30 @@ reader.readAsArrayBuffer(file); // binary
 
 **Definition:** Creates a temporary blob URL for a `File` or `Blob` — useful for previewing uploads. Parsing `https://` URLs: [URL / URLSearchParams](#url--urlsearchparams).
 
-**Example:**
+**How it works:**
 
-<details>
-  <summary>Code</summary>
+- `URL.createObjectURL(blob)` creates `blob:` URL referencing in-memory blob until revoked.
+- Document owns URLs — revoke when done to free memory.
+
+URL lifetime is tied to the document — revoke when no longer needed.
+
+**When to use:**
+
+Image preview before upload; download link for generated PDF blob.
+
+#### Common pitfalls
+
+Never calling `revokeObjectURL`; storing blob URL in localStorage; using after blob garbage collected without revoke semantics understood.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Instant preview of uploads | Memory leak if not revoked |
+| No base64 overhead | URL invalid after revoke |
+| Works with video/audio src | Blob URLs not persistent across sessions |
+
+**Examples:**
 
 ```js
 const file = input.files[0];
@@ -1188,26 +1184,7 @@ img.src = url;
 URL.revokeObjectURL(url);
 ```
 
-</details>
-
-**How it works:**
-
-- `URL.createObjectURL(blob)` creates `blob:` URL referencing in-memory blob until revoked.
-- Document owns URLs — revoke when done to free memory.
-
-| Pros | Cons |
-|------|------|
-| Instant preview of uploads | Memory leak if not revoked |
-| No base64 overhead | URL invalid after revoke |
-| Works with video/audio src | Blob URLs not persistent across sessions |
-
-**Cases:** Image preview before upload; download link for generated PDF blob.
-
-**Common pitfalls:** Never calling `revokeObjectURL`; storing blob URL in localStorage; using after blob garbage collected without revoke semantics understood.
-
-**Note:** URL lifetime is tied to the document — revoke when no longer needed.
-
-**Source:** [MDN createObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static)
+**Sources:** [MDN createObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static)
 
 </details>
 
@@ -1224,18 +1201,6 @@ URL.revokeObjectURL(url);
 - `attachShadow({ mode: 'open' })` creates encapsulated DOM; styles scoped inside shadow root.
 - `<template>` holds inert markup cloned into shadow root.
 
-| Pros | Cons |
-|------|------|
-| Native encapsulation | Framework ecosystem still dominant |
-| Reusable across stacks | SSR/styling tooling more complex |
-| Standard in modern browsers | Closed shadow harder to debug |
-
-**Cases:** Design system primitives; embeddable widget; cross-framework component.
-
-**Common pitfalls:** Expecting global CSS to pierce shadow (need `::part` or CSS variables); forgetting `customElements.define` once guard; form association with shadow inputs.
-
-**Building blocks:**
-
 | API | Purpose |
 |-----|---------|
 | Custom Elements | Define new tags (`<my-button>`) |
@@ -1243,10 +1208,25 @@ URL.revokeObjectURL(url);
 | HTML Templates | `<template>` for inert markup |
 | ES Modules | `import` in `<script type="module">` |
 
-**Example:**
+**When to use:**
 
-<details>
-  <summary>Code</summary>
+Design system primitives; embeddable widget; cross-framework component.
+
+design systems, embeddable widgets, framework-agnostic components.
+
+#### Common pitfalls
+
+Expecting global CSS to pierce shadow (need `::part` or CSS variables); forgetting `customElements.define` once guard; form association with shadow inputs.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Native encapsulation | Framework ecosystem still dominant |
+| Reusable across stacks | SSR/styling tooling more complex |
+| Standard in modern browsers | Closed shadow harder to debug |
+
+**Examples:**
 
 ```js
 class MyButton extends HTMLElement {
@@ -1258,11 +1238,7 @@ class MyButton extends HTMLElement {
 customElements.define('my-button', MyButton);
 ```
 
-</details>
-
-**When to use:** design systems, embeddable widgets, framework-agnostic components.
-
-**Source:** [MDN Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
+**Sources:** [MDN Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
 
 </details>
 
@@ -1285,18 +1261,23 @@ customElements.define('my-button', MyButton);
 | **Use for** | Search input, resize end | Scroll, mousemove, rAF alternatives |
 | **Risk** | Feels sluggish if delay too long | May miss final state |
 
-| Pros | Cons |
+**When to use:**
+
+Search input → debounce; scroll position → throttle; resize layout → debounce end.
+
+#### Common pitfalls
+
+Debounce on button click (may never fire if continuous); not cancelling debounce on unmount; throttle leading vs trailing edge confusion.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Debounce reduces API calls | Debounce feels laggy if delay too high |
 | Throttle smooth scroll handlers | Throttle may skip final position |
 | Essential for resize/scroll | Wrong choice for use case |
 
-**Cases:** Search input → debounce; scroll position → throttle; resize layout → debounce end.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function debounce(fn, ms) {
@@ -1321,11 +1302,7 @@ window.addEventListener('resize', debounce(onResize, 300));
 window.addEventListener('scroll', throttle(onScroll, 100));
 ```
 
-</details>
-
-**Common pitfalls:** Debounce on button click (may never fire if continuous); not cancelling debounce on unmount; throttle leading vs trailing edge confusion.
-
-**Source:** [yeahub debounce/throttle](https://yeahub.ru/questions/382?page=5&status=all&specialization=11&skills=6)
+**Sources:** [yeahub debounce/throttle](https://yeahub.ru/questions/382?page=5&status=all&specialization=11&skills=6)
 
 </details>
 
@@ -1346,22 +1323,25 @@ window.addEventListener('scroll', throttle(onScroll, 100));
 - `setInterval(fn, 1000/60)` is not tied to paint: jank between frames, and after a hidden tab the timer may **catch up** (many callbacks at once).
 - Pipeline / dirty layout → [1_html.md](./1_html.md#browser--rendering).
 
-| Pros | Cons |
+**When to use:**
+
+JS animations; measure layout before paint; game loop; scroll-linked effects.
+
+Visual animations — always prefer over `setInterval`/`setTimeout`.
+
+#### Common pitfalls
+
+Doing heavy logic inside rAF callback; using rAF for one-shot delay (use `queueMicrotask` or `setTimeout`); not cancelling loop on unmount.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Smooth animations | Still main-thread — heavy work janks |
 | Auto-pauses in background | Not for non-visual delays |
 | Better than `setInterval` for visuals | One frame budget ~16ms |
 
-**Cases:** JS animations; measure layout before paint; game loop; scroll-linked effects.
-
-**Common pitfalls:** Doing heavy logic inside rAF callback; using rAF for one-shot delay (use `queueMicrotask` or `setTimeout`); not cancelling loop on unmount.
-
-**When to use:** Visual animations — always prefer over `setInterval`/`setTimeout`.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function animate() {
@@ -1372,15 +1352,13 @@ function animate() {
 requestAnimationFrame(animate);
 ```
 
-</details>
-
 | | rAF | setTimeout |
 |---|-----|------------|
 | Sync with display | yes | no |
 | Paused in background tab | yes | no |
 | Use for | animations | delayed one-off tasks |
 
-**Source:** [MDN requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
+**Sources:** [MDN requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
 
 </details>
 
@@ -1404,11 +1382,11 @@ requestAnimationFrame(animate);
 | When | Before paint | When idle (or timeout) | After sync, before next macro |
 | Use | Animations | Analytics, prefetch | Promise reactions |
 
-**Cases:** Non-urgent work. Do **not** use for drag/scroll animation.
+**When to use:** Non-urgent work. Do **not** use for drag/scroll animation.
 
-**Key idea:** *rAF = this frame’s pixels; idle = leftover time; microtask storms never leave leftover time.*
+**Thoughts:** *rAF = this frame’s pixels; idle = leftover time; microtask storms never leave leftover time.*
 
-**Source:** [MDN requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
+**Sources:** [MDN requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
 
 </details>
 
@@ -1427,15 +1405,17 @@ requestAnimationFrame(animate);
 - `getBoundingClientRect()` viewport-relative box; add `scrollY` for document coords.
 - `scrollIntoView()` scrolls ancestors to reveal element.
 
-| Pros | Cons |
-|------|------|
-| `getBoundingClientRect` precise | Forces layout if called in loop |
-| Many properties for different needs | Easy to confuse offset vs client |
-| `scrollIntoView` built-in | Smooth scroll not instant for tests |
+**When to use:**
 
-**Cases:** Sticky header offset; infinite scroll near bottom; tooltip positioning.
+Sticky header offset; infinite scroll near bottom; tooltip positioning.
 
-**Common pitfalls:** Reading layout in write loop (thrashing); `offsetHeight` includes border, `clientHeight` not; rect changes on scroll without re-read.
+Layout calculations, infinite scroll, sticky headers, scroll-to-element.
+
+anchor navigation, "scroll to error", highlighting search results.
+
+#### Common pitfalls
+
+Reading layout in write loop (thrashing); `offsetHeight` includes border, `clientHeight` not; rect changes on scroll without re-read.
 
 | Property family | Includes border | Includes scrollbar | Content only |
 |-----------------|-----------------|--------------------|--------------|
@@ -1443,12 +1423,15 @@ requestAnimationFrame(animate);
 | `client*` | no | no | no |
 | `scroll*` | — | — | full scrollable area |
 
-**When to use:** Layout calculations, infinite scroll, sticky headers, scroll-to-element.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| `getBoundingClientRect` precise | Forces layout if called in loop |
+| Many properties for different needs | Easy to confuse offset vs client |
+| `scrollIntoView` built-in | Smooth scroll not instant for tests |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const el = document.querySelector('.panel');
@@ -1457,8 +1440,6 @@ const belowFold = rect.top > window.innerHeight;
 
 el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 ```
-
-</details>
 
 #### scrollIntoView()
 
@@ -1472,11 +1453,11 @@ document.querySelector('#section-3').scrollIntoView({
 });
 ```
 
-**When to use:** anchor navigation, "scroll to error", highlighting search results.
+**Thoughts:** `getBoundingClientRect()` is relative to viewport; add `scrollY` for document coordinates.
 
-**Notes:** `getBoundingClientRect()` is relative to viewport; add `scrollY` for document coordinates.
+**Sources:**
 
-**Source:** [javascript.info/size-and-scroll](https://learn.javascript.ru/size-and-scroll)
+[javascript.info/size-and-scroll](https://learn.javascript.ru/size-and-scroll)
 
 ---
 
@@ -1495,15 +1476,15 @@ document.querySelector('#section-3').scrollIntoView({
 - `getBoundingClientRect()` gives element box vs viewport.
 - Drag math often converts between coordinate systems.
 
-| Pros | Cons |
-|------|------|
-| Standard event coordinates | Touch has multiple touches |
-| `getBoundingClientRect` for element hits | Zoom/transform affect rect |
-| `pageX` includes scroll | Legacy IE differences mostly gone |
+**When to use:**
 
-**Cases:** Drag-drop; canvas hit testing; tooltip at cursor.
+Drag-drop; canvas hit testing; tooltip at cursor.
 
-**Common pitfalls:** Using client coords for document-positioned elements without scroll; ignoring `transform` on parent; touch `touches[0]` vs `changedTouches`.
+Drag-and-drop, tooltips, click targets on canvas/SVG.
+
+#### Common pitfalls
+
+Using client coords for document-positioned elements without scroll; ignoring `transform` on parent; touch `touches[0]` vs `changedTouches`.
 
 | Method | Coordinate system |
 |--------|-------------------|
@@ -1511,12 +1492,15 @@ document.querySelector('#section-3').scrollIntoView({
 | `clientX` / `clientY` (events) | Viewport |
 | `pageX` / `pageY` | Document (includes scroll) |
 
-**When to use:** Drag-and-drop, tooltips, click targets on canvas/SVG.
+**Pluses and minuses:**
 
-**Example:**
+| + | − |
+|------|------|
+| Standard event coordinates | Touch has multiple touches |
+| `getBoundingClientRect` for element hits | Zoom/transform affect rect |
+| `pageX` includes scroll | Legacy IE differences mostly gone |
 
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 document.addEventListener('click', (e) => {
@@ -1525,9 +1509,9 @@ document.addEventListener('click', (e) => {
 });
 ```
 
-</details>
+**Sources:**
 
-**Source:** [javascript.info/coordinates](https://learn.javascript.ru/coordinates)
+[javascript.info/coordinates](https://learn.javascript.ru/coordinates)
 
 ---
 
@@ -1545,27 +1529,30 @@ document.addEventListener('click', (e) => {
 - `window.getSelection()` returns user selection; `Range` defines start/end containers and offsets.
 - `range.selectNodeContents(el)` selects all children; `addRange` applies to selection.
 
-| Pros | Cons |
+**When to use:**
+
+Editor toolbar bold; copy custom format; highlight search matches.
+
+WYSIWYG editors, copy/custom highlight, find-in-page.
+
+#### Common pitfalls
+
+Selection cleared on DOM mutation; conflating selection with input `selectionStart`; not collapsing range after use.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Rich text editor building block | Cross-browser quirks in edge cases |
 | Programmatic copy/highlight | Complex nested text nodes |
 | Inspect user selection | Mobile selection API limited |
 
-**Cases:** Editor toolbar bold; copy custom format; highlight search matches.
-
-**Common pitfalls:** Selection cleared on DOM mutation; conflating selection with input `selectionStart`; not collapsing range after use.
-
-| Pros | Cons |
+| + | − |
 |------|------|
 | Rich text editor support | Browser inconsistencies in edge cases |
 | Programmatic selection | Complex API surface |
 
-**When to use:** WYSIWYG editors, copy/custom highlight, find-in-page.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const selection = window.getSelection();
@@ -1575,9 +1562,9 @@ selection.removeAllRanges();
 selection.addRange(range);
 ```
 
-</details>
+**Sources:**
 
-**Source:** [javascript.info/selection-range](https://learn.javascript.ru/selection-range)
+[javascript.info/selection-range](https://learn.javascript.ru/selection-range)
 
 ---
 
@@ -1590,7 +1577,9 @@ selection.addRange(range);
 
 ### Cross-tab & cross-window communication
 
-**Definition:** Tabs/windows exchange data through several APIs. Pick by **origin**, **1:1 vs broadcast**, and **message vs shared state**.
+**Definition:**
+
+Tabs/windows exchange data through several APIs. Pick by **origin**, **1:1 vs broadcast**, and **message vs shared state**.
 
 **Sequence** (decide → send → receive):
 
@@ -1614,36 +1603,9 @@ Same-origin = protocol + host + port. `sessionStorage` is **per tab** (shared wi
 
 \*Cross-origin popups still use `postMessage`; direct `opener` property access is blocked.
 
-**How it works:** SOP blocks direct JS across origins. `postMessage` delivers a `MessageEvent`; the receiver **must** check `event.origin`. The `storage` event fires on **other** documents that share that storage area — not on the writer.
+**How it works:**
 
-**Cases:** Logout all tabs; OAuth popup; theme sync; iframe widgets.
-
-| + | − |
-| --- | --- |
-| Right API per constraint | Easy to treat `localStorage` as a bus |
-| `postMessage` is the cross-origin path | Must validate `event.origin` |
-
-**Example — `postMessage`:**
-
-```js
-parent.postMessage({ type: 'READY' }, 'https://parent.example.com');
-
-window.addEventListener('message', (e) => {
-  if (e.origin !== 'https://child.example.com') return;
-  console.log(e.data);
-});
-```
-
-**Example — `BroadcastChannel`:**
-
-```js
-const channel = new BroadcastChannel('app-events');
-channel.postMessage({ type: 'LOGOUT' });
-channel.onmessage = (e) => { if (e.data.type === 'LOGOUT') redirectToLogin(); };
-channel.close();
-```
-
-**Other APIs:**
+SOP blocks direct JS across origins. `postMessage` delivers a `MessageEvent`; the receiver **must** check `event.origin`. The `storage` event fires on **other** documents that share that storage area — not on the writer.
 
 - **`localStorage` + `storage`:** `setItem` in A; `storage` in B/C (`e.key`, `e.newValue`). Strings only; races — not a message bus.
 - **`window.open` / `opener`:** same origin may call `opener.fn()`; otherwise `opener.postMessage`.
@@ -1659,19 +1621,52 @@ Shared background work?               → SharedWorker
 PWA fan-out?                          → Service Worker clients
 ```
 
-**Common pitfalls:** Skipping `event.origin`; expecting `storage` in the writing tab; using `sessionStorage` for cross-tab sync.
+**When to use:**
 
-**Key idea:** Cross-origin → `postMessage` + origin check. Same-origin broadcast → `BroadcastChannel`.
+Logout all tabs; OAuth popup; theme sync; iframe widgets.
 
-**Source:** [MDN postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) · [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel) · [storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event)
+#### Common pitfalls
+
+Skipping `event.origin`; expecting `storage` in the writing tab; using `sessionStorage` for cross-tab sync.
+
+**Pluses and minuses:**
+
+| + | − |
+| --- | --- |
+| Right API per constraint | Easy to treat `localStorage` as a bus |
+| `postMessage` is the cross-origin path | Must validate `event.origin` |
+
+**Examples:**
+
+```js
+parent.postMessage({ type: 'READY' }, 'https://parent.example.com');
+
+window.addEventListener('message', (e) => {
+  if (e.origin !== 'https://child.example.com') return;
+  console.log(e.data);
+});
+```
+
+```js
+const channel = new BroadcastChannel('app-events');
+channel.postMessage({ type: 'LOGOUT' });
+channel.onmessage = (e) => { if (e.data.type === 'LOGOUT') redirectToLogin(); };
+channel.close();
+```
+
+**Thoughts:** Cross-origin → `postMessage` + origin check. Same-origin broadcast → `BroadcastChannel`.
+
+**Sources:** [MDN postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) · [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel) · [storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event)
 
 ### Clickjacking
 
 **Definition:** Attacker embeds your site in a hidden iframe and tricks the user into clicking your UI under a deceptive overlay.
 
-**Defense:** `X-Frame-Options: DENY` or CSP `frame-ancestors 'none'` (or allowlist trusted parents only).
+**How it works:** `X-Frame-Options: DENY` or CSP `frame-ancestors 'none'` (or allowlist trusted parents only).
 
-**Source:** [javascript.info/cross-window-communication](https://learn.javascript.ru/cross-window-communication) · [MDN BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel) · [MDN storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event)
+**Sources:**
+
+[javascript.info/cross-window-communication](https://learn.javascript.ru/cross-window-communication) · [MDN BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel) · [MDN storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event)
 
 ---
 
@@ -1689,27 +1684,30 @@ PWA fan-out?                          → Service Worker clients
 - `new CustomEvent('name', { detail, bubbles, cancelable })` then `dispatchEvent` on element.
 - Listeners same as native events; `detail` carries payload.
 
-| Pros | Cons |
+**When to use:**
+
+Widget signals parent; micro-frontend integration; legacy plugin hooks.
+
+Micro-frontends, Web Components communication, legacy widget integration.
+
+#### Common pitfalls
+
+Typo in event name; forgetting `bubbles: true` for parent listeners; huge objects in `detail` causing retention.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Decoupled pub/sub on DOM tree | Hard to trace vs explicit callbacks |
 | Bubbles like native events | Overuse creates spaghetti |
 | Works with Web Components | Not a state management solution |
 
-**Cases:** Widget signals parent; micro-frontend integration; legacy plugin hooks.
-
-**Common pitfalls:** Typo in event name; forgetting `bubbles: true` for parent listeners; huge objects in `detail` causing retention.
-
-| Pros | Cons |
+| + | − |
 |------|------|
 | Decoupled components | Overuse creates hard-to-trace flows |
 | Same bubbling/capture as native events | Not a replacement for state management |
 
-**When to use:** Micro-frontends, Web Components communication, legacy widget integration.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const el = document.querySelector('#app');
@@ -1726,9 +1724,7 @@ el.dispatchEvent(
 );
 ```
 
-</details>
-
-**Source:** [MDN CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent)
+**Sources:** [MDN CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent)
 
 </details>
 
@@ -1758,19 +1754,24 @@ el.dispatchEvent(
 
 Safari / WebKit ITP (when tracking prevention is on): **script-writable** data (JS cookies, Web Storage, IndexedDB, SW cache, …) can be deleted if the origin had **no user interaction** (click/tap) in the last **7 days of browser use**. Server-set cookies are exempt from that proactive eviction. Home-screen web apps skip the 7-day cap.
 
-**Cases:** Auth session the **server** must see → `HttpOnly` + `Secure` + `SameSite` cookie. Theme / locale / small UI prefs → `localStorage`. Wizard / tab-only draft → `sessionStorage`. Offline notes, files, queryable lists → IndexedDB (or localForage). Client-only data → never cookies (they bloat every request).
+**When to use:**
 
-| Pros | Cons |
+Auth session the **server** must see → `HttpOnly` + `Secure` + `SameSite` cookie. Theme / locale / small UI prefs → `localStorage`. Wizard / tab-only draft → `sessionStorage`. Offline notes, files, queryable lists → IndexedDB (or localForage). Client-only data → never cookies (they bloat every request).
+
+#### Common pitfalls
+
+JWT / tokens in Web Storage (XSS, extensions). Assuming overflow *wipes* Web Storage — it **throws**, it does not auto-clear. Cookie table “sent unless HttpOnly” is wrong: HttpOnly is still sent to the server, just not readable from JS. `storage` event does not fire in the writing tab. Safari 7-day rule is **no interaction**, not “did not call `getItem`”. Do not treat localStorage as durable forever.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Cookies: server round-trip, `HttpOnly` for XSS | Size; sent every request; clumsy JS API |
 | Web Storage: tiny API | Sync; strings; XSS-readable; ~5 MiB |
 | IndexedDB: async, structured, large | Verbose API |
 | localForage: one API, driver fallback | Extra dependency |
 
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 try {
@@ -1797,13 +1798,9 @@ await localforage.setItem('user', { id: 1 });
 const fromForage = await localforage.getItem('user');
 ```
 
-</details>
+**Thoughts:** Cookies for what the **server** needs on the next request; Web Storage for small client prefs; IndexedDB (or localForage) for large/async data.
 
-**Common pitfalls:** JWT / tokens in Web Storage (XSS, extensions). Assuming overflow *wipes* Web Storage — it **throws**, it does not auto-clear. Cookie table “sent unless HttpOnly” is wrong: HttpOnly is still sent to the server, just not readable from JS. `storage` event does not fire in the writing tab. Safari 7-day rule is **no interaction**, not “did not call `getItem`”. Do not treat localStorage as durable forever.
-
-**Key idea:** Cookies for what the **server** needs on the next request; Web Storage for small client prefs; IndexedDB (or localForage) for large/async data.
-
-**Source:** [MDN — Web Storage](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) · [MDN — quotas & eviction](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria) · [MDN — cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies) · [MDN — IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) · [localForage](https://github.com/localForage/localForage)
+**Sources:** [MDN — Web Storage](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) · [MDN — quotas & eviction](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria) · [MDN — cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies) · [MDN — IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) · [localForage](https://github.com/localForage/localForage)
 
 </details>
 
@@ -1818,17 +1815,19 @@ const fromForage = await localforage.getItem('user');
 
 **How it works:** SOP also covers iframes and `document` access — not only APIs. Headers, preflight, credentials, `*`, and `Vary: Origin` live in [Web API — CORS](./6_web_api.md#cors).
 
-**Cases:** Cross-origin `fetch` from a page; module scripts / fonts that need CORS; same-origin calls need no CORS headers.
+**When to use:** Cross-origin `fetch` from a page; module scripts / fonts that need CORS; same-origin calls need no CORS headers.
 
-| Pros | Cons |
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Isolates tabs/iframes by origin | Easy to confuse SOP (DOM) with CORS (HTTP read) |
 
-**Example:** see [Web API — CORS](./6_web_api.md#cors).
+**Examples:** see [Web API — CORS](./6_web_api.md#cors).
 
-**Key idea:** SOP is the default isolate; CORS is server headers that let **page JS** read a response — not a server firewall.
+**Thoughts:** SOP is the default isolate; CORS is server headers that let **page JS** read a response — not a server firewall.
 
-**Source:** [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
+**Sources:** [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
 
 </details>
 
@@ -1853,18 +1852,23 @@ const fromForage = await localforage.getItem('user');
 | Use for | lazy load, infinite scroll, ads viewability | responsive components, charts |
 | Root | viewport or custom element | element itself |
 
-| Pros | Cons |
+**When to use:**
+
+Lazy-load images (`data-src` when intersecting); sticky analytics "50% visible"; textarea auto-grow; canvas resize.
+
+#### Common pitfalls
+
+Not `unobserve` after lazy load; ResizeObserver callback changing size infinitely; expecting IO during `display:none` (no intersection).
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Better perf than scroll listeners | Callback timing async — not synchronous with DOM |
 | Lazy loading standard pattern | ResizeObserver loop limit errors if callback mutates layout |
 | Fine-grained thresholds | Older browsers need polyfill for IO |
 
-**Cases:** Lazy-load images (`data-src` when intersecting); sticky analytics "50% visible"; textarea auto-grow; canvas resize.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 const io = new IntersectionObserver((entries) => {
@@ -1885,11 +1889,7 @@ const ro = new ResizeObserver((entries) => {
 ro.observe(document.querySelector('.panel'));
 ```
 
-</details>
-
-**Common pitfalls:** Not `unobserve` after lazy load; ResizeObserver callback changing size infinitely; expecting IO during `display:none` (no intersection).
-
-**Source:** [MDN IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) · [MDN ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
+**Sources:** [MDN IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) · [MDN ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
 
 </details>
 
@@ -1910,18 +1910,23 @@ ro.observe(document.querySelector('.panel'));
 - `history.length`, `back()`, `forward()`, `go(n)` navigate the stack.
 - Full navigation: `location.assign(href)`, `location.href = url`, or `<a>` click — loads new document.
 
-| Pros | Cons |
+**When to use:**
+
+SPA route change; wizard steps; modal deep-link; replaceState to strip temp query params.
+
+#### Common pitfalls
+
+Forgetting `popstate` listener — back button breaks; pushing same URL duplicates stack; state too large; confusing `hashchange` (`#/page`) with History API.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | SPA URLs without reload | Must sync app state with history manually |
 | State object for restore | `state` structured-clone limits (no DOM nodes) |
 | Works with router libs (React Router) | User expects back button to undo app state |
 
-**Cases:** SPA route change; wizard steps; modal deep-link; replaceState to strip temp query params.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 function navigate(path) {
@@ -1937,11 +1942,7 @@ window.addEventListener('popstate', (e) => {
 renderRoute(location.pathname);
 ```
 
-</details>
-
-**Common pitfalls:** Forgetting `popstate` listener — back button breaks; pushing same URL duplicates stack; state too large; confusing `hashchange` (`#/page`) with History API.
-
-**Source:** [javascript.info/modifying-document](https://learn.javascript.ru/modifying-document) · [MDN History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
+**Sources:** [javascript.info/modifying-document](https://learn.javascript.ru/modifying-document) · [MDN History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
 
 </details>
 
@@ -1961,12 +1962,15 @@ renderRoute(location.pathname);
 - `searchParams.get` / `getAll` / `set` / `append` / `delete` / `toString()` (no leading `?`). Duplicate keys are allowed; `append` adds, `set` replaces.
 - Do not split `?`/`&` by hand — encoding breaks (`привет`, `+` vs space).
 
-**Cases:** Build search links; read `location.search`; Node/Next `new URL(request.url)`.
+**When to use:**
 
-**Example:**
+Build search links; read `location.search`; Node/Next `new URL(request.url)`.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+`toString()` omits `?`; constructing `URLSearchParams` from a raw interpolated string can mishandle `+`; `username`/`password` exist on `URL` but putting credentials in a href is deprecated.
+
+**Examples:**
 
 ```js
 const url = new URL('/search', 'https://doka.guide');
@@ -1980,13 +1984,9 @@ url.href;
 url.searchParams.getAll('category'); // ['html', 'js']
 ```
 
-</details>
+**Thoughts:** Parse with `URL`; mutate query with `searchParams`, never with string concat.
 
-**Common pitfalls:** `toString()` omits `?`; constructing `URLSearchParams` from a raw interpolated string can mishandle `+`; `username`/`password` exist on `URL` but putting credentials in a href is deprecated.
-
-**Key idea:** Parse with `URL`; mutate query with `searchParams`, never with string concat.
-
-**Source:** [MDN — URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) · [MDN — URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+**Sources:** [MDN — URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) · [MDN — URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
 </details>
 
@@ -2036,7 +2036,9 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 ### DOM vs BOM?
 
-**Definition:** **DOM** models document content (nodes, elements); **BOM** models browser chrome/environment around the page (`window`, `location`, `history`, `navigator`).
+**Definition:**
+
+**DOM** models document content (nodes, elements); **BOM** models browser chrome/environment around the page (`window`, `location`, `history`, `navigator`).
 
 | | DOM | BOM |
 |---|-----|-----|
@@ -2047,11 +2049,13 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 **How it works:** `window` is the global object; `document` is a property of `window`. DOM operations mutate/read page structure; BOM controls navigation, dialogs, viewport, timers.
 
-**Cases:** DOM for UI updates; BOM for redirects, opening windows, reading URL, history navigation.
+**When to use:**
+
+DOM for UI updates; BOM for redirects, opening windows, reading URL, history navigation.
 
 See full table in [DOM vs BOM](#dom-vs-bom) under **DOM, BOM & events**.
 
-**Source:** [javascript.info/browser-environment](https://learn.javascript.ru/browser-environment)
+**Sources:** [javascript.info/browser-environment](https://learn.javascript.ru/browser-environment)
 
 </details>
 
@@ -2069,12 +2073,15 @@ See full table in [DOM vs BOM](#dom-vs-bom) under **DOM, BOM & events**.
 3. Bubble phase (default): target → window.
 4. Delegation: parent listens on bubble; checks `e.target.matches(selector)`.
 
-**Cases:** Dynamic list items — one `ul` listener; stopping propagation when overlay handles click; capture for early intercept.
+**When to use:**
 
-**Example:**
+Dynamic list items — one `ul` listener; stopping propagation when overlay handles click; capture for early intercept.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+`target` may be child inside `li` (use `closest`); `stopPropagation` breaks delegation above; assuming delegate on capture without `{ capture: true }`.
+
+**Examples:**
 
 ```js
 list.addEventListener('click', (e) => {
@@ -2084,13 +2091,9 @@ list.addEventListener('click', (e) => {
 });
 ```
 
-</details>
-
 See [Event phases](#event-phases) and [Event delegation](#event-delegation).
 
-**Common pitfalls:** `target` may be child inside `li` (use `closest`); `stopPropagation` breaks delegation above; assuming delegate on capture without `{ capture: true }`.
-
-**Source:** [javascript.info/event-delegation](https://learn.javascript.ru/event-delegation)
+**Sources:** [javascript.info/event-delegation](https://learn.javascript.ru/event-delegation)
 
 </details>
 
@@ -2099,7 +2102,9 @@ See [Event phases](#event-phases) and [Event delegation](#event-delegation).
 
 ### localStorage vs sessionStorage vs cookies?
 
-**Definition:** Three client storage mechanisms with different lifetime, scope, and server visibility.
+**Definition:**
+
+Three client storage mechanisms with different lifetime, scope, and server visibility.
 
 | | localStorage | sessionStorage | Cookies |
 |---|--------------|----------------|---------|
@@ -2111,12 +2116,15 @@ See [Event phases](#event-phases) and [Event delegation](#event-delegation).
 
 **How it works:** Web Storage stores **strings** (`JSON.stringify` / `JSON.parse` — [JS Core — JSON](./3_js_core.md#json)). Cookies travel on HTTP; IndexedDB is async + objects. Full comparison, Safari 7-day ITP, quotas, localForage: [Browser storage](#browser-storage). HTTP flags: [HTTP cookies](./6_web_api.md#http-cookies).
 
-**Cases:** Theme → localStorage; tab draft → sessionStorage; auth id → HttpOnly cookie; large/offline → IndexedDB.
+**When to use:**
 
-**Example:**
+Theme → localStorage; tab draft → sessionStorage; auth id → HttpOnly cookie; large/offline → IndexedDB.
 
-<details>
-  <summary>Code</summary>
+#### Common pitfalls
+
+JWT in localStorage; cookie size; sessionStorage not cross-tab; Safari script-storage eviction after 7 days without interaction.
+
+**Examples:**
 
 ```js
 localStorage.setItem('theme', 'dark');
@@ -2124,11 +2132,7 @@ sessionStorage.setItem('step', '2');
 // cookie set by server preferred: Set-Cookie: sid=...; HttpOnly; Secure; SameSite=Lax
 ```
 
-</details>
-
-**Common pitfalls:** JWT in localStorage; cookie size; sessionStorage not cross-tab; Safari script-storage eviction after 7 days without interaction.
-
-**Source:** [javascript.info/localstorage](https://learn.javascript.ru/localstorage)
+**Sources:** [javascript.info/localstorage](https://learn.javascript.ru/localstorage)
 
 </details>
 
@@ -2146,13 +2150,17 @@ sessionStorage.setItem('step', '2');
 - Non-simple requests trigger **preflight** `OPTIONS`; server must allow method and headers.
 - Credentialed requests need `credentials: 'include'` and cannot use `Allow-Origin: *`.
 
-**Cases:** API on `api.example.com` consumed by `app.example.com`; public CDN with `*`; cookie auth requires explicit origin.
+**When to use:**
+
+API on `api.example.com` consumed by `app.example.com`; public CDN with `*`; cookie auth requires explicit origin.
 
 See [CORS and same-origin policy](#cors-same-origin) and [Web API — CORS](./6_web_api.md#cors).
 
-**Common pitfalls:** CORS is browser-only — not server-side security boundary; misconfigured preflight; confusing with same-origin policy for iframes/DOM.
+#### Common pitfalls
 
-**Source:** [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
+CORS is browser-only — not server-side security boundary; misconfigured preflight; confusing with same-origin policy for iframes/DOM.
+
+**Sources:** [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
 
 </details>
 
@@ -2171,13 +2179,17 @@ See [CORS and same-origin policy](#cors-same-origin) and [Web API — CORS](./6_
 - `BroadcastChannel` / `storage` / `SharedWorker` — same origin only.
 - `sessionStorage` — not shared between tabs.
 
-**Cases:** Logout broadcast → BroadcastChannel; theme sync → localStorage + storage; OAuth popup → postMessage.
+**When to use:**
+
+Logout broadcast → BroadcastChannel; theme sync → localStorage + storage; OAuth popup → postMessage.
 
 See [Cross-tab & cross-window communication](#cross-tab-communication).
 
-**Common pitfalls:** Skipping origin check on `message`; expecting sessionStorage cross-tab; race on concurrent localStorage writes.
+#### Common pitfalls
 
-**Source:** [javascript.info/cross-window-communication](https://learn.javascript.ru/cross-window-communication)
+Skipping origin check on `message`; expecting sessionStorage cross-tab; race on concurrent localStorage writes.
+
+**Sources:** [javascript.info/cross-window-communication](https://learn.javascript.ru/cross-window-communication)
 
 </details>
 
@@ -2195,18 +2207,17 @@ See [Cross-tab & cross-window communication](#cross-tab-communication).
 - Paused when tab hidden — saves CPU/battery.
 - `cancelAnimationFrame(id)` stops scheduled frame.
 
-| Pros | Cons |
+**When to use:** JS animations; measure-then-mutate layout; scroll-linked effects.
+
+**Pluses and minuses:**
+
+| + | − |
 |------|------|
 | Synced to display refresh | Still runs on main thread |
 | Better than setInterval for animation | Not for arbitrary delays |
 | Auto-pauses in background | Heavy work still causes jank |
 
-**Cases:** JS animations; measure-then-mutate layout; scroll-linked effects.
-
-**Example:**
-
-<details>
-  <summary>Code</summary>
+**Examples:**
 
 ```js
 let x = 0;
@@ -2218,11 +2229,9 @@ function tick(ts) {
 requestAnimationFrame(tick);
 ```
 
-</details>
-
 See [requestAnimationFrame](#request-animation-frame) in **Browser APIs & UI patterns**.
 
-**Source:** [MDN requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
+**Sources:** [MDN requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
 
 </details>
 
@@ -2235,11 +2244,13 @@ See [requestAnimationFrame](#request-animation-frame) in **Browser APIs & UI pat
 
 **How it works:** Not a microtask. rAF is for frames; idle is for leftover time. A microtask storm delays both paint and idle work.
 
-**Key idea:** *Use idle for non-urgent work; never for animations.*
+**Thoughts:**
+
+*Use idle for non-urgent work; never for animations.*
 
 See [requestIdleCallback](#request-idle-callback) in theory (after rAF).
 
-**Source:** [MDN requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
+**Sources:** [MDN requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
 
 </details>
 
