@@ -1,0 +1,67 @@
+---
+description: Apply when the user prompt is about adding, editing, syncing, or structuring MyConspect study notes / conspect in resources/ (HTML, CSS, JS, React, Web API, interview notes). Ignore if they only have a note open or ask an unrelated question.
+alwaysApply: false
+---
+
+# Study notes — structure & accuracy
+
+When creating or editing topic files in `resources/`, follow this workflow. The Next.js handbook at the repo root reads only `resources/*.md`.
+
+## 1. Verify facts before writing
+
+Do **not** rely on training data for technical details (APIs, syntax, behavior, versions, deprecations).
+
+**Required:** use **Context7 MCP** before adding or changing factual content:
+
+1. `resolve-library-id` — pass `libraryName` and the full topic as `query`
+2. `query-docs` — pass the chosen `libraryId` and a specific question
+
+**Also use when needed:**
+- **Ref.tools MCP** — narrow API lookups (endpoints, params, SDK methods)
+- **Web search** — only if Context7/Ref lack coverage
+
+Prefer official docs. If docs conflict with memory, trust the fetched docs.
+
+## 2. File header
+
+- H1: `# [Topic] — [subtitle]`
+- 1–2 sentence intro
+- `### Related docs` with cross-links to related files
+- `### Main concepts` table (Area | Topics)
+- `### Sections` TOC with anchor links
+
+## 3. Topic blocks
+
+Wrap each concept in `<details><summary>...</summary>`.
+
+Inside each block, in this order:
+
+1. **Definition:** one clear sentence
+2. **How it works:** bullets or short paragraphs
+3. **Cases:** when to use it
+4. Pros | Cons (if relevant) — two-column table, **or** `+` / `−` lists when a table is overkill
+5. **Example:** fenced code aligned with verified docs
+6. **Common pitfalls** (if relevant)
+7. **Key idea:** one-line takeaway
+
+## 4. Related-file updates
+
+After a factual or structural change, keep sibling notes in sync:
+
+1. Pick candidate files from `.cursor/skills/update-conspect/files.md`, then grep the concept / `<summary>` there first. Do **not** read whole topic files (many are 3k–6k lines). Read the header (~40 lines) plus the matching `<details>` block.
+2. Pick **one canonical** `<details>` block (the file whose topic owns the concept). Other files get a short pointer + link, not a second full essay. Skip `resources/0_me.md`.
+3. Update `### Related docs` **both ways** when a new overlap appears.
+4. Refresh that file’s Main concepts / Sections if headings changed.
+5. Do not leave stale definitions, examples, or deprecations in siblings.
+
+For the full search-and-patch sequence, follow `.cursor/skills/update-conspect/SKILL.md`.
+
+## 5. End of file
+
+- `## Interview Practice` with Q&A or exercises
+- Tone: concise, interview-prep friendly
+- Edit `resources/*.md` notes only; no unrelated app refactors
+
+## Canonical example
+
+Match the pattern in `resources/3_js_browser.md`.

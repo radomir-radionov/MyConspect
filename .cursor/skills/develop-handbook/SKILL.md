@@ -12,7 +12,7 @@ disable-model-invocation: false
 
 ## When to use
 
-The user is changing this app (routes, parser, catalog, UI, SEO), not Core conspect notes in another repo.
+The user is changing this app (routes, parser, catalog, UI, SEO), not the conspect notes in `resources/` (unless they also asked to edit notes).
 
 ## Layout
 

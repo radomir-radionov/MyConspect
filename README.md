@@ -1,6 +1,8 @@
 # MyConspect
 
-Browse-only study handbook. Notes are copied into `resources/` and turned into static pages at build time.
+Browse-only study handbook. Conspect markdown lives in `resources/` and is turned into static pages at build time. Edit notes there; the Next.js app stays at the repo root.
+
+Useful study links: [roadmap.sh](https://roadmap.sh/), [StackBlitz](https://stackblitz.com/), [GitNation](https://portal.gitnation.org/). Extra intro notes from the old Core README are in `resources/0_intro.md` (not published).
 
 ## Routes
 
