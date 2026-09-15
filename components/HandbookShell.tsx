@@ -24,7 +24,6 @@ export function HandbookShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname() ?? "/";
-  console.count("render:HandbookShell");
   const router = useRouter();
   const pathnameRef = useRef(pathname);
   const restoreHrefRef = useRef<string | null>(null);

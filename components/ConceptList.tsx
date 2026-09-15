@@ -60,7 +60,6 @@ export function ConceptList({
   emptyMessage: string;
 }) {
   const query = useSearchQuery();
-  console.count("render:ConceptList");
   const hash = useSyncExternalStore(subscribeHash, getHash, () => "");
   const activeId = decodeURIComponent(hash.replace(/^#/, ""));
 

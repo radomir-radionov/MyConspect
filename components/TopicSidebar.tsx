@@ -71,7 +71,6 @@ export const TopicSidebar = memo(function TopicSidebar({
   onNavigate?: () => void;
 }) {
   const pathname = usePathname() ?? "/";
-  console.count("render:TopicSidebar");
   const hash = useSyncExternalStore(subscribeHash, getHash, () => "");
   const activeConceptId = decodeURIComponent(hash.replace(/^#/, ""));
   const filtered = filterNavGroups(groups, query);
