@@ -23,7 +23,7 @@ The user is changing this app (routes, parser, catalog, UI, SEO), not the conspe
 - Search: `components/search` (query context and hit highlighting)
 - Topic: `components/topic` (accordion list, slot labels)
 - Audit: `lib/audit` + `scripts/audit.ts` (`**Source:**` URL checks)
-- Routes: `/` tracks → `/[track]` topic cards → `/[track]/[topic]`
+- Routes: `/` tracks → `/[track]` topic cards → `/[track]/[topic]` (subject hubs share `[topic]`)
 - SEO: `generateMetadata`, `app/sitemap.ts`, `app/robots.ts`
 
 ## Product rules
@@ -45,13 +45,15 @@ The user is changing this app (routes, parser, catalog, UI, SEO), not the conspe
 
 ## Adding a topic
 
+Split only when a new **study unit** is needed (see `/instructions` and `.cursor/rules/study-notes-structure.mdc`). One file = one sidebar topic = one accordion page. Do not add per-concept routes.
+
 1. Copy the `*_*.md` file into `resources/`
-2. Add a `Topic` row in `lib/catalog` (`slug`, `file`, `title`, `blurb`, `track`)
+2. Add a `Topic` row in `lib/catalog` (`slug`, `file`, `title`, `blurb`, `track`). For grouped subjects (HTML, CSS, JavaScript, React, …), set `grouping: { subject, cluster }`
 3. Run `npm run build` — `generateStaticParams` picks it up
 
 ## UI
 
-- Docs shell: sticky header + track-grouped topic sidebar (`components/nav`)
+- Docs shell: sticky header + track-grouped topic sidebar (`components/nav`). Subjects (HTML, CSS, JavaScript, React, …) nest Core / other clusters
 - Topic search lists only matching topics in the sidebar. Tracks and topic concept lists stay collapsed until opened. Search opens the found accordion in the main pane and restores the previous page when cleared
 - Card grids for tracks and topics (`components/catalog`)
 - Topic accordion UI (`components/topic`)

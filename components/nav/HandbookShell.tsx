@@ -156,8 +156,8 @@ export function HandbookShell({
             id="handbook-nav-aside"
             className={
               navOpen
-                ? "fixed top-14 bottom-0 left-0 z-30 w-72 overflow-y-auto border-r border-zinc-200 bg-white lg:static lg:z-0 lg:w-64 lg:shrink-0"
-                : "hidden overflow-y-auto border-r border-zinc-200 bg-white lg:block lg:w-64 lg:shrink-0"
+                ? "fixed top-14 bottom-0 left-0 z-30 w-80 overflow-y-auto border-r border-zinc-200 bg-white lg:static lg:z-0 lg:w-72 lg:shrink-0"
+                : "hidden overflow-y-auto border-r border-zinc-200 bg-white lg:block lg:w-72 lg:shrink-0"
             }
             style={{ minHeight: 0, overscrollBehavior: "contain" }}
           >

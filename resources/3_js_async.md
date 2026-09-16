@@ -4,9 +4,9 @@ Covers asynchronous JavaScript: event loop, timers, promises, `async/await`, and
 
 ### Related docs
 
-* [JS Core](./3_js_core.md) · [Memory: stack and heap](./3_js_core.md#memory-stack-heap) · [JSON](./3_js_core.md#json) · [JS OOP](./3_js_oop.md) · [JS Browser](./3_js_browser.md)
-* [Web API](./6_web_api.md) · [CORS](./6_web_api.md#cors) · [INP](./6_web_api.md#inp-interaction-to-next-paint) · [Node.js](./8_nodejs.md) · [React](./4_react.md) · [YAML](./10_build.md#yaml)
-* [Jest — mock `fetch`](./7_special.md#jest--first-tests-node-vs-jsdom)
+* [JS Core](./3_js_core.md) · [JS Array](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [Memory: stack and heap](./3_js_core.md#memory-stack-heap) · [JSON](./3_js_core.md#json) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser additional](./3_js_browser_extra.md)
+* [Web API](./6_web_api.md) · [CORS](./6_web_api_security.md#cors) · [INP](./6_web_api_security.md#inp-interaction-to-next-paint) · [Node.js](./8_nodejs.md) · [React](./4_react.md) · [YAML](./10_build_ci.md#yaml)
+* [Jest — mock `fetch`](./7_special_engineering.md#jest--first-tests-node-vs-jsdom)
 
 [← Back to JS hub](./3_js.md)
 
@@ -521,7 +521,7 @@ fs.readFile('file.txt', (err, data) => {
 - Side effects: mutate global state, touch DOM, call APIs, write files, `console.log`.
 - Async side effects complete later — must be awaited or handled in `.then`.
 - In React, side effects belong in `useEffect` or event handlers, not render.
-- Tests mock side effects (fetch, timers) to keep units isolated. Jest: stub `global.fetch` to a `{ json }` Response — [Jest first tests](./7_special.md#jest--first-tests-node-vs-jsdom). Stub vs mock vs spy: [Test doubles](./7_special.md#test-doubles-stubs-mocks-spies).
+- Tests mock side effects (fetch, timers) to keep units isolated. Jest: stub `global.fetch` to a `{ json }` Response — [Jest first tests](./7_special_engineering.md#jest--first-tests-node-vs-jsdom). Stub vs mock vs spy: [Test doubles](./7_special_engineering.md#test-doubles-stubs-mocks-spies).
 
 | Operation | Example |
 |-----------|---------|
@@ -535,7 +535,7 @@ fs.readFile('file.txt', (err, data) => {
 | Situation | Approach |
 |-----------|----------|
 | Identify what to `await` | Network, DB, file I/O |
-| Unit tests | Mock `fetch` (`jest.fn` / Vitest `vi.fn`), fake timers (`vi.useFakeTimers`) — [Test doubles](./7_special.md#test-doubles-stubs-mocks-spies) |
+| Unit tests | Mock `fetch` (`jest.fn` / Vitest `vi.fn`), fake timers (`vi.useFakeTimers`) — [Test doubles](./7_special_engineering.md#test-doubles-stubs-mocks-spies) |
 | React data loading | `useEffect` + cleanup (`AbortController`) |
 | Redux/reducers | Keep reducers pure — effects in thunks/sagas |
 
@@ -578,7 +578,7 @@ async function refreshUI() {
 - Browser sends HTTP in the background (`XMLHttpRequest` or `fetch`).
 - **Early AJAX:** server often returned an **HTML fragment**; JS inserted it — no full reload, API still coupled to markup.
 - **Today:** payload is usually **JSON**; the client renders. `fetch` returns a Promise; XHR uses `onload` / `onerror`.
-- CORS, cookies, and auth headers apply — see [Web API — CORS](./6_web_api.md#cors).
+- CORS, cookies, and auth headers apply — see [Web API — CORS](./6_web_api_security.md#cors).
 
 **When to use:**
 
@@ -1225,7 +1225,7 @@ try {
 }
 ```
 
-**Thoughts:** Aborting stale search `fetch` reduces main-thread work and races — helps **INP**. [6_web_api.md — INP](./6_web_api.md#inp-interaction-to-next-paint).
+**Thoughts:** Aborting stale search `fetch` reduces main-thread work and races — helps **INP**. [6_web_api.md — INP](./6_web_api_security.md#inp-interaction-to-next-paint).
 
 **Sources:** [javascript.info/fetch-abort](https://learn.javascript.ru/fetch-abort) — full Fetch details in [6_web_api.md](./6_web_api.md)
 
@@ -1271,7 +1271,7 @@ try {
 - `this` in timer callback — use arrow function or `.bind`.
 - Forgetting `clearInterval` on SPA route change — leaks and stale updates.
 - Assuming exact timing — event loop load adds jitter.
-- Leftover `setInterval` (polling, autosave) regularly steals the main thread — worse for **INP** than a one-shot `setTimeout`. [6_web_api.md — INP](./6_web_api.md#inp-interaction-to-next-paint).
+- Leftover `setInterval` (polling, autosave) regularly steals the main thread — worse for **INP** than a one-shot `setTimeout`. [6_web_api.md — INP](./6_web_api_security.md#inp-interaction-to-next-paint).
 
 **Pluses and minuses:**
 
@@ -1344,7 +1344,7 @@ requestIdleCallback((deadline) => {
 
 ### JSON
 
-**Definition:** Syntax, `stringify`/`parse`, and pitfalls: [JS Core — JSON](./3_js_core.md#json). Config comments → [YAML](./10_build.md#yaml).
+**Definition:** Syntax, `stringify`/`parse`, and pitfalls: [JS Core — JSON](./3_js_core.md#json). Config comments → [YAML](./10_build_ci.md#yaml).
 
 **How it works:** `await res.json()` parses the fetch body (same as `JSON.parse` on the text). Send with `JSON.stringify(body)` and `Content-Type: application/json`.
 
@@ -1361,9 +1361,10 @@ requestIdleCallback((deadline) => {
 
 **How it works:**
 
-- Fetch, CORS, HTTP methods → [6_web_api.md](./6_web_api.md#cors)
+- Fetch, CORS, HTTP methods → [6_web_api.md](./6_web_api_security.md#cors)
 - Node event loop phases, `libuv` → [8_nodejs.md](./8_nodejs.md)
-- DOM events, `requestAnimationFrame`, `requestIdleCallback` → [3_js_browser.md](./3_js_browser.md)
+- DOM events → [3_js_events.md](./3_js_events.md)
+- `requestAnimationFrame`, `requestIdleCallback` → [3_js_browser_extra.md](./3_js_browser_extra.md#request-animation-frame)
 - React async patterns, stale closures → [4_react.md](./4_react.md)
 
 **When to use:** Follow these links when async code touches networking, server runtime, UI timing, or framework lifecycle.

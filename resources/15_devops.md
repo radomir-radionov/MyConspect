@@ -4,7 +4,7 @@ Deployment, containers, CI/CD integration, and production operations — intervi
 
 ### Related docs
 
-* [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build.md#what-is-cicd) · [GitHub Actions](./10_build.md#github-actions) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs.md#files--file-systems) · [Node — SIGTERM](./8_nodejs.md#graceful-shutdown--sigterm) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design.md#processes-multitasking) · [Web server](./6_web_api.md#web-server) · [How the Internet works](./6_web_api.md#how-the-internet-works) · [Ports & sockets](./6_web_api.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api.md#osi--tcpip-models) · [Encryption](./7_special.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
+* [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_core.md#files--file-systems) · [Node — SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_foundations.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#how-the-internet-works) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
 
 ### Main concepts
 
@@ -32,7 +32,7 @@ Full Docker / Compose / multi-stage notes live in [10_build.md — Docker](./10_
 
 **Definition:** An **image** is an immutable layered template; a **container** is a running instance of that image; a **volume** stores data outside the container lifecycle.
 
-**How it works:** Engine = `dockerd` + API + `docker` CLI. Build layers (`FROM`, `COPY`, `RUN`). Multi-stage: compile in a builder, copy artifacts into a slim runtime. Engine, Hub, networks, CLI, lifecycle: [10_build.md — Docker](./10_build.md#docker) · [Dockerfile](./10_build.md#dockerfile) · [container lifecycle](./10_build.md#container-lifecycle) · [Compose](./10_build.md).
+**How it works:** Engine = `dockerd` + API + `docker` CLI. Build layers (`FROM`, `COPY`, `RUN`). Multi-stage: compile in a builder, copy artifacts into a slim runtime. Engine, Hub, networks, CLI, lifecycle: [10_build.md — Docker](./10_build_docker.md#docker) · [Dockerfile](./10_build_docker.md#dockerfile) · [container lifecycle](./10_build_docker.md#container-lifecycle) · [Compose](./10_build.md).
 
 **When to use:**
 
@@ -57,7 +57,7 @@ ENV NODE_ENV=production
 CMD ["node", "dist/index.js"]
 ```
 
-**Thoughts:** Image = recipe. Container = process. Persist with [volumes](./10_build.md#volumes), not the writable layer. Lifecycle: [10_build.md — Container lifecycle](./10_build.md#container-lifecycle). What an OS process is: [Processes, multitasking & interrupts](./0_system_design.md#processes-multitasking).
+**Thoughts:** Image = recipe. Container = process. Persist with [volumes](./10_build_docker.md#volumes), not the writable layer. Lifecycle: [10_build.md — Container lifecycle](./10_build_docker.md#container-lifecycle). What an OS process is: [Processes, multitasking & interrupts](./0_system_design_foundations.md#processes-multitasking).
 
 </details>
 
@@ -83,7 +83,7 @@ volumes:
   pgdata:
 ```
 
-**See also:** [Docker Compose](./10_build.md#docker-compose) · [storage mounts](./10_build.md#docker-storage-mounts) · [container lifecycle](./10_build.md#container-lifecycle).
+**See also:** [Docker Compose](./10_build_interview.md#docker-compose) · [storage mounts](./10_build_docker.md#docker-storage-mounts) · [container lifecycle](./10_build_docker.md#container-lifecycle).
 
 </details>
 
@@ -96,7 +96,7 @@ volumes:
 
 ### GitHub Actions vs GitLab CI vs CircleCI
 
-**Definition:** Hosted CI that runs jobs on git events (push, PR). YAML describes stages: install → test → build → deploy. Concept and product loop: [10_build.md — What is CI/CD](./10_build.md#what-is-cicd). YAML syntax: [10_build.md — YAML](./10_build.md#yaml). Full GitHub Actions syntax (triggers, cron, `needs`, matrix, contexts): [10_build.md — GitHub Actions](./10_build.md#github-actions).
+**Definition:** Hosted CI that runs jobs on git events (push, PR). YAML describes stages: install → test → build → deploy. Concept and product loop: [10_build.md — What is CI/CD](./10_build_interview.md#what-is-cicd). YAML syntax: [10_build.md — YAML](./10_build_ci.md#yaml). Full GitHub Actions syntax (triggers, cron, `needs`, matrix, contexts): [10_build.md — GitHub Actions](./10_build_ci.md#github-actions).
 
 **How it works:**
 
@@ -280,7 +280,7 @@ await tracer.startActiveSpan('charge', async (span) => {
 
 1. Request arrives (`Host`, path, method). `server` block matches `server_name` + `listen`.
 2. **`location`** chooses a handler: prefix (`/api/`), exact (`=`), or regex (`~`).
-3. **Static:** `root` + URI → filesystem path (`root /www/data;` + `/images/a.png` → `/www/data/images/a.png`). Paths/FHS: [Files & file systems](./8_nodejs.md#files--file-systems).
+3. **Static:** `root` + URI → filesystem path (`root /www/data;` + `/images/a.png` → `/www/data/images/a.png`). Paths/FHS: [Files & file systems](./8_nodejs_core.md#files--file-systems).
 4. **`try_files`** checks files in order; last argument is a fallback URI, named location, or `=404`. SPAs use `try_files $uri /index.html` so client routes do not 404.
 5. **`proxy_pass`** forwards to an upstream. Set `Host` and `X-Real-IP` so the app sees the original client.
 
@@ -317,7 +317,7 @@ server {
 
 *Nginx maps URL → `location` → file (`root` + `try_files`) or upstream (`proxy_pass`) — that is how the server “knows which resource to send.”*
 
-Same pattern in [10_build.md — Nginx](./10_build.md). Config syntax, FastCGI, systemd → [Nginx configuration](#nginx-configuration). Apache equivalent → [Apache HTTP Server](#apache-http-server). HTTP semantics / compression / Basic auth → [6_web_api.md — Web server](./6_web_api.md#web-server). CORS is browser-only → [3_js_browser.md](./3_js_browser.md#cors-same-origin).
+Same pattern in [10_build.md — Nginx](./10_build.md). Config syntax, FastCGI, systemd → [Nginx configuration](#nginx-configuration). Apache equivalent → [Apache HTTP Server](#apache-http-server). HTTP semantics / compression / Basic auth → [6_web_api.md — Web server](./6_web_api_http.md#web-server). CORS is browser-only → [3_js_browser.md](./3_js_browser_extra.md#cors-same-origin).
 
 **Sources:** [nginx.org — try_files](https://nginx.org/en/docs/http/ngx_http_core_module.html#try_files) · [Serve static content](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/)
 
@@ -630,7 +630,7 @@ Quick map of AWS services commonly asked on fullstack/backend interviews.
 **How it works:**
 
 - Client talks to `sshd` (default TCP **22**). After key exchange, the session is encrypted. SSHv2 is built to resist passive sniffing and to authenticate the **host** so a naïve **MITM** cannot silently swap endpoints (you still must verify the host key on first connect).
-- **Public-key auth (preferred):** you keep a **private** key; the server stores the matching **public** key in `~/.ssh/authorized_keys` (one key per line). The client proves it holds the private key; the server never sees that private key. Algorithms: **Ed25519** (default for new keys), ECDSA, RSA. Asymmetric crypto: [Encryption](./7_special.md#encryption).
+- **Public-key auth (preferred):** you keep a **private** key; the server stores the matching **public** key in `~/.ssh/authorized_keys` (one key per line). The client proves it holds the private key; the server never sees that private key. Algorithms: **Ed25519** (default for new keys), ECDSA, RSA. Asymmetric crypto: [Encryption](./7_special_security.md#encryption).
 - **Password / keyboard-interactive:** weaker (guessable, phishing, brute-force). Typical for the **first** login before a key is installed; then turn it off.
 - **Host-based / “by IP”:** OpenSSH `HostbasedAuthentication` (rhosts-style) is weak. An **IP allowlist** is not identity — NAT and shared IPv4 mean many users can sit behind one address. Use keys, then optionally restrict *who* may connect (`AllowUsers`, firewall) as defense in depth.
 - **Do not copy the private key** between machines. Copy only `*.pub`. Protect the private key with a passphrase; use `ssh-agent` so you type it once per session.
@@ -707,7 +707,7 @@ ssh root@192.0.2.50   # should not ask the account password (passphrase for the 
 
 ### PID, jobs, nice, top, ps, kill
 
-**Definition:** On Unix-like systems a **process** is a running program identified by a **PID** (process ID). The OS scheduler, job-control shell, and tools like `ps`/`top`/`kill` use that ID to inspect, pause, resume, re-prioritize, or signal the process. Scheduler, context, interrupts, POSIX signal table: [Processes, multitasking & interrupts](./0_system_design.md#processes-multitasking).
+**Definition:** On Unix-like systems a **process** is a running program identified by a **PID** (process ID). The OS scheduler, job-control shell, and tools like `ps`/`top`/`kill` use that ID to inspect, pause, resume, re-prioritize, or signal the process. Scheduler, context, interrupts, POSIX signal table: [Processes, multitasking & interrupts](./0_system_design_foundations.md#processes-multitasking).
 
 **How it works:**
 
@@ -721,7 +721,7 @@ ssh root@192.0.2.50   # should not ask the account password (passphrase for the 
 
 **When to use:**
 
-Long `ping` / logs in the background while you keep using the shell. Archive a large tree with low niceness so a DB keeps CPU. Find a runaway Node PID with `ps`/`top` and `kill` it. Deploy path: SIGTERM first (K8s / `docker stop`), SIGKILL only after the grace period — [Node SIGTERM](./8_nodejs.md#graceful-shutdown--sigterm).
+Long `ping` / logs in the background while you keep using the shell. Archive a large tree with low niceness so a DB keeps CPU. Find a runaway Node PID with `ps`/`top` and `kill` it. Deploy path: SIGTERM first (K8s / `docker stop`), SIGKILL only after the grace period — [Node SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm).
 
 #### Common pitfalls
 
@@ -783,7 +783,7 @@ kill -9 22495  # SIGKILL — last resort; sudo only if not your process
 
 - Chains: **INPUT** (to this host), **OUTPUT** (from this host), **FORWARD** (transit, e.g. a router). Rules match in order; first hit wins unless you append (`-A`) and later rules never run for that packet.
 - Typical web host: allow 22/80/443, drop the rest. ICMP echo can be rejected so `ping` fails while HTTP still works.
-- Host sockets and ports: [6_web_api.md — Ports](./6_web_api.md#ports-sockets--network-services). Path of a request: [How the Internet works](./6_web_api.md#how-the-internet-works).
+- Host sockets and ports: [6_web_api.md — Ports](./6_web_api_apps.md#ports-sockets--network-services). Path of a request: [How the Internet works](./6_web_api_core.md#how-the-internet-works).
 
 **When to use:**
 
@@ -829,7 +829,7 @@ sudo iptables -L
 | Nginx reverse proxy / which file to send | Q&A |
 | Nginx vs Apache config | Q&A |
 | Docker vs VM | Q&A |
-| Container lifecycle | [10_build.md](./10_build.md#container-lifecycle) |
+| Container lifecycle | [10_build.md](./10_build_docker.md#container-lifecycle) |
 | CI/CD pipeline stages | Q&A |
 | Blue-green / rolling deploy | Q&A |
 | Environment variables vs secrets | Q&A |
@@ -894,7 +894,7 @@ sudo iptables -L
 
 ### Docker vs virtual machine?
 
-VMs virtualize hardware + full OS. Containers share host kernel, isolate processes/filesystem — lighter, faster start. Use containers for app packaging; VMs for strong isolation or different OS. Dockerfile: [10_build.md](./10_build.md#dockerfile).
+VMs virtualize hardware + full OS. Containers share host kernel, isolate processes/filesystem — lighter, faster start. Use containers for app packaging; VMs for strong isolation or different OS. Dockerfile: [10_build.md](./10_build_docker.md#dockerfile).
 
 </details>
 
@@ -903,7 +903,7 @@ VMs virtualize hardware + full OS. Containers share host kernel, isolate process
 
 ### Docker container lifecycle?
 
-Create → start → (pause) → stop (`SIGTERM` then `SIGKILL`) → remove. Full answer: [10_build.md — Container lifecycle](./10_build.md#container-lifecycle).
+Create → start → (pause) → stop (`SIGTERM` then `SIGKILL`) → remove. Full answer: [10_build.md — Container lifecycle](./10_build_docker.md#container-lifecycle).
 
 </details>
 

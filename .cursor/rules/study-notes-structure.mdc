@@ -7,20 +7,31 @@ alwaysApply: false
 
 When creating or editing topic files in `resources/`, follow this workflow. The Next.js handbook at the repo root reads only `resources/*.md`.
 
+## 0. How to split topics
+
+The sidebar does not invent splits. **One markdown file = one topic page** (`lib/catalog` row). Large subjects (HTML, CSS, JavaScript, React, …) nest clusters the same way.
+
+| Level | What it is | Example |
+| --- | --- | --- |
+| Track | Coarse job area | Frontend / Backend / Other |
+| Subject | Optional nest of related topics | JavaScript |
+| Cluster | Group inside a subject | Core, Browser, Additional |
+| Topic | One `resources/*_*.md` + catalog row | Structure, Language, Hooks |
+| Concept | One `<details>` accordion | `flexbox`, `Promise`, `useEffect` |
+
+Keep the concept in the **same file** when it shares runtime/layer, interview bucket, and canonical owner (see `.cursor/skills/update-conspect/SKILL.md`). Overlap: one full block, pointer + link in siblings. Markdown hubs (`3_js.md`, `1_html.md`, `0_interview.md`) stay indexes; published subjects are `SUBJECTS` in `lib/catalog`.
+
+**Split** into a new `*_*.md` + catalog row when several of these hold: unrelated mental models in one file; no honest one-line blurb; duplicated essays; a section you would study as its own sitting.
+
+**Do not split** because one `<details>` got long, two APIs are related, or the sidebar would look nicer.
+
+Test: if you studied only that page for 20 minutes, would the title still be honest? Yes → add a `<details>` in the owner file. No → new topic. Unsure → use the ownership table.
+
+Live copy: `/instructions`.
+
 ## 1. Verify facts before writing
 
-Do **not** rely on training data for technical details (APIs, syntax, behavior, versions, deprecations).
-
-**Required:** use **Context7 MCP** before adding or changing factual content:
-
-1. `resolve-library-id` — pass `libraryName` and the full topic as `query`
-2. `query-docs` — pass the chosen `libraryId` and a specific question
-
-**Also use when needed:**
-- **Ref.tools MCP** — narrow API lookups (endpoints, params, SDK methods)
-- **Web search** — only if Context7/Ref lack coverage
-
-Prefer official docs. If docs conflict with memory, trust the fetched docs.
+Follow `.cursor/rules/resources-official-docs.mdc`: fetch official docs (Context7 → Ref → web) for the concept **and related APIs** before writing. Do not rely on training data. If docs conflict with memory, trust the fetch.
 
 ## 2. File header
 

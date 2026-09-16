@@ -5,7 +5,8 @@ import type { SlotKind } from "@/lib/parse";
 
 export const metadata: Metadata = {
   title: "Instructions",
-  description: "How concept sections are structured in the MyConspect study handbook.",
+  description:
+    "How MyConspect splits tracks, topics, and concepts, and how each concept section is structured.",
 };
 
 const CONCEPT_SECTIONS: {
@@ -97,6 +98,84 @@ export default function InstructionsPage() {
       <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">Instructions</h1>
 
       <p className="mt-4 text-base leading-7 text-zinc-600">
+        The sidebar does not invent splits. One markdown file is one topic page. Large subjects
+        such as HTML, CSS, JavaScript, and React use Core and other cluster groups. Use the
+        levels below so new notes land in the right place.
+      </p>
+
+      <h2 className="mt-10 text-xl font-semibold tracking-tight text-zinc-900">
+        How to split topics
+      </h2>
+      <p className="mt-3 text-base leading-7 text-zinc-600">
+        Tracks group the sidebar. A topic is a study unit you would open and scroll. A concept is
+        one interview-sized idea inside that unit.
+      </p>
+      <div className="mt-4 overflow-x-auto">
+        <table className="w-full text-left text-sm text-zinc-700">
+          <thead>
+            <tr className="border-b border-zinc-200">
+              <th className="py-2 pr-4 font-semibold">Level</th>
+              <th className="py-2 pr-4 font-semibold">What it is</th>
+              <th className="py-2 font-semibold">Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b border-zinc-100">
+              <td className="py-2 pr-4 font-medium">Track</td>
+              <td className="py-2 pr-4">Coarse job area</td>
+              <td className="py-2">Frontend, Backend, Other, System design, Algorithms, AI</td>
+            </tr>
+            <tr className="border-b border-zinc-100">
+              <td className="py-2 pr-4 font-medium">Subject</td>
+              <td className="py-2 pr-4">Optional nest of related topics</td>
+              <td className="py-2">HTML, JavaScript, React</td>
+            </tr>
+            <tr className="border-b border-zinc-100">
+              <td className="py-2 pr-4 font-medium">Cluster</td>
+              <td className="py-2 pr-4">Group inside a subject</td>
+              <td className="py-2">Core, Browser, Additional</td>
+            </tr>
+            <tr className="border-b border-zinc-100">
+              <td className="py-2 pr-4 font-medium">Topic</td>
+              <td className="py-2 pr-4">
+                One <code>resources/*_*.md</code> file and one catalog row
+              </td>
+              <td className="py-2">Structure, Language, Hooks</td>
+            </tr>
+            <tr>
+              <td className="py-2 pr-4 font-medium">Concept</td>
+              <td className="py-2 pr-4">
+                One <code>&lt;details&gt;</code> accordion on that page
+              </td>
+              <td className="py-2">flexbox, Promise, useEffect</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-4 text-base leading-7 text-zinc-600">
+        Large subjects follow the JavaScript model: one subject, a few clusters, and a topic page
+        per markdown file — not four tracks, and not hundreds of tiny pages.
+      </p>
+      <p className="mt-3 text-base leading-7 text-zinc-600">
+        Keep a concept in the same topic when it shares the same runtime, interview bucket, and
+        canonical owner. Overlap is fine: one full essay, a short pointer plus link in siblings.
+      </p>
+      <p className="mt-3 text-base leading-7 text-zinc-600">
+        Split into a new file (and catalog row) when several of these are true: unrelated mental
+        models in one file, no honest one-line blurb, duplicated essays across files, or a section
+        you would study as its own sitting. Do not split because one accordion grew long, two APIs
+        are related, or the sidebar would look nicer.
+      </p>
+      <p className="mt-3 text-base leading-7 text-zinc-600">
+        Test: if you studied only that page for 20 minutes, would the title still be honest? If
+        yes, add a <code>&lt;details&gt;</code> in the owner file. If the title would have to list
+        several layers, make a new topic.
+      </p>
+
+      <h2 className="mt-10 text-xl font-semibold tracking-tight text-zinc-900">
+        Concept sections
+      </h2>
+      <p className="mt-3 text-base leading-7 text-zinc-600">
         Every concept answer follows this structure. <strong>Definition</strong> is required; all
         other sections are optional — include only the blocks that add value.
       </p>

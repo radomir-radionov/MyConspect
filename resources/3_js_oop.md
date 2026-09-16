@@ -1,11 +1,11 @@
-# JS OOP — Objects & Classes
+# JS OOP — Classes & Objects
 
 Covers objects, prototypes, classes, property descriptors, Proxy/Reflect, `this`, and garbage collection.
 
 ### Related docs
 
-* [JS Core](./3_js_core.md) · [JS Browser](./3_js_browser.md) · [JS Async](./3_js_async.md)
-* [Special — OOP & SOLID](./7_special.md#2-oop--fp) · [TypeScript classes](./5_ts.md#classes) · [System design — SOLID](./0_system_design.md#7-principles--patterns)
+* [JS Language](./3_js_core.md) · [JS Array](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser additional](./3_js_browser_extra.md) · [JS Async](./3_js_async.md)
+* [Special — OOP & SOLID](./7_special_paradigms.md#2-oop--fp) · [TypeScript classes](./5_ts_objects.md#classes) · [System design — SOLID](./0_system_design_data.md#7-principles--patterns)
 
 [← Back to JS hub](./3_js.md)
 
@@ -1419,7 +1419,7 @@ const daily = new DailyAmount(new Budget(10000, 10), new History());
 
 **Thoughts:** High-level policy receives tools; it does not build them.
 
-**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [7_special.md — DIP](./7_special.md#9-solid--principles)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [7_special.md — DIP](./7_special_engineering.md#9-solid-principles)
 
 </details>
 

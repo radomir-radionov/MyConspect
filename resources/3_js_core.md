@@ -1,13 +1,13 @@
 # JS Core — Language
 
-Covers ECMAScript fundamentals: types, scope, operators, control flow, functions, closures, modules, and errors.
+Covers ECMAScript fundamentals: types, scope, operators, control flow, closures, modules, and errors. Arrays and function APIs live in sibling Core topics.
 
 [← Back to JS hub](./3_js.md)
 
 ### Related docs
 
-- [JS OOP](./3_js_oop.md) · [JS Browser](./3_js_browser.md) · [JS Async](./3_js_async.md) · [Call stack](./3_js_async.md#call-stack)
-- [Web API](./6_web_api.md) · [YAML](./10_build.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs.md#process--threads) · [React](./4_react.md) · [Special — OOP](./7_special.md#2-oop--fp)
+- [JS Array](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser additional](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [Call stack](./3_js_async.md#call-stack)
+- [Web API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [Special — OOP](./7_special_paradigms.md#2-oop--fp)
 
 ### Main concepts
 
@@ -15,8 +15,7 @@ Covers ECMAScript fundamentals: types, scope, operators, control flow, functions
 | ------------- | --------------------------------------------------------------- |
 | **Runtime**   | JS vs ECMAScript, JIT, stack/heap, strict mode, engine pipeline |
 | **Types**     | Primitives, objects, coercion, `Map`/`Set`, strings, `Symbol`, JSON |
-| **Scope**     | `let`/`const`/`var`, TDZ, hoisting, execution context           |
-| **Functions** | Declarations, arrows, closures, currying, `call`/`apply`/`bind`, debounce/throttle |
+| **Scope**     | `let`/`const`/`var`, TDZ, hoisting, execution context, closures |
 | **Modern**    | ESM, optional chaining, `Proxy`, `Intl`, RegExp, `Object.is`, Signals (TC39) |
 
 ### Sections
@@ -26,13 +25,14 @@ Covers ECMAScript fundamentals: types, scope, operators, control flow, functions
 - [Core](#core) · [Memory: stack and heap](#memory-stack-heap)
 - [Data types](#data-types)
 - [Scope & closures](#scope-closures)
-- [Functions](#functions)
 - [Modules](#modules)
 - [Iterators](#iterators)
 - [Advanced](#advanced) · [Signals](#signals)
 - [Interview Practice](#interview-practice)
 
-Topics also covered: **plain objects**, **strings**, **Symbol**, **JSON**, **stack/heap**, **JIT**, **`call`/`apply`/`bind`**, **debounce/throttle**, **GC**, **Object.is**, **Signals**.
+Sibling Core topics: [Array](./3_js_array.md) · [Functions](./3_js_functions.md) · [Classes & Objects](./3_js_oop.md).
+
+Topics also covered: **plain objects**, **strings**, **Symbol**, **JSON**, **stack/heap**, **JIT**, **GC**, **Object.is**, **Signals**.
 
 ### Types & coercion
 
@@ -52,30 +52,18 @@ Topics also covered: **plain objects**, **strings**, **Symbol**, **JSON**, **sta
 
 ### Functions & scope
 
-**Definition:**
-
-Functions are first-class values with lexical scope; closures retain outer bindings. `this` is set by call site (except arrow functions).
+**Definition:** Lexical scope and closures live here; function forms, `this`, and HOF live in [JS Functions](./3_js_functions.md).
 
 | Concept       | Key rule                                           |
 | ------------- | -------------------------------------------------- |
 | Closure       | Inner function keeps access to outer variables     |
 | `var`         | Function-scoped, hoisted as `undefined`            |
 | `let`/`const` | Block-scoped, temporal dead zone until declaration |
-| Arrow `this`  | Lexical — inherits from enclosing scope            |
+| Arrow `this`  | Lexical — inherit from enclosing scope; see [Functions](./3_js_functions.md) |
 
-**When to use:** Closures for factories and encapsulation; `const` by default; arrow functions for callbacks that need outer `this`.
+**When to use:** Closures for factories and encapsulation; `const` by default.
 
-**Examples:**
-
-```js
-function makeAdder(n) {
-  return (x) => x + n;
-}
-const add5 = makeAdder(5);
-add5(3); // 8
-```
-
-**Sources:** [javascript.info/closure](https://learn.javascript.ru/closure) · [arrow-functions](https://learn.javascript.ru/arrow-functions-basics)
+**Sources:** [javascript.info/closure](https://learn.javascript.ru/closure)
 
 ### Modules & iterators
 
@@ -311,7 +299,7 @@ JIT combines fast startup (interpreter) with peak performance (compiler). Babel 
 
 - **Mental CPU model:** von Neumann — instructions and data share one store (one bus). Harvard splits them. Real chips are a hybrid (e.g. separate L1 I-cache / D-cache). Memory is numbered **cells**; the number is a fixed-width **address** (random access, not only sequential). Values larger than one cell span several. 64-bit width → 2⁶⁴ addresses (≈ 16 EiB of *address space*, not “you have 18 EB of RAM”).
 - **Virtual vs physical:** the CPU maps virtual addresses to RAM. The OS hands the process **pages** (often 4–8 KB), many of them.
-- **Process vs thread:** the OS isolates processes (no access to another process unless it allows it). A process may have several threads, each with its own stack. POSIX threads are one real API — hosts differ (browser tab vs Node). Scheduler, context switch, signals: [Processes, multitasking & interrupts](./0_system_design.md#processes-multitasking). Node layer: [Process & threads](./8_nodejs.md#process--threads).
+- **Process vs thread:** the OS isolates processes (no access to another process unless it allows it). A process may have several threads, each with its own stack. POSIX threads are one real API — hosts differ (browser tab vs Node). Scheduler, context switch, signals: [Processes, multitasking & interrupts](./0_system_design_foundations.md#processes-multitasking). Node layer: [Process & threads](./8_nodejs_process.md#process--threads).
 - **Process image:** into that space go program **code**, **globals**, then **stack** and **heap**.
 - **Stack:** grow/shrink by moving the **stack pointer** (CPU register) — cheap. You can **read** stack data; you **write** only at the top (push). You cannot free a hole in the middle; rewind the pointer to drop everything above it. Exhaustion → **stack overflow**. Teaching diagram: heap grows “up”, stack “down”, they meet in the free gap.
 - **Stack frame:** one call’s args, locals, and “what to run after return”. A **frame pointer** marks the active frame. Nested calls: `logDogs` frame → `countDogs(20)` → pop → `countDogs(9)` → pop → pop `logDogs`.
@@ -398,7 +386,7 @@ Paradigms describe how you structure logic: imperative (how), declarative (what)
 const odds = [1, 2, 3, 4].filter((n) => n % 2 !== 0); // declarative
 ```
 
-**Thoughts:** Full map (procedural, logic, reactive, composition vs inheritance): [Special — paradigms](./7_special.md#1-programming-fundamentals) · [Reactive programming](./7_special.md#reactive-programming--reactivity).
+**Thoughts:** Full map (procedural, logic, reactive, composition vs inheritance): [Special — paradigms](./7_special_paradigms.md#1-programming-fundamentals) · [Reactive programming](./7_special_paradigms.md#reactive-programming--reactivity).
 
 **Sources:** [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/)
 
@@ -1117,261 +1105,11 @@ null === undefined;       // false
 
 ### Arrays & array methods
 
-**Definition:** An array is an ordered, iterable object with numeric indices (`0`, `1`, …) and a `length` property. Elements can be any type, including mixed types. Arrays are **mutable** — methods either mutate in place or return new arrays.
+**Definition:** Ordered, iterable objects with numeric indices and `length`. Full API, mutating vs non-mutating methods, and pitfalls: [JS Array](./3_js_array.md).
 
-**How it works:**
+**When to use:** Sequences where order and index access matter. Use `Set` for uniqueness-only.
 
-- Created with `[]`, `new Array(n)`, `Array.from()`, or `Array.of()`.
-- Indices are strings internally (`arr[0]` → key `"0"`); `length` auto-updates on indexed assignment.
-- Sparse arrays are allowed (`arr[5] = 1` leaves holes); some methods skip holes (`forEach`, `map`).
-- Iterable via `Symbol.iterator` — works with `for...of`, spread, destructuring.
-- `Array.isArray()` is the reliable type check (`typeof []` is `'object'`).
-
-**When to use:**
-
-| Use `Array` | Use `Set` instead |
-|-------------|-------------------|
-| Order matters, duplicates OK | Only uniqueness needed |
-| Index access (`arr[i]`) | Fast membership checks only |
-| `map`/`filter`/`reduce` pipelines | No indexed iteration needed |
-
-| Use mutating methods | Use non-mutating |
-|----------------------|------------------|
-| Local scratch buffers | Shared state / React state |
-| Performance-critical in-place updates | Functional pipelines, immutability |
-
----
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Rich built-in API | Mutating methods can surprise callers |
-| Ordered, indexable | No built-in immutability |
-| JSON-serializable | `sort()` default is lexicographic, not numeric |
-| Works with HOFs (`map`, `filter`, `reduce`) | Large arrays + frequent `shift`/`unshift` are O(n) |
-
-### Creating & copying arrays
-
-**Definition:** Ways to instantiate arrays and duplicate them without mutating the original.
-
-**How it works:**
-
-- `[]` / `Array.of(1,2)` — literal or explicit elements.
-- `new Array(n)` — creates sparse array of length `n` (avoid for `[1,2,3]`).
-- `Array.from(iterable, mapFn?)` — copies iterables or array-likes.
-- `[...arr]`, `arr.slice()`, `arr.concat()` — **shallow** copies (nested objects still shared).
-
-**When to use:**
-
-| Need | Method |
-|------|--------|
-| Copy before mutate | `[...arr]` or `arr.slice()` |
-| String → char array | `Array.from('hi')` or `[...'hi']` |
-| Generate sequence | `Array.from({ length: n }, (_, i) => i)` |
-| Merge arrays | `[...a, ...b]` or `a.concat(b)` |
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Spread is concise | Shallow copy only |
-| `Array.from` handles array-likes | `new Array(3)` creates holes, not `[0,0,0]` |
-| `slice`/`concat` non-mutating | Deep clone needs `structuredClone` or manual walk |
-
-**Examples:**
-
-```js
-const a = [1, 2, 3];
-const b = Array.from("hi");           // ['h', 'i']
-const c = Array.from({ length: 3 }, (_, i) => i); // [0, 1, 2]
-const copy = [...a];                  // shallow copy
-const slice = a.slice(0, 2);          // [1, 2] — non-mutating
-const merged = a.concat([4, 5]);      // [1, 2, 3, 4, 5]
-```
-
----
-
-### Mutating vs non-mutating methods
-
-**Definition:** Array methods either change the array **in place** or return a **new** array/value without touching the original.
-
-**How it works:**
-
-- Mutating methods update `length` and indices on the same object — all other references see the change.
-- Non-mutating methods allocate new arrays; safe for immutable/React patterns.
-- ES2023 added `toSorted`, `toReversed`, `toSpliced`, `with` as non-mutating alternatives.
-
-In React/Redux or when passing arrays around, prefer non-mutating methods or copy first (`[...arr]` then mutate the copy).
-
----
-
-**When to use:**
-
-| Mutating (changes original) | Non-mutating (returns new) |
-|-----------------------------|----------------------------|
-| `push`, `pop`, `shift`, `unshift` | `map`, `filter`, `slice`, `concat` |
-| `splice`, `sort`, `reverse`, `fill` | `flat`, `flatMap`, `toSorted`, `toReversed` |
-| `copyWithin` | `reduce`, `find`, `some`, `every` |
-
-**Pluses and minuses:**
-
-| + (mutating) | − (mutating) |
-|-----------------|-----------------|
-| No extra allocation | Surprises callers holding same reference |
-| Faster for large in-place edits | Breaks time-travel / Redux expectations |
-
-| + (non-mutating) | − (non-mutating) |
-|---------------------|---------------------|
-| Predictable, debuggable | Extra memory for new arrays |
-| Works with React state | Slightly more verbose |
-
-### Transformation & search
-
-**Definition:** Methods to map, filter, fold, and query arrays without manual `for` loops.
-
-**How it works:**
-
-- Callback receives `(element, index, array)` for most methods.
-- `map`/`filter` always return new arrays; `reduce` returns any type.
-- `find`/`some`/`every` short-circuit — stop when result is determined.
-- `forEach` is like `map` but returns `undefined` and cannot be chained.
-
-| Method | Returns | Notes |
-|--------|---------|-------|
-| `map(fn)` | New array, same length | Transform each element |
-| `filter(fn)` | New array, ≤ length | Keep elements where `fn` is truthy |
-| `reduce(fn, init?)` | Single accumulated value | `init` required on possibly empty arrays |
-| `find(fn)` | First match or `undefined` | Stops early |
-| `findIndex(fn)` | Index or `-1` | |
-| `some` / `every` | Boolean | Short-circuit |
-| `forEach(fn)` | `undefined` | Cannot `break`; use `for...of` if needed |
-| `includes(val)` | Boolean | SameValueZero (`NaN` matches `NaN`) |
-| `indexOf` / `lastIndexOf` | Index or `-1` | Strict equality, no `NaN` match |
-
-**When to use:** Use `map`+`filter` for pipelines; `reduce` for aggregation; `find` for first match; `some`/`every` for predicates; avoid `forEach` when you need `break` or a return value.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Declarative, chainable | Callback overhead vs raw `for` |
-| Built-in edge cases handled | Easy to nest too deeply |
-
-**Examples:**
-
-```js
-const users = [
-  { name: "Ann", age: 30 },
-  { name: "Bob", age: 17 },
-  { name: "Cal", age: 25 },
-];
-
-const adultNames = users
-  .filter((u) => u.age >= 18)
-  .map((u) => u.name);
-// ['Ann', 'Cal']
-```
-
-```js
-[1, 2, 3].reduce((sum, n) => sum + n, 0); // 6
-[].reduce((a, b) => a + b);               // TypeError — no initial on empty
-[1].reduce((a, b) => a + b);              // 1 — first element used as init
-```
-
----
-
-### Add / remove elements
-
-**Definition:** Methods that change array length and shift elements at ends or middle.
-
-**How it works:**
-
-- `push`/`pop` operate on the end — O(1) amortized.
-- `shift`/`unshift` operate on the start — O(n) because indices shift.
-- `splice(start, deleteCount, ...items)` removes and/or inserts at any index.
-
-| Method | Effect | Returns |
-|--------|--------|---------|
-| `push(...items)` | Add to end | New `length` |
-| `pop()` | Remove last | Removed item |
-| `shift()` | Remove first | Removed item (O(n)) |
-| `unshift(...items)` | Add to start | New `length` (O(n)) |
-| `splice(start, deleteCount, ...items)` | Remove/insert at index | Array of removed items |
-
-**When to use:** Queue → `push`+`shift` (or use deque pattern); stack → `push`+`pop`; middle edit → `splice` or `toSpliced` (immutable).
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| `push`/`pop` are fast | `shift`/`unshift` slow on large arrays |
-| `splice` is versatile | Easy to misuse and confuse callers |
-
-**Examples:**
-
-```js
-const arr = [1, 2, 3];
-arr.splice(1, 1, 99); // removes 2, inserts 99 → [1, 99, 3]
-```
-
----
-
-### `sort`, `flat`, iteration
-
-**Definition:** Ordering, flattening nested arrays, and looping over elements.
-
-**How it works:**
-
-- `sort(compareFn?)` **mutates**; default compares as strings (`10` before `2`).
-- `flat(depth?)` shallow-flattens one level by default; `Infinity` for full flatten.
-- `for...of` iterates values; `for...in` iterates keys (avoid on arrays).
-
-**When to use:** Numeric sort → `sort((a,b) => a - b)`; nested API data → `flatMap`; iteration → `for...of` or `map`.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| `sort` in-place saves memory | Default string sort surprises |
-| `flat`/`flatMap` clean nested data | `flat` allocates new array |
-
-**Examples:**
-
-```js
-[10, 1, 2].sort();                    // [1, 10, 2] — string sort!
-[10, 1, 2].sort((a, b) => a - b);     // [1, 2, 10] — numeric
-
-[1, [2, [3]]].flat();                 // [1, 2, [3]]
-[1, [2, [3]]].flat(Infinity);         // [1, 2, 3]
-
-for (const n of [1, 2, 3]) { }        // prefer over for...in on arrays
-for (const [i, v] of arr.entries()) { }
-```
-
----
-
-### Common pitfalls
-
-```js
-// Pitfall 1: sort mutates + default string comparison
-const nums = [10, 2, 1];
-nums.sort(); // mutates to [1, 10, 2]
-
-// Pitfall 2: sparse array holes
-const sparse = [1, , 3];
-sparse.map((x) => x * 2); // [2, , 6] — hole stays
-
-// Pitfall 3: reference elements — shallow copy
-const row = [{ id: 1 }];
-const grid = [row];
-grid[0][0].id = 99; // mutates shared inner object
-
-// Pitfall 4: for...in includes inherited keys on arrays
-for (const k in [1, 2]) { } // may iterate non-index keys
-```
-
-**Sources:** [javascript.info/array](https://learn.javascript.ru/array) · [array-methods](https://learn.javascript.ru/array-methods)
+**Sources:** [javascript.info/array](https://learn.javascript.ru/array)
 
 </details>
 
@@ -2253,695 +1991,9 @@ function once(fn) {
 
 ## Functions
 
-<details>
-  <summary>functions — core</summary>
+Full notes: [JS Functions](./3_js_functions.md) — declarations, arrows, `this`, HOF, `call`/`apply`/`bind`, debounce.
 
-### Functions — core
-
-**Definition:** Functions are **first-class** callable objects: assignable to variables, passed as arguments, returned from other functions, and stored in data structures. They are the primary unit of behavior in JS.
-
-**How it works:**
-
-- Invoked with `()`; optional `return` (defaults to `undefined`).
-- Parameters are local bindings; default values apply when argument is `undefined`.
-- **Higher-order functions (HOF)** take and/or return other functions (`map`, `filter`, decorators).
-- **Callbacks** are functions passed to run later (sync in `sort`, async in `setTimeout`).
-- `this` is set by **call site** for regular functions; **lexical** for arrows (see below).
-
----
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| First-class — flexible composition | `this` binding confuses beginners |
-| Closures for encapsulation | Callback nesting without promises |
-| Arrow syntax for short callbacks | Arrows unsuitable as methods/constructors |
-
-### Function declaration vs expression
-
-**Definition:** Declarations are hoisted with full body; expressions are created when execution reaches them.
-
-**How it works:**
-
-- **Declaration** `function f() {}` — registered at parse time in scope; callable before the line.
-- **Expression** `const f = function() {}` — function object created at runtime when assignment runs.
-- **NFE** (Named Function Expression) — internal name visible inside for recursion; outer scope still uses `const` name.
-- Both create functions with dynamic `this` (unless arrow).
-
-|          | Declaration              | Expression                |
-| -------- | ------------------------ | ------------------------- |
-| Syntax   | `function f() {}`        | `const f = function() {}` |
-| Hoisting | Yes — callable before line | No |
-| Name     | Required                 | Optional (NFE for recursion) |
-| `this`   | Dynamic                  | Dynamic (unless arrow) |
-
-**When to use:**
-
-| Declaration | Expression / arrow |
-|-------------|-------------------|
-| Top-level helpers, hoisting needed | Callbacks, assignments, conditional creation |
-| Named stack traces | IIFE, module exports |
-
-**Pluses and minuses:**
-
-| + (declaration) | − (declaration) |
-|--------------------|--------------------|
-| Hoisting simplifies top-down scripts | Cannot conditionally declare in block (legacy quirks) |
-| Clear named entry points | Less flexible than expressions |
-
-| + (expression) | − (expression) |
-|-------------------|-------------------|
-| Assign to `const`, pass inline | Not hoisted — order matters |
-| Conditional creation | Anonymous stacks harder to read |
-
-**Examples:**
-
-```js
-// Declaration — hoisted
-log("a");
-function log(x) {
-  console.log(x);
-}
-
-// Named Function Expression — safe recursion
-const factorial = function fact(n) {
-  return n <= 1 ? 1 : n * fact(n - 1);
-};
-
-// Anonymous expression — assigned to const
-const double = function (n) {
-  return n * 2;
-};
-```
-
----
-
-### Arrow functions
-
-**Definition:** Shorthand `() => {}` with **lexical** `this`, `arguments`, and no `new`.
-
-**How it works:**
-
-- No own `this` — inherits from enclosing lexical scope at **definition** time.
-- No `arguments` object — use rest `...args`.
-- Cannot be used as constructor (`new` throws).
-- Concise body: `(x) => x * 2` implicit return; `() => { return x; }` for block body.
-- Always anonymous in syntax (name inferred from variable in assignments).
-
-|             | Arrow   | Regular          |
-| ----------- | ------- | ---------------- |
-| `this`      | Lexical (from outer scope) | Dynamic (call site) |
-| `arguments` | No — use rest `...args` | Yes |
-| `new`       | No      | Yes              |
-| Hoisting    | No      | Declaration: yes |
-| Methods     | Poor choice for object methods | Use for `obj.method()` |
-
-**When to use:**
-
-| Use arrows | Use regular `function` |
-|------------|----------------------|
-| Callbacks (`map`, `forEach`, promises) | Object methods needing dynamic `this` |
-| Lexical `this` in class field handlers | Constructors, generators |
-| Short one-liners | When you need `arguments` |
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Short syntax for callbacks | Wrong `this` as object method |
-| Fixes `this` in class handlers | No `arguments`, no `new` |
-| Implicit return for one-liners | Debugging anonymous stacks |
-
-**Examples:**
-
-const add = (a, b) => a + b;
-
-const obj = {
-  items: [1, 2, 3],
-  // arrow — lexical this (likely wrong for methods)
-  logItems: () => this.items, // undefined in strict module
-
-  // regular — dynamic this
-  sum() {
-    return this.items.reduce((a, b) => a + b, 0);
-  },
-};
-```
-
----
-
-### Callbacks
-
-**Definition:** A function passed into another function to invoke at the right time.
-
-**How it works:**
-
-- Caller controls **when** the callback runs (sync immediately, async later, on event).
-- Sync: `array.map(cb)` calls `cb` per element before returning.
-- Async: `setTimeout(cb, 0)` queues `cb` on macrotask queue.
-- Error-first (Node): `cb(err, result)` — first arg signals failure.
-
-| Pattern        | Use                            |
-| -------------- | ------------------------------ |
-| Sync callback  | `array.map`, `sort` comparator |
-| Async callback | `setTimeout`, event handlers   |
-| Error-first    | Node-style `(err, data)`       |
-
-**When to use:** Array methods, event APIs, legacy Node APIs. Prefer `async/await` for new async chains (see [3_js_async.md](./3_js_async.md)).
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Simple async before Promises | Deep nesting ("callback hell") |
-| Flexible control flow | Inversion of control — harder to trace |
-| Works everywhere (DOM, Node) | Error handling scattered |
-
-**Examples:**
-
-[1, 2, 3].map((n) => n * 2);
-
-function load(done) {
-  setTimeout(() => done(null, "data"), 100);
-}
-load((err, data) => {
-  if (err) return console.error(err);
-  console.log(data);
-});
-```
-
----
-
-### Pure vs impure functions
-
-**Definition:** A **pure** function returns the same output for the same inputs and causes no observable side effects.
-
-**How it works:**
-
-- **Pure:** depends only on arguments; no reads/writes to outer state, DOM, network, `console`.
-- **Impure:** mutates external variables, I/O, random time, throws based on global state.
-- Purity is a spectrum — `console.log` inside makes a function impure but may be acceptable at boundaries.
-
-| Pure                      | Impure                    |
-| ------------------------- | ------------------------- |
-| `(a, b) => a + b`         | Mutates external state    |
-| Predictable, testable     | `console.log`, DOM, I/O   |
-| Referentially transparent | `Date.now()`, `Math.random()` |
-
-**When to use:** Use pure functions for reducers, selectors, utilities, anything you memoize. Keep impure I/O in thin wrappers at app boundaries. Even **reading** `Date.now()` / `Math.random()` is impure — external code may mutate hidden state.
-
-**Pluses and minuses:**
-
-| + (pure) | − (pure) |
-|-------------|-------------|
-| Easy to test and memoize | I/O must live at edges |
-| Safe to parallelize/reorder | Can feel verbose for UI |
-
-| + (impure) | − (impure) |
-|---------------|---------------|
-| Natural for I/O and UI | Harder to reason about order |
-| Direct state updates | Breaks caching assumptions |
-
-**Examples:**
-
-const add = (a, b) => a + b; // pure
-
-let total = 0;
-const addToTotal = (n) => {
-  total += n;
-}; // impure — mutates outer state
-
-const greet = (name) => {
-  console.log(`Hi ${name}`);
-}; // impure — side effect
-```
-
----
-
-### `this` binding rules
-
-**See also:** [7_special.md — Pure functions & side effects](./7_special.md) · [Functional core, imperative shell](./7_special.md#functional-core-imperative-shell)
-
-**Definition:** For regular functions, `this` is determined by **how** the function is called, not where it is defined. Arrow functions inherit `this` lexically.
-
-**How it works:**
-
-- `obj.method()` — `this` is `obj`.
-- Bare `fn()` — `this` is `undefined` (strict) or `globalThis` (sloppy).
-- `new Fn()` — `this` is the new instance.
-- `fn.call(ctx, ...)` / `apply` / `bind` — `this` is explicit.
-- Arrow — `this` frozen from outer scope at creation; **cannot** be rebound with `call`/`bind`.
-
-| Call pattern          | `this`       |
-| --------------------- | ------------ |
-| `obj.method()`        | `obj`        |
-| `func()` strict       | `undefined`  |
-| `func()` sloppy       | `globalThis` |
-| `new Func()`          | new instance |
-| `call`/`apply`/`bind` | explicit     |
-| Arrow                 | lexical (outer `this`) |
-
-**When to use:** Object methods → regular `function` or method shorthand; React class handlers → `bind` or arrows; utilities with no `this` → arrows or strict bare calls.
-
-**Pluses and minuses:**
-
-| + (dynamic `this`) | − |
-|-----------------------|------|
-| Flexible method reuse | Context loss when extracting methods |
-| OOP patterns | Confusing in callbacks without arrows/bind |
-
-**Examples:**
-
-const obj = { x: 10, getX() { return this.x; } };
-const getX = obj.getX;
-getX(); // undefined (strict)
-getX.call(obj); // 10
-const bound = obj.getX.bind(obj);
-```
-
-**Default parameters & rest:**
-
-```js
-function greet(name = "Guest", ...tags) {
-  return `Hello, ${name}`;
-}
-```
-
-**Sources:** [javascript.info/function-basics](https://learn.javascript.ru/function-basics) · [function-expressions](https://learn.javascript.ru/function-expressions) · [arrow-functions-basics](https://learn.javascript.ru/arrow-functions-basics) · [callbacks](https://learn.javascript.ru/callbacks) · [object-methods](https://learn.javascript.ru/object-methods)
-
-</details>
-
-<details>
-  <summary>functions — advanced</summary>
-
-### Functions — advanced
-
-Topics beyond declarations and arrows: HOFs, memoization, currying, `new`, IIFE, generators, recursion.
-
----
-
-### Higher-order functions (HOF)
-
-**Definition:** Functions that take functions as arguments and/or return functions.
-
-**How it works:**
-
-- **Accepts callback:** `arr.map(fn)` — HOF calls `fn` per element.
-- **Returns function:** decorators wrap behavior (`timed(fn)`, `memoize(fn)`).
-- Enables composition without duplicating control-flow logic.
-
-**When to use:** Array methods, middleware, decorators, event wiring, `once`/`debounce` wrappers.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Reusable patterns (`map`, decorators) | Can obscure flow if over-nested |
-| Declarative pipelines | Harder stack traces |
-
-**Examples:**
-
-const evens = [1, 2, 3, 4].filter((n) => n % 2 === 0).map((n) => n * 2);
-
-function timed(fn) {
-  return function (...args) {
-    const t0 = performance.now();
-    const result = fn.apply(this, args);
-    console.log(`${performance.now() - t0}ms`);
-    return result;
-  };
-}
-```
-
----
-
-### Memoization
-
-**Definition:** Cache results keyed by arguments to skip redundant work.
-
-**How it works:**
-
-- Wrapper stores a `Map` (or object) from serialized args → result.
-- On call: if key exists, return cached value; else compute, store, return.
-- Only correct for **pure** functions — impure caches return stale/wrong data.
-- Key strategy matters: `JSON.stringify(args)` fails for functions, circular refs.
-
-**When to use:** Fibonacci, API response transforms, React `useMemo`-style logic. Avoid for unbounded inputs or functions with side effects.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Big speedup on expensive pure calls | Memory grows with unique keys |
-| Transparent to callers | Wrong if function is impure |
-
-**Examples:**
-
-function memoize(fn) {
-  const cache = new Map();
-  return (...args) => {
-    const key = JSON.stringify(args);
-    if (cache.has(key)) return cache.get(key);
-    const result = fn(...args);
-    cache.set(key, result);
-    return result;
-  };
-}
-```
-
----
-
-### Currying, partial application & composition
-
-**Definition:** **Partial application** pre-fills some arguments (`const double = (x) => multiply(2, x)` or `multiply.bind(null, 2)`). **Currying** transforms `f(a, b, c)` → `f(a)(b)(c)`. **Composition** pipes values: `compose(f, g)(x) === f(g(x))` (right-to-left); `pipe` is left-to-right.
-
-**How it works:**
-
-- Curry checks `args.length` vs `fn.length` — partial apply until enough args.
-- `bind(null, arg)` is partial application — practical in JS, less idiomatic in strict FP.
-- `compose` applies right-to-left; `pipe` (not built-in) applies left-to-right.
-- Useful for building configured functions without many parameters.
-
-**When to use:** Currying — optional params, FP libs; Composition — transform pipelines (`parse → validate → format`).
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Partial application, reusable config | Extra function layers |
-| Clean pipelines | Steeper learning curve |
-
-**Examples:**
-
-const curry = (f) =>
-  function curried(...args) {
-    return args.length >= f.length
-      ? f(...args)
-      : (...more) => curried(...args, ...more);
-  };
-
-const compose =
-  (...fns) =>
-  (x) =>
-    fns.reduceRight((v, fn) => fn(v), x);
-
-const double = (n) => n * 2;
-const inc = (n) => n + 1;
-compose(double, inc)(3); // 8
-```
-
-**See also:** [7_special.md — Partial application & currying](./7_special.md) · [Function composition](./7_special.md)
-
----
-
-### Constructor & `new`
-
-**Definition:** `new` creates an object, sets `[[Prototype]]` from `Constructor.prototype`, runs the function with `this` bound to that object, returns it (unless constructor returns another object).
-
-**How it works:**
-
-1. Create empty object.
-2. Link `[[Prototype]]` to `Fn.prototype`.
-3. Call `Fn` with `this` = new object.
-4. If `Fn` returns an object, use that; else return the new object.
-
-**When to use:** Legacy constructors, interviews. Prefer `class` syntax for new code.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Familiar OOP pattern | Easy to forget `new` |
-| Prototype methods shared | `this` binding pitfalls |
-
-**Examples:**
-
-function User(name) {
-  this.name = name;
-}
-User.prototype.greet = function () {
-  return `Hi, ${this.name}`;
-};
-const u = new User("Ann");
-```
-
----
-
-### Named Function Expression (NFE)
-
-**Definition:** Function expression with an internal name — safe recursion and clearer stack traces.
-
-**How it works:**
-
-- Name `fact` visible **inside** the function body for self-calls.
-- Outer scope uses the `const` variable name, not `fact` (in strict mode).
-
-**When to use:** Recursive helpers assigned to `const`.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Recursion without polluting outer scope | Slightly more syntax |
-| Better stack traces than anonymous | IE legacy quirks (historical) |
-
-**Examples:**
-
-const factorial = function fact(n) {
-  return n <= 1 ? 1 : n * fact(n - 1);
-};
-```
-
----
-
-### IIFE
-
-**Definition:** Immediately Invoked Function Expression — runs once to create a private scope.
-
-**How it works:**
-
-- Function expression wrapped in `()` then called with `()`.
-- Creates local bindings that disappear after the IIFE returns (unless closed over).
-
-**When to use:** Legacy module pattern, one-time setup. Prefer `const`/`let` blocks and ESM today.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Private scope before block scope | Extra syntax noise |
-| One-off initialization | Less needed with ESM |
-
-**Examples:**
-
-(function () {
-  const secret = 42;
-  // secret not visible outside
-})();
-```
-
----
-
-### Generators
-
-**Definition:** `function*` returns an iterator; `yield` pauses and `.next()` resumes.
-
-**How it works:**
-
-- Calling `function*` returns a generator object (iterator).
-- `yield` produces `{ value, done: false }`; function end yields `{ done: true }`.
-- `yield*` delegates to another iterable.
-- Generators are pausable — state preserved between `.next()` calls.
-
-**When to use:** Infinite IDs, paginated fetch loops, custom iterables. Use arrays/`async` iterators for most app code.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Lazy infinite sequences | Harder mental model |
-| Custom iteration | Not for simple list transforms |
-
-**Examples:**
-
-function* range(n) {
-  for (let i = 0; i < n; i++) yield i;
-}
-const gen = range(3);
-gen.next(); // { value: 0, done: false }
-[...range(3)]; // [0, 1, 2]
-```
-
----
-
-### Recursion
-
-**Definition:** Function calls itself until a base case stops.
-
-**How it works:**
-
-- Each call adds a stack frame — base case prevents infinite recursion.
-- Without tail-call optimization (limited in JS engines), deep recursion overflows stack.
-- Often rewriteable as `while` loop with explicit stack for trees.
-
-**When to use:** Tree walk, factorial (toy), nested JSON transform. Prefer iteration for very deep or hot paths.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Natural for trees, nested structures | Stack overflow on deep recursion |
-| Elegant divide-and-conquer | Often slower than iteration |
-
-**Examples:**
-
-function pow(x, n) {
-  if (n === 1) return x;
-  return x * pow(x, n - 1);
-}
-```
-
----
-
-### `new Function` (avoid)
-
-**Definition:** Builds a function from strings at runtime; `[[Environment]]` is global — no closure over outer vars. Same risks as `eval`.
-
-**How it works:**
-
-- `new Function('a', 'b', 'return a + b')` compiles body at runtime.
-- Cannot see lexical variables from the calling scope — only globals.
-- JIT cannot optimize as well as static functions.
-
-**When to use:** Almost never in app code. Prefer static functions, parsers, or sandboxed VMs.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Dynamic code from templates (rare) | Security hole with user input |
-| | No closure access |
-| | Same as `eval` risks |
-
-**Examples:**
-
-```js
-const sum = new Function("a", "b", "return a + b");
-sum(1, 2); // 3
-```
-
-**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators) · [currying-partials](https://learn.javascript.ru/currying-partials) · [constructor-new](https://learn.javascript.ru/constructor-new) · [generators](https://learn.javascript.ru/generators) · [recursion](https://learn.javascript.ru/recursion)
-
-</details>
-
-<details>
-  <summary>call, apply & bind</summary>
-
-### call, apply & bind
-
-**Definition:** Methods on `Function.prototype` to set **`this`** explicitly and optionally **partial-apply** arguments. `call`/`apply` invoke immediately; `bind` returns a new function.
-
-**How it works:**
-
-- `fn.call(thisArg, arg1, arg2, ...)` — args listed individually.
-- `fn.apply(thisArg, [args])` — args as array (useful for spread-like calls).
-- `fn.bind(thisArg, arg1, ...)` — returns new function with fixed `this` and optional preset args; does **not** invoke.
-- Bound functions cannot be re-bound with a different `this` (arrow functions also ignore `call`/`bind`).
-- Passing `null`/`undefined` as `thisArg` uses default binding (`undefined` in strict, `globalThis` in sloppy).
-
-| | `call` | `apply` | `bind` |
-|---|--------|---------|--------|
-| Invokes now | yes | yes | no |
-| Args format | comma-separated | array | preset + later args |
-| Returns | function result | function result | new function |
-
-**When to use:** `obj.method.bind(obj)` for callbacks; `func.apply(ctx, argsArray)`; borrow array methods on array-likes; polyfills.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Fix context loss on extracted methods | Easy to over-bind |
-| Borrow methods (`Array.prototype.slice.call(arguments)`) | Bound fn has no `prototype` for `new` |
-| Partial application without curry lib | `this` mental overhead |
-
-**Examples:**
-
-```js
-function greet(greeting, punct) {
-  return `${greeting}, ${this.name}${punct}`;
-}
-const user = { name: "Ann" };
-
-greet.call(user, "Hi", "!");       // 'Hi, Ann!'
-greet.apply(user, ["Hello", "."]); // 'Hello, Ann.'
-
-const sayHi = greet.bind(user, "Hi");
-sayHi("?"); // 'Hi, Ann?'
-
-// Context loss fix
-const getX = obj.getX.bind(obj);
-```
-
-**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators) · see also [3_js_oop.md](./3_js_oop.md#call-apply-bind)
-
-</details>
-
-<details>
-  <summary>debounce & throttle</summary>
-
-### debounce & throttle
-
-**Definition:** **Debounce** delays execution until calls stop for `delay` ms. **Throttle** runs at most once per `delay` ms window.
-
-**How it works:**
-
-- **Debounce:** each call resets timer; only the last call in a burst runs (search input, resize end).
-- **Throttle:** first call runs, ignores others until window expires (scroll, mousemove).
-- Both are closures over a timer id; use `clearTimeout` in debounce.
-
-| | Debounce | Throttle |
-|---|----------|----------|
-| Fires | After pause in events | On interval during stream |
-| Use for | Search, resize layout | Scroll, pointer move |
-| Risk | Feels laggy if delay too high | May skip final state |
-
-**When to use:** Debounce — API search on keystroke; throttle — infinite scroll position updates.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Cuts expensive handler calls | Timing tuning needed |
-| Standard interview pattern | `this` must be forwarded in wrappers |
-
-**Examples:**
-
-```js
-function debounce(fn, delay) {
-  let id;
-  return function (...args) {
-    clearTimeout(id);
-    id = setTimeout(() => fn.apply(this, args), delay);
-  };
-}
-
-function throttle(fn, delay) {
-  let last = 0;
-  return function (...args) {
-    const now = Date.now();
-    if (now - last >= delay) {
-      last = now;
-      fn.apply(this, args);
-    }
-  };
-}
-```
-
-**Sources:** [javascript.info/task/debounce](https://learn.javascript.ru/task/debounce) · [task/throttle](https://learn.javascript.ru/task/throttle)
-
-</details>
+Lexical scope, hoisting, and closures stay in [Scope & closures](#scope-closures).
 
 <a name="modules"></a>
 
@@ -3299,7 +2351,7 @@ const proxy = new Proxy(target, {
 proxy.message1; // logs, then "hello"
 ```
 
-**Thoughts:** Language `Proxy` vs GoF **Proxy pattern** (same interface, control access) — [7_special.md](./7_special.md#proxy). Traps must respect invariants (e.g. non-writable own data properties).
+**Thoughts:** Language `Proxy` vs GoF **Proxy pattern** (same interface, control access) — [7_special.md](./7_special_engineering.md#proxy). Traps must respect invariants (e.g. non-writable own data properties).
 
 **Sources:** [MDN `Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) · [javascript.info/proxy](https://learn.javascript.ru/proxy)
 
@@ -3609,39 +2661,10 @@ const m = /(\d+)-(\d+)/.exec("2024-07"); // groups
 
 ### Function decorators
 
-**Definition:** Wrap a function to add cross-cutting behavior (timing, logging, caching) without changing every call site.
-
-**How it works:**
-
-- HOF returns new function that calls original with `fn.apply(this, args)`.
-- Preserves `this` when wrapper is used as method if you forward `this`.
-- Combine with `call`/`bind` for partial application.
-
-**When to use:** `timed`, `once`, `debounce`, `memoize`, API auth guards.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| DRY for logging, timing, auth | Stack depth increases |
-| Composable wrappers | Order of decorators matters |
-
-**Examples:**
-
-```js
-function timed(fn) {
-  return function (...args) {
-    const t0 = performance.now();
-    const result = fn.apply(this, args);
-    console.log(`${fn.name}: ${performance.now() - t0}ms`);
-    return result;
-  };
-}
-```
-
-**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
+**Definition:** Wrap a function to add timing, logging, or caching. Canonical notes: [JS Functions — Function decorators](./3_js_functions.md#function-decorators).
 
 </details>
+
 
 ---
 
@@ -3654,7 +2677,7 @@ function timed(fn) {
 
 **Definition:**
 
-Curated Q&A and coding tasks covering types, scope, functions, and common interview traps.
+Curated Q&A covering types, scope, and language traps. Array and function tasks: [JS Array](./3_js_array.md#interview-practice) · [JS Functions](./3_js_functions.md#interview-practice).
 
 Questions from [0_interview.md](0_interview.md). Try answering before opening solutions.
 
@@ -3672,8 +2695,8 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 | 29–30 | Map/Set, deep vs shallow copy         | Q&A below  |
 | —     | Signals (TC39)                      | Q&A below  |
 | —     | JIT / interpreted? Stack vs heap    | Q&A below  |
-| —     | `map` / `forEach` / `reduce`          | Q&A below  |
-| —     | Pure functions, immutability          | Q&A below  |
+| —     | `map` / `forEach` / `reduce`          | [JS Array](./3_js_array.md#interview-practice) |
+| —     | Pure functions, immutability          | [JS Functions](./3_js_functions.md#interview-practice) |
 | —     | Output prediction                     | Tasks 1–5  |
 | —     | Implement utilities                   | Tasks 6–15 |
 | —     | Cart aggregation (reduce + discounts) | Task 16    |
@@ -3791,37 +2814,20 @@ add5(3); // 8
 
 ### How does this work? Context loss?
 
-**Definition:** `this` is determined by call site (except arrows). Extracting a method loses its receiver.
-
-**How it works:**
-
-`const fn = obj.method; fn()` — `this` is not `obj`.
-
-`fn.bind(obj)`, `obj.method()`, arrow wrapper, or `call`/`apply`.
-
-**Sources:** [javascript.info/object-methods](https://learn.javascript.ru/object-methods)
+**Definition:** Moved to [JS Functions](./3_js_functions.md#how-does-this-work-context-loss)
 
 </details>
+
 
 <details>
   <summary>bind vs call vs apply?</summary>
 
 ### bind vs call vs apply?
 
-**Definition:** All set `this`. `call`/`apply` invoke immediately; `bind` returns a new function with fixed `this`.
-
-**Examples:**
-
-```js
-fn.call(ctx, 1, 2);
-fn.apply(ctx, [1, 2]);
-const bound = fn.bind(ctx, 1);
-bound(2); // same as fn.call(ctx, 1, 2)
-```
-
-**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
+**Definition:** Moved to [JS Functions](./3_js_functions.md#bind-vs-call-vs-apply)
 
 </details>
+
 
 <details>
   <summary>What are Signals? Why no effect() in the proposal?</summary>
@@ -3924,138 +2930,50 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 
 ### `map`, `forEach`, `reduce` — how do they work?
 
-**Definition:**
-
-Array higher-order methods that iterate with a callback `(element, index, array)`.
-
-| Method | Returns | Use |
-|--------|---------|-----|
-| `map(fn)` | New array, same length | Transform each element |
-| `forEach(fn)` | `undefined` | Side effects only — no return value, cannot `break` |
-| `reduce(fn, init?)` | Single accumulated value | Fold array into one result |
-
-**How it works:**
-
-- `map` — callback return becomes new element; original unchanged.
-- `forEach` — like `map` but discards return; use `for...of` if you need `break`.
-- `reduce` — callback `(acc, item) => nextAcc`; provide `init` on possibly empty arrays.
-
-**Examples:**
-
-```js
-[1, 2, 3].map((n) => n * 2);           // [2, 4, 6]
-[1, 2, 3].forEach((n) => console.log(n)); // logs 1, 2, 3
-[1, 2, 3].reduce((sum, n) => sum + n, 0); // 6
-```
-
-**Thoughts:** *`map` transforms, `forEach` acts, `reduce` aggregates.*
-
-**See also:** [Transformation & search](#transformation--search) (full theory)
+**Definition:** Moved to [JS Array](./3_js_array.md#interview-practice)
 
 </details>
+
 
 <details>
   <summary>`reduce` vs `map` — when to use which?</summary>
 
 ### `reduce` vs `map` — when to use which?
 
-**Definition:**
-
-`map` always returns an array of the same length; `reduce` returns any type — number, object, Map, etc.
-
-| | `map` | `reduce` |
-|---|-------|----------|
-| Output | Array (same length) | Any type |
-| Best for | Transform each item | Aggregate, group, build object |
-| Chainable | Yes (`map().filter()`) | Usually terminal |
-
-**How it works:**
-
-Sum, count, group-by, flatten, build `{ subtotal, tax, total }` object from cart items.
-
-Rename fields, format display values, extract IDs.
-
-**Thoughts:** *If you need one value or object from an array, reach for `reduce`.*
+**Definition:** Moved to [JS Array](./3_js_array.md#interview-practice)
 
 </details>
+
 
 <details>
   <summary>What is the accumulator in `reduce`?</summary>
 
 ### What is the accumulator in `reduce`?
 
-**Definition:** The accumulator (`acc`) is the value carried from one iteration to the next — the "running result."
-
-**How it works:**
-
-```js
-[10, 20, 30].reduce((acc, price) => acc + price, 0);
-// acc: 0 → 10 → 30 → 60
-```
-
-- First argument to callback is `acc`; return value becomes `acc` for next step.
-- Without `init` on non-empty array, first element is used as initial `acc` (risky on empty arrays → `TypeError`).
-
-**When to use:** Sum · max value · `{ count, total }` object · `Map` of grouped items.
-
-**Thoughts:** *Always pass an initial value when the array might be empty.*
+**Definition:** Moved to [JS Array](./3_js_array.md#interview-practice)
 
 </details>
+
 
 <details>
   <summary>How to sum an array? Sum with conditional discounts?</summary>
 
 ### How to sum an array? Sum with conditional discounts?
 
-**Definition:** Use `reduce` to fold values; apply business rules inside the callback.
-
-**How it works:**
-
-```js
-const total = prices.reduce((sum, p) => sum + p, 0);
-```
-
-```js
-const items = [
-  { price: 100, category: 'food' },
-  { price: 200, category: 'electronics' },
-];
-const discounts = { food: 0.1, electronics: 0.2 };
-
-const total = items.reduce((sum, item) => {
-  const rate = discounts[item.category] ?? 0;
-  return sum + item.price * (1 - rate);
-}, 0);
-// 100*0.9 + 200*0.8 = 250
-```
-
-**Thoughts:** *Keep aggregation logic pure — same input always gives same output.*
+**Definition:** Moved to [JS Array](./3_js_array.md#interview-practice)
 
 </details>
+
 
 <details>
   <summary>Why avoid mutations? What is a pure function?</summary>
 
 ### Why avoid mutations? What is a pure function?
 
-**Definition:** A **pure function** returns the same output for the same input and has no side effects (no mutating external state, no I/O).
-
-**How it works:**
-
-- React compares state by reference — mutating `state.push(x)` does not trigger re-render.
-- Shared references cause bugs when one consumer mutates data another relies on.
-- Easier to debug, test, and reason about immutable snapshots.
-
-| Pure | Impure |
-|------|--------|
-| `(arr) => [...arr, x]` | `arr.push(x); return arr` |
-| `reduce` with no external writes | `fetch`, `console.log`, `Date.now()` |
-
-**Thoughts:** *Prefer `map`/`filter`/`reduce` and spread over `push`/`splice` on shared data.*
-
-**See also:** [Pure vs impure functions](#pure-vs-impure-functions)
+**Definition:** Moved to [JS Functions](./3_js_functions.md#why-avoid-mutations-what-is-a-pure-function)
 
 </details>
+
 
 ---
 
@@ -4112,23 +3030,8 @@ for (var i = 0; i < 3; i++) {
 
 ### Task 4 — this context
 
-```js
-const obj = {
-  x: 10,
-  getX() {
-    return this.x;
-  },
-};
-const getX = obj.getX;
-console.log(getX());
-console.log(getX.call(obj));
-```
+See [JS Functions](./3_js_functions.md#interview-practice)
 
-<details><summary>Answer</summary>
-
-`undefined` (strict) then `10`
-
-</details>
 
 ### Task 5 — Prototype reference
 
@@ -4148,69 +3051,18 @@ console.log(o.a);
 
 ### Task 6 — Implement debounce
 
-```js
-function debounce(fn, delay) {
-  /* ... */
-}
-```
+See [JS Functions](./3_js_functions.md#interview-practice)
 
-<details><summary>Solution</summary>
-
-```js
-function debounce(fn, delay) {
-  let id;
-  return function (...args) {
-    clearTimeout(id);
-    id = setTimeout(() => fn.apply(this, args), delay);
-  };
-}
-```
-
-</details>
 
 ### Task 7 — Flatten array (one level)
 
-```js
-function flatten(arr) {
-  /* [1,[2,3],[4]] → [1,2,3,4] */
-}
-```
+See [JS Array](./3_js_array.md#interview-practice)
 
-<details><summary>Solution</summary>
-
-```js
-function flatten(arr) {
-  return arr.reduce(
-    (acc, item) => acc.concat(Array.isArray(item) ? item : item),
-    [],
-  );
-}
-// or arr.flat(1)
-```
-
-</details>
 
 ### Task 8 — Polyfill Array.map
 
-```js
-function map(arr, fn) {
-  /* without Array.prototype.map */
-}
-```
+See [JS Array](./3_js_array.md#interview-practice)
 
-<details><summary>Solution</summary>
-
-```js
-function map(arr, fn) {
-  const result = [];
-  for (let i = 0; i < arr.length; i++) {
-    result.push(fn(arr[i], i, arr));
-  }
-  return result;
-}
-```
-
-</details>
 
 ### Task 9 — Deep clone (JSON limitations)
 
@@ -4224,61 +3076,18 @@ Loses `undefined`, functions, symbols; `Date` becomes an ISO string; `Map`/`Set`
 
 ### Task 10 — Implement bind
 
-```js
-function myBind(fn, ctx, ...args) {
-  /* ... */
-}
-```
+See [JS Functions](./3_js_functions.md#interview-practice)
 
-<details><summary>Solution</summary>
-
-```js
-function myBind(fn, ctx, ...args) {
-  return function (...rest) {
-    return fn.apply(ctx, args.concat(rest));
-  };
-}
-```
-
-</details>
 
 ### Task 11 — Unique array values
 
-```js
-function unique(arr) {
-  /* [1,2,2,3] → [1,2,3] */
-}
-```
+See [JS Array](./3_js_array.md#interview-practice)
 
-<details><summary>Solution</summary>
-
-```js
-function unique(arr) {
-  return [...new Set(arr)];
-}
-```
-
-</details>
 
 ### Task 12 — Curry add
 
-```js
-const curriedAdd = curry((a, b, c) => a + b + c);
-curriedAdd(1)(2)(3); // 6
-```
+See [JS Functions](./3_js_functions.md#interview-practice)
 
-<details><summary>Solution</summary>
-
-```js
-function curry(fn) {
-  return function curried(...args) {
-    if (args.length >= fn.length) return fn(...args);
-    return (...more) => curried(...args, ...more);
-  };
-}
-```
-
-</details>
 
 ### Task 13 — Object.is vs ===
 
@@ -4292,28 +3101,8 @@ When does `Object.is(NaN, NaN)` differ from `NaN === NaN`?
 
 ### Task 14 — Memoize
 
-```js
-function memoize(fn) {
-  /* cache by args */
-}
-```
+See [JS Functions](./3_js_functions.md#interview-practice)
 
-<details><summary>Solution</summary>
-
-```js
-function memoize(fn) {
-  const cache = new Map();
-  return function (...args) {
-    const key = JSON.stringify(args);
-    if (cache.has(key)) return cache.get(key);
-    const result = fn.apply(this, args);
-    cache.set(key, result);
-    return result;
-  };
-}
-```
-
-</details>
 
 ### Task 15 — Query string to object
 
@@ -4335,51 +3124,8 @@ function queryObjectify(str) {
 
 ### Task 16 — Cart aggregation with category discounts
 
-Calculate cart totals using `reduce`. Return an object with `subtotal`, `discount`, and `total`.
+See [JS Array](./3_js_array.md#interview-practice)
 
-```js
-const items = [
-  { product: { id: '1', name: 'Bread', price: 5, category: 'food' }, qty: 2 },
-  { product: { id: '2', name: 'Phone', price: 500, category: 'electronics' }, qty: 1 },
-  { product: { id: '3', name: 'Shirt', price: 30, category: 'clothing' }, qty: 3 },
-];
-const discounts = { food: 0.1, electronics: 0.15 }; // 10% food, 15% electronics
-
-function calculateCart(items, discounts) {
-  /* return { subtotal, discount, total } */
-}
-```
-
-<details><summary>Solution</summary>
-
-```js
-function calculateCart(items, discounts = {}) {
-  return items.reduce(
-    (acc, { product, qty }) => {
-      const lineSubtotal = product.price * qty;
-      const rate = discounts[product.category] ?? 0;
-      const lineDiscount = lineSubtotal * rate;
-      acc.subtotal += lineSubtotal;
-      acc.discount += lineDiscount;
-      acc.total += lineSubtotal - lineDiscount;
-      return acc;
-    },
-    { subtotal: 0, discount: 0, total: 0 },
-  );
-}
-
-// subtotal: 600, discount: 86, total: 514
-// Bread: 10, Phone: 500, Shirt: 90 → discount: 1 + 75 + 0
-```
-
-**Interview talking points:**
-
-- `reduce` returns any shape — here a summary object.
-- Category discounts via lookup `discounts[product.category] ?? 0`.
-- Different product types share one `Product` shape; category drives discount rules.
-- Typed version → [5_ts.md — Cart task](./5_ts.md#interview-practice).
-
-</details>
 
 ---
 
@@ -4421,25 +3167,10 @@ console.log(Object.keys(a));
 
 ### call / apply / bind
 
-**Definition:**
-
-Set `this` and optionally partial-apply arguments.
-
-See **Functions → call, apply & bind** for full notes (definition, how it works, cases, pros/cons).
-
-**Examples:**
-
-```js
-const f = (a, b, c) => a + b + c;
-const f1 = f.bind(null, 1, 2);
-f1(3); // 6 — bind does not invoke
-f.call(null, 1, 2, 3); // 6
-f.apply(null, [1, 2, 3]); // 6
-```
-
-**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
+**Definition:** Moved to [JS Functions](./3_js_functions.md#call-apply-bind)
 
 </details>
+
 
 <details>
   <summary>Junior — General (core subset)</summary>
@@ -4466,7 +3197,7 @@ Entry-level interview questions on strict mode, typing, mutability, and debuggin
 
 **Definition:**
 
-Fundamental language questions: types, arrays, operators, scope, and collections.
+Fundamental language questions: types, arrays, operators, scope, and collections. Array method answers: [JS Array](./3_js_array.md#interview-practice).
 
 15. What data types exist in JS?
 16. How to check if a value is an array?
@@ -4492,23 +3223,10 @@ Fundamental language questions: types, arrays, operators, scope, and collections
 
 ### Junior — Functions
 
-**Definition:**
-
-Function forms, hoisting, closures, `this`, and method binding.
-
-31. Function declaration vs function expression?
-32. What is an anonymous function?
-33. Arrow functions — differences from regular functions?
-34. What is IIFE and why use it?
-35. What is hoisting for variables and functions?
-36. What is a closure? Use cases?
-37. What logs when `execute(f)` runs after `f` is reassigned?
-38. What is recursion?
-39. What does `this` mean?
-40. Context loss — when and how to prevent?
-41. `bind` / `call` / `apply` — differences?
+**Definition:** Moved to [JS Functions](./3_js_functions.md#junior-functions)
 
 </details>
+
 
 <details>
   <summary>Middle — JS Core</summary>
@@ -4568,16 +3286,10 @@ Architecture patterns beyond syntax: class-free OOP, async disposer, RegExp disc
 
 ### Middle — Functions
 
-**Definition:**
-
-Advanced function techniques: currying, memoization, composition, and arrow tracing.
-
-40. Explain currying with a practical example.
-41. Memoization — when to apply?
-42. Function chaining — example?
-43. `function` vs arrow — trace nested arrow `pluckDeep`?
+**Definition:** Moved to [JS Functions](./3_js_functions.md#middle-functions)
 
 </details>
+
 
 <details>
   <summary>Junior — Practice tasks</summary>
@@ -4615,11 +3327,7 @@ Utility implementations: query parsing and set operations on arrays.
 
 ### Practice tasks
 
-**Definition:**
-
-Recursive implementations of standard library patterns.
-
-44. Implement `reduce` using recursion.
+**Definition:** Recursive `reduce` lives in [JS Array — Interview Practice](./3_js_array.md#interview-practice).
 
 </details>
 

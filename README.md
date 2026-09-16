@@ -8,9 +8,10 @@ Useful study links: [roadmap.sh](https://roadmap.sh/), [StackBlitz](https://stac
 
 ## Routes
 
-- `/` — tracks (Frontend, Backend, Other)
+- `/` — tracks (Frontend, Backend, Other, System design, Algorithms, AI)
 - `/frontend` — topic cards
-- `/frontend/html` — one accordion page (`<details>` / `<summary>`)
+- `/frontend/html` — HTML subject hub (Core / Browser / Additional cards)
+- `/frontend/html-structure` — one accordion page (`<details>` / `<summary>`)
 
 ## Run locally
 
@@ -29,6 +30,8 @@ npm start
 ## Content
 
 Topic files are `resources/*_*.md`. The public catalog is `lib/catalog`. Files in `resources/` that are not listed there (personal notes, link hubs) are not published.
+
+How to split: **track** → optional **subject** (HTML, CSS, JavaScript, React, …) → **cluster** (Core / Browser / Additional, or subject-specific names) → **topic** (one markdown file / one page) → **concept** (one `<details>` accordion). Rules and examples: `/instructions`.
 
 Set `NEXT_PUBLIC_SITE_URL` (no trailing slash) for absolute sitemap and robots URLs in production. On Vercel, production URL is inferred when that env is unset.
 

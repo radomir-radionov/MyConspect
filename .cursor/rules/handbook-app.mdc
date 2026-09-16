@@ -10,15 +10,16 @@ Public study handbook. Browse-only. Parse `resources/*.md` at **build time**.
 
 ## Product constraints
 
-- Routes: `/` tracks → `/[track]` topic cards → `/[track]/[topic]`
+- Routes: `/` tracks → `/[track]` topic cards → `/[track]/[topic]` (subject hubs like `/frontend/javascript` use the same segment)
 - Native `<details>`/`<summary>`. Full concept HTML on first load. Do **not** fetch on click
 - No per-concept URLs, progress, quiz, auth, localStorage, or SRS
 - SSG via `generateStaticParams`. `generateMetadata` on topic pages. `app/sitemap.ts` + `app/robots.ts`
-- UI chrome: sticky header (icon, title, topic/concept search) and a track-grouped topic sidebar. Keep reading width on topic pages. English only.
+- UI chrome: sticky header (icon, title, topic/concept search) and a track-grouped topic sidebar. Subjects nest clusters (HTML, CSS, JavaScript, React, …). Keep reading width on topic pages. English only.
 
 ## Content
 
 - Read **only** `resources/` numbered `*_*.md` files (see `lib/catalog`)
+- One catalog topic = one markdown file = one accordion page. Optional `SUBJECTS` group related topics (HTML, CSS, JavaScript, React, …). Do not invent per-concept routes
 - Do not rewrite study notes unless the user asks. Do not add React to markdown
 - Skip personal/hub files that are not in the catalog (`0_me.md`, `0_interview.md`, `3_js.md`, …)
 

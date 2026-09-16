@@ -1,7 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CardGrid } from "@/components/catalog";
-import { TRACKS, getTrack, isTrackId, topicHref, topicsForTrack } from "@/lib/catalog";
+import { CardGrid, ClusterCardSections } from "@/components/catalog";
+import { ConceptList } from "@/components/topic";
+import {
+  TRACKS,
+  getTrack,
+  isTrackId,
+  leafTopicForTrack,
+  subjectClusterCards,
+  subjectForTrack,
+  trackBrowseCards,
+} from "@/lib/catalog";
+import { loadParsedTopic } from "@/lib/parse";
 
 export const dynamicParams = false;
 
@@ -16,6 +26,23 @@ export async function generateMetadata({
   const track = getTrack(trackId);
   if (!track) {
     return { title: "Not found" };
+  }
+  const subject = isTrackId(trackId) ? subjectForTrack(trackId) : undefined;
+  if (subject) {
+    return {
+      title: subject.title,
+      description: subject.blurb,
+    };
+  }
+  if (isTrackId(trackId)) {
+    const leaf = leafTopicForTrack(trackId);
+    if (leaf) {
+      const parsed = await loadParsedTopic(leaf);
+      return {
+        title: parsed.title,
+        description: parsed.description,
+      };
+    }
   }
   return {
     title: track.title,
@@ -32,20 +59,44 @@ export default async function TrackPage({ params }: PageProps<"/[track]">) {
   if (!track) {
     notFound();
   }
-  const topics = topicsForTrack(track.id);
+
+  const subject = subjectForTrack(track.id);
+  if (subject) {
+    return (
+      <main className="w-full max-w-5xl px-4 py-10 sm:px-6">
+        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{subject.title}</h1>
+        <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600">{subject.blurb}</p>
+        <ClusterCardSections sections={subjectClusterCards(subject)} />
+      </main>
+    );
+  }
+
+  const leaf = leafTopicForTrack(track.id);
+  if (leaf) {
+    const parsed = await loadParsedTopic(leaf);
+    return (
+      <main className="w-full max-w-3xl px-4 py-10 sm:px-6">
+        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{parsed.title}</h1>
+        <p className="mt-3 text-base leading-7 text-zinc-600">{parsed.description}</p>
+        <p className="mt-2 text-sm text-zinc-500">
+          {parsed.concepts.length} concepts · click a title to expand
+        </p>
+        <div className="mt-8">
+          <ConceptList
+            concepts={parsed.concepts}
+            emptyMessage="No concepts were parsed from this topic."
+          />
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="w-full max-w-5xl px-4 py-10 sm:px-6">
       <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{track.title}</h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600">{track.description}</p>
       <div className="mt-8">
-        <CardGrid
-          items={topics.map((topic) => ({
-            href: topicHref(topic),
-            title: topic.title,
-            description: topic.blurb,
-          }))}
-        />
+        <CardGrid items={trackBrowseCards(track.id)} />
       </div>
     </main>
   );

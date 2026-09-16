@@ -17,7 +17,7 @@ Editor productivity, extensions, and browser DevTools for frontend development.
 
 ### Related
 
-* [Build & ESLint/Prettier](./10_build.md) · [Core Web Vitals](./6_web_api.md#core-web-vitals) · [LCP](./6_web_api.md#lcp-largest-contentful-paint) · [TTFB](./6_web_api.md#ttfb-time-to-first-byte) · [CLS](./1_html.md#cls-cumulative-layout-shift) · [Interview hub](./0_interview.md)
+* [Build & ESLint/Prettier](./10_build.md) · [Core Web Vitals](./6_web_api_security.md#core-web-vitals) · [LCP](./6_web_api_security.md#lcp-largest-contentful-paint) · [TTFB](./6_web_api_security.md#ttfb-time-to-first-byte) · [CLS](./1_html_performance.md#cls-cumulative-layout-shift) · [Interview hub](./0_interview.md)
 
 ---
 
@@ -237,13 +237,13 @@ cat (Get-PSReadlineOption).HistorySavePath
 
 ### DevTools — Core Web Vitals
 
-**Definition:** Chrome DevTools is the lab tool for *reproducing* LCP, INP, and CLS after field data (CrUX / Search Console) tells you which metric is bad. Full field vs lab notes: [6_web_api.md — Core Web Vitals](./6_web_api.md#core-web-vitals). LCP element and four sub-parts: [6_web_api.md — LCP](./6_web_api.md#lcp-largest-contentful-paint).
+**Definition:** Chrome DevTools is the lab tool for *reproducing* LCP, INP, and CLS after field data (CrUX / Search Console) tells you which metric is bad. Full field vs lab notes: [6_web_api.md — Core Web Vitals](./6_web_api_security.md#core-web-vitals). LCP element and four sub-parts: [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint).
 
 **How it works:**
 
 - **Lighthouse** (panel, CLI, CI) — lab audit + recommendations. Default run has no user, so **INP is not real INP**; **TBT** is the lab proxy.
-- **Network** — document request Waiting / TTFB. Full metric: [6_web_api.md — TTFB](./6_web_api.md#ttfb-time-to-first-byte).
-- **Performance** — record a trace. Enable Screenshots. For INP: interact during the recording, then inspect the **Interactions** track (input delay / processing / presentation delay). Red triangles in the call stack mark long handlers. **Layout Shifts** track for CLS: which nodes moved and how many points they added. Side panel **Insights** summarizes common issues. Metric + fixes: [1_html.md — CLS](./1_html.md#cls-cumulative-layout-shift).
+- **Network** — document request Waiting / TTFB. Full metric: [6_web_api.md — TTFB](./6_web_api_security.md#ttfb-time-to-first-byte).
+- **Performance** — record a trace. Enable Screenshots. For INP: interact during the recording, then inspect the **Interactions** track (input delay / processing / presentation delay). Red triangles in the call stack mark long handlers. **Layout Shifts** track for CLS: which nodes moved and how many points they added. Side panel **Insights** summarizes common issues. Metric + fixes: [1_html.md — CLS](./1_html_performance.md#cls-cumulative-layout-shift).
 - If it is fast locally: CPU throttle 4× / 6×, or remote-debug a real Android phone.
 - **Application → Back/forward cache → Test** — whether the page can use **bfcache** (instant restore on Back/Forward; LCP/FCP/CLS often ~0). Chrome lists blockers. `unload` / `beforeunload` often break it — use `pagehide`. `Cache-Control: no-store` can too.
 

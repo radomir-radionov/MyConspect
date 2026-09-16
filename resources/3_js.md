@@ -1,7 +1,7 @@
 
 # JavaScript — hub
 
-ECMAScript language, object model, browser runtime (DOM/BOM/events), and asynchronous programming. Theory and Interview Practice live in the four sub-files.
+ECMAScript language, object model, browser runtime (DOM/BOM/events), and asynchronous programming. Theory and Interview Practice live in the Core, Browser, and Async sub-files.
 
 ## Resources & links
 
@@ -47,8 +47,8 @@ ECMAScript language, object model, browser runtime (DOM/BOM/events), and asynchr
 * [TypeScript](5_ts.md)
 * [Web API — HTTP, storage, security](6_web_api.md)
 * [Node.js](8_nodejs.md)
-* [Databases](9_database.md)
-* [Interview hub](0_interview.md) · [Core](./3_js_core.md#interview-practice) · [OOP](./3_js_oop.md#interview-practice) · [Async](./3_js_async.md#interview-practice) · [Browser](./3_js_browser.md#interview-practice)
+* [DB](9_database.md)
+* [Interview hub](0_interview.md) · [Language](./3_js_core.md#interview-practice) · [Array](./3_js_array.md#interview-practice) · [Functions](./3_js_functions.md#interview-practice) · [OOP](./3_js_oop.md#interview-practice) · [Async](./3_js_async.md#interview-practice) · [Document](./3_js_browser.md#interview-practice) · [Events](./3_js_events.md#interview-practice) · [Browser additional](./3_js_browser_extra.md#interview-practice)
 
 </details>
 
@@ -62,35 +62,47 @@ Covers the ECMAScript language, object model, browser runtime (DOM/BOM/events), 
 
 | Area | Topics |
 |------|--------|
-| **Language** | Types, coercion, [JSON](./3_js_core.md#json), [stack/heap](./3_js_core.md#memory-stack-heap), JIT, scope, closures, functions, modules, errors, Signals (TC39) → [core](./3_js_core.md#signals) |
-| **OOP** | Prototypes, classes, descriptors, GC, `this` → [oop](./3_js_oop.md); design & SOLID → [7_special](./7_special.md#2-oop--fp) |
-| **Browser** | DOM, events, storage, CORS, [`URL` / `URLSearchParams`](./3_js_browser.md#url--urlsearchparams) → [browser](./3_js_browser.md) · anatomy → [Web API](./6_web_api.md#uri-url--urn) |
+| **Language** | Types, coercion, [JSON](./3_js_core.md#json), [stack/heap](./3_js_core.md#memory-stack-heap), JIT, scope, closures, modules, errors, Signals (TC39) → [core](./3_js_core.md#signals) |
+| **Array** | Indexed collections, mutating vs non-mutating methods, `map`/`filter`/`reduce` → [array](./3_js_array.md) |
+| **Functions** | Declarations, arrows, `this`, HOF, `call`/`apply`/`bind` → [functions](./3_js_functions.md) |
+| **OOP** | Prototypes, classes, descriptors, GC, `this` → [oop](./3_js_oop.md); design & SOLID → [7_special](./7_special_paradigms.md#2-oop--fp) |
+| **Browser** | [Document](./3_js_browser.md), [Events](./3_js_events.md), storage / CORS / [`URL` / `URLSearchParams`](./3_js_browser_extra.md#url--urlsearchparams) → [additional](./3_js_browser_extra.md) · anatomy → [Web API](./6_web_api_core.md#uri-url--urn) |
 | **Async** | Event loop, promises, `async/await` → [async](./3_js_async.md) |
 
 ### Interview coverage checklist
 
 | File | Theory | Q&A | Tasks | Status |
 |------|--------|-----|-------|--------|
-| [3_js_core.md](./3_js_core.md#interview-practice) | Yes | Yes | 15 | Complete |
+| [3_js_core.md](./3_js_core.md#interview-practice) | Yes | Yes | language tasks | Complete |
+| [3_js_array.md](./3_js_array.md#interview-practice) | Yes | Yes | flatten, map, cart | Complete |
+| [3_js_functions.md](./3_js_functions.md#interview-practice) | Yes | Yes | bind, debounce, curry | Complete |
 | [3_js_async.md](./3_js_async.md#interview-practice) | Yes | Yes | 5+ | Complete |
 | [3_js_oop.md](./3_js_oop.md#interview-practice) | Yes | Yes | 4+ | Complete |
-| [3_js_browser.md](./3_js_browser.md#interview-practice) | Yes | Yes | 3+ | Complete |
+| [3_js_browser.md](./3_js_browser.md#interview-practice) | Yes | Yes | 1+ | Complete |
+| [3_js_events.md](./3_js_events.md#interview-practice) | Yes | Yes | 1+ | Complete |
+| [3_js_browser_extra.md](./3_js_browser_extra.md#interview-practice) | Yes | Yes | 2+ | Complete |
 
 ### Navigation
 
 | Part 1 | Part 2 |
 |--------|--------|
-| [Core — language](./3_js_core.md) | [Browser — DOM & events](./3_js_browser.md) |
-| [OOP — objects & classes](./3_js_oop.md) | [Async — promises & practice](./3_js_async.md) |
+| [Core — language](./3_js_core.md) | [Core — array](./3_js_array.md) |
+| [Core — functions](./3_js_functions.md) | [OOP — classes & objects](./3_js_oop.md) |
+| [Browser — Document](./3_js_browser.md) | [Browser — Events](./3_js_events.md) |
+| [Async — promises & practice](./3_js_async.md) | [Browser — Additional](./3_js_browser_extra.md) |
 
 ### Interview practice
 
 Output-prediction tasks, Q&A, and real-world cases live in:
 
 * [3_js_core.md — Interview Practice](./3_js_core.md#interview-practice)
+* [3_js_array.md — Interview Practice](./3_js_array.md#interview-practice)
+* [3_js_functions.md — Interview Practice](./3_js_functions.md#interview-practice)
 * [3_js_oop.md — Interview Practice](./3_js_oop.md#interview-practice)
 * [3_js_async.md — Interview Practice](./3_js_async.md#interview-practice) (also [Practice](./3_js_async.md#practice))
 * [3_js_browser.md — Interview Practice](./3_js_browser.md#interview-practice)
+* [3_js_events.md — Interview Practice](./3_js_events.md#interview-practice)
+* [3_js_browser_extra.md — Interview Practice](./3_js_browser_extra.md#interview-practice)
 * [Interview hub](./0_interview.md)
 
 ### Topic template

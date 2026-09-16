@@ -72,10 +72,14 @@ export function ConceptList({
       if (!(element instanceof HTMLDetailsElement)) {
         return;
       }
-      if (!element.open) {
+      const wasOpen = element.open;
+      if (!wasOpen) {
         element.open = true;
       }
       closeSiblingAccordions(element);
+      if (wasOpen) {
+        return;
+      }
       window.requestAnimationFrame(() => {
         scrollConceptToTop(element);
       });

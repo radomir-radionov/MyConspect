@@ -4,7 +4,16 @@ export {
   filterNavGroups,
   firstSearchHref,
   matchesQuery,
+  navTopics,
   splitHref,
   topicMatches,
 } from "./search";
-export type { ChromeCopy, NavConcept, NavGroup, NavTopic } from "./types";
+export type {
+  ChromeCopy,
+  NavCluster,
+  NavConcept,
+  NavEntry,
+  NavGroup,
+  NavSubject,
+  NavTopic,
+} from "./types";

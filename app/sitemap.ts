@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { TRACKS, TOPICS, topicHref } from "@/lib/catalog";
+import { SUBJECTS, TRACKS, TOPICS, isLeafTopic, subjectHref, topicHref } from "@/lib/catalog";
 import { INSTRUCTIONS_HREF } from "@/lib/nav";
 import { siteUrl } from "@/lib/site";
 
@@ -21,7 +21,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const topics = TOPICS.map((topic) => ({
+  const trackUrls = new Set(tracks.map((item) => item.url));
+  const subjects = SUBJECTS.map((subject) => ({
+    url: `${base}${subjectHref(subject)}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  })).filter((item) => !trackUrls.has(item.url));
+
+  const topics = TOPICS.filter((topic) => !isLeafTopic(topic)).map((topic) => ({
     url: `${base}${topicHref(topic)}`,
     lastModified: now,
     changeFrequency: "weekly" as const,
@@ -35,5 +43,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.4,
   };
 
-  return [home, instructions, ...tracks, ...topics];
+  return [home, instructions, ...tracks, ...subjects, ...topics];
 }

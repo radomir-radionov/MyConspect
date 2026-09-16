@@ -1,0 +1,48 @@
+---
+description: When editing MyConspect study notes in resources/, fetch official docs for the topic and related APIs before writing. Do not rely on training data.
+globs: resources/**/*.md
+alwaysApply: false
+---
+
+# Resources — official docs check
+
+Before adding or changing facts in `resources/*.md`, look up the **current official docs** for that concept **and** closely related APIs. Do not write from memory.
+
+## Required lookup
+
+1. **Context7 MCP** — `resolve-library-id` (`libraryName` + full topic as `query`), then `query-docs` (`libraryId` + a specific question). Prefer official/primary IDs over forks. Match versions when the note names one (React 19, Next.js 16).
+2. **Ref.tools MCP** — method/param/signature lookups.
+3. **Web fetch/search** — only if Context7/Ref miss the page (MDN, WHATWG, RFC, vendor docs).
+
+If fetched docs conflict with memory or an existing note, **trust the docs** and update the note.
+
+## Related info (not only the keyword)
+
+Query more than the heading. Cover siblings that interviews mix up: related methods, flags, return values, defaults, deprecations, browser vs Node vs framework behavior.
+
+Examples: editing `fetch` → also credentials, CORS, abort, `keepalive`. Editing `useEffect` → also Strict Mode, cleanup, `useLayoutEffect`. Editing Git merge → also rebase, fast-forward, conflict markers.
+
+## After fetch
+
+- Align **Definition / How it works / Examples** with the docs.
+- Put canonical URLs in **Sources:** (MDN, spec, react.dev, nextjs.org, nodejs.org, git-scm.com, …).
+- Do not invent APIs, options, or status codes that did not appear in the fetch.
+
+## Default official homes
+
+| Notes | Look up |
+| --- | --- |
+| HTML / a11y / SEO | MDN HTML, WHATWG HTML, WAI-ARIA |
+| CSS | MDN CSS, csswg drafts when needed |
+| JS language | MDN JS, ECMA-262 |
+| DOM / fetch / Web APIs | MDN Web API, WHATWG Fetch/DOM |
+| React | react.dev |
+| Next.js | nextjs.org/docs |
+| TypeScript | typescriptlang.org/docs |
+| Node.js | nodejs.org/docs |
+| Git | git-scm.com/docs |
+| HTTP / REST | RFCs, MDN HTTP |
+| PostgreSQL / SQL | postgresql.org/docs |
+| Docker | docs.docker.com |
+
+Skip this lookup for personal/hub files with no APIs (`0_me.md`, link-only hubs) unless you are adding a factual claim.

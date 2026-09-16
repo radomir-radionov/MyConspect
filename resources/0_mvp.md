@@ -4,7 +4,7 @@ When to ship fast, when to invest in structure, and how engineering decisions af
 
 ### Related docs
 
-* [System design](./0_system_design.md) · [Interview hub](./0_interview.md) · [AI-first approach](./0_ai.md#ai-first-approach) · [TypeScript](./5_ts.md) · [React architecture](./4_react.md#9-ecosystem--architecture)
+* [System design](./0_system_design.md) · [Interview hub](./0_interview.md) · [AI-first approach](./0_ai.md#ai-first-approach) · [TypeScript](./5_ts.md) · [React architecture](./4_react_ecosystem.md#9-ecosystem--architecture)
 
 ### Main concepts
 
@@ -59,7 +59,7 @@ Questions on engineering judgment — common in senior and full-stack interviews
 
 **Thoughts:** *Contract = both sides know what to send and expect — types and docs enforce it.*
 
-**See also:** [6_web_api.md — REST contract](./6_web_api.md#interview-practice) · [5_ts.md](./5_ts.md)
+**See also:** [6_web_api.md — REST contract](./6_web_api_interview.md#interview-practice) · [5_ts.md](./5_ts.md)
 
 </details>
 
@@ -80,7 +80,7 @@ Questions on engineering judgment — common in senior and full-stack interviews
 
 **Thoughts:** *Scale when you have evidence of need — but design so you're not blocked when growth arrives.*
 
-**See also:** [0_system_design.md — Load balancing, caching](./0_system_design.md#interview-practice)
+**See also:** [0_system_design.md — Load balancing, caching](./0_system_design_interview.md#interview-practice)
 
 </details>
 
@@ -100,7 +100,7 @@ Questions on engineering judgment — common in senior and full-stack interviews
 
 **Thoughts:** *Types scale communication — critical when more than one person touches the code.*
 
-**See also:** [5_ts.md — Why TypeScript in large projects](./5_ts.md#interview-practice)
+**See also:** [5_ts.md — Why TypeScript in large projects](./5_ts_interview.md#interview-practice)
 
 </details>
 
@@ -177,7 +177,7 @@ Questions on engineering judgment — common in senior and full-stack interviews
 
 **Thoughts:** *Good code is working code your teammate can change confidently.*
 
-**See also:** [0_system_design.md §7 — SOLID](./0_system_design.md#7-principles--patterns)
+**See also:** [0_system_design.md §7 — SOLID](./0_system_design_data.md#7-principles--patterns)
 
 </details>
 
