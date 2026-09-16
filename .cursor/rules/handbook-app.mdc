@@ -12,7 +12,7 @@ Public study handbook. Browse-only. Parse `resources/*.md` at **build time**.
 
 - Routes: `/` tracks → `/[track]` topic cards → `/[track]/[topic]` (subject hubs like `/frontend/javascript` use the same segment)
 - Native `<details>`/`<summary>`. Full concept HTML on first load. Do **not** fetch on click
-- No per-concept URLs, progress, quiz, auth, localStorage, or SRS
+- No per-concept URLs, progress, quiz, auth, or SRS. localStorage only for UI chrome (search + last page)
 - SSG via `generateStaticParams`. `generateMetadata` on topic pages. `app/sitemap.ts` + `app/robots.ts`
 - UI chrome: sticky header (icon, title, topic/concept search) and a track-grouped topic sidebar. Subjects nest clusters (HTML, CSS, JavaScript, React, …). Keep reading width on topic pages. English only.
 

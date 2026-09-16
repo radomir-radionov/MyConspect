@@ -28,7 +28,7 @@ The user is changing this app (routes, parser, catalog, UI, SEO), not the conspe
 
 ## Product rules
 
-- Browse-only. No progress, quiz, auth, localStorage, SRS
+- Browse-only. No progress, quiz, auth, or SRS. localStorage only for UI chrome (search + last page)
 - Topic page is **one** accordion. Nested `<details>` in the body stay nested
 - Do not fetch concept HTML on click
 - Do not invent per-concept routes

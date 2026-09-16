@@ -3,6 +3,7 @@
 import { useDeferredValue, useEffect, useRef, useState, startTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { firstSearchHref, splitHref, type NavGroup, type SearchMode } from "@/lib/nav";
+import { readUi, writeUi } from "./uiStorage";
 
 const SEARCH_NAV_DELAY_MS = 280;
 
@@ -20,7 +21,16 @@ export function useHandbookSearch(
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
   const [mode, setMode] = useState<SearchMode>("titles");
+  const [hydrated, setHydrated] = useState(false);
   const modeRef = useRef(mode);
+
+  useEffect(() => {
+    const stored = readUi();
+    setQuery(stored.query);
+    setMode(stored.mode);
+    modeRef.current = stored.mode;
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     onSearchActiveRef.current = onSearchActive;
@@ -28,6 +38,13 @@ export function useHandbookSearch(
     groupsRef.current = groups;
     modeRef.current = mode;
   }, [onSearchActive, pathname, groups, mode]);
+
+  useEffect(() => {
+    if (!hydrated) {
+      return;
+    }
+    writeUi({ query, mode });
+  }, [hydrated, query, mode]);
 
   useEffect(() => {
     return () => {

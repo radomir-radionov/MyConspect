@@ -15,6 +15,21 @@ describe("handbook sidebar", () => {
     cy.nav("track", "backend").should("not.have.class", "bg-yellow-50");
   });
 
+  it("opens the Backend hub when that track is chosen from System design", () => {
+    cy.visit("/system-design");
+    cy.contains("h1", "System design");
+
+    cy.nav("track", "backend").click();
+
+    cy.location("pathname").should("eq", "/backend");
+    cy.contains("h1", "Backend");
+    cy.contains("h2", "Node.js");
+    cy.contains("h2", "Database");
+    cy.nav("track", "backend").should("have.attr", "aria-expanded", "true");
+    cy.nav("subject", "nodejs").should("be.visible");
+    cy.nav("subject", "database").should("be.visible");
+  });
+
   it("keeps Additional open when opening it from Algorithms Core", () => {
     cy.visit("/algorithms/algorithms-core#time-vs-space-complexity");
     cy.nav("track", "algorithms").should("have.attr", "aria-expanded", "true");
@@ -179,6 +194,20 @@ describe("handbook sidebar", () => {
         $el[0].getBoundingClientRect().top - main.getBoundingClientRect().top;
       expect(top).to.be.within(0, 24);
     });
+  });
+
+  it("restores search and the last page from browser storage", () => {
+    cy.visit("/frontend/react-core");
+    cy.get('[data-search-mode="notes"]').click();
+    cy.get('input[placeholder="Search in notes…"]').clear().type("useState");
+    cy.wait(400);
+    cy.reload();
+    cy.get('input[placeholder="Search in notes…"]').should("have.value", "useState");
+    cy.get('[data-search-mode="notes"]').should("have.attr", "aria-checked", "true");
+
+    cy.visit("/");
+    cy.location("pathname").should("not.eq", "/");
+    cy.get('input[placeholder="Search in notes…"]').should("have.value", "useState");
   });
 
   it("filters the sidebar to matching topics while searching", () => {

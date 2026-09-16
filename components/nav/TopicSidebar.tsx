@@ -523,24 +523,44 @@ export const TopicSidebar = memo(function TopicSidebar({
                 </li>
               );
             }
+            const trackChevron = (
+              <span aria-hidden="true" className="shrink-0 text-base leading-none text-zinc-500">
+                {trackOpen ? "▾" : "▸"}
+              </span>
+            );
             return (
               <li key={group.id}>
-                <button
-                  type="button"
-                  aria-expanded={trackOpen}
-                  data-nav="track"
-                  data-nav-id={group.id}
-                  onClick={() =>
-                    setOpenTrackId((current) => (current === group.id ? null : group.id))
-                  }
-                  aria-current={onThisTrack ? "true" : undefined}
-                  className={trackHeaderClass(trackHighlighted)}
-                >
-                  <HighlightedText text={group.title} query={query} className="min-w-0 flex-1" />
-                  <span aria-hidden="true" className="shrink-0 text-base leading-none text-zinc-500">
-                    {trackOpen ? "▾" : "▸"}
-                  </span>
-                </button>
+                {onThisTrack ? (
+                  <button
+                    type="button"
+                    aria-expanded={trackOpen}
+                    data-nav="track"
+                    data-nav-id={group.id}
+                    onClick={() =>
+                      setOpenTrackId((current) => (current === group.id ? null : group.id))
+                    }
+                    aria-current="true"
+                    className={trackHeaderClass(trackHighlighted)}
+                  >
+                    <HighlightedText text={group.title} query={query} className="min-w-0 flex-1" />
+                    {trackChevron}
+                  </button>
+                ) : (
+                  <Link
+                    href={group.href}
+                    data-nav="track"
+                    data-nav-id={group.id}
+                    onClick={() => {
+                      setOpenTrackId(group.id);
+                      closeNavSoon(onNavigate);
+                    }}
+                    aria-expanded={trackOpen}
+                    className={trackHeaderClass(trackHighlighted)}
+                  >
+                    <HighlightedText text={group.title} query={query} className="min-w-0 flex-1" />
+                    {trackChevron}
+                  </Link>
+                )}
                 {trackOpen ? (
                   <ul className="mt-1 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2">
                     {group.entries.map((entry) => {
