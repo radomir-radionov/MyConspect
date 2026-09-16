@@ -13,7 +13,6 @@ export function useHandbookSearch(
   const pathname = usePathname() ?? "/";
   const router = useRouter();
   const onSearchActiveRef = useRef(onSearchActive);
-  onSearchActiveRef.current = onSearchActive;
   const pathnameRef = useRef(pathname);
   const groupsRef = useRef(groups);
   const restoreHrefRef = useRef<string | null>(null);
@@ -23,9 +22,12 @@ export function useHandbookSearch(
   const [mode, setMode] = useState<SearchMode>("titles");
   const modeRef = useRef(mode);
 
-  pathnameRef.current = pathname;
-  groupsRef.current = groups;
-  modeRef.current = mode;
+  useEffect(() => {
+    onSearchActiveRef.current = onSearchActive;
+    pathnameRef.current = pathname;
+    groupsRef.current = groups;
+    modeRef.current = mode;
+  }, [onSearchActive, pathname, groups, mode]);
 
   useEffect(() => {
     return () => {

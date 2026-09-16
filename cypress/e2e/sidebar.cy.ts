@@ -135,10 +135,10 @@ describe("handbook sidebar", () => {
 
   it("does not jump the main pane when opening a concept in the page list", () => {
     cy.visit("/frontend/react-core");
-    cy.get("#state > summary").click({ scrollBehavior: false });
-    cy.get("#state").should("have.prop", "open", true);
+    cy.get("#tooling > summary").click({ scrollBehavior: false });
+    cy.get("#tooling").should("have.prop", "open", true);
 
-    cy.get("#state-as-snapshot > summary").then(($summary) => {
+    cy.get("#react > summary").then(($summary) => {
       const main = Cypress.$("#handbook-main")[0];
       const desired =
         $summary[0].getBoundingClientRect().top -
@@ -151,9 +151,9 @@ describe("handbook sidebar", () => {
       expect(before).to.be.within(80, 400);
 
       cy.wrap($summary).click({ scrollBehavior: false });
-      cy.get("#state-as-snapshot").should("have.prop", "open", true);
-      cy.get("#state").should("have.prop", "open", false);
-      cy.get("#state-as-snapshot > summary").should(($el) => {
+      cy.get("#react").should("have.prop", "open", true);
+      cy.get("#tooling").should("have.prop", "open", false);
+      cy.get("#react > summary").should(($el) => {
         const after =
           $el[0].getBoundingClientRect().top - main.getBoundingClientRect().top;
         expect(after).to.be.closeTo(before, 40);
