@@ -35,6 +35,60 @@ function getHash() {
   return window.location.hash;
 }
 
+function notifyConceptHash(pathname: string, conceptId: string) {
+  const next = `#${conceptId}`;
+  if (window.location.hash !== next) {
+    window.history.replaceState(window.history.state, "", `${pathname}${next}`);
+  }
+  window.dispatchEvent(new CustomEvent("hashchange", { detail: { scroll: true } }));
+}
+
+function ConceptLink({
+  topicHref,
+  pathname,
+  conceptId,
+  isFirstConcept,
+  conceptActive,
+  title,
+  query,
+  onNavigate,
+}: {
+  topicHref: string;
+  pathname: string;
+  conceptId: string;
+  isFirstConcept: boolean;
+  conceptActive: boolean;
+  title: string;
+  query: string;
+  onNavigate?: () => void;
+}) {
+  const router = useRouter();
+  return (
+    <a
+      href={conceptHref(topicHref, conceptId)}
+      data-concept-id={conceptId}
+      data-search-hit={isFirstConcept ? "true" : undefined}
+      onClick={(event) => {
+        event.preventDefault();
+        if (pathname === topicHref) {
+          notifyConceptHash(pathname, conceptId);
+          onNavigate?.();
+          return;
+        }
+        closeNavSoon(onNavigate);
+        router.push(conceptHref(topicHref, conceptId));
+      }}
+      className={
+        conceptActive
+          ? "block cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-inset ring-yellow-200"
+          : "block cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800"
+      }
+    >
+      <HighlightedText text={title} query={query} />
+    </a>
+  );
+}
+
 function scrollSidebarHit(hit: HTMLElement) {
   const scroller = document.getElementById("handbook-nav-aside");
   if (!(scroller instanceof HTMLElement)) {
@@ -68,6 +122,7 @@ function closeNavSoon(onNavigate?: () => void) {
 
 function locationForPath(groups: readonly NavGroup[], pathname: string, hash: string) {
   const clusterId = decodeURIComponent(hash.replace(/^#/, ""));
+  let hubSubjectHref: string | null = null;
   for (const group of groups) {
     if (group.leafTopic && (pathname === group.href || pathname === group.leafTopic.href)) {
       return {
@@ -88,12 +143,21 @@ function locationForPath(groups: readonly NavGroup[], pathname: string, hash: st
           }
           break;
         case "cluster":
-          if (pathname === entry.subjectHref && clusterId === entry.cluster.id) {
-            return {
-              topicHref: null as string | null,
-              subjectHref: entry.subjectHref,
-              clusterKey: clusterKey(entry.subjectHref, entry.cluster.id),
-            };
+          if (clusterId === entry.cluster.id) {
+            const onSubject =
+              pathname === entry.subjectHref ||
+              pathname.startsWith(`${entry.subjectHref}/`);
+            if (onSubject) {
+              const onThisTopic = entry.cluster.topics.some((topic) => topic.href === pathname);
+              return {
+                topicHref: onThisTopic ? pathname : null,
+                subjectHref: entry.subjectHref,
+                clusterKey: clusterKey(entry.subjectHref, entry.cluster.id),
+              };
+            }
+          }
+          if (pathname === entry.subjectHref) {
+            hubSubjectHref = entry.subjectHref;
           }
           if (entry.cluster.topics.some((topic) => topic.href === pathname)) {
             return {
@@ -129,6 +193,13 @@ function locationForPath(groups: readonly NavGroup[], pathname: string, hash: st
       }
     }
   }
+  if (hubSubjectHref) {
+    return {
+      topicHref: null as string | null,
+      subjectHref: hubSubjectHref,
+      clusterKey: null as string | null,
+    };
+  }
   return { topicHref: null as string | null, subjectHref: null as string | null, clusterKey: null as string | null };
 }
 
@@ -136,6 +207,12 @@ function rowClass(active: boolean) {
   return active
     ? "flex w-full cursor-pointer items-center justify-between gap-2 rounded-md bg-yellow-50 px-2 py-2 text-left text-base font-medium text-zinc-900 ring-1 ring-inset ring-yellow-200"
     : "flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 text-left text-base text-zinc-800 hover:bg-yellow-50 hover:text-zinc-900";
+}
+
+function trackHeaderClass(highlighted: boolean) {
+  return highlighted
+    ? "flex w-full cursor-pointer items-center justify-between gap-2 rounded-md bg-yellow-50 px-2 py-1 text-left text-sm font-semibold uppercase tracking-wide text-zinc-900 ring-1 ring-inset ring-yellow-200"
+    : "flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1 text-left text-sm font-semibold uppercase tracking-wide text-zinc-500 hover:bg-yellow-50 hover:text-zinc-800";
 }
 
 function RowTitle({
@@ -204,7 +281,11 @@ export const TopicSidebar = memo(function TopicSidebar({
     setNavSnapshot({ searching, activeTrackId, pathname, hash, activeConceptId });
     if (!searching) {
       const leftSearch = navSnapshot.searching;
-      if (leftSearch || activeTrackId !== navSnapshot.activeTrackId) {
+      if (
+        leftSearch ||
+        activeTrackId !== navSnapshot.activeTrackId ||
+        pathname !== navSnapshot.pathname
+      ) {
         setOpenTrackId(activeTrackId);
       }
       if (leftSearch || pathname !== navSnapshot.pathname || hash !== navSnapshot.hash) {
@@ -263,13 +344,13 @@ export const TopicSidebar = memo(function TopicSidebar({
           {filtered.map((group) => {
             const isLeafTrack = Boolean(group.leafTopic) && group.entries.length === 0;
             const trackActive = isActiveHref(pathname, group.href);
+            const onThisTrack = isActiveTrack(pathname, group.href);
             const trackOpen = searching || openTrackId === group.id;
+            const trackHighlighted = onThisTrack || trackOpen;
             if (isLeafTrack && group.leafTopic) {
               const leaf = group.leafTopic;
               const leafOpen = trackOpen;
-              const leafHeaderClass = leafOpen
-                ? "flex w-full cursor-pointer items-center justify-between gap-2 rounded-md bg-yellow-50 px-2 py-1 text-left text-sm font-semibold uppercase tracking-wide text-zinc-900 ring-1 ring-inset ring-yellow-200"
-                : "flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1 text-left text-sm font-semibold uppercase tracking-wide text-zinc-500 hover:bg-yellow-50 hover:text-zinc-800";
+              const leafHeaderClass = trackHeaderClass(trackHighlighted);
               const leafChevron = (
                 <span aria-hidden="true" className="shrink-0 text-base leading-none text-zinc-500">
                   {leafOpen ? "▾" : "▸"}
@@ -281,6 +362,8 @@ export const TopicSidebar = memo(function TopicSidebar({
                     <button
                       type="button"
                       aria-expanded={leafOpen}
+                      data-nav="track"
+                      data-nav-id={group.id}
                       onClick={() => {
                         if (!searching) {
                           setOpenTrackId((current) => (current === group.id ? null : group.id));
@@ -294,6 +377,8 @@ export const TopicSidebar = memo(function TopicSidebar({
                   ) : (
                     <Link
                       href={group.href}
+                      data-nav="track"
+                      data-nav-id={group.id}
                       onClick={() => {
                         setOpenTrackId(group.id);
                         closeNavSoon(onNavigate);
@@ -329,14 +414,13 @@ export const TopicSidebar = memo(function TopicSidebar({
                 <button
                   type="button"
                   aria-expanded={trackOpen}
+                  data-nav="track"
+                  data-nav-id={group.id}
                   onClick={() =>
                     setOpenTrackId((current) => (current === group.id ? null : group.id))
                   }
-                  className={
-                    trackOpen
-                      ? "flex w-full cursor-pointer items-center justify-between gap-2 rounded-md bg-yellow-50 px-2 py-1 text-left text-sm font-semibold uppercase tracking-wide text-zinc-900 ring-1 ring-inset ring-yellow-200"
-                      : "flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1 text-left text-sm font-semibold uppercase tracking-wide text-zinc-500 hover:bg-yellow-50 hover:text-zinc-800"
-                  }
+                  aria-current={onThisTrack ? "true" : undefined}
+                  className={trackHeaderClass(trackHighlighted)}
                 >
                   <HighlightedText text={group.title} query={query} className="min-w-0 flex-1" />
                   <span aria-hidden="true" className="shrink-0 text-base leading-none text-zinc-500">
@@ -453,6 +537,8 @@ function SubjectRow({
     <li>
       <Link
         href={subject.href}
+        data-nav="subject"
+        data-nav-id={subject.slug}
         onClick={(event) => {
           if (pathname === subject.href) {
             event.preventDefault();
@@ -541,6 +627,8 @@ function ClusterRow({
         setOpenTopicHref={setOpenTopicHref}
         onNavigate={onNavigate}
         compact
+        navKind="cluster"
+        navId={cluster.id}
       />
     );
   }
@@ -555,6 +643,8 @@ function ClusterRow({
     <li>
       <Link
         href={cluster.href}
+        data-nav="cluster"
+        data-nav-id={cluster.id}
         onClick={(event) => {
           if (onHub) {
             event.preventDefault();
@@ -600,6 +690,8 @@ function ClusterRow({
               setOpenTopicHref={setOpenTopicHref}
               onNavigate={onNavigate}
               compact
+              navKind="topic"
+              navId={topic.slug}
             />
           ))}
         </ul>
@@ -620,6 +712,8 @@ function TopicRow({
   onNavigate,
   compact = false,
   hideTitle = false,
+  navKind = "topic",
+  navId,
 }: {
   topic: NavTopic;
   query: string;
@@ -632,6 +726,8 @@ function TopicRow({
   onNavigate?: () => void;
   compact?: boolean;
   hideTitle?: boolean;
+  navKind?: "cluster" | "topic";
+  navId?: string;
 }) {
   const active = isActiveHref(pathname, topic.href);
   const isHitTopic = first?.pathname === topic.href;
@@ -656,35 +752,16 @@ function TopicRow({
             first?.pathname === topic.href && first.hash === `#${concept.id}`;
           return (
             <li key={concept.id}>
-              <Link
-                href={conceptHref(topic.href, concept.id)}
-                data-concept-id={concept.id}
-                data-search-hit={isFirstConcept ? "true" : undefined}
-                onClick={(event) => {
-                  if (pathname === topic.href) {
-                    event.preventDefault();
-                    const next = `#${concept.id}`;
-                    if (window.location.hash !== next) {
-                      window.history.replaceState(
-                        window.history.state,
-                        "",
-                        `${pathname}${next}`,
-                      );
-                    }
-                    window.dispatchEvent(new Event("hashchange"));
-                    onNavigate?.();
-                    return;
-                  }
-                  closeNavSoon(onNavigate);
-                }}
-                className={
-                  conceptActive
-                    ? "block cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-inset ring-yellow-200"
-                    : "block cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800"
-                }
-              >
-                <HighlightedText text={concept.title} query={query} />
-              </Link>
+              <ConceptLink
+                topicHref={topic.href}
+                pathname={pathname}
+                conceptId={concept.id}
+                isFirstConcept={isFirstConcept}
+                conceptActive={conceptActive}
+                title={concept.title}
+                query={query}
+                onNavigate={onNavigate}
+              />
             </li>
           );
         })}
@@ -696,6 +773,8 @@ function TopicRow({
     <li>
       <Link
         href={topic.href}
+        data-nav={navKind}
+        data-nav-id={navId ?? topic.slug}
         onClick={(event) => {
           if (pathname === topic.href) {
             event.preventDefault();
@@ -727,35 +806,16 @@ function TopicRow({
               first?.pathname === topic.href && first.hash === `#${concept.id}`;
             return (
               <li key={concept.id}>
-                <Link
-                  href={conceptHref(topic.href, concept.id)}
-                  data-concept-id={concept.id}
-                  data-search-hit={isFirstConcept ? "true" : undefined}
-                  onClick={(event) => {
-                    if (pathname === topic.href) {
-                      event.preventDefault();
-                      const next = `#${concept.id}`;
-                      if (window.location.hash !== next) {
-                        window.history.replaceState(
-                          window.history.state,
-                          "",
-                          `${pathname}${next}`,
-                        );
-                      }
-                      window.dispatchEvent(new Event("hashchange"));
-                      onNavigate?.();
-                      return;
-                    }
-                    closeNavSoon(onNavigate);
-                  }}
-                  className={
-                    conceptActive
-                      ? "block cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-inset ring-yellow-200"
-                      : "block cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800"
-                  }
-                >
-                  <HighlightedText text={concept.title} query={query} />
-                </Link>
+                <ConceptLink
+                  topicHref={topic.href}
+                  pathname={pathname}
+                  conceptId={concept.id}
+                  isFirstConcept={isFirstConcept}
+                  conceptActive={conceptActive}
+                  title={concept.title}
+                  query={query}
+                  onNavigate={onNavigate}
+                />
               </li>
             );
           })}

@@ -14,7 +14,7 @@ function getHash() {
   return window.location.hash;
 }
 
-function setHash(id: string) {
+function setHash(id: string, scroll = true) {
   const next = `#${id}`;
   if (window.location.hash === next) {
     return;
@@ -24,7 +24,18 @@ function setHash(id: string) {
     "",
     `${window.location.pathname}${window.location.search}${next}`,
   );
-  window.dispatchEvent(new Event("hashchange"));
+  window.dispatchEvent(new CustomEvent("hashchange", { detail: { scroll } }));
+}
+
+function shouldScrollFromHashEvent(event?: Event): boolean {
+  if (event == null) {
+    return true;
+  }
+  if (event instanceof CustomEvent) {
+    const detail = event.detail as { scroll?: boolean } | undefined;
+    return detail?.scroll !== false;
+  }
+  return true;
 }
 
 function closeSiblingAccordions(opened: HTMLDetailsElement) {
@@ -39,9 +50,37 @@ function closeSiblingAccordions(opened: HTMLDetailsElement) {
   }
 }
 
-function scrollConceptToTop(element: HTMLElement) {
+function handbookMain() {
   const scroller = document.getElementById("handbook-main");
-  if (!(scroller instanceof HTMLElement)) {
+  return scroller instanceof HTMLElement ? scroller : null;
+}
+
+function conceptDetailsById(id: string) {
+  const scroller = handbookMain();
+  const element = scroller?.querySelector(`details[id="${CSS.escape(id)}"]`);
+  return element instanceof HTMLDetailsElement ? element : null;
+}
+
+function restoreElementViewportTop(element: HTMLElement, viewportTop: number) {
+  const scroller = handbookMain();
+  if (!scroller) {
+    return;
+  }
+  const delta = element.getBoundingClientRect().top - viewportTop;
+  if (delta !== 0) {
+    scroller.scrollTop += delta;
+  }
+}
+
+function keepOpenedConceptInPlace(opened: HTMLDetailsElement) {
+  const viewportTop = opened.getBoundingClientRect().top;
+  closeSiblingAccordions(opened);
+  restoreElementViewportTop(opened, viewportTop);
+}
+
+function scrollConceptToTop(element: HTMLElement) {
+  const scroller = handbookMain();
+  if (!scroller) {
     return;
   }
   const offset =
@@ -63,21 +102,24 @@ export function ConceptList({
   const activeId = decodeURIComponent(hash.replace(/^#/, ""));
 
   useEffect(() => {
-    function focusFromHash() {
+    function focusFromHash(event?: Event) {
       const id = decodeURIComponent(window.location.hash.replace(/^#/, ""));
       if (!id) {
         return;
       }
-      const element = document.getElementById(id);
-      if (!(element instanceof HTMLDetailsElement)) {
+      const element = conceptDetailsById(id);
+      if (!element) {
         return;
       }
+      const shouldScroll = shouldScrollFromHashEvent(event);
+      const viewportTop = element.getBoundingClientRect().top;
       const wasOpen = element.open;
       if (!wasOpen) {
         element.open = true;
       }
       closeSiblingAccordions(element);
-      if (wasOpen) {
+      if (!shouldScroll) {
+        restoreElementViewportTop(element, viewportTop);
         return;
       }
       window.requestAnimationFrame(() => {
@@ -116,7 +158,6 @@ export function ConceptList({
           <details
             key={concept.id}
             id={concept.id}
-            name="topic-concepts"
             className={
               isActive
                 ? "group scroll-mt-20 bg-yellow-50 px-4"
@@ -124,8 +165,8 @@ export function ConceptList({
             }
             onToggle={(event) => {
               if (event.currentTarget.open) {
-                closeSiblingAccordions(event.currentTarget);
-                setHash(event.currentTarget.id);
+                keepOpenedConceptInPlace(event.currentTarget);
+                setHash(event.currentTarget.id, false);
               }
             }}
           >

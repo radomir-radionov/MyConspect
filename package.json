@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check-conspect": "tsx scripts/audit.ts"
+    "check-conspect": "tsx scripts/audit.ts",
+    "start:e2e": "next start -p 3456",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:e2e": "start-server-and-test start:e2e http://127.0.0.1:3456 cypress:run"
   },
   "dependencies": {
     "marked": "^18.0.13",
@@ -23,8 +27,10 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/sanitize-html": "^2.16.1",
+    "cypress": "^16.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
+    "start-server-and-test": "^3.0.12",
     "tailwindcss": "^4",
     "tsx": "^4.23.13",
     "typescript": "^5"

@@ -27,6 +27,23 @@ npm run build
 npm start
 ```
 
+## E2E (sidebar)
+
+Cypress checks real sidebar clicks (cluster open/close, hash, scroll). Production server on port 3456:
+
+```bash
+npm run build
+npm run test:e2e
+```
+
+Interactive:
+
+```bash
+npm run build
+npm run start:e2e
+npm run cypress:open
+```
+
 ## Content
 
 Topic files are `resources/*_*.md`. The public catalog is `lib/catalog`. Files in `resources/` that are not listed there (personal notes, link hubs) are not published.
@@ -39,7 +56,7 @@ Set `NEXT_PUBLIC_SITE_URL` (no trailing slash) for absolute sitemap and robots U
 
 GitHub Actions:
 
-- `.github/workflows/ci.yml` — `npm ci`, lint, and production build on push and pull requests to `main`
+- `.github/workflows/ci.yml` — `npm ci`, lint, production build, and Cypress sidebar E2E (Chrome) on push and pull requests to `main`
 - `.github/workflows/deploy.yml` — preview deploys on pull requests, production deploys on push to `main`
 
 Add these repository secrets before the deploy workflow can run:
