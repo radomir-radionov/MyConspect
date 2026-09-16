@@ -1023,7 +1023,7 @@ next build --debug-build-paths "/blog/[slug]"
 
 **Definition:**
 
-Test Next.js apps with **Vitest** (fast ESM-native runner) and **React Testing Library** (RTL) for component behavior. Why tests / AAA: [7_special.md](./7_special_engineering.md#why-write-tests-aaa). Server Components and Server Actions need separate strategies — mock `next/navigation` and test actions as plain async functions. Stub vs mock vs spy: [Test doubles](./7_special_engineering.md#test-doubles-stubs-mocks-spies).
+Test Next.js apps with **Vitest** (fast ESM-native runner) and **React Testing Library** (RTL) for component behavior. Why tests / AAA: [7_special.md](./7_special_engineering.md#tests-and-aaa). Server Components and Server Actions need separate strategies — mock `next/navigation` and test actions as plain async functions. Stub vs mock vs spy: [Test doubles](./7_special_engineering.md#test-doubles-stubs-mocks-spies).
 
 | What to test | Tool | Approach |
 |--------------|------|----------|

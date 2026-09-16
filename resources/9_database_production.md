@@ -1,4 +1,4 @@
-# DB — Production
+# Database — Production
 
 Replication, sharding, caching, and OLTP scaling.
 

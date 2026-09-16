@@ -1,4 +1,4 @@
-# DB — ORM
+# Database — ORM
 
 Prisma, Sequelize, Knex, Drizzle, and query builders.
 

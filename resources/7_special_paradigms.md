@@ -19,7 +19,7 @@ Each `<details>` topic follows: **Definition** → **How it works** → **When t
 
 - [10. Design patterns](./7_special_engineering.md#10-design-patterns) — [creational cheat sheet](./7_special_engineering.md#creational-patterns--cheat-sheet)
 - [11. SDLC & Agile](./7_special_engineering.md#11-sdlc--agile) — [methodology](./7_special_engineering.md#software-design-methodology), [Waterfall](./7_special_engineering.md#waterfall), [Agile](./7_special_engineering.md#agile), [Scrum](./7_special_engineering.md#scrum), [Kanban](./7_special_engineering.md#kanban), [not a silver bullet](./7_special_engineering.md#not-a-silver-bullet)
-- [12. Testing](./7_special_engineering.md#12-testing) — [why tests / AAA](./7_special_engineering.md#why-write-tests-aaa), pyramid, [integration](./7_special_engineering.md#integration-testing), [system / E2E](./7_special_engineering.md#system-testing), TDD, BDD, [making tests easy](./7_special_engineering.md#making-tests-easy), [test doubles](./7_special_engineering.md#test-doubles-stubs-mocks-spies), [Jest first tests](./7_special_engineering.md#jest--first-tests-node-vs-jsdom)
+- [12. Testing](./7_special_engineering.md#12-testing) — [why tests / AAA](./7_special_engineering.md#tests-and-aaa), pyramid, [integration](./7_special_engineering.md#integration-testing), [system / E2E](./7_special_engineering.md#system-testing), TDD, BDD, [making tests easy](./7_special_engineering.md#making-tests-easy), [test doubles](./7_special_engineering.md#test-doubles-stubs-mocks-spies), [Jest first tests](./7_special_engineering.md#jest--first-tests-node-vs-jsdom)
 
 ### Topic template
 

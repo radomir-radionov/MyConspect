@@ -30,10 +30,13 @@ const SKIP_TITLES = new Set([
   "figma templates & design references",
   "website examples & student tutorials",
   "related docs",
+  "related docs in this repo",
+  "related notes",
   "main concepts",
   "sections",
   "resources & links",
   "resources",
+  "core advanced",
 ]);
 
 const CONCEPT_MARKERS = [
@@ -254,8 +257,12 @@ function partitionInterviewBlocks(markdown: string): {
 }
 
 function interviewRegionStart(markdown: string): number {
-  const heading = markdown.search(/^#{2,3}\s+Interview (?:Practice|questions)\s*$/im);
-  const summary = markdown.search(/<summary>\s*Interview (?:Practice|questions)\s*<\/summary>/i);
+  const heading = markdown.search(
+    /^#{2,3}\s+(?:Interview (?:Practice|questions)|Questions?\s*(?:&|and)\s*Answers?|Q&A)\s*$/im,
+  );
+  const summary = markdown.search(
+    /<summary>\s*(?:Interview (?:Practice|questions)|Questions?\s*(?:&|and)\s*Answers?)\s*<\/summary>/i,
+  );
   const hits = [heading, summary].filter((index) => index >= 0);
   return hits.length === 0 ? -1 : Math.min(...hits);
 }

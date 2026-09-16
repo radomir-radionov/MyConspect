@@ -1,4 +1,4 @@
-# Build — CI & packages
+# Build — CI
 
 CI/CD, package managers, and task runners.
 
@@ -6,7 +6,7 @@ CI/CD, package managers, and task runners.
 
 ### Related docs
 
-* [Build — CI & packages](./10_build_ci.md) · [Build — Bundlers](./10_build_bundlers.md) · [Build — Docker](./10_build_docker.md) · [Build — Infra](./10_build_infra.md) · [Build — Interview](./10_build_interview.md)
+* [Build — CI](./10_build_ci.md) · [Build — Bundlers](./10_build_bundlers.md) · [Build — Docker](./10_build_docker.md) · [Build — Infra](./10_build_infra.md) · [Build — Interview](./10_build_interview.md)
 
 ### Sections
 
@@ -121,10 +121,9 @@ CMD ["node", "dist/index.js"]
 ## CI/CD
 
 <details>
-  <summary>What is CI/CD</summary>
+  <summary>CI/CD</summary>
 
-### What is CI/CD
-
+### CI/CD
 **Definition:** **CI/CD** means **Continuous Integration / Continuous Delivery** — a way of working where build, test, and publish (and often deploy) are automated so every change can be integrated and shipped with a short feedback loop. **Continuous Deployment** is a stricter variant: passing CI ships to production with no human gate. See [CI vs CD](#ci-vs-cd--comparison).
 
 **How it works:**
@@ -144,7 +143,7 @@ Product loop (stages can be skipped or merged):
 |-------|----------------|
 | **Code** | Git workflow (often [GitHub Flow](./0_git_branching.md#github-flow--trunk-based): branch → PR → review → merge). Git Flow is heavier — better for versioned releases than for many-deploys-per-day. |
 | **Build** | After local checks, CI builds on a runner — often in **Docker** for a repeatable image. Platforms: GitHub Actions, GitLab CI/CD, Jenkins, Bitbucket Pipelines, TeamCity; hosts like Netlify/Vercel run build+deploy. Comparison: [15_devops.md — CI systems](./15_devops.md#ci-systems). |
-| **Test** | Automated unit/integration/E2E first; manual QA still used for UX and exploratory work. Pre-release builds may be versioned (`v.2.4.5-1`). Jest, Playwright/Puppeteer, Selenium — [7_special.md — tests](./7_special_engineering.md#why-write-tests-aaa). |
+| **Test** | Automated unit/integration/E2E first; manual QA still used for UX and exploratory work. Pre-release builds may be versioned (`v.2.4.5-1`). Jest, Playwright/Puppeteer, Selenium — [7_special.md — tests](./7_special_engineering.md#tests-and-aaa). |
 | **Release** | Cadence depends on the product. CI’s job is a **promotable artifact**, not Jira/analytics. Product metrics (GA, Metrika) and task trackers sit next to the loop. |
 | **Deploy** | Deliver to users. Simple SPAs need little infra; shops/search/streaming compete on caching, CDNs, and server architecture. |
 | **Operate** | Support and monitoring. Helpdesk/chatbots are not CI tools; they often expose APIs. Observability: [15_devops.md](./15_devops.md). |
@@ -197,7 +196,7 @@ jobs:
 
 ### Continuous Integration (CI)
 
-**Definition:** Automated process that builds, tests, and validates every code change merged into a shared repository — catching integration errors early. Full loop: [What is CI/CD](#what-is-cicd).
+**Definition:** Automated process that builds, tests, and validates every code change merged into a shared repository — catching integration errors early. Full loop: [What is CI/CD](#cicd).
 
 **When to use:** Every team with more than one developer; mandatory for production apps.
 
@@ -235,10 +234,9 @@ jobs:
 </details>
 
 <details>
-  <summary>Continuous Delivery (CDelivery)</summary>
+  <summary>Continuous Delivery</summary>
 
-### Continuous Delivery (CDelivery)
-
+### Continuous Delivery
 **Definition:** Every change that passes CI produces a **deployable artifact**; production release is a manual (or approval-gated) step.
 
 **When to use:** Regulated industries, staged rollouts, teams that want automation but retain release control.
@@ -314,7 +312,7 @@ jobs:
 
 **Definition:**
 
-The **machine** path from git event to artifact/deploy. The wider **product** loop (plan → code → operate) is in [What is CI/CD](#what-is-cicd).
+The **machine** path from git event to artifact/deploy. The wider **product** loop (plan → code → operate) is in [What is CI/CD](#cicd).
 
 ```mermaid
 flowchart LR
@@ -341,7 +339,7 @@ flowchart LR
 
 ### GitHub Actions
 
-**Definition:** GitHub’s CI/CD platform — YAML workflows in `.github/workflows/` that lint, test, build, and deploy on repository events. Concept: [What is CI/CD](#what-is-cicd). YAML: [YAML](#yaml). Competitors: [15_devops.md](./15_devops.md#github-actions-vs-gitlab-ci-vs-circleci).
+**Definition:** GitHub’s CI/CD platform — YAML workflows in `.github/workflows/` that lint, test, build, and deploy on repository events. Concept: [What is CI/CD](#cicd). YAML: [YAML](#yaml). Competitors: [15_devops.md](./15_devops.md#github-actions-vs-gitlab-ci-vs-circleci).
 
 **How it works:**
 

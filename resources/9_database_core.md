@@ -1,4 +1,4 @@
-# DB — Foundations
+# Database — Foundations
 
 ACID, CAP, transactions, and normalization.
 

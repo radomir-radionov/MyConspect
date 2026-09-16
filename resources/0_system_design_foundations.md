@@ -28,10 +28,9 @@ Every major topic follows:
 ## 1. Foundations
 
 <details>
-  <summary>What is system design</summary>
+  <summary>System design</summary>
 
-### What is system design
-
+### System design
 **Definition:** System design is the process of defining architecture, components, modules, interfaces, and data flows to satisfy functional and non-functional requirements at scale.
 
 **When to use:** Greenfield products, scaling existing systems, architecture reviews, incident post-mortems, technical interviews.
@@ -59,10 +58,9 @@ Every major topic follows:
 </details>
 
 <details>
-  <summary>Client–server architecture (why a backend)</summary>
+  <summary>Client–server architecture</summary>
 
-### Client–server architecture (why a backend)
-
+### Client–server architecture
 **Definition:** Architecture is a high-level contract for how parts of a system interact. **Client–server** is the usual web contract: a **client** (browser / frontend) sends requests; a **server** (backend) applies rules and talks to **storage**.
 
 **How it works:**

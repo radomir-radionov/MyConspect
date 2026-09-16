@@ -1,4 +1,4 @@
-# DB — Interview
+# Database — Interview
 
 Interview Q&A for databases.
 

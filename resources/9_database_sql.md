@@ -1,4 +1,4 @@
-# DB — SQL
+# Database — SQL
 
 PostgreSQL, joins, indexes, and SQL patterns.
 

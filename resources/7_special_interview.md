@@ -10,14 +10,17 @@ Interview Q&A plus leftover tooling notes.
 
 ### Sections
 
-- [15. Tooling misc](#15-tooling-misc)
+- [Interview Practice](#interview-practice)
 - [Questions & Answers](#questions-answers)
 
 ---
 
 <a name="interview-practice"></a>
+<a name="15-tooling-misc"></a>
 
-## 15. Tooling misc
+## Interview Practice
+
+### Tooling notes
 
 <details>
   <summary>Polyfill</summary>
@@ -508,7 +511,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **How it works:** Arrange (inputs/fakes) → Act (run the scenario) → Assert (one assumption). Tests should be independent. Skip only for throwaway prototypes.
 
-**See also:** [Why write tests (AAA)](./7_special_engineering.md#why-write-tests-aaa) · [Test pyramid](./7_special_engineering.md#12-testing)
+**See also:** [Why write tests (AAA)](./7_special_engineering.md#tests-and-aaa) · [Test pyramid](./7_special_engineering.md#12-testing)
 
 </details>
 

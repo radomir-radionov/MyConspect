@@ -17,10 +17,9 @@ URL to pixels: parse, CSSOM, render tree, layout, paint, composite.
 ## Browser & rendering
 
 <details>
-  <summary>What happens when you enter a URL?</summary>
+  <summary>From URL to pixels</summary>
 
-### What happens when you enter a URL?
-
+### From URL to pixels
 **Definition:**
 
 Entering a URL triggers a chain from DNS resolution through HTTP to HTML parsing and the full browser rendering pipeline.
@@ -86,10 +85,9 @@ CSSOM and paint stages → [2_css.md](./2_css.md). DOM APIs after parse → [3_j
 </details>
 
 <details>
-  <summary>How DNS works</summary>
+  <summary>DNS</summary>
 
-### How DNS works
-
+### DNS
 **Definition:**
 
 DNS (Domain Name System) maps human-readable domain names to IP addresses so the browser can open a network connection.
@@ -136,10 +134,9 @@ First visit · CDN CNAME · split-horizon internal DNS.
 </details>
 
 <details>
-  <summary>How the browser fetches HTML</summary>
+  <summary>Fetching HTML</summary>
 
-### How the browser fetches HTML
-
+### Fetching HTML
 **Definition:**
 
 After DNS resolves, the browser opens a TCP/TLS connection, sends an HTTP request, and receives an HTML document stream to parse.
@@ -199,10 +196,9 @@ The HTML response also triggers fetches for `style.css`, `hello.jpg`, and `index
 </details>
 
 <details>
-  <summary>What is the DOM?</summary>
+  <summary>DOM</summary>
 
-### What is the DOM?
-
+### DOM
 **Definition:**
 
 The DOM (Document Object Model) is the browser's live in-memory tree representation of the HTML document. HTML is the source; parsing builds the DOM.
@@ -260,10 +256,9 @@ Static pages · client-rendered SPAs · `innerHTML` updates.
 </details>
 
 <details>
-  <summary>How the DOM tree is built (HTML parsing)</summary>
+  <summary>HTML parsing</summary>
 
-### How the DOM tree is built (HTML parsing)
-
+### HTML parsing
 **Definition:**
 
 The browser parses HTML top-to-bottom: tokenization converts bytes to tokens, then tree construction creates DOM nodes. Classic scripts without `async`/`defer`/`type="module"` block parsing.
@@ -312,10 +307,9 @@ Document with deferred scripts · inline script mid-body · malformed HTML (erro
 </details>
 
 <details>
-  <summary>What is the CSSOM?</summary>
+  <summary>CSSOM</summary>
 
-### What is the CSSOM?
-
+### CSSOM
 **Definition:**
 
 The CSSOM (CSS Object Model) is the browser's object representation of parsed CSS rules. The DOM holds structure; the CSSOM holds computed style information.
@@ -365,10 +359,9 @@ External stylesheet · inline `<style>` · `@import` chains (slower).
 </details>
 
 <details>
-  <summary>What is the Render Tree?</summary>
+  <summary>Render tree</summary>
 
-### What is the Render Tree?
-
+### Render tree
 **Definition:**
 
 The render tree combines the DOM and CSSOM into a tree of boxes ready for layout and paint. Elements with `display: none` are excluded. WebKit/Blink call it the render tree; Gecko uses **frame tree**.

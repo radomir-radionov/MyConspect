@@ -6,7 +6,7 @@ Covers ECMAScript fundamentals: types, scope, operators, control flow, closures,
 
 ### Related docs
 
-- [JS Array](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser additional](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [Call stack](./3_js_async.md#call-stack)
+- [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [Call stack](./3_js_async.md#call-stack)
 - [Web API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [Special — OOP](./7_special_paradigms.md#2-oop--fp)
 
 ### Main concepts
@@ -97,51 +97,11 @@ for (const x of range(3)) console.log(x); // 0, 1, 2
 
 ### JavaScript vs ECMAScript
 
-**Definition:** ECMAScript is the language specification (ECMA-262); JavaScript is an implementation that conforms to it (V8, SpiderMonkey, JavaScriptCore).
-
-**When to use:** Default language for web UI, SSR, tooling, and full-stack JS teams.
-
-**Pluses and minuses:**
-
-| + (JS ecosystem)                   | −                                 |
-| ------------------------------------- | ------------------------------------ |
-| Runs everywhere (browser, Node, Deno) | Implementation quirks across engines |
-| Massive ecosystem                     | Dynamic typing footguns              |
-
-**Examples:**
-
-```js
-// .mjs = ES module file (strict mode by default)
-export const version = "ES2024";
-```
-
-**Thoughts:** Engines parse the whole script (syntax errors abort before any line runs) then JIT: interpreter first, optimizing compiler for hot paths. “JS is interpreted” is oversimplified — see [JavaScript engine pipeline](#javascript-engine-pipeline).
-
-**Sources:** [javascript.info/intro](https://learn.javascript.ru/intro)
+Full notes: [JavaScript and ECMAScript](#javascript-and-ecmascript).
 
 ### Strict mode
 
-**Definition:** `"use strict"` enables a restricted variant that catches silent errors and disables unsafe features.
-
-**When to use:** All new modules (ESM is strict by default); enable in legacy IIFE wrappers.
-
-**Pluses and minuses:**
-
-| +                        | −                     |
-| --------------------------- | ------------------------ |
-| Prevents accidental globals | May break legacy scripts |
-| Safer `this` in functions   | Slightly stricter syntax |
-
-**Examples:**
-
-```js
-"use strict";
-// mistypedVar = 1; // ReferenceError
-```
-
-**Sources:**
-
-[javascript.info/strict-mode](https://learn.javascript.ru/strict-mode)
+Full notes: [Strict mode](#strict-mode).
 
 ---
 
@@ -150,7 +110,7 @@ export const version = "ES2024";
 ## Core
 
 <details>
-  <summary>what is js & es</summary>
+  <summary>JavaScript and ECMAScript</summary>
 
 ### JavaScript & ECMAScript
 
@@ -185,7 +145,7 @@ Brendan Eich created the first engine (SpiderMonkey) in 1995. Today V8, SpiderMo
 </details>
 
 <details>
-  <summary>strict mode</summary>
+  <summary>Strict mode</summary>
 
 ### Strict mode
 
@@ -216,7 +176,7 @@ function demo() {
 </details>
 
 <details>
-  <summary>js under the hood</summary>
+  <summary>Engine and runtime</summary>
 
 ### JavaScript engine pipeline
 
@@ -287,7 +247,7 @@ JIT combines fast startup (interpreter) with peak performance (compiler). Babel 
 </details>
 
 <details>
-  <summary>memory: stack & heap</summary>
+  <summary>Stack and heap</summary>
 
 <a name="memory-stack-heap"></a>
 
@@ -359,7 +319,7 @@ function createDogArray() {
 Extended language topics beyond syntax: paradigms, team methodologies, glossary, and debugging APIs.
 
 <details>
-  <summary>js paradigms</summary>
+  <summary>Paradigms</summary>
 
 ### Programming paradigms
 
@@ -393,7 +353,7 @@ const odds = [1, 2, 3, 4].filter((n) => n % 2 !== 0); // declarative
 </details>
 
 <details>
-  <summary>js methodologies</summary>
+  <summary>Methodologies</summary>
 
 ### Development methodologies
 
@@ -414,7 +374,7 @@ Methodologies are structured practices for organizing code and teams — distinc
 </details>
 
 <details>
-  <summary>paradigms vs methodologies</summary>
+  <summary>Paradigms vs methodologies</summary>
 
 ### Paradigms vs methodologies
 
@@ -432,7 +392,7 @@ Both work together: choose paradigms for problem-solving style, methodologies fo
 </details>
 
 <details>
-  <summary>terms</summary>
+  <summary>Glossary</summary>
 
 ### Glossary
 
@@ -455,7 +415,7 @@ Common terms used throughout JS core documentation.
 </details>
 
 <details>
-  <summary>console</summary>
+  <summary>Console</summary>
 
 ### Console API
 
@@ -477,7 +437,7 @@ console.dir(document.body, { depth: 1 });
 </details>
 
 <details>
-  <summary>operators</summary>
+  <summary>Operators</summary>
 
 ### Operators
 
@@ -519,7 +479,7 @@ An expression evaluates to a value; statements perform actions and may contain e
 </details>
 
 <details>
-  <summary>math oper</summary>
+  <summary>Math operators</summary>
 
 ### Math operators
 
@@ -558,7 +518,7 @@ Number.isFinite(42); // true
 </details>
 
 <details>
-  <summary>bitwise operators (basics)</summary>
+  <summary>Bitwise operators</summary>
 
 ### Bitwise operators (basics)
 
@@ -591,7 +551,7 @@ Number.isFinite(42); // true
 </details>
 
 <details>
-  <summary>comparisons</summary>
+  <summary>Comparisons</summary>
 
 ### Comparison operators
 
@@ -628,7 +588,7 @@ null == undefined;  // true
 </details>
 
 <details>
-  <summary>conditional branching: if, else if, else, '?'</summary>
+  <summary>if, else, and ternary</summary>
 
 ### Conditional branching
 
@@ -670,7 +630,7 @@ if (age >= 18) {
 </details>
 
 <details>
-  <summary>!, ?., ??, optional chaining & nullish</summary>
+  <summary>Optional chaining and nullish</summary>
 
 ### Optional chaining (`?.`) & nullish coalescing (`??`)
 
@@ -709,7 +669,7 @@ const port = config.port ?? 3000;
 </details>
 
 <details>
-  <summary>logical operators (|| (OR), && (AND), ! (NOT), !!(double NOT), ?? (Nullish Coalescing))</summary>
+  <summary>Logical operators</summary>
 
 ### Logical operators
 
@@ -753,7 +713,7 @@ config.debug ?? false;
 </details>
 
 <details>
-  <summary>loops, break, continue & switch</summary>
+  <summary>Loops and switch</summary>
 
 ### Loops, break, continue & switch
 
@@ -1029,7 +989,7 @@ s === 'hi';               // false — object wrapper vs primitive
 </details>
 
 <details>
-  <summary>type conversions</summary>
+  <summary>Type conversions</summary>
 
 ### Type conversions
 
@@ -1101,11 +1061,11 @@ null === undefined;       // false
 </details>
 
 <details>
-  <summary>array & array methods</summary>
+  <summary>Array methods</summary>
 
 ### Arrays & array methods
 
-**Definition:** Ordered, iterable objects with numeric indices and `length`. Full API, mutating vs non-mutating methods, and pitfalls: [JS Array](./3_js_array.md).
+**Definition:** Ordered, iterable objects with numeric indices and `length`. Full API, mutating vs non-mutating methods, and pitfalls: [JS Arrays](./3_js_array.md).
 
 **When to use:** Sequences where order and index access matter. Use `Set` for uniqueness-only.
 
@@ -1393,7 +1353,7 @@ new Set([{ a: 1 }, { a: 1 }]).size; // 2
 </details>
 
 <details>
-  <summary>plain objects & Object utilities</summary>
+  <summary>Objects and Object utilities</summary>
 
 ### Plain objects & Object utilities
 
@@ -1453,7 +1413,7 @@ const pairs = Object.fromEntries(
 </details>
 
 <details>
-  <summary>strings & template literals</summary>
+  <summary>Strings and templates</summary>
 
 ### Strings & template literals
 
@@ -1658,7 +1618,7 @@ globalThis.setTimeout(fn, 0); // works in browser and Node
 ## Scope & closures
 
 <details>
-  <summary>variables, scope & hoisting</summary>
+  <summary>Variables, scope, and hoisting</summary>
 
 ### Variables, scope & hoisting
 
@@ -1823,7 +1783,7 @@ for (let i = 0; i < 3; i++) {
 </details>
 
 <details>
-  <summary>rest, spread & destructuring</summary>
+  <summary>Rest, spread, and destructuring</summary>
 
 ### Rest, spread & destructuring
 
@@ -1899,7 +1859,7 @@ const copy = [...arr, newItem];
 </details>
 
 <details>
-  <summary>closures</summary>
+  <summary>Closures</summary>
 
 ### Closures
 
@@ -2064,7 +2024,7 @@ const heavy = await import("./heavy.js"); // dynamic — returns Promise
 ## Iterators
 
 <details>
-  <summary>iterators & generators</summary>
+  <summary>Iterators and generators</summary>
 
 ### Iterators & generators
 
@@ -2677,7 +2637,7 @@ const m = /(\d+)-(\d+)/.exec("2024-07"); // groups
 
 **Definition:**
 
-Curated Q&A covering types, scope, and language traps. Array and function tasks: [JS Array](./3_js_array.md#interview-practice) · [JS Functions](./3_js_functions.md#interview-practice).
+Curated Q&A covering types, scope, and language traps. Array and function tasks: [JS Arrays](./3_js_array.md#interview-practice) · [JS Functions](./3_js_functions.md#interview-practice).
 
 Questions from [0_interview.md](0_interview.md). Try answering before opening solutions.
 
@@ -2695,7 +2655,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 | 29–30 | Map/Set, deep vs shallow copy         | Q&A below  |
 | —     | Signals (TC39)                      | Q&A below  |
 | —     | JIT / interpreted? Stack vs heap    | Q&A below  |
-| —     | `map` / `forEach` / `reduce`          | [JS Array](./3_js_array.md#interview-practice) |
+| —     | `map` / `forEach` / `reduce`          | [JS Arrays](./3_js_array.md#interview-practice) |
 | —     | Pure functions, immutability          | [JS Functions](./3_js_functions.md#interview-practice) |
 | —     | Output prediction                     | Tasks 1–5  |
 | —     | Implement utilities                   | Tasks 6–15 |
@@ -2930,7 +2890,7 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 
 ### `map`, `forEach`, `reduce` — how do they work?
 
-**Definition:** Moved to [JS Array](./3_js_array.md#interview-practice)
+**Definition:** Moved to [JS Arrays](./3_js_array.md#interview-practice)
 
 </details>
 
@@ -2940,7 +2900,7 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 
 ### `reduce` vs `map` — when to use which?
 
-**Definition:** Moved to [JS Array](./3_js_array.md#interview-practice)
+**Definition:** Moved to [JS Arrays](./3_js_array.md#interview-practice)
 
 </details>
 
@@ -2950,7 +2910,7 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 
 ### What is the accumulator in `reduce`?
 
-**Definition:** Moved to [JS Array](./3_js_array.md#interview-practice)
+**Definition:** Moved to [JS Arrays](./3_js_array.md#interview-practice)
 
 </details>
 
@@ -2960,7 +2920,7 @@ See **Data types → Map & Set & WeakMap & WeakSet** for full API notes, pitfall
 
 ### How to sum an array? Sum with conditional discounts?
 
-**Definition:** Moved to [JS Array](./3_js_array.md#interview-practice)
+**Definition:** Moved to [JS Arrays](./3_js_array.md#interview-practice)
 
 </details>
 
@@ -3056,12 +3016,12 @@ See [JS Functions](./3_js_functions.md#interview-practice)
 
 ### Task 7 — Flatten array (one level)
 
-See [JS Array](./3_js_array.md#interview-practice)
+See [JS Arrays](./3_js_array.md#interview-practice)
 
 
 ### Task 8 — Polyfill Array.map
 
-See [JS Array](./3_js_array.md#interview-practice)
+See [JS Arrays](./3_js_array.md#interview-practice)
 
 
 ### Task 9 — Deep clone (JSON limitations)
@@ -3081,7 +3041,7 @@ See [JS Functions](./3_js_functions.md#interview-practice)
 
 ### Task 11 — Unique array values
 
-See [JS Array](./3_js_array.md#interview-practice)
+See [JS Arrays](./3_js_array.md#interview-practice)
 
 
 ### Task 12 — Curry add
@@ -3124,7 +3084,7 @@ function queryObjectify(str) {
 
 ### Task 16 — Cart aggregation with category discounts
 
-See [JS Array](./3_js_array.md#interview-practice)
+See [JS Arrays](./3_js_array.md#interview-practice)
 
 
 ---
@@ -3197,7 +3157,7 @@ Entry-level interview questions on strict mode, typing, mutability, and debuggin
 
 **Definition:**
 
-Fundamental language questions: types, arrays, operators, scope, and collections. Array method answers: [JS Array](./3_js_array.md#interview-practice).
+Fundamental language questions: types, arrays, operators, scope, and collections. Array method answers: [JS Arrays](./3_js_array.md#interview-practice).
 
 15. What data types exist in JS?
 16. How to check if a value is an array?
@@ -3327,7 +3287,7 @@ Utility implementations: query parsing and set operations on arrays.
 
 ### Practice tasks
 
-**Definition:** Recursive `reduce` lives in [JS Array — Interview Practice](./3_js_array.md#interview-practice).
+**Definition:** Recursive `reduce` lives in [JS Arrays — Interview Practice](./3_js_array.md#interview-practice).
 
 </details>
 

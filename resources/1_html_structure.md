@@ -661,10 +661,9 @@ Template notes in source · displaying `<` in code samples · copyright symbols.
 ## Semantic markup
 
 <details>
-  <summary>Why semantics matter</summary>
+  <summary>Semantics</summary>
 
-### Why semantics matter
-
+### Semantics
 **Definition:**
 
 Semantic markup uses elements for their intended meaning, not just visual appearance. It improves accessibility, SEO, and maintainability.

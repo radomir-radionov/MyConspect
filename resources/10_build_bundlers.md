@@ -6,7 +6,7 @@ Transpilers, bundling concepts, bundlers, and code quality.
 
 ### Related docs
 
-* [Build — CI & packages](./10_build_ci.md) · [Build — Bundlers](./10_build_bundlers.md) · [Build — Docker](./10_build_docker.md) · [Build — Infra](./10_build_infra.md) · [Build — Interview](./10_build_interview.md)
+* [Build — CI](./10_build_ci.md) · [Build — Bundlers](./10_build_bundlers.md) · [Build — Docker](./10_build_docker.md) · [Build — Infra](./10_build_infra.md) · [Build — Interview](./10_build_interview.md)
 
 ### Sections
 
@@ -622,7 +622,7 @@ export default defineConfig({ plugins: [react()] });
 
 ## Code quality
 
-Why write tests and AAA: [7_special.md — Why write tests](./7_special_engineering.md#why-write-tests-aaa). Jest (`jest.config.js`, `npm test`, Node vs jsdom): [7_special.md — Jest](./7_special_engineering.md#jest--first-tests-node-vs-jsdom). Stubs/mocks/spies: [Test doubles](./7_special_engineering.md#test-doubles-stubs-mocks-spies). Wire `npm test` into CI: [GitHub Actions](./10_build_ci.md#github-actions).
+Why write tests and AAA: [7_special.md — Why write tests](./7_special_engineering.md#tests-and-aaa). Jest (`jest.config.js`, `npm test`, Node vs jsdom): [7_special.md — Jest](./7_special_engineering.md#jest--first-tests-node-vs-jsdom). Stubs/mocks/spies: [Test doubles](./7_special_engineering.md#test-doubles-stubs-mocks-spies). Wire `npm test` into CI: [GitHub Actions](./10_build_ci.md#github-actions).
 
 <details>
   <summary>Linter vs formatter</summary>

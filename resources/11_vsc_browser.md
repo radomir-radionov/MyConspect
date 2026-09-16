@@ -21,7 +21,7 @@ Editor productivity, extensions, and browser DevTools for frontend development.
 
 ---
 
-## vsc
+## VS Code
 
 **src** - https://www.freecodecamp.org/news/increase-your-vs-code-productivity/?ref=dailydev    
 **vsc-shortcuts** - https://dev.to/usman_awan_003/20-vs-code-shortcuts-to-enhance-your-coding-productivity-2dp6?bb=177643
@@ -36,10 +36,9 @@ Editor productivity, extensions, and browser DevTools for frontend development.
 `change-keyboard-shortcut-bindings` - https://stackoverflow.com/questions/33791097/how-can-i-change-keyboard-shortcut-bindings-in-visual-studio-code
 
 <details>
-  <summary>extensions</summary>
+  <summary>Extensions</summary>
 
-### extensions
-
+### Extensions
 #### ai  
 
 Tabnine: AI Autocomplete
@@ -109,10 +108,9 @@ WSL
 </details>
 
 <details>
-  <summary>shortcuts</summary>
+  <summary>Shortcuts</summary>
 
-### shortcuts
-
+### Shortcuts
 `ctrl + shift + e` | `ctrl + 0` focus on explorer    
 `ctrl + shift + n` - open a new terminal    
 `ecs - go back if you on folder or file
@@ -136,10 +134,9 @@ WSL
 </details>
 
 <details>
-  <summary>settings</summary>
+  <summary>Settings</summary>
 
-### settings
-
+### Settings
   "prettier.printWidth": 120,
 
 To add console.log, create file and folder as shortcut use file-preferences - keyboardshorcuts then icon top=>right
@@ -209,10 +206,9 @@ add formatter
 </details>
 
 <details>
-  <summary>terminal</summary>
+  <summary>Terminal</summary>
 
-### terminal
-
+### Terminal
 pwd - get current direction
 ls ( ls .env) + tag for autocomplete  
 бывает относительный и абсолюбтный путь(/)
@@ -257,7 +253,7 @@ cat (Get-PSReadlineOption).HistorySavePath
 
 # Extension for browser
 
-### !!!
+### Chrome extensions
 
 - JSON Viewer - https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh/related
 - ColorZilla - https://chrome.google.com/webstore/detail/colorzilla/bhlhnicpbhignbdhedgjhgdocnmhomnp
@@ -267,14 +263,14 @@ cat (Get-PSReadlineOption).HistorySavePath
 - Octotree - GitHub code tree - https://chrome.google.com/webstore/detail/octotree-github-code-tree/bkhaagjahfmjljalopjnoealnfndnagc
 - Githunt - https://githunt.io/
 
-### !!
+### DevTools extensions
 
 - Web Developer Checklist - https://chrome.google.com/webstore/detail/web-developer-checklist/iahamcpedabephpcgkeikbclmaljebjp
 - Talend API Tester - https://chrome.google.com/webstore/detail/talend-api-tester-free-ed/aejoelaoggembcahagimdiliamlcdmfm
 - Clear Cache - https://chrome.google.com/webstore/detail/clear-cache/cppjkneekbjaeellbfkmgnhonkkjfpdn
 - Web Developer - https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm
 
-### !
+### Accessibility extensions
 - Fonts Ninja - https://chrome.google.com/webstore/detail/fonts-ninja/eljapbgkmlngdpckoiiibecpemleclhh
 - Check My Links - https://chrome.google.com/webstore/detail/check-my-links/ojkcdipcgfaekbeaelaapakgnjflfglf
 - WAVE Evaluation Tool - https://chrome.google.com/webstore/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh

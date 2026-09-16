@@ -103,13 +103,13 @@ HTTP sits at the **application layer** — it assumes TCP (reliable delivery) an
 
 **Definition:** Same TCP/IP packets on a home LAN and on the public Internet. The LAN uses private addresses and a local gateway; the Internet is globally routed public IPs. DNS maps a name to an IP; TCP/TLS then HTTP talk to that IP.
 
-**How it works:** File or page → split into packets → each packet is forwarded toward the dest IP → the dest kernel demuxes by **port** to a service → bytes are reassembled. Inspect with `ping`, `ip addr`/`ifconfig`, `ss`/`netstat`; capture with tcpdump/Wireshark. Full notes: [How the Internet works](./6_web_api_core.md#how-the-internet-works) · [Ports, sockets & network services](./6_web_api_apps.md#ports-sockets--network-services).
+**How it works:** File or page → split into packets → each packet is forwarded toward the dest IP → the dest kernel demuxes by **port** to a service → bytes are reassembled. Inspect with `ping`, `ip addr`/`ifconfig`, `ss`/`netstat`; capture with tcpdump/Wireshark. Full notes: [How the Internet works](./6_web_api_core.md#internet) · [Ports, sockets & network services](./6_web_api_apps.md#ports-sockets--network-services).
 
 **When to use:** Interview: “What happens when I type a URL?” Answer DNS → TCP → TLS → HTTP, not “packets go to DNS and DNS rewrites them.”
 
 **Thoughts:** *Addressing and NAT differ; the packet model does not.*
 
-**Sources:** [How the Internet works](./6_web_api_core.md#how-the-internet-works)
+**Sources:** [How the Internet works](./6_web_api_core.md#internet)
 
 ---
 

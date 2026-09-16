@@ -106,7 +106,7 @@ curl -v http://example.com
 
 *The browser starts every HTTP exchange; methods and status codes are the contract; cookies add sessions on a stateless protocol.*
 
-Structure: [HTTP request structure](#http-request-structure) · Headers: [HTTP headers](#http-headers) · Methods/status: [HTTP methods & status codes](#http-methods--status-codes) · Cookies: [HTTP cookies](#http-cookies) · JS: [HTTP in JavaScript](#http-in-javascript) · Server process: [Web server](#web-server) · Packets / DNS / LAN: [How the Internet works](./6_web_api_core.md#how-the-internet-works).
+Structure: [HTTP request structure](#http-request-structure) · Headers: [HTTP headers](#http-headers) · Methods/status: [HTTP methods & status codes](#http-methods--status-codes) · Cookies: [HTTP cookies](#http-cookies) · JS: [HTTP in JavaScript](#http-in-javascript) · Server process: [Web server](#web-server) · Packets / DNS / LAN: [How the Internet works](./6_web_api_core.md#internet).
 
 **Sources:**
 
@@ -200,7 +200,7 @@ Layer names and why OSI still shows up in interviews: [OSI & TCP/IP models](./6_
 | TLS      | Above TCP   | Encryption + server auth — not a TCP replacement ([HTTPS](#https)) |
 | HTTP     | Application | Request/response semantics |
 
-Ports and listening sockets: [Ports, sockets & network services](./6_web_api_apps.md#ports-sockets--network-services). End-to-end path: [How the Internet works](./6_web_api_core.md#how-the-internet-works).
+Ports and listening sockets: [Ports, sockets & network services](./6_web_api_apps.md#ports-sockets--network-services). End-to-end path: [How the Internet works](./6_web_api_core.md#internet).
 
 **Examples:**
 

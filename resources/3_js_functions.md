@@ -31,7 +31,7 @@ Function forms, `this`, higher-order functions, `call`/`apply`/`bind`, debounce,
 ## Functions
 
 <details>
-  <summary>functions — core</summary>
+  <summary>Functions</summary>
 
 ### Functions — core
 
@@ -310,7 +310,7 @@ function greet(name = "Guest", ...tags) {
 </details>
 
 <details>
-  <summary>functions — advanced</summary>
+  <summary>Advanced functions</summary>
 
 ### Functions — advanced
 

@@ -32,7 +32,7 @@ Browser events: handlers, phases, delegation, and custom events.
 <a name="event"></a>
 
 <details>
-  <summary>event</summary>
+  <summary>Events</summary>
 
 ### Events
 
@@ -120,7 +120,7 @@ elem.addEventListener('click', handler);
 <a name="event-phases"></a>
 
 <details>
-  <summary>event phases</summary>
+  <summary>Event phases</summary>
 
 ### Event phases
 
@@ -176,7 +176,7 @@ child.addEventListener('click', handler);                     // runs on way up 
 </details>
 
 <details>
-  <summary>event handlers</summary>
+  <summary>Event handlers</summary>
 
 <a name="event-delegation"></a>
 

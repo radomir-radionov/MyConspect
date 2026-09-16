@@ -46,4 +46,4 @@ Q&A lives in the Interview topic for this subject.
 ---
 
 <details>
-  <summary>Why TypeScript instead of JavaScript?</summary>
+  <summary>TypeScript vs JavaScript</summary>

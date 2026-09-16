@@ -4,7 +4,7 @@ Covers asynchronous JavaScript: event loop, timers, promises, `async/await`, and
 
 ### Related docs
 
-* [JS Core](./3_js_core.md) · [JS Array](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [Memory: stack and heap](./3_js_core.md#memory-stack-heap) · [JSON](./3_js_core.md#json) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser additional](./3_js_browser_extra.md)
+* [JS Core](./3_js_core.md) · [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [Memory: stack and heap](./3_js_core.md#memory-stack-heap) · [JSON](./3_js_core.md#json) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md)
 * [Web API](./6_web_api.md) · [CORS](./6_web_api_security.md#cors) · [INP](./6_web_api_security.md#inp-interaction-to-next-paint) · [Node.js](./8_nodejs.md) · [React](./4_react.md) · [YAML](./10_build_ci.md#yaml)
 * [Jest — mock `fetch`](./7_special_engineering.md#jest--first-tests-node-vs-jsdom)
 
@@ -1353,9 +1353,9 @@ requestIdleCallback((deadline) => {
 </details>
 
 <details>
-  <summary>Related</summary>
+  <summary>Related topics</summary>
 
-### Related
+### Related topics
 
 **Definition:** Cross-references to adjacent topics covered in other study notes — HTTP, Node event loop, and browser rendering.
 
@@ -1641,6 +1641,8 @@ function once(emitter, event) {
 
 ## Practice
 
+## Interview Practice
+
 <details>
   <summary>Output tasks</summary>
 
@@ -1767,9 +1769,9 @@ console.log(typeof bar());
 </details>
 
 <details>
-  <summary>each — map callback exercise</summary>
+  <summary>Map callback example</summary>
 
-### each — map callback exercise
+### Map callback example
 
 ```js
 function each(array, callback) {

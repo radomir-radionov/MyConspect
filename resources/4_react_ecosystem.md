@@ -869,7 +869,7 @@ Testing
 
 User flows (login, submit form), conditional UI, error states. **What NOT to test:** Private functions, shallow snapshot of entire tree, third-party lib internals.
 
-Why tests / AAA / pyramid: [7_special.md](./7_special_engineering.md#why-write-tests-aaa).
+Why tests / AAA / pyramid: [7_special.md](./7_special_engineering.md#tests-and-aaa).
 
 | Tool                      | Use                                                                                |
 | ------------------------- | ---------------------------------------------------------------------------------- |

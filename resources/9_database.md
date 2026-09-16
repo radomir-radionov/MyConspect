@@ -1,4 +1,4 @@
-# DB — hub
+# Database — hub
 
 SQL, NoSQL, ORMs, and production data patterns. Theory lives in the topic files below.
 

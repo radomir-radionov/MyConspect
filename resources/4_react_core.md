@@ -59,10 +59,9 @@ Related docs in this repo
 </details>
 
 <details>
-  <summary>Related docs in this repo</summary>
+  <summary>Related notes</summary>
 
-### Related docs in this repo
-
+### Related notes
 **Definition:** Cross-links to other guides in this repository that pair with React development.
 
 **Examples:** Use [5_ts.md](./5_ts.md) for component prop typing and [6_web_api.md](./6_web_api.md) for `fetch` and security.

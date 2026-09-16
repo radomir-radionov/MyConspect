@@ -128,7 +128,7 @@ The Internet is a global network of computers; the Web is an HTTP-based system o
 | DNS      | Domain → IP phonebook (`A` = IPv4, `AAAA` = IPv6) |
 | Browser  | User agent that requests and renders pages |
 
-**How it works:** Dual-stack clients query **AAAA** and **A**. **Happy Eyeballs** (RFC 8305) races connections and prefers working IPv6, falling back to IPv4 if IPv6 is slow or broken. Full addressing: [IPv4 & IPv6](./6_web_api_apps.md#ipv4--ipv6). LAN vs public Internet, packets, and the page-load path: [How the Internet works](#how-the-internet-works). DNS is a **lookup** (cache → resolver → nameservers → IP); the browser then opens TCP/TLS to that IP — packets are not “sent to DNS as the destination.”
+**How it works:** Dual-stack clients query **AAAA** and **A**. **Happy Eyeballs** (RFC 8305) races connections and prefers working IPv6, falling back to IPv4 if IPv6 is slow or broken. Full addressing: [IPv4 & IPv6](./6_web_api_apps.md#ipv4--ipv6). LAN vs public Internet, packets, and the page-load path: [How the Internet works](#internet). DNS is a **lookup** (cache → resolver → nameservers → IP); the browser then opens TCP/TLS to that IP — packets are not “sent to DNS as the destination.”
 
 **Examples:**
 
@@ -149,10 +149,9 @@ User types https://example.com
 </details>
 
 <details>
-  <summary>How the Internet works</summary>
+  <summary>Internet</summary>
 
-### How the Internet works
-
+### Internet
 **Definition:** Hosts exchange **packets** under shared **protocols**. The same TCP/IP stack runs on a **LAN** and on the public **Internet**; the difference is addressing, routing scope, and who can reach whom — not a different “kind” of packet.
 
 **How it works:**
@@ -277,7 +276,7 @@ An IP address is a numeric identifier for a device on a network, used to route p
 | IPv4    | 32-bit (~4.3B addresses)     | e.g. `192.168.0.1` |
 | IPv6    | 128-bit (vast address space) | e.g. `2001:db8::1` |
 
-**How it works:** Public unicast is globally routed. **Private** IPv4 (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) stays on the LAN unless NAT or a tunnel publishes it. Loopback: `127.0.0.1` / `::1`. Packets + LAN vs Internet: [How the Internet works](#how-the-internet-works). Formats, prefixes, URL literals, DNS `AAAA`, and Happy Eyeballs: [IPv4 & IPv6](./6_web_api_apps.md#ipv4--ipv6).
+**How it works:** Public unicast is globally routed. **Private** IPv4 (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) stays on the LAN unless NAT or a tunnel publishes it. Loopback: `127.0.0.1` / `::1`. Packets + LAN vs Internet: [How the Internet works](#internet). Formats, prefixes, URL literals, DNS `AAAA`, and Happy Eyeballs: [IPv4 & IPv6](./6_web_api_apps.md#ipv4--ipv6).
 
 **Examples:**
 

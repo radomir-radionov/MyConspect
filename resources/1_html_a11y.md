@@ -16,7 +16,7 @@ POUR, names, landmarks, forms, and images.
 
 ## Accessibility
 
-Theory: [overview](#what-is-accessibility-a11y) · [tree](#accessibility-tree) · [name/description](#accessible-name-and-description) · [HTML basics](#accessible-html-basics) · [`lang`](#language-of-the-page-and-fragments) · [forms](#accessible-forms) · [hiding](#hiding-content-from-at-vs-visually) · [images](#image-text-alternatives) · [ARIA](#aria--when-and-how) · [screen readers](#screen-readers)
+Theory: [overview](#accessibility-basics) · [tree](#accessibility-tree) · [name/description](#accessible-name-and-description) · [HTML basics](#accessible-html-basics) · [`lang`](#language-of-the-page-and-fragments) · [forms](#accessible-forms) · [hiding](#hiding-content-from-at-vs-visually) · [images](#image-text-alternatives) · [ARIA](#aria) · [screen readers](#screen-readers)
 
 <details>
   <summary>Web accessibility overview</summary>
@@ -173,10 +173,9 @@ Pre-release audit · PR review checklist · VPAT documentation.
 </details>
 
 <details>
-  <summary>ARIA — when and how</summary>
+  <summary>ARIA</summary>
 
-### ARIA — when and how
-
+### ARIA
 **Definition:**
 
 ARIA (Accessible Rich Internet Applications) adds semantics when HTML alone is insufficient — tabs, live regions, expanded states.
@@ -274,10 +273,9 @@ Form submission flow · modal open/close · dynamic list updates.
 </details>
 
 <details>
-  <summary>What is accessibility (a11y)</summary>
+  <summary>Accessibility basics</summary>
 
-### What is accessibility (a11y)
-
+### Accessibility basics
 **Definition:** Accessibility is designing environments, products, and services so people with disabilities can use them. **Web accessibility** is that idea applied to sites, apps, and related tools. The numeronym **a11y** is *accessibility* (*a* + 11 letters + *y*).
 
 **How it works:**

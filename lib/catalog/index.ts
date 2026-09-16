@@ -173,7 +173,7 @@ export const SUBJECTS: readonly Subject[] = [
   },
   {
     slug: "database",
-    title: "DB",
+    title: "Database",
     blurb: "SQL, NoSQL, ORMs, and production data patterns.",
     track: "backend",
     clusters: [
@@ -305,7 +305,7 @@ export const TOPICS: readonly Topic[] = [
   {
     slug: "js-array",
     file: "3_js_array.md",
-    title: "Array",
+    title: "Arrays",
     blurb: "Indexed collections and array methods — map, filter, reduce.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
@@ -337,7 +337,7 @@ export const TOPICS: readonly Topic[] = [
   {
     slug: "js-browser-extra",
     file: "3_js_browser_extra.md",
-    title: "Extra APIs",
+    title: "Browser APIs",
     blurb: "Storage, CORS, observers, History, URL, files, and UI timing.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "browser" },
@@ -350,7 +350,7 @@ export const TOPICS: readonly Topic[] = [
     track: "frontend",
     grouping: { subject: "javascript", cluster: "additional" },
   },
-  grouped("react-core", "4_react_core.md", "Overview", "Library model, rendering, JSX, and state.", "frontend", "react", "core"),
+  grouped("react-core", "4_react_core.md", "Basics", "Library model, rendering, JSX, and state.", "frontend", "react", "core"),
   grouped("react-hooks", "4_react_hooks.md", "Hooks", "Hooks reference and escape hatches.", "frontend", "react", "core"),
   grouped("react-server", "4_react_server.md", "Server", "React 19 APIs, SSR, and React Server Components.", "frontend", "react", "platform"),
   grouped("react-ecosystem", "4_react_ecosystem.md", "Ecosystem", "Architecture, libraries, performance, and legacy.", "frontend", "react", "additional"),
@@ -393,7 +393,7 @@ export const TOPICS: readonly Topic[] = [
   grouped("special-engineering", "7_special_engineering.md", "Engineering", "SOLID, design patterns, SDLC, and testing.", "other", "special", "engineering"),
   grouped("special-security", "7_special_security.md", "Web security", "Security model and common web attacks.", "other", "special", "additional"),
   grouped("special-interview", "7_special_interview.md", "Interview", "Interview Q&A plus leftover tooling notes.", "other", "special", "additional"),
-  grouped("build-ci", "10_build_ci.md", "CI & packages", "CI/CD, package managers, and task runners.", "other", "build", "core"),
+  grouped("build-ci", "10_build_ci.md", "CI", "CI/CD, package managers, and task runners.", "other", "build", "core"),
   grouped("build-bundlers", "10_build_bundlers.md", "Bundlers", "Transpilers, bundling concepts, bundlers, and code quality.", "other", "build", "core"),
   grouped("build-docker", "10_build_docker.md", "Docker", "Images, containers, Compose, and container lifecycle.", "other", "build", "delivery"),
   grouped("build-infra", "10_build_infra.md", "Infra", "Delivery architecture, Nginx, brokers, and DX tools.", "other", "build", "delivery"),

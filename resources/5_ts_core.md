@@ -99,8 +99,7 @@ type UserPreview = Pick<User, "id" | "name">;
 
 ---
 
-### Why TypeScript instead of JavaScript?
-
+### TypeScript vs JavaScript
 **Definition:** JavaScript is dynamically typed; TypeScript is a **superset** that adds optional static types checked at compile time, then erased.
 
 **When to use:** Long-lived codebases, teams, libraries with public APIs.
@@ -124,10 +123,9 @@ const user = { name: "Ada" };
 </details>
 
 <details>
-  <summary>Pipeline — how `tsc` fits in</summary>
+  <summary>Compiler pipeline</summary>
 
-### Pipeline — how `tsc` fits in
-
+### Compiler pipeline
 **Definition:**
 
 TS source passes through `tsc` (or bundler + type-check) → JavaScript → browser/Node runtime.

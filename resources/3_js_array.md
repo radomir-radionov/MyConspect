@@ -26,7 +26,7 @@ Ordered collections, array methods, and interview patterns around `map` / `filte
 - [Interview Practice](#interview-practice)
 
 <details>
-  <summary>array & array methods</summary>
+  <summary>Array methods</summary>
 
 ### Arrays & array methods
 

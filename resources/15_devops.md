@@ -4,7 +4,7 @@ Deployment, containers, CI/CD integration, and production operations — intervi
 
 ### Related docs
 
-* [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_core.md#files--file-systems) · [Node — SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_foundations.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#how-the-internet-works) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
+* [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_core.md#files--file-systems) · [Node — SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_foundations.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#internet) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
 
 ### Main concepts
 
@@ -783,7 +783,7 @@ kill -9 22495  # SIGKILL — last resort; sudo only if not your process
 
 - Chains: **INPUT** (to this host), **OUTPUT** (from this host), **FORWARD** (transit, e.g. a router). Rules match in order; first hit wins unless you append (`-A`) and later rules never run for that packet.
 - Typical web host: allow 22/80/443, drop the rest. ICMP echo can be rejected so `ping` fails while HTTP still works.
-- Host sockets and ports: [6_web_api.md — Ports](./6_web_api_apps.md#ports-sockets--network-services). Path of a request: [How the Internet works](./6_web_api_core.md#how-the-internet-works).
+- Host sockets and ports: [6_web_api.md — Ports](./6_web_api_apps.md#ports-sockets--network-services). Path of a request: [How the Internet works](./6_web_api_core.md#internet).
 
 **When to use:**
 

@@ -34,7 +34,7 @@ DOM tree, querying, mutation, BOM, and script loading.
 ## Script loading
 
 <details>
-  <summary>add script(async & defer & working thread)</summary>
+  <summary>Script loading</summary>
 
 ### Script tags & loading
 
@@ -357,10 +357,9 @@ list.getElementsByTagName('li');      // live HTMLCollection
 </details>
 
 <details>
-  <summary>DOM methods & props</summary>
+  <summary>DOM methods</summary>
 
-### DOM methods & props
-
+### DOM methods
 **Definition:** Common APIs for finding elements, working with forms, and reading custom data.
 
 **How it works:**
@@ -592,7 +591,7 @@ node.cloneNode(true);       // deep clone (with children)
 </details>
 
 <details>
-  <summary>innerText vs textContent, forms, dialogs</summary>
+  <summary>Text, forms, and dialogs</summary>
 
 ### innerText vs textContent
 
@@ -717,7 +716,7 @@ observer.disconnect(); // cleanup when done
 </details>
 
 <details>
-  <summary>form vs modal</summary>
+  <summary>Forms vs dialogs</summary>
 
 ### Form vs modal
 

@@ -296,7 +296,7 @@ WebRTC media       → UDP + ICE/STUN/TURN
 
 *TCP trades RTT and ACKs for a reliable ordered stream; UDP is a thin datagram — use it when latency beats completeness, or when QUIC implements reliability on top.*
 
-Layers → [OSI & TCP/IP models](#osi--tcpip-models). TLS after TCP → [SSL/TLS handshake](./6_web_api_http.md#ssltls--https-handshake). Hints → [preload, prefetch, preconnect](./6_web_api_security.md#preload-prefetch-preconnect--prerender) · [HTML resource hints](./1_html_structure.md#link-rel-types--resource-hints). Handshake-only recap → [TCP three-way handshake](./6_web_api_security.md#tcp-three-way-handshake). Sockets / `ss` → [Ports, sockets & network services](#ports-sockets--network-services). Path → [How the Internet works](./6_web_api_core.md#how-the-internet-works).
+Layers → [OSI & TCP/IP models](#osi--tcpip-models). TLS after TCP → [SSL/TLS handshake](./6_web_api_http.md#ssltls--https-handshake). Hints → [preload, prefetch, preconnect](./6_web_api_security.md#preload-prefetch-preconnect--prerender) · [HTML resource hints](./1_html_structure.md#link-rel-types--resource-hints). Handshake-only recap → [TCP three-way handshake](./6_web_api_security.md#tcp-three-way-handshake). Sockets / `ss` → [Ports, sockets & network services](#ports-sockets--network-services). Path → [How the Internet works](./6_web_api_core.md#internet).
 
 **Sources:**
 
@@ -353,7 +353,7 @@ netstat -p tcp               # macOS/BSD: filter TCP — NOT Linux (-p = PID/pro
 
 **Sources:**
 
-[IANA port registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml) · [ss(8)](https://man7.org/linux/man-pages/man8/ss.8.html) · [ip(8)](https://man7.org/linux/man-pages/man8/ip.8.html) · [Doka — Working with the network](https://doka.guide/tools/network/) · [How the Internet works](./6_web_api_core.md#how-the-internet-works)
+[IANA port registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml) · [ss(8)](https://man7.org/linux/man-pages/man8/ss.8.html) · [ip(8)](https://man7.org/linux/man-pages/man8/ip.8.html) · [Doka — Working with the network](https://doka.guide/tools/network/) · [How the Internet works](./6_web_api_core.md#internet)
 
 ---
 

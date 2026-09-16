@@ -1,4 +1,4 @@
-# DB — NoSQL
+# Database — NoSQL
 
 MongoDB, Redis, Elasticsearch, and store selection.
 
