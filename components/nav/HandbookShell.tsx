@@ -2,15 +2,15 @@
 
 import { useCallback, useDeferredValue, useEffect, useRef, useState, startTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SearchQueryContext } from "@/components/SearchQueryContext";
-import { SiteHeader } from "@/components/SiteHeader";
-import { TopicSidebar } from "@/components/TopicSidebar";
+import { SearchQueryContext } from "@/components/search";
+import { SiteHeader } from "./SiteHeader";
+import { TopicSidebar } from "./TopicSidebar";
 import {
   firstSearchHref,
   splitHref,
   type ChromeCopy,
   type NavGroup,
-} from "@/lib/content/nav";
+} from "@/lib/nav";
 
 const SEARCH_NAV_DELAY_MS = 280;
 

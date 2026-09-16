@@ -1,10 +1,9 @@
 "use client";
 
 import { memo, useEffect, useSyncExternalStore } from "react";
-import { HighlightedText } from "@/components/HighlightedText";
-import { useSearchQuery } from "@/components/SearchQueryContext";
-import { matchesQuery } from "@/lib/content/nav";
-import type { Concept } from "@/lib/content/parse";
+import { HighlightedText, useSearchQuery } from "@/components/search";
+import { matchesQuery } from "@/lib/nav";
+import type { Concept } from "@/lib/parse";
 
 function subscribeHash(onStoreChange: () => void) {
   window.addEventListener("hashchange", onStoreChange);
@@ -86,8 +85,10 @@ export function ConceptList({
     if (needle.length > 0) {
       const hashId = decodeURIComponent(window.location.hash.replace(/^#/, ""));
       const hashConcept = concepts.find((concept) => concept.id === hashId);
-      if (!hashConcept || !matchesQuery(hashConcept.title, needle)) {
-        const match = concepts.find((concept) => matchesQuery(concept.title, needle));
+      const conceptMatchesQuery = (concept: Concept) =>
+        matchesQuery(concept.title, needle) || matchesQuery(concept.searchText ?? "", needle);
+      if (!hashConcept || !conceptMatchesQuery(hashConcept)) {
+        const match = concepts.find(conceptMatchesQuery);
         if (match) {
           setHash(match.id);
         }

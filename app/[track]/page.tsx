@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CardGrid } from "@/components/CardGrid";
-import { TRACKS, isTrackId, topicHref, topicsForTrack } from "@/lib/content/catalog";
-import { getTrack } from "@/lib/content/load";
+import { CardGrid } from "@/components/catalog";
+import { TRACKS, getTrack, isTrackId, topicHref, topicsForTrack } from "@/lib/catalog";
 
 export const dynamicParams = false;
 

@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { TOPICS, type Topic, getTopic, getTrack, isTrackId, topicsForTrack } from "./catalog";
+import { TOPICS, getTopic, type Topic } from "@/lib/catalog";
 import {
   parseTopicMarkdown,
   parseTopicOutline,
@@ -55,5 +55,3 @@ export function assertCatalogFilesExist(): void {
     readTopicFile(topic.file);
   }
 }
-
-export { getTrack, isTrackId, topicsForTrack, TOPICS };

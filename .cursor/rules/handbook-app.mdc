@@ -1,6 +1,6 @@
 ---
 description: MyConspect browse-only handbook — SSG, accordion topic pages, no extra features. Apply when working on this Next.js app.
-globs: "{app,components,lib}/**/*.{ts,tsx}"
+globs: "{app,components,lib,scripts}/**/*.{ts,tsx}"
 alwaysApply: false
 ---
 
@@ -18,7 +18,7 @@ Public study handbook. Browse-only. Parse `resources/*.md` at **build time**.
 
 ## Content
 
-- Read **only** `resources/` numbered `*_*.md` files (see `lib/content/catalog.ts`)
+- Read **only** `resources/` numbered `*_*.md` files (see `lib/catalog`)
 - Do not rewrite study notes unless the user asks. Do not add React to markdown
 - Skip personal/hub files that are not in the catalog (`0_me.md`, `0_interview.md`, `3_js.md`, …)
 

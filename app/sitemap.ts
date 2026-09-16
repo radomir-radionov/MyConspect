@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { TRACKS, TOPICS, topicHref } from "@/lib/content/catalog";
-import { INSTRUCTIONS_HREF } from "@/lib/content/nav";
+import { TRACKS, TOPICS, topicHref } from "@/lib/catalog";
+import { INSTRUCTIONS_HREF } from "@/lib/nav";
 import { siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {

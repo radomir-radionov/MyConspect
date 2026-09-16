@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { isTrackId, type TrackId } from "../lib/content/catalog";
+import { isTrackId, type TrackId } from "../lib/catalog";
 import {
   buildAuditReport,
   collectConceptAudits,
@@ -9,8 +9,8 @@ import {
   uniqueSourceUrls,
   type UrlCheck,
   type UrlCheckStatus,
-} from "../lib/content/audit";
-import { readTopicFile } from "../lib/content/load";
+} from "../lib/audit";
+import { readTopicFile } from "../lib/parse";
 
 type CliOptions = {
   readonly track?: TrackId;
@@ -112,7 +112,7 @@ function printHelp(): void {
   process.stdout.write(`Check **Source:** URLs in catalog topic files. Does not edit notes.
 
 Usage:
-  npx tsx scripts/check-conspect.ts [options]
+  npx tsx scripts/audit.ts [options]
 
 Options:
   --track frontend|backend|other  Limit to one handbook track

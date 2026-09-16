@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { ConceptSlotLabel } from "@/components/ConceptSlotLabel";
-import type { SlotKind } from "@/lib/content/concept-slots";
+import { ConceptSlotLabel } from "@/components/topic";
+import type { SlotKind } from "@/lib/parse";
 
 export const metadata: Metadata = {
   title: "Instructions",

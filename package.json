@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check-conspect": "tsx scripts/check-conspect.ts"
+    "check-conspect": "tsx scripts/audit.ts"
   },
   "dependencies": {
     "marked": "^18.0.13",

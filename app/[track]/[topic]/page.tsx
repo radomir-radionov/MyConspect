@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ConceptList } from "@/components/ConceptList";
-import { TOPICS, getTrack } from "@/lib/content/catalog";
-import { loadTopicPage } from "@/lib/content/load";
+import { ConceptList } from "@/components/topic";
+import { TOPICS, getTrack } from "@/lib/catalog";
+import { loadTopicPage } from "@/lib/parse";
 
 export const dynamicParams = false;
 

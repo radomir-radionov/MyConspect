@@ -35,7 +35,7 @@ jobs:
           if [ "${TRACK}" != "all" ]; then
             TRACK_ARGS=(--track "${TRACK}")
           fi
-          npx tsx scripts/check-conspect.ts "${TRACK_ARGS[@]}" \
+          npx tsx scripts/audit.ts "${TRACK_ARGS[@]}" \
             --json --out reports/conspect-audit.json \
             | tee reports/conspect-audit.md
         env:

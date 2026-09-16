@@ -17,9 +17,12 @@ The user is changing this app (routes, parser, catalog, UI, SEO), not the conspe
 ## Layout
 
 - Content: `resources/*_*.md` only (`process.cwd()/resources`)
-- Catalog: `lib/content/catalog.ts` (tracks + public topics)
-- Parser: `lib/content/parse.ts` (top-level `<details>`, plus `##`/`###` blocks with **Definition:**)
-- Load: `lib/content/load.ts`
+- Catalog: `lib/catalog` + `components/catalog` (tracks, topics, card grids)
+- Parse: `lib/parse` (load files, split concepts, slots, highlight)
+- Nav: `lib/nav` + `components/nav` (chrome copy, sidebar, handbook shell)
+- Search: `components/search` (query context and hit highlighting)
+- Topic: `components/topic` (accordion list, slot labels)
+- Audit: `lib/audit` + `scripts/audit.ts` (`**Source:**` URL checks)
 - Routes: `/` tracks → `/[track]` topic cards → `/[track]/[topic]`
 - SEO: `generateMetadata`, `app/sitemap.ts`, `app/robots.ts`
 
@@ -43,16 +46,17 @@ The user is changing this app (routes, parser, catalog, UI, SEO), not the conspe
 ## Adding a topic
 
 1. Copy the `*_*.md` file into `resources/`
-2. Add a `Topic` row in `catalog.ts` (`slug`, `file`, `title`, `blurb`, `track`)
+2. Add a `Topic` row in `lib/catalog` (`slug`, `file`, `title`, `blurb`, `track`)
 3. Run `npm run build` — `generateStaticParams` picks it up
 
 ## UI
 
-- Docs shell: sticky header + track-grouped topic sidebar (`components/HandbookShell.tsx`)
+- Docs shell: sticky header + track-grouped topic sidebar (`components/nav`)
 - Topic search lists only matching topics in the sidebar. Tracks and topic concept lists stay collapsed until opened. Search opens the found accordion in the main pane and restores the previous page when cleared
-- Card grids for tracks and topics (`components/CardGrid.tsx`)
-- Simple typography; fenced code uses Shiki (VS Code `dark-plus`) in `lib/content/highlight.ts`
-- English UI chrome in `lib/content/nav.ts`; nav tree + concept titles in `lib/content/handbook-nav.ts`; study notes stay in `resources/`
+- Card grids for tracks and topics (`components/catalog`)
+- Topic accordion UI (`components/topic`)
+- Simple typography; fenced code uses Shiki (VS Code `light-plus`) in `lib/parse/highlight.ts`
+- English UI chrome and sidebar search in `lib/nav`; study notes stay in `resources/`
 
 ## Verify
 

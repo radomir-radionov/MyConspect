@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { HandbookShell } from "@/components/HandbookShell";
-import { handbookNav } from "@/lib/content/handbook-nav";
-import { CHROME } from "@/lib/content/nav";
+import { HandbookShell } from "@/components/nav";
+import { handbookNav } from "@/lib/nav/handbook";
+import { CHROME } from "@/lib/nav";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
 import "./globals.css";
 

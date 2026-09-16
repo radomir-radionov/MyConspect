@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { INSTRUCTIONS_HREF, type ChromeCopy } from "@/lib/content/nav";
+import { INSTRUCTIONS_HREF, type ChromeCopy } from "@/lib/nav";
 import { SITE_NAME } from "@/lib/site";
 
 function SiteMark() {

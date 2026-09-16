@@ -1,6 +1,6 @@
-import { TRACKS, topicHref, topicsForTrack, trackHref } from "@/lib/content/catalog";
-import { loadTopicOutline } from "@/lib/content/load";
-import type { NavGroup } from "@/lib/content/nav";
+import { TRACKS, topicHref, topicsForTrack, trackHref } from "@/lib/catalog";
+import { loadTopicOutline } from "@/lib/parse";
+import type { NavGroup } from "./types";
 
 export function handbookNav(): readonly NavGroup[] {
   return TRACKS.map((track) => ({

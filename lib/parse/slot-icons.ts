@@ -1,4 +1,4 @@
-import type { SlotKind } from "./concept-slots";
+import type { SlotKind } from "./slots";
 
 function escapeHtml(value: string): string {
   return value

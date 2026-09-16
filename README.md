@@ -28,7 +28,7 @@ npm start
 
 ## Content
 
-Topic files are `resources/*_*.md`. The public catalog is `lib/content/catalog.ts`. Files in `resources/` that are not listed there (personal notes, link hubs) are not published.
+Topic files are `resources/*_*.md`. The public catalog is `lib/catalog`. Files in `resources/` that are not listed there (personal notes, link hubs) are not published.
 
 Set `NEXT_PUBLIC_SITE_URL` (no trailing slash) for absolute sitemap and robots URLs in production. On Vercel, production URL is inferred when that env is unset.
 

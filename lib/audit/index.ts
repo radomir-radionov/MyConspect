@@ -1,6 +1,5 @@
-import type { Topic, TrackId } from "./catalog";
-import { TOPICS } from "./catalog";
-import { collectConceptBlocks } from "./parse";
+import { TOPICS, type Topic, type TrackId } from "@/lib/catalog";
+import { collectConceptBlocks } from "@/lib/parse";
 
 export const AUDIT_STATUSES = ["unverified", "url-ok", "url-warn", "url-dead"] as const;
 

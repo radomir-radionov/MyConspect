@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { CardGrid } from "@/components/CardGrid";
-import { TRACKS } from "@/lib/content/catalog";
+import { CardGrid } from "@/components/catalog";
+import { TRACKS } from "@/lib/catalog";
 import { SITE_DESCRIPTION } from "@/lib/site";
 
 export const metadata: Metadata = {

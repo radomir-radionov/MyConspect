@@ -1,4 +1,4 @@
-import type { SlotKind } from "@/lib/content/concept-slots";
+import type { SlotKind } from "@/lib/parse";
 
 export function ConceptSlotLabel({ kind, label }: { kind: SlotKind; label: string }) {
   if (kind === "intro") {

@@ -1,49 +1,11 @@
-import type { TrackId } from "@/lib/content/catalog";
-
-export type NavConcept = {
-  readonly id: string;
-  readonly title: string;
-};
-
-export type NavTopic = {
-  readonly slug: string;
-  readonly href: string;
-  readonly title: string;
-  readonly blurb: string;
-  readonly concepts: readonly NavConcept[];
-};
-
-export type NavGroup = {
-  readonly id: TrackId;
-  readonly title: string;
-  readonly href: string;
-  readonly topics: readonly NavTopic[];
-};
-
-export type ChromeCopy = {
-  readonly searchPlaceholder: string;
-  readonly searchEmpty: string;
-  readonly clearSearch: string;
-  readonly topicsNav: string;
-  readonly openMenu: string;
-  readonly closeMenu: string;
-  readonly instructions: string;
-};
-
-export const INSTRUCTIONS_HREF = "/instructions";
-
-export const CHROME: ChromeCopy = {
-  searchPlaceholder: "Search topics and concepts…",
-  searchEmpty: "No topics or concepts match that search.",
-  clearSearch: "Clear search",
-  topicsNav: "Topics",
-  openMenu: "Open topics",
-  closeMenu: "Close topics",
-  instructions: "Instructions",
-};
+import type { NavGroup, NavTopic } from "./types";
 
 export function matchesQuery(haystack: string, query: string): boolean {
   return haystack.toLowerCase().includes(query);
+}
+
+function conceptMatches(concept: { title: string; searchText?: string }, query: string): boolean {
+  return matchesQuery(concept.title, query) || matchesQuery(concept.searchText ?? "", query);
 }
 
 export function conceptHref(topicHrefValue: string, conceptId: string): string {
@@ -66,7 +28,7 @@ export function topicMatches(topic: NavTopic, query: string): boolean {
   return (
     matchesQuery(topic.title, normalized) ||
     matchesQuery(topic.blurb, normalized) ||
-    topic.concepts.some((concept) => matchesQuery(concept.title, normalized))
+    topic.concepts.some((concept) => conceptMatches(concept, normalized))
   );
 }
 
@@ -107,7 +69,7 @@ export function firstSearchHref(
   if (preferredPathname) {
     for (const group of groups) {
       const current = group.topics.find((topic) => topic.href === preferredPathname);
-      const conceptHit = current?.concepts.find((concept) => matchesQuery(concept.title, normalized));
+      const conceptHit = current?.concepts.find((concept) => conceptMatches(concept, normalized));
       if (current && conceptHit) {
         return conceptHref(current.href, conceptHit.id);
       }
@@ -116,7 +78,7 @@ export function firstSearchHref(
 
   for (const group of groups) {
     for (const topic of group.topics) {
-      const conceptHit = topic.concepts.find((concept) => matchesQuery(concept.title, normalized));
+      const conceptHit = topic.concepts.find((concept) => conceptMatches(concept, normalized));
       if (conceptHit) {
         return conceptHref(topic.href, conceptHit.id);
       }

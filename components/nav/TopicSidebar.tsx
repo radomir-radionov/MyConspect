@@ -3,7 +3,7 @@
 import { memo, useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HighlightedText } from "@/components/HighlightedText";
+import { HighlightedText } from "@/components/search";
 import {
   conceptHref,
   filterNavGroups,
@@ -13,8 +13,8 @@ import {
   type ChromeCopy,
   type NavGroup,
   type NavTopic,
-} from "@/lib/content/nav";
-import type { TrackId } from "@/lib/content/catalog";
+} from "@/lib/nav";
+import type { TrackId } from "@/lib/catalog";
 
 function isActiveHref(pathname: string, href: string): boolean {
   return pathname === href;
@@ -50,7 +50,9 @@ function visibleConcepts(topic: NavTopic, query: string) {
   if (needle.length === 0) {
     return topic.concepts;
   }
-  return topic.concepts.filter((concept) => matchesQuery(concept.title, needle));
+  return topic.concepts.filter((concept) =>
+    matchesQuery(concept.title, needle) || matchesQuery(concept.searchText ?? "", needle),
+  );
 }
 
 function topicHrefForPath(groups: readonly NavGroup[], pathname: string): string | null {
