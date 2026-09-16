@@ -1,14 +1,14 @@
-import type {
-  NavCluster,
-  NavConcept,
-  NavEntry,
-  NavGroup,
-  NavSubject,
-  NavTopic,
-  SearchMode,
-} from "./types";
+import type { NavConcept, NavEntry, NavGroup, NavTopic, SearchMode } from "./types";
+import {
+  BODY_QUERY_MIN_LENGTH,
+  filterGroupsWithIndex,
+  firstHrefWithIndex,
+  searchIndexFor,
+  trigramBodyHits,
+  type HandbookSearchIndex,
+} from "./searchIndex";
 
-export const BODY_QUERY_MIN_LENGTH = 3;
+export { BODY_QUERY_MIN_LENGTH };
 
 export function matchesQuery(haystack: string, query: string): boolean {
   return haystack.toLowerCase().includes(query);
@@ -141,47 +141,28 @@ function topicsInEntry(entry: NavEntry): readonly NavTopic[] {
   }
 }
 
-function filterEntry(entry: NavEntry, query: string, mode: SearchMode): NavEntry | null {
-  switch (entry.kind) {
-    case "topic":
-      return topicMatches(entry.topic, query, mode) ? entry : null;
-    case "subject": {
-      const subject = filterSubject(entry.subject, query, mode);
-      return subject ? { kind: "subject", subject } : null;
-    }
-    case "cluster": {
-      const cluster = filterCluster(entry.cluster, query, mode);
-      return cluster ? { kind: "cluster", subjectHref: entry.subjectHref, cluster } : null;
-    }
-    default: {
-      const _never: never = entry;
-      return _never;
-    }
-  }
-}
+export type NavSearchResult = {
+  readonly groups: readonly NavGroup[];
+  readonly firstHref: string | null;
+};
 
-function filterCluster(cluster: NavCluster, query: string, mode: SearchMode): NavCluster | null {
-  if (matchesQuery(cluster.title, query)) {
-    return cluster;
+export function searchNav(
+  groups: readonly NavGroup[],
+  query: string,
+  mode: SearchMode = "titles",
+  preferredPathname?: string,
+): NavSearchResult {
+  const normalized = query.trim().toLowerCase();
+  if (normalized.length === 0) {
+    return { groups, firstHref: null };
   }
-  const topics = cluster.topics.filter((topic) => topicMatches(topic, query, mode));
-  if (topics.length === 0) {
-    return null;
-  }
-  return { ...cluster, topics };
-}
 
-function filterSubject(subject: NavSubject, query: string, mode: SearchMode): NavSubject | null {
-  if (matchesQuery(subject.title, query) || matchesQuery(subject.blurb, query)) {
-    return subject;
-  }
-  const clusters = subject.clusters
-    .map((cluster) => filterCluster(cluster, query, mode))
-    .filter((cluster): cluster is NavCluster => cluster !== null);
-  if (clusters.length === 0) {
-    return null;
-  }
-  return { ...subject, clusters };
+  const index = searchIndexFor(groups);
+  const bodyHits = notesBodyHits(index, normalized, mode);
+  return {
+    groups: filterGroupsWithIndex(index, normalized, mode, bodyHits),
+    firstHref: firstHrefWithIndex(index, normalized, mode, preferredPathname, bodyHits),
+  };
 }
 
 export function filterNavGroups(
@@ -189,27 +170,7 @@ export function filterNavGroups(
   query: string,
   mode: SearchMode = "titles",
 ): readonly NavGroup[] {
-  const normalized = query.trim().toLowerCase();
-  if (normalized.length === 0) {
-    return groups;
-  }
-
-  return groups
-    .map((group) => {
-      const keepLeaf =
-        Boolean(group.leafTopic) &&
-        (matchesQuery(group.title, normalized) ||
-          (group.leafTopic ? topicMatches(group.leafTopic, normalized, mode) : false));
-      const entries = group.entries
-        .map((entry) => filterEntry(entry, normalized, mode))
-        .filter((entry): entry is NavEntry => entry !== null);
-      return {
-        ...group,
-        leafTopic: keepLeaf ? group.leafTopic : undefined,
-        entries,
-      };
-    })
-    .filter((group) => group.entries.length > 0 || Boolean(group.leafTopic));
+  return searchNav(groups, query, mode).groups;
 }
 
 export function firstSearchHref(
@@ -218,123 +179,22 @@ export function firstSearchHref(
   preferredPathname?: string,
   mode: SearchMode = "titles",
 ): string | null {
-  const normalized = query.trim().toLowerCase();
-  if (normalized.length === 0) {
-    return null;
-  }
-
-  const topics = navTopics(groups);
-
-  const titleHit = topics.find((topic) => matchesQuery(topic.title, normalized));
-  if (titleHit) {
-    return titleHit.href;
-  }
-
-  for (const group of groups) {
-    for (const entry of group.entries) {
-      switch (entry.kind) {
-        case "subject":
-          if (matchesQuery(entry.subject.title, normalized)) {
-            return entry.subject.href;
-          }
-          break;
-        case "cluster":
-          if (matchesQuery(entry.cluster.title, normalized)) {
-            return entry.cluster.href;
-          }
-          break;
-        case "topic":
-          break;
-        default: {
-          const _never: never = entry;
-          return _never;
-        }
-      }
-    }
-  }
-
-  for (const group of groups) {
-    for (const entry of group.entries) {
-      switch (entry.kind) {
-        case "subject": {
-          const clusterHit = entry.subject.clusters.find((cluster) =>
-            matchesQuery(cluster.title, normalized),
-          );
-          if (clusterHit) {
-            return clusterHit.href;
-          }
-          break;
-        }
-        case "cluster":
-        case "topic":
-          break;
-        default: {
-          const _never: never = entry;
-          return _never;
-        }
-      }
-    }
-  }
-
-  const titleConceptHref = firstConceptHref(topics, preferredPathname, (concept) =>
-    conceptTitleMatches(concept, normalized),
-  );
-  if (titleConceptHref) {
-    return titleConceptHref;
-  }
-
-  const blurbHit = topics.find((topic) => matchesQuery(topic.blurb, normalized));
-  if (blurbHit) {
-    return blurbHit.href;
-  }
-
-  for (const group of groups) {
-    for (const entry of group.entries) {
-      switch (entry.kind) {
-        case "subject":
-          if (matchesQuery(entry.subject.blurb, normalized)) {
-            return entry.subject.href;
-          }
-          break;
-        case "cluster":
-        case "topic":
-          break;
-        default: {
-          const _never: never = entry;
-          return _never;
-        }
-      }
-    }
-  }
-
-  if (!includesNotes(mode)) {
-    return null;
-  }
-
-  return firstConceptHref(topics, preferredPathname, (concept) =>
-    conceptBodyMatches(concept, normalized),
-  );
+  return searchNav(groups, query, mode, preferredPathname).firstHref;
 }
 
-function firstConceptHref(
-  topics: readonly NavTopic[],
-  preferredPathname: string | undefined,
-  matches: (concept: NavConcept) => boolean,
-): string | null {
-  if (preferredPathname) {
-    const current = topics.find((topic) => topic.href === preferredPathname);
-    const conceptHit = current?.concepts.find(matches);
-    if (current && conceptHit) {
-      return conceptHref(current.href, conceptHit.id);
+function notesBodyHits(
+  index: HandbookSearchIndex,
+  query: string,
+  mode: SearchMode,
+): Set<number> | null {
+  switch (mode) {
+    case "notes":
+      return trigramBodyHits(index, query);
+    case "titles":
+      return null;
+    default: {
+      const _never: never = mode;
+      return _never;
     }
   }
-
-  for (const topic of topics) {
-    const conceptHit = topic.concepts.find(matches);
-    if (conceptHit) {
-      return conceptHref(topic.href, conceptHit.id);
-    }
-  }
-
-  return null;
 }

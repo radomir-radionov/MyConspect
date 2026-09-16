@@ -1,19 +1,12 @@
 "use client";
 
-import { useCallback, useDeferredValue, useEffect, useRef, useState, startTransition } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import { SearchQueryContext } from "@/components/search";
 import { SiteHeader } from "./SiteHeader";
 import { TopicSidebar } from "./TopicSidebar";
-import {
-  firstSearchHref,
-  splitHref,
-  type ChromeCopy,
-  type NavGroup,
-  type SearchMode,
-} from "@/lib/nav";
-
-const SEARCH_NAV_DELAY_MS = 280;
+import { useHandbookSearch } from "./useHandbookSearch";
+import { useMobileNav } from "./useMobileNav";
+import { useResetMainScroll } from "./useResetMainScroll";
+import type { ChromeCopy, NavGroup } from "@/lib/nav";
 
 export function HandbookShell({
   groups,
@@ -24,127 +17,10 @@ export function HandbookShell({
   chrome: ChromeCopy;
   children: React.ReactNode;
 }) {
-  const pathname = usePathname() ?? "/";
-  const router = useRouter();
-  const pathnameRef = useRef(pathname);
-  const restoreHrefRef = useRef<string | null>(null);
-  const searchTimerRef = useRef<number | null>(null);
-  const [query, setQuery] = useState("");
-  const deferredQuery = useDeferredValue(query);
-  const [mode, setMode] = useState<SearchMode>("titles");
-  const [navOpen, setNavOpen] = useState(false);
-  const groupsRef = useRef(groups);
-  const modeRef = useRef(mode);
-
-  useEffect(() => {
-    groupsRef.current = groups;
-  }, [groups]);
-
-  useEffect(() => {
-    modeRef.current = mode;
-  }, [mode]);
-
-  useEffect(() => {
-    pathnameRef.current = pathname;
-    if (window.location.hash) {
-      return;
-    }
-    const main = document.getElementById("handbook-main");
-    if (main instanceof HTMLElement) {
-      main.scrollTop = 0;
-    }
-  }, [pathname]);
-
-  useEffect(() => {
-    return () => {
-      if (searchTimerRef.current !== null) {
-        window.clearTimeout(searchTimerRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!navOpen) {
-      return;
-    }
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setNavOpen(false);
-      }
-    }
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [navOpen]);
-
-  function currentHref() {
-    return `${pathnameRef.current}${window.location.hash}`;
-  }
-
-  function goTo(target: string) {
-    const { pathname: nextPath, hash: nextHash } = splitHref(target);
-    const currentPath = pathnameRef.current;
-    const currentHash = window.location.hash;
-
-    if (nextPath === currentPath && nextHash === currentHash) {
-      window.dispatchEvent(new Event("hashchange"));
-      return;
-    }
-
-    if (nextPath === currentPath) {
-      window.history.replaceState(window.history.state, "", `${nextPath}${nextHash}`);
-      window.dispatchEvent(new Event("hashchange"));
-      return;
-    }
-
-    startTransition(() => {
-      router.replace(target, { scroll: false });
-    });
-  }
-
-  function applySearch(nextQuery: string) {
-    const trimmed = nextQuery.trim();
-    if (trimmed.length === 0) {
-      const restore = restoreHrefRef.current;
-      restoreHrefRef.current = null;
-      if (restore && restore !== currentHref()) {
-        goTo(restore);
-      }
-      return;
-    }
-
-    if (restoreHrefRef.current === null) {
-      restoreHrefRef.current = currentHref();
-    }
-
-    const target = firstSearchHref(
-      groupsRef.current,
-      nextQuery,
-      pathnameRef.current,
-      modeRef.current,
-    );
-    if (target) {
-      goTo(target);
-    }
-  }
-
-  const closeNav = useCallback(() => setNavOpen(false), []);
-
-  function scheduleSearch(nextQuery: string) {
-    if (searchTimerRef.current !== null) {
-      window.clearTimeout(searchTimerRef.current);
-      searchTimerRef.current = null;
-    }
-
-    if (nextQuery.trim().length === 0) {
-      applySearch(nextQuery);
-      return;
-    }
-
-    searchTimerRef.current = window.setTimeout(() => {
-      searchTimerRef.current = null;
-      applySearch(nextQuery);
-    }, SEARCH_NAV_DELAY_MS);
-  }
+  const { navOpen, openNav, closeNav, toggleNav } = useMobileNav();
+  const { query, deferredQuery, mode, changeQuery, changeMode } =
+    useHandbookSearch(groups, openNav);
+  useResetMainScroll();
 
   return (
     <SearchQueryContext.Provider value={{ query: deferredQuery, mode }}>
@@ -154,25 +30,12 @@ export function HandbookShell({
       >
         <SiteHeader
           query={query}
-          onQueryChange={(value) => {
-            setQuery(value);
-            if (value.trim().length > 0) {
-              setNavOpen(true);
-            }
-            scheduleSearch(value);
-          }}
+          onQueryChange={changeQuery}
           mode={mode}
-          onModeChange={(nextMode) => {
-            setMode(nextMode);
-            modeRef.current = nextMode;
-            if (query.trim().length > 0) {
-              setNavOpen(true);
-              scheduleSearch(query);
-            }
-          }}
+          onModeChange={changeMode}
           chrome={chrome}
           navOpen={navOpen}
-          onToggleNav={() => setNavOpen((open) => !open)}
+          onToggleNav={toggleNav}
         />
         <div className="flex min-h-0 flex-1" style={{ overflow: "hidden" }}>
           {navOpen ? (
@@ -180,7 +43,7 @@ export function HandbookShell({
               type="button"
               className="fixed inset-0 top-14 z-20 bg-zinc-900/30 lg:hidden"
               aria-label={chrome.closeMenu}
-              onClick={() => setNavOpen(false)}
+              onClick={closeNav}
             />
           ) : null}
           <aside

@@ -8,6 +8,7 @@ export {
   firstSearchHref,
   matchesQuery,
   navTopics,
+  searchNav,
   splitHref,
   topicMatches,
 } from "./search";

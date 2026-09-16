@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useState,
   useSyncExternalStore,
   type Dispatch,
@@ -18,8 +19,7 @@ import {
   conceptBodySnippet,
   conceptHref,
   conceptMatchesQuery,
-  filterNavGroups,
-  firstSearchHref,
+  searchNav,
   splitHref,
   type ChromeCopy,
   type NavCluster,
@@ -345,8 +345,10 @@ export const TopicSidebar = memo(function TopicSidebar({
   const mode = useSearchMode();
   const hash = useSyncExternalStore(subscribeHash, getHash, () => "");
   const activeConceptId = decodeURIComponent(hash.replace(/^#/, ""));
-  const filtered = filterNavGroups(groups, query, mode);
-  const firstHref = firstSearchHref(groups, query, pathname, mode);
+  const { groups: filtered, firstHref } = useMemo(
+    () => searchNav(groups, query, mode, pathname),
+    [groups, query, mode, pathname],
+  );
   const first = firstHref ? splitHref(firstHref) : null;
   const activeTrackId =
     groups.find((group) => isActiveTrack(pathname, group.href))?.id ?? null;
