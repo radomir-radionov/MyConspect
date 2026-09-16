@@ -146,22 +146,53 @@ export type NavSearchResult = {
   readonly firstHref: string | null;
 };
 
+type PreparedNavSearch = {
+  readonly index: HandbookSearchIndex;
+  readonly query: string;
+  readonly bodyHits: Set<number> | null;
+};
+
+function prepareNavSearch(
+  groups: readonly NavGroup[],
+  query: string,
+  mode: SearchMode,
+): PreparedNavSearch | null {
+  const normalized = query.trim().toLowerCase();
+  if (normalized.length === 0) {
+    return null;
+  }
+  const index = searchIndexFor(groups);
+  return {
+    index,
+    query: normalized,
+    bodyHits: notesBodyHits(index, normalized, mode),
+  };
+}
+
 export function searchNav(
   groups: readonly NavGroup[],
   query: string,
   mode: SearchMode = "titles",
   preferredPathname?: string,
 ): NavSearchResult {
-  const normalized = query.trim().toLowerCase();
-  if (normalized.length === 0) {
+  const prepared = prepareNavSearch(groups, query, mode);
+  if (!prepared) {
     return { groups, firstHref: null };
   }
-
-  const index = searchIndexFor(groups);
-  const bodyHits = notesBodyHits(index, normalized, mode);
   return {
-    groups: filterGroupsWithIndex(index, normalized, mode, bodyHits),
-    firstHref: firstHrefWithIndex(index, normalized, mode, preferredPathname, bodyHits),
+    groups: filterGroupsWithIndex(
+      prepared.index,
+      prepared.query,
+      mode,
+      prepared.bodyHits,
+    ),
+    firstHref: firstHrefWithIndex(
+      prepared.index,
+      prepared.query,
+      mode,
+      preferredPathname,
+      prepared.bodyHits,
+    ),
   };
 }
 
@@ -170,7 +201,16 @@ export function filterNavGroups(
   query: string,
   mode: SearchMode = "titles",
 ): readonly NavGroup[] {
-  return searchNav(groups, query, mode).groups;
+  const prepared = prepareNavSearch(groups, query, mode);
+  if (!prepared) {
+    return groups;
+  }
+  return filterGroupsWithIndex(
+    prepared.index,
+    prepared.query,
+    mode,
+    prepared.bodyHits,
+  );
 }
 
 export function firstSearchHref(
@@ -179,7 +219,17 @@ export function firstSearchHref(
   preferredPathname?: string,
   mode: SearchMode = "titles",
 ): string | null {
-  return searchNav(groups, query, mode, preferredPathname).firstHref;
+  const prepared = prepareNavSearch(groups, query, mode);
+  if (!prepared) {
+    return null;
+  }
+  return firstHrefWithIndex(
+    prepared.index,
+    prepared.query,
+    mode,
+    preferredPathname,
+    prepared.bodyHits,
+  );
 }
 
 function notesBodyHits(

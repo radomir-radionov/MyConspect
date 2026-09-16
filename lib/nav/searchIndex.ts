@@ -53,19 +53,31 @@ export function trigramBodyHits(index: HandbookSearchIndex, query: string): Set<
     return new Set();
   }
 
-  let hits: Set<number> | null = null;
+  const postings: (readonly number[])[] = [];
   for (let i = 0; i <= query.length - 3; i += 1) {
     const posting = index.grams.get(query.slice(i, i + 3));
     if (!posting) {
       return new Set();
     }
-    hits = hits ? intersectPosting(hits, posting) : new Set(posting);
+    postings.push(posting);
+  }
+
+  postings.sort((left, right) => left.length - right.length);
+
+  const firstPosting = postings[0];
+  if (!firstPosting) {
+    return new Set();
+  }
+
+  let hits = new Set(firstPosting);
+  for (let i = 1; i < postings.length; i += 1) {
+    hits = intersectPosting(hits, postings[i]);
     if (hits.size === 0) {
       return hits;
     }
   }
 
-  return hits ?? new Set();
+  return hits;
 }
 
 export function topicMatchesIndexed(
@@ -236,10 +248,36 @@ function conceptHref(topicHrefValue: string, conceptId: string): string {
   return `${topicHrefValue}#${conceptId}`;
 }
 
+function postingHas(posting: readonly number[], id: number): boolean {
+  let low = 0;
+  let high = posting.length - 1;
+  while (low <= high) {
+    const mid = (low + high) >> 1;
+    const value = posting[mid];
+    if (value === id) {
+      return true;
+    }
+    if (value < id) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  return false;
+}
+
 function intersectPosting(hits: Set<number>, posting: readonly number[]): Set<number> {
   const next = new Set<number>();
-  for (const id of posting) {
-    if (hits.has(id)) {
+  if (posting.length < hits.size) {
+    for (const id of posting) {
+      if (hits.has(id)) {
+        next.add(id);
+      }
+    }
+    return next;
+  }
+  for (const id of hits) {
+    if (postingHas(posting, id)) {
       next.add(id);
     }
   }
