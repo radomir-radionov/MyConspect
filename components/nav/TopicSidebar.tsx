@@ -1,20 +1,33 @@
 "use client";
 
-import { memo, useEffect, useState, useSyncExternalStore, type Dispatch, type SetStateAction } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useSyncExternalStore,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { HighlightedText } from "@/components/search";
+import { HighlightedText, useSearchMode } from "@/components/search";
 import {
+  CHROME,
+  conceptBodySnippet,
   conceptHref,
+  conceptMatchesQuery,
   filterNavGroups,
   firstSearchHref,
-  matchesQuery,
   splitHref,
   type ChromeCopy,
   type NavCluster,
+  type NavConcept,
   type NavGroup,
   type NavSubject,
   type NavTopic,
+  type SearchMode,
 } from "@/lib/nav";
 import type { TrackId } from "@/lib/catalog";
 
@@ -46,37 +59,38 @@ function notifyConceptHash(pathname: string, conceptId: string) {
 function ConceptLink({
   topicHref,
   pathname,
-  conceptId,
+  concept,
   isFirstConcept,
   conceptActive,
-  title,
   query,
   onNavigate,
 }: {
   topicHref: string;
   pathname: string;
-  conceptId: string;
+  concept: NavConcept;
   isFirstConcept: boolean;
   conceptActive: boolean;
-  title: string;
   query: string;
   onNavigate?: () => void;
 }) {
   const router = useRouter();
+  const mode = useSearchMode();
+  const snippet = conceptBodySnippet(concept, query, mode);
   return (
     <a
-      href={conceptHref(topicHref, conceptId)}
-      data-concept-id={conceptId}
+      href={conceptHref(topicHref, concept.id)}
+      data-concept-id={concept.id}
       data-search-hit={isFirstConcept ? "true" : undefined}
+      data-search-in={snippet ? "notes" : undefined}
       onClick={(event) => {
         event.preventDefault();
         if (pathname === topicHref) {
-          notifyConceptHash(pathname, conceptId);
+          notifyConceptHash(pathname, concept.id);
           onNavigate?.();
           return;
         }
         closeNavSoon(onNavigate);
-        router.push(conceptHref(topicHref, conceptId));
+        router.push(conceptHref(topicHref, concept.id));
       }}
       className={
         conceptActive
@@ -84,14 +98,31 @@ function ConceptLink({
           : "block cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800"
       }
     >
-      <HighlightedText text={title} query={query} />
+      <span className="flex items-baseline justify-between gap-2">
+        <HighlightedText text={concept.title} query={query} />
+        {snippet ? (
+          <span className="shrink-0 text-[10px] font-medium tracking-wide text-zinc-400 uppercase">
+            {CHROME.inNotes}
+          </span>
+        ) : null}
+      </span>
+      {snippet ? (
+        <span className="mt-0.5 block text-xs font-normal leading-snug text-zinc-500">
+          <HighlightedText text={snippet} query={query} />
+        </span>
+      ) : null}
     </a>
   );
 }
 
-function scrollSidebarHit(hit: HTMLElement) {
+function navAside() {
   const scroller = document.getElementById("handbook-nav-aside");
-  if (!(scroller instanceof HTMLElement)) {
+  return scroller instanceof HTMLElement ? scroller : null;
+}
+
+function scrollSidebarHit(hit: HTMLElement) {
+  const scroller = navAside();
+  if (!scroller) {
     return;
   }
   const scrollerBox = scroller.getBoundingClientRect();
@@ -101,15 +132,76 @@ function scrollSidebarHit(hit: HTMLElement) {
   }
 }
 
-function visibleConcepts(topic: NavTopic, query: string) {
+type SidebarPin = {
+  element: HTMLElement;
+  nav: string;
+  id: string;
+  top: number;
+};
+
+let sidebarPin: SidebarPin | null = null;
+let pinCleanup: (() => void) | null = null;
+let restoringPin = false;
+
+function pinTarget(pin: SidebarPin) {
+  if (pin.element.isConnected) {
+    return pin.element;
+  }
+  const element = document.querySelector(
+    `#handbook-sidebar [data-nav="${pin.nav}"][data-nav-id="${pin.id}"]`,
+  );
+  return element instanceof HTMLElement ? element : null;
+}
+
+function restoreSidebarPin() {
+  const pin = sidebarPin;
+  const scroller = navAside();
+  if (!pin || !scroller || restoringPin) {
+    return;
+  }
+  const element = pinTarget(pin);
+  if (!element) {
+    return;
+  }
+  const delta = element.getBoundingClientRect().top - pin.top;
+  if (Math.abs(delta) < 1) {
+    return;
+  }
+  restoringPin = true;
+  scroller.scrollTop += delta;
+  restoringPin = false;
+}
+
+function pinNavElement(element: HTMLElement) {
+  const nav = element.getAttribute("data-nav");
+  const id = element.getAttribute("data-nav-id");
+  const scroller = navAside() ?? element.closest("#handbook-nav-aside");
+  if (!nav || !id || !(scroller instanceof HTMLElement)) {
+    return;
+  }
+  pinCleanup?.();
+  sidebarPin = {
+    element,
+    nav,
+    id,
+    top: element.getBoundingClientRect().top,
+  };
+  const timeout = window.setTimeout(() => {
+    pinCleanup?.();
+  }, 2000);
+  pinCleanup = () => {
+    window.clearTimeout(timeout);
+    sidebarPin = null;
+    pinCleanup = null;
+  };
+}
+
+function visibleConcepts(topic: NavTopic, query: string, mode: SearchMode) {
   const needle = query.trim().toLowerCase();
   if (needle.length === 0) {
     return topic.concepts;
   }
-  return topic.concepts.filter(
-    (concept) =>
-      matchesQuery(concept.title, needle) || matchesQuery(concept.searchText ?? "", needle),
-  );
+  return topic.concepts.filter((concept) => conceptMatchesQuery(concept, needle, mode));
 }
 
 function clusterKey(subjectHref: string, clusterId: string) {
@@ -250,10 +342,11 @@ export const TopicSidebar = memo(function TopicSidebar({
   onNavigate?: () => void;
 }) {
   const pathname = usePathname() ?? "/";
+  const mode = useSearchMode();
   const hash = useSyncExternalStore(subscribeHash, getHash, () => "");
   const activeConceptId = decodeURIComponent(hash.replace(/^#/, ""));
-  const filtered = filterNavGroups(groups, query);
-  const firstHref = firstSearchHref(groups, query, pathname);
+  const filtered = filterNavGroups(groups, query, mode);
+  const firstHref = firstSearchHref(groups, query, pathname, mode);
   const first = firstHref ? splitHref(firstHref) : null;
   const activeTrackId =
     groups.find((group) => isActiveTrack(pathname, group.href))?.id ?? null;
@@ -263,6 +356,9 @@ export const TopicSidebar = memo(function TopicSidebar({
   const [openSubjectHref, setOpenSubjectHref] = useState<string | null>(location.subjectHref);
   const [openClusterKey, setOpenClusterKey] = useState<string | null>(location.clusterKey);
   const [openTopicHref, setOpenTopicHref] = useState<string | null>(location.topicHref);
+  const pinNav = useCallback((element: HTMLElement) => {
+    pinNavElement(element);
+  }, []);
   const [navSnapshot, setNavSnapshot] = useState({
     searching,
     activeTrackId,
@@ -304,6 +400,19 @@ export const TopicSidebar = memo(function TopicSidebar({
     }
   }
 
+  useLayoutEffect(() => {
+    restoreSidebarPin();
+  }, [openTopicHref, openClusterKey, pathname, hash]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => restoreSidebarPin());
+    const later = window.setTimeout(restoreSidebarPin, 50);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(later);
+    };
+  }, [openTopicHref, openClusterKey, pathname, hash]);
+
   useEffect(() => {
     if (!firstHref) {
       return;
@@ -338,7 +447,9 @@ export const TopicSidebar = memo(function TopicSidebar({
       className="px-2 py-3"
     >
       {filtered.length === 0 ? (
-        <p className="px-2 text-sm text-zinc-500">{chrome.searchEmpty}</p>
+        <p className="px-2 text-sm text-zinc-500">
+          {mode === "notes" ? chrome.searchNotesEmpty : chrome.searchEmpty}
+        </p>
       ) : (
         <ul className="space-y-0.5">
           {filtered.map((group) => {
@@ -401,6 +512,7 @@ export const TopicSidebar = memo(function TopicSidebar({
                         activeConceptId={activeConceptId}
                         openTopicHref={openTopicHref}
                         setOpenTopicHref={setOpenTopicHref}
+                        pinNav={pinNav}
                         onNavigate={onNavigate}
                         hideTitle
                       />
@@ -443,6 +555,7 @@ export const TopicSidebar = memo(function TopicSidebar({
                               activeConceptId={activeConceptId}
                               openTopicHref={openTopicHref}
                               setOpenTopicHref={setOpenTopicHref}
+                              pinNav={pinNav}
                               onNavigate={onNavigate}
                             />
                           );
@@ -462,6 +575,7 @@ export const TopicSidebar = memo(function TopicSidebar({
                               setOpenClusterKey={setOpenClusterKey}
                               openTopicHref={openTopicHref}
                               setOpenTopicHref={setOpenTopicHref}
+                              pinNav={pinNav}
                               onNavigate={onNavigate}
                             />
                           );
@@ -480,6 +594,7 @@ export const TopicSidebar = memo(function TopicSidebar({
                               setOpenClusterKey={setOpenClusterKey}
                               openTopicHref={openTopicHref}
                               setOpenTopicHref={setOpenTopicHref}
+                              pinNav={pinNav}
                               onNavigate={onNavigate}
                             />
                           );
@@ -513,6 +628,7 @@ function SubjectRow({
   setOpenClusterKey,
   openTopicHref,
   setOpenTopicHref,
+  pinNav,
   onNavigate,
 }: {
   subject: NavSubject;
@@ -527,6 +643,7 @@ function SubjectRow({
   setOpenClusterKey: Dispatch<SetStateAction<string | null>>;
   openTopicHref: string | null;
   setOpenTopicHref: Dispatch<SetStateAction<string | null>>;
+  pinNav: (element: HTMLElement) => void;
   onNavigate?: () => void;
 }) {
   const active = isActiveHref(pathname, subject.href);
@@ -576,6 +693,7 @@ function SubjectRow({
               setOpenClusterKey={setOpenClusterKey}
               openTopicHref={openTopicHref}
               setOpenTopicHref={setOpenTopicHref}
+              pinNav={pinNav}
               onNavigate={onNavigate}
             />
           ))}
@@ -597,6 +715,7 @@ function ClusterRow({
   setOpenClusterKey,
   openTopicHref,
   setOpenTopicHref,
+  pinNav,
   onNavigate,
 }: {
   subjectHref: string;
@@ -610,6 +729,7 @@ function ClusterRow({
   setOpenClusterKey: Dispatch<SetStateAction<string | null>>;
   openTopicHref: string | null;
   setOpenTopicHref: Dispatch<SetStateAction<string | null>>;
+  pinNav: (element: HTMLElement) => void;
   onNavigate?: () => void;
 }) {
   const onlyTopic = cluster.topics.length === 1 ? cluster.topics[0] : null;
@@ -625,6 +745,7 @@ function ClusterRow({
         activeConceptId={activeConceptId}
         openTopicHref={openTopicHref}
         setOpenTopicHref={setOpenTopicHref}
+        pinNav={pinNav}
         onNavigate={onNavigate}
         compact
         navKind="cluster"
@@ -637,15 +758,16 @@ function ClusterRow({
   const onHub = pathname === subjectPath;
   const active = onHub && activeConceptId === cluster.id;
   const isHitCluster = first?.pathname === subjectPath && first.hash === `#${cluster.id}`;
-  const router = useRouter();
 
   return (
     <li>
       <Link
         href={cluster.href}
+        scroll={false}
         data-nav="cluster"
         data-nav-id={cluster.id}
         onClick={(event) => {
+          pinNav(event.currentTarget);
           if (onHub) {
             event.preventDefault();
             const next = `#${cluster.id}`;
@@ -663,10 +785,8 @@ function ClusterRow({
             }
             return;
           }
-          event.preventDefault();
           setOpenClusterKey(key);
           closeNavSoon(onNavigate);
-          router.push(cluster.href);
         }}
         data-search-hit={isHitCluster ? "true" : undefined}
         aria-current={active ? "location" : undefined}
@@ -688,6 +808,7 @@ function ClusterRow({
               activeConceptId={activeConceptId}
               openTopicHref={openTopicHref}
               setOpenTopicHref={setOpenTopicHref}
+              pinNav={pinNav}
               onNavigate={onNavigate}
               compact
               navKind="topic"
@@ -709,6 +830,7 @@ function TopicRow({
   activeConceptId,
   openTopicHref,
   setOpenTopicHref,
+  pinNav,
   onNavigate,
   compact = false,
   hideTitle = false,
@@ -723,16 +845,18 @@ function TopicRow({
   activeConceptId: string;
   openTopicHref: string | null;
   setOpenTopicHref: Dispatch<SetStateAction<string | null>>;
+  pinNav: (element: HTMLElement) => void;
   onNavigate?: () => void;
   compact?: boolean;
   hideTitle?: boolean;
   navKind?: "cluster" | "topic";
   navId?: string;
 }) {
+  const mode = useSearchMode();
   const active = isActiveHref(pathname, topic.href);
   const isHitTopic = first?.pathname === topic.href;
   const isFirstTopic = isHitTopic && first.hash === "";
-  const matchingConcepts = visibleConcepts(topic, query);
+  const matchingConcepts = visibleConcepts(topic, query, mode);
   const topicOpen = hideTitle
     ? true
     : searching
@@ -755,10 +879,9 @@ function TopicRow({
               <ConceptLink
                 topicHref={topic.href}
                 pathname={pathname}
-                conceptId={concept.id}
+                concept={concept}
                 isFirstConcept={isFirstConcept}
                 conceptActive={conceptActive}
-                title={concept.title}
                 query={query}
                 onNavigate={onNavigate}
               />
@@ -773,9 +896,11 @@ function TopicRow({
     <li>
       <Link
         href={topic.href}
+        scroll={false}
         data-nav={navKind}
         data-nav-id={navId ?? topic.slug}
         onClick={(event) => {
+          pinNav(event.currentTarget);
           if (pathname === topic.href) {
             event.preventDefault();
             if (!searching) {
@@ -809,10 +934,9 @@ function TopicRow({
                 <ConceptLink
                   topicHref={topic.href}
                   pathname={pathname}
-                  conceptId={concept.id}
+                  concept={concept}
                   isFirstConcept={isFirstConcept}
                   conceptActive={conceptActive}
-                  title={concept.title}
                   query={query}
                   onNavigate={onNavigate}
                 />

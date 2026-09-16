@@ -87,14 +87,14 @@ Every web page starts with HTML — it is the structural foundation for CSS and 
 6. **Composite** — GPU stacks independent layers. Animate `transform` / `opacity` so other layers are not relaid out or fully repainted.
 7. **Repeat** — each **animation frame** (~60 fps / ~16 ms). Use `requestAnimationFrame`, not `setInterval`, so updates run before the next paint.
 
-| Stage | Output | Related doc |
-|-------|--------|-------------|
-| HTML parsing | DOM | [3_js_browser.md](./3_js_browser.md) |
-| CSS parsing | CSSOM | [2_css.md](./2_css.md) |
-| Merge | Render tree | — |
-| Layout | Geometry (reflow) | [2_css.md](./2_css.md) |
-| Paint | Pixels per layer | [2_css.md](./2_css.md) |
-| Composite | Final frame | — |
+| Stage | Output |
+|-------|--------|
+| HTML parsing | DOM |
+| CSS parsing | CSSOM |
+| Merge | Render tree |
+| Layout | Geometry (reflow) |
+| Paint | Pixels per layer |
+| Composite | Final frame |
 
 **When to use:**
 
@@ -127,7 +127,7 @@ Understanding this pipeline explains parser-blocking scripts, render-blocking CS
 </body>
 ```
 
-**Thoughts:** Script loading details → [3_js_browser.md](./3_js_browser.md). CSS layout/paint triggers → [2_css.md](./2_css.md). Property → layout/paint/composite map → [csstriggers.com](https://csstriggers.com/).
+**Thoughts:** Parser-blocking scripts, render-blocking CSS, and layout-vs-composite animations all map to this pipeline. Property → layout/paint/composite map → [csstriggers.com](https://csstriggers.com/).
 
 **Sources:** [web.dev — Critical rendering path](https://web.dev/articles/critical-rendering-path) · [MDN — How browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/how_browsers_work) · [Doka — How the browser renders pages](https://doka.guide/js/how-the-browser-renders-pages/)
 

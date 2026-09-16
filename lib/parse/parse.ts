@@ -9,6 +9,7 @@ export type Concept = {
   readonly title: string;
   readonly html: string;
   readonly searchText?: string;
+  readonly titleSearchText?: string;
 };
 
 export type ConceptBlock = {
@@ -93,9 +94,12 @@ export type ConceptOutline = {
   readonly id: string;
   readonly title: string;
   readonly searchText?: string;
+  readonly titleSearchText?: string;
 };
 
 const INTERVIEW_GROUP_TITLE = "Interview questions";
+const CONCEPT_SEARCH_TEXT_MAX = 1600;
+const INTERVIEW_SEARCH_TEXT_MAX = 12000;
 
 export function parseTopicOutline(markdown: string): readonly ConceptOutline[] {
   const rewritten = rewriteNoteLinks(markdown);
@@ -104,12 +108,14 @@ export function parseTopicOutline(markdown: string): readonly ConceptOutline[] {
   const outline: ConceptOutline[] = regular.map((block) => ({
     id: uniqueId(slugify(block.title), usedIds),
     title: block.title,
+    searchText: conceptSearchText(block.body),
   }));
   if (interview.length > 0) {
     outline.push({
       id: uniqueId(slugify(INTERVIEW_GROUP_TITLE), usedIds),
       title: INTERVIEW_GROUP_TITLE,
-      searchText: interview.map((block) => block.title).join("\n"),
+      titleSearchText: interviewTitleSearchText(interview),
+      searchText: interviewBodySearchText(interview),
     });
   }
   return outline;
@@ -214,6 +220,7 @@ async function collectConcepts(markdown: string): Promise<Concept[]> {
       id: uniqueId(slugify(block.title), usedIds),
       title: block.title,
       html: await renderHtml(block.body),
+      searchText: conceptSearchText(block.body),
     });
   }
   if (interview.length > 0) {
@@ -221,7 +228,8 @@ async function collectConcepts(markdown: string): Promise<Concept[]> {
       id: uniqueId(slugify(INTERVIEW_GROUP_TITLE), usedIds),
       title: INTERVIEW_GROUP_TITLE,
       html: await renderInterviewGroup(interview),
-      searchText: interview.map((block) => block.title).join("\n"),
+      titleSearchText: interviewTitleSearchText(interview),
+      searchText: interviewBodySearchText(interview),
     });
   }
   return concepts;
@@ -529,4 +537,26 @@ function stripMd(value: string): string {
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function conceptSearchText(body: string): string {
+  const withoutFences = body.replace(/```[\s\S]*?```/g, "\n");
+  const withoutTags = withoutFences.replace(/<[^>]+>/g, " ");
+  const withoutHeavySlots = withoutTags.replace(
+    /\*\*(?:Examples?|Sources?):\*\*[\s\S]*?(?=\n\*\*[^*]+?:\*\*|$)/gi,
+    "\n",
+  );
+  return stripMd(withoutHeavySlots).slice(0, CONCEPT_SEARCH_TEXT_MAX);
+}
+
+function interviewTitleSearchText(blocks: readonly ConceptBlock[]): string {
+  return blocks.map((block) => block.title).filter(Boolean).join("\n");
+}
+
+function interviewBodySearchText(blocks: readonly ConceptBlock[]): string {
+  return blocks
+    .map((block) => conceptSearchText(block.body))
+    .filter(Boolean)
+    .join("\n")
+    .slice(0, INTERVIEW_SEARCH_TEXT_MAX);
 }

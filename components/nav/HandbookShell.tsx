@@ -10,6 +10,7 @@ import {
   splitHref,
   type ChromeCopy,
   type NavGroup,
+  type SearchMode,
 } from "@/lib/nav";
 
 const SEARCH_NAV_DELAY_MS = 280;
@@ -30,12 +31,28 @@ export function HandbookShell({
   const searchTimerRef = useRef<number | null>(null);
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
+  const [mode, setMode] = useState<SearchMode>("titles");
   const [navOpen, setNavOpen] = useState(false);
   const groupsRef = useRef(groups);
-  groupsRef.current = groups;
+  const modeRef = useRef(mode);
+
+  useEffect(() => {
+    groupsRef.current = groups;
+  }, [groups]);
+
+  useEffect(() => {
+    modeRef.current = mode;
+  }, [mode]);
 
   useEffect(() => {
     pathnameRef.current = pathname;
+    if (window.location.hash) {
+      return;
+    }
+    const main = document.getElementById("handbook-main");
+    if (main instanceof HTMLElement) {
+      main.scrollTop = 0;
+    }
   }, [pathname]);
 
   useEffect(() => {
@@ -99,7 +116,12 @@ export function HandbookShell({
       restoreHrefRef.current = currentHref();
     }
 
-    const target = firstSearchHref(groupsRef.current, nextQuery, pathnameRef.current);
+    const target = firstSearchHref(
+      groupsRef.current,
+      nextQuery,
+      pathnameRef.current,
+      modeRef.current,
+    );
     if (target) {
       goTo(target);
     }
@@ -125,7 +147,7 @@ export function HandbookShell({
   }
 
   return (
-    <SearchQueryContext.Provider value={deferredQuery}>
+    <SearchQueryContext.Provider value={{ query: deferredQuery, mode }}>
       <div
         className="flex flex-col"
         style={{ height: "100%", maxHeight: "100%", overflow: "hidden" }}
@@ -138,6 +160,15 @@ export function HandbookShell({
               setNavOpen(true);
             }
             scheduleSearch(value);
+          }}
+          mode={mode}
+          onModeChange={(nextMode) => {
+            setMode(nextMode);
+            modeRef.current = nextMode;
+            if (query.trim().length > 0) {
+              setNavOpen(true);
+              scheduleSearch(query);
+            }
           }}
           chrome={chrome}
           navOpen={navOpen}

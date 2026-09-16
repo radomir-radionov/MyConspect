@@ -1,8 +1,9 @@
 "use client";
 
 import { memo, useEffect, useSyncExternalStore } from "react";
-import { HighlightedText, useSearchQuery } from "@/components/search";
-import { matchesQuery } from "@/lib/nav";
+import { HighlightedText, useSearchMode, useSearchQuery } from "@/components/search";
+import { highlightQueryInHtml } from "@/components/search/highlightQueryInHtml";
+import { conceptMatchesQuery } from "@/lib/nav";
 import type { Concept } from "@/lib/parse";
 
 function subscribeHash(onStoreChange: () => void) {
@@ -98,6 +99,7 @@ export function ConceptList({
   emptyMessage: string;
 }) {
   const query = useSearchQuery();
+  const mode = useSearchMode();
   const hash = useSyncExternalStore(subscribeHash, getHash, () => "");
   const activeId = decodeURIComponent(hash.replace(/^#/, ""));
 
@@ -131,10 +133,8 @@ export function ConceptList({
     if (needle.length > 0) {
       const hashId = decodeURIComponent(window.location.hash.replace(/^#/, ""));
       const hashConcept = concepts.find((concept) => concept.id === hashId);
-      const conceptMatchesQuery = (concept: Concept) =>
-        matchesQuery(concept.title, needle) || matchesQuery(concept.searchText ?? "", needle);
-      if (!hashConcept || !conceptMatchesQuery(hashConcept)) {
-        const match = concepts.find(conceptMatchesQuery);
+      if (!hashConcept || !conceptMatchesQuery(hashConcept, needle, mode)) {
+        const match = concepts.find((concept) => conceptMatchesQuery(concept, needle, mode));
         if (match) {
           setHash(match.id);
         }
@@ -144,7 +144,7 @@ export function ConceptList({
     focusFromHash();
     window.addEventListener("hashchange", focusFromHash);
     return () => window.removeEventListener("hashchange", focusFromHash);
-  }, [concepts, query]);
+  }, [concepts, mode, query]);
 
   if (concepts.length === 0) {
     return <p className="text-zinc-600">{emptyMessage}</p>;
@@ -173,7 +173,7 @@ export function ConceptList({
             <summary className="cursor-pointer py-3 text-left text-base font-medium text-zinc-900">
               <HighlightedText text={concept.title} query={query} />
             </summary>
-            <ConceptBody html={concept.html} />
+            <ConceptBody html={concept.html} query={mode === "notes" ? query : ""} />
           </details>
         );
       })}
@@ -181,11 +181,17 @@ export function ConceptList({
   );
 }
 
-const ConceptBody = memo(function ConceptBody({ html }: { html: string }) {
+const ConceptBody = memo(function ConceptBody({
+  html,
+  query,
+}: {
+  html: string;
+  query: string;
+}) {
   return (
     <div
       className="concept-body pb-5 pt-1"
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={{ __html: highlightQueryInHtml(html, query) }}
     />
   );
 });

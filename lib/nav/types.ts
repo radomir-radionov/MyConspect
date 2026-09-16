@@ -1,9 +1,12 @@
 import type { TrackId } from "@/lib/catalog";
 
+export type SearchMode = "titles" | "notes";
+
 export type NavConcept = {
   readonly id: string;
   readonly title: string;
   readonly searchText?: string;
+  readonly titleSearchText?: string;
 };
 
 export type NavTopic = {
@@ -48,7 +51,13 @@ export type NavGroup = {
 
 export type ChromeCopy = {
   readonly searchPlaceholder: string;
+  readonly searchNotesPlaceholder: string;
   readonly searchEmpty: string;
+  readonly searchNotesEmpty: string;
+  readonly searchMode: string;
+  readonly searchModeTitles: string;
+  readonly searchModeNotes: string;
+  readonly inNotes: string;
   readonly clearSearch: string;
   readonly topicsNav: string;
   readonly openMenu: string;

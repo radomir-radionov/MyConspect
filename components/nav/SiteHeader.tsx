@@ -2,46 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { INSTRUCTIONS_HREF, type ChromeCopy } from "@/lib/nav";
+import { INSTRUCTIONS_HREF, type ChromeCopy, type SearchMode } from "@/lib/nav";
 import { SITE_NAME } from "@/lib/site";
-
-function SiteMark() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="size-6 shrink-0 text-zinc-900"
-    >
-      <rect
-        x="4"
-        y="3"
-        width="16"
-        height="18"
-        rx="2.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-      />
-      <path
-        d="M8 8h8M8 12h8M8 16h5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
+import { SiteMark } from "./SiteMark";
 
 export function SiteHeader({
   query,
   onQueryChange,
+  mode,
+  onModeChange,
   chrome,
   navOpen,
   onToggleNav,
 }: {
   query: string;
   onQueryChange: (value: string) => void;
+  mode: SearchMode;
+  onModeChange: (mode: SearchMode) => void;
   chrome: ChromeCopy;
   navOpen: boolean;
   onToggleNav: () => void;
@@ -89,9 +66,11 @@ export function SiteHeader({
             <span className="hidden sm:inline">{SITE_NAME}</span>
           </Link>
         </div>
-        <div className="relative min-w-0 max-w-md justify-self-stretch lg:max-w-none lg:justify-self-center lg:w-full">
+        <div className="relative min-w-0 max-w-xl justify-self-stretch lg:max-w-none lg:justify-self-center lg:w-full">
           <label className="block min-w-0">
-            <span className="sr-only">{chrome.searchPlaceholder}</span>
+            <span className="sr-only">
+              {mode === "notes" ? chrome.searchNotesPlaceholder : chrome.searchPlaceholder}
+            </span>
             <svg
               aria-hidden="true"
               viewBox="0 0 24 24"
@@ -110,33 +89,55 @@ export function SiteHeader({
               type="search"
               value={query}
               onChange={(event) => onQueryChange(event.target.value)}
-              placeholder={chrome.searchPlaceholder}
+              placeholder={
+                mode === "notes" ? chrome.searchNotesPlaceholder : chrome.searchPlaceholder
+              }
               className={
                 query.length > 0
-                  ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-10 pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
-                  : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-3 pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                  ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[9.75rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                  : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[7.75rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
               }
             />
           </label>
-          {query.length > 0 ? (
-            <button
-              type="button"
-              aria-label={chrome.clearSearch}
-              title={chrome.clearSearch}
-              onClick={() => onQueryChange("")}
-              className="absolute top-1/2 right-1 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
+          <div className="absolute inset-y-0 right-1 flex items-center gap-0.5">
+            {query.length > 0 ? (
+              <button
+                type="button"
+                aria-label={chrome.clearSearch}
+                title={chrome.clearSearch}
+                onClick={() => onQueryChange("")}
+                className="inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
+              >
+                <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4">
+                  <path
+                    d="M6 6l12 12M18 6L6 18"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+            ) : null}
+            <div
+              role="radiogroup"
+              aria-label={chrome.searchMode}
+              className="flex h-7 shrink-0 rounded-md bg-zinc-100 p-0.5"
             >
-              <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4">
-                <path
-                  d="M6 6l12 12M18 6L6 18"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
-          ) : null}
+              <SearchModeButton
+                checked={mode === "titles"}
+                label={chrome.searchModeTitles}
+                value="titles"
+                onSelect={onModeChange}
+              />
+              <SearchModeButton
+                checked={mode === "notes"}
+                label={chrome.searchModeNotes}
+                value="notes"
+                onSelect={onModeChange}
+              />
+            </div>
+          </div>
         </div>
         <div className="flex justify-end">
           <Link
@@ -153,5 +154,34 @@ export function SiteHeader({
         </div>
       </div>
     </header>
+  );
+}
+
+function SearchModeButton({
+  checked,
+  label,
+  value,
+  onSelect,
+}: {
+  checked: boolean;
+  label: string;
+  value: SearchMode;
+  onSelect: (mode: SearchMode) => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="radio"
+      aria-checked={checked}
+      data-search-mode={value}
+      onClick={() => onSelect(value)}
+      className={
+        checked
+          ? "cursor-pointer rounded px-1.5 text-xs font-medium text-zinc-900 bg-white shadow-sm"
+          : "cursor-pointer rounded px-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-800"
+      }
+    >
+      {label}
+    </button>
   );
 }

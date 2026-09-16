@@ -54,7 +54,7 @@ Split only when a new **study unit** is needed (see `/instructions` and `.cursor
 ## UI
 
 - Docs shell: sticky header + track-grouped topic sidebar (`components/nav`). Subjects (HTML, CSS, JavaScript, React, …) nest Core / other clusters
-- Topic search lists only matching topics in the sidebar. Tracks and topic concept lists stay collapsed until opened. Search opens the found accordion in the main pane and restores the previous page when cleared
+- Topic search defaults to titles (topics and concepts). A Notes mode also matches concept bodies and shows an “In notes” snippet. Tracks and topic concept lists stay collapsed until opened. Search opens the found accordion in the main pane and restores the previous page when cleared
 - Card grids for tracks and topics (`components/catalog`)
 - Topic accordion UI (`components/topic`)
 - Simple typography; fenced code uses Shiki (VS Code `light-plus`) in `lib/parse/highlight.ts`

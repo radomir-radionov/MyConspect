@@ -1,11 +1,92 @@
-import type { NavCluster, NavEntry, NavGroup, NavSubject, NavTopic } from "./types";
+import type {
+  NavCluster,
+  NavConcept,
+  NavEntry,
+  NavGroup,
+  NavSubject,
+  NavTopic,
+  SearchMode,
+} from "./types";
+
+export const BODY_QUERY_MIN_LENGTH = 3;
 
 export function matchesQuery(haystack: string, query: string): boolean {
   return haystack.toLowerCase().includes(query);
 }
 
-function conceptMatches(concept: { title: string; searchText?: string }, query: string): boolean {
-  return matchesQuery(concept.title, query) || matchesQuery(concept.searchText ?? "", query);
+function includesNotes(mode: SearchMode): boolean {
+  switch (mode) {
+    case "notes":
+      return true;
+    case "titles":
+      return false;
+    default: {
+      const _never: never = mode;
+      return _never;
+    }
+  }
+}
+
+function conceptTitleMatches(
+  concept: Pick<NavConcept, "title" | "titleSearchText">,
+  query: string,
+): boolean {
+  return (
+    matchesQuery(concept.title, query) || matchesQuery(concept.titleSearchText ?? "", query)
+  );
+}
+
+function conceptBodyMatches(concept: Pick<NavConcept, "searchText">, query: string): boolean {
+  if (query.length < BODY_QUERY_MIN_LENGTH) {
+    return false;
+  }
+  return matchesQuery(concept.searchText ?? "", query);
+}
+
+export function conceptMatchesQuery(
+  concept: Pick<NavConcept, "title" | "titleSearchText" | "searchText">,
+  query: string,
+  mode: SearchMode = "titles",
+): boolean {
+  const normalized = query.trim().toLowerCase();
+  if (normalized.length === 0) {
+    return true;
+  }
+  if (conceptTitleMatches(concept, normalized)) {
+    return true;
+  }
+  return includesNotes(mode) && conceptBodyMatches(concept, normalized);
+}
+
+const SNIPPET_PAD = 24;
+
+export function conceptBodySnippet(
+  concept: Pick<NavConcept, "title" | "titleSearchText" | "searchText">,
+  query: string,
+  mode: SearchMode = "titles",
+): string | null {
+  if (!includesNotes(mode)) {
+    return null;
+  }
+  const normalized = query.trim().toLowerCase();
+  if (conceptTitleMatches(concept, normalized) || !conceptBodyMatches(concept, normalized)) {
+    return null;
+  }
+  const haystack = concept.searchText ?? "";
+  const index = haystack.toLowerCase().indexOf(normalized);
+  if (index === -1) {
+    return null;
+  }
+  const start = Math.max(0, index - SNIPPET_PAD);
+  const end = Math.min(haystack.length, index + normalized.length + SNIPPET_PAD);
+  let snippet = haystack.slice(start, end).replace(/\s+/g, " ").trim();
+  if (start > 0) {
+    snippet = `…${snippet}`;
+  }
+  if (end < haystack.length) {
+    snippet = `${snippet}…`;
+  }
+  return snippet;
 }
 
 export function conceptHref(topicHrefValue: string, conceptId: string): string {
@@ -20,7 +101,7 @@ export function splitHref(href: string): { pathname: string; hash: string } {
   return { pathname: href.slice(0, hashIndex), hash: href.slice(hashIndex) };
 }
 
-export function topicMatches(topic: NavTopic, query: string): boolean {
+export function topicMatches(topic: NavTopic, query: string, mode: SearchMode = "titles"): boolean {
   const normalized = query.trim().toLowerCase();
   if (normalized.length === 0) {
     return true;
@@ -28,7 +109,7 @@ export function topicMatches(topic: NavTopic, query: string): boolean {
   return (
     matchesQuery(topic.title, normalized) ||
     matchesQuery(topic.blurb, normalized) ||
-    topic.concepts.some((concept) => conceptMatches(concept, normalized))
+    topic.concepts.some((concept) => conceptMatchesQuery(concept, normalized, mode))
   );
 }
 
@@ -60,16 +141,16 @@ function topicsInEntry(entry: NavEntry): readonly NavTopic[] {
   }
 }
 
-function filterEntry(entry: NavEntry, query: string): NavEntry | null {
+function filterEntry(entry: NavEntry, query: string, mode: SearchMode): NavEntry | null {
   switch (entry.kind) {
     case "topic":
-      return topicMatches(entry.topic, query) ? entry : null;
+      return topicMatches(entry.topic, query, mode) ? entry : null;
     case "subject": {
-      const subject = filterSubject(entry.subject, query);
+      const subject = filterSubject(entry.subject, query, mode);
       return subject ? { kind: "subject", subject } : null;
     }
     case "cluster": {
-      const cluster = filterCluster(entry.cluster, query);
+      const cluster = filterCluster(entry.cluster, query, mode);
       return cluster ? { kind: "cluster", subjectHref: entry.subjectHref, cluster } : null;
     }
     default: {
@@ -79,23 +160,23 @@ function filterEntry(entry: NavEntry, query: string): NavEntry | null {
   }
 }
 
-function filterCluster(cluster: NavCluster, query: string): NavCluster | null {
+function filterCluster(cluster: NavCluster, query: string, mode: SearchMode): NavCluster | null {
   if (matchesQuery(cluster.title, query)) {
     return cluster;
   }
-  const topics = cluster.topics.filter((topic) => topicMatches(topic, query));
+  const topics = cluster.topics.filter((topic) => topicMatches(topic, query, mode));
   if (topics.length === 0) {
     return null;
   }
   return { ...cluster, topics };
 }
 
-function filterSubject(subject: NavSubject, query: string): NavSubject | null {
+function filterSubject(subject: NavSubject, query: string, mode: SearchMode): NavSubject | null {
   if (matchesQuery(subject.title, query) || matchesQuery(subject.blurb, query)) {
     return subject;
   }
   const clusters = subject.clusters
-    .map((cluster) => filterCluster(cluster, query))
+    .map((cluster) => filterCluster(cluster, query, mode))
     .filter((cluster): cluster is NavCluster => cluster !== null);
   if (clusters.length === 0) {
     return null;
@@ -106,6 +187,7 @@ function filterSubject(subject: NavSubject, query: string): NavSubject | null {
 export function filterNavGroups(
   groups: readonly NavGroup[],
   query: string,
+  mode: SearchMode = "titles",
 ): readonly NavGroup[] {
   const normalized = query.trim().toLowerCase();
   if (normalized.length === 0) {
@@ -117,9 +199,9 @@ export function filterNavGroups(
       const keepLeaf =
         Boolean(group.leafTopic) &&
         (matchesQuery(group.title, normalized) ||
-          (group.leafTopic ? topicMatches(group.leafTopic, normalized) : false));
+          (group.leafTopic ? topicMatches(group.leafTopic, normalized, mode) : false));
       const entries = group.entries
-        .map((entry) => filterEntry(entry, normalized))
+        .map((entry) => filterEntry(entry, normalized, mode))
         .filter((entry): entry is NavEntry => entry !== null);
       return {
         ...group,
@@ -134,6 +216,7 @@ export function firstSearchHref(
   groups: readonly NavGroup[],
   query: string,
   preferredPathname?: string,
+  mode: SearchMode = "titles",
 ): string | null {
   const normalized = query.trim().toLowerCase();
   if (normalized.length === 0) {
@@ -193,19 +276,11 @@ export function firstSearchHref(
     }
   }
 
-  if (preferredPathname) {
-    const current = topics.find((topic) => topic.href === preferredPathname);
-    const conceptHit = current?.concepts.find((concept) => conceptMatches(concept, normalized));
-    if (current && conceptHit) {
-      return conceptHref(current.href, conceptHit.id);
-    }
-  }
-
-  for (const topic of topics) {
-    const conceptHit = topic.concepts.find((concept) => conceptMatches(concept, normalized));
-    if (conceptHit) {
-      return conceptHref(topic.href, conceptHit.id);
-    }
+  const titleConceptHref = firstConceptHref(topics, preferredPathname, (concept) =>
+    conceptTitleMatches(concept, normalized),
+  );
+  if (titleConceptHref) {
+    return titleConceptHref;
   }
 
   const blurbHit = topics.find((topic) => matchesQuery(topic.blurb, normalized));
@@ -229,6 +304,35 @@ export function firstSearchHref(
           return _never;
         }
       }
+    }
+  }
+
+  if (!includesNotes(mode)) {
+    return null;
+  }
+
+  return firstConceptHref(topics, preferredPathname, (concept) =>
+    conceptBodyMatches(concept, normalized),
+  );
+}
+
+function firstConceptHref(
+  topics: readonly NavTopic[],
+  preferredPathname: string | undefined,
+  matches: (concept: NavConcept) => boolean,
+): string | null {
+  if (preferredPathname) {
+    const current = topics.find((topic) => topic.href === preferredPathname);
+    const conceptHit = current?.concepts.find(matches);
+    if (current && conceptHit) {
+      return conceptHref(current.href, conceptHit.id);
+    }
+  }
+
+  for (const topic of topics) {
+    const conceptHit = topic.concepts.find(matches);
+    if (conceptHit) {
+      return conceptHref(topic.href, conceptHit.id);
     }
   }
 

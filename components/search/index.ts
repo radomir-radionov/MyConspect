@@ -1,2 +1,3 @@
 export { HighlightedText } from "./HighlightedText";
-export { SearchQueryContext, useSearchQuery } from "./SearchQueryContext";
+export { highlightQueryInHtml } from "./highlightQueryInHtml";
+export { SearchQueryContext, useSearchMode, useSearchQuery } from "./SearchQueryContext";

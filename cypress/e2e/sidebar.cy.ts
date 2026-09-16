@@ -96,6 +96,43 @@ describe("handbook sidebar", () => {
     cy.url().should("include", "core");
   });
 
+  it("keeps Forms in the sidebar view when Structure collapses", () => {
+    cy.viewport(1280, 560);
+    cy.visit("/frontend/html-structure#heading-hierarchy");
+    cy.nav("topic", "html-structure").should("have.attr", "aria-expanded", "true");
+    cy.sidebar().contains("Heading hierarchy").should("be.visible");
+
+    cy.get("#handbook-nav-aside").then(($aside) => {
+      const aside = $aside[0];
+      const forms = aside.querySelector(
+        '[data-nav="topic"][data-nav-id="html-forms"]',
+      ) as HTMLElement | null;
+      expect(forms, "Forms topic").to.exist;
+      if (!forms) {
+        return;
+      }
+      aside.scrollTop +=
+        forms.getBoundingClientRect().top -
+        aside.getBoundingClientRect().top -
+        96;
+    });
+
+    cy.nav("topic", "html-forms").then(($forms) => {
+      const aside = Cypress.$("#handbook-nav-aside")[0];
+      cy.wrap($forms).click({ scrollBehavior: false, force: true });
+      cy.url().should("include", "/frontend/html-forms");
+      cy.nav("topic", "html-forms").should("have.attr", "aria-expanded", "true");
+      cy.nav("topic", "html-structure").should("have.attr", "aria-expanded", "false");
+      cy.nav("topic", "html-forms").should("be.visible");
+      cy.nav("topic", "html-forms").should(($el) => {
+        const box = $el[0].getBoundingClientRect();
+        const asideBox = aside.getBoundingClientRect();
+        expect(box.top).to.be.gte(asideBox.top - 1);
+        expect(box.top).to.be.lt(asideBox.bottom);
+      });
+    });
+  });
+
   it("does not jump the main pane when opening a concept in the page list", () => {
     cy.visit("/frontend/react-core");
     cy.get("#state > summary").click({ scrollBehavior: false });
@@ -153,5 +190,27 @@ describe("handbook sidebar", () => {
       expect(text).to.contain("event loop");
     });
     cy.get("#handbook-sidebar [data-search-hit='true']").should("exist");
+  });
+
+  it("does not search inside notes in Topics mode", () => {
+    cy.visit("/frontend/js-browser-extra");
+    cy.get('input[placeholder="Search topics and concepts…"]').clear().type("resize layout");
+    cy.wait(400);
+    cy.sidebar().should("contain", "No topics or concepts match that search.");
+    cy.get("#handbook-sidebar [data-search-in='notes']").should("not.exist");
+  });
+
+  it("finds a phrase inside concept notes in Notes mode", () => {
+    cy.visit("/frontend/js-browser-extra");
+    cy.get('[data-search-mode="notes"]').click();
+    cy.get('input[placeholder="Search in notes…"]').clear().type("resize layout");
+    cy.wait(400);
+    cy.sidebar().should(($nav) => {
+      const text = $nav.text().toLowerCase();
+      expect(text).to.contain("debounc");
+    });
+    cy.location("hash").should("match", /debounc/i);
+    cy.get("#handbook-sidebar [data-search-in='notes']").should("contain", "resize layout");
+    cy.get("#handbook-main mark").should("contain", "resize layout");
   });
 });
