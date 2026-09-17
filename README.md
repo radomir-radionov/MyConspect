@@ -1,10 +1,10 @@
 # MyConspect
 
-Browse-only study handbook. Conspect markdown lives in local `resources/` (not in this GitHub repo) and is turned into static pages at build time. Edit notes there; the Next.js app stays at the repo root. GitHub Actions / Vercel Git deploys need those files on the machine that builds.
+Browse-only study handbook. Conspect markdown lives in `resources/` and is turned into static pages at build time. Edit notes there; the Next.js app stays at the repo root. Those files are in git so Vercel and CI can build.
 
 Live site: [https://myconspect.vercel.app](https://myconspect.vercel.app).
 
-Useful study links: [roadmap.sh](https://roadmap.sh/), [StackBlitz](https://stackblitz.com/), [GitNation](https://portal.gitnation.org/). Extra intro notes from the old Core README are in `resources/0_intro.md` (not published).
+Useful study links: [roadmap.sh](https://roadmap.sh/), [StackBlitz](https://stackblitz.com/), [GitNation](https://portal.gitnation.org/). Extra intro notes from the old Core README are in `resources/0_intro.md`.
 
 ## Routes
 
