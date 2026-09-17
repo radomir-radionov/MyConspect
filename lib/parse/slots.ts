@@ -1,4 +1,4 @@
-import { slotLabelHtml } from "./slot-icons";
+import { escapeHtml, slotLabelHtml } from "./slot-icons";
 import { transformProsConsTables } from "./pros-cons";
 
 export type SlotKind =
@@ -161,6 +161,95 @@ function pitfallsMarkdown(section: ConceptSection): string {
   return body ? `#### ${title}\n\n${body}` : `#### ${title}`;
 }
 
+function mergeDuplicateKinds(sections: ConceptSection[]): ConceptSection[] {
+  const merged: ConceptSection[] = [];
+  const indexByKey = new Map<string, number>();
+
+  for (const section of sections) {
+    const key =
+      section.kind === "extra" ? `extra:${normalizeLabel(section.rawLabel)}` : section.kind;
+    const existingIndex = indexByKey.get(key);
+    if (existingIndex === undefined) {
+      indexByKey.set(key, merged.length);
+      merged.push(section);
+      continue;
+    }
+    const existing = merged[existingIndex];
+    merged[existingIndex] = {
+      ...existing,
+      body: `${existing.body}\n\n${section.body}`.trim(),
+    };
+  }
+
+  return merged;
+}
+
+function stripHeadingText(value: string): string {
+  return value
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+type ConceptPart = {
+  readonly heading: string;
+  readonly markdown: string;
+};
+
+function splitBySubheadings(markdown: string): ConceptPart[] {
+  const parts: { heading: string; lines: string[] }[] = [];
+  let current = { heading: "", lines: [] as string[] };
+  let inFence = false;
+
+  for (const line of markdown.split("\n")) {
+    const fence = line.trimStart().startsWith("```");
+    if (fence) {
+      inFence = !inFence;
+      current.lines.push(line);
+      continue;
+    }
+
+    const headingMatch = !inFence ? line.match(/^#{2,3}\s+(.+)$/) : undefined;
+    if (headingMatch) {
+      if (current.heading || current.lines.some((entry) => entry.trim())) {
+        parts.push(current);
+      }
+      current = { heading: stripHeadingText(headingMatch[1]), lines: [] };
+      continue;
+    }
+
+    current.lines.push(line);
+  }
+
+  if (current.heading || current.lines.some((entry) => entry.trim())) {
+    parts.push(current);
+  }
+
+  return parts.map((part) => ({
+    heading: part.heading,
+    markdown: part.lines.join("\n").trim(),
+  }));
+}
+
+function sectionsForMarkdown(markdown: string): ConceptSection[] {
+  return orderSectionsForRender(
+    mergeDuplicateKinds(mergePitfallsIntoCases(splitByMarkers(markdown))),
+  );
+}
+
+function wrapPart(heading: string, slotsHtml: string): string {
+  if (!slotsHtml.trim() && !heading) {
+    return "";
+  }
+  const title = heading
+    ? `<h3 class="concept-part__title">${escapeHtml(heading)}</h3>`
+    : "";
+  return `<section class="concept-part">${title}${slotsHtml}</section>`;
+}
+
 function mergePitfallsIntoCases(sections: ConceptSection[]): ConceptSection[] {
   const merged: ConceptSection[] = [];
   let pendingPitfalls: ConceptSection[] = [];
@@ -219,21 +308,34 @@ function wrapSlot(kind: SlotKind, rawLabel: string, bodyHtml: string): string {
   return `<section class="concept-slot slot-${kind}">${labelHtml}<div class="concept-slot__body">${bodyHtml}</div></section>`;
 }
 
-export async function structureConceptBody(
-  markdown: string,
+async function renderSections(
+  sections: readonly ConceptSection[],
   renderFragment: (fragment: string) => Promise<string>,
 ): Promise<string> {
-  const sections = orderSectionsForRender(mergePitfallsIntoCases(splitByMarkers(markdown)));
-  if (sections.length === 0) {
-    return "";
-  }
-
   const rendered = await Promise.all(
     sections.map(async (section) => {
       const bodyHtml = transformProsConsTables(await renderFragment(section.body));
       return wrapSlot(section.kind, section.rawLabel, bodyHtml);
     }),
   );
-
   return rendered.filter(Boolean).join("\n");
+}
+
+export async function structureConceptBody(
+  markdown: string,
+  renderFragment: (fragment: string) => Promise<string>,
+): Promise<string> {
+  const parts = splitBySubheadings(markdown);
+  if (parts.length === 0) {
+    return "";
+  }
+
+  const renderedParts = await Promise.all(
+    parts.map(async (part) => {
+      const slotsHtml = await renderSections(sectionsForMarkdown(part.markdown), renderFragment);
+      return wrapPart(part.heading, slotsHtml);
+    }),
+  );
+
+  return renderedParts.filter(Boolean).join("\n");
 }

@@ -48,6 +48,17 @@ describe("handbook sidebar", () => {
     cy.url().should("include", "additional");
   });
 
+  it("opens Paradigms & security instead of sending Other to Algorithms", () => {
+    cy.visit("/other");
+    cy.nav("subject", "paradigms").click();
+
+    cy.location("pathname").should("eq", "/other/paradigms");
+    cy.contains("h1", "Paradigms & security");
+    cy.nav("subject", "paradigms").should("have.attr", "aria-expanded", "true");
+    cy.sidebar().contains("Web security").should("be.visible");
+    cy.sidebar().contains("Engineering").should("be.visible");
+  });
+
   it("opens Additional from the Algorithms hub without collapsing the track", () => {
     cy.visit("/algorithms");
     cy.nav("track", "algorithms").should("have.attr", "aria-expanded", "true");
@@ -109,6 +120,19 @@ describe("handbook sidebar", () => {
     cy.nav("track", "frontend").should("have.attr", "aria-expanded", "true");
     cy.url().should("include", "/frontend/javascript");
     cy.url().should("include", "core");
+  });
+
+  it("opens React Platform as a cluster folder instead of dumping Server concepts", () => {
+    cy.visit("/frontend/react-hooks");
+    cy.nav("cluster", "platform").click();
+
+    cy.location("pathname").should("eq", "/frontend/react");
+    cy.location("hash").should("eq", "#platform");
+    cy.nav("cluster", "platform").should("have.attr", "aria-expanded", "true");
+    cy.nav("topic", "react-server").should("be.visible");
+    cy.nav("topic", "react-server").should("have.attr", "aria-expanded", "false");
+    cy.sidebar().contains("Overview").should("not.exist");
+    cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
   });
 
   it("keeps Forms in the sidebar view when Structure collapses", () => {

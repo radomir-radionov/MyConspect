@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/other/special",
-        destination: "/algorithms",
+        destination: "/other/paradigms",
         permanent: true,
       },
       {

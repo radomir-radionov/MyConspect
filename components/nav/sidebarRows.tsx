@@ -45,6 +45,10 @@ function RowTitle({
   );
 }
 
+function sameTitle(left: string, right: string): boolean {
+  return left.trim().toLowerCase() === right.trim().toLowerCase();
+}
+
 function visibleConcepts(topic: NavTopic, query: string, mode: SearchMode) {
   const needle = query.trim().toLowerCase();
   if (needle.length === 0) {
@@ -352,7 +356,7 @@ export function ClusterRow({
   } = useSidebarNav();
   const onlyTopic = cluster.topics.length === 1 ? cluster.topics[0] : null;
 
-  if (onlyTopic) {
+  if (onlyTopic && sameTitle(cluster.title, onlyTopic.title)) {
     return (
       <TopicRow
         topic={{ ...onlyTopic, title: cluster.title }}

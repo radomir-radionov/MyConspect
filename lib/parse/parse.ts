@@ -627,16 +627,29 @@ function normalizeTitle(value: string): string {
   return value
     .toLowerCase()
     .replace(/[–—−]/g, "-")
+    .replace(/&/g, " and ")
     .replace(/\s+/g, " ")
     .trim();
 }
 
+function headingMatchesTitle(title: string, heading: string): boolean {
+  const a = normalizeTitle(title);
+  const b = normalizeTitle(heading);
+  if (a === b) {
+    return true;
+  }
+  if (Math.min(a.length, b.length) < 10) {
+    return false;
+  }
+  return a.includes(b) || b.includes(a);
+}
+
 function stripDuplicateTitleHeading(title: string, body: string): string {
-  const match = body.match(/^(?:\s*\n)*#{2,3}\s+(.+?)(?:\n+|$)/);
+  const match = body.match(/^(?:\s*\n)*#{1,3}\s+(.+?)(?:\n+|$)/);
   if (!match) {
     return body;
   }
-  if (normalizeTitle(stripMd(match[1])) !== normalizeTitle(title)) {
+  if (!headingMatchesTitle(title, stripMd(match[1]))) {
     return body;
   }
   return body.slice(match[0].length);
