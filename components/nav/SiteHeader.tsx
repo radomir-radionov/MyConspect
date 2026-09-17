@@ -27,7 +27,7 @@ export function SiteHeader({
   const onInstructions = pathname === INSTRUCTIONS_HREF;
 
   return (
-    <header id="handbook-header" className="shrink-0 border-b border-zinc-200 bg-white">
+    <header id="handbook-header" className="relative z-40 shrink-0 border-b border-zinc-200 bg-white">
       <div className="grid h-14 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-[var(--chrome-inline)] lg:grid-cols-[minmax(0,1fr)_minmax(12rem,28rem)_minmax(0,1fr)]">
         <div className="flex min-w-0 items-center gap-2">
           <button
@@ -38,25 +38,29 @@ export function SiteHeader({
             onClick={onToggleNav}
           >
             <span className="sr-only">{navOpen ? chrome.closeMenu : chrome.openMenu}</span>
-            <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">
-              {navOpen ? (
-                <path
-                  d="M6 6l12 12M18 6L6 18"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                />
-              ) : (
-                <path
-                  d="M4 7h16M4 12h16M4 17h16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                />
-              )}
-            </svg>
+            <span aria-hidden="true" className="relative block size-5">
+              <span
+                className={
+                  navOpen
+                    ? "absolute top-1/2 left-0 block h-0.5 w-5 -translate-y-1/2 rotate-45 rounded-full bg-current transition-transform duration-200 ease-out motion-reduce:transition-none"
+                    : "absolute top-1/2 left-0 block h-0.5 w-5 -translate-y-1.5 rounded-full bg-current transition-transform duration-200 ease-out motion-reduce:transition-none"
+                }
+              />
+              <span
+                className={
+                  navOpen
+                    ? "absolute top-1/2 left-0 block h-0.5 w-5 -translate-y-1/2 scale-x-0 rounded-full bg-current transition-transform duration-200 ease-out motion-reduce:transition-none"
+                    : "absolute top-1/2 left-0 block h-0.5 w-5 -translate-y-1/2 rounded-full bg-current transition-transform duration-200 ease-out motion-reduce:transition-none"
+                }
+              />
+              <span
+                className={
+                  navOpen
+                    ? "absolute top-1/2 left-0 block h-0.5 w-5 -translate-y-1/2 -rotate-45 rounded-full bg-current transition-transform duration-200 ease-out motion-reduce:transition-none"
+                    : "absolute top-1/2 left-0 block h-0.5 w-5 translate-y-1.5 rounded-full bg-current transition-transform duration-200 ease-out motion-reduce:transition-none"
+                }
+              />
+            </span>
           </button>
           <Link
             href="/"

@@ -9,6 +9,7 @@ import {
   useState,
   useSyncExternalStore,
   type Dispatch,
+  type ReactNode,
   type SetStateAction,
 } from "react";
 import Link from "next/link";
@@ -295,6 +296,96 @@ function locationForPath(groups: readonly NavGroup[], pathname: string, hash: st
   return { topicHref: null as string | null, subjectHref: null as string | null, clusterKey: null as string | null };
 }
 
+const FOLD_MS = 200;
+
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function NavFold({
+  open,
+  instant = false,
+  children,
+}: {
+  open: boolean;
+  instant?: boolean;
+  children: ReactNode;
+}) {
+  const [mounted, setMounted] = useState(open);
+  const [expanded, setExpanded] = useState(open);
+
+  useLayoutEffect(() => {
+    const skipMotion = instant || prefersReducedMotion();
+    if (open) {
+      setMounted(true);
+      if (skipMotion) {
+        setExpanded(true);
+        return;
+      }
+      let inner = 0;
+      const frame = window.requestAnimationFrame(() => {
+        inner = window.requestAnimationFrame(() => setExpanded(true));
+      });
+      return () => {
+        window.cancelAnimationFrame(frame);
+        window.cancelAnimationFrame(inner);
+      };
+    }
+    setExpanded(false);
+    if (skipMotion) {
+      setMounted(false);
+    }
+  }, [open, instant]);
+
+  useEffect(() => {
+    if (open || instant || prefersReducedMotion()) {
+      return;
+    }
+    const timeout = window.setTimeout(() => setMounted(false), FOLD_MS);
+    return () => window.clearTimeout(timeout);
+  }, [open, instant]);
+
+  if (!mounted) {
+    return null;
+  }
+
+  return (
+    <div
+      className={
+        expanded
+          ? "grid grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none"
+          : "grid grid-rows-[0fr] transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none"
+      }
+    >
+      <div
+        className={
+          expanded
+            ? "min-h-0 overflow-hidden opacity-100 transition-opacity duration-200 ease-out motion-reduce:transition-none"
+            : "min-h-0 overflow-hidden opacity-0 transition-opacity duration-200 ease-out motion-reduce:transition-none"
+        }
+        inert={!expanded}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function NavChevron({ open, large = false }: { open: boolean; large?: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={
+        open
+          ? `inline-block shrink-0 origin-center rotate-90 leading-none text-zinc-500 transition-transform duration-200 ease-out motion-reduce:transition-none ${large ? "text-lg" : "text-base"}`
+          : `inline-block shrink-0 origin-center rotate-0 leading-none text-zinc-500 transition-transform duration-200 ease-out motion-reduce:transition-none ${large ? "text-lg" : "text-base"}`
+      }
+    >
+      ▸
+    </span>
+  );
+}
+
 function rowClass(active: boolean) {
   return active
     ? "flex w-full cursor-pointer items-center justify-between gap-2 rounded-md bg-yellow-50 px-2 py-2 text-left text-base font-medium text-zinc-900 ring-1 ring-inset ring-yellow-200"
@@ -408,7 +499,7 @@ export const TopicSidebar = memo(function TopicSidebar({
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => restoreSidebarPin());
-    const later = window.setTimeout(restoreSidebarPin, 50);
+    const later = window.setTimeout(restoreSidebarPin, FOLD_MS + 20);
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(later);
@@ -464,11 +555,7 @@ export const TopicSidebar = memo(function TopicSidebar({
               const leaf = group.leafTopic;
               const leafOpen = trackOpen;
               const leafHeaderClass = trackHeaderClass(trackHighlighted);
-              const leafChevron = (
-                <span aria-hidden="true" className="shrink-0 text-base leading-none text-zinc-500">
-                  {leafOpen ? "▾" : "▸"}
-                </span>
-              );
+              const leafChevron = <NavChevron open={leafOpen} />;
               return (
                 <li key={group.id}>
                   {trackActive ? (
@@ -503,7 +590,7 @@ export const TopicSidebar = memo(function TopicSidebar({
                       {leafChevron}
                     </Link>
                   )}
-                  {leafOpen ? (
+                  <NavFold open={leafOpen} instant={searching}>
                     <ul className="mt-1 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2">
                       <TopicRow
                         topic={leaf}
@@ -519,15 +606,11 @@ export const TopicSidebar = memo(function TopicSidebar({
                         hideTitle
                       />
                     </ul>
-                  ) : null}
+                  </NavFold>
                 </li>
               );
             }
-            const trackChevron = (
-              <span aria-hidden="true" className="shrink-0 text-base leading-none text-zinc-500">
-                {trackOpen ? "▾" : "▸"}
-              </span>
-            );
+            const trackChevron = <NavChevron open={trackOpen} />;
             return (
               <li key={group.id}>
                 {onThisTrack ? (
@@ -561,7 +644,7 @@ export const TopicSidebar = memo(function TopicSidebar({
                     {trackChevron}
                   </Link>
                 )}
-                {trackOpen ? (
+                <NavFold open={trackOpen} instant={searching}>
                   <ul className="mt-1 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2">
                     {group.entries.map((entry) => {
                       switch (entry.kind) {
@@ -627,7 +710,7 @@ export const TopicSidebar = memo(function TopicSidebar({
                       }
                     })}
                   </ul>
-                ) : null}
+                </NavFold>
               </li>
             );
           })}
@@ -695,11 +778,9 @@ function SubjectRow({
         className={rowClass(isHitSubject || active || subjectOpen)}
       >
         <RowTitle text={subject.title} query={query} />
-        <span aria-hidden="true" className="shrink-0 text-lg leading-none text-zinc-500">
-          {subjectOpen ? "▾" : "▸"}
-        </span>
+        <NavChevron open={subjectOpen} large />
       </Link>
-      {subjectOpen ? (
+      <NavFold open={subjectOpen} instant={searching}>
         <ul className="mt-0.5 mb-1 ml-2 space-y-0.5 border-l border-yellow-200 pl-2">
           {subject.clusters.map((cluster) => (
             <ClusterRow
@@ -720,7 +801,7 @@ function SubjectRow({
             />
           ))}
         </ul>
-      ) : null}
+      </NavFold>
     </li>
   );
 }
@@ -817,7 +898,7 @@ function ClusterRow({
       >
         <RowTitle text={cluster.title} query={query} marker open={clusterOpen} />
       </Link>
-      {clusterOpen ? (
+      <NavFold open={clusterOpen} instant={searching}>
         <ul className="mt-0.5 space-y-0.5 pl-2">
           {cluster.topics.map((topic) => (
             <TopicRow
@@ -838,7 +919,7 @@ function ClusterRow({
             />
           ))}
         </ul>
-      ) : null}
+      </NavFold>
     </li>
   );
 }
@@ -884,7 +965,7 @@ function TopicRow({
     : searching
       ? matchingConcepts.length > 0
       : openTopicHref === topic.href;
-  const concepts = topicOpen ? matchingConcepts : [];
+  const concepts = matchingConcepts;
 
   if (hideTitle) {
     if (concepts.length === 0) {
@@ -939,13 +1020,9 @@ function TopicRow({
         className={rowClass(isHitTopic || active || topicOpen)}
       >
         <RowTitle text={topic.title} query={query} marker={compact} open={topicOpen} />
-        {compact ? null : (
-          <span aria-hidden="true" className="shrink-0 text-lg leading-none text-zinc-500">
-            {topicOpen ? "▾" : "▸"}
-          </span>
-        )}
+        {compact ? null : <NavChevron open={topicOpen} large />}
       </Link>
-      {concepts.length > 0 ? (
+      <NavFold open={topicOpen && concepts.length > 0} instant={searching}>
         <ul className={compact ? "mt-0.5 mb-1 space-y-0.5 pl-2" : "mt-0.5 mb-1 space-y-0.5 pl-3"}>
           {concepts.map((concept) => {
             const conceptActive = concept.id === activeConceptId;
@@ -966,7 +1043,7 @@ function TopicRow({
             );
           })}
         </ul>
-      ) : null}
+      </NavFold>
     </li>
   );
 }

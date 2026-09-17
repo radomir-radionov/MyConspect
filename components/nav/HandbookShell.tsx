@@ -41,19 +41,23 @@ export function HandbookShell({
           onToggleNav={toggleNav}
         />
         <div className="flex min-h-0 flex-1" style={{ overflow: "hidden" }}>
-          {navOpen ? (
-            <button
-              type="button"
-              className="fixed inset-0 top-14 z-20 bg-zinc-900/30 lg:hidden"
-              aria-label={chrome.closeMenu}
-              onClick={closeNav}
-            />
-          ) : null}
+          <button
+            type="button"
+            className={
+              navOpen
+                ? "fixed inset-0 top-14 z-20 bg-zinc-900/30 opacity-100 transition-opacity duration-200 ease-out motion-reduce:transition-none lg:hidden"
+                : "pointer-events-none fixed inset-0 top-14 z-20 bg-zinc-900/30 opacity-0 transition-opacity duration-200 ease-out motion-reduce:transition-none lg:hidden"
+            }
+            tabIndex={navOpen ? 0 : -1}
+            aria-hidden={!navOpen}
+            aria-label={chrome.closeMenu}
+            onClick={closeNav}
+          />
           <aside
             className={
               navOpen
-                ? "fixed top-14 bottom-0 left-0 z-30 flex w-80 flex-col border-r border-zinc-200 bg-white lg:static lg:z-0 lg:w-72 lg:shrink-0"
-                : "hidden border-r border-zinc-200 bg-white lg:flex lg:w-72 lg:shrink-0 lg:flex-col"
+                ? "fixed top-14 bottom-0 left-0 z-30 flex w-80 translate-x-0 flex-col border-r border-zinc-200 bg-white transition-transform duration-200 ease-out motion-reduce:transition-none lg:static lg:z-0 lg:w-72 lg:shrink-0 lg:translate-x-0"
+                : "pointer-events-none fixed top-14 bottom-0 left-0 z-30 flex w-80 -translate-x-full flex-col border-r border-zinc-200 bg-white transition-transform duration-200 ease-out motion-reduce:transition-none lg:pointer-events-auto lg:static lg:z-0 lg:w-72 lg:shrink-0 lg:translate-x-0"
             }
             style={{ minHeight: 0 }}
           >
