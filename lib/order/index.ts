@@ -302,7 +302,7 @@ export function auditTopicOrder(topic: Topic, markdown: string): OrderAuditRow {
     }
   }
 
-  const firstConcept = conceptTitles.find((title) => title !== "Interview questions");
+  const firstConcept = conceptTitles[0];
   if (firstConcept && tocTitles.length > 0) {
     const firstStub = splitStubBlocks(stubs)[0];
     if (firstStub && !issues.some((issue) => issue.message.includes(firstStub.title))) {

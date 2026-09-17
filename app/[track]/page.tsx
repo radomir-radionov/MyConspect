@@ -5,6 +5,7 @@ import { ConceptList } from "@/components/topic";
 import {
   TRACKS,
   getTrack,
+  isInterviewTopic,
   isTrackId,
   leafTopicForTrack,
   subjectClusterCards,
@@ -85,6 +86,7 @@ export default async function TrackPage({ params }: PageProps<"/[track]">) {
           <ConceptList
             concepts={parsed.concepts}
             emptyMessage="No concepts were parsed from this topic."
+            groupInterviewSections={isInterviewTopic(leaf)}
           />
         </div>
       </main>

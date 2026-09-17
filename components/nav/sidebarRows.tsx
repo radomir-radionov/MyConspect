@@ -1,14 +1,16 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { HighlightedText } from "@/components/search";
+import { isInterviewTopic } from "@/lib/catalog";
 import {
   CHROME,
   conceptBodySnippet,
   conceptHref,
   conceptMatchesQuery,
+  type InterviewSection,
   type NavCluster,
   type NavConcept,
   type NavSubject,
@@ -132,6 +134,127 @@ function ConceptItems({
   );
 }
 
+const INTERVIEW_SECTION_LABELS: Record<InterviewSection, string> = {
+  questions: "Questions",
+  tasks: "Tasks",
+};
+
+function interviewSectionGroups(concepts: readonly NavConcept[]) {
+  const questions = concepts.filter((concept) => concept.interviewSection === "questions");
+  const tasks = concepts.filter((concept) => concept.interviewSection === "tasks");
+  const groups: Array<{ section: InterviewSection; concepts: NavConcept[] }> = [];
+  if (questions.length > 0) {
+    groups.push({ section: "questions", concepts: [...questions] });
+  }
+  if (tasks.length > 0) {
+    groups.push({ section: "tasks", concepts: [...tasks] });
+  }
+  return groups;
+}
+
+function InterviewSectionNav({
+  topic,
+  concepts,
+}: {
+  topic: NavTopic;
+  concepts: readonly NavConcept[];
+}) {
+  const { activeConceptId, searching, query } = useSidebarNav();
+  const groups = useMemo(() => interviewSectionGroups(concepts), [concepts]);
+  const activeSection = concepts.find((concept) => concept.id === activeConceptId)?.interviewSection;
+  const [openSections, setOpenSections] = useState<ReadonlySet<InterviewSection>>(
+    () => new Set(activeSection ? [activeSection] : ["questions"]),
+  );
+
+  useEffect(() => {
+    if (searching) {
+      setOpenSections(new Set(groups.map((group) => group.section)));
+      return;
+    }
+    if (activeSection) {
+      setOpenSections((current) => {
+        if (current.has(activeSection)) {
+          return current;
+        }
+        return new Set([...current, activeSection]);
+      });
+    }
+  }, [activeSection, groups, searching]);
+
+  return (
+    <>
+      {groups.map((group) => {
+        const sectionOpen = searching || openSections.has(group.section);
+        const sectionActive = activeSection === group.section;
+        return (
+          <li key={group.section}>
+            <button
+              type="button"
+              data-nav="interview-section"
+              data-nav-id={group.section}
+              aria-expanded={sectionOpen}
+              onClick={() => {
+                if (searching) {
+                  return;
+                }
+                setOpenSections((current) => {
+                  const next = new Set(current);
+                  if (next.has(group.section)) {
+                    next.delete(group.section);
+                  } else {
+                    next.add(group.section);
+                  }
+                  return next;
+                });
+              }}
+              className={
+                sectionActive || sectionOpen
+                  ? "flex w-full cursor-pointer items-center rounded-md bg-yellow-50/70 px-2 py-1.5 text-left text-sm font-medium text-zinc-900 ring-1 ring-inset ring-yellow-200"
+                  : "flex w-full cursor-pointer items-center rounded-md px-2 py-1.5 text-left text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800"
+              }
+            >
+              <RowTitle
+                text={INTERVIEW_SECTION_LABELS[group.section]}
+                query={query}
+                marker
+                open={sectionOpen}
+              />
+            </button>
+            <NavFold open={sectionOpen} instant={searching}>
+              <ul className="mt-0.5 space-y-0.5 pl-2">
+                <ConceptItems topic={topic} concepts={group.concepts} />
+              </ul>
+            </NavFold>
+          </li>
+        );
+      })}
+    </>
+  );
+}
+
+function TopicConceptNav({
+  topic,
+  concepts,
+}: {
+  topic: NavTopic;
+  concepts: readonly NavConcept[];
+}) {
+  if (!isInterviewTopic(topic)) {
+    return <ConceptItems topic={topic} concepts={concepts} />;
+  }
+  const regular = concepts.filter((concept) => !concept.interviewSection);
+  const grouped = concepts.filter((concept) => concept.interviewSection);
+  if (grouped.length === 0) {
+    return <ConceptItems topic={topic} concepts={concepts} />;
+  }
+  return (
+    <>
+      {regular.length > 0 ? <ConceptItems topic={topic} concepts={regular} /> : null}
+      <InterviewSectionNav topic={topic} concepts={grouped} />
+    </>
+  );
+}
+
 export function TopicRow({
   topic,
   compact = false,
@@ -170,7 +293,7 @@ export function TopicRow({
     if (concepts.length === 0) {
       return null;
     }
-    return <ConceptItems topic={topic} concepts={concepts} />;
+    return <TopicConceptNav topic={topic} concepts={concepts} />;
   }
 
   return (
@@ -202,7 +325,7 @@ export function TopicRow({
       </Link>
       <NavFold open={topicOpen && concepts.length > 0} instant={searching}>
         <ul className={compact ? "mt-0.5 mb-1 space-y-0.5 pl-2" : "mt-0.5 mb-1 space-y-0.5 pl-3"}>
-          <ConceptItems topic={topic} concepts={concepts} />
+          <TopicConceptNav topic={topic} concepts={concepts} />
         </ul>
       </NavFold>
     </li>

@@ -14,6 +14,7 @@ export {
 } from "./search";
 export type {
   ChromeCopy,
+  InterviewSection,
   NavCluster,
   NavConcept,
   NavEntry,

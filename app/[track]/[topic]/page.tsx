@@ -5,6 +5,7 @@ import { ConceptList } from "@/components/topic";
 import {
   getSubject,
   getTrack,
+  isInterviewTopic,
   subjectClusterCards,
   topicRouteParams,
 } from "@/lib/catalog";
@@ -72,6 +73,7 @@ export default async function TopicPage({ params }: PageProps<"/[track]/[topic]"
         <ConceptList
           concepts={loaded.parsed.concepts}
           emptyMessage="No concepts were parsed from this topic."
+          groupInterviewSections={isInterviewTopic(loaded.topic)}
         />
       </div>
     </main>

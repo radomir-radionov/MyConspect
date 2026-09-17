@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useSyncExternalStore } from "react";
+import { memo, useEffect, useMemo, useSyncExternalStore } from "react";
 import { HighlightedText, useSearchMode, useSearchQuery } from "@/components/search";
 import { highlightQueryInHtml } from "@/components/search/highlightQueryInHtml";
 import { HANDBOOK_MAIN_ID } from "@/constants";
@@ -13,7 +13,7 @@ import {
   subscribeHash,
 } from "@/components/nav/hash";
 import { conceptMatchesQuery } from "@/lib/nav";
-import type { Concept } from "@/lib/parse";
+import type { Concept, InterviewSection } from "@/lib/parse";
 
 function closeSiblingAccordions(opened: HTMLDetailsElement) {
   const parent = opened.parentElement;
@@ -67,17 +67,56 @@ function scrollConceptToTop(element: HTMLElement) {
   scroller.scrollTo({ top: Math.max(0, offset) });
 }
 
+const SECTION_LABELS: Record<InterviewSection, string> = {
+  questions: "Questions",
+  tasks: "Tasks",
+};
+
+type ConceptGroup = {
+  readonly section: InterviewSection | null;
+  readonly concepts: Concept[];
+};
+
+function groupConcepts(
+  concepts: readonly Concept[],
+  groupInterviewSections: boolean,
+): ConceptGroup[] {
+  if (!groupInterviewSections) {
+    return [{ section: null, concepts: [...concepts] }];
+  }
+
+  const groups: ConceptGroup[] = [];
+  let current: ConceptGroup | null = null;
+
+  for (const concept of concepts) {
+    const section = concept.interviewSection ?? null;
+    if (!current || current.section !== section) {
+      current = { section, concepts: [] };
+      groups.push(current);
+    }
+    current.concepts.push(concept);
+  }
+
+  return groups;
+}
+
 export function ConceptList({
   concepts,
   emptyMessage,
+  groupInterviewSections = false,
 }: {
   concepts: readonly Concept[];
   emptyMessage: string;
+  groupInterviewSections?: boolean;
 }) {
   const query = useSearchQuery();
   const mode = useSearchMode();
   const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
   const activeId = hashIdFrom(hash);
+  const groups = useMemo(
+    () => groupConcepts(concepts, groupInterviewSections),
+    [concepts, groupInterviewSections],
+  );
 
   useEffect(() => {
     function focusFromHash(event?: Event) {
@@ -127,6 +166,38 @@ export function ConceptList({
   }
 
   return (
+    <div className="space-y-8">
+      {groups.map((group) => (
+        <section key={group.section ?? "default"}>
+          {group.section ? (
+            <h2 className="mb-3 text-xl font-semibold tracking-tight text-zinc-900">
+              {SECTION_LABELS[group.section]}
+            </h2>
+          ) : null}
+          <ConceptAccordionList
+            concepts={group.concepts}
+            activeId={activeId}
+            query={query}
+            notesQuery={mode === "notes" ? query : ""}
+          />
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function ConceptAccordionList({
+  concepts,
+  activeId,
+  query,
+  notesQuery,
+}: {
+  concepts: readonly Concept[];
+  activeId: string;
+  query: string;
+  notesQuery: string;
+}) {
+  return (
     <div className="concept-list divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white">
       {concepts.map((concept) => {
         const isActive = concept.id === activeId;
@@ -149,7 +220,7 @@ export function ConceptList({
             <summary className="cursor-pointer py-3 text-left text-base font-medium text-zinc-900">
               <HighlightedText text={concept.title} query={query} />
             </summary>
-            <ConceptBody html={concept.html} query={mode === "notes" ? query : ""} />
+            <ConceptBody html={concept.html} query={notesQuery} />
           </details>
         );
       })}

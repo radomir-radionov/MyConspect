@@ -4,12 +4,15 @@ import { hrefForFile } from "@/lib/catalog";
 import { highlightMarkdownFences } from "./highlight";
 import { structureConceptBody } from "./slots";
 
+export type InterviewSection = "questions" | "tasks";
+
 export type Concept = {
   readonly id: string;
   readonly title: string;
   readonly html: string;
   readonly searchText?: string;
   readonly titleSearchText?: string;
+  readonly interviewSection?: InterviewSection;
 };
 
 export type ConceptBlock = {
@@ -98,11 +101,10 @@ export type ConceptOutline = {
   readonly title: string;
   readonly searchText?: string;
   readonly titleSearchText?: string;
+  readonly interviewSection?: InterviewSection;
 };
 
-const INTERVIEW_GROUP_TITLE = "Interview questions";
 const CONCEPT_SEARCH_TEXT_MAX = 1600;
-const INTERVIEW_SEARCH_TEXT_MAX = 12000;
 
 export function parseTopicOutline(markdown: string): readonly ConceptOutline[] {
   const rewritten = rewriteNoteLinks(markdown);
@@ -113,13 +115,8 @@ export function parseTopicOutline(markdown: string): readonly ConceptOutline[] {
     title: block.title,
     searchText: conceptSearchText(block.body),
   }));
-  if (interview.length > 0) {
-    outline.push({
-      id: uniqueId(slugify(INTERVIEW_GROUP_TITLE), usedIds),
-      title: INTERVIEW_GROUP_TITLE,
-      titleSearchText: interviewTitleSearchText(interview),
-      searchText: interviewBodySearchText(interview),
-    });
+  for (const item of interviewOutlineItems(interview, usedIds)) {
+    outline.push(item);
   }
   return outline;
 }
@@ -226,15 +223,7 @@ async function collectConcepts(markdown: string): Promise<Concept[]> {
       searchText: conceptSearchText(block.body),
     });
   }
-  if (interview.length > 0) {
-    concepts.push({
-      id: uniqueId(slugify(INTERVIEW_GROUP_TITLE), usedIds),
-      title: INTERVIEW_GROUP_TITLE,
-      html: await renderInterviewGroup(interview),
-      titleSearchText: interviewTitleSearchText(interview),
-      searchText: interviewBodySearchText(interview),
-    });
-  }
+  concepts.push(...(await interviewConceptItems(interview, usedIds, renderInterviewConcept)));
   return concepts;
 }
 
@@ -284,31 +273,126 @@ function isInterviewSectionTitle(title: string): boolean {
     t === "browser pipeline q and a" ||
     t === "original questions" ||
     t.startsWith("original questions") ||
-    t === "tasks"
+    t === "tasks" ||
+    t === "coding tasks" ||
+    t.startsWith("quick oral questions") ||
+    t === "answers" ||
+    t === "solution" ||
+    t.startsWith("solution ")
   );
 }
 
+function isInterviewTaskTitle(title: string): boolean {
+  return /^Task(?:\s+\d+)?\b/i.test(title);
+}
+
 function isInterviewQuestionTitle(title: string): boolean {
-  return /^(Q\d+[a-z]?|Q-[A-Za-z0-9]+)\b/.test(title) || /^Task(?:\s+\d+)?\b/i.test(title);
+  return /^(Q\d+[a-z]?|Q-[A-Za-z0-9]+)\b/.test(title) || isInterviewTaskTitle(title);
 }
 
-async function renderInterviewGroup(blocks: readonly ConceptBlock[]): Promise<string> {
-  const parts = await Promise.all(blocks.map((block) => renderInterviewItem(block)));
-  return parts.filter(Boolean).join("\n");
+function interviewSectionForTitle(title: string): InterviewSection {
+  return isInterviewTaskTitle(title) ? "tasks" : "questions";
 }
 
-async function renderInterviewItem(block: ConceptBlock): Promise<string> {
+function cleanInterviewTitle(title: string, section: InterviewSection): string {
+  if (section === "tasks") {
+    const stripped = title.replace(/^Task\s+\d+[a-z]?\s*[—–-]\s*/i, "").trim();
+    return stripped || title;
+  }
+  const stripped = title.replace(/^Q(?:-[A-Za-z0-9]+|\d+[a-z]?)\.\s*/, "").trim();
+  return stripped || title;
+}
+
+function orderedInterviewBlocks(blocks: readonly ConceptBlock[]): ConceptBlock[] {
+  const flat = flattenInterviewBlocks(blocks);
+  const questions = flat.filter((block) => !isInterviewTaskTitle(block.title));
+  const tasks = flat.filter((block) => isInterviewTaskTitle(block.title));
+  return [...questions, ...tasks];
+}
+
+function interviewOutlineItems(
+  blocks: readonly ConceptBlock[],
+  usedIds: Set<string>,
+): ConceptOutline[] {
+  return orderedInterviewBlocks(blocks).map((block) => {
+    const interviewSection = interviewSectionForTitle(block.title);
+    return {
+      id: uniqueId(slugify(block.title), usedIds),
+      title: cleanInterviewTitle(block.title, interviewSection),
+      titleSearchText: block.title,
+      searchText: conceptSearchText(block.body),
+      interviewSection,
+    };
+  });
+}
+
+async function interviewConceptItems(
+  blocks: readonly ConceptBlock[],
+  usedIds: Set<string>,
+  render: (block: ConceptBlock) => Promise<string>,
+): Promise<Concept[]> {
+  const items: Concept[] = [];
+  for (const block of orderedInterviewBlocks(blocks)) {
+    const interviewSection = interviewSectionForTitle(block.title);
+    items.push({
+      id: uniqueId(slugify(block.title), usedIds),
+      title: cleanInterviewTitle(block.title, interviewSection),
+      titleSearchText: block.title,
+      html: await render(block),
+      searchText: conceptSearchText(block.body),
+      interviewSection,
+    });
+  }
+  return items;
+}
+
+function isInterviewQuestionBlock(block: ConceptBlock): boolean {
+  if (isInterviewSectionTitle(block.title) && !isInterviewQuestionTitle(block.title)) {
+    return false;
+  }
+  if (isInterviewQuestionTitle(block.title)) {
+    return true;
+  }
+  return looksLikeConcept(block.body, block.title);
+}
+
+function shouldExpandInterviewWrapper(block: ConceptBlock): boolean {
+  if (!block.body.includes("<details")) {
+    return false;
+  }
+  if (isInterviewQuestionTitle(block.title)) {
+    return false;
+  }
+  if (isInterviewSectionTitle(block.title)) {
+    return true;
+  }
+  const nested = collectConceptBlocks(block.body);
+  if (nested.length === 0) {
+    return false;
+  }
+  const questionCount = nested.filter(isInterviewQuestionBlock).length;
+  return questionCount > 0 && questionCount >= nested.length / 2;
+}
+
+function flattenInterviewBlocks(blocks: readonly ConceptBlock[]): ConceptBlock[] {
+  const result: ConceptBlock[] = [];
+  for (const block of blocks) {
+    if (shouldExpandInterviewWrapper(block)) {
+      result.push(...flattenInterviewBlocks(collectConceptBlocks(block.body)));
+      continue;
+    }
+    if (isInterviewQuestionBlock(block)) {
+      result.push(block);
+    }
+  }
+  return result;
+}
+
+async function renderInterviewConcept(block: ConceptBlock): Promise<string> {
   if (block.body.includes("<details")) {
     return renderFragment(block.body);
   }
-  if (isInterviewSectionTitle(block.title) && !isInterviewQuestionTitle(block.title)) {
-    return structureConceptBody(block.body, renderFragment);
-  }
-  const inner = await structureConceptBody(block.body, renderFragment);
-  if (!inner.trim()) {
-    return "";
-  }
-  return `<details><summary>${escapeHtml(block.title)}</summary>\n${inner}\n</details>`;
+  return renderHtml(block.body);
 }
 
 function normalizeConceptTitle(title: string): string {
@@ -568,14 +652,6 @@ async function renderHtml(markdown: string): Promise<string> {
   return structureConceptBody(markdown, renderFragment);
 }
 
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
 function stripMd(value: string): string {
   return value
     .replace(/`([^`]+)`/g, "$1")
@@ -596,14 +672,3 @@ function conceptSearchText(body: string): string {
   return stripMd(withoutHeavySlots).slice(0, CONCEPT_SEARCH_TEXT_MAX);
 }
 
-function interviewTitleSearchText(blocks: readonly ConceptBlock[]): string {
-  return blocks.map((block) => block.title).filter(Boolean).join("\n");
-}
-
-function interviewBodySearchText(blocks: readonly ConceptBlock[]): string {
-  return blocks
-    .map((block) => conceptSearchText(block.body))
-    .filter(Boolean)
-    .join("\n")
-    .slice(0, INTERVIEW_SEARCH_TEXT_MAX);
-}

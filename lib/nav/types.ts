@@ -2,11 +2,14 @@ import type { TrackId } from "@/lib/catalog";
 
 export type SearchMode = "titles" | "notes";
 
+export type InterviewSection = "questions" | "tasks";
+
 export type NavConcept = {
   readonly id: string;
   readonly title: string;
   readonly searchText?: string;
   readonly titleSearchText?: string;
+  readonly interviewSection?: InterviewSection;
 };
 
 export type NavTopic = {

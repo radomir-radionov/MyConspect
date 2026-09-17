@@ -50,12 +50,14 @@ function entriesForTrack(trackId: (typeof TRACKS)[number]["id"]): readonly NavEn
           href: subjectHref(subject),
           title: subject.title,
           blurb: subject.blurb,
-          clusters: subject.clusters.map((cluster) => ({
-            id: cluster.id,
-            title: cluster.title,
-            href: clusterHref(subject, cluster),
-            topics: topicsForCluster(subject, cluster.id).map(toNavTopic),
-          })),
+          clusters: subject.clusters
+            .map((cluster) => ({
+              id: cluster.id,
+              title: cluster.title,
+              href: clusterHref(subject, cluster),
+              topics: topicsForCluster(subject, cluster.id).map(toNavTopic),
+            }))
+            .filter((cluster) => cluster.topics.length > 0),
         },
       });
       continue;

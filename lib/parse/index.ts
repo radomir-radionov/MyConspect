@@ -14,5 +14,6 @@ export {
   type Concept,
   type ConceptBlock,
   type ConceptOutline,
+  type InterviewSection,
   type ParsedTopic,
 } from "./parse";
