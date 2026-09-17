@@ -20,7 +20,9 @@ export function readTopicFile(file: string): string {
     throw new Error(`Refusing to read outside resources/: ${file}`);
   }
   if (!fs.existsSync(resolved)) {
-    throw new Error(`Missing topic file in resources/: ${file}`);
+    throw new Error(
+      `Missing topic file in resources/: ${file} (resolved=${resolved}; cwd=${process.cwd()})`,
+    );
   }
   return fs.readFileSync(resolved, "utf8");
 }
