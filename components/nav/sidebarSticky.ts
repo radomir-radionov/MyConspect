@@ -28,7 +28,7 @@ function stickySpacing(nav: Element) {
 }
 
 function topVarName(element: HTMLElement) {
-  const kind = element.getAttribute("data-nav");
+  const kind = element.getAttribute("data-nav") ?? element.getAttribute("data-nav-pin");
   switch (kind) {
     case "track":
     case "subject":
@@ -41,6 +41,10 @@ function topVarName(element: HTMLElement) {
   }
 }
 
+function pathElements(nav: Element) {
+  return nav.querySelectorAll<HTMLElement>(`[${PATH_ATTR}="true"], [data-nav-pin]`);
+}
+
 export type StickyVars = Readonly<Record<string, string>>;
 
 export function measureStickyPathVars(): StickyVars {
@@ -51,10 +55,10 @@ export function measureStickyPathVars(): StickyVars {
   const { inset, gap } = stickySpacing(nav);
   const vars: Record<string, string> = {};
   let top = inset;
-  for (const element of nav.querySelectorAll<HTMLElement>(`[${PATH_ATTR}="true"]`)) {
+  for (const element of pathElements(nav)) {
     vars[topVarName(element)] = `${top}px`;
     top += element.offsetHeight + gap;
-    const guideVar = GUIDE_VARS[element.getAttribute("data-nav") ?? ""];
+    const guideVar = GUIDE_VARS[element.getAttribute("data-nav") ?? element.getAttribute("data-nav-pin") ?? ""];
     if (guideVar) {
       vars[guideVar] = `${top}px`;
     }
@@ -78,7 +82,7 @@ export function measureStickyCover(navElement?: HTMLElement): number {
   const { gap } = stickySpacing(nav);
   const scrollerTop = scroller.getBoundingClientRect().top;
   let cover = 0;
-  for (const element of nav.querySelectorAll<HTMLElement>(`[${PATH_ATTR}="true"]`)) {
+  for (const element of pathElements(nav)) {
     const rect = element.getBoundingClientRect();
     const relativeTop = rect.top - scrollerTop;
     const stickyTop = Number.parseFloat(getComputedStyle(element).top) || 0;

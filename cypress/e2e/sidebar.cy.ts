@@ -146,6 +146,35 @@ describe("handbook sidebar", () => {
     cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
   });
 
+  it("keeps a collapsed Structure topic stuck while later topics scroll", () => {
+    cy.viewport(1280, 560);
+    cy.visit("/frontend/html-structure");
+    cy.nav("topic", "html-structure").should("have.attr", "aria-expanded", "true");
+    cy.nav("topic", "html-structure").click({ scrollBehavior: false, force: true });
+    cy.nav("topic", "html-structure").should("have.attr", "aria-expanded", "false");
+
+    cy.get("#handbook-nav-aside").scrollTo("bottom");
+
+    cy.nav("track", "frontend").should("be.visible");
+    cy.nav("subject", "html").should("be.visible");
+    cy.nav("cluster", "core").should("be.visible");
+    cy.nav("topic", "html-structure").should("be.visible");
+    cy.nav("topic", "html-structure").should(($el) => {
+      const asideBox = Cypress.$("#handbook-nav-aside")[0].getBoundingClientRect();
+      const box = $el[0].getBoundingClientRect();
+      expect(box.top).to.be.gte(asideBox.top - 1);
+      expect(box.bottom).to.be.lt(asideBox.top + 220);
+    });
+    cy.nav("cluster", "core").should(($core) => {
+      const structure = Cypress.$(
+        '#handbook-sidebar [data-nav="topic"][data-nav-id="html-structure"]',
+      )[0];
+      expect(structure.getBoundingClientRect().top).to.be.gte(
+        $core[0].getBoundingClientRect().bottom - 1,
+      );
+    });
+  });
+
   it("keeps Forms in the sidebar view when Structure collapses", () => {
     cy.viewport(1280, 560);
     cy.visit("/frontend/html-structure#doctype");

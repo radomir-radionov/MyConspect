@@ -287,6 +287,8 @@ export function TopicRow({
       ? concepts.length > 0
       : openTopicHref === topic.href;
   const onPath = !searching && active;
+  const foldOpen = topicOpen && concepts.length > 0;
+  const pinInParent = onPath && !foldOpen;
 
   if (hideTitle) {
     if (concepts.length === 0) {
@@ -296,13 +298,13 @@ export function TopicRow({
   }
 
   return (
-    <li>
+    <li data-nav-pin={pinInParent ? navKind : undefined}>
       <Link
         href={topic.href}
         scroll={false}
         data-nav={navKind}
         data-nav-id={navId ?? topic.slug}
-        data-nav-path={onPath ? "true" : undefined}
+        data-nav-path={onPath && !pinInParent ? "true" : undefined}
         onClick={(event) => {
           pinNav(event.currentTarget);
           if (pathname === topic.href) {
@@ -318,7 +320,7 @@ export function TopicRow({
         data-search-hit={isFirstTopic ? "true" : undefined}
         aria-current={active ? "page" : undefined}
         aria-expanded={topicOpen}
-        className={rowClass(isHitTopic || active || topicOpen, onPath)}
+        className={rowClass(isHitTopic || active || topicOpen, onPath && !pinInParent)}
       >
         <RowTitle text={topic.title} query={query} marker={compact} open={topicOpen} />
         {compact ? (topicOpen ? <NavChevron open /> : null) : <NavChevron open={topicOpen} large />}
@@ -370,15 +372,16 @@ export function ClusterRow({
   const isHitCluster = first?.pathname === subjectPath && first.hash === `#${cluster.id}`;
   const onPath =
     !searching && (active || cluster.topics.some((topic) => topic.href === pathname));
+  const pinInParent = onPath && !clusterOpen;
 
   return (
-    <li>
+    <li data-nav-pin={pinInParent ? "cluster" : undefined}>
       <Link
         href={cluster.href}
         scroll={false}
         data-nav="cluster"
         data-nav-id={cluster.id}
-        data-nav-path={onPath ? "true" : undefined}
+        data-nav-path={onPath && !pinInParent ? "true" : undefined}
         onClick={(event) => {
           pinNav(event.currentTarget);
           if (onHub) {
@@ -403,7 +406,7 @@ export function ClusterRow({
         data-search-hit={isHitCluster ? "true" : undefined}
         aria-current={active ? "location" : undefined}
         aria-expanded={clusterOpen}
-        className={rowClass(isHitCluster || active || clusterOpen, onPath)}
+        className={rowClass(isHitCluster || active || clusterOpen, onPath && !pinInParent)}
       >
         <RowTitle text={cluster.title} query={query} marker open={clusterOpen} />
         {clusterOpen ? <NavChevron open /> : null}
