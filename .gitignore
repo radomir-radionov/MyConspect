@@ -46,6 +46,7 @@ yarn-error.log*
 
 # generated source audits
 /reports
+/scripts/audit.ts
 
 # typescript
 *.tsbuildinfo
