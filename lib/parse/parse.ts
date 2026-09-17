@@ -311,6 +311,46 @@ async function renderInterviewItem(block: ConceptBlock): Promise<string> {
   return `<details><summary>${escapeHtml(block.title)}</summary>\n${inner}\n</details>`;
 }
 
+function normalizeConceptTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[`*_~]/g, "")
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function detailsSummaryTitles(markdown: string): Set<string> {
+  const titles = new Set<string>();
+  for (const match of markdown.matchAll(/<summary>\s*([\s\S]*?)\s*<\/summary>/gi)) {
+    const title = stripMd(match[1].replace(/<[^>]+>/g, ""));
+    if (title) {
+      titles.add(normalizeConceptTitle(title));
+    }
+  }
+  return titles;
+}
+
+function isDetailsBlockStart(markdown: string, start: number): boolean {
+  return /^<details\b/i.test(markdown.slice(start).trimStart());
+}
+
+function dropDuplicateHeadingStubs(
+  markdown: string,
+  blocks: readonly LocatedBlock[],
+): LocatedBlock[] {
+  const detailsTitles = detailsSummaryTitles(markdown);
+  if (detailsTitles.size === 0) {
+    return [...blocks];
+  }
+  return blocks.filter((block) => {
+    if (isDetailsBlockStart(markdown, block.start)) {
+      return true;
+    }
+    return !detailsTitles.has(normalizeConceptTitle(block.title));
+  });
+}
+
 function collectLocatedBlocks(markdown: string): LocatedBlock[] {
   const lower = markdown.toLowerCase();
   const blocks: LocatedBlock[] = [];
@@ -367,7 +407,7 @@ function collectLocatedBlocks(markdown: string): LocatedBlock[] {
   }
 
   flushHeading();
-  return blocks;
+  return dropDuplicateHeadingStubs(markdown, blocks);
 }
 
 function uniqueId(base: string, used: Set<string>): string {

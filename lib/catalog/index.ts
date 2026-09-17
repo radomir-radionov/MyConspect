@@ -86,10 +86,10 @@ export const SUBJECTS: readonly Subject[] = [
   {
     slug: "html",
     title: "HTML",
-    blurb: "Document structure, rendering, forms, a11y, and SEO.",
+    blurb: "Document structure, semantics, rendering, forms, a11y, and SEO.",
     track: "frontend",
     clusters: [
-      { id: "core", title: "Core", blurb: "Structure, forms, and media." },
+      { id: "core", title: "Core", blurb: "Structure, semantics, forms, and media." },
       { id: "browser", title: "Browser", blurb: "Rendering pipeline and performance." },
       { id: "additional", title: "Additional", blurb: "Accessibility, SEO, advanced APIs, and interview." },
     ],
@@ -269,7 +269,8 @@ function grouped(
 }
 
 export const TOPICS: readonly Topic[] = [
-  grouped("html-structure", "1_html_structure.md", "Structure", "Document structure, semantics, elements, and attributes.", "frontend", "html", "core"),
+  grouped("html-structure", "1_html_structure.md", "Structure", "Document skeleton, metadata, elements, and attributes.", "frontend", "html", "core"),
+  grouped("html-semantics", "1_html_semantics.md", "Semantics", "Landmarks, headings, lists, and phrasing elements that carry meaning.", "frontend", "html", "core"),
   grouped("html-forms", "1_html_forms.md", "Forms", "Form controls, validation, dialog, and accessible form patterns.", "frontend", "html", "core"),
   grouped("html-media", "1_html_media.md", "Media", "Images, picture, audio, video, canvas, and SVG.", "frontend", "html", "core"),
   grouped("html-rendering", "1_html_rendering.md", "Rendering", "URL to pixels: parse, CSSOM, render tree, layout, paint, composite.", "frontend", "html", "browser"),

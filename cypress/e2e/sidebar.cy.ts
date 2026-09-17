@@ -113,9 +113,9 @@ describe("handbook sidebar", () => {
 
   it("keeps Forms in the sidebar view when Structure collapses", () => {
     cy.viewport(1280, 560);
-    cy.visit("/frontend/html-structure#heading-hierarchy");
+    cy.visit("/frontend/html-structure#doctype");
     cy.nav("topic", "html-structure").should("have.attr", "aria-expanded", "true");
-    cy.sidebar().contains("Heading hierarchy").should("be.visible");
+    cy.sidebar().contains("DOCTYPE").should("be.visible");
 
     cy.get("#handbook-nav-aside").then(($aside) => {
       const aside = $aside[0];
@@ -150,8 +150,8 @@ describe("handbook sidebar", () => {
 
   it("does not jump the main pane when opening a concept in the page list", () => {
     cy.visit("/frontend/react-core");
-    cy.get("#tooling > summary").click({ scrollBehavior: false });
-    cy.get("#tooling").should("have.prop", "open", true);
+    cy.get("#jsx > summary").click({ scrollBehavior: false, force: true });
+    cy.get("#jsx").should("have.prop", "open", true);
 
     cy.get("#react > summary").then(($summary) => {
       const main = Cypress.$("#handbook-main")[0];
@@ -165,9 +165,9 @@ describe("handbook sidebar", () => {
         $summary[0].getBoundingClientRect().top - main.getBoundingClientRect().top;
       expect(before).to.be.within(80, 400);
 
-      cy.wrap($summary).click({ scrollBehavior: false });
+      cy.wrap($summary).click({ scrollBehavior: false, force: true });
       cy.get("#react").should("have.prop", "open", true);
-      cy.get("#tooling").should("have.prop", "open", false);
+      cy.get("#jsx").should("have.prop", "open", false);
       cy.get("#react > summary").should(($el) => {
         const after =
           $el[0].getBoundingClientRect().top - main.getBoundingClientRect().top;

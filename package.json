@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "check-conspect": "tsx scripts/audit.ts",
+    "check-order": "tsx scripts/order-audit.ts",
+    "reorder-concepts": "tsx scripts/reorder-concepts.ts",
     "start:e2e": "next start -p 3456",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
