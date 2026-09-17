@@ -49,7 +49,9 @@ function parseArgs(argv: string[]): CliOptions {
         const value = argv[i + 1];
         i += 1;
         if (!value || !isTrackId(value)) {
-          throw new Error(`--track must be one of: frontend, backend, system-design, algorithms, ai, other`);
+          throw new Error(
+            `--track must be one of: frontend, backend, system-design, algorithms, data-structures, ai, other`,
+          );
         }
         track = value;
         break;

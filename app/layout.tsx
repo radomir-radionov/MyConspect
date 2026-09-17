@@ -4,6 +4,10 @@ import { HandbookShell } from "@/components/nav";
 import { handbookNav } from "@/lib/nav/handbook";
 import { CHROME } from "@/lib/nav";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
+import {
+  formatSiteLastUpdated,
+  siteLastUpdatedIso,
+} from "@/lib/siteLastUpdated";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,13 +29,20 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const lastUpdatedIso = siteLastUpdatedIso();
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full overflow-hidden antialiased`}
     >
       <body className="h-full overflow-hidden bg-zinc-50 font-sans text-zinc-900">
-        <HandbookShell groups={handbookNav()} chrome={CHROME}>
+        <HandbookShell
+          groups={handbookNav()}
+          chrome={CHROME}
+          lastUpdatedIso={lastUpdatedIso}
+          lastUpdatedLabel={formatSiteLastUpdated(lastUpdatedIso)}
+        >
           {children}
         </HandbookShell>
       </body>

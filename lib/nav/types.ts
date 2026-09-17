@@ -52,6 +52,16 @@ export type NavGroup = {
   readonly leafTopic?: NavTopic;
 };
 
+export type Crumb = {
+  readonly label: string;
+  readonly href?: string;
+};
+
+export type HashCrumb = {
+  readonly id: string;
+  readonly label: string;
+};
+
 export type ChromeCopy = {
   readonly searchPlaceholder: string;
   readonly searchNotesPlaceholder: string;
@@ -66,5 +76,8 @@ export type ChromeCopy = {
   readonly openMenu: string;
   readonly closeMenu: string;
   readonly instructions: string;
-  readonly back: string;
+  readonly home: string;
+  readonly breadcrumbs: string;
+  readonly lastUpdated: string;
+  readonly scrollToTop: string;
 };

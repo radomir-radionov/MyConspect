@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { BackLink, ClusterCardSections } from "@/components/catalog";
+import { Breadcrumbs, ClusterCardSections } from "@/components/catalog";
 import { ConceptList } from "@/components/topic";
 import {
   getSubject,
   getTrack,
   isInterviewTopic,
   subjectClusterCards,
+  subjectHref,
+  topicHref,
   topicRouteParams,
 } from "@/lib/catalog";
-import { backToLabel } from "@/lib/nav";
+import { subjectCrumbs, topicCrumbs } from "@/lib/nav";
 import { loadTopicPage } from "@/lib/parse";
 
 export const dynamicParams = false;
@@ -49,7 +51,14 @@ export default async function TopicPage({ params }: PageProps<"/[track]/[topic]"
   if (subject && track) {
     return (
       <main className="w-full max-w-5xl px-4 py-10 sm:px-6">
-        <BackLink href={`/${track.id}`} label={backToLabel(track.title)} />
+        <Breadcrumbs
+          items={subjectCrumbs(subject)}
+          pageHref={subjectHref(subject)}
+          hashCrumbs={subject.clusters.map((cluster) => ({
+            id: cluster.id,
+            label: cluster.title,
+          }))}
+        />
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{subject.title}</h1>
         <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600">{subject.blurb}</p>
         <ClusterCardSections sections={subjectClusterCards(subject)} />
@@ -64,6 +73,14 @@ export default async function TopicPage({ params }: PageProps<"/[track]/[topic]"
 
   return (
     <main className="w-full max-w-3xl px-4 py-10 sm:px-6">
+      <Breadcrumbs
+        items={topicCrumbs(loaded.topic)}
+        pageHref={topicHref(loaded.topic)}
+        hashCrumbs={loaded.parsed.concepts.map((concept) => ({
+          id: concept.id,
+          label: concept.title,
+        }))}
+      />
       <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
         {loaded.parsed.title}
       </h1>

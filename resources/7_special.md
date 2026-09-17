@@ -1,10 +1,10 @@
 # Paradigms & security — hub
 
-Paradigms, architecture, SOLID, testing, and web attacks. Theory lives in the topic files below. Algorithms have their own track.
+Paradigms, architecture, SOLID, testing, and web attacks. Theory lives in the topic files below. Algorithms and data structures have their own tracks.
 
 ### Related docs
 
-[Paradigms](./7_special_paradigms.md) · [Architecture patterns](./7_special_architecture.md) · [Engineering](./7_special_engineering.md) · [Web security](./7_special_security.md) · [Paradigms — Interview](./7_special_interview.md) · [Algorithms](./7_special_algorithms.md)
+[Paradigms](./7_special_paradigms.md) · [Architecture patterns](./7_special_architecture.md) · [Engineering](./7_special_engineering.md) · [Web security](./7_special_security.md) · [Paradigms — Interview](./7_special_interview.md) · [Algorithms](./7_special_algorithms.md) · [Data structures](./7_special_data_structures.md)
 
 ### Navigation
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { BackLink, CardGrid, ClusterCardSections } from "@/components/catalog";
+import { Breadcrumbs, CardGrid, ClusterCardSections } from "@/components/catalog";
 import { ConceptList } from "@/components/topic";
 import {
   TRACKS,
@@ -10,10 +10,12 @@ import {
   leafTopicForTrack,
   subjectClusterCards,
   subjectForTrack,
+  subjectHref,
   trackBrowseCards,
+  trackHref,
+  topicHref,
 } from "@/lib/catalog";
-import { backToLabel } from "@/lib/nav";
-import { SITE_NAME } from "@/lib/site";
+import { subjectCrumbs, trackCrumbs } from "@/lib/nav";
 import { loadParsedTopic } from "@/lib/parse";
 
 export const dynamicParams = false;
@@ -67,7 +69,14 @@ export default async function TrackPage({ params }: PageProps<"/[track]">) {
   if (subject) {
     return (
       <main className="w-full max-w-5xl px-4 py-10 sm:px-6">
-        <BackLink href="/" label={backToLabel(SITE_NAME)} />
+        <Breadcrumbs
+          items={subjectCrumbs(subject)}
+          pageHref={subjectHref(subject)}
+          hashCrumbs={subject.clusters.map((cluster) => ({
+            id: cluster.id,
+            label: cluster.title,
+          }))}
+        />
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{subject.title}</h1>
         <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600">{subject.blurb}</p>
         <ClusterCardSections sections={subjectClusterCards(subject)} />
@@ -80,6 +89,14 @@ export default async function TrackPage({ params }: PageProps<"/[track]">) {
     const parsed = await loadParsedTopic(leaf);
     return (
       <main className="w-full max-w-3xl px-4 py-10 sm:px-6">
+        <Breadcrumbs
+          items={trackCrumbs(track)}
+          pageHref={leaf ? topicHref(leaf) : trackHref(track.id)}
+          hashCrumbs={parsed.concepts.map((concept) => ({
+            id: concept.id,
+            label: concept.title,
+          }))}
+        />
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{parsed.title}</h1>
         <p className="mt-3 text-base leading-7 text-zinc-600">{parsed.description}</p>
         <p className="mt-2 text-sm text-zinc-500">
@@ -98,7 +115,7 @@ export default async function TrackPage({ params }: PageProps<"/[track]">) {
 
   return (
     <main className="w-full max-w-5xl px-4 py-10 sm:px-6">
-      <BackLink href="/" label={backToLabel(SITE_NAME)} />
+      <Breadcrumbs items={trackCrumbs(track)} />
       <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{track.title}</h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600">{track.description}</p>
       <div className="mt-8">

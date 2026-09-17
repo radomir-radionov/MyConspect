@@ -30,22 +30,31 @@ describe("handbook sidebar", () => {
     cy.nav("subject", "database").should("be.visible");
   });
 
-  it("keeps Additional open when opening it from Algorithms Core", () => {
+  it("keeps Patterns open when opening it from Algorithms Core", () => {
     cy.visit("/algorithms/algorithms-core#time-vs-space-complexity");
     cy.nav("track", "algorithms").should("have.attr", "aria-expanded", "true");
     cy.nav("cluster", "core").should("have.attr", "aria-expanded", "true");
     cy.sidebar().contains("Time vs space complexity").should("be.visible");
 
-    cy.nav("cluster", "additional").click();
+    cy.nav("cluster", "patterns").click();
 
-    cy.nav("cluster", "additional").should("have.attr", "aria-expanded", "true");
+    cy.nav("cluster", "patterns").should("have.attr", "aria-expanded", "true");
     cy.sidebar().contains("Patterns").should("be.visible");
-    cy.sidebar().contains("Data structures").should("be.visible");
     cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
     cy.nav("cluster", "algorithms").should("have.attr", "aria-expanded", "false");
     cy.nav("track", "algorithms").should("have.attr", "aria-expanded", "true");
     cy.url().should("include", "/algorithms");
-    cy.url().should("include", "additional");
+    cy.url().should("include", "patterns");
+  });
+
+  it("opens Data Structures as its own track from Algorithms", () => {
+    cy.visit("/algorithms");
+    cy.nav("track", "data-structures").click();
+
+    cy.location("pathname").should("eq", "/data-structures");
+    cy.contains("h1", "Data Structures");
+    cy.nav("track", "data-structures").should("have.attr", "aria-expanded", "true");
+    cy.sidebar().contains("Choosing a data structure").should("be.visible");
   });
 
   it("opens Paradigms & security instead of sending Other to Algorithms", () => {
@@ -61,26 +70,26 @@ describe("handbook sidebar", () => {
     cy.sidebar().contains("Web security").should("be.visible");
   });
 
-  it("opens Additional from the Algorithms hub without collapsing the track", () => {
+  it("opens Patterns from the Algorithms hub without collapsing the track", () => {
     cy.visit("/algorithms");
     cy.nav("track", "algorithms").should("have.attr", "aria-expanded", "true");
-    cy.nav("cluster", "additional").click();
+    cy.nav("cluster", "patterns").click();
 
-    cy.nav("cluster", "additional").should("have.attr", "aria-expanded", "true");
+    cy.nav("cluster", "patterns").should("have.attr", "aria-expanded", "true");
     cy.sidebar().contains("Patterns").should("be.visible");
     cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
     cy.nav("track", "algorithms").should("have.attr", "aria-expanded", "true");
   });
 
-  it("switches from Additional back to Core on the Algorithms hub", () => {
-    cy.visit("/algorithms#additional");
-    cy.nav("cluster", "additional").should("have.attr", "aria-expanded", "true");
+  it("switches from Patterns back to Core on the Algorithms hub", () => {
+    cy.visit("/algorithms#patterns");
+    cy.nav("cluster", "patterns").should("have.attr", "aria-expanded", "true");
 
     cy.nav("cluster", "core").click();
 
     cy.nav("cluster", "core").should("have.attr", "aria-expanded", "true");
     cy.sidebar().contains("Algorithm").should("be.visible");
-    cy.nav("cluster", "additional").should("have.attr", "aria-expanded", "false");
+    cy.nav("cluster", "patterns").should("have.attr", "aria-expanded", "false");
   });
 
   it("toggles the same hub cluster closed on a second click", () => {
@@ -171,6 +180,26 @@ describe("handbook sidebar", () => {
         expect(box.top).to.be.gte(asideBox.top - 1);
         expect(box.top).to.be.lt(asideBox.bottom);
       });
+    });
+  });
+
+  it("sticks the active path to the top of the sidebar when scrolled away", () => {
+    cy.viewport(1280, 560);
+    cy.visit("/frontend/js-browser-extra");
+    cy.nav("topic", "js-browser-extra").should("have.attr", "aria-expanded", "true");
+
+    cy.get("#handbook-nav-aside").scrollTo("bottom");
+
+    cy.nav("track", "frontend").should("be.visible");
+    cy.nav("subject", "javascript").should("be.visible");
+    cy.nav("cluster", "browser").should("be.visible");
+    cy.nav("topic", "js-browser-extra").should("be.visible");
+    cy.nav("cluster", "core").should("not.be.visible");
+    cy.nav("topic", "js-browser-extra").should(($el) => {
+      const asideBox = Cypress.$("#handbook-nav-aside")[0].getBoundingClientRect();
+      const box = $el[0].getBoundingClientRect();
+      expect(box.top).to.be.gte(asideBox.top - 1);
+      expect(box.bottom).to.be.lt(asideBox.top + 180);
     });
   });
 
@@ -267,5 +296,18 @@ describe("handbook sidebar", () => {
     cy.location("hash").should("match", /debounc/i);
     cy.get("#handbook-sidebar [data-search-in='notes']").should("contain", "resize ended");
     cy.get("#handbook-main mark").should("contain", "resize ended");
+  });
+
+  it("shows the last updated day, month, and year next to contact links", () => {
+    cy.visit("/");
+    cy.get("nav[aria-label='Contact']").should("be.visible");
+    cy.contains("Last updated")
+      .closest("time")
+      .should("have.attr", "datetime")
+      .and("match", /^\d{4}-\d{2}-\d{2}$/);
+    cy.contains("Last updated")
+      .closest("time")
+      .invoke("text")
+      .should("match", /\d{1,2} [A-Z][a-z]+ \d{4}/);
   });
 });

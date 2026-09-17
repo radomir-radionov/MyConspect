@@ -27,7 +27,7 @@ export function useReducedMotion() {
 const FOLD_GRID =
   "grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none";
 const FOLD_INNER =
-  "min-h-0 overflow-hidden transition-opacity duration-200 ease-out motion-reduce:transition-none";
+  "min-h-0 transition-opacity duration-200 ease-out motion-reduce:transition-none";
 
 export function NavFold({
   open,
@@ -85,7 +85,7 @@ export function NavFold({
   return (
     <div className={`${FOLD_GRID} ${expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
       <div
-        className={`${FOLD_INNER} ${expanded ? "opacity-100" : "opacity-0"}`}
+        className={`${FOLD_INNER} ${expanded ? "overflow-visible opacity-100" : "overflow-hidden opacity-0"}`}
         inert={!expanded}
       >
         {children}

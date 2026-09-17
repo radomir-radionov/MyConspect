@@ -6,7 +6,7 @@ Algorithm basics and complexity analysis.
 
 ### Related docs
 
-* [Algorithms — Big O](./7_special_algorithms_core.md) · [Algorithms — Common](./7_special_algorithms_common.md) · [Algorithms — Patterns](./7_special_algorithms_patterns.md) · [Algorithms — Data structures](./7_special_algorithms_data.md) · [Paradigms](./7_special_paradigms.md) · [Engineering](./7_special_engineering.md)
+* [Algorithms — Big O](./7_special_algorithms_core.md) · [Algorithms — Common](./7_special_algorithms_common.md) · [Algorithms — Patterns](./7_special_algorithms_patterns.md) · [Data structures](./7_special_data_structures.md) · [Paradigms](./7_special_paradigms.md) · [Engineering](./7_special_engineering.md)
 
 ### Sections
 
@@ -73,14 +73,47 @@ Big O describes how **time** or **space** grows relative to input size `n` — w
 **Examples:**
 
 ```js
-// O(n) — one pass
+// O(1) — constant: index / hash lookup, independent of n
+const first = arr[0];
+map.get(key);
+
+// O(log n) — logarithmic: halved search space each step (sorted input)
+function binarySearch(arr, target) {
+  let lo = 0;
+  let hi = arr.length - 1;
+  while (lo <= hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) lo = mid + 1;
+    else hi = mid - 1;
+  }
+  return -1;
+}
+
+// O(n) — linear: one pass
 function sum(arr) {
   let total = 0;
   for (const x of arr) total += x;
   return total;
 }
 
-// O(n²) — nested loops
+// O(n log n) — linearithmic: split in half, then linear merge (merge sort)
+function merge(left, right) {
+  const out = [];
+  let i = 0;
+  let j = 0;
+  while (i < left.length && j < right.length) {
+    out.push(left[i] <= right[j] ? left[i++] : right[j++]);
+  }
+  return out.concat(left.slice(i), right.slice(j));
+}
+function mergeSort(arr) {
+  if (arr.length <= 1) return arr;
+  const mid = Math.floor(arr.length / 2);
+  return merge(mergeSort(arr.slice(0, mid)), mergeSort(arr.slice(mid)));
+}
+
+// O(n²) — quadratic: nested loops
 function pairs(arr) {
   const result = [];
   for (let i = 0; i < arr.length; i++)
@@ -88,13 +121,27 @@ function pairs(arr) {
       result.push([arr[i], arr[j]]);
   return result;
 }
+
+// O(2ⁿ) — exponential: each call branches into two (naive Fibonacci)
+function fib(n) {
+  if (n <= 1) return n;
+  return fib(n - 1) + fib(n - 2);
+}
+
+// O(n!) — factorial: all orderings of n items
+function permutations(items) {
+  if (items.length <= 1) return [items];
+  return items.flatMap((x, i) =>
+    permutations([...items.slice(0, i), ...items.slice(i + 1)]).map((rest) => [x, ...rest]),
+  );
+}
 ```
 
 **Thoughts:** Also know **best** and **average** case. Quick sort: avg O(n log n), worst O(n²). Space complexity matters for recursion depth and auxiliary arrays.
 
 **Sources:**
 
-[ByteByteGo Big O](https://blog.bytebytego.com/p/ep132-big-o-notation-101-the-secret)
+[ByteByteGo Big O](https://blog.bytebytego.com/p/ep132-big-o-notation-101-the-secret) · [Khan Academy — Big-O](https://www.khanacademy.org/computing/computer-science/algorithms/asymptotic-notation/a/big-o-notation) · [javascript-algorithms](https://github.com/trekhleb/javascript-algorithms)
 
 ---
 

@@ -1,16 +1,18 @@
 "use client";
 
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useSyncExternalStore, type Dispatch, type SetStateAction } from "react";
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useState, useSyncExternalStore, type CSSProperties, type Dispatch, type SetStateAction } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HighlightedText, useSearchMode } from "@/components/search";
-import { HANDBOOK_SIDEBAR_ID, NAV_FOLD_MS } from "@/constants";
+import { HANDBOOK_NAV_ASIDE_ID, HANDBOOK_SIDEBAR_ID, NAV_FOLD_MS } from "@/constants";
 import { searchNav, splitHref, type ChromeCopy, type NavEntry, type NavGroup } from "@/lib/nav";
 import type { TrackId } from "@/lib/catalog";
 import { NavChevron, NavFold } from "./NavFold";
+import { NavGuide } from "./NavGuide";
 import { getHash, getServerHash, subscribeHash } from "./hash";
 import { isActiveHref, isActiveTrack } from "./location";
 import { pinNavElement, restoreSidebarPin, scrollSidebarHit } from "./sidebarPin";
+import { measureStickyCover, measureStickyPathVars, type StickyVars } from "./sidebarSticky";
 import { SidebarNavProvider, closeNavSoon, trackHeaderClass } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
 import { useSidebarOpen } from "./useSidebarOpen";
@@ -57,14 +59,55 @@ export const TopicSidebar = memo(function TopicSidebar({
   const pinNav = useCallback((element: HTMLElement) => {
     pinNavElement(element);
   }, []);
+  const [stickyVars, setStickyVars] = useState<StickyVars>({});
 
   useLayoutEffect(() => {
     restoreSidebarPin();
-  }, [openTopicHref, openClusterKey, pathname, hash]);
+  }, [openTopicHref, openClusterKey, openSubjectHref, pathname, hash, searching, query]);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => restoreSidebarPin());
-    const later = window.setTimeout(restoreSidebarPin, NAV_FOLD_MS + 20);
+    const update = () => setStickyVars(measureStickyPathVars());
+    update();
+    const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
+    const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
+    const observer = nav ? new ResizeObserver(update) : null;
+    if (nav) {
+      observer?.observe(nav);
+    }
+    let frame = 0;
+    const onScroll = () => {
+      if (frame !== 0) {
+        return;
+      }
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const cover = `${measureStickyCover()}px`;
+        setStickyVars((current) =>
+          current["--nav-sticky-cover"] === cover
+            ? current
+            : { ...current, "--nav-sticky-cover": cover },
+        );
+      });
+    };
+    scroller?.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
+    const later = window.setTimeout(update, NAV_FOLD_MS + 20);
+    return () => {
+      observer?.disconnect();
+      scroller?.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", update);
+      window.clearTimeout(later);
+      window.cancelAnimationFrame(frame);
+    };
+  }, [openTopicHref, openClusterKey, openSubjectHref, pathname, hash, searching, query]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      restoreSidebarPin();
+    });
+    const later = window.setTimeout(() => {
+      restoreSidebarPin();
+    }, NAV_FOLD_MS + 20);
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(later);
@@ -133,7 +176,13 @@ export const TopicSidebar = memo(function TopicSidebar({
 
   return (
     <SidebarNavProvider value={navValue}>
-      <nav id={HANDBOOK_SIDEBAR_ID} aria-label={chrome.topicsNav} className="px-2 py-3">
+      <nav
+        id={HANDBOOK_SIDEBAR_ID}
+        aria-label={chrome.topicsNav}
+        className="relative isolate px-2 py-3"
+        style={Object.keys(stickyVars).length > 0 ? (stickyVars as CSSProperties) : undefined}
+      >
+        <div data-nav-sticky-cover="" aria-hidden="true" />
         {filtered.length === 0 ? (
           <p className="px-2 text-sm text-zinc-500">
             {mode === "notes" ? chrome.searchNotesEmpty : chrome.searchEmpty}
@@ -183,7 +232,8 @@ function TrackGroup({
   const trackActive = isActiveHref(pathname, group.href);
   const onThisTrack = isActiveTrack(pathname, group.href);
   const trackOpen = searching || openTrackId === group.id;
-  const headerClass = trackHeaderClass(onThisTrack || trackOpen);
+  const onPath = !searching && onThisTrack;
+  const headerClass = trackHeaderClass(onThisTrack || trackOpen, onPath);
   const title = (
     <HighlightedText text={group.title} query={query} className="min-w-0 flex-1" />
   );
@@ -198,6 +248,7 @@ function TrackGroup({
           aria-expanded={trackOpen}
           data-nav="track"
           data-nav-id={group.id}
+          data-nav-path={onPath ? "true" : undefined}
           onClick={() => {
             if (!searching) {
               setOpenTrackId((current) => (current === group.id ? null : group.id));
@@ -214,6 +265,7 @@ function TrackGroup({
           href={group.href}
           data-nav="track"
           data-nav-id={group.id}
+          data-nav-path={onPath ? "true" : undefined}
           onClick={() => {
             setOpenTrackId(group.id);
             closeNavSoon(onNavigate);
@@ -229,7 +281,8 @@ function TrackGroup({
         </Link>
       )}
       <NavFold open={trackOpen} instant={searching}>
-        <ul className="mt-1 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2">
+        <ul className="mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2">
+          <NavGuide level="track" />
           {isLeafTrack && group.leafTopic ? (
             <TopicRow topic={group.leafTopic} hideTitle />
           ) : (

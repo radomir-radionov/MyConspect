@@ -3,6 +3,7 @@ export const TRACK_IDS = [
   "backend",
   "system-design",
   "algorithms",
+  "data-structures",
   "ai",
   "other",
 ] as const;
@@ -68,7 +69,12 @@ export const TRACKS: readonly Track[] = [
   {
     id: "algorithms",
     title: "Algorithms",
-    description: "Big O, common algorithms, interview patterns, and data structures.",
+    description: "Big O, common algorithms, and interview patterns.",
+  },
+  {
+    id: "data-structures",
+    title: "Data Structures",
+    description: "Arrays, trees, graphs, heaps, and structure selection.",
   },
   {
     id: "ai",
@@ -217,12 +223,12 @@ export const SUBJECTS: readonly Subject[] = [
   {
     slug: "algorithms",
     title: "Algorithms",
-    blurb: "Big O, common algorithms, interview patterns, and data structures.",
+    blurb: "Big O, common algorithms, and interview patterns.",
     track: "algorithms",
     clusters: [
       { id: "core", title: "Core", blurb: "Big O and algorithm fundamentals." },
       { id: "algorithms", title: "Algorithms", blurb: "Sorting, search, and graph algorithms." },
-      { id: "additional", title: "Additional", blurb: "Interview patterns and data structures." },
+      { id: "patterns", title: "Patterns", blurb: "Two pointers, sliding window, and greedy vs DP." },
     ],
   },
   {
@@ -263,6 +269,7 @@ const HUB_HREFS: Readonly<Record<string, string>> = {
   "0_git.md": "/other/git",
   "0_system_design.md": "/system-design",
   "7_special_algorithms.md": "/algorithms",
+  "7_special_data_structures.md": "/data-structures",
   "7_special.md": "/other/paradigms",
   "10_build.md": "/other/build",
 };
@@ -441,17 +448,15 @@ export const TOPICS: readonly Topic[] = [
     "Two pointers, sliding window, and greedy vs DP decisions.",
     "algorithms",
     "algorithms",
-    "additional",
+    "patterns",
   ),
-  grouped(
-    "algorithms-data",
-    "7_special_algorithms_data.md",
-    "Data structures",
-    "Arrays, trees, graphs, heaps, and structure selection.",
-    "algorithms",
-    "algorithms",
-    "additional",
-  ),
+  {
+    slug: "data-structures",
+    file: "7_special_algorithms_data.md",
+    title: "Data Structures",
+    blurb: "Arrays, trees, graphs, heaps, and structure selection.",
+    track: "data-structures",
+  },
   {
     slug: "vscode-devtools",
     file: "11_vsc_browser.md",

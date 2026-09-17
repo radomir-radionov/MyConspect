@@ -1,6 +1,6 @@
 # Algorithms — hub
 
-Big O, common algorithms, interview patterns, and data structures. Theory lives in the topic files below.
+Big O, common algorithms, and interview patterns. Theory lives in the topic files below.
 
 [← Back to hub](./7_special.md)
 
@@ -15,14 +15,14 @@ Big O, common algorithms, interview patterns, and data structures. Theory lives 
 | [Algorithms — Big O](./7_special_algorithms_core.md) | Algorithm basics and complexity analysis. |
 | [Algorithms — Common](./7_special_algorithms_common.md) | Sorting, search, graph traversal, and classic choices. |
 | [Algorithms — Patterns](./7_special_algorithms_patterns.md) | Two pointers, sliding window, and interview patterns. |
-| [Algorithms — Data structures](./7_special_algorithms_data.md) | Arrays, trees, graphs, heaps, and structure selection. |
+| [Data structures](./7_special_data_structures.md) | Arrays, trees, graphs, heaps, and structure selection. |
 
 ### Sections
 
 - [Algorithms & Big O](./7_special_algorithms_core.md)
 - [Common algorithms](./7_special_algorithms_common.md)
 - [Interview patterns](./7_special_algorithms_patterns.md)
-- [Data structures](./7_special_algorithms_data.md)
+- [Data structures](./7_special_data_structures.md)
 
 ---
 

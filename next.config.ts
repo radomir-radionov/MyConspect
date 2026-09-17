@@ -34,6 +34,11 @@ const nextConfig: NextConfig = {
         destination: "/ai",
         permanent: true,
       },
+      {
+        source: "/algorithms/algorithms-data",
+        destination: "/data-structures",
+        permanent: true,
+      },
     ];
   },
 };

@@ -6,7 +6,7 @@ Sorting, search, graph traversal, and classic algorithm choices.
 
 ### Related docs
 
-* [Algorithms — Big O](./7_special_algorithms_core.md) · [Algorithms — Common](./7_special_algorithms_common.md) · [Algorithms — Patterns](./7_special_algorithms_patterns.md) · [Algorithms — Data structures](./7_special_algorithms_data.md)
+* [Algorithms — Big O](./7_special_algorithms_core.md) · [Algorithms — Common](./7_special_algorithms_common.md) · [Algorithms — Patterns](./7_special_algorithms_patterns.md) · [Data structures](./7_special_data_structures.md)
 
 ### Sections
 

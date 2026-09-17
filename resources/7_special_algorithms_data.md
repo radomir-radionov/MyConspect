@@ -1,12 +1,12 @@
-# Algorithms — Data structures
+# Data structures
 
 Arrays, trees, graphs, heaps, and how to pick the right structure.
 
-[← Back to hub](./7_special_algorithms.md)
+[← Back to hub](./7_special_data_structures.md)
 
 ### Related docs
 
-* [Algorithms — Big O](./7_special_algorithms_core.md) · [Algorithms — Common](./7_special_algorithms_common.md) · [Algorithms — Patterns](./7_special_algorithms_patterns.md) · [Algorithms — Data structures](./7_special_algorithms_data.md) · [JavaScript — Document](./3_js_browser.md)
+* [Algorithms — Big O](./7_special_algorithms_core.md) · [Algorithms — Common](./7_special_algorithms_common.md) · [Algorithms — Patterns](./7_special_algorithms_patterns.md) · [Data structures](./7_special_algorithms_data.md) · [JavaScript — Document](./3_js_browser.md)
 
 ### Sections
 

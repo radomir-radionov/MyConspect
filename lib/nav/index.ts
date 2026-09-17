@@ -1,4 +1,5 @@
-export { CHROME, INSTRUCTIONS_HREF, backToLabel } from "./chrome";
+export { CHROME, INSTRUCTIONS_HREF } from "./chrome";
+export { crumbsWithActive, subjectCrumbs, topicCrumbs, trackCrumbs } from "./breadcrumbs";
 export {
   BODY_QUERY_MIN_LENGTH,
   conceptBodySnippet,
@@ -14,6 +15,8 @@ export {
 } from "./search";
 export type {
   ChromeCopy,
+  Crumb,
+  HashCrumb,
   InterviewSection,
   NavCluster,
   NavConcept,

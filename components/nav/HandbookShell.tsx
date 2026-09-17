@@ -8,16 +8,21 @@ import { TopicSidebar } from "./TopicSidebar";
 import { useHandbookSearch } from "./useHandbookSearch";
 import { useMobileNav } from "./useMobileNav";
 import { useRememberLocation } from "./useRememberLocation";
+import { ScrollToTopButton } from "./ScrollToTopButton";
 import { useResetMainScroll } from "./useResetMainScroll";
 import type { ChromeCopy, NavGroup } from "@/lib/nav";
 
 export function HandbookShell({
   groups,
   chrome,
+  lastUpdatedIso,
+  lastUpdatedLabel,
   children,
 }: {
   groups: readonly NavGroup[];
   chrome: ChromeCopy;
+  lastUpdatedIso: string;
+  lastUpdatedLabel: string;
   children: React.ReactNode;
 }) {
   const { navOpen, openNav, closeNav, toggleNav } = useMobileNav();
@@ -64,7 +69,7 @@ export function HandbookShell({
           >
             <div
               id={HANDBOOK_NAV_ASIDE_ID}
-              className="min-h-0 flex-1 overflow-y-auto"
+              className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto"
               style={{ overscrollBehavior: "contain" }}
             >
               <TopicSidebar
@@ -74,16 +79,26 @@ export function HandbookShell({
                 onNavigate={closeNav}
               />
             </div>
-            <div className="shrink-0 border-t border-zinc-200 px-2 py-1.5">
+            <div className="flex shrink-0 items-center justify-between gap-2 border-t border-zinc-200 px-2 py-1.5">
               <ContactLinks />
+              <time
+                dateTime={lastUpdatedIso}
+                className="pr-1 text-right text-[11px] leading-tight text-zinc-500"
+              >
+                <span className="block">{chrome.lastUpdated}</span>
+                <span className="tabular-nums text-zinc-600">
+                  {lastUpdatedLabel}
+                </span>
+              </time>
             </div>
           </aside>
           <div
             id={HANDBOOK_MAIN_ID}
-            className="min-w-0 flex-1"
+            className="relative min-w-0 flex-1"
             style={{ minHeight: 0, overflow: "auto", overscrollBehavior: "contain" }}
           >
             {children}
+            <ScrollToTopButton label={chrome.scrollToTop} />
           </div>
         </div>
       </div>
