@@ -412,6 +412,9 @@ export function reorderTopicMarkdown(topic: Topic, markdown: string): ReorderRes
     changes.push("Moved remaining overview stubs into the first section");
   } else if (movableStubs) {
     sectionChunks = [movableStubs];
+  } else if (sectionChunks.length === 0 && main.trim()) {
+    sectionChunks = [main.trim()];
+    changes.push("Preserved concept body without ## sections");
   }
 
   const pointerBlock = pointers.length > 0 ? `\n\n${pointers.join("\n\n")}\n` : "";

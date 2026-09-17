@@ -16,4 +16,9 @@ export const CHROME: ChromeCopy = {
   openMenu: "Open topics",
   closeMenu: "Close topics",
   instructions: "Instructions",
+  back: "Back",
 };
+
+export function backToLabel(title: string): string {
+  return `Back to ${title}`;
+}

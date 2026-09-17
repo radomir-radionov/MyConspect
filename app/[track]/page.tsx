@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CardGrid, ClusterCardSections } from "@/components/catalog";
+import { BackLink, CardGrid, ClusterCardSections } from "@/components/catalog";
 import { ConceptList } from "@/components/topic";
 import {
   TRACKS,
@@ -12,6 +12,8 @@ import {
   subjectForTrack,
   trackBrowseCards,
 } from "@/lib/catalog";
+import { backToLabel } from "@/lib/nav";
+import { SITE_NAME } from "@/lib/site";
 import { loadParsedTopic } from "@/lib/parse";
 
 export const dynamicParams = false;
@@ -65,6 +67,7 @@ export default async function TrackPage({ params }: PageProps<"/[track]">) {
   if (subject) {
     return (
       <main className="w-full max-w-5xl px-4 py-10 sm:px-6">
+        <BackLink href="/" label={backToLabel(SITE_NAME)} />
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{subject.title}</h1>
         <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600">{subject.blurb}</p>
         <ClusterCardSections sections={subjectClusterCards(subject)} />
@@ -95,6 +98,7 @@ export default async function TrackPage({ params }: PageProps<"/[track]">) {
 
   return (
     <main className="w-full max-w-5xl px-4 py-10 sm:px-6">
+      <BackLink href="/" label={backToLabel(SITE_NAME)} />
       <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{track.title}</h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600">{track.description}</p>
       <div className="mt-8">

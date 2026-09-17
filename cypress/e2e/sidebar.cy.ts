@@ -55,8 +55,10 @@ describe("handbook sidebar", () => {
     cy.location("pathname").should("eq", "/other/paradigms");
     cy.contains("h1", "Paradigms & security");
     cy.nav("subject", "paradigms").should("have.attr", "aria-expanded", "true");
+    cy.nav("cluster", "engineering").should("be.visible");
+    cy.nav("cluster", "additional").should("be.visible");
+    cy.nav("cluster", "additional").click();
     cy.sidebar().contains("Web security").should("be.visible");
-    cy.sidebar().contains("Engineering").should("be.visible");
   });
 
   it("opens Additional from the Algorithms hub without collapsing the track", () => {
@@ -256,14 +258,14 @@ describe("handbook sidebar", () => {
   it("finds a phrase inside concept notes in Notes mode", () => {
     cy.visit("/frontend/js-browser-extra");
     cy.get('[data-search-mode="notes"]').click();
-    cy.get('input[placeholder="Search in notes…"]').clear().type("resize layout");
+    cy.get('input[placeholder="Search in notes…"]').clear().type("resize ended");
     cy.wait(400);
     cy.sidebar().should(($nav) => {
       const text = $nav.text().toLowerCase();
       expect(text).to.contain("debounc");
     });
     cy.location("hash").should("match", /debounc/i);
-    cy.get("#handbook-sidebar [data-search-in='notes']").should("contain", "resize layout");
-    cy.get("#handbook-main mark").should("contain", "resize layout");
+    cy.get("#handbook-sidebar [data-search-in='notes']").should("contain", "resize ended");
+    cy.get("#handbook-main mark").should("contain", "resize ended");
   });
 });

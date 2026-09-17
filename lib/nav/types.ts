@@ -66,4 +66,5 @@ export type ChromeCopy = {
   readonly openMenu: string;
   readonly closeMenu: string;
   readonly instructions: string;
+  readonly back: string;
 };

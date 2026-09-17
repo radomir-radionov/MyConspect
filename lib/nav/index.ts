@@ -1,4 +1,4 @@
-export { CHROME, INSTRUCTIONS_HREF } from "./chrome";
+export { CHROME, INSTRUCTIONS_HREF, backToLabel } from "./chrome";
 export {
   BODY_QUERY_MIN_LENGTH,
   conceptBodySnippet,

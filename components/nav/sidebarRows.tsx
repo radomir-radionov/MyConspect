@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { HighlightedText } from "@/components/search";
@@ -167,28 +167,14 @@ function InterviewSectionNav({
   const groups = useMemo(() => interviewSectionGroups(concepts), [concepts]);
   const activeSection = concepts.find((concept) => concept.id === activeConceptId)?.interviewSection;
   const [openSections, setOpenSections] = useState<ReadonlySet<InterviewSection>>(
-    () => new Set(activeSection ? [activeSection] : ["questions"]),
+    () => new Set(["questions"]),
   );
-
-  useEffect(() => {
-    if (searching) {
-      setOpenSections(new Set(groups.map((group) => group.section)));
-      return;
-    }
-    if (activeSection) {
-      setOpenSections((current) => {
-        if (current.has(activeSection)) {
-          return current;
-        }
-        return new Set([...current, activeSection]);
-      });
-    }
-  }, [activeSection, groups, searching]);
 
   return (
     <>
       {groups.map((group) => {
-        const sectionOpen = searching || openSections.has(group.section);
+        const sectionOpen =
+          searching || activeSection === group.section || openSections.has(group.section);
         const sectionActive = activeSection === group.section;
         return (
           <li key={group.section}>

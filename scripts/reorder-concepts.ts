@@ -2,7 +2,7 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { TOPICS, isTrackId, type TrackId } from "../lib/catalog";
 import { auditTopicOrder, reorderTopicMarkdown } from "../lib/order";
-import { readTopicFile, resourcesDir } from "../lib/parse";
+import { collectConceptBlocks, readTopicFile, resourcesDir } from "../lib/parse";
 
 type CliOptions = {
   readonly track?: TrackId;
@@ -27,6 +27,14 @@ async function main(): Promise<void> {
     const current = readTopicFile(topic.file);
     const result = reorderTopicMarkdown(topic, current);
     const afterAudit = auditTopicOrder(topic, result.markdown);
+    const beforeCount = collectConceptBlocks(current).length;
+    const afterCount = collectConceptBlocks(result.markdown).length;
+    if (afterCount < beforeCount) {
+      process.stderr.write(
+        `\n${topic.file}\n  - skipped write: would drop concepts (${beforeCount} → ${afterCount})\n`,
+      );
+      continue;
+    }
     if (!result.changed) {
       continue;
     }
