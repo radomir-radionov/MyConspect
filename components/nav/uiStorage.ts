@@ -1,7 +1,5 @@
+import { SEARCH_QUERY_MAX_LENGTH, UI_STORAGE_KEY } from "@/constants";
 import { INSTRUCTIONS_HREF, splitHref, type NavGroup, type SearchMode } from "@/lib/nav";
-
-const STORAGE_KEY = "myconspect.ui";
-const QUERY_MAX = 200;
 
 export type StoredUi = {
   readonly query: string;
@@ -10,8 +8,43 @@ export type StoredUi = {
 };
 
 const EMPTY: StoredUi = { query: "", mode: "titles", href: "/" };
+const EMPTY_SEARCH = { query: EMPTY.query, mode: EMPTY.mode };
 
 let cache: StoredUi | null = null;
+let searchCache: { query: string; mode: SearchMode } = EMPTY_SEARCH;
+const listeners = new Set<() => void>();
+
+function emitUi() {
+  for (const listener of listeners) {
+    listener();
+  }
+}
+
+export function subscribeUi(onStoreChange: () => void) {
+  listeners.add(onStoreChange);
+  return () => {
+    listeners.delete(onStoreChange);
+  };
+}
+
+function searchSnapshot(ui: StoredUi) {
+  if (ui.query === EMPTY_SEARCH.query && ui.mode === EMPTY_SEARCH.mode) {
+    searchCache = EMPTY_SEARCH;
+    return searchCache;
+  }
+  if (searchCache.query !== ui.query || searchCache.mode !== ui.mode) {
+    searchCache = { query: ui.query, mode: ui.mode };
+  }
+  return searchCache;
+}
+
+export function readSearchUi() {
+  return searchSnapshot(readUi());
+}
+
+export function getServerSearchUi() {
+  return EMPTY_SEARCH;
+}
 
 function asSearchMode(value: unknown): SearchMode {
   switch (value) {
@@ -28,7 +61,7 @@ function asQuery(value: unknown): string {
   if (typeof value !== "string") {
     return "";
   }
-  return value.slice(0, QUERY_MAX);
+  return value.slice(0, SEARCH_QUERY_MAX_LENGTH);
 }
 
 function asHref(value: unknown): string {
@@ -43,7 +76,7 @@ export function readUi(): StoredUi {
     return cache;
   }
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(UI_STORAGE_KEY);
     if (!raw) {
       cache = EMPTY;
       return cache;
@@ -68,11 +101,13 @@ export function readUi(): StoredUi {
 
 export function writeUi(patch: Partial<StoredUi>) {
   cache = { ...readUi(), ...patch };
+  searchSnapshot(cache);
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(cache));
+    window.localStorage.setItem(UI_STORAGE_KEY, JSON.stringify(cache));
   } catch {
     // Private mode or a full quota should not break browsing.
   }
+  emitUi();
 }
 
 export function hrefInHandbook(groups: readonly NavGroup[], href: string): boolean {

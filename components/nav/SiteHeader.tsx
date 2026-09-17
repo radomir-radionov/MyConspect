@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { HANDBOOK_HEADER_ID, HANDBOOK_SIDEBAR_ID } from "@/constants";
 import { INSTRUCTIONS_HREF, type ChromeCopy, type SearchMode } from "@/lib/nav";
 import { SITE_NAME } from "@/lib/site";
 import { SiteMark } from "./SiteMark";
@@ -27,14 +28,14 @@ export function SiteHeader({
   const onInstructions = pathname === INSTRUCTIONS_HREF;
 
   return (
-    <header id="handbook-header" className="relative z-40 shrink-0 border-b border-zinc-200 bg-white">
+    <header id={HANDBOOK_HEADER_ID} className="relative z-40 shrink-0 border-b border-zinc-200 bg-white">
       <div className="grid h-14 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-[var(--chrome-inline)] lg:grid-cols-[minmax(0,1fr)_minmax(12rem,28rem)_minmax(0,1fr)]">
         <div className="flex min-w-0 items-center gap-2">
           <button
             type="button"
             className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-zinc-700 hover:bg-zinc-100 lg:hidden"
             aria-expanded={navOpen}
-            aria-controls="handbook-sidebar"
+            aria-controls={HANDBOOK_SIDEBAR_ID}
             onClick={onToggleNav}
           >
             <span className="sr-only">{navOpen ? chrome.closeMenu : chrome.openMenu}</span>

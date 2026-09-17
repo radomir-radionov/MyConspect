@@ -3,6 +3,7 @@
 import { memo, useEffect, useSyncExternalStore } from "react";
 import { HighlightedText, useSearchMode, useSearchQuery } from "@/components/search";
 import { highlightQueryInHtml } from "@/components/search/highlightQueryInHtml";
+import { HANDBOOK_MAIN_ID } from "@/constants";
 import { conceptMatchesQuery } from "@/lib/nav";
 import type { Concept } from "@/lib/parse";
 
@@ -52,7 +53,7 @@ function closeSiblingAccordions(opened: HTMLDetailsElement) {
 }
 
 function handbookMain() {
-  const scroller = document.getElementById("handbook-main");
+  const scroller = document.getElementById(HANDBOOK_MAIN_ID);
   return scroller instanceof HTMLElement ? scroller : null;
 }
 

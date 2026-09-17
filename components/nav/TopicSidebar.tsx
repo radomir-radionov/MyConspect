@@ -16,6 +16,12 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { HighlightedText, useSearchMode } from "@/components/search";
 import {
+  HANDBOOK_NAV_ASIDE_ID,
+  HANDBOOK_SIDEBAR_ID,
+  NAV_FOLD_MS,
+  SIDEBAR_PIN_HOLD_MS,
+} from "@/constants";
+import {
   CHROME,
   conceptBodySnippet,
   conceptHref,
@@ -117,7 +123,7 @@ function ConceptLink({
 }
 
 function navAside() {
-  const scroller = document.getElementById("handbook-nav-aside");
+  const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
   return scroller instanceof HTMLElement ? scroller : null;
 }
 
@@ -149,7 +155,7 @@ function pinTarget(pin: SidebarPin) {
     return pin.element;
   }
   const element = document.querySelector(
-    `#handbook-sidebar [data-nav="${pin.nav}"][data-nav-id="${pin.id}"]`,
+    `#${HANDBOOK_SIDEBAR_ID} [data-nav="${pin.nav}"][data-nav-id="${pin.id}"]`,
   );
   return element instanceof HTMLElement ? element : null;
 }
@@ -176,7 +182,7 @@ function restoreSidebarPin() {
 function pinNavElement(element: HTMLElement) {
   const nav = element.getAttribute("data-nav");
   const id = element.getAttribute("data-nav-id");
-  const scroller = navAside() ?? element.closest("#handbook-nav-aside");
+  const scroller = navAside() ?? element.closest(`#${HANDBOOK_NAV_ASIDE_ID}`);
   if (!nav || !id || !(scroller instanceof HTMLElement)) {
     return;
   }
@@ -189,7 +195,7 @@ function pinNavElement(element: HTMLElement) {
   };
   const timeout = window.setTimeout(() => {
     pinCleanup?.();
-  }, 2000);
+  }, SIDEBAR_PIN_HOLD_MS);
   pinCleanup = () => {
     window.clearTimeout(timeout);
     sidebarPin = null;
@@ -296,9 +302,13 @@ function locationForPath(groups: readonly NavGroup[], pathname: string, hash: st
   return { topicHref: null as string | null, subjectHref: null as string | null, clusterKey: null as string | null };
 }
 
-const FOLD_MS = 200;
+function subscribeReducedMotion(onStoreChange: () => void) {
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  media.addEventListener("change", onStoreChange);
+  return () => media.removeEventListener("change", onStoreChange);
+}
 
-function prefersReducedMotion() {
+function getReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
@@ -311,39 +321,49 @@ function NavFold({
   instant?: boolean;
   children: ReactNode;
 }) {
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotion,
+    () => false,
+  );
+  const skipMotion = instant || reducedMotion;
   const [mounted, setMounted] = useState(open);
   const [expanded, setExpanded] = useState(open);
 
-  useLayoutEffect(() => {
-    const skipMotion = instant || prefersReducedMotion();
-    if (open) {
-      setMounted(true);
-      if (skipMotion) {
-        setExpanded(true);
-        return;
-      }
-      let inner = 0;
-      const frame = window.requestAnimationFrame(() => {
-        inner = window.requestAnimationFrame(() => setExpanded(true));
-      });
-      return () => {
-        window.cancelAnimationFrame(frame);
-        window.cancelAnimationFrame(inner);
-      };
-    }
+  if (open && !mounted) {
+    setMounted(true);
+  }
+  if (open && skipMotion && !expanded) {
+    setExpanded(true);
+  }
+  if (!open && expanded) {
     setExpanded(false);
-    if (skipMotion) {
-      setMounted(false);
-    }
-  }, [open, instant]);
+  }
+  if (!open && skipMotion && mounted) {
+    setMounted(false);
+  }
 
-  useEffect(() => {
-    if (open || instant || prefersReducedMotion()) {
+  useLayoutEffect(() => {
+    if (!open || skipMotion || expanded) {
       return;
     }
-    const timeout = window.setTimeout(() => setMounted(false), FOLD_MS);
+    let inner = 0;
+    const frame = window.requestAnimationFrame(() => {
+      inner = window.requestAnimationFrame(() => setExpanded(true));
+    });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.cancelAnimationFrame(inner);
+    };
+  }, [open, skipMotion, expanded]);
+
+  useEffect(() => {
+    if (open || skipMotion) {
+      return;
+    }
+    const timeout = window.setTimeout(() => setMounted(false), NAV_FOLD_MS);
     return () => window.clearTimeout(timeout);
-  }, [open, instant]);
+  }, [open, skipMotion]);
 
   if (!mounted) {
     return null;
@@ -499,7 +519,7 @@ export const TopicSidebar = memo(function TopicSidebar({
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => restoreSidebarPin());
-    const later = window.setTimeout(restoreSidebarPin, FOLD_MS + 20);
+    const later = window.setTimeout(restoreSidebarPin, NAV_FOLD_MS + 20);
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(later);
@@ -510,7 +530,7 @@ export const TopicSidebar = memo(function TopicSidebar({
     if (!firstHref) {
       return;
     }
-    const nav = document.getElementById("handbook-sidebar");
+    const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
     const hit = nav?.querySelector("[data-search-hit='true']");
     if (hit instanceof HTMLElement) {
       scrollSidebarHit(hit);
@@ -522,7 +542,7 @@ export const TopicSidebar = memo(function TopicSidebar({
       return;
     }
     const frame = window.requestAnimationFrame(() => {
-      const nav = document.getElementById("handbook-sidebar");
+      const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
       const hit = nav?.querySelector(
         `[data-concept-id="${CSS.escape(activeConceptId)}"]`,
       );
@@ -535,7 +555,7 @@ export const TopicSidebar = memo(function TopicSidebar({
 
   return (
     <nav
-      id="handbook-sidebar"
+      id={HANDBOOK_SIDEBAR_ID}
       aria-label={chrome.topicsNav}
       className="px-2 py-3"
     >

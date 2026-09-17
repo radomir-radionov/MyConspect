@@ -1,11 +1,10 @@
 "use client";
 
-import { useDeferredValue, useEffect, useRef, useState, startTransition } from "react";
+import { useDeferredValue, useEffect, useRef, useSyncExternalStore, startTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { SEARCH_NAV_DELAY_MS } from "@/constants";
 import { firstSearchHref, splitHref, type NavGroup, type SearchMode } from "@/lib/nav";
-import { readUi, writeUi } from "./uiStorage";
-
-const SEARCH_NAV_DELAY_MS = 280;
+import { getServerSearchUi, readSearchUi, subscribeUi, writeUi } from "./uiStorage";
 
 export function useHandbookSearch(
   groups: readonly NavGroup[],
@@ -18,19 +17,11 @@ export function useHandbookSearch(
   const groupsRef = useRef(groups);
   const restoreHrefRef = useRef<string | null>(null);
   const searchTimerRef = useRef<number | null>(null);
-  const [query, setQuery] = useState("");
+  const stored = useSyncExternalStore(subscribeUi, readSearchUi, getServerSearchUi);
+  const query = stored.query;
+  const mode = stored.mode;
   const deferredQuery = useDeferredValue(query);
-  const [mode, setMode] = useState<SearchMode>("titles");
-  const [hydrated, setHydrated] = useState(false);
   const modeRef = useRef(mode);
-
-  useEffect(() => {
-    const stored = readUi();
-    setQuery(stored.query);
-    setMode(stored.mode);
-    modeRef.current = stored.mode;
-    setHydrated(true);
-  }, []);
 
   useEffect(() => {
     onSearchActiveRef.current = onSearchActive;
@@ -38,13 +29,6 @@ export function useHandbookSearch(
     groupsRef.current = groups;
     modeRef.current = mode;
   }, [onSearchActive, pathname, groups, mode]);
-
-  useEffect(() => {
-    if (!hydrated) {
-      return;
-    }
-    writeUi({ query, mode });
-  }, [hydrated, query, mode]);
 
   useEffect(() => {
     return () => {
@@ -123,7 +107,7 @@ export function useHandbookSearch(
   }
 
   function changeQuery(value: string) {
-    setQuery(value);
+    writeUi({ query: value });
     if (value.trim().length > 0) {
       onSearchActiveRef.current?.();
     }
@@ -131,7 +115,7 @@ export function useHandbookSearch(
   }
 
   function changeMode(nextMode: SearchMode) {
-    setMode(nextMode);
+    writeUi({ mode: nextMode });
     modeRef.current = nextMode;
     if (query.trim().length > 0) {
       onSearchActiveRef.current?.();

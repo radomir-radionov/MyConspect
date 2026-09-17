@@ -6,16 +6,14 @@ import { hrefInHandbook, readUi, writeUi } from "./uiStorage";
 export function useRememberLocation(groups: readonly NavGroup[]) {
   const pathname = usePathname() ?? "/";
   const router = useRouter();
-  const groupsRef = useRef(groups);
   const didCheckLandingRef = useRef(false);
-  groupsRef.current = groups;
 
   useEffect(() => {
     if (!didCheckLandingRef.current) {
       didCheckLandingRef.current = true;
       if (pathname === "/") {
         const href = readUi().href;
-        if (href !== "/" && hrefInHandbook(groupsRef.current, href)) {
+        if (href !== "/" && hrefInHandbook(groups, href)) {
           router.replace(href, { scroll: false });
           return;
         }
@@ -32,5 +30,5 @@ export function useRememberLocation(groups: readonly NavGroup[]) {
     save();
     window.addEventListener("hashchange", save);
     return () => window.removeEventListener("hashchange", save);
-  }, [pathname, router]);
+  }, [pathname, router, groups]);
 }

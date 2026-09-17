@@ -1,6 +1,7 @@
 "use client";
 
 import { SearchQueryContext } from "@/components/search";
+import { HANDBOOK_MAIN_ID, HANDBOOK_NAV_ASIDE_ID } from "@/constants";
 import { ContactLinks } from "./ContactLinks";
 import { SiteHeader } from "./SiteHeader";
 import { TopicSidebar } from "./TopicSidebar";
@@ -62,7 +63,7 @@ export function HandbookShell({
             style={{ minHeight: 0 }}
           >
             <div
-              id="handbook-nav-aside"
+              id={HANDBOOK_NAV_ASIDE_ID}
               className="min-h-0 flex-1 overflow-y-auto"
               style={{ overscrollBehavior: "contain" }}
             >
@@ -78,7 +79,7 @@ export function HandbookShell({
             </div>
           </aside>
           <div
-            id="handbook-main"
+            id={HANDBOOK_MAIN_ID}
             className="min-w-0 flex-1"
             style={{ minHeight: 0, overflow: "auto", overscrollBehavior: "contain" }}
           >
