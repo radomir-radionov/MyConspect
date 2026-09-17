@@ -1,0 +1,80 @@
+export function hashIdFrom(hash: string): string {
+  return decodeURIComponent(hash.replace(/^#/, ""));
+}
+
+export function subscribeHash(onStoreChange: () => void) {
+  window.addEventListener("hashchange", onStoreChange);
+  return () => window.removeEventListener("hashchange", onStoreChange);
+}
+
+export function getHash() {
+  return window.location.hash;
+}
+
+export function getServerHash() {
+  return "";
+}
+
+export function dispatchHashChange(scroll?: boolean) {
+  if (scroll === undefined) {
+    window.dispatchEvent(new Event("hashchange"));
+    return;
+  }
+  window.dispatchEvent(new CustomEvent("hashchange", { detail: { scroll } }));
+}
+
+export function applySameDocumentHref(
+  nextPath: string,
+  nextHash: string,
+  currentPath: string,
+): boolean {
+  const currentHash = window.location.hash;
+  if (nextPath === currentPath && nextHash === currentHash) {
+    dispatchHashChange();
+    return true;
+  }
+  if (nextPath === currentPath) {
+    window.history.replaceState(window.history.state, "", `${nextPath}${nextHash}`);
+    dispatchHashChange();
+    return true;
+  }
+  return false;
+}
+
+export function setHashOnPath(pathname: string, id: string, scroll = true) {
+  const next = `#${id}`;
+  if (window.location.hash !== next) {
+    window.history.replaceState(window.history.state, "", `${pathname}${next}`);
+  }
+  dispatchHashChange(scroll);
+}
+
+export function setHashIfChanged(id: string, scroll = true) {
+  const next = `#${id}`;
+  if (window.location.hash === next) {
+    return false;
+  }
+  window.history.replaceState(
+    window.history.state,
+    "",
+    `${window.location.pathname}${window.location.search}${next}`,
+  );
+  dispatchHashChange(scroll);
+  return true;
+}
+
+export function replacePathHash(pathname: string, hash: string) {
+  window.history.replaceState(window.history.state, "", `${pathname}${hash}`);
+  dispatchHashChange();
+}
+
+export function shouldScrollFromHashEvent(event?: Event): boolean {
+  if (event == null) {
+    return true;
+  }
+  if (event instanceof CustomEvent) {
+    const detail = event.detail as { scroll?: boolean } | undefined;
+    return detail?.scroll !== false;
+  }
+  return true;
+}

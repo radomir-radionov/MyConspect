@@ -4,6 +4,7 @@ import { useDeferredValue, useEffect, useRef, useSyncExternalStore, startTransit
 import { usePathname, useRouter } from "next/navigation";
 import { SEARCH_NAV_DELAY_MS } from "@/constants";
 import { firstSearchHref, splitHref, type NavGroup, type SearchMode } from "@/lib/nav";
+import { applySameDocumentHref } from "./hash";
 import { getServerSearchUi, readSearchUi, subscribeUi, writeUi } from "./uiStorage";
 
 export function useHandbookSearch(
@@ -44,20 +45,9 @@ export function useHandbookSearch(
 
   function goTo(target: string) {
     const { pathname: nextPath, hash: nextHash } = splitHref(target);
-    const currentPath = pathnameRef.current;
-    const currentHash = window.location.hash;
-
-    if (nextPath === currentPath && nextHash === currentHash) {
-      window.dispatchEvent(new Event("hashchange"));
+    if (applySameDocumentHref(nextPath, nextHash, pathnameRef.current)) {
       return;
     }
-
-    if (nextPath === currentPath) {
-      window.history.replaceState(window.history.state, "", `${nextPath}${nextHash}`);
-      window.dispatchEvent(new Event("hashchange"));
-      return;
-    }
-
     startTransition(() => {
       router.replace(target, { scroll: false });
     });

@@ -4,41 +4,16 @@ import { memo, useEffect, useSyncExternalStore } from "react";
 import { HighlightedText, useSearchMode, useSearchQuery } from "@/components/search";
 import { highlightQueryInHtml } from "@/components/search/highlightQueryInHtml";
 import { HANDBOOK_MAIN_ID } from "@/constants";
+import {
+  getHash,
+  getServerHash,
+  hashIdFrom,
+  setHashIfChanged,
+  shouldScrollFromHashEvent,
+  subscribeHash,
+} from "@/components/nav/hash";
 import { conceptMatchesQuery } from "@/lib/nav";
 import type { Concept } from "@/lib/parse";
-
-function subscribeHash(onStoreChange: () => void) {
-  window.addEventListener("hashchange", onStoreChange);
-  return () => window.removeEventListener("hashchange", onStoreChange);
-}
-
-function getHash() {
-  return window.location.hash;
-}
-
-function setHash(id: string, scroll = true) {
-  const next = `#${id}`;
-  if (window.location.hash === next) {
-    return;
-  }
-  window.history.replaceState(
-    window.history.state,
-    "",
-    `${window.location.pathname}${window.location.search}${next}`,
-  );
-  window.dispatchEvent(new CustomEvent("hashchange", { detail: { scroll } }));
-}
-
-function shouldScrollFromHashEvent(event?: Event): boolean {
-  if (event == null) {
-    return true;
-  }
-  if (event instanceof CustomEvent) {
-    const detail = event.detail as { scroll?: boolean } | undefined;
-    return detail?.scroll !== false;
-  }
-  return true;
-}
 
 function closeSiblingAccordions(opened: HTMLDetailsElement) {
   const parent = opened.parentElement;
@@ -101,12 +76,12 @@ export function ConceptList({
 }) {
   const query = useSearchQuery();
   const mode = useSearchMode();
-  const hash = useSyncExternalStore(subscribeHash, getHash, () => "");
-  const activeId = decodeURIComponent(hash.replace(/^#/, ""));
+  const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
+  const activeId = hashIdFrom(hash);
 
   useEffect(() => {
     function focusFromHash(event?: Event) {
-      const id = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+      const id = hashIdFrom(window.location.hash);
       if (!id) {
         return;
       }
@@ -132,12 +107,12 @@ export function ConceptList({
 
     const needle = query.trim().toLowerCase();
     if (needle.length > 0) {
-      const hashId = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+      const hashId = hashIdFrom(window.location.hash);
       const hashConcept = concepts.find((concept) => concept.id === hashId);
       if (!hashConcept || !conceptMatchesQuery(hashConcept, needle, mode)) {
         const match = concepts.find((concept) => conceptMatchesQuery(concept, needle, mode));
         if (match) {
-          setHash(match.id);
+          setHashIfChanged(match.id);
         }
       }
     }
@@ -167,7 +142,7 @@ export function ConceptList({
             onToggle={(event) => {
               if (event.currentTarget.open) {
                 keepOpenedConceptInPlace(event.currentTarget);
-                setHash(event.currentTarget.id, false);
+                setHashIfChanged(event.currentTarget.id, false);
               }
             }}
           >

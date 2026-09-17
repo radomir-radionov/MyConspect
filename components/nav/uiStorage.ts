@@ -1,5 +1,5 @@
 import { SEARCH_QUERY_MAX_LENGTH, UI_STORAGE_KEY } from "@/constants";
-import { INSTRUCTIONS_HREF, splitHref, type NavGroup, type SearchMode } from "@/lib/nav";
+import type { SearchMode } from "@/lib/nav";
 
 export type StoredUi = {
   readonly query: string;
@@ -109,48 +109,3 @@ export function writeUi(patch: Partial<StoredUi>) {
   }
   emitUi();
 }
-
-export function hrefInHandbook(groups: readonly NavGroup[], href: string): boolean {
-  const { pathname } = splitHref(href);
-  if (pathname === "/" || pathname === INSTRUCTIONS_HREF) {
-    return true;
-  }
-  for (const group of groups) {
-    if (group.href === pathname || group.leafTopic?.href === pathname) {
-      return true;
-    }
-    for (const entry of group.entries) {
-      switch (entry.kind) {
-        case "topic":
-          if (entry.topic.href === pathname) {
-            return true;
-          }
-          break;
-        case "subject":
-          if (entry.subject.href === pathname) {
-            return true;
-          }
-          if (entry.subject.clusters.some((cluster) =>
-            cluster.topics.some((topic) => topic.href === pathname),
-          )) {
-            return true;
-          }
-          break;
-        case "cluster":
-          if (entry.subjectHref === pathname) {
-            return true;
-          }
-          if (entry.cluster.topics.some((topic) => topic.href === pathname)) {
-            return true;
-          }
-          break;
-        default: {
-          const _never: never = entry;
-          return _never;
-        }
-      }
-    }
-  }
-  return false;
-}
-
