@@ -57,14 +57,5 @@ Set `NEXT_PUBLIC_SITE_URL` (no trailing slash) for absolute sitemap and robots U
 GitHub Actions:
 
 - `.github/workflows/ci.yml` — `npm ci`, lint, production build, and Cypress sidebar E2E (Chrome) on push and pull requests to `main`
-- `.github/workflows/deploy.yml` — preview deploys on pull requests, production deploys on push to `main`
 
-Add these repository secrets before the deploy workflow can run:
-
-| Secret | Value |
-| --- | --- |
-| `VERCEL_TOKEN` | [Vercel access token](https://vercel.com/account/tokens) |
-| `VERCEL_ORG_ID` | Team id from the Vercel project settings (or `.vercel/project.json` `orgId`) |
-| `VERCEL_PROJECT_ID` | Project id from `.vercel/project.json` after `vercel link` |
-
-Install the [Vercel GitHub App](https://github.com/apps/vercel) on `radomir-radionov/MyConspect` if you want dashboard Git-push deploys. Do not enable both Git integration production deploys and this Actions deploy on the same project, or every push will ship twice.
+Production and preview deploys run automatically through the [Vercel GitHub integration](https://vercel.com/docs/git/vercel-for-github): push to `main` ships production; pull requests get preview URLs. Install the [Vercel GitHub App](https://github.com/apps/vercel) on `radomir-radionov/MyConspect` if the project is not already connected.
