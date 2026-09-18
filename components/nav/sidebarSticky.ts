@@ -111,13 +111,24 @@ export function measureStickyPathVars(navElement?: HTMLElement | null): StickyVa
  * still sitting in normal flow. It ends one gap below the lowest pinned row so
  * scrolling rows never touch it.
  */
-function stickyTopPx(element: HTMLElement, nav: HTMLElement, vars?: StickyVars): number {
-  const name = topVarName(element);
+export function resolveStickyTopPx(
+  varName: string,
+  vars: StickyVars | undefined,
+  scrollerStyle: StickyStyle,
+): number {
   return (
-    Number.parseFloat(vars?.[name] ?? "") ||
-    Number.parseFloat(nav.style.getPropertyValue(name)) ||
+    Number.parseFloat(vars?.[varName] ?? "") ||
+    Number.parseFloat(scrollerStyle.getPropertyValue(varName)) ||
     0
   );
+}
+
+function stickyTopPx(
+  element: HTMLElement,
+  scrollerStyle: StickyStyle,
+  vars?: StickyVars,
+): number {
+  return resolveStickyTopPx(topVarName(element), vars, scrollerStyle);
 }
 
 export function measureStickyCover(navElement?: HTMLElement, vars?: StickyVars): number {
@@ -126,13 +137,14 @@ export function measureStickyCover(navElement?: HTMLElement, vars?: StickyVars):
   if (!nav || !scroller) {
     return 0;
   }
+  const scrollerStyle = getComputedStyle(scroller);
   const { gap } = stickySpacing(nav);
   const scrollerTop = scroller.getBoundingClientRect().top;
   let cover = 0;
   for (const element of pathElements(nav)) {
     const rect = element.getBoundingClientRect();
     const relativeTop = rect.top - scrollerTop;
-    const pinned = relativeTop <= stickyTopPx(element, nav, vars) + 0.5;
+    const pinned = relativeTop <= stickyTopPx(element, scrollerStyle, vars) + 0.5;
     if (pinned) {
       cover = Math.max(cover, relativeTop + rect.height + gap);
     }

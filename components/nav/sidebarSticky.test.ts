@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { stickyVarsEqual, writeStickyVars } from "./sidebarSticky";
+import { resolveStickyTopPx, stickyVarsEqual, writeStickyVars } from "./sidebarSticky";
 
 test("stickyVarsEqual is true for the same keys and values", () => {
   assert.equal(
@@ -14,6 +14,27 @@ test("stickyVarsEqual is false when a value differs", () => {
     stickyVarsEqual({ "--nav-sticky-cover": "12px" }, { "--nav-sticky-cover": "13px" }),
     false,
   );
+});
+
+test("resolveStickyTopPx prefers measured vars over scroller styles", () => {
+  const scrollerStyle = {
+    getPropertyValue(name: string) {
+      return name === "--nav-sticky-top-subject" ? "99px" : "";
+    },
+  };
+  assert.equal(
+    resolveStickyTopPx("--nav-sticky-top-subject", { "--nav-sticky-top-subject": "42px" }, scrollerStyle),
+    42,
+  );
+});
+
+test("resolveStickyTopPx reads sticky tops from the scroller when vars are absent", () => {
+  const scrollerStyle = {
+    getPropertyValue(name: string) {
+      return name === "--nav-sticky-top-cluster" ? "88px" : "";
+    },
+  };
+  assert.equal(resolveStickyTopPx("--nav-sticky-top-cluster", undefined, scrollerStyle), 88);
 });
 
 test("writeStickyVars skips DOM writes when the style already matches", () => {
