@@ -3,8 +3,8 @@
 import { useDeferredValue, useEffect, useRef, useSyncExternalStore, startTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { SEARCH_NAV_DELAY_MS } from "@/constants";
-import { firstSearchHref, splitHref, type NavGroup, type SearchMode } from "@/lib/nav";
-import { applySameDocumentHref } from "./hash";
+import { firstSearchHref, type NavGroup, type SearchMode } from "@/lib/nav";
+import { followHandbookHref } from "./hash";
 import { getServerSearchUi, readSearchUi, subscribeUi, writeUi } from "./uiStorage";
 
 export function useHandbookSearch(
@@ -44,12 +44,10 @@ export function useHandbookSearch(
   }
 
   function goTo(target: string) {
-    const { pathname: nextPath, hash: nextHash } = splitHref(target);
-    if (applySameDocumentHref(nextPath, nextHash, pathnameRef.current)) {
-      return;
-    }
-    startTransition(() => {
-      router.replace(target, { scroll: false });
+    followHandbookHref(target, pathnameRef.current, (path) => {
+      startTransition(() => {
+        router.replace(path, { scroll: false });
+      });
     });
   }
 

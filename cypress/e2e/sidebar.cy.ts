@@ -146,6 +146,39 @@ describe("handbook sidebar", () => {
     cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
   });
 
+  it("keeps an open Structure topic stuck after its concepts scroll away", () => {
+    cy.viewport(1280, 560);
+    cy.visit("/frontend/html-structure");
+    cy.nav("topic", "html-structure").should("have.attr", "aria-expanded", "true");
+    cy.sidebar().contains("Global attributes").should("be.visible");
+
+    cy.get("#handbook-nav-aside").then(($aside) => {
+      const aside = $aside[0];
+      const forms = aside.querySelector(
+        '[data-nav="topic"][data-nav-id="html-forms"]',
+      ) as HTMLElement | null;
+      expect(forms, "Forms topic").to.exist;
+      if (!forms) {
+        return;
+      }
+      aside.scrollTop +=
+        forms.getBoundingClientRect().top -
+        aside.getBoundingClientRect().top -
+        140;
+    });
+
+    cy.nav("topic", "html-structure").should("be.visible");
+    cy.nav("topic", "html-forms").should("be.visible");
+    cy.nav("cluster", "core").should(($core) => {
+      const structure = Cypress.$(
+        '#handbook-sidebar [data-nav="topic"][data-nav-id="html-structure"]',
+      )[0];
+      expect(structure.getBoundingClientRect().top).to.be.gte(
+        $core[0].getBoundingClientRect().bottom - 1,
+      );
+    });
+  });
+
   it("keeps a collapsed Structure topic stuck while later topics scroll", () => {
     cy.viewport(1280, 560);
     cy.visit("/frontend/html-structure");
@@ -327,6 +360,54 @@ describe("handbook sidebar", () => {
     cy.get("#handbook-main mark").should("contain", "resize ended");
   });
 
+  it("opens the search sidebar when typing on a phone", () => {
+    cy.viewport(390, 844);
+    cy.visit("/frontend/react-hooks");
+    cy.get('input[placeholder="Search topics and concepts…"]').clear().type("useEf");
+    cy.wait(400);
+    cy.contains("button", "Close topics").should("be.visible");
+    cy.sidebar().should("be.visible");
+    cy.sidebar().should(($nav) => {
+      const text = $nav.text().toLowerCase();
+      expect(text).to.contain("useeffect");
+      expect(text).not.to.contain("javascript");
+    });
+    cy.sidebar().contains("HTML").should("not.exist");
+
+    cy.get('#handbook-sidebar [data-concept-id="useeffect"]').click();
+    cy.sidebar().should("not.be.visible");
+    cy.location("pathname").should("eq", "/frontend/react-hooks");
+    cy.location("hash").should("eq", "#useeffect");
+    cy.get("#useeffect").should("have.prop", "open", true);
+  });
+
+  it("keeps the overlay open until a concept is chosen", () => {
+    cy.viewport(390, 844);
+    cy.visit("/frontend/web-api");
+    cy.contains("button", "Open topics").click();
+    cy.get('button[aria-label="Close topics"]').should("have.attr", "tabindex", "0");
+    cy.get("aside").should(($aside) => {
+      const box = $aside[0].getBoundingClientRect();
+      expect(box.top).to.be.closeTo(56, 2);
+      expect(box.left).to.be.closeTo(0, 2);
+      expect(box.right).to.be.closeTo(390, 2);
+      expect(box.bottom).to.be.closeTo(844, 2);
+    });
+
+    cy.nav("cluster", "core").click();
+    cy.get('button[aria-label="Close topics"]').should("have.attr", "tabindex", "0");
+    cy.sidebar().contains("HTTP").should("be.visible");
+
+    cy.nav("topic", "web-api-http").click();
+    cy.get('button[aria-label="Close topics"]').should("have.attr", "tabindex", "0");
+    cy.sidebar().contains("HTTP protocol").should("be.visible");
+
+    cy.get('#handbook-sidebar [data-concept-id="http-protocol"]').click();
+    cy.get('button[aria-label="Close topics"]').should("have.attr", "tabindex", "-1");
+    cy.location("pathname").should("eq", "/frontend/web-api-http");
+    cy.location("hash").should("eq", "#http-protocol");
+  });
+
   it("shows the last updated day, month, and year next to contact links", () => {
     cy.visit("/");
     cy.get("nav[aria-label='Contact']").should("be.visible");
@@ -338,5 +419,49 @@ describe("handbook sidebar", () => {
       .closest("time")
       .invoke("text")
       .should("match", /\d{1,2} [A-Z][a-z]+ \d{4}/);
+  });
+
+  it("collapses the desktop sidebar and restores it", () => {
+    cy.visit("/frontend/html-structure");
+    cy.sidebar().should("be.visible");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.sidebar().should("not.be.visible");
+    cy.reload();
+    cy.sidebar().should("not.be.visible");
+    cy.get('button[aria-label="Expand topics"]').should("be.visible").click();
+    cy.sidebar().should("be.visible");
+  });
+
+  it("peeks the collapsed sidebar on hover and collapses again on leave", () => {
+    cy.visit("/frontend/html-structure");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.sidebar().should("not.be.visible");
+
+    cy.get("aside").trigger("pointerenter", { pointerType: "mouse" });
+    cy.sidebar().should("be.visible");
+    cy.sidebar().contains("HTML").should("be.visible");
+
+    cy.get("aside").trigger("pointerleave", { pointerType: "mouse" });
+    cy.sidebar().should("not.be.visible");
+    cy.get('button[aria-label="Expand topics"]').should("be.visible");
+  });
+
+  it("does not peek the collapsed sidebar when hovering the dock button", () => {
+    cy.visit("/frontend/html-structure");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.sidebar().should("not.be.visible");
+
+    cy.get('button[aria-label="Expand topics"]').trigger("pointerenter", { pointerType: "mouse" });
+    cy.sidebar().should("not.be.visible");
+  });
+
+  it("keeps a peeked sidebar open when the pointer moves onto the dock", () => {
+    cy.visit("/frontend/html-structure");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.get("aside").trigger("pointerenter", { pointerType: "mouse" });
+    cy.sidebar().should("be.visible");
+
+    cy.get('button[aria-label="Expand topics"]').trigger("pointerover", { pointerType: "mouse" });
+    cy.sidebar().should("be.visible");
   });
 });

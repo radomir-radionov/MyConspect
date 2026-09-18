@@ -13,7 +13,7 @@ import { getHash, getServerHash, subscribeHash } from "./hash";
 import { isActiveHref, isActiveTrack } from "./location";
 import { pinNavElement, restoreSidebarPin, scrollSidebarHit } from "./sidebarPin";
 import { measureStickyCover, measureStickyPathVars, type StickyVars } from "./sidebarSticky";
-import { SidebarNavProvider, closeNavSoon, trackHeaderClass } from "./sidebarContext";
+import { SidebarNavProvider, trackHeaderClass } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
 import { useSidebarOpen } from "./useSidebarOpen";
 
@@ -199,7 +199,6 @@ export const TopicSidebar = memo(function TopicSidebar({
                 first={first}
                 openTrackId={openTrackId}
                 setOpenTrackId={setOpenTrackId}
-                onNavigate={onNavigate}
               />
             ))}
           </ul>
@@ -217,7 +216,6 @@ function TrackGroup({
   first,
   openTrackId,
   setOpenTrackId,
-  onNavigate,
 }: {
   group: NavGroup;
   query: string;
@@ -226,7 +224,6 @@ function TrackGroup({
   first: { pathname: string; hash: string } | null;
   openTrackId: TrackId | null;
   setOpenTrackId: Dispatch<SetStateAction<TrackId | null>>;
-  onNavigate?: () => void;
 }) {
   const isLeafTrack = Boolean(group.leafTopic) && group.entries.length === 0;
   const trackActive = isActiveHref(pathname, group.href);
@@ -268,7 +265,6 @@ function TrackGroup({
           data-nav-path={onPath ? "true" : undefined}
           onClick={() => {
             setOpenTrackId(group.id);
-            closeNavSoon(onNavigate);
           }}
           data-search-hit={
             isLeafTrack && first?.pathname === group.href && first.hash === "" ? "true" : undefined

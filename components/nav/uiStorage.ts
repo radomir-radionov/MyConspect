@@ -5,9 +5,15 @@ export type StoredUi = {
   readonly query: string;
   readonly mode: SearchMode;
   readonly href: string;
+  readonly sidebarCollapsed: boolean;
 };
 
-const EMPTY: StoredUi = { query: "", mode: "titles", href: "/" };
+const EMPTY: StoredUi = {
+  query: "",
+  mode: "titles",
+  href: "/",
+  sidebarCollapsed: false,
+};
 const EMPTY_SEARCH = { query: EMPTY.query, mode: EMPTY.mode };
 
 let cache: StoredUi | null = null;
@@ -91,12 +97,21 @@ export function readUi(): StoredUi {
       query: asQuery(record.query),
       mode: asSearchMode(record.mode),
       href: asHref(record.href),
+      sidebarCollapsed: record.sidebarCollapsed === true,
     };
     return cache;
   } catch {
     cache = EMPTY;
     return cache;
   }
+}
+
+export function readSidebarCollapsed() {
+  return readUi().sidebarCollapsed;
+}
+
+export function getServerSidebarCollapsed() {
+  return EMPTY.sidebarCollapsed;
 }
 
 export function writeUi(patch: Partial<StoredUi>) {

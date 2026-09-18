@@ -15,6 +15,8 @@ export const CHROME: ChromeCopy = {
   topicsNav: "Topics",
   openMenu: "Open topics",
   closeMenu: "Close topics",
+  collapseSidebar: "Collapse topics",
+  expandSidebar: "Expand topics",
   instructions: "Instructions",
   home: "Home",
   breadcrumbs: "Breadcrumb",

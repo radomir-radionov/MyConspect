@@ -38,6 +38,18 @@ function conceptDetailsById(id: string) {
   return element instanceof HTMLDetailsElement ? element : null;
 }
 
+function closeOpenConceptAccordions() {
+  const scroller = handbookMain();
+  if (!scroller) {
+    return;
+  }
+  for (const node of scroller.querySelectorAll(".concept-list > details[open]")) {
+    if (node instanceof HTMLDetailsElement) {
+      node.open = false;
+    }
+  }
+}
+
 function restoreElementViewportTop(element: HTMLElement, viewportTop: number) {
   const scroller = handbookMain();
   if (!scroller) {
@@ -122,6 +134,9 @@ export function ConceptList({
     function focusFromHash(event?: Event) {
       const id = hashIdFrom(window.location.hash);
       if (!id) {
+        if (event) {
+          closeOpenConceptAccordions();
+        }
         return;
       }
       const element = conceptDetailsById(id);

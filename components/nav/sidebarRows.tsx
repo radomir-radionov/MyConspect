@@ -19,7 +19,7 @@ import {
 } from "@/lib/nav";
 import { NavChevron, NavFold } from "./NavFold";
 import { NavGuide } from "./NavGuide";
-import { replacePathHash, setHashOnPath } from "./hash";
+import { applySameDocumentHref, followHandbookHref, queueHandbookHref, replacePathHash, setHashOnPath } from "./hash";
 import { clusterKey, isActiveHref } from "./location";
 import { closeNavSoon, rowClass, useSidebarNav } from "./sidebarContext";
 
@@ -82,11 +82,13 @@ export const ConceptLink = memo(function ConceptLink({
         event.preventDefault();
         if (pathname === topicHref) {
           setHashOnPath(pathname, concept.id);
-          onNavigate?.();
+          closeNavSoon(onNavigate);
           return;
         }
         closeNavSoon(onNavigate);
-        router.push(conceptHref(topicHref, concept.id));
+        followHandbookHref(conceptHref(topicHref, concept.id), pathname, (path) => {
+          router.push(path, { scroll: false });
+        });
       }}
       className={
         conceptActive
@@ -287,8 +289,6 @@ export function TopicRow({
       ? concepts.length > 0
       : openTopicHref === topic.href;
   const onPath = !searching && active;
-  const foldOpen = topicOpen && concepts.length > 0;
-  const pinInParent = onPath && !foldOpen;
 
   if (hideTitle) {
     if (concepts.length === 0) {
@@ -298,29 +298,38 @@ export function TopicRow({
   }
 
   return (
-    <li data-nav-pin={pinInParent ? navKind : undefined}>
+    <li className="contents">
       <Link
         href={topic.href}
         scroll={false}
         data-nav={navKind}
         data-nav-id={navId ?? topic.slug}
-        data-nav-path={onPath && !pinInParent ? "true" : undefined}
+        data-nav-path={onPath ? "true" : undefined}
         onClick={(event) => {
           pinNav(event.currentTarget);
           if (pathname === topic.href) {
             event.preventDefault();
+            if (window.location.hash) {
+              applySameDocumentHref(pathname, "", pathname);
+              if (!searching) {
+                setOpenTopicHref(topic.href);
+              }
+              return;
+            }
             if (!searching) {
               setOpenTopicHref((current) => (current === topic.href ? null : topic.href));
             }
             return;
           }
           setOpenTopicHref(topic.href);
-          closeNavSoon(onNavigate);
+          if (concepts.length === 0) {
+            closeNavSoon(onNavigate);
+          }
         }}
         data-search-hit={isFirstTopic ? "true" : undefined}
         aria-current={active ? "page" : undefined}
         aria-expanded={topicOpen}
-        className={rowClass(isHitTopic || active || topicOpen, onPath && !pinInParent)}
+        className={rowClass(isHitTopic || active || topicOpen, onPath)}
       >
         <RowTitle text={topic.title} query={query} marker={compact} open={topicOpen} />
         {compact ? (topicOpen ? <NavChevron open /> : null) : <NavChevron open={topicOpen} large />}
@@ -350,7 +359,6 @@ export function ClusterRow({
     openClusterKey,
     setOpenClusterKey,
     pinNav,
-    onNavigate,
   } = useSidebarNav();
   const onlyTopic = cluster.topics.length === 1 ? cluster.topics[0] : null;
 
@@ -401,7 +409,7 @@ export function ClusterRow({
             return;
           }
           setOpenClusterKey(key);
-          closeNavSoon(onNavigate);
+          queueHandbookHref(cluster.href);
         }}
         data-search-hit={isHitCluster ? "true" : undefined}
         aria-current={active ? "location" : undefined}
@@ -423,7 +431,7 @@ export function ClusterRow({
 }
 
 export function SubjectRow({ subject }: { subject: NavSubject }) {
-  const { query, pathname, searching, first, openSubjectHref, setOpenSubjectHref, onNavigate } =
+  const { query, pathname, searching, first, openSubjectHref, setOpenSubjectHref } =
     useSidebarNav();
   const active = isActiveHref(pathname, subject.href);
   const subjectOpen = searching || openSubjectHref === subject.href;
@@ -446,7 +454,6 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
             return;
           }
           setOpenSubjectHref(subject.href);
-          closeNavSoon(onNavigate);
         }}
         data-search-hit={isHitSubject ? "true" : undefined}
         aria-current={active ? "page" : undefined}

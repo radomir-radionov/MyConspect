@@ -94,7 +94,7 @@ createRoot(document.getElementById('root')!).render(<Counter />);`}</code>
 
 export default function InstructionsPage() {
   return (
-    <main className="w-full max-w-3xl px-4 py-10 sm:px-6">
+    <main className="w-full max-w-3xl px-4 pt-5 pb-10 sm:px-6">
       <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">Instructions</h1>
 
       <p className="mt-4 text-base leading-7 text-zinc-600">

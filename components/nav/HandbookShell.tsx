@@ -1,16 +1,33 @@
 "use client";
 
+import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
 import { SearchQueryContext } from "@/components/search";
 import { HANDBOOK_MAIN_ID, HANDBOOK_NAV_ASIDE_ID } from "@/constants";
-import { ContactLinks } from "./ContactLinks";
-import { SiteHeader } from "./SiteHeader";
+import { ContentBreadcrumbs } from "./ContentBreadcrumbs";
+import { DrawerFooter, SiteHeader } from "./SiteHeader";
+import { SidebarDockButton } from "./SidebarDockButton";
 import { TopicSidebar } from "./TopicSidebar";
+import { useApplyPendingHash } from "./useApplyPendingHash";
 import { useHandbookSearch } from "./useHandbookSearch";
 import { useMobileNav } from "./useMobileNav";
 import { useRememberLocation } from "./useRememberLocation";
 import { ScrollToTopButton } from "./ScrollToTopButton";
 import { useResetMainScroll } from "./useResetMainScroll";
+import { useSidebarCollapsed } from "./useSidebarCollapsed";
 import type { ChromeCopy, NavGroup } from "@/lib/nav";
+
+const SIDEBAR_MOTION =
+  "transition-[width,transform,box-shadow] duration-200 ease-out motion-reduce:transition-none";
+const SIDEBAR_MOBILE_FRAME =
+  "fixed inset-x-0 top-14 z-30 flex h-[calc(100dvh-3.5rem)] w-full flex-col";
+const SIDEBAR_DESKTOP =
+  "md:pointer-events-auto md:z-20 md:cursor-pointer md:shrink-0 md:translate-x-0 md:overflow-visible md:border-r md:border-zinc-200";
+const SIDEBAR_DESKTOP_OPEN = `${SIDEBAR_DESKTOP} md:relative md:inset-auto md:top-auto md:right-auto md:bottom-auto md:left-auto md:h-auto md:w-80 md:shadow-none`;
+const SIDEBAR_DESKTOP_COLLAPSED = `${SIDEBAR_DESKTOP} md:absolute md:inset-y-0 md:left-0 md:top-0 md:bottom-0 md:h-auto md:w-10 md:shadow-none`;
+const SIDEBAR_DESKTOP_PEEK = `${SIDEBAR_DESKTOP} md:absolute md:inset-y-0 md:left-0 md:top-0 md:bottom-0 md:z-30 md:h-auto md:w-80 md:shadow-lg`;
+const SIDEBAR_PANEL_MOTION =
+  "flex h-full min-h-0 flex-1 flex-col overflow-hidden transition-opacity duration-200 ease-out motion-reduce:transition-none";
+const PEEK_LEAVE_MS = 80;
 
 export function HandbookShell({
   groups,
@@ -25,71 +42,131 @@ export function HandbookShell({
   lastUpdatedLabel: string;
   children: React.ReactNode;
 }) {
-  const { navOpen, openNav, closeNav, toggleNav } = useMobileNav();
+  const { navOpen, closeNav, toggleNav, openNav } = useMobileNav();
+  const { collapsed, expandSidebar, toggleSidebar } = useSidebarCollapsed();
+  const [searchSheetDismissed, setSearchSheetDismissed] = useState(false);
+  const revealSearchNav = useCallback(() => {
+    expandSidebar();
+    setSearchSheetDismissed(false);
+    openNav();
+  }, [expandSidebar, openNav]);
+  const dismissNav = useCallback(() => {
+    closeNav();
+    setSearchSheetDismissed(true);
+  }, [closeNav]);
   const { query, deferredQuery, mode, changeQuery, changeMode } =
-    useHandbookSearch(groups, openNav);
+    useHandbookSearch(groups, revealSearchNav);
+  const searching = query.trim().length > 0;
+  useEffect(() => {
+    if (!searching) {
+      setSearchSheetDismissed(false);
+    }
+  }, [searching]);
+  const searchSheet = searching && !searchSheetDismissed;
+  const menuOpen = navOpen || searchSheet;
+  const onToggleNav = useCallback(() => {
+    if (searchSheet) {
+      dismissNav();
+      return;
+    }
+    toggleNav();
+  }, [dismissNav, searchSheet, toggleNav]);
+  useEffect(() => {
+    if (!searchSheet) {
+      return;
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        dismissNav();
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [dismissNav, searchSheet]);
+  const desktopCollapsed = collapsed && !searching;
+  const { peeking, onPointerEnter, onPointerLeave } = useDesktopSidebarPeek(desktopCollapsed);
+  const railCollapsed = desktopCollapsed && !peeking;
+  const desktopClass = desktopCollapsed
+    ? peeking
+      ? SIDEBAR_DESKTOP_PEEK
+      : SIDEBAR_DESKTOP_COLLAPSED
+    : SIDEBAR_DESKTOP_OPEN;
   useRememberLocation(groups);
+  useApplyPendingHash();
   useResetMainScroll();
 
   return (
     <SearchQueryContext.Provider value={{ query: deferredQuery, mode }}>
-      <div
-        className="flex flex-col"
-        style={{ height: "100%", maxHeight: "100%", overflow: "hidden" }}
-      >
+      <div className="flex h-dvh max-h-dvh flex-col overflow-hidden">
         <SiteHeader
           query={query}
           onQueryChange={changeQuery}
           mode={mode}
           onModeChange={changeMode}
           chrome={chrome}
-          navOpen={navOpen}
-          onToggleNav={toggleNav}
+          navOpen={menuOpen}
+          onToggleNav={onToggleNav}
         />
-        <div className="flex min-h-0 flex-1" style={{ overflow: "hidden" }}>
+        <div className="relative flex min-h-0 flex-1" style={{ overflow: "hidden" }}>
           <button
             type="button"
             className={
-              navOpen
-                ? "fixed inset-0 top-14 z-20 bg-zinc-900/30 opacity-100 transition-opacity duration-200 ease-out motion-reduce:transition-none lg:hidden"
-                : "pointer-events-none fixed inset-0 top-14 z-20 bg-zinc-900/30 opacity-0 transition-opacity duration-200 ease-out motion-reduce:transition-none lg:hidden"
+              navOpen && !searching
+                ? "fixed inset-x-0 top-14 z-20 h-[calc(100dvh-3.5rem)] bg-zinc-900/30 opacity-100 transition-opacity duration-200 ease-out motion-reduce:transition-none md:hidden"
+                : "pointer-events-none fixed inset-x-0 top-14 z-20 h-[calc(100dvh-3.5rem)] bg-zinc-900/30 opacity-0 transition-opacity duration-200 ease-out motion-reduce:transition-none md:hidden"
             }
-            tabIndex={navOpen ? 0 : -1}
-            aria-hidden={!navOpen}
+            tabIndex={navOpen && !searching ? 0 : -1}
+            aria-hidden={!navOpen || searching}
             aria-label={chrome.closeMenu}
             onClick={closeNav}
           />
+          {desktopCollapsed ? (
+            <div className="hidden w-10 shrink-0 md:block" aria-hidden="true" />
+          ) : null}
           <aside
             className={
-              navOpen
-                ? "fixed top-14 bottom-0 left-0 z-30 flex w-80 translate-x-0 flex-col border-r border-zinc-200 bg-white transition-transform duration-200 ease-out motion-reduce:transition-none lg:static lg:z-0 lg:w-72 lg:shrink-0 lg:translate-x-0"
-                : "pointer-events-none fixed top-14 bottom-0 left-0 z-30 flex w-80 -translate-x-full flex-col border-r border-zinc-200 bg-white transition-transform duration-200 ease-out motion-reduce:transition-none lg:pointer-events-auto lg:static lg:z-0 lg:w-72 lg:shrink-0 lg:translate-x-0"
+              searchSheet
+                ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white ${SIDEBAR_MOTION} ${SIDEBAR_DESKTOP_OPEN}`
+                : navOpen
+                  ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white ${SIDEBAR_MOTION} ${desktopClass}`
+                  : `pointer-events-none ${SIDEBAR_MOBILE_FRAME} -translate-x-full border-zinc-200 bg-white ${SIDEBAR_MOTION} ${desktopClass}`
             }
-            style={{ minHeight: 0 }}
+            onPointerEnter={onPointerEnter}
+            onPointerLeave={onPointerLeave}
           >
+            <SidebarDockButton
+              collapsed={desktopCollapsed}
+              collapseLabel={chrome.collapseSidebar}
+              expandLabel={chrome.expandSidebar}
+              onToggle={toggleSidebar}
+            />
             <div
-              id={HANDBOOK_NAV_ASIDE_ID}
-              className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto"
-              style={{ overscrollBehavior: "contain" }}
+              className={
+                railCollapsed
+                  ? `${SIDEBAR_PANEL_MOTION} opacity-100 md:pointer-events-none md:opacity-0`
+                  : `${SIDEBAR_PANEL_MOTION} min-w-0 opacity-100`
+              }
             >
-              <TopicSidebar
-                groups={groups}
-                query={deferredQuery}
-                chrome={chrome}
-                onNavigate={closeNav}
-              />
-            </div>
-            <div className="flex shrink-0 items-center justify-between gap-2 border-t border-zinc-200 px-2 py-1.5">
-              <ContactLinks />
-              <time
-                dateTime={lastUpdatedIso}
-                className="pr-1 text-right text-[11px] leading-tight text-zinc-500"
-              >
-                <span className="block">{chrome.lastUpdated}</span>
-                <span className="tabular-nums text-zinc-600">
-                  {lastUpdatedLabel}
-                </span>
-              </time>
+              <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col md:w-80">
+                <div
+                  id={HANDBOOK_NAV_ASIDE_ID}
+                  className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto"
+                  style={{ overscrollBehavior: "contain" }}
+                >
+                  <TopicSidebar
+                    groups={groups}
+                    query={query}
+                    chrome={chrome}
+                    onNavigate={dismissNav}
+                  />
+                </div>
+                <DrawerFooter
+                  chrome={chrome}
+                  lastUpdatedIso={lastUpdatedIso}
+                  lastUpdatedLabel={lastUpdatedLabel}
+                  onNavigate={dismissNav}
+                />
+              </div>
             </div>
           </aside>
           <div
@@ -97,6 +174,7 @@ export function HandbookShell({
             className="relative min-w-0 flex-1"
             style={{ minHeight: 0, overflow: "auto", overscrollBehavior: "contain" }}
           >
+            <ContentBreadcrumbs groups={groups} chrome={chrome} />
             {children}
             <ScrollToTopButton label={chrome.scrollToTop} />
           </div>
@@ -104,4 +182,43 @@ export function HandbookShell({
       </div>
     </SearchQueryContext.Provider>
   );
+}
+
+function useDesktopSidebarPeek(collapsed: boolean) {
+  const [peeking, setPeeking] = useState(false);
+  const leaveTimer = useRef(0);
+
+  useEffect(() => {
+    if (!collapsed) {
+      setPeeking(false);
+    }
+  }, [collapsed]);
+
+  useEffect(() => {
+    return () => window.clearTimeout(leaveTimer.current);
+  }, []);
+
+  const onPointerEnter = useCallback((event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType !== "mouse") {
+      return;
+    }
+    window.clearTimeout(leaveTimer.current);
+    if (isSidebarDockControl(event.target)) {
+      return;
+    }
+    setPeeking(true);
+  }, []);
+
+  const onPointerLeave = useCallback(() => {
+    window.clearTimeout(leaveTimer.current);
+    leaveTimer.current = window.setTimeout(() => {
+      setPeeking(false);
+    }, PEEK_LEAVE_MS);
+  }, []);
+
+  return { peeking: collapsed && peeking, onPointerEnter, onPointerLeave };
+}
+
+function isSidebarDockControl(target: EventTarget | null) {
+  return target instanceof Element && target.closest("[data-sidebar-dock]") !== null;
 }

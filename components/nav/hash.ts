@@ -1,3 +1,5 @@
+import { splitHref } from "@/lib/nav";
+
 export function hashIdFrom(hash: string): string {
   return decodeURIComponent(hash.replace(/^#/, ""));
 }
@@ -23,6 +25,13 @@ export function dispatchHashChange(scroll?: boolean) {
   window.dispatchEvent(new CustomEvent("hashchange", { detail: { scroll } }));
 }
 
+type PendingPathHash = {
+  readonly pathname: string;
+  readonly hash: string;
+};
+
+let pendingPathHash: PendingPathHash | null = null;
+
 export function applySameDocumentHref(
   nextPath: string,
   nextHash: string,
@@ -39,6 +48,37 @@ export function applySameDocumentHref(
     return true;
   }
   return false;
+}
+
+export function queueHandbookHref(href: string): void {
+  const { pathname, hash } = splitHref(href);
+  pendingPathHash = { pathname, hash };
+}
+
+export function followHandbookHref(
+  href: string,
+  currentPath: string,
+  push: (pathname: string) => void,
+): void {
+  const { pathname, hash } = splitHref(href);
+  if (applySameDocumentHref(pathname, hash, currentPath)) {
+    return;
+  }
+  queueHandbookHref(href);
+  push(pathname);
+}
+
+export function takePendingHashForPath(pathname: string): string | null {
+  if (!pendingPathHash) {
+    return null;
+  }
+  if (pendingPathHash.pathname !== pathname) {
+    pendingPathHash = null;
+    return null;
+  }
+  const { hash } = pendingPathHash;
+  pendingPathHash = null;
+  return hash;
 }
 
 export function setHashOnPath(pathname: string, id: string, scroll = true) {

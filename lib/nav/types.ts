@@ -75,6 +75,8 @@ export type ChromeCopy = {
   readonly topicsNav: string;
   readonly openMenu: string;
   readonly closeMenu: string;
+  readonly collapseSidebar: string;
+  readonly expandSidebar: string;
   readonly instructions: string;
   readonly home: string;
   readonly breadcrumbs: string;
