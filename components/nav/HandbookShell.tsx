@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 import { SearchQueryContext } from "@/components/search";
 import { HANDBOOK_MAIN_ID, HANDBOOK_NAV_ASIDE_ID } from "@/constants";
 import { ContentBreadcrumbs } from "./ContentBreadcrumbs";
@@ -56,7 +56,13 @@ export function HandbookShell({
   }, [closeNav]);
   const { query, deferredQuery, mode, changeQuery, changeMode } =
     useHandbookSearch(groups, revealSearchNav);
+  const searchValue = useMemo(
+    () => ({ query: deferredQuery, mode }),
+    [deferredQuery, mode],
+  );
   const searching = query.trim().length > 0;
+  const sidebarQuery =
+    searching && deferredQuery.trim().length === 0 ? query : deferredQuery;
   useEffect(() => {
     if (!searching) {
       setSearchSheetDismissed(false);
@@ -96,7 +102,7 @@ export function HandbookShell({
   useResetMainScroll();
 
   return (
-    <SearchQueryContext.Provider value={{ query: deferredQuery, mode }}>
+    <SearchQueryContext.Provider value={searchValue}>
       <div className="flex h-dvh max-h-dvh flex-col overflow-hidden">
         <SiteHeader
           query={query}
@@ -155,7 +161,7 @@ export function HandbookShell({
                 >
                   <TopicSidebar
                     groups={groups}
-                    query={query}
+                    query={sidebarQuery}
                     chrome={chrome}
                     onNavigate={dismissNav}
                   />

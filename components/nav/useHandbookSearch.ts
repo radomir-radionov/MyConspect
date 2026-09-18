@@ -3,8 +3,8 @@
 import { useDeferredValue, useEffect, useRef, useSyncExternalStore, startTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { SEARCH_NAV_DELAY_MS } from "@/constants";
-import { firstSearchHref, type NavGroup, type SearchMode } from "@/lib/nav";
-import { followHandbookHref } from "./hash";
+import { firstSearchHref, splitHref, type NavGroup, type SearchMode } from "@/lib/nav";
+import { applySameDocumentHref, followHandbookHref } from "./hash";
 import { getServerSearchUi, readSearchUi, subscribeUi, writeUi } from "./uiStorage";
 
 export function useHandbookSearch(
@@ -73,7 +73,8 @@ export function useHandbookSearch(
       modeRef.current,
     );
     if (target) {
-      goTo(target);
+      const { pathname, hash } = splitHref(target);
+      applySameDocumentHref(pathname, hash, pathnameRef.current);
     }
   }
 

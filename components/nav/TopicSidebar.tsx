@@ -12,7 +12,12 @@ import { NavGuide } from "./NavGuide";
 import { getHash, getServerHash, subscribeHash } from "./hash";
 import { isActiveHref, isActiveTrack } from "./location";
 import { pinNavElement, restoreSidebarPin, scrollSidebarHit } from "./sidebarPin";
-import { measureStickyCover, measureStickyPathVars, type StickyVars } from "./sidebarSticky";
+import {
+  measureStickyCover,
+  measureStickyPathVars,
+  stickyVarsEqual,
+  type StickyVars,
+} from "./sidebarSticky";
 import { SidebarNavProvider, trackHeaderClass } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
 import { useSidebarOpen } from "./useSidebarOpen";
@@ -59,46 +64,12 @@ export const TopicSidebar = memo(function TopicSidebar({
   const pinNav = useCallback((element: HTMLElement) => {
     pinNavElement(element);
   }, []);
-  const [stickyVars, setStickyVars] = useState<StickyVars>({});
+  const stickyVars = useStickyPathVars(
+    `${openTopicHref}|${openClusterKey}|${openSubjectHref}|${pathname}|${hash}|${searching}|${query}`,
+  );
 
   useLayoutEffect(() => {
     restoreSidebarPin();
-  }, [openTopicHref, openClusterKey, openSubjectHref, pathname, hash, searching, query]);
-
-  useEffect(() => {
-    const update = () => setStickyVars(measureStickyPathVars());
-    update();
-    const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
-    const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
-    const observer = nav ? new ResizeObserver(update) : null;
-    if (nav) {
-      observer?.observe(nav);
-    }
-    let frame = 0;
-    const onScroll = () => {
-      if (frame !== 0) {
-        return;
-      }
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        const cover = `${measureStickyCover()}px`;
-        setStickyVars((current) =>
-          current["--nav-sticky-cover"] === cover
-            ? current
-            : { ...current, "--nav-sticky-cover": cover },
-        );
-      });
-    };
-    scroller?.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", update);
-    const later = window.setTimeout(update, NAV_FOLD_MS + 20);
-    return () => {
-      observer?.disconnect();
-      scroller?.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", update);
-      window.clearTimeout(later);
-      window.cancelAnimationFrame(frame);
-    };
   }, [openTopicHref, openClusterKey, openSubjectHref, pathname, hash, searching, query]);
 
   useEffect(() => {
@@ -208,6 +179,59 @@ export const TopicSidebar = memo(function TopicSidebar({
   );
 });
 
+function useStickyPathVars(revision: string) {
+  const [stickyVars, setStickyVars] = useState<StickyVars>({});
+
+  const applyVars = useCallback(() => {
+    const next = measureStickyPathVars();
+    setStickyVars((current) => (stickyVarsEqual(current, next) ? current : next));
+  }, []);
+
+  useLayoutEffect(() => {
+    applyVars();
+  }, [applyVars, revision]);
+
+  useEffect(() => {
+    applyVars();
+    const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
+    const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
+    const observer = nav ? new ResizeObserver(applyVars) : null;
+    if (nav) {
+      observer?.observe(nav);
+    }
+    let frame = 0;
+    const onScroll = () => {
+      if (frame !== 0) {
+        return;
+      }
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const cover = `${measureStickyCover()}px`;
+        setStickyVars((current) =>
+          current["--nav-sticky-cover"] === cover
+            ? current
+            : { ...current, "--nav-sticky-cover": cover },
+        );
+      });
+    };
+    scroller?.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", applyVars);
+    return () => {
+      observer?.disconnect();
+      scroller?.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", applyVars);
+      window.cancelAnimationFrame(frame);
+    };
+  }, [applyVars]);
+
+  useEffect(() => {
+    const later = window.setTimeout(applyVars, NAV_FOLD_MS + 20);
+    return () => window.clearTimeout(later);
+  }, [applyVars, revision]);
+
+  return stickyVars;
+}
+
 function TrackGroup({
   group,
   query,
@@ -260,6 +284,7 @@ function TrackGroup({
       ) : (
         <Link
           href={group.href}
+          prefetch={false}
           data-nav="track"
           data-nav-id={group.id}
           data-nav-path={onPath ? "true" : undefined}

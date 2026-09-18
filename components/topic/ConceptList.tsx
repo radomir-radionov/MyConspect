@@ -131,6 +131,7 @@ export function ConceptList({
   );
 
   useEffect(() => {
+    let frame = 0;
     function focusFromHash(event?: Event) {
       const id = hashIdFrom(window.location.hash);
       if (!id) {
@@ -154,7 +155,9 @@ export function ConceptList({
         restoreElementViewportTop(element, viewportTop);
         return;
       }
-      window.requestAnimationFrame(() => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
         scrollConceptToTop(element);
       });
     }
@@ -173,7 +176,10 @@ export function ConceptList({
 
     focusFromHash();
     window.addEventListener("hashchange", focusFromHash);
-    return () => window.removeEventListener("hashchange", focusFromHash);
+    return () => {
+      window.removeEventListener("hashchange", focusFromHash);
+      window.cancelAnimationFrame(frame);
+    };
   }, [concepts, mode, query]);
 
   if (concepts.length === 0) {

@@ -47,6 +47,19 @@ function pathElements(nav: Element) {
 
 export type StickyVars = Readonly<Record<string, string>>;
 
+export function stickyVarsEqual(left: StickyVars, right: StickyVars): boolean {
+  const keys = Object.keys(left);
+  if (keys.length !== Object.keys(right).length) {
+    return false;
+  }
+  for (const key of keys) {
+    if (left[key] !== right[key]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export function measureStickyPathVars(): StickyVars {
   const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
   if (!nav) {

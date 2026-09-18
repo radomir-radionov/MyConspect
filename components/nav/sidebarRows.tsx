@@ -301,6 +301,7 @@ export function TopicRow({
     <li className="contents">
       <Link
         href={topic.href}
+        prefetch={false}
         scroll={false}
         data-nav={navKind}
         data-nav-id={navId ?? topic.slug}
@@ -386,6 +387,7 @@ export function ClusterRow({
     <li data-nav-pin={pinInParent ? "cluster" : undefined}>
       <Link
         href={cluster.href}
+        prefetch={false}
         scroll={false}
         data-nav="cluster"
         data-nav-id={cluster.id}
@@ -442,6 +444,7 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
     <li>
       <Link
         href={subject.href}
+        prefetch={false}
         data-nav="subject"
         data-nav-id={subject.slug}
         data-nav-path={onPath ? "true" : undefined}
