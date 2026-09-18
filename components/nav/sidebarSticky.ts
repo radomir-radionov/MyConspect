@@ -60,8 +60,33 @@ export function stickyVarsEqual(left: StickyVars, right: StickyVars): boolean {
   return true;
 }
 
-export function measureStickyPathVars(): StickyVars {
-  const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
+type StickyStyle = {
+  getPropertyValue(name: string): string;
+  setProperty(name: string, value: string): void;
+  removeProperty(name: string): string;
+};
+
+/** Write CSS vars without React state so scroll/measure does not rerender the tree. */
+export function writeStickyVars(
+  style: StickyStyle,
+  next: StickyVars,
+  previous: StickyVars,
+): StickyVars {
+  for (const key of Object.keys(previous)) {
+    if (next[key] === undefined) {
+      style.removeProperty(key);
+    }
+  }
+  for (const [key, value] of Object.entries(next)) {
+    if (style.getPropertyValue(key) !== value) {
+      style.setProperty(key, value);
+    }
+  }
+  return next;
+}
+
+export function measureStickyPathVars(navElement?: HTMLElement | null): StickyVars {
+  const nav = navElement ?? document.getElementById(HANDBOOK_SIDEBAR_ID);
   if (!nav) {
     return {};
   }
@@ -76,7 +101,7 @@ export function measureStickyPathVars(): StickyVars {
       vars[guideVar] = `${top}px`;
     }
   }
-  vars["--nav-sticky-cover"] = `${measureStickyCover(nav)}px`;
+  vars["--nav-sticky-cover"] = `${measureStickyCover(nav, vars)}px`;
   return vars;
 }
 
@@ -86,7 +111,16 @@ export function measureStickyPathVars(): StickyVars {
  * still sitting in normal flow. It ends one gap below the lowest pinned row so
  * scrolling rows never touch it.
  */
-export function measureStickyCover(navElement?: HTMLElement): number {
+function stickyTopPx(element: HTMLElement, nav: HTMLElement, vars?: StickyVars): number {
+  const name = topVarName(element);
+  return (
+    Number.parseFloat(vars?.[name] ?? "") ||
+    Number.parseFloat(nav.style.getPropertyValue(name)) ||
+    0
+  );
+}
+
+export function measureStickyCover(navElement?: HTMLElement, vars?: StickyVars): number {
   const nav = navElement ?? document.getElementById(HANDBOOK_SIDEBAR_ID);
   const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
   if (!nav || !scroller) {
@@ -98,8 +132,7 @@ export function measureStickyCover(navElement?: HTMLElement): number {
   for (const element of pathElements(nav)) {
     const rect = element.getBoundingClientRect();
     const relativeTop = rect.top - scrollerTop;
-    const stickyTop = Number.parseFloat(getComputedStyle(element).top) || 0;
-    const pinned = relativeTop <= stickyTop + 0.5;
+    const pinned = relativeTop <= stickyTopPx(element, nav, vars) + 0.5;
     if (pinned) {
       cover = Math.max(cover, relativeTop + rect.height + gap);
     }

@@ -2,7 +2,6 @@
 
 import { memo, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { HighlightedText } from "@/components/search";
 import { isInterviewTopic } from "@/lib/catalog";
 import {
@@ -21,7 +20,13 @@ import { NavChevron, NavFold } from "./NavFold";
 import { NavGuide } from "./NavGuide";
 import { applySameDocumentHref, followHandbookHref, queueHandbookHref, replacePathHash, setHashOnPath } from "./hash";
 import { clusterKey, isActiveHref } from "./location";
-import { closeNavSoon, rowClass, useSidebarNav } from "./sidebarContext";
+import {
+  closeNavSoon,
+  rowClass,
+  useSidebarActive,
+  useSidebarChrome,
+  useSidebarFold,
+} from "./sidebarContext";
 
 function RowTitle({
   text,
@@ -69,8 +74,7 @@ export const ConceptLink = memo(function ConceptLink({
   isFirstConcept: boolean;
   conceptActive: boolean;
 }) {
-  const { query, mode, pathname, onNavigate } = useSidebarNav();
-  const router = useRouter();
+  const { query, mode, pathname, onNavigate, goToPath } = useSidebarChrome();
   const snippet = conceptBodySnippet(concept, query, mode);
   return (
     <a
@@ -86,9 +90,7 @@ export const ConceptLink = memo(function ConceptLink({
           return;
         }
         closeNavSoon(onNavigate);
-        followHandbookHref(conceptHref(topicHref, concept.id), pathname, (path) => {
-          router.push(path, { scroll: false });
-        });
+        followHandbookHref(conceptHref(topicHref, concept.id), pathname, goToPath);
       }}
       className={
         conceptActive
@@ -120,7 +122,8 @@ function ConceptItems({
   topic: NavTopic;
   concepts: readonly NavConcept[];
 }) {
-  const { first, activeConceptId, searching } = useSidebarNav();
+  const { first, searching } = useSidebarChrome();
+  const { activeConceptId } = useSidebarActive();
   return (
     <>
       {concepts.map((concept) => {
@@ -170,7 +173,8 @@ function InterviewSectionNav({
   topic: NavTopic;
   concepts: readonly NavConcept[];
 }) {
-  const { activeConceptId, pathname, searching, query } = useSidebarNav();
+  const { pathname, searching, query } = useSidebarChrome();
+  const { activeConceptId } = useSidebarActive();
   const groups = useMemo(() => interviewSectionGroups(concepts), [concepts]);
   const activeSection = concepts.find((concept) => concept.id === activeConceptId)?.interviewSection;
   const onTopic = !searching && isActiveHref(pathname, topic.href);
@@ -220,7 +224,7 @@ function InterviewSectionNav({
                 open={sectionOpen}
               />
             </button>
-            <NavFold open={sectionOpen} instant={searching}>
+            <NavFold open={sectionOpen} instant={searching || !sectionOpen}>
               <ul className="mt-1.5 space-y-0.5 pl-2">
                 <ConceptItems topic={topic} concepts={group.concepts} />
               </ul>
@@ -268,17 +272,8 @@ export function TopicRow({
   navKind?: "cluster" | "topic";
   navId?: string;
 }) {
-  const {
-    query,
-    mode,
-    pathname,
-    searching,
-    first,
-    openTopicHref,
-    setOpenTopicHref,
-    pinNav,
-    onNavigate,
-  } = useSidebarNav();
+  const { query, mode, pathname, searching, first, pinNav, onNavigate } = useSidebarChrome();
+  const { openTopicHref, setOpenTopicHref } = useSidebarFold();
   const active = isActiveHref(pathname, topic.href);
   const isHitTopic = first?.pathname === topic.href;
   const isFirstTopic = isHitTopic && first.hash === "";
@@ -335,7 +330,7 @@ export function TopicRow({
         <RowTitle text={topic.title} query={query} marker={compact} open={topicOpen} />
         {compact ? (topicOpen ? <NavChevron open /> : null) : <NavChevron open={topicOpen} large />}
       </Link>
-      <NavFold open={topicOpen && concepts.length > 0} instant={searching}>
+      <NavFold open={topicOpen && concepts.length > 0} instant={searching || !topicOpen}>
         <ul className={compact ? "mt-1.5 mb-1 space-y-0.5 pl-2" : "mt-1.5 mb-1 space-y-0.5 pl-3"}>
           <TopicConceptNav topic={topic} concepts={concepts} />
         </ul>
@@ -351,16 +346,9 @@ export function ClusterRow({
   subjectHref: string;
   cluster: NavCluster;
 }) {
-  const {
-    query,
-    pathname,
-    searching,
-    first,
-    activeConceptId,
-    openClusterKey,
-    setOpenClusterKey,
-    pinNav,
-  } = useSidebarNav();
+  const { query, pathname, searching, first, pinNav } = useSidebarChrome();
+  const { openClusterKey, setOpenClusterKey } = useSidebarFold();
+  const { activeConceptId } = useSidebarActive();
   const onlyTopic = cluster.topics.length === 1 ? cluster.topics[0] : null;
 
   if (onlyTopic && sameTitle(cluster.title, onlyTopic.title)) {
@@ -421,7 +409,7 @@ export function ClusterRow({
         <RowTitle text={cluster.title} query={query} marker open={clusterOpen} />
         {clusterOpen ? <NavChevron open /> : null}
       </Link>
-      <NavFold open={clusterOpen} instant={searching}>
+      <NavFold open={clusterOpen} instant={searching || !clusterOpen}>
         <ul className="mt-1.5 space-y-0.5 pl-2">
           {cluster.topics.map((topic) => (
             <TopicRow key={topic.slug} topic={topic} compact navKind="topic" navId={topic.slug} />
@@ -433,8 +421,8 @@ export function ClusterRow({
 }
 
 export function SubjectRow({ subject }: { subject: NavSubject }) {
-  const { query, pathname, searching, first, openSubjectHref, setOpenSubjectHref } =
-    useSidebarNav();
+  const { query, pathname, searching, first } = useSidebarChrome();
+  const { openSubjectHref, setOpenSubjectHref } = useSidebarFold();
   const active = isActiveHref(pathname, subject.href);
   const subjectOpen = searching || openSubjectHref === subject.href;
   const isHitSubject = first?.pathname === subject.href && first.hash === "";
@@ -466,7 +454,7 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
         <RowTitle text={subject.title} query={query} />
         <NavChevron open={subjectOpen} large />
       </Link>
-      <NavFold open={subjectOpen} instant={searching}>
+      <NavFold open={subjectOpen} instant={searching || !subjectOpen}>
         <ul className="mt-1.5 mb-1 ml-2 space-y-0.5 border-l border-yellow-200 pl-2">
           <NavGuide level="subject" />
           {subject.clusters.map((cluster) => (

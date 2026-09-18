@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
+import { createContext, useContext, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import type { SearchMode } from "@/lib/nav";
 
 export type SearchHit = {
@@ -8,31 +8,74 @@ export type SearchHit = {
   hash: string;
 };
 
-export type SidebarNavValue = {
+export type SidebarChromeValue = {
   query: string;
   mode: SearchMode;
   pathname: string;
   searching: boolean;
   first: SearchHit | null;
-  activeConceptId: string;
+  pinNav: (element: HTMLElement) => void;
+  goToPath: (path: string) => void;
+  onNavigate?: () => void;
+};
+
+export type SidebarFoldValue = {
   openSubjectHref: string | null;
   setOpenSubjectHref: Dispatch<SetStateAction<string | null>>;
   openClusterKey: string | null;
   setOpenClusterKey: Dispatch<SetStateAction<string | null>>;
   openTopicHref: string | null;
   setOpenTopicHref: Dispatch<SetStateAction<string | null>>;
-  pinNav: (element: HTMLElement) => void;
-  onNavigate?: () => void;
 };
 
-const SidebarNavContext = createContext<SidebarNavValue | null>(null);
+export type SidebarActiveValue = {
+  activeConceptId: string;
+};
 
-export const SidebarNavProvider = SidebarNavContext.Provider;
+const SidebarChromeContext = createContext<SidebarChromeValue | null>(null);
+const SidebarFoldContext = createContext<SidebarFoldValue | null>(null);
+const SidebarActiveContext = createContext<SidebarActiveValue | null>(null);
 
-export function useSidebarNav() {
-  const value = useContext(SidebarNavContext);
+export function SidebarNavProvider({
+  chrome,
+  fold,
+  active,
+  children,
+}: {
+  chrome: SidebarChromeValue;
+  fold: SidebarFoldValue;
+  active: SidebarActiveValue;
+  children: ReactNode;
+}) {
+  return (
+    <SidebarChromeContext.Provider value={chrome}>
+      <SidebarFoldContext.Provider value={fold}>
+        <SidebarActiveContext.Provider value={active}>{children}</SidebarActiveContext.Provider>
+      </SidebarFoldContext.Provider>
+    </SidebarChromeContext.Provider>
+  );
+}
+
+export function useSidebarChrome() {
+  const value = useContext(SidebarChromeContext);
   if (!value) {
-    throw new Error("useSidebarNav must be used within TopicSidebar");
+    throw new Error("useSidebarChrome must be used within TopicSidebar");
+  }
+  return value;
+}
+
+export function useSidebarFold() {
+  const value = useContext(SidebarFoldContext);
+  if (!value) {
+    throw new Error("useSidebarFold must be used within TopicSidebar");
+  }
+  return value;
+}
+
+export function useSidebarActive() {
+  const value = useContext(SidebarActiveContext);
+  if (!value) {
+    throw new Error("useSidebarActive must be used within TopicSidebar");
   }
   return value;
 }

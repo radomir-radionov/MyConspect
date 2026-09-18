@@ -1,8 +1,8 @@
 "use client";
 
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useState, useSyncExternalStore, type CSSProperties, type Dispatch, type SetStateAction } from "react";
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useState, useSyncExternalStore, type Dispatch, type SetStateAction } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { HighlightedText, useSearchMode } from "@/components/search";
 import { HANDBOOK_NAV_ASIDE_ID, HANDBOOK_SIDEBAR_ID, NAV_FOLD_MS } from "@/constants";
 import { searchNav, splitHref, type ChromeCopy, type NavEntry, type NavGroup } from "@/lib/nav";
@@ -12,12 +12,7 @@ import { NavGuide } from "./NavGuide";
 import { getHash, getServerHash, subscribeHash } from "./hash";
 import { isActiveHref, isActiveTrack } from "./location";
 import { pinNavElement, restoreSidebarPin, scrollSidebarHit } from "./sidebarPin";
-import {
-  measureStickyCover,
-  measureStickyPathVars,
-  stickyVarsEqual,
-  type StickyVars,
-} from "./sidebarSticky";
+import { measureStickyCover, measureStickyPathVars, stickyVarsEqual, type StickyVars } from "./sidebarSticky";
 import { SidebarNavProvider, trackHeaderClass } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
 import { useSidebarOpen } from "./useSidebarOpen";
@@ -61,12 +56,17 @@ export const TopicSidebar = memo(function TopicSidebar({
     searching,
     activeTrackId,
   });
+  const router = useRouter();
   const pinNav = useCallback((element: HTMLElement) => {
     pinNavElement(element);
   }, []);
-  const stickyVars = useStickyPathVars(
-    `${openTopicHref}|${openClusterKey}|${openSubjectHref}|${pathname}|${hash}|${searching}|${query}`,
+  const goToPath = useCallback(
+    (path: string) => {
+      router.push(path, { scroll: false });
+    },
+    [router],
   );
+  const stickyRevision = `${openTopicHref}|${openClusterKey}|${openSubjectHref}|${pathname}|${hash}|${searching}|${query}`;
 
   useLayoutEffect(() => {
     restoreSidebarPin();
@@ -110,48 +110,38 @@ export const TopicSidebar = memo(function TopicSidebar({
     return () => window.cancelAnimationFrame(frame);
   }, [activeConceptId, openTopicHref, searching]);
 
-  const navValue = useMemo(
+  const chromeValue = useMemo(
     () => ({
       query,
       mode,
       pathname,
       searching,
       first,
-      activeConceptId,
-      openSubjectHref,
-      setOpenSubjectHref,
-      openClusterKey,
-      setOpenClusterKey,
-      openTopicHref,
-      setOpenTopicHref,
       pinNav,
+      goToPath,
       onNavigate,
     }),
-    [
-      query,
-      mode,
-      pathname,
-      searching,
-      first,
-      activeConceptId,
+    [query, mode, pathname, searching, first, pinNav, goToPath, onNavigate],
+  );
+  const foldValue = useMemo(
+    () => ({
       openSubjectHref,
       setOpenSubjectHref,
       openClusterKey,
       setOpenClusterKey,
       openTopicHref,
       setOpenTopicHref,
-      pinNav,
-      onNavigate,
-    ],
+    }),
+    [openSubjectHref, openClusterKey, openTopicHref],
   );
+  const activeValue = useMemo(() => ({ activeConceptId }), [activeConceptId]);
 
   return (
-    <SidebarNavProvider value={navValue}>
+    <SidebarNavProvider chrome={chromeValue} fold={foldValue} active={activeValue}>
       <nav
         id={HANDBOOK_SIDEBAR_ID}
         aria-label={chrome.topicsNav}
         className="relative isolate px-2 py-3"
-        style={Object.keys(stickyVars).length > 0 ? (stickyVars as CSSProperties) : undefined}
       >
         <div data-nav-sticky-cover="" aria-hidden="true" />
         {filtered.length === 0 ? (
@@ -175,16 +165,17 @@ export const TopicSidebar = memo(function TopicSidebar({
           </ul>
         )}
       </nav>
+      <StickyPathStyles revision={stickyRevision} />
     </SidebarNavProvider>
   );
 });
 
-function useStickyPathVars(revision: string) {
-  const [stickyVars, setStickyVars] = useState<StickyVars>({});
+function StickyPathStyles({ revision }: { revision: string }) {
+  const [vars, setVars] = useState<StickyVars>({});
 
   const applyVars = useCallback(() => {
     const next = measureStickyPathVars();
-    setStickyVars((current) => (stickyVarsEqual(current, next) ? current : next));
+    setVars((current) => (stickyVarsEqual(current, next) ? current : next));
   }, []);
 
   useLayoutEffect(() => {
@@ -192,13 +183,7 @@ function useStickyPathVars(revision: string) {
   }, [applyVars, revision]);
 
   useEffect(() => {
-    applyVars();
-    const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
     const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
-    const observer = nav ? new ResizeObserver(applyVars) : null;
-    if (nav) {
-      observer?.observe(nav);
-    }
     let frame = 0;
     const onScroll = () => {
       if (frame !== 0) {
@@ -207,17 +192,14 @@ function useStickyPathVars(revision: string) {
       frame = window.requestAnimationFrame(() => {
         frame = 0;
         const cover = `${measureStickyCover()}px`;
-        setStickyVars((current) =>
-          current["--nav-sticky-cover"] === cover
-            ? current
-            : { ...current, "--nav-sticky-cover": cover },
+        setVars((current) =>
+          current["--nav-sticky-cover"] === cover ? current : { ...current, "--nav-sticky-cover": cover },
         );
       });
     };
     scroller?.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", applyVars);
     return () => {
-      observer?.disconnect();
       scroller?.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", applyVars);
       window.cancelAnimationFrame(frame);
@@ -229,7 +211,10 @@ function useStickyPathVars(revision: string) {
     return () => window.clearTimeout(later);
   }, [applyVars, revision]);
 
-  return stickyVars;
+  const css = Object.entries(vars)
+    .map(([name, value]) => `${name}:${value}`)
+    .join(";");
+  return <style>{css ? `#${HANDBOOK_NAV_ASIDE_ID}{${css}}` : ""}</style>;
 }
 
 function TrackGroup({
@@ -301,7 +286,7 @@ function TrackGroup({
           {chevron}
         </Link>
       )}
-      <NavFold open={trackOpen} instant={searching}>
+      <NavFold open={trackOpen} instant={searching || !trackOpen}>
         <ul className="mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2">
           <NavGuide level="track" />
           {isLeafTrack && group.leafTopic ? (
