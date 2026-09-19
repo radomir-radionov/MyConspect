@@ -6,7 +6,7 @@ Architecture, libraries, performance, and legacy.
 
 ### Related docs
 
-* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Server](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
+* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Server](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md) · [Architecture patterns](./7_special_architecture.md)
 
 ### Sections
 
@@ -344,8 +344,6 @@ export function Button({ children }: { children: React.ReactNode }) {
 
 [react.dev/learn](https://react.dev/learn)
 
-Feature-Sliced Design (FSD)
-
 </details>
 
 <details>
@@ -353,60 +351,11 @@ Feature-Sliced Design (FSD)
 
 ### Feature-Sliced Design (FSD)
 
-**Definition:** Architectural methodology organizing code into layers with strict dependency rules.
+**Definition:** Frontend folder methodology: layers (app → pages → widgets → features → entities → shared) plus slices with a public `index.ts`.
 
-**How it works:**
+Canonical: [Feature-Sliced Design](./7_special_architecture.md#feature-sliced-design-fsd). React-specific: keep server-state libraries out of `entities` models — [State at scale](./7_special_architecture.md#state-at-scale).
 
-Each slice (e.g. `entities/product`) has segments: `ui`, `model`, `api`, `lib`. Public API is `index.ts` — other slices import that, not internals. Higher layers import lower — never reverse. `shared` has no business knowledge.
-
-```
-App → Pages → Widgets → Features → Entities → Shared
-```
-
-| Layer        | Responsibility                             |
-| ------------ | ------------------------------------------ |
-| **Shared**   | UI kit, utils, API client, constants       |
-| **Entities** | Business models (User, Product), entity UI |
-| **Features** | User actions (AddToCart, LoginForm)        |
-| **Widgets**  | Composite blocks (ProductCard, Header)     |
-| **Pages**    | Route screens                              |
-| **App**      | Providers, router, global styles           |
-
-**When to use:**
-
-Medium/large teams, long-lived products. Skip for throwaway MVPs.
-
-#### Common pitfalls
-
-Importing `pages` from `features`; dumping everything into `shared`; skipping the public `index.ts`.
-
-**Pluses and minuses:**
-
-| +                                             | −                            |
-| ------------------------------------------------ | ------------------------------- |
-| Predictable imports; features stay isolated      | Overkill for a 3-page prototype |
-| UI kit lives in `shared` / `entities`, not pages | Learning curve for layer names  |
-
-**Examples:**
-
-```tsx
-// pages/catalog/ui/CatalogPage.tsx
-import { ProductCard } from '@/widgets/product-card';
-import { useProducts } from '@/entities/product';
-
-export function CatalogPage() {
-  const products = useProducts();
-  return products.map(p => <ProductCard key={p.id} product={p} />);
-}
-```
-
-**Thoughts:** Depend downward. Features own user actions; entities own the business model.
-
-**Sources:**
-
-[feature-sliced.design](https://feature-sliced.design/)
-
-TanStack Router
+**Sources:** [feature-sliced.design](https://feature-sliced.design/)
 
 </details>
 

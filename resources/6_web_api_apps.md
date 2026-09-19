@@ -376,7 +376,7 @@ GraphQL is a query language and runtime where clients request exactly the fields
 
 **How it works:** Client sends a query document against a schema (`type Query { book(id: ID!): Book }`). The server resolves each field. Mutations change data; subscriptions push updates (often over WebSocket). Use persisted queries and complexity limits in production.
 
-**When to use:** Many clients needing different shapes of the same graph (mobile vs web). Informal **middle-end**: trim REST over-fetch without cloning endpoints — same idea as a [BFF](./0_system_design_architecture.md#bff-backend-for-frontend). Avoid as a cache-unfriendly replacement for a simple CRUD REST API.
+**When to use:** Many clients needing different shapes of the same graph (mobile vs web). Informal **middle-end**: trim REST over-fetch without cloning endpoints — same idea as a [BFF](./7_special_architecture.md#bff-backend-for-frontend). Avoid as a cache-unfriendly replacement for a simple CRUD REST API.
 
 **Pluses and minuses:**
 

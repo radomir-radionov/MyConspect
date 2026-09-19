@@ -1,16 +1,28 @@
 # Design patterns
 
-GoF creational, structural, and behavioral patterns.
+GoF catalog: creational, structural, and behavioral patterns. SOLID, DRY/KISS/YAGNI, and GRASP live in sibling Principles topics. TDD/BDD: [Tests](./7_special_testing.md). Constructor injection: [Entities, relations & design](./0_system_design_grasp.md#entities-relations--design).
 
 [← Back to hub](./0_system_design.md)
 
 ### Related docs
 
-* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [System design — Patterns](./0_system_design_patterns.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+
+### Main concepts
+
+| Area | Topics |
+|------|--------|
+| Catalog | 23 GoF patterns (creational, structural, behavioral) |
+| Cheat sheets | Frontend-oriented grouping |
+| Extra | Repository (not GoF) |
 
 ### Sections
 
 - [10. Design patterns](#10-design-patterns)
+- [GOF design patterns — catalog](#gof-design-patterns--catalog)
+- [Creational patterns — cheat sheet](#creational-patterns--cheat-sheet)
+- [Structural patterns — cheat sheet](#structural-patterns--cheat-sheet)
+- [Behavioral patterns — cheat sheet](#behavioral-patterns--cheat-sheet)
 
 ---
 
@@ -42,13 +54,56 @@ A reusable solution to a recurring design problem — not copy-paste code, but a
 | Shared vocabulary | Over-application ("pattern fever") |
 | Battle-tested structures | Can obscure simple code |
 
-**Thoughts:** See full catalog and frontend grouping in [Patterns](./0_system_design_patterns.md#gof-design-patterns--catalog). Responsibility assignment (Expert, Creator, Controller): [GRASP](./0_system_design_grasp.md#grasp-principles). Creational shortlist: [cheat sheet](#creational-patterns--cheat-sheet). Structural shortlist: [cheat sheet](#structural-patterns--cheat-sheet). Behavioral shortlist: [Patterns](./0_system_design_patterns.md#behavioral-patterns--cheat-sheet). Patterns are not the goal of a PR.
+**Thoughts:** See full catalog and frontend grouping in [GOF catalog](#gof-design-patterns--catalog). Responsibility assignment (Expert, Creator, Controller): [GRASP](./0_system_design_grasp.md#grasp-principles). Creational shortlist: [cheat sheet](#creational-patterns--cheat-sheet). Structural shortlist: [cheat sheet](#structural-patterns--cheat-sheet). Behavioral shortlist: [cheat sheet](#behavioral-patterns--cheat-sheet). Patterns are not the goal of a PR.
 
 **Sources:**
 
 [refactoring.guru](https://refactoring.guru/design-patterns/catalog) · [Doka — Architecture and design patterns](https://doka.guide/tools/architecture-and-design-patterns/)
 
 ---
+
+</details>
+
+<details>
+  <summary>GOF design patterns — catalog</summary>
+
+<a name="gof-design-patterns--catalog"></a>
+
+### GOF design patterns — catalog
+
+**Definition:**
+
+Gang of Four (Gamma, Helm, Johnson, Vlissides) — 23 reusable OOP design patterns from *Design Patterns: Elements of Reusable Object-Oriented Software* (1994).
+
+| Creational | Structural | Behavioral |
+|------------|------------|------------|
+| Factory Method | Adapter | Chain of Responsibility |
+| Abstract Factory | Bridge | Command |
+| Builder | Composite | Interpreter |
+| Prototype | Decorator | Iterator |
+| Singleton | Facade | Mediator |
+| | Flyweight | Memento |
+| | Proxy | Observer |
+| | | State |
+| | | Strategy |
+| | | Template Method |
+| | | Visitor |
+
+**Thoughts:**
+
+Patterns are vocabulary, not goals. "We need a Factory" is the wrong starting point — identify the problem first, then name the pattern. Deep JS/Doka notes: [Creational cheat sheet](#creational-patterns--cheat-sheet).
+
+Doka’s frontend shortlist (not the full 23):
+
+| Kind | Job | Names to know |
+|------|-----|----------------|
+| **Creational** | Create objects / families without duplication | Simple Factory (informal), Factory Method, Abstract Factory, Builder |
+| **Structural** | Combine entities (“how to assemble a component”) | Adapter, Decorator, Facade, Proxy |
+| **Behavioral** | Who does what, how they talk (“how to organize behavior”) | Chain of Responsibility, Strategy, Command, Observer |
+
+Refactoring Guru: creational = creation mechanisms; structural = assemble objects/classes; behavioral = algorithms and responsibility. **Simple Factory** is a common name for a function that `switch`es on type — useful, but not a separate GoF pattern (Factory Method is). Shortlists: [structural](#structural-patterns--cheat-sheet) · [behavioral](#behavioral-patterns--cheat-sheet).
+
+**Sources:** [Refactoring Guru — Catalog](https://refactoring.guru/design-patterns/catalog) · [Doka — Architecture and design patterns](https://doka.guide/tools/architecture-and-design-patterns/) · [ByteByteGo — OOP Design Patterns](https://blog.bytebytego.com/i/162154465/oop-design-patterns-you-must-know)
 
 </details>
 
@@ -140,7 +195,7 @@ new Sun() === new Sun(); // true
 // Idiomatic: export const sun = Object.freeze({ mass: 1.989e30 });
 ```
 
-**See also:** [Factory](#factory--factory-method) · [Abstract Factory](#abstract-factory) · [Builder](#builder) · [Singleton](#singleton-caution) · [0_system_design.md catalog](./0_system_design_patterns.md#gof-design-patterns--catalog) · [JS OOP factory](./3_js_oop.md)
+**See also:** [Factory](#factory--factory-method) · [Abstract Factory](#abstract-factory) · [Builder](#builder) · [Singleton](#singleton-caution) · [GOF catalog](#gof-design-patterns--catalog) · [JS OOP factory](./3_js_oop.md)
 
 **Sources:**
 
@@ -229,13 +284,52 @@ gate.secret; // undefined
 
 **Thoughts:** Adapter **translates**. Facade **simplifies**. Decorator **adds**. Proxy **gates**.
 
-**See also:** [Adapter](#adapter) · [Facade](#facade) · [Decorator](#decorator) · [Proxy](#proxy) · [JS `Proxy`](./3_js_core.md#proxy-and-reflect) · [Hexagonal adapters](./0_system_design_architecture.md#clean-architecture--hexagonal)
+**See also:** [Adapter](#adapter) · [Facade](#facade) · [Decorator](#decorator) · [Proxy](#proxy) · [JS `Proxy`](./3_js_core.md#proxy-and-reflect) · [Hexagonal adapters](./7_special_architecture.md#clean-architecture--hexagonal)
 
 **Sources:**
 
 [Refactoring Guru — Adapter relations](https://refactoring.guru/design-patterns/adapter) · [Decorator](https://refactoring.guru/design-patterns/decorator) · [Facade](https://refactoring.guru/design-patterns/facade) · [Proxy](https://refactoring.guru/design-patterns/proxy) · [MDN `Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
 
 ---
+
+</details>
+
+<details>
+  <summary>Behavioral patterns — cheat sheet</summary>
+
+<a name="behavioral-patterns--cheat-sheet"></a>
+
+### Behavioral patterns — cheat sheet
+
+**Definition:**
+
+Behavioral patterns answer “who does what, and how do they talk?” — they split **responsibility** and **communication**, not object creation or assembly.
+
+| Pattern | One line | Swap in your head |
+|---------|----------|-------------------|
+| **Strategy** | Same job, different algorithm; pick (and swap) at runtime | Navigator: walk / bike / drive |
+| **Chain of Responsibility** | Request walks handlers until **one** can handle it | Charge USD vs EUR vs RUB |
+| **Command** | Action + data become an object you can queue, log, undo | Redux action `{ type, payload }` |
+| **Observer** | Subject notifies whoever subscribed; list can change | Vacancy → matching applicants |
+
+**How it works:**
+
+- **Strategy vs CoR** — Strategy: caller *chooses* the algorithm. CoR: caller *does not know* who will handle; order of handlers decides.
+- **CoR vs `switch`** — `switch` works when all cases are known and owned here (Redux reducers). CoR wins when handlers, order, or variants are unknown or plugged in later — the dispatcher does not import every handler.
+- **CoR vs middleware** — Doka: middleware lets **every** link run (auth → log → handler). Canonical CoR: **one** handler consumes the request and stops. Refactoring Guru still treats middleware as CoR with inverted “always call `next()` unless you stop.”
+- **Null Object** — same interface, does nothing. Use as `switch` `default` or chain terminator so callers skip `if (handler)`.
+- **Command vs Observer** — Command is a *one-shot* encapsulated request (invoker → `execute`). Observer is *ongoing* subscription (`attach` / `detach` / `notify`).
+
+| Use | Pattern |
+|-----|---------|
+| Algorithm may change while the app runs | Strategy |
+| Unknown / plugin handlers; don’t couple dispatcher to all of them | CoR |
+| Undo, queue, history, extra payload on an action | Command |
+| Unknown how many listeners; subscription is temporary | Observer |
+
+**Thoughts:** Name the *problem* (swap algorithm / pass until handled / reify an action / notify many). The pattern is vocabulary, not a class count.
+
+**Sources:** [Doka — Behavioral patterns](https://doka.guide/tools/design-patterns-behaviorial/) · [Refactoring Guru — Catalog](https://refactoring.guru/design-patterns/catalog)
 
 </details>
 
@@ -926,6 +1020,184 @@ original.ssn;  // still '000' — the real object is not mutated
 [refactoring.guru — Proxy](https://refactoring.guru/design-patterns/proxy) · [MDN `Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) · [MDN `handler.get`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/get)
 
 ---
+
+</details>
+
+<details>
+  <summary>Mediator</summary>
+
+### Mediator
+
+**Definition:** Behavioral pattern — defines an object that **centralizes** how other objects interact, so components don't reference each other directly.
+
+**How it works:**
+
+- Colleagues send messages to **Mediator**, not to each other.
+- Mediator routes messages, coordinates state, triggers side effects.
+- Opposite of letting every component hold references to every other component.
+
+| Pattern | Coupling | Mediator role |
+|---------|----------|---------------|
+| **Direct calls** | A knows B, C | None |
+| **Mediator** | A knows only Mediator | In-process coordinator |
+| **Pub/Sub** | Publisher knows broker only | Broker is often a Mediator + async transport |
+
+Observer — subject holds list of observers and notifies directly. Mediator — colleagues are decoupled; only mediator knows the graph.
+
+Mediator coordinates **in-process** communication. Saga coordinates **distributed transactions** across services with compensations.
+
+**When to use:**
+
+- Chat room / group messaging — users talk through room object.
+- Air traffic control UI — many forms/dialogs coordinated by one controller.
+- **NestJS** — `CommandBus`, `EventBus`, `QueryBus` (CQRS module).
+- **Redux** — store mediates between actions and reducers (components don't call each other).
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Reduces tangled dependencies (N×N → N) | Mediator can become a god-object |
+| Single place to change interaction rules | Extra indirection |
+| Components stay focused on their job | |
+
+**Examples:**
+
+```ts
+interface Mediator {
+  notify(sender: object, event: string, payload?: unknown): void;
+}
+
+class ChatRoom implements Mediator {
+  private users = new Map<string, User>();
+
+  register(user: User) {
+    this.users.set(user.name, user);
+    user.setMediator(this);
+  }
+
+  notify(sender: User, event: string, payload?: unknown) {
+    if (event === 'message') {
+      for (const user of this.users.values()) {
+        if (user !== sender) user.receive(payload as string);
+      }
+    }
+  }
+}
+```
+
+**Thoughts:** Use when many-to-many object communication creates spaghetti — centralize routing, keep endpoints dumb.
+
+**Sources:** [Refactoring Guru — Mediator](https://refactoring.guru/design-patterns/mediator)
+
+</details>
+
+<details>
+  <summary>Chain of Responsibility</summary>
+
+### Chain of Responsibility
+
+**Definition:** Pass a request along linked handlers until **one** handles it (or the chain ends). Each handler knows only `setNext` / `handle`, not the full set of siblings.
+
+**When to use:** Handler set, order, or variants are **not all known** up front. If the set is closed and owned in one file, a `switch` is enough (higher coupling).
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Caller need not import every handler or know their order | Request can “fall off” the end |
+| Plug in handlers without rewriting the dispatcher | Order and stop-vs-continue must be explicit |
+
+**Examples:**
+
+```ts
+abstract class Handler {
+  protected next?: Handler;
+  setNext(h: Handler) { this.next = h; return h; }
+  handle(currency: string, amount: number) {
+    this.next?.handle(currency, amount) ?? console.log('No handler');
+  }
+}
+class UsdHandler extends Handler {
+  handle(currency: string, amount: number) {
+    if (currency === 'USD') return console.log(`charged ${amount}$`);
+    super.handle(currency, amount);
+  }
+}
+// rub.setNext(usd).setNext(eur) — start from any link that is connected
+```
+
+**Thoughts:** **Null Object** = same interface, no-op — useful as `default` in a `switch`. **Middleware** usually lets *each* layer run (`next()`); Doka treats that as similar-but-not-the-same. Refactoring Guru: middleware is still CoR with inverted continue/stop.
+
+**Sources:** [Doka — Behavioral](https://doka.guide/tools/design-patterns-behaviorial/) · [Refactoring Guru — Chain of Responsibility](https://refactoring.guru/design-patterns/chain-of-responsibility)
+
+</details>
+
+<details>
+  <summary>Command</summary>
+
+### Command
+
+**Definition:** Turn an action (and the data it needs) into an object so you can delay, queue, log, or undo it — invoker calls `execute` without knowing the receiver’s internals.
+
+**When to use:** Operation needs extra payload; buffer/queue/history of actions; **undo**.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Undo / history / job queue | Extra types |
+| Invoker decoupled from *how* work is done | Easy to over-command simple clicks |
+
+**Examples:**
+
+```ts
+// Classic: command *is* the handler
+const updateUser = { execute(payload: User) { /* mutate / API */ } };
+
+// Common split (Redux / CQRS): data object + handler outside
+const action = { type: 'UPDATE_USER', payload: { name: 'Alex' } };
+function userReducer(state, action) {
+  if (action.type === 'UPDATE_USER') return { ...state, ...action.payload };
+  return state;
+}
+```
+
+**Thoughts:** Redux **actions** are Command *data*; the reducer is the handler (not inside the action). Application-layer “use cases” often use `Command` + `CommandHandler`.
+
+**Sources:** [Doka — Behavioral](https://doka.guide/tools/design-patterns-behaviorial/) · [Refactoring Guru — Command](https://refactoring.guru/design-patterns/command)
+
+</details>
+
+<details>
+  <summary>State</summary>
+
+### State
+
+**Definition:** Allow an object to alter its behavior when its internal state changes — object appears to change its class.
+
+**When to use:** Workflow engines, TCP connection states, media player (playing/paused/stopped), order lifecycle.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Eliminates large conditionals | Many state classes |
+| State transitions explicit | Overkill for few states |
+
+**Examples:**
+
+```ts
+type OrderState = { submit(order: Order): void };
+const draft: OrderState = {
+  submit(order) { order.state = pending; order.notifyWarehouse(); },
+};
+const pending: OrderState = {
+  submit() { throw new Error('Already submitted'); },
+};
+```
+
+**Thoughts:** State vs Strategy — State transitions are internal and often define valid next states. Strategy is chosen externally and interchangeable.
 
 </details>
 

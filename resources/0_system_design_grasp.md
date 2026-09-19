@@ -6,7 +6,7 @@ Nine responsibility-assignment patterns (Craig Larman) for deciding which class 
 
 ### Related docs
 
-* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [System design — Patterns](./0_system_design_patterns.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md) · [Computer science](./7_special_cs.md)
+* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md) · [Computer science](./7_special_cs.md)
 
 ### Main concepts
 
@@ -44,7 +44,7 @@ Nine responsibility-assignment patterns (Craig Larman) for deciding which class 
 
 **When to use:** Responsibility-assignment questions (“who owns this?”). Skip as a checklist on a 50-line script.
 
-**Thoughts:** GRASP is more practical than memorizing all 23 GoF patterns for day-to-day design. Expert + Creator + Controller cover most assignment questions. Domain modeling: [Entities, relations & design](#entities-relations--design). GoF catalog: [System design — Patterns](./0_system_design_patterns.md#gof-design-patterns--catalog).
+**Thoughts:** GRASP is more practical than memorizing all 23 GoF patterns for day-to-day design. Expert + Creator + Controller cover most assignment questions. Domain modeling: [Entities, relations & design](#entities-relations--design). GoF catalog: [Design patterns](./7_special_patterns.md#gof-design-patterns--catalog).
 
 **Sources:** [Wikipedia — GRASP](https://en.wikipedia.org/wiki/GRASP_(object-oriented_design))
 

@@ -90,6 +90,13 @@ describe("handbook sidebar", () => {
     cy.nav("topic", "special-architecture").should("be.visible");
     cy.nav("topic", "sd-architecture").should("be.visible");
     cy.nav("topic", "special-patterns").should("be.visible").and("contain", "Design patterns");
+    cy.nav("cluster", "additional").should("not.exist");
+    cy.nav("topic", "sd-patterns").should("not.exist");
+    cy.nav("topic", "special-patterns").click();
+    cy.location("pathname").should("eq", "/system-design/special-patterns");
+    cy.contains("h1", "Design patterns");
+    cy.sidebar().contains("GOF design patterns — catalog").should("be.visible");
+    cy.sidebar().contains("Mediator").should("be.visible");
     cy.nav("topic", "special-architecture").click();
     cy.location("pathname").should("eq", "/system-design/special-architecture");
     cy.contains("h1", "Architecture patterns");

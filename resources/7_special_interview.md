@@ -320,7 +320,7 @@ const bus = {
 
 **Architecture** = whole-system rules for how modules talk (MVC roles, domain vs infra layers, Flux/Redux one-way flow, monolith vs many apps). **Patterns** = named local recipes (Adapter, Strategy, Observer). House plan vs how you pour concrete. Not a goal — skip on a prototype; add when change, tests, and onboarding hurt.
 
-**See also:** [Architecture vs design patterns](#architecture-vs-design-patterns) · [0_system_design.md](./0_system_design_interview.md#architecture-vs-design-patterns)
+**See also:** [Architecture vs design patterns](./7_special_architecture.md#architecture-vs-design-patterns) · [Interview Q&A](./0_system_design_interview.md#architecture-vs-design-patterns)
 
 </details>
 
@@ -465,7 +465,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 ### Common patterns (interview)?
 
-**Quick catalog** — name, category, one-line use case. Architecture (MVC, Flux, layers) is a larger cut; these are local tools. See [Architecture vs design patterns](#architecture-vs-design-patterns).
+**Quick catalog** — name, category, one-line use case. Architecture (MVC, Flux, layers) is a larger cut; these are local tools. See [Architecture vs design patterns](./7_special_architecture.md#architecture-vs-design-patterns).
 
 | Pattern | Category | When |
 |---------|----------|------|

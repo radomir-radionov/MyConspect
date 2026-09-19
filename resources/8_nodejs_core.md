@@ -536,7 +536,7 @@ npm run build
 |---------|-----------|
 | MVC | `routes/` → `controllers/` → `models/` |
 | Feature-based | `features/users/`, `features/auth/` |
-| Clean architecture | `domain/`, `use-cases/`, `infrastructure/` — [three-layer notes](./0_system_design_architecture.md#three-layer-architecture-doka) |
+| Clean architecture | `domain/`, `use-cases/`, `infrastructure/` — [three-layer notes](./7_special_architecture.md#three-layer-architecture-doka) |
 
 **Examples:**
 

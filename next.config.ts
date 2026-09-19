@@ -69,6 +69,11 @@ const nextConfig: NextConfig = {
         destination: "/system-design/sd-core",
         permanent: true,
       },
+      {
+        source: "/system-design/sd-patterns",
+        destination: "/system-design/special-patterns",
+        permanent: true,
+      },
     ];
   },
 };

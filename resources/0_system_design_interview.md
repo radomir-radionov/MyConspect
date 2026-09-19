@@ -6,7 +6,7 @@ Interview Q&A for system design.
 
 ### Related docs
 
-* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [System design — Patterns](./0_system_design_patterns.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
 
 ### Sections
 
@@ -98,6 +98,8 @@ OrderService --[order.placed]--> Kafka --> InventoryService (reserve)
 
 **Sources:** [Microservices.io — Event-driven architecture](https://microservices.io/patterns/data/event-driven-architecture.html)
 
+**See also:** [Event-driven architecture](./7_special_architecture.md#event-driven-architecture)
+
 </details>
 
 <details>
@@ -150,7 +152,7 @@ Observer — subject knows observers directly. **Mediator** — only mediator kn
 
 Mediator usually in-process; pub/sub uses external broker for cross-service async messaging.
 
-See [Mediator](./0_system_design_patterns.md#mediator) in section 7.
+See [Mediator](./7_special_patterns.md#mediator) in section 7.
 
 **When to use:** Chat rooms, UI dialog coordinators, NestJS `EventBus`/`CommandBus`, Redux store.
 
@@ -163,7 +165,7 @@ See [Mediator](./0_system_design_patterns.md#mediator) in section 7.
 
 A **BFF** is a frontend-owned adapter that returns the exact payload one UI needs. Use it when web vs mobile (or TV vs phone) would otherwise over-fetch or under-fetch from one generic API. Skip it with a **single** client — extra hop + extra SPOF. Domain logic stays downstream; BFF aggregates and shapes. Origin: SoundCloud (~2013), documented by Calçado / Newman.
 
-See [BFF](./0_system_design_architecture.md#bff-backend-for-frontend).
+See [BFF](./7_special_architecture.md#bff-backend-for-frontend).
 
 </details>
 
@@ -176,7 +178,7 @@ See [BFF](./0_system_design_architecture.md#bff-backend-for-frontend).
 
 **BFF** = that idea plus **per-client composition** (Doka: BFF includes a gateway). Web: `GET /bff/pdp/123` → `{ title, price, reviews, inStock }`. Mobile BFF returns `{ name, price, thumbnail }`. Kong/NGINX for the whole company ≠ BFF. Stack: UI → BFF → gateway → services. Skip BFF if every client wants the same API.
 
-See [API Gateway](./0_system_design_architecture.md#api-gateway) · [BFF](./0_system_design_architecture.md#bff-backend-for-frontend).
+See [API Gateway](./7_special_architecture.md#api-gateway) · [BFF](./7_special_architecture.md#bff-backend-for-frontend).
 
 </details>
 
@@ -209,7 +211,7 @@ See [Edge rendering vs data locality](./0_system_design_architecture.md#edge-ren
 
 When **team deploy coordination** is the bottleneck, typically 50+ engineers with clear domains — not because the SPA is "complex." Under ~15: modular monolith. 15–50: BFF + modular monolith is usually enough. Real failure mode: **two React versions on one page** (dependency drift), not mixing frameworks.
 
-See [Micro-frontends](./0_system_design_architecture.md#micro-frontends).
+See [Micro-frontends](./7_special_architecture.md#micro-frontends).
 
 </details>
 
@@ -237,7 +239,7 @@ See [Microservices architecture](./0_system_design_architecture.md#microservices
 
 **Architecture** = decisions about how *the whole system* is cut and how modules talk (MVC roles, layers vs infra, Flux/Redux one-way flow, monolith vs many apps). **Patterns** = named fixes for *local* problems (Adapter maps `{ some_data: ["Name", "Lastname"] }` → `{ someData: "Name Lastname" }`; Factory hides `new`; Strategy swaps `format.usd` / `format.eur`; Observer `subscribe`/`notify`). Same photo app: `applySepia` is domain, `readCamera` is infra, `dispatch(setFilter)` is one-way state — that is architecture; the Adapter is a pattern inside it. Neither is the goal — skip ceremony on a prototype.
 
-See [Architecture vs design patterns](#architecture-vs-design-patterns).
+See [Architecture vs design patterns](./7_special_architecture.md#architecture-vs-design-patterns).
 
 </details>
 
@@ -258,7 +260,7 @@ See [Architecture vs design patterns](#architecture-vs-design-patterns).
 
 **Place this line:** `Math.round(cents * 0.9)` → domain. `await storage.save(userId, cart)` → application. `body.product_id` → `productId` → adapter. `onClick` → driving adapter.
 
-See [Three-layer architecture](./0_system_design_architecture.md#three-layer-architecture-doka) · [Clean Architecture & Hexagonal](./0_system_design_architecture.md#clean-architecture--hexagonal).
+See [Three-layer architecture](./7_special_architecture.md#three-layer-architecture-doka) · [Clean Architecture & Hexagonal](./7_special_architecture.md#clean-architecture--hexagonal).
 
 </details>
 
@@ -269,7 +271,7 @@ See [Three-layer architecture](./0_system_design_architecture.md#three-layer-arc
 
 **Strategy** — same interface, swap the algorithm (even at runtime). **Chain of Responsibility** — request walks handlers until one handles it; dispatcher need not know the full set (`switch` is fine when it does). **Command** — action + data as an object (queue/undo); Redux actions are the data half. **Observer** — subscribe/notify when you don’t know how many listeners. Don’t mix CoR with middleware: middleware usually lets *every* layer run.
 
-See [Behavioral patterns — cheat sheet](./0_system_design_patterns.md#behavioral-patterns--cheat-sheet).
+See [Behavioral patterns — cheat sheet](./7_special_patterns.md#behavioral-patterns--cheat-sheet).
 
 </details>
 
