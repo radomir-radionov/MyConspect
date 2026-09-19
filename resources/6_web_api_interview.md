@@ -614,7 +614,7 @@ ac.abort(); // throws AbortError in catch
 
 **How it works:** Classic MPA reloaded the whole page. AJAX first returned HTML fragments. Modern APIs return JSON; the client paints. HTTP verbs + resource URLs = REST. Payload bloat → BFF/GraphQL.
 
-**See:** [Client–server architecture](./6_web_api_core.md#client-server-architecture) · [Evolution of web apps](#evolution-of-web-apps) · [0_system_design.md](./0_system_design_foundations.md#clientserver-architecture-why-a-backend)
+**See:** [Client–server architecture](./6_web_api_core.md#client-server-architecture) · [Evolution of web apps](#evolution-of-web-apps) · [0_system_design.md](./0_system_design_core.md#clientserver-architecture-why-a-backend)
 
 **Sources:** [Doka — How web apps work](https://doka.guide/tools/web-app-works/)
 

@@ -28,7 +28,7 @@ export function SiteHeader({
   return (
     <div id={HANDBOOK_HEADER_ID} className="relative z-40 shrink-0">
       <header className="border-b border-zinc-200 bg-white">
-        <div className="flex h-14 min-w-0 items-stretch overflow-x-auto overscroll-x-contain">
+        <div className="flex h-14 min-w-0 items-stretch overflow-hidden">
           <div className="sticky left-0 z-10 flex shrink-0 items-center bg-white pl-(--chrome-inline) pr-2">
             <Link
               href="/"
@@ -43,7 +43,7 @@ export function SiteHeader({
             <span aria-hidden="true" className="ml-2 h-6 w-px shrink-0 bg-zinc-200" />
           </div>
           <div className="flex min-w-0 flex-1 items-center px-3">
-            <div className="relative w-full min-w-80 max-w-2xl">
+            <div className="relative w-full min-w-0 max-w-2xl">
             <label className="block min-w-0">
               <span className="sr-only">
                 {mode === "notes" ? chrome.searchNotesPlaceholder : chrome.searchPlaceholder}

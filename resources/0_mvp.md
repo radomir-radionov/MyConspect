@@ -175,7 +175,7 @@ Questions on engineering judgment — common in senior and full-stack interviews
 
 **Thoughts:** *Good code is working code your teammate can change confidently.*
 
-**See also:** [0_system_design.md §7 — SOLID](./0_system_design_data.md#7-principles--patterns)
+**See also:** [SOLID](./7_special_engineering.md#9-oop-and-solid)
 
 </details>
 

@@ -4,7 +4,7 @@ Deployment, containers, CI/CD integration, and production operations — intervi
 
 ### Related docs
 
-* [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_core.md#files--file-systems) · [Node — SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_foundations.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#internet) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
+* [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [SDLC](./7_special_sdlc.md) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_core.md#files--file-systems) · [Node — SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_core.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#internet) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
 
 ### Main concepts
 
@@ -68,7 +68,7 @@ ENV NODE_ENV=production
 CMD ["node", "dist/index.js"]
 ```
 
-**Thoughts:** Image = recipe. Container = process. Persist with [volumes](./10_build_docker.md#volumes), not the writable layer. Lifecycle: [10_build.md — Container lifecycle](./10_build_docker.md#container-lifecycle). What an OS process is: [Processes, multitasking & interrupts](./0_system_design_foundations.md#processes-multitasking).
+**Thoughts:** Image = recipe. Container = process. Persist with [volumes](./10_build_docker.md#volumes), not the writable layer. Lifecycle: [10_build.md — Container lifecycle](./10_build_docker.md#container-lifecycle). What an OS process is: [Processes, multitasking & interrupts](./0_system_design_core.md#processes-multitasking).
 
 </details>
 
@@ -718,7 +718,7 @@ ssh root@192.0.2.50   # should not ask the account password (passphrase for the 
 
 ### PID, jobs, nice, top, ps, kill
 
-**Definition:** On Unix-like systems a **process** is a running program identified by a **PID** (process ID). The OS scheduler, job-control shell, and tools like `ps`/`top`/`kill` use that ID to inspect, pause, resume, re-prioritize, or signal the process. Scheduler, context, interrupts, POSIX signal table: [Processes, multitasking & interrupts](./0_system_design_foundations.md#processes-multitasking).
+**Definition:** On Unix-like systems a **process** is a running program identified by a **PID** (process ID). The OS scheduler, job-control shell, and tools like `ps`/`top`/`kill` use that ID to inspect, pause, resume, re-prioritize, or signal the process. Scheduler, context, interrupts, POSIX signal table: [Processes, multitasking & interrupts](./0_system_design_core.md#processes-multitasking).
 
 **How it works:**
 

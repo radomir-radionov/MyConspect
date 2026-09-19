@@ -63,7 +63,7 @@ paralect - https://paralect-global.notion.site/2540b0604f464f0cafdca50ed72a0c9c
 
 ### system design
 
-**Conspect:** [0_system_design.md → Interview Practice](0_system_design_interview.md#interview-practice) · [7_special.md → Interview Practice](7_special_interview.md#interview-practice) — distributed systems, architecture, SOLID, GRASP, design patterns · [SDLC / Agile / Scrum / Kanban](7_special_engineering.md#11-sdlc--agile)
+**Conspect:** [0_system_design.md → Interview Practice](0_system_design_interview.md#interview-practice) · [7_special.md → Interview Practice](7_special_interview.md#interview-practice) — distributed systems, architecture, SOLID, GRASP, design patterns · [SDLC / Agile / Scrum / Kanban](./7_special_sdlc.md#11-sdlc--agile)
 
 ### js
 
@@ -85,7 +85,7 @@ js-algorithms - https://github.com/trekhleb/javascript-algorithms
 
 https://habr.com/ru/articles/784548/
 
-**Conspect:** [3_js_core.md → Interview Practice](3_js_interview.md) · [JIT / interpreted?](3_js_core.md#is-javascript-an-interpreted-language) · [Stack vs heap](3_js_core.md#memory-stack-heap) · [3_js_array.md](3_js_interview.md) · [3_js_functions.md](3_js_interview.md) · [3_js_oop.md](3_js_interview.md) · [3_js_async.md](3_js_interview.md) · [3_js_browser.md](3_js_interview.md) · [3_js_events.md](3_js_interview.md) · [3_js_browser_extra.md](3_js_interview.md) · [7_special.md — OOP](7_special_paradigms.md#2-oop--fp)
+**Conspect:** [3_js_core.md → Interview Practice](3_js_interview.md) · [JIT / interpreted?](3_js_core.md#is-javascript-an-interpreted-language) · [Stack vs heap](3_js_core.md#memory-stack-heap) · [3_js_array.md](3_js_interview.md) · [3_js_functions.md](3_js_interview.md) · [3_js_oop.md](3_js_interview.md) · [3_js_async.md](3_js_interview.md) · [3_js_browser.md](3_js_interview.md) · [3_js_events.md](3_js_interview.md) · [3_js_browser_extra.md](3_js_interview.md) · [7_special.md — OOP](7_special_engineering.md#object-oriented-programming-oop)
 
 ### ts
 
@@ -204,14 +204,14 @@ Typical 3–5y React/Next/Node JD (condensed). Original post: [LinkedIn](https:/
 
 | Area | Expect | Notes |
 | --- | --- | --- |
-| Core | JS ES6+, TS strict/generics, OOP/SOLID, async | [3_js_oop](./3_js_oop.md) · [7_special OOP](./7_special_paradigms.md#2-oop--fp) |
+| Core | JS ES6+, TS strict/generics, OOP/SOLID, async | [3_js_oop](./3_js_oop.md) · [7_special OOP](./7_special_engineering.md#object-oriented-programming-oop) |
 | Frontend | React hooks/patterns, Next App Router/RSC, RTK/Zustand/TanStack Query, RHF+Zod, FSD | [4_react](./4_react.md) · [4_nextjs](./4_nextjs.md) |
 | UI / API | shadcn, Storybook, orval, CASL, nuqs | [4_react §9](./4_react_ecosystem.md#9-ecosystem--architecture) |
 | Perf / SEO | LCP, INP, CLS, split/lazy, SSR SEO | [6_web_api vitals](./6_web_api_security.md#core-web-vitals) |
 | Backend | Node + Nest/Express, REST/GraphQL/WS, DDD/microservices | [8_nodejs](./8_nodejs.md) · [0_system_design](./0_system_design.md) |
 | Data | PostgreSQL, Redis | [9_database](./9_database.md) |
 | Tooling | Git, Docker, CI | [10_build](./10_build.md) · [0_git](./0_git.md) |
-| Quality | Jest / RTL, Cypress/Playwright | [7_special testing](./7_special_engineering.md#12-testing) |
+| Quality | Jest / RTL, Cypress/Playwright | [7_special testing](./7_special_testing.md#12-testing) |
 | Search / queues | Elasticsearch, Kafka/RabbitMQ/BullMQ | [9_database ES](./9_database_nosql.md#elasticsearch) |
 | Security | XSS/CSRF/JWT, TLS | [7_special attacks](./7_special_security.md#14-common-web-attacks) · [TLS](./6_web_api_http.md#tls-certificates-x509--pki) |
 | DevOps | Docker, CI, cloud, optional K8s, OTel | [10_build](./10_build.md) · [15_devops](./15_devops.md) |

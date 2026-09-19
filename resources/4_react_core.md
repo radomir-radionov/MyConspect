@@ -301,7 +301,7 @@ function IconButton({ onClick, disabled, children }: ClickableProps) {
 
 **Thoughts:** *Small focused units, extend by composition, inject data — React is built for S, O, and D.*
 
-**See also:** [Philosophy](#philosophy) · [Composition patterns](#composition-patterns) · [Custom hooks](./4_react_hooks.md#custom-hooks) · [7_special.md — SOLID](./7_special_engineering.md#9-solid-principles)
+**See also:** [Philosophy](#philosophy) · [Composition patterns](#composition-patterns) · [Custom hooks](./4_react_hooks.md#custom-hooks) · [7_special.md — SOLID](./7_special_engineering.md#9-oop-and-solid)
 
 **Sources:**
 
@@ -1314,7 +1314,7 @@ setCount(c => c + 1);
 
 **Thoughts:** *State lives on the fiber; each render sees a frozen snapshot.*
 
-**See also:** [State as snapshot](#state-as-snapshot) · [Batching](#batching) · [Reactive programming](./7_special_paradigms.md#reactive-programming--reactivity)
+**See also:** [State as snapshot](#state-as-snapshot) · [Batching](#batching) · [Reactive programming](./7_special_architecture.md#reactive-programming--reactivity)
 
 **Sources:**
 

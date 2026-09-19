@@ -57,17 +57,62 @@ describe("handbook sidebar", () => {
     cy.sidebar().contains("Choosing a data structure").should("be.visible");
   });
 
-  it("opens Paradigms & security instead of sending Other to Algorithms", () => {
-    cy.visit("/other");
-    cy.nav("subject", "paradigms").click();
+  it("shows System design Core as a single row instead of nested Foundations", () => {
+    cy.visit("/system-design");
+    cy.nav("cluster", "core").should("be.visible").and("contain", "Core");
+    cy.nav("topic", "sd-foundations").should("not.exist");
+    cy.nav("cluster", "core").click();
+    cy.location("pathname").should("eq", "/system-design/sd-core");
+    cy.contains("h1", "Core");
+  });
 
-    cy.location("pathname").should("eq", "/other/paradigms");
-    cy.contains("h1", "Paradigms & security");
-    cy.nav("subject", "paradigms").should("have.attr", "aria-expanded", "true");
-    cy.nav("cluster", "engineering").should("be.visible");
-    cy.nav("cluster", "additional").should("be.visible");
-    cy.nav("cluster", "additional").click();
-    cy.sidebar().contains("Web security").should("be.visible");
+  it("opens SOLID under System design Principles", () => {
+    cy.visit("/system-design");
+    cy.nav("cluster", "principles").click();
+    cy.nav("topic", "solid").should("be.visible").and("contain", "OOP & SOLID");
+    cy.nav("topic", "sd-principles").should("be.visible").and("contain", "DRY, KISS, YAGNI");
+    cy.nav("topic", "sd-grasp").should("be.visible").and("contain", "GRASP");
+    cy.nav("topic", "sd-grasp").click();
+    cy.location("pathname").should("eq", "/system-design/sd-grasp");
+    cy.sidebar().contains("GRASP principles").should("not.exist");
+    cy.contains("h1", "GRASP");
+    cy.contains("General Responsibility Assignment Software Patterns").should("be.visible");
+    cy.get("main .concept-list > details").should("not.exist");
+    cy.nav("topic", "solid").click();
+    cy.location("pathname").should("eq", "/system-design/solid");
+    cy.contains("h1", "OOP & SOLID");
+    cy.sidebar().contains("Single Responsibility (SRP)").should("be.visible");
+  });
+
+  it("opens Architecture patterns under System design Architecture", () => {
+    cy.visit("/system-design");
+    cy.nav("cluster", "architecture").click();
+    cy.nav("topic", "special-architecture").should("be.visible");
+    cy.nav("topic", "sd-architecture").should("be.visible");
+    cy.nav("topic", "special-patterns").should("be.visible").and("contain", "Design patterns");
+    cy.nav("topic", "special-architecture").click();
+    cy.location("pathname").should("eq", "/system-design/special-architecture");
+    cy.contains("h1", "Architecture patterns");
+    cy.sidebar().contains("MVC (Model-View-Controller)").should("be.visible");
+  });
+
+  it("opens Computer science from Other without sending the track to Algorithms", () => {
+    cy.visit("/other");
+    cy.nav("subject", "git").should("be.visible");
+    cy.nav("topic", "special-testing").should("be.visible");
+    cy.nav("topic", "special-sdlc").should("be.visible");
+    cy.nav("topic", "special-security").should("be.visible");
+    cy.nav("topic", "computer-science").should("be.visible");
+    cy.nav("subject", "paradigms").should("not.exist");
+    cy.nav("cluster", "additional").should("not.exist");
+    cy.nav("cluster", "engineering").should("not.exist");
+
+    cy.nav("topic", "computer-science").click();
+
+    cy.location("pathname").should("eq", "/other/computer-science");
+    cy.contains("h1", "Computer science");
+    cy.nav("topic", "special-testing").should("be.visible");
+    cy.nav("topic", "special-security").should("be.visible");
   });
 
   it("opens Patterns from the Algorithms hub without collapsing the track", () => {
@@ -358,6 +403,23 @@ describe("handbook sidebar", () => {
     cy.location("hash").should("match", /debounc/i);
     cy.get("#handbook-sidebar [data-search-in='notes']").should("contain", "resize ended");
     cy.get("#handbook-main mark").should("contain", "resize ended");
+  });
+
+  it("keeps search mode buttons inside the phone header", () => {
+    cy.viewport(384, 844);
+    cy.visit("/backend/database");
+    cy.get("#handbook-header [data-search-mode]").should(($buttons) => {
+      const viewportRight = 384;
+      expect($buttons.length).to.be.greaterThan(0);
+      for (const button of $buttons) {
+        const box = button.getBoundingClientRect();
+        expect(box.left).to.be.at.least(0);
+        expect(box.right).to.be.at.most(viewportRight);
+      }
+    });
+    cy.get("#handbook-header > header > div").should(($row) => {
+      expect($row[0].scrollWidth).to.be.at.most($row[0].clientWidth + 1);
+    });
   });
 
   it("opens the search sidebar when typing on a phone", () => {

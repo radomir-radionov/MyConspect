@@ -4,13 +4,13 @@ Version control, history, collaboration, and recovery. Theory lives in the topic
 
 ### Related docs
 
-[Git — Fundamentals](./0_git_core.md) · [Git — Branching](./0_git_branching.md) · [Git — Team](./0_git_team.md) · [Git — Interview](./0_git_interview.md)
+[Git — Core](./0_git_core.md) · [Git — Branching](./0_git_branching.md) · [Git — Team](./0_git_team.md) · [Git — Interview](./0_git_interview.md)
 
 ### Navigation
 
 | Topic | Covers |
 |------|--------|
-| [Git — Fundamentals](./0_git_core.md) | Objects, commits, and everyday workflow. |
+| [Git — Core](./0_git_core.md) | Objects, commits, and everyday workflow. |
 | [Git — Branching](./0_git_branching.md) | Branches, merges, remotes, and collaboration. |
 | [Git — Team](./0_git_team.md) | Recovery, team practices, hooks, and advanced Git. |
 | [Git — Interview](./0_git_interview.md) | Interview Q&A and shell appendix. |
@@ -78,7 +78,7 @@ GitHub UI: **Settings → SSH and GPG keys → New SSH key** — paste the **`.p
 
 > Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
-- [Fundamentals](./0_git_core.md#fundamentals)
+- [Core](./0_git_core.md#core)
 - [Workflow](./0_git_core.md#workflow) — [Git CLI daily loop](./0_git_core.md#workflow)
 - [Branching & merge](./0_git_core.md#branching)
 - [Remote](./0_git_branching.md#remote)

@@ -1,21 +1,30 @@
 # Architecture patterns
 
-MVC-family patterns and system architecture styles.
+How an app is cut inside one deploy: MVC family, layers/DDD, data flow, and frontend structure.
 
-[← Back to hub](./7_special.md)
+[← Back to hub](./0_system_design.md)
 
 ### Related docs
 
-* [Paradigms](./7_special_paradigms.md) · [Architecture patterns](./7_special_architecture.md) · [Algorithms](./7_special_algorithms.md) · [Engineering](./7_special_engineering.md) · [Web security](./7_special_security.md) · [Paradigms — Interview](./7_special_interview.md)
+* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [System design — Patterns](./0_system_design_patterns.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md) · [JS Functions](./3_js_functions.md)
 
 ### Sections
 
 - [3. Architecture patterns](#3-architecture-patterns)
-- [4. System architecture](#4-system-architecture)
+- [Layers & domain](#layers--domain)
+- [Reactive programming](#reactive-programming--reactivity)
+- [Functional core, imperative shell](#functional-core-imperative-shell)
+- [Frontend structure](#frontend-structure)
 
 ---
 
 ## 3. Architecture patterns
+
+<a name="4-frontend-architecture"></a>
+
+## 4. Frontend architecture
+
+Senior interviews rarely ask *what* you built. They ask **why that way**. Two frames: **how modules talk** (architecture vs patterns), and **how much work the browser vs server vs build does**. SSR, RSC, micro-frontends, BFFs are different places to draw that second line.
 
 <details>
   <summary>Architecture vs design patterns</summary>
@@ -24,57 +33,70 @@ MVC-family patterns and system architecture styles.
 
 **Definition:**
 
-**Architecture** is the set of decisions about how modules talk to each other and to the outside world — constraints, rules, heuristics for the whole app. A **design pattern** is a named fix for a smaller, recurring problem closer to the code.
+**Architecture** is the set of decisions about how modules talk to each other and to the outside world — constraints, rules, and heuristics for the whole system. A **design pattern** is a named template for a smaller, recurring problem closer to the code. Architecture covers the project; patterns cover local jobs.
 
-House metaphor: architecture = “how to build the house”; patterns = “how to drive piles / mix cement / run wiring.”
+House metaphor (Doka): architecture is “how to build the house”; patterns are “how to drive piles / mix cement / run wiring.”
 
 **How it works:**
 
-A photo editor’s **architecture** decides who owns the canvas, who talks to the camera, whether UI may mutate pixels, and whether checkout is the same deploy. A **pattern** is a local recipe: Adapter maps a snake_case API into the shape your UI already uses. You can have layers + Redux *and* still use Adapter inside one module.
+Imagine a photo editor.
 
-Requirements will change. A useful architecture makes that cheaper: swap a module behind a stable API; contain I/O so internals (and data) leak less; split code so tests are easier; keep layout predictable so features and bugs cost less; use a known style so onboarding is faster.
+- **Architecture** answers: Who owns the canvas? Who talks to the camera? Does UI mutate pixels, or only send “apply sepia”? Is this one deployable app or a checkout widget loaded from another team? Those rules apply to *every* feature.
+- **A pattern** answers a *local* mismatch: the camera SDK returns `{ some_data: ["Name", "Lastname"] }` but your UI wants `{ someData: "Name Lastname" }` → **Adapter**. You do not need a new architecture for that one mapping.
 
-**How it works — families** (group by *goal*):
+Same product can use **both**: layers + one-way store (architecture) *and* Adapter / Strategy / Observer inside a module (patterns).
 
-| Family | Question | Examples |
-|--------|----------|----------|
-| **Responsibility** | Who owns which job? | MVC / MVP / MVVM |
-| **Distance from domain** | Business logic vs infrastructure? | Three-layer — photo filters vs camera API |
-| **Data flow** | Direct, bus, or one-way store? | Flux / Redux; two-way / reactive — [Data flow](#data-flow--one-way-vs-two-way) |
+Every extra line loads the reader; too few details hide meaning. Community-standard cuts (MVC, layers, Flux) and named patterns help hold that balance.
+
+Requirements will change; people cannot forecast the future well. A useful architecture makes change cheaper:
+
+- Regulated module APIs → swap implementations.
+- Regulated I/O → fewer accidental leaks of internals (and of data).
+- Clear splits → easier tests.
+- Predictable layout → faster features and bug hunts.
+- Known style → faster onboarding.
+
+**How it works — families of approaches** (group by *goal*, not by brand name):
+
+| Family | Question it answers | Frontend examples |
+|--------|---------------------|-------------------|
+| **Responsibility** | Which module owns which job? | MVC / MVP / MVVM — [MVC family](#mvc-model-view-controller) · Doka “Model View Whatever” |
+| **Distance from domain** | What is business logic vs infrastructure? | Three-layer / Clean / Hexagonal — photo **filters** (domain) vs **camera API** (infra) |
+| **Data flow** | Direct calls, bus, or one-way store? | Flux / Redux (unidirectional); two-way / reactive — [Data flow](#data-flow--one-way-vs-two-way) |
 | **Composition** | One program or many? | Monolith vs microservices / micro-frontends |
 
-| Kind | Job | Names |
-|------|-----|-------|
-| **Creational** | Create entities without duplication | Factory, Factory Method, Abstract Factory, Builder |
-| **Structural** | How to assemble a component | Adapter, Decorator, Facade, Proxy |
-| **Behavioral** | How to organize behavior | Chain of Responsibility, Strategy, Command, Observer |
-
-UI event → `dispatch(action)` → reducers → new state → subscribers re-render. One-way: dispatch is the only state-change API. Prefer RTK `configureStore` + `createSlice`.
+one-way process — UI event → `dispatch(action)` → store runs reducers → new state → `subscribe` / `useSelector` → UI re-renders. State in, view out; dispatch is the only state-change API. Prefer `configureStore` + `createSlice` (RTK); legacy `createStore` still works but is deprecated. Notes: [Data flow](#data-flow--one-way-vs-two-way).
 
 **When to use:**
 
-High-rise apps (many modules, long life). Skip ceremony on a prototype.
+Use a named architecture when the app is already a “high-rise” — many modules, many people, long life. Skip heavy architecture on a throwaway prototype (YAGNI). Pick an approach after comparing **cost vs benefit**.
 
 #### Common pitfalls
 
-Treating architecture or a pattern as the *goal*. Gold-plating a spike.
+Treating MVC or Redux as the *goal*. Shipping layers nobody needs. Copying a pattern because it is famous.
 
 **Pluses and minuses:**
 
 | + | − |
 |------|------|
-| Change, tests, onboarding cheaper at scale | Time, money, cognitive load |
-| Shared vocabulary | Wrong cut is expensive to unwind |
+| Change, test, onboard cheaper at scale | Time, money, cognitive load to invent *and* follow it |
+| Shared vocabulary in interviews | Wrong architecture is expensive to unwind |
+| | Over-architecture on a 2-week spike |
 
 **Examples:**
 
 ```ts
-// Layers: domain is pure; camera is I/O
+// 1) Responsibility (MVC-shaped): controller never paints pixels; view never talks to camera
 type Photo = { pixels: Uint8ClampedArray };
-function applySepia(photo: Photo): Photo { return photo; }
-async function readCamera(): Promise<Photo> { throw new Error('device'); }
+const model = { photo: null as Photo | null };
+function controllerCapture() { /* I/O */ model.photo = { pixels: new Uint8ClampedArray() }; viewRender(); }
+function viewRender() { /* DOM only reads model.photo */ }
 
-// Data flow — RTK (redux.js.org). UI cannot assign state; only dispatch
+// 2) Distance from domain: filters are testable without a phone
+function applySepia(photo: Photo): Photo { /* pure domain */ return photo; }
+async function readCamera(): Promise<Photo> { /* infrastructure */ throw new Error('device'); }
+
+// 3) Data flow — Redux Toolkit (redux.js.org getting-started). One-way: UI → dispatch → reducer → new state → subscribe
 import { createSlice, configureStore } from '@reduxjs/toolkit';
 
 const editor = createSlice({
@@ -82,46 +104,389 @@ const editor = createSlice({
   initialState: { filter: 'none' as 'none' | 'sepia' },
   reducers: {
     setFilter(state, action: { payload: 'none' | 'sepia' }) {
-      state.filter = action.payload;
+      state.filter = action.payload; // Immer draft; store still immutable
     },
   },
 });
 const store = configureStore({ reducer: editor.reducer });
+store.subscribe(() => console.log(store.getState()));
 store.dispatch(editor.actions.setFilter('sepia'));
+// UI may only change state through dispatch — not store.getState().filter = 'sepia'
+
+// 4) Composition: one Next.js app vs a separately deployed checkout remote (micro-frontend)
 ```
 
+**How it works — pattern groups** (too small for an architecture, too common to invent each time):
+
+| Kind | Job | Doka shortlist |
+|------|-----|----------------|
+| **Creational** | Create objects / families; less duplication | Factory (informal), Factory Method, Abstract Factory, Builder |
+| **Structural** | How to assemble a component | Adapter, Decorator, Facade, Proxy |
+| **Behavioral** | How to organize behavior / talk | Chain of Responsibility, Strategy, Command, Observer |
+
 ```ts
-// Factory
-function createFilter(id: 'sepia' | 'gray') {
-  return id === 'sepia' ? { apply: applySepia } : { apply: (p: Photo) => p };
+// Creational — Factory: hide `new` / format choice
+type Filter = { id: string; apply: (p: Photo) => Photo };
+function createFilter(id: 'sepia' | 'gray'): Filter {
+  if (id === 'sepia') return { id, apply: applySepia };
+  return { id, apply: (p) => p };
 }
 
-// Adapter (Doka)
+// Structural — Adapter: foreign API → app shape (Doka)
 function serverToClientAdapter(data: { some_data: string[] }) {
   return { someData: data.some_data.join(' ') };
 }
 
-// Strategy
-const format = {
-  usd: (cents: number) => `$${(cents / 100).toFixed(2)}`,
-  eur: (cents: number) => `${(cents / 100).toFixed(2)} €`,
+// Behavioral — Strategy: same call site, swap algorithm
+const price: Record<'usd' | 'eur', (cents: number) => string> = {
+  usd: (c) => `$${(c / 100).toFixed(2)}`,
+  eur: (c) => `${(c / 100).toFixed(2)} €`,
 };
+function formatPrice(cents: number, currency: 'usd' | 'eur') {
+  return price[currency](cents);
+}
 
-// Observer
-const listeners = new Set<(p: Photo) => void>();
-const subscribe = (fn: (p: Photo) => void) => {
-  listeners.add(fn);
-  return () => listeners.delete(fn);
-};
+// Behavioral — Observer: subject notifies whoever subscribed
+type Listener = (photo: Photo) => void;
+const listeners = new Set<Listener>();
+function subscribe(fn: Listener) { listeners.add(fn); return () => listeners.delete(fn); }
+function notify(photo: Photo) { listeners.forEach((fn) => fn(photo)); }
 ```
 
-**Thoughts:** Tools, not trophies. Compare cost vs benefit; bring them in when the cost of *not* having them is higher.
+**Thoughts:** Architecture and patterns are tools. Add them when benefits beat cost — they are not a scorecard.
 
-**See also:** [0_system_design.md — Architecture vs design patterns](./0_system_design_interview.md#architecture-vs-design-patterns) · [MVC](#mvc-model-view-controller) · [10. Design patterns](./7_special_engineering.md#10-design-patterns)
+**See also:** [Clean / Hexagonal](#clean-architecture--hexagonal) · [State at scale](#state-at-scale) · [GOF catalog](./0_system_design_patterns.md#gof-design-patterns--catalog) · [Adapter](./0_system_design_patterns.md#adapter)
 
-**Sources:** [Doka — Architecture and design patterns](https://doka.guide/tools/architecture-and-design-patterns/) · [Redux — Getting started](https://redux.js.org/introduction/getting-started) · [Redux — data flow](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow)
+**Sources:** [Doka — Architecture and design patterns](https://doka.guide/tools/architecture-and-design-patterns/) (Bespoiasov, updated 2023-01-25) · [Doka — Data flow](https://doka.guide/tools/architecture-data-flow/) · [Redux — Getting started (RTK counter)](https://redux.js.org/introduction/getting-started) · [Redux — data flow](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow) · [Refactoring Guru — catalog](https://refactoring.guru/design-patterns/catalog)
 
 </details>
+
+
+## Layers & domain
+
+<details>
+  <summary>CQRS</summary>
+
+### CQRS
+
+**Definition:** Command Query Responsibility Segregation — separate models and paths for writes (commands) and reads (queries).
+
+**When to use:** Read-heavy apps with complex queries, different scaling needs for reads vs writes, event sourcing companion.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Optimize read and write independently | Increased complexity |
+| Scale reads separately (read replicas, denormalized views) | Eventual consistency between read/write models |
+| Simpler write model, rich read model | Overkill for simple CRUD |
+
+**Examples:** Write: normalized `orders` table. Read: denormalized `order_summaries` materialized view updated by events. Forms: [9_database.md — Normal forms](./9_database_core.md#normal-forms-1nf3nf-bcnf); snapshots: [Normalize vs denormalize](./9_database_core.md#normalization-vs-denormalization).
+
+**Thoughts:** Don't apply CQRS everywhere. Use when read patterns genuinely differ from write patterns and justify the sync cost. Fowler: apply per bounded context, not the whole system; most CRUD domains should not use it.
+
+**Sources:** [Martin Fowler — CQRS](https://martinfowler.com/bliki/CQRS.html)
+
+</details>
+
+<details>
+  <summary>DDD (Domain-Driven Design)</summary>
+
+### DDD (Domain-Driven Design)
+
+**Definition:**
+
+Software design approach centered on the business domain, using a ubiquitous language and bounded contexts to model complex domains.
+
+| Concept | Meaning |
+|---------|---------|
+| **Bounded context** | Explicit boundary where a domain model applies |
+| **Ubiquitous language** | Shared vocabulary between devs and domain experts |
+| **Aggregate** | Cluster of entities treated as one unit for consistency |
+| **Entity / Value object** | Identity vs defined-by-attributes |
+
+**When to use:** Complex business domains (finance, logistics, healthcare). Less valuable for simple CRUD apps.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Aligns code with business | Steep learning curve |
+| Clear service boundaries for microservices | Over-modeling slows delivery |
+| Reduces mismatched assumptions | Requires domain expert access |
+
+**Examples:** "Customer" in Sales context ≠ "Customer" in Support context — different models, different bounded contexts, integrate via APIs/events.
+
+**Thoughts:** DDD is strategic (bounded contexts) and tactical (aggregates, entities). Interviews often focus on bounded contexts as microservice boundaries. A model is a ubiquitous language; large domains need several models, not one enterprise-wide Customer.
+
+**Sources:** [Martin Fowler — Bounded Context](https://martinfowler.com/bliki/BoundedContext.html)
+
+</details>
+
+<details>
+  <summary>Clean Architecture & Hexagonal</summary>
+
+### Clean Architecture & Hexagonal
+
+**Definition:** Family of architectures with the same interview idea: **business rules do not depend on frameworks, DBs, or UI**. Hexagonal (ports & adapters, Cockburn) draws a domain hexagon with inbound/outbound ports. Onion (Palermo) is the same instinct with slightly different rings. Clean Architecture (Uncle Bob) draws concentric rings: **entities → use cases → interface adapters → frameworks & drivers**. Doka’s **three-layer** cut (domain / application / ports-and-adapters) is the same idea for small apps — treat the names as synonyms until the project is large enough that the extra rings matter. See [Three-layer architecture](#three-layer-architecture-doka).
+
+**How it works:**
+
+Inner circles are **policies**; outer circles are **mechanisms**. **The Dependency Rule:** source-code dependencies only point **inward**. An inner circle must not name anything declared in an outer circle (class, function, type, or a framework row/DTO). Data that crosses a boundary is a simple structure convenient for the **inner** circle — not a Prisma row or an Express `Request`.
+
+| Ring | Owns | Independent of |
+|------|------|----------------|
+| **Entities** | Enterprise / app business rules (objects or data + functions) | UI, DB, navigation, auth flavor |
+| **Use cases** | Application-specific scenarios; orchestrate entities | DB, UI, frameworks |
+| **Interface adapters** | MVC, presenters, controllers, SQL, API mappers | — converts inner shapes ↔ outer shapes |
+| **Frameworks & drivers** | HTTP framework, ORM, DB, glue | Details live here so they can be replaced |
+
+Uncle Bob’s goals (all of these architectures): independent of frameworks, UI, DB, and external agencies; **testable** business rules without those.
+
+Domain defines **ports** (interfaces): `OrderRepository`, `PaymentGateway`. **Adapters** implement them: Prisma, Stripe SDK, Express/React. Use cases orchestrate entities and ports. UI and Nest/Express are **outer** — replaceable.
+
+```
+Frameworks (HTTP, ORM, queue)
+        ↓ adapters
+Use cases / application
+        ↓
+Entities / domain
+```
+
+Flow of control can go **outward** (use case → presenter) while **source** dependencies still point **inward**: the use case calls an **output port** interface it owns; the presenter in the outer ring implements it (**Dependency Inversion**).
+
+**When to use:**
+
+Long-lived backends with real domain rules. **When NOT:** a weekend MVP — a modular monolith with clear modules is enough. See [0_mvp.md](./0_mvp.md).
+
+#### Common pitfalls
+
+Putting Prisma calls in React components. Calling it Hexagonal while importing `pg` from the domain folder. Passing ORM row types into entities.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Test domain without a database | Extra interfaces on a 4-endpoint CRUD app |
+| Swap Postgres for a fake in tests | "Use case class per button" cargo cult |
+| Same story as FSD layers on the frontend | Teams argue about folder names |
+
+**Examples:**
+
+```ts
+// port (owned inward — application/domain)
+export type ChargeCard = (input: { orderId: string; cents: number }) => Promise<void>;
+
+// use case — no Express, no Prisma
+export function completeCheckout(charge: ChargeCard) {
+  return async (orderId: string, cents: number) => {
+    await charge({ orderId, cents });
+  };
+}
+```
+
+**Thoughts:** Dependencies point inward. The domain does not know Nest or Next.
+
+**See also:** [Three-layer architecture](#three-layer-architecture-doka) · [Architecture vs design patterns](#architecture-vs-design-patterns) · [DDD](#ddd-domain-driven-design) · [FSD](#feature-sliced-design-fsd) · [Kafka vs RabbitMQ vs BullMQ](./10_build.md)
+
+**Sources:** [Alistair Cockburn — Hexagonal](https://alistair.cockburn.us/hexagonal-architecture/) · [Robert C. Martin — The Clean Architecture (2012)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) · [Doka — Three-layer architecture](https://doka.guide/tools/clean-architecture/)
+
+</details>
+
+<a name="three-layer-architecture-doka"></a>
+
+<details>
+  <summary>Three-layer architecture (Doka)</summary>
+
+### Three-layer architecture (Doka)
+
+**Definition:** Split the app into **domain**, **application**, and **ports & adapters**, with a hard rule: **every dependency points toward the domain**. The rest of the code exists to feed the domain the shapes it wants, call its functions, and persist or display the result. Goal: cheaper features and cheaper bug hunts because you know which layer owns the mistake.
+
+**How it works:**
+
+Draw three rings. Center = **what the business is** (cart rules). Middle = **what the user is doing** (checkout). Outer = **how we talk to the world** (button click, HTTP, Postgres). A bug in “10% off is wrong” is domain. A bug in “we forgot to save after checkout” is application. A bug in “snake_case from the API” is an adapter.
+
+```
+     ┌─────────────────────────────────────────┐
+     │  ports & adapters  (UI, fetch, DB)      │  ← world
+     │   ┌─────────────────────────────────┐   │
+     │   │  application  (use cases)       │   │
+     │   │   ┌─────────────────────────┐   │   │
+     │   │   │  domain (pure rules)    │   │   │
+     │   │   └─────────────────────────┘   │   │
+     │   └─────────────────────────────────┘   │
+     └─────────────────────────────────────────┘
+              arrows of *imports* only go inward
+```
+
+| Layer | Question it answers | Allowed to do | Forbidden |
+|-------|---------------------|---------------|-----------|
+| **Domain** | What are the rules of *this* product? | Types + **pure** functions (same in → same out) | `fetch`, React, Prisma, `window` |
+| **Application** | What happens in this **scenario**? | Load via **port**, call domain, save via **port** | Import Stripe SDK / `fetch` / JSX |
+| **Ports & adapters** | How do we plug into the real world? | Implement ports; map DTO ↔ domain | Business rules (discounts, totals) |
+
+| Code | Layer | Why |
+|------|-------|-----|
+| `type Cart = { items: CartItem[] }` | Domain | Subject data |
+| `cartTotal(cart)` / `addItem(cart, product)` | Domain | Rule, no I/O |
+| `interface CartStorage { load(); save() }` | Application | Contract we wish the world had |
+| `checkout(userId, storage)` | Application | Scenario: load → domain → save |
+| `fetch('/cart').then(fromApi)` | Driven adapter | Real HTTP + field mapping |
+| `onClick={() => checkout(...)}` | Driving adapter | User signal in |
+| Express `POST /checkout` | Driving adapter | Same idea on the server |
+
+Domain imports nothing outer. Application imports domain + **port types**. Outer **implements** ports and is passed in (DI). JS has no native DI — pass functions as arguments, or Inversify (`container.bind(id).to(Impl)`).
+
+a **port** is the *wish*: “give me `saveCart(cart)`.” An **adapter** makes a messy API look like that wish. Mapping `product_id` → `productId` is adapter work. `function saveCart(c) { return api.save(c) }` is **not** an adapter until you can swap the backend **without editing application code**.
+
+**Driving** (left) — world tells the app: UI, HTTP, CLI. **Driven** (right) — app tells the world: storage, email, payments. Both live in the outer ring.
+
+**Infrastructure** = real DB, SMS, payment APIs. **Shared kernel** = cheap globals (`window`, language). Browser + Node shared code → those globals become adapters.
+
+```ts
+// WRONG — domain + HTTP + UI glued; cannot test total without fetch
+async function onAddClickedWrong(userId: string, item: CartItem) {
+  const res = await fetch(`/api/carts/${userId}`);
+  const cart = await res.json();
+  cart.items.push(item);
+  await fetch(`/api/carts/${userId}`, { method: 'PUT', body: JSON.stringify(cart) });
+}
+
+// RIGHT — same click, but rules are testable:
+//   expect(cartTotalCents(addItem(empty, item))).toBe(500)
+```
+
+**When to use:**
+
+Real domain rules; browser + SSR + RN; swap backends. **Minimum:** extract **domain** first. Full three layers when I/O and use cases actually hurt.
+
+#### Common pitfalls
+
+Domain that `fetch`es. Application that imports Stripe. Adapter that only renames a method. Port **implementations** sitting next to use cases. Putting `%` discount logic in JSX.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Bug hunt: rule vs scenario vs glue | Design time, onboarding |
+| Domain unit-tests with no mocks | Extra files; more JS to parse |
+| Swap UI or API without rewriting totals | Overkill for a 3-page marketing site |
+
+**Examples:**
+
+```ts
+// --- domain/cart.ts  (pure; test with plain objects) ---
+export type CartItem = { productId: string; priceCents: number; qty: number };
+export type Cart = { items: CartItem[] };
+
+export function addItem(cart: Cart, item: CartItem): Cart {
+  const i = cart.items.findIndex((x) => x.productId === item.productId);
+  if (i === -1) return { items: [...cart.items, item] };
+  const items = cart.items.map((x, n) =>
+    n === i ? { ...x, qty: x.qty + item.qty } : x,
+  );
+  return { items };
+}
+
+export function cartTotalCents(cart: Cart): number {
+  return cart.items.reduce((sum, x) => sum + x.priceCents * x.qty, 0);
+}
+
+export function applyPercentOff(totalCents: number, percent: number): number {
+  return Math.round(totalCents * (1 - percent / 100));
+}
+
+// --- application/ports.ts + addToCart.ts ---
+export interface CartStorage {
+  load(userId: string): Promise<Cart>;
+  save(userId: string, cart: Cart): Promise<void>;
+}
+
+import { addItem, cartTotalCents, type Cart, type CartItem } from '../domain/cart';
+
+export async function addToCartUseCase(
+  userId: string,
+  item: CartItem,
+  storage: CartStorage, // port — not fetch
+): Promise<{ cart: Cart; totalCents: number }> {
+  const cart = await storage.load(userId);
+  const next = addItem(cart, item);
+  await storage.save(userId, next);
+  return { cart: next, totalCents: cartTotalCents(next) };
+}
+
+// --- adapters/httpCartStorage.ts  (driven) ---
+import type { CartItem } from '../domain/cart';
+import type { CartStorage } from '../application/ports';
+
+function fromApi(row: { product_id: string; price_cents: number; qty: number }): CartItem {
+  return { productId: row.product_id, priceCents: row.price_cents, qty: row.qty };
+}
+
+export const httpCartStorage: CartStorage = {
+  async load(userId) {
+    const res = await fetch(`/api/carts/${userId}`);
+    const body: { items: { product_id: string; price_cents: number; qty: number }[] } =
+      await res.json();
+    return { items: body.items.map(fromApi) };
+  },
+  async save(userId, cart) {
+    await fetch(`/api/carts/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: cart.items.map((i) => ({
+          product_id: i.productId,
+          price_cents: i.priceCents,
+          qty: i.qty,
+        })),
+      }),
+    });
+  },
+};
+
+// --- adapters/AddToCartButton.tsx  (driving) ---
+// onClick is the adapter; it must not compute discounts itself
+async function onAddClicked(userId: string, item: CartItem) {
+  await addToCartUseCase(userId, item, httpCartStorage);
+}
+```
+
+load → pure update → save.
+
+```ts
+type Product = { id: string; name: string };
+
+interface ProductsStorage {
+  getProductById(id: string): Product;
+  saveProduct(product: Product): void;
+}
+
+function updateProduct(product: Product, patch: { name: string }): Product {
+  return { ...product, name: patch.name };
+}
+
+function renameProductHandler(
+  command: { productId: string; name: string },
+  storage: ProductsStorage,
+) {
+  const product = storage.getProductById(command.productId);
+  const updated = updateProduct(product, { name: command.name });
+  storage.saveProduct(updated);
+}
+```
+
+domain = fractal + 2D math; application = fractal → draw commands; outer = DOM/Canvas. Same split: geometry is not mixed with `canvas.getContext('2d')`.
+
+**Thoughts:** Program *to the domain*. Outer layers serve it; adapters make the world compatible — ports make the app reachable.
+
+**See also:** [Clean Architecture & Hexagonal](#clean-architecture--hexagonal) · [Architecture vs design patterns](#architecture-vs-design-patterns) · [Modular monolith](./0_system_design_architecture.md#modular-monolith)
+
+**Sources:** [Doka — Three-layer architecture](https://doka.guide/tools/clean-architecture/) (Bespoiasov, updated 2023-01-27) · [Martin — Dependency Rule](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) · [InversifyJS — bind / inject](https://github.com/inversify/InversifyJS)
+
+</details>
+
+
 
 <details>
   <summary>MVC (Model-View-Controller)</summary>
@@ -616,7 +981,7 @@ Today’s Redux uses `configureStore` / slices; the cycle is the same (`dispatch
 
 #### Common pitfalls
 
-Treating the store as the renderer. Using two-way binding for a non-form graph. Confusing `computed` with `v-model`. Putting server cache in Redux — [state at scale](./0_system_design_architecture.md#state-at-scale).
+Treating the store as the renderer. Using two-way binding for a non-form graph. Confusing `computed` with `v-model`. Putting server cache in Redux — [state at scale](#state-at-scale).
 
 **Examples:**
 
@@ -645,7 +1010,7 @@ One-way = “ask, then re-read.” Two-way = “the field *is* the model.” Rea
 
 React 19 form actions blur the line; the core model stays one-way. Controlled inputs = two-way **you** write. Original Flux had a separate dispatcher; Redux folds dispatch into the store + one root reducer.
 
-**See also:** [Reactive programming](./7_special_paradigms.md#reactive-programming--reactivity) · [MVC vs MVP vs MVVM](#mvc-vs-mvp-vs-mvvm) · [4_react.md](./4_react.md) · [0_system_design.md — architecture vs patterns](./0_system_design_interview.md#architecture-vs-design-patterns)
+**See also:** [Reactive programming](#reactive-programming--reactivity) · [MVC vs MVP vs MVVM](#mvc-vs-mvp-vs-mvvm) · [4_react.md](./4_react.md) · [0_system_design.md — architecture vs patterns](./0_system_design_interview.md#architecture-vs-design-patterns)
 
 **Sources:**
 
@@ -655,159 +1020,261 @@ React 19 form actions blur the line; the core model stays one-way. Controlled in
 
 </details>
 
-<a name="4-system-architecture"></a>
-
-## 4. System architecture
-
 <details>
-  <summary>Monolithic architecture</summary>
+  <summary>Reactive programming & reactivity</summary>
 
-### Monolithic architecture
-
-**Definition:** Entire application — UI, business logic, data access — ships and deploys as **one unit** (single process, single artifact).
-
-**How it works:**
-
-- All modules live in one codebase and share memory/process.
-- Requests flow: client → monolith → database(s) — no inter-service network calls.
-- Scaling = replicate the whole app behind a load balancer (horizontal) or bigger machine (vertical).
-- **Modular monolith** — logical service boundaries inside one deployable (packages, bounded contexts) — is a common evolution path.
-
-**When to use:** Startups, MVPs, small teams (<10 engineers), well-understood domain, products without extreme per-component scale needs. Stay monolith until **pain** (deploy frequency, team coordination, scale hotspots) justifies microservices cost.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Simple dev, test, deploy — one repo, one CI pipeline | Hard to scale one hot component independently |
-| Single codebase, easy debugging and tracing | Large codebase → slow builds, coupling over time |
-| No network between modules — low latency | One bug or memory leak can take down everything |
-| Lower infra cost early | Deploy all or nothing — risky big-bang releases |
-
-**Examples:**
-
-```mermaid
-flowchart TB
-  client[Client] --> app[Monolith — UI + API + Business Logic]
-  app --> db[(Single Database)]
-```
-
-**Thoughts:** Modular monolith with clear package boundaries is often the right long-term choice before splitting. Extract services when a bounded context has independent scale, team, or deploy cadence — not because Netflix uses microservices.
-
-**Sources:**
-
-[0_system_design.md](./0_system_design.md)
-
----
-
-</details>
-
-<details>
-  <summary>Microservices architecture</summary>
-
-### Microservices architecture
-
-**Definition:** One application as a **suite of small services**, each in its **own process**, around a **business capability**, talking over HTTP/RPC/queues, **independently deployable**. (Fowler)
-
-**How it works:**
-
-- Companies leave the monolith to cut **time-to-market for one slice**, **reuse** a capability (auth, mail) across products, and **scale/staff** that slice without cloning the whole app.
-- The new coupling is the **API contract** + the network. Doka size check: logic fits in **one head**. Size of the repo matters less than independent lifecycle.
-- CI, Kubernetes, service discovery, Prometheus, Kafka are the **cost of many processes** (build, place, find, watch, buffer) — Fowler’s **microservice premium**.
-
-**When to use:**
-
-Hotspot autoscale; team ≳10–15; many autonomous modules; reuse in a new product; huge builds / uneven CPU vs I/O. **Not** for early-stage / fuzzy domain.
-
-#### Common pitfalls
-
-Treating “small HTTP server” as architecture; splitting without bounded contexts; believing microservices are cheaper by default (Doka oversells this). Result: **distributed monolith**.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Independent scale and deploy | Distributed system complexity |
-| Team autonomy per service | Network latency, partial failures |
-| Technology diversity per service | Higher ops cost (K8s, observability) |
-| Reuse a service in several products | Data consistency across services is hard |
-| Fault isolation | Many services can cost **more** than one monolith |
-
-**Examples:**
-
-In a monolith, Pay is `payments.charge(order)` in the same process; a pay-bugfix redeploys the whole shop; Black Friday clones Catalog+Pay together. As services, browser → gateway → Orders → `POST /payments`; Mail is a **second** process (often via a queue) so the shop and a newsletter product share one mailer. Pay can scale to 20 replicas while Catalog stays at 2.
-
-```mermaid
-sequenceDiagram
-  participant U as Browser
-  participant G as Gateway
-  participant O as Orders
-  participant P as Payments
-  participant M as Mail
-  U->>G: POST /checkout
-  G->>O: create order
-  O->>P: POST /payments
-  P-->>O: charged
-  O->>M: OrderPaid
-```
-
-```js
-import http from 'node:http';
-
-const server = http.createServer((req, res) => {
-  if (req.method === 'POST' && req.url === '/send') {
-    res.writeHead(202, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ queued: true }));
-    return;
-  }
-  res.writeHead(404);
-  res.end();
-});
-
-server.listen(8000);
-```
-
-Shop calls `POST /send` instead of importing `sendMail()`. Full walkthrough: [0_system_design.md](./0_system_design.md).
-
-**Thoughts:**
-
-Split for independent **scale, team, or reuse** — stay a modular monolith until that pain is real.
-
-"Microservices too early" is a top failure mode. You need bounded contexts, CI/CD, and tracing before splitting. See [0_system_design.md](./0_system_design.md).
-
-**Sources:**
-
-[Fowler — Microservices](https://martinfowler.com/articles/microservices.html) · [Fowler — Monolith First](https://martinfowler.com/bliki/MonolithFirst.html) · [Doka — Микросервисы](https://doka.guide/tools/microservices/)
-
----
-
-</details>
-
-<details>
-  <summary>Monolith vs microservices — decision guide</summary>
-
-### Monolith vs microservices — decision guide
+### Reactive programming & reactivity
 
 **Definition:**
 
-Decision matrix for choosing monolithic vs microservices architecture based on team, domain, scale, and ops maturity.
+**Reactivity** is automatically updating a system when data changes. **Reactive programming** is a paradigm centered on **data streams** — time-ordered event sequences from any source — and the relationships between them.
 
-| Factor | Monolith | Microservices |
-|--------|----------|---------------|
-| Team size | Small | Multiple teams |
-| Domain clarity | Evolving | Well-bounded contexts |
-| Scale needs | Uniform | Per-service hotspots |
-| Ops maturity | Basic | K8s, tracing, SRE |
-| Time to market | Faster initially | Slower setup |
+| Perspective | Meaning |
+|-------------|---------|
+| **User** | UI responds instantly to input (typing, clicks, loaders) |
+| **Developer** | Derived values stay in sync with sources without manual recomputation |
+
+**How it works:**
+
+Built on the **Observer** pattern. When the source changes, subscribers react — but *when* they react depends on push vs pull:
+
+| Type | Mechanism | Subscribers update | JS examples |
+|------|-----------|-------------------|-------------|
+| **Push** | Source pushes each change immediately | On every event | `addEventListener`, RxJS `fromEvent`, WebSockets |
+| **Pull** | Consumers read fresh values on demand | On next system pass (e.g. render) | React re-render, MobX `autorun` |
+
+`const sum = a + b` is a one-time snapshot — changing `a`/`b` later does not update `sum`. Reactive systems recompute dependents when inputs change (frameworks wire this for you).
+
+| Push | Pull |
+|------|------|
+| Immediate; natural for events | Deferred work — compute only when needed |
+| Risk: duplicate work under heavy streams | Risk: refreshing the whole graph can be costly |
+
+**When to use:** Live dashboards, event-heavy UIs, validation chains, syncing UI with server push. **FRP** (functional reactive programming) composes streams with `map` / `filter` / `scan` — RxJS in JS; Elm is a pure FRP language.
+
+**Examples:**
+
+```js
+// Push — native events
+document.addEventListener('click', () => console.log('clicked'));
+
+// Push — RxJS
+import { fromEvent } from 'rxjs';
+fromEvent(document, 'click').subscribe(() => console.log('clicked'));
+```
 
 **Thoughts:**
 
-Extract services when **pain** justifies **cost** — not because Netflix does it. Doka lists Netflix/Amazon/Uber as proof they **use** microservices, not as proof they are cheaper for a small team.
+Express *relationships* between data; let the runtime sync consumers (especially UI) instead of manually re-running every step.
 
-Team, domain, per-service scale, ops maturity — if three of four still favor a monolith, stay there.
+`$name` or `clicks$` often marks Observables/streams. In practice reactive ideas mix with imperative/OOP (React hooks, Vue Proxy). Two-way binding is *UI ↔ model sync*; reactivity is *derived values recompute* — [Data flow](#data-flow--one-way-vs-two-way). See [Observer](./0_system_design_patterns.md#observer) · [React state](./4_react_core.md#state).
+
+**Sources:**
+
+[Doka — reactivity](https://doka.guide/js/reactivity/) · [RxJS overview](https://rxjs.dev/guide/overview)
 
 ---
 
 </details>
 
-<a name="5-algorithms--big-o"></a>
+<details>
+  <summary>Functional core, imperative shell</summary>
+
+### Functional core, imperative shell
+
+**Definition:** Keep **business logic pure** (functional core) inside an **impure boundary** (imperative shell) that handles I/O — the pragmatic FP pattern for real apps.
+
+**How it works:**
+
+- **Sandwich pattern:** I/O → pure transform → I/O.
+- Example — update DB record: (1) fetch row [effect], (2) `applyBusinessRules(row, input)` [pure], (3) persist [effect].
+- Rule: **impure may call pure; pure must not call impure** — keeps core testable without DB/network mocks.
+- Strict FP (Haskell, IO monads) pushes further; JS/TS typically use this lighter pattern.
+
+**When to use:** Redux reducers (pure) + thunks (effects), service layer, React Server Actions (validate pure → DB write impure).
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Core logic unit-testable with plain inputs/outputs | Discipline required — easy to leak I/O into core |
+| Clear separation of "what" vs "how to reach world" | Boilerplate adapters at boundaries |
+
+**Examples:**
+
+```js
+// pure core
+function applyDiscount(cart, coupon) {
+  return { ...cart, total: cart.total * (1 - coupon.percent) };
+}
+
+// imperative shell
+async function checkout(cartId, couponCode) {
+  const cart = await db.cart.find(cartId);        // effect
+  const coupon = await db.coupon.find(couponCode); // effect
+  const updated = applyDiscount(cart, coupon);     // pure
+  await db.cart.save(updated);                     // effect
+  return updated;
+}
+```
+
+**Thoughts:** *Effects at the edges; decisions in the middle.*
+
+**See also:** Mark Seemann’s **impure / pure / impure** (“impureim”) sandwich — same idea. Why it lowers test friction: [Making tests easy](./7_special_testing.md#making-tests-easy).
+
+**Sources:**
+
+[javascript.info/functional-programming](https://javascript.info/functional-programming)
+
+---
+
+</details>
+
+## Frontend structure
+
+<details>
+  <summary>Feature-Sliced Design (FSD)</summary>
+
+### Feature-Sliced Design (FSD)
+
+**Definition:**
+
+Frontend architecture methodology organizing code into **layers** (app, pages, widgets, features, entities, shared) and **slices** by business domain, with a strict public API rule per slice.
+
+| Layer | Responsibility |
+|-------|----------------|
+| `app` | Providers, router, global styles, entry |
+| `pages` | Full pages, route composition |
+| `widgets` | Composite UI blocks (header, sidebar) |
+| `features` | User actions (login, add-to-cart) |
+| `entities` | Business nouns (user, product) |
+| `shared` | UI kit, API client, utils — no business logic |
+
+**When to use:** Medium-to-large SPAs, multiple teams, long-lived products.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Predictable structure at scale | Learning curve, can feel heavy for small apps |
+| Enforced dependency direction (top → down) | Migration cost from flat structure |
+| Team ownership per slice | Over-segmentation if slices too granular |
+
+**Examples:**
+
+```
+src/
+  app/
+  pages/cart/
+  widgets/header/
+  features/add-to-cart/
+  entities/product/
+  shared/ui/
+```
+
+Import rule: `features/cart` can import `entities/product` and `shared/*`, never another feature's internals.
+
+**Thoughts:** Public API = `index.ts` barrel per slice. Cross-slice imports only through public API — enforce with ESLint `boundaries` plugin.
+
+**Sources:** [feature-sliced.design](https://feature-sliced.design/)
+
+</details>
+
+<details>
+  <summary>Atomic Design</summary>
+
+### Atomic Design
+
+**Definition:**
+
+UI methodology building interfaces from five levels: Atoms → Molecules → Organisms → Templates → Pages.
+
+| Level | Examples |
+|-------|----------|
+| **Atoms** | Button, Input, Label, Icon |
+| **Molecules** | Search form (input + button), Form field (label + input + error) |
+| **Organisms** | Header, Product card, Login form |
+| **Templates** | Page layout without real data |
+| **Pages** | Templates with real content |
+
+**When to use:** Design systems, component libraries, teams with designers using shared vocabulary.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Reusable component hierarchy | Can be rigid — not everything fits neatly |
+| Shared design language | Atoms/molecules distinction can be subjective |
+| Works well with Storybook | Doesn't address data/state architecture |
+
+**Thoughts:** Atomic Design complements (not replaces) FSD. Atoms/molecules live in `shared/ui`; organisms may be widgets or features.
+
+**Sources:** [Brad Frost — Atomic Design](https://atomicdesign.bradfrost.com/)
+
+</details>
+
+<details>
+  <summary>Module / package boundaries</summary>
+
+### Module / package boundaries
+
+**Definition:** Encapsulation rules defining what code is public vs internal within a module, and which direction dependencies may flow.
+
+**When to use:** Monorepos, large codebases, libraries consumed by multiple apps.
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Prevents spaghetti imports | Requires tooling (ESLint, Nx, Turborepo) |
+| Enables safe refactoring inside modules | Wrong boundaries are expensive to fix |
+| Clear ownership | |
+
+**Examples:**
+
+```ts
+// packages/billing/src/index.ts — public API only
+export { createInvoice } from './api';
+export type { Invoice } from './types';
+// ./internal/* never exported
+```
+
+**Thoughts:** Dependency direction: features → entities → shared. Never shared → features. Cyclic deps = boundary smell.
+
+</details>
+
+<details>
+  <summary>State at scale</summary>
+
+### State at scale
+
+**Definition:**
+
+Decision framework for where to store UI and server state in large frontend applications.
+
+| State type | Where | When |
+|------------|-------|------|
+| **Local component** | `useState` | UI-only, not shared |
+| **Shared client** | Context, Zustand, Jotai | Cross-component, client-only |
+| **Server** | React Query, SWR, RTK Query | Remote data, caching, sync |
+| **URL** | Router search params | Shareable, bookmarkable state |
+| **Form** | React Hook Form | Complex forms, validation |
+
+**When to use:** Default local → lift or URL → server cache → global store only when truly cross-cutting.
+
+**Pluses and minuses:**
+
+| + (right placement) | − (wrong placement) |
+|------------------------|------------------------|
+| Minimal re-renders | Global store for everything = unmaintainable |
+| Clear data flow | Server state in Redux = manual cache hell |
+
+**Thoughts:**
+
+"Server state is not client state." Don't put API responses in Redux/Zustand — use a server-state library. See [React — Ecosystem](./4_react_ecosystem.md).
+
+---
+
+</details>
+
+

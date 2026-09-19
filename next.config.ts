@@ -26,7 +26,17 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/other/special",
-        destination: "/other/paradigms",
+        destination: "/other/computer-science",
+        permanent: true,
+      },
+      {
+        source: "/other/paradigms",
+        destination: "/other/computer-science",
+        permanent: true,
+      },
+      {
+        source: "/other/special-paradigms",
+        destination: "/other/computer-science",
         permanent: true,
       },
       {
@@ -35,8 +45,28 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/algorithms/algorithms-data",
-        destination: "/data-structures",
+        source: "/solid",
+        destination: "/system-design/solid",
+        permanent: true,
+      },
+      {
+        source: "/other/special-engineering",
+        destination: "/system-design/solid",
+        permanent: true,
+      },
+      {
+        source: "/other/special-architecture",
+        destination: "/system-design/special-architecture",
+        permanent: true,
+      },
+      {
+        source: "/other/git-fundamentals",
+        destination: "/other/git-core",
+        permanent: true,
+      },
+      {
+        source: "/system-design/sd-foundations",
+        destination: "/system-design/sd-core",
         permanent: true,
       },
     ];

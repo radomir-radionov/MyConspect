@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useState, useSyncExternalStore, type Dispatch, type SetStateAction } from "react";
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSyncExternalStore, type Dispatch, type SetStateAction } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { HighlightedText, useSearchMode } from "@/components/search";
@@ -12,7 +12,7 @@ import { NavGuide } from "./NavGuide";
 import { getHash, getServerHash, subscribeHash } from "./hash";
 import { isActiveHref, isActiveTrack } from "./location";
 import { pinNavElement, restoreSidebarPin, scrollSidebarHit } from "./sidebarPin";
-import { measureStickyCover, measureStickyPathVars, stickyVarsEqual, type StickyVars } from "./sidebarSticky";
+import { measureStickyCover, measureStickyPathVars, writeStickyVars, type StickyVars } from "./sidebarSticky";
 import { SidebarNavProvider, trackHeaderClass } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
 import { useSidebarOpen } from "./useSidebarOpen";
@@ -132,7 +132,14 @@ export const TopicSidebar = memo(function TopicSidebar({
       openTopicHref,
       setOpenTopicHref,
     }),
-    [openSubjectHref, openClusterKey, openTopicHref],
+    [
+      openSubjectHref,
+      setOpenSubjectHref,
+      openClusterKey,
+      setOpenClusterKey,
+      openTopicHref,
+      setOpenTopicHref,
+    ],
   );
   const activeValue = useMemo(() => ({ activeConceptId }), [activeConceptId]);
 
@@ -171,11 +178,14 @@ export const TopicSidebar = memo(function TopicSidebar({
 });
 
 function StickyPathStyles({ revision }: { revision: string }) {
-  const [vars, setVars] = useState<StickyVars>({});
+  const previousRef = useRef<StickyVars>({});
 
   const applyVars = useCallback(() => {
-    const next = measureStickyPathVars();
-    setVars((current) => (stickyVarsEqual(current, next) ? current : next));
+    const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
+    if (!scroller) {
+      return;
+    }
+    previousRef.current = writeStickyVars(scroller.style, measureStickyPathVars(), previousRef.current);
   }, []);
 
   useLayoutEffect(() => {
@@ -191,9 +201,18 @@ function StickyPathStyles({ revision }: { revision: string }) {
       }
       frame = window.requestAnimationFrame(() => {
         frame = 0;
-        const cover = `${measureStickyCover()}px`;
-        setVars((current) =>
-          current["--nav-sticky-cover"] === cover ? current : { ...current, "--nav-sticky-cover": cover },
+        if (!scroller) {
+          return;
+        }
+        const current = previousRef.current;
+        const cover = `${measureStickyCover(undefined, current)}px`;
+        if (current["--nav-sticky-cover"] === cover) {
+          return;
+        }
+        previousRef.current = writeStickyVars(
+          scroller.style,
+          { ...current, "--nav-sticky-cover": cover },
+          current,
         );
       });
     };
@@ -211,10 +230,7 @@ function StickyPathStyles({ revision }: { revision: string }) {
     return () => window.clearTimeout(later);
   }, [applyVars, revision]);
 
-  const css = Object.entries(vars)
-    .map(([name, value]) => `${name}:${value}`)
-    .join(";");
-  return <style>{css ? `#${HANDBOOK_NAV_ASIDE_ID}{${css}}` : ""}</style>;
+  return null;
 }
 
 function TrackGroup({

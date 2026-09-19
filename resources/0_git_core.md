@@ -1,4 +1,4 @@
-# Git — Fundamentals
+# Git — Core
 
 Objects, commits, and everyday workflow.
 
@@ -6,16 +6,18 @@ Objects, commits, and everyday workflow.
 
 ### Related docs
 
-* [Git — Fundamentals](./0_git_core.md) · [Git — Branching](./0_git_branching.md) · [Git — Team](./0_git_team.md) · [Git — Interview](./0_git_interview.md)
+* [Git — Core](./0_git_core.md) · [Git — Branching](./0_git_branching.md) · [Git — Team](./0_git_team.md) · [Git — Interview](./0_git_interview.md)
 
 ### Sections
 
-- [Fundamentals](#fundamentals)
+- [Core](#core)
 - [Workflow](#workflow)
 
 ---
 
-## Fundamentals
+<a name="fundamentals"></a>
+
+## Core
 
 <details>
   <summary>Version control types</summary>
@@ -248,8 +250,6 @@ git switch main && git merge feature/login
 [Pro Git — Branching](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) · [Pro Git — Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
 
 ---
-
-<a name="fundamentals"></a>
 
 ## Workflow
 

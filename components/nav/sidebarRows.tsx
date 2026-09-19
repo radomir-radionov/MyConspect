@@ -55,12 +55,26 @@ function sameTitle(left: string, right: string): boolean {
   return left.trim().toLowerCase() === right.trim().toLowerCase();
 }
 
+function isDuplicateConceptTitle(topicTitle: string, conceptTitle: string): boolean {
+  const topic = topicTitle.trim().toLowerCase();
+  const concept = conceptTitle.trim().toLowerCase();
+  return topic === concept || concept.startsWith(`${topic} `) || topic.startsWith(`${concept} `);
+}
+
 function visibleConcepts(topic: NavTopic, query: string, mode: SearchMode) {
   const needle = query.trim().toLowerCase();
-  if (needle.length === 0) {
-    return topic.concepts;
+  const matched =
+    needle.length === 0
+      ? topic.concepts
+      : topic.concepts.filter((concept) => conceptMatchesQuery(concept, needle, mode));
+  const only = matched.length === 1 ? matched[0] : undefined;
+  if (only && isDuplicateConceptTitle(topic.title, only.title)) {
+    if (mode === "notes" && needle.length > 0 && conceptBodySnippet(only, query, mode)) {
+      return matched;
+    }
+    return [];
   }
-  return topic.concepts.filter((concept) => conceptMatchesQuery(concept, needle, mode));
+  return matched;
 }
 
 export const ConceptLink = memo(function ConceptLink({
@@ -278,11 +292,12 @@ export function TopicRow({
   const isHitTopic = first?.pathname === topic.href;
   const isFirstTopic = isHitTopic && first.hash === "";
   const concepts = visibleConcepts(topic, query, mode);
+  const hasConcepts = concepts.length > 0;
   const topicOpen = hideTitle
     ? true
     : searching
-      ? concepts.length > 0
-      : openTopicHref === topic.href;
+      ? hasConcepts
+      : hasConcepts && openTopicHref === topic.href;
   const onPath = !searching && active;
 
   if (hideTitle) {
@@ -307,30 +322,35 @@ export function TopicRow({
             event.preventDefault();
             if (window.location.hash) {
               applySameDocumentHref(pathname, "", pathname);
-              if (!searching) {
+              if (!searching && hasConcepts) {
                 setOpenTopicHref(topic.href);
               }
               return;
             }
-            if (!searching) {
+            if (!searching && hasConcepts) {
               setOpenTopicHref((current) => (current === topic.href ? null : topic.href));
+            }
+            if (!hasConcepts) {
+              closeNavSoon(onNavigate);
             }
             return;
           }
-          setOpenTopicHref(topic.href);
-          if (concepts.length === 0) {
+          setOpenTopicHref(hasConcepts ? topic.href : null);
+          if (!hasConcepts) {
             closeNavSoon(onNavigate);
           }
         }}
         data-search-hit={isFirstTopic ? "true" : undefined}
         aria-current={active ? "page" : undefined}
-        aria-expanded={topicOpen}
+        aria-expanded={hasConcepts ? topicOpen : undefined}
         className={rowClass(isHitTopic || active || topicOpen, onPath)}
       >
-        <RowTitle text={topic.title} query={query} marker={compact} open={topicOpen} />
-        {compact ? (topicOpen ? <NavChevron open /> : null) : <NavChevron open={topicOpen} large />}
+        <RowTitle text={topic.title} query={query} marker={compact && hasConcepts} open={topicOpen} />
+        {hasConcepts ? (
+          compact ? (topicOpen ? <NavChevron open /> : null) : <NavChevron open={topicOpen} large />
+        ) : null}
       </Link>
-      <NavFold open={topicOpen && concepts.length > 0} instant={searching || !topicOpen}>
+      <NavFold open={topicOpen && hasConcepts} instant={searching || !topicOpen}>
         <ul className={compact ? "mt-1.5 mb-1 space-y-0.5 pl-2" : "mt-1.5 mb-1 space-y-0.5 pl-3"}>
           <TopicConceptNav topic={topic} concepts={concepts} />
         </ul>

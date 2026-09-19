@@ -1,19 +1,24 @@
 # System design — hub
 
-Foundations, distributed systems, frontend architecture, and infrastructure. Theory lives in the topic files below.
+Foundations, distributed systems, frontend architecture, principles, and patterns. Theory lives in the topic files below.
 
 ### Related docs
 
-[System design — Foundations](./0_system_design_foundations.md) · [System design — Architecture](./0_system_design_architecture.md) · [System design — Data](./0_system_design_data.md) · [System design — Patterns](./0_system_design_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+[System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [System design — Patterns](./0_system_design_patterns.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
 
 ### Navigation
 
 | Topic | Covers |
 |------|--------|
-| [System design — Foundations](./0_system_design_foundations.md) | Foundations and distributed-systems basics. |
+| [System design — Core](./0_system_design_core.md) | Foundations and distributed-systems basics. |
 | [System design — Architecture](./0_system_design_architecture.md) | Architecture styles and frontend architecture. |
+| [Architecture patterns](./7_special_architecture.md) | MVC-family UI architecture and data flow. |
 | [System design — Data](./0_system_design_data.md) | Data, caching, and infrastructure building blocks. |
-| [System design — Patterns](./0_system_design_patterns.md) | Principles and GOF/GRASP patterns. |
+| [SOLID](./7_special_engineering.md) | Five OOP design principles for modules and APIs. |
+| [DRY, KISS, YAGNI](./0_system_design_principles.md) | Don't Repeat Yourself, Keep It Simple, You Aren't Gonna Need It. |
+| [GRASP](./0_system_design_grasp.md) | Nine patterns for assigning responsibilities to objects. |
+| [System design — Patterns](./0_system_design_patterns.md) | GoF pattern catalog. |
+| [Design patterns](./7_special_patterns.md) | GoF creational, structural, and behavioral patterns. |
 | [System design — Interview](./0_system_design_interview.md) | Interview Q&A for system design. |
 
 ### Interview practice
@@ -49,7 +54,7 @@ Q&A lives in the Interview topic for this subject.
 ### Related repo docs
 
 * [Interview questions](./0_interview.md) — OOP, SOLID, DRY, KISS, YAGNI · [Interview Practice](./0_system_design_interview.md#interview-practice)
-* [JS OOP](./3_js_oop.md) · [Special — OOP & SOLID](./7_special_paradigms.md#2-oop--fp)
+* [JS OOP](./3_js_oop.md) · [Special — OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop)
 * [React — Ecosystem & architecture](./4_react.md)
 * [Next.js — SSR, SSG, ISR, PPR, runtimes](./4_nextjs.md)
 * [Build & deploy — monolith, nginx, RabbitMQ, Docker](./10_build.md)

@@ -1,4 +1,4 @@
-# Paradigms — Interview
+# Interview leftovers
 
 Interview Q&A plus leftover tooling notes.
 
@@ -6,7 +6,7 @@ Interview Q&A plus leftover tooling notes.
 
 ### Related docs
 
-* [Paradigms](./7_special_paradigms.md) · [Architecture patterns](./7_special_architecture.md) · [Algorithms](./7_special_algorithms.md) · [Engineering](./7_special_engineering.md) · [Web security](./7_special_security.md) · [Paradigms — Interview](./7_special_interview.md)
+* [Computer science](./7_special_cs.md) · [Architecture patterns](./7_special_architecture.md) · [SOLID](./7_special_engineering.md) · [Design patterns](./7_special_patterns.md) · [SDLC](./7_special_sdlc.md) · [Testing](./7_special_testing.md) · [Web security](./7_special_security.md) · [Interview leftovers](./7_special_interview.md)
 
 ### Sections
 
@@ -110,7 +110,7 @@ Same “odd numbers in an array”: a `for` + `push` vs `array.filter`. Differen
 
 **Thoughts:** *How* vs *what* — hide the how one layer down.
 
-**See also:** [Imperative vs declarative](./7_special_paradigms.md#1-programming-fundamentals)
+**See also:** [Imperative vs declarative](./7_special_cs.md#programming-paradigm)
 
 </details>
 
@@ -123,7 +123,7 @@ Same “odd numbers in an array”: a `for` + `push` vs `array.filter`. Differen
 
 **How it works:**
 
-`double(x) { return x * 2 }` is pure. Mutating a global, calling `fetch`, `Date.now()`, `Math.random()`, or depending on outer mutable state is impure — even **reading** external methods can hide mutations. Purity buys **referential transparency**, easy tests, and parallelism; copies instead of in-place updates can use more memory. Real apps isolate effects at the edges ([functional core, imperative shell](./7_special_paradigms.md#functional-core-imperative-shell)).
+`double(x) { return x * 2 }` is pure. Mutating a global, calling `fetch`, `Date.now()`, `Math.random()`, or depending on outer mutable state is impure — even **reading** external methods can hide mutations. Purity buys **referential transparency**, easy tests, and parallelism; copies instead of in-place updates can use more memory. Real apps isolate effects at the edges ([functional core, imperative shell](./7_special_architecture.md#functional-core-imperative-shell)).
 
 - **First-class functions (JS):** assign to variable, pass as argument, return from function — enables HOFs.
 - **`compose(f, g)(x) === f(g(x))`:** `(...fns) => x => fns.reduceRight((acc, fn) => fn(acc), x)`.
@@ -133,7 +133,7 @@ Same “odd numbers in an array”: a `for` + `push` vs `array.filter`. Differen
 
 **Thoughts:** *Arguments in, value out — the rest of the universe stays untouched.*
 
-**See also:** [Pure functions & side effects](./7_special_paradigms.md#pure-functions--side-effects) · [Function composition](./7_special_paradigms.md#function-composition) · [HOF](./7_special_paradigms.md#higher-order-functions-hof)
+**See also:** [Pure functions & side effects](./3_js_functions.md#pure-functions--side-effects) · [Function composition](./3_js_functions.md#function-composition) · [HOF](./3_js_functions.md#higher-order-functions-hof)
 
 </details>
 
@@ -159,7 +159,7 @@ const compose = (...fns) => (x) =>
 
 **HOF:** Function that accepts and/or returns another function — e.g. `filter(list, predicate)`, `timed(fn)`.
 
-**See also:** [Function composition](./7_special_paradigms.md#function-composition) · [HOF](./7_special_paradigms.md#higher-order-functions-hof)
+**See also:** [Function composition](./3_js_functions.md#function-composition) · [HOF](./3_js_functions.md#higher-order-functions-hof)
 
 </details>
 
@@ -221,7 +221,7 @@ history.addRecord({ amount: 100, dateTime: Date.now() });
 
 **Interview tip:** Pair with "class vs constructor function" and "composition vs inheritance". Mention JS has no interfaces — TypeScript supplies contracts. Full answer: [3_js_oop.md](./3_js_oop.md#interview-practice).
 
-**See also:** [Object-Oriented Programming](./7_special_paradigms.md#2-oop--fp) · [Entities, relations & design](./7_special_paradigms.md#2-oop--fp)
+**See also:** [Object-Oriented Programming](./7_special_engineering.md#object-oriented-programming-oop) · [Entities, relations & design](./7_special_engineering.md#object-oriented-programming-oop)
 
 </details>
 
@@ -331,7 +331,7 @@ const bus = {
 
 **Definition:** MVC splits **data / display / input**. Client–server splits **browser / backend / DB**. Early web: View = HTML, Controller = server, Model = DB. Modern SPAs keep MVC (or Flux) **on the client** so the document is JSON-shaped state, not HTML with inline styles.
 
-**How it works:** [MVC](./7_special_architecture.md#mvc-model-view-controller) · [0_system_design.md — Client–server](./0_system_design_foundations.md#clientserver-architecture-why-a-backend)
+**How it works:** [MVC](./7_special_architecture.md#mvc-model-view-controller) · [0_system_design.md — Client–server](./0_system_design_core.md#clientserver-architecture-why-a-backend)
 
 </details>
 
@@ -425,6 +425,8 @@ function withTax(amount) { return amount * (1 + TAX_RATE); }
 function charge(amount) { return stripe.charge(amount); }
 ```
 
+**See also:** [DRY, KISS, YAGNI](./0_system_design_principles.md)
+
 </details>
 
 <details>
@@ -432,7 +434,7 @@ function charge(amount) { return stripe.charge(amount); }
 
 ### Creational patterns — factory vs AF vs builder vs singleton?
 
-**Definition:** Creational patterns hide object construction. The four you will name in interviews: **Factory** (recipe), **Abstract Factory** (family), **Builder** (steps), **Singleton** (one instance). See [Creational cheat sheet](./7_special_engineering.md#creational-patterns--cheat-sheet).
+**Definition:** Creational patterns hide object construction. The four you will name in interviews: **Factory** (recipe), **Abstract Factory** (family), **Builder** (steps), **Singleton** (one instance). See [Creational cheat sheet](./7_special_patterns.md#creational-patterns--cheat-sheet).
 
 **How it works:**
 
@@ -508,7 +510,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **How it works:** Arrange (inputs/fakes) → Act (run the scenario) → Assert (one assumption). Tests should be independent. Skip only for throwaway prototypes.
 
-**See also:** [Why write tests (AAA)](./7_special_engineering.md#tests-and-aaa) · [Test pyramid](./7_special_engineering.md#12-testing)
+**See also:** [Why write tests (AAA)](./7_special_testing.md#tests-and-aaa) · [Test pyramid](./7_special_testing.md#12-testing)
 
 </details>
 
@@ -521,7 +523,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **Thoughts:** Node for logic; jsdom + mocks for DOM/network — do not hit the real API in unit tests.
 
-**See also:** [Jest — first tests](./7_special_engineering.md#jest--first-tests-node-vs-jsdom) · [Test doubles](./7_special_engineering.md#test-doubles-stubs-mocks-spies)
+**See also:** [Jest — first tests](./7_special_testing.md#jest--first-tests-node-vs-jsdom) · [Test doubles](./7_special_testing.md#test-doubles-stubs-mocks-spies)
 
 </details>
 
@@ -540,7 +542,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **Thoughts:** Stub = replace. Mock/spy = replace **and** verify usage. Don't mock if the unit can stay pure.
 
-**See also:** [Test doubles](./7_special_engineering.md#test-doubles-stubs-mocks-spies)
+**See also:** [Test doubles](./7_special_testing.md#test-doubles-stubs-mocks-spies)
 
 </details>
 
@@ -555,7 +557,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **Thoughts:** Green units ≠ working product — add seam tests, then a handful of real-user flows.
 
-**See also:** [Integration](./7_special_engineering.md#integration-testing) · [System](./7_special_engineering.md#system-testing) · [E2E](./7_special_engineering.md#e2e-testing)
+**See also:** [Integration](./7_special_testing.md#integration-testing) · [System](./7_special_testing.md#system-testing) · [E2E](./7_special_testing.md#e2e-testing)
 
 </details>
 
@@ -628,7 +630,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **How it works:** Software changes cheaper than physical engineering, so a multi-year TZ often ships late, obsolete, and hard to amend. Manifesto (2001): people, working software, customer collaboration, responding to change — *over* (not instead of) tools, docs, contracts, and plans. Scrum/Kanban are frameworks; Agile is the mindset. Not a silver bullet — match process to contract and risk.
 
-**See also:** [Software design methodology](./7_special_engineering.md#software-design-methodology) · [Waterfall](./7_special_engineering.md#waterfall) · [Agile](./7_special_engineering.md#agile) · [Not a silver bullet](./7_special_engineering.md#not-a-silver-bullet)
+**See also:** [Software design methodology](./7_special_sdlc.md#software-design-methodology) · [Waterfall](./7_special_sdlc.md#waterfall) · [Agile](./7_special_sdlc.md#agile) · [Not a silver bullet](./7_special_sdlc.md#not-a-silver-bullet)
 
 </details>
 
@@ -641,7 +643,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **How it works:** Scrum for a product goal and shared cadence. Kanban when each item walks design → dev → QA, or interrupt-heavy queues; look at which column piles up (bottleneck). Hybrids (Scrumban) are common.
 
-**See also:** [Scrum](./7_special_engineering.md#scrum) · [Kanban](./7_special_engineering.md#kanban)
+**See also:** [Scrum](./7_special_sdlc.md#scrum) · [Kanban](./7_special_sdlc.md#kanban)
 
 </details>
 
@@ -658,7 +660,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 3. What are unit tests? Where do they sit in the testing pyramid?
 
-3b. How do you make tests cheap to write? (Pure core / impureim sandwich, DIP, independent AAA tests, don't unit-test libraries, shared fixtures, Jest `.only`/`.skip`/`-o`.) → [Making tests easy](./7_special_engineering.md#making-tests-easy)
+3b. How do you make tests cheap to write? (Pure core / impureim sandwich, DIP, independent AAA tests, don't unit-test libraries, shared fixtures, Jest `.only`/`.skip`/`-o`.) → [Making tests easy](./7_special_testing.md#making-tests-easy)
 
 4. What is code coverage? Is 100% coverage required?
 

@@ -165,7 +165,7 @@ Layers: [OSI & TCP/IP models](./6_web_api_apps.md#osi--tcpip-models). Addresses:
 - Server → persist, authorize, transform; optional background jobs (index, email).
 - DB → storage, replicas, backups — often more than one technology.
 
-**When to use:** Feeds, docs, auth. Full picture: [0_system_design.md — Client–server](./0_system_design_foundations.md#clientserver-architecture-why-a-backend). Messages, methods, proxies: [HTTP protocol](./6_web_api_http.md#http-protocol). The HTTP process on the server is the [web server](./6_web_api_http.md#web-server).
+**When to use:** Feeds, docs, auth. Full picture: [0_system_design.md — Client–server](./0_system_design_core.md#clientserver-architecture-why-a-backend). Messages, methods, proxies: [HTTP protocol](./6_web_api_http.md#http-protocol). The HTTP process on the server is the [web server](./6_web_api_http.md#web-server).
 
 **Thoughts:** Architecture describes contracts between parts, not every module’s internals.
 

@@ -6,7 +6,7 @@ Interview Q&A for system design.
 
 ### Related docs
 
-* [System design — Foundations](./0_system_design_foundations.md) · [System design — Architecture](./0_system_design_architecture.md) · [System design — Data](./0_system_design_data.md) · [System design — Patterns](./0_system_design_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [System design — Patterns](./0_system_design_patterns.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
 
 ### Sections
 
@@ -21,7 +21,7 @@ Interview Q&A for system design.
 
 ### Why does a web app need a backend?
 
-The browser only paints HTML/CSS/JS. User data must be stored, authorized, and processed under **business rules** — that is the server. The client names the action; the server talks to the DB and may run jobs (index, email). Architecture name: **client–server**. See [Client–server architecture](./0_system_design_foundations.md#clientserver-architecture-why-a-backend).
+The browser only paints HTML/CSS/JS. User data must be stored, authorized, and processed under **business rules** — that is the server. The client names the action; the server talks to the DB and may run jobs (index, email). Architecture name: **client–server**. See [Client–server architecture](./0_system_design_core.md#clientserver-architecture-why-a-backend).
 
 </details>
 
@@ -122,7 +122,7 @@ OrderService --[order.placed]--> Kafka --> InventoryService (reserve)
 
 Order + payment + inventory, travel booking, multi-step onboarding.
 
-See [Distributed transactions & Saga](./0_system_design_foundations.md#distributed-transactions--saga) in section 2.
+See [Distributed transactions & Saga](./0_system_design_core.md#distributed-transactions--saga) in section 2.
 
 #### Pitfalls
 
@@ -280,7 +280,7 @@ See [Behavioral patterns — cheat sheet](./0_system_design_patterns.md#behavior
 
 A **class** is a blueprint: fields, methods, `constructor`. In JS it is prototype sugar. **Constructor injection** passes collaborators in (`new DailyAmount(budget, history)`) so the high-level type does not `new` its tools — tests swap fakes, UML arrows stay one-way.
 
-See [Entities, relations & constructor injection](./0_system_design_data.md#7-principles--patterns) · [3_js_oop.md](./3_js_oop.md) · [7_special.md — What are classes?](./7_special_interview.md#interview-practice)
+See [Entities, relations & design](./0_system_design_grasp.md#entities-relations--design) · [3_js_oop.md](./3_js_oop.md) · [7_special.md — What are classes?](./7_special_interview.md#interview-practice)
 
 </details>
 

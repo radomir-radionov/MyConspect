@@ -1,20 +1,17 @@
-# Paradigms & security — hub
+# Other — hub
 
-Paradigms, architecture, SOLID, testing, and web attacks. Theory lives in the topic files below. Algorithms and data structures have their own tracks.
+Indexes leftover study notes. Programming styles live in [Computer science](./7_special_cs.md). MVC-family architecture, OOP/SOLID, DRY/KISS/YAGNI, and GoF patterns live under System design. SDLC, testing, and web security are sibling topics under Other.
 
 ### Related docs
 
-[Paradigms](./7_special_paradigms.md) · [Architecture patterns](./7_special_architecture.md) · [Engineering](./7_special_engineering.md) · [Web security](./7_special_security.md) · [Paradigms — Interview](./7_special_interview.md) · [Algorithms](./7_special_algorithms.md) · [Data structures](./7_special_data_structures.md)
+[Computer science](./7_special_cs.md) · [Architecture patterns](./7_special_architecture.md) · [Interview leftovers](./7_special_interview.md) · [OOP & SOLID](./7_special_engineering.md) · [SDLC](./7_special_sdlc.md) · [Testing](./7_special_testing.md) · [Design patterns](./7_special_patterns.md) · [Web security](./7_special_security.md) · [Algorithms](./7_special_algorithms.md) · [Data structures](./7_special_data_structures.md)
 
 ### Navigation
 
 | Topic | Covers |
 |------|--------|
-| [Paradigms](./7_special_paradigms.md) | Programming fundamentals, OOP, and functional style. |
-| [Architecture patterns](./7_special_architecture.md) | MVC-family patterns and system architecture styles. |
-| [Engineering](./7_special_engineering.md) | SOLID, design patterns, SDLC, and testing. |
-| [Web security](./7_special_security.md) | Security model and common web attacks. |
-| [Paradigms — Interview](./7_special_interview.md) | Interview Q&A plus leftover tooling notes. |
+| [Computer science](./7_special_cs.md) | Computation, programming styles, logic programming. |
+| [Interview leftovers](./7_special_interview.md) | Q&A that still sits outside subject interviews. |
 
 ### Interview practice
 

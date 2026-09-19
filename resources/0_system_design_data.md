@@ -6,7 +6,7 @@ Data, caching, and infrastructure building blocks.
 
 ### Related docs
 
-* [System design — Foundations](./0_system_design_foundations.md) · [System design — Architecture](./0_system_design_architecture.md) · [System design — Data](./0_system_design_data.md) · [System design — Patterns](./0_system_design_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [System design — Patterns](./0_system_design_patterns.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
 
 ### Sections
 
@@ -115,7 +115,58 @@ async function getUserById(id: string): Promise<User> {
 }
 ```
 
-**Thoughts:** Cache invalidation is hard. Prefer TTL + event-driven invalidation. Watch for thundering herd — use request coalescing or probabilistic early expiration.
+**Thoughts:** Cache invalidation is hard. Prefer TTL + event-driven invalidation. Watch for thundering herd — use request coalescing or probabilistic early expiration. Function-result caching is a narrower case: [Cache vs memoization](#cache-vs-memoization).
+
+</details>
+
+<details>
+  <summary>Cache vs memoization</summary>
+
+### Cache vs memoization
+
+**Definition:**
+
+- **Cache** — general storage to avoid re-fetching or re-computing data (API responses, assets, CDN).
+- **Memoization** — specific caching of **function results** keyed by arguments.
+
+| | Cache | Memoization |
+|---|-------|-------------|
+| Scope | System-wide, HTTP, disk | Per-function |
+| Key | URL, custom | Function arguments |
+| Example | `Cache-Control`, Redis | `memoize(fn)` |
+
+**When to use:**
+
+- Cache: API responses, static assets, computed dashboards
+- Memoization: Expensive pure functions (Fibonacci, selectors)
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Faster reads | Stale data if invalidation wrong |
+| Reduced load | Memory growth without TTL/eviction |
+
+**Examples:**
+
+```js
+function memoize(fn) {
+  const cache = new Map();
+  return (...args) => {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) return cache.get(key);
+    const result = fn(...args);
+    cache.set(key, result);
+    return result;
+  };
+}
+```
+
+**Thoughts:**
+
+React `useMemo` memoizes values; `useCallback` memoizes functions. Reselect memoizes selectors. Invalidate cache on mutation. System-level strategies: [Caching strategies](#caching-strategies).
+
+---
 
 </details>
 
@@ -378,4 +429,3 @@ Correlate logs with `trace_id`. Alert on SLO burn rate, not every error. High-ca
 
 </details>
 
-<a name="7-principles--patterns"></a>

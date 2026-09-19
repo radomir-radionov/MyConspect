@@ -60,8 +60,11 @@ export function stickyVarsEqual(left: StickyVars, right: StickyVars): boolean {
   return true;
 }
 
-type StickyStyle = {
+type StickyStyleRead = {
   getPropertyValue(name: string): string;
+};
+
+type StickyStyle = StickyStyleRead & {
   setProperty(name: string, value: string): void;
   removeProperty(name: string): string;
 };
@@ -114,7 +117,7 @@ export function measureStickyPathVars(navElement?: HTMLElement | null): StickyVa
 export function resolveStickyTopPx(
   varName: string,
   vars: StickyVars | undefined,
-  scrollerStyle: StickyStyle,
+  scrollerStyle: StickyStyleRead,
 ): number {
   return (
     Number.parseFloat(vars?.[varName] ?? "") ||
@@ -125,7 +128,7 @@ export function resolveStickyTopPx(
 
 function stickyTopPx(
   element: HTMLElement,
-  scrollerStyle: StickyStyle,
+  scrollerStyle: StickyStyleRead,
   vars?: StickyVars,
 ): number {
   return resolveStickyTopPx(topVarName(element), vars, scrollerStyle);

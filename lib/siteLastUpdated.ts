@@ -21,6 +21,23 @@ function gitIsoDate(paths: readonly string[]): string | null {
   }
 }
 
+function resourcesHaveLocalChanges(): boolean {
+  try {
+    const out = execFileSync(
+      "git",
+      ["status", "--porcelain", "--untracked-files=normal", "--", "resources"],
+      {
+        encoding: "utf8",
+        cwd: process.cwd(),
+        stdio: ["ignore", "pipe", "ignore"],
+      },
+    ).trim();
+    return out.length > 0;
+  } catch {
+    return false;
+  }
+}
+
 function resourcesMtimeIso(): string | null {
   try {
     const dir = join(process.cwd(), "resources");
@@ -31,17 +48,31 @@ function resourcesMtimeIso(): string | null {
       if (mtime > max) max = mtime;
     }
     if (!max) return null;
-    return new Date(max).toISOString().slice(0, 10);
+    const date = new Date(max);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   } catch {
     return null;
   }
 }
 
+export function maxIsoDate(dates: readonly (string | null | undefined)[]): string | null {
+  let max: string | null = null;
+  for (const date of dates) {
+    if (!date || !ISO_DATE.test(date)) continue;
+    if (!max || date > max) max = date;
+  }
+  return max;
+}
+
 export function siteLastUpdatedIso(): string {
+  const notesCommit = gitIsoDate(["resources"]);
+  const repoCommit = gitIsoDate([]);
+  const localNotes = resourcesHaveLocalChanges() ? resourcesMtimeIso() : null;
   return (
-    gitIsoDate(["resources"]) ??
-    gitIsoDate([]) ??
-    resourcesMtimeIso() ??
+    maxIsoDate([notesCommit, repoCommit, localNotes]) ??
     new Date().toISOString().slice(0, 10)
   );
 }

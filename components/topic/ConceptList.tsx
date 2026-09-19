@@ -32,10 +32,10 @@ function handbookMain() {
   return scroller instanceof HTMLElement ? scroller : null;
 }
 
-function conceptDetailsById(id: string) {
+function conceptTargetById(id: string) {
   const scroller = handbookMain();
-  const element = scroller?.querySelector(`details[id="${CSS.escape(id)}"]`);
-  return element instanceof HTMLDetailsElement ? element : null;
+  const element = scroller?.querySelector(`[id="${CSS.escape(id)}"]`);
+  return element instanceof HTMLElement ? element : null;
 }
 
 function closeOpenConceptAccordions() {
@@ -140,17 +140,18 @@ export function ConceptList({
         }
         return;
       }
-      const element = conceptDetailsById(id);
+      const element = conceptTargetById(id);
       if (!element) {
         return;
       }
       const shouldScroll = shouldScrollFromHashEvent(event);
       const viewportTop = element.getBoundingClientRect().top;
-      const wasOpen = element.open;
-      if (!wasOpen) {
-        element.open = true;
+      if (element instanceof HTMLDetailsElement) {
+        if (!element.open) {
+          element.open = true;
+        }
+        closeSiblingAccordions(element);
       }
-      closeSiblingAccordions(element);
       if (!shouldScroll) {
         restoreElementViewportTop(element, viewportTop);
         return;
@@ -200,6 +201,7 @@ export function ConceptList({
             activeId={activeId}
             query={query}
             notesQuery={mode === "notes" ? query : ""}
+            flat={concepts.length === 1}
           />
         </section>
       ))}
@@ -212,12 +214,29 @@ function ConceptAccordionList({
   activeId,
   query,
   notesQuery,
+  flat,
 }: {
   concepts: readonly Concept[];
   activeId: string;
   query: string;
   notesQuery: string;
+  flat: boolean;
 }) {
+  if (flat) {
+    const concept = concepts[0];
+    if (!concept) {
+      return null;
+    }
+    return (
+      <article
+        id={concept.id}
+        className="concept-list scroll-mt-20 rounded-xl border border-zinc-200 bg-white px-4 pt-4"
+      >
+        <ConceptBody html={concept.html} query={notesQuery} />
+      </article>
+    );
+  }
+
   return (
     <div className="concept-list divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white">
       {concepts.map((concept) => {

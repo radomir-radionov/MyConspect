@@ -7,7 +7,7 @@ Covers ECMAScript fundamentals: types, scope, operators, control flow, closures,
 ### Related docs
 
 - [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md) · [Call stack](./3_js_async.md#call-stack)
-- [Web API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [Special — OOP](./7_special_paradigms.md#2-oop--fp) · [Engineering](./7_special_engineering.md#software-design-methodology)
+- [Web API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Computer science](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
 
 ### Main concepts
 
@@ -187,7 +187,7 @@ JIT combines fast startup (interpreter) with peak performance (compiler). Babel 
 
 - **Mental CPU model:** von Neumann — instructions and data share one store (one bus). Harvard splits them. Real chips are a hybrid (e.g. separate L1 I-cache / D-cache). Memory is numbered **cells**; the number is a fixed-width **address** (random access, not only sequential). Values larger than one cell span several. 64-bit width → 2⁶⁴ addresses (≈ 16 EiB of *address space*, not “you have 18 EB of RAM”).
 - **Virtual vs physical:** the CPU maps virtual addresses to RAM. The OS hands the process **pages** (often 4–8 KB), many of them.
-- **Process vs thread:** the OS isolates processes (no access to another process unless it allows it). A process may have several threads, each with its own stack. POSIX threads are one real API — hosts differ (browser tab vs Node). Scheduler, context switch, signals: [Processes, multitasking & interrupts](./0_system_design_foundations.md#processes-multitasking). Node layer: [Process & threads](./8_nodejs_process.md#process--threads).
+- **Process vs thread:** the OS isolates processes (no access to another process unless it allows it). A process may have several threads, each with its own stack. POSIX threads are one real API — hosts differ (browser tab vs Node). Scheduler, context switch, signals: [Processes, multitasking & interrupts](./0_system_design_core.md#processes-multitasking). Node layer: [Process & threads](./8_nodejs_process.md#process--threads).
 - **Process image:** into that space go program **code**, **globals**, then **stack** and **heap**.
 - **Stack:** grow/shrink by moving the **stack pointer** (CPU register) — cheap. You can **read** stack data; you **write** only at the top (push). You cannot free a hole in the middle; rewind the pointer to drop everything above it. Exhaustion → **stack overflow**. Teaching diagram: heap grows “up”, stack “down”, they meet in the free gap.
 - **Stack frame:** one call’s args, locals, and “what to run after return”. A **frame pointer** marks the active frame. Nested calls: `logDogs` frame → `countDogs(20)` → pop → `countDogs(9)` → pop → pop `logDogs`.
@@ -274,7 +274,7 @@ Paradigms describe how you structure logic: imperative (how), declarative (what)
 const odds = [1, 2, 3, 4].filter((n) => n % 2 !== 0); // declarative
 ```
 
-**Thoughts:** Full map (procedural, logic, reactive, composition vs inheritance): [Special — paradigms](./7_special_paradigms.md#1-programming-fundamentals) · [Reactive programming](./7_special_paradigms.md#reactive-programming--reactivity). Team process, SOLID, TDD, MVC, and CSS naming live under [Engineering](./7_special_engineering.md#development-methodologies) — they are not language features.
+**Thoughts:** Full map (procedural, reactive, composition vs inheritance): [Programming paradigms](./7_special_cs.md#programming-paradigm) · [Reactive programming](./7_special_architecture.md#reactive-programming--reactivity). Logic programming is CS, not JS syntax: [Logic programming](./7_special_cs.md#logic-programming). Team process, SOLID, TDD, MVC, and CSS naming live under [SDLC methodologies](./7_special_sdlc.md#development-methodologies) — they are not language features.
 
 **Sources:** [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/)
 
@@ -364,6 +364,37 @@ An expression evaluates to a value; statements perform actions and may contain e
 | Assignment      | `x = 10` → `10`           |
 
 **Thoughts:** Every expression produces a value (except thrown errors).
+
+</details>
+
+<details>
+  <summary>Statement vs expression</summary>
+
+### Statement vs expression
+
+**Definition:**
+
+A **statement** performs an action (assign, loop, declare). An **expression** evaluates to a value (`42`, `a + b`, `fn()`).
+
+| | Statement | Expression |
+|---|-----------|------------|
+| Returns value | No | Yes |
+| Examples | `if`, `for`, `const x = 1` | `1 + 2`, ternary, arrow fn body without braces |
+
+**When to use:** Prefer expressions in functional pipelines; statements for control flow and side effects at boundaries.
+
+**Examples:**
+
+```js
+const doubled = items.map(x => x * 2); // expression-bodied callback
+if (items.length === 0) return [];     // statement
+```
+
+**Thoughts:**
+
+`const x = (y = 1)` — assignment inside expression is valid but hurts readability.
+
+---
 
 </details>
 
@@ -2227,7 +2258,7 @@ const proxy = new Proxy(target, {
 proxy.message1; // logs, then "hello"
 ```
 
-**Thoughts:** Language `Proxy` vs GoF **Proxy pattern** (same interface, control access) — [7_special.md](./7_special_engineering.md#proxy). Traps must respect invariants (e.g. non-writable own data properties).
+**Thoughts:** Language `Proxy` vs GoF **Proxy pattern** (same interface, control access) — [7_special.md](./7_special_patterns.md#proxy). Traps must respect invariants (e.g. non-writable own data properties).
 
 **Sources:** [MDN `Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) · [javascript.info/proxy](https://learn.javascript.ru/proxy)
 

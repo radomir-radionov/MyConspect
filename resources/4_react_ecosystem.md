@@ -869,12 +869,12 @@ Testing
 
 User flows (login, submit form), conditional UI, error states. **What NOT to test:** Private functions, shallow snapshot of entire tree, third-party lib internals.
 
-Why tests / AAA / pyramid: [7_special.md](./7_special_engineering.md#tests-and-aaa).
+Why tests / AAA / pyramid: [7_special.md](./7_special_testing.md#tests-and-aaa).
 
 | Tool                      | Use                                                                                |
 | ------------------------- | ---------------------------------------------------------------------------------- |
 | **React Testing Library** | Render, query by role/label, fire events                                           |
-| **Jest / Vitest**         | Test runner — [Jest Node vs jsdom](./7_special_engineering.md#jest--first-tests-node-vs-jsdom) |
+| **Jest / Vitest**         | Test runner — [Jest Node vs jsdom](./7_special_testing.md#jest--first-tests-node-vs-jsdom) |
 | **MSW**                   | Mock network in integration tests                                                  |
 
 **Examples:**
@@ -890,7 +890,7 @@ expect(await screen.findByText(/welcome/i)).toBeInTheDocument();
 
 *Test like a user — roles and labels, not class names.*
 
-Don't test state directly — test rendered output. `userEvent` over `fireEvent` for realistic interactions. RTL in jsdom is **integration**, not E2E — full user flows: [7_special.md — E2E](./7_special_engineering.md#e2e-testing).
+Don't test state directly — test rendered output. `userEvent` over `fireEvent` for realistic interactions. RTL in jsdom is **integration**, not E2E — full user flows: [7_special.md — E2E](./7_special_testing.md#e2e-testing).
 
 **Sources:**
 

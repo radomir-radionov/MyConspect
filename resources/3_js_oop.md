@@ -5,7 +5,7 @@ Covers objects, prototypes, classes, property descriptors, Proxy/Reflect, `this`
 ### Related docs
 
 * [JS Language](./3_js_core.md) · [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md)
-* [Special — OOP & SOLID](./7_special_paradigms.md#2-oop--fp) · [TypeScript classes](./5_ts_objects.md#classes) · [System design — SOLID](./0_system_design_data.md#7-principles--patterns)
+* [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [TypeScript classes](./5_ts_objects.md#classes) · [GRASP](./0_system_design_grasp.md)
 
 [← Back to JS hub](./3_js.md)
 
@@ -23,6 +23,8 @@ Covers objects, prototypes, classes, property descriptors, Proxy/Reflect, `this`
 
 > Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
+- [Class vs prototype inheritance](#class-vs-prototype-inheritance)
+- [OOP in JavaScript](#oop-in-javascript)
 - [Objects & references](#objects-references)
 - [Prototypes](#prototypes)
 - [Classes](#classes)
@@ -38,6 +40,110 @@ Topics also covered: **Proxy/Reflect**, **factory & module patterns**, **constru
 
 ## Objects & classes
 
+
+<details>
+  <summary>Class vs prototype inheritance</summary>
+
+### Class vs prototype inheritance
+
+**Definition:**
+
+**Class inheritance** uses `class extends` syntax; **prototype inheritance** links objects via `[[Prototype]]` — `Object.create`, `Object.setPrototypeOf`.
+
+| | Class syntax | Prototype chain |
+|---|--------------|-----------------|
+| Readability | Familiar to OOP devs | Lower-level, flexible |
+| Under the hood (JS) | Desugars to prototypes | Native mechanism |
+| Constructors | `constructor()` required pattern | Factory functions + `Object.create` |
+
+**When to use:** `class` for most app code; prototypes for libraries, mixins, or understanding JS internals.
+
+**Pluses and minuses:**
+
+| + (prototypes) | − |
+|-------------------|------|
+| Dynamic — add methods at runtime | Harder for newcomers |
+| Memory-efficient shared methods | `setPrototypeOf` is slow — avoid hot paths |
+
+**Examples:**
+
+```js
+const animal = {
+  speak() { return 'sound'; },
+};
+const dog = Object.create(animal);
+dog.speak = () => 'bark';
+```
+
+**Thoughts:** `class` methods live on `prototype`, not instance. `instanceof` walks the prototype chain.
+
+**Sources:**
+
+[3_js_oop.md](./3_js_oop.md)
+
+---
+
+</details>
+
+<details>
+  <summary>OOP in JavaScript</summary>
+
+### OOP in JavaScript
+
+**Definition:** JS can do objects, classes, and `this`, but classic OOP also wants **user-defined types and interfaces**. Those are missing at runtime — TypeScript adds them at compile time.
+
+**How it works:**
+
+| Have | Missing |
+|------|---------|
+| Classes, objects, prototypes, `#` private fields | Native interfaces / nominal user types |
+| Duck typing, factory functions, mixins | Native abstraction checks (no `implements` at runtime) |
+
+- `class` is sugar over prototypes — still one inheritance chain. Composition and mixins (`Object.assign`, spread) are how you mix feature sets without a hierarchy.
+- Without interfaces, readable composition is harder: you cannot write `class Human implements Cardio, Immune`. TS can.
+- Design-first in TS: describe `History { addRecord(record: LedgerEntry): void }` before writing the class. The compiler flags broken relations **before** you run the app.
+- TS `private` is erased in emit — JS can still read the field. `#field` stays private at runtime (`SyntaxError` outside the class). Chrome's console may still show/read `#` for debugging.
+
+В JS есть классы, нет интерфейсов. Классическое ООП удобнее на TypeScript: контракты на этапе проектирования. `private` в TS — только компилятор; `#` — и в рантайме.
+
+**When to use:** Domain-heavy apps, DI graphs, teams that need contracts. Stay on factories + modules for tiny scripts.
+
+**Pluses and minuses:**
+
+| + (TS for OOP) | − |
+|-------------------|------|
+| Interfaces, unions, `implements` — real contracts | Still compiles to JS — no runtime types |
+| Catch bad entity wiring at compile time | Extra toolchain |
+| Autocomplete on domain fields | `enum` and `private` have JS pitfalls (prefer unions + `#`) |
+
+**Examples:**
+
+```ts
+type MoneyAmount = number;
+type TimeStamp = number;
+type RecordKind = 'spending' | 'income';
+
+type LedgerEntry = {
+  kind: RecordKind;
+  amount: MoneyAmount;
+  dateTime: TimeStamp;
+};
+
+interface Ledger {
+  addRecord(record: LedgerEntry): void;
+}
+// Implement Ledger later — the rest of the system already type-checks against the contract.
+```
+
+**Thoughts:** Do not name a type `Record` — that clashes with TS's built-in `Record<K, V>`. Prefer `LedgerEntry`. Full privacy comparison: [5_ts.md](./5_ts_objects.md#classes). Classes: [3_js_oop.md](./3_js_oop.md).
+
+**Sources:**
+
+[Doka — OOP](https://doka.guide/tools/oop/) · [MDN — private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [TS handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
+
+---
+
+</details>
 <details>
   <summary>`this` binding — four rules</summary>
 
@@ -1347,7 +1453,7 @@ const daily = new DailyAmount(new Budget(10000, 10), new History());
 
 **Thoughts:** High-level policy receives tools; it does not build them.
 
-**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [7_special.md — DIP](./7_special_engineering.md#9-solid-principles)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [7_special.md — DIP](./7_special_engineering.md#9-oop-and-solid)
 
 </details>
 

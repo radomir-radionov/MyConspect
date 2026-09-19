@@ -6,7 +6,7 @@ Algorithm basics and complexity analysis.
 
 ### Related docs
 
-* [Algorithms — Big O](./7_special_algorithms_core.md) · [Algorithms — Common](./7_special_algorithms_common.md) · [Algorithms — Patterns](./7_special_algorithms_patterns.md) · [Data structures](./7_special_data_structures.md) · [Paradigms](./7_special_paradigms.md) · [Engineering](./7_special_engineering.md)
+* [Algorithms — Big O](./7_special_algorithms_core.md) · [Algorithms — Common](./7_special_algorithms_common.md) · [Algorithms — Patterns](./7_special_algorithms_patterns.md) · [Data structures](./7_special_data_structures.md) · [Computer science](./7_special_cs.md) · [SOLID](./7_special_engineering.md)
 
 ### Sections
 

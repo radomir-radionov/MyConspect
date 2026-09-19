@@ -584,7 +584,7 @@ class History implements Ledger {
 }
 ```
 
-**Thoughts:** Why TS if runtime is JS? Same as engine diagnostics before you drive — you learn about a broken contract before traffic. Full OOP design: [7_special.md](./7_special_paradigms.md#2-oop--fp).
+**Thoughts:** Why TS if runtime is JS? Same as engine diagnostics before you drive — you learn about a broken contract before traffic. Full OOP design: [7_special.md](./7_special_engineering.md#object-oriented-programming-oop).
 
 **Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [TypeScript handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
 

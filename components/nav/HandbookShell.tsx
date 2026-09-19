@@ -56,6 +56,15 @@ export function HandbookShell({
   }, [closeNav]);
   const { query, deferredQuery, mode, changeQuery, changeMode } =
     useHandbookSearch(groups, revealSearchNav);
+  const onQueryChange = useCallback(
+    (value: string) => {
+      if (value.trim().length === 0) {
+        setSearchSheetDismissed(false);
+      }
+      changeQuery(value);
+    },
+    [changeQuery],
+  );
   const searchValue = useMemo(
     () => ({ query: deferredQuery, mode }),
     [deferredQuery, mode],
@@ -63,11 +72,6 @@ export function HandbookShell({
   const searching = query.trim().length > 0;
   const sidebarQuery =
     searching && deferredQuery.trim().length === 0 ? query : deferredQuery;
-  useEffect(() => {
-    if (!searching) {
-      setSearchSheetDismissed(false);
-    }
-  }, [searching]);
   const searchSheet = searching && !searchSheetDismissed;
   const menuOpen = navOpen || searchSheet;
   const onToggleNav = useCallback(() => {
@@ -106,7 +110,7 @@ export function HandbookShell({
       <div className="flex h-dvh max-h-dvh flex-col overflow-hidden">
         <SiteHeader
           query={query}
-          onQueryChange={changeQuery}
+          onQueryChange={onQueryChange}
           mode={mode}
           onModeChange={changeMode}
           chrome={chrome}
@@ -193,12 +197,6 @@ export function HandbookShell({
 function useDesktopSidebarPeek(collapsed: boolean) {
   const [peeking, setPeeking] = useState(false);
   const leaveTimer = useRef(0);
-
-  useEffect(() => {
-    if (!collapsed) {
-      setPeeking(false);
-    }
-  }, [collapsed]);
 
   useEffect(() => {
     return () => window.clearTimeout(leaveTimer.current);

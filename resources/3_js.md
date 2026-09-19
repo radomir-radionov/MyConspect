@@ -65,7 +65,7 @@ Covers the ECMAScript language, object model, browser runtime (DOM/BOM/events), 
 | **Language** | Types, coercion, [JSON](./3_js_core.md#json), [stack/heap](./3_js_core.md#memory-stack-heap), JIT, scope, closures, modules, errors, Signals (TC39) → [core](./3_js_core.md#signals) |
 | **Array** | Indexed collections, mutating vs non-mutating methods, `map`/`filter`/`reduce` → [array](./3_js_array.md) |
 | **Functions** | Declarations, arrows, `this`, HOF, `call`/`apply`/`bind` → [functions](./3_js_functions.md) |
-| **OOP** | Prototypes, classes, descriptors, GC, `this` → [oop](./3_js_oop.md); design & SOLID → [7_special](./7_special_paradigms.md#2-oop--fp) |
+| **OOP** | Prototypes, classes, descriptors, GC, `this` → [oop](./3_js_oop.md); design & SOLID → [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) |
 | **Browser** | [Document](./3_js_browser.md), [Events](./3_js_events.md), storage / CORS / [`URL` / `URLSearchParams`](./3_js_browser_extra.md#url--urlsearchparams) → [additional](./3_js_browser_extra.md) · anatomy → [Web API](./6_web_api_core.md#uri-url--urn) |
 | **Async** | Event loop, promises, `async/await` → [async](./3_js_async.md) |
 

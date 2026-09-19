@@ -6,7 +6,7 @@ Interview Q&A and shell appendix.
 
 ### Related docs
 
-* [Git — Fundamentals](./0_git_core.md) · [Git — Branching](./0_git_branching.md) · [Git — Team](./0_git_team.md) · [Git — Interview](./0_git_interview.md)
+* [Git — Core](./0_git_core.md) · [Git — Branching](./0_git_branching.md) · [Git — Team](./0_git_team.md) · [Git — Interview](./0_git_interview.md)
 
 ### Sections
 

@@ -23,7 +23,7 @@ child_process, cluster, workers, and real-time servers.
 
 **Definition:**
 
-A process is a running program with its own isolated virtual address space (PID). A thread is a unit of execution within a process (typically its own stack). Node's main JS runs on one thread; libuv uses a thread pool for I/O. OS scheduling, context, interrupts, POSIX signals: [Processes, multitasking & interrupts](./0_system_design_foundations.md#processes-multitasking). Stack vs heap inside that space: [Memory: stack and heap](./3_js_core.md#memory-stack-heap).
+A process is a running program with its own isolated virtual address space (PID). A thread is a unit of execution within a process (typically its own stack). Node's main JS runs on one thread; libuv uses a thread pool for I/O. OS scheduling, context, interrupts, POSIX signals: [Processes, multitasking & interrupts](./0_system_design_core.md#processes-multitasking). Stack vs heap inside that space: [Memory: stack and heap](./3_js_core.md#memory-stack-heap).
 
 | Concept | Node.js |
 |---------|---------|

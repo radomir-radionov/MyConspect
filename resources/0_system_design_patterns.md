@@ -1,237 +1,27 @@
 # System design — Patterns
 
-Principles and GOF/GRASP patterns.
+GoF catalog. SOLID, DRY/KISS/YAGNI, and GRASP live in sibling Principles topics. TDD/BDD: [Tests](./7_special_testing.md). Constructor injection: [Entities, relations & design](./0_system_design_grasp.md#entities-relations--design).
 
 [← Back to hub](./0_system_design.md)
 
 ### Related docs
 
-* [System design — Foundations](./0_system_design_foundations.md) · [System design — Architecture](./0_system_design_architecture.md) · [System design — Data](./0_system_design_data.md) · [System design — Patterns](./0_system_design_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [System design — Patterns](./0_system_design_patterns.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+
+### Main concepts
+
+| Area | Topics |
+|------|--------|
+| Catalog | 23 GoF patterns (creational, structural, behavioral) |
+| Cheat sheets | Frontend-oriented grouping |
 
 ### Sections
 
-- [7. Principles & patterns](#7-principles-patterns)
+- [GOF design patterns](#gof-design-patterns)
 
 ---
 
-## 7. Principles & patterns
-
-<details>
-  <summary>Entities, relations & constructor injection</summary>
-
-### Entities, relations & constructor injection
-
-**Definition:** Design names **entities** (domain actors) and **relations** (who depends on whom). Express them as objects that send messages. Pass collaborators in through the **constructor** (manual DI) so arrows stay one-way.
-
-**How it works:**
-
-- External world = data in/out. Internal world = entity-to-entity messages.
-- UML arrows point at the dependency: History → Record; DailyAmount → Budget + History. Cycles (A constructs B constructs A) are a smell.
-- Keep knowledge on the expert (GRASP): History computes `spentToday`, Budget computes `perDay`, DailyAmount only subtracts.
-- JS has no interfaces — constructor injection still decouples *construction*, but DIP onto an abstraction needs TypeScript or duck typing.
-
-**When to use:** More than one collaborating concept (order + lines, budget + ledger). Skip for a single function.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Code map matches the domain | Upfront modeling |
-| Tests swap fakes at the constructor | God constructors with 8 deps |
-| Avoids hidden `new` inside business classes | JS won't enforce the contract at runtime |
-
-**Examples:**
-
-```ts
-class DailyAmount {
-  constructor(
-    private readonly budget: { perDay: number },
-    private readonly history: { spentToday: number },
-  ) {}
-  get valueOf() {
-    return this.budget.perDay - this.history.spentToday;
-  }
-}
-```
-
-**Thoughts:** Full OOP walkthrough (budget clone): [7_special.md — OOP](./7_special_paradigms.md#2-oop--fp). GRASP Expert + Creator sit next to this.
-
-**Sources:** [Doka — OOP](https://doka.guide/tools/oop/)
-
-</details>
-
-<details>
-  <summary>SOLID principles</summary>
-
-### SOLID principles
-
-**Definition:**
-
-Five OOP design principles (Robert C. Martin) for maintainable, extensible systems — apply to modules and functions, not only classes. React-agnostic cheat sheet here; per-letter essays: [7_special.md — SOLID](./7_special_engineering.md#9-solid-principles). React components/hooks: [4_react.md — SOLID in React](./4_react_core.md#solid-in-react).
-
-| | Principle | One-liner |
-|--|-----------|-----------|
-| **S** | Single Responsibility | One reason to change per module |
-| **O** | Open/Closed | Open for extension, closed for modification |
-| **L** | Liskov Substitution | Subtypes must honor the parent contract |
-| **I** | Interface Segregation | Small, focused interfaces |
-| **D** | Dependency Inversion | Depend on abstractions, not concretions |
-
-**How it works:** Together they push toward small units that change independently and extend via **new** code. JS/TS: composition + injected functions; TypeScript interfaces express DIP/ISP (JS cannot natively).
-
-**When to use:**
-
-God classes; payment/export variants; injectable data layers. **Not** a 50-line script.
-
-#### Common pitfalls
-
-SRP ≠ “one method.” `Square extends Rectangle`. Fat `Worker` with `eat()` that robots stub. Instantiating SDKs inside domain modules.
-
-**Pluses and minuses:**
-
-| + | − |
-| --- | --- |
-| Shared review vocabulary; easier tests | Abstraction sprawl if applied as a scorecard |
-
-**Examples:**
-
-checkout depends on a `PaymentProcessor` port, not `new StripeClient()` — swap Stripe/PayPal or a fake in tests without editing the use case.
-
-```ts
-type PaymentProcessor = { charge(amount: number): Promise<void> };
-
-class OrderService {
-  constructor(private readonly payment: PaymentProcessor) {}
-  async checkout(total: number) {
-    await this.payment.charge(total);
-  }
-}
-```
-
-**Thoughts:** Depend inward on contracts; add variants without editing the core.
-
-**See also:** [7_special.md — SOLID (overview)](./7_special_engineering.md#solid-overview) · [DRY, YAGNI, KISS](#dry-yagni-kiss)
-
-**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [freeCodeCamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/)
-
-</details>
-
-<details>
-  <summary>DRY, YAGNI, KISS</summary>
-
-### DRY, YAGNI, KISS
-
-#### DRY (Don't Repeat Yourself)
-
-**Definition:** Every piece of knowledge should have a single, unambiguous representation in the system.
-
-**When to use:** Repeated business logic, validation rules, API clients. Not for coincidentally similar code with different reasons to change.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Less duplication, easier changes | Premature abstraction creates wrong shared code |
-| Consistent behavior | "Copy-paste" vs "wrong abstraction" dilemma |
-
-**Examples:**
-
-Extract shared `formatCurrency()` — not forced shared component for two UIs that look similar but evolve differently.
-
-#### YAGNI (You Aren't Gonna Need It)
-
-**Definition:** Don't implement functionality until it is actually needed.
-
-**When to use:**
-
-Default stance. Build for today's requirements with clean extension points (OCP), not speculative features.
-
-#### KISS (Keep It Simple, Stupid)
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Faster delivery | May need refactor when requirement arrives |
-| Less dead code | Under-engineering if requirements are well-known |
-
-**Definition:** Most systems work best when kept simple rather than made complicated.
-
-**When to use:** Always prefer the simplest solution that meets current requirements. Complexity must be justified by measured need.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Easier to understand and debug | May need to revisit when scale demands |
-| Lower maintenance cost | "Simple" is subjective |
-
-**Thoughts:** DRY vs WET (Write Everything Twice) — duplicate once, abstract on third occurrence. YAGNI fights gold-plating. KISS fights resume-driven architecture.
-
-</details>
-
-<details>
-  <summary>GRASP principles</summary>
-
-### GRASP principles
-
-**Definition:**
-
-General Responsibility Assignment Software Patterns — nine principles for assigning responsibilities to classes and objects.
-
-| Principle | Definition | When to apply |
-|-----------|------------|---------------|
-| **Expert** | Assign responsibility to the class that has the information needed to fulfill it | Order calculates its own total |
-| **Creator** | Class A creates class B if A contains/records/uses/closely relates to B | Order creates OrderLine |
-| **Controller** | Object handles system events, delegating to domain objects | OrderController handles HTTP, delegates to Order |
-| **Low Coupling** | Minimize dependencies between classes | Inject services, avoid direct concrete deps |
-| **High Cohesion** | Keep related responsibilities together in one class | PaymentValidator validates, doesn't send emails |
-| **Polymorphism** | Use polymorphism for type-varying behavior | PaymentProcessor interface, not switch on type |
-| **Indirection** | Assign responsibility to intermediate object to decouple | Repository between service and DB |
-| **Protected Variations** | Shield elements from changes in other elements with stable interface | Adapter around third-party API |
-| **Pure Fabrication** | Create classes that don't represent domain concepts to achieve low coupling/high cohesion | Repository, Factory, DTO |
-
-**Thoughts:** GRASP is more practical than memorizing all 23 GOF patterns for day-to-day design. Expert + Creator + Controller cover most assignment questions.
-
-</details>
-
-<details>
-  <summary>TDD & BDD</summary>
-
-### TDD & BDD
-
-#### TDD (Test-Driven Development)
-
-**Definition:** Write a failing test first, then minimal code to pass, then refactor (Red → Green → Refactor).
-
-**When to use:**
-
-Core business logic, algorithms, utilities with clear inputs/outputs.
-
-#### BDD (Behavior-Driven Development)
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Forces clear requirements | Slower initial development |
-| High test coverage by design | Tests can be brittle if over-mocked |
-| Safer refactoring | Not suited for exploratory/spike work |
-
-**Definition:** Tests describe expected behavior in natural language (Given/When/Then), shared between devs and stakeholders.
-
-**When to use:** Complex business rules, cross-team alignment on behavior. Often with Cucumber/Playwright.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Shared language with product | Ceremony overhead |
-| Tests as living documentation | Gherkin scenarios can become UI-test duplicates |
-
-**Thoughts:** TDD/BDD are practices, not architecture. Use where feedback loop helps — don't mandate 100% TDD for UI prototypes. Friction (tight coupling, no fixtures) is why TDD gets skipped — [Making tests easy](./7_special_engineering.md#making-tests-easy).
-
-</details>
+## GOF design patterns
 
 <details>
   <summary>GOF design patterns — catalog</summary>
@@ -258,7 +48,7 @@ Gang of Four (Gamma, Helm, Johnson, Vlissides) — 23 reusable OOP design patter
 
 **Thoughts:**
 
-Patterns are vocabulary, not goals. "We need a Factory" is the wrong starting point — identify the problem first, then name the pattern. Deep JS/Doka notes: [7_special.md — Creational cheat sheet](./7_special_engineering.md#creational-patterns--cheat-sheet).
+Patterns are vocabulary, not goals. "We need a Factory" is the wrong starting point — identify the problem first, then name the pattern. Deep JS/Doka notes: [7_special.md — Creational cheat sheet](./7_special_patterns.md#creational-patterns--cheat-sheet).
 
 Doka’s frontend shortlist (not the full 23):
 
@@ -283,7 +73,7 @@ Refactoring Guru: creational = creation mechanisms; structural = assemble object
 
 **Definition:**
 
-Structural patterns compose objects (“how to assemble a component”). Full JS notes: [7_special.md](./7_special_engineering.md#structural-patterns--cheat-sheet).
+Structural patterns compose objects (“how to assemble a component”). Full JS notes: [7_special.md](./7_special_patterns.md#structural-patterns--cheat-sheet).
 
 | Pattern | Job | Not this |
 |---------|-----|----------|
