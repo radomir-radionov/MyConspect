@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { HandbookShell } from "@/components/nav";
+import { withoutSearchText } from "@/lib/nav/chromeNav";
 import { handbookNav } from "@/lib/nav/handbook";
 import { CHROME } from "@/lib/nav";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
@@ -38,13 +40,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="h-full overflow-hidden bg-zinc-50 font-sans text-zinc-900">
         <HandbookShell
-          groups={handbookNav()}
+          groups={withoutSearchText(handbookNav())}
           chrome={CHROME}
           lastUpdatedIso={lastUpdatedIso}
           lastUpdatedLabel={formatSiteLastUpdated(lastUpdatedIso)}
         >
           {children}
         </HandbookShell>
+        <Analytics />
       </body>
     </html>
   );

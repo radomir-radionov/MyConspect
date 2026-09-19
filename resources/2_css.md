@@ -4,13 +4,13 @@ Cascade, box model, layout, responsive design, motion, architecture, and perform
 
 ### Related docs
 
-[CSS — Fundamentals](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md)
+[CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md)
 
 ### Navigation
 
 | Topic | Covers |
 |------|--------|
-| [CSS — Fundamentals](./2_css_core.md) | How CSS is added, cascade, selectors, and the box model. |
+| [CSS — Core](./2_css_core.md) | How CSS is added, cascade, selectors, and the box model. |
 | [CSS — Layout](./2_css_layout.md) | Flexbox, grid, positioning, responsive design, and mobile viewport. |
 | [CSS — Visual](./2_css_visual.md) | Typography, color, decoration, form styling, and print. |
 | [CSS — Motion](./2_css_motion.md) | Transforms, transitions, animations, and visual effects. |
@@ -51,7 +51,7 @@ Q&A lives in the Interview topic for this subject.
 
 ### Sections
 
-- [Fundamentals](#fundamentals)
+- [Core](./2_css_core.md#core)
 - [Selectors & Cascade](./2_css_core.md#selectors-cascade)
 - [Box Model & Display](./2_css_core.md#box-model-display)
 - [Layout Systems](./2_css_layout.md#layout-systems)
@@ -81,6 +81,3 @@ Q&A lives in the Interview topic for this subject.
 5. `display: none` / `visibility: hidden` on parent
 6. Typo in property or value
 
----
-
-<a name="fundamentals"></a>

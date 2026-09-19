@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { SEARCH_NAV_DELAY_MS } from "@/constants";
 import { firstSearchHref, splitHref, type NavGroup, type SearchMode } from "@/lib/nav";
 import { applySameDocumentHref, followHandbookHref } from "./hash";
+import { useSearchCorpus } from "./searchCorpus";
 import { getServerSearchUi, readSearchUi, subscribeUi, writeUi } from "./uiStorage";
 
 export function useHandbookSearch(
@@ -15,21 +16,23 @@ export function useHandbookSearch(
   const router = useRouter();
   const onSearchActiveRef = useRef(onSearchActive);
   const pathnameRef = useRef(pathname);
-  const groupsRef = useRef(groups);
   const restoreHrefRef = useRef<string | null>(null);
   const searchTimerRef = useRef<number | null>(null);
   const stored = useSyncExternalStore(subscribeUi, readSearchUi, getServerSearchUi);
   const query = stored.query;
   const mode = stored.mode;
+  const notesCorpus = useSearchCorpus(mode === "notes");
+  const searchGroups = notesCorpus ?? groups;
+  const groupsRef = useRef(searchGroups);
   const deferredQuery = useDeferredValue(query);
   const modeRef = useRef(mode);
 
   useEffect(() => {
     onSearchActiveRef.current = onSearchActive;
     pathnameRef.current = pathname;
-    groupsRef.current = groups;
+    groupsRef.current = searchGroups;
     modeRef.current = mode;
-  }, [onSearchActive, pathname, groups, mode]);
+  }, [onSearchActive, pathname, searchGroups, mode]);
 
   useEffect(() => {
     return () => {
@@ -112,10 +115,24 @@ export function useHandbookSearch(
     }
   }
 
+  const notesCorpusReady = useRef(false);
+  useEffect(() => {
+    if (!notesCorpus) {
+      return;
+    }
+    const firstLoad = !notesCorpusReady.current;
+    notesCorpusReady.current = true;
+    if (!firstLoad || mode !== "notes" || query.trim().length === 0) {
+      return;
+    }
+    applySearch(query);
+  }, [notesCorpus, mode, query]);
+
   return {
     query,
     deferredQuery,
     mode,
+    searchGroups,
     changeQuery,
     changeMode,
   };

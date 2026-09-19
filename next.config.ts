@@ -11,10 +11,16 @@ if (!fs.existsSync(catalogProbe)) {
   );
 }
 
+const tracedBuildOnly = [
+  "./resources/**/*",
+  "./node_modules/shiki/**/*",
+  "./node_modules/@shikijs/**/*",
+];
+
 const nextConfig: NextConfig = {
-  outputFileTracingIncludes: {
-    "/*": ["./resources/**/*.md"],
-    "/**": ["./resources/**/*.md"],
+  outputFileTracingExcludes: {
+    "/*": tracedBuildOnly,
+    "/**": tracedBuildOnly,
   },
   serverExternalPackages: ["sanitize-html", "marked", "shiki"],
   async redirects() {
@@ -62,6 +68,11 @@ const nextConfig: NextConfig = {
       {
         source: "/other/git-fundamentals",
         destination: "/other/git-core",
+        permanent: true,
+      },
+      {
+        source: "/frontend/css-fundamentals",
+        destination: "/frontend/css-core",
         permanent: true,
       },
       {

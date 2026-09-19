@@ -1,4 +1,4 @@
-# CSS — Fundamentals
+# CSS — Core
 
 How CSS is added, cascade, selectors, and the box model.
 
@@ -6,17 +6,19 @@ How CSS is added, cascade, selectors, and the box model.
 
 ### Related docs
 
-* [CSS — Fundamentals](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md)
+* [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md)
 
 ### Sections
 
-- [Fundamentals](#fundamentals)
+- [Core](#core)
 - [Selectors & Cascade](#selectors-cascade)
 - [Box Model & Display](#box-model-display)
 
 ---
 
-## Fundamentals
+<a name="fundamentals"></a>
+
+## Core
 
 <details>
   <summary>Ways to add CSS</summary>

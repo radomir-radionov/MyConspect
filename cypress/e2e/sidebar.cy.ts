@@ -3,6 +3,16 @@ describe("handbook sidebar", () => {
     cy.viewport(1280, 800);
   });
 
+  it("shows CSS Core as a single row instead of nested Fundamentals", () => {
+    cy.visit("/frontend/css");
+    cy.nav("cluster", "core").should("be.visible").and("contain", "Core");
+    cy.nav("topic", "css-fundamentals").should("not.exist");
+    cy.nav("topic", "css-core").should("not.exist");
+    cy.nav("cluster", "core").click();
+    cy.location("pathname").should("eq", "/frontend/css-core");
+    cy.contains("h1", "Core");
+  });
+
   it("highlights Frontend while CSS is the open page", () => {
     cy.visit("/frontend/css");
     cy.nav("track", "frontend").should("have.attr", "aria-expanded", "true");

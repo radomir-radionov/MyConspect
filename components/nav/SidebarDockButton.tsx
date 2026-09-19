@@ -1,17 +1,24 @@
 "use client";
 
+import type { PointerEvent } from "react";
 import { HANDBOOK_SIDEBAR_ID } from "@/constants";
 
 export function SidebarDockButton({
   collapsed,
+  rail,
   collapseLabel,
   expandLabel,
   onToggle,
+  onPointerEnter,
+  onPointerLeave,
 }: {
   collapsed: boolean;
+  rail: boolean;
   collapseLabel: string;
   expandLabel: string;
   onToggle: () => void;
+  onPointerEnter: (event: PointerEvent<HTMLElement>) => void;
+  onPointerLeave: () => void;
 }) {
   const label = collapsed ? expandLabel : collapseLabel;
 
@@ -19,14 +26,26 @@ export function SidebarDockButton({
     <button
       type="button"
       data-sidebar-dock=""
-      className="group absolute top-0.5 right-0 z-30 hidden size-9 translate-x-1/2 cursor-pointer items-center justify-center md:inline-flex"
+      className={
+        rail
+          ? "group absolute top-full left-0 z-50 hidden h-10 w-10 cursor-pointer items-center justify-center md:flex"
+          : "group absolute bottom-0 left-40 z-50 hidden size-9 -translate-x-1/2 translate-y-1/2 cursor-pointer items-center justify-center md:inline-flex"
+      }
       aria-expanded={!collapsed}
       aria-controls={HANDBOOK_SIDEBAR_ID}
       aria-label={label}
       title={label}
       onClick={onToggle}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
     >
-      <span className="inline-flex size-7 items-center justify-center rounded-md border border-transparent bg-white text-zinc-600 shadow-sm transition-colors duration-200 ease-out group-hover:border-zinc-400 group-hover:bg-zinc-50 group-hover:text-zinc-900 motion-reduce:transition-none">
+      <span
+        className={
+          rail
+            ? "inline-flex h-full w-full items-center justify-center rounded-none border-r border-zinc-200 bg-white text-zinc-600 transition-colors duration-200 ease-out group-hover:bg-zinc-50 group-hover:text-zinc-900 motion-reduce:transition-none"
+            : "inline-flex size-7 items-center justify-center rounded-md border border-transparent bg-white text-zinc-600 shadow-sm transition-colors duration-200 ease-out group-hover:border-zinc-400 group-hover:bg-zinc-50 group-hover:text-zinc-900 motion-reduce:transition-none"
+        }
+      >
         <SidebarDockGlyph collapsed={collapsed} />
       </span>
     </button>

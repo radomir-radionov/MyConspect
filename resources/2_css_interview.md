@@ -6,7 +6,7 @@ Interview Q&A and quick-fix cases.
 
 ### Related docs
 
-* [CSS — Fundamentals](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md)
+* [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md)
 
 ### Sections
 
@@ -984,7 +984,7 @@ background-color: #fff;
 2. Replaced float layout with Grid
 3. Flattened `.container .box .title` → BEM `.card__title`
 4. Magic numbers → custom properties and `rem`
-5. Added `box-sizing: border-box` in global reset (see Fundamentals)
+5. Added `box-sizing: border-box` in global reset (see Core)
 
 **Examples:**
 

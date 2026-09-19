@@ -26,7 +26,7 @@ const SIDEBAR_DESKTOP_OPEN = `${SIDEBAR_DESKTOP} md:relative md:inset-auto md:to
 const SIDEBAR_DESKTOP_COLLAPSED = `${SIDEBAR_DESKTOP} md:absolute md:inset-y-0 md:left-0 md:top-0 md:bottom-0 md:h-auto md:w-10 md:shadow-none`;
 const SIDEBAR_DESKTOP_PEEK = `${SIDEBAR_DESKTOP} md:absolute md:inset-y-0 md:left-0 md:top-0 md:bottom-0 md:z-30 md:h-auto md:w-80 md:shadow-lg`;
 const SIDEBAR_PANEL_MOTION =
-  "flex h-full min-h-0 flex-1 flex-col overflow-hidden transition-opacity duration-200 ease-out motion-reduce:transition-none";
+  "flex min-h-0 flex-1 flex-col overflow-hidden transition-opacity duration-200 ease-out motion-reduce:transition-none";
 const PEEK_LEAVE_MS = 80;
 
 export function HandbookShell({
@@ -54,7 +54,7 @@ export function HandbookShell({
     closeNav();
     setSearchSheetDismissed(true);
   }, [closeNav]);
-  const { query, deferredQuery, mode, changeQuery, changeMode } =
+  const { query, deferredQuery, mode, searchGroups, changeQuery, changeMode } =
     useHandbookSearch(groups, revealSearchNav);
   const onQueryChange = useCallback(
     (value: string) => {
@@ -94,8 +94,19 @@ export function HandbookShell({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [dismissNav, searchSheet]);
   const desktopCollapsed = collapsed && !searching;
-  const { peeking, onPointerEnter, onPointerLeave } = useDesktopSidebarPeek(desktopCollapsed);
+  const { peeking, onPointerEnter, onPointerLeave, suppressPeek } =
+    useDesktopSidebarPeek(desktopCollapsed);
   const railCollapsed = desktopCollapsed && !peeking;
+  const onToggleSidebar = useCallback(() => {
+    if (desktopCollapsed && peeking) {
+      suppressPeek();
+      return;
+    }
+    if (!desktopCollapsed) {
+      suppressPeek();
+    }
+    toggleSidebar();
+  }, [desktopCollapsed, peeking, suppressPeek, toggleSidebar]);
   const desktopClass = desktopCollapsed
     ? peeking
       ? SIDEBAR_DESKTOP_PEEK
@@ -108,15 +119,26 @@ export function HandbookShell({
   return (
     <SearchQueryContext.Provider value={searchValue}>
       <div className="flex h-dvh max-h-dvh flex-col overflow-hidden">
-        <SiteHeader
-          query={query}
-          onQueryChange={onQueryChange}
-          mode={mode}
-          onModeChange={changeMode}
-          chrome={chrome}
-          navOpen={menuOpen}
-          onToggleNav={onToggleNav}
-        />
+        <div className="relative z-50 shrink-0">
+          <SiteHeader
+            query={query}
+            onQueryChange={onQueryChange}
+            mode={mode}
+            onModeChange={changeMode}
+            chrome={chrome}
+            navOpen={menuOpen}
+            onToggleNav={onToggleNav}
+          />
+          <SidebarDockButton
+            collapsed={desktopCollapsed}
+            rail={railCollapsed}
+            collapseLabel={chrome.collapseSidebar}
+            expandLabel={chrome.expandSidebar}
+            onToggle={onToggleSidebar}
+            onPointerEnter={onPointerEnter}
+            onPointerLeave={onPointerLeave}
+          />
+        </div>
         <div className="relative flex min-h-0 flex-1" style={{ overflow: "hidden" }}>
           <button
             type="button"
@@ -144,12 +166,6 @@ export function HandbookShell({
             onPointerEnter={onPointerEnter}
             onPointerLeave={onPointerLeave}
           >
-            <SidebarDockButton
-              collapsed={desktopCollapsed}
-              collapseLabel={chrome.collapseSidebar}
-              expandLabel={chrome.expandSidebar}
-              onToggle={toggleSidebar}
-            />
             <div
               className={
                 railCollapsed
@@ -164,7 +180,7 @@ export function HandbookShell({
                   style={{ overscrollBehavior: "contain" }}
                 >
                   <TopicSidebar
-                    groups={groups}
+                    groups={searchGroups}
                     query={sidebarQuery}
                     chrome={chrome}
                     onNavigate={dismissNav}
@@ -197,6 +213,7 @@ export function HandbookShell({
 function useDesktopSidebarPeek(collapsed: boolean) {
   const [peeking, setPeeking] = useState(false);
   const leaveTimer = useRef(0);
+  const peekLocked = useRef(false);
 
   useEffect(() => {
     return () => window.clearTimeout(leaveTimer.current);
@@ -207,7 +224,7 @@ function useDesktopSidebarPeek(collapsed: boolean) {
       return;
     }
     window.clearTimeout(leaveTimer.current);
-    if (isSidebarDockControl(event.target)) {
+    if (peekLocked.current || isSidebarDockControl(event.target)) {
       return;
     }
     setPeeking(true);
@@ -216,11 +233,18 @@ function useDesktopSidebarPeek(collapsed: boolean) {
   const onPointerLeave = useCallback(() => {
     window.clearTimeout(leaveTimer.current);
     leaveTimer.current = window.setTimeout(() => {
+      peekLocked.current = false;
       setPeeking(false);
     }, PEEK_LEAVE_MS);
   }, []);
 
-  return { peeking: collapsed && peeking, onPointerEnter, onPointerLeave };
+  const suppressPeek = useCallback(() => {
+    peekLocked.current = true;
+    window.clearTimeout(leaveTimer.current);
+    setPeeking(false);
+  }, []);
+
+  return { peeking: collapsed && peeking, onPointerEnter, onPointerLeave, suppressPeek };
 }
 
 function isSidebarDockControl(target: EventTarget | null) {

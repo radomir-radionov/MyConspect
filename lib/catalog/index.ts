@@ -107,7 +107,7 @@ export const SUBJECTS: readonly Subject[] = [
     blurb: "Cascade, layout, visual design, and CSS architecture.",
     track: "frontend",
     clusters: [
-      { id: "core", title: "Core", blurb: "Fundamentals, cascade, and the box model." },
+      { id: "core", title: "Core", blurb: "Cascade, selectors, and the box model." },
       { id: "layout", title: "Layout", blurb: "Flexbox, grid, and responsive design." },
       { id: "additional", title: "Additional", blurb: "Visual, motion, modern CSS, and architecture." },
       { id: "interview", title: "Interview", blurb: "Q&A and coding tasks." },
@@ -285,7 +285,7 @@ export const TOPICS: readonly Topic[] = [
   grouped("html-seo", "1_html_seo.md", "SEO", "Crawlability, metadata, and structured data.", "frontend", "html", "additional"),
   grouped("html-advanced", "1_html_advanced.md", "Advanced", "Web components, shadow DOM, and newer HTML APIs.", "frontend", "html", "additional"),
   grouped("html-interview", "1_html_interview.md", "Interview", "Interview Q&A and coding tasks for HTML.", "frontend", "html", "interview"),
-  grouped("css-fundamentals", "2_css_core.md", "Fundamentals", "How CSS is added, cascade, selectors, and the box model.", "frontend", "css", "core"),
+  grouped("css-core", "2_css_core.md", "Core", "How CSS is added, cascade, selectors, and the box model.", "frontend", "css", "core"),
   grouped("css-layout", "2_css_layout.md", "Layout", "Flexbox, grid, positioning, responsive design, and mobile viewport.", "frontend", "css", "layout"),
   grouped("css-visual", "2_css_visual.md", "Visual", "Typography, color, decoration, form styling, and print.", "frontend", "css", "additional"),
   grouped("css-motion", "2_css_motion.md", "Motion", "Transforms, transitions, animations, and visual effects.", "frontend", "css", "additional"),
