@@ -69,7 +69,7 @@ LIMIT 10;
 
 **Thoughts:** Apps connect via **drivers** (`pg`, `mysql2`). The query planner uses statistics — stale stats = bad plans. Always parameterize user input.
 
-**Sources:** [PostgreSQL — SQL commands](https://www.postgresql.org/docs/current/sql-commands.html) · [SQL Academy — Interview questions](https://sql-academy.org/ru/interview-questions)
+**Sources:** [PostgreSQL — SQL commands](https://www.postgresql.org/docs/current/sql-commands.html) · [SQL Academy — Interview questions](https://sql-academy.org/ru/interview-questions) · [Habr — SQL interview questions, part 1](https://habr.com/ru/articles/790850/) · [Habr — SQL interview questions, part 2](https://habr.com/ru/articles/791208/) · [Habr — Top-65 SQL interview questions, part I](https://habr.com/ru/companies/otus/articles/461067/)
 
 ---
 
