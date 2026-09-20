@@ -4,7 +4,7 @@ Type `/` in Agent chat to run built-in skills, custom commands, and migrated ski
 
 ### Related docs
 
-* [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md)
+* [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
@@ -133,10 +133,4 @@ description: Prep this branch for review
 
 ## Interview Practice
 
-**Q: Where do custom `/foo` commands live?**
-
-Project: `.cursor/commands/foo.md`. User: `~/.cursor/commands/foo.md`. Prefer skills for new work.
-
-**Q: Name five high-value built-in slash entries.**
-
-`/create-rule`, `/create-skill`, `/review`, `/loop`, `/migrate-to-skills` (plus `/summarize` for long chats).
+Q&A moved to [Cursor — Questions](./0_ai_cursor_questions.md).

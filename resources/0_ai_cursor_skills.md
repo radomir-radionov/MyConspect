@@ -4,7 +4,7 @@ Reusable multi-step workflows that teach Agent how to handle a specific task. Mo
 
 ### Related docs
 
-* [AI workflow](./0_ai.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md)
+* [AI workflow](./0_ai.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
@@ -33,26 +33,76 @@ Reusable multi-step workflows that teach Agent how to handle a specific task. Mo
 <details>
 <summary>What are skills</summary>
 
-**Definition:** A **skill** is a portable, version-controlled package (`SKILL.md` plus optional scripts/references) that teaches Agent how to perform a domain-specific, multi-step task.
+**Definition:** A **skill** is a portable, version-controlled package that teaches Agent how to perform a domain-specific task. It is a folder with a required `SKILL.md` (YAML frontmatter + markdown instructions) and optional `scripts/`, `references/`, and `assets/` that Agent can act on with its tools. Skills are more detailed than [rules](./0_ai_cursor_rules.md) and are built for multi-step, repeatable workflows.
 
 **How it works:**
 
-- On startup, Cursor discovers skills from known directories and shows them to Agent.
-- Agent decides when a skill is relevant from its `description`, or you invoke it with `/skill-name`.
-- Skills can ship scripts, templates, and reference docs that Agent loads on demand (progressive context).
+- **Discovery:** On startup, Cursor scans skill directories (project + user; also Claude/Codex-compatible paths) and lists every folder that contains `SKILL.md`. See [Skill directories](#skill-directories).
+- **Relevance:** Agent sees available skills and picks one when the request matches the skill’s `description` (WHAT it does + WHEN to use it). A vague description → the skill rarely auto-applies.
+- **Manual invoke:** Type `/` in Agent chat and choose the skill (or `@` attach). That attaches the skill to **one** message. For a whole session, promote it to a [Custom Mode](#custom-mode) (Option+Enter / Alt+Enter).
+- **Progressive context:** Keep `SKILL.md` focused; put deep docs in `references/` and templates in `assets/`. Agent loads those files on demand instead of stuffing everything into every turn.
+- **Actionable:** Point Agent at `scripts/deploy.sh` (or similar). It reads the skill, then runs the referenced scripts with tools — Bash, Python, JS, etc.
+- **Open standard:** Agent Skills works across agents that implement [agentskills.io](https://agentskills.io). Cursor also ships [built-in skills](#built-in-skills) (`/create-skill`, `/review`, …) next to yours.
 
-**When to use:** Repeatable workflows (deploy, review, conspect update). Prefer a short **rule** for style constraints; prefer a **skill** when Agent needs a procedure.
+**When to use:**
+
+| Use a **skill** when… | Prefer a **rule** when… |
+| --- | --- |
+| Multi-step procedure (deploy, audit, update conspect, land a PR). | Short coding guideline or constraint (“TypeScript only”, “no default exports”). |
+| Agent needs ordered steps, checklists, or scripts. | Guidance should ride along always / by file globs / `@mention`. |
+| Workflow is reusable across chats and shareable in the repo. | A few lines are enough; no playbook. |
+
+**Common pitfalls:** Writing “helps with docs” as the description (too vague); dumping a novel into `SKILL.md` instead of progressive `references/`; using a skill for style that belongs in a rule; forgetting `disable-model-invocation: true` when you only want `/skill-name` (see [Automatic vs slash](#automatic-vs-slash-invocation)).
 
 **Pluses and minuses:**
 
 | + | − |
 | --- | --- |
-| Shareable, versioned playbooks. | Bad `description` → never auto-applied. |
-| Optional scripts and references. | Long skills burn context if always attached. |
+| Shareable, git-tracked playbooks for the team. | Bad `description` → never auto-applied. |
+| Scripts + references + assets, loaded progressively. | Long always-on skills burn context. |
+| Works with `/`, auto-pick, Custom Mode, and plugins. | Overlap with rules if you mix “always style” into skills. |
 
-**Thoughts:** Rules = “always / when matching files.” Skills = “how to do this job.”
+**Examples:**
 
-**Sources:** [Agent Skills](https://cursor.com/docs/skills.md) · [Skills help](https://cursor.com/help/customization/skills)
+Minimal skill (folder `.cursor/skills/deploy-staging/SKILL.md`):
+
+```markdown
+---
+name: deploy-staging
+description: >
+  Deploy the app to staging. Use when the user asks to deploy, ship to staging,
+  or verify a staging release.
+---
+
+# Deploy to staging
+
+1. Run the test suite
+2. Build the production bundle
+3. Deploy to the staging environment
+4. Verify the deployment health check
+```
+
+Skill with scripts (Agent follows relative paths from the skill root):
+
+```markdown
+---
+name: deploy-app
+description: >
+  Deploy the application to staging or production. Use when deploying code
+  or when the user mentions deployment, releases, or environments.
+---
+
+# Deploy App
+
+Run `scripts/deploy.sh <environment>` where `<environment>` is `staging` or `production`.
+Before deploying, run `python scripts/validate.py`.
+```
+
+Create one interactively: type `/create-skill` and describe the workflow — Cursor’s built-in skill scaffolds name, structure, and save location.
+
+**Thoughts:** Rules = “always / when matching files.” Skills = “how to do this job.” If you would paste the same checklist into chat every week, make it a skill.
+
+**Sources:** [Agent Skills](https://cursor.com/docs/skills.md) · [What are skills?](https://cursor.com/docs/skills.md#what-are-skills) · [Skills help](https://cursor.com/help/customization/skills) · [agentskills.io](https://agentskills.io)
 
 </details>
 
@@ -222,10 +272,4 @@ paths:
 
 ## Interview Practice
 
-**Q: Skills vs rules?**
-
-Rules = short persistent guidance (always / globs / @mention). Skills = multi-step workflows, often invoked with `/` or auto-picked by description.
-
-**Q: Where do project skills live?**
-
-`.cursor/skills/<name>/SKILL.md` or `.agents/skills/<name>/SKILL.md` (also nested package paths).
+Q&A moved to [Cursor — Questions](./0_ai_cursor_questions.md).

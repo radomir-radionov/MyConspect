@@ -4,7 +4,7 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 
 ### Related docs
 
-* [Cursor — Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Interview hub](./0_interview.md) · [MVP & judgment](./0_mvp.md) · [TypeScript](./5_ts.md) · [Next.js](./4_nextjs.md)
+* [Cursor — Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) · [Interview hub](./0_interview.md) · [MVP & judgment](./0_mvp.md) · [TypeScript](./5_ts.md) · [Next.js](./4_nextjs.md)
 
 ### Main concepts
 
@@ -12,7 +12,7 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 |------|--------|
 | **Product** | [AI-first approach](#ai-first-approach) vs AI-enabled vs AI-augmented |
 | **Workflow** | [AI-assisted editors](#ai-assisted-workflow-cursor-copilot-claude-code), [Context7 / Ref](#context7-and-reftools), [RTK](#rtk-rust-token-killer) |
-| **Cursor** | [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) |
+| **Cursor** | [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) |
 
 ### Sections
 
@@ -174,3 +174,7 @@ Training cutoffs invent APIs. Context7 (`resolve-library-id` → `query-docs`) a
 **Q: Cursor chat vs Cursor CLI vs RTK?**
 
 Chat/Agent in the IDE is the full agent with diffs and MCP. Cursor CLI is the same agent without the editor. RTK only shrinks shell output after `rtk init --global --agent cursor`.
+
+**Q: Skills vs rules in Cursor — when to use which?**
+
+**Rules** = short persistent constraints; **Skills** = multi-step playbooks. Full Q&A: [Cursor — Questions](./0_ai_cursor_questions.md).

@@ -4,7 +4,7 @@ Distributable bundles that package skills, rules, agents, commands, hooks, and M
 
 ### Related docs
 
-* [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Slash commands](./0_ai_cursor_slash.md)
+* [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
@@ -157,10 +157,4 @@ Distributable bundles that package skills, rules, agents, commands, hooks, and M
 
 ## Interview Practice
 
-**Q: Agent Plugin vs Cursor Plugin?**
-
-Agent Plugin = root `plugin.json`, skills + MCP only. Cursor Plugin = `.cursor-plugin/plugin.json` plus rules, agents, commands, hooks, variables.
-
-**Q: Can I import only rules from a GitHub repo?**
-
-No — package them in a plugin with a marketplace manifest, then install the plugin.
+Q&A moved to [Cursor — Questions](./0_ai_cursor_questions.md).

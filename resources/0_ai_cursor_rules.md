@@ -4,7 +4,7 @@ Persistent system-level instructions for Agent. Shorter than skills; scoped alwa
 
 ### Related docs
 
-* [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md)
+* [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
@@ -31,22 +31,78 @@ Persistent system-level instructions for Agent. Shorter than skills; scoped alwa
 <details>
 <summary>Four rule sources</summary>
 
-**Definition:** Cursor has four places rules come from: **Project Rules**, **User Rules**, **Team Rules**, and plain **AGENTS.md**.
+**Definition:** A **rule** is persistent system-level guidance injected into Agent’s context so the model keeps the same constraints across chats (LLMs do not remember between completions). Cursor has **four** places rules come from: **Project Rules**, **User Rules**, **Team Rules**, and plain **AGENTS.md**. Rules are shorter than [skills](./0_ai_cursor_skills.md); skills are multi-step playbooks, rules are ongoing constraints and conventions.
 
 **How it works:**
 
-| Source | Where | Notes |
-| --- | --- | --- |
-| Project Rules | `.cursor/rules/*.mdc` | Version-controlled with the repo |
-| User Rules | Customize → Rules | Global; Agent chat only (not Tab / Cmd+K) |
-| Team Rules | Cursor dashboard | Team / Enterprise; can be enforced |
-| AGENTS.md | Project root or nested dirs | Plain markdown, no frontmatter |
+- When a rule applies, its contents are included at the **start** of the model context for that Agent turn.
+- Rules apply to **Agent (Chat) only** — not Cursor Tab, Inline Edit (Cmd/Ctrl+K), or Bugbot PR reviews.
+- All applicable sources are **merged**; on conflict, earlier wins: **Team → Project → User** (see [Precedence](#precedence)). `AGENTS.md` sits alongside project guidance as a simple instruction file.
 
-**When to use:** Project `.mdc` for codebase conventions. User Rules for personal tone. AGENTS.md when you want one simple instruction file. Team Rules for org-wide standards.
+| Source | Where | Scope | Shape |
+| --- | --- | --- | --- |
+| **Project Rules** | `.cursor/rules/*.mdc` (git) | This repo / package | Frontmatter: `alwaysApply`, `description`, `globs` — see [Apply modes](#apply-modes) |
+| **User Rules** | Customize → Rules (account sync); optional local `~/.cursor/rules` (machine-only, no sync) | All your projects | Free-form preferences (tone, personal conventions) |
+| **Team Rules** | Cursor team dashboard | Org-wide (Team / Enterprise) | Free-form text; optional globs; can be **enforced** so members cannot disable |
+| **AGENTS.md** | Project root and/or nested dirs | That directory tree | Plain markdown, **no** frontmatter; nested files combine with parents (more specific wins) |
 
-**Thoughts:** Rules do **not** apply to Cursor Tab or Inline Edit (Cmd/Ctrl+K) — only Agent (Chat).
+**When to use:**
 
-**Sources:** [Rules](https://cursor.com/docs/rules)
+| Choose… | When… |
+| --- | --- |
+| **Project Rules** (`.mdc`) | Codebase conventions the whole team should share; need globs, always-on, intelligent, or `@mention` apply modes. |
+| **User Rules** | Personal tone (“be concise”), private habits across every repo — not team policy. |
+| **Team Rules** | Org standards / compliance baselines that must follow people across repos; use **Enforce** when optional toggle is not enough. |
+| **AGENTS.md** | Simple readable instructions without frontmatter overhead; nested package notes. Prefer `.mdc` when you need apply modes. |
+
+**Common pitfalls:** Putting a plain `.md` in `.cursor/rules/` (ignored — must be `.mdc`); expecting User Rules to affect Tab / Cmd+K; stuffing multi-step deploy checklists into rules instead of a [skill](./0_ai_cursor_skills.md); duplicating linter style guides into always-on rules.
+
+**Pluses and minuses:**
+
+| + | − |
+| --- | --- |
+| Persistent guidance without re-pasting prompts. | Only Agent Chat — Tab / Inline Edit ignore rules. |
+| Four layers: personal, project, org, simple markdown. | Too many always-on rules waste context. |
+| Project `.mdc` + Team Rules are shareable / enforceable. | Wrong source (User for team policy) → inconsistent teammates. |
+
+**Examples:**
+
+User Rule (Customize → Rules):
+
+```md
+Please reply in a concise style. Avoid unnecessary repetition or filler language.
+```
+
+Project Rule (`.cursor/rules/typescript.mdc`) — always apply:
+
+```md
+---
+alwaysApply: true
+---
+
+- Use TypeScript for all new files
+- Prefer named exports over default exports
+```
+
+AGENTS.md (project root or nested folder):
+
+```markdown
+# Project Instructions
+
+## Code Style
+- Prefer functional components in React
+- Use snake_case for database columns
+
+## Architecture
+- Follow the repository pattern
+- Keep business logic in service layers
+```
+
+Create a project rule from chat: `/create-rule`, or Customize → Rules → Add Rule. For Team Rules detail see [Team Rules](#team-rules); for `.mdc` layout see [Project rules](#project-rules-mdc).
+
+**Thoughts:** Pick the **narrowest** source that fits — personal tone in User, repo conventions in Project, org policy in Team, “just a markdown file” in AGENTS.md. If Agent repeats the same mistake, add or tighten a rule; if the job is a checklist, use a skill.
+
+**Sources:** [Rules](https://cursor.com/docs/rules) · [Rules help](https://cursor.com/help/customization/rules) · [How rules work](https://cursor.com/docs/rules#how-rules-work)
 
 </details>
 
@@ -180,10 +236,4 @@ alwaysApply: false
 
 ## Interview Practice
 
-**Q: Why is my `.cursor/rules/foo.md` ignored?**
-
-Project rules must be `.mdc` with frontmatter. Use `AGENTS.md` for plain markdown, or rename to `.mdc` and add `description` / `globs` / `alwaysApply`.
-
-**Q: Do User Rules affect Tab completion?**
-
-No. User Rules apply to Agent (Chat) only — not Tab or Cmd/Ctrl+K.
+Q&A moved to [Cursor — Questions](./0_ai_cursor_questions.md).

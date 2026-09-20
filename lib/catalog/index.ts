@@ -245,7 +245,7 @@ export const SUBJECTS: readonly Subject[] = [
   {
     slug: "cursor",
     title: "Cursor",
-    blurb: "Skills, rules, plugins, and slash commands.",
+    blurb: "Skills, rules, plugins, slash commands, and questions.",
     track: "ai",
     clusters: [
       { id: "skills", title: "Skills", blurb: "Agent Skills: SKILL.md, auto vs slash, and built-ins." },
@@ -256,6 +256,7 @@ export const SUBJECTS: readonly Subject[] = [
         title: "Slash commands",
         blurb: "How `/` works and the most-used built-ins.",
       },
+      { id: "questions", title: "Questions", blurb: "Q&A for Cursor skills, rules, plugins, and slash." },
     ],
   },
 ];
@@ -551,6 +552,15 @@ export const TOPICS: readonly Topic[] = [
     "ai",
     "cursor",
     "slash",
+  ),
+  grouped(
+    "cursor-questions",
+    "0_ai_cursor_questions.md",
+    "Questions",
+    "Q&A for Cursor skills, rules, plugins, and slash commands.",
+    "ai",
+    "cursor",
+    "questions",
   ),
   {
     slug: "mvp",

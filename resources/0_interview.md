@@ -164,7 +164,7 @@ Master index for the fullstack frontend question set. Status: **Q&A** = Intervie
 | **Engineering** | Data contract, scalability, typing, tools, MVP, good code, documentation | [0_mvp.md → Interview Practice](0_mvp.md#interview-practice) · [0_system_design.md](0_system_design_interview.md#interview-practice) | Q&A |
 | **Clean / Hexagonal** | Ports & adapters, domain inward | [Clean Architecture](7_special_architecture.md#clean-architecture--hexagonal) | Theory |
 | **Observability** | Logs, traces, metrics, OpenTelemetry | [15_devops.md](15_devops.md) | Theory + Q&A |
-| **AI tools** | Cursor (skills, rules, plugins, `/`), Copilot, Context7 | [0_ai.md](0_ai.md) · [Skills](0_ai_cursor_skills.md) | Theory |
+| **AI tools** | Cursor (skills, rules, plugins, `/`), Copilot, Context7 | [0_ai.md](0_ai.md) · [Questions](0_ai_cursor_questions.md) | Theory |
 
 ### Conspect coverage checklist
 
