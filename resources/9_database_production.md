@@ -267,7 +267,7 @@ pg_restore -d mydb_restored mydb.dump
 # RDS — enable automated backups + PITR in console; restore creates new instance
 ```
 
-**Thoughts:** Define **RPO** (max acceptable data loss) and **RTO** (max downtime). Encrypt backups at rest. Secrets in dumps — treat backups as sensitive.
+**Thoughts:** Define **RPO** (max acceptable data loss) and **RTO** (max downtime). Encrypt backups at rest. Secrets in dumps — treat backups as sensitive. SQL dump commands: [Backup and restore](./9_database_sql.md#backup-and-restore).
 
 **Sources:**
 

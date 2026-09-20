@@ -32,7 +32,7 @@ SQL execution order — `FROM` → `WHERE` → `GROUP BY` → `HAVING` → `SELE
 | `WHERE`  | Individual rows | No (`COUNT(*)` invalid)     |
 | `HAVING` | Groups          | Yes (`HAVING COUNT(*) > 5`) |
 
-**When to use:** "Authors with more than 5 books" → `HAVING`. "Books from 2020+" → `WHERE`.
+**When to use:** "Authors with more than 5 books" → `HAVING`. "Books from 2020+" → `WHERE`. Topic: [WHERE vs HAVING](./9_database_sql.md#where-vs-having).
 
 **Examples:**
 
@@ -64,9 +64,9 @@ Join condition in `ON` — `FROM users u LEFT JOIN orders o ON o.user_id = u.id`
 | INNER | Relationship required (only users with orders)         |
 | LEFT  | Optional relationship (all users, order total or NULL) |
 
-**When to use:** Wrong join type silently drops data — INNER when you meant LEFT loses users without orders.
+**When to use:** Wrong join type silently drops data — INNER when you meant LEFT loses users without orders. Topic: [Joins](./9_database_sql.md#joins).
 
-**Sources:** [Use The Index, Luke — Joins](https://use-the-index-luke.com/sql/join)
+**Sources:** [PostgreSQL — Joins](https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-JOIN) · [Use The Index, Luke — Joins](https://use-the-index-luke.com/sql/join)
 
 </details>
 
@@ -158,7 +158,7 @@ const users = await prisma.user.findMany({ include: { posts: true } });
 
 **When to use:** Bank transfer — debit and credit in one transaction; `ROLLBACK` on any failure.
 
-**Thoughts:** Postgres default isolation is READ COMMITTED. Keep transactions short.
+**Thoughts:** Postgres default isolation is READ COMMITTED. Keep transactions short. Topics: [ACID](./9_database_core.md#acid), [COMMIT and ROLLBACK](./9_database_sql.md#commit-and-rollback).
 
 **Sources:** [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
 
@@ -171,7 +171,7 @@ const users = await prisma.user.findMany({ include: { posts: true } });
 
 **Definition:** `INSERT ... ON CONFLICT (unique_col) DO UPDATE` — insert or update atomically in PostgreSQL.
 
-**When to use:** Idempotent webhooks, sync user profile by email, settings row per user.
+**When to use:** Idempotent webhooks, sync user profile by email, settings row per user. Topic: [Upsert](./9_database_sql.md#upsert-on-conflict).
 
 **Examples:**
 
@@ -191,7 +191,7 @@ ON CONFLICT (user_id) DO UPDATE SET theme = EXCLUDED.theme;
 
 **Definition:** FK ensures referential integrity — cannot insert `orders.user_id = 999` if user 999 does not exist.
 
-**When to use:** `ON DELETE RESTRICT` prevents deleting user with orders; `CASCADE` deletes children with parent (use carefully).
+**When to use:** `ON DELETE RESTRICT` prevents deleting user with orders; `CASCADE` deletes children with parent (use carefully). Topics: [Primary key](./9_database_sql.md#primary-key), [Foreign key](./9_database_sql.md#foreign-key).
 
 **Sources:** [PostgreSQL — Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
 

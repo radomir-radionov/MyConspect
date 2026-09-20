@@ -71,8 +71,8 @@ export function SiteHeader({
                 }
                 className={
                   query.length > 0
-                    ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[9.75rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
-                    : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[7.75rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                    ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[6.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[9.75rem] [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                    : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[4.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[7.75rem] [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
                 }
               />
             </label>
@@ -235,15 +235,59 @@ function SearchModeButton({
       type="button"
       role="radio"
       aria-checked={checked}
+      aria-label={label}
+      title={label}
       data-search-mode={value}
       onClick={() => onSelect(value)}
       className={
         checked
-          ? "cursor-pointer rounded px-1.5 text-xs font-medium text-zinc-900 bg-white shadow-sm"
-          : "cursor-pointer rounded px-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-800"
+          ? "inline-flex size-6 cursor-pointer items-center justify-center rounded text-zinc-900 bg-white shadow-sm sm:h-auto sm:w-auto sm:px-1.5"
+          : "inline-flex size-6 cursor-pointer items-center justify-center rounded text-zinc-500 hover:text-zinc-800 sm:h-auto sm:w-auto sm:px-1.5"
       }
     >
-      {label}
+      <SearchModeIcon mode={value} />
+      <span className="hidden text-xs font-medium sm:inline">{label}</span>
     </button>
   );
+}
+
+function SearchModeIcon({ mode }: { mode: SearchMode }) {
+  switch (mode) {
+    case "titles":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="size-3.5 sm:hidden">
+          <path
+            d="M5 7h14M5 12h14M5 17h9"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "notes":
+      return (
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="size-3.5 sm:hidden">
+          <path
+            d="M7 4.5h7.5L18 8v11.5H7z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M14.5 4.5V8H18M9.5 12h5M9.5 15.5h5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    default: {
+      const exhaustive: never = mode;
+      return exhaustive;
+    }
+  }
 }

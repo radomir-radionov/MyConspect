@@ -88,7 +88,7 @@ Databases group by data model and consistency guarantees — not by a single "SQ
 | Right tool per workload      | More ops, sync, and failure modes |
 | Optimize read vs write paths | Data duplication across stores    |
 
-**Thoughts:** "NoSQL" means **Not Only SQL** — many teams run Postgres + Redis + a queue. See [DB selection matrix](./9_database_nosql.md#db-selection-matrix).
+**Thoughts:** "NoSQL" means **Not Only SQL** — many teams run Postgres + Redis + a queue. Relational model (tables, rows, keys, SQL): [Relational database](./9_database_sql.md#relational-database). See [DB selection matrix](./9_database_nosql.md#db-selection-matrix).
 
 **Sources:**
 
@@ -104,6 +104,15 @@ Databases group by data model and consistency guarantees — not by a single "SQ
 ### ACID
 
 **Definition:** Four transactional guarantees — **Atomicity**, **Consistency**, **Isolation**, **Durability**.
+
+**How it works:**
+
+| Letter | Meaning |
+| --- | --- |
+| **Atomicity** | The transaction is all-or-nothing |
+| **Consistency** | Constraints hold when it ends (not CAP “every replica current”) |
+| **Isolation** | Concurrent transactions do not see each other’s uncommitted state |
+| **Durability** | A successful `COMMIT` survives process/OS crash (WAL flushed) |
 
 **When to use:** Financial transfers, inventory, booking systems — anywhere partial updates are unacceptable.
 
@@ -130,6 +139,7 @@ COMMIT;
 - **Consistency** in ACID = constraints hold (FK, CHECK), not CAP consistency.
 - NoSQL systems often relax **I** (isolation) or **D** (durability) for scale — see BASE.
 - Keep transactions short; hold locks for milliseconds, not seconds.
+- SQL verbs: [COMMIT and ROLLBACK](./9_database_sql.md#commit-and-rollback).
 
 **Sources:**
 

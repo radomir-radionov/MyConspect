@@ -11,7 +11,7 @@ SQL, NoSQL, ORMs, and production data patterns. Theory lives in the topic files 
 | Topic | Covers |
 |------|--------|
 | [DB — Foundations](./9_database_core.md) | ACID, CAP, transactions, and normalization. |
-| [DB — SQL](./9_database_sql.md) | PostgreSQL, joins, indexes, and SQL patterns. |
+| [DB — SQL](./9_database_sql.md) | SQL language, schema, joins, objects, indexes, and PostgreSQL. |
 | [DB — NoSQL](./9_database_nosql.md) | MongoDB, Redis, Elasticsearch, and store selection. |
 | [DB — ORM](./9_database_orm.md) | Prisma, Sequelize, Knex, Drizzle, and query builders. |
 | [DB — Production](./9_database_production.md) | Replication, sharding, caching, and OLTP scaling. |

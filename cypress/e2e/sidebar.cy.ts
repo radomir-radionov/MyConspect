@@ -434,6 +434,10 @@ describe("handbook sidebar", () => {
         expect(box.right).to.be.at.most(viewportRight);
       }
     });
+    cy.get('#handbook-header [data-search-mode="titles"]').should("have.attr", "aria-label", "Topics");
+    cy.get('#handbook-header [data-search-mode="notes"]').should("have.attr", "aria-label", "Notes");
+    cy.get("#handbook-header [data-search-mode] svg").should("be.visible");
+    cy.get("#handbook-header [data-search-mode] span").should("not.be.visible");
     cy.get("#handbook-header > header > div").should(($row) => {
       expect($row[0].scrollWidth).to.be.at.most($row[0].clientWidth + 1);
     });

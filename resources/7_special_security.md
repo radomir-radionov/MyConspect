@@ -330,7 +330,7 @@ Login or search builds `SELECT … WHERE email = '${input}'`. Input like `' OR '
 
 **When to use:** Any user value in a query — login, search, IDs. Same class exists for NoSQL (operator injection in JSON).
 
-**Examples:** See [Database — SQL injection](./9_database_sql.md#sql-injection) for parameterized `pg` / Prisma. Lab: [application.security](https://application.security) SQL injection.
+**Examples:** Full dump of impact + five defenses (parameters, ORM, validation, least privilege, procedures): [Database — SQL injection](./9_database_sql.md#sql-injection). Lab: [application.security](https://application.security) SQL injection.
 
 **Thoughts:**
 

@@ -387,7 +387,7 @@ export const TOPICS: readonly Topic[] = [
   grouped("nodejs-process", "8_nodejs_process.md", "Process", "child_process, cluster, workers, and real-time servers.", "backend", "nodejs", "additional"),
   grouped("nodejs-interview", "8_nodejs_interview.md", "Interview", "Interview Q&A for Node.js.", "backend", "nodejs", "interview"),
   grouped("database-foundations", "9_database_core.md", "Foundations", "ACID, CAP, transactions, and normalization.", "backend", "database", "core"),
-  grouped("database-sql", "9_database_sql.md", "SQL", "PostgreSQL, joins, indexes, and SQL patterns.", "backend", "database", "core"),
+  grouped("database-sql", "9_database_sql.md", "SQL", "SQL language, schema, joins, objects, indexes, and PostgreSQL.", "backend", "database", "core"),
   grouped("database-nosql", "9_database_nosql.md", "NoSQL", "MongoDB, Redis, Elasticsearch, and store selection.", "backend", "database", "data"),
   grouped("database-orm", "9_database_orm.md", "ORM", "Prisma, Sequelize, Knex, Drizzle, and query builders.", "backend", "database", "data"),
   grouped("database-production", "9_database_production.md", "Production", "Replication, sharding, caching, and OLTP scaling.", "backend", "database", "additional"),
