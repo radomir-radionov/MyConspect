@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ResourcesAutoRefresh } from "@/components/dev/ResourcesAutoRefresh";
 import { HandbookShell } from "@/components/nav";
 import { withoutSearchText } from "@/lib/nav/chromeNav";
 import { handbookNav } from "@/lib/nav/handbook";
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full overflow-hidden antialiased`}
     >
       <body className="h-full overflow-hidden bg-zinc-50 font-sans text-zinc-900">
+        <ResourcesAutoRefresh />
         <HandbookShell
           groups={withoutSearchText(handbookNav())}
           chrome={CHROME}

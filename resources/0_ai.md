@@ -4,7 +4,7 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 
 ### Related docs
 
-* [Interview hub](./0_interview.md) · [MVP & judgment](./0_mvp.md) · [RTK setup](#rtk-rust-token-killer) · [TypeScript](./5_ts.md) · [Next.js](./4_nextjs.md)
+* [Cursor — Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Interview hub](./0_interview.md) · [MVP & judgment](./0_mvp.md) · [TypeScript](./5_ts.md) · [Next.js](./4_nextjs.md)
 
 ### Main concepts
 
@@ -12,6 +12,7 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 |------|--------|
 | **Product** | [AI-first approach](#ai-first-approach) vs AI-enabled vs AI-augmented |
 | **Workflow** | [AI-assisted editors](#ai-assisted-workflow-cursor-copilot-claude-code), [Context7 / Ref](#context7-and-reftools), [RTK](#rtk-rust-token-killer) |
+| **Cursor** | [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) |
 
 ### Sections
 
@@ -60,7 +61,7 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 
 **How it works:**
 
-- **Cursor Agent (this chat):** can edit the workspace, run the terminal, and call MCP. User Rules apply to Agent chat, not to Tab or Cmd/Ctrl+K inline edit. Project rules (`.cursor/rules`) and skills load here.
+- **Cursor Agent (this chat):** can edit the workspace, run the terminal, and call MCP. User Rules apply to Agent chat, not to Tab or Cmd/Ctrl+K inline edit. Project rules (`.cursor/rules`), [skills](./0_ai_cursor_skills.md), and [slash commands](./0_ai_cursor_slash.md) load here.
 - **Cursor Tab / Cmd+K:** completions and inline edits. Faster for local tweaks; they do not follow the same Agent rules/MCP loop.
 - **Cursor CLI (`agent`):** same class of agent in a terminal/CI (`agent -p "…"`). Use when there is no editor window.
 - **GitHub Copilot:** inline completions plus Copilot Chat (and Agent mode in current VS Code). Chat uses open files / repo context; optional `.github/copilot-instructions.md`. Org admins can disable chat or agent.

@@ -18,9 +18,11 @@ describe("handbook breadcrumbs", () => {
       const main = $main[0];
       const nav = main.querySelector("nav[aria-label='Breadcrumb']");
       expect(nav, "breadcrumb nav").to.exist;
+      const sticky = nav!.closest(".sticky");
+      expect(sticky, "sticky breadcrumb bar").to.exist;
       const mainBox = main.getBoundingClientRect();
-      const navBox = nav!.getBoundingClientRect();
-      expect(navBox.top).to.be.closeTo(mainBox.top, 2);
+      const stickyBox = sticky!.getBoundingClientRect();
+      expect(stickyBox.top).to.be.closeTo(mainBox.top, 2);
     });
   });
 

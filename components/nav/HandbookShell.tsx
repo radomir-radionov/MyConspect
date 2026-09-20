@@ -54,8 +54,12 @@ export function HandbookShell({
     closeNav();
     setSearchSheetDismissed(true);
   }, [closeNav]);
-  const { query, deferredQuery, mode, searchGroups, changeQuery, changeMode } =
+  const { query, deferredQuery, mode, searchGroups, changeQuery, changeMode, clearQuery } =
     useHandbookSearch(groups, revealSearchNav);
+  const selectNavResult = useCallback(() => {
+    dismissNav();
+    clearQuery();
+  }, [clearQuery, dismissNav]);
   const onQueryChange = useCallback(
     (value: string) => {
       if (value.trim().length === 0) {
@@ -183,14 +187,14 @@ export function HandbookShell({
                     groups={searchGroups}
                     query={sidebarQuery}
                     chrome={chrome}
-                    onNavigate={dismissNav}
+                    onNavigate={selectNavResult}
                   />
                 </div>
                 <DrawerFooter
                   chrome={chrome}
                   lastUpdatedIso={lastUpdatedIso}
                   lastUpdatedLabel={lastUpdatedLabel}
-                  onNavigate={dismissNav}
+                  onNavigate={selectNavResult}
                 />
               </div>
             </div>
@@ -223,10 +227,10 @@ function useDesktopSidebarPeek(collapsed: boolean) {
     if (event.pointerType !== "mouse") {
       return;
     }
-    window.clearTimeout(leaveTimer.current);
     if (peekLocked.current || isSidebarDockControl(event.target)) {
       return;
     }
+    window.clearTimeout(leaveTimer.current);
     setPeeking(true);
   }, []);
 
@@ -242,6 +246,9 @@ function useDesktopSidebarPeek(collapsed: boolean) {
     peekLocked.current = true;
     window.clearTimeout(leaveTimer.current);
     setPeeking(false);
+    leaveTimer.current = window.setTimeout(() => {
+      peekLocked.current = false;
+    }, PEEK_LEAVE_MS);
   }, []);
 
   return { peeking: collapsed && peeking, onPointerEnter, onPointerLeave, suppressPeek };

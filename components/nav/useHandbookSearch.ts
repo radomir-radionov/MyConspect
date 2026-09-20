@@ -106,6 +106,15 @@ export function useHandbookSearch(
     scheduleSearch(value);
   }
 
+  function clearQuery() {
+    if (searchTimerRef.current !== null) {
+      window.clearTimeout(searchTimerRef.current);
+      searchTimerRef.current = null;
+    }
+    restoreHrefRef.current = null;
+    writeUi({ query: "" });
+  }
+
   function changeMode(nextMode: SearchMode) {
     writeUi({ mode: nextMode });
     modeRef.current = nextMode;
@@ -134,6 +143,7 @@ export function useHandbookSearch(
     mode,
     searchGroups,
     changeQuery,
+    clearQuery,
     changeMode,
   };
 }

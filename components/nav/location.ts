@@ -60,8 +60,12 @@ export function locationForPath(
               pathname.startsWith(`${entry.subjectHref}/`);
             if (onSubject) {
               const onThisTopic = entry.cluster.topics.some((topic) => topic.href === pathname);
+              const aliasTopic =
+                !onThisTopic && pathname === entry.subjectHref
+                  ? aliasTopicForCluster(entry.cluster)
+                  : undefined;
               return {
-                topicHref: onThisTopic ? pathname : null,
+                topicHref: onThisTopic ? pathname : (aliasTopic?.href ?? null),
                 subjectHref: entry.subjectHref,
                 clusterKey: clusterKey(entry.subjectHref, entry.cluster.id),
               };
@@ -81,8 +85,9 @@ export function locationForPath(
         case "subject":
           if (entry.subject.href === pathname) {
             const cluster = entry.subject.clusters.find((item) => item.id === clusterId);
+            const aliasTopic = cluster ? aliasTopicForCluster(cluster) : undefined;
             return {
-              topicHref: null,
+              topicHref: aliasTopic?.href ?? null,
               subjectHref: entry.subject.href,
               clusterKey: cluster ? clusterKey(entry.subject.href, cluster.id) : null,
             };
@@ -323,8 +328,15 @@ function sameTitle(left: string, right: string): boolean {
 }
 
 function isTopicAliasCluster(cluster: NavCluster): boolean {
+  return Boolean(aliasTopicForCluster(cluster));
+}
+
+function aliasTopicForCluster(cluster: NavCluster): NavTopic | undefined {
   const only = cluster.topics.length === 1 ? cluster.topics[0] : undefined;
-  return Boolean(only && sameTitle(cluster.title, only.title));
+  if (!only || !sameTitle(cluster.title, only.title)) {
+    return undefined;
+  }
+  return only;
 }
 
 function withConcept(

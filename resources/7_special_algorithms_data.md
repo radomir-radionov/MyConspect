@@ -1,4 +1,4 @@
-# Data structures
+# Data Structures
 
 Arrays, trees, graphs, heaps, and how to pick the right structure.
 

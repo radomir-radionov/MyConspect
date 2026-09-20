@@ -19,7 +19,6 @@ Nine responsibility-assignment patterns (Craig Larman) for deciding which class 
 ### Sections
 
 - [GRASP](#grasp)
-- [Entities, relations & design](#entities-relations--design)
 
 ---
 
@@ -44,14 +43,9 @@ Nine responsibility-assignment patterns (Craig Larman) for deciding which class 
 
 **When to use:** Responsibility-assignment questions (“who owns this?”). Skip as a checklist on a 50-line script.
 
-**Thoughts:** GRASP is more practical than memorizing all 23 GoF patterns for day-to-day design. Expert + Creator + Controller cover most assignment questions. Domain modeling: [Entities, relations & design](#entities-relations--design). GoF catalog: [Design patterns](./7_special_patterns.md#gof-design-patterns--catalog).
+**Thoughts:** GRASP is more practical than memorizing all 23 GoF patterns for day-to-day design. Expert + Creator + Controller cover most assignment questions. Domain modeling below. GoF catalog: [Design patterns](./7_special_patterns.md#gof-design-patterns--catalog).
 
 **Sources:** [Wikipedia — GRASP](https://en.wikipedia.org/wiki/GRASP_(object-oriented_design))
-
-</details>
-
-<details>
-  <summary>Entities, relations & design</summary>
 
 ### Entities, relations & design
 
@@ -111,12 +105,10 @@ class DailyAmount {
 }
 ```
 
-**Thoughts:** `DailyAmount` does not create Budget/History — it receives them. That keeps dependency direction one-way and makes tests swap fakes. Full class syntax: [3_js_oop.md](./3_js_oop.md). SOLID mapping: [§9](./7_special_engineering.md#9-oop-and-solid). Responsibility assignment: [GRASP](./0_system_design_grasp.md#grasp-principles).
+**Thoughts:** `DailyAmount` does not create Budget/History — it receives them. That keeps dependency direction one-way and makes tests swap fakes. Full class syntax: [3_js_oop.md](./3_js_oop.md). SOLID mapping: [§9](./7_special_engineering.md#9-oop-and-solid).
 
 **Sources:**
 
 [Doka — OOP](https://doka.guide/tools/oop/)
-
----
 
 </details>

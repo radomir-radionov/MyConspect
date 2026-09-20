@@ -1,4 +1,4 @@
-# Data structures — hub
+# Data Structures — hub
 
 Arrays, trees, graphs, heaps, and how to pick the right structure.
 

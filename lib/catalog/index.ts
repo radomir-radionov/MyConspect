@@ -242,6 +242,22 @@ export const SUBJECTS: readonly Subject[] = [
       { id: "interview", title: "Interview", blurb: "Q&A for build and CI." },
     ],
   },
+  {
+    slug: "cursor",
+    title: "Cursor",
+    blurb: "Skills, rules, plugins, and slash commands.",
+    track: "ai",
+    clusters: [
+      { id: "skills", title: "Skills", blurb: "Agent Skills: SKILL.md, auto vs slash, and built-ins." },
+      { id: "rules", title: "Rules", blurb: "Project, user, team rules, and AGENTS.md." },
+      { id: "plugins", title: "Plugins", blurb: "Cursor and Agent plugin formats and marketplaces." },
+      {
+        id: "slash",
+        title: "Slash commands",
+        blurb: "How `/` works and the most-used built-ins.",
+      },
+    ],
+  },
 ];
 
 const HUB_HREFS: Readonly<Record<string, string>> = {
@@ -496,10 +512,46 @@ export const TOPICS: readonly Topic[] = [
   {
     slug: "ai",
     file: "0_ai.md",
-    title: "AI",
-    blurb: "Working with coding agents and docs tools.",
+    title: "Workflow",
+    blurb: "AI-first vs augmented, editors, Context7/Ref, and RTK.",
     track: "ai",
   },
+  grouped(
+    "cursor-skills",
+    "0_ai_cursor_skills.md",
+    "Skills",
+    "Agent Skills: SKILL.md, auto vs slash, paths, and built-ins.",
+    "ai",
+    "cursor",
+    "skills",
+  ),
+  grouped(
+    "cursor-rules",
+    "0_ai_cursor_rules.md",
+    "Rules",
+    "Project, user, team rules, AGENTS.md, and apply modes.",
+    "ai",
+    "cursor",
+    "rules",
+  ),
+  grouped(
+    "cursor-plugins",
+    "0_ai_cursor_plugins.md",
+    "Plugins",
+    "Cursor and Agent plugin formats, MCP, and marketplaces.",
+    "ai",
+    "cursor",
+    "plugins",
+  ),
+  grouped(
+    "cursor-slash",
+    "0_ai_cursor_slash.md",
+    "Slash commands",
+    "How `/` works, custom commands, and the most-used built-ins.",
+    "ai",
+    "cursor",
+    "slash",
+  ),
   {
     slug: "mvp",
     file: "0_mvp.md",

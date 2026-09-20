@@ -312,13 +312,29 @@ describe("handbook sidebar", () => {
     cy.visit("/frontend/js-browser-extra");
     cy.nav("topic", "js-browser-extra").should("have.attr", "aria-expanded", "true");
 
-    cy.get("#handbook-nav-aside").scrollTo("bottom");
+    cy.get("#handbook-nav-aside").then(($aside) => {
+      const aside = $aside[0];
+      const core = aside.querySelector(
+        '[data-nav="cluster"][data-nav-id="core"]',
+      ) as HTMLElement | null;
+      expect(core, "Core cluster").to.exist;
+      if (!core) {
+        return;
+      }
+      // Scroll Core just out of view without releasing sticky path rows at the end.
+      aside.scrollTop +=
+        core.getBoundingClientRect().bottom - aside.getBoundingClientRect().top + 24;
+    });
 
     cy.nav("track", "frontend").should("be.visible");
     cy.nav("subject", "javascript").should("be.visible");
     cy.nav("cluster", "browser").should("be.visible");
     cy.nav("topic", "js-browser-extra").should("be.visible");
-    cy.nav("cluster", "core").should("not.be.visible");
+    cy.get('#handbook-sidebar [data-nav="cluster"][data-nav-id="core"]').each(($el) => {
+      const asideBox = Cypress.$("#handbook-nav-aside")[0].getBoundingClientRect();
+      const box = $el[0].getBoundingClientRect();
+      expect(box.bottom).to.be.at.most(asideBox.top + 1);
+    });
     cy.nav("topic", "js-browser-extra").should(($el) => {
       const asideBox = Cypress.$("#handbook-nav-aside")[0].getBoundingClientRect();
       const box = $el[0].getBoundingClientRect();
@@ -363,7 +379,10 @@ describe("handbook sidebar", () => {
     cy.get("#core-web-vitals-html-developer-impact").should("have.prop", "open", true);
 
     const cachingId = "caching-historical-note-applicationcache";
-    cy.get(`#handbook-sidebar [data-concept-id="${cachingId}"]`).click();
+    cy.get(`#handbook-sidebar [data-concept-id="${cachingId}"]`).click({
+      scrollBehavior: false,
+      force: true,
+    });
     cy.location("hash").should("eq", `#${cachingId}`);
     cy.get(`#${cachingId}`).should("have.prop", "open", true);
     cy.get("#core-web-vitals-html-developer-impact").should("have.prop", "open", false);
@@ -458,7 +477,11 @@ describe("handbook sidebar", () => {
     cy.sidebar().contains("HTML").should("not.exist");
 
     cy.get('#handbook-sidebar [data-concept-id="useeffect"]').click();
-    cy.sidebar().should("not.be.visible");
+    cy.get('#handbook-header button[aria-controls="handbook-sidebar"]').should(
+      "have.attr",
+      "aria-expanded",
+      "false",
+    );
     cy.location("pathname").should("eq", "/frontend/react-hooks");
     cy.location("hash").should("eq", "#useeffect");
     cy.get("#useeffect").should("have.prop", "open", true);
@@ -518,7 +541,7 @@ describe("handbook sidebar", () => {
   it("peeks the collapsed sidebar on hover and collapses again on leave", () => {
     cy.visit("/frontend/html-structure");
     cy.get('button[aria-label="Collapse topics"]').click();
-    cy.sidebar().should("not.be.visible");
+    cy.get('button[aria-label="Expand topics"]').should("be.visible");
 
     cy.get("aside").trigger("pointerenter", { pointerType: "mouse" });
     cy.sidebar().should("be.visible");

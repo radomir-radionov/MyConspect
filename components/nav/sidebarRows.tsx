@@ -99,11 +99,11 @@ export const ConceptLink = memo(function ConceptLink({
       onClick={(event) => {
         event.preventDefault();
         if (pathname === topicHref) {
+          onNavigate?.();
           setHashOnPath(pathname, concept.id);
-          closeNavSoon(onNavigate);
           return;
         }
-        closeNavSoon(onNavigate);
+        onNavigate?.();
         followHandbookHref(conceptHref(topicHref, concept.id), pathname, goToPath);
       }}
       className={
