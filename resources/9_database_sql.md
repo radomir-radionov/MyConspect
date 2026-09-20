@@ -69,9 +69,7 @@ LIMIT 10;
 
 **Thoughts:** Apps connect via **drivers** (`pg`, `mysql2`). The query planner uses statistics — stale stats = bad plans. Always parameterize user input.
 
-**Sources:**
-
-[PostgreSQL — SQL commands](https://www.postgresql.org/docs/current/sql-commands.html)
+**Sources:** [PostgreSQL — SQL commands](https://www.postgresql.org/docs/current/sql-commands.html) · [SQL Academy — Interview questions](https://sql-academy.org/ru/interview-questions)
 
 ---
 
@@ -305,7 +303,7 @@ The John / Math / Music case after 3NF is three tables: `Students`, `Courses`, `
 
 **Thoughts:** M:N after 1NF is a junction table, not a repeating course list on the student row.
 
-**Sources:** [PostgreSQL — Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html) · [Database normalization](https://en.wikipedia.org/wiki/Database_normalization)
+**Sources:** [PostgreSQL — Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html) · [Database normalization](https://en.wikipedia.org/wiki/Database_normalization) · [SQL Academy — Database normalization](https://sql-academy.org/ru/blog/database-normalization)
 
 </details>
 
@@ -443,7 +441,7 @@ WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);
 
 **Thoughts:** A correlated subquery is not always slow — `EXISTS` can short-circuit. Measure with [EXPLAIN](#query-optimization-explain).
 
-**Sources:** [PostgreSQL — Subquery expressions](https://www.postgresql.org/docs/current/functions-subquery.html) · [PostgreSQL — Table expressions (FROM)](https://www.postgresql.org/docs/current/queries-table-expressions.html)
+**Sources:** [PostgreSQL — Subquery expressions](https://www.postgresql.org/docs/current/functions-subquery.html) · [PostgreSQL — Table expressions (FROM)](https://www.postgresql.org/docs/current/queries-table-expressions.html) · [SQL Academy — Correlated subqueries](https://sql-academy.org/ru/guide/correlated-subqueries)
 
 </details>
 
@@ -622,7 +620,7 @@ TRUNCATE TABLE employees RESTART IDENTITY;
 
 **Thoughts:** “TRUNCATE cannot ROLLBACK” is a MySQL/old-lore myth — in PostgreSQL it can. Still prefer `DELETE` when you need `WHERE` or per-row triggers.
 
-**Sources:** [PostgreSQL — DELETE](https://www.postgresql.org/docs/current/sql-delete.html) · [PostgreSQL — TRUNCATE](https://www.postgresql.org/docs/current/sql-truncate.html)
+**Sources:** [PostgreSQL — DELETE](https://www.postgresql.org/docs/current/sql-delete.html) · [PostgreSQL — TRUNCATE](https://www.postgresql.org/docs/current/sql-truncate.html) · [SQL Academy — TRUNCATE, DELETE, and DROP](https://sql-academy.org/ru/blog/sql-truncate-delete-drop)
 
 </details>
 
@@ -672,7 +670,7 @@ COMMIT;
 
 **Thoughts:** SQL `COMMIT`/`ROLLBACK` are the verbs; ACID is the contract. ACID **Consistency** is not CAP consistency.
 
-**Sources:** [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
+**Sources:** [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html) · [SQL Academy — ACID](https://sql-academy.org/ru/blog/sql-acid)
 
 </details>
 
@@ -1023,9 +1021,7 @@ Look for: `Seq Scan` on large tables (bad), `Index Scan` / `Index Only Scan` (go
 - Pagination: `OFFSET` is slow at depth — use keyset (`WHERE id > $cursor ORDER BY id LIMIT 20`).
 - Prefer equality join keys; wrapping an indexed column in a function (`WHERE lower(email) = …`) needs a matching expression index.
 
-**Sources:**
-
-[PostgreSQL — EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html)
+**Sources:** [PostgreSQL — EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) · [SQL Academy — Query optimization](https://sql-academy.org/ru/blog/sql-query-optimization)
 
 ---
 
@@ -1316,7 +1312,7 @@ SELECT COALESCE(nickname, name, '(none)') AS display FROM employees;
 
 **Thoughts:** `WHERE col != 'x'` drops NULL rows. Keep them with `col IS DISTINCT FROM 'x'`.
 
-**Sources:** [PostgreSQL — Comparison](https://www.postgresql.org/docs/current/functions-comparison.html) · [PostgreSQL — COALESCE](https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL)
+**Sources:** [PostgreSQL — Comparison](https://www.postgresql.org/docs/current/functions-comparison.html) · [PostgreSQL — COALESCE](https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL) · [SQL Academy — COALESCE](https://sql-academy.org/ru/blog/sql-coalesce)
 
 </details>
 
@@ -1420,7 +1416,7 @@ ROLLBACK;
 
 **Thoughts:** ACID is the guarantee; these are the verbs. Isolation levels: [Foundations](./9_database_core.md#transactions-isolation-levels).
 
-**Sources:** [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html) · [PostgreSQL — BEGIN](https://www.postgresql.org/docs/current/sql-begin.html) · [PostgreSQL — COMMIT](https://www.postgresql.org/docs/current/sql-commit.html) · [PostgreSQL — ROLLBACK](https://www.postgresql.org/docs/current/sql-rollback.html)
+**Sources:** [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html) · [PostgreSQL — BEGIN](https://www.postgresql.org/docs/current/sql-begin.html) · [PostgreSQL — COMMIT](https://www.postgresql.org/docs/current/sql-commit.html) · [PostgreSQL — ROLLBACK](https://www.postgresql.org/docs/current/sql-rollback.html) · [SQL Academy — ACID](https://sql-academy.org/ru/blog/sql-acid)
 
 </details>
 
@@ -1559,7 +1555,7 @@ FROM payments;
 
 **Thoughts:** Window functions run **after** WHERE/GROUP BY. `ROW_NUMBER` vs `RANK` vs `DENSE_RANK`: ties skip numbers only with `RANK`.
 
-**Sources:** [PostgreSQL — Window functions](https://www.postgresql.org/docs/current/tutorial-window.html)
+**Sources:** [PostgreSQL — Window functions](https://www.postgresql.org/docs/current/tutorial-window.html) · [SQL Academy — Window functions](https://sql-academy.org/ru/guide/windows-functions) · [SQL Academy — ROW_NUMBER, RANK, DENSE_RANK](https://sql-academy.org/ru/blog/row-number-rank-dense-rank)
 
 </details>
 
@@ -1594,7 +1590,7 @@ WHERE t.total > 1000;
 
 **Thoughts:** Recursive CTEs use `UNION` vs `UNION ALL` deliberately — `UNION` can stop duplicate graph nodes.
 
-**Sources:** [PostgreSQL — WITH queries](https://www.postgresql.org/docs/current/queries-with.html)
+**Sources:** [PostgreSQL — WITH queries](https://www.postgresql.org/docs/current/queries-with.html) · [SQL Academy — Operator WITH](https://sql-academy.org/ru/guide/operator-with) · [SQL Academy — CTE](https://sql-academy.org/ru/blog/sql-cte)
 
 </details>
 
@@ -1622,7 +1618,7 @@ DROP TABLE employees;
 
 **Thoughts:** Compare with DELETE/TRUNCATE in [DELETE, TRUNCATE, and DROP](#delete-truncate-and-drop).
 
-**Sources:** [PostgreSQL — DROP TABLE](https://www.postgresql.org/docs/current/sql-droptable.html)
+**Sources:** [PostgreSQL — DROP TABLE](https://www.postgresql.org/docs/current/sql-droptable.html) · [SQL Academy — TRUNCATE, DELETE, and DROP](https://sql-academy.org/ru/blog/sql-truncate-delete-drop)
 
 </details>
 
@@ -1682,7 +1678,7 @@ WHERE e.salary > (
 
 **Thoughts:** A correlated subquery is not always slow — `EXISTS` can short-circuit. Measure with [EXPLAIN](#query-optimization-explain).
 
-**Sources:** [PostgreSQL — Subquery expressions](https://www.postgresql.org/docs/current/functions-subquery.html)
+**Sources:** [PostgreSQL — Subquery expressions](https://www.postgresql.org/docs/current/functions-subquery.html) · [SQL Academy — Correlated subqueries](https://sql-academy.org/ru/guide/correlated-subqueries)
 
 </details>
 
@@ -1715,7 +1711,7 @@ DROP TABLE employees;
 
 **Thoughts:** “TRUNCATE cannot ROLLBACK” is a MySQL/old-lore myth — in PostgreSQL it can. Still prefer `DELETE` when you need `WHERE` or per-row triggers.
 
-**Sources:** [PostgreSQL — DELETE](https://www.postgresql.org/docs/current/sql-delete.html) · [PostgreSQL — TRUNCATE](https://www.postgresql.org/docs/current/sql-truncate.html) · [PostgreSQL — DROP TABLE](https://www.postgresql.org/docs/current/sql-droptable.html)
+**Sources:** [PostgreSQL — DELETE](https://www.postgresql.org/docs/current/sql-delete.html) · [PostgreSQL — TRUNCATE](https://www.postgresql.org/docs/current/sql-truncate.html) · [PostgreSQL — DROP TABLE](https://www.postgresql.org/docs/current/sql-droptable.html) · [SQL Academy — TRUNCATE, DELETE, and DROP](https://sql-academy.org/ru/blog/sql-truncate-delete-drop)
 
 </details>
 
