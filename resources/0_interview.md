@@ -85,7 +85,7 @@ js-algorithms - https://github.com/trekhleb/javascript-algorithms
 
 https://habr.com/ru/articles/784548/
 
-**Conspect:** [3_js_core.md → Interview Practice](3_js_interview.md) · [JIT / interpreted?](3_js_core.md#is-javascript-an-interpreted-language) · [Stack vs heap](3_js_core.md#memory-stack-heap) · [3_js_array.md](3_js_interview.md) · [3_js_functions.md](3_js_interview.md) · [3_js_oop.md](3_js_interview.md) · [3_js_async.md](3_js_interview.md) · [3_js_browser.md](3_js_interview.md) · [3_js_events.md](3_js_interview.md) · [3_js_browser_extra.md](3_js_interview.md) · [7_special.md — OOP](7_special_engineering.md#object-oriented-programming-oop)
+**Conspect:** [3_js_core.md → Interview Practice](3_js_interview.md) · [JIT / interpreted?](3_js_core.md#is-javascript-an-interpreted-language) · [Stack vs heap](3_js_variables.md#memory-stack-heap) · [3_js_array.md](3_js_interview.md) · [3_js_functions.md](3_js_interview.md) · [3_js_oop.md](3_js_interview.md) · [3_js_async.md](3_js_interview.md) · [3_js_browser.md](3_js_interview.md) · [3_js_events.md](3_js_interview.md) · [3_js_browser_extra.md](3_js_interview.md) · [7_special.md — OOP](7_special_engineering.md#object-oriented-programming-oop)
 
 ### ts
 

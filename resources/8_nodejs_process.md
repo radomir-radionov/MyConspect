@@ -1,4 +1,4 @@
-# Node.js — Process
+# Node.js — Additional
 
 child_process, cluster, workers, and real-time servers.
 
@@ -6,7 +6,7 @@ child_process, cluster, workers, and real-time servers.
 
 ### Related docs
 
-* [Node.js — Runtime](./8_nodejs_core.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Process](./8_nodejs_process.md) · [Node.js — Interview](./8_nodejs_interview.md)
+* [Node.js — Core](./8_nodejs_core.md) · [Node.js — Modules](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Additional](./8_nodejs_process.md) · [Node.js — Interview](./8_nodejs_interview.md)
 
 ### Sections
 
@@ -23,7 +23,7 @@ child_process, cluster, workers, and real-time servers.
 
 **Definition:**
 
-A process is a running program with its own isolated virtual address space (PID). A thread is a unit of execution within a process (typically its own stack). Node's main JS runs on one thread; libuv uses a thread pool for I/O. OS scheduling, context, interrupts, POSIX signals: [Processes, multitasking & interrupts](./0_system_design_core.md#processes-multitasking). Stack vs heap inside that space: [Memory: stack and heap](./3_js_core.md#memory-stack-heap).
+A process is a running program with its own isolated virtual address space (PID). A thread is a unit of execution within a process (typically its own stack). Node's main JS runs on one thread; libuv uses a thread pool for I/O. OS scheduling, context, interrupts, POSIX signals: [Processes, multitasking & interrupts](./0_system_design_core.md#processes-multitasking). Stack vs heap inside that space: [Memory: stack and heap](./3_js_variables.md#memory-stack-heap).
 
 | Concept | Node.js |
 |---------|---------|
@@ -145,7 +145,7 @@ Core OS components relevant to Node deployment.
 
 portable Unix standard — Node and most server tools target POSIX-like systems.
 
-named byte streams, hierarchical dirs, FHS (`/etc`, `/var`, …): [Files & file systems](./8_nodejs_core.md#files--file-systems).
+named byte streams, hierarchical dirs, FHS (`/etc`, `/var`, …): [Files & file systems](./8_nodejs_modules.md#files--file-systems).
 
 `cp`, `ps`, `cat` (Linux) / `type` (Windows equivalent for file display). PID, jobs, `nice`, `top`/`htop`, `kill`: [Unix process management](./15_devops.md#unix-process-management).
 

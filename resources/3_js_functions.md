@@ -6,7 +6,7 @@ Function forms, `this`, higher-order functions, `call`/`apply`/`bind`, debounce,
 
 ### Related docs
 
-- [JS Language](./3_js_core.md) · [Scope & closures](./3_js_core.md#scope-closures) · [JS Array](./3_js_array.md) · [JS OOP](./3_js_oop.md)
+- [JS Language](./3_js_core.md) · [JS Data Types & Variables](./3_js_variables.md) · [JS Operators & Loops](./3_js_operators.md) · [Scope & closures](./3_js_variables.md#scope-closures) · [Iterables](./3_js_operators.md#iterators) · [JS Array](./3_js_array.md) · [JS OOP](./3_js_oop.md)
 - [JS Async](./3_js_async.md) · [JS Events](./3_js_events.md) · [Browser APIs](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md) · [Computer science](./7_special_cs.md#programming-paradigm) · [Architecture — functional core](./7_special_architecture.md#functional-core-imperative-shell)
 
 ### Main concepts
@@ -16,7 +16,7 @@ Function forms, `this`, higher-order functions, `call`/`apply`/`bind`, debounce,
 | **Forms** | Declaration vs expression, arrows, IIFE, NFE |
 | **Call site** | `this`, `call`/`apply`/`bind`, constructors |
 | **HOF / FP** | Callbacks, memoize, curry, composition, purity, immutability |
-| **Advanced** | Generators, recursion, `new Function` |
+| **Advanced** | Recursion, `new Function` · [Generators](./3_js_operators.md#iterators) |
 | **Timing** | [Debounce](./3_js_browser_extra.md#debounce) · [Throttle](./3_js_browser_extra.md#throttle) |
 
 ### Sections
@@ -790,32 +790,7 @@ const factorial = function fact(n) {
 
 **Definition:** `function*` returns an iterator; `yield` pauses and `.next()` resumes.
 
-**How it works:**
-
-- Calling `function*` returns a generator object (iterator).
-- `yield` produces `{ value, done: false }`; function end yields `{ done: true }`.
-- `yield*` delegates to another iterable.
-- Generators are pausable — state preserved between `.next()` calls.
-
-**When to use:** Infinite IDs, paginated fetch loops, custom iterables. Use arrays/`async` iterators for most app code.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Lazy infinite sequences | Harder mental model |
-| Custom iteration | Not for simple list transforms |
-
-**Examples:**
-
-```js
-function* range(n) {
-  for (let i = 0; i < n; i++) yield i;
-}
-const gen = range(3);
-gen.next(); // { value: 0, done: false }
-[...range(3)]; // [0, 1, 2]
-```
+Full essay (iterable protocol, custom iterators, `for...of`): [Iterators and generators](./3_js_operators.md#iterators). Async generators: [Async iterators](./3_js_async.md).
 
 **Sources:** [javascript.info/generators](https://learn.javascript.ru/generators)
 

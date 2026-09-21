@@ -284,7 +284,7 @@ gate.secret; // undefined
 
 **Thoughts:** Adapter **translates**. Facade **simplifies**. Decorator **adds**. Proxy **gates**.
 
-**See also:** [Adapter](#adapter) · [Facade](#facade) · [Decorator](#decorator) · [Proxy](#proxy) · [JS `Proxy`](./3_js_core.md#proxy-and-reflect) · [Hexagonal adapters](./7_special_architecture.md#clean-architecture--hexagonal)
+**See also:** [Adapter](#adapter) · [Facade](#facade) · [Decorator](#decorator) · [Proxy](#proxy) · [JS `Proxy`](./3_js_oop.md#proxy-and-reflect) · [Hexagonal adapters](./7_special_architecture.md#clean-architecture--hexagonal)
 
 **Sources:**
 

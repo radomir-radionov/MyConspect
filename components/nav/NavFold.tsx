@@ -32,10 +32,13 @@ const FOLD_INNER =
 export function NavFold({
   open,
   instant = false,
+  unbox = false,
   children,
 }: {
   open: boolean;
   instant?: boolean;
+  /** When fully open, render children without a box so nested sticky can span siblings. */
+  unbox?: boolean;
   children: ReactNode;
 }) {
   const reducedMotion = useReducedMotion();
@@ -80,6 +83,10 @@ export function NavFold({
 
   if (!mounted) {
     return null;
+  }
+
+  if (unbox && expanded) {
+    return <>{children}</>;
   }
 
   return (

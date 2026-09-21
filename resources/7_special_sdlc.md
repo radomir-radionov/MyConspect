@@ -68,7 +68,7 @@ Same phases, different **order and feedback**. Waterfall runs them once, end-to-
 
 **How it works:** Paradigms answer *how to express logic* (FP vs OOP). Methodologies answer *how to structure a codebase and collaborate* (MVC, TDD, BEM). Use both: paradigm for the problem, methodology for maintainability at scale.
 
-**Thoughts:** Do not file this under JavaScript language notes — JS is multi-paradigm; these practices apply across stacks. JS angle: [Programming paradigms](./3_js_core.md#programming-paradigms).
+**Thoughts:** Do not file this under JavaScript language notes — JS is multi-paradigm; these practices apply across stacks. Paradigms map: [Programming paradigms](./7_special_cs.md#programming-paradigm).
 
 **Sources:** [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/) · [Doka — Agile](https://doka.guide/tools/agile/) · [getbem.com](http://getbem.com/)
 

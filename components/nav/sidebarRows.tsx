@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { HighlightedText } from "@/components/search";
 import { isInterviewTopic } from "@/lib/catalog";
@@ -22,6 +22,7 @@ import { applySameDocumentHref, followHandbookHref, queueHandbookHref, replacePa
 import { clusterKey, isActiveHref } from "./location";
 import {
   closeNavSoon,
+  NAV_ROW_GAP,
   rowClass,
   useSidebarActive,
   useSidebarChrome,
@@ -99,11 +100,11 @@ export const ConceptLink = memo(function ConceptLink({
       onClick={(event) => {
         event.preventDefault();
         if (pathname === topicHref) {
-          onNavigate?.();
           setHashOnPath(pathname, concept.id);
+          closeNavSoon(onNavigate);
           return;
         }
-        onNavigate?.();
+        closeNavSoon(onNavigate);
         followHandbookHref(conceptHref(topicHref, concept.id), pathname, goToPath);
       }}
       className={
@@ -132,22 +133,27 @@ export const ConceptLink = memo(function ConceptLink({
 function ConceptItems({
   topic,
   concepts,
+  indentClass = "pl-4",
 }: {
   topic: NavTopic;
   concepts: readonly NavConcept[];
+  indentClass?: string;
 }) {
   const { first, searching } = useSidebarChrome();
   const { activeConceptId } = useSidebarActive();
   return (
     <>
-      {concepts.map((concept) => {
+      {concepts.map((concept, index) => {
         const conceptActive = concept.id === activeConceptId;
         const isFirstConcept = first?.pathname === topic.href && first.hash === `#${concept.id}`;
+        const onPath = conceptActive && !searching;
         return (
           <li
             key={concept.id}
-            data-nav-path={conceptActive && !searching ? "true" : undefined}
-            className={conceptActive && !searching ? "sticky bg-yellow-50" : undefined}
+            data-nav-path={onPath ? "true" : undefined}
+            className={[index === 0 ? NAV_ROW_GAP : "mt-0.5", indentClass, onPath ? "sticky bg-yellow-50" : undefined]
+              .filter(Boolean)
+              .join(" ")}
           >
             <ConceptLink
               topicHref={topic.href}
@@ -196,20 +202,34 @@ function InterviewSectionNav({
     () => new Set(["questions"]),
   );
 
+  useEffect(() => {
+    if (!activeSection) {
+      return;
+    }
+    setOpenSections((current) => {
+      if (current.has(activeSection)) {
+        return current;
+      }
+      const next = new Set(current);
+      next.add(activeSection);
+      return next;
+    });
+  }, [activeSection, activeConceptId]);
+
   return (
     <>
       {groups.map((group) => {
-        const sectionOpen =
-          searching || activeSection === group.section || openSections.has(group.section);
+        const sectionOpen = searching || openSections.has(group.section);
         const sectionActive = activeSection === group.section;
         const onPath = onTopic && sectionOpen;
         return (
-          <li key={group.section}>
+          <li key={group.section} className="contents">
             <button
               type="button"
               data-nav="interview-section"
               data-nav-id={group.section}
               aria-expanded={sectionOpen}
+              data-nav-path={onPath ? "true" : undefined}
               onClick={() => {
                 if (searching) {
                   return;
@@ -224,11 +244,10 @@ function InterviewSectionNav({
                   return next;
                 });
               }}
-              data-nav-path={onPath ? "true" : undefined}
               className={
                 sectionActive || sectionOpen
-                  ? `flex w-full cursor-pointer items-center rounded-md bg-yellow-50 px-2 py-1.5 text-left text-sm font-medium text-zinc-900 ring-1 ring-yellow-200${onPath ? " sticky" : ""}`
-                  : "flex w-full cursor-pointer items-center rounded-md px-2 py-1.5 text-left text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800"
+                  ? `flex w-full ${NAV_ROW_GAP} cursor-pointer items-center rounded-md bg-yellow-50 px-2 py-1.5 pl-4 text-left text-sm font-medium text-zinc-900 ring-1 ring-yellow-200${onPath ? " sticky" : ""}`
+                  : `flex w-full ${NAV_ROW_GAP} cursor-pointer items-center rounded-md px-2 py-1.5 pl-4 text-left text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800`
               }
             >
               <RowTitle
@@ -238,9 +257,9 @@ function InterviewSectionNav({
                 open={sectionOpen}
               />
             </button>
-            <NavFold open={sectionOpen} instant={searching || !sectionOpen}>
-              <ul className="mt-1.5 space-y-0.5 pl-2">
-                <ConceptItems topic={topic} concepts={group.concepts} />
+            <NavFold open={sectionOpen} instant={searching || !sectionOpen} unbox>
+              <ul className="contents">
+                <ConceptItems topic={topic} concepts={group.concepts} indentClass="pl-8" />
               </ul>
             </NavFold>
           </li>
@@ -253,21 +272,25 @@ function InterviewSectionNav({
 function TopicConceptNav({
   topic,
   concepts,
+  indentClass = "pl-4",
 }: {
   topic: NavTopic;
   concepts: readonly NavConcept[];
+  indentClass?: string;
 }) {
   if (!isInterviewTopic(topic)) {
-    return <ConceptItems topic={topic} concepts={concepts} />;
+    return <ConceptItems topic={topic} concepts={concepts} indentClass={indentClass} />;
   }
   const regular = concepts.filter((concept) => !concept.interviewSection);
   const grouped = concepts.filter((concept) => concept.interviewSection);
   if (grouped.length === 0) {
-    return <ConceptItems topic={topic} concepts={concepts} />;
+    return <ConceptItems topic={topic} concepts={concepts} indentClass={indentClass} />;
   }
   return (
     <>
-      {regular.length > 0 ? <ConceptItems topic={topic} concepts={regular} /> : null}
+      {regular.length > 0 ? (
+        <ConceptItems topic={topic} concepts={regular} indentClass={indentClass} />
+      ) : null}
       <InterviewSectionNav topic={topic} concepts={grouped} />
     </>
   );
@@ -299,12 +322,16 @@ export function TopicRow({
       ? hasConcepts
       : hasConcepts && openTopicHref === topic.href;
   const onPath = !searching && active;
+  // Flatten sticky headers into the track list so nested containing blocks cannot
+  // drag Core/Structure above Frontend/HTML while siblings scroll.
+  const indent = compact ? (navKind === "cluster" ? "pl-4" : "pl-6") : "";
+  const conceptIndent = compact ? "pl-8" : "pl-4";
 
   if (hideTitle) {
     if (concepts.length === 0) {
       return null;
     }
-    return <TopicConceptNav topic={topic} concepts={concepts} />;
+    return <TopicConceptNav topic={topic} concepts={concepts} indentClass={conceptIndent} />;
   }
 
   return (
@@ -343,16 +370,16 @@ export function TopicRow({
         data-search-hit={isFirstTopic ? "true" : undefined}
         aria-current={active ? "page" : undefined}
         aria-expanded={hasConcepts ? topicOpen : undefined}
-        className={rowClass(isHitTopic || active || topicOpen, onPath)}
+        className={`${rowClass(isHitTopic || active || topicOpen, onPath, indent)} ${NAV_ROW_GAP}`}
       >
         <RowTitle text={topic.title} query={query} marker={compact && hasConcepts} open={topicOpen} />
         {hasConcepts ? (
           compact ? (topicOpen ? <NavChevron open /> : null) : <NavChevron open={topicOpen} large />
         ) : null}
       </Link>
-      <NavFold open={topicOpen && hasConcepts} instant={searching || !topicOpen}>
-        <ul className={compact ? "mt-1.5 mb-1 space-y-0.5 pl-2" : "mt-1.5 mb-1 space-y-0.5 pl-3"}>
-          <TopicConceptNav topic={topic} concepts={concepts} />
+      <NavFold open={topicOpen && hasConcepts} instant={searching || !topicOpen} unbox>
+        <ul className="contents">
+          <TopicConceptNav topic={topic} concepts={concepts} indentClass={conceptIndent} />
         </ul>
       </NavFold>
     </li>
@@ -390,16 +417,18 @@ export function ClusterRow({
   const onPath =
     !searching && (active || cluster.topics.some((topic) => topic.href === pathname));
   const pinInParent = onPath && !clusterOpen;
+  const stickHeader = onPath && !pinInParent;
 
   return (
-    <li data-nav-pin={pinInParent ? "cluster" : undefined}>
+    <li className="contents">
       <Link
         href={cluster.href}
         prefetch={false}
         scroll={false}
         data-nav="cluster"
         data-nav-id={cluster.id}
-        data-nav-path={onPath && !pinInParent ? "true" : undefined}
+        data-nav-path={stickHeader ? "true" : undefined}
+        data-nav-pin={pinInParent ? "cluster" : undefined}
         onClick={(event) => {
           pinNav(event.currentTarget);
           if (onHub) {
@@ -424,13 +453,15 @@ export function ClusterRow({
         data-search-hit={isHitCluster ? "true" : undefined}
         aria-current={active ? "location" : undefined}
         aria-expanded={clusterOpen}
-        className={rowClass(isHitCluster || active || clusterOpen, onPath && !pinInParent)}
+        className={`${rowClass(isHitCluster || active || clusterOpen, stickHeader, "pl-4")}${
+          pinInParent ? " sticky bg-white" : ""
+        } ${NAV_ROW_GAP}`}
       >
         <RowTitle text={cluster.title} query={query} marker open={clusterOpen} />
         {clusterOpen ? <NavChevron open /> : null}
       </Link>
-      <NavFold open={clusterOpen} instant={searching || !clusterOpen}>
-        <ul className="mt-1.5 space-y-0.5 pl-2">
+      <NavFold open={clusterOpen} instant={searching || !clusterOpen} unbox>
+        <ul className="contents">
           {cluster.topics.map((topic) => (
             <TopicRow key={topic.slug} topic={topic} compact navKind="topic" navId={topic.slug} />
           ))}
@@ -449,7 +480,7 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
   const onPath = !searching && openSubjectHref === subject.href;
 
   return (
-    <li>
+    <li className="contents">
       <Link
         href={subject.href}
         prefetch={false}
@@ -469,13 +500,13 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
         data-search-hit={isHitSubject ? "true" : undefined}
         aria-current={active ? "page" : undefined}
         aria-expanded={subjectOpen}
-        className={rowClass(isHitSubject || active || subjectOpen, onPath)}
+        className={`${rowClass(isHitSubject || active || subjectOpen, onPath)} ${NAV_ROW_GAP}`}
       >
         <RowTitle text={subject.title} query={query} />
         <NavChevron open={subjectOpen} large />
       </Link>
-      <NavFold open={subjectOpen} instant={searching || !subjectOpen}>
-        <ul className="mt-1.5 mb-1 ml-2 space-y-0.5 border-l border-yellow-200 pl-2">
+      <NavFold open={subjectOpen} instant={searching || !subjectOpen} unbox>
+        <ul className="contents">
           <NavGuide level="subject" />
           {subject.clusters.map((cluster) => (
             <ClusterRow key={cluster.id} subjectHref={subject.href} cluster={cluster} />

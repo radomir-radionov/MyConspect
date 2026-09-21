@@ -271,7 +271,7 @@ An absolute HTTP(S) URL is `scheme ":" "//" authority path [ "?" query ] [ "#" f
 | Query | `?query=hi&category=js` | Starts at `?`; pairs `key=value` joined by `&`. Same key may repeat. Not the resource identity — filters, search, pagination. REST split: [query vs path params](#query-parameters--path-params). |
 | Fragment | `#kratko` | Starts at `#`. Client-only; **not sent to the server**. Scrolls to `id` / named anchor. |
 
-No host — the browser fills scheme/host from the current document (or `<base href>`). Path without `/` is relative to the current path; `/…` is from the origin root; `../` goes up one path segment; `//host/path` is scheme-relative (keep `https`/`http`). The address bar resembles a file path; SSR may hide `index.html`, and client routing can show a virtual path via History API — [Files & file systems](./8_nodejs_core.md#files--file-systems).
+No host — the browser fills scheme/host from the current document (or `<base href>`). Path without `/` is relative to the current path; `/…` is from the origin root; `../` goes up one path segment; `//host/path` is scheme-relative (keep `https`/`http`). The address bar resembles a file path; SSR may hide `index.html`, and client routing can show a virtual path via History API — [Files & file systems](./8_nodejs_modules.md#files--file-systems).
 
 One registered domain can front several services (`mail.google.com` vs `www.google.com`). `www` is just a common third-level name; most sites redirect `www` ↔ apex.
 

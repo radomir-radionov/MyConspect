@@ -4,7 +4,7 @@ Covers asynchronous JavaScript: event loop, timers, promises, `async/await`, and
 
 ### Related docs
 
-* [JS Core](./3_js_core.md) · [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [Memory: stack and heap](./3_js_core.md#memory-stack-heap) · [JSON](./3_js_core.md#json) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
+* [JS Language](./3_js_core.md) · [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [Memory: stack and heap](./3_js_variables.md#memory-stack-heap) · [JSON](./3_js_variables.md#json) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
 * [Web API](./6_web_api.md) · [CORS](./6_web_api_security.md#cors) · [INP](./6_web_api_security.md#inp-interaction-to-next-paint) · [Node.js](./8_nodejs.md) · [React](./4_react.md) · [YAML](./10_build_ci.md#yaml)
 * [Jest — mock `fetch`](./7_special_testing.md#jest--first-tests-node-vs-jsdom)
 
@@ -107,7 +107,7 @@ Promise.resolve().then(() => console.log('microtask'));
 - When a function **returns**, its context is **popped** off.
 - Nested calls build a stack: `main()` → `foo()` → `bar()`.
 - Each context has: variable environment, scope chain, `this` binding, and (for generators) state.
-- Stack overflow (`Maximum call stack size exceeded`) happens when recursion never returns or depth exceeds engine limit (~10k–50k frames). OS/process memory model (virtual pages, heap vs stack): [Memory: stack and heap](./3_js_core.md#memory-stack-heap).
+- Stack overflow (`Maximum call stack size exceeded`) happens when recursion never returns or depth exceeds engine limit (~10k–50k frames). OS/process memory model (virtual pages, heap vs stack): [Memory: stack and heap](./3_js_variables.md#memory-stack-heap).
 
 | Stage | What happens |
 |-------|----------------|
@@ -1225,32 +1225,11 @@ requestIdleCallback((deadline) => {
 
 ### JSON
 
-**Definition:** Syntax, `stringify`/`parse`, and pitfalls: [JS Core — JSON](./3_js_core.md#json). Config comments → [YAML](./10_build_ci.md#yaml).
+**Definition:** Syntax, `stringify`/`parse`, and pitfalls: [JSON](./3_js_variables.md#json). Config comments → [YAML](./10_build_ci.md#yaml).
 
 **How it works:** `await res.json()` parses the fetch body (same as `JSON.parse` on the text). Send with `JSON.stringify(body)` and `Content-Type: application/json`.
 
 **Thoughts:** *Fetch delivers JSON text; Core JSON APIs turn it into values.*
-
-</details>
-
-<details>
-  <summary>Related topics</summary>
-
-### Related topics
-
-**Definition:** Cross-references to adjacent topics covered in other study notes — HTTP, Node event loop, and browser rendering.
-
-**How it works:**
-
-- Fetch, CORS, HTTP methods → [6_web_api.md](./6_web_api_security.md#cors)
-- Node event loop phases, `libuv` → [8_nodejs.md](./8_nodejs.md)
-- DOM events → [3_js_events.md](./3_js_events.md)
-- `requestAnimationFrame`, `requestIdleCallback` → [3_js_browser_extra.md](./3_js_browser_extra.md#request-animation-frame)
-- React async patterns, stale closures → [4_react.md](./4_react.md)
-
-**When to use:** Follow these links when async code touches networking, server runtime, UI timing, or framework lifecycle.
-
-**Sources:** See linked docs above.
 
 </details>
 

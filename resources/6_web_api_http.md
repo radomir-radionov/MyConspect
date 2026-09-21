@@ -176,7 +176,7 @@ Protocol (client, proxy, messages): [HTTP protocol](#http-protocol). Listen port
 
 **Sources:**
 
-[MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages) · [Doka — Web server](https://doka.guide/tools/web-server/) · [Node.js http](https://nodejs.org/api/http.html) · Proxy: [Reverse proxy](./0_system_design_data.md#reverse-proxy) · [Nginx](./10_build_infra.md#nginx) · [Node `http`](./8_nodejs_core.md#http)
+[MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages) · [Doka — Web server](https://doka.guide/tools/web-server/) · [Node.js http](https://nodejs.org/api/http.html) · Proxy: [Reverse proxy](./0_system_design_data.md#reverse-proxy) · [Nginx](./10_build_infra.md#nginx) · [Node `http`](./8_nodejs_modules.md#http)
 
 ---
 

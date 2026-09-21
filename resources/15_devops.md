@@ -4,7 +4,7 @@ Deployment, containers, CI/CD integration, and production operations — intervi
 
 ### Related docs
 
-* [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [SDLC](./7_special_sdlc.md) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_core.md#files--file-systems) · [Node — SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_core.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#internet) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
+* [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [SDLC](./7_special_sdlc.md) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_modules.md#files--file-systems) · [Node — SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_core.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#internet) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
 
 ### Main concepts
 
@@ -291,7 +291,7 @@ await tracer.startActiveSpan('charge', async (span) => {
 
 1. Request arrives (`Host`, path, method). `server` block matches `server_name` + `listen`.
 2. **`location`** chooses a handler: prefix (`/api/`), exact (`=`), or regex (`~`).
-3. **Static:** `root` + URI → filesystem path (`root /www/data;` + `/images/a.png` → `/www/data/images/a.png`). Paths/FHS: [Files & file systems](./8_nodejs_core.md#files--file-systems).
+3. **Static:** `root` + URI → filesystem path (`root /www/data;` + `/images/a.png` → `/www/data/images/a.png`). Paths/FHS: [Files & file systems](./8_nodejs_modules.md#files--file-systems).
 4. **`try_files`** checks files in order; last argument is a fallback URI, named location, or `=404`. SPAs use `try_files $uri /index.html` so client routes do not 404.
 5. **`proxy_pass`** forwards to an upstream. Set `Host` and `X-Real-IP` so the app sees the original client.
 

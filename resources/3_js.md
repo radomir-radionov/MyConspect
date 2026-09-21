@@ -62,22 +62,27 @@ Covers the ECMAScript language, object model, browser runtime (DOM/BOM/events), 
 
 | Area | Topics |
 |------|--------|
-| **Language** | Types, coercion, [JSON](./3_js_core.md#json), [stack/heap](./3_js_core.md#memory-stack-heap), JIT, scope, closures, modules, errors, Signals (TC39) → [core](./3_js_core.md#signals) |
+| **Language** | [JIT](./3_js_core.md), modules → [core](./3_js_core.md) |
+| **Data Types & Variables** | Primitives, coercion, [stack/heap](./3_js_variables.md#memory-stack-heap), [JSON](./3_js_variables.md#json), `let`/`const`/`var`, scope, [`globalThis`](./3_js_variables.md#globalthis), closures → [variables](./3_js_variables.md) |
+| **Operators & Loops** | Expressions, operators, comparisons, `Object.is`, `if` / loops / `switch`, [error handling](./3_js_operators.md#error-handling) → [operators](./3_js_operators.md) |
 | **Array** | Indexed collections, mutating vs non-mutating methods, `map`/`filter`/`reduce` → [array](./3_js_array.md) |
 | **Functions** | Declarations, arrows, `this`, HOF, `call`/`apply`/`bind` → [functions](./3_js_functions.md) |
 | **OOP** | Prototypes, classes, descriptors, GC, `this` → [oop](./3_js_oop.md); design & SOLID → [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) |
 | **Browser** | [Document](./3_js_browser.md), [Events](./3_js_events.md), storage / CORS / [`URL` / `URLSearchParams`](./3_js_browser_extra.md#url--urlsearchparams) → [additional](./3_js_browser_extra.md) · anatomy → [Web API](./6_web_api_core.md#uri-url--urn) |
 | **Async** | Event loop, promises, `async/await` → [async](./3_js_async.md) |
+| **Additional** | `Intl`, RegExp, Signals (TC39), `eval` → [additional](./3_js_extra.md) |
 
 ### Navigation
 
 | Part 1 | Part 2 |
 |--------|--------|
-| [Core — language](./3_js_core.md) | [Core — array](./3_js_array.md) |
-| [Core — functions](./3_js_functions.md) | [OOP — classes & objects](./3_js_oop.md) |
+| [Core — language](./3_js_core.md) | [Core — data types & variables](./3_js_variables.md) |
+| [Core — operators & loops](./3_js_operators.md) | [Core — array](./3_js_array.md) |
+| [Core — functions](./3_js_functions.md) | [Core — classes & objects](./3_js_oop.md) |
 | [Browser — Document](./3_js_browser.md) | [Browser — Events](./3_js_events.md) |
-| [Async — promises & fetch](./3_js_async.md) | [Browser — Additional](./3_js_browser_extra.md) |
-| [Interview — questions & tasks](./3_js_interview.md) | [Interview hub](./0_interview.md) |
+| [Browser — Additional](./3_js_browser_extra.md) | [Async — promises & fetch](./3_js_async.md) |
+| [Additional](./3_js_extra.md) | [Interview — questions & tasks](./3_js_interview.md) |
+| [Interview hub](./0_interview.md) | |
 
 ### Topic template
 

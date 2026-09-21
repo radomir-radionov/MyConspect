@@ -6,7 +6,7 @@ Ordered collections, array methods, and interview patterns around `map` / `filte
 
 ### Related docs
 
-- [JS Language](./3_js_core.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Async](./3_js_async.md) · [JS Document](./3_js_browser.md)
+- [JS Language](./3_js_core.md) · [JS Data Types & Variables](./3_js_variables.md) · [JS Operators & Loops](./3_js_operators.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Async](./3_js_async.md) · [JS Document](./3_js_browser.md)
 - [JS Interview](./3_js_interview.md) · [TypeScript cart task](./5_ts_interview.md#interview-practice)
 
 ### Main concepts

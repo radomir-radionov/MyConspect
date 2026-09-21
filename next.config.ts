@@ -85,6 +85,16 @@ const nextConfig: NextConfig = {
         destination: "/system-design/special-patterns",
         permanent: true,
       },
+      {
+        source: "/backend/nodejs-runtime",
+        destination: "/backend/nodejs-core",
+        permanent: true,
+      },
+      {
+        source: "/backend/nodejs-process",
+        destination: "/backend/nodejs-additional",
+        permanent: true,
+      },
     ];
   },
 };

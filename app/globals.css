@@ -461,6 +461,14 @@ body {
   --nav-sticky-cover: 0px;
 }
 
+/* Room to scroll trailing topics clear of the sticky path at the bottom. */
+#handbook-nav-aside #handbook-sidebar {
+  padding-bottom: calc(
+    var(--nav-sticky-inset) + var(--nav-sticky-track) + (5 * var(--nav-sticky-row)) +
+      (6 * var(--nav-sticky-gap)) + 1.5rem
+  );
+}
+
 #handbook-nav-aside a,
 #handbook-nav-aside button,
 [data-sidebar-dock],
@@ -525,13 +533,14 @@ body {
   z-index: 25;
 }
 
-#handbook-nav-aside li[data-nav-pin] {
+#handbook-nav-aside li[data-nav-pin],
+#handbook-nav-aside [data-nav-pin] {
   position: sticky;
   background: #fff;
 }
 
 #handbook-nav-aside [data-nav="cluster"][data-nav-path="true"],
-#handbook-nav-aside li[data-nav-pin="cluster"] {
+#handbook-nav-aside [data-nav-pin="cluster"] {
   top: var(
     --nav-sticky-top-cluster,
     calc(
@@ -542,7 +551,7 @@ body {
 }
 
 #handbook-nav-aside [data-nav="topic"][data-nav-path="true"],
-#handbook-nav-aside li[data-nav-pin="topic"] {
+#handbook-nav-aside [data-nav-pin="topic"] {
   top: var(
     --nav-sticky-top-topic,
     calc(
@@ -562,7 +571,7 @@ body {
   z-index: 21;
 }
 
-#handbook-nav-aside li[data-nav-path="true"] {
+#handbook-nav-aside li[data-nav-path="true"]:not([data-nav]) {
   top: var(
     --nav-sticky-top-concept,
     calc(

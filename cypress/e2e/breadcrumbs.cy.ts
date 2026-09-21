@@ -33,15 +33,15 @@ describe("handbook breadcrumbs", () => {
     cy.get("nav[aria-label='Breadcrumb']").should("not.contain", "HTTP");
   });
 
-  it("shows HTTP once on the Node.js HTTP topic", () => {
-    cy.visit("/backend/nodejs-http");
-    cy.contains("h1", "HTTP");
+  it("shows Core once on the Node.js Core topic", () => {
+    cy.visit("/backend/nodejs-core");
+    cy.contains("h1", "Core");
     cy.get("nav[aria-label='Breadcrumb']").then(($nav) => {
       const labels = [...$nav.find("li")].map((li) =>
         li.innerText.replaceAll("/", "").trim(),
       );
-      expect(labels.filter((label) => label === "HTTP")).to.have.length(1);
-      expect(labels).to.deep.equal(["Home", "Backend", "Node.js", "HTTP"]);
+      expect(labels.filter((label) => label === "Core")).to.have.length(1);
+      expect(labels).to.deep.equal(["Home", "Backend", "Node.js", "Core"]);
     });
   });
 });

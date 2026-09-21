@@ -28,7 +28,10 @@ function stickySpacing(nav: Element) {
 }
 
 function topVarName(element: HTMLElement) {
-  const kind = element.getAttribute("data-nav") ?? element.getAttribute("data-nav-pin");
+  const kind =
+    element.getAttribute("data-nav") ??
+    element.getAttribute("data-nav-pin") ??
+    element.querySelector<HTMLElement>(":scope > [data-nav]")?.getAttribute("data-nav");
   switch (kind) {
     case "track":
     case "subject":

@@ -7,9 +7,9 @@ Browser APIs beyond the document tree: storage, CORS, observers, History, URL, f
 ### Related docs
 
 * [Document](./3_js_browser.md) · [Events](./3_js_events.md) · [JS Interview](./3_js_interview.md)
-* [JS Core](./3_js_core.md) · [JSON](./3_js_core.md#json) · [JS Array](./3_js_array.md) · [JS Async](./3_js_async.md)
+* [JS Core](./3_js_core.md) · [JSON](./3_js_variables.md#json) · [JS Array](./3_js_array.md) · [JS Async](./3_js_async.md)
 * [HTML browser & rendering](./1_html.md) · [Web API](./6_web_api.md) · [HTTP cookies](./6_web_api_http.md#http-cookies) · [URI / URL anatomy](./6_web_api_core.md#uri-url--urn) · [CORS](./6_web_api_security.md#cors) · [PWA](./6_web_api_apps.md#pwa-progressive-web-app)
-* [OS files & file systems](./8_nodejs_core.md#files--file-systems)
+* [OS files & file systems](./8_nodejs_modules.md#files--file-systems)
 
 ### Main concepts
 
@@ -39,7 +39,7 @@ Browser APIs beyond the document tree: storage, CORS, observers, History, URL, f
 
 ### FormData, File API, FileReader
 
-**Definition:** APIs for reading user files and sending form data to a server. Disk paths, attributes, and OS file APIs live in [Files & file systems](./8_nodejs_core.md#files--file-systems) — the browser only sees a `File` the user picked, not the host tree.
+**Definition:** APIs for reading user files and sending form data to a server. Disk paths, attributes, and OS file APIs live in [Files & file systems](./8_nodejs_modules.md#files--file-systems) — the browser only sees a `File` the user picked, not the host tree.
 
 **How it works:**
 

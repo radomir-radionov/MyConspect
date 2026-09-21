@@ -6,7 +6,7 @@ Interview Q&A for Node.js.
 
 ### Related docs
 
-* [Node.js — Runtime](./8_nodejs_core.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Process](./8_nodejs_process.md) · [Node.js — Interview](./8_nodejs_interview.md)
+* [Node.js — Core](./8_nodejs_core.md) · [Node.js — Modules](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Additional](./8_nodejs_process.md) · [Node.js — Interview](./8_nodejs_interview.md)
 
 ### Sections
 
@@ -43,7 +43,7 @@ Useful for quick experiments and debugging snippets.
 
 **Definition:** A **file** is a named byte sequence plus attributes (permissions, owner, size, timestamps, read/write cursor). A **file system** maps that abstraction onto disks so programs do not care about hardware, and unique **paths** avoid name collisions.
 
-**How it works:** Hierarchical trees (root, directories, files as leaves) won over flat namespaces. Unix treats devices and dirs as files; open → read/write → close, with kernel **file descriptors**. Full notes: [Files & file systems](./8_nodejs_core.md#files--file-systems).
+**How it works:** Hierarchical trees (root, directories, files as leaves) won over flat namespaces. Unix treats devices and dirs as files; open → read/write → close, with kernel **file descriptors**. Full notes: [Files & file systems](./8_nodejs_modules.md#files--file-systems).
 
 </details>
 

@@ -132,7 +132,7 @@ export default function InstructionsPage() {
             <tr className="border-b border-zinc-100">
               <td className="py-2 pr-4 font-medium">Cluster</td>
               <td className="py-2 pr-4">A group of related pages</td>
-              <td className="py-2">Core, Browser, Additional</td>
+              <td className="py-2">Core, Browser, Async</td>
             </tr>
             <tr className="border-b border-zinc-100">
               <td className="py-2 pr-4 font-medium">Topic</td>

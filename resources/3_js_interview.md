@@ -6,7 +6,7 @@ Interview Q&A and coding tasks for JavaScript.
 
 ### Related docs
 
-- [Language](./3_js_core.md) · [Arrays](./3_js_array.md) · [Functions](./3_js_functions.md) · [Classes & Objects](./3_js_oop.md)
+- [Language](./3_js_core.md) · [Operators & Loops](./3_js_operators.md) · [Arrays](./3_js_array.md) · [Functions](./3_js_functions.md) · [Classes & Objects](./3_js_oop.md)
 - [Document](./3_js_browser.md) · [Events](./3_js_events.md) · [Browser APIs](./3_js_browser_extra.md) · [Async](./3_js_async.md)
 
 ### Sections
@@ -30,7 +30,7 @@ Interview Q&A and coding tasks for JavaScript.
 - `function` declarations **hoist** (`praise()` can appear above the body) — not line-by-line interpretation.
 - Engines **JIT**: interpreter for cold code; hot paths with stable types get compiled (may deopt). MDN still calls JS “interpreted” because that compile happens **at run time**, not AOT.
 
-Full pipeline: [JavaScript engine pipeline](#javascript-engine-pipeline). Memory model for frames vs objects: [Memory: stack and heap](#memory-stack-heap).
+Full pipeline: [JavaScript engine pipeline](#javascript-engine-pipeline). Memory model for frames vs objects: [Memory: stack and heap](./3_js_variables.md#memory-stack-heap).
 
 **Sources:** [MDN — What is JavaScript](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [Doka — memory](https://doka.guide/js/how-the-memory-works/)
 
@@ -41,7 +41,7 @@ Full pipeline: [JavaScript engine pipeline](#javascript-engine-pipeline). Memory
 
 ### Stack vs heap — what lives where?
 
-**Stack:** call frames (args, locals, return address), push/pop via stack pointer. **Heap:** dynamic / unknown-size data (objects, growing arrays); the frame stores a reference. `throw` unwinds frames (stack trace). Overflow ≠ heap OOM. Model + examples: [Memory: stack and heap](#memory-stack-heap).
+**Stack:** call frames (args, locals, return address), push/pop via stack pointer. **Heap:** dynamic / unknown-size data (objects, growing arrays); the frame stores a reference. `throw` unwinds frames (stack trace). Overflow ≠ heap OOM. Model + examples: [Memory: stack and heap](./3_js_variables.md#memory-stack-heap).
 
 </details>
 
@@ -106,7 +106,7 @@ let b = 2;
 
 A function that retains access to outer lexical bindings after the outer function returns.
 
-See **Scope & closures → closures** for loop/`var` pitfalls and GC.
+See [Data Types & Variables — Closures](./3_js_variables.md#closures) for loop/`var` pitfalls and GC.
 
 **Examples:**
 
@@ -141,7 +141,7 @@ n.set(1);
 doubled.get(); // 2 — lazy recompute on pull
 ```
 
-See **Advanced → Signals (TC39)** for dynamic deps, diamond, Watcher `effect`, `equals`, `untrack`.
+See [Signals (TC39)](./3_js_extra.md#signals) for dynamic deps, diamond, Watcher `effect`, `equals`, `untrack`.
 
 **Sources:** [proposal-signals](https://github.com/proposal-signals/proposal-signals)
 
@@ -896,7 +896,7 @@ arr.push(10, 20, 30);
 console.log(arr[-1]); // 30
 ```
 
-See **Advanced topics → Proxy and Reflect** for full trap list and pitfalls.
+Full trap list and pitfalls: [Proxy and Reflect](./3_js_oop.md#proxy-and-reflect).
 
 **Sources:** [javascript.info/proxy](https://learn.javascript.ru/proxy)
 
@@ -1080,7 +1080,7 @@ Three client storage mechanisms with different lifetime, scope, and server visib
 | Typical capacity | ~5MB | ~5MB | ~4KB per cookie |
 | API | `getItem`/`setItem` sync | same | `document.cookie` string |
 
-**How it works:** Web Storage stores **strings** (`JSON.stringify` / `JSON.parse` — [JS Core — JSON](./3_js_core.md#json)). Cookies travel on HTTP; IndexedDB is async + objects. Full comparison, Safari 7-day ITP, quotas, localForage: [Browser storage](#browser-storage). HTTP flags: [HTTP cookies](./6_web_api_http.md#http-cookies).
+**How it works:** Web Storage stores **strings** (`JSON.stringify` / `JSON.parse` — [JSON](./3_js_variables.md#json)). Cookies travel on HTTP; IndexedDB is async + objects. Full comparison, Safari 7-day ITP, quotas, localForage: [Browser storage](#browser-storage). HTTP flags: [HTTP cookies](./6_web_api_http.md#http-cookies).
 
 **When to use:**
 

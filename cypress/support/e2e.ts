@@ -1,5 +1,7 @@
 function nav(kind: "track" | "subject" | "cluster" | "topic", id: string) {
-  return cy.get(`#handbook-sidebar [data-nav="${kind}"][data-nav-id="${id}"]`);
+  return cy.get(
+    `#handbook-sidebar a[data-nav="${kind}"][data-nav-id="${id}"], #handbook-sidebar button[data-nav="${kind}"][data-nav-id="${id}"]`,
+  );
 }
 
 function sidebar() {

@@ -25,9 +25,9 @@ const groups: readonly NavGroup[] = [
               href: "/backend/nodejs#core",
               topics: [
                 {
-                  slug: "nodejs-runtime",
-                  href: "/backend/nodejs-runtime",
-                  title: "Runtime",
+                  slug: "nodejs-core",
+                  href: "/backend/nodejs-core",
+                  title: "Core",
                   blurb: "",
                   concepts: [],
                 },
@@ -89,6 +89,31 @@ const groups: readonly NavGroup[] = [
           ],
         },
       },
+      {
+        kind: "subject",
+        subject: {
+          slug: "javascript",
+          href: "/frontend/javascript",
+          title: "JavaScript",
+          blurb: "",
+          clusters: [
+            {
+              id: "async",
+              title: "Async",
+              href: "/frontend/javascript#async",
+              topics: [
+                {
+                  slug: "js-async",
+                  href: "/frontend/js-async",
+                  title: "Async",
+                  blurb: "",
+                  concepts: [],
+                },
+              ],
+            },
+          ],
+        },
+      },
     ],
   },
 ];
@@ -101,8 +126,68 @@ test("Node.js hub does not treat a same-named cluster hash as the current page",
   assert.deepEqual(trail("/backend/nodejs", "#http"), ["Home", "Backend", "Node.js"]);
 });
 
+test("Core cluster hash on the hub does not nest under Core", () => {
+  assert.deepEqual(trail("/backend/nodejs", "#core"), ["Home", "Backend", "Node.js"]);
+});
+
 test("HTTP topic does not duplicate the cluster name in the trail", () => {
   assert.deepEqual(trail("/backend/nodejs-http"), ["Home", "Backend", "Node.js", "HTTP"]);
+});
+
+test("Core topic does not duplicate the cluster name in the trail", () => {
+  assert.deepEqual(trail("/backend/nodejs-core"), ["Home", "Backend", "Node.js", "Core"]);
+});
+
+test("Additional topic does not duplicate the cluster name in the trail", () => {
+  const withAdditional: typeof groups = [
+    {
+      ...groups[0],
+      entries: [
+        {
+          kind: "subject",
+          subject: {
+            slug: "nodejs",
+            href: "/backend/nodejs",
+            title: "Node.js",
+            blurb: "",
+            clusters: [
+              {
+                id: "additional",
+                title: "Additional",
+                href: "/backend/nodejs#additional",
+                topics: [
+                  {
+                    slug: "nodejs-additional",
+                    href: "/backend/nodejs-additional",
+                    title: "Additional",
+                    blurb: "",
+                    concepts: [{ id: "child-process", title: "child_process" }],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+    ...groups.slice(1),
+  ];
+  const labels = { home: "Home", instructions: "Instructions" };
+  const trailAdditional = (pathname: string, hash = "") =>
+    crumbsForPath(withAdditional, pathname, hash, labels).map((item) => item.label);
+  assert.deepEqual(trailAdditional("/backend/nodejs-additional"), [
+    "Home",
+    "Backend",
+    "Node.js",
+    "Additional",
+  ]);
+  assert.deepEqual(trailAdditional("/backend/nodejs-additional", "#child-process"), [
+    "Home",
+    "Backend",
+    "Node.js",
+    "Additional",
+    "child_process",
+  ]);
 });
 
 test("HTTP topic still appends the open concept", () => {
@@ -125,6 +210,6 @@ test("multi-topic clusters stay in the trail", () => {
   ]);
 });
 
-test("a distinct cluster hash on the hub stays in the trail", () => {
-  assert.deepEqual(trail("/backend/nodejs", "#core"), ["Home", "Backend", "Node.js", "Core"]);
+test("JavaScript Async does not nest under Additional", () => {
+  assert.deepEqual(trail("/frontend/js-async"), ["Home", "Frontend", "JavaScript", "Async"]);
 });

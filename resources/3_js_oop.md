@@ -4,7 +4,7 @@ Covers objects, prototypes, classes, property descriptors, Proxy/Reflect, `this`
 
 ### Related docs
 
-* [JS Language](./3_js_core.md) · [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md)
+* [JS Language](./3_js_core.md) · [JS Data Types & Variables](./3_js_variables.md) · [JS Operators & Loops](./3_js_operators.md) · [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [Stack & heap](./3_js_variables.md#memory-stack-heap) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md)
 * [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [TypeScript classes](./5_ts_objects.md#classes) · [GRASP](./0_system_design_grasp.md)
 
 [← Back to JS hub](./3_js.md)
