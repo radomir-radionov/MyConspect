@@ -184,7 +184,7 @@ export function ConceptList({
   }, [concepts, mode, query]);
 
   if (concepts.length === 0) {
-    return <p className="text-zinc-600">{emptyMessage}</p>;
+    return <p className="text-zinc-600 dark:text-zinc-400">{emptyMessage}</p>;
   }
 
   return (
@@ -192,7 +192,7 @@ export function ConceptList({
       {groups.map((group) => (
         <section key={group.section ?? "default"}>
           {group.section ? (
-            <h2 className="mb-3 text-xl font-semibold tracking-tight text-zinc-900">
+            <h2 className="mb-3 text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
               {SECTION_LABELS[group.section]}
             </h2>
           ) : null}
@@ -230,7 +230,7 @@ function ConceptAccordionList({
     return (
       <article
         id={concept.id}
-        className="concept-list scroll-mt-20 rounded-xl border border-zinc-200 bg-white px-4 pt-4"
+        className="concept-list scroll-mt-20 rounded-xl border border-zinc-200 bg-white px-4 pt-4 dark:border-zinc-800 dark:bg-zinc-900"
       >
         <ConceptBody html={concept.html} query={notesQuery} />
       </article>
@@ -238,7 +238,7 @@ function ConceptAccordionList({
   }
 
   return (
-    <div className="concept-list divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white">
+    <div className="concept-list divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900">
       {concepts.map((concept) => {
         const isActive = concept.id === activeId;
         return (
@@ -247,7 +247,7 @@ function ConceptAccordionList({
             id={concept.id}
             className={
               isActive
-                ? "group scroll-mt-20 bg-yellow-50 px-4"
+                ? "group scroll-mt-20 bg-yellow-50 px-4 dark:bg-yellow-950"
                 : "group scroll-mt-20 px-4"
             }
             onToggle={(event) => {
@@ -257,7 +257,7 @@ function ConceptAccordionList({
               }
             }}
           >
-            <summary className="cursor-pointer py-3 text-left text-base font-medium text-zinc-900">
+            <summary className="cursor-pointer py-3 text-left text-base font-medium text-zinc-900 dark:text-zinc-50">
               <HighlightedText text={concept.title} query={query} />
             </summary>
             <ConceptBody html={concept.html} query={notesQuery} />

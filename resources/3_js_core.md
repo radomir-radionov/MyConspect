@@ -6,8 +6,8 @@ Covers ECMAScript runtime fundamentals: engines and modules. Types, memory (stac
 
 ### Related docs
 
-- [JS Data Types & Variables](./3_js_variables.md) · [Stack & heap](./3_js_variables.md#memory-stack-heap) · [globalThis](./3_js_variables.md#globalthis) · [JS Operators & Loops](./3_js_operators.md) · [Error handling](./3_js_operators.md#error-handling) · [Iterators](./3_js_operators.md#iterators) · [JS Arrays](./3_js_array.md) · [JS Additional](./3_js_extra.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md) · [Call stack](./3_js_async.md#call-stack)
-- [Web API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Computer science](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
+- [JS Data Types & Variables](./3_js_variables.md) · [Stack & heap](./3_js_variables.md#memory-stack-heap) · [globalThis](./3_js_variables.md#globalthis) · [JS Operators & Loops](./3_js_operators.md) · [Error handling](./3_js_operators.md#error-handling) · [Iterators](./3_js_operators.md#iterators) · [JS Arrays](./3_js_array.md) · [JS Additional](./3_js_extra.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [CORS / same-origin](./3_js_browser_extra.md#cors-same-origin) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md) · [Call stack](./3_js_async.md#call-stack)
+- [TypeScript](./5_ts.md) · [Web API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Computer science](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
 
 ### Main concepts
 
@@ -38,33 +38,54 @@ Topics also covered: **JIT**, **strict mode**, **ESM**. Types / stack-heap / var
 
 ### JavaScript & ECMAScript
 
-**Definition:**
+**Definition:** JavaScript is a high-level scripting language created to make web pages interactive. Programs are plain-text **scripts** (often embedded in HTML) that run without a separate compile step. **ECMAScript** (ECMA-262) is the language standard; “JavaScript” is the everyday name for that language plus **host APIs** (DOM in browsers, `fs` / network in Node, etc.). It has no technical relation to Java — the name came from marketing when it was briefly called LiveScript.
 
-ECMAScript is the standardized language spec; JavaScript is a conforming implementation with host APIs (DOM in browsers, `fs` in Node).
-
-| Trait     | Detail                                    |
-| --------- | ----------------------------------------- |
+| Trait     | Detail |
+| --------- | ------ |
 | Paradigms | Event-driven, functional, OOP, imperative |
-| Typing    | Dynamic — types checked at runtime        |
-| Execution | JIT compilation in modern engines         |
-| Modules   | `.mjs` or `type="module"` for ESM         |
+| Typing    | Dynamic — types checked at runtime |
+| Execution | Engine parses → compiles → runs (JIT optimizations); see [Engine and runtime](#engine-and-runtime) |
+| Modules   | `.mjs` or `type="module"` for ESM |
+| Hosts     | Browser, Node/Deno/Bun, embedded engines on other devices |
+
+**How it works:**
+
+- **Engine (VM):** each host embeds an engine. Common codenames: **V8** (Chrome, Opera, Edge, Node), **SpiderMonkey** (Firefox), **JavaScriptCore** / Nitro / SquirrelFish (Safari). Legacy: **Chakra** (IE / early Edge). Feature support is often discussed by engine name (“supported in V8”).
+- **Pipeline (basics):** parse script → compile to machine code → run; engines keep optimizing hot paths. Deeper JIT/AOT distinction → [Engine and runtime](#engine-and-runtime).
+- **In-browser capabilities:** manipulate HTML/CSS; react to user input; network requests (XHR/`fetch`, historically AJAX/COMET); cookies / dialogs; client storage (`localStorage`, etc.). What the language *can* do depends on the **host**, not on ECMAScript alone.
+- **In-browser limits (safety):** no arbitrary disk / OS access; file/camera/mic need explicit user gestures or permission; cross-tab/window DOM access blocked across different origins (**Same-Origin Policy** — scheme + host + port); cross-origin network reads need the remote side’s agreement (CORS headers). Outside the browser (Node, extensions with granted permissions) those sandbox rules do not apply the same way. SOP/CORS detail → [CORS and same-origin policy](./3_js_browser_extra.md#cors-same-origin).
+- **Why JS won the browser:** full HTML/CSS integration, simple tasks stay simple, shipping enabled by default in every major browser — unique combination among browser technologies. Also used for servers, mobile (RN/Hermes), desktop (Electron), etc.
+- **Languages “over” JS:** many languages **transpile** to JavaScript (TypeScript, CoffeeScript, Flow, Dart→JS, Brython, Kotlin/JS, …). You still need JS to debug what the browser/Node actually runs. Typing layer today → [TypeScript](./5_ts.md).
+
+**When to use:** Browser UI and any host that embeds a JS engine. Prefer TypeScript (or similar) for large typed codebases, but learn JS first. Skip assuming browser APIs exist on the server (and vice versa).
+
+**Pluses and minuses:**
+
+| + | − |
+| --- | --- |
+| Only ubiquitous browser language with HTML/CSS built in. | Name confuses people with Java; dynamic typing can hide bugs until runtime. |
+| Same language on client and many servers (Node, Deno, Bun). | Capability set is host-dependent — security sandboxes differ. |
+| Huge ecosystem; engines converge on ECMAScript yearly editions. | Transpile-to-JS stack adds tools; must still reason about emitted JS. |
 
 **Examples:**
 
+```html
+<!-- Script in the page — runs as the document loads -->
+<script>
+  document.body.textContent = "Hello from a script";
+</script>
+```
+
 ```js
-// ECMAScript module — strict by default
+// ECMAScript module — strict by default; host APIs come from the environment
 export function greet(name) {
   return `Hello, ${name}`;
 }
 ```
 
-**Thoughts:**
+**Thoughts:** Interview framing: ECMAScript = language spec; JavaScript = that language + host APIs. “What can JS do?” always means “in which environment?” Browser sandbox (SOP, no arbitrary FS) is a feature, not a bug. Brendan Eich’s first engine was SpiderMonkey (1995); modern engines implement the same ECMA-262 with minor edge-case differences.
 
-Host environments add APIs; the language itself is defined by ECMA-262.
-
-Brendan Eich created the first engine (SpiderMonkey) in 1995. Today V8, SpiderMonkey, and JavaScriptCore all implement the same spec with minor edge-case differences.
-
-**Sources:** [javascript.info/intro](https://learn.javascript.ru/intro)
+**Sources:** [javascript.info — Intro](https://javascript.info/intro) · [MDN — What is JavaScript?](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [MDN — JavaScript technologies overview](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/JavaScript_technologies_overview) · [ECMA-262](https://tc39.es/ecma262/)
 
 </details>
 

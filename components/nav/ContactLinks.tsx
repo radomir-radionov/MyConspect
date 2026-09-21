@@ -11,7 +11,7 @@ export function ContactLinks() {
           rel="noopener noreferrer"
           aria-label={contact.label}
           title={contact.label}
-          className="inline-flex size-9 items-center justify-center rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+          className="inline-flex size-9 items-center justify-center rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
         >
           <ContactIcon id={contact.id} />
         </a>

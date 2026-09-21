@@ -53,7 +53,7 @@ export function Breadcrumbs({
               className="flex shrink-0 items-center gap-x-0.5"
             >
               {index === 0 ? null : (
-                <span aria-hidden="true" className="text-zinc-300">
+                <span aria-hidden="true" className="text-zinc-300 dark:text-zinc-600">
                   /
                 </span>
               )}
@@ -73,14 +73,14 @@ export function Breadcrumbs({
                     }
                     queueHandbookHref(href);
                   }}
-                  className="cursor-pointer rounded-md px-1.5 py-0.5 font-medium text-zinc-500 transition-colors hover:bg-yellow-50 hover:text-zinc-900"
+                  className="cursor-pointer rounded-md px-1.5 py-0.5 font-medium text-zinc-500 transition-colors hover:bg-yellow-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-yellow-950/60 dark:hover:text-zinc-50"
                 >
                   {item.label}
                 </Link>
               ) : (
                 <span
                   aria-current={isLast ? "page" : undefined}
-                  className="rounded-md bg-yellow-50 px-1.5 py-0.5 font-medium text-zinc-900 ring-1 ring-inset ring-yellow-200"
+                  className="rounded-md bg-yellow-50 px-1.5 py-0.5 font-medium text-zinc-900 ring-1 ring-inset ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800"
                 >
                   {item.label}
                 </span>

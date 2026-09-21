@@ -42,8 +42,8 @@ export function SidebarDockButton({
       <span
         className={
           rail
-            ? "inline-flex h-full w-full items-center justify-center rounded-none border-r border-zinc-200 bg-white text-zinc-600 transition-colors duration-200 ease-out group-hover:bg-zinc-50 group-hover:text-zinc-900 motion-reduce:transition-none"
-            : "inline-flex size-7 items-center justify-center rounded-md border border-transparent bg-white text-zinc-600 shadow-sm transition-colors duration-200 ease-out group-hover:border-zinc-400 group-hover:bg-zinc-50 group-hover:text-zinc-900 motion-reduce:transition-none"
+            ? "inline-flex h-full w-full items-center justify-center rounded-none border-r border-zinc-200 bg-white text-zinc-600 transition-colors duration-200 ease-out group-hover:bg-zinc-50 group-hover:text-zinc-900 motion-reduce:transition-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:group-hover:bg-zinc-900 dark:group-hover:text-zinc-100"
+            : "inline-flex size-7 items-center justify-center rounded-md border border-transparent bg-white text-zinc-600 shadow-sm transition-colors duration-200 ease-out group-hover:border-zinc-400 group-hover:bg-zinc-50 group-hover:text-zinc-900 motion-reduce:transition-none dark:bg-zinc-950 dark:text-zinc-400 dark:group-hover:border-zinc-500 dark:group-hover:bg-zinc-900 dark:group-hover:text-zinc-100"
         }
       >
         <SidebarDockGlyph collapsed={collapsed} />

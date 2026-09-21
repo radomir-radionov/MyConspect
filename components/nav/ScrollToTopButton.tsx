@@ -39,8 +39,8 @@ export function ScrollToTopButton({ label }: { label: string }) {
       onClick={scrollToTop}
       className={
         visible
-          ? "fixed right-4 bottom-4 z-10 inline-flex size-10 translate-y-0 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 shadow-sm transition-[opacity,transform] duration-200 ease-out hover:bg-zinc-50 hover:text-zinc-900 motion-reduce:transition-none"
-          : "pointer-events-none fixed right-4 bottom-4 z-10 inline-flex size-10 translate-y-2 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 opacity-0 shadow-sm transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none"
+          ? "fixed right-4 bottom-4 z-10 inline-flex size-10 translate-y-0 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 shadow-sm transition-[opacity,transform] duration-200 ease-out hover:bg-zinc-50 hover:text-zinc-900 motion-reduce:transition-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+          : "pointer-events-none fixed right-4 bottom-4 z-10 inline-flex size-10 translate-y-2 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 opacity-0 shadow-sm transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
       }
     >
       <svg

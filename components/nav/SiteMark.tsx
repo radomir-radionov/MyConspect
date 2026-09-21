@@ -3,7 +3,7 @@ export function SiteMark() {
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
-      className="size-6 shrink-0 text-zinc-900"
+      className="size-6 shrink-0 text-zinc-900 dark:text-zinc-50"
     >
       <rect
         x="4"

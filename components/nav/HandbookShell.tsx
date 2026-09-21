@@ -21,7 +21,7 @@ const SIDEBAR_MOTION =
 const SIDEBAR_MOBILE_FRAME =
   "fixed inset-x-0 top-14 z-30 flex h-[calc(100dvh-3.5rem)] w-full flex-col";
 const SIDEBAR_DESKTOP =
-  "md:pointer-events-auto md:z-20 md:cursor-pointer md:shrink-0 md:translate-x-0 md:overflow-visible md:border-r md:border-zinc-200";
+  "md:pointer-events-auto md:z-20 md:cursor-pointer md:shrink-0 md:translate-x-0 md:overflow-visible md:border-r md:border-zinc-200 dark:md:border-zinc-800";
 const SIDEBAR_DESKTOP_OPEN = `${SIDEBAR_DESKTOP} md:relative md:inset-auto md:top-auto md:right-auto md:bottom-auto md:left-auto md:h-auto md:w-80 md:shadow-none`;
 const SIDEBAR_DESKTOP_COLLAPSED = `${SIDEBAR_DESKTOP} md:absolute md:inset-y-0 md:left-0 md:top-0 md:bottom-0 md:h-auto md:w-10 md:shadow-none`;
 const SIDEBAR_DESKTOP_PEEK = `${SIDEBAR_DESKTOP} md:absolute md:inset-y-0 md:left-0 md:top-0 md:bottom-0 md:z-30 md:h-auto md:w-80 md:shadow-lg`;
@@ -169,10 +169,10 @@ export function HandbookShell({
           <aside
             className={
               searchSheet
-                ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white ${SIDEBAR_MOTION} ${SIDEBAR_DESKTOP_OPEN}`
+                ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${SIDEBAR_DESKTOP_OPEN}`
                 : navOpen
-                  ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white ${SIDEBAR_MOTION} ${desktopClass}`
-                  : `pointer-events-none ${SIDEBAR_MOBILE_FRAME} -translate-x-full border-zinc-200 bg-white ${SIDEBAR_MOTION} ${desktopClass}`
+                  ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
+                  : `pointer-events-none ${SIDEBAR_MOBILE_FRAME} -translate-x-full border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
             }
             onPointerEnter={onPointerEnter}
             onPointerLeave={onPointerLeave}

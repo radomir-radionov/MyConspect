@@ -21,7 +21,7 @@ export function HighlightedText({
     <span className={className}>
       {parts.map((part, index) =>
         part.toLowerCase() === needle.toLowerCase() ? (
-          <mark key={`${part}-${index}`} className="rounded-sm bg-amber-100 text-zinc-900">
+          <mark key={`${part}-${index}`} className="rounded-sm bg-amber-100 text-zinc-900 dark:bg-amber-900/50 dark:text-amber-50">
             {part}
           </mark>
         ) : (

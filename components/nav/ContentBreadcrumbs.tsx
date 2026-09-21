@@ -26,7 +26,7 @@ export function ContentBreadcrumbs({
   }
 
   return (
-    <div className="sticky top-0 z-[1] border-b border-zinc-200 bg-zinc-50/95 backdrop-blur-sm">
+    <div className="sticky top-0 z-[1] border-b border-zinc-200 bg-zinc-50/95 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-950/95">
       <div className="flex min-w-0 items-center overflow-x-auto overscroll-x-contain py-2 pr-4 pl-4 md:pl-10 sm:pr-6">
         <Breadcrumbs items={crumbs} compact />
       </div>

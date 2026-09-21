@@ -7,6 +7,7 @@ import { INSTRUCTIONS_HREF, type ChromeCopy, type SearchMode } from "@/lib/nav";
 import { SITE_NAME } from "@/lib/site";
 import { ContactLinks } from "./ContactLinks";
 import { SiteMark } from "./SiteMark";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function SiteHeader({
   query,
@@ -27,12 +28,12 @@ export function SiteHeader({
 }) {
   return (
     <div id={HANDBOOK_HEADER_ID} className="relative z-40 shrink-0">
-      <header className="border-b border-zinc-200 bg-white">
+      <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
         <div className="flex h-14 min-w-0 items-stretch overflow-hidden">
-          <div className="sticky left-0 z-10 flex shrink-0 items-center bg-white pl-(--chrome-inline) pr-2">
+          <div className="sticky left-0 z-10 flex shrink-0 items-center bg-white pl-(--chrome-inline) pr-2 dark:bg-zinc-950">
             <Link
               href="/"
-              className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md px-1.5 text-zinc-900 hover:bg-zinc-100"
+              className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md px-1.5 text-zinc-900 hover:bg-zinc-100 dark:text-zinc-50 dark:hover:bg-zinc-800"
             >
               <SiteMark />
               <span className="hidden text-sm font-semibold tracking-tight sm:inline">
@@ -40,7 +41,7 @@ export function SiteHeader({
               </span>
               <span className="sr-only sm:hidden">{SITE_NAME}</span>
             </Link>
-            <span aria-hidden="true" className="ml-2 h-6 w-px shrink-0 bg-zinc-200" />
+            <span aria-hidden="true" className="ml-2 h-6 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800" />
           </div>
           <div className="flex min-w-0 flex-1 items-center px-3">
             <div className="relative w-full min-w-0 max-w-2xl">
@@ -71,8 +72,8 @@ export function SiteHeader({
                 }
                 className={
                   query.length > 0
-                    ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[6.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[9.75rem] [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
-                    : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[4.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[7.75rem] [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                    ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[6.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[9.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                    : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[4.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[7.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
                 }
               />
             </label>
@@ -83,7 +84,7 @@ export function SiteHeader({
                   aria-label={chrome.clearSearch}
                   title={chrome.clearSearch}
                   onClick={() => onQueryChange("")}
-                  className="inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
+                  className="inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                 >
                   <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4">
                     <path
@@ -99,7 +100,7 @@ export function SiteHeader({
               <div
                 role="radiogroup"
                 aria-label={chrome.searchMode}
-                className="flex h-7 shrink-0 rounded-md bg-zinc-100 p-0.5"
+                className="flex h-7 shrink-0 rounded-md bg-zinc-100 p-0.5 dark:bg-zinc-800"
               >
                 <SearchModeButton
                   checked={mode === "titles"}
@@ -117,14 +118,19 @@ export function SiteHeader({
             </div>
             </div>
           </div>
-          <div className="sticky right-0 z-10 flex shrink-0 items-center bg-white pr-(--chrome-inline) pl-2 md:hidden">
-            <span aria-hidden="true" className="mr-2 h-6 w-px shrink-0 bg-zinc-200" />
+          <div className="sticky right-0 z-10 hidden shrink-0 items-center gap-0.5 bg-white pr-(--chrome-inline) pl-2 md:flex dark:bg-zinc-950">
+            <span aria-hidden="true" className="mr-1 h-6 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800" />
+            <ThemeToggle />
+          </div>
+          <div className="sticky right-0 z-10 flex shrink-0 items-center bg-white pr-(--chrome-inline) pl-2 md:hidden dark:bg-zinc-950">
+            <span aria-hidden="true" className="mr-2 h-6 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800" />
+            <ThemeToggle />
             <button
               type="button"
               className={
                 navOpen
-                  ? "inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-900 bg-zinc-900 text-white"
-                  : "inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-300 bg-zinc-50 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-100"
+                  ? "ml-1 inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
+                  : "ml-1 inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-300 bg-zinc-50 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-100 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-800"
               }
               aria-expanded={navOpen}
               aria-controls={HANDBOOK_SIDEBAR_ID}
@@ -155,7 +161,7 @@ export function DrawerFooter({
   const onInstructions = pathname === INSTRUCTIONS_HREF;
 
   return (
-    <div className="flex shrink-0 items-center justify-between gap-2 border-t border-zinc-200 px-2 py-1.5">
+    <div className="flex shrink-0 items-center justify-between gap-2 border-t border-zinc-200 px-2 py-1.5 dark:border-zinc-800">
       <div className="flex min-w-0 items-center gap-1">
         <ContactLinks />
         <Link
@@ -166,8 +172,8 @@ export function DrawerFooter({
           aria-current={onInstructions ? "page" : undefined}
           className={
             onInstructions
-              ? "inline-flex size-9 items-center justify-center rounded-md text-zinc-900"
-              : "inline-flex size-9 items-center justify-center rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+              ? "inline-flex size-9 items-center justify-center rounded-md text-zinc-900 dark:text-zinc-50"
+              : "inline-flex size-9 items-center justify-center rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           }
         >
           <InstructionsIcon />
@@ -175,10 +181,10 @@ export function DrawerFooter({
       </div>
       <time
         dateTime={lastUpdatedIso}
-        className="pr-1 text-right text-[11px] leading-tight text-zinc-500"
+        className="pr-1 text-right text-[11px] leading-tight text-zinc-500 dark:text-zinc-400"
       >
         <span className="block">{chrome.lastUpdated}</span>
-        <span className="tabular-nums text-zinc-600">{lastUpdatedLabel}</span>
+        <span className="tabular-nums text-zinc-600 dark:text-zinc-300">{lastUpdatedLabel}</span>
       </time>
     </div>
   );
@@ -241,8 +247,8 @@ function SearchModeButton({
       onClick={() => onSelect(value)}
       className={
         checked
-          ? "inline-flex size-6 cursor-pointer items-center justify-center rounded text-zinc-900 bg-white shadow-sm sm:h-auto sm:w-auto sm:px-1.5"
-          : "inline-flex size-6 cursor-pointer items-center justify-center rounded text-zinc-500 hover:text-zinc-800 sm:h-auto sm:w-auto sm:px-1.5"
+          ? "inline-flex size-6 cursor-pointer items-center justify-center rounded bg-white text-zinc-900 shadow-sm sm:h-auto sm:w-auto sm:px-1.5 dark:bg-zinc-700 dark:text-zinc-50"
+          : "inline-flex size-6 cursor-pointer items-center justify-center rounded text-zinc-500 hover:text-zinc-800 sm:h-auto sm:w-auto sm:px-1.5 dark:text-zinc-400 dark:hover:text-zinc-100"
       }
     >
       <SearchModeIcon mode={value} />

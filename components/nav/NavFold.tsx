@@ -105,7 +105,7 @@ export function NavChevron({ open, large = false }: { open: boolean; large?: boo
   return (
     <span
       aria-hidden="true"
-      className={`inline-block shrink-0 origin-center leading-none text-zinc-500 transition-transform duration-200 ease-out motion-reduce:transition-none ${open ? "rotate-90" : "rotate-0"} ${large ? "text-lg" : "text-base"}`}
+      className={`inline-block shrink-0 origin-center leading-none text-zinc-500 transition-transform duration-200 ease-out motion-reduce:transition-none dark:text-zinc-400 ${open ? "rotate-90" : "rotate-0"} ${large ? "text-lg" : "text-base"}`}
     >
       ▸
     </span>

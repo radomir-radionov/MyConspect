@@ -2,7 +2,7 @@
 
 import { BODY_QUERY_MIN_LENGTH } from "@/lib/nav";
 
-const MARK_CLASS = "rounded-sm bg-amber-100 text-zinc-900";
+const MARK_CLASS = "rounded-sm bg-amber-100 text-zinc-900 dark:bg-amber-900/50 dark:text-amber-50";
 
 export function highlightQueryInHtml(html: string, query: string): string {
   const needle = query.trim();

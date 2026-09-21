@@ -1,6 +1,9 @@
 import { bundledLanguages, codeToHtml, type BundledLanguage } from "shiki";
 
-const THEME = "light-plus";
+const THEMES = {
+  light: "light-plus",
+  dark: "dark-plus",
+} as const;
 
 const LANG_ALIASES: Record<string, BundledLanguage> = {
   js: "javascript",
@@ -43,7 +46,11 @@ async function renderCodeBlock(code: string, langLabel: string): Promise<string>
 
   if (lang) {
     try {
-      highlighted = await codeToHtml(code, { lang, theme: THEME });
+      highlighted = await codeToHtml(code, {
+        lang,
+        themes: THEMES,
+        defaultColor: false,
+      });
     } catch {
       highlighted = plainCodeHtml(code);
     }

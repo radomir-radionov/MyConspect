@@ -43,7 +43,7 @@ function RowTitle({
   return (
     <span className="flex min-w-0 flex-1 items-center">
       {marker ? (
-        <span aria-hidden="true" className="mr-1.5 w-3 shrink-0 text-center text-zinc-500">
+        <span aria-hidden="true" className="mr-1.5 w-3 shrink-0 text-center text-zinc-500 dark:text-zinc-400">
           {open ? "−" : "+"}
         </span>
       ) : null}
@@ -116,20 +116,20 @@ export const ConceptLink = memo(function ConceptLink({
       }}
       className={
         conceptActive
-          ? `block w-full cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-yellow-200 ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}${onPath ? " sticky" : ""}`
-          : `block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800 ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}`
+          ? `block w-full cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800 ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}${onPath ? " sticky" : ""}`
+          : `block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800 dark:text-zinc-300 dark:hover:bg-yellow-950/60 dark:hover:text-zinc-50 ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}`
       }
     >
       <span className="flex items-baseline justify-between gap-2">
         <HighlightedText text={concept.title} query={query} />
         {snippet ? (
-          <span className="shrink-0 text-[10px] font-medium tracking-wide text-zinc-400 uppercase">
+          <span className="shrink-0 text-[10px] font-medium tracking-wide text-zinc-400 uppercase dark:text-zinc-500">
             {CHROME.inNotes}
           </span>
         ) : null}
       </span>
       {snippet ? (
-        <span className="mt-0.5 block text-xs font-normal leading-snug text-zinc-500">
+        <span className="mt-0.5 block text-xs font-normal leading-snug text-zinc-500 dark:text-zinc-400">
           <HighlightedText text={snippet} query={query} />
         </span>
       ) : null}
@@ -250,8 +250,8 @@ function InterviewSectionNav({
               }}
               className={
                 sectionActive || sectionOpen
-                  ? `flex w-full ${NAV_ROW_GAP} cursor-pointer items-center rounded-md bg-yellow-50 px-2 py-1.5 pl-4 text-left text-sm font-medium text-zinc-900 ring-1 ring-yellow-200${onPath ? " sticky" : ""}`
-                  : `flex w-full ${NAV_ROW_GAP} cursor-pointer items-center rounded-md px-2 py-1.5 pl-4 text-left text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800`
+                  ? `flex w-full ${NAV_ROW_GAP} cursor-pointer items-center rounded-md bg-yellow-50 px-2 py-1.5 pl-4 text-left text-sm font-medium text-zinc-900 ring-1 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800${onPath ? " sticky" : ""}`
+                  : `flex w-full ${NAV_ROW_GAP} cursor-pointer items-center rounded-md px-2 py-1.5 pl-4 text-left text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800 dark:text-zinc-300 dark:hover:bg-yellow-950/60 dark:hover:text-zinc-50`
               }
             >
               <RowTitle
@@ -458,7 +458,7 @@ export function ClusterRow({
         aria-current={active ? "location" : undefined}
         aria-expanded={clusterOpen}
         className={`${rowClass(isHitCluster || active || clusterOpen, stickHeader, "pl-4")}${
-          pinInParent ? " sticky bg-white" : ""
+          pinInParent ? " sticky bg-white dark:bg-[var(--chrome-surface)]" : ""
         } ${NAV_ROW_GAP}`}
       >
         <RowTitle text={cluster.title} query={query} marker open={clusterOpen} />

@@ -152,7 +152,7 @@ export const TopicSidebar = memo(function TopicSidebar({
       >
         <div data-nav-sticky-cover="" aria-hidden="true" />
         {filtered.length === 0 ? (
-          <p className="px-2 text-sm text-zinc-500">
+          <p className="px-2 text-sm text-zinc-500 dark:text-zinc-400">
             {mode === "notes" ? chrome.searchNotesEmpty : chrome.searchEmpty}
           </p>
         ) : (
@@ -302,8 +302,8 @@ function TrackGroup({
           {chevron}
         </Link>
       )}
-      <NavFold open={trackOpen} instant={searching || !trackOpen}>
-        <ul className="mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2">
+      <NavFold open={trackOpen} instant={searching || !trackOpen} unbox>
+        <ul className="mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2 dark:border-yellow-800">
           <NavGuide level="track" />
           {isLeafTrack && group.leafTopic ? (
             <TopicRow topic={group.leafTopic} hideTitle />
