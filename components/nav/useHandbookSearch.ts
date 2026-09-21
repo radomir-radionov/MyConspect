@@ -115,6 +115,11 @@ export function useHandbookSearch(
     writeUi({ query: "" });
   }
 
+  /** Keep the current page when the search box is later cleared (e.g. after picking a hit). */
+  function commitSearchLocation() {
+    restoreHrefRef.current = null;
+  }
+
   function changeMode(nextMode: SearchMode) {
     writeUi({ mode: nextMode });
     modeRef.current = nextMode;
@@ -144,6 +149,7 @@ export function useHandbookSearch(
     searchGroups,
     changeQuery,
     clearQuery,
+    commitSearchLocation,
     changeMode,
   };
 }

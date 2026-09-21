@@ -54,12 +54,19 @@ export function HandbookShell({
     closeNav();
     setSearchSheetDismissed(true);
   }, [closeNav]);
-  const { query, deferredQuery, mode, searchGroups, changeQuery, changeMode, clearQuery } =
-    useHandbookSearch(groups, revealSearchNav);
+  const {
+    query,
+    deferredQuery,
+    mode,
+    searchGroups,
+    changeQuery,
+    changeMode,
+    commitSearchLocation,
+  } = useHandbookSearch(groups, revealSearchNav);
   const selectNavResult = useCallback(() => {
     dismissNav();
-    clearQuery();
-  }, [clearQuery, dismissNav]);
+    commitSearchLocation();
+  }, [commitSearchLocation, dismissNav]);
   const onQueryChange = useCallback(
     (value: string) => {
       if (value.trim().length === 0) {
