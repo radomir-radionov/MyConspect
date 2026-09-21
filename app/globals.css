@@ -571,7 +571,7 @@ body {
   z-index: 21;
 }
 
-#handbook-nav-aside li[data-nav-path="true"]:not([data-nav]) {
+#handbook-nav-aside [data-nav-path="true"]:not([data-nav]) {
   top: var(
     --nav-sticky-top-concept,
     calc(

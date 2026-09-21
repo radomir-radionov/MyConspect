@@ -83,11 +83,17 @@ export const ConceptLink = memo(function ConceptLink({
   concept,
   isFirstConcept,
   conceptActive,
+  onPath = false,
+  indentClass = "pl-4",
+  rowGapClass = "",
 }: {
   topicHref: string;
   concept: NavConcept;
   isFirstConcept: boolean;
   conceptActive: boolean;
+  onPath?: boolean;
+  indentClass?: string;
+  rowGapClass?: string;
 }) {
   const { query, mode, pathname, onNavigate, goToPath } = useSidebarChrome();
   const snippet = conceptBodySnippet(concept, query, mode);
@@ -95,6 +101,7 @@ export const ConceptLink = memo(function ConceptLink({
     <a
       href={conceptHref(topicHref, concept.id)}
       data-concept-id={concept.id}
+      data-nav-path={onPath ? "true" : undefined}
       data-search-hit={isFirstConcept ? "true" : undefined}
       data-search-in={snippet ? "notes" : undefined}
       onClick={(event) => {
@@ -109,8 +116,8 @@ export const ConceptLink = memo(function ConceptLink({
       }}
       className={
         conceptActive
-          ? "block cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-yellow-200"
-          : "block cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800"
+          ? `block w-full cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-yellow-200 ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}${onPath ? " sticky" : ""}`
+          : `block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800 ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}`
       }
     >
       <span className="flex items-baseline justify-between gap-2">
@@ -148,18 +155,15 @@ function ConceptItems({
         const isFirstConcept = first?.pathname === topic.href && first.hash === `#${concept.id}`;
         const onPath = conceptActive && !searching;
         return (
-          <li
-            key={concept.id}
-            data-nav-path={onPath ? "true" : undefined}
-            className={[index === 0 ? NAV_ROW_GAP : "mt-0.5", indentClass, onPath ? "sticky bg-yellow-50" : undefined]
-              .filter(Boolean)
-              .join(" ")}
-          >
+          <li key={concept.id} className="contents">
             <ConceptLink
               topicHref={topic.href}
               concept={concept}
               isFirstConcept={isFirstConcept}
               conceptActive={conceptActive}
+              onPath={onPath}
+              indentClass={indentClass}
+              rowGapClass={index === 0 ? NAV_ROW_GAP : "mt-0.5"}
             />
           </li>
         );
