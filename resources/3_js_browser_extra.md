@@ -16,7 +16,8 @@ Browser APIs beyond the document tree: storage, CORS, observers, History, URL, f
 | Area | Topics |
 |------|--------|
 | **UI** | Dimensions, scroll, coordinates, debounce, throttle, `rAF`, idle callbacks |
-| **APIs** | Storage, CORS, observers, History API, `URL` / `URLSearchParams`, Web Components, File API |
+| **APIs** | Storage, CORS, observers, History API, `URL` / `URLSearchParams`, Web Components, File / Blob / binary |
+| **Windows** | Popups, `postMessage`, iframes |
 
 ### Sections
 
@@ -25,7 +26,9 @@ Browser APIs beyond the document tree: storage, CORS, observers, History, URL, f
 - [Media queries](#media-queries-in-javascript)
 - [Browser APIs & UI patterns](#browser-apis--ui-patterns)
 - [Debounce](#debounce) · [Throttle](#throttle)
-- [Browser storage & security](#browser-storage) · [CORS](#cors-same-origin) · [Observers](#intersection-resize-observer) · [History API](#history-api) · [URL / URLSearchParams](#url--urlsearchparams)
+- [FormData / File / Blob](#formdata-file-api-filereader) · [createObjectURL](#url-createobjecturl)
+- [Cross-tab / windows](#cross-tab-communication) · [Clickjacking](#clickjacking-pointer)
+- [Browser storage](#browser-storage) · [CORS](#cors-same-origin) · [Observers](#intersection-resize-observer) · [History API](#history-api) · [URL / URLSearchParams](#url--urlsearchparams)
 - [Interview](./3_js_interview.md)
 
 ---
@@ -35,7 +38,7 @@ Browser APIs beyond the document tree: storage, CORS, observers, History, URL, f
 <a name="formdata-file-api-filereader"></a>
 
 <details>
-  <summary>FormData, File API, FileReader Api</summary>
+  <summary>FormData, File API, FileReader</summary>
 
 ### FormData, File API, FileReader
 
@@ -43,65 +46,42 @@ Browser APIs beyond the document tree: storage, CORS, observers, History, URL, f
 
 **How it works:**
 
-- `FormData` wraps form fields or manual append; multipart body for `fetch`.
-- File input `files` is `FileList`; drag-drop `dataTransfer.files`.
-- `FileReader` async reads file as text, data URL, or ArrayBuffer via events.
+- `FormData` wraps form fields or manual append; multipart body for `fetch`/`XHR`. `set` replaces same-name fields; `append` can add duplicates. File field: `append(name, blob, fileName)`.
+- `File` extends `Blob` with `name` / `lastModified`. From `<input type="file">` → `input.files[0]`, or drag-drop `dataTransfer.files`.
+- `Blob` = immutable binary + optional MIME `type`. Build with `new Blob(parts, { type })`; slice with `blob.slice`. Download/preview via `URL.createObjectURL` (revoke when done) or `FileReader.readAsDataURL`.
+- `FileReader` async reads Blob/File as text, data URL, or `ArrayBuffer` (`load` / `error` events). Prefer `blob.arrayBuffer()` / `blob.text()` when available.
+- **Binary core:** `ArrayBuffer` = fixed raw bytes (not a JS `Array`). Views: TypedArrays (`Uint8Array`, …) or `DataView` for mixed formats. `TextDecoder` / `TextEncoder` convert UTF-8 ↔ bytes.
 
-**When to use:**
-
-Avatar upload; CSV import; drag-drop text file preview.
+**When to use:** Avatar upload; CSV import; canvas → `toBlob` then FormData; decode fetched binary as text.
 
 #### Common pitfalls
 
-Forgetting `enctype` not needed with fetch FormData; reading huge file with `readAsDataURL`; not revoking object URLs.
-
-#### FormData
-
-Collects key/value pairs from a form (including files) for `fetch` or `XHR`.
+Setting `Content-Type` manually on FormData (breaks boundary); never revoking object URLs; treating `ArrayBuffer` like `Array`; expecting `fetch` upload progress (use XHR — [HTTP in JS](./6_web_api_http.md#http-in-javascript)).
 
 **Pluses and minuses:**
 
 | + | − |
 |------|------|
-| `FormData` easy uploads | Large files block if read fully to memory |
-| `FileReader` flexible formats | Event-based API verbose |
-| Works with fetch/XHR | No built-in progress on fetch (XHR has progress) |
+| `FormData` easy multipart | Large files → memory if fully buffered |
+| `Blob` + object URL for preview | Must `revokeObjectURL` |
+| Typed arrays for binary ops | Fixed length — no `splice` |
 
 **Examples:**
 
 ```js
-const form = document.querySelector('form');
 const data = new FormData(form);
-// or manually:
-data.append('avatar', fileInput.files[0]);
-
+data.append('image', canvasBlob, 'shot.png');
 await fetch('/upload', { method: 'POST', body: data });
+
+const buf = await file.arrayBuffer();
+const text = new TextDecoder().decode(new Uint8Array(buf));
 ```
 
-#### File input
-
-```js
-input.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  console.log(file.name, file.size, file.type);
-});
-```
-
-#### FileReader
-
-Reads file contents asynchronously. Events: `load`, `error`, `progress`.
-
-```js
-const reader = new FileReader();
-reader.onload = (e) => console.log(e.target.result);
-reader.readAsText(file);       // text
-reader.readAsDataURL(file);    // base64
-reader.readAsArrayBuffer(file); // binary
-```
-
-**Sources:** [javascripttutorial FormData](https://www.javascripttutorial.net/web-apis/javascript-formdata/) · [MDN FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader)
+**Sources:** [javascript.info/formdata](https://javascript.info/formdata) · [javascript.info/file](https://javascript.info/file) · [javascript.info/blob](https://javascript.info/blob) · [javascript.info/arraybuffer-binary-arrays](https://javascript.info/arraybuffer-binary-arrays) · [javascript.info/text-decoder](https://javascript.info/text-decoder) · [MDN FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader)
 
 </details>
+
+<a name="url-createobjecturl"></a>
 
 <details>
   <summary>URL: createObjectURL()</summary>
@@ -144,7 +124,7 @@ img.src = url;
 URL.revokeObjectURL(url);
 ```
 
-**Sources:** [MDN createObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static)
+**Sources:** [javascript.info/blob](https://javascript.info/blob) · [MDN — URL.createObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static)
 
 </details>
 
@@ -464,9 +444,9 @@ document.querySelector('#section-3').scrollIntoView({
 
 **Thoughts:** `getBoundingClientRect()` is relative to viewport; add `scrollY` for document coordinates.
 
-**Sources:**
+**Window size / page scroll:** Prefer `document.documentElement.clientWidth/Height` for the content area (excludes scrollbar). `window.innerWidth` includes scrollbar. Full document height is unreliable on one property — use `Math.max(body/documentElement scroll/offset/client heights)`. Read scroll with `window.scrollY` / `scrollX` (aliases `pageYOffset` / `pageXOffset`). Scroll with `scrollTo` / `scrollBy` / `elem.scrollIntoView`.
 
-[javascript.info/size-and-scroll](https://learn.javascript.ru/size-and-scroll)
+**Sources:** [javascript.info/size-and-scroll](https://javascript.info/size-and-scroll) · [javascript.info/size-and-scroll-window](https://javascript.info/size-and-scroll-window)
 
 ---
 
@@ -500,6 +480,9 @@ Using client coords for document-positioned elements without scroll; ignoring `t
 | `getBoundingClientRect()` | Viewport (changes on scroll) |
 | `clientX` / `clientY` (events) | Viewport |
 | `pageX` / `pageY` | Document (includes scroll) |
+| `document.elementFromPoint(x, y)` | Topmost element at viewport point (`null` if outside window) |
+
+Convert viewport → document: add `window.scrollY` / `scrollX` to `getBoundingClientRect()` edges.
 
 **Pluses and minuses:**
 
@@ -518,9 +501,7 @@ document.addEventListener('click', (e) => {
 });
 ```
 
-**Sources:**
-
-[javascript.info/coordinates](https://learn.javascript.ru/coordinates)
+**Sources:** [javascript.info/coordinates](https://javascript.info/coordinates)
 
 ---
 
@@ -571,9 +552,7 @@ selection.removeAllRanges();
 selection.addRange(range);
 ```
 
-**Sources:**
-
-[javascript.info/selection-range](https://learn.javascript.ru/selection-range)
+**Sources:** [javascript.info/selection-range](https://javascript.info/selection-range)
 
 ---
 
@@ -614,8 +593,11 @@ Same-origin = protocol + host + port. `sessionStorage` is **per tab** (shared wi
 
 **How it works:**
 
-SOP blocks direct JS across origins. `postMessage` delivers a `MessageEvent`; the receiver **must** check `event.origin`. The `storage` event fires on **other** documents that share that storage area — not on the writer.
+SOP blocks direct JS across origins. `postMessage` delivers a `MessageEvent`; the receiver **must** check `event.origin` and prefer a concrete `targetOrigin` (avoid `*`). The `storage` event fires on **other** documents that share that storage area — not on the writer.
 
+- **Popups:** `window.open(url, name, params)` — browsers block unless called from a user gesture (`onclick`). With size params → popup window; otherwise often a tab. Returns a window ref; popup uses `window.opener`. Call `win.close()` / check `win.closed`. Focus/move/resize are heavily limited.
+- **`postMessage`:** `win.postMessage(data, targetOrigin)`; listen with `addEventListener('message', …)` (not `onmessage` alone for reliability). Event: `data`, `origin`, `source`.
+- **iframes:** `iframe.contentWindow` / `contentDocument` (document only if same-origin). Hierarchy: `window.frames`, `parent`, `top`. `sandbox` adds restrictions (scripts/forms/top-nav/same-origin) unless allowlisted.
 - **`localStorage` + `storage`:** `setItem` in A; `storage` in B/C (`e.key`, `e.newValue`). Strings only; races — not a message bus.
 - **`window.open` / `opener`:** same origin may call `opener.fn()`; otherwise `opener.postMessage`.
 - **`SharedWorker`:** each tab `new SharedWorker(url)` + `port`; worker `onconnect` fans out. Same origin; weaker support than `BroadcastChannel`.
@@ -663,21 +645,24 @@ channel.onmessage = (e) => { if (e.data.type === 'LOGOUT') redirectToLogin(); };
 channel.close();
 ```
 
-**Thoughts:** Cross-origin → `postMessage` + origin check. Same-origin broadcast → `BroadcastChannel`.
+**Thoughts:** Cross-origin → `postMessage` + origin check. Same-origin broadcast → `BroadcastChannel`. Popups need a user gesture.
 
-**Sources:** [MDN postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) · [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel) · [storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event)
+**Sources:** [javascript.info/popup-windows](https://javascript.info/popup-windows) · [javascript.info/cross-window-communication](https://javascript.info/cross-window-communication) · [MDN postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) · [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel) · [storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event)
+
+</details>
+
+<a name="clickjacking-pointer"></a>
+
+<details>
+  <summary>Clickjacking (pointer)</summary>
 
 ### Clickjacking
 
-**Definition:** Attacker embeds your site in a hidden iframe and tricks the user into clicking your UI under a deceptive overlay.
+**Definition:** Transparent iframe overlays your authenticated UI so a click on a decoy page hits your controls — full essay in [Clickjacking](./7_special_security.md#clickjacking).
 
-**How it works:** `X-Frame-Options: DENY` or CSP `frame-ancestors 'none'` (or allowlist trusted parents only).
+**How it works:** Prefer CSP `frame-ancestors`; fallback `X-Frame-Options` (HTTP header only, not `<meta>`). `SameSite` cookies reduce cookie-based framed sessions but do **not** replace framing controls. Frame-busting JS alone is weak.
 
-**Sources:**
-
-[javascript.info/cross-window-communication](https://learn.javascript.ru/cross-window-communication) · [MDN BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel) · [MDN storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event)
-
----
+**Sources:** [javascript.info/clickjacking](https://javascript.info/clickjacking) · [7_special_security — Clickjacking](./7_special_security.md#clickjacking)
 
 </details>
 
@@ -692,9 +677,9 @@ channel.close();
 
 **How it works:**
 
-- **Cookies** — HTTP, not a general store. Server sets `Set-Cookie`; browser sends a `Cookie` header on later requests. Default is a **session cookie** (no `Max-Age`/`Expires` → gone when the browser session ends). ~4 KB per cookie; values must be encoded so they do not break the request. Awkward `document.cookie` string → libraries are common. Tracking cookies vs privacy: browsers restrict this; prefer Web Storage / IndexedDB for client-only data.
-- **Web Storage** — `localStorage` and `sessionStorage`: same sync string KV API, different lifetime. `sessionStorage` is per tab and dies when the tab closes. `localStorage` is origin-scoped and *intended* to last until cleared, but browsers still evict. MDN: **5 MiB local + 5 MiB session** per origin; over quota → `QuotaExceededError` (`try/catch`). Writes block the main thread — avoid frequent/large writes. Any same-origin script (including a malicious extension) can read it — **not for tokens**. Private/incognito: `localStorage` behaves like session storage and is wiped when the private session ends. Third-party iframes may be denied storage if third-party cookies are off.
-- **IndexedDB** — async transactional object DB (also in workers). Stores structured-cloneable values (objects, blobs), indexes, much larger quotas (disk-based, browser-specific). Same-origin. Overkill for a theme flag; right for offline caches, drafts, large datasets. Raw API is event/`IDBRequest`-heavy — wrappers are common.
+- **Cookies** — HTTP, not a general store. Server sets `Set-Cookie`; browser sends a `Cookie` header on later requests. Default is a **session cookie** (no `Max-Age`/`Expires` → gone when the browser session ends). Flags: `Path`, `Domain`, `Secure`, `HttpOnly`, `SameSite`. ~4 KB per cookie; encode values (`encodeURIComponent`). Awkward `document.cookie` string → libraries are common. Tracking cookies vs privacy: browsers restrict this; prefer Web Storage / IndexedDB for client-only data. Full HTTP flags: [HTTP cookies](./6_web_api_http.md#http-cookies).
+- **Web Storage** — `localStorage` and `sessionStorage`: same sync string KV API (`setItem`/`getItem`/`removeItem`/`clear`/`key`/`length`), different lifetime. Prefer methods over property access (avoids colliding with built-ins; `storage` event only fires for method writes). `sessionStorage` is per tab and dies when the tab closes. `localStorage` is origin-scoped and *intended* to last until cleared, but browsers still evict. MDN: **5 MiB local + 5 MiB session** per origin; over quota → `QuotaExceededError` (`try/catch`). Writes block the main thread — avoid frequent/large writes. Any same-origin script (including a malicious extension) can read it — **not for tokens**. Private/incognito: `localStorage` behaves like session storage and is wiped when the private session ends. Third-party iframes may be denied storage if third-party cookies are off.
+- **IndexedDB** — async transactional object DB (also in workers). `indexedDB.open(name, version)` → `onupgradeneeded` to create stores/indexes. Stores structured-cloneable values (objects, blobs), key ranges, much larger quotas (disk-based, browser-specific). Same-origin. Overkill for a theme flag; right for offline caches, drafts, large datasets. Raw API is event/`IDBRequest`-heavy — wrappers (`idb`, localForage) are common.
 - **localForage** — `localStorage`-like API that is **async**. Default driver: IndexedDB (WebSQL as a legacy option); falls back to `localStorage`. Can store JS objects/blobs; JSON stringify/parse is automatic on the localStorage backend.
 
 | | Cookies | sessionStorage | localStorage | IndexedDB |
@@ -753,7 +738,7 @@ const fromForage = await localforage.getItem('user');
 
 **Thoughts:** Cookies for what the **server** needs on the next request; Web Storage for small client prefs; IndexedDB (or localForage) for large/async data.
 
-**Sources:** [MDN — Web Storage](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) · [MDN — quotas & eviction](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria) · [MDN — cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies) · [MDN — IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) · [localForage](https://github.com/localForage/localForage)
+**Sources:** [javascript.info/cookie](https://javascript.info/cookie) · [javascript.info/localstorage](https://javascript.info/localstorage) · [javascript.info/indexeddb](https://javascript.info/indexeddb) · [MDN — Web Storage](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) · [MDN — quotas & eviction](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria) · [MDN — cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies) · [MDN — IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) · [localForage](https://github.com/localForage/localForage)
 
 </details>
 
@@ -780,7 +765,7 @@ const fromForage = await localforage.getItem('user');
 
 **Thoughts:** SOP is the default isolate; CORS is server headers that let **page JS** read a response — not a server firewall.
 
-**Sources:** [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
+**Sources:** [javascript.info/fetch-crossorigin](https://javascript.info/fetch-crossorigin) · [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
 
 </details>
 
@@ -895,7 +880,7 @@ window.addEventListener('popstate', (e) => {
 renderRoute(location.pathname);
 ```
 
-**Sources:** [javascript.info/modifying-document](https://learn.javascript.ru/modifying-document) · [MDN History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
+**Sources:** [javascript.info/history-api](https://javascript.info/history-api) · [MDN History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
 
 </details>
 
@@ -939,7 +924,7 @@ url.searchParams.getAll('category'); // ['html', 'js']
 
 **Thoughts:** Parse with `URL`; mutate query with `searchParams`, never with string concat.
 
-**Sources:** [MDN — URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) · [MDN — URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+**Sources:** [javascript.info/url](https://javascript.info/url) · [MDN — URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) · [MDN — URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
 </details>
 

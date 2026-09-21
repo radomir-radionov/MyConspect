@@ -38,6 +38,37 @@ Transpilers, bundling concepts, bundlers, and code quality.
 </details>
 
 <details>
+  <summary>Polyfills vs transpilers</summary>
+
+### Polyfills vs transpilers
+
+**Definition:** A **transpiler** rewrites **syntax** the old engine cannot parse. A **polyfill** is a script that **adds missing APIs** (functions/methods) at runtime. Most modern apps need both ideas, even if Vite/esbuild do the heavy lifting.
+
+**How it works:**
+
+- Transpile: `height ?? 100` → `(height !== undefined && height !== null) ? height : 100`. Tools: Babel, TypeScript emit, esbuild/swc.
+- Polyfill: if `!Math.trunc`, assign an implementation. Libraries: `core-js`, often via `@babel/preset-env` `useBuiltIns`.
+- Syntax cannot be polyfilled — you must transpile. Missing methods can be polyfilled without rewriting call sites.
+- Check support: [compat-table](https://compat-table.github.io/compat-table/es6/) (language), [caniuse.com](https://caniuse.com/) (web APIs).
+
+**When to use:** Ship modern JS to older targets; avoid shipping unused `core-js` — prefer `useBuiltIns: 'usage'` or explicit imports.
+
+**Examples:**
+
+```js
+// Polyfill pattern
+if (!Math.trunc) {
+  Math.trunc = function (number) {
+    return number < 0 ? Math.ceil(number) : Math.floor(number);
+  };
+}
+```
+
+**Sources:** [javascript.info/polyfills](https://javascript.info/polyfills) · [core-js](https://github.com/zloirock/core-js)
+
+</details>
+
+<details>
   <summary>Babel</summary>
 
 ### Babel

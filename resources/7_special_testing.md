@@ -547,6 +547,27 @@ Scenario: Successful login
 | Language | Code tests | Often natural language |
 | Audience | Developers | Devs + PM + QA |
 
+**Mocha-style `describe` / `it` (tutorial / classic BDD runners):**
+
+- Spec = tests + docs + examples: `describe("pow", …)` groups; `it("raises to n-th power", …)` is one case.
+- Prefer **one assertion per `it`** — if the first `assert` fails, later ones never run.
+- Nested `describe` groups related cases; `before` / `after` / `beforeEach` / `afterEach` for setup/teardown.
+- Chai-style checks: `assert.equal` (`==`), `assert.strictEqual` (`===`), `assert.isNaN`, …
+- Flow: write failing spec → implement → green → add cases. Same spirit as [TDD](#tdd-test-driven-development); modern stack often uses Jest/Vitest with the same `describe`/`it` shape — see [Tests and AAA](#tests-and-aaa).
+
+```js
+describe("pow", function () {
+  it("2^3 is 8", function () {
+    assert.equal(pow(2, 3), 8);
+  });
+  it("for negative n returns NaN", function () {
+    assert.isNaN(pow(2, -1));
+  });
+});
+```
+
+**Sources:** [javascript.info/testing-mocha](https://javascript.info/testing-mocha)
+
 ---
 
 </details>

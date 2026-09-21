@@ -421,7 +421,13 @@ WebSocket upgrades an HTTP connection to a persistent full-duplex channel for re
 | Higher latency    | Low latency push               |
 | Simple            | Requires connection management |
 
-**How it works:** Browser sends `Upgrade: websocket`. Server responds `101 Switching Protocols`. After that, frames go both ways. Heartbeats detect dead peers. Scale with sticky sessions or a pub/sub bus (Redis) behind multiple Node processes.
+**How it works:** Browser sends `Upgrade: websocket` (+ `Sec-WebSocket-*`). Server responds `101 Switching Protocols`. After that, frames go both ways (text or binary). Prefer `wss://` (TLS; proxies less likely to break the tunnel). Heartbeats detect dead peers. Scale with sticky sessions or a pub/sub bus (Redis) behind multiple Node processes.
+
+- Events: `open`, `message`, `error`, `close`. Send: `socket.send(data)` (string / Blob / ArrayBuffer).
+- `binaryType`: `'blob'` (default) or `'arraybuffer'`.
+- Backpressure: check `socket.bufferedAmount` before flooding `send`.
+- Close: `socket.close(code, reason)` — `1000` normal; `1006` means unclean (no close frame). `readyState`: 0 CONNECTING → 1 OPEN → 2 CLOSING → 3 CLOSED.
+- No built-in reconnect/auth — libraries or manual retry.
 
 **When to use:** Chat, live dashboards, collaborative cursors. Prefer SSE when the server only needs to **push** (notifications). Prefer HTTP for request/response CRUD.
 
@@ -436,15 +442,17 @@ WebSocket upgrades an HTTP connection to a persistent full-duplex channel for re
 
 ```js
 const ws = new WebSocket('wss://chat.example.com');
-ws.onmessage = (e) => console.log(JSON.parse(e.data));
-ws.send(JSON.stringify({ type: 'join', room: 'general' }));
+ws.binaryType = 'arraybuffer';
+ws.onopen = () => ws.send(JSON.stringify({ type: 'join', room: 'general' }));
+ws.onmessage = (e) => console.log(e.data);
+ws.onclose = (e) => console.log(e.code, e.wasClean);
 ```
 
 **Thoughts:** Upgrade HTTP once, then speak frames — not a replacement for REST CRUD.
 
 **Sources:**
 
-[MDN — WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+[javascript.info/websocket](https://javascript.info/websocket) · [MDN — WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
 
 ---
 
@@ -471,6 +479,16 @@ These patterns deliver server updates to clients with different trade-offs betwe
 | Direction | Both ways          | Server → client only |
 | Data      | Binary + text      | Text only            |
 | Protocol  | `ws://` / `wss://` | HTTP                 |
+| Reconnect | Manual             | Built-in             |
+
+**How it works:**
+
+- **Short polling:** client asks on an interval — simple, delayed, noisy when idle.
+- **Long polling:** server holds the request until a message (or timeout/`502`); client reconnects immediately. Server must handle many pending connections.
+- **SSE:** `Content-Type: text/event-stream`. Fields: `data:`, optional `id:` (→ `Last-Event-ID` on reconnect), `retry:` (ms), `event:` (custom name → `addEventListener`). Auto-reconnect unless `close()` or fatal status. Cross-origin needs CORS; credentials via `{ withCredentials: true }`.
+- **WebSocket:** see [WebSocket](#websocket) above.
+
+**When to use:** Rare pushes → long polling or SSE. High-frequency bidirectional → WebSocket. CRUD still HTTP.
 
 **Examples:**
 
@@ -478,11 +496,27 @@ These patterns deliver server updates to clients with different trade-offs betwe
 // Server-Sent Events
 const es = new EventSource('/api/events');
 es.onmessage = (e) => console.log(e.data);
+es.addEventListener('bye', (e) => console.log(e.data));
+// es.close();
+```
+
+```js
+// Long polling sketch
+async function subscribe() {
+  const res = await fetch('/subscribe');
+  if (res.status === 502) return subscribe(); // timeout — reconnect
+  if (!res.ok) {
+    await new Promise((r) => setTimeout(r, 1000));
+    return subscribe();
+  }
+  console.log(await res.text());
+  return subscribe();
+}
 ```
 
 **Sources:**
 
-[MDN — Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
+[javascript.info/long-polling](https://javascript.info/long-polling) · [javascript.info/server-sent-events](https://javascript.info/server-sent-events) · [javascript.info/websocket](https://javascript.info/websocket) · [MDN — Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
 
 ---
 

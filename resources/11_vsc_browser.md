@@ -22,6 +22,7 @@ Editor productivity, extensions, and browser DevTools for frontend development.
 ### Sections
 
 - [VS Code](#vs-code)
+- [Browser DevTools](#browser-devtools)
 - [Ubuntu](#ubuntu)
 
 ---
@@ -253,6 +254,42 @@ cat (Get-PSReadlineOption).HistorySavePath
 **Thoughts:** DevTools explains *why*; CrUX p75 decides *if it shipped*.
 
 **Sources:** [web.dev — TBT](https://web.dev/articles/tbt) · [Chrome DevTools Performance](https://developer.chrome.com/docs/devtools/performance)
+
+</details>
+
+<a name="browser-devtools"></a>
+## Browser DevTools
+
+<details>
+  <summary>Debugging JS (Sources)</summary>
+
+### Debugging JS (Sources)
+
+**Definition:** The **Sources** panel pauses script execution so you can inspect variables, the call stack, and step through code. Three ways to pause: a **breakpoint**, the `debugger` statement, or pause-on-exceptions (when DevTools is open).
+
+**How it works:**
+
+- Click a line number to set a breakpoint; right-click → **conditional** breakpoint (stops only when an expression is truthy).
+- `debugger;` in source pauses only when DevTools is open — browsers ignore it otherwise.
+- While paused: **Scope** (locals/globals), **Watch** (expressions), **Call Stack** (nested calls — click a frame to jump).
+- Stepping: Resume (F8), Step over (F10 — skip into nested calls), Step into (F11), Step out (Shift+F11). Right-click a line → **Continue to here**.
+- `console.log` / Esc console for print debugging without pausing. Console API detail → [JS Language — Console](./3_js_core.md).
+
+**When to use:** Reproduce a wrong value or unexpected branch; prefer breakpoints over flooding logs. Skip logging secrets in production builds.
+
+**Examples:**
+
+```js
+function hello(name) {
+  const phrase = `Hello, ${name}!`;
+  debugger; // pauses here if DevTools is open
+  say(phrase);
+}
+```
+
+**Thoughts:** Pause → read Scope/Call Stack → step. That loop beats guessing from scattered `console.log`s.
+
+**Sources:** [javascript.info/debugging-chrome](https://javascript.info/debugging-chrome) · [Chrome DevTools — debug JavaScript](https://developer.chrome.com/docs/devtools/javascript/)
 
 </details>
 

@@ -14,7 +14,7 @@ Primitives, coercion, stack/heap memory, collections, JSON, bindings, scope, `gl
 | Area              | Topics                                                          |
 | ----------------- | --------------------------------------------------------------- |
 | **Memory**        | Stack frames vs heap objects, value vs reference                |
-| **Types**         | Primitives, coercion, strings, `Symbol`, objects, `Map`/`Set`, JSON |
+| **Types**         | Primitives, coercion, numbers, `Date`, strings, `Symbol`, objects, `Map`/`Set`, JSON |
 | **Bindings**      | `let` / `const` / `var`, naming, reassignment                   |
 | **Scope**         | Global, function, block; `globalThis`; TDZ; hoisting            |
 | **Patterns**      | Rest / spread / destructuring, closures                         |
@@ -23,7 +23,7 @@ Primitives, coercion, stack/heap memory, collections, JSON, bindings, scope, `gl
 
 > Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
-- [Data types](#data-types) · [Memory: stack and heap](#memory-stack-heap)
+- [Data types](#data-types) · [Memory: stack and heap](#memory-stack-heap) · [Numbers](#numbers) · [Date](#date)
 - [Scope & closures](#scope-closures)
 - [Interview](./3_js_interview.md)
 
@@ -95,7 +95,7 @@ function createDogArray() {
 
 **Thoughts:** *Frames are cheap LIFO; anything with unknown or lasting size is a heap object behind a pointer — GC, not `free()`.*
 
-**Sources:** [Doka — how memory works](https://doka.guide/js/how-the-memory-works/) · [MDN Memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management) · [javascript.info/garbage-collection](https://learn.javascript.ru/garbage-collection)
+**Sources:** [Doka — how memory works](https://doka.guide/js/how-the-memory-works/) · [MDN Memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management) · [javascript.info/garbage-collection](https://javascript.info/garbage-collection)
 
 </details>
 
@@ -255,7 +255,7 @@ s === 'hi';               // false — object wrapper vs primitive
 | Frequent add/delete | Literal config / DTO shapes |
 | `.size` needed      | Prototype chain / methods   |
 
-**Sources:** [javascript.info/types](https://learn.javascript.ru/types) · [map-set](https://learn.javascript.ru/map-set)
+**Sources:** [javascript.info/types](https://javascript.info/types) · [javascript.info/map-set](https://javascript.info/map-set)
 
 </details>
 
@@ -327,7 +327,71 @@ null === undefined;       // false
 '' === 0;                 // false
 ```
 
-**Sources:** [javascript.info/type-conversions](https://learn.javascript.ru/type-conversions) · [comparison](https://learn.javascript.ru/comparison)
+**Sources:** [javascript.info/type-conversions](https://javascript.info/type-conversions) · [javascript.info/comparison](https://javascript.info/comparison)
+
+</details>
+
+<details>
+  <summary>Numbers</summary>
+
+<a name="numbers"></a>
+
+### Numbers
+
+**Definition:** Regular JS numbers are IEEE-754 **float64** doubles (safe integers ±`2^53−1`). `BigInt` covers larger integers. Write large/small literals with `_` separators, `e` notation, or `0x` / `0b` / `0o` prefixes.
+
+**How it works:**
+
+- Literals: `1_000_000_000`, `1e9`, `1e-6`, `0xff`, `0b11111111`, `0o377`.
+- `num.toString(base)` — base `2`…`36` (hex colors, short IDs). Call on a literal with two dots: `255..toString(16)` or `(255).toString(16)`.
+- Rounding: `Math.floor` / `ceil` / `round` / `trunc`; precision via multiply-divide or `toFixed(n)` (**returns a string**).
+- Float gotcha: `0.1 + 0.2 !== 0.3` — compare with epsilon or round money (`toFixed` / integer cents).
+- Checks: prefer `Number.isNaN` / `Number.isFinite` / `Number.isInteger` / `Number.isSafeInteger` over global `isNaN` / `isFinite` (those coerce).
+- Parsing: `parseInt(str, radix)` / `parseFloat(str)` stop at first invalid char; `Number(str)` / `+str` require the whole string to be numeric (after trim).
+- **`BigInt`:** suffix `n` or `BigInt(...)`. All ops stay BigInt (`5n / 2n === 2n`). **Cannot mix** with Number (`1n + 2` throws) — convert explicitly. `==` can coerce (`1 == 1n`), `===` does not. Unary `+bigint` is invalid.
+
+**When to use:** Arithmetic, IDs, measurements. Money → round carefully or use integer minor units / `BigInt` / a decimal library. Never use `new Number()`.
+
+#### Common pitfalls
+
+```js
+0.1 + 0.2;                 // 0.30000000000000004
+(12.34).toFixed(1);        // "12.3" — string, not number
+parseInt("100px", 10);     // 100
+Number("100px");           // NaN
+isNaN("hello");            // true — coerces
+Number.isNaN("hello");     // false
+123456..toString(36);      // "2n9c"
+```
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| One number type for most math | Binary float imprecision |
+| Rich `Math.*` + radix convert | `toFixed` returns string |
+| Safe integer helpers | Integers beyond `MAX_SAFE_INTEGER` lose precision |
+
+**Examples:**
+
+```js
+Math.round(1.23456 * 100) / 100; // 1.23
++(1.005).toFixed(2);             // often 1 — float trap; prefer cents
+
+Number.isFinite(Infinity);       // false
+Number.isSafeInteger(2 ** 53);   // false
+Number.MAX_SAFE_INTEGER;         // 9007199254740991
+
+1n + 2n;           // 3n
+// 1n + 2;         // TypeError — mix banned
+Number(1n) + 2;    // 3
+1 == 1n;           // true
+1 === 1n;          // false
+```
+
+**Thoughts:** *Treat float equality as approximate; treat `parseInt` vs `Number` as “prefix vs whole-string.”*
+
+**Sources:** [javascript.info/number](https://javascript.info/number) · [javascript.info/bigint](https://javascript.info/bigint) · [MDN Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) · [MDN Math](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math)
 
 </details>
 
@@ -344,6 +408,9 @@ null === undefined;       // false
 - Template literals: `` `Hello ${name}` `` embed expressions; multiline without `\n`.
 - Escape sequences: `\n`, `\t`, `\u{1F600}` (unicode).
 - Common methods: `slice`, `includes`, `startsWith`, `trim`, `split`, `replace`, `replaceAll`.
+- Strings are **iterable** (`for...of` / `Array.from`) and handle surrogate pairs correctly — index/`length` still count UTF-16 code units.
+- Surrogate pairs (emoji, many CJK): `'😂'.length === 2`; use `codePointAt` / `fromCodePoint` / `for...of`, not `charAt` / `charCodeAt` alone.
+- Visually identical strings may differ by mark order — `str.normalize()` (NFC) before compare/store.
 
 **When to use:** User-facing text, URL building, `split`/`join` parsing, regex on strings. Use `trim()` on form input; `includes` for simple search before RegExp.
 
@@ -368,9 +435,12 @@ line 2`;
 ["a", "b"].join("-");     // 'a-b'
 "hello".includes("ell");  // true
 "hello".replaceAll("l", "L"); // 'heLLo'
+[..."𝒳😂"];               // ['𝒳', '😂'] — for..of / spread use code points
+"S\u0307\u0323".normalize() === "S\u0323\u0307".normalize(); // true
+'𝒳'.codePointAt(0).toString(16); // '1d4b3' — full code point
 ```
 
-**Sources:** [javascript.info/string](https://learn.javascript.ru/string) · [template-strings](https://learn.javascript.ru/template-strings)
+**Sources:** [javascript.info/string](https://javascript.info/string) · [javascript.info/unicode](https://javascript.info/unicode) · [javascript.info/primitives-methods](https://javascript.info/primitives-methods)
 
 </details>
 
@@ -384,10 +454,12 @@ line 2`;
 **How it works:**
 
 - Created with `Symbol('description')` or `Symbol.for('globalKey')` (global registry).
+- `Symbol.keyFor(sym)` returns the registry key for **global** symbols only (`undefined` for local ones); use `sym.description` for any symbol’s label.
 - Used as object keys that won't collide with string keys or other libraries.
 - Symbol keys are **omitted** from `Object.keys`, `JSON.stringify`, and `for...in`.
 - Use `Object.getOwnPropertySymbols(obj)` or `Reflect.ownKeys` to list them.
-- Well-known symbols: `Symbol.iterator`, `Symbol.toStringTag`, `Symbol.hasInstance`.
+- `Object.assign` **does** copy symbol properties (unlike `for...in` / `Object.keys`).
+- Well-known symbols: `Symbol.iterator`, `Symbol.toPrimitive`, `Symbol.toStringTag`, `Symbol.hasInstance`.
 
 **When to use:** Private-ish object metadata, library extension points, defining custom iterables. Prefer `class` private fields `#x` for true class privacy in modern code.
 
@@ -408,9 +480,13 @@ const user = { name: "Ann", [id]: 42 };
 Object.keys(user);                    // ['name']
 user[id];                             // 42
 Symbol.for("app") === Symbol.for("app"); // true — global registry
+Symbol.keyFor(Symbol.for("app"));     // "app"
+Symbol.keyFor(Symbol("app"));         // undefined — not global
+
+Object.assign({}, user)[id];          // 42 — symbols are copied
 ```
 
-**Sources:** [javascript.info/symbol](https://learn.javascript.ru/symbol)
+**Sources:** [javascript.info/symbol](https://javascript.info/symbol)
 
 </details>
 
@@ -470,7 +546,7 @@ const pairs = Object.fromEntries(
 );
 ```
 
-**Sources:** [javascript.info/object](https://learn.javascript.ru/object) · [object-keys](https://learn.javascript.ru/keys-values-entries)
+**Sources:** [javascript.info/object](https://javascript.info/object) · [javascript.info/keys-values-entries](https://javascript.info/keys-values-entries)
 
 </details>
 
@@ -749,7 +825,62 @@ obj = null; // eventually GC removes the entry
 new Set([{ a: 1 }, { a: 1 }]).size; // 2
 ```
 
-**Sources:** [javascript.info/map-set](https://learn.javascript.ru/map-set) · [weakmap-weakset](https://learn.javascript.ru/weakmap-weakset) · [MDN Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+**Sources:** [javascript.info/map-set](https://javascript.info/map-set) · [javascript.info/weakmap-weakset](https://javascript.info/weakmap-weakset) · [MDN Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+
+</details>
+
+<details>
+  <summary>Date</summary>
+
+<a name="date"></a>
+
+### Date
+
+**Definition:** `Date` stores a single timestamp — milliseconds since **1 Jan 1970 UTC** (Unix epoch). Local getters/setters use the runtime timezone; `getUTC*` / `setUTC*` use UTC.
+
+**How it works:**
+
+- Create: `new Date()` (now), `new Date(ms)`, `new Date(dateString)` (same algorithm as `Date.parse`), `new Date(y, monthIndex, …)` — **month is 0–11**.
+- Read: `getFullYear`, `getMonth` (0–11), `getDate` (day of month 1–31), `getDay` (weekday 0=Sun…6=Sat), `getHours`…, `getTime()`, `getTimezoneOffset()`.
+- Write: `setFullYear` / `setMonth` / `setDate` / `setHours`… / `setTime(ms)` — out-of-range values **autocorrect** (e.g. Jan 32 → Feb 1).
+- Diff: `date1 - date2` or `getTime()` difference → milliseconds. `Date.now()` is current timestamp without allocating a `Date`.
+- Prefer `getFullYear()` — never use deprecated `getYear()`.
+
+**When to use:** Timestamps, elapsed time, simple calendar math via autocorrection. Display → `Intl.DateTimeFormat` ([Intl](./3_js_extra.md#intl)). Complex calendars / time zones → consider Temporal (when available) or a dedicated library.
+
+#### Common pitfalls
+
+```js
+new Date(2011, 0, 1);     // 1 Jan 2011 local — month 0 = January
+new Date("2017-01-26");   // date-only → UTC midnight, then shown in local TZ
+date.getDate();           // day of month — not getDay (weekday)
+date.setDate(0);          // last day of previous month
+```
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Built-in, ms precision | Month 0-based; date-string parsing quirks |
+| Autocorrection for offsets | Mutable; mutating shared dates is a bug source |
+| Easy elapsed-time diffs | No first-class TZ arithmetic |
+
+**Examples:**
+
+```js
+const start = Date.now();
+// …work…
+const elapsedMs = Date.now() - start;
+
+const d = new Date(2016, 1, 28);
+d.setDate(d.getDate() + 2); // 1 Mar 2016 (leap year)
+
+Date.parse("2017-01-26");   // ms or NaN
+```
+
+**Thoughts:** *Epoch ms is the portable value; `Date` is a view with local/UTC accessors — month index and mutable APIs are the interview traps.*
+
+**Sources:** [javascript.info/date](https://javascript.info/date) · [MDN Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) · [MDN Date.parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse)
 
 </details>
 
@@ -852,8 +983,10 @@ JSON.parse("{ invalid");     // SyntaxError
 **How it works:**
 
 - `globalThis` is the same object across realms in a given JS environment.
-- In strict mode, bare `this` at top level is `undefined`, not global — use `globalThis` when you truly need global.
-- Prefer module scope or explicit exports over polluting global.
+- In browsers the global is also `window`; in Node `global`. Prefer `globalThis` for portable code.
+- `var` globals and function declarations in classic scripts become properties of the global object; `let`/`const` do **not**.
+- In strict mode / modules, bare `this` at top level is `undefined` — use `globalThis` when you truly need global.
+- Prefer module scope or explicit exports over polluting global; attach only true polyfills (`if (!globalThis.Promise) ...`).
 
 **When to use:** Library UMD bundles, test setup, rare polyfills. Avoid attaching app state to `globalThis`.
 
@@ -868,9 +1001,13 @@ JSON.parse("{ invalid");     // SyntaxError
 
 ```js
 globalThis.setTimeout(fn, 0); // works in browser and Node
+
+// classic script only — modules don't put let on global:
+// var gVar = 5; → window.gVar === 5
+// let gLet = 5; → window.gLet === undefined
 ```
 
-**Sources:** [MDN globalThis](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis)
+**Sources:** [MDN globalThis](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis) · [javascript.info/global-object](https://javascript.info/global-object)
 
 </details>
 
@@ -904,6 +1041,17 @@ globalThis.setTimeout(fn, 0); // works in browser and Node
 | `const` by default | `var` in new code |
 | `let` when rebinding (`for` counter, accumulators) | `const` for values you will reassign |
 | Block scope in `if`/`for` for temporary bindings | Relying on hoisting for logic flow |
+
+**Naming:**
+
+- Prefer camelCase (`userName`, `shoppingCart`); letters, digits, `$`, `_` only; not starting with a digit.
+- Declare a binding **once** — re-`let` / re-`const` the same name in one scope is a `SyntaxError`.
+- **Uppercase `CONST_NAME`:** only for hard-coded aliases known before run (`COLOR_RED = "#F00"`). Runtime-calculated constants stay camelCase (`const age = someCode(birthday)`).
+
+```js
+const COLOR_ORANGE = "#FF7F00"; // hard-coded → UPPER_SNAKE
+const pageLoadTime = performance.now(); // computed once → camelCase
+```
 
 ---
 
@@ -1010,8 +1158,6 @@ let b = 2;
 - `var i` is function-scoped — all closures share the same `i` after loop ends.
 - `let i` is block-scoped per iteration — each async callback captures its own `i`.
 
-camelCase; letters, digits, `$`, `_`; cannot start with digit; avoid reserved words.
-
 **When to use:** Always `let` in `for` loops with closures; use `for...of` when you don't need index.
 
 **Pluses and minuses:**
@@ -1035,7 +1181,7 @@ for (let i = 0; i < 3; i++) {
 }
 ```
 
-**Sources:** [javascript.info/variables](https://learn.javascript.ru/variables) · [let-const](https://learn.javascript.ru/let-const) · [closure](https://learn.javascript.ru/closure)
+**Sources:** [javascript.info/variables](https://javascript.info/variables) · [javascript.info/let-const](https://javascript.info/let-const) · [javascript.info/closure](https://javascript.info/closure)
 
 </details>
 
@@ -1052,6 +1198,8 @@ for (let i = 0; i < 3; i++) {
 - Rest must be last in a pattern; creates a **shallow** copy of remaining properties.
 - Spread in literals creates shallow copies — nested objects are still shared references.
 - Function rest parameters replace `arguments` object in modern code.
+- **Smart parameters:** `function show({ title = "Menu", width = 100 } = {})` — destructure an options object; default `= {}` so a bare call works.
+- Assignment without `let`/`const`: wrap in parens — `({ title, width } = options)` — otherwise `{` is parsed as a block.
 
 **When to use:**
 
@@ -1062,6 +1210,7 @@ for (let i = 0; i < 3; i++) {
 | Rest in destructuring | Omit fields (`const { password, ...safe } = user`) |
 | Spread merge | Immutable object/array updates |
 | Rest parameters | Variadic functions (`sum(...nums)`) |
+| Options object param | Many optional args with defaults |
 
 #### Common pitfalls
 
@@ -1069,11 +1218,12 @@ for (let i = 0; i < 3; i++) {
 // Pitfall: nested destructuring — undefined parent throws
 const { address: { city } } = {}; // TypeError
 
+// Pitfall: bare `{...} =` looks like a block
+let title, width;
+({ title, width } = { title: "Menu", width: 200 }); // needs parens
+
 // Pitfall: spread is shallow
 const inner = { x: 1 };
-const outer = { ...inner };
-outer.x = 2;
-inner.x; // still 1 — but:
 const nested = { data: inner };
 const clone = { ...nested };
 clone.data.x = 99;
@@ -1095,15 +1245,21 @@ inner.x; // 99 — shared nested reference
 const [first, second, ...rest] = [1, 2, 3, 4];
 // first=1, second=2, rest=[3,4]
 
-const [a, b] = [b, a]; // swap (with let/var)
+let a = 1, b = 2;
+[a, b] = [b, a]; // swap
 
-// Object
-const { name, age = 18 } = { name: "Ann" };
-const { id, ...withoutId } = { id: 1, name: "Ann" };
+// Object — rename + default
+const { years: age, isAdmin = false } = { name: "John", years: 30 };
 
-// Function rest
+// Function rest + options object
+function showMenu({ title = "Untitled", width = 200, height = 100 } = {}) {
+  return `${title} ${width}x${height}`;
+}
+showMenu(); // Untitled 200x100
+showMenu({ title: "File" });
+
 function sum(...nums) {
-  return nums.reduce((a, b) => a + b, 0);
+  return nums.reduce((acc, n) => acc + n, 0);
 }
 
 // Spread — shallow copy / merge
@@ -1111,7 +1267,7 @@ const merged = { ...defaults, ...userOverrides };
 const copy = [...arr, newItem];
 ```
 
-**Sources:** [javascript.info/destructuring-assignment](https://learn.javascript.ru/destructuring-assignment) · [rest-parameters-spread](https://learn.javascript.ru/rest-parameters-spread)
+**Sources:** [javascript.info/destructuring-assignment](https://javascript.info/destructuring-assignment) · [javascript.info/rest-parameters-spread](https://javascript.info/rest-parameters-spread)
 
 </details>
 
@@ -1200,6 +1356,6 @@ function once(fn) {
 }
 ```
 
-**Sources:** [javascript.info/closure](https://learn.javascript.ru/closure) · [garbage-collection](https://learn.javascript.ru/garbage-collection)
+**Sources:** [javascript.info/closure](https://javascript.info/closure) · [javascript.info/garbage-collection](https://javascript.info/garbage-collection)
 
 </details>

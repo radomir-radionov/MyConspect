@@ -66,7 +66,7 @@ new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(99
 new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date());
 ```
 
-**Sources:** [javascript.info/intl](https://learn.javascript.ru/intl)
+**Sources:** [javascript.info/intl](https://javascript.info/intl)
 
 </details>
 
@@ -104,7 +104,7 @@ new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date());
 const m = /(\d+)-(\d+)/.exec("2024-07"); // groups
 ```
 
-**Sources:** [javascript.info/regular-expressions](https://learn.javascript.ru/regular-expressions)
+**Sources:** [javascript.info/regular-expressions](https://javascript.info/regular-expressions)
 
 </details>
 
@@ -295,6 +295,6 @@ const total = new Signal.Computed(() => {
 | | Breaks optimization |
 | | Hard to debug |
 
-**Sources:** [javascript.info/eval](https://learn.javascript.ru/eval)
+**Sources:** [javascript.info/eval](https://javascript.info/eval)
 
 </details>

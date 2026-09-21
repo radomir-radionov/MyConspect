@@ -90,7 +90,7 @@ Promise.resolve().then(() => console.log('microtask'));
 // sync → microtask → macrotask
 ```
 
-**Sources:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop) · [JSV9000 visualizer](https://www.jsv9000.app/) · [Loupe](http://latentflip.com/loupe/)
+**Sources:** [javascript.info/event-loop](https://javascript.info/event-loop) · [JSV9000 visualizer](https://www.jsv9000.app/) · [Loupe](http://latentflip.com/loupe/)
 
 </details>
 
@@ -153,7 +153,7 @@ main();
 // Stack: main → greet('Alice') → pop → greet('Bob') → pop → pop
 ```
 
-**Sources:** [javascript.info/call-stack](https://learn.javascript.ru/call-stack)
+**Sources:** [javascript.info/call-stack](https://javascript.info/call-stack)
 
 </details>
 
@@ -267,7 +267,7 @@ console.log(7);
 // 1, 7, 3, 5, 2, 6, 4
 ```
 
-**Sources:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop)
+**Sources:** [javascript.info/event-loop](https://javascript.info/event-loop)
 
 </details>
 
@@ -325,7 +325,7 @@ console.log('C');
 // A, C, B
 ```
 
-**Sources:** [javascript.info/intro](https://learn.javascript.ru/intro)
+**Sources:** [javascript.info/intro](https://javascript.info/intro)
 
 </details>
 
@@ -385,7 +385,7 @@ fs.readFile('file.txt', (err, data) => {
 });
 ```
 
-**Sources:** [javascript.info/callbacks](https://learn.javascript.ru/callbacks)
+**Sources:** [javascript.info/callbacks](https://javascript.info/callbacks)
 
 </details>
 
@@ -443,7 +443,7 @@ async function refreshUI() {
 }
 ```
 
-**Sources:** [javascript.info/intro](https://learn.javascript.ru/intro)
+**Sources:** [javascript.info/intro](https://javascript.info/intro)
 
 </details>
 
@@ -553,7 +553,7 @@ try {
 }
 ```
 
-**Sources:** [javascript.info/async](https://learn.javascript.ru/async)
+**Sources:** [javascript.info/async](https://javascript.info/async)
 
 </details>
 
@@ -620,7 +620,7 @@ promise
   .finally(() => console.log('done'));
 ```
 
-**Sources:** [MDN Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) · [javascript.info/promise-basics](https://learn.javascript.ru/promise-basics)
+**Sources:** [MDN Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) · [javascript.info/promise-basics](https://javascript.info/promise-basics)
 
 </details>
 
@@ -680,7 +680,7 @@ Promise.resolve(1)
 // 42
 ```
 
-**Sources:** [javascript.info/promise-chaining](https://learn.javascript.ru/promise-chaining)
+**Sources:** [javascript.info/promise-chaining](https://javascript.info/promise-chaining)
 
 </details>
 
@@ -746,7 +746,7 @@ const timeout = (ms) => new Promise((_, reject) =>
 await Promise.race([fetch('/api'), timeout(5000)]);
 ```
 
-**Sources:** [javascript.info/promise-api](https://learn.javascript.ru/promise-api)
+**Sources:** [javascript.info/promise-api](https://javascript.info/promise-api)
 
 </details>
 
@@ -807,7 +807,7 @@ const readFile = promisify(fs.readFile);
 const data = await readFile('file.txt', 'utf8');
 ```
 
-**Sources:** [javascript.info/promisify](https://learn.javascript.ru/promisify)
+**Sources:** [javascript.info/promisify](https://javascript.info/promisify)
 
 </details>
 
@@ -873,7 +873,7 @@ fetchData()
   .catch(error => console.error('Error:', error));
 ```
 
-**Sources:** [javascript.info/try-catch](https://learn.javascript.ru/try-catch)
+**Sources:** [javascript.info/try-catch](https://javascript.info/try-catch)
 
 </details>
 
@@ -931,7 +931,7 @@ async function load() {
 load().then(data => console.log(data));
 ```
 
-**Sources:** [javascript.info/async-await](https://learn.javascript.ru/async-await)
+**Sources:** [javascript.info/async-await](https://javascript.info/async-await)
 
 </details>
 
@@ -987,7 +987,7 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 const results = await Promise.all(ids.map(id => fetchItem(id)));
 ```
 
-**Sources:** [javascript.info/promise-api](https://learn.javascript.ru/promise-api)
+**Sources:** [javascript.info/promise-api](https://javascript.info/promise-api)
 
 </details>
 
@@ -1046,7 +1046,7 @@ async function* generateIds() {
 })();
 ```
 
-**Sources:** [javascript.info/async-iterators-generators](https://learn.javascript.ru/async-iterators-generators)
+**Sources:** [javascript.info/async-iterators-generators](https://javascript.info/async-iterators-generators)
 
 </details>
 
@@ -1108,7 +1108,7 @@ try {
 
 **Thoughts:** Aborting stale search `fetch` reduces main-thread work and races — helps **INP**. [6_web_api.md — INP](./6_web_api_security.md#inp-interaction-to-next-paint).
 
-**Sources:** [javascript.info/fetch-abort](https://learn.javascript.ru/fetch-abort) — full Fetch details in [6_web_api.md](./6_web_api.md)
+**Sources:** [javascript.info/fetch-abort](https://javascript.info/fetch-abort) — full Fetch details in [HTTP — AbortController & FormData](./6_web_api_http.md#fetch-api-abortcontroller-and-formdata)
 
 </details>
 
@@ -1125,16 +1125,19 @@ try {
 
 **How it works:**
 
-- `setTimeout(fn, ms)` — minimum delay `ms`; actual delay ≥ `ms` (clamped to ~4ms in browsers when nested).
-- `setInterval(fn, ms)` — repeats until `clearInterval`; can drift if callback runs longer than interval.
+- `setTimeout(fn, ms)` — minimum delay `ms`; actual delay ≥ `ms` (clamped to ~4ms in browsers when nested ≥5 deep).
+- `setInterval(fn, ms)` — repeats until `clearInterval`; interval includes callback time — real gap between starts can shrink or stack.
+- **Nested `setTimeout`** — schedule the next run at the **end** of the current one: guarantees a minimum pause between finishes; can adjust delay (backoff) per iteration.
 - Return value is numeric ID (browser) or `Timeout` object (Node) — pass to `clear*`.
 - Callback runs as macrotask — after current sync code and all microtasks.
 - `setTimeout(fn, 0)` defers to next macrotask turn — not immediate.
+- Scheduler holds a reference to the callback until it runs / is cleared — cancel unused timers to free closed-over memory.
 
 | API | Behavior |
 |-----|----------|
 | `setTimeout(fn, ms)` | Run once after `ms` (minimum ~4ms in browsers) |
 | `setInterval(fn, ms)` | Repeat every `ms` until cleared |
+| Nested `setTimeout` | Next tick planned after previous finishes |
 | `clearTimeout(id)` | Cancel a `setTimeout` |
 | `clearInterval(id)` | Cancel a `setInterval` |
 
@@ -1172,12 +1175,20 @@ clearTimeout(id);
 const interval = setInterval(() => tick(), 500);
 clearInterval(interval);
 
+// Nested setTimeout — delay between *ends*, optional backoff
+let delay = 1000;
+let timerId = setTimeout(function tick() {
+  // work...
+  delay = overloaded ? delay * 2 : 1000;
+  timerId = setTimeout(tick, delay);
+}, delay);
+
 // Async sleep helper
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 await sleep(1000);
 ```
 
-**Sources:** [javascript.info/settimeout-setinterval](https://learn.javascript.ru/settimeout-setinterval)
+**Sources:** [javascript.info/settimeout-setinterval](https://javascript.info/settimeout-setinterval)
 
 </details>
 
@@ -1298,7 +1309,7 @@ setTimeout(() => console.log('macrotask'), 0);
 // sync → nextTick (Node) → microtask → promise microtask → macrotask
 ```
 
-**Sources:** [MDN queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask) · [Node process.nextTick](https://nodejs.org/api/process.html#processnexttickcallback-args) · [8_nodejs.md](./8_nodejs.md)
+**Sources:** [MDN queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask) · [javascript.info/microtask-queue](https://javascript.info/microtask-queue) · [Node process.nextTick](https://nodejs.org/api/process.html#processnexttickcallback-args) · [8_nodejs.md](./8_nodejs.md)
 
 </details>
 
@@ -1375,7 +1386,7 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 ```
 
-**Sources:** [MDN unhandledrejection](https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event) · [Node unhandledRejection](https://nodejs.org/api/process.html#event-unhandledrejection)
+**Sources:** [MDN unhandledrejection](https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event) · [javascript.info/promise-error-handling](https://javascript.info/promise-error-handling) · [javascript.info/microtask-queue](https://javascript.info/microtask-queue) · [Node unhandledRejection](https://nodejs.org/api/process.html#event-unhandledrejection)
 
 </details>
 
@@ -1431,7 +1442,7 @@ import { config } from './config.mjs';
 console.log(config.apiUrl);
 ```
 
-**Sources:** [MDN top-level await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await) · [javascript.info/modules](https://learn.javascript.ru/modules-intro)
+**Sources:** [MDN top-level await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await) · [javascript.info/modules](https://javascript.info/modules-intro)
 
 </details>
 

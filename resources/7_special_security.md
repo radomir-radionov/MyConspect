@@ -346,6 +346,8 @@ Escaping on the **frontend** does not protect the database. Validate types/lengt
 
 </details>
 
+<a name="clickjacking"></a>
+
 <details>
   <summary>Clickjacking</summary>
 
@@ -366,7 +368,7 @@ Escaping on the **frontend** does not protect the database. Validate types/lengt
 | `X-Frame-Options: ALLOW-FROM` | **Obsolete** — modern browsers **ignore the whole header** |
 | CSP `frame-ancestors 'none'` / `'self'` / listed hosts | Preferred replacement; more flexible than XFO |
 
-**When to use:** Payments, deletes, OAuth consent, social like/follow. SameSite cookies do **not** replace framing controls.
+**When to use:** Payments, deletes, OAuth consent, social like/follow. SameSite cookies help when auth is cookie-based but do **not** replace framing controls (public unauthenticated UI can still be framed).
 
 **Examples:**
 
@@ -385,7 +387,7 @@ CSP `frame-ancestors` cannot be set via `<meta http-equiv>`. Frame-busting JS is
 
 **Sources:**
 
-[OWASP Clickjacking](https://owasp.org/www-community/attacks/Clickjacking) · [MDN — frame-ancestors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors)
+[javascript.info/clickjacking](https://javascript.info/clickjacking) · [OWASP Clickjacking](https://owasp.org/www-community/attacks/Clickjacking) · [MDN — frame-ancestors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors)
 
 ---
 

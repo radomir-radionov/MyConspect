@@ -13,7 +13,7 @@ Covers ECMAScript runtime fundamentals: engines and modules. Types, memory (stac
 
 | Area            | Topics                                                                  |
 | --------------- | ----------------------------------------------------------------------- |
-| **Runtime**     | JS vs ECMAScript, JIT, strict mode, console |
+| **Runtime**     | JS vs ECMAScript, JIT, strict mode, console, code style |
 | **Modern**      | ESM                                                                   |
 
 ### Sections
@@ -105,7 +105,14 @@ export function greet(name) {
 | Octal literals        | SyntaxError                             |
 | `this` in plain calls | `undefined` (not `globalThis`)          |
 
-**When to use:** All new code. Place at top of script or first line of function for local strict mode.
+**How it works:**
+
+- Place `"use strict";` (or `'use strict';`) at the **top** of a script or as the first statement in a function. Only comments may appear above it — otherwise it is ignored.
+- There is **no** `"no use strict"` — once enabled, you cannot cancel it for that scope.
+- **Modules** (`import`/`export`, `type="module"`) and **class** bodies enable strict mode automatically — no directive needed.
+- The browser **console** is not strict by default; wrap snippets in an IIFE with `'use strict'` when testing strict-only behavior.
+
+**When to use:** All new code. Prefer modules/classes so strict mode is implicit; otherwise put the directive at the top of classic scripts.
 
 **Examples:**
 
@@ -114,9 +121,13 @@ export function greet(name) {
 function demo() {
   // this === undefined in strict mode
 }
+
+// Modules / classes are already strict:
+export function f() { /* strict */ }
+class C { method() { /* strict */ } }
 ```
 
-**Sources:** [javascript.info/strict-mode](https://learn.javascript.ru/strict-mode)
+**Sources:** [javascript.info/strict-mode](https://javascript.info/strict-mode) · [MDN Strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)
 
 </details>
 
@@ -187,7 +198,7 @@ JIT combines fast startup (interpreter) with peak performance (compiler). Babel 
 | SpiderMonkey   | Firefox            |
 | JavaScriptCore | Safari             |
 
-**Sources:** [javascript.info/intro](https://learn.javascript.ru/intro) · [MDN — interpreted vs compiled](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [MDN JIT](https://developer.mozilla.org/en-US/docs/Glossary/Just_in_time_compilation) · [V8 blog](https://v8.dev/blog)
+**Sources:** [javascript.info/intro](https://javascript.info/intro) · [MDN — interpreted vs compiled](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [MDN JIT](https://developer.mozilla.org/en-US/docs/Glossary/Just_in_time_compilation) · [V8 blog](https://v8.dev/blog)
 
 </details>
 
@@ -196,7 +207,12 @@ JIT combines fast startup (interpreter) with peak performance (compiler). Babel 
 
 ### Console API
 
-**Definition:** Browser/Node debugging API for logging, timing, and inspecting objects.
+**Definition:** Browser/Node debugging API for logging, timing, and inspecting objects. Pair with the Sources debugger when you need to pause — see [Debugging JS (Sources)](./11_vsc_browser.md#browser-devtools).
+
+**How it works:**
+
+- `console.log` / `table` / `dir` / `time` / `timeEnd` for output without stopping execution.
+- Prefer a **breakpoint** or `debugger` when you need live locals and the call stack.
 
 **Examples:**
 
@@ -209,7 +225,50 @@ console.timeEnd("fetch");
 console.dir(document.body, { depth: 1 });
 ```
 
-**Sources:** [MDN console](https://developer.mozilla.org/en-US/docs/Web/API/console)
+**Sources:** [MDN console](https://developer.mozilla.org/en-US/docs/Web/API/console) · [javascript.info/debugging-chrome](https://javascript.info/debugging-chrome)
+
+</details>
+
+<details>
+  <summary>Code style and comments</summary>
+
+### Code style & comments
+
+**Definition:** Style rules exist to make code readable and to avoid footguns (ASI, missing braces). Comments should explain **why** and architecture — not narrate **what** the next line does.
+
+**How it works:**
+
+- Prefer Egyptian braces (`if (cond) {`), spaces around operators, and a team line-length (often 80–120). Always put `;` after statements — see [ASI](./3_js_operators.md).
+- Reduce nesting with early `return` / `continue` instead of deep `else` trees.
+- Function placement: often **call site first**, helpers below — readers learn *what happens* before *how*.
+- **Good comments:** architecture overview, non-obvious decisions, JSDoc for public APIs. **Bad comments:** restating `i++` or naming what a well-named function already says — factor into a function instead.
+- Anti-patterns (“ninja code”): one-letter names, vague `data`/`obj`, inconsistent synonyms (`show` vs `display` for the same thing), silent side effects in `is*`/`check*` functions, reusing variables for unrelated values mid-function.
+
+**When to use:** Agree on a style guide (Airbnb, Standard, Google, or Prettier + ESLint) and enforce with a linter — see [ESLint](./10_build_bundlers.md).
+
+**Examples:**
+
+```js
+// Prefer early return over nested else
+function pow(x, n) {
+  if (n < 0) return NaN;
+  let result = 1;
+  for (let i = 0; i < n; i++) result *= x;
+  return result;
+}
+
+/**
+ * Returns x raised to the n-th power.
+ * @param {number} x
+ * @param {number} n Natural number
+ * @return {number}
+ */
+function documentedPow(x, n) { /* ... */ }
+```
+
+**Thoughts:** Readable names beat clever one-liners. If you need a comment to explain *what*, rewrite the code.
+
+**Sources:** [javascript.info/coding-style](https://javascript.info/coding-style) · [javascript.info/comments](https://javascript.info/comments) · [javascript.info/ninja-code](https://javascript.info/ninja-code)
 
 </details>
 
@@ -250,10 +309,13 @@ Common terms used throughout JS core documentation.
 **How it works:**
 
 - **Named exports:** `export const x = 1;` → `import { x } from './mod.js'`
-- **Default export:** one per file → `import name from './mod.js'`
+- **Default export:** one per file → `import name from './mod.js'` (no curly braces)
+- **Re-export:** `export { x } from './mod.js'` / `export { default as User } from './user.js'`
 - **Live bindings:** imported `let`/`const` bindings update when the exporter mutates (read-only on import side).
+- **Dynamic `import(path)`:** returns a Promise of the module namespace; works anywhere (including classic scripts); path may be computed. Default export is `.default`.
 - **Top-level `await`:** allowed in ES modules.
-- Browser: `<script type="module">` or `.mjs`; bundlers resolve for production.
+- Module code runs once on first import; further imports share the same exports.
+- Browser: `<script type="module">` (deferred, CORS for cross-origin); no bare specifiers without a resolver/bundler.
 
 **When to use:**
 
@@ -296,6 +358,6 @@ import multiply, { PI, add } from "./math.js";
 const heavy = await import("./heavy.js"); // dynamic — returns Promise
 ```
 
-**Sources:** [javascript.info/modules-intro](https://learn.javascript.ru/modules-intro)
+**Sources:** [javascript.info/modules-intro](https://javascript.info/modules-intro) · [javascript.info/import-export](https://javascript.info/import-export) · [javascript.info/modules-dynamic-imports](https://javascript.info/modules-dynamic-imports)
 
 </details>

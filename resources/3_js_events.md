@@ -15,6 +15,8 @@ Browser events: handlers, phases, delegation, and custom events.
 | Area | Topics |
 |------|--------|
 | **Events** | Bubbling, capturing, delegation, default actions |
+| **UI** | Mouse, pointer, keyboard, scroll |
+| **Forms** | Focus, input/change, submit |
 | **Custom** | `CustomEvent` and `detail` payloads |
 
 ### Sections
@@ -22,9 +24,11 @@ Browser events: handlers, phases, delegation, and custom events.
 > Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
 - [Events](#events)
+- [Default actions](#default-actions)
 - [Event phases](#event-phases)
 - [Event handlers & delegation](#event-handlers-and-delegation)
 - [Custom events](#custom-events)
+- [UI events (mouse, pointer, keyboard)](#ui-events-mouse-pointer-keyboard)
 - [Interview](./3_js_interview.md)
 
 ---
@@ -68,7 +72,46 @@ button.removeEventListener("click", onSave);
 
 **Thoughts:** One named function + `addEventListener`/`removeEventListener` is the interview-safe pattern.
 
-**Sources:** [MDN EventTarget.addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) · [javascript.info/introduction-browser-events](https://learn.javascript.ru/introduction-browser-events)
+**Sources:** [MDN EventTarget.addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) · [javascript.info/introduction-browser-events](https://javascript.info/introduction-browser-events)
+
+</details>
+
+<details>
+  <summary>Default actions</summary>
+
+### Default actions
+
+**Definition:** Many events trigger a built-in browser action (link navigation, form submit, text selection, context menu). Cancel it with `event.preventDefault()` — or `return false` only from `on*` property/attribute handlers.
+
+**How it works:**
+
+- `preventDefault()` works if the event is `cancelable` and the listener is not `{ passive: true }`.
+- `event.defaultPrevented` is `true` after cancel — prefer checking this over `stopPropagation()` so outer handlers (analytics, document menus) still see the event.
+- `passive: true` tells the browser you will not cancel (smoother scroll/touch); default is often passive for `touchstart`/`touchmove` in Chrome/Firefox.
+- Preventing an early event can suppress a follow-up (e.g. cancel `mousedown` → no focus).
+
+**When to use:** Custom SPA links, form validation before submit, custom context menus, drag without native image drag.
+
+**Examples:**
+
+```js
+menu.addEventListener("click", (e) => {
+  const a = e.target.closest("a");
+  if (!a) return;
+  e.preventDefault();
+  route(a.getAttribute("href"));
+});
+
+document.addEventListener("contextmenu", (e) => {
+  if (e.defaultPrevented) return; // child already handled
+  e.preventDefault();
+  showDocMenu(e);
+});
+```
+
+**Thoughts:** `stopPropagation` ≠ `preventDefault`. Cancel the default; let the event bubble unless you have a strong reason not to.
+
+**Sources:** [javascript.info/default-browser-action](https://javascript.info/default-browser-action)
 
 </details>
 
@@ -113,7 +156,7 @@ inner.addEventListener("click", (e) => e.stopPropagation());
 
 **Thoughts:** Default is bubble. Capture is the exception you name in the third argument.
 
-**Sources:** [MDN Event.eventPhase](https://developer.mozilla.org/en-US/docs/Web/API/Event/eventPhase) · [MDN Event.stopPropagation](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation) · [javascript.info/bubbling-and-capturing](https://learn.javascript.ru/bubbling-and-capturing)
+**Sources:** [MDN Event.eventPhase](https://developer.mozilla.org/en-US/docs/Web/API/Event/eventPhase) · [MDN Event.stopPropagation](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation) · [javascript.info/bubbling-and-capturing](https://javascript.info/bubbling-and-capturing)
 
 </details>
 
@@ -154,7 +197,7 @@ list.addEventListener("click", (e) => {
 
 **See also:** [DOM navigation — `closest`](./3_js_browser.md#dom-navigation)
 
-**Sources:** [MDN Event.target](https://developer.mozilla.org/en-US/docs/Web/API/Event/target) · [MDN Event.currentTarget](https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget) · [javascript.info/event-delegation](https://learn.javascript.ru/event-delegation)
+**Sources:** [MDN Event.target](https://developer.mozilla.org/en-US/docs/Web/API/Event/target) · [MDN Event.currentTarget](https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget) · [javascript.info/event-delegation](https://javascript.info/event-delegation)
 
 </details>
 
@@ -198,7 +241,67 @@ item.dispatchEvent(
 
 **Thoughts:** Custom events are for **DOM components**, not a replacement for application state.
 
-**Sources:** [MDN CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent) · [MDN dispatchEvent](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent) · [javascript.info/dispatch-events](https://learn.javascript.ru/dispatch-events)
+**Sources:** [MDN CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent) · [MDN dispatchEvent](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent) · [javascript.info/dispatch-events](https://javascript.info/dispatch-events)
+
+</details>
+
+<a name="ui-events-mouse-pointer-keyboard"></a>
+
+<details>
+  <summary>UI events (mouse, pointer, keyboard)</summary>
+
+### UI events (mouse, pointer, keyboard)
+
+**Definition:** Pointer-like input and keyboard hotkeys use dedicated event families. Prefer **Pointer Events** for new UI that must work with mouse, touch, and pen; use keyboard events for shortcuts (not for tracking field text — use `input`).
+
+**How it works:**
+
+**Mouse (basics):** `mousedown` → `mouseup` → `click` (left). Also `dblclick`, `contextmenu`, `mousemove`, `mouseover`/`mouseout` (bubble, relatedTarget), `mouseenter`/`mouseleave` (no bubble, no enter/leave for children). Modifiers: `ctrlKey` / `metaKey` (Mac Cmd) / `shiftKey` / `altKey`. Coords: `clientX/Y` (viewport), `pageX/Y` (document). `event.button`: 0 left, 1 middle, 2 right.
+
+**mouseover vs mouseenter:** `mouseover`/`mouseout` fire when crossing child boundaries (lots of noise). `mouseenter`/`mouseleave` fire once for the element as a whole — better for “hover this card”.
+
+**Drag with mouse/pointer:** `pointerdown` → document `pointermove` → `pointerup`; remember `shiftX/Y` from pointer to element corner; cancel native image drag (`ondragstart = () => false`) and set `touch-action: none` to avoid `pointercancel`. Find droppables with `document.elementFromPoint` (hide the dragged element first). Prefer `setPointerCapture(pointerId)` so moves stay on the thumb without document listeners.
+
+**Pointer extras:** `pointerId`, `pointerType` (`"mouse"|"pen"|"touch"`), `isPrimary` (first finger). Same names as mouse (`pointerdown` …).
+
+**Keyboard:** `keydown` / `keyup`. `event.key` = character/meaning (`"z"`, `"Enter"`); `event.code` = physical key (`"KeyZ"`) — layout-independent for hotkeys. Auto-repeat sets `event.repeat`. Filter hotkeys with `code` + `ctrlKey || metaKey`. Do **not** use keyboard alone to validate text fields — paste/speech skip keys; use `input`.
+
+**Scroll:** `scroll` fires *after* scrolling — cannot `preventDefault` there; freeze with CSS `overflow: hidden` or cancel the causing key (`PageDown`). Geometry helpers: [Element and window dimensions & scroll](./3_js_browser_extra.md#element-and-window-dimensions--scroll).
+
+**When to use:** Hotkeys → `keydown` + `code`. Hover tooltips → `mouseenter`/`mouseleave` or pointer equivalents. Sliders/drag → pointer + capture. Field value → `input` (see [forms](./3_js_browser.md#text-forms-and-dialogs)).
+
+**Pluses and minuses:**
+
+| + | − |
+|------|------|
+| Pointer unifies mouse/touch/pen | Must handle `pointercancel` / native drag |
+| Delegation works for dynamic lists | `mouseover` floods with child events |
+| `code` stable for shortcuts | Mobile IME may report `key = "Unidentified"` |
+
+**Examples:**
+
+```js
+document.addEventListener("keydown", (e) => {
+  if (e.code === "KeyZ" && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    undo();
+  }
+});
+
+thumb.onpointerdown = (e) => {
+  thumb.setPointerCapture(e.pointerId);
+  thumb.onpointermove = (ev) => {
+    thumb.style.left = `${ev.clientX - slider.getBoundingClientRect().left}px`;
+  };
+  thumb.onpointerup = () => {
+    thumb.onpointermove = null;
+  };
+};
+```
+
+**Thoughts:** Interview path: bubbling → delegation → pointer capture for drag → `preventDefault` for defaults.
+
+**Sources:** [javascript.info/mouse-events-basics](https://javascript.info/mouse-events-basics) · [javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave](https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave) · [javascript.info/mouse-drag-and-drop](https://javascript.info/mouse-drag-and-drop) · [javascript.info/pointer-events](https://javascript.info/pointer-events) · [javascript.info/keyboard-events](https://javascript.info/keyboard-events) · [javascript.info/onscroll](https://javascript.info/onscroll)
 
 </details>
 

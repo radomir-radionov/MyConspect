@@ -13,7 +13,7 @@ Expressions, operators, comparisons, optional chaining, and control flow (`if` /
 
 | Area              | Topics                                                          |
 | ----------------- | --------------------------------------------------------------- |
-| **Expressions**   | Statement vs expression, expression kinds                       |
+| **Expressions**   | Statement vs expression, ASI, expression kinds                       |
 | **Operators**     | Arithmetic, comparison, `Object.is`, logical, bitwise, `?.` / `??` |
 | **Control flow**  | `if` / ternary, loops, `for...in` vs `for...of`, `switch`, `try`/`catch`/`finally` |
 | **Iterators**     | Iterables, generators                                           |
@@ -62,6 +62,38 @@ if (items.length === 0) return [];     // statement
 `const x = (y = 1)` — assignment inside expression is valid but hurts readability.
 
 ---
+
+</details>
+
+<details>
+  <summary>ASI (automatic semicolon insertion)</summary>
+
+### ASI (automatic semicolon insertion)
+
+**Definition:** When a line break separates statements, the engine often inserts an implicit `;`. It does **not** always do so — some line starts continue the previous expression.
+
+**How it works:**
+
+- Most newlines act like a statement end: `alert('Hello')\nalert('World')` is fine.
+- A newline after an incomplete expression does **not** insert `;` (e.g. ending with `+`).
+- A newline before `[...]` does **not** insert `;` — the next line can be parsed as property access on the previous expression.
+- Same class of footgun: bare `return` then a newline returns `undefined` (ASI inserts `;` after `return`).
+
+**When to use:** Put an explicit `;` after every statement (community default). Extra `;` after blocks/`for` is harmless; missing ones before `[`, `(`, `` ` ``, `/` are the dangerous cases.
+
+**Examples:**
+
+```js
+alert("Hello");
+[1, 2].forEach(alert); // Hello, then 1, then 2
+
+alert("Hello")
+[1, 2].forEach(alert); // treated as alert("Hello")[1, 2].forEach(alert) — broken
+```
+
+**Thoughts:** ASI is why style guides prefer semicolons — the bugs are rare but hard to spot.
+
+**Sources:** [javascript.info/structure](https://javascript.info/structure) · [MDN ASI](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#automatic_semicolon_insertion)
 
 </details>
 
@@ -124,6 +156,8 @@ Operators perform actions on operands — arithmetic, assignment, comparison, lo
 - Unary `+x` coerces to number; unary `-x` negates.
 - `++`/`--` prefix returns new value; postfix returns old value then updates.
 - `%` is remainder, not mathematical modulo for negatives.
+- Assignment `=` is an operator: it writes then **returns** the assigned value — so `a = b = c = 2` chains right-to-left. Prefer separate lines for readability.
+- Comma `,` evaluates left-to-right and returns the **last** value (`(1 + 2, 3 + 4)` → `7`). Rare outside `for` init; know it when reading library code.
 
 **When to use:** Use `Number(x)` or `+x` for explicit coerce; always pass radix to `parseInt(s, 10)`.
 
@@ -143,9 +177,13 @@ Operators perform actions on operands — arithmetic, assignment, comparison, lo
 parseInt("08", 10); // 8
 Number.isFinite(42); // true
 1n + 2n;  // 3n — bigint, cannot mix with number without conversion
+
+let a, b, c;
+a = b = c = 2 + 2; // all 4
+let x = (1 + 2, 3 + 4); // 7 — comma returns last
 ```
 
-**Sources:** [javascript.info/operators](https://learn.javascript.ru/operators) · [number](https://learn.javascript.ru/number)
+**Sources:** [javascript.info/operators](https://javascript.info/operators)
 
 </details>
 
@@ -162,8 +200,9 @@ Number.isFinite(42); // true
 - `==` / `!=` — apply abstract equality rules (surprising with `''`, `0`, `false`).
 - Relational `>`, `<`, `>=`, `<=` — usually convert to numbers; strings compare lexicographically when both are strings.
 - `Object.is` for edge cases (`NaN`, signed zero) — see [Object.is & equality](#object-is-and-equality).
+- **`null` / `undefined` quirks:** `null == undefined` is `true`, but neither equals any other value with `==`. Relational ops convert `null` → `0` and `undefined` → `NaN`, so `null >= 0` is `true` while `null > 0` and `null == 0` are both `false`.
 
-**When to use:** Default `===`; `value == null` for null/undefined; numeric sort comparators return negative/zero/positive.
+**When to use:** Default `===`; `value == null` for null/undefined; numeric sort comparators return negative/zero/positive. Do **not** use `>`, `<`, `>=`, `<=` on a value that may be `null`/`undefined` — check those separately.
 
 **Pluses and minuses:**
 
@@ -180,9 +219,15 @@ null === undefined; // false
 null == undefined;  // true
 "2" > "12";         // true — string compare
 "2" > 12;           // false — number compare
+
+null > 0;   // false
+null == 0;  // false — == has a special null/undefined rule
+null >= 0;  // true  — >= converts null → 0
+undefined > 0;  // false (NaN)
+undefined == 0; // false
 ```
 
-**Sources:** [javascript.info/comparison](https://learn.javascript.ru/comparison)
+**Sources:** [javascript.info/comparison](https://javascript.info/comparison)
 
 </details>
 
@@ -272,7 +317,7 @@ name && greet(name);
 config.debug ?? false;
 ```
 
-**Sources:** [javascript.info/logical-operators](https://learn.javascript.ru/logical-operators) · [nullish-coalescing](https://learn.javascript.ru/nullish-coalescing-operator)
+**Sources:** [javascript.info/logical-operators](https://javascript.info/logical-operators) · [javascript.info/nullish-coalescing-operator](https://javascript.info/nullish-coalescing-operator)
 
 </details>
 
@@ -305,7 +350,7 @@ config.debug ?? false;
 1 << 3;  // 8 — multiply by 8 via shift
 ```
 
-**Sources:** [javascript.info/bitwise-operators](https://learn.javascript.ru/bitwise-operators)
+**Sources:** [javascript.info/bitwise-operators](https://javascript.info/bitwise-operators)
 
 </details>
 
@@ -321,7 +366,10 @@ config.debug ?? false;
 - `obj?.prop`, `obj?.[expr]`, `fn?.()` — stops at first nullish step.
 - `??` differs from `||`: `0 ?? 1` is `0`; `0 || 1` is `1`.
 - Combine with care: `a ?? b || c` needs parentheses per language rules.
-- `!.` is logical NOT; `!!x` coerces to boolean.
+- Short-circuits: `user?.sayHi(x++)` does **not** evaluate `x++` if `user` is nullish.
+- Variable before `?.` must be **declared** — undeclared `user?.x` is still a `ReferenceError`.
+- **Read/delete only** — `user?.name = "John"` is invalid (assigns to `undefined`).
+- Don’t overuse: if `user` must exist, write `user.address?.street` so a missing `user` still throws.
 
 **When to use:** API optional fields, chained config, default only for nullish (`??`), not all falsy (`||`).
 
@@ -337,6 +385,8 @@ config.debug ?? false;
 ```js
 const user = null;
 user?.profile?.name; // undefined — no throw
+userAdmin.admin?.(); // call only if method exists
+user?.[key];
 
 0 || "default";  // 'default'
 0 ?? "default";  // 0
@@ -344,7 +394,7 @@ user?.profile?.name; // undefined — no throw
 const port = config.port ?? 3000;
 ```
 
-**Sources:** [javascript.info/optional-chaining](https://learn.javascript.ru/optional-chaining) · [nullish-coalescing](https://learn.javascript.ru/nullish-coalescing-operator)
+**Sources:** [javascript.info/optional-chaining](https://javascript.info/optional-chaining) · [javascript.info/nullish-coalescing-operator](https://javascript.info/nullish-coalescing-operator)
 
 </details>
 
@@ -389,7 +439,7 @@ if (age >= 18) {
 }
 ```
 
-**Sources:** [javascript.info/ifelse](https://learn.javascript.ru/ifelse)
+**Sources:** [javascript.info/ifelse](https://javascript.info/ifelse)
 
 </details>
 
@@ -407,7 +457,8 @@ if (age >= 18) {
 - `for (init; cond; step)` — classic counter; use `let` for per-iteration binding.
 - `for...of` — iterates **values** of iterables.
 - `for...in` — iterates **keys** (including inherited); filter with `Object.hasOwn`.
-- `switch` — strict match; fall-through without `break`.
+- `switch` — **always `===`**; fall-through without `break`.
+- Labels: `outer: for (...) { ... break outer; }` exits the labeled loop (needed for nested loops). `continue outer` jumps to the next iteration of that loop.
 
 | Construct | Use |
 | --------- | --- |
@@ -425,7 +476,7 @@ if (age >= 18) {
 | + | − |
 |------|------|
 | `for...of` clean on iterables | `for...in` on arrays is buggy |
-| `switch` readable for enums | Fall-through footguns |
+| `switch` readable for enums | Fall-through footguns; `===` vs `prompt` strings |
 | `break`/`continue` control flow | Labels rarely needed |
 
 **Examples:**
@@ -438,6 +489,12 @@ for (const v of ["a", "b"]) console.log(v);
 for (const key in obj) {
   if (!Object.hasOwn(obj, key)) continue;
   console.log(key, obj[key]);
+}
+
+outer: for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 3; j++) {
+    if (!input) break outer; // leave both loops
+  }
 }
 
 switch (status) {
@@ -453,9 +510,7 @@ switch (status) {
 }
 ```
 
-**Sources:**
-
-[javascript.info/while-for](https://learn.javascript.ru/while-for) · [switch](https://learn.javascript.ru/switch)
+**Sources:** [javascript.info/while-for](https://javascript.info/while-for) · [javascript.info/switch](https://javascript.info/switch)
 
 </details>
 
@@ -475,7 +530,7 @@ for (const key in obj) {
 for (const ch of "hi") console.log(ch);
 ```
 
-**Sources:** [javascript.info/array#loops](https://learn.javascript.ru/array#loops)
+**Sources:** [javascript.info/array#loops](https://javascript.info/array#loops)
 
 </details>
 
@@ -485,7 +540,7 @@ for (const ch of "hi") console.log(ch);
 
 ### Error handling
 
-**Definition:** Use `try/catch/finally` for synchronous errors; subclass `Error` for domain errors; re-throw after logging at boundaries.
+**Definition:** Use `try/catch/finally` for synchronous errors; subclass `Error` for domain errors; wrap low-level failures into higher-level types at API boundaries.
 
 **How it works:**
 
@@ -493,6 +548,11 @@ for (const ch of "hi") console.log(ch);
 - `finally` runs always — cleanup, close resources.
 - Uncaught errors propagate up the call stack until caught or crash.
 - `throw new Error('msg')` — prefer `Error` objects over strings.
+- **Custom hierarchy:** `class ValidationError extends Error` then `PropertyRequiredError extends ValidationError` — check with `instanceof` (works for subclasses).
+- Set `this.name = this.constructor.name` (or a shared `MyError` base) so `err.name` matches the class.
+- **Wrapping:** catch `SyntaxError` / `ValidationError` inside `readUser`, throw `ReadError` with `cause` — callers handle one type.
+- Rethrow unknown errors in `catch` — do not swallow programming bugs.
+- `try/catch` does **not** catch async errors scheduled later (`setTimeout` throw) — use promise `.catch` / `async` `try`.
 
 **When to use:** JSON parse, user input validation, API boundary wrappers. Log + re-throw at top level; handle expected errors locally.
 
@@ -502,6 +562,7 @@ for (const ch of "hi") console.log(ch);
 |------|------|
 | Local recovery without crashing | Easy to swallow errors silently |
 | `finally` guarantees cleanup | try/catch has minor perf cost in hot paths |
+| Hierarchy + `instanceof` scales | Must remember `super(message)` in subclasses |
 
 **Examples:**
 
@@ -514,15 +575,31 @@ try {
   // cleanup always runs
 }
 
-class ValidationError extends Error {
-  constructor(field) {
-    super(`Invalid: ${field}`);
-    this.name = "ValidationError";
+class MyError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
+
+class ValidationError extends MyError {}
+class PropertyRequiredError extends ValidationError {
+  constructor(property) {
+    super("No property: " + property);
+    this.property = property;
+  }
+}
+
+class ReadError extends Error {
+  constructor(message, cause) {
+    super(message);
+    this.cause = cause;
+    this.name = "ReadError";
   }
 }
 ```
 
-**Sources:** [javascript.info/try-catch](https://learn.javascript.ru/try-catch)
+**Sources:** [javascript.info/try-catch](https://javascript.info/try-catch) · [javascript.info/custom-errors](https://javascript.info/custom-errors)
 
 </details>
 
@@ -542,7 +619,8 @@ class ValidationError extends Error {
 - Iterable: object with `[Symbol.iterator]()` returning an iterator.
 - Iterator: object with `next()` returning `{ value, done }`.
 - `for...of` calls `Symbol.iterator` then loops `.next()` until `done: true`.
-- Generator: `function*` auto-implements iterator; `yield` emits values.
+- Generator: `function*` auto-implements iterator; `yield` emits values; `yield* otherGen` delegates (composition).
+- `generator.throw(err)` / `.return(value)` inject error or finish early; `yield` is two-way — `next(arg)` becomes the result of the paused `yield`.
 - **Array-likes** have `length` + indexed props but may lack `Symbol.iterator` — use `Array.from`.
 
 | Built-in iterables | Notes |
@@ -601,16 +679,21 @@ Array.from("hi"); // ['h', 'i']
 Array.from({ length: 3 }, (_, i) => i); // [0, 1, 2]
 ```
 
-**Sources:** [javascript.info/iterable](https://learn.javascript.ru/iterable) · [generators](https://learn.javascript.ru/generators) · [array](https://learn.javascript.ru/array) · [MDN: Iteration protocols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
+**Sources:** [javascript.info/iterable](https://javascript.info/iterable) · [javascript.info/generators](https://javascript.info/generators) · [javascript.info/array](https://javascript.info/array) · [MDN: Iteration protocols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
 
 </details>
 
 <details>
   <summary>switch — extended notes</summary>
 
-### switch — fall-through
+### switch — fall-through & types
 
-**Definition:** Without `break`, execution falls through to the next `case`. Use `break` unless fall-through is intentional.
+**Definition:** Without `break`, execution falls through to the next `case`. Use `break` unless fall-through is intentional. Matching is always **strict** (`===`) — types must match.
+
+**How it works:**
+
+- Grouping cases (`case 2: case 3: ...`) shares one body via intentional fall-through.
+- `prompt` / form values are **strings**. `case 3:` never matches `"3"` from `prompt` — use `case '3':` or coerce (`+prompt(...)`) first.
 
 **Examples:**
 
@@ -620,13 +703,27 @@ switch (x) {
     console.log("one");
     break;
   case 2:
-    console.log("two");
+  case 3:
+    console.log("two or three"); // grouped
     break;
   default:
     console.log("other");
 }
+
+const arg = prompt("Enter a value?"); // string | null
+switch (arg) {
+  case "0":
+  case "1":
+    console.log("one or zero");
+    break;
+  case 3:
+    console.log("never runs for prompt — types differ");
+    break;
+  default:
+    console.log("unknown");
+}
 ```
 
-**Sources:** [javascript.info/switch](https://learn.javascript.ru/switch)
+**Sources:** [javascript.info/switch](https://javascript.info/switch)
 
 </details>

@@ -198,7 +198,7 @@ g.call(user); // 'Alice'
 
 **Thoughts:** `this` follows the call site, except arrows which close over the outer `this`. Classes need `this` so `addRecord` updates *this* instance when several exist — see [Constructor injection](#constructor-injection).
 
-**Sources:** [javascript.info/bind](https://learn.javascript.ru/bind)
+**Sources:** [javascript.info/bind](https://javascript.info/bind)
 
 </details>
 
@@ -254,7 +254,7 @@ delete user.age; // remove property
 
 **Sources:**
 
-[javascript.info/object](https://learn.javascript.ru/object)
+[javascript.info/object](https://javascript.info/object)
 
 #### Object types in JavaScript
 
@@ -273,7 +273,7 @@ Objects fall into several categories depending on their origin.
 
 **Sources:**
 
-[javascript.info/object](https://learn.javascript.ru/object)
+[javascript.info/object](https://javascript.info/object)
 
 #### Property existence: `in` vs `hasOwnProperty`
 
@@ -300,19 +300,20 @@ console.log(obj.hasOwnProperty('toString')); // false
 
 **Sources:**
 
-[javascript.info/object-keys](https://learn.javascript.ru/object-keys)
+[javascript.info/keys-values-entries](https://javascript.info/keys-values-entries)
 
 #### Object static methods
 
 **Definition:**
 
-`Object.keys`, `Object.values`, `Object.entries`, and `Object.is` operate on own enumerable properties.
+`Object.keys`, `Object.values`, `Object.entries`, and `Object.is` operate on own enumerable properties. `Object.fromEntries` rebuilds an object from pairs (inverse of `entries`).
 
 | Method | Returns |
 |--------|---------|
 | `Object.keys(obj)` | Array of own keys |
 | `Object.values(obj)` | Array of own values |
 | `Object.entries(obj)` | Array of `[key, value]` pairs |
+| `Object.fromEntries(iterable)` | Object from pairs |
 | `Object.is(a, b)` | Strict equality; `NaN === NaN` is `true` |
 
 **Examples:**
@@ -324,14 +325,18 @@ for (const [key, value] of Object.entries(user)) {
   console.log(key, value);
 }
 
+const doubled = Object.fromEntries(
+  Object.entries({ a: 1, b: 2 }).map(([k, v]) => [k, v * 2])
+); // { a: 2, b: 4 }
+
 console.log(Object.is(NaN, NaN)); // true
 ```
 
-**Thoughts:** Unlike `for...in`, these methods skip inherited properties.
+**Thoughts:** Unlike `for...in`, these methods skip inherited properties. Syntax is `Object.keys(obj)`, not `obj.keys()` (unlike `Map`).
 
 **Sources:**
 
-[javascript.info/object-keys](https://learn.javascript.ru/object-keys)
+[javascript.info/keys-values-entries](https://javascript.info/keys-values-entries)
 
 #### Object comparison
 
@@ -358,7 +363,7 @@ console.log(a === c); // true — same reference
 
 **Sources:**
 
-[javascript.info/object-copy](https://learn.javascript.ru/object-copy)
+[javascript.info/object-copy](https://javascript.info/object-copy)
 
 #### Global object
 
@@ -372,7 +377,7 @@ console.log(a === c); // true — same reference
 console.log(globalThis === window); // true in browser
 ```
 
-**Sources:** [javascript.info/global-object](https://learn.javascript.ru/global-object)
+**Sources:** [javascript.info/global-object](https://javascript.info/global-object)
 
 </details>
 
@@ -444,7 +449,7 @@ const e = new Employee('dev');
 const copy = Object.assign({}, literal);
 ```
 
-**Sources:** [javascript.info/object](https://learn.javascript.ru/object) · [javascript.info/object-copy](https://learn.javascript.ru/object-copy)
+**Sources:** [javascript.info/object](https://javascript.info/object) · [javascript.info/object-copy](https://javascript.info/object-copy)
 
 </details>
 
@@ -504,7 +509,7 @@ In boolean context, any object is `true`. `alert(obj)` coerces to string.
 
 `obj1 + obj2` converts both with `hint: 'default'`. `==` uses `hint: 'default'` for objects.
 
-**Sources:** [javascript.info/object-toprimitive](https://learn.javascript.ru/object-toprimitive)
+**Sources:** [javascript.info/object-toprimitive](https://javascript.info/object-toprimitive)
 
 </details>
 
@@ -571,7 +576,7 @@ obj.getValue(); // 42
 | Event handlers | `this` may be the DOM element |
 | Class methods as callbacks | Need bind or arrow fields |
 
-**Sources:** [javascript.info/object-methods](https://learn.javascript.ru/object-methods) · [javascript.info/bind](https://learn.javascript.ru/bind)
+**Sources:** [javascript.info/object-methods](https://javascript.info/object-methods) · [javascript.info/bind](https://javascript.info/bind)
 
 </details>
 
@@ -630,7 +635,7 @@ bound('?'); // 'Hey, Alice?'
 
 **Thoughts:** Passing `null`/`undefined` to `call`/`apply`/`bind` falls back to default binding. A function bound with `bind()` cannot be re-bound.
 
-**Sources:** [javascript.info/bind](https://learn.javascript.ru/bind)
+**Sources:** [javascript.info/bind](https://javascript.info/bind)
 
 </details>
 
@@ -668,7 +673,7 @@ c.x = 3;
 console.log(a.x); // 2 — shallow copy, top-level independent
 ```
 
-**Sources:** [javascript.info/object-copy](https://learn.javascript.ru/object-copy)
+**Sources:** [javascript.info/object-copy](https://javascript.info/object-copy)
 
 <a name="prototypes"></a>
 
@@ -726,7 +731,7 @@ console.log(rabbit.jumps); // true — own property
 
 **Sources:**
 
-[javascript.info/prototypes](https://learn.javascript.ru/prototypes)
+[javascript.info/prototypes](https://javascript.info/prototypes)
 
 #### `F.prototype` and `new`
 
@@ -756,7 +761,7 @@ console.log(p.__proto__ === Person.prototype); // true
 
 **Sources:**
 
-[javascript.info/function-prototype](https://learn.javascript.ru/function-prototype)
+[javascript.info/function-prototype](https://javascript.info/function-prototype)
 
 #### Prototype limitations
 
@@ -767,7 +772,7 @@ console.log(p.__proto__ === Person.prototype); // true
 | Single parent | Only one `[[Prototype]]` per object |
 | Read-only chain | Writes never go up the prototype chain |
 
-[javascript.info/prototypes](https://learn.javascript.ru/prototypes)
+[javascript.info/prototypes](https://javascript.info/prototypes)
 
 #### Built-in prototypes
 
@@ -795,7 +800,7 @@ console.log(obj.toString()); // '[object Object]'
 
 **Sources:**
 
-[javascript.info/native-prototypes](https://learn.javascript.ru/native-prototypes)
+[javascript.info/native-prototypes](https://javascript.info/native-prototypes)
 
 #### Borrowing from prototypes
 
@@ -810,7 +815,7 @@ pseudo.join = Array.prototype.join;
 console.log(pseudo.join(',')); // 'Hello,world!'
 ```
 
-**Sources:** [javascript.info/prototypes](https://learn.javascript.ru/prototypes)
+**Sources:** [javascript.info/prototypes](https://javascript.info/prototypes)
 
 </details>
 
@@ -824,6 +829,8 @@ console.log(pseudo.join(',')); // 'Hello,world!'
 **How it works:**
 
 - `Object.create(proto)` allocates object with `[[Prototype]]` = `proto`; optional second arg defines own properties with descriptors.
+- Prefer `Object.create` / `getPrototypeOf` / `setPrototypeOf` over legacy `__proto__` getter/setter (Annex B). Literal `{ __proto__: proto }` is still OK for create-time linkage.
+- `Object.create(null)` — no inherited keys/`toString`/`__proto__` accessor — safe dictionary for **user-supplied** keys (avoids `__proto__` pollution).
 - `getPrototypeOf` / `setPrototypeOf` read/write the link; `setPrototypeOf` deoptimizes engines — avoid in hot loops.
 
 **When to use:**
@@ -865,7 +872,7 @@ const rabbit = Object.create(animal, {
 rabbit.walk(); // 'walking' — inherited
 ```
 
-**Sources:** [javascript.info/prototype-methods](https://learn.javascript.ru/prototype-methods)
+**Sources:** [javascript.info/prototype-methods](https://javascript.info/prototype-methods)
 
 </details>
 
@@ -915,7 +922,7 @@ console.log(r instanceof Animal);  // true — chain includes Animal.prototype
 console.log(r instanceof Object);  // true
 ```
 
-**Sources:** [javascript.info/instanceof](https://learn.javascript.ru/instanceof)
+**Sources:** [javascript.info/instanceof](https://javascript.info/instanceof)
 
 </details>
 
@@ -929,6 +936,9 @@ console.log(r instanceof Object);  // true
 **How it works:**
 
 - `class MyArr extends Array` creates subclass whose instances delegate to `Array` internal slots when constructed properly.
+- Built-in methods (`map`, `filter`) use `this.constructor[Symbol.species]` (or `constructor`) to build the **result** object — so `filteredArr instanceof PowerArray` stays true unless you override species.
+- `static get [Symbol.species]() { return Array; }` makes `filter`/`map` return plain `Array`.
+- Built-ins do **not** inherit each other’s **static** methods (`Array.keys` ≠ `Object.keys` via `extends` chain the way user classes do).
 - `super` in derived class must be called before `this` use in constructor.
 - Some builtins (e.g. certain DOM types) cannot be subclassed reliably.
 
@@ -968,17 +978,21 @@ class HttpError extends Error {
   }
 }
 
-class FilteredArray extends Array {
-  filterPositive() {
-    return this.filter(n => n > 0);
+class PowerArray extends Array {
+  isEmpty() {
+    return this.length === 0;
+  }
+  // built-ins like filter return Array, not PowerArray
+  static get [Symbol.species]() {
+    return Array;
   }
 }
 
-const arr = new FilteredArray(-1, 2, 3);
-console.log(arr.filterPositive()); // [2, 3]
+const arr = new PowerArray(1, 2, 10);
+arr.filter((n) => n >= 10); // Array — no .isEmpty()
 ```
 
-**Sources:** [javascript.info/extend-natives](https://learn.javascript.ru/extend-natives)
+**Sources:** [javascript.info/extend-natives](https://javascript.info/extend-natives)
 
 </details>
 
@@ -1055,7 +1069,7 @@ class BikeClass {
 
 **Sources:**
 
-[javascript.info/class](https://learn.javascript.ru/class)
+[javascript.info/class](https://javascript.info/class)
 
 #### Class declarations vs expressions
 
@@ -1084,7 +1098,7 @@ const Rect = class Rectangle {
 console.log(Rect.name); // 'Rectangle'
 ```
 
-**Sources:** [javascript.info/class](https://learn.javascript.ru/class)
+**Sources:** [javascript.info/class](https://javascript.info/class)
 
 </details>
 
@@ -1144,7 +1158,7 @@ class Article {
 Article.compare(new Article('A'), new Article('B'));
 ```
 
-**Sources:** [javascript.info/static-properties-methods](https://learn.javascript.ru/static-properties-methods)
+**Sources:** [javascript.info/static-properties-methods](https://javascript.info/static-properties-methods)
 
 </details>
 
@@ -1199,7 +1213,7 @@ console.log(acc.getBalance()); // 100
 // acc.#balance — SyntaxError
 ```
 
-**Sources:** [javascript.info/private-protected-properties-methods](https://learn.javascript.ru/private-protected-properties-methods) · [MDN — private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements)
+**Sources:** [javascript.info/private-protected-properties-methods](https://javascript.info/private-protected-properties-methods) · [MDN — private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements)
 
 </details>
 
@@ -1270,7 +1284,7 @@ In a derived constructor, `this` is inaccessible before `super()` — runtime er
 
 JavaScript has single inheritance. For multiple behavior sources, use composition or mixins.
 
-**Sources:** [javascript.info/class-inheritance](https://learn.javascript.ru/class-inheritance)
+**Sources:** [javascript.info/class-inheritance](https://javascript.info/class-inheritance)
 
 </details>
 
@@ -1334,7 +1348,7 @@ u.name = '  Bob  ';
 console.log(u.name); // 'Bob'
 ```
 
-**Sources:** [javascript.info/property-accessors](https://learn.javascript.ru/property-accessors)
+**Sources:** [javascript.info/property-accessors](https://javascript.info/property-accessors)
 
 </details>
 
@@ -1397,7 +1411,7 @@ console.log(u.sayHi()); // 'Hi, Ann'
 
 **Sources:**
 
-[javascript.info/mixins](https://learn.javascript.ru/mixins) · [Doka — OOP](https://doka.guide/tools/oop/)
+[javascript.info/mixins](https://javascript.info/mixins) · [Doka — OOP](https://doka.guide/tools/oop/)
 
 ---
 
@@ -1518,7 +1532,7 @@ console.log(obj.id); // 1 — not writable
 
 **Sources:**
 
-[javascript.info/property-descriptors](https://learn.javascript.ru/property-descriptors) · [MDN defineProperty](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
+[javascript.info/property-descriptors](https://javascript.info/property-descriptors) · [MDN defineProperty](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
 
 #### `Object.preventExtensions`, `Object.seal`, `Object.freeze`
 
@@ -1567,7 +1581,7 @@ frozen.x = 2;           // fails
 console.log(Object.isFrozen(frozen)); // true
 ```
 
-**Sources:** [javascript.info/property-descriptors](https://learn.javascript.ru/property-descriptors)
+**Sources:** [javascript.info/property-descriptors](https://javascript.info/property-descriptors)
 
 </details>
 
@@ -1629,7 +1643,7 @@ deep.nested.b = 0;
 console.log(original.nested.b); // 99 — independent
 ```
 
-**Sources:** [javascript.info/object-copy](https://learn.javascript.ru/object-copy) · [MDN structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
+**Sources:** [javascript.info/object-copy](https://javascript.info/object-copy) · [MDN structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
 
 </details>
 
@@ -1642,8 +1656,9 @@ console.log(original.nested.b); // 99 — independent
 
 **How it works:**
 
-- `key in obj` checks entire prototype chain for property existence (own or inherited).
-- `for...in` enumerates **enumerable** keys on object and prototypes — order: own string keys (insertion), then inherited.
+- `key in obj` checks entire prototype chain for property existence (own or inherited). Prefer `in` when a property may exist with value `undefined` — `obj.x === undefined` cannot tell “missing” from “set to undefined”.
+- `for...in` enumerates **enumerable** keys on object and prototypes.
+- **Integer-like keys** (`"49"`, `"1"`) are sorted ascending in enumeration; other keys keep creation order. Prefix with `"+"` (or similar) if you need insertion order for numeric-looking codes.
 - `Object.keys` / `hasOwn` / `Object.hasOwn` restrict to own properties.
 
 It is inherited from `Object.prototype` with `{ enumerable: false }`.
@@ -1661,13 +1676,18 @@ It is inherited from `Object.prototype` with `{ enumerable: false }`.
 | + | − |
 |------|------|
 | `in` detects inherited methods | `for...in` pulls inherited enumerable props |
-| `for...in` simple iteration | Must filter with `hasOwn` |
+| `for...in` simple iteration | Must filter with `hasOwn`; integer keys reordered |
 | `Object.hasOwn` modern own check | `hasOwnProperty` can be shadowed |
 
 **Examples:**
 
 ```js
-const obj = { a: 1, b: 2 };
+const obj = { a: 1, b: 2, test: undefined };
+"test" in obj; // true — property exists
+obj.test === undefined; // true — but also true if missing
+
+const codes = { "49": "DE", "41": "CH", "1": "US" };
+for (const code in codes) console.log(code); // 1, 41, 49 — integer sort
 
 for (const key in obj) {
   if (Object.hasOwn(obj, key)) {
@@ -1676,7 +1696,7 @@ for (const key in obj) {
 }
 ```
 
-**Sources:** [javascript.info/object-keys](https://learn.javascript.ru/object-keys)
+**Sources:** [javascript.info/object](https://javascript.info/object) · [javascript.info/keys-values-entries](https://javascript.info/keys-values-entries)
 
 </details>
 
@@ -1732,9 +1752,9 @@ user = null;
 | Incremental collection | Spread GC across small steps |
 | Idle-time collection | Run GC when CPU is idle |
 
-**Thoughts:** Outgoing references do not keep an object alive — only **incoming** references from reachable objects matter.
+**Thoughts:** Outgoing references do not keep an object alive — only **incoming** references from reachable objects matter. An “island” of objects that only reference each other is collected once no root reaches it.
 
-**Sources:** [javascript.info/garbage-collection](https://learn.javascript.ru/garbage-collection)
+**Sources:** [javascript.info/garbage-collection](https://javascript.info/garbage-collection)
 
 </details>
 
@@ -1789,7 +1809,7 @@ registry.register(obj, 'session-1');
 obj = null; // eventually GC + callback
 ```
 
-**Sources:** [javascript.info/weakref-finalizationregistry](https://learn.javascript.ru/weakref-finalizationregistry)
+**Sources:** [javascript.info/weakref-finalizationregistry](https://javascript.info/weakref-finalizationregistry)
 
 </details>
 
@@ -1849,7 +1869,7 @@ user.age = 30;
 console.log(user.fullName); // 'Ann Lee'
 ```
 
-**Sources:** [javascript.info/proxy](https://learn.javascript.ru/proxy) · [MDN Reflect](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect)
+**Sources:** [javascript.info/proxy](https://javascript.info/proxy) · [MDN Reflect](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect)
 
 </details>
 
@@ -1914,7 +1934,7 @@ const authModule = (() => {
 // export function login(t) { token = t; }
 ```
 
-**Sources:** [javascript.info/modules-intro](https://learn.javascript.ru/modules-intro) · [MDN modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) · [Doka — OOP](https://doka.guide/tools/oop/)
+**Sources:** [javascript.info/modules-intro](https://javascript.info/modules-intro) · [MDN modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) · [Doka — OOP](https://doka.guide/tools/oop/)
 
 </details>
 

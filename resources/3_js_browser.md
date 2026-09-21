@@ -44,7 +44,10 @@ DOM tree, querying, mutation, BOM, and script loading.
 - Parser hits `<script>` without `async`/`defer` → stops HTML parse, fetches (if `src`), executes, then resumes parse.
 - `defer`: download parallel, execute in order after HTML parsed, before `DOMContentLoaded`.
 - `async`: download parallel, execute when ready (order not guaranteed), may block parse at execution.
+- Dynamically created `<script>` defaults to **async** behavior; set `script.async = false` to keep insertion order (like `defer`).
 - `type="module"`: deferred by default, strict mode, `import`/`export`.
+- A tag with **`src` ignores any inline body** — use a second `<script>` for inline code. Do not mix `src` and content in one tag.
+- Old markup: `language` is obsolete; `type="text/javascript"` is unnecessary for classic scripts. Modern `type` is for modules / import maps / data blocks.
 
 **When to use:**
 
@@ -52,7 +55,7 @@ App bundle → `defer`; analytics/ads → `async`; ES app → `type="module"`.
 
 #### Common pitfalls
 
-Two `async` scripts depending on each other; inline script before deferred external assuming it ran; module CORS requirements for cross-origin `src`.
+Two `async` scripts depending on each other; inline script before deferred external assuming it ran; module CORS requirements for cross-origin `src`; expecting inline code inside `<script src="…">` to run (it is ignored).
 
 **Pluses and minuses:**
 
@@ -67,6 +70,17 @@ Two `async` scripts depending on each other; inline script before deferred exter
 ```html
 <script src="app.js" defer></script>
 <script src="analytics.js" async></script>
+
+<!-- WRONG: alert never runs -->
+<script src="file.js">
+  alert(1);
+</script>
+
+<!-- OK: external + separate inline -->
+<script src="file.js"></script>
+<script>
+  alert(1);
+</script>
 ```
 
 **Thoughts:** Place non-critical scripts at the end of `<body>` or use `async` / `defer` to avoid blocking render.
@@ -88,7 +102,7 @@ Two `async` scripts depending on each other; inline script before deferred exter
 <script src="tracker.js" async></script>
 ```
 
-**Sources:** [javascript.info/script-async-defer](https://learn.javascript.ru/script-async-defer)
+**Sources:** [javascript.info/hello-world](https://javascript.info/hello-world) · [javascript.info/script-async-defer](https://javascript.info/script-async-defer) · [MDN `<script>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script)
 
 </details>
 
@@ -128,12 +142,25 @@ The DOM is a live **node tree** the browser builds from HTML/XML. JS reads and m
 | `children` / `nextElementSibling` | elements only |
 | `childNodes` / `nextSibling` | all nodes (often whitespace text) |
 | `getElementById` / `querySelector` / `querySelectorAll` | id / first CSS match / all matches |
+| `matches(sel)` / `closest(sel)` / `contains(node)` | boolean match / nearest ancestor / descendant check |
 
 **How it works:**
 
 Writes update the live tree immediately; mixed read/write loops can layout-thrash. Live collections change as the tree changes.
 
-HTML string vs live JS field. Form state (`checked`, `value`, `disabled`) → **property**. `getAttribute` stays the original markup. `href` attribute is the raw string; `.href` is the resolved URL. `data-*` → `elem.dataset`.
+**Node identity:** `nodeType` (number), `nodeName` (always uppercase for HTML elements, e.g. `"DIV"`), `tagName` (elements only, same as `nodeName` for HTML). Prefer `tagName`/`nodeName` over stringifying the node.
+
+**Attributes vs properties:** Standard HTML attrs become JS properties, but mapping is not 1:1.
+
+| | Attribute (`getAttribute`) | Property (e.g. `el.id`) |
+|--|----------------------------|-------------------------|
+| Type | always string | typed (`checked` → boolean, `style` → object) |
+| Name | case-insensitive | case-sensitive |
+| Sync | most standard attrs ↔ props | exceptions: `input.value` updates property from attr, not attr from property |
+
+- Non-standard attrs → no property; use `getAttribute` / `setAttribute`, or safer `data-*` → `elem.dataset`.
+- `href` attribute = as written; `.href` = absolute URL.
+- Prefer DOM properties for normal work; attributes when you need the HTML-as-written value or `data-*`.
 
 **When to use:**
 
@@ -166,7 +193,7 @@ box.getAttribute('checked'); // still "checked" if it was in HTML
 
 **See also:** [DOM navigation](#dom-navigation) · [DOM methods & props](#dom-methods--props) · [HTMLCollection vs NodeList](#htmlcollection-vs-nodelist) · [innerHTML vs outerHTML](#innerhtml-vs-outerhtml)
 
-**Sources:** [MDN DOM](https://developer.mozilla.org/en-US/docs/Glossary/DOM) · [Node.nodeType](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType)
+**Sources:** [javascript.info/dom-nodes](https://javascript.info/dom-nodes) · [javascript.info/basic-dom-node-properties](https://javascript.info/basic-dom-node-properties) · [javascript.info/dom-attributes-and-properties](https://javascript.info/dom-attributes-and-properties) · [MDN DOM](https://developer.mozilla.org/en-US/docs/Glossary/DOM)
 
 ### shadow dom
 
@@ -196,7 +223,7 @@ Web Components, embeddable widgets, third-party UI on unknown pages.
 
 React/Vue apps (they handle encapsulation differently); when you want global page styles to affect the component.
 
-**Sources:** [learn.javascript.ru/shadow-dom](https://learn.javascript.ru/shadow-dom)
+**Sources:** [javascript.info/shadow-dom](https://javascript.info/shadow-dom)
 
 ### Page lifecycle events
 
@@ -211,7 +238,13 @@ Browser fires events as the page loads and unloads. Use them to initialize UI or
 | `beforeunload` | User is leaving the page | `window` |
 | `unload` | Page is being unloaded | `window` |
 
-**How it works:** `DOMContentLoaded` — init UI early; `load` — wait for all assets.
+**How it works:**
+
+- `DOMContentLoaded` waits for classic/deferred scripts; `async` scripts and dynamically inserted scripts do not block it. Stylesheets before a script can delay that script (and thus `DOMContentLoaded`).
+- `document.readyState`: `"loading"` → `"interactive"` (≈ before `DOMContentLoaded`) → `"complete"` (≈ `window.load`).
+- `beforeunload`: set `event.returnValue = ""` (or return a string from `onbeforeunload`) to show the leave confirm — browsers ignore custom message text.
+- `unload`: only fire-and-forget work (`navigator.sendBeacon`); do not expect async responses.
+- Resource `load` / `error` on `<img>`, `<script>`, etc. track that asset only — not parse errors inside a successfully loaded script (`window.onerror` for those). Cross-origin script errors stay opaque unless `crossorigin` + CORS headers.
 
 **Examples:**
 
@@ -223,9 +256,18 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('load', () => {
   hideLoader(); // images loaded too
 });
+
+window.addEventListener('beforeunload', (e) => {
+  if (formDirty) e.returnValue = '';
+});
+
+const img = new Image();
+img.onload = () => console.log(img.width);
+img.onerror = () => console.log('failed');
+img.src = '/hero.png';
 ```
 
-**Sources:** [javascript.info/onload-ondomcontentloaded](https://learn.javascript.ru/onload-ondomcontentloaded)
+**Sources:** [javascript.info/onload-ondomcontentloaded](https://javascript.info/onload-ondomcontentloaded) · [javascript.info/onload-onerror](https://javascript.info/onload-onerror)
 
 ### Creating & appending elements
 
@@ -353,6 +395,10 @@ list.getElementsByTagName('li');      // live HTMLCollection
 
 **Thoughts:** `getElementsBy*` returns **live** collections; `querySelectorAll` returns a **snapshot**.
 
+**Also:** `elem.matches(css)` — does this element match? `elem.closest(css)` — nearest ancestor (incl. self). `elemA.contains(elemB)` — is `elemB` inside `elemA`?
+
+**Sources:** [javascript.info/dom-navigation](https://javascript.info/dom-navigation) · [javascript.info/searching-elements-dom](https://javascript.info/searching-elements-dom)
+
 </details>
 
 <details>
@@ -476,7 +522,7 @@ navigator.userAgent;
 history.back();
 ```
 
-**Sources:** [learn.javascript.ru/browser-environment](https://learn.javascript.ru/browser-environment)
+**Sources:** [javascript.info/browser-environment](https://javascript.info/browser-environment)
 
 <a name="dom-vs-bom"></a>
 
@@ -510,15 +556,24 @@ appending an existing node **moves** it (doesn't copy).
 
 `appendChild`, `removeChild`, `insertBefore`, `replaceChild` — still work but prefer modern methods above.
 
-#### Changing appearance
+#### Changing appearance (styles & classes)
 
-Prefer **CSS classes** over inline styles. Use JS only when CSS isn't enough.
+Prefer **CSS classes** over inline styles. Use `style` only for values computed at runtime (e.g. coordinates).
+
+| API | Role |
+|-----|------|
+| `className` | whole `class` string (replaces all) |
+| `classList.add/remove/toggle/contains` | one class at a time |
+| `elem.style.prop` | inline style only (camelCase: `backgroundColor`) |
+| `elem.style.cssText` | rewrite entire inline style string |
+| `getComputedStyle(elem)` | resolved styles after cascade (read-only; geometry usually in `px`) |
 
 ```js
 el.classList.add('active');
 el.classList.toggle('hidden');
-el.setAttribute('disabled', '');
-el.style.color = 'red'; // last resort
+el.style.left = `${x}px`;          // need units
+el.style.display = '';             // clear inline → CSS classes apply again
+getComputedStyle(el).marginTop;    // not available via el.style if set in CSS
 ```
 
 `hasAttribute`, `getAttribute`, `setAttribute`, `removeAttribute`.
@@ -587,6 +642,8 @@ node.remove();              // remove from DOM
 node.cloneNode(true);       // deep clone (with children)
 ```
 
+**Sources:** [javascript.info/modifying-document](https://javascript.info/modifying-document) · [javascript.info/styles-and-classes](https://javascript.info/styles-and-classes)
+
 </details>
 
 <details>
@@ -627,13 +684,24 @@ el.textContent = 'Hello'; // preferred for setting text
 
 ### Forms
 
-Use `.value` for inputs — **not** `innerHTML` (especially `<textarea>`).
+Use `.value` for inputs — **not** `innerHTML` (especially `<textarea>`). Navigate via `document.forms[name]` and `form.elements[name]`; each control has `.form` back to the form.
 
 ```js
-input.value;       // current value
+const form = document.forms.my;     // or document.forms[0]
+form.elements.login.value;
+input.value;       // current value (property)
 textarea.value;    // not textarea.innerHTML
-form.requestSubmit(); // triggers validation
+form.requestSubmit(); // triggers validation + submit event
+form.submit();        // sends without submit event / validation
 ```
+
+`<select>`: `select.value`, `select.selectedIndex`, or `option.selected`. Create options with `new Option(text, value, defaultSelected, selected)`.
+
+**Focus:** `focus` / `blur` do not bubble — use capture or bubbling `focusin` / `focusout`. Most elements need `tabindex` to be focusable (`0` = natural tab order, `-1` = programmatic only). Current focus: `document.activeElement`.
+
+**Value events:** `input` fires on every change (typing, paste, speech); `change` fires when editing finishes (blur for text; immediately for checkbox/select). `cut` / `copy` / `paste` are `ClipboardEvent`s — can `preventDefault()`.
+
+**Sources:** [javascript.info/alert-prompt-confirm](https://javascript.info/alert-prompt-confirm) · [javascript.info/form-elements](https://javascript.info/form-elements) · [javascript.info/focus-blur](https://javascript.info/focus-blur) · [javascript.info/events-change-input](https://javascript.info/events-change-input) · [javascript.info/forms-submit](https://javascript.info/forms-submit)
 
 ### Dialog popups
 
@@ -643,9 +711,9 @@ form.requestSubmit(); // triggers validation
 | `confirm(msg)` | `true` / `false` |
 | `prompt(msg, default)` | string or `null` |
 
-**Common pitfalls:** `textarea.innerHTML` vs `textarea.value`; using `innerText` in hot loops; `confirm` in async code blocks main thread.
+All three are **modal**: they pause script execution and block the rest of the page until dismissed. Look and position are browser-controlled.
 
-**Sources:** [javascript.info/forms-controls](https://learn.javascript.ru/forms-controls)
+**Common pitfalls:** `textarea.innerHTML` vs `textarea.value`; using `innerText` in hot loops; `confirm` in async code blocks main thread.
 
 </details>
 
@@ -710,7 +778,7 @@ observer.observe(document.querySelector('#app'), {
 observer.disconnect(); // cleanup when done
 ```
 
-**Sources:** [javascript.info/mutation-observer](https://learn.javascript.ru/mutation-observer)
+**Sources:** [javascript.info/mutation-observer](https://javascript.info/mutation-observer)
 
 </details>
 

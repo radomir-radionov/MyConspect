@@ -13,8 +13,8 @@ Function forms, `this`, higher-order functions, `call`/`apply`/`bind`, debounce,
 
 | Area | Topics |
 | ---- | ------ |
-| **Forms** | Declaration vs expression, arrows, IIFE, NFE |
-| **Call site** | `this`, `call`/`apply`/`bind`, constructors |
+| **Forms** | Declaration vs expression, arrows, IIFE, NFE, function `name`/`length` |
+| **Call site** | `this`, `call`/`apply`/`bind`, Reference Type, constructors |
 | **HOF / FP** | Callbacks, memoize, curry, composition, purity, immutability |
 | **Advanced** | Recursion, `new Function` · [Generators](./3_js_operators.md#iterators) |
 | **Timing** | [Debounce](./3_js_browser_extra.md#debounce) · [Throttle](./3_js_browser_extra.md#throttle) |
@@ -39,6 +39,7 @@ Function forms, `this`, higher-order functions, `call`/`apply`/`bind`, debounce,
 - [Recursion & declarative iteration](#recursion--declarative-iteration)
 - [`new Function`](#new-function-avoid)
 - [call, apply & bind](#call-apply-and-bind)
+- [Reference Type](#reference-type)
 - [Result containers](#result-containers-box-ok--error)
 - [Pattern matching](#pattern-matching)
 - [FP — math foundations](#fp--math-foundations-pros--cons)
@@ -90,11 +91,23 @@ Function forms, `this`, higher-order functions, `call`/`apply`/`bind`, debounce,
 | Top-level helpers, hoisting needed | Callbacks, assignments, conditional creation |
 | Named stack traces | IIFE, module exports |
 
+In **strict mode** (and modules), a Function Declaration inside `if` / `{ }` is **block-scoped** — not visible outside. For a function chosen at runtime, assign an expression to an outer `let`:
+
+```js
+let welcome;
+if (age < 18) {
+  welcome = function () { alert("Hello!"); };
+} else {
+  welcome = function () { alert("Greetings!"); };
+}
+welcome(); // OK
+```
+
 **Pluses and minuses:**
 
 | + (declaration) | − (declaration) |
 |--------------------|--------------------|
-| Hoisting simplifies top-down scripts | Cannot conditionally declare in block (legacy quirks) |
+| Hoisting simplifies top-down scripts | Block-scoped in `if` — cannot “declare for later” outside |
 | Clear named entry points | Less flexible than expressions |
 
 | + (expression) | − (expression) |
@@ -315,7 +328,7 @@ function greet(name = "Guest", ...tags) {
 }
 ```
 
-**Sources:** [javascript.info/function-basics](https://learn.javascript.ru/function-basics) · [function-expressions](https://learn.javascript.ru/function-expressions) · [arrow-functions-basics](https://learn.javascript.ru/arrow-functions-basics) · [callbacks](https://learn.javascript.ru/callbacks) · [object-methods](https://learn.javascript.ru/object-methods)
+**Sources:** [javascript.info/function-basics](https://javascript.info/function-basics) · [javascript.info/function-expressions](https://javascript.info/function-expressions) · [javascript.info/arrow-functions-basics](https://javascript.info/arrow-functions-basics) · [javascript.info/arrow-functions](https://javascript.info/arrow-functions) · [javascript.info/callbacks](https://javascript.info/callbacks) · [javascript.info/object-methods](https://javascript.info/object-methods)
 
 </details>
 
@@ -582,7 +595,7 @@ function timed(fn) {
 }
 ```
 
-**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
+**Sources:** [javascript.info/call-apply-decorators](https://javascript.info/call-apply-decorators)
 
 </details>
 
@@ -624,7 +637,7 @@ function memoize(fn) {
 }
 ```
 
-**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
+**Sources:** [javascript.info/call-apply-decorators](https://javascript.info/call-apply-decorators)
 
 </details>
 
@@ -673,7 +686,7 @@ compose(double, inc)(3); // 8
 
 **See also:** [Currying, partial application & composition](#currying-partial-application--composition) · [Function composition](#function-composition)
 
-**Sources:** [javascript.info/currying-partials](https://learn.javascript.ru/currying-partials)
+**Sources:** [javascript.info/currying-partials](https://javascript.info/currying-partials)
 
 </details>
 
@@ -689,9 +702,10 @@ compose(double, inc)(3); // 8
 1. Create empty object.
 2. Link `[[Prototype]]` to `Fn.prototype`.
 3. Call `Fn` with `this` = new object.
-4. If `Fn` returns an object, use that; else return the new object.
+4. If `Fn` returns an **object**, that object is used; if it returns a primitive / empty `return`, `this` is returned.
+5. `new.target` inside the function is the constructor when called with `new`, else `undefined` (rarely used to auto-redirect `User()` → `new User()`).
 
-**When to use:** Legacy constructors, interviews. Prefer `class` syntax for new code.
+**When to use:** Legacy constructors, interviews. Prefer `class` syntax for new code. Capitalize constructor names; always call with `new` (arrows cannot be constructors).
 
 **Pluses and minuses:**
 
@@ -699,6 +713,7 @@ compose(double, inc)(3); // 8
 |------|------|
 | Familiar OOP pattern | Easy to forget `new` |
 | Prototype methods shared | `this` binding pitfalls |
+| Return-object override for factories | Surprising if accidental |
 
 **Examples:**
 
@@ -710,9 +725,15 @@ User.prototype.greet = function () {
   return `Hi, ${this.name}`;
 };
 const u = new User("Ann");
+
+function BigUser() {
+  this.name = "John";
+  return { name: "Godzilla" }; // overrides this
+}
+new BigUser().name; // "Godzilla"
 ```
 
-**Sources:** [javascript.info/constructor-new](https://learn.javascript.ru/constructor-new)
+**Sources:** [javascript.info/constructor-new](https://javascript.info/constructor-new)
 
 </details>
 
@@ -721,21 +742,25 @@ const u = new User("Ann");
 
 ### Named Function Expression (NFE)
 
-**Definition:** Function expression with an internal name — safe recursion and clearer stack traces.
+**Definition:** Function expression with an internal name — safe recursion and clearer stack traces. Functions are objects: they also expose `name`, `length`, and custom properties.
 
 **How it works:**
 
-- Name `fact` visible **inside** the function body for self-calls.
-- Outer scope uses the `const` variable name, not `fact` (in strict mode).
+- Name `fact` visible **inside** the function body for self-calls; not visible outside (unlike the outer `const`).
+- Outer reassignment (`sayHi = null`) does not break NFE self-calls — the internal name stays bound to the function.
+- **`fn.name`** — usually the declaration/assignment name (contextual); empty when the engine cannot infer one (e.g. array element).
+- **`fn.length`** — count of parameters before the first rest (`...args` is not counted).
+- Custom properties (`fn.counter = 0`) live on the function object; they are **not** local variables inside the body.
 
-**When to use:** Recursive helpers assigned to `const`.
+**When to use:** Recursive helpers assigned to `const`; introspection (`handler.length`); attaching helpers to one export (`$.ajax`-style). Prefer closures when the counter must stay private from callers.
 
 **Pluses and minuses:**
 
 | + | − |
 |------|------|
 | Recursion without polluting outer scope | Slightly more syntax |
-| Better stack traces than anonymous | IE legacy quirks (historical) |
+| Better stack traces than anonymous | Function properties are public — callers can mutate them |
+| `name` / `length` for libraries | Rest params hide arity in `.length` |
 
 **Examples:**
 
@@ -743,9 +768,20 @@ const u = new User("Ann");
 const factorial = function fact(n) {
   return n <= 1 ? 1 : n * fact(n - 1);
 };
+
+function many(a, b, ...rest) {}
+many.length; // 2 — rest not counted
+many.name;   // "many"
+
+function sayHi() {
+  sayHi.counter++;
+}
+sayHi.counter = 0;
+sayHi();
+sayHi.counter; // 1
 ```
 
-**Sources:** [javascript.info/function-expressions](https://learn.javascript.ru/function-expressions)
+**Sources:** [javascript.info/function-object](https://javascript.info/function-object) · [javascript.info/function-expressions](https://javascript.info/function-expressions)
 
 </details>
 
@@ -779,7 +815,7 @@ const factorial = function fact(n) {
 })();
 ```
 
-**Sources:** [javascript.info/closures](https://learn.javascript.ru/closures)
+**Sources:** [javascript.info/var](https://javascript.info/var) · [javascript.info/closure](https://javascript.info/closure)
 
 </details>
 
@@ -792,7 +828,7 @@ const factorial = function fact(n) {
 
 Full essay (iterable protocol, custom iterators, `for...of`): [Iterators and generators](./3_js_operators.md#iterators). Async generators: [Async iterators](./3_js_async.md).
 
-**Sources:** [javascript.info/generators](https://learn.javascript.ru/generators)
+**Sources:** [javascript.info/generators](https://javascript.info/generators)
 
 </details>
 
@@ -827,7 +863,7 @@ function pow(x, n) {
 }
 ```
 
-**Sources:** [javascript.info/recursion](https://learn.javascript.ru/recursion)
+**Sources:** [javascript.info/recursion](https://javascript.info/recursion)
 
 </details>
 
@@ -905,7 +941,7 @@ const sum = new Function("a", "b", "return a + b");
 sum(1, 2); // 3
 ```
 
-**Sources:** [javascript.info/eval](https://learn.javascript.ru/eval)
+**Sources:** [javascript.info/eval](https://javascript.info/eval)
 
 </details>
 
@@ -934,6 +970,17 @@ sum(1, 2); // 3
 **Examples:**
 
 ```js
+function cachingDecorator(func) {
+  const cache = new Map();
+  return function (...args) {
+    const key = args[0]; // simple key — serialize for multi-arg
+    if (cache.has(key)) return cache.get(key);
+    const result = func.apply(this, args); // keep method this
+    cache.set(key, result);
+    return result;
+  };
+}
+
 function timed(fn) {
   return function (...args) {
     const t0 = performance.now();
@@ -944,7 +991,47 @@ function timed(fn) {
 }
 ```
 
-**Sources:** [javascript.info/call-apply-decorators](https://learn.javascript.ru/call-apply-decorators)
+**Sources:** [javascript.info/call-apply-decorators](https://javascript.info/call-apply-decorators) · [javascript.info/bind](https://javascript.info/bind)
+
+</details>
+
+<details>
+  <summary>Reference Type</summary>
+
+### Reference Type
+
+**Definition:** Spec-internal value `(base, name, strict)` produced by property access (`obj.method`). Calling `()` on it sets `this` to `base`. Any other operation discards the Reference and leaves a bare function — `this` is lost.
+
+**How it works:**
+
+- `obj.method()` — dot returns a Reference; call uses `obj` as `this`.
+- `const f = obj.method; f()` — assignment extracts the function; `this` is `undefined` (strict) / global (sloppy).
+- Same loss: `(cond ? obj.hi : obj.bye)()`, `(method = obj.go)()`, `(obj.go || obj.stop)()`.
+- Parentheses around `(obj.go)()` do **not** strip the Reference; assignment/`||`/`?` do.
+
+**When to use:** Understand interview “lost `this`” puzzles; fix with `.bind(obj)`, arrow wrapper, or call as `obj.method()`.
+
+**Examples:**
+
+```js
+const user = {
+  name: "John",
+  hi() {
+    return this.name;
+  },
+};
+
+user.hi(); // "John"
+(user.name === "John" ? user.hi : user.bye)(); // TypeError / wrong this
+
+const hi = user.hi;
+hi(); // this lost
+user.hi.bind(user)(); // "John"
+```
+
+**Thoughts:** *Dot + call keep `this`; anything that “unwraps” the method first does not.*
+
+**Sources:** [javascript.info/reference-type](https://javascript.info/reference-type)
 
 </details>
 

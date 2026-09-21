@@ -767,7 +767,7 @@ document.cookie; // readable unless HttpOnly
 
 **Sources:**
 
-[MDN — HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies)
+[javascript.info/cookie](https://javascript.info/cookie) · [MDN — HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies)
 
 ---
 
@@ -881,16 +881,22 @@ If-None-Match: "33a64df…"
 
 **Definition:**
 
-Browsers expose several APIs for asynchronous HTTP without full page reloads (AJAX pattern). `fetch` is the global method used at the application level.
+Browsers expose several APIs for asynchronous HTTP without full page reloads (AJAX pattern). `fetch` is the modern default; `XMLHttpRequest` remains for upload progress and some legacy paths.
 
 | API              | Status               |
 | ---------------- | -------------------- |
 | `fetch`          | Modern standard      |
-| `XMLHttpRequest` | Legacy               |
+| `XMLHttpRequest` | Legacy + upload progress |
 | HTML `<form>`    | Full page navigation |
 | Axios / jQuery   | Third-party wrappers |
 
-**How it works:** `fetch(url, init)` returns `Promise<Response>`. Set `method` to an HTTP verb (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`, …). JSON bodies need `JSON.stringify` and usually `Content-Type: application/json`. Network failures reject; HTTP 4xx/5xx do **not** — check `res.ok`.
+**How it works:** `fetch(url, init)` returns `Promise<Response>`. Set `method` to an HTTP verb (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`, …). JSON bodies need `JSON.stringify` and usually `Content-Type: application/json`. Network failures reject; HTTP 4xx/5xx do **not** — check `res.ok`. Body once: only one of `res.json()` / `text()` / `blob()` / `arrayBuffer()`.
+
+**Download progress:** read `response.body.getReader()` chunks; sum `value.length` vs `Content-Length` when present. **Upload progress:** not available on `fetch` — use `xhr.upload.onprogress`.
+
+**XHR sketch:** `open` → `send` → `onload` / `onerror` / `onprogress`. `xhr.responseType = 'json'` | `'blob'` | `'arraybuffer'`. Cross-origin cookies: `xhr.withCredentials = true` (same idea as `fetch` `credentials: 'include'`).
+
+**Resumable upload idea:** ask server how many bytes it has (`X-File-Id`), then `file.slice(startByte)` + `X-Start-Byte` via XHR (server must append).
 
 **Examples:**
 
@@ -903,9 +909,25 @@ const res = await fetch('/api/save-text', {
 if (!res.ok) throw new Error(`HTTP ${res.status}`);
 ```
 
+```js
+// download progress (fetch)
+const res = await fetch(url);
+const total = +res.headers.get('Content-Length') || 0;
+const reader = res.body.getReader();
+let received = 0;
+const chunks = [];
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  chunks.push(value);
+  received += value.length;
+  console.log(received, total);
+}
+```
+
 **Sources:**
 
-[MDN — Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) · [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods)
+[javascript.info/fetch](https://javascript.info/fetch) · [javascript.info/fetch-progress](https://javascript.info/fetch-progress) · [javascript.info/xmlhttprequest](https://javascript.info/xmlhttprequest) · [javascript.info/resume-upload](https://javascript.info/resume-upload) · [MDN — Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) · [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods)
 
 ---
 
@@ -921,15 +943,17 @@ if (!res.ok) throw new Error(`HTTP ${res.status}`);
 **How it works:**
 
 - `fetch(url, options)` returns a `Promise<Response>` — check `res.ok` (`status 200–299`); network errors reject, HTTP 4xx/5xx do not.
-- `AbortController` — `const ac = new AbortController(); fetch(url, { signal: ac.signal })`; call `ac.abort()` to cancel (throws `AbortError`).
-- `FormData` — `fd.append('file', fileInput.files[0])`; pass `body: fd` — browser sets `Content-Type` with boundary automatically (do not set manually).
+- `AbortController` — `const ac = new AbortController(); fetch(url, { signal: ac.signal })`; call `ac.abort()` → promise rejects with `AbortError`. One controller can abort many fetches sharing `signal`.
+- `FormData` — `fd.append('file', fileInput.files[0])`; pass `body: fd` — browser sets `Content-Type` with boundary automatically (do not set manually). File-like: `append(name, blob, fileName)`.
 - Timeouts — combine `AbortController` with `setTimeout(() => ac.abort(), 5000)`.
+- Rare options: `keepalive: true` (beacon-style, e.g. `unload`, body ≤ 64 KB total); `credentials` / `mode` / `cache` / `integrity` — see [javascript.info/fetch-api](https://javascript.info/fetch-api). CORS details: [CORS](./6_web_api_security.md#cors).
 
 **When to use:**
 
 - Debounced search — abort previous request when user types again.
 - React `useEffect` cleanup — abort fetch on unmount.
 - File upload — `FormData` + `POST`; for JSON use `JSON.stringify` + `Content-Type: application/json`.
+- Analytics on leave — `keepalive` POST (or `navigator.sendBeacon`).
 
 **Pluses and minuses:**
 
@@ -970,7 +994,7 @@ try {
 
 **Sources:**
 
-[MDN — AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) · [MDN — FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData)
+[javascript.info/fetch](https://javascript.info/fetch) · [javascript.info/formdata](https://javascript.info/formdata) · [javascript.info/fetch-abort](https://javascript.info/fetch-abort) · [javascript.info/fetch-api](https://javascript.info/fetch-api) · [MDN — AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) · [MDN — FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData)
 
 ---
 
