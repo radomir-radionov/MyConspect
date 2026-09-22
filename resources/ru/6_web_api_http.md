@@ -442,8 +442,8 @@ openssl req -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \
 
 **How it works:**
 
-- Строка запроса: `61 62 63` — e.g. `GET / HTTP/1.1`. Заказ фиксированный. Целью обычно является исходная форма (путь + запрос); `Host` держит авторитет. Другие формы: абсолютный URL (прокси-GET), `host:port` (`CONNECT`), `*` (`OPTIONS`).
-- Статус-строка: `64 65 66` — e.g. `HTTP/1.1 200 OK`. Фраза причины предназначена для людей. Классы: [Протокол HTTP](#http-протокол).
+- Строка запроса: `<method> <request-target> <protocol>` — e.g. `GET / HTTP/1.1`. Заказ фиксированный. Целью обычно является исходная форма (путь + запрос); `Host` держит авторитет. Другие формы: абсолютный URL (прокси-GET), `host:port` (`CONNECT`), `*` (`OPTIONS`).
+- Статус-строка: `<protocol> <status-code> <reason-phrase>` — e.g. `HTTP/1.1 200 OK`. Фраза причины предназначена для людей. Классы: [Протокол HTTP](#http-протокол).
 - Заголовки: `Name: value` (имя не чувствительно к регистру). Наличие тела обозначается `Content-Length` or `Transfer-Encoding` (часто `chunked`). `Content-Type` называет тип носителя (`text/html`, `application/json`, `multipart/form-data`).
 - HTTP/2+ сохраняет те же поля, что и **псевдозаголовки** (`:method`, `:path`, `:authority`, `:scheme`, `:status`) внутри двоичных кадров; версия не повторяется в каждом сообщении.
 
@@ -876,10 +876,10 @@ If-None-Match: "33a64df…"
 | ---------------- | -------------------- |
 | `fetch`          | Современный стандарт |
 | `XMLHttpRequest` | Наследие + прогресс загрузки |
-| HTML `87`    | Полная навигация по страницам |
+| HTML `<form>`    | Полная навигация по страницам |
 | Аксиос/jQuery | Сторонние оболочки |
 
-**How it works:** `fetch(url, init)` возвращает `Promise88`. Набор `method` к HTTP-глаголу (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`, …). Тела JSON нужны `JSON.stringify` и обычно `Content-Type: application/json`. Сбои сети отклоняются; HTTP 4xx/5xx do **not** — check `res.ok`. Тело однажды: только один из `res.json()` / `text()` / `blob()` / `arrayBuffer()`.
+**How it works:** `fetch(url, init)` возвращает `Promise<Response>`. Набор `method` к HTTP-глаголу (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`, …). Тела JSON нужны `JSON.stringify` и обычно `Content-Type: application/json`. Сбои сети отклоняются; HTTP 4xx/5xx делать **нет** — проверьте `res.ok`. Тело однажды: только один из `res.json()` / `text()` / `blob()` / `arrayBuffer()`.
 
 **Download progress:** читать `response.body.getReader()` куски; сумма `value.length` vs `Content-Length` когда присутствует. **Ход загрузки:** недоступен на `fetch` - использовать `xhr.upload.onprogress`.
 
@@ -931,7 +931,7 @@ while (true) {
 
 **How it works:**
 
-- `fetch(url, options)` возвращает `Promise91` - проверять `res.ok` (`status 200–299`); сетевые ошибки отклоняются, HTTP 4xx/5xx — нет.
+- `fetch(url, options)` возвращает `Promise<Response>` - проверять `res.ok` (`status 200–299`); сетевые ошибки отклоняются, HTTP 4xx/5xx — нет.
 - `AbortController` — `const ac = new AbortController(); fetch(url, { signal: ac.signal })`; вызов `ac.abort()` → обещание отклоняется с `AbortError`. Один контроллер может прервать совместное использование нескольких выборок. `signal`.
 - `FormData` — `fd.append('file', fileInput.files[0])`; проходить `body: fd` — наборы браузеров `Content-Type` с границей автоматически (не задается вручную). Файловый: `append(name, blob, fileName)`.
 - Таймауты — объединить `AbortController` с `setTimeout(() => ac.abort(), 5000)`.

@@ -195,15 +195,13 @@ describe("handbook sidebar", () => {
     cy.url().should("include", "core");
   });
 
-  it("opens React Platform as a cluster folder instead of dumping Server concepts", () => {
+  it("shows React 19 as a single sidebar row instead of dumping concepts", () => {
     cy.visit("/en/frontend/react-hooks");
-    cy.nav("cluster", "platform").click();
+    cy.nav("cluster", "react-19").should("be.visible");
+    cy.nav("cluster", "react-19").click();
 
-    cy.location("pathname").should("eq", "/en/frontend/react");
-    cy.location("hash").should("eq", "#platform");
-    cy.nav("cluster", "platform").should("have.attr", "aria-expanded", "true");
-    cy.nav("topic", "react-server").should("be.visible");
-    cy.nav("topic", "react-server").should("have.attr", "aria-expanded", "false");
+    cy.location("pathname").should("eq", "/en/frontend/react-server");
+    cy.nav("cluster", "react-19").should("have.attr", "aria-expanded", "false");
     cy.sidebar().contains("Overview").should("not.exist");
     cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
   });

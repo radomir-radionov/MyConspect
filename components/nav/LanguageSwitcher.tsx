@@ -1,22 +1,64 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSyncExternalStore } from "react";
-import { LOCALES, type Locale } from "@/lib/i18n/locales";
+import { isLocale, LOCALES, type Locale } from "@/lib/i18n/locales";
 import { pathWithoutLocale, withLocale } from "@/lib/i18n/paths";
-import { getHash, getServerHash, queueHandbookHref, subscribeHash } from "./hash";
+import {
+  followHandbookHref,
+  getHash,
+  getServerHash,
+  queueHandbookHref,
+  subscribeHash,
+} from "./hash";
 
 const LABELS: Record<Locale, string> = {
   en: "EN",
   ru: "RU",
 };
 
-export function LanguageSwitcher({ locale }: { locale: Locale }) {
+export function LanguageSwitcher({
+  locale,
+  variant = "links",
+}: {
+  locale: Locale;
+  variant?: "links" | "select";
+}) {
   const pathname = usePathname() ?? `/${locale}`;
+  const router = useRouter();
   const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
   const rest = pathWithoutLocale(pathname);
   const pathRest = rest === "/" ? "/" : rest;
+
+  if (variant === "select") {
+    return (
+      <label className="inline-flex items-center">
+        <span className="sr-only">Language</span>
+        <select
+          aria-label="Language"
+          value={locale}
+          onChange={(event) => {
+            const next = event.target.value;
+            if (!isLocale(next) || next === locale) {
+              return;
+            }
+            const href = `${withLocale(next, pathRest)}${hash}`;
+            followHandbookHref(href, pathname, (path) => {
+              router.push(path, { scroll: false });
+            });
+          }}
+          className="h-8 cursor-pointer rounded-md border border-zinc-200 bg-zinc-50 px-1.5 text-xs font-semibold text-zinc-900 outline-none focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500"
+        >
+          {LOCALES.map((item) => (
+            <option key={item} value={item} lang={item}>
+              {LABELS[item]}
+            </option>
+          ))}
+        </select>
+      </label>
+    );
+  }
 
   return (
     <div

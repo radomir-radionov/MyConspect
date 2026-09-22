@@ -446,9 +446,9 @@ sudo systemctl status nginx
 
 - Одна директива на строку; `\` продолжает линию. `#` запускает комментарий длиной **целую строку** (не идущий на той же строке, что и директива). Аргументы заключены в кавычки, если они содержат пробелы.
 - **Имена директив не чувствительны к регистру**; аргументы часто чувствительны к регистру. `${VAR}` расширяется `Define` (и обрабатывать env с **before** start). `SetEnv` слишком поздно для `${VAR}` в файле конфигурации.
-- В контейнерах используются HTML-теги: `64`, `65`, `66`, `67`, `68`, `69`, `70`.
+- В контейнерах используются HTML-теги: `<Directory path>`, `<DirectoryMatch regex>`, `<Files>`, `<FilesMatch>`, `<Location>`, `<LocationMatch>`, `<VirtualHost addr[:port]>`.
 - `.htaccess` (имя через `AccessFileName`) читается **при каждом запросе** для этого дерева каталогов. `AllowOverride None` игнорирует это — предпочитаете основную конфигурацию, когда вы управляете сервером.
-- Доступ в **2.4** есть `Require` (`mod_authz_core`), а не 2,2 `Order`/`Allow`/`Deny`. Комбинировать с `71` / `72` / `73`.
+- Доступ в **2.4** есть `Require` (`mod_authz_core`), а не 2,2 `Order`/`Allow`/`Deny`. Комбинировать с `<RequireAll>` / `<RequireAny>` / `<RequireNone>`.
 - Контроль: `httpd -t` or `apachectl configtest`. `httpd -S` сбрасывает vhosts. `apachectl -k stop|graceful-stop|restart|graceful`. системный модуль часто `httpd` (RHEL) или `apache2` (Дебиан). Окна: `httpd.exe -k shutdown|restart` при запуске как служба/консоль.
 - Стеки: **AMP/XAMPP** = Apache + MySQL/MariaDB + Perl/PHP/Python для локальной установки.
 
@@ -517,7 +517,7 @@ sudo systemctl reload httpd   # graceful; Debian: apache2
 sudo apachectl -k graceful
 ```
 
-**Thoughts:** *Контейнеры (`74` / `75`) директивы области действия; `.htaccess` является необязательным переопределением для каждого каталога; 2.4 авторизация есть `Require`; тест с `-t`, применить с плавной перезагрузкой.*
+**Thoughts:** *Контейнеры (`<Directory>` / `<VirtualHost>`) директивы области действия; `.htaccess` является необязательным переопределением для каждого каталога; 2.4 авторизация есть `Require`; тест с `-t`, применить с плавной перезагрузкой.*
 
 **See also:** [Конфигурация Nginx](#nginx-configuration) · обратный прокси в [0_system_design.md](./0_system_design.md) · [10_build.md](./10_build.md)
 
@@ -884,7 +884,7 @@ sudo iptables -L
 
 ### Nginx vs Apache — how do you configure them?
 
-**Definition:** Оба являются HTTP-серверами/обратными прокси-серверами. Nginx использует `server`/`location` in `nginx.conf`; Apache использует `httpd.conf` контейнеры (`96`, `97`) и необязательно `.htaccess`.
+**Definition:** Оба являются HTTP-серверами/обратными прокси-серверами. Nginx использует `server`/`location` in `nginx.conf`; Apache использует `httpd.conf` контейнеры (`<VirtualHost>`, `<Directory>`) и необязательно `.htaccess`.
 
 **How it works:** Nginx: воркеры, управляемые событиями, `nginx -t` затем `reload` (HUP, сохраняйте связи). Apache: MPM (событие/работник/префорк), `httpd -t`, `apachectl -k graceful`. Доступ к Apache 2.4 есть `Require`, а не 2,2 `Order`/`Allow`. У Nginx нет `.htaccess`; вы редактируете основную конфигурацию (или включенные фрагменты).
 

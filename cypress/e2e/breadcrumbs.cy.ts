@@ -45,6 +45,18 @@ describe("handbook breadcrumbs", () => {
     });
   });
 
+  it("shows React 19 once on the React React 19 topic", () => {
+    cy.visit("/en/frontend/react-server");
+    cy.contains("h1", "React 19");
+    cy.get("nav[aria-label='Breadcrumb']").then(($nav) => {
+      const labels = [...$nav.find("li")].map((li) =>
+        li.innerText.replaceAll("/", "").trim(),
+      );
+      expect(labels.filter((label) => label === "React 19")).to.have.length(1);
+      expect(labels).to.deep.equal(["Home", "Frontend", "React", "React 19"]);
+    });
+  });
+
   it("keeps the concept hash when switching language", () => {
     cy.visit("/en/frontend/html-structure#meta-tags");
     cy.get("nav[aria-label='Breadcrumb'] li").last().should("contain", "Meta tags");

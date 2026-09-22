@@ -4,7 +4,7 @@ Components, hooks, rendering, RSC, and ecosystem patterns. Theory lives in the t
 
 ### Related docs
 
-[React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Server](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
+[React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
 
 ### Navigation
 
@@ -12,7 +12,7 @@ Components, hooks, rendering, RSC, and ecosystem patterns. Theory lives in the t
 |------|--------|
 | [React — Core](./4_react_core.md) | Library model, rendering, JSX, and state. |
 | [React — Hooks](./4_react_hooks.md) | Hooks reference and escape hatches. |
-| [React — Server](./4_react_server.md) | React 19 APIs, SSR, and React Server Components. |
+| [React — React 19](./4_react_server.md) | React 19 APIs, SSR, and React Server Components. |
 | [React — Ecosystem](./4_react_ecosystem.md) | Architecture, libraries, performance, and legacy. |
 | [React — Interview](./4_react_interview.md) | Interview Q&A and coding tasks. |
 

@@ -1,6 +1,6 @@
 # Next.js — Platform
 
-Оптимизация, прокси, конфигурация, Vercel, миграция и отладка.
+Оптимизации, прокси, конфиг, Vercel, миграция и отладка.
 
 [ ← Вернуться в центр](./4_nextjs.md)
 
@@ -30,7 +30,7 @@
 
 **Definition:** Компонент изображения с автоматической оптимизацией — изменение размера, WebP/AVIF, отложенная загрузка, размытие заполнителя.
 
-**When to use:** Всегда предпочитаю сырому `65` для фотографий и изображений героев.
+**When to use:** Всегда предпочитаю сырому `<img>` для фотографий и изображений героев.
 
 **Pluses and minuses:**
 
@@ -100,7 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-**Thoughts:** Не используйте `68` - использовать `next/font` для производственных приложений на Vercel.
+**Thoughts:** Не используйте `<link href="fonts.googleapis.com">` - использовать `next/font` для производственных приложений на Vercel.
 
 **Sources:** [nextjs.org/docs/app/api-reference/comComponents/font](https://nextjs.org/docs/app/api-reference/comComponents/font)
 
@@ -746,7 +746,7 @@ Pages Router и устаревшие API Next.js заменены шаблона
 |-------|-----|
 | `Date.now()` / `Math.random()` в рендеринге | Генерировать в `useEffect` или перейти с сервера |
 | `typeof window !== 'undefined'` филиалы | Использовать `useEffect` или только серверный компонент |
-| Неверное вложение HTML (`113114`) | Исправить структуру HTML |
+| Неверное вложение HTML (`<p><div>`) | Исправить структуру HTML |
 | Расширения браузера, изменяющие DOM | Тест инкогнито |
 | Сторонние библиотеки, предполагающие браузер | Динамический импорт с `ssr: false` |
 
@@ -1171,7 +1171,7 @@ export function WebVitals() {
 }
 ```
 
-Импорт `137` от `app/layout.tsx`. Лаборатория против поля, 28-дневное окно CrUX, `web-vitals/attribution` → [6_web_api.md — основные веб-показатели](./6_web_api_security.md#core-web-vitals). Срезы LCP (`fetchpriority`, `picture`, Правила спекуляций) → [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint).
+Импорт `<WebVitals />` от `app/layout.tsx`. Лаборатория против поля, 28-дневное окно CrUX, `web-vitals/attribution` → [6_web_api.md — основные веб-показатели](./6_web_api_security.md#core-web-vitals). Срезы LCP (`fetchpriority`, `picture`, Правила спекуляций) → [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint).
 
 **Thoughts:** LCP = первая осмысленная краска, INP = резкость ввода, CLS = визуальная стабильность. TTFB — это средство, а не цель.
 

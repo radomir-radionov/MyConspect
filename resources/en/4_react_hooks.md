@@ -6,7 +6,7 @@ Hooks reference and escape hatches.
 
 ### Related docs
 
-* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Server](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
+* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
 
 ### Sections
 

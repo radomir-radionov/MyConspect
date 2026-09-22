@@ -6,7 +6,7 @@
 
 ### Related docs
 
-* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Сервер](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Интервью](./4_react_interview.md)
+* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Интервью](./4_react_interview.md)
 
 ### Sections
 

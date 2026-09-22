@@ -44,7 +44,6 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Document, events, and extra browser APIs.": "Document, события и дополнительные браузерные API.",
   "DOM tree, querying, mutation, BOM, and script loading.": "DOM-дерево, поиск, мутации, BOM и загрузка скриптов.",
   "Don't Repeat Yourself, Keep It Simple, You Aren't Gonna Need It.": "Не повторяйся, держи простоту, тебе это не понадобится (DRY, KISS, YAGNI).",
-  "Ecosystem and performance.": "Экосистема и производительность.",
   "Editor and browser developer tools.": "Редактор и инструменты разработчика в браузере.",
   "Event loop, promises, and fetch.": "Event loop, промисы и fetch.",
   "Express, auth, validation, Koa, NestJS, and runtime choice.": "Express, auth, валидация, Koa, NestJS и выбор рантайма.",

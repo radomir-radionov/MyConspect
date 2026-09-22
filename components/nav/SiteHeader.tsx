@@ -35,7 +35,7 @@ export function SiteHeader({
     <div id={HANDBOOK_HEADER_ID} className="relative z-40 shrink-0">
       <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
         <div className="flex h-14 min-w-0 items-stretch overflow-hidden">
-          <div className="sticky left-0 z-10 flex shrink-0 items-center bg-white pl-(--chrome-inline) pr-2 dark:bg-zinc-950">
+          <div className="sticky left-0 z-10 flex shrink-0 items-center bg-white pl-(--chrome-inline) pr-1 sm:pr-2 dark:bg-zinc-950">
             <Link
               href={homeHref(locale)}
               className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md px-1.5 text-zinc-900 hover:bg-zinc-100 dark:text-zinc-50 dark:hover:bg-zinc-800"
@@ -46,9 +46,12 @@ export function SiteHeader({
               </span>
               <span className="sr-only sm:hidden">{SITE_NAME}</span>
             </Link>
-            <span aria-hidden="true" className="ml-2 h-6 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800" />
+            <span
+              aria-hidden="true"
+              className="ml-1 hidden h-6 w-px shrink-0 bg-zinc-200 sm:ml-2 sm:block dark:bg-zinc-800"
+            />
           </div>
-          <div className="flex min-w-0 flex-1 items-center px-3">
+          <div className="flex min-w-0 flex-1 items-center px-1.5 sm:px-3">
             <div className="relative w-full min-w-0 max-w-2xl">
             <label className="block min-w-0">
               <span className="sr-only">
@@ -128,16 +131,13 @@ export function SiteHeader({
             <LanguageSwitcher locale={locale} />
             <ThemeToggle />
           </div>
-          <div className="sticky right-0 z-10 flex shrink-0 items-center bg-white pr-(--chrome-inline) pl-2 md:hidden dark:bg-zinc-950">
-            <span aria-hidden="true" className="mr-2 h-6 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800" />
-            <LanguageSwitcher locale={locale} />
-            <ThemeToggle />
+          <div className="sticky right-0 z-10 flex shrink-0 items-center bg-white pr-(--chrome-inline) pl-1 sm:pl-2 md:hidden dark:bg-zinc-950">
             <button
               type="button"
               className={
                 navOpen
-                  ? "ml-1 inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
-                  : "ml-1 inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-300 bg-zinc-50 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-100 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-800"
+                  ? "inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
+                  : "inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-300 bg-zinc-50 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-100 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-800"
               }
               aria-expanded={navOpen}
               aria-controls={HANDBOOK_SIDEBAR_ID}
@@ -188,13 +188,19 @@ export function DrawerFooter({
           <InstructionsIcon />
         </Link>
       </div>
-      <time
-        dateTime={lastUpdatedIso}
-        className="pr-1 text-right text-[11px] leading-tight text-zinc-500 dark:text-zinc-400"
-      >
-        <span className="block">{chrome.lastUpdated}</span>
-        <span className="tabular-nums text-zinc-600 dark:text-zinc-300">{lastUpdatedLabel}</span>
-      </time>
+      <div className="flex shrink-0 items-center gap-1.5">
+        <div className="flex items-center gap-1 md:hidden">
+          <LanguageSwitcher locale={locale} variant="select" />
+          <ThemeToggle />
+        </div>
+        <time
+          dateTime={lastUpdatedIso}
+          className="pr-1 text-right text-[11px] leading-tight text-zinc-500 dark:text-zinc-400"
+        >
+          <span className="block">{chrome.lastUpdated}</span>
+          <span className="tabular-nums text-zinc-600 dark:text-zinc-300">{lastUpdatedLabel}</span>
+        </time>
+      </div>
     </div>
   );
 }

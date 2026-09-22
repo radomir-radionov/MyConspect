@@ -4,7 +4,7 @@
 
 ### Related docs
 
-[React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Сервер](./4_react_server.md) · [React — Экосистема](./4_react_ecosystem.md) · [React — Интервью](./4_react_interview.md)
+[React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Экосистема](./4_react_ecosystem.md) · [React — Интервью](./4_react_interview.md)
 
 ### Navigation
 
@@ -12,7 +12,7 @@
 |------|--------|
 | [React — Core](./4_react_core.md) | Модель библиотеки, рендеринг, JSX и состояние. |
 | [React — Хуки](./4_react_hooks.md) | Крюки опорные и аварийные люки. |
-| [React — Сервер](./4_react_server.md) | API-интерфейсы React 19, SSR и серверные компоненты React. |
+| [React — React 19](./4_react_server.md) | API-интерфейсы React 19, SSR и серверные компоненты React. |
 | [React — Экосистема](./4_react_ecosystem.md) | Архитектура, библиотеки, производительность и наследие. || [React — Интервью](./4_react_interview.md) | Интервью с вопросами и ответами и задания по кодированию. |
 
 ### Interview practice
