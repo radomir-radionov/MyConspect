@@ -3,21 +3,13 @@ import { Analytics } from "@vercel/analytics/next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { ResourcesAutoRefresh } from "@/components/dev/ResourcesAutoRefresh";
-import { HandbookShell } from "@/components/nav";
 import { themeBootScript } from "@/components/nav/uiStorage";
-import { withoutSearchText } from "@/lib/nav/chromeNav";
-import { handbookNav } from "@/lib/nav/handbook";
-import { CHROME } from "@/lib/nav";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
-import {
-  formatSiteLastUpdated,
-  siteLastUpdatedIso,
-} from "@/lib/siteLastUpdated";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  subsets: ["latin", "cyrillic"],
 });
 
 const geistMono = Geist_Mono({
@@ -34,8 +26,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  const lastUpdatedIso = siteLastUpdatedIso();
-
   return (
     <html
       lang="en"
@@ -49,14 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{ __html: themeBootScript() }}
         />
         <ResourcesAutoRefresh />
-        <HandbookShell
-          groups={withoutSearchText(handbookNav())}
-          chrome={CHROME}
-          lastUpdatedIso={lastUpdatedIso}
-          lastUpdatedLabel={formatSiteLastUpdated(lastUpdatedIso)}
-        >
-          {children}
-        </HandbookShell>
+        {children}
         <Analytics />
       </body>
     </html>

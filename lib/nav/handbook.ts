@@ -10,6 +10,9 @@ import {
   trackHref,
   type Topic,
 } from "@/lib/catalog";
+import { catalogBlurb } from "@/lib/i18n/catalog";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
+import { withLocale } from "@/lib/i18n/paths";
 import { loadTopicOutline } from "@/lib/parse";
 import type { NavEntry, NavGroup, NavTopic } from "./types";
 
@@ -17,17 +20,24 @@ function sameTitle(left: string, right: string): boolean {
   return left.trim().toLowerCase() === right.trim().toLowerCase();
 }
 
-function toNavTopic(topic: Topic): NavTopic {
+function localizeHref(locale: Locale, href: string): string {
+  return withLocale(locale, href);
+}
+
+function toNavTopic(topic: Topic, locale: Locale): NavTopic {
   return {
     slug: topic.slug,
-    href: topicHref(topic),
+    href: localizeHref(locale, topicHref(topic)),
     title: topic.title,
-    blurb: topic.blurb,
-    concepts: loadTopicOutline(topic),
+    blurb: catalogBlurb(locale, topic.blurb),
+    concepts: loadTopicOutline(topic, locale),
   };
 }
 
-function entriesForTrack(trackId: (typeof TRACKS)[number]["id"]): readonly NavEntry[] {
+function entriesForTrack(
+  trackId: (typeof TRACKS)[number]["id"],
+  locale: Locale,
+): readonly NavEntry[] {
   const seenSubjects = new Set<string>();
   const entries: NavEntry[] = [];
 
@@ -47,8 +57,8 @@ function entriesForTrack(trackId: (typeof TRACKS)[number]["id"]): readonly NavEn
         .map((cluster) => ({
           id: cluster.id,
           title: cluster.title,
-          href: clusterHref(subject, cluster),
-          topics: topicsForCluster(subject, cluster.id).map(toNavTopic),
+          href: localizeHref(locale, clusterHref(subject, cluster)),
+          topics: topicsForCluster(subject, cluster.id).map((item) => toNavTopic(item, locale)),
         }))
         .filter((cluster) => cluster.topics.length > 0);
       if (clusters.length === 0) {
@@ -58,24 +68,24 @@ function entriesForTrack(trackId: (typeof TRACKS)[number]["id"]): readonly NavEn
         kind: "subject",
         subject: {
           slug: subject.slug,
-          href: subjectHref(subject),
+          href: localizeHref(locale, subjectHref(subject)),
           title: subject.title,
-          blurb: subject.blurb,
+          blurb: catalogBlurb(locale, subject.blurb),
           clusters,
         },
       });
       continue;
     }
 
-    entries.push({ kind: "topic", topic: toNavTopic(topic) });
+    entries.push({ kind: "topic", topic: toNavTopic(topic, locale) });
   }
 
   return entries;
 }
 
-export function handbookNav(): readonly NavGroup[] {
+export function handbookNav(locale: Locale = DEFAULT_LOCALE): readonly NavGroup[] {
   return TRACKS.map((track) => {
-    const href = trackHref(track.id);
+    const href = localizeHref(locale, trackHref(track.id));
     const leaf = leafTopicForTrack(track.id);
     if (leaf && sameTitle(leaf.title, track.title)) {
       return {
@@ -83,11 +93,11 @@ export function handbookNav(): readonly NavGroup[] {
         title: track.title,
         href,
         entries: [],
-        leafTopic: toNavTopic(leaf),
+        leafTopic: toNavTopic(leaf, locale),
       };
     }
 
-    const entries = entriesForTrack(track.id);
+    const entries = entriesForTrack(track.id, locale);
     const only = entries.length === 1 ? entries[0] : undefined;
     if (only?.kind === "subject" && sameTitle(only.subject.title, track.title)) {
       return {

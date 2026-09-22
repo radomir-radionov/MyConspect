@@ -7,6 +7,7 @@ import {
   type NavGroup,
   type NavTopic,
 } from "@/lib/nav";
+import { homeHref, localeFromPathname, stripLocalePrefix } from "@/lib/i18n/paths";
 import { hashIdFrom } from "./hash";
 
 export type NavLocation = {
@@ -121,7 +122,8 @@ export function locationForPath(
 
 export function hrefInHandbook(groups: readonly NavGroup[], href: string): boolean {
   const { pathname } = splitHref(href);
-  if (pathname === "/" || pathname === INSTRUCTIONS_HREF) {
+  const { path } = stripLocalePrefix(pathname);
+  if (path === "/" || path === INSTRUCTIONS_HREF) {
     return true;
   }
   for (const group of groups) {
@@ -172,12 +174,14 @@ export function crumbsForPath(
   labels: { home: string; instructions: string },
 ): readonly Crumb[] {
   const hashId = hashIdFrom(hash);
-  const home: Crumb = { label: labels.home, href: "/" };
+  const locale = localeFromPathname(pathname);
+  const { path } = stripLocalePrefix(pathname);
+  const home: Crumb = { label: labels.home, href: homeHref(locale) };
 
-  if (pathname === "/") {
+  if (path === "/") {
     return [{ label: labels.home }];
   }
-  if (pathname === INSTRUCTIONS_HREF) {
+  if (path === INSTRUCTIONS_HREF) {
     return [home, { label: labels.instructions }];
   }
 

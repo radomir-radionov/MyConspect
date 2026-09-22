@@ -1,6 +1,8 @@
 import { marked } from "marked";
 import sanitizeHtml from "sanitize-html";
 import { hrefForFile } from "@/lib/catalog";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
+import { withLocale } from "@/lib/i18n/paths";
 import { highlightMarkdownFences } from "./highlight";
 import { structureConceptBody } from "./slots";
 
@@ -106,8 +108,11 @@ export type ConceptOutline = {
 
 const CONCEPT_SEARCH_TEXT_MAX = 1600;
 
-export function parseTopicOutline(markdown: string): readonly ConceptOutline[] {
-  const rewritten = rewriteNoteLinks(markdown);
+export function parseTopicOutline(
+  markdown: string,
+  locale: Locale = DEFAULT_LOCALE,
+): readonly ConceptOutline[] {
+  const rewritten = rewriteNoteLinks(markdown, locale);
   const { regular, interview } = partitionInterviewBlocks(rewritten);
   const usedIds = new Set<string>();
   const outline: ConceptOutline[] = regular.map((block) => ({
@@ -121,8 +126,11 @@ export function parseTopicOutline(markdown: string): readonly ConceptOutline[] {
   return outline;
 }
 
-export async function parseTopicMarkdown(markdown: string): Promise<ParsedTopic> {
-  const rewritten = rewriteNoteLinks(markdown);
+export async function parseTopicMarkdown(
+  markdown: string,
+  locale: Locale = DEFAULT_LOCALE,
+): Promise<ParsedTopic> {
+  const rewritten = rewriteNoteLinks(markdown, locale);
   const title = extractH1(rewritten) ?? "Topic";
   const description = extractDescription(rewritten);
   const concepts = await collectConcepts(rewritten);
@@ -140,7 +148,7 @@ export function slugify(value: string): string {
   return slug || "section";
 }
 
-function rewriteNoteLinks(markdown: string): string {
+function rewriteNoteLinks(markdown: string, locale: Locale): string {
   const mdLinks = /\]\((?:\.\.\/)?(?:\.\/)?(\d+_[a-z0-9_]+\.md)(#[^)\s]*)?\)/gi;
   const hrefs = /href="(?:\.\.\/)?(?:\.\/)?(\d+_[a-z0-9_]+\.md)(#[^"]*)?"/gi;
 
@@ -149,7 +157,7 @@ function rewriteNoteLinks(markdown: string): string {
     if (!href) {
       return undefined;
     }
-    return `${href}${hash ?? ""}`;
+    return withLocale(locale, `${href}${hash ?? ""}`);
   };
 
   return markdown

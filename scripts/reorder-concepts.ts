@@ -2,12 +2,14 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { TOPICS, isTrackId, type TrackId } from "../lib/catalog";
 import { auditTopicOrder, reorderTopicMarkdown } from "../lib/order";
+import { DEFAULT_LOCALE, isLocale, type Locale } from "../lib/i18n/locales";
 import { collectConceptBlocks, readTopicFile, resourcesDir } from "../lib/parse";
 
 type CliOptions = {
   readonly track?: TrackId;
   readonly file?: string;
   readonly dryRun: boolean;
+  readonly locale: Locale;
 };
 
 async function main(): Promise<void> {
@@ -24,7 +26,7 @@ async function main(): Promise<void> {
 
   let changedFiles = 0;
   for (const topic of topics) {
-    const current = readTopicFile(topic.file);
+    const current = readTopicFile(topic.file, options.locale);
     const result = reorderTopicMarkdown(topic, current);
     const afterAudit = auditTopicOrder(topic, result.markdown);
     const beforeCount = collectConceptBlocks(current).length;
@@ -47,7 +49,7 @@ async function main(): Promise<void> {
       process.stderr.write(`  remaining issues: ${afterAudit.issues.length}\n`);
     }
     if (!options.dryRun) {
-      const target = path.join(resourcesDir(), topic.file);
+      const target = path.join(resourcesDir(options.locale), topic.file);
       await writeFile(target, result.markdown, "utf8");
     }
   }
@@ -61,6 +63,7 @@ function parseArgs(argv: string[]): CliOptions {
   let track: TrackId | undefined;
   let file: string | undefined;
   let dryRun = false;
+  let locale: Locale = DEFAULT_LOCALE;
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -83,6 +86,15 @@ function parseArgs(argv: string[]): CliOptions {
         file = value;
         break;
       }
+      case "--locale": {
+        const value = argv[i + 1];
+        i += 1;
+        if (!value || !isLocale(value)) {
+          throw new Error(`--locale must be a valid locale`);
+        }
+        locale = value;
+        break;
+      }
       case "--dry-run":
         dryRun = true;
         break;
@@ -96,6 +108,7 @@ Usage:
 Options:
   --track <id>     Limit to one handbook track
   --file <name>    Limit to one resources/*.md file
+  --locale <code>  en | ru (default: en)
   --dry-run        Print changes without writing files
   -h, --help
 `);
@@ -106,7 +119,7 @@ Options:
     }
   }
 
-  return { track, file, dryRun };
+  return { track, file, dryRun, locale };
 }
 
 main().catch((error: unknown) => {

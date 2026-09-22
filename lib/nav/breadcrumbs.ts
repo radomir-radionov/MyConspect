@@ -9,29 +9,38 @@ import {
   type Topic,
   type Track,
 } from "@/lib/catalog";
-import { CHROME } from "./chrome";
+import { chromeFor } from "@/lib/i18n/chrome";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
+import { homeHref, withLocale } from "@/lib/i18n/paths";
 import type { Crumb, HashCrumb } from "./types";
 
-function homeCrumb(): Crumb {
-  return { label: CHROME.home, href: "/" };
+function homeCrumb(locale: Locale): Crumb {
+  return { label: chromeFor(locale).home, href: homeHref(locale) };
 }
 
-export function trackCrumbs(track: Track): readonly Crumb[] {
-  return [homeCrumb(), { label: track.title }];
+function L(locale: Locale, href: string): string {
+  return withLocale(locale, href);
 }
 
-export function subjectCrumbs(subject: Subject): readonly Crumb[] {
-  const trail: Crumb[] = [homeCrumb()];
+export function trackCrumbs(track: Track, locale: Locale = DEFAULT_LOCALE): readonly Crumb[] {
+  return [homeCrumb(locale), { label: track.title }];
+}
+
+export function subjectCrumbs(
+  subject: Subject,
+  locale: Locale = DEFAULT_LOCALE,
+): readonly Crumb[] {
+  const trail: Crumb[] = [homeCrumb(locale)];
   const track = getTrack(subject.track);
   if (track && subjectHref(subject) !== trackHref(track.id)) {
-    trail.push({ label: track.title, href: trackHref(track.id) });
+    trail.push({ label: track.title, href: L(locale, trackHref(track.id)) });
   }
   trail.push({ label: subject.title });
   return trail;
 }
 
-export function topicCrumbs(topic: Topic): readonly Crumb[] {
-  const trail: Crumb[] = [homeCrumb()];
+export function topicCrumbs(topic: Topic, locale: Locale = DEFAULT_LOCALE): readonly Crumb[] {
+  const trail: Crumb[] = [homeCrumb(locale)];
   const track = getTrack(topic.track);
   const subject = topic.grouping
     ? getSubject(topic.track, topic.grouping.subject)
@@ -39,16 +48,19 @@ export function topicCrumbs(topic: Topic): readonly Crumb[] {
   const subjectPath = subject ? subjectHref(subject) : undefined;
 
   if (track && subjectPath !== trackHref(track.id)) {
-    trail.push({ label: track.title, href: trackHref(track.id) });
+    trail.push({ label: track.title, href: L(locale, trackHref(track.id)) });
   }
 
   if (subject && subjectPath) {
-    trail.push({ label: subject.title, href: subjectPath });
+    trail.push({ label: subject.title, href: L(locale, subjectPath) });
     const cluster = topic.grouping
       ? getCluster(subject, topic.grouping.cluster)
       : undefined;
     if (cluster) {
-      trail.push({ label: cluster.title, href: clusterHref(subject, cluster) });
+      trail.push({
+        label: cluster.title,
+        href: L(locale, clusterHref(subject, cluster)),
+      });
     }
   }
 

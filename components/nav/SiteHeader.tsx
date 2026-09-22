@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HANDBOOK_HEADER_ID, HANDBOOK_SIDEBAR_ID } from "@/constants";
-import { INSTRUCTIONS_HREF, type ChromeCopy, type SearchMode } from "@/lib/nav";
+import { type ChromeCopy, type SearchMode } from "@/lib/nav";
+import { homeHref, instructionsHref, localeFromPathname } from "@/lib/i18n/paths";
 import { SITE_NAME } from "@/lib/site";
 import { ContactLinks } from "./ContactLinks";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { SiteMark } from "./SiteMark";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -26,13 +28,16 @@ export function SiteHeader({
   navOpen: boolean;
   onToggleNav: () => void;
 }) {
+  const pathname = usePathname() ?? "/en";
+  const locale = localeFromPathname(pathname);
+
   return (
     <div id={HANDBOOK_HEADER_ID} className="relative z-40 shrink-0">
       <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
         <div className="flex h-14 min-w-0 items-stretch overflow-hidden">
           <div className="sticky left-0 z-10 flex shrink-0 items-center bg-white pl-(--chrome-inline) pr-2 dark:bg-zinc-950">
             <Link
-              href="/"
+              href={homeHref(locale)}
               className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md px-1.5 text-zinc-900 hover:bg-zinc-100 dark:text-zinc-50 dark:hover:bg-zinc-800"
             >
               <SiteMark />
@@ -120,10 +125,12 @@ export function SiteHeader({
           </div>
           <div className="sticky right-0 z-10 hidden shrink-0 items-center gap-0.5 bg-white pr-(--chrome-inline) pl-2 md:flex dark:bg-zinc-950">
             <span aria-hidden="true" className="mr-1 h-6 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800" />
+            <LanguageSwitcher locale={locale} />
             <ThemeToggle />
           </div>
           <div className="sticky right-0 z-10 flex shrink-0 items-center bg-white pr-(--chrome-inline) pl-2 md:hidden dark:bg-zinc-950">
             <span aria-hidden="true" className="mr-2 h-6 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800" />
+            <LanguageSwitcher locale={locale} />
             <ThemeToggle />
             <button
               type="button"
@@ -157,15 +164,17 @@ export function DrawerFooter({
   lastUpdatedLabel: string;
   onNavigate: () => void;
 }) {
-  const pathname = usePathname() ?? "/";
-  const onInstructions = pathname === INSTRUCTIONS_HREF;
+  const pathname = usePathname() ?? "/en";
+  const locale = localeFromPathname(pathname);
+  const instructionsPath = instructionsHref(locale);
+  const onInstructions = pathname === instructionsPath;
 
   return (
     <div className="flex shrink-0 items-center justify-between gap-2 border-t border-zinc-200 px-2 py-1.5 dark:border-zinc-800">
       <div className="flex min-w-0 items-center gap-1">
         <ContactLinks />
         <Link
-          href={INSTRUCTIONS_HREF}
+          href={instructionsPath}
           onClick={onNavigate}
           aria-label={chrome.instructions}
           title={chrome.instructions}

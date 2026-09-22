@@ -2,6 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { isTrackId, type TrackId } from "../lib/catalog";
 import { topicsForAudit } from "../lib/audit";
+import { DEFAULT_LOCALE, isLocale, LOCALES, type Locale } from "../lib/i18n/locales";
 import {
   auditTopicOrder,
   countOrderIssues,
@@ -11,6 +12,7 @@ import { readTopicFile } from "../lib/parse";
 
 type CliOptions = {
   readonly track?: TrackId;
+  readonly locale: Locale | "all";
   readonly out?: string;
   readonly json: boolean;
   readonly strict: boolean;
@@ -19,7 +21,14 @@ type CliOptions = {
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
   const topics = topicsForAudit(options.track);
-  const rows = topics.map((topic) => auditTopicOrder(topic, readTopicFile(topic.file)));
+  const locales: Locale[] =
+    options.locale === "all" ? [...LOCALES] : [options.locale];
+  const rows = locales.flatMap((locale) =>
+    topics.map((topic) => {
+      const row = auditTopicOrder(topic, readTopicFile(topic.file, locale));
+      return { ...row, file: `${locale}/${row.file}` };
+    }),
+  );
   const markdown = formatOrderAuditMarkdown(rows);
   process.stdout.write(`${markdown}\n`);
 
@@ -38,6 +47,7 @@ async function main(): Promise<void> {
 
 function parseArgs(argv: string[]): CliOptions {
   let track: TrackId | undefined;
+  let locale: Locale | "all" = DEFAULT_LOCALE;
   let out: string | undefined;
   let json = false;
   let strict = false;
@@ -54,6 +64,18 @@ function parseArgs(argv: string[]): CliOptions {
           );
         }
         track = value;
+        break;
+      }
+      case "--locale": {
+        const value = argv[i + 1];
+        i += 1;
+        if (value === "all") {
+          locale = "all";
+        } else if (!value || !isLocale(value)) {
+          throw new Error(`--locale must be one of: ${LOCALES.join(", ")}, all`);
+        } else {
+          locale = value;
+        }
         break;
       }
       case "--out": {
@@ -81,7 +103,7 @@ function parseArgs(argv: string[]): CliOptions {
     }
   }
 
-  return { track, out, json, strict };
+  return { track, locale, out, json, strict };
 }
 
 function printHelp(): void {
@@ -91,16 +113,16 @@ Usage:
   npx tsx scripts/order-audit.ts [options]
 
 Options:
-  --track <id>   Limit to one handbook track
-  --out <path>   Write report (markdown, or JSON with --json)
-  --json         Write JSON when --out is set
-  --strict       Exit 1 if any ordering issue is found
+  --track <id>     Limit to one handbook track
+  --locale <code>  en | ru | all (default: en)
+  --out <path>     Write report (markdown, or JSON with --json)
+  --json           Write JSON when --out is set
+  --strict         Exit 1 if any ordering issue is found
   -h, --help
 `);
 }
 
 main().catch((error: unknown) => {
-  const message = error instanceof Error ? error.message : String(error);
-  process.stderr.write(`${message}\n`);
-  process.exit(1);
+  process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
+  process.exitCode = 1;
 });

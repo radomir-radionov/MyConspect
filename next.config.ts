@@ -3,11 +3,11 @@ import path from "node:path";
 import type { NextConfig } from "next";
 
 const resourcesDir = path.join(process.cwd(), "resources");
-const catalogProbe = path.join(resourcesDir, "1_html_structure.md");
+const catalogProbe = path.join(resourcesDir, "en", "1_html_structure.md");
 if (!fs.existsSync(catalogProbe)) {
   throw new Error(
     `Missing study notes at ${catalogProbe} (cwd=${process.cwd()}). ` +
-      "Vercel CLI uploads omit gitignored files; resources/*.md must be in the deploy.",
+      "Vercel CLI uploads omit gitignored files; resources/en/*.md must be in the deploy.",
   );
 }
 
@@ -16,6 +16,9 @@ const tracedBuildOnly = [
   "./node_modules/shiki/**/*",
   "./node_modules/@shikijs/**/*",
 ];
+
+const TRACK_SEGMENT =
+  "frontend|backend|system-design|algorithms|data-structures|ai|other";
 
 const nextConfig: NextConfig = {
   outputFileTracingExcludes: {
@@ -26,73 +29,93 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/",
+        destination: "/en",
+        permanent: false,
+      },
+      {
+        source: "/instructions",
+        destination: "/en/instructions",
+        permanent: true,
+      },
+      {
+        source: `/:track(${TRACK_SEGMENT})`,
+        destination: "/en/:track",
+        permanent: true,
+      },
+      {
+        source: `/:track(${TRACK_SEGMENT})/:topic`,
+        destination: "/en/:track/:topic",
+        permanent: true,
+      },
+      {
         source: "/other/system-design",
-        destination: "/system-design",
+        destination: "/en/system-design",
         permanent: true,
       },
       {
         source: "/other/special",
-        destination: "/other/computer-science",
+        destination: "/en/other/computer-science",
         permanent: true,
       },
       {
         source: "/other/paradigms",
-        destination: "/other/computer-science",
+        destination: "/en/other/computer-science",
         permanent: true,
       },
       {
         source: "/other/special-paradigms",
-        destination: "/other/computer-science",
+        destination: "/en/other/computer-science",
         permanent: true,
       },
       {
         source: "/other/ai",
-        destination: "/ai",
+        destination: "/en/ai",
         permanent: true,
       },
       {
         source: "/solid",
-        destination: "/system-design/solid",
+        destination: "/en/system-design/solid",
         permanent: true,
       },
       {
         source: "/other/special-engineering",
-        destination: "/system-design/solid",
+        destination: "/en/system-design/solid",
         permanent: true,
       },
       {
         source: "/other/special-architecture",
-        destination: "/system-design/special-architecture",
+        destination: "/en/system-design/special-architecture",
         permanent: true,
       },
       {
         source: "/other/git-fundamentals",
-        destination: "/other/git-core",
+        destination: "/en/other/git-core",
         permanent: true,
       },
       {
         source: "/frontend/css-fundamentals",
-        destination: "/frontend/css-core",
+        destination: "/en/frontend/css-core",
         permanent: true,
       },
       {
         source: "/system-design/sd-foundations",
-        destination: "/system-design/sd-core",
+        destination: "/en/system-design/sd-core",
         permanent: true,
       },
       {
         source: "/system-design/sd-patterns",
-        destination: "/system-design/special-patterns",
+        destination: "/en/system-design/special-patterns",
         permanent: true,
       },
       {
         source: "/backend/nodejs-runtime",
-        destination: "/backend/nodejs-core",
+        destination: "/en/backend/nodejs-core",
         permanent: true,
       },
       {
         source: "/backend/nodejs-process",
-        destination: "/backend/nodejs-additional",
+        destination: "/en/backend/nodejs-additional",
         permanent: true,
       },
     ];

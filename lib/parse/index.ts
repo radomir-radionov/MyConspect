@@ -5,7 +5,9 @@ export {
   loadTopicOutline,
   loadTopicPage,
   readTopicFile,
+  readTopicFileDetailed,
   resourcesDir,
+  topicFileExists,
 } from "./load";
 export {
   collectConceptBlocks,

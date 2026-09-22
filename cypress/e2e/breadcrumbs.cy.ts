@@ -4,7 +4,7 @@ describe("handbook breadcrumbs", () => {
   });
 
   it("lives in the content pane and stays stuck while that pane scrolls", () => {
-    cy.visit("/data-structures#tree");
+    cy.visit("/en/data-structures#tree");
     cy.contains("h1", "Data Structures");
     cy.mainScroller()
       .find("nav[aria-label='Breadcrumb']")
@@ -27,14 +27,14 @@ describe("handbook breadcrumbs", () => {
   });
 
   it("keeps Node.js current on the hub when the URL has an HTTP cluster hash", () => {
-    cy.visit("/backend/nodejs#http");
+    cy.visit("/en/backend/nodejs#http");
     cy.contains("h1", "Node.js");
     cy.get("nav[aria-label='Breadcrumb'] li").last().should("contain", "Node.js");
     cy.get("nav[aria-label='Breadcrumb']").should("not.contain", "HTTP");
   });
 
   it("shows Core once on the Node.js Core topic", () => {
-    cy.visit("/backend/nodejs-core");
+    cy.visit("/en/backend/nodejs-core");
     cy.contains("h1", "Core");
     cy.get("nav[aria-label='Breadcrumb']").then(($nav) => {
       const labels = [...$nav.find("li")].map((li) =>
@@ -43,5 +43,14 @@ describe("handbook breadcrumbs", () => {
       expect(labels.filter((label) => label === "Core")).to.have.length(1);
       expect(labels).to.deep.equal(["Home", "Backend", "Node.js", "Core"]);
     });
+  });
+
+  it("keeps the concept hash when switching language", () => {
+    cy.visit("/en/frontend/html-structure#meta-tags");
+    cy.get("nav[aria-label='Breadcrumb'] li").last().should("contain", "Meta tags");
+    cy.get('[aria-label="Language"] a[hreflang="ru"]').click();
+    cy.location("pathname").should("eq", "/ru/frontend/html-structure");
+    cy.location("hash").should("eq", "#meta-tags");
+    cy.get("nav[aria-label='Breadcrumb'] li").last().should("contain", "Meta tags");
   });
 });

@@ -1,47 +1,86 @@
 import type { MetadataRoute } from "next";
 import { SUBJECTS, TRACKS, TOPICS, isLeafTopic, subjectHref, topicHref } from "@/lib/catalog";
-import { INSTRUCTIONS_HREF } from "@/lib/nav";
+import { LOCALES } from "@/lib/i18n/locales";
+import { instructionsHref, withLocale } from "@/lib/i18n/paths";
 import { siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl();
   const now = new Date();
+  const entries: MetadataRoute.Sitemap = [];
 
-  const home: MetadataRoute.Sitemap[number] = {
-    url: base,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: 1,
-  };
+  for (const locale of LOCALES) {
+    entries.push({
+      url: `${base}/${locale}`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 1,
+      alternates: {
+        languages: Object.fromEntries(LOCALES.map((item) => [item, `${base}/${item}`])),
+      },
+    });
 
-  const tracks = TRACKS.map((track) => ({
-    url: `${base}/${track.id}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }));
+    entries.push({
+      url: `${base}${instructionsHref(locale)}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.4,
+      alternates: {
+        languages: Object.fromEntries(
+          LOCALES.map((item) => [item, `${base}${instructionsHref(item)}`]),
+        ),
+      },
+    });
 
-  const trackUrls = new Set(tracks.map((item) => item.url));
-  const subjects = SUBJECTS.map((subject) => ({
-    url: `${base}${subjectHref(subject)}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  })).filter((item) => !trackUrls.has(item.url));
+    for (const track of TRACKS) {
+      const path = withLocale(locale, `/${track.id}`);
+      entries.push({
+        url: `${base}${path}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.8,
+        alternates: {
+          languages: Object.fromEntries(
+            LOCALES.map((item) => [item, `${base}${withLocale(item, `/${track.id}`)}`]),
+          ),
+        },
+      });
+    }
 
-  const topics = TOPICS.filter((topic) => !isLeafTopic(topic)).map((topic) => ({
-    url: `${base}${topicHref(topic)}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }));
+    const trackPaths = new Set(TRACKS.map((track) => `/${track.id}`));
+    for (const subject of SUBJECTS) {
+      const raw = subjectHref(subject);
+      if (trackPaths.has(raw)) {
+        continue;
+      }
+      entries.push({
+        url: `${base}${withLocale(locale, raw)}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.7,
+        alternates: {
+          languages: Object.fromEntries(
+            LOCALES.map((item) => [item, `${base}${withLocale(item, raw)}`]),
+          ),
+        },
+      });
+    }
 
-  const instructions: MetadataRoute.Sitemap[number] = {
-    url: `${base}${INSTRUCTIONS_HREF}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.4,
-  };
+    for (const topic of TOPICS.filter((item) => !isLeafTopic(item))) {
+      const raw = topicHref(topic);
+      entries.push({
+        url: `${base}${withLocale(locale, raw)}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.6,
+        alternates: {
+          languages: Object.fromEntries(
+            LOCALES.map((item) => [item, `${base}${withLocale(item, raw)}`]),
+          ),
+        },
+      });
+    }
+  }
 
-  return [home, instructions, ...tracks, ...subjects, ...topics];
+  return entries;
 }
