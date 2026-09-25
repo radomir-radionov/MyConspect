@@ -19,39 +19,173 @@ OOP pillars and the five SOLID principles for modules and APIs.
 
 ### Object-Oriented Programming (OOP)
 
-**Definition:** OOP models programs as **objects** — instances of a **class** (blueprint). Each object holds fields and methods described once on the class.
+**Definition:** OOP models programs as **objects** — live instances built from a **class** (blueprint). Each object bundles **state** (fields) and **behavior** (methods); the class describes that shape once.
 
 **How it works:**
 
-| Pillar            | Meaning                                                                     |
-| ----------------- | --------------------------------------------------------------------------- |
-| **Abstraction**   | Keep the characteristics that describe behavior; omit internals             |
-| **Encapsulation** | Keep data next to the object that uses it; hide the rest                    |
-| **Polymorphism**  | One interface, many types                                                   |
-| **Inheritance**   | Take properties from a parent — prefer **composition** when “is-a” is messy |
+| Step        | Idea                                                                |
+| ----------- | ------------------------------------------------------------------- |
+| **Class**   | Blueprint — defines fields and methods once                         |
+| **Object**  | Instance — `new User("Alex")` creates its own copy of state         |
+| **Message** | Call a method — `user.isAdmin()`; the object decides how to respond |
 
-ООП: класс = чертёж, объект = экземпляр. Столпы: абстракция, инкапсуляция, полиморфизм, наследование. Чайник с таймером — композиция, не двойное наследование. Общая память + два писателя = гонки. Код — карта бизнес-логики.
+Four **pillars** explain how objects cooperate. Each has a focused example below; full essays: [Abstraction](#abstraction) · [Encapsulation](#encapsulation) · [Polymorphism](#polymorphism) · [Inheritance](#inheritance).
 
-**When to use:** Rich domain models, UI component trees, SDKs with clear type hierarchies. Teapot-with-timer: inherit from teapot _or_ timer? Prefer **composition** (has a kettle + has a timer).
+| Pillar            | What it means                                                                                                                                                                 | Concrete example                                                                                                        |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Abstraction**   | Give callers a **small, stable API** and hide everything behind it: storage format, network library, retry logic, error mapping. They ask _what_ the object does, not _how_.  | Checkout calls `order.place()` — it never builds Stripe HTTP requests or parses webhooks.                               |
+| **Encapsulation** | Keep **data and the only legal ways to change it** inside one object. Outside code cannot skip validation by writing fields directly — rules live in methods.                 | `account.withdraw(50)` checks the balance; `account.balance = -100` from outside is blocked (`#balance` or convention). |
+| **Polymorphism**  | Different classes answer the **same method call**. Code is written against a shared shape; you swap implementations without rewriting every caller.                           | One loop: `notifiers.forEach(n => n.send(text))` — email, SMS, or push; no `switch (channel)` in the caller.            |
+| **Inheritance**   | Put **shared fields and methods in a parent**; child classes override or extend only what differs — when the relationship is truly **is-a** (every manager _is_ an employee). | `Manager extends Employee`: both have `name` and `getRole()`; `Manager` returns `"manager"`, base returns `"employee"`. |
+
+**Abstraction** — stable public API; hide storage, transport, and algorithms:
+
+```js
+// bad: checkout hard-codes Stripe URL, auth header, and payload shape
+async function checkout(cart) {
+  const res = await fetch("https://api.stripe.com/v1/charges", {
+    method: "POST",
+    headers: { Authorization: "Bearer sk_..." },
+    body: JSON.stringify({ amount: cart.total * 100, currency: "usd" }),
+  });
+  return res.json();
+}
+
+// good: checkout asks _what_ (charge total); gateway hides _how_
+class PaymentGateway {
+  async charge(amount) {
+    return fetch("/api/charge", {
+      method: "POST",
+      body: JSON.stringify({ amount }),
+    });
+  }
+}
+async function checkout(cart, gateway) {
+  return gateway.charge(cart.total); // swap Stripe → PayPal without touching checkout
+}
+```
+
+**Encapsulation** — state changes only through methods that enforce rules:
+
+```js
+// bad: public field — caller skips validation
+class BankAccount {
+  balance = 0;
+}
+const account = new BankAccount();
+account.balance = -100; // no check, invariant broken
+
+// good: private state; only methods can change it
+class BankAccount {
+  #balance = 0;
+  deposit(amount) {
+    if (amount <= 0) throw new Error("amount must be positive");
+    this.#balance += amount;
+  }
+  withdraw(amount) {
+    if (amount > this.#balance) throw new Error("insufficient funds");
+    this.#balance -= amount;
+  }
+  getBalance() {
+    return this.#balance;
+  }
+}
+// account.#balance → SyntaxError
+```
+
+**Polymorphism** — one method name, many classes; callers stay unchanged:
+
+```js
+// bad: switch grows with every new channel — edit every caller
+function notify(channel, msg) {
+  if (channel === "email") console.log("email:", msg);
+  else if (channel === "sms") console.log("sms:", msg);
+  // add Slack → another branch here and in every copy
+}
+
+// good: same call site; new class = new implementation, zero caller edits
+class EmailAlert {
+  send(msg) {
+    console.log("email:", msg);
+  }
+}
+class SmsAlert {
+  send(msg) {
+    console.log("sms:", msg);
+  }
+}
+function notify(alert, msg) {
+  alert.send(msg);
+}
+[new EmailAlert(), new SmsAlert()].forEach((a) => notify(a, "Order shipped"));
+```
+
+**Inheritance** — child reuses parent code and overrides only what differs:
+
+```js
+// bad: duplicate name field — change Employee constructor → fix Manager by hand
+class Employee {
+  constructor(name) {
+    this.name = name;
+  }
+  getRole() {
+    return "employee";
+  }
+}
+class Manager {
+  constructor(name) {
+    this.name = name;
+  } // copied
+  getRole() {
+    return "manager";
+  }
+}
+
+// good: shared code in parent; child overrides only getRole()
+class Employee {
+  constructor(name) {
+    this.name = name;
+  }
+  getRole() {
+    return "employee";
+  }
+}
+class Manager extends Employee {
+  getRole() {
+    return "manager";
+  }
+}
+const staff = [new Employee("Ann"), new Manager("Bob")];
+staff.map((e) => e.getRole()); // ['employee', 'manager']
+```
+
+**Composition vs inheritance:** a smart kettle with a timer is **has-a** (`this.kettle`, `this.timer`), not **is-a** teapot _and_ timer. JavaScript allows only single `extends` — when “both parent types” apply, compose objects instead.
+
+**When to use:** Rich domain models (users, orders, ledgers), UI component trees, SDKs with shared base types. Prefer functions/modules for one-off scripts or mostly data pipelines.
 
 **Pluses and minuses:**
 
-| +                                                                 | −                                                                   |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------- |
-| Modeling: components as objects; relations are easier to pin down | Shared mutable data + several writers → races (not unique to OOP)   |
-| Enterprise modeling (UML, ER, DFD) grew around objects            | Simple inheritance rarely matches real “has both” objects           |
-| Well-studied: books, known failure modes                          | Encapsulation can block sharing; concurrent edits need extra design |
+| +                                                       | −                                                                                       |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Entities and relations map cleanly to business language | Shared mutable state + many writers → races (locks, CRDT, or immutability still needed) |
+| UML, ER, DFD grew around object thinking                | Shallow “is-a” trees rarely match real “has both” objects                               |
+| Well-studied patterns and failure modes                 | Deep hierarchies become hard to change (fragile base class)                             |
 
 **Examples:**
 
+Class + object — the four pillars in one place:
+
 ```js
 class User {
+  #admin = false;
   constructor(name) {
-    this.name = name;
-    this.admin = false;
+    this.name = name; // abstraction: callers use nameOf(), not raw field rules
+  }
+  promote() {
+    this.#admin = true; // encapsulation: state change through method
   }
   isAdmin() {
-    return this.admin;
+    return this.#admin;
   }
   nameOf() {
     return this.name;
@@ -60,18 +194,13 @@ class User {
 
 const user = new User("Alex");
 user.isAdmin(); // false
-user.nameOf(); // 'Alex'
+user.promote();
+user.isAdmin(); // true
 ```
 
-**Thoughts:**
+**Thoughts:** In JS, `class` is syntax sugar over prototypes — inheritance is a prototype chain, not copying fields. Encapsulation does not fix concurrent edits (two users, one doc) — you still need OT/CRDT or locks. Good code is a **map of the territory**; OOP helps when entities and messages stay aligned with that map.
 
-In JS, `class` desugars to prototypes. Concurrent edits (two users, one Google Doc) need OT/CRDT or locks — encapsulation does not solve shared writes. See [3_js_oop.md](./3_js_oop.md).
-
-Good code is a **map of the territory**: business rules, entity relations, and change axes. When the map drifts from reality, the code becomes fragile. OOP is one way to keep entities and messages aligned with that map.
-
-**Sources:**
-
-[Doka — OOP](https://doka.guide/tools/oop/) · [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/) · [MDN Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/) · [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript)
 
 ---
 

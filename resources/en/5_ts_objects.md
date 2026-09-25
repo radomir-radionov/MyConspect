@@ -612,6 +612,134 @@ class History implements Ledger {
 </details>
 
 <details>
+  <summary>OOP in TypeScript</summary>
+
+### OOP in TypeScript
+
+**Definition:** TypeScript adds **static types** on top of JavaScript's prototype-based runtime. The four OOP pillars still apply, but TS adds **interfaces**, **abstract classes**, **access modifiers**, and **structural typing** — checked at compile time and **erased** in emitted JS.
+
+**How it works:**
+
+| Pillar            | TypeScript mechanism                                                                |
+| ----------------- | ----------------------------------------------------------------------------------- |
+| **Encapsulation** | `private` / `protected` / `readonly` (compile-time); `#field` (runtime, same as JS) |
+| **Abstraction**   | `interface`, `abstract class`, small public class API                               |
+| **Inheritance**   | `extends` one class; methods live on the prototype chain in emit                    |
+| **Polymorphism**  | Method overrides + `implements` contracts; structural typing by shape               |
+
+- **Structural typing:** compatible shapes assign — a plain object can satisfy an `interface` without `implements`.
+- **`implements`:** class explicitly promises an interface shape; `tsc` errors on mismatch.
+- **`extends`:** single base class only (JS limitation); stack multiple contracts with `implements A, B`.
+- **`private` / `protected`:** erased in emit — not enforced at runtime. Use `#` when you need real hiding.
+- **`abstract class`:** cannot instantiate; may mix concrete and abstract methods.
+
+**When to use:** Domain models, DI graphs, public SDKs, teams that need contracts. Overkill for throwaway scripts.
+
+**Pluses and minuses:**
+
+| +                                                           | −                                                                      |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `interface` + `implements` document and enforce contracts   | Types erase — runtime is still untyped JS                              |
+| Structural typing is flexible for adapters and tests        | Two types with the same shape are interchangeable even if names differ |
+| `abstract class` shares implementation + enforces overrides | Over-modeling small scripts adds noise                                 |
+
+**Examples:**
+
+**Encapsulation** — state changes only through methods; `#` enforces privacy at runtime:
+
+```ts
+class BankAccount {
+  #balance = 0;
+  deposit(amount: number) {
+    if (amount <= 0) throw new Error("amount must be positive");
+    this.#balance += amount;
+  }
+  withdraw(amount: number) {
+    if (amount > this.#balance) throw new Error("insufficient funds");
+    this.#balance -= amount;
+  }
+  getBalance(): number {
+    return this.#balance;
+  }
+}
+// account.#balance → SyntaxError
+```
+
+**Abstraction** — `interface` hides transport; checkout depends on _what_, not _how_:
+
+```ts
+interface PaymentGateway {
+  charge(amount: number): Promise<{ ok: boolean }>;
+}
+
+class StripeGateway implements PaymentGateway {
+  async charge(amount: number) {
+    const res = await fetch("/api/charge", {
+      method: "POST",
+      body: JSON.stringify({ amount }),
+    });
+    return { ok: res.ok };
+  }
+}
+
+async function checkout(total: number, gateway: PaymentGateway) {
+  return gateway.charge(total); // no Stripe URL or auth headers here
+}
+```
+
+**Inheritance** — parent holds shared code; child overrides only what differs:
+
+```ts
+class Employee {
+  constructor(public name: string) {}
+  getRole(): string {
+    return "employee";
+  }
+}
+
+class Manager extends Employee {
+  getRole(): string {
+    return "manager";
+  }
+}
+
+const staff: Employee[] = [new Employee("Ann"), new Manager("Bob")];
+staff.map((e) => e.getRole()); // ['employee', 'manager']
+```
+
+**Polymorphism** — one `send()` call; swap `EmailAlert` / `SmsAlert` without changing the caller:
+
+```ts
+interface Notifier {
+  send(message: string): void;
+}
+
+class EmailAlert implements Notifier {
+  send(message: string) {
+    console.log("email:", message);
+  }
+}
+
+class SmsAlert implements Notifier {
+  send(message: string) {
+    console.log("sms:", message);
+  }
+}
+
+function notifyAll(alerts: Notifier[], text: string) {
+  alerts.forEach((a) => a.send(text));
+}
+
+notifyAll([new EmailAlert(), new SmsAlert()], "Order shipped");
+```
+
+**Thoughts:** TS OOP = JS runtime + compile-time contracts. Privacy: [TS `private` vs `#` fields](#ts-private-vs-fields). Design-first workflow: [Design-first OOP with interfaces](#design-first-oop-with-interfaces). Pillars theory: [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop). JS mechanisms: [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+
+**Sources:** [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [TypeScript handbook — Object types](https://www.typescriptlang.org/docs/handbook/2/objects.html) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [Doka — OOP](https://doka.guide/tools/oop/) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
+
+</details>
+
+<details>
   <summary>TS `private` vs `#` fields</summary>
 
 ### TS `private` vs `#` fields

@@ -158,11 +158,11 @@ See [Signals (TC39)](./3_js_extra.md#signals) for dynamic deps, diamond, Watcher
 
 Prefer `===` / `!==`. The useful `==` exception: `value == null` is true for both `null` and `undefined` only. `Number.isNaN` does not coerce; global `isNaN` does.
 
-| Pitfall | Result | Prefer |
-|---------|--------|--------|
-| `typeof null` | `"object"` | `value === null` |
-| `[] == false` | `true` | `===` |
-| `isNaN("hello")` | `true` | `Number.isNaN` |
+| Pitfall          | Result     | Prefer           |
+| ---------------- | ---------- | ---------------- |
+| `typeof null`    | `"object"` | `value === null` |
+| `[] == false`    | `true`     | `===`            |
+| `isNaN("hello")` | `true`     | `Number.isNaN`   |
 
 **Thoughts:**
 
@@ -183,13 +183,13 @@ See **Data types → Interesting cases** and **Data types → Type conversions**
 
 `Map`/`Set` hold **strong** references, are iterable, and expose `.size`. `WeakMap`/`WeakSet` hold **weak** references to objects so entries disappear when the object is no longer reachable elsewhere.
 
-| | `Map` / `Set` | `WeakMap` / `WeakSet` |
-|---|---------------|------------------------|
-| Key/value types | Any (`Map` keys, `Set` values) | Objects only |
-| Iterable | Yes | No |
-| `.size` | Yes | No |
-| GC | Keeps keys/values alive | Lets object keys/values be collected |
-| Typical use | Caches, indexes, dedupe | Private metadata, DOM tags, "seen" sets |
+|                 | `Map` / `Set`                  | `WeakMap` / `WeakSet`                   |
+| --------------- | ------------------------------ | --------------------------------------- |
+| Key/value types | Any (`Map` keys, `Set` values) | Objects only                            |
+| Iterable        | Yes                            | No                                      |
+| `.size`         | Yes                            | No                                      |
+| GC              | Keeps keys/values alive        | Lets object keys/values be collected    |
+| Typical use     | Caches, indexes, dedupe        | Private metadata, DOM tags, "seen" sets |
 
 **When to use:**
 
@@ -238,14 +238,14 @@ a[b] = "1";
 console.log(Object.keys(a));
 ```
 
-| Expression               | Result                  | Why                            |
-| ------------------------ | ----------------------- | ------------------------------ |
-| `typeof null`            | `"object"`              | Legacy bug                     |
-| `typeof []`              | `"object"`              | Arrays are objects             |
-| `fn instanceof Function` | `true`                  | Functions are callable objects |
-| `1 == '1'`               | `true`                  | Coercion                       |
-| `{a:1} === {a:1}`        | `false`                 | Reference compare              |
-| `Object.keys(a)`         | `['[object Object]']`   | Object keys stringify          |
+| Expression               | Result                | Why                            |
+| ------------------------ | --------------------- | ------------------------------ |
+| `typeof null`            | `"object"`            | Legacy bug                     |
+| `typeof []`              | `"object"`            | Arrays are objects             |
+| `fn instanceof Function` | `true`                | Functions are callable objects |
+| `1 == '1'`               | `true`                | Coercion                       |
+| `{a:1} === {a:1}`        | `false`               | Reference compare              |
+| `Object.keys(a)`         | `['[object Object]']` | Object keys stringify          |
 
 **Sources:** [javascript.info/types](https://learn.javascript.ru/types)
 
@@ -399,11 +399,11 @@ Utility implementations: query parsing and set operations on arrays.
 
 Array higher-order methods that iterate with a callback `(element, index, array)`.
 
-| Method | Returns | Use |
-|--------|---------|-----|
-| `map(fn)` | New array, same length | Transform each element |
-| `forEach(fn)` | `undefined` | Side effects only — no return value, cannot `break` |
-| `reduce(fn, init?)` | Single accumulated value | Fold array into one result |
+| Method              | Returns                  | Use                                                 |
+| ------------------- | ------------------------ | --------------------------------------------------- |
+| `map(fn)`           | New array, same length   | Transform each element                              |
+| `forEach(fn)`       | `undefined`              | Side effects only — no return value, cannot `break` |
+| `reduce(fn, init?)` | Single accumulated value | Fold array into one result                          |
 
 **How it works:**
 
@@ -414,12 +414,12 @@ Array higher-order methods that iterate with a callback `(element, index, array)
 **Examples:**
 
 ```js
-[1, 2, 3].map((n) => n * 2);           // [2, 4, 6]
+[1, 2, 3].map((n) => n * 2); // [2, 4, 6]
 [1, 2, 3].forEach((n) => console.log(n)); // logs 1, 2, 3
 [1, 2, 3].reduce((sum, n) => sum + n, 0); // 6
 ```
 
-**Thoughts:** *`map` transforms, `forEach` acts, `reduce` aggregates.*
+**Thoughts:** _`map` transforms, `forEach` acts, `reduce` aggregates._
 
 **See also:** [Transformation & search](#transformation-and-search) (full theory)
 
@@ -434,11 +434,11 @@ Array higher-order methods that iterate with a callback `(element, index, array)
 
 `map` always returns an array of the same length; `reduce` returns any type — number, object, Map, etc.
 
-| | `map` | `reduce` |
-|---|-------|----------|
-| Output | Array (same length) | Any type |
-| Best for | Transform each item | Aggregate, group, build object |
-| Chainable | Yes (`map().filter()`) | Usually terminal |
+|           | `map`                  | `reduce`                       |
+| --------- | ---------------------- | ------------------------------ |
+| Output    | Array (same length)    | Any type                       |
+| Best for  | Transform each item    | Aggregate, group, build object |
+| Chainable | Yes (`map().filter()`) | Usually terminal               |
 
 **How it works:**
 
@@ -446,7 +446,7 @@ Sum, count, group-by, flatten, build `{ subtotal, tax, total }` object from cart
 
 Rename fields, format display values, extract IDs.
 
-**Thoughts:** *If you need one value or object from an array, reach for `reduce`.*
+**Thoughts:** _If you need one value or object from an array, reach for `reduce`._
 
 </details>
 
@@ -469,7 +469,7 @@ Rename fields, format display values, extract IDs.
 
 **When to use:** Sum · max value · `{ count, total }` object · `Map` of grouped items.
 
-**Thoughts:** *Always pass an initial value when the array might be empty.*
+**Thoughts:** _Always pass an initial value when the array might be empty._
 
 </details>
 
@@ -488,8 +488,8 @@ const total = prices.reduce((sum, p) => sum + p, 0);
 
 ```js
 const items = [
-  { price: 100, category: 'food' },
-  { price: 200, category: 'electronics' },
+  { price: 100, category: "food" },
+  { price: 200, category: "electronics" },
 ];
 const discounts = { food: 0.1, electronics: 0.2 };
 
@@ -500,7 +500,7 @@ const total = items.reduce((sum, item) => {
 // 100*0.9 + 200*0.8 = 250
 ```
 
-**Thoughts:** *Keep aggregation logic pure — same input always gives same output.*
+**Thoughts:** _Keep aggregation logic pure — same input always gives same output._
 
 </details>
 
@@ -554,12 +554,12 @@ bound(2); // same as fn.call(ctx, 1, 2)
 - Shared references cause bugs when one consumer mutates data another relies on.
 - Easier to debug, test, and reason about immutable snapshots.
 
-| Pure | Impure |
-|------|--------|
-| `(arr) => [...arr, x]` | `arr.push(x); return arr` |
+| Pure                             | Impure                               |
+| -------------------------------- | ------------------------------------ |
+| `(arr) => [...arr, x]`           | `arr.push(x); return arr`            |
 | `reduce` with no external writes | `fetch`, `console.log`, `Date.now()` |
 
-**Thoughts:** *Prefer `map`/`filter`/`reduce` and spread over `push`/`splice` on shared data.*
+**Thoughts:** _Prefer `map`/`filter`/`reduce` and spread over `push`/`splice` on shared data._
 
 **See also:** [Pure vs impure functions](#pure-vs-impure-functions)
 
@@ -630,50 +630,13 @@ Advanced function techniques: currying, memoization, composition, and arrow trac
 </details>
 
 <details>
-  <summary>Four OOP principles in JavaScript?</summary>
-
-### Four OOP principles in JavaScript?
-
-**Definition:**
-
-Classic OOP pillars map to JS patterns — not all via `class`.
-
-| Principle | In JS | Example |
-|-----------|-------|---------|
-| **Encapsulation** | Closures, private `#fields`, ES modules | `#balance` only inside class |
-| **Abstraction** | Hide internals behind small public API | `fetch(url)` hides HTTP details |
-| **Inheritance** | Prototype chain, `class extends` | `Dog extends Animal` |
-| **Polymorphism** | Same method name, different behavior per object | `shapes.forEach(s => s.area())` |
-
-**How it works:** JS uses prototypes under the hood; classes are syntax sugar. Encapsulation is often closures/modules rather than access modifiers alone.
-
-**When to use:** Use inheritance for true `is-a`; encapsulation via modules + private fields; polymorphism via shared method interface (duck typing).
-
-**Examples:**
-
-```js
-class Shape {
-  area() { throw new Error('implement'); }
-}
-class Circle extends Shape {
-  constructor(r) { super(); this.r = r; }
-  area() { return Math.PI * this.r ** 2; }
-}
-[ new Circle(2), new Circle(3) ].forEach(s => console.log(s.area()));
-```
-
-**Sources:** [javascript.info/class](https://learn.javascript.ru/class) · [Doka — OOP](https://doka.guide/tools/oop/)
-
-</details>
-
-<details>
   <summary>What are classes?</summary>
 
 ### What are classes?
 
 **Definition:** A class is a **schema** for creating and using objects — fields (data) + methods (actions) + `constructor` (init on `new`).
 
-**How it works:** `class History { ... }` creates a constructor function and puts methods on `History.prototype`. Each `new History()` is an instance; methods use `this` so they mutate *that* instance. Factories (`createSpending`) are enough for small same-shaped objects; classes win when behavior and several instances matter.
+**How it works:** `class History { ... }` creates a constructor function and puts methods on `History.prototype`. Each `new History()` is an instance; methods use `this` so they mutate _that_ instance. Factories (`createSpending`) are enough for small same-shaped objects; classes win when behavior and several instances matter.
 
 **When to use:** Interview opener for OOP. Follow with prototype sugar, `this` rules, and why JS still lacks interfaces.
 
@@ -722,10 +685,14 @@ Setting `Child.prototype = Parent.prototype` (no `Child` in chain); confusing `_
 **Examples:**
 
 ```js
-function Animal(name) { this.name = name; }
-Animal.prototype.speak = function () { return this.name; };
+function Animal(name) {
+  this.name = name;
+}
+Animal.prototype.speak = function () {
+  return this.name;
+};
 
-const a = new Animal('Cat');
+const a = new Animal("Cat");
 console.log(a.speak()); // 'Cat' — from Animal.prototype
 console.log(Object.getPrototypeOf(a) === Animal.prototype); // true
 ```
@@ -745,14 +712,14 @@ console.log(Object.getPrototypeOf(a) === Animal.prototype); // true
 
 Both create objects with shared prototype methods; `class` is syntactic sugar with stricter rules.
 
-| | Constructor function | ES6 class |
-|---|---------------------|-----------|
-| Call without `new` | Often breaks silently | `TypeError` |
-| Strict mode | Optional | Always |
-| Methods | On `.prototype` manually | Inside class body |
-| Inheritance | Manual prototype linking | `extends` / `super` |
-| Hoisting | Function hoisted | TDZ until declaration |
-| `arguments` in methods | Available | Not in class methods |
+|                        | Constructor function     | ES6 class             |
+| ---------------------- | ------------------------ | --------------------- |
+| Call without `new`     | Often breaks silently    | `TypeError`           |
+| Strict mode            | Optional                 | Always                |
+| Methods                | On `.prototype` manually | Inside class body     |
+| Inheritance            | Manual prototype linking | `extends` / `super`   |
+| Hoisting               | Function hoisted         | TDZ until declaration |
+| `arguments` in methods | Available                | Not in class methods  |
 
 **How it works:** `class User {}` creates function `User` and puts methods on `User.prototype` — same as writing constructor + `User.prototype.method`.
 
@@ -768,13 +735,21 @@ Calling class without `new`; expecting class hoisting like `function`; `typeof M
 
 ```js
 // ES5
-function UserES5(name) { this.name = name; }
-UserES5.prototype.greet = function () { return this.name; };
+function UserES5(name) {
+  this.name = name;
+}
+UserES5.prototype.greet = function () {
+  return this.name;
+};
 
 // ES6 — equivalent intent
 class UserES6 {
-  constructor(name) { this.name = name; }
-  greet() { return this.name; }
+  constructor(name) {
+    this.name = name;
+  }
+  greet() {
+    return this.name;
+  }
 }
 ```
 
@@ -791,11 +766,11 @@ class UserES6 {
 
 **Inheritance** — `is-a` (subtype shares prototype chain). **Composition** — `has-a` (object embeds or receives behavior from other objects/functions).
 
-| | Inheritance | Composition |
-|---|-------------|-------------|
-| Relationship | `Dog extends Animal` | `car.engine = createEngine()` |
-| Flexibility | Rigid tree | Mix behaviors at runtime |
-| JS fit | Single inheritance limit | Idiomatic in modern JS |
+|              | Inheritance              | Composition                   |
+| ------------ | ------------------------ | ----------------------------- |
+| Relationship | `Dog extends Animal`     | `car.engine = createEngine()` |
+| Flexibility  | Rigid tree               | Mix behaviors at runtime      |
+| JS fit       | Single inheritance limit | Idiomatic in modern JS        |
 
 **How it works:** Composition favors injecting dependencies or merging capability objects; inheritance sets fixed prototype chain at class definition time.
 
@@ -811,12 +786,24 @@ Deep inheritance trees in JS; "god object" composing too many unrelated traits; 
 
 ```js
 // Composition
-const canFly = { fly() { return 'flying'; } };
-const bird = { name: 'Eagle', ...canFly };
+const canFly = {
+  fly() {
+    return "flying";
+  },
+};
+const bird = { name: "Eagle", ...canFly };
 
 // Inheritance
-class Animal { speak() { return 'sound'; } }
-class Dog extends Animal { speak() { return 'woof'; } }
+class Animal {
+  speak() {
+    return "sound";
+  }
+}
+class Dog extends Animal {
+  speak() {
+    return "woof";
+  }
+}
 ```
 
 **Sources:** [javascript.info/mixins](https://learn.javascript.ru/mixins)
@@ -838,13 +825,13 @@ class Dog extends Animal { speak() { return 'woof'; } }
 - Copy-then-replace: `structuredClone` + new object instead of mutate (React/Redux style).
 - Libraries: Immer produces immutable updates from draft mutations.
 
-| Technique | Depth | Reversible |
-|-----------|-------|------------|
-| `const` | binding only | reassign variable |
-| `freeze` | shallow | no |
-| `defineProperty` | one property | if `configurable` |
-| `structuredClone` + replace | deep copy new tree | old tree unchanged |
-| Immer | logical immutability | produces new state |
+| Technique                   | Depth                | Reversible         |
+| --------------------------- | -------------------- | ------------------ |
+| `const`                     | binding only         | reassign variable  |
+| `freeze`                    | shallow              | no                 |
+| `defineProperty`            | one property         | if `configurable`  |
+| `structuredClone` + replace | deep copy new tree   | old tree unchanged |
+| Immer                       | logical immutability | produces new state |
 
 **When to use:**
 
@@ -857,11 +844,11 @@ Redux state; frozen config; read-only API response exposure; defensive copies be
 **Examples:**
 
 ```js
-const config = Object.freeze({ api: 'https://api.example.com' });
+const config = Object.freeze({ api: "https://api.example.com" });
 // config.api = 'x'; // fails in strict
 
 const next = structuredClone(state);
-next.user.name = 'Bob'; // new tree, state unchanged
+next.user.name = "Bob"; // new tree, state unchanged
 ```
 
 Deep freeze requires recursive `Object.freeze` on nested objects or use Immer.
@@ -886,7 +873,7 @@ Deep freeze requires recursive `Object.freeze` on nested objects or use Immer.
 ```js
 const arr = new Proxy([], {
   get(target, prop) {
-    if (typeof prop === 'string' && prop.startsWith('-')) {
+    if (typeof prop === "string" && prop.startsWith("-")) {
       return target[target.length + Number(prop)];
     }
     return Reflect.get(target, prop);
@@ -907,8 +894,6 @@ Full trap list and pitfalls: [Proxy and Reflect](./3_js_oop.md#proxy-and-reflect
 
 ### Coding tasks (legacy)
 
-//// 0 Name four OOP principles
-
 // 4 Object.create — Create vehicle/car with inheritance and describe method
 
 /// 8 **proto**, prototype, [[Prototype]]
@@ -928,15 +913,15 @@ Full trap list and pitfalls: [Proxy and Reflect](./3_js_oop.md#proxy-and-reflect
 
 16. What is the difference between composition and inheritance?
 
-20. What behavioral differences exist between ES5 constructor functions and ES2015 classes?
+17. What behavioral differences exist between ES5 constructor functions and ES2015 classes?
 
-31. What are property descriptors? Describe practical use cases.
+18. What are property descriptors? Describe practical use cases.
 
-32. Name several ways to create an immutable object in JavaScript.
+19. Name several ways to create an immutable object in JavaScript.
 
-33. How do you create a property that cannot be changed?
+20. How do you create a property that cannot be changed?
 
-34. What is the Proxy constructor for? Give an example.
+21. What is the Proxy constructor for? Give an example.
 
 </details>
 
@@ -958,12 +943,12 @@ Full trap list and pitfalls: [Proxy and Reflect](./3_js_oop.md#proxy-and-reflect
 
 **DOM** models document content (nodes, elements); **BOM** models browser chrome/environment around the page (`window`, `location`, `history`, `navigator`).
 
-| | DOM | BOM |
-|---|-----|-----|
-| Scope | HTML document tree | Browser window & APIs |
-| Entry | `document` | `window` |
+|          | DOM                              | BOM                               |
+| -------- | -------------------------------- | --------------------------------- |
+| Scope    | HTML document tree               | Browser window & APIs             |
+| Entry    | `document`                       | `window`                          |
 | Examples | `querySelector`, `createElement` | `location`, `alert`, `setTimeout` |
-| Spec | DOM standard | HTML / browser specs |
+| Spec     | DOM standard                     | HTML / browser specs              |
 
 **How it works:** `window` is the global object; `document` is a property of `window`. DOM operations mutate/read page structure; BOM controls navigation, dialogs, viewport, timers.
 
@@ -984,11 +969,11 @@ See full table in [DOM vs BOM](#dom-vs-bom) under **DOM, BOM & events**.
 
 42. What is the DOM? → [DOM](#dom-bom-events)
 
-50. How do you get an element's height and position relative to the document? → [Browser additional — dimensions](./3_js_browser_extra.md)
+43. How do you get an element's height and position relative to the document? → [Browser additional — dimensions](./3_js_browser_extra.md)
 
-51. What is webpack?
+44. What is webpack?
 
-52. How does a dev build differ from a production build?
+45. How does a dev build differ from a production build?
 
 </details>
 
@@ -1035,8 +1020,8 @@ Dynamic list items — one `ul` listener; stopping propagation when overlay hand
 **Examples:**
 
 ```js
-list.addEventListener('click', (e) => {
-  const li = e.target.closest('li');
+list.addEventListener("click", (e) => {
+  const li = e.target.closest("li");
   if (!li || !list.contains(li)) return;
   console.log(li.textContent);
 });
@@ -1072,13 +1057,13 @@ See [Event phases](#event-phases) and [Event delegation](#event-delegation).
 
 Three client storage mechanisms with different lifetime, scope, and server visibility.
 
-| | localStorage | sessionStorage | Cookies |
-|---|--------------|----------------|---------|
-| Lifetime | until explicit clear | until tab/window closed | `Expires` / session cookie |
-| Shared across tabs | yes (same origin) | no (per tab) | yes (domain-scoped) |
-| Sent with HTTP requests | no | no | yes (unless HttpOnly) |
-| Typical capacity | ~5MB | ~5MB | ~4KB per cookie |
-| API | `getItem`/`setItem` sync | same | `document.cookie` string |
+|                         | localStorage             | sessionStorage          | Cookies                    |
+| ----------------------- | ------------------------ | ----------------------- | -------------------------- |
+| Lifetime                | until explicit clear     | until tab/window closed | `Expires` / session cookie |
+| Shared across tabs      | yes (same origin)        | no (per tab)            | yes (domain-scoped)        |
+| Sent with HTTP requests | no                       | no                      | yes (unless HttpOnly)      |
+| Typical capacity        | ~5MB                     | ~5MB                    | ~4KB per cookie            |
+| API                     | `getItem`/`setItem` sync | same                    | `document.cookie` string   |
 
 **How it works:** Web Storage stores **strings** (`JSON.stringify` / `JSON.parse` — [JSON](./3_js_variables.md#json)). Cookies travel on HTTP; IndexedDB is async + objects. Full comparison, Safari 7-day ITP, quotas, localForage: [Browser storage](#browser-storage). HTTP flags: [HTTP cookies](./6_web_api_http.md#http-cookies).
 
@@ -1093,8 +1078,8 @@ JWT in localStorage; cookie size; sessionStorage not cross-tab; Safari script-st
 **Examples:**
 
 ```js
-localStorage.setItem('theme', 'dark');
-sessionStorage.setItem('step', '2');
+localStorage.setItem("theme", "dark");
+sessionStorage.setItem("step", "2");
 // cookie set by server preferred: Set-Cookie: sid=...; HttpOnly; Secure; SameSite=Lax
 ```
 
@@ -1177,11 +1162,11 @@ Skipping origin check on `message`; expecting sessionStorage cross-tab; race on 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Synced to display refresh | Still runs on main thread |
-| Better than setInterval for animation | Not for arbitrary delays |
-| Auto-pauses in background | Heavy work still causes jank |
+| +                                     | −                            |
+| ------------------------------------- | ---------------------------- |
+| Synced to display refresh             | Still runs on main thread    |
+| Better than setInterval for animation | Not for arbitrary delays     |
+| Auto-pauses in background             | Heavy work still causes jank |
 
 **Examples:**
 
@@ -1212,7 +1197,7 @@ See [requestAnimationFrame](#request-animation-frame) in **Browser APIs & UI pat
 
 **Thoughts:**
 
-*Use idle for non-urgent work; never for animations.*
+_Use idle for non-urgent work; never for animations._
 
 See [requestIdleCallback](#request-idle-callback) in theory (after rAF).
 
@@ -1290,7 +1275,7 @@ External test: https://chm.org.ua/ru/testy-po-programmirovaniiu/test-dom-bom-v-j
 ### Output tasks
 
 ```js
-console.log([] + null + 1) // 'null1'
+console.log([] + null + 1); // 'null1'
 ```
 
 <details>
@@ -1301,7 +1286,7 @@ console.log([] + null + 1) // 'null1'
 </details>
 
 ```js
-"foo" + + "bar" // 'fooNaN'
+"foo" + +"bar"; // 'fooNaN'
 ```
 
 <details>
@@ -1356,10 +1341,10 @@ Both `!!"false"` and `!!"true"` are `true` (non-empty strings are truthy).
 </details>
 
 ```js
-var employeeId = '1234abe';
+var employeeId = "1234abe";
 (function () {
   console.log(employeeId);
-  var employeeId = '122345';
+  var employeeId = "122345";
 })();
 // undefined (hoisting — TDZ until assignment in IIFE)
 ```
@@ -1379,7 +1364,7 @@ console.log(7);
 setTimeout(() => console.log(1), 500);
 console.log(2);
 setTimeout(() => console.log(3));
-Promise.resolve(6).then(response => console.log(response));
+Promise.resolve(6).then((response) => console.log(response));
 Promise.resolve(new Promise(() => console.log(7)));
 console.log(4);
 setTimeout(() => console.log(5), 200);
@@ -1395,7 +1380,7 @@ const square = {
   perimeter: () => 2 * this.side,
 };
 
-console.log(square.area());      // 100
+console.log(square.area()); // 100
 console.log(square.perimeter()); // NaN (arrow — no own this)
 ```
 
@@ -1420,16 +1405,16 @@ function each(array, callback) {
   return newArray;
 }
 
-const eachToTitle = value => value.toUpperCase();
-const eachToReverse = value => value.split('').reverse().join('');
-const eachToFactor2 = value => value * 2;
+const eachToTitle = (value) => value.toUpperCase();
+const eachToReverse = (value) => value.split("").reverse().join("");
+const eachToFactor2 = (value) => value * 2;
 
 const arrayOfNumbers = [1, 2, 3];
-const arrayOfStrings = ['roman', 'getsman'];
+const arrayOfStrings = ["roman", "getsman"];
 
-console.log(each(arrayOfNumbers, eachToFactor2));  // [2, 4, 6]
-console.log(each(arrayOfStrings, eachToReverse));  // ['namor', 'namsteg']
-console.log(each(arrayOfStrings, eachToTitle));    // ['ROMAN', 'GETSMAN']
+console.log(each(arrayOfNumbers, eachToFactor2)); // [2, 4, 6]
+console.log(each(arrayOfStrings, eachToReverse)); // ['namor', 'namsteg']
+console.log(each(arrayOfStrings, eachToTitle)); // ['ROMAN', 'GETSMAN']
 ```
 
 </details>
@@ -1440,26 +1425,22 @@ console.log(each(arrayOfStrings, eachToTitle));    // ['ROMAN', 'GETSMAN']
 ### date
 
 ```js
-export const dateFormat = (
-  ms,
-  options,
-  locale,
-) => {
+export const dateFormat = (ms, options, locale) => {
   const _options = options || {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
   };
 
-  return new Intl.DateTimeFormat(locale || 'ru-RU', _options).format(ms);
+  return new Intl.DateTimeFormat(locale || "ru-RU", _options).format(ms);
 };
 
 dateFormat(Date.now(), {
-  day: '2-digit',
-  month: '2-digit',
-  year: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
+  day: "2-digit",
+  month: "2-digit",
+  year: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
 });
 ```
 
@@ -1472,7 +1453,7 @@ dateFormat(Date.now(), {
 
 ```js
 function delay(milliseconds) {
-  return new Promise(resolve => setTimeout(resolve, milliseconds));
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
 async function main() {
@@ -1514,16 +1495,25 @@ console.log(9);
 ```
 
 ```js
-const delay = t => new Promise(r => setTimeout(r, t));
+const delay = (t) => new Promise((r) => setTimeout(r, t));
 
-const runner = async task => {
+const runner = async (task) => {
   await task();
 };
 
 const main = () => {
-  const t1 = async () => { await delay(10); console.log('t1'); };
-  const t2 = async () => { await delay(5);  console.log('t2'); };
-  const t3 = async () => { await delay(15); console.log('t3'); };
+  const t1 = async () => {
+    await delay(10);
+    console.log("t1");
+  };
+  const t2 = async () => {
+    await delay(5);
+    console.log("t2");
+  };
+  const t3 = async () => {
+    await delay(15);
+    console.log("t3");
+  };
 
   runner(t1);
   runner(t2);
@@ -1545,9 +1535,9 @@ Logger exercise: [jsfiddle](https://jsfiddle.net/hlieb/fryuvapb/1/)
 
 23. What are `setTimeout` and `setInterval` for?
 24. Compare callbacks vs promises vs async/await.
-38. What is recursion?
-29. What is a Promise? Order of `then` and `catch` in a chain.
-30. Sequential vs parallel async execution. Difference between `Promise.all()` and `Promise.allSettled()`.
+25. What is recursion?
+26. What is a Promise? Order of `then` and `catch` in a chain.
+27. Sequential vs parallel async execution. Difference between `Promise.all()` and `Promise.allSettled()`.
 
 </details>
 
@@ -1557,11 +1547,11 @@ Logger exercise: [jsfiddle](https://jsfiddle.net/hlieb/fryuvapb/1/)
 ### Middle — JS Core
 
 18. Describe the Event loop.
-28. What is an Observable vs a Promise?
-29. What is a Promise? Order of `then` and `catch` in a chain.
-30. Sequential vs parallel async. `Promise.all()` vs `Promise.allSettled()`.
-37. Generators and iterators.
-39. Async disposer pattern.
+19. What is an Observable vs a Promise?
+20. What is a Promise? Order of `then` and `catch` in a chain.
+21. Sequential vs parallel async. `Promise.all()` vs `Promise.allSettled()`.
+22. Generators and iterators.
+23. Async disposer pattern.
 
 </details>
 
@@ -1572,9 +1562,9 @@ Logger exercise: [jsfiddle](https://jsfiddle.net/hlieb/fryuvapb/1/)
 
 43. Implement an async `Array.prototype.filter` (must support `await` in predicate).
 
-140. Write `Sleep(ms)` that pauses an async function for a given duration.
+44. Write `Sleep(ms)` that pauses an async function for a given duration.
 
-141. Implement one array method (e.g. `splice`).
+45. Implement one array method (e.g. `splice`).
 
 </details>
 
@@ -1595,11 +1585,11 @@ Logger exercise: [jsfiddle](https://jsfiddle.net/hlieb/fryuvapb/1/)
 
 Node: `process.nextTick` runs before other microtasks.
 
-| Pros | Cons |
-|------|------|
+| Pros                                      | Cons                                |
+| ----------------------------------------- | ----------------------------------- |
 | Predictable promise-before-timer ordering | Easy to get wrong in nested puzzles |
-| Microtasks batch related async work | Long microtask queues delay UI |
-| One macro per turn allows paint | Node phases add complexity |
+| Microtasks batch related async work       | Long microtask queues delay UI      |
+| One macro per turn allows paint           | Node phases add complexity          |
 
 **When to use:** Interview output questions; debugging "why did this run first?"; avoiding UI jank.
 
@@ -1618,7 +1608,7 @@ console.log(4);
 - `new Promise(executor)` — executor is sync; only `.then` is microtask.
 - `setTimeout` inside microtask still waits for next macrotask turn.
 
-**Thoughts:** *Sync → drain all microtasks → one macrotask → (browser may paint) → micros spawned by that macrotask → … Infinite micros starve paint and idle callbacks.*
+**Thoughts:** _Sync → drain all microtasks → one macrotask → (browser may paint) → micros spawned by that macrotask → … Infinite micros starve paint and idle callbacks._
 
 **Sources:** [javascript.info/event-loop](https://learn.javascript.ru/event-loop)
 
@@ -1634,16 +1624,16 @@ console.log(4);
 **How it works:**
 
 ```js
-console.log('A');
+console.log("A");
 setTimeout(() => {
-  console.log('B');
-  Promise.resolve().then(() => console.log('C'));
+  console.log("B");
+  Promise.resolve().then(() => console.log("C"));
 }, 0);
 Promise.resolve().then(() => {
-  console.log('D');
-  setTimeout(() => console.log('E'), 0);
+  console.log("D");
+  setTimeout(() => console.log("E"), 0);
 });
-console.log('F');
+console.log("F");
 // A, F, D, B, C, E
 ```
 
@@ -1655,7 +1645,7 @@ console.log('F');
 
 **When to use:** Interview output puzzles. Comment each line: sync / micro / macro.
 
-**Thoughts:** *After each macrotask, empty the microtask queue again before the next timer.*
+**Thoughts:** _After each macrotask, empty the microtask queue again before the next timer._
 
 **See also:** [Explain the event loop order](#interview-practice)
 
@@ -1676,17 +1666,17 @@ console.log('F');
 - Promises: single settlement, composable chains, errors propagate to `.catch`.
 - Promises wrap callbacks via promisification; `async/await` is promise syntax sugar.
 
-| | Callback | Promise |
-|---|----------|---------|
-| Composition | Manual nesting | `.then` chains, `Promise.all` |
-| Errors | Error-first convention or easy to miss | `.catch` / `try/catch` with `await` |
-| Multiple calls | Possible (events) | Settles once |
+|                | Callback                               | Promise                             |
+| -------------- | -------------------------------------- | ----------------------------------- |
+| Composition    | Manual nesting                         | `.then` chains, `Promise.all`       |
+| Errors         | Error-first convention or easy to miss | `.catch` / `try/catch` with `await` |
+| Multiple calls | Possible (events)                      | Settles once                        |
 
-| Pros | Cons |
-|------|------|
-| Promises unify async style | Promises don't cancel natively |
-| Callbacks universal for events | Callback hell for sequential steps |
-| Promises work with `await` | Promisifying loses multi-callback APIs |
+| Pros                           | Cons                                   |
+| ------------------------------ | -------------------------------------- |
+| Promises unify async style     | Promises don't cancel natively         |
+| Callbacks universal for events | Callback hell for sequential steps     |
+| Promises work with `await`     | Promisifying loses multi-callback APIs |
 
 **When to use:** Events → callbacks; app logic → promises/`async`; legacy Node → promisify.
 
@@ -1694,14 +1684,14 @@ console.log('F');
 
 ```js
 // Callback
-readFile('a.txt', (err, data) => {
+readFile("a.txt", (err, data) => {
   if (err) return console.error(err);
   console.log(data);
 });
 
 // Promise
-readFilePromise('a.txt')
-  .then(data => console.log(data))
+readFilePromise("a.txt")
+  .then((data) => console.log(data))
   .catch(console.error);
 ```
 
@@ -1723,38 +1713,35 @@ readFilePromise('a.txt')
 - `race` — first settle wins (fulfill or reject).
 - `any` — first fulfill wins; `AggregateError` if all reject.
 
-| Method | Resolves when | Rejects when |
-|--------|---------------|--------------|
-| `Promise.all` | all fulfill | first reject |
-| `Promise.allSettled` | all settle | never |
-| `Promise.race` | first settle | first reject |
-| `Promise.any` | first fulfill | all reject |
+| Method               | Resolves when | Rejects when |
+| -------------------- | ------------- | ------------ |
+| `Promise.all`        | all fulfill   | first reject |
+| `Promise.allSettled` | all settle    | never        |
+| `Promise.race`       | first settle  | first reject |
+| `Promise.any`        | first fulfill | all reject   |
 
-| Pros | Cons |
-|------|------|
-| `all` — fast fail, parallel required data | One failure loses everything |
-| `allSettled` — full status report | Verbose to map results |
-| `race` — timeouts | Loser requests may still run |
-| `any` — redundant sources | Rare; `AggregateError` handling |
+| Pros                                      | Cons                            |
+| ----------------------------------------- | ------------------------------- |
+| `all` — fast fail, parallel required data | One failure loses everything    |
+| `allSettled` — full status report         | Verbose to map results          |
+| `race` — timeouts                         | Loser requests may still run    |
+| `any` — redundant sources                 | Rare; `AggregateError` handling |
 
 **When to use:**
 
-| Method | Use when |
-|--------|----------|
-| `all` | User + permissions both required |
+| Method       | Use when                           |
+| ------------ | ---------------------------------- |
+| `all`        | User + permissions both required   |
 | `allSettled` | Bulk upload — show per-file status |
-| `race` | 5s timeout on `fetch` |
-| `any` | Try CDN mirrors until one succeeds |
+| `race`       | 5s timeout on `fetch`              |
+| `any`        | Try CDN mirrors until one succeeds |
 
 **Examples:**
 
 ```js
-const results = await Promise.allSettled([
-  fetch('/a'),
-  fetch('/b'),
-]);
-results.forEach(r => {
-  if (r.status === 'fulfilled') console.log(r.value);
+const results = await Promise.allSettled([fetch("/a"), fetch("/b")]);
+results.forEach((r) => {
+  if (r.status === "fulfilled") console.log(r.value);
   else console.error(r.reason);
 });
 ```
@@ -1782,15 +1769,15 @@ results.forEach(r => {
 - Start promises before `await` — `const p = fetchA(); await fetchB(); await p` overlaps A and B.
 - `for` loop with `await` — sequential by default.
 
-| Pattern | Latency (independent 100ms × 2) |
-|---------|-----------------------------------|
-| Sequential `await` | ~200ms |
-| `Promise.all` | ~100ms |
+| Pattern            | Latency (independent 100ms × 2) |
+| ------------------ | ------------------------------- |
+| Sequential `await` | ~200ms                          |
+| `Promise.all`      | ~100ms                          |
 
-| Pros | Cons |
-|------|------|
-| Sequential: clear dependencies | Sequential: unnecessarily slow |
-| Parallel: minimal wait | `all`: one failure fails batch |
+| Pros                             | Cons                                  |
+| -------------------------------- | ------------------------------------- |
+| Sequential: clear dependencies   | Sequential: unnecessarily slow        |
+| Parallel: minimal wait           | `all`: one failure fails batch        |
 | `allSettled` for partial success | Harder to read than sync-looking code |
 
 **When to use:** Sequential when step 2 needs step 1 output; parallel for independent API calls.
@@ -1830,11 +1817,11 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 - Caller must `await fn()` or `fn().then(...)` to get value or catch errors.
 - `await` inside only works in `async` functions (or top-level modules).
 
-| Pros | Cons |
-|------|------|
-| Uniform promise interface | Easy to forget `await` at call site |
-| Interops with `.then` chains | Stack traces cross async boundaries |
-| `try/catch` inside async fn | Returned promise needs its own `.catch` |
+| Pros                         | Cons                                    |
+| ---------------------------- | --------------------------------------- |
+| Uniform promise interface    | Easy to forget `await` at call site     |
+| Interops with `.then` chains | Stack traces cross async boundaries     |
+| `try/catch` inside async fn  | Returned promise needs its own `.catch` |
 
 **When to use:** Always treat call result as Promise unless you `await` immediately.
 
@@ -1848,7 +1835,7 @@ getValue(); // Promise { 42 }
 await getValue(); // 42
 
 async function fail() {
-  throw new Error('oops');
+  throw new Error("oops");
 }
 fail().catch(console.error); // required or unhandled rejection
 ```
@@ -1876,9 +1863,9 @@ fail().catch(console.error); // required or unhandled rejection
 - Fix: `.catch`, `try/catch` + `await`, or `.catch` on async IIFE.
 - Global handler for logging — not a substitute for local handling.
 
-| Pros | Cons |
-|------|------|
-| Surfaces missing error paths | Can crash Node in production |
+| Pros                         | Cons                                  |
+| ---------------------------- | ------------------------------------- |
+| Surfaces missing error paths | Can crash Node in production          |
 | Monitor with global listener | Fire-and-forget promises easy to miss |
 
 **When to use:** Every `fetch`, `async` route handler, and fire-and-forget task needs a handler.
@@ -1887,7 +1874,9 @@ fail().catch(console.error); // required or unhandled rejection
 
 ```js
 // Bad
-async function load() { throw new Error('fail'); }
+async function load() {
+  throw new Error("fail");
+}
 load();
 
 // Good
@@ -1912,11 +1901,11 @@ load().catch(console.error);
 - Use in React `useEffect` cleanup to cancel on unmount.
 - `AbortSignal.timeout(ms)` for built-in timeout (modern runtimes).
 
-| Pros | Cons |
-|------|------|
-| Stops stale requests | Not all APIs support signals |
+| Pros                           | Cons                                           |
+| ------------------------------ | ---------------------------------------------- |
+| Stops stale requests           | Not all APIs support signals                   |
 | Prevents race conditions in UI | Must distinguish `AbortError` from real errors |
-| Standard across fetch | One-shot — new controller per request |
+| Standard across fetch          | One-shot — new controller per request          |
 
 **When to use:** Search autocomplete, route change, request timeout, `Promise.race` cleanup.
 
@@ -1924,7 +1913,7 @@ load().catch(console.error);
 
 ```js
 const ac = new AbortController();
-fetch('/api', { signal: ac.signal });
+fetch("/api", { signal: ac.signal });
 ac.abort(); // AbortError
 ```
 
@@ -2081,7 +2070,6 @@ function queryObjectify(str) {
 
 See [JS Arrays](./3_js_array.md#interview-practice)
 
-
 ---
 
 <details>
@@ -2104,14 +2092,14 @@ a[b] = "1";
 console.log(Object.keys(a));
 ```
 
-| Expression               | Result                  | Why                            |
-| ------------------------ | ----------------------- | ------------------------------ |
-| `typeof null`            | `"object"`              | Legacy bug                     |
-| `typeof []`              | `"object"`              | Arrays are objects             |
-| `fn instanceof Function` | `true`                  | Functions are callable objects |
-| `1 == '1'`               | `true`                  | Coercion                       |
-| `{a:1} === {a:1}`        | `false`                 | Reference compare              |
-| `Object.keys(a)`         | `['[object Object]']`   | Object keys stringify          |
+| Expression               | Result                | Why                            |
+| ------------------------ | --------------------- | ------------------------------ |
+| `typeof null`            | `"object"`            | Legacy bug                     |
+| `typeof []`              | `"object"`            | Arrays are objects             |
+| `fn instanceof Function` | `true`                | Functions are callable objects |
+| `1 == '1'`               | `true`                | Coercion                       |
+| `{a:1} === {a:1}`        | `false`               | Reference compare              |
+| `Object.keys(a)`         | `['[object Object]']` | Object keys stringify          |
 
 **Sources:** [javascript.info/types](https://learn.javascript.ru/types)
 
@@ -2125,7 +2113,6 @@ console.log(Object.keys(a));
 **Definition:** Moved to [JS Functions](./3_js_functions.md#call-apply-bind)
 
 </details>
-
 
 <details>
   <summary>Junior — General (core subset)</summary>
@@ -2181,7 +2168,6 @@ Fundamental language questions: types, arrays, operators, scope, and collections
 **Definition:** Moved to [JS Functions](./3_js_functions.md#junior-functions)
 
 </details>
-
 
 <details>
   <summary>Middle — JS Core</summary>
@@ -2244,7 +2230,6 @@ Architecture patterns beyond syntax: class-free OOP, async disposer, RegExp disc
 **Definition:** Moved to [JS Functions](./3_js_functions.md#middle-functions)
 
 </details>
-
 
 <details>
   <summary>Junior — Practice tasks</summary>
@@ -2508,10 +2493,12 @@ Create `vehicle` with `describe`, `car` inherits and adds `wheels`.
 
 ```js
 const vehicle = {
-  describe() { return `${this.brand}`; },
+  describe() {
+    return `${this.brand}`;
+  },
 };
 const car = Object.create(vehicle);
-car.brand = 'Toyota';
+car.brand = "Toyota";
 car.wheels = 4;
 ```
 
@@ -2547,7 +2534,11 @@ const obj = {};
 <details><summary>Solution</summary>
 
 ```js
-Object.defineProperty(obj, 'id', { value: 1, writable: false, enumerable: true });
+Object.defineProperty(obj, "id", {
+  value: 1,
+  writable: false,
+  enumerable: true,
+});
 ```
 
 </details>
@@ -2564,13 +2555,16 @@ Proxy that rejects negative `age` assignments.
 <details><summary>Solution</summary>
 
 ```js
-const user = new Proxy({}, {
-  set(target, prop, value) {
-    if (prop === 'age' && value < 0) throw new RangeError('age');
-    target[prop] = value;
-    return true;
+const user = new Proxy(
+  {},
+  {
+    set(target, prop, value) {
+      if (prop === "age" && value < 0) throw new RangeError("age");
+      target[prop] = value;
+      return true;
+    },
   },
-});
+);
 ```
 
 </details>
@@ -2581,8 +2575,6 @@ const user = new Proxy({}, {
   <summary>Coding tasks (legacy)</summary>
 
 ### Coding tasks (legacy)
-
-//// 0 Name four OOP principles
 
 // 4 Object.create — Create vehicle/car with inheritance and describe method
 
@@ -2603,15 +2595,15 @@ const user = new Proxy({}, {
 
 16. What is the difference between composition and inheritance?
 
-20. What behavioral differences exist between ES5 constructor functions and ES2015 classes?
+17. What behavioral differences exist between ES5 constructor functions and ES2015 classes?
 
-31. What are property descriptors? Describe practical use cases.
+18. What are property descriptors? Describe practical use cases.
 
-32. Name several ways to create an immutable object in JavaScript.
+19. Name several ways to create an immutable object in JavaScript.
 
-33. How do you create a property that cannot be changed?
+20. How do you create a property that cannot be changed?
 
-34. What is the Proxy constructor for? Give an example.
+21. What is the Proxy constructor for? Give an example.
 
 </details>
 
@@ -2644,60 +2636,59 @@ https://jsfiddle.net/softnetix/r3u1cy0n/
 // DOM list exercise — page markup: [1_html.md](1_html.md)
 
 const users = [
-{
-  id: 'njscmmaks',
-  name: 'Petya',
-},
-{
-  id: 'mnfdmnfdm',
-  name: 'Vasya',
-},
-{
-  id: 'lswlqdwa',
-  name: 'Dima',
-},
-{
-  id: 'jncvmdasd',
-  name: 'Olga',
-},
+  {
+    id: "njscmmaks",
+    name: "Petya",
+  },
+  {
+    id: "mnfdmnfdm",
+    name: "Vasya",
+  },
+  {
+    id: "lswlqdwa",
+    name: "Dima",
+  },
+  {
+    id: "jncvmdasd",
+    name: "Olga",
+  },
 ];
 
-const list = document.getElementById('list');
+const list = document.getElementById("list");
 
 users.forEach(({ name }) => {
-const li = document.createElement('li');
+  const li = document.createElement("li");
 
-li.innerText = name;
+  li.innerText = name;
 
-list.appendChild(li);
+  list.appendChild(li);
 });
 
 const handler = () => {
-//solution
+  //solution
 };
 
-list.addEventListener('click', handler);
+list.addEventListener("click", handler);
 
 // solution
 
 const handler = (event) => {
-if (event.target.tagName === 'LI') {
-  alert(`You clicked on: ${event.target.dataset.id}`);
-}
+  if (event.target.tagName === "LI") {
+    alert(`You clicked on: ${event.target.dataset.id}`);
+  }
 };
 
 // Add `id` as a `data-id` attribute when creating list items
 users.forEach(({ id, name }) => {
-const li = document.createElement('li');
+  const li = document.createElement("li");
 
-li.innerText = name;
-li.dataset.id = id; // Store the user ID in a data attribute
+  li.innerText = name;
+  li.dataset.id = id; // Store the user ID in a data attribute
 
-list.appendChild(li);
+  list.appendChild(li);
 });
 
-list.addEventListener('click', handler);
-
+list.addEventListener("click", handler);
 ```
 
 </details>
@@ -2747,9 +2738,9 @@ Attach a scroll listener that logs only after the user **stops** scrolling for 2
 
 ```js
 let timer;
-window.addEventListener('scroll', () => {
+window.addEventListener("scroll", () => {
   clearTimeout(timer);
-  timer = setTimeout(() => console.log('scroll ended'), 200);
+  timer = setTimeout(() => console.log("scroll ended"), 200);
 });
 ```
 
@@ -2858,9 +2849,9 @@ External test: https://chm.org.ua/ru/testy-po-programmirovaniiu/test-dom-bom-v-j
 
 54. Why does ResizeObserver fire before the element is painted, not after?
 
-56. Describe how to read a `.txt` file dropped from the file system into the browser window.
+55. Describe how to read a `.txt` file dropped from the file system into the browser window.
 
-57. What is the Virtual DOM?
+56. What is the Virtual DOM?
 
 </details>
 
@@ -2871,15 +2862,15 @@ External test: https://chm.org.ua/ru/testy-po-programmirovaniiu/test-dom-bom-v-j
 
 11. How does the browser determine if tabs can communicate with each other? → [#cross-tab-communication](#cross-tab-communication)
 
-13. How do you avoid loading cached script and style files? → [2_css.md — cache busting](2_css_interview.md#interview-practice)
+12. How do you avoid loading cached script and style files? → [2_css.md — cache busting](2_css_interview.md#interview-practice)
 
-14. What is `requestAnimationFrame`? → [#request-animation-frame](#request-animation-frame)
+13. What is `requestAnimationFrame`? → [#request-animation-frame](#request-animation-frame)
 
 14b. What is `requestIdleCallback`? → [#request-idle-callback](#request-idle-callback)
 
 15. Describe micro-frontend architecture.
 
-18. What web performance metrics do you know?
+16. What web performance metrics do you know?
 
 </details>
 
@@ -2891,10 +2882,10 @@ External test: https://chm.org.ua/ru/testy-po-programmirovaniiu/test-dom-bom-v-j
 ### Task 1 — Event loop output
 
 ```js
-console.log('A');
-setTimeout(() => console.log('B'), 0);
-Promise.resolve().then(() => console.log('C'));
-console.log('D');
+console.log("A");
+setTimeout(() => console.log("B"), 0);
+Promise.resolve().then(() => console.log("C"));
+console.log("D");
 ```
 
 <details><summary>Answer</summary> A, D, C, B </details>
@@ -2908,8 +2899,10 @@ console.log('D');
 
 ```js
 Promise.resolve(1)
-  .then(x => x + 1)
-  .then(x => { throw new Error('fail'); })
+  .then((x) => x + 1)
+  .then((x) => {
+    throw new Error("fail");
+  })
   .catch(() => 42)
   .then(console.log);
 ```
@@ -2925,7 +2918,7 @@ Promise.resolve(1)
 
 ```js
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 ```
 
@@ -2937,7 +2930,9 @@ function delay(ms) {
 ### Task 4 — promiseAll polyfill
 
 ```js
-function promiseAll(iterable) { /* ... */ }
+function promiseAll(iterable) {
+  /* ... */
+}
 ```
 
 <details><summary>Solution</summary>
@@ -2950,10 +2945,10 @@ function promiseAll(iterable) {
     const results = [];
     let done = 0;
     arr.forEach((p, i) => {
-      Promise.resolve(p).then(
-        val => { results[i] = val; if (++done === arr.length) resolve(results); },
-        reject
-      );
+      Promise.resolve(p).then((val) => {
+        results[i] = val;
+        if (++done === arr.length) resolve(results);
+      }, reject);
     });
   });
 }
@@ -2969,7 +2964,9 @@ function promiseAll(iterable) {
 ### Task 5 — Retry with backoff
 
 ```js
-async function retry(fn, retries = 3, delay = 100) { /* ... */ }
+async function retry(fn, retries = 3, delay = 100) {
+  /* ... */
+}
 ```
 
 <details><summary>Solution</summary>
@@ -2980,7 +2977,7 @@ async function retry(fn, retries = 3, delay = 100) {
     return await fn();
   } catch (e) {
     if (retries <= 0) throw e;
-    await new Promise(r => setTimeout(r, delay));
+    await new Promise((r) => setTimeout(r, delay));
     return retry(fn, retries - 1, delay * 2);
   }
 }

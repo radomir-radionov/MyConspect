@@ -6,7 +6,7 @@
 
 ### Related docs
 
-* [TypeScript — Основы](./5_ts_core.md) · [TypeScript — Сужение](./5_ts_narrowing.md) · [TypeScript — Функции](./5_ts_functions.md) · [TypeScript — Объекты](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Ссылка](./5_ts_reference.md) · [TypeScript — Интервью](./5_ts_interview.md)
+- [TypeScript — Основы](./5_ts_core.md) · [TypeScript — Сужение](./5_ts_narrowing.md) · [TypeScript — Функции](./5_ts_functions.md) · [TypeScript — Объекты](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Ссылка](./5_ts_reference.md) · [TypeScript — Интервью](./5_ts_interview.md)
 
 ### Sections
 
@@ -23,25 +23,25 @@
 
 **Definition:** Головоломки на уровне шрифта и общие подсказки по живому кодированию для собеседований на TypeScript.
 
-| Площадь | Должен знать |
-|------|-----------|
-| **Основы** | `any` vs `unknown` vs `never`, сужения, соединения |
-| **Структура** | `interface` vs `type`, дженерики, типы утилит |
-| **Безопасность** | `strict`, дискриминационные профсоюзы, исчерпывающий характер, `erasableSyntaxOnly` |
-| **Расширенный** | `infer`, условные/сопоставленные типы, `keyof` |
-| **Время выполнения** | Типы стерты — проверка внешних данных (Зод) |
+| Площадь              | Должен знать                                                                        |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| **Основы**           | `any` vs `unknown` vs `never`, сужения, соединения                                  |
+| **Структура**        | `interface` vs `type`, дженерики, типы утилит                                       |
+| **Безопасность**     | `strict`, дискриминационные профсоюзы, исчерпывающий характер, `erasableSyntaxOnly` |
+| **Расширенный**      | `infer`, условные/сопоставленные типы, `keyof`                                      |
+| **Время выполнения** | Типы стерты — проверка внешних данных (Зод)                                         |
 
 **Sources:** [Введите задачи](https://github.com/type-challenges/type-challenges)
 
-| Тема | Ответ |
-|-------|--------|
-| Зачем ТС /большие проекты/ когда больно | Вопросы и ответы |
-| Интерфейсы, ориентированные на дизайн / `private` vs `#` | Q&A |
-| `any` приемлемые случаи, расширить `interface` | Вопросы и ответы |
-| Объединения, литералы, сборка с ошибками типов | Вопросы и ответы |
-| Введите API/объект/массив/функцию | Вопросы и ответы |
-| Необязательный / `undefined` поля | Вопросы и ответы |
-| Агрегация корзины (типизированная) | Задача — Корзина |
+| Тема                                                     | Ответ            |
+| -------------------------------------------------------- | ---------------- |
+| Зачем ТС /большие проекты/ когда больно                  | Вопросы и ответы |
+| Интерфейсы, ориентированные на дизайн / `private` vs `#` | Q&A              |
+| `any` приемлемые случаи, расширить `interface`           | Вопросы и ответы |
+| Объединения, литералы, сборка с ошибками типов           | Вопросы и ответы |
+| Введите API/объект/массив/функцию                        | Вопросы и ответы |
+| Необязательный / `undefined` поля                        | Вопросы и ответы |
+| Агрегация корзины (типизированная)                       | Задача — Корзина |
 
 ---
 
@@ -54,11 +54,11 @@
 
 **Definition:** Типизированное расширение JavaScript — типы проверяются во время компиляции и **стираются** в создаваемом JS. Добавляет интерфейсы, дженерики, перечисления и строгие проверки на нулевое значение без изменения семантики времени выполнения.
 
-| Плюсы | Минусы |
-|------|------|
-| Более безопасный рефакторинг, лучшая поддержка IDE | Дополнительный шаг компиляции |
-| Постепенное принятие (`allowJs`) | `any` / `as` может обойти безопасность |
-| Обнаруживает ошибки перед развертыванием | Типы не существуют во время выполнения |
+| Плюсы                                              | Минусы                                 |
+| -------------------------------------------------- | -------------------------------------- |
+| Более безопасный рефакторинг, лучшая поддержка IDE | Дополнительный шаг компиляции          |
+| Постепенное принятие (`allowJs`)                   | `any` / `as` может обойти безопасность |
+| Обнаруживает ошибки перед развертыванием           | Типы не существуют во время выполнения |
 
 **How it works:** `tsc` (или esbuild/swc с `noEmit` check) анализирует код → сообщает об ошибках → выдает JS. Внешние данные (API, `JSON.parse`) по-прежнему требует проверки во время выполнения (Zod, io-ts), поскольку TS не может проверять полезную нагрузку сети.
 
@@ -73,7 +73,7 @@ function greet(name: string): string {
 greet(42); // compile error: number not assignable to string
 ```
 
-**Interview one-liner:** *"TypeScript — это JavaScript с дополнительными статическими типами — безопасность во время компиляции, среда выполнения по-прежнему JS."*
+**Interview one-liner:** _"TypeScript — это JavaScript с дополнительными статическими типами — безопасность во время компиляции, среда выполнения по-прежнему JS."_
 
 **Sources:** [Справочник по TypeScript — введение](https://www.typescriptlang.org/docs/handbook/intro.html)
 
@@ -90,7 +90,7 @@ greet(42); // compile error: number not assignable to string
 
 **When to use:** Приложения с интенсивным использованием предметной области, DI, команды. Не требуется для сценария из 20 строк.
 
-**See also:** [ООП-проектирование с интерфейсами](./5_ts_objects.md#classes) · [Doka — ООП](https://doka.guide/tools/oop/)
+**See also:** [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript) · [Design-first OOP with interfaces](./5_ts_objects.md#design-first-oop-with-interfaces) · [Doka — OOP](https://doka.guide/tools/oop/)
 
 </details>
 
@@ -101,10 +101,10 @@ greet(42); // compile error: number not assignable to string
 
 **Definition:** `tsc` **проверка типов** (компилятор) и **генерация JS** из TS (транспиляция между языками высокого уровня).
 
-| Роль | `tsc` |
-|------|-------|
+| Роль       | `tsc`              |
+| ---------- | ------------------ |
 | Компилятор | Статический анализ |
-| Транспилер | TS → JS излучает |
+| Транспилер | TS → JS излучает   |
 
 **Examples:**
 
@@ -124,9 +124,9 @@ tsc
 
 **Definition:** TypeScript обнаруживает ошибки формы во время компиляции; время выполнения все еще нужно `try/catch` и проверка схемы для внешних данных.
 
-| Слой | Оснастка |
-|-------|---------|
-| Время компиляции | `tsc`, IDE |
+| Слой             | Оснастка              |
+| ---------------- | --------------------- |
+| Время компиляции | `tsc`, IDE            |
 | Время выполнения | `try/catch`, Зод/ио-ц |
 
 **Examples:**
@@ -150,10 +150,10 @@ function parseAge(input: string): number {
 
 **Definition:** `A | B` — один из; `A & B` — должен удовлетворить всех. `string & number` невозможно.
 
-| Оператор | Значение |
-|----------|---------|
-| `\|` | любой тип |
-| `&` | объединить фигуры |
+| Оператор | Значение          |
+| -------- | ----------------- |
+| `\|`     | любой тип         |
+| `&`      | объединить фигуры |
 
 **Examples:**
 
@@ -173,11 +173,11 @@ type Person = { name: string } & { age: number };
 
 **Definition:** `any` отключает проверку; `unknown` требует сужения; `never` — пустой тип (недоступный).
 
-| Тип | Поведение |
-|------|----------|
-| `any` | Никаких проверок |
+| Тип       | Поведение                   |
+| --------- | --------------------------- |
+| `any`     | Никаких проверок            |
 | `unknown` | Сузить перед использованием |
-| `never` | Исчерпывание/броски |
+| `never`   | Исчерпывание/броски         |
 
 **Examples:**
 
@@ -200,16 +200,16 @@ function parse(input: unknown) {
 
 **How it works:**
 
-| Особенность | `interface` | `type` |
-|---------|-------------|--------|
-| Форма объекта | да | да |
-| Продлить | `extends` | пересечение `&` |
-| Декларация о слиянии | да — повторяющиеся имена объединяют поля | нет — дубликат = ошибка |
-| Союз `A \| B` | нет | да |
-| Кортеж `[string, number]` | неловкий | натуральный |
-| Сопоставленные/условные типы | ограниченный | основной инструмент |
-| Псевдоним примитивов `type ID = string` | нет | да |
-| `implements` в классе | да | да (часто через перекресток) |
+| Особенность                             | `interface`                              | `type`                       |
+| --------------------------------------- | ---------------------------------------- | ---------------------------- |
+| Форма объекта                           | да                                       | да                           |
+| Продлить                                | `extends`                                | пересечение `&`              |
+| Декларация о слиянии                    | да — повторяющиеся имена объединяют поля | нет — дубликат = ошибка      |
+| Союз `A \| B`                           | нет                                      | да                           |
+| Кортеж `[string, number]`               | неловкий                                 | натуральный                  |
+| Сопоставленные/условные типы            | ограниченный                             | основной инструмент          |
+| Псевдоним примитивов `type ID = string` | нет                                      | да                           |
+| `implements` в классе                   | да                                       | да (часто через перекресток) |
 
 **When to use:**
 
@@ -220,17 +220,21 @@ function parse(input: unknown) {
 
 ```typescript
 // interface — merging (common for augmenting library types)
-interface User { id: string }
-interface User { email: string } // merged
+interface User {
+  id: string;
+}
+interface User {
+  email: string;
+} // merged
 
 // type — union (impossible with interface alone)
-type Result<T> =
-  | { ok: true; data: T }
-  | { ok: false; error: string };
+type Result<T> = { ok: true; data: T } | { ok: false; error: string };
 
 // equivalent extension
-interface Admin extends User { role: 'admin' }
-type AdminUser = User & { role: 'admin' };
+interface Admin extends User {
+  role: "admin";
+}
+type AdminUser = User & { role: "admin" };
 ```
 
 **Interview pitfall:** «Что быстрее?» — незначительная разница; выбирайте по выразительности. Не используйте `interface` для типов объединения; не используй `type` когда вам нужно расширение модуля.
@@ -266,41 +270,12 @@ type Status = (typeof Status)[keyof typeof Status];
 
 **Definition:** `strict` позволяет `strictNullChecks`, `noImplicitAny`, `strictFunctionTypes`и соответствующие проверки.
 
-| Флаг | Эффект |
-|------|--------|
-| `strictNullChecks` | `null`/`undefined` не везде назначается |
+| Флаг                       | Эффект                                  |
+| -------------------------- | --------------------------------------- |
+| `strictNullChecks`         | `null`/`undefined` не везде назначается |
 | `noUncheckedIndexedAccess` | Доступ к индексу может быть `undefined` |
 
 **Sources:** [tsconfig](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
-
-</details>
-
-<details>
-  <summary>OOP principles in TypeScript?</summary>
-
-### OOP principles in TypeScript
-
-**Definition:** Инкапсуляция, наследование (`extends`), полиморфизм (переопределения), абстракция (`abstract`/`interface`).
-
-| Принцип | механизм ТС |
-|-----------|--------------|
-| Инкапсуляция | `private`, `protected`, `readonly` |
-| Наследование | `extends` (одна база) |
-| Абстракция | `abstract class`, `interface` |
-
-**Examples:**
-
-```typescript
-abstract class Animal {
-  constructor(public name: string) {}
-  abstract makeSound(): void;
-}
-class Dog extends Animal {
-  makeSound() { console.log("Woof"); }
-}
-```
-
-**Sources:** [Классы](https://www.typescriptlang.org/docs/handbook/2/classes.html)
 
 </details>
 
@@ -311,9 +286,9 @@ class Dog extends Animal {
 
 **Definition:** `extends` наследует один класс; `implements` удовлетворяет контрактам интерфейса без наследуемого кода.
 
-| | `extends` | `implements` |
-|---|-----------|----------------|
-| Цель | класс | интерфейс(ы) |
+|            | `extends`      | `implements`                   |
+| ---------- | -------------- | ------------------------------ |
+| Цель       | класс          | интерфейс(ы)                   |
 | Реализация | унаследованный | должны предоставить участникам |
 
 **Sources:** [Классы](https://www.typescriptlang.org/docs/handbook/2/classes.html)
@@ -337,7 +312,7 @@ class Dog extends Animal {
 
 **Why large projects:** Больше файлов, больше разработчиков, больше точек интеграции — типы масштабируют общение лучше, чем комментарии. `strict` Режим окупается, когда кодовая база переживет память любого отдельного разработчика.
 
-**Thoughts:** *Типы — это документация, которую обеспечивает компилятор.*
+**Thoughts:** _Типы — это документация, которую обеспечивает компилятор._
 
 **See also:** [Что такое TypeScript?](#what-is-typescript) · вводный раздел
 
@@ -350,16 +325,16 @@ class Dog extends Animal {
 
 **Definition:** TS помогает большинству поддерживаемых приложений, но требует затрат — особенно на ранних этапах проекта или при неправильном использовании.
 
-| Помеха | смягчение последствий |
-|-----------|------------|
-| Кривая обучения | Начните с `strict` постепенно; использовать `allowJs` |
-| Медленный CI при проверке типов всего монолита | Ссылки на проекты, инкрементные сборки |
-| Борьба с компилятором в сложных дженериках | Упрощать; не переусердствуйте с типами |
-| `any` / `as` аварийные люки обхода безопасности | Давать возможность `noImplicitAny`, проверка кода |
-| Сторонние библиотеки без типов | `@types/*`, местный `.d.ts`, `unknown` + Зод на границах |
-| Скорость прототипирования | `// @ts-nocheck` только для файлов спайков, а не для производства |
+| Помеха                                          | смягчение последствий                                             |
+| ----------------------------------------------- | ----------------------------------------------------------------- |
+| Кривая обучения                                 | Начните с `strict` постепенно; использовать `allowJs`             |
+| Медленный CI при проверке типов всего монолита  | Ссылки на проекты, инкрементные сборки                            |
+| Борьба с компилятором в сложных дженериках      | Упрощать; не переусердствуйте с типами                            |
+| `any` / `as` аварийные люки обхода безопасности | Давать возможность `noImplicitAny`, проверка кода                 |
+| Сторонние библиотеки без типов                  | `@types/*`, местный `.d.ts`, `unknown` + Зод на границах          |
+| Скорость прототипирования                       | `// @ts-nocheck` только для файлов спайков, а не для производства |
 
-**Thoughts:** *TS причиняет боль, когда вы относитесь к типам как к бюрократии, а не как к ограждению, или когда команда отключает строгие проверки.*
+**Thoughts:** _TS причиняет боль, когда вы относитесь к типам как к бюрократии, а не как к ограждению, или когда команда отключает строгие проверки._
 
 </details>
 
@@ -379,7 +354,7 @@ class Dog extends Animal {
 
 **Prefer instead:** `unknown` + сужение, обобщения или тонкая типизированная оболочка вокруг нетипизированной библиотеки.
 
-**Thoughts:** *`any` это скальпель для границ миграции, а не образ жизни.*
+**Thoughts:** _`any` это скальпель для границ миграции, а не образ жизни._
 
 **See also:** [`any` vs `unknown` vs `never`](#любой-против-неизвестного-против-никогда)
 
@@ -395,17 +370,23 @@ class Dog extends Animal {
 **How it works:**
 
 ```typescript
-interface User { id: string }
-interface User { email: string } // merges — User has id + email
+interface User {
+  id: string;
+}
+interface User {
+  email: string;
+} // merges — User has id + email
 
-interface Admin extends User { role: 'admin' }
+interface Admin extends User {
+  role: "admin";
+}
 ```
 
 - `extends` — наследовать поля от другого интерфейса или класса.
 - Объединение деклараций — дубликат `interface` объединение имен (полезно для расширения модулей).
 - `type` использует пересечение (`&`) вместо; никакого слияния.
 
-**Thoughts:** *Использовать `interface` когда вы можете продлить или увеличить; использовать `type` для профсоюзов.*
+**Thoughts:** _Использовать `interface` когда вы можете продлить или увеличить; использовать `type` для профсоюзов._
 
 **See also:** [`interface` vs `type`](#интерфейс-против-типа)
 
@@ -420,15 +401,15 @@ interface Admin extends User { role: 'admin' }
 
 **Where used:**
 
-| Вариант использования | Пример |
-|----------|---------|
-| Статус API | `type Status = 'idle' \| 'loading' \| 'error'` |
+| Вариант использования        | Пример                                                           |
+| ---------------------------- | ---------------------------------------------------------------- |
+| Статус API                   | `type Status = 'idle' \| 'loading' \| 'error'`                   |
 | Дискриминированные профсоюзы | `{ kind: 'success'; data: T } \| { kind: 'error'; msg: string }` |
-| Ключи конфигурации | `type Theme = 'light' \| 'dark'` |
-| Функция ввода перегрузки | `string \| number` ID |
-| `as const` объекты | Сохраняйте литералы вместо расширения до `string` |
+| Ключи конфигурации           | `type Theme = 'light' \| 'dark'`                                 |
+| Функция ввода перегрузки     | `string \| number` ID                                            |
+| `as const` объекты           | Сохраняйте литералы вместо расширения до `string`                |
 
-**Thoughts:** *Лутеральные объединения + дискриминантное поле = безопасно. `switch` с проверкой полноты.*
+**Thoughts:** _Лутеральные объединения + дискриминантное поле = безопасно. `switch` с проверкой полноты._
 
 **See also:** [Типы объединений](./5_ts_core.md#union-types) · [Литеральные типы](./5_ts_core.md#literal-types) · [Дискриминированные объединения](./5_ts_narrowing.md#discrimination-unions)
 
@@ -443,16 +424,16 @@ interface Admin extends User { role: 'admin' }
 
 **How it works:**
 
-| Настройка/флаг | Поведение |
-|----------------|----------|
-| По умолчанию `tsc` | Зарегистрированы ошибки; JS все еще может быть выпущен |
-| `noEmitOnError: true` | Нет вывода JS, пока типы не пройдут |
-| `tsc --noEmit` | Только проверка типа — никаких выбросов (обычно в CI) |
-| Вите/esbuild/SWC | Транспилировать без проверки типа; бегать `tsc --noEmit` отдельно |
+| Настройка/флаг        | Поведение                                                         |
+| --------------------- | ----------------------------------------------------------------- |
+| По умолчанию `tsc`    | Зарегистрированы ошибки; JS все еще может быть выпущен            |
+| `noEmitOnError: true` | Нет вывода JS, пока типы не пройдут                               |
+| `tsc --noEmit`        | Только проверка типа — никаких выбросов (обычно в CI)             |
+| Вите/esbuild/SWC      | Транспилировать без проверки типа; бегать `tsc --noEmit` отдельно |
 
-**Interview answer:** *В строгом режиме CI мы выполняем `tsc --noEmit` и провалить сборку из-за ошибок. Сами по себе бандлеры не гарантируют типобезопасность.*
+**Interview answer:** _В строгом режиме CI мы выполняем `tsc --noEmit` и провалить сборку из-за ошибок. Сами по себе бандлеры не гарантируют типобезопасность._
 
-**Thoughts:** *Проверка типов и транспиляция — это отдельные этапы в современных конвейерах.*
+**Thoughts:** _Проверка типов и транспиляция — это отдельные этапы в современных конвейерах._
 
 **Sources:** [tsconfig — noEmitOnError](https://www.typescriptlang.org/tsconfig#noEmitOnError)
 
@@ -482,7 +463,12 @@ async function fetchUser(id: string): Promise<User> {
 **Object (product):**
 
 ```typescript
-type Product = { id: string; name: string; price: number; category: 'food' | 'electronics' };
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  category: "food" | "electronics";
+};
 ```
 
 **Array of objects:**
@@ -502,7 +488,7 @@ function calculateCart(items: CartItem[]): CartSummary {
 }
 ```
 
-**Thoughts:** *Типы описывают намерение; Zod/io-ts проверяет реальность на границе сети.*
+**Thoughts:** _Типы описывают намерение; Zod/io-ts проверяет реальность на границе сети._
 
 </details>
 
@@ -513,23 +499,23 @@ function calculateCart(items: CartItem[]): CartSummary {
 
 **Definition:** С `strictNullChecks`, пропал и `undefined` должны обрабатываться явно.
 
-| Синтаксис | Значение |
-|--------|---------|
-| `prop?: string` | Может отсутствовать или `undefined` |
-| `prop: string \| undefined` | Должен присутствовать; значение может быть `undefined` |
-| `obj.prop?.trim()` | Необязательная цепочка — короткое замыкание на нуль/неопределенное |
-| `value ?? 'default'` | Нулевое слияние — только для `null`/`undefined` |
+| Синтаксис                   | Значение                                                           |
+| --------------------------- | ------------------------------------------------------------------ |
+| `prop?: string`             | Может отсутствовать или `undefined`                                |
+| `prop: string \| undefined` | Должен присутствовать; значение может быть `undefined`             |
+| `obj.prop?.trim()`          | Необязательная цепочка — короткое замыкание на нуль/неопределенное |
+| `value ?? 'default'`        | Нулевое слияние — только для `null`/`undefined`                    |
 
 ```typescript
 type User = { name: string; email?: string };
 
 function greet(user: User) {
-  const domain = user.email?.split('@')[1] ?? 'unknown';
+  const domain = user.email?.split("@")[1] ?? "unknown";
   return `${user.name}@${domain}`;
 }
 ```
 
-**Thoughts:** *`?` по реквизиту + `?.` и `??` на сайтах доступа — никогда не предполагайте, что поле существует.*
+**Thoughts:** _`?` по реквизиту + `?.` и `??` на сайтах доступа — никогда не предполагайте, что поле существует._
 
 **See also:** [Необязательные свойства](./5_ts_objects.md#optional-properties) · [`null` и `undefined`](./5_ts_core.md#null-and-undefined)
 
@@ -575,6 +561,7 @@ type AddressWithIdType = Omit<AddressType, "city"> & {
   };
 };
 ```
+
 </details>
 
 ---
@@ -604,6 +591,7 @@ const invalidConst1: LettersWithoutC = "c"; // should error
 type RemoveC<T> = Exclude<T, "c">;
 // or: T extends "c" ? never : T
 ```
+
 </details>
 
 ---
@@ -694,6 +682,7 @@ type MyPick<T, K extends keyof T> = {
   [P in K]: T[P];
 };
 ```
+
 </details>
 
 ---
@@ -715,6 +704,7 @@ type R = MyReturn<typeof fn>; // should be boolean
 ```typescript
 type MyReturn<T> = T extends (...args: never[]) => infer R ? R : never;
 ```
+
 </details>
 
 ---
@@ -744,6 +734,7 @@ type DeepReadonly<T> = T extends object
   ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
   : T;
 ```
+
 </details>
 
 ---
@@ -755,9 +746,9 @@ type DeepReadonly<T> = T extends object
 ```typescript
 type Flatten<T> = unknown; // your implementation
 
-type A = Flatten<string[]>;       // string
-type B = Flatten<number[][]>;     // number[]
-type C = Flatten<boolean>;        // boolean
+type A = Flatten<string[]>; // string
+type B = Flatten<number[][]>; // number[]
+type C = Flatten<boolean>; // boolean
 ```
 
 <details>
@@ -766,6 +757,7 @@ type C = Flatten<boolean>;        // boolean
 ```typescript
 type Flatten<T> = T extends (infer U)[] ? U : T;
 ```
+
 </details>
 
 ---
@@ -787,6 +779,7 @@ type P = MyParameters<typeof join>; // [string, number]
 ```typescript
 type MyParameters<T> = T extends (...args: infer P) => unknown ? P : never;
 ```
+
 </details>
 
 ---
@@ -851,7 +844,7 @@ type MyParameters<T> = T extends (...args: infer P) => unknown ? P : never;
 Полностью типизированный калькулятор корзины — зеркала [3_js_array.md, задача 16](./3_js_array.md#interview-practice).
 
 ```typescript
-type ProductCategory = 'food' | 'electronics' | 'clothing';
+type ProductCategory = "food" | "electronics" | "clothing";
 
 type Product = {
   id: string;
@@ -866,7 +859,10 @@ type CartSummary = { subtotal: number; discount: number; total: number };
 
 type Discounts = Partial<Record<ProductCategory, number>>;
 
-function calculateCart(items: CartItem[], discounts: Discounts = {}): CartSummary {
+function calculateCart(
+  items: CartItem[],
+  discounts: Discounts = {},
+): CartSummary {
   return items.reduce<CartSummary>(
     (acc, { product, qty }) => {
       const lineSubtotal = product.price * qty;
@@ -895,9 +891,12 @@ function calculateCart(items: CartItem[], discounts: Discounts = {}): CartSummar
 ```typescript
 type BaseProduct = { id: string; name: string; price: number };
 
-type FoodProduct = BaseProduct & { kind: 'food'; expiryDays: number };
-type ElectronicsProduct = BaseProduct & { kind: 'electronics'; warrantyMonths: number };
-type ClothingProduct = BaseProduct & { kind: 'clothing'; size: string };
+type FoodProduct = BaseProduct & { kind: "food"; expiryDays: number };
+type ElectronicsProduct = BaseProduct & {
+  kind: "electronics";
+  warrantyMonths: number;
+};
+type ClothingProduct = BaseProduct & { kind: "clothing"; size: string };
 
 type Product = FoodProduct | ElectronicsProduct | ClothingProduct;
 
@@ -912,5 +911,3 @@ function getDiscountRate(product: Product, discounts: Discounts): number {
 ---
 
 </details>
-
-

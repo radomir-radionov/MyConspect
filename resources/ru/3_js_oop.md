@@ -4,20 +4,20 @@ Covers objects, prototypes, classes, property descriptors, Proxy/Reflect, `this`
 
 ### Related docs
 
-* [JS Language](./3_js_core.md) · [JS Data Types & Variables](./3_js_variables.md) · [JS Operators & Loops](./3_js_operators.md) · [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [Stack & heap](./3_js_variables.md#memory-stack-heap) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md)
-* [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [TypeScript classes](./5_ts_objects.md#classes) · [GRASP](./0_system_design_grasp.md)
+- [JS Language](./3_js_core.md) · [JS Data Types & Variables](./3_js_variables.md) · [JS Operators & Loops](./3_js_operators.md) · [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [Stack & heap](./3_js_variables.md#memory-stack-heap) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md)
+- [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript) · [GRASP](./0_system_design_grasp.md)
 
 [← Back to JS hub](./3_js.md)
 
 ### Main concepts
 
-| Area | Topics |
-|------|--------|
-| **Objects** | Literals, references, copying, keys/values |
-| **Prototypes** | Chain, `Object.create`, built-in prototypes |
-| **Classes** | Syntax, inheritance, static, private `#` |
-| **Advanced** | Descriptors, Proxy/Reflect, mixins, factory/module patterns |
-| **Memory** | GC, mark-and-sweep, leaks, `WeakRef` |
+| Area           | Topics                                                      |
+| -------------- | ----------------------------------------------------------- |
+| **Objects**    | Literals, references, copying, keys/values                  |
+| **Prototypes** | Chain, `Object.create`, built-in prototypes                 |
+| **Classes**    | Syntax, inheritance, static, private `#`                    |
+| **Advanced**   | Descriptors, Proxy/Reflect, mixins, factory/module patterns |
+| **Memory**     | GC, mark-and-sweep, leaks, `WeakRef`                        |
 
 ### Sections
 
@@ -40,7 +40,6 @@ Topics also covered: **Proxy/Reflect**, **factory & module patterns**, **constru
 
 ## Objects & classes
 
-
 <details>
   <summary>Class vs prototype inheritance</summary>
 
@@ -50,29 +49,31 @@ Topics also covered: **Proxy/Reflect**, **factory & module patterns**, **constru
 
 **Class inheritance** uses `class extends` syntax; **prototype inheritance** links objects via `[[Prototype]]` — `Object.create`, `Object.setPrototypeOf`.
 
-| | Class syntax | Prototype chain |
-|---|--------------|-----------------|
-| Readability | Familiar to OOP devs | Lower-level, flexible |
-| Under the hood (JS) | Desugars to prototypes | Native mechanism |
-| Constructors | `constructor()` required pattern | Factory functions + `Object.create` |
+|                     | Class syntax                     | Prototype chain                     |
+| ------------------- | -------------------------------- | ----------------------------------- |
+| Readability         | Familiar to OOP devs             | Lower-level, flexible               |
+| Under the hood (JS) | Desugars to prototypes           | Native mechanism                    |
+| Constructors        | `constructor()` required pattern | Factory functions + `Object.create` |
 
 **When to use:** `class` for most app code; prototypes for libraries, mixins, or understanding JS internals.
 
 **Pluses and minuses:**
 
-| + (prototypes) | − |
-|-------------------|------|
-| Dynamic — add methods at runtime | Harder for newcomers |
-| Memory-efficient shared methods | `setPrototypeOf` is slow — avoid hot paths |
+| + (prototypes)                   | −                                          |
+| -------------------------------- | ------------------------------------------ |
+| Dynamic — add methods at runtime | Harder for newcomers                       |
+| Memory-efficient shared methods  | `setPrototypeOf` is slow — avoid hot paths |
 
 **Examples:**
 
 ```js
 const animal = {
-  speak() { return 'sound'; },
+  speak() {
+    return "sound";
+  },
 };
 const dog = Object.create(animal);
-dog.speak = () => 'bark';
+dog.speak = () => "bark";
 ```
 
 **Thoughts:** `class` methods live on `prototype`, not instance. `instanceof` walks the prototype chain.
@@ -90,56 +91,117 @@ dog.speak = () => 'bark';
 
 ### OOP in JavaScript
 
-**Definition:** JS can do objects, classes, and `this`, but classic OOP also wants **user-defined types and interfaces**. Those are missing at runtime — TypeScript adds them at compile time.
+**Definition:** JavaScript **прототипный**: объекты делегируют другим объектам через `[[Prototype]]`. `class` — синтаксический сахар над функциями-конструкторами и цепочкой прототипов, а не отдельная ООП-модель. JS поддерживает **паттерны** ООП (инкапсуляция, наследование, полиморфизм, абстракция), но **не имеет нативных интерфейсов** и использует **утиную типизацию** вместо номинальных типов.
 
 **How it works:**
 
-| Have | Missing |
-|------|---------|
-| Classes, objects, prototypes, `#` private fields | Native interfaces / nominal user types |
-| Duck typing, factory functions, mixins | Native abstraction checks (no `implements` at runtime) |
+| Столп            | В JavaScript                                                    | Механизм                                                      |
+| ---------------- | --------------------------------------------------------------- | ------------------------------------------------------------- |
+| **Инкапсуляция** | Скрыть состояние; менять только через методы с правилами        | `#` private fields, замыкания, ES-модули                      |
+| **Абстракция**   | Небольшой стабильный публичный API; скрыть хранение и алгоритмы | Методы класса, фабрики, модули                                |
+| **Наследование** | Переиспользовать поведение по одной цепочке                     | `[[Prototype]]`, `class extends` (только один родитель)       |
+| **Полиморфизм**  | Один вызов метода — разное поведение у объектов                 | Утиная типизация — общее имя/форма метода, не объявленный тип |
 
-- `class` is sugar over prototypes — still one inheritance chain. Composition and mixins (`Object.assign`, spread) are how you mix feature sets without a hierarchy.
-- Without interfaces, readable composition is harder: you cannot write `class Human implements Cardio, Immune`. TS can.
-- Design-first in TS: describe `History { addRecord(record: LedgerEntry): void }` before writing the class. The compiler flags broken relations **before** you run the app.
-- TS `private` is erased in emit — JS can still read the field. `#field` stays private at runtime (`SyntaxError` outside the class). Chrome's console may still show/read `#` for debugging.
+- `class` раскрывается в конструктор + методы на `.prototype`; `extends` связывает `.prototype` подкласса с `.prototype` суперкласса.
+- Нет `interface` / `implements` в рантайме — если у объекта есть `.area()`, вызывающий код считает его такой формой.
+- Предпочитайте **композицию** (`Object.assign`, миксины, вложенные объекты) глубоким деревьям `extends` — в JS только один `extends`.
+- Инкапсуляция без `#`: замыкания (module pattern) или соглашение (`_field`).
 
-В JS есть классы, нет интерфейсов. Классическое ООП удобнее на TypeScript: контракты на этапе проектирования. `private` в TS — только компилятор; `#` — и в рантайме.
-
-**When to use:** Domain-heavy apps, DI graphs, teams that need contracts. Stay on factories + modules for tiny scripts.
+**When to use:** Доменные модели с поведением; библиотеки с экземплярами. Для DTO и пайплайнов — простые объекты + функции.
 
 **Pluses and minuses:**
 
-| + (TS for OOP) | − |
-|-------------------|------|
-| Interfaces, unions, `implements` — real contracts | Still compiles to JS — no runtime types |
-| Catch bad entity wiring at compile time | Extra toolchain |
-| Autocomplete on domain fields | `enum` and `private` have JS pitfalls (prefer unions + `#`) |
+| +                                                | −                                                            |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| `class` читается как в других ООП-языках         | Нет контрактов на этапе компиляции — ошибки формы в рантайме |
+| Прототипы гибки для библиотек и делегирования    | Глубокие иерархии наследования хрупки                        |
+| Замыкания + модули дают инкапсуляцию без классов | Утиная типизация скрывает отсутствие метода до вызова        |
 
 **Examples:**
 
-```ts
-type MoneyAmount = number;
-type TimeStamp = number;
-type RecordKind = 'spending' | 'income';
+**Encapsulation** — состояние меняется только через методы; `#` блокирует прямой доступ к полю:
 
-type LedgerEntry = {
-  kind: RecordKind;
-  amount: MoneyAmount;
-  dateTime: TimeStamp;
-};
-
-interface Ledger {
-  addRecord(record: LedgerEntry): void;
+```js
+class BankAccount {
+  #balance = 0;
+  deposit(amount) {
+    if (amount <= 0) throw new Error("amount must be positive");
+    this.#balance += amount;
+  }
+  withdraw(amount) {
+    if (amount > this.#balance) throw new Error("insufficient funds");
+    this.#balance -= amount;
+  }
+  getBalance() {
+    return this.#balance;
+  }
 }
-// Implement Ledger later — the rest of the system already type-checks against the contract.
+// account.#balance → SyntaxError
 ```
 
-**Thoughts:** Do not name a type `Record` — that clashes with TS's built-in `Record<K, V>`. Prefer `LedgerEntry`. Full privacy comparison: [5_ts.md](./5_ts_objects.md#classes). Classes: [3_js_oop.md](./3_js_oop.md).
+**Abstraction** — небольшой публичный API; детали транспорта скрыты за методом класса:
 
-**Sources:**
+```js
+class PaymentGateway {
+  async charge(amount) {
+    const res = await fetch("/api/charge", {
+      method: "POST",
+      body: JSON.stringify({ amount }),
+    });
+    return res.json();
+  }
+}
 
-[Doka — OOP](https://doka.guide/tools/oop/) · [MDN — private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [TS handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
+async function checkout(cart, gateway) {
+  return gateway.charge(cart.total); // без URL Stripe и заголовков auth
+}
+```
+
+**Inheritance** — общий код в родителе; потомок переопределяет только отличия:
+
+```js
+class Employee {
+  constructor(name) {
+    this.name = name;
+  }
+  getRole() {
+    return "employee";
+  }
+}
+
+class Manager extends Employee {
+  getRole() {
+    return "manager";
+  }
+}
+
+const staff = [new Employee("Ann"), new Manager("Bob")];
+staff.map((e) => e.getRole()); // ['employee', 'manager']
+```
+
+**Polymorphism** — один вызов `send()`; утиная типизация — без `interface`, достаточно общей формы метода:
+
+```js
+class EmailAlert {
+  send(msg) {
+    console.log("email:", msg);
+  }
+}
+
+class SmsAlert {
+  send(msg) {
+    console.log("sms:", msg);
+  }
+}
+
+function notify(alert, msg) {
+  alert.send(msg); // работает для любого объекта с .send()
+}
+
+[new EmailAlert(), new SmsAlert()].forEach((a) => notify(a, "Order shipped"));
+```
+
+**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [javascript.info — Prototypal inheritance](https://javascript.info/prototype-inheritance) · [Doka — OOP](https://doka.guide/tools/oop/) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript)
 
 ---
 
@@ -167,26 +229,28 @@ Debug class methods passed as callbacks — bind or use arrow class fields.
 
 `const g = obj.method; g()` loses receiver; nested object `obj.inner.method()` binds to `inner`, not `outer`; `setTimeout(obj.method)` without bind.
 
-| Priority | Rule | `this` value |
-|----------|------|--------------|
-| 1 | `new` call | newly created object |
-| 2 | Explicit `call` / `apply` / `bind` | first argument |
-| 3 | Method call `obj.method()` | `obj` |
-| 4 | Plain call / lost context | `undefined` (strict) or `globalThis` |
+| Priority | Rule                               | `this` value                         |
+| -------- | ---------------------------------- | ------------------------------------ |
+| 1        | `new` call                         | newly created object                 |
+| 2        | Explicit `call` / `apply` / `bind` | first argument                       |
+| 3        | Method call `obj.method()`         | `obj`                                |
+| 4        | Plain call / lost context          | `undefined` (strict) or `globalThis` |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Explicit rules once learned | Easy to lose context in callbacks |
-| `bind`/`call` fix context | Arrow `this` surprises in class methods if misused |
+| +                           | −                                                  |
+| --------------------------- | -------------------------------------------------- |
+| Explicit rules once learned | Easy to lose context in callbacks                  |
+| `bind`/`call` fix context   | Arrow `this` surprises in class methods if misused |
 
 **Examples:**
 
 ```js
 const user = {
-  name: 'Alice',
-  greet() { return this.name; },
+  name: "Alice",
+  greet() {
+    return this.name;
+  },
 };
 
 const g = user.greet;
@@ -196,7 +260,7 @@ user.greet(); // 'Alice'
 g.call(user); // 'Alice'
 ```
 
-**Thoughts:** `this` follows the call site, except arrows which close over the outer `this`. Classes need `this` so `addRecord` updates *this* instance when several exist — see [Constructor injection](#constructor-injection).
+**Thoughts:** `this` follows the call site, except arrows which close over the outer `this`. Classes need `this` so `addRecord` updates _this_ instance when several exist — see [Constructor injection](#constructor-injection).
 
 **Sources:** [javascript.info/bind](https://javascript.info/bind)
 
@@ -223,28 +287,28 @@ Config/state objects; method bags on prototypes; `Object.create(null)` for pure 
 
 Shallow copy still shares nested objects; `delete` only removes own properties; comparing `{a:1} === {a:1}` is always false.
 
-| Objects | Arrays |
-|---------|--------|
-| Named keys (strings/symbols) | Numeric indices + `length` |
-| General-purpose records | Ordered collections with array methods |
-| Not iterable by default | Iterable (`for...of`) |
+| Objects                      | Arrays                                 |
+| ---------------------------- | -------------------------------------- |
+| Named keys (strings/symbols) | Numeric indices + `length`             |
+| General-purpose records      | Ordered collections with array methods |
+| Not iterable by default      | Iterable (`for...of`)                  |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Flexible key-value records | Reference semantics — aliases share mutations |
-| Prototype sharing for methods | No built-in deep equality |
-| `Object.*` static helpers | `for...in` includes inherited enumerable keys |
+| +                             | −                                             |
+| ----------------------------- | --------------------------------------------- |
+| Flexible key-value records    | Reference semantics — aliases share mutations |
+| Prototype sharing for methods | No built-in deep equality                     |
+| `Object.*` static helpers     | `for...in` includes inherited enumerable keys |
 
 **Examples:**
 
 ```js
-const user = { name: 'John', age: 30 };
+const user = { name: "John", age: 30 };
 
 // Object literal
 const admin = user;
-admin.name = 'Jane';
+admin.name = "Jane";
 console.log(user.name); // 'Jane' — same reference
 
 delete user.age; // remove property
@@ -262,12 +326,12 @@ delete user.age; // remove property
 
 Objects fall into several categories depending on their origin.
 
-| Type | Examples |
-|------|----------|
-| **Native / built-in** | `Object`, `Array`, `Date`, `Error` |
-| **Host** | `window`, `document` (browser); `fs`, `http` (Node.js) |
-| **Custom** | Created via literals, constructors, or classes |
-| **Prototype** | Template objects shared via the prototype chain |
+| Type                  | Examples                                               |
+| --------------------- | ------------------------------------------------------ |
+| **Native / built-in** | `Object`, `Array`, `Date`, `Error`                     |
+| **Host**              | `window`, `document` (browser); `fs`, `http` (Node.js) |
+| **Custom**            | Created via literals, constructors, or classes         |
+| **Prototype**         | Template objects shared via the prototype chain        |
 
 **When to use:** Avoid extending native prototypes (`Array.prototype.myMethod = ...`) except for polyfills — risks naming collisions.
 
@@ -281,21 +345,21 @@ Objects fall into several categories depending on their origin.
 
 The `in` operator checks the full prototype chain; `hasOwnProperty` / `Object.hasOwn()` check only own properties.
 
-| Method | Checks prototype chain? |
-|--------|-------------------------|
-| `'key' in obj` | Yes |
-| `obj.hasOwnProperty('key')` | No (own only) |
-| `Object.hasOwn(obj, 'key')` | No (own only, modern) |
+| Method                      | Checks prototype chain? |
+| --------------------------- | ----------------------- |
+| `'key' in obj`              | Yes                     |
+| `obj.hasOwnProperty('key')` | No (own only)           |
+| `Object.hasOwn(obj, 'key')` | No (own only, modern)   |
 
 **Examples:**
 
 ```js
 const obj = { a: 1 };
 
-console.log('a' in obj);           // true (own)
-console.log('toString' in obj);    // true (inherited)
-console.log(obj.hasOwnProperty('a'));        // true
-console.log(obj.hasOwnProperty('toString')); // false
+console.log("a" in obj); // true (own)
+console.log("toString" in obj); // true (inherited)
+console.log(obj.hasOwnProperty("a")); // true
+console.log(obj.hasOwnProperty("toString")); // false
 ```
 
 **Sources:**
@@ -308,25 +372,25 @@ console.log(obj.hasOwnProperty('toString')); // false
 
 `Object.keys`, `Object.values`, `Object.entries`, and `Object.is` operate on own enumerable properties. `Object.fromEntries` rebuilds an object from pairs (inverse of `entries`).
 
-| Method | Returns |
-|--------|---------|
-| `Object.keys(obj)` | Array of own keys |
-| `Object.values(obj)` | Array of own values |
-| `Object.entries(obj)` | Array of `[key, value]` pairs |
-| `Object.fromEntries(iterable)` | Object from pairs |
-| `Object.is(a, b)` | Strict equality; `NaN === NaN` is `true` |
+| Method                         | Returns                                  |
+| ------------------------------ | ---------------------------------------- |
+| `Object.keys(obj)`             | Array of own keys                        |
+| `Object.values(obj)`           | Array of own values                      |
+| `Object.entries(obj)`          | Array of `[key, value]` pairs            |
+| `Object.fromEntries(iterable)` | Object from pairs                        |
+| `Object.is(a, b)`              | Strict equality; `NaN === NaN` is `true` |
 
 **Examples:**
 
 ```js
-const user = { name: 'Ann', age: 25 };
+const user = { name: "Ann", age: 25 };
 
 for (const [key, value] of Object.entries(user)) {
   console.log(key, value);
 }
 
 const doubled = Object.fromEntries(
-  Object.entries({ a: 1, b: 2 }).map(([k, v]) => [k, v * 2])
+  Object.entries({ a: 1, b: 2 }).map(([k, v]) => [k, v * 2]),
 ); // { a: 2, b: 4 }
 
 console.log(Object.is(NaN, NaN)); // true
@@ -344,11 +408,11 @@ console.log(Object.is(NaN, NaN)); // true
 
 `==` and `===` compare objects by reference — two objects are equal only if they are the same object in memory.
 
-| Approach | Use case |
-|----------|----------|
-| `===` / `==` | Same reference check |
+| Approach          | Use case                                   |
+| ----------------- | ------------------------------------------ |
+| `===` / `==`      | Same reference check                       |
 | `Object.is(a, b)` | Strict compare with correct `NaN` handling |
-| Custom function | Compare specific fields (id, name, etc.) |
+| Custom function   | Compare specific fields (id, name, etc.)   |
 
 **Examples:**
 
@@ -403,47 +467,53 @@ Literals for DTOs; `Object.create` for inheritance without constructors; classes
 
 Forgetting `new` on constructor pollutes global or returns `undefined`; `Object.assign` mutates target — use `{}` as first arg for copy.
 
-| # | Pattern | Notes |
-|---|---------|-------|
-| 1 | Object literal `{ }` | Most common |
-| 2 | `new Object()` | Equivalent to `{}` |
-| 3 | `Object.create(proto)` | Explicit prototype |
-| 4 | Constructor function + `new` | Pre-ES6 OOP |
-| 5 | Constructor + `.prototype` | Shared methods |
-| 6 | ES6 `class` | Syntactic sugar over prototypes |
-| 7 | Singleton IIFE | One instance only |
-| 8 | `Object.assign(target, ...sources)` | Copy properties to target |
+| #   | Pattern                             | Notes                           |
+| --- | ----------------------------------- | ------------------------------- |
+| 1   | Object literal `{ }`                | Most common                     |
+| 2   | `new Object()`                      | Equivalent to `{}`              |
+| 3   | `Object.create(proto)`              | Explicit prototype              |
+| 4   | Constructor function + `new`        | Pre-ES6 OOP                     |
+| 5   | Constructor + `.prototype`          | Shared methods                  |
+| 6   | ES6 `class`                         | Syntactic sugar over prototypes |
+| 7   | Singleton IIFE                      | One instance only               |
+| 8   | `Object.assign(target, ...sources)` | Copy properties to target       |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Many patterns for different needs | Inconsistent style across codebase if mixed |
+| +                                   | −                                                    |
+| ----------------------------------- | ---------------------------------------------------- |
+| Many patterns for different needs   | Inconsistent style across codebase if mixed          |
 | `Object.create` for pure delegation | Constructors easy to forget `new` (classes fix this) |
-| Factory functions avoid `new` | Singleton IIFE harder to test |
+| Factory functions avoid `new`       | Singleton IIFE harder to test                        |
 
 **Examples:**
 
 ```js
 // Literal
-const literal = { name: 'John' };
+const literal = { name: "John" };
 
 // Object.create
-const proto = { greet() { return this.name; } };
+const proto = {
+  greet() {
+    return this.name;
+  },
+};
 const created = Object.create(proto);
-created.name = 'Ann';
+created.name = "Ann";
 
 // Constructor
 function Person(name) {
   this.name = name;
 }
-const p = new Person('Bob');
+const p = new Person("Bob");
 
 // Class
 class Employee {
-  constructor(role) { this.role = role; }
+  constructor(role) {
+    this.role = role;
+  }
 }
-const e = new Employee('dev');
+const e = new Employee("dev");
 
 // Shallow copy
 const copy = Object.assign({}, literal);
@@ -474,18 +544,18 @@ Value objects (Money, Date-like); debugging with meaningful `toString`; avoid cu
 
 `{} + 1` → `"[object Object]1"`; relying on `valueOf` for string concat; `==` between object and primitive uses `default` hint.
 
-| Hint | Conversion order |
-|------|------------------|
-| `number` | `valueOf` → `toString` |
-| `string` | `toString` → `valueOf` |
+| Hint      | Conversion order       |
+| --------- | ---------------------- |
+| `number`  | `valueOf` → `toString` |
+| `string`  | `toString` → `valueOf` |
 | `default` | `valueOf` → `toString` |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Custom coercion for value objects | Easy to create surprising `+` / `==` behavior |
-| `Symbol.toPrimitive` centralizes logic | Default `toString` often `[object Object]` |
+| +                                      | −                                             |
+| -------------------------------------- | --------------------------------------------- |
+| Custom coercion for value objects      | Easy to create surprising `+` / `==` behavior |
+| `Symbol.toPrimitive` centralizes logic | Default `toString` often `[object Object]`    |
 
 **Examples:**
 
@@ -493,14 +563,14 @@ Value objects (Money, Date-like); debugging with meaningful `toString`; avoid cu
 const obj = {
   value: 42,
   [Symbol.toPrimitive](hint) {
-    if (hint === 'number') return this.value;
+    if (hint === "number") return this.value;
     return `value: ${this.value}`;
   },
 };
 
-console.log(+obj);       // 42
-console.log(`${obj}`);   // 'value: 42'
-console.log(obj + '');   // 'value: 42' (hint: default)
+console.log(+obj); // 42
+console.log(`${obj}`); // 'value: 42'
+console.log(obj + ""); // 'value: 42' (hint: default)
 ```
 
 **Thoughts:**
@@ -536,28 +606,30 @@ Understand before debugging lost context in callbacks, event handlers, and class
 
 `map(user.getName)` loses `user`; `this` in nested function inside method is `undefined` (strict) unless arrow or bind.
 
-| Context | `this` refers to |
-|---------|------------------|
-| Object method | The object |
-| Nested object method | The immediate object (not outer) |
-| Arrow function | Lexical `this` from enclosing scope |
-| Global (non-strict) | `globalThis` |
-| Global (strict) | `undefined` |
-| Constructor (`new`) | Newly created instance |
+| Context              | `this` refers to                    |
+| -------------------- | ----------------------------------- |
+| Object method        | The object                          |
+| Nested object method | The immediate object (not outer)    |
+| Arrow function       | Lexical `this` from enclosing scope |
+| Global (non-strict)  | `globalThis`                        |
+| Global (strict)      | `undefined`                         |
+| Constructor (`new`)  | Newly created instance              |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Flexible receiver for shared functions | Context loss is a top JS bug source |
-| Explicit `call`/`bind` when needed | Arrow in object literal does not bind to object |
+| +                                      | −                                               |
+| -------------------------------------- | ----------------------------------------------- |
+| Flexible receiver for shared functions | Context loss is a top JS bug source             |
+| Explicit `call`/`bind` when needed     | Arrow in object literal does not bind to object |
 
 **Examples:**
 
 ```js
 const obj = {
   value: 42,
-  getValue() { return this.value; },
+  getValue() {
+    return this.value;
+  },
   getValueArrow: () => this?.value, // lexical — not obj
 };
 
@@ -569,12 +641,12 @@ obj.getValue(); // 42
 
 #### Lost context scenarios
 
-| Scenario | Risk |
-|----------|------|
-| Detached method `const f = obj.m` | `this` is not `obj` |
-| Callbacks (`setTimeout`, `map`) | Context changes |
-| Event handlers | `this` may be the DOM element |
-| Class methods as callbacks | Need bind or arrow fields |
+| Scenario                          | Risk                          |
+| --------------------------------- | ----------------------------- |
+| Detached method `const f = obj.m` | `this` is not `obj`           |
+| Callbacks (`setTimeout`, `map`)   | Context changes               |
+| Event handlers                    | `this` may be the DOM element |
+| Class methods as callbacks        | Need bind or arrow fields     |
 
 **Sources:** [javascript.info/object-methods](https://javascript.info/object-methods) · [javascript.info/bind](https://javascript.info/bind)
 
@@ -603,18 +675,18 @@ obj.getValue(); // 42
 
 Forgetting bound functions cannot be used as constructors; assuming `bind` copies method — still shared on prototype.
 
-| Method | Invokes now? | Arguments |
-|--------|--------------|-----------|
-| `fn.call(ctx, a, b)` | Yes | Comma-separated |
-| `fn.apply(ctx, [a, b])` | Yes | Array-like |
-| `fn.bind(ctx, a)` | No — returns bound fn | Partial application supported |
+| Method                  | Invokes now?          | Arguments                     |
+| ----------------------- | --------------------- | ----------------------------- |
+| `fn.call(ctx, a, b)`    | Yes                   | Comma-separated               |
+| `fn.apply(ctx, [a, b])` | Yes                   | Array-like                    |
+| `fn.bind(ctx, a)`       | No — returns bound fn | Partial application supported |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Borrow methods across objects | `bind` creates new function each time (memory) |
-| Partial application via `bind` | Easy to overuse instead of arrows/closures |
+| +                                      | −                                                  |
+| -------------------------------------- | -------------------------------------------------- |
+| Borrow methods across objects          | `bind` creates new function each time (memory)     |
+| Partial application via `bind`         | Easy to overuse instead of arrows/closures         |
 | `apply` for spread-before-`...` legacy | `null`/`undefined` first arg → global (non-strict) |
 
 **Examples:**
@@ -624,13 +696,13 @@ function greet(greeting, punct) {
   return `${greeting}, ${this.name}${punct}`;
 }
 
-const user = { name: 'Alice' };
+const user = { name: "Alice" };
 
-greet.call(user, 'Hi', '!');       // 'Hi, Alice!'
-greet.apply(user, ['Hello', '.']); // 'Hello, Alice.'
+greet.call(user, "Hi", "!"); // 'Hi, Alice!'
+greet.apply(user, ["Hello", "."]); // 'Hello, Alice.'
 
-const bound = greet.bind(user, 'Hey');
-bound('?'); // 'Hey, Alice?'
+const bound = greet.bind(user, "Hey");
+bound("?"); // 'Hey, Alice?'
 ```
 
 **Thoughts:** Passing `null`/`undefined` to `call`/`apply`/`bind` falls back to default binding. A function bound with `bind()` cannot be re-bound.
@@ -655,10 +727,10 @@ When you need an independent copy — use spread/`Object.assign` (shallow) or `s
 
 **Pluses and minuses:**
 
-| + (reference semantics) | − |
-|----------------------------|------|
+| + (reference semantics)               | −                                |
+| ------------------------------------- | -------------------------------- |
 | Efficient passing of large structures | Mutations visible across aliases |
-| Shared state when intended | Accidental mutation bugs |
+| Shared state when intended            | Accidental mutation bugs         |
 
 **Examples:**
 
@@ -700,20 +772,20 @@ Shared behavior via `Constructor.prototype`; `Object.create` for classical inher
 
 Setting `Child.prototype = Parent.prototype` breaks `instanceof`; modifying `__proto__` at runtime is slow; shadowing inherited property hides but does not remove prototype value.
 
-| Term | Meaning |
-|------|---------|
-| `[[Prototype]]` | Internal slot — link to parent object |
-| `__proto__` | Legacy getter/setter on `Object.prototype` |
-| `.prototype` | Property on **functions** — used by `new` |
-| Prototype object | The object referenced by `[[Prototype]]` |
+| Term             | Meaning                                    |
+| ---------------- | ------------------------------------------ |
+| `[[Prototype]]`  | Internal slot — link to parent object      |
+| `__proto__`      | Legacy getter/setter on `Object.prototype` |
+| `.prototype`     | Property on **functions** — used by `new`  |
+| Prototype object | The object referenced by `[[Prototype]]`   |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Shared methods — memory efficient | Deeper chains = slower lookup |
-| Runtime extension of behavior | Single inheritance only |
-| `Object.create` for delegation | `__proto__` is legacy — prefer `getPrototypeOf` |
+| +                                 | −                                               |
+| --------------------------------- | ----------------------------------------------- |
+| Shared methods — memory efficient | Deeper chains = slower lookup                   |
+| Runtime extension of behavior     | Single inheritance only                         |
+| `Object.create` for delegation    | `__proto__` is legacy — prefer `getPrototypeOf` |
 
 **Examples:**
 
@@ -723,7 +795,7 @@ const rabbit = { jumps: true };
 
 Object.setPrototypeOf(rabbit, animal);
 
-console.log(rabbit.eats);  // true — found on animal
+console.log(rabbit.eats); // true — found on animal
 console.log(rabbit.jumps); // true — own property
 ```
 
@@ -754,7 +826,7 @@ Person.prototype.sayHi = function () {
   return `Hi, ${this.name}`;
 };
 
-const p = new Person('Ann');
+const p = new Person("Ann");
 console.log(p.sayHi()); // 'Hi, Ann'
 console.log(p.__proto__ === Person.prototype); // true
 ```
@@ -765,12 +837,12 @@ console.log(p.__proto__ === Person.prototype); // true
 
 #### Prototype limitations
 
-| Rule | Detail |
-|------|--------|
-| No circular links | `__proto__` in a loop throws |
-| Type restriction | `[[Prototype]]` must be object or `null` |
-| Single parent | Only one `[[Prototype]]` per object |
-| Read-only chain | Writes never go up the prototype chain |
+| Rule              | Detail                                   |
+| ----------------- | ---------------------------------------- |
+| No circular links | `__proto__` in a loop throws             |
+| Type restriction  | `[[Prototype]]` must be object or `null` |
+| Single parent     | Only one `[[Prototype]]` per object      |
+| Read-only chain   | Writes never go up the prototype chain   |
 
 [javascript.info/prototypes](https://javascript.info/prototypes)
 
@@ -794,8 +866,8 @@ console.log(obj.toString()); // '[object Object]'
 
 `{ }` is shorthand for `new Object()` — inheriting from `Object.prototype` (`toString`, `hasOwnProperty`, etc.).
 
-| Object stores | Prototype stores |
-|---------------|------------------|
+| Object stores                  | Prototype stores                   |
+| ------------------------------ | ---------------------------------- |
 | Data (array items, properties) | Methods (`push`, `toString`, etc.) |
 
 **Sources:**
@@ -809,10 +881,10 @@ console.log(obj.toString()); // '[object Object]'
 **Examples:**
 
 ```js
-const pseudo = { 0: 'Hello', 1: 'world!', length: 2 };
+const pseudo = { 0: "Hello", 1: "world!", length: 2 };
 pseudo.join = Array.prototype.join;
 
-console.log(pseudo.join(',')); // 'Hello,world!'
+console.log(pseudo.join(",")); // 'Hello,world!'
 ```
 
 **Sources:** [javascript.info/prototypes](https://javascript.info/prototypes)
@@ -843,26 +915,28 @@ console.log(pseudo.join(',')); // 'Hello,world!'
 
 Using `setPrototypeOf` on every instance in constructor; confusing `Object.create(Fn.prototype)` with `new Fn()`.
 
-| Method | Purpose |
-|--------|---------|
-| `Object.create(proto, descriptors?)` | New object with `[[Prototype]]` = `proto` |
-| `Object.getPrototypeOf(obj)` | Read `[[Prototype]]` |
-| `Object.setPrototypeOf(obj, proto)` | Write `[[Prototype]]` (slow — avoid in hot paths) |
+| Method                               | Purpose                                           |
+| ------------------------------------ | ------------------------------------------------- |
+| `Object.create(proto, descriptors?)` | New object with `[[Prototype]]` = `proto`         |
+| `Object.getPrototypeOf(obj)`         | Read `[[Prototype]]`                              |
+| `Object.setPrototypeOf(obj, proto)`  | Write `[[Prototype]]` (slow — avoid in hot paths) |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Clean delegation without constructors | `setPrototypeOf` hurts performance |
-| `Object.create(null)` — no inherited pollution | Descriptors in second arg verbose |
-| Explicit prototype in tests/mocks | Changing proto breaks `instanceof` assumptions |
+| +                                              | −                                              |
+| ---------------------------------------------- | ---------------------------------------------- |
+| Clean delegation without constructors          | `setPrototypeOf` hurts performance             |
+| `Object.create(null)` — no inherited pollution | Descriptors in second arg verbose              |
+| Explicit prototype in tests/mocks              | Changing proto breaks `instanceof` assumptions |
 
 **Examples:**
 
 ```js
 const animal = {
   eats: true,
-  walk() { console.log('walking'); },
+  walk() {
+    console.log("walking");
+  },
 };
 
 const rabbit = Object.create(animal, {
@@ -899,16 +973,16 @@ Type checks in polymorphic code; verifying API response shapes; custom `@@hasIns
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Works across inheritance | Breaks if `prototype` is changed |
-| Checks prototype chain | Not reliable across realms (iframes) |
+| +                        | −                                    |
+| ------------------------ | ------------------------------------ |
+| Works across inheritance | Breaks if `prototype` is changed     |
+| Checks prototype chain   | Not reliable across realms (iframes) |
 
-| + | − |
-|------|------|
+| +                          | −                                                  |
+| -------------------------- | -------------------------------------------------- |
 | Works with subclass chains | Fails across iframes/realms (different prototypes) |
-| Duck typing alternative | Breaks if `prototype` replaced |
-| Familiar OOP check | Not for primitive values |
+| Duck typing alternative    | Breaks if `prototype` replaced                     |
+| Familiar OOP check         | Not for primitive values                           |
 
 **Examples:**
 
@@ -917,9 +991,9 @@ class Animal {}
 class Rabbit extends Animal {}
 
 const r = new Rabbit();
-console.log(r instanceof Rabbit);  // true
-console.log(r instanceof Animal);  // true — chain includes Animal.prototype
-console.log(r instanceof Object);  // true
+console.log(r instanceof Rabbit); // true
+console.log(r instanceof Animal); // true — chain includes Animal.prototype
+console.log(r instanceof Object); // true
 ```
 
 **Sources:** [javascript.info/instanceof](https://javascript.info/instanceof)
@@ -956,16 +1030,16 @@ Forgetting `super()` in derived constructor; assuming `JSON.stringify` handles c
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Reuse native behavior | Easy to break internal slots if misused |
-| Custom error types | Some builtins cannot be subclassed reliably |
+| +                     | −                                           |
+| --------------------- | ------------------------------------------- |
+| Reuse native behavior | Easy to break internal slots if misused     |
+| Custom error types    | Some builtins cannot be subclassed reliably |
 
-| + | − |
-|------|------|
-| Domain-specific array/map types | Wrong subclassing breaks `length` / iterators |
-| Custom `Error` with stack/status | Engine-specific edge cases |
-| Native methods still work | `Array.from` on subclass needs care |
+| +                                | −                                             |
+| -------------------------------- | --------------------------------------------- |
+| Domain-specific array/map types  | Wrong subclassing breaks `length` / iterators |
+| Custom `Error` with stack/status | Engine-specific edge cases                    |
+| Native methods still work        | `Array.from` on subclass needs care           |
 
 **Examples:**
 
@@ -973,7 +1047,7 @@ Forgetting `super()` in derived constructor; assuming `JSON.stringify` handles c
 class HttpError extends Error {
   constructor(status, message) {
     super(message);
-    this.name = 'HttpError';
+    this.name = "HttpError";
     this.status = status;
   }
 }
@@ -1026,20 +1100,20 @@ Domain entities; React class components (legacy); service classes with instance 
 
 Using class before declaration (TDZ); expecting `class` to hoist like `function`; thinking private `#` fields are on prototype (they are per-instance).
 
-| Feature | Behavior |
-|---------|----------|
-| Strict mode | Always on inside class bodies |
-| Methods | Non-enumerable by default |
-| Call without `new` | TypeError |
-| Hoisting | Hoisted but in TDZ until definition |
+| Feature            | Behavior                            |
+| ------------------ | ----------------------------------- |
+| Strict mode        | Always on inside class bodies       |
+| Methods            | Non-enumerable by default           |
+| Call without `new` | TypeError                           |
+| Hoisting           | Hoisted but in TDZ until definition |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                  | −                                                    |
+| ---------------------------------- | ---------------------------------------------------- |
 | Familiar syntax, `extends`/`super` | Still prototypes underneath — surprises in debugging |
-| Strict by default | TDZ — cannot use before declaration |
-| Clear constructor/method split | Not hoisted like `function` declarations |
+| Strict by default                  | TDZ — cannot use before declaration                  |
+| Clear constructor/method split     | Not hoisted like `function` declarations             |
 
 **Examples:**
 
@@ -1077,10 +1151,10 @@ class BikeClass {
 
 Classes can be declared or expressed, named or anonymous — similar to functions.
 
-| Form | Example |
-|------|---------|
-| Declaration | `class Foo {}` |
-| Expression | `const Foo = class {}` |
+| Form             | Example                                                     |
+| ---------------- | ----------------------------------------------------------- |
+| Declaration      | `class Foo {}`                                              |
+| Expression       | `const Foo = class {}`                                      |
 | Named expression | `const Foo = class Bar {}` — `Bar` visible inside body only |
 
 **How it works:** Classes are hoisted but uninitialized — `new Rectangle()` before `class Rectangle {}` throws `ReferenceError`.
@@ -1124,19 +1198,19 @@ Comparison utilities, factories, constants — anything not tied to a single ins
 
 Calling static method on instance (`user.createGuest()` — undefined); static block (ES2022) runs once — side effects persist.
 
-| Static | Instance |
-|--------|----------|
-| `User.createGuest()` | `user.sayHi()` |
-| Class-level utilities | Per-object behavior |
-| Factory methods, counters | Instance state |
+| Static                    | Instance            |
+| ------------------------- | ------------------- |
+| `User.createGuest()`      | `user.sayHi()`      |
+| Class-level utilities     | Per-object behavior |
+| Factory methods, counters | Instance state      |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Namespace for utilities | Can become grab-bag if overused |
+| +                                      | −                                             |
+| -------------------------------------- | --------------------------------------------- |
+| Namespace for utilities                | Can become grab-bag if overused               |
 | Factory methods (`User.createGuest()`) | Harder to mock than instance methods in tests |
-| Counters/constants on class | Static-only state is global-like |
+| Counters/constants on class            | Static-only state is global-like              |
 
 **Examples:**
 
@@ -1155,7 +1229,7 @@ class Article {
   }
 }
 
-Article.compare(new Article('A'), new Article('B'));
+Article.compare(new Article("A"), new Article("B"));
 ```
 
 **Sources:** [javascript.info/static-properties-methods](https://javascript.info/static-properties-methods)
@@ -1186,11 +1260,11 @@ Chrome DevTools (and some other consoles) may **read `#` fields for debugging** 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Real encapsulation | SyntaxError if accessed outside — no runtime undefined |
-| No `_prefix` convention | Cannot access from subclasses in separate files without getters |
-| Works with getters for controlled exposure | DevTools support varies |
+| +                                          | −                                                               |
+| ------------------------------------------ | --------------------------------------------------------------- |
+| Real encapsulation                         | SyntaxError if accessed outside — no runtime undefined          |
+| No `_prefix` convention                    | Cannot access from subclasses in separate files without getters |
+| Works with getters for controlled exposure | DevTools support varies                                         |
 
 **Examples:**
 
@@ -1238,18 +1312,18 @@ console.log(acc.getBalance()); // 100
 
 Using `this` before `super()` in derived constructor; forgetting `super()` when derived class has constructor; diamond problem — JS has no multiple inheritance.
 
-| Use case | Syntax |
-|----------|--------|
+| Use case                | Syntax                             |
+| ----------------------- | ---------------------------------- |
 | Call parent constructor | `super(args)` in child constructor |
-| Call parent method | `super.method()` in override |
-| Static inheritance | `super` in static methods |
+| Call parent method      | `super.method()` in override       |
+| Static inheritance      | `super` in static methods          |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Built-in `extends`/`super` | Single inheritance only |
-| `instanceof` works through chain | Deep hierarchies fragile |
+| +                                | −                                                        |
+| -------------------------------- | -------------------------------------------------------- |
+| Built-in `extends`/`super`       | Single inheritance only                                  |
+| `instanceof` works through chain | Deep hierarchies fragile                                 |
 | Method override with parent call | Must call `super()` before `this` in derived constructor |
 
 **Examples:**
@@ -1274,7 +1348,7 @@ class Dog extends Animal {
   }
 }
 
-const d = new Dog('Rex', 'lab');
+const d = new Dog("Rex", "lab");
 console.log(d.speak());
 ```
 
@@ -1311,17 +1385,17 @@ Lazy computed values; input validation; exposing read-only derived state; compat
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Validation on set | Slight overhead vs plain properties |
-| Computed values on get | Can complicate debugging |
-| Encapsulation with private `#` fields | Overuse adds boilerplate |
+| +                                     | −                                   |
+| ------------------------------------- | ----------------------------------- |
+| Validation on set                     | Slight overhead vs plain properties |
+| Computed values on get                | Can complicate debugging            |
+| Encapsulation with private `#` fields | Overuse adds boilerplate            |
 
-| + | − |
-|------|------|
-| Validation on assignment | Harder to trace in debugger than methods |
-| Computed read-only properties | Infinite recursion if setter calls itself |
-| Backward-compatible API evolution | Slight perf cost vs data properties |
+| +                                 | −                                         |
+| --------------------------------- | ----------------------------------------- |
+| Validation on assignment          | Harder to trace in debugger than methods  |
+| Computed read-only properties     | Infinite recursion if setter calls itself |
+| Backward-compatible API evolution | Slight perf cost vs data properties       |
 
 **Examples:**
 
@@ -1336,15 +1410,15 @@ class User {
   }
 
   set name(value) {
-    if (typeof value !== 'string' || !value.trim()) {
-      throw new TypeError('Invalid name');
+    if (typeof value !== "string" || !value.trim()) {
+      throw new TypeError("Invalid name");
     }
     this._name = value.trim();
   }
 }
 
-const u = new User('Ann');
-u.name = '  Bob  ';
+const u = new User("Ann");
+u.name = "  Bob  ";
 console.log(u.name); // 'Bob'
 ```
 
@@ -1372,38 +1446,44 @@ Cross-cutting concerns (serialization, event emitter); legacy code sharing; when
 
 Two mixins defining same method; mixin assuming `this` shape without contract; prefer composition (`has-a`) for new code.
 
-| Approach | When |
-|----------|------|
-| `extends` | True `is-a` subtype |
+| Approach                             | When                                    |
+| ------------------------------------ | --------------------------------------- |
+| `extends`                            | True `is-a` subtype                     |
 | Mixin (`Object.assign` to prototype) | Share behavior across unrelated classes |
-| Composition | `has-a` — preferred for flexibility |
+| Composition                          | `has-a` — preferred for flexibility     |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Share behavior without inheritance | Method name collisions |
-| Multiple behaviors on one class | No `super` to mixin |
-| Works with unrelated classes | Harder to trace than composition |
+| +                                  | −                                |
+| ---------------------------------- | -------------------------------- |
+| Share behavior without inheritance | Method name collisions           |
+| Multiple behaviors on one class    | No `super` to mixin              |
+| Works with unrelated classes       | Harder to trace than composition |
 
 **Examples:**
 
 ```js
 const sayHi = {
-  sayHi() { return `Hi, ${this.name}`; },
+  sayHi() {
+    return `Hi, ${this.name}`;
+  },
 };
 
 const sayBye = {
-  sayBye() { return `Bye, ${this.name}`; },
+  sayBye() {
+    return `Bye, ${this.name}`;
+  },
 };
 
 class User {
-  constructor(name) { this.name = name; }
+  constructor(name) {
+    this.name = name;
+  }
 }
 
 Object.assign(User.prototype, sayHi, sayBye);
 
-const u = new User('Ann');
+const u = new User("Ann");
 console.log(u.sayHi()); // 'Hi, Ann'
 ```
 
@@ -1424,7 +1504,7 @@ console.log(u.sayHi()); // 'Hi, Ann'
 
 ### Constructor injection
 
-**Definition:** Pass collaborators into `constructor` and store them on `this`, instead of constructing them inside the class. The class that *needs* others is the dependent.
+**Definition:** Pass collaborators into `constructor` and store them on `this`, instead of constructing them inside the class. The class that _needs_ others is the dependent.
 
 **How it works:**
 
@@ -1443,11 +1523,11 @@ Constructing deps inside the class (hidden coupling); circular `new` between two
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Testable; swap implementations | Wiring at the composition root |
-| Clear ownership of collaborators | Easy to pass too many deps (god constructor) |
-| Matches domain relation direction | Without types, nothing checks the shape |
+| +                                 | −                                            |
+| --------------------------------- | -------------------------------------------- |
+| Testable; swap implementations    | Wiring at the composition root               |
+| Clear ownership of collaborators  | Easy to pass too many deps (god constructor) |
+| Matches domain relation direction | Without types, nothing checks the shape      |
 
 **Examples:**
 
@@ -1498,28 +1578,28 @@ Read-only `id`; non-enumerable internal slots; library defining non-writable glo
 
 Assuming `const obj` makes properties immutable; `writable: false` still allows change if `configurable: true` (redefine); shallow freeze only top level.
 
-| Descriptor | Type | Controls |
-|------------|------|----------|
-| `value` | Data | Stored value |
-| `writable` | Data | Can value be changed? |
-| `enumerable` | Data / Accessor | Shows in `for...in` / `Object.keys`? |
-| `configurable` | Data / Accessor | Can delete or redefine? |
-| `get` / `set` | Accessor | Read/write functions |
+| Descriptor     | Type            | Controls                             |
+| -------------- | --------------- | ------------------------------------ |
+| `value`        | Data            | Stored value                         |
+| `writable`     | Data            | Can value be changed?                |
+| `enumerable`   | Data / Accessor | Shows in `for...in` / `Object.keys`? |
+| `configurable` | Data / Accessor | Can delete or redefine?              |
+| `get` / `set`  | Accessor        | Read/write functions                 |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Fine-grained control (immutable id) | Verbose API |
-| Hide internal props (`enumerable: false`) | Easy to forget `configurable: false` for true lock |
-| Accessors for computed/validated fields | Mixing data and accessor descriptors on same key forbidden |
+| +                                         | −                                                          |
+| ----------------------------------------- | ---------------------------------------------------------- |
+| Fine-grained control (immutable id)       | Verbose API                                                |
+| Hide internal props (`enumerable: false`) | Easy to forget `configurable: false` for true lock         |
+| Accessors for computed/validated fields   | Mixing data and accessor descriptors on same key forbidden |
 
 **Examples:**
 
 ```js
 const obj = {};
 
-Object.defineProperty(obj, 'id', {
+Object.defineProperty(obj, "id", {
   value: 1,
   writable: false,
   enumerable: true,
@@ -1545,11 +1625,11 @@ console.log(obj.id); // 1 — not writable
 - `Object.freeze(obj)` — `seal` + set all data properties `writable: false`; strict mode assignment throws.
 - Check state: `Object.isExtensible`, `Object.isSealed`, `Object.isFrozen`.
 
-| Method | Add | Delete | Write values | Reconfigure descriptors |
-|--------|-----|--------|--------------|-------------------------|
-| `preventExtensions()` | No | Yes | Yes | Yes |
-| `seal()` | No | No | Yes | No |
-| `freeze()` | No | No | No | No |
+| Method                | Add | Delete | Write values | Reconfigure descriptors |
+| --------------------- | --- | ------ | ------------ | ----------------------- |
+| `preventExtensions()` | No  | Yes    | Yes          | Yes                     |
+| `seal()`              | No  | No     | Yes          | No                      |
+| `freeze()`            | No  | No     | No           | No                      |
 
 **When to use:**
 
@@ -1561,23 +1641,23 @@ Assuming `freeze` deep-clones; mutating nested object after parent freeze; `cons
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Simple runtime immutability | Shallow only |
-| `freeze` for config constants | Cannot unfreeze |
+| +                                 | −                                    |
+| --------------------------------- | ------------------------------------ |
+| Simple runtime immutability       | Shallow only                         |
+| `freeze` for config constants     | Cannot unfreeze                      |
 | No library needed for basic cases | Deep freeze needs recursion or Immer |
 
 **Examples:**
 
 ```js
 const sealed = Object.seal({ a: 1, nested: { b: 2 } });
-sealed.a = 2;           // OK
-sealed.c = 3;           // fails silently / strict throw
-delete sealed.a;        // fails
-sealed.nested.b = 99;   // nested still mutable!
+sealed.a = 2; // OK
+sealed.c = 3; // fails silently / strict throw
+delete sealed.a; // fails
+sealed.nested.b = 99; // nested still mutable!
 
 const frozen = Object.freeze({ x: 1 });
-frozen.x = 2;           // fails
+frozen.x = 2; // fails
 console.log(Object.isFrozen(frozen)); // true
 ```
 
@@ -1598,14 +1678,14 @@ console.log(Object.isFrozen(frozen)); // true
 - Deep: recursively clone reachable own properties; `structuredClone` uses structured clone algorithm.
 - `JSON` round-trip drops non-JSON types and breaks on cycles.
 
-| Type | `JSON.stringify` behavior |
-|------|---------------------------|
-| `undefined`, functions, symbols | Removed |
-| `BigInt` | Throws |
-| `NaN`, `Infinity` | `null` |
-| Circular references | Throws |
-| `Date` | ISO string |
-| `Map`, `Set` | `{}` |
+| Type                            | `JSON.stringify` behavior |
+| ------------------------------- | ------------------------- |
+| `undefined`, functions, symbols | Removed                   |
+| `BigInt`                        | Throws                    |
+| `NaN`, `Infinity`               | `null`                    |
+| Circular references             | Throws                    |
+| `Date`                          | ISO string                |
+| `Map`, `Set`                    | `{}`                      |
 
 **When to use:**
 
@@ -1615,19 +1695,19 @@ Immutable updates (shallow + replace nested); API payload clone; state snapshot 
 
 `{...obj}` then mutating `copy.nested` affects original; `structuredClone` on DOM nodes throws; JSON clone turns `Date` to string.
 
-| Strategy | Nested objects | Methods / symbols |
-|----------|----------------|-----------------|
-| Spread / `Object.assign` | Shared (shallow) | Copied (enumerable own) |
-| `structuredClone()` | Cloned (deep) | Most types; no functions |
-| `JSON.parse(JSON.stringify())` | Cloned | Loses functions, `undefined`, `Date` precision |
+| Strategy                       | Nested objects   | Methods / symbols                              |
+| ------------------------------ | ---------------- | ---------------------------------------------- |
+| Spread / `Object.assign`       | Shared (shallow) | Copied (enumerable own)                        |
+| `structuredClone()`            | Cloned (deep)    | Most types; no functions                       |
+| `JSON.parse(JSON.stringify())` | Cloned           | Loses functions, `undefined`, `Date` precision |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Spread/`assign` fast for flat clones | Shallow copies hide nested sharing bugs |
-| `structuredClone` native deep clone | No functions, symbols in clone |
-| JSON clone simple for plain data | JSON loses `Date`, `undefined`, `BigInt` |
+| +                                    | −                                        |
+| ------------------------------------ | ---------------------------------------- |
+| Spread/`assign` fast for flat clones | Shallow copies hide nested sharing bugs  |
+| `structuredClone` native deep clone  | No functions, symbols in clone           |
+| JSON clone simple for plain data     | JSON loses `Date`, `undefined`, `BigInt` |
 
 **Examples:**
 
@@ -1673,11 +1753,11 @@ It is inherited from `Object.prototype` with `{ enumerable: false }`.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| `in` detects inherited methods | `for...in` pulls inherited enumerable props |
-| `for...in` simple iteration | Must filter with `hasOwn`; integer keys reordered |
-| `Object.hasOwn` modern own check | `hasOwnProperty` can be shadowed |
+| +                                | −                                                 |
+| -------------------------------- | ------------------------------------------------- |
+| `in` detects inherited methods   | `for...in` pulls inherited enumerable props       |
+| `for...in` simple iteration      | Must filter with `hasOwn`; integer keys reordered |
+| `Object.hasOwn` modern own check | `hasOwnProperty` can be shadowed                  |
 
 **Examples:**
 
@@ -1686,7 +1766,7 @@ const obj = { a: 1, b: 2, test: undefined };
 "test" in obj; // true — property exists
 obj.test === undefined; // true — but also true if missing
 
-const codes = { "49": "DE", "41": "CH", "1": "US" };
+const codes = { 49: "DE", 41: "CH", 1: "US" };
 for (const code in codes) console.log(code); // 1, 41, 49 — integer sort
 
 for (const key in obj) {
@@ -1721,23 +1801,23 @@ Drop references (`obj = null`) when done; avoid global caches without bounds; `W
 
 Closures holding large outer scope; detached DOM nodes still referenced by JS; `setInterval` holding callback forever; forgetting event listener removal.
 
-| Phase | Action |
-|-------|--------|
-| **Mark** | Traverse from roots; mark reachable objects |
-| **Sweep** | Delete unmarked (unreachable) objects |
+| Phase     | Action                                      |
+| --------- | ------------------------------------------- |
+| **Mark**  | Traverse from roots; mark reachable objects |
+| **Sweep** | Delete unmarked (unreachable) objects       |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                           | −                                    |
+| --------------------------- | ------------------------------------ |
 | Automatic memory management | Pauses (mitigated by incremental GC) |
-| No manual free() | Memory leaks still possible |
-| WeakRef/WeakMap for caches | Unpredictable collection timing |
+| No manual free()            | Memory leaks still possible          |
+| WeakRef/WeakMap for caches  | Unpredictable collection timing      |
 
 **Examples:**
 
 ```js
-let user = { name: 'John' };
+let user = { name: "John" };
 // user is reachable — object stays in memory
 
 user = null;
@@ -1746,11 +1826,11 @@ user = null;
 
 #### GC optimizations
 
-| Technique | Purpose |
-|-----------|---------|
+| Technique               | Purpose                            |
+| ----------------------- | ---------------------------------- |
 | Generational collection | Young objects collected more often |
-| Incremental collection | Spread GC across small steps |
-| Idle-time collection | Run GC when CPU is idle |
+| Incremental collection  | Spread GC across small steps       |
+| Idle-time collection    | Run GC when CPU is idle            |
 
 **Thoughts:** Outgoing references do not keep an object alive — only **incoming** references from reachable objects matter. An “island” of objects that only reference each other is collected once no root reaches it.
 
@@ -1785,16 +1865,16 @@ Using WeakRef as only lifecycle management; assuming finalizer runs promptly; st
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Cache without memory leaks | Non-deterministic cleanup timing |
-| External metadata for objects | Overkill for most apps |
+| +                             | −                                |
+| ----------------------------- | -------------------------------- |
+| Cache without memory leaks    | Non-deterministic cleanup timing |
+| External metadata for objects | Overkill for most apps           |
 
-| + | − |
-|------|------|
+| +                                   | −                                      |
+| ----------------------------------- | -------------------------------------- |
 | Cache large objects without leaking | `deref()` may return undefined anytime |
-| Observe GC for diagnostics | Finalization order non-deterministic |
-| Complements `WeakMap` | Overkill for typical apps |
+| Observe GC for diagnostics          | Finalization order non-deterministic   |
+| Complements `WeakMap`               | Overkill for typical apps              |
 
 **Examples:**
 
@@ -1803,9 +1883,9 @@ const registry = new FinalizationRegistry((heldValue) => {
   console.log(`Object with id ${heldValue} was garbage-collected`);
 });
 
-let obj = { data: 'large' };
+let obj = { data: "large" };
 const ref = new WeakRef(obj);
-registry.register(obj, 'session-1');
+registry.register(obj, "session-1");
 obj = null; // eventually GC + callback
 ```
 
@@ -1839,32 +1919,35 @@ Forgetting `return true` from `set` trap (strict mode error); proxying arrays �
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Validation, logging, reactivity (Vue 3) | Slight overhead; mental overhead |
-| Virtual properties without storage | Hard to debug stack traces |
-| Revocable proxies (`Proxy.revocable`) | Cannot proxy all internal slots equally |
+| +                                       | −                                       |
+| --------------------------------------- | --------------------------------------- |
+| Validation, logging, reactivity (Vue 3) | Slight overhead; mental overhead        |
+| Virtual properties without storage      | Hard to debug stack traces              |
+| Revocable proxies (`Proxy.revocable`)   | Cannot proxy all internal slots equally |
 
 **Examples:**
 
 ```js
-const user = new Proxy({}, {
-  set(target, prop, value) {
-    if (prop === 'age' && (typeof value !== 'number' || value < 0)) {
-      throw new RangeError('age must be non-negative number');
-    }
-    return Reflect.set(target, prop, value);
+const user = new Proxy(
+  {},
+  {
+    set(target, prop, value) {
+      if (prop === "age" && (typeof value !== "number" || value < 0)) {
+        throw new RangeError("age must be non-negative number");
+      }
+      return Reflect.set(target, prop, value);
+    },
+    get(target, prop, receiver) {
+      if (prop === "fullName") {
+        return `${target.first ?? ""} ${target.last ?? ""}`.trim();
+      }
+      return Reflect.get(target, prop, receiver);
+    },
   },
-  get(target, prop, receiver) {
-    if (prop === 'fullName') {
-      return `${target.first ?? ''} ${target.last ?? ''}`.trim();
-    }
-    return Reflect.get(target, prop, receiver);
-  },
-});
+);
 
-user.first = 'Ann';
-user.last = 'Lee';
+user.first = "Ann";
+user.last = "Lee";
 user.age = 30;
 console.log(user.fullName); // 'Ann Lee'
 ```
@@ -1897,25 +1980,29 @@ Factory returning new function each call breaks `===` identity checks; IIFE modu
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                          | −                                        |
+| ------------------------------------------ | ---------------------------------------- |
 | Factory flexible — plain objects, no `new` | No `instanceof` without shared prototype |
-| Module hides implementation | IIFE modules harder to tree-shake |
-| ES modules standard, static analysis | Over-factorying simple literals |
+| Module hides implementation                | IIFE modules harder to tree-shake        |
+| ES modules standard, static analysis       | Over-factorying simple literals          |
 
 **Examples:**
 
 ```js
 // Factory — same-shaped objects without `new`
 function createSpending(amount) {
-  return { amount, dateTime: Date.now(), kind: 'spending' };
+  return { amount, dateTime: Date.now(), kind: "spending" };
 }
 
 function createCounter(start = 0) {
   let n = start;
   return {
-    next() { return ++n; },
-    reset() { n = start; },
+    next() {
+      return ++n;
+    },
+    reset() {
+      n = start;
+    },
   };
 }
 
@@ -1923,9 +2010,15 @@ function createCounter(start = 0) {
 const authModule = (() => {
   let token = null;
   return {
-    login(t) { token = t; },
-    logout() { token = null; },
-    isLoggedIn() { return token !== null; },
+    login(t) {
+      token = t;
+    },
+    logout() {
+      token = null;
+    },
+    isLoggedIn() {
+      return token !== null;
+    },
   };
 })();
 

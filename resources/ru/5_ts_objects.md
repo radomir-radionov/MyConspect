@@ -605,9 +605,137 @@ class History implements Ledger {
 }
 ```
 
-**Thoughts:** Почему TS, если среда выполнения — JS? То же, что и диагностика двигателя перед поездкой — о расторгнутом контракте вы узнаете еще до пробки. Полный дизайн ООП: [7_special.md](./7_special_engineering.md#объектно-ориентированное-программирование-oop).
+**Thoughts:** Почему TS, если среда выполнения — JS? То же, что и диагностика двигателя перед поездкой — о расторгнутом контракте вы узнаете еще до пробки. Полный дизайн ООП: [7_special.md](./7_special_engineering.md#object-oriented-programming-oop).
 
 **Sources:** [Doka — ООП](https://doka.guide/tools/oop/) · [Справочник TypeScript — классы](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [Повседневные типы](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
+
+</details>
+
+<details>
+  <summary>OOP in TypeScript</summary>
+
+### OOP in TypeScript
+
+**Definition:** TypeScript добавляет **статические типы** поверх прототипного рантайма JavaScript. Четыре столпа ООП сохраняются, но TS добавляет **интерфейсы**, **абстрактные классы**, **модификаторы доступа** и **структурную типизацию** — проверка при компиляции, в emit **стирается**.
+
+**How it works:**
+
+| Столп            | Механизм TypeScript                                                               |
+| ---------------- | --------------------------------------------------------------------------------- |
+| **Инкапсуляция** | `private` / `protected` / `readonly` (compile-time); `#field` (runtime, как в JS) |
+| **Абстракция**   | `interface`, `abstract class`, небольшой публичный API класса                     |
+| **Наследование** | `extends` одного класса; методы в emit на цепочке прототипов                      |
+| **Полиморфизм**  | Переопределения методов + контракты `implements`; структурная типизация по форме  |
+
+- **Структурная типизация:** совместимые формы присваиваются — plain object может удовлетворять `interface` без `implements`.
+- **`implements`:** класс явно обещает форму интерфейса; `tsc` ругается при расхождении.
+- **`extends`:** только один базовый класс (ограничение JS); несколько контрактов — `implements A, B`.
+- **`private` / `protected`:** стираются в emit — в рантайме не защищают. Для реального сокрытия — `#`.
+- **`abstract class`:** нельзя инстанцировать; можно смешивать конкретные и абстрактные методы.
+
+**When to use:** Доменные модели, DI, публичные SDK, команды с контрактами. Для одноразовых скриптов — избыточно.
+
+**Pluses and minuses:**
+
+| +                                                              | −                                                                            |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `interface` + `implements` документируют и проверяют контракты | Типы стираются — рантайм остаётся нетипизированным JS                        |
+| Структурная типизация гибка для адаптеров и тестов             | Две формы с одинаковыми полями взаимозаменяемы, даже если имена типов разные |
+| `abstract class` делит реализацию и требует override           | Перемоделирование мелких скриптов добавляет шум                              |
+
+**Examples:**
+
+**Encapsulation** — состояние меняется только через методы; `#` защищает приватность в рантайме:
+
+```ts
+class BankAccount {
+  #balance = 0;
+  deposit(amount: number) {
+    if (amount <= 0) throw new Error("amount must be positive");
+    this.#balance += amount;
+  }
+  withdraw(amount: number) {
+    if (amount > this.#balance) throw new Error("insufficient funds");
+    this.#balance -= amount;
+  }
+  getBalance(): number {
+    return this.#balance;
+  }
+}
+// account.#balance → SyntaxError
+```
+
+**Abstraction** — `interface` скрывает транспорт; checkout зависит от _что_, а не _как_:
+
+```ts
+interface PaymentGateway {
+  charge(amount: number): Promise<{ ok: boolean }>;
+}
+
+class StripeGateway implements PaymentGateway {
+  async charge(amount: number) {
+    const res = await fetch("/api/charge", {
+      method: "POST",
+      body: JSON.stringify({ amount }),
+    });
+    return { ok: res.ok };
+  }
+}
+
+async function checkout(total: number, gateway: PaymentGateway) {
+  return gateway.charge(total); // без URL Stripe и заголовков auth
+}
+```
+
+**Inheritance** — общий код в родителе; потомок переопределяет только отличия:
+
+```ts
+class Employee {
+  constructor(public name: string) {}
+  getRole(): string {
+    return "employee";
+  }
+}
+
+class Manager extends Employee {
+  getRole(): string {
+    return "manager";
+  }
+}
+
+const staff: Employee[] = [new Employee("Ann"), new Manager("Bob")];
+staff.map((e) => e.getRole()); // ['employee', 'manager']
+```
+
+**Polymorphism** — один вызов `send()`; меняйте `EmailAlert` / `SmsAlert` без правок вызывающего кода:
+
+```ts
+interface Notifier {
+  send(message: string): void;
+}
+
+class EmailAlert implements Notifier {
+  send(message: string) {
+    console.log("email:", message);
+  }
+}
+
+class SmsAlert implements Notifier {
+  send(message: string) {
+    console.log("sms:", message);
+  }
+}
+
+function notifyAll(alerts: Notifier[], text: string) {
+  alerts.forEach((a) => a.send(text));
+}
+
+notifyAll([new EmailAlert(), new SmsAlert()], "Order shipped");
+```
+
+**Thoughts:** ООП в TS = JS-рантайм + контракты на этапе компиляции. Приватность: [TS `private` vs `#` fields](#ts-private-vs-fields). Design-first: [Design-first OOP with interfaces](#design-first-oop-with-interfaces). Теория столпов: [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop). Механизмы JS: [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+
+**Sources:** [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [TypeScript handbook — Object types](https://www.typescriptlang.org/docs/handbook/2/objects.html) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [Doka — OOP](https://doka.guide/tools/oop/) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
 
 </details>
 

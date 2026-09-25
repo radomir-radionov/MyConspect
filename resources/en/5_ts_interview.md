@@ -6,7 +6,7 @@ Interview Q&A and type challenges.
 
 ### Related docs
 
-* [TypeScript — Basics](./5_ts_core.md) · [TypeScript — Narrowing](./5_ts_narrowing.md) · [TypeScript — Functions](./5_ts_functions.md) · [TypeScript — Objects](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Reference](./5_ts_reference.md) · [TypeScript — Interview](./5_ts_interview.md)
+- [TypeScript — Basics](./5_ts_core.md) · [TypeScript — Narrowing](./5_ts_narrowing.md) · [TypeScript — Functions](./5_ts_functions.md) · [TypeScript — Objects](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Reference](./5_ts_reference.md) · [TypeScript — Interview](./5_ts_interview.md)
 
 ### Sections
 
@@ -23,25 +23,25 @@ Interview Q&A and type challenges.
 
 **Definition:** Type-level puzzles and common live-coding prompts for TypeScript interviews.
 
-| Area | Must know |
-|------|-----------|
-| **Basics** | `any` vs `unknown` vs `never`, narrowing, unions |
-| **Structure** | `interface` vs `type`, generics, utility types |
-| **Safety** | `strict`, discriminated unions, exhaustiveness, `erasableSyntaxOnly` |
-| **Advanced** | `infer`, conditional/mapped types, `keyof` |
-| **Runtime** | Types erased — validate external data (Zod) |
+| Area          | Must know                                                            |
+| ------------- | -------------------------------------------------------------------- |
+| **Basics**    | `any` vs `unknown` vs `never`, narrowing, unions                     |
+| **Structure** | `interface` vs `type`, generics, utility types                       |
+| **Safety**    | `strict`, discriminated unions, exhaustiveness, `erasableSyntaxOnly` |
+| **Advanced**  | `infer`, conditional/mapped types, `keyof`                           |
+| **Runtime**   | Types erased — validate external data (Zod)                          |
 
 **Sources:** [Type challenges](https://github.com/type-challenges/type-challenges)
 
-| Topic | Answer |
-|-------|--------|
-| Why TS / large projects / when it hurts | Q&A |
-| Design-first interfaces / `private` vs `#` | Q&A |
-| `any` acceptable cases, extend `interface` | Q&A |
-| Unions, literals, build with type errors | Q&A |
-| Typify API/object/array/function | Q&A |
-| Optional / `undefined` fields | Q&A |
-| Cart aggregation (typed) | Task — Cart |
+| Topic                                      | Answer      |
+| ------------------------------------------ | ----------- |
+| Why TS / large projects / when it hurts    | Q&A         |
+| Design-first interfaces / `private` vs `#` | Q&A         |
+| `any` acceptable cases, extend `interface` | Q&A         |
+| Unions, literals, build with type errors   | Q&A         |
+| Typify API/object/array/function           | Q&A         |
+| Optional / `undefined` fields              | Q&A         |
+| Cart aggregation (typed)                   | Task — Cart |
 
 ---
 
@@ -54,11 +54,11 @@ Interview Q&A and type challenges.
 
 **Definition:** Typed superset of JavaScript — types are checked at compile time and **erased** in emitted JS. Adds interfaces, generics, enums, and strict null checks without changing runtime semantics.
 
-| Pros | Cons |
-|------|------|
-| Safer refactors, better IDE support | Extra compile step |
-| Gradual adoption (`allowJs`) | `any` / `as` can bypass safety |
-| Catches bugs before deploy | Types don't exist at runtime |
+| Pros                                | Cons                           |
+| ----------------------------------- | ------------------------------ |
+| Safer refactors, better IDE support | Extra compile step             |
+| Gradual adoption (`allowJs`)        | `any` / `as` can bypass safety |
+| Catches bugs before deploy          | Types don't exist at runtime   |
 
 **How it works:** `tsc` (or esbuild/swc with `noEmit` check) analyzes code → reports errors → emits JS. External data (API, `JSON.parse`) still needs runtime validation (Zod, io-ts) because TS cannot verify network payloads.
 
@@ -73,7 +73,7 @@ function greet(name: string): string {
 greet(42); // compile error: number not assignable to string
 ```
 
-**Interview one-liner:** *"TypeScript is JavaScript with optional static types — compile-time safety, runtime is still JS."*
+**Interview one-liner:** _"TypeScript is JavaScript with optional static types — compile-time safety, runtime is still JS."_
 
 **Sources:** [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
 
@@ -90,7 +90,7 @@ greet(42); // compile error: number not assignable to string
 
 **When to use:** Domain-heavy apps, DI, teams. Not needed for a 20-line script.
 
-**See also:** [Design-first OOP with interfaces](./5_ts_objects.md#classes) · [Doka — OOP](https://doka.guide/tools/oop/)
+**See also:** [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript) · [Design-first OOP with interfaces](./5_ts_objects.md#design-first-oop-with-interfaces) · [Doka — OOP](https://doka.guide/tools/oop/)
 
 </details>
 
@@ -101,10 +101,10 @@ greet(42); // compile error: number not assignable to string
 
 **Definition:** `tsc` **type-checks** (compiler) and **emits JS** from TS (transpilation between high-level languages).
 
-| Role | `tsc` |
-|------|-------|
-| Compiler | Static analysis |
-| Transpiler | TS → JS emit |
+| Role       | `tsc`           |
+| ---------- | --------------- |
+| Compiler   | Static analysis |
+| Transpiler | TS → JS emit    |
 
 **Examples:**
 
@@ -124,10 +124,10 @@ tsc
 
 **Definition:** TypeScript catches shape errors at compile time; runtime still needs `try/catch` and schema validation for external data.
 
-| Layer | Tooling |
-|-------|---------|
-| Compile time | `tsc`, IDE |
-| Runtime | `try/catch`, Zod/io-ts |
+| Layer        | Tooling                |
+| ------------ | ---------------------- |
+| Compile time | `tsc`, IDE             |
+| Runtime      | `try/catch`, Zod/io-ts |
 
 **Examples:**
 
@@ -150,10 +150,10 @@ function parseAge(input: string): number {
 
 **Definition:** `A | B` — one of; `A & B` — must satisfy all. `string & number` is impossible.
 
-| Operator | Meaning |
-|----------|---------|
-| `\|` | either type |
-| `&` | combine shapes |
+| Operator | Meaning        |
+| -------- | -------------- |
+| `\|`     | either type    |
+| `&`      | combine shapes |
 
 **Examples:**
 
@@ -173,11 +173,11 @@ type Person = { name: string } & { age: number };
 
 **Definition:** `any` disables checking; `unknown` requires narrowing; `never` is the empty type (unreachable).
 
-| Type | Behavior |
-|------|----------|
-| `any` | No checks |
-| `unknown` | Narrow before use |
-| `never` | Exhaustiveness / throws |
+| Type      | Behavior                |
+| --------- | ----------------------- |
+| `any`     | No checks               |
+| `unknown` | Narrow before use       |
+| `never`   | Exhaustiveness / throws |
 
 **Examples:**
 
@@ -200,16 +200,16 @@ function parse(input: unknown) {
 
 **How it works:**
 
-| Feature | `interface` | `type` |
-|---------|-------------|--------|
-| Object shape | yes | yes |
-| Extend | `extends` | intersection `&` |
-| Declaration merging | yes — duplicate name merges fields | no — duplicate = error |
-| Union `A \| B` | no | yes |
-| Tuple `[string, number]` | awkward | natural |
-| Mapped / conditional types | limited | primary tool |
-| Primitives alias `type ID = string` | no | yes |
-| `implements` in class | yes | yes (often via intersection) |
+| Feature                             | `interface`                        | `type`                       |
+| ----------------------------------- | ---------------------------------- | ---------------------------- |
+| Object shape                        | yes                                | yes                          |
+| Extend                              | `extends`                          | intersection `&`             |
+| Declaration merging                 | yes — duplicate name merges fields | no — duplicate = error       |
+| Union `A \| B`                      | no                                 | yes                          |
+| Tuple `[string, number]`            | awkward                            | natural                      |
+| Mapped / conditional types          | limited                            | primary tool                 |
+| Primitives alias `type ID = string` | no                                 | yes                          |
+| `implements` in class               | yes                                | yes (often via intersection) |
 
 **When to use:**
 
@@ -220,17 +220,21 @@ function parse(input: unknown) {
 
 ```typescript
 // interface — merging (common for augmenting library types)
-interface User { id: string }
-interface User { email: string } // merged
+interface User {
+  id: string;
+}
+interface User {
+  email: string;
+} // merged
 
 // type — union (impossible with interface alone)
-type Result<T> =
-  | { ok: true; data: T }
-  | { ok: false; error: string };
+type Result<T> = { ok: true; data: T } | { ok: false; error: string };
 
 // equivalent extension
-interface Admin extends User { role: 'admin' }
-type AdminUser = User & { role: 'admin' };
+interface Admin extends User {
+  role: "admin";
+}
+type AdminUser = User & { role: "admin" };
 ```
 
 **Interview pitfall:** "Which is faster?" — negligible difference; choose by expressiveness. Don't use `interface` for union types; don't use `type` when you need module augmentation.
@@ -266,41 +270,12 @@ type Status = (typeof Status)[keyof typeof Status];
 
 **Definition:** `strict` enables `strictNullChecks`, `noImplicitAny`, `strictFunctionTypes`, and related checks.
 
-| Flag | Effect |
-|------|--------|
-| `strictNullChecks` | `null`/`undefined` not assignable everywhere |
-| `noUncheckedIndexedAccess` | Index access may be `undefined` |
+| Flag                       | Effect                                       |
+| -------------------------- | -------------------------------------------- |
+| `strictNullChecks`         | `null`/`undefined` not assignable everywhere |
+| `noUncheckedIndexedAccess` | Index access may be `undefined`              |
 
 **Sources:** [tsconfig](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
-
-</details>
-
-<details>
-  <summary>OOP principles in TypeScript?</summary>
-
-### OOP principles in TypeScript
-
-**Definition:** Encapsulation, inheritance (`extends`), polymorphism (overrides), abstraction (`abstract`/`interface`).
-
-| Principle | TS mechanism |
-|-----------|--------------|
-| Encapsulation | `private`, `protected`, `readonly` |
-| Inheritance | `extends` (single base) |
-| Abstraction | `abstract class`, `interface` |
-
-**Examples:**
-
-```typescript
-abstract class Animal {
-  constructor(public name: string) {}
-  abstract makeSound(): void;
-}
-class Dog extends Animal {
-  makeSound() { console.log("Woof"); }
-}
-```
-
-**Sources:** [Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
 
 </details>
 
@@ -311,9 +286,9 @@ class Dog extends Animal {
 
 **Definition:** `extends` inherits one class; `implements` satisfies interface contract(s) without inherited code.
 
-| | `extends` | `implements` |
-|---|-----------|----------------|
-| Target | class | interface(s) |
+|                | `extends` | `implements`         |
+| -------------- | --------- | -------------------- |
+| Target         | class     | interface(s)         |
 | Implementation | inherited | must provide members |
 
 **Sources:** [Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
@@ -337,7 +312,7 @@ class Dog extends Animal {
 
 **Why large projects:** More files, more developers, more integration points — types scale communication better than comments. `strict` mode pays off when the codebase outlives any single developer's memory.
 
-**Thoughts:** *Types are documentation that the compiler enforces.*
+**Thoughts:** _Types are documentation that the compiler enforces._
 
 **See also:** [What is TypeScript?](#what-is-typescript) · intro section
 
@@ -350,16 +325,16 @@ class Dog extends Animal {
 
 **Definition:** TS helps most maintained apps, but it has costs — especially early in a project or when misused.
 
-| Hindrance | Mitigation |
-|-----------|------------|
-| Learning curve | Start with `strict` gradually; use `allowJs` |
-| Slower CI if whole monolith type-checks | Project references, incremental builds |
-| Fighting the compiler on complex generics | Simplify; don't over-engineer types |
-| `any` / `as` escape hatches bypass safety | Enable `noImplicitAny`, code review |
-| Third-party libs without types | `@types/*`, local `.d.ts`, `unknown` + Zod at boundaries |
-| Prototyping speed | `// @ts-nocheck` on spike files only — not production |
+| Hindrance                                 | Mitigation                                               |
+| ----------------------------------------- | -------------------------------------------------------- |
+| Learning curve                            | Start with `strict` gradually; use `allowJs`             |
+| Slower CI if whole monolith type-checks   | Project references, incremental builds                   |
+| Fighting the compiler on complex generics | Simplify; don't over-engineer types                      |
+| `any` / `as` escape hatches bypass safety | Enable `noImplicitAny`, code review                      |
+| Third-party libs without types            | `@types/*`, local `.d.ts`, `unknown` + Zod at boundaries |
+| Prototyping speed                         | `// @ts-nocheck` on spike files only — not production    |
 
-**Thoughts:** *TS hurts when you treat types as bureaucracy instead of guardrails — or when the team disables strict checks.*
+**Thoughts:** _TS hurts when you treat types as bureaucracy instead of guardrails — or when the team disables strict checks._
 
 </details>
 
@@ -379,7 +354,7 @@ class Dog extends Animal {
 
 **Prefer instead:** `unknown` + narrowing, generics, or a thin typed wrapper around untyped lib.
 
-**Thoughts:** *`any` is a scalpel for migration boundaries — not a lifestyle.*
+**Thoughts:** _`any` is a scalpel for migration boundaries — not a lifestyle._
 
 **See also:** [`any` vs `unknown` vs `never`](#any-vs-unknown-vs-never)
 
@@ -395,17 +370,23 @@ class Dog extends Animal {
 **How it works:**
 
 ```typescript
-interface User { id: string }
-interface User { email: string } // merges — User has id + email
+interface User {
+  id: string;
+}
+interface User {
+  email: string;
+} // merges — User has id + email
 
-interface Admin extends User { role: 'admin' }
+interface Admin extends User {
+  role: "admin";
+}
 ```
 
 - `extends` — inherit fields from another interface or class.
 - Declaration merging — duplicate `interface` names combine (useful for module augmentation).
 - `type` uses intersection (`&`) instead; no merging.
 
-**Thoughts:** *Use `interface` when you may extend or augment; use `type` for unions.*
+**Thoughts:** _Use `interface` when you may extend or augment; use `type` for unions._
 
 **See also:** [`interface` vs `type`](#interface-vs-type)
 
@@ -420,15 +401,15 @@ interface Admin extends User { role: 'admin' }
 
 **Where used:**
 
-| Use case | Example |
-|----------|---------|
-| API status | `type Status = 'idle' \| 'loading' \| 'error'` |
-| Discriminated unions | `{ kind: 'success'; data: T } \| { kind: 'error'; msg: string }` |
-| Config keys | `type Theme = 'light' \| 'dark'` |
-| Function overload input | `string \| number` ID |
-| `as const` objects | Preserve literals instead of widening to `string` |
+| Use case                | Example                                                          |
+| ----------------------- | ---------------------------------------------------------------- |
+| API status              | `type Status = 'idle' \| 'loading' \| 'error'`                   |
+| Discriminated unions    | `{ kind: 'success'; data: T } \| { kind: 'error'; msg: string }` |
+| Config keys             | `type Theme = 'light' \| 'dark'`                                 |
+| Function overload input | `string \| number` ID                                            |
+| `as const` objects      | Preserve literals instead of widening to `string`                |
 
-**Thoughts:** *Literal unions + discriminant field = safe `switch` with exhaustiveness checking.*
+**Thoughts:** _Literal unions + discriminant field = safe `switch` with exhaustiveness checking._
 
 **See also:** [Union Types](./5_ts_core.md#union-types) · [Literal Types](./5_ts_core.md#literal-types) · [Discriminated Unions](./5_ts_narrowing.md#discriminated-unions)
 
@@ -443,16 +424,16 @@ interface Admin extends User { role: 'admin' }
 
 **How it works:**
 
-| Setting / flag | Behavior |
-|----------------|----------|
-| Default `tsc` | Errors logged; JS may still be emitted |
-| `noEmitOnError: true` | No JS output until types pass |
-| `tsc --noEmit` | Type-check only — no emit (common in CI) |
-| Vite/esbuild/SWC | Transpile without type-check; run `tsc --noEmit` separately |
+| Setting / flag        | Behavior                                                    |
+| --------------------- | ----------------------------------------------------------- |
+| Default `tsc`         | Errors logged; JS may still be emitted                      |
+| `noEmitOnError: true` | No JS output until types pass                               |
+| `tsc --noEmit`        | Type-check only — no emit (common in CI)                    |
+| Vite/esbuild/SWC      | Transpile without type-check; run `tsc --noEmit` separately |
 
-**Interview answer:** *In strict CI we run `tsc --noEmit` and fail the build on errors. Bundlers alone don't guarantee type safety.*
+**Interview answer:** _In strict CI we run `tsc --noEmit` and fail the build on errors. Bundlers alone don't guarantee type safety._
 
-**Thoughts:** *Type-checking and transpilation are separate steps in modern pipelines.*
+**Thoughts:** _Type-checking and transpilation are separate steps in modern pipelines._
 
 **Sources:** [tsconfig — noEmitOnError](https://www.typescriptlang.org/tsconfig#noEmitOnError)
 
@@ -482,7 +463,12 @@ async function fetchUser(id: string): Promise<User> {
 **Object (product):**
 
 ```typescript
-type Product = { id: string; name: string; price: number; category: 'food' | 'electronics' };
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  category: "food" | "electronics";
+};
 ```
 
 **Array of objects:**
@@ -502,7 +488,7 @@ function calculateCart(items: CartItem[]): CartSummary {
 }
 ```
 
-**Thoughts:** *Types describe intent; Zod/io-ts validates reality at the network boundary.*
+**Thoughts:** _Types describe intent; Zod/io-ts validates reality at the network boundary._
 
 </details>
 
@@ -513,23 +499,23 @@ function calculateCart(items: CartItem[]): CartSummary {
 
 **Definition:** With `strictNullChecks`, missing and `undefined` must be handled explicitly.
 
-| Syntax | Meaning |
-|--------|---------|
-| `prop?: string` | May be absent or `undefined` |
-| `prop: string \| undefined` | Must be present; value may be `undefined` |
-| `obj.prop?.trim()` | Optional chaining — short-circuits on null/undefined |
-| `value ?? 'default'` | Nullish coalescing — only for `null`/`undefined` |
+| Syntax                      | Meaning                                              |
+| --------------------------- | ---------------------------------------------------- |
+| `prop?: string`             | May be absent or `undefined`                         |
+| `prop: string \| undefined` | Must be present; value may be `undefined`            |
+| `obj.prop?.trim()`          | Optional chaining — short-circuits on null/undefined |
+| `value ?? 'default'`        | Nullish coalescing — only for `null`/`undefined`     |
 
 ```typescript
 type User = { name: string; email?: string };
 
 function greet(user: User) {
-  const domain = user.email?.split('@')[1] ?? 'unknown';
+  const domain = user.email?.split("@")[1] ?? "unknown";
   return `${user.name}@${domain}`;
 }
 ```
 
-**Thoughts:** *`?` on props + `?.` and `??` at access sites — never assume a field exists.*
+**Thoughts:** _`?` on props + `?.` and `??` at access sites — never assume a field exists._
 
 **See also:** [Optional properties](./5_ts_objects.md#optional-properties) · [`null` and `undefined`](./5_ts_core.md#null-and-undefined)
 
@@ -575,6 +561,7 @@ type AddressWithIdType = Omit<AddressType, "city"> & {
   };
 };
 ```
+
 </details>
 
 ---
@@ -604,6 +591,7 @@ const invalidConst1: LettersWithoutC = "c"; // should error
 type RemoveC<T> = Exclude<T, "c">;
 // or: T extends "c" ? never : T
 ```
+
 </details>
 
 ---
@@ -694,6 +682,7 @@ type MyPick<T, K extends keyof T> = {
   [P in K]: T[P];
 };
 ```
+
 </details>
 
 ---
@@ -715,6 +704,7 @@ type R = MyReturn<typeof fn>; // should be boolean
 ```typescript
 type MyReturn<T> = T extends (...args: never[]) => infer R ? R : never;
 ```
+
 </details>
 
 ---
@@ -744,6 +734,7 @@ type DeepReadonly<T> = T extends object
   ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
   : T;
 ```
+
 </details>
 
 ---
@@ -755,9 +746,9 @@ Unwrap one level of array: `Flatten<string[][]>` → `string[]`.
 ```typescript
 type Flatten<T> = unknown; // your implementation
 
-type A = Flatten<string[]>;       // string
-type B = Flatten<number[][]>;     // number[]
-type C = Flatten<boolean>;        // boolean
+type A = Flatten<string[]>; // string
+type B = Flatten<number[][]>; // number[]
+type C = Flatten<boolean>; // boolean
 ```
 
 <details>
@@ -766,6 +757,7 @@ type C = Flatten<boolean>;        // boolean
 ```typescript
 type Flatten<T> = T extends (infer U)[] ? U : T;
 ```
+
 </details>
 
 ---
@@ -787,6 +779,7 @@ type P = MyParameters<typeof join>; // [string, number]
 ```typescript
 type MyParameters<T> = T extends (...args: infer P) => unknown ? P : never;
 ```
+
 </details>
 
 ---
@@ -851,7 +844,7 @@ type MyParameters<T> = T extends (...args: infer P) => unknown ? P : never;
 Fully typed cart calculator — mirrors [3_js_array.md Task 16](./3_js_array.md#interview-practice).
 
 ```typescript
-type ProductCategory = 'food' | 'electronics' | 'clothing';
+type ProductCategory = "food" | "electronics" | "clothing";
 
 type Product = {
   id: string;
@@ -866,7 +859,10 @@ type CartSummary = { subtotal: number; discount: number; total: number };
 
 type Discounts = Partial<Record<ProductCategory, number>>;
 
-function calculateCart(items: CartItem[], discounts: Discounts = {}): CartSummary {
+function calculateCart(
+  items: CartItem[],
+  discounts: Discounts = {},
+): CartSummary {
   return items.reduce<CartSummary>(
     (acc, { product, qty }) => {
       const lineSubtotal = product.price * qty;
@@ -895,9 +891,12 @@ function calculateCart(items: CartItem[], discounts: Discounts = {}): CartSummar
 ```typescript
 type BaseProduct = { id: string; name: string; price: number };
 
-type FoodProduct = BaseProduct & { kind: 'food'; expiryDays: number };
-type ElectronicsProduct = BaseProduct & { kind: 'electronics'; warrantyMonths: number };
-type ClothingProduct = BaseProduct & { kind: 'clothing'; size: string };
+type FoodProduct = BaseProduct & { kind: "food"; expiryDays: number };
+type ElectronicsProduct = BaseProduct & {
+  kind: "electronics";
+  warrantyMonths: number;
+};
+type ClothingProduct = BaseProduct & { kind: "clothing"; size: string };
 
 type Product = FoodProduct | ElectronicsProduct | ClothingProduct;
 
@@ -912,5 +911,3 @@ function getDiscountRate(product: Product, discounts: Discounts): number {
 ---
 
 </details>
-
-
