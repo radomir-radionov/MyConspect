@@ -919,9 +919,9 @@ export function createUserService(db) {
 // }
 ```
 
-**Thoughts:** SOLID — **ориентир**, не закон: API на 30 строк не требует пяти папок. Применять, когда Express-больно менять или тестировать. Frontend: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs). JS: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+**Thoughts:** SOLID — **ориентир**, не закон: API на 30 строк не требует пяти папок. Применять, когда Express-больно менять или тестировать. Frontend: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript). JS: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [Express — Routing guide](https://expressjs.com/en/guide/routing.html) · [Express — Writing middleware](https://expressjs.com/en/guide/writing-middleware.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs)
+**Sources:** [Express — Routing guide](https://expressjs.com/en/guide/routing.html) · [Express — Writing middleware](https://expressjs.com/en/guide/writing-middleware.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
 </details>
 

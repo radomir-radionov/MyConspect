@@ -6,12 +6,13 @@
 
 ### Related docs
 
-* [TypeScript — Основы](./5_ts_core.md) · [TypeScript — Сужение](./5_ts_narrowing.md) · [TypeScript — Функции](./5_ts_functions.md) · [TypeScript — Объекты](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Ссылка](./5_ts_reference.md) · [TypeScript — Интервью](./5_ts_interview.md)
+- [TypeScript — Основы](./5_ts_core.md) · [TypeScript — Сужение](./5_ts_narrowing.md) · [TypeScript — Функции](./5_ts_functions.md) · [TypeScript — Объекты](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Ссылка](./5_ts_reference.md) · [TypeScript — Интервью](./5_ts_interview.md)
 
 ### Sections
 
 - [Object types](#object-types)
 - [Classes & OOP](#classes-oop)
+- [Design principles](#design-principles)
 
 ---
 
@@ -26,8 +27,8 @@
 
 Три способа описания формы объекта: встроенный `{ }`, `interface`, or `type` псевдоним.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                                                  | Заметки                                                                                                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Выберите один стиль для каждой базы кода. Встроенный для разовых заказов; `interface`/`type` для повторного использования в файлах. | TypeScript использует **структурную типизацию** — важна только форма, а не имя. Переменная, типизированная как `Person` действителен в любом месте `{ name: string; age: number }` ожидается. |
 
 **Examples:**
@@ -59,9 +60,9 @@ type Person = {
 
 Встроенные типы работают, но повторяют структуру. Извлечь один раз с помощью `type` or `interface`:
 
-| Аспект | Деталь |
-|--------|--------|
-| Резюме | Встроенные типы работают, но повторяют структуру. Извлечь один раз с помощью `type` or `interface`:
+| Аспект | Деталь                                                                                              |
+| ------ | --------------------------------------------------------------------------------------------------- |
+| Резюме | Встроенные типы работают, но повторяют структуру. Извлечь один раз с помощью `type` or `interface`: |
 
 Встроенные типы работают, но повторяют структуру |
 
@@ -100,8 +101,8 @@ let admin2: PersonWithExtras = {
 
 Поля объекта, которые могут отсутствовать, отмечены значком `?`.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                                          | Заметки                                                                                                                                                                                                                                                 |
+| --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Об интерфейсах/типах в главе «Типы объектов» — то же, что и о повседневных типах: дополнительные ключи могут отсутствовать. | Необязательно ≠ только «может не существовать во время выполнения» — под `strictNullChecks`, чтение необязательного свойства дает `T \| undefined`. Использовать значения по умолчанию при деструктуризации (`{ xPos = 0 }`) для сужения внутри функций |
 
 **Examples:**
@@ -136,9 +137,9 @@ function paintShape(opts: PaintOptions) {
 
 При деструктуризации JS `{ shape: Shape }` переименовывает `shape` в переменную `Shape` — НЕ добавляет аннотацию типа.
 
-| Аспект | Деталь |
-|--------|--------|
-| Резюме | При деструктуризации JS `{ shape: Shape }` переименовывает `shape` в переменную `Shape` — НЕ добавляет аннотацию типа.
+| Аспект | Деталь                                                                                                                 |
+| ------ | ---------------------------------------------------------------------------------------------------------------------- |
+| Резюме | При деструктуризации JS `{ shape: Shape }` переименовывает `shape` в переменную `Shape` — НЕ добавляет аннотацию типа. |
 
 В JS |
 
@@ -151,7 +152,7 @@ function paintShape(opts: PaintOptions) {
 // function draw({ shape: Shape, xPos: number = 100 }) { ... }
 
 // Correct — type after the whole pattern
-function draw({ shape, xPos = 100 }: { shape: Shape; xPos?: number }) { }
+function draw({ shape, xPos = 100 }: { shape: Shape; xPos?: number }) {}
 ```
 
 **Sources:** [Справочник по TypeScript — объекты] (https://www.typescriptlang.org/docs/handbook/2/objects.html)
@@ -162,8 +163,8 @@ function draw({ shape, xPos = 100 }: { shape: Shape; xPos?: number }) { }
 
 Свойства объекта, которые нельзя переназначить после инициализации.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                                                        | Заметки                                                                                                                                                                                                                                                               |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Отметить значком `readonly` в полях интерфейса или `readonly` массивы/кортежи. Только во время компиляции — поверхностная неизменяемость. | `readonly` неглубокий — содержимое вложенных объектов все еще может видоизменяться. Также, `readonly` игнорируется при проверке совместимости типов через псевдонимы — `readonly` представление все равно может измениться, если вы удерживаете изменяемый элемент al |
 
 **Examples:**
@@ -200,8 +201,8 @@ writable.age++; // mutates shared object — readonly view sees 43
 
 Описывайте объекты с помощью динамических строковых/цифровых ключей: `{ [key: string]: number }`.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                                           | Заметки                                                                                                                                                                                                                                         |
+| ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Используйте, когда ключи не известны заранее. Объединить с известными полями; Тип значения должен включать все типы свойств. | Все именованные свойства должны соответствовать типу подписи индекса. `number` значения индекса должны быть подтипом `string` значения индекса (поскольку `obj[100]` === `obj["100"]` в JS). Используйте типы индексов объединения, когда prope |
 
 **Examples:**
@@ -241,8 +242,8 @@ interface ReadonlyStringArray {
 
 TS отклоняет объектные литералы со свойствами, не объявленными в целевом типе.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                                         | Заметки                                                                                                                                                                                                                                                 |
+| -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Обнаруживает опечатки в новых литералах `{ name: "a", nmae: "b" }`. Не применяется при первом назначении через переменную. | Дополнительные проверки применяются только к **новым литералам объектов**. Сначала назначьте переменную, используйте `as Type`или добавьте сигнатуру строкового индекса для обхода — но большинство ошибок лишних свойств являются настоящими ошибками. |
 
 **Examples:**
@@ -253,7 +254,9 @@ interface SquareConfig {
   width?: number;
 }
 
-function createSquare(config: SquareConfig) { /* ... */ }
+function createSquare(config: SquareConfig) {
+  /* ... */
+}
 
 // Error — 'colour' is not in SquareConfig
 // createSquare({ colour: "red", width: 100 });
@@ -279,8 +282,8 @@ createSquare(options); // OK — not a fresh literal check
 
 Добавление полей к существующему типу через `interface Child extends Parent`.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                               | Заметки                                                                                                                                                       |
+| ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Интерфейсы стека: `interface Admin extends User { role: string }`. Для типов используйте пересечение `&` вместо. | `extends` сигнализирует о намерении и позволяет избежать повторения полей. Предпочитайте его копипасту при создании специализированных версий базовой фигуры. |
 
 **Examples:**
@@ -297,8 +300,12 @@ interface AddressWithUnit extends BasicAddress {
   unit: string;
 }
 
-interface Colorful { color: string; }
-interface Circle { radius: number; }
+interface Colorful {
+  color: string;
+}
+interface Circle {
+  radius: number;
+}
 interface ColorfulCircle extends Colorful, Circle {}
 
 const cc: ColorfulCircle = { color: "red", radius: 42 };
@@ -312,15 +319,19 @@ const cc: ColorfulCircle = { color: "red", radius: 42 };
 
 Комбинируйте типы с `&` — значение должно удовлетворять **всем** членам: `A & B`.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                           | Заметки                                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Объединить формы объектов: `type Employee = Person & Worker`. Конфликтующие типы свойств становятся `never`. | Пересечение объединяет конфликтующие типы свойств в `never` вместо ошибки во время объявления. `Person1 & Person2` где у обоих есть `name: string` vs `name: number` → `name: never`. |
 
 **Examples:**
 
 ```typescript
-interface Colorful { color: string; }
-interface Circle { radius: number; }
+interface Colorful {
+  color: string;
+}
+interface Circle {
+  radius: number;
+}
 
 type ColorfulCircle = Colorful & Circle;
 
@@ -353,20 +364,26 @@ const employee: EmployeePerson = {
 
 Два способа объединения типов — они по-разному обрабатывают конфликты свойств.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                                                      | Заметки                                                                                                                                                                                                                                 |
+| --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Предпочитать `extends` для интерфейсов (ошибки при конфликте). Использовать `&` для типов; противоречивые реквизиты становятся `never`. | Дублировать `interface` имена **объединяются**, если они совместимы; несовместимый реквизит → ошибка. Пересечение типов с конфликтующими реквизитами → `never` в этом свойстве компилируется автоматически, пока вы его не используете. |
 
 **Examples:**
 
 ```typescript
 // Interface merge — error on conflict
-interface Person { name: string; }
+interface Person {
+  name: string;
+}
 // interface Person { name: number; } // Error — incompatible merge
 
 // Intersection — compiles, property becomes never
-interface Person1 { name: string; }
-interface Person2 { name: number; }
+interface Person1 {
+  name: string;
+}
+interface Person2 {
+  name: number;
+}
 type Staff = Person1 & Person2;
 declare const staffer: Staff;
 // staffer.name is type `never`
@@ -380,9 +397,9 @@ declare const staffer: Staff;
 
 Типы объектов, параметризованные другими типами: `Box<T>`, `Array<T>`.
 
-| Когда использовать | Заметки |
-|-------------|-------|
-| `` interface ApiResponse<T> { data: T; error?: string } `` — reuse one shape for many payloads. | `Коробка<string>` is identical to `{ содержимое: строка }` after substitution. Generics on interfaces AND type aliases work; aliases can also build helper types like `введите OrNull<T> = Т \| ноль`. |
+| Когда использовать                                                                          | Заметки                                                                                                                                                                                                |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `interface ApiResponse<T> { data: T; error?: string }` — reuse one shape for many payloads. | `Коробка<string>` is identical to `{ содержимое: строка }` after substitution. Generics on interfaces AND type aliases work; aliases can also build helper types like `введите OrNull<T> = Т \| ноль`. |
 
 **Examples:**
 
@@ -414,8 +431,8 @@ type OneOrManyOrNull<Type> = OrNull<OneOrMany<Type>>;
 
 `Array<T>` / `T[]` для изменяемых списков; `ReadonlyArray<T>` / `readonly T[]` для неизменных представлений.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                                          | Заметки                                                                                                                                                                             |
+| --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Назначить изменяемый массив только для чтения ОК; а не наоборот. Массивы только для чтения запрещают `push`/`pop`/`splice`. | `ReadonlyArray<T>` / `readonly T[]` не имеет конструктора — присваивается из обычного массива. Только для чтения → изменяемое присвоение работает; mutable ← только для чтения нет. |
 
 **How it works:** `ReadonlyArray<T>` и `readonly T[]` **эквивалентны** — одинаковое поведение (нет `push`/`pop`/`splice`). `readonly T[]` является синтаксическим сахаром; `ReadonlyArray<T>` является более явным в общем коде.
@@ -423,8 +440,12 @@ type OneOrManyOrNull<Type> = OrNull<OneOrMany<Type>>;
 **Examples:**
 
 ```typescript
-function process(values: Array<string>) { /* ... */ }
-function process2(values: string[]) { /* ... */ } // same
+function process(values: Array<string>) {
+  /* ... */
+}
+function process2(values: string[]) {
+  /* ... */
+} // same
 
 function readOnly(values: readonly string[]) {
   values.slice(); // OK
@@ -448,8 +469,8 @@ x = y; // OK — readonly accepts mutable
 
 Массив фиксированной длины с определенным типом для каждого индекса: `[string, number]`.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                                                                                                     | Заметки                                                                                                                                                                                                                         |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Объявить `type Pair = [string, number]` or `let t: [string, number] = ["a", 1]`. Порядок имеет значение. Используйте для координат, `[value, error]` пары или зеркальные функции args. | **Порядок имеет значение** — `[string, number]` не назначается из `[number, string]`. Кортежи идеально подходят для API, основанных на соглашениях (`[x, y]` координаты), но объекты с именованными полями часто более понятны. |
 
 **Examples:**
@@ -491,7 +512,7 @@ function readButtonInput(...args: [string, number, ...boolean[]]) {
 }
 
 // Equivalent to:
-function readButtonInput(name: string, version: number, ...input: boolean[]) { }
+function readButtonInput(name: string, version: number, ...input: boolean[]) {}
 ```
 
 **Sources:** [Справочник по TypeScript — объекты] (https://www.typescriptlang.org/docs/handbook/2/objects.html)
@@ -502,8 +523,8 @@ function readButtonInput(name: string, version: number, ...input: boolean[]) { }
 
 Кортежи, элементы которых нельзя переназначить: `readonly [string, number]`.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                                        | Заметки                                                                                                                                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Отметить параметры `readonly` когда звонящие проходят `as const` кортежи. Предотвращает случайную мутацию внутри функции. | `readonly [3, 4]` НЕ назначается `[number, number]` потому что вызываемый объект может изменять элементы. Предпочитать `readonly` параметры кортежа, когда вы не будете мутировать — совпадают `as const` сайты звонков. |
 
 **Examples:**
@@ -553,18 +574,18 @@ distanceFromOrigin2(point); // OK
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Отловить плохие графы сущностей перед запуском | Типы стерты — среда выполнения все еще JS |
-| Автозаполнение полей домена | Перемоделирование небольших скриптов |
-| `implements` составление документов | ТС `private` это не конфиденциальность во время выполнения |
+| +                                              | −                                                          |
+| ---------------------------------------------- | ---------------------------------------------------------- |
+| Отловить плохие графы сущностей перед запуском | Типы стерты — среда выполнения все еще JS                  |
+| Автозаполнение полей домена                    | Перемоделирование небольших скриптов                       |
+| `implements` составление документов            | ТС `private` это не конфиденциальность во время выполнения |
 
 **Examples:**
 
 ```ts
 type MoneyAmount = number;
 type TimeStamp = number;
-type RecordKind = 'spending' | 'income';
+type RecordKind = "spending" | "income";
 
 type LedgerEntry = {
   kind: RecordKind;
@@ -603,12 +624,12 @@ class History implements Ledger {
 - `#foo` → `SyntaxError` вне класса; `instance["#foo"]` is `undefined`, а не значение.
 - Chrome DevTools может читать `#` поля в консоли для отладки — не языковая дыра.
 
-| | `private` (TS) | `#field` (ИС) |
-|---|----------------|---------------|
-| Принудительно | компилятор | время выполнения |
-| Выживает испускает | нет — общественная собственность | да — приватный слот |
-| Доступ к подклассу | `protected` да | нет (если только геттер) |
-| Старые цели | работает (это обычное поле) | нужна более ранняя или современная среда выполнения |
+|                    | `private` (TS)                   | `#field` (ИС)                                       |
+| ------------------ | -------------------------------- | --------------------------------------------------- |
+| Принудительно      | компилятор                       | время выполнения                                    |
+| Выживает испускает | нет — общественная собственность | да — приватный слот                                 |
+| Доступ к подклассу | `protected` да                   | нет (если только геттер)                            |
+| Старые цели        | работает (это обычное поле)      | нужна более ранняя или современная среда выполнения |
 
 **When to use:** Библиотека поставляется как JS → `#` если вам нужно настоящее сокрытие. Только приложение TS → `private` зачастую достаточно плюс командная дисциплина.
 
@@ -640,14 +661,15 @@ console.log(new C()["foo"]); // 10
 конструктор (имя: строка, возраст: номер, ник: строка) {
 
 это.имя = имя;
-    this.age = возраст;
-    this.nickName = псевдоним;
-  }
+this.age = возраст;
+this.nickName = псевдоним;
+}
 }
 
-| Аспект | Деталь |
-|--------|--------|
-| Резюме | конструктор (имя: строка, возраст: номер, ник: строка) {
+| Аспект | Деталь                                                   |
+| ------ | -------------------------------------------------------- |
+| Резюме | конструктор (имя: строка, возраст: номер, ник: строка) { |
+
     это.имя = имя;
     this.age = возраст;
     this.nickName = |
@@ -705,8 +727,8 @@ class User {
 
 Ключевые слова, управляющие видимостью членов класса: `public`, `private`, `protected`, `readonly`.
 
-| Когда использовать | Заметки |
-|-------------|-------|
+| Когда использовать                                                                                                                                                | Заметки                                                                                                                                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | По умолчанию `public`. `private` — только класс; `protected` — класс + подклассы. Модификаторы TS создаются во время компиляции, если вы не используете `#` поля. | `private`/`protected` в TS используются **только во время компиляции**, если вы не используете ECMAScript. `#private` поля. Два структурно одинаковых класса с разными `private` члены **не** могут быть назначены каждому из |
 
 **Examples:**
@@ -727,7 +749,7 @@ class User {
 }
 
 const dev = new User("RR", 30, "webDev", 123);
-dev.name;        // OK
+dev.name; // OK
 // dev.nickName; // Error — private
 // dev.age;      // Error — protected (outside subclass)
 // dev.pass = 1; // Error — readonly
@@ -741,8 +763,8 @@ dev.name;        // OK
 
 Сокращение конструктора: `constructor(public name: string)` объявляет и назначает в одной строке.
 
-| Аспект | Деталь |
-|--------|--------|
+| Аспект | Деталь                                                                                            |
+| ------ | ------------------------------------------------------------------------------------------------- |
 | Резюме | Сокращение конструктора: `constructor(public name: string)` объявляет и назначает в одной строке. |
 
 **Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
@@ -753,9 +775,9 @@ dev.name;        // OK
 
 После компиляции `static` живет в функции класса, а не в экземплярах:
 
-| Аспект | Деталь |
-|--------|--------|
-| Резюме | После компиляции `static` живет в функции класса, а не в экземплярах:
+| Аспект | Деталь                                                                |
+| ------ | --------------------------------------------------------------------- |
+| Резюме | После компиляции `static` живет в функции класса, а не в экземплярах: |
 
 После компиляции `static` живет в классе |
 
@@ -785,8 +807,8 @@ User.secret = 12345;
 
 Переопределение метода в подклассе — функция языка TypeScript или компилятора.
 
-| Аспект | Деталь |
-|--------|--------|
+| Аспект | Деталь                                                                         |
+| ------ | ------------------------------------------------------------------------------ |
 | Резюме | Переопределение метода в подклассе — функция языка TypeScript или компилятора. |
 
 **Examples:**
@@ -810,8 +832,8 @@ class Child extends User {
 
 Два способа определения контрактов: абстрактные классы могут иметь реализацию; интерфейсы являются только сигнатурами.
 
-| Аспект | Деталь |
-|--------|--------|
+| Аспект | Деталь                                                                                                                 |
+| ------ | ---------------------------------------------------------------------------------------------------------------------- |
 | Резюме | Два способа определения контрактов: абстрактные классы могут иметь реализацию; интерфейсы являются только сигнатурами. |
 
 **Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
@@ -822,15 +844,18 @@ class Child extends User {
 
 Пример абстрактного класса — язык TypeScript или функция компилятора.
 
-| Аспект | Деталь |
-|--------|--------|
+| Аспект | Деталь                                                                |
+| ------ | --------------------------------------------------------------------- |
 | Резюме | Пример абстрактного класса — язык TypeScript или функция компилятора. |
 
 **Examples:**
 
 ```typescript
 abstract class User {
-  constructor(public name: string, public age: number) {}
+  constructor(
+    public name: string,
+    public age: number,
+  ) {}
   greet() {
     console.log(this.name);
   }
@@ -847,8 +872,8 @@ class Child extends User {
 }
 
 const y = new Child(31);
-y.greet();    // "Yauhen"
-y.getPass();  // "31Yauhen"
+y.greet(); // "Yauhen"
+y.getPass(); // "31Yauhen"
 ```
 
 **Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
@@ -859,8 +884,8 @@ y.getPass();  // "31Yauhen"
 
 Использование интерфейсов для описания форм и контрактов экземпляров классов.
 
-| Аспект | Деталь |
-|--------|--------|
+| Аспект | Деталь                                                                        |
+| ------ | ----------------------------------------------------------------------------- |
 | Резюме | Использование интерфейсов для описания форм и контрактов экземпляров классов. |
 
 **Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
@@ -872,17 +897,18 @@ y.getPass();  // "31Yauhen"
 // Лишняя проверка свойств — ошибка дополнительных ключей, если сигнатура индекса их не допускает
 
 интерфейс FlexibleUser {
-  имя: строка;
-  возраст: номер;
-  [propName: строка]: неизвестно;
+имя: строка;
+возраст: номер;
+[propName: строка]: неизвестно;
 }
 
-| Аспект | Деталь |
-|--------|--------|
-| Резюме | // Лишняя проверка свойств — ошибка дополнительных ключей, если сигнатура индекса их не допускает
+| Аспект | Деталь                                                                                            |
+| ------ | ------------------------------------------------------------------------------------------------- |
+| Резюме | // Лишняя проверка свойств — ошибка дополнительных ключей, если сигнатура индекса их не допускает |
+
 интерфейс FlexibleUser {
-  имя: строка;
- |
+имя: строка;
+|
 
 **Examples:**
 
@@ -915,21 +941,28 @@ const u: FlexibleUser = {
 getPass() {
 
 возвращение `${this.name}${this.age}`;
-  }
+}
 }
 
-| Аспект | Деталь |
-|--------|--------|
-| Резюме | getPass() {
+| Аспект | Деталь      |
+| ------ | ----------- |
+| Резюме | getPass() { |
+
     возвращение `${this.name}${this.age}`;
-  }
+
+}
 } |
 
 **Examples:**
 
 ```typescript
-interface User { name: string; age: number }
-interface Pass { getPass(): string }
+interface User {
+  name: string;
+  age: number;
+}
+interface Pass {
+  getPass(): string;
+}
 
 class Employee implements User, Pass {
   name = "Yauhen";
@@ -962,11 +995,162 @@ class Manager implements Admin {
 
 Пообещайте, что класс удовлетворяет контракту интерфейса — все необходимые члены должны существовать.
 
-| Аспект | Деталь |
-|--------|--------|
+| Аспект | Деталь                                                                                                |
+| ------ | ----------------------------------------------------------------------------------------------------- |
 | Резюме | Пообещайте, что класс удовлетворяет контракту интерфейса — все необходимые члены должны существовать. |
 
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
+**Sources:** [TypeScript handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
+
+</details>
+
+<a name="design-principles"></a>
+
+## Design principles
+
+<details>
+  <summary>SOLID in TypeScript</summary>
+
+### SOLID in TypeScript
+
+**Definition:** Пять принципов **SOLID** для **TypeScript interfaces, classes и modules** — compile-time контракты через `interface`, `implements` и constructor injection.
+
+| Principle                     | Meaning                            | TypeScript example                                                                 |
+| ----------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------- |
+| **S** — Single Responsibility | Одна причина для изменения модуля  | `UserRepository` читает · `UserFormatter` форматирует — не один god class          |
+| **O** — Open/Closed           | Расширять новым кодом, не правками | Новый `StripeProcessor implements PaymentProcessor` — не править `CheckoutService` |
+| **L** — Liskov Substitution   | Подтипы соблюдают контракт         | Любой `UserStore` в `loadProfile()` возвращает одну форму `{ id, name }`           |
+| **I** — Interface Segregation | Маленькие интерфейсы               | `ReadableLedger` для отчётов — не fat `Ledger` с `write()` / `delete()`            |
+| **D** — Dependency Inversion  | Зависеть от абстракций             | `placeOrder(id, logger: Logger)` — инжектить `Logger`, не concrete console adapter |
+
+**How it works:**
+
+Каждая буква соответствует **Examples** ниже — ищите `// good` и `// bad`:
+
+1. **S** — repository и formatter через разные `interface` — не один service class.
+2. **O** — новый provider = новый class с `implements` — не растущий `if/else` в одном class.
+3. **L** — `implements UserStore` обязан соблюдать return type — `tsc` ловит сломанные substitutes.
+4. **I** — передавать `ReadableLedger`, когда нужны только reads — не требовать write API.
+5. **D** — domain принимает типы `Logger` / `DbClient` — wiring выбирает concrete implementations.
+
+**When to use:** Domain models, services, DI graphs, public module APIs. На одноразовом скрипте — без тяжёлых interfaces.
+
+**Examples:**
+
+```typescript
+type DbClient = { query(id: string): Promise<{ id: string; name: string }> };
+
+// S — good: repository vs formatter — separate interfaces
+interface UserRepository {
+  findById(id: string): Promise<{ id: string; name: string }>;
+}
+
+interface UserFormatter {
+  label(user: { name: string; email: string }): string;
+}
+
+class DbUserRepository implements UserRepository {
+  constructor(private db: DbClient) {}
+  findById(id: string) {
+    return this.db.query(id);
+  }
+}
+
+// S — bad: one class loads users and formats UI labels
+// class UserService {
+//   findById(id: string) {
+//     return this.db.query(id);
+//   }
+//   label(user: { name: string; email: string }) {
+//     return `${user.name} <${user.email}>`;
+//   }
+// }
+
+// O — good: new processor = new class implementing PaymentProcessor
+interface PaymentProcessor {
+  charge(amount: number): Promise<{ ok: true }>;
+}
+
+class StripeProcessor implements PaymentProcessor {
+  charge(amount: number) {
+    return Promise.resolve({ ok: true as const });
+  }
+}
+
+class CheckoutService {
+  constructor(private payments: PaymentProcessor) {}
+  checkout(amount: number) {
+    return this.payments.charge(amount);
+  }
+}
+
+// O — bad: edit CheckoutService for every provider
+// class CheckoutService {
+//   checkout(provider: "stripe" | "paypal", amount: number) {
+//     if (provider === "stripe") return payStripe(amount);
+//     if (provider === "paypal") return payPaypal(amount);
+//   }
+// }
+
+// L — good: any UserStore works in loadProfile
+interface UserStore {
+  get(id: string): Promise<{ id: string; name: string }>;
+}
+
+async function loadProfile(id: string, store: UserStore) {
+  return store.get(id);
+}
+
+class CachedUserStore implements UserStore {
+  get(id: string) {
+    return Promise.resolve({ id, name: "Ada" });
+  }
+}
+
+// L — bad: returns string instead of contract — tsc error + broken callers
+// class BrokenUserStore implements UserStore {
+//   get(id: string) {
+//     return Promise.resolve("missing");
+//   }
+// }
+
+// I — good: report needs only ReadableLedger
+interface ReadableLedger {
+  read(id: string): Promise<{ id: string; total: number }>;
+}
+
+function buildReport(ledger: ReadableLedger) {
+  return ledger.read("summary");
+}
+
+// I — bad: read-only code forced to depend on write/delete APIs
+// interface Ledger {
+//   read(id: string): Promise<{ id: string; total: number }>;
+//   write(entry: { id: string; total: number }): Promise<void>;
+//   delete(id: string): Promise<void>;
+// }
+// function buildReport(ledger: Ledger) {
+//   return ledger.read("summary");
+// }
+
+// D — good: inject Logger abstraction
+interface Logger {
+  info(message: string): void;
+}
+
+function placeOrder(orderId: string, logger: Logger) {
+  logger.info(`Processing ${orderId}`);
+}
+
+// D — bad: domain imports concrete infra
+// import { consoleLogger } from "./infra/logger";
+// function placeOrder(orderId: string) {
+//   consoleLogger.info(`Processing ${orderId}`);
+// }
+```
+
+**Thoughts:** TypeScript делает **I**, **L** и **D** видимыми на compile time — но types стираются в runtime; behavioral contracts всё равно важны. JS: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+
+**Sources:** [TypeScript handbook — Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html) · [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
 
 </details>
 

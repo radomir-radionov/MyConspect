@@ -922,9 +922,9 @@ export function createUserService(db) {
 // }
 ```
 
-**Thoughts:** SOLID is a **guide**, not a law — a 30-line API does not need five folders. Apply when the Express app becomes painful to change or test. Frontend mapping: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs). JS fundamentals: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Full reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+**Thoughts:** SOLID is a **guide**, not a law — a 30-line API does not need five folders. Apply when the Express app becomes painful to change or test. Frontend mapping: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript). JS fundamentals: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Full reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [Express — Routing guide](https://expressjs.com/en/guide/routing.html) · [Express — Writing middleware](https://expressjs.com/en/guide/writing-middleware.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs)
+**Sources:** [Express — Routing guide](https://expressjs.com/en/guide/routing.html) · [Express — Writing middleware](https://expressjs.com/en/guide/writing-middleware.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
 </details>
 

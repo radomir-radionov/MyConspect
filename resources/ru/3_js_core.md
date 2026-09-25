@@ -527,9 +527,9 @@ class Car {
 goToWork(new Car(false)); // { km: 10, status: "no fuel" } — same goToWork, no crash
 ```
 
-**Thoughts:** SOLID — **ориентир**, не закон: для 10-строчного скрипта пять классов не нужны. Применять, когда больно менять код. Функции и модули: [SOLID in Functions](#solid-in-functions). Синтаксис классов: [Classes & Objects](./3_js_oop.md#classes-full). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Полный OOP-справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+**Thoughts:** SOLID — **ориентир**, не закон: для 10-строчного скрипта пять классов не нужны. Применять, когда больно менять код. Функции и модули: [SOLID in Functions](#solid-in-functions). Синтаксис классов: [Classes & Objects](./3_js_oop.md#classes-full). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript). Полный OOP-справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Functions](#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
+**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Functions](#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
 </details>
 
@@ -626,8 +626,8 @@ async function loadProfile(userId, http) {
 // }
 ```
 
-**Thoughts:** Большинство JS — функции и модули, не классы; для повседневного кода начинайте здесь. `class` / `extends`: [SOLID in Classes](#solid-in-classes). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+**Thoughts:** Большинство JS — функции и модули, не классы; для повседневного кода начинайте здесь. `class` / `extends`: [SOLID in Classes](#solid-in-classes). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Classes](#solid-in-classes) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
+**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Classes](#solid-in-classes) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
 </details>

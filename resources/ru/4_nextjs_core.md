@@ -1320,8 +1320,8 @@ export default async function CheckoutPage() {
 }
 ```
 
-**Thoughts:** SOLID — **ориентир**, не закон: для одноразовой маркетинговой страницы пять интерфейсов не нужны. Применять, когда больно менять или тестировать. React: [SOLID in React](./4_react_core.md#solid-in-react). Express: [SOLID in Express](./8_nodejs_http.md#solid-in-express). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+**Thoughts:** SOLID — **ориентир**, не закон: для одноразовой маркетинговой страницы пять интерфейсов не нужны. Применять, когда больно менять или тестировать. React: [SOLID in React](./4_react_core.md#solid-in-react). Express: [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
+**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
 </details>
