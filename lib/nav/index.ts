@@ -1,5 +1,10 @@
 export { CHROME, INSTRUCTIONS_HREF } from "./chrome";
-export { crumbsWithActive, subjectCrumbs, topicCrumbs, trackCrumbs } from "./breadcrumbs";
+export {
+  crumbsWithActive,
+  subjectCrumbs,
+  topicCrumbs,
+  trackCrumbs,
+} from "./breadcrumbs";
 export {
   BODY_QUERY_MIN_LENGTH,
   conceptBodySnippet,
@@ -13,6 +18,8 @@ export {
   splitHref,
   topicMatches,
 } from "./search";
+export { collectGroupSearchHits } from "./searchSidebarHits";
+export type { SearchSidebarHit } from "./searchSidebarHits";
 export type {
   ChromeCopy,
   Crumb,

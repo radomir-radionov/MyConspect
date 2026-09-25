@@ -39,6 +39,20 @@ test("structureConceptBody keeps When to use and When not to use as separate slo
   assert.equal((html.match(/slot-cases/g) ?? []).length, 2);
 });
 
+test("structureConceptBody omits See also slots", async () => {
+  const html = await structureConceptBody(
+    `**Short answer:** Same five OOP principles.
+
+**See also:** [SOLID in React](./4_react_core.md#solid-in-react)`,
+    renderFragment,
+  );
+
+  assert.match(html, /Short answer/i);
+  assert.match(html, /Same five OOP principles/);
+  assert.doesNotMatch(html, /See also/i);
+  assert.doesNotMatch(html, /SOLID in React/);
+});
+
 test("structureConceptBody renders bullet lists in case slots", async () => {
   const html = await structureConceptBody(
     `**When to use:**

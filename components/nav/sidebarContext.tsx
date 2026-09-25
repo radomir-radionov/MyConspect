@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, type Dispatch, type ReactNode, type SetStateAction } from "react";
+import {
+  createContext,
+  useContext,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+} from "react";
 import type { SearchMode } from "@/lib/nav";
 
 export type SearchHit = {
@@ -50,7 +56,9 @@ export function SidebarNavProvider({
   return (
     <SidebarChromeContext.Provider value={chrome}>
       <SidebarFoldContext.Provider value={fold}>
-        <SidebarActiveContext.Provider value={active}>{children}</SidebarActiveContext.Provider>
+        <SidebarActiveContext.Provider value={active}>
+          {children}
+        </SidebarActiveContext.Provider>
       </SidebarFoldContext.Provider>
     </SidebarChromeContext.Provider>
   );

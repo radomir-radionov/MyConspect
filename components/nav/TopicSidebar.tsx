@@ -1,18 +1,51 @@
 "use client";
 
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSyncExternalStore, type Dispatch, type SetStateAction } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useSyncExternalStore,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { HighlightedText, useSearchMode } from "@/components/search";
-import { HANDBOOK_NAV_ASIDE_ID, HANDBOOK_SIDEBAR_ID, NAV_FOLD_MS } from "@/constants";
-import { searchNav, splitHref, type ChromeCopy, type NavEntry, type NavGroup } from "@/lib/nav";
+import {
+  HANDBOOK_NAV_ASIDE_ID,
+  HANDBOOK_SIDEBAR_ID,
+  NAV_FOLD_MS,
+} from "@/constants";
+import {
+  collectGroupSearchHits,
+  matchesQuery,
+  searchNav,
+  splitHref,
+  type ChromeCopy,
+  type NavEntry,
+  type NavGroup,
+  type SearchMode,
+} from "@/lib/nav";
 import type { TrackId } from "@/lib/catalog";
 import { NavChevron, NavFold } from "./NavFold";
 import { NavGuide } from "./NavGuide";
 import { getHash, getServerHash, subscribeHash } from "./hash";
 import { isActiveHref, isActiveTrack } from "./location";
-import { pinNavElement, restoreSidebarPin, scrollSidebarHit } from "./sidebarPin";
-import { measureStickyCover, measureStickyPathVars, writeStickyVars, type StickyVars } from "./sidebarSticky";
+import { SearchHitList } from "./SearchHitList";
+import {
+  pinNavElement,
+  restoreSidebarPin,
+  scrollSidebarHit,
+} from "./sidebarPin";
+import {
+  measureStickyCover,
+  measureStickyPathVars,
+  writeStickyVars,
+  type StickyVars,
+} from "./sidebarSticky";
 import { SidebarNavProvider, trackHeaderClass } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
 import { useSidebarOpen } from "./useSidebarOpen";
@@ -35,7 +68,10 @@ export const TopicSidebar = memo(function TopicSidebar({
     () => searchNav(groups, query, mode, pathname),
     [groups, query, mode, pathname],
   );
-  const first = useMemo(() => (firstHref ? splitHref(firstHref) : null), [firstHref]);
+  const first = useMemo(
+    () => (firstHref ? splitHref(firstHref) : null),
+    [firstHref],
+  );
   const activeTrackId =
     groups.find((group) => isActiveTrack(pathname, group.href))?.id ?? null;
   const searching = query.trim().length > 0;
@@ -70,7 +106,15 @@ export const TopicSidebar = memo(function TopicSidebar({
 
   useLayoutEffect(() => {
     restoreSidebarPin();
-  }, [openTopicHref, openClusterKey, openSubjectHref, pathname, hash, searching, query]);
+  }, [
+    openTopicHref,
+    openClusterKey,
+    openSubjectHref,
+    pathname,
+    hash,
+    searching,
+    query,
+  ]);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -102,7 +146,9 @@ export const TopicSidebar = memo(function TopicSidebar({
     }
     const frame = window.requestAnimationFrame(() => {
       const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
-      const hit = nav?.querySelector(`[data-concept-id="${CSS.escape(activeConceptId)}"]`);
+      const hit = nav?.querySelector(
+        `[data-concept-id="${CSS.escape(activeConceptId)}"]`,
+      );
       if (hit instanceof HTMLElement) {
         scrollSidebarHit(hit);
       }
@@ -144,7 +190,11 @@ export const TopicSidebar = memo(function TopicSidebar({
   const activeValue = useMemo(() => ({ activeConceptId }), [activeConceptId]);
 
   return (
-    <SidebarNavProvider chrome={chromeValue} fold={foldValue} active={activeValue}>
+    <SidebarNavProvider
+      chrome={chromeValue}
+      fold={foldValue}
+      active={activeValue}
+    >
       <nav
         id={HANDBOOK_SIDEBAR_ID}
         aria-label={chrome.topicsNav}
@@ -162,6 +212,7 @@ export const TopicSidebar = memo(function TopicSidebar({
                 key={group.id}
                 group={group}
                 query={query}
+                mode={mode}
                 pathname={pathname}
                 searching={searching}
                 first={first}
@@ -185,7 +236,11 @@ function StickyPathStyles({ revision }: { revision: string }) {
     if (!scroller) {
       return;
     }
-    previousRef.current = writeStickyVars(scroller.style, measureStickyPathVars(), previousRef.current);
+    previousRef.current = writeStickyVars(
+      scroller.style,
+      measureStickyPathVars(),
+      previousRef.current,
+    );
   }, []);
 
   useLayoutEffect(() => {
@@ -236,6 +291,7 @@ function StickyPathStyles({ revision }: { revision: string }) {
 function TrackGroup({
   group,
   query,
+  mode,
   pathname,
   searching,
   first,
@@ -244,6 +300,7 @@ function TrackGroup({
 }: {
   group: NavGroup;
   query: string;
+  mode: SearchMode;
   pathname: string;
   searching: boolean;
   first: { pathname: string; hash: string } | null;
@@ -255,9 +312,26 @@ function TrackGroup({
   const onThisTrack = isActiveTrack(pathname, group.href);
   const trackOpen = searching || openTrackId === group.id;
   const onPath = !searching && onThisTrack;
-  const headerClass = trackHeaderClass(onThisTrack || trackOpen, onPath);
+  const needle = query.trim().toLowerCase();
+  const trackHighlighted = searching
+    ? needle.length > 0 && matchesQuery(group.title, needle)
+    : onThisTrack || trackOpen;
+  const headerClass = trackHeaderClass(trackHighlighted, onPath);
+  const searchHits = useMemo(
+    () => (searching ? collectGroupSearchHits(group, query, mode) : []),
+    [group, mode, query, searching],
+  );
+
+  if (searching && searchHits.length === 0) {
+    return null;
+  }
+
   const title = (
-    <HighlightedText text={group.title} query={query} className="min-w-0 flex-1" />
+    <HighlightedText
+      text={group.title}
+      query={query}
+      className="min-w-0 flex-1"
+    />
   );
   const chevron = <NavChevron open={trackOpen} />;
   const asButton = isLeafTrack ? trackActive : onThisTrack;
@@ -273,7 +347,9 @@ function TrackGroup({
           data-nav-path={onPath ? "true" : undefined}
           onClick={() => {
             if (!searching) {
-              setOpenTrackId((current) => (current === group.id ? null : group.id));
+              setOpenTrackId((current) =>
+                current === group.id ? null : group.id,
+              );
             }
           }}
           aria-current={isLeafTrack ? undefined : "true"}
@@ -293,7 +369,9 @@ function TrackGroup({
             setOpenTrackId(group.id);
           }}
           data-search-hit={
-            isLeafTrack && first?.pathname === group.href && first.hash === "" ? "true" : undefined
+            isLeafTrack && first?.pathname === group.href && first.hash === ""
+              ? "true"
+              : undefined
           }
           aria-expanded={isLeafTrack ? undefined : trackOpen}
           className={headerClass}
@@ -304,11 +382,19 @@ function TrackGroup({
       )}
       <NavFold open={trackOpen} instant={searching || !trackOpen} unbox>
         <ul className="mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2 dark:border-yellow-800">
-          <NavGuide level="track" />
-          {isLeafTrack && group.leafTopic ? (
-            <TopicRow topic={group.leafTopic} hideTitle />
+          {searching ? (
+            <SearchHitList hits={searchHits} />
           ) : (
-            group.entries.map((entry) => <TrackEntry key={entryKey(entry)} entry={entry} />)
+            <>
+              <NavGuide level="track" />
+              {isLeafTrack && group.leafTopic ? (
+                <TopicRow topic={group.leafTopic} hideTitle />
+              ) : (
+                group.entries.map((entry) => (
+                  <TrackEntry key={entryKey(entry)} entry={entry} />
+                ))
+              )}
+            </>
           )}
         </ul>
       </NavFold>
@@ -338,7 +424,9 @@ function TrackEntry({ entry }: { entry: NavEntry }) {
     case "subject":
       return <SubjectRow subject={entry.subject} />;
     case "cluster":
-      return <ClusterRow subjectHref={entry.subjectHref} cluster={entry.cluster} />;
+      return (
+        <ClusterRow subjectHref={entry.subjectHref} cluster={entry.cluster} />
+      );
     default: {
       const _never: never = entry;
       return _never;

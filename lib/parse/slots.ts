@@ -57,6 +57,11 @@ function normalizeLabel(raw: string): string {
     .toLowerCase();
 }
 
+function isSkippedSlot(rawLabel: string): boolean {
+  const label = normalizeLabel(rawLabel);
+  return label === "see also" || label === "related";
+}
+
 function classifyMarker(rawLabel: string): SlotKind {
   const label = normalizeLabel(rawLabel);
   if (label === "definition") {
@@ -265,9 +270,10 @@ function splitBySubheadings(markdown: string): ConceptPart[] {
 }
 
 function sectionsForMarkdown(markdown: string): ConceptSection[] {
-  return orderSectionsForRender(
-    mergeDuplicateKinds(mergePitfallsIntoCases(splitByMarkers(markdown))),
-  );
+  const sections = mergeDuplicateKinds(
+    mergePitfallsIntoCases(splitByMarkers(markdown)),
+  ).filter((section) => !isSkippedSlot(section.rawLabel));
+  return orderSectionsForRender(sections);
 }
 
 function wrapPart(heading: string, slotsHtml: string): string {
