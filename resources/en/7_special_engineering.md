@@ -6,7 +6,7 @@ OOP pillars and the five SOLID principles for modules and APIs.
 
 ### Related docs
 
-* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md) · [JS OOP](./3_js_oop.md)
+- [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md) · [JS OOP](./3_js_oop.md)
 
 ### Sections
 
@@ -23,24 +23,24 @@ OOP pillars and the five SOLID principles for modules and APIs.
 
 **How it works:**
 
-| Pillar | Meaning |
-|--------|---------|
-| **Abstraction** | Keep the characteristics that describe behavior; omit internals |
-| **Encapsulation** | Keep data next to the object that uses it; hide the rest |
-| **Polymorphism** | One interface, many types |
-| **Inheritance** | Take properties from a parent — prefer **composition** when “is-a” is messy |
+| Pillar            | Meaning                                                                     |
+| ----------------- | --------------------------------------------------------------------------- |
+| **Abstraction**   | Keep the characteristics that describe behavior; omit internals             |
+| **Encapsulation** | Keep data next to the object that uses it; hide the rest                    |
+| **Polymorphism**  | One interface, many types                                                   |
+| **Inheritance**   | Take properties from a parent — prefer **composition** when “is-a” is messy |
 
 ООП: класс = чертёж, объект = экземпляр. Столпы: абстракция, инкапсуляция, полиморфизм, наследование. Чайник с таймером — композиция, не двойное наследование. Общая память + два писателя = гонки. Код — карта бизнес-логики.
 
-**When to use:** Rich domain models, UI component trees, SDKs with clear type hierarchies. Teapot-with-timer: inherit from teapot *or* timer? Prefer **composition** (has a kettle + has a timer).
+**When to use:** Rich domain models, UI component trees, SDKs with clear type hierarchies. Teapot-with-timer: inherit from teapot _or_ timer? Prefer **composition** (has a kettle + has a timer).
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Modeling: components as objects; relations are easier to pin down | Shared mutable data + several writers → races (not unique to OOP) |
-| Enterprise modeling (UML, ER, DFD) grew around objects | Simple inheritance rarely matches real “has both” objects |
-| Well-studied: books, known failure modes | Encapsulation can block sharing; concurrent edits need extra design |
+| +                                                                 | −                                                                   |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Modeling: components as objects; relations are easier to pin down | Shared mutable data + several writers → races (not unique to OOP)   |
+| Enterprise modeling (UML, ER, DFD) grew around objects            | Simple inheritance rarely matches real “has both” objects           |
+| Well-studied: books, known failure modes                          | Encapsulation can block sharing; concurrent edits need extra design |
 
 **Examples:**
 
@@ -60,7 +60,7 @@ class User {
 
 const user = new User("Alex");
 user.isAdmin(); // false
-user.nameOf();  // 'Alex'
+user.nameOf(); // 'Alex'
 ```
 
 **Thoughts:**
@@ -87,9 +87,9 @@ Good code is a **map of the territory**: business rules, entity relations, and c
 **How it works:**
 
 - Data + the operations that know how to change it live together. History knows how to add a record — callers do not `history.records.push(...)`.
-- If History were a bare array, *how to add* would leak into every caller. Change storage later → rewrite the app.
+- If History were a bare array, _how to add_ would leak into every caller. Change storage later → rewrite the app.
 - Related work in one module = **high cohesion**. Uncontrolled access from outside = low encapsulation.
-- JS: hide with `#` fields, closures, or module scope. `this` lets the same method update *this* instance when several Histories exist.
+- JS: hide with `#` fields, closures, or module scope. `this` lets the same method update _this_ instance when several Histories exist.
 
 Инкапсуляция — знание о сущности внутри неё. История сама знает, как добавить запись. `this` — «свой» объект, когда историй несколько.
 
@@ -97,11 +97,11 @@ Good code is a **map of the territory**: business rules, entity relations, and c
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| One place to change storage or rules | Over-private APIs hinder testing |
-| Callers stay stable when internals change | Getters/setters can leak the model |
-| Prevents accidental mutation | Easy to wrap every field and call it "OOP" |
+| +                                         | −                                          |
+| ----------------------------------------- | ------------------------------------------ |
+| One place to change storage or rules      | Over-private APIs hinder testing           |
+| Callers stay stable when internals change | Getters/setters can leak the model         |
+| Prevents accidental mutation              | Easy to wrap every field and call it "OOP" |
 
 **Examples:**
 
@@ -142,7 +142,7 @@ history1.addRecord({ amount: 100, dateTime: Date.now() });
 
 **How it works:**
 
-Наследование = «является». Если «и чайник, и таймер» — лучше *имеет* (композиция), а не два родителя.
+Наследование = «является». Если «и чайник, и таймер» — лучше _имеет_ (композиция), а не два родителя.
 
 ---
 
@@ -150,21 +150,27 @@ history1.addRecord({ amount: 100, dateTime: Date.now() });
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| DRY for shared behavior | Tight coupling to parent implementation |
+| +                       | −                                                   |
+| ----------------------- | --------------------------------------------------- |
+| DRY for shared behavior | Tight coupling to parent implementation             |
 | Natural "is-a" modeling | LSP violations when subclass breaks parent contract |
 
 **Examples:**
 
 ```js
 class Employee {
-  constructor(name) { this.name = name; }
-  getRole() { return 'employee'; }
+  constructor(name) {
+    this.name = name;
+  }
+  getRole() {
+    return "employee";
+  }
 }
 
 class Manager extends Employee {
-  getRole() { return 'manager'; }
+  getRole() {
+    return "manager";
+  }
 }
 ```
 
@@ -181,16 +187,16 @@ class Manager extends Employee {
 
 Use an object without knowing the concrete type — only a shared contract (methods/shape). One operation, many implementations.
 
-| Type | Meaning |
-|------|---------|
-| **Subtype (inheritance)** | Subclass usable wherever parent is expected |
-| **Parametric (generics)** | Same code works on many types (`T[]`) |
-| **Ad-hoc (overloading)** | Same name, different signatures (limited in JS) |
-| **Structural (JS/TS)** | If it has the methods, it fits — duck typing / TS structural types |
+| Type                      | Meaning                                                            |
+| ------------------------- | ------------------------------------------------------------------ |
+| **Subtype (inheritance)** | Subclass usable wherever parent is expected                        |
+| **Parametric (generics)** | Same code works on many types (`T[]`)                              |
+| **Ad-hoc (overloading)**  | Same name, different signatures (limited in JS)                    |
+| **Structural (JS/TS)**    | If it has the methods, it fits — duck typing / TS structural types |
 
 **How it works:**
 
-Code written against one concrete type is **tightly coupled**. A shared shape (`Record` with `kind`, or `shape.area()`) lets History accept spend *and* income without changing `addRecord`. JS has no `interface` keyword — you fake the contract with duck typing, JSDoc, or TypeScript.
+Code written against one concrete type is **tightly coupled**. A shared shape (`Record` with `kind`, or `shape.area()`) lets History accept spend _and_ income without changing `addRecord`. JS has no `interface` keyword — you fake the contract with duck typing, JSDoc, or TypeScript.
 
 Полиморфизм — объект по контракту, не по конкретному классу. `addRecord` принимает трату и доход. В JS нет интерфейсов — утка / TypeScript.
 
@@ -198,11 +204,11 @@ Code written against one concrete type is **tightly coupled**. A shared shape (`
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Fewer `if/else` on concrete types | Need a real shared contract, not a random `type` string |
-| Lower coupling — change one variant, not every caller | JS won't check the contract at runtime |
-| Plugin lists, renderers, strategies | Fake "polymorphism" via flags can become a god `switch` |
+| +                                                     | −                                                       |
+| ----------------------------------------------------- | ------------------------------------------------------- |
+| Fewer `if/else` on concrete types                     | Need a real shared contract, not a random `type` string |
+| Lower coupling — change one variant, not every caller | JS won't check the contract at runtime                  |
+| Plugin lists, renderers, strategies                   | Fake "polymorphism" via flags can become a god `switch` |
 
 **Examples:**
 
@@ -215,8 +221,8 @@ class LedgerRecord {
   }
 }
 
-const spending = new LedgerRecord(400, 'spending');
-const income = new LedgerRecord(400, 'income');
+const spending = new LedgerRecord(400, "spending");
+const income = new LedgerRecord(400, "income");
 history.addRecord(spending);
 history.addRecord(income); // same API — History does not care which kind
 ```
@@ -244,10 +250,10 @@ history.addRecord(income); // same API — History does not care which kind
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Simplifies mental model | Wrong abstraction is expensive to undo |
-| Enables swapping implementations | Too many layers obscure flow |
+| +                                | −                                      |
+| -------------------------------- | -------------------------------------- |
+| Simplifies mental model          | Wrong abstraction is expensive to undo |
+| Enables swapping implementations | Too many layers obscure flow           |
 
 **Examples:**
 
@@ -281,9 +287,9 @@ async function getUser(id, client) {
 - Polymorphism lowers coupling: callers depend on a contract, not on `Spending` vs `Income`.
 - Duplicate "spent today" logic in three files is low cohesion spread thin — a rule change misses a copy.
 
-| | High (good / bad) | Low |
-|---|-------------------|-----|
-| **Cohesion** | Good — related code in one module | Bad — a class does budget *and* HTTP *and* UI |
+|              | High (good / bad)                         | Low                                                      |
+| ------------ | ----------------------------------------- | -------------------------------------------------------- |
+| **Cohesion** | Good — related code in one module         | Bad — a class does budget _and_ HTTP _and_ UI            |
 | **Coupling** | Bad — many modules break when one changes | Good — swap History storage without touching DailyAmount |
 
 Связность — близкие задачи в одном модуле. Сцепление / зацепление — сколько модули знают друг о друге. Цель: высокая связность, низкое сцепление. High coupling → many mocks just to boot a unit test; see [Making tests easy](./7_special_testing.md#making-tests-easy).
@@ -317,16 +323,16 @@ Inheritance designs **from general to specific** (Animal → Dog). Composition d
 
 **Pluses and minuses:**
 
-| + (composition) | − |
-|------------------|------|
-| Loose coupling; swap behaviors at runtime | More boilerplate wiring |
-| Avoids fragile base class problem | Many small objects to track |
-| Aligns with LSP and OCP | |
+| + (composition)                           | −                           |
+| ----------------------------------------- | --------------------------- |
+| Loose coupling; swap behaviors at runtime | More boilerplate wiring     |
+| Avoids fragile base class problem         | Many small objects to track |
+| Aligns with LSP and OCP                   |                             |
 
-| + (inheritance) | − |
-|--------------------|------|
+| + (inheritance)                   | −                                |
+| --------------------------------- | -------------------------------- |
 | Fast to prototype shared behavior | Changes in base break subclasses |
-| Clear taxonomy | Deep trees resist refactoring |
+| Clear taxonomy                    | Deep trees resist refactoring    |
 
 **Examples:**
 
@@ -353,56 +359,140 @@ const worm = { ...cardio, ...immune }; // same features, no shared parent class
 
 </details>
 
-
 <details>
   <summary>SOLID (overview)</summary>
 
 ### SOLID (overview)
 
-**Definition:** Five OOP design principles (Robert C. Martin) for maintainable, extensible systems — apply to modules and functions, not only classes.
+**Definition:** **SOLID** — five design principles from Robert C. Martin ("Uncle Bob") for code that stays easy to **change, test, and extend**. Named in OOP, they apply to **classes**, **modules**, and **functions**. A **guide when change pain shows up** — not a rule that every short script needs five abstractions.
 
 **How it works:**
 
-| Letter | Principle | One-liner |
-|--------|-----------|-----------|
-| **S** | Single Responsibility | One reason to change per module |
-| **O** | Open/Closed | Open for extension, closed for modification |
-| **L** | Liskov Substitution | Subtypes must honor parent contract |
-| **I** | Interface Segregation | Small, focused interfaces |
-| **D** | Dependency Inversion | Depend on abstractions, not concretions |
+| Letter | Principle             | Plain one-liner                                   |
+| ------ | --------------------- | ------------------------------------------------- |
+| **S**  | Single Responsibility | One module / class / function = one job           |
+| **O**  | Open/Closed           | Extend with **new** code — don't edit stable code |
+| **L**  | Liskov Substitution   | Every subtype must work wherever the parent works |
+| **I**  | Interface Segregation | Don't expose methods callers never use            |
+| **D**  | Dependency Inversion  | Pass dependencies in — don't hardcode them inside |
 
-Each principle addresses a specific coupling or rigidity problem. Together they push toward small, composable units that change independently and accept extension via new code rather than edits to existing code.
+Each letter fixes a different coupling problem. Per-principle essays on this page: [SRP](#single-responsibility-srp) · [OCP](#open-closed-ocp) · [LSP](#liskov-substitution-lsp) · [ISP](#interface-segregation-isp) · [DIP](#dependency-inversion-dip).
 
-**When to use:** Refactoring god classes; designing plugin systems, payment providers, data layers; code review checklist for new modules. In JS/TS: split React components, inject dependencies, use strategy objects instead of giant `switch`.
+**When to use:** God classes or god modules; plugin-style providers; code review; interviews. Skip heavy abstraction on a one-off script.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                           | −                                           |
+| ------------------------------------------- | ------------------------------------------- |
 | Easier testing, refactoring, team ownership | Over-application creates abstraction sprawl |
-| Shared vocabulary in code reviews | "SOLID" debates distract from shipping |
-| Scales with codebase size | Subjective boundaries (especially SRP) |
+| Shared vocabulary in code reviews           | "SOLID" debates distract from shipping      |
+| Scales with codebase size                   | Subjective boundaries (especially SRP)      |
 
 **Examples:**
 
-```ts
-type Logger = { log(msg: string): void };
-
-function processOrder(order: Order, logger: Logger) {
-  logger.log(`Processing ${order.id}`);
-  // business logic — no import of ConsoleLogger
+```js
+// S — good: engine logic separate from dashboard UI
+class CarEngine {
+  start() {
+    return "engine on";
+  }
 }
+
+class CarDashboard {
+  render({ speed }) {
+    return `${speed} km/h`;
+  }
+}
+
+// S — bad: one class mixes engine + UI (two reasons to change)
+// class Car {
+//   start() { return "engine on"; }
+//   renderDashboard() { return `${this.speed} km/h`; }
+// }
+
+// O — good: new engine = new class, Car unchanged
+class GasEngine {
+  start() {
+    return "gas started";
+  }
+}
+
+class Car {
+  constructor(engine) {
+    this.engine = engine;
+  }
+  start() {
+    return this.engine.start();
+  }
+}
+
+new Car(new GasEngine());
+
+// O — bad: edit Car.start() for every new engine type
+// class Car {
+//   start() {
+//     if (this.type === "gas") return "gas started";
+//     if (this.type === "electric") return "motor started";
+//   }
+// }
+
+// L — good: goToWork(car) works for any car that returns a result
+function goToWork(car) {
+  return car.drive(10);
+}
+
+class RoadCar {
+  drive(km) {
+    return { km, status: "ok" };
+  }
+}
+
+goToWork(new RoadCar());
+
+// L — bad: subclass throws — goToWork crashes without try/catch
+class OutOfFuelCar extends RoadCar {
+  drive(km) {
+    throw new Error("No fuel");
+  }
+}
+// goToWork(new OutOfFuelCar());
+
+// I — good: showroom lists; workshop repairs — separate APIs
+class CarLot {
+  listAvailable() {
+    return ["sedan", "suv"];
+  }
+}
+
+class CarWorkshop {
+  repair(carId) {
+    return `repaired ${carId}`;
+  }
+}
+
+// I — bad: lot forced to stub repair() it never uses
+// class Garage {
+//   listAvailable() { return ["sedan", "suv"]; }
+//   repair() { throw new Error("We don't repair here"); }
+// }
+// class CarLot extends Garage {}
+
+// D — good: inject logger — business logic does not own console
+function processOrder(order, logger) {
+  logger.log(`Processing ${order.id}`);
+}
+
+// D — bad: hardcoded console inside domain code
+// function processOrder(order) {
+//   console.log(`Processing ${order.id}`);
+// }
 ```
 
-**Thoughts:**
-
-Full GOF/GRASP catalog in [0_system_design.md](./0_system_design.md). SOLID complements DRY/KISS/YAGNI — don't abstract until a second use case appears. React-specific examples (components, hooks, composition): [4_react.md — SOLID in React](./4_react_core.md#solid-in-react).
-
-On a budget app: **SRP** — `perDay` on Budget, `spentToday` on History, subtract on DailyAmount. **OCP** — `LedgerEntry` with a `kind`, not a hardcoded `Spending` class. **LSP** — any `LedgerEntry` is valid wherever a record is expected. **ISP** — split feature contracts, not one fat interface. **DIP** — DailyAmount depends on Budget/History abstractions (constructor injection); JS makes this harder without interfaces.
+**Thoughts:** Stack-specific walkthroughs with `// good` / `// bad` for all five letters: [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Complements [DRY, KISS, YAGNI](./0_system_design_principles.md) — don't abstract until a second use case appears.
 
 **Sources:**
 
-[Doka — OOP](https://doka.guide/tools/oop/) · [freecodecamp SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/)
+[Doka — OOP](https://doka.guide/tools/oop/) · [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
 
 ---
 
@@ -426,11 +516,11 @@ On a budget app: **SRP** — `perDay` on Budget, `spentToday` on History, subtra
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Easier test, refactor, and reason about | Over-splitting creates file sprawl |
-| Clear ownership per module | "One reason" is subjective |
-| Smaller diffs, fewer merge conflicts | Can feel bureaucratic for tiny scripts |
+| +                                       | −                                      |
+| --------------------------------------- | -------------------------------------- |
+| Easier test, refactor, and reason about | Over-splitting creates file sprawl     |
+| Clear ownership per module              | "One reason" is subjective             |
+| Smaller diffs, fewer merge conflicts    | Can feel bureaucratic for tiny scripts |
 
 **Examples:**
 
@@ -451,6 +541,8 @@ class UserMapper { toDto(row) { return { fullName: `${row.first} ${row.last}`, .
 **Thoughts:**
 
 Interview: SRP ≠ "one function" — it's one **axis of change**. A change in tax law shouldn't force editing UI code.
+
+**Sources:** [SOLID (overview)](#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
 
 ---
 
@@ -474,11 +566,11 @@ Interview: SRP ≠ "one function" — it's one **axis of change**. A change in t
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Safer additions — existing code untouched | Abstraction upfront cost |
-| Plugin and middleware architectures | Wrong extension points are hard to fix |
-| Fewer regression bugs on extend | Can over-engineer for one implementation |
+| +                                         | −                                        |
+| ----------------------------------------- | ---------------------------------------- |
+| Safer additions — existing code untouched | Abstraction upfront cost                 |
+| Plugin and middleware architectures       | Wrong extension points are hard to fix   |
+| Fewer regression bugs on extend           | Can over-engineer for one implementation |
 
 **Examples:**
 
@@ -490,7 +582,7 @@ const paymentStrategies = {
 
 function checkout(provider, amount) {
   const pay = paymentStrategies[provider];
-  if (!pay) throw new Error('Unknown provider');
+  if (!pay) throw new Error("Unknown provider");
   return pay(amount); // add new provider without editing this function
 }
 ```
@@ -498,6 +590,8 @@ function checkout(provider, amount) {
 **Thoughts:**
 
 OCP pairs with Strategy and Factory patterns. A `switch` on closed enum is fine if the set is truly fixed and owned by one team.
+
+**Sources:** [SOLID (overview)](#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
 
 ---
 
@@ -521,27 +615,39 @@ OCP pairs with Strategy and Factory patterns. A `switch` on closed enum is fine 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Reliable polymorphism | Violations are subtle and discovered late |
+| +                                 | −                                                 |
+| --------------------------------- | ------------------------------------------------- |
+| Reliable polymorphism             | Violations are subtle and discovered late         |
 | Safe refactoring with inheritance | Pushes toward composition (good, but more wiring) |
-| Clear contracts in hierarchies | Hard to formalize in untyped JS |
+| Clear contracts in hierarchies    | Hard to formalize in untyped JS                   |
 
 **Examples:**
 
 ```js
-class Bird { fly() { return 'flying'; } }
+class Bird {
+  fly() {
+    return "flying";
+  }
+}
 class Penguin extends Bird {
-  fly() { throw new Error('Cannot fly'); } // ❌ breaks callers expecting fly()
+  fly() {
+    throw new Error("Cannot fly");
+  } // ❌ breaks callers expecting fly()
 }
 
 // ✅ Better — separate interfaces
-class Penguin { swim() { return 'swimming'; } }
+class Penguin {
+  swim() {
+    return "swimming";
+  }
+}
 ```
 
 **Thoughts:**
 
 Classic interview trap: `Square extends Rectangle`. Fix: don't model square as rectangle subtype; use shared `Shape` with `area()`.
+
+**Sources:** [SOLID (overview)](#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
 
 ---
 
@@ -565,10 +671,10 @@ Classic interview trap: `Square extends Rectangle`. Fix: don't model square as r
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Smaller, focused contracts | More types/interfaces to maintain |
-| Easier mocks in tests | Can fragment APIs if overdone |
+| +                                     | −                                        |
+| ------------------------------------- | ---------------------------------------- |
+| Smaller, focused contracts            | More types/interfaces to maintain        |
+| Easier mocks in tests                 | Can fragment APIs if overdone            |
 | Implementers only stub what they need | Discovery — "which interface do I need?" |
 
 **Examples:**
@@ -579,13 +685,15 @@ type Writable = { write(data: Data): Promise<void> };
 
 // Report generator only needs Readable
 function generateReport(source: Readable) {
-  return source.read('summary');
+  return source.read("summary");
 }
 ```
 
 **Thoughts:**
 
 ISP reduces coupling between modules. In frontend, prop drilling fat objects is an ISP smell — pass only needed fields.
+
+**Sources:** [SOLID (overview)](#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
 
 ---
 
@@ -609,11 +717,11 @@ ISP reduces coupling between modules. In frontend, prop drilling fat objects is 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Testable via mocks/stubs | Indirection and wiring overhead |
+| +                                                | −                                   |
+| ------------------------------------------------ | ----------------------------------- |
+| Testable via mocks/stubs                         | Indirection and wiring overhead     |
 | Swappable implementations (DB, payment, storage) | DI containers can hide dependencies |
-| Business logic isolated from frameworks | Learning curve for junior devs |
+| Business logic isolated from frameworks          | Learning curve for junior devs      |
 
 **Examples:**
 
@@ -628,13 +736,13 @@ function getUserProfile(id: string, repo: UserRepo) {
 // Test:       getUserProfile(id, { findById: async () => mockUser })
 ```
 
-**Thoughts:** DIP ≠ every function takes 10 params. Module-level defaults with injectable overrides is idiomatic in JS. Pairs with Factory and Repository patterns. JS has no interfaces — constructor injection still helps (`new DailyAmount(budget, history)`), but the *inversion onto an abstraction* is a TypeScript/`typedef` story. See [Entities, relations & design](./0_system_design_grasp.md#entities-relations--design).
+**Thoughts:** DIP ≠ every function takes 10 params. Module-level defaults with injectable overrides is idiomatic in JS. Pairs with Factory and Repository patterns. JS has no interfaces — constructor injection still helps (`new DailyAmount(budget, history)`), but the _inversion onto an abstraction_ is a TypeScript/`typedef` story. See [Entities, relations & design](./0_system_design_grasp.md#entities-relations--design).
 
 **See also:** Swappable fakes at the interface = less mock archaeology — [Making tests easy](./7_special_testing.md#making-tests-easy).
 
 **Sources:**
 
-[Doka — OOP](https://doka.guide/tools/oop/)
+[Doka — OOP](https://doka.guide/tools/oop/) · [SOLID (overview)](#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
 
 ---
 

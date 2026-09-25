@@ -4,7 +4,7 @@ Type `/` in Agent chat to run built-in skills, custom commands, and migrated ski
 
 ### Related docs
 
-* [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Questions](./0_ai_cursor_questions.md)
+* [AI workflow](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 

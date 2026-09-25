@@ -6,7 +6,7 @@ Interview Q&A plus leftover tooling notes.
 
 ### Related docs
 
-* [Computer science](./7_special_cs.md) · [Architecture patterns](./7_special_architecture.md) · [SOLID](./7_special_engineering.md) · [Design patterns](./7_special_patterns.md) · [SDLC](./7_special_sdlc.md) · [Testing](./7_special_testing.md) · [Web security](./7_special_security.md) · [Interview leftovers](./7_special_interview.md)
+- [Computer science](./7_special_cs.md) · [Architecture patterns](./7_special_architecture.md) · [SOLID](./7_special_engineering.md) · [Design patterns](./7_special_patterns.md) · [SDLC](./7_special_sdlc.md) · [Testing](./7_special_testing.md) · [Web security](./7_special_security.md) · [Interview leftovers](./7_special_interview.md)
 
 ### Sections
 
@@ -30,10 +30,10 @@ Interview Q&A plus leftover tooling notes.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Use new APIs with fallback | Bundle size |
-| Progressive enhancement | May not match native behavior exactly |
+| +                          | −                                     |
+| -------------------------- | ------------------------------------- |
+| Use new APIs with fallback | Bundle size                           |
+| Progressive enhancement    | May not match native behavior exactly |
 
 **Examples:** `core-js` polyfills `Promise` on IE11.
 
@@ -56,9 +56,9 @@ Interview Q&A plus leftover tooling notes.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Write modern JS | Build step required |
+| +                           | −                     |
+| --------------------------- | --------------------- |
+| Write modern JS             | Build step required   |
 | Tooling ecosystem (plugins) | Debug via source maps |
 
 **Thoughts:**
@@ -84,10 +84,10 @@ Default in all modern code. Avoid spaghetti jumps.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Readable control flow | |
-| Foundation of modern languages | |
+| +                              | −   |
+| ------------------------------ | --- |
+| Readable control flow          |     |
+| Foundation of modern languages |     |
 
 </details>
 
@@ -100,15 +100,15 @@ Default in all modern code. Avoid spaghetti jumps.
 
 ### Imperative vs declarative — how vs what?
 
-**Definition:** Imperative lists *commands in order*. Declarative states *the result*; another layer (engine, `filter`, SQL optimizer) chooses the steps.
+**Definition:** Imperative lists _commands in order_. Declarative states _the result_; another layer (engine, `filter`, SQL optimizer) chooses the steps.
 
 **How it works:**
 
-Same “odd numbers in an array”: a `for` + `push` vs `array.filter`. Difference is who owns details. Use imperative for a specific algorithm; declarative at business-logic height so you do not hold *what* and *how* in working memory at once.
+Same “odd numbers in an array”: a `for` + `push` vs `array.filter`. Difference is who owns details. Use imperative for a specific algorithm; declarative at business-logic height so you do not hold _what_ and _how_ in working memory at once.
 
-*Как* (команды) vs *что* (результат). Алгоритм — императивно; бизнес — декларативно.
+_Как_ (команды) vs _что_ (результат). Алгоритм — императивно; бизнес — декларативно.
 
-**Thoughts:** *How* vs *what* — hide the how one layer down.
+**Thoughts:** _How_ vs _what_ — hide the how one layer down.
 
 **See also:** [Imperative vs declarative](./7_special_cs.md#programming-paradigm)
 
@@ -131,7 +131,7 @@ Same “odd numbers in an array”: a `for` + `push` vs `array.filter`. Differen
 
 Чистая = те же аргументы → тот же результат, без эффектов. `fetch`/DOM/глобали/`Date.now()` — нечисто. Эффекты на краю.
 
-**Thoughts:** *Arguments in, value out — the rest of the universe stays untouched.*
+**Thoughts:** _Arguments in, value out — the rest of the universe stays untouched._
 
 **See also:** [Pure functions & side effects](./3_js_functions.md#pure-functions--side-effects) · [Function composition](./3_js_functions.md#function-composition) · [HOF](./3_js_functions.md#higher-order-functions-hof)
 
@@ -147,14 +147,18 @@ Same “odd numbers in an array”: a `for` + `push` vs `array.filter`. Differen
 ```js
 const multipleTwo = (n) => n * 2;
 loadData(getData);
-function makeAdder(x) { return (y) => x + y; }
+function makeAdder(x) {
+  return (y) => x + y;
+}
 ```
 
 **Compose:** `compose(f, g, ...)(x) === f(g(...(x)))` — right to left.
 
 ```js
-const compose = (...fns) => (x) =>
-  fns.reduceRight((acc, fn) => fn(acc), x);
+const compose =
+  (...fns) =>
+  (x) =>
+    fns.reduceRight((acc, fn) => fn(acc), x);
 ```
 
 **HOF:** Function that accepts and/or returns another function — e.g. `filter(list, predicate)`, `timed(fn)`.
@@ -172,7 +176,7 @@ const compose = (...fns) => (x) =>
 
 **How it works:** One `Map` of value → index, one pass, O(n) time. A plain object coerces keys to strings, which collides for numbers and is wrong for non-string keys. Sorted input can drop the map and use two pointers.
 
-**Thoughts:** *`Map` is the O(n) interview solution; objects stringify keys.*
+**Thoughts:** _`Map` is the O(n) interview solution; objects stringify keys._
 
 **See also:** [Two Sum with Map](./7_special_algorithms_patterns.md#two-sum-with-map)
 
@@ -187,7 +191,7 @@ const compose = (...fns) => (x) =>
 
 **How it works:** Recursion is fine for shallow React trees (menus). Unbounded depth (API trees, files) → `while` + array stack, or flatten first. BFS uses a queue (level order).
 
-**Thoughts:** *Same visit order as recursion if you simulate the stack; heap memory instead of call stack.*
+**Thoughts:** _Same visit order as recursion if you simulate the stack; heap memory instead of call stack._
 
 **See also:** [Tree traversal](./7_special_algorithms_data.md#tree-traversal-recursive-vs-iterative)
 
@@ -230,39 +234,9 @@ history.addRecord({ amount: 100, dateTime: Date.now() });
 
 ### SOLID in JavaScript?
 
-**Short answer:** Same five principles as OOP — applied to **modules, functions, and components**, not only `class`.
+**Short answer:** Те же пять принципов ООП — для **модулей, функций и компонентов**, не только `class`.
 
-| Principle | Meaning | JS/TS example |
-|-----------|---------|---------------|
-| **S** — Single Responsibility | One reason to change per module | Split `UserPage` into `useUser` hook (fetch), `UserCard` (render), `formatUser` (transform) |
-| **O** — Open/Closed | Extend via new code, not edits | Payment strategies object map — add `applePay` without touching `checkout()` |
-| **L** — Liskov Substitution | Subtypes honor parent contract | Don't `extends` in a way that breaks callers — `Penguin.fly()` throwing breaks `Bird` users |
-| **I** — Interface Segregation | Small focused APIs | Pass `{ read }` not full `DbClient` when caller only reads |
-| **D** — Dependency Inversion | Depend on abstractions | `function save(user, storage: Storage)` — inject `localStorage` or mock in tests |
-
-**How it works in practice:**
-
-- JS has no `interface` keyword (TS does) — use **duck typing**, JSDoc `@typedef`, or TS types for contracts.
-- **Module singleton** and `import` graphs replace some class patterns.
-- React: composition + hooks achieve SRP/OCP better than deep class hierarchies.
-- DIP = pass dependencies as args, context, or constructor — avoid hardcoded `fetch` in domain logic.
-
-**Example (DIP + SRP):**
-
-```js
-// Service depends on abstraction, not fetch
-async function loadDashboard(userId, api) {
-  const [user, orders] = await Promise.all([
-    api.getUser(userId),
-    api.getOrders(userId),
-  ]);
-  return { user, orders };
-}
-
-// Test: loadDashboard('1', { getUser: () => mockUser, getOrders: () => [] })
-```
-
-**Interview tip:** Mention SOLID is a **guide**, not a law — a 10-line script doesn't need five interfaces. Apply when change pain appears.
+**See also:** [JS — Language — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — Language — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in React](./4_react_core.md#solid-in-react)
 
 </details>
 
@@ -275,11 +249,11 @@ async function loadDashboard(userId, api) {
 
 Both are one-to-many notification patterns, but differ in **coupling** and **topology**.
 
-| | Observer | Pub/Sub |
-|---|----------|---------|
-| **Coupling** | Subject **knows** observers directly | Publishers and subscribers **don't know** each other |
-| **Mediator** | None — direct registration | **Broker / event bus** in between |
-| **Delivery** | Synchronous callback list | Often async (message queue) |
+|              | Observer                                                       | Pub/Sub                                                   |
+| ------------ | -------------------------------------------------------------- | --------------------------------------------------------- |
+| **Coupling** | Subject **knows** observers directly                           | Publishers and subscribers **don't know** each other      |
+| **Mediator** | None — direct registration                                     | **Broker / event bus** in between                         |
+| **Delivery** | Synchronous callback list                                      | Often async (message queue)                               |
 | **Examples** | DOM `addEventListener`, Redux `subscribe`, Node `EventEmitter` | Redis pub/sub, RabbitMQ, MQTT, browser `BroadcastChannel` |
 
 **How it works:**
@@ -298,8 +272,13 @@ Both are one-to-many notification patterns, but differ in **coupling** and **top
 
 ```js
 const listeners = new Set();
-function subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); }
-function notify(data) { listeners.forEach(fn => fn(data)); }
+function subscribe(fn) {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+function notify(data) {
+  listeners.forEach((fn) => fn(data));
+}
 ```
 
 ```js
@@ -354,7 +333,7 @@ const bus = {
 
 **Examples:** “Click Power → controller flips `model.isOn` → view adds class `is-on`. I put button→color mapping in the view so the controller stays `updateColor(string)`.”
 
-**Thoughts:** Interview = name the flow, then say where *your* team put event mapping and transforms.
+**Thoughts:** Interview = name the flow, then say where _your_ team put event mapping and transforms.
 
 </details>
 
@@ -363,7 +342,7 @@ const bus = {
 
 ### One-way vs two-way data flow?
 
-**Definition:** Data flow is how modules pass intermediate results. **One-way:** between two parts you only send *or* receive — direction is fixed (Flux/Redux). **Two-way:** the same pair can update each other (typical: two-way binding on a form field).
+**Definition:** Data flow is how modules pass intermediate results. **One-way:** between two parts you only send _or_ receive — direction is fixed (Flux/Redux). **Two-way:** the same pair can update each other (typical: two-way binding on a form field).
 
 **How it works:**
 
@@ -388,11 +367,11 @@ Redux cycle — view reads store → user event → `dispatch(action)` → reduc
 
 Three complementary principles for managing complexity — reduce duplication, keep solutions simple, and avoid speculative features.
 
-| Principle | Full name | Core idea |
-|-----------|-----------|-----------|
-| **DRY** | Don't Repeat Yourself | Single source of truth for **knowledge** — not character count |
-| **KISS** | Keep It Simple, Stupid | Simplest solution that works; add complexity only when measured need appears |
-| **YAGNI** | You Aren't Gonna Need It | Don't build features or abstractions until they're actually required |
+| Principle | Full name                | Core idea                                                                    |
+| --------- | ------------------------ | ---------------------------------------------------------------------------- |
+| **DRY**   | Don't Repeat Yourself    | Single source of truth for **knowledge** — not character count               |
+| **KISS**  | Keep It Simple, Stupid   | Simplest solution that works; add complexity only when measured need appears |
+| **YAGNI** | You Aren't Gonna Need It | Don't build features or abstractions until they're actually required         |
 
 **How it works:**
 
@@ -406,11 +385,11 @@ Balance all three — "DRY is about knowledge, KISS is default, YAGNI stops gold
 
 **Pluses and minuses:**
 
-| + (together) | − / traps |
-|-----------------|--------------|
-| Less bug surface, faster onboarding | DRY too early → wrong abstraction |
-| Focus on current user value | KISS can block needed scale prep |
-| Avoid dead code maintenance | YAGNI vs "we know this is coming next sprint" — use judgment |
+| + (together)                        | − / traps                                                    |
+| ----------------------------------- | ------------------------------------------------------------ |
+| Less bug surface, faster onboarding | DRY too early → wrong abstraction                            |
+| Focus on current user value         | KISS can block needed scale prep                             |
+| Avoid dead code maintenance         | YAGNI vs "we know this is coming next sprint" — use judgment |
 
 **Examples:**
 
@@ -418,11 +397,15 @@ Balance all three — "DRY is about knowledge, KISS is default, YAGNI stops gold
 // ❌ DRY violation — same tax rule in checkout AND invoice
 // ✅ Extract once
 const TAX_RATE = 0.2;
-function withTax(amount) { return amount * (1 + TAX_RATE); }
+function withTax(amount) {
+  return amount * (1 + TAX_RATE);
+}
 
 // ❌ YAGNI — PaymentStrategy interface for one provider
 // ✅ KISS — single function until second provider is real
-function charge(amount) { return stripe.charge(amount); }
+function charge(amount) {
+  return stripe.charge(amount);
+}
 ```
 
 **See also:** [DRY, KISS, YAGNI](./0_system_design_principles.md)
@@ -438,20 +421,20 @@ function charge(amount) { return stripe.charge(amount); }
 
 **How it works:**
 
-| Problem | Pattern |
-|---------|---------|
-| Construction logic / defaults in many places | Factory (`createGuitar(6)`) |
-| Related products + `instanceof` explosion | Abstract Factory |
-| Many optional parts / telescoping ctor | Builder + `build()` |
-| Must be unique in the process | Singleton — usually ESM export, not a class |
+| Problem                                      | Pattern                                     |
+| -------------------------------------------- | ------------------------------------------- |
+| Construction logic / defaults in many places | Factory (`createGuitar(6)`)                 |
+| Related products + `instanceof` explosion    | Abstract Factory                            |
+| Many optional parts / telescoping ctor       | Builder + `build()`                         |
+| Must be unique in the process                | Singleton — usually ESM export, not a class |
 
-Name the *problem* first. Simple factory ≠ Factory Method ≠ Abstract Factory. Singleton pattern ≠ DI singleton scope.
+Name the _problem_ first. Simple factory ≠ Factory Method ≠ Abstract Factory. Singleton pattern ≠ DI singleton scope.
 
 ```js
 const guitar = createGuitar(6); // factory — recipe in one fn
-reserve(violinKit);             // abstract factory — family, no instanceof
+reserve(violinKit); // abstract factory — family, no instanceof
 new DrinkBuilder().addMilk().build();
-new Sun() === new Sun();        // singleton — usually export const instead
+new Sun() === new Sun(); // singleton — usually export const instead
 ```
 
 Using Singleton for convenience (global config in every module) — fails tests and OCP.
@@ -467,21 +450,21 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **Quick catalog** — name, category, one-line use case. Architecture (MVC, Flux, layers) is a larger cut; these are local tools. See [Architecture vs design patterns](./7_special_architecture.md#architecture-vs-design-patterns).
 
-| Pattern | Category | When |
-|---------|----------|------|
-| **Singleton** | Creational | One shared instance (DB pool) — caution in tests |
-| **Factory** | Creational | Hide recipe / `new Concrete()` behind creator |
-| **Abstract Factory** | Creational | Family of products behind one interface |
-| **Builder** | Creational | Optional steps, then `build()` |
-| **Strategy** | Behavioral | Swap algorithms at runtime (payment, sort) |
-| **Observer** | Behavioral | One-to-many notify on state change |
-| **Chain of Responsibility** | Behavioral | Middleware / handler pipeline |
-| **Adapter** | Structural | Wrap incompatible API to match client interface |
-| **Decorator** | Structural | Add behavior via wrappers (HOCs, middleware) |
-| **Facade** | Structural | Simple API over complex subsystem |
-| **Proxy** | Structural | Same interface; gate access (lazy, auth, cache) |
-| **Repository** | Data | Collection-like persistence abstraction |
-| **Module** | Creational (JS) | `export` — encapsulation via closure/ESM |
+| Pattern                     | Category        | When                                             |
+| --------------------------- | --------------- | ------------------------------------------------ |
+| **Singleton**               | Creational      | One shared instance (DB pool) — caution in tests |
+| **Factory**                 | Creational      | Hide recipe / `new Concrete()` behind creator    |
+| **Abstract Factory**        | Creational      | Family of products behind one interface          |
+| **Builder**                 | Creational      | Optional steps, then `build()`                   |
+| **Strategy**                | Behavioral      | Swap algorithms at runtime (payment, sort)       |
+| **Observer**                | Behavioral      | One-to-many notify on state change               |
+| **Chain of Responsibility** | Behavioral      | Middleware / handler pipeline                    |
+| **Adapter**                 | Structural      | Wrap incompatible API to match client interface  |
+| **Decorator**               | Structural      | Add behavior via wrappers (HOCs, middleware)     |
+| **Facade**                  | Structural      | Simple API over complex subsystem                |
+| **Proxy**                   | Structural      | Same interface; gate access (lazy, auth, cache)  |
+| **Repository**              | Data            | Collection-like persistence abstraction          |
+| **Module**                  | Creational (JS) | `export` — encapsulation via closure/ESM         |
 
 **Interview flow:** State problem → name pattern → trade-off (pros/cons) → JS example.
 
@@ -570,7 +553,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **How it works:** Encode output for the context (HTML entities, not `encodeURI` for markup). Use `textContent` over `innerHTML`. Sanitize if you must allow HTML. CSP `script-src` (nonces, no `'unsafe-inline'`) is backup. HttpOnly cookies stop **reading** the session cookie, not acting as the user.
 
-**Thoughts:** *Untrusted data is never HTML/JS. Stored XSS needs a DB cleanup too.*
+**Thoughts:** _Untrusted data is never HTML/JS. Stored XSS needs a DB cleanup too._
 
 **See also:** [XSS](./7_special_security.md#xss-cross-site-scripting) · [Stored XSS](./7_special_security.md#stored-xss--xss-driven-keylogging) · [CSP](./7_special_security.md#content-security-policy-csp)
 
@@ -585,7 +568,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **How it works:** CSRF → token + `SameSite=Lax/Strict` + Origin check (`HttpOnly` does not stop CSRF). Clickjacking → CSP `frame-ancestors` + `X-Frame-Options` (`ALLOW-FROM` is obsolete). MITM → HTTPS/TLS + HSTS; do not ignore cert warnings.
 
-**Thoughts:** *Cookie intent vs UI redress vs transport — different headers for each.*
+**Thoughts:** _Cookie intent vs UI redress vs transport — different headers for each._
 
 **See also:** [CSRF](./7_special_security.md#csrf-cross-site-request-forgery) · [Clickjacking](./7_special_security.md#clickjacking) · [MITM](./7_special_security.md#man-in-the-middle-mitm)
 
@@ -600,7 +583,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **How it works:** Prevent SQLi with parameterized queries / ORM bind — not frontend escaping. Prevent XSS with context encoding + CSP.
 
-**Thoughts:** *Bind SQL parameters; encode HTML. Do not mix the two mitigations.*
+**Thoughts:** _Bind SQL parameters; encode HTML. Do not mix the two mitigations._
 
 **See also:** [SQL injection](./7_special_security.md#sql-injection) · [Database — SQL injection](./9_database_sql.md#sql-injection)
 
@@ -615,7 +598,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **How it works:** TLS uses asymmetric (or ECDHE) only to **agree** a session key, then symmetric for the bytes. Passwords: slow KDF (Argon2id/bcrypt) + salt — not MD5, not reversible encryption.
 
-**Thoughts:** *Fast shared-key for data; public-key for setup and signatures; hashes for integrity and password storage.*
+**Thoughts:** _Fast shared-key for data; public-key for setup and signatures; hashes for integrity and password storage._
 
 **See also:** [Encryption](./7_special_security.md#encryption) · [HTTPS](./6_web_api_http.md#https)
 
@@ -628,7 +611,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **Definition:** A methodology is how the team coordinates delivery under uncertainty. **Waterfall** freezes a full spec and runs phases once. **Agile** repeats a short full cycle so hypotheses can be killed or grown quickly.
 
-**How it works:** Software changes cheaper than physical engineering, so a multi-year TZ often ships late, obsolete, and hard to amend. Manifesto (2001): people, working software, customer collaboration, responding to change — *over* (not instead of) tools, docs, contracts, and plans. Scrum/Kanban are frameworks; Agile is the mindset. Not a silver bullet — match process to contract and risk.
+**How it works:** Software changes cheaper than physical engineering, so a multi-year TZ often ships late, obsolete, and hard to amend. Manifesto (2001): people, working software, customer collaboration, responding to change — _over_ (not instead of) tools, docs, contracts, and plans. Scrum/Kanban are frameworks; Agile is the mindset. Not a silver bullet — match process to contract and risk.
 
 **See also:** [Software design methodology](./7_special_sdlc.md#software-design-methodology) · [Waterfall](./7_special_sdlc.md#waterfall) · [Agile](./7_special_sdlc.md#agile) · [Not a silver bullet](./7_special_sdlc.md#not-a-silver-bullet)
 
@@ -693,7 +676,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 4. What are TDD (Test-Driven Development) and BDD (Behavior-Driven Development)? Stub vs mock vs spy?
 
-3. Explain how HTTPS works in detail.
+5. Explain how HTTPS works in detail.
 
 </details>
 
@@ -709,5 +692,3 @@ Using Singleton for convenience (global config in every module) — fails tests 
 </details>
 
 </details>
-
-

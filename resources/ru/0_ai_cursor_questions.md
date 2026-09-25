@@ -4,7 +4,7 @@
 
 ### Related docs
 
-* [Навыки](./0_ai_cursor_skills.md) · [Правила](./0_ai_cursor_rules.md) · [Плагины](./0_ai_cursor_plugins.md) · [Слэш-команды](./0_ai_cursor_slash.md) · [Рабочий процесс AI](./0_ai.md)
+* [Core](./0_ai_cursor_core.md) · [Навыки](./0_ai_cursor_skills.md) · [Правила](./0_ai_cursor_rules.md) · [Плагины](./0_ai_cursor_plugins.md) · [Слэш-команды](./0_ai_cursor_slash.md) · [Рабочий процесс AI](./0_ai.md)
 
 ### Sections
 

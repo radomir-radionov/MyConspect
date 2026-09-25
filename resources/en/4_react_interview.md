@@ -6,7 +6,7 @@ Interview Q&A and coding tasks.
 
 ### Related docs
 
-* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
 
 ### Sections
 
@@ -156,7 +156,7 @@ What is React?
 
 **Answer:** JS **library** for UIs from components — describe `UI = f(state)`; React reconciles the DOM.
 
-**See also:** [React](./4_react_core.md#react)
+**See also:** [React overview](./4_react_core.md#react-overview)
 
 What is JSX? What does it compile to?
 
@@ -364,11 +364,11 @@ React Fiber and concurrent rendering?
 
 **Sequence:** Queue update → render WIP (DFS: `beginWork` ↓ / `completeWork` ↑) → commit flags to DOM. Render is interruptible; commit is not. Render ≠ paint.
 
-**Chunks:** Fibers until `shouldYield()` (~5ms) — pause *between* fibers, resume next; commit never yields.
+**Chunks:** Fibers until `shouldYield()` (~5ms) — pause _between_ fibers, resume next; commit never yields.
 
-**Priority:** Scheduler *when*; lanes *which* (sync > input > default > transition > idle). Urgent discards WIP. APIs: `useTransition`, `useDeferredValue`, `Suspense`, `createRoot`.
+**Priority:** Scheduler _when_; lanes _which_ (sync > input > default > transition > idle). Urgent discards WIP. APIs: `useTransition`, `useDeferredValue`, `Suspense`, `createRoot`.
 
-**Thoughts:** *Work loop reconciles in memory; commit flushes atomically; Scheduler decides when.*
+**Thoughts:** _Work loop reconciles in memory; commit flushes atomically; Scheduler decides when._
 
 **See also:** [React Fiber](./4_react_core.md#react-fiber) · [Concurrent rendering](./4_react_core.md#concurrent-rendering)
 
@@ -392,7 +392,7 @@ React and the browser DOM?
 
 `setState` **from browser view:** Schedules render → reconcile → commit DOM mutations → layout → paint → run effects.
 
-**Thoughts:** *React is faster than naive direct DOM not because VDOM is magic — because it batches, diffs, and minimizes writes.*
+**Thoughts:** _React is faster than naive direct DOM not because VDOM is magic — because it batches, diffs, and minimizes writes._
 
 **See also:**
 
@@ -417,7 +417,7 @@ SPA first render vs SSR?
 | SEO           | Weak without prerender | Strong            |
 | Interactivity | After hydration        | After hydration   |
 
-**Thoughts:** *SPA = client builds UI; SSR = server sends HTML first.*
+**Thoughts:** _SPA = client builds UI; SSR = server sends HTML first._
 
 **See also:**
 
@@ -501,7 +501,7 @@ nuqs vs useSearchParams vs qs?
 
 **How it works:** Prefer nuqs when UI writes many typed filters to the URL. Prefer `useSearchParams` + `router.push` for a single throwaway param. Prefer `qs` (or `URLSearchParams`) when you only serialize on the API, not in React.
 
-**Thoughts:** nuqs is URL *state*. Query is server *cache*.
+**Thoughts:** nuqs is URL _state_. Query is server _cache_.
 
 **See also:**
 
@@ -587,12 +587,7 @@ What happens on every render?
 
 ```tsx
 const UserList = ({ users }) => {
-  return users.map(user => (
-    <UserCard
-      key={Math.random()}
-      user={user}
-    />
-  ));
+  return users.map((user) => <UserCard key={Math.random()} user={user} />);
 };
 ```
 
@@ -600,12 +595,7 @@ Fix:
 
 ```tsx
 const UserList = ({ users }) => {
-  return users.map(user => (
-    <UserCard
-      key={user.id}
-      user={user}
-    />
-  ));
+  return users.map((user) => <UserCard key={user.id} user={user} />);
 };
 ```
 
@@ -631,9 +621,9 @@ Task 2 — State mutation
 What is wrong? Why might the UI not update?
 
 ```tsx
-const [user, setUser] = useState({ name: 'Anna' });
+const [user, setUser] = useState({ name: "Anna" });
 
-user.name = 'Kate';
+user.name = "Kate";
 console.log(user.name); // "Kate"
 setUser(user);
 ```
@@ -645,9 +635,9 @@ Answer
 Fix — return a **new object**:
 
 ```tsx
-setUser({ ...user, name: 'Kate' });
+setUser({ ...user, name: "Kate" });
 // or
-setUser(prev => ({ ...prev, name: 'Kate' }));
+setUser((prev) => ({ ...prev, name: "Kate" }));
 ```
 
 `console.log(user.name)` prints `"Kate"` because the mutation happened in memory; the UI simply did not get a new render cycle.
@@ -672,10 +662,7 @@ useEffect(() => {
 Fix:
 
 ```tsx
-const filters = useMemo(
-  () => ({ name, isActive }),
-  [name, isActive],
-);
+const filters = useMemo(() => ({ name, isActive }), [name, isActive]);
 
 useEffect(() => {
   loadData();
@@ -733,7 +720,7 @@ useEffect(() => {
       const data = await api.get({ signal: controller.signal });
       setData(data);
     } catch (err) {
-      if (err.name !== 'AbortError') {
+      if (err.name !== "AbortError") {
         setError(err);
       }
     }
@@ -744,6 +731,5 @@ useEffect(() => {
 ```
 
 Alternatively use a data-fetching library (TanStack Query, SWR) or React 19 `use()` with Suspense — they handle abort, deduplication, and caching.
+
 </details>
-
-

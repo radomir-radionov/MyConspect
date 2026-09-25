@@ -21,7 +21,10 @@ type MarkerMatch = {
   readonly kind: SlotKind;
 };
 
-const SLOT_DISPLAY: Record<Exclude<SlotKind, "intro" | "extra" | "pitfalls">, string> = {
+const SLOT_DISPLAY: Record<
+  Exclude<SlotKind, "intro" | "extra" | "pitfalls">,
+  string
+> = {
   definition: "Definition",
   how: "How it works",
   cases: "When to use",
@@ -48,7 +51,10 @@ const SLOT_ORDER: Record<SlotKind, number> = {
 const MARKER_LINE_RE = /^\*\*([^*\n]+):\*\*\s*(.*)$/;
 
 function normalizeLabel(raw: string): string {
-  return raw.replace(/\s+—.*$/u, "").trim().toLowerCase();
+  return raw
+    .replace(/\s+—.*$/u, "")
+    .trim()
+    .toLowerCase();
 }
 
 function classifyMarker(rawLabel: string): SlotKind {
@@ -59,10 +65,18 @@ function classifyMarker(rawLabel: string): SlotKind {
   if (label === "how it works") {
     return "how";
   }
-  if (label === "cases" || label === "when to use" || label.startsWith("when not to use")) {
+  if (
+    label === "cases" ||
+    label === "when to use" ||
+    label.startsWith("when not to use")
+  ) {
     return "cases";
   }
-  if (label === "example" || label === "examples" || label.startsWith("example")) {
+  if (
+    label === "example" ||
+    label === "examples" ||
+    label.startsWith("example")
+  ) {
     return "example";
   }
   if (label.includes("pitfall")) {
@@ -93,10 +107,15 @@ function displayLabel(kind: SlotKind, rawLabel: string): string {
   if (kind === "intro" || kind === "extra" || kind === "pitfalls") {
     return stripMdLabel(rawLabel);
   }
-  if (kind === "cases" && normalizeLabel(rawLabel).startsWith("when not to use")) {
+  if (
+    kind === "cases" &&
+    normalizeLabel(rawLabel).startsWith("when not to use")
+  ) {
     return "When not to use";
   }
-  return SLOT_DISPLAY[kind as keyof typeof SLOT_DISPLAY] ?? stripMdLabel(rawLabel);
+  return (
+    SLOT_DISPLAY[kind as keyof typeof SLOT_DISPLAY] ?? stripMdLabel(rawLabel)
+  );
 }
 
 function stripMdLabel(raw: string): string {
@@ -127,7 +146,9 @@ function findMarkers(markdown: string): MarkerMatch[] {
   return markers;
 }
 
-function splitByMarkers(markdown: string): { kind: SlotKind; rawLabel: string; body: string }[] {
+function splitByMarkers(
+  markdown: string,
+): { kind: SlotKind; rawLabel: string; body: string }[] {
   const markers = findMarkers(markdown);
   if (markers.length === 0) {
     const trimmed = markdown.trim();
@@ -142,9 +163,16 @@ function splitByMarkers(markdown: string): { kind: SlotKind; rawLabel: string; b
 
   for (let i = 0; i < markers.length; i += 1) {
     const marker = markers[i];
-    const nextIndex = i + 1 < markers.length ? markers[i + 1].index : markdown.length;
-    const chunk = markdown.slice(marker.index + marker.length, nextIndex).trim();
-    const body = marker.inline ? (chunk ? `${marker.inline}\n\n${chunk}` : marker.inline) : chunk;
+    const nextIndex =
+      i + 1 < markers.length ? markers[i + 1].index : markdown.length;
+    const chunk = markdown
+      .slice(marker.index + marker.length, nextIndex)
+      .trim();
+    const body = marker.inline
+      ? chunk
+        ? `${marker.inline}\n\n${chunk}`
+        : marker.inline
+      : chunk;
     if (body.trim()) {
       sections.push({ kind: marker.kind, rawLabel: marker.rawLabel, body });
     }
@@ -167,7 +195,9 @@ function mergeDuplicateKinds(sections: ConceptSection[]): ConceptSection[] {
 
   for (const section of sections) {
     const key =
-      section.kind === "extra" ? `extra:${normalizeLabel(section.rawLabel)}` : section.kind;
+      section.kind === "extra" || section.kind === "cases"
+        ? `${section.kind}:${normalizeLabel(section.rawLabel)}`
+        : section.kind;
     const existingIndex = indexByKey.get(key);
     if (existingIndex === undefined) {
       indexByKey.set(key, merged.length);
@@ -281,7 +311,9 @@ function mergePitfallsIntoCases(sections: ConceptSection[]): ConceptSection[] {
   }
 
   if (pendingPitfalls.length > 0) {
-    const lastCasesIndex = merged.findLastIndex((item) => item.kind === "cases");
+    const lastCasesIndex = merged.findLastIndex(
+      (item) => item.kind === "cases",
+    );
     if (lastCasesIndex >= 0) {
       flushPitfallsIntoCases(lastCasesIndex);
     } else {
@@ -304,7 +336,8 @@ function wrapSlot(kind: SlotKind, rawLabel: string, bodyHtml: string): string {
   if (!bodyHtml.trim()) {
     return "";
   }
-  const labelHtml = kind === "intro" ? "" : slotLabelHtml(kind, displayLabel(kind, rawLabel));
+  const labelHtml =
+    kind === "intro" ? "" : slotLabelHtml(kind, displayLabel(kind, rawLabel));
   return `<section class="concept-slot slot-${kind}">${labelHtml}<div class="concept-slot__body">${bodyHtml}</div></section>`;
 }
 
@@ -314,7 +347,9 @@ async function renderSections(
 ): Promise<string> {
   const rendered = await Promise.all(
     sections.map(async (section) => {
-      const bodyHtml = transformProsConsTables(await renderFragment(section.body));
+      const bodyHtml = transformProsConsTables(
+        await renderFragment(section.body),
+      );
       return wrapSlot(section.kind, section.rawLabel, bodyHtml);
     }),
   );
@@ -332,7 +367,10 @@ export async function structureConceptBody(
 
   const renderedParts = await Promise.all(
     parts.map(async (part) => {
-      const slotsHtml = await renderSections(sectionsForMarkdown(part.markdown), renderFragment);
+      const slotsHtml = await renderSections(
+        sectionsForMarkdown(part.markdown),
+        renderFragment,
+      );
       return wrapPart(part.heading, slotsHtml);
     }),
   );

@@ -6,7 +6,7 @@ Fetching, caching, revalidation, Server Actions, and Route Handlers.
 
 ### Related docs
 
-* [Next.js — Core](./4_nextjs_core.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
+- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
 
 ### Sections
 
@@ -18,7 +18,7 @@ Fetching, caching, revalidation, Server Actions, and Route Handlers.
 
 ## 7. Data fetching
 
-*Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template)).*
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Server Component fetching</summary>
@@ -31,20 +31,20 @@ Fetching, caching, revalidation, Server Actions, and Route Handlers.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Data available on first paint | Tight coupling to server runtime |
-| Secrets stay on server | Errors surface at render time |
+| +                                                           | −                                            |
+| ----------------------------------------------------------- | -------------------------------------------- |
+| Data available on first paint                               | Tight coupling to server runtime             |
+| Secrets stay on server                                      | Errors surface at render time                |
 | Automatic deduplication of identical `fetch` in one request | ORM in serverless — watch connection pooling |
 
 **Examples:**
 
 ```tsx
 async function getProducts() {
-  const res = await fetch('https://api.example.com/products', {
-    next: { tags: ['products'] },
+  const res = await fetch("https://api.example.com/products", {
+    next: { tags: ["products"] },
   });
-  if (!res.ok) throw new Error('Failed to fetch products');
+  if (!res.ok) throw new Error("Failed to fetch products");
   return res.json();
 }
 
@@ -73,18 +73,18 @@ export default async function ProductsPage() {
 
 Next.js extends `fetch` with caching semantics that map to SSG/SSR/ISR.
 
-| Option | Behavior | Pages Router equivalent |
-|--------|----------|------------------------|
-| `cache: 'force-cache'` (default) | Cache until invalidated | `getStaticProps` |
-| `cache: 'no-store'` | Fetch every request | `getServerSideProps` |
-| `next: { revalidate: N }` | ISR — revalidate after N seconds | `revalidate` in `getStaticProps` |
-| `next: { tags: ['tag'] }` | Tag for on-demand invalidation | N/A |
+| Option                           | Behavior                         | Pages Router equivalent          |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| `cache: 'force-cache'` (default) | Cache until invalidated          | `getStaticProps`                 |
+| `cache: 'no-store'`              | Fetch every request              | `getServerSideProps`             |
+| `next: { revalidate: N }`        | ISR — revalidate after N seconds | `revalidate` in `getStaticProps` |
+| `next: { tags: ['tag'] }`        | Tag for on-demand invalidation   | N/A                              |
 
 **Examples:**
 
 ```tsx
-const staticData = await fetch(url, { cache: 'force-cache' });
-const dynamicData = await fetch(url, { cache: 'no-store' });
+const staticData = await fetch(url, { cache: "force-cache" });
+const dynamicData = await fetch(url, { cache: "no-store" });
 const revalidatedData = await fetch(url, { next: { revalidate: 10 } });
 ```
 
@@ -125,22 +125,26 @@ export default async function Page() {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Live updates, polling, optimistic UI | Client waterfall if overused |
-| Works with any REST/GraphQL client | Worse SEO for critical content |
+| +                                    | −                              |
+| ------------------------------------ | ------------------------------ |
+| Live updates, polling, optimistic UI | Client waterfall if overused   |
+| Works with any REST/GraphQL client   | Worse SEO for critical content |
 
 **Examples:**
 
 ```tsx
-'use client';
+"use client";
 
-import useSWR from 'swr';
+import useSWR from "swr";
 
 export function LiveMetrics() {
-  const { data, isLoading } = useSWR('/api/metrics', (url) => fetch(url).then(r => r.json()), {
-    refreshInterval: 5000,
-  });
+  const { data, isLoading } = useSWR(
+    "/api/metrics",
+    (url) => fetch(url).then((r) => r.json()),
+    {
+      refreshInterval: 5000,
+    },
+  );
   if (isLoading) return <p>Loading…</p>;
   return <div>{data.value}</div>;
 }
@@ -167,39 +171,43 @@ Regular authenticated app previews — use session auth + dynamic rendering inst
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Editors preview unpublished content | Must protect enable endpoint with secret |
-| Works with any headless CMS | Disables static optimization while active |
+| +                                     | −                                             |
+| ------------------------------------- | --------------------------------------------- |
+| Editors preview unpublished content   | Must protect enable endpoint with secret      |
+| Works with any headless CMS           | Disables static optimization while active     |
 | Cookie-based — no special client code | Easy to forget to disable in production tests |
 
 **Examples:**
 
 ```tsx
 // app/api/draft/route.ts
-import { draftMode } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { draftMode } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const secret = searchParams.get('secret');
-  const slug = searchParams.get('slug');
+  const secret = searchParams.get("secret");
+  const slug = searchParams.get("slug");
 
   if (secret !== process.env.DRAFT_SECRET) {
-    return new Response('Invalid token', { status: 401 });
+    return new Response("Invalid token", { status: 401 });
   }
 
   const draft = await draftMode();
   draft.enable();
-  redirect(slug ?? '/');
+  redirect(slug ?? "/");
 }
 ```
 
 ```tsx
 // app/blog/[slug]/page.tsx
-import { draftMode } from 'next/headers';
+import { draftMode } from "next/headers";
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPost({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const { isEnabled } = await draftMode();
 
@@ -225,7 +233,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
 ## 8. Caching & revalidation
 
-*Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template)).*
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Caching model overview</summary>
@@ -236,12 +244,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
 Next.js maintains **four cache layers** between your data source and the browser. Understanding which layer serves a response — and which invalidation API clears it — is the #1 source of production bugs.
 
-| Cache | What it stores | Lifetime | Invalidation |
-|-------|----------------|----------|--------------|
-| **Request memoization** | Deduped `fetch` / function results within one render | Single request | Automatic — new request |
-| **Data Cache** | Persistent `fetch` and `use cache` results | Until revalidate TTL or on-demand | `revalidateTag`, `revalidatePath`, `updateTag` |
-| **Full Route Cache** | Rendered HTML + RSC Flight payload per route | Build or until revalidated | `revalidatePath`, `revalidateTag`, `router.refresh()` |
-| **Router Cache** | RSC payload on **client-side** navigations | Session (soft) / ~30s default (static) | `router.refresh()`, full page reload |
+| Cache                   | What it stores                                       | Lifetime                               | Invalidation                                          |
+| ----------------------- | ---------------------------------------------------- | -------------------------------------- | ----------------------------------------------------- |
+| **Request memoization** | Deduped `fetch` / function results within one render | Single request                         | Automatic — new request                               |
+| **Data Cache**          | Persistent `fetch` and `use cache` results           | Until revalidate TTL or on-demand      | `revalidateTag`, `revalidatePath`, `updateTag`        |
+| **Full Route Cache**    | Rendered HTML + RSC Flight payload per route         | Build or until revalidated             | `revalidatePath`, `revalidateTag`, `router.refresh()` |
+| **Router Cache**        | RSC payload on **client-side** navigations           | Session (soft) / ~30s default (static) | `router.refresh()`, full page reload                  |
 
 **When to use:**
 
@@ -250,16 +258,18 @@ Next.js maintains **four cache layers** between your data source and the browser
 - `next: { revalidate: N }` — ISR content
 - `use cache` + `cacheTag` — explicit cache boundaries in Next.js 16
 
+**When not to use:**
+
 - Assuming `revalidatePath` clears client Router Cache instantly — pair with `router.refresh()` in Client Components when needed
 - In-process `Map` caches on serverless — use `'use cache: remote'` or external store
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Massive perf wins for read-heavy apps | Stale UI after mutations if you forget invalidation |
+| +                                              | −                                                      |
+| ---------------------------------------------- | ------------------------------------------------------ |
+| Massive perf wins for read-heavy apps          | Stale UI after mutations if you forget invalidation    |
 | Request memoization prevents duplicate DB hits | Router Cache can show old RSC payload after navigation |
-| CDN-friendly static shells with PPR | Mental model is harder than "always fresh SSR" |
+| CDN-friendly static shells with PPR            | Mental model is harder than "always fresh SSR"         |
 
 **Examples:**
 
@@ -277,14 +287,19 @@ Client navigation (Link)
 ```
 
 ```tsx
-'use server';
+"use server";
 
-import { revalidateTag, revalidatePath } from 'next/cache';
+import { revalidateTag, revalidatePath } from "next/cache";
 
 export async function updateProduct(id: string, data: FormData) {
-  await db.product.update({ where: { id }, data: { /* ... */ } });
-  revalidateTag(`product-${id}`, 'max');   // Data Cache
-  revalidatePath('/products');              // Full Route Cache
+  await db.product.update({
+    where: { id },
+    data: {
+      /* ... */
+    },
+  });
+  revalidateTag(`product-${id}`, "max"); // Data Cache
+  revalidatePath("/products"); // Full Route Cache
 }
 ```
 
@@ -308,23 +323,23 @@ export async function updateProduct(id: string, data: FormData) {
 
 Next.js 16 directive marking a function or component body as cacheable. Enables Cache Components and PPR.
 
-| Variant | Scope |
-|---------|-------|
-| `'use cache'` | Default component/function cache |
-| `'use cache: private'` | Per-user cache (uses cookies/headers) |
-| `'use cache: remote'` | Runtime cache — shared across serverless instances |
+| Variant                | Scope                                              |
+| ---------------------- | -------------------------------------------------- |
+| `'use cache'`          | Default component/function cache                   |
+| `'use cache: private'` | Per-user cache (uses cookies/headers)              |
+| `'use cache: remote'`  | Runtime cache — shared across serverless instances |
 
 **Examples:**
 
 ```tsx
-import { cacheLife, cacheTag } from 'next/cache';
+import { cacheLife, cacheTag } from "next/cache";
 
 async function getProducts() {
-  'use cache: remote';
-  cacheTag('products-list');
+  "use cache: remote";
+  cacheTag("products-list");
   cacheLife({ expire: 3600 });
 
-  const res = await fetch('https://api.example.com/products');
+  const res = await fetch("https://api.example.com/products");
   return res.json();
 }
 ```
@@ -349,13 +364,13 @@ export default nextConfig;
 **Examples:**
 
 ```tsx
-'use server';
+"use server";
 
-import { revalidateTag } from 'next/cache';
+import { revalidateTag } from "next/cache";
 
 export async function updateArticle(articleId: string) {
   await db.article.update({ where: { id: articleId }, data: {} });
-  revalidateTag(`article-${articleId}`, 'max');
+  revalidateTag(`article-${articleId}`, "max");
 }
 ```
 
@@ -373,13 +388,13 @@ export async function updateArticle(articleId: string) {
 **Examples:**
 
 ```tsx
-'use server';
+"use server";
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from "next/cache";
 
 export async function createPost(formData: FormData) {
-  await db.post.create({ data: { title: formData.get('title') as string } });
-  revalidatePath('/blog');
+  await db.post.create({ data: { title: formData.get("title") as string } });
+  revalidatePath("/blog");
 }
 ```
 
@@ -397,9 +412,9 @@ export async function createPost(formData: FormData) {
 **Examples:**
 
 ```tsx
-'use server';
+"use server";
 
-import { updateTag } from 'next/cache';
+import { updateTag } from "next/cache";
 
 export async function updateProfile(userId: string, data: ProfileData) {
   await db.user.update({ where: { id: userId }, data });
@@ -420,16 +435,16 @@ export async function updateProfile(userId: string, data: ProfileData) {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                      | −                                                   |
+| ---------------------- | --------------------------------------------------- |
 | Preserves client state | Does **not** invalidate server Data Cache by itself |
 
 **Examples:**
 
 ```tsx
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 export function RefreshButton() {
   const router = useRouter();
@@ -450,19 +465,19 @@ export function RefreshButton() {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Simple escape hatch for dynamic data | Disables static optimization for that tree |
+| +                                             | −                                                 |
+| --------------------------------------------- | ------------------------------------------------- |
+| Simple escape hatch for dynamic data          | Disables static optimization for that tree        |
 | Works with direct DB calls (not just `fetch`) | Prefer explicit `cache: 'no-store'` when possible |
 
 **Examples:**
 
 ```tsx
-import { unstable_noStore as noStore } from 'next/cache';
+import { unstable_noStore as noStore } from "next/cache";
 
 export default async function LiveClock() {
   noStore();
-  const now = await db.query('SELECT NOW() as time');
+  const now = await db.query("SELECT NOW() as time");
   return <time>{now}</time>;
 }
 ```
@@ -480,11 +495,11 @@ export default async function LiveClock() {
 
 Calling only `router.refresh()` without `revalidatePath` / `revalidateTag` / `updateTag` often leaves cached data stale.
 
-| Symptom | Fix |
-|---------|-----|
+| Symptom                          | Fix                                                                            |
+| -------------------------------- | ------------------------------------------------------------------------------ |
 | List doesn't update after create | `revalidatePath('/items')` or `revalidateTag('items', 'max')` in Server Action |
-| User sees old profile after edit | `updateTag('user-${id}')` |
-| CDN serves old HTML | Check `Cache-Control` + `revalidatePath` |
+| User sees old profile after edit | `updateTag('user-${id}')`                                                      |
+| CDN serves old HTML              | Check `Cache-Control` + `revalidatePath`                                       |
 
 **Thoughts:** [Caching discussion #54075](https://github.com/vercel/next.js/discussions/54075). [Pre-rendering & hydration](https://www.freecodecamp.org/news/what-are-pre-rendering-and-hydration-in-web-dev/).
 
@@ -503,11 +518,11 @@ Calling only `router.refresh()` without `revalidatePath` / `revalidateTag` / `up
 
 ```ts
 export async function GET() {
-  return new Response('Cached response', {
+  return new Response("Cached response", {
     headers: {
-      'Cache-Control': 'max-age=10',
-      'CDN-Cache-Control': 'max-age=60',
-      'Vercel-CDN-Cache-Control': 'max-age=3600',
+      "Cache-Control": "max-age=10",
+      "CDN-Cache-Control": "max-age=60",
+      "Vercel-CDN-Cache-Control": "max-age=3600",
     },
   });
 }
@@ -526,12 +541,12 @@ export async function GET() {
 
 APIs removed or changed in Next.js 16 and their recommended replacements.
 
-| Deprecated | Replacement |
-|------------|-------------|
-| `unstable_cache()` | `'use cache'` + `cacheTag` / `cacheLife` |
-| `experimental.ppr` | `cacheComponents: true` |
-| `revalidateTag(tag)` single arg | `revalidateTag(tag, 'max')` |
-| `cacheHandler` (singular) | `cacheHandlers` (plural) |
+| Deprecated                      | Replacement                              |
+| ------------------------------- | ---------------------------------------- |
+| `unstable_cache()`              | `'use cache'` + `cacheTag` / `cacheLife` |
+| `experimental.ppr`              | `cacheComponents: true`                  |
+| `revalidateTag(tag)` single arg | `revalidateTag(tag, 'max')`              |
+| `cacheHandler` (singular)       | `cacheHandlers` (plural)                 |
 
 ---
 
@@ -543,7 +558,7 @@ APIs removed or changed in Next.js 16 and their recommended replacements.
 
 ## 9. Server Actions vs Route Handlers
 
-*Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template)).*
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Server Actions</summary>
@@ -556,24 +571,24 @@ APIs removed or changed in Next.js 16 and their recommended replacements.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Colocated with UI | Not a public HTTP API |
-| Progressive enhancement | POST-only under the hood |
+| +                         | −                                   |
+| ------------------------- | ----------------------------------- |
+| Colocated with UI         | Not a public HTTP API               |
+| Progressive enhancement   | POST-only under the hood            |
 | Type-safe with TypeScript | Must validate all input server-side |
 
 **Examples:**
 
 ```tsx
 // app/actions.ts
-'use server';
+"use server";
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from "next/cache";
 
 export async function createTodo(formData: FormData) {
-  const title = formData.get('title') as string;
+  const title = formData.get("title") as string;
   await db.todo.create({ data: { title } });
-  revalidatePath('/todos');
+  revalidatePath("/todos");
 }
 ```
 
@@ -590,16 +605,16 @@ export async function createTodo(formData: FormData) {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Real HTTP — webhooks, public APIs | No progressive enhancement |
-| Any HTTP method | Cannot coexist with `page.tsx` in same folder |
+| +                                 | −                                             |
+| --------------------------------- | --------------------------------------------- |
+| Real HTTP — webhooks, public APIs | No progressive enhancement                    |
+| Any HTTP method                   | Cannot coexist with `page.tsx` in same folder |
 
 **Examples:**
 
 ```tsx
 // app/api/webhook/route.ts
-import { NextRequest } from 'next/server';
+import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -620,12 +635,12 @@ export async function POST(request: NextRequest) {
 
 Decision matrix for choosing Server Actions vs Route Handlers based on invocation model and consumers.
 
-| | Server Actions | Route Handlers |
-|---|----------------|----------------|
-| **Invocation** | RPC / `<form action>` | HTTP to URL |
-| **Protocol** | POST (wrapped) | GET, POST, PUT, PATCH, DELETE |
-| **Consumers** | Next.js app only | Any HTTP client |
-| **Use case** | Mutations, forms | Webhooks, public APIs |
+|                | Server Actions        | Route Handlers                |
+| -------------- | --------------------- | ----------------------------- |
+| **Invocation** | RPC / `<form action>` | HTTP to URL                   |
+| **Protocol**   | POST (wrapped)        | GET, POST, PUT, PATCH, DELETE |
+| **Consumers**  | Next.js app only      | Any HTTP client               |
+| **Use case**   | Mutations, forms      | Webhooks, public APIs         |
 
 **Thoughts:** Route Handlers are **only** in `app/`. External systems use Route Handlers, not Server Actions.
 
@@ -644,11 +659,11 @@ Decision matrix for choosing Server Actions vs Route Handlers based on invocatio
 
 Server Actions are invoked via **POST** with a server-generated action ID. Next.js includes **built-in CSRF protections** — Origin header validation and encrypted action IDs — so you do not manually add CSRF tokens for same-origin form posts.
 
-| Protection | How it works |
-|------------|--------------|
+| Protection       | How it works                                                    |
+| ---------------- | --------------------------------------------------------------- |
 | **Origin check** | Request `Origin` must match `Host` (or allowed deployment host) |
-| **Action ID** | Opaque encrypted ID binds POST to the correct server action |
-| **POST-only** | Actions are not callable via GET — no img-tag CSRF |
+| **Action ID**    | Opaque encrypted ID binds POST to the correct server action     |
+| **POST-only**    | Actions are not callable via GET — no img-tag CSRF              |
 
 **How it works:**
 
@@ -660,11 +675,11 @@ Server Actions are invoked via **POST** with a server-generated action ID. Next.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Zero boilerplate for same-origin forms | Cross-origin Server Action calls need explicit `allowedOrigins` |
-| Progressive enhancement safe by default | Route Handlers still need your own CSRF strategy |
-| Works with `<form action={...}>` | Custom `fetch` to actions must include correct headers/body |
+| +                                       | −                                                               |
+| --------------------------------------- | --------------------------------------------------------------- |
+| Zero boilerplate for same-origin forms  | Cross-origin Server Action calls need explicit `allowedOrigins` |
+| Progressive enhancement safe by default | Route Handlers still need your own CSRF strategy                |
+| Works with `<form action={...}>`        | Custom `fetch` to actions must include correct headers/body     |
 
 **Examples:**
 
@@ -673,29 +688,31 @@ Server Actions are invoked via **POST** with a server-generated action ID. Next.
 const nextConfig = {
   experimental: {
     serverActions: {
-      allowedOrigins: ['localhost:3000', 'preview.example.com'],
+      allowedOrigins: ["localhost:3000", "preview.example.com"],
     },
   },
 };
 ```
 
 ```tsx
-'use server';
+"use server";
 
-import { revalidatePath } from 'next/cache';
-import { z } from 'zod';
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 const schema = z.object({ title: z.string().min(1).max(200) });
 
 export async function createTodo(formData: FormData) {
-  const parsed = schema.safeParse({ title: formData.get('title') });
-  if (!parsed.success) return { error: 'Invalid title' };
+  const parsed = schema.safeParse({ title: formData.get("title") });
+  if (!parsed.success) return { error: "Invalid title" };
 
   const session = await getSession(); // always re-validate auth in action
-  if (!session) throw new Error('Unauthorized');
+  if (!session) throw new Error("Unauthorized");
 
-  await db.todo.create({ data: { title: parsed.data.title, userId: session.userId } });
-  revalidatePath('/todos');
+  await db.todo.create({
+    data: { title: parsed.data.title, userId: session.userId },
+  });
+  revalidatePath("/todos");
 }
 ```
 

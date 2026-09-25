@@ -6,7 +6,7 @@ Library model, rendering, JSX, and state.
 
 ### Related docs
 
-* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
 
 ### Sections
 
@@ -22,9 +22,9 @@ Library model, rendering, JSX, and state.
 React
 
 <details>
-  <summary>React</summary>
+  <summary>React overview</summary>
 
-### React
+### React overview
 
 **Definition:** React is a JavaScript **library** for building user interfaces from reusable components. It manages the view layer only — routing, data fetching, and global conventions come from frameworks (Next.js, React Router) or third-party libraries.
 
@@ -32,7 +32,7 @@ React
 
 **Pluses and minuses:**
 
-| +                                                      | −                                                          |
+| +                                                         | −                                                             |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | Component model scales from widgets to full apps          | Not batteries-included — need router, data layer, build tool  |
 | Huge ecosystem, hiring pool, tooling (DevTools, Compiler) | Learning curve: hooks, concurrent rendering, RSC mental model |
@@ -43,15 +43,15 @@ React
 **Examples:**
 
 ```tsx
-import { useState } from 'react';
-import { createRoot } from 'react-dom/client';
+import { useState } from "react";
+import { createRoot } from "react-dom/client";
 
 function Counter() {
   const [count, setCount] = useState(0);
-  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
+  return <button onClick={() => setCount((c) => c + 1)}>{count}</button>;
 }
 
-createRoot(document.getElementById('root')!).render(<Counter />);
+createRoot(document.getElementById("root")!).render(<Counter />);
 ```
 
 **Thoughts:** React is **not** a framework. Inversion of Control: you call React (`createRoot`, `render`); frameworks call your file conventions. Meta (now Linux Foundation) maintains React; production apps typically ship via Vite, Next.js, or Expo — not Create React App (deprecated).
@@ -75,13 +75,13 @@ React vs ReactDOM
 
 Web install is **two** packages, **three** `react-dom` import paths (not three npm packages):
 
-| | Role |
-| --- | --- |
-| `react` | Platform-agnostic UI |
-| `react-dom` | Web renderer (replaces `react-native` on mobile) |
-| `react-dom/client` | `createRoot`, `hydrateRoot` |
-| `react-dom` | `createPortal`, `flushSync`, `useFormStatus` |
-| `react-dom/server` | `renderToString` / streaming SSR |
+|                    | Role                                             |
+| ------------------ | ------------------------------------------------ |
+| `react`            | Platform-agnostic UI                             |
+| `react-dom`        | Web renderer (replaces `react-native` on mobile) |
+| `react-dom/client` | `createRoot`, `hydrateRoot`                      |
+| `react-dom`        | `createPortal`, `flushSync`, `useFormStatus`     |
+| `react-dom/server` | `renderToString` / streaming SSR                 |
 
 `react-dom` triggers the **first** render and **commit**; `react` runs **render** + `setState`. Browser paints.
 
@@ -96,13 +96,13 @@ Treating `/server` as a third package; importing `react-dom` in every component;
 **Examples:**
 
 ```tsx
-import { createRoot } from 'react-dom/client';
-import { createPortal } from 'react-dom';
-createRoot(document.getElementById('root')!).render(<App />);
+import { createRoot } from "react-dom/client";
+import { createPortal } from "react-dom";
+createRoot(document.getElementById("root")!).render(<App />);
 createPortal(<Modal />, document.body);
 ```
 
-**Thoughts:** *Two packages for web; three* `react-dom` *paths.* `react` *describes UI; the renderer commits it.*
+**Thoughts:** _Two packages for web; three_ `react-dom` _paths._ `react` _describes UI; the renderer commits it._
 
 **See also:** [Render pipeline](#render-pipeline) · [Hydration](./4_react_server.md#hydration)
 
@@ -133,7 +133,7 @@ A **library** solves a specific problem (UI rendering); you control the architec
 
 ```tsx
 // Library — you wire routing yourself
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Framework — Next.js owns file-based routes and data loading
 // app/page.tsx is a Server Component by convention
@@ -178,8 +178,14 @@ Core design principles that shape how React apps are structured — declarative 
 **Examples:**
 
 ```tsx
-function LikeButton({ liked, onToggle }: { liked: boolean; onToggle: () => void }) {
-  return <button onClick={onToggle}>{liked ? 'Unlike' : 'Like'}</button>;
+function LikeButton({
+  liked,
+  onToggle,
+}: {
+  liked: boolean;
+  onToggle: () => void;
+}) {
+  return <button onClick={onToggle}>{liked ? "Unlike" : "Like"}</button>;
 }
 ```
 
@@ -206,11 +212,11 @@ Rules of React
 
 Three buckets. Enforce with [`<StrictMode>`](#strict-mode) + `eslint-plugin-react-hooks`.
 
-| Bucket | Rule |
-| --- | --- |
-| **[Purity](#purity)** | Same props/state/context → same JSX. No `fetch` / `new Date()` / mutate-in-render. Copy, then `setState`. Don't mutate Hook args or values already in JSX. |
-| **React calls you** | `<Article />`, never `Article()`. Don't pass Hooks as props or wrap them in HOFs. |
-| **[Rules of Hooks](./4_react_hooks.md#rules-of-hooks)** | Top level only (no loops/conditions/early return). Only in components or `use*` hooks. |
+| Bucket                                                  | Rule                                                                                                                                                       |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Purity](#purity)**                                   | Same props/state/context → same JSX. No `fetch` / `new Date()` / mutate-in-render. Copy, then `setState`. Don't mutate Hook args or values already in JSX. |
+| **React calls you**                                     | `<Article />`, never `Article()`. Don't pass Hooks as props or wrap them in HOFs.                                                                          |
+| **[Rules of Hooks](./4_react_hooks.md#rules-of-hooks)** | Top level only (no loops/conditions/early return). Only in components or `use*` hooks.                                                                     |
 
 Local objects created **this render** may mutate **before** JSX. Mutating props, state, module arrays, or the DOM during render is not allowed.
 
@@ -225,14 +231,18 @@ Treating rules as optional; side effects in render; injecting a Hook via props; 
 **Examples:**
 
 ```tsx
-return <Layout><Article /></Layout>;     // ✅
-return <Layout>{Article()}</Layout>;     // 🔴 React never owns that instance
+return (
+  <Layout>
+    <Article />
+  </Layout>
+); // ✅
+return <Layout>{Article()}</Layout>; // 🔴 React never owns that instance
 
 if (!id) return null;
 const user = useUser(id); // 🔴 hook after return — call it first
 ```
 
-**Thoughts:** *Render is a pure formula; React calls you — you don't call components or pass Hooks around.*
+**Thoughts:** _Render is a pure formula; React calls you — you don't call components or pass Hooks around._
 
 **See also:** [Purity](#purity) · [Rules of Hooks](./4_react_hooks.md#rules-of-hooks) · [Strict Mode](#strict-mode) · [Element vs component](#element-vs-component) · [React Compiler](./4_react_server.md#react-compiler) · [Thinking in React](https://react.dev/learn/thinking-in-react)
 
@@ -253,13 +263,13 @@ SOLID in React
 
 **How it works:**
 
-| | Principle | In React |
-| --- | --- | --- |
-| **S** | Single Responsibility | One job: UI **or** data hook, not both |
-| **O** | Open/Closed | Extend with `variant`, wrappers, `children` — don't fork `Button` |
-| **L** | Liskov Substitution | Wrapper honors the same contract (don't ignore `disabled`) |
-| **I** | Interface Segregation | Small props / split contexts — no god `Modal` props |
-| **D** | Dependency Inversion | UI depends on a hook/client, not `fetch` in JSX |
+Each letter matches the **Examples** below — look for `// good` and `// bad`:
+
+1. **S** — data hook **or** UI component — not both in one file.
+2. **O** — extend with `variant`, `children`, wrappers — don't copy-paste `DangerButton`.
+3. **L** — if `Button` accepts `disabled`, every wrapper must honor it.
+4. **I** — small prop surfaces — `Modal` is a shell with `children`, not 20 props.
+5. **D** — pass `UserClient` into `useUsers()` — no `fetch('/api/...')` inside the hook.
 
 **When to use:**
 
@@ -272,40 +282,138 @@ Over-SRP (15 one-line components); endless `variant` enums; DIP for a single pro
 **Examples:**
 
 ```tsx
-// S + D — data hook vs UI; inject the client
+type User = { id: string; name: string };
 type UserClient = { list(): Promise<User[]> };
 
+// S — good: hook loads data; component renders UI
 function useUsers(client: UserClient) {
   const [users, setUsers] = useState<User[]>([]);
-  useEffect(() => { void client.list().then(setUsers); }, [client]);
+  useEffect(() => {
+    void client.list().then(setUsers);
+  }, [client]);
   return users;
 }
 
 function UserList({ users }: { users: User[] }) {
-  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
+  return (
+    <ul>
+      {users.map((u) => (
+        <li key={u.id}>{u.name}</li>
+      ))}
+    </ul>
+  );
 }
 
-// O — extend Button; don't fork DangerButton
-function Button({ variant = 'primary', children, ...props }: ButtonProps) {
-  return <button className={styles[variant]} {...props}>{children}</button>;
+// S — bad: one component fetches, formats, handles errors, and renders
+// function UserPage() {
+//   const [users, setUsers] = useState<User[]>([]);
+//   useEffect(() => {
+//     fetch("/api/users")
+//       .then((r) => r.json())
+//       .then(setUsers);
+//   }, []);
+//   return (
+//     <ul>
+//       {users.map((u) => (
+//         <li key={u.id}>{u.name.toUpperCase()}</li>
+//       ))}
+//     </ul>
+//   );
+// }
+
+// O — good: extend Button with variant — no forked components
+type ButtonProps = React.ComponentProps<"button"> & {
+  variant?: "primary" | "danger";
+};
+
+function Button({ variant = "primary", children, ...props }: ButtonProps) {
+  return (
+    <button className={styles[variant]} {...props}>
+      {children}
+    </button>
+  );
 }
 
-// I — Modal is a shell, not a god component
-<Modal open={open} onClose={close}>{children}</Modal>
+// O — bad: copy-paste PrimaryButton / DangerButton — edit both when padding changes
+// function DangerButton(props: ButtonProps) {
+//   return <button className="btn-danger" {...props} />;
+// }
 
-// L — honor the contract (disabled actually disables)
-function IconButton({ onClick, disabled, children }: ClickableProps) {
-  return <button type="button" onClick={onClick} disabled={disabled}>{children}</button>;
+// L — good: disabled actually disables click
+function IconButton({
+  onClick,
+  disabled,
+  children,
+}: {
+  onClick?: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button type="button" onClick={onClick} disabled={disabled}>
+      {children}
+    </button>
+  );
 }
+
+// L — bad: ignores disabled — looks disabled but still fires onClick
+// function IconButton({ onClick, disabled, children }) {
+//   return (
+//     <button type="button" onClick={onClick} aria-disabled={disabled}>
+//       {children}
+//     </button>
+//   );
+// }
+
+// I — good: Modal shell — content via children
+function Modal({
+  open,
+  onClose,
+  children,
+}: {
+  open: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
+  if (!open) return null;
+  return (
+    <dialog open>
+      <button type="button" onClick={onClose}>
+        Close
+      </button>
+      {children}
+    </dialog>
+  );
+}
+
+// I — bad: god Modal — callers forced to pass props they never use
+// function Modal({ open, title, body, footer, onConfirm, confirmLabel, ...rest }) { ... }
+
+// D — good: inject API client — swap fake in tests
+function UsersPanel({ client }: { client: UserClient }) {
+  const users = useUsers(client);
+  return <UserList users={users} />;
+}
+
+// D — bad: hook hardcodes fetch — hard to test, tied to one URL
+// function useUsers() {
+//   const [users, setUsers] = useState<User[]>([]);
+//   useEffect(() => {
+//     void fetch("/api/users")
+//       .then((r) => r.json())
+//       .then(setUsers);
+//   }, []);
+//   return users;
+// }
 ```
 
-**Thoughts:** *Small focused units, extend by composition, inject data — React is built for S, O, and D.*
+**Thoughts:** _Small focused units, extend by composition, inject data — React is built for S, O, and D._
 
-**See also:** [Philosophy](#philosophy) · [Composition patterns](#composition-patterns) · [Custom hooks](./4_react_hooks.md#custom-hooks) · [7_special.md — SOLID](./7_special_engineering.md#9-oop-and-solid)
+**See also:** [Philosophy](#philosophy) · [Composition patterns](#composition-patterns) · [Custom hooks](./4_react_hooks.md#custom-hooks) · [SOLID (overview)](./7_special_engineering.md#solid-overview)
 
 **Sources:**
 
-[react.dev/learn](https://react.dev/learn) · [patterns.dev/react](https://www.patterns.dev/react/)
+[react.dev/learn](https://react.dev/learn) · [patterns.dev/react](https://www.patterns.dev/react/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
 
 ---
 
@@ -372,11 +480,11 @@ Paint     browser layout + pixels
 Effects   useEffect after paint
 ```
 
-| Who | Owns |
-| --- | --- |
-| `react` | Render, `setState` / hooks |
+| Who         | Owns                                            |
+| ----------- | ----------------------------------------------- |
+| `react`     | Render, `setState` / hooks                      |
 | `react-dom` | Initial trigger (`createRoot`), commit, portals |
-| Browser | Paint |
+| Browser     | Paint                                           |
 
 Packages vs import paths: [React vs ReactDOM](#react-vs-reactdom). Concurrent: render may pause/restart; **commit never pauses** — [Fiber](#react-fiber).
 
@@ -393,13 +501,17 @@ Render ≠ DOM update; side effects in render; `useLayoutEffect` for everything;
 ```tsx
 function Tooltip({ text }: { text: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => { /* measure DOM before paint */ }, [text]);
-  useEffect(() => { document.title = text; }, [text]); // after paint
+  useLayoutEffect(() => {
+    /* measure DOM before paint */
+  }, [text]);
+  useEffect(() => {
+    document.title = text;
+  }, [text]); // after paint
   return <div ref={ref}>{text}</div>;
 }
 ```
 
-**Thoughts:** *Trigger schedules → render computes (may repeat) → commit mutates once → paint →* `useEffect`*.*
+**Thoughts:** _Trigger schedules → render computes (may repeat) → commit mutates once → paint →_ `useEffect`_._
 
 **See also:** [React vs ReactDOM](#react-vs-reactdom) · [useEffect vs useLayoutEffect?](./4_react_interview.md#useeffect-vs-uselayouteffect) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Concurrent rendering](#concurrent-rendering) · [Batching](#batching)
 
@@ -451,7 +563,9 @@ return <h1>Hello, {name}</h1>;
 return condition ? <h1>Title</h1> : <p>Body</p>;
 
 // Keys — stable id, not index on sortable lists
-{items.map(item => <li key={item.id}>{item.name}</li>)}
+{
+  items.map((item) => <li key={item.id}>{item.name}</li>);
+}
 ```
 
 A component can re-render and produce an element tree **identical** to the previous one — reconciliation finds no changes and **commit skips DOM mutations**. Parent re-renders often re-run child functions without touching the DOM.
@@ -472,13 +586,13 @@ Always — this is how React works internally. You don't opt in.
 
 **Pluses and minuses:**
 
-| +                                        | −                                                                           |
+| +                                           | −                                                                              |
 | ------------------------------------------- | ------------------------------------------------------------------------------ |
 | Declarative updates — write `UI = f(state)` | Misleading name — not a full DOM clone for every node                          |
 | Reuses DOM nodes when type + key match      | Diff is O(n) heuristic, not optimal — huge lists need virtualization           |
 | Same model works for React Native           | "VDOM is faster than real DOM" is a myth — browsers already do partial updates |
 
-**Thoughts:** *Reconciliation diffs element trees by type and key — same type updates props in place; different type rebuilds; lists need stable keys.*
+**Thoughts:** _Reconciliation diffs element trees by type and key — same type updates props in place; different type rebuilds; lists need stable keys._
 
 **See also:** [Render pipeline](#render-pipeline) · [Element vs component](#element-vs-component) · [Keys](#keys) · [React Fiber](#react-fiber) · [Batching](#batching)
 
@@ -517,9 +631,9 @@ React Fiber
 
 Render ≠ paint. The screen changes only at **commit**. Reconciler (`react`) walks fibers; renderer (`react-dom`) writes the DOM.
 
-| | current | WIP |
-| --- | --- | --- |
-| Tree | On screen | Draft this render |
+|      | current          | WIP                                  |
+| ---- | ---------------- | ------------------------------------ |
+| Tree | On screen        | Draft this render                    |
 | Link | `alternate` twin | Clone; reuse if `type` + `key` match |
 
 Linked list (`child` = first child, `sibling` = next, `return` = parent) so React always knows the **next** fiber without the JS call stack — that is how pause/resume works.
@@ -541,15 +655,15 @@ One fiber (or a short burst) processed before `shouldYield()`. React **finishes 
 
 Chunks do **not** use extra CPU cores and do **not** make your own heavy JS (`array.filter` on 100k items) non-blocking — only reconciliation is sliced.
 
-Scheduler orders *when* the callback runs. **Lanes** tag *which* updates.
+Scheduler orders _when_ the callback runs. **Lanes** tag _which_ updates.
 
-| High → low | Trigger | Notes |
-| ---------- | ------- | ----- |
-| Sync | click, `flushSync` | Commit ASAP |
-| Input | `onChange`, drag | Keep typing smooth |
-| Default | normal `setState` | Standard |
-| Transition | `startTransition` | Interruptible; WIP can be discarded |
-| Idle | prefetch | Lowest; starved work **expires** and gets promoted |
+| High → low | Trigger            | Notes                                              |
+| ---------- | ------------------ | -------------------------------------------------- |
+| Sync       | click, `flushSync` | Commit ASAP                                        |
+| Input      | `onChange`, drag   | Keep typing smooth                                 |
+| Default    | normal `setState`  | Standard                                           |
+| Transition | `startTransition`  | Interruptible; WIP can be discarded                |
+| Idle       | prefetch           | Lowest; starved work **expires** and gets promoted |
 
 Same lane → **batched**. Higher lane during a lower render → throw away WIP, restart.
 
@@ -565,8 +679,8 @@ Interview "how React stays responsive"; expensive tab/list UI via transitions. N
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
+| +                                          | −                                                  |
+| ------------------------------------------ | -------------------------------------------------- |
 | Interruptible render, priorities, Suspense | Internals unstable; commit still blocks the thread |
 
 **Examples:**
@@ -576,7 +690,7 @@ onClick={() => setOpen(true)}; // urgent lane
 startTransition(() => setTab('analytics')); // transition lane
 ```
 
-**Thoughts:** *Render prepares work in chunks; commit applies it in one atomic pass.*
+**Thoughts:** _Render prepares work in chunks; commit applies it in one atomic pass._
 
 **See also:** [Render pipeline](#render-pipeline) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Concurrent rendering](#concurrent-rendering) · [Batching](#batching) · [Rules of Hooks](./4_react_hooks.md#rules-of-hooks)
 
@@ -630,7 +744,7 @@ function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 }
 ```
 
-**Thoughts:** *Prepare UI in the background, commit urgent work first — stale UI briefly is the tradeoff.*
+**Thoughts:** _Prepare UI in the background, commit urgent work first — stale UI briefly is the tradeoff._
 
 **See also:** [React Fiber](#react-fiber) · [useTransition / useDeferredValue](./4_react_hooks.md#usetransition--usedeferredvalue) · [Render pipeline](#render-pipeline)
 
@@ -669,8 +783,8 @@ Batching
 
 ```tsx
 function handleClick() {
-  setCount(c => c + 1);
-  setFlag(f => !f);
+  setCount((c) => c + 1);
+  setFlag((f) => !f);
   // React 18+: one re-render, not two
 }
 
@@ -679,7 +793,7 @@ setCount(count + 1);
 setCount(count + 1); // still +1 total — use c => c + 1
 ```
 
-**Thoughts:** *Batching reduces renders; functional updaters fix stale snapshot math.*
+**Thoughts:** _Batching reduces renders; functional updaters fix stale snapshot math._
 
 **See also:** [State as snapshot](#state-as-snapshot) · [Render pipeline](#render-pipeline)
 
@@ -726,13 +840,17 @@ Every item in `array.map()`. Use stable IDs from data (`todo.id`). Also use `key
 
 ```tsx
 // Good — stable id from database
-{todos.map(todo => <Todo key={todo.id} todo={todo} />)}
+{
+  todos.map((todo) => <Todo key={todo.id} todo={todo} />);
+}
 
 // Bad — reorder [A,B] → [B,A]: React reuses wrong instances, stale state
-{todos.map((todo, i) => <Todo key={i} todo={todo} />)}
+{
+  todos.map((todo, i) => <Todo key={i} todo={todo} />);
+}
 ```
 
-**Thoughts:** *Key = identity across renders, not list position.*
+**Thoughts:** _Key = identity across renders, not list position._
 
 **See also:** [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Why list keys? Index as key?](./4_react_interview.md#why-list-keys-index-as-key)
 
@@ -780,7 +898,7 @@ As a fix for double-fetch — fix effect cleanup or dedupe logic instead of remo
 </StrictMode>
 ```
 
-**Thoughts:** *Strict Mode stress-tests your components — if it breaks in dev, it was already fragile.*
+**Thoughts:** _Strict Mode stress-tests your components — if it breaks in dev, it was already fragile._
 
 **See also:** [Rules of React](#rules-of-react) · [Purity](#purity) · [useEffect](./4_react_hooks.md#useeffect) · [Render pipeline](#render-pipeline)
 
@@ -838,7 +956,7 @@ const element = <Welcome name="Ada" />;
 // ≈ { type: Welcome, props: { name: 'Ada' } }
 ```
 
-**Thoughts:** *Components are functions; elements are their output snapshots — reconciliation compares elements.*
+**Thoughts:** _Components are functions; elements are their output snapshots — reconciliation compares elements._
 
 **See also:** [Rules of React](#rules-of-react) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Components](#components)
 
@@ -873,18 +991,24 @@ Every piece of UI. Prefer small, focused components composed upward.
 ```tsx
 // Bad — Profile recreated every Gallery render
 function Gallery() {
-  function Profile() { return <p>...</p>; }
+  function Profile() {
+    return <p>...</p>;
+  }
   return <Profile />;
 }
 
 // Good — define at module scope
-function Profile() { return <p>...</p>; }
-function Gallery() { return <Profile />; }
+function Profile() {
+  return <p>...</p>;
+}
+function Gallery() {
+  return <Profile />;
+}
 ```
 
 **Pluses and minuses:**
 
-| +                           | −                                        |
+| +                              | −                                           |
 | ------------------------------ | ------------------------------------------- |
 | Colocate markup, logic, styles | Deep trees → prop drilling without planning |
 | Reusable at any granularity    | Over-fragmentation adds boilerplate         |
@@ -896,7 +1020,9 @@ function Gallery() { return <Profile />; }
 function VideoList({ videos }: { videos: Video[] }) {
   return (
     <section>
-      {videos.map(v => <Video key={v.id} video={v} />)}
+      {videos.map((v) => (
+        <Video key={v.id} video={v} />
+      ))}
     </section>
   );
 }
@@ -904,7 +1030,7 @@ function VideoList({ videos }: { videos: Video[] }) {
 
 **Thoughts:**
 
-*Components are functions — capital letter = React component, lowercase = HTML.*
+_Components are functions — capital letter = React component, lowercase = HTML._
 
 Single Responsibility — if a component grows, split it. Pages/widgets/features in FSD terms (see [Section 9](./4_react_ecosystem.md#9-ecosystem--architecture)).
 
@@ -934,7 +1060,7 @@ JSX
 
 **Pluses and minuses:**
 
-| +                      | −                                      |
+| +                         | −                                         |
 | ------------------------- | ----------------------------------------- |
 | Readable UI code          | Requires build step (Babel, SWC, esbuild) |
 | Type-safe with TypeScript | `class` → `className`, `for` → `htmlFor`  |
@@ -943,7 +1069,7 @@ JSX
 **Examples:**
 
 ```tsx
-const name = 'Ada';
+const name = "Ada";
 return (
   <>
     <h1 className="title">{name}</h1>
@@ -975,7 +1101,7 @@ Fragments
 
 **Pluses and minuses:**
 
-| +                                                   | −                                           |
+| +                                                      | −                                              |
 | ------------------------------------------------------ | ---------------------------------------------- |
 | Avoids wrapper `<div>` that breaks layout (flex/grid)  | Cannot set `className` or events on a fragment |
 | Keeps semantic HTML clean                              | Shorthand `<>` does not accept `key`           |
@@ -994,7 +1120,7 @@ function Row({ user }: { user: User }) {
 }
 
 // Keyed fragment in a list
-items.map(item => (
+items.map((item) => (
   <Fragment key={item.id}>
     <dt>{item.term}</dt>
     <dd>{item.definition}</dd>
@@ -1038,11 +1164,15 @@ Pass data, configuration, and event handlers down the tree. Lift state up when s
 
 ```tsx
 function Button({ label, onClick, ...rest }: ButtonProps) {
-  return <button onClick={onClick} {...rest}>{label}</button>;
+  return (
+    <button onClick={onClick} {...rest}>
+      {label}
+    </button>
+  );
 }
 ```
 
-**Thoughts:** *Props in, callbacks out — parent owns mutable state.*
+**Thoughts:** _Props in, callbacks out — parent owns mutable state._
 
 **See also:** [State vs props](#state-vs-props) · [Composition patterns](#composition-patterns)
 
@@ -1066,7 +1196,7 @@ React components must be **pure** during render: same inputs → same output; no
 | Allowed                         | Forbidden during render                                     |
 | ------------------------------- | ----------------------------------------------------------- |
 | Create local variables          | `fetch()` side effects                                      |
-| Local mutation of *new* objects | Mutate props, state, context, refs                          |
+| Local mutation of _new_ objects | Mutate props, state, context, refs                          |
 | Compute derived values          | Subscribe to external stores without `useSyncExternalStore` |
 
 **Side effects** belong in event handlers or effects — not in the render body.
@@ -1086,18 +1216,30 @@ Every component render should be pure. Derive display values in render; fetch/su
 ```tsx
 // Bad — impure render
 function ItemList({ items }: { items: Item[] }) {
-  items.push({ id: 'new' }); // mutates prop!
-  return <ul>{items.map(i => <li key={i.id}>{i.name}</li>)}</ul>;
+  items.push({ id: "new" }); // mutates prop!
+  return (
+    <ul>
+      {items.map((i) => (
+        <li key={i.id}>{i.name}</li>
+      ))}
+    </ul>
+  );
 }
 
 // Good — local mutation of new data is fine
 function FriendList({ friends }: { friends: string[] }) {
   const sorted = [...friends].sort(); // new array, local
-  return <ul>{sorted.map(f => <li key={f}>{f}</li>)}</ul>;
+  return (
+    <ul>
+      {sorted.map((f) => (
+        <li key={f}>{f}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
-**Thoughts:** *Render is a pure function of props, state, and context.*
+**Thoughts:** _Render is a pure function of props, state, and context._
 
 **See also:** [Rules of React](#rules-of-react) · [Render pipeline](#render-pipeline) · [You might not need an effect](./4_react_hooks.md#you-might-not-need-an-effect)
 
@@ -1139,12 +1281,18 @@ Conditional rendering & lists
 if (loading) return <Spinner />;
 if (error) return <Error message={error.message} />;
 
-{isLoggedIn ? <Dashboard /> : <Login />}
-{count > 0 && <Badge count={count} />}  // not: {count && ...} when count can be 0
-{items.map(item => <Row key={item.id} item={item} />)}
+{
+  isLoggedIn ? <Dashboard /> : <Login />;
+}
+{
+  count > 0 && <Badge count={count} />;
+} // not: {count && ...} when count can be 0
+{
+  items.map((item) => <Row key={item.id} item={item} />);
+}
 ```
 
-**Thoughts:** *JSX has no* `v-if` *— use JavaScript expressions and early returns.*
+**Thoughts:** _JSX has no_ `v-if` _— use JavaScript expressions and early returns._
 
 **See also:** [Keys](#keys) · [Component trees](#component-trees)
 
@@ -1189,16 +1337,26 @@ Understand render tree when debugging state resets, context scope, and error bou
 
 ```tsx
 // Same position → state preserved across re-renders
-<Profile userId={id} />
+<Profile userId={id} />;
 
 // Different type at same slot → state reset
-{showA ? <CounterA /> : <CounterB />}
+{
+  showA ? <CounterA /> : <CounterB />;
+}
 
 // Same variable name, different position — still different state slots
-{cond ? <Panel><Counter /></Panel> : <Counter />}
+{
+  cond ? (
+    <Panel>
+      <Counter />
+    </Panel>
+  ) : (
+    <Counter />
+  );
+}
 ```
 
-**Thoughts:** *State is tied to tree position, not to how you named the variable.*
+**Thoughts:** _State is tied to tree position, not to how you named the variable._
 
 **See also:** [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Keys](#keys)
 
@@ -1246,7 +1404,13 @@ Build complex UIs by nesting components and passing `children`.
 **Examples:**
 
 ```tsx
-function Card({ children, header }: { children: React.ReactNode; header?: React.ReactNode }) {
+function Card({
+  children,
+  header,
+}: {
+  children: React.ReactNode;
+  header?: React.ReactNode;
+}) {
   return (
     <article>
       {header && <header>{header}</header>}
@@ -1256,7 +1420,7 @@ function Card({ children, header }: { children: React.ReactNode; header?: React.
 }
 ```
 
-**Thoughts:** *Compose UI like nesting HTML — slots over inheritance.*
+**Thoughts:** _Compose UI like nesting HTML — slots over inheritance._
 
 **See also:** [SOLID in React](#solid-in-react) · [Props](#props) · [Context](#context)
 
@@ -1298,7 +1462,7 @@ Any UI that changes: forms, toggles, fetched data, selections.
 
 **Pluses and minuses:**
 
-| +                                       | −                                         |
+| +                                          | −                                            |
 | ------------------------------------------ | -------------------------------------------- |
 | Local encapsulation                        | Easy to create redundant/duplicated state    |
 | Triggers targeted re-renders               | Async batching can surprise (stale closures) |
@@ -1309,10 +1473,10 @@ Any UI that changes: forms, toggles, fetched data, selections.
 ```tsx
 const [count, setCount] = useState(0);
 // Functional update avoids stale closure
-setCount(c => c + 1);
+setCount((c) => c + 1);
 ```
 
-**Thoughts:** *State lives on the fiber; each render sees a frozen snapshot.*
+**Thoughts:** _State lives on the fiber; each render sees a frozen snapshot._
 
 **See also:** [State as snapshot](#state-as-snapshot) · [Batching](#batching) · [Reactive programming](./7_special_architecture.md#reactive-programming--reactivity)
 
@@ -1349,11 +1513,17 @@ Parent holds state → passes **snapshot** as props → child displays and calls
 ```tsx
 function Parent() {
   const [count, setCount] = useState(0);
-  return <Child label="Clicks" count={count} onIncrement={() => setCount(c => c + 1)} />;
+  return (
+    <Child
+      label="Clicks"
+      count={count}
+      onIncrement={() => setCount((c) => c + 1)}
+    />
+  );
 }
 ```
 
-**Thoughts:** *Props in, events out — state lives where it's owned.*
+**Thoughts:** _Props in, events out — state lives where it's owned._
 
 **See also:** [Props](#props) · [Lifting state up](#lifting-state-up)
 
@@ -1391,14 +1561,14 @@ function Counter() {
     setN(n + 1);
     setN(n + 1);
     // After one click: n becomes 1, not 2 — both use snapshot n=0
-    setN(prev => prev + 1);
-    setN(prev => prev + 1);
+    setN((prev) => prev + 1);
+    setN((prev) => prev + 1);
     // After one click: n becomes 2 — functional updates queue correctly
   }
 }
 ```
 
-**Thoughts:** *setState schedules the future; the current render's values are frozen.*
+**Thoughts:** _setState schedules the future; the current render's values are frozen._
 
 **See also:** [Batching](#batching) · [State](#state)
 
@@ -1431,15 +1601,15 @@ Guidelines for choosing what to store in state so updates stay predictable and c
 
 ```tsx
 // Bad — redundant
-const [firstName, setFirstName] = useState('');
-const [lastName, setLastName] = useState('');
-const [fullName, setFullName] = useState(''); // derive instead!
+const [firstName, setFirstName] = useState("");
+const [lastName, setLastName] = useState("");
+const [fullName, setFullName] = useState(""); // derive instead!
 
 // Good
 const fullName = `${firstName} ${lastName}`;
 ```
 
-**Thoughts:** *Minimize state surface — derive during render when possible.*
+**Thoughts:** _Minimize state surface — derive during render when possible._
 
 **See also:** [State](#state) · [You might not need an effect](./4_react_hooks.md#you-might-not-need-an-effect)
 
@@ -1473,7 +1643,7 @@ State used by one component only — keep local. Deep drilling → [Context](#co
 
 ```tsx
 function Page() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   return (
     <>
       <SearchInput value={query} onChange={setQuery} />
@@ -1483,7 +1653,7 @@ function Page() {
 }
 ```
 
-**Thoughts:** *Shared state lives in the lowest common ancestor.*
+**Thoughts:** _Shared state lives in the lowest common ancestor._
 
 **See also:** [State vs props](#state-vs-props) · [Context](#context)
 
@@ -1547,7 +1717,7 @@ Context
 
 **Pluses and minuses:**
 
-| +                                 | −                                       |
+| +                                    | −                                          |
 | ------------------------------------ | ------------------------------------------ |
 | Avoids drilling theme, locale, auth  | All consumers re-render when value changes |
 | Good for rarely changing global data | Easy to overuse as global store            |
@@ -1555,10 +1725,10 @@ Context
 **Examples:**
 
 ```tsx
-const ThemeContext = createContext<'light' | 'dark'>('light');
+const ThemeContext = createContext<"light" | "dark">("light");
 
 function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   return (
     <ThemeContext value={theme}>
       <Toolbar />
@@ -1593,7 +1763,7 @@ useReducer
 
 **Pluses and minuses:**
 
-| +                                | −                                |
+| +                                   | −                                   |
 | ----------------------------------- | ----------------------------------- |
 | Predictable state transitions       | More boilerplate for simple toggles |
 | Easier to test reducer in isolation |                                     |
@@ -1602,11 +1772,13 @@ useReducer
 **Examples:**
 
 ```tsx
-type Action = { type: 'increment' } | { type: 'decrement' };
+type Action = { type: "increment" } | { type: "decrement" };
 function reducer(state: number, action: Action) {
   switch (action.type) {
-    case 'increment': return state + 1;
-    case 'decrement': return state - 1;
+    case "increment":
+      return state + 1;
+    case "decrement":
+      return state - 1;
   }
 }
 const [count, dispatch] = useReducer(reducer, 0);
@@ -1633,7 +1805,7 @@ State normalization
 
 **Pluses and minuses:**
 
-| +                                     | −                              |
+| +                                        | −                                 |
 | ---------------------------------------- | --------------------------------- |
 | Fast lookup by id                        | More setup than plain arrays      |
 | Update one entity without scanning array | Denormalized views need selectors |
@@ -1652,15 +1824,15 @@ type UsersState = {
 const user = state.usersById[2];
 
 // Update one user
-state.usersById[2] = { ...state.usersById[2], name: 'Ivan' };
+state.usersById[2] = { ...state.usersById[2], name: "Ivan" };
 
 // Render list
-state.userIds.map(id => <User key={id} user={state.usersById[id]} />);
+state.userIds.map((id) => <User key={id} user={state.usersById[id]} />);
 ```
 
 **Thoughts:**
 
-*Ids for order, map for lookup — update one row without touching the whole list.*
+_Ids for order, map for lookup — update one row without touching the whole list._
 
 Redux Toolkit `createEntityAdapter`, Apollo/Relay normalize GraphQL cache automatically. TanStack Query stores server shape as-is — normalize in `select` if needed. Unrelated to SQL 1NF–3NF — that is [9_database.md — Normal forms](./9_database_core.md#normal-forms-1nf3nf-bcnf).
 

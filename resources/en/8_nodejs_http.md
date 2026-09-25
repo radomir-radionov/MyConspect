@@ -6,7 +6,7 @@ Express, auth, validation, Koa, NestJS, and runtime choice.
 
 ### Related docs
 
-* [Node.js — Core](./8_nodejs_core.md) · [Node.js — Modules](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Additional](./8_nodejs_process.md) · [Node.js — Interview](./8_nodejs_interview.md)
+- [Node.js — Core](./8_nodejs_core.md) · [Node.js — Modules](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Additional](./8_nodejs_process.md) · [Node.js — Interview](./8_nodejs_interview.md)
 
 ### Sections
 
@@ -15,6 +15,7 @@ Express, auth, validation, Koa, NestJS, and runtime choice.
 - [Validation](#validation)
 - [Koa](#koa)
 - [NestJS](#nestjs)
+- [Design principles](#design-principles)
 - [Choosing a backend runtime](#choosing-a-backend-runtime)
 
 ---
@@ -30,22 +31,22 @@ Express, auth, validation, Koa, NestJS, and runtime choice.
 
 Minimal, unopinionated web framework for Node.js — routing, middleware, templating, static files, error handling.
 
-| Feature | Description |
-|---------|-------------|
-| Routing | `app.get`, `app.post`, `app.use` |
-| Middleware | functions in request pipeline |
-| Static files | `express.static('public')` |
-| Error middleware | 4-arg `(err, req, res, next)` |
+| Feature          | Description                      |
+| ---------------- | -------------------------------- |
+| Routing          | `app.get`, `app.post`, `app.use` |
+| Middleware       | functions in request pipeline    |
+| Static files     | `express.static('public')`       |
+| Error middleware | 4-arg `(err, req, res, next)`    |
 
 **Examples:**
 
 ```js
-import express from 'express';
+import express from "express";
 
 const app = express();
 app.use(express.json());
 
-app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 app.listen(3000);
 ```
 
@@ -62,12 +63,12 @@ app.listen(3000);
 
 Functions `(req, res, next) => {}` that run in order during a request. Call `next()` to continue or send a response to end the chain.
 
-| Use case | Example |
-|----------|---------|
-| Logging | log method + URL |
-| Body parsing | `express.json()` |
-| Auth | verify JWT, attach `req.user` |
-| Errors | catch and format errors |
+| Use case     | Example                       |
+| ------------ | ----------------------------- |
+| Logging      | log method + URL              |
+| Body parsing | `express.json()`              |
+| Auth         | verify JWT, attach `req.user` |
+| Errors       | catch and format errors       |
 
 **Examples:**
 
@@ -100,21 +101,21 @@ app.use((err, req, res, next) => {
 3. Express jumps to the **first error middleware** (4-arg function).
 4. Error handler formats response (JSON, status code) and logs.
 
-| Pattern | Purpose |
-|---------|---------|
-| `next(err)` | Explicit error propagation |
-| `express-async-errors` / wrapper | Catches rejected promises in async routes |
-| Central error handler | Consistent `{ error, code }` shape |
-| 404 handler | `app.use((req,res) => res.status(404).json(...))` after routes |
+| Pattern                          | Purpose                                                        |
+| -------------------------------- | -------------------------------------------------------------- |
+| `next(err)`                      | Explicit error propagation                                     |
+| `express-async-errors` / wrapper | Catches rejected promises in async routes                      |
+| Central error handler            | Consistent `{ error, code }` shape                             |
+| 404 handler                      | `app.use((req,res) => res.status(404).json(...))` after routes |
 
 **When to use:** Map `ValidationError` → 422, `UnauthorizedError` → 401, unknown → 500 without leaking internals.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Single place for logging and mapping errors | Must register after all routes |
-| Hides stack traces in production | Easy to forget async error forwarding |
+| +                                           | −                                     |
+| ------------------------------------------- | ------------------------------------- |
+| Single place for logging and mapping errors | Must register after all routes        |
+| Hides stack traces in production            | Easy to forget async error forwarding |
 
 **Examples:**
 
@@ -123,17 +124,20 @@ app.use((err, req, res, next) => {
 const asyncHandler = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
-app.post('/users', asyncHandler(async (req, res) => {
-  const user = await db.createUser(req.body);
-  res.status(201).json(user);
-}));
+app.post(
+  "/users",
+  asyncHandler(async (req, res) => {
+    const user = await db.createUser(req.body);
+    res.status(201).json(user);
+  }),
+);
 
 // Error middleware — MUST be last
 app.use((err, req, res, next) => {
   const status = err.status ?? 500;
   console.error(err);
   res.status(status).json({
-    error: status === 500 ? 'Internal server error' : err.message,
+    error: status === 500 ? "Internal server error" : err.message,
   });
 });
 ```
@@ -153,15 +157,15 @@ app.use((err, req, res, next) => {
 
 Route params are path segments (`:id`); query params are key/value pairs after `?` in the URL.
 
-| Type | Pattern | Access |
-|------|---------|--------|
-| Route param | `/users/:id` | `req.params.id` |
+| Type         | Pattern          | Access           |
+| ------------ | ---------------- | ---------------- |
+| Route param  | `/users/:id`     | `req.params.id`  |
 | Query string | `/users?lang=en` | `req.query.lang` |
 
 **Examples:**
 
 ```js
-app.get('/users/:id', (req, res) => {
+app.get("/users/:id", (req, res) => {
   const { id } = req.params;
   const { lang } = req.query;
   res.json({ id, lang });
@@ -181,16 +185,16 @@ app.get('/users/:id', (req, res) => {
 
 Both send HTTP responses; `res.json()` sets `Content-Type: application/json` and serializes objects.
 
-| Method | Behavior |
-|--------|----------|
+| Method           | Behavior                                   |
+| ---------------- | ------------------------------------------ |
 | `res.send(data)` | auto-detects type (string, buffer, object) |
-| `res.json(obj)` | always JSON, sets header explicitly |
+| `res.json(obj)`  | always JSON, sets header explicitly        |
 
 **Examples:**
 
 ```js
-res.json({ users: [] });     // preferred for APIs
-res.send('plain text');      // text/html or text/plain
+res.json({ users: [] }); // preferred for APIs
+res.send("plain text"); // text/html or text/plain
 ```
 
 **Sources:** [expressjs.com response](https://expressjs.com/en/4x/api.html#res)
@@ -212,11 +216,11 @@ res.send('plain text');      // text/html or text/plain
 
 Three distinct security steps in most auth flows.
 
-| Step | Question | Examples |
-|------|----------|----------|
-| Authentication | Who are you? | password, OTP, OAuth, passkeys |
-| Identification | Which account? | user id, email, username (`sub` claim) |
-| Authorization | What can you do? | roles, permissions, scopes |
+| Step           | Question         | Examples                               |
+| -------------- | ---------------- | -------------------------------------- |
+| Authentication | Who are you?     | password, OTP, OAuth, passkeys         |
+| Identification | Which account?   | user id, email, username (`sub` claim) |
+| Authorization  | What can you do? | roles, permissions, scopes             |
 
 **How it works:**
 
@@ -225,11 +229,11 @@ Three distinct security steps in most auth flows.
 3. **Request** — middleware verifies session/JWT → attach `req.user`.
 4. **Authorize** — check role/permission before handler (`if (!req.user.can('delete'))` → 403).
 
-| Pattern | Storage | Revocation |
-|---------|---------|------------|
-| Session + Redis | Server-side session | Delete session key |
+| Pattern              | Storage              | Revocation                   |
+| -------------------- | -------------------- | ---------------------------- |
+| Session + Redis      | Server-side session  | Delete session key           |
 | JWT access + refresh | Client cookie/header | Short TTL + refresh rotation |
-| API key | DB hash | Rotate key in dashboard |
+| API key              | DB hash              | Rotate key in dashboard      |
 
 identify → verify email uniqueness → create account (minimal auth).
 
@@ -239,10 +243,10 @@ authenticate credentials → identify user → authorize access.
 
 **Pluses and minuses:**
 
-| + (layered auth) | − |
-|---------------------|------|
-| Clear separation of concerns | Easy to confuse 401 vs 403 |
-| Middleware reusable across routes | OAuth adds complexity |
+| + (layered auth)                  | −                          |
+| --------------------------------- | -------------------------- |
+| Clear separation of concerns      | Easy to confuse 401 vs 403 |
+| Middleware reusable across routes | OAuth adds complexity      |
 
 **Sources:** [OWASP authentication](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
 
@@ -262,21 +266,21 @@ authenticate credentials → identify user → authorize access.
 3. Client sends JWT on each API request (usually `Authorization: Bearer <token>`).
 4. API verifies signature and expiry.
 
-| Part | Content |
-|------|---------|
-| Header | algorithm (`alg`), type |
-| Payload | `sub`, `iat`, `exp`, custom claims |
-| Signature | verifies integrity |
+| Part      | Content                            |
+| --------- | ---------------------------------- |
+| Header    | algorithm (`alg`), type            |
+| Payload   | `sub`, `iat`, `exp`, custom claims |
+| Signature | verifies integrity                 |
 
 short-lived access token + long-lived refresh token stored securely; refresh endpoint issues new access token.
 
 **Examples:**
 
 ```js
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
-const token = jwt.sign({ sub: userId, role: 'user' }, process.env.JWT_SECRET, {
-  expiresIn: '30m',
+const token = jwt.sign({ sub: userId, role: "user" }, process.env.JWT_SECRET, {
+  expiresIn: "30m",
 });
 const payload = jwt.verify(token, process.env.JWT_SECRET);
 ```
@@ -294,16 +298,16 @@ const payload = jwt.verify(token, process.env.JWT_SECRET);
 
 bcrypt is a slow, adaptive hash for passwords. Never store plain passwords — compare with `bcrypt.compare()`.
 
-| Practice | Why |
-|----------|-----|
-| Hash with salt | resists rainbow tables |
-| Slow algorithm | limits brute force |
-| Never log passwords | security leak |
+| Practice            | Why                    |
+| ------------------- | ---------------------- |
+| Hash with salt      | resists rainbow tables |
+| Slow algorithm      | limits brute force     |
+| Never log passwords | security leak          |
 
 **Examples:**
 
 ```js
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 const hash = await bcrypt.hash(password, 12);
 const valid = await bcrypt.compare(password, hash);
@@ -323,16 +327,18 @@ const valid = await bcrypt.compare(password, hash);
 **Examples:**
 
 ```js
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
 
-passport.use(new LocalStrategy(async (username, password, done) => {
-  const user = await findUser(username);
-  if (!user || !await bcrypt.compare(password, user.hash)) {
-    return done(null, false);
-  }
-  return done(null, user);
-}));
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    const user = await findUser(username);
+    if (!user || !(await bcrypt.compare(password, user.hash))) {
+      return done(null, false);
+    }
+    return done(null, user);
+  }),
+);
 ```
 
 **Sources:** [passportjs.org](http://www.passportjs.org/)
@@ -348,16 +354,16 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 
 Config and secrets stored in `process.env`, loaded from OS or `.env` files. Never commit secrets to git.
 
-| Practice | Description |
-|----------|-------------|
-| `.env` in `.gitignore` | keep local secrets out of repo |
-| `dotenv` package | load `.env` at startup |
-| Different envs | dev/staging/prod separate values |
+| Practice               | Description                      |
+| ---------------------- | -------------------------------- |
+| `.env` in `.gitignore` | keep local secrets out of repo   |
+| `dotenv` package       | load `.env` at startup           |
+| Different envs         | dev/staging/prod separate values |
 
 **Examples:**
 
 ```js
-import 'dotenv/config';
+import "dotenv/config";
 const dbUrl = process.env.DATABASE_URL;
 ```
 
@@ -380,17 +386,17 @@ const dbUrl = process.env.DATABASE_URL;
 
 Schema description language and validator for JavaScript objects — declarative rules for request bodies, config, and API payloads.
 
-| Feature | Description |
-|---------|-------------|
-| Schema types | string, number, array, object, date |
-| Rules | `.required()`, `.min()`, `.email()`, `.pattern()` |
-| Sanitization | `.trim()`, `.lowercase()` |
-| Errors | detailed validation messages |
+| Feature      | Description                                       |
+| ------------ | ------------------------------------------------- |
+| Schema types | string, number, array, object, date               |
+| Rules        | `.required()`, `.min()`, `.email()`, `.pattern()` |
+| Sanitization | `.trim()`, `.lowercase()`                         |
+| Errors       | detailed validation messages                      |
 
 **Examples:**
 
 ```js
-import Joi from 'joi';
+import Joi from "joi";
 
 const schema = Joi.object({
   email: Joi.string().email().required(),
@@ -413,22 +419,22 @@ const { error, value } = schema.validate(req.body);
 
 Fast JSON Schema validator — compiles schemas to efficient validation functions.
 
-| Feature | Description |
-|---------|-------------|
-| JSON Schema | draft-07, 2019-09, 2020-12 |
-| Performance | compiled validators, very fast |
-| Custom keywords | extend with plugins |
+| Feature         | Description                    |
+| --------------- | ------------------------------ |
+| JSON Schema     | draft-07, 2019-09, 2020-12     |
+| Performance     | compiled validators, very fast |
+| Custom keywords | extend with plugins            |
 
 **Examples:**
 
 ```js
-import Ajv from 'ajv';
+import Ajv from "ajv";
 
 const ajv = new Ajv();
 const validate = ajv.compile({
-  type: 'object',
-  properties: { name: { type: 'string' } },
-  required: ['name'],
+  type: "object",
+  properties: { name: { type: "string" } },
+  required: ["name"],
 });
 
 if (!validate(data)) console.log(validate.errors);
@@ -453,20 +459,20 @@ if (!validate(data)) console.log(validate.errors);
 
 Modern, lightweight HTTP framework by the Express team — uses async/await middleware and a context object (`ctx`) instead of Node's `req`/`res` directly.
 
-| vs Express | Koa |
-|------------|-----|
-| Callback middleware | async functions |
-| `req` / `res` | unified `ctx` |
-| Batteries included | minimal core, add middleware |
+| vs Express          | Koa                          |
+| ------------------- | ---------------------------- |
+| Callback middleware | async functions              |
+| `req` / `res`       | unified `ctx`                |
+| Batteries included  | minimal core, add middleware |
 
 **Examples:**
 
 ```js
-import Koa from 'koa';
+import Koa from "koa";
 
 const app = new Koa();
 app.use(async (ctx) => {
-  ctx.body = { message: 'Hello Koa' };
+  ctx.body = { message: "Hello Koa" };
 });
 app.listen(3000);
 ```
@@ -484,12 +490,12 @@ app.listen(3000);
 
 Koa's context object encapsulates request and response for each HTTP call.
 
-| Property | Maps to |
-|----------|---------|
-| `ctx.request` | incoming request |
-| `ctx.response` | outgoing response |
-| `ctx.body` | response body shorthand |
-| `ctx.state` | middleware-shared data |
+| Property       | Maps to                 |
+| -------------- | ----------------------- |
+| `ctx.request`  | incoming request        |
+| `ctx.response` | outgoing response       |
+| `ctx.body`     | response body shorthand |
+| `ctx.state`    | middleware-shared data  |
 
 **Examples:**
 
@@ -529,12 +535,12 @@ app.use(async (ctx, next) => {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Modular architecture out of the box | More boilerplate than raw Express |
-| DI + testability | Learning curve (decorators, modules) |
-| Unified patterns (guards, pipes, interceptors) | Heavier for tiny APIs |
-| TypeScript-first | Framework lock-in vs minimal libs |
+| +                                              | −                                    |
+| ---------------------------------------------- | ------------------------------------ |
+| Modular architecture out of the box            | More boilerplate than raw Express    |
+| DI + testability                               | Learning curve (decorators, modules) |
+| Unified patterns (guards, pipes, interceptors) | Heavier for tiny APIs                |
+| TypeScript-first                               | Framework lock-in vs minimal libs    |
 
 **Examples:**
 
@@ -584,13 +590,13 @@ flowchart TD
   filter --> res
 ```
 
-| Layer | Question it answers | Nest vs Express |
-|-------|---------------------|-----------------|
-| Middleware | Cross-cutting, any route? | Same idea as Express |
-| Guard | Is caller allowed? | Nest-specific |
-| Pipe | Is input valid/transformed? | Nest-specific |
-| Interceptor | Before/after handler logic? | Nest-specific |
-| Filter | How to format errors? | Like Express error middleware |
+| Layer       | Question it answers         | Nest vs Express               |
+| ----------- | --------------------------- | ----------------------------- |
+| Middleware  | Cross-cutting, any route?   | Same idea as Express          |
+| Guard       | Is caller allowed?          | Nest-specific                 |
+| Pipe        | Is input valid/transformed? | Nest-specific                 |
+| Interceptor | Before/after handler logic? | Nest-specific                 |
+| Filter      | How to format errors?       | Like Express error middleware |
 
 **Guard order example** — `@UseGuards(Guard1, Guard2)` on controller, `@UseGuards(Guard3)` on route → `Guard1 → Guard2 → Guard3`.
 
@@ -609,33 +615,33 @@ flowchart TD
 
 Decorators attach metadata and wire Nest's DI and routing. TypeScript `experimentalDecorators` or TS 5+ stage 3 decorators required.
 
-| Decorator | Level | Purpose |
-|-----------|-------|---------|
-| `@Module()` | App | Bundle controllers, providers, imports, exports |
-| `@Controller('path')` | Class | Route prefix |
-| `@Get()`, `@Post()`, `@Patch()`, `@Delete()` | Method | HTTP verb + path |
-| `@Injectable()` | Class | Registerable provider for DI |
-| `@Inject(token)` | Param | Custom provider token |
-| `@Body()`, `@Param()`, `@Query()`, `@Headers()` | Param | Extract request parts |
-| `@UseGuards()` | Class/method | Auth / roles |
-| `@UsePipes()` | Class/method | Validation on route |
-| `@UseInterceptors()` | Class/method | Logging, mapping, cache |
-| `@Catch()` | Class | Exception filter for specific errors |
+| Decorator                                       | Level        | Purpose                                         |
+| ----------------------------------------------- | ------------ | ----------------------------------------------- |
+| `@Module()`                                     | App          | Bundle controllers, providers, imports, exports |
+| `@Controller('path')`                           | Class        | Route prefix                                    |
+| `@Get()`, `@Post()`, `@Patch()`, `@Delete()`    | Method       | HTTP verb + path                                |
+| `@Injectable()`                                 | Class        | Registerable provider for DI                    |
+| `@Inject(token)`                                | Param        | Custom provider token                           |
+| `@Body()`, `@Param()`, `@Query()`, `@Headers()` | Param        | Extract request parts                           |
+| `@UseGuards()`                                  | Class/method | Auth / roles                                    |
+| `@UsePipes()`                                   | Class/method | Validation on route                             |
+| `@UseInterceptors()`                            | Class/method | Logging, mapping, cache                         |
+| `@Catch()`                                      | Class        | Exception filter for specific errors            |
 
 **Parameter decorators** (`@Body('email')`, `@Param('id')`) tell Nest what to inject into handler arguments — combined with pipes for validation.
 
 **Examples:**
 
 ```ts
-@Controller('users')
+@Controller("users")
 @UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly users: UsersService) {}
 
-  @Get(':id')
+  @Get(":id")
   @UseGuards(RolesGuard)
-  @Roles('admin')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  @Roles("admin")
+  findOne(@Param("id", ParseIntPipe) id: number) {
     return this.users.findOne(id);
   }
 
@@ -660,13 +666,13 @@ export class UsersController {
 
 Three different extension points — easy to confuse on interviews.
 
-| | Middleware | Guard | Pipe |
-|---|------------|-------|------|
-| **Runs when** | Early in pipeline | After middleware, before handler | Before handler args are passed |
-| **Access** | `req`, `res`, `next` | `ExecutionContext` | `ArgumentMetadata` + value |
-| **Typical use** | Logger, helmet, cookie-parser | JWT verify, RBAC | `class-validator`, `ParseUUIDPipe` |
-| **Can block route** | Yes (don't call `next`) | Yes (`return false` / throw) | Yes (throw `BadRequestException`) |
-| **Knows handler** | No | Yes (reflector metadata) | Yes (param type) |
+|                     | Middleware                    | Guard                            | Pipe                               |
+| ------------------- | ----------------------------- | -------------------------------- | ---------------------------------- |
+| **Runs when**       | Early in pipeline             | After middleware, before handler | Before handler args are passed     |
+| **Access**          | `req`, `res`, `next`          | `ExecutionContext`               | `ArgumentMetadata` + value         |
+| **Typical use**     | Logger, helmet, cookie-parser | JWT verify, RBAC                 | `class-validator`, `ParseUUIDPipe` |
+| **Can block route** | Yes (don't call `next`)       | Yes (`return false` / throw)     | Yes (throw `BadRequestException`)  |
+| **Knows handler**   | No                            | Yes (reflector metadata)         | Yes (param type)                   |
 
 **Guards** implement `CanActivate` — check roles from `@Roles()` via `Reflector`, verify JWT, API keys.
 
@@ -701,11 +707,11 @@ Three different extension points — easy to confuse on interviews.
 4. **Transactions** — `prisma.$transaction([...])` or `@Transactional()` (TypeORM).
 5. **Migrations** — ORM CLI or Prisma Migrate, run in CI/CD before deploy.
 
-| Approach | Nest integration |
-|----------|------------------|
-| Prisma | `PrismaService` extends `PrismaClient`, `onModuleInit` connects |
-| TypeORM | `@nestjs/typeorm`, entities, `Repository<T>` injection |
-| Raw SQL | Custom provider wrapping `pg.Pool` |
+| Approach | Nest integration                                                |
+| -------- | --------------------------------------------------------------- |
+| Prisma   | `PrismaService` extends `PrismaClient`, `onModuleInit` connects |
+| TypeORM  | `@nestjs/typeorm`, entities, `Repository<T>` injection          |
+| Raw SQL  | Custom provider wrapping `pg.Pool`                              |
 
 **When to use:** Repository pattern for testability (mock service in unit tests). CQRS module for read/write split at scale.
 
@@ -745,16 +751,16 @@ export class UsersService {
 
 Express and Fastify are minimal HTTP servers; NestJS is a full application framework that can use either as its HTTP engine.
 
-| | Express | Fastify | NestJS |
-|---|---------|---------|--------|
-| **Type** | Minimal router + middleware | Fast HTTP framework + schema validation | Opinionated framework (modules, DI) |
-| **Structure** | You design | You design | Modules, controllers, services |
-| **Performance** | Baseline | Often 2×+ RPS vs Express | Depends on adapter (Fastify faster) |
-| **TypeScript** | Community types | Strong native support | First-class |
-| **Validation** | Manual / middleware | `@fastify/*` plugins | `ValidationPipe` + DTO |
-| **Auth** | Passport, custom middleware | Plugins | Guards + Passport module |
-| **Learning curve** | Low | Low–medium | Medium–high |
-| **Best for** | Small APIs, legacy, flexibility | High-throughput APIs | Teams, microservices, long-lived products |
+|                    | Express                         | Fastify                                 | NestJS                                    |
+| ------------------ | ------------------------------- | --------------------------------------- | ----------------------------------------- |
+| **Type**           | Minimal router + middleware     | Fast HTTP framework + schema validation | Opinionated framework (modules, DI)       |
+| **Structure**      | You design                      | You design                              | Modules, controllers, services            |
+| **Performance**    | Baseline                        | Often 2×+ RPS vs Express                | Depends on adapter (Fastify faster)       |
+| **TypeScript**     | Community types                 | Strong native support                   | First-class                               |
+| **Validation**     | Manual / middleware             | `@fastify/*` plugins                    | `ValidationPipe` + DTO                    |
+| **Auth**           | Passport, custom middleware     | Plugins                                 | Guards + Passport module                  |
+| **Learning curve** | Low                             | Low–medium                              | Medium–high                               |
+| **Best for**       | Small APIs, legacy, flexibility | High-throughput APIs                    | Teams, microservices, long-lived products |
 
 **How it works:**
 
@@ -779,6 +785,151 @@ const app = await NestFactory.create<NestFastifyApplication>(
 
 ---
 
+<a name="design-principles"></a>
+
+## Design principles
+
+<details>
+  <summary>SOLID in Express</summary>
+
+### SOLID in Express
+
+**Definition:** The five **SOLID** principles applied to **Express routes, middleware, controllers, and services** — typical Node.js HTTP APIs.
+
+| Principle                     | Meaning                         | Express example                                                                                       |
+| ----------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **S** — Single Responsibility | One reason to change per module | `users.routes.js` wires HTTP · `users.controller.js` handles req/res · `users.service.js` talks to DB |
+| **O** — Open/Closed           | Extend via new code, not edits  | Add OAuth provider middleware — don't edit `auth.js` with another `if (provider)`                     |
+| **L** — Liskov Substitution   | Subtypes honor parent contract  | Every auth middleware must call `next()` or send a response — same contract                           |
+| **I** — Interface Segregation | Small focused APIs              | `usersRouter` exposes CRUD — don't force admin-only handlers on public routes                         |
+| **D** — Dependency Inversion  | Depend on abstractions          | `createUserService({ db, mailer })` — not `require('pg')` inside the service                          |
+
+**How it works:**
+
+Each letter matches the **Examples** below — look for `// good` and `// bad`:
+
+1. **S** — routes → controller → service — not one `app.js` with SQL and JSON parsing.
+2. **O** — new auth strategy = new middleware function — not editing a giant `auth()` switch.
+3. **L** — middleware always ends with `next()` or `res.status(...)` — no silent hang.
+4. **I** — `usersRouter` vs `adminRouter` — not one router exporting everything.
+5. **D** — inject `db` / `mailer` into services — Route Handler wires concrete adapters.
+
+**When to use:** Refactoring monolithic Express apps; plugin-style auth/payments; code review before adding routes.
+
+**Examples:**
+
+```js
+import express from "express";
+
+// S — good: route wires HTTP; service owns business logic
+export function createUsersRouter(userService) {
+  const router = express.Router();
+
+  router.get("/", async (req, res, next) => {
+    try {
+      const users = await userService.list();
+      res.json(users);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  return router;
+}
+
+export function createUserService(db) {
+  return {
+    list: () => db.query("SELECT id, name FROM users"),
+  };
+}
+
+// S — bad: route file runs SQL, sends email, validates — everything inline
+// app.get("/users", async (req, res) => {
+//   const rows = await pool.query("SELECT * FROM users");
+//   await sendDigestEmail(rows);
+//   res.json(rows);
+// });
+
+// O — good: add provider without editing core auth
+const authProviders = {
+  jwt: (req) => verifyJwt(req.headers.authorization),
+  apiKey: (req) => verifyApiKey(req.headers["x-api-key"]),
+};
+
+function auth(provider) {
+  const verify = authProviders[provider];
+  return (req, res, next) => {
+    if (!verify(req)) return res.status(401).json({ error: "Unauthorized" });
+    next();
+  };
+}
+
+// O — bad: edit auth middleware for every new provider
+// function auth(req, res, next) {
+//   if (req.headers.authorization) return verifyJwt(req, res, next);
+//   if (req.headers["x-api-key"]) return verifyApiKey(req, res, next);
+//   res.status(401).end();
+// }
+
+// L — good: middleware always continues or responds
+function requireJson(req, res, next) {
+  if (!req.is("application/json")) {
+    return res.status(415).json({ error: "Expected JSON" });
+  }
+  next();
+}
+
+// L — bad: sometimes calls next(), sometimes hangs — breaks Express pipeline
+// function brokenAuth(req, res, next) {
+//   if (!req.headers.authorization) return; // forgot next() and res — request hangs
+//   next();
+// }
+
+// I — good: public users router — only list/create
+export function createPublicUsersRouter(userService) {
+  const router = express.Router();
+  router.get("/", async (req, res, next) => {
+    try {
+      res.json(await userService.list());
+    } catch (error) {
+      next(error);
+    }
+  });
+  return router;
+}
+
+// I — bad: one router mixes public list + admin delete + internal metrics
+// router.get("/", listUsers);
+// router.delete("/:id", adminOnly, deleteUser);
+// router.get("/metrics", internalOnly, metrics);
+
+// D — good: service receives db — swap fake in tests
+export function createUserService(db) {
+  return {
+    async create(input) {
+      return db.query("INSERT INTO users(name) VALUES($1) RETURNING *", [
+        input.name,
+      ]);
+    },
+  };
+}
+// createUserService({ query: async () => [{ id: "1", name: "Ada" }] });
+
+// D — bad: service imports pg pool directly — locked to Postgres, hard to test
+// import { pool } from "./db.js";
+// export async function createUser(input) {
+//   return pool.query("INSERT INTO users(name) VALUES($1) RETURNING *", [input.name]);
+// }
+```
+
+**Thoughts:** SOLID is a **guide**, not a law — a 30-line API does not need five folders. Apply when the Express app becomes painful to change or test. Frontend mapping: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs). JS fundamentals: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Full reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+
+**Sources:** [Express — Routing guide](https://expressjs.com/en/guide/routing.html) · [Express — Writing middleware](https://expressjs.com/en/guide/writing-middleware.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs)
+
+</details>
+
+---
+
 <a name="runtime-choice"></a>
 
 ## Choosing a backend runtime
@@ -792,14 +943,14 @@ const app = await NestFactory.create<NestFastifyApplication>(
 
 Three common backend choices with different concurrency models and ecosystems — pick based on workload, team skills, and operational needs.
 
-| | **Node.js** | **Go** | **Elixir (BEAM)** |
-|---|-------------|--------|-------------------|
-| **Concurrency** | Single-threaded JS + event loop; `worker_threads` / cluster | Goroutines (cheap threads), CSP channels | Actor processes, preemptive scheduler |
-| **Strength** | I/O-bound APIs, real-time, fullstack TS | CPU + I/O, simple deploy (static binary) | Fault tolerance, millions of connections |
-| **Weakness** | CPU on main thread blocks loop | Verbose error handling, fewer web libs | Smaller hiring pool, niche ecosystem |
-| **Typical stack** | Nest/Express + Postgres + Redis | Gin/Fiber + Postgres | Phoenix + Postgres |
-| **JSON/HTTP APIs** | Excellent | Excellent | Excellent |
-| **WebSocket / chat** | Socket.IO, ws | Good | Phoenix Channels — industry strength |
+|                      | **Node.js**                                                 | **Go**                                   | **Elixir (BEAM)**                        |
+| -------------------- | ----------------------------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| **Concurrency**      | Single-threaded JS + event loop; `worker_threads` / cluster | Goroutines (cheap threads), CSP channels | Actor processes, preemptive scheduler    |
+| **Strength**         | I/O-bound APIs, real-time, fullstack TS                     | CPU + I/O, simple deploy (static binary) | Fault tolerance, millions of connections |
+| **Weakness**         | CPU on main thread blocks loop                              | Verbose error handling, fewer web libs   | Smaller hiring pool, niche ecosystem     |
+| **Typical stack**    | Nest/Express + Postgres + Redis                             | Gin/Fiber + Postgres                     | Phoenix + Postgres                       |
+| **JSON/HTTP APIs**   | Excellent                                                   | Excellent                                | Excellent                                |
+| **WebSocket / chat** | Socket.IO, ws                                               | Good                                     | Phoenix Channels — industry strength     |
 
 **How it works:**
 
@@ -815,7 +966,7 @@ Three common backend choices with different concurrency models and ecosystems �
 - "Let it crash" + OTP supervision for 99.99% uptime.
 - Telecom-grade connection counts on one node.
 
-*"We chose Node because the team is fullstack TypeScript, the product is I/O-heavy CRUD and integrations, and time-to-market mattered. I'd consider Go for a CPU-bound worker service if profiling showed event-loop blocking, or Elixir if we built a real-time collaboration core."*
+_"We chose Node because the team is fullstack TypeScript, the product is I/O-heavy CRUD and integrations, and time-to-market mattered. I'd consider Go for a CPU-bound worker service if profiling showed event-loop blocking, or Elixir if we built a real-time collaboration core."_
 
 **Sources:** [Node.js event loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick) · [Go concurrency](https://go.dev/doc/effective_go#concurrency)
 
@@ -834,20 +985,20 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 ### Question index
 
-| # | Topic | Answer |
-|---|-------|--------|
-| 117 | REPL | Q&A |
-| 118 | Streams | Q&A |
-| — | File vs file system | Q&A |
-| 119 | Middleware | Q&A |
-| 120 | setImmediate vs nextTick | Q&A |
-| — | ESM vs CJS | Q&A |
-| — | worker_threads | Q&A |
-| — | Graceful shutdown | Q&A |
-| — | NestJS request lifecycle | Q&A |
-| — | Guards vs middleware vs pipes | Q&A |
-| — | NestJS vs Express vs Fastify | Q&A |
-| — | Node.js vs Go vs Elixir | Q&A |
-| Middle | Single-threaded, fork/spawn, JWT, bcrypt | Q&A |
+| #      | Topic                                    | Answer |
+| ------ | ---------------------------------------- | ------ |
+| 117    | REPL                                     | Q&A    |
+| 118    | Streams                                  | Q&A    |
+| —      | File vs file system                      | Q&A    |
+| 119    | Middleware                               | Q&A    |
+| 120    | setImmediate vs nextTick                 | Q&A    |
+| —      | ESM vs CJS                               | Q&A    |
+| —      | worker_threads                           | Q&A    |
+| —      | Graceful shutdown                        | Q&A    |
+| —      | NestJS request lifecycle                 | Q&A    |
+| —      | Guards vs middleware vs pipes            | Q&A    |
+| —      | NestJS vs Express vs Fastify             | Q&A    |
+| —      | Node.js vs Go vs Elixir                  | Q&A    |
+| Middle | Single-threaded, fork/spawn, JWT, bcrypt | Q&A    |
 
 ---

@@ -6,7 +6,7 @@ Foundations and distributed-systems basics.
 
 ### Related docs
 
-* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+- [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
 
 ### Sections
 
@@ -18,20 +18,21 @@ Foundations and distributed-systems basics.
 ## 1. Foundations
 
 <details>
-  <summary>System design</summary>
+  <summary>System design overview</summary>
 
-### System design
+### System design overview
+
 **Definition:** System design is the process of defining architecture, components, modules, interfaces, and data flows to satisfy functional and non-functional requirements at scale.
 
 **When to use:** Greenfield products, scaling existing systems, architecture reviews, incident post-mortems, technical interviews.
 
 **Pluses and minuses:**
 
-| + (structured approach) | − |
-|----------------------------|------|
-| Surfaces tradeoffs early | Easy to over-engineer on paper |
+| + (structured approach)     | −                                        |
+| --------------------------- | ---------------------------------------- |
+| Surfaces tradeoffs early    | Easy to over-engineer on paper           |
 | Aligns teams on constraints | Requirements change — design must evolve |
-| Interview signal | Diagrams ≠ working production system |
+| Interview signal            | Diagrams ≠ working production system     |
 
 **Examples:**
 
@@ -51,17 +52,18 @@ Foundations and distributed-systems basics.
   <summary>Client–server architecture</summary>
 
 ### Client–server architecture
+
 **Definition:** Architecture is a high-level contract for how parts of a system interact. **Client–server** is the usual web contract: a **client** (browser / frontend) sends requests; a **server** (backend) applies rules and talks to **storage**.
 
 **How it works:**
 
 A browser UI is HTML, CSS, and JS (WASM exists; ignore it at this level). Anything users create or reuse must be stored, authorized, and processed — that work lives on the server.
 
-| Role | Job |
-|------|-----|
-| **Client** | Ask the server to read, transform, or save data. For the user: render data and collect updates. Almost always the browser. |
-| **Server** | Accept requests, persist via the DB, apply **business logic**, expose data under those rules. May also run background jobs (search indexing, email). |
-| **Database** | Durable store for user and system data — fast, reliable access (often several stores: primary, replicas, backups). |
+| Role         | Job                                                                                                                                                  |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Client**   | Ask the server to read, transform, or save data. For the user: render data and collect updates. Almost always the browser.                           |
+| **Server**   | Accept requests, persist via the DB, apply **business logic**, expose data under those rules. May also run background jobs (search indexing, email). |
+| **Database** | Durable store for user and system data — fast, reliable access (often several stores: primary, replicas, backups).                                   |
 
 ```
 Browser  --HTTP request-->  App server  -->  Database
@@ -72,10 +74,10 @@ Browser  --HTTP request-->  App server  -->  Database
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Shared data, auth, and jobs off the user’s machine | Extra hop, ops, and failure modes |
-| Many clients (web, mobile) can share one API | Tight coupling if HTML is generated only on the server |
+| +                                                  | −                                                      |
+| -------------------------------------------------- | ------------------------------------------------------ |
+| Shared data, auth, and jobs off the user’s machine | Extra hop, ops, and failure modes                      |
+| Many clients (web, mobile) can share one API       | Tight coupling if HTML is generated only on the server |
 
 **Examples:** Client = HTML/CSS/JS UI. Server = APIs that read/write stores. Databases = persistence, replication, failover.
 
@@ -92,15 +94,15 @@ Browser  --HTTP request-->  App server  -->  Database
 
 **Definition:**
 
-Functional requirements describe *what* the system does (features). Non-functional requirements (NFRs) describe *how well* it does it — performance, availability, security, maintainability.
+Functional requirements describe _what_ the system does (features). Non-functional requirements (NFRs) describe _how well_ it does it — performance, availability, security, maintainability.
 
-| NFR category | Examples |
-|--------------|----------|
-| Performance | p99 latency < 200ms, 10k QPS |
-| Availability | 99.9% uptime (8.7 h downtime/year) |
-| Scalability | 10× traffic growth without rewrite |
-| Consistency | Strong for payments, eventual for feeds |
-| Security | Auth, encryption, audit logs |
+| NFR category | Examples                                |
+| ------------ | --------------------------------------- |
+| Performance  | p99 latency < 200ms, 10k QPS            |
+| Availability | 99.9% uptime (8.7 h downtime/year)      |
+| Scalability  | 10× traffic growth without rewrite      |
+| Consistency  | Strong for payments, eventual for feeds |
+| Security     | Auth, encryption, audit logs            |
 
 **When to use:** Every design session. NFRs drive technology choices more than feature lists.
 
@@ -124,10 +126,10 @@ Functional requirements describe *what* the system does (features). Non-function
 
 **Pluses and minuses:**
 
-| Type | How | + | − |
-|------|-----|------|------|
-| **Vertical** | Bigger machine (more CPU/RAM) | Simple, no distributed complexity | Hardware ceiling, downtime to resize |
-| **Horizontal** | More machines | Near-unlimited scale, fault isolation | Distributed systems complexity |
+| Type           | How                           | +                                     | −                                    |
+| -------------- | ----------------------------- | ------------------------------------- | ------------------------------------ |
+| **Vertical**   | Bigger machine (more CPU/RAM) | Simple, no distributed complexity     | Hardware ceiling, downtime to resize |
+| **Horizontal** | More machines                 | Near-unlimited scale, fault isolation | Distributed systems complexity       |
 
 **Examples:**
 
@@ -152,10 +154,10 @@ Peak (3×) ≈ 7,000 QPS → plan for ~10k QPS
 - **Throughput** — operations per second (QPS/TPS)
 - **Concurrency** — simultaneous in-flight operations
 
-| Tradeoff | Insight |
-|----------|---------|
-| Low latency + high throughput | Need parallelism, efficient I/O, minimal blocking |
-| Optimizing one can hurt the other | Batching ↑ throughput, may ↑ latency |
+| Tradeoff                          | Insight                                           |
+| --------------------------------- | ------------------------------------------------- |
+| Low latency + high throughput     | Need parallelism, efficient I/O, minimal blocking |
+| Optimizing one can hurt the other | Batching ↑ throughput, may ↑ latency              |
 
 **When to use:** Capacity planning, SLA definition, choosing sync vs async processing.
 
@@ -178,7 +180,7 @@ Peak (3×) ≈ 7,000 QPS → plan for ~10k QPS
 
 - **Not always true parallelism.** One core still runs **one** instruction stream at a time. “Several apps at once” is **time-sharing**: each process gets a short slice, then the scheduler switches. Several cores / CPUs can run processes **in parallel**.
 - **Why multitasking exists.** Early single-task OS: one program owns the machine until it exits. While it waits on disk, keyboard, or a user, the CPU idles. The OS started overlapping **wait** of one program with **work** of another (I/O overlap), then a **dispatcher** that picks the next ready process so the CPU stays busy.
-- **Ready queue.** Runnable processes sit in a **ready queue**. Priority decides who runs next. On Linux the user-visible **nice** value is **−20** (most CPU-favored) … **19** (least); default **0**. A normal user can *raise* niceness (be nicer / lower priority); lowering niceness (higher priority) needs privilege (`CAP_SYS_NICE` / root). `nice` / `renice` at start or while running. (Linux autogroup can weaken classic nice effects — see `sched(7)`.)
+- **Ready queue.** Runnable processes sit in a **ready queue**. Priority decides who runs next. On Linux the user-visible **nice** value is **−20** (most CPU-favored) … **19** (least); default **0**. A normal user can _raise_ niceness (be nicer / lower priority); lowering niceness (higher priority) needs privilege (`CAP_SYS_NICE` / root). `nice` / `renice` at start or while running. (Linux autogroup can weaken classic nice effects — see `sched(7)`.)
 - **Wait queues.** Devices take different time (keyboard vs disk vs GPU). Processes **blocked** on I/O sit on **wait / device queues**, not on the CPU ready queue, until the device is ready — then they become ready again.
 - **What a process is.** Not only code. The OS keeps: **program** (instructions in RAM), **data** (variables; must be in RAM before the CPU uses them), **context** so it can pause and resume — CPU registers, user stack, kernel stack, memory mappings. Saving/restoring context is a **context switch**. Context also enables IPC and talking to the kernel.
 - **Priority queue.** The scheduler’s model is a **priority queue**: highest-priority ready process first. System processes often outrank user apps. Chrome-style **one process per tab / site** isolates crashes and sandboxing — one app, many processes.
@@ -194,16 +196,16 @@ Peak (3×) ≈ 7,000 QPS → plan for ~10k QPS
 - **Windows:** mostly a **message** model (window UI, some IPC). Messages do **not** replace kill/stop/restart of a process.
 - **Unix / POSIX:** **signals**. Delivery interrupts the process and runs a handler (or the default action). Signals come from the **tty** (keys), the **kernel**, or **kill** from another process (or `raise` to self). POSIX lists standard names; apps can also use **real-time** signals (`SIGRTMIN`+n) — those **queue**; ordinary signals **do not**.
 
-| Signal | Role | Notes |
-|--------|------|--------|
-| `SIGINT` | Interrupt (job control) | Terminal **Ctrl+C**. Catchable. Default: terminate. |
-| `SIGQUIT` | Quit from keyboard | **Ctrl+\\**. Default: terminate + core. |
-| `SIGTSTP` | Terminal stop | **Ctrl+Z**. Catchable. Default: stop. Resume with `SIGCONT`. |
-| `SIGSTOP` | Stop | Kernel/job control. **Cannot** catch, block, or ignore. |
-| `SIGCONT` | Continue | Resume a stopped process. |
-| `SIGKILL` | Kill | Immediate terminate. **Cannot** catch, block, or ignore. |
-| `SIGTRAP` | Trace / breakpoint | Debugger / `ptrace`. Default: core. |
-| `SIGUSR1` / `SIGUSR2` | App-defined | POSIX “user” signals. |
+| Signal                | Role                    | Notes                                                        |
+| --------------------- | ----------------------- | ------------------------------------------------------------ |
+| `SIGINT`              | Interrupt (job control) | Terminal **Ctrl+C**. Catchable. Default: terminate.          |
+| `SIGQUIT`             | Quit from keyboard      | **Ctrl+\\**. Default: terminate + core.                      |
+| `SIGTSTP`             | Terminal stop           | **Ctrl+Z**. Catchable. Default: stop. Resume with `SIGCONT`. |
+| `SIGSTOP`             | Stop                    | Kernel/job control. **Cannot** catch, block, or ignore.      |
+| `SIGCONT`             | Continue                | Resume a stopped process.                                    |
+| `SIGKILL`             | Kill                    | Immediate terminate. **Cannot** catch, block, or ignore.     |
+| `SIGTRAP`             | Trace / breakpoint      | Debugger / `ptrace`. Default: core.                          |
+| `SIGUSR1` / `SIGUSR2` | App-defined             | POSIX “user” signals.                                        |
 
 **When to use:**
 
@@ -214,25 +216,25 @@ Explain concurrency vs parallelism in interviews. Isolate browser tabs. Handle C
 - Calling time-sharing **multithreading**. A process may have many threads; the OS still schedules **threads**. Node’s JS is one thread; that is a different layer — [Process & threads](./8_nodejs_process.md#process--threads).
 - Confusing **Ctrl+Z** (`SIGTSTP`) with **`SIGSTOP`**. Only `SIGKILL` and `SIGSTOP` are uncatchable (`signal(7)`).
 - Assuming Windows process control works like POSIX signals (Node emulates a few `kill` names).
-- Treating “dispatcher queues every CPU *instruction*” as literal — teaching model; real CPUs run until a **timer interrupt**, syscall, or I/O interrupt, then the scheduler picks the next thread.
+- Treating “dispatcher queues every CPU _instruction_” as literal — teaching model; real CPUs run until a **timer interrupt**, syscall, or I/O interrupt, then the scheduler picks the next thread.
 
 **Pluses and minuses:**
 
-| + | − |
-|---|---|
+| +                                                     | −                                                       |
+| ----------------------------------------------------- | ------------------------------------------------------- |
 | CPU used during I/O waits; many users/apps on one box | Context-switch cost; isolation is not free (Chrome RAM) |
-| Signals: simple Unix control + IPC | Standard signals do not queue; `SIGKILL` skips cleanup |
-| Priority / nice for batch vs interactive | Unprivileged users cannot steal CPU with nicer values |
+| Signals: simple Unix control + IPC                    | Standard signals do not queue; `SIGKILL` skips cleanup  |
+| Priority / nice for batch vs interactive              | Unprivileged users cannot steal CPU with nicer values   |
 
 **Examples:**
 
 ```js
-import process from 'node:process';
+import process from "node:process";
 
 process.stdin.resume(); // keep the process alive
 
-process.on('SIGINT', () => {
-  console.log('Received SIGINT. Press Control-D to exit.');
+process.on("SIGINT", () => {
+  console.log("Received SIGINT. Press Control-D to exit.");
 });
 
 // SIGKILL / SIGSTOP: listeners are ignored — process is killed / stopped anyway
@@ -255,11 +257,11 @@ process.on('SIGINT', () => {
 - **Availability** — system is operational when needed (uptime %)
 - **Fault tolerance** — system continues operating when components fail
 
-| Term | Formula / meaning |
-|------|-------------------|
-| SLA | Contract with users (e.g. 99.9%) |
-| SLO | Internal target (e.g. p99 < 300ms) |
-| SLI | Measured metric (error rate, latency) |
+| Term | Formula / meaning                     |
+| ---- | ------------------------------------- |
+| SLA  | Contract with users (e.g. 99.9%)      |
+| SLO  | Internal target (e.g. p99 < 300ms)    |
+| SLI  | Measured metric (error rate, latency) |
 
 **When to use:** Defining on-call expectations, redundancy decisions, multi-AZ deployment.
 
@@ -280,10 +282,10 @@ process.on('SIGINT', () => {
 
 **Pluses and minuses:**
 
-| + (accepting SPOF) | − |
-|-----------------------|------|
-| Simpler architecture early | Outage affects all users |
-| Lower operational cost | Harder to hit high availability |
+| + (accepting SPOF)         | −                               |
+| -------------------------- | ------------------------------- |
+| Simpler architecture early | Outage affects all users        |
+| Lower operational cost     | Harder to hit high availability |
 
 **Examples:** Single database with no replica = SPOF. Single load balancer = SPOF → use active-passive pair or cloud-managed LB.
 
@@ -318,10 +320,10 @@ Every major topic follows:
 
 In a distributed data store, during a network **partition**, you can guarantee at most two of: **Consistency**, **Availability**, **Partition tolerance**.
 
-| Guarantee | Meaning |
-|-----------|---------|
-| **C** — Consistency | Every read returns the latest write or an error |
-| **A** — Availability | Every request gets a non-error response |
+| Guarantee                   | Meaning                                              |
+| --------------------------- | ---------------------------------------------------- |
+| **C** — Consistency         | Every read returns the latest write or an error      |
+| **A** — Availability        | Every request gets a non-error response              |
 | **P** — Partition tolerance | System operates despite network splits between nodes |
 
 ```mermaid
@@ -336,11 +338,11 @@ flowchart TD
   choice --> AP["AP: Cassandra, DynamoDB, CouchDB"]
 ```
 
-| CP (consistency + partition tolerance) | AP (availability + partition tolerance) |
-|----------------------------------------|----------------------------------------|
-| Strong consistency during partition | May return stale data |
-| Some requests may fail/timeout | System stays responsive |
-| ZooKeeper, etcd, traditional RDBMS with sync replication | Cassandra, DynamoDB, Riak |
+| CP (consistency + partition tolerance)                   | AP (availability + partition tolerance) |
+| -------------------------------------------------------- | --------------------------------------- |
+| Strong consistency during partition                      | May return stale data                   |
+| Some requests may fail/timeout                           | System stays responsive                 |
+| ZooKeeper, etcd, traditional RDBMS with sync replication | Cassandra, DynamoDB, Riak               |
 
 **When to use:**
 
@@ -349,7 +351,7 @@ flowchart TD
 
 **Examples:** Two data centers lose network link. CP system rejects writes on minority partition. AP system accepts writes on both sides — resolves conflicts later.
 
-**Thoughts:** Partition tolerance is not optional in real distributed systems — networks fail. The real choice is C vs A *during* a partition. Outside partitions, you can have both. CAP is often misquoted as "pick any two forever."
+**Thoughts:** Partition tolerance is not optional in real distributed systems — networks fail. The real choice is C vs A _during_ a partition. Outside partitions, you can have both. CAP is often misquoted as "pick any two forever."
 
 **Sources:** [ByteByteGo — CAP](https://blog.bytebytego.com/p/ep160-top-20-system-design-concepts)
 
@@ -364,9 +366,9 @@ flowchart TD
 
 Extension of CAP: if **P**artition, choose **A** or **C**; **E**lse (normal operation), choose **L**atency or **C**onsistency.
 
-| System | PACELC profile |
-|--------|----------------|
-| DynamoDB / Cassandra | PA/EL — available + low latency |
+| System                    | PACELC profile                               |
+| ------------------------- | -------------------------------------------- |
+| DynamoDB / Cassandra      | PA/EL — available + low latency              |
 | PostgreSQL (sync replica) | PC/EC — consistent, higher latency on writes |
 
 **When to use:** Explaining why systems behave differently under normal load vs during failures.
@@ -385,11 +387,11 @@ Extension of CAP: if **P**artition, choose **A** or **C**; **E**lse (normal oper
 - **ACID** — Atomicity, Consistency, Isolation, Durability (traditional RDBMS transactions)
 - **BASE** — Basically Available, Soft state, Eventually consistent (NoSQL flexibility)
 
-| ACID | BASE |
-|------|------|
-| Strong guarantees | High availability, partition tolerance |
+| ACID                     | BASE                                        |
+| ------------------------ | ------------------------------------------- |
+| Strong guarantees        | High availability, partition tolerance      |
 | Transactions across rows | Optimistic concurrency, conflict resolution |
-| PostgreSQL, MySQL | Cassandra, DynamoDB, Couchbase |
+| PostgreSQL, MySQL        | Cassandra, DynamoDB, Couchbase              |
 
 **When to use:**
 
@@ -411,12 +413,12 @@ Extension of CAP: if **P**artition, choose **A** or **C**; **E**lse (normal oper
 
 Rules governing when a write becomes visible to reads in distributed storage.
 
-| Model | Guarantee |
-|-------|-----------|
-| **Strong** | Read always returns latest write |
-| **Eventual** | Replicas converge given no new writes |
-| **Causal** | Causally related ops seen in order |
-| **Read-your-writes** | User sees own updates immediately |
+| Model                | Guarantee                             |
+| -------------------- | ------------------------------------- |
+| **Strong**           | Read always returns latest write      |
+| **Eventual**         | Replicas converge given no new writes |
+| **Causal**           | Causally related ops seen in order    |
+| **Read-your-writes** | User sees own updates immediately     |
 
 **When to use:**
 
@@ -445,11 +447,11 @@ Rules governing when a write becomes visible to reads in distributed storage.
 
 **Pluses and minuses:**
 
-| Strategy | How | + | − |
-|----------|-----|------|------|
-| **Leader-follower** | Writes to leader, async/sync to followers | Simple, strong consistency option | Leader is bottleneck/SPOF |
-| **Multi-leader** | Writes to any leader, replicate bidirectionally | Write locality, multi-region | Conflict resolution needed |
-| **Leaderless** | Quorum reads/writes (e.g. W=2, R=2 of N=3) | High availability | Complex, stale reads possible |
+| Strategy            | How                                             | +                                 | −                             |
+| ------------------- | ----------------------------------------------- | --------------------------------- | ----------------------------- |
+| **Leader-follower** | Writes to leader, async/sync to followers       | Simple, strong consistency option | Leader is bottleneck/SPOF     |
+| **Multi-leader**    | Writes to any leader, replicate bidirectionally | Write locality, multi-region      | Conflict resolution needed    |
+| **Leaderless**      | Quorum reads/writes (e.g. W=2, R=2 of N=3)      | High availability                 | Complex, stale reads possible |
 
 **Thoughts:** Sync replication = CP (write waits for replicas). Async = faster writes, risk of data loss on leader crash.
 
@@ -466,11 +468,11 @@ Rules governing when a write becomes visible to reads in distributed storage.
 
 **Pluses and minuses:**
 
-| Strategy | How | + | − |
-|----------|-----|------|------|
-| **Hash-based** | `shard = hash(key) % N` | Even distribution | Resharding painful when N changes |
-| **Range-based** | Keys A–M on shard 1, N–Z on shard 2 | Range queries efficient | Hot spots (e.g. all recent data on last shard) |
-| **Consistent hashing** | Keys map to ring; add/remove nodes move minimal data | Elastic scaling | Implementation complexity |
+| Strategy               | How                                                  | +                       | −                                              |
+| ---------------------- | ---------------------------------------------------- | ----------------------- | ---------------------------------------------- |
+| **Hash-based**         | `shard = hash(key) % N`                              | Even distribution       | Resharding painful when N changes              |
+| **Range-based**        | Keys A–M on shard 1, N–Z on shard 2                  | Range queries efficient | Hot spots (e.g. all recent data on last shard) |
+| **Consistent hashing** | Keys map to ring; add/remove nodes move minimal data | Elastic scaling         | Implementation complexity                      |
 
 **Examples:** User data sharded by `user_id`. Hot celebrity account = hot shard. Mitigate: sub-shard, cache, dedicated partition.
 
@@ -489,10 +491,10 @@ Rules governing when a write becomes visible to reads in distributed storage.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Safe retries on network failure | Requires design upfront (idempotency keys) |
-| Critical for distributed systems | Storage for dedup keys |
+| +                                | −                                          |
+| -------------------------------- | ------------------------------------------ |
+| Safe retries on network failure  | Requires design upfront (idempotency keys) |
+| Critical for distributed systems | Storage for dedup keys                     |
 
 **Examples:**
 
@@ -529,20 +531,20 @@ Body: { amount: 100, currency: "USD" }
 
 OrderService emits `OrderCreated` → PaymentService listens and emits `PaymentCompleted` or `PaymentFailed` → Inventory reacts — no central coordinator, but harder to debug.
 
-| Saga concern | Mitigation |
-|--------------|------------|
-| Partial failure | Compensating transactions + idempotency keys |
-| Duplicate events | Idempotent handlers, dedup table |
-| Visibility | Saga log / outbox pattern for reliable events |
+| Saga concern     | Mitigation                                    |
+| ---------------- | --------------------------------------------- |
+| Partial failure  | Compensating transactions + idempotency keys  |
+| Duplicate events | Idempotent handlers, dedup table              |
+| Visibility       | Saga log / outbox pattern for reliable events |
 
 **When to use:** Saga for multi-service workflows (order → payment → inventory → shipping). Avoid 2PC across microservices in production.
 
 **Pluses and minuses:**
 
-| Approach | How | + | − |
-|----------|-----|------|------|
-| **2PC (two-phase commit)** | Coordinator: prepare → commit/abort all | Strong atomicity | Blocking, coordinator SPOF, doesn't scale |
-| **Saga** | Sequence of local transactions + compensating actions | Scales, fits microservices | No isolation, complex rollback |
+| Approach                   | How                                                   | +                          | −                                         |
+| -------------------------- | ----------------------------------------------------- | -------------------------- | ----------------------------------------- |
+| **2PC (two-phase commit)** | Coordinator: prepare → commit/abort all               | Strong atomicity           | Blocking, coordinator SPOF, doesn't scale |
+| **Saga**                   | Sequence of local transactions + compensating actions | Scales, fits microservices | No isolation, complex rollback            |
 
 **Examples:**
 

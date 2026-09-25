@@ -6,7 +6,7 @@ ACID, CAP, transactions, and normalization.
 
 ### Related docs
 
-* [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
+- [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
 
 ### Sections
 
@@ -17,9 +17,9 @@ ACID, CAP, transactions, and normalization.
 ## Core foundations
 
 <details>
-  <summary>Database</summary>
+  <summary>Database overview</summary>
 
-### Database
+### Database overview
 
 **Definition:** A structured system for storing, retrieving, and managing data with defined access patterns, integrity rules, and concurrency control.
 
@@ -33,7 +33,7 @@ Any app that must persist state beyond a single request — users, orders, sessi
 
 **Pluses and minuses:**
 
-| +                       | −                                                  |
+| +                          | −                                                     |
 | -------------------------- | ----------------------------------------------------- |
 | Central source of truth    | Operational complexity (backups, migrations, scaling) |
 | Queryable, auditable data  | Schema and access patterns must be designed upfront   |
@@ -69,21 +69,21 @@ CREATE TABLE users (
 
 Databases group by data model and consistency guarantees — not by a single "SQL vs NoSQL" axis.
 
-| Type                   | Examples                        | Best for                                   |
-| ---------------------- | ------------------------------- | ------------------------------------------ |
-| **Relational (RDBMS)** | PostgreSQL, MySQL, SQL Server   | Structured data, joins, transactions       |
-| **Document**           | MongoDB, CouchDB                | Flexible schemas, nested JSON documents    |
-| **Key-value**          | Redis, DynamoDB                 | Caching, sessions, simple lookups          |
-| **Column-family**      | Cassandra, HBase                | Wide rows, high write throughput           |
-| **Graph**              | Neo4j                           | Relationship-heavy queries (social, fraud) |
-| **Time-series**        | TimescaleDB, InfluxDB           | Metrics, IoT, monitoring                   |
+| Type                   | Examples                                             | Best for                                   |
+| ---------------------- | ---------------------------------------------------- | ------------------------------------------ |
+| **Relational (RDBMS)** | PostgreSQL, MySQL, SQL Server                        | Structured data, joins, transactions       |
+| **Document**           | MongoDB, CouchDB                                     | Flexible schemas, nested JSON documents    |
+| **Key-value**          | Redis, DynamoDB                                      | Caching, sessions, simple lookups          |
+| **Column-family**      | Cassandra, HBase                                     | Wide rows, high write throughput           |
+| **Graph**              | Neo4j                                                | Relationship-heavy queries (social, fraud) |
+| **Time-series**        | TimescaleDB, InfluxDB                                | Metrics, IoT, monitoring                   |
 | **Search**             | [Elasticsearch](./9_database_nosql.md#elasticsearch) | Full-text search, log analytics            |
 
 **When to use:** Start with one primary store (usually PostgreSQL). Add Redis/Mongo/queue only when measured pain justifies it.
 
 **Pluses and minuses:**
 
-| + (polyglot persistence)  | −                              |
+| + (polyglot persistence)     | −                                 |
 | ---------------------------- | --------------------------------- |
 | Right tool per workload      | More ops, sync, and failure modes |
 | Optimize read vs write paths | Data duplication across stores    |
@@ -107,18 +107,18 @@ Databases group by data model and consistency guarantees — not by a single "SQ
 
 **How it works:**
 
-| Letter | Meaning |
-| --- | --- |
-| **Atomicity** | The transaction is all-or-nothing |
-| **Consistency** | Constraints hold when it ends (not CAP “every replica current”) |
-| **Isolation** | Concurrent transactions do not see each other’s uncommitted state |
-| **Durability** | A successful `COMMIT` survives process/OS crash (WAL flushed) |
+| Letter          | Meaning                                                           |
+| --------------- | ----------------------------------------------------------------- |
+| **Atomicity**   | The transaction is all-or-nothing                                 |
+| **Consistency** | Constraints hold when it ends (not CAP “every replica current”)   |
+| **Isolation**   | Concurrent transactions do not see each other’s uncommitted state |
+| **Durability**  | A successful `COMMIT` survives process/OS crash (WAL flushed)     |
 
 **When to use:** Financial transfers, inventory, booking systems — anywhere partial updates are unacceptable.
 
 **Pluses and minuses:**
 
-| +                                 | −                                         |
+| +                                    | −                                            |
 | ------------------------------------ | -------------------------------------------- |
 | Predictable state after failures     | Higher write latency vs eventual consistency |
 | Strong integrity for money/inventory | Harder to scale writes across regions        |
@@ -175,7 +175,7 @@ In a distributed data store, you can guarantee at most **two** of three properti
 
 **Pluses and minuses:**
 
-| + (explicit trade-off)      | −                                        |
+| + (explicit trade-off)         | −                                           |
 | ------------------------------ | ------------------------------------------- |
 | Forces architectural honesty   | Oversimplified for real systems             |
 | Guides CP vs AP product choice | Partitions are rare but inevitable at scale |
@@ -201,7 +201,7 @@ In a distributed data store, you can guarantee at most **two** of three properti
 
 **Pluses and minuses:**
 
-| +                                   | −                                         |
+| +                                      | −                                            |
 | -------------------------------------- | -------------------------------------------- |
 | Models everyday latency vs consistency | Less famous than CAP — explain in interviews |
 | Explains async replication behavior    | Not a formal proof like CAP                  |
@@ -229,7 +229,7 @@ In a distributed data store, you can guarantee at most **two** of three properti
 
 **Pluses and minuses:**
 
-| +                                   | −                                            |
+| +                                      | −                                               |
 | -------------------------------------- | ----------------------------------------------- |
 | High availability and write throughput | Stale reads, conflict resolution needed         |
 | Scales horizontally easier             | Application must tolerate inconsistency windows |
@@ -276,10 +276,10 @@ A transaction groups operations into one atomic unit. **Isolation levels** contr
 
 **Pluses and minuses:**
 
-| + (higher isolation) | −                              |
-| ----------------------- | --------------------------------- |
-| Fewer anomalies         | More locking, retries, deadlocks  |
-| Easier reasoning        | Lower throughput under contention |
+| + (higher isolation) | −                                 |
+| -------------------- | --------------------------------- |
+| Fewer anomalies      | More locking, retries, deadlocks  |
+| Easier reasoning     | Lower throughput under contention |
 
 **Examples:**
 
@@ -312,14 +312,14 @@ COMMIT;
 
 A **functional dependency** `X → Y` means the values of `X` determine `Y`. **Prime** attributes belong to some candidate key. Each form is stricter than the previous.
 
-| Form     | Informal rule                                                                 | Typical fix                                      |
-| -------- | ----------------------------------------------------------------------------- | ------------------------------------------------ |
-| **1NF**  | Atomic cells — no repeating groups, no nested tables in a column              | One value per cell; extra rows or child table    |
-| **2NF**  | 1NF + every non-key column depends on the **whole** candidate key             | Split partial deps (composite key → subset)      |
-| **3NF**  | 2NF + non-key columns do not depend on other non-key columns (no transitive)  | Move `instructor_office` off the course row      |
-| **BCNF** | Every non-trivial FD `X → Y` has `X` as a **superkey** (stricter 3NF)         | Split overlapping composite keys                 |
+| Form     | Informal rule                                                                | Typical fix                                   |
+| -------- | ---------------------------------------------------------------------------- | --------------------------------------------- |
+| **1NF**  | Atomic cells — no repeating groups, no nested tables in a column             | One value per cell; extra rows or child table |
+| **2NF**  | 1NF + every non-key column depends on the **whole** candidate key            | Split partial deps (composite key → subset)   |
+| **3NF**  | 2NF + non-key columns do not depend on other non-key columns (no transitive) | Move `instructor_office` off the course row   |
+| **BCNF** | Every non-trivial FD `X → Y` has `X` as a **superkey** (stricter 3NF)        | Split overlapping composite keys              |
 
-Kent (interview mnemonic): *each non-key field is a fact about the key, the whole key, and nothing but the key.*
+Kent (interview mnemonic): _each non-key field is a fact about the key, the whole key, and nothing but the key._
 
 update the same city in many rows and miss one; cannot insert a course until a student enrolls; deleting the last student also deletes the course.
 
@@ -333,10 +333,10 @@ Read models, checkout snapshots, caches — see [Normalization vs denormalizatio
 
 **Pluses and minuses:**
 
-| +                              | −                                           |
-| --------------------------------- | ---------------------------------------------- |
-| One place to update a fact        | More JOINs and FKs at read time                |
-| Clear entities (user, order, sku) | SQL still allows arrays/JSONB that skip 1NF    |
+| +                                 | −                                               |
+| --------------------------------- | ----------------------------------------------- |
+| One place to update a fact        | More JOINs and FKs at read time                 |
+| Clear entities (user, order, sku) | SQL still allows arrays/JSONB that skip 1NF     |
 | Integrity via keys, not copies    | Over-normalize (6NF-style) explodes table count |
 
 **Examples:**
@@ -379,7 +379,7 @@ CREATE TABLE orders (
 
 **Sources:**
 
-[Database normalization (Wikipedia)](https://en.wikipedia.org/wiki/Database_normalization) · [First normal form](https://en.wikipedia.org/wiki/First_normal_form) · [BCNF](https://en.wikipedia.org/wiki/Boyce%E2%80%93Codd_normal_form) · Codd, *A Relational Model of Data for Large Shared Data Banks* (1970)
+[Database normalization (Wikipedia)](https://en.wikipedia.org/wiki/Database_normalization) · [First normal form](https://en.wikipedia.org/wiki/First_normal_form) · [BCNF](https://en.wikipedia.org/wiki/Boyce%E2%80%93Codd_normal_form) · Codd, _A Relational Model of Data for Large Shared Data Banks_ (1970)
 
 ---
 
@@ -400,12 +400,12 @@ Read-heavy analytics, embedded documents (order snapshot at checkout), cache tab
 
 **Pluses and minuses:**
 
-| + (normalized)         | − (normalized)              |
+| + (normalized)            | − (normalized)                 |
 | ------------------------- | ------------------------------ |
 | No update anomalies       | More JOINs at read time        |
 | Smaller storage footprint | Complex queries for dashboards |
 
-| + (denormalized)           | − (denormalized)                    |
+| + (denormalized)              | − (denormalized)                       |
 | ----------------------------- | -------------------------------------- |
 | Faster reads, fewer JOINs     | Update anomalies — must sync copies    |
 | Better for read-heavy reports | More application logic for consistency |
@@ -454,7 +454,7 @@ CREATE TABLE order_items (
 
 **Pluses and minuses:**
 
-| +                                       | −                                                 |
+| +                                          | −                                                    |
 | ------------------------------------------ | ---------------------------------------------------- |
 | Universal vocabulary across stacks         | Hides complex domain operations behind generic verbs |
 | Maps cleanly to HTTP (POST/GET/PUT/DELETE) | Bulk/batch operations don't fit neatly               |
@@ -492,7 +492,7 @@ type UserRepo = {
 
 **Pluses and minuses:**
 
-| +                                     | −                                               |
+| +                                        | −                                                  |
 | ---------------------------------------- | -------------------------------------------------- |
 | Schema in version control alongside code | Bad migrations can lock large tables in production |
 | Reproducible environments                | Rollback complexity on data migrations             |
@@ -573,7 +573,7 @@ Unbounded nested documents with no joins — consider document stores or Postgre
 
 **Pluses and minuses:**
 
-| +                               | −                                       |
+| +                                  | −                                          |
 | ---------------------------------- | ------------------------------------------ |
 | Declarative, portable across RDBMS | Dialect differences (Postgres vs MySQL)    |
 | Mature ecosystem, strong joins     | Complex queries need careful indexing      |
@@ -603,7 +603,7 @@ Heavy analytics, bulk ETL, performance-critical batch jobs — use raw SQL or a 
 
 **Pluses and minuses:**
 
-| +                               | −                                     |
+| +                                  | −                                        |
 | ---------------------------------- | ---------------------------------------- |
 | Less boilerplate, type-safe models | Abstraction leaks — know SQL anyway      |
 | Integrated migrations              | N+1 queries if relations are lazy-loaded |
@@ -628,7 +628,7 @@ const users = await prisma.user.findMany({
 
 **Pluses and minuses:**
 
-| +                               | −                                   |
+| +                                  | −                                      |
 | ---------------------------------- | -------------------------------------- |
 | Schema flexibility, fast iteration | Weaker default consistency             |
 | Horizontal scaling built-in        | No universal query language            |

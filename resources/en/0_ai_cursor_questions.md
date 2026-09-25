@@ -4,7 +4,7 @@ Q&A for Cursor skills, rules, plugins, and slash commands.
 
 ### Related docs
 
-* [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [AI workflow](./0_ai.md)
+* [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [AI workflow](./0_ai.md)
 
 ### Sections
 

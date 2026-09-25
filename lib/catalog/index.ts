@@ -247,9 +247,10 @@ export const SUBJECTS: readonly Subject[] = [
   {
     slug: "cursor",
     title: "Cursor",
-    blurb: "Skills, rules, plugins, slash commands, and questions.",
+    blurb: "Core tips, skills, rules, plugins, slash commands, and questions.",
     track: "ai",
     clusters: [
+      { id: "core", title: "Core", blurb: "Shortcuts, Run Modes, verification loops, and Cursor Directory." },
       { id: "skills", title: "Skills", blurb: "Agent Skills: SKILL.md, auto vs slash, and built-ins." },
       { id: "rules", title: "Rules", blurb: "Project, user, team rules, and AGENTS.md." },
       { id: "plugins", title: "Plugins", blurb: "Cursor and Agent plugin formats and marketplaces." },
@@ -544,6 +545,15 @@ export const TOPICS: readonly Topic[] = [
     blurb: "AI-first vs augmented, editors, Context7/Ref, and RTK.",
     track: "ai",
   },
+  grouped(
+    "cursor-core",
+    "0_ai_cursor_core.md",
+    "Core",
+    "Shortcuts, Run Modes, verification loops, and Cursor Directory.",
+    "ai",
+    "cursor",
+    "core",
+  ),
   grouped(
     "cursor-skills",
     "0_ai_cursor_skills.md",

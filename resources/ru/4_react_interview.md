@@ -6,7 +6,7 @@
 
 ### Related docs
 
-* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Интервью](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Интервью](./4_react_interview.md)
 
 ### Sections
 
@@ -156,7 +156,7 @@ useEffect против useLayoutEffect?
 
 **Answer:** JS **библиотека** для UI из компонентов — опишите `UI = f(state)`; React согласовывает DOM.
 
-**See also:** [Реагировать](./4_react_core.md#react)
+**See also:** [React overview](./4_react_core.md#react-overview)
 
 Что такое JSX? Во что это компилируется?
 
@@ -364,11 +364,11 @@ React Fiber и параллельный рендеринг?
 
 **Sequence:** Обновление очереди → рендеринг WIP (DFS: `beginWork` ↓ / `completeWork` ↑) → зафиксировать флаги в DOM. Рендер можно прервать; коммит нет. Рендер ≠ краска.
 
-**Chunks:** Волокна до `shouldYield()` (~5 мс) — пауза *между* волокнами, возобновление следующего; commit никогда не уступает.
+**Chunks:** Волокна до `shouldYield()` (~5 мс) — пауза _между_ волокнами, возобновление следующего; commit никогда не уступает.
 
-**Priority:** Планировщик *когда*; полосы *которые* (синхронизация > ввод > по умолчанию > переход > холостой ход). Срочно отбрасывает незавершенное производство. API: `useTransition`, `useDeferredValue`, `Suspense`, `createRoot`.
+**Priority:** Планировщик _когда_; полосы _которые_ (синхронизация > ввод > по умолчанию > переход > холостой ход). Срочно отбрасывает незавершенное производство. API: `useTransition`, `useDeferredValue`, `Suspense`, `createRoot`.
 
-**Thoughts:** *Рабочий цикл согласовывается в памяти; совершать сбросы атомарно; Планировщик решает, когда.*
+**Thoughts:** _Рабочий цикл согласовывается в памяти; совершать сбросы атомарно; Планировщик решает, когда._
 
 **See also:** [React Fiber](./4_react_core.md#react-fiber) · [Параллельный рендеринг](./4_react_core.md#concurrent-rendering)
 
@@ -392,7 +392,7 @@ React и DOM браузера?
 
 `setState` **из просмотра браузера:** Графики рендеринга → согласования → фиксации изменений DOM → макета → рисования → запуска эффектов.
 
-**Thoughts:** *React быстрее, чем наивный прямой DOM, не потому, что VDOM — это волшебство, а потому, что он пакетирует, сравнивает и минимизирует записи.*
+**Thoughts:** _React быстрее, чем наивный прямой DOM, не потому, что VDOM — это волшебство, а потому, что он пакетирует, сравнивает и минимизирует записи._
 
 **See also:**
 
@@ -411,12 +411,12 @@ React и DOM браузера?
 
 **SPA (CSR):** браузер загружает пакет JS, выполняет, собирает DOM на стороне клиента — пустой/скелетный, пока не запустится JS. **SSR:** сервер отправляет HTML с содержимым; браузер гидратируется.
 
-|               | СПА (КСО) | ССР |
-| ------------- | ---------------------- | ----------------- |
+|               | СПА (КСО)               | ССР                      |
+| ------------- | ----------------------- | ------------------------ | --- | --------------- | ---------------- | ---------------- |
 | Первая краска | Медленно (требуется JS) | Быстро (готово для HTML) |
-| SEO | Слабый без пререндера | Сильный || Интерактивность | После гидратации | После гидратации |
+| SEO           | Слабый без пререндера   | Сильный                  |     | Интерактивность | После гидратации | После гидратации |
 
-**Thoughts:** *SPA = клиент создает пользовательский интерфейс; SSR = сервер сначала отправляет HTML.*
+**Thoughts:** _SPA = клиент создает пользовательский интерфейс; SSR = сервер сначала отправляет HTML._
 
 **See also:**
 
@@ -437,11 +437,11 @@ TanStack Query против RTK-запроса — когда?
 
 Ключи запроса идентифицируют данные; мутации делают ключи недействительными. RTK Query генерирует перехваты из `createApi` и сохраняет кеш в Redux. Переключатели пользовательского интерфейса и черновики форм остаются в силе. `useState` /Zustand — нет в кеше сервера.
 
-| Выбрать | Когда |
-| ------------------ | ----------------------------------------- |
+| Выбрать             | Когда                                              |
+| ------------------- | -------------------------------------------------- |
 | **Запрос TanStack** | Новый SPA, Zustand/Context для государства-клиента |
-| **RTK-запрос** | Существующее хранилище RTK, одно дерево DevTools |
-| **РСЦ** `fetch`    | Данные начальной страницы Next.js App Router |
+| **RTK-запрос**      | Существующее хранилище RTK, одно дерево DevTools   |
+| **РСЦ** `fetch`     | Данные начальной страницы Next.js App Router       |
 
 **Thoughts:** Кэш сервера ≠ клиентское хранилище.
 
@@ -500,7 +500,7 @@ nuqs против useSearchParams против qs?
 
 **How it works:** Предпочитайте nuqs, когда пользовательский интерфейс записывает в URL-адрес множество типизированных фильтров. Предпочитать `useSearchParams` + `router.push` для одного одноразового параметра. Предпочитать `qs` (or `URLSearchParams`), когда вы сериализуете только через API, а не в React.
 
-**Thoughts:** nuqs — это URL *state*. Запрос — это серверный *кэш*.
+**Thoughts:** nuqs — это URL _state_. Запрос — это серверный _кэш_.
 
 **See also:**
 
@@ -517,25 +517,25 @@ nuqs против useSearchParams против qs?
 1. Работали ли вы с компонентами классов? Каковы их характеристики? → [Компоненты класса (устаревшие)](./4_react_ecosystem.md#11-legacy--migration)
 2. Какие данные относятся к состоянию компонента и реквизитам? Приведите пример. → [Государство против реквизита?](#вопросы--ответы)
 3. Знакомы ли вы с крючками? Каковы их преимущества? Писали ли вы собственные хуки и почему? → [Почему крючки? Пользовательские перехватчики?](#вопросы--ответы)
-4.Знакомы ли вы с фрагментами и порталами? Для чего они нужны? → [Фрагменты](./4_react_core.md#fragments) · [Фрагменты и порталы?](#вопросы--ответы)
-5. Когда и почему используются ссылки? → [useRef vs createRef?](#questions--ответы)
-6. Какие методы жизненного цикла компонентов вы знаете? → [Раздел 11 — Наследие](./4_react_ecosystem.md#11-legacy--migration)
-7.В каком методе жизненного цикла (или перехватчике) следует получать данные с сервера? Почему? → [useEffect vs useLayoutEffect?](#questions--ответы)
-8. В каком методе жизненного цикла следует подписываться на прослушиватели и отписываться от них? Зачем отписываться? → [useEffect](./4_react_hooks.md#5-hooks-reference)
-9. Работали ли вы с Context? Когда вам следует его использовать? → [Context vs Redux vs Zustand vs React Query?](#questions--ответы)
-10.Что особенного в `PureComponent`? → [PureComponent](./4_react_ecosystem.md#11-legacy--migration)
-11. Работали ли вы с мемоизированными селекторами? Для чего они нужны и как работают?
-12. Какие преимущества вы видите в React?
-13. Почему React быстрый? Что такое виртуальный DOM? → [Виртуальный DOM и сверка](./4_react_core.md#virtual-dom--reconciliation)
-14.Зачем спискам нужны ключи? Могут ли индексы массива быть ключами? Когда это приемлемо? → [Зачем перечислять ключи? Индекс как ключ?](#вопросы--ответы)
-15. Какова основная идея Redux? → [Библиотеки управления состоянием](./4_react_ecosystem.md#9-ecosystem--architecture)
-16. Работа со стилями в React → [Стилизация в React](./4_react_ecosystem.md#9-ecosystem--architecture) · Основы CSS: [2_css.md](2_css.md)
-17.React — это библиотека или фреймворк? В чем разница? → [Библиотека React или фреймворк?](#вопросы--ответы)
-18. Можете ли вы использовать jQuery вместе с React? Почему или почему нет?
-19. Что такое кодмод?
-20. Как создать хорошую архитектуру для проекта React? → [Функциональное проектирование (FSD)](./4_react_ecosystem.md#9-ecosystem--architecture)
-21. Перечислите библиотеки, которые вы использовали с React.→ [Запрос TanStack против запроса RTK](./4_react_ecosystem.md#9-ecosystem--architecture) · [CASL](./4_react_ecosystem.md#9-ecosystem--architecture) · [shadcn/ui](./4_react_ecosystem.md#9-ecosystem--architecture) · [orval](./4_react_ecosystem.md#9-ecosystem--архитектура)
-22. Что самое сложное вы реализовали с помощью React?
+   4.Знакомы ли вы с фрагментами и порталами? Для чего они нужны? → [Фрагменты](./4_react_core.md#fragments) · [Фрагменты и порталы?](#вопросы--ответы)
+4. Когда и почему используются ссылки? → [useRef vs createRef?](#questions--ответы)
+5. Какие методы жизненного цикла компонентов вы знаете? → [Раздел 11 — Наследие](./4_react_ecosystem.md#11-legacy--migration)
+   7.В каком методе жизненного цикла (или перехватчике) следует получать данные с сервера? Почему? → [useEffect vs useLayoutEffect?](#questions--ответы)
+6. В каком методе жизненного цикла следует подписываться на прослушиватели и отписываться от них? Зачем отписываться? → [useEffect](./4_react_hooks.md#5-hooks-reference)
+7. Работали ли вы с Context? Когда вам следует его использовать? → [Context vs Redux vs Zustand vs React Query?](#questions--ответы)
+   10.Что особенного в `PureComponent`? → [PureComponent](./4_react_ecosystem.md#11-legacy--migration)
+8. Работали ли вы с мемоизированными селекторами? Для чего они нужны и как работают?
+9. Какие преимущества вы видите в React?
+10. Почему React быстрый? Что такое виртуальный DOM? → [Виртуальный DOM и сверка](./4_react_core.md#virtual-dom--reconciliation)
+    14.Зачем спискам нужны ключи? Могут ли индексы массива быть ключами? Когда это приемлемо? → [Зачем перечислять ключи? Индекс как ключ?](#вопросы--ответы)
+11. Какова основная идея Redux? → [Библиотеки управления состоянием](./4_react_ecosystem.md#9-ecosystem--architecture)
+12. Работа со стилями в React → [Стилизация в React](./4_react_ecosystem.md#9-ecosystem--architecture) · Основы CSS: [2_css.md](2_css.md)
+    17.React — это библиотека или фреймворк? В чем разница? → [Библиотека React или фреймворк?](#вопросы--ответы)
+13. Можете ли вы использовать jQuery вместе с React? Почему или почему нет?
+14. Что такое кодмод?
+15. Как создать хорошую архитектуру для проекта React? → [Функциональное проектирование (FSD)](./4_react_ecosystem.md#9-ecosystem--architecture)
+16. Перечислите библиотеки, которые вы использовали с React.→ [Запрос TanStack против запроса RTK](./4_react_ecosystem.md#9-ecosystem--architecture) · [CASL](./4_react_ecosystem.md#9-ecosystem--architecture) · [shadcn/ui](./4_react_ecosystem.md#9-ecosystem--architecture) · [orval](./4_react_ecosystem.md#9-ecosystem--архитектура)
+17. Что самое сложное вы реализовали с помощью React?
 
 Средний — Реагировать
 
@@ -557,9 +557,9 @@ nuqs против useSearchParams против qs?
 14. Какие недостатки React вы видите?
 15. Какие шаблоны вы используете в React? → [Шаблоны композиции](./4_react_core.md#3-description-the-ui)
 16. Как вы относитесь к набору текста с помощью React? → [TypeScript](./5_ts.md)
-17.Как создать хорошую архитектуру для проекта React? → [Функциональное проектирование (FSD)](./4_react_ecosystem.md#9-ecosystem--architecture)
-18. Как вы оптимизируете приложения React? Как вы измеряете производительность? → [Производительность](./4_react_ecosystem.md#10- Performance)
-19. Можете ли вы встроить одно приложение React в другое приложение React?
+    17.Как создать хорошую архитектуру для проекта React? → [Функциональное проектирование (FSD)](./4_react_ecosystem.md#9-ecosystem--architecture)
+17. Как вы оптимизируете приложения React? Как вы измеряете производительность? → [Производительность](./4_react_ecosystem.md#10- Performance)
+18. Можете ли вы встроить одно приложение React в другое приложение React?
 
 Младший — Практические задания (проект React)
 
@@ -586,12 +586,7 @@ nuqs против useSearchParams против qs?
 
 ```tsx
 const UserList = ({ users }) => {
-  return users.map(user => (
-    <UserCard
-      key={Math.random()}
-      user={user}
-    />
-  ));
+  return users.map((user) => <UserCard key={Math.random()} user={user} />);
 };
 ```
 
@@ -599,12 +594,7 @@ const UserList = ({ users }) => {
 
 ```tsx
 const UserList = ({ users }) => {
-  return users.map(user => (
-    <UserCard
-      key={user.id}
-      user={user}
-    />
-  ));
+  return users.map((user) => <UserCard key={user.id} user={user} />);
 };
 ```
 
@@ -630,9 +620,9 @@ const UserList = ({ users }) => {
 Что не так? Почему пользовательский интерфейс может не обновляться?
 
 ```tsx
-const [user, setUser] = useState({ name: 'Anna' });
+const [user, setUser] = useState({ name: "Anna" });
 
-user.name = 'Kate';
+user.name = "Kate";
 console.log(user.name); // "Kate"
 setUser(user);
 ```
@@ -644,9 +634,9 @@ setUser(user);
 Исправление — вернуть **новый объект**:
 
 ```tsx
-setUser({ ...user, name: 'Kate' });
+setUser({ ...user, name: "Kate" });
 // or
-setUser(prev => ({ ...prev, name: 'Kate' }));
+setUser((prev) => ({ ...prev, name: "Kate" }));
 ```
 
 `console.log(user.name)` принты `"Kate"` потому что мутация произошла в памяти; пользовательский интерфейс просто не получил новый цикл рендеринга.
@@ -671,10 +661,7 @@ useEffect(() => {
 Исправить:
 
 ```tsx
-const filters = useMemo(
-  () => ({ name, isActive }),
-  [name, isActive],
-);
+const filters = useMemo(() => ({ name, isActive }), [name, isActive]);
 
 useEffect(() => {
   loadData();
@@ -732,7 +719,7 @@ useEffect(() => {
       const data = await api.get({ signal: controller.signal });
       setData(data);
     } catch (err) {
-      if (err.name !== 'AbortError') {
+      if (err.name !== "AbortError") {
         setError(err);
       }
     }
@@ -743,6 +730,5 @@ useEffect(() => {
 ```
 
 Альтернативно используйте библиотеку выборки данных (TanStack Query, SWR) или React 19. `use()` с помощью Suspense — они обрабатывают прерывание, дедупликацию и кэширование.
+
 </details>
-
-

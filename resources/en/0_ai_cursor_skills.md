@@ -4,25 +4,31 @@ Reusable multi-step workflows that teach Agent how to handle a specific task. Mo
 
 ### Related docs
 
-* [AI workflow](./0_ai.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
+- [AI workflow](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
-| Area | Topics |
-|------|--------|
-| **Basics** | [What are skills](#what-are-skills), [Directories](#skill-directories), [SKILL.md](#skillmd-format) |
-| **Control** | [Automatic vs slash](#automatic-vs-slash-invocation), [paths scoping](#scoping-with-paths), [Custom Mode](#custom-mode) |
-| **Ops** | [Built-in skills](#built-in-skills), [Migrate from rules/commands](#migrate-to-skills) |
+| Area             | Topics                                                                                                                                 |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **Basics**       | [What are skills](#what-are-skills), [Directories](#skill-directories), [SKILL.md](#skillmd-format), [How to use](#how-to-use-a-skill) |
+| **Control**      | [Automatic vs slash](#automatic-vs-slash-invocation), [paths scoping](#scoping-with-paths), [Custom Mode](#custom-mode)                |
+| **Distribution** | [Cloud sync](#cloud-agents-sync), [Publish to team](#publish-to-team), [View & install](#viewing-and-installing-skills)                |
+| **Ops**          | [Built-in skills](#built-in-skills), [Convert a rule](#convert-rule-to-skill), [Migrate rules/commands](#migrate-to-skills)            |
 
 ### Sections
 
 - [What are skills](#what-are-skills)
 - [Skill directories](#skill-directories)
 - [SKILL.md format](#skillmd-format)
+- [How to use a skill](#how-to-use-a-skill)
 - [Automatic vs slash invocation](#automatic-vs-slash-invocation)
 - [Scoping with paths](#scoping-with-paths)
 - [Custom Mode](#custom-mode)
+- [Cloud Agents sync](#cloud-agents-sync)
+- [Publish to team](#publish-to-team)
+- [Viewing and installing skills](#viewing-and-installing-skills)
 - [Built-in skills](#built-in-skills)
+- [Convert rule to skill](#convert-rule-to-skill)
 - [Migrate to skills](#migrate-to-skills)
 - [Interview Practice](#interview-practice)
 
@@ -37,29 +43,39 @@ Reusable multi-step workflows that teach Agent how to handle a specific task. Mo
 
 **How it works:**
 
-- **Discovery:** On startup, Cursor scans skill directories (project + user; also Claude/Codex-compatible paths) and lists every folder that contains `SKILL.md`. See [Skill directories](#skill-directories).
+| Pillar                 | Meaning                                                                             |
+| ---------------------- | ----------------------------------------------------------------------------------- |
+| **Portable**           | Works on any agent that implements [agentskills.io](https://agentskills.io)         |
+| **Version-controlled** | Files in git — project skills in `.cursor/skills/`, personal in `~/.cursor/skills/` |
+| **Actionable**         | Optional `scripts/` Agent can run; templates in `assets/`                           |
+| **Progressive**        | Deep docs in `references/` — loaded on demand, not every turn                       |
+
+- **Discovery:** On startup, Cursor scans skill directories (project + user; also Claude/Codex paths) and lists every folder with `SKILL.md`. See [Skill directories](#skill-directories).
 - **Relevance:** Agent sees available skills and picks one when the request matches the skill’s `description` (WHAT it does + WHEN to use it). A vague description → the skill rarely auto-applies.
 - **Manual invoke:** Type `/` in Agent chat and choose the skill (or `@` attach). That attaches the skill to **one** message. For a whole session, promote it to a [Custom Mode](#custom-mode) (Option+Enter / Alt+Enter).
-- **Progressive context:** Keep `SKILL.md` focused; put deep docs in `references/` and templates in `assets/`. Agent loads those files on demand instead of stuffing everything into every turn.
-- **Actionable:** Point Agent at `scripts/deploy.sh` (or similar). It reads the skill, then runs the referenced scripts with tools — Bash, Python, JS, etc.
-- **Open standard:** Agent Skills works across agents that implement [agentskills.io](https://agentskills.io). Cursor also ships [built-in skills](#built-in-skills) (`/create-skill`, `/review`, …) next to yours.
+- **Progressive context:** Keep `SKILL.md` focused; put deep docs in `references/` and templates in `assets/`.
+- **Actionable:** Reference `scripts/` with relative paths — Bash, Python, JS, etc.
+- **Built-ins:** Cursor ships [built-in skills](#built-in-skills) (`/create-skill`, `/review`, …) next to yours.
 
 **When to use:**
 
-| Use a **skill** when… | Prefer a **rule** when… |
-| --- | --- |
-| Multi-step procedure (deploy, audit, update conspect, land a PR). | Short coding guideline or constraint (“TypeScript only”, “no default exports”). |
-| Agent needs ordered steps, checklists, or scripts. | Guidance should ride along always / by file globs / `@mention`. |
-| Workflow is reusable across chats and shareable in the repo. | A few lines are enough; no playbook. |
+|             | **Rules**                                    | **Skills**                                                              |
+| ----------- | -------------------------------------------- | ----------------------------------------------------------------------- |
+| Purpose     | Short coding guidelines and constraints      | Multi-step workflows and procedures                                     |
+| Length      | A few lines to a few hundred lines           | Often longer, with step-by-step instructions                            |
+| How applied | Included in every (or matching) conversation | Invoked with `/skill-name`, `@skill-name`, or auto-picked when relevant |
+| Example     | “Use TypeScript for all new files”           | “Deploy to staging: run tests, build, deploy, verify”                   |
 
-**Common pitfalls:** Writing “helps with docs” as the description (too vague); dumping a novel into `SKILL.md` instead of progressive `references/`; using a skill for style that belongs in a rule; forgetting `disable-model-invocation: true` when you only want `/skill-name` (see [Automatic vs slash](#automatic-vs-slash-invocation)).
+Use a **rule** when a short instruction is enough. Use a **skill** when Agent needs a detailed, repeatable process (deploy, audit, update conspect, land a PR).
+
+**Common pitfalls:** Writing “helps with docs” as the description (too vague); dumping a novel into `SKILL.md` instead of progressive `references/`; using a skill for style that belongs in a [rule](./0_ai_cursor_rules.md); duplicating the same checklist in a rule **and** a skill — see [Context optimization](./0_ai_cursor_rules.md#context-optimization).
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| Shareable, git-tracked playbooks for the team. | Bad `description` → never auto-applied. |
-| Scripts + references + assets, loaded progressively. | Long always-on skills burn context. |
+| +                                                    | −                                                         |
+| ---------------------------------------------------- | --------------------------------------------------------- |
+| Shareable, git-tracked playbooks for the team.       | Bad `description` → never auto-applied.                   |
+| Scripts + references + assets, loaded progressively. | Long always-on skills burn context.                       |
 | Works with `/`, auto-pick, Custom Mode, and plugins. | Overlap with rules if you mix “always style” into skills. |
 
 **Examples:**
@@ -115,18 +131,19 @@ Create one interactively: type `/create-skill` and describe the workflow — Cur
 
 **How it works:**
 
-| Location | Scope |
-| --- | --- |
-| `.agents/skills/` | Project |
-| `.cursor/skills/` | Project |
-| `~/.agents/skills/` | User (local machine) |
+| Location            | Scope                                  |
+| ------------------- | -------------------------------------- |
+| `.agents/skills/`   | Project                                |
+| `.cursor/skills/`   | Project                                |
+| `~/.agents/skills/` | User (local machine)                   |
 | `~/.cursor/skills/` | User (local; can sync to Cloud Agents) |
 
 - Also discovers Claude/Codex dirs: `.claude/skills/`, `.codex/skills/`, and the `~/` variants.
-- Nested category folders are fine (e.g. `.cursor/skills/shipping/land-it/SKILL.md`); the skill name is the folder that holds `SKILL.md`.
-- Skills under a nested package (e.g. `apps/web/.cursor/skills/`) are scoped to files in that package.
+- Cursor walks each skills root **recursively** — category subfolders are fine (e.g. `.cursor/skills/shipping/deploy-staging/SKILL.md`). The skill **name** is the folder that contains `SKILL.md`, not the parent category.
+- Monorepos: any nested `.cursor/skills/` or `.agents/skills/` under the repo is discovered (e.g. `apps/web/.cursor/skills/`). Skills there are **auto-scoped** to files in that directory — like setting `paths`, without extra frontmatter.
+- `~/.agents/skills/` and unsynced `~/.cursor/skills/` stay on your machine; they are **not** copied to Cloud Agents, Agents Window remote SSH, or self-hosted workers (use repo skills or bake skills into the worker image).
 
-**When to use:** Put team workflows in `.cursor/skills/` (commit them). Put personal habits in `~/.cursor/skills/`.
+**When to use:** Put team workflows in `.cursor/skills/` (commit them). Put personal habits in `~/.cursor/skills/` (optionally sync for Cloud Agents — see [Cloud Agents sync](#cloud-agents-sync)).
 
 **Sources:** [Skill directories](https://cursor.com/docs/skills.md#skill-directories)
 
@@ -141,9 +158,24 @@ Create one interactively: type `/create-skill` and describe the workflow — Cur
 
 **How it works:**
 
-- Required: `name` (kebab-case, must match parent folder), `description` (used for auto-relevance).
-- Optional: `paths` (glob scope), `disable-model-invocation` (slash-only), `icon` / `color` (Custom Mode badge), `metadata`.
-- Optional dirs next to `SKILL.md`: `scripts/`, `references/`, `assets/`.
+| Field                      | Required | Role                                                                   |
+| -------------------------- | -------- | ---------------------------------------------------------------------- |
+| `name`                     | Yes      | Kebab-case id; **must match** parent folder name                       |
+| `description`              | Yes      | WHAT + WHEN — drives auto-relevance                                    |
+| `paths`                    | No       | Glob scope (list or comma-separated string)                            |
+| `disable-model-invocation` | No       | `true` → slash-only, no auto-pick                                      |
+| `icon` / `color`           | No       | Custom Mode badge (`code`, `beaker`, `shield`, … / `green`, `blue`, …) |
+| `metadata`                 | No       | Arbitrary key-value map                                                |
+
+Optional folders next to `SKILL.md`:
+
+| Dir           | Purpose                        |
+| ------------- | ------------------------------ |
+| `scripts/`    | Executable code Agent runs     |
+| `references/` | Extra docs loaded on demand    |
+| `assets/`     | Templates, images, static data |
+
+Body: markdown instructions — often `# Title`, `## When to Use`, `## Instructions`. Keep the main file short; move depth to `references/`.
 
 **Examples:**
 
@@ -161,6 +193,32 @@ description: Add or correct study notes in resources/. Use when the user asks to
 ```
 
 **Sources:** [SKILL.md file format](https://cursor.com/docs/skills.md#skillmd-file-format)
+
+</details>
+
+## How to use a skill
+
+<details>
+<summary>How to use a skill</summary>
+
+**Definition:** Run a skill by typing `/` plus the skill name in Agent chat, or attach it with `@` so Agent reads the `SKILL.md` and follows its instructions.
+
+**How it works:**
+
+- **`/` invoke:** Type `/write-tests` (or pick from the menu). Attaches the skill to **one** message unless you promote it to a [Custom Mode](#custom-mode).
+- **`@` attach:** Type `@` and select the skill to add it as context for the current turn.
+- **Auto-pick:** When model invocation is enabled (default), Agent may apply a skill when your request matches its `description`.
+
+**When to use:** `/` or `@` for explicit runs; auto-pick for domain playbooks you want Agent to notice without typing the skill name every time.
+
+**Examples:**
+
+```text
+/write-tests
+@deploy-staging
+```
+
+**Sources:** [How do I use a skill?](https://cursor.com/help/customization/skills#how-do-i-use-a-skill)
 
 </details>
 
@@ -222,7 +280,7 @@ paths:
 **How it works:**
 
 - Pick the skill from `/`, then Option+Enter (Mac) / Alt+Enter (Windows), or **Use as Mode**.
-- Style with optional `icon` and `color` frontmatter.
+- Optional `icon` (`code`, `terminal`, `bug`, `git-branch`, `book-open`, `beaker`, `shield`, `rocket`, …) and `color` (`default`, `green`, `cyan`, `blue`, `purple`, `magenta`, `orange`, `yellow`, `red`, `brand`). Unknown values fall back to the default lightning badge.
 - Available in the Agents Window and the CLI.
 
 **When to use:** Long sessions that should stay on one playbook (TDD, code review checklist). Skip for one-shot tasks.
@@ -231,18 +289,120 @@ paths:
 
 </details>
 
+## Cloud Agents sync
+
+<details>
+<summary>Cloud Agents sync</summary>
+
+**Definition:** Personal skills in `~/.cursor/skills/` stay on your machine until you turn on **Sync Skills for Cloud Agents** so Cloud Agents can use the same private playbooks.
+
+**How it works:**
+
+1. Open **Settings → Agents**.
+2. Under **Context and Tools**, turn on **Sync Skills for Cloud Agents** (you can also start sync from **Customize → Skills**).
+3. Cursor copies `~/.cursor/skills/` for your Cloud Agents. Synced skills stay **private to you** — not shared with teammates.
+4. Turn sync off to move synced skills back to your machine.
+5. **Only** `~/.cursor/skills/` syncs — not project skills, not `~/.agents/skills/`, not other local files.
+6. On **Teams / Enterprise**, admins can disable sync for everyone under **Team Settings → Security & Identity**.
+
+**When to use:** You rely on personal skills locally and want the same workflows on Cloud Agents. To share with teammates, [publish to team](#publish-to-team) instead of sync.
+
+**Sources:** [Use personal skills with Cloud Agents](https://cursor.com/docs/skills.md#use-personal-skills-with-cloud-agents) · [Skills help — Cloud Agents](https://cursor.com/help/customization/skills#how-do-i-use-personal-skills-with-cloud-agents)
+
+</details>
+
+## Publish to team
+
+<details>
+<summary>Publish to team</summary>
+
+**Definition:** **Publish** puts a personal skill on your team’s **Default marketplace** so teammates can install it. Publishing is different from [Cloud sync](#cloud-agents-sync): sync is private; publish is team-wide sharing.
+
+**How it works:**
+
+1. Open **Customize → Skills**.
+2. Open a personal skill.
+3. Choose **Publish** — Cursor adds it to the team Default marketplace.
+4. Teammates install it from the marketplace; Cursor stores a copy in a repository hosted for your team.
+
+**When to use:** A workflow should be standard for the whole team (deploy checklist, review playbook). Keep one-off personal habits in `~/.cursor/skills/` with sync instead.
+
+**Sources:** [Publish a skill to your team](https://cursor.com/help/customization/skills#how-do-i-publish-a-skill-to-my-team)
+
+</details>
+
+## Viewing and installing skills
+
+<details>
+<summary>Viewing and installing skills</summary>
+
+**Definition:** **Customize → Skills** lists discovered skills (project, personal, plugin). Project skills also appear under **Agent Decides** next to rules.
+
+**How it works:**
+
+- **Browse:** Sidebar **Customize → Skills** — see what Cursor loaded from [skill directories](#skill-directories).
+- **From GitHub:** Skills are **not** imported standalone. Package them in a [plugin](./0_ai_cursor_plugins.md) with `.cursor-plugin/marketplace.json`, import via **From GitHub Repository** or a team marketplace, then install the plugin.
+- **Personal → Cloud:** [Cloud sync](#cloud-agents-sync). **Personal → team:** [Publish to team](#publish-to-team).
+
+**When to use:** Audit what Agent can auto-pick before debugging a skill that never fires. Use plugins when sharing skills from a repo.
+
+**Sources:** [Viewing skills](https://cursor.com/docs/skills.md#viewing-skills) · [Installing skills from a repository](https://cursor.com/docs/skills.md#installing-skills-from-a-repository)
+
+</details>
+
 ## Built-in skills
 
 <details>
 <summary>Built-in skills</summary>
 
-**Definition:** Cursor ships built-in skills (managed by Cursor) that appear in the `/` menu next to your own skills.
+**Definition:** Cursor ships built-in skills (managed by Cursor) in the `/` menu. Agent may also auto-use some when your request clearly matches.
 
-**How it works:** High-traffic built-ins include `/create-rule`, `/create-skill`, `/create-hook`, `/review`, `/review-bugbot`, `/review-security`, `/loop`, `/canvas`, `/migrate-to-skills`, `/split-to-prs`, `/shell`. See [Slash commands](./0_ai_cursor_slash.md) for the everyday list.
+**How it works:**
 
-**When to use:** Prefer built-ins for creating rules/skills/hooks and for reviews instead of reinventing prompts.
+| Skill                     | What it does                                       |
+| ------------------------- | -------------------------------------------------- |
+| `/automate`               | Cursor Automations (schedules, Slack, GitHub, …)   |
+| `/autopilot`              | Monitor a PR — feedback, conflicts, CI, follow-ups |
+| `/canvas`                 | Interactive React artifact beside chat             |
+| `/create-hook`            | Hooks + `hooks.json`                               |
+| `/create-rule`            | Project/user rules with correct scope              |
+| `/create-skill`           | Scaffold `SKILL.md` and folder structure           |
+| `/create-subagent`        | Custom subagents with focused roles                |
+| `/cursor-blame`           | Trace AI-authored changes and prompts              |
+| `/loop`                   | Re-run a prompt/skill on an interval               |
+| `/migrate-to-skills`      | Convert eligible rules/commands → skills           |
+| `/review`                 | Pick and run code-review agent                     |
+| `/review-bugbot`          | Bug/regression review                              |
+| `/review-security`        | Security review                                    |
+| `/sdk`                    | Cursor SDK integrations                            |
+| `/shell`                  | Run literal shell command                          |
+| `/split-to-prs`           | Split large changes into smaller PRs               |
+| `/statusline`             | CLI status line config                             |
+| `/update-cli-config`      | Edit `~/.cursor/cli-config.json`                   |
+| `/update-cursor-settings` | Find/update Cursor or VS Code settings             |
+
+**When to use:** Prefer built-ins for scaffolding (rules, skills, hooks) and reviews — don’t reinvent prompts. Everyday slash list: [Slash commands](./0_ai_cursor_slash.md).
 
 **Sources:** [Built-in Cursor skills](https://cursor.com/docs/skills.md#built-in-cursor-skills)
+
+</details>
+
+## Convert rule to skill
+
+<details>
+<summary>Convert rule to skill</summary>
+
+**Definition:** Turn one **Apply Intelligently** project rule into a skill when the content is a multi-step playbook rather than a short constraint.
+
+**How it works:**
+
+1. Type `/create-skill` and ask Agent to convert the rule (e.g. “turn `@my-rule` into a skill”).
+2. Review the generated `.cursor/skills/<name>/SKILL.md`.
+3. Delete the original `.cursor/rules/<name>.mdc` if you no longer need it.
+
+**When to use:** A single rule outgrew “always-on guidance” and needs scripts, references, or explicit `/` invocation. For bulk conversion of rules **and** slash commands, use [Migrate to skills](#migrate-to-skills).
+
+**Sources:** [Convert a rule into a skill](https://cursor.com/help/customization/skills#how-do-i-convert-a-rule-into-a-skill)
 
 </details>
 

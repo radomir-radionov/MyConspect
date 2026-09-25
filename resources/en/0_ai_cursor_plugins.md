@@ -4,7 +4,7 @@ Distributable bundles that package skills, rules, agents, commands, hooks, and M
 
 ### Related docs
 
-* [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
+* [AI workflow](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
@@ -141,7 +141,7 @@ Distributable bundles that package skills, rules, agents, commands, hooks, and M
 <details>
 <summary>Marketplace and install</summary>
 
-**Definition:** Plugins are installed from Cursor marketplaces (official, team, or GitHub repos with `.cursor-plugin/marketplace.json`). Skills/rules from a repo arrive **only** packaged inside a plugin.
+**Definition:** Plugins are installed from Cursor marketplaces (official, team, or GitHub repos with `.cursor-plugin/marketplace.json`). Skills/rules from a repo arrive **only** packaged inside a plugin. For community browsing of rules/MCP (not the official publish path), see [Cursor Directory](./0_ai_cursor_core.md#cursor-directory).
 
 **How it works:**
 
@@ -151,7 +151,7 @@ Distributable bundles that package skills, rules, agents, commands, hooks, and M
 
 **When to use:** Share team kits (e.g. cursor-team-kit, Prisma, Vercel plugins) instead of copying `.mdc` files by hand. Skip for one-off personal skills — use `~/.cursor/skills/`.
 
-**Sources:** [Submitting a plugin](https://cursor.com/docs/reference/plugins#submitting-a-plugin) · [Importing rules](https://cursor.com/docs/rules#importing-rules-from-a-repository)
+**Sources:** [Submitting a plugin](https://cursor.com/docs/reference/plugins#submitting-a-plugin) · [Importing rules](https://cursor.com/docs/rules#importing-rules-from-a-repository) · [cursor.directory](https://cursor.directory/)
 
 </details>
 

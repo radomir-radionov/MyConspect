@@ -10,10 +10,10 @@
 
 ### Main concepts
 
-| Площадь | Темы |
-| --------------- | ----------------------------------------------------------------------- |
+| Площадь              | Темы                                                          |
+| -------------------- | ------------------------------------------------------------- |
 | **Время выполнения** | JS против ECMAScript, JIT, строгий режим, консоль, стиль кода |
-| **Современный** | ЕСМ |
+| **Современный**      | ЕСМ                                                           |
 
 ### Sections
 
@@ -21,6 +21,7 @@
 
 - [Core](#core)
 - [Modules](#modules)
+- [Design principles](#design-principles)
 - [Интервью](./3_js_interview.md)
 
 Стек и куча → [Типы данных и переменные](./3_js_variables.md#memory-stack-heap). Обработка ошибок → [Операторы и циклы](./3_js_operators.md#error-handling). Итераторы и генераторы → [Операторы и циклы](./3_js_operators.md#iterators).Родственные основные темы: [Типы данных и переменные](./3_js_variables.md) · [Операторы и циклы](./3_js_operators.md) · [Массив](./3_js_array.md) · [Функции](./3_js_functions.md) · [Классы и объекты](./3_js_oop.md).
@@ -28,6 +29,7 @@
 Также обсуждались темы: **JIT**, **строгий режим**, **ESM**. Типы/stack-heap/переменные/область действия/ `globalThis` / замыкания → [3_js_variables.md](./3_js_variables.md); Операторы/циклы/ошибки → [3_js_operators.md](./3_js_operators.md); Массивы → [3_js_array.md](./3_js_array.md); Intl/RegExp/Сигналы → [3_js_extra.md](./3_js_extra.md); цикл событий → [3_js_async.md](./3_js_async.md); GC/Прокси/глубокое копирование → [3_js_oop.md](./3_js_oop.md); парадигмы → [7_special_cs.md](./7_special_cs.md).
 
 <a name="core"></a>
+
 ## Core
 
 <details>
@@ -37,19 +39,19 @@
 
 **Definition:** JavaScript — это язык сценариев высокого уровня, созданный для того, чтобы сделать веб-страницы интерактивными. Программы представляют собой текстовые **скрипты** (часто встроенные в HTML), которые запускаются без отдельного этапа компиляции. **ECMAScript** (ECMA-262) — языковой стандарт; «JavaScript» — это повседневное название этого языка плюс **API хоста** (DOM в браузерах, `fs` /сеть в Node и т. д.). Он не имеет никакого технического отношения к Java — название пришло из маркетинга, когда его кратко называли LiveScript.
 
-| черта | Деталь |
-| --------- | ------ |
-| Парадигмы | Событийный, функциональный, ООП, императивный |
-| Ввод текста | Динамический — типы проверяются во время выполнения |
-| Исполнение | Движок анализирует → компилирует → запускает (JIT-оптимизация); см. [Движок и среда выполнения](#engine-and-runtime) |
-| Модули | `.mjs` or `type="module"` для ЕСМ |
-| Хозяева | Браузер, Node/Deno/Bun, встроенные движки на других устройствах |
+| черта       | Деталь                                                                                                               |
+| ----------- | -------------------------------------------------------------------------------------------------------------------- |
+| Парадигмы   | Событийный, функциональный, ООП, императивный                                                                        |
+| Ввод текста | Динамический — типы проверяются во время выполнения                                                                  |
+| Исполнение  | Движок анализирует → компилирует → запускает (JIT-оптимизация); см. [Движок и среда выполнения](#engine-and-runtime) |
+| Модули      | `.mjs` or `type="module"` для ЕСМ                                                                                    |
+| Хозяева     | Браузер, Node/Deno/Bun, встроенные движки на других устройствах                                                      |
 
 **How it works:**
 
 - **Движок (ВМ):** каждый хост имеет встроенный движок. Распространенные кодовые имена: **V8** (Chrome, Opera, Edge, Node), **SpiderMonkey** (Firefox), **JavaScriptCore** / Nitro / SquirrelFish (Safari). Наследие: **Чакра** (IE/ранняя версия Edge). Поддержка функций часто обсуждается по названию движка («поддерживается в V8»).
 - **Конвейер (основы):** анализ сценария → компиляция в машинный код → запуск; двигатели продолжают оптимизировать горячие пути.Более глубокое различие JIT/AOT → [Engine и среда выполнения](#engine-and-runtime).
-- **Возможности браузера:** манипулирование HTML/CSS; реагировать на ввод пользователя; сетевые запросы (XHR/`fetch`, исторически AJAX/COMET); файлы cookie/диалоги; клиентское хранилище (`localStorage`, и т. д.). То, что *может* делать язык, зависит от **хоста**, а не только от ECMAScript.
+- **Возможности браузера:** манипулирование HTML/CSS; реагировать на ввод пользователя; сетевые запросы (XHR/`fetch`, исторически AJAX/COMET); файлы cookie/диалоги; клиентское хранилище (`localStorage`, и т. д.). То, что _может_ делать язык, зависит от **хоста**, а не только от ECMAScript.
 - **Ограничения в браузере (безопасность):** нет произвольного доступа к диску/ОС; файл/камера/микрофон требуют явных жестов или разрешения пользователя; Доступ к кросс-таблице/окну DOM заблокирован из разных источников (**Политика одного и того же происхождения** — схема + хост + порт); Для чтения из сети между источниками требуется согласие удаленной стороны (заголовки CORS).За пределами браузера (узел, расширения с предоставленными разрешениями) эти правила песочницы не применяются таким же образом. Подробности SOP/CORS → [CORS и политика одного и того же происхождения](./3_js_browser_extra.md#cors-same-origin).
 - **Почему JS победил браузер:** полная интеграция HTML/CSS, простые задачи остаются простыми, доставка включена по умолчанию во всех основных браузерах — уникальное сочетание браузерных технологий.Также используется для серверов, мобильных (RN/Hermes), настольных компьютеров (Electron) и т. д.
 - **Языки «поверх» JS:** многие языки **транспилируются** в JavaScript (TypeScript, CoffeeScript, Flow, Dart→JS, Brython, Kotlin/JS, …). Вам все еще нужен JS для отладки того, что на самом деле запускает браузер/узел. Слой набора текста сегодня → [TypeScript](./5_ts.md).
@@ -58,11 +60,11 @@
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| Единственный вездесущий язык браузера со встроенным HTML/CSS. | Название сбивает людей с Java; динамическая типизация может скрыть ошибки до момента выполнения. |
-| Один и тот же язык на клиенте и на многих серверах (Node, Deno, Bun). | Набор возможностей зависит от хоста — изолированные программные среды безопасности различаются. |
-| Огромная экосистема; движки сходятся на ежегодных выпусках ECMAScript. | Стек Transpile-to-JS добавляет инструменты;надо еще рассуждать о выдаваемом JS. |
+| +                                                                      | −                                                                                                |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Единственный вездесущий язык браузера со встроенным HTML/CSS.          | Название сбивает людей с Java; динамическая типизация может скрыть ошибки до момента выполнения. |
+| Один и тот же язык на клиенте и на многих серверах (Node, Deno, Bun).  | Набор возможностей зависит от хоста — изолированные программные среды безопасности различаются.  |
+| Огромная экосистема; движки сходятся на ежегодных выпусках ECMAScript. | Стек Transpile-to-JS добавляет инструменты;надо еще рассуждать о выдаваемом JS.                  |
 
 **Examples:**
 
@@ -95,12 +97,12 @@ export function greet(name) {
 
 `"use strict"` выбирает более строгий анализ и поведение во время выполнения: никаких случайных глобальных переменных, дублирование параметров запрещено, `delete` на ненастраиваемые свойства выкидывает.
 
-| Ограничено | Эффект |
-| --------------------- | --------------------------------------- |
-| Необъявленное присвоение | `ReferenceError` вместо глобальной утечки |
-| Повторяющиеся имена параметров | Синтаксическая ошибка |
-| Восьмеричные литералы | Синтаксическая ошибка |
-| `this` в простых вызовах | `undefined` (нет `globalThis`)          |
+| Ограничено                     | Эффект                                    |
+| ------------------------------ | ----------------------------------------- |
+| Необъявленное присвоение       | `ReferenceError` вместо глобальной утечки |
+| Повторяющиеся имена параметров | Синтаксическая ошибка                     |
+| Восьмеричные литералы          | Синтаксическая ошибка                     |
+| `this` в простых вызовах       | `undefined` (нет `globalThis`)            |
 
 **How it works:**
 
@@ -120,8 +122,14 @@ function demo() {
 }
 
 // Modules / classes are already strict:
-export function f() { /* strict */ }
-class C { method() { /* strict */ } }
+export function f() {
+  /* strict */
+}
+class C {
+  method() {
+    /* strict */
+  }
+}
 ```
 
 **Sources:** [javascript.info/strict-mode](https://javascript.info/strict-mode) · [Строгий режим MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)
@@ -137,11 +145,11 @@ class C { method() { /* strict */ } }
 
 **How it works:**
 
-- **AOT-компиляция** (C, Go): перевести всю программу в машинный код *перед* запуском. Выявляет множество ошибок на ранней стадии; медленнее начинать итерацию.
+- **AOT-компиляция** (C, Go): перевести всю программу в машинный код _перед_ запуском. Выявляет множество ошибок на ранней стадии; медленнее начинать итерацию.
 - **Интерпретировано** (классические сценарии): переводите и запускайте построчно. Быстрый старт; опечатка может появиться только тогда, когда эта строка выполняется.
-- **JS на практике:** синтаксический анализ + компиляция происходят *во время выполнения* (по этой причине MDN до сих пор называет JS «интерпретируемым»).Синтаксис сначала проверяется для **всего** сценария — `SyntaxError` в строке 2 предотвращает запуск линии 1. А `ReferenceError` из-за неправильно написанного идентификатора возникает **ошибка времени выполнения**: предыдущие строки уже выполнялись.
+- **JS на практике:** синтаксический анализ + компиляция происходят _во время выполнения_ (по этой причине MDN до сих пор называет JS «интерпретируемым»).Синтаксис сначала проверяется для **всего** сценария — `SyntaxError` в строке 2 предотвращает запуск линии 1. А `ReferenceError` из-за неправильно написанного идентификатора возникает **ошибка времени выполнения**: предыдущие строки уже выполнялись.
 - **объявления** функции подняты, поэтому вызов может появиться над `function` в исходнике, а не построчная интерпретация.
-- **JIT:** интерпретатор холодного кода; если функция часто выполняется со стабильными типами, оптимизирующий компилятор генерирует машинный код (и может деоптимизировать, если типы изменяются). Babel/TypeScript генерирует старый JS *до* движка — это не то же самое, что JIT.
+- **JIT:** интерпретатор холодного кода; если функция часто выполняется со стабильными типами, оптимизирующий компилятор генерирует машинный код (и может деоптимизировать, если типы изменяются). Babel/TypeScript генерирует старый JS _до_ движка — это не то же самое, что JIT.
 
 | Этап | Роль |
 | ------------------- | ------------------------- || Парсер | Токенизирует и строит AST |
@@ -159,9 +167,9 @@ class C { method() { /* strict */ } }
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| Быстрый запуск + более поздняя пиковая скорость | Типовые спекуляции могут деоптимизировать |
+| +                                                        | −                                                          |
+| -------------------------------------------------------- | ---------------------------------------------------------- |
+| Быстрый запуск + более поздняя пиковая скорость          | Типовые спекуляции могут деоптимизировать                  |
 | Синтаксические ошибки не позволяют выполнить весь анализ | Ярлыки «интерпретировано»/«скомпилировано» сбивают с толку |
 
 **Examples:**
@@ -188,11 +196,11 @@ function praise(name) {
 
 JIT сочетает в себе быстрый запуск (интерпретатор) с максимальной производительностью (компилятор). Babel переносит современный синтаксис в более старый ECMAScript для более старых сред выполнения — это не то же самое, что JIT движка.
 
-| Двигатель | Хозяин |
-| -------------- | ------------------ |
-| В8 | Хром, Нод, Дено |
-| ПаукОбезьяна | Firefox |
-| JavaScriptCore | Сафари |
+| Двигатель      | Хозяин          |
+| -------------- | --------------- |
+| В8             | Хром, Нод, Дено |
+| ПаукОбезьяна   | Firefox         |
+| JavaScriptCore | Сафари          |
 
 **Sources:** [javascript.info/intro](https://javascript.info/intro) · [MDN — интерпретируемый или скомпилированный](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [MDN JIT](https://developer.mozilla.org/en-US/docs/Glossary/Just_in_time_compilation) · [блог V8](https://v8.dev/blog)
 
@@ -236,7 +244,7 @@ console.dir(document.body, { depth: 1 });
 
 - Отдавайте предпочтение египетским брекетам (`if (cond) {`), пробелы вокруг операторов и длину строки команды (часто 80–120). Всегда ставьте `;` операторы after — см. [ASI](./3_js_operators.md).
 - Уменьшить гнездование с ранним `return` / `continue` вместо глубокого `else` деревья.
-– Размещение функций: часто **сначала вызывайте сайт**, помощники ниже — читатели узнают, *что происходит*, прежде чем *как*.
+- Размещение функций: часто **сначала вызывайте сайт**, помощники ниже — читатели узнают, _что происходит_, прежде чем _как_.
 - **Хорошие комментарии**: обзор архитектуры, неочевидные решения, JSDoc для публичных API. **Плохие комментарии:** повторение `i++` или называя то, что уже говорит хорошо названная функция — вместо этого учитывайте функцию.
 - Антишаблоны («код ниндзя»): названия однобуквенные, расплывчатые. `data`/`obj`, противоречивые синонимы (`show` vs `display` для того же самого), тихие побочные эффекты в `is*`/`check*` функции, повторное использование переменных для несвязанных значений в середине функции.
 
@@ -259,10 +267,12 @@ function pow(x, n) {
  * @param {number} n Natural number
  * @return {number}
  */
-function documentedPow(x, n) { /* ... */ }
+function documentedPow(x, n) {
+  /* ... */
+}
 ```
 
-**Thoughts:** Читабельные имена превосходят остроумные остроты. Если вам нужен комментарий, объясняющий *что*, перепишите код.
+**Thoughts:** Читабельные имена превосходят остроумные остроты. Если вам нужен комментарий, объясняющий _что_, перепишите код.
 
 **Sources:** [javascript.info/coding-style](https://javascript.info/coding-style) · [javascript.info/comments](https://javascript.info/comments) · [javascript.info/ninja-code](https://javascript.info/ninja-code)
 
@@ -277,21 +287,21 @@ function documentedPow(x, n) { /* ... */ }
 
 Общие термины, используемые в основной документации JS.
 
-| Срок | Значение |
-| ------------- | ------------------------------------------------ |
-| Выделить | Зарезервировать память для значения |
-| Разложение | Разбейте проблему на более мелкие части |
-| Мемоизация | Кэшируйте результаты функции, чтобы избежать повторных вычислений || Идентификатор | Имя переменной, функции или метки |
-| Линтер | Инструмент, который обеспечивает соблюдение стиля кода и выявляет проблемы |
-| Нормализатор | Функция, стандартизирующая форму данных |
-| Минимизация | Удалите пробелы/комментарии, чтобы уменьшить размер пакета |
+| Срок         | Значение                                                                   |
+| ------------ | -------------------------------------------------------------------------- | --- | ------------- | --------------------------------- |
+| Выделить     | Зарезервировать память для значения                                        |
+| Разложение   | Разбейте проблему на более мелкие части                                    |
+| Мемоизация   | Кэшируйте результаты функции, чтобы избежать повторных вычислений          |     | Идентификатор | Имя переменной, функции или метки |
+| Линтер       | Инструмент, который обеспечивает соблюдение стиля кода и выявляет проблемы |
+| Нормализатор | Функция, стандартизирующая форму данных                                    |
+| Минимизация  | Удалите пробелы/комментарии, чтобы уменьшить размер пакета                 |
 
 **Sources:** [Глоссарий MDN](https://developer.mozilla.org/en-US/docs/Glossary)
 
 </details>
 
-
 <a name="modules"></a>
+
 ## Modules
 
 <details>
@@ -314,11 +324,11 @@ function documentedPow(x, n) { /* ... */ }
 
 **When to use:**
 
-| ЕСМ | CommonJS (`require`) |
-|-----|---------------------|
-| Новый браузер и приложения Node | Устаревшие кодовые базы только для узлов |
-| В комплекте интерфейс | Некоторые инструменты все еще доступны только для CJS |
-| Динамический `import()` для ленивых маршрутов | Конфигурация синхронизации загружается в старом Node |
+| ЕСМ                                           | CommonJS (`require`)                                  |
+| --------------------------------------------- | ----------------------------------------------------- |
+| Новый браузер и приложения Node               | Устаревшие кодовые базы только для узлов              |
+| В комплекте интерфейс                         | Некоторые инструменты все еще доступны только для CJS |
+| Динамический `import()` для ленивых маршрутов | Конфигурация синхронизации загружается в старом Node  |
 
 #### Common pitfalls
 
@@ -329,12 +339,12 @@ function documentedPow(x, n) { /* ... */ }
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Встряхивание дерева (устранение мертвого кода) | Нужен упаковщик или `type="module"` в браузере |
-| Очистить статический график зависимостей | CORS для сценариев с перекрестным происхождением |
-| Никаких случайных глобальных переменных | Нет синхронности `require` в браузере |
-| `import()` для разделения кода | Немного другая семантика, чем CJS в Node |
+| +                                              | −                                                |
+| ---------------------------------------------- | ------------------------------------------------ |
+| Встряхивание дерева (устранение мертвого кода) | Нужен упаковщик или `type="module"` в браузере   |
+| Очистить статический график зависимостей       | CORS для сценариев с перекрестным происхождением |
+| Никаких случайных глобальных переменных        | Нет синхронности `require` в браузере            |
+| `import()` для разделения кода                 | Немного другая семантика, чем CJS в Node         |
 
 **Examples:**
 
@@ -354,5 +364,270 @@ const heavy = await import("./heavy.js"); // dynamic — returns Promise
 ```
 
 **Sources:** [javascript.info/modules-intro](https://javascript.info/modules-intro) · [javascript.info/import-export](https://javascript.info/import-export) · [javascript.info/modules-dynamic-imports](https://javascript.info/modules-dynamic-imports)
+
+</details>
+
+<a name="design-principles"></a>
+
+## Design principles
+
+<details>
+  <summary>SOLID in Classes</summary>
+
+### SOLID in Classes
+
+**Definition:** **SOLID** — пять принципов дизайна Роберта Мартина («Дядя Боб») для кода, который остаётся **удобным для изменений, тестов и расширения**. На **иерархиях `class`** каждая буква связана с прототипами, `extends` и инжектом через constructor. В JS `class` — **синтаксический сахар над прототипами**: методы лежат на prototype, `extends` связывает цепочку — поэтому **Liskov** и **композиция** важны при каждом наследовании. Маппинг на модули и функции: [SOLID in Functions](#solid-in-functions). В рантайме нет `interface` (TypeScript добавляет его при компиляции) — контракты задают **duck typing**, JSDoc `@typedef` или TS `implements`.
+
+| Letter | Principle             | Какую проблему закрывает (классы)                         |
+| ------ | --------------------- | --------------------------------------------------------- |
+| **S**  | Single Responsibility | God-классы с несвязанными обязанностями                   |
+| **O**  | Open/Closed           | Бесконечные правки `if/else` внутри `Car.start()`         |
+| **L**  | Liskov Substitution   | Подклассы, ломающие код, рассчитанный на родительский тип |
+| **I**  | Interface Segregation | Жирные class API с неиспользуемыми методами               |
+| **D**  | Dependency Inversion  | Классы с `new GasEngine()` или `fetch` внутри             |
+
+| Principle                     | Meaning                                                                                                                                                                                                                                                   | JS `class` example                                                                             |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **S** — Single Responsibility | Класс делает **одну работу** и имеет **одну причину для изменения**. Правила запуска/остановки мотора — в `CarEngine`; правила отображения скорости и топлива — в `CarDashboard`. Смешать всё в `Car` — правка UI может сломать логику мотора и наоборот. | `CarEngine` запускает мотор; `CarDashboard` показывает скорость — не один `Car` на всё         |
+| **O** — Open/Closed           | Открыт для **расширения**, закрыт для **модификации**. Новый тип двигателя — новый класс (`ElectricMotor`), а не очередная ветка `if/else` в `Car.start()`. Существующий код, работающий с `Car`, не переписывается.                                      | Добавить `ElectricMotor` без правки `Car` — новый класс двигателя в `constructor`              |
+| **L** — Liskov Substitution   | Если код принимает `RoadCar`, **любой подкласс должен работать там же** без доп. проверок. Если у одного подтипа `drive()` бросает исключение — нужен `try/catch`, подставить безопасно нельзя.                                                           | `goToWork(new OutOfFuelCar())` падает, а `goToWork(new RoadCar())` работает — LSP нарушен      |
+| **I** — Interface Segregation | Клиенты не должны зависеть от методов, которые **никогда не вызывают**. Автосалон, который только показывает машины, не обязан реализовывать `repair()`, `paint()` или `tow()` только потому, что у «большого» `Garage` они есть.                         | `CarLot` показывает склад — не требовать `repair()` у read-only автосалона                     |
+| **D** — Dependency Inversion  | Высокоуровневый модуль (`Car`) зависит от **абстракции** (всё, у чего есть `start()`), а не от конкретного `GasEngine`. Двигатель передаётся в `constructor` — prod, тесты и будущие моторы меняются без переписывания `Car`.                             | `Car` принимает `engine` в `constructor` — в тестах подставить `GasEngine` или `ElectricMotor` |
+
+**How it works:**
+
+Каждая буква соответствует **Examples** ниже — ищите `// good` и `// bad`:
+
+1. **S** — один класс, одна задача (`CarEngine` vs `CarDashboard`).
+2. **O** — новый двигатель = новый класс (`ElectricMotor`), а не новый `if` внутри `Car.start()`.
+3. **L** — `goToWork(car)` должен работать с любой машиной; пустой бак → `{ status: "no fuel" }`, а не подкласс с throw.
+4. **I** — `CarLot` только показывает; `CarWorkshop` чинит — не наследуйте лишние методы.
+5. **D** — передавайте `engine` в `constructor` (`new Car(engine)`); не делайте `new GasEngine()` внутри `Car`.
+
+**When to use:** Рефакторинг god-классов; plugin-style провайдеры; ответы на интервью; code review, когда растут цепочки `extends`.
+
+**Examples:**
+
+```js
+// S — good: one job per class
+class CarEngine {
+  start() {
+    return "engine on";
+  }
+  stop() {
+    return "engine off";
+  }
+}
+
+class CarDashboard {
+  render({ speed, fuel }) {
+    return `${speed} km/h · ${fuel}% fuel`;
+  }
+}
+
+// S — bad: god class mixes engine logic and UI
+// class Car {
+//   start() {
+//     return "engine on";
+//   }
+//   renderDashboard() {
+//     return `${this.speed} km/h · ${this.fuel}% fuel`;
+//   }
+// }
+
+// O + D — good: new engine type = new class + inject (no edit to Car)
+class GasEngine {
+  start() {
+    return "gas engine started";
+  }
+}
+
+class ElectricMotor {
+  start() {
+    return "motor started silently";
+  }
+}
+
+class Car {
+  #engine;
+  constructor(engine) {
+    this.#engine = engine; // DIP — inject engine abstraction
+  }
+  start() {
+    return this.#engine.start();
+  }
+}
+
+const sedan = new Car(new GasEngine());
+const ev = new Car(new ElectricMotor());
+
+// O + D — bad: edit Car every time a new engine appears
+// class Car {
+//   start() {
+//     if (this.type === "gas") return "gas engine started";
+//     if (this.type === "electric") return "motor started silently";
+//   }
+// }
+
+// I — good: showroom lists; workshop repairs — separate APIs
+class CarLot {
+  listAvailable() {
+    return ["sedan", "suv"];
+  }
+}
+
+class CarWorkshop {
+  repair(carId) {
+    return `repaired ${carId}`;
+  }
+}
+
+// I — bad: read-only lot forced to stub methods it never uses
+// class Garage {
+//   listAvailable() {
+//     return ["sedan", "suv"];
+//   }
+//   repair() {
+//     throw new Error("We don't repair here");
+//   }
+// }
+// class CarLot extends Garage {}
+
+// L — one caller; every "car" must work here
+function goToWork(car) {
+  return car.drive(10); // expects { km, status } — not a crash
+}
+
+// L — good: drive() always returns a result
+class RoadCar {
+  drive(km) {
+    return { km, status: "ok" };
+  }
+}
+goToWork(new RoadCar()); // { km: 10, status: "ok" }
+
+// L — bad: still a RoadCar, but drive() throws — goToWork breaks
+class OutOfFuelCar extends RoadCar {
+  drive(km) {
+    throw new Error("No fuel");
+  }
+}
+// goToWork(new OutOfFuelCar()); // crash — caller needs try/catch
+
+// L — good fix: no broken subclass — return status for empty tank
+class Car {
+  constructor(hasFuel) {
+    this.hasFuel = hasFuel;
+  }
+  drive(km) {
+    if (!this.hasFuel) return { km, status: "no fuel" };
+    return { km, status: "ok" };
+  }
+}
+goToWork(new Car(false)); // { km: 10, status: "no fuel" } — same goToWork, no crash
+```
+
+**Thoughts:** SOLID — **ориентир**, не закон: для 10-строчного скрипта пять классов не нужны. Применять, когда больно менять код. Функции и модули: [SOLID in Functions](#solid-in-functions). Синтаксис классов: [Classes & Objects](./3_js_oop.md#classes-full). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Полный OOP-справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+
+**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Functions](#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
+
+</details>
+
+<details>
+  <summary>SOLID in Functions</summary>
+
+### SOLID in Functions
+
+**Definition:** Те же пять принципов **SOLID** относятся к **обычным функциям**, **замыканиям** и **модулям ESM** — тому стилю, в котором большинство JavaScript пишут каждый день. Граница модуля или экспортируемая функция может быть единицей с одной задачей, расширяемой новыми функциями и тестируемой, когда зависимости передают снаружи. Маппинг на классы: [SOLID in Classes](#solid-in-classes).
+
+| Letter | Principle             | Какую проблему закрывает (функции / модули)                  |
+| ------ | --------------------- | ------------------------------------------------------------ |
+| **S**  | Single Responsibility | God-модули, смешивающие parse, format и I/O                  |
+| **O**  | Open/Closed           | Рост одной функции очередной веткой `if (paymentType)`       |
+| **L**  | Liskov Substitution   | Колбэки, которые бросают или возвращают разную форму         |
+| **I**  | Interface Segregation | Barrel-файлы с десятками хелперов, которые не импортируют    |
+| **D**  | Dependency Inversion  | Доменные функции с прямым вызовом `fetch` или `localStorage` |
+
+| Principle                     | Meaning                                                                                                                                                                                                                       | JS function example                                                           |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| **S** — Single Responsibility | Одна функция — **одна причина для изменения**. Парсинг JSON — в `parseUser()`; форматирование для UI — в `formatUserLabel()` — не одна `handleUser()` на всё.                                                                 | `parseUser()` vs `formatUserLabel()` — не один `handleUser()` на всё          |
+| **O** — Open/Closed           | Открыт для **расширения**, закрыт для **модификации**. Новый способ оплаты — новая strategy-функция, а не правка `processOrder()` очередной веткой.                                                                           | `processOrder(order, payWithCard)` — добавить `payWithWallet` без правки ядра |
+| **L** — Liskov Substitution   | Любой колбэк с ожидаемым контрактом должен **вести себя как остальные**. Если `normalizeUser()` обычно возвращает `{ id, name }`, ветка со throw или строкой ломает всех вызывающих — тот же LSP без `extends`.               | Сломанный `normalize` ломает вызывающих `mapUsers()`                          |
+| **I** — Interface Segregation | Экспортировать **узкие поверхности**. Кто только листает пользователей, не должен импортировать модуль с delete, audit и email, которые не вызывают.                                                                          | `listUsers.js` + `updateUser.js` — не один `userUtils.js` с 20 экспортами     |
+| **D** — Dependency Inversion  | Высокоуровневые функции зависят от **инжектируемых коллабораторов** (HTTP-клиент, storage, clock), а не от глобалов. Передавайте `http` аргументом или через factory — тесты подставят фейки без переписывания бизнес-логики. | `loadProfile(userId, http)` — фейковый `http` в тестах                        |
+
+**How it works:**
+
+Каждая буква соответствует **Examples** ниже — ищите `// good` и `// bad`:
+
+1. **S** — `parseUser()` и `formatUserLabel()` отдельно; не один `handleUser()`.
+2. **O** — новая оплата = новая функция (`payWithWallet`), а не новый `if` в `processOrder()`.
+3. **L** — колбэки в `mapUsers()` всегда возвращают одну форму; не строку вместо объекта.
+4. **I** — узкие экспорты (`listUsers.js`), а не один `userUtils.js` со всем.
+5. **D** — передавайте `http` в `loadProfile()`; не вызывайте `fetch` внутри функции.
+
+**When to use:** Utility-модули, Node-сервисы, data-слои, рефакторинг god-файлов; большинство повседневного JS — functions-first.
+
+**Examples:**
+
+```js
+// S — good: parse and format are separate functions
+function parseUser(raw) {
+  return JSON.parse(raw);
+}
+
+function formatUserLabel(user) {
+  return `${user.name} <${user.email}>`;
+}
+
+// S — bad: one function parses and formats (two reasons to change)
+// function handleUser(raw) {
+//   const user = JSON.parse(raw);
+//   return `${user.name} <${user.email}>`;
+// }
+
+// O + D — good: new payment = new function, processOrder stays closed
+function processOrder(order, pay) {
+  return pay(order.total);
+}
+
+function payWithCard(amount) {
+  return { ok: true, method: "card", amount };
+}
+
+function payWithWallet(amount) {
+  return { ok: true, method: "wallet", amount };
+}
+
+// O + D — bad: edit processOrder for every new payment type
+// function processOrder(order) {
+//   if (order.payment === "card") return { ok: true, method: "card" };
+//   if (order.payment === "wallet") return { ok: true, method: "wallet" };
+// }
+
+// L — good: normalize always returns the same shape
+function mapUsers(users, normalize = (u) => ({ id: u.id, name: u.name })) {
+  return users.map(normalize);
+}
+
+// L — bad: callback sometimes returns a string — breaks mapUsers callers
+// mapUsers(users, (u) => (u.active ? { id: u.id, name: u.name } : "skipped"));
+
+// D — good: inject http — swap fake in tests
+async function loadProfile(userId, http) {
+  return http.get(`/api/users/${userId}`);
+}
+// loadProfile("1", { get: async () => ({ id: "1", name: "Ada" }) });
+
+// D — bad: hardcoded fetch — hard to test, tied to browser/Node global
+// async function loadProfile(userId) {
+//   const res = await fetch(`/api/users/${userId}`);
+//   return res.json();
+// }
+```
+
+**Thoughts:** Большинство JS — функции и модули, не классы; для повседневного кода начинайте здесь. `class` / `extends`: [SOLID in Classes](#solid-in-classes). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+
+**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Classes](#solid-in-classes) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
 
 </details>

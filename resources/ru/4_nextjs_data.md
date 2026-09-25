@@ -6,7 +6,7 @@
 
 ### Related docs
 
-* [Next.js — Ядро](./4_nextjs_core.md) · [Next.js — Данные](./4_nextjs_data.md) · [Next.js — Маршрутизация](./4_nextjs_routing.md) · [Next.js — Платформа](./4_nextjs_platform.md) · [Next.js — Интервью](./4_nextjs_interview.md)
+- [Next.js — Ядро](./4_nextjs_core.md) · [Next.js — Данные](./4_nextjs_data.md) · [Next.js — Маршрутизация](./4_nextjs_routing.md) · [Next.js — Платформа](./4_nextjs_platform.md) · [Next.js — Интервью](./4_nextjs_interview.md)
 
 ### Sections
 
@@ -18,7 +18,7 @@
 
 ## 7. Data fetching
 
-*Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template)).*
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Server Component fetching</summary>
@@ -31,20 +31,20 @@
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Доступны данные о первой покраске | Тесная связь со средой выполнения сервера |
-| Секреты остаются на сервере | Ошибки появляются во время рендеринга |
+| +                                                              | −                                                          |
+| -------------------------------------------------------------- | ---------------------------------------------------------- |
+| Доступны данные о первой покраске                              | Тесная связь со средой выполнения сервера                  |
+| Секреты остаются на сервере                                    | Ошибки появляются во время рендеринга                      |
 | Автоматическая дедупликация идентичных `fetch` в одном запросе | ORM в бессерверной работе — наблюдайте за пулом соединений |
 
 **Examples:**
 
 ```tsx
 async function getProducts() {
-  const res = await fetch('https://api.example.com/products', {
-    next: { tags: ['products'] },
+  const res = await fetch("https://api.example.com/products", {
+    next: { tags: ["products"] },
   });
-  if (!res.ok) throw new Error('Failed to fetch products');
+  if (!res.ok) throw new Error("Failed to fetch products");
   return res.json();
 }
 
@@ -73,18 +73,18 @@ export default async function ProductsPage() {
 
 Next.js расширяет `fetch` с семантикой кэширования, которая соответствует SSG/SSR/ISR.
 
-| Вариант | Поведение | Pages Эквивалент маршрутизатора |
-|--------|----------|------------------------|
-| `cache: 'force-cache'` (по умолчанию) | Кэш до аннулирования | `getStaticProps` |
-| `cache: 'no-store'` | Получить каждый запрос | `getServerSideProps` |
-| `next: { revalidate: N }` | ISR — повторная проверка через N секунд | `revalidate` in `getStaticProps` |
-| `next: { tags: ['tag'] }` | Тег для аннулирования по требованию | Н/Д |
+| Вариант                               | Поведение                               | Pages Эквивалент маршрутизатора  |
+| ------------------------------------- | --------------------------------------- | -------------------------------- |
+| `cache: 'force-cache'` (по умолчанию) | Кэш до аннулирования                    | `getStaticProps`                 |
+| `cache: 'no-store'`                   | Получить каждый запрос                  | `getServerSideProps`             |
+| `next: { revalidate: N }`             | ISR — повторная проверка через N секунд | `revalidate` in `getStaticProps` |
+| `next: { tags: ['tag'] }`             | Тег для аннулирования по требованию     | Н/Д                              |
 
 **Examples:**
 
 ```tsx
-const staticData = await fetch(url, { cache: 'force-cache' });
-const dynamicData = await fetch(url, { cache: 'no-store' });
+const staticData = await fetch(url, { cache: "force-cache" });
+const dynamicData = await fetch(url, { cache: "no-store" });
 const revalidatedData = await fetch(url, { next: { revalidate: 10 } });
 ```
 
@@ -125,22 +125,26 @@ export default async function Page() {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                                      | −                                               |
+| ------------------------------------------------------ | ----------------------------------------------- |
 | Постоянные обновления, опросы, оптимистичный интерфейс | Клиентский водопад при чрезмерном использовании |
-| Работает с любым клиентом REST/GraphQL | Худшее SEO для критического контента |
+| Работает с любым клиентом REST/GraphQL                 | Худшее SEO для критического контента            |
 
 **Examples:**
 
 ```tsx
-'use client';
+"use client";
 
-import useSWR from 'swr';
+import useSWR from "swr";
 
 export function LiveMetrics() {
-  const { data, isLoading } = useSWR('/api/metrics', (url) => fetch(url).then(r => r.json()), {
-    refreshInterval: 5000,
-  });
+  const { data, isLoading } = useSWR(
+    "/api/metrics",
+    (url) => fetch(url).then((r) => r.json()),
+    {
+      refreshInterval: 5000,
+    },
+  );
   if (isLoading) return <p>Loading…</p>;
   return <div>{data.value}</div>;
 }
@@ -167,39 +171,43 @@ Contentful, Sanity, Strapi или пользовательские URL-адре�
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Редакторы просматривают неопубликованный контент | Необходимо защитить конечную точку включения с помощью секрета |
-| Работает с любой безголовой CMS | Отключает статическую оптимизацию, пока она активна |
-| На основе файлов cookie — без специального клиентского кода | Легко забыть отключить во время производственных тестов |
+| +                                                           | −                                                              |
+| ----------------------------------------------------------- | -------------------------------------------------------------- |
+| Редакторы просматривают неопубликованный контент            | Необходимо защитить конечную точку включения с помощью секрета |
+| Работает с любой безголовой CMS                             | Отключает статическую оптимизацию, пока она активна            |
+| На основе файлов cookie — без специального клиентского кода | Легко забыть отключить во время производственных тестов        |
 
 **Examples:**
 
 ```tsx
 // app/api/draft/route.ts
-import { draftMode } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { draftMode } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const secret = searchParams.get('secret');
-  const slug = searchParams.get('slug');
+  const secret = searchParams.get("secret");
+  const slug = searchParams.get("slug");
 
   if (secret !== process.env.DRAFT_SECRET) {
-    return new Response('Invalid token', { status: 401 });
+    return new Response("Invalid token", { status: 401 });
   }
 
   const draft = await draftMode();
   draft.enable();
-  redirect(slug ?? '/');
+  redirect(slug ?? "/");
 }
 ```
 
 ```tsx
 // app/blog/[slug]/page.tsx
-import { draftMode } from 'next/headers';
+import { draftMode } from "next/headers";
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPost({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const { isEnabled } = await draftMode();
 
@@ -225,7 +233,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
 ## 8. Caching & revalidation
 
-*Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template)).*
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Caching model overview</summary>
@@ -236,12 +244,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
 Next.js поддерживает **четыре уровня кэша** между вашим источником данных и браузером. Понимание того, какой уровень обслуживает ответ — и какой API аннулирования его очищает — является источником ошибок №1.
 
-| Кэш | Что он хранит | Пожизненная | Аннулирование |
-|-------|----------------|----------|--------------|
-| **Запросить запоминание** | Дедупликация `fetch` / результаты функции за один рендер | Единый запрос | Автомат — новый запрос |
-| **Кэш данных** | Настойчивый `fetch` и `use cache` результаты | До повторной проверки TTL или по требованию | `revalidateTag`, `revalidatePath`, `updateTag` |
-| **Полный кэш маршрутов** | Визуализация HTML + RSC Полезная нагрузка для каждого маршрута | Сборка или до повторной проверки | `revalidatePath`, `revalidateTag`, `router.refresh()` |
-| **Кэш маршрутизатора** | Полезная нагрузка RSC при навигации **на стороне клиента** | Сеанс (мягкий) / ~30 с по умолчанию (статический) | `router.refresh()`, полная перезагрузка страницы |
+| Кэш                       | Что он хранит                                                  | Пожизненная                                       | Аннулирование                                         |
+| ------------------------- | -------------------------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------- |
+| **Запросить запоминание** | Дедупликация `fetch` / результаты функции за один рендер       | Единый запрос                                     | Автомат — новый запрос                                |
+| **Кэш данных**            | Настойчивый `fetch` и `use cache` результаты                   | До повторной проверки TTL или по требованию       | `revalidateTag`, `revalidatePath`, `updateTag`        |
+| **Полный кэш маршрутов**  | Визуализация HTML + RSC Полезная нагрузка для каждого маршрута | Сборка или до повторной проверки                  | `revalidatePath`, `revalidateTag`, `router.refresh()` |
+| **Кэш маршрутизатора**    | Полезная нагрузка RSC при навигации **на стороне клиента**     | Сеанс (мягкий) / ~30 с по умолчанию (статический) | `router.refresh()`, полная перезагрузка страницы      |
 
 **When to use:**
 
@@ -250,16 +258,18 @@ Next.js поддерживает **четыре уровня кэша** межд
 - `next: { revalidate: N }` — ISR-контент
 - `use cache` + `cacheTag` — явные границы кэша в Next.js 16
 
+**When not to use:**
+
 - Предполагая `revalidatePath` мгновенно очищает кэш маршрутизатора клиента — в паре с `router.refresh()` в клиентских компонентах при необходимости
 - В процессе `Map` кэши на бессерверных серверах — используйте `'use cache: remote'` или внешний магазин
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                                                             | −                                                                                            |
+| ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | Огромный выигрыш в производительности для приложений с большим объемом чтения | Устаревший пользовательский интерфейс после мутаций, если вы забыли сделать недействительной |
-| Запоминание запроса предотвращает дублирование обращений к базе данных | Кэш маршрутизатора может отображать старую полезную нагрузку RSC после навигации |
-| CDN-дружественные статические оболочки с PPR | Ментальная модель сложнее, чем «всегда свежая ССР» |
+| Запоминание запроса предотвращает дублирование обращений к базе данных        | Кэш маршрутизатора может отображать старую полезную нагрузку RSC после навигации             |
+| CDN-дружественные статические оболочки с PPR                                  | Ментальная модель сложнее, чем «всегда свежая ССР»                                           |
 
 **Examples:**
 
@@ -277,14 +287,19 @@ Client navigation (Link)
 ```
 
 ```tsx
-'use server';
+"use server";
 
-import { revalidateTag, revalidatePath } from 'next/cache';
+import { revalidateTag, revalidatePath } from "next/cache";
 
 export async function updateProduct(id: string, data: FormData) {
-  await db.product.update({ where: { id }, data: { /* ... */ } });
-  revalidateTag(`product-${id}`, 'max');   // Data Cache
-  revalidatePath('/products');              // Full Route Cache
+  await db.product.update({
+    where: { id },
+    data: {
+      /* ... */
+    },
+  });
+  revalidateTag(`product-${id}`, "max"); // Data Cache
+  revalidatePath("/products"); // Full Route Cache
 }
 ```
 
@@ -308,23 +323,23 @@ export async function updateProduct(id: string, data: FormData) {
 
 Директива Next.js 16, обозначающая тело функции или компонента как кэшируемое. Включает компоненты кэша и PPR.
 
-| Вариант | Область применения |
-|---------|-------|
-| `'use cache'` | Кэш компонентов/функций по умолчанию |
-| `'use cache: private'` | Индивидуальный кеш (использует файлы cookie/заголовки) |
-| `'use cache: remote'` | Кэш времени выполнения — общий для бессерверных экземпляров |
+| Вариант                | Область применения                                          |
+| ---------------------- | ----------------------------------------------------------- |
+| `'use cache'`          | Кэш компонентов/функций по умолчанию                        |
+| `'use cache: private'` | Индивидуальный кеш (использует файлы cookie/заголовки)      |
+| `'use cache: remote'`  | Кэш времени выполнения — общий для бессерверных экземпляров |
 
 **Examples:**
 
 ```tsx
-import { cacheLife, cacheTag } from 'next/cache';
+import { cacheLife, cacheTag } from "next/cache";
 
 async function getProducts() {
-  'use cache: remote';
-  cacheTag('products-list');
+  "use cache: remote";
+  cacheTag("products-list");
   cacheLife({ expire: 3600 });
 
-  const res = await fetch('https://api.example.com/products');
+  const res = await fetch("https://api.example.com/products");
   return res.json();
 }
 ```
@@ -349,13 +364,13 @@ export default nextConfig;
 **Examples:**
 
 ```tsx
-'use server';
+"use server";
 
-import { revalidateTag } from 'next/cache';
+import { revalidateTag } from "next/cache";
 
 export async function updateArticle(articleId: string) {
   await db.article.update({ where: { id: articleId }, data: {} });
-  revalidateTag(`article-${articleId}`, 'max');
+  revalidateTag(`article-${articleId}`, "max");
 }
 ```
 
@@ -373,13 +388,13 @@ export async function updateArticle(articleId: string) {
 **Examples:**
 
 ```tsx
-'use server';
+"use server";
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from "next/cache";
 
 export async function createPost(formData: FormData) {
-  await db.post.create({ data: { title: formData.get('title') as string } });
-  revalidatePath('/blog');
+  await db.post.create({ data: { title: formData.get("title") as string } });
+  revalidatePath("/blog");
 }
 ```
 
@@ -397,9 +412,9 @@ export async function createPost(formData: FormData) {
 **Examples:**
 
 ```tsx
-'use server';
+"use server";
 
-import { updateTag } from 'next/cache';
+import { updateTag } from "next/cache";
 
 export async function updateProfile(userId: string, data: ProfileData) {
   await db.user.update({ where: { id: userId }, data });
@@ -420,16 +435,16 @@ export async function updateProfile(userId: string, data: ProfileData) {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                           | −                                                             |
+| --------------------------- | ------------------------------------------------------------- |
 | Сохраняет состояние клиента | **Не** делает недействительным кэш данных сервера сам по себе |
 
 **Examples:**
 
 ```tsx
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 export function RefreshButton() {
   const router = useRouter();
@@ -450,19 +465,19 @@ export function RefreshButton() {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Простой аварийный люк для динамических данных | Отключает статическую оптимизацию для этого дерева |
+| +                                                  | −                                                        |
+| -------------------------------------------------- | -------------------------------------------------------- |
+| Простой аварийный люк для динамических данных      | Отключает статическую оптимизацию для этого дерева       |
 | Работает с прямыми вызовами БД (не только `fetch`) | Предпочитаю явное `cache: 'no-store'` когда это возможно |
 
 **Examples:**
 
 ```tsx
-import { unstable_noStore as noStore } from 'next/cache';
+import { unstable_noStore as noStore } from "next/cache";
 
 export default async function LiveClock() {
   noStore();
-  const now = await db.query('SELECT NOW() as time');
+  const now = await db.query("SELECT NOW() as time");
   return <time>{now}</time>;
 }
 ```
@@ -480,11 +495,11 @@ export default async function LiveClock() {
 
 Только звонки `router.refresh()` без `revalidatePath` / `revalidateTag` / `updateTag` часто оставляет кэшированные данные устаревшими.
 
-| Симптом | Исправить |
-|---------|-----|
-| Список не обновляется после создания | `revalidatePath('/items')` or `revalidateTag('items', 'max')` в действии сервера |
-| Пользователь видит старый профиль после редактирования | `updateTag('user-${id}')` |
-| CDN обслуживает старый HTML | Проверять `Cache-Control` + `revalidatePath` |
+| Симптом                                                | Исправить                                                                        |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Список не обновляется после создания                   | `revalidatePath('/items')` or `revalidateTag('items', 'max')` в действии сервера |
+| Пользователь видит старый профиль после редактирования | `updateTag('user-${id}')`                                                        |
+| CDN обслуживает старый HTML                            | Проверять `Cache-Control` + `revalidatePath`                                     |
 
 **Thoughts:** [Обсуждение кэширования № 54075] (https://github.com/vercel/next.js/discussions/54075). [Предварительный рендеринг и гидратация] (https://www.freecodecamp.org/news/what-are-pre-rendering-and-гидратация-in-web-dev/).
 
@@ -503,11 +518,11 @@ export default async function LiveClock() {
 
 ```ts
 export async function GET() {
-  return new Response('Cached response', {
+  return new Response("Cached response", {
     headers: {
-      'Cache-Control': 'max-age=10',
-      'CDN-Cache-Control': 'max-age=60',
-      'Vercel-CDN-Cache-Control': 'max-age=3600',
+      "Cache-Control": "max-age=10",
+      "CDN-Cache-Control": "max-age=60",
+      "Vercel-CDN-Cache-Control": "max-age=3600",
     },
   });
 }
@@ -526,12 +541,12 @@ export async function GET() {
 
 API-интерфейсы, удаленные или измененные в Next.js 16, и их рекомендуемые замены.
 
-| Устарело | Замена |
-|------------|-------------|
-| `unstable_cache()` | `'use cache'` + `cacheTag` / `cacheLife` |
-| `experimental.ppr` | `cacheComponents: true` |
-| `revalidateTag(tag)` одиночный аргумент | `revalidateTag(tag, 'max')` |
-| `cacheHandler` (единственное число) | `cacheHandlers` (множественное число) |
+| Устарело                                | Замена                                   |
+| --------------------------------------- | ---------------------------------------- |
+| `unstable_cache()`                      | `'use cache'` + `cacheTag` / `cacheLife` |
+| `experimental.ppr`                      | `cacheComponents: true`                  |
+| `revalidateTag(tag)` одиночный аргумент | `revalidateTag(tag, 'max')`              |
+| `cacheHandler` (единственное число)     | `cacheHandlers` (множественное число)    |
 
 ---
 
@@ -543,7 +558,7 @@ API-интерфейсы, удаленные или измененные в Next
 
 ## 9. Server Actions vs Route Handlers
 
-*Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template)).*
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Server Actions</summary>
@@ -556,24 +571,24 @@ API-интерфейсы, удаленные или измененные в Next
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Совмещено с пользовательским интерфейсом | Не общедоступный HTTP API |
-| Прогрессивное улучшение | POST-только под капотом |
-| Типобезопасность с TypeScript | Необходимо проверить все входные данные на стороне сервера |
+| +                                        | −                                                          |
+| ---------------------------------------- | ---------------------------------------------------------- |
+| Совмещено с пользовательским интерфейсом | Не общедоступный HTTP API                                  |
+| Прогрессивное улучшение                  | POST-только под капотом                                    |
+| Типобезопасность с TypeScript            | Необходимо проверить все входные данные на стороне сервера |
 
 **Examples:**
 
 ```tsx
 // app/actions.ts
-'use server';
+"use server";
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from "next/cache";
 
 export async function createTodo(formData: FormData) {
-  const title = formData.get('title') as string;
+  const title = formData.get("title") as string;
   await db.todo.create({ data: { title } });
-  revalidatePath('/todos');
+  revalidatePath("/todos");
 }
 ```
 
@@ -590,16 +605,16 @@ export async function createTodo(formData: FormData) {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Настоящий HTTP — веб-перехватчики, общедоступные API | Нет прогрессивного улучшения |
-| Любой метод HTTP | Не может сосуществовать с `page.tsx` в той же папке |
+| +                                                    | −                                                   |
+| ---------------------------------------------------- | --------------------------------------------------- |
+| Настоящий HTTP — веб-перехватчики, общедоступные API | Нет прогрессивного улучшения                        |
+| Любой метод HTTP                                     | Не может сосуществовать с `page.tsx` в той же папке |
 
 **Examples:**
 
 ```tsx
 // app/api/webhook/route.ts
-import { NextRequest } from 'next/server';
+import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -620,12 +635,12 @@ export async function POST(request: NextRequest) {
 
 Матрица решений для выбора действий сервера или обработчиков маршрутов на основе модели вызова и потребителей.
 
-| | Действия сервера | Обработчики маршрутов |
-|---|----------------|----------------|
-| **Призыв** | РПК / `<form action>` | HTTP к URL |
-| **Протокол** | ПОСТ (завернутый) | ПОЛУЧИТЬ, ОТПРАВИТЬ, ПОЛОЖИТЬ, ИСПРАВИТЬ, УДАЛИТЬ |
-| **Потребители** | Только приложение Next.js | Любой HTTP-клиент |
-| **Сценарий использования** | Мутации, формы | Вебхуки, общедоступные API |
+|                            | Действия сервера          | Обработчики маршрутов                             |
+| -------------------------- | ------------------------- | ------------------------------------------------- |
+| **Призыв**                 | РПК / `<form action>`     | HTTP к URL                                        |
+| **Протокол**               | ПОСТ (завернутый)         | ПОЛУЧИТЬ, ОТПРАВИТЬ, ПОЛОЖИТЬ, ИСПРАВИТЬ, УДАЛИТЬ |
+| **Потребители**            | Только приложение Next.js | Любой HTTP-клиент                                 |
+| **Сценарий использования** | Мутации, формы            | Вебхуки, общедоступные API                        |
 
 **Thoughts:** Обработчики маршрутов присутствуют **только** в `app/`. Внешние системы используют обработчики маршрутов, а не действия сервера.
 
@@ -644,11 +659,11 @@ export async function POST(request: NextRequest) {
 
 Действия сервера вызываются через **POST** с идентификатором действия, сгенерированным сервером. Next.js включает **встроенную защиту CSRF** — проверку заголовка источника и зашифрованные идентификаторы действий — поэтому вам не нужно вручную добавлять токены CSRF для сообщений формы того же происхождения.
 
-| Защита | Как это работает |
-|------------|--------------|
-| **Проверка происхождения** | Запрос `Origin` должен соответствовать `Host` (или разрешенный хост развертывания) |
+| Защита                     | Как это работает                                                                       |
+| -------------------------- | -------------------------------------------------------------------------------------- |
+| **Проверка происхождения** | Запрос `Origin` должен соответствовать `Host` (или разрешенный хост развертывания)     |
 | **Идентификатор действия** | Непрозрачный зашифрованный идентификатор связывает POST с правильным действием сервера |
-| **Только POST** | Действия нельзя вызвать через GET — нет тега img CSRF |
+| **Только POST**            | Действия нельзя вызвать через GET — нет тега img CSRF                                  |
 
 **How it works:**
 
@@ -660,11 +675,11 @@ export async function POST(request: NextRequest) {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                                      | −                                                                              |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------ |
 | Нулевой шаблон для форм одного и того же происхождения | Вызовы действий сервера между источниками должны быть явными. `allowedOrigins` |
-| Прогрессивное улучшение безопасно по умолчанию | Обработчикам маршрутов по-прежнему нужна собственная стратегия CSRF |
-| Работает с `<form action={...}>` | Обычай `fetch` действия должны содержать правильные заголовки/тело |
+| Прогрессивное улучшение безопасно по умолчанию         | Обработчикам маршрутов по-прежнему нужна собственная стратегия CSRF            |
+| Работает с `<form action={...}>`                       | Обычай `fetch` действия должны содержать правильные заголовки/тело             |
 
 **Examples:**
 
@@ -673,29 +688,31 @@ export async function POST(request: NextRequest) {
 const nextConfig = {
   experimental: {
     serverActions: {
-      allowedOrigins: ['localhost:3000', 'preview.example.com'],
+      allowedOrigins: ["localhost:3000", "preview.example.com"],
     },
   },
 };
 ```
 
 ```tsx
-'use server';
+"use server";
 
-import { revalidatePath } from 'next/cache';
-import { z } from 'zod';
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 const schema = z.object({ title: z.string().min(1).max(200) });
 
 export async function createTodo(formData: FormData) {
-  const parsed = schema.safeParse({ title: formData.get('title') });
-  if (!parsed.success) return { error: 'Invalid title' };
+  const parsed = schema.safeParse({ title: formData.get("title") });
+  if (!parsed.success) return { error: "Invalid title" };
 
   const session = await getSession(); // always re-validate auth in action
-  if (!session) throw new Error('Unauthorized');
+  if (!session) throw new Error("Unauthorized");
 
-  await db.todo.create({ data: { title: parsed.data.title, userId: session.userId } });
-  revalidatePath('/todos');
+  await db.todo.create({
+    data: { title: parsed.data.title, userId: session.userId },
+  });
+  revalidatePath("/todos");
 }
 ```
 
@@ -703,7 +720,7 @@ export async function createTodo(formData: FormData) {
 
 - Встроенный CSRF **не** заменяет **авторизацию** — всегда проверяйте права пользователя внутри действия.
 - Для обработчиков маршрутов, принимающих POST браузера, используйте файлы cookie двойной отправки, файлы cookie SameSite или промежуточное программное обеспечение CSRF платформы.
-– См. [Веб-API — CSRF](./6_web_api_security.md#csrf-cross-site-request-forgery) и [Special — CSRF vs AuthZ](./7_special_security.md#csrf-cross-site-request-forgery).
+- См. [Веб-API — CSRF](./6_web_api_security.md#csrf-cross-site-request-forgery) и [Special — CSRF vs AuthZ](./7_special_security.md#csrf-cross-site-request-forgery).
 
 **Sources:** [nextjs.org/docs/app/guides/data-security](https://nextjs.org/docs/app/guides/data-security)
 

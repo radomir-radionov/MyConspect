@@ -4,7 +4,7 @@
 
 ### Related docs
 
-* [Рабочий процесс AI](./0_ai.md) · [Навыки](./0_ai_cursor_skills.md) · [Правила](./0_ai_cursor_rules.md) · [Slash-команды](./0_ai_cursor_slash.md) · [Вопросы](./0_ai_cursor_questions.md)
+* [Рабочий процесс AI](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Навыки](./0_ai_cursor_skills.md) · [Правила](./0_ai_cursor_rules.md) · [Slash-команды](./0_ai_cursor_slash.md) · [Вопросы](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
@@ -113,7 +113,7 @@
 **How it works:**
 
 - Использовать `${VAR}` заполнители в `mcp.json`; объявить совпадающие имена под `variables` (Схема JSON) в `plugin.json`.
-— Администраторы команды устанавливают значения в разделе «Плагины» → «Настроить».
+- Администраторы команды устанавливают значения в разделе «Плагины» → «Настроить».
 - Курсор расширяется `${CURSOR_PLUGIN_ROOT}` / `${CLAUDE_PLUGIN_ROOT}` для пути установки в командах/args/env/cwd.
 - Плагины агентов `${PLUGIN_ROOT}` / `${PLUGIN_DATA}` **не** раскрываются в курсоре — используйте `${CURSOR_PLUGIN_ROOT}`.
 
@@ -141,7 +141,7 @@
 <details>
 <summary>Marketplace and install</summary>
 
-**Definition:** Плагины устанавливаются с торговых площадок Cursor (официальные, командные репозитории или репозитории GitHub с `.cursor-plugin/marketplace.json`). Навыки/правила из репозитория поставляются **только** упакованными в плагин.
+**Definition:** Плагины устанавливаются с торговых площадок Cursor (официальные, командные репозитории или репозитории GitHub с `.cursor-plugin/marketplace.json`). Навыки/правила из репозитория поставляются **только** упакованными в плагин. Для community-обзора rules/MCP (не официальный publish path) см. [Cursor Directory](./0_ai_cursor_core.md#cursor-directory).
 
 **How it works:**
 
@@ -151,7 +151,7 @@
 
 **When to use:** Делитесь наборами команд (например, курсором-team-kit, плагинами Prisma, Vercel) вместо копирования. `.mdc` файлы вручную. Пропустите одноразовые личные навыки — используйте `~/.cursor/skills/`.
 
-**Sources:** [Отправка плагина](https://cursor.com/docs/reference/plugins#submitting-a-plugin) · [Правила импорта](https://cursor.com/docs/rules#importing-rules-from-a-repository)
+**Sources:** [Отправка плагина](https://cursor.com/docs/reference/plugins#submitting-a-plugin) · [Правила импорта](https://cursor.com/docs/rules#importing-rules-from-a-repository) · [cursor.directory](https://cursor.directory/)
 
 </details>
 

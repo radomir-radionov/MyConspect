@@ -6,7 +6,7 @@ Optimizations, proxy, config, Vercel, migration, and debugging.
 
 ### Related docs
 
-* [Next.js — Core](./4_nextjs_core.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
+- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
 
 ### Sections
 
@@ -21,7 +21,7 @@ Optimizations, proxy, config, Vercel, migration, and debugging.
 
 ## 14. Built-in optimizations
 
-*Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template)).*
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>next/image</summary>
@@ -34,16 +34,16 @@ Optimizations, proxy, config, Vercel, migration, and debugging.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Better LCP, smaller payloads | Requires config for remote domains |
+| +                                           | −                                                      |
+| ------------------------------------------- | ------------------------------------------------------ |
+| Better LCP, smaller payloads                | Requires config for remote domains                     |
 | Prevents layout shift with `width`/`height` | SVG handling needs `unoptimized` or different approach |
-| `priority` / `preload` for LCP images | Build-time optimization adds deploy step on Vercel |
+| `priority` / `preload` for LCP images       | Build-time optimization adds deploy step on Vercel     |
 
 **Examples:**
 
 ```tsx
-import Image from 'next/image';
+import Image from "next/image";
 
 <Image
   src="/hero.jpg"
@@ -52,14 +52,14 @@ import Image from 'next/image';
   height={630}
   priority
   sizes="(max-width: 768px) 100vw, 50vw"
-/>
+/>;
 ```
 
 ```ts
 // next.config.ts — remote images
 const nextConfig = {
   images: {
-    remotePatterns: [{ protocol: 'https', hostname: 'cdn.example.com' }],
+    remotePatterns: [{ protocol: "https", hostname: "cdn.example.com" }],
   },
 };
 ```
@@ -79,19 +79,23 @@ const nextConfig = {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Zero CLS from font swap | Subset selection affects character coverage |
-| No external CDN dependency | Multiple font weights increase bundle |
+| +                          | −                                           |
+| -------------------------- | ------------------------------------------- |
+| Zero CLS from font swap    | Subset selection affects character coverage |
+| No external CDN dependency | Multiple font weights increase bundle       |
 
 **Examples:**
 
 ```tsx
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono } from "next/font/google";
 
-const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans' });
+const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className={geistSans.variable}>
       <body>{children}</body>
@@ -115,19 +119,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Optimized third-party script loading with strategies to avoid blocking main thread.
 
-| Strategy | When |
-|----------|------|
-| `beforeInteractive` | Critical scripts — injected into initial HTML |
-| `afterInteractive` (default) | Analytics, chat widgets |
-| `lazyOnload` | Low-priority trackers |
-| `worker` | Experimental — run in web worker |
+| Strategy                     | When                                          |
+| ---------------------------- | --------------------------------------------- |
+| `beforeInteractive`          | Critical scripts — injected into initial HTML |
+| `afterInteractive` (default) | Analytics, chat widgets                       |
+| `lazyOnload`                 | Low-priority trackers                         |
+| `worker`                     | Experimental — run in web worker              |
 
 **Examples:**
 
 ```tsx
-import Script from 'next/script';
+import Script from "next/script";
 
-<Script src="https://analytics.example.com/script.js" strategy="afterInteractive" />
+<Script
+  src="https://analytics.example.com/script.js"
+  strategy="afterInteractive"
+/>;
 ```
 
 **Sources:** [nextjs.org/docs/app/api-reference/components/script](https://nextjs.org/docs/app/api-reference/components/script)
@@ -144,9 +151,13 @@ import Script from 'next/script';
 **Examples:**
 
 ```tsx
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleAnalytics } from "@next/third-parties/google";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html>
       <body>{children}</body>
@@ -166,7 +177,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ## 15. Proxy & middleware
 
-*Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template)).*
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Three "middleware" concepts</summary>
@@ -177,11 +188,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 The Next.js/Vercel ecosystem has **three distinct request interception layers**. Confusing them causes security holes, double redirects, and "works locally, fails in prod" bugs.
 
-| Layer | File | Runtime | Runs when | Scope |
-|-------|------|---------|-----------|-------|
-| **Next.js 16 Proxy** | `proxy.ts` (root or `src/`) | Node.js only | Before Next.js routing | Next.js app network boundary |
-| **Vercel Routing Middleware** | `middleware.ts` (project root) | Edge / Node / Bun | Before cache, at platform edge | Any framework on Vercel |
-| **Pages Router middleware (legacy)** | `middleware.ts` in Next 16 | Deprecated warning | Same as old middleware | Migrate to `proxy.ts` |
+| Layer                                | File                           | Runtime            | Runs when                      | Scope                        |
+| ------------------------------------ | ------------------------------ | ------------------ | ------------------------------ | ---------------------------- |
+| **Next.js 16 Proxy**                 | `proxy.ts` (root or `src/`)    | Node.js only       | Before Next.js routing         | Next.js app network boundary |
+| **Vercel Routing Middleware**        | `middleware.ts` (project root) | Edge / Node / Bun  | Before cache, at platform edge | Any framework on Vercel      |
+| **Pages Router middleware (legacy)** | `middleware.ts` in Next 16     | Deprecated warning | Same as old middleware         | Migrate to `proxy.ts`        |
 
 **How it works:**
 
@@ -200,25 +211,27 @@ Client
 - **Vercel middleware** — cross-framework edge logic, geo headers, A/B at CDN edge
 - **Neither alone for auth** — always validate in Server Components / Server Actions / Route Handlers
 
+**When not to use:**
+
 - Heavy DB lookups or session validation only in proxy — use server data layer
 - Sole auth gate in middleware — **CVE-2025-29927** showed `x-middleware-subrequest` header could bypass middleware-only checks on affected versions
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Early redirects save render cost | Tempting to put all auth here |
-| Geo/locale routing at edge | Node proxy cannot use Edge-only APIs |
-| Header injection before cache | Two layers can conflict if both rewrite same path |
+| +                                | −                                                 |
+| -------------------------------- | ------------------------------------------------- |
+| Early redirects save render cost | Tempting to put all auth here                     |
+| Geo/locale routing at edge       | Node proxy cannot use Edge-only APIs              |
+| Header injection before cache    | Two layers can conflict if both rewrite same path |
 
 **Examples:**
 
 ```ts
 // proxy.ts — coarse gate only
 export function proxy(request: NextRequest) {
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    if (!request.cookies.get('session')) {
-      return NextResponse.redirect(new URL('/login', request.url));
+  if (request.nextUrl.pathname.startsWith("/admin")) {
+    if (!request.cookies.get("session")) {
+      return NextResponse.redirect(new URL("/login", request.url));
     }
   }
   return NextResponse.next();
@@ -229,7 +242,7 @@ export function proxy(request: NextRequest) {
 // app/admin/page.tsx — real authorization
 export default async function AdminPage() {
   const session = await getSession();
-  if (!session || session.role !== 'admin') forbidden();
+  if (!session || session.role !== "admin") forbidden();
   return <AdminDashboard />;
 }
 ```
@@ -257,30 +270,30 @@ export default async function AdminPage() {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Full Node.js APIs | Node.js runtime only — not Edge |
-| Clearer security boundary naming | Migration required from `middleware.ts` |
-| Rewrites, redirects, header injection | Not for heavy business logic |
+| +                                     | −                                       |
+| ------------------------------------- | --------------------------------------- |
+| Full Node.js APIs                     | Node.js runtime only — not Edge         |
+| Clearer security boundary naming      | Migration required from `middleware.ts` |
+| Rewrites, redirects, header injection | Not for heavy business logic            |
 
 **Examples:**
 
 ```ts
 // proxy.ts (project root or src/proxy.ts)
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(request: NextRequest) {
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    const token = request.cookies.get('session');
+  if (request.nextUrl.pathname.startsWith("/admin")) {
+    const token = request.cookies.get("session");
     if (!token) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      return NextResponse.redirect(new URL("/login", request.url));
     }
   }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ["/admin/:path*"],
 };
 ```
 
@@ -301,13 +314,13 @@ export const config = {
 
 ```ts
 // middleware.ts — Vercel platform middleware
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export default function middleware(request: NextRequest) {
-  const country = request.geo?.country ?? 'US';
+  const country = request.geo?.country ?? "US";
   const response = NextResponse.next();
-  response.headers.set('x-user-country', country);
+  response.headers.set("x-user-country", country);
   return response;
 }
 ```
@@ -328,8 +341,8 @@ export default function middleware(request: NextRequest) {
 ```ts
 export const config = {
   matcher: [
-    '/dashboard/:path*',
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    "/dashboard/:path*",
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };
 ```
@@ -344,7 +357,7 @@ export const config = {
 
 ## 16. Configuration
 
-*Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template)).*
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>next.config.ts</summary>
@@ -355,29 +368,29 @@ export const config = {
 
 Central configuration for build, routing, images, caching, and experimental features.
 
-| Option | Purpose |
-|--------|---------|
-| `output: 'standalone'` | Docker-friendly self-contained build |
-| `output: 'export'` | Static HTML export (no server features) |
-| `cacheComponents: true` | Enable Cache Components / PPR |
-| `images.remotePatterns` | Allow remote image domains |
-| `rewrites` / `redirects` / `headers` | URL and header rules |
-| `serverActions.bodySizeLimit` | Max Server Action payload |
-| `typedRoutes: true` | Type-safe `href` in `Link` |
-| `reactCompiler: true` | Enable React Compiler |
-| `trailingSlash` | Enforce trailing slashes in URLs |
-| `authInterrupts: true` | Enable `forbidden()` / `unauthorized()` |
+| Option                               | Purpose                                 |
+| ------------------------------------ | --------------------------------------- |
+| `output: 'standalone'`               | Docker-friendly self-contained build    |
+| `output: 'export'`                   | Static HTML export (no server features) |
+| `cacheComponents: true`              | Enable Cache Components / PPR           |
+| `images.remotePatterns`              | Allow remote image domains              |
+| `rewrites` / `redirects` / `headers` | URL and header rules                    |
+| `serverActions.bodySizeLimit`        | Max Server Action payload               |
+| `typedRoutes: true`                  | Type-safe `href` in `Link`              |
+| `reactCompiler: true`                | Enable React Compiler                   |
+| `trailingSlash`                      | Enforce trailing slashes in URLs        |
+| `authInterrupts: true`               | Enable `forbidden()` / `unauthorized()` |
 
 **Examples:**
 
 ```ts
-import type { NextConfig } from 'next';
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
   typedRoutes: true,
   images: {
-    remotePatterns: [{ protocol: 'https', hostname: '**.example.com' }],
+    remotePatterns: [{ protocol: "https", hostname: "**.example.com" }],
   },
   experimental: {
     reactCompiler: true,
@@ -400,11 +413,11 @@ export default nextConfig;
 
 The `output` option in `next.config.ts` controls the **shape of the production build** — default server bundle, self-contained Docker standalone, or fully static HTML export.
 
-| Mode | Config | Deploy target | Server features |
-|------|--------|---------------|-----------------|
-| **Default** | (omit `output`) | Vercel, `next start`, Node PaaS | SSR, ISR, Server Actions, Route Handlers |
-| **Standalone** | `output: 'standalone'` | Docker, Kubernetes, VPS | Same as default — minimal `node server.js` bundle |
-| **Export** | `output: 'export'` | S3, GitHub Pages, any static host | **None** — no SSR, no Server Actions, no dynamic Route Handlers |
+| Mode           | Config                 | Deploy target                     | Server features                                                 |
+| -------------- | ---------------------- | --------------------------------- | --------------------------------------------------------------- |
+| **Default**    | (omit `output`)        | Vercel, `next start`, Node PaaS   | SSR, ISR, Server Actions, Route Handlers                        |
+| **Standalone** | `output: 'standalone'` | Docker, Kubernetes, VPS           | Same as default — minimal `node server.js` bundle               |
+| **Export**     | `output: 'export'`     | S3, GitHub Pages, any static host | **None** — no SSR, no Server Actions, no dynamic Route Handlers |
 
 **When to use:**
 
@@ -412,22 +425,24 @@ The `output` option in `next.config.ts` controls the **shape of the production b
 - **`standalone`** — Docker/K8s self-hosting with `output: 'standalone'` + copy `public` and `.next/static`
 - **`export`** — marketing microsites with zero server logic, or pre-rendered docs only
 
+**When not to use:**
+
 - `export` for dashboards, auth, Server Actions, or webhooks — use default or standalone
 - `standalone` when deploying to Vercel — Vercel uses its own output pipeline
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                              | −                                                             |
+| ---------------------------------------------- | ------------------------------------------------------------- |
 | Standalone trims `node_modules` to traced deps | Standalone still needs Node process — not "static files only" |
-| Export is cheapest hosting | Export cannot use `cookies()`, ISR, or most dynamic APIs |
-| Default zero-config on Vercel | Wrong mode → build passes but features silently break |
+| Export is cheapest hosting                     | Export cannot use `cookies()`, ISR, or most dynamic APIs      |
+| Default zero-config on Vercel                  | Wrong mode → build passes but features silently break         |
 
 **Examples:**
 
 ```ts
 // next.config.ts
-const nextConfig = { output: 'standalone' };
+const nextConfig = { output: "standalone" };
 export default nextConfig;
 ```
 
@@ -443,7 +458,7 @@ CMD ["node", "server.js"]
 ```
 
 ```ts
-const nextConfig = { output: 'export', images: { unoptimized: true } };
+const nextConfig = { output: "export", images: { unoptimized: true } };
 ```
 
 **Thoughts:**
@@ -467,13 +482,13 @@ const nextConfig = { output: 'export', images: { unoptimized: true } };
 
 Next.js can run a route on **`nodejs`** (default, full Node APIs) or the **Edge runtime** (V8 isolate, Web APIs). For **new apps, do not choose Edge for SSR**. Next.js documents `export const runtime = 'edge'` as **deprecated** — delete it; Node is the default.
 
-| | Node.js runtime | Edge runtime |
-|---|-----------------|--------------|
-| **Status** | Default. Recommended for SSR + DB | Deprecated for new route rendering |
-| **APIs** | `fs`, `crypto`, full `node:*` | Web standard (`fetch`, `Request`, `crypto.subtle`) |
-| **DB drivers** | Prisma, `pg`, most ORMs | HTTP-based only (Neon serverless, Turso HTTP) |
-| **Placement** | Pin **region next to the database** | Historically "close to the user" — often slower once you round-trip to a single-region DB |
-| **Still valid** | App rendering, Server Actions, Fluid compute | Vercel **Routing Middleware** (geo, auth, A/B) — not standalone Edge Functions |
+|                 | Node.js runtime                              | Edge runtime                                                                              |
+| --------------- | -------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Status**      | Default. Recommended for SSR + DB            | Deprecated for new route rendering                                                        |
+| **APIs**        | `fs`, `crypto`, full `node:*`                | Web standard (`fetch`, `Request`, `crypto.subtle`)                                        |
+| **DB drivers**  | Prisma, `pg`, most ORMs                      | HTTP-based only (Neon serverless, Turso HTTP)                                             |
+| **Placement**   | Pin **region next to the database**          | Historically "close to the user" — often slower once you round-trip to a single-region DB |
+| **Still valid** | App rendering, Server Actions, Fluid compute | Vercel **Routing Middleware** (geo, auth, A/B) — not standalone Edge Functions            |
 
 **How it works:**
 
@@ -483,18 +498,18 @@ Static/CDN shells, PPR streaming the shell from the edge while compute runs in t
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                             | −                                                                              |
+| --------------------------------------------- | ------------------------------------------------------------------------------ |
 | Node near data — fewer ocean hops to Postgres | Historically slower cold starts (Fluid compute / bytecode cache improved this) |
-| Full npm + native addons | |
-| Edge middleware — cheap geo/JWT at the PoP | Edge SSR + distant DB often **worse** TTFB than regional Node |
+| Full npm + native addons                      |                                                                                |
+| Edge middleware — cheap geo/JWT at the PoP    | Edge SSR + distant DB often **worse** TTFB than regional Node                  |
 
 **Examples:**
 
 ```tsx
 // app/api/hello/route.ts — Node.js default
 export async function GET() {
-  return Response.json({ message: 'Hello' });
+  return Response.json({ message: "Hello" });
 }
 ```
 
@@ -530,7 +545,7 @@ Self-hosted ISR across multiple Node instances — implement shared cache backen
 
 ## 17. Vercel deployment
 
-*Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template)).*
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Deployment model</summary>
@@ -541,21 +556,21 @@ Self-hosted ISR across multiple Node instances — implement shared cache backen
 
 Vercel is the **native platform** for Next.js — Git push triggers build, every PR gets a preview URL, merge to main deploys production. The framework and platform are co-designed for ISR, Edge, and RSC.
 
-| Stage | What happens |
-|-------|--------------|
-| **Git push** | Webhook triggers Vercel build (`next build`) |
-| **Preview** | Unique URL per branch/PR — same env vars scoped to Preview |
+| Stage          | What happens                                                   |
+| -------------- | -------------------------------------------------------------- |
+| **Git push**   | Webhook triggers Vercel build (`next build`)                   |
+| **Preview**    | Unique URL per branch/PR — same env vars scoped to Preview     |
 | **Production** | Atomic promotion on merge — CDN + serverless functions updated |
-| **Rollback** | Instant revert to previous deployment in dashboard |
+| **Rollback**   | Instant revert to previous deployment in dashboard             |
 
-| Feature | Benefit |
-|---------|---------|
-| **Preview deployments** | QA and design review on real infrastructure before merge |
-| **Git integration** | Auto-deploy; status checks on PRs |
-| **Edge Network** | Global CDN for static assets and cached Full Route HTML |
-| **Fluid Compute** | Shared serverless pool — reduced cold starts vs classic functions |
-| **Analytics / Speed Insights** | Core Web Vitals without manual instrumentation |
-| **Environment scoping** | Different `DATABASE_URL` for Preview vs Production |
+| Feature                        | Benefit                                                           |
+| ------------------------------ | ----------------------------------------------------------------- |
+| **Preview deployments**        | QA and design review on real infrastructure before merge          |
+| **Git integration**            | Auto-deploy; status checks on PRs                                 |
+| **Edge Network**               | Global CDN for static assets and cached Full Route HTML           |
+| **Fluid Compute**              | Shared serverless pool — reduced cold starts vs classic functions |
+| **Analytics / Speed Insights** | Core Web Vitals without manual instrumentation                    |
+| **Environment scoping**        | Different `DATABASE_URL` for Preview vs Production                |
 
 **When to use:**
 
@@ -565,11 +580,11 @@ Strict on-prem-only requirements — use [`standalone` Docker](#output-modes) + 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                                      | −                                              |
+| ------------------------------------------------------ | ---------------------------------------------- |
 | Zero-config Next.js features (ISR, images, middleware) | Vendor affinity for advanced platform features |
-| Instant rollbacks and previews | Cost scales with traffic and function duration |
-| Automatic HTTPS and CDN | Self-hosting requires more ops for parity |
+| Instant rollbacks and previews                         | Cost scales with traffic and function duration |
+| Automatic HTTPS and CDN                                | Self-hosting requires more ops for parity      |
 
 **Examples:**
 
@@ -605,10 +620,10 @@ DATABASE_URL=postgresql://...
 NEXT_PUBLIC_API_URL=https://api.example.com
 ```
 
-| Scope | Access |
-|-------|--------|
-| Server Components, Route Handlers, Server Actions | All env vars |
-| Client Components | Only `NEXT_PUBLIC_*` |
+| Scope                                             | Access               |
+| ------------------------------------------------- | -------------------- |
+| Server Components, Route Handlers, Server Actions | All env vars         |
+| Client Components                                 | Only `NEXT_PUBLIC_*` |
 
 **Thoughts:** Never put secrets in `NEXT_PUBLIC_`. Use Vercel dashboard for production env vars with environment scoping (Production / Preview / Development).
 
@@ -625,12 +640,12 @@ NEXT_PUBLIC_API_URL=https://api.example.com
 
 Runtime limits on Vercel/serverless — no persistent memory, timeouts, cold starts, and DB connection pooling.
 
-| Constraint | Implication |
-|------------|-------------|
-| No persistent process memory | In-process LRU caches are useless — use Runtime Cache |
-| Function timeout (plan-dependent) | Long jobs → background queue (Inngest, Trigger.dev) |
-| Cold starts | Minimize bundle size; use Fluid Compute |
-| DB connection limits | Use connection pooler (PgBouncer, Neon serverless driver) |
+| Constraint                        | Implication                                               |
+| --------------------------------- | --------------------------------------------------------- |
+| No persistent process memory      | In-process LRU caches are useless — use Runtime Cache     |
+| Function timeout (plan-dependent) | Long jobs → background queue (Inngest, Trigger.dev)       |
+| Cold starts                       | Minimize bundle size; use Fluid Compute                   |
+| DB connection limits              | Use connection pooler (PgBouncer, Neon serverless driver) |
 
 **How it works:** `'use cache: remote'`, Vercel Runtime Cache, or external Redis.
 
@@ -638,7 +653,7 @@ Runtime limits on Vercel/serverless — no persistent memory, timeouts, cold sta
 
 ```ts
 // BAD — lost between invocations on serverless
-import { LRUCache } from 'lru-cache';
+import { LRUCache } from "lru-cache";
 const cache = new LRUCache({ max: 500 });
 ```
 
@@ -655,11 +670,11 @@ const cache = new LRUCache({ max: 500 });
 
 Run Next.js outside Vercel with `output: 'standalone'` Docker image or `next start`.
 
-| Works out of the box | Needs extra setup |
-|---------------------|-------------------|
-| SSR, SSG, API routes | Multi-instance ISR (custom `cacheHandlers`) |
-| Image optimization (with sharp) | CDN cache invalidation |
-| Standalone Docker | Edge middleware features |
+| Works out of the box            | Needs extra setup                           |
+| ------------------------------- | ------------------------------------------- |
+| SSR, SSG, API routes            | Multi-instance ISR (custom `cacheHandlers`) |
+| Image optimization (with sharp) | CDN cache invalidation                      |
+| Standalone Docker               | Edge middleware features                    |
 
 **Examples:**
 
@@ -684,7 +699,7 @@ CMD ["node", "server.js"]
 
 ## 18. Migration & pitfalls
 
-*Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template)).*
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Pages → App Router checklist</summary>
@@ -719,16 +734,16 @@ Step-by-step migration checklist from Pages Router to App Router conventions.
 
 Pages Router and legacy Next.js APIs superseded by App Router patterns.
 
-| Removed / deprecated | Migration |
-|---------------------|-----------|
-| `next export` CLI | `output: 'export'` in config |
-| `getServerSideProps` / `getStaticProps` | Server Components + `fetch` |
-| `next/head` | `metadata` / `generateMetadata` |
-| `next/router` | `next/navigation` |
-| `unstable_cache` | `'use cache'` |
-| `revalidateTag(tag)` | `revalidateTag(tag, 'max')` |
-| `middleware.ts` (Next 16) | `proxy.ts` |
-| Sync `cookies()` / `headers()` / `params` | `await` all request APIs |
+| Removed / deprecated                      | Migration                       |
+| ----------------------------------------- | ------------------------------- |
+| `next export` CLI                         | `output: 'export'` in config    |
+| `getServerSideProps` / `getStaticProps`   | Server Components + `fetch`     |
+| `next/head`                               | `metadata` / `generateMetadata` |
+| `next/router`                             | `next/navigation`               |
+| `unstable_cache`                          | `'use cache'`                   |
+| `revalidateTag(tag)`                      | `revalidateTag(tag, 'max')`     |
+| `middleware.ts` (Next 16)                 | `proxy.ts`                      |
+| Sync `cookies()` / `headers()` / `params` | `await` all request APIs        |
 
 **Sources:** [nextjs.org/docs/app/guides/migrating](https://nextjs.org/docs/app/guides/migrating)
 
@@ -743,13 +758,13 @@ Pages Router and legacy Next.js APIs superseded by App Router patterns.
 
 Server HTML does not match client render — React cannot reconcile.
 
-| Cause | Fix |
-|-------|-----|
+| Cause                                    | Fix                                         |
+| ---------------------------------------- | ------------------------------------------- |
 | `Date.now()` / `Math.random()` in render | Generate in `useEffect` or pass from server |
-| `typeof window !== 'undefined'` branches | Use `useEffect` or Server Component only |
-| Invalid HTML nesting (`<p><div>`) | Fix HTML structure |
-| Browser extensions modifying DOM | Test in incognito |
-| Third-party libs assuming browser | Dynamic import with `ssr: false` |
+| `typeof window !== 'undefined'` branches | Use `useEffect` or Server Component only    |
+| Invalid HTML nesting (`<p><div>`)        | Fix HTML structure                          |
+| Browser extensions modifying DOM         | Test in incognito                           |
+| Third-party libs assuming browser        | Dynamic import with `ssr: false`            |
 
 **Sources:** [nextjs.org/docs/messages/react-hydration-error](https://nextjs.org/docs/messages/react-hydration-error)
 
@@ -764,12 +779,12 @@ Server HTML does not match client render — React cannot reconcile.
 
 Common mistakes that inflate client bundles or leak server code into the browser.
 
-| Mistake | Fix |
-|---------|-----|
-| Importing `fs`, `db` in Client Component | Keep data access in Server Components |
-| `"use client"` at page root | Push to leaf components |
-| Barrel files importing server code | Direct imports or separate entry points |
-| Heavy libs in layout | Dynamic `import()` with loading state |
+| Mistake                                  | Fix                                     |
+| ---------------------------------------- | --------------------------------------- |
+| Importing `fs`, `db` in Client Component | Keep data access in Server Components   |
+| `"use client"` at page root              | Push to leaf components                 |
+| Barrel files importing server code       | Direct imports or separate entry points |
+| Heavy libs in layout                     | Dynamic `import()` with loading state   |
 
 **Sources:** [nextjs.org/docs/app/guides/lazy-loading](https://nextjs.org/docs/app/guides/lazy-loading)
 
@@ -784,13 +799,13 @@ Common mistakes that inflate client bundles or leak server code into the browser
 
 React Server Components use the **Flight protocol** — a serialized stream of component output and references sent from server to client. Security issues in RSC packages or misconfiguration can expose server data, enable request forgery, or allow middleware bypass.
 
-| Risk | Mitigation |
-|------|------------|
+| Risk                                                  | Mitigation                                                                                                   |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | **RSC package vulnerabilities** (Dec 2025 advisories) | Keep `react`, `react-dom`, `next` on **patched** versions — monitor [react.dev/blog](https://react.dev/blog) |
-| **Middleware/proxy bypass** (CVE-2025-29927) | Patch Next.js; never rely on proxy/middleware as sole auth gate |
-| **Secrets in RSC props** | Never pass API keys, tokens, or PII in props to Client Components |
-| **Server Action abuse** | Validate auth + input in every action; configure `allowedOrigins` |
-| **Data leaks via Flight** | Treat all Client-bound props as public — serialize DTOs only |
+| **Middleware/proxy bypass** (CVE-2025-29927)          | Patch Next.js; never rely on proxy/middleware as sole auth gate                                              |
+| **Secrets in RSC props**                              | Never pass API keys, tokens, or PII in props to Client Components                                            |
+| **Server Action abuse**                               | Validate auth + input in every action; configure `allowedOrigins`                                            |
+| **Data leaks via Flight**                             | Treat all Client-bound props as public — serialize DTOs only                                                 |
 
 **How it works:**
 
@@ -805,11 +820,11 @@ React Server Components use the **Flight protocol** — a serialized stream of c
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Server secrets stay server-side by default | Flight payload is opaque — easy to over-share in props |
-| Built-in Server Action CSRF checks | Ecosystem still maturing — audit third-party RSC libs |
-| `httpOnly` cookies never reach client JS | Misconfigured caching can serve one user's data to another — use `use cache: private` |
+| +                                          | −                                                                                     |
+| ------------------------------------------ | ------------------------------------------------------------------------------------- |
+| Server secrets stay server-side by default | Flight payload is opaque — easy to over-share in props                                |
+| Built-in Server Action CSRF checks         | Ecosystem still maturing — audit third-party RSC libs                                 |
+| `httpOnly` cookies never reach client JS   | Misconfigured caching can serve one user's data to another — use `use cache: private` |
 
 **Examples:**
 
@@ -821,7 +836,13 @@ export default async function BillingPage() {
 
   const invoice = await stripe.invoices.retrieve(session.stripeCustomerId);
   // Pass only what UI needs — not full Stripe object
-  return <InvoiceSummary id={invoice.id} amount={invoice.amount_due} status={invoice.status} />;
+  return (
+    <InvoiceSummary
+      id={invoice.id}
+      amount={invoice.amount_due}
+      status={invoice.status}
+    />
+  );
 }
 ```
 
@@ -844,19 +865,19 @@ export default async function BillingPage() {
 
 App Router auth combines **session identity** (cookie or token), **route protection** (layout guards), and **authorization** (role/permission checks in data layer). Managed providers and DIY sessions both follow the same defense-in-depth shape.
 
-| Approach | Best for | Notes |
-|----------|----------|-------|
-| **Clerk / Auth0 / Descope** | Fast SaaS launch, OAuth, MFA | Provider middleware + server SDK; Vercel-friendly |
-| **Better Auth / Auth.js** | Self-hosted sessions, custom DB | Session in DB + `httpOnly` cookie |
-| **Session in httpOnly cookie** | Full control, BFF pattern | Validate JWT/session in Server Components + Actions |
-| **External IdP + Route Handlers** | Enterprise SSO | Token exchange in `route.ts`; store session cookie |
+| Approach                          | Best for                        | Notes                                               |
+| --------------------------------- | ------------------------------- | --------------------------------------------------- |
+| **Clerk / Auth0 / Descope**       | Fast SaaS launch, OAuth, MFA    | Provider middleware + server SDK; Vercel-friendly   |
+| **Better Auth / Auth.js**         | Self-hosted sessions, custom DB | Session in DB + `httpOnly` cookie                   |
+| **Session in httpOnly cookie**    | Full control, BFF pattern       | Validate JWT/session in Server Components + Actions |
+| **External IdP + Route Handlers** | Enterprise SSO                  | Token exchange in `route.ts`; store session cookie  |
 
-| Layer | Responsibility |
-|-------|----------------|
-| **proxy.ts** | Coarse redirect if no session cookie (optional) |
-| **Layout / page** | `getSession()` → `redirect()` or `unauthorized()` |
+| Layer             | Responsibility                                      |
+| ----------------- | --------------------------------------------------- |
+| **proxy.ts**      | Coarse redirect if no session cookie (optional)     |
+| **Layout / page** | `getSession()` → `redirect()` or `unauthorized()`   |
 | **Server Action** | Re-validate session + permissions on every mutation |
-| **Route Handler** | Bearer/cookie auth for webhooks and public API |
+| **Route Handler** | Bearer/cookie auth for webhooks and public API      |
 
 **When to use:**
 
@@ -864,38 +885,44 @@ App Router auth combines **session identity** (cookie or token), **route protect
 - **DIY session** — full control, existing user table, BFF with Next.js only
 - **`authInterrupts: true`** + `forbidden()` / `unauthorized()` — semantic 403/401 pages (Next.js 15+)
 
+**When not to use:**
+
 - Storing JWT in `localStorage` for SSR apps — prefer `httpOnly` cookie
 - Auth check only in `proxy.ts` — bypass risk; always validate in server data layer
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| httpOnly cookies resist XSS token theft | Cookie sessions need CSRF awareness on Route Handlers |
-| Server-side validation on every render | JWT in cookie — must verify signature server-side |
-| Managed providers reduce auth boilerplate | Vendor lock-in for advanced auth features |
+| +                                         | −                                                     |
+| ----------------------------------------- | ----------------------------------------------------- |
+| httpOnly cookies resist XSS token theft   | Cookie sessions need CSRF awareness on Route Handlers |
+| Server-side validation on every render    | JWT in cookie — must verify signature server-side     |
+| Managed providers reduce auth boilerplate | Vendor lock-in for advanced auth features             |
 
 **Examples:**
 
 ```tsx
 // app/(dashboard)/layout.tsx
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/auth';
+import { redirect } from "next/navigation";
+import { getSession } from "@/lib/auth";
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const session = await getSession();
-  if (!session) redirect('/login');
+  if (!session) redirect("/login");
   return <>{children}</>;
 }
 ```
 
 ```tsx
 // lib/auth.ts
-import { cookies } from 'next/headers';
-import { cache } from 'react';
+import { cookies } from "next/headers";
+import { cache } from "react";
 
 export const getSession = cache(async () => {
-  const token = (await cookies()).get('session')?.value;
+  const token = (await cookies()).get("session")?.value;
   if (!token) return null;
   return verifySessionToken(token); // throws if invalid
 });
@@ -908,12 +935,12 @@ const nextConfig = { authInterrupts: true };
 
 ```tsx
 // app/admin/page.tsx
-import { forbidden, unauthorized } from 'next/navigation';
+import { forbidden, unauthorized } from "next/navigation";
 
 export default async function AdminPage() {
   const session = await getSession();
   if (!session) unauthorized();
-  if (session.role !== 'admin') forbidden();
+  if (session.role !== "admin") forbidden();
   return <AdminPanel />;
 }
 ```
@@ -933,7 +960,7 @@ export default async function AdminPage() {
 
 ## 19. Performance & debugging
 
-*Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template)).*
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Bundle analysis</summary>
@@ -951,9 +978,11 @@ ANALYZE=true npm run build
 
 ```ts
 // next.config.ts
-import bundleAnalyzer from '@next/bundle-analyzer';
+import bundleAnalyzer from "@next/bundle-analyzer";
 
-const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === 'true' });
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 export default withBundleAnalyzer(nextConfig);
 ```
 
@@ -973,7 +1002,7 @@ export default withBundleAnalyzer(nextConfig);
 ```ts
 const nextConfig = {
   experimental: {
-    optimizePackageImports: ['lucide-react', '@mui/material', 'date-fns'],
+    optimizePackageImports: ["lucide-react", "@mui/material", "date-fns"],
   },
 };
 ```
@@ -1025,12 +1054,12 @@ next build --debug-build-paths "/blog/[slug]"
 
 Test Next.js apps with **Vitest** (fast ESM-native runner) and **React Testing Library** (RTL) for component behavior. Why tests / AAA: [7_special.md](./7_special_testing.md#tests-and-aaa). Server Components and Server Actions need separate strategies — mock `next/navigation` and test actions as plain async functions. Stub vs mock vs spy: [Test doubles](./7_special_testing.md#test-doubles-stubs-mocks-spies).
 
-| What to test | Tool | Approach |
-|--------------|------|----------|
-| Client Components | Vitest + RTL | `render()`, `userEvent`, assert DOM |
-| Server Actions | Vitest | Import action; mock `db` / `cookies` |
-| Route Handlers | Vitest | Call exported `GET`/`POST` with `Request` |
-| E2E flows | Playwright | Real browser — login, navigation, forms |
+| What to test      | Tool         | Approach                                  |
+| ----------------- | ------------ | ----------------------------------------- |
+| Client Components | Vitest + RTL | `render()`, `userEvent`, assert DOM       |
+| Server Actions    | Vitest       | Import action; mock `db` / `cookies`      |
+| Route Handlers    | Vitest       | Call exported `GET`/`POST` with `Request` |
+| E2E flows         | Playwright   | Real browser — login, navigation, forms   |
 
 **When to use:**
 
@@ -1039,58 +1068,58 @@ Test Next.js apps with **Vitest** (fast ESM-native runner) and **React Testing L
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Vitest — fast, Jest-compatible API | RSC cannot render in jsdom — test Client leaves or E2E |
-| RTL — tests user-visible behavior | Heavy mocking of `next/*` modules |
-| `next/experimental/testmode` (evolving) | Not a replacement for Playwright on critical paths |
+| +                                       | −                                                      |
+| --------------------------------------- | ------------------------------------------------------ |
+| Vitest — fast, Jest-compatible API      | RSC cannot render in jsdom — test Client leaves or E2E |
+| RTL — tests user-visible behavior       | Heavy mocking of `next/*` modules                      |
+| `next/experimental/testmode` (evolving) | Not a replacement for Playwright on critical paths     |
 
 **Examples:**
 
 ```ts
 // vitest.config.ts
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
-import path from 'node:path';
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+import path from "node:path";
 
 export default defineConfig({
   plugins: [react()],
-  test: { environment: 'jsdom', setupFiles: ['./vitest.setup.ts'] },
-  resolve: { alias: { '@': path.resolve(__dirname, './src') } },
+  test: { environment: "jsdom", setupFiles: ["./vitest.setup.ts"] },
+  resolve: { alias: { "@": path.resolve(__dirname, "./src") } },
 });
 ```
 
 ```ts
 // vitest.setup.ts
-import '@testing-library/jest-dom/vitest';
+import "@testing-library/jest-dom/vitest";
 ```
 
 ```tsx
 // components/counter.test.tsx
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { Counter } from './counter';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { Counter } from "./counter";
 
-it('increments on click', async () => {
+it("increments on click", async () => {
   render(<Counter />);
-  await userEvent.click(screen.getByRole('button', { name: /increment/i }));
-  expect(screen.getByText('1')).toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: /increment/i }));
+  expect(screen.getByText("1")).toBeInTheDocument();
 });
 ```
 
 ```tsx
 // actions.test.ts — mock server deps
-import { vi } from 'vitest';
-vi.mock('next/cache', () => ({ revalidatePath: vi.fn() }));
-vi.mock('@/lib/db', () => ({ todo: { create: vi.fn() } }));
+import { vi } from "vitest";
+vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
+vi.mock("@/lib/db", () => ({ todo: { create: vi.fn() } }));
 
-import { createTodo } from './actions';
+import { createTodo } from "./actions";
 
-it('rejects empty title', async () => {
+it("rejects empty title", async () => {
   const fd = new FormData();
-  fd.set('title', '');
+  fd.set("title", "");
   const result = await createTodo(fd);
-  expect(result).toEqual({ error: 'Invalid title' });
+  expect(result).toEqual({ error: "Invalid title" });
 });
 ```
 
@@ -1115,13 +1144,13 @@ it('rejects empty title', async () => {
 
 Chrome records the metrics; CrUX / Speed Insights aggregate them. Next.js levers:
 
-| Metric | Good | What it measures | Next.js levers |
-|--------|------|------------------|----------------|
-| **LCP** | ≤ 2.5s | Largest contentful paint (hero image/text) | `next/image` `priority`, PPR static shell, `next/font` |
-| **INP** | ≤ 200ms | Interaction to next paint (replaced FID) | Smaller client JS, Server Components, fewer hydration handlers |
-| **CLS** | ≤ 0.1 | Layout shift | `next/font` (fallback `size-adjust`, self-hosted files), explicit image `width`/`height`/`sizes` or `fill`. Metric + HTML/CSS causes → [1_html.md — CLS](./1_html_performance.md#cls-cumulative-layout-shift) |
-| **TTFB** (diagnostic) | ≤ 0.8 s good, > 1.8 s poor | Time to first byte | CDN/SSG/ISR, streaming, avoid `force-dynamic` unless needed, regional Node vs distant Edge+DB — [full TTFB](./6_web_api_security.md#ttfb-time-to-first-byte) |
-| **FCP** (diagnostic) | ≤ 1.8s | First contentful paint (blank screen ended) | Same early path as LCP: TTFB, blocking CSS, `next/font`, less JS before first paint — [6_web_api.md](./6_web_api_security.md#first-contentful-paint-fcp) |
+| Metric                | Good                       | What it measures                            | Next.js levers                                                                                                                                                                                                |
+| --------------------- | -------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **LCP**               | ≤ 2.5s                     | Largest contentful paint (hero image/text)  | `next/image` `priority`, PPR static shell, `next/font`                                                                                                                                                        |
+| **INP**               | ≤ 200ms                    | Interaction to next paint (replaced FID)    | Smaller client JS, Server Components, fewer hydration handlers                                                                                                                                                |
+| **CLS**               | ≤ 0.1                      | Layout shift                                | `next/font` (fallback `size-adjust`, self-hosted files), explicit image `width`/`height`/`sizes` or `fill`. Metric + HTML/CSS causes → [1_html.md — CLS](./1_html_performance.md#cls-cumulative-layout-shift) |
+| **TTFB** (diagnostic) | ≤ 0.8 s good, > 1.8 s poor | Time to first byte                          | CDN/SSG/ISR, streaming, avoid `force-dynamic` unless needed, regional Node vs distant Edge+DB — [full TTFB](./6_web_api_security.md#ttfb-time-to-first-byte)                                                  |
+| **FCP** (diagnostic)  | ≤ 1.8s                     | First contentful paint (blank screen ended) | Same early path as LCP: TTFB, blocking CSS, `next/font`, less JS before first paint — [6_web_api.md](./6_web_api_security.md#first-contentful-paint-fcp)                                                      |
 
 **When to use:**
 
@@ -1133,15 +1162,15 @@ Calling FID a Core Web Vital (it is not, since 2024). Shipping a huge `'use clie
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Shared language with SEO/product | Lab Lighthouse ≠ field CrUX |
-| Maps cleanly to Next primitives | Chasing TTFB on Edge while the DB is far away can *hurt* LCP |
+| +                                | −                                                            |
+| -------------------------------- | ------------------------------------------------------------ |
+| Shared language with SEO/product | Lab Lighthouse ≠ field CrUX                                  |
+| Maps cleanly to Next primitives  | Chasing TTFB on Edge while the DB is far away can _hurt_ LCP |
 
 **Examples:**
 
 ```tsx
-import Image from 'next/image';
+import Image from "next/image";
 
 export function Hero() {
   return (
@@ -1160,13 +1189,13 @@ export function Hero() {
 keep `'use client'` on a tiny reporter so `layout` stays a Server Component:
 
 ```tsx
-'use client';
+"use client";
 
-import { useReportWebVitals } from 'next/web-vitals';
+import { useReportWebVitals } from "next/web-vitals";
 
 export function WebVitals() {
   useReportWebVitals((metric) => {
-    navigator.sendBeacon('/analytics', JSON.stringify(metric));
+    navigator.sendBeacon("/analytics", JSON.stringify(metric));
   });
   return null;
 }

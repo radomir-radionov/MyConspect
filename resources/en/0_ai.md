@@ -4,7 +4,7 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 
 ### Related docs
 
-* [Cursor — Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) · [Interview hub](./0_interview.md) · [MVP & judgment](./0_mvp.md) · [TypeScript](./5_ts.md) · [Next.js](./4_nextjs.md)
+* [Cursor — Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) · [Interview hub](./0_interview.md) · [MVP & judgment](./0_mvp.md) · [TypeScript](./5_ts.md) · [Next.js](./4_nextjs.md)
 
 ### Main concepts
 
@@ -12,7 +12,7 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 |------|--------|
 | **Product** | [AI-first approach](#ai-first-approach) vs AI-enabled vs AI-augmented |
 | **Workflow** | [AI-assisted editors](#ai-assisted-workflow-cursor-copilot-claude-code), [Context7 / Ref](#context7-and-reftools), [RTK](#rtk-rust-token-killer) |
-| **Cursor** | [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) |
+| **Cursor** | [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) |
 
 ### Sections
 

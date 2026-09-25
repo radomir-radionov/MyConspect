@@ -9,6 +9,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Agent Skills: SKILL.md, auto vs slash, and built-ins.": "Agent Skills: SKILL.md, auto vs slash и встроенные.",
   "Agent Skills: SKILL.md, auto vs slash, paths, and built-ins.": "Agent Skills: SKILL.md, auto vs slash, пути и встроенные.",
   "AI-first vs augmented, editors, Context7/Ref, and RTK.": "AI-first vs augmented, редакторы, Context7/Ref и RTK.",
+  "Core tips, skills, rules, plugins, slash commands, and questions.": "Core tips, skills, rules, plugins, slash-команды и вопросы.",
+  "Shortcuts, Run Modes, verification loops, and Cursor Directory.": "Шорткаты, Run Modes, циклы проверки и Cursor Directory.",
   "Algorithm basics and complexity analysis.": "Основы алгоритмов и анализ сложности.",
   "App Router, data, routing, and the Next.js platform.": "App Router, данные, маршрутизация и платформа Next.js.",
   "App types and security.": "Типы приложений и безопасность.",

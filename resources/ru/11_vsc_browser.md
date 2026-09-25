@@ -268,7 +268,7 @@ Get-ChildItem
 
 - Щелкните номер строки, чтобы установить точку останова; щелкните правой кнопкой мыши → **условная** точка останова (останавливается только тогда, когда выражение истинно).
 - `debugger;` in source приостанавливается только тогда, когда DevTools открыт — в противном случае браузеры игнорируют его.
-– Во время паузы: **Область** (локальные/глобальные значения), **Наблюдение** (выражения), **Стек вызовов** (вложенные вызовы — щелкните кадр, чтобы перейти).
+- Во время паузы: **Область** (локальные/глобальные значения), **Наблюдение** (выражения), **Стек вызовов** (вложенные вызовы — щелкните кадр, чтобы перейти).
 - Пошаговый режим: Возобновить (F8), Шаг вперед (F10 — переход к вложенным вызовам), Шаг вперед (F11), Выход (Shift+F11). Щелкните строку правой кнопкой мыши → **Продолжить здесь**.
 - `console.log` /Esc консоль для отладки печати без паузы. Подробности API консоли → [Язык JS — Консоль](./3_js_core.md).
 
@@ -297,19 +297,19 @@ function hello(name) {
 - Средство просмотра JSON – https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh/based.
 - ColorZilla - https://chrome.google.com/webstore/detail/colorzilla/bhlhnicpbhignbdhedgjhgdocnmhomnp
 - Wappalyzer - https://chrome.google.com/webstore/detail/wappalyzer-technology-pro/gppongmhjkpfnbhagpmjfkannfbllamg- Поддельный наполнитель - https://chrome.google.com/webstore/detail/fake-filler/bnjjngeaknajbdcgpfkgnonkmififhfo
-– PerfectPixel – https://chrome.google.com/webstore/detail/perfectpixel-by-welldonec/dkaagdgjmgdmbnecmcefdhjekcoceebi
+- PerfectPixel – https://chrome.google.com/webstore/detail/perfectpixel-by-welldonec/dkaagdgjmgdmbnecmcefdhjekcoceebi
 - Octotree - дерево кода GitHub - https://chrome.google.com/webstore/detail/octotree-github-code-tree/bkhaagjahfmjljalopjnoealnfndnagc
 - Гитхант - https://githunt.io/
 
 ### DevTools extensions
 
-– Контрольный список для веб-разработчика – https://chrome.google.com/webstore/detail/web-developer-checklist/iahamcpedabephpcgkeikbclmaljebjp.
+- Контрольный список для веб-разработчика – https://chrome.google.com/webstore/detail/web-developer-checklist/iahamcpedabephpcgkeikbclmaljebjp.
 - Тестер API Talend - https://chrome.google.com/webstore/detail/talend-api-tester-free-ed/aejoelaoggembcahagimdiliamlcdmfm
 - Очистить кэш – https://chrome.google.com/webstore/detail/clear-cache/cppjkneekbjaeellbfkmgnhonkkjfpdn.– Веб-разработчик – https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm
 
 ### Accessibility extensions
 - Шрифты Ninja - https://chrome.google.com/webstore/detail/fonts-ninja/eljapbgkmlngdpckoiiibecpemleclhh
-– Проверьте мои ссылки – https://chrome.google.com/webstore/detail/check-my-links/ojkcdipcgfaekbeaelaapakgnjflfglf.
+- Проверьте мои ссылки – https://chrome.google.com/webstore/detail/check-my-links/ojkcdipcgfaekbeaelaapakgnjflfglf.
 - Инструмент оценки WAVE – https://chrome.google.com/webstore/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh.
 
 ## Ubuntu
