@@ -6,7 +6,7 @@ Internet, DNS, and how the web stack fits together.
 
 ### Related docs
 
-* [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
+- [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
 
 ### Sections
 
@@ -38,7 +38,7 @@ Internet, DNS, and how the web stack fits together.
 
 **Pluses and minuses:**
 
-| + (understanding pipeline)  | −                               |
+| + (understanding pipeline)     | −                                  |
 | ------------------------------ | ---------------------------------- |
 | Targeted perf fixes (LCP, CLS) | Many engine-specific optimizations |
 
@@ -46,7 +46,7 @@ Internet, DNS, and how the web stack fits together.
 
 ```html
 <!-- Critical CSS in <head> speeds first paint -->
-<link rel="stylesheet" href="critical.css">
+<link rel="stylesheet" href="critical.css" />
 <script src="app.js" defer></script>
 ```
 
@@ -69,12 +69,12 @@ Internet, DNS, and how the web stack fits together.
 
 The Internet is a global network of computers; the Web is an HTTP-based system of linked documents accessed via browsers; DNS maps human-readable domain names to IP addresses.
 
-| Term     | Role                                       |
-| -------- | ------------------------------------------ |
-| Internet | Global packet-routed network (TCP/IP)      |
-| Web      | Hyperlinked documents over HTTP            |
+| Term     | Role                                              |
+| -------- | ------------------------------------------------- |
+| Internet | Global packet-routed network (TCP/IP)             |
+| Web      | Hyperlinked documents over HTTP                   |
 | DNS      | Domain → IP phonebook (`A` = IPv4, `AAAA` = IPv6) |
-| Browser  | User agent that requests and renders pages |
+| Browser  | User agent that requests and renders pages        |
 
 **How it works:** Dual-stack clients query **AAAA** and **A**. **Happy Eyeballs** (RFC 8305) races connections and prefers working IPv6, falling back to IPv4 if IPv6 is slow or broken. Full addressing: [IPv4 & IPv6](./6_web_api_apps.md#ipv4--ipv6). LAN vs public Internet, packets, and the page-load path: [How the Internet works](#internet). DNS is a **lookup** (cache → resolver → nameservers → IP); the browser then opens TCP/TLS to that IP — packets are not “sent to DNS as the destination.”
 
@@ -100,6 +100,7 @@ User types https://example.com
   <summary>Internet</summary>
 
 ### Internet
+
 **Definition:** Hosts exchange **packets** under shared **protocols**. The same TCP/IP stack runs on a **LAN** and on the public **Internet**; the difference is addressing, routing scope, and who can reach whom — not a different “kind” of packet.
 
 **How it works:**
@@ -121,10 +122,10 @@ Treating DNS as the HTTP destination. Calling TLS a replacement for TCP. Assumin
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| One mental model (packets + IP + port) | NAT and firewalls hide “just ping the LAN IP” |
-| Same tools on LAN and WAN (`ping`, `ss`) | “TLS/IP stack” as a peer of TCP/IP is a myth |
+| +                                        | −                                             |
+| ---------------------------------------- | --------------------------------------------- |
+| One mental model (packets + IP + port)   | NAT and firewalls hide “just ping the LAN IP” |
+| Same tools on LAN and WAN (`ping`, `ss`) | “TLS/IP stack” as a peer of TCP/IP is a myth  |
 
 **Examples:**
 
@@ -140,7 +141,7 @@ https://example.com/index.html
 
 **Thoughts:**
 
-*DNS finds the IP; TCP/TLS opens the pipe; HTTP is the conversation; IP+port is how packets find the right process.*
+_DNS finds the IP; TCP/TLS opens the pipe; HTTP is the conversation; IP+port is how packets find the right process._
 
 Layers: [OSI & TCP/IP models](./6_web_api_apps.md#osi--tcpip-models). Addresses: [IP address](#ip-address) · [IPv4 & IPv6](./6_web_api_apps.md#ipv4--ipv6). Packet capture: Wireshark/`tcpdump` in the OSI block. Host firewall: [15_devops.md — Firewall](./15_devops.md#firewall--packet-filter).
 
@@ -248,7 +249,7 @@ IPv6: 2001:db8:85a3::8a2e:370:7334
 
 **Definition:**
 
-A **URI** identifies a resource. A **URL** is a URI that also says *how* to reach it (scheme + location). A **URN** names a resource without locating it (`urn:isbn:…`).
+A **URI** identifies a resource. A **URL** is a URI that also says _how_ to reach it (scheme + location). A **URN** names a resource without locating it (`urn:isbn:…`).
 
 | Type | Identifies         | Includes access method |
 | ---- | ------------------ | ---------------------- |
@@ -260,16 +261,16 @@ A **URI** identifies a resource. A **URL** is a URI that also says *how* to reac
 
 An absolute HTTP(S) URL is `scheme ":" "//" authority path [ "?" query ] [ "#" fragment ]`. Authority is `[ userinfo "@" ] host [ ":" port ]` (RFC 3986). The browser resolves the host via [DNS](#internet-web--dns) to an IP, then opens TCP to the port.
 
-| Part | Example | Role |
-| ---- | ------- | ---- |
-| Scheme | `https` | Protocol; `:` is the separator. `http` is unencrypted. Also `mailto:`, `ftp:`, `ws:` / `wss:`. |
-| Authority | `user:pass@host:443` | Starts after `://`. Usually just the host. |
-| Userinfo | `admin:secret@` | Login + password before `@`. RFC 3986 **deprecates** `user:password` in URLs (leaks in history, logs, Referer). Browsers may ignore or block it. |
-| Host | `doka.guide` | Domain or IP. People type names; DNS is the phonebook to IPv4/`A` and IPv6/`AAAA`. |
-| Port | `:443` | Process on the host. WHATWG defaults: **http/ws → 80**, **https/wss → 443**, **ftp → 21**. Default port is omitted from the URL and from `origin`. |
-| Path | `/tools/url` | Resource on the origin. |
-| Query | `?query=hi&category=js` | Starts at `?`; pairs `key=value` joined by `&`. Same key may repeat. Not the resource identity — filters, search, pagination. REST split: [query vs path params](#query-parameters--path-params). |
-| Fragment | `#kratko` | Starts at `#`. Client-only; **not sent to the server**. Scrolls to `id` / named anchor. |
+| Part      | Example                 | Role                                                                                                                                                                                              |
+| --------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scheme    | `https`                 | Protocol; `:` is the separator. `http` is unencrypted. Also `mailto:`, `ftp:`, `ws:` / `wss:`.                                                                                                    |
+| Authority | `user:pass@host:443`    | Starts after `://`. Usually just the host.                                                                                                                                                        |
+| Userinfo  | `admin:secret@`         | Login + password before `@`. RFC 3986 **deprecates** `user:password` in URLs (leaks in history, logs, Referer). Browsers may ignore or block it.                                                  |
+| Host      | `doka.guide`            | Domain or IP. People type names; DNS is the phonebook to IPv4/`A` and IPv6/`AAAA`.                                                                                                                |
+| Port      | `:443`                  | Process on the host. WHATWG defaults: **http/ws → 80**, **https/wss → 443**, **ftp → 21**. Default port is omitted from the URL and from `origin`.                                                |
+| Path      | `/tools/url`            | Resource on the origin.                                                                                                                                                                           |
+| Query     | `?query=hi&category=js` | Starts at `?`; pairs `key=value` joined by `&`. Same key may repeat. Not the resource identity — filters, search, pagination. REST split: [query vs path params](#query-parameters--path-params). |
+| Fragment  | `#kratko`               | Starts at `#`. Client-only; **not sent to the server**. Scrolls to `id` / named anchor.                                                                                                           |
 
 No host — the browser fills scheme/host from the current document (or `<base href>`). Path without `/` is relative to the current path; `/…` is from the origin root; `../` goes up one path segment; `//host/path` is scheme-relative (keep `https`/`http`). The address bar resembles a file path; SSR may hide `index.html`, and client routing can show a virtual path via History API — [Files & file systems](./8_nodejs_modules.md#files--file-systems).
 
@@ -285,10 +286,10 @@ Putting secrets in query or userinfo; treating `#` as a server param; omitting e
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| Human-readable vs raw IPs | Userinfo in URLs is a credential leak |
-| Relative links survive domain moves | Fragment never reaches the API |
+| +                                      | −                                        |
+| -------------------------------------- | ---------------------------------------- |
+| Human-readable vs raw IPs              | Userinfo in URLs is a credential leak    |
+| Relative links survive domain moves    | Fragment never reaches the API           |
 | `URL` / `URLSearchParams` parse safely | Hand-splitting `?` / `&` breaks encoding |
 
 **Examples:**
@@ -301,15 +302,15 @@ urn:isbn:978-0-393-04002-9
 ```
 
 ```js
-const url = new URL('https://doka.guide');
-const page = new URL('/tools/url', url);
-page.searchParams.set('q', 'url');
-page.hash = 'kratko';
+const url = new URL("https://doka.guide");
+const page = new URL("/tools/url", url);
+page.searchParams.set("q", "url");
+page.hash = "kratko";
 page.href;
 // https://doka.guide/tools/url?q=url#kratko
 ```
 
-**Thoughts:** URL = *how to fetch* + *where*; DNS turns the host into an IP; query is extra input; hash stays in the browser.
+**Thoughts:** URL = _how to fetch_ + _where_; DNS turns the host into an IP; query is extra input; hash stays in the browser.
 
 **Sources:**
 
@@ -367,7 +368,7 @@ Path parameters identify a resource in the URL path; query parameters filter, so
 **Examples:**
 
 ```js
-const params = new URLSearchParams({ page: '2', limit: '20' });
+const params = new URLSearchParams({ page: "2", limit: "20" });
 fetch(`/api/books?${params}`);
 ```
 
@@ -384,7 +385,7 @@ fetch(`/api/books?${params}`);
 
 ### API (Application Programming Interface)
 
-**Definition:** *API (Application Programming Interface)* is the set of features one program exposes to others: “talk to me this way — ask here, change things there.” It exists so modules, systems, and languages can communicate (JS client ↔ Python/Java server, exported functions, Gulp, Arduino SDK).
+**Definition:** _API (Application Programming Interface)_ is the set of features one program exposes to others: “talk to me this way — ask here, change things there.” It exists so modules, systems, and languages can communicate (JS client ↔ Python/Java server, exported functions, Gulp, Arduino SDK).
 
 **How it works:**
 
@@ -428,8 +429,8 @@ GET  /api/v1.0/users   → list users
 ```
 
 ```js
-localStorage.setItem('key', 'value');
-console.log('debug');
+localStorage.setItem("key", "value");
+console.log("debug");
 ```
 
 **Thoughts:** API is any published contract between programs — HTTP routes are one kind, not the only kind.
@@ -451,7 +452,7 @@ console.log('debug');
 
 **Pluses and minuses:**
 
-| +                             | −                          |
+| +                                | −                             |
 | -------------------------------- | ----------------------------- |
 | Lower latency, less origin load  | Cache invalidation complexity |
 | DDoS mitigation, TLS termination | Extra cost and configuration  |
@@ -471,54 +472,3 @@ console.log('debug');
 ---
 
 </details>
-
-<a name="2-rest"></a>
-
-### Topic template
-
-Every major topic follows:
-
-**Definition** → **How it works** → **Cases** → **Pros / Cons** → **Example** → **Notes** → **Source**
-
-### HTTP (Hypertext Transfer Protocol)
-
-Application-layer request/response protocol for the Web. Full notes: [HTTP protocol](./6_web_api_http.md#http-protocol).
-
-### REST (Representational State Transfer)
-
-**Definition:** REST is an architectural style for distributed systems where resources are identified by URLs and manipulated via standard HTTP verbs and representations (usually JSON).
-
-**When to use:**
-
-CRUD APIs, public HTTP services, mobile/web clients sharing one backend.
-
-Complex nested queries with many round-trips — consider GraphQL; high-performance internal RPC — consider gRPC.
-
-**Pluses and minuses:**
-
-| +                                 | −                                |
-| ------------------------------------ | ----------------------------------- |
-| Simple, cache-friendly, tooling-rich | Over/under-fetching without GraphQL |
-| Language-agnostic clients            | Strict REST is rare in practice     |
-
-**Examples:**
-
-```http
-GET    /books      → list
-POST   /books      → create
-GET    /books/3    → read
-PUT    /books/3    → replace
-DELETE /books/3    → remove
-```
-
-**Sources:** [ByteByteGo — REST API cheatsheet](https://blog.bytebytego.com/p/ep94-rest-api-cheatsheet)
-
-### CORS (Cross-Origin Resource Sharing)
-
-**Definition:**
-
-CORS is a browser opt-in that lets a server allow cross-origin JavaScript to **read** a response. Full theory → [CORS](./6_web_api_security.md#cors).
-
----
-
-<a name="resources"></a>

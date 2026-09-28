@@ -1,12 +1,29 @@
 "use client";
 
-import { useDeferredValue, useEffect, useRef, useSyncExternalStore, startTransition } from "react";
+import {
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useRef,
+  useSyncExternalStore,
+  startTransition,
+} from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { SEARCH_NAV_DELAY_MS } from "@/constants";
-import { firstSearchHref, splitHref, type NavGroup, type SearchMode } from "@/lib/nav";
+import {
+  firstSearchHref,
+  splitHref,
+  type NavGroup,
+  type SearchMode,
+} from "@/lib/nav";
 import { applySameDocumentHref, followHandbookHref } from "./hash";
 import { useSearchCorpus } from "./searchCorpus";
-import { getServerSearchUi, readSearchUi, subscribeUi, writeUi } from "./uiStorage";
+import {
+  getServerSearchUi,
+  readSearchUi,
+  subscribeUi,
+  writeUi,
+} from "./uiStorage";
 
 export function useHandbookSearch(
   groups: readonly NavGroup[],
@@ -18,7 +35,11 @@ export function useHandbookSearch(
   const pathnameRef = useRef(pathname);
   const restoreHrefRef = useRef<string | null>(null);
   const searchTimerRef = useRef<number | null>(null);
-  const stored = useSyncExternalStore(subscribeUi, readSearchUi, getServerSearchUi);
+  const stored = useSyncExternalStore(
+    subscribeUi,
+    readSearchUi,
+    getServerSearchUi,
+  );
   const query = stored.query;
   const mode = stored.mode;
   const notesCorpus = useSearchCorpus(mode === "notes");
@@ -46,40 +67,46 @@ export function useHandbookSearch(
     return `${pathnameRef.current}${window.location.hash}`;
   }
 
-  function goTo(target: string) {
-    followHandbookHref(target, pathnameRef.current, (path) => {
-      startTransition(() => {
-        router.replace(path, { scroll: false });
+  const goTo = useCallback(
+    (target: string) => {
+      followHandbookHref(target, pathnameRef.current, (path) => {
+        startTransition(() => {
+          router.replace(path, { scroll: false });
+        });
       });
-    });
-  }
+    },
+    [router],
+  );
 
-  function applySearch(nextQuery: string) {
-    const trimmed = nextQuery.trim();
-    if (trimmed.length === 0) {
-      const restore = restoreHrefRef.current;
-      restoreHrefRef.current = null;
-      if (restore && restore !== currentHref()) {
-        goTo(restore);
+  const applySearch = useCallback(
+    (nextQuery: string) => {
+      const trimmed = nextQuery.trim();
+      if (trimmed.length === 0) {
+        const restore = restoreHrefRef.current;
+        restoreHrefRef.current = null;
+        if (restore && restore !== currentHref()) {
+          goTo(restore);
+        }
+        return;
       }
-      return;
-    }
 
-    if (restoreHrefRef.current === null) {
-      restoreHrefRef.current = currentHref();
-    }
+      if (restoreHrefRef.current === null) {
+        restoreHrefRef.current = currentHref();
+      }
 
-    const target = firstSearchHref(
-      groupsRef.current,
-      nextQuery,
-      pathnameRef.current,
-      modeRef.current,
-    );
-    if (target) {
-      const { pathname, hash } = splitHref(target);
-      applySameDocumentHref(pathname, hash, pathnameRef.current);
-    }
-  }
+      const target = firstSearchHref(
+        groupsRef.current,
+        nextQuery,
+        pathnameRef.current,
+        modeRef.current,
+      );
+      if (target) {
+        const { pathname, hash } = splitHref(target);
+        applySameDocumentHref(pathname, hash, pathnameRef.current);
+      }
+    },
+    [goTo],
+  );
 
   function scheduleSearch(nextQuery: string) {
     if (searchTimerRef.current !== null) {
@@ -140,7 +167,7 @@ export function useHandbookSearch(
       return;
     }
     applySearch(query);
-  }, [notesCorpus, mode, query]);
+  }, [applySearch, notesCorpus, mode, query]);
 
   return {
     query,

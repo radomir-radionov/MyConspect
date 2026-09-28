@@ -7,7 +7,7 @@ Covers ECMAScript runtime fundamentals: engines and modules. Types, memory (stac
 ### Related docs
 
 - [JS Data Types & Variables](./3_js_variables.md) · [Stack & heap](./3_js_variables.md#memory-stack-heap) · [globalThis](./3_js_variables.md#globalthis) · [JS Operators & Loops](./3_js_operators.md) · [Error handling](./3_js_operators.md#error-handling) · [Iterators](./3_js_operators.md#iterators) · [JS Arrays](./3_js_array.md) · [JS Additional](./3_js_extra.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [CORS / same-origin](./3_js_browser_extra.md#cors-same-origin) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md) · [Call stack](./3_js_async.md#call-stack)
-- [TypeScript](./5_ts.md) · [Web API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Computer science](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
+- [TypeScript](./5_ts.md) · [Web API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [Vue](./4_vue.md) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Computer science](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
 
 ### Main concepts
 

@@ -6,7 +6,7 @@ Protocols, real-time, and types of web apps.
 
 ### Related docs
 
-* [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
+- [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
 
 ### Sections
 
@@ -23,30 +23,30 @@ Protocols, real-time, and types of web apps.
 
 ### OSI & TCP/IP models
 
-**Definition:** A **network model** is a layered spec of how hosts exchange digital data. **OSI** (Open Systems Interconnection, ISO/IEC 7498-1 / ITU-T X.200) is a 7-layer *reference* model for teaching, standards talk, and troubleshooting. The Internet runs the **TCP/IP** (DoD / Internet protocol suite) stack described in RFC 1122 / RFC 1123 — four broad layers, not seven.
+**Definition:** A **network model** is a layered spec of how hosts exchange digital data. **OSI** (Open Systems Interconnection, ISO/IEC 7498-1 / ITU-T X.200) is a 7-layer _reference_ model for teaching, standards talk, and troubleshooting. The Internet runs the **TCP/IP** (DoD / Internet protocol suite) stack described in RFC 1122 / RFC 1123 — four broad layers, not seven.
 
 **How it works:**
 
 Each OSI layer talks to the layer below and offers a service to the layer above. On send, data is **encapsulated** (header/footer added); on receive, headers are stripped. Layers 1–3 are **media** (bits → frames → packets across links and routers); 4–7 are **host** layers.
 
-| OSI | PDU | Job | Typical examples |
-| --- | --- | --- | --- |
-| 7 Application | data | App protocols the user/program sees | HTTP, SMTP, FTP, DNS, SIP, [SSH](./15_devops.md#ssh) |
-| 6 Presentation | data | Syntax: encoding, compression, encryption (textbook) | TLS/MIME/ASN.1; JPEG/TIFF as *formats*, not a wire protocol |
-| 5 Session | data | Setup / checkpoint / teardown of a dialog | RPC-style sessions, PPTP tunnels; sockets in TCP/IP |
-| 4 Transport | segment (TCP) / datagram (UDP) | End-to-end delivery, ports, optional reliability | TCP, UDP, QUIC |
-| 3 Network | packet | Addressing and **routing** between networks | IP, ICMP, OSPF. IP does **not** guarantee order, delivery, or uniqueness |
-| 2 Data link | frame | Neighbor delivery on one link; MAC; error detect | Ethernet, Wi-Fi (IEEE 802.11), PPP. IEEE 802 splits **MAC** + **LLC** |
-| 1 Physical | bit / symbol | Signals on a medium | Copper, fiber, radio; 802.15 Bluetooth PHY, DSL, GSM radio |
+| OSI            | PDU                            | Job                                                  | Typical examples                                                         |
+| -------------- | ------------------------------ | ---------------------------------------------------- | ------------------------------------------------------------------------ |
+| 7 Application  | data                           | App protocols the user/program sees                  | HTTP, SMTP, FTP, DNS, SIP, [SSH](./15_devops.md#ssh)                     |
+| 6 Presentation | data                           | Syntax: encoding, compression, encryption (textbook) | TLS/MIME/ASN.1; JPEG/TIFF as _formats_, not a wire protocol              |
+| 5 Session      | data                           | Setup / checkpoint / teardown of a dialog            | RPC-style sessions, PPTP tunnels; sockets in TCP/IP                      |
+| 4 Transport    | segment (TCP) / datagram (UDP) | End-to-end delivery, ports, optional reliability     | TCP, UDP, QUIC                                                           |
+| 3 Network      | packet                         | Addressing and **routing** between networks          | IP, ICMP, OSPF. IP does **not** guarantee order, delivery, or uniqueness |
+| 2 Data link    | frame                          | Neighbor delivery on one link; MAC; error detect     | Ethernet, Wi-Fi (IEEE 802.11), PPP. IEEE 802 splits **MAC** + **LLC**    |
+| 1 Physical     | bit / symbol                   | Signals on a medium                                  | Copper, fiber, radio; 802.15 Bluetooth PHY, DSL, GSM radio               |
 
 interviews and ops still say **L4 load balancer** (IP+port) vs **L7** (HTTP path/headers). The names are OSI even when the stack is TCP/IP. It also maps “where did this break?” (cable vs switch vs routing vs TCP vs TLS vs HTTP).
 
-| TCP/IP | Maps to OSI | Examples |
-| ------ | ----------- | -------- |
-| Application | 5 + 6 + 7 | HTTP, DNS, TLS, WebSocket |
-| Transport | 4 (plus TCP’s graceful close, which OSI puts in session) | TCP, UDP |
-| Internet | 3 | IP, routing |
-| Link / Network Access | 1 + 2 | Ethernet, Wi-Fi |
+| TCP/IP                | Maps to OSI                                              | Examples                  |
+| --------------------- | -------------------------------------------------------- | ------------------------- |
+| Application           | 5 + 6 + 7                                                | HTTP, DNS, TLS, WebSocket |
+| Transport             | 4 (plus TCP’s graceful close, which OSI puts in session) | TCP, UDP                  |
+| Internet              | 3                                                        | IP, routing               |
+| Link / Network Access | 1 + 2                                                    | Ethernet, Wi-Fi           |
 
 RFC 3439 (“Layering considered harmful”) is why real stacks are leaky: TLS sits between HTTP and TCP; HTTP/3 uses **QUIC over UDP**. Do not force every protocol into one OSI box.
 
@@ -70,15 +70,15 @@ Interview: “HTTP is application, TCP transport, IP internet.” Debugging: Wir
 
 #### Common pitfalls
 
-Treating OSI as how browsers are implemented. Calling GraphQL/gRPC “session layer” — they are **application** protocols (RPC is only a *textbook* session example). Assuming IP is reliable. Equating UDP with “no integrity” — UDP still has a checksum; it just does not retransmit or reorder.
+Treating OSI as how browsers are implemented. Calling GraphQL/gRPC “session layer” — they are **application** protocols (RPC is only a _textbook_ session example). Assuming IP is reliable. Equating UDP with “no integrity” — UDP still has a checksum; it just does not retransmit or reorder.
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| Shared vocabulary (L2/L3/L4/L7) | OSI *protocols* never replaced TCP/IP |
-| Clean mental model for encapsulation | Strict 7-layer mapping of TLS/QUIC/RPC is forced |
-| Separates “medium” from “app” | Extra session/presentation layers are often just the app in TCP/IP |
+| +                                    | −                                                                  |
+| ------------------------------------ | ------------------------------------------------------------------ |
+| Shared vocabulary (L2/L3/L4/L7)      | OSI _protocols_ never replaced TCP/IP                              |
+| Clean mental model for encapsulation | Strict 7-layer mapping of TLS/QUIC/RPC is forced                   |
+| Separates “medium” from “app”        | Extra session/presentation layers are often just the app in TCP/IP |
 
 **Examples:**
 
@@ -93,7 +93,7 @@ Browser GET https://example.com
 
 Ethernet payload **MTU** is typically **1500** bytes, not a fixed “1446-byte frame.” TCP MSS on IPv4 Ethernet is often **1460** (1500 − 20 IP − 20 TCP); PPPoE and other headers shrink it further.
 
-**Thoughts:** *OSI is the 7-layer dictionary; TCP/IP is the 4-layer stack the web runs on — HTTP over TCP (or QUIC) over IP over a link.*
+**Thoughts:** _OSI is the 7-layer dictionary; TCP/IP is the 4-layer stack the web runs on — HTTP over TCP (or QUIC) over IP over a link._
 
 **Sources:**
 
@@ -120,22 +120,22 @@ Ethernet payload **MTU** is typically **1500** bytes, not a fixed “1446-byte f
 - **DNS:** `A` → IPv4, `AAAA` → IPv6. Dual-stack **Happy Eyeballs** (RFC 8305) queries both and races connects (IPv6 first, IPv4 fallback) so a broken AAAA does not stall the site.
 - **Privacy:** OSes use **temporary / privacy addresses** (RFC 8981). Do not treat a full 128-bit client address as a stable person ID; correlate at **`/64` or wider** if you must group a network.
 
-| Prefix | Size | Typical use |
-| ------ | ---- | ----------- |
-| `/64` | 1 subnet | Home/LAN subnet (rough IPv4 `/24` analog for “one LAN”) |
-| `/60` | 16 × `/64` | Often ISP to a customer |
-| `/56` | 256 × `/64` | Often ISP to a customer |
-| `/48` | 65 536 × `/64` | Site / organization |
-| `/32` | 65 536 × `/48` | ISP / LIR allocation |
+| Prefix | Size           | Typical use                                             |
+| ------ | -------------- | ------------------------------------------------------- |
+| `/64`  | 1 subnet       | Home/LAN subnet (rough IPv4 `/24` analog for “one LAN”) |
+| `/60`  | 16 × `/64`     | Often ISP to a customer                                 |
+| `/56`  | 256 × `/64`    | Often ISP to a customer                                 |
+| `/48`  | 65 536 × `/64` | Site / organization                                     |
+| `/32`  | 65 536 × `/48` | ISP / LIR allocation                                    |
 
-| Prefix | Purpose |
-| ------ | ------- |
-| `::1/128` | Loopback (`127.0.0.1`) |
+| Prefix                       | Purpose                                                      |
+| ---------------------------- | ------------------------------------------------------------ |
+| `::1/128`                    | Loopback (`127.0.0.1`)                                       |
 | `2001:db8::/32`, `3fff::/20` | Documentation only (RFC 3849, RFC 9637) — not for production |
-| `fe80::/10` | Link-local (one link; not globally routed) |
-| `::ffff:0:0/96` | IPv4-mapped IPv6 (often in DBs / dual-stack sockets) |
-| `2000::/3` | Currently allocated **global unicast** (public Internet) |
-| `fc00::/7` | Unique local (ULA, “private-ish”) |
+| `fe80::/10`                  | Link-local (one link; not globally routed)                   |
+| `::ffff:0:0/96`              | IPv4-mapped IPv6 (often in DBs / dual-stack sockets)         |
+| `2000::/3`                   | Currently allocated **global unicast** (public Internet)     |
+| `fc00::/7`                   | Unique local (ULA, “private-ish”)                            |
 
 **When to use:**
 
@@ -147,12 +147,12 @@ Publishing an AAAA that does not answer (blackhole) — dual-stack users may sti
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| Huge space; one address per host is normal | URLs and logs look noisy; `:` vs port |
-| Less CGNAT: P2P, WebRTC, inbound to a device | Broken AAAA without Happy Eyeballs = timeouts |
-| Unique host vs shared IPv4 hosting/CGNAT blocks | Privacy: don’t log 128 bits as a durable user key |
-| IPv6-only networks (some mobile / developing regions) | Need a global unicast address + working DNS |
+| +                                                     | −                                                 |
+| ----------------------------------------------------- | ------------------------------------------------- |
+| Huge space; one address per host is normal            | URLs and logs look noisy; `:` vs port             |
+| Less CGNAT: P2P, WebRTC, inbound to a device          | Broken AAAA without Happy Eyeballs = timeouts     |
+| Unique host vs shared IPv4 hosting/CGNAT blocks       | Privacy: don’t log 128 bits as a durable user key |
+| IPv6-only networks (some mobile / developing regions) | Need a global unicast address + working DNS       |
 
 **Examples:**
 
@@ -251,13 +251,13 @@ test behind NAT; cap send rate (often ≤ competing TCP); app-level congestion c
 
 TCP — HTML/CSS/JS, files, HTTP/1.1 and HTTP/2, email, anything that must be complete and in order. UDP — DNS, streaming, WebRTC, HTTP/3 (QUIC adds reliability **on UDP**).
 
-| | TCP | UDP |
-| --- | --- | --- |
-| Connection | Handshake, then stream | None |
-| Delivery | Reliable, ordered, no dupes | Best-effort |
-| Congestion control | Yes | No (app or QUIC) |
-| Overhead | Higher (state, ACKs) | Low (8-byte header) |
-| Web | HTTP/1.1, HTTP/2, TLS over TCP | DNS, WebRTC, HTTP/3/QUIC |
+|                    | TCP                            | UDP                      |
+| ------------------ | ------------------------------ | ------------------------ |
+| Connection         | Handshake, then stream         | None                     |
+| Delivery           | Reliable, ordered, no dupes    | Best-effort              |
+| Congestion control | Yes                            | No (app or QUIC)         |
+| Overhead           | Higher (state, ACKs)           | Low (8-byte header)      |
+| Web                | HTTP/1.1, HTTP/2, TLS over TCP | DNS, WebRTC, HTTP/3/QUIC |
 
 #### Common pitfalls
 
@@ -268,22 +268,22 @@ TCP — HTML/CSS/JS, files, HTTP/1.1 and HTTP/2, email, anything that must be co
 
 **Pluses and minuses:**
 
-| + (TCP) | − (TCP) |
-| ---------- | ---------- |
-| Integrity and order | Handshake + ACKs add RTT |
-| Congestion control | Head-of-line blocking per connection (HTTP/2 still TCP HOL) |
+| + (TCP)             | − (TCP)                                                     |
+| ------------------- | ----------------------------------------------------------- |
+| Integrity and order | Handshake + ACKs add RTT                                    |
+| Congestion control  | Head-of-line blocking per connection (HTTP/2 still TCP HOL) |
 
-| + (UDP) | − (UDP) |
-| ---------- | ---------- |
-| Low latency, small header | Loss, reorder, duplicates |
+| + (UDP)                   | − (UDP)                    |
+| ------------------------- | -------------------------- |
+| Low latency, small header | Loss, reorder, duplicates  |
 | Good for real-time / QUIC | NAT/firewall pain; no cwnd |
 
 **Examples:**
 
 ```html
 <!-- Warm DNS+TCP+TLS to a CDN you will actually use (limit count) -->
-<link rel="preconnect" href="https://cdn.example.com" crossorigin>
-<link rel="dns-prefetch" href="https://analytics.example.com">
+<link rel="preconnect" href="https://cdn.example.com" crossorigin />
+<link rel="dns-prefetch" href="https://analytics.example.com" />
 ```
 
 ```
@@ -294,7 +294,7 @@ WebRTC media       → UDP + ICE/STUN/TURN
 
 **Thoughts:**
 
-*TCP trades RTT and ACKs for a reliable ordered stream; UDP is a thin datagram — use it when latency beats completeness, or when QUIC implements reliability on top.*
+_TCP trades RTT and ACKs for a reliable ordered stream; UDP is a thin datagram — use it when latency beats completeness, or when QUIC implements reliability on top._
 
 Layers → [OSI & TCP/IP models](#osi--tcpip-models). TLS after TCP → [SSL/TLS handshake](./6_web_api_http.md#ssltls--https-handshake). Hints → [preload, prefetch, preconnect](./6_web_api_security.md#preload-prefetch-preconnect--prerender) · [HTML resource hints](./1_html_structure.md#link-rel-types--resource-hints). Handshake-only recap → [TCP three-way handshake](./6_web_api_security.md#tcp-three-way-handshake). Sockets / `ss` → [Ports, sockets & network services](#ports-sockets--network-services). Path → [How the Internet works](./6_web_api_core.md#internet).
 
@@ -330,9 +330,9 @@ Layers → [OSI & TCP/IP models](#osi--tcpip-models). TLS after TCP → [SSL/TLS
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| One port → one listening service | Ephemeral client ports clutter `ss` output |
+| +                                            | −                                                |
+| -------------------------------------------- | ------------------------------------------------ |
+| One port → one listening service             | Ephemeral client ports clutter `ss` output       |
 | IANA defaults hide `:80` / `:443` in the URL | Flag names differ (`netstat -p` PID vs protocol) |
 
 **Examples:**
@@ -349,7 +349,7 @@ netstat -an                  # numeric sockets (most OS)
 netstat -p tcp               # macOS/BSD: filter TCP — NOT Linux (-p = PID/program)
 ```
 
-**Thoughts:** *IP finds the host; the port finds the process; `ss`/`netstat` show the sockets the stack currently has.*
+**Thoughts:** _IP finds the host; the port finds the process; `ss`/`netstat` show the sockets the stack currently has._
 
 **Sources:**
 
@@ -380,7 +380,7 @@ GraphQL is a query language and runtime where clients request exactly the fields
 
 **Pluses and minuses:**
 
-| +                                                | −                                            |
+| +                                                   | −                                               |
 | --------------------------------------------------- | ----------------------------------------------- |
 | Client picks fields; one round-trip for nested data | Caching and HTTP semantics are harder than REST |
 | Strong schema / codegen (orval-like for GraphQL)    | N+1 resolvers without DataLoader                |
@@ -390,7 +390,12 @@ GraphQL is a query language and runtime where clients request exactly the fields
 
 ```graphql
 query GetBook($id: ID!) {
-  book(id: $id) { title author { name } }
+  book(id: $id) {
+    title
+    author {
+      name
+    }
+  }
 }
 ```
 
@@ -433,7 +438,7 @@ WebSocket upgrades an HTTP connection to a persistent full-duplex channel for re
 
 **Pluses and minuses:**
 
-| +                       | −                                                                      |
+| +                          | −                                                                         |
 | -------------------------- | ------------------------------------------------------------------------- |
 | Low-latency bidirectional  | Proxies, load balancers, and serverless timeouts fight long-lived sockets |
 | Less overhead than polling | Must handle reconnect, backpressure, auth on the socket                   |
@@ -441,9 +446,9 @@ WebSocket upgrades an HTTP connection to a persistent full-duplex channel for re
 **Examples:**
 
 ```js
-const ws = new WebSocket('wss://chat.example.com');
-ws.binaryType = 'arraybuffer';
-ws.onopen = () => ws.send(JSON.stringify({ type: 'join', room: 'general' }));
+const ws = new WebSocket("wss://chat.example.com");
+ws.binaryType = "arraybuffer";
+ws.onopen = () => ws.send(JSON.stringify({ type: "join", room: "general" }));
 ws.onmessage = (e) => console.log(e.data);
 ws.onclose = (e) => console.log(e.code, e.wasClean);
 ```
@@ -494,16 +499,16 @@ These patterns deliver server updates to clients with different trade-offs betwe
 
 ```js
 // Server-Sent Events
-const es = new EventSource('/api/events');
+const es = new EventSource("/api/events");
 es.onmessage = (e) => console.log(e.data);
-es.addEventListener('bye', (e) => console.log(e.data));
+es.addEventListener("bye", (e) => console.log(e.data));
 // es.close();
 ```
 
 ```js
 // Long polling sketch
 async function subscribe() {
-  const res = await fetch('/subscribe');
+  const res = await fetch("/subscribe");
   if (res.status === 502) return subscribe(); // timeout — reconnect
   if (!res.ok) {
     await new Promise((r) => setTimeout(r, 1000));
@@ -567,7 +572,7 @@ Same stack (HTML, CSS, JS). Organization differs: **MPA** vs **SPA**, then where
 
 **Pluses and minuses:**
 
-| +                            | −                                                 |
+| +                               | −                                                    |
 | ------------------------------- | ---------------------------------------------------- |
 | Simplest to build               | Hundreds/thousands of pages → unmaintainable by hand |
 | Excellent cache/CDN performance | Changing data needs a rebuild or another approach    |
@@ -605,7 +610,7 @@ nginx → GET /about.html → file from disk
 
 **Pluses and minuses:**
 
-| +                                      | −                                                 |
+| +                                         | −                                                    |
 | ----------------------------------------- | ---------------------------------------------------- |
 | Logic stays on the server; smaller client | Full reload — no instant “app” UX                    |
 | Fresh data from DB                        | Scroll position lost; uncached pages wait on network |
@@ -633,11 +638,11 @@ nginx → GET /about.html → file from disk
 
 **Pluses and minuses:**
 
-| +                             | −                                                                       |
+| +                                | −                                                                          |
 | -------------------------------- | -------------------------------------------------------------------------- |
 | Instant in-app transitions       | Harder: tools, bundles, performance                                        |
 | Visual feedback while data loads | Needs JS — disabled JS = blank                                             |
-|                                  | Crawlers prefer static HTML (they *can* run JS now, but static still wins) |
+|                                  | Crawlers prefer static HTML (they _can_ run JS now, but static still wins) |
 
 **Thoughts:** The page stays; JS paints the next screen.
 
@@ -662,7 +667,7 @@ nginx → GET /about.html → file from disk
 
 **Pluses and minuses:**
 
-| +                          | −                             |
+| +                             | −                                |
 | ----------------------------- | -------------------------------- |
 | Simple SPA setup              | First paint blocked on JS        |
 | Fast start if the app is tiny | No JS → nothing                  |
@@ -685,13 +690,13 @@ nginx → GET /about.html → file from disk
 
 **Definition:** The **server** sends already-rendered HTML for the first view so the user can read while the SPA JS downloads and hydrates.
 
-**How it works:** Node (typical) runs the same UI on the server. Next.js (React) / Nuxt (Vue) are the usual starters. Custom SSR is hard (data loading, correct render, infra). Extra server = extra ops.
+**How it works:** Node (typical) runs the same UI on the server. Next.js (React) / Nuxt (Vue) are the usual starters — see [4_react_server.md §8](./4_react_server.md#8-server-rendering--rsc), [4_vue_ssr.md §8](./4_vue_ssr.md#8-ssr--hydration), [4_nuxt_core.md §4](./4_nuxt_core.md#4-rendering-strategies). Custom SSR is hard (data loading, correct render, infra). Extra server = extra ops.
 
 **When to use:** SEO + first paint that must not wait on the bundle. Personalized pages (session) — see Next.js `cookies()` / `force-dynamic`.
 
 **Pluses and minuses:**
 
-| +                                   | −                   |
+| +                                      | −                      |
 | -------------------------------------- | ---------------------- |
 | HTML immediately; better UX and search | Server + infra         |
 | Same app can hydrate into SPA          | DIY SSR is error-prone |
@@ -699,7 +704,7 @@ nginx → GET /about.html → file from disk
 **Examples:**
 
 ```ts
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 ```
 
 **Thoughts:** First bytes are real content, not an empty shell.
@@ -717,7 +722,7 @@ export const dynamic = 'force-dynamic';
 
 ### SSG (Static Site Generation)
 
-**Definition:** Build step turns data + templates into **static HTML files** (an MPA on disk). SSG tools often wrap an SPA framework so you get static files *and* client interactivity.
+**Definition:** Build step turns data + templates into **static HTML files** (an MPA on disk). SSG tools often wrap an SPA framework so you get static files _and_ client interactivity.
 
 **How it works:** Blog posts → HTML pages at build. Doka itself is SSG. **Jamstack** = JavaScript + APIs + Markup (Doka: Markdown as the typical content source). React/etc. “wake up” the page; APIs fetch extra data.
 
@@ -725,7 +730,7 @@ export const dynamic = 'force-dynamic';
 
 **Pluses and minuses:**
 
-| +                 | −                             |
+| +                    | −                                |
 | -------------------- | -------------------------------- |
 | Static + SPA UX      | Frozen until next build (or ISR) |
 | CDN cache, great SEO | Not for per-user dashboards      |
@@ -734,7 +739,7 @@ export const dynamic = 'force-dynamic';
 
 ```ts
 export async function generateStaticParams() {
-  const posts = await fetch('https://example.com/posts').then((r) => r.json());
+  const posts = await fetch("https://example.com/posts").then((r) => r.json());
   return posts.map((post: { slug: string }) => ({ slug: post.slug }));
 }
 ```
@@ -759,14 +764,14 @@ export async function generateStaticParams() {
 | Kind          | Meaning                                                                                                                                                     |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Everyday**  | A site you can pin as an icon; launched in **standalone** (no browser chrome), can work offline, get push, etc. — looks like a native app.                  |
-| **Official**  | A web app that uses **progressive enhancement**: feature-detect Web APIs and, if present, use them for native-class UX. That is why they are *progressive*. |
+| **Official**  | A web app that uses **progressive enhancement**: feature-detect Web APIs and, if present, use them for native-class UX. That is why they are _progressive_. |
 | **Technical** | A site that meets **browser-specific install criteria** (they change). Not one global spec checklist.                                                       |
 
 **How it works — Chromium install (Chrome/Edge/…):** HTTPS or `localhost` + a **web app manifest**. Chromium **used to** also require a Service Worker; that is **not** required for the install prompt anymore. SW is still how you get offline, push, background sync, and intercepting `fetch`. Safari/Firefox typically **do not** show Chromium’s “Install app” UI. Apple calls these **Home Screen Web Apps**, not “PWA.”
 
 Chrome `beforeinstallprompt` ([web.dev](https://web.dev/articles/install-criteria)): not already installed; HTTPS; user engagement (~30s + a tap); manifest with `name` or `short_name`, `start_url`, `icons` (192 + 512), `display` in `fullscreen` / `standalone` / `minimal-ui` / `window-controls-overlay`; `prefer_related_applications` absent or `false`.
 
-**History (short):** Term coined **2015** by Alex Russell and Frances Berriman (*Progressive Web Apps: Escaping Tabs Without Losing Our Soul*). Idea older: Palm webOS, Firefox OS, ChromeOS; Jobs (2007) described web-delivered apps before the App Store. Community PWA logo: Diego Gonzalez (2017 contest).
+**History (short):** Term coined **2015** by Alex Russell and Frances Berriman (_Progressive Web Apps: Escaping Tabs Without Losing Our Soul_). Idea older: Palm webOS, Firefox OS, ChromeOS; Jobs (2007) described web-delivered apps before the App Store. Community PWA logo: Diego Gonzalez (2017 contest).
 
 **When to use:** Layer on any MPA/SPA. Gradual: add manifest first, then SW for offline. Optional: wrap in a thin native shell for Play/App Store.
 
@@ -804,12 +809,12 @@ Chrome `beforeinstallprompt` ([web.dev](https://web.dev/articles/install-criteri
 ```
 
 ```js
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
 }
 ```
 
-**Common pitfalls:** Treating SW as required for *install* (outdated). Expecting Chrome’s install banner in Safari. Caching forever without a versioned SW activate step.
+**Common pitfalls:** Treating SW as required for _install_ (outdated). Expecting Chrome’s install banner in Safari. Caching forever without a versioned SW activate step.
 
 **Thoughts:** PWA = website + optional native capabilities. Install ≠ offline.
 
@@ -839,7 +844,7 @@ Choose by **reload vs JS routing** (MPA/SPA) and **when HTML is built** (CSR/SSR
 
 **When to use:** Bad network: SPA can still change screens from cached JS; MPA waits for the next HTML. SPA can still be slow if the bundle is huge.
 
-**Thoughts:** MPA vs SPA is navigation. CSR/SSR/SSG is *when* HTML exists.
+**Thoughts:** MPA vs SPA is navigation. CSR/SSR/SSG is _when_ HTML exists.
 
 **Sources:**
 

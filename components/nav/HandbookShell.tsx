@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent,
+} from "react";
 import { SearchQueryContext } from "@/components/search";
 import { HANDBOOK_MAIN_ID, HANDBOOK_NAV_ASIDE_ID } from "@/constants";
 import { ContentBreadcrumbs } from "./ContentBreadcrumbs";
@@ -60,6 +67,7 @@ export function HandbookShell({
     mode,
     searchGroups,
     changeQuery,
+    clearQuery,
     changeMode,
     commitSearchLocation,
   } = useHandbookSearch(groups, revealSearchNav);
@@ -76,6 +84,11 @@ export function HandbookShell({
     },
     [changeQuery],
   );
+  const onHomeClick = useCallback(() => {
+    clearQuery();
+    setSearchSheetDismissed(false);
+    dismissNav();
+  }, [clearQuery, dismissNav]);
   const searchValue = useMemo(
     () => ({ query: deferredQuery, mode }),
     [deferredQuery, mode],
@@ -134,6 +147,7 @@ export function HandbookShell({
           <SiteHeader
             query={query}
             onQueryChange={onQueryChange}
+            onHomeClick={onHomeClick}
             mode={mode}
             onModeChange={changeMode}
             chrome={chrome}
@@ -150,7 +164,10 @@ export function HandbookShell({
             onPointerLeave={onPointerLeave}
           />
         </div>
-        <div className="relative flex min-h-0 flex-1" style={{ overflow: "hidden" }}>
+        <div
+          className="relative flex min-h-0 flex-1"
+          style={{ overflow: "hidden" }}
+        >
           <button
             type="button"
             className={
@@ -209,7 +226,11 @@ export function HandbookShell({
           <div
             id={HANDBOOK_MAIN_ID}
             className="relative min-w-0 flex-1"
-            style={{ minHeight: 0, overflow: "auto", overscrollBehavior: "contain" }}
+            style={{
+              minHeight: 0,
+              overflow: "auto",
+              overscrollBehavior: "contain",
+            }}
           >
             <ContentBreadcrumbs groups={groups} chrome={chrome} />
             {children}
@@ -258,9 +279,16 @@ function useDesktopSidebarPeek(collapsed: boolean) {
     }, PEEK_LEAVE_MS);
   }, []);
 
-  return { peeking: collapsed && peeking, onPointerEnter, onPointerLeave, suppressPeek };
+  return {
+    peeking: collapsed && peeking,
+    onPointerEnter,
+    onPointerLeave,
+    suppressPeek,
+  };
 }
 
 function isSidebarDockControl(target: EventTarget | null) {
-  return target instanceof Element && target.closest("[data-sidebar-dock]") !== null;
+  return (
+    target instanceof Element && target.closest("[data-sidebar-dock]") !== null
+  );
 }

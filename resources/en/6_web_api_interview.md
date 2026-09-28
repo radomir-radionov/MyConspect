@@ -6,7 +6,7 @@ Interview Q&A for HTTP and Web APIs.
 
 ### Related docs
 
-* [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
+- [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
 
 ### Sections
 
@@ -31,17 +31,15 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 | OSI vs TCP/IP layers                        | Q&A    |
 | LAN vs Internet / packets / how to inspect  | Q&A    |
 | TCP vs UDP                                  | Q&A    |
-| IPv4 vs IPv6 / AAAA / Happy Eyeballs      | Q&A    |
+| IPv4 vs IPv6 / AAAA / Happy Eyeballs        | Q&A    |
 | URL anatomy (scheme, query, hash)           | Q&A    |
 | What is an API? REST vs SOAP vs RPC (tRPC)  | Q&A    |
 | XML vs HTML vs JSON                         | Q&A    |
 | HTTP methods + idempotency                  | Q&A    |
 | Status codes                                | Q&A    |
-| REST principles                             | Q&A    |
 | REST versioning & pagination                | Q&A    |
 | GET vs POST                                 | Q&A    |
 | What happens on `fetch`                     | Q&A    |
-| REST contract                               | Q&A    |
 | Caching headers                             | Q&A    |
 | CORS                                        | Q&A    |
 | OAuth2 vs OIDC                              | Q&A    |
@@ -105,7 +103,7 @@ HTTP sits at the **application layer** — it assumes TCP (reliable delivery) an
 
 **When to use:** Interview: “What happens when I type a URL?” Answer DNS → TCP → TLS → HTTP, not “packets go to DNS and DNS rewrites them.”
 
-**Thoughts:** *Addressing and NAT differ; the packet model does not.*
+**Thoughts:** _Addressing and NAT differ; the packet model does not._
 
 **Sources:** [How the Internet works](./6_web_api_core.md#internet)
 
@@ -175,7 +173,7 @@ HTTP sits at the **application layer** — it assumes TCP (reliable delivery) an
 | ----- | --------------------------------------------------------------------------- | ------------------------------ | -------------------------------------- |
 | REST  | Communication style: needed data is in the request (URL + HTTP verb + body) | Common, HTTP-native, readable  | Over/under-fetch (BFF helps)           |
 | SOAP  | Structured data-exchange format (XML envelope)                              | Transport-agnostic, structured | Verbose, worse on the client than REST |
-| RPC   | Request holds the action *and* its data (`method` + `params` + `id`)        | Structure, JSON, good batches  | Logic on client; no HTTP cache         |
+| RPC   | Request holds the action _and_ its data (`method` + `params` + `id`)        | Structure, JSON, good batches  | Logic on client; no HTTP cache         |
 | tRPC  | TS procedures inferred from `AppRouter`; query GET / mutation POST          | End-to-end types, no codegen   | TS-to-TS; not a public resource API    |
 
 **When to use:** REST for public CRUD and caching. SOAP for legacy enterprise. JSON-RPC when you want procedure calls / batches. tRPC when client and server share TypeScript.
@@ -193,7 +191,7 @@ HTTP sits at the **application layer** — it assumes TCP (reliable delivery) an
 
 ### XML vs HTML vs JSON?
 
-**Definition:** XML is a markup *syntax* you invent tags for; HTML is a fixed vocabulary for pages; JSON is a typed data format. SOAP *uses* XML; REST usually uses JSON.
+**Definition:** XML is a markup _syntax_ you invent tags for; HTML is a fixed vocabulary for pages; JSON is a typed data format. SOAP _uses_ XML; REST usually uses JSON.
 
 **How it works:** XML needs one root, closed tags, quoted attributes, optional `<?xml …?>` at the top. Namespaces (`xmlns`) split the same local name into different vocabularies. HTML parsers forgive errors; XML and JSON do not.
 
@@ -222,7 +220,7 @@ HTTP sits at the **application layer** — it assumes TCP (reliable delivery) an
 | PUT     | yes        | no   | Full replace                 |
 | DELETE  | yes        | no   | Remove (2nd call may 404)    |
 | POST    | no         | no   | Create, actions              |
-| PATCH   | no*        | no   | Partial update               |
+| PATCH   | no\*       | no   | Partial update               |
 
 PATCH idempotency depends on server implementation. `TRACE` is safe and idempotent (loop-back); `CONNECT` is neither (tunnel). Full list: [HTTP protocol](./6_web_api_http.md#http-protocol).
 
@@ -289,34 +287,6 @@ PATCH idempotency depends on server implementation. `TRACE` is safe and idempote
 </details>
 
 <details>
-  <summary>REST principles?</summary>
-
-### REST principles?
-
-**Definition:** REST is an architectural style for distributed hypermedia systems with six constraints (Fielding).
-
-**How it works:**
-
-| Principle                 | Meaning                                                          |
-| ------------------------- | ---------------------------------------------------------------- |
-| Client–server             | UI and data storage separated                                    |
-| Stateless                 | Each request carries all context (no server session in protocol) |
-| Uniform interface         | URIs identify resources; HTTP verbs; representations (JSON)      |
-| Cacheable                 | Responses may be cached when marked                              |
-| Layered system            | Client may talk through proxies, CDN, gateway                    |
-| Code on demand (optional) | Server may send executable code                                  |
-
-**When to use:** Use **nouns** in paths (`/users/1/orders`), not verbs (`/getOrders`). Return appropriate status codes, not always 200 with `{ error: true }`.
-
-**Thoughts:** HATEOAS (hypermedia links in responses) is rare in practice but is the "R" in REST theory.
-
-**Sources:** [Roy Fielding — REST](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
-
----
-
-</details>
-
-<details>
   <summary>REST versioning & pagination?</summary>
 
 ### REST versioning & pagination?
@@ -353,7 +323,7 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 
 **When to use:** Static assets with hash in filename → `max-age=31536000, immutable`. API user data → `private, no-store` or short `max-age`. App-level cache (RTK Query) is separate — see [HTTP caching](./6_web_api_rest.md#7-http).
 
-**Thoughts:** `max-age` *is freshness;* `no-cache` *means revalidate;* `no-store` *means do not write a cache.*
+**Thoughts:** `max-age` _is freshness;_ `no-cache` _means revalidate;_ `no-store` _means do not write a cache._
 
 **Sources:** [MDN — HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching)
 
@@ -377,7 +347,7 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 
 **When to use:** SPA + API on another origin; curl/Postman have **no** CORS. Full headers and pitfalls → [CORS](./6_web_api_security.md#cors).
 
-**Thoughts:** *The server often still receives the request; the browser hides the response from page JS without matching* `Access-Control-*` *headers.*
+**Thoughts:** _The server often still receives the request; the browser hides the response from page JS without matching_ `Access-Control-*` _headers._
 
 | Pros                                             | Cons                                    |
 | ------------------------------------------------ | --------------------------------------- |
@@ -468,7 +438,7 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 
 ### Rate limiting — what is 429?
 
-**Definition:** **429 Too Many Requests** when client exceeds allowed rate. Server should send `**Retry-After`**.
+**Definition:** **429 Too Many Requests** when client exceeds allowed rate. Server should send `**Retry-After`\*\*.
 
 **How it works:** Counter per IP/API key in Redis or edge proxy. Client backs off exponentially with jitter.
 
@@ -489,7 +459,7 @@ Conditional request: client sends `If-None-Match: "etag"` → server returns **3
 
 ```js
 const ac = new AbortController();
-fetch('/api/search?q=ab', { signal: ac.signal });
+fetch("/api/search?q=ab", { signal: ac.signal });
 ac.abort(); // throws AbortError in catch
 ```
 
@@ -515,9 +485,9 @@ ac.abort(); // throws AbortError in catch
 | **Cacheable**  | Yes (by default)               | No                                |
 | **Example**    | `GET /api/users/1`             | `POST /api/users`                 |
 
-**Thoughts:** *GET = read (bookmarkable, cacheable); POST = write/action (not idempotent by default).*
+**Thoughts:** _GET = read (bookmarkable, cacheable); POST = write/action (not idempotent by default)._
 
-**See also:** [CRUD & REST mapping](./6_web_api_rest.md#2-rest) · [PUT vs POST](./6_web_api_http.md#put-vs-post)
+**See also:** [CRUD & REST mapping](./6_web_api_rest.md#rest-principles-and-contract) · [PUT vs POST](./6_web_api_http.md#put-vs-post)
 
 **Sources:** [MDN — HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
 
@@ -546,38 +516,11 @@ ac.abort(); // throws AbortError in catch
 
 **Frontend ↔ API contract:** Client expects JSON shape; server must match status codes and `Content-Type`.
 
-**Thoughts:** *Network errors reject; HTTP errors don't — always check* `res.ok` *and validate JSON shape.*
+**Thoughts:** _Network errors reject; HTTP errors don't — always check_ `res.ok` _and validate JSON shape._
 
 **See also:** [Fetch API](#fetch-api) · [CORS](./6_web_api_security.md#cors)
 
 **Sources:** [MDN — Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
-
----
-
-</details>
-
-<details>
-  <summary>What is a REST contract?</summary>
-
-### What is a REST contract?
-
-**Definition:** A **REST contract** is the agreed specification between client and server — URLs, HTTP methods, request/response shapes, status codes, and error formats.
-
-**How it works:**
-
-| Layer           | Tool                                                                     |
-| --------------- | ------------------------------------------------------------------------ |
-| Documentation   | OpenAPI (Swagger) spec                                                   |
-| Shared types    | TypeScript interfaces generated from OpenAPI (orval, openapi-typescript) |
-| Validation      | Zod schemas at runtime boundary                                          |
-| Versioning      | `/v2/` path or `Accept` header                                           |
-| Breaking change | Removing field, changing type, renaming endpoint                         |
-
-**When to use:** Frontend and backend teams agree on `UserDto` before implementation. Codegen keeps types in sync.
-
-**Thoughts:** *Contract = API is a product — version it, document it, validate at boundaries.*
-
-**See also:** [REST & RESTful API principles](./6_web_api_rest.md#2-rest)
 
 ---
 
@@ -658,7 +601,7 @@ ac.abort(); // throws AbortError in catch
 
 **Cons:** no big PWA catalog; fragmented APIs; iOS WebKit in every browser.
 
-**Thoughts:** Install/offline are not mandatory for the *official* definition. See [PWA](./6_web_api_apps.md#pwa-progressive-web-app).
+**Thoughts:** Install/offline are not mandatory for the _official_ definition. See [PWA](./6_web_api_apps.md#pwa-progressive-web-app).
 
 **Sources:** [Doka — PWA](https://doka.guide/tools/pwa/) · [web.dev — install criteria](https://web.dev/articles/install-criteria)
 
@@ -705,7 +648,7 @@ ac.abort(); // throws AbortError in catch
 
 ### INP vs FID?
 
-**Definition:** **INP** is the Core Web Vital for responsiveness (since **12 Mar 2024**). **FID** only measured the **first** interaction’s wait until the handler *started* (not handler work or next paint).
+**Definition:** **INP** is the Core Web Vital for responsiveness (since **12 Mar 2024**). **FID** only measured the **first** interaction’s wait until the handler _started_ (not handler work or next paint).
 
 **How it works:** INP = click/tap/key → next paint for (almost) the worst interaction on the visit (one outlier dropped per 50). Phases: input delay + processing + presentation. Good ≤ 200 ms p75; poor > 500 ms. Lighthouse without a user reports **TBT**, not INP.
 
@@ -890,5 +833,3 @@ May serve from cache without revalidation for 3600 seconds; shared caches (CDN) 
 ---
 
 </details>
-
-

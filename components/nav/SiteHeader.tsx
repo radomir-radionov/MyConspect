@@ -4,7 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HANDBOOK_HEADER_ID, HANDBOOK_SIDEBAR_ID } from "@/constants";
 import { type ChromeCopy, type SearchMode } from "@/lib/nav";
-import { homeHref, instructionsHref, localeFromPathname } from "@/lib/i18n/paths";
+import {
+  homeHref,
+  instructionsHref,
+  localeFromPathname,
+} from "@/lib/i18n/paths";
 import { SITE_NAME } from "@/lib/site";
 import { ContactLinks } from "./ContactLinks";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -14,6 +18,7 @@ import { ThemeToggle } from "./ThemeToggle";
 export function SiteHeader({
   query,
   onQueryChange,
+  onHomeClick,
   mode,
   onModeChange,
   chrome,
@@ -22,6 +27,7 @@ export function SiteHeader({
 }: {
   query: string;
   onQueryChange: (value: string) => void;
+  onHomeClick: () => void;
   mode: SearchMode;
   onModeChange: (mode: SearchMode) => void;
   chrome: ChromeCopy;
@@ -38,6 +44,7 @@ export function SiteHeader({
           <div className="sticky left-0 z-10 flex shrink-0 items-center bg-white pl-(--chrome-inline) pr-1 sm:pr-2 dark:bg-zinc-950">
             <Link
               href={homeHref(locale)}
+              onClick={onHomeClick}
               className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md px-1.5 text-zinc-900 hover:bg-zinc-100 dark:text-zinc-50 dark:hover:bg-zinc-800"
             >
               <SiteMark />
@@ -53,81 +60,99 @@ export function SiteHeader({
           </div>
           <div className="flex min-w-0 flex-1 items-center px-1.5 sm:px-3">
             <div className="relative w-full min-w-0 max-w-2xl">
-            <label className="block min-w-0">
-              <span className="sr-only">
-                {mode === "notes" ? chrome.searchNotesPlaceholder : chrome.searchPlaceholder}
-              </span>
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400"
-              >
-                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.75" />
-                <path
-                  d="M16 16l4 4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <input
-                type="search"
-                value={query}
-                onChange={(event) => onQueryChange(event.target.value)}
-                placeholder={
-                  mode === "notes" ? chrome.searchNotesPlaceholder : chrome.searchPlaceholder
-                }
-                className={
-                  query.length > 0
-                    ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[6.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[9.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
-                    : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[4.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[7.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
-                }
-              />
-            </label>
-            <div className="absolute inset-y-0 right-1 flex items-center gap-0.5">
-              {query.length > 0 ? (
-                <button
-                  type="button"
-                  aria-label={chrome.clearSearch}
-                  title={chrome.clearSearch}
-                  onClick={() => onQueryChange("")}
-                  className="inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+              <label className="block min-w-0">
+                <span className="sr-only">
+                  {mode === "notes"
+                    ? chrome.searchNotesPlaceholder
+                    : chrome.searchPlaceholder}
+                </span>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400"
                 >
-                  <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4">
-                    <path
-                      d="M6 6l12 12M18 6L6 18"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.75"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </button>
-              ) : null}
-              <div
-                role="radiogroup"
-                aria-label={chrome.searchMode}
-                className="flex h-7 shrink-0 rounded-md bg-zinc-100 p-0.5 dark:bg-zinc-800"
-              >
-                <SearchModeButton
-                  checked={mode === "titles"}
-                  label={chrome.searchModeTitles}
-                  value="titles"
-                  onSelect={onModeChange}
+                  <circle
+                    cx="11"
+                    cy="11"
+                    r="6.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                  />
+                  <path
+                    d="M16 16l4 4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(event) => onQueryChange(event.target.value)}
+                  placeholder={
+                    mode === "notes"
+                      ? chrome.searchNotesPlaceholder
+                      : chrome.searchPlaceholder
+                  }
+                  className={
+                    query.length > 0
+                      ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[6.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[9.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                      : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[4.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[7.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                  }
                 />
-                <SearchModeButton
-                  checked={mode === "notes"}
-                  label={chrome.searchModeNotes}
-                  value="notes"
-                  onSelect={onModeChange}
-                />
+              </label>
+              <div className="absolute inset-y-0 right-1 flex items-center gap-0.5">
+                {query.length > 0 ? (
+                  <button
+                    type="button"
+                    aria-label={chrome.clearSearch}
+                    title={chrome.clearSearch}
+                    onClick={() => onQueryChange("")}
+                    className="inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      className="size-4"
+                    >
+                      <path
+                        d="M6 6l12 12M18 6L6 18"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </button>
+                ) : null}
+                <div
+                  role="radiogroup"
+                  aria-label={chrome.searchMode}
+                  className="flex h-7 shrink-0 rounded-md bg-zinc-100 p-0.5 dark:bg-zinc-800"
+                >
+                  <SearchModeButton
+                    checked={mode === "titles"}
+                    label={chrome.searchModeTitles}
+                    value="titles"
+                    onSelect={onModeChange}
+                  />
+                  <SearchModeButton
+                    checked={mode === "notes"}
+                    label={chrome.searchModeNotes}
+                    value="notes"
+                    onSelect={onModeChange}
+                  />
+                </div>
               </div>
-            </div>
             </div>
           </div>
           <div className="sticky right-0 z-10 hidden shrink-0 items-center gap-0.5 bg-white pr-(--chrome-inline) pl-2 md:flex dark:bg-zinc-950">
-            <span aria-hidden="true" className="mr-1 h-6 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800" />
+            <span
+              aria-hidden="true"
+              className="mr-1 h-6 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800"
+            />
             <LanguageSwitcher locale={locale} />
             <ThemeToggle />
           </div>
@@ -143,7 +168,9 @@ export function SiteHeader({
               aria-controls={HANDBOOK_SIDEBAR_ID}
               onClick={onToggleNav}
             >
-              <span className="sr-only">{navOpen ? chrome.closeMenu : chrome.openMenu}</span>
+              <span className="sr-only">
+                {navOpen ? chrome.closeMenu : chrome.openMenu}
+              </span>
               <MenuGlyph open={navOpen} />
             </button>
           </div>
@@ -198,7 +225,9 @@ export function DrawerFooter({
           className="pr-1 text-right text-[11px] leading-tight text-zinc-500 dark:text-zinc-400"
         >
           <span className="block">{chrome.lastUpdated}</span>
-          <span className="tabular-nums text-zinc-600 dark:text-zinc-300">{lastUpdatedLabel}</span>
+          <span className="tabular-nums text-zinc-600 dark:text-zinc-300">
+            {lastUpdatedLabel}
+          </span>
         </time>
       </div>
     </div>
@@ -276,7 +305,11 @@ function SearchModeIcon({ mode }: { mode: SearchMode }) {
   switch (mode) {
     case "titles":
       return (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="size-3.5 sm:hidden">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          className="size-3.5 sm:hidden"
+        >
           <path
             d="M5 7h14M5 12h14M5 17h9"
             fill="none"
@@ -288,7 +321,11 @@ function SearchModeIcon({ mode }: { mode: SearchMode }) {
       );
     case "notes":
       return (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="size-3.5 sm:hidden">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          className="size-3.5 sm:hidden"
+        >
           <path
             d="M7 4.5h7.5L18 8v11.5H7z"
             fill="none"

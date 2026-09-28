@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import Link from "next/link";
 import { HighlightedText } from "@/components/search";
 import { isInterviewTopic } from "@/lib/catalog";
@@ -18,7 +18,13 @@ import {
 } from "@/lib/nav";
 import { NavChevron, NavFold } from "./NavFold";
 import { NavGuide } from "./NavGuide";
-import { applySameDocumentHref, followHandbookHref, queueHandbookHref, replacePathHash, setHashOnPath } from "./hash";
+import {
+  applySameDocumentHref,
+  followHandbookHref,
+  queueHandbookHref,
+  replacePathHash,
+  setHashOnPath,
+} from "./hash";
 import { clusterKey, isActiveHref } from "./location";
 import {
   closeNavSoon,
@@ -43,7 +49,10 @@ function RowTitle({
   return (
     <span className="flex min-w-0 flex-1 items-center">
       {marker ? (
-        <span aria-hidden="true" className="mr-1.5 w-3 shrink-0 text-center text-zinc-500 dark:text-zinc-400">
+        <span
+          aria-hidden="true"
+          className="mr-1.5 w-3 shrink-0 text-center text-zinc-500 dark:text-zinc-400"
+        >
           {open ? "−" : "+"}
         </span>
       ) : null}
@@ -56,10 +65,17 @@ function sameTitle(left: string, right: string): boolean {
   return left.trim().toLowerCase() === right.trim().toLowerCase();
 }
 
-function isDuplicateConceptTitle(topicTitle: string, conceptTitle: string): boolean {
+function isDuplicateConceptTitle(
+  topicTitle: string,
+  conceptTitle: string,
+): boolean {
   const topic = topicTitle.trim().toLowerCase();
   const concept = conceptTitle.trim().toLowerCase();
-  return topic === concept || concept.startsWith(`${topic} `) || topic.startsWith(`${concept} `);
+  return (
+    topic === concept ||
+    concept.startsWith(`${topic} `) ||
+    topic.startsWith(`${concept} `)
+  );
 }
 
 function visibleConcepts(topic: NavTopic, query: string, mode: SearchMode) {
@@ -67,10 +83,16 @@ function visibleConcepts(topic: NavTopic, query: string, mode: SearchMode) {
   const matched =
     needle.length === 0
       ? topic.concepts
-      : topic.concepts.filter((concept) => conceptMatchesQuery(concept, needle, mode));
+      : topic.concepts.filter((concept) =>
+          conceptMatchesQuery(concept, needle, mode),
+        );
   const only = matched.length === 1 ? matched[0] : undefined;
   if (only && isDuplicateConceptTitle(topic.title, only.title)) {
-    if (mode === "notes" && needle.length > 0 && conceptBodySnippet(only, query, mode)) {
+    if (
+      mode === "notes" &&
+      needle.length > 0 &&
+      conceptBodySnippet(only, query, mode)
+    ) {
       return matched;
     }
     return [];
@@ -112,7 +134,11 @@ export const ConceptLink = memo(function ConceptLink({
           return;
         }
         closeNavSoon(onNavigate);
-        followHandbookHref(conceptHref(topicHref, concept.id), pathname, goToPath);
+        followHandbookHref(
+          conceptHref(topicHref, concept.id),
+          pathname,
+          goToPath,
+        );
       }}
       className={
         conceptActive
@@ -152,7 +178,8 @@ function ConceptItems({
     <>
       {concepts.map((concept, index) => {
         const conceptActive = concept.id === activeConceptId;
-        const isFirstConcept = first?.pathname === topic.href && first.hash === `#${concept.id}`;
+        const isFirstConcept =
+          first?.pathname === topic.href && first.hash === `#${concept.id}`;
         const onPath = conceptActive && !searching;
         return (
           <li key={concept.id} className="contents">
@@ -178,9 +205,14 @@ const INTERVIEW_SECTION_LABELS: Record<InterviewSection, string> = {
 };
 
 function interviewSectionGroups(concepts: readonly NavConcept[]) {
-  const questions = concepts.filter((concept) => concept.interviewSection === "questions");
-  const tasks = concepts.filter((concept) => concept.interviewSection === "tasks");
-  const groups: Array<{ section: InterviewSection; concepts: NavConcept[] }> = [];
+  const questions = concepts.filter(
+    (concept) => concept.interviewSection === "questions",
+  );
+  const tasks = concepts.filter(
+    (concept) => concept.interviewSection === "tasks",
+  );
+  const groups: Array<{ section: InterviewSection; concepts: NavConcept[] }> =
+    [];
   if (questions.length > 0) {
     groups.push({ section: "questions", concepts: [...questions] });
   }
@@ -200,25 +232,27 @@ function InterviewSectionNav({
   const { pathname, searching, query } = useSidebarChrome();
   const { activeConceptId } = useSidebarActive();
   const groups = useMemo(() => interviewSectionGroups(concepts), [concepts]);
-  const activeSection = concepts.find((concept) => concept.id === activeConceptId)?.interviewSection;
+  const activeSection = concepts.find(
+    (concept) => concept.id === activeConceptId,
+  )?.interviewSection;
   const onTopic = !searching && isActiveHref(pathname, topic.href);
-  const [openSections, setOpenSections] = useState<ReadonlySet<InterviewSection>>(
-    () => new Set(["questions"]),
-  );
+  const [openSections, setOpenSections] = useState<
+    ReadonlySet<InterviewSection>
+  >(() => new Set(["questions"]));
+  const [trackedActiveSection, setTrackedActiveSection] = useState<
+    InterviewSection | undefined
+  >();
 
-  useEffect(() => {
-    if (!activeSection) {
-      return;
+  if (activeSection && activeSection !== trackedActiveSection) {
+    setTrackedActiveSection(activeSection);
+    if (!openSections.has(activeSection)) {
+      setOpenSections((current) => {
+        const next = new Set(current);
+        next.add(activeSection);
+        return next;
+      });
     }
-    setOpenSections((current) => {
-      if (current.has(activeSection)) {
-        return current;
-      }
-      const next = new Set(current);
-      next.add(activeSection);
-      return next;
-    });
-  }, [activeSection, activeConceptId]);
+  }
 
   return (
     <>
@@ -261,9 +295,17 @@ function InterviewSectionNav({
                 open={sectionOpen}
               />
             </button>
-            <NavFold open={sectionOpen} instant={searching || !sectionOpen} unbox>
+            <NavFold
+              open={sectionOpen}
+              instant={searching || !sectionOpen}
+              unbox
+            >
               <ul className="contents">
-                <ConceptItems topic={topic} concepts={group.concepts} indentClass="pl-8" />
+                <ConceptItems
+                  topic={topic}
+                  concepts={group.concepts}
+                  indentClass="pl-8"
+                />
               </ul>
             </NavFold>
           </li>
@@ -283,17 +325,33 @@ function TopicConceptNav({
   indentClass?: string;
 }) {
   if (!isInterviewTopic(topic)) {
-    return <ConceptItems topic={topic} concepts={concepts} indentClass={indentClass} />;
+    return (
+      <ConceptItems
+        topic={topic}
+        concepts={concepts}
+        indentClass={indentClass}
+      />
+    );
   }
   const regular = concepts.filter((concept) => !concept.interviewSection);
   const grouped = concepts.filter((concept) => concept.interviewSection);
   if (grouped.length === 0) {
-    return <ConceptItems topic={topic} concepts={concepts} indentClass={indentClass} />;
+    return (
+      <ConceptItems
+        topic={topic}
+        concepts={concepts}
+        indentClass={indentClass}
+      />
+    );
   }
   return (
     <>
       {regular.length > 0 ? (
-        <ConceptItems topic={topic} concepts={regular} indentClass={indentClass} />
+        <ConceptItems
+          topic={topic}
+          concepts={regular}
+          indentClass={indentClass}
+        />
       ) : null}
       <InterviewSectionNav topic={topic} concepts={grouped} />
     </>
@@ -313,7 +371,8 @@ export function TopicRow({
   navKind?: "cluster" | "topic";
   navId?: string;
 }) {
-  const { query, mode, pathname, searching, first, pinNav, onNavigate } = useSidebarChrome();
+  const { query, mode, pathname, searching, first, pinNav, onNavigate } =
+    useSidebarChrome();
   const { openTopicHref, setOpenTopicHref } = useSidebarFold();
   const active = isActiveHref(pathname, topic.href);
   const isHitTopic = first?.pathname === topic.href;
@@ -335,7 +394,13 @@ export function TopicRow({
     if (concepts.length === 0) {
       return null;
     }
-    return <TopicConceptNav topic={topic} concepts={concepts} indentClass={conceptIndent} />;
+    return (
+      <TopicConceptNav
+        topic={topic}
+        concepts={concepts}
+        indentClass={conceptIndent}
+      />
+    );
   }
 
   return (
@@ -359,7 +424,9 @@ export function TopicRow({
               return;
             }
             if (!searching && hasConcepts) {
-              setOpenTopicHref((current) => (current === topic.href ? null : topic.href));
+              setOpenTopicHref((current) =>
+                current === topic.href ? null : topic.href,
+              );
             }
             if (!hasConcepts) {
               closeNavSoon(onNavigate);
@@ -376,14 +443,33 @@ export function TopicRow({
         aria-expanded={hasConcepts ? topicOpen : undefined}
         className={`${rowClass(isHitTopic || active || topicOpen, onPath, indent)} ${NAV_ROW_GAP}`}
       >
-        <RowTitle text={topic.title} query={query} marker={compact && hasConcepts} open={topicOpen} />
+        <RowTitle
+          text={topic.title}
+          query={query}
+          marker={compact && hasConcepts}
+          open={topicOpen}
+        />
         {hasConcepts ? (
-          compact ? (topicOpen ? <NavChevron open /> : null) : <NavChevron open={topicOpen} large />
+          compact ? (
+            topicOpen ? (
+              <NavChevron open />
+            ) : null
+          ) : (
+            <NavChevron open={topicOpen} large />
+          )
         ) : null}
       </Link>
-      <NavFold open={topicOpen && hasConcepts} instant={searching || !topicOpen} unbox>
+      <NavFold
+        open={topicOpen && hasConcepts}
+        instant={searching || !topicOpen}
+        unbox
+      >
         <ul className="contents">
-          <TopicConceptNav topic={topic} concepts={concepts} indentClass={conceptIndent} />
+          <TopicConceptNav
+            topic={topic}
+            concepts={concepts}
+            indentClass={conceptIndent}
+          />
         </ul>
       </NavFold>
     </li>
@@ -417,9 +503,11 @@ export function ClusterRow({
   const clusterOpen = searching || openClusterKey === key;
   const onHub = pathname === subjectPath;
   const active = onHub && activeConceptId === cluster.id;
-  const isHitCluster = first?.pathname === subjectPath && first.hash === `#${cluster.id}`;
+  const isHitCluster =
+    first?.pathname === subjectPath && first.hash === `#${cluster.id}`;
   const onPath =
-    !searching && (active || cluster.topics.some((topic) => topic.href === pathname));
+    !searching &&
+    (active || cluster.topics.some((topic) => topic.href === pathname));
   const pinInParent = onPath && !clusterOpen;
   const stickHeader = onPath && !pinInParent;
 
@@ -461,13 +549,24 @@ export function ClusterRow({
           pinInParent ? " sticky bg-white dark:bg-[var(--chrome-surface)]" : ""
         } ${NAV_ROW_GAP}`}
       >
-        <RowTitle text={cluster.title} query={query} marker open={clusterOpen} />
+        <RowTitle
+          text={cluster.title}
+          query={query}
+          marker
+          open={clusterOpen}
+        />
         {clusterOpen ? <NavChevron open /> : null}
       </Link>
       <NavFold open={clusterOpen} instant={searching || !clusterOpen} unbox>
         <ul className="contents">
           {cluster.topics.map((topic) => (
-            <TopicRow key={topic.slug} topic={topic} compact navKind="topic" navId={topic.slug} />
+            <TopicRow
+              key={topic.slug}
+              topic={topic}
+              compact
+              navKind="topic"
+              navId={topic.slug}
+            />
           ))}
         </ul>
       </NavFold>
@@ -495,7 +594,9 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
           if (pathname === subject.href) {
             event.preventDefault();
             if (!searching) {
-              setOpenSubjectHref((current) => (current === subject.href ? null : subject.href));
+              setOpenSubjectHref((current) =>
+                current === subject.href ? null : subject.href,
+              );
             }
             return;
           }
@@ -513,7 +614,11 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
         <ul className="contents">
           <NavGuide level="subject" />
           {subject.clusters.map((cluster) => (
-            <ClusterRow key={cluster.id} subjectHref={subject.href} cluster={cluster} />
+            <ClusterRow
+              key={cluster.id}
+              subjectHref={subject.href}
+              cluster={cluster}
+            />
           ))}
         </ul>
       </NavFold>

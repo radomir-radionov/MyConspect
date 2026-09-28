@@ -4,7 +4,7 @@ AAA, the test pyramid, doubles, and Jest.
 
 ### Related docs
 
-* [Computer science](./7_special_cs.md) · [Architecture patterns](./7_special_architecture.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [Design patterns](./7_special_patterns.md) · [SDLC](./7_special_sdlc.md) · [Testing](./7_special_testing.md) · [Web security](./7_special_security.md) · [Interview leftovers](./7_special_interview.md) · [Cache vs memoization](./0_system_design_data.md#cache-vs-memoization)
+- [Computer science](./7_special_cs.md) · [Architecture patterns](./7_special_architecture.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [Design patterns](./7_special_patterns.md) · [SDLC](./7_special_sdlc.md) · [Testing](./7_special_testing.md) · [Web security](./7_special_security.md) · [Interview leftovers](./7_special_interview.md) · [Cache vs memoization](./0_system_design_data.md#cache-vs-memoization)
 
 ### Sections
 
@@ -20,12 +20,13 @@ AAA, the test pyramid, doubles, and Jest.
   <summary>Tests and AAA</summary>
 
 ### Tests and AAA
+
 **Definition:** A test is code that checks assumptions about other code. Tests make new code cleaner (you design the public API and edge cases first) and make old code safer to change (failures catch regressions before production).
 
 **How it works:**
 
 - Primitive check: call the unit, compare with an expected value (`console.assert`). That lacks a description, readable matchers, and auto-rerun on change — runners exist for that.
-- Frontend runners: **Jest** (common default), **Vitest** (Jest-like API, Vite-native). Pick the runner for the layer: unit → Jest/Vitest; components / integration → RTL; E2E → Playwright / Cypress / WebdriverIO. Setup: [Jest — first tests](#jest--first-tests-node-vs-jsdom). Layers: [Integration](#integration-testing) · [E2E](#e2e-testing).
+- Frontend runners: **Jest** (common default), **Vitest** (Jest-like API, Vite-native). Pick the runner for the layer: unit → Jest/Vitest; components / integration → RTL; E2E → Playwright / Cypress / WebdriverIO. Vue: [Vue Test Utils](./4_vue_ecosystem.md#testing) · Nuxt: [@nuxt/test-utils](./4_nuxt_platform.md#nuxt-test-utils). Setup: [Jest — first tests](#jest--first-tests-node-vs-jsdom). Layers: [Integration](#integration-testing) · [E2E](#e2e-testing).
 - Anatomy is **AAA** (Arrange / Act / Assert) — Russian mnemonic **ПВП**: подготовка, выполнение, проверка.
   - **Arrange** — inputs, expected value, fakes/doubles.
   - **Act** — run the scenario (one call or user flow).
@@ -46,13 +47,13 @@ Default for production code. Skip or defer for throwaway prototypes and projects
 
 **Pluses and minuses:**
 
-| + | − |
-|---|---|
-| Forces edge cases, not only the happy path | More time on a young project |
+| +                                                         | −                                                                                         |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Forces edge cases, not only the happy path                | More time on a young project                                                              |
 | Fewer regressions when adding features or sharing helpers | Need structure for fixtures and doubles ([Test doubles](#test-doubles-stubs-mocks-spies)) |
-| Confidence to refactor (including `==` vs `=` bugs) | CI must run the suite and block bad merges |
-| Catch breaking dependency upgrades | Designing fakes is an architecture skill |
-| Living docs that cannot silently rot (unlike comments) | |
+| Confidence to refactor (including `==` vs `=` bugs)       | CI must run the suite and block bad merges                                                |
+| Catch breaking dependency upgrades                        | Designing fakes is an architecture skill                                                  |
+| Living docs that cannot silently rot (unlike comments)    |                                                                                           |
 
 **Examples:**
 
@@ -69,8 +70,8 @@ function testAdd() {
 }
 
 // AAA — Arrange args/expected, Act call, Assert matcher
-describe('When given 2 numbers', () => {
-  it('returns the sum of those 2 numbers', () => {
+describe("When given 2 numbers", () => {
+  it("returns the sum of those 2 numbers", () => {
     const expected = 15;
     const result = add(10, 5);
     expect(result).toEqual(expected);
@@ -109,12 +110,12 @@ flowchart TB
   unit --> integration --> e2e
 ```
 
-| Layer | Scope | Speed | Cost |
-|-------|-------|-------|------|
-| **Unit** | One function/module; other deps replaced with doubles | Fast, parallel-safe | Low |
-| **Integration** | Two+ parts of one job — **result** of collaboration, not call order | Medium | Medium |
-| **E2E** (system) | App as a user: click, fill, assert | Slow | High |
-| **Acceptance** | Spec / TZ scenarios before ship; often **manual** | Slowest | High |
+| Layer            | Scope                                                               | Speed               | Cost   |
+| ---------------- | ------------------------------------------------------------------- | ------------------- | ------ |
+| **Unit**         | One function/module; other deps replaced with doubles               | Fast, parallel-safe | Low    |
+| **Integration**  | Two+ parts of one job — **result** of collaboration, not call order | Medium              | Medium |
+| **E2E** (system) | App as a user: click, fill, assert                                  | Slow                | High   |
+| **Acceptance**   | Spec / TZ scenarios before ship; often **manual**                   | Slowest             | High   |
 
 **How it works:**
 
@@ -127,9 +128,9 @@ flowchart TB
 
 **Pluses and minuses:**
 
-| + (pyramid shape) | − |
-|----------------------|------|
-| Fast CI feedback | E2E-only gives slow, flaky suite |
+| + (pyramid shape)         | −                                              |
+| ------------------------- | ---------------------------------------------- |
+| Fast CI feedback          | E2E-only gives slow, flaky suite               |
 | Cheap maintenance at base | Under-testing integration misses contract bugs |
 
 **Thoughts:**
@@ -151,16 +152,16 @@ Contract tests between services sit between integration and E2E. Snapshot tests 
 
 Unit tests isolate one unit (often with doubles). Integration tests keep real seams between a **group** of units. You still stub far edges (payment vendor, email, another team's service) so the suite stays deterministic.
 
-| Approach | How | When |
-|----------|-----|------|
-| **Big bang** | Wire all modules, then run scenarios | Small systems; fast to write, slow to localize failures |
-| **Incremental** | Integrate closest modules first (bottom-up or top-down) | Default — a failing test points at a smaller group |
+| Approach        | How                                                     | When                                                    |
+| --------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| **Big bang**    | Wire all modules, then run scenarios                    | Small systems; fast to write, slow to localize failures |
+| **Incremental** | Integrate closest modules first (bottom-up or top-down) | Default — a failing test points at a smaller group      |
 
-a **stub** is called *by* the group (fake neighbor on the “output” side). A **driver** *calls* the group (test harness, HTTP client, RTL `userEvent` on the “input” side). Same idea as Jest [stubs/mocks](#test-doubles-stubs-mocks-spies), but named for assembling clusters, not a single function.
+a **stub** is called _by_ the group (fake neighbor on the “output” side). A **driver** _calls_ the group (test harness, HTTP client, RTL `userEvent` on the “input” side). Same idea as Jest [stubs/mocks](#test-doubles-stubs-mocks-spies), but named for assembling clusters, not a single function.
 
 Prioritize **critical features** (checkout, auth, money, permissions). Fixtures: only fields the scenario needs. Automate in CI next to units; keep the real browser for [E2E](#e2e-testing).
 
-[Testing Library](https://testing-library.com/) — user-visible queries; unit *and* integration; no shallow render. **Enzyme** is historical (shallow render, last aimed at React 16) — do not start new suites on it. Runners: Jest / Vitest. Network: MSW. Backend: test DB + HTTP against the app.
+[Testing Library](https://testing-library.com/) — user-visible queries; unit _and_ integration; no shallow render. **Enzyme** is historical (shallow render, last aimed at React 16) — do not start new suites on it. Runners: Jest / Vitest. Network: MSW. Backend: test DB + HTTP against the app.
 
 **When to use:**
 
@@ -172,24 +173,24 @@ Calling a jsdom RTL test “E2E”. Hitting production APIs. Huge JSON fixtures.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Catches wiring bugs units miss | Slower than units; needs fixtures |
-| Still cheaper/stabler than full E2E | Too many real deps → flaky “mini-E2E” |
-| Good CI default for critical paths | Big-bang suites hide the broken module |
+| +                                   | −                                      |
+| ----------------------------------- | -------------------------------------- |
+| Catches wiring bugs units miss      | Slower than units; needs fixtures      |
+| Still cheaper/stabler than full E2E | Too many real deps → flaky “mini-E2E”  |
+| Good CI default for critical paths  | Big-bang suites hide the broken module |
 
 **Examples:**
 
 ```tsx
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { LoginForm } from './LoginForm';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { LoginForm } from "./LoginForm";
 
-test('submit shows welcome after a successful sign-in', async () => {
+test("submit shows welcome after a successful sign-in", async () => {
   const user = userEvent.setup();
   render(<LoginForm />);
-  await user.type(screen.getByLabelText(/email/i), 'ada@example.com');
-  await user.click(screen.getByRole('button', { name: /sign in/i }));
+  await user.type(screen.getByLabelText(/email/i), "ada@example.com");
+  await user.click(screen.getByRole("button", { name: /sign in/i }));
   expect(await screen.findByText(/welcome/i)).toBeInTheDocument();
 });
 ```
@@ -217,12 +218,12 @@ RTL does not shallow-render: mock I/O at the boundary (MSW/`fetch`), not child c
 
 After units + integration, remaining risk is “does the assembled system behave for a user / under load / under attack?” Split by **purpose**:
 
-| Kind | Question |
-|------|----------|
-| **[E2E](#e2e-testing)** | Can a user complete a flow in a real browser? |
-| **[Screenshot / visual](#screenshot-testing)** | Did the UI pixels regress? |
-| **[Performance](#performance-testing)** | Did we get slower (Web Vitals / lab budget)? |
-| **[Security tests](#security-testing)** | Can we inject, steal cookies, or call APIs unsafely? |
+| Kind                                           | Question                                             |
+| ---------------------------------------------- | ---------------------------------------------------- |
+| **[E2E](#e2e-testing)**                        | Can a user complete a flow in a real browser?        |
+| **[Screenshot / visual](#screenshot-testing)** | Did the UI pixels regress?                           |
+| **[Performance](#performance-testing)**        | Did we get slower (Web Vitals / lab budget)?         |
+| **[Security tests](#security-testing)**        | Can we inject, steal cookies, or call APIs unsafely? |
 
 Automate and run in CI — usually a **separate job** (slow, browsers, secrets). See [CI](./10_build_ci.md#continuous-integration-ci).
 
@@ -230,9 +231,9 @@ Automate and run in CI — usually a **separate job** (slow, browsers, secrets).
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Highest confidence the product works | Slow, flaky, expensive to maintain |
+| +                                     | −                                            |
+| ------------------------------------- | -------------------------------------------- |
+| Highest confidence the product works  | Slow, flaky, expensive to maintain           |
 | Finds env/config bugs units never see | Overuse inverts the [pyramid](#test-pyramid) |
 
 **Thoughts:** System tests answer “the app as a whole” — pick the subtype that matches the risk (flow, look, speed, attack).
@@ -256,11 +257,11 @@ Automate and run in CI — usually a **separate job** (slow, browsers, secrets).
 
 Script user actions and assert observable outcomes (URL, heading, toast). Playwright gives each test an isolated **browser context** (fresh profile) and auto-waits for actionability — avoid `sleep()`.
 
-Playwright, Cypress, Puppeteer, Selenium, WebdriverIO, Nightwatch. Playwright/Cypress are the usual frontend default. Selenium/WebDriver is the older protocol; WebdriverIO is a runner that can sit on WebDriver *or* Playwright. RTL in jsdom is **not** E2E.
+Playwright, Cypress, Puppeteer, Selenium, WebdriverIO, Nightwatch. Playwright/Cypress are the usual frontend default. Selenium/WebDriver is the older protocol; WebdriverIO is a runner that can sit on WebDriver _or_ Playwright. RTL in jsdom is **not** E2E.
 
 **When to use:**
 
-Auth, checkout, navigation + Server Actions, anything that must work when units *and* integration already passed but the assembled app still failed.
+Auth, checkout, navigation + Server Actions, anything that must work when units _and_ integration already passed but the assembled app still failed.
 
 #### Common pitfalls
 
@@ -268,20 +269,22 @@ Testing every unit path in E2E (ice-cream cone). Shared mutable test users. Asse
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Closest to real users | Slow; flake from timing, data, third parties |
-| Catches CSS/JS/backend wiring | Few tests — only critical paths |
+| +                             | −                                            |
+| ----------------------------- | -------------------------------------------- |
+| Closest to real users         | Slow; flake from timing, data, third parties |
+| Catches CSS/JS/backend wiring | Few tests — only critical paths              |
 
 **Examples:**
 
 ```ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-  await page.getByRole('link', { name: 'Get started' }).click();
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+test("get started link", async ({ page }) => {
+  await page.goto("https://playwright.dev/");
+  await page.getByRole("link", { name: "Get started" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Installation" }),
+  ).toBeVisible();
 });
 ```
 
@@ -312,18 +315,18 @@ Playwright `expect(page).toHaveScreenshot()`, Puppeteer + a diff lib, Chromatic/
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Catches CSS/layout surprises | Fonts, OS, DPI make baselines brittle |
-| Cheap once stable | Noise from animations, clocks, A/B flags |
+| +                            | −                                        |
+| ---------------------------- | ---------------------------------------- |
+| Catches CSS/layout surprises | Fonts, OS, DPI make baselines brittle    |
+| Cheap once stable            | Noise from animations, clocks, A/B flags |
 
 **Examples:**
 
 ```ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('docs home visual', async ({ page }) => {
-  await page.goto('https://playwright.dev');
+test("docs home visual", async ({ page }) => {
+  await page.goto("https://playwright.dev");
   await expect(page).toHaveScreenshot({ maxDiffPixels: 100 });
 });
 ```
@@ -357,19 +360,19 @@ Lighthouse (DevTools / CLI / [LHCI](https://github.com/GoogleChrome/lighthouse-c
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Numeric regression signal | Lab ≠ field (CrUX / Search Console) |
+| +                            | −                                             |
+| ---------------------------- | --------------------------------------------- |
+| Numeric regression signal    | Lab ≠ field (CrUX / Search Console)           |
 | Lighthouse CI is automatable | One-off `performance.now()` in tests is noisy |
 
 **Examples:**
 
 ```js
-performance.mark('search-start');
+performance.mark("search-start");
 await search(query);
-performance.mark('search-end');
-performance.measure('search', 'search-start', 'search-end');
-const { duration } = performance.getEntriesByName('search')[0];
+performance.mark("search-end");
+performance.measure("search", "search-start", "search-end");
+const { duration } = performance.getEntriesByName("search")[0];
 expect(duration).toBeLessThan(200); // lab-only; flake-prone — prefer Lighthouse budgets
 ```
 
@@ -396,16 +399,16 @@ expect(duration).toBeLessThan(200); // lab-only; flake-prone — prefer Lighthou
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Catches XSS/CSRF-class bugs before prod | Scanners miss logic bugs (IDOR) |
-| Cookie/header checks are cheap in E2E | Not a substitute for review + OWASP |
+| +                                       | −                                   |
+| --------------------------------------- | ----------------------------------- |
+| Catches XSS/CSRF-class bugs before prod | Scanners miss logic bugs (IDOR)     |
+| Cookie/header checks are cheap in E2E   | Not a substitute for review + OWASP |
 
 **Examples:**
 
 ```ts
 const cookies = await context.cookies();
-const session = cookies.find((c) => c.name === 'session');
+const session = cookies.find((c) => c.name === "session");
 expect(session?.httpOnly).toBe(true);
 expect(session?.secure).toBe(true);
 expect(session?.sameSite).toMatch(/Lax|Strict/);
@@ -432,11 +435,11 @@ expect(session?.sameSite).toMatch(/Lax|Strict/);
 
 **How it works:**
 
-| Phase | Goal | Rule |
-|-------|------|------|
-| **Red** | Test fails for the **expected reason** | If it fails for another reason (syntax, import), fix the test before writing production code |
-| **Green** | Make the test pass | Simplest implementation — even "obvious" one-liners; don't over-engineer yet |
-| **Refactor** | Clean up test + production code | Safe because tests catch regressions immediately |
+| Phase        | Goal                                   | Rule                                                                                         |
+| ------------ | -------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Red**      | Test fails for the **expected reason** | If it fails for another reason (syntax, import), fix the test before writing production code |
+| **Green**    | Make the test pass                     | Simplest implementation — even "obvious" one-liners; don't over-engineer yet                 |
+| **Refactor** | Clean up test + production code        | Safe because tests catch regressions immediately                                             |
 
 TDD only covers the happy path. The cycle applies to **any** case — errors, edge cases, and invalid input are just the next Red test.
 
@@ -454,12 +457,12 @@ Core business logic, utilities, parsers, reducers — anywhere inputs/outputs an
 
 **Pluses and minuses:**
 
-| + | − / costs |
-|------|--------------|
-| Tests woven into the workflow — not "extra work after" | Slower at first; ~6 months to feel natural |
-| Forces you to design the **public API** before implementation | Requires thinking about API upfront |
-| Living documentation with runnable examples | "Make tests fail first" feels awkward but is essential |
-| Safer refactoring — regressions show up instantly | Not every task benefits (exploratory spikes) |
+| +                                                             | − / costs                                              |
+| ------------------------------------------------------------- | ------------------------------------------------------ |
+| Tests woven into the workflow — not "extra work after"        | Slower at first; ~6 months to feel natural             |
+| Forces you to design the **public API** before implementation | Requires thinking about API upfront                    |
+| Living documentation with runnable examples                   | "Make tests fail first" feels awkward but is essential |
+| Safer refactoring — regressions show up instantly             | Not every task benefits (exploratory spikes)           |
 
 **Examples:**
 
@@ -475,23 +478,25 @@ function divide(a, b, settings = defaultSettings) {
 }
 
 // 1. Red — basic division
-test('returns a / b', () => {
+test("returns a / b", () => {
   expect(divide(10, 5)).toBe(2);
 });
 
 // 2. Red — decimals (default 1 digit)
-test('rounds to 1 decimal by default', () => {
+test("rounds to 1 decimal by default", () => {
   expect(divide(10, 3)).toBe(3.3);
 });
 
 // 3. Red — custom precision
-test('respects precision option', () => {
+test("respects precision option", () => {
   expect(divide(10, 3, { precision: 2 })).toBe(3.33);
 });
 
 // 4. Red — divide by zero (wrap call so Jest catches the throw)
-test('throws on divide by zero', () => {
-  expect(() => divide(10, 0)).toThrow("I'm sorry, Dave. I'm afraid I can't do that.");
+test("throws on divide by zero", () => {
+  expect(() => divide(10, 0)).toThrow(
+    "I'm sorry, Dave. I'm afraid I can't do that.",
+  );
 });
 ```
 
@@ -501,7 +506,7 @@ test('throws on divide by zero', () => {
 it.each([
   { a: 10, b: 5, expected: 2 },
   { a: 15, b: 5, expected: 3 },
-])('divide($a, $b) → $expected', ({ a, b, expected }) => {
+])("divide($a, $b) → $expected", ({ a, b, expected }) => {
   expect(divide(a, b)).toBe(expected);
 });
 ```
@@ -527,10 +532,10 @@ it.each([
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Readable specs for non-devs | Gherkin ceremony can bloat |
-| Focus on user outcomes | Tooling overhead (Cucumber) |
+| +                           | −                           |
+| --------------------------- | --------------------------- |
+| Readable specs for non-devs | Gherkin ceremony can bloat  |
+| Focus on user outcomes      | Tooling overhead (Cucumber) |
 
 **Examples:**
 
@@ -541,11 +546,11 @@ Scenario: Successful login
   Then they see the dashboard
 ```
 
-| | TDD | BDD |
-|---|-----|-----|
-| Focus | Code correctness | Behavior / user value |
-| Language | Code tests | Often natural language |
-| Audience | Developers | Devs + PM + QA |
+|          | TDD              | BDD                    |
+| -------- | ---------------- | ---------------------- |
+| Focus    | Code correctness | Behavior / user value  |
+| Language | Code tests       | Often natural language |
+| Audience | Developers       | Devs + PM + QA         |
 
 **Mocha-style `describe` / `it` (tutorial / classic BDD runners):**
 
@@ -602,11 +607,11 @@ Stub `random` / clock / repo when you only need a known return. Mock / spy when 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Fast, deterministic tests without DB/DOM/network | Over-mocking tests the mock, not the product |
-| Assert collaboration (calls + args) for effectful APIs | Doubles drift when the real interface changes |
-| Shared fixtures keep suites short | Global mocks leak between tests if not restored |
+| +                                                      | −                                               |
+| ------------------------------------------------------ | ----------------------------------------------- |
+| Fast, deterministic tests without DB/DOM/network       | Over-mocking tests the mock, not the product    |
+| Assert collaboration (calls + args) for effectful APIs | Doubles drift when the real interface changes   |
+| Shared fixtures keep suites short                      | Global mocks leak between tests if not restored |
 
 **Examples:**
 
@@ -616,38 +621,42 @@ function addRandom(a) {
 }
 
 function toggleTheme(app) {
-  app.toggleClassName('dark-theme');
+  app.toggleClassName("dark-theme");
   app.userChangedTheme = true;
 }
 
-const fakeUser = { name: 'Alex', email: 'alex@site.com', role: 'user' };
-const fakeUserInvalidEmail = { ...fakeUser, email: 'not-an-email' };
+const fakeUser = { name: "Alex", email: "alex@site.com", role: "user" };
+const fakeUserInvalidEmail = { ...fakeUser, email: "not-an-email" };
 
 afterEach(() => {
   jest.restoreAllMocks();
 });
 
-test('stub: canned return, no call assertions required', () => {
-  jest.spyOn(Math, 'random').mockReturnValue(0.42);
+test("stub: canned return, no call assertions required", () => {
+  jest.spyOn(Math, "random").mockReturnValue(0.42);
   expect(addRandom(2)).toBe(2.42);
 });
 
-test('mock: assert how the dependency was used', () => {
+test("mock: assert how the dependency was used", () => {
   const fakeApp = { toggleClassName: jest.fn(), userChangedTheme: false };
   toggleTheme(fakeApp);
-  expect(fakeApp.toggleClassName).toHaveBeenCalledWith('dark-theme');
+  expect(fakeApp.toggleClassName).toHaveBeenCalledWith("dark-theme");
   expect(fakeApp.userChangedTheme).toBe(true);
 });
 
-test('spy: wrap a real method; restore after', () => {
-  const video = { play() { return true; } };
-  const spy = jest.spyOn(video, 'play');
+test("spy: wrap a real method; restore after", () => {
+  const video = {
+    play() {
+      return true;
+    },
+  };
+  const spy = jest.spyOn(video, "play");
   expect(video.play()).toBe(true);
   expect(spy).toHaveBeenCalled();
 });
 ```
 
-**Thoughts:** Stub to *have* a dependency; mock/spy to *check how it was used* — and prefer no double at all if the code can stay pure or injected.
+**Thoughts:** Stub to _have_ a dependency; mock/spy to _check how it was used_ — and prefer no double at all if the code can stay pure or injected.
 
 **See also:** Shared fixture store + auto-restore as infrastructure — [Making tests easy](#making-tests-easy). Group-level stubs/drivers — [Integration testing](#integration-testing).
 
@@ -672,7 +681,7 @@ test('spy: wrap a real method; restore after', () => {
 2. **Functional architecture (impureim sandwich)** — impure may call pure, never the reverse. Thin I/O shell: fetch/DB/UI → **pure transform** → persist/render. The “bread” sets up the call and observes the result ([Functional core, imperative shell](./7_special_architecture.md#functional-core-imperative-shell)).
 3. **Low coupling** (зацепление / сцепление) ≠ **high cohesion** (связность / SRP). Tight coupling → mock archaeology. **DIP:** details depend on abstractions; tests swap fakes at the contract ([Cohesion vs coupling](./7_special_engineering.md#cohesion-vs-coupling), [DIP](./7_special_engineering.md#dependency-inversion-dip)).
 4. **Independent tests** — any order, any machine, parallel workers. Shared DB/files/time leak into other cases and hide the real failure. Use `--randomize` to catch order bugs.
-5. **Clear setup and expectations (ПВП / AAA)** — enough detail to see *what* and *under which preconditions*; not a novel. One naming style per repo. Anatomy: [Why write tests (AAA)](#tests-and-aaa).
+5. **Clear setup and expectations (ПВП / AAA)** — enough detail to see _what_ and _under which preconditions_; not a novel. One naming style per repo. Anatomy: [Why write tests (AAA)](#tests-and-aaa).
 6. **Unit-test your code only** — do not unit-test libraries you cannot change. Cover **adapters**. Dependency upgrades: [integration / E2E](#12-testing).
 7. **Comfortable runner (Jest)** — `test.only` / `describe.only` (do not commit), `test.skip`, `test.todo` (name only — a callback is an error; use `skip` for implemented-but-disabled). Watch: `--watch` ≈ `-o` (related to **uncommitted** files); `--watchAll` reruns everything. Git: `jest -o` / `--onlyChanged`, `--lastCommit`, `--changedSince=<branch|sha>`. Filter: `jest path/pattern`, `-t` / `--testNamePattern`. `--debug` prints **config**, not a debugger — use `node --inspect-brk` + `--runInBand` to step through tests.
 8. **Shared fakes** — fixtures/factories by entity; auto-reset (`--restoreMocks` / `afterEach(jest.restoreAllMocks)`). Treat test infra like product code.
@@ -686,21 +695,21 @@ New module you dread testing; flaky suite that only fails in CI order; TDD skipp
 - **`--debug` ≠ debugger** — it dumps Jest config.
 - **`test.todo(fn)` throws** — todo is a reminder, not a skipped implementation.
 - **Leaving `test.only` in git** — CI silently drops the rest of the file.
-- **Unit-testing `lodash` / React internals** — time sink; test *your* wrapper.
+- **Unit-testing `lodash` / React internals** — time sink; test _your_ wrapper.
 - **Shared mutable fixture** — clone per test (`{ ...fakeUser }`).
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Less mock theater; failures point at one unit | Upfront design (DIP, sandwich, fixture module) |
-| Parallel CI; cheaper onboarding | Over-abstracted ports if every function is injected |
+| +                                             | −                                                   |
+| --------------------------------------------- | --------------------------------------------------- |
+| Less mock theater; failures point at one unit | Upfront design (DIP, sandwich, fixture module)      |
+| Parallel CI; cheaper onboarding               | Over-abstracted ports if every function is injected |
 
 **Examples:**
 
 ```js
 // fixtures/user.js — shared fake
-export const fakeUser = { id: '1', name: 'Ada', email: 'ada@ex.com' };
+export const fakeUser = { id: "1", name: "Ada", email: "ada@ex.com" };
 
 // pure core
 export function greeting(user) {
@@ -710,16 +719,16 @@ export function greeting(user) {
 // impure shell (not unit-tested here — adapter + E2E)
 export async function showGreeting(id, repo, render) {
   const user = await repo.findById(id); // impure in
-  render(greeting(user));              // pure middle, impure out
+  render(greeting(user)); // pure middle, impure out
 }
 
-test('greeting uses the user name', () => {
+test("greeting uses the user name", () => {
   // Arrange
-  const user = { ...fakeUser, name: 'Ada' };
+  const user = { ...fakeUser, name: "Ada" };
   // Act
   const text = greeting(user);
   // Assert
-  expect(text).toBe('Hello, Ada');
+  expect(text).toBe("Hello, Ada");
 });
 ```
 
@@ -774,22 +783,22 @@ npx jest --restoreMocks --randomize  # isolation + order bugs
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| One runner for Node + browser-like tests | jsdom is not a real browser (no layout, limited APIs) |
-| Built-in mocks; `--watch` reruns related tests | Mocking `fetch` tests the mock, not the network |
-| Living docs of public APIs | Import-time effects make setup painful |
-| Cheap guard on tiny functions (signature changes fail CI) | Changing production code *only* for tests often means the API was wrong |
+| +                                                         | −                                                                       |
+| --------------------------------------------------------- | ----------------------------------------------------------------------- |
+| One runner for Node + browser-like tests                  | jsdom is not a real browser (no layout, limited APIs)                   |
+| Built-in mocks; `--watch` reruns related tests            | Mocking `fetch` tests the mock, not the network                         |
+| Living docs of public APIs                                | Import-time effects make setup painful                                  |
+| Cheap guard on tiny functions (signature changes fail CI) | Changing production code _only_ for tests often means the API was wrong |
 
 **Examples:**
 
 ```js
 // jest.config.js
 module.exports = {
-  testEnvironment: 'node', // or 'jest-environment-node'
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testEnvironment: "node", // or 'jest-environment-node'
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   transform: {
-    '\\.[jt]sx?$': 'babel-jest',
+    "\\.[jt]sx?$": "babel-jest",
   },
 };
 ```
@@ -806,15 +815,15 @@ npm test -- --watch   # rerun tests for changed files
 ```js
 // title-formatter.js
 function titleFormatter(segments) {
-  return segments.filter(Boolean).join(' — ');
+  return segments.filter(Boolean).join(" — ");
 }
 
 // __tests__/title-formatter.js
-import { titleFormatter } from '../title-formatter';
+import { titleFormatter } from "../title-formatter";
 
-describe('titleFormatter', () => {
-  it('joins truthy segments with an em dash', () => {
-    expect(titleFormatter(['test', 'test2'])).toEqual('test — test2');
+describe("titleFormatter", () => {
+  it("joins truthy segments with an em dash", () => {
+    expect(titleFormatter(["test", "test2"])).toEqual("test — test2");
   });
 });
 ```
@@ -824,21 +833,21 @@ If someone swaps the signature to `titleFormatter(separator, segments)` without 
 `fetch` is missing in Node unless polyfilled. A real network test couples you to the API and needs online. Stub `global.fetch` so it returns `{ json: () => Promise.resolve(data) }` — that is the `Response` shape `search()` uses.
 
 ```js
-describe('searchClient', () => {
-  it('returns JSON and hits the search query param', async () => {
+describe("searchClient", () => {
+  it("returns JSON and hits the search query param", async () => {
     const expectedResult = {
-      title: 'Как и зачем писать тесты',
-      link: '/tools/how-to-test-and-why/',
-      category: 'tools',
+      title: "Как и зачем писать тесты",
+      link: "/tools/how-to-test-and-why/",
+      category: "tools",
     };
 
     const json = jest.fn(() => Promise.resolve(expectedResult));
     global.fetch = jest.fn(() => Promise.resolve({ json }));
 
-    const searchResult = await searchClient.search('test');
+    const searchResult = await searchClient.search("test");
     expect(searchResult).toEqual(expectedResult);
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch.mock.calls[0][0]).toContain('search=test');
+    expect(global.fetch.mock.calls[0][0]).toContain("search=test");
   });
 });
 ```
@@ -852,13 +861,13 @@ If `document` is undefined on import, set jsdom (config or docblock). Mock heavy
  * @jest-environment jsdom
  */
 
-import { init } from '../article-aside';
+import { init } from "../article-aside";
 
-jest.mock('../header', () => {
+jest.mock("../header", () => {
   const fixed = [];
   return {
     on: (eventName, callback) => {
-      if (eventName === 'fixed') fixed.push(callback);
+      if (eventName === "fixed") fixed.push(callback);
     },
     callFixed: () => {
       fixed.forEach((callback) => callback());
@@ -866,17 +875,17 @@ jest.mock('../header', () => {
   };
 });
 
-import { callFixed } from '../header';
+import { callFixed } from "../header";
 
-describe('articleAside', () => {
-  it('adds offset class when header is fixed', () => {
-    const el = document.createElement('div');
-    el.className = 'article__aside';
+describe("articleAside", () => {
+  it("adds offset class when header is fixed", () => {
+    const el = document.createElement("div");
+    el.className = "article__aside";
     document.body.appendChild(el);
     init();
-    expect(el.classList.contains('article__aside--offset')).toBe(false);
+    expect(el.classList.contains("article__aside--offset")).toBe(false);
     callFixed();
-    expect(el.classList.contains('article__aside--offset')).toBe(true);
+    expect(el.classList.contains("article__aside--offset")).toBe(true);
   });
 });
 ```
