@@ -162,7 +162,7 @@ Core Web Vitals измеряет реальный опыт пользовате�
 
 **Thoughts:** Основные веб-показатели: **LCP, INP, CLS**. TTFB и FCP объясняют медленную первую отрисовку/LCP; они не являются основными жизненно важными элементами.
 
-**See also:** Измерение / лаборатория против поля / RUM → [6_web_api.md — основные веб-показатели](./6_web_api_security.md#core-web-vitals). Подразделы LCP → [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint). INP → [6_web_api.md](./6_web_api_security.md#inp-interaction-to-next-paint). TTFB → [6_web_api.md](./6_web_api_security.md#ttfb-time-to-first-byte).FCP → [6_web_api.md](./6_web_api_security.md#first-contentful-paint-fcp). Рычаги Next.js → [4_nextjs.md](./4_nextjs_platform.md#core-web-vitals-on-vercel).
+**See also:** Измерение / лаборатория против поля / RUM → [6_web_api.md — основные веб-показатели](./6_web_api_security.md#core-web-vitals). Подразделы LCP → [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint). INP → [6_web_api.md](./6_web_api_security.md#inp-interaction-to-next-paint). TTFB → [6_web_api.md](./6_web_api_security.md#ttfb-time-to-first-byte).FCP → [6_web_api.md](./6_web_api_security.md#first-contentful-paint-fcp). Рычаги Next.js → [4_nextjs.md](./4_nextjs_optimizations.md#core-web-vitals-on-vercel).
 
 **Sources:** [web.dev — Vitals](https://web.dev/articles/vitals)
 
@@ -247,7 +247,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 </style>
 ```
 
-`srcset` / `<picture>`: сохранять **одинаковое соотношение сторон** для всех кандидатов; набор `width`/`height` on `<img>` (и дальше `<source>` в современных браузерах). Next.js `<Image>` требует `width`+`height` or `fill`; статический импорт заполняет размеры. Примечания к фреймворку: [4_nextjs.md](./4_nextjs_platform.md#core-web-vitals-on-vercel).
+`srcset` / `<picture>`: сохранять **одинаковое соотношение сторон** для всех кандидатов; набор `width`/`height` on `<img>` (и дальше `<source>` в современных браузерах). Next.js `<Image>` требует `width`+`height` or `fill`; статический импорт заполняет размеры. Примечания к фреймворку: [4_nextjs.md](./4_nextjs_optimizations.md#core-web-vitals-on-vercel).
 
 **Thoughts:** Зарезервируйте место **до** поступления позднего контента; не помещайте новые блоки в текущую область просмотра, если только пользователь не попросил их.
 

@@ -126,8 +126,9 @@ export function useHandbookSearch(
   }
 
   function changeQuery(value: string) {
+    const wasEmpty = readSearchUi().query.trim().length === 0;
     writeUi({ query: value });
-    if (value.trim().length > 0) {
+    if (value.trim().length > 0 && wasEmpty) {
       onSearchActiveRef.current?.();
     }
     scheduleSearch(value);

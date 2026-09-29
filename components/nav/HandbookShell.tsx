@@ -117,9 +117,15 @@ export function HandbookShell({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [dismissNav, searchSheet]);
-  const desktopCollapsed = collapsed && !searching;
-  const { peeking, onPointerEnter, onPointerLeave, suppressPeek } =
-    useDesktopSidebarPeek(desktopCollapsed);
+  const desktopCollapsed = collapsed;
+  const peekEnabled = desktopCollapsed && !searching;
+  const {
+    peeking,
+    onAsidePointerEnter,
+    onAsidePointerLeave,
+    onDockPointerEnter,
+    suppressPeek,
+  } = useDesktopSidebarPeek(peekEnabled);
   const railCollapsed = desktopCollapsed && !peeking;
   const onToggleSidebar = useCallback(() => {
     if (desktopCollapsed && peeking) {
@@ -160,8 +166,7 @@ export function HandbookShell({
             collapseLabel={chrome.collapseSidebar}
             expandLabel={chrome.expandSidebar}
             onToggle={onToggleSidebar}
-            onPointerEnter={onPointerEnter}
-            onPointerLeave={onPointerLeave}
+            onPointerEnter={onDockPointerEnter}
           />
         </div>
         <div
@@ -186,13 +191,13 @@ export function HandbookShell({
           <aside
             className={
               searchSheet
-                ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${SIDEBAR_DESKTOP_OPEN}`
+                ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
                 : navOpen
                   ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
                   : `pointer-events-none ${SIDEBAR_MOBILE_FRAME} -translate-x-full border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
             }
-            onPointerEnter={onPointerEnter}
-            onPointerLeave={onPointerLeave}
+            onPointerEnter={onAsidePointerEnter}
+            onPointerLeave={onAsidePointerLeave}
           >
             <div
               className={
@@ -242,33 +247,57 @@ export function HandbookShell({
   );
 }
 
-function useDesktopSidebarPeek(collapsed: boolean) {
+function useDesktopSidebarPeek(peekEnabled: boolean) {
   const [peeking, setPeeking] = useState(false);
   const leaveTimer = useRef(0);
   const peekLocked = useRef(false);
 
   useEffect(() => {
+    if (!peekEnabled) {
+      peekLocked.current = false;
+      window.clearTimeout(leaveTimer.current);
+      setPeeking(false);
+    }
+  }, [peekEnabled]);
+
+  useEffect(() => {
     return () => window.clearTimeout(leaveTimer.current);
   }, []);
 
-  const onPointerEnter = useCallback((event: PointerEvent<HTMLElement>) => {
-    if (event.pointerType !== "mouse") {
-      return;
-    }
-    if (peekLocked.current || isSidebarDockControl(event.target)) {
-      return;
-    }
-    window.clearTimeout(leaveTimer.current);
-    setPeeking(true);
-  }, []);
+  const onAsidePointerEnter = useCallback(
+    (event: PointerEvent<HTMLElement>) => {
+      if (event.pointerType !== "mouse" || !peekEnabled) {
+        return;
+      }
+      if (peekLocked.current) {
+        return;
+      }
+      window.clearTimeout(leaveTimer.current);
+      setPeeking(true);
+    },
+    [peekEnabled],
+  );
 
-  const onPointerLeave = useCallback(() => {
+  const onAsidePointerLeave = useCallback(() => {
+    if (!peekEnabled) {
+      return;
+    }
     window.clearTimeout(leaveTimer.current);
     leaveTimer.current = window.setTimeout(() => {
       peekLocked.current = false;
       setPeeking(false);
     }, PEEK_LEAVE_MS);
-  }, []);
+  }, [peekEnabled]);
+
+  const onDockPointerEnter = useCallback(
+    (event: PointerEvent<HTMLElement>) => {
+      if (event.pointerType !== "mouse" || !peekEnabled) {
+        return;
+      }
+      window.clearTimeout(leaveTimer.current);
+    },
+    [peekEnabled],
+  );
 
   const suppressPeek = useCallback(() => {
     peekLocked.current = true;
@@ -280,15 +309,10 @@ function useDesktopSidebarPeek(collapsed: boolean) {
   }, []);
 
   return {
-    peeking: collapsed && peeking,
-    onPointerEnter,
-    onPointerLeave,
+    peeking: peekEnabled && peeking,
+    onAsidePointerEnter,
+    onAsidePointerLeave,
+    onDockPointerEnter,
     suppressPeek,
   };
-}
-
-function isSidebarDockControl(target: EventTarget | null) {
-  return (
-    target instanceof Element && target.closest("[data-sidebar-dock]") !== null
-  );
 }

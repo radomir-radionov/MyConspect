@@ -6,15 +6,15 @@ GoF catalog: creational, structural, and behavioral patterns. SOLID, DRY/KISS/YA
 
 ### Related docs
 
-* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+- [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
 
 ### Main concepts
 
-| Area | Topics |
-|------|--------|
-| Catalog | 23 GoF patterns (creational, structural, behavioral) |
-| Cheat sheets | Frontend-oriented grouping |
-| Extra | Repository (not GoF) |
+| Area         | Topics                                               |
+| ------------ | ---------------------------------------------------- |
+| Catalog      | 23 GoF patterns (creational, structural, behavioral) |
+| Cheat sheets | Frontend-oriented grouping                           |
+| Extra        | Repository (not GoF)                                 |
 
 ### Sections
 
@@ -39,20 +39,20 @@ GoF catalog: creational, structural, and behavioral patterns. SOLID, DRY/KISS/YA
 
 A reusable solution to a recurring design problem — not copy-paste code, but a structure and collaboration pattern.
 
-| Category | Examples |
-|----------|----------|
+| Category       | Examples                                                                 |
+| -------------- | ------------------------------------------------------------------------ |
 | **Creational** | Factory, Factory Method, Abstract Factory, Builder, Singleton, Prototype |
-| **Structural** | Adapter, Decorator, Facade, Proxy |
-| **Behavioral** | Chain of Responsibility, Observer, Strategy, Command, Iterator |
+| **Structural** | Adapter, Decorator, Facade, Proxy                                        |
+| **Behavioral** | Chain of Responsibility, Observer, Strategy, Command, Iterator           |
 
 **When to use:** When problem matches catalog; name patterns in docs and reviews.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Shared vocabulary | Over-application ("pattern fever") |
-| Battle-tested structures | Can obscure simple code |
+| +                        | −                                  |
+| ------------------------ | ---------------------------------- |
+| Shared vocabulary        | Over-application ("pattern fever") |
+| Battle-tested structures | Can obscure simple code            |
 
 **Thoughts:** See full catalog and frontend grouping in [GOF catalog](#gof-design-patterns--catalog). Responsibility assignment (Expert, Creator, Controller): [GRASP](./0_system_design_grasp.md#grasp-principles). Creational shortlist: [cheat sheet](#creational-patterns--cheat-sheet). Structural shortlist: [cheat sheet](#structural-patterns--cheat-sheet). Behavioral shortlist: [cheat sheet](#behavioral-patterns--cheat-sheet). Patterns are not the goal of a PR.
 
@@ -73,21 +73,21 @@ A reusable solution to a recurring design problem — not copy-paste code, but a
 
 **Definition:**
 
-Gang of Four (Gamma, Helm, Johnson, Vlissides) — 23 reusable OOP design patterns from *Design Patterns: Elements of Reusable Object-Oriented Software* (1994).
+Gang of Four (Gamma, Helm, Johnson, Vlissides) — 23 reusable OOP design patterns from _Design Patterns: Elements of Reusable Object-Oriented Software_ (1994).
 
-| Creational | Structural | Behavioral |
-|------------|------------|------------|
-| Factory Method | Adapter | Chain of Responsibility |
-| Abstract Factory | Bridge | Command |
-| Builder | Composite | Interpreter |
-| Prototype | Decorator | Iterator |
-| Singleton | Facade | Mediator |
-| | Flyweight | Memento |
-| | Proxy | Observer |
-| | | State |
-| | | Strategy |
-| | | Template Method |
-| | | Visitor |
+| Creational       | Structural | Behavioral              |
+| ---------------- | ---------- | ----------------------- |
+| Factory Method   | Adapter    | Chain of Responsibility |
+| Abstract Factory | Bridge     | Command                 |
+| Builder          | Composite  | Interpreter             |
+| Prototype        | Decorator  | Iterator                |
+| Singleton        | Facade     | Mediator                |
+|                  | Flyweight  | Memento                 |
+|                  | Proxy      | Observer                |
+|                  |            | State                   |
+|                  |            | Strategy                |
+|                  |            | Template Method         |
+|                  |            | Visitor                 |
 
 **Thoughts:**
 
@@ -95,11 +95,11 @@ Patterns are vocabulary, not goals. "We need a Factory" is the wrong starting po
 
 Doka’s frontend shortlist (not the full 23):
 
-| Kind | Job | Names to know |
-|------|-----|----------------|
-| **Creational** | Create objects / families without duplication | Simple Factory (informal), Factory Method, Abstract Factory, Builder |
-| **Structural** | Combine entities (“how to assemble a component”) | Adapter, Decorator, Facade, Proxy |
-| **Behavioral** | Who does what, how they talk (“how to organize behavior”) | Chain of Responsibility, Strategy, Command, Observer |
+| Kind           | Job                                                       | Names to know                                                        |
+| -------------- | --------------------------------------------------------- | -------------------------------------------------------------------- |
+| **Creational** | Create objects / families without duplication             | Simple Factory (informal), Factory Method, Abstract Factory, Builder |
+| **Structural** | Combine entities (“how to assemble a component”)          | Adapter, Decorator, Facade, Proxy                                    |
+| **Behavioral** | Who does what, how they talk (“how to organize behavior”) | Chain of Responsibility, Strategy, Command, Observer                 |
 
 Refactoring Guru: creational = creation mechanisms; structural = assemble objects/classes; behavioral = algorithms and responsibility. **Simple Factory** is a common name for a function that `switch`es on type — useful, but not a separate GoF pattern (Factory Method is). Shortlists: [structural](#structural-patterns--cheat-sheet) · [behavioral](#behavioral-patterns--cheat-sheet).
 
@@ -120,32 +120,32 @@ Creational patterns hide **how objects are born** — fields, defaults, extra da
 
 Doka’s everyday four (not the full GoF list): **Factory** (simple), **Abstract Factory**, **Builder**, **Singleton**. GoF also has **Factory Method** and **Prototype**. Doka’s “factory” is the informal **simple factory** function — not Factory Method.
 
-| Pattern | One line | Mental model |
-|---------|----------|--------------|
-| **Factory** (simple) | Function owns the recipe; caller passes intent (`createGuitar(6)`) | Guitar shop vs milling a neck |
-| **Factory Method** | Creator subclasses override `createX()` — which *class* is born | Department.hire → Programmer vs Accountant |
-| **Abstract Factory** | Interface that creates a **family** of related products | Orchestra reservation: instrument + musician, one API |
-| **Builder** | Optional steps, then `build()`; chain returns `this` | Coffee: espresso + milk + sugar |
-| **Singleton** | At most one instance; later `new` returns the first | One Sun — usually redesign instead |
+| Pattern              | One line                                                           | Mental model                                          |
+| -------------------- | ------------------------------------------------------------------ | ----------------------------------------------------- |
+| **Factory** (simple) | Function owns the recipe; caller passes intent (`createGuitar(6)`) | Guitar shop vs milling a neck                         |
+| **Factory Method**   | Creator subclasses override `createX()` — which _class_ is born    | Department.hire → Programmer vs Accountant            |
+| **Abstract Factory** | Interface that creates a **family** of related products            | Orchestra reservation: instrument + musician, one API |
+| **Builder**          | Optional steps, then `build()`; chain returns `this`               | Coffee: espresso + milk + sugar                       |
+| **Singleton**        | At most one instance; later `new` returns the first                | One Sun — usually redesign instead                    |
 
 **How it works:**
 
-- **Factory vs Abstract Factory** — Factory returns **one** product. Abstract Factory is a factory of factories: same *operations*, different *families* (Violin+Violinist vs Cello+Cellist). Goal is dropping `instanceof` trees.
+- **Factory vs Abstract Factory** — Factory returns **one** product. Abstract Factory is a factory of factories: same _operations_, different _families_ (Violin+Violinist vs Cello+Cellist). Goal is dropping `instanceof` trees.
 - **Factory vs Builder** — Factory: “give me a complete object, maybe with a couple of args.” Builder: many **optional steps**, order matters, avoid a constructor with ten booleans.
-- **Simple Factory vs Factory Method** — `createX(type)` + `switch` is an idiom. Factory Method is when a *class* defers `new` to subclasses (Refactoring Guru).
+- **Simple Factory vs Factory Method** — `createX(type)` + `switch` is an idiom. Factory Method is when a _class_ defers `new` to subclasses (Refactoring Guru).
 - **Pattern Singleton vs DI “singleton”** — Pattern = restrict count. DI lifetime = reuse the same injected instance. Different jobs (Doka).
 
-| Use | Pattern |
-|-----|---------|
-| Construction > 1–2 lines, or needs calc / extra data | Factory |
-| Related products must stay compatible; client must not name classes | Abstract Factory |
-| Many optional features; telescoping constructors | Builder |
-| Domain truly allows only one (rare) | Singleton — prefer ESM `export const` |
+| Use                                                                 | Pattern                               |
+| ------------------------------------------------------------------- | ------------------------------------- |
+| Construction > 1–2 lines, or needs calc / extra data                | Factory                               |
+| Related products must stay compatible; client must not name classes | Abstract Factory                      |
+| Many optional features; telescoping constructors                    | Builder                               |
+| Domain truly allows only one (rare)                                 | Singleton — prefer ESM `export const` |
 
 ```js
 // Factory — recipe + a calculation. Call sites stay createGuitar(6) if fields change.
 function createGuitar(stringsCount = 6, maxWeight = 5) {
-  const fretBoardMaterial = maxWeight <= 5 ? 'fir' : 'cedar';
+  const fretBoardMaterial = maxWeight <= 5 ? "fir" : "cedar";
   return { stringsCount, fretsCount: 24, fretBoardMaterial };
 }
 createGuitar(6);
@@ -166,19 +166,27 @@ function reserve(kit) {
   kit.notifyPlayer();
   return kit.reserveInstrument();
 }
-reserve(violinKit).play('A'); // 'violin A'
-reserve(celloKit).play('A');  // 'cello A'
+reserve(violinKit).play("A"); // 'violin A'
+reserve(celloKit).play("A"); // 'cello A'
 ```
 
 ```js
 // Builder — optional steps, then build(). addX returns this so you can chain.
 class DrinkBuilder {
-  settings = { base: 'espresso' };
-  addMilk() { this.settings.milk = true; return this; }
-  addSugar() { this.settings.sugar = true; return this; }
-  build() { return { ...this.settings }; }
+  settings = { base: "espresso" };
+  addMilk() {
+    this.settings.milk = true;
+    return this;
+  }
+  addSugar() {
+    this.settings.sugar = true;
+    return this;
+  }
+  build() {
+    return { ...this.settings };
+  }
 }
-new DrinkBuilder().addMilk().build();           // { base: 'espresso', milk: true }
+new DrinkBuilder().addMilk().build(); // { base: 'espresso', milk: true }
 new DrinkBuilder().addSugar().addMilk().build();
 ```
 
@@ -216,36 +224,36 @@ new Sun() === new Sun(); // true
 
 Structural patterns answer “how do we assemble a component so it can compose with others?” — they manage **object composition**, not creation (creational) or who talks to whom (behavioral).
 
-| Pattern | One line | Mental model |
-|---------|----------|--------------|
-| **Adapter** | Translate incompatible API / data shape into what the client already expects | Travel plug |
-| **Facade** | One simple method over many subsystem steps | “Heat water” vs 8 atomic machine calls |
-| **Decorator** | Wrap to **add** behavior; keep the same interface | Phone + case; `debounce(fn)` |
-| **Proxy** | Same interface; **gate** access (lazy, auth, cache, intercept) | Receptionist; JS `Proxy` |
+| Pattern       | One line                                                                     | Mental model                           |
+| ------------- | ---------------------------------------------------------------------------- | -------------------------------------- |
+| **Adapter**   | Translate incompatible API / data shape into what the client already expects | Travel plug                            |
+| **Facade**    | One simple method over many subsystem steps                                  | “Heat water” vs 8 atomic machine calls |
+| **Decorator** | Wrap to **add** behavior; keep the same interface                            | Phone + case; `debounce(fn)`           |
+| **Proxy**     | Same interface; **gate** access (lazy, auth, cache, intercept)               | Receptionist; JS `Proxy`               |
 
 **How they differ** (Refactoring Guru):
 
-- **Adapter vs Decorator** — Adapter provides a *different* interface. Decorator keeps (or extends) the original and supports stacking wrappers.
-- **Adapter vs Facade** — Adapter wraps *one* object to match a target interface. Facade gives a *new, simpler* interface over a *subsystem* (many objects / many calls).
-- **Decorator vs Proxy** — both wrap and usually keep the same interface. Decorator *adds* responsibilities (log, retry, encrypt). Proxy *controls* access (lazy init, protection, remote stub, cache) and does not exist to enrich the public API.
-- **JS `Proxy` vs the pattern** — `new Proxy(target, handler)` is a language tool that intercepts operations (`get`, `set`, …). You can implement a GoF Proxy *or* a Decorator with it. Vue 3 reactivity uses `Proxy`.
+- **Adapter vs Decorator** — Adapter provides a _different_ interface. Decorator keeps (or extends) the original and supports stacking wrappers.
+- **Adapter vs Facade** — Adapter wraps _one_ object to match a target interface. Facade gives a _new, simpler_ interface over a _subsystem_ (many objects / many calls).
+- **Decorator vs Proxy** — both wrap and usually keep the same interface. Decorator _adds_ responsibilities (log, retry, encrypt). Proxy _controls_ access (lazy init, protection, remote stub, cache) and does not exist to enrich the public API.
+- **JS `Proxy` vs the pattern** — `new Proxy(target, handler)` is a language tool that intercepts operations (`get`, `set`, …). You can implement a GoF Proxy _or_ a Decorator with it. Vue 3 reactivity uses `Proxy`.
 
 **How it works:**
 
-| Use | Pattern |
-|-----|---------|
-| Server `snake_case` / nested payload ≠ app `camelCase` DTOs | Adapter |
-| Hexagonal / ports: Prisma, Stripe, Express live in the outer **adapter** layer | Adapter |
-| Same multi-step SDK dance copied in several places | Facade |
-| Cross-cutting extras: log, metrics, cache, `throttle` / `debounce` | Decorator |
-| Check / delay / deny before the real object (auth, lazy, DOM insert guard) | Proxy |
+| Use                                                                            | Pattern   |
+| ------------------------------------------------------------------------------ | --------- |
+| Server `snake_case` / nested payload ≠ app `camelCase` DTOs                    | Adapter   |
+| Hexagonal / ports: Prisma, Stripe, Express live in the outer **adapter** layer | Adapter   |
+| Same multi-step SDK dance copied in several places                             | Facade    |
+| Cross-cutting extras: log, metrics, cache, `throttle` / `debounce`             | Decorator |
+| Check / delay / deny before the real object (auth, lazy, DOM insert guard)     | Proxy     |
 
 ```js
 // Adapter — foreign shape → our shape. Callers never see snake_case.
 function toUser(dto) {
   return { id: dto.ID, name: dto.user_name };
 }
-toUser({ ID: '1', user_name: 'Ada' }); // { id: '1', name: 'Ada' }
+toUser({ ID: "1", user_name: "Ada" }); // { id: '1', name: 'Ada' }
 ```
 
 ```js
@@ -260,25 +268,29 @@ function brew(machine) {
 
 ```js
 // Decorator — same function, extra behavior before/after. update itself stays clean.
-const withLog = (fn) => (...args) => {
-  console.log('call', args);
-  return fn(...args);
+const withLog =
+  (fn) =>
+  (...args) => {
+    console.log("call", args);
+    return fn(...args);
+  };
+const save = (user) => {
+  /* write */
 };
-const save = (user) => { /* write */ };
 const saveLogged = withLog(save);
 saveLogged({ id: 1 }); // logs, then save
 ```
 
 ```js
 // Proxy — same property names; trap decides what happens. original.secret stays readable.
-const user = { name: 'Ada', secret: 'x' };
+const user = { name: "Ada", secret: "x" };
 const gate = new Proxy(user, {
   get(t, key, r) {
-    if (key === 'secret') return undefined;
+    if (key === "secret") return undefined;
     return Reflect.get(t, key, r);
   },
 });
-gate.name;   // 'Ada'
+gate.name; // 'Ada'
 gate.secret; // undefined
 ```
 
@@ -305,29 +317,29 @@ gate.secret; // undefined
 
 Behavioral patterns answer “who does what, and how do they talk?” — they split **responsibility** and **communication**, not object creation or assembly.
 
-| Pattern | One line | Swap in your head |
-|---------|----------|-------------------|
-| **Strategy** | Same job, different algorithm; pick (and swap) at runtime | Navigator: walk / bike / drive |
-| **Chain of Responsibility** | Request walks handlers until **one** can handle it | Charge USD vs EUR vs RUB |
-| **Command** | Action + data become an object you can queue, log, undo | Redux action `{ type, payload }` |
-| **Observer** | Subject notifies whoever subscribed; list can change | Vacancy → matching applicants |
+| Pattern                     | One line                                                  | Swap in your head                |
+| --------------------------- | --------------------------------------------------------- | -------------------------------- |
+| **Strategy**                | Same job, different algorithm; pick (and swap) at runtime | Navigator: walk / bike / drive   |
+| **Chain of Responsibility** | Request walks handlers until **one** can handle it        | Charge USD vs EUR vs RUB         |
+| **Command**                 | Action + data become an object you can queue, log, undo   | Redux action `{ type, payload }` |
+| **Observer**                | Subject notifies whoever subscribed; list can change      | Vacancy → matching applicants    |
 
 **How it works:**
 
-- **Strategy vs CoR** — Strategy: caller *chooses* the algorithm. CoR: caller *does not know* who will handle; order of handlers decides.
+- **Strategy vs CoR** — Strategy: caller _chooses_ the algorithm. CoR: caller _does not know_ who will handle; order of handlers decides.
 - **CoR vs `switch`** — `switch` works when all cases are known and owned here (Redux reducers). CoR wins when handlers, order, or variants are unknown or plugged in later — the dispatcher does not import every handler.
 - **CoR vs middleware** — Doka: middleware lets **every** link run (auth → log → handler). Canonical CoR: **one** handler consumes the request and stops. Refactoring Guru still treats middleware as CoR with inverted “always call `next()` unless you stop.”
 - **Null Object** — same interface, does nothing. Use as `switch` `default` or chain terminator so callers skip `if (handler)`.
-- **Command vs Observer** — Command is a *one-shot* encapsulated request (invoker → `execute`). Observer is *ongoing* subscription (`attach` / `detach` / `notify`).
+- **Command vs Observer** — Command is a _one-shot_ encapsulated request (invoker → `execute`). Observer is _ongoing_ subscription (`attach` / `detach` / `notify`).
 
-| Use | Pattern |
-|-----|---------|
-| Algorithm may change while the app runs | Strategy |
-| Unknown / plugin handlers; don’t couple dispatcher to all of them | CoR |
-| Undo, queue, history, extra payload on an action | Command |
-| Unknown how many listeners; subscription is temporary | Observer |
+| Use                                                               | Pattern  |
+| ----------------------------------------------------------------- | -------- |
+| Algorithm may change while the app runs                           | Strategy |
+| Unknown / plugin handlers; don’t couple dispatcher to all of them | CoR      |
+| Undo, queue, history, extra payload on an action                  | Command  |
+| Unknown how many listeners; subscription is temporary             | Observer |
 
-**Thoughts:** Name the *problem* (swap algorithm / pass until handled / reify an action / notify many). The pattern is vocabulary, not a class count.
+**Thoughts:** Name the _problem_ (swap algorithm / pass until handled / reify an action / notify many). The pattern is vocabulary, not a class count.
 
 **Sources:** [Doka — Behavioral patterns](https://doka.guide/tools/design-patterns-behaviorial/) · [Refactoring Guru — Catalog](https://refactoring.guru/design-patterns/catalog)
 
@@ -336,32 +348,110 @@ Behavioral patterns answer “who does what, and how do they talk?” — they s
 <details>
   <summary>Observer</summary>
 
+<a name="observer"></a>
+
 ### Observer
 
-**Definition:** Subject notifies observers on state change — one-to-many dependency.
+**Definition:** One object changes → all **subscribers** get told. Also called **Listener** or **Event-Subscriber** (GoF behavioral pattern).
 
-**When to use:** DOM events, Redux subscriptions, pub/sub, `EventEmitter`.
+**Simple idea:** A YouTube channel posts a video → every subscriber gets notified. They don't check the channel every hour.
+
+**How it works:**
+
+| Piece                     | Job                           |
+| ------------------------- | ----------------------------- |
+| **Subject** (publisher)   | Owns data + list of listeners |
+| **Observer** (subscriber) | Callback that runs on change  |
+
+1. **Subscribe** — listener joins the list.
+2. **Change** — subject updates its state.
+3. **Notify** — subject calls every listener.
+4. **Unsubscribe** — listener leaves (important — avoids memory leaks).
+
+**Push vs pull:** **Push** = subject sends new data (`notify(25)`). **Pull** = subject says "I changed"; listener reads `getState()`.
+
+| Not the same as | Difference                                      |
+| --------------- | ----------------------------------------------- |
+| **Pub/Sub**     | Goes through a broker/topic, often async        |
+| **Mediator**    | Central router, not a direct fan-out            |
+| **Command**     | One action object — not an ongoing subscription |
+
+See also: [Mediator](#mediator) · [Command](#command).
+
+**When to use:** Button clicks, Redux `subscribe`, `EventEmitter`, any time **many parts** must react to **one** change.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Loose coupling | Order of notification matters |
-| Event-driven UIs | Memory leaks if unsubscribe forgotten |
+| +                                            | −                                          |
+| -------------------------------------------- | ------------------------------------------ |
+| Add listeners without editing the subject    | Easy to forget unsubscribe                 |
+| Subscribe/unsubscribe at runtime             | Harder to trace who fired what             |
+| Subject doesn't know concrete listener types | Listeners can trigger each other in a loop |
+
+#### Common pitfalls
+
+- No cleanup → memory leak (`removeEventListener`, `useEffect` return, store unsubscribe).
+- Listener changes subject → infinite notify loop.
+- One callback? Just pass a function — Observer is for **many** listeners.
 
 **Examples:**
 
 ```js
-class Store {
-  #listeners = new Set();
-  subscribe(fn) { this.#listeners.add(fn); return () => this.#listeners.delete(fn); }
-  notify(data) { this.#listeners.forEach(fn => fn(data)); }
+// 1) Smallest store — subscribe, change, notify
+const listeners = new Set();
+let count = 0;
+
+function subscribe(fn) {
+  listeners.add(fn);
+  return () => listeners.delete(fn); // unsubscribe
 }
+
+function setCount(next) {
+  count = next;
+  listeners.forEach((fn) => fn(count)); // tell everyone
+}
+
+const off = subscribe((n) => console.log("count is", n));
+setCount(1); // logs: count is 1
+off(); // stop listening
 ```
 
-**Thoughts:**
+```js
+// 2) You already use Observer — DOM events
+const btn = document.querySelector("button");
+const onClick = () => console.log("clicked");
 
-React's `useEffect` cleanup is observer unsubscribe.
+btn.addEventListener("click", onClick); // subscribe
+btn.removeEventListener("click", onClick); // unsubscribe
+```
+
+```js
+// 3) Weather station — one source, many displays
+class WeatherStation {
+  #listeners = [];
+  #temp = 20;
+
+  subscribe(fn) {
+    this.#listeners.push(fn);
+  }
+
+  setTemp(c) {
+    this.#temp = c;
+    this.#listeners.forEach((fn) => fn(this.#temp));
+  }
+}
+
+const station = new WeatherStation();
+station.subscribe((t) => console.log("Phone:", t + "°C"));
+station.subscribe((t) => console.log("TV:", t + "°C"));
+station.setTemp(25);
+// Phone: 25°C
+// TV: 25°C
+```
+
+**Thoughts:** Ask: "Who needs to know when this changes?" React `useEffect` cleanup = unsubscribe. Redux `store.subscribe` = Observer.
+
+**Sources:** [Refactoring Guru — Observer](https://refactoring.guru/design-patterns/observer) · [MDN — EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) · [GeeksforGeeks — Observer](https://www.geeksforgeeks.org/system-design/observer-pattern-set-1-introduction/) · [Doka — Behavioral patterns](https://doka.guide/tools/design-patterns-behaviorial/)
 
 ---
 
@@ -392,28 +482,33 @@ Wrapping every object in a factory (“pattern fever”). Confusing simple facto
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Hides construction complexity | Extra indirection |
-| Centralizes defaults (e.g. `dateTime: Date.now()`) | Over-factorying simple DTOs |
-| Fewer typos than duplicating object literals | No `instanceof` unless you share a prototype/`class` |
+| +                                                  | −                                                    |
+| -------------------------------------------------- | ---------------------------------------------------- |
+| Hides construction complexity                      | Extra indirection                                    |
+| Centralizes defaults (e.g. `dateTime: Date.now()`) | Over-factorying simple DTOs                          |
+| Fewer typos than duplicating object literals       | No `instanceof` unless you share a prototype/`class` |
 
 **Examples:**
 
 ```js
 // 1) Construction logic — Doka: compute a field, hide the rest of the recipe
 function createGuitar(stringsCount = 6, maxWeight = 5) {
-  const fretBoardMaterial = maxWeight <= 5 ? 'fir' : 'cedar';
-  return { stringsCount, fretsCount: 24, fretBoardMaterial, boardMaterial: 'maple' };
+  const fretBoardMaterial = maxWeight <= 5 ? "fir" : "cedar";
+  return {
+    stringsCount,
+    fretsCount: 24,
+    fretBoardMaterial,
+    boardMaterial: "maple",
+  };
 }
-createGuitar(6);     // light guitar → fir
-createGuitar(7, 9);  // heavy → cedar
+createGuitar(6); // light guitar → fir
+createGuitar(7, 9); // heavy → cedar
 ```
 
 ```js
 // 2) Many similar objects — defaults (timestamp, kind) in one place
 function createSpending(amount) {
-  return { amount, dateTime: Date.now(), kind: 'spending' };
+  return { amount, dateTime: Date.now(), kind: "spending" };
 }
 const spending1 = createSpending(250);
 const spending2 = createSpending(100);
@@ -422,22 +517,22 @@ const spending2 = createSpending(100);
 ```js
 // 3) Pick implementation by type — simple factory (not Factory Method)
 function createParser(kind) {
-  if (kind === 'json') return (text) => JSON.parse(text);
-  if (kind === 'csv') return (text) => text.split(',').map((s) => s.trim());
+  if (kind === "json") return (text) => JSON.parse(text);
+  if (kind === "csv") return (text) => text.split(",").map((s) => s.trim());
   throw new Error(`Unknown parser: ${kind}`);
 }
-createParser('json')('{"a":1}'); // { a: 1 }
-createParser('csv')('a, b');     // ['a', 'b']
+createParser("json")('{"a":1}'); // { a: 1 }
+createParser("csv")("a, b"); // ['a', 'b']
 ```
 
 ```js
 // 4) Test double — same factory, fake in tests
 function createLogger(env) {
-  if (env === 'test') return { info: () => {} };
+  if (env === "test") return { info: () => {} };
   return { info: (msg) => console.log(msg) };
 }
-createLogger('prod').info('up');
-createLogger('test').info('silent');
+createLogger("prod").info("up");
+createLogger("test").info("silent");
 ```
 
 ```js
@@ -448,19 +543,21 @@ class Department {
     employee.start();
     return employee;
   }
-  createEmployee(id) { throw new Error('override me'); }
+  createEmployee(id) {
+    throw new Error("override me");
+  }
 }
 class ITDepartment extends Department {
   createEmployee(id) {
-    return { id, role: 'programmer', start() {} };
+    return { id, role: "programmer", start() {} };
   }
 }
 class AccountingDepartment extends Department {
   createEmployee(id) {
-    return { id, role: 'accountant', start() {} };
+    return { id, role: "accountant", start() {} };
   }
 }
-new ITDepartment().hire(1).role;          // 'programmer'
+new ITDepartment().hire(1).role; // 'programmer'
 new AccountingDepartment().hire(2).role; // 'accountant'
 ```
 
@@ -468,7 +565,7 @@ new AccountingDepartment().hire(2).role; // 'accountant'
 
 Factories are enough for small objects. Grow into a `class` when you need `this` or methods that must stay on the entity. See [3_js_oop.md — factory](./3_js_oop.md).
 
-Knowledge of *how* to build lives in one function.
+Knowledge of _how_ to build lives in one function.
 
 **Sources:**
 
@@ -491,7 +588,7 @@ Knowledge of *how* to build lives in one function.
 
 Shared contract (`ReservationFactory { reserveInstrument(); notifyPlayer(); }`). Each family (violin, cello) implements that contract. Client `reserve(factory)` never `instanceof`s. Add a viola → new class, not a new branch in `reserve()`.
 
-Refactoring Guru: one factory produces matching products (Windows button + Windows checkbox). Harder to add a *new product type* (every factory gains a method).
+Refactoring Guru: one factory produces matching products (Windows button + Windows checkbox). Harder to add a _new product type_ (every factory gains a method).
 
 **When to use:**
 
@@ -503,38 +600,54 @@ Union types + `instanceof` instead of a shared factory interface — fragile whe
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Compatible product families | Many interfaces / classes |
+| +                                 | −                                               |
+| --------------------------------- | ----------------------------------------------- |
+| Compatible product families       | Many interfaces / classes                       |
 | Client code stays on abstractions | Adding a new product kind touches all factories |
-| No `instanceof` trees | Overkill for one product type |
+| No `instanceof` trees             | Overkill for one product type                   |
 
 **Examples:**
 
 ```js
 // 1) Orchestra family — same API, different products. Client has no instanceof.
 class Violin {
-  playNote(note) { return `violin ${note}`; }
+  playNote(note) {
+    return `violin ${note}`;
+  }
 }
 class Cello {
-  playNote(note) { return `cello ${note}`; }
+  playNote(note) {
+    return `cello ${note}`;
+  }
 }
 class Violinist {
   instrument = new Violin();
-  play(piece) { return piece.map((n) => this.instrument.playNote(n)); }
+  play(piece) {
+    return piece.map((n) => this.instrument.playNote(n));
+  }
 }
 class Cellist {
   instrument = new Cello();
-  play(piece) { return piece.map((n) => this.instrument.playNote(n)); }
+  play(piece) {
+    return piece.map((n) => this.instrument.playNote(n));
+  }
 }
 
 class ViolinReservation {
-  reserveInstrument() { return new Violin(); }
-  notifyPlayer() { return new Violinist(); }
+  reserveInstrument() {
+    return new Violin();
+  }
+  notifyPlayer() {
+    return new Violinist();
+  }
 }
 class CelloReservation {
-  reserveInstrument() { return new Cello(); }
-  notifyPlayer() { return new Cellist(); }
+  reserveInstrument() {
+    return new Cello();
+  }
+  notifyPlayer() {
+    return new Cellist();
+  }
 }
 
 function reserve(factory) {
@@ -542,29 +655,29 @@ function reserve(factory) {
   factory.reserveInstrument();
   return player;
 }
-reserve(new ViolinReservation()).play(['A', 'C']); // ['violin A', 'violin C']
-reserve(new CelloReservation()).play(['A', 'C']);  // ['cello A', 'cello C']
+reserve(new ViolinReservation()).play(["A", "C"]); // ['violin A', 'violin C']
+reserve(new CelloReservation()).play(["A", "C"]); // ['cello A', 'cello C']
 ```
 
 ```js
 // 2) Themed UI kit — button + input stay in the same family (dark vs light)
 const lightUi = {
-  button: (label) => ({ kind: 'button', theme: 'light', label }),
-  input: (name) => ({ kind: 'input', theme: 'light', name }),
+  button: (label) => ({ kind: "button", theme: "light", label }),
+  input: (name) => ({ kind: "input", theme: "light", name }),
 };
 const darkUi = {
-  button: (label) => ({ kind: 'button', theme: 'dark', label }),
-  input: (name) => ({ kind: 'input', theme: 'dark', name }),
+  button: (label) => ({ kind: "button", theme: "dark", label }),
+  input: (name) => ({ kind: "input", theme: "dark", name }),
 };
 
 function loginForm(ui) {
-  return { submit: ui.button('Log in'), email: ui.input('email') };
+  return { submit: ui.button("Log in"), email: ui.input("email") };
 }
 loginForm(lightUi).submit.theme; // 'light'
-loginForm(darkUi).email.theme;   // 'dark'
+loginForm(darkUi).email.theme; // 'dark'
 ```
 
-**Thoughts:** You create *types of products*, not `new Violin()` in the client.
+**Thoughts:** You create _types of products_, not `new Violin()` in the client.
 
 **Sources:**
 
@@ -599,22 +712,33 @@ Builder when a factory with two args is enough. Forgetting `return this` breaks 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Readable optional configuration | Verbose for 2-field objects |
+| +                                | −                                           |
+| -------------------------------- | ------------------------------------------- |
+| Readable optional configuration  | Verbose for 2-field objects                 |
 | Avoids boolean-flag constructors | Mutable builder if reused without `reset()` |
-| Same steps, different products | |
+| Same steps, different products   |                                             |
 
 **Examples:**
 
 ```js
 // 1) Coffee drink — optional ingredients, fluent chain (Doka)
 class DrinkBuilder {
-  settings = { base: 'espresso' };
-  addMilk() { this.settings.milk = true; return this; }
-  addSugar() { this.settings.sugar = true; return this; }
-  addCream() { this.settings.cream = true; return this; }
-  build() { return { ...this.settings }; }
+  settings = { base: "espresso" };
+  addMilk() {
+    this.settings.milk = true;
+    return this;
+  }
+  addSugar() {
+    this.settings.sugar = true;
+    return this;
+  }
+  addCream() {
+    this.settings.cream = true;
+    return this;
+  }
+  build() {
+    return { ...this.settings };
+  }
 }
 const latte = new DrinkBuilder().addMilk().build();
 const extra = new DrinkBuilder().addSugar().addCream().build();
@@ -623,31 +747,53 @@ const extra = new DrinkBuilder().addSugar().addCream().build();
 ```js
 // 2) HTTP request — skip unused options instead of fetch(url, { method, headers, body, … })
 class RequestBuilder {
-  #url = '';
-  #init = { method: 'GET', headers: {} };
-  url(value) { this.#url = value; return this; }
-  method(value) { this.#init.method = value; return this; }
-  header(key, value) { this.#init.headers[key] = value; return this; }
+  #url = "";
+  #init = { method: "GET", headers: {} };
+  url(value) {
+    this.#url = value;
+    return this;
+  }
+  method(value) {
+    this.#init.method = value;
+    return this;
+  }
+  header(key, value) {
+    this.#init.headers[key] = value;
+    return this;
+  }
   json(body) {
     this.#init.body = JSON.stringify(body);
-    return this.header('Content-Type', 'application/json').method('POST');
+    return this.header("Content-Type", "application/json").method("POST");
   }
-  build() { return { url: this.#url, ...this.#init }; }
+  build() {
+    return { url: this.#url, ...this.#init };
+  }
 }
-new RequestBuilder().url('/api/users').json({ name: 'Ada' }).build();
+new RequestBuilder().url("/api/users").json({ name: "Ada" }).build();
 // { url: '/api/users', method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{"name":"Ada"}' }
 ```
 
 ```js
 // 3) Query / test data — named steps, no telescoping constructor
 class UserBuilder {
-  #user = { name: 'anon', role: 'user', active: true };
-  name(value) { this.#user.name = value; return this; }
-  admin() { this.#user.role = 'admin'; return this; }
-  inactive() { this.#user.active = false; return this; }
-  build() { return { ...this.#user }; }
+  #user = { name: "anon", role: "user", active: true };
+  name(value) {
+    this.#user.name = value;
+    return this;
+  }
+  admin() {
+    this.#user.role = "admin";
+    return this;
+  }
+  inactive() {
+    this.#user.active = false;
+    return this;
+  }
+  build() {
+    return { ...this.#user };
+  }
 }
-new UserBuilder().name('Ada').admin().build();
+new UserBuilder().name("Ada").admin().build();
 // { name: 'Ada', role: 'admin', active: true }
 ```
 
@@ -664,28 +810,65 @@ new UserBuilder().name('Ada').admin().build();
 <details>
   <summary>Strategy</summary>
 
+<a name="strategy"></a>
+
 ### Strategy
 
-**Definition:** Family of interchangeable algorithms behind one interface.
+**Definition:** Swap **how** something is done without a giant `if/else`. Each option is a separate strategy; the caller picks one.
 
-**When to use:** Sort comparators, pricing rules, validation strategies, payment methods.
+**Simple idea:** Checkout lets you pay by card or PayPal — same `pay()` button, different logic behind it.
+
+**How it works:**
+
+1. Define a common shape (e.g. `calculate(price)`).
+2. Put each variant in its own function/class.
+3. Context calls `strategy.calculate(price)` — no `switch` inside checkout.
+
+| vs [State](#state) | Strategy                    | State                  |
+| ------------------ | --------------------------- | ---------------------- |
+| Who picks          | You, from outside           | Object switches itself |
+| Example            | `vip` vs `regular` discount | order: draft → sent    |
+
+**When to use:** Payment methods, discount rules, sort comparators, validators — anywhere you'd write `if (type === 'a') … else if …`.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Runtime algorithm swap | More classes/functions |
-| OCP-friendly | |
+| +                                         | −                                  |
+| ----------------------------------------- | ---------------------------------- |
+| Add a new option without editing old code | More small functions/classes       |
+| Swap at runtime                           | Overkill for only 2 fixed branches |
 
 **Examples:**
 
 ```js
-const strategies = {
+// 1) Object map — pick by key (most common in JS)
+const discounts = {
+  regular: (price) => price,
+  vip: (price) => price * 0.8,
+  sale: (price) => price * 0.5,
+};
+
+function checkout(price, customerType) {
+  return discounts[customerType](price);
+}
+
+checkout(100, "vip"); // 80
+checkout(100, "sale"); // 50
+```
+
+```js
+// 2) Same idea with payment providers
+const pay = {
   stripe: (amount) => chargeStripe(amount),
   paypal: (amount) => chargePayPal(amount),
 };
-strategies[provider](total);
+
+pay[provider](total); // no if-chain in the caller
 ```
+
+**Thoughts:** If the object **changes its own mode** over time → [State](#state). If **you** pick the algorithm → Strategy.
+
+**Sources:** [Refactoring Guru — Strategy](https://refactoring.guru/design-patterns/strategy) · [Doka — Behavioral patterns](https://doka.guide/tools/design-patterns-behaviorial/)
 
 ---
 
@@ -714,12 +897,12 @@ Pattern Singleton (limit count) vs DI **singleton lifetime** (same instance inje
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Controlled global access point | Hidden global state — hard to test |
-| Lazy init saves resources | Tight coupling to concrete instance |
-| One connection pool / config object | Concurrency issues in multi-threaded envs (Java) |
-| | Violates DIP if callers can't inject alternatives |
+| +                                   | −                                                 |
+| ----------------------------------- | ------------------------------------------------- |
+| Controlled global access point      | Hidden global state — hard to test                |
+| Lazy init saves resources           | Tight coupling to concrete instance               |
+| One connection pool / config object | Concurrency issues in multi-threaded envs (Java)  |
+|                                     | Violates DIP if callers can't inject alternatives |
 
 **Examples:**
 
@@ -740,7 +923,7 @@ a === b; // true
 ```js
 // 2) Idiomatic JS — one module export per process (config / logger / pool)
 // config.js
-export const config = Object.freeze({ apiUrl: process.env.API_URL ?? '/api' });
+export const config = Object.freeze({ apiUrl: process.env.API_URL ?? "/api" });
 // importers share the same binding — no class Singleton needed
 ```
 
@@ -753,10 +936,14 @@ class Logger {
     if (Logger.#instance) return Logger.#instance;
     Logger.#instance = this;
   }
-  info(msg) { this.#lines.push(msg); }
-  dump() { return this.#lines.slice(); }
+  info(msg) {
+    this.#lines.push(msg);
+  }
+  dump() {
+    return this.#lines.slice();
+  }
 }
-new Logger().info('boot');
+new Logger().info("boot");
 new Logger().dump(); // ['boot'] — same instance
 ```
 
@@ -807,11 +994,11 @@ Callers write `getUser('42')` or `heatWater(machine)` instead of repeating token
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Easier API for consumers | Can become god facade if logic creeps in |
-| Hides legacy or complex internals | Extra layer to maintain |
-| Stable public surface while subsystem refactors | May hide needed low-level control |
+| +                                               | −                                        |
+| ----------------------------------------------- | ---------------------------------------- |
+| Easier API for consumers                        | Can become god facade if logic creeps in |
+| Hides legacy or complex internals               | Extra layer to maintain                  |
+| Stable public surface while subsystem refactors | May hide needed low-level control        |
 
 **Examples:**
 
@@ -826,7 +1013,7 @@ export async function getUser(id) {
   return res.json();
 }
 
-const user = await getUser('42');
+const user = await getUser("42");
 
 // Same idea: many atomic SDK calls → one use case
 function heatWater(machine) {
@@ -869,20 +1056,18 @@ function heatWater(machine) {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Reuse existing code with new interfaces | Thin adapters can pile up |
-| Integrate third-party SDKs cleanly | Mapping layer may lag API updates |
-| Isolate legacy from modern modules | Extra indirection |
+| +                                       | −                                 |
+| --------------------------------------- | --------------------------------- |
+| Reuse existing code with new interfaces | Thin adapters can pile up         |
+| Integrate third-party SDKs cleanly      | Mapping layer may lag API updates |
+| Isolate legacy from modern modules      | Extra indirection                 |
 
 **Examples:**
 
 ```js
 function fakeAPI() {
   return {
-    entries: [
-      { user_name: 'Ada', email_address: 'a@x.com', ID: '1' },
-    ],
+    entries: [{ user_name: "Ada", email_address: "a@x.com", ID: "1" }],
   };
 }
 
@@ -930,34 +1115,34 @@ const compatible = responseToWantedAdapter(fakeAPI());
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                               | −                                        |
+| ----------------------------------------------- | ---------------------------------------- |
 | Open/closed — extend without modifying original | Many wrappers → hard to trace call stack |
-| Compose behavior at runtime | Order of decorators matters |
-| Alternative to deep inheritance trees | Can obscure what's actually running |
+| Compose behavior at runtime                     | Order of decorators matters              |
+| Alternative to deep inheritance trees           | Can obscure what's actually running      |
 
 **Examples:**
 
 ```js
 function loggingDecorator(fn) {
   return function wrapped(...args) {
-    console.log(`log: ${args.join(', ')}`);
+    console.log(`log: ${args.join(", ")}`);
     return fn(...args);
   };
 }
 
-const user = { name: 'Ada', email: 'a@x.com' };
+const user = { name: "Ada", email: "a@x.com" };
 function update(name, email) {
   user.name = name;
   user.email = email;
 }
 
 const updateWithLogging = loggingDecorator(update);
-updateWithLogging('Maria', 'm@x.com');
+updateWithLogging("Maria", "m@x.com");
 // console: "log: Maria, m@x.com" — then user becomes { name: 'Maria', email: 'm@x.com' }
 ```
 
-**Thoughts:** TypeScript `experimentalDecorators` / stage-3 decorators formalize this for classes — the *pattern* is older and works as a HOF in JS. Decorator vs Proxy: decorator is an explicit wrapper that *adds* behavior; a GoF Proxy *gates* the original. Stacking (`EncryptionDecorator(CompressionDecorator(file))`) is the GoF picture.
+**Thoughts:** TypeScript `experimentalDecorators` / stage-3 decorators formalize this for classes — the _pattern_ is older and works as a HOF in JS. Decorator vs Proxy: decorator is an explicit wrapper that _adds_ behavior; a GoF Proxy _gates_ the original. Stacking (`EncryptionDecorator(CompressionDecorator(file))`) is the GoF picture.
 
 **Sources:**
 
@@ -989,31 +1174,31 @@ Reads go through `get`. The trap blocks `ssn` on the **proxy only**. `Reflect.ge
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Lazy load, access control, cache, logging without changing the real object | Extra hop; debugging through traps is harder |
-| Transparent to callers that already use the target API | `Proxy` traps have invariants (e.g. non-writable data props) |
-| Native `Proxy` is how Vue 3 tracks reads | Overhead on hot paths |
+| +                                                                          | −                                                            |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Lazy load, access control, cache, logging without changing the real object | Extra hop; debugging through traps is harder                 |
+| Transparent to callers that already use the target API                     | `Proxy` traps have invariants (e.g. non-writable data props) |
+| Native `Proxy` is how Vue 3 tracks reads                                   | Overhead on hot paths                                        |
 
 **Examples:**
 
 ```js
-const original = { name: 'Maria', email: 'hi@site.com', ssn: '000' };
+const original = { name: "Maria", email: "hi@site.com", ssn: "000" };
 
 const proxied = new Proxy(original, {
   get(target, prop, receiver) {
-    if (prop === 'ssn') throw new Error('Access denied');
+    if (prop === "ssn") throw new Error("Access denied");
     console.log(`get ${String(prop)}`);
     return Reflect.get(target, prop, receiver);
   },
 });
 
-proxied.name;  // logs "get name", then 'Maria'
-proxied.ssn;   // throws 'Access denied'
-original.ssn;  // still '000' — the real object is not mutated
+proxied.name; // logs "get name", then 'Maria'
+proxied.ssn; // throws 'Access denied'
+original.ssn; // still '000' — the real object is not mutated
 ```
 
-**Thoughts:** A GoF Proxy does not exist to *change the product’s public behavior* the way a Decorator does — it *mediates*. The article-style demo that returns `'YOU HAVE BEEN PWND!'` for every field is interception, not a typical production proxy. Language `Proxy` ≠ always the design pattern.
+**Thoughts:** A GoF Proxy does not exist to _change the product’s public behavior_ the way a Decorator does — it _mediates_. The article-style demo that returns `'YOU HAVE BEEN PWND!'` for every field is interception, not a typical production proxy. Language `Proxy` ≠ always the design pattern.
 
 **Sources:**
 
@@ -1028,65 +1213,67 @@ original.ssn;  // still '000' — the real object is not mutated
 
 ### Mediator
 
-**Definition:** Behavioral pattern — defines an object that **centralizes** how other objects interact, so components don't reference each other directly.
+**Definition:** One **middle object** routes messages between parts. Components talk to the mediator — not to each other.
+
+**Simple idea:** Chat room — you send a message to the room; the room delivers it to everyone else. Users don't hold references to every other user.
 
 **How it works:**
 
-- Colleagues send messages to **Mediator**, not to each other.
-- Mediator routes messages, coordinates state, triggers side effects.
-- Opposite of letting every component hold references to every other component.
+1. Components register with the mediator.
+2. Component A calls `mediator.notify("message", data)`.
+3. Mediator decides who gets it and forwards.
 
-| Pattern | Coupling | Mediator role |
-|---------|----------|---------------|
-| **Direct calls** | A knows B, C | None |
-| **Mediator** | A knows only Mediator | In-process coordinator |
-| **Pub/Sub** | Publisher knows broker only | Broker is often a Mediator + async transport |
+| vs [Observer](#observer) | Mediator                 | Observer                    |
+| ------------------------ | ------------------------ | --------------------------- |
+| Shape                    | Hub routes between peers | One source fans out to many |
+| Example                  | Chat room                | Store `subscribe`           |
 
-Observer — subject holds list of observers and notifies directly. Mediator — colleagues are decoupled; only mediator knows the graph.
-
-Mediator coordinates **in-process** communication. Saga coordinates **distributed transactions** across services with compensations.
-
-**When to use:**
-
-- Chat room / group messaging — users talk through room object.
-- Air traffic control UI — many forms/dialogs coordinated by one controller.
-- **NestJS** — `CommandBus`, `EventBus`, `QueryBus` (CQRS module).
-- **Redux** — store mediates between actions and reducers (components don't call each other).
+**When to use:** Chat, complex forms with linked fields, Redux store (actions → reducers), NestJS event bus.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Reduces tangled dependencies (N×N → N) | Mediator can become a god-object |
-| Single place to change interaction rules | Extra indirection |
-| Components stay focused on their job | |
+| +                                 | −                                |
+| --------------------------------- | -------------------------------- |
+| No spaghetti of A→B, A→C, B→C     | Mediator can become a god-object |
+| One place to change routing rules | Extra layer                      |
 
 **Examples:**
 
-```ts
-interface Mediator {
-  notify(sender: object, event: string, payload?: unknown): void;
-}
+```js
+// Chat room — mediator delivers messages
+const chatRoom = {
+  users: [],
 
-class ChatRoom implements Mediator {
-  private users = new Map<string, User>();
+  join(user) {
+    this.users.push(user);
+  },
 
-  register(user: User) {
-    this.users.set(user.name, user);
-    user.setMediator(this);
-  }
-
-  notify(sender: User, event: string, payload?: unknown) {
-    if (event === 'message') {
-      for (const user of this.users.values()) {
-        if (user !== sender) user.receive(payload as string);
-      }
+  send(from, text) {
+    for (const user of this.users) {
+      if (user !== from) user.onMessage(text);
     }
-  }
-}
+  },
+};
+
+const alice = {
+  name: "Alice",
+  onMessage(t) {
+    console.log("Alice got:", t);
+  },
+};
+const bob = {
+  name: "Bob",
+  onMessage(t) {
+    console.log("Bob got:", t);
+  },
+};
+
+chatRoom.join(alice);
+chatRoom.join(bob);
+chatRoom.send(alice, "Hi!"); // Bob got: Hi!
 ```
 
-**Thoughts:** Use when many-to-many object communication creates spaghetti — centralize routing, keep endpoints dumb.
+**Thoughts:** Many-to-many talk → Mediator. One thing changes, many listen → [Observer](#observer).
 
 **Sources:** [Refactoring Guru — Mediator](https://refactoring.guru/design-patterns/mediator)
 
@@ -1095,39 +1282,56 @@ class ChatRoom implements Mediator {
 <details>
   <summary>Chain of Responsibility</summary>
 
+<a name="chain-of-responsibility"></a>
+
 ### Chain of Responsibility
 
-**Definition:** Pass a request along linked handlers until **one** handles it (or the chain ends). Each handler knows only `setNext` / `handle`, not the full set of siblings.
+**Definition:** Pass a request down a line of handlers. Each one says **"not me, next"** or **"I got it, stop"**.
 
-**When to use:** Handler set, order, or variants are **not all known** up front. If the set is closed and owned in one file, a `switch` is enough (higher coupling).
+**Simple idea:** Support ticket: bot tries first → if stuck, junior agent → if stuck, senior agent.
+
+**How it works:**
+
+1. Request hits handler A.
+2. A handles it **or** passes to B.
+3. Stops when someone handles it (or the chain ends).
+
+**Classic CoR** = first match wins. **Middleware** (Express `next()`) = every layer runs — similar idea, different stop rule.
+
+**When to use:** You don't know all handlers upfront, or you want to plug them in without rewriting the dispatcher. If it's always the same 3 cases in one file — a `switch` is fine.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Caller need not import every handler or know their order | Request can “fall off” the end |
-| Plug in handlers without rewriting the dispatcher | Order and stop-vs-continue must be explicit |
+| +                                        | −                                         |
+| ---------------------------------------- | ----------------------------------------- |
+| Add handlers without touching the caller | Request can reach the end with no handler |
+| Each handler does one job                | Order matters — easy to get wrong         |
 
 **Examples:**
 
-```ts
-abstract class Handler {
-  protected next?: Handler;
-  setNext(h: Handler) { this.next = h; return h; }
-  handle(currency: string, amount: number) {
-    this.next?.handle(currency, amount) ?? console.log('No handler');
-  }
+```js
+// Handlers as simple functions — pass to next if you can't handle
+function usdHandler(currency, amount, next) {
+  if (currency === "USD") return console.log(`Charged $${amount}`);
+  return next?.(currency, amount);
 }
-class UsdHandler extends Handler {
-  handle(currency: string, amount: number) {
-    if (currency === 'USD') return console.log(`charged ${amount}$`);
-    super.handle(currency, amount);
-  }
+
+function eurHandler(currency, amount, next) {
+  if (currency === "EUR") return console.log(`Charged €${amount}`);
+  return next?.(currency, amount);
 }
-// rub.setNext(usd).setNext(eur) — start from any link that is connected
+
+function run(currency, amount) {
+  usdHandler(currency, amount, (c, a) =>
+    eurHandler(c, a, () => console.log("No handler for", c)),
+  );
+}
+
+run("USD", 50); // Charged $50
+run("GBP", 50); // No handler for GBP
 ```
 
-**Thoughts:** **Null Object** = same interface, no-op — useful as `default` in a `switch`. **Middleware** usually lets *each* layer run (`next()`); Doka treats that as similar-but-not-the-same. Refactoring Guru: middleware is still CoR with inverted continue/stop.
+**Thoughts:** Middleware runs **all** layers (`next()`). Classic CoR stops at the **first** match. See [Behavioral cheat sheet](#behavioral-patterns--cheat-sheet).
 
 **Sources:** [Doka — Behavioral](https://doka.guide/tools/design-patterns-behaviorial/) · [Refactoring Guru — Chain of Responsibility](https://refactoring.guru/design-patterns/chain-of-responsibility)
 
@@ -1136,34 +1340,75 @@ class UsdHandler extends Handler {
 <details>
   <summary>Command</summary>
 
+<a name="command"></a>
+
 ### Command
 
-**Definition:** Turn an action (and the data it needs) into an object so you can delay, queue, log, or undo it — invoker calls `execute` without knowing the receiver’s internals.
+**Definition:** Wrap an action in an **object** so you can run it later, queue it, log it, or **undo** it.
 
-**When to use:** Operation needs extra payload; buffer/queue/history of actions; **undo**.
+**Simple idea:** Text editor Ctrl+Z — each edit is saved as a command; undo reverses the last one.
+
+**How it works:**
+
+| Piece        | Job                                                  |
+| ------------ | ---------------------------------------------------- |
+| **Command**  | `{ do(), undo() }` — the action + its reverse        |
+| **Invoker**  | Button, menu, queue — calls `do()`                   |
+| **Receiver** | The thing that actually changes (editor, API, store) |
+
+Not [Observer](#observer) (ongoing subscription). Not [Strategy](#strategy) (pick an algorithm — Command is one specific action).
+
+**When to use:** Undo/redo, job queues, audit logs, Redux actions.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Undo / history / job queue | Extra types |
-| Invoker decoupled from *how* work is done | Easy to over-command simple clicks |
+| +                         | −                               |
+| ------------------------- | ------------------------------- |
+| Undo and history for free | Extra objects for simple clicks |
+| Queue or delay work       | Easy to over-engineer           |
 
 **Examples:**
 
-```ts
-// Classic: command *is* the handler
-const updateUser = { execute(payload: User) { /* mutate / API */ } };
+```js
+// 1) Undo stack — the core idea in plain JS
+const history = [];
+const editor = { text: "" };
 
-// Common split (Redux / CQRS): data object + handler outside
-const action = { type: 'UPDATE_USER', payload: { name: 'Alex' } };
-function userReducer(state, action) {
-  if (action.type === 'UPDATE_USER') return { ...state, ...action.payload };
-  return state;
+const addHello = {
+  do() {
+    editor.text += "hello";
+  },
+  undo() {
+    editor.text = editor.text.slice(0, -5);
+  },
+};
+
+function run(cmd) {
+  cmd.do();
+  history.push(cmd);
 }
+
+function undo() {
+  history.pop()?.undo();
+}
+
+run(addHello); // editor.text = "hello"
+undo(); // editor.text = ""
 ```
 
-**Thoughts:** Redux **actions** are Command *data*; the reducer is the handler (not inside the action). Application-layer “use cases” often use `Command` + `CommandHandler`.
+```js
+// 2) Redux — action is command data; reducer is the receiver
+const action = { type: "SET_NAME", payload: "Alex" };
+
+function reducer(state, action) {
+  if (action.type === "SET_NAME") return { ...state, name: action.payload };
+  return state;
+}
+
+reducer({ name: "" }, action); // { name: "Alex" }
+```
+
+**Thoughts:** Redux `dispatch(action)` = send a command. The reducer does the work. Contrast [Observer](#observer) (many listeners, ongoing) and [Chain of Responsibility](#chain-of-responsibility) (pass until handled).
 
 **Sources:** [Doka — Behavioral](https://doka.guide/tools/design-patterns-behaviorial/) · [Refactoring Guru — Command](https://refactoring.guru/design-patterns/command)
 
@@ -1172,32 +1417,71 @@ function userReducer(state, action) {
 <details>
   <summary>State</summary>
 
+<a name="state"></a>
+
 ### State
 
-**Definition:** Allow an object to alter its behavior when its internal state changes — object appears to change its class.
+**Definition:** Object **behaves differently** depending on its current mode. Instead of `if (status === 'draft') … else if …`, each mode is its own object.
 
-**When to use:** Workflow engines, TCP connection states, media player (playing/paused/stopped), order lifecycle.
+**Simple idea:** Order is `draft` → you can submit. Once `sent` → submit throws "already sent". Same button, different rules per mode.
+
+**How it works:**
+
+1. Object holds `state` (current mode).
+2. Methods call `this.state.submit()` — not a big switch.
+3. State object decides what happens **and** which mode comes next.
+
+| vs [Strategy](#strategy) | State                  | Strategy                |
+| ------------------------ | ---------------------- | ----------------------- |
+| Who picks                | Object switches itself | You pick from outside   |
+| Example                  | draft → sent → done    | vip vs regular discount |
+
+**When to use:** Order lifecycle, media player (play/pause/stop), wizard steps, connection status.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Eliminates large conditionals | Many state classes |
-| State transitions explicit | Overkill for few states |
+| +                            | −                           |
+| ---------------------------- | --------------------------- |
+| No giant `if/else` on status | More objects for each mode  |
+| Invalid actions are obvious  | Overkill for 2 simple flags |
 
 **Examples:**
 
-```ts
-type OrderState = { submit(order: Order): void };
-const draft: OrderState = {
-  submit(order) { order.state = pending; order.notifyWarehouse(); },
+```js
+// 1) Order — each state knows what's allowed
+const sent = {
+  submit() {
+    throw new Error("Already sent");
+  },
 };
-const pending: OrderState = {
-  submit() { throw new Error('Already submitted'); },
+
+const draft = {
+  submit(order) {
+    order.state = sent;
+    console.log("Sent to warehouse");
+  },
 };
+
+const order = { state: draft };
+
+order.state.submit(order); // ok → sent
+order.state.submit(order); // throws: Already sent
 ```
 
-**Thoughts:** State vs Strategy — State transitions are internal and often define valid next states. Strategy is chosen externally and interchangeable.
+```js
+// 2) Traffic light — behavior changes with color
+const green = { next: () => yellow };
+const yellow = { next: () => red };
+const red = { next: () => green };
+
+let light = green;
+light = light.next(); // yellow
+light = light.next(); // red
+```
+
+**Thoughts:** Object **changes its own mode** → State. **You** pick the algorithm → [Strategy](#strategy).
+
+**Sources:** [Refactoring Guru — State](https://refactoring.guru/design-patterns/state) · [Doka — Behavioral patterns](https://doka.guide/tools/design-patterns-behaviorial/)
 
 </details>
 
@@ -1219,11 +1503,11 @@ const pending: OrderState = {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Testable domain logic with in-memory fakes | Extra abstraction over ORM |
-| Centralized query logic | Generic repos become god objects |
-| Persistence technology can change | Mapping entity ↔ DB row overhead |
+| +                                          | −                                |
+| ------------------------------------------ | -------------------------------- |
+| Testable domain logic with in-memory fakes | Extra abstraction over ORM       |
+| Centralized query logic                    | Generic repos become god objects |
+| Persistence technology can change          | Mapping entity ↔ DB row overhead |
 
 **Examples:**
 
@@ -1236,13 +1520,17 @@ type UserRepository = {
 
 class InMemoryUserRepo implements UserRepository {
   #store = new Map<string, User>();
-  async findById(id) { return this.#store.get(id) ?? null; }
-  async save(user) { this.#store.set(user.id, user); }
+  async findById(id) {
+    return this.#store.get(id) ?? null;
+  }
+  async save(user) {
+    this.#store.set(user.id, user);
+  }
 }
 
 async function inviteUser(email: string, repo: UserRepository) {
   const existing = await repo.findById(email); // domain doesn't know storage
-  if (existing) throw new Error('Already exists');
+  if (existing) throw new Error("Already exists");
   await repo.save({ id: crypto.randomUUID(), email });
 }
 ```

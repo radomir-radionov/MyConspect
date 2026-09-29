@@ -1,181 +1,26 @@
 # Next.js — Platform
 
-Оптимизации, прокси, конфиг, Vercel, миграция и отладка.
+Прокси, конфиг, Vercel, миграция и отладка.
 
 [ ← Вернуться в центр](./4_nextjs.md)
 
 ### Related docs
 
-- [Next.js — Ядро](./4_nextjs_core.md) · [Next.js — Данные](./4_nextjs_data.md) · [Next.js — Маршрутизация](./4_nextjs_routing.md) · [Next.js — Платформа](./4_nextjs_platform.md) · [Next.js — Интервью](./4_nextjs_interview.md)
+- [Next.js — Ядро](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Данные](./4_nextjs_data.md) · [Next.js — Маршрутизация](./4_nextjs_routing.md) · [Next.js — Оптимизации](./4_nextjs_optimizations.md) · [Next.js — Платформа](./4_nextjs_platform.md) · [Next.js — Интервью](./4_nextjs_interview.md)
 
 ### Sections
 
-- [14. Built-in optimizations](#14-built-in-optimizations)
-- [15. Proxy & middleware](#15-proxy-middleware)
-- [16. Configuration](#16-configuration)
-- [17. Vercel deployment](#17-vercel-deployment)
-- [18. Migration & pitfalls](#18-migration-pitfalls)
-- [19. Performance & debugging](#19-performance-debugging)
+- [1. Proxy & middleware](#1-proxy-and-middleware)
+- [2. Configuration](#2-configuration)
+- [3. Vercel deployment](#3-vercel-deployment)
+- [4. Migration & pitfalls](#4-migration-and-pitfalls)
+- [5. Debugging](#5-debugging)
 
 ---
 
-## 14. Built-in optimizations
+<a name="1-proxy-and-middleware"></a>
 
-_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
-
-<details>
-  <summary>next/image</summary>
-
-### next/image
-
-**Definition:** Компонент изображения с автоматической оптимизацией — изменение размера, WebP/AVIF, отложенная загрузка, размытие заполнителя.
-
-**When to use:** Всегда предпочитаю сырому `<img>` для фотографий и изображений героев.
-
-**Pluses and minuses:**
-
-| +                                             | −                                                                 |
-| --------------------------------------------- | ----------------------------------------------------------------- |
-| Лучше LCP, меньше полезной нагрузки           | Требуется конфигурация для удаленных доменов                      |
-| Предотвращает сдвиг макета с `width`/`height` | Необходимость обработки SVG `unoptimized` или другой подход       |
-| `priority` / `preload` для изображений LCP    | Оптимизация времени сборки добавляет этап развертывания на Vercel |
-
-**Examples:**
-
-```tsx
-import Image from "next/image";
-
-<Image
-  src="/hero.jpg"
-  alt="Hero"
-  width={1200}
-  height={630}
-  priority
-  sizes="(max-width: 768px) 100vw, 50vw"
-/>;
-```
-
-```ts
-// next.config.ts — remote images
-const nextConfig = {
-  images: {
-    remotePatterns: [{ protocol: "https", hostname: "cdn.example.com" }],
-  },
-};
-```
-
-**Thoughts:** Для изображения LCP `priority` отключает отложенную загрузку и повышает приоритет выборки. В Next.js 16 предпочитают `preload` (`priority` устарел). Разбивка → [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint).
-
-**Sources:** [nextjs.org/docs/app/api-reference/comComponents/image](https://nextjs.org/docs/app/api-reference/comComponents/image)
-
-</details>
-
-<details>
-  <summary>next/font</summary>
-
-### next/font
-
-**Definition:** Самостоятельная загрузка шрифтов без смещения макета. Шрифты загружаются во время сборки — во время выполнения запросы к сети Google Fonts не требуются.
-
-**Pluses and minuses:**
-
-| +                                | −                                             |
-| -------------------------------- | --------------------------------------------- |
-| Нулевой CLS из-за замены шрифтов | Выбор подмножества влияет на охват персонажей |
-| Нет внешней зависимости от CDN   | Несколько весов шрифта увеличивают пакет      |
-
-**Examples:**
-
-```tsx
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" className={geistSans.variable}>
-      <body>{children}</body>
-    </html>
-  );
-}
-```
-
-**Thoughts:** Не используйте `<link href="fonts.googleapis.com">` - использовать `next/font` для производственных приложений на Vercel.
-
-**Sources:** [nextjs.org/docs/app/api-reference/comComponents/font](https://nextjs.org/docs/app/api-reference/comComponents/font)
-
-</details>
-
-<details>
-  <summary>next/script</summary>
-
-### next/script
-
-**Definition:**
-
-Оптимизирована загрузка сторонних скриптов со стратегиями, позволяющими избежать блокировки основного потока.
-
-| Стратегия                         | Когда                                           |
-| --------------------------------- | ----------------------------------------------- |
-| `beforeInteractive`               | Критические сценарии — внедрены в исходный HTML |
-| `afterInteractive` (по умолчанию) | Аналитика, виджеты чатов                        |
-| `lazyOnload`                      | Трекеры с низким приоритетом                    |
-| `worker`                          | Экспериментально — запуск в веб-воркере         |
-
-**Examples:**
-
-```tsx
-import Script from "next/script";
-
-<Script
-  src="https://analytics.example.com/script.js"
-  strategy="afterInteractive"
-/>;
-```
-
-**Sources:** [nextjs.org/docs/app/api-reference/comComponents/script](https://nextjs.org/docs/app/api-reference/comComponents/script)
-
-</details>
-
-<details>
-  <summary>@next/third-parties</summary>
-
-### @next/third-parties
-
-**Definition:** Официальные оболочки для Google Analytics, Google Tag Manager, встраивания YouTube с оптимизированной загрузкой.
-
-**Examples:**
-
-```tsx
-import { GoogleAnalytics } from "@next/third-parties/google";
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html>
-      <body>{children}</body>
-      <GoogleAnalytics gaId="G-XXXXXXXX" />
-    </html>
-  );
-}
-```
-
----
-
-**Sources:** [nextjs.org/docs/app/building-your-application/optimizing/ Third-party-libraries](https://nextjs.org/docs/app/building-your-application/optimizing/ Third-party-libraries)
-
-</details>
-
-<a name="15-proxy--middleware"></a>
-
-## 15. Proxy & middleware
+## 1. Proxy & middleware
 
 _Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
@@ -353,9 +198,9 @@ export const config = {
 
 </details>
 
-<a name="16-configuration"></a>
+<a name="2-configuration"></a>
 
-## 16. Configuration
+## 2. Configuration
 
 _Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
@@ -541,9 +386,9 @@ export async function GET() {
 
 </details>
 
-<a name="17-vercel-deployment"></a>
+<a name="3-vercel-deployment"></a>
 
-## 17. Vercel deployment
+## 3. Vercel deployment
 
 _Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
@@ -563,14 +408,14 @@ Vercel — это **родная платформа** для Next.js: сборк
 | **Производство**             | Атомное продвижение при слиянии — обновлены бессерверные функции CDN +                   |
 | **Откат**                    | Мгновенный возврат к предыдущему развертыванию на информационной панели                  |
 
-| Особенность                       | Выгода                                                                                   |
-| --------------------------------- | ---------------------------------------------------------------------------------------- |
-| **Предварительные развертывания** | Проверка качества и проектирование реальной инфраструктуры перед слиянием                |
-| **Интеграция с Git**              | Автоматическое развертывание;проверки статуса PR                                         |
-| **Периферийная сеть**             | Глобальный CDN для статических ресурсов и кэшированный HTML-код полного маршрута         |
-| **Гибкие вычисления**             | Общий бессерверный пул — меньше холодных запусков по сравнению с классическими функциями |
-| **Аналитика/Статистика скорости** | Core Web Vitals без ручного инструментирования                                           |
-| **Обзор среды**                   | Другой `DATABASE_URL` для предварительного просмотра и производства                      |
+| Особенность                       | Выгода                                                                                                                    |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Предварительные развертывания** | Проверка качества и проектирование реальной инфраструктуры перед слиянием                                                 |
+| **Интеграция с Git**              | Автоматическое развертывание;проверки статуса PR                                                                          |
+| **Периферийная сеть**             | Глобальный CDN для статических ресурсов и кэшированный HTML-код полного маршрута                                          |
+| **Гибкие вычисления**             | Общий бессерверный пул — меньше холодных запусков по сравнению с классическими функциями                                  |
+| **Аналитика/Статистика скорости** | Core Web Vitals без ручного инструментирования — [Core Web Vitals](./4_nextjs_optimizations.md#core-web-vitals-on-vercel) |
+| **Обзор среды**                   | Другой `DATABASE_URL` для предварительного просмотра и производства                                                       |
 
 **When to use:**
 
@@ -694,9 +539,9 @@ CMD ["node", "server.js"]
 
 </details>
 
-<a name="18-migration--pitfalls"></a>
+<a name="4-migration-and-pitfalls"></a>
 
-## 18. Migration & pitfalls
+## 4. Migration & pitfalls
 
 _Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
@@ -757,35 +602,15 @@ Pages Router и устаревшие API Next.js заменены шаблона
 
 Серверный HTML не соответствует клиентскому рендерингу — React не может согласовать.
 
-| Причина                                      | Исправить                                               |
-| -------------------------------------------- | ------------------------------------------------------- |
-| `Date.now()` / `Math.random()` в рендеринге  | Генерировать в `useEffect` или перейти с сервера        |
-| `typeof window !== 'undefined'` филиалы      | Использовать `useEffect` или только серверный компонент |
-| Неверное вложение HTML (`<p><div>`)          | Исправить структуру HTML                                |
-| Расширения браузера, изменяющие DOM          | Тест инкогнито                                          |
-| Сторонние библиотеки, предполагающие браузер | Динамический импорт с `ssr: false`                      |
+| Причина                                      | Исправить                                                                                           |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `Date.now()` / `Math.random()` в рендеринге  | Генерировать в `useEffect` или перейти с сервера                                                    |
+| `typeof window !== 'undefined'` филиалы      | Использовать `useEffect` или только серверный компонент                                             |
+| Неверное вложение HTML (`<p><div>`)          | Исправить структуру HTML                                                                            |
+| Расширения браузера, изменяющие DOM          | Тест инкогнито                                                                                      |
+| Сторонние библиотеки, предполагающие браузер | Динамический импорт с `ssr: false` — [Bundle pitfalls](./4_nextjs_optimizations.md#bundle-pitfalls) |
 
 **Sources:** [nextjs.org/docs/messages/react-гидратация-error](https://nextjs.org/docs/messages/react-гидратация-error)
-
-</details>
-
-<details>
-  <summary>Bundle pitfalls</summary>
-
-### Bundle pitfalls
-
-**Definition:**
-
-Распространенные ошибки, которые приводят к раздуванию клиентских пакетов или утечке серверного кода в браузер.
-
-| Ошибка                                    | Исправить                                        |
-| ----------------------------------------- | ------------------------------------------------ |
-| Импорт `fs`, `db` в клиентском компоненте | Сохраняйте доступ к данным в компонентах сервера |
-| `"use client"` в корне страницы           | Нажмите на листовые компоненты                   |
-| Файлы ствола, импортирующие серверный код | Прямой импорт или отдельные точки ввоза          |
-| Тяжелые библиотеки в макете               | Динамический `import()` с состоянием загрузки    |
-
-**Sources:** [nextjs.org/docs/app/guides/lazy-loading](https://nextjs.org/docs/app/guides/lazy-loading)
 
 </details>
 
@@ -949,66 +774,17 @@ export default async function AdminPage() {
 - Используйте Реагировать `cache()` вокруг `getSession()` — дедупликация в рамках одного запроса.
 - Действия сервера должны вызывать `getSession()` еще раз — не доверяйте идентификаторам пользователей, отправленным клиентом.
 - Для обратных вызовов OAuth используйте обработчик маршрута (`app/api/auth/callback/route.ts`), чтобы установить файлы cookie и перенаправить.
-- Перекрестная ссылка: [cookies() и заголовки()](./4_nextjs_core.md#cookies-headers), [RSC-безопасность](#rsc-security).
+- Перекрестная ссылка: [cookies() и заголовки()](./4_nextjs_rendering.md#cookies-headers), [RSC-безопасность](#rsc-security).
 
 **Sources:** [nextjs.org/docs/app/guides/authentication](https://nextjs.org/docs/app/guides/authentication)
 
 </details>
 
-<a name="19-performance--debugging"></a>
+<a name="5-debugging"></a>
 
-## 19. Performance & debugging
+## 5. Debugging
 
 _Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
-
-<details>
-  <summary>Bundle analysis</summary>
-
-### Bundle analysis
-
-**Definition:** Определите крупные клиентские пакеты перед их отправкой.
-
-**Examples:**
-
-```bash
-# Analyze with @next/bundle-analyzer
-ANALYZE=true npm run build
-```
-
-```ts
-// next.config.ts
-import bundleAnalyzer from "@next/bundle-analyzer";
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === "true",
-});
-export default withBundleAnalyzer(nextConfig);
-```
-
-**Sources:** [nextjs.org/docs/app/guides/package-bundling](https://nextjs.org/docs/app/guides/package-bundling)
-
-</details>
-
-<details>
-  <summary>optimizePackageImports</summary>
-
-### optimizePackageImports
-
-**Definition:** Автоматическое встряхивание тяжелых значков/библиотек пользовательского интерфейса. Бочка `index` в противном случае повторный экспорт может привести к попаданию неиспользуемых модулей в пакет клиента и повредить **INP** — [6_web_api.md](./6_web_api_security.md#inp-interaction-to-next-paint).
-
-**Examples:**
-
-```ts
-const nextConfig = {
-  experimental: {
-    optimizePackageImports: ["lucide-react", "@mui/material", "date-fns"],
-  },
-};
-```
-
-**Sources:** [nextjs.org/docs/app/api-reference/config/next-config-js/optimizePackageImports](https://nextjs.org/docs/app/api-reference/config/next-config-js/optimizePackageImports)
-
-</details>
 
 <details>
   <summary>Debug build paths</summary>
@@ -1129,108 +905,6 @@ it("rejects empty title", async () => {
 - Добавить драматурга для формы действия на сервере, отправить + `revalidatePath` видимость. Пирамида + карта инструментов: [7_special.md — E2E](./7_special_testing.md#e2e-testing).
 
 **Sources:** [nextjs.org/docs/app/guides/testing](https://nextjs.org/docs/app/guides/testing) · [vitest.dev](https://vitest.dev/)
-
-</details>
-
-<details>
-  <summary>Core Web Vitals on Vercel</summary>
-
-### Core Web Vitals on Vercel
-
-**Definition:** Полевые показатели Google для реального взаимодействия с пользователем. **Основные** показатели сегодня: **LCP**, **INP**, **CLS**. **TTFB** — это диагностический показатель (насколько быстро поступает первый байт). Он влияет на LCP, но сам по себе не является ключевым параметром сети.
-
-**How it works:**
-
-Chrome записывает метрики; CruX/Speed ​​Insights агрегируют их. Рычаги Next.js:
-
-| Метрическая            | Хорошо                        | Что он измеряет                                                 | Рычаги Next.js                                                                                                                                                                                                     |
-| ---------------------- | ----------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **ЛКП**                | ≤ 2,5 с                       | Самая большая содержательная краска (главное изображение/текст) | `next/image` `priority`, статическая оболочка ППР, `next/font`                                                                                                                                                     |
-| **ИЯФ**                | ≤ 200 мс                      | Взаимодействие со следующей отрисовкой (заменено FID)           | Меньший клиентский JS, серверные компоненты, меньше обработчиков гидратации                                                                                                                                        |
-| **CLS**                | ≤ 0,1                         | Смена макета                                                    | `next/font` (отступать `size-adjust`, локальные файлы), явное изображение `width`/`height`/`sizes` or `fill`. Метрика + причины HTML/CSS → [1_html.md — CLS](./1*html* Performance.md#cls-cumulative-layout-shift) |
-| **TTFB** (диагностика) | ≤ 0,8 с хорошо, > 1,8 с плохо | Время до первого байта                                          | CDN/SSG/ISR, потоковая передача, избегать `force-dynamic` если не требуется, региональный узел или удаленный Edge+DB — [full TTFB](./6_web_api_security.md#ttfb-time-to-first-byte)                                |
-| **FCP** (диагностика)  | ≤ 1,8 с                       | Первая содержательная раскраска (кончился пустой экран)         | Тот же ранний путь, что и у LCP: TTFB, блокировка CSS, `next/font`, меньше JS перед первой отрисовкой — [6_web_api.md](./6_web_api_security.md#first-contentful-paint-fcp)                                         |
-
-**When to use:**
-
-Интервью «Как сделать Next быстрым?» — назовите три жизненно важных органа, по одному рычагу каждый, и что INP заменил FID.
-
-#### Common pitfalls
-
-Называя FID жизненно важным элементом сети (с 2024 года это не так). Доставка огромная `'use client'` дерево, разрушающее ИЯФ. Изображения без размеров → CLS. положить `useReportWebVitals` в корневом макете и отмечаем весь макет `'use client'`.
-
-**Pluses and minuses:**
-
-| +                                              | −                                                                        |
-| ---------------------------------------------- | ------------------------------------------------------------------------ |
-| Общий язык с SEO/продуктом                     | Лаборатория Маяк ≠ поле CrUX                                             |
-| Четко сопоставляется со следующими примитивами | Погоня за TTFB на Edge, когда БД находится далеко, может _навредить_ LCP |
-
-**Examples:**
-
-```tsx
-import Image from "next/image";
-
-export function Hero() {
-  return (
-    <Image
-      src="/hero.jpg"
-      alt="Product"
-      width={1200}
-      height={630}
-      priority
-      sizes="100vw"
-    />
-  );
-}
-```
-
-держать `'use client'` на крошечном репортере так `layout` остается серверным компонентом:
-
-```tsx
-"use client";
-
-import { useReportWebVitals } from "next/web-vitals";
-
-export function WebVitals() {
-  useReportWebVitals((metric) => {
-    navigator.sendBeacon("/analytics", JSON.stringify(metric));
-  });
-  return null;
-}
-```
-
-Импорт `<WebVitals />` от `app/layout.tsx`. Лаборатория против поля, 28-дневное окно CrUX, `web-vitals/attribution` → [6_web_api.md — основные веб-показатели](./6_web_api_security.md#core-web-vitals). Срезы LCP (`fetchpriority`, `picture`, Правила спекуляций) → [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint).
-
-**Thoughts:** LCP = первая осмысленная краска, INP = резкость ввода, CLS = визуальная стабильность. TTFB — это средство, а не цель.
-
-**See also:** [TTFB](./6_web_api_security.md#ttfb-time-to-first-byte) · [INP](./6_web_api_security.md#inp-interaction-to-next-paint)
-
-**Sources:** [web.dev/articles/vitals](https://web.dev/articles/vitals) · [next.js — useReportWebVitals](https://nextjs.org/docs/app/api-reference/functions/use-report-web-vitals) · [vercel.com/docs/speed-insights](https://vercel.com/docs/speed-insights)
-
-</details>
-
-<details>
-  <summary>Performance checklist</summary>
-
-### Performance checklist
-
-**Definition:**
-
-Контрольный список аудита производственной производительности для приложений App Router.
-
-1. По умолчанию для серверных компонентов — свернуть. `"use client"` поверхность
-2. Распараллелить независимые выборки с помощью `Promise.all`
-3. Используйте `loading.tsx` и Приостановка восприятия скорости
-4. Помечать и аннулировать кеш явно после мутаций.
-5. Анализируйте пакет после добавления любой клиентской библиотеки.
-6. Используйте `next/image` с правильным `sizes`
-7. Избегайте `force-dynamic` если это действительно не нужно
-8. Пул соединений для бессерверной БД (Neon, Prisma Accelerate)
-
----
-
-**Sources:** [nextjs.org/docs](https://nextjs.org/docs)
 
 </details>
 

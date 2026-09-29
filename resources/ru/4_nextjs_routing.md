@@ -1,25 +1,349 @@
 # Next.js — Routing
 
-Маршруты на основе файлов, специальные файлы, навигация, метаданные и SEO.
+App Router, маршруты на основе файлов, навигация, метаданные и SEO.
 
 [ ← Вернуться в центр](./4_nextjs.md)
 
 ### Related docs
 
-* [Next.js — Ядро](./4_nextjs_core.md) · [Next.js — Данные](./4_nextjs_data.md) · [Next.js — Маршрутизация](./4_nextjs_routing.md) · [Next.js — Платформа](./4_nextjs_platform.md) · [Next.js — Интервью](./4_nextjs_interview.md)
+- [Next.js — Ядро](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Данные](./4_nextjs_data.md) · [Next.js — Маршрутизация](./4_nextjs_routing.md) · [Next.js — Оптимизации](./4_nextjs_optimizations.md) · [Next.js — Платформа](./4_nextjs_platform.md) · [Next.js — Интервью](./4_nextjs_interview.md)
 
 ### Sections
 
-- [10. File-based routing](#10-file-based-routing)
-- [11. Special files](#11-special-files)
-- [12. Navigation](#12-navigation)
-- [13. Metadata & SEO](#13-metadata-seo)
+- [1. App vs Pages Router](#1-app-vs-pages-router)
+- [2. Project structure](#2-project-structure)
+- [3. File-based routing](#3-file-based-routing)
+- [4. Special files](#4-special-files)
+- [5. Navigation](#5-navigation)
+- [6. Metadata & SEO](#6-metadata-seo)
 
 ---
 
-## 10. File-based routing
+## 1. App vs Pages Router
 
-*Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template)).*
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](#topic-template))._
+
+<details>
+  <summary>App Router</summary>
+
+### App Router
+
+**Definition:** Современный маршрутизатор в `app/`. Папки задают сегменты URL; маршрут становится **публичным** только когда в сегменте есть `page.tsx` (UI) или `route.ts` (HTTP-обработчик). Построен на серверных компонентах React, вложенных макетах, потоковой передаче через Suspense и модели кэширования Next.js. По умолчанию для всех новых проектов с Next.js 13+.
+
+**How it works:**
+
+- **Маршрутизация по файловой системе** — `app/blog/[slug]/page.tsx` → `/blog/:slug`. Динамические сегменты: `[slug]` (один параметр), `[...slug]` (catch-all), `[[...slug]]` (опциональный catch-all). В Next.js 15+ `params` и `searchParams` — **Promise**; в Server Components их нужно `await`.
+- **Специальные файлы в каждом сегменте:**
+
+| Файл            | Роль                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------- |
+| `layout.tsx`    | Общая оболочка для дочерних сегментов; состояние сохраняется при клиентской навигации |
+| `page.tsx`      | Уникальный UI маршрута — делает URL публично доступным                                |
+| `loading.tsx`   | Мгновенный fallback, пока сегмент стримится (граница React Suspense)                  |
+| `error.tsx`     | Error boundary сегмента (нужен `"use client"`)                                        |
+| `not-found.tsx` | UI 404 для сегмента (вызывается через `notFound()`)                                   |
+| `route.ts`      | Route Handlers — HTTP-эндпоинты (`GET`, `POST`, …) рядом с UI                         |
+| `template.tsx`  | Как `layout`, но **перемонтируется** при навигации (свежее состояние/effects)         |
+
+- **Порядок рендера внутри сегмента:** `layout` → `template` → `error` → `loading` (Suspense) → `not-found` → `page`. Родительские layout оборачивают детей рекурсивно (`app/layout.tsx` → `app/dashboard/layout.tsx` → `page`).
+- **Server Components по умолчанию** — `layout` и `page` выполняются на сервере, пока файл не начинается с `"use client"`. Данные загружают прямо в `async`-компонентах; Client Components добавляют только для хуков, событий и browser API.
+- **Статика по умолчанию** — маршруты пререндерятся на сборке, пока не читают данные запроса (`cookies()`, `headers()`, `searchParams` или `fetch` с `cache: 'no-store'`). Переопределение на сегмент: `export const dynamic = 'force-static' | 'force-dynamic'`.
+- **Колокация без влияния на URL** — route groups `(marketing)` не попадают в путь; приватные папки `_lib` / `_components` игнорируются роутером. Нерутируемые файлы можно держать рядом с `page.tsx`.
+
+**When to use:** Каждый новый проект. Greenfield-приложения, e-commerce, дашборды, контентные сайты.
+
+**Pluses and minuses:**
+
+| +                                                     | −                                                     |
+| ----------------------------------------------------- | ----------------------------------------------------- |
+| RSC, streaming, вложенные layouts                     | Кривая обучения кэшированию и границам Server/Client  |
+| Колокация `loading.tsx`, `error.tsx`, `not-found.tsx` | Нельзя смешать `pages/` и `app/` на одном URL         |
+| Server Actions, Metadata API, Route Handlers          | Часть сторонних библиотек всё ещё без RSC             |
+| Тонкое кэширование через `use cache` / `revalidate`   | Миграция с Pages требует переписывания                |
+| Prefetch и client transitions через `next/link`       | `template.tsx` vs `layout.tsx` часто путают на старте |
+
+**Examples:**
+
+```tsx
+// app/layout.tsx — корневой layout (обязателен); нужны <html> и <body>
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+```tsx
+// app/blog/layout.tsx — вложенный layout для /blog/*
+export default function BlogLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <nav>Blog</nav>
+      {children}
+    </section>
+  );
+}
+```
+
+```tsx
+// app/blog/[slug]/page.tsx — async Server Component (default)
+export default async function BlogPost({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  return <article>{post.title}</article>;
+}
+```
+
+```tsx
+// app/blog/[slug]/loading.tsx — показывается мгновенно, пока page.tsx стримится
+export default function Loading() {
+  return <p>Loading post…</p>;
+}
+```
+
+```ts
+// app/api/posts/route.ts — Route Handler (замена pages/api)
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const posts = await getPosts();
+  return NextResponse.json(posts);
+}
+```
+
+**Thoughts:** Динамические, parallel и intercepting routes — в [Next.js — Routing](./4_nextjs_routing.md). Кэширование, опции `fetch` и Server Actions — в [Next.js — Data](./4_nextjs_data.md). На интервью: **RSC + static by default**; `"use client"` — opt-in для интерактивности; при конфликте URL побеждает App Router над `pages/`.
+
+**Sources:** [Project structure](https://nextjs.org/docs/app/getting-started/project-structure) · [Layouts and pages](https://nextjs.org/docs/app/getting-started/layouts-and-pages) · [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components)
+
+</details>
+
+<details>
+  <summary>Pages Router</summary>
+
+### Pages Router
+
+**Definition:** Устаревший маршрутизатор в `pages/`. Использование `getServerSideProps`, `getStaticProps`, `getInitialProps`, и `pages/api` для конечных точек серверной части.
+
+**When to use:** Поддержание только существующих приложений Pages Router. Не начинайте новые проекты на Pages Router.
+
+**Pluses and minuses:**
+
+| +                                                         | −                                                             |
+| --------------------------------------------------------- | ------------------------------------------------------------- |
+| Зрелые, хорошо документированные шаблоны                  | Нет RSC, нет вложенных макетов                                |
+| Упрощенная ментальная модель (данные на основе реквизита) | `getServerSideProps` работает на странице — сложнее составить |
+| Поддержка большой существующей кодовой базы               | Не там, где появляются новые возможности Next.js              |
+
+**Examples:**
+
+```tsx
+// pages/blog/[slug].tsx — legacy pattern
+export async function getStaticProps({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug);
+  return { props: { post } };
+}
+
+export default function BlogPost({ post }: { post: Post }) {
+  return <article>{post.title}</article>;
+}
+```
+
+**Sources:** [nextjs.org/docs/pages](https://nextjs.org/docs/pages)
+
+</details>
+
+<details>
+  <summary>Migration mapping</summary>
+
+### Migration mapping
+
+**Definition:**
+
+Сопоставление «один к одному» API-интерфейсов Pages Router с эквивалентами App Router для поэтапной миграции.
+
+| Маршрутизатор страниц | Эквивалент App Router                                     |
+| --------------------- | --------------------------------------------------------- |
+| `getStaticProps`      | `fetch` с `cache: 'force-cache'` + `generateStaticParams` |
+| `getServerSideProps`  | `fetch` с `cache: 'no-store'` или динамический маршрут    |
+| `getInitialProps`     | Асинхронная выборка данных серверного компонента          |
+| `pages/api/*.ts`      | `app/**/route.ts` (Обработчики маршрутов)                 |
+| `_app.tsx`            | `app/layout.tsx`                                          |
+| `_document.tsx`       | `app/layout.tsx` + API метаданных                         |
+| `next/head`           | `export const metadata` / `generateMetadata()`            |
+| `next/router`         | `next/navigation` (`useRouter`, `usePathname`)            |
+| `next/link`           | `next/link` (тот же пакет, с поддержкой App Router)       |
+
+**Examples:**
+
+```tsx
+// Pages Router (legacy)
+export async function getServerSideProps() {
+  const res = await fetch("https://api.example.com/data");
+  return { props: { data: await res.json() } };
+}
+
+// App Router (modern)
+async function getData() {
+  const res = await fetch("https://api.example.com/data", {
+    cache: "no-store",
+  });
+  return res.json();
+}
+
+export default async function Page() {
+  const data = await getData();
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+}
+```
+
+**Thoughts:**
+
+Оба роутера могут сосуществовать в одном проекте (`pages/` + `app/`), но **не для того же URL**. Маршрутизатор приложений имеет приоритет. Планируйте поэтапную миграцию по каждому маршруту.
+
+---
+
+**Sources:** [nextjs.org/docs/app/guides/migrating](https://nextjs.org/docs/app/guides/migrating)
+
+</details>
+
+<a name="3-project-structure"></a>
+
+## 2. Project structure
+
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](#topic-template))._
+
+<details>
+  <summary>Directory layout</summary>
+
+### Directory layout
+
+**Definition:** Next.js использует соглашения о файловой системе. `app/` каталог (или `src/app/`) определяет маршруты; специальные имена файлов соответствуют функциям платформы.
+
+**When to use:** Следуйте настройкам по умолчанию, если только не требуется monorepo или FSD. `src/app/` + функциональные папки.
+
+**Pluses and minuses:**
+
+| +                                                | −                                                                                    |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| Предсказуемая структура — быстрая адаптация      | Глубокая вложенность может слишком буквально отражать URL                            |
+| Размещение интерфейса маршрута, загрузка, ошибки | Большой `app/` деревьям нужны группы маршрутов или дисциплина FSD                    |
+| `src/` опция сохраняет корень чистым             | При перемещении файлов URL-адреса изменяются, если не используются группы/перезаписи |
+
+**Examples:**
+
+```
+my-app/
+├── app/                    # App Router (or src/app/)
+│   ├── layout.tsx          # Root layout (required)
+│   ├── page.tsx            # Home route (/)
+│   ├── loading.tsx         # Loading UI for segment
+│   ├── error.tsx           # Error boundary for segment
+│   ├── not-found.tsx       # 404 for segment
+│   ├── (marketing)/        # Route group (no URL segment)
+│   │   └── about/page.tsx  # /about
+│   ├── blog/
+│   │   ├── page.tsx        # /blog
+│   │   └── [slug]/page.tsx # /blog/:slug
+│   └── api/
+│       └── webhook/route.ts
+├── public/                 # Static assets (served as-is)
+├── next.config.ts
+├── package.json
+└── tsconfig.json
+```
+
+**Thoughts:** Предпочитать `src/app/` в более крупных базах кода для отделения кода приложения от конфигурации в корне. Личные папки: префикс с `_` (e.g. `_components`) — не маршрутизируется.
+
+**Sources:** [nextjs.org/docs/app/getting-started/project-structure](https://nextjs.org/docs/app/getting-started/project-structure)
+
+</details>
+
+<details>
+  <summary>Special files</summary>
+
+### Special files
+
+**Definition:**
+
+Имена файлов соглашения в `app/` которые соответствуют функциям платформы — макетам, состояниям загрузки, ошибкам и маршрутам API.
+
+| Файл            | Цель                                                                            |
+| --------------- | ------------------------------------------------------------------------------- |
+| `page.tsx`      | Уникальный интерфейс для сегмента маршрута; делает маршрут общедоступным        |
+| `layout.tsx`    | Оболочка общего пользовательского интерфейса; сохраняет состояние при навигации |
+| `template.tsx`  | Похож на макет, но **перемонтируется** при навигации (новое состояние/эффекты)  |
+| `loading.tsx`   | Мгновенная загрузка пользовательского интерфейса через границу ожидания         |
+| `error.tsx`     | Граница ошибки клиента для сегмента                                             |
+| `not-found.tsx` | Пользовательский интерфейс, когда `notFound()` называется                       |
+| `route.ts`      | Обработчик маршрута (конечная точка API)                                        |
+| `default.tsx`   | Резервный вариант для слотов параллельных маршрутов                             |
+
+**Examples:**
+
+```tsx
+// app/dashboard/layout.tsx
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex">
+      <aside>Sidebar</aside>
+      <main>{children}</main>
+    </div>
+  );
+}
+```
+
+**Thoughts:** `layout.tsx` состояние выдерживает навигацию клиента; `template.tsx` нет. Использовать `template` для ввода анимации или клавиш аналитики для каждой навигации.
+
+**Sources:** [nextjs.org/docs/app/api-reference/file-conventions](https://nextjs.org/docs/app/api-reference/file-conventions)
+
+</details>
+
+<details>
+  <summary>Route segments</summary>
+
+### Route segments
+
+**Definition:**
+
+Сегменты URL-пути, созданные по именам папок в `app/` — статические, динамические, универсальные и группы маршрутов.
+
+| Узор                         | URL-адрес               | Пример                                 |
+| ---------------------------- | ----------------------- | -------------------------------------- |
+| Статический                  | `/blog`                 | `app/blog/page.tsx`                    |
+| Динамический                 | `/blog/hello`           | `app/blog/[slug]/page.tsx`             |
+| Всеобъемлющий                | `/docs/a/b/c`           | `app/docs/[...slug]/page.tsx`          |
+| Дополнительный всеобъемлющий | `/shop` or `/shop/a/b`  | `app/shop/[[...slug]]/page.tsx`        |
+| Группа маршрутов             | Никакого влияния на URL | `app/(auth)/login/page.tsx` → `/login` |
+
+**Sources:**
+
+[nextjs.org/docs/app/api-reference/file-conventions](https://nextjs.org/docs/app/api-reference/file-conventions)
+
+---
+
+</details>
+
+## 3. File-based routing
+
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Dynamic routes</summary>
@@ -30,10 +354,10 @@
 
 Синтаксис скобок в именах папок создает динамические сегменты URL-адресов. Доступ к значениям через `params` (асинхронный в Next.js 16).
 
-| Узор | URL-адрес | `params` |
-|---------|-----|----------|
-| `[id]` | `/products/42` | `{ id: '42' }` |
-| `[...slug]` | `/docs/a/b` | `{ slug: ['a', 'b'] }` |
+| Узор          | URL-адрес            | `params`                                   |
+| ------------- | -------------------- | ------------------------------------------ |
+| `[id]`        | `/products/42`       | `{ id: '42' }`                             |
+| `[...slug]`   | `/docs/a/b`          | `{ slug: ['a', 'b'] }`                     |
 | `[[...slug]]` | `/shop` or `/shop/a` | `{ slug: undefined }` or `{ slug: ['a'] }` |
 
 **Examples:**
@@ -63,16 +387,18 @@ export default async function ProductPage({
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| SSG для динамических путей | Построение шкал времени с учетом количества параметров |
+| +                                                | −                                                                    |
+| ------------------------------------------------ | -------------------------------------------------------------------- |
+| SSG для динамических путей                       | Построение шкал времени с учетом количества параметров               |
 | Отлично подходит для блогов, каталогов продукции | Должен обрабатывать новые пули (резервный вариант или по требованию) |
 
 **Examples:**
 
 ```tsx
 export async function generateStaticParams() {
-  const posts = await fetch('https://api.example.com/posts').then(r => r.json());
+  const posts = await fetch("https://api.example.com/posts").then((r) =>
+    r.json(),
+  );
   return posts.map((post: { slug: string }) => ({ slug: post.slug }));
 }
 ```
@@ -92,10 +418,10 @@ export async function generateStaticParams() {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Независимая загрузка/ошибка для каждого слота | Сложная ментальная модель |
-| Макеты приборной панели с боковыми панелями | Требует `default.tsx` для непревзойденных слотов |
+| +                                             | −                                                |
+| --------------------------------------------- | ------------------------------------------------ |
+| Независимая загрузка/ошибка для каждого слота | Сложная ментальная модель                        |
+| Макеты приборной панели с боковыми панелями   | Требует `default.tsx` для непревзойденных слотов |
 
 **Examples:**
 
@@ -143,12 +469,12 @@ export default function Layout({
 
 `(.)` соглашение перехватывает маршрут для его рендеринга внутри текущего макета — модальный шаблон.
 
-| Конвенция | Перехваты |
-|------------|------------|
-| `(.)` | Тот же уровень |
-| `(..)` | На уровень выше |
+| Конвенция  | Перехваты        |
+| ---------- | ---------------- |
+| `(.)`      | Тот же уровень   |
+| `(..)`     | На уровень выше  |
 | `(..)(..)` | Два уровня вверх |
-| `(...)` | Из корня |
+| `(...)`    | Из корня         |
 
 **When to use:** Лайтбоксы для фотографий, модальные окна быстрого редактирования, диалоговые окна обмена.
 
@@ -177,40 +503,38 @@ app/
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                                                   | −                                         |
+| ------------------------------------------------------------------- | ----------------------------------------- |
 | Состояние фильтра, доступное для совместного использования/закладки | Сложность кодирования (`%5B%5D` для `[]`) |
-| Работает без библиотек состояния клиента | Требует `useSearchParams` + Интрига |
+| Работает без библиотек состояния клиента                            | Требует `useSearchParams` + Интрига       |
 
 **Examples:**
 
 ```tsx
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useRouter } from "next/navigation";
+import { useEffect, useState, type ReactNode } from "react";
 
 export function CategoryFilter({ filterKey }: { filterKey: string }) {
   const router = useRouter();
   const [selected, setSelected] = useState<string[]>([]);
 
   const onCategoryChange = (value: number) => {
-    setSelected(prev =>
+    setSelected((prev) =>
       prev.includes(`${value}`)
-        ? prev.filter(id => id !== `${value}`)
+        ? prev.filter((id) => id !== `${value}`)
         : [...prev, `${value}`],
     );
   };
 
   useEffect(() => {
-    const query = selected
-      .map(id => `${filterKey}%5B%5D=${id}`)
-      .join('&');
+    const query = selected.map((id) => `${filterKey}%5B%5D=${id}`).join("&");
     router.push(`/projects?${query}`);
   }, [selected, router, filterKey]);
 
   return (
-  /* render checkboxes calling onCategoryChange */
+    /* render checkboxes calling onCategoryChange */
     <div>{/* … */}</div>
   );
 }
@@ -257,9 +581,11 @@ app/
 **Examples:**
 
 ```tsx
-import Link from 'next/link';
+import Link from "next/link";
 
-<Link href="/blog/my-post" prefetch={true}>Read post</Link>
+<Link href="/blog/my-post" prefetch={true}>
+  Read post
+</Link>;
 ```
 
 **Thoughts:**
@@ -272,11 +598,11 @@ import Link from 'next/link';
 
 </details>
 
-<a name="11-special-files"></a>
+<a name="4-special-files"></a>
 
-## 11. Special files
+## 4. Special files
 
-*Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template)).*
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>error.tsx</summary>
@@ -287,15 +613,15 @@ import Link from 'next/link';
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Детальный интерфейс ошибок для каждого раздела | Должно быть `'use client'` |
-| `reset()` повторные попытки оказать | Не улавливает ошибки в одном сегменте `layout.tsx` |
+| +                                              | −                                                  |
+| ---------------------------------------------- | -------------------------------------------------- |
+| Детальный интерфейс ошибок для каждого раздела | Должно быть `'use client'`                         |
+| `reset()` повторные попытки оказать            | Не улавливает ошибки в одном сегменте `layout.tsx` |
 
 **Examples:**
 
 ```tsx
-'use client';
+"use client";
 
 export default function Error({
   error,
@@ -327,9 +653,13 @@ export default function Error({
 **Examples:**
 
 ```tsx
-import { notFound } from 'next/navigation';
+import { notFound } from "next/navigation";
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const product = await getProduct(id);
   if (!product) notFound();
@@ -353,7 +683,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 **Examples:**
 
 ```tsx
-import { unauthorized } from 'next/navigation';
+import { unauthorized } from "next/navigation";
 
 export default async function AdminPage() {
   const session = await getSession();
@@ -376,7 +706,7 @@ export default async function AdminPage() {
 **Examples:**
 
 ```tsx
-'use client';
+"use client";
 
 export default function GlobalError({
   error,
@@ -411,20 +741,20 @@ export default function GlobalError({
 
 Помощники навигации, которые выдают специальные ошибки для запуска перенаправления или ответов 404 во время рендеринга серверных компонентов.
 
-| Функция | HTTP | Вариант использования |
-|----------|------|----------|
-| `redirect(url)` | 307 Временно | Перенаправление после мутации |
-| `permanentRedirect(url)` | 308 Постоянный | Миграция URL |
-| `notFound()` | 404 | Отсутствует ресурс |
+| Функция                  | HTTP           | Вариант использования         |
+| ------------------------ | -------------- | ----------------------------- |
+| `redirect(url)`          | 307 Временно   | Перенаправление после мутации |
+| `permanentRedirect(url)` | 308 Постоянный | Миграция URL                  |
+| `notFound()`             | 404            | Отсутствует ресурс            |
 
 **Examples:**
 
 ```tsx
-import { redirect } from 'next/navigation';
+import { redirect } from "next/navigation";
 
 export default async function Page() {
   const session = await getSession();
-  if (!session) redirect('/login');
+  if (!session) redirect("/login");
   return <Dashboard />;
 }
 ```
@@ -443,7 +773,7 @@ export default async function Page() {
 **Examples:**
 
 ```tsx
-import { unstable_rethrow } from 'next/navigation';
+import { unstable_rethrow } from "next/navigation";
 
 export default async function Page() {
   try {
@@ -462,11 +792,11 @@ export default async function Page() {
 
 </details>
 
-<a name="12-navigation"></a>
+<a name="5-navigation"></a>
 
-## 12. Navigation
+## 5. Navigation
 
-*Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template)).*
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>next/link</summary>
@@ -477,10 +807,10 @@ export default async function Page() {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                             | −                                                              |
+| ----------------------------- | -------------------------------------------------------------- |
 | Быстрая навигация в стиле SPA | Предварительная выборка может увеличить пропускную способность |
-| Восстановление прокрутки | Внешние URL-адреса должны быть простыми `<a>` |
+| Восстановление прокрутки      | Внешние URL-адреса должны быть простыми `<a>`                  |
 
 **Examples:**
 
@@ -505,19 +835,19 @@ import Link from 'next/link';
 
 Клиентские хуки от `next/navigation` (Маршрутизатор приложений). Не используйте `next/router` — это только Pages Router.
 
-| Крюк | Возврат |
-|------|---------|
-| `useRouter()` | `{ push, replace, refresh, back, forward, prefetch }` |
-| `usePathname()` | Текущая строка пути |
-| `useSearchParams()` | `URLSearchParams` — требуется Саспенс |
-| `useParams()` | Объект параметров динамического маршрута |
+| Крюк                | Возврат                                               |
+| ------------------- | ----------------------------------------------------- |
+| `useRouter()`       | `{ push, replace, refresh, back, forward, prefetch }` |
+| `usePathname()`     | Текущая строка пути                                   |
+| `useSearchParams()` | `URLSearchParams` — требуется Саспенс                 |
+| `useParams()`       | Объект параметров динамического маршрута              |
 
 **Examples:**
 
 ```tsx
-'use client';
+"use client";
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export function Nav() {
   const router = useRouter();
@@ -526,8 +856,10 @@ export function Nav() {
 
   return (
     <nav>
-      <span>Current: {pathname}?{searchParams.toString()}</span>
-      <button onClick={() => router.push('/dashboard')}>Dashboard</button>
+      <span>
+        Current: {pathname}?{searchParams.toString()}
+      </span>
+      <button onClick={() => router.push("/dashboard")}>Dashboard</button>
       <button onClick={() => router.refresh()}>Refresh server data</button>
     </nav>
   );
@@ -548,10 +880,10 @@ export function Nav() {
 **Examples:**
 
 ```tsx
-router.push('/projects?page=2');       // Navigate with history entry
-router.replace('/login');              // Replace current entry
-router.back();                         // History back
-router.refresh();                      // Re-fetch RSC for current route
+router.push("/projects?page=2"); // Navigate with history entry
+router.replace("/login"); // Replace current entry
+router.back(); // History back
+router.refresh(); // Re-fetch RSC for current route
 ```
 
 **Sources:** [nextjs.org/docs/app/api-reference/functions/use-router](https://nextjs.org/docs/app/api-reference/functions/use-router)
@@ -581,11 +913,11 @@ const nextConfig = { trailingSlash: true }; // /about/ instead of /about
 
 </details>
 
-<a name="13-metadata--seo"></a>
+<a name="6-metadata-seo"></a>
 
-## 13. Metadata & SEO
+## 6. Metadata & SEO
 
-*Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template)).*
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](./4_nextjs_core.md#topic-template))._
 
 <details>
   <summary>Static metadata</summary>
@@ -597,19 +929,19 @@ const nextConfig = { trailingSlash: true }; // /about/ instead of /about
 **Examples:**
 
 ```tsx
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'My App',
-  description: 'Full-stack React on Next.js',
+  title: "My App",
+  description: "Full-stack React on Next.js",
   openGraph: {
-    title: 'My App',
-    description: 'Full-stack React on Next.js',
-    url: 'https://myapp.com',
-    siteName: 'My App',
-    images: [{ url: 'https://myapp.com/og.png', width: 1200, height: 630 }],
-    locale: 'en_US',
-    type: 'website',
+    title: "My App",
+    description: "Full-stack React on Next.js",
+    url: "https://myapp.com",
+    siteName: "My App",
+    images: [{ url: "https://myapp.com/og.png", width: 1200, height: 630 }],
+    locale: "en_US",
+    type: "website",
   },
 };
 ```
@@ -627,15 +959,15 @@ export const metadata: Metadata = {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Постраничное SEO на основе данных CMS | Запускается на сервере — смотрите кэширование выборки |
-| Дедупликация с выборкой данных страницы, если она хорошо структурирована | Ошибки требуют обработки |
+| +                                                                        | −                                                     |
+| ------------------------------------------------------------------------ | ----------------------------------------------------- |
+| Постраничное SEO на основе данных CMS                                    | Запускается на сервере — смотрите кэширование выборки |
+| Дедупликация с выборкой данных страницы, если она хорошо структурирована | Ошибки требуют обработки                              |
 
 **Examples:**
 
 ```tsx
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 export async function generateMetadata({
   params,
@@ -665,24 +997,26 @@ export async function generateMetadata({
 
 Файлы соглашений (`icon.png`, `opengraph-image.tsx`, `sitemap.ts`), который Next.js автоматически обнаруживает метаданные SEO.
 
-| Файл | Цель |
-|------|---------|
-| `favicon.ico` | Фавикон |
-| `icon.png` / `apple-icon.png` | Иконки приложений |
-| `opengraph-image.tsx` | Динамическое создание изображений OG |
-| `twitter-image.tsx` | Изображение карточки Twitter |
-| `robots.txt` | Правила краулера |
-| `sitemap.ts` | Динамическая карта сайта |
+| Файл                          | Цель                                 |
+| ----------------------------- | ------------------------------------ |
+| `favicon.ico`                 | Фавикон                              |
+| `icon.png` / `apple-icon.png` | Иконки приложений                    |
+| `opengraph-image.tsx`         | Динамическое создание изображений OG |
+| `twitter-image.tsx`           | Изображение карточки Twitter         |
+| `robots.txt`                  | Правила краулера                     |
+| `sitemap.ts`                  | Динамическая карта сайта             |
 
 **Examples:**
 
 ```tsx
 // app/opengraph-image.tsx
-import { ImageResponse } from 'next/og';
+import { ImageResponse } from "next/og";
 
 export default function Image() {
   return new ImageResponse(
-    <div style={{ fontSize: 64, background: '#000', color: '#fff', padding: 40 }}>
+    <div
+      style={{ fontSize: 64, background: "#000", color: "#fff", padding: 40 }}
+    >
       My App
     </div>,
     { width: 1200, height: 630 },
@@ -706,10 +1040,10 @@ export default function Image() {
 ```tsx
 export default function ProductPage({ product }: { product: Product }) {
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
+    "@context": "https://schema.org",
+    "@type": "Product",
     name: product.name,
-    offers: { '@type': 'Offer', price: product.price },
+    offers: { "@type": "Offer", price: product.price },
   };
 
   return (

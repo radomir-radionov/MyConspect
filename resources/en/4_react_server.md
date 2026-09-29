@@ -6,7 +6,7 @@ React 19 APIs, SSR, and React Server Components.
 
 ### Related docs
 
-* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
 
 ### Sections
 
@@ -45,15 +45,18 @@ New projects on React 19; migrate forms and ref-forwarding incrementally. Enable
 
 ```tsx
 // ref is a normal prop (no forwardRef)
-function Input({ ref, ...props }: Props & { ref?: React.Ref<HTMLInputElement> }) {
+function Input({
+  ref,
+  ...props
+}: Props & { ref?: React.Ref<HTMLInputElement> }) {
   return <input ref={ref} {...props} />;
 }
 
 // Action — pending comes from React
-<form action={submitAction}>...</form>
+<form action={submitAction}>...</form>;
 ```
 
-**Thoughts:** *Less boilerplate for async UI — Actions, optimistic state, and Compiler handle what you used to wire manually.*
+**Thoughts:** _Less boilerplate for async UI — Actions, optimistic state, and Compiler handle what you used to wire manually._
 
 **See also:** [Actions](#actions) · [React Compiler](#react-compiler) · [ref as prop](#ref-as-prop)
 
@@ -88,7 +91,7 @@ Complex client-only validation flows where RHF is clearer; non-form mutations (u
 
 **Pluses and minuses:**
 
-| +                               | −                                            |
+| +                                  | −                                               |
 | ---------------------------------- | ----------------------------------------------- |
 | Built-in pending/error handling    | Requires mental shift from `e.preventDefault()` |
 | Works with progressive enhancement | Server Actions are framework-specific (Next.js) |
@@ -98,9 +101,9 @@ Complex client-only validation flows where RHF is clearer; non-form mutations (u
 
 ```tsx
 async function updateName(prev: string | null, formData: FormData) {
-  const error = await saveName(formData.get('name') as string);
+  const error = await saveName(formData.get("name") as string);
   if (error) return error;
-  redirect('/profile');
+  redirect("/profile");
   return null;
 }
 
@@ -141,7 +144,7 @@ useActionState
 const [message, formAction, isPending] = useActionState(
   async (_prev, formData: FormData) => {
     const err = await updateUser(formData);
-    return err ?? 'Saved';
+    return err ?? "Saved";
   },
   null,
 );
@@ -154,7 +157,7 @@ return (
 );
 ```
 
-**Thoughts:** *One hook for action result + pending — no separate* `isLoading` *state.*
+**Thoughts:** _One hook for action result + pending — no separate_ `isLoading` _state._
 
 **See also:** [Actions](#actions) · [useFormStatus](#useformstatus)
 
@@ -184,7 +187,10 @@ Critical data where wrong optimistic state confuses users (financial balances) w
 **Examples:**
 
 ```tsx
-const [optimisticCount, addOptimistic] = useOptimistic(count, (c, delta: number) => c + delta);
+const [optimisticCount, addOptimistic] = useOptimistic(
+  count,
+  (c, delta: number) => c + delta,
+);
 
 async function handleLike() {
   addOptimistic(1);
@@ -192,7 +198,7 @@ async function handleLike() {
 }
 ```
 
-**Thoughts:** *Show the future now; real state wins when the server responds.*
+**Thoughts:** _Show the future now; real state wins when the server responds._
 
 **See also:** [Actions](#actions) · [useActionState](#useactionstate)
 
@@ -220,7 +226,11 @@ useFormStatus
 ```tsx
 function SubmitButton({ children }: { children: React.ReactNode }) {
   const { pending } = useFormStatus();
-  return <button type="submit" disabled={pending}>{children}</button>;
+  return (
+    <button type="submit" disabled={pending}>
+      {children}
+    </button>
+  );
 }
 
 function Form() {
@@ -233,7 +243,7 @@ function Form() {
 }
 ```
 
-**Thoughts:** *Child reads parent form status — no* `isPending` *prop through the tree.*
+**Thoughts:** _Child reads parent form status — no_ `isPending` _prop through the tree._
 
 **See also:** [useActionState](#useactionstate) · [Actions](#actions)
 
@@ -262,7 +272,7 @@ use()
 
 **Pluses and minuses:**
 
-| +                                       | −                                            |
+| +                                          | −                                               |
 | ------------------------------------------ | ----------------------------------------------- |
 | Simpler async component code with Suspense | Promise must be stable reference across renders |
 | Works with `use(context)`                  | Error handling via nearest Error Boundary       |
@@ -279,10 +289,10 @@ function Message({ messagePromise }: { messagePromise: Promise<Message> }) {
 const promise = fetchMessage();
 <Suspense fallback={<p>Loading...</p>}>
   <Message messagePromise={promise} />
-</Suspense>
+</Suspense>;
 ```
 
-**Thoughts:** `use(promise)` *+ Suspense replaces loading state boilerplate for async render.*
+**Thoughts:** `use(promise)` _+ Suspense replaces loading state boilerplate for async render._
 
 **See also:** [Streaming & Suspense](#streaming--suspense) · [React 19 hooks](./4_react_hooks.md#react-19-hooks)
 
@@ -313,7 +323,7 @@ Impure render (mutating props, reading `Date.now()` during render) breaks compil
 
 **Pluses and minuses:**
 
-| +                                   | −                                                            |
+| +                                      | −                                                               |
 | -------------------------------------- | --------------------------------------------------------------- |
 | Fewer perf footguns                    | Requires `babel-plugin-react-compiler` or framework integration |
 | Focus on correct code, not memoization | Not a substitute for bad architecture                           |
@@ -324,13 +334,19 @@ Impure render (mutating props, reading `Date.now()` during render) breaks compil
 ```js
 // babel.config.js
 module.exports = {
-  plugins: [['babel-plugin-react-compiler', { target: '19' }]],
+  plugins: [["babel-plugin-react-compiler", { target: "19" }]],
 };
 
 function TodoList({ todos }) {
   "use memo"; // opt this component into compilation
   const sorted = todos.slice().sort();
-  return <ul>{sorted.map(t => <li key={t.id}>{t.title}</li>)}</ul>;
+  return (
+    <ul>
+      {sorted.map((t) => (
+        <li key={t.id}>{t.title}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -373,7 +389,7 @@ function BlogPost({ post }: { post: Post }) {
 }
 ```
 
-**Thoughts:** *Colocate SEO tags with the component that owns the content.*
+**Thoughts:** _Colocate SEO tags with the component that owns the content._
 
 **Sources:**
 
@@ -396,7 +412,7 @@ ref as prop
 
 **Pluses and minuses:**
 
-| +                         | −                                        |
+| +                            | −                                           |
 | ---------------------------- | ------------------------------------------- |
 | Simpler component signatures | Mixed codebases during migration            |
 | Consistent with other props  | Library types may still expect `forwardRef` |
@@ -405,13 +421,16 @@ ref as prop
 **Examples:**
 
 ```tsx
-function TextInput({ ref, ...props }: { ref?: Ref<HTMLInputElement> } & ComponentProps<'input'>) {
+function TextInput({
+  ref,
+  ...props
+}: { ref?: Ref<HTMLInputElement> } & ComponentProps<"input">) {
   return <input ref={ref} {...props} />;
 }
 
 // Parent
 const ref = useRef<HTMLInputElement>(null);
-<TextInput ref={ref} placeholder="Email" />
+<TextInput ref={ref} placeholder="Email" />;
 ```
 
 **Thoughts:** `forwardRef` still works for backward compatibility. For imperative APIs beyond DOM nodes, combine with `useImperativeHandle`.
@@ -447,11 +466,11 @@ Three delivery models for React apps — client-only SPA, server-rendered HTML w
 
 **How it works:**
 
-| Metric  | Meaning                                                                                                                     |
-| ------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Metric  | Meaning                                                                                                                              |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **FCP** | First content on screen (supporting vital, not Core). Full notes: [6_web_api.md](./6_web_api_security.md#first-contentful-paint-fcp) |
-| **LCP** | Largest Contentful Paint — main content visible (Core)                                                                      |
-| **INP** | Interaction to Next Paint — input snappiness (Core; replaced FID)                                                           |
+| **LCP** | Largest Contentful Paint — main content visible (Core)                                                                               |
+| **INP** | Interaction to Next Paint — input snappiness (Core; replaced FID)                                                                    |
 
 ```mermaid
 flowchart LR
@@ -473,7 +492,7 @@ flowchart LR
 | SEO + fast first paint, traditional web app   | SSR (Next.js Pages or Remix) |
 | Minimal client JS, data on server, streaming  | RSC (Next.js App Router)     |
 
-**Thoughts:** *SPA ships JS first; SSR ships HTML first; RSC ships server components with minimal client bundle.*
+**Thoughts:** _SPA ships JS first; SSR ships HTML first; RSC ships server components with minimal client bundle._
 
 **See also:**
 
@@ -502,7 +521,7 @@ Server Components
 
 **Pluses and minuses:**
 
-| +                    | −                                                  |
+| +                       | −                                                     |
 | ----------------------- | ----------------------------------------------------- |
 | Smaller client bundles  | No interactivity — no event handlers                  |
 | Direct DB/API access    | Requires framework (Next.js App Router, etc.)         |
@@ -516,7 +535,7 @@ async function PostsPage() {
   const posts = await db.posts.findAll();
   return (
     <ul>
-      {posts.map(p => (
+      {posts.map((p) => (
         <li key={p.id}>
           <LikeButton postId={p.id} /> {/* Client Component */}
           {p.title}
@@ -555,9 +574,9 @@ Static markup, data fetching, layouts without interactivity — keep as Server C
 **Examples:**
 
 ```tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export function LikeButton({ postId }: { postId: string }) {
   const [liked, setLiked] = useState(false);
@@ -565,7 +584,7 @@ export function LikeButton({ postId }: { postId: string }) {
 }
 ```
 
-**Thoughts:** *Push* `"use client"` *to the leaves — interactive widgets, not whole pages.*
+**Thoughts:** _Push_ `"use client"` _to the leaves — interactive widgets, not whole pages._
 
 **See also:** [Server Components](#server-components) · [SPA vs SSR vs RSC](#spa-vs-ssr-vs-rsc)
 
@@ -586,7 +605,7 @@ Hydration
 
 **How it works:**
 
-1. Server sends HTML + RSC payload (in RSC apps)
+1. Server sends HTML + RSC payload (in RSC apps) — wire format: [Next.js — RSC payload](./4_nextjs_rendering.md#rsc-payload)
 2. Browser paints HTML immediately (fast FCP/LCP)
 3. Client JS loads → `hydrateRoot(domNode, <App />)`
 4. React walks existing DOM, matches to component tree, attaches listeners
@@ -605,7 +624,7 @@ Any SSR/RSC app. Entry: `hydrateRoot` (React 18+), not legacy `hydrate`.
 
 **Pluses and minuses:**
 
-| +                                  | −                                             |
+| +                                     | −                                                |
 | ------------------------------------- | ------------------------------------------------ |
 | Fast first paint + full interactivity | Mismatch errors if server HTML ≠ client render   |
 | Reuses server DOM nodes               | Hydrating large trees is expensive (main-thread) |
@@ -616,12 +635,12 @@ Any SSR/RSC app. Entry: `hydrateRoot` (React 18+), not legacy `hydrate`.
 // Server and client must render the same initial HTML
 const id = useId(); // not Math.random()
 
-hydrateRoot(document.getElementById('root')!, <App />);
+hydrateRoot(document.getElementById("root")!, <App />);
 ```
 
 **Thoughts:**
 
-*Server HTML is the contract — client first render must match byte-for-byte in structure.*
+_Server HTML is the contract — client first render must match byte-for-byte in structure._
 
 `suppressHydrationWarning` only for known benign mismatches (timestamps). Fix root cause, don't suppress broadly.
 
@@ -648,7 +667,7 @@ Streaming & Suspense
 
 **Pluses and minuses:**
 
-| +                                      | −                                         |
+| +                                         | −                                            |
 | ----------------------------------------- | -------------------------------------------- |
 | Faster FCP/LCP — users see content sooner | More complex mental model vs single SSR blob |
 | Progressive enhancement of page sections  | Fallback design and layout shift need care   |
@@ -707,7 +726,7 @@ npx create-next-app@latest my-app
 
 **Thoughts:**
 
-*React is the UI library; frameworks own the request → HTML → hydration pipeline.*
+_React is the UI library; frameworks own the request → HTML → hydration pipeline._
 
 Dec 2025 security advisories affected React Server Components packages — keep `react`, `react-dom`, and framework versions patched. RSC is an **architecture** implemented by frameworks, not something you enable with `react` alone.
 

@@ -10,7 +10,6 @@ export function SidebarDockButton({
   expandLabel,
   onToggle,
   onPointerEnter,
-  onPointerLeave,
 }: {
   collapsed: boolean;
   rail: boolean;
@@ -18,7 +17,6 @@ export function SidebarDockButton({
   expandLabel: string;
   onToggle: () => void;
   onPointerEnter: (event: PointerEvent<HTMLElement>) => void;
-  onPointerLeave: () => void;
 }) {
   const label = collapsed ? expandLabel : collapseLabel;
 
@@ -37,7 +35,6 @@ export function SidebarDockButton({
       title={label}
       onClick={onToggle}
       onPointerEnter={onPointerEnter}
-      onPointerLeave={onPointerLeave}
     >
       <span
         className={
@@ -61,7 +58,12 @@ function SidebarDockGlyph({ collapsed }: { collapsed: boolean }) {
         stroke="currentColor"
         strokeWidth="1.75"
       />
-      <path d="M9 5.5v13" fill="none" stroke="currentColor" strokeWidth="1.75" />
+      <path
+        d="M9 5.5v13"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
       <g
         className={`transition-transform duration-200 ease-out motion-reduce:transition-none ${
           collapsed ? "rotate-180" : "rotate-0"

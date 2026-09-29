@@ -6,7 +6,7 @@ Browser security, CWV, and third-party integrations.
 
 ### Related docs
 
-* [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
+- [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
 
 ### Sections
 
@@ -35,19 +35,19 @@ Browser security, CWV, and third-party integrations.
 - `Access-Control-Allow-Origin` may be **one** origin or `*` (no credentials). Multiple sites: reflect the request `Origin` if it is on an allowlist, and send `Vary: Origin`.
 - Preflight must **not** include credentials. Credentialed actual requests need `Access-Control-Allow-Credentials: true` and a **concrete** origin — never `*` (also no `*` on Allow-Methods / Allow-Headers / Expose-Headers with credentials).
 
-| Response header | Role |
-| --------------- | ---- |
-| `Access-Control-Allow-Origin` | Which origin may read the response (`*` or one origin) |
-| `Access-Control-Allow-Methods` | Methods allowed on the **actual** request (preflight) |
-| `Access-Control-Allow-Headers` | Request headers the client may send (preflight) — **not** response headers |
-| `Access-Control-Allow-Credentials` | `true` if cookies / HTTP auth may be used |
-| `Access-Control-Max-Age` | Seconds to cache the preflight result |
-| `Access-Control-Expose-Headers` | Response headers JS may read (`Response.headers`) |
+| Response header                    | Role                                                                       |
+| ---------------------------------- | -------------------------------------------------------------------------- |
+| `Access-Control-Allow-Origin`      | Which origin may read the response (`*` or one origin)                     |
+| `Access-Control-Allow-Methods`     | Methods allowed on the **actual** request (preflight)                      |
+| `Access-Control-Allow-Headers`     | Request headers the client may send (preflight) — **not** response headers |
+| `Access-Control-Allow-Credentials` | `true` if cookies / HTTP auth may be used                                  |
+| `Access-Control-Max-Age`           | Seconds to cache the preflight result                                      |
+| `Access-Control-Expose-Headers`    | Response headers JS may read (`Response.headers`)                          |
 
-| Request header (browser-set) | Role |
-| ---------------------------- | ---- |
-| `Origin` | Page origin |
-| `Access-Control-Request-Method` | Method of the planned actual request |
+| Request header (browser-set)     | Role                                         |
+| -------------------------------- | -------------------------------------------- |
+| `Origin`                         | Page origin                                  |
+| `Access-Control-Request-Method`  | Method of the planned actual request         |
 | `Access-Control-Request-Headers` | Non-safelisted headers of the actual request |
 
 **When to use:**
@@ -60,11 +60,11 @@ Treating CORS as a firewall (the simple request already ran). `Allow-Headers` vs
 
 **Pluses and minuses:**
 
-| + | − |
-| ---- | ---- |
-| Lets SPAs call a separate API origin with server consent | Easy to misconfigure (`*`, missing preflight, wrong header names) |
-| Preflight can reject unsafe methods/headers before the real call | Browser-only — curl/Postman/server-to-server ignore CORS |
-| Standard `Access-Control-*` headers | Does **not** replace CSRF protection |
+| +                                                                | −                                                                 |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Lets SPAs call a separate API origin with server consent         | Easy to misconfigure (`*`, missing preflight, wrong header names) |
+| Preflight can reject unsafe methods/headers before the real call | Browser-only — curl/Postman/server-to-server ignore CORS          |
+| Standard `Access-Control-*` headers                              | Does **not** replace CSRF protection                              |
 
 **Examples:**
 
@@ -86,8 +86,8 @@ Vary: Origin
 ```
 
 ```js
-await fetch('https://api.example.com/data', {
-  credentials: 'include', // needs Allow-Credentials: true and a concrete Allow-Origin
+await fetch("https://api.example.com/data", {
+  credentials: "include", // needs Allow-Credentials: true and a concrete Allow-Origin
 });
 ```
 
@@ -128,7 +128,7 @@ Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.examp
 ```
 
 ```html
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'" />
 ```
 
 **Thoughts:** `'unsafe-inline'` largely defeats XSS protection. `<meta>` CSP cannot set `frame-ancestors` or some other document directives. See [HTML — CSP](./1_html.md) · [Special — CSP](./7_special_security.md#content-security-policy-csp) · [Special — XSS](./7_special_security.md#xss-cross-site-scripting).
@@ -204,7 +204,7 @@ Encode for the **output context** (HTML vs URL). `encodeURIComponent` is for URL
 
 **Pluses and minuses:**
 
-| + (SameSite + token)         | −                                                        |
+| + (SameSite + token)            | −                                                           |
 | ------------------------------- | ----------------------------------------------------------- |
 | Blocks most browser-driven CSRF | SameSite=None needed for some OAuth flows (requires Secure) |
 | Token pattern well-understood   | SPA + cookie auth needs careful CORS/credentials setup      |
@@ -212,18 +212,18 @@ Encode for the **output context** (HTML vs URL). `encodeURIComponent` is for URL
 **Examples:**
 
 ```html
-<meta name="csrf-token" content="random-token-from-server">
+<meta name="csrf-token" content="random-token-from-server" />
 ```
 
 ```js
-fetch('/api/transfer', {
-  method: 'POST',
-  credentials: 'include',
+fetch("/api/transfer", {
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json',
-    'X-CSRF-Token': document.querySelector('meta[name=csrf-token]').content,
+    "Content-Type": "application/json",
+    "X-CSRF-Token": document.querySelector("meta[name=csrf-token]").content,
   },
-  body: JSON.stringify({ to: 'alice', amount: 50 }),
+  body: JSON.stringify({ to: "alice", amount: 50 }),
 });
 ```
 
@@ -288,7 +288,9 @@ JSONP bypasses SOP by loading cross-origin data via a `<script>` tag that calls 
 ```html
 <script src="https://api.example.com/data?callback=handleData"></script>
 <script>
-  function handleData(json) { console.log(json); }
+  function handleData(json) {
+    console.log(json);
+  }
 </script>
 ```
 
@@ -322,11 +324,13 @@ A service worker is a background script that intercepts network requests and ena
 **Examples:**
 
 ```js
-navigator.serviceWorker.register('/sw.js');
+navigator.serviceWorker.register("/sw.js");
 
 // sw.js
-self.addEventListener('fetch', (event) => {
-  event.respondWith(caches.match(event.request).then(r => r || fetch(event.request)));
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((r) => r || fetch(event.request)),
+  );
 });
 ```
 
@@ -356,9 +360,9 @@ Web Workers run JavaScript on a background thread so CPU-heavy work does not blo
 **Examples:**
 
 ```js
-const worker = new Worker('hash-worker.js');
+const worker = new Worker("hash-worker.js");
 worker.postMessage(largeBuffer);
-worker.onmessage = (e) => console.log('hash:', e.data);
+worker.onmessage = (e) => console.log("hash:", e.data);
 ```
 
 **Sources:**
@@ -387,8 +391,8 @@ Worklets are lightweight parallel execution contexts for specific tasks like aud
 **Examples:**
 
 ```js
-await audioContext.audioWorklet.addModule('processor.js');
-const node = new AudioWorkletNode(audioContext, 'gain-processor');
+await audioContext.audioWorklet.addModule("processor.js");
+const node = new AudioWorkletNode(audioContext, "gain-processor");
 ```
 
 **Sources:**
@@ -417,9 +421,9 @@ The History API lets SPAs manipulate the browser URL and history stack without f
 **Examples:**
 
 ```js
-history.pushState({ page: 'settings' }, '', '/settings');
-window.addEventListener('popstate', (e) => {
-  renderPage(e.state?.page ?? 'home');
+history.pushState({ page: "settings" }, "", "/settings");
+window.addEventListener("popstate", (e) => {
+  renderPage(e.state?.page ?? "home");
 });
 ```
 
@@ -440,11 +444,11 @@ window.addEventListener('popstate', (e) => {
 
 TCP opens a connection with SYN → SYN-ACK → ACK so both sides agree on initial sequence numbers before the byte stream.
 
-| Step | Packet  | Meaning                          |
-| ---- | ------- | -------------------------------- |
-| 1    | SYN     | Client ISN `x`                   |
-| 2    | SYN-ACK | Server ISN `y`, ack `x + 1`      |
-| 3    | ACK     | Client ack `y + 1`; connected    |
+| Step | Packet  | Meaning                       |
+| ---- | ------- | ----------------------------- |
+| 1    | SYN     | Client ISN `x`                |
+| 2    | SYN-ACK | Server ISN `y`, ack `x + 1`   |
+| 3    | ACK     | Client ack `y + 1`; connected |
 
 Full UDP comparison, TFO vs `initcwnd`, `preconnect`, STUN/TURN → [TCP vs UDP](./6_web_api_interview.md#tcp-vs-udp).
 
@@ -493,7 +497,7 @@ Axios interceptors are middleware hooks that transform or inspect requests and r
 **Examples:**
 
 ```js
-import axios from 'axios';
+import axios from "axios";
 
 axios.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${getToken()}`;
@@ -505,7 +509,7 @@ axios.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401) logout();
     return Promise.reject(err);
-  }
+  },
 );
 ```
 
@@ -535,8 +539,8 @@ Progressive rendering displays meaningful content before all assets finish loadi
 **Examples:**
 
 ```html
-<img src="hero.jpg" loading="lazy" alt="Hero">
-<link rel="preload" href="font.woff2" as="font" crossorigin>
+<img src="hero.jpg" loading="lazy" alt="Hero" />
+<link rel="preload" href="font.woff2" as="font" crossorigin />
 ```
 
 **Sources:**
@@ -584,20 +588,20 @@ Progressive rendering displays meaningful content before all assets finish loadi
 
 Google’s page-experience metrics (2020+). **Core** set is **LCP** (main content painted), **INP** (click/tap/key → next paint), **CLS** (unexpected layout jump). A URL **passes** when **all three** are “good” at **p75**, **mobile and desktop scored separately**. **FCP** and **TTFB** are diagnostic, not Core, not ranking.
 
-| Metric | Question | 🟢 Good | 🟡 Needs improvement | 🔴 Poor |
-| ------ | -------- | ------- | -------------------- | ------- |
-| **LCP** | When did I see the main content? | ≤ 2.5 s | 2.5–4.0 s | > 4.0 s |
-| **INP** | After I pressed, did the UI update soon? | ≤ 200 ms | 200–500 ms | > 500 ms |
-| **CLS** | Did things jump so I might tap the wrong control? | ≤ 0.1 | 0.1–0.25 | > 0.25 |
-| **FCP** | When did *anything* appear? | ≤ 1.8 s | 1.8–3.0 s | > 3.0 s |
-| **TTFB** | How soon did the server start the response? | ≤ 0.8 s | 0.8–1.8 s | > 1.8 s |
+| Metric   | Question                                          | 🟢 Good  | 🟡 Needs improvement | 🔴 Poor  |
+| -------- | ------------------------------------------------- | -------- | -------------------- | -------- |
+| **LCP**  | When did I see the main content?                  | ≤ 2.5 s  | 2.5–4.0 s            | > 4.0 s  |
+| **INP**  | After I pressed, did the UI update soon?          | ≤ 200 ms | 200–500 ms           | > 500 ms |
+| **CLS**  | Did things jump so I might tap the wrong control? | ≤ 0.1    | 0.1–0.25             | > 0.25   |
+| **FCP**  | When did _anything_ appear?                       | ≤ 1.8 s  | 1.8–3.0 s            | > 3.0 s  |
+| **TTFB** | How soon did the server start the response?       | ≤ 0.8 s  | 0.8–1.8 s            | > 1.8 s  |
 
 Thresholds are the same on phone and desktop; **samples are not**. Ranking uses **CrUX field** data (28-day window), not a lab Lighthouse run. **CLS** is unitless; others are time. **FID** was Core until **12 March 2024** — **INP** replaced it (all clicks/taps/keys, full path to paint). Lighthouse with no user reports **TBT**, not INP.
 
-| | **Lab** | **Field** (RUM) |
-| --- | --- | --- |
+|       | **Lab**                          | **Field** (RUM)                               |
+| ----- | -------------------------------- | --------------------------------------------- |
 | Tools | Lighthouse, PSI lab, Performance | CrUX, PSI field, Search Console, `web-vitals` |
-| Use | Reproduce *what to fix* | p75 of real visits — *what ranking uses* |
+| Use   | Reproduce _what to fix_          | p75 of real visits — _what ranking uses_      |
 
 Lab ≠ field: INP needs real input; CLS in the field includes scroll/banners; LCP element and cache differ. Workflow: field first → lab slice (not “make LCP better”) → re-check all three. Slow hero → [LCP](#lcp-largest-contentful-paint); dead buttons → [INP](#inp-interaction-to-next-paint); jump → [1_html.md — CLS](./1_html_performance.md#cls-cumulative-layout-shift); blank screen → [FCP](#first-contentful-paint-fcp) / [TTFB](#ttfb-time-to-first-byte). Start **mobile**, high-traffic URLs.
 
@@ -608,10 +612,10 @@ SEO ranking, incident triage, Lighthouse CI budgets, tickets with a numeric p75 
 **Example** — field (`web-vitals`). Flush on `visibilitychange` → `hidden` via `sendBeacon` (`unload` breaks **bfcache**). Report **p75**, not the average.
 
 ```js
-import { onCLS, onINP, onLCP } from 'web-vitals';
+import { onCLS, onINP, onLCP } from "web-vitals";
 
 function send(metric) {
-  navigator.sendBeacon('/analytics', JSON.stringify(metric));
+  navigator.sendBeacon("/analytics", JSON.stringify(metric));
 }
 
 onCLS(send);
@@ -620,13 +624,15 @@ onLCP(send);
 ```
 
 ```js
-import { onLCP, onINP, onCLS } from 'web-vitals/attribution';
+import { onLCP, onINP, onCLS } from "web-vitals/attribution";
 onLCP(({ attribution }) => console.log(attribution)); // TTFB, load delay/duration, render delay
-onINP(({ attribution }) => console.log(attribution.inputDelay, attribution.processingDuration));
+onINP(({ attribution }) =>
+  console.log(attribution.inputDelay, attribution.processingDuration),
+);
 onCLS(({ attribution }) => console.log(attribution.largestShiftTarget));
 ```
 
-Next.js: [4_nextjs.md — CWV](./4_nextjs_platform.md#core-web-vitals-on-vercel). HTML levers: [1_html.md](./1_html_performance.md#core-web-vitals--html-developer-impact). DevTools: [11_vsc_browser.md](./11_vsc_browser.md#devtools--core-web-vitals).
+Next.js: [4_nextjs.md — CWV](./4_nextjs_optimizations.md#core-web-vitals-on-vercel). HTML levers: [1_html.md](./1_html_performance.md#core-web-vitals--html-developer-impact). DevTools: [11_vsc_browser.md](./11_vsc_browser.md#devtools--core-web-vitals).
 
 #### Common pitfalls
 
@@ -634,9 +640,9 @@ Trusting Lighthouse while Search Console is red. Expecting CrUX next day. Optimi
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| Shared language with SEO | Lab green ≠ Search Console green |
+| +                                    | −                                    |
+| ------------------------------------ | ------------------------------------ |
+| Shared language with SEO             | Lab green ≠ Search Console green     |
 | Attribution names the element/script | 28-day CrUX lag; mean hides the tail |
 
 **Thoughts:** Lab = how to reproduce; field p75 = whether users (and ranking) care.
@@ -664,14 +670,14 @@ Good: **≤ 2.5 s**. Poor: **> 4 s**. Field “pass” is p75 (see [Core Web Vit
 
 **How it works:**
 
-Google splits LCP into four consecutive sub-parts (no gaps). On a **well-optimized** page the *typical* share is ~40% TTFB, &lt;10% resource load delay, ~40% resource load duration, &lt;10% element render delay — real sites vary; fix the slice that is large in *your* attribution (`web-vitals/attribution`: `timeToFirstByte`, `resourceLoadDelay`, `resourceLoadDuration`, `elementRenderDelay`).
+Google splits LCP into four consecutive sub-parts (no gaps). On a **well-optimized** page the _typical_ share is ~40% TTFB, &lt;10% resource load delay, ~40% resource load duration, &lt;10% element render delay — real sites vary; fix the slice that is large in _your_ attribution (`web-vitals/attribution`: `timeToFirstByte`, `resourceLoadDelay`, `resourceLoadDuration`, `elementRenderDelay`).
 
-| Sub-part | What it is | Typical share (optimized) |
-| -------- | ---------- | -------------------------- |
-| **TTFB** | Navigation start → first byte of HTML | ~40% |
-| **Resource load delay** | First HTML byte → start of the LCP resource request | &lt;10% |
-| **Resource load duration** | LCP resource download | ~40% |
-| **Element render delay** | Resource ready → paint on screen | &lt;10% |
+| Sub-part                   | What it is                                          | Typical share (optimized) |
+| -------------------------- | --------------------------------------------------- | ------------------------- |
+| **TTFB**                   | Navigation start → first byte of HTML               | ~40%                      |
+| **Resource load delay**    | First HTML byte → start of the LCP resource request | &lt;10%                   |
+| **Resource load duration** | LCP resource download                               | ~40%                      |
+| **Element render delay**   | Resource ready → paint on screen                    | &lt;10%                   |
 
 Text-only LCP (no extra file) has **no** resource delay/duration — only TTFB + render delay.
 
@@ -690,7 +696,7 @@ Put the LCP image in HTML as `<img src>` so the preload scanner finds it — not
 />
 ```
 
-Next.js: `priority` on `next/image` disables lazy loading and raises fetch priority; in **Next.js 16** prefer `preload` (`priority` is deprecated). → [4_nextjs.md](./4_nextjs_platform.md#core-web-vitals-on-vercel).
+Next.js: `priority` on `next/image` disables lazy loading and raises fetch priority; in **Next.js 16** prefer `preload` (`priority` is deprecated). → [4_nextjs.md](./4_nextjs_optimizations.md#core-web-vitals-on-vercel).
 
 Photos → raster **AVIF → WebP → JPEG** via `<picture>`, not SVG. Serve `srcset`/`sizes`. Image CDNs can pick format/size from Client Hints / UA. Long `Cache-Control` on static files; sort/strip cache-busting query junk; avoid `Set-Cookie` on cacheable responses. Demote competing work: `fetchpriority="low"` on non-LCP carousel slides; `defer`/`async` third-party scripts. Tiny icons: `data:` URL or **inline `<svg>`** (SVGO); base64 is ~⅓ larger and shares the document cache — not for heroes. Field data often shows TTFB/delays dominate — check before encoding marathons.
 
@@ -734,10 +740,10 @@ Product hero, article cover, marketing landing. Confirm the weak slice with CrUX
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
+| +                                       | −                                         |
+| --------------------------------------- | ----------------------------------------- |
 | Maps to a visible “main content” moment | LCP element changes with viewport / cache |
-| Four named slices for tickets | Lab cold cache ≠ field warm cache |
+| Four named slices for tickets           | Lab cold cache ≠ field warm cache         |
 
 **Examples:**
 
@@ -751,8 +757,16 @@ Product hero, article cover, marketing landing. Confirm the weak slice with CrUX
 />
 
 <picture>
-  <source type="image/avif" srcset="hero-640.avif 640w, hero-1280.avif 1280w" sizes="100vw" />
-  <source type="image/webp" srcset="hero-640.webp 640w, hero-1280.webp 1280w" sizes="100vw" />
+  <source
+    type="image/avif"
+    srcset="hero-640.avif 640w, hero-1280.avif 1280w"
+    sizes="100vw"
+  />
+  <source
+    type="image/webp"
+    srcset="hero-640.webp 640w, hero-1280.webp 1280w"
+    sizes="100vw"
+  />
   <img
     src="hero-1280.jpg"
     srcset="hero-640.jpg 640w, hero-1280.jpg 1280w"
@@ -807,15 +821,15 @@ Long white screen. When LCP is bad, FCP tells you “nothing painted yet” vs �
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| Earliest user-visible load signal | Not Core Web Vitals / not ranking |
+| +                                 | −                                        |
+| --------------------------------- | ---------------------------------------- |
+| Earliest user-visible load signal | Not Core Web Vitals / not ranking        |
 | Shares the critical path with LCP | First logo or line of text ≠ usable page |
 
 **Examples:**
 
 ```js
-import { onFCP } from 'web-vitals';
+import { onFCP } from "web-vitals";
 onFCP(console.log);
 ```
 
@@ -852,11 +866,11 @@ TTFB is the sum of:
 
 Until that byte arrives, the browser has nothing to parse, so **FCP and LCP wait**. A high TTFB often drags other metrics down. A **low** TTFB does **not** guarantee good LCP/FCP — resources, JS, and paint still follow.
 
-| Rating ([web.dev](https://web.dev/articles/optimize-ttfb)) | TTFB |
-| ---------------------------------------------------------- | ---- |
-| Good | ≤ 0.8 s |
-| Needs improvement | 0.8–1.8 s |
-| Poor | > 1.8 s |
+| Rating ([web.dev](https://web.dev/articles/optimize-ttfb)) | TTFB      |
+| ---------------------------------------------------------- | --------- |
+| Good                                                       | ≤ 0.8 s   |
+| Needs improvement                                          | 0.8–1.8 s |
+| Poor                                                       | > 1.8 s   |
 
 Measure in PageSpeed Insights, DevTools **Network** (Waiting / TTFB), `web-vitals` `onTTFB`, or field data via **CrUX**. Typical causes: **network** (distance, no CDN) or **origin** (HTML render, DB, third-party APIs).
 
@@ -869,7 +883,7 @@ Measure in PageSpeed Insights, DevTools **Network** (Waiting / TTFB), `web-vital
 **Server**
 
 - Stream HTML (`renderToPipeableStream` + `<Suspense>` in React) so the browser can parse chunks while slow data is still loading. See [system design — streaming SSR](./0_system_design_architecture.md#rendering-strategies-when-html-is-built).
-- Next.js: SSG / [ISR](./4_nextjs_core.md#incremental-static-regeneration-isr) for pages that do not need per-visitor HTML — then a CDN can serve it. Levers: [Core Web Vitals on Vercel](./4_nextjs_platform.md#core-web-vitals-on-vercel).
+- Next.js: SSG / [ISR](./4_nextjs_rendering.md#incremental-static-regeneration-isr) for pages that do not need per-visitor HTML — then a CDN can serve it. Levers: [Core Web Vitals on Vercel](./4_nextjs_optimizations.md#core-web-vitals-on-vercel).
 - Service worker **stale-while-revalidate** can return an app shell from cache immediately; **do not** use it for per-request personalized HTML (it would serve a stale document). See [Service Workers](#service-workers).
 - **103 Early Hints:** while the origin prepares the final response, send `Link` hints so the browser can start critical assets. Some CDNs (e.g. Cloudflare) emit 103 before origin HTML exists. Adoption is still uneven.
 - Origin health (memory, runtime). Break down origin time with `Server-Timing`; those marks show up in the browser via **Navigation Timing** (`PerformanceNavigationTiming`).
@@ -884,23 +898,23 @@ Unique analytics query params bypassing CDN cache. Extra 301/302 hops. Edge SSR 
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| Explains stalled FCP/LCP before parse | Not a Core Web Vital; chasing TTFB alone misses JS/images |
+| +                                            | −                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------- |
+| Explains stalled FCP/LCP before parse        | Not a Core Web Vital; chasing TTFB alone misses JS/images                  |
 | Attribution splits DNS vs connect vs request | 103 Early Hints can make “first byte” the interim response, not final HTML |
 
 **Examples:**
 
 ```js
-import { onTTFB } from 'web-vitals';
+import { onTTFB } from "web-vitals";
 
 onTTFB((metric) => {
-  console.log('TTFB:', metric.value, 'ms', metric.rating);
+  console.log("TTFB:", metric.value, "ms", metric.rating);
   const nav = metric.entries[0];
   if (nav) {
-    console.log('DNS:', nav.domainLookupEnd - nav.domainLookupStart);
-    console.log('Connect:', nav.connectEnd - nav.connectStart);
-    console.log('Request→first byte:', nav.responseStart - nav.requestStart);
+    console.log("DNS:", nav.domainLookupEnd - nav.domainLookupStart);
+    console.log("Connect:", nav.connectEnd - nav.connectStart);
+    console.log("Request→first byte:", nav.responseStart - nav.requestStart);
   }
 });
 ```
@@ -942,11 +956,11 @@ An interaction is one gesture (`pointerdown` + `click`, or `keydown` + `keyup`).
 
 Three phases (sum = interaction latency):
 
-| Phase | What | Typical cause |
-| ----- | ---- | ------------- |
-| **Input delay** | User action → first handler starts | Main thread busy (JS, Long Tasks) |
-| **Processing duration** | Handlers + other sync work | Heavy click handlers, large React commit |
-| **Presentation delay** | Handlers done → updated frame | Layout/paint, third-party JS, huge DOM |
+| Phase                   | What                               | Typical cause                            |
+| ----------------------- | ---------------------------------- | ---------------------------------------- |
+| **Input delay**         | User action → first handler starts | Main thread busy (JS, Long Tasks)        |
+| **Processing duration** | Handlers + other sync work         | Heavy click handlers, large React commit |
+| **Presentation delay**  | Handlers done → updated frame      | Layout/paint, third-party JS, huge DOM   |
 
 FID (Core Vital until **March 2024**) measured only the **first** interaction and only **input delay**. INP replaced it: all clicks/taps/keys, full path to next paint. Lab Lighthouse with no user reports **TBT**, not INP.
 
@@ -1002,7 +1016,7 @@ Search, cart, checkout, filters, autocomplete. Measure field first (`web-vitals`
 1. **Measure** — `webpack-bundle-analyzer` / `@next/bundle-analyzer`.
 2. **Code split** — per route; `import()` / `React.lazy` / `next/dynamic` for charts, editors, modals. See [10_build.md](./10_build_bundlers.md#code-splitting).
 3. **Tree-shake** — named ESM (`lodash-es`, `date-fns`), not `import _ from 'lodash'` / Moment. [10_build.md](./10_build_bundlers.md#tree-shaking).
-4. **Barrel files** — `export *` from `index.ts` can pull a whole UI kit. Next: [`optimizePackageImports`](./4_nextjs_platform.md#optimizepackageimports) (Next docs still mark it experimental; Turbopack often analyzes imports itself).
+4. **Barrel files** — `export *` from `index.ts` can pull a whole UI kit. Next: [`optimizePackageImports`](./4_nextjs_optimizations.md#optimizepackageimports) (Next docs still mark it experimental; Turbopack often analyzes imports itself).
 5. **Server work** — RSC instead of client Markdown, etc. Best JS is JS never sent. Then lighter libs, Brotli, CI bundle budget.
 
 Other techniques:
@@ -1023,23 +1037,23 @@ Yield/Workers before cutting unused JS. Treating FID or TBT as INP. Counting scr
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| Matches post-load UX (most of the session) | No INP if nobody clicked/tapped/typed |
-| Attribution names control + phase | Lab INP depends on which clicks you perform |
-| Shared language with SEO | Scroll/hover jank is out of scope |
+| +                                          | −                                           |
+| ------------------------------------------ | ------------------------------------------- |
+| Matches post-load UX (most of the session) | No INP if nobody clicked/tapped/typed       |
+| Attribution names control + phase          | Lab INP depends on which clicks you perform |
+| Shared language with SEO                   | Scroll/hover jank is out of scope           |
 
 **Examples:**
 
 ```tsx
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-const HeavyChart = dynamic(() => import('./heavy-chart'), { ssr: false });
+const HeavyChart = dynamic(() => import("./heavy-chart"), { ssr: false });
 ```
 
 ```js
 let controller;
-input.addEventListener('input', async (e) => {
+input.addEventListener("input", async (e) => {
   const query = e.target.value.trim();
   controller?.abort();
   if (!query) return;
@@ -1065,7 +1079,7 @@ boxes.forEach((box, i) => {
 
 **Thoughts:** Paint a response **now** (spinner, optimistic UI); keep the main thread free of long JS.
 
-**See also:** [Core Web Vitals](#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [4_react.md — Web Vitals](./4_react_ecosystem.md#web-vitals-in-react-apps) · [4_nextjs.md — CWV](./4_nextjs_platform.md#core-web-vitals-on-vercel)
+**See also:** [Core Web Vitals](#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [4_react.md — Web Vitals](./4_react_ecosystem.md#web-vitals-in-react-apps) · [4_nextjs.md — CWV](./4_nextjs_optimizations.md#core-web-vitals-on-vercel)
 
 **Sources:**
 
@@ -1094,9 +1108,9 @@ Resource hints tell the browser to fetch or connect early, speeding up current o
 **Examples:**
 
 ```html
-<link rel="preload" href="/app.js" as="script">
-<link rel="prefetch" href="/next-page.js" as="script">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" href="/app.js" as="script" />
+<link rel="prefetch" href="/next-page.js" as="script" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
 ```
 
 **Sources:**
@@ -1127,9 +1141,9 @@ PRPL (Push, Render, Pre-cache, Lazy-load) is a performance pattern for fast inte
 
 ```html
 <!-- Push critical route -->
-<link rel="preload" href="/route-home.js" as="script">
+<link rel="preload" href="/route-home.js" as="script" />
 <!-- Lazy-load below-fold images -->
-<img loading="lazy" src="/gallery/photo-9.jpg">
+<img loading="lazy" src="/gallery/photo-9.jpg" />
 ```
 
 **Sources:**
@@ -1169,7 +1183,7 @@ Putting secret keys in the browser. Trusting client-reported `amount`. Blocking 
 
 **Pluses and minuses:**
 
-| +                                          | −                                        |
+| +                                             | −                                           |
 | --------------------------------------------- | ------------------------------------------- |
 | PCI / tracking compliance is the vendor's job | Script size, privacy, and CSP `script-src`  |
 | Webhooks keep your DB in sync                 | Webhook signature verification is mandatory |
@@ -1180,9 +1194,13 @@ Putting secret keys in the browser. Trusting client-reported `amount`. Blocking 
 ```ts
 // Server — confirm after webhook, never trust the client amount alone
 export async function POST(req: Request) {
-  const sig = req.headers.get('stripe-signature');
-  const event = stripe.webhooks.constructEvent(await req.text(), sig!, process.env.STRIPE_WEBHOOK_SECRET!);
-  if (event.type === 'checkout.session.completed') {
+  const sig = req.headers.get("stripe-signature");
+  const event = stripe.webhooks.constructEvent(
+    await req.text(),
+    sig!,
+    process.env.STRIPE_WEBHOOK_SECRET!,
+  );
+  if (event.type === "checkout.session.completed") {
     await markPaid(event.data.object.id);
   }
   return new Response(null, { status: 200 });

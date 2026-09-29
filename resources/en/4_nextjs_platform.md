@@ -1,181 +1,26 @@
 # Next.js — Platform
 
-Optimizations, proxy, config, Vercel, migration, and debugging.
+Proxy, config, Vercel, migration, and debugging.
 
 [← Back to hub](./4_nextjs.md)
 
 ### Related docs
 
-- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
+- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Optimizations](./4_nextjs_optimizations.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
 
 ### Sections
 
-- [14. Built-in optimizations](#14-built-in-optimizations)
-- [15. Proxy & middleware](#15-proxy-middleware)
-- [16. Configuration](#16-configuration)
-- [17. Vercel deployment](#17-vercel-deployment)
-- [18. Migration & pitfalls](#18-migration-pitfalls)
-- [19. Performance & debugging](#19-performance-debugging)
+- [1. Proxy & middleware](#1-proxy-and-middleware)
+- [2. Configuration](#2-configuration)
+- [3. Vercel deployment](#3-vercel-deployment)
+- [4. Migration & pitfalls](#4-migration-and-pitfalls)
+- [5. Debugging](#5-debugging)
 
 ---
 
-## 14. Built-in optimizations
+<a name="1-proxy-and-middleware"></a>
 
-_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
-
-<details>
-  <summary>next/image</summary>
-
-### next/image
-
-**Definition:** Image component with automatic optimization — resizing, WebP/AVIF, lazy loading, blur placeholder.
-
-**When to use:** Always prefer over raw `<img>` for photos and hero images.
-
-**Pluses and minuses:**
-
-| +                                           | −                                                      |
-| ------------------------------------------- | ------------------------------------------------------ |
-| Better LCP, smaller payloads                | Requires config for remote domains                     |
-| Prevents layout shift with `width`/`height` | SVG handling needs `unoptimized` or different approach |
-| `priority` / `preload` for LCP images       | Build-time optimization adds deploy step on Vercel     |
-
-**Examples:**
-
-```tsx
-import Image from "next/image";
-
-<Image
-  src="/hero.jpg"
-  alt="Hero"
-  width={1200}
-  height={630}
-  priority
-  sizes="(max-width: 768px) 100vw, 50vw"
-/>;
-```
-
-```ts
-// next.config.ts — remote images
-const nextConfig = {
-  images: {
-    remotePatterns: [{ protocol: "https", hostname: "cdn.example.com" }],
-  },
-};
-```
-
-**Thoughts:** For the LCP image, `priority` disables lazy loading and raises fetch priority. In Next.js 16 prefer `preload` (`priority` is deprecated). Breakdown → [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint).
-
-**Sources:** [nextjs.org/docs/app/api-reference/components/image](https://nextjs.org/docs/app/api-reference/components/image)
-
-</details>
-
-<details>
-  <summary>next/font</summary>
-
-### next/font
-
-**Definition:** Self-hosted font loading with zero layout shift. Fonts are downloaded at build time — no Google Fonts network request at runtime.
-
-**Pluses and minuses:**
-
-| +                          | −                                           |
-| -------------------------- | ------------------------------------------- |
-| Zero CLS from font swap    | Subset selection affects character coverage |
-| No external CDN dependency | Multiple font weights increase bundle       |
-
-**Examples:**
-
-```tsx
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" className={geistSans.variable}>
-      <body>{children}</body>
-    </html>
-  );
-}
-```
-
-**Thoughts:** Do not use `<link href="fonts.googleapis.com">` — use `next/font` for production apps on Vercel.
-
-**Sources:** [nextjs.org/docs/app/api-reference/components/font](https://nextjs.org/docs/app/api-reference/components/font)
-
-</details>
-
-<details>
-  <summary>next/script</summary>
-
-### next/script
-
-**Definition:**
-
-Optimized third-party script loading with strategies to avoid blocking main thread.
-
-| Strategy                     | When                                          |
-| ---------------------------- | --------------------------------------------- |
-| `beforeInteractive`          | Critical scripts — injected into initial HTML |
-| `afterInteractive` (default) | Analytics, chat widgets                       |
-| `lazyOnload`                 | Low-priority trackers                         |
-| `worker`                     | Experimental — run in web worker              |
-
-**Examples:**
-
-```tsx
-import Script from "next/script";
-
-<Script
-  src="https://analytics.example.com/script.js"
-  strategy="afterInteractive"
-/>;
-```
-
-**Sources:** [nextjs.org/docs/app/api-reference/components/script](https://nextjs.org/docs/app/api-reference/components/script)
-
-</details>
-
-<details>
-  <summary>@next/third-parties</summary>
-
-### @next/third-parties
-
-**Definition:** Official wrappers for Google Analytics, Google Tag Manager, YouTube embeds with optimized loading.
-
-**Examples:**
-
-```tsx
-import { GoogleAnalytics } from "@next/third-parties/google";
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html>
-      <body>{children}</body>
-      <GoogleAnalytics gaId="G-XXXXXXXX" />
-    </html>
-  );
-}
-```
-
----
-
-**Sources:** [nextjs.org/docs/app/building-your-application/optimizing/third-party-libraries](https://nextjs.org/docs/app/building-your-application/optimizing/third-party-libraries)
-
-</details>
-
-<a name="15-proxy--middleware"></a>
-
-## 15. Proxy & middleware
+## 1. Proxy & middleware
 
 _Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
@@ -353,9 +198,9 @@ export const config = {
 
 </details>
 
-<a name="16-configuration"></a>
+<a name="2-configuration"></a>
 
-## 16. Configuration
+## 2. Configuration
 
 _Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
@@ -541,9 +386,9 @@ Self-hosted ISR across multiple Node instances — implement shared cache backen
 
 </details>
 
-<a name="17-vercel-deployment"></a>
+<a name="3-vercel-deployment"></a>
 
-## 17. Vercel deployment
+## 3. Vercel deployment
 
 _Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
@@ -563,14 +408,14 @@ Vercel is the **native platform** for Next.js — Git push triggers build, every
 | **Production** | Atomic promotion on merge — CDN + serverless functions updated |
 | **Rollback**   | Instant revert to previous deployment in dashboard             |
 
-| Feature                        | Benefit                                                           |
-| ------------------------------ | ----------------------------------------------------------------- |
-| **Preview deployments**        | QA and design review on real infrastructure before merge          |
-| **Git integration**            | Auto-deploy; status checks on PRs                                 |
-| **Edge Network**               | Global CDN for static assets and cached Full Route HTML           |
-| **Fluid Compute**              | Shared serverless pool — reduced cold starts vs classic functions |
-| **Analytics / Speed Insights** | Core Web Vitals without manual instrumentation                    |
-| **Environment scoping**        | Different `DATABASE_URL` for Preview vs Production                |
+| Feature                        | Benefit                                                                                                                   |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| **Preview deployments**        | QA and design review on real infrastructure before merge                                                                  |
+| **Git integration**            | Auto-deploy; status checks on PRs                                                                                         |
+| **Edge Network**               | Global CDN for static assets and cached Full Route HTML                                                                   |
+| **Fluid Compute**              | Shared serverless pool — reduced cold starts vs classic functions                                                         |
+| **Analytics / Speed Insights** | Core Web Vitals without manual instrumentation — [Core Web Vitals](./4_nextjs_optimizations.md#core-web-vitals-on-vercel) |
+| **Environment scoping**        | Different `DATABASE_URL` for Preview vs Production                                                                        |
 
 **When to use:**
 
@@ -695,9 +540,9 @@ CMD ["node", "server.js"]
 
 </details>
 
-<a name="18-migration--pitfalls"></a>
+<a name="4-migration-and-pitfalls"></a>
 
-## 18. Migration & pitfalls
+## 4. Migration & pitfalls
 
 _Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
 
@@ -758,35 +603,15 @@ Pages Router and legacy Next.js APIs superseded by App Router patterns.
 
 Server HTML does not match client render — React cannot reconcile.
 
-| Cause                                    | Fix                                         |
-| ---------------------------------------- | ------------------------------------------- |
-| `Date.now()` / `Math.random()` in render | Generate in `useEffect` or pass from server |
-| `typeof window !== 'undefined'` branches | Use `useEffect` or Server Component only    |
-| Invalid HTML nesting (`<p><div>`)        | Fix HTML structure                          |
-| Browser extensions modifying DOM         | Test in incognito                           |
-| Third-party libs assuming browser        | Dynamic import with `ssr: false`            |
+| Cause                                    | Fix                                                                                               |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `Date.now()` / `Math.random()` in render | Generate in `useEffect` or pass from server                                                       |
+| `typeof window !== 'undefined'` branches | Use `useEffect` or Server Component only                                                          |
+| Invalid HTML nesting (`<p><div>`)        | Fix HTML structure                                                                                |
+| Browser extensions modifying DOM         | Test in incognito                                                                                 |
+| Third-party libs assuming browser        | Dynamic import with `ssr: false` — [Bundle pitfalls](./4_nextjs_optimizations.md#bundle-pitfalls) |
 
 **Sources:** [nextjs.org/docs/messages/react-hydration-error](https://nextjs.org/docs/messages/react-hydration-error)
-
-</details>
-
-<details>
-  <summary>Bundle pitfalls</summary>
-
-### Bundle pitfalls
-
-**Definition:**
-
-Common mistakes that inflate client bundles or leak server code into the browser.
-
-| Mistake                                  | Fix                                     |
-| ---------------------------------------- | --------------------------------------- |
-| Importing `fs`, `db` in Client Component | Keep data access in Server Components   |
-| `"use client"` at page root              | Push to leaf components                 |
-| Barrel files importing server code       | Direct imports or separate entry points |
-| Heavy libs in layout                     | Dynamic `import()` with loading state   |
-
-**Sources:** [nextjs.org/docs/app/guides/lazy-loading](https://nextjs.org/docs/app/guides/lazy-loading)
 
 </details>
 
@@ -950,66 +775,17 @@ export default async function AdminPage() {
 - Use React `cache()` around `getSession()` — dedupe within one request.
 - Server Actions must call `getSession()` again — do not trust client-sent user IDs.
 - For OAuth callbacks, use Route Handler (`app/api/auth/callback/route.ts`) to set cookie and redirect.
-- Cross-link: [cookies() & headers()](./4_nextjs_core.md#cookies-headers), [RSC security](#rsc-security).
+- Cross-link: [cookies() & headers()](./4_nextjs_rendering.md#cookies-headers), [RSC security](#rsc-security).
 
 **Sources:** [nextjs.org/docs/app/guides/authentication](https://nextjs.org/docs/app/guides/authentication)
 
 </details>
 
-<a name="19-performance--debugging"></a>
+<a name="5-debugging"></a>
 
-## 19. Performance & debugging
+## 5. Debugging
 
 _Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
-
-<details>
-  <summary>Bundle analysis</summary>
-
-### Bundle analysis
-
-**Definition:** Identify large client bundles before they ship.
-
-**Examples:**
-
-```bash
-# Analyze with @next/bundle-analyzer
-ANALYZE=true npm run build
-```
-
-```ts
-// next.config.ts
-import bundleAnalyzer from "@next/bundle-analyzer";
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === "true",
-});
-export default withBundleAnalyzer(nextConfig);
-```
-
-**Sources:** [nextjs.org/docs/app/guides/package-bundling](https://nextjs.org/docs/app/guides/package-bundling)
-
-</details>
-
-<details>
-  <summary>optimizePackageImports</summary>
-
-### optimizePackageImports
-
-**Definition:** Tree-shake heavy icon/UI libraries automatically. Barrel `index` re-exports can otherwise pull unused modules into the client bundle and hurt **INP** — [6_web_api.md](./6_web_api_security.md#inp-interaction-to-next-paint).
-
-**Examples:**
-
-```ts
-const nextConfig = {
-  experimental: {
-    optimizePackageImports: ["lucide-react", "@mui/material", "date-fns"],
-  },
-};
-```
-
-**Sources:** [nextjs.org/docs/app/api-reference/config/next-config-js/optimizePackageImports](https://nextjs.org/docs/app/api-reference/config/next-config-js/optimizePackageImports)
-
-</details>
 
 <details>
   <summary>Debug build paths</summary>
@@ -1130,108 +906,6 @@ it("rejects empty title", async () => {
 - Add Playwright for Server Action form submit + `revalidatePath` visibility. Pyramid + tool map: [7_special.md — E2E](./7_special_testing.md#e2e-testing).
 
 **Sources:** [nextjs.org/docs/app/guides/testing](https://nextjs.org/docs/app/guides/testing) · [vitest.dev](https://vitest.dev/)
-
-</details>
-
-<details>
-  <summary>Core Web Vitals on Vercel</summary>
-
-### Core Web Vitals on Vercel
-
-**Definition:** Google's field metrics for real-user experience. **Core** vitals today: **LCP**, **INP**, **CLS**. **TTFB** is a diagnostic (how fast the first byte arrives) — it influences LCP but is not itself a Core Web Vital.
-
-**How it works:**
-
-Chrome records the metrics; CrUX / Speed Insights aggregate them. Next.js levers:
-
-| Metric                | Good                       | What it measures                            | Next.js levers                                                                                                                                                                                                |
-| --------------------- | -------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **LCP**               | ≤ 2.5s                     | Largest contentful paint (hero image/text)  | `next/image` `priority`, PPR static shell, `next/font`                                                                                                                                                        |
-| **INP**               | ≤ 200ms                    | Interaction to next paint (replaced FID)    | Smaller client JS, Server Components, fewer hydration handlers                                                                                                                                                |
-| **CLS**               | ≤ 0.1                      | Layout shift                                | `next/font` (fallback `size-adjust`, self-hosted files), explicit image `width`/`height`/`sizes` or `fill`. Metric + HTML/CSS causes → [1_html.md — CLS](./1_html_performance.md#cls-cumulative-layout-shift) |
-| **TTFB** (diagnostic) | ≤ 0.8 s good, > 1.8 s poor | Time to first byte                          | CDN/SSG/ISR, streaming, avoid `force-dynamic` unless needed, regional Node vs distant Edge+DB — [full TTFB](./6_web_api_security.md#ttfb-time-to-first-byte)                                                  |
-| **FCP** (diagnostic)  | ≤ 1.8s                     | First contentful paint (blank screen ended) | Same early path as LCP: TTFB, blocking CSS, `next/font`, less JS before first paint — [6_web_api.md](./6_web_api_security.md#first-contentful-paint-fcp)                                                      |
-
-**When to use:**
-
-Interview “how do you make Next fast?” — name the three vitals, one lever each, and that INP replaced FID.
-
-#### Common pitfalls
-
-Calling FID a Core Web Vital (it is not, since 2024). Shipping a huge `'use client'` tree that wrecks INP. Images without dimensions → CLS. Putting `useReportWebVitals` in the root layout and marking the whole layout `'use client'`.
-
-**Pluses and minuses:**
-
-| +                                | −                                                            |
-| -------------------------------- | ------------------------------------------------------------ |
-| Shared language with SEO/product | Lab Lighthouse ≠ field CrUX                                  |
-| Maps cleanly to Next primitives  | Chasing TTFB on Edge while the DB is far away can _hurt_ LCP |
-
-**Examples:**
-
-```tsx
-import Image from "next/image";
-
-export function Hero() {
-  return (
-    <Image
-      src="/hero.jpg"
-      alt="Product"
-      width={1200}
-      height={630}
-      priority
-      sizes="100vw"
-    />
-  );
-}
-```
-
-keep `'use client'` on a tiny reporter so `layout` stays a Server Component:
-
-```tsx
-"use client";
-
-import { useReportWebVitals } from "next/web-vitals";
-
-export function WebVitals() {
-  useReportWebVitals((metric) => {
-    navigator.sendBeacon("/analytics", JSON.stringify(metric));
-  });
-  return null;
-}
-```
-
-Import `<WebVitals />` from `app/layout.tsx`. Lab vs field, CrUX 28-day window, `web-vitals/attribution` → [6_web_api.md — Core Web Vitals](./6_web_api_security.md#core-web-vitals). LCP slices (`fetchpriority`, `picture`, Speculation Rules) → [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint).
-
-**Thoughts:** LCP = first meaningful paint, INP = input snappiness, CLS = visual stability. TTFB is a means, not the goal.
-
-**See also:** [TTFB](./6_web_api_security.md#ttfb-time-to-first-byte) · [INP](./6_web_api_security.md#inp-interaction-to-next-paint)
-
-**Sources:** [web.dev/articles/vitals](https://web.dev/articles/vitals) · [next.js — useReportWebVitals](https://nextjs.org/docs/app/api-reference/functions/use-report-web-vitals) · [vercel.com/docs/speed-insights](https://vercel.com/docs/speed-insights)
-
-</details>
-
-<details>
-  <summary>Performance checklist</summary>
-
-### Performance checklist
-
-**Definition:**
-
-Production performance audit checklist for App Router applications.
-
-1. Default to Server Components — minimize `"use client"` surface
-2. Parallelize independent fetches with `Promise.all`
-3. Use `loading.tsx` and Suspense for perceived speed
-4. Tag and invalidate cache explicitly after mutations
-5. Analyze bundle after adding any client library
-6. Use `next/image` with correct `sizes`
-7. Avoid `force-dynamic` unless truly needed
-8. Connection pool for serverless DB (Neon, Prisma Accelerate)
-
----
-
-**Sources:** [nextjs.org/docs](https://nextjs.org/docs)
 
 </details>
 

@@ -162,7 +162,7 @@ Optimize hero for LCP · reserve ad/embed space for CLS · use `<button>` for IN
 
 **Thoughts:** Core Web Vitals are **LCP, INP, CLS**. TTFB and FCP explain a slow first paint / LCP; they are not Core Vitals.
 
-**See also:** Measure / lab vs field / RUM → [6_web_api.md — Core Web Vitals](./6_web_api_security.md#core-web-vitals). LCP sub-parts → [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint). INP → [6_web_api.md](./6_web_api_security.md#inp-interaction-to-next-paint). TTFB → [6_web_api.md](./6_web_api_security.md#ttfb-time-to-first-byte). FCP → [6_web_api.md](./6_web_api_security.md#first-contentful-paint-fcp). Next.js levers → [4_nextjs.md](./4_nextjs_platform.md#core-web-vitals-on-vercel).
+**See also:** Measure / lab vs field / RUM → [6_web_api.md — Core Web Vitals](./6_web_api_security.md#core-web-vitals). LCP sub-parts → [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint). INP → [6_web_api.md](./6_web_api_security.md#inp-interaction-to-next-paint). TTFB → [6_web_api.md](./6_web_api_security.md#ttfb-time-to-first-byte). FCP → [6_web_api.md](./6_web_api_security.md#first-contentful-paint-fcp). Next.js levers → [4_nextjs.md](./4_nextjs_optimizations.md#core-web-vitals-on-vercel).
 
 **Sources:** [web.dev — Vitals](https://web.dev/articles/vitals)
 
@@ -248,7 +248,7 @@ Late media, third-party embeds, consent UI, infinite scroll, custom fonts.
 </style>
 ```
 
-`srcset` / `<picture>`: keep the **same aspect ratio** across candidates; set `width`/`height` on `<img>` (and on `<source>` in modern browsers). Next.js `<Image>` requires `width`+`height` or `fill`; static import fills dimensions. Framework notes: [4_nextjs.md](./4_nextjs_platform.md#core-web-vitals-on-vercel).
+`srcset` / `<picture>`: keep the **same aspect ratio** across candidates; set `width`/`height` on `<img>` (and on `<source>` in modern browsers). Next.js `<Image>` requires `width`+`height` or `fill`; static import fills dimensions. Framework notes: [4_nextjs.md](./4_nextjs_optimizations.md#core-web-vitals-on-vercel).
 
 **Thoughts:** Reserve space **before** late content arrives; do not shove new boxes into the current viewport unless the user just asked for them.
 

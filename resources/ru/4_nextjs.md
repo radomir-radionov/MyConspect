@@ -1,19 +1,22 @@
 # Next.js — hub
 
-Маршрутизатор приложений, рендеринг, данные, маршрутизация и платформа Next.js. Теория живет в файлах темы ниже.
+Маршрутизатор приложений, рендеринг, данные, маршрутизация, оптимизации и платформа Next.js. Теория живет в файлах темы ниже.
 
 ### Related docs
 
-[Next.js — Core](./4_nextjs_core.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
+[Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Optimizations](./4_nextjs_optimizations.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
 
 ### Navigation
 
-| Тема | Обложки |
-|------|--------|
-| [Next.js — Core](./4_nextjs_core.md) | Модель фреймворка, Маршрутизатор приложений, рендеринг и потоковая передача. |
-| [Next.js — Data](./4_nextjs_data.md) | Извлечение, кэширование, повторная проверка, действия сервера и обработчики маршрутов. |
-| [Next.js — Маршрутизация](./4_nextjs_routing.md) | Файловые маршруты, специальные файлы, навигация, метаданные и SEO. || [Next.js — Платформа](./4_nextjs_platform.md) | Оптимизация, прокси, конфигурация, Vercel, миграция и отладка. |
-| [Next.js — Интервью](./4_nextjs_interview.md) | Вопросы и ответы на интервью и задачи по кодированию. |
+| Тема                                                 | Обложки                                                                                |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [Next.js — Core](./4_nextjs_core.md)                 | Модель фреймворка и принципы проектирования.                                           |
+| [Next.js — Rendering](./4_nextjs_rendering.md)       | Стратегии рендеринга, границы Server/Client и потоковая передача.                      |
+| [Next.js — Data](./4_nextjs_data.md)                 | Извлечение, кэширование, повторная проверка, действия сервера и обработчики маршрутов. |
+| [Next.js — Маршрутизация](./4_nextjs_routing.md)     | App Router, файловые маршруты, навигация, метаданные и SEO.                            |
+| [Next.js — Оптимизации](./4_nextjs_optimizations.md) | Изображения, шрифты, скрипты, бандлинг и Core Web Vitals.                              |
+| [Next.js — Платформа](./4_nextjs_platform.md)        | Прокси, конфиг, Vercel, миграция и отладка.                                            |
+| [Next.js — Интервью](./4_nextjs_interview.md)        | Вопросы и ответы на интервью и задачи по кодированию.                                  |
 
 ### Interview practice
 
@@ -23,7 +26,7 @@
 
 ## 20. Resources
 
-* Следующие темы: → Плюсы / минусы определения → Когда использовать → источник → примечаний к → примеру ([шаблон](./4_nextjs_core.md#topic-template)).*
+- Следующие темы: → Плюсы / минусы определения → Когда использовать → источник → примечаний к → примеру ([шаблон](./4_nextjs_core.md#topic-template)).\*
 
 <details>
   <summary>Primary references</summary>

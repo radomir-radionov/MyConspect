@@ -152,7 +152,10 @@ function rewriteNoteLinks(markdown: string, locale: Locale): string {
   const mdLinks = /\]\((?:\.\.\/)?(?:\.\/)?(\d+_[a-z0-9_]+\.md)(#[^)\s]*)?\)/gi;
   const hrefs = /href="(?:\.\.\/)?(?:\.\/)?(\d+_[a-z0-9_]+\.md)(#[^"]*)?"/gi;
 
-  const replaceFile = (file: string, hash: string | undefined): string | undefined => {
+  const replaceFile = (
+    file: string,
+    hash: string | undefined,
+  ): string | undefined => {
     const href = hrefForFile(file);
     if (!href) {
       return undefined;
@@ -216,7 +219,10 @@ type LocatedBlock = {
 };
 
 export function collectConceptBlocks(markdown: string): ConceptBlock[] {
-  return collectLocatedBlocks(markdown).map(({ title, body }) => ({ title, body }));
+  return collectLocatedBlocks(markdown).map(({ title, body }) => ({
+    title,
+    body,
+  }));
 }
 
 async function collectConcepts(markdown: string): Promise<Concept[]> {
@@ -231,7 +237,13 @@ async function collectConcepts(markdown: string): Promise<Concept[]> {
       searchText: conceptSearchText(block.body),
     });
   }
-  concepts.push(...(await interviewConceptItems(interview, usedIds, renderInterviewConcept)));
+  concepts.push(
+    ...(await interviewConceptItems(
+      interview,
+      usedIds,
+      renderInterviewConcept,
+    )),
+  );
   return concepts;
 }
 
@@ -244,7 +256,10 @@ function partitionInterviewBlocks(markdown: string): {
   const interview: ConceptBlock[] = [];
   for (const block of collectLocatedBlocks(markdown)) {
     const item = { title: block.title, body: block.body };
-    if (isInterviewNavItem(block.title) || (regionStart !== -1 && block.start >= regionStart)) {
+    if (
+      isInterviewNavItem(block.title) ||
+      (regionStart !== -1 && block.start >= regionStart)
+    ) {
       interview.push(item);
     } else {
       regular.push(item);
@@ -295,7 +310,9 @@ function isInterviewTaskTitle(title: string): boolean {
 }
 
 function isInterviewQuestionTitle(title: string): boolean {
-  return /^(Q\d+[a-z]?|Q-[A-Za-z0-9]+)\b/.test(title) || isInterviewTaskTitle(title);
+  return (
+    /^(Q\d+[a-z]?|Q-[A-Za-z0-9]+)\b/.test(title) || isInterviewTaskTitle(title)
+  );
 }
 
 function interviewSectionForTitle(title: string): InterviewSection {
@@ -307,11 +324,15 @@ function cleanInterviewTitle(title: string, section: InterviewSection): string {
     const stripped = title.replace(/^Task\s+\d+[a-z]?\s*[—–-]\s*/i, "").trim();
     return stripped || title;
   }
-  const stripped = title.replace(/^Q(?:-[A-Za-z0-9]+|\d+[a-z]?)\.\s*/, "").trim();
+  const stripped = title
+    .replace(/^Q(?:-[A-Za-z0-9]+|\d+[a-z]?)\.\s*/, "")
+    .trim();
   return stripped || title;
 }
 
-function orderedInterviewBlocks(blocks: readonly ConceptBlock[]): ConceptBlock[] {
+function orderedInterviewBlocks(
+  blocks: readonly ConceptBlock[],
+): ConceptBlock[] {
   const flat = flattenInterviewBlocks(blocks);
   const questions = flat.filter((block) => !isInterviewTaskTitle(block.title));
   const tasks = flat.filter((block) => isInterviewTaskTitle(block.title));
@@ -355,7 +376,10 @@ async function interviewConceptItems(
 }
 
 function isInterviewQuestionBlock(block: ConceptBlock): boolean {
-  if (isInterviewSectionTitle(block.title) && !isInterviewQuestionTitle(block.title)) {
+  if (
+    isInterviewSectionTitle(block.title) &&
+    !isInterviewQuestionTitle(block.title)
+  ) {
     return false;
   }
   if (isInterviewQuestionTitle(block.title)) {
@@ -382,7 +406,9 @@ function shouldExpandInterviewWrapper(block: ConceptBlock): boolean {
   return questionCount > 0 && questionCount >= nested.length / 2;
 }
 
-function flattenInterviewBlocks(blocks: readonly ConceptBlock[]): ConceptBlock[] {
+function flattenInterviewBlocks(
+  blocks: readonly ConceptBlock[],
+): ConceptBlock[] {
   const result: ConceptBlock[] = [];
   for (const block of blocks) {
     if (shouldExpandInterviewWrapper(block)) {
@@ -414,7 +440,9 @@ function normalizeConceptTitle(title: string): string {
 
 function detailsSummaryTitles(markdown: string): Set<string> {
   const titles = new Set<string>();
-  for (const match of markdown.matchAll(/<summary>\s*([\s\S]*?)\s*<\/summary>/gi)) {
+  for (const match of markdown.matchAll(
+    /<summary>\s*([\s\S]*?)\s*<\/summary>/gi,
+  )) {
     const title = stripMd(match[1].replace(/<[^>]+>/g, ""));
     if (title) {
       titles.add(normalizeConceptTitle(title));
@@ -454,7 +482,10 @@ function collectLocatedBlocks(markdown: string): LocatedBlock[] {
       return;
     }
     const title = heading.title;
-    const body = stripDuplicateTitleHeading(title, heading.body.join("\n").trim());
+    const body = stripDuplicateTitleHeading(
+      title,
+      heading.body.join("\n").trim(),
+    );
     if (body && !shouldSkipTitle(title) && looksLikeConcept(body, title)) {
       blocks.push({ title, body, start: heading.start });
     }
@@ -521,7 +552,9 @@ function looksLikeConcept(body: string, title: string): boolean {
   if (title.toLowerCase() === "code") {
     return false;
   }
-  return CONCEPT_MARKERS.some((marker) => body.includes(marker)) || body.length > 400;
+  return (
+    CONCEPT_MARKERS.some((marker) => body.includes(marker)) || body.length > 400
+  );
 }
 
 function detailsOpenAt(source: string, lower: string, from: number): number {
@@ -624,7 +657,12 @@ function extractSummary(inner: string): string | undefined {
   if (!match) {
     return undefined;
   }
-  return stripMd(match[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
+  return stripMd(
+    match[1]
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim(),
+  );
 }
 
 function stripFirstSummary(inner: string): string {
@@ -652,15 +690,44 @@ function headingMatchesTitle(title: string, heading: string): boolean {
   return a.includes(b) || b.includes(a);
 }
 
+function stripLeadingConceptPreamble(body: string): {
+  preamble: string;
+  rest: string;
+} {
+  let rest = body;
+  let preamble = "";
+
+  while (rest.length > 0) {
+    const whitespace = rest.match(/^\s+/);
+    if (whitespace) {
+      preamble += whitespace[0];
+      rest = rest.slice(whitespace[0].length);
+      continue;
+    }
+
+    const anchor = rest.match(/^<a\b[^>]*>\s*<\/a>\s*/i);
+    if (anchor) {
+      preamble += anchor[0];
+      rest = rest.slice(anchor[0].length);
+      continue;
+    }
+
+    break;
+  }
+
+  return { preamble, rest };
+}
+
 function stripDuplicateTitleHeading(title: string, body: string): string {
-  const match = body.match(/^(?:\s*\n)*#{1,3}\s+(.+?)(?:\n+|$)/);
+  const { preamble, rest } = stripLeadingConceptPreamble(body);
+  const match = rest.match(/^#{1,3}\s+(.+?)(?:\n+|$)/);
   if (!match) {
     return body;
   }
   if (!headingMatchesTitle(title, stripMd(match[1]))) {
     return body;
   }
-  return body.slice(match[0].length);
+  return (preamble + rest.slice(match[0].length)).trimStart();
 }
 
 async function renderFragment(markdown: string): Promise<string> {
@@ -692,4 +759,3 @@ function conceptSearchText(body: string): string {
   );
   return stripMd(withoutHeavySlots).slice(0, CONCEPT_SEARCH_TEXT_MAX);
 }
-

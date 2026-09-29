@@ -110,10 +110,12 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Foundations and distributed-systems basics.":
     "Основы и база распределённых систем.",
   "Foundations and SQL.": "Основы и SQL.",
-  "Framework model, App Router, rendering, and streaming.":
-    "Модель фреймворка, App Router, рендеринг и стриминг.",
-  "Framework model, rendering, and streaming.":
-    "Модель фреймворка, рендеринг и стриминг.",
+  "Framework model, App Router, and design principles.":
+    "Модель фреймворка, App Router и принципы проектирования.",
+  "Rendering strategies, Server/Client boundaries, and streaming.":
+    "Стратегии рендеринга, границы Server/Client и потоковая передача.",
+  "Framework model and design principles.":
+    "Модель фреймворка и принципы проектирования.",
   "Generics, type operators, and utility types.":
     "Дженерики, type operators и utility types.",
   "Git, tooling, and adjacent topics.": "Git, тулинг и смежные темы.",
@@ -217,8 +219,10 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Столпы ООП и пять принципов SOLID для модулей и API.",
   "OOP, SOLID, DRY, KISS, YAGNI, and GRASP.":
     "ООП, SOLID, DRY, KISS, YAGNI и GRASP.",
-  "Optimizations, proxy, config, Vercel, migration, and debugging.":
-    "Оптимизации, proxy, config, Vercel, миграция и отладка.",
+  "Images, fonts, scripts, bundling, and Core Web Vitals.":
+    "Изображения, шрифты, скрипты, бандлинг и Core Web Vitals.",
+  "Proxy, config, Vercel, migration, and debugging.":
+    "Прокси, конфиг, Vercel, миграция и отладка.",
   "Package managers, CommonJS/ESM, and built-in modules.":
     "Менеджеры пакетов, CommonJS/ESM и встроенные модули.",
   "Packages, CommonJS/ESM, and built-in APIs.":

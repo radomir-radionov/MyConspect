@@ -6,7 +6,7 @@ Interview Q&A and coding tasks.
 
 ### Related docs
 
-* [Next.js — Core](./4_nextjs_core.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
+- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Optimizations](./4_nextjs_optimizations.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
 
 ### Sections
 
@@ -22,19 +22,19 @@ Questions for Next.js interviews. Try answering before opening solutions.
 
 **Definition:** Curated Q&A and coding tasks covering App Router rendering, caching, Server Actions, and deployment.
 
-*Interview answers follow: Definition → comparison table → When to use → Example → Notes → Source.*
+_Interview answers follow: Definition → comparison table → When to use → Example → Notes → Source._
 
 ### Question index
 
-| Topic | Answer |
-|-------|--------|
-| SSR vs SSG vs ISR vs CSR | Q&A |
-| Core Web Vitals (LCP, INP, CLS, TTFB) | Q&A |
-| App Router vs Pages Router | Q&A |
-| Server vs Client Components | Q&A |
-| Caching (`fetch`, `revalidate`) | Q&A |
-| Server Actions | Q&A |
-| Coding tasks 1–3 | Tasks |
+| Topic                                 | Answer |
+| ------------------------------------- | ------ |
+| SSR vs SSG vs ISR vs CSR              | Q&A    |
+| Core Web Vitals (LCP, INP, CLS, TTFB) | Q&A    |
+| App Router vs Pages Router            | Q&A    |
+| Server vs Client Components           | Q&A    |
+| Caching (`fetch`, `revalidate`)       | Q&A    |
+| Server Actions                        | Q&A    |
+| Coding tasks 1–3                      | Tasks  |
 
 ---
 
@@ -47,19 +47,19 @@ Questions for Next.js interviews. Try answering before opening solutions.
 
 **Definition:** Four ways HTML reaches the browser — the interview tests whether you know **when** each runs and which Next.js API triggers it.
 
-| Mode | When HTML is built | Next.js trigger | Use case |
-|------|-------------------|-----------------|----------|
-| **CSR** | Client after JS loads | `'use client'` + client fetch | Heavy dashboards behind auth, low SEO need |
-| **SSR** | Every request on server | `cache: 'no-store'`, `cookies()`, `force-dynamic` | Personalized, always-fresh pages |
-| **SSG** | Build time | Default `fetch`, `force-static` | Marketing, docs, legal |
-| **ISR** | Build + periodic refresh | `next: { revalidate: N }`, `export const revalidate` | Blogs, catalogs that change occasionally |
-| **PPR** (bonus) | Static shell + streamed dynamic | `cacheComponents: true`, `use cache` | Best of static + personalized |
+| Mode            | When HTML is built              | Next.js trigger                                      | Use case                                   |
+| --------------- | ------------------------------- | ---------------------------------------------------- | ------------------------------------------ |
+| **CSR**         | Client after JS loads           | `'use client'` + client fetch                        | Heavy dashboards behind auth, low SEO need |
+| **SSR**         | Every request on server         | `cache: 'no-store'`, `cookies()`, `force-dynamic`    | Personalized, always-fresh pages           |
+| **SSG**         | Build time                      | Default `fetch`, `force-static`                      | Marketing, docs, legal                     |
+| **ISR**         | Build + periodic refresh        | `next: { revalidate: N }`, `export const revalidate` | Blogs, catalogs that change occasionally   |
+| **PPR** (bonus) | Static shell + streamed dynamic | `cacheComponents: true`, `use cache`                 | Best of static + personalized              |
 
-| Pros | Cons |
-|------|------|
-| SSG/ISR — fastest, CDN-friendly | Stale until revalidation |
-| SSR — always current | Higher TTFB, no CDN for HTML |
-| CSR — rich interactivity | Poor SEO, slow first paint |
+| Pros                            | Cons                                 |
+| ------------------------------- | ------------------------------------ |
+| SSG/ISR — fastest, CDN-friendly | Stale until revalidation             |
+| SSR — always current            | Higher TTFB, no CDN for HTML         |
+| CSR — rich interactivity        | Poor SEO, slow first paint           |
 | ISR — balance for content sites | Wrong TTL → stale or wasted rebuilds |
 
 **When to use:**
@@ -76,7 +76,7 @@ Questions for Next.js interviews. Try answering before opening solutions.
 const posts = await fetch(url, { next: { revalidate: 60 } });
 
 // SSR
-const user = await fetch(url, { cache: 'no-store' });
+const user = await fetch(url, { cache: "no-store" });
 ```
 
 **Thoughts:** App Router is **static by default** — former `getServerSideProps` pages may need explicit `no-store`. Mention **streaming SSR** — HTML chunks sent before slow data resolves.
@@ -92,13 +92,13 @@ const user = await fetch(url, { cache: 'no-store' });
 
 **Definition:** Field metrics for real users: **LCP** (largest paint ≤ 2.5s), **INP** (interaction ≤ 200ms; replaced FID), **CLS** (layout shift ≤ 0.1). **TTFB** and **FCP** (≤ 1.8s) are diagnostics that feed LCP, not Core Vitals.
 
-**How it works:** `next/image` + `priority` on the LCP image; Server Components / smaller client bundles for INP; `next/font` and explicit image sizes for CLS. Avoid `force-dynamic` when a static or ISR page would hit the CDN.
+**How it works:** `next/image` + `preload` on the LCP image (`priority` is deprecated in Next.js 16); Server Components / smaller client bundles for INP; `next/font` and explicit image sizes for CLS. Avoid `force-dynamic` when a static or ISR page would hit the CDN.
 
 **Common pitfalls:** Citing FID as a current Core Web Vital. Edge SSR + far-away DB worsening TTFB.
 
 **Thoughts:** One lever per metric — image, JS, layout.
 
-**See also:** [Core Web Vitals on Vercel](./4_nextjs_platform.md#core-web-vitals-on-vercel) · [TTFB](./6_web_api_security.md#ttfb-time-to-first-byte) · [CLS](./1_html_performance.md#cls-cumulative-layout-shift) · [FCP](./6_web_api_security.md#first-contentful-paint-fcp) · [lab vs field](./6_web_api_security.md#core-web-vitals)
+**See also:** [Core Web Vitals on Vercel](./4_nextjs_optimizations.md#core-web-vitals-on-vercel) · [TTFB](./6_web_api_security.md#ttfb-time-to-first-byte) · [CLS](./1_html_performance.md#cls-cumulative-layout-shift) · [FCP](./6_web_api_security.md#first-contentful-paint-fcp) · [lab vs field](./6_web_api_security.md#core-web-vitals)
 
 </details>
 
@@ -109,22 +109,22 @@ const user = await fetch(url, { cache: 'no-store' });
 
 **Definition:** Two routing systems in one framework — App Router (`app/`) is the default for new projects; Pages Router (`pages/`) is legacy maintenance mode.
 
-| | App Router | Pages Router |
-|---|------------|--------------|
-| **Directory** | `app/` | `pages/` |
-| **Default component** | Server Component | Client (pre-RSC model) |
-| **Data fetching** | `async` Server Component, `fetch` cache | `getServerSideProps`, `getStaticProps` |
-| **Layouts** | Nested `layout.tsx` | Single `_app.tsx` |
-| **Loading / error** | `loading.tsx`, `error.tsx` colocated | Manual |
-| **Mutations** | Server Actions | API routes + client fetch |
-| **Metadata** | `metadata` export / `generateMetadata` | `next/head` |
-| **Middleware** | `proxy.ts` (Next 16) | `middleware.ts` |
+|                       | App Router                              | Pages Router                           |
+| --------------------- | --------------------------------------- | -------------------------------------- |
+| **Directory**         | `app/`                                  | `pages/`                               |
+| **Default component** | Server Component                        | Client (pre-RSC model)                 |
+| **Data fetching**     | `async` Server Component, `fetch` cache | `getServerSideProps`, `getStaticProps` |
+| **Layouts**           | Nested `layout.tsx`                     | Single `_app.tsx`                      |
+| **Loading / error**   | `loading.tsx`, `error.tsx` colocated    | Manual                                 |
+| **Mutations**         | Server Actions                          | API routes + client fetch              |
+| **Metadata**          | `metadata` export / `generateMetadata`  | `next/head`                            |
+| **Middleware**        | `proxy.ts` (Next 16)                    | `middleware.ts`                        |
 
-| Pros (App) | Cons (App) |
-|------------|------------|
-| RSC, streaming, nested layouts | Steeper caching learning curve |
-| Server Actions, fine-grained caching | Migration cost from Pages |
-| Colocated special files | Some libs still lack RSC support |
+| Pros (App)                           | Cons (App)                       |
+| ------------------------------------ | -------------------------------- |
+| RSC, streaming, nested layouts       | Steeper caching learning curve   |
+| Server Actions, fine-grained caching | Migration cost from Pages        |
+| Colocated special files              | Some libs still lack RSC support |
 
 **When to use App Router:** Every greenfield project since Next.js 13+.
 
@@ -132,12 +132,12 @@ const user = await fetch(url, { cache: 'no-store' });
 
 **Example — migration mapping:**
 
-| Pages | App Router |
-|-------|------------|
-| `pages/index.tsx` | `app/page.tsx` |
-| `getStaticProps` | `fetch` with default cache or `use cache` |
+| Pages                | App Router                                    |
+| -------------------- | --------------------------------------------- |
+| `pages/index.tsx`    | `app/page.tsx`                                |
+| `getStaticProps`     | `fetch` with default cache or `use cache`     |
 | `getServerSideProps` | `fetch({ cache: 'no-store' })` or `cookies()` |
-| `pages/api/users.ts` | `app/api/users/route.ts` |
+| `pages/api/users.ts` | `app/api/users/route.ts`                      |
 
 **Thoughts:** Cannot serve the same URL from both routers. Coexist during migration on **different paths** only.
 
@@ -152,19 +152,19 @@ const user = await fetch(url, { cache: 'no-store' });
 
 **Definition:** App Router components are **Server Components by default**. `"use client"` opts into client-side hydration for interactivity.
 
-| | Server Component | Client Component |
-|---|------------------|------------------|
-| **Runs on** | Server only | Server (SSR) + browser (hydration) |
-| **JS shipped** | None for component logic | Yes — bundle included |
-| **Can use** | `async/await`, DB, secrets | `useState`, `useEffect`, events |
-| **Cannot use** | Hooks, `onClick`, browser APIs | Direct `fs`, server secrets |
-| **Props** | Receives serializable props | Receives serializable props |
+|                | Server Component               | Client Component                   |
+| -------------- | ------------------------------ | ---------------------------------- |
+| **Runs on**    | Server only                    | Server (SSR) + browser (hydration) |
+| **JS shipped** | None for component logic       | Yes — bundle included              |
+| **Can use**    | `async/await`, DB, secrets     | `useState`, `useEffect`, events    |
+| **Cannot use** | Hooks, `onClick`, browser APIs | Direct `fs`, server secrets        |
+| **Props**      | Receives serializable props    | Receives serializable props        |
 
-| Pros | Cons |
-|------|------|
-| Smaller client bundles | No interactivity without Client leaves |
-| Secrets safe on server | Serialization limits props |
-| Data fetching without waterfalls | Debugging needs server logs |
+| Pros                             | Cons                                   |
+| -------------------------------- | -------------------------------------- |
+| Smaller client bundles           | No interactivity without Client leaves |
+| Secrets safe on server           | Serialization limits props             |
+| Data fetching without waterfalls | Debugging needs server logs            |
 
 **When to use Server:** Data fetch, layouts, static content, passing data to interactive leaves.
 
@@ -176,11 +176,11 @@ const user = await fetch(url, { cache: 'no-store' });
 // app/posts/page.tsx — Server (no directive)
 export default async function PostsPage() {
   const posts = await getPosts();
-  return posts.map(p => <PostCard key={p.id} post={p} />);
+  return posts.map((p) => <PostCard key={p.id} post={p} />);
 }
 
 // post-card.tsx
-'use client';
+("use client");
 export function PostCard({ post }: { post: { id: string; title: string } }) {
   const [liked, setLiked] = useState(false);
   return <button onClick={() => setLiked(!liked)}>{post.title}</button>;
@@ -200,23 +200,23 @@ export function PostCard({ post }: { post: { id: string; title: string } }) {
 
 **Definition:** Four cache layers — interview answer should name each, what it stores, and how to invalidate after mutations.
 
-| Layer | Stores | Cleared by |
-|-------|--------|------------|
-| Request memoization | Deduped fetch per render | New request |
-| Data Cache | `fetch` / `use cache` results | `revalidateTag`, TTL |
-| Full Route Cache | HTML + RSC payload | `revalidatePath`, `revalidateTag` |
-| Router Cache | Client navigation RSC payload | `router.refresh()`, reload |
+| Layer               | Stores                        | Cleared by                        |
+| ------------------- | ----------------------------- | --------------------------------- |
+| Request memoization | Deduped fetch per render      | New request                       |
+| Data Cache          | `fetch` / `use cache` results | `revalidateTag`, TTL              |
+| Full Route Cache    | HTML + RSC payload            | `revalidatePath`, `revalidateTag` |
+| Router Cache        | Client navigation RSC payload | `router.refresh()`, reload        |
 
-| `fetch` option | Behavior |
-|----------------|----------|
-| Default (`force-cache`) | Static — cached until invalidated |
-| `cache: 'no-store'` | Dynamic every request |
-| `next: { revalidate: 60 }` | ISR — refresh after 60s |
-| `next: { tags: ['x'] }` | Tag for `revalidateTag('x', 'max')` |
+| `fetch` option             | Behavior                            |
+| -------------------------- | ----------------------------------- |
+| Default (`force-cache`)    | Static — cached until invalidated   |
+| `cache: 'no-store'`        | Dynamic every request               |
+| `next: { revalidate: 60 }` | ISR — refresh after 60s             |
+| `next: { tags: ['x'] }`    | Tag for `revalidateTag('x', 'max')` |
 
-| Pros | Cons |
-|------|------|
-| Huge perf for read-heavy apps | #1 bug: stale UI after mutation |
+| Pros                                  | Cons                                          |
+| ------------------------------------- | --------------------------------------------- |
+| Huge perf for read-heavy apps         | #1 bug: stale UI after mutation               |
 | Request dedup prevents double DB hits | Router Cache surprises after `revalidatePath` |
 
 **When to use:**
@@ -228,11 +228,11 @@ export function PostCard({ post }: { post: { id: string; title: string } }) {
 **Examples:**
 
 ```tsx
-'use server';
+"use server";
 export async function updateProduct(id: string) {
   await db.product.update({ where: { id }, data: {} });
-  revalidateTag(`product-${id}`, 'max');
-  revalidatePath('/products');
+  revalidateTag(`product-${id}`, "max");
+  revalidatePath("/products");
 }
 ```
 
@@ -249,20 +249,20 @@ export async function updateProduct(id: string) {
 
 **Definition:** Two server mutation patterns — Actions are RPC for your app; Route Handlers are real HTTP endpoints.
 
-| | Server Actions | Route Handlers |
-|---|----------------|----------------|
-| **File** | `'use server'` function or file | `route.ts` |
-| **Invocation** | `<form action>`, import in Client | `fetch('/api/...')` |
-| **Protocol** | POST with encrypted action ID | GET, POST, PUT, PATCH, DELETE |
-| **Consumers** | Next.js app only | Any HTTP client |
-| **CSRF** | Built-in Origin check | You implement |
-| **Progressive enhancement** | Yes — works without JS | No |
+|                             | Server Actions                    | Route Handlers                |
+| --------------------------- | --------------------------------- | ----------------------------- |
+| **File**                    | `'use server'` function or file   | `route.ts`                    |
+| **Invocation**              | `<form action>`, import in Client | `fetch('/api/...')`           |
+| **Protocol**                | POST with encrypted action ID     | GET, POST, PUT, PATCH, DELETE |
+| **Consumers**               | Next.js app only                  | Any HTTP client               |
+| **CSRF**                    | Built-in Origin check             | You implement                 |
+| **Progressive enhancement** | Yes — works without JS            | No                            |
 
-| Pros | Cons |
-|------|------|
-| Actions — colocated, type-safe mutations | Not a public API |
-| Handlers — webhooks, mobile, third parties | No form progressive enhancement |
-| Actions — built-in CSRF for same-origin | Actions POST-only under the hood |
+| Pros                                       | Cons                             |
+| ------------------------------------------ | -------------------------------- |
+| Actions — colocated, type-safe mutations   | Not a public API                 |
+| Handlers — webhooks, mobile, third parties | No form progressive enhancement  |
+| Actions — built-in CSRF for same-origin    | Actions POST-only under the hood |
 
 **When to use Actions:** Form submits, in-app mutations, optimistic UI with `useActionState`.
 
@@ -272,10 +272,10 @@ export async function updateProduct(id: string) {
 
 ```tsx
 // Server Action — internal mutation
-'use server';
+"use server";
 export async function createTodo(fd: FormData) {
-  await db.todo.create({ data: { title: String(fd.get('title')) } });
-  revalidatePath('/todos');
+  await db.todo.create({ data: { title: String(fd.get("title")) } });
+  revalidatePath("/todos");
 }
 
 // Route Handler — external webhook
@@ -305,11 +305,11 @@ export async function POST(req: Request) {
 
 **Scenario:** `/products` uses cached `fetch` or `use cache`. Admin updates a product via Server Action but the public list still shows old data after redirect.
 
-| Symptom | Likely cause |
-|---------|--------------|
-| Old data after mutation | Missing `revalidatePath` / `revalidateTag` |
-| Old data only on client nav | Router Cache — add `router.refresh()` |
-| Always stale | `revalidate` too high or cache never tagged |
+| Symptom                     | Likely cause                                |
+| --------------------------- | ------------------------------------------- |
+| Old data after mutation     | Missing `revalidatePath` / `revalidateTag`  |
+| Old data only on client nav | Router Cache — add `router.refresh()`       |
+| Always stale                | `revalidate` too high or cache never tagged |
 
 **What to add:**
 
@@ -317,15 +317,20 @@ export async function POST(req: Request) {
 2. In the Server Action after DB write:
 
 ```tsx
-'use server';
+"use server";
 
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function updateProduct(id: string, formData: FormData) {
-  await db.product.update({ where: { id }, data: { /* ... */ } });
-  revalidateTag('products', 'max');      // Data Cache
-  revalidateTag(`product-${id}`, 'max'); // per-item tag
-  revalidatePath('/products');           // Full Route Cache
+  await db.product.update({
+    where: { id },
+    data: {
+      /* ... */
+    },
+  });
+  revalidateTag("products", "max"); // Data Cache
+  revalidateTag(`product-${id}`, "max"); // per-item tag
+  revalidatePath("/products"); // Full Route Cache
 }
 ```
 
@@ -355,32 +360,32 @@ export async function updateProduct(id: string, formData: FormData) {
 
 **Scenario:** Build a todo form that works with JavaScript disabled — browser native submit, server mutation, updated list on redirect/render.
 
-| Requirement | Implementation |
-|-------------|----------------|
-| No `onSubmit` / client `fetch` | `<form action={addTodo}>` |
-| Server mutation | `'use server'` function |
-| Fresh list after add | `revalidatePath('/todos')` |
-| Validation | Check `formData` in action; return errors via `useActionState` (optional) |
+| Requirement                    | Implementation                                                            |
+| ------------------------------ | ------------------------------------------------------------------------- |
+| No `onSubmit` / client `fetch` | `<form action={addTodo}>`                                                 |
+| Server mutation                | `'use server'` function                                                   |
+| Fresh list after add           | `revalidatePath('/todos')`                                                |
+| Validation                     | Check `formData` in action; return errors via `useActionState` (optional) |
 
 **Examples:**
 
 ```tsx
 // actions.ts
-'use server';
+"use server";
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from "next/cache";
 
 export async function addTodo(formData: FormData) {
-  const title = formData.get('title');
+  const title = formData.get("title");
   if (!title || String(title).trim().length === 0) {
-    return { error: 'Title required' };
+    return { error: "Title required" };
   }
   await db.todo.create({ data: { title: String(title).trim() } });
-  revalidatePath('/todos');
+  revalidatePath("/todos");
 }
 
 // page.tsx — Server Component
-import { addTodo } from './actions';
+import { addTodo } from "./actions";
 
 export default function TodosPage() {
   return (
@@ -416,23 +421,23 @@ Use `<form action={addTodo}>` where `addTodo` is a Server Action (`'use server'`
 
 **Scenario:** Dashboard page has a fast header and a slow analytics widget. Full-page spinner feels sluggish; you want the header immediately.
 
-| Tool | Scope | Triggers on |
-|------|-------|-------------|
-| `loading.tsx` | Entire route segment | Client navigation to that segment |
-| `<Suspense fallback>` | Wrapped subtree only | That async child suspending |
+| Tool                  | Scope                | Triggers on                       |
+| --------------------- | -------------------- | --------------------------------- |
+| `loading.tsx`         | Entire route segment | Client navigation to that segment |
+| `<Suspense fallback>` | Wrapped subtree only | That async child suspending       |
 
-| Pros (`loading.tsx`) | Pros (`<Suspense>`) |
-|----------------------|---------------------|
-| Zero boilerplate per route | Granular — fast + slow regions on same page |
-| Instant skeleton on navigation | Multiple boundaries per page |
-| Works with `app/router` prefetch | Compose with Server Component children |
+| Pros (`loading.tsx`)             | Pros (`<Suspense>`)                         |
+| -------------------------------- | ------------------------------------------- |
+| Zero boilerplate per route       | Granular — fast + slow regions on same page |
+| Instant skeleton on navigation   | Multiple boundaries per page                |
+| Works with `app/router` prefetch | Compose with Server Component children      |
 
 **Examples:**
 
 ```tsx
 // app/dashboard/page.tsx
-import { Suspense } from 'react';
-import { Analytics } from './analytics'; // async Server Component
+import { Suspense } from "react";
+import { Analytics } from "./analytics"; // async Server Component
 
 export default function DashboardPage() {
   return (
@@ -469,5 +474,3 @@ Use **inline `<Suspense>`** when only **part** of the page is slow — header re
 </details>
 
 ---
-
-

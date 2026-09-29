@@ -36,7 +36,8 @@ test("structureConceptBody keeps When to use and When not to use as separate slo
 
   assert.match(html, /When to use<\/span>/);
   assert.match(html, /When not to use<\/span>/);
-  assert.equal((html.match(/slot-cases/g) ?? []).length, 2);
+  assert.equal((html.match(/slot-cases/g) ?? []).length, 1);
+  assert.equal((html.match(/slot-avoid/g) ?? []).length, 1);
 });
 
 test("structureConceptBody omits See also slots", async () => {

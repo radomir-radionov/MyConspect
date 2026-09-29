@@ -677,7 +677,7 @@ nginx → GET /about.html → file from disk
 
 **Sources:**
 
-[Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [Next.js rendering](./4_nextjs_core.md#4-rendering-strategies)
+[Doka — Types of web apps](https://doka.guide/tools/web-app-types/) · [Next.js rendering](./4_nextjs_rendering.md#1-rendering-strategies)
 
 ---
 
@@ -690,7 +690,7 @@ nginx → GET /about.html → file from disk
 
 **Definition:** The **server** sends already-rendered HTML for the first view so the user can read while the SPA JS downloads and hydrates.
 
-**How it works:** Node (typical) runs the same UI on the server. Next.js (React) / Nuxt (Vue) are the usual starters — see [4_react_server.md §8](./4_react_server.md#8-server-rendering--rsc), [4_vue_ssr.md §8](./4_vue_ssr.md#8-ssr--hydration), [4_nuxt_core.md §4](./4_nuxt_core.md#4-rendering-strategies). Custom SSR is hard (data loading, correct render, infra). Extra server = extra ops.
+**How it works:** Node (typical) runs the same UI on the server. Next.js (React) / Nuxt (Vue) are the usual starters — see [4_react_server.md §8](./4_react_server.md#8-server-rendering--rsc), [4_vue_ssr.md §8](./4_vue_ssr.md#8-ssr--hydration), [4_nextjs_rendering.md §1](./4_nextjs_rendering.md#1-rendering-strategies), [4_nuxt_core.md §4](./4_nuxt_core.md#4-rendering-strategies). Custom SSR is hard (data loading, correct render, infra). Extra server = extra ops.
 
 **When to use:** SEO + first paint that must not wait on the bundle. Personalized pages (session) — see Next.js `cookies()` / `force-dynamic`.
 

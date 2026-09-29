@@ -665,7 +665,7 @@ nginx → GET /about.html → file from disk
 
 **Sources:**
 
-[Doka — Типы веб-приложений](https://doka.guide/tools/web-app-types/) · [рендеринг Next.js](./4_nextjs_core.md#4-rendering-strategies)
+[Doka — Типы веб-приложений](https://doka.guide/tools/web-app-types/) · [рендеринг Next.js](./4_nextjs_rendering.md#1-rendering-strategies)
 
 ---
 
@@ -678,7 +678,7 @@ nginx → GET /about.html → file from disk
 
 **Definition:** **Сервер** отправляет уже обработанный HTML для первого просмотра, чтобы пользователь мог читать, пока SPA JS загружается и гидратируется.
 
-**How it works:** Узел (типичный) использует тот же пользовательский интерфейс на сервере. Next.js (React) / Nuxt (Vue) — обычные стартеры — см. [4_react_server.md §8](./4_react_server.md#8-server-rendering--rsc), [4_vue_ssr.md §8](./4_vue_ssr.md#8-ssr--hydration), [4_nuxt_core.md §4](./4_nuxt_core.md#4-rendering-strategies). Пользовательский SSR — это сложно (загрузка данных, правильный рендеринг, инфра). Дополнительный сервер = дополнительные операции.
+**How it works:** Узел (типичный) использует тот же пользовательский интерфейс на сервере. Next.js (React) / Nuxt (Vue) — обычные стартеры — см. [4_react_server.md §8](./4_react_server.md#8-server-rendering--rsc), [4_vue_ssr.md §8](./4_vue_ssr.md#8-ssr--hydration), [4_nextjs_rendering.md §1](./4_nextjs_rendering.md#1-rendering-strategies), [4_nuxt_core.md §4](./4_nuxt_core.md#4-rendering-strategies). Пользовательский SSR — это сложно (загрузка данных, правильный рендеринг, инфра). Дополнительный сервер = дополнительные операции.
 
 **When to use:** SEO + первая краска, которая не должна ждать в связке. Персонализированные страницы (сессия) — см. Next.js. `cookies()` / `force-dynamic`.
 

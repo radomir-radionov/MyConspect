@@ -5,6 +5,7 @@ export type SlotKind =
   | "definition"
   | "how"
   | "cases"
+  | "avoid"
   | "tradeoffs"
   | "example"
   | "thoughts"
@@ -28,6 +29,7 @@ const SLOT_DISPLAY: Record<
   definition: "Definition",
   how: "How it works",
   cases: "When to use",
+  avoid: "When not to use",
   tradeoffs: "Pluses and minuses",
   example: "Examples",
   thoughts: "Thoughts",
@@ -39,6 +41,7 @@ const SLOT_ORDER: Record<SlotKind, number> = {
   definition: 10,
   how: 20,
   cases: 30,
+  avoid: 32,
   pitfalls: 35,
   tradeoffs: 40,
   example: 50,
@@ -70,11 +73,10 @@ function classifyMarker(rawLabel: string): SlotKind {
   if (label === "how it works") {
     return "how";
   }
-  if (
-    label === "cases" ||
-    label === "when to use" ||
-    label.startsWith("when not to use")
-  ) {
+  if (label.startsWith("when not to use")) {
+    return "avoid";
+  }
+  if (label === "cases" || label === "when to use") {
     return "cases";
   }
   if (
@@ -111,12 +113,6 @@ function classifyMarker(rawLabel: string): SlotKind {
 function displayLabel(kind: SlotKind, rawLabel: string): string {
   if (kind === "intro" || kind === "extra" || kind === "pitfalls") {
     return stripMdLabel(rawLabel);
-  }
-  if (
-    kind === "cases" &&
-    normalizeLabel(rawLabel).startsWith("when not to use")
-  ) {
-    return "When not to use";
   }
   return (
     SLOT_DISPLAY[kind as keyof typeof SLOT_DISPLAY] ?? stripMdLabel(rawLabel)
@@ -200,7 +196,9 @@ function mergeDuplicateKinds(sections: ConceptSection[]): ConceptSection[] {
 
   for (const section of sections) {
     const key =
-      section.kind === "extra" || section.kind === "cases"
+      section.kind === "extra" ||
+      section.kind === "cases" ||
+      section.kind === "avoid"
         ? `${section.kind}:${normalizeLabel(section.rawLabel)}`
         : section.kind;
     const existingIndex = indexByKey.get(key);
