@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { cache } from "react";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
 import { TOPICS, getTopic, type Topic } from "@/lib/catalog";
 import {
@@ -10,6 +11,40 @@ import {
 } from "./parse";
 
 const RESOURCES_ROOT = path.join(process.cwd(), "resources");
+
+type StoredRead = {
+  readonly stamp: string;
+  readonly result: ReadTopicResult;
+};
+
+type OutlineEntry = {
+  readonly stamp: string;
+  readonly value: readonly ConceptOutline[];
+};
+
+type ParsedEntry = {
+  readonly stamp: string;
+  readonly promise: Promise<ParsedTopic>;
+};
+
+type ParseCache = {
+  markdown: Map<string, StoredRead>;
+  outlines: Map<string, OutlineEntry>;
+  parsed: Map<string, ParsedEntry>;
+};
+
+const globalForParse = globalThis as typeof globalThis & {
+  __topicParseCache?: ParseCache;
+};
+
+function parseCache(): ParseCache {
+  globalForParse.__topicParseCache ??= {
+    markdown: new Map(),
+    outlines: new Map(),
+    parsed: new Map(),
+  };
+  return globalForParse.__topicParseCache;
+}
 
 export function resourcesDir(locale: Locale = DEFAULT_LOCALE): string {
   return path.join(RESOURCES_ROOT, locale);
@@ -30,32 +65,82 @@ function resolveInside(locale: Locale, file: string): string {
   return resolved;
 }
 
-export function readTopicFile(file: string, locale: Locale = DEFAULT_LOCALE): string {
-  return readTopicFileDetailed(file, locale).markdown;
+function cacheKey(locale: Locale, file: string): string {
+  return `${locale}\0${file}`;
 }
 
-export function readTopicFileDetailed(file: string, locale: Locale = DEFAULT_LOCALE): ReadTopicResult {
-  const primary = resolveInside(locale, file);
-  if (fs.existsSync(primary)) {
-    return {
-      markdown: fs.readFileSync(primary, "utf8"),
-      locale,
-      usedFallback: false,
-    };
+function fileStamp(absPath: string): string | undefined {
+  try {
+    const stat = fs.statSync(absPath);
+    return `${stat.mtimeMs}:${stat.size}`;
+  } catch {
+    return undefined;
   }
+}
+
+function loadDetailed(file: string, locale: Locale): StoredRead {
+  const primary = resolveInside(locale, file);
+  const primaryStamp = fileStamp(primary);
+  const key = cacheKey(locale, file);
+  const store = parseCache().markdown;
+
+  if (primaryStamp) {
+    const stamp = `own:${primaryStamp}`;
+    const hit = store.get(key);
+    if (hit?.stamp === stamp) {
+      return hit;
+    }
+    const stored: StoredRead = {
+      stamp,
+      result: {
+        markdown: fs.readFileSync(primary, "utf8"),
+        locale,
+        usedFallback: false,
+      },
+    };
+    store.set(key, stored);
+    return stored;
+  }
+
   if (locale !== DEFAULT_LOCALE) {
     const fallback = resolveInside(DEFAULT_LOCALE, file);
-    if (fs.existsSync(fallback)) {
-      return {
-        markdown: fs.readFileSync(fallback, "utf8"),
-        locale: DEFAULT_LOCALE,
-        usedFallback: true,
+    const fallbackStamp = fileStamp(fallback);
+    if (fallbackStamp) {
+      const stamp = `fallback:${fallbackStamp}`;
+      const hit = store.get(key);
+      if (hit?.stamp === stamp) {
+        return hit;
+      }
+      const stored: StoredRead = {
+        stamp,
+        result: {
+          markdown: fs.readFileSync(fallback, "utf8"),
+          locale: DEFAULT_LOCALE,
+          usedFallback: true,
+        },
       };
+      store.set(key, stored);
+      return stored;
     }
   }
+
   throw new Error(
     `Missing topic file in resources/${locale}/: ${file} (cwd=${process.cwd()})`,
   );
+}
+
+export function readTopicFile(
+  file: string,
+  locale: Locale = DEFAULT_LOCALE,
+): string {
+  return readTopicFileDetailed(file, locale).markdown;
+}
+
+export function readTopicFileDetailed(
+  file: string,
+  locale: Locale = DEFAULT_LOCALE,
+): ReadTopicResult {
+  return loadDetailed(file, locale).result;
 }
 
 export function topicFileExists(file: string, locale: Locale): boolean {
@@ -66,39 +151,89 @@ export function loadTopicOutline(
   topic: Topic,
   locale: Locale = DEFAULT_LOCALE,
 ): readonly ConceptOutline[] {
-  return parseTopicOutline(readTopicFile(topic.file, locale), locale);
-}
-
-export async function loadParsedTopic(
-  topic: Topic,
-  locale: Locale = DEFAULT_LOCALE,
-): Promise<ParsedTopic> {
-  return parseTopicMarkdown(readTopicFile(topic.file, locale), locale);
-}
-
-export async function loadTopicPage(
-  track: string,
-  slug: string,
-  locale: Locale = DEFAULT_LOCALE,
-): Promise<
-  | {
-      topic: Topic;
-      parsed: ParsedTopic;
-      usedFallback: boolean;
-    }
-  | undefined
-> {
-  const topic = getTopic(track, slug);
-  if (!topic) {
-    return undefined;
+  const { stamp, result } = loadDetailed(topic.file, locale);
+  const key = cacheKey(locale, topic.file);
+  const store = parseCache().outlines;
+  const hit = store.get(key);
+  if (hit?.stamp === stamp) {
+    return hit.value;
   }
-  const detailed = readTopicFileDetailed(topic.file, locale);
-  return {
-    topic,
-    parsed: await parseTopicMarkdown(detailed.markdown, locale),
-    usedFallback: detailed.usedFallback,
-  };
+  const value = parseTopicOutline(result.markdown, locale);
+  store.set(key, { stamp, value });
+  return value;
 }
+
+function loadParsedFromFile(
+  file: string,
+  locale: Locale,
+): Promise<{ parsed: ParsedTopic; usedFallback: boolean }> {
+  const { stamp, result } = loadDetailed(file, locale);
+  const key = cacheKey(locale, file);
+  const store = parseCache().parsed;
+  const hit = store.get(key);
+  const pending =
+    hit?.stamp === stamp
+      ? hit.promise
+      : startParsed(store, key, stamp, result.markdown, locale);
+  return pending.then((parsed) => ({
+    parsed,
+    usedFallback: result.usedFallback,
+  }));
+}
+
+function startParsed(
+  store: Map<string, ParsedEntry>,
+  key: string,
+  stamp: string,
+  markdown: string,
+  locale: Locale,
+): Promise<ParsedTopic> {
+  const promise = parseTopicMarkdown(markdown, locale);
+  store.set(key, { stamp, promise });
+  promise.catch(() => {
+    const current = store.get(key);
+    if (current?.promise === promise) {
+      store.delete(key);
+    }
+  });
+  return promise;
+}
+
+export const loadParsedTopic = cache(
+  async (
+    topic: Topic,
+    locale: Locale = DEFAULT_LOCALE,
+  ): Promise<ParsedTopic> => {
+    const loaded = await loadParsedFromFile(topic.file, locale);
+    return loaded.parsed;
+  },
+);
+
+export const loadTopicPage = cache(
+  async (
+    track: string,
+    slug: string,
+    locale: Locale = DEFAULT_LOCALE,
+  ): Promise<
+    | {
+        topic: Topic;
+        parsed: ParsedTopic;
+        usedFallback: boolean;
+      }
+    | undefined
+  > => {
+    const topic = getTopic(track, slug);
+    if (!topic) {
+      return undefined;
+    }
+    const loaded = await loadParsedFromFile(topic.file, locale);
+    return {
+      topic,
+      parsed: loaded.parsed,
+      usedFallback: loaded.usedFallback,
+    };
+  },
+);
 
 export function assertCatalogFilesExist(locale: Locale = DEFAULT_LOCALE): void {
   for (const topic of TOPICS) {

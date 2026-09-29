@@ -228,23 +228,28 @@ export function collectConceptBlocks(markdown: string): ConceptBlock[] {
 async function collectConcepts(markdown: string): Promise<Concept[]> {
   const { regular, interview } = partitionInterviewBlocks(markdown);
   const usedIds = new Set<string>();
-  const concepts: Concept[] = [];
-  for (const block of regular) {
-    concepts.push({
-      id: uniqueId(slugify(block.title), usedIds),
-      title: block.title,
-      html: await renderHtml(block.body),
-      searchText: conceptSearchText(block.body),
-    });
-  }
-  concepts.push(
-    ...(await interviewConceptItems(
-      interview,
-      usedIds,
-      renderInterviewConcept,
-    )),
+  const regularConcepts = regular.map((block) => {
+    const id = uniqueId(slugify(block.title), usedIds);
+    const searchText = conceptSearchText(block.body);
+    return renderHtml(block.body).then(
+      (html): Concept => ({
+        id,
+        title: block.title,
+        html,
+        searchText,
+      }),
+    );
+  });
+  const interviewConcepts = interviewConceptItems(
+    interview,
+    usedIds,
+    renderInterviewConcept,
   );
-  return concepts;
+  const [renderedRegular, renderedInterview] = await Promise.all([
+    Promise.all(regularConcepts),
+    interviewConcepts,
+  ]);
+  return [...renderedRegular, ...renderedInterview];
 }
 
 function partitionInterviewBlocks(markdown: string): {
@@ -355,24 +360,28 @@ function interviewOutlineItems(
   });
 }
 
-async function interviewConceptItems(
+function interviewConceptItems(
   blocks: readonly ConceptBlock[],
   usedIds: Set<string>,
   render: (block: ConceptBlock) => Promise<string>,
 ): Promise<Concept[]> {
-  const items: Concept[] = [];
-  for (const block of orderedInterviewBlocks(blocks)) {
+  const items = orderedInterviewBlocks(blocks).map((block) => {
     const interviewSection = interviewSectionForTitle(block.title);
-    items.push({
-      id: uniqueId(slugify(block.title), usedIds),
-      title: cleanInterviewTitle(block.title, interviewSection),
-      titleSearchText: block.title,
-      html: await render(block),
-      searchText: conceptSearchText(block.body),
-      interviewSection,
-    });
-  }
-  return items;
+    const id = uniqueId(slugify(block.title), usedIds);
+    const title = cleanInterviewTitle(block.title, interviewSection);
+    const searchText = conceptSearchText(block.body);
+    return render(block).then(
+      (html): Concept => ({
+        id,
+        title,
+        titleSearchText: block.title,
+        html,
+        searchText,
+        interviewSection,
+      }),
+    );
+  });
+  return Promise.all(items);
 }
 
 function isInterviewQuestionBlock(block: ConceptBlock): boolean {

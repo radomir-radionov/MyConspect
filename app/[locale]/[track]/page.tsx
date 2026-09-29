@@ -16,7 +16,7 @@ import { catalogBlurb } from "@/lib/i18n/catalog";
 import { FALLBACK_NOTE_BADGE } from "@/lib/i18n/chrome";
 import { isLocale, localeStaticParams, type Locale } from "@/lib/i18n/locales";
 import { withLocale } from "@/lib/i18n/paths";
-import { loadParsedTopic, readTopicFileDetailed } from "@/lib/parse";
+import { loadParsedTopic, loadTopicPage } from "@/lib/parse";
 
 export const dynamicParams = false;
 
@@ -96,7 +96,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function TrackPage({ params }: PageProps<"/[locale]/[track]">) {
+export default async function TrackPage({
+  params,
+}: PageProps<"/[locale]/[track]">) {
   const { locale: localeParam, track: trackId } = await params;
   if (!isLocale(localeParam) || !isTrackId(trackId)) {
     notFound();
@@ -109,7 +111,10 @@ export default async function TrackPage({ params }: PageProps<"/[locale]/[track]
 
   const subject = subjectForTrack(track.id);
   if (subject) {
-    const sections = localizeClusterSections(locale, subjectClusterCards(subject));
+    const sections = localizeClusterSections(
+      locale,
+      subjectClusterCards(subject),
+    );
     return (
       <main className="w-full max-w-5xl px-4 pt-5 pb-10 sm:px-6">
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -125,21 +130,23 @@ export default async function TrackPage({ params }: PageProps<"/[locale]/[track]
 
   const leaf = leafTopicForTrack(track.id);
   if (leaf) {
-    const detailed = readTopicFileDetailed(leaf.file, locale);
-    const parsed = await loadParsedTopic(leaf, locale);
+    const loaded = await loadTopicPage(track.id, leaf.slug, locale);
+    if (!loaded) {
+      notFound();
+    }
     return (
       <main className="w-full max-w-3xl px-4 pt-5 pb-10 sm:px-6">
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-          {parsed.title}
+          {loaded.parsed.title}
         </h1>
-        {detailed.usedFallback ? (
+        {loaded.usedFallback ? (
           <p className="mt-2 text-sm text-amber-700 dark:text-amber-300">
             {FALLBACK_NOTE_BADGE[locale]}
           </p>
         ) : null}
         <div className="mt-8">
           <ConceptList
-            concepts={parsed.concepts}
+            concepts={loaded.parsed.concepts}
             emptyMessage="No concepts were parsed from this topic."
             groupInterviewSections={isInterviewTopic(leaf)}
           />
