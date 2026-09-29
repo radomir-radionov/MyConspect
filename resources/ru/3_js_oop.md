@@ -76,11 +76,11 @@ const dog = Object.create(animal);
 dog.speak = () => "bark";
 ```
 
-**Thoughts:** `class` methods live on `prototype`, not instance. `instanceof` walks the prototype chain.
+**Thoughts:** `class` methods live on `prototype`, not instance. `instanceof` walks the prototype chain. Полная таблица сравнения: [OOP in JavaScript](#oop-in-javascript).
 
 **Sources:**
 
-[3_js_oop.md](./3_js_oop.md)
+[OOP in JavaScript](#oop-in-javascript) · [MDN — Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain)
 
 ---
 
@@ -91,117 +91,171 @@ dog.speak = () => "bark";
 
 ### OOP in JavaScript
 
-**Definition:** JavaScript **прототипный**: объекты делегируют другим объектам через `[[Prototype]]`. `class` — синтаксический сахар над функциями-конструкторами и цепочкой прототипов, а не отдельная ООП-модель. JS поддерживает **паттерны** ООП (инкапсуляция, наследование, полиморфизм, абстракция), но **не имеет нативных интерфейсов** и использует **утиную типизацию** вместо номинальных типов.
+**Definition:** JavaScript **прототипный** — объекты делегируют через `[[Prototype]]`. ООП опирается на четыре концепции: инкапсуляция, наследование, полиморфизм, абстракция. `class` (ES6+) — **синтаксический сахар** над функциями-конструкторами и цепочкой прототипов; **`extends`** и **`super()`** связывают наследование; приватные поля — `#`.
 
 **How it works:**
 
-| Столп            | В JavaScript                                                    | Механизм                                                      |
-| ---------------- | --------------------------------------------------------------- | ------------------------------------------------------------- |
-| **Инкапсуляция** | Скрыть состояние; менять только через методы с правилами        | `#` private fields, замыкания, ES-модули                      |
-| **Абстракция**   | Небольшой стабильный публичный API; скрыть хранение и алгоритмы | Методы класса, фабрики, модули                                |
-| **Наследование** | Переиспользовать поведение по одной цепочке                     | `[[Prototype]]`, `class extends` (только один родитель)       |
-| **Полиморфизм**  | Один вызов метода — разное поведение у объектов                 | Утиная типизация — общее имя/форма метода, не объявленный тип |
+#### 1. Современный подход: классы (ES6+)
 
-- `class` раскрывается в конструктор + методы на `.prototype`; `extends` связывает `.prototype` подкласса с `.prototype` суперкласса.
-- Нет `interface` / `implements` в рантайме — если у объекта есть `.area()`, вызывающий код считает его такой формой.
-- Предпочитайте **композицию** (`Object.assign`, миксины, вложенные объекты) глубоким деревьям `extends` — в JS только один `extends`.
-- Инкапсуляция без `#`: замыкания (module pattern) или соглашение (`_field`).
+**Класс** — чертёж (шаблон) для создания объектов. `constructor` инициализирует свойства; `new` создаёт экземпляр.
+
+```js
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  speak() {
+    console.log(`${this.name} издаёт звук.`);
+  }
+}
+
+const dog = new Animal("Шарик");
+dog.speak(); // Шарик издаёт звук.
+```
+
+#### 2. Под капотом: прототипы
+
+До классов использовали **функции-конструкторы** и `.prototype`. Этот механизм работает и сегодня. При вызове метода движок ищет его в объекте, затем идёт по **цепочке прототипов**.
+
+Код ниже делает то же, что `class Animal` выше:
+
+```js
+function AnimalOld(name) {
+  this.name = name;
+}
+
+AnimalOld.prototype.speak = function () {
+  console.log(`${this.name} издаёт звук.`);
+};
+
+const cat = new AnimalOld("Мурзик");
+cat.speak(); // Мурзик издаёт звук.
+```
+
+Методы лежат в прототипе, чтобы **не дублироваться** в каждом экземпляре.
+
+#### 3. Четыре столпа ООП в JavaScript
+
+ООП базируется на четырех ключевых концепциях. Вот как они реализуются в JS:
+
+**Инкапсуляция**
+
+Это сокрытие внутренней логики и данных объекта от прямого доступа извне. В современном JS для создания полностью приватных свойств и методов используется префикс `#`.
+
+```js
+class BankAccount {
+  #balance = 0; // Приватное свойство, недоступно снаружи класса
+
+  constructor(owner) {
+    this.owner = owner;
+  }
+
+  deposit(amount) {
+    if (amount > 0) this.#balance += amount;
+  }
+
+  getBalance() {
+    return this.#balance; // Доступ к данным только через контролируемый метод
+  }
+}
+
+const account = new BankAccount("Иван");
+account.deposit(100);
+console.log(account.getBalance()); // 100
+// console.log(account.#balance); // Ошибка! Свойство приватное.
+```
+
+**Наследование**
+
+Позволяет создать дочерний класс на основе родительского, чтобы не дублировать код. Реализуется с помощью ключевого слова `extends` и вызова `super()`.
+
+```js
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name); // Вызов конструктора родительского класса Animal
+    this.breed = breed;
+  }
+
+  // Переопределение метода родителя
+  speak() {
+    console.log(`${this.name} (порода: ${this.breed}) лает: Гав!`);
+  }
+}
+
+const lab = new Dog("Босс", "Лабрадор");
+lab.speak(); // Вывод: Босс (порода: Лабрадор) лает: Гав!
+```
+
+**Полиморфизм**
+
+Возможность объектов с разной структурой использовать одноименные методы, которые будут работать по-разному в зависимости от контекста.
+
+```js
+class Cat extends Animal {
+  speak() {
+    console.log(`${this.name} мяукает: Мяу!`);
+  }
+}
+
+// Массив разных животных
+const animals = [new Dog("Рекс", "Овчарка"), new Cat("Пушок")];
+
+// Один и тот же метод speak() ведет себя по-разному для каждого объекта
+animals.forEach((animal) => animal.speak());
+// Вывод:
+// Рекс (порода: Овчарка) лает: Гав!
+// Пушок мяукает: Мяу!
+```
+
+**Абстракция**
+
+Выделение главного и сокрытие деталей реализации. Мы создаём интерфейс взаимодействия, не заставляя пользователя разбираться в сложных внутренних механизмах.
+
+```js
+const video = document.querySelector("video");
+video.play(); // без деталей decode/buffer — просто используем API
+```
+
+#### 4. Классы vs прототипы
+
+| Критерий    | Классы (`class`)                              | Прототипы (`prototype`)                                  |
+| ----------- | --------------------------------------------- | -------------------------------------------------------- |
+| Синтаксис   | Чистый, декларативный                         | Раздельный: конструктор отдельно, методы на `.prototype` |
+| Приватность | `#` private fields                            | Замыкания или соглашение `_field`                        |
+| Поднятие    | Не поднимаются — нельзя вызвать до объявления | Функции-конструкторы поднимаются (в отличие от `class`)  |
+| Под капотом | Та же цепочка прототипов                      | Прямая работа с объектами-прототипами                    |
+
+Полное сравнение: [Class vs prototype inheritance](#class-vs-prototype-inheritance).
+
+#### 5. `extends`, `super()` и цепочка прототипов
+
+| Feature              | Role                                                                                                         |
+| -------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **`extends`**        | Дочерний class наследует parent; **только один родитель**. Связывает `Child.prototype` → `Parent.prototype`. |
+| **`super()`**        | В `constructor` потомка — вызывает конструктор parent; **обязателен до использования `this`**.               |
+| **`super.method()`** | В переопределённом методе — вызывает реализацию parent.                                                      |
+| **`static`**         | Методы на самом class (не на экземплярах); подклассы наследуют static-члены.                                 |
+| **`instanceof`**     | Идёт по `[[Prototype]]` — `dog instanceof Dog` === `true`, если `Dog.prototype` в цепочке.                   |
+
+- `class` раскрывается в конструктор + методы на `.prototype` — наследование это **цепочка прототипов**, а не копирование полей.
+- Только **одиночное наследование** — предпочитайте **композицию** (`Object.assign`, миксины) глубоким деревьям `extends`.
+- Инкапсуляция без `#`: замыкания (module pattern), ES-модули или соглашение `_field`.
+
+Развёрнутые блоки по столпам (when to use, composition vs inheritance, SOLID): [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Encapsulation](./7_special_engineering.md#encapsulation) · [Inheritance](./7_special_engineering.md#inheritance) · [Polymorphism](./7_special_engineering.md#polymorphism) · [Abstraction](./7_special_engineering.md#abstraction).
 
 **When to use:** Доменные модели с поведением; библиотеки с экземплярами. Для DTO и пайплайнов — простые объекты + функции.
 
 **Pluses and minuses:**
 
-| +                                                | −                                                            |
-| ------------------------------------------------ | ------------------------------------------------------------ |
-| `class` читается как в других ООП-языках         | Нет контрактов на этапе компиляции — ошибки формы в рантайме |
-| Прототипы гибки для библиотек и делегирования    | Глубокие иерархии наследования хрупки                        |
-| Замыкания + модули дают инкапсуляцию без классов | Утиная типизация скрывает отсутствие метода до вызова        |
+| +                                                | −                                                             |
+| ------------------------------------------------ | ------------------------------------------------------------- |
+| `class` / `extends` / `super()` читаются знакомо | `super()` обязателен до `this` в constructor потомка          |
+| Прототипы гибки для библиотек и делегирования    | Глубокие иерархии наследования хрупки                         |
+| Замыкания + модули дают инкапсуляцию без классов | Только один `extends` — для нескольких ролей нужна композиция |
 
-**Examples:**
+**Thoughts:** Хорошее ООП в JS — соответствие сущностей домену, а не глубокие деревья `extends`. Эта страница — **канонический JS-гайд** (синтаксис + примеры столпов); контекст system design — в [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop).
 
-**Encapsulation** — состояние меняется только через методы; `#` блокирует прямой доступ к полю:
-
-```js
-class BankAccount {
-  #balance = 0;
-  deposit(amount) {
-    if (amount <= 0) throw new Error("amount must be positive");
-    this.#balance += amount;
-  }
-  withdraw(amount) {
-    if (amount > this.#balance) throw new Error("insufficient funds");
-    this.#balance -= amount;
-  }
-  getBalance() {
-    return this.#balance;
-  }
-}
-// account.#balance → SyntaxError
-```
-
-**Abstraction** — небольшой публичный API; детали транспорта скрыты за методом класса:
-
-```js
-class PaymentGateway {
-  async charge(amount) {
-    const res = await fetch("/api/charge", {
-      method: "POST",
-      body: JSON.stringify({ amount }),
-    });
-    return res.json();
-  }
-}
-
-async function checkout(cart, gateway) {
-  return gateway.charge(cart.total); // без URL Stripe и заголовков auth
-}
-```
-
-**Inheritance** — общий код в родителе; потомок переопределяет только отличия:
-
-```js
-class Employee {
-  constructor(name) {
-    this.name = name;
-  }
-  getRole() {
-    return "employee";
-  }
-}
-
-class Manager extends Employee {
-  getRole() {
-    return "manager";
-  }
-}
-
-const staff = [new Employee("Ann"), new Manager("Bob")];
-staff.map((e) => e.getRole()); // ['employee', 'manager']
-```
-
-**Polymorphism** — один вызов `send()`; утиная типизация — без `interface`, достаточно общей формы метода:
-
-```js
-class EmailAlert {
-  send(msg) {
-    console.log("email:", msg);
-  }
-}
-
-class SmsAlert {
-  send(msg) {
-    console.log("sms:", msg);
-  }
-}
-
-function notify(alert, msg) {
-  alert.send(msg); // работает для любого объекта с .send()
-}
-
-[new EmailAlert(), new SmsAlert()].forEach((a) => notify(a, "Order shipped"));
-```
-
-**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [javascript.info — Prototypal inheritance](https://javascript.info/prototype-inheritance) · [Doka — OOP](https://doka.guide/tools/oop/) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript)
+**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [MDN — Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain) · [javascript.info — Prototypal inheritance](https://javascript.info/prototype-inheritance) · [Doka — OOP](https://doka.guide/tools/oop/) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript)
 
 ---
 

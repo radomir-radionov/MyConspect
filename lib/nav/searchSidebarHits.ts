@@ -4,6 +4,7 @@ import {
   conceptMatchesQuery,
   matchesQuery,
 } from "./search";
+import { navSubjectClusters } from "./subjectClusters";
 import type {
   NavCluster,
   NavConcept,
@@ -132,7 +133,7 @@ function collectSubjectHits(
   query: string,
   mode: SearchMode,
 ) {
-  for (const cluster of subject.clusters) {
+  for (const cluster of navSubjectClusters(subject)) {
     collectClusterHits(hits, cluster, [subject.title], query, mode);
   }
 }

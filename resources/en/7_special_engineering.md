@@ -19,29 +19,297 @@ OOP pillars and the five SOLID principles for modules and APIs.
 
 ### Object-Oriented Programming (OOP)
 
-**Definition:** OOP models programs as **objects** — live instances built from a **class** (blueprint). Each object bundles **state** (fields) and **behavior** (methods); the class describes that shape once.
+**Definition:** OOP is a programming paradigm that models programs as **objects** — live instances built from a **class** (blueprint). Each object bundles **state** (fields) and **behavior** (methods). OOP is based on four key concepts — encapsulation, inheritance, polymorphism, abstraction. In JavaScript, `class` is syntactic sugar over prototypes — see [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
 
 **How it works:**
 
-| Step        | Idea                                                                |
-| ----------- | ------------------------------------------------------------------- |
-| **Class**   | Blueprint — defines fields and methods once                         |
-| **Object**  | Instance — `new User("Alex")` creates its own copy of state         |
-| **Message** | Call a method — `user.isAdmin()`; the object decides how to respond |
+| Step        | Idea                                                             |
+| ----------- | ---------------------------------------------------------------- |
+| **Class**   | Blueprint — defines fields and methods once                      |
+| **Object**  | Instance — `new Animal("Rex")` creates its own copy of state     |
+| **Message** | Call a method — `dog.speak()`; the object decides how to respond |
 
-Four **pillars** explain how objects cooperate. Each has a focused example below; full essays: [Abstraction](#abstraction) · [Encapsulation](#encapsulation) · [Polymorphism](#polymorphism) · [Inheritance](#inheritance).
+Four **pillars** explain how objects cooperate:
 
-| Pillar            | What it means                                                                                                                                                                 | Concrete example                                                                                                        |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **Abstraction**   | Give callers a **small, stable API** and hide everything behind it: storage format, network library, retry logic, error mapping. They ask _what_ the object does, not _how_.  | Checkout calls `order.place()` — it never builds Stripe HTTP requests or parses webhooks.                               |
-| **Encapsulation** | Keep **data and the only legal ways to change it** inside one object. Outside code cannot skip validation by writing fields directly — rules live in methods.                 | `account.withdraw(50)` checks the balance; `account.balance = -100` from outside is blocked (`#balance` or convention). |
-| **Polymorphism**  | Different classes answer the **same method call**. Code is written against a shared shape; you swap implementations without rewriting every caller.                           | One loop: `notifiers.forEach(n => n.send(text))` — email, SMS, or push; no `switch (channel)` in the caller.            |
-| **Inheritance**   | Put **shared fields and methods in a parent**; child classes override or extend only what differs — when the relationship is truly **is-a** (every manager _is_ an employee). | `Manager extends Employee`: both have `name` and `getRole()`; `Manager` returns `"manager"`, base returns `"employee"`. |
+| Pillar            | What it means                                                                                               |
+| ----------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Encapsulation** | Hiding internal logic and data from direct external access                                                  |
+| **Inheritance**   | Child class from parent — reuse shared code without duplication                                             |
+| **Polymorphism**  | Objects with different structure use the same method name; behavior depends on context                      |
+| **Abstraction**   | Highlight what matters; hide implementation — e.g. `video.play()` without knowing how the stream is decoded |
 
-**Abstraction** — stable public API; hide storage, transport, and algorithms:
+Focused essays: [Encapsulation](#encapsulation) · [Inheritance](#inheritance) · [Polymorphism](#polymorphism) · [Abstraction](#abstraction).
+
+JS code (`#` fields, `extends`/`super()`, `speak()` polymorphism, `video.play()`): [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+
+**Composition vs inheritance:** a smart kettle with a timer is **has-a** (`this.kettle`, `this.timer`), not **is-a** teapot _and_ timer. JavaScript allows only single `extends` — when “both parent types” apply, compose objects instead.
+
+**When to use:** Rich domain models (users, orders, ledgers), UI component trees, SDKs with shared base types. Prefer functions/modules for one-off scripts or mostly data pipelines.
+
+**Pluses and minuses:**
+
+| +                                                       | −                                                                                       |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Entities and relations map cleanly to business language | Shared mutable state + many writers → races (locks, CRDT, or immutability still needed) |
+| UML, ER, DFD grew around object thinking                | Shallow “is-a” trees rarely match real “has both” objects                               |
+| Well-studied patterns and failure modes                 | Deep hierarchies become hard to change (fragile base class)                             |
+
+**Thoughts:** This page covers **what** OOP is and **when** to use it; JS syntax and pillar code examples live in [OOP in JavaScript](./3_js_oop.md#oop-in-javascript). Encapsulation does not fix concurrent edits (two users, one doc) — you still need OT/CRDT or locks. Good code is a **map of the territory**; OOP helps when entities and messages stay aligned with that map.
+
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/) · [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript)
+
+---
+
+</details>
+
+<details>
+  <summary>Encapsulation</summary>
+
+### Encapsulation
+
+**Definition:** Hiding an object's internal logic and data from direct external access. Outside code uses a small API; state changes only through methods that enforce rules.
+
+**How it works:**
+
+- **Object level:** data and the only legal ways to change it live inside one object — callers call `deposit()`, not `account.balance = -100`.
+- **Module level:** a `History` class hides how records are stored; callers use `addRecord()`, not `history.records.push(...)`. Change storage later without rewriting every caller.
+- **In JS:** `#` creates fully private fields; closures and ES modules also hide internals. See [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+
+**When to use:** Domain objects with invariants (balance, permissions, cart totals). Any type with more than one instance — prefer methods over public arrays/maps.
+
+**Pluses and minuses:**
+
+| +                                         | −                                          |
+| ----------------------------------------- | ------------------------------------------ |
+| One place to change storage or rules      | Over-private APIs hinder testing           |
+| Callers stay stable when internals change | Getters/setters can leak the model         |
+| Prevents accidental mutation              | Easy to wrap every field and call it "OOP" |
+
+**Examples:**
 
 ```js
-// bad: checkout hard-codes Stripe URL, auth header, and payload shape
+// bad: public field — caller bypasses validation
+class BankAccount {
+  balance = 0;
+}
+const account = new BankAccount();
+account.balance = -100; // no rules, invariant broken
+
+// good: private state; only methods can change it
+class BankAccount {
+  #balance = 0;
+
+  constructor(owner) {
+    this.owner = owner;
+  }
+
+  deposit(amount) {
+    if (amount > 0) this.#balance += amount;
+  }
+
+  getBalance() {
+    return this.#balance;
+  }
+}
+
+const account = new BankAccount("Ivan");
+account.deposit(100);
+console.log(account.getBalance()); // 100
+// account.#balance → SyntaxError
+```
+
+**Thoughts:** `public` fields in TS/JS are convention-only unless `#` or closures enforce privacy. Chrome DevTools can read `#` in the console for debugging — that is **not** app-code access.
+
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
+
+---
+
+</details>
+
+<details>
+  <summary>Inheritance</summary>
+
+### Inheritance
+
+**Definition:** A subclass acquires properties and methods from a parent (superclass), enabling code reuse and specialization. Lets you create a child class from a parent without duplicating shared code.
+
+**How it works:**
+
+- Inheritance is **is-a**: every `Manager` _is_ an `Employee`.
+- If something is both a kettle and a timer — prefer **has-a** (composition), not two parents.
+- In JavaScript: `extends` links prototypes; `super()` calls the parent constructor or method. See [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+
+**When to use:** True **is-a** relationships with stable base behavior. Prefer shallow hierarchies (≤2 levels).
+
+**Pluses and minuses:**
+
+| +                       | −                                                   |
+| ----------------------- | --------------------------------------------------- |
+| DRY for shared behavior | Tight coupling to parent implementation             |
+| Natural "is-a" modeling | LSP violations when subclass breaks parent contract |
+
+**Examples:**
+
+```js
+// bad: duplicate name — change Employee constructor → fix Manager by hand
+class Employee {
+  constructor(name) {
+    this.name = name;
+  }
+  getRole() {
+    return "employee";
+  }
+}
+class Manager {
+  constructor(name) {
+    this.name = name;
+  } // copied
+  getRole() {
+    return "manager";
+  }
+}
+
+// good: shared code in parent; child calls super() and adds only what differs
+class Employee {
+  constructor(name) {
+    this.name = name;
+  }
+  getRole() {
+    return "employee";
+  }
+}
+class Manager extends Employee {
+  constructor(name, department) {
+    super(name);
+    this.department = department;
+  }
+  getRole() {
+    return "manager";
+  }
+}
+
+const bob = new Manager("Bob", "Engineering");
+console.log(bob.name); // inherited from Employee
+console.log(bob.department); // Manager-only field
+```
+
+Polymorphism (`staff.map(e => e.getRole())`) — see [Polymorphism](#polymorphism). JS `Dog extends Animal` with `super()`: [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+
+**Thoughts:** Favor composition when behavior varies by combination, not taxonomy. "Prefer composition over inheritance" — Gang of Four.
+
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
+
+---
+
+</details>
+
+<details>
+  <summary>Polymorphism</summary>
+
+### Polymorphism
+
+**Definition:** Objects with different structure can use methods with the same name that behave differently depending on context. Callers depend on a shared shape (method name), not a concrete class.
+
+| Type                      | Meaning                                                            |
+| ------------------------- | ------------------------------------------------------------------ |
+| **Subtype (inheritance)** | Subclass usable wherever parent is expected                        |
+| **Parametric (generics)** | Same code works on many types (`T[]`)                              |
+| **Ad-hoc (overloading)**  | Same name, different signatures (limited in JS)                    |
+| **Structural (JS/TS)**    | If it has the methods, it fits — duck typing / TS structural types |
+
+**How it works:**
+
+- One call site — different behavior per object: `animals.forEach(a => a.speak())`.
+- Code against a **shared contract** (`speak()`, `send()`, `render()`), not `if (type === "dog")`.
+- **In JS:** no `interface` at runtime — duck typing, JSDoc, or TypeScript. Full examples: [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+
+**When to use:** Strategy-like swaps; plugin/notifier lists; rendering different component types from one array; any time a `switch` on type keeps growing.
+
+**Pluses and minuses:**
+
+| +                                                     | −                                                       |
+| ----------------------------------------------------- | ------------------------------------------------------- |
+| Fewer `if/else` on concrete types                     | Need a real shared contract, not a random `type` string |
+| Lower coupling — change one variant, not every caller | JS won't check the contract at runtime                  |
+| Plugin lists, renderers, strategies                   | Fake "polymorphism" via flags can become a god `switch` |
+
+**Examples:**
+
+```js
+// bad: switch grows with every new type — edit every caller
+function animalSound(type, name) {
+  if (type === "dog") console.log(`${name} barks: Woof!`);
+  else if (type === "cat") console.log(`${name} meows: Meow!`);
+  // add Bird → another branch here and in every copy
+}
+
+// good: same method call — new class = new behavior, callers unchanged
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  speak() {
+    console.log(`${this.name} makes a sound.`);
+  }
+}
+
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name);
+    this.breed = breed;
+  }
+  speak() {
+    console.log(`${this.name} (breed: ${this.breed}) barks: Woof!`);
+  }
+}
+
+class Cat extends Animal {
+  speak() {
+    console.log(`${this.name} meows: Meow!`);
+  }
+}
+
+const animals = [new Dog("Rex", "Shepherd"), new Cat("Fluffy")];
+animals.forEach((animal) => animal.speak());
+// Rex (breed: Shepherd) barks: Woof!
+// Fluffy meows: Meow!
+```
+
+**Thoughts:** Prefer a real `interface` in TS when variants diverge in behavior. Subtype polymorphism needs a sensible parent — see [Inheritance](#inheritance). Composition + contract is often safer than deep trees.
+
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
+
+---
+
+</details>
+
+<details>
+  <summary>Abstraction</summary>
+
+### Abstraction
+
+**Definition:** Highlighting what matters and hiding implementation details. We create an interaction interface without forcing the user to understand complex internal mechanisms.
+
+**How it works:**
+
+- Callers use a **small, stable API** — they ask _what_ (`play()`, `charge()`, `getUser()`), not _how_ (decode stream, Stripe HTTP, SQL queries).
+- Internals can change (PayPal instead of Stripe, IndexedDB instead of `localStorage`) while the public API stays the same.
+- Too **few** layers leak complexity; too **many** obscure the flow — both hurt.
+- **In JS:** no built-in `interface` at runtime — classes, modules, or functions hide details. See [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+
+**When to use:** APIs, repositories, storage adapters, payment providers, any boundary where callers should not depend on implementation.
+
+**Pluses and minuses:**
+
+| +                                | −                                      |
+| -------------------------------- | -------------------------------------- |
+| Simplifies mental model          | Wrong abstraction is expensive to undo |
+| Enables swapping implementations | Too many layers obscure flow           |
+
+**Examples:**
+
+```js
+// bad: caller knows Stripe URL, auth header, and payload shape
 async function checkout(cart) {
   const res = await fetch("https://api.stripe.com/v1/charges", {
     method: "POST",
@@ -63,341 +331,15 @@ class PaymentGateway {
 async function checkout(cart, gateway) {
   return gateway.charge(cart.total); // swap Stripe → PayPal without touching checkout
 }
+
+// good: video.play() — no decode/buffer details
+const video = document.querySelector("video");
+video.play();
 ```
 
-**Encapsulation** — state changes only through methods that enforce rules:
+**Thoughts:** `interface` in TS is compile-time abstraction. In JS, document contracts via JSDoc or tests. Do not confuse abstraction with encapsulation — encapsulation hides _state_; abstraction hides _how work is done_.
 
-```js
-// bad: public field — caller skips validation
-class BankAccount {
-  balance = 0;
-}
-const account = new BankAccount();
-account.balance = -100; // no check, invariant broken
-
-// good: private state; only methods can change it
-class BankAccount {
-  #balance = 0;
-  deposit(amount) {
-    if (amount <= 0) throw new Error("amount must be positive");
-    this.#balance += amount;
-  }
-  withdraw(amount) {
-    if (amount > this.#balance) throw new Error("insufficient funds");
-    this.#balance -= amount;
-  }
-  getBalance() {
-    return this.#balance;
-  }
-}
-// account.#balance → SyntaxError
-```
-
-**Polymorphism** — one method name, many classes; callers stay unchanged:
-
-```js
-// bad: switch grows with every new channel — edit every caller
-function notify(channel, msg) {
-  if (channel === "email") console.log("email:", msg);
-  else if (channel === "sms") console.log("sms:", msg);
-  // add Slack → another branch here and in every copy
-}
-
-// good: same call site; new class = new implementation, zero caller edits
-class EmailAlert {
-  send(msg) {
-    console.log("email:", msg);
-  }
-}
-class SmsAlert {
-  send(msg) {
-    console.log("sms:", msg);
-  }
-}
-function notify(alert, msg) {
-  alert.send(msg);
-}
-[new EmailAlert(), new SmsAlert()].forEach((a) => notify(a, "Order shipped"));
-```
-
-**Inheritance** — child reuses parent code and overrides only what differs:
-
-```js
-// bad: duplicate name field — change Employee constructor → fix Manager by hand
-class Employee {
-  constructor(name) {
-    this.name = name;
-  }
-  getRole() {
-    return "employee";
-  }
-}
-class Manager {
-  constructor(name) {
-    this.name = name;
-  } // copied
-  getRole() {
-    return "manager";
-  }
-}
-
-// good: shared code in parent; child overrides only getRole()
-class Employee {
-  constructor(name) {
-    this.name = name;
-  }
-  getRole() {
-    return "employee";
-  }
-}
-class Manager extends Employee {
-  getRole() {
-    return "manager";
-  }
-}
-const staff = [new Employee("Ann"), new Manager("Bob")];
-staff.map((e) => e.getRole()); // ['employee', 'manager']
-```
-
-**Composition vs inheritance:** a smart kettle with a timer is **has-a** (`this.kettle`, `this.timer`), not **is-a** teapot _and_ timer. JavaScript allows only single `extends` — when “both parent types” apply, compose objects instead.
-
-**When to use:** Rich domain models (users, orders, ledgers), UI component trees, SDKs with shared base types. Prefer functions/modules for one-off scripts or mostly data pipelines.
-
-**Pluses and minuses:**
-
-| +                                                       | −                                                                                       |
-| ------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| Entities and relations map cleanly to business language | Shared mutable state + many writers → races (locks, CRDT, or immutability still needed) |
-| UML, ER, DFD grew around object thinking                | Shallow “is-a” trees rarely match real “has both” objects                               |
-| Well-studied patterns and failure modes                 | Deep hierarchies become hard to change (fragile base class)                             |
-
-**Examples:**
-
-Class + object — the four pillars in one place:
-
-```js
-class User {
-  #admin = false;
-  constructor(name) {
-    this.name = name; // abstraction: callers use nameOf(), not raw field rules
-  }
-  promote() {
-    this.#admin = true; // encapsulation: state change through method
-  }
-  isAdmin() {
-    return this.#admin;
-  }
-  nameOf() {
-    return this.name;
-  }
-}
-
-const user = new User("Alex");
-user.isAdmin(); // false
-user.promote();
-user.isAdmin(); // true
-```
-
-**Thoughts:** In JS, `class` is syntax sugar over prototypes — inheritance is a prototype chain, not copying fields. Encapsulation does not fix concurrent edits (two users, one doc) — you still need OT/CRDT or locks. Good code is a **map of the territory**; OOP helps when entities and messages stay aligned with that map.
-
-**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/) · [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript)
-
----
-
-</details>
-
-<details>
-  <summary>Encapsulation</summary>
-
-### Encapsulation
-
-**Definition:** Keep knowledge about an entity **inside** that entity (or its module). Outside code talks through a small API; internals stay hidden.
-
-**How it works:**
-
-- Data + the operations that know how to change it live together. History knows how to add a record — callers do not `history.records.push(...)`.
-- If History were a bare array, _how to add_ would leak into every caller. Change storage later → rewrite the app.
-- Related work in one module = **high cohesion**. Uncontrolled access from outside = low encapsulation.
-- JS: hide with `#` fields, closures, or module scope. `this` lets the same method update _this_ instance when several Histories exist.
-
-Инкапсуляция — знание о сущности внутри неё. История сама знает, как добавить запись. `this` — «свой» объект, когда историй несколько.
-
-**When to use:** Domain objects; any type with more than one instance (`this` vs a captured outer variable). Always prefer methods over poking public arrays/maps.
-
-**Pluses and minuses:**
-
-| +                                         | −                                          |
-| ----------------------------------------- | ------------------------------------------ |
-| One place to change storage or rules      | Over-private APIs hinder testing           |
-| Callers stay stable when internals change | Getters/setters can leak the model         |
-| Prevents accidental mutation              | Easy to wrap every field and call it "OOP" |
-
-**Examples:**
-
-```js
-// Knowledge leaked — every caller must know the structure
-function addRecord(history, record) {
-  history.push(record);
-}
-
-class History {
-  records = [];
-  addRecord(record) {
-    this.records.push(record); // this instance, not a captured outer `history`
-  }
-}
-
-const history1 = new History();
-const history2 = new History();
-history1.addRecord({ amount: 100, dateTime: Date.now() });
-```
-
-**Thoughts:** `public` fields in TS/JS are convention-only unless `#` or closures enforce privacy. Chrome DevTools can read `#` fields in the console for debugging — that is **not** app-code access. See [3_js_oop.md — private fields](./3_js_oop.md).
-
-**Sources:**
-
-[Doka — OOP](https://doka.guide/tools/oop/) · [MDN — private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements)
-
----
-
-</details>
-
-<details>
-  <summary>Inheritance</summary>
-
-### Inheritance
-
-**Definition:** A class (subclass) acquires properties and methods from a parent (superclass), enabling code reuse and specialization.
-
-**How it works:**
-
-Наследование = «является». Если «и чайник, и таймер» — лучше _имеет_ (композиция), а не два родителя.
-
----
-
-**When to use:** True "is-a" relationships with stable base behavior. Prefer shallow hierarchies (≤2 levels).
-
-**Pluses and minuses:**
-
-| +                       | −                                                   |
-| ----------------------- | --------------------------------------------------- |
-| DRY for shared behavior | Tight coupling to parent implementation             |
-| Natural "is-a" modeling | LSP violations when subclass breaks parent contract |
-
-**Examples:**
-
-```js
-class Employee {
-  constructor(name) {
-    this.name = name;
-  }
-  getRole() {
-    return "employee";
-  }
-}
-
-class Manager extends Employee {
-  getRole() {
-    return "manager";
-  }
-}
-```
-
-**Thoughts:** Favor composition when behavior varies by combination, not taxonomy. "Prefer composition over inheritance" — Gang of Four.
-
-</details>
-
-<details>
-  <summary>Polymorphism</summary>
-
-### Polymorphism
-
-**Definition:**
-
-Use an object without knowing the concrete type — only a shared contract (methods/shape). One operation, many implementations.
-
-| Type                      | Meaning                                                            |
-| ------------------------- | ------------------------------------------------------------------ |
-| **Subtype (inheritance)** | Subclass usable wherever parent is expected                        |
-| **Parametric (generics)** | Same code works on many types (`T[]`)                              |
-| **Ad-hoc (overloading)**  | Same name, different signatures (limited in JS)                    |
-| **Structural (JS/TS)**    | If it has the methods, it fits — duck typing / TS structural types |
-
-**How it works:**
-
-Code written against one concrete type is **tightly coupled**. A shared shape (`Record` with `kind`, or `shape.area()`) lets History accept spend _and_ income without changing `addRecord`. JS has no `interface` keyword — you fake the contract with duck typing, JSDoc, or TypeScript.
-
-Полиморфизм — объект по контракту, не по конкретному классу. `addRecord` принимает трату и доход. В JS нет интерфейсов — утка / TypeScript.
-
-**When to use:** Strategy-like swaps; plugin systems; ledger entries that are spend or income; rendering different component types from one list.
-
-**Pluses and minuses:**
-
-| +                                                     | −                                                       |
-| ----------------------------------------------------- | ------------------------------------------------------- |
-| Fewer `if/else` on concrete types                     | Need a real shared contract, not a random `type` string |
-| Lower coupling — change one variant, not every caller | JS won't check the contract at runtime                  |
-| Plugin lists, renderers, strategies                   | Fake "polymorphism" via flags can become a god `switch` |
-
-**Examples:**
-
-```js
-class LedgerRecord {
-  constructor(amount, kind) {
-    this.kind = kind; // 'spending' | 'income'
-    this.amount = amount;
-    this.dateTime = Date.now();
-  }
-}
-
-const spending = new LedgerRecord(400, "spending");
-const income = new LedgerRecord(400, "income");
-history.addRecord(spending);
-history.addRecord(income); // same API — History does not care which kind
-```
-
-**Thoughts:** Prefer a real interface in TS over a string `kind` when variants diverge in behavior. Inheritance is another path — composition + a contract is usually safer. See [OOP in JavaScript](#2-oop--fp) below.
-
-**Sources:**
-
-[Doka — OOP](https://doka.guide/tools/oop/)
-
----
-
-</details>
-
-<details>
-  <summary>Abstraction</summary>
-
-### Abstraction
-
-**Definition:** Exposing essential behavior while hiding implementation complexity.
-
-**How it works:** Абстракция — поведение без внутренностей. Слишком мало или слишком много слоёв — оба вредят.
-
-**When to use:** APIs, repositories, storage adapters, payment providers.
-
-**Pluses and minuses:**
-
-| +                                | −                                      |
-| -------------------------------- | -------------------------------------- |
-| Simplifies mental model          | Wrong abstraction is expensive to undo |
-| Enables swapping implementations | Too many layers obscure flow           |
-
-**Examples:**
-
-```js
-// Caller depends on abstraction, not fetch vs axios
-async function getUser(id, client) {
-  return client.request(`/users/${id}`);
-}
-```
-
-**Thoughts:** Interface in TS = compile-time abstraction. In JS, document contracts via JSDoc or tests.
-
-**Sources:**
-
-[Doka — OOP](https://doka.guide/tools/oop/)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
 
 ---
 
@@ -704,6 +646,14 @@ Interview: SRP ≠ "one function" — it's one **axis of change**. A change in t
 **Examples:**
 
 ```js
+// bad: edit checkout every time a new payment provider is added
+function checkout(provider, amount) {
+  if (provider === "stripe") return chargeStripe(amount);
+  if (provider === "paypal") return chargePayPal(amount);
+  // add Apple Pay → change this function again (open for modification)
+}
+
+// good: checkout stays closed; new providers register in the map
 const paymentStrategies = {
   stripe: (amount) => chargeStripe(amount),
   paypal: (amount) => chargePayPal(amount),
@@ -712,13 +662,14 @@ const paymentStrategies = {
 function checkout(provider, amount) {
   const pay = paymentStrategies[provider];
   if (!pay) throw new Error("Unknown provider");
-  return pay(amount); // add new provider without editing this function
+  return pay(amount);
 }
+
+// extend elsewhere — no edit to checkout
+paymentStrategies.applePay = (amount) => chargeApplePay(amount);
 ```
 
-**Thoughts:**
-
-OCP pairs with Strategy and Factory patterns. A `switch` on closed enum is fine if the set is truly fixed and owned by one team.
+**Thoughts:** OCP pairs with Strategy and Factory patterns. A `switch` on a closed enum is fine if the set is truly fixed and owned by one team.
 
 **Sources:** [SOLID (overview)](#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
@@ -753,6 +704,7 @@ OCP pairs with Strategy and Factory patterns. A `switch` on closed enum is fine 
 **Examples:**
 
 ```js
+// bad: Penguin is-a Bird but breaks callers that expect fly() to work
 class Bird {
   fly() {
     return "flying";
@@ -761,20 +713,28 @@ class Bird {
 class Penguin extends Bird {
   fly() {
     throw new Error("Cannot fly");
-  } // ❌ breaks callers expecting fly()
+  }
 }
 
-// ✅ Better — separate interfaces
+function makeBirdFly(bird) {
+  return bird.fly(); // works for Bird, throws for Penguin — LSP violation
+}
+makeBirdFly(new Penguin());
+
+// good: separate capability — caller depends only on what it needs
 class Penguin {
   swim() {
     return "swimming";
   }
 }
+
+function makeSwimmer(animal) {
+  return animal.swim();
+}
+makeSwimmer(new Penguin());
 ```
 
-**Thoughts:**
-
-Classic interview trap: `Square extends Rectangle`. Fix: don't model square as rectangle subtype; use shared `Shape` with `area()`.
+**Thoughts:** Classic interview trap: `Square extends Rectangle` — `setWidth` on a square changes height too. Fix: shared `Shape` with `area()`, not a false **is-a** hierarchy.
 
 **Sources:** [SOLID (overview)](#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
@@ -809,18 +769,36 @@ Classic interview trap: `Square extends Rectangle`. Fix: don't model square as r
 **Examples:**
 
 ```ts
+// bad: fat DbClient — read-only code must depend on write/delete too
+class DbClient {
+  read(id: string) {
+    /* ... */
+  }
+  write(data: Data) {
+    /* ... */
+  }
+  delete(id: string) {
+    /* ... */
+  }
+}
+
+function generateReport(db: DbClient) {
+  return db.read("summary"); // only needs read
+}
+
+// good: small contract — caller takes only what it uses
 type Readable = { read(id: string): Promise<Data> };
 type Writable = { write(data: Data): Promise<void> };
 
-// Report generator only needs Readable
 function generateReport(source: Readable) {
   return source.read("summary");
 }
+
+const readOnlyDb: Readable = { read: (id) => fetchReport(id) };
+generateReport(readOnlyDb);
 ```
 
-**Thoughts:**
-
-ISP reduces coupling between modules. In frontend, prop drilling fat objects is an ISP smell — pass only needed fields.
+**Thoughts:** ISP reduces coupling between modules. In frontend, fat props that force unused callbacks are an ISP smell — pass only needed fields.
 
 **Sources:** [SOLID (overview)](#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
@@ -855,17 +833,26 @@ ISP reduces coupling between modules. In frontend, prop drilling fat objects is 
 **Examples:**
 
 ```ts
+// bad: high-level code hard-coded to Postgres — hard to test or swap storage
+import { PostgresUserRepo } from "./postgres";
+
+function getUserProfile(id: string) {
+  const repo = new PostgresUserRepo();
+  return repo.findById(id);
+}
+
+// good: depend on abstraction; inject implementation at the edge
 type UserRepo = { findById(id: string): Promise<User> };
 
 function getUserProfile(id: string, repo: UserRepo) {
-  return repo.findById(id); // depends on abstraction
+  return repo.findById(id);
 }
 
-// Production: getUserProfile(id, new PostgresUserRepo())
-// Test:       getUserProfile(id, { findById: async () => mockUser })
+// production: getUserProfile(id, new PostgresUserRepo())
+// test:       getUserProfile(id, { findById: async () => mockUser })
 ```
 
-**Thoughts:** DIP ≠ every function takes 10 params. Module-level defaults with injectable overrides is idiomatic in JS. Pairs with Factory and Repository patterns. JS has no interfaces — constructor injection still helps (`new DailyAmount(budget, history)`), but the _inversion onto an abstraction_ is a TypeScript/`typedef` story. See [Entities, relations & design](./0_system_design_grasp.md#entities-relations--design).
+**Thoughts:** DIP ≠ every function takes 10 params. Module-level defaults with injectable overrides is idiomatic in JS. Pairs with Factory and Repository patterns. Constructor injection works in plain JS too (`new DailyAmount(budget, history)`); typed abstractions help in TS. See [Entities, relations & design](./0_system_design_grasp.md#entities-relations--design).
 
 **See also:** Swappable fakes at the interface = less mock archaeology — [Making tests easy](./7_special_testing.md#making-tests-easy).
 

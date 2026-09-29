@@ -34,6 +34,12 @@ export type TopicCluster = {
   readonly id: string;
   readonly title: string;
   readonly blurb: string;
+  readonly section?: string;
+};
+
+export type SubjectSection = {
+  readonly id: string;
+  readonly title: string;
 };
 
 export type Subject = {
@@ -41,6 +47,7 @@ export type Subject = {
   readonly title: string;
   readonly blurb: string;
   readonly track: TrackId;
+  readonly sections?: readonly SubjectSection[];
   readonly clusters: readonly TopicCluster[];
 };
 
@@ -55,7 +62,7 @@ export const TRACKS: readonly Track[] = [
     id: "frontend",
     title: "Frontend",
     description:
-      "HTML, CSS, JavaScript, React, Next.js, TypeScript, Web APIs, Vue, and Nuxt.",
+      "HTML, CSS, JavaScript, React, Next.js, TypeScript, Web APIs, and Vue & Nuxt.",
   },
   {
     id: "backend",
@@ -261,47 +268,64 @@ export const SUBJECTS: readonly Subject[] = [
     ],
   },
   {
-    slug: "vue",
-    title: "Vue",
-    blurb: "Components, Composition API, reactivity, SSR, and ecosystem.",
+    slug: "vue-nuxt",
+    title: "Vue & Nuxt",
+    blurb:
+      "Vue library and Nuxt meta-framework: components, Composition API, SSR, routing, and Nitro.",
     track: "frontend",
+    sections: [
+      { id: "vue", title: "Vue" },
+      { id: "nuxt", title: "Nuxt" },
+    ],
     clusters: [
       {
         id: "core",
         title: "Core",
         blurb: "Library model, templates, reactivity, and Composition API.",
+        section: "vue",
       },
       {
         id: "vue-ssr",
         title: "SSR",
         blurb: "Server rendering, hydration, and Vue 3.5+ features.",
+        section: "vue",
       },
       {
         id: "ecosystem",
         title: "Ecosystem",
         blurb: "Router, Pinia, Vite, performance, and migration.",
+        section: "vue",
       },
-      { id: "interview", title: "Interview", blurb: "Q&A and coding tasks." },
-    ],
-  },
-  {
-    slug: "nuxt",
-    title: "Nuxt",
-    blurb: "File-based routing, data fetching, Nitro, and the Nuxt platform.",
-    track: "frontend",
-    clusters: [
       {
-        id: "core",
+        id: "interview",
+        title: "Interview",
+        blurb: "Q&A and coding tasks.",
+        section: "vue",
+      },
+      {
+        id: "nuxt-core",
         title: "Core",
         blurb: "Framework model, rendering, and streaming.",
+        section: "nuxt",
       },
       {
-        id: "data",
+        id: "nuxt-data",
         title: "Data",
         blurb: "useFetch, useAsyncData, and server routes.",
+        section: "nuxt",
       },
-      { id: "additional", title: "Additional", blurb: "Routing and platform." },
-      { id: "interview", title: "Interview", blurb: "Q&A and coding tasks." },
+      {
+        id: "nuxt-additional",
+        title: "Additional",
+        blurb: "Routing and platform.",
+        section: "nuxt",
+      },
+      {
+        id: "nuxt-interview",
+        title: "Interview",
+        blurb: "Q&A and coding tasks.",
+        section: "nuxt",
+      },
     ],
   },
   {
@@ -465,8 +489,9 @@ const HUB_HREFS: Readonly<Record<string, string>> = {
   "2_css.md": "/frontend/css",
   "4_react.md": "/frontend/react",
   "4_nextjs.md": "/frontend/nextjs",
-  "4_vue.md": "/frontend/vue",
-  "4_nuxt.md": "/frontend/nuxt",
+  "4_vue_nuxt.md": "/frontend/vue-nuxt",
+  "4_vue.md": "/frontend/vue-nuxt",
+  "4_nuxt.md": "/frontend/vue-nuxt",
   "5_ts.md": "/frontend/typescript",
   "6_web_api.md": "/frontend/web-api",
   "8_nodejs.md": "/backend/nodejs",
@@ -968,7 +993,7 @@ export const TOPICS: readonly Topic[] = [
     "Basics",
     "Library model, templates, reactivity, and state.",
     "frontend",
-    "vue",
+    "vue-nuxt",
     "core",
   ),
   grouped(
@@ -977,7 +1002,7 @@ export const TOPICS: readonly Topic[] = [
     "Composition",
     "Composition API, composables, and script setup.",
     "frontend",
-    "vue",
+    "vue-nuxt",
     "core",
   ),
   grouped(
@@ -986,7 +1011,7 @@ export const TOPICS: readonly Topic[] = [
     "SSR",
     "Server rendering, hydration, and Vue 3.5+ features.",
     "frontend",
-    "vue",
+    "vue-nuxt",
     "vue-ssr",
   ),
   grouped(
@@ -995,7 +1020,7 @@ export const TOPICS: readonly Topic[] = [
     "Ecosystem",
     "Router, Pinia, Vite, performance, and migration.",
     "frontend",
-    "vue",
+    "vue-nuxt",
     "ecosystem",
   ),
   grouped(
@@ -1004,7 +1029,7 @@ export const TOPICS: readonly Topic[] = [
     "Interview",
     "Interview Q&A and coding tasks.",
     "frontend",
-    "vue",
+    "vue-nuxt",
     "interview",
   ),
   grouped(
@@ -1013,8 +1038,8 @@ export const TOPICS: readonly Topic[] = [
     "Core",
     "Framework model, rendering, and streaming.",
     "frontend",
-    "nuxt",
-    "core",
+    "vue-nuxt",
+    "nuxt-core",
   ),
   grouped(
     "nuxt-data",
@@ -1022,8 +1047,8 @@ export const TOPICS: readonly Topic[] = [
     "Data",
     "useFetch, useAsyncData, caching, and server routes.",
     "frontend",
-    "nuxt",
-    "data",
+    "vue-nuxt",
+    "nuxt-data",
   ),
   grouped(
     "nuxt-routing",
@@ -1031,8 +1056,8 @@ export const TOPICS: readonly Topic[] = [
     "Routing",
     "File-based routes, layouts, middleware, and SEO.",
     "frontend",
-    "nuxt",
-    "additional",
+    "vue-nuxt",
+    "nuxt-additional",
   ),
   grouped(
     "nuxt-platform",
@@ -1040,8 +1065,8 @@ export const TOPICS: readonly Topic[] = [
     "Platform",
     "Nitro, modules, config, deployment, and debugging.",
     "frontend",
-    "nuxt",
-    "additional",
+    "vue-nuxt",
+    "nuxt-additional",
   ),
   grouped(
     "nuxt-interview",
@@ -1049,8 +1074,8 @@ export const TOPICS: readonly Topic[] = [
     "Interview",
     "Interview Q&A and coding tasks.",
     "frontend",
-    "nuxt",
-    "interview",
+    "vue-nuxt",
+    "nuxt-interview",
   ),
   grouped(
     "nodejs-core",
@@ -1510,6 +1535,19 @@ function assertCatalogGroupings() {
       );
     }
   }
+  for (const subject of SUBJECTS) {
+    if (!subject.sections?.length) {
+      continue;
+    }
+    const sectionIds = new Set(subject.sections.map((section) => section.id));
+    for (const cluster of subject.clusters) {
+      if (!cluster.section || !sectionIds.has(cluster.section)) {
+        throw new Error(
+          `Cluster ${cluster.id} on ${subject.slug} missing valid section`,
+        );
+      }
+    }
+  }
 }
 
 assertCatalogGroupings();
@@ -1648,7 +1686,7 @@ export function subjectClusterCards(subject: Subject): readonly {
   readonly cluster: TopicCluster;
   readonly items: readonly BrowseCard[];
 }[] {
-  return subject.clusters.flatMap((cluster) => {
+  return clustersWithTopics(subject).flatMap((cluster) => {
     const topics = topicsForCluster(subject, cluster.id);
     if (topics.length === 0) {
       return [];
@@ -1669,6 +1707,29 @@ export function subjectClusterCards(subject: Subject): readonly {
           }));
     return [{ cluster, items }];
   });
+}
+
+function clustersWithTopics(subject: Subject): readonly TopicCluster[] {
+  return subject.clusters.filter(
+    (cluster) => topicsForCluster(subject, cluster.id).length > 0,
+  );
+}
+
+export function subjectSectionClusterCards(subject: Subject): readonly {
+  readonly section: SubjectSection;
+  readonly clusters: readonly {
+    readonly cluster: TopicCluster;
+    readonly items: readonly BrowseCard[];
+  }[];
+}[] {
+  const cards = subjectClusterCards(subject);
+  if (!subject.sections?.length) {
+    return [];
+  }
+  return subject.sections.map((section) => ({
+    section,
+    clusters: cards.filter((entry) => entry.cluster.section === section.id),
+  }));
 }
 
 export function topicRouteParams(): readonly {

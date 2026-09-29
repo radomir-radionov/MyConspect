@@ -136,8 +136,10 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Файловая маршрутизация, загрузка данных, Nitro и платформа Nuxt.",
   "File-based routes, layouts, middleware, and SEO.":
     "Файловые маршруты, layouts, middleware и SEO.",
-  "HTML, CSS, JavaScript, React, Next.js, TypeScript, Web APIs, Vue, and Nuxt.":
-    "HTML, CSS, JavaScript, React, Next.js, TypeScript, Web API, Vue и Nuxt.",
+  "HTML, CSS, JavaScript, React, Next.js, TypeScript, Web APIs, and Vue & Nuxt.":
+    "HTML, CSS, JavaScript, React, Next.js, TypeScript, Web API и Vue & Nuxt.",
+  "Vue library and Nuxt meta-framework: components, Composition API, SSR, routing, and Nitro.":
+    "Библиотека Vue и meta-framework Nuxt: компоненты, Composition API, SSR, маршрутизация и Nitro.",
   "HTML, CSS, JavaScript, React, TypeScript, and browser APIs.":
     "HTML, CSS, JavaScript, React, TypeScript и браузерные API.",
   "Library model, templates, reactivity, and Composition API.":

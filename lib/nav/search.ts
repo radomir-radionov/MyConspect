@@ -1,4 +1,11 @@
-import type { NavConcept, NavEntry, NavGroup, NavTopic, SearchMode } from "./types";
+import { navSubjectClusters } from "./subjectClusters";
+import type {
+  NavConcept,
+  NavEntry,
+  NavGroup,
+  NavTopic,
+  SearchMode,
+} from "./types";
 import {
   BODY_QUERY_MIN_LENGTH,
   filterGroupsWithIndex,
@@ -32,11 +39,15 @@ function conceptTitleMatches(
   query: string,
 ): boolean {
   return (
-    matchesQuery(concept.title, query) || matchesQuery(concept.titleSearchText ?? "", query)
+    matchesQuery(concept.title, query) ||
+    matchesQuery(concept.titleSearchText ?? "", query)
   );
 }
 
-function conceptBodyMatches(concept: Pick<NavConcept, "searchText">, query: string): boolean {
+function conceptBodyMatches(
+  concept: Pick<NavConcept, "searchText">,
+  query: string,
+): boolean {
   if (query.length < BODY_QUERY_MIN_LENGTH) {
     return false;
   }
@@ -69,7 +80,10 @@ export function conceptBodySnippet(
     return null;
   }
   const normalized = query.trim().toLowerCase();
-  if (conceptTitleMatches(concept, normalized) || !conceptBodyMatches(concept, normalized)) {
+  if (
+    conceptTitleMatches(concept, normalized) ||
+    !conceptBodyMatches(concept, normalized)
+  ) {
     return null;
   }
   const haystack = concept.searchText ?? "";
@@ -78,7 +92,10 @@ export function conceptBodySnippet(
     return null;
   }
   const start = Math.max(0, index - SNIPPET_PAD);
-  const end = Math.min(haystack.length, index + normalized.length + SNIPPET_PAD);
+  const end = Math.min(
+    haystack.length,
+    index + normalized.length + SNIPPET_PAD,
+  );
   let snippet = haystack.slice(start, end).replace(/\s+/g, " ").trim();
   if (start > 0) {
     snippet = `…${snippet}`;
@@ -101,7 +118,11 @@ export function splitHref(href: string): { pathname: string; hash: string } {
   return { pathname: href.slice(0, hashIndex), hash: href.slice(hashIndex) };
 }
 
-export function topicMatches(topic: NavTopic, query: string, mode: SearchMode = "titles"): boolean {
+export function topicMatches(
+  topic: NavTopic,
+  query: string,
+  mode: SearchMode = "titles",
+): boolean {
   const normalized = query.trim().toLowerCase();
   if (normalized.length === 0) {
     return true;
@@ -109,7 +130,9 @@ export function topicMatches(topic: NavTopic, query: string, mode: SearchMode = 
   return (
     matchesQuery(topic.title, normalized) ||
     matchesQuery(topic.blurb, normalized) ||
-    topic.concepts.some((concept) => conceptMatchesQuery(concept, normalized, mode))
+    topic.concepts.some((concept) =>
+      conceptMatchesQuery(concept, normalized, mode),
+    )
   );
 }
 
@@ -131,7 +154,9 @@ function topicsInEntry(entry: NavEntry): readonly NavTopic[] {
     case "topic":
       return [entry.topic];
     case "subject":
-      return entry.subject.clusters.flatMap((cluster) => cluster.topics);
+      return navSubjectClusters(entry.subject).flatMap(
+        (cluster) => cluster.topics,
+      );
     case "cluster":
       return entry.cluster.topics;
     default: {

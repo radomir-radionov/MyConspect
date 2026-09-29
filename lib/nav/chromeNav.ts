@@ -1,4 +1,11 @@
-import type { NavCluster, NavConcept, NavEntry, NavGroup, NavSubject, NavTopic } from "./types";
+import type {
+  NavCluster,
+  NavConcept,
+  NavEntry,
+  NavGroup,
+  NavSubject,
+  NavTopic,
+} from "./types";
 
 export function withoutSearchText(groups: readonly NavGroup[]): NavGroup[] {
   return groups.map((group) => ({
@@ -28,9 +35,15 @@ function chromeEntry(entry: NavEntry): NavEntry {
 }
 
 function chromeSubject(subject: NavSubject): NavSubject {
+  const mapClusters = (clusters: readonly NavCluster[]) =>
+    clusters.map(chromeCluster);
   return {
     ...subject,
-    clusters: subject.clusters.map(chromeCluster),
+    sections: subject.sections?.map((section) => ({
+      ...section,
+      clusters: mapClusters(section.clusters),
+    })),
+    clusters: mapClusters(subject.clusters),
   };
 }
 

@@ -48,7 +48,8 @@ function entriesForTrack(
       }
       seenSubjects.add(topic.grouping.subject);
       const subject = SUBJECTS.find(
-        (item) => item.track === trackId && item.slug === topic.grouping?.subject,
+        (item) =>
+          item.track === trackId && item.slug === topic.grouping?.subject,
       );
       if (!subject) {
         continue;
@@ -58,12 +59,24 @@ function entriesForTrack(
           id: cluster.id,
           title: cluster.title,
           href: localizeHref(locale, clusterHref(subject, cluster)),
-          topics: topicsForCluster(subject, cluster.id).map((item) => toNavTopic(item, locale)),
+          topics: topicsForCluster(subject, cluster.id).map((item) =>
+            toNavTopic(item, locale),
+          ),
         }))
         .filter((cluster) => cluster.topics.length > 0);
       if (clusters.length === 0) {
         continue;
       }
+      const sections = subject.sections?.map((section) => ({
+        id: section.id,
+        title: section.title,
+        clusters: clusters.filter((cluster) => {
+          const definition = subject.clusters.find(
+            (item) => item.id === cluster.id,
+          );
+          return definition?.section === section.id;
+        }),
+      }));
       entries.push({
         kind: "subject",
         subject: {
@@ -71,7 +84,10 @@ function entriesForTrack(
           href: localizeHref(locale, subjectHref(subject)),
           title: subject.title,
           blurb: catalogBlurb(locale, subject.blurb),
-          clusters,
+          sections: sections?.some((section) => section.clusters.length > 0)
+            ? sections.filter((section) => section.clusters.length > 0)
+            : undefined,
+          clusters: sections ? [] : clusters,
         },
       });
       continue;
@@ -83,7 +99,9 @@ function entriesForTrack(
   return entries;
 }
 
-export function handbookNav(locale: Locale = DEFAULT_LOCALE): readonly NavGroup[] {
+export function handbookNav(
+  locale: Locale = DEFAULT_LOCALE,
+): readonly NavGroup[] {
   return TRACKS.map((track) => {
     const href = localizeHref(locale, trackHref(track.id));
     const leaf = leafTopicForTrack(track.id);
@@ -99,7 +117,10 @@ export function handbookNav(locale: Locale = DEFAULT_LOCALE): readonly NavGroup[
 
     const entries = entriesForTrack(track.id, locale);
     const only = entries.length === 1 ? entries[0] : undefined;
-    if (only?.kind === "subject" && sameTitle(only.subject.title, track.title)) {
+    if (
+      only?.kind === "subject" &&
+      sameTitle(only.subject.title, track.title)
+    ) {
       return {
         id: track.id,
         title: track.title,

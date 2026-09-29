@@ -376,33 +376,33 @@ const heavy = await import("./heavy.js"); // dynamic — returns Promise
 
 ### SOLID in Classes
 
-**Definition:** **SOLID** — пять принципов дизайна Роберта Мартина («Дядя Боб») для кода, который остаётся **удобным для изменений, тестов и расширения**. На **иерархиях `class`** каждая буква связана с прототипами, `extends` и инжектом через constructor. В JS `class` — **синтаксический сахар над прототипами**: методы лежат на prototype, `extends` связывает цепочку — поэтому **Liskov** и **композиция** важны при каждом наследовании. Маппинг на модули и функции: [SOLID in Functions](#solid-in-functions). В рантайме нет `interface` (TypeScript добавляет его при компиляции) — контракты задают **duck typing**, JSDoc `@typedef` или TS `implements`.
+**Definition:** **SOLID** — пять архитектурных принципов дизайна Роберта Мартина («Дядя Боб») для кода, который остаётся **удобным для изменений, тестов и расширения**. В JavaScript — особенно с приходом ES6-**`class`** — они помогают избежать **«спагетти-кода»**. На **иерархиях `class`** каждая буква связана с прототипами, `extends` и инжектом через constructor. В JS `class` — **синтаксический сахар над прототипами**: методы лежат на prototype, `extends` связывает цепочку — поэтому **Liskov** и **композиция** важны при каждом наследовании. В чистом JS нет встроенных `interface` (как в TypeScript или Java) — часть принципов адаптируется через **композицию функций** или **утиную типизацию** (JSDoc `@typedef`, TS `implements`). Маппинг на модули и функции: [SOLID in Functions](#solid-in-functions).
 
 | Letter | Principle             | Какую проблему закрывает (классы)                         |
 | ------ | --------------------- | --------------------------------------------------------- |
 | **S**  | Single Responsibility | God-классы с несвязанными обязанностями                   |
-| **O**  | Open/Closed           | Бесконечные правки `if/else` внутри `Car.start()`         |
+| **O**  | Open/Closed           | Бесконечные правки `if/else` внутри `applyDiscount()`     |
 | **L**  | Liskov Substitution   | Подклассы, ломающие код, рассчитанный на родительский тип |
 | **I**  | Interface Segregation | Жирные class API с неиспользуемыми методами               |
-| **D**  | Dependency Inversion  | Классы с `new GasEngine()` или `fetch` внутри             |
+| **D**  | Dependency Inversion  | Классы с `new EmailService()` или `fetch` внутри          |
 
-| Principle                     | Meaning                                                                                                                                                                                                                                                   | JS `class` example                                                                             |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| **S** — Single Responsibility | Класс делает **одну работу** и имеет **одну причину для изменения**. Правила запуска/остановки мотора — в `CarEngine`; правила отображения скорости и топлива — в `CarDashboard`. Смешать всё в `Car` — правка UI может сломать логику мотора и наоборот. | `CarEngine` запускает мотор; `CarDashboard` показывает скорость — не один `Car` на всё         |
-| **O** — Open/Closed           | Открыт для **расширения**, закрыт для **модификации**. Новый тип двигателя — новый класс (`ElectricMotor`), а не очередная ветка `if/else` в `Car.start()`. Существующий код, работающий с `Car`, не переписывается.                                      | Добавить `ElectricMotor` без правки `Car` — новый класс двигателя в `constructor`              |
-| **L** — Liskov Substitution   | Если код принимает `RoadCar`, **любой подкласс должен работать там же** без доп. проверок. Если у одного подтипа `drive()` бросает исключение — нужен `try/catch`, подставить безопасно нельзя.                                                           | `goToWork(new OutOfFuelCar())` падает, а `goToWork(new RoadCar())` работает — LSP нарушен      |
-| **I** — Interface Segregation | Клиенты не должны зависеть от методов, которые **никогда не вызывают**. Автосалон, который только показывает машины, не обязан реализовывать `repair()`, `paint()` или `tow()` только потому, что у «большого» `Garage` они есть.                         | `CarLot` показывает склад — не требовать `repair()` у read-only автосалона                     |
-| **D** — Dependency Inversion  | Высокоуровневый модуль (`Car`) зависит от **абстракции** (всё, у чего есть `start()`), а не от конкретного `GasEngine`. Двигатель передаётся в `constructor` — prod, тесты и будущие моторы меняются без переписывания `Car`.                             | `Car` принимает `engine` в `constructor` — в тестах подставить `GasEngine` или `ElectricMotor` |
+| Principle                     | Meaning                                                                                                                                                                                                                                  | JS `class` example                                                                             |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **S** — Single Responsibility | Класс или функция должны иметь **одну причину для изменения** — одну задачу. Валидация — в `UserValidator`; сохранение в БД — в `UserRepository`. Смешать validate + DB + HTML в одном `User` — правка UI может сломать логику хранения. | `UserValidator` валидирует; `UserRepository` сохраняет — не один `User` на всё                 |
+| **O** — Open/Closed           | Открыт для **расширения**, закрыт для **модификации**. Новый тип скидки — новый подкласс (`PercentDiscount`), а не очередная ветка `if/else` в `applyDiscount()`. Существующие вызывающие не переписываются.                             | Добавить `FixedDiscount` без правки `applyDiscount()` — новый подкласс `Discount`              |
+| **L** — Liskov Substitution   | Наследники должны **легко заменять родителей**, не ломая логику. Если `Ostrich` бросает в `fly()`, вызывающим нужен `try/catch` — подставить безопасно нельзя.                                                                           | `releaseBird(new Ostrich())` падает, а `releaseBird(new Sparrow())` работает — LSP нарушен     |
+| **I** — Interface Segregation | Клиенты не должны зависеть от методов, которые **не используют**. Read-only листер не обязан реализовывать `delete()` или `update()` только потому, что у «большого» `UserRepository` они есть.                                          | `UserReader` только читает — не требовать `delete()` у read-only класса                        |
+| **D** — Dependency Inversion  | Модули верхнего уровня (`OrderService`) не зависят от нижнего уровня — оба зависят от **абстракций**. Mailer передаётся в `constructor` — prod, тесты и будущие каналы меняются без переписывания заказов.                               | `OrderService` принимает `mailer` в `constructor` — подставить `EmailService` или `SmsService` |
 
 **How it works:**
 
 Каждая буква соответствует **Examples** ниже — ищите `// good` и `// bad`:
 
-1. **S** — один класс, одна задача (`CarEngine` vs `CarDashboard`).
-2. **O** — новый двигатель = новый класс (`ElectricMotor`), а не новый `if` внутри `Car.start()`.
-3. **L** — `goToWork(car)` должен работать с любой машиной; пустой бак → `{ status: "no fuel" }`, а не подкласс с throw.
-4. **I** — `CarLot` только показывает; `CarWorkshop` чинит — не наследуйте лишние методы.
-5. **D** — передавайте `engine` в `constructor` (`new Car(engine)`); не делайте `new GasEngine()` внутри `Car`.
+1. **S** — один класс, одна задача (`UserValidator` vs `UserRepository`).
+2. **O** — новая скидка = новый подкласс (`PercentDiscount`), а не новый `if` внутри `applyDiscount()`.
+3. **L** — `releaseBird(bird)` должен работать с любой птицей; нелетающим нужен другой контракт, а не подкласс с throw в `fly()`.
+4. **I** — `UserReader` только читает; `UserWriter` меняет — не наследуйте лишние методы.
+5. **D** — передавайте `mailer` в `constructor` (`new OrderService(mailer)`); не делайте `new EmailService()` внутри `OrderService`.
 
 **When to use:** Рефакторинг god-классов; plugin-style провайдеры; ответы на интервью; code review, когда растут цепочки `extends`.
 
@@ -410,126 +410,154 @@ const heavy = await import("./heavy.js"); // dynamic — returns Promise
 
 ```js
 // S — good: one job per class
-class CarEngine {
-  start() {
-    return "engine on";
-  }
-  stop() {
-    return "engine off";
+class UserValidator {
+  validate(data) {
+    return Boolean(data.email && data.name);
   }
 }
 
-class CarDashboard {
-  render({ speed, fuel }) {
-    return `${speed} km/h · ${fuel}% fuel`;
+class UserRepository {
+  save(user) {
+    return db.insert("users", user);
   }
 }
 
-// S — bad: god class mixes engine logic and UI
-// class Car {
-//   start() {
-//     return "engine on";
-//   }
-//   renderDashboard() {
-//     return `${this.speed} km/h · ${this.fuel}% fuel`;
-//   }
+// S — bad: god class mixes validate, DB, and HTML
+// class User {
+//   validate(data) { return Boolean(data.email); }
+//   save(user) { return db.insert("users", user); }
+//   toHtml(user) { return `<p>${user.name}</p>`; }
 // }
 
-// O + D — good: new engine type = new class + inject (no edit to Car)
-class GasEngine {
-  start() {
-    return "gas engine started";
+// O — good: new discount type = new subclass (no edit to applyDiscount)
+class Discount {
+  apply(total) {
+    throw new Error("Subclass must implement apply()");
   }
 }
 
-class ElectricMotor {
-  start() {
-    return "motor started silently";
+class PercentDiscount extends Discount {
+  constructor(rate) {
+    super();
+    this.rate = rate;
+  }
+  apply(total) {
+    return total * (1 - this.rate);
   }
 }
 
-class Car {
-  #engine;
-  constructor(engine) {
-    this.#engine = engine; // DIP — inject engine abstraction
+class FixedDiscount extends Discount {
+  constructor(amount) {
+    super();
+    this.amount = amount;
   }
-  start() {
-    return this.#engine.start();
+  apply(total) {
+    return Math.max(0, total - this.amount);
   }
 }
 
-const sedan = new Car(new GasEngine());
-const ev = new Car(new ElectricMotor());
+function applyDiscount(total, discount) {
+  return discount.apply(total);
+}
 
-// O + D — bad: edit Car every time a new engine appears
-// class Car {
-//   start() {
-//     if (this.type === "gas") return "gas engine started";
-//     if (this.type === "electric") return "motor started silently";
-//   }
+// O — bad: edit applyDiscount for every new discount type
+// function applyDiscount(total, type, value) {
+//   if (type === "percent") return total * (1 - value);
+//   if (type === "fixed") return Math.max(0, total - value);
 // }
 
-// I — good: showroom lists; workshop repairs — separate APIs
-class CarLot {
-  listAvailable() {
-    return ["sedan", "suv"];
+// I — good: reader lists; writer mutates — separate APIs
+class UserReader {
+  findAll() {
+    return db.query("SELECT * FROM users");
   }
 }
 
-class CarWorkshop {
-  repair(carId) {
-    return `repaired ${carId}`;
+class UserWriter {
+  update(id, data) {
+    return db.query("UPDATE users SET ? WHERE id = ?", [data, id]);
   }
 }
 
-// I — bad: read-only lot forced to stub methods it never uses
-// class Garage {
-//   listAvailable() {
-//     return ["sedan", "suv"];
-//   }
-//   repair() {
-//     throw new Error("We don't repair here");
+// I — bad: read-only reader forced to stub methods it never uses
+// class UserRepository {
+//   findAll() { return db.query("SELECT * FROM users"); }
+//   update() { throw new Error("Read-only"); }
+// }
+// class UserReader extends UserRepository {}
+
+// L — one caller; every "bird" must work here
+function releaseBird(bird) {
+  return bird.fly(); // expects a string — not a crash
+}
+
+// L — good: fly() works for flying birds
+class Sparrow {
+  fly() {
+    return "flying";
+  }
+}
+releaseBird(new Sparrow()); // "flying"
+
+// L — bad: still a Bird, but fly() throws — releaseBird breaks
+class Bird {
+  fly() {
+    return "flying";
+  }
+}
+class Ostrich extends Bird {
+  fly() {
+    throw new Error("Cannot fly");
+  }
+}
+// releaseBird(new Ostrich()); // crash — caller needs try/catch
+
+// L — good fix: separate contract for ground birds (composition, not broken extends)
+class Ostrich {
+  run() {
+    return "running";
+  }
+}
+
+// D — good: inject mailer — swap EmailService or SmsService
+class EmailService {
+  send(userId, message) {
+    return `email to ${userId}: ${message}`;
+  }
+}
+
+class SmsService {
+  send(userId, message) {
+    return `sms to ${userId}: ${message}`;
+  }
+}
+
+class OrderService {
+  #mailer;
+  constructor(mailer) {
+    this.#mailer = mailer;
+  }
+  place(order) {
+    this.#mailer.send(order.userId, `Order ${order.id} placed`);
+    return { ok: true, orderId: order.id };
+  }
+}
+
+new OrderService(new EmailService());
+new OrderService(new SmsService());
+
+// D — bad: hardcoded concrete mailer inside order logic
+// class OrderService {
+//   place(order) {
+//     const mailer = new EmailService();
+//     mailer.send(order.userId, `Order ${order.id} placed`);
 //   }
 // }
-// class CarLot extends Garage {}
-
-// L — one caller; every "car" must work here
-function goToWork(car) {
-  return car.drive(10); // expects { km, status } — not a crash
-}
-
-// L — good: drive() always returns a result
-class RoadCar {
-  drive(km) {
-    return { km, status: "ok" };
-  }
-}
-goToWork(new RoadCar()); // { km: 10, status: "ok" }
-
-// L — bad: still a RoadCar, but drive() throws — goToWork breaks
-class OutOfFuelCar extends RoadCar {
-  drive(km) {
-    throw new Error("No fuel");
-  }
-}
-// goToWork(new OutOfFuelCar()); // crash — caller needs try/catch
-
-// L — good fix: no broken subclass — return status for empty tank
-class Car {
-  constructor(hasFuel) {
-    this.hasFuel = hasFuel;
-  }
-  drive(km) {
-    if (!this.hasFuel) return { km, status: "no fuel" };
-    return { km, status: "ok" };
-  }
-}
-goToWork(new Car(false)); // { km: 10, status: "no fuel" } — same goToWork, no crash
 ```
 
 **Thoughts:** SOLID — **ориентир**, не закон: для 10-строчного скрипта пять классов не нужны. Применять, когда больно менять код. Функции и модули: [SOLID in Functions](#solid-in-functions). Синтаксис классов: [Classes & Objects](./3_js_oop.md#classes-full). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript). Полный OOP-справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Functions](#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
+**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Functions](#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
 </details>
 
@@ -538,23 +566,23 @@ goToWork(new Car(false)); // { km: 10, status: "no fuel" } — same goToWork, no
 
 ### SOLID in Functions
 
-**Definition:** Те же пять принципов **SOLID** относятся к **обычным функциям**, **замыканиям** и **модулям ESM** — тому стилю, в котором большинство JavaScript пишут каждый день. Граница модуля или экспортируемая функция может быть единицей с одной задачей, расширяемой новыми функциями и тестируемой, когда зависимости передают снаружи. Маппинг на классы: [SOLID in Classes](#solid-in-classes).
+**Definition:** Те же пять принципов **SOLID** относятся к **обычным функциям**, **замыканиям** и **модулям ESM** — тому стилю, в котором большинство JavaScript пишут каждый день. Они помогают избежать **«спагетти-кода»** в function-first коде. Граница модуля или экспортируемая функция может быть единицей с одной задачей, расширяемой новыми функциями и тестируемой, когда зависимости передают снаружи. В чистом JS нет встроенных `interface` — **I** и **D** адаптируются через **композицию** (object spread, мелкие mixin-функции) и **утиную типизацию**. Маппинг на классы: [SOLID in Classes](#solid-in-classes).
 
-| Letter | Principle             | Какую проблему закрывает (функции / модули)                  |
-| ------ | --------------------- | ------------------------------------------------------------ |
-| **S**  | Single Responsibility | God-модули, смешивающие parse, format и I/O                  |
-| **O**  | Open/Closed           | Рост одной функции очередной веткой `if (paymentType)`       |
-| **L**  | Liskov Substitution   | Колбэки, которые бросают или возвращают разную форму         |
-| **I**  | Interface Segregation | Barrel-файлы с десятками хелперов, которые не импортируют    |
-| **D**  | Dependency Inversion  | Доменные функции с прямым вызовом `fetch` или `localStorage` |
+| Letter | Principle             | Какую проблему закрывает (функции / модули)                                |
+| ------ | --------------------- | -------------------------------------------------------------------------- |
+| **S**  | Single Responsibility | God-модули, смешивающие parse, format и I/O                                |
+| **O**  | Open/Closed           | Рост одной функции очередной веткой `if (paymentType)`                     |
+| **L**  | Liskov Substitution   | Колбэки, которые бросают или возвращают разную форму                       |
+| **I**  | Interface Segregation | Жирные объекты конфигурации и barrel-файлы с лишними экспортами            |
+| **D**  | Dependency Inversion  | Доменные функции с прямым `fetch`, `localStorage` или `new EmailService()` |
 
-| Principle                     | Meaning                                                                                                                                                                                                                       | JS function example                                                           |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| **S** — Single Responsibility | Одна функция — **одна причина для изменения**. Парсинг JSON — в `parseUser()`; форматирование для UI — в `formatUserLabel()` — не одна `handleUser()` на всё.                                                                 | `parseUser()` vs `formatUserLabel()` — не один `handleUser()` на всё          |
-| **O** — Open/Closed           | Открыт для **расширения**, закрыт для **модификации**. Новый способ оплаты — новая strategy-функция, а не правка `processOrder()` очередной веткой.                                                                           | `processOrder(order, payWithCard)` — добавить `payWithWallet` без правки ядра |
-| **L** — Liskov Substitution   | Любой колбэк с ожидаемым контрактом должен **вести себя как остальные**. Если `normalizeUser()` обычно возвращает `{ id, name }`, ветка со throw или строкой ломает всех вызывающих — тот же LSP без `extends`.               | Сломанный `normalize` ломает вызывающих `mapUsers()`                          |
-| **I** — Interface Segregation | Экспортировать **узкие поверхности**. Кто только листает пользователей, не должен импортировать модуль с delete, audit и email, которые не вызывают.                                                                          | `listUsers.js` + `updateUser.js` — не один `userUtils.js` с 20 экспортами     |
-| **D** — Dependency Inversion  | Высокоуровневые функции зависят от **инжектируемых коллабораторов** (HTTP-клиент, storage, clock), а не от глобалов. Передавайте `http` аргументом или через factory — тесты подставят фейки без переписывания бизнес-логики. | `loadProfile(userId, http)` — фейковый `http` в тестах                        |
+| Principle                     | Meaning                                                                                                                                                                                                            | JS function example                                                           |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| **S** — Single Responsibility | Одна функция — **одна причина для изменения**. Парсинг JSON — в `parseUser()`; форматирование для UI — в `formatUserLabel()` — не одна `handleUser()` на всё.                                                      | `parseUser()` vs `formatUserLabel()` — не один `handleUser()` на всё          |
+| **O** — Open/Closed           | Открыт для **расширения**, закрыт для **модификации**. Новый способ оплаты — новая strategy-функция, а не правка `processOrder()` очередной веткой.                                                                | `processOrder(order, payWithCard)` — добавить `payWithWallet` без правки ядра |
+| **L** — Liskov Substitution   | Любой колбэк с ожидаемым контрактом должен **вести себя как остальные**. Если `normalizeUser()` обычно возвращает `{ id, name }`, ветка со throw или строкой ломает всех вызывающих — тот же LSP без `extends`.    | Сломанный `normalize` ломает вызывающих `mapUsers()`                          |
+| **I** — Interface Segregation | Делите **крупные объекты конфигураций** на роль-специфичные формы. Предпочитайте **композицию** (mixin-функции) наследованию неиспользуемых методов. Экспортируйте **узкие поверхности** — не один barrel со всем. | `canRead(store)` для list-only — не fat repo с заглушками `write()`           |
+| **D** — Dependency Inversion  | Высокоуровневые функции зависят от **инжектируемых коллабораторов** (HTTP, mailer, storage), а не от глобалов. Передавайте `http` или `notify` аргументом — тесты подставят фейки без переписывания бизнес-логики. | `placeOrder(order, notify)` — подставить `emailService` или `smsService`      |
 
 **How it works:**
 
@@ -563,8 +591,8 @@ goToWork(new Car(false)); // { km: 10, status: "no fuel" } — same goToWork, no
 1. **S** — `parseUser()` и `formatUserLabel()` отдельно; не один `handleUser()`.
 2. **O** — новая оплата = новая функция (`payWithWallet`), а не новый `if` в `processOrder()`.
 3. **L** — колбэки в `mapUsers()` всегда возвращают одну форму; не строку вместо объекта.
-4. **I** — узкие экспорты (`listUsers.js`), а не один `userUtils.js` со всем.
-5. **D** — передавайте `http` в `loadProfile()`; не вызывайте `fetch` внутри функции.
+4. **I** — собирайте `canRead(store)` для list-only; делите fat configs; не один `userUtils.js` со всем.
+5. **D** — передавайте `notify` в `placeOrder()` и `http` в `loadProfile()`; не хардкодьте `EmailService` или `fetch` внутри.
 
 **When to use:** Utility-модули, Node-сервисы, data-слои, рефакторинг god-файлов; большинство повседневного JS — functions-first.
 
@@ -613,6 +641,44 @@ function mapUsers(users, normalize = (u) => ({ id: u.id, name: u.name })) {
 // L — bad: callback sometimes returns a string — breaks mapUsers callers
 // mapUsers(users, (u) => (u.active ? { id: u.id, name: u.name } : "skipped"));
 
+// I — good: compose behavior from small mixin functions (no fat inheritance)
+const canRead = (base) => ({
+  ...base,
+  read: (id) => base.store.get(id),
+});
+const canWrite = (base) => ({
+  ...base,
+  write: (id, data) => base.store.set(id, data),
+});
+
+const store = {
+  data: new Map(),
+  get: (id) => store.data.get(id),
+  set: (id, v) => store.data.set(id, v),
+};
+const reader = canRead({ store }); // list-only consumer — no write/delete stubs
+
+// I — bad: fat config forces unused keys on every consumer
+// function initApp({ readUser, writeUser, deleteUser, auditUser, emailUser }) { ... }
+// listPageOnlyNeeds({ readUser }); // still depends on write/delete/email shape
+
+// D — good: inject notify — swap email or SMS in tests
+function placeOrder(order, notify) {
+  notify.send(order.userId, `Order ${order.id} placed`);
+  return { ok: true, orderId: order.id };
+}
+
+const emailService = { send: (userId, msg) => `email: ${msg}` };
+const smsService = { send: (userId, msg) => `sms: ${msg}` };
+placeOrder({ id: "42", userId: "u1" }, emailService);
+placeOrder({ id: "43", userId: "u2" }, smsService);
+
+// D — bad: hardcoded EmailService inside domain function
+// function placeOrder(order) {
+//   const mailer = { send: (id, msg) => console.log(`email: ${msg}`) };
+//   mailer.send(order.userId, `Order ${order.id} placed`);
+// }
+
 // D — good: inject http — swap fake in tests
 async function loadProfile(userId, http) {
   return http.get(`/api/users/${userId}`);
@@ -628,6 +694,6 @@ async function loadProfile(userId, http) {
 
 **Thoughts:** Большинство JS — функции и модули, не классы; для повседневного кода начинайте здесь. `class` / `extends`: [SOLID in Classes](#solid-in-classes). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Classes](#solid-in-classes) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
+**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Classes](#solid-in-classes) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
 </details>

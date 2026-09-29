@@ -76,11 +76,11 @@ const dog = Object.create(animal);
 dog.speak = () => "bark";
 ```
 
-**Thoughts:** `class` methods live on `prototype`, not instance. `instanceof` walks the prototype chain.
+**Thoughts:** `class` methods live on `prototype`, not instance. `instanceof` walks the prototype chain. Full comparison table: [OOP in JavaScript](#oop-in-javascript).
 
 **Sources:**
 
-[3_js_oop.md](./3_js_oop.md)
+[OOP in JavaScript](#oop-in-javascript) · [MDN — Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain)
 
 ---
 
@@ -91,117 +91,171 @@ dog.speak = () => "bark";
 
 ### OOP in JavaScript
 
-**Definition:** JavaScript is **prototype-based**: objects delegate to other objects via `[[Prototype]]`. `class` is syntactic sugar over constructor functions and the prototype chain — not a separate OOP model. JS supports OOP **patterns** (encapsulation, inheritance, polymorphism, abstraction) but has **no native interfaces** and uses **duck typing** instead of nominal types.
+**Definition:** JavaScript is **prototype-based** — objects delegate via `[[Prototype]]`. OOP rests on four concepts: encapsulation, inheritance, polymorphism, abstraction. `class` (ES6+) is **syntactic sugar** over constructor functions and the prototype chain; **`extends`** and **`super()`** wire up inheritance; private fields use `#`.
 
 **How it works:**
 
-| Pillar            | In JavaScript                                                 | Mechanism                                                 |
-| ----------------- | ------------------------------------------------------------- | --------------------------------------------------------- |
-| **Encapsulation** | Hide state; change it only through methods that enforce rules | `#` private fields, closures, ES modules                  |
-| **Abstraction**   | Small stable public API; hide storage and algorithms          | Class methods, factory functions, modules                 |
-| **Inheritance**   | Reuse behavior along one chain                                | `[[Prototype]]`, `class extends` (single parent only)     |
-| **Polymorphism**  | Same method call, different behavior per object               | Duck typing — shared method name/shape, not declared type |
+#### 1. Modern approach: classes (ES6+)
 
-- `class` desugars to a constructor + methods on `.prototype`; `extends` links subclass `.prototype` to superclass `.prototype`.
-- No `interface` / `implements` at runtime — if an object has `.area()`, callers treat it as that shape.
-- Prefer **composition** (`Object.assign`, mixins, nested objects) over deep `extends` trees — JS allows only one `extends`.
-- Encapsulation without `#`: closures (module pattern) or convention (`_field`).
+A **class** is a blueprint for creating objects. The `constructor` initializes properties; `new` creates an instance.
+
+```js
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  speak() {
+    console.log(`${this.name} makes a sound.`);
+  }
+}
+
+const dog = new Animal("Rex");
+dog.speak(); // Rex makes a sound.
+```
+
+#### 2. Under the hood: prototypes
+
+Before classes, developers used **constructor functions** and `.prototype`. This mechanism still powers JS today. When you call a method, the engine looks on the object first, then walks the **prototype chain**.
+
+The code below does the same as `class Animal` above:
+
+```js
+function AnimalOld(name) {
+  this.name = name;
+}
+
+AnimalOld.prototype.speak = function () {
+  console.log(`${this.name} makes a sound.`);
+};
+
+const cat = new AnimalOld("Fluffy");
+cat.speak(); // Fluffy makes a sound.
+```
+
+Methods live on the prototype so they are **not duplicated** in every instance.
+
+#### 3. Four pillars of OOP in JavaScript
+
+OOP is based on four key concepts. Here is how they are implemented in JS:
+
+**Encapsulation**
+
+Hiding an object's internal logic and data from direct external access. In modern JS, the `#` prefix creates fully private properties and methods.
+
+```js
+class BankAccount {
+  #balance = 0; // Private property — not accessible outside the class
+
+  constructor(owner) {
+    this.owner = owner;
+  }
+
+  deposit(amount) {
+    if (amount > 0) this.#balance += amount;
+  }
+
+  getBalance() {
+    return this.#balance; // Data access only through a controlled method
+  }
+}
+
+const account = new BankAccount("Ivan");
+account.deposit(100);
+console.log(account.getBalance()); // 100
+// console.log(account.#balance); // Error! Property is private.
+```
+
+**Inheritance**
+
+Lets you create a child class from a parent class to avoid duplicating code. Implemented with `extends` and `super()`.
+
+```js
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name); // Call the parent Animal constructor
+    this.breed = breed;
+  }
+
+  // Override the parent method
+  speak() {
+    console.log(`${this.name} (breed: ${this.breed}) barks: Woof!`);
+  }
+}
+
+const lab = new Dog("Boss", "Labrador");
+lab.speak(); // Output: Boss (breed: Labrador) barks: Woof!
+```
+
+**Polymorphism**
+
+Objects with different structure can use methods with the same name that behave differently depending on context.
+
+```js
+class Cat extends Animal {
+  speak() {
+    console.log(`${this.name} meows: Meow!`);
+  }
+}
+
+// Array of different animals
+const animals = [new Dog("Rex", "Shepherd"), new Cat("Fluffy")];
+
+// The same speak() method behaves differently for each object
+animals.forEach((animal) => animal.speak());
+// Output:
+// Rex (breed: Shepherd) barks: Woof!
+// Fluffy meows: Meow!
+```
+
+**Abstraction**
+
+Highlighting what matters and hiding implementation details. We create an interaction interface without forcing the user to understand complex internal mechanisms.
+
+```js
+const video = document.querySelector("video");
+video.play(); // no decode/buffer details — just use the API
+```
+
+#### 4. Classes vs prototypes
+
+| Criterion      | Classes (`class`)                           | Prototypes (`prototype`)                               |
+| -------------- | ------------------------------------------- | ------------------------------------------------------ |
+| Syntax         | Clean, declarative                          | Split: constructor separately, methods on `.prototype` |
+| Privacy        | `#` private fields                          | Closures or `_field` convention                        |
+| Hoisting       | Not hoisted — cannot use before declaration | Constructor functions hoist (unlike `class`)           |
+| Under the hood | Same prototype chain                        | Direct work with prototype objects                     |
+
+Full comparison: [Class vs prototype inheritance](#class-vs-prototype-inheritance).
+
+#### 5. `extends`, `super()`, and the prototype chain
+
+| Feature              | Role                                                                                                 |
+| -------------------- | ---------------------------------------------------------------------------------------------------- |
+| **`extends`**        | Child class inherits from parent; **one parent only**. Links `Child.prototype` → `Parent.prototype`. |
+| **`super()`**        | In child `constructor` — calls parent constructor; **must run before using `this`**.                 |
+| **`super.method()`** | Inside an overridden method — calls the parent implementation.                                       |
+| **`static`**         | Methods on the class itself (not instances); subclasses inherit static members.                      |
+| **`instanceof`**     | Walks `[[Prototype]]` — `dog instanceof Dog` is `true` if `Dog.prototype` is in the chain.           |
+
+- `class` desugars to a constructor + methods on `.prototype` — inheritance is a **prototype chain**, not copying fields.
+- Only **single inheritance** — prefer **composition** (`Object.assign`, mixins) over deep `extends` trees.
+- Encapsulation without `#`: closures (module pattern), ES modules, or `_field` convention.
+
+Pillar essays (when to use, composition vs inheritance, SOLID): [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Encapsulation](./7_special_engineering.md#encapsulation) · [Inheritance](./7_special_engineering.md#inheritance) · [Polymorphism](./7_special_engineering.md#polymorphism) · [Abstraction](./7_special_engineering.md#abstraction).
 
 **When to use:** Domain models with behavior; libraries exposing instances. Prefer plain objects + functions for data-only DTOs and pipelines.
 
 **Pluses and minuses:**
 
-| +                                                          | −                                                           |
-| ---------------------------------------------------------- | ----------------------------------------------------------- |
-| `class` reads like other OOP languages                     | No compile-time contracts — shape errors surface at runtime |
-| Prototypes are flexible for libraries and delegation       | Deep inheritance hierarchies become fragile                 |
-| Closures + modules give real encapsulation without classes | Duck typing can hide missing methods until a call fails     |
+| +                                                          | −                                                          |
+| ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `class` / `extends` / `super()` read familiar              | Must call `super()` before `this` in child constructor     |
+| Prototypes are flexible for libraries and delegation       | Deep inheritance hierarchies become fragile                |
+| Closures + modules give real encapsulation without classes | Only single `extends` — composition for multiple behaviors |
 
-**Examples:**
+**Thoughts:** Good OOP in JS means matching entities to the domain, not deep `extends` trees. This page is the **canonical JS guide** (syntax + pillar examples); system-design context lives in [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop).
 
-**Encapsulation** — state changes only through methods; `#` blocks direct field access:
-
-```js
-class BankAccount {
-  #balance = 0;
-  deposit(amount) {
-    if (amount <= 0) throw new Error("amount must be positive");
-    this.#balance += amount;
-  }
-  withdraw(amount) {
-    if (amount > this.#balance) throw new Error("insufficient funds");
-    this.#balance -= amount;
-  }
-  getBalance() {
-    return this.#balance;
-  }
-}
-// account.#balance → SyntaxError
-```
-
-**Abstraction** — small public API; hide transport details behind a class method:
-
-```js
-class PaymentGateway {
-  async charge(amount) {
-    const res = await fetch("/api/charge", {
-      method: "POST",
-      body: JSON.stringify({ amount }),
-    });
-    return res.json();
-  }
-}
-
-async function checkout(cart, gateway) {
-  return gateway.charge(cart.total); // no Stripe URL or auth headers here
-}
-```
-
-**Inheritance** — parent holds shared code; child overrides only what differs:
-
-```js
-class Employee {
-  constructor(name) {
-    this.name = name;
-  }
-  getRole() {
-    return "employee";
-  }
-}
-
-class Manager extends Employee {
-  getRole() {
-    return "manager";
-  }
-}
-
-const staff = [new Employee("Ann"), new Manager("Bob")];
-staff.map((e) => e.getRole()); // ['employee', 'manager']
-```
-
-**Polymorphism** — same `send()` call; duck typing — no `interface`, just shared method shape:
-
-```js
-class EmailAlert {
-  send(msg) {
-    console.log("email:", msg);
-  }
-}
-
-class SmsAlert {
-  send(msg) {
-    console.log("sms:", msg);
-  }
-}
-
-function notify(alert, msg) {
-  alert.send(msg); // works on any object with .send()
-}
-
-[new EmailAlert(), new SmsAlert()].forEach((a) => notify(a, "Order shipped"));
-```
-
-**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [javascript.info — Prototypal inheritance](https://javascript.info/prototype-inheritance) · [Doka — OOP](https://doka.guide/tools/oop/) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript)
+**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [MDN — Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain) · [javascript.info — Prototypal inheritance](https://javascript.info/prototype-inheritance) · [Doka — OOP](https://doka.guide/tools/oop/) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript)
 
 ---
 

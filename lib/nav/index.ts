@@ -20,6 +20,7 @@ export {
 } from "./search";
 export { collectGroupSearchHits } from "./searchSidebarHits";
 export type { SearchSidebarHit } from "./searchSidebarHits";
+export { navSubjectClusters } from "./subjectClusters";
 export type {
   ChromeCopy,
   Crumb,
@@ -29,6 +30,7 @@ export type {
   NavConcept,
   NavEntry,
   NavGroup,
+  NavSection,
   NavSubject,
   NavTopic,
   SearchMode,

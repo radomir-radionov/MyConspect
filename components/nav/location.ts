@@ -7,7 +7,12 @@ import {
   type NavGroup,
   type NavTopic,
 } from "@/lib/nav";
-import { homeHref, localeFromPathname, stripLocalePrefix } from "@/lib/i18n/paths";
+import { navSubjectClusters } from "@/lib/nav/subjectClusters";
+import {
+  homeHref,
+  localeFromPathname,
+  stripLocalePrefix,
+} from "@/lib/i18n/paths";
 import { hashIdFrom } from "./hash";
 
 export type NavLocation = {
@@ -36,7 +41,10 @@ export function locationForPath(
   const clusterId = hashIdFrom(hash);
   let hubSubjectHref: string | null = null;
   for (const group of groups) {
-    if (group.leafTopic && (pathname === group.href || pathname === group.leafTopic.href)) {
+    if (
+      group.leafTopic &&
+      (pathname === group.href || pathname === group.leafTopic.href)
+    ) {
       return {
         topicHref: group.leafTopic.href,
         subjectHref: null,
@@ -60,7 +68,9 @@ export function locationForPath(
               pathname === entry.subjectHref ||
               pathname.startsWith(`${entry.subjectHref}/`);
             if (onSubject) {
-              const onThisTopic = entry.cluster.topics.some((topic) => topic.href === pathname);
+              const onThisTopic = entry.cluster.topics.some(
+                (topic) => topic.href === pathname,
+              );
               const aliasTopic =
                 !onThisTopic && pathname === entry.subjectHref
                   ? aliasTopicForCluster(entry.cluster)
@@ -85,15 +95,21 @@ export function locationForPath(
           break;
         case "subject":
           if (entry.subject.href === pathname) {
-            const cluster = entry.subject.clusters.find((item) => item.id === clusterId);
-            const aliasTopic = cluster ? aliasTopicForCluster(cluster) : undefined;
+            const cluster = navSubjectClusters(entry.subject).find(
+              (item) => item.id === clusterId,
+            );
+            const aliasTopic = cluster
+              ? aliasTopicForCluster(cluster)
+              : undefined;
             return {
               topicHref: aliasTopic?.href ?? null,
               subjectHref: entry.subject.href,
-              clusterKey: cluster ? clusterKey(entry.subject.href, cluster.id) : null,
+              clusterKey: cluster
+                ? clusterKey(entry.subject.href, cluster.id)
+                : null,
             };
           }
-          for (const cluster of entry.subject.clusters) {
+          for (const cluster of navSubjectClusters(entry.subject)) {
             if (cluster.topics.some((topic) => topic.href === pathname)) {
               return {
                 topicHref: pathname,
@@ -120,7 +136,10 @@ export function locationForPath(
   return { topicHref: null, subjectHref: null, clusterKey: null };
 }
 
-export function hrefInHandbook(groups: readonly NavGroup[], href: string): boolean {
+export function hrefInHandbook(
+  groups: readonly NavGroup[],
+  href: string,
+): boolean {
   const { pathname } = splitHref(href);
   const { path } = stripLocalePrefix(pathname);
   if (path === "/" || path === INSTRUCTIONS_HREF) {
@@ -142,7 +161,7 @@ export function hrefInHandbook(groups: readonly NavGroup[], href: string): boole
             return true;
           }
           if (
-            entry.subject.clusters.some((cluster) =>
+            navSubjectClusters(entry.subject).some((cluster) =>
               cluster.topics.some((topic) => topic.href === pathname),
             )
           ) {
@@ -190,15 +209,26 @@ export function crumbsForPath(
       continue;
     }
 
-    if (group.leafTopic && (pathname === group.href || pathname === group.leafTopic.href)) {
-      return withConcept(home, [{ label: group.title, href: group.href }], group.leafTopic, hashId);
+    if (
+      group.leafTopic &&
+      (pathname === group.href || pathname === group.leafTopic.href)
+    ) {
+      return withConcept(
+        home,
+        [{ label: group.title, href: group.href }],
+        group.leafTopic,
+        hashId,
+      );
     }
 
     if (pathname === group.href) {
       for (const entry of group.entries) {
         switch (entry.kind) {
           case "cluster":
-            if (hashId === entry.cluster.id && !isTopicAliasCluster(entry.cluster)) {
+            if (
+              hashId === entry.cluster.id &&
+              !isTopicAliasCluster(entry.cluster)
+            ) {
               return [
                 home,
                 { label: group.title, href: group.href },
@@ -208,9 +238,15 @@ export function crumbsForPath(
             break;
           case "subject": {
             const cluster = hashId
-              ? entry.subject.clusters.find((item) => item.id === hashId)
+              ? navSubjectClusters(entry.subject).find(
+                  (item) => item.id === hashId,
+                )
               : undefined;
-            if (cluster && pathname === entry.subject.href && !isTopicAliasCluster(cluster)) {
+            if (
+              cluster &&
+              pathname === entry.subject.href &&
+              !isTopicAliasCluster(cluster)
+            ) {
               return [
                 home,
                 { label: group.title, href: group.href },
@@ -251,7 +287,9 @@ export function crumbsForPath(
         case "subject": {
           if (pathname === entry.subject.href) {
             const cluster = hashId
-              ? entry.subject.clusters.find((item) => item.id === hashId)
+              ? navSubjectClusters(entry.subject).find(
+                  (item) => item.id === hashId,
+                )
               : undefined;
             if (cluster && !isTopicAliasCluster(cluster)) {
               return [
@@ -261,9 +299,13 @@ export function crumbsForPath(
                 { label: cluster.title },
               ];
             }
-            return [home, { label: group.title, href: group.href }, { label: entry.subject.title }];
+            return [
+              home,
+              { label: group.title, href: group.href },
+              { label: entry.subject.title },
+            ];
           }
-          for (const cluster of entry.subject.clusters) {
+          for (const cluster of navSubjectClusters(entry.subject)) {
             const topic = cluster.topics.find((item) => item.href === pathname);
             if (!topic) {
               continue;
@@ -286,7 +328,10 @@ export function crumbsForPath(
         }
         case "cluster": {
           if (pathname === entry.subjectHref) {
-            if (hashId === entry.cluster.id && !isTopicAliasCluster(entry.cluster)) {
+            if (
+              hashId === entry.cluster.id &&
+              !isTopicAliasCluster(entry.cluster)
+            ) {
               return [
                 home,
                 { label: group.title, href: entry.subjectHref },
@@ -296,7 +341,9 @@ export function crumbsForPath(
             hubTitle = group.title;
             break;
           }
-          const topic = entry.cluster.topics.find((item) => item.href === pathname);
+          const topic = entry.cluster.topics.find(
+            (item) => item.href === pathname,
+          );
           if (!topic) {
             break;
           }
@@ -361,7 +408,10 @@ function withConcept(
   return [...crumbs.slice(0, -1), { label: last.label }];
 }
 
-function conceptById(concepts: readonly NavConcept[], id: string): NavConcept | undefined {
+function conceptById(
+  concepts: readonly NavConcept[],
+  id: string,
+): NavConcept | undefined {
   if (!id) {
     return undefined;
   }

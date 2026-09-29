@@ -25,7 +25,13 @@ import {
   replacePathHash,
   setHashOnPath,
 } from "./hash";
+import { localeFromPathname } from "@/lib/i18n/paths";
+import {
+  subjectCautionLabel,
+  subjectCautionTooltip,
+} from "@/lib/nav/subjectCaution";
 import { clusterKey, isActiveHref } from "./location";
+import { NavCautionBadge } from "./NavCautionBadge";
 import {
   closeNavSoon,
   NAV_ROW_GAP,
@@ -581,6 +587,8 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
   const subjectOpen = searching || openSubjectHref === subject.href;
   const isHitSubject = first?.pathname === subject.href && first.hash === "";
   const onPath = !searching && openSubjectHref === subject.href;
+  const locale = localeFromPathname(pathname);
+  const cautionTip = subjectCautionTooltip(locale, subject.slug);
 
   return (
     <li className="contents">
@@ -608,18 +616,43 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
         className={`${rowClass(isHitSubject || active || subjectOpen, onPath)} ${NAV_ROW_GAP}`}
       >
         <RowTitle text={subject.title} query={query} />
+        {cautionTip ? (
+          <NavCautionBadge
+            label={subjectCautionLabel(locale)}
+            tip={cautionTip}
+          />
+        ) : null}
         <NavChevron open={subjectOpen} large />
       </Link>
       <NavFold open={subjectOpen} instant={searching || !subjectOpen} unbox>
         <ul className="contents">
           <NavGuide level="subject" />
-          {subject.clusters.map((cluster) => (
-            <ClusterRow
-              key={cluster.id}
-              subjectHref={subject.href}
-              cluster={cluster}
-            />
-          ))}
+          {subject.sections?.length
+            ? subject.sections.map((section) => (
+                <li key={section.id} className="contents">
+                  <div
+                    className={`px-2 pt-2 pb-0.5 text-[10px] font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400 ${NAV_ROW_GAP}`}
+                  >
+                    <HighlightedText text={section.title} query={query} />
+                  </div>
+                  <ul className="contents">
+                    {section.clusters.map((cluster) => (
+                      <ClusterRow
+                        key={cluster.id}
+                        subjectHref={subject.href}
+                        cluster={cluster}
+                      />
+                    ))}
+                  </ul>
+                </li>
+              ))
+            : subject.clusters.map((cluster) => (
+                <ClusterRow
+                  key={cluster.id}
+                  subjectHref={subject.href}
+                  cluster={cluster}
+                />
+              ))}
         </ul>
       </NavFold>
     </li>

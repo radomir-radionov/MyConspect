@@ -7,6 +7,7 @@ import {
   getTrack,
   isInterviewTopic,
   subjectClusterCards,
+  subjectSectionClusterCards,
   topicRouteParams,
 } from "@/lib/catalog";
 import { catalogBlurb } from "@/lib/i18n/catalog";
@@ -48,6 +49,22 @@ function localizeClusterSections(
       blurb: catalogBlurb(locale, section.cluster.blurb),
     },
     items: localizeCards(locale, section.items),
+  }));
+}
+
+function localizeGroupedClusterSections(
+  locale: Locale,
+  sections: ReturnType<typeof subjectSectionClusterCards>,
+) {
+  return sections.map((section) => ({
+    section: section.section,
+    clusters: section.clusters.map((entry) => ({
+      cluster: {
+        ...entry.cluster,
+        blurb: catalogBlurb(locale, entry.cluster.blurb),
+      },
+      items: localizeCards(locale, entry.items),
+    })),
   }));
 }
 
@@ -97,7 +114,15 @@ export default async function TopicPage({
   const track = getTrack(trackId);
   const subject = getSubject(trackId, slug);
   if (subject && track) {
-    const sections = localizeClusterSections(locale, subjectClusterCards(subject));
+    const groupedSections = subject.sections?.length
+      ? localizeGroupedClusterSections(
+          locale,
+          subjectSectionClusterCards(subject),
+        )
+      : undefined;
+    const sections = groupedSections
+      ? undefined
+      : localizeClusterSections(locale, subjectClusterCards(subject));
     return (
       <main className="w-full max-w-5xl px-4 pt-5 pb-10 sm:px-6">
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -106,7 +131,10 @@ export default async function TopicPage({
         <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-400">
           {catalogBlurb(locale, subject.blurb)}
         </p>
-        <ClusterCardSections sections={sections} />
+        <ClusterCardSections
+          sections={sections}
+          groupedSections={groupedSections}
+        />
       </main>
     );
   }

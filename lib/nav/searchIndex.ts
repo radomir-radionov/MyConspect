@@ -1,3 +1,4 @@
+import { navSubjectClusters } from "./subjectClusters";
 import type {
   NavCluster,
   NavConcept,
@@ -38,7 +39,9 @@ export type HandbookSearchIndex = {
 
 const indexCache = new WeakMap<readonly NavGroup[], HandbookSearchIndex>();
 
-export function searchIndexFor(groups: readonly NavGroup[]): HandbookSearchIndex {
+export function searchIndexFor(
+  groups: readonly NavGroup[],
+): HandbookSearchIndex {
   const cached = indexCache.get(groups);
   if (cached) {
     return cached;
@@ -48,7 +51,10 @@ export function searchIndexFor(groups: readonly NavGroup[]): HandbookSearchIndex
   return index;
 }
 
-export function trigramBodyHits(index: HandbookSearchIndex, query: string): Set<number> {
+export function trigramBodyHits(
+  index: HandbookSearchIndex,
+  query: string,
+): Set<number> {
   if (query.length < BODY_QUERY_MIN_LENGTH) {
     return new Set();
   }
@@ -134,14 +140,19 @@ function topicMatchesPrepared(
   return (
     prepared.title.includes(query) ||
     prepared.blurb.includes(query) ||
-    prepared.concepts.some((concept) => conceptMatchesIndexed(concept, query, mode, bodyHits))
+    prepared.concepts.some((concept) =>
+      conceptMatchesIndexed(concept, query, mode, bodyHits),
+    )
   );
 }
 
 function buildSearchIndex(groups: readonly NavGroup[]): HandbookSearchIndex {
   const topicOf = new WeakMap<NavTopic, PreparedTopic>();
   const groupTitle = new WeakMap<NavGroup, string>();
-  const subjectText = new WeakMap<NavSubject, { title: string; blurb: string }>();
+  const subjectText = new WeakMap<
+    NavSubject,
+    { title: string; blurb: string }
+  >();
   const clusterTitle = new WeakMap<NavCluster, string>();
   const gramLists = new Map<string, number[]>();
   let nextBodyId = 0;
@@ -230,7 +241,7 @@ function indexEntry(
         title: entry.subject.title.toLowerCase(),
         blurb: entry.subject.blurb.toLowerCase(),
       });
-      return entry.subject.clusters.flatMap((cluster) => {
+      return navSubjectClusters(entry.subject).flatMap((cluster) => {
         clusterTitle.set(cluster, cluster.title.toLowerCase());
         return cluster.topics.map(prepareTopic);
       });
@@ -266,7 +277,10 @@ function postingHas(posting: readonly number[], id: number): boolean {
   return false;
 }
 
-function intersectPosting(hits: Set<number>, posting: readonly number[]): Set<number> {
+function intersectPosting(
+  hits: Set<number>,
+  posting: readonly number[],
+): Set<number> {
   const next = new Set<number>();
   if (posting.length < hits.size) {
     for (const id of posting) {
@@ -323,7 +337,7 @@ export function firstHrefWithIndex(
     for (const entry of group.entries) {
       switch (entry.kind) {
         case "subject": {
-          const clusterHit = entry.subject.clusters.find((cluster) =>
+          const clusterHit = navSubjectClusters(entry.subject).find((cluster) =>
             Boolean(index.clusterTitle.get(cluster)?.includes(query)),
           );
           if (clusterHit) {
@@ -397,7 +411,9 @@ function firstConceptHref(
   matches: (concept: PreparedConcept) => boolean,
 ): string | null {
   if (preferredPathname) {
-    const current = topics.find((topic) => topic.topic.href === preferredPathname);
+    const current = topics.find(
+      (topic) => topic.topic.href === preferredPathname,
+    );
     const conceptHit = current?.concepts.find(matches);
     if (current && conceptHit) {
       return conceptHref(current.topic.href, conceptHit.concept.id);
@@ -449,14 +465,30 @@ function filterEntry(
 ): NavEntry | null {
   switch (entry.kind) {
     case "topic":
-      return topicMatchesIndexed(entry.topic, query, mode, index, bodyHits) ? entry : null;
+      return topicMatchesIndexed(entry.topic, query, mode, index, bodyHits)
+        ? entry
+        : null;
     case "subject": {
-      const subject = filterSubject(entry.subject, query, mode, index, bodyHits);
+      const subject = filterSubject(
+        entry.subject,
+        query,
+        mode,
+        index,
+        bodyHits,
+      );
       return subject ? { kind: "subject", subject } : null;
     }
     case "cluster": {
-      const cluster = filterCluster(entry.cluster, query, mode, index, bodyHits);
-      return cluster ? { kind: "cluster", subjectHref: entry.subjectHref, cluster } : null;
+      const cluster = filterCluster(
+        entry.cluster,
+        query,
+        mode,
+        index,
+        bodyHits,
+      );
+      return cluster
+        ? { kind: "cluster", subjectHref: entry.subjectHref, cluster }
+        : null;
     }
     default: {
       const _never: never = entry;
@@ -494,6 +526,22 @@ function filterSubject(
   const text = index.subjectText.get(subject);
   if (text?.title.includes(query) || text?.blurb.includes(query)) {
     return subject;
+  }
+  if (subject.sections?.length) {
+    const sections = subject.sections
+      .map((section) => ({
+        ...section,
+        clusters: section.clusters
+          .map((cluster) =>
+            filterCluster(cluster, query, mode, index, bodyHits),
+          )
+          .filter((cluster): cluster is NavCluster => cluster !== null),
+      }))
+      .filter((section) => section.clusters.length > 0);
+    if (sections.length === 0) {
+      return null;
+    }
+    return { ...subject, sections, clusters: [] };
   }
   const clusters = subject.clusters
     .map((cluster) => filterCluster(cluster, query, mode, index, bodyHits))

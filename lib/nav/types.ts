@@ -27,11 +27,18 @@ export type NavCluster = {
   readonly topics: readonly NavTopic[];
 };
 
+export type NavSection = {
+  readonly id: string;
+  readonly title: string;
+  readonly clusters: readonly NavCluster[];
+};
+
 export type NavSubject = {
   readonly slug: string;
   readonly href: string;
   readonly title: string;
   readonly blurb: string;
+  readonly sections?: readonly NavSection[];
   readonly clusters: readonly NavCluster[];
 };
 

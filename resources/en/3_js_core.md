@@ -381,33 +381,33 @@ const heavy = await import("./heavy.js"); // dynamic — returns Promise
 
 ### SOLID in Classes
 
-**Definition:** **SOLID** is five design principles from Robert C. Martin ("Uncle Bob") for code that stays easy to **change, test, and extend**. On **`class` hierarchies**, each letter maps to prototypes, `extends`, and constructor injection. In JS, `class` is **syntax sugar over prototypes** — methods sit on the prototype, `extends` wires the chain — so **Liskov** and **composition** matter whenever you subclass. Module/function mapping: [SOLID in Functions](#solid-in-functions). Runtime has no `interface` keyword (TypeScript adds one at compile time) — contracts are **duck typing**, JSDoc `@typedef`, or TS `implements`.
+**Definition:** **SOLID** is five design principles from Robert C. Martin ("Uncle Bob") for code that stays easy to **change, test, and extend**. In JavaScript — especially as ES6 **`class`** usage grows — they help avoid **spaghetti code**. On **`class` hierarchies**, each letter maps to prototypes, `extends`, and constructor injection. In JS, `class` is **syntax sugar over prototypes** — methods sit on the prototype, `extends` wires the chain — so **Liskov** and **composition** matter whenever you subclass. Pure JS has no built-in `interface` (unlike TypeScript or Java) — some principles adapt through **function composition** or **duck typing** (JSDoc `@typedef`, TS `implements`). Module/function mapping: [SOLID in Functions](#solid-in-functions).
 
-| Letter | Principle             | What problem it targets (classes)                         |
-| ------ | --------------------- | --------------------------------------------------------- |
-| **S**  | Single Responsibility | God classes that mix unrelated jobs                       |
-| **O**  | Open/Closed           | Endless `if/else` edits inside `Car.start()`              |
-| **L**  | Liskov Substitution   | Subclasses that break callers of the parent type          |
-| **I**  | Interface Segregation | Fat class APIs that force unused methods on consumers     |
-| **D**  | Dependency Inversion  | Classes that `new GasEngine()` or call `fetch` internally |
+| Letter | Principle             | What problem it targets (classes)                            |
+| ------ | --------------------- | ------------------------------------------------------------ |
+| **S**  | Single Responsibility | God classes that mix unrelated jobs                          |
+| **O**  | Open/Closed           | Endless `if/else` edits inside `applyDiscount()`             |
+| **L**  | Liskov Substitution   | Subclasses that break callers of the parent type             |
+| **I**  | Interface Segregation | Fat class APIs that force unused methods on consumers        |
+| **D**  | Dependency Inversion  | Classes that `new EmailService()` or call `fetch` internally |
 
-| Principle                     | Meaning                                                                                                                                                                                                                                     | JS `class` example                                                                          |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| **S** — Single Responsibility | A class should do **one job** and have **one reason to change**. Engine start/stop rules live in `CarEngine`; speed/fuel display rules live in `CarDashboard`. Mixing both in `Car` means a UI tweak can break engine logic and vice versa. | `CarEngine` starts the motor; `CarDashboard` renders speed — not one `Car` class doing both |
-| **O** — Open/Closed           | Open for **extension**, closed for **modification**. Add a new engine type by creating a new class (`ElectricMotor`), not by editing `Car.start()` with another `if/else` branch. Existing `Car` callers keep working.                      | Add `ElectricMotor` without editing `Car` — plug a new engine class into `constructor`      |
-| **L** — Liskov Substitution   | If code accepts `RoadCar`, **every subclass must work there** without extra checks. If one subtype makes `drive()` throw, callers need `try/catch` — you cannot swap it in safely.                                                          | `goToWork(new OutOfFuelCar())` crashes, but `goToWork(new RoadCar())` works — LSP broken    |
-| **I** — Interface Segregation | Clients should not depend on methods they **never use**. A showroom that only lists cars should not implement `repair()`, `paint()`, or `tow()` just because a bigger `Garage` class exposes all of them.                                   | `CarLot` lists stock — don't force `repair()` on a read-only showroom class                 |
-| **D** — Dependency Inversion  | High-level modules (`Car`) depend on **abstractions** (anything with `start()`), not concrete `GasEngine` details. Pass the engine in via `constructor` so production, tests, and future motor types swap without rewriting `Car`.          | `Car` takes `engine` in `constructor` — inject `GasEngine` or `ElectricMotor` in tests      |
+| Principle                     | Meaning                                                                                                                                                                                                                                     | JS `class` example                                                                              |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **S** — Single Responsibility | A class should do **one job** and have **one reason to change**. Validation rules live in `UserValidator`; persistence in `UserRepository`. Mixing validate + DB + HTML in one `User` class means a UI tweak can break storage logic.       | `UserValidator` validates; `UserRepository` saves — not one `User` class doing both             |
+| **O** — Open/Closed           | Open for **extension**, closed for **modification**. Add a new discount type by creating a subclass (`PercentDiscount`), not by editing `applyDiscount()` with another `if/else` branch. Existing callers keep working.                     | Add `FixedDiscount` without editing `applyDiscount()` — plug a new `Discount` subclass          |
+| **L** — Liskov Substitution   | If code accepts `Bird`, **every subclass must work there** without extra checks. If `Ostrich` makes `fly()` throw, callers need `try/catch` — you cannot swap it in safely.                                                                 | `releaseBird(new Ostrich())` crashes, but `releaseBird(new Sparrow())` works — LSP broken       |
+| **I** — Interface Segregation | Clients should not depend on methods they **never use**. A read-only lister should not implement `delete()` or `update()` just because a bigger `UserRepository` class exposes all of them.                                                 | `UserReader` lists users — don't force `delete()` on a read-only class                          |
+| **D** — Dependency Inversion  | High-level modules (`OrderService`) depend on **abstractions** (anything with `send()`), not concrete `EmailService` details. Pass the mailer in via `constructor` so production, tests, and future channels swap without rewriting orders. | `OrderService` takes `mailer` in `constructor` — inject `EmailService` or `SmsService` in tests |
 
 **How it works:**
 
 Each letter matches the **Examples** below — look for `// good` and `// bad`:
 
-1. **S** — one class, one job (`CarEngine` vs `CarDashboard`).
-2. **O** — new engine = new class (`ElectricMotor`), not a new `if` inside `Car.start()`.
-3. **L** — `goToWork(car)` must work for every car; empty tank → return `{ status: "no fuel" }`, not a subclass that throws.
-4. **I** — `CarLot` lists only; `CarWorkshop` repairs — don't inherit unused methods.
-5. **D** — pass `engine` into `constructor` (`new Car(engine)`); don't `new GasEngine()` inside `Car`.
+1. **S** — one class, one job (`UserValidator` vs `UserRepository`).
+2. **O** — new discount = new subclass (`PercentDiscount`), not a new `if` inside `applyDiscount()`.
+3. **L** — `releaseBird(bird)` must work for every bird; ground birds need a different contract, not a subclass that throws on `fly()`.
+4. **I** — `UserReader` lists only; `UserWriter` mutates — don't inherit unused methods.
+5. **D** — pass `mailer` into `constructor` (`new OrderService(mailer)`); don't `new EmailService()` inside `OrderService`.
 
 **When to use:** Refactoring god classes; plugin-style providers; interview answers; code review when `extends` chains grow.
 
@@ -415,126 +415,154 @@ Each letter matches the **Examples** below — look for `// good` and `// bad`:
 
 ```js
 // S — good: one job per class
-class CarEngine {
-  start() {
-    return "engine on";
-  }
-  stop() {
-    return "engine off";
+class UserValidator {
+  validate(data) {
+    return Boolean(data.email && data.name);
   }
 }
 
-class CarDashboard {
-  render({ speed, fuel }) {
-    return `${speed} km/h · ${fuel}% fuel`;
+class UserRepository {
+  save(user) {
+    return db.insert("users", user);
   }
 }
 
-// S — bad: god class mixes engine logic and UI
-// class Car {
-//   start() {
-//     return "engine on";
-//   }
-//   renderDashboard() {
-//     return `${this.speed} km/h · ${this.fuel}% fuel`;
-//   }
+// S — bad: god class mixes validate, DB, and HTML
+// class User {
+//   validate(data) { return Boolean(data.email); }
+//   save(user) { return db.insert("users", user); }
+//   toHtml(user) { return `<p>${user.name}</p>`; }
 // }
 
-// O + D — good: new engine type = new class + inject (no edit to Car)
-class GasEngine {
-  start() {
-    return "gas engine started";
+// O — good: new discount type = new subclass (no edit to applyDiscount)
+class Discount {
+  apply(total) {
+    throw new Error("Subclass must implement apply()");
   }
 }
 
-class ElectricMotor {
-  start() {
-    return "motor started silently";
+class PercentDiscount extends Discount {
+  constructor(rate) {
+    super();
+    this.rate = rate;
+  }
+  apply(total) {
+    return total * (1 - this.rate);
   }
 }
 
-class Car {
-  #engine;
-  constructor(engine) {
-    this.#engine = engine; // DIP — inject engine abstraction
+class FixedDiscount extends Discount {
+  constructor(amount) {
+    super();
+    this.amount = amount;
   }
-  start() {
-    return this.#engine.start();
+  apply(total) {
+    return Math.max(0, total - this.amount);
   }
 }
 
-const sedan = new Car(new GasEngine());
-const ev = new Car(new ElectricMotor());
+function applyDiscount(total, discount) {
+  return discount.apply(total);
+}
 
-// O + D — bad: edit Car every time a new engine appears
-// class Car {
-//   start() {
-//     if (this.type === "gas") return "gas engine started";
-//     if (this.type === "electric") return "motor started silently";
-//   }
+// O — bad: edit applyDiscount for every new discount type
+// function applyDiscount(total, type, value) {
+//   if (type === "percent") return total * (1 - value);
+//   if (type === "fixed") return Math.max(0, total - value);
 // }
 
-// I — good: showroom lists; workshop repairs — separate APIs
-class CarLot {
-  listAvailable() {
-    return ["sedan", "suv"];
+// I — good: reader lists; writer mutates — separate APIs
+class UserReader {
+  findAll() {
+    return db.query("SELECT * FROM users");
   }
 }
 
-class CarWorkshop {
-  repair(carId) {
-    return `repaired ${carId}`;
+class UserWriter {
+  update(id, data) {
+    return db.query("UPDATE users SET ? WHERE id = ?", [data, id]);
   }
 }
 
-// I — bad: read-only lot forced to stub methods it never uses
-// class Garage {
-//   listAvailable() {
-//     return ["sedan", "suv"];
-//   }
-//   repair() {
-//     throw new Error("We don't repair here");
+// I — bad: read-only reader forced to stub methods it never uses
+// class UserRepository {
+//   findAll() { return db.query("SELECT * FROM users"); }
+//   update() { throw new Error("Read-only"); }
+// }
+// class UserReader extends UserRepository {}
+
+// L — one caller; every "bird" must work here
+function releaseBird(bird) {
+  return bird.fly(); // expects a string — not a crash
+}
+
+// L — good: fly() works for flying birds
+class Sparrow {
+  fly() {
+    return "flying";
+  }
+}
+releaseBird(new Sparrow()); // "flying"
+
+// L — bad: still a Bird, but fly() throws — releaseBird breaks
+class Bird {
+  fly() {
+    return "flying";
+  }
+}
+class Ostrich extends Bird {
+  fly() {
+    throw new Error("Cannot fly");
+  }
+}
+// releaseBird(new Ostrich()); // crash — caller needs try/catch
+
+// L — good fix: separate contract for ground birds (composition, not broken extends)
+class Ostrich {
+  run() {
+    return "running";
+  }
+}
+
+// D — good: inject mailer — swap EmailService or SmsService
+class EmailService {
+  send(userId, message) {
+    return `email to ${userId}: ${message}`;
+  }
+}
+
+class SmsService {
+  send(userId, message) {
+    return `sms to ${userId}: ${message}`;
+  }
+}
+
+class OrderService {
+  #mailer;
+  constructor(mailer) {
+    this.#mailer = mailer;
+  }
+  place(order) {
+    this.#mailer.send(order.userId, `Order ${order.id} placed`);
+    return { ok: true, orderId: order.id };
+  }
+}
+
+new OrderService(new EmailService());
+new OrderService(new SmsService());
+
+// D — bad: hardcoded concrete mailer inside order logic
+// class OrderService {
+//   place(order) {
+//     const mailer = new EmailService();
+//     mailer.send(order.userId, `Order ${order.id} placed`);
 //   }
 // }
-// class CarLot extends Garage {}
-
-// L — one caller; every "car" must work here
-function goToWork(car) {
-  return car.drive(10); // expects { km, status } — not a crash
-}
-
-// L — good: drive() always returns a result
-class RoadCar {
-  drive(km) {
-    return { km, status: "ok" };
-  }
-}
-goToWork(new RoadCar()); // { km: 10, status: "ok" }
-
-// L — bad: still a RoadCar, but drive() throws — goToWork breaks
-class OutOfFuelCar extends RoadCar {
-  drive(km) {
-    throw new Error("No fuel");
-  }
-}
-// goToWork(new OutOfFuelCar()); // crash — caller needs try/catch
-
-// L — good fix: no broken subclass — return status for empty tank
-class Car {
-  constructor(hasFuel) {
-    this.hasFuel = hasFuel;
-  }
-  drive(km) {
-    if (!this.hasFuel) return { km, status: "no fuel" };
-    return { km, status: "ok" };
-  }
-}
-goToWork(new Car(false)); // { km: 10, status: "no fuel" } — same goToWork, no crash
 ```
 
 **Thoughts:** SOLID is a **guide**, not a law — a 10-line script does not need five classes. Apply when change pain appears. Plain functions and modules: [SOLID in Functions](#solid-in-functions). Class syntax details: [Classes & Objects](./3_js_oop.md#classes-full). Framework mapping: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript). Full OOP reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Functions](#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
+**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Functions](#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
 </details>
 
@@ -543,23 +571,23 @@ goToWork(new Car(false)); // { km: 10, status: "no fuel" } — same goToWork, no
 
 ### SOLID in Functions
 
-**Definition:** The same five **SOLID** principles apply to **plain functions**, **closures**, and **ESM modules** — the style most JavaScript uses day to day. A module boundary or exported function can be a unit with one job, open for extension via new functions, and testable when dependencies are passed in. Class/prototype mapping: [SOLID in Classes](#solid-in-classes).
+**Definition:** The same five **SOLID** principles apply to **plain functions**, **closures**, and **ESM modules** — the style most JavaScript uses day to day. They help avoid **spaghetti code** in function-first codebases. A module boundary or exported function can be a unit with one job, open for extension via new functions, and testable when dependencies are passed in. Pure JS has no built-in `interface` — adapt **I** and **D** through **composition** (object spread, small mixin functions) and **duck typing**. Class/prototype mapping: [SOLID in Classes](#solid-in-classes).
 
-| Letter | Principle             | What problem it targets (functions / modules)                 |
-| ------ | --------------------- | ------------------------------------------------------------- |
-| **S**  | Single Responsibility | God modules mixing parse, format, and I/O                     |
-| **O**  | Open/Closed           | Growing one function with another `if (paymentType)` branch   |
-| **L**  | Liskov Substitution   | Callbacks that throw or return inconsistent shapes            |
-| **I**  | Interface Segregation | Barrel files that export dozens of helpers you never import   |
-| **D**  | Dependency Inversion  | Domain functions that call `fetch` or `localStorage` directly |
+| Letter | Principle             | What problem it targets (functions / modules)                                        |
+| ------ | --------------------- | ------------------------------------------------------------------------------------ |
+| **S**  | Single Responsibility | God modules mixing parse, format, and I/O                                            |
+| **O**  | Open/Closed           | Growing one function with another `if (paymentType)` branch                          |
+| **L**  | Liskov Substitution   | Callbacks that throw or return inconsistent shapes                                   |
+| **I**  | Interface Segregation | Fat config objects and barrel files with unused exports                              |
+| **D**  | Dependency Inversion  | Domain functions that call `fetch`, `localStorage`, or `new EmailService()` directly |
 
 | Principle                     | Meaning                                                                                                                                                                                                                                | JS function example                                                                 |
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | **S** — Single Responsibility | One function, **one reason to change**. Parsing raw JSON belongs in `parseUser()`; display formatting belongs in `formatUserLabel()` — not one function doing both.                                                                    | `parseUser()` vs `formatUserLabel()` — not one `handleUser()` for everything        |
 | **O** — Open/Closed           | Open for **extension**, closed for **modification**. Add a new payment path by passing a new strategy function, not by editing `processOrder()` with another branch.                                                                   | `processOrder(order, payWithCard)` — add `payWithWallet` without editing core logic |
 | **L** — Liskov Substitution   | Any callback passed where a contract is expected must **behave like the others**. If `normalizeUser()` usually returns `{ id, name }`, a branch that throws or returns a string breaks every caller — same LSP idea without `extends`. | Broken `normalize` callback breaks `mapUsers()` callers                             |
-| **I** — Interface Segregation | Export **small, focused surfaces**. Consumers that only list users should not import a module that also exports delete, audit, and email helpers they never call.                                                                      | `listUsers.js` + `updateUser.js` — not one `userUtils.js` with 20 exports           |
-| **D** — Dependency Inversion  | High-level functions depend on **injected collaborators** (HTTP client, storage, clock), not globals. Pass `http` as an argument or via a factory so tests swap fakes without rewriting business logic.                                | `loadProfile(userId, http)` — inject fake `http` in tests                           |
+| **I** — Interface Segregation | Split **large config objects** into role-specific shapes. Prefer **composition** (mixin functions) over inheriting unused methods. Export **small, focused surfaces** — not one barrel with everything.                                | `canRead(store)` for list-only consumers — not a fat repo with `write()` stubs      |
+| **D** — Dependency Inversion  | High-level functions depend on **injected collaborators** (HTTP client, mailer, storage), not globals. Pass `http` or `notify` as an argument so tests swap fakes without rewriting business logic.                                    | `placeOrder(order, notify)` — inject `emailService` or `smsService` in tests        |
 
 **How it works:**
 
@@ -568,8 +596,8 @@ Each letter matches the **Examples** below — look for `// good` and `// bad`:
 1. **S** — `parseUser()` and `formatUserLabel()` stay separate; not one `handleUser()`.
 2. **O** — new payment = new function (`payWithWallet`), not a new `if` in `processOrder()`.
 3. **L** — callbacks passed to `mapUsers()` always return the same shape; not sometimes a string.
-4. **I** — small module exports (`listUsers.js`), not one `userUtils.js` with everything.
-5. **D** — pass `http` into `loadProfile()`; don't call `fetch` inside the function body.
+4. **I** — compose `canRead(store)` for list-only code; split fat configs; not one `userUtils.js` with everything.
+5. **D** — pass `notify` into `placeOrder()` and `http` into `loadProfile()`; don't hardcode `EmailService` or `fetch` inside.
 
 **When to use:** Utility modules, Node services, data layers, refactoring god files; most day-to-day JS is functions-first.
 
@@ -618,6 +646,44 @@ function mapUsers(users, normalize = (u) => ({ id: u.id, name: u.name })) {
 // L — bad: callback sometimes returns a string — breaks mapUsers callers
 // mapUsers(users, (u) => (u.active ? { id: u.id, name: u.name } : "skipped"));
 
+// I — good: compose behavior from small mixin functions (no fat inheritance)
+const canRead = (base) => ({
+  ...base,
+  read: (id) => base.store.get(id),
+});
+const canWrite = (base) => ({
+  ...base,
+  write: (id, data) => base.store.set(id, data),
+});
+
+const store = {
+  data: new Map(),
+  get: (id) => store.data.get(id),
+  set: (id, v) => store.data.set(id, v),
+};
+const reader = canRead({ store }); // list-only consumer — no write/delete stubs
+
+// I — bad: fat config forces unused keys on every consumer
+// function initApp({ readUser, writeUser, deleteUser, auditUser, emailUser }) { ... }
+// listPageOnlyNeeds({ readUser }); // still depends on write/delete/email shape
+
+// D — good: inject notify — swap email or SMS in tests
+function placeOrder(order, notify) {
+  notify.send(order.userId, `Order ${order.id} placed`);
+  return { ok: true, orderId: order.id };
+}
+
+const emailService = { send: (userId, msg) => `email: ${msg}` };
+const smsService = { send: (userId, msg) => `sms: ${msg}` };
+placeOrder({ id: "42", userId: "u1" }, emailService);
+placeOrder({ id: "43", userId: "u2" }, smsService);
+
+// D — bad: hardcoded EmailService inside domain function
+// function placeOrder(order) {
+//   const mailer = { send: (id, msg) => console.log(`email: ${msg}`) };
+//   mailer.send(order.userId, `Order ${order.id} placed`);
+// }
+
 // D — good: inject http — swap fake in tests
 async function loadProfile(userId, http) {
   return http.get(`/api/users/${userId}`);
@@ -633,6 +699,6 @@ async function loadProfile(userId, http) {
 
 **Thoughts:** Most JS is functions and modules, not classes — start here for everyday code. `class` / `extends`: [SOLID in Classes](#solid-in-classes). Framework mapping: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript). Full reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Classes](#solid-in-classes) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
+**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Classes](#solid-in-classes) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
 
 </details>
