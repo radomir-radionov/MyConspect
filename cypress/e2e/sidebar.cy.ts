@@ -19,7 +19,9 @@ describe("handbook sidebar", () => {
     cy.nav("track", "frontend").should("have.class", "bg-yellow-50");
     cy.nav("subject", "css").should("have.class", "bg-yellow-50");
 
-    cy.nav("track", "frontend").click({ scrollBehavior: false, force: true });
+    cy.nav("track", "frontend").then(($el) => {
+      $el[0].click();
+    });
     cy.nav("track", "frontend").should("have.attr", "aria-expanded", "false");
     cy.nav("track", "frontend").should("have.class", "bg-yellow-50");
     cy.nav("track", "backend").should("not.have.class", "bg-yellow-50");
@@ -224,14 +226,14 @@ describe("handbook sidebar", () => {
     cy.url().should("include", "core");
   });
 
-  it("shows React 19 as a single sidebar row instead of dumping concepts", () => {
+  it("opens React 19 from Hooks and closes Core", () => {
     cy.visit("/en/frontend/react-hooks");
     cy.nav("cluster", "react-19").should("be.visible");
     cy.nav("cluster", "react-19").click();
 
     cy.location("pathname").should("eq", "/en/frontend/react-server");
-    cy.nav("cluster", "react-19").should("have.attr", "aria-expanded", "false");
-    cy.sidebar().contains("Overview").should("not.exist");
+    cy.nav("cluster", "react-19").should("have.attr", "aria-expanded", "true");
+    cy.sidebar().contains("Overview").should("be.visible");
     cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
   });
 
@@ -280,9 +282,8 @@ describe("handbook sidebar", () => {
       "aria-expanded",
       "true",
     );
-    cy.nav("topic", "html-structure").click({
-      scrollBehavior: false,
-      force: true,
+    cy.nav("topic", "html-structure").then(($el) => {
+      $el[0].click();
     });
     cy.nav("topic", "html-structure").should(
       "have.attr",
@@ -340,7 +341,6 @@ describe("handbook sidebar", () => {
     });
 
     cy.nav("topic", "html-forms").then(($forms) => {
-      const aside = Cypress.$("#handbook-nav-aside")[0];
       cy.wrap($forms).click({ scrollBehavior: false, force: true });
       cy.url().should("include", "/frontend/html-forms");
       cy.nav("topic", "html-forms").should(
@@ -355,8 +355,10 @@ describe("handbook sidebar", () => {
       );
       cy.nav("topic", "html-forms").should("be.visible");
       cy.nav("topic", "html-forms").should(($el) => {
+        const liveAside = Cypress.$("#handbook-nav-aside")[0];
+        expect(liveAside, "sidebar scroller").to.exist;
         const box = $el[0].getBoundingClientRect();
-        const asideBox = aside.getBoundingClientRect();
+        const asideBox = liveAside.getBoundingClientRect();
         expect(box.top).to.be.gte(asideBox.top - 1);
         expect(box.top).to.be.lt(asideBox.bottom);
       });
@@ -416,7 +418,7 @@ describe("handbook sidebar", () => {
     cy.get("#jsx > summary").click({ scrollBehavior: false, force: true });
     cy.get("#jsx").should("have.prop", "open", true);
 
-    cy.get("#react > summary").then(($summary) => {
+    cy.get("#fragments > summary").then(($summary) => {
       const main = Cypress.$("#handbook-main")[0];
       const desired =
         $summary[0].getBoundingClientRect().top -
@@ -430,9 +432,9 @@ describe("handbook sidebar", () => {
       expect(before).to.be.within(80, 400);
 
       cy.wrap($summary).click({ scrollBehavior: false, force: true });
-      cy.get("#react").should("have.prop", "open", true);
+      cy.get("#fragments").should("have.prop", "open", true);
       cy.get("#jsx").should("have.prop", "open", false);
-      cy.get("#react > summary").should(($el) => {
+      cy.get("#fragments > summary").should(($el) => {
         const after =
           $el[0].getBoundingClientRect().top - main.getBoundingClientRect().top;
         expect(after).to.be.closeTo(before, 40);

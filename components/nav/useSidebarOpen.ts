@@ -30,9 +30,15 @@ export function useSidebarOpen({
   const activeConceptId = hashIdFrom(hash);
   const location = locationForPath(groups, pathname, hash);
   const [openTrackId, setOpenTrackId] = useState<TrackId | null>(activeTrackId);
-  const [openSubjectHref, setOpenSubjectHref] = useState<string | null>(location.subjectHref);
-  const [openClusterKey, setOpenClusterKey] = useState<string | null>(location.clusterKey);
-  const [openTopicHref, setOpenTopicHref] = useState<string | null>(location.topicHref);
+  const [openSubjectHref, setOpenSubjectHref] = useState<string | null>(
+    location.subjectHref,
+  );
+  const [openClusterKey, setOpenClusterKey] = useState<string | null>(
+    location.clusterKey,
+  );
+  const [openTopicHref, setOpenTopicHref] = useState<string | null>(
+    location.topicHref,
+  );
   const [navSnapshot, setNavSnapshot] = useState<NavSnapshot>({
     searching,
     activeTrackId,
@@ -48,7 +54,13 @@ export function useSidebarOpen({
     hash !== navSnapshot.hash ||
     activeConceptId !== navSnapshot.activeConceptId
   ) {
-    setNavSnapshot({ searching, activeTrackId, pathname, hash, activeConceptId });
+    setNavSnapshot({
+      searching,
+      activeTrackId,
+      pathname,
+      hash,
+      activeConceptId,
+    });
     if (!searching) {
       syncOpenState({
         snapshot: navSnapshot,
@@ -102,7 +114,11 @@ function syncOpenState({
   setOpenTopicHref: Dispatch<SetStateAction<string | null>>;
 }) {
   const leftSearch = snapshot.searching;
-  if (leftSearch || activeTrackId !== snapshot.activeTrackId || pathname !== snapshot.pathname) {
+  if (
+    leftSearch ||
+    activeTrackId !== snapshot.activeTrackId ||
+    pathname !== snapshot.pathname
+  ) {
     setOpenTrackId(activeTrackId);
   }
   if (leftSearch || pathname !== snapshot.pathname || hash !== snapshot.hash) {
@@ -112,7 +128,14 @@ function syncOpenState({
     } else if (!location.subjectHref) {
       setOpenClusterKey(null);
     }
-    setOpenTopicHref(location.topicHref);
+    const clearingHash =
+      !leftSearch &&
+      pathname === snapshot.pathname &&
+      snapshot.hash !== "" &&
+      hash === "";
+    if (!clearingHash) {
+      setOpenTopicHref(location.topicHref);
+    }
   } else if (activeConceptId && activeConceptId !== snapshot.activeConceptId) {
     if (location.topicHref) {
       setOpenTopicHref(location.topicHref);

@@ -12,10 +12,22 @@ function mainScroller() {
   return cy.get("#handbook-main");
 }
 
+function sidebarHydrated() {
+  cy.get("#handbook-sidebar [data-nav]").should(($nodes) => {
+    const names = Object.getOwnPropertyNames($nodes[0]);
+    const hydrated = names.some((name) => name.toLowerCase().includes("react"));
+    const marker = names.filter((name) => name.includes("$")).join(" ");
+    expect(hydrated, marker || "no react props").to.equal(true);
+  });
+}
+
 declare global {
   namespace Cypress {
     interface Chainable {
-      nav(kind: "track" | "subject" | "cluster" | "topic", id: string): Chainable<JQuery<HTMLElement>>;
+      nav(
+        kind: "track" | "subject" | "cluster" | "topic",
+        id: string,
+      ): Chainable<JQuery<HTMLElement>>;
       sidebar(): Chainable<JQuery<HTMLElement>>;
       mainScroller(): Chainable<JQuery<HTMLElement>>;
     }
@@ -25,5 +37,10 @@ declare global {
 Cypress.Commands.add("nav", nav);
 Cypress.Commands.add("sidebar", sidebar);
 Cypress.Commands.add("mainScroller", mainScroller);
+
+Cypress.Commands.overwrite("visit", (originalFn, url, options) => {
+  originalFn(url, options);
+  sidebarHydrated();
+});
 
 export {};

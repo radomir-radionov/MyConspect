@@ -27,7 +27,7 @@ export function SidebarDockButton({
       className={
         rail
           ? "group absolute top-full left-0 z-50 hidden h-10 w-10 cursor-pointer items-center justify-center md:flex"
-          : "group absolute bottom-0 left-40 z-50 hidden size-9 -translate-x-1/2 translate-y-1/2 cursor-pointer items-center justify-center md:inline-flex"
+          : "group absolute bottom-0 left-80 z-50 hidden size-9 -translate-x-1/2 translate-y-1/2 cursor-pointer items-center justify-center md:inline-flex"
       }
       aria-expanded={!collapsed}
       aria-controls={HANDBOOK_SIDEBAR_ID}

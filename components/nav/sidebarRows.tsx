@@ -424,10 +424,6 @@ export function TopicRow({
             event.preventDefault();
             if (window.location.hash) {
               applySameDocumentHref(pathname, "", pathname);
-              if (!searching && hasConcepts) {
-                setOpenTopicHref(topic.href);
-              }
-              return;
             }
             if (!searching && hasConcepts) {
               setOpenTopicHref((current) =>
