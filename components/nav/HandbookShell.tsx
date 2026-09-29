@@ -252,11 +252,14 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
   const leaveTimer = useRef(0);
   const peekLocked = useRef(false);
 
+  if (!peekEnabled && peeking) {
+    setPeeking(false);
+  }
+
   useEffect(() => {
     if (!peekEnabled) {
       peekLocked.current = false;
       window.clearTimeout(leaveTimer.current);
-      setPeeking(false);
     }
   }, [peekEnabled]);
 
