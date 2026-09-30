@@ -1,17 +1,19 @@
 # Next.js — Core
 
-Framework model and design principles.
+Framework model, App Router, and design principles.
 
 [← Back to hub](./4_nextjs.md)
 
 ### Related docs
 
-- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Optimizations](./4_nextjs_optimizations.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
+- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
 
 ### Sections
 
 - [1. Framework overview](#1-framework-overview)
-- [2. Design principles](#2-design-principles)
+- [2. App vs Pages Router](#2-app-vs-pages-router)
+- [3. Project structure](#3-project-structure)
+- [4. Design principles](#4-design-principles)
 
 ---
 
@@ -186,7 +188,332 @@ Official documentation and platform guides for Next.js and Vercel.
 
 </details>
 
-## 2. Design principles
+<details>
+  <summary>Deep dives</summary>
+
+## 2. App vs Pages Router
+
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](#topic-template))._
+
+<details>
+  <summary>App Router</summary>
+
+### App Router
+
+**Definition:** The modern router living in `app/`. Folders define URL segments; a route becomes **public** only when a segment has `page.tsx` (UI) or `route.ts` (HTTP handler). Built on React Server Components, nested layouts, streaming Suspense boundaries, and the Next.js caching model. Default for all new projects since Next.js 13.
+
+**How it works:**
+
+- **File-system routing** — `app/blog/[slug]/page.tsx` maps to `/blog/:slug`. Dynamic segments: `[slug]` (one param), `[...slug]` (catch-all), `[[...slug]]` (optional catch-all). In Next.js 15+, `params` and `searchParams` are **Promises** — `await` them in Server Components.
+- **Special files per segment:**
+
+| File            | Role                                                                           |
+| --------------- | ------------------------------------------------------------------------------ |
+| `layout.tsx`    | Shared shell wrapping child segments; state persists across client navigations |
+| `page.tsx`      | Unique UI for the route — makes the URL publicly accessible                    |
+| `loading.tsx`   | Instant fallback while the segment streams (React Suspense boundary)           |
+| `error.tsx`     | Segment error boundary (`"use client"` required)                               |
+| `not-found.tsx` | 404 UI for this segment (`notFound()` triggers it)                             |
+| `route.ts`      | Route Handlers — HTTP endpoints (`GET`, `POST`, …) colocated with UI           |
+| `template.tsx`  | Like `layout`, but **remounts** on navigation (fresh state/effects)            |
+
+- **Render order inside a segment:** `layout` → `template` → `error` → `loading` (Suspense) → `not-found` → `page`. Parent layouts wrap children recursively (`app/layout.tsx` → `app/dashboard/layout.tsx` → `page`).
+- **Server Components by default** — `layout` and `page` run on the server unless the file starts with `"use client"`. Fetch data directly in `async` components; add Client Components only for hooks, events, or browser APIs.
+- **Static by default** — routes prerender at build time unless they read request-time data (`cookies()`, `headers()`, `searchParams`, or `fetch` with `cache: 'no-store'`). Override per segment with `export const dynamic = 'force-static' | 'force-dynamic'`.
+- **Colocation without routing** — route groups `(marketing)` omit the folder name from the URL; private folders `_lib` / `_components` are ignored by the router. Non-routable files can also sit beside `page.tsx` in the same folder.
+
+**When to use:** Every new project. Greenfield apps, e-commerce, dashboards, content sites.
+
+**Pluses and minuses:**
+
+| +                                                     | −                                                       |
+| ----------------------------------------------------- | ------------------------------------------------------- |
+| RSC, streaming, nested layouts                        | Learning curve for caching and Server/Client boundaries |
+| Colocated `loading.tsx`, `error.tsx`, `not-found.tsx` | Cannot mix `pages/` and `app/` for the same URL         |
+| Server Actions, Metadata API, Route Handlers          | Some third-party libs still lack RSC support            |
+| Fine-grained caching with `use cache` / `revalidate`  | Migration from Pages requires rewrites                  |
+| Prefetch + client transitions via `next/link`         | `template.tsx` vs `layout.tsx` trips up teams early     |
+
+**Examples:**
+
+```tsx
+// app/layout.tsx — root layout (required); must include <html> and <body>
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+```tsx
+// app/blog/layout.tsx — nested layout shared by /blog/*
+export default function BlogLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <nav>Blog</nav>
+      {children}
+    </section>
+  );
+}
+```
+
+```tsx
+// app/blog/[slug]/page.tsx — async Server Component (default)
+export default async function BlogPost({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  return <article>{post.title}</article>;
+}
+```
+
+```tsx
+// app/blog/[slug]/loading.tsx — shown instantly while page.tsx streams
+export default function Loading() {
+  return <p>Loading post…</p>;
+}
+```
+
+```ts
+// app/api/posts/route.ts — Route Handler (replaces pages/api)
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const posts = await getPosts();
+  return NextResponse.json(posts);
+}
+```
+
+**Thoughts:** Deep dives on dynamic, parallel, and intercepting routes live in [Next.js — Routing](./4_nextjs_routing.md). Rendering strategies and streaming: [Next.js — Rendering](./4_nextjs_rendering.md). Caching, `fetch` options, and Server Actions: [Next.js — Data](./4_nextjs_data.md). Interview framing: **RSC + static by default**; `"use client"` is the opt-in for interactivity; App Router wins URL conflicts over `pages/`.
+
+**Sources:** [Project structure](https://nextjs.org/docs/app/getting-started/project-structure) · [Layouts and pages](https://nextjs.org/docs/app/getting-started/layouts-and-pages) · [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components)
+
+</details>
+
+<details>
+  <summary>Pages Router</summary>
+
+### Pages Router
+
+**Definition:** Legacy router in `pages/`. Uses `getServerSideProps`, `getStaticProps`, `getInitialProps`, and `pages/api` for backend endpoints.
+
+**When to use:** Maintaining existing Pages Router apps only. Do not start new projects on Pages Router.
+
+**Pluses and minuses:**
+
+| +                                       | −                                                      |
+| --------------------------------------- | ------------------------------------------------------ |
+| Mature, well-documented patterns        | No RSC, no nested layouts                              |
+| Simpler mental model (props-based data) | `getServerSideProps` runs per page — harder to compose |
+| Large existing codebase support         | Not where new Next.js features land                    |
+
+**Examples:**
+
+```tsx
+// pages/blog/[slug].tsx — legacy pattern
+export async function getStaticProps({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug);
+  return { props: { post } };
+}
+
+export default function BlogPost({ post }: { post: Post }) {
+  return <article>{post.title}</article>;
+}
+```
+
+**Sources:** [nextjs.org/docs/pages](https://nextjs.org/docs/pages)
+
+</details>
+
+<details>
+  <summary>Migration mapping</summary>
+
+### Migration mapping
+
+**Definition:**
+
+One-to-one mapping from Pages Router APIs to App Router equivalents for incremental migration.
+
+| Pages Router         | App Router equivalent                                        |
+| -------------------- | ------------------------------------------------------------ |
+| `getStaticProps`     | `fetch` with `cache: 'force-cache'` + `generateStaticParams` |
+| `getServerSideProps` | `fetch` with `cache: 'no-store'` or dynamic route            |
+| `getInitialProps`    | Server Component async data fetch                            |
+| `pages/api/*.ts`     | `app/**/route.ts` (Route Handlers)                           |
+| `_app.tsx`           | `app/layout.tsx`                                             |
+| `_document.tsx`      | `app/layout.tsx` + Metadata API                              |
+| `next/head`          | `export const metadata` / `generateMetadata()`               |
+| `next/router`        | `next/navigation` (`useRouter`, `usePathname`)               |
+| `next/link`          | `next/link` (same package, App Router aware)                 |
+
+**Examples:**
+
+```tsx
+// Pages Router (legacy)
+export async function getServerSideProps() {
+  const res = await fetch("https://api.example.com/data");
+  return { props: { data: await res.json() } };
+}
+
+// App Router (modern)
+async function getData() {
+  const res = await fetch("https://api.example.com/data", {
+    cache: "no-store",
+  });
+  return res.json();
+}
+
+export default async function Page() {
+  const data = await getData();
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+}
+```
+
+**Thoughts:**
+
+Both routers can coexist in one project (`pages/` + `app/`), but **not for the same URL**. App Router takes precedence. Plan incremental migration route-by-route.
+
+---
+
+**Sources:** [nextjs.org/docs/app/guides/migrating](https://nextjs.org/docs/app/guides/migrating)
+
+</details>
+
+<a name="3-project-structure"></a>
+
+## 3. Project structure
+
+_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](#topic-template))._
+
+<details>
+  <summary>Directory layout</summary>
+
+### Directory layout
+
+**Definition:** Next.js uses file-system conventions. The `app/` directory (or `src/app/`) defines routes; special filenames map to framework features.
+
+**When to use:** Follow defaults unless monorepo or FSD requires `src/app/` + feature folders.
+
+**Pluses and minuses:**
+
+| +                                          | −                                                      |
+| ------------------------------------------ | ------------------------------------------------------ |
+| Predictable structure — onboarding is fast | Deep nesting can mirror URL too literally              |
+| Colocation of route UI, loading, errors    | Large `app/` trees need route groups or FSD discipline |
+| `src/` option keeps root clean             | Moving files changes URLs unless using groups/rewrites |
+
+**Examples:**
+
+```
+my-app/
+├── app/                    # App Router (or src/app/)
+│   ├── layout.tsx          # Root layout (required)
+│   ├── page.tsx            # Home route (/)
+│   ├── loading.tsx         # Loading UI for segment
+│   ├── error.tsx           # Error boundary for segment
+│   ├── not-found.tsx       # 404 for segment
+│   ├── (marketing)/        # Route group (no URL segment)
+│   │   └── about/page.tsx  # /about
+│   ├── blog/
+│   │   ├── page.tsx        # /blog
+│   │   └── [slug]/page.tsx # /blog/:slug
+│   └── api/
+│       └── webhook/route.ts
+├── public/                 # Static assets (served as-is)
+├── next.config.ts
+├── package.json
+└── tsconfig.json
+```
+
+**Thoughts:** Prefer `src/app/` in larger codebases to separate app code from config at root. Private folders: prefix with `_` (e.g. `_components`) — not routed.
+
+**Sources:** [nextjs.org/docs/app/getting-started/project-structure](https://nextjs.org/docs/app/getting-started/project-structure)
+
+</details>
+
+<details>
+  <summary>Special files</summary>
+
+### Special files
+
+**Definition:**
+
+Convention filenames in `app/` that map to framework features — layouts, loading states, errors, and API routes.
+
+| File            | Purpose                                                           |
+| --------------- | ----------------------------------------------------------------- |
+| `page.tsx`      | Unique UI for a route segment; makes route publicly accessible    |
+| `layout.tsx`    | Shared UI wrapper; persists state across navigations              |
+| `template.tsx`  | Like layout but **re-mounts** on navigation (fresh state/effects) |
+| `loading.tsx`   | Instant loading UI via Suspense boundary                          |
+| `error.tsx`     | Client error boundary for segment                                 |
+| `not-found.tsx` | UI when `notFound()` is called                                    |
+| `route.ts`      | Route Handler (API endpoint)                                      |
+| `default.tsx`   | Fallback for parallel route slots                                 |
+
+**Examples:**
+
+```tsx
+// app/dashboard/layout.tsx
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex">
+      <aside>Sidebar</aside>
+      <main>{children}</main>
+    </div>
+  );
+}
+```
+
+**Thoughts:** `layout.tsx` state survives client navigations; `template.tsx` does not. Use `template` for enter animations or per-navigation analytics keys.
+
+**Sources:** [nextjs.org/docs/app/api-reference/file-conventions](https://nextjs.org/docs/app/api-reference/file-conventions)
+
+</details>
+
+<details>
+  <summary>Route segments</summary>
+
+### Route segments
+
+**Definition:**
+
+URL path segments created by folder names in `app/` — static, dynamic, catch-all, and route groups.
+
+| Pattern            | URL                    | Example                                |
+| ------------------ | ---------------------- | -------------------------------------- |
+| Static             | `/blog`                | `app/blog/page.tsx`                    |
+| Dynamic            | `/blog/hello`          | `app/blog/[slug]/page.tsx`             |
+| Catch-all          | `/docs/a/b/c`          | `app/docs/[...slug]/page.tsx`          |
+| Optional catch-all | `/shop` or `/shop/a/b` | `app/shop/[[...slug]]/page.tsx`        |
+| Route group        | No URL impact          | `app/(auth)/login/page.tsx` → `/login` |
+
+**Sources:**
+
+[nextjs.org/docs/app/api-reference/file-conventions](https://nextjs.org/docs/app/api-reference/file-conventions)
+
+---
+
+</details>
+
+## 4. Design principles
 
 <details>
   <summary>SOLID in Next.js</summary>

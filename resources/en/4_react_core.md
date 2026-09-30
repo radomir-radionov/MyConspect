@@ -413,7 +413,7 @@ function UsersPanel({ client }: { client: UserClient }) {
 
 **Sources:**
 
-[react.dev/learn](https://react.dev/learn) · [patterns.dev/react](https://www.patterns.dev/react/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_objects.md#solid-in-typescript)
+[react.dev/learn](https://react.dev/learn) · [patterns.dev/react](https://www.patterns.dev/react/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express)
 
 ---
 

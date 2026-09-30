@@ -230,6 +230,17 @@ history.addRecord({ amount: 100, dateTime: Date.now() });
 </details>
 
 <details>
+  <summary>SOLID in JavaScript?</summary>
+
+### SOLID in JavaScript?
+
+**Short answer:** Те же пять принципов ООП — для **модулей, функций и компонентов**, не только `class`.
+
+**See also:** [JS — Language — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — Language — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in React](./4_react_core.md#solid-in-react)
+
+</details>
+
+<details>
   <summary>Observer vs Pub/Sub?</summary>
 
 ### Observer vs Pub/Sub?

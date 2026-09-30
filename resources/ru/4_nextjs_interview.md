@@ -29,7 +29,6 @@ _Ответы на интервью следуют: Определение → �
 | Тема                                                  | Ответ            |
 | ----------------------------------------------------- | ---------------- |
 | SSR против SSG против ISR против CSR                  | Вопросы и ответы |
-| Основные веб-показатели (LCP, INP, CLS, TTFB)         | Вопросы и ответы |
 | Маршрутизатор приложений против Маршрутизатор страниц | Вопросы и ответы |
 | Серверные и клиентские компоненты                     | Вопросы и ответы |
 | Кэширование (`fetch`, `revalidate`)                   | Вопросы и ответы |
@@ -82,23 +81,6 @@ const user = await fetch(url, { cache: "no-store" });
 **Thoughts:** Маршрутизатор приложений **статичен по умолчанию** — ранее `getServerSideProps` страницам может потребоваться явное `no-store`. Упомяните **потоковую SSR** — фрагменты HTML отправляются до разрешения медленных данных.
 
 **Sources:** [nextjs.org/docs/app/guides/caching](https://nextjs.org/docs/app/guides/caching)
-
-</details>
-
-<details>
-  <summary>What are Core Web Vitals? How do you improve them in Next.js?</summary>
-
-### What are Core Web Vitals? How do you improve them in Next.js?
-
-**Definition:** Метрики поля для реальных пользователей: **LCP** (наибольшая отрисовка ≤ 2,5 с), **INP** (взаимодействие ≤ 200 мс; заменен FID), **CLS** (сдвиг макета ≤ 0,1). **TTFB** и **FCP** (< 1,8 с) — это диагностические данные, которые используются для LCP, а не для Core Vitals.
-
-**How it works:** `next/image` + `preload` на изображении LCP (`priority` устарел в Next.js 16); Серверные компоненты/меньшие клиентские пакеты для INP; `next/font` и явные размеры изображений для CLS. Избегать `force-dynamic` когда статическая страница или страница ISR попадет в CDN.
-
-**Common pitfalls:** Ссылаясь на FID как на текущий основной веб-важный показатель. Edge SSR + удаленная БД, ухудшающая TTFB.
-
-**Thoughts:** Один рычаг на каждую метрику — изображение, JS, макет.
-
-**See also:** [Основные веб-показатели на Vercel](./4_nextjs_optimizations.md#core-web-vitals-on-vercel) · [TTFB](./6_web_api_security.md#ttfb-time-to-first-byte) · [CLS](./1*html* Performance.md#cls-cumulative-layout-shift) · [FCP](./6_web_api_security.md#first-contentful-paint-fcp) · [лаборатория против поля](./6_web_api_security.md#core-web-vitals)
 
 </details>
 

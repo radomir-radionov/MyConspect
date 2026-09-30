@@ -6,7 +6,7 @@
 
 ### Related docs
 
-- [Веб-API — Core](./6_web_api_core.md) · [Веб-API — HTTP](./6_web_api_http.md) · [Веб-API — стили API](./6_web_api_rest.md) · [Веб-API — аутентификация и хранение](./6_web_api_auth.md) · [Веб-API — Приложения](./6_web_api_apps.md) · [Веб-API — Безопасность](./6_web_api_security.md) · [Веб-API — Интервью](./6_web_api_interview.md)
+- [Веб-API — Core](./6_web_api_core.md) · [Веб-API — HTTP](./6_web_api_http.md) · [Веб-API — стили API](./6_web_api_rest.md) · [Веб-API — аутентификация и хранение](./6_web_api_auth.md) · [Веб-API — Приложения](./6_web_api_apps.md) · [Веб-API — Безопасность](./6_web_api_security.md) · [Веб-API — Performance](./6_web_api_performance.md) · [Веб-API — Интервью](./6_web_api_interview.md)
 
 ### Sections
 
@@ -52,7 +52,6 @@
 | Что такое ПВА?                                        | Вопросы и ответы |
 | Что такое ФКП?                                        | Вопросы и ответы |     | Что такое ЛКП?                         | Вопросы и ответы |
 | Платежи/вебхуки                                       | Вопросы и ответы |
-| Что такое основные веб-жизненные показатели?          | Вопросы и ответы |
 | ИЯФ против ФИД                                        | Вопросы и ответы |
 | ТТФБ                                                  | Вопросы и ответы |
 | Core Web Vitals (лабораторные и полевые исследования) | Вопросы и ответы |
@@ -605,7 +604,7 @@ ac.abort(); // throws AbortError in catch
 
 **Thoughts:** Исправлена ​​первая отрисовка с TTFB + ресурсами, блокирующими рендеринг; еще измеряю LCP и INP.
 
-**See also:** [Первая отрисовка содержимого (FCP)](./6_web_api_security.md#first-contentful-paint-fcp)
+**See also:** [Первая отрисовка содержимого (FCP)](./1_html_performance.md#first-contentful-paint-fcp)
 
 ---
 
@@ -622,7 +621,7 @@ ac.abort(); // throws AbortError in catch
 
 **Thoughts:** Откройте для себя ресурс LCP в HTML как можно раньше; затем сократите TTFB, байты и CSS/JS, блокирующие рендеринг.
 
-**See also:** [LCP (Largest Contentful Paint)](./6_web_api_security.md#lcp-largest-contentful-paint)
+**See also:** [LCP (Largest Contentful Paint)](./1_html_performance.md#lcp-largest-contentful-paint)
 
 ---
 
@@ -639,7 +638,7 @@ ac.abort(); // throws AbortError in catch
 
 **Thoughts:** Вырезать основной поток JS; сначала покажи пользовательский интерфейс, затем выдай (`scheduler.yield()` + `setTimeout` отступать).
 
-**See also:** [INP (Взаимодействие со следующей отрисовкой)](./6_web_api_security.md#inp-interaction-to-next-paint)
+**See also:** [INP (Взаимодействие со следующей отрисовкой)](./1_html_performance.md#inp-interaction-to-next-paint)
 
 ---
 
@@ -673,24 +672,7 @@ ac.abort(); // throws AbortError in catch
 
 **Thoughts:** Лаборатория = воспроизводить. Поле p75 = пользователи и рейтинг.
 
-**See also:** [Основные веб-показатели](./6_web_api_security.md#core-web-vitals)
-
----
-
-</details>
-
-<details>
-  <summary>What are Core Web Vitals?</summary>
-
-### What are Core Web Vitals?
-
-**Definition:** Полевые UX-метрики на **p75** (отдельно для мобильных и настольных компьютеров): **LCP** ≤ 2,5 с, **INP** ≤ 200 мс, **CLS** ≤ 0,1. Пройдено = все три хорошо. **FCP** / **TTFB** диагностирует нагрузку; они не являются ключевыми и не ранжируются.
-
-**How it works:** В рейтинге используется **CrUX**, а не Lighthouse. INP заменил **FID** 12 марта 2024 г. (полный щелчок → следующая отрисовка, все взаимодействия). Те же пороговые значения на телефоне и компьютере; посмотрите оба среза.
-
-**Thoughts:** LCP = просмотрен основной контент; INP = пользовательский интерфейс отреагировал; CLS = макет остался неизменным.
-
-**See also:** [Основные веб-показатели](./6_web_api_security.md#core-web-vitals)
+**See also:** [Основные веб-показатели](./1_html_performance.md#core-web-vitals)
 
 ---
 
@@ -707,7 +689,7 @@ ac.abort(); // throws AbortError in catch
 
 **Thoughts:** Исправлена ​​сеть (CDN, меньше перенаправлений) и источник (поток/SSG/ISR, `Server-Timing`). Затем оптимизируйте покраску.
 
-**See also:** [TTFB](./6_web_api_security.md#ttfb-time-to-first-byte)
+**See also:** [TTFB](./1_html_performance.md#ttfb-time-to-first-byte)
 
 ---
 

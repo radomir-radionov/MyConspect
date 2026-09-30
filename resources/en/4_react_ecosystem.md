@@ -933,20 +933,86 @@ Web Vitals in React apps
 - Prefer RSC for static, non-interactive content
 - Defer non-critical JS with `lazy` + `Suspense`
 - Avoid layout thrashing in `useLayoutEffect`
-- INP: granular `<Suspense>`, React 19.2 `<Activity mode="hidden">` → [6_web_api.md — INP](./6_web_api_security.md#inp-interaction-to-next-paint)
+- INP: granular `<Suspense>`, React 19.2 `<Activity mode="hidden">` → [6_web_api.md — INP](./1_html_performance.md#inp-interaction-to-next-paint)
 - CLS causes in HTML/CSS → [1_html.md — CLS](./1_html_performance.md#cls-cumulative-layout-shift)
 
 **Examples:**
+
+Field RUM — mount once after the app shell (Vite/CRA). Flush on `visibilitychange` → `hidden` via `sendBeacon` (`unload` breaks **bfcache**). Full pattern → [6_web_api.md — Core Web Vitals](./1_html_performance.md#core-web-vitals).
+
+```tsx
+import { useEffect } from "react";
+import { onCLS, onINP, onLCP } from "web-vitals";
+
+export function WebVitalsReporter() {
+  useEffect(() => {
+    const send = (metric) =>
+      navigator.sendBeacon("/analytics", JSON.stringify(metric));
+    onCLS(send);
+    onINP(send);
+    onLCP(send);
+  }, []);
+  return null;
+}
+```
+
+```tsx
+// main.tsx — render <WebVitalsReporter /> next to <App />
+```
+
+Next.js — keep `'use client'` on a tiny reporter; import from `app/layout.tsx` → [4_nextjs.md — CWV](./4_nextjs_optimizations.md#core-web-vitals-on-vercel).
+
+**LCP** — smaller initial JS; defer below-fold UI:
+
+```tsx
+import { lazy, Suspense } from "react";
+
+const Dashboard = lazy(() => import("./Dashboard"));
+
+export function App() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: 400 }} />}>
+      <Dashboard />
+    </Suspense>
+  );
+}
+```
+
+**INP** — mark heavy updates non-urgent so clicks paint sooner:
+
+```tsx
+import { useState, useTransition } from "react";
+
+const [filter, setFilter] = useState("");
+const [isPending, startTransition] = useTransition();
+
+const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  startTransition(() => setFilter(e.target.value));
+```
+
+**CLS** — skeleton matches final hero dimensions:
+
+```tsx
+{
+  hero ? (
+    <img src={hero.url} width={1200} height={630} alt="" fetchPriority="high" />
+  ) : (
+    <div style={{ width: 1200, height: 630 }} aria-hidden />
+  );
+}
+```
+
+Lab bundle size:
 
 ```bash
 npm run build && npx @next/bundle-analyzer
 ```
 
-**Thoughts:** _Vitals measure user-perceived speed — optimize bundle, hydration, and main-thread work._
+**Thoughts:** _Vitals measure user-perceived speed — optimize bundle, hydration, and main-thread work. Ship field RUM first; use Lighthouse only to reproduce a bad p75._
 
 **Sources:**
 
-[web.dev/vitals](https://web.dev/vitals/) · [react.dev — Activity](https://react.dev/reference/react/Activity)
+[web.dev/articles/vitals](https://web.dev/articles/vitals) · [web-vitals](https://github.com/GoogleChrome/web-vitals) · [react.dev — Activity](https://react.dev/reference/react/Activity)
 
 ---
 

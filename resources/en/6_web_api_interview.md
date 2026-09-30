@@ -6,7 +6,7 @@ Interview Q&A for HTTP and Web APIs.
 
 ### Related docs
 
-- [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
+- [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Performance](./6_web_api_performance.md) · [Web APIs — Interview](./6_web_api_interview.md)
 
 ### Sections
 
@@ -55,7 +55,6 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 | What is FCP?                                | Q&A    |
 | What is LCP?                                | Q&A    |
 | Payments / webhooks                         | Q&A    |
-| What are Core Web Vitals?                   | Q&A    |
 | INP vs FID                                  | Q&A    |
 | TTFB                                        | Q&A    |
 | Core Web Vitals (lab vs field)              | Q&A    |
@@ -620,7 +619,7 @@ ac.abort(); // throws AbortError in catch
 
 **Thoughts:** Fix first paint with TTFB + render-blocking resources; still measure LCP and INP.
 
-**See also:** [First Contentful Paint (FCP)](./6_web_api_security.md#first-contentful-paint-fcp)
+**See also:** [First Contentful Paint (FCP)](./1_html_performance.md#first-contentful-paint-fcp)
 
 ---
 
@@ -637,7 +636,7 @@ ac.abort(); // throws AbortError in catch
 
 **Thoughts:** Discover the LCP resource in HTML early; then cut TTFB, bytes, and render-blocking CSS/JS.
 
-**See also:** [LCP (Largest Contentful Paint)](./6_web_api_security.md#lcp-largest-contentful-paint)
+**See also:** [LCP (Largest Contentful Paint)](./1_html_performance.md#lcp-largest-contentful-paint)
 
 ---
 
@@ -654,7 +653,7 @@ ac.abort(); // throws AbortError in catch
 
 **Thoughts:** Cut main-thread JS; show UI first, then yield (`scheduler.yield()` + `setTimeout` fallback).
 
-**See also:** [INP (Interaction to Next Paint)](./6_web_api_security.md#inp-interaction-to-next-paint)
+**See also:** [INP (Interaction to Next Paint)](./1_html_performance.md#inp-interaction-to-next-paint)
 
 ---
 
@@ -688,24 +687,7 @@ ac.abort(); // throws AbortError in catch
 
 **Thoughts:** Lab = reproduce. Field p75 = users and ranking.
 
-**See also:** [Core Web Vitals](./6_web_api_security.md#core-web-vitals)
-
----
-
-</details>
-
-<details>
-  <summary>What are Core Web Vitals?</summary>
-
-### What are Core Web Vitals?
-
-**Definition:** Field UX metrics at **p75** (mobile and desktop separately): **LCP** ≤ 2.5 s, **INP** ≤ 200 ms, **CLS** ≤ 0.1. Pass = all three good. **FCP** / **TTFB** diagnose load; they are not Core and not ranking.
-
-**How it works:** Ranking uses **CrUX**, not Lighthouse. INP replaced **FID** on 12 Mar 2024 (full click→next paint, all interactions). Same thresholds on phone and desktop; look at both slices.
-
-**Thoughts:** LCP = saw main content; INP = UI reacted; CLS = layout stayed put.
-
-**See also:** [Core Web Vitals](./6_web_api_security.md#core-web-vitals)
+**See also:** [Core Web Vitals](./1_html_performance.md#core-web-vitals)
 
 ---
 
@@ -722,7 +704,7 @@ ac.abort(); // throws AbortError in catch
 
 **Thoughts:** Fix network (CDN, fewer redirects) and origin (stream/SSG/ISR, `Server-Timing`). Then optimize paint.
 
-**See also:** [TTFB](./6_web_api_security.md#ttfb-time-to-first-byte)
+**See also:** [TTFB](./1_html_performance.md#ttfb-time-to-first-byte)
 
 ---
 

@@ -26,15 +26,14 @@ _Interview answers follow: Definition → comparison table → When to use → E
 
 ### Question index
 
-| Topic                                 | Answer |
-| ------------------------------------- | ------ |
-| SSR vs SSG vs ISR vs CSR              | Q&A    |
-| Core Web Vitals (LCP, INP, CLS, TTFB) | Q&A    |
-| App Router vs Pages Router            | Q&A    |
-| Server vs Client Components           | Q&A    |
-| Caching (`fetch`, `revalidate`)       | Q&A    |
-| Server Actions                        | Q&A    |
-| Coding tasks 1–3                      | Tasks  |
+| Topic                           | Answer |
+| ------------------------------- | ------ |
+| SSR vs SSG vs ISR vs CSR        | Q&A    |
+| App Router vs Pages Router      | Q&A    |
+| Server vs Client Components     | Q&A    |
+| Caching (`fetch`, `revalidate`) | Q&A    |
+| Server Actions                  | Q&A    |
+| Coding tasks 1–3                | Tasks  |
 
 ---
 
@@ -82,23 +81,6 @@ const user = await fetch(url, { cache: "no-store" });
 **Thoughts:** App Router is **static by default** — former `getServerSideProps` pages may need explicit `no-store`. Mention **streaming SSR** — HTML chunks sent before slow data resolves.
 
 **Sources:** [nextjs.org/docs/app/guides/caching](https://nextjs.org/docs/app/guides/caching)
-
-</details>
-
-<details>
-  <summary>What are Core Web Vitals? How do you improve them in Next.js?</summary>
-
-### What are Core Web Vitals? How do you improve them in Next.js?
-
-**Definition:** Field metrics for real users: **LCP** (largest paint ≤ 2.5s), **INP** (interaction ≤ 200ms; replaced FID), **CLS** (layout shift ≤ 0.1). **TTFB** and **FCP** (≤ 1.8s) are diagnostics that feed LCP, not Core Vitals.
-
-**How it works:** `next/image` + `preload` on the LCP image (`priority` is deprecated in Next.js 16); Server Components / smaller client bundles for INP; `next/font` and explicit image sizes for CLS. Avoid `force-dynamic` when a static or ISR page would hit the CDN.
-
-**Common pitfalls:** Citing FID as a current Core Web Vital. Edge SSR + far-away DB worsening TTFB.
-
-**Thoughts:** One lever per metric — image, JS, layout.
-
-**See also:** [Core Web Vitals on Vercel](./4_nextjs_optimizations.md#core-web-vitals-on-vercel) · [TTFB](./6_web_api_security.md#ttfb-time-to-first-byte) · [CLS](./1_html_performance.md#cls-cumulative-layout-shift) · [FCP](./6_web_api_security.md#first-contentful-paint-fcp) · [lab vs field](./6_web_api_security.md#core-web-vitals)
 
 </details>
 

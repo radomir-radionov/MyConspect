@@ -509,15 +509,88 @@ Web Vitals in Vue apps
 
 **How it works:**
 
-- **LCP** — SSR/SSG or prerender hero; optimize images (`<img loading="lazy">`)
-- **INP** — avoid long tasks in `watch`/`computed`; use `v-memo`, async components
-- **CLS** — reserve space for async content; avoid inserting DOM above existing content without dimensions
+| Metric  | Vue lever                                                                                |
+| ------- | ---------------------------------------------------------------------------------------- |
+| **LCP** | SSR/SSG (Nuxt) or prerender hero; lazy routes; `fetchpriority="high"` on hero `<img>`    |
+| **INP** | Avoid long sync work in `watch`/`computed`; `v-memo`, `defineAsyncComponent`, route lazy |
+| **CLS** | `width`/`height` on images; reserve slots for async banners; no DOM insert above fold    |
 
-**When to use:** Lighthouse CI on Nuxt/Vite production builds.
+- Analyze bundle: `rollup-plugin-visualizer` / Nuxt DevTools
+- Prefer SSR/SSG for marketing and content pages — pure SPA hurts LCP
+- Lazy-load route components in Vue Router / Nuxt pages
+- INP phases and attribution → [6_web_api.md — INP](./1_html_performance.md#inp-interaction-to-next-paint)
+- CLS causes in HTML/CSS → [1_html.md — CLS](./1_html_performance.md#cls-cumulative-layout-shift)
+
+**When to use:** Production RUM on Nuxt/Vite builds; Lighthouse CI budgets before release.
+
+**Examples:**
+
+Field RUM — register once at app bootstrap (Nuxt plugin or `main.js`). Flush on `visibilitychange` → `hidden` via `sendBeacon`. Full pattern → [6_web_api.md — Core Web Vitals](./1_html_performance.md#core-web-vitals).
+
+```ts
+// plugins/web-vitals.client.ts (Nuxt)
+import { onCLS, onINP, onLCP } from "web-vitals";
+
+export default defineNuxtPlugin(() => {
+  const send = (metric) =>
+    navigator.sendBeacon("/analytics", JSON.stringify(metric));
+  onCLS(send);
+  onINP(send);
+  onLCP(send);
+});
+```
+
+```js
+// main.js (Vite SPA)
+import { createApp } from "vue";
+import { onCLS, onINP, onLCP } from "web-vitals";
+import App from "./App.vue";
+
+const send = (metric) =>
+  navigator.sendBeacon("/analytics", JSON.stringify(metric));
+onCLS(send);
+onINP(send);
+onLCP(send);
+
+createApp(App).mount("#app");
+```
+
+**LCP** — lazy route chunks keep the first paint small:
+
+```js
+// router.js
+const routes = [
+  { path: "/dashboard", component: () => import("./pages/Dashboard.vue") },
+];
+```
+
+**INP** — skip re-rendering unchanged list rows:
+
+```vue
+<li v-for="item in list" :key="item.id" v-memo="[item.id, item.active]">
+  {{ item.name }}
+</li>
+```
+
+**CLS** — reserve hero space before data arrives:
+
+```vue
+<img
+  v-if="hero"
+  :src="hero"
+  width="1200"
+  height="630"
+  alt=""
+  fetchpriority="high"
+/>
+<div v-else style="width: 1200px; height: 630px" aria-hidden />
+```
+
+**Thoughts:** _Same field metrics as any SPA — Vue levers are SSR, route splitting, and stable list rendering. Measure production, not dev HMR._
 
 **Sources:**
 
-[web.dev/vitals](https://web.dev/vitals/)
+[web.dev/articles/vitals](https://web.dev/articles/vitals) · [web-vitals](https://github.com/GoogleChrome/web-vitals) · [vuejs.org — performance](https://vuejs.org/guide/best-practices/performance.html)
 
 </details>
 

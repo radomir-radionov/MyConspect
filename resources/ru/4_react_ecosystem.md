@@ -924,20 +924,86 @@ Web Vitals в приложениях React
 - Предпочитайте RSC для статического, неинтерактивного контента.
 - Отложите некритичный JS с помощью `lazy` + `Suspense`
 - Избегайте сбоев макета `useLayoutEffect`
-- INP: гранулированный `<Suspense>`, Реагировать 19.2 `<Activity mode="hidden">` → [6_web_api.md — INP](./6_web_api_security.md#inp-interaction-to-next-paint)
+- INP: гранулированный `<Suspense>`, Реагировать 19.2 `<Activity mode="hidden">` → [6_web_api.md — INP](./1_html_performance.md#inp-interaction-to-next-paint)
 - Причины CLS в HTML/CSS → [1_html.md — CLS](./1*html* Performance.md#cls-cumulative-layout-shift)
 
 **Examples:**
+
+Полевой RUM — монтируйте один раз после shell приложения (Vite/CRA). Отправка на `visibilitychange` → `hidden` через `sendBeacon` (`unload` ломает **bfcache**). Полный паттерн → [6_web_api.md — Core Web Vitals](./1_html_performance.md#core-web-vitals).
+
+```tsx
+import { useEffect } from "react";
+import { onCLS, onINP, onLCP } from "web-vitals";
+
+export function WebVitalsReporter() {
+  useEffect(() => {
+    const send = (metric) =>
+      navigator.sendBeacon("/analytics", JSON.stringify(metric));
+    onCLS(send);
+    onINP(send);
+    onLCP(send);
+  }, []);
+  return null;
+}
+```
+
+```tsx
+// main.tsx — рендер <WebVitalsReporter /> рядом с <App />
+```
+
+Next.js — `'use client'` только на маленьком репортере; импорт из `app/layout.tsx` → [4_nextjs.md — CWV](./4_nextjs_optimizations.md#core-web-vitals-on-vercel).
+
+**LCP** — меньше начального JS; отложите UI ниже fold:
+
+```tsx
+import { lazy, Suspense } from "react";
+
+const Dashboard = lazy(() => import("./Dashboard"));
+
+export function App() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: 400 }} />}>
+      <Dashboard />
+    </Suspense>
+  );
+}
+```
+
+**INP** — помечайте тяжёлые обновления как несрочные, чтобы клик быстрее отрисовался:
+
+```tsx
+import { useState, useTransition } from "react";
+
+const [filter, setFilter] = useState("");
+const [isPending, startTransition] = useTransition();
+
+const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  startTransition(() => setFilter(e.target.value));
+```
+
+**CLS** — скелет совпадает с размерами финального hero:
+
+```tsx
+{
+  hero ? (
+    <img src={hero.url} width={1200} height={630} alt="" fetchPriority="high" />
+  ) : (
+    <div style={{ width: 1200, height: 630 }} aria-hidden />
+  );
+}
+```
+
+Лабораторный размер бандла:
 
 ```bash
 npm run build && npx @next/bundle-analyzer
 ```
 
-**Thoughts:** _Жизненно важные показатели измеряют скорость, воспринимаемую пользователем, — оптимизируйте работу связок, гидратации и основного потока._
+**Thoughts:** _Vitals измеряют скорость, которую видит пользователь — оптимизируйте бандл, гидратацию и main thread. Сначала полевой RUM; Lighthouse — только чтобы воспроизвести плохой p75._
 
 **Sources:**
 
-[web.dev/vitals](https://web.dev/vitals/) · [react.dev — Activity](https://react.dev/reference/react/Activity)
+[web.dev/articles/vitals](https://web.dev/articles/vitals) · [web-vitals](https://github.com/GoogleChrome/web-vitals) · [react.dev — Activity](https://react.dev/reference/react/Activity)
 
 ---
 

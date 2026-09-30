@@ -6,7 +6,7 @@ Redux Toolkit, глобальное состояние клиента и RTK Que
 
 ### Related docs
 
-- [React — Basics](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Core](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — Интервью](./4_react_interview.md)
+- [React — Basics](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Core](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Интервью](./4_react_interview.md)
 
 ### Sections
 
@@ -273,7 +273,7 @@ Redux Toolkit essentials
 | `createSlice`         | `name`, `initialState`, case reducers; генерирует action creators и типы                                                                    |
 | `createAsyncThunk`    | Async с lifecycle actions `pending` / `fulfilled` / `rejected`                                                                              |
 | `createEntityAdapter` | Нормализованная форма `{ ids, entities }` + CRUD-хелперы                                                                                    |
-| RTK Query `createApi` | Кэш сервера, loading, invalidation — [TanStack Query vs RTK Query](./5_ts_tanstack.md#tanstack-query-vs-rtk-query)                       |
+| RTK Query `createApi` | Кэш сервера, loading, invalidation — [TanStack Query vs RTK Query](./4_react_tanstack.md#tanstack-query-vs-rtk-query)                       |
 
 Reducers в `createSlice` работают через Immer — можно писать в «мутирующем» стиле:
 
@@ -540,7 +540,7 @@ const fetchTodos = () => async (dispatch) => {
 
 **Thoughts:** _Redux синхронен в ядре; «async Redux» — это async **вокруг** store, не внутри reducers._
 
-**See also:** [Working with async in Redux](#working-with-async-in-redux) · [createAsyncThunk](#createasyncthunk) · [RTK Query](./5_ts_tanstack.md#tanstack-query-vs-rtk-query) · [Data fetching](./4_react_ecosystem.md#data-fetching)
+**See also:** [Working with async in Redux](#working-with-async-in-redux) · [createAsyncThunk](#createasyncthunk) · [RTK Query](./4_react_tanstack.md#tanstack-query-vs-rtk-query) · [Data fetching](./4_react_ecosystem.md#data-fetching)
 
 **Sources:**
 
@@ -615,7 +615,7 @@ Payload creator получает `(arg, thunkAPI)` с `dispatch`, `getState`, `s
 
 **Thoughts:** _createAsyncThunk — для actions; RTK Query — когда главная задача «fetch, cache, refetch»._
 
-**See also:** [Working with async in Redux](#working-with-async-in-redux) · [Why async is outside reducers](#why-async-is-outside-reducers) · [TanStack Query vs RTK Query](./5_ts_tanstack.md#tanstack-query-vs-rtk-query)
+**See also:** [Working with async in Redux](#working-with-async-in-redux) · [Why async is outside reducers](#why-async-is-outside-reducers) · [TanStack Query vs RTK Query](./4_react_tanstack.md#tanstack-query-vs-rtk-query)
 
 **Sources:**
 
@@ -726,7 +726,7 @@ const [addTodo] = useAddTodoMutation();
 
 **Thoughts:** _Async Redux = dispatch thunk/query, middleware делает I/O, reducers применяют plain results._
 
-**See also:** [Why async is outside reducers](#why-async-is-outside-reducers) · [createAsyncThunk](#createasyncthunk) · [TanStack Query vs RTK Query](./5_ts_tanstack.md#tanstack-query-vs-rtk-query) · [Data fetching](./4_react_ecosystem.md#data-fetching)
+**See also:** [Why async is outside reducers](#why-async-is-outside-reducers) · [createAsyncThunk](#createasyncthunk) · [TanStack Query vs RTK Query](./4_react_tanstack.md#tanstack-query-vs-rtk-query) · [Data fetching](./4_react_ecosystem.md#data-fetching)
 
 **Sources:**
 
@@ -826,7 +826,7 @@ const useStore = create((set) => ({
 
 **Thoughts:** _Server state и UI state — разные задачи — не кладите fetch cache в Redux без нужды в RTK Query._
 
-**See also:** [TanStack Query vs RTK Query](./5_ts_tanstack.md#tanstack-query-vs-rtk-query) · [Data fetching](./4_react_ecosystem.md#data-fetching)
+**See also:** [TanStack Query vs RTK Query](./4_react_tanstack.md#tanstack-query-vs-rtk-query) · [Data fetching](./4_react_ecosystem.md#data-fetching)
 
 **Sources:**
 
@@ -845,7 +845,7 @@ TanStack Query vs RTK Query
 
 **Definition:** Оба кэшируют **server state** в памяти. TanStack Query — автономный; RTK Query живёт в Redux store через `createApi`.
 
-Каноническое сравнение → [TypeScript — TanStack](./5_ts_tanstack.md#tanstack-query-vs-rtk-query).
+Каноническое сравнение → [React — TanStack](./4_react_tanstack.md#tanstack-query-vs-rtk-query).
 
 **When to use RTK Query:** Приложение уже на Redux Toolkit — один store, DevTools, `invalidatesTags`, generated hooks из endpoints.
 

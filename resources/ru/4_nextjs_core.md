@@ -1,17 +1,19 @@
 # Next.js — Core
 
-Модель платформы и принципы проектирования.
+Модель платформы, маршрутизатор приложений и принципы проектирования.
 
 [ ← Вернуться в центр](./4_nextjs.md)
 
 ### Related docs
 
-- [Next.js — Ядро](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Данные](./4_nextjs_data.md) · [Next.js — Маршрутизация](./4_nextjs_routing.md) · [Next.js — Оптимизации](./4_nextjs_optimizations.md) · [Next.js — Платформа](./4_nextjs_platform.md) · [Next.js — Интервью](./4_nextjs_interview.md)
+- [Next.js — Ядро](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Данные](./4_nextjs_data.md) · [Next.js — Маршрутизация](./4_nextjs_routing.md) · [Next.js — Платформа](./4_nextjs_platform.md) · [Next.js — Интервью](./4_nextjs_interview.md)
 
 ### Sections
 
 - [1. Framework overview](#1-framework-overview)
-- [2. Design principles](#2-design-principles)
+- [2. App vs Pages Router](#2-app-vs-pages-router)
+- [3. Project structure](#3-project-structure)
+- [4. Design principles](#4-design-principles)
 
 ---
 
@@ -183,7 +185,332 @@ React отображает пользовательский интерфейс; 
 
 </details>
 
-## 2. Design principles
+<details>
+  <summary>Deep dives</summary>
+
+## 2. App vs Pages Router
+
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](#topic-template))._
+
+<details>
+  <summary>App Router</summary>
+
+### App Router
+
+**Definition:** Современный маршрутизатор в `app/`. Папки задают сегменты URL; маршрут становится **публичным** только когда в сегменте есть `page.tsx` (UI) или `route.ts` (HTTP-обработчик). Построен на серверных компонентах React, вложенных макетах, потоковой передаче через Suspense и модели кэширования Next.js. По умолчанию для всех новых проектов с Next.js 13+.
+
+**How it works:**
+
+- **Маршрутизация по файловой системе** — `app/blog/[slug]/page.tsx` → `/blog/:slug`. Динамические сегменты: `[slug]` (один параметр), `[...slug]` (catch-all), `[[...slug]]` (опциональный catch-all). В Next.js 15+ `params` и `searchParams` — **Promise**; в Server Components их нужно `await`.
+- **Специальные файлы в каждом сегменте:**
+
+| Файл            | Роль                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------- |
+| `layout.tsx`    | Общая оболочка для дочерних сегментов; состояние сохраняется при клиентской навигации |
+| `page.tsx`      | Уникальный UI маршрута — делает URL публично доступным                                |
+| `loading.tsx`   | Мгновенный fallback, пока сегмент стримится (граница React Suspense)                  |
+| `error.tsx`     | Error boundary сегмента (нужен `"use client"`)                                        |
+| `not-found.tsx` | UI 404 для сегмента (вызывается через `notFound()`)                                   |
+| `route.ts`      | Route Handlers — HTTP-эндпоинты (`GET`, `POST`, …) рядом с UI                         |
+| `template.tsx`  | Как `layout`, но **перемонтируется** при навигации (свежее состояние/effects)         |
+
+- **Порядок рендера внутри сегмента:** `layout` → `template` → `error` → `loading` (Suspense) → `not-found` → `page`. Родительские layout оборачивают детей рекурсивно (`app/layout.tsx` → `app/dashboard/layout.tsx` → `page`).
+- **Server Components по умолчанию** — `layout` и `page` выполняются на сервере, пока файл не начинается с `"use client"`. Данные загружают прямо в `async`-компонентах; Client Components добавляют только для хуков, событий и browser API.
+- **Статика по умолчанию** — маршруты пререндерятся на сборке, пока не читают данные запроса (`cookies()`, `headers()`, `searchParams` или `fetch` с `cache: 'no-store'`). Переопределение на сегмент: `export const dynamic = 'force-static' | 'force-dynamic'`.
+- **Колокация без влияния на URL** — route groups `(marketing)` не попадают в путь; приватные папки `_lib` / `_components` игнорируются роутером. Нерутируемые файлы можно держать рядом с `page.tsx`.
+
+**When to use:** Каждый новый проект. Greenfield-приложения, e-commerce, дашборды, контентные сайты.
+
+**Pluses and minuses:**
+
+| +                                                     | −                                                     |
+| ----------------------------------------------------- | ----------------------------------------------------- |
+| RSC, streaming, вложенные layouts                     | Кривая обучения кэшированию и границам Server/Client  |
+| Колокация `loading.tsx`, `error.tsx`, `not-found.tsx` | Нельзя смешать `pages/` и `app/` на одном URL         |
+| Server Actions, Metadata API, Route Handlers          | Часть сторонних библиотек всё ещё без RSC             |
+| Тонкое кэширование через `use cache` / `revalidate`   | Миграция с Pages требует переписывания                |
+| Prefetch и client transitions через `next/link`       | `template.tsx` vs `layout.tsx` часто путают на старте |
+
+**Examples:**
+
+```tsx
+// app/layout.tsx — корневой layout (обязателен); нужны <html> и <body>
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+```tsx
+// app/blog/layout.tsx — вложенный layout для /blog/*
+export default function BlogLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <nav>Blog</nav>
+      {children}
+    </section>
+  );
+}
+```
+
+```tsx
+// app/blog/[slug]/page.tsx — async Server Component (default)
+export default async function BlogPost({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  return <article>{post.title}</article>;
+}
+```
+
+```tsx
+// app/blog/[slug]/loading.tsx — показывается мгновенно, пока page.tsx стримится
+export default function Loading() {
+  return <p>Loading post…</p>;
+}
+```
+
+```ts
+// app/api/posts/route.ts — Route Handler (замена pages/api)
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const posts = await getPosts();
+  return NextResponse.json(posts);
+}
+```
+
+**Thoughts:** Динамические, parallel и intercepting routes — в [Next.js — Routing](./4_nextjs_routing.md). Кэширование, опции `fetch` и Server Actions — в [Next.js — Data](./4_nextjs_data.md). На интервью: **RSC + static by default**; `"use client"` — opt-in для интерактивности; при конфликте URL побеждает App Router над `pages/`.
+
+**Sources:** [Project structure](https://nextjs.org/docs/app/getting-started/project-structure) · [Layouts and pages](https://nextjs.org/docs/app/getting-started/layouts-and-pages) · [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components)
+
+</details>
+
+<details>
+  <summary>Pages Router</summary>
+
+### Pages Router
+
+**Definition:** Устаревший маршрутизатор в `pages/`. Использование `getServerSideProps`, `getStaticProps`, `getInitialProps`, и `pages/api` для конечных точек серверной части.
+
+**When to use:** Поддержание только существующих приложений Pages Router. Не начинайте новые проекты на Pages Router.
+
+**Pluses and minuses:**
+
+| +                                                         | −                                                             |
+| --------------------------------------------------------- | ------------------------------------------------------------- |
+| Зрелые, хорошо документированные шаблоны                  | Нет RSC, нет вложенных макетов                                |
+| Упрощенная ментальная модель (данные на основе реквизита) | `getServerSideProps` работает на странице — сложнее составить |
+| Поддержка большой существующей кодовой базы               | Не там, где появляются новые возможности Next.js              |
+
+**Examples:**
+
+```tsx
+// pages/blog/[slug].tsx — legacy pattern
+export async function getStaticProps({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug);
+  return { props: { post } };
+}
+
+export default function BlogPost({ post }: { post: Post }) {
+  return <article>{post.title}</article>;
+}
+```
+
+**Sources:** [nextjs.org/docs/pages](https://nextjs.org/docs/pages)
+
+</details>
+
+<details>
+  <summary>Migration mapping</summary>
+
+### Migration mapping
+
+**Definition:**
+
+Сопоставление «один к одному» API-интерфейсов Pages Router с эквивалентами App Router для поэтапной миграции.
+
+| Маршрутизатор страниц | Эквивалент App Router                                     |
+| --------------------- | --------------------------------------------------------- |
+| `getStaticProps`      | `fetch` с `cache: 'force-cache'` + `generateStaticParams` |
+| `getServerSideProps`  | `fetch` с `cache: 'no-store'` или динамический маршрут    |
+| `getInitialProps`     | Асинхронная выборка данных серверного компонента          |
+| `pages/api/*.ts`      | `app/**/route.ts` (Обработчики маршрутов)                 |
+| `_app.tsx`            | `app/layout.tsx`                                          |
+| `_document.tsx`       | `app/layout.tsx` + API метаданных                         |
+| `next/head`           | `export const metadata` / `generateMetadata()`            |
+| `next/router`         | `next/navigation` (`useRouter`, `usePathname`)            |
+| `next/link`           | `next/link` (тот же пакет, с поддержкой App Router)       |
+
+**Examples:**
+
+```tsx
+// Pages Router (legacy)
+export async function getServerSideProps() {
+  const res = await fetch("https://api.example.com/data");
+  return { props: { data: await res.json() } };
+}
+
+// App Router (modern)
+async function getData() {
+  const res = await fetch("https://api.example.com/data", {
+    cache: "no-store",
+  });
+  return res.json();
+}
+
+export default async function Page() {
+  const data = await getData();
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+}
+```
+
+**Thoughts:**
+
+Оба роутера могут сосуществовать в одном проекте (`pages/` + `app/`), но **не для того же URL**. Маршрутизатор приложений имеет приоритет. Планируйте поэтапную миграцию по каждому маршруту.
+
+---
+
+**Sources:** [nextjs.org/docs/app/guides/migrating](https://nextjs.org/docs/app/guides/migrating)
+
+</details>
+
+<a name="3-project-structure"></a>
+
+## 3. Project structure
+
+_Темы следующие: Определение → Плюсы и минусы → Когда использовать → Пример → Примечания → Источник ([шаблон](#topic-template))._
+
+<details>
+  <summary>Directory layout</summary>
+
+### Directory layout
+
+**Definition:** Next.js использует соглашения о файловой системе. `app/` каталог (или `src/app/`) определяет маршруты; специальные имена файлов соответствуют функциям платформы.
+
+**When to use:** Следуйте настройкам по умолчанию, если только не требуется monorepo или FSD. `src/app/` + функциональные папки.
+
+**Pluses and minuses:**
+
+| +                                                | −                                                                                    |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| Предсказуемая структура — быстрая адаптация      | Глубокая вложенность может слишком буквально отражать URL                            |
+| Размещение интерфейса маршрута, загрузка, ошибки | Большой `app/` деревьям нужны группы маршрутов или дисциплина FSD                    |
+| `src/` опция сохраняет корень чистым             | При перемещении файлов URL-адреса изменяются, если не используются группы/перезаписи |
+
+**Examples:**
+
+```
+my-app/
+├── app/                    # App Router (or src/app/)
+│   ├── layout.tsx          # Root layout (required)
+│   ├── page.tsx            # Home route (/)
+│   ├── loading.tsx         # Loading UI for segment
+│   ├── error.tsx           # Error boundary for segment
+│   ├── not-found.tsx       # 404 for segment
+│   ├── (marketing)/        # Route group (no URL segment)
+│   │   └── about/page.tsx  # /about
+│   ├── blog/
+│   │   ├── page.tsx        # /blog
+│   │   └── [slug]/page.tsx # /blog/:slug
+│   └── api/
+│       └── webhook/route.ts
+├── public/                 # Static assets (served as-is)
+├── next.config.ts
+├── package.json
+└── tsconfig.json
+```
+
+**Thoughts:** Предпочитать `src/app/` в более крупных базах кода для отделения кода приложения от конфигурации в корне. Личные папки: префикс с `_` (e.g. `_components`) — не маршрутизируется.
+
+**Sources:** [nextjs.org/docs/app/getting-started/project-structure](https://nextjs.org/docs/app/getting-started/project-structure)
+
+</details>
+
+<details>
+  <summary>Special files</summary>
+
+### Special files
+
+**Definition:**
+
+Имена файлов соглашения в `app/` которые соответствуют функциям платформы — макетам, состояниям загрузки, ошибкам и маршрутам API.
+
+| Файл            | Цель                                                                            |
+| --------------- | ------------------------------------------------------------------------------- |
+| `page.tsx`      | Уникальный интерфейс для сегмента маршрута; делает маршрут общедоступным        |
+| `layout.tsx`    | Оболочка общего пользовательского интерфейса; сохраняет состояние при навигации |
+| `template.tsx`  | Похож на макет, но **перемонтируется** при навигации (новое состояние/эффекты)  |
+| `loading.tsx`   | Мгновенная загрузка пользовательского интерфейса через границу ожидания         |
+| `error.tsx`     | Граница ошибки клиента для сегмента                                             |
+| `not-found.tsx` | Пользовательский интерфейс, когда `notFound()` называется                       |
+| `route.ts`      | Обработчик маршрута (конечная точка API)                                        |
+| `default.tsx`   | Резервный вариант для слотов параллельных маршрутов                             |
+
+**Examples:**
+
+```tsx
+// app/dashboard/layout.tsx
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex">
+      <aside>Sidebar</aside>
+      <main>{children}</main>
+    </div>
+  );
+}
+```
+
+**Thoughts:** `layout.tsx` состояние выдерживает навигацию клиента; `template.tsx` нет. Использовать `template` для ввода анимации или клавиш аналитики для каждой навигации.
+
+**Sources:** [nextjs.org/docs/app/api-reference/file-conventions](https://nextjs.org/docs/app/api-reference/file-conventions)
+
+</details>
+
+<details>
+  <summary>Route segments</summary>
+
+### Route segments
+
+**Definition:**
+
+Сегменты URL-пути, созданные по именам папок в `app/` — статические, динамические, универсальные и группы маршрутов.
+
+| Узор                         | URL-адрес               | Пример                                 |
+| ---------------------------- | ----------------------- | -------------------------------------- |
+| Статический                  | `/blog`                 | `app/blog/page.tsx`                    |
+| Динамический                 | `/blog/hello`           | `app/blog/[slug]/page.tsx`             |
+| Всеобъемлющий                | `/docs/a/b/c`           | `app/docs/[...slug]/page.tsx`          |
+| Дополнительный всеобъемлющий | `/shop` or `/shop/a/b`  | `app/shop/[[...slug]]/page.tsx`        |
+| Группа маршрутов             | Никакого влияния на URL | `app/(auth)/login/page.tsx` → `/login` |
+
+**Sources:**
+
+[nextjs.org/docs/app/api-reference/file-conventions](https://nextjs.org/docs/app/api-reference/file-conventions)
+
+---
+
+</details>
+
+## 4. Design principles
 
 <details>
   <summary>SOLID in Next.js</summary>

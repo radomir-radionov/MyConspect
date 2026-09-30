@@ -6,7 +6,7 @@ Methodologies, tooling, and rendering performance.
 
 ### Related docs
 
-* [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md) · [SDLC — methodologies](./7_special_sdlc.md#development-methodologies)
+- [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md) · [SDLC — methodologies](./7_special_sdlc.md#development-methodologies)
 
 ### Sections
 
@@ -47,11 +47,11 @@ block__element--modifier
 </button>
 ```
 
-| Part | Separator | Example |
-|------|-----------|---------|
-| Block | — | `button` |
-| Element | `__` | `button__icon` |
-| Modifier | `--` | `button--primary` |
+| Part     | Separator | Example           |
+| -------- | --------- | ----------------- |
+| Block    | —         | `button`          |
+| Element  | `__`      | `button__icon`    |
+| Modifier | `--`      | `button--primary` |
 
 **Sources:** [getbem.com](http://getbem.com/)
 
@@ -120,11 +120,11 @@ PostCSS transforms CSS with plugins. **Autoprefixer** adds vendor prefixes from 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Write modern CSS; ship compatible CSS | Extra build step and config |
+| +                                       | −                                                 |
+| --------------------------------------- | ------------------------------------------------- |
+| Write modern CSS; ship compatible CSS   | Extra build step and config                       |
 | Autoprefixer eliminates manual prefixes | Plugin order matters — can break if misconfigured |
-| Ecosystem of transforms | Debugging generated CSS harder than source |
+| Ecosystem of transforms                 | Debugging generated CSS harder than source        |
 
 **Examples:**
 
@@ -137,9 +137,9 @@ PostCSS transforms CSS with plugins. **Autoprefixer** adds vendor prefixes from 
 // postcss.config.js
 export default {
   plugins: {
-    'postcss-preset-env': { stage: 2 },
+    "postcss-preset-env": { stage: 2 },
     autoprefixer: {},
-    cssnano: process.env.NODE_ENV === 'production' ? {} : false,
+    cssnano: process.env.NODE_ENV === "production" ? {} : false,
   },
 };
 ```
@@ -170,23 +170,28 @@ Scope class names at build time — `import styles from './Button.module.css'` �
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| No global namespace collisions | Class names unreadable in DevTools |
-| Co-located styles with components | Dynamic class names need `styles[variant]` pattern |
-| Works with any framework | No true DOM encapsulation — globals can still leak in |
+| +                                 | −                                                     |
+| --------------------------------- | ----------------------------------------------------- |
+| No global namespace collisions    | Class names unreadable in DevTools                    |
+| Co-located styles with components | Dynamic class names need `styles[variant]` pattern    |
+| Works with any framework          | No true DOM encapsulation — globals can still leak in |
 
 **Examples:**
 
 ```css
 /* Button.module.css */
-.button { padding: 0.5rem 1rem; }
-.primary { composes: button; background: var(--brand); }
+.button {
+  padding: 0.5rem 1rem;
+}
+.primary {
+  composes: button;
+  background: var(--brand);
+}
 ```
 
 ```jsx
-import styles from './Button.module.css';
-<button className={styles.primary}>Submit</button>
+import styles from "./Button.module.css";
+<button className={styles.primary}>Submit</button>;
 ```
 
 **Sources:** [CSS Modules](https://github.com/css-modules/css-modules)
@@ -204,10 +209,10 @@ import styles from './Button.module.css';
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Fast prototyping | HTML verbosity |
-| Consistent design tokens | Learning curve |
+| +                         | −                                            |
+| ------------------------- | -------------------------------------------- |
+| Fast prototyping          | HTML verbosity                               |
+| Consistent design tokens  | Learning curve                               |
 | Purged unused CSS in prod | Class precedence issues with dynamic classes |
 
 **Examples:**
@@ -246,12 +251,12 @@ Component framework with grid, utilities, and JS widgets. Good for rapid MVPs; l
 
 Methodologies (BEM, OOCSS, SMACSS, ITCSS) organize CSS for maintainability and team scale.
 
-| Method | Idea |
-|--------|------|
-| **BEM** | Block/element/modifier naming |
-| **OOCSS** | Separate structure and skin |
+| Method     | Idea                                          |
+| ---------- | --------------------------------------------- |
+| **BEM**    | Block/element/modifier naming                 |
+| **OOCSS**  | Separate structure and skin                   |
 | **SMACSS** | Base, layout, module, state, theme categories |
-| **ITCSS** | Inverted triangle — specificity layers |
+| **ITCSS**  | Inverted triangle — specificity layers        |
 
 ---
 
@@ -274,12 +279,12 @@ Style changes trigger style recalc, layout (reflow), paint, or composite — wit
 
 When CSS changes, the browser pays different costs:
 
-| Step | Trigger examples | Cost |
-|------|------------------|------|
-| **Style recalc** | class change, `:hover` | Low–medium |
-| **Layout (reflow)** | `width`, `height`, `margin`, `font-size`, DOM insert | High |
-| **Paint** | `color`, `background`, `box-shadow`, `visibility` | Medium |
-| **Composite** | `transform`, `opacity`, `filter` | Low (GPU) |
+| Step                | Trigger examples                                     | Cost       |
+| ------------------- | ---------------------------------------------------- | ---------- |
+| **Style recalc**    | class change, `:hover`                               | Low–medium |
+| **Layout (reflow)** | `width`, `height`, `margin`, `font-size`, DOM insert | High       |
+| **Paint**           | `color`, `background`, `box-shadow`, `visibility`    | Medium     |
+| **Composite**       | `transform`, `opacity`, `filter`                     | Low (GPU)  |
 
 **How it works:**
 
@@ -294,7 +299,7 @@ Need to animate?
 └─ width / height / margin / top → Layout (expensive — avoid in loops)
 ```
 
-**Thoughts:** Full pipeline, dirty/global layout, rAF vs interval → [1_html.md — Browser & rendering](./1_html_rendering.md#browser--rendering). Property → layout/paint/composite → [CSS Triggers](https://csstriggers.com/). Field metrics (LCP / INP / CLS) → [6_web_api.md — Core Web Vitals](./6_web_api_security.md#core-web-vitals). INP phases/fixes → [6_web_api.md — INP](./6_web_api_security.md#inp-interaction-to-next-paint). Layout-shift metric → [CLS](./1_html_performance.md#cls-cumulative-layout-shift).
+**Thoughts:** Full pipeline, dirty/global layout, rAF vs interval → [1_html.md — Browser & rendering](./1_html_rendering.md#browser--rendering). Property → layout/paint/composite → [CSS Triggers](https://csstriggers.com/). Field metrics (LCP / INP / CLS) → [6_web_api.md — Core Web Vitals](./1_html_performance.md#core-web-vitals). INP phases/fixes → [6_web_api.md — INP](./1_html_performance.md#inp-interaction-to-next-paint). Layout-shift metric → [CLS](./1_html_performance.md#cls-cumulative-layout-shift).
 
 **Sources:** [web.dev — Rendering performance](https://web.dev/articles/critical-rendering-path)
 
@@ -332,11 +337,11 @@ Properties that typically composite on GPU (no layout/paint): `transform`, `opac
 
 `transform`, `opacity < 1`, `filter`, `will-change`, `position: fixed`, video/canvas, etc.
 
-| Do | Don't |
-|----|-------|
-| Add briefly before a known animation | Leave on dozens of elements permanently |
-| Use `will-change: transform` for hover lifts | Use `will-change: auto` everywhere "just in case" |
-| Remove after `transitionend` / `animationend` | Expect it to fix layout bugs |
+| Do                                            | Don't                                             |
+| --------------------------------------------- | ------------------------------------------------- |
+| Add briefly before a known animation          | Leave on dozens of elements permanently           |
+| Use `will-change: transform` for hover lifts  | Use `will-change: auto` everywhere "just in case" |
+| Remove after `transitionend` / `animationend` | Expect it to fix layout bugs                      |
 
 **When to use:**
 
@@ -366,13 +371,13 @@ too many layers → high memory use → crashes on mobile. Do not sprinkle `will
 
 Browser skips layout/paint for off-screen sections; `contain-intrinsic-size` reserves approximate space so scroll position stays stable.
 
-| `contain` value | Isolates |
-|-----------------|----------|
-| `layout` | Internal layout from affecting outside |
-| `style` | Counters, quotes |
-| `paint` | Painting to element box |
-| `size` | Size as if empty (use carefully) |
-| `strict` | `layout style paint size` |
+| `contain` value | Isolates                               |
+| --------------- | -------------------------------------- |
+| `layout`        | Internal layout from affecting outside |
+| `style`         | Counters, quotes                       |
+| `paint`         | Painting to element box                |
+| `size`          | Size as if empty (use carefully)       |
+| `strict`        | `layout style paint size`              |
 
 **Examples:**
 
@@ -389,7 +394,7 @@ Browser skips layout/paint for off-screen sections; `contain-intrinsic-size` res
 
 `content-visibility: auto` skips rendering off-screen content — major perf win for long lists.
 
-**Sources:** [MDN — content-visibility](https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility) · INP / large DOM: [6_web_api.md](./6_web_api_security.md#inp-interaction-to-next-paint)
+**Sources:** [MDN — content-visibility](https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility) · INP / large DOM: [6_web_api.md](./1_html_performance.md#inp-interaction-to-next-paint)
 
 </details>
 
@@ -414,11 +419,11 @@ One image, multiple icons via `background-position`. Less relevant with HTTP/2, 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Fewer HTTP requests on HTTP/1 | Painful to maintain — pixel math on every icon add |
-| Consistent icon sizing in one asset | Retina requires `@2x` sprite sheets |
-| No JS required | SVG icons + icon components are the modern default |
+| +                                   | −                                                  |
+| ----------------------------------- | -------------------------------------------------- |
+| Fewer HTTP requests on HTTP/1       | Painful to maintain — pixel math on every icon add |
+| Consistent icon sizing in one asset | Retina requires `@2x` sprite sheets                |
+| No JS required                      | SVG icons + icon components are the modern default |
 
 **Examples:**
 
@@ -476,14 +481,18 @@ background-color: #fff;
 ```css
 /* Respect motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
 }
 
 /* Keyboard focus only */
-:focus { outline: none; }
+:focus {
+  outline: none;
+}
 :focus-visible {
   outline: 2px solid #2563eb;
   outline-offset: 2px;
@@ -530,74 +539,74 @@ Try answering before opening solutions.
 
 **Junior — CSS / layout (Q53–61)**
 
-53. What is the CSS box model?  
-54. What centering techniques do you know (horizontal and vertical)?  
-55. What layout approaches do you know (float, flex, grid, etc.)?  
-56. How do you make an application responsive?  
-58. Why do some CSS properties need vendor prefixes (`-webkit-`, `-moz-`, etc.)?  
-59. How do you simplify cross-browser styling?  
-60. Practical: review and fix a bad CSS or HTML example.  
-61. What are CSS preprocessors? Which have you used? What do they add over standard CSS?
+53. What is the CSS box model?
+54. What centering techniques do you know (horizontal and vertical)?
+55. What layout approaches do you know (float, flex, grid, etc.)?
+56. How do you make an application responsive?
+57. Why do some CSS properties need vendor prefixes (`-webkit-`, `-moz-`, etc.)?
+58. How do you simplify cross-browser styling?
+59. Practical: review and fix a bad CSS or HTML example.
+60. What are CSS preprocessors? Which have you used? What do they add over standard CSS?
 
 > Q57 (semantic layout) → [1_html.md](1_html.md)
 
 **CSS / layout (Q57–73, CSS only)**
 
-57. Explain the difference between `px`, `em`, and `rem`.  
-58. What are CSS custom properties for? Give usage examples.  
-59. What happens when you add `* { box-sizing: border-box; }`?  
-60. How do you adapt a page for print?  
-61. Describe styling native form controls.  
-62. What is progressive rendering? What approaches exist?  
-63. Name ways to lazy-load media on a page.  
-65. Name popular CSS methodologies and their differences.  
-66. How does CSS Grid work?  
-67. Which image formats support animation?  
-68. How do you track CSS `@keyframes` or `transition` end in JS?  
-69. Which CSS properties are GPU-composited? What are compositor layers?  
-70. How do you reuse inline SVG elements on a page?  
-73. What is faux bold or faux italic font rendering?
+57. Explain the difference between `px`, `em`, and `rem`.
+58. What are CSS custom properties for? Give usage examples.
+59. What happens when you add `* { box-sizing: border-box; }`?
+60. How do you adapt a page for print?
+61. Describe styling native form controls.
+62. What is progressive rendering? What approaches exist?
+63. Name ways to lazy-load media on a page.
+64. Name popular CSS methodologies and their differences.
+65. How does CSS Grid work?
+66. Which image formats support animation?
+67. How do you track CSS `@keyframes` or `transition` end in JS?
+68. Which CSS properties are GPU-composited? What are compositor layers?
+69. How do you reuse inline SVG elements on a page?
+70. What is faux bold or faux italic font rendering?
 
 > Q64 (templating), Q71–72, Q74–77 (SVG opt, shadow DOM, canvas) → [1_html.md](1_html.md) or general frontend
 
 ### Question index
 
-| # | Topic | Answer below |
-|---|-------|--------------|
-| 53 | Box model | Box model |
-| 54 | Centering | Centering |
-| 55 | float / flex / grid | Layout approaches |
-| 56 | Responsive app | Responsive |
-| 58–59 | Vendor prefixes / cross-browser | Vendor prefixes |
-| 60 | Review bad CSS | Bad CSS review + Task 6 |
-| 61 | Preprocessors | Preprocessors |
-| 57† | px / em / rem | Units |
-| 58† | CSS variables | Custom properties |
-| 59† | `* { box-sizing }` | Universal box-sizing |
-| 60† | Print styles | Print styles |
-| 61† | Form styling | Form styling |
-| 62† | Progressive rendering | Progressive rendering |
-| 63† | Lazy-loading media | Lazy-loading |
-| 65† | CSS methodologies | Methodologies |
-| 66† | CSS Grid | Grid |
-| 67† | Animated image formats | Animated images |
-| 68† | Animation events in JS | Animation JS + Task 8 |
-| 69† | GPU / compositor layers | GPU layers |
-| 70† | Reuse inline SVG | Reuse SVG |
-| 73† | Faux bold/italic | Faux fonts |
-| — | BFC, reflow, flex overflow, implicit grid | See Q&A |
-| — | Containing block | Containing block |
-| — | `min-width: 0` in flex | Flex min-width |
-| — | `auto-fit` vs `auto-fill` | Auto-fit vs auto-fill |
-| — | Intrinsic vs extrinsic sizing | Intrinsic sizing |
-| — | `100vh` vs `100dvh` | Viewport units |
-| — | `@supports` | Supports queries |
-| — | Stacking context | Stacking context |
-| — | `box-shadow` vs `drop-shadow` | Shadow vs drop-shadow |
-| — | Native `<select>` limits | Select styling |
-| — | Pure CSS toggle | CSS toggle |
-| 45 | iPhone toggle without JS | CSS toggle + Task 15 |
-| Q13 | Cache busting CSS/JS | Cache busting |
+| #     | Topic                                     | Answer below            |
+| ----- | ----------------------------------------- | ----------------------- |
+| 53    | Box model                                 | Box model               |
+| 54    | Centering                                 | Centering               |
+| 55    | float / flex / grid                       | Layout approaches       |
+| 56    | Responsive app                            | Responsive              |
+| 58–59 | Vendor prefixes / cross-browser           | Vendor prefixes         |
+| 60    | Review bad CSS                            | Bad CSS review + Task 6 |
+| 61    | Preprocessors                             | Preprocessors           |
+| 57†   | px / em / rem                             | Units                   |
+| 58†   | CSS variables                             | Custom properties       |
+| 59†   | `* { box-sizing }`                        | Universal box-sizing    |
+| 60†   | Print styles                              | Print styles            |
+| 61†   | Form styling                              | Form styling            |
+| 62†   | Progressive rendering                     | Progressive rendering   |
+| 63†   | Lazy-loading media                        | Lazy-loading            |
+| 65†   | CSS methodologies                         | Methodologies           |
+| 66†   | CSS Grid                                  | Grid                    |
+| 67†   | Animated image formats                    | Animated images         |
+| 68†   | Animation events in JS                    | Animation JS + Task 8   |
+| 69†   | GPU / compositor layers                   | GPU layers              |
+| 70†   | Reuse inline SVG                          | Reuse SVG               |
+| 73†   | Faux bold/italic                          | Faux fonts              |
+| —     | BFC, reflow, flex overflow, implicit grid | See Q&A                 |
+| —     | Containing block                          | Containing block        |
+| —     | `min-width: 0` in flex                    | Flex min-width          |
+| —     | `auto-fit` vs `auto-fill`                 | Auto-fit vs auto-fill   |
+| —     | Intrinsic vs extrinsic sizing             | Intrinsic sizing        |
+| —     | `100vh` vs `100dvh`                       | Viewport units          |
+| —     | `@supports`                               | Supports queries        |
+| —     | Stacking context                          | Stacking context        |
+| —     | `box-shadow` vs `drop-shadow`             | Shadow vs drop-shadow   |
+| —     | Native `<select>` limits                  | Select styling          |
+| —     | Pure CSS toggle                           | CSS toggle              |
+| 45    | iPhone toggle without JS                  | CSS toggle + Task 15    |
+| Q13   | Cache busting CSS/JS                      | Cache busting           |
 
 † Advanced block · Semantic layout (Q57) → [1_html.md](1_html.md)
 

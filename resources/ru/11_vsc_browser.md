@@ -4,20 +4,20 @@
 
 ### VS Code shortcuts (macOS)
 
-| Действие | Ярлык |
-|--------|----------|
-| Палитра команд | `Cmd+Shift+P` |
-| Быстрое открытие файла | `Cmd+P` |
-| Переключить боковую панель | `Cmd+B` |
-| Закрыть вкладку | `Cmd+W` |
-| Закрыть окно | `Cmd+Shift+W` |
-| Окно перезагрузки | `Cmd+R` |
-| Мультикурсор | `Option+Click` |
-| Формат документа | `Shift+Option+F` |
+| Действие                   | Ярлык            |
+| -------------------------- | ---------------- |
+| Палитра команд             | `Cmd+Shift+P`    |
+| Быстрое открытие файла     | `Cmd+P`          |
+| Переключить боковую панель | `Cmd+B`          |
+| Закрыть вкладку            | `Cmd+W`          |
+| Закрыть окно               | `Cmd+Shift+W`    |
+| Окно перезагрузки          | `Cmd+R`          |
+| Мультикурсор               | `Option+Click`   |
+| Формат документа           | `Shift+Option+F` |
 
 ### Related
 
-* [Build & ESLint/Prettier](./10_build.md) · [Core Web Vitals](./6_web_api_security.md#core-web-vitals) · [LCP](./6_web_api_security.md#lcp-largest-contentful-paint) · [TTFB](./6_web_api_security.md#ttfb-time-to-first-byte) · [CLS](./1_html_ Performance.md#cls-cumulative-layout-shift) · [Интервью-хаб](./0_interview.md)
+- [Build & ESLint/Prettier](./10_build.md) · [Core Web Vitals](./1_html_performance.md#core-web-vitals) · [LCP](./1_html_performance.md#lcp-largest-contentful-paint) · [TTFB](./1_html_performance.md#ttfb-time-to-first-byte) · [CLS](./1*html* Performance.md#cls-cumulative-layout-shift) · [Интервью-хаб](./0_interview.md)
 
 ### Sections
 
@@ -29,14 +29,14 @@
 
 ## VS Code
 
-**src** - https://www.freecodecamp.org/news/increase-your-vs-code-productivity/?ref=dailydev    
+**src** - https://www.freecodecamp.org/news/increase-your-vs-code-productivity/?ref=dailydev  
 **vsc-ярлыки** – https://dev.to/usman_awan_003/20-vs-code-shortcuts-to-enhance-your-coding-productivity-2dp6?bb=177643
 
 `auto-save` - настройки - часто используемые
 
 `vsc` - https://code.visualstudio.com/  
 `downlaod vsc` - https://www.youtube.com/watch?v=aogVqWGWaFk  
-`usefull` - https://dev.to/idboussadel/how-to-become-a-10x-dev-ake?ref=dailydev  
+`usefull` - https://dev.to/idboussadel/how-to-become-a-10x-dev-ake?ref=dailydev
 
 `create-files-and-folders` - https://dev.to/equiman/vscode-create-files-and-folders-on-the-go-2hd6  
 `change-keyboard-shortcut-bindings` - https://stackoverflow.com/questions/33791097/how-can-i-change-keyboard-shortcut-bindings-in-visual-studio-code
@@ -45,14 +45,15 @@
   <summary>Extensions</summary>
 
 ### Extensions
-#### ai  
+
+#### ai
 
 Tabnine: автозаполнение AI
 
 #### common
 
 ESLint  
-Prettier — форматировщик кода    
+Prettier — форматировщик кода  
 Автозакрытие тега  
 Автозаполнение тега  
 Автоматический импорт  
@@ -62,7 +63,7 @@ Prettier — форматировщик кода
 Проверка орфографии кода  
 Предварительный просмотр Markdown Стилизация GitHub  
 Код Бегун
-Сохранение регистра нескольких курсоров  
+Сохранение регистра нескольких курсоров
 
 Консольный ниндзя  
 Фрагменты регулярных выражений
@@ -80,7 +81,7 @@ GitLens — усовершенствованный Git
 #### html/css
 
 HTML-шаблон  
-Поддержка HTML CSS    
+Поддержка HTML CSS  
 компоненты в стиле vscode  
 CSS IntelliSense для попутного ветра
 
@@ -90,7 +91,7 @@ CSS IntelliSense для попутного ветра
 
 Фрагменты кода JavaScript (ES6)  
 JavaScript и TypeScript Nightly  
-Фрагменты ES7+ React/Redux/React-Native    
+Фрагменты ES7+ React/Redux/React-Native  
 Простые фрагменты React  
 Симпатичные ошибки TypeScript
 Квокка.js
@@ -99,13 +100,13 @@ JavaScript и TypeScript Nightly
 
 #### test
 
-кодиат 
+кодиат
 
 #### db
 
 MongoDB для VS Code
 
-#### docker 
+#### docker
 
 Докер  
 Контейнеры разработки  
@@ -117,35 +118,39 @@ MongoDB для VS Code
   <summary>Shortcuts</summary>
 
 ### Shortcuts
-`ctrl + shift + e` | `ctrl + 0` сосредоточься на проводнике    
-`ctrl + shift + n` - открыть новый терминал    
+
+`ctrl + shift + e` | `ctrl + 0` сосредоточься на проводнике  
+`ctrl + shift + n` - открыть новый терминал  
 `ecs - вернуться назад, если вы находитесь в папке или файле
 
-`ctrl + shift + k` - удалить строку кода    
-`ctrl + shift + c` - добавить файл    
+`ctrl + shift + k` - удалить строку кода  
+`ctrl + shift + c` - добавить файл  
 `ctrl + shift + v` - добавить папку
 `alt + 1(любое число) - переключиться на открытый файл
 
-`Ctrl + P` || `Ctrl + E`: быстрая навигация по файлам, позволяющая открывать файлы по имени.    
-`Ctrl + /`: переключить комментарий к строке   
-`Ctrl + A`: выбирает все строки в текущем файле.   
-`Ctrl + L` || `Ctrl + Shift + Up/Down Arrow`: выбрать текущую строку   
+`Ctrl + P` || `Ctrl + E`: быстрая навигация по файлам, позволяющая открывать файлы по имени.  
+`Ctrl + /`: переключить комментарий к строке  
+`Ctrl + A`: выбирает все строки в текущем файле.  
+`Ctrl + L` || `Ctrl + Shift + Up/Down Arrow`: выбрать текущую строку  
 `Alt + Up/Down Arrow`: Переместить текущую строку вверх или вниз.
 
-`Ctrl + F`: находит определенный текст в коде.   
+`Ctrl + F`: находит определенный текст в коде.  
 `Ctrl + Shift + L`: выбрать все вхождения текущего слова.
 
-`Alt + Click`: удерживайте нажатой клавишу Alt и щелкайте в разных местах кода, чтобы создать несколько курсоров, что позволит редактировать или вводить эти места одновременно.    
+`Alt + Click`: удерживайте нажатой клавишу Alt и щелкайте в разных местах кода, чтобы создать несколько курсоров, что позволит редактировать или вводить эти места одновременно.  
 `Ctrl + Shift + P`: открыть палитру команд для различных команд.
+
 </details>
 
 <details>
   <summary>Settings</summary>
 
 ### Settings
-  "prettier.printWidth": 120,
+
+"prettier.printWidth": 120,
 
 Чтобы добавить console.log, создайте файл и папку в качестве ярлыка, используя настройки файла — сочетания клавиш, затем значок вверху => справа.
+
 ```
  {
     "key": "ctrl+1",
@@ -195,9 +200,11 @@ MongoDB для VS Code
     "command": "editor.emmet.action.wrapWithAbbreviation"
   }
 ```
+
 в keybindings.json
 
 добавить форматтер
+
 ```
 {
     "editor.formatOnSave": true,
@@ -209,12 +216,14 @@ MongoDB для VS Code
     }
 }
 ```
+
 </details>
 
 <details>
   <summary>Terminal</summary>
 
 ### Terminal
+
 pwd — получить текущее направление
 ls ( ls .env) + тег для автозаполнения  
 бывает относительный и абсолюбтный путь(/)
@@ -222,9 +231,9 @@ mkdir «имя» — создать каталог
 флаг - p использовать для создания вложенного каталога
 «имя» дерева — для получения дерева
 mv "name1" "name2" - для изменения имени или перемещения имени
-mv "name1/*" "name2" - удалить содержимое имени в name2
+mv "name1/_" "name2" - удалить содержимое имени в name2
 rm «имя» — удалить файл (-r для удаления всего содержимого) (rf)
-rm -r * удалить все содержимое каталогаSet-Location -Path D: — сменить каталог
+rm -r _ удалить все содержимое каталогаSet-Location -Path D: — сменить каталог
 Get-ChildItem
 используйте для просмотра истории команд во всех сеансах PS
 (Get-PSReadlineOption).HistorySavePath
@@ -237,24 +246,25 @@ Get-ChildItem
 
 ### DevTools — Core Web Vitals
 
-**Definition:** Chrome DevTools — это лабораторный инструмент для *воспроизведения* LCP, INP и CLS после того, как полевые данные (CrUX/Search Console) сообщают вам, какая метрика плохая. Полное поле и лабораторные примечания: [6_web_api.md — основные веб-показатели](./6_web_api_security.md#core-web-vitals). Элемент LCP и четыре подраздела: [6_web_api.md — LCP](./6_web_api_security.md#lcp-largest-contentful-paint).
+**Definition:** Chrome DevTools — это лабораторный инструмент для _воспроизведения_ LCP, INP и CLS после того, как полевые данные (CrUX/Search Console) сообщают вам, какая метрика плохая. Полное поле и лабораторные примечания: [6_web_api.md — основные веб-показатели](./1_html_performance.md#core-web-vitals). Элемент LCP и четыре подраздела: [6_web_api.md — LCP](./1_html_performance.md#lcp-largest-contentful-paint).
 
 **How it works:**
 
 - **Маяк** (панель, CLI, CI) — лабораторный аудит + рекомендации. В запуске по умолчанию нет пользователя, поэтому **INP не является настоящим INP**; **TBT** — прокси-сервер лаборатории.
-- **Сеть** — Ожидание запроса документа / TTFB. Полная метрика: [6_web_api.md — TTFB](./6_web_api_security.md#ttfb-time-to-first-byte).
-- **Производительность** — запись трассировки. Включить снимки экрана.Для INP: взаимодействуйте во время записи, затем проверьте дорожку **Взаимодействия** (задержка ввода/обработка/задержка представления). Красные треугольники в стеке вызовов обозначают длинные обработчики. **Сдвиги макета** отслеживают для CLS: какие узлы были перемещены и сколько точек они добавили. Боковая панель **Статистика** суммирует распространенные проблемы. Метрика + исправления: [1_html.md — CLS](./1_html_ Performance.md#cls-cumulative-layout-shift).- Если локально быстро: дросселируйте процессор 4×/6× или выполните удаленную отладку настоящего телефона Android.
+- **Сеть** — Ожидание запроса документа / TTFB. Полная метрика: [6_web_api.md — TTFB](./1_html_performance.md#ttfb-time-to-first-byte).
+- **Производительность** — запись трассировки. Включить снимки экрана.Для INP: взаимодействуйте во время записи, затем проверьте дорожку **Взаимодействия** (задержка ввода/обработка/задержка представления). Красные треугольники в стеке вызовов обозначают длинные обработчики. **Сдвиги макета** отслеживают для CLS: какие узлы были перемещены и сколько точек они добавили. Боковая панель **Статистика** суммирует распространенные проблемы. Метрика + исправления: [1_html.md — CLS](./1*html* Performance.md#cls-cumulative-layout-shift).- Если локально быстро: дросселируйте процессор 4×/6× или выполните удаленную отладку настоящего телефона Android.
 - **Приложение → Кэш назад/вперед → Тест** — может ли страница использовать **bfcache** (мгновенное восстановление при возврате/пересылке; LCP/FCP/CLS часто ~0). Chrome перечисляет блокировщики. `unload` / `beforeunload` часто ломаю — пользуйтесь `pagehide`. `Cache-Control: no-store` тоже может.
 
 **When to use:** Локальное воспроизведение поля регрессии INP/CLS/LCP перед написанием заявки.
 
-**Thoughts:** DevTools объясняет *почему*; CruUX p75 решает, будет ли он отправлен.
+**Thoughts:** DevTools объясняет _почему_; CruUX p75 решает, будет ли он отправлен.
 
 **Sources:** [web.dev — TBT](https://web.dev/articles/tbt) · [Производительность Chrome DevTools](https://developer.chrome.com/docs/devtools/ Performance)
 
 </details>
 
 <a name="browser-devtools"></a>
+
 ## Browser DevTools
 
 <details>
@@ -308,6 +318,7 @@ function hello(name) {
 - Очистить кэш – https://chrome.google.com/webstore/detail/clear-cache/cppjkneekbjaeellbfkmgnhonkkjfpdn.– Веб-разработчик – https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm
 
 ### Accessibility extensions
+
 - Шрифты Ninja - https://chrome.google.com/webstore/detail/fonts-ninja/eljapbgkmlngdpckoiiibecpemleclhh
 - Проверьте мои ссылки – https://chrome.google.com/webstore/detail/check-my-links/ojkcdipcgfaekbeaelaapakgnjflfglf.
 - Инструмент оценки WAVE – https://chrome.google.com/webstore/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh.
