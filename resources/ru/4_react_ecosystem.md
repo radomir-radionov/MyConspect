@@ -54,7 +54,7 @@
 
 **Thoughts:** _URL-адрес определяет, какие компоненты монтируются — без полной перезагрузки документа._
 
-**See also:** [Основные сведения о React Router](#react-router-essentials) · [TanStack Router](#tanstack-router)
+**See also:** [Основные сведения о React Router](#react-router-essentials) · [TanStack Router](./5_ts_tanstack.md#tanstack-router)
 
 **Sources:**
 
@@ -209,7 +209,7 @@ async function Page() {
 }
 ```
 
-**Thoughts:** Не `useEffect` + `fetch` для данных начальной страницы, если RSC или загрузчик маршрутизатора могут их предоставить. Заголовки HTTP и кэш клиента → [6_web_api.md — кэширование HTTP](./6_web_api.md).
+**Thoughts:** Не `useEffect` + `fetch` для данных начальной страницы, если RSC или загрузчик маршрутизатора могут их предоставить. Заголовки HTTP и кэш клиента → [6_web_api.md — кэширование HTTP](./6_web_api.md). TanStack Query → [TypeScript — TanStack](./5_ts_tanstack.md). RTK Query → [React — Redux](./4_react_redux.md).
 
 **Sources:**
 
@@ -319,57 +319,11 @@ export function Button({ children }: { children: React.ReactNode }) {
 
 ### TanStack Router
 
-**Definition:** Полностью типобезопасный маршрутизатор React с первоклассными параметрами поиска, загрузчиками и файловыми маршрутами — типы для `params` и данные загрузчика выводятся из определения маршрута.
+**Definition:** Полностью типобезопасный React router с loaders и validated search params.
 
-**How it works:** Экспорт файловых маршрутов `Route = createFileRoute('/posts/$postId')({ loader, validateSearch, component })`. `Route.useParams()`, `Route.useLoaderData()`, и `Route.useSearch()` наследовать типы из этого файла. `validateSearch` (часто Zod) анализирует строку запроса; `loaderDeps` передать проверенный поиск в загрузчик, чтобы ключи кэша оставались правильными.
+Полное руководство → [TypeScript — TanStack](./5_ts_tanstack.md#tanstack-router).
 
-**When to use:**
-
-Приложения Vite/SPA, которым требуются введенные URL-адреса; информационные панели с состоянием фильтра в строке запроса. **Не** является заменой Next.js App Router RSC.
-
-#### Common pitfalls
-
-Использование Next.js `app/` соглашения о файлах внутри приложения TanStack. Пропуск `validateSearch` so `?offset=abc` вылетает загрузчик.
-
-**Pluses and minuses:**
-
-| +                                                             | −                                                                |
-| ------------------------------------------------------------- | ---------------------------------------------------------------- |
-| Параметры, данные поиска и загрузчика вводятся                | Другой маршрутизатор, если вы уже используете Next.js App Router |
-| Параметры поиска как первоклассное состояние (подобно nuqs)   | Настройка файла-плагина для `createFileRoute`                    |
-| Погрузчики избегают водопадов, связанных с доставкой на месте | Перекрывается режим платформы Next.js/React Router v7            |
-
-**Examples:**
-
-```tsx
-import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
-
-export const Route = createFileRoute("/posts/$postId")({
-  validateSearch: z.object({ tab: z.enum(["info", "comments"]).catch("info") }),
-  loader: async ({ params }) => {
-    const post = await fetchPost(params.postId); // params.postId: string
-    return { post };
-  },
-  component: PostPage,
-});
-
-function PostPage() {
-  const { post } = Route.useLoaderData();
-  const { postId } = Route.useParams();
-  const { tab } = Route.useSearch();
-  return (
-    <article>
-      <h1>{post.title}</h1>
-      <p>
-        {postId} / {tab}
-      </p>
-    </article>
-  );
-}
-```
-
-**Thoughts:** Модуль маршрута _является_ источником типа — перехватчики не требуют ручных обобщений.
+**See also:** [Routing](#routing) · [nuqs (URL search params)](#nuqs-url-search-params)
 
 **Sources:**
 
@@ -390,7 +344,7 @@ nuqs (параметры поиска URL)
 
 **When to use:**
 
-Фасетный поиск, пагинация, табы в URL. Пропустить, когда TanStack Router `validateSearch` уже владеет строкой запроса или когда параметр является одноразовым `?ref=` вы никогда не пишете из пользовательского интерфейса.
+Фасетный поиск, пагинация, табы в URL. Пропустить, когда [TanStack Router](./5_ts_tanstack.md#tanstack-router) `validateSearch` уже владеет строкой запроса или когда параметр является одноразовым `?ref=` вы никогда не пишете из пользовательского интерфейса.
 
 #### Common pitfalls
 
@@ -504,7 +458,7 @@ function Editor({ article }: { article: Article }) {
 
 ### orval (OpenAPI codegen)
 
-**Definition:** Генерирует клиенты TypeScript, модели и дополнительные макеты на основе спецификации OpenAPI/Swagger — обычно перехватывает запросы TanStack, привязанные к операциям.
+**Definition:** Генерирует клиенты TypeScript, модели и дополнительные макеты на основе спецификации OpenAPI/Swagger — обычно [TanStack Query](./5_ts_tanstack.md#codegen-orval) hooks, привязанные к операциям.
 
 **How it works:** Точка `orval.config.ts` по спецификации YAML/JSON; набор `output.client: 'react-query'`. Orval генерирует функции запроса, ключи запроса и `useX` крючки. Используйте **мутатор** для общего Axios/`fetch` экземпляр (заголовки аутентификации). Повторите запуск при изменении спецификации в CI, чтобы типы интерфейса не могли отклоняться от контракта.
 
@@ -779,7 +733,7 @@ React DevTools **Profiler** — запись взаимодействия → «
 2. **Разделение контекста** — тема, пользователь и диспетчеризация.
 3. **Запомнить значение контекста** — `useMemo` у провайдера `value`
 4. `React.memo` **/Компилятор** на дорогих чистых детях
-5. **Виртуализация** длинных списков (`@tanstack/react-virtual`)
+5. **Виртуализация** длинных списков — [TanStack Virtual](./5_ts_tanstack.md#tanstack-virtual) (`@tanstack/react-virtual`)
 
 **Examples:**
 
@@ -901,7 +855,7 @@ async function exportPdf() {
 
 **Definition:** Отрисовывайте только **видимые строки** (плюс небольшой буфер пересканирования) в длинных прокручиваемых списках — количество узлов DOM остается постоянным независимо от размера списка.
 
-**How it works:** Виртуализатор вычисляет, какие элементы пересекают область просмотра прокрутки. `scrollTop`, высота контейнера и фиксированная/переменная высота строк. Только эти индексы монтируются как узлы DOM; элементы за кадром отсутствуют в документе. При прокрутке виртуализатор обновляет видимое окно и перемещает строки с помощью `transform` или абсолютный `top` смещения. Библиотеки: `@tanstack/react-virtual`, `react-window`, `react-virtuoso`.
+**How it works:** Виртуализатор вычисляет, какие элементы пересекают область просмотра прокрутки. `scrollTop`, высота контейнера и фиксированная/переменная высота строк. Только эти индексы монтируются как узлы DOM; элементы за кадром отсутствуют в документе. При прокрутке виртуализатор обновляет видимое окно и перемещает строки с помощью `transform` или абсолютный `top` смещения. Библиотеки: [@tanstack/react-virtual](./5_ts_tanstack.md#tanstack-virtual), `react-window`, `react-virtuoso`.
 
 **When to use:** Таблицы данных с тысячами строк, бесконечными каналами, историей сообщений чата, средствами просмотра журналов. Порог: учитывайте, когда **более 1000 узлов DOM** в одном контейнере прокрутки вызывают зависание.
 
@@ -941,9 +895,11 @@ function VirtualList({ items }: { items: string[] }) {
 }
 ```
 
+**See also:** [TanStack Virtual](./5_ts_tanstack.md#tanstack-virtual)
+
 **Sources:**
 
-[tanstack.com/virtual](https://tanstack.com/virtual)
+[tanstack.com/virtual](https://tanstack.com/virtual) · [react-window](https://react-window.vercel.app/)
 
 Web Vitals в приложениях React
 

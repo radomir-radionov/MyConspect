@@ -6,7 +6,7 @@
 
 ### Related docs
 
-* [TypeScript — Основы](./5_ts_core.md) · [TypeScript — Сужение](./5_ts_narrowing.md) · [TypeScript — Функции](./5_ts_functions.md) · [TypeScript — Объекты](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Ссылка](./5_ts_reference.md) · [TypeScript — Интервью](./5_ts_interview.md)
+* [TypeScript — hub](./5_ts.md) · [Интервью](./5_ts_interview.md)
 
 ### Sections
 

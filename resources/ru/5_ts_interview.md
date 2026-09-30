@@ -6,7 +6,7 @@
 
 ### Related docs
 
-- [TypeScript — Основы](./5_ts_core.md) · [TypeScript — Сужение](./5_ts_narrowing.md) · [TypeScript — Функции](./5_ts_functions.md) · [TypeScript — Объекты](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Ссылка](./5_ts_reference.md) · [TypeScript — Интервью](./5_ts_interview.md)
+- [TypeScript — hub](./5_ts.md) · [Интервью](./5_ts_interview.md)
 
 ### Sections
 
@@ -411,7 +411,7 @@ interface Admin extends User {
 
 **Thoughts:** _Лутеральные объединения + дискриминантное поле = безопасно. `switch` с проверкой полноты._
 
-**See also:** [Типы объединений](./5_ts_core.md#union-types) · [Литеральные типы](./5_ts_core.md#literal-types) · [Дискриминированные объединения](./5_ts_narrowing.md#discrimination-unions)
+**See also:** [Типы объединений](./5_ts_unions_literals.md#union-types) · [Литеральные типы](./5_ts_unions_literals.md#literal-types) · [Дискриминированные объединения](./5_ts_narrowing.md#discrimination-unions)
 
 </details>
 
@@ -517,7 +517,7 @@ function greet(user: User) {
 
 **Thoughts:** _`?` по реквизиту + `?.` и `??` на сайтах доступа — никогда не предполагайте, что поле существует._
 
-**See also:** [Необязательные свойства](./5_ts_objects.md#optional-properties) · [`null` и `undefined`](./5_ts_core.md#null-and-undefined)
+**See also:** [Необязательные свойства](./5_ts_objects.md#optional-properties) · [`null` и `undefined`](./5_ts_null_undefined.md#null-and-undefined)
 
 </details>
 

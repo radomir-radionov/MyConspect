@@ -104,7 +104,7 @@ useRef против createRef?
 
 **Answer:** Контекст = редкие общие значения (тема/аутентификация). Redux/Zustand = состояние клиентского приложения. TanStack Query = кэш сервера. URL = общие фильтры. Не помещайте горячую корзину в один контекст.
 
-**See also:** [Контекст](./4_react_core.md#context) · [State management libraries](./4_react_redux.md#state-management-libraries) · [TanStack Query vs RTK Query](./4_react_redux.md#tanstack-query-vs-rtk-query)
+**See also:** [Контекст](./4_react_core.md#context) · [Redux core principles](./4_react_redux.md#redux-core-principles) · [When to use Redux](./4_react_redux.md#when-to-use-redux) · [TanStack Query vs RTK Query](./5_ts_tanstack.md#tanstack-query-vs-rtk-query)
 
 Как React.lazy загружает компонент, когда условие становится истинным?
 
@@ -447,7 +447,7 @@ TanStack Query против RTK-запроса — когда?
 
 **See also:**
 
-[TanStack Query vs RTK Query](./4_react_redux.md#tanstack-query-vs-rtk-query)
+[TanStack Query vs RTK Query](./5_ts_tanstack.md#tanstack-query-vs-rtk-query)
 
 Как скрыть кнопку «Редактировать», которую пользователь не может использовать?
 
@@ -528,13 +528,13 @@ nuqs против useSearchParams против qs?
 9. Какие преимущества вы видите в React?
 10. Почему React быстрый? Что такое виртуальный DOM? → [Виртуальный DOM и сверка](./4_react_core.md#virtual-dom--reconciliation)
     14.Зачем спискам нужны ключи? Могут ли индексы массива быть ключами? Когда это приемлемо? → [Зачем перечислять ключи? Индекс как ключ?](#вопросы--ответы)
-11. Какова основная идея Redux? → [State management libraries](./4_react_redux.md#state-management-libraries)
+11. Какова основная идея Redux? → [Redux core principles](./4_react_redux.md#redux-core-principles)
 12. Работа со стилями в React → [Стилизация в React](./4_react_ecosystem.md#9-ecosystem--architecture) · Основы CSS: [2_css.md](2_css.md)
     17.React — это библиотека или фреймворк? В чем разница? → [Библиотека React или фреймворк?](#вопросы--ответы)
 13. Можете ли вы использовать jQuery вместе с React? Почему или почему нет?
 14. Что такое кодмод?
 15. Как создать хорошую архитектуру для проекта React? → [Функциональное проектирование (FSD)](./4_react_ecosystem.md#9-ecosystem--architecture)
-16. Перечислите библиотеки, которые вы использовали с React.→ [TanStack Query vs RTK Query](./4_react_redux.md#tanstack-query-vs-rtk-query) · [CASL](./4_react_ecosystem.md#9-ecosystem--architecture) · [shadcn/ui](./4_react_ecosystem.md#9-ecosystem--architecture) · [orval](./4_react_ecosystem.md#9-ecosystem--architecture)
+16. Перечислите библиотеки, которые вы использовали с React.→ [TanStack Query vs RTK Query](./5_ts_tanstack.md#tanstack-query-vs-rtk-query) · [CASL](./4_react_ecosystem.md#9-ecosystem--architecture) · [shadcn/ui](./4_react_ecosystem.md#9-ecosystem--architecture) · [orval](./4_react_ecosystem.md#9-ecosystem--architecture)
 17. Что самое сложное вы реализовали с помощью React?
 
 Средний — Реагировать

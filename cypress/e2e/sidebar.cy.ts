@@ -316,6 +316,24 @@ describe("handbook sidebar", () => {
     cy.nav("topic", "react-redux").should("be.visible").and("contain", "Redux");
   });
 
+  it("shows TanStack under TypeScript Reference in breadcrumbs", () => {
+    cy.visit("/en/frontend/ts-tanstack");
+    cy.contains("nav[aria-label='Breadcrumbs']", "TypeScript").should(
+      "be.visible",
+    );
+    cy.contains("nav[aria-label='Breadcrumbs']", "Reference").should(
+      "be.visible",
+    );
+    cy.contains("nav[aria-label='Breadcrumbs']", "TanStack").should(
+      "be.visible",
+    );
+    cy.contains("h1", "TanStack");
+    cy.nav("cluster", "reference").should("have.attr", "aria-expanded", "true");
+    cy.nav("topic", "ts-tanstack")
+      .should("be.visible")
+      .and("contain", "TanStack");
+  });
+
   it("opens React 19 from Hooks and closes Core", () => {
     cy.visit("/en/frontend/react-hooks");
     cy.nav("cluster", "react-19").should("be.visible");

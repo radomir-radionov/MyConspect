@@ -1,25 +1,56 @@
-# TypeScript — hub
+# TypeScript — хаб
 
-Статическая типизация, система типов, компилятор и практика прохождения собеседований. Теория находится в файлах тем ниже.
+Справочник, повседневные типы, языковая документация, компилятор и практика для собеседований. Structure follows the [official TypeScript docs](https://www.typescriptlang.org/docs/handbook/intro.html).
 
 ### Related docs
 
-[TypeScript — Основы](./5_ts_core.md) · [TypeScript — Сужение](./5_ts_narrowing.md) · [TypeScript — Функции](./5_ts_functions.md) · [TypeScript — Объекты](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Ссылка](./5_ts_reference.md) · [TypeScript — Интервью](./5_ts_interview.md) · [JS — Язык (JS против ECMAScript)](./3_js_core.md#javascript-and-ecmascript)
+[JS — Language (JS vs ECMAScript)](./3_js_core.md#javascript-and-ecmascript) · [Interview](./5_ts_interview.md)
 
-### Navigation
+### Navigation — Handbook
 
-| Тема | Обложки |
-|------|--------|
-| [TypeScript — основы](./5_ts_core.md) | Статическая типизация, tsconfig и повседневные типы. |
-| [TypeScript — Сужение](./5_ts_narrowing.md) | Анализ потока управления и защита типов. |
-| [TypeScript — Функции](./5_ts_functions.md) | Сигнатуры вызовов, перегрузки и этот набор текста. |
-| [TypeScript — Объекты](./5_ts_objects.md) | Интерфейсы, типы объектов, классы и ООП. || [TypeScript — дженерики](./5_ts_generics.md) | Обобщенные типы, операторы типов и служебные типы. |
-| [TypeScript — Справочник](./5_ts_reference.md) | Справочник по языку и расширенные темы. |
-| [TypeScript — Интервью](./5_ts_interview.md) | Интервью с вопросами и ответами и тип задач. |
+| Topic                                            | Covers                                                              |
+| ------------------------------------------------ | ------------------------------------------------------------------- |
+| [The Basics](./5_ts_basics.md)                   | Static type-checking, compiler, tsconfig, intro for JS programmers. |
+| [Narrowing](./5_ts_narrowing.md)                 | Control-flow analysis and type guards.                              |
+| [More on Functions](./5_ts_functions.md)         | Call signatures, overloads, and `this` typing.                      |
+| [Object Types](./5_ts_objects.md)                | Object shapes, optional properties, tuples.                         |
+| [Type Manipulation](./5_ts_type_manipulation.md) | Generics, keyof, typeof, mapped and conditional types.              |
+| [Utility Types](./5_ts_utility_types.md)         | Partial, Pick, Omit, Record, ReturnType, and more.                  |
+| [Classes](./5_ts_classes.md)                     | Classes, inheritance, abstract classes.                             |
+| [Modules](./5_ts_modules.md)                     | ES modules, import/export, module resolution.                       |
+
+### Navigation — Common
+
+| Topic                                                | Covers                                             |
+| ---------------------------------------------------- | -------------------------------------------------- |
+| [Primitives](./5_ts_primitives.md)                   | `string`, `number`, `boolean`, `bigint`, `symbol`. |
+| [Arrays](./5_ts_arrays.md)                           | Typed arrays: `number[]` and `Array<T>`.           |
+| [any, unknown, never](./5_ts_top_types.md)           | Top and bottom types.                              |
+| [Type Annotations](./5_ts_type_annotations.md)       | Explicit labels and when to omit them.             |
+| [Unions & Literals](./5_ts_unions_literals.md)       | Union types and literal types.                     |
+| [Aliases & Interfaces](./5_ts_aliases_interfaces.md) | `type`, `interface`, and when to use which.        |
+| [Assertions & satisfies](./5_ts_assertions.md)       | `as` and the `satisfies` operator.                 |
+| [null & undefined](./5_ts_null_undefined.md)         | Absence types and `strictNullChecks`.              |
+
+### Navigation — Reference
+
+| Topic                                                | Covers                                            |
+| ---------------------------------------------------- | ------------------------------------------------- |
+| [Cheat Sheets](./5_ts_cheat_sheets.md)               | Quick-reference cards and memorization checklist. |
+| [Decorators](./5_ts_decorators.md)                   | Stage 2 and stage 3 decorators.                   |
+| [Declaration Merging](./5_ts_declaration_merging.md) | Interface, namespace, class merging.              |
+| [Enums](./5_ts_enums.md)                             | Numeric/string enums and `as const` alternatives. |
+| [Iterators and Generators](./5_ts_iterators.md)      | `Symbol.iterator`, generators, `for..of`.         |
+| [JSX](./5_ts_jsx.md)                                 | JSX in `.tsx` and component typing.               |
+| [Mixins](./5_ts_mixins.md)                           | Compose classes from building blocks.             |
+| [Namespaces & Modules](./5_ts_namespaces.md)         | Legacy namespaces, triple-slash directives.       |
+| [Symbols](./5_ts_symbols.md)                         | Unique keys and `unique symbol`.                  |
+| [Type System](./5_ts_type_system.md)                 | Compatibility, inference, variable declarations.  |
+| [TanStack](./5_ts_tanstack.md)                       | Query, Router, Table, Virtual, Form и orval.      |
 
 ### Interview practice
 
-Вопросы и ответы находятся в теме интервью по этой теме.
+Вопросы и ответы — в теме [Интервью](./5_ts_interview.md).
 
 ---
 
@@ -28,16 +59,12 @@
 <details>
   <summary>External references</summary>
 
-* [Шпаргалки по TypeScript](https://www.typescriptlang.org/cheatsheets)
-* [Тип задач (практика)](https://github.com/type-challenges/type-challenges)
-* [Расширенное руководство по TypeScript](https://fettblog.eu/advanced-typescript-guide/)
-* [Освоение продвинутого TS](https://jsdev.space/mastering-adv-ts/)
-* [Примечания к выпуску TS 5.2+](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html)* [Шаблон карты — избегайте злоупотреблений союзами](https://dev.to/perisicnikola37/dont-use--types-like-this-use-map-pattern-instead-ki3)
-* [Объявления модулей SVG/изображений](https://duncanleung.com/typescript-module-declearation-svg-img-assets/)
-* [Типскрипт `Map`](https://howtodoinjava.com/typescript/maps/)
-* [Сводка вопросов для собеседования] (https://www.simplilearn.com/tutorials/typescript-tutorial/typescript-interview-questions)
-* [Ссылки на проекты](https://www.typescriptlang.org/docs/handbook/project-references.html)
-* [Примечания к выпуску TS 5.0](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html) (`const` параметры типа, декораторы)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
+- [TypeScript for JavaScript Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
+- [TypeScript cheatsheets](https://www.typescriptlang.org/cheatsheets)
+- [Type challenges (practice)](https://github.com/type-challenges/type-challenges)
+- [TS 5.0 release notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html) (`const` type params, decorators)
+- [Project references](https://www.typescriptlang.org/docs/handbook/project-references.html)
 
 </details>
 

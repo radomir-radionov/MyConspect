@@ -6,7 +6,7 @@ Interview Q&A and type challenges.
 
 ### Related docs
 
-- [TypeScript — Basics](./5_ts_core.md) · [TypeScript — Narrowing](./5_ts_narrowing.md) · [TypeScript — Functions](./5_ts_functions.md) · [TypeScript — Objects](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Reference](./5_ts_reference.md) · [TypeScript — Interview](./5_ts_interview.md)
+- [TypeScript — hub](./5_ts.md) · [The Basics](./5_ts_basics.md) · [Type Manipulation](./5_ts_type_manipulation.md) · [Utility Types](./5_ts_utility_types.md)
 
 ### Sections
 
@@ -411,7 +411,7 @@ interface Admin extends User {
 
 **Thoughts:** _Literal unions + discriminant field = safe `switch` with exhaustiveness checking._
 
-**See also:** [Union Types](./5_ts_core.md#union-types) · [Literal Types](./5_ts_core.md#literal-types) · [Discriminated Unions](./5_ts_narrowing.md#discriminated-unions)
+**See also:** [Union Types](./5_ts_unions_literals.md#union-types) · [Literal Types](./5_ts_unions_literals.md#literal-types) · [Discriminated Unions](./5_ts_narrowing.md#discriminated-unions)
 
 </details>
 
@@ -517,7 +517,7 @@ function greet(user: User) {
 
 **Thoughts:** _`?` on props + `?.` and `??` at access sites — never assume a field exists._
 
-**See also:** [Optional properties](./5_ts_objects.md#optional-properties) · [`null` and `undefined`](./5_ts_core.md#null-and-undefined)
+**See also:** [Optional properties](./5_ts_objects.md#optional-properties) · [`null` and `undefined`](./5_ts_null_undefined.md#null-and-undefined)
 
 </details>
 

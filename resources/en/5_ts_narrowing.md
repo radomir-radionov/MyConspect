@@ -6,16 +6,16 @@ Control-flow analysis and type guards.
 
 ### Related docs
 
-* [TypeScript — Basics](./5_ts_core.md) · [TypeScript — Narrowing](./5_ts_narrowing.md) · [TypeScript — Functions](./5_ts_functions.md) · [TypeScript — Objects](./5_ts_objects.md) · [TypeScript — Generics](./5_ts_generics.md) · [TypeScript — Reference](./5_ts_reference.md) · [TypeScript — Interview](./5_ts_interview.md)
+- [TypeScript — hub](./5_ts.md) · [Interview](./5_ts_interview.md)
 
 ### Main concepts
 
-| Area | Topics |
-|------|--------|
+| Area   | Topics                                             |
+| ------ | -------------------------------------------------- |
 | Guards | `typeof`, truthiness, equality, `in`, `instanceof` |
-| Custom | Type predicates, assertion functions |
-| Flow | Assignment narrowing, control-flow analysis |
-| Unions | Discriminated unions, `never` and exhaustiveness |
+| Custom | Type predicates, assertion functions               |
+| Flow   | Assignment narrowing, control-flow analysis        |
+| Unions | Discriminated unions, `never` and exhaustiveness   |
 
 ### Sections
 
@@ -34,8 +34,9 @@ Control-flow analysis and type guards.
 **Definition:** TypeScript refines a declared union to a more specific type by analyzing runtime checks and control flow.
 
 **How it works:**
+
 - The compiler overlays type analysis on JavaScript constructs (`if`/`else`, ternaries, loops, truthiness, equality).
-- A *type guard* is a check TypeScript understands (`typeof`, `in`, `instanceof`, predicates).
+- A _type guard_ is a check TypeScript understands (`typeof`, `in`, `instanceof`, predicates).
 - After a guard, you can safely use members that exist only on that variant.
 
 **When to use:** Any value typed as a union before you access members that are not shared by every variant. Skip when the type is already a single concrete type.
@@ -64,6 +65,7 @@ function printId(id: string | number) {
 **Definition:** Checking `typeof value === "..."` is a type guard because TypeScript encodes JavaScript's `typeof` results.
 
 **How it works:**
+
 - Recognized strings: `"string"`, `"number"`, `"bigint"`, `"boolean"`, `"symbol"`, `"undefined"`, `"object"`, `"function"`.
 - `typeof null` is `"object"` — a `typeof x === "object"` branch still includes `null`.
 - Arrays are objects; `typeof arr === "object"` does not prove `T[]` by itself.
@@ -99,6 +101,7 @@ function printAll(strs: string | string[] | null) {
 **Definition:** Conditions that coerce to boolean (`if (value)`, `!value`, `&&` / `||`) narrow away falsy variants.
 
 **How it works:**
+
 - Falsy: `false`, `0`, `0n`, `""`, `null`, `undefined`, `NaN`. Everything else is truthy.
 - `if (x)` drops `null`/`undefined` (and other falsy primitives) from the true branch.
 - `Boolean(x)` infers `boolean`; `!!x` infers the literal `true` when `x` is always truthy.
@@ -135,6 +138,7 @@ function checkCount(count: number | undefined) {
 **Definition:** `===`, `!==`, `==`, `!=`, and `switch` narrow when TypeScript can prove which union members remain.
 
 **How it works:**
+
 - Strict equality (`===` / `!==`) compares type and value.
 - Loose equality: `== null` / `!= null` is the usual shortcut for both `null` and `undefined`.
 - Comparing two unions keeps only the overlapping type in the true branch.
@@ -169,6 +173,7 @@ function printValue(value: string | null | undefined) {
 **Definition:** `"key" in obj` narrows an object union to members that declare that property.
 
 **How it works:**
+
 - True branch: types that have the key (required or optional).
 - False branch: types that do **not** have the key as a required property.
 - If the key is optional (`?`) on one variant, that variant can remain in the `else` branch.
@@ -208,6 +213,7 @@ function serviceVehicle(vehicle: Car | Truck) {
 **Definition:** `value instanceof Ctor` narrows to that constructor's instance type using the prototype chain at runtime.
 
 **How it works:**
+
 - Works with classes and constructor functions (`Date`, `Error`, custom classes).
 - Interfaces and type aliases are erased — `instanceof User` is a compile error if `User` is only a type.
 - `Symbol.hasInstance` with a type predicate can customize what `instanceof` narrows to.
@@ -225,7 +231,9 @@ function logValue(x: Date | string) {
   }
 }
 
-interface User { name: string }
+interface User {
+  name: string;
+}
 // Error: 'User' only refers to a type, but is being used as a value.
 // if (obj instanceof User) { ... }
 ```
@@ -244,9 +252,10 @@ interface User { name: string }
 **Definition:** A user-defined type guard is a function whose return type is `arg is SomeType`.
 
 **How it works:**
+
 - On `true`, the argument is narrowed to `SomeType` at the call site.
 - On `false`, that type is excluded from the remaining union.
-- The body is *not* checked against the predicate — a wrong `return true` will lie to the type checker.
+- The body is _not_ checked against the predicate — a wrong `return true` will lie to the type checker.
 
 **When to use:** When built-in guards are not enough (`Array.isArray` style helpers, validating API payloads). Keep the runtime check honest.
 
@@ -276,6 +285,7 @@ function move(pet: Fish | Bird) {
 **Definition:** A function with return type `asserts condition` or `asserts val is Type` narrows by throwing if the check fails.
 
 **How it works:**
+
 - `asserts condition` — if the function returns, `condition` is `true` for the rest of the scope.
 - `asserts val is Type` — after return, `val` has that type (error-throwing type guard).
 - Works with generics, e.g. `asserts val is NonNullable<T>`.
@@ -315,11 +325,12 @@ function assertNonNull<T>(val: T): asserts val is NonNullable<T> {
 <details>
 <summary>Assignment narrowing</summary>
 
-**Definition:** Assigning a more specific value narrows a variable's *observed* type until the next assignment.
+**Definition:** Assigning a more specific value narrows a variable's _observed_ type until the next assignment.
 
 **How it works:**
-- *Declared type* is the annotation (what you may assign later).
-- *Observed type* is the narrowed type after the latest assignment.
+
+- _Declared type_ is the annotation (what you may assign later).
+- _Observed type_ is the narrowed type after the latest assignment.
 - You still cannot assign a value outside the declared type.
 
 **When to use:** `let` variables that start as a union and get a concrete value. `const` is already the assigned literal/type.
@@ -349,6 +360,7 @@ console.log(data.toUpperCase());
 **Definition:** TypeScript tracks how `if`, `return`, `throw`, `break`, and loops change types on each path, then re-merges them when paths join.
 
 **How it works:**
+
 - An early `return`/`throw` removes that variant from the rest of the function — no `else` required.
 - Assignments inside branches split the type; after the `if`/`else`, remaining possibilities are unioned.
 - Reachability matters: code after a never-returning call is unreachable.
@@ -392,6 +404,7 @@ function getStatus() {
 **Definition:** A union of object types that share a literal discriminant field (`kind`, `type`) so checks on that field narrow the whole object.
 
 **How it works:**
+
 - Each variant has the same key with a different string/number/boolean literal.
 - `if (shape.kind === "circle")` makes other fields (`radius`) available.
 - Optional fields on one shared interface do **not** work the same way — TypeScript will not prove `radius` exists from `kind`.
@@ -433,6 +446,7 @@ function getArea(shape: Shape) {
 **Definition:** `never` is the type of values that never occur — remaining union members after every variant is handled, or a function that always throws / loops.
 
 **How it works:**
+
 - Only `never` is assignable to `never`.
 - In a `switch` `default`, assign the value to `const _exhaustive: never = shape`.
 - Adding a new union member makes that assignment fail until you add a `case`.
@@ -442,8 +456,14 @@ function getArea(shape: Shape) {
 **Examples:**
 
 ```typescript
-interface Circle { kind: "circle"; radius: number }
-interface Square { kind: "square"; sideLength: number }
+interface Circle {
+  kind: "circle";
+  radius: number;
+}
+interface Square {
+  kind: "square";
+  sideLength: number;
+}
 
 type Shape = Circle | Square;
 
