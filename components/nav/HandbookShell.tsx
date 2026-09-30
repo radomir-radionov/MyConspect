@@ -124,6 +124,7 @@ export function HandbookShell({
     onAsidePointerEnter,
     onAsidePointerLeave,
     onDockPointerEnter,
+    onDockPointerLeave,
     suppressPeek,
   } = useDesktopSidebarPeek(peekEnabled);
   const railCollapsed = desktopCollapsed && !peeking;
@@ -167,6 +168,7 @@ export function HandbookShell({
             expandLabel={chrome.expandSidebar}
             onToggle={onToggleSidebar}
             onPointerEnter={onDockPointerEnter}
+            onPointerLeave={onDockPointerLeave}
           />
         </div>
         <div
@@ -247,21 +249,48 @@ export function HandbookShell({
   );
 }
 
+function isDockTarget(target: EventTarget | null): boolean {
+  return (
+    target instanceof Element && target.closest("[data-sidebar-dock]") !== null
+  );
+}
+
+function isSidebarTarget(target: EventTarget | null): boolean {
+  return target instanceof Element && target.closest("aside") !== null;
+}
+
 function useDesktopSidebarPeek(peekEnabled: boolean) {
   const [peeking, setPeeking] = useState(false);
   const leaveTimer = useRef(0);
   const peekLocked = useRef(false);
+  const pointerOverDock = useRef(false);
 
   if (!peekEnabled && peeking) {
     setPeeking(false);
   }
 
+  const cancelClose = useCallback(() => {
+    window.clearTimeout(leaveTimer.current);
+  }, []);
+
+  const scheduleClose = useCallback(() => {
+    cancelClose();
+    leaveTimer.current = window.setTimeout(() => {
+      if (pointerOverDock.current) {
+        return;
+      }
+      peekLocked.current = false;
+      setPeeking(false);
+    }, PEEK_LEAVE_MS);
+  }, [cancelClose]);
+
   useEffect(() => {
     if (!peekEnabled) {
       peekLocked.current = false;
-      window.clearTimeout(leaveTimer.current);
+      pointerOverDock.current = false;
+      cancelClose();
     }
-  }, [peekEnabled]);
+  }, [cancelClose, peekEnabled]);
 
   useEffect(() => {
     return () => window.clearTimeout(leaveTimer.current);
@@ -275,47 +304,68 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
       if (peekLocked.current) {
         return;
       }
-      window.clearTimeout(leaveTimer.current);
+      cancelClose();
       setPeeking(true);
     },
-    [peekEnabled],
+    [cancelClose, peekEnabled],
   );
 
-  const onAsidePointerLeave = useCallback(() => {
-    if (!peekEnabled) {
-      return;
-    }
-    window.clearTimeout(leaveTimer.current);
-    leaveTimer.current = window.setTimeout(() => {
-      peekLocked.current = false;
-      setPeeking(false);
-    }, PEEK_LEAVE_MS);
-  }, [peekEnabled]);
+  const onAsidePointerLeave = useCallback(
+    (event: PointerEvent<HTMLElement>) => {
+      if (!peekEnabled) {
+        return;
+      }
+      if (isDockTarget(event.relatedTarget)) {
+        pointerOverDock.current = true;
+        cancelClose();
+        return;
+      }
+      scheduleClose();
+    },
+    [cancelClose, peekEnabled, scheduleClose],
+  );
 
   const onDockPointerEnter = useCallback(
     (event: PointerEvent<HTMLElement>) => {
       if (event.pointerType !== "mouse" || !peekEnabled) {
         return;
       }
-      window.clearTimeout(leaveTimer.current);
+      pointerOverDock.current = true;
+      cancelClose();
     },
-    [peekEnabled],
+    [cancelClose, peekEnabled],
+  );
+
+  const onDockPointerLeave = useCallback(
+    (event: PointerEvent<HTMLElement>) => {
+      pointerOverDock.current = false;
+      if (event.pointerType !== "mouse" || !peekEnabled) {
+        return;
+      }
+      if (isSidebarTarget(event.relatedTarget)) {
+        return;
+      }
+      scheduleClose();
+    },
+    [peekEnabled, scheduleClose],
   );
 
   const suppressPeek = useCallback(() => {
+    pointerOverDock.current = false;
     peekLocked.current = true;
-    window.clearTimeout(leaveTimer.current);
+    cancelClose();
     setPeeking(false);
     leaveTimer.current = window.setTimeout(() => {
       peekLocked.current = false;
     }, PEEK_LEAVE_MS);
-  }, []);
+  }, [cancelClose]);
 
   return {
     peeking: peekEnabled && peeking,
     onAsidePointerEnter,
     onAsidePointerLeave,
     onDockPointerEnter,
+    onDockPointerLeave,
     suppressPeek,
   };
 }

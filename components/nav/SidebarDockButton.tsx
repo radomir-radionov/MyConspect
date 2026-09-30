@@ -10,6 +10,7 @@ export function SidebarDockButton({
   expandLabel,
   onToggle,
   onPointerEnter,
+  onPointerLeave,
 }: {
   collapsed: boolean;
   rail: boolean;
@@ -17,6 +18,7 @@ export function SidebarDockButton({
   expandLabel: string;
   onToggle: () => void;
   onPointerEnter: (event: PointerEvent<HTMLElement>) => void;
+  onPointerLeave: (event: PointerEvent<HTMLElement>) => void;
 }) {
   const label = collapsed ? expandLabel : collapseLabel;
 
@@ -35,6 +37,8 @@ export function SidebarDockButton({
       title={label}
       onClick={onToggle}
       onPointerEnter={onPointerEnter}
+      onPointerOver={onPointerEnter}
+      onPointerLeave={onPointerLeave}
     >
       <span
         className={
