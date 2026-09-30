@@ -42,6 +42,68 @@ describe("handbook sidebar", () => {
     cy.nav("subject", "database").should("be.visible");
   });
 
+  it("does not keep a concept highlighted after switching tracks", () => {
+    cy.visit("/en/frontend/js-operators#error-handling");
+    cy.get('[data-concept-id="error-handling"]').should(
+      "have.class",
+      "bg-yellow-50",
+    );
+
+    cy.nav("track", "system-design").click();
+    cy.location("pathname").should("eq", "/en/system-design");
+    cy.get('[data-concept-id="error-handling"]').should(
+      "not.have.class",
+      "bg-yellow-50",
+    );
+    cy.nav("track", "system-design").should("have.class", "bg-yellow-50");
+  });
+
+  it("highlights only the current track and collapses other tracks", () => {
+    cy.visit("/en/frontend/javascript");
+    cy.nav("track", "frontend").should("have.class", "bg-yellow-50");
+    cy.nav("subject", "javascript").should("have.class", "bg-yellow-50");
+
+    cy.nav("track", "system-design").click();
+    cy.location("pathname").should("eq", "/en/system-design");
+
+    cy.nav("track", "system-design").should("have.class", "bg-yellow-50");
+    cy.nav("track", "system-design").should(
+      "have.attr",
+      "aria-expanded",
+      "true",
+    );
+    cy.nav("track", "frontend").should("not.have.class", "bg-yellow-50");
+    cy.nav("track", "frontend").should("have.attr", "aria-expanded", "false");
+    cy.nav("subject", "javascript").should("not.be.visible");
+  });
+
+  it("opens only one track at a time when choosing another track", () => {
+    cy.visit("/en/frontend/html-structure");
+    cy.nav("track", "frontend").should("have.attr", "aria-expanded", "true");
+
+    cy.nav("track", "data-structures").click();
+    cy.location("pathname").should("eq", "/en/data-structures");
+    cy.nav("track", "data-structures").should(
+      "have.attr",
+      "aria-expanded",
+      "true",
+    );
+    cy.nav("track", "frontend").should("have.attr", "aria-expanded", "false");
+
+    cy.nav("track", "system-design").click();
+    cy.location("pathname").should("eq", "/en/system-design");
+    cy.nav("track", "system-design").should(
+      "have.attr",
+      "aria-expanded",
+      "true",
+    );
+    cy.nav("track", "data-structures").should(
+      "have.attr",
+      "aria-expanded",
+      "false",
+    );
+  });
+
   it("keeps Patterns open when opening it from Algorithms Core", () => {
     cy.visit("/en/algorithms/algorithms-core#time-vs-space-complexity");
     cy.nav("track", "algorithms").should("have.attr", "aria-expanded", "true");
@@ -224,6 +286,34 @@ describe("handbook sidebar", () => {
     cy.nav("track", "frontend").should("have.attr", "aria-expanded", "true");
     cy.url().should("include", "/frontend/javascript");
     cy.url().should("include", "core");
+  });
+
+  it("shows React Ecosystem Core without a duplicate Ecosystem crumb", () => {
+    cy.visit("/en/frontend/react-ecosystem");
+    cy.contains("nav[aria-label='Breadcrumbs']", "Ecosystem").should(
+      "be.visible",
+    );
+    cy.contains("nav[aria-label='Breadcrumbs']", "Core").should("be.visible");
+    cy.contains("nav[aria-label='Breadcrumbs'] li", "Ecosystem").should(
+      "have.length",
+      1,
+    );
+    cy.contains("h1", "Core");
+    cy.nav("cluster", "ecosystem").should("have.attr", "aria-expanded", "true");
+    cy.nav("topic", "react-ecosystem")
+      .should("be.visible")
+      .and("contain", "Core");
+  });
+
+  it("shows Redux under React Ecosystem in breadcrumbs", () => {
+    cy.visit("/en/frontend/react-redux");
+    cy.contains("nav[aria-label='Breadcrumbs']", "Ecosystem").should(
+      "be.visible",
+    );
+    cy.contains("nav[aria-label='Breadcrumbs']", "Redux").should("be.visible");
+    cy.contains("h1", "Redux");
+    cy.nav("cluster", "ecosystem").should("have.attr", "aria-expanded", "true");
+    cy.nav("topic", "react-redux").should("be.visible").and("contain", "Redux");
   });
 
   it("opens React 19 from Hooks and closes Core", () => {

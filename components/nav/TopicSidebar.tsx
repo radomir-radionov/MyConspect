@@ -134,15 +134,26 @@ export const TopicSidebar = memo(function TopicSidebar({
     }
     const frame = window.requestAnimationFrame(() => {
       const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
-      const hit = nav?.querySelector(
+      const hits = nav?.querySelectorAll(
         `[data-concept-id="${CSS.escape(activeConceptId)}"]`,
       );
-      if (hit instanceof HTMLElement) {
+      if (!hits) {
+        return;
+      }
+      for (const hit of hits) {
+        if (!(hit instanceof HTMLElement)) {
+          continue;
+        }
+        const href = hit.getAttribute("href");
+        if (!href || splitHref(href).pathname !== pathname) {
+          continue;
+        }
         scrollSidebarHit(hit);
+        break;
       }
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [activeConceptId, stickyRevision, searching]);
+  }, [activeConceptId, pathname, stickyRevision, searching]);
 
   const chromeValue = useMemo(
     () => ({
@@ -295,7 +306,7 @@ function TrackGroup({
   const needle = query.trim().toLowerCase();
   const trackHighlighted = searching
     ? needle.length > 0 && matchesQuery(group.title, needle)
-    : onThisTrack || trackOpen;
+    : onThisTrack;
   const headerClass = trackHeaderClass(trackHighlighted, onPath);
   const searchHits = useMemo(
     () => (searching ? collectGroupSearchHits(group, query, mode) : []),

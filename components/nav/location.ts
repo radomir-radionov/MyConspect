@@ -5,6 +5,7 @@ import {
   type NavCluster,
   type NavConcept,
   type NavGroup,
+  type NavSubject,
   type NavTopic,
 } from "@/lib/nav";
 import { navSubjectClusters } from "@/lib/nav/subjectClusters";
@@ -27,6 +28,34 @@ export function isActiveHref(pathname: string, href: string): boolean {
 
 export function isActiveTrack(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+export function isConceptActiveOnPage(
+  pathname: string,
+  topicHref: string,
+  conceptId: string,
+  activeConceptId: string,
+): boolean {
+  return (
+    activeConceptId.length > 0 &&
+    pathname === topicHref &&
+    conceptId === activeConceptId
+  );
+}
+
+export function isOnSubjectPath(
+  pathname: string,
+  subject: NavSubject,
+): boolean {
+  if (pathname === subject.href) {
+    return true;
+  }
+  for (const cluster of navSubjectClusters(subject)) {
+    if (cluster.topics.some((topic) => topic.href === pathname)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export function clusterKey(subjectHref: string, clusterId: string) {

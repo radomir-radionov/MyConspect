@@ -143,24 +143,19 @@ export function useSidebarOpen({
 
   const toggleTrackId = useCallback((trackId: TrackId) => {
     setOpenTrackIds((previous) => {
-      const next = new Set(previous);
-      if (next.has(trackId)) {
-        next.delete(trackId);
-      } else {
-        next.add(trackId);
+      if (previous.has(trackId)) {
+        return new Set();
       }
-      return next;
+      return new Set([trackId]);
     });
   }, []);
 
   const ensureTrackOpen = useCallback((trackId: TrackId) => {
     setOpenTrackIds((previous) => {
-      if (previous.has(trackId)) {
+      if (previous.size === 1 && previous.has(trackId)) {
         return previous;
       }
-      const next = new Set(previous);
-      next.add(trackId);
-      return next;
+      return new Set([trackId]);
     });
   }, []);
 
@@ -202,12 +197,10 @@ function syncOpenState({
   ) {
     if (activeTrackId) {
       setOpenTrackIds((previous) => {
-        if (previous.has(activeTrackId)) {
+        if (previous.size === 1 && previous.has(activeTrackId)) {
           return previous;
         }
-        const next = new Set(previous);
-        next.add(activeTrackId);
-        return next;
+        return new Set([activeTrackId]);
       });
     }
   }

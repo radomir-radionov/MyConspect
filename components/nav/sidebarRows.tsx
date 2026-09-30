@@ -30,7 +30,12 @@ import {
   subjectCautionLabel,
   subjectCautionTooltip,
 } from "@/lib/nav/subjectCaution";
-import { clusterKey, isActiveHref } from "./location";
+import {
+  clusterKey,
+  isActiveHref,
+  isConceptActiveOnPage,
+  isOnSubjectPath,
+} from "./location";
 import { NavCautionBadge } from "./NavCautionBadge";
 import {
   closeNavSoon,
@@ -178,12 +183,17 @@ function ConceptItems({
   concepts: readonly NavConcept[];
   indentClass?: string;
 }) {
-  const { first, searching } = useSidebarChrome();
+  const { first, searching, pathname } = useSidebarChrome();
   const { activeConceptId } = useSidebarActive();
   return (
     <>
       {concepts.map((concept, index) => {
-        const conceptActive = concept.id === activeConceptId;
+        const conceptActive = isConceptActiveOnPage(
+          pathname,
+          topic.href,
+          concept.id,
+          activeConceptId,
+        );
         const isFirstConcept =
           first?.pathname === topic.href && first.hash === `#${concept.id}`;
         const onPath = conceptActive && !searching;
@@ -238,10 +248,11 @@ function InterviewSectionNav({
   const { pathname, searching, query } = useSidebarChrome();
   const { activeConceptId } = useSidebarActive();
   const groups = useMemo(() => interviewSectionGroups(concepts), [concepts]);
-  const activeSection = concepts.find(
-    (concept) => concept.id === activeConceptId,
-  )?.interviewSection;
   const onTopic = !searching && isActiveHref(pathname, topic.href);
+  const activeSection = onTopic
+    ? concepts.find((concept) => concept.id === activeConceptId)
+        ?.interviewSection
+    : undefined;
   const [openSections, setOpenSections] = useState<
     ReadonlySet<InterviewSection>
   >(() => new Set(["questions"]));
@@ -249,7 +260,7 @@ function InterviewSectionNav({
     InterviewSection | undefined
   >();
 
-  if (activeSection && activeSection !== trackedActiveSection) {
+  if (onTopic && activeSection && activeSection !== trackedActiveSection) {
     setTrackedActiveSection(activeSection);
     if (!openSections.has(activeSection)) {
       setOpenSections((current) => {
@@ -264,8 +275,8 @@ function InterviewSectionNav({
     <>
       {groups.map((group) => {
         const sectionOpen = searching || openSections.has(group.section);
-        const sectionActive = activeSection === group.section;
-        const onPath = onTopic && sectionOpen;
+        const sectionActive = onTopic && activeSection === group.section;
+        const onPath = sectionActive;
         return (
           <li key={group.section} className="contents">
             <button
@@ -289,7 +300,7 @@ function InterviewSectionNav({
                 });
               }}
               className={
-                sectionActive || sectionOpen
+                sectionActive
                   ? `flex w-full ${NAV_ROW_GAP} cursor-pointer items-center rounded-md bg-yellow-50 px-2 py-1.5 pl-4 text-left text-sm font-medium text-zinc-900 ring-1 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800${onPath ? " sticky" : ""}`
                   : `flex w-full ${NAV_ROW_GAP} cursor-pointer items-center rounded-md px-2 py-1.5 pl-4 text-left text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800 dark:text-zinc-300 dark:hover:bg-yellow-950/60 dark:hover:text-zinc-50`
               }
@@ -448,7 +459,7 @@ export function TopicRow({
         data-search-hit={isFirstTopic ? "true" : undefined}
         aria-current={active ? "page" : undefined}
         aria-expanded={hasConcepts ? topicOpen : undefined}
-        className={`${rowClass(isHitTopic || active || topicOpen, onPath, indent)} ${NAV_ROW_GAP}`}
+        className={`${rowClass(isHitTopic || active, onPath, indent)} ${NAV_ROW_GAP}`}
       >
         <RowTitle
           text={topic.title}
@@ -558,7 +569,7 @@ export function ClusterRow({
         data-search-hit={isHitCluster ? "true" : undefined}
         aria-current={active ? "location" : undefined}
         aria-expanded={clusterOpen}
-        className={`${rowClass(isHitCluster || active || clusterOpen, stickHeader, "pl-4")}${
+        className={`${rowClass(isHitCluster || active, stickHeader, "pl-4")}${
           pinInParent ? " sticky bg-white dark:bg-[var(--chrome-surface)]" : ""
         } ${NAV_ROW_GAP}`}
       >
@@ -601,7 +612,7 @@ export function SubjectRow({
   const active = isActiveHref(pathname, subject.href);
   const subjectOpen = searching || openSubjectHref === subject.href;
   const isHitSubject = first?.pathname === subject.href && first.hash === "";
-  const onPath = !searching && openSubjectHref === subject.href;
+  const onPath = !searching && isOnSubjectPath(pathname, subject);
   const locale = localeFromPathname(pathname);
   const cautionTip = subjectCautionTooltip(locale, subject.slug);
 
@@ -629,7 +640,7 @@ export function SubjectRow({
         data-search-hit={isHitSubject ? "true" : undefined}
         aria-current={active ? "page" : undefined}
         aria-expanded={subjectOpen}
-        className={`${rowClass(isHitSubject || active || subjectOpen, onPath)} ${NAV_ROW_GAP}`}
+        className={`${rowClass(isHitSubject || onPath, onPath)} ${NAV_ROW_GAP}`}
       >
         <RowTitle text={subject.title} query={query} />
         {cautionTip ? (

@@ -104,7 +104,7 @@ useRef против createRef?
 
 **Answer:** Контекст = редкие общие значения (тема/аутентификация). Redux/Zustand = состояние клиентского приложения. TanStack Query = кэш сервера. URL = общие фильтры. Не помещайте горячую корзину в один контекст.
 
-**See also:** [Контекст](./4_react_core.md#context) · [Библиотеки управления состоянием](./4_react_ecosystem.md#state-management-libraries) · [Запрос TanStack против запроса RTK](./4_react_ecosystem.md#tanstack-query-vs-rtk-query)
+**See also:** [Контекст](./4_react_core.md#context) · [State management libraries](./4_react_redux.md#state-management-libraries) · [TanStack Query vs RTK Query](./4_react_redux.md#tanstack-query-vs-rtk-query)
 
 Как React.lazy загружает компонент, когда условие становится истинным?
 
@@ -447,7 +447,7 @@ TanStack Query против RTK-запроса — когда?
 
 **See also:**
 
-[Запрос TanStack против запроса RTK](./4_react_ecosystem.md#9-ecosystem--architecture)
+[TanStack Query vs RTK Query](./4_react_redux.md#tanstack-query-vs-rtk-query)
 
 Как скрыть кнопку «Редактировать», которую пользователь не может использовать?
 
@@ -528,13 +528,13 @@ nuqs против useSearchParams против qs?
 9. Какие преимущества вы видите в React?
 10. Почему React быстрый? Что такое виртуальный DOM? → [Виртуальный DOM и сверка](./4_react_core.md#virtual-dom--reconciliation)
     14.Зачем спискам нужны ключи? Могут ли индексы массива быть ключами? Когда это приемлемо? → [Зачем перечислять ключи? Индекс как ключ?](#вопросы--ответы)
-11. Какова основная идея Redux? → [Библиотеки управления состоянием](./4_react_ecosystem.md#9-ecosystem--architecture)
+11. Какова основная идея Redux? → [State management libraries](./4_react_redux.md#state-management-libraries)
 12. Работа со стилями в React → [Стилизация в React](./4_react_ecosystem.md#9-ecosystem--architecture) · Основы CSS: [2_css.md](2_css.md)
     17.React — это библиотека или фреймворк? В чем разница? → [Библиотека React или фреймворк?](#вопросы--ответы)
 13. Можете ли вы использовать jQuery вместе с React? Почему или почему нет?
 14. Что такое кодмод?
 15. Как создать хорошую архитектуру для проекта React? → [Функциональное проектирование (FSD)](./4_react_ecosystem.md#9-ecosystem--architecture)
-16. Перечислите библиотеки, которые вы использовали с React.→ [Запрос TanStack против запроса RTK](./4_react_ecosystem.md#9-ecosystem--architecture) · [CASL](./4_react_ecosystem.md#9-ecosystem--architecture) · [shadcn/ui](./4_react_ecosystem.md#9-ecosystem--architecture) · [orval](./4_react_ecosystem.md#9-ecosystem--архитектура)
+16. Перечислите библиотеки, которые вы использовали с React.→ [TanStack Query vs RTK Query](./4_react_redux.md#tanstack-query-vs-rtk-query) · [CASL](./4_react_ecosystem.md#9-ecosystem--architecture) · [shadcn/ui](./4_react_ecosystem.md#9-ecosystem--architecture) · [orval](./4_react_ecosystem.md#9-ecosystem--architecture)
 17. Что самое сложное вы реализовали с помощью React?
 
 Средний — Реагировать
@@ -548,7 +548,7 @@ nuqs против useSearchParams против qs?
 5. Почему и когда нужно передавать реквизит `super()` в компонентах класса?
 6. Почему вам необходимо использовать `setState()` обновить состояние внутреннего компонента?
 7. Что такое «поднятие государства»? → [Поднятие состояния](./4_react_core.md#4-state--interactivity)
-8. Какие библиотеки управления состоянием для React вы знаете? Зачем они нужны? → [Библиотеки управления состоянием](./4_react_ecosystem.md#9-ecosystem--architecture)
+8. Какие библиотеки управления состоянием для React вы знаете? Зачем они нужны? → [State management libraries](./4_react_redux.md#state-management-libraries)
 9. Когда следует использовать Redux? Каковы альтернативы?
 10. Redux против MobX?
 11. Объясните основной принцип React Hooks.→ [Справочник по крючкам](./4_react_hooks.md#5-hooks-reference)

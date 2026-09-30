@@ -104,7 +104,7 @@ Context vs Redux vs Zustand vs React Query?
 
 **Answer:** Context = rare shared values (theme/auth). Redux/Zustand = client app state. TanStack Query = server cache. URL = shareable filters. Don't put a hot cart in one Context.
 
-**See also:** [Context](./4_react_core.md#context) · [State management libraries](./4_react_ecosystem.md#state-management-libraries) · [TanStack Query vs RTK Query](./4_react_ecosystem.md#tanstack-query-vs-rtk-query)
+**See also:** [Context](./4_react_core.md#context) · [State management libraries](./4_react_redux.md#state-management-libraries) · [TanStack Query vs RTK Query](./4_react_redux.md#tanstack-query-vs-rtk-query)
 
 How does React.lazy load a component when a condition becomes true?
 
@@ -448,7 +448,7 @@ Query keys identify data; mutations invalidate keys. RTK Query generates hooks f
 
 **See also:**
 
-[TanStack Query vs RTK Query](./4_react_ecosystem.md#9-ecosystem--architecture)
+[TanStack Query vs RTK Query](./4_react_redux.md#tanstack-query-vs-rtk-query)
 
 How do you hide an Edit button the user cannot use?
 
@@ -529,13 +529,13 @@ Junior — React
 12. What advantages do you see in React?
 13. Why is React fast? What is the Virtual DOM? → [Virtual DOM & reconciliation](./4_react_core.md#virtual-dom--reconciliation)
 14. Why do lists need keys? Can array indices be keys? When is that acceptable? → [Why list keys? Index as key?](#questions--answers)
-15. What is the core idea of Redux? → [State management libraries](./4_react_ecosystem.md#9-ecosystem--architecture)
+15. What is the core idea of Redux? → [State management libraries](./4_react_redux.md#state-management-libraries)
 16. Working with styles in React → [Styling in React](./4_react_ecosystem.md#9-ecosystem--architecture) · CSS basics: [2_css.md](2_css.md)
 17. Is React a library or a framework? What is the difference? → [React library or framework?](#questions--answers)
 18. Can you use jQuery together with React? Why or why not?
 19. What is a codemod?
 20. How do you build good architecture for a React project? → [Feature-Sliced Design (FSD)](./4_react_ecosystem.md#9-ecosystem--architecture)
-21. List libraries you have used with React. → [TanStack Query vs RTK Query](./4_react_ecosystem.md#9-ecosystem--architecture) · [CASL](./4_react_ecosystem.md#9-ecosystem--architecture) · [shadcn/ui](./4_react_ecosystem.md#9-ecosystem--architecture) · [orval](./4_react_ecosystem.md#9-ecosystem--architecture)
+21. List libraries you have used with React. → [TanStack Query vs RTK Query](./4_react_redux.md#tanstack-query-vs-rtk-query) · [CASL](./4_react_ecosystem.md#9-ecosystem--architecture) · [shadcn/ui](./4_react_ecosystem.md#9-ecosystem--architecture) · [orval](./4_react_ecosystem.md#9-ecosystem--architecture)
 22. What is the hardest thing you have implemented with React?
 
 Middle — React
@@ -549,7 +549,7 @@ Middle — React
 5. Why and when must you pass props to `super()` in class components?
 6. Why must you use `setState()` to update internal component state?
 7. What is "lifting state up"? → [Lifting state up](./4_react_core.md#4-state--interactivity)
-8. What state management libraries for React do you know? Why are they needed? → [State management libraries](./4_react_ecosystem.md#9-ecosystem--architecture)
+8. What state management libraries for React do you know? Why are they needed? → [State management libraries](./4_react_redux.md#state-management-libraries)
 9. When should you use Redux? What are the alternatives?
 10. Redux vs MobX?
 11. Explain the basic principle of React Hooks. → [Hooks reference](./4_react_hooks.md#5-hooks-reference)

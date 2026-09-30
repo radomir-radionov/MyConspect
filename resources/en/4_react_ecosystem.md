@@ -1,12 +1,12 @@
-# React — Ecosystem
+# React — Core
 
-Architecture, libraries, performance, and legacy.
+Routing, libraries, performance, and legacy.
 
 [← Back to hub](./4_react.md)
 
 ### Related docs
 
-* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md) · [Architecture patterns](./7_special_architecture.md)
+- [React — Basics](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Core](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — Interview](./4_react_interview.md) · [Architecture patterns](./7_special_architecture.md)
 
 ### Sections
 
@@ -52,7 +52,7 @@ Routing
 </Routes>
 ```
 
-**Thoughts:** *URL drives which components mount — no full document reload.*
+**Thoughts:** _URL drives which components mount — no full document reload._
 
 **See also:** [React Router essentials](#react-router-essentials) · [TanStack Router](#tanstack-router)
 
@@ -77,7 +77,7 @@ React Router essentials
 
 **Pluses and minuses:**
 
-| +                                             | −                                 |
+| +                                                | −                                    |
 | ------------------------------------------------ | ------------------------------------ |
 | Nested layouts without remounting parent         | v6→v7 migration learning curve       |
 | Loaders reduce fetch-on-mount waterfalls         | Framework mode overlaps with Next.js |
@@ -88,13 +88,13 @@ React Router essentials
 ```tsx
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Layout />,
     loader: () => fetchRootData(),
     children: [
       { index: true, element: <Home /> },
       {
-        path: 'users/:userId',
+        path: "users/:userId",
         loader: ({ params }) => fetchUser(params.userId),
         element: <UserProfile />,
       },
@@ -108,7 +108,13 @@ function UserProfile() {
 }
 
 function Layout() {
-  return <><nav /><Outlet /><footer /></>;
+  return (
+    <>
+      <nav />
+      <Outlet />
+      <footer />
+    </>
+  );
 }
 ```
 
@@ -135,7 +141,7 @@ Accessibility in React (a11y)
 
 **Pluses and minuses:**
 
-| +                                             | −                                   |
+| +                                                | −                                      |
 | ------------------------------------------------ | -------------------------------------- |
 | Semantic HTML covers most cases                  | Custom widgets need full keyboard spec |
 | `eslint-plugin-jsx-a11y` catches common mistakes | Portals/modals need manual focus trap  |
@@ -147,12 +153,16 @@ Accessibility in React (a11y)
 function Dialog({ title, onClose, children }: DialogProps) {
   const titleId = useId();
   const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => { ref.current?.showModal(); }, []);
+  useEffect(() => {
+    ref.current?.showModal();
+  }, []);
   return (
     <dialog ref={ref} aria-labelledby={titleId} onClose={onClose}>
       <h2 id={titleId}>{title}</h2>
       {children}
-      <button type="button" onClick={onClose}>Close</button>
+      <button type="button" onClick={onClose}>
+        Close
+      </button>
     </dialog>
   );
 }
@@ -192,72 +202,19 @@ Patterns for loading server data in React — framework loaders, client caches, 
 ```tsx
 // Next.js Server Component
 async function Page() {
-  const res = await fetch('https://api.example.com/posts', { next: { revalidate: 60 } });
+  const res = await fetch("https://api.example.com/posts", {
+    next: { revalidate: 60 },
+  });
   const posts = await res.json();
   return <PostList posts={posts} />;
 }
 ```
 
-**Thoughts:** Don't `useEffect` + `fetch` for initial page data if RSC or router loader can provide it. HTTP headers vs client cache → [6_web_api.md — HTTP caching](./6_web_api.md).
+**Thoughts:** Don't `useEffect` + `fetch` for initial page data if RSC or router loader can provide it. HTTP headers vs client cache → [6_web_api.md — HTTP caching](./6_web_api.md). RTK Query details → [React — Redux](./4_react_redux.md).
 
 **Sources:**
 
 [react.dev/reference/rsc/server-components](https://react.dev/reference/rsc/server-components) · [RTK Query cache behavior](https://redux-toolkit.js.org/rtk-query/usage/cache-behavior)
-
-State management libraries
-
-</details>
-
-<details>
-  <summary>State management libraries</summary>
-
-### State management libraries
-
-**Definition:**
-
-External libraries for shared client state and server cache — complement local `useState` and Context. **Application state** is the data at a given moment (e.g. editor blocks + timestamps), kept as objects — not mixed into HTML — so it can be processed, exported, and saved as JSON.
-
-| Library                  | Best for                                                |
-| ------------------------ | ------------------------------------------------------- |
-| **Redux Toolkit**        | Large teams, time-travel debugging, normalized entities |
-| **Zustand**              | Minimal boilerplate, slice-based global state           |
-| **Jotai / Recoil**       | Atomic fine-grained subscriptions                       |
-| **TanStack Query**       | Server/async state — not UI state                       |
-| **RTK Query**            | Server cache in the Redux store (`createApi`)           |
-| **Context + useReducer** | Small apps, theme/locale                                |
-
-**How it works:**
-
-|         | Flux                        | Redux                    |
-| ------- | --------------------------- | ------------------------ |
-| Stores  | Multiple                    | Single store             |
-| Updates | Stores self-update          | Pure reducers only       |
-| Flow    | Action → Dispatcher → Store | Action → Reducer → Store |
-
-| State type                     | Tool                        |
-| ------------------------------ | --------------------------- |
-| Server/async data              | TanStack Query or RTK Query |
-| Local UI state                 | `useState` / `useReducer`   |
-| Shared client UI (theme, cart) | Zustand or Context          |
-| Complex app state + DevTools   | Redux Toolkit               |
-| Fine-grained atoms             | Jotai                       |
-
-Complex shared client state, middleware (logging, analytics), time-travel DevTools. **When to skip:** Most state is server data (use Query) or local (`useState`).
-
-**Examples:**
-
-```tsx
-const useStore = create(set => ({
-  count: 0,
-  inc: () => set(s => ({ count: s.count + 1 })),
-}));
-```
-
-**Thoughts:** *Server state and UI state are different problems — don't put fetch cache in Redux unless you need RTK Query.*
-
-**Sources:**
-
-[redux-toolkit.js.org](https://redux-toolkit.js.org/)
 
 Forms
 
@@ -295,7 +252,7 @@ const schema = z.object({ email: z.string().email() });
 const { register, handleSubmit } = useForm({ resolver: zodResolver(schema) });
 ```
 
-**Thoughts:** *Simple forms → Actions; complex validation → RHF + Zod.*
+**Thoughts:** _Simple forms → Actions; complex validation → RHF + Zod._
 
 **See also:** [Controlled vs uncontrolled inputs](./4_react_core.md#controlled-vs-uncontrolled-inputs) · [Actions](./4_react_server.md#actions) · [useActionState](./4_react_server.md#useactionstate)
 
@@ -331,14 +288,14 @@ React has no built-in styling — attach CSS via `className`, CSS Modules, utili
 **Examples:**
 
 ```tsx
-import styles from './Button.module.css';
+import styles from "./Button.module.css";
 
 export function Button({ children }: { children: React.ReactNode }) {
   return <button className={styles.primary}>{children}</button>;
 }
 ```
 
-**Thoughts:** *Prefer zero-runtime CSS in RSC apps — styles must not depend on client JS injection.*
+**Thoughts:** _Prefer zero-runtime CSS in RSC apps — styles must not depend on client JS injection._
 
 **Sources:**
 
@@ -378,7 +335,7 @@ Using Next.js `app/` file conventions inside a TanStack app. Skipping `validateS
 
 **Pluses and minuses:**
 
-| +                                           | −                                                 |
+| +                                              | −                                                    |
 | ---------------------------------------------- | ---------------------------------------------------- |
 | Params, search, and loader data are typed      | Another router if you already use Next.js App Router |
 | Search params as first-class state (nuqs-like) | File-plugin setup for `createFileRoute`              |
@@ -387,11 +344,11 @@ Using Next.js `app/` file conventions inside a TanStack app. Skipping `validateS
 **Examples:**
 
 ```tsx
-import { createFileRoute } from '@tanstack/react-router';
-import { z } from 'zod';
+import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 
-export const Route = createFileRoute('/posts/$postId')({
-  validateSearch: z.object({ tab: z.enum(['info', 'comments']).catch('info') }),
+export const Route = createFileRoute("/posts/$postId")({
+  validateSearch: z.object({ tab: z.enum(["info", "comments"]).catch("info") }),
   loader: async ({ params }) => {
     const post = await fetchPost(params.postId); // params.postId: string
     return { post };
@@ -403,11 +360,18 @@ function PostPage() {
   const { post } = Route.useLoaderData();
   const { postId } = Route.useParams();
   const { tab } = Route.useSearch();
-  return <article><h1>{post.title}</h1><p>{postId} / {tab}</p></article>;
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>
+        {postId} / {tab}
+      </p>
+    </article>
+  );
 }
 ```
 
-**Thoughts:** The route module *is* the type source — hooks do not need manual generics.
+**Thoughts:** The route module _is_ the type source — hooks do not need manual generics.
 
 **Sources:**
 
@@ -436,7 +400,7 @@ Importing parsers from `nuqs` in Server Components — use `nuqs/server`. Forget
 
 **Pluses and minuses:**
 
-| +                                           | −                                                                            |
+| +                                              | −                                                                               |
 | ---------------------------------------------- | ------------------------------------------------------------------------------- |
 | Shareable, bookmarkable filter state           | Client hook only — wrap with adapter                                            |
 | Typed parsers instead of raw `URLSearchParams` | Next.js App Router already has `useSearchParams`; nuqs adds typing and batching |
@@ -446,9 +410,13 @@ Importing parsers from `nuqs` in Server Components — use `nuqs/server`. Forget
 
 ```tsx
 // app/layout.tsx
-import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html>
       <body>
@@ -459,11 +427,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 
 // client
-'use client';
-import { parseAsInteger, useQueryState } from 'nuqs';
+("use client");
+import { parseAsInteger, useQueryState } from "nuqs";
 
 function Pager() {
-  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   return <button onClick={() => setPage((p) => p + 1)}>Page {page}</button>;
 }
 ```
@@ -473,69 +441,6 @@ function Pager() {
 **Sources:**
 
 [nuqs.dev](https://nuqs.dev/) · [github.com/47ng/nuqs](https://github.com/47ng/nuqs)
-
-TanStack Query vs RTK Query
-
-</details>
-
-<details>
-  <summary>TanStack Query vs RTK Query</summary>
-
-### TanStack Query vs RTK Query
-
-**Definition:** Two **server-state** caches. TanStack Query (React Query) is a standalone cache keyed by `queryKey`. RTK Query is the same idea inside Redux Toolkit (`createApi`) so server cache lives in the Redux store.
-
-**How it works:**
-
-Both cache JSON in memory (not HTTP `Cache-Control`). TanStack Query v5 uses a single options object: `useQuery({ queryKey, queryFn, staleTime })`. Default `staleTime` is **0** (always stale → background refetch); `gcTime` (was `cacheTime`) defaults to **5 minutes**. `invalidateQueries` marks keys stale and refetches active observers. RTK Query: `createApi` + `keepUnusedDataFor` (default **60s**); hooks are generated from endpoints.
-
-|              | TanStack Query                                | RTK Query                      |
-| ------------ | --------------------------------------------- | ------------------------------ |
-| Store        | Own `QueryClient`                             | Redux store                    |
-| Boilerplate  | Low                                           | Higher (`createApi`, slices)   |
-| Best with    | Zustand / Context for UI state                | Existing Redux Toolkit app     |
-| Invalidation | `queryClient.invalidateQueries({ queryKey })` | `invalidatesTags` on mutations |
-
-**When to use:**
-
-New SPA without Redux → TanStack Query. Large Redux codebase → RTK Query. RSC/Next.js server `fetch` first; add a client cache only for live client updates.
-
-#### Common pitfalls
-
-v4 positional args (`useQuery(key, fn)`) — v5 requires the object form. Putting form/toggle state in Query. Forgetting `queryKey` includes every input that changes the response.
-
-**Pluses and minuses:**
-
-| +                                             | −                                          |
-| ------------------------------------------------ | --------------------------------------------- |
-| Query: flexible, framework-agnostic              | Easy to treat it as a global UI store (don't) |
-| RTK Query: one store, DevTools, codegen-friendly | Couples server cache to Redux                 |
-
-**Examples:**
-
-```tsx
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-function Todos() {
-  const queryClient = useQueryClient();
-  const { data } = useQuery({
-    queryKey: ['todos'],
-    queryFn: fetchTodos,
-    staleTime: 30_000,
-  });
-  const { mutate } = useMutation({
-    mutationFn: addTodo,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
-  });
-  return <ul>{data?.map(t => <li key={t.id}>{t.title}</li>)}</ul>;
-}
-```
-
-**Thoughts:** Query caches **server** data. Redux/Zustand caches **client** data. Do not mix them.
-
-**Sources:**
-
-[tanstack.com/query](https://tanstack.com/query/latest) · [redux-toolkit.js.org/rtk-query](https://redux-toolkit.js.org/rtk-query/overview)
 
 CASL (authorization)
 
@@ -560,7 +465,7 @@ Hiding a button without repeating the check in the mutation. Using CASL as authe
 
 **Pluses and minuses:**
 
-| +                                   | −                                        |
+| +                                      | −                                           |
 | -------------------------------------- | ------------------------------------------- |
 | Same rules on client and API           | Easy to forget server-side enforcement      |
 | Declarative `<Can>` keeps JSX readable | Complex ABAC conditions need tests          |
@@ -569,13 +474,13 @@ Hiding a button without repeating the check in the mutation. Using CASL as authe
 **Examples:**
 
 ```tsx
-import { defineAbility } from '@casl/ability';
-import { Can } from '@casl/react';
+import { defineAbility } from "@casl/ability";
+import { Can } from "@casl/react";
 
 const ability = defineAbility((can, cannot) => {
-  can('read', 'Article');
-  can('update', 'Article', { authorId: user.id });
-  cannot('delete', 'Article');
+  can("read", "Article");
+  can("update", "Article", { authorId: user.id });
+  cannot("delete", "Article");
 });
 
 function Editor({ article }: { article: Article }) {
@@ -616,7 +521,7 @@ Committing generated files that nobody regenerates. Editing generated files by h
 
 **Pluses and minuses:**
 
-| +                                       | −                                           |
+| +                                          | −                                              |
 | ------------------------------------------ | ---------------------------------------------- |
 | Spec is the source of truth                | Garbage spec → garbage hooks                   |
 | Query keys + invalidation can be generated | Another build step to keep green               |
@@ -625,18 +530,18 @@ Committing generated files that nobody regenerates. Editing generated files by h
 **Examples:**
 
 ```ts
-import { defineConfig } from 'orval';
+import { defineConfig } from "orval";
 
 export default defineConfig({
   petstore: {
-    input: { target: './openapi.yaml' },
+    input: { target: "./openapi.yaml" },
     output: {
-      mode: 'tags-split',
-      target: 'src/api/petstore.ts',
-      schemas: 'src/api/model',
-      client: 'react-query',
+      mode: "tags-split",
+      target: "src/api/petstore.ts",
+      schemas: "src/api/model",
+      client: "react-query",
       override: {
-        mutator: { path: './src/api/mutator.ts', name: 'customInstance' },
+        mutator: { path: "./src/api/mutator.ts", name: "customInstance" },
       },
     },
   },
@@ -658,7 +563,7 @@ shadcn/ui
 
 ### shadcn/ui
 
-**Definition:** Not an npm component library you import as a black box — a CLI that **copies** accessible primitives (Radix + Tailwind) into *your* repo so you own the source.
+**Definition:** Not an npm component library you import as a black box — a CLI that **copies** accessible primitives (Radix + Tailwind) into _your_ repo so you own the source.
 
 **How it works:** `npx shadcn@latest init` writes `components.json`. `npx shadcn@latest add button` drops `components/ui/button.tsx` into the project. You edit that file like any other component. Copy-paste without the CLI also works; `components.json` is only required for the CLI.
 
@@ -672,7 +577,7 @@ Calling it “a library we depend on” in interviews — interviewers want “w
 
 **Pluses and minuses:**
 
-| +                                  | −                                             |
+| +                                     | −                                                |
 | ------------------------------------- | ------------------------------------------------ |
 | Full ownership and customization      | You maintain the copies (a11y + updates)         |
 | Works with RSC (no runtime CSS-in-JS) | Not a versioned design-system package by default |
@@ -685,7 +590,7 @@ npx shadcn@latest add button
 ```
 
 ```tsx
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
 export function SaveBar() {
   return <Button type="submit">Save</Button>;
@@ -715,7 +620,7 @@ Charts (Nivo / amCharts)
 
 **Pluses and minuses:**
 
-| +                                          | −                                                  |
+| +                                             | −                                                     |
 | --------------------------------------------- | ----------------------------------------------------- |
 | Nivo: composable, MIT, good defaults          | Bundle size — lazy-load chart routes                  |
 | amCharts: maps, Gantt, stock, licensed polish | License cost; heavier API                             |
@@ -724,13 +629,17 @@ Charts (Nivo / amCharts)
 **Examples:**
 
 ```tsx
-'use client';
-import { ResponsiveBar } from '@nivo/bar';
+"use client";
+import { ResponsiveBar } from "@nivo/bar";
 
-export function RevenueBar({ data }: { data: { month: string; value: number }[] }) {
+export function RevenueBar({
+  data,
+}: {
+  data: { month: string; value: number }[];
+}) {
   return (
     <div style={{ height: 320 }} role="img" aria-label="Revenue by month">
-      <ResponsiveBar data={data} keys={['value']} indexBy="month" />
+      <ResponsiveBar data={data} keys={["value"]} indexBy="month" />
     </div>
   );
 }
@@ -765,7 +674,7 @@ Hard-coded UI strings. Splitting sentences across keys (`t('hello') + name + t('
 
 **Pluses and minuses:**
 
-| +                                                                       | −                                                                                  |
+| +                                                                          | −                                                                                     |
 | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | ICU placeholders avoid broken grammar                                      | Routing + middleware/proxy must stay in sync                                          |
 | Server Components can translate without shipping all locales to the client | Missing keys fail at runtime unless typed                                             |
@@ -774,21 +683,24 @@ Hard-coded UI strings. Splitting sentences across keys (`t('hello') + name + t('
 **Examples:**
 
 ```tsx
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 
 export default function HomePage() {
-  const t = useTranslations('HomePage');
-  return <h1>{t('title')}</h1>;
+  const t = useTranslations("HomePage");
+  return <h1>{t("title")}</h1>;
 }
 ```
 
 ```ts
 // i18n/request.ts
-import { getRequestConfig } from 'next-intl/server';
+import { getRequestConfig } from "next-intl/server";
 
 export default getRequestConfig(async () => {
-  const locale = 'en';
-  return { locale, messages: (await import(`../messages/${locale}.json`)).default };
+  const locale = "en";
+  return {
+    locale,
+    messages: (await import(`../messages/${locale}.json`)).default,
+  };
 });
 ```
 
@@ -820,24 +732,24 @@ User flows (login, submit form), conditional UI, error states. **What NOT to tes
 
 Why tests / AAA / pyramid: [7_special.md](./7_special_testing.md#tests-and-aaa).
 
-| Tool                      | Use                                                                                |
-| ------------------------- | ---------------------------------------------------------------------------------- |
-| **React Testing Library** | Render, query by role/label, fire events                                           |
+| Tool                      | Use                                                                                        |
+| ------------------------- | ------------------------------------------------------------------------------------------ |
+| **React Testing Library** | Render, query by role/label, fire events                                                   |
 | **Jest / Vitest**         | Test runner — [Jest Node vs jsdom](./7_special_testing.md#jest--first-tests-node-vs-jsdom) |
-| **MSW**                   | Mock network in integration tests                                                  |
+| **MSW**                   | Mock network in integration tests                                                          |
 
 **Examples:**
 
 ```tsx
 render(<LoginForm />);
-await userEvent.type(screen.getByLabelText(/email/i), 'ada@example.com');
-await userEvent.click(screen.getByRole('button', { name: /sign in/i }));
+await userEvent.type(screen.getByLabelText(/email/i), "ada@example.com");
+await userEvent.click(screen.getByRole("button", { name: /sign in/i }));
 expect(await screen.findByText(/welcome/i)).toBeInTheDocument();
 ```
 
 **Thoughts:**
 
-*Test like a user — roles and labels, not class names.*
+_Test like a user — roles and labels, not class names._
 
 Don't test state directly — test rendered output. `userEvent` over `fireEvent` for realistic interactions. RTL in jsdom is **integration**, not E2E — full user flows: [7_special.md — E2E](./7_special_testing.md#e2e-testing).
 
@@ -881,14 +793,14 @@ React DevTools **Profiler** — record interaction → "why did this render?" Hi
 
 ```tsx
 // New object/function every render → memo child still re-renders
-<Item style={{ color }} onClick={() => save(id)} />
+<Item style={{ color }} onClick={() => save(id)} />;
 
 // Stabilize when Profiler shows cost
 const style = useMemo(() => ({ color }), [color]);
 const onClick = useCallback(() => save(id), [id]);
 ```
 
-**Thoughts:** *Profile first — most re-renders are cheap; fix architecture before sprinkling* `memo`*.*
+**Thoughts:** _Profile first — most re-renders are cheap; fix architecture before sprinkling_ `memo`_._
 
 **See also:** [memo / useMemo / useCallback vs Compiler](#memo--usememo--usecallback-vs-compiler) · [Render pipeline](./4_react_core.md#render-pipeline)
 
@@ -936,7 +848,7 @@ const Row = React.memo(function Row({ item }: { item: Item }) {
 });
 ```
 
-**Thoughts:** *Compiler replaces manual memo for most apps — profile, don't guess.*
+**Thoughts:** _Compiler replaces manual memo for most apps — profile, don't guess._
 
 **See also:** [React Compiler](./4_react_server.md#react-compiler) · [useMemo / useCallback](./4_react_hooks.md#usememo--usecallback)
 
@@ -961,7 +873,7 @@ Code splitting
 
 **Pluses and minuses:**
 
-| +                               | −                                       |
+| +                                  | −                                          |
 | ---------------------------------- | ------------------------------------------ |
 | Smaller initial bundle, faster TTI | More HTTP requests (mitigated by HTTP/2)   |
 | Pay-for-what-you-use per route     | Waterfall if chunks chain without prefetch |
@@ -971,11 +883,11 @@ Code splitting
 
 ```tsx
 // Route-level
-const Settings = lazy(() => import('./Settings'));
+const Settings = lazy(() => import("./Settings"));
 
 // Interaction-level
 async function exportPdf() {
-  const { generatePdf } = await import('./pdf');
+  const { generatePdf } = await import("./pdf");
   generatePdf(data);
 }
 ```
@@ -1003,7 +915,7 @@ List virtualization
 
 **Pluses and minuses:**
 
-| +                                | −                                                           |
+| +                                   | −                                                              |
 | ----------------------------------- | -------------------------------------------------------------- |
 | 10k+ rows without browser slowdown  | Fixed row height is simpler; variable height needs measurement |
 | Constant memory and paint cost      | Breaks native find-in-page for off-screen rows                 |
@@ -1012,7 +924,7 @@ List virtualization
 **Examples:**
 
 ```tsx
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 function VirtualList({ items }: { items: string[] }) {
   const parentRef = useRef<HTMLDivElement>(null);
@@ -1022,10 +934,13 @@ function VirtualList({ items }: { items: string[] }) {
     estimateSize: () => 36,
   });
   return (
-    <div ref={parentRef} style={{ height: 400, overflow: 'auto' }}>
-      <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
-        {virtualizer.getVirtualItems().map(row => (
-          <div key={row.index} style={{ position: 'absolute', top: row.start, height: row.size }}>
+    <div ref={parentRef} style={{ height: 400, overflow: "auto" }}>
+      <div style={{ height: virtualizer.getTotalSize(), position: "relative" }}>
+        {virtualizer.getVirtualItems().map((row) => (
+          <div
+            key={row.index}
+            style={{ position: "absolute", top: row.start, height: row.size }}
+          >
             {items[row.index]}
           </div>
         ))}
@@ -1071,7 +986,7 @@ Web Vitals in React apps
 npm run build && npx @next/bundle-analyzer
 ```
 
-**Thoughts:** *Vitals measure user-perceived speed — optimize bundle, hydration, and main-thread work.*
+**Thoughts:** _Vitals measure user-perceived speed — optimize bundle, hydration, and main-thread work._
 
 **Sources:**
 
@@ -1113,7 +1028,13 @@ ES6 classes extending `React.Component` with `render()` method. Still supported 
 ```tsx
 class Counter extends React.Component {
   state = { count: 0 };
-  render() { return <button onClick={() => this.setState(s => ({ count: s.count + 1 }))}>{this.state.count}</button>; }
+  render() {
+    return (
+      <button onClick={() => this.setState((s) => ({ count: s.count + 1 }))}>
+        {this.state.count}
+      </button>
+    );
+  }
 }
 ```
 
@@ -1138,7 +1059,7 @@ PureComponent
 
 **Pluses and minuses:**
 
-| +                              | −                                  |
+| +                                 | −                                     |
 | --------------------------------- | ------------------------------------- |
 | Cheap skip for stable props       | Shallow compare misses deep mutations |
 | Familiar in legacy codebases      | Class-only — not for new code         |
@@ -1149,7 +1070,9 @@ PureComponent
 ```tsx
 // Legacy class
 class Item extends React.PureComponent<{ name: string }> {
-  render() { return <li>{this.props.name}</li>; }
+  render() {
+    return <li>{this.props.name}</li>;
+  }
 }
 
 // Modern equivalent
@@ -1181,7 +1104,7 @@ Create React App
 
 **Pluses and minuses:**
 
-| +                                     | −                               |
+| +                                        | −                                  |
 | ---------------------------------------- | ---------------------------------- |
 | Zero config for beginners (historically) | Deprecated — no longer recommended |
 | Familiar to many developers              | Slow webpack dev server vs Vite    |
@@ -1226,7 +1149,9 @@ Design system inputs, wrappers around native elements, any component parents nee
 
 ```tsx
 // Before (React 18)
-const Input = forwardRef<HTMLInputElement, Props>((props, ref) => <input ref={ref} {...props} />);
+const Input = forwardRef<HTMLInputElement, Props>((props, ref) => (
+  <input ref={ref} {...props} />
+));
 
 // After (React 19)
 function Input({ ref, ...props }: Props & { ref?: Ref<HTMLInputElement> }) {
@@ -1234,7 +1159,7 @@ function Input({ ref, ...props }: Props & { ref?: Ref<HTMLInputElement> }) {
 }
 ```
 
-**Thoughts:** `ref` *is just a prop now — no HOC wrapper.*
+**Thoughts:** `ref` _is just a prop now — no HOC wrapper._
 
 **See also:** [ref as prop](./4_react_server.md#ref-as-prop) · [Refs (React 19)](./4_react_hooks.md#refs-react-19-ref-as-prop)
 
@@ -1270,11 +1195,11 @@ Migration checklist
 
 ```tsx
 // React 18+ root API
-import { createRoot } from 'react-dom/client';
-createRoot(document.getElementById('root')!).render(<App />);
+import { createRoot } from "react-dom/client";
+createRoot(document.getElementById("root")!).render(<App />);
 ```
 
-**Thoughts:** *Upgrade runtime first, then patterns — one breaking change at a time.*
+**Thoughts:** _Upgrade runtime first, then patterns — one breaking change at a time._
 
 **Sources:**
 
