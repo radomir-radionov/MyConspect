@@ -264,6 +264,8 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
   const leaveTimer = useRef(0);
   const peekLocked = useRef(false);
   const pointerOverDock = useRef(false);
+  const peekingRef = useRef(false);
+  peekingRef.current = peeking;
 
   if (!peekEnabled && peeking) {
     setPeeking(false);
@@ -296,6 +298,14 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
     return () => window.clearTimeout(leaveTimer.current);
   }, []);
 
+  const holdPeek = useCallback(() => {
+    pointerOverDock.current = true;
+    cancelClose();
+    if (peekingRef.current && !peekLocked.current) {
+      setPeeking(true);
+    }
+  }, [cancelClose]);
+
   const onAsidePointerEnter = useCallback(
     (event: PointerEvent<HTMLElement>) => {
       if (event.pointerType !== "mouse" || !peekEnabled) {
@@ -316,13 +326,12 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
         return;
       }
       if (isDockTarget(event.relatedTarget)) {
-        pointerOverDock.current = true;
-        cancelClose();
+        holdPeek();
         return;
       }
       scheduleClose();
     },
-    [cancelClose, peekEnabled, scheduleClose],
+    [holdPeek, peekEnabled, scheduleClose],
   );
 
   const onDockPointerEnter = useCallback(
@@ -330,19 +339,29 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
       if (event.pointerType !== "mouse" || !peekEnabled) {
         return;
       }
-      pointerOverDock.current = true;
-      cancelClose();
+      if (isSidebarTarget(event.relatedTarget)) {
+        holdPeek();
+        if (!peekLocked.current) {
+          setPeeking(true);
+        }
+        return;
+      }
+      holdPeek();
     },
-    [cancelClose, peekEnabled],
+    [holdPeek, peekEnabled],
   );
 
   const onDockPointerLeave = useCallback(
     (event: PointerEvent<HTMLElement>) => {
-      pointerOverDock.current = false;
-      if (event.pointerType !== "mouse" || !peekEnabled) {
+      const next = event.relatedTarget;
+      if (next == null || isDockTarget(next) || isSidebarTarget(next)) {
         return;
       }
-      if (isSidebarTarget(event.relatedTarget)) {
+      if (event.pointerType !== "mouse") {
+        return;
+      }
+      pointerOverDock.current = false;
+      if (!peekEnabled) {
         return;
       }
       scheduleClose();

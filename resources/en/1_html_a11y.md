@@ -6,7 +6,7 @@ POUR, names, landmarks, forms, and images.
 
 ### Related docs
 
-* [HTML — Structure](./1_html_structure.md) · [HTML — Semantics](./1_html_semantics.md) · [HTML — Forms](./1_html_forms.md) · [HTML — Media](./1_html_media.md) · [HTML — Rendering](./1_html_rendering.md) · [HTML — Performance](./1_html_performance.md) · [HTML — Accessibility](./1_html_a11y.md) · [HTML — SEO](./1_html_seo.md) · [HTML — Advanced](./1_html_advanced.md) · [HTML — Interview](./1_html_interview.md)
+- [HTML — Structure](./1_html_structure.md) · [HTML — Semantics](./1_html_semantics.md) · [HTML — Forms](./1_html_forms.md) · [HTML — Media](./1_html_media.md) · [HTML — Rendering](./1_html_rendering.md) · [HTML — Performance](./1_html_performance.md) · [HTML — Accessibility](./1_html_a11y.md) · [HTML — SEO](./1_html_seo.md) · [HTML — Advanced](./1_html_advanced.md) · [HTML — Interview](./1_html_interview.md) · [UX & UI principles](./7_special_ux.md#ux-and-ui-principles)
 
 ### Sections
 
@@ -27,12 +27,12 @@ Theory: [overview](#accessibility-basics) · [tree](#accessibility-tree) · [nam
 
 Web accessibility (a11y) means people with disabilities can perceive, understand, navigate, and interact with the web. Foundation: WCAG (POUR).
 
-| Principle | Meaning |
-|-----------|---------|
-| Perceivable | Content available to senses |
-| Operable | Keyboard and input accessible |
-| Understandable | Clear language and behavior |
-| Robust | Works with assistive tech |
+| Principle      | Meaning                       |
+| -------------- | ----------------------------- |
+| Perceivable    | Content available to senses   |
+| Operable       | Keyboard and input accessible |
+| Understandable | Clear language and behavior   |
+| Robust         | Works with assistive tech     |
 
 **How it works:**
 
@@ -40,10 +40,10 @@ Web accessibility (a11y) means people with disabilities can perceive, understand
 - HTML is the first layer — semantics, labels, alt text.
 - Test with keyboard + screen reader + automated tools.
 
-| Principle | Meaning |
-|-----------|--------|
+| Principle   | Meaning            |
+| ----------- | ------------------ |
 | Perceivable | Alt text, contrast |
-| Operable | Keyboard access |
+| Operable    | Keyboard access    |
 
 **When to use:**
 
@@ -79,11 +79,11 @@ Public sites (legal requirements) · internal tools · component libraries.
 
 Prefer native HTML elements over ARIA when possible. The first rule of ARIA: don't use ARIA if a native element exists.
 
-| Need | Use | Avoid |
-|------|-----|-------|
-| Button action | `<button>` | `<div onclick>` |
-| Navigation | `<nav>` + `<a href>` | `<div>` with click handlers |
-| Modal | `<dialog>` | `<div role="dialog">` |
+| Need          | Use                  | Avoid                       |
+| ------------- | -------------------- | --------------------------- |
+| Button action | `<button>`           | `<div onclick>`             |
+| Navigation    | `<nav>` + `<a href>` | `<div>` with click handlers |
+| Modal         | `<dialog>`           | `<div role="dialog">`       |
 
 **How it works:**
 
@@ -91,10 +91,10 @@ Prefer native HTML elements over ARIA when possible. The first rule of ARIA: don
 - `<button>`, `<nav>`, `<dialog>`, `<details>` before `role=` equivalents.
 - Add ARIA only for gaps native HTML cannot fill.
 
-| Need | Use | Avoid |
-|------|-----|-------|
-| Action | `<button>` | `<div onclick>` |
-| Nav | `<nav>` + `<a>` | div soup |
+| Need   | Use             | Avoid           |
+| ------ | --------------- | --------------- |
+| Action | `<button>`      | `<div onclick>` |
+| Nav    | `<nav>` + `<a>` | div soup        |
 
 **When to use:**
 
@@ -111,7 +111,10 @@ Custom tabs (ARIA) vs native `<details>` · modal (`<dialog>`).
 ```html
 <nav aria-label="Main"><a href="/">Home</a></nav>
 <button type="button">Open settings</button>
-<details><summary>More info</summary><p>Details here.</p>
+<details>
+  <summary>More info</summary>
+  <p>Details here.</p>
+</details>
 ```
 
 </details>
@@ -131,13 +134,13 @@ Custom tabs (ARIA) vs native `<details>` · modal (`<dialog>`).
 
 A practical checklist for HTML accessibility covering semantics, contrast, labels, headings, and keyboard support.
 
-| Check | Implementation |
-|-------|----------------|
-| Semantic elements | `button` vs `a`, landmarks |
-| Image alt text | Meaningful `alt`; `alt=""` for decorative |
-| Form labels | `<label for>` on every control |
-| Heading hierarchy | Logical `h1`–`h6` outline |
-| Keyboard | All interactive elements focusable |
+| Check             | Implementation                            |
+| ----------------- | ----------------------------------------- |
+| Semantic elements | `button` vs `a`, landmarks                |
+| Image alt text    | Meaningful `alt`; `alt=""` for decorative |
+| Form labels       | `<label for>` on every control            |
+| Heading hierarchy | Logical `h1`–`h6` outline                 |
+| Keyboard          | All interactive elements focusable        |
 
 **How it works:**
 
@@ -145,9 +148,9 @@ A practical checklist for HTML accessibility covering semantics, contrast, label
 - Forms: label every control; announce errors.
 - Dynamic updates: `aria-live` regions.
 
-| Check | Implementation |
-|-------|----------------|
-| Labels | `<label for>` |
+| Check  | Implementation   |
+| ------ | ---------------- |
+| Labels | `<label for>`    |
 | Images | Meaningful `alt` |
 
 **When to use:**
@@ -176,16 +179,17 @@ Pre-release audit · PR review checklist · VPAT documentation.
   <summary>ARIA</summary>
 
 ### ARIA
+
 **Definition:**
 
 ARIA (Accessible Rich Internet Applications) adds semantics when HTML alone is insufficient — tabs, live regions, expanded states.
 
-| Pattern | ARIA |
-|---------|------|
-| Live updates | `aria-live="polite"` |
-| Expanded state | `aria-expanded="true/false"` |
-| Described by | `aria-describedby="error-id"` |
-| Hidden decorative | `aria-hidden="true"` |
+| Pattern           | ARIA                          |
+| ----------------- | ----------------------------- |
+| Live updates      | `aria-live="polite"`          |
+| Expanded state    | `aria-expanded="true/false"`  |
+| Described by      | `aria-describedby="error-id"` |
+| Hidden decorative | `aria-hidden="true"`          |
 
 **How it works:**
 
@@ -193,10 +197,10 @@ ARIA (Accessible Rich Internet Applications) adds semantics when HTML alone is i
 - `aria-expanded`, `aria-selected`, `aria-live` for dynamic UI.
 - Never change native role (no `role="button"` on `<a href>`).
 
-| Pattern | ARIA |
-|---------|------|
-| Live updates | `aria-live="polite"` |
-| Described errors | `aria-describedby` |
+| Pattern          | ARIA                 |
+| ---------------- | -------------------- |
+| Live updates     | `aria-live="polite"` |
+| Described errors | `aria-describedby`   |
 
 **When to use:**
 
@@ -231,12 +235,12 @@ Tab panels · live search results · custom sliders.
 
 A screen reader converts on-screen content to speech or braille. Test with VoiceOver, NVDA, JAWS, or TalkBack.
 
-| Test area | What to verify |
-|-----------|----------------|
-| Headings | Logical outline navigation |
-| Landmarks | `main`, `nav`, `header` |
-| Forms | Labels and error messages |
-| Images | Meaningful alt text |
+| Test area | What to verify             |
+| --------- | -------------------------- |
+| Headings  | Logical outline navigation |
+| Landmarks | `main`, `nav`, `header`    |
+| Forms     | Labels and error messages  |
+| Images    | Meaningful alt text        |
 
 **How it works:**
 
@@ -244,10 +248,10 @@ A screen reader converts on-screen content to speech or braille. Test with Voice
 - Navigate by headings, landmarks, links, forms mode.
 - Test real flows, not just page load.
 
-| Test | Verify |
-|------|--------|
-| Headings | Logical outline |
-| Forms | Labels announced |
+| Test     | Verify           |
+| -------- | ---------------- |
+| Headings | Logical outline  |
+| Forms    | Labels announced |
 
 **When to use:**
 
@@ -276,7 +280,8 @@ Form submission flow · modal open/close · dynamic list updates.
   <summary>Accessibility basics</summary>
 
 ### Accessibility basics
-**Definition:** Accessibility is designing environments, products, and services so people with disabilities can use them. **Web accessibility** is that idea applied to sites, apps, and related tools. The numeronym **a11y** is *accessibility* (*a* + 11 letters + *y*).
+
+**Definition:** Accessibility is designing environments, products, and services so people with disabilities can use them. **Web accessibility** is that idea applied to sites, apps, and related tools. The numeronym **a11y** is _accessibility_ (_a_ + 11 letters + _y_).
 
 **How it works:**
 
@@ -302,12 +307,12 @@ Equating a11y with “screen readers only”; separate “blind versions” of a
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                                                 | −                                                               |
+| ----------------------------------------------------------------- | --------------------------------------------------------------- |
 | Legal and ethical baseline; helps more users than “disabled only” | Needs time, training, and ongoing checks as the product changes |
-| Semantic HTML covers most cases | Hard to measure AT users via analytics (OS Accessibility APIs) |
+| Semantic HTML covers most cases                                   | Hard to measure AT users via analytics (OS Accessibility APIs)  |
 
-**Thoughts:** *Barriers are in the product; POUR + native HTML is the default, ARIA is the exception.*
+**Thoughts:** _Barriers are in the product; POUR + native HTML is the default, ARIA is the exception._
 
 **Sources:** [Doka — What is accessibility](https://doka.guide/a11y/a11y-overview/) · [W3C WAI](https://www.w3.org/WAI/) · [MDN — Accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
 
@@ -341,8 +346,8 @@ Trusting DevTools only; `role="link"` on a `<span>` without keyboard/activation;
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                  | −                                      |
+| ------------------ | -------------------------------------- |
 | Explains AT output | DevTools ≠ real SR; engine differences |
 
 **Examples:**
@@ -359,7 +364,7 @@ Trusting DevTools only; `role="link"` on a `<span>` without keyboard/activation;
 
 Chrome Accessibility pane (typical): `main`; `heading` level 1 named “Products”; `textbox` named “Address”, described by the hint; `button` “Buy”, focusable.
 
-**Thoughts:** *AT sees a pruned semantic tree, not your CSS layout.*
+**Thoughts:** _AT sees a pruned semantic tree, not your CSS layout._
 
 **Sources:** [MDN — Accessibility tree](https://developer.mozilla.org/en-US/docs/Glossary/Accessibility_tree) · [Doka — Accessibility tree](https://doka.guide/a11y/a11y-tree/) · [Chrome a11y DevTools](https://developer.chrome.com/docs/devtools/accessibility/reference)
 
@@ -393,21 +398,26 @@ Icon buttons, inputs, tables, figures, custom widgets.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                               | −                                                |
+| ----------------------------------------------- | ------------------------------------------------ |
 | Native HTML names stay translatable and visible | `aria-labelledby` silently replaces visible text |
 
 **Examples:**
 
 ```html
 <label for="email">Email</label>
-<input id="email" type="email" autocomplete="email" aria-describedby="email-hint" />
+<input
+  id="email"
+  type="email"
+  autocomplete="email"
+  aria-describedby="email-hint"
+/>
 <span id="email-hint">Use your work address.</span>
 
 <button aria-label="Close">×</button>
 ```
 
-**Thoughts:** *Name = purpose; description = extra; ARIA name wins over HTML.*
+**Thoughts:** _Name = purpose; description = extra; ARIA name wins over HTML._
 
 **Sources:** [AccName](https://www.w3.org/TR/accname-1.2/) · [MDN — aria-labelledby](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-labelledby) · [Doka — Accessible name](https://doka.guide/a11y/accessible-name-and-description/)
 
@@ -440,7 +450,7 @@ Every page. Custom tabs/dialogs only when HTML has no equivalent — follow [ARI
 
 `placeholder` instead of `<label>` (majority of sites historically); icon-only controls without a name; heading soup.
 
-**Thoughts:** *Semantics + honest text first; ARIA last; tools don’t replace keyboard + SR.*
+**Thoughts:** _Semantics + honest text first; ARIA last; tools don’t replace keyboard + SR._
 
 **Sources:**
 
@@ -477,11 +487,12 @@ Styling language with CSS classes only; leaving `aria-label` untranslated; `href
 
 ```html
 <html lang="en">
-<p>The Swedish word <span lang="sv">lagom</span> means “just enough.”</p>
-<p lang="he" dir="rtl">לחיים</p>
+  <p>The Swedish word <span lang="sv">lagom</span> means “just enough.”</p>
+  <p lang="he" dir="rtl">לחיים</p>
+</html>
 ```
 
-**Thoughts:** *Wrong `lang` = wrong voice; mark the page and every foreign snippet.*
+**Thoughts:** _Wrong `lang` = wrong voice; mark the page and every foreign snippet._
 
 **Sources:** [MDN — lang](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang) · [Doka — Page language](https://doka.guide/a11y/language/) · [Language subtag lookup](https://r12a.github.io/app-subtags/)
 
@@ -520,15 +531,22 @@ Login, checkout, filters. Not: reinventing checkbox with `<div>`.
 ```html
 <form>
   <label for="email">Email</label>
-  <input id="email" name="email" type="email" autocomplete="email" required
-    aria-describedby="email-hint email-err" aria-invalid="true" />
+  <input
+    id="email"
+    name="email"
+    type="email"
+    autocomplete="email"
+    required
+    aria-describedby="email-hint email-err"
+    aria-invalid="true"
+  />
   <p id="email-hint">Work address.</p>
   <p id="email-err" role="alert">Enter a valid email.</p>
   <button type="submit">Save</button>
 </form>
 ```
 
-**Thoughts:** *Native control + visible label + described errors; ARIA only to wire hints.*
+**Thoughts:** _Native control + visible label + described errors; ARIA only to wire hints._
 
 **Sources:** [MDN — How to structure a web form](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form) · [Doka — Accessible forms](https://doka.guide/a11y/forms/) · [MDN — aria-invalid](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-invalid)
 
@@ -543,13 +561,13 @@ Login, checkout, filters. Not: reinventing checkbox with `<div>`.
 
 **How it works:**
 
-| Goal | Technique | Visual | AT |
-|------|-----------|--------|----|
-| Hide from all | `hidden`, `display: none` | Gone, no box | Out of tree |
-| Hide from all, keep layout | `visibility: hidden` | Invisible, still takes space | Treated as hidden |
-| Hide from AT, stay on screen | `aria-hidden="true"` | Visible | Out of tree (descendants too) |
-| Hide visually, keep for AT | `.sr-only` / `.visually-hidden` | Off-screen 1×1 clip | Announced |
-| Drop native role, keep content | `role="none"` / `role="presentation"` | Unchanged | Semantics removed; **focusable controls stay in tab order** |
+| Goal                           | Technique                             | Visual                       | AT                                                          |
+| ------------------------------ | ------------------------------------- | ---------------------------- | ----------------------------------------------------------- |
+| Hide from all                  | `hidden`, `display: none`             | Gone, no box                 | Out of tree                                                 |
+| Hide from all, keep layout     | `visibility: hidden`                  | Invisible, still takes space | Treated as hidden                                           |
+| Hide from AT, stay on screen   | `aria-hidden="true"`                  | Visible                      | Out of tree (descendants too)                               |
+| Hide visually, keep for AT     | `.sr-only` / `.visually-hidden`       | Off-screen 1×1 clip          | Announced                                                   |
+| Drop native role, keep content | `role="none"` / `role="presentation"` | Unchanged                    | Semantics removed; **focusable controls stay in tab order** |
 
 ```css
 .sr-only {
@@ -586,7 +604,7 @@ Icon+text buttons; skip-link off-screen until focus; closed dialog (`hidden` / `
 <p hidden>Not shown to anyone.</p>
 ```
 
-**Thoughts:** *`display:none`/`hidden` = nobody; `aria-hidden` = sighted only; `.sr-only` = AT only.*
+**Thoughts:** _`display:none`/`hidden` = nobody; `aria-hidden` = sighted only; `.sr-only` = AT only._
 
 **Sources:** [MDN — aria-hidden](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-hidden) · [MDN — hidden](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) · [Doka — Hiding content](https://doka.guide/a11y/hiding-content/)
 
@@ -621,7 +639,11 @@ Missing `alt`; empty `alt` on informative images; repeating `figcaption` in `alt
 **Examples:**
 
 ```html
-<img src="chart.png" alt="Q3 revenue rose 12%. Details after the figure." aria-describedby="chart-desc" />
+<img
+  src="chart.png"
+  alt="Q3 revenue rose 12%. Details after the figure."
+  aria-describedby="chart-desc"
+/>
 <p id="chart-desc">…</p>
 
 <a href="/"><img src="logo.svg" alt="Home" /></a>
@@ -633,7 +655,7 @@ Missing `alt`; empty `alt` on informative images; repeating `figcaption` in `alt
 </svg>
 ```
 
-**Thoughts:** *Decorative = `alt=""`; content = describe meaning; controls = name the action.*
+**Thoughts:** _Decorative = `alt=""`; content = describe meaning; controls = name the action._
 
 **Sources:** [MDN — alt](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/alt) · [WAI — Images tutorial](https://www.w3.org/WAI/tutorials/images/) · [Doka — Describing images](https://doka.guide/a11y/images/) · [MDN — SVG in HTML](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/SVG_in_HTML)
 

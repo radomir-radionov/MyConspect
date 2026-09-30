@@ -6,7 +6,7 @@ POUR, имена, ориентиры, формы и образы.
 
 ### Related docs
 
-* [HTML — Структура](./1_html_structure.md) · [HTML — Семантика](./1_html_semantics.md) · [HTML — Формы](./1_html_forms.md) · [HTML — Медиа](./1_html_media.md) · [HTML — Рендеринг](./1_html_rendering.md) · [HTML — Производительность](./1_html_ Performance.md) · [HTML — Доступность](./1_html_a11y.md) · [HTML — SEO](./1_html_seo.md) · [HTML — Расширенный](./1_html_advanced.md) · [HTML — Интервью](./1_html_interview.md)
+- [HTML — Структура](./1_html_structure.md) · [HTML — Семантика](./1_html_semantics.md) · [HTML — Формы](./1_html_forms.md) · [HTML — Медиа](./1_html_media.md) · [HTML — Рендеринг](./1_html_rendering.md) · [HTML — Производительность](./1_html_performance.md) · [HTML — Доступность](./1_html_a11y.md) · [HTML — SEO](./1_html_seo.md) · [HTML — Расширенный](./1_html_advanced.md) · [HTML — Интервью](./1_html_interview.md) · [Принципы UX и UI](./7_special_ux.md#ux-and-ui-principles)
 
 ### Sections
 
@@ -27,12 +27,12 @@ POUR, имена, ориентиры, формы и образы.
 
 Доступность Интернета (a11y) означает, что люди с ограниченными возможностями могут воспринимать, понимать, перемещаться по Интернету и взаимодействовать с ним. Основание: WCAG (POUR).
 
-| Принцип | Значение |
-|-----------|---------|
-| воспринимаемый | Контент, доступный органам чувств |
-| Работоспособный | Доступна клавиатура и ввод |
-| Понятно | Понятный язык и поведение |
-| Прочный | Работает со вспомогательными технологиями |
+| Принцип         | Значение                                  |
+| --------------- | ----------------------------------------- |
+| воспринимаемый  | Контент, доступный органам чувств         |
+| Работоспособный | Доступна клавиатура и ввод                |
+| Понятно         | Понятный язык и поведение                 |
+| Прочный         | Работает со вспомогательными технологиями |
 
 **How it works:**
 
@@ -40,10 +40,10 @@ POUR, имена, ориентиры, формы и образы.
 - HTML — это первый слой — семантика, метки, замещающий текст.
 - Тестирование с помощью клавиатуры + программы чтения с экрана + автоматизированных инструментов.
 
-| Принцип | Значение |
-|-----------|--------|
-| воспринимаемый | Альтернативный текст, контраст |
-| Работоспособный | Доступ с клавиатуры |
+| Принцип         | Значение                       |
+| --------------- | ------------------------------ |
+| воспринимаемый  | Альтернативный текст, контраст |
+| Работоспособный | Доступ с клавиатуры            |
 
 **When to use:**
 
@@ -79,11 +79,11 @@ POUR, имена, ориентиры, формы и образы.
 
 По возможности отдавайте предпочтение собственным элементам HTML, а не ARIA. Первое правило ARIA: не используйте ARIA, если существует собственный элемент.
 
-| Нужна | Использование | Избегайте |
-|------|-----|-------|
-| Действие кнопки | `<button>` | `<div onclick>` |
-| Навигация | `<nav>` + `<a href>` | `<div>` с обработчиками кликов |
-| Модальный | `<dialog>` | `<div role="dialog">` |
+| Нужна           | Использование        | Избегайте                      |
+| --------------- | -------------------- | ------------------------------ |
+| Действие кнопки | `<button>`           | `<div onclick>`                |
+| Навигация       | `<nav>` + `<a href>` | `<div>` с обработчиками кликов |
+| Модальный       | `<dialog>`           | `<div role="dialog">`          |
 
 **How it works:**
 
@@ -91,10 +91,10 @@ POUR, имена, ориентиры, формы и образы.
 - `<button>`, `<nav>`, `<dialog>`, `<details>` до `role=` эквиваленты.
 - Добавляйте ARIA только для пробелов, которые не может заполнить собственный HTML.
 
-| Нужна | Использование | Избегайте |
-|------|-----|-------|
-| Действие | `<button>` | `<div onclick>` |
-| Навигация | `<nav>` + `<a>` | дивный суп |
+| Нужна     | Использование   | Избегайте       |
+| --------- | --------------- | --------------- |
+| Действие  | `<button>`      | `<div onclick>` |
+| Навигация | `<nav>` + `<a>` | дивный суп      |
 
 **When to use:**
 
@@ -111,7 +111,10 @@ POUR, имена, ориентиры, формы и образы.
 ```html
 <nav aria-label="Main"><a href="/">Home</a></nav>
 <button type="button">Open settings</button>
-<details><summary>More info</summary><p>Details here.</p>
+<details>
+  <summary>More info</summary>
+  <p>Details here.</p>
+</details>
 ```
 
 </details>
@@ -131,13 +134,13 @@ POUR, имена, ориентиры, формы и образы.
 
 Практический контрольный список по доступности HTML, охватывающий семантику, контрастность, метки, заголовки и поддержку клавиатуры.
 
-| Проверить | Реализация |
-|-------|----------------|
-| Семантические элементы | `button` vs `a`, достопримечательности |
-| Альтернативный текст изображения | Значимый `alt`; `alt=""` для декора |
-| Форма этикеток | `<label for>` на каждом элементе управления |
-| Иерархия заголовков | Логический `h1`–`h6` контур |
-| Клавиатура | Все интерактивные элементы можно фокусировать |
+| Проверить                        | Реализация                                    |
+| -------------------------------- | --------------------------------------------- |
+| Семантические элементы           | `button` vs `a`, достопримечательности        |
+| Альтернативный текст изображения | Значимый `alt`; `alt=""` для декора           |
+| Форма этикеток                   | `<label for>` на каждом элементе управления   |
+| Иерархия заголовков              | Логический `h1`–`h6` контур                   |
+| Клавиатура                       | Все интерактивные элементы можно фокусировать |
 
 **How it works:**
 
@@ -145,9 +148,9 @@ POUR, имена, ориентиры, формы и образы.
 - Формы: маркируйте каждый элемент управления; сообщать об ошибках.
 - Динамические обновления: `aria-live` регионы.
 
-| Проверить | Реализация |
-|-------|----------------|
-| Этикетки | `<label for>` |
+| Проверить   | Реализация     |
+| ----------- | -------------- |
+| Этикетки    | `<label for>`  |
 | Изображения | Значимый `alt` |
 
 **When to use:**
@@ -176,16 +179,17 @@ POUR, имена, ориентиры, формы и образы.
   <summary>ARIA</summary>
 
 ### ARIA
+
 **Definition:**
 
 ARIA (Accessible Rich Internet Applications) добавляет семантику, когда одного HTML недостаточно — вкладки, динамические регионы, развернутые состояния.
 
-| Узор | АРИЯ |
-|---------|------|
-| Постоянные обновления | `aria-live="polite"` |
-| Развернутое состояние | `aria-expanded="true/false"` |
-| Описано | `aria-describedby="error-id"` |
-| Скрытый декоративный | `aria-hidden="true"` |
+| Узор                  | АРИЯ                          |
+| --------------------- | ----------------------------- |
+| Постоянные обновления | `aria-live="polite"`          |
+| Развернутое состояние | `aria-expanded="true/false"`  |
+| Описано               | `aria-describedby="error-id"` |
+| Скрытый декоративный  | `aria-hidden="true"`          |
 
 **How it works:**
 
@@ -193,10 +197,10 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 - `aria-expanded`, `aria-selected`, `aria-live` для динамического пользовательского интерфейса.
 - Никогда не меняйте родную роль (нет `role="button"` on `<a href>`).
 
-| Узор | АРИЯ |
-|---------|------|
+| Узор                  | АРИЯ                 |
+| --------------------- | -------------------- |
 | Постоянные обновления | `aria-live="polite"` |
-| Описанные ошибки | `aria-describedby` |
+| Описанные ошибки      | `aria-describedby`   |
 
 **When to use:**
 
@@ -231,12 +235,12 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 
 Программа чтения с экрана преобразует содержимое экрана в речь или шрифт Брайля. Протестируйте с помощью VoiceOver, NVDA, JAWS или TalkBack.
 
-| Тестовая площадка | Что проверять |
-|-----------|----------------|
-| Рубрики | Логическая схема навигации |
-| Достопримечательности | `main`, `nav`, `header` |
-| Формы | Ярлыки и сообщения об ошибках |
-| Изображения | Значимый альтернативный текст |
+| Тестовая площадка     | Что проверять                 |
+| --------------------- | ----------------------------- |
+| Рубрики               | Логическая схема навигации    |
+| Достопримечательности | `main`, `nav`, `header`       |
+| Формы                 | Ярлыки и сообщения об ошибках |
+| Изображения           | Значимый альтернативный текст |
 
 **How it works:**
 
@@ -244,10 +248,10 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 - Навигация по заголовкам, ориентирам, ссылкам, режиму форм.
 - Тестируйте реальные потоки, а не только загрузку страницы.
 
-| Тест | Проверить |
-|------|--------|
-| Рубрики | Логическая схема |
-| Формы | Этикетки объявлены |
+| Тест    | Проверить          |
+| ------- | ------------------ |
+| Рубрики | Логическая схема   |
+| Формы   | Этикетки объявлены |
 
 **When to use:**
 
@@ -276,7 +280,8 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
   <summary>Accessibility basics</summary>
 
 ### Accessibility basics
-**Definition:** Доступность — это создание среды, продуктов и услуг, позволяющих людям с ограниченными возможностями использовать их. **Доступность в Интернете** – это идея, применимая к сайтам, приложениям и связанным с ними инструментам. Нумероним **a11y** означает *доступность* (*a* + 11 букв + *y*).
+
+**Definition:** Доступность — это создание среды, продуктов и услуг, позволяющих людям с ограниченными возможностями использовать их. **Доступность в Интернете** – это идея, применимая к сайтам, приложениям и связанным с ними инструментам. Нумероним **a11y** означает _доступность_ (_a_ + 11 букв + _y_).
 
 **How it works:**
 
@@ -300,12 +305,12 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                                                                                   | −                                                                          |
+| --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
 | Правовые и этические основы; помогает большему количеству пользователей, чем «только для инвалидов» | Требуется время, обучение и постоянные проверки по мере изменения продукта |
-| Семантический HTML охватывает большинство случаев | Трудно измерить пользователей AT с помощью аналитики (API доступности ОС) |
+| Семантический HTML охватывает большинство случаев                                                   | Трудно измерить пользователей AT с помощью аналитики (API доступности ОС)  |
 
-**Thoughts:** *Барьеры присутствуют в изделии; POUR + собственный HTML используется по умолчанию, ARIA является исключением.*
+**Thoughts:** _Барьеры присутствуют в изделии; POUR + собственный HTML используется по умолчанию, ARIA является исключением._
 
 **Sources:** [Doka — Что такое доступность](https://doka.guide/a11y/a11y-overview/) · [W3C WAI](https://www.w3.org/WAI/) · [MDN — Доступность](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
 
@@ -339,8 +344,8 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                  | −                                              |
+| ------------------ | ---------------------------------------------- |
 | Объясняет выход AT | DevTools ≠ настоящий СР; различия в двигателях |
 
 **Examples:**
@@ -357,7 +362,7 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 
 Панель специальных возможностей Chrome (типичная): `main`; `heading` уровень 1 под названием «Продукты»; `textbox` с именем «Адрес», описанным подсказкой; `button` «Купить», фокусируемый.
 
-**Thoughts:** *AT видит обрезанное семантическое дерево, а не ваш макет CSS.*
+**Thoughts:** _AT видит обрезанное семантическое дерево, а не ваш макет CSS._
 
 **Sources:** [MDN — Дерево доступности](https://developer.mozilla.org/en-US/docs/Glossary/Accessibility_tree) · [Doka — Дерево доступности](https://doka.guide/a11y/a11y-tree/) · [Chrome a11y DevTools](https://developer.chrome.com/docs/devtools/accessibility/reference)
 
@@ -391,21 +396,26 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                                    | −                                              |
+| ---------------------------------------------------- | ---------------------------------------------- |
 | Нативные HTML-имена остаются переводимыми и видимыми | `aria-labelledby` молча заменяет видимый текст |
 
 **Examples:**
 
 ```html
 <label for="email">Email</label>
-<input id="email" type="email" autocomplete="email" aria-describedby="email-hint" />
+<input
+  id="email"
+  type="email"
+  autocomplete="email"
+  aria-describedby="email-hint"
+/>
 <span id="email-hint">Use your work address.</span>
 
 <button aria-label="Close">×</button>
 ```
 
-**Thoughts:** *Имя = цель; описание = дополнительно; Имя ARIA побеждает HTML.*
+**Thoughts:** _Имя = цель; описание = дополнительно; Имя ARIA побеждает HTML._
 
 **Sources:** [AcccName](https://www.w3.org/TR/accname-1.2/) · [MDN — aria-labelledby](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-labelledby) · [Doka — Доступно имя](https://doka.guide/a11y/accessible-name-and-description/)
 
@@ -438,7 +448,7 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 
 `placeholder` вместо `<label>` (большинство сайтов исторически); элементы управления, состоящие только из значков, без имени; заголовок суп.
 
-**Thoughts:** *Семантика + сначала честный текст; АРИЯ последняя; инструменты не заменяют клавиатуру + SR.*
+**Thoughts:** _Семантика + сначала честный текст; АРИЯ последняя; инструменты не заменяют клавиатуру + SR._
 
 **Sources:**
 
@@ -475,11 +485,12 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 
 ```html
 <html lang="en">
-<p>The Swedish word <span lang="sv">lagom</span> means “just enough.”</p>
-<p lang="he" dir="rtl">לחיים</p>
+  <p>The Swedish word <span lang="sv">lagom</span> means “just enough.”</p>
+  <p lang="he" dir="rtl">לחיים</p>
+</html>
 ```
 
-**Thoughts:** *Неправильный `lang` = неправильный голос; отметьте страницу и каждый иностранный фрагмент.*
+**Thoughts:** _Неправильный `lang` = неправильный голос; отметьте страницу и каждый иностранный фрагмент._
 
 **Sources:** [MDN — язык](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang) · [Doka — язык страницы](https://doka.guide/a11y/language/) · [Поиск языкового подтега](https://r12a.github.io/app-subtags/)
 
@@ -518,15 +529,22 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 ```html
 <form>
   <label for="email">Email</label>
-  <input id="email" name="email" type="email" autocomplete="email" required
-    aria-describedby="email-hint email-err" aria-invalid="true" />
+  <input
+    id="email"
+    name="email"
+    type="email"
+    autocomplete="email"
+    required
+    aria-describedby="email-hint email-err"
+    aria-invalid="true"
+  />
   <p id="email-hint">Work address.</p>
   <p id="email-err" role="alert">Enter a valid email.</p>
   <button type="submit">Save</button>
 </form>
 ```
 
-**Thoughts:** *Встроенный элемент управления + видимая метка + описанные ошибки; ARIA только для передачи подсказок.*
+**Thoughts:** _Встроенный элемент управления + видимая метка + описанные ошибки; ARIA только для передачи подсказок._
 
 **Sources:** [MDN — Как структурировать веб-форму] (https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form) · [Doka — Доступные формы] (https://doka.guide/a11y/forms/) · [MDN — aria-invalid](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-invalid)
 
@@ -541,13 +559,13 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 
 **How it works:**
 
-| Цель | Техника | Визуальный | АТ |
-|------|-----------|--------|----|
-| Скрыть от всех | `hidden`, `display: none` | Пропало, нет коробки | Из дерева |
-| Скрыть от всех, сохранить макет | `visibility: hidden` | Невидимый, все равно занимает место | Рассматривается как скрытый |
-| Скрыться от AT, остаться на экране | `aria-hidden="true"` | Видимый | Из дерева (потомки тоже) |
-| Скрыть визуально, оставить за AT | `.sr-only` / `.visually-hidden` | Закадровый клип 1х1 | Объявлено |
-| Откажитесь от встроенной роли, сохраните контент | `role="none"` / `role="presentation"` | Без изменений | Семантика удалена; **фокусируемые элементы управления остаются в порядке табуляции** |
+| Цель                                             | Техника                               | Визуальный                          | АТ                                                                                   |
+| ------------------------------------------------ | ------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
+| Скрыть от всех                                   | `hidden`, `display: none`             | Пропало, нет коробки                | Из дерева                                                                            |
+| Скрыть от всех, сохранить макет                  | `visibility: hidden`                  | Невидимый, все равно занимает место | Рассматривается как скрытый                                                          |
+| Скрыться от AT, остаться на экране               | `aria-hidden="true"`                  | Видимый                             | Из дерева (потомки тоже)                                                             |
+| Скрыть визуально, оставить за AT                 | `.sr-only` / `.visually-hidden`       | Закадровый клип 1х1                 | Объявлено                                                                            |
+| Откажитесь от встроенной роли, сохраните контент | `role="none"` / `role="presentation"` | Без изменений                       | Семантика удалена; **фокусируемые элементы управления остаются в порядке табуляции** |
 
 ```css
 .sr-only {
@@ -584,7 +602,7 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 <p hidden>Not shown to anyone.</p>
 ```
 
-**Thoughts:** *`display:none`/`hidden` = никто; `aria-hidden` = только зрячий; `.sr-only` = Только AT.*
+**Thoughts:** _`display:none`/`hidden` = никто; `aria-hidden` = только зрячий; `.sr-only` = Только AT._
 
 **Sources:** [MDN — aria-hidden](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-hidden) · [MDN — скрыто](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) · [Doka — скрытие контент](https://doka.guide/a11y/hiding-content/)
 
@@ -619,7 +637,11 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 **Examples:**
 
 ```html
-<img src="chart.png" alt="Q3 revenue rose 12%. Details after the figure." aria-describedby="chart-desc" />
+<img
+  src="chart.png"
+  alt="Q3 revenue rose 12%. Details after the figure."
+  aria-describedby="chart-desc"
+/>
 <p id="chart-desc">…</p>
 
 <a href="/"><img src="logo.svg" alt="Home" /></a>
@@ -631,7 +653,7 @@ ARIA (Accessible Rich Internet Applications) добавляет семантик
 </svg>
 ```
 
-**Thoughts:** *Декоративный = `alt=""`; содержание = описать смысл; элементы управления = назовите действие.*
+**Thoughts:** _Декоративный = `alt=""`; содержание = описать смысл; элементы управления = назовите действие._
 
 **Sources:** [MDN — alt](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/alt) · [WAI — Учебник по изображениям](https://www.w3.org/WAI/tutorials/images/) · [Doka — Описание изображений](https://doka.guide/a11y/images/) · [MDN — SVG в HTML](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/SVG_in_HTML)
 

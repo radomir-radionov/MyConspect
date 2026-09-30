@@ -46,12 +46,12 @@ export function ClusterCardSections({
 }) {
   if (groupedSections?.length) {
     return (
-      <div className="mt-8 space-y-12">
+      <div className="mt-8 space-y-8 sm:space-y-12">
         {groupedSections.map(({ section, clusters }) => (
           <div
             key={section.id}
             id={section.id}
-            className="scroll-mt-24 space-y-10"
+            className="scroll-mt-24 space-y-6 sm:space-y-10"
           >
             <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
               {section.title}
@@ -64,7 +64,7 @@ export function ClusterCardSections({
   }
 
   return (
-    <div className="mt-8 space-y-10">
+    <div className="mt-8 space-y-6 sm:space-y-10">
       <ClusterBlocks sections={sections ?? []} />
     </div>
   );

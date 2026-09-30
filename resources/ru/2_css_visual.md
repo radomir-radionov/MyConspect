@@ -6,7 +6,7 @@
 
 ### Related docs
 
-* [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Архитектура](./2_css_architecture.md) · [CSS — Интервью](./2_css_interview.md)
+- [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Архитектура](./2_css_architecture.md) · [CSS — Интервью](./2_css_interview.md) · [Принципы UX и UI](./7_special_ux.md#ux-and-ui-principles)
 
 ### Sections
 
@@ -32,7 +32,7 @@
 
 `font-family: "Inter", system-ui, sans-serif;` — всегда заканчиваются родовой семьей.
 
-Сопоставьте резервные показатели с `size-adjust`, `ascent-override`, `descent-override`, `line-gap-override` поэтому своп не меняет макет. CLS (FOIT/FOUT, предварительная нагрузка, WOFF2, `unicode-range`) → [1_html.md — CLS](./1_html_ Performance.md#cls-cumulative-layout-shift).
+Сопоставьте резервные показатели с `size-adjust`, `ascent-override`, `descent-override`, `line-gap-override` поэтому своп не меняет макет. CLS (FOIT/FOUT, предварительная нагрузка, WOFF2, `unicode-range`) → [1_html.md — CLS](./1*html* Performance.md#cls-cumulative-layout-shift).
 
 **Examples:**
 
@@ -45,11 +45,11 @@
 }
 ```
 
-| `font-display` | Поведение |
-|----------------|----------|
-| `swap` | Текст виден сразу; может ФУТ |
-| `optional` | Короткий период блокировки; может сохранить резервный вариант в медленных сетях |
-| `block` | Невидимый текст во время загрузки (FOIT) — избегать |
+| `font-display` | Поведение                                                                       |
+| -------------- | ------------------------------------------------------------------------------- |
+| `swap`         | Текст виден сразу; может ФУТ                                                    |
+| `optional`     | Короткий период блокировки; может сохранить резервный вариант в медленных сетях |
+| `block`        | Невидимый текст во время загрузки (FOIT) — избегать                             |
 
 **Sources:** [MDN — @font-face](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face)
 
@@ -75,21 +75,21 @@
 /* Multi-line clamp — see .truncate above */
 ```
 
-| Недвижимость | Эффект |
-|----------|--------|
+| Недвижимость                | Эффект                                                           |
+| --------------------------- | ---------------------------------------------------------------- |
 | `overflow-wrap: break-word` | При необходимости разбивайте длинные слова в произвольных точках |
-| `word-break: break-all` | Взломать куда угодно (URL-адреса, коды) |
-| `hyphens: auto` | Расстановка переносов с учетом языка (`lang` атрибут обязателен) |
+| `word-break: break-all`     | Взломать куда угодно (URL-адреса, коды)                          |
+| `hyphens: auto`             | Расстановка переносов с учетом языка (`lang` атрибут обязателен) |
 
 **When to use:**
 
 #### `white-space` pitfalls
 
-| Значение | Поведение |
-|-------|----------|
-| `normal` | Свернуть пробелы; обернуть |
-| `nowrap` | Без упаковки — необходимо `overflow: hidden` + многоточие |
-| `pre-wrap` | Сохраняйте пробелы; обернуть |
+| Значение   | Поведение                                                 |
+| ---------- | --------------------------------------------------------- |
+| `normal`   | Свернуть пробелы; обернуть                                |
+| `nowrap`   | Без упаковки — необходимо `overflow: hidden` + многоточие |
+| `pre-wrap` | Сохраняйте пробелы; обернуть                              |
 
 **Examples:**
 
@@ -98,7 +98,7 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 400;
-  text-wrap: pretty;        /* reduce orphans */
+  text-wrap: pretty; /* reduce orphans */
 }
 
 .heading {
@@ -114,10 +114,10 @@ body {
 }
 ```
 
-* `line-height` — предпочтительно без единиц измерения (1,5 шкалы с размером шрифта)
-* `line-clamp` — обрезать многострочный текст (используйте с `overflow: hidden`)
-* `text-rendering: optimizeLegibility` — лучший кернинг/лигатуры; незначительные затраты на производительность
-* `text-decoration-skip-ink: auto` — подчеркивание пропускает нижние элементы глифа
+- `line-height` — предпочтительно без единиц измерения (1,5 шкалы с размером шрифта)
+- `line-clamp` — обрезать многострочный текст (используйте с `overflow: hidden`)
+- `text-rendering: optimizeLegibility` — лучший кернинг/лигатуры; незначительные затраты на производительность
+- `text-decoration-skip-ink: auto` — подчеркивание пропускает нижние элементы глифа
 
 **Sources:** [MDN — Типографика](https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text)
 
@@ -140,16 +140,18 @@ body {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Лучшая типографика без JS | `balance` может быть дорогостоящим при использовании длинного текста — используйте только в заголовках |
-| Прогрессивное улучшение | Проверьте caniuse — растущая поддержка в Chromium/Safari/Firefox |
-| Сочетается с `text-wrap: nowrap` + многоточие для пользовательского интерфейса | Не является заменой ручного. `<wbr>` в URL-адресах |
+| +                                                                              | −                                                                                                      |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| Лучшая типографика без JS                                                      | `balance` может быть дорогостоящим при использовании длинного текста — используйте только в заголовках |
+| Прогрессивное улучшение                                                        | Проверьте caniuse — растущая поддержка в Chromium/Safari/Firefox                                       |
+| Сочетается с `text-wrap: nowrap` + многоточие для пользовательского интерфейса | Не является заменой ручного. `<wbr>` в URL-адресах                                                     |
 
 **Examples:**
 
 ```css
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   text-wrap: balance;
 }
 
@@ -172,14 +174,30 @@ article p {
 **Examples:**
 
 ```css
-.keyword   { color: navy; }
-.hex       { color: #2563eb; }
-.rgb       { color: rgb(37 99 235); }
-.rgba      { color: rgb(37 99 235 / 80%); }
-.hsl       { color: hsl(220 90% 56%); }
-.oklch     { color: oklch(58% 0.22 264); }  /* perceptually uniform */
-.mix       { color: color-mix(in oklch, blue 70%, white); }
-.current   { border-color: currentColor; }
+.keyword {
+  color: navy;
+}
+.hex {
+  color: #2563eb;
+}
+.rgb {
+  color: rgb(37 99 235);
+}
+.rgba {
+  color: rgb(37 99 235 / 80%);
+}
+.hsl {
+  color: hsl(220 90% 56%);
+}
+.oklch {
+  color: oklch(58% 0.22 264);
+} /* perceptually uniform */
+.mix {
+  color: color-mix(in oklch, blue 70%, white);
+}
+.current {
+  border-color: currentColor;
+}
 ```
 
 **Предпочитать `oklch` / `hsl` для оформления** — легче настроить яркость/насыщенность, чем в шестнадцатеричном формате.
@@ -207,12 +225,7 @@ article p {
 }
 
 .shimmer {
-  background: linear-gradient(
-    90deg,
-    #eee 25%,
-    #f5f5f5 50%,
-    #eee 75%
-  );
+  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
   background-size: 200% 100%;
 }
 ```
@@ -271,11 +284,11 @@ body {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Встроенная тема управления формой | `light-dark()` потребности `color-scheme` установить в корне |
-| Меньше `@media` дублирование | Не полная система дизайнерских токенов — в сочетании с настраиваемыми свойствами |
-| Полоса прокрутки/пользовательский интерфейс Chrome соответствует теме | Контраст теста в обеих схемах |
+| +                                                                     | −                                                                                |
+| --------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Встроенная тема управления формой                                     | `light-dark()` потребности `color-scheme` установить в корне                     |
+| Меньше `@media` дублирование                                          | Не полная система дизайнерских токенов — в сочетании с настраиваемыми свойствами |
+| Полоса прокрутки/пользовательский интерфейс Chrome соответствует теме | Контраст теста в обеих схемах                                                    |
 
 **Examples:**
 
@@ -328,13 +341,13 @@ body {
 }
 ```
 
-| Недвижимость | Цель |
-|----------|---------|
-| `background-size` | `cover` \| `contain` \| явный размер |
-| `background-position` | Точка привязки (`center top`, `50% 50%`) |
-| `background-repeat` | `repeat` \| `no-repeat` \| `space` \| `round` |
-| `background-clip` | Площадь покраски (`border-box`, `padding-box`, `text`) |
-| `background-origin` | Позиционирующий ящик для `background-position` |
+| Недвижимость          | Цель                                                   |
+| --------------------- | ------------------------------------------------------ |
+| `background-size`     | `cover` \| `contain` \| явный размер                   |
+| `background-position` | Точка привязки (`center top`, `50% 50%`)               |
+| `background-repeat`   | `repeat` \| `no-repeat` \| `space` \| `round`          |
+| `background-clip`     | Площадь покраски (`border-box`, `padding-box`, `text`) |
+| `background-origin`   | Позиционирующий ящик для `background-position`         |
 
 Несколько фонов сначала объявляются сверху:
 
@@ -359,11 +372,11 @@ body {
 
 **How it works:**
 
-| | `box-shadow` | `filter: drop-shadow()` |
-|---|--------------|-------------------------|
-| Следует | Box (включая радиус границы) | Альфа-форма контента |
-| SVG/изображения | Только прямоугольная коробка | Следит за непрозрачными пикселями |
-| Производительность | Краска | Композитный |
+|                    | `box-shadow`                 | `filter: drop-shadow()`           |
+| ------------------ | ---------------------------- | --------------------------------- |
+| Следует            | Box (включая радиус границы) | Альфа-форма контента              |
+| SVG/изображения    | Только прямоугольная коробка | Следит за непрозрачными пикселями |
+| Производительность | Краска                       | Композитный                       |
 
 **Examples:**
 
@@ -379,12 +392,12 @@ body {
 }
 ```
 
-| Недвижимость | Заметки |
-|----------|-------|
-| `border` | Сокращение — устанавливает ширину, стиль и цвет со всех сторон |
-| `border-radius` | За угол: `border-radius: 8px 8px 0 0` |
-| `outline` | Не влияет на макет (в отличие от границы); использовать для фокусировки |
-| `box-shadow` | Несколько слоев, разделенных запятыми; `inset` для внутренней тени |
+| Недвижимость    | Заметки                                                                 |
+| --------------- | ----------------------------------------------------------------------- |
+| `border`        | Сокращение — устанавливает ширину, стиль и цвет со всех сторон          |
+| `border-radius` | За угол: `border-radius: 8px 8px 0 0`                                   |
+| `outline`       | Не влияет на макет (в отличие от границы); использовать для фокусировки |
+| `box-shadow`    | Несколько слоев, разделенных запятыми; `inset` для внутренней тени      |
 
 **Sources:** [MDN — box-shadow](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow)
 
@@ -434,12 +447,12 @@ input[type="file"]::file-selector-button {
 }
 ```
 
-| Техника | Применяется к |
-|-----------|------------|
+| Техника            | Применяется к                                 |
+| ------------------ | --------------------------------------------- |
 | `appearance: none` | Удалить Chrome ОС — перестроить с помощью CSS |
-| `accent-color` | Флажок, радио, диапазон, прогресс |
-| `::placeholder` | Цвет текста заполнителя |
-| `:focus-visible` | Специальное кольцо фокусировки |
+| `accent-color`     | Флажок, радио, диапазон, прогресс             |
+| `::placeholder`    | Цвет текста заполнителя                       |
+| `:focus-visible`   | Специальное кольцо фокусировки                |
 
 **Sources:** [MDN — внешний вид](https://developer.mozilla.org/en-US/docs/Web/CSS/appearance)
 
@@ -544,7 +557,12 @@ input[type="file"]::file-selector-button {
 
 ```css
 @media print {
-  nav, .sidebar, .ads, .no-print { display: none !important; }
+  nav,
+  .sidebar,
+  .ads,
+  .no-print {
+    display: none !important;
+  }
   body {
     font-size: 12pt;
     color: #000;
@@ -554,17 +572,25 @@ input[type="file"]::file-selector-button {
     content: " (" attr(href) ")";
     font-size: 0.85em;
   }
-  .page-break { break-before: page; }
-  h1, h2, h3 { break-after: avoid; }
-  img { max-width: 100% !important; }
+  .page-break {
+    break-before: page;
+  }
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  img {
+    max-width: 100% !important;
+  }
 }
 ```
 
-| Недвижимость | Цель |
-|----------|---------|
+| Недвижимость                   | Цель                                         |
+| ------------------------------ | -------------------------------------------- |
 | `break-before` / `break-after` | Принудительно или избегайте разрывов страниц |
-| `break-inside: avoid` | Сохранить блок на одной странице |
-| `print-color-adjust: exact` | Печать цветов фона в соответствии с дизайном |
+| `break-inside: avoid`          | Сохранить блок на одной странице             |
+| `print-color-adjust: exact`    | Печать цветов фона в соответствии с дизайном |
 
 **Sources:** [MDN — Печать](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries#printing)
 

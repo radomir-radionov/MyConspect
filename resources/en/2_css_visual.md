@@ -6,7 +6,7 @@ Typography, color, decoration, form styling, and print.
 
 ### Related docs
 
-* [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md)
+- [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md) · [UX & UI principles](./7_special_ux.md#ux-and-ui-principles)
 
 ### Sections
 
@@ -45,11 +45,11 @@ Match fallback metrics with `size-adjust`, `ascent-override`, `descent-override`
 }
 ```
 
-| `font-display` | Behavior |
-|----------------|----------|
-| `swap` | Text visible immediately; may FOUT |
-| `optional` | Short block period; may keep fallback on slow networks |
-| `block` | Invisible text during load (FOIT) — avoid |
+| `font-display` | Behavior                                               |
+| -------------- | ------------------------------------------------------ |
+| `swap`         | Text visible immediately; may FOUT                     |
+| `optional`     | Short block period; may keep fallback on slow networks |
+| `block`        | Invisible text during load (FOIT) — avoid              |
 
 **Sources:** [MDN — @font-face](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face)
 
@@ -75,21 +75,21 @@ Match fallback metrics with `size-adjust`, `ascent-override`, `descent-override`
 /* Multi-line clamp — see .truncate above */
 ```
 
-| Property | Effect |
-|----------|--------|
-| `overflow-wrap: break-word` | Break long words at arbitrary points if needed |
-| `word-break: break-all` | Break anywhere (URLs, codes) |
-| `hyphens: auto` | Language-aware hyphenation (`lang` attribute required) |
+| Property                    | Effect                                                 |
+| --------------------------- | ------------------------------------------------------ |
+| `overflow-wrap: break-word` | Break long words at arbitrary points if needed         |
+| `word-break: break-all`     | Break anywhere (URLs, codes)                           |
+| `hyphens: auto`             | Language-aware hyphenation (`lang` attribute required) |
 
 **When to use:**
 
 #### `white-space` pitfalls
 
-| Value | Behavior |
-|-------|----------|
-| `normal` | Collapse whitespace; wrap |
-| `nowrap` | No wrap — needs `overflow: hidden` + ellipsis |
-| `pre-wrap` | Preserve whitespace; wrap |
+| Value      | Behavior                                      |
+| ---------- | --------------------------------------------- |
+| `normal`   | Collapse whitespace; wrap                     |
+| `nowrap`   | No wrap — needs `overflow: hidden` + ellipsis |
+| `pre-wrap` | Preserve whitespace; wrap                     |
 
 **Examples:**
 
@@ -98,7 +98,7 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 400;
-  text-wrap: pretty;        /* reduce orphans */
+  text-wrap: pretty; /* reduce orphans */
 }
 
 .heading {
@@ -114,10 +114,10 @@ body {
 }
 ```
 
-* `line-height` — unitless preferred (1.5 scales with font-size)
-* `line-clamp` — truncate multi-line text (use with `overflow: hidden`)
-* `text-rendering: optimizeLegibility` — better kerning/ligatures; minor perf cost
-* `text-decoration-skip-ink: auto` — underline skips glyph descenders
+- `line-height` — unitless preferred (1.5 scales with font-size)
+- `line-clamp` — truncate multi-line text (use with `overflow: hidden`)
+- `text-rendering: optimizeLegibility` — better kerning/ligatures; minor perf cost
+- `text-decoration-skip-ink: auto` — underline skips glyph descenders
 
 **Sources:** [MDN — Typography](https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text)
 
@@ -140,16 +140,18 @@ body {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Better typography without JS | `balance` can be costly on long text — use on headings only |
-| Progressive enhancement | Check caniuse — growing support in Chromium/Safari/Firefox |
-| Pairs with `text-wrap: nowrap` + ellipsis for UI | Not a substitute for manual `<wbr>` in URLs |
+| +                                                | −                                                           |
+| ------------------------------------------------ | ----------------------------------------------------------- |
+| Better typography without JS                     | `balance` can be costly on long text — use on headings only |
+| Progressive enhancement                          | Check caniuse — growing support in Chromium/Safari/Firefox  |
+| Pairs with `text-wrap: nowrap` + ellipsis for UI | Not a substitute for manual `<wbr>` in URLs                 |
 
 **Examples:**
 
 ```css
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   text-wrap: balance;
 }
 
@@ -172,14 +174,30 @@ article p {
 **Examples:**
 
 ```css
-.keyword   { color: navy; }
-.hex       { color: #2563eb; }
-.rgb       { color: rgb(37 99 235); }
-.rgba      { color: rgb(37 99 235 / 80%); }
-.hsl       { color: hsl(220 90% 56%); }
-.oklch     { color: oklch(58% 0.22 264); }  /* perceptually uniform */
-.mix       { color: color-mix(in oklch, blue 70%, white); }
-.current   { border-color: currentColor; }
+.keyword {
+  color: navy;
+}
+.hex {
+  color: #2563eb;
+}
+.rgb {
+  color: rgb(37 99 235);
+}
+.rgba {
+  color: rgb(37 99 235 / 80%);
+}
+.hsl {
+  color: hsl(220 90% 56%);
+}
+.oklch {
+  color: oklch(58% 0.22 264);
+} /* perceptually uniform */
+.mix {
+  color: color-mix(in oklch, blue 70%, white);
+}
+.current {
+  border-color: currentColor;
+}
 ```
 
 **Prefer `oklch` / `hsl` for theming** — easier to adjust lightness/saturation than hex.
@@ -207,12 +225,7 @@ article p {
 }
 
 .shimmer {
-  background: linear-gradient(
-    90deg,
-    #eee 25%,
-    #f5f5f5 50%,
-    #eee 75%
-  );
+  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
   background-size: 200% 100%;
 }
 ```
@@ -271,11 +284,11 @@ body {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Native form control theming | `light-dark()` needs `color-scheme` set on root |
-| Less `@media` duplication | Not a full design-token system — pair with custom properties |
-| Scrollbar/UI chrome matches theme | Test contrast in both schemes |
+| +                                 | −                                                            |
+| --------------------------------- | ------------------------------------------------------------ |
+| Native form control theming       | `light-dark()` needs `color-scheme` set on root              |
+| Less `@media` duplication         | Not a full design-token system — pair with custom properties |
+| Scrollbar/UI chrome matches theme | Test contrast in both schemes                                |
 
 **Examples:**
 
@@ -328,13 +341,13 @@ Prefer longhands when overriding a single sub-property — `background:` shortha
 }
 ```
 
-| Property | Purpose |
-|----------|---------|
-| `background-size` | `cover` \| `contain` \| explicit size |
-| `background-position` | Anchor point (`center top`, `50% 50%`) |
-| `background-repeat` | `repeat` \| `no-repeat` \| `space` \| `round` |
-| `background-clip` | Paint area (`border-box`, `padding-box`, `text`) |
-| `background-origin` | Positioning box for `background-position` |
+| Property              | Purpose                                          |
+| --------------------- | ------------------------------------------------ |
+| `background-size`     | `cover` \| `contain` \| explicit size            |
+| `background-position` | Anchor point (`center top`, `50% 50%`)           |
+| `background-repeat`   | `repeat` \| `no-repeat` \| `space` \| `round`    |
+| `background-clip`     | Paint area (`border-box`, `padding-box`, `text`) |
+| `background-origin`   | Positioning box for `background-position`        |
 
 Multiple backgrounds stack first-declared on top:
 
@@ -359,11 +372,11 @@ Multiple backgrounds stack first-declared on top:
 
 **How it works:**
 
-| | `box-shadow` | `filter: drop-shadow()` |
-|---|--------------|-------------------------|
-| Follows | Box (including border-radius) | Alpha shape of content |
-| SVG/images | Rectangular box only | Follows non-transparent pixels |
-| Performance | Paint | Composite |
+|             | `box-shadow`                  | `filter: drop-shadow()`        |
+| ----------- | ----------------------------- | ------------------------------ |
+| Follows     | Box (including border-radius) | Alpha shape of content         |
+| SVG/images  | Rectangular box only          | Follows non-transparent pixels |
+| Performance | Paint                         | Composite                      |
 
 **Examples:**
 
@@ -379,12 +392,12 @@ Multiple backgrounds stack first-declared on top:
 }
 ```
 
-| Property | Notes |
-|----------|-------|
-| `border` | Shorthand — sets width, style, color on all sides |
-| `border-radius` | Per-corner: `border-radius: 8px 8px 0 0` |
-| `outline` | Does not affect layout (unlike border); use for focus |
-| `box-shadow` | Multiple layers comma-separated; `inset` for inner shadow |
+| Property        | Notes                                                     |
+| --------------- | --------------------------------------------------------- |
+| `border`        | Shorthand — sets width, style, color on all sides         |
+| `border-radius` | Per-corner: `border-radius: 8px 8px 0 0`                  |
+| `outline`       | Does not affect layout (unlike border); use for focus     |
+| `box-shadow`    | Multiple layers comma-separated; `inset` for inner shadow |
 
 **Sources:** [MDN — box-shadow](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow)
 
@@ -434,12 +447,12 @@ input[type="file"]::file-selector-button {
 }
 ```
 
-| Technique | Applies to |
-|-----------|------------|
+| Technique          | Applies to                          |
+| ------------------ | ----------------------------------- |
 | `appearance: none` | Remove OS chrome — rebuild with CSS |
-| `accent-color` | Checkbox, radio, range, progress |
-| `::placeholder` | Placeholder text color |
-| `:focus-visible` | Custom focus ring |
+| `accent-color`     | Checkbox, radio, range, progress    |
+| `::placeholder`    | Placeholder text color              |
+| `:focus-visible`   | Custom focus ring                   |
 
 **Sources:** [MDN — appearance](https://developer.mozilla.org/en-US/docs/Web/CSS/appearance)
 
@@ -544,7 +557,12 @@ Avoid dark backgrounds in print — wastes ink; expand URLs only when useful.
 
 ```css
 @media print {
-  nav, .sidebar, .ads, .no-print { display: none !important; }
+  nav,
+  .sidebar,
+  .ads,
+  .no-print {
+    display: none !important;
+  }
   body {
     font-size: 12pt;
     color: #000;
@@ -554,17 +572,25 @@ Avoid dark backgrounds in print — wastes ink; expand URLs only when useful.
     content: " (" attr(href) ")";
     font-size: 0.85em;
   }
-  .page-break { break-before: page; }
-  h1, h2, h3 { break-after: avoid; }
-  img { max-width: 100% !important; }
+  .page-break {
+    break-before: page;
+  }
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  img {
+    max-width: 100% !important;
+  }
 }
 ```
 
-| Property | Purpose |
-|----------|---------|
-| `break-before` / `break-after` | Force or avoid page breaks |
-| `break-inside: avoid` | Keep block on one page |
-| `print-color-adjust: exact` | Print background colors as designed |
+| Property                       | Purpose                             |
+| ------------------------------ | ----------------------------------- |
+| `break-before` / `break-after` | Force or avoid page breaks          |
+| `break-inside: avoid`          | Keep block on one page              |
+| `print-color-adjust: exact`    | Print background colors as designed |
 
 **Sources:** [MDN — Print](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries#printing)
 

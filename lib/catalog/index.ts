@@ -1271,6 +1271,13 @@ export const TOPICS: readonly Topic[] = [
     track: "other",
   },
   {
+    slug: "special-ux",
+    file: "7_special_ux.md",
+    title: "UX & UI principles",
+    blurb: "Interaction laws and visual principles for interfaces.",
+    track: "other",
+  },
+  {
     slug: "computer-science",
     file: "7_special_cs.md",
     title: "Computer science",
