@@ -3,7 +3,7 @@
 import { memo, useMemo, useState } from "react";
 import Link from "next/link";
 import { HighlightedText } from "@/components/search";
-import { isInterviewTopic } from "@/lib/catalog";
+import { isInterviewTopic, type TrackId } from "@/lib/catalog";
 import {
   CHROME,
   conceptBodySnippet,
@@ -365,12 +365,14 @@ function TopicConceptNav({
 }
 
 export function TopicRow({
+  trackId,
   topic,
   compact = false,
   hideTitle = false,
   navKind = "topic",
   navId,
 }: {
+  trackId: TrackId;
   topic: NavTopic;
   compact?: boolean;
   hideTitle?: boolean;
@@ -379,7 +381,8 @@ export function TopicRow({
 }) {
   const { query, mode, pathname, searching, first, pinNav, onNavigate } =
     useSidebarChrome();
-  const { openTopicHref, setOpenTopicHref } = useSidebarFold();
+  const { getTrackFold, patchTrackFold } = useSidebarFold();
+  const { topicHref: openTopicHref } = getTrackFold(trackId);
   const active = isActiveHref(pathname, topic.href);
   const isHitTopic = first?.pathname === topic.href;
   const isFirstTopic = isHitTopic && first.hash === "";
@@ -426,16 +429,18 @@ export function TopicRow({
               applySameDocumentHref(pathname, "", pathname);
             }
             if (!searching && hasConcepts) {
-              setOpenTopicHref((current) =>
-                current === topic.href ? null : topic.href,
-              );
+              patchTrackFold(trackId, {
+                topicHref: openTopicHref === topic.href ? null : topic.href,
+              });
             }
             if (!hasConcepts) {
               closeNavSoon(onNavigate);
             }
             return;
           }
-          setOpenTopicHref(hasConcepts ? topic.href : null);
+          patchTrackFold(trackId, {
+            topicHref: hasConcepts ? topic.href : null,
+          });
           if (!hasConcepts) {
             closeNavSoon(onNavigate);
           }
@@ -479,20 +484,24 @@ export function TopicRow({
 }
 
 export function ClusterRow({
+  trackId,
   subjectHref: subjectPath,
   cluster,
 }: {
+  trackId: TrackId;
   subjectHref: string;
   cluster: NavCluster;
 }) {
   const { query, pathname, searching, first, pinNav } = useSidebarChrome();
-  const { openClusterKey, setOpenClusterKey } = useSidebarFold();
+  const { getTrackFold, patchTrackFold } = useSidebarFold();
+  const { clusterKey: openClusterKey } = getTrackFold(trackId);
   const { activeConceptId } = useSidebarActive();
   const onlyTopic = cluster.topics.length === 1 ? cluster.topics[0] : null;
 
   if (onlyTopic && sameTitle(cluster.title, onlyTopic.title)) {
     return (
       <TopicRow
+        trackId={trackId}
         topic={{ ...onlyTopic, title: cluster.title }}
         compact
         navKind="cluster"
@@ -531,9 +540,11 @@ export function ClusterRow({
             const sameHash = window.location.hash === next;
             if (!searching) {
               if (sameHash) {
-                setOpenClusterKey((current) => (current === key ? null : key));
+                patchTrackFold(trackId, {
+                  clusterKey: openClusterKey === key ? null : key,
+                });
               } else {
-                setOpenClusterKey(key);
+                patchTrackFold(trackId, { clusterKey: key });
               }
             }
             if (!sameHash) {
@@ -541,7 +552,7 @@ export function ClusterRow({
             }
             return;
           }
-          setOpenClusterKey(key);
+          patchTrackFold(trackId, { clusterKey: key });
           queueHandbookHref(cluster.href);
         }}
         data-search-hit={isHitCluster ? "true" : undefined}
@@ -564,6 +575,7 @@ export function ClusterRow({
           {cluster.topics.map((topic) => (
             <TopicRow
               key={topic.slug}
+              trackId={trackId}
               topic={topic}
               compact
               navKind="topic"
@@ -576,9 +588,16 @@ export function ClusterRow({
   );
 }
 
-export function SubjectRow({ subject }: { subject: NavSubject }) {
+export function SubjectRow({
+  trackId,
+  subject,
+}: {
+  trackId: TrackId;
+  subject: NavSubject;
+}) {
   const { query, pathname, searching, first } = useSidebarChrome();
-  const { openSubjectHref, setOpenSubjectHref } = useSidebarFold();
+  const { getTrackFold, patchTrackFold } = useSidebarFold();
+  const { subjectHref: openSubjectHref } = getTrackFold(trackId);
   const active = isActiveHref(pathname, subject.href);
   const subjectOpen = searching || openSubjectHref === subject.href;
   const isHitSubject = first?.pathname === subject.href && first.hash === "";
@@ -598,13 +617,14 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
           if (pathname === subject.href) {
             event.preventDefault();
             if (!searching) {
-              setOpenSubjectHref((current) =>
-                current === subject.href ? null : subject.href,
-              );
+              patchTrackFold(trackId, {
+                subjectHref:
+                  openSubjectHref === subject.href ? null : subject.href,
+              });
             }
             return;
           }
-          setOpenSubjectHref(subject.href);
+          patchTrackFold(trackId, { subjectHref: subject.href });
         }}
         data-search-hit={isHitSubject ? "true" : undefined}
         aria-current={active ? "page" : undefined}
@@ -635,6 +655,7 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
                     {section.clusters.map((cluster) => (
                       <ClusterRow
                         key={cluster.id}
+                        trackId={trackId}
                         subjectHref={subject.href}
                         cluster={cluster}
                       />
@@ -645,6 +666,7 @@ export function SubjectRow({ subject }: { subject: NavSubject }) {
             : subject.clusters.map((cluster) => (
                 <ClusterRow
                   key={cluster.id}
+                  trackId={trackId}
                   subjectHref={subject.href}
                   cluster={cluster}
                 />

@@ -1,13 +1,9 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  type Dispatch,
-  type ReactNode,
-  type SetStateAction,
-} from "react";
+import { createContext, useContext, type ReactNode } from "react";
+import type { TrackId } from "@/lib/catalog";
 import type { SearchMode } from "@/lib/nav";
+import type { NavLocation } from "./location";
 
 export type SearchHit = {
   pathname: string;
@@ -26,12 +22,8 @@ export type SidebarChromeValue = {
 };
 
 export type SidebarFoldValue = {
-  openSubjectHref: string | null;
-  setOpenSubjectHref: Dispatch<SetStateAction<string | null>>;
-  openClusterKey: string | null;
-  setOpenClusterKey: Dispatch<SetStateAction<string | null>>;
-  openTopicHref: string | null;
-  setOpenTopicHref: Dispatch<SetStateAction<string | null>>;
+  getTrackFold: (trackId: TrackId) => NavLocation;
+  patchTrackFold: (trackId: TrackId, patch: Partial<NavLocation>) => void;
 };
 
 export type SidebarActiveValue = {

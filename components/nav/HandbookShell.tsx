@@ -35,6 +35,7 @@ const SIDEBAR_DESKTOP_PEEK = `${SIDEBAR_DESKTOP} md:absolute md:inset-y-0 md:lef
 const SIDEBAR_PANEL_MOTION =
   "flex min-h-0 flex-1 flex-col overflow-hidden transition-opacity duration-200 ease-out motion-reduce:transition-none";
 const PEEK_LEAVE_MS = 80;
+const PEEK_TOGGLE_LOCK_MS = 300;
 
 export function HandbookShell({
   groups,
@@ -123,20 +124,16 @@ export function HandbookShell({
     peeking,
     onAsidePointerEnter,
     onAsidePointerLeave,
-    onDockPointerEnter,
     onDockPointerLeave,
     suppressPeek,
   } = useDesktopSidebarPeek(peekEnabled);
-  const railCollapsed = desktopCollapsed && !peeking;
   const onToggleSidebar = useCallback(() => {
     if (desktopCollapsed && peeking) {
-      suppressPeek();
+      suppressPeek(PEEK_TOGGLE_LOCK_MS);
       return;
     }
-    if (!desktopCollapsed) {
-      suppressPeek();
-    }
     toggleSidebar();
+    suppressPeek(PEEK_TOGGLE_LOCK_MS);
   }, [desktopCollapsed, peeking, suppressPeek, toggleSidebar]);
   const desktopClass = desktopCollapsed
     ? peeking
@@ -150,7 +147,7 @@ export function HandbookShell({
   return (
     <SearchQueryContext.Provider value={searchValue}>
       <div className="flex h-dvh max-h-dvh flex-col overflow-hidden">
-        <div className="relative z-50 shrink-0">
+        <div className="relative z-50 shrink-0 overflow-visible">
           <SiteHeader
             query={query}
             onQueryChange={onQueryChange}
@@ -163,11 +160,10 @@ export function HandbookShell({
           />
           <SidebarDockButton
             collapsed={desktopCollapsed}
-            rail={railCollapsed}
+            peeking={peeking}
             collapseLabel={chrome.collapseSidebar}
             expandLabel={chrome.expandSidebar}
             onToggle={onToggleSidebar}
-            onPointerEnter={onDockPointerEnter}
             onPointerLeave={onDockPointerLeave}
           />
         </div>
@@ -203,7 +199,7 @@ export function HandbookShell({
           >
             <div
               className={
-                railCollapsed
+                desktopCollapsed && !peeking
                   ? `${SIDEBAR_PANEL_MOTION} opacity-100 md:pointer-events-none md:opacity-0`
                   : `${SIDEBAR_PANEL_MOTION} min-w-0 opacity-100`
               }
@@ -305,17 +301,9 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
     };
   }, []);
 
-  const holdPeek = useCallback(() => {
-    pointerOverDock.current = true;
-    cancelClose();
-    if (peeking && !peekLocked.current) {
-      setPeeking(true);
-    }
-  }, [cancelClose, peeking]);
-
   const onAsidePointerEnter = useCallback(
     (event: PointerEvent<HTMLElement>) => {
-      if (event.pointerType !== "mouse" || !peekEnabled) {
+      if (event.pointerType !== "mouse" || !peekEnabled || peekLocked.current) {
         return;
       }
       cancelClose();
@@ -329,66 +317,57 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
       if (!peekEnabled) {
         return;
       }
-      if (isDockTarget(event.relatedTarget)) {
-        holdPeek();
+      const next = event.relatedTarget;
+      if (next instanceof Element && isDockTarget(next)) {
+        pointerOverDock.current = true;
+        cancelClose();
         return;
       }
+      if (next instanceof Element && isSidebarTarget(next)) {
+        return;
+      }
+      pointerOverDock.current = false;
       scheduleClose();
     },
-    [holdPeek, peekEnabled, scheduleClose],
-  );
-
-  const onDockPointerEnter = useCallback(
-    (event: PointerEvent<HTMLElement>) => {
-      if (event.pointerType !== "mouse" || !peekEnabled) {
-        return;
-      }
-      if (isSidebarTarget(event.relatedTarget)) {
-        holdPeek();
-        if (!peekLocked.current) {
-          setPeeking(true);
-        }
-        return;
-      }
-      holdPeek();
-    },
-    [holdPeek, peekEnabled],
+    [cancelClose, peekEnabled, scheduleClose],
   );
 
   const onDockPointerLeave = useCallback(
     (event: PointerEvent<HTMLElement>) => {
-      const next = event.relatedTarget;
-      if (next == null || isDockTarget(next) || isSidebarTarget(next)) {
+      if (event.pointerType !== "mouse" || !peekEnabled) {
         return;
       }
-      if (event.pointerType !== "mouse") {
+      const next = event.relatedTarget;
+      if (
+        next instanceof Element &&
+        (isDockTarget(next) || isSidebarTarget(next))
+      ) {
         return;
       }
       pointerOverDock.current = false;
-      if (!peekEnabled) {
-        return;
-      }
       scheduleClose();
     },
     [peekEnabled, scheduleClose],
   );
 
-  const suppressPeek = useCallback(() => {
-    pointerOverDock.current = false;
-    peekLocked.current = true;
-    cancelClose();
-    setPeeking(false);
-    cancelUnlock();
-    unlockTimer.current = window.setTimeout(() => {
-      peekLocked.current = false;
-    }, PEEK_LEAVE_MS);
-  }, [cancelClose, cancelUnlock]);
+  const suppressPeek = useCallback(
+    (lockMs = PEEK_LEAVE_MS) => {
+      pointerOverDock.current = false;
+      peekLocked.current = true;
+      cancelClose();
+      setPeeking(false);
+      cancelUnlock();
+      unlockTimer.current = window.setTimeout(() => {
+        peekLocked.current = false;
+      }, lockMs);
+    },
+    [cancelClose, cancelUnlock],
+  );
 
   return {
     peeking: peekEnabled && peeking,
     onAsidePointerEnter,
     onAsidePointerLeave,
-    onDockPointerEnter,
     onDockPointerLeave,
     suppressPeek,
   };

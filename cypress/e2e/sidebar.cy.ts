@@ -645,6 +645,46 @@ describe("handbook sidebar", () => {
       .should("match", /\d{1,2} [A-Z][a-z]+ \d{4}/);
   });
 
+  it("anchors the desktop sidebar dock button to the header seam center", () => {
+    cy.visit("/en/frontend/html-structure");
+
+    cy.get("[data-sidebar-dock]").should("be.visible");
+    cy.get("[data-sidebar-dock]").then(($btn) => {
+      cy.get("#handbook-header").then(($header) => {
+        cy.get("div.relative.flex.min-h-0.flex-1")
+          .first()
+          .then(($shell) => {
+            const btn = $btn[0].getBoundingClientRect();
+            const header = $header[0].getBoundingClientRect();
+            const shell = $shell[0].getBoundingClientRect();
+            const btnCenterY = btn.top + btn.height / 2;
+            expect(btnCenterY).to.be.closeTo(header.bottom, 2);
+            expect(btnCenterY).to.be.closeTo(shell.top, 2);
+            expect(btn.left + btn.width / 2).to.be.closeTo(160, 3);
+          });
+      });
+    });
+
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.get('button[aria-label="Expand topics"]').should("be.visible");
+
+    cy.get("[data-sidebar-dock]").then(($btn) => {
+      cy.get("#handbook-header").then(($header) => {
+        cy.get("div.relative.flex.min-h-0.flex-1")
+          .first()
+          .then(($shell) => {
+            const btn = $btn[0].getBoundingClientRect();
+            const header = $header[0].getBoundingClientRect();
+            const shell = $shell[0].getBoundingClientRect();
+            const btnCenterY = btn.top + btn.height / 2;
+            expect(btnCenterY).to.be.closeTo(header.bottom, 2);
+            expect(btnCenterY).to.be.closeTo(shell.top, 2);
+            expect(btn.left + btn.width / 2).to.be.closeTo(40, 2);
+          });
+      });
+    });
+  });
+
   it("collapses the desktop sidebar and restores it", () => {
     cy.visit("/en/frontend/html-structure");
     cy.sidebar().should("be.visible");
@@ -654,6 +694,36 @@ describe("handbook sidebar", () => {
     cy.sidebar().should("not.be.visible");
     cy.get('button[aria-label="Expand topics"]').should("be.visible").click();
     cy.sidebar().should("be.visible");
+  });
+
+  it("toggles the desktop sidebar open and closed repeatedly via the dock", () => {
+    cy.visit("/en/frontend/html-structure");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.sidebar().should("not.be.visible");
+
+    cy.get('button[aria-label="Expand topics"]').click();
+    cy.sidebar().should("be.visible");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.sidebar().should("not.be.visible");
+
+    cy.get('button[aria-label="Expand topics"]').click();
+    cy.sidebar().should("be.visible");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.sidebar().should("not.be.visible");
+  });
+
+  it("keeps the sidebar collapsed after dock collapse when the pointer is over the rail", () => {
+    cy.visit("/en/frontend/html-structure");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.get('button[aria-label="Expand topics"]').click();
+    cy.sidebar().should("be.visible");
+    cy.get('button[aria-label="Collapse topics"]').click({ force: true });
+    cy.sidebar().should("not.be.visible");
+
+    cy.pointerOn("aside", "pointerenter");
+    cy.wait(350);
+    cy.sidebar().should("not.be.visible");
+    cy.get('button[aria-label="Expand topics"]').should("be.visible");
   });
 
   it("collapses the desktop sidebar while a search query is active", () => {
@@ -714,5 +784,51 @@ describe("handbook sidebar", () => {
 
     cy.pointerOn('button[aria-label="Expand topics"]', "pointerover");
     cy.sidebar().should("be.visible");
+  });
+
+  it("dismisses peek when the dock is clicked but keeps the sidebar collapsed", () => {
+    cy.visit("/en/frontend/html-structure");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.pointerOn("aside", "pointerenter");
+    cy.sidebar().should("be.visible");
+
+    cy.get('button[aria-label="Expand topics"]').click({ force: true });
+
+    cy.get('button[aria-label="Expand topics"]').should("be.visible");
+    cy.pointerOn("aside", "pointerleave");
+    cy.sidebar().should("not.be.visible");
+  });
+
+  it("closes peek after hovering the sidebar, dock, and away", () => {
+    cy.visit("/en/frontend/html-structure");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.pointerOn("aside", "pointerenter");
+    cy.sidebar().should("be.visible");
+
+    cy.pointerOn('button[aria-label="Expand topics"]', "pointerover");
+    cy.sidebar().should("be.visible");
+
+    cy.get("[data-sidebar-dock]").trigger("pointerleave", {
+      pointerType: "mouse",
+    });
+    cy.wait(100);
+    cy.sidebar().should("not.be.visible");
+    cy.get('button[aria-label="Expand topics"]').should("be.visible");
+  });
+
+  it("moves the dock to the sidebar center while peeking", () => {
+    cy.visit("/en/frontend/html-structure");
+    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.get("[data-sidebar-dock]").then(($btn) => {
+      expect(
+        $btn[0].getBoundingClientRect().left + $btn[0].width / 2,
+      ).to.be.closeTo(40, 2);
+    });
+    cy.pointerOn("aside", "pointerenter");
+    cy.get("[data-sidebar-dock]").then(($btn) => {
+      expect(
+        $btn[0].getBoundingClientRect().left + $btn[0].width / 2,
+      ).to.be.closeTo(160, 3);
+    });
   });
 });

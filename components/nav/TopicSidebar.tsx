@@ -8,8 +8,6 @@ import {
   useMemo,
   useRef,
   useSyncExternalStore,
-  type Dispatch,
-  type SetStateAction,
 } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -48,7 +46,7 @@ import {
 } from "./sidebarSticky";
 import { SidebarNavProvider, trackHeaderClass } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
-import { useSidebarOpen } from "./useSidebarOpen";
+import { foldRevision, useSidebarOpen } from "./useSidebarOpen";
 
 export const TopicSidebar = memo(function TopicSidebar({
   groups,
@@ -77,14 +75,12 @@ export const TopicSidebar = memo(function TopicSidebar({
   const searching = query.trim().length > 0;
   const {
     activeConceptId,
-    openTrackId,
-    setOpenTrackId,
-    openSubjectHref,
-    setOpenSubjectHref,
-    openClusterKey,
-    setOpenClusterKey,
-    openTopicHref,
-    setOpenTopicHref,
+    openTrackIds,
+    toggleTrackId,
+    ensureTrackOpen,
+    trackFolds,
+    getTrackFold,
+    patchTrackFold,
   } = useSidebarOpen({
     groups,
     pathname,
@@ -102,19 +98,11 @@ export const TopicSidebar = memo(function TopicSidebar({
     },
     [router],
   );
-  const stickyRevision = `${openTopicHref}|${openClusterKey}|${openSubjectHref}|${pathname}|${hash}|${searching}|${query}`;
+  const stickyRevision = `${foldRevision(trackFolds, openTrackIds)}|${pathname}|${hash}|${searching}|${query}`;
 
   useLayoutEffect(() => {
     restoreSidebarPin();
-  }, [
-    openTopicHref,
-    openClusterKey,
-    openSubjectHref,
-    pathname,
-    hash,
-    searching,
-    query,
-  ]);
+  }, [stickyRevision, pathname, hash, searching, query]);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -127,7 +115,7 @@ export const TopicSidebar = memo(function TopicSidebar({
       window.cancelAnimationFrame(frame);
       window.clearTimeout(later);
     };
-  }, [openTopicHref, openClusterKey, pathname, hash]);
+  }, [stickyRevision, pathname, hash]);
 
   useEffect(() => {
     if (!firstHref) {
@@ -154,7 +142,7 @@ export const TopicSidebar = memo(function TopicSidebar({
       }
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [activeConceptId, openTopicHref, searching]);
+  }, [activeConceptId, stickyRevision, searching]);
 
   const chromeValue = useMemo(
     () => ({
@@ -171,21 +159,10 @@ export const TopicSidebar = memo(function TopicSidebar({
   );
   const foldValue = useMemo(
     () => ({
-      openSubjectHref,
-      setOpenSubjectHref,
-      openClusterKey,
-      setOpenClusterKey,
-      openTopicHref,
-      setOpenTopicHref,
+      getTrackFold,
+      patchTrackFold,
     }),
-    [
-      openSubjectHref,
-      setOpenSubjectHref,
-      openClusterKey,
-      setOpenClusterKey,
-      openTopicHref,
-      setOpenTopicHref,
-    ],
+    [getTrackFold, patchTrackFold],
   );
   const activeValue = useMemo(() => ({ activeConceptId }), [activeConceptId]);
 
@@ -216,8 +193,9 @@ export const TopicSidebar = memo(function TopicSidebar({
                 pathname={pathname}
                 searching={searching}
                 first={first}
-                openTrackId={openTrackId}
-                setOpenTrackId={setOpenTrackId}
+                openTrackIds={openTrackIds}
+                toggleTrackId={toggleTrackId}
+                ensureTrackOpen={ensureTrackOpen}
               />
             ))}
           </ul>
@@ -295,8 +273,9 @@ function TrackGroup({
   pathname,
   searching,
   first,
-  openTrackId,
-  setOpenTrackId,
+  openTrackIds,
+  toggleTrackId,
+  ensureTrackOpen,
 }: {
   group: NavGroup;
   query: string;
@@ -304,13 +283,14 @@ function TrackGroup({
   pathname: string;
   searching: boolean;
   first: { pathname: string; hash: string } | null;
-  openTrackId: TrackId | null;
-  setOpenTrackId: Dispatch<SetStateAction<TrackId | null>>;
+  openTrackIds: ReadonlySet<TrackId>;
+  toggleTrackId: (trackId: TrackId) => void;
+  ensureTrackOpen: (trackId: TrackId) => void;
 }) {
   const isLeafTrack = Boolean(group.leafTopic) && group.entries.length === 0;
   const trackActive = isActiveHref(pathname, group.href);
   const onThisTrack = isActiveTrack(pathname, group.href);
-  const trackOpen = searching || openTrackId === group.id;
+  const trackOpen = searching || openTrackIds.has(group.id);
   const onPath = !searching && onThisTrack;
   const needle = query.trim().toLowerCase();
   const trackHighlighted = searching
@@ -347,9 +327,7 @@ function TrackGroup({
           data-nav-path={onPath ? "true" : undefined}
           onClick={() => {
             if (!searching) {
-              setOpenTrackId((current) =>
-                current === group.id ? null : group.id,
-              );
+              toggleTrackId(group.id);
             }
           }}
           aria-current={isLeafTrack ? undefined : "true"}
@@ -366,7 +344,7 @@ function TrackGroup({
           data-nav-id={group.id}
           data-nav-path={onPath ? "true" : undefined}
           onClick={() => {
-            setOpenTrackId(group.id);
+            ensureTrackOpen(group.id);
           }}
           data-search-hit={
             isLeafTrack && first?.pathname === group.href && first.hash === ""
@@ -388,10 +366,18 @@ function TrackGroup({
             <>
               <NavGuide level="track" />
               {isLeafTrack && group.leafTopic ? (
-                <TopicRow topic={group.leafTopic} hideTitle />
+                <TopicRow
+                  trackId={group.id}
+                  topic={group.leafTopic}
+                  hideTitle
+                />
               ) : (
                 group.entries.map((entry) => (
-                  <TrackEntry key={entryKey(entry)} entry={entry} />
+                  <TrackEntry
+                    key={entryKey(entry)}
+                    entry={entry}
+                    trackId={group.id}
+                  />
                 ))
               )}
             </>
@@ -417,15 +403,19 @@ function entryKey(entry: NavEntry) {
   }
 }
 
-function TrackEntry({ entry }: { entry: NavEntry }) {
+function TrackEntry({ entry, trackId }: { entry: NavEntry; trackId: TrackId }) {
   switch (entry.kind) {
     case "topic":
-      return <TopicRow topic={entry.topic} />;
+      return <TopicRow trackId={trackId} topic={entry.topic} />;
     case "subject":
-      return <SubjectRow subject={entry.subject} />;
+      return <SubjectRow trackId={trackId} subject={entry.subject} />;
     case "cluster":
       return (
-        <ClusterRow subjectHref={entry.subjectHref} cluster={entry.cluster} />
+        <ClusterRow
+          trackId={trackId}
+          subjectHref={entry.subjectHref}
+          cluster={entry.cluster}
+        />
       );
     default: {
       const _never: never = entry;
