@@ -848,7 +848,7 @@ describe("handbook sidebar", () => {
     );
   });
 
-  it("does not peek the collapsed sidebar while searching", () => {
+  it("peeks the collapsed sidebar while searching", () => {
     cy.visit("/en/system-design/sd-core");
     cy.get('input[placeholder="Search topics…"]').clear().type("design");
     cy.wait(400);
@@ -856,6 +856,10 @@ describe("handbook sidebar", () => {
     cy.sidebar().should("not.be.visible");
 
     cy.pointerOn("aside", "pointerenter");
+    cy.sidebar().should("be.visible");
+    cy.get("#handbook-sidebar [data-search-hit='true']").should("exist");
+
+    cy.pointerOn("aside", "pointerleave");
     cy.sidebar().should("not.be.visible");
     cy.pointerOn('button[aria-label="Expand topics"]', "pointerenter");
     cy.sidebar().should("not.be.visible");

@@ -119,7 +119,7 @@ export function HandbookShell({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [dismissNav, searchSheet]);
   const desktopCollapsed = collapsed;
-  const peekEnabled = desktopCollapsed && !searching;
+  const peekEnabled = desktopCollapsed;
   const {
     peeking,
     onAsidePointerEnter,
