@@ -6,7 +6,7 @@ Interview Q&A for databases.
 
 ### Related docs
 
-* [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
+- [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
 
 ### Sections
 
@@ -79,12 +79,12 @@ Join condition in `ON` — `FROM users u LEFT JOIN orders o ON o.user_id = u.id`
 
 Normal forms are stacked rules that remove redundancy. Target for OLTP is **3NF**. Theory: [Normal forms (1NF–3NF, BCNF)](./9_database_core.md#normal-forms-1nf3nf-bcnf).
 
-| Form     | Extra rule over the previous                                      |
-| -------- | ----------------------------------------------------------------- |
-| **1NF**  | Atomic values — no lists/nested tables in a cell                  |
-| **2NF**  | Non-key columns depend on the **entire** candidate key            |
+| Form     | Extra rule over the previous                                       |
+| -------- | ------------------------------------------------------------------ |
+| **1NF**  | Atomic values — no lists/nested tables in a cell                   |
+| **2NF**  | Non-key columns depend on the **entire** candidate key             |
 | **3NF**  | Non-key columns depend **only** on keys (no A → B → C via non-key) |
-| **BCNF** | Every determinant of a non-trivial FD is a **superkey**           |
+| **BCNF** | Every determinant of a non-trivial FD is a **superkey**            |
 
 **How it works:** 2NF only bites on **composite** keys. Single-column PK tables that are 1NF are already 2NF. BCNF is 3NF plus “no leftover FDs from a non-key into a key.”
 
@@ -260,7 +260,7 @@ flowchart LR
 
 **Pluses and minuses:**
 
-| + (incremental scale)               | −                                     |
+| + (incremental scale)                  | −                                        |
 | -------------------------------------- | ---------------------------------------- |
 | Each step is reversible and measurable | Sharding adds cross-shard query pain     |
 | Most apps never need step 9            | Cache invalidation bugs cause stale data |
@@ -347,7 +347,7 @@ Primary transactional store.
 
 **When to use:** Full-text product search, logs. Keep Postgres/Mongo as source of truth; sync into ES.
 
-**Sources:** [9_database.md — Elasticsearch](./9_database_nosql.md#elasticsearch)
+**Sources:** [NoSQL — Elasticsearch](./9_database_nosql_core.md#elasticsearch)
 
 </details>
 
@@ -485,5 +485,3 @@ See also (git, not databases): [0_git.md — Interview Practice](0_git_interview
 </details>
 
 </details>
-
-

@@ -6,7 +6,7 @@ Replication, sharding, caching, and OLTP scaling.
 
 ### Related docs
 
-* [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
+- [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
 
 ### Sections
 
@@ -36,7 +36,7 @@ Copy data from a **primary** (writer) to one or more **replicas** (readers) for 
 
 **Pluses and minuses:**
 
-| +                            | −                                              |
+| +                               | −                                                 |
 | ------------------------------- | ------------------------------------------------- |
 | Scale read traffic horizontally | Replication lag — read-your-writes not guaranteed |
 | Failover for high availability  | Split-brain risk without proper tooling           |
@@ -73,7 +73,7 @@ flowchart LR
 **Definition:**
 
 - **Partitioning** — split one logical table into segments within one database (by range, list, hash).
-- **Sharding** — split data across **multiple independent databases** (shards), each holding a subset. Elasticsearch does this inside the cluster (index → primary shards + replicas) — [Elasticsearch](./9_database_nosql.md#elasticsearch).
+- **Sharding** — split data across **multiple independent databases** (shards), each holding a subset. Elasticsearch does this inside the cluster (index → primary shards + replicas) — [Elasticsearch](./9_database_nosql_core.md#elasticsearch).
 
 | Pros (partitioning)         | Pros (sharding)                  |
 | --------------------------- | -------------------------------- |
@@ -121,7 +121,7 @@ Patterns for placing a fast cache layer (usually Redis) between app and database
 
 **Pluses and minuses:**
 
-| +                         | −                                 |
+| +                            | −                                    |
 | ---------------------------- | ------------------------------------ |
 | Dramatically reduces DB load | Cache invalidation is hard           |
 | Lower p99 latency            | Stale data if TTL/invalidation wrong |
@@ -165,7 +165,7 @@ Async middleware for decoupling services — producers publish events; consumers
 
 **Pluses and minuses:**
 
-| +                              | −                                                  |
+| +                                 | −                                                     |
 | --------------------------------- | ----------------------------------------------------- |
 | Decouples services in time        | At-least-once delivery — consumers must be idempotent |
 | Absorbs traffic spikes            | Operational overhead (cluster, monitoring)            |
@@ -199,7 +199,7 @@ Order Service → [order.created] → Kafka → Inventory Service (reserve stock
 
 **Pluses and minuses:**
 
-| +                                         | −                              |
+| +                                            | −                                 |
 | -------------------------------------------- | --------------------------------- |
 | Atomic: DB + event intent in one transaction | Extra table and publisher process |
 | No lost events on crash after commit         | Consumers still need idempotency  |
@@ -251,7 +251,7 @@ COMMIT;
 
 **Pluses and minuses:**
 
-| +                                 | −                                 |
+| +                                    | −                                    |
 | ------------------------------------ | ------------------------------------ |
 | PITR recovers from "oops" deletes    | WAL storage cost and complexity      |
 | Managed RDS/Cloud SQL simplify ops   | Restore time proportional to DB size |

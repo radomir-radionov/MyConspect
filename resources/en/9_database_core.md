@@ -69,15 +69,15 @@ CREATE TABLE users (
 
 Databases group by data model and consistency guarantees — not by a single "SQL vs NoSQL" axis.
 
-| Type                   | Examples                                             | Best for                                   |
-| ---------------------- | ---------------------------------------------------- | ------------------------------------------ |
-| **Relational (RDBMS)** | PostgreSQL, MySQL, SQL Server                        | Structured data, joins, transactions       |
-| **Document**           | MongoDB, CouchDB                                     | Flexible schemas, nested JSON documents    |
-| **Key-value**          | Redis, DynamoDB                                      | Caching, sessions, simple lookups          |
-| **Column-family**      | Cassandra, HBase                                     | Wide rows, high write throughput           |
-| **Graph**              | Neo4j                                                | Relationship-heavy queries (social, fraud) |
-| **Time-series**        | TimescaleDB, InfluxDB                                | Metrics, IoT, monitoring                   |
-| **Search**             | [Elasticsearch](./9_database_nosql.md#elasticsearch) | Full-text search, log analytics            |
+| Type                   | Examples                                                  | Best for                                   |
+| ---------------------- | --------------------------------------------------------- | ------------------------------------------ |
+| **Relational (RDBMS)** | PostgreSQL, MySQL, SQL Server                             | Structured data, joins, transactions       |
+| **Document**           | MongoDB, CouchDB                                          | Flexible schemas, nested JSON documents    |
+| **Key-value**          | Redis, DynamoDB                                           | Caching, sessions, simple lookups          |
+| **Column-family**      | Cassandra, HBase                                          | Wide rows, high write throughput           |
+| **Graph**              | Neo4j                                                     | Relationship-heavy queries (social, fraud) |
+| **Time-series**        | TimescaleDB, InfluxDB                                     | Metrics, IoT, monitoring                   |
+| **Search**             | [Elasticsearch](./9_database_nosql_core.md#elasticsearch) | Full-text search, log analytics            |
 
 **When to use:** Start with one primary store (usually PostgreSQL). Add Redis/Mongo/queue only when measured pain justifies it.
 
@@ -88,7 +88,7 @@ Databases group by data model and consistency guarantees — not by a single "SQ
 | Right tool per workload      | More ops, sync, and failure modes |
 | Optimize read vs write paths | Data duplication across stores    |
 
-**Thoughts:** "NoSQL" means **Not Only SQL** — many teams run Postgres + Redis + a queue. Relational model (tables, rows, keys, SQL): [Relational database](./9_database_sql.md#relational-database). See [DB selection matrix](./9_database_nosql.md#db-selection-matrix).
+**Thoughts:** "NoSQL" means **Not Only SQL** — many teams run Postgres + Redis + a queue. Relational model (tables, rows, keys, SQL): [Relational database](./9_database_sql.md#relational-database). See [DB selection matrix](./9_database_nosql_core.md#db-selection-matrix).
 
 **Sources:**
 

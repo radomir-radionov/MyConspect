@@ -6,7 +6,7 @@ Delivery architecture, Nginx, brokers, and DX tools.
 
 ### Related docs
 
-* [Build — CI](./10_build_ci.md) · [Build — Bundlers](./10_build_bundlers.md) · [Build — Docker](./10_build_docker.md) · [Build — Infra](./10_build_infra.md) · [Build — Interview](./10_build_interview.md)
+- [Build — CI](./10_build_ci.md) · [Build — Bundlers](./10_build_bundlers.md) · [Build — Docker](./10_build_docker.md) · [Build — Infra](./10_build_infra.md) · [Build — Interview](./10_build_interview.md)
 
 ### Sections
 
@@ -25,38 +25,38 @@ Delivery architecture, Nginx, brokers, and DX tools.
 
 **Definition:**
 
-| | Monolith | Microservices |
-|---|----------|---------------|
-| **Structure** | Single deployable unit | Independent services per domain |
-| **Deployment** | All-or-nothing | Per-service deploy |
-| **Scaling** | Scale entire app | Scale individual services |
-| **Data** | Shared database (usually) | Database per service |
-| **Team** | One team, one codebase | Teams per service |
+|                | Monolith                  | Microservices                   |
+| -------------- | ------------------------- | ------------------------------- |
+| **Structure**  | Single deployable unit    | Independent services per domain |
+| **Deployment** | All-or-nothing            | Per-service deploy              |
+| **Scaling**    | Scale entire app          | Scale individual services       |
+| **Data**       | Shared database (usually) | Database per service            |
+| **Team**       | One team, one codebase    | Teams per service               |
 
 **When to use:**
 
-| Choose monolith | Choose microservices |
-|-----------------|---------------------|
-| Startup / MVP | Large org, many teams |
-| Small team (< 10 devs) | Clear domain boundaries |
-| Unclear domain boundaries | Different scaling needs per service |
+| Choose monolith                 | Choose microservices                 |
+| ------------------------------- | ------------------------------------ |
+| Startup / MVP                   | Large org, many teams                |
+| Small team (< 10 devs)          | Clear domain boundaries              |
+| Unclear domain boundaries       | Different scaling needs per service  |
 | Speed of iteration matters most | Mature DevOps / platform team exists |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Simple to develop and deploy initially | Grows complex; tight coupling |
-| Easy local debugging | Single point of failure |
-| No network latency between modules | Scaling is all-or-nothing |
-| Transactions across modules are easy | Deploy risk increases with size |
+| +                                      | −                               |
+| -------------------------------------- | ------------------------------- |
+| Simple to develop and deploy initially | Grows complex; tight coupling   |
+| Easy local debugging                   | Single point of failure         |
+| No network latency between modules     | Scaling is all-or-nothing       |
+| Transactions across modules are easy   | Deploy risk increases with size |
 
-| + | − |
-|------|------|
-| Independent deploy and scale | Distributed system complexity |
-| Technology diversity per service | Network latency, partial failures |
-| Team autonomy | Data consistency challenges (sagas, events) |
-| Fault isolation | Operational overhead (observability, CI/CD × N) |
+| +                                | −                                               |
+| -------------------------------- | ----------------------------------------------- |
+| Independent deploy and scale     | Distributed system complexity                   |
+| Technology diversity per service | Network latency, partial failures               |
+| Team autonomy                    | Data consistency challenges (sagas, events)     |
+| Fault isolation                  | Operational overhead (observability, CI/CD × N) |
 
 **Thoughts:**
 
@@ -83,12 +83,12 @@ Start monolith, extract services when boundaries are clear and pain is real — 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Extremely fast static file serving | Config syntax is unique |
-| Reverse proxy to upstream apps | SSL termination config can be tricky |
-| Load balancing, rate limiting | Not a replacement for app-level auth |
-| Low memory footprint | |
+| +                                  | −                                    |
+| ---------------------------------- | ------------------------------------ |
+| Extremely fast static file serving | Config syntax is unique              |
+| Reverse proxy to upstream apps     | SSL termination config can be tricky |
+| Load balancing, rate limiting      | Not a replacement for app-level auth |
+| Low memory footprint               |                                      |
 
 **Examples:**
 
@@ -129,24 +129,24 @@ server {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Sub-millisecond latency | Data loss risk without persistence config |
-| Versatile (cache, pub/sub, queues) | Memory-bound — expensive at scale |
-| Simple key-value API | Not a replacement for a primary database |
-| TTL-based expiration | Cluster mode adds complexity |
+| +                                  | −                                         |
+| ---------------------------------- | ----------------------------------------- |
+| Sub-millisecond latency            | Data loss risk without persistence config |
+| Versatile (cache, pub/sub, queues) | Memory-bound — expensive at scale         |
+| Simple key-value API               | Not a replacement for a primary database  |
+| TTL-based expiration               | Cluster mode adds complexity              |
 
 **Examples:**
 
 ```js
-import { createClient } from 'redis';
+import { createClient } from "redis";
 
 const redis = createClient({ url: process.env.REDIS_URL });
 await redis.connect();
 
 // Cache with TTL
-await redis.set('user:123', JSON.stringify(user), { EX: 300 });
-const cached = await redis.get('user:123');
+await redis.set("user:123", JSON.stringify(user), { EX: 300 });
+const cached = await redis.get("user:123");
 ```
 
 **Thoughts:** Always set TTL on cache keys. Use Redis for ephemeral data; Postgres/MySQL for source of truth. Enable AOF/RDB persistence if data must survive restarts.
@@ -160,78 +160,13 @@ const cached = await redis.get('user:123');
 
 ### Message broker
 
-**Definition:** Software intermediary that routes messages between producers and consumers — enabling asynchronous, decoupled communication.
+**Definition:** Software intermediary for async producer–consumer messaging.
 
-**When to use:** Microservices communication, background job processing, event-driven systems, fan-out notifications.
+**When to use:** Microservices, background jobs, event-driven systems — when HTTP coupling is not enough.
 
-**Pluses and minuses:**
+**Thoughts:** Full coverage — [Message broker — Core](./12_message_broker_core.md), [Kafka](./12_message_broker_kafka.md), [RabbitMQ](./12_message_broker_rabbitmq.md), [NATS](./12_message_broker_nats.md) (Backend track).
 
-| + | − |
-|------|------|
-| Decouples services | Added infrastructure complexity |
-| Handles traffic spikes (buffering) | Message ordering guarantees vary |
-| Enables event-driven architecture | Debugging async flows is harder |
-| Reliable delivery with persistence | Operational overhead |
-
-**Thoughts:** Prefer a message broker when you need guaranteed delivery, buffering, or multiple consumers. Use direct HTTP for synchronous request/response with simple coupling.
-
-**Sources:** [RabbitMQ tutorials](https://www.rabbitmq.com/tutorials)
-
-</details>
-
-<details>
-  <summary>RabbitMQ</summary>
-
-### RabbitMQ
-
-**Definition:**
-
-Open-source message broker implementing AMQP. Routes messages from producers to consumers via exchanges and queues.
-
-| Concept | Definition |
-|---------|------------|
-| **Producer** | Sends messages to an exchange |
-| **Exchange** | Routes messages to queues by rules (direct, fanout, topic, headers) |
-| **Queue** | Buffer holding messages until consumed |
-| **Binding** | Link between exchange and queue with routing key |
-| **Consumer** | Subscribes to a queue and processes messages |
-
-**When to use:** Task queues, event broadcasting, work distribution, reliable async processing.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Mature, battle-tested | Erlang-based — niche ops knowledge |
-| Flexible routing (4 exchange types) | Slower than Redis pub/sub for simple cases |
-| Message acknowledgment & durability | Clustering setup is non-trivial |
-| Management UI | |
-
-**Examples:**
-
-```js
-import amqp from 'amqplib';
-
-const conn = await amqp.connect(process.env.RABBITMQ_URL);
-const channel = await conn.createChannel();
-await channel.assertQueue('tasks', { durable: true });
-
-// Producer
-channel.sendToQueue('tasks', Buffer.from(JSON.stringify({ job: 'send-email' })), {
-  persistent: true,
-});
-
-// Consumer
-channel.consume('tasks', (msg) => {
-  const data = JSON.parse(msg.content.toString());
-  console.log('Processing:', data);
-  channel.ack(msg);
-});
-```
-
-**Thoughts:** Use `durable: true` queues and `persistent: true` messages for reliability. Dead-letter exchanges (DLX) handle poison messages.
-
-**Sources:** [rabbitmq.com](https://www.rabbitmq.com/)
+**Sources:** [Message broker hub](./12_message_broker.md)
 
 </details>
 
@@ -240,31 +175,29 @@ channel.consume('tasks', (msg) => {
 
 ### Kafka vs RabbitMQ vs BullMQ
 
-**Definition:**
+**Definition:** Three ways to decouple producers from consumers in Node/build pipelines. Pick by **delivery model**, not hype.
 
-Three ways to decouple producers from consumers. Pick by **delivery model**, not by hype.
+|            | RabbitMQ                                         | Kafka                                    | BullMQ                                  |
+| ---------- | ------------------------------------------------ | ---------------------------------------- | --------------------------------------- |
+| Model      | Queue + exchange (messages disappear when acked) | Append-only log (consumers have offsets) | Redis lists/streams as a Node job queue |
+| Fan-out    | Exchanges (fanout/topic)                         | Consumer groups + partitions             | Repeatable jobs / queues per name       |
+| Replay     | Poor (message gone)                              | First-class (rewind offset)              | Limited                                 |
+| Throughput | Thousands–tens of k msg/s                        | Hundreds of k+                           | Fine for typical Node jobs              |
+| Ops        | Erlang broker                                    | Cluster, disk, partition key             | Redis you already run                   |
 
-| | RabbitMQ | Kafka | BullMQ |
-|---|----------|-------|--------|
-| Model | Queue + exchange (messages disappear when acked) | Append-only log (consumers have offsets) | Redis lists/streams as a Node job queue |
-| Fan-out | Exchanges (fanout/topic) | Consumer groups + partitions | Repeatable jobs / queues per name |
-| Replay | Poor (message gone) | First-class (rewind offset) | Limited |
-| Throughput | Thousands–tens of k msg/s | Hundreds of k+ | Fine for typical Node jobs |
-| Ops | Erlang broker | Cluster, disk, partition key | Redis you already run |
-
-**When to use:** Email/worker jobs → BullMQ. Complex routing + ack → RabbitMQ. Event log many teams consume at their own pace → Kafka. AWS managed: SQS ≈ queue, Kinesis/MSK ≈ log.
+**When to use:** Email/worker jobs → **BullMQ** (this file). Complex routing + ack → **RabbitMQ**. Event log many teams consume at their own pace → **Kafka**. Deep dives: [Message broker](./12_message_broker.md) (Backend). AWS managed: SQS ≈ queue, Kinesis/MSK ≈ log.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Rabbit: flexible routing, ack/nack | Not a replay log |
+| +                                              | −                                            |
+| ---------------------------------------------- | -------------------------------------------- |
+| Rabbit: flexible routing, ack/nack             | Not a replay log                             |
 | Kafka: replay, huge throughput, event sourcing | Operationally heavy; not a simple task queue |
-| BullMQ: tiny ops if Redis exists | Redis is the SPOF unless clustered |
+| BullMQ: tiny ops if Redis exists               | Redis is the SPOF unless clustered           |
 
-**Thoughts:** Queue = consume and forget. Log = consume and remember (offset).
+**Thoughts:** Queue = consume and forget. Log = consume and remember (offset). NATS comparison → [Kafka vs RabbitMQ vs NATS](./12_message_broker_core.md#kafka-vs-rabbitmq-vs-nats).
 
-**Sources:** [Kafka intro](https://kafka.apache.org/intro) · [BullMQ](https://docs.bullmq.io/)
+**Sources:** [Kafka intro](https://kafka.apache.org/intro) · [BullMQ](https://docs.bullmq.io/) · [Message broker — Core](./12_message_broker_core.md)
 
 </details>
 
@@ -283,30 +216,34 @@ Three ways to decouple producers from consumers. Pick by **delivery model**, not
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                           | −                                              |
+| ------------------------------------------- | ---------------------------------------------- |
 | Develop components without running full app | Maintenance overhead (stories drift from code) |
-| Visual documentation for design system | Separate build config |
-| Interaction testing with `@storybook/test` | Can slow CI if not parallelized |
-| Chromatic integration for visual regression | |
+| Visual documentation for design system      | Separate build config                          |
+| Interaction testing with `@storybook/test`  | Can slow CI if not parallelized                |
+| Chromatic integration for visual regression |                                                |
 
 **Examples:**
 
 ```tsx
 // Button.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './Button';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "./Button";
 
 const meta: Meta<typeof Button> = {
   component: Button,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 export default meta;
 
 type Story = StoryObj<typeof Button>;
 
-export const Primary: Story = { args: { variant: 'primary', children: 'Click me' } };
-export const Disabled: Story = { args: { variant: 'primary', children: 'Disabled', disabled: true } };
+export const Primary: Story = {
+  args: { variant: "primary", children: "Click me" },
+};
+export const Disabled: Story = {
+  args: { variant: "primary", children: "Disabled", disabled: true },
+};
 ```
 
 **Thoughts:** Integrate Storybook build into CI to catch broken stories. Use Chromatic or Lost Pixel for visual regression. Co-locate stories with components (`Button.stories.tsx` next to `Button.tsx`).
@@ -326,12 +263,12 @@ export const Disabled: Story = { args: { variant: 'primary', children: 'Disabled
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Single source of truth for API contract | Spec can drift from implementation |
-| Auto-generated docs (Swagger UI) | Codegen output needs cleanup |
-| Client SDK generation | Not ideal for non-REST protocols (GraphQL, gRPC) |
-| Contract testing between frontend/backend | |
+| +                                         | −                                                |
+| ----------------------------------------- | ------------------------------------------------ |
+| Single source of truth for API contract   | Spec can drift from implementation               |
+| Auto-generated docs (Swagger UI)          | Codegen output needs cleanup                     |
+| Client SDK generation                     | Not ideal for non-REST protocols (GraphQL, gRPC) |
+| Contract testing between frontend/backend |                                                  |
 
 **Examples:**
 
@@ -351,12 +288,12 @@ paths:
           required: true
           schema: { type: string }
       responses:
-        '200':
+        "200":
           description: User found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
 components:
   schemas:
     User:
@@ -392,18 +329,18 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 
 ### Question index
 
-| Topic | Answer |
-|-------|--------|
-| What is CI/CD | Q&A |
-| CI vs CD | Q&A |
-| YAML vs JSON | Q&A |
-| Webpack vs Vite | Q&A |
-| Tree shaking | Q&A |
-| Docker layers | Q&A |
-| Docker storage (volumes vs bind vs tmpfs) | Q&A |
-| CMD vs ENTRYPOINT | Q&A |
-| Docker container lifecycle | Q&A |
-| Docker Compose | Q&A |
-| Lockfiles | Q&A |
+| Topic                                     | Answer |
+| ----------------------------------------- | ------ |
+| What is CI/CD                             | Q&A    |
+| CI vs CD                                  | Q&A    |
+| YAML vs JSON                              | Q&A    |
+| Webpack vs Vite                           | Q&A    |
+| Tree shaking                              | Q&A    |
+| Docker layers                             | Q&A    |
+| Docker storage (volumes vs bind vs tmpfs) | Q&A    |
+| CMD vs ENTRYPOINT                         | Q&A    |
+| Docker container lifecycle                | Q&A    |
+| Docker Compose                            | Q&A    |
+| Lockfiles                                 | Q&A    |
 
 ---

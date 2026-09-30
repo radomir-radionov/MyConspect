@@ -6,15 +6,15 @@ PostgreSQL, joins, indexes, and SQL patterns.
 
 ### Related docs
 
-* [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md) · [Web security](./7_special_security.md)
+- [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md) · [Web security](./7_special_security.md)
 
 ### Main concepts
 
-| # | Topics |
-| --- | --- |
-| 1–10 | SQL, DDL/DML/DCL, primary key, foreign key, normalization, joins, subqueries, DISTINCT, WHERE vs HAVING, indexes |
-| 11–20 | ACID, triggers, VIEW, LIKE, aggregates, UNION, procedures, EXPLAIN, constraints, SQL injection |
-| 21–30 | Relational DB, INNER vs OUTER, NULL, CASE, COMMIT/ROLLBACK, CHAR vs VARCHAR, temp tables, windows, CTE, DROP TABLE |
+| #     | Topics                                                                                                                            |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 1–10  | SQL, DDL/DML/DCL, primary key, foreign key, normalization, joins, subqueries, DISTINCT, WHERE vs HAVING, indexes                  |
+| 11–20 | ACID, triggers, VIEW, LIKE, aggregates, UNION, procedures, EXPLAIN, constraints, SQL injection                                    |
+| 21–30 | Relational DB, INNER vs OUTER, NULL, CASE, COMMIT/ROLLBACK, CHAR vs VARCHAR, temp tables, windows, CTE, DROP TABLE                |
 | 31–40 | ALTER TABLE, correlated subquery, DELETE/TRUNCATE/DROP, self-join, backup, many-to-many, GRANT/REVOKE, hashing, how triggers work |
 
 ### Sections
@@ -48,7 +48,7 @@ Command families: [DDL, DML, and DCL](#ddl-dml-and-dcl). Dialects share the core
 
 **Pluses and minuses:**
 
-| +                               | −                                    |
+| +                                  | −                                       |
 | ---------------------------------- | --------------------------------------- |
 | Declarative, portable across RDBMS | Dialect differences (Postgres vs MySQL) |
 | Mature ecosystem, tooling          | Complex queries become hard to maintain |
@@ -84,12 +84,12 @@ LIMIT 10;
 
 **How it works:**
 
-| Group | Job | Typical commands |
-| --- | --- | --- |
-| **DDL** (Data Definition) | Create/alter/drop objects | `CREATE`, `ALTER`, `DROP`, `TRUNCATE`, `COMMENT` |
-| **DML** (Data Manipulation) | Work with rows | `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `MERGE` |
-| **DCL** (Data Control) | Privileges | `GRANT`, `REVOKE` |
-| **TCL** (Transaction Control) | Commit or abort | `BEGIN`, `COMMIT`, `ROLLBACK`, `SAVEPOINT` |
+| Group                         | Job                       | Typical commands                                 |
+| ----------------------------- | ------------------------- | ------------------------------------------------ |
+| **DDL** (Data Definition)     | Create/alter/drop objects | `CREATE`, `ALTER`, `DROP`, `TRUNCATE`, `COMMENT` |
+| **DML** (Data Manipulation)   | Work with rows            | `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `MERGE`  |
+| **DCL** (Data Control)        | Privileges                | `GRANT`, `REVOKE`                                |
+| **TCL** (Transaction Control) | Commit or abort           | `BEGIN`, `COMMIT`, `ROLLBACK`, `SAVEPOINT`       |
 
 Interview lists often put `SELECT` in DML. The SQL standard also calls read-only queries **DQL** — say both if asked.
 
@@ -202,10 +202,10 @@ Main goals:
 
 Main normal forms (each builds on the previous):
 
-| Form | Rule | Example |
-| --- | --- | --- |
-| **1NF** | Every column holds atomic (indivisible) values — no repeating groups in a cell | Not 1NF: `courses = "Math, Music"` in one cell. 1NF: one course per row. |
-| **2NF** | Satisfies 1NF, and every non-key column depends on the **whole** primary key | PK `(student_id, course_id)` still storing `student_name` — name depends only on `student_id`. Move name to `students`. |
+| Form    | Rule                                                                            | Example                                                                                                                              |
+| ------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **1NF** | Every column holds atomic (indivisible) values — no repeating groups in a cell  | Not 1NF: `courses = "Math, Music"` in one cell. 1NF: one course per row.                                                             |
+| **2NF** | Satisfies 1NF, and every non-key column depends on the **whole** primary key    | PK `(student_id, course_id)` still storing `student_name` — name depends only on `student_id`. Move name to `students`.              |
 | **3NF** | Satisfies 2NF, and there are no transitive dependencies between non-key columns | `courses` has `instructor` and `instructor_office` — office depends on instructor, not on `course_id`. Move office to `instructors`. |
 
 Wide row `student + course` ends in `students`, `courses`, and [enrollments](#many-to-many).
@@ -218,40 +218,40 @@ Wide row `student + course` ends in `students`, `courses`, and [enrollments](#ma
 
 Before: two courses in one cell.
 
-| StudentID | StudentName | Courses |
-| --- | --- | --- |
-| 1 | John | Math, Music |
+| StudentID | StudentName | Courses     |
+| --------- | ----------- | ----------- |
+| 1         | John        | Math, Music |
 
 After: one value per cell (one course per row).
 
 | StudentID | StudentName | CourseID | CourseName |
-| --- | --- | --- | --- |
-| 1 | John | 101 | Math |
-| 1 | John | 102 | Music |
+| --------- | ----------- | -------- | ---------- |
+| 1         | John        | 101      | Math       |
+| 1         | John        | 102      | Music      |
 
 **2NF — depend on the whole key**
 
 Before: 1NF, but `StudentName` depends only on `StudentID`, not on `(StudentID, CourseID)`. “John” is copied on every course row.
 
 | StudentID | StudentName | CourseID | CourseName |
-| --- | --- | --- | --- |
-| 1 | John | 101 | Math |
-| 1 | John | 102 | Music |
+| --------- | ----------- | -------- | ---------- |
+| 1         | John        | 101      | Math       |
+| 1         | John        | 102      | Music      |
 
 After: name lives on `Students`. The link table keeps only the pair of keys plus course facts that still belong on the line.
 
 **Students**
 
 | StudentID | StudentName |
-| --- | --- |
-| 1 | John |
+| --------- | ----------- |
+| 1         | John        |
 
 **Enrollments**
 
 | StudentID | CourseID | CourseName |
-| --- | --- | --- |
-| 1 | 101 | Math |
-| 1 | 102 | Music |
+| --------- | -------- | ---------- |
+| 1         | 101      | Math       |
+| 1         | 102      | Music      |
 
 **3NF — no transitive dependency**
 
@@ -259,47 +259,47 @@ After: name lives on `Students`. The link table keeps only the pair of keys plus
 
 Before (office repeats because it follows Ada, not the course):
 
-| CourseID | CourseName | Instructor | Office |
-| --- | --- | --- | --- |
-| 101 | Math | Ada | Room 12 |
-| 102 | CS | Ada | Room 12 |
+| CourseID | CourseName | Instructor | Office  |
+| -------- | ---------- | ---------- | ------- |
+| 101      | Math       | Ada        | Room 12 |
+| 102      | CS         | Ada        | Room 12 |
 
 After:
 
 **Instructors**
 
-| Instructor | Office |
-| --- | --- |
-| Ada | Room 12 |
+| Instructor | Office  |
+| ---------- | ------- |
+| Ada        | Room 12 |
 
 **Courses**
 
 | CourseID | CourseName | Instructor |
-| --- | --- | --- |
-| 101 | Math | Ada |
-| 102 | CS | Ada |
+| -------- | ---------- | ---------- |
+| 101      | Math       | Ada        |
+| 102      | CS         | Ada        |
 
 The John / Math / Music case after 3NF is three tables: `Students`, `Courses`, `Enrollments` (ids only) — see [Many-to-many](#many-to-many).
 
 **Students**
 
 | StudentID | StudentName |
-| --- | --- |
-| 1 | John |
+| --------- | ----------- |
+| 1         | John        |
 
 **Courses**
 
 | CourseID | CourseName |
-| --- | --- |
-| 101 | Math |
-| 102 | Music |
+| -------- | ---------- |
+| 101      | Math       |
+| 102      | Music      |
 
 **Enrollments**
 
 | StudentID | CourseID |
-| --- | --- |
-| 1 | 101 |
-| 1 | 102 |
+| --------- | -------- |
+| 1         | 101      |
+| 1         | 102      |
 
 **Thoughts:** M:N after 1NF is a junction table, not a repeating course list on the student row.
 
@@ -344,7 +344,7 @@ INNER for required relationships; LEFT when optional related data (e.g. user wit
 
 **Pluses and minuses:**
 
-| +                              | −                                               |
+| +                                 | −                                                  |
 | --------------------------------- | -------------------------------------------------- |
 | Normalized schema, no duplication | Expensive on large tables without indexes          |
 | Single query for related data     | Wrong join type = silent data loss (INNER vs LEFT) |
@@ -549,7 +549,7 @@ The index stores ordered keys plus pointers (TIDs) into the heap. A matching `WH
 
 **Pluses and minuses:**
 
-| +                                | −                                           |
+| +                                   | −                                              |
 | ----------------------------------- | ---------------------------------------------- |
 | Dramatic read speedups              | Slow INSERT/UPDATE/DELETE on indexed columns   |
 | Enables efficient sorting/filtering | Wrong index = wasted space, planner may ignore |
@@ -599,10 +599,10 @@ CREATE INDEX idx_users_active_email ON users (email) WHERE deleted_at IS NULL;
 - Resets identity / autoincrement (`RESTART IDENTITY` in Postgres; default there is `CONTINUE IDENTITY` unless you ask).
 - `ON DELETE` triggers do **not** fire (`ON TRUNCATE` statement triggers can).
 
-| Command | Rows | `WHERE` | `DELETE` triggers | Speed | `ROLLBACK` (Postgres) |
-| --- | --- | --- | --- | --- | --- |
-| `DELETE` | Selected (or all) | Yes | Yes | Slower | Yes |
-| `TRUNCATE` | All | No | No | Faster | Yes |
+| Command    | Rows              | `WHERE` | `DELETE` triggers | Speed  | `ROLLBACK` (Postgres) |
+| ---------- | ----------------- | ------- | ----------------- | ------ | --------------------- |
+| `DELETE`   | Selected (or all) | Yes     | Yes               | Slower | Yes                   |
+| `TRUNCATE` | All               | No      | No                | Faster | Yes                   |
 
 **When to use:** `DELETE` for filtered cleanup (`salary < 30000`) or per-row triggers / `RETURNING`.
 
@@ -693,10 +693,10 @@ COMMIT;
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
+| +                                 | −                                |
+| --------------------------------- | -------------------------------- |
 | Always runs, even outside the app | Hard to test and easy to recurse |
-| Central integrity / audit | Surprises ORMs and bulk loaders |
+| Central integrity / audit         | Surprises ORMs and bulk loaders  |
 
 **Examples:**
 
@@ -763,10 +763,10 @@ Skip when the query is used once.
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| One name for a complex join | Extra catalog object to migrate |
-| Can hide columns from a role | Not a security boundary without grants / RLS |
+| +                            | −                                                 |
+| ---------------------------- | ------------------------------------------------- |
+| One name for a complex join  | Extra catalog object to migrate                   |
+| Can hide columns from a role | Not a security boundary without grants / RLS      |
 | Simple views may be writable | Join / aggregate views need `INSTEAD OF` to write |
 
 **Examples:**
@@ -799,7 +799,7 @@ SELECT * FROM employee_details WHERE salary > 50000;
 
 - Any sequence of characters, including empty.
 
-#### _
+#### \_
 
 - Exactly one character.
 
@@ -944,12 +944,12 @@ SELECT email FROM leads;
 
 **How it works:**
 
-| | Function | Procedure |
-| --- | --- | --- |
-| Create | `CREATE FUNCTION` | `CREATE PROCEDURE` (PG 11+) |
-| Invoke | `SELECT fn(…)`, inside expressions | `CALL proc(…)` |
-| Return | Required (`RETURNS`) | No result set required; `OUT` args allowed |
-| `COMMIT`/`ROLLBACK` inside | No (except some procedures/tx patterns) | Allowed in `CALL` |
+|                            | Function                                | Procedure                                  |
+| -------------------------- | --------------------------------------- | ------------------------------------------ |
+| Create                     | `CREATE FUNCTION`                       | `CREATE PROCEDURE` (PG 11+)                |
+| Invoke                     | `SELECT fn(…)`, inside expressions      | `CALL proc(…)`                             |
+| Return                     | Required (`RETURNS`)                    | No result set required; `OUT` args allowed |
+| `COMMIT`/`ROLLBACK` inside | No (except some procedures/tx patterns) | Allowed in `CALL`                          |
 
 **When to use:** Functions for computed values, generated defaults, trigger bodies. Procedures for admin batches (`CALL clean_emp()`). App CRUD usually stays in the client with parameterized SQL.
 
@@ -1000,7 +1000,7 @@ Typical levers (measure with `EXPLAIN` first):
 
 **Pluses and minuses:**
 
-| +                                | −                                       |
+| +                                   | −                                          |
 | ----------------------------------- | ------------------------------------------ |
 | Finds missing indexes and bad plans | Output requires practice to read           |
 | Cheaper than guessing in production | `ANALYZE` adds load — use on staging first |
@@ -1036,15 +1036,15 @@ Look for: `Seq Scan` on large tables (bad), `Index Scan` / `Index Only Scan` (go
 
 **How it works:**
 
-| Constraint           | Purpose                                                                 |
-| -------------------- | ----------------------------------------------------------------------- |
-| **PRIMARY KEY**      | Unique row identifier                                                   |
-| **FOREIGN KEY (FK)** | Referential integrity: child must match parent; insert of a missing parent id fails; parent delete fails unless `ON DELETE` — [Foreign key](#foreign-key) |
-| **UNIQUE**           | No duplicate values in column(s)                                        |
-| **NOT NULL**         | Column required                                                         |
-| **CHECK**            | Boolean expression per row (`price > 0`, `status IN ('open','closed')`) |
-| **DEFAULT**          | Value when insert omits column                                          |
-| **EXCLUDE** (Postgres) | No two rows satisfy a given operator (typical: overlapping ranges)    |
+| Constraint             | Purpose                                                                                                                                                   |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **PRIMARY KEY**        | Unique row identifier                                                                                                                                     |
+| **FOREIGN KEY (FK)**   | Referential integrity: child must match parent; insert of a missing parent id fails; parent delete fails unless `ON DELETE` — [Foreign key](#foreign-key) |
+| **UNIQUE**             | No duplicate values in column(s)                                                                                                                          |
+| **NOT NULL**           | Column required                                                                                                                                           |
+| **CHECK**              | Boolean expression per row (`price > 0`, `status IN ('open','closed')`)                                                                                   |
+| **DEFAULT**            | Value when insert omits column                                                                                                                            |
+| **EXCLUDE** (Postgres) | No two rows satisfy a given operator (typical: overlapping ranges)                                                                                        |
 
 PK is `NOT NULL` + `UNIQUE` plus “this is the row identity”. A table may have several `UNIQUE` constraints but only one `PRIMARY KEY`.
 
@@ -1059,7 +1059,7 @@ PK is `NOT NULL` + `UNIQUE` plus “this is the row identity”. A table may hav
 
 **Pluses and minuses:**
 
-| +                              | −                                          |
+| +                                 | −                                             |
 | --------------------------------- | --------------------------------------------- |
 | Integrity even if app has bugs    | Migration order matters (parent before child) |
 | Self-documenting relationships    | `CASCADE` deletes can surprise                |
@@ -1138,10 +1138,10 @@ Do not return raw DB errors to clients.
 
 **Pluses and minuses:**
 
-| + (of prevention) | − |
-| --- | --- |
-| Parameterization removes the whole class | One string concat still fails |
-| ORM APIs bind by default | Raw SQL in ORMs is still injectable |
+| + (of prevention)                        | −                                   |
+| ---------------------------------------- | ----------------------------------- |
+| Parameterization removes the whole class | One string concat still fails       |
+| ORM APIs bind by default                 | Raw SQL in ORMs is still injectable |
 
 **Examples:**
 
@@ -1183,7 +1183,7 @@ Attack payload: `email = "' OR '1'='1' --"` makes a concatenated `WHERE` always 
 
 #### Tables (relations)
 
-- Data is organized in named tables of rows and columns. In PostgreSQL a *relation* is essentially a table.
+- Data is organized in named tables of rows and columns. In PostgreSQL a _relation_ is essentially a table.
 
 #### Rows (records / tuples)
 
@@ -1201,15 +1201,15 @@ SQL is the language for this model. 1:1, 1:N, M:N via a [junction table](#many-t
 
 **When to use:** Structured OLTP, reporting, integrity constraints.
 
-Document/KV stores when the access pattern is not relational — [DB selection matrix](./9_database_nosql.md#db-selection-matrix).
+Document/KV stores when the access pattern is not relational — [DB selection matrix](./9_database_nosql_core.md#db-selection-matrix).
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| Add tables and columns as the schema grows | Schema changes need migrations |
-| Constraints keep integrity at write time | Vertical scale ceiling on one primary |
-| SQL is the standard language for the data | Wrong join type loses or duplicates rows |
+| +                                          | −                                        |
+| ------------------------------------------ | ---------------------------------------- |
+| Add tables and columns as the schema grows | Schema changes need migrations           |
+| Constraints keep integrity at write time   | Vertical scale ceiling on one primary    |
+| SQL is the standard language for the data  | Wrong join type loses or duplicates rows |
 
 **Examples:**
 
@@ -1277,7 +1277,7 @@ LEFT JOIN orders o ON o.user_id = u.id;
 **How it works:**
 
 - Most operations with `NULL` return `NULL` (unknown).
-- `NULL = NULL` is **not true**. In standard SQL it yields **unknown** (`NULL`), not `FALSE`. `WHERE` treats unknown as “no row”, so it *looks* like false. Never write `col = NULL`.
+- `NULL = NULL` is **not true**. In standard SQL it yields **unknown** (`NULL`), not `FALSE`. `WHERE` treats unknown as “no row”, so it _looks_ like false. Never write `col = NULL`.
 
 #### IS NULL / IS NOT NULL
 
@@ -1524,13 +1524,13 @@ SELECT * FROM temp_table;
 
 **How it works:**
 
-| Window | Role |
-| --- | --- |
-| `ROW_NUMBER()` | Unique 1…n in the partition |
-| `RANK()` | Ties share a rank; next number skipped |
-| `DENSE_RANK()` | Ties share a rank; no gaps |
-| `LAG` / `LEAD` | Previous / next row value |
-| `FIRST_VALUE` / `LAST_VALUE` | Edges of the window frame |
+| Window                       | Role                                   |
+| ---------------------------- | -------------------------------------- |
+| `ROW_NUMBER()`               | Unique 1…n in the partition            |
+| `RANK()`                     | Ties share a rank; next number skipped |
+| `DENSE_RANK()`               | Ties share a rank; no gaps             |
+| `LAG` / `LEAD`               | Previous / next row value              |
+| `FIRST_VALUE` / `LAST_VALUE` | Edges of the window frame              |
 
 `OVER (PARTITION BY … ORDER BY …)` defines the window. Window results cannot go in `WHERE` — wrap in a subquery.
 
@@ -1691,11 +1691,11 @@ WHERE e.salary > (
 
 **How it works:**
 
-| Command | What it removes | `WHERE` | Triggers | Transaction |
-| --- | --- | --- | --- | --- |
-| `DELETE` | Selected rows | Yes | Row `DELETE` triggers fire | Fully transactional |
-| `TRUNCATE` | All rows; optional `RESTART IDENTITY` | No | Statement `TRUNCATE` triggers only | **Transactional in PostgreSQL** (can `ROLLBACK`) |
-| `DROP TABLE` | Table + indexes + constraints | — | Object gone | Transactional in PostgreSQL |
+| Command      | What it removes                       | `WHERE` | Triggers                           | Transaction                                      |
+| ------------ | ------------------------------------- | ------- | ---------------------------------- | ------------------------------------------------ |
+| `DELETE`     | Selected rows                         | Yes     | Row `DELETE` triggers fire         | Fully transactional                              |
+| `TRUNCATE`   | All rows; optional `RESTART IDENTITY` | No      | Statement `TRUNCATE` triggers only | **Transactional in PostgreSQL** (can `ROLLBACK`) |
+| `DROP TABLE` | Table + indexes + constraints         | —       | Object gone                        | Transactional in PostgreSQL                      |
 
 `TRUNCATE` reclaims space immediately and may `CASCADE` to tables that reference it.
 
@@ -2078,7 +2078,7 @@ RETURNING *;
 
 **Pluses and minuses:**
 
-| +                                           | −                                     |
+| +                                              | −                                        |
 | ---------------------------------------------- | ---------------------------------------- |
 | One round trip, race-safe vs check-then-insert | Must have matching unique index          |
 | Idempotent sync/import jobs                    | Easy to overwrite fields unintentionally |
@@ -2149,7 +2149,7 @@ await prisma.$queryRaw`SELECT * FROM users WHERE email = ${email}`;
 
 **Pluses and minuses:**
 
-| +                                 | −                                                               |
+| +                                    | −                                                                  |
 | ------------------------------------ | ------------------------------------------------------------------ |
 | Rich feature set, excellent JSONB    | Single-writer primary — write scaling needs sharding/read replicas |
 | Mature extensions ecosystem          | Tuning requires DBA knowledge at scale                             |
@@ -2205,4 +2205,3 @@ GRANT ALL PRIVILEGES ON SCHEMA public TO myapp_user;
 ---
 
 </details>
-
