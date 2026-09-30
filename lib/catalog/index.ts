@@ -100,7 +100,8 @@ export const SUBJECTS: readonly Subject[] = [
   {
     slug: "html",
     title: "HTML",
-    blurb: "Document structure, semantics, rendering, forms, a11y, and SEO.",
+    blurb:
+      "Document structure, semantics, rendering, forms, a11y, UX/UI, and SEO.",
     track: "frontend",
     clusters: [
       {
@@ -595,6 +596,24 @@ export const TOPICS: readonly Topic[] = [
     "1_html_a11y.md",
     "Accessibility",
     "POUR, names, landmarks, forms, and images.",
+    "frontend",
+    "html",
+    "additional",
+  ),
+  grouped(
+    "html-ux-laws",
+    "7_special_ux.md",
+    "UX laws",
+    "Jakob, Fitts, Hick, Miller, Postel, and related cognitive effects.",
+    "frontend",
+    "html",
+    "additional",
+  ),
+  grouped(
+    "html-ui-principles",
+    "7_special_ui.md",
+    "UI principles",
+    "Visual hierarchy, consistency, spacing, feedback, and accessibility.",
     "frontend",
     "html",
     "additional",
@@ -1268,13 +1287,6 @@ export const TOPICS: readonly Topic[] = [
     file: "7_special_security.md",
     title: "Web security",
     blurb: "Security model and common web attacks.",
-    track: "other",
-  },
-  {
-    slug: "special-ux",
-    file: "7_special_ux.md",
-    title: "UX & UI principles",
-    blurb: "Interaction laws and visual principles for interfaces.",
     track: "other",
   },
   {

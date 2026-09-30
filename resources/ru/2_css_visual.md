@@ -6,7 +6,7 @@
 
 ### Related docs
 
-- [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Архитектура](./2_css_architecture.md) · [CSS — Интервью](./2_css_interview.md) · [Принципы UX и UI](./7_special_ux.md#ux-and-ui-principles)
+- [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Архитектура](./2_css_architecture.md) · [CSS — Интервью](./2_css_interview.md) · [Законы UX](./7_special_ux.md#ux-laws) · [Принципы UI](./7_special_ui.md#ui-principles)
 
 ### Sections
 

@@ -261,7 +261,8 @@ function isSidebarTarget(target: EventTarget | null): boolean {
 
 function useDesktopSidebarPeek(peekEnabled: boolean) {
   const [peeking, setPeeking] = useState(false);
-  const leaveTimer = useRef(0);
+  const closeTimer = useRef(0);
+  const unlockTimer = useRef(0);
   const peekLocked = useRef(false);
   const pointerOverDock = useRef(false);
   const peekingRef = useRef(false);
@@ -272,12 +273,16 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
   }
 
   const cancelClose = useCallback(() => {
-    window.clearTimeout(leaveTimer.current);
+    window.clearTimeout(closeTimer.current);
+  }, []);
+
+  const cancelUnlock = useCallback(() => {
+    window.clearTimeout(unlockTimer.current);
   }, []);
 
   const scheduleClose = useCallback(() => {
     cancelClose();
-    leaveTimer.current = window.setTimeout(() => {
+    closeTimer.current = window.setTimeout(() => {
       if (pointerOverDock.current) {
         return;
       }
@@ -291,11 +296,15 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
       peekLocked.current = false;
       pointerOverDock.current = false;
       cancelClose();
+      cancelUnlock();
     }
-  }, [cancelClose, peekEnabled]);
+  }, [cancelClose, cancelUnlock, peekEnabled]);
 
   useEffect(() => {
-    return () => window.clearTimeout(leaveTimer.current);
+    return () => {
+      window.clearTimeout(closeTimer.current);
+      window.clearTimeout(unlockTimer.current);
+    };
   }, []);
 
   const holdPeek = useCallback(() => {
@@ -309,9 +318,6 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
   const onAsidePointerEnter = useCallback(
     (event: PointerEvent<HTMLElement>) => {
       if (event.pointerType !== "mouse" || !peekEnabled) {
-        return;
-      }
-      if (peekLocked.current) {
         return;
       }
       cancelClose();
@@ -374,10 +380,11 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
     peekLocked.current = true;
     cancelClose();
     setPeeking(false);
-    leaveTimer.current = window.setTimeout(() => {
+    cancelUnlock();
+    unlockTimer.current = window.setTimeout(() => {
       peekLocked.current = false;
     }, PEEK_LEAVE_MS);
-  }, [cancelClose]);
+  }, [cancelClose, cancelUnlock]);
 
   return {
     peeking: peekEnabled && peeking,

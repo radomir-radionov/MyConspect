@@ -1,17 +1,16 @@
 # Other — hub
 
-Indexes leftover study notes. Programming styles live in [Computer science](./7_special_cs.md). MVC-family architecture, OOP/SOLID, DRY/KISS/YAGNI, and GoF patterns live under System design. SDLC, testing, web security, and UX & UI principles are sibling topics under Other.
+Indexes leftover study notes. Programming styles live in [Computer science](./7_special_cs.md). MVC-family architecture, OOP/SOLID, DRY/KISS/YAGNI, and GoF patterns live under System design. SDLC, testing, and web security are sibling topics under Other. UX laws and UI principles live under [HTML](./1_html.md).
 
 ### Related docs
 
-[Computer science](./7_special_cs.md) · [Architecture patterns](./7_special_architecture.md) · [Interview leftovers](./7_special_interview.md) · [OOP & SOLID](./7_special_engineering.md) · [SDLC](./7_special_sdlc.md) · [Testing](./7_special_testing.md) · [Design patterns](./7_special_patterns.md) · [Web security](./7_special_security.md) · [UX & UI principles](./7_special_ux.md) · [Algorithms](./7_special_algorithms.md) · [Data structures](./7_special_data_structures.md)
+[Computer science](./7_special_cs.md) · [Architecture patterns](./7_special_architecture.md) · [Interview leftovers](./7_special_interview.md) · [OOP & SOLID](./7_special_engineering.md) · [SDLC](./7_special_sdlc.md) · [Testing](./7_special_testing.md) · [Design patterns](./7_special_patterns.md) · [Web security](./7_special_security.md) · [Algorithms](./7_special_algorithms.md) · [Data structures](./7_special_data_structures.md)
 
 ### Navigation
 
 | Topic                                           | Covers                                              |
 | ----------------------------------------------- | --------------------------------------------------- |
 | [Computer science](./7_special_cs.md)           | Computation, programming styles, logic programming. |
-| [UX & UI principles](./7_special_ux.md)         | Interaction laws and visual principles.             |
 | [Interview leftovers](./7_special_interview.md) | Q&A that still sits outside subject interviews.     |
 
 ### Interview practice

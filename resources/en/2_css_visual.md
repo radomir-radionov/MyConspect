@@ -6,7 +6,7 @@ Typography, color, decoration, form styling, and print.
 
 ### Related docs
 
-- [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md) · [UX & UI principles](./7_special_ux.md#ux-and-ui-principles)
+- [CSS — Core](./2_css_core.md) · [CSS — Layout](./2_css_layout.md) · [CSS — Visual](./2_css_visual.md) · [CSS — Motion](./2_css_motion.md) · [CSS — Modern](./2_css_modern.md) · [CSS — Architecture](./2_css_architecture.md) · [CSS — Interview](./2_css_interview.md) · [UX laws](./7_special_ux.md#ux-laws) · [UI principles](./7_special_ui.md#ui-principles)
 
 ### Sections
 

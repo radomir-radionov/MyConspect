@@ -677,11 +677,9 @@ describe("handbook sidebar", () => {
     cy.get('button[aria-label="Collapse topics"]').click();
     cy.sidebar().should("not.be.visible");
 
-    cy.get("aside").trigger("pointerenter", { pointerType: "mouse" });
+    cy.pointerOn("aside", "pointerenter");
     cy.sidebar().should("not.be.visible");
-    cy.get('button[aria-label="Expand topics"]').trigger("pointerenter", {
-      pointerType: "mouse",
-    });
+    cy.pointerOn('button[aria-label="Expand topics"]', "pointerenter");
     cy.sidebar().should("not.be.visible");
   });
 
@@ -690,11 +688,11 @@ describe("handbook sidebar", () => {
     cy.get('button[aria-label="Collapse topics"]').click();
     cy.get('button[aria-label="Expand topics"]').should("be.visible");
 
-    cy.get("aside").trigger("pointerenter", { pointerType: "mouse" });
+    cy.pointerOn("aside", "pointerenter");
     cy.sidebar().should("be.visible");
     cy.sidebar().contains("HTML").should("be.visible");
 
-    cy.get("aside").trigger("pointerleave", { pointerType: "mouse" });
+    cy.pointerOn("aside", "pointerleave");
     cy.sidebar().should("not.be.visible");
     cy.get('button[aria-label="Expand topics"]').should("be.visible");
   });
@@ -704,21 +702,17 @@ describe("handbook sidebar", () => {
     cy.get('button[aria-label="Collapse topics"]').click();
     cy.sidebar().should("not.be.visible");
 
-    cy.get('button[aria-label="Expand topics"]').trigger("pointerenter", {
-      pointerType: "mouse",
-    });
+    cy.pointerOn('button[aria-label="Expand topics"]', "pointerenter");
     cy.sidebar().should("not.be.visible");
   });
 
   it("keeps a peeked sidebar open when the pointer moves onto the dock", () => {
     cy.visit("/en/frontend/html-structure");
     cy.get('button[aria-label="Collapse topics"]').click();
-    cy.get("aside").trigger("pointerenter", { pointerType: "mouse" });
+    cy.pointerOn("aside", "pointerenter");
     cy.sidebar().should("be.visible");
 
-    cy.get('button[aria-label="Expand topics"]').trigger("pointerover", {
-      pointerType: "mouse",
-    });
+    cy.pointerOn('button[aria-label="Expand topics"]', "pointerover");
     cy.sidebar().should("be.visible");
   });
 });

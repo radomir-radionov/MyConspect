@@ -8,6 +8,22 @@ function sidebar() {
   return cy.get("#handbook-sidebar");
 }
 
+function pointerOn(
+  selector: string,
+  type: "pointerenter" | "pointerleave" | "pointerover",
+) {
+  cy.get(selector).then(($el) => {
+    $el[0].dispatchEvent(
+      new PointerEvent(type, {
+        bubbles: type === "pointerover",
+        cancelable: true,
+        pointerType: "mouse",
+        isPrimary: true,
+      }),
+    );
+  });
+}
+
 function mainScroller() {
   return cy.get("#handbook-main");
 }
@@ -29,6 +45,10 @@ declare global {
         id: string,
       ): Chainable<JQuery<HTMLElement>>;
       sidebar(): Chainable<JQuery<HTMLElement>>;
+      pointerOn(
+        selector: string,
+        type: "pointerenter" | "pointerleave" | "pointerover",
+      ): Chainable<void>;
       mainScroller(): Chainable<JQuery<HTMLElement>>;
     }
   }
@@ -36,6 +56,7 @@ declare global {
 
 Cypress.Commands.add("nav", nav);
 Cypress.Commands.add("sidebar", sidebar);
+Cypress.Commands.add("pointerOn", pointerOn);
 Cypress.Commands.add("mainScroller", mainScroller);
 
 Cypress.Commands.overwrite("visit", (originalFn, url, options) => {
