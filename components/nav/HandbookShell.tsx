@@ -265,8 +265,6 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
   const unlockTimer = useRef(0);
   const peekLocked = useRef(false);
   const pointerOverDock = useRef(false);
-  const peekingRef = useRef(false);
-  peekingRef.current = peeking;
 
   if (!peekEnabled && peeking) {
     setPeeking(false);
@@ -310,10 +308,10 @@ function useDesktopSidebarPeek(peekEnabled: boolean) {
   const holdPeek = useCallback(() => {
     pointerOverDock.current = true;
     cancelClose();
-    if (peekingRef.current && !peekLocked.current) {
+    if (peeking && !peekLocked.current) {
       setPeeking(true);
     }
-  }, [cancelClose]);
+  }, [cancelClose, peeking]);
 
   const onAsidePointerEnter = useCallback(
     (event: PointerEvent<HTMLElement>) => {
