@@ -10,7 +10,25 @@ type ClusterSection = {
   readonly items: readonly BrowseCard[];
 };
 
+function isCompactSectionList(sections: readonly ClusterSection[]) {
+  return (
+    sections.length > 0 &&
+    sections.every((section) => section.items.length === 1)
+  );
+}
+
+function compactSectionItems(sections: readonly ClusterSection[]) {
+  return sections.map(({ cluster, items }) => ({
+    ...items[0],
+    id: cluster.id,
+  }));
+}
+
 function ClusterBlocks({ sections }: { sections: readonly ClusterSection[] }) {
+  if (isCompactSectionList(sections)) {
+    return <CardGrid items={compactSectionItems(sections)} />;
+  }
+
   return (
     <>
       {sections.map(({ cluster, items }) => (
@@ -63,9 +81,12 @@ export function ClusterCardSections({
     );
   }
 
+  const flatSections = sections ?? [];
+  const compact = isCompactSectionList(flatSections);
+
   return (
-    <div className="mt-8 space-y-6 sm:space-y-10">
-      <ClusterBlocks sections={sections ?? []} />
+    <div className={compact ? "mt-8" : "mt-8 space-y-6 sm:space-y-10"}>
+      <ClusterBlocks sections={flatSections} />
     </div>
   );
 }
