@@ -11,6 +11,7 @@ Loading metrics, resource hints, and browser performance APIs. Core Web Vitals o
 ### Sections
 
 - [14. Advanced topics](#14-advanced-topics)
+- [API and client performance optimization](#api-and-client-performance-optimization)
 
 ---
 
@@ -785,6 +786,45 @@ PRPL (Push, Render, Pre-cache, Lazy-load) is a performance pattern for fast inte
 [web.dev — PRPL pattern](https://web.dev/articles/apply-instant-loading-with-prpl)
 
 ---
+
+---
+
+</details>
+
+<a name="api-and-client-performance-optimization"></a>
+
+<details>
+  <summary>API and client performance optimization</summary>
+
+### API and client performance optimization
+
+**Definition:** End-to-end speed work on **backend APIs** (latency, throughput, payload size) and the **client** (bundle, main-thread work, perceived load). Measure in production first; optimize the slowest layer in the critical path.
+
+**How it works:**
+
+| Layer               | Typical bottlenecks                               | Levers                                                                                                                      |
+| ------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **API / origin**    | Slow DB, N+1 queries, cold starts, oversized JSON | Indexes, eager loading, pagination/cursors, field selection, compression, cache headers, Redis, async jobs, `Server-Timing` |
+| **Network**         | Waterfalls, too many round trips, no CDN          | HTTP/2+, parallel fetches, BFF/aggregated endpoints, CDN/edge cache, `preconnect` / `preload`                               |
+| **Client runtime**  | Long tasks, re-renders, huge lists                | Code splitting, lazy routes/components, memo/virtualization, defer third-party JS                                           |
+| **Load experience** | Late LCP/FCP, high INP/CLS                        | SSR/SSG/RSC, optimized images/fonts, stable layout, break up work (`scheduler.yield`)                                       |
+
+Workflow: **profile** (RUM + APM/traces + Lighthouse/DevTools) → find p95/p99 → fix one bottleneck → **regression guard** (budgets, CI Lighthouse, load tests).
+
+**When to use:** JD bullets like “optimize API and client performance”, slow dashboards, high TTFB, poor Core Web Vitals in Search Console, or API p99 above SLO.
+
+**Pluses and minuses:**
+
+| Approach                      | Pro                           | Con                                 |
+| ----------------------------- | ----------------------------- | ----------------------------------- |
+| Cache (HTTP/Redis/CDN)        | Huge win on read-heavy APIs   | Stale data, invalidation complexity |
+| Pagination + sparse JSON      | Smaller payloads, faster TTFB | More client logic                   |
+| Client memo/code split        | Smoother INP, smaller bundles | Harder to debug, easy to over-memo  |
+| Premature micro-optimizations | —                             | Wasted time without metrics         |
+
+**Thoughts:** Client CWV and API latency are linked — slow TTFB blocks FCP/LCP; heavy client JS hurts INP even when the API is fast. Full React/Next/Vue client playbooks → [§10 Performance](./4_react_ecosystem.md#10-performance) · [Next optimizations](./4_nextjs_optimizations.md) · DB/query tuning → [N+1](./9_database_orm.md#n1-problem) · [Connection pooling](./9_database_orm.md#connection-pooling) · Node stack → [8_nodejs interview Q29](./8_nodejs_interview.md#a-project-has-performance-issues--how-do-you-find-fix-and-prevent-them).
+
+**Sources:** [web.dev — Vitals](https://web.dev/articles/vitals) · [web.dev — Optimize TTFB](https://web.dev/articles/optimize-ttfb) · [MDN — Server-Timing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing) · [web.dev — Optimize long tasks](https://web.dev/articles/optimize-long-tasks)
 
 ---
 

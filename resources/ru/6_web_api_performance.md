@@ -11,6 +11,7 @@
 ### Sections
 
 - [14. Advanced topics](#14-advanced-topics)
+- [API and client performance optimization](#api-and-client-performance-optimization)
 
 ---
 
@@ -781,6 +782,45 @@ PRPL (Push, Render, Pre-cache, Lazy-load) — это шаблон произво
 [web.dev — шаблон PRPL](https://web.dev/articles/apply-instant-loading-with-prpl)
 
 ---
+
+---
+
+</details>
+
+<a name="api-and-client-performance-optimization"></a>
+
+<details>
+  <summary>API and client performance optimization</summary>
+
+### API and client performance optimization
+
+**Definition:** Сквозная оптимизация **backend API** (задержка, пропускная способность, размер ответа) и **клиента** (бандл, main thread, воспринимаемая скорость). Сначала меряйте в production; чините самое медленное звено на критическом пути.
+
+**How it works:**
+
+| Слой                    | Типичные узкие места                          | Рычаги                                                                                                                  |
+| ----------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **API / origin**        | Медленная БД, N+1, cold start, тяжёлый JSON   | Индексы, eager loading, pagination/cursors, выбор полей, compression, cache headers, Redis, async jobs, `Server-Timing` |
+| **Сеть**                | Waterfall, много round trip, нет CDN          | HTTP/2+, параллельные fetch, BFF/агрегация, CDN/edge cache, `preconnect` / `preload`                                    |
+| **Клиентский runtime**  | Long tasks, лишние re-render, огромные списки | Code splitting, lazy routes/components, memo/virtualization, отложить third-party JS                                    |
+| **Восприятие загрузки** | Поздний LCP/FCP, высокий INP/CLS              | SSR/SSG/RSC, оптимизация image/font, стабильный layout, дробление работы (`scheduler.yield`)                            |
+
+Workflow: **профилирование** (RUM + APM/traces + Lighthouse/DevTools) → p95/p99 → одно узкое место → **регресс-контроль** (бюджеты, CI Lighthouse, load tests).
+
+**When to use:** Пункты JD вроде «оптимизировать производительность API и клиентской части», медленные дашборды, высокий TTFB, плохие Core Web Vitals в Search Console, p99 API выше SLO.
+
+**Pluses and minuses:**
+
+| Подход                            | Плюс                              | Минус                                   |
+| --------------------------------- | --------------------------------- | --------------------------------------- |
+| Кэш (HTTP/Redis/CDN)              | Большой выигрыш на read-heavy API | Устаревание данных, сложная инвалидация |
+| Pagination + sparse JSON          | Меньше payload, быстрее TTFB      | Больше логики на клиенте                |
+| Memo/code split на клиенте        | Лучше INP, меньше бандл           | Сложнее отладка, легко пере-мemo        |
+| Преждевременная микро-оптимизация | —                                 | Потеря времени без метрик               |
+
+**Thoughts:** CWV клиента и latency API связаны — медленный TTFB блокирует FCP/LCP; тяжёлый client JS бьёт по INP даже при быстром API. Полные client-playbook → [§10 Performance](./4_react_ecosystem.md#10-performance) · [Next optimizations](./4_nextjs_optimizations.md) · БД/запросы → [N+1](./9_database_orm.md#n1-problem) · [Connection pooling](./9_database_orm.md#connection-pooling) · Node → [8_nodejs interview Q29](./8_nodejs_interview.md#a-project-has-performance-issues--how-do-you-find-fix-and-prevent-them).
+
+**Sources:** [web.dev — Vitals](https://web.dev/articles/vitals) · [web.dev — Optimize TTFB](https://web.dev/articles/optimize-ttfb) · [MDN — Server-Timing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing) · [web.dev — Optimize long tasks](https://web.dev/articles/optimize-long-tasks)
 
 ---
 

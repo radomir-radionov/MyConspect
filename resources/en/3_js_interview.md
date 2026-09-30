@@ -1803,6 +1803,19 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 </details>
 
 <details>
+  <summary>async/await, tasks, and multithreading — how does it fit together?</summary>
+
+### async/await, tasks, and multithreading — how does it fit together?
+
+**Answer:** **`async/await`** pauses one function on a Promise; the **main JS thread keeps running** other tasks. **Tasks** = **microtasks** (promises, `await` continuations) and **macrotasks** (timers, I/O) — order: sync → all microtasks → one macrotask. **Multithreading:** main thread is still single; parallel **CPU** needs **Web Workers** (browser) or **`worker_threads` / `cluster`** (Node). Parallel **I/O** = start several promises, then `Promise.all` — not threads. C# **`Task`** is the same interview idea in another runtime.
+
+**See also:** [Async/await, tasks, and concurrency model](./3_js_async.md#asyncawait-tasks-and-concurrency-model) · [Event loop](./3_js_async.md#event-loop) · [worker_threads](./8_nodejs_core.md#worker_threads) · [Web Workers](./6_web_api_performance.md#web-workers)
+
+---
+
+</details>
+
+<details>
   <summary>What does async function return?</summary>
 
 ### What does async function return?

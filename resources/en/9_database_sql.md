@@ -1,6 +1,6 @@
 # Database — SQL
 
-PostgreSQL, joins, indexes, and SQL patterns.
+PostgreSQL, SQL Server (T-SQL), joins, indexes, and execution plans.
 
 [← Back to hub](./9_database.md)
 
@@ -13,9 +13,10 @@ PostgreSQL, joins, indexes, and SQL patterns.
 | #     | Topics                                                                                                                            |
 | ----- | --------------------------------------------------------------------------------------------------------------------------------- |
 | 1–10  | SQL, DDL/DML/DCL, primary key, foreign key, normalization, joins, subqueries, DISTINCT, WHERE vs HAVING, indexes                  |
-| 11–20 | ACID, triggers, VIEW, LIKE, aggregates, UNION, procedures, EXPLAIN, constraints, SQL injection                                    |
+| 11–20 | ACID, triggers, VIEW, LIKE, aggregates, UNION, procedures, EXPLAIN (Postgres + SQL Server), constraints, SQL injection            |
 | 21–30 | Relational DB, INNER vs OUTER, NULL, CASE, COMMIT/ROLLBACK, CHAR vs VARCHAR, temp tables, windows, CTE, DROP TABLE                |
 | 31–40 | ALTER TABLE, correlated subquery, DELETE/TRUNCATE/DROP, self-join, backup, many-to-many, GRANT/REVOKE, hashing, how triggers work |
+| 41–42 | T-SQL dialect (SQL Server), SQL Server indexes (clustered / nonclustered)                                                          |
 
 ### Sections
 
@@ -562,7 +563,7 @@ CREATE INDEX idx_orders_user_created ON orders (user_id, created_at DESC);
 CREATE INDEX idx_users_active_email ON users (email) WHERE deleted_at IS NULL;
 ```
 
-**Thoughts:** Indexes don't help `LIKE '%foo%'` (leading wildcard). Use `EXPLAIN ANALYZE` to verify index usage. Drop unused indexes found in `pg_stat_user_indexes`. Extra disk + slower `INSERT`/`UPDATE`/`DELETE` because each index row is maintained. A **hash index** is an access method — not a password hash. See [Hash functions](#hash-functions).
+**Thoughts:** Indexes don't help `LIKE '%foo%'` (leading wildcard). Use `EXPLAIN ANALYZE` to verify index usage. Drop unused indexes found in `pg_stat_user_indexes`. Extra disk + slower `INSERT`/`UPDATE`/`DELETE` because each index row is maintained. A **hash index** is an access method — not a password hash. See [Hash functions](#hash-functions). SQL Server **clustered / nonclustered** model: [SQL Server indexes (clustered vs nonclustered)](#sql-server-indexes-clustered-vs-nonclustered).
 
 **Sources:**
 
@@ -982,19 +983,51 @@ CALL clean_emp();
 
 ### Query optimization & EXPLAIN
 
-**Definition:** Analyze how the database executes a query — scan type, index usage, row estimates, actual timing.
+**Definition:** Analyze how the database executes a query — scan type, index usage, row estimates, actual timing. Same goal in PostgreSQL (`EXPLAIN`) and SQL Server (Actual Execution Plan).
 
 **How it works:**
 
-Typical levers (measure with `EXPLAIN` first):
+Typical levers (measure with a plan first — see [Indexes](#indexes)):
 
 - Index columns used in `WHERE`, `JOIN`, `ORDER BY`; drop unused indexes.
 - Select only needed columns — avoid `SELECT *`.
 - Prefer equality join keys; do not wrap an indexed column in a function unless you have a matching expression index.
 - Prefer `JOIN` / `EXISTS` over correlated subqueries that run per row.
 - `LIMIT` / keyset pagination instead of deep `OFFSET`.
-- Keep statistics fresh (`ANALYZE`); stale stats → bad plans.
+- Keep statistics fresh; stale stats → bad plans.
 - Materialized views or app cache for hot aggregates — see production caching notes.
+
+#### PostgreSQL
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+SELECT * FROM orders WHERE user_id = 42 AND status = 'pending';
+```
+
+| Operator (bad → good) | Meaning                                      |
+| --------------------- | -------------------------------------------- |
+| `Seq Scan`            | Full table read — OK on tiny tables only     |
+| `Index Scan`          | Index lookup + heap fetch                    |
+| `Index Only Scan`     | Covered by index — best when columns match   |
+| `Nested Loop`         | Inner probe per outer row — OK when inner is indexed |
+
+Refresh stats: `ANALYZE orders;`. Find unused indexes: `pg_stat_user_indexes`.
+
+#### SQL Server
+
+Enable **Include Actual Execution Plan** in SSMS or Azure Data Studio (or `SET STATISTICS IO ON` for I/O). Green = SELECT; yellow = warnings (missing index, implicit conversion).
+
+| Operator (bad → good) | Meaning                                           |
+| --------------------- | ------------------------------------------------- |
+| **Table Scan**        | Full table read                                   |
+| **Clustered Index Scan** | Full clustered index read                      |
+| **Index Seek**        | Efficient lookup on nonclustered index            |
+| **Key Lookup** (RID / bookmark lookup) | Extra hop to fetch non-indexed columns — add `INCLUDE` or narrow `SELECT` |
+| **Hash Match** / **Sort** | Build/probe hash or sort — watch spills to tempdb |
+
+Refresh stats: `UPDATE STATISTICS orders;`. Missing-index hints: `sys.dm_db_missing_index_details` (suggestions only — validate with a plan).
+
+**What to read in any plan:** estimated vs actual row counts (large gap = bad stats or stale histogram), scan vs seek on hot predicates, warnings on sorts/hashes, key lookup on wide `SELECT *`.
 
 **When to use:** Slow endpoints, before adding indexes, after large data growth or schema change.
 
@@ -1003,25 +1036,27 @@ Typical levers (measure with `EXPLAIN` first):
 | +                                   | −                                          |
 | ----------------------------------- | ------------------------------------------ |
 | Finds missing indexes and bad plans | Output requires practice to read           |
-| Cheaper than guessing in production | `ANALYZE` adds load — use on staging first |
+| Cheaper than guessing in production | `ANALYZE` / `UPDATE STATISTICS` adds load — use on staging first |
 
 **Examples:**
 
 ```sql
+-- PostgreSQL
 EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
-SELECT * FROM orders WHERE user_id = 42 AND status = 'pending';
-```
+SELECT id, total FROM orders WHERE user_id = 42 AND status = 'pending';
 
-Look for: `Seq Scan` on large tables (bad), `Index Scan` / `Index Only Scan` (good), large `rows` mismatch between estimate and actual (run `ANALYZE`).
+-- SQL Server — turn on Actual Execution Plan in the client, then:
+SELECT id, total FROM orders WHERE user_id = 42 AND status = 'pending';
+```
 
 **Thoughts:**
 
 - **N+1 at SQL level** — app runs 1 query + N queries in a loop. Fix with JOIN or `WHERE id IN (...)`.
-- Avoid `SELECT *`; fetch columns you need.
-- Pagination: `OFFSET` is slow at depth — use keyset (`WHERE id > $cursor ORDER BY id LIMIT 20`).
+- Avoid `SELECT *`; fetch columns you need (reduces key lookups in SQL Server, enables Index Only Scan in Postgres).
+- Pagination: `OFFSET` is slow at depth — use keyset (`WHERE id > $cursor ORDER BY id LIMIT 20` / `OFFSET-FETCH` with a seek key).
 - Prefer equality join keys; wrapping an indexed column in a function (`WHERE lower(email) = …`) needs a matching expression index.
 
-**Sources:** [PostgreSQL — EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) · [SQL Academy — Query optimization](https://sql-academy.org/ru/blog/sql-query-optimization)
+**Sources:** [PostgreSQL — EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) · [SQL Server — Display an actual execution plan](https://learn.microsoft.com/en-us/sql/relational-databases/performance/display-an-actual-execution-plan) · [SQL Server — Clustered and nonclustered indexes](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described) · [SQL Academy — Query optimization](https://sql-academy.org/ru/blog/sql-query-optimization)
 
 ---
 
@@ -2133,6 +2168,133 @@ await prisma.$queryRaw`SELECT * FROM users WHERE email = ${email}`;
 **Thoughts:** Placeholders handle values only — never parameterize table or column names.
 
 **Sources:** [OWASP — SQL Injection Prevention](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html)
+
+</details>
+
+<details>
+  <summary>SQL Server (T-SQL)</summary>
+
+### SQL Server (T-SQL)
+
+**Definition:** **T-SQL** (Transact-SQL) is Microsoft SQL Server's dialect of SQL — same relational core as PostgreSQL (`SELECT`, `JOIN`, `GROUP BY`, transactions) with different syntax for limits, upserts, dates, and temp objects.
+
+**How it works:**
+
+Core SQL transfers: joins, subqueries, CTEs, window functions, `BEGIN` / `COMMIT` / `ROLLBACK`. Watch dialect traps in interviews and migrations:
+
+| Task              | PostgreSQL                         | SQL Server (T-SQL)                                      |
+| ----------------- | ---------------------------------- | ------------------------------------------------------- |
+| Limit rows        | `LIMIT 10` / `OFFSET 20`         | `TOP (10)` or `ORDER BY … OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY` |
+| Auto-increment PK | `SERIAL` / `GENERATED … AS IDENTITY` | `IDENTITY(1,1)` on column                            |
+| Upsert            | `INSERT … ON CONFLICT DO UPDATE`   | `MERGE` (or separate try/update)                        |
+| Current time      | `now()` / `CURRENT_TIMESTAMP`      | `GETDATE()` / `SYSDATETIME()`                           |
+| Null substitute   | `COALESCE(a, b)` (portable)        | `ISNULL(a, b)` (two args only)                          |
+| String concat     | `\|\|` or `concat()`               | `+` (NULL poisons result — use `CONCAT()`)              |
+| Temp table        | `CREATE TEMP TABLE …`              | `#local` (session) / `##global` (shared)               |
+| Boolean           | native `BOOLEAN`                   | `BIT` (0/1)                                             |
+| Identifier quotes | double quotes `"col"`              | square brackets `[col]` or `"col"` in quoted mode       |
+
+**When to use:** Enterprise .NET stacks, Azure SQL, legacy on-prem SQL Server. Postgres-first teams still need T-SQL literacy for interviews and brownfield integrations.
+
+**Pluses and minuses:**
+
+| +                                      | −                                           |
+| -------------------------------------- | ------------------------------------------- |
+| Rich tooling (SSMS, Actual Plan)       | `MERGE` has edge-case bugs — test carefully |
+| Strong window-function / CTE support   | Licensing / cloud lock-in on Azure tiers    |
+| Portable SQL core with Microsoft stack | Dialect differences trip ORMs and migrations |
+
+**Examples:**
+
+```sql
+-- Top customers by order count (T-SQL)
+SELECT TOP (10)
+  u.email,
+  COUNT(o.id) AS order_count
+FROM users u
+LEFT JOIN orders o ON o.user_id = u.id
+WHERE u.created_at >= '2025-01-01'
+GROUP BY u.id, u.email
+HAVING COUNT(o.id) > 5
+ORDER BY order_count DESC;
+
+-- Upsert with MERGE
+MERGE users AS target
+USING (SELECT @email AS email, @name AS name) AS source
+ON target.email = source.email
+WHEN MATCHED THEN UPDATE SET name = source.name, updated_at = GETDATE()
+WHEN NOT MATCHED THEN INSERT (email, name, updated_at)
+  VALUES (source.email, source.name, GETDATE());
+```
+
+**Thoughts:** `#temp` tables participate in statistics and can beat table variables for large sets. Compare plans: [Query optimization & EXPLAIN](#query-optimization-explain). Index model differs: [SQL Server indexes (clustered vs nonclustered)](#sql-server-indexes-clustered-vs-nonclustered). Postgres deep dive: [PostgreSQL](#postgresql).
+
+**Sources:** [T-SQL language reference](https://learn.microsoft.com/en-us/sql/t-sql/language-reference) · [MERGE (Transact-SQL)](https://learn.microsoft.com/en-us/sql/t-sql/statements/merge-transact-sql) · [SELECT — TOP clause](https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql)
+
+---
+
+</details>
+
+<details>
+  <summary>SQL Server indexes (clustered vs nonclustered)</summary>
+
+### SQL Server indexes (clustered vs nonclustered)
+
+**Definition:** SQL Server splits indexes into **clustered** (defines table row order; at most one per table) and **nonclustered** (separate structure pointing to rows). PostgreSQL has no clustered index in this sense — see [Indexes](#indexes).
+
+**How it works:**
+
+| Type            | What it is                                      | Typical use                          |
+| --------------- | ----------------------------------------------- | ------------------------------------ |
+| **Clustered**   | Table data stored in index key order            | Primary key — range scans, `ORDER BY` on PK |
+| **Nonclustered**| B-tree of key + pointer to row (or clustered key) | `WHERE` / `JOIN` on non-PK columns   |
+| **Included cols** | Non-key columns stored in leaf (`INCLUDE`)    | Covering index — avoids key lookup   |
+| **Columnstore** | Compressed column batches                       | Analytics / large aggregations       |
+
+Rules that differ from Postgres:
+
+- Only **one** clustered index per table (often the PK).
+- Nonclustered index on a heap uses **RID lookup**; on a clustered table uses **key lookup** to fetch missing columns.
+- Filtered index: `CREATE INDEX … WHERE deleted_at IS NULL` (like Postgres partial index).
+- `INCLUDE (col)` is SQL Server's covering pattern; Postgres uses `INCLUDE` on B-tree similarly.
+
+**When to use:** Clustered on the main access path (usually PK). Nonclustered on FK + filter columns. Columnstore for warehouse/reporting — not default OLTP.
+
+**Pluses and minuses:**
+
+| +                                   | −                                              |
+| ----------------------------------- | ---------------------------------------------- |
+| `INCLUDE` reduces key lookups       | Wrong clustered key hurts inserts / hot splits |
+| Filtered indexes shrink maintenance | Too many nonclustered indexes slow writes      |
+| Columnstore for scan-heavy analytics| Columnstore wrong for point lookups            |
+
+**Examples:**
+
+```sql
+-- Clustered PK (default if PRIMARY KEY specified)
+CREATE TABLE orders (
+  id INT IDENTITY(1,1) PRIMARY KEY CLUSTERED,
+  user_id INT NOT NULL,
+  created_at DATETIME2 NOT NULL,
+  total DECIMAL(10,2) NOT NULL
+);
+
+-- Nonclustered + covering INCLUDE
+CREATE NONCLUSTERED INDEX idx_orders_user_created
+ON orders (user_id, created_at DESC)
+INCLUDE (total);
+
+-- Filtered (soft-delete pattern)
+CREATE NONCLUSTERED INDEX idx_users_active_email
+ON users (email)
+WHERE deleted_at IS NULL;
+```
+
+**Thoughts:** Interview line: “Clustered = table order, one per table; nonclustered = extra indexes for seeks.” Read plans: [Query optimization & EXPLAIN](#query-optimization-explain). General index tuning principles: [Indexes](#indexes).
+
+**Sources:** [Clustered and nonclustered indexes](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described) · [Create nonclustered indexes](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/create-nonclustered-indexes) · [Columnstore indexes](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/columnstore-indexes-overview)
+
+---
 
 </details>
 

@@ -6,7 +6,7 @@
 
 ### Related docs
 
-* [Node.js — Core](./8_nodejs_core.md) · [Node.js — Модули](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Дополнительно](./8_nodejs_process.md) · [Node.js — Интервью](./8_nodejs_interview.md)
+- [Node.js — Core](./8_nodejs_core.md) · [Node.js — Модули](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Дополнительно](./8_nodejs_process.md) · [Node.js — Интервью](./8_nodejs_interview.md)
 
 ### Sections
 
@@ -59,7 +59,7 @@ $ node
 **Examples:**
 
 ```js
-createReadStream('./large.bin').pipe(res);
+createReadStream("./large.bin").pipe(res);
 ```
 
 </details>
@@ -95,31 +95,31 @@ createReadStream('./large.bin').pipe(res);
 5. **`setImmediate`** выполняется на этапе **проверки** (после опроса ввода-вывода).
 6. **`setTimeout(fn, 0)`** выполняется в фазе **таймеров** (следующая итерация цикла, если ожидается ввод-вывод).
 
-| API | Очередь/фаза | Когда |
-|-----|---------------|------|
-| `process.nextTick` | следующая очередь очереди | До микрозадач и ввода-вывода |
-| `Promise.then` | микрозадача | После nextTick, перед следующей макрозадачой |
-| `setImmediate` | этап проверки | После обратных вызовов ввода-вывода в опросе |
-| `setTimeout(0)` | фазовые таймеры | После минимальной задержки (≥1 мс) |
+| API                | Очередь/фаза              | Когда                                        |
+| ------------------ | ------------------------- | -------------------------------------------- |
+| `process.nextTick` | следующая очередь очереди | До микрозадач и ввода-вывода                 |
+| `Promise.then`     | микрозадача               | После nextTick, перед следующей макрозадачой |
+| `setImmediate`     | этап проверки             | После обратных вызовов ввода-вывода в опросе |
+| `setTimeout(0)`    | фазовые таймеры           | После минимальной задержки (≥1 мс)           |
 
 **When to use:** Использовать `setImmediate` отложить работу после ввода-вывода; избегать рекурсивного `nextTick`. Предпочитать `queueMicrotask` над `nextTick` для отсрочки, подобной обещанию, в новом коде.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| `setImmediate` откладывает без блокировки ввода-вывода | Ментальная модель сложна |
-| `nextTick` выполняется перед продолжением | бесконечный `nextTick` голодает цикл |
+| +                                                      | −                                    |
+| ------------------------------------------------------ | ------------------------------------ |
+| `setImmediate` откладывает без блокировки ввода-вывода | Ментальная модель сложна             |
+| `nextTick` выполняется перед продолжением              | бесконечный `nextTick` голодает цикл |
 
 **Examples:**
 
 ```js
-console.log('1');
-setTimeout(() => console.log('2'), 0);
-setImmediate(() => console.log('3'));
-Promise.resolve().then(() => console.log('4'));
-process.nextTick(() => console.log('5'));
-console.log('6');
+console.log("1");
+setTimeout(() => console.log("2"), 0);
+setImmediate(() => console.log("3"));
+Promise.resolve().then(() => console.log("4"));
+process.nextTick(() => console.log("5"));
+console.log("6");
 // 1, 6, 5, 4, 2, 3 (2 vs 3 order can vary at top level)
 ```
 
@@ -184,10 +184,10 @@ console.log('6');
 
 Оба из `child_process`.
 
-| Метод | Цель |
-|--------|---------|
-| `spawn` | общий процесс с потоковым stdio |
-| `fork` | создать Node-модуль с IPC (`process.send`) |
+| Метод   | Цель                                       |
+| ------- | ------------------------------------------ |
+| `spawn` | общий процесс с потоковым stdio            |
+| `fork`  | создать Node-модуль с IPC (`process.send`) |
 
 Использовать `fork` для работников кластера и обмена сообщениями между процессами.
 
@@ -198,9 +198,9 @@ console.log('6');
 
 ### JWT and bcrypt?
 
-| Инструмент | Роль |
-|------|------|
-| **JWT** | Подписанный токен (`header.payload.signature`) для аутентификации без гражданства; проверить подпись + `exp` серверная часть; короткий TTL + обновление для отзыва |
+| Инструмент | Роль                                                                                                                                                                 |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **JWT**    | Подписанный токен (`header.payload.signature`) для аутентификации без гражданства; проверить подпись + `exp` серверная часть; короткий TTL + обновление для отзыва   |
 | **bcrypt** | Медленный адаптивный хеш для паролей; `bcrypt.hash(plain, rounds)` хранить хэш; `bcrypt.compare(plain, hash)` — никогда не храните и не регистрируйте простые пароли |
 
 **How it works:** Войти → `bcrypt.compare` → выдать JWT с `sub`, `role`, `exp`. Промежуточное ПО `jwt.verify` на охраняемых маршрутах.
@@ -224,7 +224,7 @@ console.log('6');
 - **Пул потоков** (по умолчанию 4) — блокировка работы: файловой системы, DNS, криптографии (`UV_THREADPOOL_SIZE` для настройки).
 - **Сетевой ввод-вывод** — `epoll` / `kqueue` /IOCP — один поток обрабатывает множество соединений.
 
-*"JS работает в одном потоке; libuv обрабатывает асинхронный ввод-вывод и выгружает операции блокировки в пул потоков."*
+_"JS работает в одном потоке; libuv обрабатывает асинхронный ввод-вывод и выгружает операции блокировки в пул потоков."_
 
 **Sources:** [nodejs.org — О программе](https://nodejs.org/en/about) · [libuv docs](http://docs.libuv.org/en/v1.x/)
 
@@ -243,11 +243,11 @@ console.log('6');
 
 осушать `process.nextTick`, затем микрозадачи (`Promise.then`).
 
-| Очередь | Примеры |
-|-------|----------|
-| `nextTick` | Запускается перед другими микрозадачами — может привести к остановке ввода-вывода, если рекурсивный |
-| Микрозадачи | `Promise.then`, `queueMicrotask` |
-| Макрозадачи | `setTimeout`, обратные вызовы ввода-вывода, `setImmediate` |
+| Очередь     | Примеры                                                                                             |
+| ----------- | --------------------------------------------------------------------------------------------------- |
+| `nextTick`  | Запускается перед другими микрозадачами — может привести к остановке ввода-вывода, если рекурсивный |
+| Микрозадачи | `Promise.then`, `queueMicrotask`                                                                    |
+| Макрозадачи | `setTimeout`, обратные вызовы ввода-вывода, `setImmediate`                                          |
 
 **When to use:**
 
@@ -264,12 +264,12 @@ console.log('6');
 
 ### cluster vs worker_threads?
 
-| | **кластер** | **worker_threads** |
-|---|-------------|-------------------|
-| Единица | Отдельный **процесс** (собственный V8) | **Поток** в том же процессе |
+|                       | **кластер**                              | **worker_threads**                                     |
+| --------------------- | ---------------------------------------- | ------------------------------------------------------ |
+| Единица               | Отдельный **процесс** (собственный V8)   | **Поток** в том же процессе                            |
 | Вариант использования | Масштабирование HTTP-сервера по ядрам ЦП | JS с привязкой к процессору (хэш, анализ, изображение) |
-| Связь | МПК (`process.send`) | `postMessage`, `SharedArrayBuffer` |
-| Аварийная изоляция | Авария рабочего ≠ всегда убивать всех | Ошибка работника может повлиять на процесс |
+| Связь                 | МПК (`process.send`)                     | `postMessage`, `SharedArrayBuffer`                     |
+| Аварийная изоляция    | Авария рабочего ≠ всегда убивать всех    | Ошибка работника может повлиять на процесс             |
 
 **Rule:** кластер для многоядерного HTTP; worker_threads для параллельных вычислений — не один рабочий на запрос.
 
@@ -332,7 +332,7 @@ Express/Fastify = уровень HTTP. Гнездо = ​​каркас (мод
 ### Task 1 — Fix async route error
 
 ```js
-router.post('/users', async (req, res) => {
+router.post("/users", async (req, res) => {
   const user = await db.createUser(req.body);
   res.json(user);
 });
@@ -353,15 +353,28 @@ router.post('/users', async (req, res) => {
 <details><summary>Solution</summary>
 
 ```js
-import { createReadStream } from 'fs';
-app.get('/file', (req, res) => {
-  createReadStream('./large.bin').pipe(res);
+import { createReadStream } from "fs";
+app.get("/file", (req, res) => {
+  createReadStream("./large.bin").pipe(res);
 });
 ```
 
 </details>
 
 ---
+
+<details>
+  <summary>A project has performance issues — how do you find, fix, and prevent them?</summary>
+
+### A project has performance issues — how do you find, fix, and prevent them?
+
+**Answer:** **Find:** RUM (Core Web Vitals, p95 latency API), APM/traces (`trace_id`), Node `--inspect`/clinic.js, DB `EXPLAIN`, load tests. **Fix API:** индексы, N+1, pagination, кэш, compression, тяжёлую работу в очереди, размер pool. **Fix client:** профиль React/Vue, split/lazy бандлы, long tasks, LCP-ресурсы. **Prevent:** SLO alerts, bundle/Lighthouse CI budgets, review запросов в PR, регрессионные load tests.
+
+**See also:** [API and client performance optimization](./6_web_api_performance.md#api-and-client-performance-optimization) · [Connection pooling](./9_database_orm.md#connection-pooling) · [N+1 problem](./9_database_orm.md#n1-problem)
+
+---
+
+</details>
 
 <details>
   <summary>Junior — Back-end</summary>
@@ -412,12 +425,12 @@ app.get('/file', (req, res) => {
 128. Джуниор отправил этот код на проверку. В чем дело? Как исправить?
 
 ```js
-router.post('/users', async (req, res, next) => {
+router.post("/users", async (req, res, next) => {
   const user = await db.createUser(req);
   if (user) {
     return res.json(users);
   }
-  res.json({ error: 'can not create user' });
+  res.json({ error: "can not create user" });
 });
 ```
 
@@ -450,5 +463,3 @@ router.post('/users', async (req, res, next) => {
 </details>
 
 </details>
-
-

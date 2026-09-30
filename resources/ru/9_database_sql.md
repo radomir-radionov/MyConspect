@@ -1,6 +1,6 @@
 # Database — SQL
 
-PostgreSQL, соединения, индексы и шаблоны SQL.
+PostgreSQL, SQL Server (T-SQL), соединения, индексы и планы выполнения.
 
 [ ← Вернуться в хаб](./9_database.md)
 
@@ -11,10 +11,12 @@ PostgreSQL, соединения, индексы и шаблоны SQL.
 ### Main concepts
 
 | #     | Темы                                                                                                                     |
-| ----- | ------------------------------------------------------------------------------------------------------------------------ | --- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ----- | ------------------------------------------------------------------------------------------------------------------------ |
 | 1–10  | SQL, DDL/DML/DCL, первичный ключ, внешний ключ, нормализация, соединения, подзапросы, DISTINCT, WHERE vs HAVING, индексы |
-| 11–20 | ACID, триггеры, VIEW, LIKE, агрегаты, UNION, процедуры, EXPLAIN, ограничения, SQL-инъекция                               |
-| 21–30 | Реляционная БД, INNER и OUTER, NULL, CASE, COMMIT/ROLLBACK, CHAR и VARCHAR, временные таблицы, окна, CTE, DROP TABLE     |     | 31–40 | ALTER TABLE, коррелированный подзапрос, DELETE/TRUNCATE/DROP, самосоединение, резервное копирование, многие-ко-многим, GRANT/REVOKE, хеширование, как работают триггеры |
+| 11–20 | ACID, триггеры, VIEW, LIKE, агрегаты, UNION, процедуры, EXPLAIN (Postgres + SQL Server), ограничения, SQL-инъекция       |
+| 21–30 | Реляционная БД, INNER и OUTER, NULL, CASE, COMMIT/ROLLBACK, CHAR и VARCHAR, временные таблицы, окна, CTE, DROP TABLE     |
+| 31–40 | ALTER TABLE, коррелированный подзапрос, DELETE/TRUNCATE/DROP, самосоединение, резервное копирование, многие-ко-многим, GRANT/REVOKE, хеширование, как работают триггеры |
+| 41–42 | T-SQL (SQL Server), индексы SQL Server (clustered / nonclustered)                                                          |
 
 ### Sections
 
@@ -975,46 +977,80 @@ CALL clean_emp();
 
 ### Query optimization & EXPLAIN
 
-**Definition:** Проанализируйте, как база данных выполняет запрос — тип сканирования, использование индекса, оценки строк, фактическое время.
+**Definition:** Проанализируйте, как база данных выполняет запрос — тип сканирования, использование индекса, оценки строк, фактическое время. Та же цель в PostgreSQL (`EXPLAIN`) и SQL Server (Actual Execution Plan).
 
 **How it works:**
 
-Типичные рычаги (измерять с `EXPLAIN` первый):
+Типичные рычаги (сначала смотрите план — см. [Indexes](#indexes)):
 
 - Индексные столбцы, используемые в `WHERE`, `JOIN`, `ORDER BY`; удалить неиспользуемые индексы.
 - Выбирайте только необходимые столбцы — избегайте `SELECT *`.
 - Предпочитать ключи равенства; не переносите индексированный столбец в функцию, если у вас нет соответствующего индекса выражения.
-- Предпочитать `JOIN` / `EXISTS` более коррелированные подзапросы, которые выполняются для каждой строки.
+- Предпочитать `JOIN` / `EXISTS` более коррелированным подзапросам, которые выполняются для каждой строки.
 - `LIMIT` / пагинация набора ключей вместо глубокой `OFFSET`.
-- Держите статистику свежей (`ANALYZE`); устаревшая статистика → плохие планы.
+- Держите статистику свежей; устаревшая статистика → плохие планы.
 - Материализованные представления или кеш приложения для горячих агрегатов — см. примечания к рабочему кэшированию.
 
-**When to use:** Медленные конечные точки перед добавлением индексов, после большого роста данных или изменения схемы.
-
-**Pluses and minuses:**
-
-| +                                          | −                                                                      |
-| ------------------------------------------ | ---------------------------------------------------------------------- |
-| Находит недостающие индексы и плохие планы | Для вывода требуется практика чтения                                   |
-| Дешевле гадать на производстве             | `ANALYZE` добавляет нагрузку — сначала используйте на этапе подготовки |
-
-**Examples:**
+#### PostgreSQL
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
 SELECT * FROM orders WHERE user_id = 42 AND status = 'pending';
 ```
 
-Искать: `Seq Scan` на больших столах (плохо), `Index Scan` / `Index Only Scan` (хороший), большой `rows` несоответствие между оценкой и фактом (запустить `ANALYZE`).
+| Оператор (плохо → хорошо) | Значение                                           |
+| ------------------------- | -------------------------------------------------- |
+| `Seq Scan`                | Полное сканирование таблицы — OK только на малых   |
+| `Index Scan`              | Поиск по индексу + чтение heap                     |
+| `Index Only Scan`         | Покрыт индексом — лучший вариант при совпадении колонок |
+| `Nested Loop`             | Внутренний probe на каждую внешнюю строку — OK если внутренний проиндексирован |
+
+Обновить статистику: `ANALYZE orders;`. Неиспользуемые индексы: `pg_stat_user_indexes`.
+
+#### SQL Server
+
+Включите **Include Actual Execution Plan** в SSMS или Azure Data Studio (или `SET STATISTICS IO ON` для I/O). Зелёный = SELECT; жёлтый = предупреждения (missing index, implicit conversion).
+
+| Оператор (плохо → хорошо) | Значение                                              |
+| ------------------------- | ----------------------------------------------------- |
+| **Table Scan**            | Полное сканирование таблицы                           |
+| **Clustered Index Scan**  | Полное сканирование clustered-индекса                 |
+| **Index Seek**            | Эффективный поиск по nonclustered-индексу             |
+| **Key Lookup**            | Доп. переход за колонками вне индекса — добавьте `INCLUDE` или сузьте `SELECT` |
+| **Hash Match** / **Sort** | Хеш или сортировка — следите за spill в tempdb        |
+
+Обновить статистику: `UPDATE STATISTICS orders;`. Подсказки missing index: `sys.dm_db_missing_index_details` (только подсказки — проверяйте планом).
+
+**Что смотреть в любом плане:** estimated vs actual rows (большой разрыв = плохая статистика), scan vs seek на горячих предикатах, предупреждения на sort/hash, key lookup при широком `SELECT *`.
+
+**When to use:** Медленные конечные точки, перед добавлением индексов, после большого роста данных или изменения схемы.
+
+**Pluses and minuses:**
+
+| +                                          | −                                                                      |
+| ------------------------------------------ | ---------------------------------------------------------------------- |
+| Находит недостающие индексы и плохие планы | Для вывода требуется практика чтения                                   |
+| Дешевле гадать на production               | `ANALYZE` / `UPDATE STATISTICS` добавляет нагрузку — сначала на staging |
+
+**Examples:**
+
+```sql
+-- PostgreSQL
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+SELECT id, total FROM orders WHERE user_id = 42 AND status = 'pending';
+
+-- SQL Server — включите Actual Execution Plan в клиенте, затем:
+SELECT id, total FROM orders WHERE user_id = 42 AND status = 'pending';
+```
 
 **Thoughts:**
 
 - **N+1 на уровне SQL** — приложение выполняет 1 запрос + N запросов в цикле. Исправьте с помощью JOIN или `WHERE id IN (...)`.
-- Избегать `SELECT *`; получить нужные столбцы.
-- Пагинация: `OFFSET` работает медленно на глубине — используйте набор ключей (`WHERE id > $cursor ORDER BY id LIMIT 20`).
-- Предпочитать ключи равенства; перенос индексированного столбца в функцию (`WHERE lower(email) = …`) требуется соответствующий индекс выражения.
+- Избегать `SELECT *`; получить нужные столбцы (меньше key lookup в SQL Server, Index Only Scan в Postgres).
+- Пагинация: `OFFSET` работает медленно на глубине — используйте набор ключей (`WHERE id > $cursor ORDER BY id LIMIT 20` / `OFFSET-FETCH` с seek-ключом).
+- Предпочитать ключи равенства; перенос индексированного столбца в функцию (`WHERE lower(email) = …`) требует соответствующий индекс выражения.
 
-**Sources:** [PostgreSQL — EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) · [SQL Academy — Оптимизация запросов](https://sql-academy.org/ru/blog/sql-query-optimization)
+**Sources:** [PostgreSQL — EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) · [SQL Server — Display an actual execution plan](https://learn.microsoft.com/en-us/sql/relational-databases/performance/display-an-actual-execution-plan) · [SQL Server — Clustered and nonclustered indexes](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described) · [SQL Academy — Оптимизация запросов](https://sql-academy.org/ru/blog/sql-query-optimization)
 
 ---
 
@@ -2125,6 +2161,133 @@ await prisma.$queryRaw`SELECT * FROM users WHERE email = ${email}`;
 **Thoughts:** Заполнители обрабатывают только значения — никогда не параметризуйте имена таблиц или столбцов.
 
 **Sources:** [OWASP — Предотвращение SQL-инъекций](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html)
+
+</details>
+
+<details>
+  <summary>SQL Server (T-SQL)</summary>
+
+### SQL Server (T-SQL)
+
+**Definition:** **T-SQL** (Transact-SQL) — диалект SQL в Microsoft SQL Server. Тот же реляционный core, что в PostgreSQL (`SELECT`, `JOIN`, `GROUP BY`, транзакции), но другой синтаксис лимитов, upsert, дат и временных объектов.
+
+**How it works:**
+
+Базовый SQL переносится: joins, подзапросы, CTE, оконные функции, `BEGIN` / `COMMIT` / `ROLLBACK`. На собеседованиях и в миграциях ловите диалектные ловушки:
+
+| Задача            | PostgreSQL                         | SQL Server (T-SQL)                                      |
+| ----------------- | ---------------------------------- | ------------------------------------------------------- |
+| Лимит строк       | `LIMIT 10` / `OFFSET 20`           | `TOP (10)` или `ORDER BY … OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY` |
+| Auto-increment PK | `SERIAL` / `GENERATED … AS IDENTITY` | `IDENTITY(1,1)` на колонке                           |
+| Upsert            | `INSERT … ON CONFLICT DO UPDATE`   | `MERGE` (или отдельный try/update)                      |
+| Текущее время     | `now()` / `CURRENT_TIMESTAMP`      | `GETDATE()` / `SYSDATETIME()`                           |
+| Замена NULL       | `COALESCE(a, b)` (переносимо)      | `ISNULL(a, b)` (только два аргумента)                   |
+| Конкатенация      | `\|\|` или `concat()`              | `+` (NULL «отравляет» результат — используйте `CONCAT()`) |
+| Временная таблица | `CREATE TEMP TABLE …`              | `#local` (сессия) / `##global` (общая)                  |
+| Boolean           | нативный `BOOLEAN`                 | `BIT` (0/1)                                             |
+| Кавычки идентификаторов | двойные `"col"`              | квадратные `[col]` или `"col"` в quoted mode            |
+
+**When to use:** Enterprise .NET, Azure SQL, legacy on-prem SQL Server. Postgres-командам T-SQL всё равно нужен для собеседований и интеграций.
+
+**Pluses and minuses:**
+
+| +                                      | −                                           |
+| -------------------------------------- | ------------------------------------------- |
+| Богатые инструменты (SSMS, Actual Plan) | `MERGE` имеет edge-case баги — тестируйте    |
+| Сильные CTE и window functions         | Лицензирование / vendor lock-in на Azure    |
+| Общий SQL core в Microsoft-стеке       | Диалект ломает ORM и миграции               |
+
+**Examples:**
+
+```sql
+-- Топ клиентов по числу заказов (T-SQL)
+SELECT TOP (10)
+  u.email,
+  COUNT(o.id) AS order_count
+FROM users u
+LEFT JOIN orders o ON o.user_id = u.id
+WHERE u.created_at >= '2025-01-01'
+GROUP BY u.id, u.email
+HAVING COUNT(o.id) > 5
+ORDER BY order_count DESC;
+
+-- Upsert через MERGE
+MERGE users AS target
+USING (SELECT @email AS email, @name AS name) AS source
+ON target.email = source.email
+WHEN MATCHED THEN UPDATE SET name = source.name, updated_at = GETDATE()
+WHEN NOT MATCHED THEN INSERT (email, name, updated_at)
+  VALUES (source.email, source.name, GETDATE());
+```
+
+**Thoughts:** `#temp` участвует в статистике и часто выигрывает у table variables на больших наборах. Планы: [Query optimization & EXPLAIN](#query-optimization-explain). Модель индексов: [SQL Server indexes (clustered vs nonclustered)](#sql-server-indexes-clustered-vs-nonclustered). Postgres: [PostgreSQL](#postgresql).
+
+**Sources:** [T-SQL language reference](https://learn.microsoft.com/en-us/sql/t-sql/language-reference) · [MERGE (Transact-SQL)](https://learn.microsoft.com/en-us/sql/t-sql/statements/merge-transact-sql) · [SELECT — TOP clause](https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql)
+
+---
+
+</details>
+
+<details>
+  <summary>SQL Server indexes (clustered vs nonclustered)</summary>
+
+### SQL Server indexes (clustered vs nonclustered)
+
+**Definition:** В SQL Server индексы делятся на **clustered** (задаёт порядок строк таблицы; не более одного на таблицу) и **nonclustered** (отдельная структура с указателями на строки). В PostgreSQL нет clustered index в этом смысле — см. [Indexes](#indexes).
+
+**How it works:**
+
+| Тип             | Что это                                         | Типичное использование               |
+| --------------- | ----------------------------------------------- | -------------------------------------- |
+| **Clustered**   | Данные таблицы хранятся в порядке ключа индекса | PK — range scan, `ORDER BY` по PK      |
+| **Nonclustered**| B-tree ключа + указатель на строку               | `WHERE` / `JOIN` по не-PK колонкам     |
+| **Included cols** | Неключевые колонки в листе (`INCLUDE`)      | Covering index — без key lookup        |
+| **Columnstore** | Сжатые column batches                           | Аналитика / большие агрегаты           |
+
+Отличия от Postgres:
+
+- Только **один** clustered index на таблицу (часто PK).
+- Nonclustered на heap использует **RID lookup**; на clustered table — **key lookup** за недостающими колонками.
+- Filtered index: `CREATE INDEX … WHERE deleted_at IS NULL` (как partial index в Postgres).
+- `INCLUDE (col)` — covering-паттерн SQL Server; в Postgres B-tree тоже поддерживает `INCLUDE`.
+
+**When to use:** Clustered на основной путь доступа (обычно PK). Nonclustered на FK и фильтры. Columnstore для DW/отчётов — не default OLTP.
+
+**Pluses and minuses:**
+
+| +                                   | −                                              |
+| ----------------------------------- | ---------------------------------------------- |
+| `INCLUDE` уменьшает key lookup      | Неверный clustered key бьёт по INSERT/split    |
+| Filtered indexes экономят maintenance | Много nonclustered замедляет запись          |
+| Columnstore для scan-heavy analytics | Columnstore не для point lookup               |
+
+**Examples:**
+
+```sql
+-- Clustered PK (по умолчанию при PRIMARY KEY)
+CREATE TABLE orders (
+  id INT IDENTITY(1,1) PRIMARY KEY CLUSTERED,
+  user_id INT NOT NULL,
+  created_at DATETIME2 NOT NULL,
+  total DECIMAL(10,2) NOT NULL
+);
+
+-- Nonclustered + covering INCLUDE
+CREATE NONCLUSTERED INDEX idx_orders_user_created
+ON orders (user_id, created_at DESC)
+INCLUDE (total);
+
+-- Filtered (soft-delete)
+CREATE NONCLUSTERED INDEX idx_users_active_email
+ON users (email)
+WHERE deleted_at IS NULL;
+```
+
+**Thoughts:** На собеседовании: «Clustered = порядок таблицы, один на таблицу; nonclustered = доп. индексы для seek». Планы: [Query optimization & EXPLAIN](#query-optimization-explain). Общие принципы: [Indexes](#indexes).
+
+**Sources:** [Clustered and nonclustered indexes](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described) · [Create nonclustered indexes](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/create-nonclustered-indexes) · [Columnstore indexes](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/columnstore-indexes-overview)
+
+---
 
 </details>
 

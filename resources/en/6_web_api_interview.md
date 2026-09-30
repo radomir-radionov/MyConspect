@@ -58,6 +58,7 @@ Questions from [0_interview.md](0_interview.md). Try answering before opening so
 | INP vs FID                                  | Q&A    |
 | TTFB                                        | Q&A    |
 | Core Web Vitals (lab vs field)              | Q&A    |
+| API & client performance optimization       | Q&A    |
 
 ---
 
@@ -705,6 +706,19 @@ ac.abort(); // throws AbortError in catch
 **Thoughts:** Fix network (CDN, fewer redirects) and origin (stream/SSG/ISR, `Server-Timing`). Then optimize paint.
 
 **See also:** [TTFB](./1_html_performance.md#ttfb-time-to-first-byte)
+
+---
+
+</details>
+
+<details>
+  <summary>How do you optimize API and client performance?</summary>
+
+### How do you optimize API and client performance?
+
+**Answer:** Measure first (RUM, APM/traces, Lighthouse, `Server-Timing`), then fix the slowest layer on the user path. **API:** pagination, indexes, kill N+1, cache (HTTP/Redis/CDN), compression, async for heavy work, fewer round trips (BFF/batch). **Client:** smaller bundles (split/lazy), less main-thread work (memo, virtualization, defer third-party), Core Web Vitals (LCP images, INP long tasks, CLS layout). Re-check p95/p99 and field vitals after each change.
+
+**See also:** [API and client performance optimization](./6_web_api_performance.md#api-and-client-performance-optimization) · [§10 Performance](./4_react_ecosystem.md#10-performance) · [TTFB](./1_html_performance.md#ttfb-time-to-first-byte)
 
 ---
 

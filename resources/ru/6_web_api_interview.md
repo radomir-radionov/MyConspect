@@ -55,6 +55,7 @@
 | ИЯФ против ФИД                                        | Вопросы и ответы |
 | ТТФБ                                                  | Вопросы и ответы |
 | Core Web Vitals (лабораторные и полевые исследования) | Вопросы и ответы |
+| Оптимизация API и клиентской части                    | Вопросы и ответы |
 
 ---
 
@@ -690,6 +691,19 @@ ac.abort(); // throws AbortError in catch
 **Thoughts:** Исправлена ​​сеть (CDN, меньше перенаправлений) и источник (поток/SSG/ISR, `Server-Timing`). Затем оптимизируйте покраску.
 
 **See also:** [TTFB](./1_html_performance.md#ttfb-time-to-first-byte)
+
+---
+
+</details>
+
+<details>
+  <summary>How do you optimize API and client performance?</summary>
+
+### How do you optimize API and client performance?
+
+**Answer:** Сначала измерения (RUM, APM/traces, Lighthouse, `Server-Timing`), затем самое медленное звено на пользовательском пути. **API:** pagination, индексы, убрать N+1, кэш (HTTP/Redis/CDN), compression, async для тяжёлых задач, меньше round trip (BFF/batch). **Клиент:** меньше бандл (split/lazy), меньше работы main thread (memo, virtualization, отложить third-party), Core Web Vitals (LCP images, INP long tasks, CLS layout). После каждого изменения — p95/p99 и field vitals.
+
+**See also:** [API and client performance optimization](./6_web_api_performance.md#api-and-client-performance-optimization) · [§10 Performance](./4_react_ecosystem.md#10-performance) · [TTFB](./1_html_performance.md#ttfb-time-to-first-byte)
 
 ---
 

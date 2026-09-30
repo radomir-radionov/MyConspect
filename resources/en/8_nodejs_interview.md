@@ -6,7 +6,7 @@ Interview Q&A for Node.js.
 
 ### Related docs
 
-* [Node.js — Core](./8_nodejs_core.md) · [Node.js — Modules](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Additional](./8_nodejs_process.md) · [Node.js — Interview](./8_nodejs_interview.md)
+- [Node.js — Core](./8_nodejs_core.md) · [Node.js — Modules](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Additional](./8_nodejs_process.md) · [Node.js — Interview](./8_nodejs_interview.md)
 
 ### Sections
 
@@ -59,7 +59,7 @@ Useful for quick experiments and debugging snippets.
 **Examples:**
 
 ```js
-createReadStream('./large.bin').pipe(res);
+createReadStream("./large.bin").pipe(res);
 ```
 
 </details>
@@ -95,31 +95,31 @@ createReadStream('./large.bin').pipe(res);
 5. **`setImmediate`** runs in the **check** phase (after poll I/O).
 6. **`setTimeout(fn, 0)`** runs in **timers** phase (next loop iteration if I/O pending).
 
-| API | Queue / phase | When |
-|-----|---------------|------|
-| `process.nextTick` | nextTick queue | Before microtasks and I/O |
-| `Promise.then` | microtask | After nextTick, before next macrotask |
-| `setImmediate` | check phase | After I/O callbacks in poll |
-| `setTimeout(0)` | timers phase | After minimum delay (≥1ms) |
+| API                | Queue / phase  | When                                  |
+| ------------------ | -------------- | ------------------------------------- |
+| `process.nextTick` | nextTick queue | Before microtasks and I/O             |
+| `Promise.then`     | microtask      | After nextTick, before next macrotask |
+| `setImmediate`     | check phase    | After I/O callbacks in poll           |
+| `setTimeout(0)`    | timers phase   | After minimum delay (≥1ms)            |
 
 **When to use:** Use `setImmediate` to defer work after I/O; avoid recursive `nextTick`. Prefer `queueMicrotask` over `nextTick` for promise-like deferral in new code.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| `setImmediate` defers without blocking I/O | Mental model is complex |
-| `nextTick` runs before continuation | Infinite `nextTick` starves the loop |
+| +                                          | −                                    |
+| ------------------------------------------ | ------------------------------------ |
+| `setImmediate` defers without blocking I/O | Mental model is complex              |
+| `nextTick` runs before continuation        | Infinite `nextTick` starves the loop |
 
 **Examples:**
 
 ```js
-console.log('1');
-setTimeout(() => console.log('2'), 0);
-setImmediate(() => console.log('3'));
-Promise.resolve().then(() => console.log('4'));
-process.nextTick(() => console.log('5'));
-console.log('6');
+console.log("1");
+setTimeout(() => console.log("2"), 0);
+setImmediate(() => console.log("3"));
+Promise.resolve().then(() => console.log("4"));
+process.nextTick(() => console.log("5"));
+console.log("6");
 // 1, 6, 5, 4, 2, 3 (2 vs 3 order can vary at top level)
 ```
 
@@ -184,10 +184,10 @@ See **Modules → ESM vs CommonJS (deep dive)**.
 
 Both from `child_process`.
 
-| Method | Purpose |
-|--------|---------|
-| `spawn` | generic process with streaming stdio |
-| `fork` | spawn Node module with IPC (`process.send`) |
+| Method  | Purpose                                     |
+| ------- | ------------------------------------------- |
+| `spawn` | generic process with streaming stdio        |
+| `fork`  | spawn Node module with IPC (`process.send`) |
 
 Use `fork` for cluster workers and inter-process messaging.
 
@@ -198,9 +198,9 @@ Use `fork` for cluster workers and inter-process messaging.
 
 ### JWT and bcrypt?
 
-| Tool | Role |
-|------|------|
-| **JWT** | Signed token (`header.payload.signature`) for stateless auth; verify signature + `exp` server-side; short TTL + refresh for revocation |
+| Tool       | Role                                                                                                                                          |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **JWT**    | Signed token (`header.payload.signature`) for stateless auth; verify signature + `exp` server-side; short TTL + refresh for revocation        |
 | **bcrypt** | Slow adaptive hash for passwords; `bcrypt.hash(plain, rounds)` store hash; `bcrypt.compare(plain, hash)` — never store or log plain passwords |
 
 **How it works:** Login → `bcrypt.compare` → issue JWT with `sub`, `role`, `exp`. Middleware `jwt.verify` on protected routes.
@@ -224,7 +224,7 @@ Use `fork` for cluster workers and inter-process messaging.
 - **Thread pool** (default 4) — blocking work: file system, DNS, crypto (`UV_THREADPOOL_SIZE` to tune).
 - **Network I/O** — `epoll` / `kqueue` / IOCP — one thread handles many connections.
 
-*"JS runs on one thread; libuv handles async I/O and offloads blocking ops to a thread pool."*
+_"JS runs on one thread; libuv handles async I/O and offloads blocking ops to a thread pool."_
 
 **Sources:** [nodejs.org — About](https://nodejs.org/en/about) · [libuv docs](http://docs.libuv.org/en/v1.x/)
 
@@ -243,11 +243,11 @@ timers → pending → idle/prepare → **poll** (I/O) → check (`setImmediate`
 
 drain `process.nextTick`, then microtasks (`Promise.then`).
 
-| Queue | Examples |
-|-------|----------|
+| Queue      | Examples                                                   |
+| ---------- | ---------------------------------------------------------- |
 | `nextTick` | Runs before other microtasks — can starve I/O if recursive |
-| Microtasks | `Promise.then`, `queueMicrotask` |
-| Macrotasks | `setTimeout`, I/O callbacks, `setImmediate` |
+| Microtasks | `Promise.then`, `queueMicrotask`                           |
+| Macrotasks | `setTimeout`, I/O callbacks, `setImmediate`                |
 
 **When to use:**
 
@@ -264,12 +264,12 @@ Long synchronous loop on main thread blocks all clients — offload CPU to `work
 
 ### cluster vs worker_threads?
 
-| | **cluster** | **worker_threads** |
-|---|-------------|-------------------|
-| Unit | Separate **process** (own V8) | **Thread** in same process |
-| Use case | Scale HTTP server across CPU cores | CPU-bound JS (hash, parse, image) |
-| Communication | IPC (`process.send`) | `postMessage`, `SharedArrayBuffer` |
-| Crash isolation | Worker crash ≠ always kill all | Worker error can affect process |
+|                 | **cluster**                        | **worker_threads**                 |
+| --------------- | ---------------------------------- | ---------------------------------- |
+| Unit            | Separate **process** (own V8)      | **Thread** in same process         |
+| Use case        | Scale HTTP server across CPU cores | CPU-bound JS (hash, parse, image)  |
+| Communication   | IPC (`process.send`)               | `postMessage`, `SharedArrayBuffer` |
+| Crash isolation | Worker crash ≠ always kill all     | Worker error can affect process    |
 
 **Rule:** cluster for multi-core HTTP; worker_threads for parallel computation — not one worker per request.
 
@@ -332,7 +332,7 @@ See [Choosing a backend runtime](./8_nodejs_http.md#runtime-choice).
 ### Task 1 — Fix async route error
 
 ```js
-router.post('/users', async (req, res) => {
+router.post("/users", async (req, res) => {
   const user = await db.createUser(req.body);
   res.json(user);
 });
@@ -353,15 +353,28 @@ Pipe large file to HTTP response with backpressure.
 <details><summary>Solution</summary>
 
 ```js
-import { createReadStream } from 'fs';
-app.get('/file', (req, res) => {
-  createReadStream('./large.bin').pipe(res);
+import { createReadStream } from "fs";
+app.get("/file", (req, res) => {
+  createReadStream("./large.bin").pipe(res);
 });
 ```
 
 </details>
 
 ---
+
+<details>
+  <summary>A project has performance issues — how do you find, fix, and prevent them?</summary>
+
+### A project has performance issues — how do you find, fix, and prevent them?
+
+**Answer:** **Find:** RUM (Core Web Vitals, p95 API latency), APM/traces (`trace_id`), Node `--inspect`/clinic.js, DB `EXPLAIN`, load tests. **Fix API:** indexes, N+1, pagination, cache, compression, move heavy work to queues, tune pool size. **Fix client:** profile React/Vue, split/lazy bundles, kill long tasks, optimize LCP assets. **Prevent:** SLO alerts, bundle/Lighthouse CI budgets, query review in PRs, regression load tests.
+
+**See also:** [API and client performance optimization](./6_web_api_performance.md#api-and-client-performance-optimization) · [Connection pooling](./9_database_orm.md#connection-pooling) · [N+1 problem](./9_database_orm.md#n1-problem)
+
+---
+
+</details>
 
 <details>
   <summary>Junior — Back-end</summary>
@@ -412,12 +425,12 @@ app.get('/file', (req, res) => {
 128. Junior submitted this code for review. What's wrong? How to fix?
 
 ```js
-router.post('/users', async (req, res, next) => {
+router.post("/users", async (req, res, next) => {
   const user = await db.createUser(req);
   if (user) {
     return res.json(users);
   }
-  res.json({ error: 'can not create user' });
+  res.json({ error: "can not create user" });
 });
 ```
 
@@ -450,5 +463,3 @@ router.post('/users', async (req, res, next) => {
 </details>
 
 </details>
-
-
