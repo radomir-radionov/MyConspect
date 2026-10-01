@@ -1,4 +1,5 @@
 export const HANDBOOK_HEADER_ID = "handbook-header";
+export const HANDBOOK_SEARCH_INPUT_ID = "handbook-search-input";
 export const HANDBOOK_MAIN_ID = "handbook-main";
 export const HANDBOOK_NAV_ASIDE_ID = "handbook-nav-aside";
 export const HANDBOOK_SIDEBAR_ID = "handbook-sidebar";

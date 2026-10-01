@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HANDBOOK_HEADER_ID, HANDBOOK_SIDEBAR_ID } from "@/constants";
+import {
+  HANDBOOK_HEADER_ID,
+  HANDBOOK_SEARCH_INPUT_ID,
+  HANDBOOK_SIDEBAR_ID,
+} from "@/constants";
 import { type ChromeCopy, type SearchMode } from "@/lib/nav";
 import {
   homeHref,
@@ -88,6 +92,7 @@ export function SiteHeader({
                   />
                 </svg>
                 <input
+                  id={HANDBOOK_SEARCH_INPUT_ID}
                   type="search"
                   value={query}
                   onChange={(event) => onQueryChange(event.target.value)}

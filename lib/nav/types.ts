@@ -93,4 +93,7 @@ export type ChromeCopy = {
   readonly breadcrumbs: string;
   readonly lastUpdated: string;
   readonly scrollToTop: string;
+  readonly copyLink: string;
+  readonly copiedLink: string;
+  readonly copyCode: string;
 };

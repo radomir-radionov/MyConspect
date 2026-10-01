@@ -5,10 +5,7 @@ import {
   type Highlighter,
 } from "shiki";
 
-const THEMES = {
-  light: "light-plus",
-  dark: "dark-plus",
-} as const;
+const THEME = "dark-plus" as const;
 
 const LANG_ALIASES: Record<string, BundledLanguage> = {
   js: "javascript",
@@ -26,7 +23,7 @@ let highlighterPromise: Promise<Highlighter> | undefined;
 
 function sharedHighlighter(): Promise<Highlighter> {
   highlighterPromise ??= getSingletonHighlighter({
-    themes: [THEMES.light, THEMES.dark],
+    themes: [THEME],
     langs: [],
   });
   return highlighterPromise;
@@ -87,8 +84,7 @@ async function renderCodeBlock(
     try {
       highlighted = highlighter.codeToHtml(code, {
         lang,
-        themes: THEMES,
-        defaultColor: false,
+        theme: THEME,
       });
     } catch {
       highlighted = plainCodeHtml(code);

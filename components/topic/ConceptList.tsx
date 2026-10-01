@@ -1,7 +1,12 @@
 "use client";
 
-import { memo, useEffect, useMemo, useSyncExternalStore } from "react";
-import { HighlightedText, useSearchMode, useSearchQuery } from "@/components/search";
+import { memo, useEffect, useMemo, useRef, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
+import {
+  HighlightedText,
+  useSearchMode,
+  useSearchQuery,
+} from "@/components/search";
 import { highlightQueryInHtml } from "@/components/search/highlightQueryInHtml";
 import { HANDBOOK_MAIN_ID } from "@/constants";
 import {
@@ -12,8 +17,14 @@ import {
   shouldScrollFromHashEvent,
   subscribeHash,
 } from "@/components/nav/hash";
+import { chromeFor } from "@/lib/i18n/chrome";
+import { localeFromPathname } from "@/lib/i18n/paths";
 import { conceptMatchesQuery } from "@/lib/nav";
+import type { ChromeCopy } from "@/lib/nav";
 import type { Concept, InterviewSection } from "@/lib/parse";
+import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
+import { useCodeCopyButtons } from "./useCodeCopyButtons";
+import { useConceptKeyboardNav } from "./useConceptKeyboardNav";
 
 function closeSiblingAccordions(opened: HTMLDetailsElement) {
   const parent = opened.parentElement;
@@ -43,7 +54,9 @@ function closeOpenConceptAccordions() {
   if (!scroller) {
     return;
   }
-  for (const node of scroller.querySelectorAll(".concept-list > details[open]")) {
+  for (const node of scroller.querySelectorAll(
+    ".concept-list > details[open]",
+  )) {
     if (node instanceof HTMLDetailsElement) {
       node.open = false;
     }
@@ -123,8 +136,18 @@ export function ConceptList({
 }) {
   const query = useSearchQuery();
   const mode = useSearchMode();
+  const pathname = usePathname() ?? "/en";
+  const chrome = useMemo(
+    () => chromeFor(localeFromPathname(pathname)),
+    [pathname],
+  );
   const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
   const activeId = hashIdFrom(hash);
+  const conceptIds = useMemo(
+    () => concepts.map((concept) => concept.id),
+    [concepts],
+  );
+  useConceptKeyboardNav(conceptIds);
   const groups = useMemo(
     () => groupConcepts(concepts, groupInterviewSections),
     [concepts, groupInterviewSections],
@@ -168,7 +191,9 @@ export function ConceptList({
       const hashId = hashIdFrom(window.location.hash);
       const hashConcept = concepts.find((concept) => concept.id === hashId);
       if (!hashConcept || !conceptMatchesQuery(hashConcept, needle, mode)) {
-        const match = concepts.find((concept) => conceptMatchesQuery(concept, needle, mode));
+        const match = concepts.find((concept) =>
+          conceptMatchesQuery(concept, needle, mode),
+        );
         if (match) {
           setHashIfChanged(match.id);
         }
@@ -202,6 +227,7 @@ export function ConceptList({
             query={query}
             notesQuery={mode === "notes" ? query : ""}
             flat={concepts.length === 1}
+            chrome={chrome}
           />
         </section>
       ))}
@@ -215,12 +241,14 @@ function ConceptAccordionList({
   query,
   notesQuery,
   flat,
+  chrome,
 }: {
   concepts: readonly Concept[];
   activeId: string;
   query: string;
   notesQuery: string;
   flat: boolean;
+  chrome: ChromeCopy;
 }) {
   if (flat) {
     const concept = concepts[0];
@@ -230,15 +258,18 @@ function ConceptAccordionList({
     return (
       <article
         id={concept.id}
-        className="concept-list scroll-mt-20 rounded-xl border border-zinc-200 bg-white px-4 pt-4 dark:border-zinc-800 dark:bg-zinc-900"
+        className="concept-list group scroll-mt-20 rounded-xl border border-zinc-200 bg-white px-4 pt-4 dark:border-zinc-800 dark:bg-zinc-900"
       >
-        <ConceptBody html={concept.html} query={notesQuery} />
+        <div className="mb-2 flex justify-end">
+          <CopyConceptLinkButton conceptId={concept.id} chrome={chrome} />
+        </div>
+        <ConceptBody html={concept.html} query={notesQuery} chrome={chrome} />
       </article>
     );
   }
 
   return (
-    <div className="concept-list divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="concept-list divide-y divide-zinc-200 overflow-hidden rounded-xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900">
       {concepts.map((concept) => {
         const isActive = concept.id === activeId;
         return (
@@ -257,10 +288,17 @@ function ConceptAccordionList({
               }
             }}
           >
-            <summary className="cursor-pointer py-3 text-left text-base font-medium text-zinc-900 dark:text-zinc-50">
-              <HighlightedText text={concept.title} query={query} />
+            <summary className="flex cursor-pointer items-center gap-2 py-3 text-left text-base font-medium text-zinc-900 dark:text-zinc-50">
+              <span className="min-w-0 flex-1">
+                <HighlightedText text={concept.title} query={query} />
+              </span>
+              <CopyConceptLinkButton conceptId={concept.id} chrome={chrome} />
             </summary>
-            <ConceptBody html={concept.html} query={notesQuery} />
+            <ConceptBody
+              html={concept.html}
+              query={notesQuery}
+              chrome={chrome}
+            />
           </details>
         );
       })}
@@ -271,12 +309,18 @@ function ConceptAccordionList({
 const ConceptBody = memo(function ConceptBody({
   html,
   query,
+  chrome,
 }: {
   html: string;
   query: string;
+  chrome: ChromeCopy;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useCodeCopyButtons(ref, chrome, html);
+
   return (
     <div
+      ref={ref}
       className="concept-body pb-5 pt-1"
       dangerouslySetInnerHTML={{ __html: highlightQueryInHtml(html, query) }}
     />

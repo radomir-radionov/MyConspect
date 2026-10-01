@@ -21,6 +21,7 @@ import { useRememberLocation } from "./useRememberLocation";
 import { ScrollToTopButton } from "./ScrollToTopButton";
 import { useResetMainScroll } from "./useResetMainScroll";
 import { useSidebarCollapsed } from "./useSidebarCollapsed";
+import { useHandbookShortcuts } from "./useHandbookShortcuts";
 import type { ChromeCopy, NavGroup } from "@/lib/nav";
 
 const SIDEBAR_MOTION =
@@ -106,18 +107,12 @@ export function HandbookShell({
     }
     toggleNav();
   }, [dismissNav, searchSheet, toggleNav]);
-  useEffect(() => {
-    if (!searchSheet) {
-      return;
-    }
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        dismissNav();
-      }
-    }
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [dismissNav, searchSheet]);
+  useHandbookShortcuts({
+    query,
+    clearQuery,
+    searchSheetOpen: searchSheet,
+    dismissNav,
+  });
   const desktopCollapsed = collapsed;
   const peekEnabled = desktopCollapsed;
   const {

@@ -21,6 +21,9 @@ const EN: ChromeCopy = {
   breadcrumbs: "Breadcrumb",
   lastUpdated: "Last updated",
   scrollToTop: "Scroll to top",
+  copyLink: "Copy link",
+  copiedLink: "Copied",
+  copyCode: "Copy code",
 };
 
 const RU: ChromeCopy = {
@@ -43,6 +46,9 @@ const RU: ChromeCopy = {
   breadcrumbs: "Навигация",
   lastUpdated: "Обновлено",
   scrollToTop: "Наверх",
+  copyLink: "Копировать ссылку",
+  copiedLink: "Скопировано",
+  copyCode: "Копировать код",
 };
 
 const BY_LOCALE: Record<Locale, ChromeCopy> = {
