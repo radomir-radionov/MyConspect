@@ -62,7 +62,7 @@ Same phases, different **order and feedback**. Waterfall runs them once, end-to-
 | --- | --- | --- |
 | CSS architecture | BEM, SMACSS, OOCSS, Atomic Design | [CSS Architecture](./2_css_architecture.md) |
 | App structure | MVC, MVVM, Flux, Redux | [Architecture patterns](./7_special_architecture.md) |
-| Process | TDD, BDD, DDD | [Testing](./7_special_testing.md#12-testing) |
+| Process | TDD, BDD, DDD | [Testing](./7_special_testing_fundamentals.md#12-testing) |
 | Principles | DRY, KISS, SOLID, YAGNI | [SOLID](./7_special_engineering.md#9-oop-and-solid) · [DRY, KISS, YAGNI](./0_system_design_principles.md) |
 | Frontend | Component-driven, mobile-first, progressive enhancement | Product/UX conventions |
 

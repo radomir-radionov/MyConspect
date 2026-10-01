@@ -2,7 +2,14 @@ import fs from "node:fs";
 import path from "node:path";
 import { cache } from "react";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
-import { TOPICS, getTopic, type Topic } from "@/lib/catalog";
+import {
+  TOPICS,
+  getTopic,
+  hubFileForTrack,
+  topicForFile,
+  type Topic,
+  type TrackId,
+} from "@/lib/catalog";
 import {
   parseTopicMarkdown,
   parseTopicOutline,
@@ -26,6 +33,8 @@ type ParsedEntry = {
   readonly stamp: string;
   readonly promise: Promise<ParsedTopic>;
 };
+
+const PARSE_LOGIC_REVISION = 3;
 
 type ParseCache = {
   markdown: Map<string, StoredRead>;
@@ -163,6 +172,44 @@ export function loadTopicOutline(
   return value;
 }
 
+export function loadFileOutline(
+  file: string,
+  locale: Locale = DEFAULT_LOCALE,
+): readonly ConceptOutline[] {
+  const { stamp, result } = loadDetailed(file, locale);
+  const key = cacheKey(locale, file);
+  const store = parseCache().outlines;
+  const hit = store.get(key);
+  if (hit?.stamp === stamp) {
+    return hit.value;
+  }
+  const value = parseTopicOutline(result.markdown, locale);
+  store.set(key, { stamp, value });
+  return value;
+}
+
+export async function loadHubPage(
+  trackId: TrackId,
+  locale: Locale = DEFAULT_LOCALE,
+): Promise<
+  | {
+      file: string;
+      parsed: ParsedTopic;
+      usedFallback: boolean;
+    }
+  | undefined
+> {
+  const file = hubFileForTrack(trackId);
+  if (!file) {
+    return undefined;
+  }
+  const loaded = await loadParsedFromFile(file, locale);
+  if (loaded.parsed.concepts.length === 0) {
+    return undefined;
+  }
+  return { file, ...loaded };
+}
+
 function loadParsedFromFile(
   file: string,
   locale: Locale,
@@ -170,15 +217,39 @@ function loadParsedFromFile(
   const { stamp, result } = loadDetailed(file, locale);
   const key = cacheKey(locale, file);
   const store = parseCache().parsed;
+  const parsedStamp = parsedCacheStamp(stamp, file);
   const hit = store.get(key);
   const pending =
-    hit?.stamp === stamp
+    hit?.stamp === parsedStamp
       ? hit.promise
-      : startParsed(store, key, stamp, result.markdown, locale);
+      : startParsed(store, key, parsedStamp, result.markdown, locale, file);
   return pending.then((parsed) => ({
     parsed,
     usedFallback: result.usedFallback,
   }));
+}
+
+function parseOptionsForFile(file: string, locale: Locale) {
+  const topic = topicForFile(file);
+  return {
+    ...(topic?.hideAnswers ? { hideAnswers: true as const } : {}),
+    locale,
+  };
+}
+
+function parsedCacheStamp(fileStamp: string, file: string): string {
+  const hideAnswers = topicForFile(file)?.hideAnswers ? "1" : "0";
+  return `${fileStamp}|ha:${hideAnswers}|rev:${PARSE_LOGIC_REVISION}`;
+}
+
+export function clearTopicParseCache(): void {
+  const store = globalForParse.__topicParseCache;
+  if (!store) {
+    return;
+  }
+  store.parsed.clear();
+  store.outlines.clear();
+  store.markdown.clear();
 }
 
 function startParsed(
@@ -187,8 +258,13 @@ function startParsed(
   stamp: string,
   markdown: string,
   locale: Locale,
+  file: string,
 ): Promise<ParsedTopic> {
-  const promise = parseTopicMarkdown(markdown, locale);
+  const promise = parseTopicMarkdown(
+    markdown,
+    locale,
+    parseOptionsForFile(file, locale),
+  );
   store.set(key, { stamp, promise });
   promise.catch(() => {
     const current = store.get(key);

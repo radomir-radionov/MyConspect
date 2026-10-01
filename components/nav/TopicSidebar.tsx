@@ -302,10 +302,16 @@ function TrackGroup({
   toggleTrackId: (trackId: TrackId) => void;
   ensureTrackOpen: (trackId: TrackId) => void;
 }) {
-  const isLeafTrack = Boolean(group.leafTopic) && group.entries.length === 0;
+  const isLeafTrack =
+    Boolean(group.leafTopic) &&
+    group.entries.length === 0 &&
+    !group.leafTopic?.hideSidebarConcepts;
+  const hasSidebarChildren =
+    group.entries.length > 0 || Boolean(group.hubTopic) || isLeafTrack;
   const trackActive = isActiveHref(pathname, group.href);
   const onThisTrack = isActiveTrack(pathname, group.href);
-  const trackOpen = searching || openTrackIds.has(group.id);
+  const trackOpen =
+    searching || (hasSidebarChildren && openTrackIds.has(group.id));
   const onPath = !searching && onThisTrack;
   const needle = query.trim().toLowerCase();
   const trackHighlighted = searching
@@ -328,7 +334,7 @@ function TrackGroup({
       className="min-w-0 flex-1"
     />
   );
-  const chevron = <NavChevron open={trackOpen} />;
+  const chevron = hasSidebarChildren ? <NavChevron open={trackOpen} /> : null;
   const asButton = isLeafTrack ? trackActive : onThisTrack;
 
   return (
@@ -373,13 +379,20 @@ function TrackGroup({
           {chevron}
         </Link>
       )}
-      <NavFold open={trackOpen} instant={searching || !trackOpen} unbox>
+      <NavFold
+        open={hasSidebarChildren && trackOpen}
+        instant={searching || !trackOpen}
+        unbox
+      >
         <ul className="mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2 dark:border-yellow-800">
           {searching ? (
             <SearchHitList hits={searchHits} />
           ) : (
             <>
               <NavGuide level="track" />
+              {group.hubTopic ? (
+                <TopicRow trackId={group.id} topic={group.hubTopic} hideTitle />
+              ) : null}
               {isLeafTrack && group.leafTopic ? (
                 <TopicRow
                   trackId={group.id}

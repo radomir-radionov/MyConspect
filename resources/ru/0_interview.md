@@ -211,7 +211,7 @@ https://stackblitz.com/@Segacnd
 | Производительность / SEO | LCP, INP, CLS, split/lazy, SSR SEO, latency API | [Оптимизация API и клиента](./6_web_api_performance.md#api-and-client-performance-optimization) · [CWV](./1_html_performance.md#core-web-vitals) · [Next CWV](./4_nextjs_optimizations.md#core-web-vitals-on-vercel) |
 | Бэкэнд | Node + Nest/Express, REST/GraphQL/WS, DDD/микросервисы | [8_nodejs](./8_nodejs.md) · [0_system_design](./0_system_design.md) || Данные | PostgreSQL, Redis | [9_database](./9_database.md) |
 | Оснастка | Git, Докер, CI | [10_build](./10_build.md) · [0_git](./0_git.md) |
-| Качество | Шутка / РТЛ, Кипарис/Драматург | [7_специальное тестирование](./7_special_testing.md#12-testing) |
+| Качество | Шутка / РТЛ, Кипарис/Драматург | [7_специальное тестирование](./7_special_testing_fundamentals.md#12-testing) |
 | Поиск / очереди | Elasticsearch, Кафка/RabbitMQ/BullMQ | [NoSQL — Elasticsearch](./9_database_nosql_core.md#elasticsearch) || Безопасность | XSS/CSRF/JWT, TLS | [7_special Attacks](./7_special_security.md#14-common-web-attacks) · [TLS](./6_web_api_http.md#tls-certificates-x509--pki) |
 | DevOps | Docker, CI, облако, дополнительные K8, OTel | [10_build](./10_build.md) · [15_devops](./15_devops.md) |
 | DX | pnpm, ESLint, Turborepo/Nx, Курсор/Второй пилот | [0_ai](./0_ai.md) |

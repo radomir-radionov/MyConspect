@@ -142,6 +142,9 @@ export function navTopics(groups: readonly NavGroup[]): readonly NavTopic[] {
     if (group.leafTopic) {
       topics.push(group.leafTopic);
     }
+    if (group.hubTopic) {
+      topics.push(group.hubTopic);
+    }
     for (const entry of group.entries) {
       topics.push(...topicsInEntry(entry));
     }

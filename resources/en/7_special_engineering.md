@@ -363,7 +363,7 @@ video.play();
 | **Cohesion** | Good — related code in one module         | Bad — a class does budget _and_ HTTP _and_ UI            |
 | **Coupling** | Bad — many modules break when one changes | Good — swap History storage without touching DailyAmount |
 
-Связность — близкие задачи в одном модуле. Сцепление / зацепление — сколько модули знают друг о друге. Цель: высокая связность, низкое сцепление. High coupling → many mocks just to boot a unit test; see [Making tests easy](./7_special_testing.md#making-tests-easy).
+Связность — близкие задачи в одном модуле. Сцепление / зацепление — сколько модули знают друг о друге. Цель: высокая связность, низкое сцепление. High coupling → many mocks just to boot a unit test; see [Making tests easy](./7_special_testing_practices.md#making-tests-easy).
 
 **When to use:** Refactor when you copy the same formula; when a UI tweak forces a domain-class edit.
 
@@ -818,7 +818,7 @@ generateReport(readOnlyDb);
 1. High-level policy (`OrderService`) defines what it needs (`PaymentGateway`, `OrderRepo`).
 2. Low-level details (`StripeGateway`, `PostgresOrderRepo`) implement those abstractions.
 3. **Inject** dependencies via constructor, factory, or DI container — don't `import` concrete implementations inside business logic.
-4. Tests swap in fakes/mocks at the abstraction boundary — kinds: [Test doubles](./7_special_testing.md#test-doubles-stubs-mocks-spies).
+4. Tests swap in fakes/mocks at the abstraction boundary — kinds: [Test doubles](./7_special_testing_practices.md#test-doubles-stubs-mocks-spies).
 
 **When to use:** Inject `HttpClient`, `Storage`, `Logger`; repository pattern over raw ORM in services; React context/providers for testable dependencies; avoid `fetch` calls inside pure domain functions.
 
@@ -854,7 +854,7 @@ function getUserProfile(id: string, repo: UserRepo) {
 
 **Thoughts:** DIP ≠ every function takes 10 params. Module-level defaults with injectable overrides is idiomatic in JS. Pairs with Factory and Repository patterns. Constructor injection works in plain JS too (`new DailyAmount(budget, history)`); typed abstractions help in TS. See [Entities, relations & design](./0_system_design_grasp.md#entities-relations--design).
 
-**See also:** Swappable fakes at the interface = less mock archaeology — [Making tests easy](./7_special_testing.md#making-tests-easy).
+**See also:** Swappable fakes at the interface = less mock archaeology — [Making tests easy](./7_special_testing_practices.md#making-tests-easy).
 
 **Sources:**
 

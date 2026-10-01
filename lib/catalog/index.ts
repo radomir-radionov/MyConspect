@@ -4,7 +4,9 @@ export const TRACK_IDS = [
   "system-design",
   "algorithms",
   "data-structures",
+  "testing",
   "ai",
+  "behavior",
   "other",
 ] as const;
 
@@ -28,6 +30,8 @@ export type Topic = {
   readonly blurb: string;
   readonly track: TrackId;
   readonly grouping?: TopicGrouping;
+  readonly hideSidebarConcepts?: boolean;
+  readonly hideAnswers?: boolean;
 };
 
 export type TopicCluster = {
@@ -57,6 +61,7 @@ export type BrowseCard = {
   readonly href: string;
   readonly title: string;
   readonly description: string;
+  readonly highlights?: readonly string[];
 };
 
 export const TRACKS: readonly Track[] = [
@@ -87,9 +92,20 @@ export const TRACKS: readonly Track[] = [
     description: "Arrays, trees, graphs, heaps, and structure selection.",
   },
   {
+    id: "testing",
+    title: "Testing",
+    description: "AAA, the test pyramid, doubles, and Jest.",
+  },
+  {
     id: "ai",
     title: "AI",
     description: "Working with coding agents and docs tools.",
+  },
+  {
+    id: "behavior",
+    title: "Behavior questions",
+    description:
+      "Soft-skill and HR interview questions with answer frameworks, traps, and sample answers.",
   },
   {
     id: "other",
@@ -174,69 +190,6 @@ const SUBJECTS_BASE: readonly Subject[] = [
         id: "additional",
         title: "Additional",
         blurb: "Intl, RegExp, Signals, and other extras.",
-      },
-      { id: "interview", title: "Interview", blurb: "Q&A and coding tasks." },
-    ],
-  },
-  {
-    slug: "react",
-    title: "React",
-    blurb: "Components, hooks, server rendering, and ecosystem.",
-    track: "frontend",
-    clusters: [
-      {
-        id: "core",
-        title: "Core",
-        blurb: "Library model, rendering, JSX, state, and hooks.",
-      },
-      {
-        id: "react-19",
-        title: "React 19",
-        blurb: "React 19, SSR, and React Server Components.",
-      },
-      {
-        id: "ecosystem",
-        title: "Ecosystem",
-        blurb: "Architecture, libraries, performance, and legacy.",
-      },
-      { id: "interview", title: "Interview", blurb: "Q&A and coding tasks." },
-    ],
-  },
-  {
-    slug: "nextjs",
-    title: "Next.js",
-    blurb: "App Router, data, routing, and the Next.js platform.",
-    track: "frontend",
-    clusters: [
-      {
-        id: "core",
-        title: "Core",
-        blurb: "Framework model and design principles.",
-      },
-      {
-        id: "rendering",
-        title: "Rendering",
-        blurb: "Rendering strategies, Server/Client boundaries, and streaming.",
-      },
-      {
-        id: "data",
-        title: "Data",
-        blurb: "Fetching, caching, and Server Actions.",
-      },
-      {
-        id: "routing",
-        title: "Routing",
-        blurb: "App Router, file-based routes, navigation, and metadata.",
-      },
-      {
-        id: "optimizations",
-        title: "Optimizations",
-        blurb: "Images, fonts, scripts, bundling, and Core Web Vitals.",
-      },
-      {
-        id: "platform",
-        title: "Platform",
-        blurb: "Proxy, config, Vercel, migration, and debugging.",
       },
       { id: "interview", title: "Interview", blurb: "Q&A and coding tasks." },
     ],
@@ -396,6 +349,69 @@ const SUBJECTS_BASE: readonly Subject[] = [
         blurb: "var vs let vs const and destructuring with types.",
         section: "reference",
       },
+    ],
+  },
+  {
+    slug: "react",
+    title: "React",
+    blurb: "Components, hooks, server rendering, and ecosystem.",
+    track: "frontend",
+    clusters: [
+      {
+        id: "core",
+        title: "Core",
+        blurb: "Library model, rendering, JSX, state, and hooks.",
+      },
+      {
+        id: "react-19",
+        title: "React 19",
+        blurb: "React 19, SSR, and React Server Components.",
+      },
+      {
+        id: "ecosystem",
+        title: "Ecosystem",
+        blurb: "Architecture, libraries, performance, and legacy.",
+      },
+      { id: "interview", title: "Interview", blurb: "Q&A and coding tasks." },
+    ],
+  },
+  {
+    slug: "nextjs",
+    title: "Next.js",
+    blurb: "App Router, data, routing, and the Next.js platform.",
+    track: "frontend",
+    clusters: [
+      {
+        id: "core",
+        title: "Core",
+        blurb: "Framework model and design principles.",
+      },
+      {
+        id: "rendering",
+        title: "Rendering",
+        blurb: "Rendering strategies, Server/Client boundaries, and streaming.",
+      },
+      {
+        id: "data",
+        title: "Data",
+        blurb: "Fetching, caching, and Server Actions.",
+      },
+      {
+        id: "routing",
+        title: "Routing",
+        blurb: "App Router, file-based routes, navigation, and metadata.",
+      },
+      {
+        id: "optimizations",
+        title: "Optimizations",
+        blurb: "Images, fonts, scripts, bundling, and Core Web Vitals.",
+      },
+      {
+        id: "platform",
+        title: "Platform",
+        blurb: "Proxy, config, Vercel, migration, and debugging.",
+      },
+      { id: "interview", title: "Interview", blurb: "Q&A and coding tasks." },
     ],
   },
   {
@@ -610,7 +626,11 @@ const SUBJECTS_BASE: readonly Subject[] = [
     blurb: "Big O, common algorithms, and interview patterns.",
     track: "algorithms",
     clusters: [
-      { id: "core", title: "Core", blurb: "Big O and algorithm fundamentals." },
+      {
+        id: "big-o",
+        title: "Big O",
+        blurb: "Algorithm basics and complexity analysis.",
+      },
       {
         id: "algorithms",
         title: "Algorithms",
@@ -620,6 +640,61 @@ const SUBJECTS_BASE: readonly Subject[] = [
         id: "patterns",
         title: "Patterns",
         blurb: "Two pointers, sliding window, and greedy vs DP.",
+      },
+    ],
+  },
+  {
+    slug: "data-structures",
+    title: "Data Structures",
+    blurb:
+      "Match access patterns to the right structure, then study linear collections, trees and graphs, and hash-based lookup with heaps.",
+    track: "data-structures",
+    clusters: [
+      {
+        id: "linear",
+        title: "Linear",
+        blurb:
+          "Index-based arrays, LIFO stacks, FIFO queues, unique sets, and key–value maps — with Big-O costs and JavaScript gotchas like O(n) array.shift().",
+      },
+      {
+        id: "trees",
+        title: "Trees & graphs",
+        blurb:
+          "Binary trees, BFS/DFS traversal, graph representations, and tries for prefix search — including recursive vs iterative trade-offs.",
+      },
+      {
+        id: "advanced",
+        title: "Hash & heap",
+        blurb:
+          "Hash tables for average O(1) lookup, binary heaps for dynamic min/max, and how the DOM maps to trees and node lists.",
+      },
+    ],
+  },
+  {
+    slug: "testing",
+    title: "Testing",
+    blurb: "AAA, pyramid, layers, practices, and tooling.",
+    track: "testing",
+    clusters: [
+      {
+        id: "fundamentals",
+        title: "Fundamentals",
+        blurb: "AAA and the test pyramid.",
+      },
+      {
+        id: "layers",
+        title: "Layers",
+        blurb: "Integration, system, E2E, visual, performance, security.",
+      },
+      {
+        id: "practices",
+        title: "Practices",
+        blurb: "TDD, BDD, doubles, and making tests easy.",
+      },
+      {
+        id: "tooling",
+        title: "Tooling",
+        blurb: "Jest, Vitest, RTL, MSW, and coverage.",
       },
     ],
   },
@@ -699,9 +774,26 @@ const HUB_HREFS: Readonly<Record<string, string>> = {
   "0_system_design.md": "/system-design",
   "7_special_algorithms.md": "/algorithms",
   "7_special_data_structures.md": "/data-structures",
+  "7_special_testing.md": "/testing",
   "7_special.md": "/other/computer-science",
   "10_build.md": "/other/build",
 };
+
+const TRACK_HUB_FILES: Partial<Record<TrackId, string>> = {
+  "data-structures": "7_special_data_structures.md",
+};
+
+export function hubFileForTrack(trackId: TrackId): string | undefined {
+  return TRACK_HUB_FILES[trackId];
+}
+
+export function hubHrefForTrack(trackId: TrackId): string | undefined {
+  const file = hubFileForTrack(trackId);
+  if (!file) {
+    return undefined;
+  }
+  return HUB_HREFS[file.toLowerCase()];
+}
 
 function grouped(
   slug: string,
@@ -988,132 +1080,7 @@ const TOPICS_BASE: Topic[] = [
     "javascript",
     "interview",
   ),
-  grouped(
-    "react-core",
-    "4_react_core.md",
-    "Basics",
-    "Library model, rendering, JSX, and state.",
-    "frontend",
-    "react",
-    "core",
-  ),
-  grouped(
-    "react-hooks",
-    "4_react_hooks.md",
-    "Hooks",
-    "Hooks reference and escape hatches.",
-    "frontend",
-    "react",
-    "core",
-  ),
-  grouped(
-    "react-server",
-    "4_react_server.md",
-    "React 19",
-    "React 19 APIs, SSR, and React Server Components.",
-    "frontend",
-    "react",
-    "react-19",
-  ),
-  grouped(
-    "react-ecosystem",
-    "4_react_ecosystem.md",
-    "Core",
-    "Routing, libraries, performance, and legacy.",
-    "frontend",
-    "react",
-    "ecosystem",
-  ),
-  grouped(
-    "react-redux",
-    "4_react_redux.md",
-    "Redux",
-    "Redux Toolkit, global client state, and RTK Query.",
-    "frontend",
-    "react",
-    "ecosystem",
-  ),
-  grouped(
-    "react-tanstack",
-    "4_react_tanstack.md",
-    "TanStack",
-    "TanStack Query, Router, Table, Virtual, Form, and ecosystem tools.",
-    "frontend",
-    "react",
-    "ecosystem",
-  ),
-  grouped(
-    "react-interview",
-    "4_react_interview.md",
-    "Interview",
-    "Interview Q&A and coding tasks.",
-    "frontend",
-    "react",
-    "interview",
-  ),
-  grouped(
-    "nextjs-core",
-    "4_nextjs_core.md",
-    "Core",
-    "Framework model and design principles.",
-    "frontend",
-    "nextjs",
-    "core",
-  ),
-  grouped(
-    "nextjs-rendering",
-    "4_nextjs_rendering.md",
-    "Rendering",
-    "Rendering strategies, Server/Client boundaries, and streaming.",
-    "frontend",
-    "nextjs",
-    "rendering",
-  ),
-  grouped(
-    "nextjs-data",
-    "4_nextjs_data.md",
-    "Data",
-    "Fetching, caching, revalidation, Server Actions, and Route Handlers.",
-    "frontend",
-    "nextjs",
-    "data",
-  ),
-  grouped(
-    "nextjs-routing",
-    "4_nextjs_routing.md",
-    "Routing",
-    "App Router, file-based routes, navigation, metadata, and SEO.",
-    "frontend",
-    "nextjs",
-    "routing",
-  ),
-  grouped(
-    "nextjs-optimizations",
-    "4_nextjs_optimizations.md",
-    "Optimizations",
-    "Images, fonts, scripts, bundling, and Core Web Vitals.",
-    "frontend",
-    "nextjs",
-    "optimizations",
-  ),
-  grouped(
-    "nextjs-platform",
-    "4_nextjs_platform.md",
-    "Platform",
-    "Proxy, config, Vercel, migration, and debugging.",
-    "frontend",
-    "nextjs",
-    "platform",
-  ),
-  grouped(
-    "nextjs-interview",
-    "4_nextjs_interview.md",
-    "Interview",
-    "Interview Q&A and coding tasks.",
-    "frontend",
-    "nextjs",
-    "interview",
-  ),
+
   grouped(
     "ts-basics",
     "5_ts_basics.md",
@@ -1328,6 +1295,132 @@ const TOPICS_BASE: Topic[] = [
     "Interview Q&A and type challenges.",
     "frontend",
     "typescript",
+    "interview",
+  ),
+  grouped(
+    "react-core",
+    "4_react_core.md",
+    "Basics",
+    "Library model, rendering, JSX, and state.",
+    "frontend",
+    "react",
+    "core",
+  ),
+  grouped(
+    "react-hooks",
+    "4_react_hooks.md",
+    "Hooks",
+    "Hooks reference and escape hatches.",
+    "frontend",
+    "react",
+    "core",
+  ),
+  grouped(
+    "react-server",
+    "4_react_server.md",
+    "React 19",
+    "React 19 APIs, SSR, and React Server Components.",
+    "frontend",
+    "react",
+    "react-19",
+  ),
+  grouped(
+    "react-ecosystem",
+    "4_react_ecosystem.md",
+    "Core",
+    "Routing, libraries, performance, and legacy.",
+    "frontend",
+    "react",
+    "ecosystem",
+  ),
+  grouped(
+    "react-redux",
+    "4_react_redux.md",
+    "Redux",
+    "Redux Toolkit, global client state, and RTK Query.",
+    "frontend",
+    "react",
+    "ecosystem",
+  ),
+  grouped(
+    "react-tanstack",
+    "4_react_tanstack.md",
+    "TanStack",
+    "TanStack Query, Router, Table, Virtual, Form, and ecosystem tools.",
+    "frontend",
+    "react",
+    "ecosystem",
+  ),
+  grouped(
+    "react-interview",
+    "4_react_interview.md",
+    "Interview",
+    "Interview Q&A and coding tasks.",
+    "frontend",
+    "react",
+    "interview",
+  ),
+  grouped(
+    "nextjs-core",
+    "4_nextjs_core.md",
+    "Core",
+    "Framework model and design principles.",
+    "frontend",
+    "nextjs",
+    "core",
+  ),
+  grouped(
+    "nextjs-rendering",
+    "4_nextjs_rendering.md",
+    "Rendering",
+    "Rendering strategies, Server/Client boundaries, and streaming.",
+    "frontend",
+    "nextjs",
+    "rendering",
+  ),
+  grouped(
+    "nextjs-data",
+    "4_nextjs_data.md",
+    "Data",
+    "Fetching, caching, revalidation, Server Actions, and Route Handlers.",
+    "frontend",
+    "nextjs",
+    "data",
+  ),
+  grouped(
+    "nextjs-routing",
+    "4_nextjs_routing.md",
+    "Routing",
+    "App Router, file-based routes, navigation, metadata, and SEO.",
+    "frontend",
+    "nextjs",
+    "routing",
+  ),
+  grouped(
+    "nextjs-optimizations",
+    "4_nextjs_optimizations.md",
+    "Optimizations",
+    "Images, fonts, scripts, bundling, and Core Web Vitals.",
+    "frontend",
+    "nextjs",
+    "optimizations",
+  ),
+  grouped(
+    "nextjs-platform",
+    "4_nextjs_platform.md",
+    "Platform",
+    "Proxy, config, Vercel, migration, and debugging.",
+    "frontend",
+    "nextjs",
+    "platform",
+  ),
+  grouped(
+    "nextjs-interview",
+    "4_nextjs_interview.md",
+    "Interview",
+    "Interview Q&A and coding tasks.",
+    "frontend",
+    "nextjs",
     "interview",
   ),
   grouped(
@@ -1727,13 +1820,6 @@ const TOPICS_BASE: Topic[] = [
     "interview",
   ),
   {
-    slug: "special-testing",
-    file: "7_special_testing.md",
-    title: "Testing",
-    blurb: "AAA, the test pyramid, doubles, and Jest.",
-    track: "other",
-  },
-  {
     slug: "special-sdlc",
     file: "7_special_sdlc.md",
     title: "SDLC",
@@ -1896,7 +1982,7 @@ const TOPICS_BASE: Topic[] = [
     "Algorithm basics and complexity analysis.",
     "algorithms",
     "algorithms",
-    "core",
+    "big-o",
   ),
   grouped(
     "algorithms-common",
@@ -1916,13 +2002,69 @@ const TOPICS_BASE: Topic[] = [
     "algorithms",
     "patterns",
   ),
-  {
-    slug: "data-structures",
-    file: "7_special_algorithms_data.md",
-    title: "Data Structures",
-    blurb: "Arrays, trees, graphs, heaps, and structure selection.",
-    track: "data-structures",
-  },
+  grouped(
+    "data-structures-linear",
+    "7_special_data_structures_linear.md",
+    "Linear",
+    "Index-based arrays, LIFO stacks, FIFO queues, unique sets, and key–value maps — with Big-O costs and JavaScript gotchas like O(n) array.shift().",
+    "data-structures",
+    "data-structures",
+    "linear",
+  ),
+  grouped(
+    "data-structures-trees",
+    "7_special_data_structures_trees.md",
+    "Trees & graphs",
+    "Binary trees, BFS/DFS traversal, graph representations, and tries for prefix search — including recursive vs iterative trade-offs.",
+    "data-structures",
+    "data-structures",
+    "trees",
+  ),
+  grouped(
+    "data-structures-advanced",
+    "7_special_data_structures_advanced.md",
+    "Hash & heap",
+    "Hash tables for average O(1) lookup, binary heaps for dynamic min/max, and how the DOM maps to trees and node lists.",
+    "data-structures",
+    "data-structures",
+    "advanced",
+  ),
+  grouped(
+    "testing-fundamentals",
+    "7_special_testing_fundamentals.md",
+    "Fundamentals",
+    "AAA and the test pyramid.",
+    "testing",
+    "testing",
+    "fundamentals",
+  ),
+  grouped(
+    "testing-layers",
+    "7_special_testing_layers.md",
+    "Layers",
+    "Integration, system, E2E, visual, performance, and security testing.",
+    "testing",
+    "testing",
+    "layers",
+  ),
+  grouped(
+    "testing-practices",
+    "7_special_testing_practices.md",
+    "Practices",
+    "TDD, BDD, test doubles, and making tests easy.",
+    "testing",
+    "testing",
+    "practices",
+  ),
+  grouped(
+    "testing-tooling",
+    "7_special_testing_tooling.md",
+    "Tooling",
+    "Jest, Vitest, RTL, MSW, and code coverage.",
+    "testing",
+    "testing",
+    "tooling",
+  ),
   {
     slug: "vscode-devtools",
     file: "11_vsc_browser.md",
@@ -1998,6 +2140,16 @@ const TOPICS_BASE: Topic[] = [
     "cursor",
     "questions",
   ),
+  {
+    slug: "behavior-questions",
+    file: "0_behavior_questions.md",
+    title: "Behavior questions",
+    blurb:
+      "Soft-skill and HR interview questions with answer frameworks, traps, and sample answers.",
+    track: "behavior",
+    hideSidebarConcepts: true,
+    hideAnswers: true,
+  },
   {
     slug: "mvp",
     file: "0_mvp.md",
@@ -2196,8 +2348,12 @@ export function topicsForCluster(
   );
 }
 
+export function topicForFile(filename: string): Topic | undefined {
+  return TOPIC_BY_FILE.get(filename.toLowerCase());
+}
+
 export function hrefForFile(filename: string): string | undefined {
-  const topic = TOPIC_BY_FILE.get(filename.toLowerCase());
+  const topic = topicForFile(filename);
   if (topic) {
     return topicHref(topic);
   }

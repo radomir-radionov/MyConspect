@@ -4,6 +4,7 @@ import {
   SUBJECTS,
   TRACKS,
   clusterHref,
+  hubFileForTrack,
   leafTopicForTrack,
   subjectHref,
   topicHref,
@@ -13,10 +14,18 @@ import {
   type Topic,
 } from "@/lib/catalog";
 import { catalogBlurb } from "@/lib/i18n/catalog";
+import {
+  behaviorPageTitle,
+  isBehaviorQuestionsTopic,
+  localizeBehaviorOutline,
+} from "@/lib/i18n/behaviorQuestions";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
 import { withLocale } from "@/lib/i18n/paths";
-import { loadTopicOutline } from "@/lib/parse";
-import type { ConceptOutline } from "@/lib/parse";
+import {
+  loadFileOutline,
+  loadTopicOutline,
+  type ConceptOutline,
+} from "@/lib/parse";
 import type { NavEntry, NavGroup, NavTopic } from "./types";
 
 function sameTitle(left: string, right: string): boolean {
@@ -40,14 +49,38 @@ function outlineForTopic(
   return outline;
 }
 
+function hubNavTopic(
+  trackId: (typeof TRACKS)[number]["id"],
+  locale: Locale,
+): NavTopic | undefined {
+  const file = hubFileForTrack(trackId);
+  if (!file) {
+    return undefined;
+  }
+  const concepts = loadFileOutline(file, locale);
+  if (concepts.length === 0) {
+    return undefined;
+  }
+  return {
+    slug: "hub",
+    href: localizeHref(locale, trackHref(trackId)),
+    title: "",
+    blurb: "",
+    concepts,
+  };
+}
+
 function toNavTopic(topic: Topic, locale: Locale): NavTopic {
   const outline = outlineForTopic(topic, loadTopicOutline(topic, locale));
   return {
     slug: topic.slug,
     href: localizeHref(locale, topicHref(topic)),
-    title: topic.title,
+    title: catalogBlurb(locale, topic.title),
     blurb: catalogBlurb(locale, topic.blurb),
-    concepts: outline,
+    concepts: isBehaviorQuestionsTopic(topic)
+      ? localizeBehaviorOutline(outline, locale)
+      : outline,
+    hideSidebarConcepts: topic.hideSidebarConcepts,
   };
 }
 
@@ -131,7 +164,7 @@ export function handbookNav(
     if (leaf && sameTitle(leaf.title, track.title)) {
       return {
         id: track.id,
-        title: track.title,
+        title: catalogBlurb(locale, track.title),
         href,
         entries: [],
         leafTopic: toNavTopic(leaf, locale),
@@ -146,8 +179,9 @@ export function handbookNav(
     ) {
       return {
         id: track.id,
-        title: track.title,
+        title: catalogBlurb(locale, track.title),
         href,
+        hubTopic: hubNavTopic(track.id, locale),
         entries: only.subject.clusters.map((cluster) => ({
           kind: "cluster" as const,
           subjectHref: only.subject.href,
@@ -158,7 +192,7 @@ export function handbookNav(
 
     return {
       id: track.id,
-      title: track.title,
+      title: catalogBlurb(locale, track.title),
       href,
       entries,
     };

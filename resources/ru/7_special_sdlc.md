@@ -61,7 +61,7 @@
 | Категория | Примеры | Заметки |
 | --- | --- | --- |
 | CSS-архитектура | БЭМ, SMACSS, OOCSS, атомарный дизайн | [Архитектура CSS](./2_css_architecture.md) |
-| Структура приложения | MVC, MVVM, Flux, Redux | [Архитектурные шаблоны](./7_special_architecture.md) || Процесс | ТДД, БДД, ДДД | [Тестирование](./7_special_testing.md#12-testing) |
+| Структура приложения | MVC, MVVM, Flux, Redux | [Архитектурные шаблоны](./7_special_architecture.md) || Процесс | ТДД, БДД, ДДД | [Тестирование](./7_special_testing_fundamentals.md#12-testing) |
 | Принципы | СУХОЙ, ПОЦЕЛУЙ, ТВЕРДЫЙ, ЯГНИ | [SOLID](./7_special_engineering.md#9-oop-and-solid) · [СУХОЙ, ПОЦЕЛУЙ, ЯГНИ](./0_system_design_principles.md) |
 | Фронтенд | Прогрессивное улучшение на основе компонентов, ориентированное на мобильные устройства | Соглашения о продукте/UX |
 

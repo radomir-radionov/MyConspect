@@ -9,7 +9,7 @@ DOM tree, querying, mutation, BOM, and script loading.
 * [JS Core](./3_js_core.md) · [JS Array](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Async](./3_js_async.md)
 * [Events](./3_js_events.md) · [Browser additional](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
 * [HTML browser & rendering](./1_html.md) · [Web API](./6_web_api.md) · [OS files & file systems](./8_nodejs_modules.md#files--file-systems)
-* [Jest DOM tests (`jsdom`)](./7_special_testing.md#jest--first-tests-node-vs-jsdom)
+* [Jest DOM tests (`jsdom`)](./7_special_testing_tooling.md#jest--first-tests-node-vs-jsdom)
 
 ### Main concepts
 

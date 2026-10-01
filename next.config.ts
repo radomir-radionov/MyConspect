@@ -18,7 +18,7 @@ const tracedBuildOnly = [
 ];
 
 const TRACK_SEGMENT =
-  "frontend|backend|system-design|algorithms|data-structures|ai|other";
+  "frontend|backend|system-design|algorithms|data-structures|testing|ai|other";
 
 const nextConfig: NextConfig = {
   outputFileTracingExcludes: {
@@ -71,6 +71,21 @@ const nextConfig: NextConfig = {
       {
         source: "/other/ai",
         destination: "/en/ai",
+        permanent: true,
+      },
+      {
+        source: "/other/special-testing",
+        destination: "/en/testing",
+        permanent: true,
+      },
+      {
+        source: "/data-structures/data-structures-choosing",
+        destination: "/en/data-structures#choosing-a-data-structure",
+        permanent: true,
+      },
+      {
+        source: "/data-structures/data-structures-overview",
+        destination: "/en/data-structures#choosing-a-data-structure",
         permanent: true,
       },
       {

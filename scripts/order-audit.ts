@@ -2,7 +2,12 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { isTrackId, type TrackId } from "../lib/catalog";
 import { topicsForAudit } from "../lib/audit";
-import { DEFAULT_LOCALE, isLocale, LOCALES, type Locale } from "../lib/i18n/locales";
+import {
+  DEFAULT_LOCALE,
+  isLocale,
+  LOCALES,
+  type Locale,
+} from "../lib/i18n/locales";
 import {
   auditTopicOrder,
   countOrderIssues,
@@ -35,7 +40,9 @@ async function main(): Promise<void> {
   if (options.out) {
     const outPath = path.resolve(options.out);
     await mkdir(path.dirname(outPath), { recursive: true });
-    const payload = options.json ? `${JSON.stringify(rows, null, 2)}\n` : markdown;
+    const payload = options.json
+      ? `${JSON.stringify(rows, null, 2)}\n`
+      : markdown;
     await writeFile(outPath, payload, "utf8");
     process.stderr.write(`Wrote ${outPath}\n`);
   }
@@ -60,7 +67,7 @@ function parseArgs(argv: string[]): CliOptions {
         i += 1;
         if (!value || !isTrackId(value)) {
           throw new Error(
-            `--track must be one of: frontend, backend, system-design, algorithms, data-structures, ai, other`,
+            `--track must be one of: frontend, backend, system-design, algorithms, data-structures, testing, ai, other`,
           );
         }
         track = value;
@@ -72,7 +79,9 @@ function parseArgs(argv: string[]): CliOptions {
         if (value === "all") {
           locale = "all";
         } else if (!value || !isLocale(value)) {
-          throw new Error(`--locale must be one of: ${LOCALES.join(", ")}, all`);
+          throw new Error(
+            `--locale must be one of: ${LOCALES.join(", ")}, all`,
+          );
         } else {
           locale = value;
         }
@@ -123,6 +132,8 @@ Options:
 }
 
 main().catch((error: unknown) => {
-  process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
+  process.stderr.write(
+    `${error instanceof Error ? error.message : String(error)}\n`,
+  );
   process.exitCode = 1;
 });

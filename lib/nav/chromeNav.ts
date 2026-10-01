@@ -11,6 +11,7 @@ export function withoutSearchText(groups: readonly NavGroup[]): NavGroup[] {
   return groups.map((group) => ({
     ...group,
     leafTopic: group.leafTopic ? chromeTopic(group.leafTopic) : undefined,
+    hubTopic: group.hubTopic ? chromeTopic(group.hubTopic) : undefined,
     entries: group.entries.map(chromeEntry),
   }));
 }

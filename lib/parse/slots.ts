@@ -1,5 +1,7 @@
 import { escapeHtml, slotLabelHtml } from "./slot-icons";
 import { transformProsConsTables } from "./pros-cons";
+import { behaviorSlotLabel } from "@/lib/i18n/behaviorQuestions";
+import type { Locale } from "@/lib/i18n/locales";
 
 export type SlotKind =
   | "definition"
@@ -11,6 +13,9 @@ export type SlotKind =
   | "thoughts"
   | "sources"
   | "pitfalls"
+  | "traps"
+  | "key"
+  | "advices"
   | "intro"
   | "extra";
 
@@ -34,10 +39,16 @@ const SLOT_DISPLAY: Record<
   example: "Examples",
   thoughts: "Thoughts",
   sources: "Sources",
+  traps: "TRAPS",
+  key: "Key",
+  advices: "Advices",
 };
 
 const SLOT_ORDER: Record<SlotKind, number> = {
   intro: 0,
+  traps: 8,
+  key: 12,
+  advices: 16,
   definition: 10,
   how: 20,
   cases: 30,
@@ -52,6 +63,12 @@ const SLOT_ORDER: Record<SlotKind, number> = {
 
 // Notes use `**Label:**` (colon before closing bold), not `**Label**:`
 const MARKER_LINE_RE = /^\*\*([^*\n]+):\*\*\s*(.*)$/;
+const ALT_MARKER_LINE_RE =
+  /^\*\*(TRAPS|Advice|Advices|Key|Keys)\*\*\s*:?\s*(.*)$/i;
+const ALT_ANSWER_HEADING_RE =
+  /^\*\*(Answer|Answear|Example(?: answers| responses)?)\b[^*]*\*\*\s*:?\s*(.*)$/i;
+const PROMPT_ANSWER_HEADING_RE =
+  /^\*\*(If asked about|If pressed for|General formula for any illegal)/i;
 
 function normalizeLabel(raw: string): string {
   return raw
@@ -65,8 +82,75 @@ function isSkippedSlot(rawLabel: string): boolean {
   return label === "see also" || label === "related";
 }
 
+export function isAnswerSlotLabel(rawLabel: string): boolean {
+  const label = normalizeLabel(rawLabel);
+  if (label.startsWith("answer") || label.startsWith("answear")) {
+    return true;
+  }
+  if (label.includes("best answer") || label.includes("passable answer")) {
+    return true;
+  }
+  if (
+    label.startsWith("example answers") ||
+    label.startsWith("example responses")
+  ) {
+    return true;
+  }
+  if (
+    label.startsWith("if asked about") ||
+    label.startsWith("if pressed for") ||
+    label.startsWith("general formula for any illegal")
+  ) {
+    return true;
+  }
+  return label.startsWith("example");
+}
+
+function isAnswerBoundaryLine(line: string): boolean {
+  const standard = line.match(MARKER_LINE_RE);
+  if (standard && isAnswerSlotLabel(standard[1])) {
+    return true;
+  }
+  return (
+    ALT_ANSWER_HEADING_RE.test(line) || PROMPT_ANSWER_HEADING_RE.test(line)
+  );
+}
+
+export function stripAnswerSections(markdown: string): string {
+  const kept: string[] = [];
+  let skipping = false;
+
+  for (const line of markdown.split("\n")) {
+    const trimmed = line.trim();
+    if (trimmed === "---") {
+      if (skipping) {
+        skipping = false;
+      }
+      continue;
+    }
+    if (isAnswerBoundaryLine(line)) {
+      skipping = true;
+      continue;
+    }
+    if (!skipping) {
+      kept.push(line);
+    }
+  }
+
+  return kept.join("\n").trim();
+}
+
 function classifyMarker(rawLabel: string): SlotKind {
   const label = normalizeLabel(rawLabel);
+  if (label === "traps") {
+    return "traps";
+  }
+  if (label === "key" || label === "keys" || label === "simple summary") {
+    return "key";
+  }
+  if (label === "advice" || label === "advices") {
+    return "advices";
+  }
   if (label === "definition") {
     return "definition";
   }
@@ -110,9 +194,20 @@ function classifyMarker(rawLabel: string): SlotKind {
   return "extra";
 }
 
-function displayLabel(kind: SlotKind, rawLabel: string): string {
+function displayLabel(
+  kind: SlotKind,
+  rawLabel: string,
+  locale?: Locale,
+): string {
+  const localized = locale ? behaviorSlotLabel(locale, kind) : undefined;
+  if (localized) {
+    return localized;
+  }
   if (kind === "intro" || kind === "extra" || kind === "pitfalls") {
     return stripMdLabel(rawLabel);
+  }
+  if (kind === "key" || kind === "advices" || kind === "traps") {
+    return SLOT_DISPLAY[kind];
   }
   return (
     SLOT_DISPLAY[kind as keyof typeof SLOT_DISPLAY] ?? stripMdLabel(rawLabel)
@@ -123,6 +218,28 @@ function stripMdLabel(raw: string): string {
   return raw.replace(/\s+—.*$/u, "").trim();
 }
 
+function markerFromLine(
+  line: string,
+): Omit<MarkerMatch, "index" | "length"> | undefined {
+  const standard = line.match(MARKER_LINE_RE);
+  if (standard) {
+    return {
+      rawLabel: standard[1],
+      inline: standard[2].trim(),
+      kind: classifyMarker(standard[1]),
+    };
+  }
+  const alternate = line.match(ALT_MARKER_LINE_RE);
+  if (alternate) {
+    return {
+      rawLabel: alternate[1],
+      inline: alternate[2].trim(),
+      kind: classifyMarker(alternate[1]),
+    };
+  }
+  return undefined;
+}
+
 function findMarkers(markdown: string): MarkerMatch[] {
   const markers: MarkerMatch[] = [];
   let lineStart = 0;
@@ -131,14 +248,12 @@ function findMarkers(markdown: string): MarkerMatch[] {
     const lineEnd = markdown.indexOf("\n", lineStart);
     const end = lineEnd === -1 ? markdown.length : lineEnd;
     const line = markdown.slice(lineStart, end);
-    const match = line.match(MARKER_LINE_RE);
+    const match = markerFromLine(line);
     if (match) {
       markers.push({
         index: lineStart,
         length: end - lineStart + (lineEnd === -1 ? 0 : 1),
-        rawLabel: match[1],
-        inline: match[2].trim(),
-        kind: classifyMarker(match[1]),
+        ...match,
       });
     }
     lineStart = lineEnd === -1 ? markdown.length : lineEnd + 1;
@@ -267,10 +382,17 @@ function splitBySubheadings(markdown: string): ConceptPart[] {
   }));
 }
 
-function sectionsForMarkdown(markdown: string): ConceptSection[] {
+function sectionsForMarkdown(
+  markdown: string,
+  hideAnswers = false,
+): ConceptSection[] {
   const sections = mergeDuplicateKinds(
     mergePitfallsIntoCases(splitByMarkers(markdown)),
-  ).filter((section) => !isSkippedSlot(section.rawLabel));
+  ).filter(
+    (section) =>
+      !isSkippedSlot(section.rawLabel) &&
+      !(hideAnswers && isAnswerSlotLabel(section.rawLabel)),
+  );
   return orderSectionsForRender(sections);
 }
 
@@ -336,35 +458,52 @@ function orderSectionsForRender(sections: ConceptSection[]): ConceptSection[] {
   return [...sections].sort((a, b) => SLOT_ORDER[a.kind] - SLOT_ORDER[b.kind]);
 }
 
-function wrapSlot(kind: SlotKind, rawLabel: string, bodyHtml: string): string {
+function wrapSlot(
+  kind: SlotKind,
+  rawLabel: string,
+  bodyHtml: string,
+  locale?: Locale,
+): string {
   if (!bodyHtml.trim()) {
     return "";
   }
   const labelHtml =
-    kind === "intro" ? "" : slotLabelHtml(kind, displayLabel(kind, rawLabel));
+    kind === "intro"
+      ? ""
+      : slotLabelHtml(kind, displayLabel(kind, rawLabel, locale));
   return `<section class="concept-slot slot-${kind}">${labelHtml}<div class="concept-slot__body">${bodyHtml}</div></section>`;
 }
 
 async function renderSections(
   sections: readonly ConceptSection[],
   renderFragment: (fragment: string) => Promise<string>,
+  locale?: Locale,
 ): Promise<string> {
   const rendered = await Promise.all(
     sections.map(async (section) => {
       const bodyHtml = transformProsConsTables(
         await renderFragment(section.body),
       );
-      return wrapSlot(section.kind, section.rawLabel, bodyHtml);
+      return wrapSlot(section.kind, section.rawLabel, bodyHtml, locale);
     }),
   );
   return rendered.filter(Boolean).join("\n");
 }
 
+export type StructureConceptBodyOptions = {
+  readonly hideAnswers?: boolean;
+  readonly locale?: Locale;
+};
+
 export async function structureConceptBody(
   markdown: string,
   renderFragment: (fragment: string) => Promise<string>,
+  options: StructureConceptBodyOptions = {},
 ): Promise<string> {
-  const parts = splitBySubheadings(markdown);
+  const hideAnswers = options.hideAnswers ?? false;
+  const locale = options.locale;
+  const source = hideAnswers ? stripAnswerSections(markdown) : markdown;
+  const parts = splitBySubheadings(source);
   if (parts.length === 0) {
     return "";
   }
@@ -372,8 +511,9 @@ export async function structureConceptBody(
   const renderedParts = await Promise.all(
     parts.map(async (part) => {
       const slotsHtml = await renderSections(
-        sectionsForMarkdown(part.markdown),
+        sectionsForMarkdown(part.markdown, hideAnswers),
         renderFragment,
+        locale,
       );
       return wrapPart(part.heading, slotsHtml);
     }),

@@ -106,6 +106,14 @@ export function locationForPath(
   const clusterId = hashIdFrom(hash);
   let hubSubjectHref: string | null = null;
   for (const group of groups) {
+    if (group.hubTopic && pathname === group.href) {
+      return {
+        topicHref: group.href,
+        subjectHref: null,
+        clusterKey: null,
+        sectionKey: null,
+      };
+    }
     if (
       group.leafTopic &&
       (pathname === group.href || pathname === group.leafTopic.href)
@@ -263,6 +271,9 @@ export function hrefInHandbook(
     if (group.href === pathname || group.leafTopic?.href === pathname) {
       return true;
     }
+    if (group.hubTopic && group.href === pathname) {
+      return true;
+    }
     for (const entry of group.entries) {
       switch (entry.kind) {
         case "topic":
@@ -336,6 +347,14 @@ export function crumbsForPath(
     }
 
     if (pathname === group.href) {
+      if (group.hubTopic) {
+        return withConcept(
+          home,
+          [{ label: group.title, href: group.href }],
+          group.hubTopic,
+          hashId,
+        );
+      }
       for (const entry of group.entries) {
         switch (entry.kind) {
           case "cluster":

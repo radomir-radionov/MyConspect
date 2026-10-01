@@ -1,6 +1,8 @@
 export type { SlotKind } from "./slots";
 export {
   assertCatalogFilesExist,
+  loadFileOutline,
+  loadHubPage,
   loadParsedTopic,
   loadTopicOutline,
   loadTopicPage,
@@ -17,5 +19,6 @@ export {
   type ConceptBlock,
   type ConceptOutline,
   type InterviewSection,
+  type ParseOptions,
   type ParsedTopic,
 } from "./parse";

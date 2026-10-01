@@ -673,24 +673,11 @@ Testing
 
 ### Testing
 
-**Definition:** Test **behavior users see** — not implementation details (internal state, hook call order). RTL queries mirror how assistive tech finds elements.
+**Definition:** Test **behavior users see** — roles, labels, and visible output — not implementation details.
 
-**How it works:**
+**How it works:** Render → query by role/label → `userEvent` → assert on screen. Full pyramid, AAA, RTL patterns, MSW, Vitest/Jest, and coverage live in the **Testing** track.
 
-1. **Render** component with `render(<App />)`
-2. **Query** by accessible role/label (`getByRole`, `getByLabelText`) — not `querySelector` or test IDs unless necessary
-3. **Act** with `userEvent` (preferred) or `fireEvent`
-4. **Assert** on visible output (`expect(screen.getByText(...))`)
-
-User flows (login, submit form), conditional UI, error states. **What NOT to test:** Private functions, shallow snapshot of entire tree, third-party lib internals.
-
-Why tests / AAA / pyramid: [7_special.md](./7_special_testing.md#tests-and-aaa).
-
-| Tool                      | Use                                                                                        |
-| ------------------------- | ------------------------------------------------------------------------------------------ |
-| **React Testing Library** | Render, query by role/label, fire events                                                   |
-| **Jest / Vitest**         | Test runner — [Jest Node vs jsdom](./7_special_testing.md#jest--first-tests-node-vs-jsdom) |
-| **MSW**                   | Mock network in integration tests                                                          |
+**When to use:** Component and page behavior in jsdom; full user flows → E2E in the Testing track.
 
 **Examples:**
 
@@ -701,15 +688,11 @@ await userEvent.click(screen.getByRole("button", { name: /sign in/i }));
 expect(await screen.findByText(/welcome/i)).toBeInTheDocument();
 ```
 
-**Thoughts:**
+**Thoughts:** Do not duplicate the Testing handbook here — link to it for runners, doubles, and layers.
 
-_Test like a user — roles and labels, not class names._
+**See also:** [Testing — React Testing Library](./7_special_testing_tooling.md#react-testing-library) · [Vitest vs Jest](./7_special_testing_tooling.md#vitest-vs-jest) · [MSW](./7_special_testing_tooling.md#msw-mock-service-worker) · [Integration](./7_special_testing_layers.md#integration-testing) · [E2E](./7_special_testing_layers.md#e2e-testing)
 
-Don't test state directly — test rendered output. `userEvent` over `fireEvent` for realistic interactions. RTL in jsdom is **integration**, not E2E — full user flows: [7_special.md — E2E](./7_special_testing.md#e2e-testing).
-
-**Sources:**
-
-[testing-library.com/docs/react-testing-library/intro](https://testing-library.com/docs/react-testing-library/intro/)
+**Sources:** [Testing Library — React intro](https://testing-library.com/docs/react-testing-library/intro/)
 
 ---
 

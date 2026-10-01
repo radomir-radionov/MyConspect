@@ -1544,7 +1544,7 @@ async function checkout(cartId, couponCode) {
 
 **Thoughts:** _Effects at the edges; decisions in the middle._
 
-**See also:** Mark Seemann’s **impure / pure / impure** (“impureim”) sandwich — same idea. Why it lowers test friction: [Making tests easy](./7_special_testing.md#making-tests-easy).
+**See also:** Mark Seemann’s **impure / pure / impure** (“impureim”) sandwich — same idea. Why it lowers test friction: [Making tests easy](./7_special_testing_practices.md#making-tests-easy).
 
 **Sources:**
 

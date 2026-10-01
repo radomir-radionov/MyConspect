@@ -90,7 +90,7 @@ HTTPS sessions; encrypting a file at rest with AES; verifying a download with SH
 
 #### Common pitfalls
 
-Calling hashes “irreversible encryption.” Using MD5/SHA-1 for passwords or certs. Encrypting passwords so they can be decrypted. RSA-encrypting whole payloads. Teaching Caesar as “how HTTPS works.” Mixing **hash tables** (non-crypto bucket index — [Hash table](./7_special_algorithms_data.md#hash-table)) with SHA. Assuming DH is a signature.
+Calling hashes “irreversible encryption.” Using MD5/SHA-1 for passwords or certs. Encrypting passwords so they can be decrypted. RSA-encrypting whole payloads. Teaching Caesar as “how HTTPS works.” Mixing **hash tables** (non-crypto bucket index — [Hash table](./7_special_data_structures_advanced.md#hash-table)) with SHA. Assuming DH is a signature.
 
 **Examples:**
 
@@ -174,7 +174,7 @@ output   &lt;script&gt;…&lt;/script&gt;
 
 **Thoughts:**
 
-SQL injection is **not** XSS — different channel (SQL vs HTML/JS). `encodeURI` / `encodeURIComponent` encode **URLs**, not HTML. Encode **on output** in the right context; also validate on the server. Labs: DOM XSS / reflected XSS on [application.security](https://application.security). Automated checks: [Security testing](./7_special_testing.md#security-testing).
+SQL injection is **not** XSS — different channel (SQL vs HTML/JS). `encodeURI` / `encodeURIComponent` encode **URLs**, not HTML. Encode **on output** in the right context; also validate on the server. Labs: DOM XSS / reflected XSS on [application.security](https://application.security). Automated checks: [Security testing](./7_special_testing_layers.md#security-testing).
 
 *Treat every user string as data — encode for the output context; CSP is the backup net.*
 

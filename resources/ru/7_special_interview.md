@@ -193,7 +193,7 @@ const compose =
 
 **Thoughts:** _Same visit order as recursion if you simulate the stack; heap memory instead of call stack._
 
-**See also:** [Tree traversal](./7_special_algorithms_data.md#tree-traversal-recursive-vs-iterative)
+**See also:** [Tree traversal](./7_special_data_structures_trees.md#tree-traversal-recursive-vs-iterative)
 
 </details>
 
@@ -493,7 +493,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **How it works:** Arrange (inputs/fakes) → Act (run the scenario) → Assert (one assumption). Tests should be independent. Skip only for throwaway prototypes.
 
-**See also:** [Why write tests (AAA)](./7_special_testing.md#tests-and-aaa) · [Test pyramid](./7_special_testing.md#12-testing)
+**See also:** [Why write tests (AAA)](./7_special_testing_fundamentals.md#tests-and-aaa) · [Test pyramid](./7_special_testing_fundamentals.md#12-testing)
 
 </details>
 
@@ -506,7 +506,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **Thoughts:** Node for logic; jsdom + mocks for DOM/network — do not hit the real API in unit tests.
 
-**See also:** [Jest — first tests](./7_special_testing.md#jest--first-tests-node-vs-jsdom) · [Test doubles](./7_special_testing.md#test-doubles-stubs-mocks-spies)
+**See also:** [Jest — first tests](./7_special_testing_tooling.md#jest--first-tests-node-vs-jsdom) · [Test doubles](./7_special_testing_practices.md#test-doubles-stubs-mocks-spies)
 
 </details>
 
@@ -525,7 +525,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **Thoughts:** Stub = replace. Mock/spy = replace **and** verify usage. Don't mock if the unit can stay pure.
 
-**See also:** [Test doubles](./7_special_testing.md#test-doubles-stubs-mocks-spies)
+**See also:** [Test doubles](./7_special_testing_practices.md#test-doubles-stubs-mocks-spies)
 
 </details>
 
@@ -540,7 +540,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 **Thoughts:** Green units ≠ working product — add seam tests, then a handful of real-user flows.
 
-**See also:** [Integration](./7_special_testing.md#integration-testing) · [System](./7_special_testing.md#system-testing) · [E2E](./7_special_testing.md#e2e-testing)
+**See also:** [Integration](./7_special_testing_layers.md#integration-testing) · [System](./7_special_testing_layers.md#system-testing) · [E2E](./7_special_testing_layers.md#e2e-testing)
 
 </details>
 
@@ -643,7 +643,7 @@ Using Singleton for convenience (global config in every module) — fails tests 
 
 3. What are unit tests? Where do they sit in the testing pyramid?
 
-3b. How do you make tests cheap to write? (Pure core / impureim sandwich, DIP, independent AAA tests, don't unit-test libraries, shared fixtures, Jest `.only`/`.skip`/`-o`.) → [Making tests easy](./7_special_testing.md#making-tests-easy)
+3b. How do you make tests cheap to write? (Pure core / impureim sandwich, DIP, independent AAA tests, don't unit-test libraries, shared fixtures, Jest `.only`/`.skip`/`-o`.) → [Making tests easy](./7_special_testing_practices.md#making-tests-easy)
 
 4. What is code coverage? Is 100% coverage required?
 

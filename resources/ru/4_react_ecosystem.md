@@ -667,22 +667,11 @@ export default getRequestConfig(async () => {
 
 ### Testing
 
-**Definition:** Тестируйте **поведение, которое видят пользователи**, а не детали реализации (внутреннее состояние, порядок вызова перехватчика). Запросы RTL отражают то, как вспомогательные технологии находят элементы.
+**Definition:** Тестируйте **поведение, которое видят пользователи** — роли, метки и видимый вывод — а не детали реализации.
 
-**How it works:**
+**How it works:** Render → query по role/label → `userEvent` → assert на экране. Пирамида, AAA, RTL, MSW, Vitest/Jest и coverage — в треке **Testing**.
 
-1. **Рендеринг** компонента с помощью `render(<App />)`
-2. **Запрос** по доступной роли/метке (`getByRole`, `getByLabelText`) - нет `querySelector` или идентификаторы тестов, если это необходимо.
-3. **Действуйте** с `userEvent` (предпочтительно) или `fireEvent`
-4. **Утверждать** видимые выходные данные (`expect(screen.getByText(...))`)
-
-Пользовательские потоки (вход в систему, форма отправки), условный пользовательский интерфейс, состояния ошибок. **Что НЕ тестировать:** Частные функции, поверхностный снимок всего дерева, внутренние компоненты сторонних библиотек.
-
-Зачем тесты/ААА/пирамида: [7_special.md](./7_special_testing.md#tests-and-aaa).
-
-| Инструмент | Использование || ------------------------- | ---------------------------------------------------------------------------------- |
-| **Библиотека тестирования React** | Рендеринг, запрос по роли/метке, срабатывание событий |
-| **Джест / Витест** | Запуск теста — [Jest Node против jsdom](./7_special_testing.md#jest--first-tests-node-vs-jsdom) || **ТБО** | Макет сети в интеграционных тестах |
+**When to use:** Поведение компонентов в jsdom; полные пользовательские потоки → E2E в треке Testing.
 
 **Examples:**
 
@@ -693,15 +682,11 @@ await userEvent.click(screen.getByRole("button", { name: /sign in/i }));
 expect(await screen.findByText(/welcome/i)).toBeInTheDocument();
 ```
 
-**Thoughts:**
+**Thoughts:** Не дублируйте handbook Testing здесь — ссылайтесь на него для runners, doubles и слоёв.
 
-_Тестируйте как пользователь — роли и метки, а не имена классов._
+**See also:** [Testing — React Testing Library](./7_special_testing_tooling.md#react-testing-library) · [Vitest vs Jest](./7_special_testing_tooling.md#vitest-vs-jest) · [MSW](./7_special_testing_tooling.md#msw-mock-service-worker) · [Integration](./7_special_testing_layers.md#integration-testing) · [E2E](./7_special_testing_layers.md#e2e-testing)
 
-Не тестируйте состояние напрямую — проверяйте визуализированный вывод. `userEvent` над `fireEvent` для реалистичного взаимодействия. RTL в jsdom — это **интеграция**, а не E2E — полные пользовательские потоки: [7_special.md — E2E](./7_special_testing.md#e2e-testing).
-
-**Sources:**
-
-[testing-library.com/docs/react-testing-library/intro](https://testing-library.com/docs/react-testing-library/intro/)
+**Sources:** [Testing Library — React intro](https://testing-library.com/docs/react-testing-library/intro/)
 
 ---
 

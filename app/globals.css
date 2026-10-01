@@ -36,6 +36,9 @@
   --slot-accent-example: #0891b2;
   --slot-accent-thoughts: #d97706;
   --slot-accent-sources: #64748b;
+  --slot-accent-key: #16a34a;
+  --slot-accent-advices: #ca8a04;
+  --slot-accent-traps: #eab308;
   color-scheme: light;
 }
 
@@ -73,6 +76,9 @@
   --slot-accent-example: #22d3ee;
   --slot-accent-thoughts: #fbbf24;
   --slot-accent-sources: #94a3b8;
+  --slot-accent-key: #4ade80;
+  --slot-accent-advices: #facc15;
+  --slot-accent-traps: #fde047;
 }
 
 @media (min-width: 64rem) {
@@ -259,6 +265,18 @@ body {
   --slot-accent: var(--slot-accent-sources);
   padding-top: 1rem;
   border-top: 2px solid var(--border);
+}
+
+.slot-key {
+  --slot-accent: var(--slot-accent-key);
+}
+
+.slot-advices {
+  --slot-accent: var(--slot-accent-advices);
+}
+
+.slot-traps {
+  --slot-accent: var(--slot-accent-traps);
 }
 
 .slot-extra {

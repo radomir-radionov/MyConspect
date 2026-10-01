@@ -181,6 +181,9 @@ export function collectGroupSearchHits(
   if (group.leafTopic) {
     pushTopicHits(hits, group.leafTopic, [], query, mode);
   }
+  if (group.hubTopic) {
+    pushTopicHits(hits, group.hubTopic, [], query, mode);
+  }
   for (const entry of group.entries) {
     collectEntryHits(hits, entry, query, mode);
   }

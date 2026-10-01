@@ -54,6 +54,31 @@ test("collectConceptBlocks still strips duplicate heading without anchor preambl
   assert.doesNotMatch(blocks[0].body, /^#{1,3}\s+Factory/m);
 });
 
+test("collectConceptBlocks ignores preamble before first horizontal rule", () => {
+  const blocks = collectConceptBlocks(`
+# Data Structures — hub
+
+### Navigation
+
+| Topic | Covers |
+| --- | --- |
+| [Linear](./7_special_data_structures_linear.md) | Arrays. |
+
+---
+
+<details>
+  <summary>Choosing a data structure</summary>
+
+### Choosing a data structure
+
+**Definition:** Lookup table.
+</details>
+`);
+
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0].title, "Choosing a data structure");
+});
+
 test("collectConceptBlocks keeps short interview task bodies", () => {
   const blocks = collectConceptBlocks(`
 ## Coding tasks

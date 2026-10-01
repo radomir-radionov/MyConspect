@@ -5,7 +5,7 @@
 ### Related docs
 
 - [Язык JS](./3_js_core.md) · [Массивы JS](./3_js_array.md) · [Функции JS](./3_js_functions.md) · [Память: стек и куча](./3_js_variables.md#memory-stack-heap) · [JSON](./3_js_variables.md#json) · [JS OOP](./3_js_oop.md) · [JS-документ](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser API](./3_js_browser_extra.md) · [JS Интервью](./3_js_interview.md)\* [Веб-API](./6_web_api.md) · [CORS](./6_web_api_security.md#cors) · [INP](./6_web_api_security.md#inp-interaction-to-next-paint) · [Node.js](./8_nodejs.md) · [React](./4_react.md) · [YAML](./10_build_ci.md#yaml)
-- [Шутка — насмешка `fetch`](./7_special_testing.md#jest--first-tests-node-vs-jsdom)
+- [Шутка — насмешка `fetch`](./7_special_testing_tooling.md#jest--first-tests-node-vs-jsdom)
 
 [ ← Назад в JS-хаб](./3_js.md)
 
@@ -399,7 +399,7 @@ fs.readFile("file.txt", (err, data) => {
 - Побочные эффекты: изменение глобального состояния, касание DOM, вызов API, запись файлов, `console.log`.
 - Побочные эффекты асинхронности завершаются позже — их необходимо дождаться или обработать в `.then`.
 - В React побочные эффекты относятся к `useEffect` или обработчики событий, а не рендеринг.
-- Тесты имитируют побочные эффекты (выборка, таймеры), чтобы обеспечить изоляцию модулей. Шутка: заглушка `global.fetch` к `{ json }` Ответ — [Первые тесты Jest](./7_special_testing.md#jest--first-tests-node-vs-jsdom). Заглушка против макета против шпиона: [Тестовые дубли](./7_special_testing.md#test-doubles-stubs-mocks-spies).
+- Тесты имитируют побочные эффекты (выборка, таймеры), чтобы обеспечить изоляцию модулей. Шутка: заглушка `global.fetch` к `{ json }` Ответ — [Первые тесты Jest](./7_special_testing_tooling.md#jest--first-tests-node-vs-jsdom). Заглушка против макета против шпиона: [Тестовые дубли](./7_special_testing_practices.md#test-doubles-stubs-mocks-spies).
 
 | Операция        | Пример                        |
 | --------------- | ----------------------------- |
@@ -413,7 +413,7 @@ fs.readFile("file.txt", (err, data) => {
 | Ситуация                | Подход                                                                                                                                                                 |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Определите, что `await` | Сеть, БД, файловый ввод-вывод                                                                                                                                          |
-| Модульные тесты         | Насмехаться `fetch` (`jest.fn` / Витест `vi.fn`), поддельные таймеры (`vi.useFakeTimers`) — [Тестовые двойники](./7_special_testing.md#test-doubles-stubs-mocks-spies) |
+| Модульные тесты         | Насмехаться `fetch` (`jest.fn` / Витест `vi.fn`), поддельные таймеры (`vi.useFakeTimers`) — [Тестовые двойники](./7_special_testing_practices.md#test-doubles-stubs-mocks-spies) |
 | Загрузка данных React   | `useEffect` + уборка(`AbortController`)                                                                                                                                |
 | Redux/редукторы         | Сохраняйте редюсеры чистыми — эффекты в thunks/saga                                                                                                                    |
 

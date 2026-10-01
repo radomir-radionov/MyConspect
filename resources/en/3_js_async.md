@@ -6,7 +6,7 @@ Covers asynchronous JavaScript: event loop, timers, promises, `async/await`, and
 
 - [JS Language](./3_js_core.md) · [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [Memory: stack and heap](./3_js_variables.md#memory-stack-heap) · [JSON](./3_js_variables.md#json) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
 - [Web API](./6_web_api.md) · [CORS](./6_web_api_security.md#cors) · [INP](./6_web_api_security.md#inp-interaction-to-next-paint) · [Node.js](./8_nodejs.md) · [React](./4_react.md) · [YAML](./10_build_ci.md#yaml)
-- [Jest — mock `fetch`](./7_special_testing.md#jest--first-tests-node-vs-jsdom)
+- [Jest — mock `fetch`](./7_special_testing_tooling.md#jest--first-tests-node-vs-jsdom)
 
 [← Back to JS hub](./3_js.md)
 
@@ -403,7 +403,7 @@ fs.readFile("file.txt", (err, data) => {
 - Side effects: mutate global state, touch DOM, call APIs, write files, `console.log`.
 - Async side effects complete later — must be awaited or handled in `.then`.
 - In React, side effects belong in `useEffect` or event handlers, not render.
-- Tests mock side effects (fetch, timers) to keep units isolated. Jest: stub `global.fetch` to a `{ json }` Response — [Jest first tests](./7_special_testing.md#jest--first-tests-node-vs-jsdom). Stub vs mock vs spy: [Test doubles](./7_special_testing.md#test-doubles-stubs-mocks-spies).
+- Tests mock side effects (fetch, timers) to keep units isolated. Jest: stub `global.fetch` to a `{ json }` Response — [Jest first tests](./7_special_testing_tooling.md#jest--first-tests-node-vs-jsdom). Stub vs mock vs spy: [Test doubles](./7_special_testing_practices.md#test-doubles-stubs-mocks-spies).
 
 | Operation    | Example                       |
 | ------------ | ----------------------------- |
@@ -417,7 +417,7 @@ fs.readFile("file.txt", (err, data) => {
 | Situation                | Approach                                                                                                                                            |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Identify what to `await` | Network, DB, file I/O                                                                                                                               |
-| Unit tests               | Mock `fetch` (`jest.fn` / Vitest `vi.fn`), fake timers (`vi.useFakeTimers`) — [Test doubles](./7_special_testing.md#test-doubles-stubs-mocks-spies) |
+| Unit tests               | Mock `fetch` (`jest.fn` / Vitest `vi.fn`), fake timers (`vi.useFakeTimers`) — [Test doubles](./7_special_testing_practices.md#test-doubles-stubs-mocks-spies) |
 | React data loading       | `useEffect` + cleanup (`AbortController`)                                                                                                           |
 | Redux/reducers           | Keep reducers pure — effects in thunks/sagas                                                                                                        |
 

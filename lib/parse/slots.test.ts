@@ -54,6 +54,67 @@ test("structureConceptBody omits See also slots", async () => {
   assert.doesNotMatch(html, /SOLID in React/);
 });
 
+test("structureConceptBody omits answer slots when hideAnswers is set", async () => {
+  const html = await structureConceptBody(
+    `**Advices:**
+
+- Stay positive
+
+**Answer:**
+
+This is a sample answer you should not see.
+
+**Answer 1**
+
+Another leaked answer.
+
+**Answer**:
+Colon-outside-bold answer.
+
+**BEST ANSWER:** Generic advice.
+
+**Example:** "Sample quote."
+
+**Example answers**
+
+**If asked about age:**
+
+> "Too old or too young?"`,
+    renderFragment,
+    { hideAnswers: true },
+  );
+
+  assert.match(html, /Stay positive/);
+  assert.doesNotMatch(html, /sample answer you should not see/i);
+  assert.doesNotMatch(html, /Another leaked answer/i);
+  assert.doesNotMatch(html, /Colon-outside-bold answer/i);
+  assert.doesNotMatch(html, /Generic advice/i);
+  assert.doesNotMatch(html, /Sample quote/i);
+  assert.doesNotMatch(html, /Too old or too young/i);
+});
+
+test("structureConceptBody classifies behavior Key, Advices, and TRAPS slots", async () => {
+  const html = await structureConceptBody(
+    `**TRAPS:** This is a trap.
+
+**Key:**
+
+Stay positive.
+
+**Advices:**
+
+- Be concise`,
+    renderFragment,
+  );
+
+  assert.match(html, /slot-traps/);
+  assert.match(html, /slot-key/);
+  assert.match(html, /slot-advices/);
+  assert.match(html, />TRAPS</);
+  assert.match(html, />Key</);
+  assert.match(html, />Advices</);
+});
+
 test("structureConceptBody renders bullet lists in case slots", async () => {
   const html = await structureConceptBody(
     `**When to use:**

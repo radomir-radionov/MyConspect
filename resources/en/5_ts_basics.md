@@ -12,6 +12,8 @@ Static type-checking, compiler fundamentals, tsconfig, and a short intro for Jav
 
 - [Static typing & basics](#static-typing-basics)
 - [Compiler & tsconfig](#compiler-tsconfig)
+- [tsconfig.json](#tsconfig-json)
+- [Declaration files (.d.ts)](#declaration-files-dts)
 - [TypeScript for JavaScript programmers](#typescript-for-javascript-programmers)
 
 ---
@@ -512,6 +514,101 @@ legacyApi.doSomething();
 ```
 
 **Sources:** [TypeScript handbook — tsconfig-json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+
+</details>
+
+<details>
+  <summary>tsconfig.json</summary>
+
+### tsconfig.json
+
+**Definition:**
+
+A JSON project file that tells the TypeScript compiler **which files belong to the project** and **how to type-check and emit** them.
+
+| When to use                                                                                         | Notes                                                                                                                                                      |
+| --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Every TypeScript project. Run `tsc --init` to scaffold a starter file, then tune `compilerOptions`. | `tsc` looks for `tsconfig.json` in the current folder (or use `tsc -p path/to/tsconfig.json`). Without it, only the files you pass on the CLI are checked. |
+
+**How it works:**
+
+- **`compilerOptions`** — flags such as `strict`, `target`, `module`, `moduleResolution`, `paths`, `noEmit`.
+- **`include` / `exclude`** — glob patterns for source files (for example `"src/**/*"`; exclude `node_modules` and tests).
+- **`files`** — explicit file list when you do not want globs.
+- **`extends`** — inherit a shared base config; child `compilerOptions` merge, but `files` / `include` / `exclude` in the child **replace** the base lists.
+
+**Examples:**
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+```json
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist"
+  }
+}
+```
+
+**Sources:** [TypeScript handbook — tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) · [TSConfig Reference](https://www.typescriptlang.org/tsconfig/)
+
+</details>
+
+<details>
+  <summary>Declaration files (.d.ts)</summary>
+
+### Declaration files (.d.ts)
+
+**Definition:**
+
+Type-only files that describe the **shape** of JavaScript code — they emit **no runtime JavaScript** when written by hand, but give TypeScript (and your editor) types for JS libraries and globals.
+
+| When to use                                                                                                        | Notes                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Consuming untyped npm packages (`@types/node`, `@types/react`), publishing a typed library, or augmenting globals. | During module resolution, TypeScript prefers `.ts` / `.d.ts` over plain `.js` so imports get checking without reading implementation source. |
+
+**How it works:**
+
+- **Hand-written `.d.ts`** — describe third-party or legacy JS (`declare module "lodash"`, ambient globals).
+- **Emitted `.d.ts`** — turn on `"declaration": true` in `tsconfig.json` when publishing a TS library so consumers import your public API types.
+- **`@types/*` packages** — community or DefinitelyTyped declarations installed beside JavaScript packages.
+- **`skipLibCheck`** — skips deep checking of declaration files for faster builds; does not remove the types themselves.
+
+**Examples:**
+
+```typescript
+// types/legacy-lib.d.ts — shape of an untyped package
+declare module "legacy-lib" {
+  export function parse(input: string): Record<string, unknown>;
+}
+```
+
+```typescript
+// global.d.ts — value loaded outside modules (e.g. script tag)
+declare const APP_CONFIG: {
+  apiUrl: string;
+};
+```
+
+```typescript
+// Consuming installed declarations
+import _ from "lodash";
+_.padStart("Hello TypeScript!", 20, " ");
+```
+
+**Sources:** [Declaration files — introduction](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) · [Consuming declarations](https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html) · [The role of declaration files](https://www.typescriptlang.org/docs/handbook/modules/theory.html#the-role-of-declaration-files)
 
 </details>
 

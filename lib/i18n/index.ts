@@ -15,3 +15,9 @@ export {
 } from "./paths";
 export { FALLBACK_NOTE_BADGE, chromeFor } from "./chrome";
 export { catalogBlurb } from "./catalog";
+export {
+  behaviorPageTitle,
+  isBehaviorQuestionsTopic,
+  localizeBehaviorConcepts,
+  localizeBehaviorOutline,
+} from "./behaviorQuestions";

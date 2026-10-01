@@ -41,7 +41,7 @@ Product loop (stages can be skipped or merged):
 |-------|----------------|
 | **Code** | Git workflow (often [GitHub Flow](./0_git_branching.md#github-flow--trunk-based): branch → PR → review → merge). Git Flow is heavier — better for versioned releases than for many-deploys-per-day. |
 | **Build** | After local checks, CI builds on a runner — often in **Docker** for a repeatable image. Platforms: GitHub Actions, GitLab CI/CD, Jenkins, Bitbucket Pipelines, TeamCity; hosts like Netlify/Vercel run build+deploy. Comparison: [15_devops.md — CI systems](./15_devops.md#ci-systems). |
-| **Test** | Automated unit/integration/E2E first; manual QA still used for UX and exploratory work. Pre-release builds may be versioned (`v.2.4.5-1`). Jest, Playwright/Puppeteer, Selenium — [7_special.md — tests](./7_special_testing.md#tests-and-aaa). |
+| **Test** | Automated unit/integration/E2E first; manual QA still used for UX and exploratory work. Pre-release builds may be versioned (`v.2.4.5-1`). Jest, Playwright/Puppeteer, Selenium — [7_special.md — tests](./7_special_testing_fundamentals.md#tests-and-aaa). |
 | **Release** | Cadence depends on the product. CI’s job is a **promotable artifact**, not Jira/analytics. Product metrics (GA, Metrika) and task trackers sit next to the loop. |
 | **Deploy** | Deliver to users. Simple SPAs need little infra; shops/search/streaming compete on caching, CDNs, and server architecture. |
 | **Operate** | Support and monitoring. Helpdesk/chatbots are not CI tools; they often expose APIs. Observability: [15_devops.md](./15_devops.md). |
@@ -125,7 +125,7 @@ jobs:
       - run: npm run build
 ```
 
-**Thoughts:** CI scope = build + test + lint. It does **not** necessarily deploy. Keep pipelines fast (< 10 min); split slow E2E / visual / Lighthouse into a separate job — [system tests](./7_special_testing.md#system-testing).
+**Thoughts:** CI scope = build + test + lint. It does **not** necessarily deploy. Keep pipelines fast (< 10 min); split slow E2E / visual / Lighthouse into a separate job — [system tests](./7_special_testing_layers.md#system-testing).
 
 **Sources:** [ByteByteGo — CI/CD crash course](https://blog.bytebytego.com/p/a-crash-course-in-cicd)
 

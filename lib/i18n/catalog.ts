@@ -36,6 +36,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Big O and algorithm fundamentals.": "Big O и основы алгоритмов.",
   "Big O, common algorithms, and interview patterns.":
     "Big O, типовые алгоритмы и паттерны для собеседований.",
+  "Binary trees, BFS/DFS traversal, graph representations, and tries for prefix search — including recursive vs iterative trade-offs.":
+    "Бинарные деревья, обход BFS/DFS, представления графов и trie для поиска по префиксу — с recursive vs iterative подходами.",
   "Branches, merges, remotes, and collaboration.":
     "Ветки, merge, remote и совместная работа.",
   "Branches, remotes, and team practices.":
@@ -123,6 +125,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Порождающие, структурные и поведенческие паттерны GoF.",
   "Handlers, bubbling, capturing, delegation, and custom events.":
     "Обработчики, bubbling, capturing, делегирование и custom events.",
+  "Hash tables for average O(1) lookup, binary heaps for dynamic min/max, and how the DOM maps to trees and node lists.":
+    "Хеш-таблицы для среднего O(1) lookup, бинарные кучи для динамического min/max и как DOM сопоставляется с деревьями и node lists.",
   "Hooks reference and escape hatches.": "Справочник хуков и escape hatches.",
   "How `/` works and the most-used built-ins.":
     "Как работает `/` и самые частые встроенные команды.",
@@ -168,6 +172,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Images, picture, audio, video, canvas и SVG.",
   "Indexed collections and array methods — map, filter, reduce.":
     "Индексированные коллекции и методы массивов — map, filter, reduce.",
+  "Index-based arrays, LIFO stacks, FIFO queues, unique sets, and key–value maps — with Big-O costs and JavaScript gotchas like O(n) array.shift().":
+    "Массивы с индексным доступом, LIFO-стеки, FIFO-очереди, множества и key–value map — со сложностью Big-O и JS-подводными камнями вроде O(n) array.shift().",
   "Interfaces, object types, classes, and OOP.":
     "Интерфейсы, object types, классы и ООП.",
   "Internet stack and HTTP.": "Интернет-стек и HTTP.",
@@ -205,6 +211,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Модель библиотеки, рендеринг, JSX, state и хуки.",
   "Methodologies, tooling, and rendering performance.":
     "Методологии, тулинг и производительность рендеринга.",
+  "Match access patterns to the right structure, then study linear collections, trees and graphs, and hash-based lookup with heaps.":
+    "Сопоставьте паттерны доступа со структурой, затем изучите линейные коллекции, деревья и графы, а также hash lookup и кучи.",
   "MongoDB, Redis, Elasticsearch, and store selection.":
     "MongoDB, Redis, Elasticsearch и выбор хранилища.",
   "Nine patterns for assigning responsibilities to objects.":
@@ -286,6 +294,11 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Модель безопасности и типичные веб-атаки.",
   "Skills, rules, plugins, slash commands, and questions.":
     "Skills, rules, плагины, slash-команды и вопросы.",
+  "Skills, rules, plugins, slash commands, and Cursor Q&A.":
+    "Skills, rules, plugins, slash-команды и Q&A по Cursor.",
+  "Soft-skill and HR interview questions with answer frameworks, traps, and sample answers.":
+    "Soft-skill и HR-вопросы на собеседовании с фреймворками ответов, ловушками и примерами.",
+  "Behavior questions": "Поведенческие вопросы",
   "Sorting, search, and graph algorithms.":
     "Сортировка, поиск и алгоритмы на графах.",
   "Sorting, search, graph traversal, and classic algorithm choices.":

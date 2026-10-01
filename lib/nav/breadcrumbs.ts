@@ -10,6 +10,7 @@ import {
   type Track,
 } from "@/lib/catalog";
 import { chromeFor } from "@/lib/i18n/chrome";
+import { catalogBlurb } from "@/lib/i18n/catalog";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
 import { homeHref, withLocale } from "@/lib/i18n/paths";
 import type { Crumb, HashCrumb } from "./types";
@@ -22,8 +23,11 @@ function L(locale: Locale, href: string): string {
   return withLocale(locale, href);
 }
 
-export function trackCrumbs(track: Track, locale: Locale = DEFAULT_LOCALE): readonly Crumb[] {
-  return [homeCrumb(locale), { label: track.title }];
+export function trackCrumbs(
+  track: Track,
+  locale: Locale = DEFAULT_LOCALE,
+): readonly Crumb[] {
+  return [homeCrumb(locale), { label: catalogBlurb(locale, track.title) }];
 }
 
 export function subjectCrumbs(
@@ -33,13 +37,19 @@ export function subjectCrumbs(
   const trail: Crumb[] = [homeCrumb(locale)];
   const track = getTrack(subject.track);
   if (track && subjectHref(subject) !== trackHref(track.id)) {
-    trail.push({ label: track.title, href: L(locale, trackHref(track.id)) });
+    trail.push({
+      label: catalogBlurb(locale, track.title),
+      href: L(locale, trackHref(track.id)),
+    });
   }
   trail.push({ label: subject.title });
   return trail;
 }
 
-export function topicCrumbs(topic: Topic, locale: Locale = DEFAULT_LOCALE): readonly Crumb[] {
+export function topicCrumbs(
+  topic: Topic,
+  locale: Locale = DEFAULT_LOCALE,
+): readonly Crumb[] {
   const trail: Crumb[] = [homeCrumb(locale)];
   const track = getTrack(topic.track);
   const subject = topic.grouping
@@ -48,7 +58,10 @@ export function topicCrumbs(topic: Topic, locale: Locale = DEFAULT_LOCALE): read
   const subjectPath = subject ? subjectHref(subject) : undefined;
 
   if (track && subjectPath !== trackHref(track.id)) {
-    trail.push({ label: track.title, href: L(locale, trackHref(track.id)) });
+    trail.push({
+      label: catalogBlurb(locale, track.title),
+      href: L(locale, trackHref(track.id)),
+    });
   }
 
   if (subject && subjectPath) {
@@ -64,7 +77,7 @@ export function topicCrumbs(topic: Topic, locale: Locale = DEFAULT_LOCALE): read
     }
   }
 
-  trail.push({ label: topic.title });
+  trail.push({ label: catalogBlurb(locale, topic.title) });
   return trail;
 }
 

@@ -827,7 +827,7 @@ next build --debug-build-paths "/blog/[slug]"
 
 **Definition:**
 
-Тестируйте приложения Next.js с помощью **Vitest** (быстрого средства запуска ESM) и **Библиотеки тестирования React** (RTL) на предмет поведения компонентов. Зачем тесты/ААА: [7_special.md](./7_special_testing.md#tests-and-aaa). Компоненты сервера и действия сервера требуют отдельных стратегий — макет `next/navigation` и тестируйте действия как простые асинхронные функции. Заглушка против макета против шпиона: [Тестовые дубли](./7_special_testing.md#test-doubles-stubs-mocks-spies).
+Тестируйте приложения Next.js с помощью **Vitest** (быстрого средства запуска ESM) и **Библиотеки тестирования React** (RTL) на предмет поведения компонентов. Зачем тесты/ААА: [7_special.md](./7_special_testing_fundamentals.md#tests-and-aaa). Компоненты сервера и действия сервера требуют отдельных стратегий — макет `next/navigation` и тестируйте действия как простые асинхронные функции. Заглушка против макета против шпиона: [Тестовые дубли](./7_special_testing_practices.md#test-doubles-stubs-mocks-spies).
 
 | Что тестировать       | Инструмент   | Подход                                               |
 | --------------------- | ------------ | ---------------------------------------------------- |
@@ -902,7 +902,7 @@ it("rejects empty title", async () => {
 
 - Насмехаться `next/navigation`: `vi.mock('next/navigation', () => ({ redirect: vi.fn(), useRouter: () => ({ refresh: vi.fn() }) }))`.
 - Предпочитайте тестирование **листов клиентских компонентов**, снабженных статическими реквизитами, а не рендеринг полных деревьев RSC в модульных тестах.
-- Добавить драматурга для формы действия на сервере, отправить + `revalidatePath` видимость. Пирамида + карта инструментов: [7_special.md — E2E](./7_special_testing.md#e2e-testing).
+- Добавить драматурга для формы действия на сервере, отправить + `revalidatePath` видимость. Пирамида + карта инструментов: [7_special.md — E2E](./7_special_testing_layers.md#e2e-testing).
 
 **Sources:** [nextjs.org/docs/app/guides/testing](https://nextjs.org/docs/app/guides/testing) · [vitest.dev](https://vitest.dev/)
 

@@ -4,9 +4,14 @@ import { hrefForFile } from "@/lib/catalog";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
 import { withLocale } from "@/lib/i18n/paths";
 import { highlightMarkdownFences } from "./highlight";
-import { structureConceptBody } from "./slots";
+import { structureConceptBody, stripAnswerSections } from "./slots";
 
 export type InterviewSection = "questions" | "tasks";
+
+export type ParseOptions = {
+  readonly hideAnswers?: boolean;
+  readonly locale?: Locale;
+};
 
 export type Concept = {
   readonly id: string;
@@ -39,6 +44,7 @@ const SKIP_TITLES = new Set([
   "related notes",
   "main concepts",
   "sections",
+  "navigation",
   "resources & links",
   "resources",
   "core advanced",
@@ -129,11 +135,12 @@ export function parseTopicOutline(
 export async function parseTopicMarkdown(
   markdown: string,
   locale: Locale = DEFAULT_LOCALE,
+  options: ParseOptions = {},
 ): Promise<ParsedTopic> {
   const rewritten = rewriteNoteLinks(markdown, locale);
   const title = extractH1(rewritten) ?? "Topic";
   const description = extractDescription(rewritten);
-  const concepts = await collectConcepts(rewritten);
+  const concepts = await collectConcepts(rewritten, options);
   return { title, description, concepts };
 }
 
@@ -225,13 +232,19 @@ export function collectConceptBlocks(markdown: string): ConceptBlock[] {
   }));
 }
 
-async function collectConcepts(markdown: string): Promise<Concept[]> {
+async function collectConcepts(
+  markdown: string,
+  options: ParseOptions = {},
+): Promise<Concept[]> {
   const { regular, interview } = partitionInterviewBlocks(markdown);
   const usedIds = new Set<string>();
   const regularConcepts = regular.map((block) => {
     const id = uniqueId(slugify(block.title), usedIds);
-    const searchText = conceptSearchText(block.body);
-    return renderHtml(block.body).then(
+    const body = options.hideAnswers
+      ? stripAnswerSections(block.body)
+      : block.body;
+    const searchText = conceptSearchText(body);
+    return renderHtml(block.body, options).then(
       (html): Concept => ({
         id,
         title: block.title,
@@ -480,7 +493,20 @@ function dropDuplicateHeadingStubs(
   });
 }
 
+function studyMarkdown(markdown: string): string {
+  const lines = markdown.split("\n");
+  const index = lines.findIndex((line) => /^---\s*$/.test(line));
+  if (index === -1) {
+    return markdown;
+  }
+  return lines
+    .slice(index + 1)
+    .join("\n")
+    .trimStart();
+}
+
 function collectLocatedBlocks(markdown: string): LocatedBlock[] {
+  markdown = studyMarkdown(markdown);
   const lower = markdown.toLowerCase();
   const blocks: LocatedBlock[] = [];
   let i = 0;
@@ -748,8 +774,11 @@ async function renderFragment(markdown: string): Promise<string> {
   return sanitizeHtml(parsed, SANITIZE);
 }
 
-async function renderHtml(markdown: string): Promise<string> {
-  return structureConceptBody(markdown, renderFragment);
+async function renderHtml(
+  markdown: string,
+  options: ParseOptions = {},
+): Promise<string> {
+  return structureConceptBody(markdown, renderFragment, options);
 }
 
 function stripMd(value: string): string {

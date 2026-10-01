@@ -653,7 +653,7 @@ export default defineConfig({ plugins: [react()] });
 
 ## Code quality
 
-Зачем писать тесты и AAA: [7_special.md — Зачем писать тесты](./7_special_testing.md#tests-and-aaa). Шутка (`jest.config.js`, `npm test`, Node vs jsdom): [7_special.md — Jest](./7_special_testing.md#jest--first-tests-node-vs-jsdom). Заглушки/издевательства/шпионы: [Тестовые дубли](./7_special_testing.md#test-doubles-stubs-mocks-spies). Проволока `npm test` в CI: [Действия GitHub](./10_build_ci.md#github-actions).
+Зачем писать тесты и AAA: [7_special.md — Зачем писать тесты](./7_special_testing_fundamentals.md#tests-and-aaa). Шутка (`jest.config.js`, `npm test`, Node vs jsdom): [7_special.md — Jest](./7_special_testing_tooling.md#jest--first-tests-node-vs-jsdom). Заглушки/издевательства/шпионы: [Тестовые дубли](./7_special_testing_practices.md#test-doubles-stubs-mocks-spies). Проволока `npm test` в CI: [Действия GitHub](./10_build_ci.md#github-actions).
 
 <details>
   <summary>Linter vs formatter</summary>

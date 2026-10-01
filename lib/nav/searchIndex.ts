@@ -209,6 +209,9 @@ function buildSearchIndex(groups: readonly NavGroup[]): HandbookSearchIndex {
     if (group.leafTopic) {
       topics.push(prepareTopic(group.leafTopic));
     }
+    if (group.hubTopic) {
+      topics.push(prepareTopic(group.hubTopic));
+    }
     for (const entry of group.entries) {
       topics.push(
         ...indexEntry(entry, prepareTopic, subjectText, clusterTitle),
@@ -438,6 +441,12 @@ export function filterGroupsWithIndex(
 ): readonly NavGroup[] {
   return index.groups
     .map((group) => {
+      const keepHub =
+        Boolean(group.hubTopic) &&
+        (Boolean(index.groupTitle.get(group)?.includes(query)) ||
+          (group.hubTopic
+            ? topicMatchesIndexed(group.hubTopic, query, mode, index, bodyHits)
+            : false));
       const keepLeaf =
         Boolean(group.leafTopic) &&
         (Boolean(index.groupTitle.get(group)?.includes(query)) ||
@@ -450,10 +459,16 @@ export function filterGroupsWithIndex(
       return {
         ...group,
         leafTopic: keepLeaf ? group.leafTopic : undefined,
+        hubTopic: keepHub ? group.hubTopic : undefined,
         entries,
       };
     })
-    .filter((group) => group.entries.length > 0 || Boolean(group.leafTopic));
+    .filter(
+      (group) =>
+        group.entries.length > 0 ||
+        Boolean(group.leafTopic) ||
+        Boolean(group.hubTopic),
+    );
 }
 
 function filterEntry(

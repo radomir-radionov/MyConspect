@@ -10,13 +10,26 @@ import {
   leafTopicForTrack,
   subjectClusterCards,
   subjectForTrack,
+  topicHref,
+  topicsForCluster,
   trackBrowseCards,
+  type Subject,
 } from "@/lib/catalog";
 import { catalogBlurb } from "@/lib/i18n/catalog";
+import {
+  behaviorPageTitle,
+  isBehaviorQuestionsTopic,
+  localizeBehaviorConcepts,
+} from "@/lib/i18n/behaviorQuestions";
 import { FALLBACK_NOTE_BADGE } from "@/lib/i18n/chrome";
 import { isLocale, localeStaticParams, type Locale } from "@/lib/i18n/locales";
 import { withLocale } from "@/lib/i18n/paths";
-import { loadParsedTopic, loadTopicPage } from "@/lib/parse";
+import {
+  loadHubPage,
+  loadParsedTopic,
+  loadTopicOutline,
+  loadTopicPage,
+} from "@/lib/parse";
 
 export const dynamicParams = false;
 
@@ -39,6 +52,7 @@ function localizeCards(
 
 function localizeClusterSections(
   locale: Locale,
+  subject: Subject,
   sections: ReturnType<typeof subjectClusterCards>,
 ) {
   return sections.map((section) => ({
@@ -46,7 +60,24 @@ function localizeClusterSections(
       ...section.cluster,
       blurb: catalogBlurb(locale, section.cluster.blurb),
     },
-    items: localizeCards(locale, section.items),
+    items: localizeCards(locale, section.items).map((item) => {
+      const topic =
+        topicsForCluster(subject, section.cluster.id).find(
+          (candidate) => topicHref(candidate) === item.href,
+        ) ??
+        topicsForCluster(subject, section.cluster.id).find(
+          (candidate) => candidate.title === item.title,
+        );
+      if (!topic) {
+        return item;
+      }
+      return {
+        ...item,
+        highlights: loadTopicOutline(topic, locale).map(
+          (concept) => concept.title,
+        ),
+      };
+    }),
   }));
 }
 
@@ -83,7 +114,7 @@ export async function generateMetadata({
     if (leaf) {
       const parsed = await loadParsedTopic(leaf, locale);
       return {
-        title: parsed.title,
+        title: behaviorPageTitle(locale, parsed.title),
         description: parsed.description,
         alternates,
       };
@@ -111,8 +142,10 @@ export default async function TrackPage({
 
   const subject = subjectForTrack(track.id);
   if (subject) {
+    const hub = await loadHubPage(track.id, locale);
     const sections = localizeClusterSections(
       locale,
+      subject,
       subjectClusterCards(subject),
     );
     return (
@@ -123,7 +156,24 @@ export default async function TrackPage({
         <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-400">
           {catalogBlurb(locale, subject.blurb)}
         </p>
-        <ClusterCardSections sections={sections} />
+        {hub ? (
+          <>
+            {hub.usedFallback ? (
+              <p className="mt-2 text-sm text-amber-700 dark:text-amber-300">
+                {FALLBACK_NOTE_BADGE[locale]}
+              </p>
+            ) : null}
+            <div className="mt-8 max-w-3xl">
+              <ConceptList
+                concepts={hub.parsed.concepts}
+                emptyMessage="No concepts were parsed from this track hub."
+              />
+            </div>
+          </>
+        ) : null}
+        <div className={hub ? "mt-10" : "mt-8"}>
+          <ClusterCardSections sections={sections} />
+        </div>
       </main>
     );
   }
@@ -134,10 +184,13 @@ export default async function TrackPage({
     if (!loaded) {
       notFound();
     }
+    const concepts = isBehaviorQuestionsTopic(leaf)
+      ? localizeBehaviorConcepts(loaded.parsed.concepts, locale)
+      : loaded.parsed.concepts;
     return (
       <main className="w-full max-w-3xl px-4 pt-5 pb-10 sm:px-6">
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-          {loaded.parsed.title}
+          {behaviorPageTitle(locale, loaded.parsed.title)}
         </h1>
         {loaded.usedFallback ? (
           <p className="mt-2 text-sm text-amber-700 dark:text-amber-300">
@@ -146,7 +199,7 @@ export default async function TrackPage({
         ) : null}
         <div className="mt-8">
           <ConceptList
-            concepts={loaded.parsed.concepts}
+            concepts={concepts}
             emptyMessage="No concepts were parsed from this topic."
             groupInterviewSections={isInterviewTopic(leaf)}
           />

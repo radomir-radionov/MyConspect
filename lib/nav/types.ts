@@ -18,6 +18,7 @@ export type NavTopic = {
   readonly title: string;
   readonly blurb: string;
   readonly concepts: readonly NavConcept[];
+  readonly hideSidebarConcepts?: boolean;
 };
 
 export type NavCluster = {
@@ -59,6 +60,7 @@ export type NavGroup = {
   readonly href: string;
   readonly entries: readonly NavEntry[];
   readonly leafTopic?: NavTopic;
+  readonly hubTopic?: NavTopic;
 };
 
 export type Crumb = {

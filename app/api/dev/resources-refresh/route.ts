@@ -1,5 +1,6 @@
 import { watch } from "node:fs";
 import path from "node:path";
+import { clearTopicParseCache } from "@/lib/parse/load";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,6 +38,7 @@ function ensureWatcher() {
   state.watcher = watch(dir, { recursive: true }, () => {
     clearTimeout(state.timer);
     state.timer = setTimeout(() => {
+      clearTopicParseCache();
       for (const listener of state.listeners) {
         listener("refresh");
       }

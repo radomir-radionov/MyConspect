@@ -104,17 +104,17 @@ describe("handbook sidebar", () => {
     );
   });
 
-  it("keeps Patterns open when opening it from Algorithms Core", () => {
+  it("keeps Patterns open when opening it from Algorithms Big O", () => {
     cy.visit("/en/algorithms/algorithms-core#time-vs-space-complexity");
     cy.nav("track", "algorithms").should("have.attr", "aria-expanded", "true");
-    cy.nav("cluster", "core").should("have.attr", "aria-expanded", "true");
+    cy.nav("cluster", "big-o").should("have.attr", "aria-expanded", "true");
     cy.sidebar().contains("Time vs space complexity").should("be.visible");
 
     cy.nav("cluster", "patterns").click();
 
     cy.nav("cluster", "patterns").should("have.attr", "aria-expanded", "true");
     cy.sidebar().contains("Patterns").should("be.visible");
-    cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
+    cy.nav("cluster", "big-o").should("have.attr", "aria-expanded", "false");
     cy.nav("cluster", "algorithms").should(
       "have.attr",
       "aria-expanded",
@@ -197,7 +197,6 @@ describe("handbook sidebar", () => {
   it("opens Computer science from Other without sending the track to Algorithms", () => {
     cy.visit("/en/other");
     cy.nav("subject", "git").should("be.visible");
-    cy.nav("topic", "special-testing").should("be.visible");
     cy.nav("topic", "special-sdlc").should("be.visible");
     cy.nav("topic", "special-security").should("be.visible");
     cy.nav("topic", "computer-science").should("be.visible");
@@ -209,7 +208,6 @@ describe("handbook sidebar", () => {
 
     cy.location("pathname").should("eq", "/en/other/computer-science");
     cy.contains("h1", "Computer science");
-    cy.nav("topic", "special-testing").should("be.visible");
     cy.nav("topic", "special-security").should("be.visible");
   });
 

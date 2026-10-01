@@ -8,7 +8,7 @@
 
 * [JS Core](./3_js_core.md) · [JS Array](./3_js_array.md) · [JS-функции](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Async](./3_js_async.md)
 * [События](./3_js_events.md) · [Дополнительный браузер](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
-* [HTML-браузер и рендеринг](./1_html.md) · [Веб-API](./6_web_api.md) · [файлы и файловые системы ОС](./8_nodejs_modules.md#files--file-systems)* [Jest DOM-тесты (`jsdom`)](./7_special_testing.md#jest--first-tests-node-vs-jsdom)
+* [HTML-браузер и рендеринг](./1_html.md) · [Веб-API](./6_web_api.md) · [файлы и файловые системы ОС](./8_nodejs_modules.md#files--file-systems)* [Jest DOM-тесты (`jsdom`)](./7_special_testing_tooling.md#jest--first-tests-node-vs-jsdom)
 
 ### Main concepts
 
