@@ -2,14 +2,16 @@
 
 import {
   useCallback,
+  useEffect,
   useState,
   type Dispatch,
   type SetStateAction,
 } from "react";
+import { SIDEBAR_COLLAPSE_ALL_EVENT } from "@/constants";
 import type { TrackId } from "@/lib/catalog";
 import type { NavGroup } from "@/lib/nav";
 import { hashIdFrom } from "./hash";
-import { locationForPath, type NavLocation } from "./location";
+import { isHomePath, locationForPath, type NavLocation } from "./location";
 
 type NavSnapshot = {
   searching: boolean;
@@ -56,6 +58,21 @@ function foldFromSync(
     sectionKey,
     topicHref,
   };
+}
+
+export function collapseAllSidebarTracks(
+  setOpenTrackIds: Dispatch<SetStateAction<Set<TrackId>>>,
+  setTrackFolds: Dispatch<SetStateAction<Map<TrackId, NavLocation>>>,
+) {
+  setOpenTrackIds(new Set());
+  setTrackFolds(new Map());
+}
+
+export function dispatchSidebarCollapseAll() {
+  if (typeof window === "undefined") {
+    return;
+  }
+  window.dispatchEvent(new Event(SIDEBAR_COLLAPSE_ALL_EVENT));
 }
 
 export function foldRevision(
@@ -150,6 +167,15 @@ export function useSidebarOpen({
     [],
   );
 
+  useEffect(() => {
+    function onCollapseAll() {
+      collapseAllSidebarTracks(setOpenTrackIds, setTrackFolds);
+    }
+    window.addEventListener(SIDEBAR_COLLAPSE_ALL_EVENT, onCollapseAll);
+    return () =>
+      window.removeEventListener(SIDEBAR_COLLAPSE_ALL_EVENT, onCollapseAll);
+  }, []);
+
   const toggleTrackId = useCallback((trackId: TrackId) => {
     setOpenTrackIds((previous) => {
       if (previous.has(trackId)) {
@@ -199,6 +225,10 @@ function syncOpenState({
   setTrackFolds: Dispatch<SetStateAction<Map<TrackId, NavLocation>>>;
 }) {
   const leftSearch = snapshot.searching;
+  if (!leftSearch && pathname !== snapshot.pathname && isHomePath(pathname)) {
+    collapseAllSidebarTracks(setOpenTrackIds, setTrackFolds);
+    return;
+  }
   if (
     leftSearch ||
     activeTrackId !== snapshot.activeTrackId ||

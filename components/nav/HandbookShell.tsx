@@ -11,6 +11,7 @@ import {
 import { SearchQueryContext } from "@/components/search";
 import { HANDBOOK_MAIN_ID, HANDBOOK_NAV_ASIDE_ID } from "@/constants";
 import { ContentBreadcrumbs } from "./ContentBreadcrumbs";
+import { dispatchSidebarCollapseAll } from "./useSidebarOpen";
 import { DrawerFooter, SiteHeader } from "./SiteHeader";
 import { SidebarDockButton } from "./SidebarDockButton";
 import { TopicSidebar } from "./TopicSidebar";
@@ -87,6 +88,7 @@ export function HandbookShell({
     [changeQuery],
   );
   const onHomeClick = useCallback(() => {
+    dispatchSidebarCollapseAll();
     clearQuery();
     setSearchSheetDismissed(false);
     dismissNav();

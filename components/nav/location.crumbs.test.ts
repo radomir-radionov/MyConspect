@@ -119,23 +119,43 @@ const groups: readonly NavGroup[] = [
 ];
 
 function trail(pathname: string, hash = "") {
-  return crumbsForPath(groups, pathname, hash, labels).map((item) => item.label);
+  return crumbsForPath(groups, pathname, hash, labels).map(
+    (item) => item.label,
+  );
 }
 
 test("Node.js hub does not treat a same-named cluster hash as the current page", () => {
-  assert.deepEqual(trail("/backend/nodejs", "#http"), ["Home", "Backend", "Node.js"]);
+  assert.deepEqual(trail("/backend/nodejs", "#http"), [
+    "Home",
+    "Backend",
+    "Node.js",
+  ]);
 });
 
 test("Core cluster hash on the hub does not nest under Core", () => {
-  assert.deepEqual(trail("/backend/nodejs", "#core"), ["Home", "Backend", "Node.js"]);
+  assert.deepEqual(trail("/backend/nodejs", "#core"), [
+    "Home",
+    "Backend",
+    "Node.js",
+  ]);
 });
 
 test("HTTP topic does not duplicate the cluster name in the trail", () => {
-  assert.deepEqual(trail("/backend/nodejs-http"), ["Home", "Backend", "Node.js", "HTTP"]);
+  assert.deepEqual(trail("/backend/nodejs-http"), [
+    "Home",
+    "Backend",
+    "Node.js",
+    "HTTP",
+  ]);
 });
 
 test("Core topic does not duplicate the cluster name in the trail", () => {
-  assert.deepEqual(trail("/backend/nodejs-core"), ["Home", "Backend", "Node.js", "Core"]);
+  assert.deepEqual(trail("/backend/nodejs-core"), [
+    "Home",
+    "Backend",
+    "Node.js",
+    "Core",
+  ]);
 });
 
 test("Additional topic does not duplicate the cluster name in the trail", () => {
@@ -174,20 +194,19 @@ test("Additional topic does not duplicate the cluster name in the trail", () => 
   ];
   const labels = { home: "Home", instructions: "Instructions" };
   const trailAdditional = (pathname: string, hash = "") =>
-    crumbsForPath(withAdditional, pathname, hash, labels).map((item) => item.label);
+    crumbsForPath(withAdditional, pathname, hash, labels).map(
+      (item) => item.label,
+    );
   assert.deepEqual(trailAdditional("/backend/nodejs-additional"), [
     "Home",
     "Backend",
     "Node.js",
     "Additional",
   ]);
-  assert.deepEqual(trailAdditional("/backend/nodejs-additional", "#child-process"), [
-    "Home",
-    "Backend",
-    "Node.js",
-    "Additional",
-    "child_process",
-  ]);
+  assert.deepEqual(
+    trailAdditional("/backend/nodejs-additional", "#child-process"),
+    ["Home", "Backend", "Node.js", "Additional", "child_process"],
+  );
 });
 
 test("HTTP topic still appends the open concept", () => {
@@ -211,5 +230,18 @@ test("multi-topic clusters stay in the trail", () => {
 });
 
 test("JavaScript Async does not nest under Additional", () => {
-  assert.deepEqual(trail("/frontend/js-async"), ["Home", "Frontend", "JavaScript", "Async"]);
+  assert.deepEqual(trail("/frontend/js-async"), [
+    "Home",
+    "Frontend",
+    "JavaScript",
+    "Async",
+  ]);
+});
+
+test("isHomePath matches locale home routes only", async () => {
+  const { isHomePath } = await import("./location");
+  assert.equal(isHomePath("/en"), true);
+  assert.equal(isHomePath("/ru"), true);
+  assert.equal(isHomePath("/en/frontend"), false);
+  assert.equal(isHomePath("/en/instructions"), false);
 });

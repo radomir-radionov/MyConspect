@@ -23,6 +23,10 @@ export type NavLocation = {
   sectionKey: string | null;
 };
 
+export function isHomePath(pathname: string): boolean {
+  return stripLocalePrefix(pathname).path === "/";
+}
+
 export function isActiveHref(pathname: string, href: string): boolean {
   return pathname === href;
 }

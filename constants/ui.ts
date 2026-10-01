@@ -10,3 +10,4 @@ export const SEARCH_NAV_DELAY_MS = 280;
 export const SEARCH_INDEX_HREF = "/search-index";
 export const NAV_FOLD_MS = 200;
 export const SIDEBAR_PIN_HOLD_MS = 2000;
+export const SIDEBAR_COLLAPSE_ALL_EVENT = "myconspect:sidebar-collapse-all";
