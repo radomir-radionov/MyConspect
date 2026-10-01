@@ -53,3 +53,18 @@ test("collectConceptBlocks still strips duplicate heading without anchor preambl
   assert.equal(blocks.length, 1);
   assert.doesNotMatch(blocks[0].body, /^#{1,3}\s+Factory/m);
 });
+
+test("collectConceptBlocks keeps short interview task bodies", () => {
+  const blocks = collectConceptBlocks(`
+## Coding tasks
+
+<details>
+<summary>Task 1 — Short prompt</summary>
+
+Implement \`Pick\` without the built-in utility.
+</details>
+`);
+
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0].title, "Task 1 — Short prompt");
+});

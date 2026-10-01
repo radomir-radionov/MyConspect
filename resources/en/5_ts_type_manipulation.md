@@ -1,97 +1,203 @@
 # TypeScript — Type Manipulation
 
-Generics, keyof, typeof, indexed access, conditional and mapped types, template literals.
+Creating types from types — generics, type operators, conditional and mapped types — from the [TypeScript handbook](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html).
 
 [← Back to hub](./5_ts.md)
 
 ### Related docs
 
-* [TypeScript — hub](./5_ts.md) · [Interview](./5_ts_interview.md)
+[TypeScript — hub](./5_ts.md) · [Object Types](./5_ts_objects.md#generic-object-types) · [Functions](./5_ts_functions.md#generic-functions) · [Utility Types](./5_ts_utility_types.md) · [Interview](./5_ts_interview.md)
+
+### Main concepts
+
+| Topic                                                   | Covers                                                       |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| [Overview](#overview)                                   | What Type Manipulation is and handbook topic map             |
+| [Creating Types from Types](#creating-types-from-types) | Compose types from existing types                            |
+| [Generics](#generics)                                   | Type parameters, constraints, generic classes and interfaces |
+| [Keyof Type Operator](#keyof-type-operator)             | Union of object keys — `keyof T`                             |
+| [`typeof` Type Operator](#typeof-type-operator)         | Type of a value in type position                             |
+| [Indexed Access Types](#indexed-access-types)           | Look up property types — `T["key"]`                          |
+| [Conditional Types](#conditional-types)                 | Type-level if/else — `T extends U ? X : Y`                   |
+| [Mapped Types](#mapped-types)                           | Transform every property — `{ [K in keyof T]: ... }`         |
+| [Template Literal Types](#template-literal-types)       | String types from unions and literals                        |
+| [How the tools combine](#how-the-tools-combine)         | Patterns chaining operators                                  |
+| [Map Pattern](#map-pattern)                             | Union → object lookup table                                  |
+| [Branded / Nominal Types](#branded--nominal-types)      | Interview pattern for distinct primitives                    |
 
 ### Sections
 
-- [Generics & type operators](#generics-type-operators)
+- [Overview](#overview)
+- [Creating Types from Types](#creating-types-from-types)
+- [Generics](#generics)
+- [Keyof Type Operator](#keyof-type-operator)
+- [`typeof` Type Operator](#typeof-type-operator)
+- [Indexed Access Types](#indexed-access-types)
+- [Conditional Types](#conditional-types)
+- [Mapped Types](#mapped-types)
+- [Template Literal Types](#template-literal-types)
+- [How the tools combine](#how-the-tools-combine)
+- [Map Pattern](#map-pattern)
+- [Branded / Nominal Types](#branded--nominal-types)
 
 ---
 
-## Generics & type operators
+## Overview
 
 <details>
-  <summary>Generics & type operators</summary>
+<summary>Type Manipulation</summary>
 
-### Generics
+**Definition:** **Type Manipulation** is the handbook track for building **new types from existing types** — generics, type operators, and type-level transforms. You describe relationships between types instead of duplicating shapes by hand.
 
-**Definition:**
+**How it works:**
 
-Type parameters that let one function/class/interface work with many types while keeping type safety: `<T>`.
+| Topic                                             | Covers                                                | Handbook                                                                                       |
+| ------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| [Generics](#generics)                             | Type parameters on functions, interfaces, and classes | [generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)                       |
+| [Keyof Type Operator](#keyof-type-operator)       | Union of an object's keys — `keyof T`                 | [keyof](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html)                       |
+| [`typeof` Type Operator](#typeof-type-operator)   | Type of a value in type position                      | [typeof](https://www.typescriptlang.org/docs/handbook/2/typeof-types.html)                     |
+| [Indexed Access Types](#indexed-access-types)     | Look up a property type — `T["key"]`                  | [indexed access](https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html)     |
+| [Conditional Types](#conditional-types)           | Type-level if/else — `T extends U ? X : Y`            | [conditional](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)           |
+| [Mapped Types](#mapped-types)                     | Transform every property — `{ [K in keyof T]: ... }`  | [mapped](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html)                     |
+| [Template Literal Types](#template-literal-types) | String types from unions and literals                 | [template literal](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) |
 
-| When to use | Notes |
-|-------------|-------|
-| Declare `function id<T>(x: T): T` or `class Box<T> { value: T }`. TS infers `T` from arguments; pass explicitly when needed: `id<string>("a")`. Constrain with `T extends SomeType`. | Type params stand in for *any* type until constrained — you can't call `.length` on `T` unless you constrain `T extends { length: number }`. Inference usually fills in `<T>` for you; pass explicitly w |
+**Prerequisites:** Everyday types ([Types](./5_ts_types.md)), object shapes ([Object Types](./5_ts_objects.md)), and function generics basics ([Functions — Generic Functions](./5_ts_functions.md#generic-functions)). Built-in helpers built on these patterns: [Utility Types](./5_ts_utility_types.md).
+
+**When to use:** Reusable APIs (`fetchJson<T>`), safe property access (`keyof` + `extends`), deriving types from values (`typeof`, indexed access), and custom utility types (conditionals, mapped types, template literals).
+
+**Thoughts:** Read in handbook order above. Start with **Generics**, then **keyof** / **typeof** / **indexed access**; add **conditional** and **mapped** types when you need `infer`, `Partial`-style transforms, or key remapping. Extra patterns at the end: [How the tools combine](#how-the-tools-combine), [Map Pattern](#map-pattern), [Branded types](#branded--nominal-types).
+
+**Sources:** [TypeScript handbook — Creating Types from Types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html) · [TypeScript handbook — Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)
+
+</details>
+
+---
+
+## Creating Types from Types
+
+<details>
+<summary>Creating Types from Types</summary>
+
+**Definition:** Techniques to build **new types from existing types** without duplicating shapes — the core of advanced TypeScript typing.
+
+**How it works:**
+
+- **Generics** — parameterize types and functions (`Box<T>`).
+- **Type operators** — `keyof`, `typeof`, indexed access (`T[K]`).
+- **Type transforms** — conditional types, mapped types, template literal types.
+- These tools combine: e.g. `ReturnType<typeof fn>` uses `typeof` + conditional + `infer`.
+
+**When to use:** When a runtime value or base interface already encodes the shape you need, derive types instead of maintaining parallel definitions.
+
+**Thoughts:** Start with generics and `keyof`/`typeof`; add conditionals and mapped types when utility types or API wrappers need them. See also [Utility Types](./5_ts_utility_types.md) for built-ins built on these patterns.
+
+**Sources:** [TypeScript handbook — Creating Types from Types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
+
+</details>
+
+---
+
+## Generics
+
+<details>
+<summary>Generics</summary>
+
+**Definition:** Type parameters (`<T>`) let one function, class, or interface work over many types while preserving type information — unlike `any`, which erases it.
+
+**How it works:**
+
+### Hello World — the identity function
+
+- `function identity<Type>(arg: Type): Type` captures the argument type and returns the same type.
+- Call with explicit type arg: `identity<string>("myString")`.
+- Or rely on **type argument inference**: `identity("myString")` → `string`.
+- Pass explicit type args when inference fails on complex calls.
+
+### Working with generic type variables
+
+- `T` stands for any type — you cannot assume `.length` unless constrained.
+- `loggingIdentity<Type>(arg: Type[]): Type[]` or `Array<Type>` fixes the array case.
+
+### Generic types (function types and interfaces)
+
+- Function type: `let fn: <T>(arg: T) => T = identity`.
+- Object call signature: `let fn: { <T>(arg: T): T } = identity`.
+- Generic interface with type param on the interface: `interface GenericIdentityFn<Type> { (arg: Type): Type }` — then `GenericIdentityFn<number>`.
+
+### Generic classes
+
+- `class GenericNumber<NumType> { zeroValue: NumType; add: (x: NumType, y: NumType) => NumType }`.
+- Type parameter on the class applies to **instance** members, not static members.
+
+### Generic constraints
+
+- `function loggingIdentity<Type extends Lengthwise>(arg: Type)` — `Type` must have `.length`.
+- `function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key)` — key must exist on `obj`.
+
+### Using class types in generics
+
+- Factory pattern: `function create<Type>(c: { new (): Type }): Type { return new c(); }`.
+- `function createInstance<A extends Animal>(c: new () => A): A`.
+
+### Generic parameter defaults
+
+- `function create<T extends HTMLElement = HTMLDivElement, U extends HTMLElement[] = T[]>(element?: T, children?: U)` — omitted type args use defaults.
+- Required type parameters must come before optional ones.
+
+**When to use:** Reusable containers, API wrappers, React hooks/components, and any API where input and output types should stay linked. Function-level basics: [Generic Functions](./5_ts_functions.md#generic-functions). Object-level: [Generic Object Types](./5_ts_objects.md#generic-object-types).
 
 **Examples:**
 
 ```typescript
-// Too narrow
-function identity(arg: number): number { return arg; }
+// identity — preserve type (not any)
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
 
-// Loses type info
-function identity(arg: any): any { return arg; }
+let a = identity("myString"); // string
+let b = identity<string>("myString");
 
-// Generic — preserves type
-function identity<T>(arg: T): T { return arg; }
-
-let a = identity("myString");        // inferred: string
-let b = identity<string>("myString"); // explicit type arg
-```
-
-```typescript
-const getter = <T>(data: T): T => data;
-
-getter("test").length;     // 4 — inferred string
-// getter(10).length;      // Error — number has no length
-
-// Explicit type argument when inference fails
-getter<number>(10);
-getter<string>("test").length; // 4
-```
-
-```typescript
 function getFirstElement<T>(arr: T[]): T {
   return arr[0];
 }
 
-const first = getFirstElement([1, 2, 3]);     // number
-const word = getFirstElement(["a", "b"]);   // string
-// getFirstElement([1, "two"]);            // Error — mixed array unless T is string | number
+interface Lengthwise {
+  length: number;
+}
+
+function loggingIdentity<Type extends Lengthwise>(arg: Type): Type {
+  console.log(arg.length);
+  return arg;
+}
+
+function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key) {
+  return obj[key];
+}
+
+let x = { a: 1, b: 2, c: 3 };
+getProperty(x, "a"); // OK
+// getProperty(x, "m"); // Error
+
+interface GenericIdentityFn<Type> {
+  (arg: Type): Type;
+}
+
+class GenericNumber<NumType> {
+  zeroValue: NumType;
+  add: (x: NumType, y: NumType) => NumType;
+}
+
+function create<Type>(c: { new (): Type }): Type {
+  return new c();
+}
+
+declare function createElement<T extends HTMLElement = HTMLDivElement>(
+  element?: T,
+): T;
 ```
 
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
-
-### Interview example — API wrapper + React `useState`
-
-**Definition:**
-
-// Generic API response shape
-
-type ApiResponse<T> =
-  | { success: true; data: T }
-  | { success: false; error: string };
-
-| Aspect | Detail |
-|--------|--------|
-| Summary | // Generic API response shape
-type ApiResponse<T> =
-  \| { success: true; data: T }
-  \| { success: false; error: string |
-
-**Examples:**
-
 ```typescript
-// React — generic state
-const [ids, setIds] = useState<number[]>([]);
-
-// Generic API response shape
+// Interview — generic API wrapper
 type ApiResponse<T> =
   | { success: true; data: T }
   | { success: false; error: string };
@@ -102,85 +208,26 @@ async function fetchJson<T>(url: string): Promise<ApiResponse<T>> {
   const data = (await res.json()) as T;
   return { success: true, data };
 }
-
-type User = { id: number; name: string };
-
-const result = await fetchJson<User[]>("/api/users");
-if (result.success) {
-  result.data.forEach((u) => u.name); // User[] — full autocomplete
-}
 ```
 
-```typescript
-interface Box<T> {
-  contents: T;
-}
+**Sources:** [TypeScript handbook — Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)
 
-interface GenericIdentityFn<T> {
-  (arg: T): T;
-}
+</details>
 
-class GenericNumber<T> {
-  zeroValue: T;
-  add: (x: T, y: T) => T;
-}
+---
 
-// Single type param — both fields same type
-class User<T> {
-  constructor(public name: T, public age: T) {}
-  getPass() {
-    return `${this.name}${this.age}`;
-  }
-}
-new User("Yauhen", "31").getPass(); // "Yauhen31"
-new User(123, 321).getPass();       // "123321"
+## Keyof Type Operator
 
-// Multiple type params — different field types
-class User2<T, K> {
-  constructor(public name: T, public age: K) {}
-  getPass() {
-    return `${this.name}${this.age}`;
-  }
-}
-new User2("Leo", 22).getPass(); // "Leo22"
+<details>
+<summary>Keyof Type Operator</summary>
 
-// Constrained type param
-class User3<T, K extends number> {
-  constructor(public name: T, public age: K) {}
-  getSecret() {
-    return this.age ** 2;
-  }
-}
-new User3("Yauhen", 31).getSecret(); // 961
-// new User3("Max", "20"); // Error — age must be number
+**Definition:** `keyof T` produces a union of `T`'s keys — `"a" | "b"` for `{ a: 1; b: 2 }`.
 
-// Multiple type params + constraints (Pair pattern)
-class Pair<T, K extends number> {
-  constructor(public key: T, public value: K) {}
-  square() {
-    return this.value ** 2;
-  }
-}
+**How it works:**
 
-const p = new Pair("age", 31);
-p.square(); // 961
-
-// Generic classes: type param applies to instance side, not static members
-```
-
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
-
-### `keyof` Type Operator
-
-**Definition:**
-
-Produces a union of an object's keys: `keyof { a: 1; b: 2 }` → `"a" | "b"`.
-
-| When to use | Notes |
-|-------------|-------|
-| Use with generics for safe property access: `function get<T, K extends keyof T>(obj: T, key: K): T[K]`. Foundation for mapped types. | With index signatures, `keyof` returns the index type — `keyof { [k: string]: boolean }` → `string \| number` (because `obj[0]` === `obj["0"]` in JS). Pairs powerfully with mapped types and `getProper |
-
-**How it works:** `keyof` + `extends` builds **type-safe APIs** without magic strings — `getProperty(user, "phone")` fails at compile time if `"phone"` is not a key of `user`. Combine with `typeof`, `in`, and utility types for flexible contracts.
+- With index signatures, `keyof { [k: string]: boolean }` → `string | number` (numeric keys stringify).
+- Combine with `extends` for safe property access: `get<T, K extends keyof T>(obj: T, key: K): T[K]`.
+- Foundation for mapped types and many utility types.
 
 **Examples:**
 
@@ -193,19 +240,30 @@ type A = keyof Arrayish; // number
 
 type Mapish = { [k: string]: boolean };
 type M = keyof Mapish; // string | number
+
+function pick<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
 ```
 
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
+**Sources:** [TypeScript handbook — Keyof Type Operator](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html)
 
-### `typeof` Type Operator
+</details>
 
-**Definition:**
+---
 
-In **type position**, gets the type of a value or variable — not the runtime `typeof` string.
+## `typeof` Type Operator
 
-| When to use | Notes |
-|-------------|-------|
-| Write `type A = typeof myVar` or `typeof obj["prop"]`. Common pattern: `ReturnType<typeof fn>` needs `typeof fn` first. | Values and types live in separate namespaces. `ReturnType<f>` is wrong — use `ReturnType<typeof f>`. Only works on identifiers and their properties, not arbitrary expressions (prevents `typeof msgbox( |
+<details>
+<summary>`typeof` Type Operator</summary>
+
+**Definition:** In **type position**, `typeof` refers to the **type** of a value — not the runtime `typeof` string.
+
+**How it works:**
+
+- Values and types live in separate namespaces — use `typeof myVar` to get a type from a value.
+- `ReturnType<typeof fn>` needs `typeof` because `fn` is a value, not a type.
+- Works on identifiers and their properties; not arbitrary call expressions.
 
 **Examples:**
 
@@ -219,84 +277,88 @@ function f() {
 
 type P = ReturnType<typeof f>; // { x: number; y: number }
 
-// type P = ReturnType<f>; // Error — f is a value, not a type
+// type P = ReturnType<f>; // Error — f is a value
+
+const STATUS_CONFIG = {
+  idle: { label: "Idle", retry: false },
+  loading: { label: "Loading…", retry: false },
+} as const;
+
+type Status = keyof typeof STATUS_CONFIG;
 ```
 
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
+**Sources:** [TypeScript handbook — Typeof Type Operator](https://www.typescriptlang.org/docs/handbook/2/typeof-types.html)
 
-### Indexed Access Types
+</details>
 
-**Definition:**
+---
 
-Look up a property's type from another type: `Person["age"]` → `number`.
+## Indexed Access Types
 
-| When to use | Notes |
-|-------------|-------|
-| Use `T["key"]` or `T[K]` where `K extends keyof T`. Extract nested types without duplicating shapes. | The index must be a **type**, not a runtime variable. `const key = "age"` won't work as `Person[key]` — use `type key = "age"` or `Person[typeof key]` with `as const`. |
+<details>
+<summary>Indexed Access Types</summary>
+
+**Definition:** Look up a property's type from another type — `Person["age"]` → `number`, or `T[K]` where `K extends keyof T`.
+
+**How it works:**
+
+- Index must be a **type**, not a runtime variable — use `typeof key` with `as const` for value keys.
+- `Person[keyof Person]` — union of all property types.
+- `typeof MyArray[number]` — element type of an array value.
 
 **Examples:**
 
 ```typescript
 type Person = { age: number; name: string; alive: boolean };
 
-type Age = Person["age"];                    // number
-type I1 = Person["age" | "name"];          // string | number
-// type Bad = Person["alve"];              // Error — typo: property doesn't exist
-type I2 = Person[keyof Person];             // string | number | boolean
+type Age = Person["age"]; // number
+type I1 = Person["age" | "name"]; // string | number
+type I2 = Person[keyof Person]; // string | number | boolean
 
 const MyArray = [
   { name: "Alice", age: 15 },
   { name: "Bob", age: 23 },
 ];
-type Person = typeof MyArray[number];        // element type
-type Age = typeof MyArray[number]["age"];   // number
-
-// const key = "age";
-// type Bad = Person[key]; // Error — key is a value
+type PersonFromArray = (typeof MyArray)[number];
+type AgeFromArray = (typeof MyArray)[number]["age"]; // number
 
 type key = "age";
 type Good = Person[key]; // number
 ```
 
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
+**Sources:** [TypeScript handbook — Indexed Access Types](https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html)
 
-### Conditional Types
+</details>
 
-**Definition:**
+---
 
-Type-level if/else: `T extends U ? X : Y` — picks `X` or `Y` based on whether `T` is assignable to `U`.
+## Conditional Types
 
-| When to use | Notes |
-|-------------|-------|
-| Build dependent types, unwrap arrays (`Flatten<T>`), extract return types with `infer`. Wrap in `[T]` to disable distribution over unions. | **Distributive** over unions: `ToArray<string \| number>` → `string[] \| number[]`, not `(string \| number)[]`. Wrap in `[T]` to disable: `[Type] extends [any] ? Type[] : never`. |
+<details>
+<summary>Conditional Types</summary>
+
+**Definition:** Type-level if/else — `SomeType extends OtherType ? TrueType : FalseType`.
+
+**How it works:**
+
+- **Distributive** over naked type parameters in unions: `ToArray<string | number>` → `string[] | number[]`.
+- Wrap in `[T]` to disable distribution: `[Type] extends [any] ? Type[] : never`.
+- `infer` extracts types inside conditional branches — powers `ReturnType`, `Parameters`, custom unwrap helpers.
 
 **Examples:**
 
 ```typescript
 type Example1 = Dog extends Animal ? number : string; // number
-type Example2 = RegExp extends Animal ? number : string; // string
 
-type NameOrId<T extends number | string> =
-  T extends number ? IdLabel : NameLabel;
+type NameOrId<T extends number | string> = T extends number
+  ? IdLabel
+  : NameLabel;
 
-function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
-  throw "unimplemented";
-}
-```
+type MessageOf<T> = T extends { message: unknown } ? T["message"] : never;
 
-```typescript
-type MessageOf<T> = T extends { message: unknown }
-  ? T["message"]
-  : never;
-
-type Flatten<T> = T extends any[] ? T[number] : T;
+type Flatten<T> = T extends Array<infer Item> ? Item : T;
 
 type Str = Flatten<string[]>; // string
-type Num = Flatten<number>;   // number
-```
-
-```typescript
-type Flatten<T> = T extends Array<infer Item> ? Item : T;
 
 type GetReturnType<T> = T extends (...args: never[]) => infer Return
   ? Return
@@ -305,17 +367,25 @@ type GetReturnType<T> = T extends (...args: never[]) => infer Return
 type Num = GetReturnType<() => number>; // number
 ```
 
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
+**Sources:** [TypeScript handbook — Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)
 
-### Mapped Types
+</details>
 
-**Definition:**
+---
 
-Transform every property of a type by iterating keys: `{ [K in keyof T]: NewType }`.
+## Mapped Types
 
-| When to use | Notes |
-|-------------|-------|
-| Create flags objects, make all props optional/readonly, rename keys with `as`. Base for many utility types (`Partial`, `Record`). | Mapping modifiers: `readonly`, `?`, and their removers `-readonly`, `-?`. Key remapping with `as` (TS 4.1+): `[K in keyof T as NewKey]: T[K]`. Filter keys by mapping to `never`. |
+<details>
+<summary>Mapped Types</summary>
+
+**Definition:** Transform every property of a type by iterating keys — `{ [Property in keyof T]: NewType }`.
+
+**How it works:**
+
+- Mapping modifiers: `readonly`, `?`, and removers `-readonly`, `-?`.
+- Key remapping with `as` (TS 4.1+): `[K in keyof T as NewKey]: T[K]`.
+- Filter keys by mapping to `never`.
+- Base for `Partial`, `Record`, `Pick`, and custom flag objects.
 
 **Examples:**
 
@@ -331,42 +401,38 @@ type Features = {
 
 type FeatureOptions = OptionsFlags<Features>;
 // { darkMode: boolean; newUserProfile: boolean }
-```
 
-```typescript
-// Mapped type + conditional — transform property types per key
-type Person = { name: string; age: number };
-
-type UpdatedPerson = {
-  [P in keyof Person]: P extends "name" ? string : number;
-};
-
-const person: UpdatedPerson = { name: "John", age: 25 };
-```
-
-```typescript
-// Remove readonly
 type CreateMutable<T> = {
   -readonly [P in keyof T]: T[P];
 };
 
-// Remove optional
 type Concrete<T> = {
   [P in keyof T]-?: T[P];
 };
+
+type UpdatedPerson = {
+  [P in keyof Person]: P extends "name" ? string : number;
+};
 ```
 
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
+**Sources:** [TypeScript handbook — Mapped Types](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html)
 
-### Template Literal Types
+</details>
 
-**Definition:**
+---
 
-String types built from string literals and unions: `` `get${Capitalize<Keys>}` ``.
+## Template Literal Types
 
-| When to use | Notes |
-|-------------|-------|
-| Generate event names, CSS keys, or API paths from a union of strings. Combine with mapped types for getter/setter names. | `` `${A \| B}_id` `` → every combination. Cross-multiply multiple unions for i18n keys etc. Built-in intrinsics: `Uppercase`, `Lowercase`, `Capitalize`, `Uncapitalize` — not locale-aware. |
+<details>
+<summary>Template Literal Types</summary>
+
+**Definition:** String types built from string literals and unions — `` `hello ${World}` ``, `` `${A | B}_id` ``.
+
+**How it works:**
+
+- Unions in template positions **cross-multiply**: `` `${"a" | "b"}_${"x" | "y"}` `` → four combinations.
+- Combine with mapped types for event names: `` `${K}Changed` ``.
+- Built-in intrinsics (not locale-aware): `Uppercase`, `Lowercase`, `Capitalize`, `Uncapitalize`.
 
 **Examples:**
 
@@ -377,87 +443,40 @@ type Greeting = `hello ${World}`; // "hello world"
 type EmailLocaleIDs = "welcome_email" | "email_heading";
 type FooterLocaleIDs = "footer_title" | "footer_sendoff";
 type AllLocaleIDs = `${EmailLocaleIDs | FooterLocaleIDs}_id`;
-// "welcome_email_id" | "email_heading_id" | "footer_title_id" | "footer_sendoff_id"
 
-type Lang = "en" | "ja";
-type LocaleMessageIDs = `${Lang}_${AllLocaleIDs}`;
-// 2 × 4 = 8 string literal combinations
-```
+type Shouty = Uppercase<"hello">; // "HELLO"
+type Cap = Capitalize<"hello world">; // "Hello world"
 
-```typescript
 type PropEventSource<T> = {
   on<K extends string & keyof T>(
     eventName: `${K}Changed`,
-    callback: (newValue: T[K]) => void
+    callback: (newValue: T[K]) => void,
   ): void;
 };
-
-declare function makeWatchedObject<T>(obj: T): T & PropEventSource<T>;
-
-const person = makeWatchedObject({
-  firstName: "Saoirse",
-  age: 26,
-});
-
-person.on("firstNameChanged", (name) => {
-  console.log(name.toUpperCase()); // name: string
-});
-
-person.on("ageChanged", (age) => {
-  if (age < 0) console.warn("negative age"); // age: number
-});
-
-// person.on("firstName", () => {}); // Error — wrong event name
 ```
 
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
+**Sources:** [TypeScript handbook — Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
 
-### Intrinsic string manipulation types
+</details>
 
-**Definition:**
+---
 
-Intrinsic string manipulation types — TypeScript language or compiler feature.
+## How the tools combine
 
-| Aspect | Detail |
-|--------|--------|
-| Summary | Intrinsic string manipulation types — TypeScript language or compiler feature. |
+<details>
+<summary>How the tools combine</summary>
+
+**Definition:** Real-world types chain operators — rarely used in isolation.
 
 **Examples:**
 
 ```typescript
-type Shouty = Uppercase<"hello">;           // "HELLO"
-type Quiet = Lowercase<"HELLO">;            // "hello"
-type Cap = Capitalize<"hello world">;       // "Hello world"
-type Uncap = Uncapitalize<"HELLO WORLD">;   // "hELLO WORLD"
-
-type CacheKey<S extends string> = `ID-${Uppercase<S>}`;
-type MainID = CacheKey<"my_app">; // "ID-MY_APP"
-```
-
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
-
-### How the tools combine
-
-**Definition:**
-
-// typeof + indexed access + infer (like built-in ReturnType)
-
-type MyReturn<T> = T extends (...args: never[]) => infer R ? R : never;
-
-| Aspect | Detail |
-|--------|--------|
-| Summary | // typeof + indexed access + infer (like built-in ReturnType)
-type MyReturn<T> = T extends (...args: never[]) => infer R |
-
-**Examples:**
-
-```typescript
-// keyof + indexed access + mapped + template literal + conditional
+// keyof + indexed access + mapped + template literal
 type EventMap<T> = {
   [K in keyof T as `${string & K}Changed`]: T[K];
 };
 
-// typeof + indexed access + infer (like built-in ReturnType)
+// typeof + conditional + infer (like ReturnType)
 type MyReturn<T> = T extends (...args: never[]) => infer R ? R : never;
 
 // Generic + keyof + extends (typed getProperty)
@@ -466,25 +485,24 @@ function pick<T, K extends keyof T>(obj: T, key: K): T[K] {
 }
 ```
 
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
+**Sources:** [TypeScript handbook — Creating Types from Types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
 
-### Map Pattern (union → object lookup)
+</details>
 
-**Definition:**
+---
 
-Replace a large union of incompatible shapes with an object keyed by a discriminant.
+## Map Pattern
 
-| When to use | Notes |
-|-------------|-------|
-| Define `{ [K in Status]: HandlerFor<K> }` and index by status — type-safe lookup without impossible intersections. | `type Status = "idle" \| "loading" \| "error"` works until you need metadata per status. A `Record` or const object scales better. |
+<details>
+<summary>Map Pattern</summary>
+
+**Definition:** Replace a large union of incompatible shapes with an object keyed by a discriminant — type-safe lookup without impossible intersections.
+
+**When to use:** `type Status = "idle" | "loading" | "error"` works until each status needs different metadata. A `Record` or `as const` object scales better.
 
 **Examples:**
 
 ```typescript
-// ❌ Union grows unwieldy — easy to miss a case
-type Status = "idle" | "loading" | "success" | "error";
-
-// ✅ Map pattern — keys are the union, values hold per-status data
 const STATUS_CONFIG = {
   idle: { label: "Idle", retry: false },
   loading: { label: "Loading…", retry: false },
@@ -499,17 +517,18 @@ function getConfig(s: Status) {
 }
 ```
 
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
+**Sources:** [TypeScript handbook — Creating Types from Types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
 
-### Branded / Nominal Types (interview pattern)
+</details>
 
-**Definition:**
+---
 
-A technique to make structurally identical types incompatible by adding a phantom brand field.
+## Branded / Nominal Types
 
-| Aspect | Detail |
-|--------|--------|
-| Summary | A technique to make structurally identical types incompatible by adding a phantom brand field. |
+<details>
+<summary>Branded / Nominal Types</summary>
+
+**Definition:** Make structurally identical types incompatible by adding a phantom brand field — common interview pattern.
 
 **Examples:**
 
@@ -521,16 +540,16 @@ function userId(id: string): UserId {
   return id as UserId;
 }
 
-function getUser(id: UserId) { /* ... */ }
+function getUser(id: UserId) {
+  /* ... */
+}
 
 const uid = userId("u-123");
 const oid = userId("o-456") as OrderId;
-// getUser(oid); // Error — OrderId is not UserId despite both being strings
-getUser(uid);    // OK
+// getUser(oid); // Error — OrderId is not UserId
+getUser(uid); // OK
 ```
 
-**Sources:** [TypeScript handbook — types-from-types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
+**Sources:** [TypeScript handbook — Creating Types from Types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
 
 </details>
-
-<a name="utility-types"></a>

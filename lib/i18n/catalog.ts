@@ -304,6 +304,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Структура, семантика, формы и медиа.",
   "Styles, app structure, design patterns, data, and infra.":
     "Стили, структура приложения, паттерны, данные и инфра.",
+  "TanStack Query, Router, Table, Virtual, Form, and ecosystem tools.":
+    "TanStack Query, Router, Table, Virtual, Form и инструменты экосистемы.",
   "Transforms, transitions, animations, and visual effects.":
     "Transforms, transitions, анимации и визуальные эффекты.",
   "Transpilers, bundling concepts, bundlers, and code quality.":

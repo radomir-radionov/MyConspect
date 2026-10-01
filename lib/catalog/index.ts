@@ -40,6 +40,8 @@ export type TopicCluster = {
 export type SubjectSection = {
   readonly id: string;
   readonly title: string;
+  readonly defaultOpen?: boolean;
+  readonly collapsible?: boolean;
 };
 
 export type Subject = {
@@ -96,7 +98,7 @@ export const TRACKS: readonly Track[] = [
   },
 ];
 
-export const SUBJECTS: readonly Subject[] = [
+const SUBJECTS_BASE: readonly Subject[] = [
   {
     slug: "html",
     title: "HTML",
@@ -244,27 +246,155 @@ export const SUBJECTS: readonly Subject[] = [
     title: "TypeScript",
     blurb: "Handbook, language reference, and typing JavaScript.",
     track: "frontend",
-    clusters: [
-      {
-        id: "handbook",
-        title: "Handbook",
-        blurb: "The official handbook track — basics through modules.",
-      },
-      {
-        id: "common",
-        title: "Common",
-        blurb: "Everyday types — primitives, unions, interfaces, and literals.",
-      },
+    sections: [
       {
         id: "reference",
         title: "Reference",
+        defaultOpen: false,
+        collapsible: true,
+      },
+    ],
+    clusters: [
+      {
+        id: "basics",
+        title: "The Basics",
         blurb:
-          "Utility types, decorators, JSX, namespaces, and language reference.",
+          "Static type-checking, compiler, tsconfig, and intro for JS programmers.",
+      },
+      {
+        id: "types",
+        title: "Types",
+        blurb:
+          "Basic value types — string, number, boolean, arrays, any, null, undefined.",
+      },
+      {
+        id: "narrowing-types",
+        title: "Narrowing types",
+        blurb: "Control-flow analysis and type guards.",
+      },
+      {
+        id: "functions",
+        title: "Functions",
+        blurb: "Function types, generics, parameters, overloads, and this.",
+      },
+      {
+        id: "object-types",
+        title: "Object types",
+        blurb:
+          "Object shapes, optional and readonly properties, index signatures, tuples.",
+      },
+      {
+        id: "type-manipulation",
+        title: "Type Manipulation",
+        blurb: "Generics, keyof, typeof, conditional and mapped types.",
+      },
+      {
+        id: "classes",
+        title: "Classes",
+        blurb:
+          "Fields, visibility, inheritance, implements, and abstract classes.",
+      },
+      {
+        id: "modules",
+        title: "Modules",
+        blurb: "ES modules, CommonJS, resolution, and module emit targets.",
       },
       {
         id: "interview",
         title: "Interview",
-        blurb: "Q&A and type challenges.",
+        blurb: "Q&A and oral questions.",
+      },
+      {
+        id: "utility-types",
+        title: "Utility Types",
+        blurb:
+          "Partial, Pick, Omit, Record, ReturnType, and built-in utilities.",
+        section: "reference",
+      },
+      {
+        id: "cheat-sheets",
+        title: "Cheat Sheets",
+        blurb: "Quick-reference cards and interview memorization checklist.",
+        section: "reference",
+      },
+      {
+        id: "decorators",
+        title: "Decorators",
+        blurb: "Stage 2 and stage 3 decorators for classes and members.",
+        section: "reference",
+      },
+      {
+        id: "declaration-merging",
+        title: "Declaration Merging",
+        blurb: "Interface, namespace, class, and enum merging.",
+        section: "reference",
+      },
+      {
+        id: "enums",
+        title: "Enums",
+        blurb:
+          "Numeric and string enums, const enums, and as const alternatives.",
+        section: "reference",
+      },
+      {
+        id: "iterators",
+        title: "Iterators and Generators",
+        blurb: "Symbol.iterator, iterables, generators, and for..of.",
+        section: "reference",
+      },
+      {
+        id: "jsx",
+        title: "JSX",
+        blurb: "JSX in .tsx, intrinsic elements, and component typing.",
+        section: "reference",
+      },
+      {
+        id: "mixins",
+        title: "Mixins",
+        blurb: "Compose classes from partial building blocks.",
+        section: "reference",
+      },
+      {
+        id: "namespaces",
+        title: "Namespaces",
+        blurb: "Legacy namespace organization and ambient declarations.",
+        section: "reference",
+      },
+      {
+        id: "namespaces-modules",
+        title: "Namespaces and Modules",
+        blurb: "When to use ES modules vs legacy namespaces.",
+        section: "reference",
+      },
+      {
+        id: "symbols",
+        title: "Symbols",
+        blurb: "Unique primitive keys and unique symbol types.",
+        section: "reference",
+      },
+      {
+        id: "triple-slash",
+        title: "Triple-Slash Directives",
+        blurb: "Compiler directives, ambient declarations, and declare.",
+        section: "reference",
+      },
+      {
+        id: "type-compatibility",
+        title: "Type Compatibility",
+        blurb: "Structural subtyping, assignability, and variance.",
+        section: "reference",
+      },
+      {
+        id: "type-inference",
+        title: "Type Inference",
+        blurb: "Best common type, contextual typing, and inference.",
+        section: "reference",
+      },
+      {
+        id: "variable-declaration",
+        title: "Variable Declaration",
+        blurb: "var vs let vs const and destructuring with types.",
+        section: "reference",
       },
     ],
   },
@@ -585,7 +715,7 @@ function grouped(
   return { slug, file, title, blurb, track, grouping: { subject, cluster } };
 }
 
-export const TOPICS: readonly Topic[] = [
+const TOPICS_BASE: Topic[] = [
   grouped(
     "html-structure",
     "1_html_structure.md",
@@ -904,6 +1034,15 @@ export const TOPICS: readonly Topic[] = [
     "ecosystem",
   ),
   grouped(
+    "react-tanstack",
+    "4_react_tanstack.md",
+    "TanStack",
+    "TanStack Query, Router, Table, Virtual, Form, and ecosystem tools.",
+    "frontend",
+    "react",
+    "ecosystem",
+  ),
+  grouped(
     "react-interview",
     "4_react_interview.md",
     "Interview",
@@ -982,25 +1121,25 @@ export const TOPICS: readonly Topic[] = [
     "Static type-checking, compiler, tsconfig, and intro for JS programmers.",
     "frontend",
     "typescript",
-    "handbook",
+    "basics",
   ),
   grouped(
     "ts-narrowing",
     "5_ts_narrowing.md",
-    "Narrowing",
+    "Narrowing types",
     "Control-flow analysis and type guards.",
     "frontend",
     "typescript",
-    "handbook",
+    "narrowing-types",
   ),
   grouped(
     "ts-functions",
     "5_ts_functions.md",
-    "More on Functions",
-    "Call signatures, overloads, and this typing.",
+    "Functions",
+    "Function types, generics, parameters, overloads, and this.",
     "frontend",
     "typescript",
-    "handbook",
+    "functions",
   ),
   grouped(
     "ts-objects",
@@ -1009,7 +1148,7 @@ export const TOPICS: readonly Topic[] = [
     "Object shapes, interfaces, optional properties, and tuples.",
     "frontend",
     "typescript",
-    "handbook",
+    "object-types",
   ),
   grouped(
     "ts-type-manipulation",
@@ -1018,7 +1157,7 @@ export const TOPICS: readonly Topic[] = [
     "Generics, keyof, typeof, conditional and mapped types.",
     "frontend",
     "typescript",
-    "handbook",
+    "type-manipulation",
   ),
   grouped(
     "ts-utility-types",
@@ -1027,16 +1166,16 @@ export const TOPICS: readonly Topic[] = [
     "Partial, Pick, Omit, Record, ReturnType, and built-in utilities.",
     "frontend",
     "typescript",
-    "handbook",
+    "utility-types",
   ),
   grouped(
     "ts-classes",
     "5_ts_classes.md",
     "Classes",
-    "Classes, inheritance, abstract classes, and implements.",
+    "Fields, visibility, inheritance, implements, and abstract classes.",
     "frontend",
     "typescript",
-    "handbook",
+    "classes",
   ),
   grouped(
     "ts-modules",
@@ -1045,79 +1184,16 @@ export const TOPICS: readonly Topic[] = [
     "ES modules, import/export, and module resolution.",
     "frontend",
     "typescript",
-    "handbook",
+    "modules",
   ),
   grouped(
-    "ts-primitives",
-    "5_ts_primitives.md",
-    "Primitives",
-    "string, number, boolean, bigint, and symbol.",
+    "ts-types",
+    "5_ts_types.md",
+    "Types",
+    "Basic value types — string, number, boolean, arrays, any, null, undefined.",
     "frontend",
     "typescript",
-    "common",
-  ),
-  grouped(
-    "ts-arrays",
-    "5_ts_arrays.md",
-    "Arrays",
-    "Typed arrays: number[] and Array<T>.",
-    "frontend",
-    "typescript",
-    "common",
-  ),
-  grouped(
-    "ts-top-types",
-    "5_ts_top_types.md",
-    "any, unknown, never",
-    "Top and bottom types — when to use each.",
-    "frontend",
-    "typescript",
-    "common",
-  ),
-  grouped(
-    "ts-type-annotations",
-    "5_ts_type_annotations.md",
-    "Type Annotations",
-    "Explicit type labels and when to omit them.",
-    "frontend",
-    "typescript",
-    "common",
-  ),
-  grouped(
-    "ts-unions-literals",
-    "5_ts_unions_literals.md",
-    "Unions & Literals",
-    "Union types and string/number literal types.",
-    "frontend",
-    "typescript",
-    "common",
-  ),
-  grouped(
-    "ts-aliases-interfaces",
-    "5_ts_aliases_interfaces.md",
-    "Aliases & Interfaces",
-    "type aliases, interface, and when to use which.",
-    "frontend",
-    "typescript",
-    "common",
-  ),
-  grouped(
-    "ts-assertions",
-    "5_ts_assertions.md",
-    "Assertions & satisfies",
-    "Type assertions (as) and the satisfies operator.",
-    "frontend",
-    "typescript",
-    "common",
-  ),
-  grouped(
-    "ts-null-undefined",
-    "5_ts_null_undefined.md",
-    "null & undefined",
-    "Absence types and strictNullChecks behavior.",
-    "frontend",
-    "typescript",
-    "common",
+    "types",
   ),
   grouped(
     "ts-cheat-sheets",
@@ -1126,7 +1202,7 @@ export const TOPICS: readonly Topic[] = [
     "Quick-reference cards and interview memorization checklist.",
     "frontend",
     "typescript",
-    "reference",
+    "cheat-sheets",
   ),
   grouped(
     "ts-decorators",
@@ -1135,7 +1211,7 @@ export const TOPICS: readonly Topic[] = [
     "Stage 2 and stage 3 decorators for classes and members.",
     "frontend",
     "typescript",
-    "reference",
+    "decorators",
   ),
   grouped(
     "ts-declaration-merging",
@@ -1144,7 +1220,7 @@ export const TOPICS: readonly Topic[] = [
     "Interface, namespace, class, and enum merging.",
     "frontend",
     "typescript",
-    "reference",
+    "declaration-merging",
   ),
   grouped(
     "ts-enums",
@@ -1153,7 +1229,7 @@ export const TOPICS: readonly Topic[] = [
     "Numeric and string enums, const enums, and as const alternatives.",
     "frontend",
     "typescript",
-    "reference",
+    "enums",
   ),
   grouped(
     "ts-iterators",
@@ -1162,7 +1238,7 @@ export const TOPICS: readonly Topic[] = [
     "Symbol.iterator, iterables, generators, and for..of.",
     "frontend",
     "typescript",
-    "reference",
+    "iterators",
   ),
   grouped(
     "ts-jsx",
@@ -1171,16 +1247,7 @@ export const TOPICS: readonly Topic[] = [
     "JSX in .tsx, intrinsic elements, and component typing.",
     "frontend",
     "typescript",
-    "reference",
-  ),
-  grouped(
-    "ts-tanstack",
-    "5_ts_tanstack.md",
-    "TanStack",
-    "TanStack Query, Router, Table, Virtual, Form, and ecosystem tools.",
-    "frontend",
-    "typescript",
-    "reference",
+    "jsx",
   ),
   grouped(
     "ts-mixins",
@@ -1189,16 +1256,25 @@ export const TOPICS: readonly Topic[] = [
     "Compose classes from partial building blocks.",
     "frontend",
     "typescript",
-    "reference",
+    "mixins",
   ),
   grouped(
     "ts-namespaces",
     "5_ts_namespaces.md",
-    "Namespaces & Modules",
-    "Legacy namespaces, triple-slash directives, and ES modules.",
+    "Namespaces",
+    "Legacy namespace organization and ambient declarations.",
     "frontend",
     "typescript",
-    "reference",
+    "namespaces",
+  ),
+  grouped(
+    "ts-namespaces-modules",
+    "5_ts_namespaces_modules.md",
+    "Namespaces and Modules",
+    "When to use ES modules vs legacy namespaces.",
+    "frontend",
+    "typescript",
+    "namespaces-modules",
   ),
   grouped(
     "ts-symbols",
@@ -1207,16 +1283,43 @@ export const TOPICS: readonly Topic[] = [
     "Unique primitive keys and unique symbol types.",
     "frontend",
     "typescript",
-    "reference",
+    "symbols",
   ),
   grouped(
-    "ts-type-system",
-    "5_ts_type_system.md",
-    "Type System",
-    "Compatibility, inference, and variable declarations.",
+    "ts-triple-slash",
+    "5_ts_triple_slash.md",
+    "Triple-Slash Directives",
+    "Compiler directives, ambient declarations, and declare.",
     "frontend",
     "typescript",
-    "reference",
+    "triple-slash",
+  ),
+  grouped(
+    "ts-type-compatibility",
+    "5_ts_type_compatibility.md",
+    "Type Compatibility",
+    "Structural subtyping, assignability, and variance.",
+    "frontend",
+    "typescript",
+    "type-compatibility",
+  ),
+  grouped(
+    "ts-type-inference",
+    "5_ts_type_inference.md",
+    "Type Inference",
+    "Best common type, contextual typing, and inference.",
+    "frontend",
+    "typescript",
+    "type-inference",
+  ),
+  grouped(
+    "ts-variable-declaration",
+    "5_ts_variable_declaration.md",
+    "Variable Declaration",
+    "var vs let vs const and destructuring with types.",
+    "frontend",
+    "typescript",
+    "variable-declaration",
   ),
   grouped(
     "ts-interview",
@@ -1911,8 +2014,60 @@ export const TOPICS: readonly Topic[] = [
   },
 ];
 
+function isInterviewClusterId(clusterId: string): boolean {
+  return clusterId === "interview" || clusterId.endsWith("-interview");
+}
+
+function tasksClusterIdForInterview(clusterId: string): string {
+  return clusterId === "nuxt-interview" ? "nuxt-tasks" : "tasks";
+}
+
+function deriveTasksCluster(interview: TopicCluster): TopicCluster {
+  return {
+    id: tasksClusterIdForInterview(interview.id),
+    title: "Tasks",
+    blurb: "Coding tasks and live-coding challenges.",
+    section: interview.section,
+  };
+}
+
+export const SUBJECTS: readonly Subject[] = SUBJECTS_BASE.map((subject) => {
+  const additions = subject.clusters
+    .filter((cluster) => isInterviewClusterId(cluster.id))
+    .map(deriveTasksCluster);
+  if (additions.length === 0) {
+    return subject;
+  }
+  return { ...subject, clusters: [...subject.clusters, ...additions] };
+});
+
+const INTERVIEW_TASK_TOPICS: Topic[] = TOPICS_BASE.filter(
+  (topic) => topic.slug.endsWith("-interview") && topic.grouping,
+).map((topic) => {
+  const interviewClusterId = topic.grouping!.cluster;
+  return {
+    slug: `${topic.slug}-tasks`,
+    file: topic.file,
+    title: "Tasks",
+    blurb: "Coding tasks and live-coding challenges.",
+    track: topic.track,
+    grouping: {
+      subject: topic.grouping!.subject,
+      cluster: tasksClusterIdForInterview(interviewClusterId),
+    },
+  };
+});
+
+export const TOPICS: readonly Topic[] = [
+  ...TOPICS_BASE,
+  ...INTERVIEW_TASK_TOPICS,
+];
+
 const TOPIC_BY_FILE = new Map(
-  TOPICS.map((topic) => [topic.file.toLowerCase(), topic]),
+  TOPICS.filter((topic) => !isInterviewTasksTopic(topic)).map((topic) => [
+    topic.file.toLowerCase(),
+    topic,
+  ]),
 );
 
 function assertCatalogGroupings() {
@@ -1952,7 +2107,10 @@ function assertCatalogGroupings() {
     }
     const sectionIds = new Set(subject.sections.map((section) => section.id));
     for (const cluster of subject.clusters) {
-      if (!cluster.section || !sectionIds.has(cluster.section)) {
+      if (!cluster.section) {
+        continue;
+      }
+      if (!sectionIds.has(cluster.section)) {
         throw new Error(
           `Cluster ${cluster.id} on ${subject.slug} missing valid section`,
         );
@@ -1987,9 +2145,16 @@ export function isLeafTopic(topic: Topic): boolean {
   return leafTopicForTrack(topic.track)?.slug === topic.slug;
 }
 
+export function isInterviewTasksTopic(topic: Pick<Topic, "slug">): boolean {
+  return topic.slug.endsWith("-interview-tasks");
+}
+
 export function isInterviewTopic(
   topic: Pick<Topic, "slug" | "title">,
 ): boolean {
+  if (isInterviewTasksTopic(topic)) {
+    return false;
+  }
   return topic.slug.endsWith("-interview") || topic.title === "Interview";
 }
 
@@ -2124,6 +2289,17 @@ function clustersWithTopics(subject: Subject): readonly TopicCluster[] {
   return subject.clusters.filter(
     (cluster) => topicsForCluster(subject, cluster.id).length > 0,
   );
+}
+
+export function subjectRootClusterCards(subject: Subject): readonly {
+  readonly cluster: TopicCluster;
+  readonly items: readonly BrowseCard[];
+}[] {
+  const cards = subjectClusterCards(subject);
+  if (!subject.sections?.length) {
+    return cards;
+  }
+  return cards.filter((entry) => !entry.cluster.section);
 }
 
 export function subjectSectionClusterCards(subject: Subject): readonly {

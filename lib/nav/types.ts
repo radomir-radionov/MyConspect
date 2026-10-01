@@ -30,6 +30,8 @@ export type NavCluster = {
 export type NavSection = {
   readonly id: string;
   readonly title: string;
+  readonly defaultOpen?: boolean;
+  readonly collapsible?: boolean;
   readonly clusters: readonly NavCluster[];
 };
 

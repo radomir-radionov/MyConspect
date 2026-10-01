@@ -5,16 +5,32 @@ import { ConceptList } from "@/components/topic";
 import {
   getSubject,
   getTrack,
+  isInterviewTasksTopic,
   isInterviewTopic,
   subjectClusterCards,
+  subjectRootClusterCards,
   subjectSectionClusterCards,
   topicRouteParams,
+  type Topic,
 } from "@/lib/catalog";
 import { catalogBlurb } from "@/lib/i18n/catalog";
 import { FALLBACK_NOTE_BADGE } from "@/lib/i18n/chrome";
 import { isLocale, localeStaticParams, type Locale } from "@/lib/i18n/locales";
 import { withLocale } from "@/lib/i18n/paths";
-import { loadTopicPage } from "@/lib/parse";
+import { loadTopicPage, type Concept } from "@/lib/parse";
+
+function conceptsForInterviewTopic(
+  topic: Topic,
+  concepts: readonly Concept[],
+): readonly Concept[] {
+  if (isInterviewTasksTopic(topic)) {
+    return concepts.filter((concept) => concept.interviewSection === "tasks");
+  }
+  if (isInterviewTopic(topic)) {
+    return concepts.filter((concept) => concept.interviewSection !== "tasks");
+  }
+  return concepts;
+}
 
 export const dynamicParams = false;
 
@@ -120,9 +136,13 @@ export default async function TopicPage({
           subjectSectionClusterCards(subject),
         )
       : undefined;
-    const sections = groupedSections
-      ? undefined
-      : localizeClusterSections(locale, subjectClusterCards(subject));
+    const rootSections = subject.sections?.length
+      ? localizeClusterSections(locale, subjectRootClusterCards(subject))
+      : undefined;
+    const sections =
+      groupedSections || rootSections
+        ? undefined
+        : localizeClusterSections(locale, subjectClusterCards(subject));
     return (
       <main className="w-full max-w-5xl px-4 pt-5 pb-10 sm:px-6">
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -133,6 +153,7 @@ export default async function TopicPage({
         </p>
         <ClusterCardSections
           sections={sections}
+          rootSections={rootSections}
           groupedSections={groupedSections}
         />
       </main>
@@ -144,10 +165,18 @@ export default async function TopicPage({
     notFound();
   }
 
+  const pageConcepts = conceptsForInterviewTopic(
+    loaded.topic,
+    loaded.parsed.concepts,
+  );
+  const pageTitle = isInterviewTasksTopic(loaded.topic)
+    ? loaded.topic.title
+    : loaded.parsed.title;
+
   return (
     <main className="w-full max-w-3xl px-4 pt-5 pb-10 sm:px-6">
       <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-        {loaded.parsed.title}
+        {pageTitle}
       </h1>
       {loaded.usedFallback ? (
         <p className="mt-2 text-sm text-amber-700 dark:text-amber-300">
@@ -156,9 +185,12 @@ export default async function TopicPage({
       ) : null}
       <div className="mt-8">
         <ConceptList
-          concepts={loaded.parsed.concepts}
+          concepts={pageConcepts}
           emptyMessage="No concepts were parsed from this topic."
-          groupInterviewSections={isInterviewTopic(loaded.topic)}
+          groupInterviewSections={
+            isInterviewTopic(loaded.topic) &&
+            !isInterviewTasksTopic(loaded.topic)
+          }
         />
       </div>
     </main>

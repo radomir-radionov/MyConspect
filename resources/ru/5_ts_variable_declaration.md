@@ -1,12 +1,12 @@
 # TypeScript — Variable Declaration
 
-`var` vs `let` vs `const` и деструктуризация.
+`var` vs `let` vs `const` and destructuring with types.
 
 [← Назад к хабу](./5_ts.md)
 
 ### Related docs
 
-- [TypeScript — hub](./5_ts.md) · [Интервью](./5_ts_interview.md)
+- [TypeScript — hub](./5_ts.md) · [Interview](./5_ts_interview.md)
 
 ### Sections
 
@@ -154,8 +154,6 @@ let [n, s] = tuple; // n: number, s: string
 10. **Проверка времени выполнения** — типы TS ≠ время выполнения; используйте Zod/io-ts для внешних данных
 
 </details>
-
-<a name="advanced"></a>
 
 ## Advanced topics
 

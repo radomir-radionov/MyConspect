@@ -90,7 +90,7 @@ greet(42); // compile error: number not assignable to string
 
 **When to use:** Приложения с интенсивным использованием предметной области, DI, команды. Не требуется для сценария из 20 строк.
 
-**See also:** [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript) · [Design-first OOP with interfaces](./5_ts_objects.md#design-first-oop-with-interfaces) · [Doka — OOP](https://doka.guide/tools/oop/)
+**See also:** [Classes](./5_ts_classes.md) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript) · [Doka — OOP](https://doka.guide/tools/oop/)
 
 </details>
 

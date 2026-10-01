@@ -1,324 +1,134 @@
-# TypeScript — Классы
+# TypeScript — Classes
 
-Классы, модификаторы доступа, наследование, абстрактные классы и `implements`.
+Поля, наследование, модификаторы доступа, абстрактные классы и `implements` — по [справочнику TypeScript](https://www.typescriptlang.org/docs/handbook/2/classes.html).
 
-[← Назад к хабу](./5_ts.md)
+[← Back to hub](./5_ts.md)
 
 ### Related docs
 
-* [TypeScript — hub](./5_ts.md) · [Интервью](./5_ts_interview.md)
+[TypeScript — hub](./5_ts.md) · [Object Types](./5_ts_objects.md) · [Functions](./5_ts_functions.md) · [Type Manipulation](./5_ts_type_manipulation.md) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript) · [Interview](./5_ts_interview.md)
+
+### Main concepts
+
+| Topic                                         | Covers                                            |
+| --------------------------------------------- | ------------------------------------------------- |
+| [Class Members](#class-members)               | Поля, конструкторы, методы                        |
+| [Parameter Properties](#parameter-properties) | Сокращённое объявление полей в конструкторе       |
+| [Member Visibility](#member-visibility)       | `public`, `protected`, `private`, `readonly`, `#` |
+| [Inheritance](#inheritance)                   | `extends`, `super`, переопределение методов       |
+| [`implements`](#implements)                   | Класс выполняет контракт интерфейса               |
+| [Abstract Classes](#abstract-classes)         | Общий базовый код + обязательные override         |
+| [Static Members](#static-members)             | Поля и методы на уровне класса                    |
 
 ### Sections
 
-- [Classes & OOP](#classes-oop)
+- [Class Members](#class-members)
+- [Parameter Properties](#parameter-properties)
+- [Member Visibility](#member-visibility)
+- [Inheritance](#inheritance)
+- [`implements`](#implements)
+- [Abstract Classes](#abstract-classes)
+- [Static Members](#static-members)
 - [Design principles](#design-principles)
 
 ---
 
-## Classes & OOP
+## Class Members
 
 <details>
-  <summary>Design-first OOP with interfaces</summary>
+<summary>Class Members</summary>
 
-### Design-first OOP with interfaces
-
-**Definition:** Описать контракты с сущностями (`interface`, `type`) перед реализациями. TypeScript проверяет отношения во время компиляции; в исходном JS не осталось типов.
+**Definition:** `class` объединяет поля, конструктор и методы. TypeScript добавляет аннотации типов поверх классов ES2015.
 
 **How it works:**
 
-- **Интерфейс** — это контракт поведения: любой объект, соответствующий форме, можно использовать (структурная типизация).
-- Эскиз `Ledger` / `LedgerEntry` первый; реализовать классы позже. Сломанная проводка выходит из строя `tsc`, не в производстве.
-- Предпочитать `type` псевдонимы для фирменных скаляров (`MoneyAmount`) и союзы (`RecordKind`). **Не** называйте тип `Record` — конфликтует со встроенным `Record<K, V>`.
-- `enum` работает, но добавляет JS во время выполнения и особенности; строковых объединений обычно достаточно.
-
-**When to use:** Модели предметной области, графики внедрения зависимостей, API общедоступных модулей. Пропустите одноразовые сценарии.
-
-**Pluses and minuses:**
-
-| +                                              | −                                                          |
-| ---------------------------------------------- | ---------------------------------------------------------- |
-| Отловить плохие графы сущностей перед запуском | Типы стерты — среда выполнения все еще JS                  |
-| Автозаполнение полей домена                    | Перемоделирование небольших скриптов                       |
-| `implements` составление документов            | ТС `private` это не конфиденциальность во время выполнения |
-
-**Examples:**
-
-```ts
-type MoneyAmount = number;
-type TimeStamp = number;
-type RecordKind = "spending" | "income";
-
-type LedgerEntry = {
-  kind: RecordKind;
-  amount: MoneyAmount;
-  dateTime: TimeStamp;
-};
-
-interface Ledger {
-  addRecord(record: LedgerEntry): void;
-}
-
-class History implements Ledger {
-  private records: LedgerEntry[] = []; // compile-time only — use #records for runtime privacy
-  addRecord(record: LedgerEntry): void {
-    this.records.push(record);
-  }
-}
-```
-
-**Thoughts:** Почему TS, если среда выполнения — JS? То же, что и диагностика двигателя перед поездкой — о расторгнутом контракте вы узнаете еще до пробки. Полный дизайн ООП: [7_special.md](./7_special_engineering.md#object-oriented-programming-oop).
-
-**Sources:** [Doka — ООП](https://doka.guide/tools/oop/) · [Справочник TypeScript — классы](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [Повседневные типы](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
-
-</details>
-
-<details>
-  <summary>OOP in TypeScript</summary>
-
-### OOP in TypeScript
-
-**Definition:** TypeScript добавляет **статические типы** поверх прототипного рантайма JavaScript. Четыре столпа ООП сохраняются, но TS добавляет **интерфейсы**, **абстрактные классы**, **модификаторы доступа** и **структурную типизацию** — проверка при компиляции, в emit **стирается**.
-
-**How it works:**
-
-| Столп            | Механизм TypeScript                                                               |
-| ---------------- | --------------------------------------------------------------------------------- |
-| **Инкапсуляция** | `private` / `protected` / `readonly` (compile-time); `#field` (runtime, как в JS) |
-| **Абстракция**   | `interface`, `abstract class`, небольшой публичный API класса                     |
-| **Наследование** | `extends` одного класса; методы в emit на цепочке прототипов                      |
-| **Полиморфизм**  | Переопределения методов + контракты `implements`; структурная типизация по форме  |
-
-- **Структурная типизация:** совместимые формы присваиваются — plain object может удовлетворять `interface` без `implements`.
-- **`implements`:** класс явно обещает форму интерфейса; `tsc` ругается при расхождении.
-- **`extends`:** только один базовый класс (ограничение JS); несколько контрактов — `implements A, B`.
-- **`private` / `protected`:** стираются в emit — в рантайме не защищают. Для реального сокрытия — `#`.
-- **`abstract class`:** нельзя инстанцировать; можно смешивать конкретные и абстрактные методы.
-
-**When to use:** Доменные модели, DI, публичные SDK, команды с контрактами. Для одноразовых скриптов — избыточно.
-
-**Pluses and minuses:**
-
-| +                                                              | −                                                                            |
-| -------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `interface` + `implements` документируют и проверяют контракты | Типы стираются — рантайм остаётся нетипизированным JS                        |
-| Структурная типизация гибка для адаптеров и тестов             | Две формы с одинаковыми полями взаимозаменяемы, даже если имена типов разные |
-| `abstract class` делит реализацию и требует override           | Перемоделирование мелких скриптов добавляет шум                              |
-
-**Examples:**
-
-**Encapsulation** — состояние меняется только через методы; `#` защищает приватность в рантайме:
-
-```ts
-class BankAccount {
-  #balance = 0;
-  deposit(amount: number) {
-    if (amount <= 0) throw new Error("amount must be positive");
-    this.#balance += amount;
-  }
-  withdraw(amount: number) {
-    if (amount > this.#balance) throw new Error("insufficient funds");
-    this.#balance -= amount;
-  }
-  getBalance(): number {
-    return this.#balance;
-  }
-}
-// account.#balance → SyntaxError
-```
-
-**Abstraction** — `interface` скрывает транспорт; checkout зависит от _что_, а не _как_:
-
-```ts
-interface PaymentGateway {
-  charge(amount: number): Promise<{ ok: boolean }>;
-}
-
-class StripeGateway implements PaymentGateway {
-  async charge(amount: number) {
-    const res = await fetch("/api/charge", {
-      method: "POST",
-      body: JSON.stringify({ amount }),
-    });
-    return { ok: res.ok };
-  }
-}
-
-async function checkout(total: number, gateway: PaymentGateway) {
-  return gateway.charge(total); // без URL Stripe и заголовков auth
-}
-```
-
-**Inheritance** — общий код в родителе; потомок переопределяет только отличия:
-
-```ts
-class Employee {
-  constructor(public name: string) {}
-  getRole(): string {
-    return "employee";
-  }
-}
-
-class Manager extends Employee {
-  getRole(): string {
-    return "manager";
-  }
-}
-
-const staff: Employee[] = [new Employee("Ann"), new Manager("Bob")];
-staff.map((e) => e.getRole()); // ['employee', 'manager']
-```
-
-**Polymorphism** — один вызов `send()`; меняйте `EmailAlert` / `SmsAlert` без правок вызывающего кода:
-
-```ts
-interface Notifier {
-  send(message: string): void;
-}
-
-class EmailAlert implements Notifier {
-  send(message: string) {
-    console.log("email:", message);
-  }
-}
-
-class SmsAlert implements Notifier {
-  send(message: string) {
-    console.log("sms:", message);
-  }
-}
-
-function notifyAll(alerts: Notifier[], text: string) {
-  alerts.forEach((a) => a.send(text));
-}
-
-notifyAll([new EmailAlert(), new SmsAlert()], "Order shipped");
-```
-
-**Thoughts:** ООП в TS = JS-рантайм + контракты на этапе компиляции. Приватность: [TS `private` vs `#` fields](#ts-private-vs-fields). Design-first: [Design-first OOP with interfaces](#design-first-oop-with-interfaces). Теория столпов: [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop). Механизмы JS: [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
-
-**Sources:** [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [TypeScript handbook — Object types](https://www.typescriptlang.org/docs/handbook/2/objects.html) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [Doka — OOP](https://doka.guide/tools/oop/) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
-
-</details>
-
-<details>
-  <summary>TS `private` vs `#` fields</summary>
-
-### TS `private` vs `#` fields
-
-**Definition:** `private` / `protected` являются **только во время компиляции** (удаляются при генерации). `#field` — это частный слот ECMAScript, недоступный за пределами класса **во время выполнения**.
-
-**How it works:**
-
-- `private foo` → еще `instance.foo` в скомпилированном JS; `instance["foo"]` тоже работает. `tsc` ошибки; Потребители JS этого не делают.
-- `#foo` → `SyntaxError` вне класса; `instance["#foo"]` is `undefined`, а не значение.
-- Chrome DevTools может читать `#` поля в консоли для отладки — не языковая дыра.
-
-|                    | `private` (TS)                   | `#field` (ИС)                                       |
-| ------------------ | -------------------------------- | --------------------------------------------------- |
-| Принудительно      | компилятор                       | время выполнения                                    |
-| Выживает испускает | нет — общественная собственность | да — приватный слот                                 |
-| Доступ к подклассу | `protected` да                   | нет (если только геттер)                            |
-| Старые цели        | работает (это обычное поле)      | нужна более ранняя или современная среда выполнения |
-
-**When to use:** Библиотека поставляется как JS → `#` если вам нужно настоящее сокрытие. Только приложение TS → `private` зачастую достаточно плюс командная дисциплина.
-
-**Examples:**
-
-```ts
-class C {
-  private foo = 10;
-  #bar = 20;
-}
-console.log(new C().foo); // tsc error; prints 10 in JS
-console.log(new C()["foo"]); // 10
-// new C().#bar; // SyntaxError at compile *and* runtime
-```
-
-**Thoughts:** TS приватность — ремень безопасности в тип-чекере; `#` это блокировка объекта.
-
-**Sources:** [TypeScript 3.8 — частные поля] (https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html) · [MDN — частные элементы] (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements)
-
-</details>
-
-<details>
-  <summary>Classes & OOP</summary>
-
-### Verbose constructor vs parameter properties
-
-**Definition:**
-
-конструктор (имя: строка, возраст: номер, ник: строка) {
-
-это.имя = имя;
-this.age = возраст;
-this.nickName = псевдоним;
-}
-}
-
-| Аспект | Деталь                                                   |
-| ------ | -------------------------------------------------------- |
-| Резюме | конструктор (имя: строка, возраст: номер, ник: строка) { |
-
-    это.имя = имя;
-    this.age = возраст;
-    this.nickName = |
+- **Fields** — свойства с типами или инициализаторами (`x: number`, `y = 0`).
+- **Constructor** — выполняется при `new`; присваивайте поля через `this.`; в подклассах вызывайте `super()` до `this`.
+- **Methods** — те же аннотации, что у функций; для членов экземпляра используйте `this.`.
+- При `strictPropertyInitialization` каждое неопциональное поле должно быть инициализировано в конструкторе, при объявлении или через `!` (definite assignment assertion).
 
 **Examples:**
 
 ```typescript
-class User {
-  name: string;
-  age: number;
-  nickName: string;
+class Point {
+  x = 0;
+  y = 0;
 
-  constructor(name: string, age: number, nickName: string) {
-    this.name = name;
-    this.age = age;
-    this.nickName = nickName;
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
+
+  scale(n: number): void {
+    this.x *= n;
+    this.y *= n;
   }
 }
 
-const dev = new User("RR", 999, "018");
+const pt = new Point(3, 4);
+pt.scale(2); // x=6, y=8
 ```
+
+**Sources:** [TypeScript handbook — Class Members](https://www.typescriptlang.org/docs/handbook/2/classes.html#class-members)
+
+</details>
+
+---
+
+## Parameter Properties
+
+<details>
+<summary>Parameter Properties</summary>
+
+**Definition:** Параметр конструктора с модификатором доступа (`public`, `private`, `protected` или `readonly`) объявляет и инициализирует поле класса в одной строке.
+
+**How it works:**
+
+- `constructor(public name: string)` автоматически создаёт `this.name`.
+- Модификаторы можно комбинировать: `constructor(private readonly id: string)`.
+- Без модификатора параметр — только локальная переменная; поле не создаётся.
+
+**Examples:**
 
 ```typescript
 class User {
   constructor(
     public name: string,
     public age: number,
-    public nickName: string,
-    public pass: number,
+    private nickName: string,
   ) {}
 }
+
+const dev = new User("RR", 30, "webDev");
+dev.name; // OK
+// dev.nickName; // Error — private
 ```
 
-```typescript
-class User {
-  name: string;
-  age = 20;
-  nickName = "webDev";
+**Sources:** [TypeScript handbook — Parameter Properties](https://www.typescriptlang.org/docs/handbook/2/classes.html#parameter-properties)
 
-  constructor(name: string) {
-    this.name = name;
-  }
+</details>
 
-  getPass() {
-    return `${this.nickName}${this.age}`; // "webDev20"
-  }
-}
-```
+---
 
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
+## Member Visibility
 
-### Access Modifiers
+<details>
+<summary>Member Visibility</summary>
 
-**Definition:**
+**Definition:** Ключевые слова, задающие, кто может читать или писать члены класса: `public` (по умолчанию), `protected`, `private` и `readonly`.
 
-Ключевые слова, управляющие видимостью членов класса: `public`, `private`, `protected`, `readonly`.
+**How it works:**
 
-| Когда использовать                                                                                                                                                | Заметки                                                                                                                                                                                                                       |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| По умолчанию `public`. `private` — только класс; `protected` — класс + подклассы. Модификаторы TS создаются во время компиляции, если вы не используете `#` поля. | `private`/`protected` в TS используются **только во время компиляции**, если вы не используете ECMAScript. `#private` поля. Два структурно одинаковых класса с разными `private` члены **не** могут быть назначены каждому из |
+| Modifier    | Visible to                                          |
+| ----------- | --------------------------------------------------- |
+| `public`    | Везде (по умолчанию — можно опустить)               |
+| `protected` | Класс и подклассы                                   |
+| `private`   | Только объявляющий класс (даже подклассы — нет)     |
+| `readonly`  | Присвоение только при объявлении или в конструкторе |
+
+- TS `private` / `protected` — **только на этапе компиляции**; в emit стираются.
+- ECMAScript `#field` — **runtime-private**; используйте, когда нужна реальная изоляция.
+- Два класса с одинаковой public-формой, но разными `private`-членами, **не** взаимозаменяемы.
 
 **Examples:**
 
@@ -337,105 +147,140 @@ class User {
   }
 }
 
-const dev = new User("RR", 30, "webDev", 123);
-dev.name; // OK
-// dev.nickName; // Error — private
-// dev.age;      // Error — protected (outside subclass)
-// dev.pass = 1; // Error — readonly
-```
-
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
-
-### Parameter Properties
-
-**Definition:**
-
-Сокращение конструктора: `constructor(public name: string)` объявляет и назначает в одной строке.
-
-| Аспект | Деталь                                                                                            |
-| ------ | ------------------------------------------------------------------------------------------------- |
-| Резюме | Сокращение конструктора: `constructor(public name: string)` объявляет и назначает в одной строке. |
-
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
-
-### Compiled output — static on the constructor
-
-**Definition:**
-
-После компиляции `static` живет в функции класса, а не в экземплярах:
-
-| Аспект | Деталь                                                                |
-| ------ | --------------------------------------------------------------------- |
-| Резюме | После компиляции `static` живет в функции класса, а не в экземплярах: |
-
-После компиляции `static` живет в классе |
-
-После компиляции `static` живет в функции класса, а не в экземплярах:
-
-**Examples:**
-
-```javascript
-"use strict";
-class User {
-  constructor(name, age) {
-    this.name = name;
-    this.age = age;
-  }
-  getPass() {
-    return this.name + User.secret;
+class SecureUser {
+  #token = "secret";
+  getToken() {
+    return this.#token;
   }
 }
-User.secret = 12345;
 ```
 
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
+**Thoughts:** Для библиотек, публикуемых как JS, при необходимости runtime-приватности предпочитайте `#`. В app-only TS часто хватает `private`.
 
-### Method override in subclass
+**Sources:** [TypeScript handbook — Member Visibility](https://www.typescriptlang.org/docs/handbook/2/classes.html#member-visibility) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements)
 
-**Definition:**
+</details>
 
-Переопределение метода в подклассе — функция языка TypeScript или компилятора.
+---
 
-| Аспект | Деталь                                                                         |
-| ------ | ------------------------------------------------------------------------------ |
-| Резюме | Переопределение метода в подклассе — функция языка TypeScript или компилятора. |
+## Inheritance
+
+<details>
+<summary>Inheritance</summary>
+
+**Definition:** Производный класс `extends` базовый, наследует его члены и может добавлять или переопределять поведение.
+
+**How it works:**
+
+- Вызывайте `super(...)` в конструкторе подкласса **до** использования `this`.
+- Переопределяйте методы с `super.method()` для вызова базовой реализации.
+- Override должны оставаться совместимы с базовой сигнатурой — производный метод не может требовать лишних параметров, если вызывающий код держит ссылку на базовый тип.
+- В JavaScript только **один** базовый класс; несколько контрактов — через `implements A, B`.
 
 **Examples:**
 
 ```typescript
-class Child extends User {
-  constructor(age: number) {
-    super("Yauhen", age);
+class Animal {
+  move() {
+    console.log("Moving along!");
   }
-  getPass() {
-    return `${this.age}${this.name}${User.secret}`; // "31Yauhen12345"
+}
+
+class Dog extends Animal {
+  woof(times: number) {
+    for (let i = 0; i < times; i++) console.log("woof!");
+  }
+}
+
+class Base {
+  greet() {
+    console.log("Hello, world!");
+  }
+}
+
+class Derived extends Base {
+  greet(name?: string) {
+    if (name === undefined) {
+      super.greet();
+    } else {
+      console.log(`Hello, ${name.toUpperCase()}`);
+    }
   }
 }
 ```
 
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
+**Sources:** [TypeScript handbook — Class Heritage](https://www.typescriptlang.org/docs/handbook/2/classes.html#class-heritage)
 
-### Abstract Classes vs Interfaces
+</details>
 
-**Definition:**
+---
 
-Два способа определения контрактов: абстрактные классы могут иметь реализацию; интерфейсы являются только сигнатурами.
+## implements
 
-| Аспект | Деталь                                                                                                                 |
-| ------ | ---------------------------------------------------------------------------------------------------------------------- |
-| Резюме | Два способа определения контрактов: абстрактные классы могут иметь реализацию; интерфейсы являются только сигнатурами. |
+<details>
+<summary>implements</summary>
 
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
+**Definition:** Клауза `implements` проверяет, что класс удовлетворяет форме `interface` (или type) на этапе компиляции.
 
-### Abstract class example
+**How it works:**
 
-**Definition:**
+- `class Sonar implements Pingable` — `tsc` выдаст ошибку, если не хватает обязательных членов.
+- Класс может `implements A, B` для нескольких контрактов.
+- `implements` — **только проверка типов**; не меняет вывод типов параметров внутри методов.
+- Опциональные свойства интерфейса не создаются автоматически — объявите их явно, если нужны.
+- Дополнительные члены класса сверх интерфейса разрешены.
 
-Пример абстрактного класса — язык TypeScript или функция компилятора.
+**Examples:**
 
-| Аспект | Деталь                                                                |
-| ------ | --------------------------------------------------------------------- |
-| Резюме | Пример абстрактного класса — язык TypeScript или функция компилятора. |
+```typescript
+interface Pingable {
+  ping(): void;
+}
+
+class Sonar implements Pingable {
+  ping() {
+    console.log("ping!");
+  }
+}
+
+interface User {
+  name: string;
+  age: number;
+}
+
+interface Pass {
+  getPass(): string;
+}
+
+class Employee implements User, Pass {
+  name = "Ada";
+  age = 31;
+
+  getPass() {
+    return `${this.name}${this.age}`;
+  }
+}
+```
+
+**Sources:** [TypeScript handbook — implements Clauses](https://www.typescriptlang.org/docs/handbook/2/classes.html#implements-clauses)
+
+</details>
+
+---
+
+## Abstract Classes
+
+<details>
+<summary>Abstract Classes</summary>
+
+**Definition:** `abstract class` нельзя инстанцировать напрямую. В нём могут быть и реализованные методы, и `abstract`-члены, которые подкласс обязан переопределить.
+
+**How it works:**
+
+- Используйте, когда несколько классов делят базовую реализацию, но отличаются в отдельных методах.
+- `abstract getPass(): string` — без тела; конкретный подкласс обязан реализовать.
+- В отличие от interface, abstract class может содержать поля, конструкторы и конкретные методы.
+- Для чистых контрактов — `interface`; для общего кода — abstract class.
 
 **Examples:**
 
@@ -445,16 +290,19 @@ abstract class User {
     public name: string,
     public age: number,
   ) {}
+
   greet() {
     console.log(this.name);
   }
-  abstract getPass(): string; // must implement in subclass
+
+  abstract getPass(): string;
 }
 
 class Child extends User {
   constructor(age: number) {
     super("Yauhen", age);
   }
+
   getPass() {
     return `${this.age}${this.name}`;
   }
@@ -462,135 +310,59 @@ class Child extends User {
 
 const y = new Child(31);
 y.greet(); // "Yauhen"
-y.getPass(); // "31Yauhen"
 ```
 
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
-
-### Interfaces with classes
-
-**Definition:**
-
-Использование интерфейсов для описания форм и контрактов экземпляров классов.
-
-| Аспект | Деталь                                                                        |
-| ------ | ----------------------------------------------------------------------------- |
-| Резюме | Использование интерфейсов для описания форм и контрактов экземпляров классов. |
-
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
-
-### Optional, readonly, and index signatures
-
-**Definition:**
-
-// Лишняя проверка свойств — ошибка дополнительных ключей, если сигнатура индекса их не допускает
-
-интерфейс FlexibleUser {
-имя: строка;
-возраст: номер;
-[propName: строка]: неизвестно;
-}
-
-| Аспект | Деталь                                                                                            |
-| ------ | ------------------------------------------------------------------------------------------------- |
-| Резюме | // Лишняя проверка свойств — ошибка дополнительных ключей, если сигнатура индекса их не допускает |
-
-интерфейс FlexibleUser {
-имя: строка;
-|
-
-**Examples:**
-
-```typescript
-interface User {
-  readonly name: string;
-  age?: number;
-}
-
-// Excess property check — extra keys error unless index signature allows them
-interface FlexibleUser {
-  name: string;
-  age: number;
-  [propName: string]: unknown;
-}
-
-const u: FlexibleUser = {
-  name: "Yauhen",
-  age: 31,
-  nickName: "webDev",
-};
-```
-
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
-
-### `implements` one or many interfaces
-
-**Definition:**
-
-getPass() {
-
-возвращение `${this.name}${this.age}`;
-}
-}
-
-| Аспект | Деталь      |
-| ------ | ----------- |
-| Резюме | getPass() { |
-
-    возвращение `${this.name}${this.age}`;
-
-}
-} |
-
-**Examples:**
-
-```typescript
-interface User {
-  name: string;
-  age: number;
-}
-interface Pass {
-  getPass(): string;
-}
-
-class Employee implements User, Pass {
-  name = "Yauhen";
-  age = 31;
-  nickName = "webDev"; // extra members OK
-
-  getPass() {
-    return `${this.name}${this.age}`;
-  }
-}
-
-interface Admin extends User {
-  getPass(): string;
-}
-
-class Manager implements Admin {
-  name = "Max";
-  age = 20;
-  getPass() {
-    return `${this.name}${this.age}`;
-  }
-}
-```
-
-**Sources:** [Справочник по TypeScript — классы] (https://www.typescriptlang.org/docs/handbook/2/classes.html)
-
-### `implements`
-
-**Definition:**
-
-Пообещайте, что класс удовлетворяет контракту интерфейса — все необходимые члены должны существовать.
-
-| Аспект | Деталь                                                                                                |
-| ------ | ----------------------------------------------------------------------------------------------------- |
-| Резюме | Пообещайте, что класс удовлетворяет контракту интерфейса — все необходимые члены должны существовать. |
-
-**Sources:** [TypeScript handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
+**Sources:** [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
 
 </details>
+
+---
+
+## Static Members
+
+<details>
+<summary>Static Members</summary>
+
+**Definition:** Поля и методы с `static` принадлежат конструктору класса, а не отдельным экземплярам.
+
+**How it works:**
+
+- Доступ: `MyClass.x` или `MyClass.printX()` — не через экземпляры.
+- Static-члены могут иметь модификаторы `public`, `protected`, `private`.
+- Static-члены наследуются подклассами (`Derived.getGreeting()`).
+- Не называйте static-члены `name`, `length` или `call` — конфликт с прототипом `Function`.
+- Параметры типа generic-класса нельзя использовать в static-членах.
+
+**Examples:**
+
+```typescript
+class MyClass {
+  static x = 0;
+
+  static printX() {
+    console.log(MyClass.x);
+  }
+}
+
+MyClass.x = 1;
+MyClass.printX(); // 1
+
+class Base {
+  static getGreeting() {
+    return "Hello world";
+  }
+}
+
+class Derived extends Base {
+  greeting = Derived.getGreeting();
+}
+```
+
+**Sources:** [TypeScript handbook — Static Members](https://www.typescriptlang.org/docs/handbook/2/classes.html#static-members)
+
+</details>
+
+---
 
 <a name="design-principles"></a>
 
@@ -603,32 +375,31 @@ class Manager implements Admin {
 
 **Definition:** Пять принципов **SOLID** для **TypeScript interfaces, classes и modules** — compile-time контракты через `interface`, `implements` и constructor injection.
 
-| Principle                     | Meaning                            | TypeScript example                                                                 |
-| ----------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------- |
-| **S** — Single Responsibility | Одна причина для изменения модуля  | `UserRepository` читает · `UserFormatter` форматирует — не один god class          |
-| **O** — Open/Closed           | Расширять новым кодом, не правками | Новый `StripeProcessor implements PaymentProcessor` — не править `CheckoutService` |
-| **L** — Liskov Substitution   | Подтипы соблюдают контракт         | Любой `UserStore` в `loadProfile()` возвращает одну форму `{ id, name }`           |
-| **I** — Interface Segregation | Маленькие интерфейсы               | `ReadableLedger` для отчётов — не fat `Ledger` с `write()` / `delete()`            |
-| **D** — Dependency Inversion  | Зависеть от абстракций             | `placeOrder(id, logger: Logger)` — инжектить `Logger`, не concrete console adapter |
+| Principle                     | Meaning                         | TypeScript example                                                                    |
+| ----------------------------- | ------------------------------- | ------------------------------------------------------------------------------------- |
+| **S** — Single Responsibility | One reason to change per module | `UserRepository` reads data · `UserFormatter` shapes labels — not one god class       |
+| **O** — Open/Closed           | Extend via new code, not edits  | New `StripeProcessor implements PaymentProcessor` — don't edit `CheckoutService`      |
+| **L** — Liskov Substitution   | Subtypes honor parent contract  | Every `UserStore` passed to `loadProfile()` must return the same `{ id, name }` shape |
+| **I** — Interface Segregation | Small focused interfaces        | `ReadableLedger` for reports — not a fat `Ledger` with `write()` / `delete()`         |
+| **D** — Dependency Inversion  | Depend on abstractions          | `placeOrder(id, logger: Logger)` — inject `Logger`, not a concrete console adapter    |
 
 **How it works:**
 
 Каждая буква соответствует **Examples** ниже — ищите `// good` и `// bad`:
 
-1. **S** — repository и formatter через разные `interface` — не один service class.
-2. **O** — новый provider = новый class с `implements` — не растущий `if/else` в одном class.
-3. **L** — `implements UserStore` обязан соблюдать return type — `tsc` ловит сломанные substitutes.
-4. **I** — передавать `ReadableLedger`, когда нужны только reads — не требовать write API.
-5. **D** — domain принимает типы `Logger` / `DbClient` — wiring выбирает concrete implementations.
+1. **S** — разделите repository и formatter отдельными `interface` — не одним service class.
+2. **O** — новый provider = новый class с interface — не растущий `if/else` в одном классе.
+3. **L** — `implements UserStore` должен соблюдать return type — `tsc` ловит сломанные замены.
+4. **I** — передавайте `ReadableLedger`, где хватает чтения — не требуйте лишние write API.
+5. **D** — domain-функции принимают типы `Logger` / `DbClient` — wiring выбирает реализации.
 
-**When to use:** Domain models, services, DI graphs, public module APIs. На одноразовом скрипте — без тяжёлых interfaces.
+**When to use:** Domain models, services, DI graphs, public module APIs. Skip heavy interfaces on a one-off script.
 
 **Examples:**
 
 ```typescript
 type DbClient = { query(id: string): Promise<{ id: string; name: string }> };
 
-// S — good: repository vs formatter — separate interfaces
 interface UserRepository {
   findById(id: string): Promise<{ id: string; name: string }>;
 }
@@ -644,17 +415,6 @@ class DbUserRepository implements UserRepository {
   }
 }
 
-// S — bad: one class loads users and formats UI labels
-// class UserService {
-//   findById(id: string) {
-//     return this.db.query(id);
-//   }
-//   label(user: { name: string; email: string }) {
-//     return `${user.name} <${user.email}>`;
-//   }
-// }
-
-// O — good: new processor = new class implementing PaymentProcessor
 interface PaymentProcessor {
   charge(amount: number): Promise<{ ok: true }>;
 }
@@ -672,15 +432,6 @@ class CheckoutService {
   }
 }
 
-// O — bad: edit CheckoutService for every provider
-// class CheckoutService {
-//   checkout(provider: "stripe" | "paypal", amount: number) {
-//     if (provider === "stripe") return payStripe(amount);
-//     if (provider === "paypal") return payPaypal(amount);
-//   }
-// }
-
-// L — good: any UserStore works in loadProfile
 interface UserStore {
   get(id: string): Promise<{ id: string; name: string }>;
 }
@@ -689,20 +440,6 @@ async function loadProfile(id: string, store: UserStore) {
   return store.get(id);
 }
 
-class CachedUserStore implements UserStore {
-  get(id: string) {
-    return Promise.resolve({ id, name: "Ada" });
-  }
-}
-
-// L — bad: returns string instead of contract — tsc error + broken callers
-// class BrokenUserStore implements UserStore {
-//   get(id: string) {
-//     return Promise.resolve("missing");
-//   }
-// }
-
-// I — good: report needs only ReadableLedger
 interface ReadableLedger {
   read(id: string): Promise<{ id: string; total: number }>;
 }
@@ -711,17 +448,6 @@ function buildReport(ledger: ReadableLedger) {
   return ledger.read("summary");
 }
 
-// I — bad: read-only code forced to depend on write/delete APIs
-// interface Ledger {
-//   read(id: string): Promise<{ id: string; total: number }>;
-//   write(entry: { id: string; total: number }): Promise<void>;
-//   delete(id: string): Promise<void>;
-// }
-// function buildReport(ledger: Ledger) {
-//   return ledger.read("summary");
-// }
-
-// D — good: inject Logger abstraction
 interface Logger {
   info(message: string): void;
 }
@@ -729,18 +455,10 @@ interface Logger {
 function placeOrder(orderId: string, logger: Logger) {
   logger.info(`Processing ${orderId}`);
 }
-
-// D — bad: domain imports concrete infra
-// import { consoleLogger } from "./infra/logger";
-// function placeOrder(orderId: string) {
-//   consoleLogger.info(`Processing ${orderId}`);
-// }
 ```
 
-**Thoughts:** TypeScript делает **I**, **L** и **D** видимыми на compile time — но types стираются в runtime; behavioral contracts всё равно важны. JS: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Типизация Vue SFC (`defineProps`, `vue-tsc`): [TypeScript with Vue](./4_vue_composition.md#typescript-with-vue). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+**Thoughts:** TypeScript делает **I**, **L** и **D** видимыми на compile time — но types стираются в runtime; behavioral contracts всё равно важны. JS: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [TypeScript handbook — Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html) · [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [TypeScript with Vue](./4_vue_composition.md#typescript-with-vue)
+**Sources:** [TypeScript handbook — Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html) · [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions)
 
 </details>
-
-<a name="generics"></a>

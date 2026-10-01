@@ -1,17 +1,27 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { resolveStickyTopPx, stickyVarsEqual, writeStickyVars } from "./sidebarSticky";
+import {
+  resolveStickyTopPx,
+  stickyVarsEqual,
+  writeStickyVars,
+} from "./sidebarSticky";
 
 test("stickyVarsEqual is true for the same keys and values", () => {
   assert.equal(
-    stickyVarsEqual({ "--nav-sticky-cover": "12px" }, { "--nav-sticky-cover": "12px" }),
+    stickyVarsEqual(
+      { "--nav-sticky-cover": "12px" },
+      { "--nav-sticky-cover": "12px" },
+    ),
     true,
   );
 });
 
 test("stickyVarsEqual is false when a value differs", () => {
   assert.equal(
-    stickyVarsEqual({ "--nav-sticky-cover": "12px" }, { "--nav-sticky-cover": "13px" }),
+    stickyVarsEqual(
+      { "--nav-sticky-cover": "12px" },
+      { "--nav-sticky-cover": "13px" },
+    ),
     false,
   );
 });
@@ -23,7 +33,11 @@ test("resolveStickyTopPx prefers measured vars over scroller styles", () => {
     },
   };
   assert.equal(
-    resolveStickyTopPx("--nav-sticky-top-subject", { "--nav-sticky-top-subject": "42px" }, scrollerStyle),
+    resolveStickyTopPx(
+      "--nav-sticky-top-subject",
+      { "--nav-sticky-top-subject": "42px" },
+      scrollerStyle,
+    ),
     42,
   );
 });
@@ -34,7 +48,10 @@ test("resolveStickyTopPx reads sticky tops from the scroller when vars are absen
       return name === "--nav-sticky-top-cluster" ? "88px" : "";
     },
   };
-  assert.equal(resolveStickyTopPx("--nav-sticky-top-cluster", undefined, scrollerStyle), 88);
+  assert.equal(
+    resolveStickyTopPx("--nav-sticky-top-cluster", undefined, scrollerStyle),
+    88,
+  );
 });
 
 test("writeStickyVars skips DOM writes when the style already matches", () => {
@@ -54,7 +71,11 @@ test("writeStickyVars skips DOM writes when the style already matches", () => {
       return "";
     },
   };
-  writeStickyVars(style, { "--nav-sticky-cover": "12px" }, { "--nav-sticky-cover": "12px" });
+  writeStickyVars(
+    style,
+    { "--nav-sticky-cover": "12px" },
+    { "--nav-sticky-cover": "12px" },
+  );
   assert.deepEqual(writes, []);
 });
 
@@ -75,7 +96,11 @@ test("writeStickyVars rewrites after the style was cleared", () => {
       return "";
     },
   };
-  writeStickyVars(style, { "--nav-sticky-cover": "12px" }, { "--nav-sticky-cover": "12px" });
+  writeStickyVars(
+    style,
+    { "--nav-sticky-cover": "12px" },
+    { "--nav-sticky-cover": "12px" },
+  );
   assert.deepEqual(writes, ["set:--nav-sticky-cover=12px"]);
 });
 

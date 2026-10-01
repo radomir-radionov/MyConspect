@@ -1,25 +1,39 @@
 # TypeScript — Interview
 
-Interview Q&A and type challenges.
+Interview Q&A, oral questions, and type-level coding tasks.
 
 [← Back to hub](./5_ts.md)
 
 ### Related docs
 
-- [TypeScript — hub](./5_ts.md) · [The Basics](./5_ts_basics.md) · [Type Manipulation](./5_ts_type_manipulation.md) · [Utility Types](./5_ts_utility_types.md)
+[TypeScript — hub](./5_ts.md) · [Types](./5_ts_types.md) · [Narrowing](./5_ts_narrowing.md) · [Functions](./5_ts_functions.md) · [Type Manipulation](./5_ts_type_manipulation.md)
+
+### Main concepts
+
+| Section                                                     | Covers                                          |
+| ----------------------------------------------------------- | ----------------------------------------------- |
+| [Overview](#overview)                                       | Must-know areas and topic map                   |
+| [Questions & Answers](#questions-answers)                   | Core interview Q&A                              |
+| [Coding tasks](#coding-tasks)                               | Type puzzles — `Pick`, `Exclude`, `infer`, cart |
+| [Quick oral questions](#quick-oral-questions-self-check)    | Fifteen self-check prompts                      |
+| [Oral questions (ITVDN)](#oral-questions-itvdn--typescript) | Course-style oral questions                     |
+| [Oral questions (extra)](#oral-questions-extra)             | Compiler flags and modules                      |
 
 ### Sections
 
-- [Interview Practice](#interview-practice)
+- [Overview](#overview)
+- [Questions & Answers](#questions-answers)
+- [Coding tasks](#coding-tasks)
+- [Quick oral questions (self-check)](#quick-oral-questions-self-check)
+- [Oral questions (ITVDN — TypeScript)](#oral-questions-itvdn--typescript)
+- [Oral questions (extra)](#oral-questions-extra)
 
 ---
 
-## Interview Practice
+## Overview
 
 <details>
-  <summary>Interview Practice</summary>
-
-### Interview Practice
+<summary>Interview checklist</summary>
 
 **Definition:** Type-level puzzles and common live-coding prompts for TypeScript interviews.
 
@@ -33,19 +47,11 @@ Interview Q&A and type challenges.
 
 **Sources:** [Type challenges](https://github.com/type-challenges/type-challenges)
 
-| Topic                                      | Answer      |
-| ------------------------------------------ | ----------- |
-| Why TS / large projects / when it hurts    | Q&A         |
-| Design-first interfaces / `private` vs `#` | Q&A         |
-| `any` acceptable cases, extend `interface` | Q&A         |
-| Unions, literals, build with type errors   | Q&A         |
-| Typify API/object/array/function           | Q&A         |
-| Optional / `undefined` fields              | Q&A         |
-| Cart aggregation (typed)                   | Task — Cart |
+</details>
 
 ---
 
-### Questions & Answers
+## Questions & Answers
 
 <details>
   <summary>What is TypeScript?</summary>
@@ -90,7 +96,7 @@ greet(42); // compile error: number not assignable to string
 
 **When to use:** Domain-heavy apps, DI, teams. Not needed for a 20-line script.
 
-**See also:** [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript) · [Design-first OOP with interfaces](./5_ts_objects.md#design-first-oop-with-interfaces) · [Doka — OOP](https://doka.guide/tools/oop/)
+**See also:** [Classes](./5_ts_classes.md) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript) · [Doka — OOP](https://doka.guide/tools/oop/)
 
 </details>
 
@@ -523,6 +529,11 @@ function greet(user: User) {
 
 ---
 
+## Coding tasks
+
+<details>
+<summary>Task 1 — Fix AddressWithIdType intersection</summary>
+
 `AddressType` defines `city: string`. Intersecting with `{ city: { id: string } }` creates an impossible type (`string & { id: string }`). Keep `AddressType` and `address` unchanged; fix only `AddressWithIdType`.
 
 ```typescript
@@ -564,9 +575,12 @@ type AddressWithIdType = Omit<AddressType, "city"> & {
 
 </details>
 
+</details>
+
 ---
 
-### Task 2 — Exclude a union member
+<details>
+<summary>Task 2 — Exclude a union member</summary>
 
 Implement `RemoveC<T>` so `RemoveC<"a" | "b" | "c">` becomes `"a" | "b"`.
 
@@ -594,70 +608,12 @@ type RemoveC<T> = Exclude<T, "c">;
 
 </details>
 
----
-
-### Quick oral questions (self-check)
-
-**Definition:** Fourteen self-check questions covering core TypeScript interview topics; answers in the collapsible block below.
-
-**Sources:** [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-1. What is the difference between `any` and `unknown`?
-2. When would you pick `interface` over `type`?
-3. What does `strictNullChecks` change?
-4. How does structural typing differ from nominal typing?
-5. What is a discriminated union and why is `never` useful with it?
-6. What gets erased at compile time — do access modifiers exist at runtime?
-7. `Exclude` vs `Omit` — what does each operate on?
-8. When is `as const` needed?
-9. What does `satisfies` do that `as` does not?
-10. When would you use the map pattern instead of a union?
-11. What is the difference between a compiler and a transpiler in the context of `tsc`?
-12. What is declaration merging on interfaces?
-13. When would you use `extends` vs `implements`?
-14. What are mixins and why use them over multiple inheritance?
-15. What does `erasableSyntaxOnly` ban, and why would you enable it?
-
-<details>
-  <summary>Answers</summary>
-
-### Answers
-
-1. **`any` vs `unknown`** — Both accept any value. `any` disables checking: you can call methods, assign anywhere, no narrowing required. `unknown` is the safe top type: you must narrow (`typeof`, `in`, etc.) or assert before use. Prefer `unknown` for external/untrusted data.
-
-2. **`interface` over `type`** — Object shapes you may extend or augment; declaration merging (e.g. patching globals). Use `type` for unions, tuples, primitives, mapped/conditional types. They are **not** identical.
-
-3. **`strictNullChecks`** — `null` and `undefined` are no longer assignable to every type. Optional chaining and explicit checks become required. Catches “forgot to handle null” bugs. Without it, null flows silently everywhere.
-
-4. **Structural vs nominal** — TS uses **structural** typing: compatibility is by shape, not declared name. Two types with the same fields are interchangeable. Java/C# use **nominal** typing: class names matter. Branding simulates nominal IDs in TS.
-
-5. **Discriminated union + `never`** — Objects share a literal field (`kind`, `type`) so TS narrows in `switch`. Assigning the union to `never` in `default` forces exhaustiveness — if you add a variant and forget a branch, compile error.
-
-6. **Erased at compile time** — All type annotations, interfaces, generics, and `private`/`protected` (TS-only) are erased. **No** runtime type info. ECMAScript `#private` fields **do** exist at runtime. `public`/`private` in TS classes are compile-time only unless you use `#`.
-
-7. **`Exclude` vs `Omit`** — `Exclude<T, U>` operates on **union types** (removes members assignable to `U`). `Omit<T, K>` operates on **object types** (removes keys `K` from `T`). Different inputs, different jobs.
-
-8. **`as const`** — When you need **literal types** instead of widened primitives (`"GET"` not `string`, `readonly` tuple, frozen config). Fixes inference on object literals and arrays. Alternative to manual literal unions.
-
-9. **`satisfies` vs `as`** — `satisfies Type` **validates** the value matches the type **and keeps** narrow inferred types (e.g. tuple stays tuple). `as Type` **forces** the type and **widens** inference — no real validation, just trust.
-
-10. **Map pattern vs union** — Use a **map/object** when each variant needs different fields or behavior keyed by a discriminant — avoids huge unions of incompatible shapes. Pattern: `{ [K in Status]: Handler }[status]` instead of `A | B | C` with unrelated fields.
-
-11. **Compiler vs transpiler (`tsc`)** — **Compiler**: type-checking (static analysis). **Transpiler**: TS → JS (high-level to high-level). `tsc` does both. Neither runs at runtime — output is plain JS.
-
-12. **Declaration merging** — Multiple `interface Foo { ... }` blocks with the **same name** merge into one interface (fields combine). Only works with `interface`, not `type`. Common for augmenting `Window`, module types.
-
-13. **`extends` vs `implements`** — `extends`: class inherits **one** base class (implementation + prototype chain). `implements`: class promises to satisfy **one or more** interface contracts (signatures only, no inherited code).
-
-14. **Mixins** — Functions that take a class and return an extended class. Compose behavior without multiple inheritance (which TS/JS don't support). Stack mixins: `class User extends WithId(WithTimestamp(Entity))`.
-
-15. **`erasableSyntaxOnly`** — TS 5.8+ flag: error on syntax that emits runtime JS TypeScript invented (constructor parameter properties, `enum`, `namespace`). Lets runtimes/type-strippers (`tsc --noEmit`, Node type stripping) treat TS as erasable types only. Use `this.x = x` instead of `constructor(public x: number)`.
-
 </details>
 
 ---
 
-### Task 3 — Implement `MyPick`
+<details>
+<summary>Task 3 — Implement MyPick</summary>
 
 Implement `MyPick<T, K>` like the built-in `Pick`.
 
@@ -685,9 +641,12 @@ type MyPick<T, K extends keyof T> = {
 
 </details>
 
+</details>
+
 ---
 
-### Task 4 — Implement `GetReturnType`
+<details>
+<summary>Task 4 — Implement GetReturnType</summary>
 
 Without using the built-in utility:
 
@@ -707,9 +666,12 @@ type MyReturn<T> = T extends (...args: never[]) => infer R ? R : never;
 
 </details>
 
+</details>
+
 ---
 
-### Task 5 — Implement `DeepReadonly`
+<details>
+<summary>Task 5 — Implement DeepReadonly</summary>
 
 Make every property (including nested objects) readonly.
 
@@ -737,9 +699,12 @@ type DeepReadonly<T> = T extends object
 
 </details>
 
+</details>
+
 ---
 
-### Task 6 — Implement `Flatten`
+<details>
+<summary>Task 6 — Implement Flatten</summary>
 
 Unwrap one level of array: `Flatten<string[][]>` → `string[]`.
 
@@ -760,9 +725,12 @@ type Flatten<T> = T extends (infer U)[] ? U : T;
 
 </details>
 
+</details>
+
 ---
 
-### Task 7 — Implement `Parameters`
+<details>
+<summary>Task 7 — Implement Parameters</summary>
 
 Extract function parameter types as a tuple.
 
@@ -782,64 +750,12 @@ type MyParameters<T> = T extends (...args: infer P) => unknown ? P : never;
 
 </details>
 
----
-
----
-
-### Oral questions (ITVDN — TypeScript)
-
-**Definition:** Self-check oral questions from ITVDN TypeScript course.
-
-**Sources:** [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-79. What are the advantages of typing in TypeScript?
-
-80. What TypeScript features can you use for typing (interfaces, types, enum, etc.)?
-
-81. What is the difference between an interface and a class?
-
-82. What is the difference between an interface and an abstract class?
-
-83. What is the difference between an interface and a type?
-
----
-
-### Oral questions (extra)
-
-**Definition:** Additional interview oral questions on compiler flags and module patterns.
-
-1. What does `noUncheckedIndexedAccess` change about `arr[i]`?
-2. When would you use `import type` vs `import`?
-3. How do project references speed up monorepo builds?
-4. Why is `as User` on `res.json()` unsafe in production?
-5. What is the difference between covariant and contravariant function parameters?
-6. When is `const` on a generic type parameter useful?
-7. What does `composite: true` enable in `tsconfig`?
-
-<details>
-  <summary>Answers</summary>
-
-### Answers
-
-1. **`noUncheckedIndexedAccess`** — Index access returns `T | undefined` instead of `T`. `arr[i]` and `obj[key]` may be out of bounds / missing — you must narrow or use `??` before use. Safer, but noisier on legacy code.
-
-2. **`import type` vs `import`** — `import type` / `export type` are **erased** at emit — no runtime import. Use for types-only symbols. Value imports (`import { fn }`) stay at runtime. `verbatimModuleSyntax` enforces this split. Prevents bundlers from pulling type-only modules into the bundle.
-
-3. **Project references** — Split the monorepo into **composite** projects with `references`. `tsc --build` type-checks and emits **incrementally** — only changed projects rebuild. Dependencies build in order. Faster CI than one giant `tsc` on everything.
-
-4. **`as User` on `res.json()`** — Assertion is **compile-time only**; no runtime check. API can return any JSON shape; wrong data causes runtime crashes (undefined access, wrong types). Use `unknown` + schema validation (Zod, etc.) at the boundary.
-
-5. **Covariant vs contravariant params** — **Return types** are covariant: subtype return is OK when assigning functions. **Parameter types** are contravariant (with `strictFunctionTypes`): function that accepts **wider** input can be assigned where **narrower** input is expected. Methods stay bivariant by default (unsound but ergonomic).
-
-6. **`const` on generic type parameter** — Preserves **literal** inference in generics: `routes<const T>(["/a", "/b"])` → tuple of literals, not `string[]`. Useful for config objects, route defs, and APIs where widening loses precision.
-
-7. **`composite: true`** — Marks a project as part of a **project references** graph. Requires `declaration: true`. Enables incremental builds and lets other projects `reference` this one. Required for `tsc --build` monorepo workflows.
-
 </details>
 
 ---
 
-### Task — Cart aggregation (typed)
+<details>
+<summary>Task 8 — Cart aggregation (typed)</summary>
 
 Fully typed cart calculator — mirrors [3_js_array.md Task 16](./3_js_array.md#interview-practice).
 
@@ -908,6 +824,133 @@ function getDiscountRate(product: Product, discounts: Discounts): number {
 
 </details>
 
+</details>
+
 ---
+
+## Quick oral questions (self-check)
+
+<details>
+<summary>Quick oral questions (self-check)</summary>
+
+**Definition:** Fifteen self-check questions covering core TypeScript interview topics; answers in the collapsible block below.
+
+**Sources:** [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
+
+1. What is the difference between `any` and `unknown`?
+2. When would you pick `interface` over `type`?
+3. What does `strictNullChecks` change?
+4. How does structural typing differ from nominal typing?
+5. What is a discriminated union and why is `never` useful with it?
+6. What gets erased at compile time — do access modifiers exist at runtime?
+7. `Exclude` vs `Omit` — what does each operate on?
+8. When is `as const` needed?
+9. What does `satisfies` do that `as` does not?
+10. When would you use the map pattern instead of a union?
+11. What is the difference between a compiler and a transpiler in the context of `tsc`?
+12. What is declaration merging on interfaces?
+13. When would you use `extends` vs `implements`?
+14. What are mixins and why use them over multiple inheritance?
+15. What does `erasableSyntaxOnly` ban, and why would you enable it?
+
+<details>
+  <summary>Answers</summary>
+
+### Answers
+
+1. **`any` vs `unknown`** — Both accept any value. `any` disables checking: you can call methods, assign anywhere, no narrowing required. `unknown` is the safe top type: you must narrow (`typeof`, `in`, etc.) or assert before use. Prefer `unknown` for external/untrusted data.
+
+2. **`interface` over `type`** — Object shapes you may extend or augment; declaration merging (e.g. patching globals). Use `type` for unions, tuples, primitives, mapped/conditional types. They are **not** identical.
+
+3. **`strictNullChecks`** — `null` and `undefined` are no longer assignable to every type. Optional chaining and explicit checks become required. Catches “forgot to handle null” bugs. Without it, null flows silently everywhere.
+
+4. **Structural vs nominal** — TS uses **structural** typing: compatibility is by shape, not declared name. Two types with the same fields are interchangeable. Java/C# use **nominal** typing: class names matter. Branding simulates nominal IDs in TS.
+
+5. **Discriminated union + `never`** — Objects share a literal field (`kind`, `type`) so TS narrows in `switch`. Assigning the union to `never` in `default` forces exhaustiveness — if you add a variant and forget a branch, compile error.
+
+6. **Erased at compile time** — All type annotations, interfaces, generics, and `private`/`protected` (TS-only) are erased. **No** runtime type info. ECMAScript `#private` fields **do** exist at runtime. `public`/`private` in TS classes are compile-time only unless you use `#`.
+
+7. **`Exclude` vs `Omit`** — `Exclude<T, U>` operates on **union types** (removes members assignable to `U`). `Omit<T, K>` operates on **object types** (removes keys `K` from `T`). Different inputs, different jobs.
+
+8. **`as const`** — When you need **literal types** instead of widened primitives (`"GET"` not `string`, `readonly` tuple, frozen config). Fixes inference on object literals and arrays. Alternative to manual literal unions.
+
+9. **`satisfies` vs `as`** — `satisfies Type` **validates** the value matches the type **and keeps** narrow inferred types (e.g. tuple stays tuple). `as Type` **forces** the type and **widens** inference — no real validation, just trust.
+
+10. **Map pattern vs union** — Use a **map/object** when each variant needs different fields or behavior keyed by a discriminant — avoids huge unions of incompatible shapes. Pattern: `{ [K in Status]: Handler }[status]` instead of `A | B | C` with unrelated fields.
+
+11. **Compiler vs transpiler (`tsc`)** — **Compiler**: type-checking (static analysis). **Transpiler**: TS → JS (high-level to high-level). `tsc` does both. Neither runs at runtime — output is plain JS.
+
+12. **Declaration merging** — Multiple `interface Foo { ... }` blocks with the **same name** merge into one interface (fields combine). Only works with `interface`, not `type`. Common for augmenting `Window`, module types.
+
+13. **`extends` vs `implements`** — `extends`: class inherits **one** base class (implementation + prototype chain). `implements`: class promises to satisfy **one or more** interface contracts (signatures only, no inherited code).
+
+14. **Mixins** — Functions that take a class and return an extended class. Compose behavior without multiple inheritance (which TS/JS don't support). Stack mixins: `class User extends WithId(WithTimestamp(Entity))`.
+
+15. **`erasableSyntaxOnly`** — TS 5.8+ flag: error on syntax that emits runtime JS TypeScript invented (constructor parameter properties, `enum`, `namespace`). Lets runtimes/type-strippers (`tsc --noEmit`, Node type stripping) treat TS as erasable types only. Use `this.x = x` instead of `constructor(public x: number)`.
+
+</details>
+
+</details>
+
+---
+
+## Oral questions (ITVDN — TypeScript)
+
+<details>
+<summary>Oral questions (ITVDN — TypeScript)</summary>
+
+**Definition:** Self-check oral questions from ITVDN TypeScript course.
+
+**Sources:** [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
+
+79. What are the advantages of typing in TypeScript?
+
+80. What TypeScript features can you use for typing (interfaces, types, enum, etc.)?
+
+81. What is the difference between an interface and a class?
+
+82. What is the difference between an interface and an abstract class?
+
+83. What is the difference between an interface and a type?
+
+</details>
+
+---
+
+## Oral questions (extra)
+
+<details>
+<summary>Oral questions (extra)</summary>
+
+**Definition:** Additional interview oral questions on compiler flags and module patterns.
+
+1. What does `noUncheckedIndexedAccess` change about `arr[i]`?
+2. When would you use `import type` vs `import`?
+3. How do project references speed up monorepo builds?
+4. Why is `as User` on `res.json()` unsafe in production?
+5. What is the difference between covariant and contravariant function parameters?
+6. When is `const` on a generic type parameter useful?
+7. What does `composite: true` enable in `tsconfig`?
+
+<details>
+  <summary>Answers</summary>
+
+### Answers
+
+1. **`noUncheckedIndexedAccess`** — Index access returns `T | undefined` instead of `T`. `arr[i]` and `obj[key]` may be out of bounds / missing — you must narrow or use `??` before use. Safer, but noisier on legacy code.
+
+2. **`import type` vs `import`** — `import type` / `export type` are **erased** at emit — no runtime import. Use for types-only symbols. Value imports (`import { fn }`) stay at runtime. `verbatimModuleSyntax` enforces this split. Prevents bundlers from pulling type-only modules into the bundle.
+
+3. **Project references** — Split the monorepo into **composite** projects with `references`. `tsc --build` type-checks and emits **incrementally** — only changed projects rebuild. Dependencies build in order. Faster CI than one giant `tsc` on everything.
+
+4. **`as User` on `res.json()`** — Assertion is **compile-time only**; no runtime check. API can return any JSON shape; wrong data causes runtime crashes (undefined access, wrong types). Use `unknown` + schema validation (Zod, etc.) at the boundary.
+
+5. **Covariant vs contravariant params** — **Return types** are covariant: subtype return is OK when assigning functions. **Parameter types** are contravariant (with `strictFunctionTypes`): function that accepts **wider** input can be assigned where **narrower** input is expected. Methods stay bivariant by default (unsound but ergonomic).
+
+6. **`const` on generic type parameter** — Preserves **literal** inference in generics: `routes<const T>(["/a", "/b"])` → tuple of literals, not `string[]`. Useful for config objects, route defs, and APIs where widening loses precision.
+
+7. **`composite: true`** — Marks a project as part of a **project references** graph. Requires `declaration: true`. Enables incremental builds and lets other projects `reference` this one. Required for `tsc --build` monorepo workflows.
+
+</details>
 
 </details>

@@ -1,50 +1,95 @@
-# TypeScript — Narrowing
+# TypeScript — Narrowing types
 
-Control-flow analysis and type guards.
+Control-flow analysis and type guards — from the [TypeScript handbook](https://www.typescriptlang.org/docs/handbook/2/narrowing.html).
 
 [← Back to hub](./5_ts.md)
 
 ### Related docs
 
-- [TypeScript — hub](./5_ts.md) · [Interview](./5_ts_interview.md)
+[TypeScript — hub](./5_ts.md) · [Types](./5_ts_types.md) · [Functions](./5_ts_functions.md) · [Object Types](./5_ts_objects.md) · [Interview](./5_ts_interview.md)
 
 ### Main concepts
 
-| Area   | Topics                                             |
-| ------ | -------------------------------------------------- |
-| Guards | `typeof`, truthiness, equality, `in`, `instanceof` |
-| Custom | Type predicates, assertion functions               |
-| Flow   | Assignment narrowing, control-flow analysis        |
-| Unions | Discriminated unions, `never` and exhaustiveness   |
+| Topic                                                   | Covers                                             |
+| ------------------------------------------------------- | -------------------------------------------------- |
+| [Type narrowing](#type-narrowing)                       | Overview — unions, type guards, control-flow paths |
+| [typeof type guards](#typeof-type-guards)               | `typeof x === "string"` and primitive unions       |
+| [Truthiness narrowing](#truthiness-narrowing)           | `if (x)`, `!x`, falsy values                       |
+| [Equality narrowing](#equality-narrowing)               | `===`, `== null`, comparing two values             |
+| [The in operator narrowing](#the-in-operator-narrowing) | `"key" in obj` on object unions                    |
+| [instanceof narrowing](#instanceof-narrowing)           | `x instanceof Date`                                |
+| [Assignments](#assignments)                             | Observed vs declared type after `=`                |
+| [Control flow analysis](#control-flow-analysis)         | `return`, branches, reachability                   |
+| [Using type predicates](#using-type-predicates)         | `pet is Fish` user-defined guards                  |
+| [Assertion functions](#assertion-functions)             | `asserts val is Type`                              |
+| [Discriminated unions](#discriminated-unions)           | Literal `kind` / `type` fields                     |
+| [The never type](#the-never-type)                       | Bottom type — no valid values                      |
+| [Exhaustiveness checking](#exhaustiveness-checking)     | `default: never` in `switch`                       |
 
 ### Sections
 
-- [Type guards](#type-guards)
-- [Custom guards](#custom-guards)
-- [Control flow](#control-flow)
-- [Unions](#unions)
+- [Type narrowing](#type-narrowing)
+- [typeof type guards](#typeof-type-guards)
+- [Truthiness narrowing](#truthiness-narrowing)
+- [Equality narrowing](#equality-narrowing)
+- [The in operator narrowing](#the-in-operator-narrowing)
+- [instanceof narrowing](#instanceof-narrowing)
+- [Assignments](#assignments)
+- [Control flow analysis](#control-flow-analysis)
+- [Using type predicates](#using-type-predicates)
+- [Assertion functions](#assertion-functions)
+- [Discriminated unions](#discriminated-unions)
+- [The never type](#the-never-type)
+- [Exhaustiveness checking](#exhaustiveness-checking)
 
 ---
 
-## Type guards
+## Type narrowing
 
 <details>
 <summary>Type narrowing</summary>
 
-**Definition:** TypeScript refines a declared union to a more specific type by analyzing runtime checks and control flow.
+**Definition:**
+
+**Narrowing** is how TypeScript refines a value from a wider type (usually a union) to a more specific type inside a branch of code. You write ordinary JavaScript checks; the compiler tracks which types are still possible on each path. A check the compiler understands is called a **type guard**.
 
 **How it works:**
 
-- The compiler overlays type analysis on JavaScript constructs (`if`/`else`, ternaries, loops, truthiness, equality).
-- A _type guard_ is a check TypeScript understands (`typeof`, `in`, `instanceof`, predicates).
-- After a guard, you can safely use members that exist only on that variant.
+1. You declare a value with a union or optional type, e.g. `padding: number | string`.
+2. Before the check, only operations valid for **every** member of the union are allowed (`" ".repeat(padding)` fails because `string` is not a `number`).
+3. Inside `if (typeof padding === "number")`, TypeScript follows that **control-flow path** and treats `padding` as `number` in the true branch and `string` in the false branch.
+4. Early `return` / `throw` removes variants from the rest of the function without an `else`.
+5. The **declared type** (what you may assign later) stays the same; the **observed type** (what the compiler sees right now) narrows until the next assignment.
 
-**When to use:** Any value typed as a union before you access members that are not shared by every variant. Skip when the type is already a single concrete type.
+Narrowing is **compile-time only** — no runtime wrapper, no validation beyond what your JavaScript already does. It is the opposite of a type assertion (`as`): assertions tell the compiler to trust you; narrowing is the compiler inferring from code you wrote.
+
+**When to use:**
+
+- A parameter or variable is a **union** and you need a method or property that exists on only one member.
+- A value may be **`null` / `undefined`** and you must prove it is present before use.
+- You handle **discriminated variants** (`kind`, `type`) and need fields that exist on only one variant.
+- Skip narrowing when the type is already a single concrete type, or when every member of the union shares the property you need (e.g. `.slice()` on `string | string[]`).
+
+**Pluses and minuses:**
+
+| +                                                                 | −                                                                             |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Stays close to normal JavaScript — no extra runtime library       | Only works where the compiler can follow control flow                         |
+| Catches misuse of union members at compile time                   | Truthiness checks treat `0`, `""`, `NaN` as false — easy to miss valid values |
+| Refactors stay safe when unions grow (with `never` checks)        | Closures and reassignment can widen types again after a guard                 |
+| No false confidence — unlike `as`, narrowing reflects real checks | `typeof null === "object"` — arrays and `null` both narrow to `object`        |
 
 **Examples:**
 
 ```typescript
-function printId(id: string | number) {
+function padLeft(padding: number | string, input: string): string {
+  if (typeof padding === "number") {
+    return " ".repeat(padding) + input;
+  }
+  return padding + input;
+}
+
+function printId(id: number | string) {
   if (typeof id === "string") {
     console.log(id.toUpperCase());
   } else {
@@ -53,14 +98,20 @@ function printId(id: string | number) {
 }
 ```
 
-**Thoughts:** Interview framing: narrowing is control-flow analysis, not a runtime cast. `as` does not check anything.
+**Thoughts:**
 
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+Interview framing: narrowing is **control-flow analysis**, not a cast. Contrast with `as`, which does not run any check.
+
+**Sources:** [TypeScript handbook — Narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
 
 </details>
 
+---
+
+## typeof type guards
+
 <details>
-<summary>`typeof` type guards</summary>
+<summary>typeof type guards</summary>
 
 **Definition:** Checking `typeof value === "..."` is a type guard because TypeScript encodes JavaScript's `typeof` results.
 
@@ -91,9 +142,13 @@ function printAll(strs: string | string[] | null) {
 }
 ```
 
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+**Sources:** [TypeScript handbook — typeof type guards](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#typeof-type-guards)
 
 </details>
+
+---
+
+## Truthiness narrowing
 
 <details>
 <summary>Truthiness narrowing</summary>
@@ -115,7 +170,6 @@ function printLength(str: string | null | undefined) {
   if (str) {
     console.log(`Length: ${str.length}`);
   } else {
-    // null, undefined, or ""
     console.log("No valid string provided");
   }
 }
@@ -128,9 +182,13 @@ function checkCount(count: number | undefined) {
 }
 ```
 
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+**Sources:** [TypeScript handbook — Truthiness narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#truthiness-narrowing)
 
 </details>
+
+---
+
+## Equality narrowing
 
 <details>
 <summary>Equality narrowing</summary>
@@ -150,7 +208,6 @@ function checkCount(count: number | undefined) {
 ```typescript
 function processInput(x: string | number, y: string | boolean) {
   if (x === y) {
-    // only shared type: string
     console.log(x.toUpperCase());
     console.log(y.toUpperCase());
   }
@@ -163,12 +220,16 @@ function printValue(value: string | null | undefined) {
 }
 ```
 
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+**Sources:** [TypeScript handbook — Equality narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#equality-narrowing)
 
 </details>
 
+---
+
+## The in operator narrowing
+
 <details>
-<summary>`in` operator narrowing</summary>
+<summary>The in operator narrowing</summary>
 
 **Definition:** `"key" in obj` narrows an object union to members that declare that property.
 
@@ -190,25 +251,18 @@ function move(animal: Fish | Bird) {
   if ("swim" in animal) animal.swim();
   else animal.fly();
 }
-
-type Car = { drive: () => void; sunroof?: boolean };
-type Truck = { drive: () => void };
-
-function serviceVehicle(vehicle: Car | Truck) {
-  if ("sunroof" in vehicle) {
-    // Car
-  } else {
-    // Truck | Car (Car may omit sunroof)
-  }
-}
 ```
 
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+**Sources:** [TypeScript handbook — The in operator narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-in-operator-narrowing)
 
 </details>
 
+---
+
+## instanceof narrowing
+
 <details>
-<summary>`instanceof` narrowing</summary>
+<summary>instanceof narrowing</summary>
 
 **Definition:** `value instanceof Ctor` narrows to that constructor's instance type using the prototype chain at runtime.
 
@@ -230,100 +284,18 @@ function logValue(x: Date | string) {
     console.log(x.toUpperCase());
   }
 }
-
-interface User {
-  name: string;
-}
-// Error: 'User' only refers to a type, but is being used as a value.
-// if (obj instanceof User) { ... }
 ```
 
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+**Sources:** [TypeScript handbook — instanceof narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#instanceof-narrowing)
 
 </details>
 
 ---
 
-## Custom guards
+## Assignments
 
 <details>
-<summary>Type predicates</summary>
-
-**Definition:** A user-defined type guard is a function whose return type is `arg is SomeType`.
-
-**How it works:**
-
-- On `true`, the argument is narrowed to `SomeType` at the call site.
-- On `false`, that type is excluded from the remaining union.
-- The body is _not_ checked against the predicate — a wrong `return true` will lie to the type checker.
-
-**When to use:** When built-in guards are not enough (`Array.isArray` style helpers, validating API payloads). Keep the runtime check honest.
-
-**Examples:**
-
-```typescript
-type Fish = { swim: () => void };
-type Bird = { fly: () => void };
-
-function isFish(pet: Fish | Bird): pet is Fish {
-  return (pet as Fish).swim !== undefined;
-}
-
-function move(pet: Fish | Bird) {
-  if (isFish(pet)) pet.swim();
-  else pet.fly();
-}
-```
-
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
-
-</details>
-
-<details>
-<summary>Assertion functions</summary>
-
-**Definition:** A function with return type `asserts condition` or `asserts val is Type` narrows by throwing if the check fails.
-
-**How it works:**
-
-- `asserts condition` — if the function returns, `condition` is `true` for the rest of the scope.
-- `asserts val is Type` — after return, `val` has that type (error-throwing type guard).
-- Works with generics, e.g. `asserts val is NonNullable<T>`.
-
-**When to use:** Preconditions at function entry when failure should abort. Prefer `if` + predicates when both branches need to continue.
-
-**Examples:**
-
-```typescript
-function assert(condition: unknown, msg?: string): asserts condition {
-  if (!condition) {
-    throw new Error(msg ?? "Assertion Failed");
-  }
-}
-
-function assertIsNumber(val: unknown): asserts val is number {
-  if (typeof val !== "number") {
-    throw new Error("Not a number!");
-  }
-}
-
-function assertNonNull<T>(val: T): asserts val is NonNullable<T> {
-  if (val == null) {
-    throw new Error("Value cannot be null or undefined");
-  }
-}
-```
-
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
-
-</details>
-
----
-
-## Control flow
-
-<details>
-<summary>Assignment narrowing</summary>
+<summary>Assignments</summary>
 
 **Definition:** Assigning a more specific value narrows a variable's _observed_ type until the next assignment.
 
@@ -345,14 +317,15 @@ console.log(data.toFixed(2));
 
 data = "goodbye";
 console.log(data.toUpperCase());
-
-// Error: boolean is not assignable to string | number
-// data = true;
 ```
 
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+**Sources:** [TypeScript handbook — Assignments](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#assignments)
 
 </details>
+
+---
+
+## Control flow analysis
 
 <details>
 <summary>Control flow analysis</summary>
@@ -365,7 +338,7 @@ console.log(data.toUpperCase());
 - Assignments inside branches split the type; after the `if`/`else`, remaining possibilities are unioned.
 - Reachability matters: code after a never-returning call is unreachable.
 
-**When to use:** Guard clauses and multi-branch functions. Do not assume a type stays narrowed after a callback that might assign later (closures can reset analysis).
+**When to use:** Guard clauses and multi-branch functions. Do not assume a type stays narrowed after a callback that might assign later.
 
 **Examples:**
 
@@ -386,17 +359,94 @@ function getStatus() {
     result = 500;
   }
 
-  return result; // string | number — boolean is gone
+  return result; // string | number
 }
 ```
 
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+**Sources:** [TypeScript handbook — Control flow analysis](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#control-flow-analysis)
 
 </details>
 
 ---
 
-## Unions
+## Using type predicates
+
+<details>
+<summary>Using type predicates</summary>
+
+**Definition:** A user-defined type guard is a function whose return type is `parameterName is Type`.
+
+**How it works:**
+
+- On `true`, the argument is narrowed to that type at the call site.
+- On `false`, that type is excluded from the remaining union.
+- The body is _not_ verified — a wrong `return true` will lie to the type checker.
+
+**When to use:** When built-in guards are not enough (payload validation, `Array.isArray`-style helpers). Keep the runtime check honest.
+
+**Examples:**
+
+```typescript
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+
+function move(pet: Fish | Bird) {
+  if (isFish(pet)) pet.swim();
+  else pet.fly();
+}
+
+const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet()];
+const underWater: Fish[] = zoo.filter(isFish);
+```
+
+**Sources:** [TypeScript handbook — Using type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
+
+</details>
+
+---
+
+## Assertion functions
+
+<details>
+<summary>Assertion functions</summary>
+
+**Definition:** A function with return type `asserts condition` or `asserts val is Type` narrows by throwing if the check fails.
+
+**How it works:**
+
+- `asserts condition` — if the function returns, `condition` is `true` for the rest of the scope.
+- `asserts val is Type` — after return, `val` has that type.
+- Works with generics, e.g. `asserts val is NonNullable<T>`.
+
+**When to use:** Preconditions at function entry when failure should abort. Prefer `if` + predicates when both branches need to continue.
+
+**Examples:**
+
+```typescript
+function assertIsNumber(val: unknown): asserts val is number {
+  if (typeof val !== "number") {
+    throw new Error("Not a number!");
+  }
+}
+
+function assertNonNull<T>(val: T): asserts val is NonNullable<T> {
+  if (val == null) {
+    throw new Error("Value cannot be null or undefined");
+  }
+}
+```
+
+**Sources:** [TypeScript handbook — Assertion functions](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#assertion-functions)
+
+</details>
+
+---
+
+## Discriminated unions
 
 <details>
 <summary>Discriminated unions</summary>
@@ -406,10 +456,10 @@ function getStatus() {
 **How it works:**
 
 - Each variant has the same key with a different string/number/boolean literal.
-- `if (shape.kind === "circle")` makes other fields (`radius`) available.
-- Optional fields on one shared interface do **not** work the same way — TypeScript will not prove `radius` exists from `kind`.
+- `if (shape.kind === "circle")` makes variant-specific fields (`radius`) available.
+- Optional fields on one shared interface do **not** discriminate — TypeScript will not prove `radius` exists from `kind` alone.
 
-**When to use:** Closed sets of variants you own (events, AST nodes, results). Prefer this over a bag of optional properties.
+**When to use:** Closed sets of variants you own (events, AST nodes, API results). Prefer separate interfaces per variant over one bag of optional properties.
 
 **Examples:**
 
@@ -436,22 +486,73 @@ function getArea(shape: Shape) {
 }
 ```
 
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+**Sources:** [TypeScript handbook — Discriminated unions](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions)
 
 </details>
 
-<details>
-<summary>`never` and exhaustiveness</summary>
+---
 
-**Definition:** `never` is the type of values that never occur — remaining union members after every variant is handled, or a function that always throws / loops.
+## The never type
+
+<details>
+<summary>The never type</summary>
+
+**Definition:** `never` is the **bottom type** — the type of values that never occur. No value is assignable to `never` except `never` itself.
 
 **How it works:**
 
-- Only `never` is assignable to `never`.
-- In a `switch` `default`, assign the value to `const _exhaustive: never = shape`.
-- Adding a new union member makes that assignment fail until you add a `case`.
+- Functions that always `throw` or loop forever have return type `never`.
+- After every member of a union is ruled out, the remaining type is `never`.
+- `never` is assignable **to** every type (it will never actually be produced).
 
-**When to use:** Discriminated unions you expect to stay exhaustive. Pair with `default` in `switch` so new variants are a compile error.
+**When to use:** Impossible branches, exhaustiveness checks, and functions that do not return. Pair with [Exhaustiveness checking](#exhaustiveness-checking) in `switch`.
+
+**Examples:**
+
+```typescript
+function fail(msg: string): never {
+  throw new Error(msg);
+}
+
+function infinite(): never {
+  while (true) {}
+}
+
+type Result = "ok" | "error";
+function handle(r: Result) {
+  if (r === "ok") return;
+  if (r === "error") return;
+  const remaining: never = r; // r: never — all cases handled
+}
+```
+
+**Sources:** [TypeScript handbook — The never type](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type)
+
+</details>
+
+---
+
+## Exhaustiveness checking
+
+<details>
+<summary>Exhaustiveness checking</summary>
+
+**Definition:** A pattern that uses `never` in a `switch` `default` branch so TypeScript errors when a new union member is not handled.
+
+**How it works:**
+
+- Handle every discriminant in `case` branches.
+- In `default`, assign `const _check: never = value`.
+- Adding a new variant makes `value` no longer `never` — compile fails until you add a `case`.
+
+**When to use:** Discriminated unions that should stay closed as the codebase evolves.
+
+**Pluses and minuses:**
+
+| +                                                           | −                                                                  |
+| ----------------------------------------------------------- | ------------------------------------------------------------------ |
+| New variants become compile errors, not silent runtime bugs | Slightly more boilerplate in every `switch`                        |
+| Documents that the union is meant to be complete            | `default` with `never` is easy to forget without a team convention |
 
 **Examples:**
 
@@ -481,8 +582,8 @@ function getArea(shape: Shape) {
 }
 ```
 
-**Thoughts:** Same idea as an exhaustive `switch` over a TypeScript union in application code: unhandled variants should fail at compile time, not silently at runtime.
+**Thoughts:** Same idea as exhaustive `switch` in application code: unhandled variants should fail at compile time.
 
-**Sources:** [TypeScript handbook — narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+**Sources:** [TypeScript handbook — Exhaustiveness checking](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking)
 
 </details>

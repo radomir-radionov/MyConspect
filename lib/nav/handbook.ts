@@ -1,4 +1,6 @@
 import {
+  isInterviewTasksTopic,
+  isInterviewTopic,
   SUBJECTS,
   TRACKS,
   clusterHref,
@@ -14,6 +16,7 @@ import { catalogBlurb } from "@/lib/i18n/catalog";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
 import { withLocale } from "@/lib/i18n/paths";
 import { loadTopicOutline } from "@/lib/parse";
+import type { ConceptOutline } from "@/lib/parse";
 import type { NavEntry, NavGroup, NavTopic } from "./types";
 
 function sameTitle(left: string, right: string): boolean {
@@ -24,13 +27,27 @@ function localizeHref(locale: Locale, href: string): string {
   return withLocale(locale, href);
 }
 
+function outlineForTopic(
+  topic: Topic,
+  outline: readonly ConceptOutline[],
+): readonly ConceptOutline[] {
+  if (isInterviewTasksTopic(topic)) {
+    return outline.filter((concept) => concept.interviewSection === "tasks");
+  }
+  if (isInterviewTopic(topic)) {
+    return outline.filter((concept) => concept.interviewSection !== "tasks");
+  }
+  return outline;
+}
+
 function toNavTopic(topic: Topic, locale: Locale): NavTopic {
+  const outline = outlineForTopic(topic, loadTopicOutline(topic, locale));
   return {
     slug: topic.slug,
     href: localizeHref(locale, topicHref(topic)),
     title: topic.title,
     blurb: catalogBlurb(locale, topic.blurb),
-    concepts: loadTopicOutline(topic, locale),
+    concepts: outline,
   };
 }
 
@@ -70,6 +87,8 @@ function entriesForTrack(
       const sections = subject.sections?.map((section) => ({
         id: section.id,
         title: section.title,
+        defaultOpen: section.defaultOpen,
+        collapsible: section.collapsible,
         clusters: clusters.filter((cluster) => {
           const definition = subject.clusters.find(
             (item) => item.id === cluster.id,
@@ -77,6 +96,12 @@ function entriesForTrack(
           return definition?.section === section.id;
         }),
       }));
+      const rootClusters = clusters.filter((cluster) => {
+        const definition = subject.clusters.find(
+          (item) => item.id === cluster.id,
+        );
+        return !definition?.section;
+      });
       entries.push({
         kind: "subject",
         subject: {
@@ -84,10 +109,8 @@ function entriesForTrack(
           href: localizeHref(locale, subjectHref(subject)),
           title: subject.title,
           blurb: catalogBlurb(locale, subject.blurb),
-          sections: sections?.some((section) => section.clusters.length > 0)
-            ? sections.filter((section) => section.clusters.length > 0)
-            : undefined,
-          clusters: sections ? [] : clusters,
+          sections: sections?.length ? sections : undefined,
+          clusters: sections?.length ? rootClusters : clusters,
         },
       });
       continue;

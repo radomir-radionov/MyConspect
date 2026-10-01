@@ -8,49 +8,46 @@ Handbook, common types, language reference, compiler, and interview practice. St
 
 ### Navigation — Handbook
 
+Matches the [official TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html).
+
 | Topic                                            | Covers                                                              |
 | ------------------------------------------------ | ------------------------------------------------------------------- |
 | [The Basics](./5_ts_basics.md)                   | Static type-checking, compiler, tsconfig, intro for JS programmers. |
-| [Narrowing](./5_ts_narrowing.md)                 | Control-flow analysis and type guards.                              |
-| [More on Functions](./5_ts_functions.md)         | Call signatures, overloads, and `this` typing.                      |
+| [Types](./5_ts_types.md)                         | Basic value types — `string`, `number`, `boolean`, arrays, `any`.   |
+| [Narrowing types](./5_ts_narrowing.md)           | Control-flow analysis and type guards.                              |
+| [Functions](./5_ts_functions.md)                 | Function types, generics, parameters, overloads, and `this`.        |
 | [Object Types](./5_ts_objects.md)                | Object shapes, optional properties, tuples.                         |
 | [Type Manipulation](./5_ts_type_manipulation.md) | Generics, keyof, typeof, mapped and conditional types.              |
-| [Utility Types](./5_ts_utility_types.md)         | Partial, Pick, Omit, Record, ReturnType, and more.                  |
-| [Classes](./5_ts_classes.md)                     | Classes, inheritance, abstract classes.                             |
-| [Modules](./5_ts_modules.md)                     | ES modules, import/export, module resolution.                       |
+| [Classes](./5_ts_classes.md)                     | Fields, visibility, inheritance, `implements`, abstract classes.    |
+| [Modules](./5_ts_modules.md)                     | ES modules, CommonJS, resolution, and emit targets.                 |
+| [Interview](./5_ts_interview.md)                 | Q&A and oral questions.                                             |
+| [Tasks](/frontend/typescript/ts-interview-tasks) | Type-level coding challenges.                                       |
 
-### Navigation — Common
+### Navigation — Old (Common)
 
-| Topic                                                | Covers                                             |
-| ---------------------------------------------------- | -------------------------------------------------- |
-| [Primitives](./5_ts_primitives.md)                   | `string`, `number`, `boolean`, `bigint`, `symbol`. |
-| [Arrays](./5_ts_arrays.md)                           | Typed arrays: `number[]` and `Array<T>`.           |
-| [any, unknown, never](./5_ts_top_types.md)           | Top and bottom types.                              |
-| [Type Annotations](./5_ts_type_annotations.md)       | Explicit labels and when to omit them.             |
-| [Unions & Literals](./5_ts_unions_literals.md)       | Union types and literal types.                     |
-| [Aliases & Interfaces](./5_ts_aliases_interfaces.md) | `type`, `interface`, and when to use which.        |
-| [Assertions & satisfies](./5_ts_assertions.md)       | `as` and the `satisfies` operator.                 |
-| [null & undefined](./5_ts_null_undefined.md)         | Absence types and `strictNullChecks`.              |
+Moved to [Types](./5_ts_types.md). Legacy filenames: `5_ts_primitives.md`, `5_ts_arrays.md`, `5_ts_top_types.md`, `5_ts_type_annotations.md`, `5_ts_unions_literals.md`, `5_ts_aliases_interfaces.md`, `5_ts_assertions.md`, `5_ts_null_undefined.md`.
 
 ### Navigation — Reference
 
-| Topic                                                | Covers                                            |
-| ---------------------------------------------------- | ------------------------------------------------- |
-| [Cheat Sheets](./5_ts_cheat_sheets.md)               | Quick-reference cards and memorization checklist. |
-| [Decorators](./5_ts_decorators.md)                   | Stage 2 and stage 3 decorators.                   |
-| [Declaration Merging](./5_ts_declaration_merging.md) | Interface, namespace, class merging.              |
-| [Enums](./5_ts_enums.md)                             | Numeric/string enums and `as const` alternatives. |
-| [Iterators and Generators](./5_ts_iterators.md)      | `Symbol.iterator`, generators, `for..of`.         |
-| [JSX](./5_ts_jsx.md)                                 | JSX in `.tsx` and component typing.               |
-| [Mixins](./5_ts_mixins.md)                           | Compose classes from building blocks.             |
-| [Namespaces & Modules](./5_ts_namespaces.md)         | Legacy namespaces, triple-slash directives.       |
-| [Symbols](./5_ts_symbols.md)                         | Unique keys and `unique symbol`.                  |
-| [Type System](./5_ts_type_system.md)                 | Compatibility, inference, variable declarations.  |
-| [TanStack](./5_ts_tanstack.md)                       | Query, Router, Table, Virtual, Form, and orval.   |
+Matches the [official Reference section](https://www.typescriptlang.org/docs/handbook/utility-types.html).
 
-### Interview practice
-
-Q&A lives in the [Interview](./5_ts_interview.md) topic.
+| Topic                                                  | Covers                                             |
+| ------------------------------------------------------ | -------------------------------------------------- |
+| [Utility Types](./5_ts_utility_types.md)               | Partial, Pick, Omit, Record, ReturnType, and more. |
+| [Cheat Sheets](./5_ts_cheat_sheets.md)                 | Quick-reference cards and memorization checklist.  |
+| [Decorators](./5_ts_decorators.md)                     | Stage 2 and stage 3 decorators.                    |
+| [Declaration Merging](./5_ts_declaration_merging.md)   | Interface, namespace, class merging.               |
+| [Enums](./5_ts_enums.md)                               | Numeric/string enums and `as const` alternatives.  |
+| [Iterators and Generators](./5_ts_iterators.md)        | `Symbol.iterator`, generators, `for..of`.          |
+| [JSX](./5_ts_jsx.md)                                   | JSX in `.tsx` and component typing.                |
+| [Mixins](./5_ts_mixins.md)                             | Compose classes from building blocks.              |
+| [Namespaces](./5_ts_namespaces.md)                     | Legacy `namespace` organization.                   |
+| [Namespaces and Modules](./5_ts_namespaces_modules.md) | ES modules vs legacy namespaces.                   |
+| [Symbols](./5_ts_symbols.md)                           | Unique keys and `unique symbol`.                   |
+| [Triple-Slash Directives](./5_ts_triple_slash.md)      | `///` compiler directives and `declare`.           |
+| [Type Compatibility](./5_ts_type_compatibility.md)     | Structural subtyping and assignability.            |
+| [Type Inference](./5_ts_type_inference.md)             | Best common type and contextual typing.            |
+| [Variable Declaration](./5_ts_variable_declaration.md) | `var`, `let`, `const`, and destructuring.          |
 
 ---
 

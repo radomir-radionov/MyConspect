@@ -5,7 +5,7 @@ Covers objects, prototypes, classes, property descriptors, Proxy/Reflect, `this`
 ### Related docs
 
 - [JS Language](./3_js_core.md) · [JS Data Types & Variables](./3_js_variables.md) · [JS Operators & Loops](./3_js_operators.md) · [JS Arrays](./3_js_array.md) · [JS Functions](./3_js_functions.md) · [Stack & heap](./3_js_variables.md#memory-stack-heap) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md)
-- [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript) · [GRASP](./0_system_design_grasp.md)
+- [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Classes (TypeScript)](./5_ts_classes.md) · [GRASP](./0_system_design_grasp.md)
 
 [← Back to JS hub](./3_js.md)
 
@@ -255,7 +255,7 @@ video.play(); // без деталей decode/buffer — просто испол
 
 **Thoughts:** Хорошее ООП в JS — соответствие сущностей домену, а не глубокие деревья `extends`. Эта страница — **канонический JS-гайд** (синтаксис + примеры столпов); контекст system design — в [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop).
 
-**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [MDN — Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain) · [javascript.info — Prototypal inheritance](https://javascript.info/prototype-inheritance) · [Doka — OOP](https://doka.guide/tools/oop/) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [OOP in TypeScript](./5_ts_objects.md#oop-in-typescript)
+**Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [MDN — Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain) · [javascript.info — Prototypal inheritance](https://javascript.info/prototype-inheritance) · [Doka — OOP](https://doka.guide/tools/oop/) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Classes (TypeScript)](./5_ts_classes.md)
 
 ---
 

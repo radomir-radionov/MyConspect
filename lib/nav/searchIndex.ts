@@ -528,6 +528,9 @@ function filterSubject(
     return subject;
   }
   if (subject.sections?.length) {
+    const rootClusters = subject.clusters
+      .map((cluster) => filterCluster(cluster, query, mode, index, bodyHits))
+      .filter((cluster): cluster is NavCluster => cluster !== null);
     const sections = subject.sections
       .map((section) => ({
         ...section,
@@ -538,10 +541,10 @@ function filterSubject(
           .filter((cluster): cluster is NavCluster => cluster !== null),
       }))
       .filter((section) => section.clusters.length > 0);
-    if (sections.length === 0) {
+    if (rootClusters.length === 0 && sections.length === 0) {
       return null;
     }
-    return { ...subject, sections, clusters: [] };
+    return { ...subject, sections, clusters: rootClusters };
   }
   const clusters = subject.clusters
     .map((cluster) => filterCluster(cluster, query, mode, index, bodyHits))

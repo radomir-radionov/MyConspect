@@ -316,20 +316,18 @@ describe("handbook sidebar", () => {
     cy.nav("topic", "react-redux").should("be.visible").and("contain", "Redux");
   });
 
-  it("shows TanStack under TypeScript Reference in breadcrumbs", () => {
-    cy.visit("/en/frontend/ts-tanstack");
-    cy.contains("nav[aria-label='Breadcrumbs']", "TypeScript").should(
-      "be.visible",
-    );
-    cy.contains("nav[aria-label='Breadcrumbs']", "Reference").should(
+  it("shows TanStack under React Ecosystem in breadcrumbs", () => {
+    cy.visit("/en/frontend/react-tanstack");
+    cy.contains("nav[aria-label='Breadcrumbs']", "React").should("be.visible");
+    cy.contains("nav[aria-label='Breadcrumbs']", "Ecosystem").should(
       "be.visible",
     );
     cy.contains("nav[aria-label='Breadcrumbs']", "TanStack").should(
       "be.visible",
     );
     cy.contains("h1", "TanStack");
-    cy.nav("cluster", "reference").should("have.attr", "aria-expanded", "true");
-    cy.nav("topic", "ts-tanstack")
+    cy.nav("cluster", "ecosystem").should("have.attr", "aria-expanded", "true");
+    cy.nav("topic", "react-tanstack")
       .should("be.visible")
       .and("contain", "TanStack");
   });

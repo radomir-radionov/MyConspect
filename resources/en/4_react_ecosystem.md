@@ -54,7 +54,7 @@ Routing
 
 **Thoughts:** _URL drives which components mount — no full document reload._
 
-**See also:** [React Router essentials](#react-router-essentials) · [TanStack Router](./5_ts_tanstack.md#tanstack-router)
+**See also:** [React Router essentials](#react-router-essentials) · [TanStack Router](./4_react_tanstack.md#tanstack-router)
 
 **Sources:**
 
@@ -210,7 +210,7 @@ async function Page() {
 }
 ```
 
-**Thoughts:** Don't `useEffect` + `fetch` for initial page data if RSC or router loader can provide it. HTTP headers vs client cache → [6_web_api.md — HTTP caching](./6_web_api.md). TanStack Query → [TypeScript — TanStack](./5_ts_tanstack.md). RTK Query → [React — Redux](./4_react_redux.md).
+**Thoughts:** Don't `useEffect` + `fetch` for initial page data if RSC or router loader can provide it. HTTP headers vs client cache → [6_web_api.md — HTTP caching](./6_web_api.md). TanStack Query → [React — TanStack](./4_react_tanstack.md). RTK Query → [React — Redux](./4_react_redux.md).
 
 **Sources:**
 
@@ -323,7 +323,7 @@ Canonical: [Feature-Sliced Design](./7_special_architecture.md#feature-sliced-de
 
 **Definition:** Fully type-safe React router with loaders and validated search params.
 
-Full guide → [TypeScript — TanStack](./5_ts_tanstack.md#tanstack-router).
+Full guide → [React — TanStack](./4_react_tanstack.md#tanstack-router).
 
 **See also:** [Routing](#routing) · [nuqs (URL search params)](#nuqs-url-search-params)
 
@@ -346,7 +346,7 @@ nuqs (URL search params)
 
 **When to use:**
 
-Faceted search, pagination, tabs in the URL. Skip when [TanStack Router](./5_ts_tanstack.md#tanstack-router) `validateSearch` already owns the query string, or when the param is a one-off `?ref=` you never write from UI.
+Faceted search, pagination, tabs in the URL. Skip when [TanStack Router](./4_react_tanstack.md#tanstack-router) `validateSearch` already owns the query string, or when the param is a one-off `?ref=` you never write from UI.
 
 #### Common pitfalls
 
@@ -461,7 +461,7 @@ orval (OpenAPI codegen)
 
 ### orval (OpenAPI codegen)
 
-**Definition:** Generates TypeScript clients, models, and optional mocks from an OpenAPI/Swagger spec — typically [TanStack Query](./5_ts_tanstack.md#codegen-orval) hooks keyed to operations.
+**Definition:** Generates TypeScript clients, models, and optional mocks from an OpenAPI/Swagger spec — typically [TanStack Query](./4_react_tanstack.md#codegen-orval) hooks keyed to operations.
 
 **How it works:** Point `orval.config.ts` at a YAML/JSON spec; set `output.client: 'react-query'`. Orval emits query functions, query keys, and `useX` hooks. Use a **mutator** for a shared Axios/`fetch` instance (auth headers). Re-run on spec change in CI so frontend types cannot drift from the contract.
 
@@ -741,7 +741,7 @@ React DevTools **Profiler** — record interaction → "why did this render?" Hi
 2. **Split context** — theme vs user vs dispatch
 3. **Memoize context value** — `useMemo` on provider `value`
 4. `React.memo` **/ Compiler** on expensive pure children
-5. **Virtualize** long lists — [TanStack Virtual](./5_ts_tanstack.md#tanstack-virtual) (`@tanstack/react-virtual`)
+5. **Virtualize** long lists — [TanStack Virtual](./4_react_tanstack.md#tanstack-virtual) (`@tanstack/react-virtual`)
 
 **Examples:**
 
@@ -863,7 +863,7 @@ List virtualization
 
 **Definition:** Render only **visible rows** (plus a small overscan buffer) in long scrollable lists — DOM node count stays constant regardless of list size.
 
-**How it works:** A virtualizer calculates which items intersect the scroll viewport from `scrollTop`, container height, and fixed/variable row heights. Only those indices mount as DOM nodes; off-screen items are not in the document. On scroll, the virtualizer updates the visible window and repositions rows with `transform` or absolute `top` offsets. Libraries: [@tanstack/react-virtual](./5_ts_tanstack.md#tanstack-virtual), `react-window`, `react-virtuoso`.
+**How it works:** A virtualizer calculates which items intersect the scroll viewport from `scrollTop`, container height, and fixed/variable row heights. Only those indices mount as DOM nodes; off-screen items are not in the document. On scroll, the virtualizer updates the visible window and repositions rows with `transform` or absolute `top` offsets. Libraries: [@tanstack/react-virtual](./4_react_tanstack.md#tanstack-virtual), `react-window`, `react-virtuoso`.
 
 **When to use:** Data tables with thousands of rows, infinite feeds, chat message history, log viewers. Threshold: consider when **1000+ DOM nodes** in one scroll container cause jank.
 
@@ -904,7 +904,7 @@ function VirtualList({ items }: { items: string[] }) {
 }
 ```
 
-**See also:** [TanStack Virtual](./5_ts_tanstack.md#tanstack-virtual)
+**See also:** [TanStack Virtual](./4_react_tanstack.md#tanstack-virtual)
 
 **Sources:**
 

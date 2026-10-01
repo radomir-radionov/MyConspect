@@ -6,6 +6,7 @@ const PATH_ATTR = "data-nav-path";
 const TOP_VARS = {
   track: "--nav-sticky-top-track",
   subject: "--nav-sticky-top-subject",
+  section: "--nav-sticky-top-section",
   cluster: "--nav-sticky-top-cluster",
   topic: "--nav-sticky-top-topic",
   "interview-section": "--nav-sticky-top-interview",
@@ -19,11 +20,17 @@ const GUIDE_VARS: Record<string, string | undefined> = {
 };
 
 function stickySpacing(nav: Element) {
-  const scroller = nav.closest(`#${HANDBOOK_NAV_ASIDE_ID}`) ?? document.getElementById(HANDBOOK_NAV_ASIDE_ID);
+  const scroller =
+    nav.closest(`#${HANDBOOK_NAV_ASIDE_ID}`) ??
+    document.getElementById(HANDBOOK_NAV_ASIDE_ID);
   const styles = scroller ? getComputedStyle(scroller) : null;
   return {
-    inset: Number.parseFloat(styles?.getPropertyValue("--nav-sticky-inset") ?? "") || 8,
-    gap: Number.parseFloat(styles?.getPropertyValue("--nav-sticky-gap") ?? "") || 6,
+    inset:
+      Number.parseFloat(styles?.getPropertyValue("--nav-sticky-inset") ?? "") ||
+      8,
+    gap:
+      Number.parseFloat(styles?.getPropertyValue("--nav-sticky-gap") ?? "") ||
+      6,
   };
 }
 
@@ -31,10 +38,13 @@ function topVarName(element: HTMLElement) {
   const kind =
     element.getAttribute("data-nav") ??
     element.getAttribute("data-nav-pin") ??
-    element.querySelector<HTMLElement>(":scope > [data-nav]")?.getAttribute("data-nav");
+    element
+      .querySelector<HTMLElement>(":scope > [data-nav]")
+      ?.getAttribute("data-nav");
   switch (kind) {
     case "track":
     case "subject":
+    case "section":
     case "cluster":
     case "topic":
     case "interview-section":
@@ -45,7 +55,9 @@ function topVarName(element: HTMLElement) {
 }
 
 function pathElements(nav: Element) {
-  return nav.querySelectorAll<HTMLElement>(`[${PATH_ATTR}="true"], [data-nav-pin]`);
+  return nav.querySelectorAll<HTMLElement>(
+    `[${PATH_ATTR}="true"], [data-nav-pin]`,
+  );
 }
 
 export type StickyVars = Readonly<Record<string, string>>;
@@ -91,7 +103,9 @@ export function writeStickyVars(
   return next;
 }
 
-export function measureStickyPathVars(navElement?: HTMLElement | null): StickyVars {
+export function measureStickyPathVars(
+  navElement?: HTMLElement | null,
+): StickyVars {
   const nav = navElement ?? document.getElementById(HANDBOOK_SIDEBAR_ID);
   if (!nav) {
     return {};
@@ -102,7 +116,12 @@ export function measureStickyPathVars(navElement?: HTMLElement | null): StickyVa
   for (const element of pathElements(nav)) {
     vars[topVarName(element)] = `${top}px`;
     top += element.offsetHeight + gap;
-    const guideVar = GUIDE_VARS[element.getAttribute("data-nav") ?? element.getAttribute("data-nav-pin") ?? ""];
+    const guideVar =
+      GUIDE_VARS[
+        element.getAttribute("data-nav") ??
+          element.getAttribute("data-nav-pin") ??
+          ""
+      ];
     if (guideVar) {
       vars[guideVar] = `${top}px`;
     }
@@ -137,7 +156,10 @@ function stickyTopPx(
   return resolveStickyTopPx(topVarName(element), vars, scrollerStyle);
 }
 
-export function measureStickyCover(navElement?: HTMLElement, vars?: StickyVars): number {
+export function measureStickyCover(
+  navElement?: HTMLElement,
+  vars?: StickyVars,
+): number {
   const nav = navElement ?? document.getElementById(HANDBOOK_SIDEBAR_ID);
   const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
   if (!nav || !scroller) {
@@ -150,7 +172,8 @@ export function measureStickyCover(navElement?: HTMLElement, vars?: StickyVars):
   for (const element of pathElements(nav)) {
     const rect = element.getBoundingClientRect();
     const relativeTop = rect.top - scrollerTop;
-    const pinned = relativeTop <= stickyTopPx(element, scrollerStyle, vars) + 0.5;
+    const pinned =
+      relativeTop <= stickyTopPx(element, scrollerStyle, vars) + 0.5;
     if (pinned) {
       cover = Math.max(cover, relativeTop + rect.height + gap);
     }

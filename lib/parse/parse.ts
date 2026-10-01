@@ -561,6 +561,9 @@ function looksLikeConcept(body: string, title: string): boolean {
   if (title.toLowerCase() === "code") {
     return false;
   }
+  if (isInterviewTaskTitle(title)) {
+    return body.trim().length > 0;
+  }
   return (
     CONCEPT_MARKERS.some((marker) => body.includes(marker)) || body.length > 400
   );

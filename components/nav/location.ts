@@ -20,6 +20,7 @@ export type NavLocation = {
   topicHref: string | null;
   subjectHref: string | null;
   clusterKey: string | null;
+  sectionKey: string | null;
 };
 
 export function isActiveHref(pathname: string, href: string): boolean {
@@ -62,6 +63,41 @@ export function clusterKey(subjectHref: string, clusterId: string) {
   return `${subjectHref}#${clusterId}`;
 }
 
+export function sectionKey(subjectHref: string, sectionId: string) {
+  return `${subjectHref}#${sectionId}`;
+}
+
+export function closedSectionKey(subjectHref: string, sectionId: string) {
+  return `!${sectionKey(subjectHref, sectionId)}`;
+}
+
+export function isNavSectionOpen(
+  section: { readonly id: string; readonly defaultOpen?: boolean },
+  subjectHref: string,
+  foldSectionKey: string | null,
+  forceOpen: boolean,
+): boolean {
+  if (forceOpen) {
+    return true;
+  }
+  const key = sectionKey(subjectHref, section.id);
+  const closed = closedSectionKey(subjectHref, section.id);
+  if (foldSectionKey === closed) {
+    return false;
+  }
+  if (foldSectionKey === key) {
+    return true;
+  }
+  return section.defaultOpen ?? true;
+}
+
+export function isNavSectionCollapsible(section: {
+  readonly defaultOpen?: boolean;
+  readonly collapsible?: boolean;
+}): boolean {
+  return section.collapsible ?? section.defaultOpen !== undefined;
+}
+
 export function locationForPath(
   groups: readonly NavGroup[],
   pathname: string,
@@ -78,6 +114,7 @@ export function locationForPath(
         topicHref: group.leafTopic.href,
         subjectHref: null,
         clusterKey: null,
+        sectionKey: null,
       };
     }
     for (const entry of group.entries) {
@@ -88,6 +125,7 @@ export function locationForPath(
               topicHref: pathname,
               subjectHref: null,
               clusterKey: null,
+              sectionKey: null,
             };
           }
           break;
@@ -108,6 +146,7 @@ export function locationForPath(
                 topicHref: onThisTopic ? pathname : (aliasTopic?.href ?? null),
                 subjectHref: entry.subjectHref,
                 clusterKey: clusterKey(entry.subjectHref, entry.cluster.id),
+                sectionKey: null,
               };
             }
           }
@@ -119,6 +158,7 @@ export function locationForPath(
               topicHref: pathname,
               subjectHref: entry.subjectHref,
               clusterKey: clusterKey(entry.subjectHref, entry.cluster.id),
+              sectionKey: null,
             };
           }
           break;
@@ -130,20 +170,51 @@ export function locationForPath(
             const aliasTopic = cluster
               ? aliasTopicForCluster(cluster)
               : undefined;
+            const parentSection = cluster
+              ? collapsibleSectionForCluster(entry.subject, cluster.id)
+              : undefined;
+            if (cluster) {
+              return {
+                topicHref: aliasTopic?.href ?? null,
+                subjectHref: entry.subject.href,
+                clusterKey: clusterKey(entry.subject.href, cluster.id),
+                sectionKey: parentSection
+                  ? sectionKey(entry.subject.href, parentSection.id)
+                  : null,
+              };
+            }
+            const navSection = entry.subject.sections?.find(
+              (section) =>
+                isNavSectionCollapsible(section) && section.id === clusterId,
+            );
+            if (navSection) {
+              return {
+                topicHref: null,
+                subjectHref: entry.subject.href,
+                clusterKey: null,
+                sectionKey: sectionKey(entry.subject.href, navSection.id),
+              };
+            }
             return {
-              topicHref: aliasTopic?.href ?? null,
+              topicHref: null,
               subjectHref: entry.subject.href,
-              clusterKey: cluster
-                ? clusterKey(entry.subject.href, cluster.id)
-                : null,
+              clusterKey: null,
+              sectionKey: null,
             };
           }
           for (const cluster of navSubjectClusters(entry.subject)) {
             if (cluster.topics.some((topic) => topic.href === pathname)) {
+              const parentSection = collapsibleSectionForCluster(
+                entry.subject,
+                cluster.id,
+              );
               return {
                 topicHref: pathname,
                 subjectHref: entry.subject.href,
                 clusterKey: clusterKey(entry.subject.href, cluster.id),
+                sectionKey: parentSection
+                  ? sectionKey(entry.subject.href, parentSection.id)
+                  : null,
               };
             }
           }
@@ -160,9 +231,23 @@ export function locationForPath(
       topicHref: null,
       subjectHref: hubSubjectHref,
       clusterKey: null,
+      sectionKey: null,
     };
   }
-  return { topicHref: null, subjectHref: null, clusterKey: null };
+  return {
+    topicHref: null,
+    subjectHref: null,
+    clusterKey: null,
+    sectionKey: null,
+  };
+}
+
+function collapsibleSectionForCluster(subject: NavSubject, clusterId: string) {
+  return subject.sections?.find(
+    (section) =>
+      isNavSectionCollapsible(section) &&
+      section.clusters.some((cluster) => cluster.id === clusterId),
+  );
 }
 
 export function hrefInHandbook(

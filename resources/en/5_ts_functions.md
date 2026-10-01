@@ -1,33 +1,56 @@
-# TypeScript — More on Functions
+# TypeScript — Functions
 
-Call signatures, overloads, and this typing.
+Function types, parameters, generics, and overloads — from the [TypeScript handbook](https://www.typescriptlang.org/docs/handbook/2/functions.html).
 
 [← Back to hub](./5_ts.md)
 
 ### Related docs
 
-- [TypeScript — hub](./5_ts.md) · [Interview](./5_ts_interview.md)
+[TypeScript — hub](./5_ts.md) · [Types](./5_ts_types.md) · [Narrowing](./5_ts_narrowing.md) · [Object Types](./5_ts_objects.md) · [Interview](./5_ts_interview.md)
+
+### Main concepts
+
+| Topic                                                           | Covers                                           |
+| --------------------------------------------------------------- | ------------------------------------------------ |
+| [Function Type Expressions](#function-type-expressions)         | `(a: string) => void` and type aliases           |
+| [Call Signatures](#call-signatures)                             | Callable objects with extra properties           |
+| [Construct Signatures](#construct-signatures)                   | `new (...)` constructor types                    |
+| [Generic Functions](#generic-functions)                         | Type parameters linking inputs and outputs       |
+| [Optional Parameters](#optional-parameters)                     | `?`, defaults, callback pitfalls                 |
+| [Function Overloads](#function-overloads)                       | Multiple call signatures, one implementation     |
+| [Declaring `this` in a Function](#declaring-this-in-a-function) | Explicit `this` parameter type                   |
+| [Other types to know about](#other-types-to-know-about)         | `void`, `object`, `unknown`, `never`, `Function` |
+| [Rest Parameters and Arguments](#rest-parameters-and-arguments) | `...rest` and spread                             |
+| [Parameter Destructuring](#parameter-destructuring)             | Typed object parameters                          |
 
 ### Sections
 
-- [Functions](#functions)
+- [Function Type Expressions](#function-type-expressions)
+- [Call Signatures](#call-signatures)
+- [Construct Signatures](#construct-signatures)
+- [Generic Functions](#generic-functions)
+- [Optional Parameters](#optional-parameters)
+- [Function Overloads](#function-overloads)
+- [Declaring `this` in a Function](#declaring-this-in-a-function)
+- [Other types to know about](#other-types-to-know-about)
+- [Rest Parameters and Arguments](#rest-parameters-and-arguments)
+- [Parameter Destructuring](#parameter-destructuring)
 
 ---
 
-## Functions
+## Function Type Expressions
 
 <details>
-  <summary>Function types</summary>
+<summary>Function Type Expressions</summary>
 
-### Function Type Expressions
+**Definition:** The simplest way to describe a function type — syntax like an arrow function: `(param: Type) => ReturnType`.
 
-**Definition:**
+**How it works:**
 
-Inline function types: `(a: string, b: number) => boolean`.
-
-| When to use                                                                                        | Notes                                                                                                                                                                                                    |
-| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Use for callbacks and variables holding functions. Includes param names (optional but documented). | The parameter name is **required** in the syntax. `(string) => void` does NOT mean "takes a string" — it means "takes a parameter literally named `string` of type `any`". Always write the name: `(s: s |
+- `(a: string) => void` — one `string` param, no meaningful return.
+- Omitted parameter types default to `any` (avoid).
+- The **parameter name is required**: `(string) => void` means a parameter literally named `string` of type `any`, not “takes a string”.
+- Name the type with a type alias when reused: `type Greet = (name: string) => void`.
 
 **Examples:**
 
@@ -42,24 +65,26 @@ function printToConsole(s: string) {
 
 greeter(printToConsole);
 
-// Named alias
 type GreetFunction = (a: string) => void;
-function greeter2(fn: GreetFunction) {
-  /* ... */
-}
 ```
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**Sources:** [TypeScript handbook — Function Type Expressions](https://www.typescriptlang.org/docs/handbook/2/functions.html#function-type-expressions)
 
-### Call Signatures
+</details>
 
-**Definition:**
+---
 
-Describe callable objects that also have properties — functions with extra fields.
+## Call Signatures
 
-| When to use                                                                        | Notes                                                                                                                            |
-| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `type Desc = { (x: number): boolean; description: string }` — callable + metadata. | Call signatures use `:` before the return type, not `=>`. `(arg: number): boolean` inside `{ }`, not `(arg: number) => boolean`. |
+<details>
+<summary>Call Signatures</summary>
+
+**Definition:** An object type that describes something **callable** and may also have properties — used when a function has metadata attached.
+
+**How it works:**
+
+- Use `:` before the return type inside `{ }`, not `=>`.
+- Properties sit alongside the call signature in the same object type.
 
 **Examples:**
 
@@ -80,17 +105,23 @@ myFunc.description = "default description";
 doSomething(myFunc);
 ```
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**Sources:** [TypeScript handbook — Call Signatures](https://www.typescriptlang.org/docs/handbook/2/functions.html#call-signatures)
 
-### Construct Signatures
+</details>
 
-**Definition:**
+---
 
-Describe something callable with `new`: `new (x: number) => SomeClass`.
+## Construct Signatures
 
-| When to use                                              | Notes                                                                                                                                    |
-| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Type factory patterns and constructor interfaces for DI. | Some values work both ways (`Date` can be called with or without `new`). You can combine call and construct signatures on the same type. |
+<details>
+<summary>Construct Signatures</summary>
+
+**Definition:** Describes a value callable with `new` — a constructor that returns an instance type.
+
+**How it works:**
+
+- Prefix the call signature with `new`: `new (s: string) => SomeObject`.
+- Some values support both call and construct (`Date`) — combine both signatures on one type.
 
 **Examples:**
 
@@ -103,7 +134,6 @@ function fn(ctor: SomeConstructor) {
   return new ctor("hello");
 }
 
-// Callable AND constructable
 interface CallOrConstruct {
   (n?: number): string;
   new (s: string): Date;
@@ -112,17 +142,27 @@ interface CallOrConstruct {
 fn(Date); // Date works both ways
 ```
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**Sources:** [TypeScript handbook — Construct Signatures](https://www.typescriptlang.org/docs/handbook/2/functions.html#construct-signatures)
 
-### Generic Functions
+</details>
 
-**Definition:**
+---
 
-Functions with type parameters linking input and output types.
+## Generic Functions
 
-| When to use                                                                                                 | Notes                                                                                                                                    |
-| ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `function first<T>(arr: T[]): T` — preserves element type. Add constraints: `T extends { length: number }`. | TypeScript infers type parameters automatically in most calls. Don't over-genericize — extra type params hurt inference and readability. |
+<details>
+<summary>Generic Functions</summary>
+
+**Definition:** Functions with **type parameters** that relate input types to output types — e.g. `firstElement<Type>(arr: Type[]): Type | undefined`.
+
+**How it works:**
+
+- TypeScript usually **infers** type arguments at the call site — you rarely write them explicitly.
+- **Constraints** (`Type extends { length: number }`) limit what type args are allowed.
+- A function returning `Type` cannot return a different subtype of the constraint — callers expect the same shape they passed in.
+- **Guidelines:** prefer `arr: Type[]` over `arr: Type extends any[]` for inference; use few type parameters; a type param should relate two or more values (appear twice).
+
+**When to use:** When the return type should follow the argument type (`map`, `first`, `identity`). Do not add generics that only appear once.
 
 **Examples:**
 
@@ -133,10 +173,7 @@ function firstElement<Type>(arr: Type[]): Type | undefined {
 
 const s = firstElement(["a", "b", "c"]); // string
 const n = firstElement([1, 2, 3]); // number
-const u = firstElement([]); // undefined
-```
 
-```typescript
 function map<Input, Output>(
   arr: Input[],
   func: (arg: Input) => Output,
@@ -144,124 +181,68 @@ function map<Input, Output>(
   return arr.map(func);
 }
 
-const parsed = map(["1", "2", "3"], (n) => parseInt(n));
-// Input: string, Output: number → number[]
-```
-
-```typescript
 function longest<Type extends { length: number }>(a: Type, b: Type) {
   return a.length >= b.length ? a : b;
 }
 
-longest([1, 2], [1, 2, 3]); // number[]
-longest("alice", "bob"); // string
-// longest(10, 100);            // Error — number has no .length
-```
-
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-### Guidelines for good generics
-
-**Definition:**
-
-Guidelines for good generics — TypeScript language or compiler feature.
-
-| Aspect  | Detail                                                                  |
-| ------- | ----------------------------------------------------------------------- |
-| Summary | Guidelines for good generics — TypeScript language or compiler feature. |
-
-- **Push type params down** — prefer `arr: Type |
-
-- **Push type params down** — prefer `arr: Type[]` over `arr: Type extends any[]` (better inference on return type)
-- **Use fewer type parameters** — each param should relate two or more values
-- **Type param should appear twice** — if it only appears once, you probably don't need it (`greet<Str extends string>(s: Str)` → just use `string`)
-
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-### Pitfall: constrained return type
-
-**Definition:**
-
-A function promising to return `Type` can't return a generic `{ length: number }` — callers expect the same subtype they passed in.
-
-| Aspect  | Detail                                                                                                                   |
-| ------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Summary | A function promising to return `Type` can't return a generic `{ length: number }` — callers expect the same subtype they |
-
-A function promising to return `Type` can't return a generic `{ length: number }` — callers expect the same subtype they passed in.
-
-**Examples:**
-
-```typescript
+// Error — cannot return a fresh object as Type
 function minimumLength<Type extends { length: number }>(
   obj: Type,
   minimum: number,
 ): Type {
   if (obj.length >= minimum) return obj;
-  return { length: minimum }; // Error — not assignable to Type
+  return { length: minimum }; // Error
 }
 ```
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**See also:** [Generics](./5_ts_type_manipulation.md#generics) — generic interfaces, classes, constraints, and defaults.
 
-### Optional Parameters
+**Sources:** [TypeScript handbook — Generic Functions](https://www.typescriptlang.org/docs/handbook/2/functions.html#generic-functions)
 
-**Definition:**
+</details>
 
-Function params that may be omitted, marked with `?` or given defaults.
+---
 
-| When to use                                                                                    | Notes                                                                                                                               |
-| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `function f(a: string, b?: number)` or `b = 0`. Optional params must come after required ones. | Callers can always pass `undefined` explicitly — it simulates a missing argument. `f()`, `f(10)`, and `f(undefined)` are all valid. |
+## Optional Parameters
+
+<details>
+<summary>Optional Parameters</summary>
+
+**Definition:** Parameters that may be omitted — marked with `?` or a **default value**.
+
+**How it works:**
+
+- `x?: number` → type is `number | undefined` inside the function.
+- `x = 10` → type is `number`; `undefined` is replaced by the default.
+- Optional params must follow required ones.
+- Callers may pass `undefined` explicitly — it simulates a missing argument.
+
+**Pluses and minuses:**
+
+| Approach                  | Note                                                                                                 |
+| ------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `?`                       | Param type includes `undefined`                                                                      |
+| Default `= value`         | Param type is the default's type, not `undefined`                                                    |
+| Optional in **callbacks** | `index?: number` means the **caller** might omit that arg — your callback sees `number \| undefined` |
 
 **Examples:**
 
 ```typescript
 function f(x?: number) {
-  // x is number | undefined
+  // x: number | undefined
 }
-f(); // OK
-f(10); // OK
-f(undefined); // OK
+f();
+f(10);
+f(undefined);
 
 function g(x = 10) {
-  // x is number — undefined replaced with 10
+  // x: number
 }
-```
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-### Pitfall: optional params in callbacks
-
-**Definition:**
-
-myForEach([1, 2, 3], (a, i) => {
-
-console.log(i.toFixed()); // Error: i possibly undefined
-});
-
-`callback: (arg: an |
-
-`callback: (arg: any, index?: number) => void` means the **caller** might invoke with one arg — so `index` is `number | undefined` in your callback. For "callback may omit index," use a rest union or overload instead.
-
-**How it works:** Never mark a callback param optional unless you intend to call without that argument.
-
-**Examples:**
-
-```
-
-| Aspect | Detail |
-|--------|--------|
-| Summary | myForEach([1, 2, 3], (a, i) => {
-  console.log(i.toFixed()); // Error: i possibly undefined
-});
-```
-
-```typescript
-// Wrong mental model — index? means caller might skip it
+// Pitfall — optional callback param
 function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
   for (let i = 0; i < arr.length; i++) {
-    callback(arr[i]); // legal — index might be undefined in callback
+    callback(arr[i]); // legal — index may be undefined in callback
   }
 }
 
@@ -270,69 +251,26 @@ myForEach([1, 2, 3], (a, i) => {
 });
 ```
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**Sources:** [TypeScript handbook — Optional Parameters](https://www.typescriptlang.org/docs/handbook/2/functions.html#optional-parameters)
 
-### Practical examples — defaults, optional, rest, return types
+</details>
 
-**Definition:**
+---
 
-// Optional parameter
+## Function Overloads
 
-const greet = (name: string, age?: number) => `${name}${age ?? ""}`;
-// createPassword('Jack'); // Error without optional age
+<details>
+<summary>Function Overloads</summary>
 
-| Aspect  | Detail                |
-| ------- | --------------------- |
-| Summary | // Optional parameter |
+**Definition:** Multiple **overload signatures** (call shapes) above a single **implementation** body — for functions callable with different argument counts or types.
 
-const greet = (name: string, age?: number) => `${name}${age ?? ""}`;
-// createPassword('Jack'); // |
+**How it works:**
 
-**Examples:**
+- Overload signatures are what callers see; the implementation signature is **not** callable directly.
+- The implementation must be compatible with every overload.
+- Prefer a **union parameter** when overloads share the same arity and return type — unions accept union inputs; overloads do not.
 
-```typescript
-// Default parameters
-const createPassword = (name = "Max", age: number | string = 20) =>
-  `${name}${age}`;
-
-// Optional parameter
-const greet = (name: string, age?: number) => `${name}${age ?? ""}`;
-// createPassword('Jack'); // Error without optional age
-
-// Rest parameters
-const createSkills = (name: string, ...skills: string[]) =>
-  `${name}, my skills are ${skills.join()}`;
-createSkills("Jack", "JS", "TS", "React");
-
-// Explicit return types
-const sum = (a: number, b: number): number => a + b;
-const createEmptyObject = (): object => ({});
-
-// void — no return value (don't annotate the variable as void)
-const greetUser = (): void => {
-  alert("Hello!");
-};
-
-// never — throws or runs forever
-const fail = (msg: string): never => {
-  throw new Error(msg);
-};
-const infiniteLoop = (): never => {
-  while (true) {}
-};
-```
-
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-### Function Overloads
-
-**Definition:**
-
-Multiple call signatures for one function name with different param/return types.
-
-| When to use                                                                                                      | Notes                                                                                                                                                                                                    |
-| ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Write overload signatures above, then one broad implementation. TS picks the matching overload at the call site. | The implementation signature is **invisible** to callers — you can't call it directly. It must be compatible with all overloads. Prefer **union parameter types** over overloads when arg count and retu |
+**When to use:** Distinct call patterns like `makeDate(timestamp)` vs `makeDate(m, d, y)`. Avoid overloads that differ only in trailing optional params — use optionals instead.
 
 **Examples:**
 
@@ -346,82 +284,34 @@ function makeDate(mOrTimestamp: number, d?: number, y?: number): Date {
   return new Date(mOrTimestamp);
 }
 
-const d1 = makeDate(12345678); // OK — 1 arg
-const d2 = makeDate(5, 5, 5); // OK — 3 args
-// const d3 = makeDate(1, 3);   // Error — no overload for 2 args
-```
+const d1 = makeDate(12345678);
+const d2 = makeDate(5, 5, 5);
+// makeDate(1, 3); // Error — no overload for 2 args
 
-```typescript
-// Different parameter types → different return types
-function combine(a: string, b: string): string;
-function combine(a: number, b: number): number;
-function combine(a: string | number, b: string | number): string | number {
-  return a + b;
-}
-
-const r1 = combine("Hello", "World"); // string
-const r2 = combine(5, 10); // number
-
-// Class method overloads — same pattern
-class Logger {
-  log(message: string): void;
-  log(code: number): void;
-  log(value: string | number): void {
-    console.log(value);
-  }
-}
-
-new Logger().log("Hello");
-new Logger().log(404);
-```
-
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-### Prefer unions over overloads when possible
-
-**Definition:**
-
-len(""); // OK
-
-len([0]); // OK
-// len(Math.random() > 0.5 ? "hello" : [0]); // Error — no matching overload
-
-| Operator | Meaning           |
-| -------- | ----------------- |
-| `A \| B` | One of A or B     |
-| `A & B`  | Must satisfy both |
-
-**Examples:**
-
-```typescript
-// Overloads — fails on union input
-function len(s: string): number;
-function len(arr: any[]): number;
-function len(x: any) {
+// Prefer union when possible
+function len(x: string | any[]) {
   return x.length;
 }
-
-len(""); // OK
-len([0]); // OK
-// len(Math.random() > 0.5 ? "hello" : [0]); // Error — no matching overload
-
-// Union — works with union input
-function len2(x: string | any[]) {
-  return x.length;
-}
+// len(Math.random() > 0.5 ? "hello" : [0]); // OK with union
 ```
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**Sources:** [TypeScript handbook — Function Overloads](https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads)
 
-### Declaring `this` in a Function
+</details>
 
-**Definition:**
+---
 
-Explicit `this` parameter type on functions that use `this` in a specific way.
+## Declaring `this` in a Function
 
-| When to use                                                                                  | Notes                                                                                                                              |
-| -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `function fn(this: HTMLElement, e: Event)` — first param is `this`; not passed at call site. | Arrow functions **cannot** declare `this` — they lexically capture outer `this`. Use `function` syntax when `this` typing matters. |
+<details>
+<summary>Declaring `this` in a Function</summary>
+
+**Definition:** A fake first parameter `this: SomeType` declares what `this` means inside a **function** body — it is not passed at the call site.
+
+**How it works:**
+
+- TypeScript infers `this` for methods on objects, but callback APIs often need an explicit `this` type.
+- **Arrow functions cannot declare `this`** — they capture lexical `this` from the enclosing scope.
 
 **Examples:**
 
@@ -436,220 +326,73 @@ interface DB {
 
 const db = getDB();
 const admins = db.filterUsers(function (this: User) {
-  return this.admin; // OK — this is User
+  return this.admin;
 });
 
-// Arrow function — captures outer/global this, not User
-// db.filterUsers(() => this.admin); // Error
+// db.filterUsers(() => this.admin); // Error — arrow captures outer this
 ```
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**Sources:** [TypeScript handbook — Declaring this in a Function](https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function)
 
-### `void`, `object`, `unknown`, `never`, and `Function`
+</details>
 
-**Definition:**
+---
 
-Common types for functions and values: no return, non-primitive, safe top, impossible, and avoid `Function`.
+## Other types to know about
 
-| When to use                                                                                                             | Notes                                                                                                                                                             |
-| ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `void` for no return; `unknown` for inputs; `never` for throws; `object` for non-primitives; never use `Function` type. | `void` ≠ `undefined`. `void` means "return value ignored." `unknown` is safe `any` — must narrow before use. Never use global `Function` type — it returns `any`. |
+<details>
+<summary>Other types to know about</summary>
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**Definition:** Return and value types that appear often when typing functions.
 
-### `void` — no meaningful return
+**How it works:**
 
-**Definition:**
-
-// void ≠ undefined at the type level
-
-// A function returning undefined is not the same as void in all contexts
-|
-
-**Examples:**
-
-```
-
-| Aspect | Detail |
-|--------|--------|
-| Summary | // void ≠ undefined at the type level
-// A function returning undefined is not the same as void in all contexts
-```
-
-```typescript
-function noop(): void {
-  return; // OK
-}
-
-// void ≠ undefined at the type level
-// A function returning undefined is not the same as void in all contexts
-```
-
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-### `object` — any non-primitive
-
-**Definition:**
-
-// object | null — rejects primitives
-
-const create = (o: object | null): void => {};
-// create(1); // Error
-// create("42"); // Error
-create({ obj: 1 }); // OK
-
-| Aspect                                          | Detail                                 |
-| ----------------------------------------------- | -------------------------------------- |
-| Summary                                         | // object \| null — rejects primitives |
-| const create = (o: object \| null): void => {}; |
-
-// create(1); // Error
-// cr |
+| Type       | Role                                                                                                                                                                                                                                                          |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `void`     | No meaningful return — inferred when a function has no `return` value. **Not the same as `undefined`.** Contextual `() => void` accepts implementations that return anything (return is discarded). Literal `function f(): void { return true }` is an error. |
+| `object`   | Any non-primitive value. Not `Object` (capital O). Function values are objects in JS.                                                                                                                                                                         |
+| `unknown`  | Any value, but you must narrow before use — safer than `any` for inputs.                                                                                                                                                                                      |
+| `never`    | No value — throws, infinite loop, or exhaustiveness branch.                                                                                                                                                                                                   |
+| `Function` | Untyped callable returning `any` — **avoid**. Prefer `() => void` if you won't call it, or a specific signature.                                                                                                                                              |
 
 **Examples:**
 
 ```typescript
-function logObj(val: object) {
-  /* ... */
-}
-
-// object | null — rejects primitives
-const create = (o: object | null): void => {};
-// create(1);      // Error
-// create("42");   // Error
-create({ obj: 1 }); // OK
-
-// Functions are objects in JS — function types count as object
-```
-
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-### `unknown` — safe any
-
-**Definition:**
-
-processValue("hello"); // "HELLO"
-
-processValue(10); // "Unknown value"
-|
-
-**Examples:**
-
-```
-
-| Aspect | Detail |
-|--------|--------|
-| Summary | processValue("hello"); // "HELLO"
-processValue(10);      // "Unknown value"
-```
-
-```typescript
-function f1(a: any) {
-  a.b(); // OK — no checking
-}
-
-function f2(a: unknown) {
-  // a.b(); // Error — must narrow first
-  if (typeof a === "object" && a !== null && "b" in a) {
-    (a as { b: () => void }).b();
-  }
-}
-
-function safeParse(s: string): unknown {
-  return JSON.parse(s);
-}
+type VoidFunc = () => void;
+const f1: VoidFunc = () => true; // OK — return ignored
 
 function processValue(value: unknown): string {
-  if (typeof value === "string") {
-    return value.toUpperCase();
-  }
-  return "Unknown value";
+  if (typeof value === "string") return value.toUpperCase();
+  return "Unknown";
 }
 
-processValue("hello"); // "HELLO"
-processValue(10); // "Unknown value"
-```
-
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-### `never` — never returns
-
-**Definition:**
-
-Type for values that never occur — functions that throw, infinite loops, or exhaustiveness checks.
-
-| Aspect  | Detail                                                                                             |
-| ------- | -------------------------------------------------------------------------------------------------- |
-| Summary | Type for values that never occur — functions that throw, infinite loops, or exhaustiveness checks. |
-
-**Examples:**
-
-```typescript
 function fail(msg: string): never {
   throw new Error(msg);
 }
 
-const infiniteLoop = (): never => {
-  while (true) {}
-};
-
-function fn(x: string | number) {
-  if (typeof x === "string") {
-    /* ... */
-  } else if (typeof x === "number") {
-    /* ... */
-  } else {
-    const _exhaustive: never = x; // x is never here
-  }
-}
-```
-
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-### `Function` — avoid it
-
-**Definition:**
-
-// Prefer:
-
-type VoidFunc = () => void; // when you won't call it
-type SpecificFunc = (a: number, b: string) => boolean;
-typescript
+// Avoid
 function doSomething(f: Function) {
-return f(1, 2, 3); // returns any — unsafe
+  return f(1, 2, 3); // returns any
 }
-
-// Prefer:
-type VoidFunc = () => void; // when you won't call it
-type SpecificFunc = (a: number, b: string) => boolean;
-
 ```
 
-**Examples:**
+**Sources:** [TypeScript handbook — Other Types to Know About](https://www.typescriptlang.org/docs/handbook/2/functions.html#other-types-to-know-about)
 
-```
+</details>
 
-| Aspect  | Detail     |
-| ------- | ---------- |
-| Summary | // Prefer: |
+---
 
-type VoidFunc = () => void; // when you won't call it
-type SpecificFunc = (a: number, b: string) => boolean;
-|
+## Rest Parameters and Arguments
 
-````
+<details>
+<summary>Rest Parameters and Arguments</summary>
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**Definition:** **Rest parameters** (`...nums: number[]`) collect unbounded trailing arguments; **spread** passes an iterable as individual arguments.
 
-### Rest Parameters and Arguments
+**How it works:**
 
-**Definition:**
-
-Collect remaining args into a tuple/array: `...rest: number[]`.
-
-| When to use | Notes |
-|-------------|-------|
-| `` function sum(...nums: number[]) ``. Tuple rest: `...args: [string, number, ...boolean[]]`. | `const args = [8, 5]` infers `number[]`, not a 2-tuple — spread into `Math.atan2` fails. Fix with `as const` for a fixed-length tuple. |
+- Rest param must be last; annotation is `T[]` or a tuple type.
+- Spreading a plain `number[]` into a fixed-arity function may fail — use `as const` for a fixed-length tuple.
 
 **Examples:**
 
@@ -657,35 +400,37 @@ Collect remaining args into a tuple/array: `...rest: number[]`.
 function multiply(n: number, ...m: number[]) {
   return m.map((x) => n * x);
 }
+multiply(10, 1, 2, 3, 4); // [10, 20, 30, 40]
 
-const a = multiply(10, 1, 2, 3, 4); // [10, 20, 30, 40]
-````
-
-```typescript
 const arr1 = [1, 2, 3];
 const arr2 = [4, 5, 6];
 arr1.push(...arr2);
 
-// Pitfall — inferred as number[], not tuple
 const args = [8, 5];
-// Math.atan2(...args); // Error
+// Math.atan2(...args); // Error — number[], not a 2-tuple
 
-// Fix
 const args2 = [8, 5] as const;
 Math.atan2(...args2); // OK
 ```
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**Sources:** [TypeScript handbook — Rest Parameters and Arguments](https://www.typescriptlang.org/docs/handbook/2/functions.html#rest-parameters-and-arguments)
 
-### Parameter Destructuring
+</details>
 
-**Definition:**
+---
 
-Typing unpacked object/ array parameters in the function signature.
+## Parameter Destructuring
 
-| When to use                                                                                         | Notes                                                                                                                      |
-| --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `function f({ x, y }: { x: number; y: number })` — inline or named type for the destructured shape. | Inline `{ a, b, c }: { a: number; b: number; c: number }` gets verbose fast — extract a named type or interface for reuse. |
+<details>
+<summary>Parameter Destructuring</summary>
+
+**Definition:** Unpack object (or array) properties directly in the parameter list, with a type on the whole pattern.
+
+**How it works:**
+
+- Inline: `function sum({ a, b, c }: { a: number; b: number; c: number })`.
+- Extract a named type or interface when the shape is reused.
+- Works the same as JavaScript destructuring — only the outer value is the parameter.
 
 **Examples:**
 
@@ -700,53 +445,11 @@ type ABC = { a: number; b: number; c: number };
 function sum2({ a, b, c }: ABC) {
   console.log(a + b + c);
 }
+
+// Explicit return type
+const add = (a: number, b: number): number => a + b;
 ```
 
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-### Function Assignability
-
-**Definition:**
-
-Rules for when one function type can be assigned to another (params contravariant, returns covariant with strict).
-
-| When to use                                                                                                                      | Notes                                                                                                                                                                                                    |
-| -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `() => void` accepts functions that return anything (return discarded). Enable `strictFunctionTypes` for sounder param checking. | `() => void` accepts implementations that return _anything_ — the return value is discarded. This is why `forEach` callbacks can return values even though the type says `void`. But a **literal** `func |
-
-**Examples:**
-
-```typescript
-type VoidFunc = () => void;
-
-const f1: VoidFunc = () => {
-  return true;
-}; // OK — return ignored
-const f2: VoidFunc = () => true; // OK
-const f3: VoidFunc = function () {
-  return true;
-}; // OK
-
-const v1 = f1(); // v1 is void
-
-// Why this matters:
-const src = [1, 2, 3];
-const dst = [0];
-src.forEach((el) => dst.push(el)); // push returns number, forEach expects void — OK
-```
-
-```typescript
-function f2(): void {
-  return true; // Error in explicit void function body
-}
-
-const f3 = function (): void {
-  return true; // Error
-};
-```
-
-**Sources:** [TypeScript handbook — functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
+**Sources:** [TypeScript handbook — Parameter Destructuring](https://www.typescriptlang.org/docs/handbook/2/functions.html#parameter-destructuring)
 
 </details>
-
-<a name="object-types"></a>

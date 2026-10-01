@@ -23,6 +23,7 @@ const EMPTY_FOLD: NavLocation = {
   topicHref: null,
   subjectHref: null,
   clusterKey: null,
+  sectionKey: null,
 };
 
 function foldFromSync(
@@ -37,6 +38,13 @@ function foldFromSync(
     clusterKey = null;
   }
 
+  let sectionKey: string | null = previous?.sectionKey ?? null;
+  if (location.sectionKey) {
+    sectionKey = location.sectionKey;
+  } else if (!location.subjectHref) {
+    sectionKey = null;
+  }
+
   let topicHref: string | null = previous?.topicHref ?? null;
   if (!clearingHash) {
     topicHref = location.topicHref;
@@ -45,6 +53,7 @@ function foldFromSync(
   return {
     subjectHref: location.subjectHref,
     clusterKey,
+    sectionKey,
     topicHref,
   };
 }
@@ -57,7 +66,7 @@ export function foldRevision(
     .sort()
     .map((id) => {
       const fold = folds.get(id) ?? EMPTY_FOLD;
-      return `${id}:${fold.subjectHref ?? ""}:${fold.clusterKey ?? ""}:${fold.topicHref ?? ""}`;
+      return `${id}:${fold.subjectHref ?? ""}:${fold.clusterKey ?? ""}:${fold.sectionKey ?? ""}:${fold.topicHref ?? ""}`;
     })
     .join("|");
 }

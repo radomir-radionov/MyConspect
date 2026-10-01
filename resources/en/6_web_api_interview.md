@@ -724,12 +724,9 @@ ac.abort(); // throws AbortError in catch
 
 </details>
 
-<details>
-  <summary>Tasks</summary>
+---
 
-### Tasks
-
-</details>
+## Coding tasks
 
 <details>
   <summary>Task 1 — Design REST API for books</summary>

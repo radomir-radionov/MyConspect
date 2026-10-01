@@ -232,9 +232,13 @@ function StickyPathStyles({ revision }: { revision: string }) {
     );
   }, []);
 
-  useLayoutEffect(() => {
+  const syncPath = useCallback(() => {
     applyVars();
-  }, [applyVars, revision]);
+  }, [applyVars]);
+
+  useLayoutEffect(() => {
+    syncPath();
+  }, [syncPath, revision]);
 
   useEffect(() => {
     const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
@@ -261,18 +265,18 @@ function StickyPathStyles({ revision }: { revision: string }) {
       });
     };
     scroller?.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", applyVars);
+    window.addEventListener("resize", syncPath);
     return () => {
       scroller?.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", applyVars);
+      window.removeEventListener("resize", syncPath);
       window.cancelAnimationFrame(frame);
     };
-  }, [applyVars]);
+  }, [applyVars, syncPath]);
 
   useEffect(() => {
-    const later = window.setTimeout(applyVars, NAV_FOLD_MS + 20);
+    const later = window.setTimeout(syncPath, NAV_FOLD_MS + 20);
     return () => window.clearTimeout(later);
-  }, [applyVars, revision]);
+  }, [syncPath, revision]);
 
   return null;
 }

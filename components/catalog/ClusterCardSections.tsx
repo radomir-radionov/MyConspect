@@ -55,27 +55,47 @@ function ClusterBlocks({ sections }: { sections: readonly ClusterSection[] }) {
 export function ClusterCardSections({
   sections,
   groupedSections,
+  rootSections,
 }: {
   sections?: readonly ClusterSection[];
+  rootSections?: readonly ClusterSection[];
   groupedSections?: readonly {
-    readonly section: { readonly id: string; readonly title: string };
+    readonly section: {
+      readonly id: string;
+      readonly title: string;
+      readonly defaultOpen?: boolean;
+    };
     readonly clusters: readonly ClusterSection[];
   }[];
 }) {
-  if (groupedSections?.length) {
+  if (groupedSections?.length || rootSections?.length) {
     return (
-      <div className="mt-8 space-y-8 sm:space-y-12">
-        {groupedSections.map(({ section, clusters }) => (
-          <div
+      <div className="catalog-sections mt-8 space-y-4">
+        {rootSections?.length ? (
+          <div className="space-y-6 sm:space-y-10">
+            <ClusterBlocks sections={rootSections} />
+          </div>
+        ) : null}
+        {groupedSections?.map(({ section, clusters }) => (
+          <details
             key={section.id}
             id={section.id}
-            className="scroll-mt-24 space-y-6 sm:space-y-10"
+            className="catalog-section scroll-mt-24 rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
+            open={section.defaultOpen ?? true}
           >
-            <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <summary className="cursor-pointer px-4 py-3 text-left text-xl font-semibold tracking-tight text-zinc-900 sm:px-5 sm:py-4 dark:text-zinc-50">
               {section.title}
-            </h2>
-            <ClusterBlocks sections={clusters} />
-          </div>
+            </summary>
+            <div className="space-y-6 border-t border-zinc-200 px-4 pt-4 pb-5 sm:space-y-10 sm:px-5 sm:pb-6 dark:border-zinc-800">
+              {clusters.length === 0 ? (
+                <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                  No topics yet.
+                </p>
+              ) : (
+                <ClusterBlocks sections={clusters} />
+              )}
+            </div>
+          </details>
         ))}
       </div>
     );

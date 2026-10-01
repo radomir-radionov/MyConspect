@@ -54,7 +54,7 @@
 
 **Thoughts:** _URL-адрес определяет, какие компоненты монтируются — без полной перезагрузки документа._
 
-**See also:** [Основные сведения о React Router](#react-router-essentials) · [TanStack Router](./5_ts_tanstack.md#tanstack-router)
+**See also:** [Основные сведения о React Router](#react-router-essentials) · [TanStack Router](./4_react_tanstack.md#tanstack-router)
 
 **Sources:**
 
@@ -209,7 +209,7 @@ async function Page() {
 }
 ```
 
-**Thoughts:** Не `useEffect` + `fetch` для данных начальной страницы, если RSC или загрузчик маршрутизатора могут их предоставить. Заголовки HTTP и кэш клиента → [6_web_api.md — кэширование HTTP](./6_web_api.md). TanStack Query → [TypeScript — TanStack](./5_ts_tanstack.md). RTK Query → [React — Redux](./4_react_redux.md).
+**Thoughts:** Не `useEffect` + `fetch` для данных начальной страницы, если RSC или загрузчик маршрутизатора могут их предоставить. Заголовки HTTP и кэш клиента → [6_web_api.md — кэширование HTTP](./6_web_api.md). TanStack Query → [React — TanStack](./4_react_tanstack.md). RTK Query → [React — Redux](./4_react_redux.md).
 
 **Sources:**
 
@@ -321,7 +321,7 @@ export function Button({ children }: { children: React.ReactNode }) {
 
 **Definition:** Полностью типобезопасный React router с loaders и validated search params.
 
-Полное руководство → [TypeScript — TanStack](./5_ts_tanstack.md#tanstack-router).
+Полное руководство → [React — TanStack](./4_react_tanstack.md#tanstack-router).
 
 **See also:** [Routing](#routing) · [nuqs (URL search params)](#nuqs-url-search-params)
 
@@ -344,7 +344,7 @@ nuqs (параметры поиска URL)
 
 **When to use:**
 
-Фасетный поиск, пагинация, табы в URL. Пропустить, когда [TanStack Router](./5_ts_tanstack.md#tanstack-router) `validateSearch` уже владеет строкой запроса или когда параметр является одноразовым `?ref=` вы никогда не пишете из пользовательского интерфейса.
+Фасетный поиск, пагинация, табы в URL. Пропустить, когда [TanStack Router](./4_react_tanstack.md#tanstack-router) `validateSearch` уже владеет строкой запроса или когда параметр является одноразовым `?ref=` вы никогда не пишете из пользовательского интерфейса.
 
 #### Common pitfalls
 
@@ -458,7 +458,7 @@ function Editor({ article }: { article: Article }) {
 
 ### orval (OpenAPI codegen)
 
-**Definition:** Генерирует клиенты TypeScript, модели и дополнительные макеты на основе спецификации OpenAPI/Swagger — обычно [TanStack Query](./5_ts_tanstack.md#codegen-orval) hooks, привязанные к операциям.
+**Definition:** Генерирует клиенты TypeScript, модели и дополнительные макеты на основе спецификации OpenAPI/Swagger — обычно [TanStack Query](./4_react_tanstack.md#codegen-orval) hooks, привязанные к операциям.
 
 **How it works:** Точка `orval.config.ts` по спецификации YAML/JSON; набор `output.client: 'react-query'`. Orval генерирует функции запроса, ключи запроса и `useX` крючки. Используйте **мутатор** для общего Axios/`fetch` экземпляр (заголовки аутентификации). Повторите запуск при изменении спецификации в CI, чтобы типы интерфейса не могли отклоняться от контракта.
 
@@ -733,7 +733,7 @@ React DevTools **Profiler** — запись взаимодействия → «
 2. **Разделение контекста** — тема, пользователь и диспетчеризация.
 3. **Запомнить значение контекста** — `useMemo` у провайдера `value`
 4. `React.memo` **/Компилятор** на дорогих чистых детях
-5. **Виртуализация** длинных списков — [TanStack Virtual](./5_ts_tanstack.md#tanstack-virtual) (`@tanstack/react-virtual`)
+5. **Виртуализация** длинных списков — [TanStack Virtual](./4_react_tanstack.md#tanstack-virtual) (`@tanstack/react-virtual`)
 
 **Examples:**
 
@@ -855,7 +855,7 @@ async function exportPdf() {
 
 **Definition:** Отрисовывайте только **видимые строки** (плюс небольшой буфер пересканирования) в длинных прокручиваемых списках — количество узлов DOM остается постоянным независимо от размера списка.
 
-**How it works:** Виртуализатор вычисляет, какие элементы пересекают область просмотра прокрутки. `scrollTop`, высота контейнера и фиксированная/переменная высота строк. Только эти индексы монтируются как узлы DOM; элементы за кадром отсутствуют в документе. При прокрутке виртуализатор обновляет видимое окно и перемещает строки с помощью `transform` или абсолютный `top` смещения. Библиотеки: [@tanstack/react-virtual](./5_ts_tanstack.md#tanstack-virtual), `react-window`, `react-virtuoso`.
+**How it works:** Виртуализатор вычисляет, какие элементы пересекают область просмотра прокрутки. `scrollTop`, высота контейнера и фиксированная/переменная высота строк. Только эти индексы монтируются как узлы DOM; элементы за кадром отсутствуют в документе. При прокрутке виртуализатор обновляет видимое окно и перемещает строки с помощью `transform` или абсолютный `top` смещения. Библиотеки: [@tanstack/react-virtual](./4_react_tanstack.md#tanstack-virtual), `react-window`, `react-virtuoso`.
 
 **When to use:** Таблицы данных с тысячами строк, бесконечными каналами, историей сообщений чата, средствами просмотра журналов. Порог: учитывайте, когда **более 1000 узлов DOM** в одном контейнере прокрутки вызывают зависание.
 
@@ -895,7 +895,7 @@ function VirtualList({ items }: { items: string[] }) {
 }
 ```
 
-**See also:** [TanStack Virtual](./5_ts_tanstack.md#tanstack-virtual)
+**See also:** [TanStack Virtual](./4_react_tanstack.md#tanstack-virtual)
 
 **Sources:**
 
