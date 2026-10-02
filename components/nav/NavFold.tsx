@@ -1,7 +1,15 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useState, useSyncExternalStore, type ReactNode } from "react";
-import { NAV_FOLD_MS } from "@/constants";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
+import { NAV_FOLD_OPEN_MS } from "@/constants";
 
 let reducedMotionQuery: MediaQueryList | null = null;
 
@@ -21,13 +29,18 @@ function getReducedMotion() {
 }
 
 export function useReducedMotion() {
-  return useSyncExternalStore(subscribeReducedMotion, getReducedMotion, () => false);
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotion,
+    () => false,
+  );
 }
 
 const FOLD_GRID =
-  "grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none";
-const FOLD_INNER =
-  "min-h-0 transition-opacity duration-200 ease-out motion-reduce:transition-none";
+  "grid transition-[grid-template-rows] ease-out motion-reduce:transition-none";
+const FOLD_INNER = "min-h-0 overflow-hidden";
+/** Contain `display: contents` nav lists during the open animation. */
+const FOLD_BODY = "block min-h-0";
 
 export function NavFold({
   open,
@@ -43,20 +56,21 @@ export function NavFold({
 }) {
   const reducedMotion = useReducedMotion();
   const skipMotion = instant || reducedMotion;
-  const [mounted, setMounted] = useState(open);
-  const [expanded, setExpanded] = useState(open);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(() => open || skipMotion);
+  const [settled, setSettled] = useState(() => open || skipMotion);
 
-  if (open && !mounted) {
-    setMounted(true);
-  }
-  if (open && skipMotion && !expanded) {
-    setExpanded(true);
-  }
-  if (!open && expanded) {
-    setExpanded(false);
-  }
-  if (!open && skipMotion && mounted) {
-    setMounted(false);
+  if (open) {
+    if (skipMotion) {
+      if (!expanded) {
+        setExpanded(true);
+      }
+      if (!settled) {
+        setSettled(true);
+      }
+    } else if (settled && !expanded) {
+      setSettled(false);
+    }
   }
 
   useLayoutEffect(() => {
@@ -74,38 +88,70 @@ export function NavFold({
   }, [open, skipMotion, expanded]);
 
   useEffect(() => {
-    if (open || skipMotion) {
+    const node = gridRef.current;
+    if (!open || !node || skipMotion || !expanded) {
       return;
     }
-    const timeout = window.setTimeout(() => setMounted(false), NAV_FOLD_MS);
-    return () => window.clearTimeout(timeout);
-  }, [open, skipMotion]);
+    const finish = (event: TransitionEvent) => {
+      if (
+        event.target !== node ||
+        event.propertyName !== "grid-template-rows"
+      ) {
+        return;
+      }
+      setSettled(true);
+    };
+    node.addEventListener("transitionend", finish);
+    const timeout = window.setTimeout(
+      () => setSettled(true),
+      NAV_FOLD_OPEN_MS + 40,
+    );
+    return () => {
+      node.removeEventListener("transitionend", finish);
+      window.clearTimeout(timeout);
+    };
+  }, [open, skipMotion, expanded]);
 
-  if (!mounted) {
+  if (!open) {
     return null;
   }
 
-  if (unbox && expanded) {
+  if (unbox && expanded && settled) {
     return <>{children}</>;
   }
 
+  const foldStyle: CSSProperties = {
+    transitionDuration: expanded ? `${NAV_FOLD_OPEN_MS}ms` : "0ms",
+    transitionTimingFunction: "ease-out",
+  };
+
   return (
-    <div className={`${FOLD_GRID} ${expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-      <div
-        className={`${FOLD_INNER} ${expanded ? "overflow-visible opacity-100" : "overflow-hidden opacity-0"}`}
-        inert={!expanded}
-      >
-        {children}
+    <div
+      ref={gridRef}
+      style={foldStyle}
+      className={`${FOLD_GRID} ${expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+    >
+      <div className={FOLD_INNER} inert={!expanded}>
+        <div className={FOLD_BODY}>{children}</div>
       </div>
     </div>
   );
 }
 
-export function NavChevron({ open, large = false }: { open: boolean; large?: boolean }) {
+export function NavChevron({
+  open,
+  large = false,
+}: {
+  open: boolean;
+  large?: boolean;
+}) {
   return (
     <span
       aria-hidden="true"
-      className={`inline-block shrink-0 origin-center leading-none text-zinc-500 transition-transform duration-200 ease-out motion-reduce:transition-none dark:text-zinc-400 ${open ? "rotate-90" : "rotate-0"} ${large ? "text-lg" : "text-base"}`}
+      style={{
+        transitionDuration: open ? `${NAV_FOLD_OPEN_MS}ms` : "0ms",
+      }}
+      className={`inline-block shrink-0 origin-center leading-none text-zinc-500 transition-transform ease-out motion-reduce:transition-none dark:text-zinc-400 ${open ? "rotate-90" : "rotate-0"} ${large ? "text-lg" : "text-base"}`}
     >
       ▸
     </span>

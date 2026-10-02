@@ -15,7 +15,7 @@ import { HighlightedText, useSearchMode } from "@/components/search";
 import {
   HANDBOOK_NAV_ASIDE_ID,
   HANDBOOK_SIDEBAR_ID,
-  NAV_FOLD_MS,
+  NAV_FOLD_OPEN_MS,
 } from "@/constants";
 import {
   collectGroupSearchHits,
@@ -111,7 +111,7 @@ export const TopicSidebar = memo(function TopicSidebar({
     });
     const later = window.setTimeout(() => {
       restoreSidebarPin();
-    }, NAV_FOLD_MS + 20);
+    }, NAV_FOLD_OPEN_MS + 20);
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(later);
@@ -278,7 +278,7 @@ function StickyPathStyles({ revision }: { revision: string }) {
   }, [applyVars, syncPath]);
 
   useEffect(() => {
-    const later = window.setTimeout(syncPath, NAV_FOLD_MS + 20);
+    const later = window.setTimeout(syncPath, NAV_FOLD_OPEN_MS + 20);
     return () => window.clearTimeout(later);
   }, [syncPath, revision]);
 
@@ -350,7 +350,8 @@ function TrackGroup({
           data-nav="track"
           data-nav-id={group.id}
           data-nav-path={onPath ? "true" : undefined}
-          onClick={() => {
+          onClick={(event) => {
+            pinNavElement(event.currentTarget);
             if (!searching) {
               toggleTrackId(group.id);
             }
@@ -368,7 +369,8 @@ function TrackGroup({
           data-nav="track"
           data-nav-id={group.id}
           data-nav-path={onPath ? "true" : undefined}
-          onClick={() => {
+          onClick={(event) => {
+            pinNavElement(event.currentTarget);
             ensureTrackOpen(group.id);
           }}
           data-search-hit={
@@ -383,11 +385,7 @@ function TrackGroup({
           {chevron}
         </Link>
       )}
-      <NavFold
-        open={hasSidebarChildren && trackOpen}
-        instant={searching || !trackOpen}
-        unbox
-      >
+      <NavFold open={hasSidebarChildren && trackOpen} instant={searching} unbox>
         <ul className="mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2 dark:border-yellow-800">
           {searching ? (
             <SearchHitList hits={searchHits} />

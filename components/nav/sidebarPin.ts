@@ -10,6 +10,16 @@ type SidebarPin = {
 let sidebarPin: SidebarPin | null = null;
 let pinCleanup: (() => void) | null = null;
 let restoringPin = false;
+let pinFrame = 0;
+
+function followPin() {
+  pinFrame = 0;
+  if (!sidebarPin) {
+    return;
+  }
+  restoreSidebarPin();
+  pinFrame = window.requestAnimationFrame(followPin);
+}
 
 export function navAside() {
   const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
@@ -65,17 +75,26 @@ export function pinNavElement(element: HTMLElement) {
     return;
   }
   pinCleanup?.();
+  const scrollerBox = scroller.getBoundingClientRect();
+  const box = element.getBoundingClientRect();
+  if (box.top < scrollerBox.top || box.bottom > scrollerBox.bottom) {
+    element.scrollIntoView({ block: "nearest" });
+  }
   sidebarPin = {
     element,
     nav,
     id,
     top: element.getBoundingClientRect().top,
   };
+  window.cancelAnimationFrame(pinFrame);
+  pinFrame = window.requestAnimationFrame(followPin);
   const timeout = window.setTimeout(() => {
     pinCleanup?.();
   }, SIDEBAR_PIN_HOLD_MS);
   pinCleanup = () => {
     window.clearTimeout(timeout);
+    window.cancelAnimationFrame(pinFrame);
+    pinFrame = 0;
     sidebarPin = null;
     pinCleanup = null;
   };

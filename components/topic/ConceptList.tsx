@@ -262,9 +262,9 @@ function ConceptAccordionList({
     return (
       <article
         id={concept.id}
-        className="concept-list group scroll-mt-20 rounded-xl border border-zinc-200 bg-white px-4 pt-4 dark:border-zinc-800 dark:bg-zinc-900"
+        className="concept-list group relative scroll-mt-20 rounded-xl border border-zinc-200 bg-white px-4 pt-3 dark:border-zinc-800 dark:bg-zinc-900"
       >
-        <div className="mb-2 flex justify-end">
+        <div className="absolute top-2 right-2 z-10">
           <span className="inline-flex items-center">
             <CopyConceptLinkButton conceptId={concept.id} chrome={chrome} />
             <BookmarkButton
@@ -276,7 +276,12 @@ function ConceptAccordionList({
             />
           </span>
         </div>
-        <ConceptBody html={concept.html} query={notesQuery} chrome={chrome} />
+        <ConceptBody
+          html={concept.html}
+          query={notesQuery}
+          chrome={chrome}
+          compactTop
+        />
       </article>
     );
   }
@@ -332,10 +337,12 @@ const ConceptBody = memo(function ConceptBody({
   html,
   query,
   chrome,
+  compactTop = false,
 }: {
   html: string;
   query: string;
   chrome: ChromeCopy;
+  compactTop?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useCodeCopyButtons(ref, chrome, html);
@@ -343,7 +350,9 @@ const ConceptBody = memo(function ConceptBody({
   return (
     <div
       ref={ref}
-      className="concept-body pb-5 pt-1"
+      className={
+        compactTop ? "concept-body pb-5 pr-14" : "concept-body pb-5 pt-1"
+      }
       dangerouslySetInnerHTML={{ __html: highlightQueryInHtml(html, query) }}
     />
   );

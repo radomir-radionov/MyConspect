@@ -184,7 +184,7 @@ export default async function TopicPage({
         <h1 className="min-w-0 flex-1 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
           {pageTitle}
         </h1>
-        <span className="inline-flex shrink-0 items-center">
+        <span className="inline-flex shrink-0 items-center -space-x-4">
           <TopicShareButton chrome={chrome} />
           <TopicBookmarkButton title={pageTitle} chrome={chrome} />
         </span>

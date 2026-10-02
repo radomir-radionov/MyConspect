@@ -370,11 +370,7 @@ export function TopicRow({
           )
         ) : null}
       </Link>
-      <NavFold
-        open={topicOpen && showConceptNav}
-        instant={searching || !topicOpen}
-        unbox
-      >
+      <NavFold open={topicOpen && showConceptNav} instant={searching} unbox>
         <ul className="contents">
           <TopicConceptNav
             topic={topic}
@@ -475,7 +471,7 @@ export function ClusterRow({
         />
         {clusterOpen ? <NavChevron open /> : null}
       </Link>
-      <NavFold open={clusterOpen} instant={searching || !clusterOpen} unbox>
+      <NavFold open={clusterOpen} instant={searching} unbox>
         <ul className="contents">
           {cluster.topics.map((topic) => (
             <TopicRow
@@ -598,7 +594,7 @@ export function SectionRow({
         />
         {sectionOpen ? <NavChevron open /> : null}
       </Link>
-      <NavFold open={sectionOpen} instant={searching || !sectionOpen} unbox>
+      <NavFold open={sectionOpen} instant={searching} unbox>
         <ul className="contents">
           {section.clusters.map((cluster) => (
             <ClusterRow
@@ -621,7 +617,7 @@ export function SubjectRow({
   trackId: TrackId;
   subject: NavSubject;
 }) {
-  const { query, pathname, searching, first } = useSidebarChrome();
+  const { query, pathname, searching, first, pinNav } = useSidebarChrome();
   const { getTrackFold, patchTrackFold } = useSidebarFold();
   const { subjectHref: openSubjectHref } = getTrackFold(trackId);
   const active = isActiveHref(pathname, subject.href);
@@ -640,6 +636,7 @@ export function SubjectRow({
         data-nav-id={subject.slug}
         data-nav-path={onPath ? "true" : undefined}
         onClick={(event) => {
+          pinNav(event.currentTarget);
           if (pathname === subject.href) {
             event.preventDefault();
             if (!searching) {
@@ -666,7 +663,7 @@ export function SubjectRow({
         ) : null}
         <NavChevron open={subjectOpen} large />
       </Link>
-      <NavFold open={subjectOpen} instant={searching || !subjectOpen} unbox>
+      <NavFold open={subjectOpen} instant={searching} unbox>
         <ul className="contents">
           <NavGuide level="subject" />
           {subject.sections?.length ? (
