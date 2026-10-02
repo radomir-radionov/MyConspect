@@ -3,10 +3,10 @@ import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
 import { TopicBookmarkButton } from "./TopicBookmarkButton";
 
 const DETAIL_HEADER =
-  "concept-detail-toolbar sticky top-[var(--handbook-sticky-inset,0px)] z-10 flex items-center gap-3 rounded-t-[calc(0.75rem-1px)] border-b border-yellow-200 bg-yellow-50 px-4 py-2.5 dark:border-yellow-800 dark:bg-yellow-950";
+  "concept-detail-toolbar sticky top-[var(--handbook-sticky-inset,0px)] z-10 flex items-start gap-3 rounded-t-[calc(0.75rem-1px)] border-b border-yellow-200 bg-yellow-50 px-4 py-2.5 dark:border-yellow-800 dark:bg-yellow-950";
 
 const INDEX_HEADER =
-  "flex items-center gap-3 border-b border-zinc-200 px-4 py-2.5 dark:border-zinc-800";
+  "flex items-start gap-3 border-b border-zinc-200 px-4 py-2.5 dark:border-zinc-800";
 
 const NAV_GROUP_DETAIL =
   "inline-flex shrink-0 overflow-hidden rounded-lg border border-amber-200/80 bg-white/95 shadow-sm ring-1 ring-amber-100/50 dark:border-amber-900/50 dark:bg-zinc-950/95 dark:ring-amber-950/40";
@@ -139,7 +139,7 @@ export function ConceptTitleHeader({
 
   return (
     <div className={variant === "detail" ? DETAIL_HEADER : INDEX_HEADER}>
-      <h2 className="min-w-0 flex-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+      <h2 className="min-w-0 flex-1 text-2xl font-semibold leading-8 tracking-tight text-zinc-900 dark:text-zinc-50">
         {title}
       </h2>
       {hasActions ? (

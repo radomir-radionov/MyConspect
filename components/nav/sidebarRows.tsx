@@ -215,13 +215,13 @@ function ConceptItems({
   concepts: readonly NavConcept[];
   indentClass?: string;
 }) {
-  const { first, searching, pathname } = useSidebarChrome();
+  const { first, searching, highlightPathname } = useSidebarChrome();
   const { activeConceptId } = useSidebarActive();
   return (
     <>
       {concepts.map((concept, index) => {
         const conceptActive = isConceptActiveOnPage(
-          pathname,
+          highlightPathname,
           topic.href,
           concept.id,
           activeConceptId,

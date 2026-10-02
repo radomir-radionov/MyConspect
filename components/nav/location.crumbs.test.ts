@@ -125,6 +125,23 @@ const groups: readonly NavGroup[] = [
   },
 ];
 
+const leafTrackGroup: NavGroup = {
+  id: "behavior",
+  title: "Behavior questions",
+  href: "/behavior",
+  entries: [],
+  leafTopic: {
+    slug: "behavior-questions",
+    href: "/behavior",
+    title: "Behavior questions",
+    blurb: "",
+    concepts: [
+      { id: "prep", title: "Interview preparation" },
+      { id: "tell-me", title: "Tell me about yourself" },
+    ],
+  },
+};
+
 function trail(pathname: string, hash = "") {
   return crumbsForPath(groups, pathname, hash, labels).map(
     (item) => item.label,
@@ -165,31 +182,149 @@ test("Core topic does not duplicate the cluster name in the trail", () => {
   ]);
 });
 
-test("navChainForPath scopes topic siblings within a subject", () => {
-  const chain = navChainForPath(groups, "/backend/nodejs-core", "");
-  assert.ok(chain);
-  assert.equal(chain?.[0]?.pathname, "/backend/nodejs");
-  assert.equal(chain?.[1]?.pathname, "/backend/nodejs-core");
-  assert.equal(chain?.[2]?.pathname, "/backend/nodejs-http");
+test("leaf track hub skips duplicate topic index in nav chain", () => {
+  const chain = navChainForPath([leafTrackGroup], "/behavior", "");
+  assert.deepEqual(
+    chain?.map((step) =>
+      step.hash ? `${step.pathname}#${step.hash}` : step.pathname,
+    ),
+    ["/behavior", "/behavior#prep", "/behavior#tell-me"],
+  );
 });
 
-test("siblingNavHrefForPath moves within the scoped chain and home at ends", () => {
+test("leaf track next from hub opens the first concept", () => {
+  assert.equal(
+    siblingNavHrefForPath([leafTrackGroup], "/behavior", "", 1, "/en"),
+    "/behavior#prep",
+  );
+});
+
+test("leaf track next from last concept wraps to the first concept", () => {
+  assert.equal(
+    siblingNavHrefForPath([leafTrackGroup], "/behavior", "#tell-me", 1, "/en"),
+    "/behavior#prep",
+  );
+});
+
+test("navChainForPath scopes topic siblings within a cluster", () => {
+  const chain = navChainForPath(groups, "/backend/nodejs-core", "");
+  assert.ok(chain);
+  assert.equal(chain?.[0]?.pathname, "/backend/nodejs-core");
+  assert.equal(chain?.length, 1);
+});
+
+test("navChainForPath includes the cluster hub for multi-topic clusters", () => {
+  const chain = navChainForPath(groups, "/frontend/html-structure", "");
+  assert.ok(chain);
+  assert.deepEqual(
+    chain?.map((step) =>
+      step.hash ? `${step.pathname}#${step.hash}` : step.pathname,
+    ),
+    ["/frontend/html#core", "/frontend/html-structure", "/frontend/html-forms"],
+  );
+});
+
+test("siblingNavHrefForPath moves within the scoped cluster and wraps next at the end", () => {
   const home = "/en";
   assert.equal(
     siblingNavHrefForPath(groups, "/backend/nodejs-core", "", -1, home),
-    "/backend/nodejs",
+    null,
   );
   assert.equal(
     siblingNavHrefForPath(groups, "/backend/nodejs-core", "", 1, home),
-    "/backend/nodejs-http",
+    null,
   );
   assert.equal(
-    siblingNavHrefForPath(groups, "/backend/nodejs", "", -1, home),
-    home,
+    siblingNavHrefForPath(groups, "/backend/nodejs-http", "", -1, home),
+    null,
   );
   assert.equal(
     siblingNavHrefForPath(groups, "/backend/nodejs-http", "", 1, home),
-    home,
+    null,
+  );
+  assert.equal(
+    siblingNavHrefForPath(groups, "/frontend/html-structure", "", 1, home),
+    "/frontend/html-forms",
+  );
+  assert.equal(
+    siblingNavHrefForPath(groups, "/frontend/html-forms", "", 1, home),
+    "/frontend/html#core",
+  );
+});
+
+test("last concept in a topic returns to the topic list before leaving the cluster", () => {
+  const home = "/en";
+  const databaseGroups: readonly NavGroup[] = [
+    {
+      id: "backend",
+      title: "Backend",
+      href: "/backend",
+      entries: [
+        {
+          kind: "subject",
+          subject: {
+            slug: "database",
+            href: "/backend/database",
+            title: "Database",
+            blurb: "",
+            clusters: [
+              {
+                id: "core",
+                title: "Core",
+                href: "/backend/database#core",
+                topics: [
+                  {
+                    slug: "foundations",
+                    href: "/backend/database-foundations",
+                    title: "Foundations",
+                    blurb: "",
+                    concepts: [],
+                  },
+                  {
+                    slug: "sql",
+                    href: "/backend/database-sql",
+                    title: "SQL",
+                    blurb: "",
+                    concepts: [
+                      { id: "indexes", title: "Indexes" },
+                      { id: "postgres", title: "PostgreSQL" },
+                    ],
+                  },
+                ],
+              },
+              {
+                id: "nosql",
+                title: "NoSQL",
+                href: "/backend/database#nosql",
+                topics: [
+                  {
+                    slug: "nosql-core",
+                    href: "/backend/database-nosql-core",
+                    title: "NoSQL Core",
+                    blurb: "",
+                    concepts: [
+                      { id: "overview", title: "Overview" },
+                      { id: "types", title: "Types" },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+  ];
+
+  assert.equal(
+    siblingNavHrefForPath(
+      databaseGroups,
+      "/backend/database-sql",
+      "#postgres",
+      1,
+      home,
+    ),
+    "/backend/database-sql",
   );
 });
 

@@ -165,7 +165,7 @@ export const TopicSidebar = memo(function TopicSidebar({
           continue;
         }
         const href = hit.getAttribute("href");
-        if (!href || splitHref(href).pathname !== pathname) {
+        if (!href || splitHref(href).pathname !== highlightPathname) {
           continue;
         }
         scrollSidebarHit(hit);
@@ -173,7 +173,7 @@ export const TopicSidebar = memo(function TopicSidebar({
       }
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [activeConceptId, pathname, stickyRevision, searching]);
+  }, [activeConceptId, highlightPathname, stickyRevision, searching]);
 
   const chromeValue = useMemo(
     () => ({

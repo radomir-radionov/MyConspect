@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
 import { dispatchHashChange, takePendingHashForPath } from "./hash";
 
 export function useApplyPendingHash() {
   const pathname = usePathname() ?? "/";
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const hash = takePendingHashForPath(pathname);
     if (hash === null) {
       return;

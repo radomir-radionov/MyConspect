@@ -1,4 +1,5 @@
 import { splitHref } from "@/lib/nav";
+import { setBookmarkNavMode } from "./bookmarkNavMode";
 
 export function hashIdFrom(hash: string): string {
   return decodeURIComponent(hash.replace(/^#/, ""));
@@ -52,6 +53,27 @@ export function getServerPendingPathname() {
   return "";
 }
 
+export function getPendingHash() {
+  return pendingPathHash?.hash ?? "";
+}
+
+export function getServerPendingHash() {
+  return "";
+}
+
+export function handbookLocation(
+  pathname: string,
+  hash: string,
+): { readonly pathname: string; readonly hash: string } {
+  if (pendingPathHash) {
+    return {
+      pathname: pendingPathHash.pathname,
+      hash: pendingPathHash.hash,
+    };
+  }
+  return { pathname, hash };
+}
+
 export function applySameDocumentHref(
   nextPath: string,
   nextHash: string,
@@ -84,7 +106,11 @@ export function followHandbookHref(
   href: string,
   currentPath: string,
   push: (pathname: string) => void,
+  options?: { bookmarkNav?: boolean },
 ): void {
+  if (!options?.bookmarkNav) {
+    setBookmarkNavMode(false);
+  }
   const { pathname, hash } = splitHref(href);
   if (applySameDocumentHref(pathname, hash, currentPath)) {
     return;

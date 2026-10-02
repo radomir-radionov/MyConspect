@@ -23,6 +23,9 @@ export type { SearchSidebarHit } from "./searchSidebarHits";
 export { navSubjectClusters } from "./subjectClusters";
 export {
   bookmarkHref,
+  bookmarkMatchesPage,
+  activeBookmarkIndex,
+  siblingBookmarkHref,
   getServerBookmarks,
   isBookmarked,
   readBookmarks,

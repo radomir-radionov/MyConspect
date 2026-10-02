@@ -1,4 +1,5 @@
 import { BOOKMARKS_MAX, BOOKMARKS_STORAGE_KEY } from "@/constants";
+import { splitHref } from "./search";
 
 export type Bookmark = {
   readonly href: string;
@@ -101,6 +102,68 @@ export function bookmarkHref(pathname: string, conceptId?: string): string {
     return `${pathname}#${conceptId}`;
   }
   return pathname;
+}
+
+function conceptIdFromHrefHash(hash: string): string {
+  if (!hash) {
+    return "";
+  }
+  return decodeURIComponent(hash.replace(/^#/, ""));
+}
+
+export function bookmarkMatchesPage(
+  pathname: string,
+  activeConceptId: string,
+  href: string,
+  conceptId?: string,
+): boolean {
+  const { pathname: targetPath, hash } = splitHref(href);
+  if (pathname !== targetPath) {
+    return false;
+  }
+  const bookmarkConceptId = conceptId ?? conceptIdFromHrefHash(hash);
+  if (bookmarkConceptId.length > 0) {
+    return activeConceptId === bookmarkConceptId;
+  }
+  return true;
+}
+
+export function activeBookmarkIndex(
+  bookmarks: readonly Bookmark[],
+  pathname: string,
+  activeConceptId: string,
+): number {
+  return bookmarks.findIndex((bookmark) =>
+    bookmarkMatchesPage(
+      pathname,
+      activeConceptId,
+      bookmark.href,
+      bookmark.conceptId,
+    ),
+  );
+}
+
+export function siblingBookmarkHref(
+  bookmarks: readonly Bookmark[],
+  pathname: string,
+  activeConceptId: string,
+  delta: -1 | 1,
+): string | null {
+  if (bookmarks.length <= 1) {
+    return null;
+  }
+  const index = activeBookmarkIndex(bookmarks, pathname, activeConceptId);
+  if (index < 0) {
+    return null;
+  }
+  const nextIndex = index + delta;
+  if (nextIndex < 0) {
+    return bookmarks[bookmarks.length - 1]?.href ?? null;
+  }
+  if (nextIndex >= bookmarks.length) {
+    return bookmarks[0]?.href ?? null;
+  }
+  return bookmarks[nextIndex]?.href ?? null;
 }
 
 export function readBookmarks(): readonly Bookmark[] {

@@ -8,6 +8,7 @@ import {
   readBookmarks,
   removeBookmark,
   resetBookmarksCache,
+  siblingBookmarkHref,
   toggleBookmark,
 } from "./bookmarks";
 
@@ -74,4 +75,52 @@ test("bookmarks toggle topic and concept entries", () => {
   });
   clearAllBookmarks();
   assert.equal(readBookmarks().length, 0);
+});
+
+test("siblingBookmarkHref moves within bookmarks and wraps at ends", () => {
+  installStorage();
+  resetBookmarksCache();
+
+  toggleBookmark({
+    href: "/en/system-design/sd-core#overview",
+    title: "Overview",
+    conceptId: "overview",
+  });
+  toggleBookmark({
+    href: "/en/system-design/sd-core#acid-base",
+    title: "ACID vs BASE",
+    conceptId: "acid-base",
+  });
+  toggleBookmark({
+    href: "/en/other/git-core",
+    title: "Git Core",
+  });
+
+  const bookmarks = readBookmarks();
+  assert.equal(bookmarks.length, 3);
+  assert.equal(bookmarks[0]?.title, "Git Core");
+  assert.equal(bookmarks[1]?.title, "ACID vs BASE");
+  assert.equal(bookmarks[2]?.title, "Overview");
+
+  assert.equal(
+    siblingBookmarkHref(
+      bookmarks,
+      "/en/system-design/sd-core",
+      "acid-base",
+      -1,
+    ),
+    bookmarks[0]?.href,
+  );
+  assert.equal(
+    siblingBookmarkHref(bookmarks, "/en/system-design/sd-core", "acid-base", 1),
+    bookmarks[2]?.href,
+  );
+  assert.equal(
+    siblingBookmarkHref(bookmarks, "/en/other/git-core", "", 1),
+    bookmarks[1]?.href,
+  );
+  assert.equal(
+    siblingBookmarkHref(bookmarks, "/en/other/git-core", "", -1),
+    bookmarks[2]?.href,
+  );
 });

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import type { Bookmark } from "@/lib/nav/bookmarks";
 import { splitHref } from "@/lib/nav";
 import {
@@ -16,12 +16,17 @@ import type { ChromeCopy } from "@/lib/nav";
 import {
   followHandbookHref,
   getHash,
+  getPendingPathname,
   getServerHash,
+  getServerPendingPathname,
+  handbookLocation,
   hashIdFrom,
   queueHandbookHref,
   setHashOnPath,
   subscribeHash,
+  subscribePendingPath,
 } from "./hash";
+import { setBookmarkNavMode } from "./bookmarkNavMode";
 import { isBookmarkActive } from "./location";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { NavChevron, NavFold } from "./NavFold";
@@ -39,7 +44,16 @@ export function BookmarksPanel({
   const [open, setOpen] = useState(false);
   const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
   const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
-  const activeConceptId = hashIdFrom(hash);
+  const pendingPathname = useSyncExternalStore(
+    subscribePendingPath,
+    getPendingPathname,
+    getServerPendingPathname,
+  );
+  const location = useMemo(
+    () => handbookLocation(pathname, hash),
+    [pathname, hash, pendingPathname],
+  );
+  const activeConceptId = hashIdFrom(location.hash);
   const bookmarks = useSyncExternalStore(
     subscribeBookmarks,
     readBookmarks,
@@ -52,7 +66,7 @@ export function BookmarksPanel({
 
   const isActive = (bookmark: Bookmark) =>
     isBookmarkActive(
-      pathname,
+      location.pathname,
       activeConceptId,
       bookmark.href,
       bookmark.conceptId,
@@ -136,13 +150,20 @@ export function BookmarksPanel({
                           if (hash) {
                             setHashOnPath(pathname, hashIdFrom(hash));
                           }
+                          setBookmarkNavMode(true);
                           onNavigate?.();
                           return;
                         }
+                        setBookmarkNavMode(true);
                         queueHandbookHref(bookmark.href);
-                        followHandbookHref(bookmark.href, pathname, (path) => {
-                          router.push(path, { scroll: false });
-                        });
+                        followHandbookHref(
+                          bookmark.href,
+                          pathname,
+                          (path) => {
+                            router.push(path, { scroll: false });
+                          },
+                          { bookmarkNav: true },
+                        );
                         onNavigate?.();
                       }}
                     >

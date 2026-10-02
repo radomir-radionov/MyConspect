@@ -545,13 +545,12 @@ describe("handbook sidebar", () => {
     cy.get("main .concept-list > article#jsx").should("not.exist");
   });
 
-  it("returns to the concept list from detail view", () => {
-    cy.visit("/en/frontend/react-core#jsx");
-    cy.get("main .concept-list > article#jsx").should("be.visible");
+  it("returns to the previous concept from detail view", () => {
+    cy.visit("/en/frontend/react-core#fragments");
+    cy.get("main .concept-list > article#fragments").should("be.visible");
     cy.contains("button", "Back").click();
-    cy.location("hash").should("eq", "");
-    cy.get("main .concept-list button").should("have.length.at.least", 2);
-    cy.get("main .concept-list > article").should("not.exist");
+    cy.location("hash").should("eq", "#jsx");
+    cy.get("main .concept-list > article#jsx").should("be.visible");
   });
 
   it("opens the chosen concept in detail view from the sidebar", () => {
