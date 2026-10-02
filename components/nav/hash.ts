@@ -31,6 +31,26 @@ type PendingPathHash = {
 };
 
 let pendingPathHash: PendingPathHash | null = null;
+const pendingPathListeners = new Set<() => void>();
+
+function notifyPendingPathListeners() {
+  for (const listener of pendingPathListeners) {
+    listener();
+  }
+}
+
+export function subscribePendingPath(onStoreChange: () => void) {
+  pendingPathListeners.add(onStoreChange);
+  return () => pendingPathListeners.delete(onStoreChange);
+}
+
+export function getPendingPathname() {
+  return pendingPathHash?.pathname ?? "";
+}
+
+export function getServerPendingPathname() {
+  return "";
+}
 
 export function applySameDocumentHref(
   nextPath: string,
@@ -43,7 +63,11 @@ export function applySameDocumentHref(
     return true;
   }
   if (nextPath === currentPath) {
-    window.history.replaceState(window.history.state, "", `${nextPath}${nextHash}`);
+    window.history.replaceState(
+      window.history.state,
+      "",
+      `${nextPath}${nextHash}`,
+    );
     dispatchHashChange();
     return true;
   }
@@ -53,6 +77,7 @@ export function applySameDocumentHref(
 export function queueHandbookHref(href: string): void {
   const { pathname, hash } = splitHref(href);
   pendingPathHash = { pathname, hash };
+  notifyPendingPathListeners();
 }
 
 export function followHandbookHref(
@@ -74,10 +99,12 @@ export function takePendingHashForPath(pathname: string): string | null {
   }
   if (pendingPathHash.pathname !== pathname) {
     pendingPathHash = null;
+    notifyPendingPathListeners();
     return null;
   }
   const { hash } = pendingPathHash;
   pendingPathHash = null;
+  notifyPendingPathListeners();
   return hash;
 }
 

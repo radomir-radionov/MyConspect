@@ -276,11 +276,19 @@ export function TopicRow({
   navKind?: "cluster" | "topic";
   navId?: string;
 }) {
-  const { query, mode, pathname, searching, first, pinNav, onNavigate } =
-    useSidebarChrome();
+  const {
+    query,
+    mode,
+    pathname,
+    highlightPathname,
+    searching,
+    first,
+    pinNav,
+    onNavigate,
+  } = useSidebarChrome();
   const { getTrackFold, patchTrackFold } = useSidebarFold();
   const { topicHref: openTopicHref } = getTrackFold(trackId);
-  const active = isActiveHref(pathname, topic.href);
+  const active = isActiveHref(highlightPathname, topic.href);
   const isHitTopic = first?.pathname === topic.href;
   const isFirstTopic = isHitTopic && first.hash === "";
   const concepts = visibleConcepts(topic, query, mode);
@@ -339,6 +347,7 @@ export function TopicRow({
             }
             return;
           }
+          queueHandbookHref(topic.href);
           patchTrackFold(trackId, {
             topicHref: showConceptNav ? topic.href : null,
           });
@@ -393,7 +402,8 @@ export function ClusterRow({
   subjectHref: string;
   cluster: NavCluster;
 }) {
-  const { query, pathname, searching, first, pinNav } = useSidebarChrome();
+  const { query, pathname, highlightPathname, searching, first, pinNav } =
+    useSidebarChrome();
   const { getTrackFold, patchTrackFold } = useSidebarFold();
   const { clusterKey: openClusterKey } = getTrackFold(trackId);
   const { activeConceptId } = useSidebarActive();
@@ -419,7 +429,8 @@ export function ClusterRow({
     first?.pathname === subjectPath && first.hash === `#${cluster.id}`;
   const onPath =
     !searching &&
-    (active || cluster.topics.some((topic) => topic.href === pathname));
+    (active ||
+      cluster.topics.some((topic) => topic.href === highlightPathname));
   const pinInParent = onPath && !clusterOpen;
   const stickHeader = onPath && !pinInParent;
 
@@ -498,7 +509,8 @@ export function SectionRow({
   subjectHref: string;
   section: NavSection;
 }) {
-  const { query, pathname, searching, first, pinNav } = useSidebarChrome();
+  const { query, pathname, highlightPathname, searching, first, pinNav } =
+    useSidebarChrome();
   const { getTrackFold, patchTrackFold } = useSidebarFold();
   const { activeConceptId } = useSidebarActive();
   const collapsible = isNavSectionCollapsible(section);
@@ -532,7 +544,7 @@ export function SectionRow({
   const hasActiveChild = section.clusters.some(
     (cluster) =>
       activeConceptId === cluster.id ||
-      cluster.topics.some((topic) => topic.href === pathname),
+      cluster.topics.some((topic) => topic.href === highlightPathname),
   );
   const sectionOpen = isNavSectionOpen(
     section,
@@ -617,13 +629,14 @@ export function SubjectRow({
   trackId: TrackId;
   subject: NavSubject;
 }) {
-  const { query, pathname, searching, first, pinNav } = useSidebarChrome();
+  const { query, pathname, highlightPathname, searching, first, pinNav } =
+    useSidebarChrome();
   const { getTrackFold, patchTrackFold } = useSidebarFold();
   const { subjectHref: openSubjectHref } = getTrackFold(trackId);
-  const active = isActiveHref(pathname, subject.href);
+  const active = isActiveHref(highlightPathname, subject.href);
   const subjectOpen = searching || openSubjectHref === subject.href;
   const isHitSubject = first?.pathname === subject.href && first.hash === "";
-  const onPath = !searching && isOnSubjectPath(pathname, subject);
+  const onPath = !searching && isOnSubjectPath(highlightPathname, subject);
   const locale = localeFromPathname(pathname);
   const cautionTip = subjectCautionTooltip(locale, subject.slug);
 
@@ -647,6 +660,7 @@ export function SubjectRow({
             }
             return;
           }
+          queueHandbookHref(subject.href);
           patchTrackFold(trackId, { subjectHref: subject.href });
         }}
         data-search-hit={isHitSubject ? "true" : undefined}

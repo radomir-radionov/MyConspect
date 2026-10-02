@@ -14,6 +14,8 @@ export type SidebarChromeValue = {
   query: string;
   mode: SearchMode;
   pathname: string;
+  /** Path used for sidebar active highlights; includes optimistic nav targets. */
+  highlightPathname: string;
   searching: boolean;
   first: SearchHit | null;
   pinNav: (element: HTMLElement) => void;

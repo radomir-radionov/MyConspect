@@ -297,7 +297,7 @@ function ConceptAccordionList({
             className={
               isActive
                 ? "group scroll-mt-20 bg-yellow-50 px-4 dark:bg-yellow-950"
-                : "group scroll-mt-20 px-4"
+                : "group scroll-mt-20 px-4 open:bg-yellow-50 dark:open:bg-yellow-950"
             }
             onToggle={(event) => {
               if (event.currentTarget.open) {
