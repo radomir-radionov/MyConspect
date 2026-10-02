@@ -2439,7 +2439,7 @@ export function subjectClusterCards(subject: Subject): readonly {
             {
               href: topicHref(topics[0]),
               title: cluster.title,
-              description: "",
+              description: cluster.blurb || topics[0].blurb,
             },
           ]
         : topics.map((topic) => ({

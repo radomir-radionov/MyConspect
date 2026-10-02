@@ -19,7 +19,7 @@ describe("handbook sidebar", () => {
       .should("have.attr", "href", "/en/testing/testing-fundamentals")
       .click();
     cy.location("pathname").should("eq", "/en/testing/testing-fundamentals");
-    cy.contains("button", "Back").should("be.visible");
+    cy.contains("button", "Back").should("not.exist");
 
     cy.visit("/en/testing");
     cy.nav("cluster", "fundamentals").click();
@@ -562,11 +562,29 @@ describe("handbook sidebar", () => {
     cy.location("hash").should("eq", "#basic-html-document-structure");
   });
 
-  it("shows Back but not Next on topic index for mobile handbook nav", () => {
+  it("shows neither Back nor Next on topic index for mobile handbook nav", () => {
     cy.viewport(390, 844);
     cy.visit("/en/frontend/html-structure");
-    cy.contains("button", "Back").should("be.visible");
+    cy.contains("button", "Back").should("not.exist");
     cy.contains("button", "Next").should("not.exist");
+  });
+
+  it("returns to the topic index from the last concept via Next", () => {
+    cy.viewport(390, 844);
+    cy.visit("/en/frontend/ts-classes#solid-in-typescript");
+    cy.contains("button", "Next").click();
+    cy.location("pathname").should("eq", "/en/frontend/ts-classes");
+    cy.location("hash").should("eq", "");
+    cy.contains("button", "Class Members").should("be.visible");
+    cy.contains("button", "Back").should("not.exist");
+    cy.contains("button", "Next").should("not.exist");
+  });
+
+  it("does not show Back on multi-concept topic index pages", () => {
+    cy.visit("/en/frontend/js-browser");
+    cy.contains("h2", "JS Browser");
+    cy.contains("button", "Script loading").should("be.visible");
+    cy.contains("button", "Back").should("not.exist");
   });
 
   it("opens the chosen concept in detail view from the sidebar", () => {

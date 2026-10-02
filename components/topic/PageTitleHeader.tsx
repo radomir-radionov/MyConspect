@@ -1,7 +1,6 @@
 "use client";
 
 import { ConceptTitleHeader } from "./ConceptTitleHeader";
-import { useHandbookTopicNav } from "./useHandbookTopicNav";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { chromeFor } from "@/lib/i18n/chrome";
@@ -13,14 +12,10 @@ export function PageTitleHeader({ title }: { title: string }) {
     () => chromeFor(localeFromPathname(pathname)),
     [pathname],
   );
-  const { showBack, goBack } = useHandbookTopicNav();
-
   return (
     <ConceptTitleHeader
       title={title}
       chrome={chrome}
-      showBack={showBack}
-      onBack={goBack}
       showBookmark
       showShare
     />

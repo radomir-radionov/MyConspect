@@ -184,7 +184,9 @@ export function useHandbookTopicNav() {
 
   return {
     inChain: inBookmarks || inChain,
-    showBack: inBookmarks ? prevHref !== null : inChain && prevHref !== null,
+    showBack: inBookmarks
+      ? prevHref !== null
+      : inChain && prevHref !== null && activeConceptId.length > 0,
     showNext: inBookmarks
       ? nextHref !== null
       : inChain && nextHref !== null && activeConceptId.length > 0,
