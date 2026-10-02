@@ -562,10 +562,10 @@ describe("handbook sidebar", () => {
     cy.location("hash").should("eq", "#basic-html-document-structure");
   });
 
-  it("shows neither Back nor Next on topic index for mobile handbook nav", () => {
+  it("shows Back but not Next on topic index for mobile handbook nav", () => {
     cy.viewport(390, 844);
     cy.visit("/en/frontend/html-structure");
-    cy.contains("button", "Back").should("not.exist");
+    cy.contains("button", "Back").should("be.visible");
     cy.contains("button", "Next").should("not.exist");
   });
 

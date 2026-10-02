@@ -19,6 +19,7 @@ import { useApplyPendingHash } from "./useApplyPendingHash";
 import { useHandbookSearch } from "./useHandbookSearch";
 import { useMobileNav } from "./useMobileNav";
 import { useRememberLocation } from "./useRememberLocation";
+import { HandbookNavGroupsProvider } from "./handbookNavContext";
 import { ScrollToTopButton } from "./ScrollToTopButton";
 import { useResetMainScroll } from "./useResetMainScroll";
 import { useSidebarCollapsed } from "./useSidebarCollapsed";
@@ -233,7 +234,9 @@ export function HandbookShell({
             }}
           >
             <ContentBreadcrumbs groups={groups} chrome={chrome} />
-            {children}
+            <HandbookNavGroupsProvider groups={groups}>
+              {children}
+            </HandbookNavGroupsProvider>
             <ScrollToTopButton label={chrome.scrollToTop} />
           </div>
         </div>

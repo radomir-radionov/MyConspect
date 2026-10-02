@@ -86,12 +86,16 @@ export function ConceptList({
     () => chromeFor(localeFromPathname(pathname)),
     [pathname],
   );
-  const { showBack, showNext, goBack, goNext } = useHandbookTopicNav();
   const { activeConceptId: activeId } = useHandbookLocation();
+  const flat = concepts.length === 1;
   const activeConcept = useMemo(
     () => concepts.find((concept) => concept.id === activeId) ?? null,
     [activeId, concepts],
   );
+  const conceptOpen = flat || activeConcept !== null;
+  const { showBack, showNext, goBack, goNext } = useHandbookTopicNav({
+    conceptOpen,
+  });
   const conceptIds = useMemo(
     () => concepts.map((concept) => concept.id),
     [concepts],
@@ -102,7 +106,6 @@ export function ConceptList({
     [concepts, groupInterviewSections],
   );
   const notesQuery = mode === "notes" ? query : "";
-  const flat = concepts.length === 1;
 
   useEffect(() => {
     const needle = query.trim().toLowerCase();

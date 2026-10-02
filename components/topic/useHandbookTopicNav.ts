@@ -16,6 +16,7 @@ import {
   parentHrefForPath,
   siblingNavHrefForPath,
 } from "@/components/nav/location";
+import { useHandbookNavGroups } from "@/components/nav/handbookNavContext";
 import { useSearchCorpus } from "@/components/nav/searchCorpus";
 import {
   activeBookmarkIndex,
@@ -28,15 +29,18 @@ import { chromeFor } from "@/lib/i18n/chrome";
 import { homeHref, localeFromPathname } from "@/lib/i18n/paths";
 import { splitHref } from "@/lib/nav";
 
-export function useHandbookTopicNav() {
+export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
   const { pathname, location, activeConceptId } = useHandbookLocation();
+  const conceptOpen = options?.conceptOpen ?? activeConceptId.length > 0;
   const router = useRouter();
   const bookmarks = useSyncExternalStore(
     subscribeBookmarks,
     readBookmarks,
     getServerBookmarks,
   );
-  const navGroups = useSearchCorpus(true);
+  const shellNavGroups = useHandbookNavGroups();
+  const searchNavGroups = useSearchCorpus(shellNavGroups === null);
+  const navGroups = shellNavGroups ?? searchNavGroups;
   const locale = localeFromPathname(pathname);
   const chrome = useMemo(() => chromeFor(locale), [locale]);
   const home = useMemo(() => homeHref(locale), [locale]);
@@ -184,12 +188,10 @@ export function useHandbookTopicNav() {
 
   return {
     inChain: inBookmarks || inChain,
-    showBack: inBookmarks
-      ? prevHref !== null
-      : inChain && prevHref !== null && activeConceptId.length > 0,
+    showBack: inBookmarks ? prevHref !== null : inChain && prevHref !== null,
     showNext: inBookmarks
       ? nextHref !== null
-      : inChain && nextHref !== null && activeConceptId.length > 0,
+      : inChain && nextHref !== null && conceptOpen,
     goBack,
     goNext,
     goToParent,
