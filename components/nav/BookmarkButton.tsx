@@ -2,7 +2,8 @@
 
 import { useCallback, useSyncExternalStore, type MouseEvent } from "react";
 import {
-  bookmarkHref,
+  bookmarkLookupKey,
+  bookmarkStorageKey,
   getServerBookmarks,
   readBookmarks,
   subscribeBookmarks,
@@ -18,16 +19,8 @@ export function useIsBookmarked(pathname: string, conceptId?: string) {
     readBookmarks,
     getServerBookmarks,
   );
-  const key = conceptId ? bookmarkHref(pathname, conceptId) : pathname;
-  return bookmarks.some((bookmark) => {
-    const bookmarkKey = bookmark.conceptId
-      ? bookmarkHref(
-          bookmark.href.split("#")[0] ?? bookmark.href,
-          bookmark.conceptId,
-        )
-      : (bookmark.href.split("#")[0] ?? bookmark.href);
-    return bookmarkKey === key;
-  });
+  const key = bookmarkLookupKey(pathname, conceptId);
+  return bookmarks.some((bookmark) => bookmarkStorageKey(bookmark) === key);
 }
 
 export function BookmarkStar({ className = "size-3" }: { className?: string }) {
@@ -75,7 +68,7 @@ export function BookmarkButton({
       event.preventDefault();
       event.stopPropagation();
       toggleBookmark({
-        href: bookmarkHref(pathname, conceptId),
+        href: bookmarkLookupKey(pathname, conceptId),
         title,
         conceptId,
       });

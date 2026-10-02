@@ -1,9 +1,8 @@
 import { splitHref } from "@/lib/nav";
+import { hashIdFrom } from "@/lib/nav/navUtils";
 import { setBookmarkNavMode } from "./bookmarkNavMode";
 
-export function hashIdFrom(hash: string): string {
-  return decodeURIComponent(hash.replace(/^#/, ""));
-}
+export { hashIdFrom };
 
 export function subscribeHash(onStoreChange: () => void) {
   window.addEventListener("hashchange", onStoreChange);

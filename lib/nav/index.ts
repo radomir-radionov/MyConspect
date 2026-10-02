@@ -1,5 +1,10 @@
 export { CHROME, INSTRUCTIONS_HREF } from "./chrome";
 export {
+  filterInterviewConcepts,
+  hashIdFrom,
+  sameTitle,
+} from "./navUtils";
+export {
   crumbsWithActive,
   subjectCrumbs,
   topicCrumbs,
@@ -23,6 +28,8 @@ export type { SearchSidebarHit } from "./searchSidebarHits";
 export { navSubjectClusters } from "./subjectClusters";
 export {
   bookmarkHref,
+  bookmarkLookupKey,
+  bookmarkStorageKey,
   bookmarkMatchesPage,
   activeBookmarkIndex,
   siblingBookmarkHref,

@@ -4,6 +4,7 @@ import {
   conceptMatchesQuery,
   matchesQuery,
 } from "./search";
+import { sameTitle } from "./navUtils";
 import { navSubjectClusters } from "./subjectClusters";
 import type {
   NavCluster,
@@ -23,10 +24,6 @@ export type SearchSidebarHit = {
   readonly context: string;
   readonly snippet: string | null;
 };
-
-function sameTitle(left: string, right: string): boolean {
-  return left.trim().toLowerCase() === right.trim().toLowerCase();
-}
 
 function isDuplicateConceptTitle(
   topicTitle: string,

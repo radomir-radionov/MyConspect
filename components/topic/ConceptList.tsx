@@ -1,7 +1,8 @@
 "use client";
 
-import { memo, useEffect, useMemo, useRef, useSyncExternalStore } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { useHandbookLocation } from "@/components/nav/useHandbookLocation";
 import {
   HighlightedText,
   useSearchMode,
@@ -12,13 +13,8 @@ import {
   BookmarkButton,
   useIsBookmarked,
 } from "@/components/nav/BookmarkButton";
-import {
-  getHash,
-  getServerHash,
-  hashIdFrom,
-  setHashIfChanged,
-  subscribeHash,
-} from "@/components/nav/hash";
+import { setHashIfChanged } from "@/components/nav/hash";
+import { hashIdFrom } from "@/lib/nav/navUtils";
 import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
 import { handbookMain } from "@/components/topic/conceptScroll";
 import { chromeFor } from "@/lib/i18n/chrome";
@@ -91,8 +87,7 @@ export function ConceptList({
     [pathname],
   );
   const { showBack, showNext, goBack, goNext } = useHandbookTopicNav();
-  const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
-  const activeId = hashIdFrom(hash);
+  const { activeConceptId: activeId } = useHandbookLocation();
   const activeConcept = useMemo(
     () => concepts.find((concept) => concept.id === activeId) ?? null,
     [activeId, concepts],

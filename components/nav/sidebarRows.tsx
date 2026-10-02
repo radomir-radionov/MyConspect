@@ -3,11 +3,7 @@
 import { memo } from "react";
 import Link from "next/link";
 import { HighlightedText } from "@/components/search";
-import {
-  isInterviewTasksTopic,
-  isInterviewTopic,
-  type TrackId,
-} from "@/lib/catalog";
+import type { TrackId } from "@/lib/catalog";
 import {
   CHROME,
   conceptBodySnippet,
@@ -20,7 +16,8 @@ import {
   type NavTopic,
   type SearchMode,
 } from "@/lib/nav";
-import { BookmarkStar, useIsBookmarked } from "./BookmarkButton";
+import { filterInterviewConcepts, sameTitle } from "@/lib/nav/navUtils";
+import { BookmarkStar } from "./BookmarkButton";
 import { NavChevron, NavFold } from "./NavFold";
 import { NavGuide } from "./NavGuide";
 import {
@@ -51,8 +48,10 @@ import {
   NAV_ROW_GAP,
   rowClass,
   useSidebarActive,
+  useSidebarBookmarks,
   useSidebarChrome,
   useSidebarFold,
+  useSidebarHighlight,
 } from "./sidebarContext";
 
 function RowTitle({
@@ -81,10 +80,6 @@ function RowTitle({
   );
 }
 
-function sameTitle(left: string, right: string): boolean {
-  return left.trim().toLowerCase() === right.trim().toLowerCase();
-}
-
 function isDuplicateConceptTitle(
   topicTitle: string,
   conceptTitle: string,
@@ -96,23 +91,6 @@ function isDuplicateConceptTitle(
     concept.startsWith(`${topic} `) ||
     topic.startsWith(`${concept} `)
   );
-}
-
-function interviewSidebarConcepts(
-  topic: NavTopic,
-  concepts: readonly NavConcept[],
-  searching: boolean,
-): readonly NavConcept[] {
-  if (searching) {
-    return concepts;
-  }
-  if (isInterviewTasksTopic(topic)) {
-    return concepts.filter((concept) => concept.interviewSection === "tasks");
-  }
-  if (isInterviewTopic(topic)) {
-    return concepts.filter((concept) => concept.interviewSection !== "tasks");
-  }
-  return concepts;
 }
 
 function visibleConcepts(topic: NavTopic, query: string, mode: SearchMode) {
@@ -155,8 +133,9 @@ export const ConceptLink = memo(function ConceptLink({
   rowGapClass?: string;
 }) {
   const { query, mode, pathname, onNavigate, goToPath } = useSidebarChrome();
+  const { isBookmarked } = useSidebarBookmarks();
   const snippet = conceptBodySnippet(concept, query, mode);
-  const bookmarked = useIsBookmarked(topicHref, concept.id);
+  const bookmarked = isBookmarked(topicHref, concept.id);
   return (
     <a
       href={conceptHref(topicHref, concept.id)}
@@ -215,7 +194,8 @@ function ConceptItems({
   concepts: readonly NavConcept[];
   indentClass?: string;
 }) {
-  const { first, searching, highlightPathname } = useSidebarChrome();
+  const { first, searching } = useSidebarChrome();
+  const { highlightPathname } = useSidebarHighlight();
   const { activeConceptId } = useSidebarActive();
   return (
     <>
@@ -278,16 +258,9 @@ export function TopicRow({
   navKind?: "cluster" | "topic";
   navId?: string;
 }) {
-  const {
-    query,
-    mode,
-    pathname,
-    highlightPathname,
-    searching,
-    first,
-    pinNav,
-    onNavigate,
-  } = useSidebarChrome();
+  const { query, mode, pathname, searching, first, pinNav, onNavigate } =
+    useSidebarChrome();
+  const { highlightPathname } = useSidebarHighlight();
   const { getTrackFold, patchTrackFold } = useSidebarFold();
   const { topicHref: openTopicHref } = getTrackFold(trackId);
   const active = isActiveHref(highlightPathname, topic.href);
@@ -295,7 +268,9 @@ export function TopicRow({
   const isFirstTopic = isHitTopic && first.hash === "";
   const concepts = visibleConcepts(topic, query, mode);
   const hasConcepts = concepts.length > 0;
-  const sidebarConcepts = interviewSidebarConcepts(topic, concepts, searching);
+  const sidebarConcepts = searching
+    ? concepts
+    : filterInterviewConcepts(topic, concepts);
   const showConceptNav = sidebarConcepts.length > 0;
   const topicOpen = hideTitle
     ? showConceptNav
@@ -303,7 +278,8 @@ export function TopicRow({
       ? hasConcepts
       : showConceptNav && openTopicHref === topic.href;
   const onPath = !searching && active;
-  const topicBookmarked = useIsBookmarked(topic.href);
+  const { isBookmarked } = useSidebarBookmarks();
+  const topicBookmarked = isBookmarked(topic.href);
   // Flatten sticky headers into the track list so nested containing blocks cannot
   // drag Core/Structure above Frontend/HTML while siblings scroll.
   const indent = compact ? (navKind === "cluster" ? "pl-4" : "pl-6") : "";
@@ -404,16 +380,9 @@ export function ClusterRow({
   subjectHref: string;
   cluster: NavCluster;
 }) {
-  const {
-    query,
-    pathname,
-    highlightPathname,
-    searching,
-    first,
-    pinNav,
-    goToPath,
-    onNavigate,
-  } = useSidebarChrome();
+  const { query, pathname, searching, first, pinNav, goToPath, onNavigate } =
+    useSidebarChrome();
+  const { highlightPathname } = useSidebarHighlight();
   const { getTrackFold, patchTrackFold } = useSidebarFold();
   const { clusterKey: openClusterKey } = getTrackFold(trackId);
   const { activeConceptId } = useSidebarActive();
@@ -526,8 +495,8 @@ export function SectionRow({
   subjectHref: string;
   section: NavSection;
 }) {
-  const { query, pathname, highlightPathname, searching, first, pinNav } =
-    useSidebarChrome();
+  const { query, pathname, searching, first, pinNav } = useSidebarChrome();
+  const { highlightPathname } = useSidebarHighlight();
   const { getTrackFold, patchTrackFold } = useSidebarFold();
   const { activeConceptId } = useSidebarActive();
   const collapsible = isNavSectionCollapsible(section);
@@ -646,8 +615,8 @@ export function SubjectRow({
   trackId: TrackId;
   subject: NavSubject;
 }) {
-  const { query, pathname, highlightPathname, searching, first, pinNav } =
-    useSidebarChrome();
+  const { query, pathname, searching, first, pinNav } = useSidebarChrome();
+  const { highlightPathname } = useSidebarHighlight();
   const { getTrackFold, patchTrackFold } = useSidebarFold();
   const { subjectHref: openSubjectHref } = getTrackFold(trackId);
   const active = isActiveHref(highlightPathname, subject.href);

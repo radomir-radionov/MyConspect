@@ -1,13 +1,12 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef } from "react";
 import { Breadcrumbs } from "@/components/catalog/Breadcrumbs";
 import { HANDBOOK_STICKY_INSET_VAR } from "@/components/topic/conceptScroll";
 import { HANDBOOK_MAIN_ID } from "@/constants";
 import type { ChromeCopy, NavGroup } from "@/lib/nav";
-import { getHash, getServerHash, subscribeHash } from "./hash";
 import { crumbsForPath } from "./location";
+import { useHandbookLocation } from "./useHandbookLocation";
 
 export function ContentBreadcrumbs({
   groups,
@@ -16,9 +15,8 @@ export function ContentBreadcrumbs({
   groups: readonly NavGroup[];
   chrome: ChromeCopy;
 }) {
-  const pathname = usePathname() ?? "/";
-  const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
-  const crumbs = crumbsForPath(groups, pathname, hash, {
+  const { location } = useHandbookLocation();
+  const crumbs = crumbsForPath(groups, location.pathname, location.hash, {
     home: chrome.home,
     instructions: chrome.instructions,
   });
@@ -47,7 +45,7 @@ export function ContentBreadcrumbs({
       observer.disconnect();
       main.style.removeProperty(HANDBOOK_STICKY_INSET_VAR);
     };
-  }, [pathname, hash]);
+  }, [location.pathname, location.hash]);
 
   if (crumbs.length < 2) {
     return null;

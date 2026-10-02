@@ -10,7 +10,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { HighlightedText, useSearchMode } from "@/components/search";
 import {
   HANDBOOK_NAV_ASIDE_ID,
@@ -27,18 +27,18 @@ import {
   type NavGroup,
   type SearchMode,
 } from "@/lib/nav";
+import {
+  bookmarkLookupKey,
+  bookmarkStorageKey,
+  getServerBookmarks,
+  readBookmarks,
+  subscribeBookmarks,
+} from "@/lib/nav/bookmarks";
 import type { TrackId } from "@/lib/catalog";
 import { NavChevron, NavFold } from "./NavFold";
 import { NavGuide } from "./NavGuide";
-import {
-  getHash,
-  getPendingPathname,
-  getServerHash,
-  getServerPendingPathname,
-  queueHandbookHref,
-  subscribeHash,
-  subscribePendingPath,
-} from "./hash";
+import { queueHandbookHref } from "./hash";
+import { useHandbookLocation } from "./useHandbookLocation";
 import { isActiveHref, isActiveTrack } from "./location";
 import { BookmarksPanel } from "./BookmarksPanel";
 import { SearchHitList } from "./SearchHitList";
@@ -56,7 +56,7 @@ import {
 import {
   SidebarNavProvider,
   trackHeaderClass,
-  useSidebarChrome,
+  useSidebarHighlight,
 } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
 import { foldRevision, useSidebarOpen } from "./useSidebarOpen";
@@ -72,15 +72,8 @@ export const TopicSidebar = memo(function TopicSidebar({
   chrome: ChromeCopy;
   onNavigate?: () => void;
 }) {
-  const pathname = usePathname() ?? "/";
-  const pendingPathname = useSyncExternalStore(
-    subscribePendingPath,
-    getPendingPathname,
-    getServerPendingPathname,
-  );
-  const highlightPathname = pendingPathname || pathname;
+  const { pathname, highlightPathname, hash } = useHandbookLocation();
   const mode = useSearchMode();
-  const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
   const { groups: filtered, firstHref } = useMemo(
     () => searchNav(groups, query, mode, pathname),
     [groups, query, mode, pathname],
@@ -175,29 +168,41 @@ export const TopicSidebar = memo(function TopicSidebar({
     return () => window.cancelAnimationFrame(frame);
   }, [activeConceptId, highlightPathname, stickyRevision, searching]);
 
+  const bookmarks = useSyncExternalStore(
+    subscribeBookmarks,
+    readBookmarks,
+    getServerBookmarks,
+  );
+  const bookmarkKeys = useMemo(() => {
+    const keys = new Set<string>();
+    for (const bookmark of bookmarks) {
+      keys.add(bookmarkStorageKey(bookmark));
+    }
+    return keys;
+  }, [bookmarks]);
+  const bookmarksValue = useMemo(
+    () => ({
+      isBookmarked: (bookmarkPath: string, conceptId?: string) =>
+        bookmarkKeys.has(bookmarkLookupKey(bookmarkPath, conceptId)),
+    }),
+    [bookmarkKeys],
+  );
+  const highlightValue = useMemo(
+    () => ({ highlightPathname }),
+    [highlightPathname],
+  );
   const chromeValue = useMemo(
     () => ({
       query,
       mode,
       pathname,
-      highlightPathname,
       searching,
       first,
       pinNav,
       goToPath,
       onNavigate,
     }),
-    [
-      query,
-      mode,
-      pathname,
-      highlightPathname,
-      searching,
-      first,
-      pinNav,
-      goToPath,
-      onNavigate,
-    ],
+    [query, mode, pathname, searching, first, pinNav, goToPath, onNavigate],
   );
   const foldValue = useMemo(
     () => ({
@@ -211,6 +216,8 @@ export const TopicSidebar = memo(function TopicSidebar({
   return (
     <SidebarNavProvider
       chrome={chromeValue}
+      highlight={highlightValue}
+      bookmarks={bookmarksValue}
       fold={foldValue}
       active={activeValue}
     >
@@ -238,7 +245,7 @@ export const TopicSidebar = memo(function TopicSidebar({
                 pathname={pathname}
                 searching={searching}
                 first={first}
-                openTrackIds={openTrackIds}
+                isTrackOpen={openTrackIds.has(group.id)}
                 toggleTrackId={toggleTrackId}
                 ensureTrackOpen={ensureTrackOpen}
               />
@@ -315,14 +322,14 @@ function StickyPathStyles({ revision }: { revision: string }) {
   return null;
 }
 
-function TrackGroup({
+const TrackGroup = memo(function TrackGroup({
   group,
   query,
   mode,
   pathname,
   searching,
   first,
-  openTrackIds,
+  isTrackOpen,
   toggleTrackId,
   ensureTrackOpen,
 }: {
@@ -332,7 +339,7 @@ function TrackGroup({
   pathname: string;
   searching: boolean;
   first: { pathname: string; hash: string } | null;
-  openTrackIds: ReadonlySet<TrackId>;
+  isTrackOpen: boolean;
   toggleTrackId: (trackId: TrackId) => void;
   ensureTrackOpen: (trackId: TrackId) => void;
 }) {
@@ -342,11 +349,10 @@ function TrackGroup({
     !group.leafTopic?.hideSidebarConcepts;
   const hasSidebarChildren =
     group.entries.length > 0 || Boolean(group.hubTopic) || isLeafTrack;
-  const { highlightPathname } = useSidebarChrome();
+  const { highlightPathname } = useSidebarHighlight();
   const trackActive = isActiveHref(highlightPathname, group.href);
   const onThisTrack = isActiveTrack(highlightPathname, group.href);
-  const trackOpen =
-    searching || (hasSidebarChildren && openTrackIds.has(group.id));
+  const trackOpen = searching || (hasSidebarChildren && isTrackOpen);
   const onPath = !searching && onThisTrack;
   const needle = query.trim().toLowerCase();
   const trackHighlighted = searching
@@ -448,7 +454,7 @@ function TrackGroup({
       </NavFold>
     </li>
   );
-}
+});
 
 function entryKey(entry: NavEntry) {
   switch (entry.kind) {

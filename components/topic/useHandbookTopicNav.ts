@@ -1,18 +1,9 @@
 "use client";
 
 import { useCallback, useMemo, useSyncExternalStore } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import {
-  followHandbookHref,
-  getHash,
-  getPendingPathname,
-  getServerHash,
-  getServerPendingPathname,
-  handbookLocation,
-  hashIdFrom,
-  subscribeHash,
-  subscribePendingPath,
-} from "@/components/nav/hash";
+import { useRouter } from "next/navigation";
+import { followHandbookHref } from "@/components/nav/hash";
+import { useHandbookLocation } from "@/components/nav/useHandbookLocation";
 import {
   getBookmarkNavMode,
   getServerBookmarkNavMode,
@@ -36,19 +27,8 @@ import { chromeFor } from "@/lib/i18n/chrome";
 import { homeHref, localeFromPathname } from "@/lib/i18n/paths";
 
 export function useHandbookTopicNav() {
-  const pathname = usePathname() ?? "/en";
+  const { pathname, location, activeConceptId } = useHandbookLocation();
   const router = useRouter();
-  const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
-  const pendingPathname = useSyncExternalStore(
-    subscribePendingPath,
-    getPendingPathname,
-    getServerPendingPathname,
-  );
-  const location = useMemo(
-    () => handbookLocation(pathname, hash),
-    [pathname, hash, pendingPathname],
-  );
-  const activeConceptId = hashIdFrom(location.hash);
   const bookmarks = useSyncExternalStore(
     subscribeBookmarks,
     readBookmarks,

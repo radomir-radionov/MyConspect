@@ -14,13 +14,20 @@ export type SidebarChromeValue = {
   query: string;
   mode: SearchMode;
   pathname: string;
-  /** Path used for sidebar active highlights; includes optimistic nav targets. */
-  highlightPathname: string;
   searching: boolean;
   first: SearchHit | null;
   pinNav: (element: HTMLElement) => void;
   goToPath: (path: string) => void;
   onNavigate?: () => void;
+};
+
+export type SidebarHighlightValue = {
+  /** Path used for sidebar active highlights; includes optimistic nav targets. */
+  highlightPathname: string;
+};
+
+export type SidebarBookmarksValue = {
+  isBookmarked: (pathname: string, conceptId?: string) => boolean;
 };
 
 export type SidebarFoldValue = {
@@ -33,27 +40,41 @@ export type SidebarActiveValue = {
 };
 
 const SidebarChromeContext = createContext<SidebarChromeValue | null>(null);
+const SidebarHighlightContext = createContext<SidebarHighlightValue | null>(
+  null,
+);
+const SidebarBookmarksContext = createContext<SidebarBookmarksValue | null>(
+  null,
+);
 const SidebarFoldContext = createContext<SidebarFoldValue | null>(null);
 const SidebarActiveContext = createContext<SidebarActiveValue | null>(null);
 
 export function SidebarNavProvider({
   chrome,
+  highlight,
+  bookmarks,
   fold,
   active,
   children,
 }: {
   chrome: SidebarChromeValue;
+  highlight: SidebarHighlightValue;
+  bookmarks: SidebarBookmarksValue;
   fold: SidebarFoldValue;
   active: SidebarActiveValue;
   children: ReactNode;
 }) {
   return (
     <SidebarChromeContext.Provider value={chrome}>
-      <SidebarFoldContext.Provider value={fold}>
-        <SidebarActiveContext.Provider value={active}>
-          {children}
-        </SidebarActiveContext.Provider>
-      </SidebarFoldContext.Provider>
+      <SidebarHighlightContext.Provider value={highlight}>
+        <SidebarBookmarksContext.Provider value={bookmarks}>
+          <SidebarFoldContext.Provider value={fold}>
+            <SidebarActiveContext.Provider value={active}>
+              {children}
+            </SidebarActiveContext.Provider>
+          </SidebarFoldContext.Provider>
+        </SidebarBookmarksContext.Provider>
+      </SidebarHighlightContext.Provider>
     </SidebarChromeContext.Provider>
   );
 }
@@ -62,6 +83,22 @@ export function useSidebarChrome() {
   const value = useContext(SidebarChromeContext);
   if (!value) {
     throw new Error("useSidebarChrome must be used within TopicSidebar");
+  }
+  return value;
+}
+
+export function useSidebarHighlight() {
+  const value = useContext(SidebarHighlightContext);
+  if (!value) {
+    throw new Error("useSidebarHighlight must be used within TopicSidebar");
+  }
+  return value;
+}
+
+export function useSidebarBookmarks() {
+  const value = useContext(SidebarBookmarksContext);
+  if (!value) {
+    throw new Error("useSidebarBookmarks must be used within TopicSidebar");
   }
   return value;
 }

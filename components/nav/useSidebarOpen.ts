@@ -3,6 +3,8 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
+  useRef,
   useState,
   type Dispatch,
   type SetStateAction,
@@ -10,7 +12,7 @@ import {
 import { SIDEBAR_COLLAPSE_ALL_EVENT } from "@/constants";
 import type { TrackId } from "@/lib/catalog";
 import type { NavGroup } from "@/lib/nav";
-import { hashIdFrom } from "./hash";
+import { hashIdFrom } from "@/lib/nav/navUtils";
 import { isHomePath, locationForPath, type NavLocation } from "./location";
 
 type NavSnapshot = {
@@ -114,7 +116,7 @@ export function useSidebarOpen({
       return new Map([[activeTrackId, location]]);
     },
   );
-  const [navSnapshot, setNavSnapshot] = useState<NavSnapshot>({
+  const navSnapshotRef = useRef<NavSnapshot>({
     searching,
     activeTrackId,
     pathname,
@@ -122,23 +124,20 @@ export function useSidebarOpen({
     activeConceptId,
   });
 
-  if (
-    searching !== navSnapshot.searching ||
-    activeTrackId !== navSnapshot.activeTrackId ||
-    pathname !== navSnapshot.pathname ||
-    hash !== navSnapshot.hash ||
-    activeConceptId !== navSnapshot.activeConceptId
-  ) {
-    setNavSnapshot({
-      searching,
-      activeTrackId,
-      pathname,
-      hash,
-      activeConceptId,
-    });
+  useLayoutEffect(() => {
+    const snapshot = navSnapshotRef.current;
+    if (
+      searching === snapshot.searching &&
+      activeTrackId === snapshot.activeTrackId &&
+      pathname === snapshot.pathname &&
+      hash === snapshot.hash &&
+      activeConceptId === snapshot.activeConceptId
+    ) {
+      return;
+    }
     if (!searching) {
       syncOpenState({
-        snapshot: navSnapshot,
+        snapshot,
         activeTrackId,
         pathname,
         hash,
@@ -148,7 +147,14 @@ export function useSidebarOpen({
         setTrackFolds,
       });
     }
-  }
+    navSnapshotRef.current = {
+      searching,
+      activeTrackId,
+      pathname,
+      hash,
+      activeConceptId,
+    };
+  }, [searching, activeTrackId, pathname, hash, activeConceptId, location]);
 
   const getTrackFold = useCallback(
     (trackId: TrackId): NavLocation => trackFolds.get(trackId) ?? EMPTY_FOLD,

@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useSyncExternalStore } from "react";
 import type { Bookmark } from "@/lib/nav/bookmarks";
 import { splitHref } from "@/lib/nav";
 import {
+  bookmarkMatchesPage,
   clearAllBookmarks,
   getServerBookmarks,
   readBookmarks,
@@ -13,21 +14,14 @@ import {
   subscribeBookmarks,
 } from "@/lib/nav/bookmarks";
 import type { ChromeCopy } from "@/lib/nav";
+import { hashIdFrom } from "@/lib/nav/navUtils";
 import {
   followHandbookHref,
-  getHash,
-  getPendingPathname,
-  getServerHash,
-  getServerPendingPathname,
-  handbookLocation,
-  hashIdFrom,
   queueHandbookHref,
   setHashOnPath,
-  subscribeHash,
-  subscribePendingPath,
 } from "./hash";
 import { setBookmarkNavMode } from "./bookmarkNavMode";
-import { isBookmarkActive } from "./location";
+import { useHandbookLocation } from "./useHandbookLocation";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { NavChevron, NavFold } from "./NavFold";
 import { trackHeaderClass } from "./sidebarContext";
@@ -39,21 +33,10 @@ export function BookmarksPanel({
   chrome: ChromeCopy;
   onNavigate?: () => void;
 }) {
-  const pathname = usePathname() ?? "/";
+  const { pathname, location, activeConceptId } = useHandbookLocation();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
-  const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
-  const pendingPathname = useSyncExternalStore(
-    subscribePendingPath,
-    getPendingPathname,
-    getServerPendingPathname,
-  );
-  const location = useMemo(
-    () => handbookLocation(pathname, hash),
-    [pathname, hash, pendingPathname],
-  );
-  const activeConceptId = hashIdFrom(location.hash);
   const bookmarks = useSyncExternalStore(
     subscribeBookmarks,
     readBookmarks,
@@ -65,7 +48,7 @@ export function BookmarksPanel({
   }
 
   const isActive = (bookmark: Bookmark) =>
-    isBookmarkActive(
+    bookmarkMatchesPage(
       location.pathname,
       activeConceptId,
       bookmark.href,

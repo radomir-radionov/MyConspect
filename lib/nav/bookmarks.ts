@@ -1,4 +1,5 @@
 import { BOOKMARKS_MAX, BOOKMARKS_STORAGE_KEY } from "@/constants";
+import { hashIdFrom } from "./navUtils";
 import { splitHref } from "./search";
 
 export type Bookmark = {
@@ -104,11 +105,13 @@ export function bookmarkHref(pathname: string, conceptId?: string): string {
   return pathname;
 }
 
-function conceptIdFromHrefHash(hash: string): string {
-  if (!hash) {
-    return "";
-  }
-  return decodeURIComponent(hash.replace(/^#/, ""));
+export function bookmarkLookupKey(pathname: string, conceptId?: string): string {
+  return conceptId ? bookmarkHref(pathname, conceptId) : pathname;
+}
+
+export function bookmarkStorageKey(bookmark: Bookmark): string {
+  const path = bookmark.href.split("#")[0] ?? bookmark.href;
+  return bookmark.conceptId ? bookmarkHref(path, bookmark.conceptId) : path;
 }
 
 export function bookmarkMatchesPage(
@@ -121,7 +124,7 @@ export function bookmarkMatchesPage(
   if (pathname !== targetPath) {
     return false;
   }
-  const bookmarkConceptId = conceptId ?? conceptIdFromHrefHash(hash);
+  const bookmarkConceptId = conceptId ?? hashIdFrom(hash);
   if (bookmarkConceptId.length > 0) {
     return activeConceptId === bookmarkConceptId;
   }

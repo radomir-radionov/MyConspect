@@ -1,6 +1,4 @@
 import {
-  isInterviewTasksTopic,
-  isInterviewTopic,
   SUBJECTS,
   TRACKS,
   clusterTargetHref,
@@ -26,27 +24,11 @@ import {
   loadTopicOutline,
   type ConceptOutline,
 } from "@/lib/parse";
+import { filterInterviewConcepts, sameTitle } from "./navUtils";
 import type { NavEntry, NavGroup, NavTopic } from "./types";
-
-function sameTitle(left: string, right: string): boolean {
-  return left.trim().toLowerCase() === right.trim().toLowerCase();
-}
 
 function localizeHref(locale: Locale, href: string): string {
   return withLocale(locale, href);
-}
-
-function outlineForTopic(
-  topic: Topic,
-  outline: readonly ConceptOutline[],
-): readonly ConceptOutline[] {
-  if (isInterviewTasksTopic(topic)) {
-    return outline.filter((concept) => concept.interviewSection === "tasks");
-  }
-  if (isInterviewTopic(topic)) {
-    return outline.filter((concept) => concept.interviewSection !== "tasks");
-  }
-  return outline;
 }
 
 function hubNavTopic(
@@ -71,7 +53,10 @@ function hubNavTopic(
 }
 
 function toNavTopic(topic: Topic, locale: Locale): NavTopic {
-  const outline = outlineForTopic(topic, loadTopicOutline(topic, locale));
+  const outline = filterInterviewConcepts(
+    topic,
+    loadTopicOutline(topic, locale),
+  );
   return {
     slug: topic.slug,
     href: localizeHref(locale, topicHref(topic)),
