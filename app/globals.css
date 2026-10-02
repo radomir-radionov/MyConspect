@@ -116,6 +116,15 @@ body {
   list-style: none;
 }
 
+.concept-list > details,
+.concept-list > article {
+  scroll-margin-top: var(--handbook-sticky-inset, 0px);
+}
+
+.concept-detail-toolbar {
+  scroll-margin-top: var(--handbook-sticky-inset, 0px);
+}
+
 .catalog-sections > details > summary::-webkit-details-marker,
 .concept-list > details > summary::-webkit-details-marker {
   display: none;
@@ -132,6 +141,34 @@ body {
 .catalog-sections > details[open] > summary::before,
 .concept-list > details[open] > summary::before {
   content: "▾";
+}
+
+@media (max-width: 767px) {
+  .concept-list > details[data-concept-pinned] {
+    position: relative;
+    z-index: 1;
+    animation: concept-pin-flash 0.55s ease-out;
+  }
+}
+
+@keyframes concept-pin-flash {
+  0% {
+    outline: 2px solid rgb(250 204 21 / 0.85);
+    outline-offset: 0;
+  }
+
+  100% {
+    outline: 2px solid rgb(250 204 21 / 0);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .concept-list > details[data-concept-pinned] {
+    animation: none;
+    outline: 2px solid rgb(250 204 21 / 0.65);
+    outline-offset: 0;
+  }
 }
 
 .concept-body {
@@ -591,7 +628,7 @@ body {
 }
 
 #handbook-nav-aside {
-  --nav-sticky-inset: 8px;
+  --nav-sticky-inset: 0px;
   --nav-sticky-gap: 6px;
   --nav-sticky-track: 28px;
   --nav-sticky-row: 40px;

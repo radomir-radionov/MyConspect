@@ -333,6 +333,22 @@ export function hrefInHandbook(
   return false;
 }
 
+export function parentHrefForPath(
+  groups: readonly NavGroup[],
+  pathname: string,
+  hash: string,
+  labels: { home: string; instructions: string },
+): string | null {
+  const crumbs = crumbsForPath(groups, pathname, hash, labels);
+  for (let index = crumbs.length - 2; index >= 0; index -= 1) {
+    const href = crumbs[index]?.href;
+    if (href) {
+      return href;
+    }
+  }
+  return null;
+}
+
 export function crumbsForPath(
   groups: readonly NavGroup[],
   pathname: string,

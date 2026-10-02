@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { NavGroup } from "@/lib/nav";
-import { crumbsForPath } from "./location";
+import { crumbsForPath, parentHrefForPath } from "./location";
 
 const labels = { home: "Home", instructions: "Instructions" };
 
@@ -156,6 +156,17 @@ test("Core topic does not duplicate the cluster name in the trail", () => {
     "Node.js",
     "Core",
   ]);
+});
+
+test("parentHrefForPath returns the nearest linked ancestor", () => {
+  assert.equal(
+    parentHrefForPath(groups, "/backend/nodejs-core", "", labels),
+    "/backend/nodejs",
+  );
+  assert.equal(
+    parentHrefForPath(groups, "/backend/nodejs-http", "", labels),
+    "/backend/nodejs",
+  );
 });
 
 test("Additional topic does not duplicate the cluster name in the trail", () => {

@@ -135,6 +135,14 @@ export function replacePathHash(pathname: string, hash: string) {
   dispatchHashChange();
 }
 
+export function clearConceptHash(scroll = false) {
+  const next = `${window.location.pathname}${window.location.search}`;
+  if (`${next}${window.location.hash}` !== next) {
+    window.history.replaceState(window.history.state, "", next);
+  }
+  dispatchHashChange(scroll);
+}
+
 export function shouldScrollFromHashEvent(event?: Event): boolean {
   if (event == null) {
     return true;

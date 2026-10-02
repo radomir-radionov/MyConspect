@@ -2377,6 +2377,17 @@ export function clusterHref(subject: Subject, cluster: TopicCluster): string {
   return `${subjectHref(subject)}#${cluster.id}`;
 }
 
+export function clusterTargetHref(
+  subject: Subject,
+  cluster: TopicCluster,
+): string {
+  const topics = topicsForCluster(subject, cluster.id);
+  if (topics.length === 1) {
+    return topicHref(topics[0]);
+  }
+  return clusterHref(subject, cluster);
+}
+
 export function trackHref(track: TrackId): string {
   return `/${track}`;
 }

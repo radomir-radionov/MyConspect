@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CardGrid, ClusterCardSections } from "@/components/catalog";
-import { ConceptList } from "@/components/topic";
+import { ConceptList, PageTitleHeader } from "@/components/topic";
 import {
   TRACKS,
   getTrack,
@@ -123,12 +123,7 @@ export default async function TrackPage({
     );
     return (
       <main className="w-full max-w-5xl px-4 pt-5 pb-10 sm:px-6">
-        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-          {subject.title}
-        </h1>
-        <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-400">
-          {catalogBlurb(locale, subject.blurb)}
-        </p>
+        <PageTitleHeader title={subject.title} />
         {hub ? (
           <>
             {hub.usedFallback ? (
@@ -162,21 +157,17 @@ export default async function TrackPage({
       : loaded.parsed.concepts;
     return (
       <main className="w-full max-w-3xl px-4 pt-5 pb-10 sm:px-6">
-        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-          {behaviorPageTitle(locale, loaded.parsed.title)}
-        </h1>
         {loaded.usedFallback ? (
-          <p className="mt-2 text-sm text-amber-700 dark:text-amber-300">
+          <p className="mb-4 text-sm text-amber-700 dark:text-amber-300">
             {FALLBACK_NOTE_BADGE[locale]}
           </p>
         ) : null}
-        <div className="mt-8">
-          <ConceptList
-            concepts={concepts}
-            emptyMessage="No concepts were parsed from this topic."
-            groupInterviewSections={isInterviewTopic(leaf)}
-          />
-        </div>
+        <ConceptList
+          concepts={concepts}
+          topicTitle={behaviorPageTitle(locale, loaded.parsed.title)}
+          emptyMessage="No concepts were parsed from this topic."
+          groupInterviewSections={isInterviewTopic(leaf)}
+        />
       </main>
     );
   }

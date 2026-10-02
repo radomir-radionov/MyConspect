@@ -10,7 +10,13 @@ import {
   hashIdFrom,
   subscribeHash,
 } from "@/components/nav/hash";
-import { CHROME, crumbsWithActive, splitHref, type Crumb, type HashCrumb } from "@/lib/nav";
+import {
+  CHROME,
+  crumbsWithActive,
+  splitHref,
+  type Crumb,
+  type HashCrumb,
+} from "@/lib/nav";
 
 export function Breadcrumbs({
   items,
@@ -37,7 +43,10 @@ export function Breadcrumbs({
   }
 
   return (
-    <nav aria-label={CHROME.breadcrumbs} className={compact ? "min-w-0" : "mb-6"}>
+    <nav
+      aria-label={CHROME.breadcrumbs}
+      className={compact ? "min-w-0" : "mb-6"}
+    >
       <ol
         className={
           compact
@@ -53,7 +62,10 @@ export function Breadcrumbs({
               className="flex shrink-0 items-center gap-x-0.5"
             >
               {index === 0 ? null : (
-                <span aria-hidden="true" className="text-zinc-300 dark:text-zinc-600">
+                <span
+                  aria-hidden="true"
+                  className="text-zinc-300 dark:text-zinc-600"
+                >
                   /
                 </span>
               )}
@@ -67,7 +79,13 @@ export function Breadcrumbs({
                       return;
                     }
                     const { pathname, hash } = splitHref(href);
-                    if (applySameDocumentHref(pathname, hash, window.location.pathname)) {
+                    if (
+                      applySameDocumentHref(
+                        pathname,
+                        hash,
+                        window.location.pathname,
+                      )
+                    ) {
                       event.preventDefault();
                       return;
                     }
@@ -80,7 +98,7 @@ export function Breadcrumbs({
               ) : (
                 <span
                   aria-current={isLast ? "page" : undefined}
-                  className="rounded-md bg-yellow-50 px-1.5 py-0.5 font-medium text-zinc-900 ring-1 ring-inset ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800"
+                  className="px-1.5 py-0.5 font-medium text-zinc-900 dark:text-zinc-50"
                 >
                   {item.label}
                 </span>

@@ -7,9 +7,11 @@ import type { ChromeCopy } from "@/lib/nav";
 export function TopicBookmarkButton({
   title,
   chrome,
+  conceptId,
 }: {
   title: string;
   chrome: ChromeCopy;
+  conceptId?: string;
 }) {
   const pathname = usePathname() ?? "/";
 
@@ -17,6 +19,7 @@ export function TopicBookmarkButton({
     <BookmarkButton
       pathname={pathname}
       title={title}
+      conceptId={conceptId}
       chrome={chrome}
       size="lg"
     />

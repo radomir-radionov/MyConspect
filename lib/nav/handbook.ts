@@ -3,7 +3,7 @@ import {
   isInterviewTopic,
   SUBJECTS,
   TRACKS,
-  clusterHref,
+  clusterTargetHref,
   hubFileForTrack,
   leafTopicForTrack,
   subjectHref,
@@ -108,7 +108,7 @@ function entriesForTrack(
         .map((cluster) => ({
           id: cluster.id,
           title: cluster.title,
-          href: localizeHref(locale, clusterHref(subject, cluster)),
+          href: localizeHref(locale, clusterTargetHref(subject, cluster)),
           topics: topicsForCluster(subject, cluster.id).map((item) =>
             toNavTopic(item, locale),
           ),

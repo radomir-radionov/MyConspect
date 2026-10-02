@@ -167,7 +167,7 @@ export const ConceptLink = memo(function ConceptLink({
       onClick={(event) => {
         event.preventDefault();
         if (pathname === topicHref) {
-          setHashOnPath(pathname, concept.id);
+          setHashOnPath(pathname, concept.id, false);
           closeNavSoon(onNavigate);
           return;
         }
@@ -402,8 +402,16 @@ export function ClusterRow({
   subjectHref: string;
   cluster: NavCluster;
 }) {
-  const { query, pathname, highlightPathname, searching, first, pinNav } =
-    useSidebarChrome();
+  const {
+    query,
+    pathname,
+    highlightPathname,
+    searching,
+    first,
+    pinNav,
+    goToPath,
+    onNavigate,
+  } = useSidebarChrome();
   const { getTrackFold, patchTrackFold } = useSidebarFold();
   const { clusterKey: openClusterKey } = getTrackFold(trackId);
   const { activeConceptId } = useSidebarActive();
@@ -448,6 +456,13 @@ export function ClusterRow({
           pinNav(event.currentTarget);
           if (onHub) {
             event.preventDefault();
+            if (onlyTopic) {
+              patchTrackFold(trackId, { clusterKey: key });
+              queueHandbookHref(onlyTopic.href);
+              goToPath(onlyTopic.href);
+              closeNavSoon(onNavigate);
+              return;
+            }
             const next = `#${cluster.id}`;
             const sameHash = window.location.hash === next;
             if (!searching) {

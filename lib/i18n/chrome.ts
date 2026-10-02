@@ -23,6 +23,7 @@ const EN: ChromeCopy = {
   scrollToTop: "Scroll to top",
   copyLink: "Copy link",
   copiedLink: "Copied",
+  share: "Share",
   copyCode: "Copy code",
   bookmarksNav: "Bookmarks",
   bookmarksEmpty: "No bookmarks yet. Star a topic or concept to save it here.",
@@ -30,6 +31,7 @@ const EN: ChromeCopy = {
   unbookmark: "Remove bookmark",
   removeBookmark: "Remove",
   clearAllBookmarks: "Clear all",
+  back: "Back",
 };
 
 const RU: ChromeCopy = {
@@ -54,6 +56,7 @@ const RU: ChromeCopy = {
   scrollToTop: "Наверх",
   copyLink: "Копировать ссылку",
   copiedLink: "Скопировано",
+  share: "Поделиться",
   copyCode: "Копировать код",
   bookmarksNav: "Закладки",
   bookmarksEmpty: "Закладок пока нет. Отметьте тему или концепт звёздочкой.",
@@ -61,6 +64,7 @@ const RU: ChromeCopy = {
   unbookmark: "Убрать из закладок",
   removeBookmark: "Убрать",
   clearAllBookmarks: "Очистить всё",
+  back: "Назад",
 };
 
 const BY_LOCALE: Record<Locale, ChromeCopy> = {

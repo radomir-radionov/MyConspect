@@ -13,6 +13,19 @@ describe("handbook sidebar", () => {
     cy.contains("h1", "Core");
   });
 
+  it("opens Testing Fundamentals on its topic page from the hub", () => {
+    cy.visit("/en/testing");
+    cy.contains("a", "Fundamentals")
+      .should("have.attr", "href", "/en/testing/testing-fundamentals")
+      .click();
+    cy.location("pathname").should("eq", "/en/testing/testing-fundamentals");
+    cy.contains("button", "Back").should("be.visible");
+
+    cy.visit("/en/testing");
+    cy.nav("cluster", "fundamentals").click();
+    cy.location("pathname").should("eq", "/en/testing/testing-fundamentals");
+  });
+
   it("highlights Frontend while CSS is the open page", () => {
     cy.visit("/en/frontend/css");
     cy.nav("track", "frontend").should("have.attr", "aria-expanded", "true");
@@ -517,45 +530,37 @@ describe("handbook sidebar", () => {
     });
   });
 
-  it("does not jump the main pane when opening a concept in the page list", () => {
+  it("opens a concept in detail view when chosen from the page list", () => {
+    cy.viewport(390, 844);
     cy.visit("/en/frontend/react-core");
-    cy.get("#jsx > summary").click({ scrollBehavior: false, force: true });
-    cy.get("#jsx").should("have.prop", "open", true);
+    cy.contains("button", "JSX").click();
+    cy.location("hash").should("eq", "#jsx");
+    cy.get("main .concept-list > article#jsx").should("be.visible");
+    cy.get("main .concept-list > article").should("have.length", 1);
+    cy.contains("button", "Back").should("be.visible");
 
-    cy.get("#fragments > summary").then(($summary) => {
-      const main = Cypress.$("#handbook-main")[0];
-      const desired =
-        $summary[0].getBoundingClientRect().top -
-        main.getBoundingClientRect().top +
-        main.scrollTop -
-        220;
-      main.scrollTop = desired;
-      const before =
-        $summary[0].getBoundingClientRect().top -
-        main.getBoundingClientRect().top;
-      expect(before).to.be.within(80, 400);
-
-      cy.wrap($summary).click({ scrollBehavior: false, force: true });
-      cy.get("#fragments").should("have.prop", "open", true);
-      cy.get("#jsx").should("have.prop", "open", false);
-      cy.get("#fragments > summary").should(($el) => {
-        const after =
-          $el[0].getBoundingClientRect().top - main.getBoundingClientRect().top;
-        expect(after).to.be.closeTo(before, 40);
-      });
-    });
+    cy.contains("button", "Fragments").click();
+    cy.location("hash").should("eq", "#fragments");
+    cy.get("main .concept-list > article#fragments").should("be.visible");
+    cy.get("main .concept-list > article#jsx").should("not.exist");
   });
 
-  it("scrolls the opened concept to the top when it is chosen in the sidebar", () => {
-    cy.visit("/en/frontend/html-performance");
-    cy.get("#core-web-vitals-html-developer-impact > summary").click({
-      scrollBehavior: false,
-    });
-    cy.get("#core-web-vitals-html-developer-impact").should(
-      "have.prop",
-      "open",
-      true,
+  it("returns to the concept list from detail view", () => {
+    cy.visit("/en/frontend/react-core#jsx");
+    cy.get("main .concept-list > article#jsx").should("be.visible");
+    cy.contains("button", "Back").click();
+    cy.location("hash").should("eq", "");
+    cy.get("main .concept-list button").should("have.length.at.least", 2);
+    cy.get("main .concept-list > article").should("not.exist");
+  });
+
+  it("opens the chosen concept in detail view from the sidebar", () => {
+    cy.visit(
+      "/en/frontend/html-performance#core-web-vitals-html-developer-impact",
     );
+    cy.get(
+      "main .concept-list > article#core-web-vitals-html-developer-impact",
+    ).should("be.visible");
 
     const cachingId = "caching-historical-note-applicationcache";
     cy.get(`#handbook-sidebar [data-concept-id="${cachingId}"]`).click({
@@ -563,18 +568,11 @@ describe("handbook sidebar", () => {
       force: true,
     });
     cy.location("hash").should("eq", `#${cachingId}`);
-    cy.get(`#${cachingId}`).should("have.prop", "open", true);
-    cy.get("#core-web-vitals-html-developer-impact").should(
-      "have.prop",
-      "open",
-      false,
-    );
-    cy.get(`#${cachingId} > summary`).should(($el) => {
-      const main = Cypress.$("#handbook-main")[0];
-      const top =
-        $el[0].getBoundingClientRect().top - main.getBoundingClientRect().top;
-      expect(top).to.be.within(0, 24);
-    });
+    cy.get(`main .concept-list > article#${cachingId}`).should("be.visible");
+    cy.get("main .concept-list > article").should("have.length", 1);
+    cy.get(
+      "main .concept-list > article#core-web-vitals-html-developer-impact",
+    ).should("not.exist");
   });
 
   it("restores search and the last page from browser storage", () => {
