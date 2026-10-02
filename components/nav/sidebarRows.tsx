@@ -185,15 +185,17 @@ export const ConceptLink = memo(function ConceptLink({
       }
     >
       <span className="flex items-baseline justify-between gap-2">
-        <span className="flex min-w-0 items-baseline gap-1.5">
-          {bookmarked ? <BookmarkStar /> : null}
+        <span className="min-w-0">
           <HighlightedText text={concept.title} query={query} />
         </span>
-        {snippet ? (
-          <span className="shrink-0 text-[10px] font-medium tracking-wide text-zinc-400 uppercase dark:text-zinc-500">
-            {CHROME.inNotes}
-          </span>
-        ) : null}
+        <span className="flex shrink-0 items-baseline gap-1.5">
+          {snippet ? (
+            <span className="text-[10px] font-medium tracking-wide text-zinc-400 uppercase dark:text-zinc-500">
+              {CHROME.inNotes}
+            </span>
+          ) : null}
+          {bookmarked ? <BookmarkStar /> : null}
+        </span>
       </span>
       {snippet ? (
         <span className="mt-0.5 block text-xs font-normal leading-snug text-zinc-500 dark:text-zinc-400">
@@ -361,7 +363,6 @@ export function TopicRow({
         className={`${rowClass(isHitTopic || active, onPath, indent)} ${NAV_ROW_GAP}`}
       >
         <span className="flex min-w-0 flex-1 items-center gap-1.5">
-          {topicBookmarked ? <BookmarkStar /> : null}
           <RowTitle
             text={topic.title}
             query={query}
@@ -369,6 +370,7 @@ export function TopicRow({
             open={topicOpen}
           />
         </span>
+        {topicBookmarked ? <BookmarkStar /> : null}
         {showConceptNav ? (
           compact ? (
             topicOpen ? (

@@ -23,6 +23,7 @@ import {
   subscribeHash,
 } from "./hash";
 import { isBookmarkActive } from "./location";
+import { ConfirmDialog } from "./ConfirmDialog";
 import { NavChevron, NavFold } from "./NavFold";
 import { trackHeaderClass } from "./sidebarContext";
 
@@ -36,6 +37,7 @@ export function BookmarksPanel({
   const pathname = usePathname() ?? "/";
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
   const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
   const activeConceptId = hashIdFrom(hash);
   const bookmarks = useSyncExternalStore(
@@ -81,10 +83,7 @@ export function BookmarksPanel({
             type="button"
             className="pointer-events-none absolute inset-0 inline-flex items-center justify-center rounded-md text-zinc-400 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 hover:bg-zinc-100 hover:text-zinc-700 focus-visible:pointer-events-auto focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 dark:focus-visible:ring-zinc-500"
             aria-label={chrome.clearAllBookmarks}
-            onClick={() => {
-              clearAllBookmarks();
-              setOpen(false);
-            }}
+            onClick={() => setClearConfirmOpen(true)}
           >
             <svg
               aria-hidden="true"
@@ -179,6 +178,18 @@ export function BookmarksPanel({
           </ul>
         </div>
       </NavFold>
+      <ConfirmDialog
+        open={clearConfirmOpen}
+        title={chrome.clearAllBookmarksConfirm}
+        confirmLabel={chrome.confirmYes}
+        cancelLabel={chrome.confirmNo}
+        onConfirm={() => {
+          clearAllBookmarks();
+          setOpen(false);
+          setClearConfirmOpen(false);
+        }}
+        onCancel={() => setClearConfirmOpen(false)}
+      />
     </section>
   );
 }

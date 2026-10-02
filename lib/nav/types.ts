@@ -103,5 +103,8 @@ export type ChromeCopy = {
   readonly unbookmark: string;
   readonly removeBookmark: string;
   readonly clearAllBookmarks: string;
+  readonly clearAllBookmarksConfirm: string;
+  readonly confirmYes: string;
+  readonly confirmNo: string;
   readonly back: string;
 };

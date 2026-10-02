@@ -9,6 +9,10 @@ import {
 } from "@/components/search";
 import { highlightQueryInHtml } from "@/components/search/highlightQueryInHtml";
 import {
+  BookmarkButton,
+  useIsBookmarked,
+} from "@/components/nav/BookmarkButton";
+import {
   clearConceptHash,
   getHash,
   getServerHash,
@@ -16,6 +20,7 @@ import {
   setHashIfChanged,
   subscribeHash,
 } from "@/components/nav/hash";
+import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
 import { handbookMain } from "@/components/topic/conceptScroll";
 import { chromeFor } from "@/lib/i18n/chrome";
 import { localeFromPathname } from "@/lib/i18n/paths";
@@ -155,24 +160,23 @@ export function ConceptList({
   }
 
   return (
-    <div className="space-y-4">
-      {topicTitle ? <PageTitleHeader title={topicTitle} /> : null}
-      <div className="space-y-8">
-        {groups.map((group) => (
-          <section key={group.section ?? "default"}>
-            {group.section ? (
-              <h2 className="mb-3 text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-                {SECTION_LABELS[group.section]}
-              </h2>
-            ) : null}
-            <ConceptIndexList
-              concepts={group.concepts}
-              query={query}
-              chrome={chrome}
-            />
-          </section>
-        ))}
-      </div>
+    <div className="space-y-8">
+      {groups.map((group) => (
+        <section key={group.section ?? "default"}>
+          {group.section ? (
+            <h2 className="mb-3 text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+              {SECTION_LABELS[group.section]}
+            </h2>
+          ) : null}
+          <ConceptIndexList
+            concepts={group.concepts}
+            query={query}
+            chrome={chrome}
+            pathname={pathname}
+            topicTitle={group.section === null ? topicTitle : undefined}
+          />
+        </section>
+      ))}
     </div>
   );
 }
@@ -187,27 +191,72 @@ function ConceptIndexList({
   concepts,
   query,
   chrome,
+  pathname,
+  topicTitle,
 }: {
   concepts: readonly Concept[];
   query: string;
   chrome: ChromeCopy;
+  pathname: string;
+  topicTitle?: string;
 }) {
   return (
     <nav aria-label={chrome.topicsNav} className={CONCEPT_LIST_CARD}>
+      {topicTitle ? <PageTitleHeader title={topicTitle} /> : null}
       <ul className="divide-y divide-zinc-200 dark:divide-zinc-800">
         {concepts.map((concept) => (
-          <li key={concept.id}>
-            <button
-              type="button"
-              onClick={() => setHashIfChanged(concept.id, false)}
-              className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 text-left text-base font-medium text-zinc-900 transition-colors hover:bg-yellow-50 dark:text-zinc-50 dark:hover:bg-yellow-950/60"
-            >
-              <HighlightedText text={concept.title} query={query} />
-            </button>
-          </li>
+          <ConceptIndexRow
+            key={concept.id}
+            concept={concept}
+            query={query}
+            chrome={chrome}
+            pathname={pathname}
+          />
         ))}
       </ul>
     </nav>
+  );
+}
+
+function ConceptIndexRow({
+  concept,
+  query,
+  chrome,
+  pathname,
+}: {
+  concept: Concept;
+  query: string;
+  chrome: ChromeCopy;
+  pathname: string;
+}) {
+  const saved = useIsBookmarked(pathname, concept.id);
+
+  return (
+    <li className="group relative transition-colors hover:bg-yellow-50 dark:hover:bg-yellow-950/60">
+      <button
+        type="button"
+        onClick={() => setHashIfChanged(concept.id, false)}
+        className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 text-left text-base font-medium text-zinc-900 dark:text-zinc-50"
+      >
+        <HighlightedText text={concept.title} query={query} />
+      </button>
+      <div
+        className={
+          saved
+            ? "absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-0.5"
+            : "pointer-events-none absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-0.5 group-hover:pointer-events-auto group-focus-within:pointer-events-auto"
+        }
+      >
+        <CopyConceptLinkButton conceptId={concept.id} chrome={chrome} />
+        <BookmarkButton
+          pathname={pathname}
+          title={concept.title}
+          conceptId={concept.id}
+          chrome={chrome}
+          revealOnHover
+        />
+      </div>
+    </li>
   );
 }
 

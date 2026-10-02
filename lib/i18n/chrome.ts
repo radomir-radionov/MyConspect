@@ -31,6 +31,9 @@ const EN: ChromeCopy = {
   unbookmark: "Remove bookmark",
   removeBookmark: "Remove",
   clearAllBookmarks: "Clear all",
+  clearAllBookmarksConfirm: "Clear all bookmarks?",
+  confirmYes: "Yes",
+  confirmNo: "No",
   back: "Back",
 };
 
@@ -64,6 +67,9 @@ const RU: ChromeCopy = {
   unbookmark: "Убрать из закладок",
   removeBookmark: "Убрать",
   clearAllBookmarks: "Очистить всё",
+  clearAllBookmarksConfirm: "Очистить все закладки?",
+  confirmYes: "Да",
+  confirmNo: "Нет",
   back: "Назад",
 };
 
