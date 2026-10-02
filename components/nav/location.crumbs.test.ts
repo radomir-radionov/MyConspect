@@ -199,10 +199,10 @@ test("leaf track next from hub opens the first concept", () => {
   );
 });
 
-test("leaf track next from last concept wraps to the first concept", () => {
+test("leaf track next from last concept returns to the topic menu", () => {
   assert.equal(
     siblingNavHrefForPath([leafTrackGroup], "/behavior", "#tell-me", 1, "/en"),
-    "/behavior#prep",
+    "/behavior",
   );
 });
 

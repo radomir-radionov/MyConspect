@@ -380,6 +380,22 @@ function crossClusterStep(
   return delta > 0 ? firstClusterStep(neighbor) : lastClusterStep(neighbor);
 }
 
+function isLastConceptStepInTopic(
+  chain: readonly NavStep[],
+  current: NavStep,
+): boolean {
+  if (!current.hash) {
+    return false;
+  }
+  let lastConcept: NavStep | null = null;
+  for (const step of chain) {
+    if (step.pathname === current.pathname && step.hash !== "") {
+      lastConcept = step;
+    }
+  }
+  return lastConcept?.hash === current.hash;
+}
+
 export function siblingNavHrefForPath(
   groups: readonly NavGroup[],
   pathname: string,
@@ -413,12 +429,6 @@ export function siblingNavHrefForPath(
     if (delta > 0) {
       const current = chain[index];
       if (current?.hash) {
-        if (!cluster || shouldWrapClusterAtBoundary(cluster)) {
-          const step = wrapToFirstClusterStep(chain);
-          if (step) {
-            return stepHref(step);
-          }
-        }
         return stepHref({ pathname: current.pathname, hash: "" });
       }
       if (cluster && !shouldWrapClusterAtBoundary(cluster)) {
@@ -436,6 +446,10 @@ export function siblingNavHrefForPath(
   const step = chain[nextIndex];
   if (!step) {
     return null;
+  }
+  const current = chain[index];
+  if (delta > 0 && current?.hash && isLastConceptStepInTopic(chain, current)) {
+    return stepHref({ pathname: current.pathname, hash: "" });
   }
   return stepHref(step);
 }

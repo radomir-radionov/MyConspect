@@ -37,7 +37,7 @@ import {
 import type { TrackId } from "@/lib/catalog";
 import { NavChevron, NavFold } from "./NavFold";
 import { NavGuide } from "./NavGuide";
-import { queueHandbookHref } from "./hash";
+import { applySameDocumentHref, queueHandbookHref } from "./hash";
 import { useHandbookLocation } from "./useHandbookLocation";
 import { isActiveHref, isActiveTrack } from "./location";
 import { BookmarksPanel } from "./BookmarksPanel";
@@ -56,6 +56,7 @@ import {
 import {
   SidebarNavProvider,
   trackHeaderClass,
+  useSidebarChrome,
   useSidebarHighlight,
 } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
@@ -343,12 +344,11 @@ const TrackGroup = memo(function TrackGroup({
   toggleTrackId: (trackId: TrackId) => void;
   ensureTrackOpen: (trackId: TrackId) => void;
 }) {
-  const isLeafTrack =
-    Boolean(group.leafTopic) &&
-    group.entries.length === 0 &&
-    !group.leafTopic?.hideSidebarConcepts;
+  const isLeafTrack = Boolean(group.leafTopic) && group.entries.length === 0;
+  const showLeafConcepts = isLeafTrack && !group.leafTopic?.hideSidebarConcepts;
   const hasSidebarChildren =
-    group.entries.length > 0 || Boolean(group.hubTopic) || isLeafTrack;
+    group.entries.length > 0 || Boolean(group.hubTopic) || showLeafConcepts;
+  const { onNavigate } = useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
   const trackActive = isActiveHref(highlightPathname, group.href);
   const onThisTrack = isActiveTrack(highlightPathname, group.href);
@@ -376,7 +376,8 @@ const TrackGroup = memo(function TrackGroup({
     />
   );
   const chevron = hasSidebarChildren ? <NavChevron open={trackOpen} /> : null;
-  const asButton = isLeafTrack ? trackActive : onThisTrack;
+  const asButton =
+    hasSidebarChildren && (showLeafConcepts ? trackActive : onThisTrack);
 
   return (
     <li>
@@ -408,8 +409,19 @@ const TrackGroup = memo(function TrackGroup({
           data-nav-path={onPath ? "true" : undefined}
           onClick={(event) => {
             pinNavElement(event.currentTarget);
+            if (!hasSidebarChildren) {
+              onNavigate?.();
+            }
+            if (pathname === group.href && window.location.hash) {
+              event.preventDefault();
+              applySameDocumentHref(pathname, "", pathname);
+              queueHandbookHref(group.href);
+              return;
+            }
             queueHandbookHref(group.href);
-            ensureTrackOpen(group.id);
+            if (hasSidebarChildren) {
+              ensureTrackOpen(group.id);
+            }
           }}
           data-search-hit={
             isLeafTrack && first?.pathname === group.href && first.hash === ""
@@ -433,7 +445,7 @@ const TrackGroup = memo(function TrackGroup({
               {group.hubTopic ? (
                 <TopicRow trackId={group.id} topic={group.hubTopic} hideTitle />
               ) : null}
-              {isLeafTrack && group.leafTopic ? (
+              {showLeafConcepts && group.leafTopic ? (
                 <TopicRow
                   trackId={group.id}
                   topic={group.leafTopic}

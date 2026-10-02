@@ -3,10 +3,10 @@ import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
 import { TopicBookmarkButton } from "./TopicBookmarkButton";
 
 const DETAIL_HEADER =
-  "concept-detail-toolbar sticky top-[var(--handbook-sticky-inset,0px)] z-10 flex items-start gap-3 rounded-t-[calc(0.75rem-1px)] border-b border-yellow-200 bg-yellow-50 px-4 py-2.5 dark:border-yellow-800 dark:bg-yellow-950";
+  "concept-detail-toolbar sticky top-[var(--handbook-sticky-inset,0px)] z-10 flex flex-col gap-2 rounded-t-[calc(0.75rem-1px)] border-b border-yellow-200 bg-yellow-50 px-4 py-2.5 sm:flex-row sm:items-start sm:gap-3 dark:border-yellow-800 dark:bg-yellow-950";
 
 const INDEX_HEADER =
-  "flex items-start gap-3 border-b border-zinc-200 px-4 py-2.5 dark:border-zinc-800";
+  "flex flex-col gap-2 border-b border-zinc-200 px-4 py-2.5 sm:flex-row sm:items-start sm:gap-3 dark:border-zinc-800";
 
 const NAV_GROUP_DETAIL =
   "inline-flex shrink-0 overflow-hidden rounded-lg border border-amber-200/80 bg-white/95 shadow-sm ring-1 ring-amber-100/50 dark:border-amber-900/50 dark:bg-zinc-950/95 dark:ring-amber-950/40";
@@ -15,10 +15,10 @@ const NAV_GROUP_INDEX =
   "inline-flex shrink-0 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm dark:border-zinc-700 dark:bg-zinc-900";
 
 const NAV_BTN_DETAIL =
-  "inline-flex h-8 cursor-pointer items-center gap-1 px-2.5 text-[13px] font-medium text-zinc-700 transition-colors hover:bg-amber-50/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-400/60 dark:text-zinc-200 dark:hover:bg-amber-950/50 dark:focus-visible:ring-amber-500/40";
+  "inline-flex min-h-11 touch-manipulation cursor-pointer items-center gap-1 px-3 text-[13px] font-medium text-zinc-700 transition-colors hover:bg-amber-50/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-400/60 sm:h-8 sm:min-h-8 sm:px-2.5 dark:text-zinc-200 dark:hover:bg-amber-950/50 dark:focus-visible:ring-amber-500/40";
 
 const NAV_BTN_INDEX =
-  "inline-flex h-8 cursor-pointer items-center gap-1 px-2.5 text-[13px] font-medium text-zinc-700 transition-colors hover:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-zinc-400/60 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:focus-visible:ring-zinc-500/40";
+  "inline-flex min-h-11 touch-manipulation cursor-pointer items-center gap-1 px-3 text-[13px] font-medium text-zinc-700 transition-colors hover:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-zinc-400/60 sm:h-8 sm:min-h-8 sm:px-2.5 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:focus-visible:ring-zinc-500/40";
 
 const NAV_DIVIDER_DETAIL =
   "w-px shrink-0 self-stretch bg-amber-200/80 dark:bg-amber-900/60";
@@ -139,11 +139,11 @@ export function ConceptTitleHeader({
 
   return (
     <div className={variant === "detail" ? DETAIL_HEADER : INDEX_HEADER}>
-      <h2 className="min-w-0 flex-1 text-2xl font-semibold leading-8 tracking-tight text-zinc-900 dark:text-zinc-50">
+      <h2 className="min-w-0 text-2xl font-semibold leading-8 tracking-tight text-zinc-900 sm:flex-1 dark:text-zinc-50">
         {title}
       </h2>
       {hasActions ? (
-        <span className="inline-flex shrink-0 items-center gap-1.5">
+        <span className="relative z-10 flex w-full shrink-0 items-center justify-end gap-1.5 sm:inline-flex sm:w-auto">
           <ConceptNavGroup
             showBack={showBack}
             onBack={onBack}

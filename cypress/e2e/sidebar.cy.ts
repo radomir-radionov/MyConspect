@@ -553,6 +553,22 @@ describe("handbook sidebar", () => {
     cy.get("main .concept-list > article#jsx").should("be.visible");
   });
 
+  it("navigates concepts with Back and Next on mobile", () => {
+    cy.viewport(390, 844);
+    cy.visit("/en/frontend/html-structure#basic-html-document-structure");
+    cy.contains("button", "Next").click();
+    cy.location("hash").should("eq", "#doctype");
+    cy.contains("button", "Back").click();
+    cy.location("hash").should("eq", "#basic-html-document-structure");
+  });
+
+  it("shows Back but not Next on topic index for mobile handbook nav", () => {
+    cy.viewport(390, 844);
+    cy.visit("/en/frontend/html-structure");
+    cy.contains("button", "Back").should("be.visible");
+    cy.contains("button", "Next").should("not.exist");
+  });
+
   it("opens the chosen concept in detail view from the sidebar", () => {
     cy.visit(
       "/en/frontend/html-performance#core-web-vitals-html-developer-impact",

@@ -189,7 +189,7 @@ export function HandbookShell({
                 ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
                 : navOpen
                   ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
-                  : `pointer-events-none ${SIDEBAR_MOBILE_FRAME} -translate-x-full border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
+                  : `pointer-events-none max-md:invisible ${SIDEBAR_MOBILE_FRAME} -translate-x-full border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
             }
             onPointerEnter={onAsidePointerEnter}
             onPointerLeave={onAsidePointerLeave}

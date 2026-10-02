@@ -2,11 +2,12 @@
 
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
-import { followHandbookHref } from "@/components/nav/hash";
+import { followHandbookHref, clearConceptHash } from "@/components/nav/hash";
 import { useHandbookLocation } from "@/components/nav/useHandbookLocation";
 import {
   getBookmarkNavMode,
   getServerBookmarkNavMode,
+  setBookmarkNavMode,
   subscribeBookmarkNavMode,
 } from "@/components/nav/bookmarkNavMode";
 import {
@@ -25,6 +26,7 @@ import {
 } from "@/lib/nav/bookmarks";
 import { chromeFor } from "@/lib/i18n/chrome";
 import { homeHref, localeFromPathname } from "@/lib/i18n/paths";
+import { splitHref } from "@/lib/nav";
 
 export function useHandbookTopicNav() {
   const { pathname, location, activeConceptId } = useHandbookLocation();
@@ -148,6 +150,14 @@ export function useHandbookTopicNav() {
       if (!href) {
         return;
       }
+      const { pathname: targetPath, hash: targetHash } = splitHref(href);
+      if (targetPath === pathname && !targetHash && activeConceptId) {
+        if (!bookmarkNavMode) {
+          setBookmarkNavMode(false);
+        }
+        clearConceptHash(false);
+        return;
+      }
       followHandbookHref(
         href,
         pathname,
@@ -157,7 +167,7 @@ export function useHandbookTopicNav() {
         { bookmarkNav: bookmarkNavMode },
       );
     },
-    [pathname, router, bookmarkNavMode],
+    [pathname, router, bookmarkNavMode, activeConceptId],
   );
 
   const goBack = useCallback(() => {
@@ -175,7 +185,9 @@ export function useHandbookTopicNav() {
   return {
     inChain: inBookmarks || inChain,
     showBack: inBookmarks ? prevHref !== null : inChain && prevHref !== null,
-    showNext: inBookmarks ? nextHref !== null : inChain && nextHref !== null,
+    showNext: inBookmarks
+      ? nextHref !== null
+      : inChain && nextHref !== null && activeConceptId.length > 0,
     goBack,
     goNext,
     goToParent,
