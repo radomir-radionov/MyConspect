@@ -121,6 +121,8 @@ export default async function Page() {
 
 **Definition:** Fetch in Client Components via SWR or TanStack Query when data must update without navigation.
 
+For TanStack Query SSR prefetch, `HydrationBoundary`, and persistent cache patterns, see [React — TanStack](./4_react_tanstack.md#ssr-prefetch--hydration).
+
 **When to use:** Infinite scroll, real-time widgets, post-hydration personalization.
 
 **Pluses and minuses:**

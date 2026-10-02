@@ -6,7 +6,7 @@ AuthN/AuthZ, sessions, JWT, OAuth, cookies, and storage.
 
 ### Related docs
 
-* [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
+- [Web APIs — Core](./6_web_api_core.md) · [Web APIs — HTTP](./6_web_api_http.md) · [Web APIs — API styles](./6_web_api_rest.md) · [Web APIs — Auth & storage](./6_web_api_auth.md) · [Web APIs — Apps](./6_web_api_apps.md) · [Web APIs — Security](./6_web_api_security.md) · [Web APIs — Interview](./6_web_api_interview.md)
 
 ### Sections
 
@@ -40,10 +40,10 @@ Calling Basic “encrypted.” Mixing Basic with session tokens as if they were 
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
+| +                                    | −                                                             |
+| ------------------------------------ | ------------------------------------------------------------- |
 | Basic is simple and widely supported | Credentials on every request; CSRF-prone vs cookie `SameSite` |
-| Clear 401 vs 403 | Password in Base64 is reversible |
+| Clear 401 vs 403                     | Password in Base64 is reversible                              |
 
 **Examples:**
 
@@ -57,7 +57,7 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 
 (`aladdin:opensesame` in Base64 — MDN’s example, not a secret.)
 
-**Thoughts:** *Identify → prove (authn) → grant (authz). Basic is `user:pass` in a header, not a session.*
+**Thoughts:** _Identify → prove (authn) → grant (authz). Basic is `user:pass` in a header, not a session._
 
 **Sources:**
 
@@ -102,7 +102,7 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 
 **Pluses and minuses:**
 
-| +                                        | −                                         |
+| +                                           | −                                            |
 | ------------------------------------------- | -------------------------------------------- |
 | No password sharing with third parties      | Complex; easy to misconfigure                |
 | Standard flows, libraries (Passport, Auth0) | Token theft if stored in localStorage        |
@@ -146,7 +146,7 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 
 **Pluses and minuses:**
 
-| Approach       | +                            | −                                        |
+| Approach       | +                               | −                                           |
 | -------------- | ------------------------------- | ------------------------------------------- |
 | Session cookie | Easy revoke (delete session)    | Server state, sticky sessions in cluster    |
 | JWT            | Stateless, scales horizontally  | Hard to revoke; token size in every request |
@@ -168,6 +168,93 @@ Sessions are easy to revoke; JWTs scale without a lookup — pick revoke vs scal
 **Sources:**
 
 [jwt.io](https://jwt.io/) · [MDN — HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
+
+---
+
+</details>
+
+<details>
+  <summary>Access token refresh</summary>
+
+### Access token refresh
+
+**Definition:** **Access token refresh** renews a short-lived **access token** using a long-lived **refresh token** so the user stays signed in without re-entering credentials — typically via `POST /token` with `grant_type=refresh_token`.
+
+**How it works:**
+
+1. **Login** — Authorization Code + PKCE (SPA) or password/session establish trust.
+2. **Issue** — IdP returns `access_token` (minutes–hours) + `refresh_token` (days, optional `id_token`).
+3. **API calls** — client sends `Authorization: Bearer <access_token>` until `401` or `exp` nears.
+4. **Refresh** — client calls token endpoint with `refresh_token`; server returns new pair.
+5. **Rotation** — issue a **new** refresh token each use and invalidate the old one — detects theft (reuse of stolen refresh → revoke family).
+6. **Retry** — replay the failed API request once with the new access token.
+
+| Storage           | Refresh location                                           | Notes                                  |
+| ----------------- | ---------------------------------------------------------- | -------------------------------------- |
+| SPA + BFF         | HttpOnly cookie on BFF; refresh Route Handler              | Preferred — refresh secret never in JS |
+| SPA + API gateway | Secure httpOnly cookie or backend-for-frontend             | Same as BFF                            |
+| Mobile            | OS secure storage (Keychain / Keystore)                    | PKCE on login; rotate refresh          |
+| Pure SPA (no BFF) | Memory for access; refresh in httpOnly cookie if same site | Avoid `localStorage` for either token  |
+
+**Silent refresh:** on `401`, queue in-flight requests, call refresh once, update access token, retry — use a single-flight lock so ten parallel 401s trigger one refresh. Libraries (Auth0 SDK, NextAuth, custom middleware) wrap this.
+
+**When to use:** Any JWT access token with TTL &lt; session length. Mandatory with OAuth2/OIDC SPAs. Pair with [Secure BFF patterns](./6_web_api_security.md#secure-bff-patterns) when the browser must not hold refresh tokens.
+
+#### Common pitfalls
+
+- Long-lived access tokens “to avoid refresh” — stolen bearer works until expiry.
+- Refresh token in `localStorage` — XSS steals long-lived credential.
+- No rotation — stolen refresh works until manual revoke.
+- Infinite refresh retry loop on invalid refresh — clear session and redirect to login.
+
+**Pluses and minuses:**
+
+| +                                    | −                                                     |
+| ------------------------------------ | ----------------------------------------------------- |
+| Short access TTL limits blast radius | More moving parts (rotation store, 401 handling)      |
+| Silent UX without re-login           | Refresh endpoint is high-value — rate-limit and audit |
+| Rotation detects token replay        | Logout must revoke refresh server-side                |
+
+**Examples:**
+
+```http
+POST /oauth/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token
+&refresh_token=def502…
+&client_id=spa-client
+```
+
+```ts
+let refreshPromise: Promise<string> | null = null;
+
+async function fetchWithRefresh(input: RequestInfo, init?: RequestInit) {
+  let res = await fetch(input, {
+    ...init,
+    headers: { ...init?.headers, Authorization: `Bearer ${getAccessToken()}` },
+  });
+  if (res.status !== 401) return res;
+
+  refreshPromise ??= refreshAccessToken().finally(() => {
+    refreshPromise = null;
+  });
+  await refreshPromise;
+
+  return fetch(input, {
+    ...init,
+    headers: { ...init?.headers, Authorization: `Bearer ${getAccessToken()}` },
+  });
+}
+```
+
+**Thoughts:** _Refresh is a second credential — protect it more than access. BFF + HttpOnly cookie is the default secure shape for web apps._
+
+**See also:** [OAuth2 & OIDC overview](#oauth2--oidc-overview) · [Sessions & JWT](#sessions--jwt) · [Secure BFF patterns](./6_web_api_security.md#secure-bff-patterns)
+
+**Sources:**
+
+[OAuth.net — Refresh Token](https://oauth.net/2/grant-types/refresh-token/) · [OAuth.net — Refresh tokens](https://oauth.net/2/refresh-tokens/) · [OAuth 2.0 for Browser-Based Apps (PKCE)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps)
 
 ---
 
@@ -212,9 +299,9 @@ Sessions are easy to revoke; JWTs scale without a lookup — pick revoke vs scal
 **Examples:**
 
 ```js
-const request = indexedDB.open('myApp', 1);
+const request = indexedDB.open("myApp", 1);
 request.onupgradeneeded = (e) => {
-  e.target.result.createObjectStore('books', { keyPath: 'id' });
+  e.target.result.createObjectStore("books", { keyPath: "id" });
 };
 ```
 
@@ -241,9 +328,9 @@ request.onupgradeneeded = (e) => {
 
 ```js
 try {
-  localStorage.setItem('user', JSON.stringify({ id: 1 }));
-  const user = JSON.parse(localStorage.getItem('user') ?? 'null');
-  sessionStorage.removeItem('tempFilter');
+  localStorage.setItem("user", JSON.stringify({ id: 1 }));
+  const user = JSON.parse(localStorage.getItem("user") ?? "null");
+  sessionStorage.removeItem("tempFilter");
 } catch {
   /* quota / disabled storage */
 }

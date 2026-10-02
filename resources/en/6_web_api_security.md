@@ -175,6 +175,67 @@ Encode for the **output context** (HTML vs URL). `encodeURIComponent` is for URL
 </details>
 
 <details>
+  <summary>SSRF (Server-Side Request Forgery)</summary>
+
+### SSRF (Server-Side Request Forgery)
+
+**Definition:** **SSRF** tricks **your server** into sending HTTP (or other protocol) requests to a URL the attacker chose — often internal services (`localhost`, `169.254.169.254`, Redis, admin panels) that the browser cannot reach directly.
+
+**How it works:**
+
+1. App accepts a URL or host from user input — webhook callback, PDF fetch, image proxy, import-from-URL, GraphQL `@deprecated` resolvers.
+2. Attacker passes `http://169.254.169.254/latest/meta-data/` (cloud metadata), `http://127.0.0.1:6379/`, or an internal admin API.
+3. Server performs the request **with its network privileges** — may leak secrets, pivot inside the VPC, or hit unauthenticated internal APIs.
+
+| Vector            | Example                                                             |
+| ----------------- | ------------------------------------------------------------------- |
+| User-supplied URL | `POST /api/preview { "url": "http://internal:8080/admin" }`         |
+| Redirect follow   | Public URL 302 → internal target if redirects are unlimited         |
+| DNS rebinding     | Host resolves to public IP at check time, internal IP at fetch time |
+
+**When to use defenses:** Any server-side `fetch`, `axios`, or HTTP client where the target is not 100% fixed at deploy time — especially BFFs, webhooks, crawlers, and file converters.
+
+#### Common pitfalls
+
+- Blocklisting only `127.0.0.1` — attackers use `0.0.0.0`, `[::1]`, decimal IPs, or DNS names that resolve internally.
+- Trusting “we only call our API” — open redirects and SSRF chains still happen.
+- Assuming SSRF is a browser problem — **no CORS** on server-to-server calls.
+
+**Pluses and minuses:**
+
+| + (allowlist + no redirects)             | −                                                     |
+| ---------------------------------------- | ----------------------------------------------------- |
+| Stops metadata and internal scans        | Strict allowlists need maintenance when backends move |
+| Network segmentation limits blast radius | Over-blocking breaks legitimate webhook integrations  |
+
+**Examples:**
+
+```ts
+const ALLOWED_HOSTS = new Set(["api.example.com", "cdn.example.com"]);
+
+function assertSafeUrl(raw: string) {
+  const url = new URL(raw);
+  if (url.protocol !== "https:") throw new Error("HTTPS only");
+  if (!ALLOWED_HOSTS.has(url.hostname)) throw new Error("Host not allowed");
+  if (isPrivateIp(url.hostname)) throw new Error("Private network blocked");
+  return url;
+}
+
+// fetch only after validation; disable redirect following or re-validate each hop
+await fetch(assertSafeUrl(userUrl), { redirect: "manual" });
+```
+
+**Thoughts:** _Default deny — fixed backend base URLs, not arbitrary user URLs. SSRF is why BFFs must validate before fan-out._ See [Secure BFF patterns](#secure-bff-patterns) · [BFF architecture](./7_special_architecture.md#bff-backend-for-frontend).
+
+**Sources:**
+
+[OWASP — SSRF](https://owasp.org/www-community/attacks/Server_Side_Request_Forgery) · [OWASP SSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html)
+
+---
+
+</details>
+
+<details>
   <summary>CSRF (Cross-Site Request Forgery)</summary>
 
 ### CSRF (Cross-Site Request Forgery)
@@ -296,6 +357,73 @@ JSONP bypasses SOP by loading cross-origin data via a `<script>` tag that calls 
 **Sources:**
 
 [MDN — CORS (prefer over JSONP)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+
+---
+
+</details>
+
+<details>
+  <summary>Secure BFF patterns</summary>
+
+### Secure BFF patterns
+
+**Definition:** A **secure BFF** (Backend for Frontend) keeps **secrets, refresh tokens, and upstream credentials on the server** while exposing a narrow, UI-shaped HTTP API to the browser — defense in depth for SPAs and Next.js Route Handlers.
+
+**How it works:**
+
+| Concern                   | Secure pattern                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------ |
+| API keys / client secrets | Only in BFF env vars — never `NEXT_PUBLIC_*` or bundled JS                                       |
+| Access token              | Short TTL; browser gets session cookie or memory-held access token                               |
+| Refresh token             | **HttpOnly cookie** or server-side store; refresh endpoint on BFF only                           |
+| Upstream calls            | BFF attaches `Authorization` server-side after session check                                     |
+| CSRF                      | `SameSite` session cookie + CSRF token / double-submit for cookie-auth mutations                 |
+| SSRF                      | Validate outbound URLs; allowlist upstream hosts — see [SSRF](#ssrf-server-side-request-forgery) |
+| AuthZ                     | BFF checks session **and** object-level permission before fan-out                                |
+
+Typical Next.js shape: browser → `POST /api/bff/checkout` (cookie) → Server Action / Route Handler validates session → parallel `fetch` to domain services with service token → return DTO. The browser never sees microservice URLs or service JWTs.
+
+**When to use:** SPA or App Router app talking to multiple backends; OAuth with refresh; any time the alternative is storing tokens in `localStorage`. Architecture overview: [BFF](./7_special_architecture.md#bff-backend-for-frontend). Refresh flow: [Access token refresh](./6_web_api_auth.md#access-token-refresh).
+
+#### Common pitfalls
+
+- Passing refresh tokens to Client Components via props or Flight payload.
+- BFF as sole auth gate with no validation in domain services (defense in depth).
+- Fan-out to `fetch(req.body.url)` — classic SSRF + credential leak.
+- Skipping CSRF because “we use JSON” while session rides on cookies.
+
+**Pluses and minuses:**
+
+| +                                         | −                                                 |
+| ----------------------------------------- | ------------------------------------------------- |
+| Secrets never in the browser bundle       | Extra hop and BFF SPOF                            |
+| Central place for rate limits and logging | Team must own BFF security reviews                |
+| Hides microservice topology from clients  | Can become a god-service if domain logic leaks in |
+
+**Examples:**
+
+```ts
+// app/api/session/refresh/route.ts — refresh stays server-side
+import { cookies } from "next/headers";
+
+export async function POST() {
+  const refresh = (await cookies()).get("refresh_token")?.value;
+  if (!refresh)
+    return Response.json({ error: "unauthorized" }, { status: 401 });
+
+  const tokens = await exchangeRefreshToken(refresh); // server-only client_secret
+  await setSessionCookies(tokens); // new HttpOnly access + rotated refresh
+  return Response.json({ ok: true });
+}
+```
+
+**Thoughts:** _BFF security = least privilege to the browser, full privilege only on the server, validate every inbound mutation._
+
+**See also:** [BFF (Backend for Frontend)](./7_special_architecture.md#bff-backend-for-frontend) · [Next.js — Auth on platform](./4_nextjs_platform.md) · [Access token refresh](./6_web_api_auth.md#access-token-refresh) · [CSRF](#csrf-cross-site-request-forgery)
+
+**Sources:**
+
+[OAuth.net — Refresh Token](https://oauth.net/2/grant-types/refresh-token/) · [Azure — Backends for Frontends](https://learn.microsoft.com/azure/architecture/patterns/backends-for-frontends) · [OWASP — Session Management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
 
 ---
 

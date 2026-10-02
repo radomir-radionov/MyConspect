@@ -6,7 +6,7 @@ AuthN/AuthZ, сеансы, JWT, OAuth, файлы cookie и хранилище.
 
 ### Related docs
 
-* [Веб-API — Core](./6_web_api_core.md) · [Веб-API — HTTP](./6_web_api_http.md) · [Веб-API — стили API](./6_web_api_rest.md) · [Веб-API — аутентификация и хранение](./6_web_api_auth.md) · [Веб-API — Приложения](./6_web_api_apps.md) · [Веб-API — Безопасность](./6_web_api_security.md) · [Веб-API — Интервью](./6_web_api_interview.md)
+- [Веб-API — Core](./6_web_api_core.md) · [Веб-API — HTTP](./6_web_api_http.md) · [Веб-API — стили API](./6_web_api_rest.md) · [Веб-API — аутентификация и хранение](./6_web_api_auth.md) · [Веб-API — Приложения](./6_web_api_apps.md) · [Веб-API — Безопасность](./6_web_api_security.md) · [Веб-API — Интервью](./6_web_api_interview.md)
 
 ### Sections
 
@@ -40,10 +40,10 @@ AuthN/AuthZ, сеансы, JWT, OAuth, файлы cookie и хранилище.
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
+| +                                   | −                                                                              |
+| ----------------------------------- | ------------------------------------------------------------------------------ |
 | Basic прост и широко поддерживается | Полномочия по каждому запросу; CSRF-склонность против файлов cookie `SameSite` |
-| Очистить 401 против 403 | Пароль в Base64 является обратимым |
+| Очистить 401 против 403             | Пароль в Base64 является обратимым                                             |
 
 **Examples:**
 
@@ -57,7 +57,7 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 
 (`aladdin:opensesame` в Base64 — пример MDN, не секрет.)
 
-**Thoughts:** *Идентифицировать → доказать (authn) → предоставить (authz). Базовый `user:pass` в заголовке, а не в сеансе.*
+**Thoughts:** _Идентифицировать → доказать (authn) → предоставить (authz). Базовый `user:pass` в заголовке, а не в сеансе._
 
 **Sources:**
 
@@ -82,16 +82,16 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 4. Приложение обменивается кодом в **конечной точке токена** (`POST /token`) с `client_secret` или **PKCE** `code_verifier` — никогда не раскрывайте секрет в приложениях, доступных только в браузере.
 5. Ответ: **access_token** (вызов API), **refresh_token** (необязательно), **id_token** (OIDC — JWT с `sub`, `email`, `iss`).
 
-| Токен | Цель |
-| --------------- | --------------------------------------------- |
-| Токен доступа | Учетные данные носителя для API серверов ресурсов |
-| Обновить токен | Получите новый токен доступа без повторного входа в систему |
-| ID-токен (OIDC) | Подтверждение аутентификации; JWT подписан эмитентом |
-|Концепция | ОАут2 | ОИДК |
-| ------------ | --------------------------------- | -------------------------------- |
-| Основная цель | Авторизация (области действия) | Аутентификация (кто является пользователем) |
+| Токен                     | Цель                                                         |
+| ------------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
+| Токен доступа             | Учетные данные носителя для API серверов ресурсов            |
+| Обновить токен            | Получите новый токен доступа без повторного входа в систему  |
+| ID-токен (OIDC)           | Подтверждение аутентификации; JWT подписан эмитентом         |
+| Концепция                 | ОАут2                                                        | ОИДК                                             |
+| ------------              | ---------------------------------                            | --------------------------------                 |
+| Основная цель             | Авторизация (области действия)                               | Аутентификация (кто является пользователем)      |
 | Информация о пользователе | Через защищенную конечную точку с информацией о пользователе | `id_token` претензии + информация о пользователе |
-| Типичное использование | «Приложение может читать мой Календарь Google» | «Войти через Google» |
+| Типичное использование    | «Приложение может читать мой Календарь Google»               | «Войти через Google»                             |
 
 **When to use:**
 
@@ -101,11 +101,11 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 
 **Pluses and minuses:**
 
-| + | − |
-| ------------------------------------------- | -------------------------------------------- |
-| Никакого обмена паролями с третьими лицами | Сложный; легко неправильно настроить |
-| Стандартные потоки, библиотеки (Паспорт, Auth0) | Кража токена, если он хранится в localStorage |
-|Мелкозернистые области | Обновление ротации токенов необходимо для обеспечения безопасности |
+| +                                               | −                                                                  |
+| ----------------------------------------------- | ------------------------------------------------------------------ |
+| Никакого обмена паролями с третьими лицами      | Сложный; легко неправильно настроить                               |
+| Стандартные потоки, библиотеки (Паспорт, Auth0) | Кража токена, если он хранится в localStorage                      |
+| Мелкозернистые области                          | Обновление ротации токенов необходимо для обеспечения безопасности |
 
 **Examples:**
 
@@ -119,7 +119,7 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 }
 ```
 
-**Thoughts:** OAuth2 сам по себе **не** аутентификация — используйте OIDC для входа. Храните токены в файлах cookie «HttpOnly»** или в безопасном хранилище; подтвердить `iss`, `aud`, `exp` на JWT. Никогда не помещайте токены доступа в URL-адреса.
+**Thoughts:** OAuth2 сам по себе **не** аутентификация — используйте OIDC для входа. Храните токены в файлах cookie «HttpOnly»\*\* или в безопасном хранилище; подтвердить `iss`, `aud`, `exp` на JWT. Никогда не помещайте токены доступа в URL-адреса.
 
 **Sources:**
 
@@ -145,11 +145,11 @@ Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 
 **Pluses and minuses:**
 
-| Подход | + | − |
-| -------------- | ------------------------------- | ------------------------------------------- |
-| Сеансовый файл cookie | Простой отзыв (удаление сеанса) | Состояние сервера, закрепленные сеансы в кластере |
-| ДЖВТ | Без гражданства, масштабируется по горизонтали | Трудно отозвать; размер токена в каждом запросе |
-|JWT + обновление | Короткий доступ, отзывное обновление | Больше движущихся частей |
+| Подход                | +                                              | −                                                 |
+| --------------------- | ---------------------------------------------- | ------------------------------------------------- |
+| Сеансовый файл cookie | Простой отзыв (удаление сеанса)                | Состояние сервера, закрепленные сеансы в кластере |
+| ДЖВТ                  | Без гражданства, масштабируется по горизонтали | Трудно отозвать; размер токена в каждом запросе   |
+| JWT + обновление      | Короткий доступ, отзывное обновление           | Больше движущихся частей                          |
 
 **Examples:**
 
@@ -167,6 +167,92 @@ JWT в `localStorage` XSS-уязвим — отдавайте предпочте
 **Sources:**
 
 [jwt.io](https://jwt.io/) · [MDN — файлы cookie HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
+
+---
+
+</details>
+
+<details>
+  <summary>Access token refresh</summary>
+
+### Access token refresh
+
+**Definition:** **Access token refresh** обновляет короткоживущий **access token** через долгоживущий **refresh token**, чтобы пользователь оставался в системе без повторного логина — обычно `POST /token` с `grant_type=refresh_token`.
+
+**How it works:**
+
+1. **Login** — Authorization Code + PKCE (SPA) или password/session.
+2. **Issue** — IdP возвращает `access_token` + `refresh_token` (опционально `id_token`).
+3. **API calls** — `Authorization: Bearer <access_token>` до `401` или `exp`.
+4. **Refresh** — token endpoint с `refresh_token`; новая пара токенов.
+5. **Rotation** — новый refresh при каждом use, старый invalidate — детект кражи.
+6. **Retry** — один повтор failed request с новым access token.
+
+| Storage   | Где refresh                                   | Notes                            |
+| --------- | --------------------------------------------- | -------------------------------- |
+| SPA + BFF | HttpOnly cookie на BFF; Route Handler refresh | Предпочтительно — secret не в JS |
+| Mobile    | OS secure storage                             | PKCE; rotate refresh             |
+| Pure SPA  | Access в memory; refresh в httpOnly cookie    | Не `localStorage`                |
+
+**Silent refresh:** на `401` — очередь запросов, один refresh (single-flight), retry. SDK (Auth0, NextAuth) оборачивают это.
+
+**When to use:** JWT access с TTL &lt; длины сессии. Обязательно с OAuth2/OIDC SPA. С [Secure BFF](./6_web_api_security.md#secure-bff-patterns), если браузер не должен держать refresh.
+
+#### Common pitfalls
+
+- Длинный access token «чтобы не refresh» — stolen bearer живёт до expiry.
+- Refresh в `localStorage` — XSS крадёт долгоживущий credential.
+- Без rotation — stolen refresh работает до revoke.
+- Бесконечный retry при invalid refresh — logout и redirect на login.
+
+**Pluses and minuses:**
+
+| +                                  | −                                        |
+| ---------------------------------- | ---------------------------------------- |
+| Короткий access ограничивает ущерб | Rotation store, 401 handling             |
+| Silent UX                          | Refresh endpoint — rate-limit и audit    |
+| Rotation детектит replay           | Logout должен revoke refresh server-side |
+
+**Examples:**
+
+```http
+POST /oauth/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token
+&refresh_token=def502…
+&client_id=spa-client
+```
+
+```ts
+let refreshPromise: Promise<string> | null = null;
+
+async function fetchWithRefresh(input: RequestInfo, init?: RequestInit) {
+  let res = await fetch(input, {
+    ...init,
+    headers: { ...init?.headers, Authorization: `Bearer ${getAccessToken()}` },
+  });
+  if (res.status !== 401) return res;
+
+  refreshPromise ??= refreshAccessToken().finally(() => {
+    refreshPromise = null;
+  });
+  await refreshPromise;
+
+  return fetch(input, {
+    ...init,
+    headers: { ...init?.headers, Authorization: `Bearer ${getAccessToken()}` },
+  });
+}
+```
+
+**Thoughts:** _Refresh — второй credential; защищайте сильнее access. BFF + HttpOnly cookie — default для web._
+
+**See also:** [OAuth2 & OIDC](#oauth2--oidc-overview) · [Sessions & JWT](#sessions--jwt) · [Secure BFF patterns](./6_web_api_security.md#secure-bff-patterns)
+
+**Sources:**
+
+[OAuth.net — Refresh Token](https://oauth.net/2/grant-types/refresh-token/) · [OAuth.net — Refresh tokens](https://oauth.net/2/refresh-tokens/) · [OAuth 2.0 for Browser-Based Apps (PKCE)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps)
 
 ---
 
@@ -211,9 +297,9 @@ JWT в `localStorage` XSS-уязвим — отдавайте предпочте
 **Examples:**
 
 ```js
-const request = indexedDB.open('myApp', 1);
+const request = indexedDB.open("myApp", 1);
 request.onupgradeneeded = (e) => {
-  e.target.result.createObjectStore('books', { keyPath: 'id' });
+  e.target.result.createObjectStore("books", { keyPath: "id" });
 };
 ```
 
@@ -240,9 +326,9 @@ request.onupgradeneeded = (e) => {
 
 ```js
 try {
-  localStorage.setItem('user', JSON.stringify({ id: 1 }));
-  const user = JSON.parse(localStorage.getItem('user') ?? 'null');
-  sessionStorage.removeItem('tempFilter');
+  localStorage.setItem("user", JSON.stringify({ id: 1 }));
+  const user = JSON.parse(localStorage.getItem("user") ?? "null");
+  sessionStorage.removeItem("tempFilter");
 } catch {
   /* quota / disabled storage */
 }
@@ -265,10 +351,10 @@ try {
 
 `Secure` ограничивает передачу файлов cookie HTTPS; `HttpOnly` блокирует доступ к JavaScript — и то, и другое усиливает безопасность сеанса.
 
-| Флаг | Защищает от |
-| -------- | ------------------------------------------------ |
-| Безопасный | Сетевой снифинг по HTTP |
-| HttpOnly | Файлы cookie сеанса чтения XSS |
+| Флаг        | Защищает от                                                           |
+| ----------- | --------------------------------------------------------------------- |
+| Безопасный  | Сетевой снифинг по HTTP                                               |
+| HttpOnly    | Файлы cookie сеанса чтения XSS                                        |
 | Тот же сайт | CSRF (частичный); некоторое уменьшение количества кликджекинга/утечек |
 
 **Examples:**

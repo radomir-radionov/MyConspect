@@ -152,9 +152,9 @@ Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.examp
 Ненадежные данные анализируются как HTML/JS. **Отражено** — запрос/текст, отраженный в этом ответе. **Сохранено** — сохраняется и воспроизводится для последующих просмотров (включая кейлоггеры XSS). **DOM** — клиентский JS записывает в DOM ненадежные строки.
 
 | Тип           | Вектор                                               |
-|  -------------  |  ----------------------------------------------------  |
-| Сохранено     | Вредоносные данные сохранены в БД |
-| Отраженный | URL/запрос отображается в ответ |
+| ------------- | ---------------------------------------------------- |
+| Сохранено     | Вредоносные данные сохранены в БД                    |
+| Отраженный    | URL/запрос отображается в ответ                      |
 | на основе DOM | Клиент JS записывает ненадежные входные данные в DOM |
 
 **Examples:**
@@ -169,6 +169,66 @@ element.textContent = userInput; // text only
 **Sources:**
 
 [OWASP — XSS](https://owasp.org/www-community/attacks/xss/)
+
+---
+
+</details>
+
+<details>
+  <summary>SSRF (Server-Side Request Forgery)</summary>
+
+### SSRF (Server-Side Request Forgery)
+
+**Definition:** **SSRF** заставляет **ваш сервер** отправить HTTP (или другой протокол) запрос на URL, выбранный атакующим — часто к внутренним сервисам (`localhost`, `169.254.169.254`, Redis, admin), недоступным браузеру напрямую.
+
+**How it works:**
+
+1. Приложение принимает URL или host от пользователя — webhook callback, PDF fetch, image proxy, import-from-URL.
+2. Атакующий передаёт `http://169.254.169.254/latest/meta-data/` (cloud metadata), `http://127.0.0.1:6379/` или внутренний admin API.
+3. Сервер выполняет запрос **со своими сетевыми привилегиями** — утечка секретов, pivot в VPC, вызов неаутентифицированных internal API.
+
+| Вектор            | Пример                                                         |
+| ----------------- | -------------------------------------------------------------- |
+| User-supplied URL | `POST /api/preview { "url": "http://internal:8080/admin" }`    |
+| Redirect follow   | Public URL 302 → internal target при неограниченных редиректах |
+| DNS rebinding     | Host резолвится в public IP при проверке, internal — при fetch |
+
+**When to use defenses:** Любой server-side `fetch`/`axios`, где target не зафиксирован при деплое — особенно BFF, webhooks, crawlers.
+
+#### Common pitfalls
+
+- Blocklist только `127.0.0.1` — атакующие используют `0.0.0.0`, `[::1]`, decimal IP, DNS во internal.
+- «Мы зовём только свой API» — open redirect и SSRF chains всё равно возможны.
+- SSRF — не browser-проблема: **нет CORS** на server-to-server.
+
+**Pluses and minuses:**
+
+| + (allowlist + no redirects)            | −                                            |
+| --------------------------------------- | -------------------------------------------- |
+| Блокирует metadata и internal scan      | Strict allowlist требует поддержки           |
+| Network segmentation ограничивает ущерб | Жёсткий allowlist ломает легитимные webhooks |
+
+**Examples:**
+
+```ts
+const ALLOWED_HOSTS = new Set(["api.example.com", "cdn.example.com"]);
+
+function assertSafeUrl(raw: string) {
+  const url = new URL(raw);
+  if (url.protocol !== "https:") throw new Error("HTTPS only");
+  if (!ALLOWED_HOSTS.has(url.hostname)) throw new Error("Host not allowed");
+  if (isPrivateIp(url.hostname)) throw new Error("Private network blocked");
+  return url;
+}
+
+await fetch(assertSafeUrl(userUrl), { redirect: "manual" });
+```
+
+**Thoughts:** _Default deny — фиксированные backend base URL, не произвольные user URL. SSRF — причина валидировать fan-out в BFF._ См. [Secure BFF patterns](#secure-bff-patterns) · [BFF architecture](./7_special_architecture.md#bff-backend-for-frontend).
+
+**Sources:**
+
+[OWASP — SSRF](https://owasp.org/www-community/attacks/Server_Side_Request_Forgery) · [OWASP SSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html)
 
 ---
 
@@ -296,6 +356,73 @@ JSONP обходит SOP, загружая данные из разных ист
 **Sources:**
 
 [MDN — CORS (предпочитаю JSONP)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+
+---
+
+</details>
+
+<details>
+  <summary>Secure BFF patterns</summary>
+
+### Secure BFF patterns
+
+**Definition:** **Secure BFF** держит **секреты, refresh tokens и upstream credentials на сервере**, отдавая браузеру узкий UI-shaped HTTP API — defense in depth для SPA и Next.js Route Handlers.
+
+**How it works:**
+
+| Concern                   | Secure pattern                                                            |
+| ------------------------- | ------------------------------------------------------------------------- |
+| API keys / client secrets | Только в env BFF — никогда `NEXT_PUBLIC_*` или bundle JS                  |
+| Access token              | Короткий TTL; браузер — session cookie или access в memory                |
+| Refresh token             | **HttpOnly cookie** или server-side store; refresh endpoint только на BFF |
+| Upstream calls            | BFF добавляет `Authorization` после проверки сессии                       |
+| CSRF                      | `SameSite` + CSRF token для cookie-auth mutations                         |
+| SSRF                      | Allowlist upstream hosts — см. [SSRF](#ssrf-server-side-request-forgery)  |
+| AuthZ                     | BFF проверяет сессию **и** object-level permission до fan-out             |
+
+Типичный Next.js: browser → `POST /api/bff/checkout` (cookie) → Route Handler / Server Action → parallel `fetch` к сервисам с service token → DTO. Браузер не видит microservice URL и service JWT.
+
+**When to use:** SPA/App Router с несколькими backend; OAuth с refresh; когда альтернатива — токены в `localStorage`. Архитектура: [BFF](./7_special_architecture.md#bff-backend-for-frontend). Refresh: [Access token refresh](./6_web_api_auth.md#access-token-refresh).
+
+#### Common pitfalls
+
+- Refresh tokens в props Client Components или Flight payload.
+- BFF как единственный auth gate без проверки в domain services.
+- Fan-out на `fetch(req.body.url)` — SSRF + credential leak.
+- Пропуск CSRF при cookie-сессии «потому что JSON».
+
+**Pluses and minuses:**
+
+| +                                  | −                                       |
+| ---------------------------------- | --------------------------------------- |
+| Секреты не в browser bundle        | Доп. hop и SPOF BFF                     |
+| Централизованный rate limit и логи | Нужны security review BFF               |
+| Скрывает topology микросервисов    | Риск god-service при domain logic в BFF |
+
+**Examples:**
+
+```ts
+// app/api/session/refresh/route.ts
+import { cookies } from "next/headers";
+
+export async function POST() {
+  const refresh = (await cookies()).get("refresh_token")?.value;
+  if (!refresh)
+    return Response.json({ error: "unauthorized" }, { status: 401 });
+
+  const tokens = await exchangeRefreshToken(refresh);
+  await setSessionCookies(tokens);
+  return Response.json({ ok: true });
+}
+```
+
+**Thoughts:** _BFF security = least privilege для браузера, полные привилегии только на сервере._
+
+**See also:** [BFF](./7_special_architecture.md#bff-backend-for-frontend) · [Next.js — Auth](./4_nextjs_platform.md) · [Access token refresh](./6_web_api_auth.md#access-token-refresh) · [CSRF](#csrf-cross-site-request-forgery)
+
+**Sources:**
+
+[OAuth.net — Refresh Token](https://oauth.net/2/grant-types/refresh-token/) · [Azure — Backends for Frontends](https://learn.microsoft.com/azure/architecture/patterns/backends-for-frontends) · [OWASP — Session Management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
 
 ---
 

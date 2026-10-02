@@ -6,7 +6,7 @@ Security model and common web attacks.
 
 ### Related docs
 
-* [Computer science](./7_special_cs.md) · [Architecture patterns](./7_special_architecture.md) · [SOLID](./7_special_engineering.md) · [Design patterns](./7_special_patterns.md) · [SDLC](./7_special_sdlc.md) · [Testing](./7_special_testing.md) · [Web security](./7_special_security.md) · [Interview leftovers](./7_special_interview.md)
+- [Computer science](./7_special_cs.md) · [Architecture patterns](./7_special_architecture.md) · [SOLID](./7_special_engineering.md) · [Design patterns](./7_special_patterns.md) · [SDLC](./7_special_sdlc.md) · [Testing](./7_special_testing.md) · [Web security](./7_special_security.md) · [Interview leftovers](./7_special_interview.md)
 
 ### Sections
 
@@ -26,24 +26,24 @@ Security model and common web attacks.
 
 Practices to protect confidentiality, integrity, and availability of web apps and user data.
 
-| Area | Key practices |
-|------|---------------|
-| **Authentication** | Strong passwords, MFA, OAuth; hash+salt passwords (bcrypt/argon2); rate-limit login |
-| **Authorization** | RBAC/ABAC; least privilege; server-side checks on every request |
-| **Input validation** | Whitelist input; encode output; parameterized queries |
-| **Session management** | HttpOnly, Secure, SameSite cookies; short TTL; rotate on privilege change |
-| **Transport** | HTTPS everywhere; HSTS |
-| **Headers** | CSP, X-Frame-Options, X-Content-Type-Options |
-| **Dependencies** | Lock files, audit (`npm audit`), minimal deps |
-| **Logging** | Audit auth events; never log secrets |
+| Area                   | Key practices                                                                       |
+| ---------------------- | ----------------------------------------------------------------------------------- |
+| **Authentication**     | Strong passwords, MFA, OAuth; hash+salt passwords (bcrypt/argon2); rate-limit login |
+| **Authorization**      | RBAC/ABAC; least privilege; server-side checks on every request                     |
+| **Input validation**   | Whitelist input; encode output; parameterized queries                               |
+| **Session management** | HttpOnly, Secure, SameSite cookies; short TTL; rotate on privilege change           |
+| **Transport**          | HTTPS everywhere; HSTS                                                              |
+| **Headers**            | CSP, X-Frame-Options, X-Content-Type-Options                                        |
+| **Dependencies**       | Lock files, audit (`npm audit`), minimal deps                                       |
+| **Logging**            | Audit auth events; never log secrets                                                |
 
 **When to use:** Always in production. Threat model before launch.
 
 **Pluses and minuses:**
 
-| + (defense in depth) | − |
-|-------------------------|------|
-| Layered mitigations | Complexity and perf overhead |
+| + (defense in depth) | −                               |
+| -------------------- | ------------------------------- |
+| Layered mitigations  | Complexity and perf overhead    |
 | Compliance readiness | False sense if only client-side |
 
 **Thoughts:**
@@ -76,17 +76,17 @@ Security is ongoing — not a checklist once. Transport crypto: [Encryption](#en
 
 HTTPS sessions; encrypting a file at rest with AES; verifying a download with SHA-256; storing login secrets with Argon2id; Git content-addressing (see [Git internals](./0_git_core.md#git-internals--dag) — Git still uses SHA-1 for objects; that is integrity addressing, not password hashing).
 
-| Keys | Role | Typical algorithms (status) |
-|------|------|-----------------------------|
-| **None (digest)** | Integrity, Git objects, **not** reversible | SHA-2/3; avoid MD5/SHA-1 for security. Passwords: Argon2id / bcrypt, not “hash = encryption” |
-| **One (symmetric)** | Fast bulk data | AES (+ mode GCM/CTR); historical: DES (broken), RC4 (do not use) |
-| **Two (asymmetric)** | Key agreement, encryption of small payloads, signatures | RSA, ECC/ECDH, ECDSA, DSA. DH = agreement |
+| Keys                 | Role                                                    | Typical algorithms (status)                                                                  |
+| -------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **None (digest)**    | Integrity, Git objects, **not** reversible              | SHA-2/3; avoid MD5/SHA-1 for security. Passwords: Argon2id / bcrypt, not “hash = encryption” |
+| **One (symmetric)**  | Fast bulk data                                          | AES (+ mode GCM/CTR); historical: DES (broken), RC4 (do not use)                             |
+| **Two (asymmetric)** | Key agreement, encryption of small payloads, signatures | RSA, ECC/ECDH, ECDSA, DSA. DH = agreement                                                    |
 
-| Symmetric vs asymmetric | Symmetric | Asymmetric |
-|-------------------------|-----------|------------|
-| Speed / bulk data | Fast | Slow; message size tied to key size |
-| Key handling | Must share the secret first | Public key can travel in the open |
-| Key count at scale | Many pairwise secrets | One pair per party |
+| Symmetric vs asymmetric | Symmetric                   | Asymmetric                          |
+| ----------------------- | --------------------------- | ----------------------------------- |
+| Speed / bulk data       | Fast                        | Slow; message size tied to key size |
+| Key handling            | Must share the secret first | Public key can travel in the open   |
+| Key count at scale      | Many pairwise secrets       | One pair per party                  |
 
 #### Common pitfalls
 
@@ -106,7 +106,7 @@ async function sha256Hex(message) {
 }
 ```
 
-**Thoughts:** *TLS = public-key handshake + fast symmetric session; hashes prove integrity and (with a slow KDF) protect passwords — they do not decrypt.*
+**Thoughts:** _TLS = public-key handshake + fast symmetric session; hashes prove integrity and (with a slow KDF) protect passwords — they do not decrypt._
 
 **Sources:**
 
@@ -124,7 +124,7 @@ Using these techniques against systems you do not own is **illegal**. Study them
 
 Any place users can type, upload, or pass data is an attack surface. Harm = leaked data, actions as the victim, or taking the service down.
 
-Catalog (Doka): [clickjacking](#clickjacking) · [XSS](#xss-cross-site-scripting) · [SQLi](#sql-injection) · [stored XSS / keylogging](#stored-xss--xss-driven-keylogging) · [CSP](#content-security-policy-csp) · [CSRF](#csrf-cross-site-request-forgery) · [DoS](#denial-of-service-dos--ddos) · [Slowloris](#slowloris-slow-http-dos) · [zip bombs](#decompression-bombs-data-bombs) · [MITM](#man-in-the-middle-mitm)
+Catalog (Doka): [clickjacking](#clickjacking) · [XSS](#xss-cross-site-scripting) · [SQLi](#sql-injection) · [stored XSS / keylogging](#stored-xss--xss-driven-keylogging) · [CSP](#content-security-policy-csp) · [CSRF](#csrf-cross-site-request-forgery) · [SSRF](./6_web_api_security.md#ssrf-server-side-request-forgery) · [DoS](#denial-of-service-dos--ddos) · [Slowloris](#slowloris-slow-http-dos) · [zip bombs](#decompression-bombs-data-bombs) · [MITM](#man-in-the-middle-mitm)
 
 HTTP headers, cookies, CORS: [Web API — security](./6_web_api.md). SQL bind: [Database — SQL injection](./9_database_sql.md#sql-injection). Guided labs (not exploits): [application.security](https://application.security).
 
@@ -139,19 +139,19 @@ HTTP headers, cookies, CORS: [Web API — security](./6_web_api.md). SQL bind: [
 
 Untrusted string is treated as HTML/JS. Classic **reflected** XSS: search `q=` is echoed into the page; a payload in the URL runs on that response. **Stored** XSS: payload is saved (DB, file, cache) and runs later for every viewer. **DOM XSS:** client JS writes untrusted data into the DOM (`innerHTML`, `document.write`).
 
-| Type | When it fires |
-|------|--------|
-| **Reflected** | Immediate, in the HTTP response (often a crafted URL) |
-| **Stored** | Later, for many users — harder to clean (must purge storage) |
-| **DOM-based** | No server echo required — buggy client rendering |
+| Type          | When it fires                                                |
+| ------------- | ------------------------------------------------------------ |
+| **Reflected** | Immediate, in the HTTP response (often a crafted URL)        |
+| **Stored**    | Later, for many users — harder to clean (must purge storage) |
+| **DOM-based** | No server echo required — buggy client rendering             |
 
-| Mitigation | Why |
-|-----------|------|
-| Encode output for the **context** (HTML / attr / URL / JS) | `<script>` becomes harmless text (`&lt;script&gt;…`) |
-| `textContent` / framework text nodes | React/Svelte text is escaped; `innerHTML` / `dangerouslySetInnerHTML` are not |
-| Sanitize if you must allow HTML | DOMPurify (or equivalent) — never “escape with `encodeURI`” for HTML |
-| CSP (`script-src` nonce/hash) | Backup if encoding fails — unknown scripts do not run |
-| HttpOnly session cookies | XSS cannot read the cookie (can still act **as** the user via the page) |
+| Mitigation                                                 | Why                                                                           |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Encode output for the **context** (HTML / attr / URL / JS) | `<script>` becomes harmless text (`&lt;script&gt;…`)                          |
+| `textContent` / framework text nodes                       | React/Svelte text is escaped; `innerHTML` / `dangerouslySetInnerHTML` are not |
+| Sanitize if you must allow HTML                            | DOMPurify (or equivalent) — never “escape with `encodeURI`” for HTML          |
+| CSP (`script-src` nonce/hash)                              | Backup if encoding fails — unknown scripts do not run                         |
+| HttpOnly session cookies                                   | XSS cannot read the cookie (can still act **as** the user via the page)       |
 
 **When to use:** Search pages, comments, profiles, error messages that echo input, rich-text editors. Reflected XSS often looks like a search query echoed into “nothing found for …”.
 
@@ -176,7 +176,7 @@ output   &lt;script&gt;…&lt;/script&gt;
 
 SQL injection is **not** XSS — different channel (SQL vs HTML/JS). `encodeURI` / `encodeURIComponent` encode **URLs**, not HTML. Encode **on output** in the right context; also validate on the server. Labs: DOM XSS / reflected XSS on [application.security](https://application.security). Automated checks: [Security testing](./7_special_testing_layers.md#security-testing).
 
-*Treat every user string as data — encode for the output context; CSP is the backup net.*
+_Treat every user string as data — encode for the output context; CSP is the backup net._
 
 **Sources:**
 
@@ -200,11 +200,11 @@ SQL injection is **not** XSS — different channel (SQL vs HTML/JS). `encodeURI`
 3. Listeners on `keydown` / form fields collect credentials; exfiltration often uses a request the page is allowed to make (e.g. `img`/`fetch` to an attacker host unless CSP `connect-src`/`img-src` blocks it).
 4. Cleanup requires deleting or sanitizing stored records — not just a code fix.
 
-| Pros (for attacker) | Mitigation |
-|---------------------|------------|
-| Hits many users over time | Encode on **store and render**; treat old DB rows as untrusted |
-| Can self-spread via other bugs | CSP + no `unsafe-inline`; lock down `connect-src` |
-| Steals passwords typed on your origin | HttpOnly cookies; MFA; treat XSS as full account compromise |
+| Pros (for attacker)                   | Mitigation                                                     |
+| ------------------------------------- | -------------------------------------------------------------- |
+| Hits many users over time             | Encode on **store and render**; treat old DB rows as untrusted |
+| Can self-spread via other bugs        | CSP + no `unsafe-inline`; lock down `connect-src`              |
+| Steals passwords typed on your origin | HttpOnly cookies; MFA; treat XSS as full account compromise    |
 
 **When to use:** Any UGC that is rendered as HTML later. Keylogging is a **consequence** of XSS, not a separate protocol — the script runs as the site and can listen for keys, then send them out unless CSP `connect-src` / `img-src` blocks it.
 
@@ -212,7 +212,7 @@ SQL injection is **not** XSS — different channel (SQL vs HTML/JS). `encodeURI`
 
 Cleanup is a **data** problem (purge or re-encode stored rows), not only a code fix. A worm can re-post itself via other bugs. Lab: stored XSS on [application.security](https://application.security).
 
-*Stored XSS is delayed and multi-victim; encoding + CSP + purging stored HTML are all required.*
+_Stored XSS is delayed and multi-victim; encoding + CSP + purging stored HTML are all required._
 
 **Sources:**
 
@@ -235,10 +235,10 @@ Cleanup is a **data** problem (purge or re-encode stored rows), not only a code 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Limits stolen-keystroke beacons and injected CDNs | Breaks inline scripts/styles until you use nonces |
-| `frame-ancestors` replaces obsolete `X-Frame-Options: ALLOW-FROM` | `<meta>` CSP cannot set `frame-ancestors` |
+| +                                                                 | −                                                 |
+| ----------------------------------------------------------------- | ------------------------------------------------- |
+| Limits stolen-keystroke beacons and injected CDNs                 | Breaks inline scripts/styles until you use nonces |
+| `frame-ancestors` replaces obsolete `X-Frame-Options: ALLOW-FROM` | `<meta>` CSP cannot set `frame-ancestors`         |
 
 **Examples:**
 
@@ -248,7 +248,7 @@ Content-Security-Policy: default-src 'self' https://*.trusted.com; script-src 's
 
 Full directive table: [Web API — CSP](./6_web_api_security.md#content-security-policy-csp). Header catalog: [securityheaders.com](https://securityheaders.com/).
 
-**Thoughts:** *Allow-list origins; never treat `'unsafe-inline'` as XSS protection.*
+**Thoughts:** _Allow-list origins; never treat `'unsafe-inline'` as XSS protection._
 
 **Sources:**
 
@@ -274,14 +274,14 @@ Full directive table: [Web API — CSP](./6_web_api_security.md#content-security
 - **Authentication** — who is this? (session is valid).
 - **Authorization** — is this request allowed **and intended**? CSRF is missing the second check for cookie-authenticated mutations.
 
-| Defense | How |
-|---------|-----|
-| CSRF token in form / header | Secret the attacker cannot read (synchronizer or double-submit) |
-| `SameSite=Lax` or `Strict` | Cookie not sent on most cross-site POSTs |
-| `HttpOnly` | Stops JS from **reading** the cookie — does **not** stop CSRF (browser still sends it) |
-| `Origin` / `Referer` check | Reject missing or foreign origin |
-| CORS + no credentialed wildcards | CORS is **not** CSRF protection by itself |
-| Re-auth / step-up | Transfers, password change |
+| Defense                          | How                                                                                    |
+| -------------------------------- | -------------------------------------------------------------------------------------- |
+| CSRF token in form / header      | Secret the attacker cannot read (synchronizer or double-submit)                        |
+| `SameSite=Lax` or `Strict`       | Cookie not sent on most cross-site POSTs                                               |
+| `HttpOnly`                       | Stops JS from **reading** the cookie — does **not** stop CSRF (browser still sends it) |
+| `Origin` / `Referer` check       | Reject missing or foreign origin                                                       |
+| CORS + no credentialed wildcards | CORS is **not** CSRF protection by itself                                              |
+| Re-auth / step-up                | Transfers, password change                                                             |
 
 **When to use:** Cookie sessions + HTML forms (e.g. “send money”); cookie SPA APIs. JWT in `Authorization` is not auto-attached by the browser.
 
@@ -289,7 +289,7 @@ Full directive table: [Web API — CSP](./6_web_api_security.md#content-security
 
 ```html
 <form action="/send_money/" method="POST">
-  <input type="hidden" name="csrf" value="token-generated-by-server">
+  <input type="hidden" name="csrf" value="token-generated-by-server" />
   <!-- rest of form -->
 </form>
 ```
@@ -321,12 +321,12 @@ AJAX: send the same secret as `X-CSRF-Token`. Full patterns: [Web API — CSRF](
 
 Login or search builds `SELECT … WHERE email = '${input}'`. Input like `' OR '1'='1` makes the predicate always true. `UNION SELECT` can append extra result sets if the app returns them. Destructive statements are possible if the DB role allows them.
 
-| Mitigation |
-|------------|
+| Mitigation                                                                   |
+| ---------------------------------------------------------------------------- |
 | Parameterized queries / prepared statements (bind values, never concatenate) |
-| ORM APIs that bind parameters (avoid raw string SQL) |
-| Least-privilege DB user (app cannot `DROP DATABASE`) |
-| Never trust client-side “escaping” as the SQLi fix |
+| ORM APIs that bind parameters (avoid raw string SQL)                         |
+| Least-privilege DB user (app cannot `DROP DATABASE`)                         |
+| Never trust client-side “escaping” as the SQLi fix                           |
 
 **When to use:** Any user value in a query — login, search, IDs. Same class exists for NoSQL (operator injection in JSON).
 
@@ -336,7 +336,7 @@ Login or search builds `SELECT … WHERE email = '${input}'`. Input like `' OR '
 
 Escaping on the **frontend** does not protect the database. Validate types/length as extra defense; parameterization is the control.
 
-*Bind values; never concatenate user input into SQL. SQLi ≠ XSS.*
+_Bind values; never concatenate user input into SQL. SQLi ≠ XSS._
 
 **Sources:**
 
@@ -361,12 +361,12 @@ Escaping on the **frontend** does not protect the database. Validate types/lengt
 2. Transparent `<iframe src="https://yoursite.com/…">` sits on top (victim's cookies apply in the iframe).
 3. Click hits the real control in the iframe.
 
-| Header | Effect |
-|--------|---------|
-| `X-Frame-Options: DENY` | Never embed this document in a frame |
-| `X-Frame-Options: SAMEORIGIN` | Embed only if all ancestors share this origin |
-| `X-Frame-Options: ALLOW-FROM` | **Obsolete** — modern browsers **ignore the whole header** |
-| CSP `frame-ancestors 'none'` / `'self'` / listed hosts | Preferred replacement; more flexible than XFO |
+| Header                                                 | Effect                                                     |
+| ------------------------------------------------------ | ---------------------------------------------------------- |
+| `X-Frame-Options: DENY`                                | Never embed this document in a frame                       |
+| `X-Frame-Options: SAMEORIGIN`                          | Embed only if all ancestors share this origin              |
+| `X-Frame-Options: ALLOW-FROM`                          | **Obsolete** — modern browsers **ignore the whole header** |
+| CSP `frame-ancestors 'none'` / `'self'` / listed hosts | Preferred replacement; more flexible than XFO              |
 
 **When to use:** Payments, deletes, OAuth consent, social like/follow. SameSite cookies help when auth is cookie-based but do **not** replace framing controls (public unauthenticated UI can still be framed).
 
@@ -383,7 +383,7 @@ Content-Security-Policy: frame-ancestors 'self'
 
 CSP `frame-ancestors` cannot be set via `<meta http-equiv>`. Frame-busting JS is weak alone. Lab: [application.security](https://application.security) clickjacking.
 
-*Do not allow foreign pages to frame authenticated UI — `frame-ancestors` first, XFO as fallback.*
+_Do not allow foreign pages to frame authenticated UI — `frame-ancestors` first, XFO as fallback._
 
 **Sources:**
 
@@ -404,12 +404,12 @@ CSP `frame-ancestors` cannot be set via `<meta http-equiv>`. Frame-busting JS is
 
 Flood HTTP (or other) so CPU, RAM, sockets, or bandwidth are exhausted. One machine can still hurt a small origin; many bots (botnets) overwhelm IP-based limits.
 
-| Mitigation | Limit |
-|------------|--------|
+| Mitigation                    | Limit                                                       |
+| ----------------------------- | ----------------------------------------------------------- |
 | Rate limiting (user, IP, key) | Helps abuse and brute force; **weak vs distributed floods** |
-| Capacity + CDN / Anycast | Absorb or drop junk at the edge |
-| Autoscaling / failover | Replace saturated instances; change IPs if needed |
-| WAF / scrubbing | Filter known flood patterns |
+| Capacity + CDN / Anycast      | Absorb or drop junk at the edge                             |
+| Autoscaling / failover        | Replace saturated instances; change IPs if needed           |
+| WAF / scrubbing               | Filter known flood patterns                                 |
 
 **When to use:** Public APIs, login, expensive endpoints (search, reports). See [Web API — 429](./6_web_api_http.md#rate-limiting-429) and [System design — rate limiting](./0_system_design_data.md#rate-limiting).
 
@@ -417,7 +417,7 @@ Flood HTTP (or other) so CPU, RAM, sockets, or bandwidth are exhausted. One mach
 
 There is no 100% DoS shield. “Reflect DDoS back at the attacker” is not a practical or safe control — drop/filter at the edge instead.
 
-*Availability: rate-limit + capacity at the edge; IP limits fail against a botnet.*
+_Availability: rate-limit + capacity at the edge; IP limits fail against a botnet._
 
 **Sources:**
 
@@ -438,16 +438,16 @@ There is no 100% DoS shield. “Reflect DDoS back at the attacker” is not a pr
 
 Server cannot finish parsing headers/body; connection stays open. When one drops, the attacker opens another. Thread/process servers (classic Apache prefork) are especially sensitive; one client can hold many slots.
 
-| Mitigation | Why |
-|------------|-----|
+| Mitigation                                 | Why                                                           |
+| ------------------------------------------ | ------------------------------------------------------------- |
 | Short read timeouts / min bytes per second | Close idle incomplete requests (e.g. Apache `mod_reqtimeout`) |
-| Cap connections per IP | Limits one-source Slowloris |
-| Event-driven servers / reverse proxy | Fewer threads blocked per slow client |
-| Rate limits | Extra signal for suspicious traffic |
+| Cap connections per IP                     | Limits one-source Slowloris                                   |
+| Event-driven servers / reverse proxy       | Fewer threads blocked per slow client                         |
+| Rate limits                                | Extra signal for suspicious traffic                           |
 
 **When to use:** Any origin that waits a long time for incomplete HTTP. Frontend cannot fix this — it is origin/proxy config.
 
-**Thoughts:** *Timeouts and connection limits, not “more XSS escaping.”*
+**Thoughts:** _Timeouts and connection limits, not “more XSS escaping.”_
 
 **Sources:**
 
@@ -468,11 +468,11 @@ Server cannot finish parsing headers/body; connection stays open. When one drops
 
 Nested zip layers (the well-known **42.zip** is ~42 KB and expands to a huge tree if fully unpacked). Similar pattern: gzip/deflate bombs, XML “billion laughs.” The HTTP body looks small; processing is huge.
 
-| Layer | Control |
-|-------|---------|
-| Frontend | Max file size + MIME allow-list (UX only — not sufficient) |
-| Server | Cap decompressed size; stream with a hard limit; refuse nested archives |
-| Images | Decode with max width/height/pixels; do not unbounded inflate |
+| Layer    | Control                                                                 |
+| -------- | ----------------------------------------------------------------------- |
+| Frontend | Max file size + MIME allow-list (UX only — not sufficient)              |
+| Server   | Cap decompressed size; stream with a hard limit; refuse nested archives |
+| Images   | Decode with max width/height/pixels; do not unbounded inflate           |
 
 **When to use:** Avatar upload, unzip-on-server, “import zip”, image pipelines.
 
@@ -480,7 +480,7 @@ Nested zip layers (the well-known **42.zip** is ~42 KB and expands to a huge tre
 
 Frontend MIME/size checks are bypassed by a crafted request. Limits belong on the server. Frontend can still cap size/MIME for UX.
 
-*Bound decompressed size on the server — never unpack untrusted archives unbounded.*
+_Bound decompressed size on the server — never unpack untrusted archives unbounded._
 
 **Sources:**
 
@@ -501,12 +501,12 @@ Frontend MIME/size checks are bypassed by a crafted request. Limits belong on th
 
 On open Wi-Fi, plaintext **HTTP** shows cookies and passwords. A rogue AP can impersonate the router. Homegrown “here is my public key” over HTTP can be swapped for the attacker’s key (classic RSA-over-cleartext story). **HTTPS** uses TLS with certificates from a **trusted CA**; the client already has CA roots, so a café laptop cannot silently substitute the server identity. Tampering breaks the handshake or record integrity.
 
-| Mitigation | Why |
-|------------|-----|
-| HTTPS everywhere | Confidentiality + integrity on the wire |
-| HSTS | Stops downgrade to HTTP after first HTTPS visit |
-| Do not ignore cert warnings | User bypass re-enables MITM |
-| Certificate Transparency / pinning (rare, ops) | Extra trust checks if a CA is compromised |
+| Mitigation                                     | Why                                             |
+| ---------------------------------------------- | ----------------------------------------------- |
+| HTTPS everywhere                               | Confidentiality + integrity on the wire         |
+| HSTS                                           | Stops downgrade to HTTP after first HTTPS visit |
+| Do not ignore cert warnings                    | User bypass re-enables MITM                     |
+| Certificate Transparency / pinning (rare, ops) | Extra trust checks if a CA is compromised       |
 
 **When to use:** Cafés, hotels, ISP interception. See [Web API — HTTPS](./6_web_api_http.md#https) and [TLS certificates](./6_web_api_http.md#tls-certificates-x509--pki).
 
@@ -514,7 +514,7 @@ On open Wi-Fi, plaintext **HTTP** shows cookies and passwords. A rogue AP can im
 
 Trust still depends on CAs (root store + chain). Compromised or rogue CAs are an industry-level failure, not an app bug. RSA is one algorithm family; modern TLS uses negotiated cipher suites and ephemeral key agreement — not “encrypt the first HTTP hello with RSA.”
 
-*HTTPS/TLS + HSTS; never click through certificate warnings.*
+_HTTPS/TLS + HSTS; never click through certificate warnings._
 
 **Sources:**
 
@@ -538,13 +538,13 @@ Trust still depends on CAs (root store + chain). Compromised or rogue CAs are an
 3. Root cause: endpoint verifies "is logged in?" but not "does this resource belong to this user?"
 4. UUIDs obscure IDs but **do not fix** IDOR — attacker can still enumerate or leak IDs.
 
-| Pros (for attacker) | Mitigation |
-|---------------------|------------|
-| Trivial to exploit — change one parameter | **Authorize every resource access** server-side |
-| Very common in API audits | Check `resource.ownerId === session.userId` (or RBAC) |
-| Works with sequential and UUID IDs | Use policy layer (ABAC) — IDs are not secrets |
-| | Integration tests for cross-user access (negative cases) |
-| | Audit logs for suspicious ID probing |
+| Pros (for attacker)                       | Mitigation                                               |
+| ----------------------------------------- | -------------------------------------------------------- |
+| Trivial to exploit — change one parameter | **Authorize every resource access** server-side          |
+| Very common in API audits                 | Check `resource.ownerId === session.userId` (or RBAC)    |
+| Works with sequential and UUID IDs        | Use policy layer (ABAC) — IDs are not secrets            |
+|                                           | Integration tests for cross-user access (negative cases) |
+|                                           | Audit logs for suspicious ID probing                     |
 
 **When to use:** Any API returning user-specific data by ID — orders, invoices, messages, files, medical records. Especially dangerous in REST where URL structure exposes resource type and ID.
 
@@ -552,13 +552,13 @@ Trust still depends on CAs (root store + chain). Compromised or rogue CAs are an
 
 ```js
 // ❌ IDOR — only checks auth, not ownership
-app.get('/api/orders/:id', async (req, res) => {
+app.get("/api/orders/:id", async (req, res) => {
   const order = await db.orders.findById(req.params.id);
   res.json(order); // any logged-in user can read any order
 });
 
 // ✅ Authorize ownership
-app.get('/api/orders/:id', async (req, res) => {
+app.get("/api/orders/:id", async (req, res) => {
   const order = await db.orders.findById(req.params.id);
   if (!order || order.userId !== req.user.id) return res.status(404).end();
   res.json(order);
@@ -584,12 +584,12 @@ app.get('/api/orders/:id', async (req, res) => {
 
 Compromise via malicious or hijacked dependencies (npm packages, typosquatting).
 
-| Mitigation |
-|------------|
-| Lock files, `npm audit`, Dependabot |
-| Pin versions; review new deps |
+| Mitigation                                  |
+| ------------------------------------------- |
+| Lock files, `npm audit`, Dependabot         |
+| Pin versions; review new deps               |
 | Subresource Integrity (SRI) for CDN scripts |
-| Minimal dependency tree |
+| Minimal dependency tree                     |
 
 **Thoughts:** `postinstall` scripts and abandoned packages are attack surface. Use `npm ci` in CI.
 

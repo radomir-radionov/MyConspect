@@ -13,6 +13,9 @@ TanStack Query, Router, Table, Virtual, Form, and related ecosystem tools.
 - [Overview](#overview)
 - [TanStack Query](#tanstack-query)
 - [Working with TanStack Query](#working-with-tanstack-query)
+- [Optimistic updates](#optimistic-updates)
+- [SSR prefetch & hydration](#ssr-prefetch--hydration)
+- [Persistent cache](#persistent-cache)
 - [TanStack Query vs RTK Query](#tanstack-query-vs-rtk-query)
 - [TanStack Router](#tanstack-router)
 - [TanStack Table](#tanstack-table)
@@ -145,7 +148,7 @@ function Todos() {
 
 **Thoughts:** _Query owns "what the server last said" — not "what the user is typing right now."_
 
-**See also:** [Working with TanStack Query](#working-with-tanstack-query) · [TanStack Query vs RTK Query](#tanstack-query-vs-rtk-query) · [Data fetching](./4_react_ecosystem.md#data-fetching)
+**See also:** [Working with TanStack Query](#working-with-tanstack-query) · [Optimistic updates](#optimistic-updates) · [SSR prefetch & hydration](#ssr-prefetch--hydration) · [Persistent cache](#persistent-cache) · [TanStack Query vs RTK Query](#tanstack-query-vs-rtk-query) · [Data fetching](./4_react_ecosystem.md#data-fetching)
 
 **Sources:**
 
@@ -166,16 +169,16 @@ Working with TanStack Query
 
 **How it works:**
 
-| Task                    | API / pattern                                                              |
-| ----------------------- | -------------------------------------------------------------------------- |
-| Fetch on mount          | `useQuery({ queryKey, queryFn })`                                          |
-| Skip until ready        | `enabled: !!userId`                                                        |
-| Dependent fetch         | `queryKey: ['user', userId]` — refetches when `userId` changes             |
-| Create/update/delete    | `useMutation({ mutationFn, onSuccess })` + `invalidateQueries`             |
-| Optimistic UI           | `onMutate` snapshot + `onError` rollback + `onSettled` invalidate          |
-| Paginated/infinite list | `useInfiniteQuery` + `getNextPageParam`                                    |
-| Prefetch on hover       | `queryClient.prefetchQuery({ queryKey, queryFn })`                         |
-| Global defaults         | `new QueryClient({ defaultOptions: { queries: { staleTime, queryFn } } })` |
+| Task                    | API / pattern                                                                  |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| Fetch on mount          | `useQuery({ queryKey, queryFn })`                                              |
+| Skip until ready        | `enabled: !!userId`                                                            |
+| Dependent fetch         | `queryKey: ['user', userId]` — refetches when `userId` changes                 |
+| Create/update/delete    | `useMutation({ mutationFn, onSuccess })` + `invalidateQueries`                 |
+| Optimistic UI           | [Optimistic updates](#optimistic-updates) — `onMutate` + rollback + invalidate |
+| Paginated/infinite list | `useInfiniteQuery` + `getNextPageParam`                                        |
+| Prefetch on hover       | `queryClient.prefetchQuery({ queryKey, queryFn })`                             |
+| Global defaults         | `new QueryClient({ defaultOptions: { queries: { staleTime, queryFn } } })`     |
 
 **Invalidation:** `queryClient.invalidateQueries({ queryKey: ['todos'] })` marks matches stale (overrides `staleTime`) and refetches observers. Prefer targeted invalidation over manual cache surgery.
 
@@ -221,11 +224,318 @@ function TodoList() {
 
 **Thoughts:** _Invalidate the smallest query key that covers the changed data — `['todos']` not every key in the app._
 
-**See also:** [TanStack Query essentials](#tanstack-query-essentials) · [Codegen (orval)](#codegen-orval) · [TanStack Query vs RTK Query](#tanstack-query-vs-rtk-query)
+**See also:** [TanStack Query essentials](#tanstack-query-essentials) · [Optimistic updates](#optimistic-updates) · [SSR prefetch & hydration](#ssr-prefetch--hydration) · [Persistent cache](#persistent-cache) · [Codegen (orval)](#codegen-orval) · [TanStack Query vs RTK Query](#tanstack-query-vs-rtk-query)
 
 **Sources:**
 
 [tanstack.com/query — invalidation](https://tanstack.com/query/latest/docs/framework/react/guides/query-invalidation) · [tanstack.com/query — mutations](https://tanstack.com/query/latest/docs/framework/react/guides/mutations)
+
+Optimistic updates
+
+</details>
+
+## Optimistic updates
+
+<details>
+  <summary>Optimistic updates</summary>
+
+### Optimistic updates
+
+**Definition:** **Optimistic updates** change the Query cache **before** the server responds, so the UI feels instant; on failure, roll back to the snapshot taken in `onMutate`.
+
+**How it works:**
+
+1. **`onMutate`** — `await queryClient.cancelQueries({ queryKey })` so in-flight fetches do not overwrite your patch
+2. Snapshot previous data — `const previous = queryClient.getQueryData(['todos'])`
+3. Patch cache — `queryClient.setQueryData(['todos'], updater)` (or `setQueriesData` for paginated keys)
+4. Return snapshot as **context** for rollback
+5. **`onError`** — `queryClient.setQueryData(['todos'], context.previousTodos)`
+6. **`onSettled`** — `invalidateQueries` so the server truth wins after success or failure
+
+For simple toggles, React 19 [`useOptimistic`](./4_react_server.md#useoptimistic) works without touching the Query cache — use Query optimistic flow when the UI reads from `useQuery` data.
+
+**When to use:** Like/unlike, todo checkboxes, reordering lists, inline edits where latency is noticeable.
+
+#### Common pitfalls
+
+- Skipping `cancelQueries` — a slow refetch can overwrite the optimistic patch
+- Optimistic item without a stable `id` — rollback and merge fail on error
+- Never calling `invalidateQueries` in `onSettled` — UI stays wrong if the server shape differs
+
+**Pluses and minuses:**
+
+| +                                  | −                                            |
+| ---------------------------------- | -------------------------------------------- |
+| Instant perceived feedback         | Rollback UX must be clear on failure         |
+| Works with any `useQuery` consumer | More code than `onSuccess` + invalidate only |
+| Official mutation lifecycle hooks  | Easy to desync paginated/infinite query keys |
+
+**Examples:**
+
+```tsx
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+type Todo = { id: string; title: string; done: boolean };
+
+function TodoList() {
+  const queryClient = useQueryClient();
+  const { data: todos = [] } = useQuery({
+    queryKey: ["todos"],
+    queryFn: fetchTodos,
+  });
+
+  const toggleDone = useMutation({
+    mutationFn: ({ id, done }: { id: string; done: boolean }) =>
+      patchTodo(id, { done }),
+    onMutate: async ({ id, done }) => {
+      await queryClient.cancelQueries({ queryKey: ["todos"] });
+      const previousTodos = queryClient.getQueryData<Todo[]>(["todos"]);
+      queryClient.setQueryData<Todo[]>(["todos"], (old = []) =>
+        old.map((t) => (t.id === id ? { ...t, done } : t)),
+      );
+      return { previousTodos };
+    },
+    onError: (_err, _vars, context) => {
+      queryClient.setQueryData(["todos"], context?.previousTodos);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+
+  return (
+    <ul>
+      {todos.map((t) => (
+        <li key={t.id}>
+          <input
+            type="checkbox"
+            checked={t.done}
+            onChange={() => toggleDone.mutate({ id: t.id, done: !t.done })}
+          />
+          {t.title}
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**Thoughts:** _Optimistic UI is a cache write, not a second state store — always reconcile with the server in `onSettled`._
+
+**See also:** [Working with TanStack Query](#working-with-tanstack-query) · [useOptimistic (React 19)](./4_react_server.md#useoptimistic)
+
+**Sources:**
+
+[tanstack.com/query — optimistic updates](https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates) · [tanstack.com/query — mutations](https://tanstack.com/query/latest/docs/framework/react/guides/mutations)
+
+SSR prefetch & hydration
+
+</details>
+
+## SSR prefetch & hydration
+
+<details>
+  <summary>SSR prefetch & hydration</summary>
+
+### SSR prefetch & hydration
+
+**Definition:** **SSR prefetch + hydration** loads data on the server into a `QueryClient`, serializes it with `dehydrate`, and restores it on the client via `HydrationBoundary` so `useQuery` renders cached data immediately — no loading flash on first paint.
+
+**How it works:**
+
+| Step          | Where                      | API                                                      |
+| ------------- | -------------------------- | -------------------------------------------------------- |
+| 1. Prefetch   | Server Component or loader | `await queryClient.prefetchQuery({ queryKey, queryFn })` |
+| 2. Serialize  | Same request               | `dehydrate(queryClient)`                                 |
+| 3. Pass state | Server → client boundary   | `<HydrationBoundary state={dehydratedState}>`            |
+| 4. Consume    | Client Component           | `useQuery` with the **same** `queryKey` + `queryFn`      |
+
+**Provider setup (Next.js App Router):** use one `QueryClient` per **request** on the server; reuse a **singleton** in the browser so Suspense does not recreate the client. Set `defaultOptions.queries.staleTime` above `0` (e.g. 60s) so the client does not refetch immediately after hydration.
+
+In Next.js, prefer **RSC `fetch`** for initial page data when you do not need a client cache — add TanStack Query when the same data must update after hydration (widgets, mutations, polling). See [Next.js — Data](./4_nextjs_data.md#client-side-fetching).
+
+**When to use:** Vite/SPA with SSR, Next.js Client Components that must match server HTML, TanStack Router/Start loaders passing dehydrated cache.
+
+#### Common pitfalls
+
+- Sharing one global `QueryClient` across server requests — leaks data between users
+- `staleTime: 0` (default) — client refetches right after hydration
+- Mismatched `queryKey` / `queryFn` between server prefetch and client `useQuery`
+- Omitting `HydrationBoundary` — client mounts with empty cache and refetches
+
+**Pluses and minuses:**
+
+| +                                      | −                                        |
+| -------------------------------------- | ---------------------------------------- |
+| No loading spinner on hydrated queries | Extra wiring vs RSC-only data fetching   |
+| Mix prefetched and client-only queries | Must understand server/client boundaries |
+| Framework-agnostic hydration APIs      | `HydrationBoundary` per route segment    |
+
+**Examples:**
+
+```tsx
+// app/providers.tsx
+"use client";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+function makeQueryClient() {
+  return new QueryClient({
+    defaultOptions: { queries: { staleTime: 60_000 } },
+  });
+}
+
+let browserQueryClient: QueryClient | undefined;
+
+function getQueryClient() {
+  if (typeof window === "undefined") return makeQueryClient();
+  if (!browserQueryClient) browserQueryClient = makeQueryClient();
+  return browserQueryClient;
+}
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <QueryClientProvider client={getQueryClient()}>
+      {children}
+    </QueryClientProvider>
+  );
+}
+```
+
+```tsx
+// app/posts/page.tsx — Server Component
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { Posts } from "./posts";
+
+export default async function PostsPage() {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["posts"],
+    queryFn: getPosts,
+  });
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Posts />
+    </HydrationBoundary>
+  );
+}
+```
+
+```tsx
+// app/posts/posts.tsx
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+
+export function Posts() {
+  const { data } = useQuery({ queryKey: ["posts"], queryFn: getPosts });
+  return (
+    <ul>
+      {data?.map((p) => (
+        <li key={p.id}>{p.title}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**Thoughts:** _Server Components are another loader — prefetch, dehydrate, hydrate; the mental model matches Remix/TanStack Router loaders._
+
+**See also:** [Hydration](./4_react_server.md#hydration) · [Next.js — Data](./4_nextjs_data.md#client-side-fetching) · [TanStack Router](#tanstack-router)
+
+**Sources:**
+
+[tanstack.com/query — Advanced SSR](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr) · [tanstack.com/query — SSR](https://tanstack.com/query/latest/docs/framework/react/guides/ssr)
+
+Persistent cache
+
+</details>
+
+## Persistent cache
+
+<details>
+  <summary>Persistent cache</summary>
+
+### Persistent cache
+
+**Definition:** **Persistent cache** saves the dehydrated Query cache to **disk** (typically `localStorage`) and restores it on the next visit so queries can render before the network responds.
+
+**How it works:**
+
+1. Install `@tanstack/react-query-persist-client` and `@tanstack/query-async-storage-persister` (or sync persister for simple cases)
+2. Wrap the app in `PersistQueryClientProvider` instead of `QueryClientProvider`
+3. Pass `persistOptions={{ persister, maxAge, buster }}`
+4. On mount, persisted cache is **restored**; queries wait until restore finishes
+5. Cache writes are **throttled** to storage (default ~1s) on cache updates
+
+Set `gcTime` (garbage-collection time) **≥ `maxAge`** so persisted entries are not discarded from memory before they expire from disk. Use `buster` string to invalidate all persisted caches after a deploy or schema change.
+
+**When to use:** Faster repeat visits, offline **read** of non-sensitive lists, reducing spinner time on large SPAs. **Do not** persist auth tokens, PII, or admin data without encryption and explicit threat modeling.
+
+#### Common pitfalls
+
+- Persisting sensitive data in plain `localStorage`
+- `gcTime` shorter than `maxAge` — restore works once, then data is garbage-collected
+- Expecting persistence to replace server validation — always revalidate auth and mutations
+- Huge caches — filter with `dehydrateOptions.shouldDehydrateQuery`
+
+**Pluses and minuses:**
+
+| +                                     | −                                            |
+| ------------------------------------- | -------------------------------------------- |
+| Instant UI on return visits           | Stale data if `maxAge` is too long           |
+| Works offline for cached queries      | Storage quota limits in browsers             |
+| `buster` for safe deploy invalidation | Extra packages and restore timing edge cases |
+
+**Examples:**
+
+```tsx
+"use client";
+
+import { QueryClient } from "@tanstack/react-query";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60 * 24, // 24h — must be >= maxAge
+      staleTime: 60_000,
+    },
+  },
+});
+
+const persister = createAsyncStoragePersister({
+  storage: typeof window !== "undefined" ? window.localStorage : undefined,
+});
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{
+        persister,
+        maxAge: 1000 * 60 * 60 * 24,
+        buster: "v1",
+      }}
+    >
+      {children}
+    </PersistQueryClientProvider>
+  );
+}
+```
+
+**Thoughts:** _Persistence is a UX accelerator for public/cached reads — not a security or offline-write layer._
+
+**See also:** [TanStack Query essentials](#tanstack-query-essentials) · [SSR prefetch & hydration](#ssr-prefetch--hydration)
+
+**Sources:**
+
+[tanstack.com/query — persistQueryClient](https://tanstack.com/query/latest/docs/framework/react/plugins/persistQueryClient) · [tanstack.com/query — createAsyncStoragePersister](https://tanstack.com/query/latest/docs/framework/react/plugins/createAsyncStoragePersister)
 
 TanStack Query vs RTK Query
 

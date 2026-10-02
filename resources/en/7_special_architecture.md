@@ -512,6 +512,8 @@ Aggregate, transform, cache. Microsoft: keep **client-specific** logic in the BF
 
 One round trip, one screen-shaped JSON, one BFF per client class — domain rules stay downstream.
 
+**See also:** [Secure BFF patterns](./6_web_api_security.md#secure-bff-patterns) · [Access token refresh](./6_web_api_auth.md#access-token-refresh) · [SSRF](./6_web_api_security.md#ssrf-server-side-request-forgery)
+
 **Sources:** [Phil Calçado — BFF](https://philcalcado.com/2015/09/18/the_back_end_for_front_end_pattern_bff.html) · [Sam Newman — Backends For Frontends](https://samnewman.io/patterns/architectural/bff/) · [Azure — Backends for Frontends](https://learn.microsoft.com/azure/architecture/patterns/backends-for-frontends) · [Doka — Gateway and BFF](https://doka.guide/tools/gateway-bff/) · [Doka — How web apps work](https://doka.guide/tools/web-app-works/) (middle-end / GraphQL)
 
 </details>
