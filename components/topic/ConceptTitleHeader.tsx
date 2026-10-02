@@ -3,30 +3,21 @@ import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
 import { TopicBookmarkButton } from "./TopicBookmarkButton";
 
 const DETAIL_HEADER =
-  "concept-detail-toolbar sticky top-[var(--handbook-sticky-inset,0px)] z-10 flex flex-col gap-2 rounded-t-[calc(0.75rem-1px)] border-b border-yellow-200 bg-yellow-50 px-4 py-2.5 sm:flex-row sm:items-start sm:gap-3 dark:border-yellow-800 dark:bg-yellow-950";
+  "concept-detail-toolbar sticky top-[var(--handbook-sticky-inset,0px)] z-10 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-2 gap-y-2 rounded-t-[calc(0.75rem-1px)] border-b border-yellow-200 bg-yellow-50 px-4 py-2.5 sm:gap-x-3 dark:border-yellow-800 dark:bg-yellow-950";
 
 const INDEX_HEADER =
-  "flex flex-col gap-2 border-b border-zinc-200 px-4 py-2.5 sm:flex-row sm:items-start sm:gap-3 dark:border-zinc-800";
+  "grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-2 gap-y-2 border-b border-zinc-200 px-4 py-2.5 sm:gap-x-3 dark:border-zinc-800";
 
-const NAV_GROUP_DETAIL =
-  "inline-flex shrink-0 overflow-hidden rounded-lg border border-amber-200/80 bg-white/95 shadow-sm ring-1 ring-amber-100/50 dark:border-amber-900/50 dark:bg-zinc-950/95 dark:ring-amber-950/40";
-
-const NAV_GROUP_INDEX =
-  "inline-flex shrink-0 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm dark:border-zinc-700 dark:bg-zinc-900";
+const NAV_GROUP = "inline-flex shrink-0 items-center gap-1";
 
 const NAV_BTN_DETAIL =
-  "inline-flex min-h-11 touch-manipulation cursor-pointer items-center gap-1 px-3 text-[13px] font-medium text-zinc-700 transition-colors hover:bg-amber-50/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-400/60 sm:h-8 sm:min-h-8 sm:px-2.5 dark:text-zinc-200 dark:hover:bg-amber-950/50 dark:focus-visible:ring-amber-500/40";
+  "inline-flex size-11 touch-manipulation cursor-pointer items-center justify-center gap-1 rounded-full border border-amber-200/80 bg-white/95 px-0 text-[13px] font-medium text-zinc-700 shadow-sm ring-1 ring-amber-100/50 transition-colors hover:bg-amber-50/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60 sm:h-8 sm:min-h-8 sm:w-auto sm:min-w-0 sm:rounded-md sm:px-2.5 dark:border-amber-900/50 dark:bg-zinc-950/95 dark:text-zinc-200 dark:ring-amber-950/40 dark:hover:bg-amber-950/50 dark:focus-visible:ring-amber-500/40";
 
 const NAV_BTN_INDEX =
-  "inline-flex min-h-11 touch-manipulation cursor-pointer items-center gap-1 px-3 text-[13px] font-medium text-zinc-700 transition-colors hover:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-zinc-400/60 sm:h-8 sm:min-h-8 sm:px-2.5 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:focus-visible:ring-zinc-500/40";
+  "inline-flex size-11 touch-manipulation cursor-pointer items-center justify-center gap-1 rounded-full border border-zinc-200 bg-white px-0 text-[13px] font-medium text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/60 sm:h-8 sm:min-h-8 sm:w-auto sm:min-w-0 sm:rounded-md sm:px-2.5 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:focus-visible:ring-zinc-500/40";
 
-const NAV_DIVIDER_DETAIL =
-  "w-px shrink-0 self-stretch bg-amber-200/80 dark:bg-amber-900/60";
-
-const NAV_DIVIDER_INDEX =
-  "w-px shrink-0 self-stretch bg-zinc-200 dark:bg-zinc-700";
-
-const NAV_ICON = "size-3.5 shrink-0 text-zinc-400 dark:text-zinc-500";
+const NAV_ICON =
+  "size-4 shrink-0 text-zinc-500 sm:size-3.5 sm:text-zinc-400 dark:text-zinc-400 sm:dark:text-zinc-500";
 
 const ACTION_DIVIDER_DETAIL =
   "mx-0.5 h-6 w-px shrink-0 bg-amber-200/70 dark:bg-amber-900/50";
@@ -53,17 +44,11 @@ function ConceptNavGroup({
     return null;
   }
 
-  const groupClass = variant === "detail" ? NAV_GROUP_DETAIL : NAV_GROUP_INDEX;
   const btnClass = variant === "detail" ? NAV_BTN_DETAIL : NAV_BTN_INDEX;
-  const dividerClass =
-    variant === "detail" ? NAV_DIVIDER_DETAIL : NAV_DIVIDER_INDEX;
-  const soloRadius = "rounded-[calc(0.5rem-1px)]";
-  const startRadius = "rounded-l-[calc(0.5rem-1px)]";
-  const endRadius = "rounded-r-[calc(0.5rem-1px)]";
 
   return (
     <div
-      className={groupClass}
+      className={NAV_GROUP}
       role="group"
       aria-label={`${chrome.back} / ${chrome.next}`}
     >
@@ -71,7 +56,8 @@ function ConceptNavGroup({
         <button
           type="button"
           onClick={onBack}
-          className={`${btnClass} ${showNext ? startRadius : soloRadius}`}
+          aria-label={chrome.back}
+          className={btnClass}
         >
           <svg aria-hidden="true" viewBox="0 0 24 24" className={NAV_ICON}>
             <path
@@ -83,19 +69,17 @@ function ConceptNavGroup({
               strokeLinejoin="round"
             />
           </svg>
-          <span>{chrome.back}</span>
+          <span className="hidden sm:inline">{chrome.back}</span>
         </button>
-      ) : null}
-      {showBack && showNext ? (
-        <span className={dividerClass} aria-hidden="true" />
       ) : null}
       {showNext ? (
         <button
           type="button"
           onClick={onNext}
-          className={`${btnClass} ${showBack ? endRadius : soloRadius}`}
+          aria-label={chrome.next}
+          className={btnClass}
         >
-          <span>{chrome.next}</span>
+          <span className="hidden sm:inline">{chrome.next}</span>
           <svg aria-hidden="true" viewBox="0 0 24 24" className={NAV_ICON}>
             <path
               d="M9 18l6-6-6-6"
@@ -139,11 +123,11 @@ export function ConceptTitleHeader({
 
   return (
     <div className={variant === "detail" ? DETAIL_HEADER : INDEX_HEADER}>
-      <h2 className="min-w-0 text-2xl font-semibold leading-8 tracking-tight text-zinc-900 sm:flex-1 dark:text-zinc-50">
+      <h2 className="col-start-1 row-start-1 min-w-0 break-words text-2xl font-semibold leading-8 tracking-tight text-zinc-900 dark:text-zinc-50">
         {title}
       </h2>
       {hasActions ? (
-        <span className="relative z-10 flex w-full shrink-0 items-center justify-end gap-1.5 sm:inline-flex sm:w-auto">
+        <span className="col-start-2 row-start-1 inline-flex shrink-0 items-center justify-end justify-self-end gap-1.5">
           <ConceptNavGroup
             showBack={showBack}
             onBack={onBack}
