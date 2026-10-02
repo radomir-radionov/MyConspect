@@ -5,6 +5,8 @@ export const HANDBOOK_NAV_ASIDE_ID = "handbook-nav-aside";
 export const HANDBOOK_SIDEBAR_ID = "handbook-sidebar";
 
 export const UI_STORAGE_KEY = "myconspect.ui";
+export const BOOKMARKS_STORAGE_KEY = "myconspect.bookmarks";
+export const BOOKMARKS_MAX = 50;
 export const SEARCH_QUERY_MAX_LENGTH = 200;
 export const SEARCH_NAV_DELAY_MS = 280;
 export const SEARCH_INDEX_HREF = "/search-index";

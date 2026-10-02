@@ -245,3 +245,22 @@ test("isHomePath matches locale home routes only", async () => {
   assert.equal(isHomePath("/en/frontend"), false);
   assert.equal(isHomePath("/en/instructions"), false);
 });
+
+test("isBookmarkActive matches topic and concept bookmarks", async () => {
+  const { isBookmarkActive } = await import("./location");
+  const topic = "/en/backend/nodejs-core";
+
+  assert.equal(isBookmarkActive(topic, "", topic), true);
+  assert.equal(
+    isBookmarkActive(topic, "event-loop", topic, "event-loop"),
+    true,
+  );
+  assert.equal(
+    isBookmarkActive(topic, "global-object", `${topic}#event-loop`),
+    false,
+  );
+  assert.equal(
+    isBookmarkActive(topic, "event-loop", `${topic}#event-loop`),
+    true,
+  );
+});

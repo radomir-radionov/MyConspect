@@ -24,6 +24,12 @@ const EN: ChromeCopy = {
   copyLink: "Copy link",
   copiedLink: "Copied",
   copyCode: "Copy code",
+  bookmarksNav: "Bookmarks",
+  bookmarksEmpty: "No bookmarks yet. Star a topic or concept to save it here.",
+  bookmark: "Bookmark",
+  unbookmark: "Remove bookmark",
+  removeBookmark: "Remove",
+  clearAllBookmarks: "Clear all",
 };
 
 const RU: ChromeCopy = {
@@ -49,6 +55,12 @@ const RU: ChromeCopy = {
   copyLink: "Копировать ссылку",
   copiedLink: "Скопировано",
   copyCode: "Копировать код",
+  bookmarksNav: "Закладки",
+  bookmarksEmpty: "Закладок пока нет. Отметьте тему или концепт звёздочкой.",
+  bookmark: "В закладки",
+  unbookmark: "Убрать из закладок",
+  removeBookmark: "Убрать",
+  clearAllBookmarks: "Очистить всё",
 };
 
 const BY_LOCALE: Record<Locale, ChromeCopy> = {

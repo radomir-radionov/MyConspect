@@ -61,7 +61,6 @@ export type BrowseCard = {
   readonly href: string;
   readonly title: string;
   readonly description: string;
-  readonly highlights?: readonly string[];
 };
 
 export const TRACKS: readonly Track[] = [
@@ -2429,7 +2428,7 @@ export function subjectClusterCards(subject: Subject): readonly {
             {
               href: topicHref(topics[0]),
               title: cluster.title,
-              description: cluster.blurb,
+              description: "",
             },
           ]
         : topics.map((topic) => ({

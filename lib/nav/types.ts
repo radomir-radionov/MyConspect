@@ -96,4 +96,10 @@ export type ChromeCopy = {
   readonly copyLink: string;
   readonly copiedLink: string;
   readonly copyCode: string;
+  readonly bookmarksNav: string;
+  readonly bookmarksEmpty: string;
+  readonly bookmark: string;
+  readonly unbookmark: string;
+  readonly removeBookmark: string;
+  readonly clearAllBookmarks: string;
 };

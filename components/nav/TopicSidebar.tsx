@@ -32,6 +32,7 @@ import { NavChevron, NavFold } from "./NavFold";
 import { NavGuide } from "./NavGuide";
 import { getHash, getServerHash, subscribeHash } from "./hash";
 import { isActiveHref, isActiveTrack } from "./location";
+import { BookmarksPanel } from "./BookmarksPanel";
 import { SearchHitList } from "./SearchHitList";
 import {
   pinNavElement,
@@ -189,6 +190,9 @@ export const TopicSidebar = memo(function TopicSidebar({
         className="relative isolate px-2 py-3"
       >
         <div data-nav-sticky-cover="" aria-hidden="true" />
+        {!searching ? (
+          <BookmarksPanel chrome={chrome} onNavigate={onNavigate} />
+        ) : null}
         {filtered.length === 0 ? (
           <p className="px-2 text-sm text-zinc-500 dark:text-zinc-400">
             {mode === "notes" ? chrome.searchNotesEmpty : chrome.searchEmpty}

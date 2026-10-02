@@ -20,6 +20,7 @@ import {
   type NavTopic,
   type SearchMode,
 } from "@/lib/nav";
+import { BookmarkStar, useIsBookmarked } from "./BookmarkButton";
 import { NavChevron, NavFold } from "./NavFold";
 import { NavGuide } from "./NavGuide";
 import {
@@ -155,6 +156,7 @@ export const ConceptLink = memo(function ConceptLink({
 }) {
   const { query, mode, pathname, onNavigate, goToPath } = useSidebarChrome();
   const snippet = conceptBodySnippet(concept, query, mode);
+  const bookmarked = useIsBookmarked(topicHref, concept.id);
   return (
     <a
       href={conceptHref(topicHref, concept.id)}
@@ -183,7 +185,10 @@ export const ConceptLink = memo(function ConceptLink({
       }
     >
       <span className="flex items-baseline justify-between gap-2">
-        <HighlightedText text={concept.title} query={query} />
+        <span className="flex min-w-0 items-baseline gap-1.5">
+          {bookmarked ? <BookmarkStar /> : null}
+          <HighlightedText text={concept.title} query={query} />
+        </span>
         {snippet ? (
           <span className="shrink-0 text-[10px] font-medium tracking-wide text-zinc-400 uppercase dark:text-zinc-500">
             {CHROME.inNotes}
@@ -288,6 +293,7 @@ export function TopicRow({
       ? hasConcepts
       : showConceptNav && openTopicHref === topic.href;
   const onPath = !searching && active;
+  const topicBookmarked = useIsBookmarked(topic.href);
   // Flatten sticky headers into the track list so nested containing blocks cannot
   // drag Core/Structure above Frontend/HTML while siblings scroll.
   const indent = compact ? (navKind === "cluster" ? "pl-4" : "pl-6") : "";
@@ -345,12 +351,15 @@ export function TopicRow({
         aria-expanded={showConceptNav ? topicOpen : undefined}
         className={`${rowClass(isHitTopic || active, onPath, indent)} ${NAV_ROW_GAP}`}
       >
-        <RowTitle
-          text={topic.title}
-          query={query}
-          marker={compact && showConceptNav}
-          open={topicOpen}
-        />
+        <span className="flex min-w-0 flex-1 items-center gap-1.5">
+          {topicBookmarked ? <BookmarkStar /> : null}
+          <RowTitle
+            text={topic.title}
+            query={query}
+            marker={compact && showConceptNav}
+            open={topicOpen}
+          />
+        </span>
         {showConceptNav ? (
           compact ? (
             topicOpen ? (

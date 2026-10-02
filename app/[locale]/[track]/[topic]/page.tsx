@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ClusterCardSections } from "@/components/catalog";
 import { ConceptList } from "@/components/topic";
+import { TopicBookmarkButton } from "@/components/topic/TopicBookmarkButton";
+import { TopicShareButton } from "@/components/topic/TopicShareButton";
 import {
   getSubject,
   getTrack,
@@ -14,6 +16,7 @@ import {
   type Topic,
 } from "@/lib/catalog";
 import { catalogBlurb } from "@/lib/i18n/catalog";
+import { chromeFor } from "@/lib/i18n/chrome";
 import { FALLBACK_NOTE_BADGE } from "@/lib/i18n/chrome";
 import { isLocale, localeStaticParams, type Locale } from "@/lib/i18n/locales";
 import { withLocale } from "@/lib/i18n/paths";
@@ -173,11 +176,19 @@ export default async function TopicPage({
     ? loaded.topic.title
     : loaded.parsed.title;
 
+  const chrome = chromeFor(locale);
+
   return (
     <main className="w-full max-w-3xl px-4 pt-5 pb-10 sm:px-6">
-      <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-        {pageTitle}
-      </h1>
+      <div className="flex items-start gap-3">
+        <h1 className="min-w-0 flex-1 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          {pageTitle}
+        </h1>
+        <span className="inline-flex shrink-0 items-center">
+          <TopicShareButton chrome={chrome} />
+          <TopicBookmarkButton title={pageTitle} chrome={chrome} />
+        </span>
+      </div>
       {loaded.usedFallback ? (
         <p className="mt-2 text-sm text-amber-700 dark:text-amber-300">
           {FALLBACK_NOTE_BADGE[locale]}

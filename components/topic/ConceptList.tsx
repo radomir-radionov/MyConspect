@@ -22,6 +22,7 @@ import { localeFromPathname } from "@/lib/i18n/paths";
 import { conceptMatchesQuery } from "@/lib/nav";
 import type { ChromeCopy } from "@/lib/nav";
 import type { Concept, InterviewSection } from "@/lib/parse";
+import { BookmarkButton } from "@/components/nav/BookmarkButton";
 import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
 import { useCodeCopyButtons } from "./useCodeCopyButtons";
 import { useConceptKeyboardNav } from "./useConceptKeyboardNav";
@@ -228,6 +229,7 @@ export function ConceptList({
             notesQuery={mode === "notes" ? query : ""}
             flat={concepts.length === 1}
             chrome={chrome}
+            pathname={pathname}
           />
         </section>
       ))}
@@ -242,6 +244,7 @@ function ConceptAccordionList({
   notesQuery,
   flat,
   chrome,
+  pathname,
 }: {
   concepts: readonly Concept[];
   activeId: string;
@@ -249,6 +252,7 @@ function ConceptAccordionList({
   notesQuery: string;
   flat: boolean;
   chrome: ChromeCopy;
+  pathname: string;
 }) {
   if (flat) {
     const concept = concepts[0];
@@ -261,7 +265,16 @@ function ConceptAccordionList({
         className="concept-list group scroll-mt-20 rounded-xl border border-zinc-200 bg-white px-4 pt-4 dark:border-zinc-800 dark:bg-zinc-900"
       >
         <div className="mb-2 flex justify-end">
-          <CopyConceptLinkButton conceptId={concept.id} chrome={chrome} />
+          <span className="inline-flex items-center">
+            <CopyConceptLinkButton conceptId={concept.id} chrome={chrome} />
+            <BookmarkButton
+              pathname={pathname}
+              title={concept.title}
+              conceptId={concept.id}
+              chrome={chrome}
+              revealOnHover
+            />
+          </span>
         </div>
         <ConceptBody html={concept.html} query={notesQuery} chrome={chrome} />
       </article>
@@ -292,7 +305,16 @@ function ConceptAccordionList({
               <span className="min-w-0 flex-1">
                 <HighlightedText text={concept.title} query={query} />
               </span>
-              <CopyConceptLinkButton conceptId={concept.id} chrome={chrome} />
+              <span className="inline-flex shrink-0 items-center">
+                <CopyConceptLinkButton conceptId={concept.id} chrome={chrome} />
+                <BookmarkButton
+                  pathname={pathname}
+                  title={concept.title}
+                  conceptId={concept.id}
+                  chrome={chrome}
+                  revealOnHover
+                />
+              </span>
             </summary>
             <ConceptBody
               html={concept.html}

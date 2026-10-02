@@ -21,6 +21,17 @@ export {
 export { collectGroupSearchHits } from "./searchSidebarHits";
 export type { SearchSidebarHit } from "./searchSidebarHits";
 export { navSubjectClusters } from "./subjectClusters";
+export {
+  bookmarkHref,
+  getServerBookmarks,
+  isBookmarked,
+  readBookmarks,
+  clearAllBookmarks,
+  removeBookmark,
+  subscribeBookmarks,
+  toggleBookmark,
+} from "./bookmarks";
+export type { Bookmark, BookmarkInput } from "./bookmarks";
 export type {
   ChromeCopy,
   Crumb,

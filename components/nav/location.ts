@@ -31,6 +31,24 @@ export function isActiveHref(pathname: string, href: string): boolean {
   return pathname === href;
 }
 
+export function isBookmarkActive(
+  pathname: string,
+  activeConceptId: string,
+  href: string,
+  conceptId?: string,
+): boolean {
+  const { pathname: targetPath, hash } = splitHref(href);
+  if (pathname !== targetPath) {
+    return false;
+  }
+  const bookmarkConceptId =
+    conceptId ?? (hash.length > 0 ? hashIdFrom(hash) : "");
+  if (bookmarkConceptId.length > 0) {
+    return activeConceptId === bookmarkConceptId;
+  }
+  return true;
+}
+
 export function isActiveTrack(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }

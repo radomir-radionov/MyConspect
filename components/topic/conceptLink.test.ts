@@ -1,6 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { conceptShareUrl } from "./conceptLink";
+import { conceptShareUrl, pageShareUrl } from "./conceptLink";
+
+test("pageShareUrl builds origin pathname", () => {
+  assert.equal(
+    pageShareUrl(
+      "https://myconspect.vercel.app",
+      "/en/system-design/architecture",
+    ),
+    "https://myconspect.vercel.app/en/system-design/architecture",
+  );
+});
 
 test("conceptShareUrl builds origin pathname hash", () => {
   assert.equal(

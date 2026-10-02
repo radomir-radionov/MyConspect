@@ -10,10 +10,7 @@ import {
   leafTopicForTrack,
   subjectClusterCards,
   subjectForTrack,
-  topicHref,
-  topicsForCluster,
   trackBrowseCards,
-  type Subject,
 } from "@/lib/catalog";
 import { catalogBlurb } from "@/lib/i18n/catalog";
 import {
@@ -24,12 +21,7 @@ import {
 import { FALLBACK_NOTE_BADGE } from "@/lib/i18n/chrome";
 import { isLocale, localeStaticParams, type Locale } from "@/lib/i18n/locales";
 import { withLocale } from "@/lib/i18n/paths";
-import {
-  loadHubPage,
-  loadParsedTopic,
-  loadTopicOutline,
-  loadTopicPage,
-} from "@/lib/parse";
+import { loadHubPage, loadParsedTopic, loadTopicPage } from "@/lib/parse";
 
 export const dynamicParams = false;
 
@@ -52,7 +44,6 @@ function localizeCards(
 
 function localizeClusterSections(
   locale: Locale,
-  subject: Subject,
   sections: ReturnType<typeof subjectClusterCards>,
 ) {
   return sections.map((section) => ({
@@ -60,24 +51,7 @@ function localizeClusterSections(
       ...section.cluster,
       blurb: catalogBlurb(locale, section.cluster.blurb),
     },
-    items: localizeCards(locale, section.items).map((item) => {
-      const topic =
-        topicsForCluster(subject, section.cluster.id).find(
-          (candidate) => topicHref(candidate) === item.href,
-        ) ??
-        topicsForCluster(subject, section.cluster.id).find(
-          (candidate) => candidate.title === item.title,
-        );
-      if (!topic) {
-        return item;
-      }
-      return {
-        ...item,
-        highlights: loadTopicOutline(topic, locale).map(
-          (concept) => concept.title,
-        ),
-      };
-    }),
+    items: localizeCards(locale, section.items),
   }));
 }
 
@@ -145,7 +119,6 @@ export default async function TrackPage({
     const hub = await loadHubPage(track.id, locale);
     const sections = localizeClusterSections(
       locale,
-      subject,
       subjectClusterCards(subject),
     );
     return (
