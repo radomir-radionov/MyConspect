@@ -77,8 +77,9 @@ Function forms, `this`, higher-order functions, `call`/`apply`/`bind`, debounce,
 - **NFE** (Named Function Expression) — internal name visible inside for recursion; outer scope still uses `const` name.
 - Both create functions with dynamic `this` (unless arrow).
 
-|          | Declaration              | Expression                |
-| -------- | ------------------------ | ------------------------- |
+
+| Declaration              | Expression                |
+|  --------  |  ------------------------  |
 | Syntax   | `function f() {}`        | `const f = function() {}` |
 | Hoisting | Yes — callable before line | No |
 | Name     | Required                 | Optional (NFE for recursion) |
@@ -149,8 +150,9 @@ const double = function (n) {
 - Concise body: `(x) => x * 2` implicit return; `() => { return x; }` for block body.
 - Always anonymous in syntax (name inferred from variable in assignments).
 
-|             | Arrow   | Regular          |
-| ----------- | ------- | ---------------- |
+
+| Arrow   | Regular          |
+|  -----------  |  -------  |
 | `this`      | Lexical (from outer scope) | Dynamic (call site) |
 | `arguments` | No — use rest `...args` | Yes |
 | `new`       | No      | Yes              |
@@ -931,8 +933,10 @@ const sum = nums.reduce((acc, n) => acc + n, 0); // declarative fold
 | + | − |
 |------|------|
 | Dynamic code from templates (rare) | Security hole with user input |
-| | No closure access |
-| | Same as `eval` risks |
+
+| No closure access |
+
+| Same as `eval` risks |
 
 **Examples:**
 

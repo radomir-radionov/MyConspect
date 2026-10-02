@@ -4,6 +4,7 @@ import {
   type Crumb,
   type NavCluster,
   type NavConcept,
+  type NavEntry,
   type NavGroup,
   type NavSubject,
   type NavTopic,
@@ -331,6 +332,211 @@ export function hrefInHandbook(
     }
   }
   return false;
+}
+
+export type NavStep = {
+  readonly pathname: string;
+  readonly hash: string;
+};
+
+function topicsFromEntry(entry: NavEntry): readonly NavTopic[] {
+  switch (entry.kind) {
+    case "topic":
+      return [entry.topic];
+    case "subject":
+      return navSubjectClusters(entry.subject).flatMap(
+        (cluster) => cluster.topics,
+      );
+    case "cluster":
+      return entry.cluster.topics;
+    default: {
+      const _never: never = entry;
+      return _never;
+    }
+  }
+}
+
+export function collectTopicsForGroup(group: NavGroup): readonly NavTopic[] {
+  if (group.leafTopic) {
+    return [group.leafTopic];
+  }
+  const topics: NavTopic[] = [];
+  for (const entry of group.entries) {
+    topics.push(...topicsFromEntry(entry));
+  }
+  return topics;
+}
+
+function appendTopicSteps(chain: NavStep[], topic: NavTopic): void {
+  if (topic.concepts.length <= 1) {
+    chain.push({ pathname: topic.href, hash: "" });
+    return;
+  }
+
+  chain.push({ pathname: topic.href, hash: "" });
+  for (const concept of topic.concepts) {
+    chain.push({ pathname: topic.href, hash: concept.id });
+  }
+}
+
+function findTopicInGroup(group: NavGroup, pathname: string): NavTopic | null {
+  for (const topic of collectTopicsForGroup(group)) {
+    if (topic.href === pathname) {
+      return topic;
+    }
+  }
+  return null;
+}
+
+function findSubjectForPath(
+  group: NavGroup,
+  pathname: string,
+): NavSubject | null {
+  for (const entry of group.entries) {
+    if (entry.kind !== "subject") {
+      continue;
+    }
+    if (entry.subject.href === pathname) {
+      return entry.subject;
+    }
+    for (const cluster of navSubjectClusters(entry.subject)) {
+      if (cluster.topics.some((topic) => topic.href === pathname)) {
+        return entry.subject;
+      }
+    }
+  }
+  return null;
+}
+
+function buildTrackHubChain(group: NavGroup): NavStep[] {
+  const chain: NavStep[] = [{ pathname: group.href, hash: "" }];
+  if (group.leafTopic) {
+    appendTopicSteps(chain, group.leafTopic);
+    return chain;
+  }
+
+  const hasNestedSubjects = group.entries.some(
+    (entry) => entry.kind === "subject" && entry.subject.href !== group.href,
+  );
+  if (hasNestedSubjects) {
+    for (const entry of group.entries) {
+      if (entry.kind === "subject") {
+        chain.push({ pathname: entry.subject.href, hash: "" });
+      } else if (entry.kind === "topic") {
+        chain.push({ pathname: entry.topic.href, hash: "" });
+      }
+    }
+    return chain;
+  }
+
+  for (const topic of collectTopicsForGroup(group)) {
+    appendTopicSteps(chain, topic);
+  }
+  return chain;
+}
+
+function buildSubjectChain(subject: NavSubject): NavStep[] {
+  const chain: NavStep[] = [{ pathname: subject.href, hash: "" }];
+  for (const cluster of navSubjectClusters(subject)) {
+    for (const topic of cluster.topics) {
+      appendTopicSteps(chain, topic);
+    }
+  }
+  return chain;
+}
+
+function buildFullTrackChain(group: NavGroup): NavStep[] {
+  const chain: NavStep[] = [{ pathname: group.href, hash: "" }];
+  for (const topic of collectTopicsForGroup(group)) {
+    appendTopicSteps(chain, topic);
+  }
+  return chain;
+}
+
+export function navChainForPath(
+  groups: readonly NavGroup[],
+  pathname: string,
+  hash: string,
+): readonly NavStep[] | null {
+  const group = groups.find((item) => isActiveTrack(pathname, item.href));
+  if (!group) {
+    return null;
+  }
+
+  if (pathname === group.href) {
+    return buildTrackHubChain(group);
+  }
+
+  const subject = findSubjectForPath(group, pathname);
+  if (subject && pathname === subject.href) {
+    return buildSubjectChain(subject);
+  }
+
+  if (findTopicInGroup(group, pathname)) {
+    if (subject && subject.href !== group.href) {
+      return buildSubjectChain(subject);
+    }
+    return buildFullTrackChain(group);
+  }
+
+  return null;
+}
+
+export function navChainIndex(
+  chain: readonly NavStep[],
+  pathname: string,
+  hash: string,
+): number {
+  const hashId = hashIdFrom(hash);
+  return chain.findIndex(
+    (step) => step.pathname === pathname && step.hash === hashId,
+  );
+}
+
+export function siblingNavHrefForPath(
+  groups: readonly NavGroup[],
+  pathname: string,
+  hash: string,
+  delta: -1 | 1,
+  homeHref: string,
+): string | null {
+  const chain = navChainForPath(groups, pathname, hash);
+  if (!chain || chain.length === 0) {
+    return null;
+  }
+
+  const index = navChainIndex(chain, pathname, hash);
+  if (index < 0) {
+    return null;
+  }
+
+  const nextIndex = index + delta;
+  if (nextIndex < 0 || nextIndex >= chain.length) {
+    return homeHref;
+  }
+
+  const step = chain[nextIndex];
+  if (!step) {
+    return null;
+  }
+  return step.hash ? `${step.pathname}#${step.hash}` : step.pathname;
+}
+
+export function adjacentConceptId(
+  conceptIds: readonly string[],
+  currentId: string,
+  delta: -1 | 1,
+): string | null {
+  if (conceptIds.length === 0) {
+    return null;
+  }
+  const index = conceptIds.indexOf(currentId);
+  const fromIndex = index < 0 ? (delta > 0 ? -1 : conceptIds.length) : index;
+  const nextIndex = fromIndex + delta;
+  if (nextIndex < 0 || nextIndex >= conceptIds.length) {
+    return null;
+  }
+  return conceptIds[nextIndex] ?? null;
 }
 
 export function parentHrefForPath(

@@ -98,8 +98,9 @@ export default defineNuxtConfig({
 
 **Definition:** Три data API — ответ на интервью должен указать SSR payload behavior и когда каждый уместен.
 
-| | `$fetch` | `useFetch` | `useAsyncData` |
-|---|----------|------------|----------------|
+
+| `$fetch` | `useFetch` | `useAsyncData` |
+| --- | ---------- | ------------ |
 | **Wrapper** | ofetch directly | `useAsyncData` + `$fetch` | Generic async handler |
 | **SSR payload** | No (alone) | Yes | Yes |
 | **Typical use** | Event handlers, server/api | REST в `setup` | CMS, DB, parallel custom logic |
@@ -146,8 +147,9 @@ async function submit() {
 
 **Answer:** В Nuxt **нет** React-style **Server Actions** (`"use server"` colocated в components). Mutations используют **`server/api`** Nitro handlers + **`$fetch`** с клиента, или form posts на API routes.
 
-| | Next.js Server Actions | Nuxt pattern |
-|---|------------------------|--------------|
+
+| Next.js Server Actions | Nuxt pattern |
+| --- | ------------------------ |
 | **Definition** | RPC-like functions в React components | HTTP handlers в `server/api/` |
 | **Colocation** | Same file as UI | Separate `server/` tree |
 | **Client call** | `action()` prop или `useActionState` | `$fetch('/api/todos', { method: 'POST', body })` |
@@ -170,8 +172,9 @@ async function submit() {
 
 **Definition:** Две middleware-системы с похожими именами — выполняются в разных runtime для разных целей.
 
-| | Route middleware | Server middleware |
-|---|------------------|-------------------|
+
+| Route middleware | Server middleware |
+| --- | ------------------ |
 | **Path** | `app/middleware/` | `server/middleware/` |
 | **Runtime** | Vue app (SSR + client nav) | Nitro only |
 | **Runs on `/api/*`** | No | Yes |

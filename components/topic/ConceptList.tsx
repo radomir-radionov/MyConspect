@@ -13,7 +13,6 @@ import {
   useIsBookmarked,
 } from "@/components/nav/BookmarkButton";
 import {
-  clearConceptHash,
   getHash,
   getServerHash,
   hashIdFrom,
@@ -31,6 +30,7 @@ import { ConceptTitleHeader } from "./ConceptTitleHeader";
 import { PageTitleHeader } from "./PageTitleHeader";
 import { useCodeCopyButtons } from "./useCodeCopyButtons";
 import { useConceptKeyboardNav } from "./useConceptKeyboardNav";
+import { useHandbookTopicNav } from "./useHandbookTopicNav";
 
 const SECTION_LABELS: Record<InterviewSection, string> = {
   questions: "Questions",
@@ -90,6 +90,7 @@ export function ConceptList({
     () => chromeFor(localeFromPathname(pathname)),
     [pathname],
   );
+  const { showBack, showNext, goBack, goNext } = useHandbookTopicNav();
   const hash = useSyncExternalStore(subscribeHash, getHash, getServerHash);
   const activeId = hashIdFrom(hash);
   const activeConcept = useMemo(
@@ -142,7 +143,10 @@ export function ConceptList({
         concept={concept}
         notesQuery={notesQuery}
         chrome={chrome}
-        showBack={false}
+        showBack={showBack}
+        onBack={goBack}
+        showNext={showNext}
+        onNext={goNext}
       />
     );
   }
@@ -153,8 +157,10 @@ export function ConceptList({
         concept={activeConcept}
         notesQuery={notesQuery}
         chrome={chrome}
-        showBack
-        onBack={() => clearConceptHash(false)}
+        showBack={showBack}
+        onBack={goBack}
+        showNext={showNext}
+        onNext={goNext}
       />
     );
   }
@@ -266,12 +272,16 @@ function ConceptDetail({
   chrome,
   showBack,
   onBack,
+  showNext,
+  onNext,
 }: {
   concept: Concept;
   notesQuery: string;
   chrome: ChromeCopy;
   showBack: boolean;
   onBack?: () => void;
+  showNext?: boolean;
+  onNext?: () => void;
 }) {
   return (
     <article id={concept.id} className={CONCEPT_DETAIL_CARD}>
@@ -281,6 +291,8 @@ function ConceptDetail({
         variant="detail"
         showBack={showBack}
         onBack={onBack}
+        showNext={showNext ?? false}
+        onNext={onNext}
         showBookmark
         showShare
         conceptId={concept.id}

@@ -56,7 +56,7 @@ Compiler directives, ambient declarations, and `declare`.
 
 | Aspect | Detail |
 |--------|--------|
-| Summary | /// <amd-module name="NamedModule"/>    // Name AMD module in output
+| Summary | /// <amd-module name="NamedModule"/>    // Name AMD module in output |
 ```
 
 ```typescript

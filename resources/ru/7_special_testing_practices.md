@@ -141,8 +141,9 @@ Scenario: Successful login
   Then they see the dashboard
 ```
 
-|          | TDD              | BDD                    |
-| -------- | ---------------- | ---------------------- |
+
+| TDD              | BDD                    |
+|  --------  |  ----------------  |
 | Focus    | Code correctness | Behavior / user value  |
 | Language | Code tests       | Often natural language |
 | Audience | Developers       | Devs + PM + QA         |

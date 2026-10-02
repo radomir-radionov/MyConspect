@@ -1,7 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { NavGroup } from "@/lib/nav";
-import { crumbsForPath, parentHrefForPath } from "./location";
+import {
+  adjacentConceptId,
+  crumbsForPath,
+  navChainForPath,
+  navChainIndex,
+  parentHrefForPath,
+  siblingNavHrefForPath,
+} from "./location";
 
 const labels = { home: "Home", instructions: "Instructions" };
 
@@ -156,6 +163,50 @@ test("Core topic does not duplicate the cluster name in the trail", () => {
     "Node.js",
     "Core",
   ]);
+});
+
+test("navChainForPath scopes topic siblings within a subject", () => {
+  const chain = navChainForPath(groups, "/backend/nodejs-core", "");
+  assert.ok(chain);
+  assert.equal(chain?.[0]?.pathname, "/backend/nodejs");
+  assert.equal(chain?.[1]?.pathname, "/backend/nodejs-core");
+  assert.equal(chain?.[2]?.pathname, "/backend/nodejs-http");
+});
+
+test("siblingNavHrefForPath moves within the scoped chain and home at ends", () => {
+  const home = "/en";
+  assert.equal(
+    siblingNavHrefForPath(groups, "/backend/nodejs-core", "", -1, home),
+    "/backend/nodejs",
+  );
+  assert.equal(
+    siblingNavHrefForPath(groups, "/backend/nodejs-core", "", 1, home),
+    "/backend/nodejs-http",
+  );
+  assert.equal(
+    siblingNavHrefForPath(groups, "/backend/nodejs", "", -1, home),
+    home,
+  );
+  assert.equal(
+    siblingNavHrefForPath(groups, "/backend/nodejs-http", "", 1, home),
+    home,
+  );
+});
+
+test("navChainIndex matches pathname and concept hash", () => {
+  const chain = navChainForPath(groups, "/backend/nodejs-http", "#express");
+  assert.ok(chain);
+  assert.equal(
+    navChainIndex(chain ?? [], "/backend/nodejs-http", "#express"),
+    chain?.findIndex((step) => step.hash === "express"),
+  );
+});
+
+test("adjacentConceptId returns the next and previous concept id", () => {
+  const ids = ["alpha", "beta", "gamma"];
+  assert.equal(adjacentConceptId(ids, "beta", 1), "gamma");
+  assert.equal(adjacentConceptId(ids, "beta", -1), "alpha");
+  assert.equal(adjacentConceptId(ids, "gamma", 1), null);
 });
 
 test("parentHrefForPath returns the nearest linked ancestor", () => {

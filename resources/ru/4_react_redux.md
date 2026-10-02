@@ -114,8 +114,9 @@ Flux vs Redux
 
 Оба описывают обновления plain **action** объектами и держат логику мутаций вне UI. Поток один: событие → action → обновление state → re-render.
 
-|                  | Flux                                            | Redux                                                            |
-| ---------------- | ----------------------------------------------- | ---------------------------------------------------------------- |
+
+| Flux                                            | Redux                                                            |
+|  ----------------  |  -----------------------------------------------  |
 | **Stores**       | Несколько stores (по домену)                    | **Один** глобальный store                                        |
 | **Dispatcher**   | Центральный хаб маршрутизирует actions в stores | **Без dispatcher** — `store.dispatch` вызывает reducers напрямую |
 | **Update logic** | Stores могут обновлять себя сами                | **Только чистые reducers** — `(state, action) => newState`       |
@@ -805,8 +806,9 @@ State management libraries
 | **RTK Query**            | Server cache внутри Redux store                                         |
 | **Context + useReducer** | Маленькие apps, theme/locale                                            |
 
-|         | Flux                        | Redux                    |
-| ------- | --------------------------- | ------------------------ |
+
+| Flux                        | Redux                    |
+|  -------  |  ---------------------------  |
 | Stores  | Несколько                   | Одно хранилище           |
 | Updates | Stores обновляют себя       | Только чистые reducers   |
 | Flow    | Action → Dispatcher → Store | Action → Reducer → Store |

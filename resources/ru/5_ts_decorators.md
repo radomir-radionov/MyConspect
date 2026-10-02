@@ -108,7 +108,7 @@ const logProperty = (цель: объект, propertyKey: строка | сим�
 
 | Аспект | Деталь |
 |--------|--------|
-| Резюме | // Декоратор свойства — цель — прототип, propertyKey — имя поля
+| Резюме | // Декоратор свойства — цель — прототип, propertyKey — имя поля |
 const logProperty = (цель: объект, propertyKey: |
 
 **Examples:**
@@ -218,7 +218,7 @@ const logMethod = (
 
 | Аспект | Деталь |
 |--------|--------|
-| Резюме | // Декоратор метода — получает PropertyDescriptor
+| Резюме | // Декоратор метода — получает PropertyDescriptor |
 const logMethod = (
   _target: объект,
   PropertyKey: строка \| символ |

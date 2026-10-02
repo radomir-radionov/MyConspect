@@ -225,8 +225,9 @@ export default defineNuxtConfig({
 
 **Definition:**
 
-|                 | Route middleware                    | Server middleware         |
-| --------------- | ----------------------------------- | ------------------------- |
+
+| Route middleware                    | Server middleware         |
+|  ---------------  |  -----------------------------------  |
 | **Location**    | `app/middleware/`                   | `server/middleware/`      |
 | **Runs on**     | Vue navigations + SSR page requests | All Nitro server requests |
 | **API routes**  | No                                  | Yes                       |

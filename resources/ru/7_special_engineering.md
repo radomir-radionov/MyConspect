@@ -358,8 +358,9 @@ video.play();
 - Polymorphism lowers coupling: callers depend on a contract, not on `Spending` vs `Income`.
 - Duplicate "spent today" logic in three files is low cohesion spread thin — a rule change misses a copy.
 
-|              | High (good / bad)                         | Low                                                      |
-| ------------ | ----------------------------------------- | -------------------------------------------------------- |
+
+| High (good / bad)                         | Low                                                      |
+|  ------------  |  -----------------------------------------  |
 | **Cohesion** | Good — related code in one module         | Bad — a class does budget _and_ HTTP _and_ UI            |
 | **Coupling** | Bad — many modules break when one changes | Good — swap History storage without touching DailyAmount |
 

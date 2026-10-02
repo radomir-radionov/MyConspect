@@ -55,7 +55,7 @@ Structural subtyping, assignability, and function parameter variance.
 
 | Aspect | Detail |
 |--------|--------|
-| Summary | // let bad: Pet = { name: "Lassie", owner: "Rudd" }; // Error — excess property check
+| Summary | // let bad: Pet = { name: "Lassie", owner: "Rudd" }; // Error — excess property check |
 ```
 
 ```typescript
@@ -75,9 +75,10 @@ let pet: Pet = dog; // OK — extra 'owner' is fine
 Таблица назначаемости (сводка) — язык TypeScript или функция компилятора.
 
 |        | любой | неизвестный | объект | пустота | неопределенный | ноль | никогда |
-|--------|-----|---------|--------|------|-----------|------|-------|
+| -------- | ----- | --------- | -------- | ------ | ----------- | ------ |
 | → любой | ✓ | ✓ | ✓ | ✓ | ✓ | ✓* | ✕ |
-| → неизвестно | ✓ | ✕ | ✕ | ✕ | ✕ | ✕ | ✕ || никогда → | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| → неизвестно | ✓ | ✕ | ✕ | ✕ | ✕ | ✕ | ✕ |
+|никогда → | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 *`strictNullChecks` выключить изменения `null`/`undefined` поведение значительно.
 

@@ -35,7 +35,8 @@
 | Пространство имен | ✓ | ✓ | ✓ |
 | Класс | ✓ | ✓ | ✓ |
 | Перечисление | ✓ | ✓ | ✓ |
-| Интерфейс |           | ✓ |       || Введите псевдоним |           | ✓ |       |
+| Интерфейс |           | ✓ |
+|Введите псевдоним |           | ✓ |       |
 | Функция |           |      | ✓ |
 | Переменная |           |      | ✓ |
 
@@ -67,7 +68,7 @@ Non-function members with the same name must have the **same type** or the compi
 
 | Аспект | Деталь |
 |--------|--------|
-| Резюме | // Члены функций → перегрузки (более поздние интерфейсы выигрывают в порядке наборов перегрузок)
+| Резюме | // Члены функций → перегрузки (более поздние интерфейсы выигрывают в порядке наборов перегрузок) |
 интерфейс Cloner { клон(животное: Анима |
 
 ```
@@ -124,7 +125,7 @@ Observable.prototype.map = function (f) { /* ... */ };
 
 | Aspect | Detail |
 |--------|--------|
-| Summary | // Function with static properties
+| Summary | // Function with static properties |
 function buildLabel(name: string): string {
   return buildLabel.prefix + name + build |
 

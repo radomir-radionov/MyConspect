@@ -43,18 +43,21 @@
 ### Concepts
 
 | Ресурс                     | URL-адрес                                                                                      |
-| -------------------------- | ---------------------------------------------------------------------------------------------- | --- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+|  --------------------------  |  ----------------------------------------------------------------------------------------------  |
 | Большой О (ByteByteGo)     | https://blog.bytebytego.com/p/ep132-big-o-notation-101-the-secret                              |
 | Шаблоны проектирования     | https://refactoring.guru/design-patterns/catalog                                               |
 | Дока — архитектура и узоры | https://doka.guide/tools/architecture-and-design-patterns/                                     |
-| Дока — ООП                 | https://doka.guide/tools/oop/                                                                  |     | Дока — парадигмы программирования   | https://doka.guide/tools/programming-paradigms/                                                               |
+| Дока — ООП                 | https://doka.guide/tools/oop/ |
+| Дока — парадигмы программирования   | https://doka.guide/tools/programming-paradigms/                                                               |
 | шаблоны.dev                | https://www.patterns.dev/                                                                      |
 | Сравнение парадигм         | https://en.wikipedia.org/wiki/Comparison_of_programming_paradigms                              |
 | ТВЕРДЫЙ                    | https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/  |
-| Методологии SDLC           | https://habr.com/ru/companies/edison/articles/269789/                                          |     | Doka — Agile/Scrum/Kanban           | https://doka.guide/tools/agile/                                                                               |
+| Методологии SDLC           | https://habr.com/ru/companies/edison/articles/269789/ |
+| Doka — Agile/Scrum/Kanban           | https://doka.guide/tools/agile/                                                                               |
 | Agile-манифест + принципы  | https://agilemanifesto.org/ · https://agilemanifesto.org/principles.html                       |
 | Скрам-руководство 2020     | https://scrumguides.org/scrum-guide.html                                                       |
-| Основы ООП                 | https://blog.bytebytego.com/i/162154465/the-fundamental-pillars-of-object-oriented-programming |     | Императивный против функционального | https://www.digitalocean.com/community/tutorials/functional-imperative-object-resident-programming-comparison |
+| Основы ООП                 | https://blog.bytebytego.com/i/162154465/the-fundamental-pillars-of-object-oriented-programming |
+| Императивный против функционального | https://www.digitalocean.com/community/tutorials/functional-imperative-object-resident-programming-comparison |
 | Дока — веб-безопасность    | https://doka.guide/security/web-security/                                                      |
 
 ---
@@ -87,7 +90,7 @@
 ### Question index
 
 | Тема                                             | Ответ            |
-| ------------------------------------------------ | ---------------- | --- | ----------------------------------------- | ---------------- |
+|  ------------------------------------------------  |  ----------------  |
 | Императив против декларативности                 | Вопросы и ответы |
 | Чистая функция/побочный эффект                   | Вопросы и ответы |
 | Первоклассные функции / составление / HOF        | Вопросы и ответы |
@@ -98,7 +101,8 @@
 | Архитектура против шаблонов                      | Вопросы и ответы |
 | Обзор шаблонов проектирования                    | Вопросы и ответы |
 | MVC против клиент-сервера                        | Вопросы и ответы |
-| Поток MVC / толстый против тонкого / MV\*        | Вопросы и ответы |     | Односторонний и двусторонний поток данных | Вопросы и ответы |
+| Поток MVC / толстый против тонкого / MV\*        | Вопросы и ответы |
+| Односторонний и двусторонний поток данных | Вопросы и ответы |
 | СУХОЙ, ПОЦЕЛУЙ, ЯГНИ                             | Вопросы и ответы |
 | Шаблоны создания (фабрика/AF/строитель/одиночка) | Вопросы и ответы |
 | Jest Node против jsdom/mocks                     | Вопросы и ответы |

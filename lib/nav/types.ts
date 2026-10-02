@@ -107,4 +107,5 @@ export type ChromeCopy = {
   readonly confirmYes: string;
   readonly confirmNo: string;
   readonly back: string;
+  readonly next: string;
 };

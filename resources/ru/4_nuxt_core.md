@@ -106,8 +106,9 @@ const { data: posts } = await useFetch('/api/posts')
 
 Vue рендерит UI; Nuxt оркестрирует, как и где этот UI строится, кэшируется и доставляется.
 
-| | Vue (Vite SPA) | Nuxt |
-|---|---|---|
+
+| Vue (Vite SPA) | Nuxt |
+| --- | --- |
 | **Role** | UI library | Full-stack framework |
 | **Routing** | Vue Router (ручная настройка) | File-based `app/pages/` |
 | **Data fetching** | Client hooks / ручной SSR | `useFetch`, `useAsyncData`, payload |

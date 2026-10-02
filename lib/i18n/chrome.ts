@@ -35,6 +35,7 @@ const EN: ChromeCopy = {
   confirmYes: "Yes",
   confirmNo: "No",
   back: "Back",
+  next: "Next",
 };
 
 const RU: ChromeCopy = {
@@ -71,6 +72,7 @@ const RU: ChromeCopy = {
   confirmYes: "Да",
   confirmNo: "Нет",
   back: "Назад",
+  next: "Далее",
 };
 
 const BY_LOCALE: Record<Locale, ChromeCopy> = {

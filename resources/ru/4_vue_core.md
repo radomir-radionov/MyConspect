@@ -119,8 +119,9 @@ Library vs framework
 
 **Definition:** **Library** решает узкую задачу (UI rendering); архитектуру контролируете вы. **Framework** инвертирует управление — задаёт структуру проекта, routing и data conventions.
 
-|               | Library (Vue core)    | Framework (Nuxt)                      |
-| ------------- | --------------------- | ------------------------------------- |
+
+| Library (Vue core)    | Framework (Nuxt)                      |
+|  -------------  |  ---------------------  |
 | Control       | Вы собираете стек     | Framework задаёт conventions          |
 | Routing       | Приносите Vue Router  | File-based routes из коробки          |
 | Data fetching | Bring your own        | `useFetch`, server routes через Nitro |

@@ -249,8 +249,9 @@ history.addRecord({ amount: 100, dateTime: Date.now() });
 
 Both are one-to-many notification patterns, but differ in **coupling** and **topology**.
 
-|              | Observer                                                       | Pub/Sub                                                   |
-| ------------ | -------------------------------------------------------------- | --------------------------------------------------------- |
+
+| Observer                                                       | Pub/Sub                                                   |
+|  ------------  |  --------------------------------------------------------------  |
 | **Coupling** | Subject **knows** observers directly                           | Publishers and subscribers **don't know** each other      |
 | **Mediator** | None — direct registration                                     | **Broker / event bus** in between                         |
 | **Delivery** | Synchronous callback list                                      | Often async (message queue)                               |

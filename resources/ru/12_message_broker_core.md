@@ -85,8 +85,9 @@
 
 **Definition:** Две модели async messaging — **queue** (consume and delete) vs **append-only log** (consume and remember offset).
 
-|                   | Queue (RabbitMQ, NATS Core)  | Log (Kafka, NATS JetStream)            |
-| ----------------- | ---------------------------- | -------------------------------------- |
+
+| Queue (RabbitMQ, NATS Core)  | Log (Kafka, NATS JetStream)            |
+|  -----------------  |  ----------------------------  |
 | Message lifecycle | Удаляется после ack          | Хранится по retention policy           |
 | Replay            | Плохо — сообщение исчезло    | First-class — rewind offset            |
 | Fan-out           | Exchanges / несколько queues | Consumer groups + partitions           |
@@ -109,8 +110,9 @@
 
 **Definition:** Три популярных брокера — выбор по **модели доставки**, пропускной способности и операционной нагрузке.
 
-|            | RabbitMQ                                 | Kafka                                      | NATS                                                              |
-| ---------- | ---------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------- |
+
+| RabbitMQ                                 | Kafka                                      | NATS                                                              |
+|  ----------  |  ----------------------------------------  |  ------------------------------------------  |
 | Model      | Queue + exchange (AMQP)                  | Append-only distributed log                | Лёгкий pub/sub; JetStream добавляет persistence                   |
 | Routing    | Богатый (direct, fanout, topic, headers) | Topic + partition key                      | Subject wildcards (`orders.*`)                                    |
 | Replay     | Плохо (после ack сообщение удалено)      | First-class (consumer offset)              | JetStream streams; Core NATS — fire-and-forget                    |

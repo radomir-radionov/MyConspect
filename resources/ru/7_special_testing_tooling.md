@@ -31,8 +31,8 @@ Jest, Vitest, React Testing Library, MSW, and code coverage.
 
 **How it works:**
 
-|                  | **Jest**                                | **Vitest**                                      |
-| ---------------- | --------------------------------------- | ----------------------------------------------- |
+| **Jest**                                | **Vitest**                                      |
+|  ----------------  |  ---------------------------------------  |
 | Runtime          | Own transformer (often Babel)           | Reuses Vite pipeline                            |
 | ESM / TypeScript | Works; config-heavy in some repos       | Native in Vite projects                         |
 | API              | `jest.fn`, `jest.mock`, `jest.spyOn`    | `vi.fn`, `vi.mock`, `vi.spyOn`                  |

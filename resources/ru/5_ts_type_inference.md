@@ -67,7 +67,7 @@ let zoo2: Animal[] = [new Rhino(), new Elephant(), new Snake()]; // OK
 
 | Аспект | Деталь |
 |--------|--------|
-| Резюме | // Без контекста параметр `any` (если только noImplicitAny)
+| Резюме | // Без контекста параметр `any` (если только noImplicitAny) |
 константный обработчик = функция (uiEvent) {
   console.log(uiEvent |
 

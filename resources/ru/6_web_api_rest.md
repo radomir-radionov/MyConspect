@@ -366,8 +366,9 @@ See also: [SOAP](#3-soap) · [REST](#rest-principles-and-contract) · [HTML vs X
 - **Namespaces (`xmlns`):** same local name (`table`) in two vocabularies. Prefix: `xmlns:classic="URI"` then `classic:table`. Default: `xmlns="URI"` on an element and descendants. The URI is an **identifier**, not a document the parser must fetch. Declaring a namespace does **not** by itself restrict tags to a schema — that is validation. `xmlns=""` undeclares the default namespace (Namespaces in XML 1.0). You can hoist prefix declarations onto the root.
 - Standalone **SVG as XML** needs `xmlns="http://www.w3.org/2000/svg"` on the outer `<svg>` or the UA will not treat it as SVG. Inline SVG in HTML serialization does **not** require `xmlns` (namespace is implied).
 
-|         | XML                      | HTML                   | JSON                                      |
-| ------- | ------------------------ | ---------------------- | ----------------------------------------- |
+
+| XML                      | HTML                   | JSON                                      |
+|  -------  |  ------------------------  |  ----------------------  |
 | Tags    | You invent them          | Fixed vocabulary       | No tags — objects/arrays                  |
 | Purpose | Data / documents         | Display in a browser   | Data interchange                          |
 | Errors  | Strict well-formedness   | Browsers recover       | `JSON.parse` throws                       |
@@ -561,8 +562,9 @@ See also: [REST](#rest-principles-and-contract) · [SOAP](#3-soap) · [XML](#xml
 
 `"jsonrpc": "2.0"`; `params` optional; omit `id` for a notification. Success has **only** `result`. Error has **only** `error` (`code`, `message`). Never both.
 
-|            | JSON-RPC                            | gRPC                      |
-| ---------- | ----------------------------------- | ------------------------- |
+
+| JSON-RPC                            | gRPC                      |
+|  ----------  |  -----------------------------------  |
 | Format     | JSON                                | Protocol Buffers          |
 | Transport  | HTTP, WebSocket, etc.               | HTTP/2                    |
 | Codegen    | Manual                              | Auto from `.proto`        |
@@ -646,8 +648,9 @@ See also: [REST](#rest-principles-and-contract) · [SOAP](#3-soap) · [XML](#xml
 
 **How it works:**
 
-|                             | REST                                              | SOAP                                      | RPC (JSON-RPC)                              | tRPC                                           |
-| --------------------------- | ------------------------------------------------- | ----------------------------------------- | ------------------------------------------- | ---------------------------------------------- |
+
+| REST                                              | SOAP                                      | RPC (JSON-RPC)                              | tRPC                                           |
+|  ---------------------------  |  -------------------------------------------------  |  -----------------------------------------  |  -------------------------------------------  |
 | **Kind**                    | Architectural style                               | Data-exchange format                      | Remote procedure style                      | TS RPC library                                 |
 | **Definition**              | Needed data is in the request (URL + verb + body) | Structured XML envelope                   | Request holds action _and_ data             | Call a typed server procedure as a function    |
 | **How you name the action** | HTTP method + resource path                       | Operation XML in Body (`getOrderDetails`) | `method` string (`orders.get`)              | Router path (`orders.get`)                     |
