@@ -188,7 +188,9 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
 
   return {
     inChain: inBookmarks || inChain,
-    showBack: inBookmarks ? prevHref !== null : inChain && prevHref !== null,
+    showBack: inBookmarks
+      ? prevHref !== null
+      : inChain && prevHref !== null && conceptOpen,
     showNext: inBookmarks
       ? nextHref !== null
       : inChain && nextHref !== null && conceptOpen,

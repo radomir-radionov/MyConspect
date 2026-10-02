@@ -562,10 +562,10 @@ describe("handbook sidebar", () => {
     cy.location("hash").should("eq", "#basic-html-document-structure");
   });
 
-  it("shows Back but not Next on topic index for mobile handbook nav", () => {
+  it("shows neither Back nor Next on topic index for mobile handbook nav", () => {
     cy.viewport(390, 844);
     cy.visit("/en/frontend/html-structure");
-    cy.contains("button", "Back").should("be.visible");
+    cy.contains("button", "Back").should("not.exist");
     cy.contains("button", "Next").should("not.exist");
   });
 
@@ -585,6 +585,38 @@ describe("handbook sidebar", () => {
     cy.contains("h2", "JS Browser");
     cy.contains("button", "Script loading").should("be.visible");
     cy.contains("button", "Back").should("not.exist");
+  });
+
+  it("does not show Back on database foundations topic index", () => {
+    cy.viewport(390, 844);
+    cy.visit("/en/backend/database-foundations");
+    cy.contains("h2", "Database — Foundations");
+    cy.contains("button", "Database overview").should("be.visible");
+    cy.contains("button", "Back").should("not.exist");
+    cy.contains("button", "Next").should("not.exist");
+  });
+
+  it("does not show Back on behavior questions topic index", () => {
+    cy.viewport(390, 844);
+    cy.visit("/en/behavior");
+    cy.contains("button", "Tell me about yourself").should("be.visible");
+    cy.contains("button", "Back").should("not.exist");
+    cy.contains("button", "Next").should("not.exist");
+  });
+
+  it("does not show Back on subject hub card grids", () => {
+    cy.visit("/en/frontend/css");
+    cy.contains("h2", "CSS");
+    cy.contains("a", "Core").should("be.visible");
+    cy.contains("button", "Back").should("not.exist");
+    cy.contains("button", "Next").should("not.exist");
+  });
+
+  it("does not show Back on interview topic index with grouped sections", () => {
+    cy.visit("/en/frontend/html-interview");
+    cy.contains("h2", "Questions");
+    cy.contains("button", "Back").should("not.exist");
+    cy.contains("button", "Next").should("not.exist");
   });
 
   it("opens the chosen concept in detail view from the sidebar", () => {

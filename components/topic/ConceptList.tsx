@@ -92,10 +92,6 @@ export function ConceptList({
     () => concepts.find((concept) => concept.id === activeId) ?? null,
     [activeId, concepts],
   );
-  const conceptOpen = flat || activeConcept !== null;
-  const { showBack, showNext, goBack, goNext } = useHandbookTopicNav({
-    conceptOpen,
-  });
   const conceptIds = useMemo(
     () => concepts.map((concept) => concept.id),
     [concepts],
@@ -141,10 +137,6 @@ export function ConceptList({
         concept={concept}
         notesQuery={notesQuery}
         chrome={chrome}
-        showBack={showBack}
-        onBack={goBack}
-        showNext={showNext}
-        onNext={goNext}
       />
     );
   }
@@ -155,10 +147,6 @@ export function ConceptList({
         concept={activeConcept}
         notesQuery={notesQuery}
         chrome={chrome}
-        showBack={showBack}
-        onBack={goBack}
-        showNext={showNext}
-        onNext={goNext}
       />
     );
   }
@@ -268,19 +256,15 @@ function ConceptDetail({
   concept,
   notesQuery,
   chrome,
-  showBack,
-  onBack,
-  showNext,
-  onNext,
 }: {
   concept: Concept;
   notesQuery: string;
   chrome: ChromeCopy;
-  showBack: boolean;
-  onBack?: () => void;
-  showNext?: boolean;
-  onNext?: () => void;
 }) {
+  const { showBack, showNext, goBack, goNext } = useHandbookTopicNav({
+    conceptOpen: true,
+  });
+
   return (
     <article id={concept.id} className={CONCEPT_DETAIL_CARD}>
       <ConceptTitleHeader
@@ -288,9 +272,9 @@ function ConceptDetail({
         chrome={chrome}
         variant="detail"
         showBack={showBack}
-        onBack={onBack}
-        showNext={showNext ?? false}
-        onNext={onNext}
+        onBack={goBack}
+        showNext={showNext}
+        onNext={goNext}
         showBookmark
         showShare
         conceptId={concept.id}
