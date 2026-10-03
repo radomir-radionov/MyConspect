@@ -45,6 +45,9 @@ function chromeSubject(subject: NavSubject): NavSubject {
       clusters: mapClusters(section.clusters),
     })),
     clusters: mapClusters(subject.clusters),
+    clustersAfterSections: subject.clustersAfterSections
+      ? mapClusters(subject.clustersAfterSections)
+      : undefined,
   };
 }
 

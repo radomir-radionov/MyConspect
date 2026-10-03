@@ -17,6 +17,18 @@ type InterviewConcept = {
   readonly interviewSection?: InterviewSection;
 };
 
+export function shouldHideSidebarConcepts(
+  topic: Pick<Topic, "slug" | "hideSidebarConcepts"> & {
+    readonly title?: string;
+  },
+): boolean {
+  return (
+    topic.hideSidebarConcepts === true ||
+    isInterviewTopic({ slug: topic.slug, title: topic.title ?? "" }) ||
+    isInterviewTasksTopic(topic)
+  );
+}
+
 export function filterInterviewConcepts<T extends InterviewConcept>(
   topic: Pick<Topic, "slug"> & { readonly title?: string },
   concepts: readonly T[],

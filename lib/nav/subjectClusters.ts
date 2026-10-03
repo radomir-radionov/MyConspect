@@ -5,6 +5,7 @@ export function navSubjectClusters(subject: NavSubject): readonly NavCluster[] {
     return [
       ...subject.clusters,
       ...subject.sections.flatMap((section) => section.clusters),
+      ...(subject.clustersAfterSections ?? []),
     ];
   }
   return subject.clusters;

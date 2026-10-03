@@ -39,6 +39,8 @@ export type TopicCluster = {
   readonly title: string;
   readonly blurb: string;
   readonly section?: string;
+  /** Root clusters listed after collapsible subject sections (e.g. Interview). */
+  readonly navAfterSections?: boolean;
 };
 
 export type SubjectSection = {
@@ -46,6 +48,8 @@ export type SubjectSection = {
   readonly title: string;
   readonly defaultOpen?: boolean;
   readonly collapsible?: boolean;
+  /** List section topics as compact links (TypeScript Reference appendix). */
+  readonly flatNav?: boolean;
 };
 
 export type Subject = {
@@ -204,6 +208,7 @@ const SUBJECTS_BASE: readonly Subject[] = [
         title: "Reference",
         defaultOpen: false,
         collapsible: true,
+        flatNav: true,
       },
     ],
     clusters: [
@@ -250,11 +255,6 @@ const SUBJECTS_BASE: readonly Subject[] = [
         id: "modules",
         title: "Modules",
         blurb: "ES modules, CommonJS, resolution, and module emit targets.",
-      },
-      {
-        id: "interview",
-        title: "Interview",
-        blurb: "Q&A and oral questions.",
       },
       {
         id: "utility-types",
@@ -347,6 +347,12 @@ const SUBJECTS_BASE: readonly Subject[] = [
         title: "Variable Declaration",
         blurb: "var vs let vs const and destructuring with types.",
         section: "reference",
+      },
+      {
+        id: "interview",
+        title: "Interview",
+        blurb: "Q&A and oral questions.",
+        navAfterSections: true,
       },
     ],
   },
@@ -2179,6 +2185,7 @@ function deriveTasksCluster(interview: TopicCluster): TopicCluster {
     title: "Tasks",
     blurb: "Coding tasks and live-coding challenges.",
     section: interview.section,
+    navAfterSections: interview.navAfterSections,
   };
 }
 
@@ -2457,6 +2464,26 @@ function clustersWithTopics(subject: Subject): readonly TopicCluster[] {
   );
 }
 
+function isSubjectRootCluster(cluster: TopicCluster): boolean {
+  return !cluster.section && !cluster.navAfterSections;
+}
+
+function isSubjectAfterSectionCluster(cluster: TopicCluster): boolean {
+  return !cluster.section && !!cluster.navAfterSections;
+}
+
+export function subjectClusterNavPlacement(
+  cluster: TopicCluster,
+): "root" | "section" | "after-sections" {
+  if (cluster.section) {
+    return "section";
+  }
+  if (cluster.navAfterSections) {
+    return "after-sections";
+  }
+  return "root";
+}
+
 export function subjectRootClusterCards(subject: Subject): readonly {
   readonly cluster: TopicCluster;
   readonly items: readonly BrowseCard[];
@@ -2465,7 +2492,18 @@ export function subjectRootClusterCards(subject: Subject): readonly {
   if (!subject.sections?.length) {
     return cards;
   }
-  return cards.filter((entry) => !entry.cluster.section);
+  return cards.filter((entry) => isSubjectRootCluster(entry.cluster));
+}
+
+export function subjectAfterSectionClusterCards(subject: Subject): readonly {
+  readonly cluster: TopicCluster;
+  readonly items: readonly BrowseCard[];
+}[] {
+  const cards = subjectClusterCards(subject);
+  if (!subject.sections?.length) {
+    return [];
+  }
+  return cards.filter((entry) => isSubjectAfterSectionCluster(entry.cluster));
 }
 
 export function subjectSectionClusterCards(subject: Subject): readonly {

@@ -7,6 +7,7 @@ import {
   getTrack,
   isInterviewTasksTopic,
   isInterviewTopic,
+  subjectAfterSectionClusterCards,
   subjectClusterCards,
   subjectRootClusterCards,
   subjectSectionClusterCards,
@@ -139,8 +140,14 @@ export default async function TopicPage({
     const rootSections = subject.sections?.length
       ? localizeClusterSections(locale, subjectRootClusterCards(subject))
       : undefined;
+    const afterRootSections = subject.sections?.length
+      ? localizeClusterSections(
+          locale,
+          subjectAfterSectionClusterCards(subject),
+        )
+      : undefined;
     const sections =
-      groupedSections || rootSections
+      groupedSections || rootSections || afterRootSections
         ? undefined
         : localizeClusterSections(locale, subjectClusterCards(subject));
     return (
@@ -150,6 +157,7 @@ export default async function TopicPage({
           sections={sections}
           rootSections={rootSections}
           groupedSections={groupedSections}
+          afterRootSections={afterRootSections}
         />
       </main>
     );

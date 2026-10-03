@@ -33,6 +33,7 @@ export type NavSection = {
   readonly title: string;
   readonly defaultOpen?: boolean;
   readonly collapsible?: boolean;
+  readonly flatNav?: boolean;
   readonly clusters: readonly NavCluster[];
 };
 
@@ -43,6 +44,7 @@ export type NavSubject = {
   readonly blurb: string;
   readonly sections?: readonly NavSection[];
   readonly clusters: readonly NavCluster[];
+  readonly clustersAfterSections?: readonly NavCluster[];
 };
 
 export type NavEntry =

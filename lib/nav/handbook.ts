@@ -5,6 +5,7 @@ import {
   hubFileForTrack,
   leafTopicForTrack,
   subjectHref,
+  subjectClusterNavPlacement,
   topicHref,
   topicsForCluster,
   topicsForTrack,
@@ -24,7 +25,11 @@ import {
   loadTopicOutline,
   type ConceptOutline,
 } from "@/lib/parse";
-import { filterInterviewConcepts, sameTitle } from "./navUtils";
+import {
+  filterInterviewConcepts,
+  sameTitle,
+  shouldHideSidebarConcepts,
+} from "./navUtils";
 import type { NavEntry, NavGroup, NavTopic } from "./types";
 
 function localizeHref(locale: Locale, href: string): string {
@@ -65,7 +70,7 @@ function toNavTopic(topic: Topic, locale: Locale): NavTopic {
     concepts: isBehaviorQuestionsTopic(topic)
       ? localizeBehaviorOutline(outline, locale)
       : outline,
-    hideSidebarConcepts: topic.hideSidebarConcepts,
+    hideSidebarConcepts: shouldHideSidebarConcepts(topic),
   };
 }
 
@@ -107,18 +112,32 @@ function entriesForTrack(
         title: section.title,
         defaultOpen: section.defaultOpen,
         collapsible: section.collapsible,
+        flatNav: section.flatNav,
         clusters: clusters.filter((cluster) => {
           const definition = subject.clusters.find(
             (item) => item.id === cluster.id,
           );
-          return definition?.section === section.id;
+          return definition
+            ? subjectClusterNavPlacement(definition) === "section" &&
+                definition.section === section.id
+            : false;
         }),
       }));
       const rootClusters = clusters.filter((cluster) => {
         const definition = subject.clusters.find(
           (item) => item.id === cluster.id,
         );
-        return !definition?.section;
+        return definition
+          ? subjectClusterNavPlacement(definition) === "root"
+          : false;
+      });
+      const clustersAfterSections = clusters.filter((cluster) => {
+        const definition = subject.clusters.find(
+          (item) => item.id === cluster.id,
+        );
+        return definition
+          ? subjectClusterNavPlacement(definition) === "after-sections"
+          : false;
       });
       entries.push({
         kind: "subject",
@@ -129,6 +148,9 @@ function entriesForTrack(
           blurb: catalogBlurb(locale, subject.blurb),
           sections: sections?.length ? sections : undefined,
           clusters: sections?.length ? rootClusters : clusters,
+          clustersAfterSections: sections?.length
+            ? clustersAfterSections
+            : undefined,
         },
       });
       continue;

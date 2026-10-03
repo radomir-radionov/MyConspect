@@ -51,9 +51,11 @@ export function ClusterCardSections({
   sections,
   groupedSections,
   rootSections,
+  afterRootSections,
 }: {
   sections?: readonly ClusterSection[];
   rootSections?: readonly ClusterSection[];
+  afterRootSections?: readonly ClusterSection[];
   groupedSections?: readonly {
     readonly section: {
       readonly id: string;
@@ -63,7 +65,11 @@ export function ClusterCardSections({
     readonly clusters: readonly ClusterSection[];
   }[];
 }) {
-  if (groupedSections?.length || rootSections?.length) {
+  if (
+    groupedSections?.length ||
+    rootSections?.length ||
+    afterRootSections?.length
+  ) {
     return (
       <div className="catalog-sections mt-8 space-y-4">
         {rootSections?.length ? (
@@ -92,6 +98,11 @@ export function ClusterCardSections({
             </div>
           </details>
         ))}
+        {afterRootSections?.length ? (
+          <div className="space-y-6 sm:space-y-10">
+            <ClusterBlocks sections={afterRootSections} />
+          </div>
+        ) : null}
       </div>
     );
   }

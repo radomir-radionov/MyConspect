@@ -3,6 +3,7 @@ export {
   filterInterviewConcepts,
   hashIdFrom,
   sameTitle,
+  shouldHideSidebarConcepts,
 } from "./navUtils";
 export {
   crumbsWithActive,

@@ -115,6 +115,18 @@ function visibleConcepts(topic: NavTopic, query: string, mode: SearchMode) {
   return matched;
 }
 
+function conceptRowClass(
+  active: boolean,
+  indentClass: string,
+  rowGapClass: string,
+  onPath: boolean,
+): string {
+  const highlight = active
+    ? "block w-full cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800"
+    : "block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800 dark:text-zinc-300 dark:hover:bg-yellow-950/60 dark:hover:text-zinc-50";
+  return `${highlight} ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}${onPath ? " sticky" : ""}`;
+}
+
 export const ConceptLink = memo(function ConceptLink({
   topicHref,
   concept,
@@ -157,11 +169,12 @@ export const ConceptLink = memo(function ConceptLink({
           goToPath,
         );
       }}
-      className={
-        conceptActive
-          ? `block w-full cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800 ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}${onPath ? " sticky" : ""}`
-          : `block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800 dark:text-zinc-300 dark:hover:bg-yellow-950/60 dark:hover:text-zinc-50 ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}`
-      }
+      className={conceptRowClass(
+        conceptActive,
+        indentClass,
+        rowGapClass,
+        onPath,
+      )}
     >
       <span className="flex items-baseline justify-between gap-2">
         <span className="min-w-0">
@@ -227,6 +240,131 @@ function ConceptItems({
   );
 }
 
+const SECTION_TOPIC_INDENT = "pl-8";
+
+const SectionTopicLink = memo(function SectionTopicLink({
+  topic,
+  title,
+  navId,
+  rowGapClass = "",
+}: {
+  topic: NavTopic;
+  title: string;
+  navId: string;
+  rowGapClass?: string;
+}) {
+  const { query, pathname, searching, first, onNavigate, goToPath } =
+    useSidebarChrome();
+  const { highlightPathname } = useSidebarHighlight();
+  const { isBookmarked } = useSidebarBookmarks();
+  const active = isActiveHref(highlightPathname, topic.href);
+  const isFirstTopic = first?.pathname === topic.href && first.hash === "";
+  const onPath = !searching && active;
+  const bookmarked = isBookmarked(topic.href);
+
+  return (
+    <Link
+      href={topic.href}
+      prefetch={false}
+      data-nav="topic"
+      data-nav-id={navId}
+      data-nav-path={onPath ? "true" : undefined}
+      data-search-hit={isFirstTopic ? "true" : undefined}
+      onClick={(event) => {
+        if (pathname === topic.href) {
+          event.preventDefault();
+          if (window.location.hash) {
+            applySameDocumentHref(pathname, "", pathname);
+          }
+          closeNavSoon(onNavigate);
+          return;
+        }
+        closeNavSoon(onNavigate);
+        followHandbookHref(topic.href, pathname, goToPath);
+      }}
+      className={conceptRowClass(
+        active,
+        SECTION_TOPIC_INDENT,
+        rowGapClass,
+        onPath,
+      )}
+    >
+      <span className="flex items-baseline justify-between gap-2">
+        <span className="min-w-0">
+          <HighlightedText text={title} query={query} />
+        </span>
+        {bookmarked ? (
+          <span className="shrink-0">
+            <BookmarkStar />
+          </span>
+        ) : null}
+      </span>
+    </Link>
+  );
+});
+
+function SectionClusterNav({
+  flatNav = false,
+  trackId,
+  subjectHref,
+  cluster,
+  rowGapClass = "",
+}: {
+  flatNav?: boolean;
+  trackId: TrackId;
+  subjectHref: string;
+  cluster: NavCluster;
+  rowGapClass?: string;
+}) {
+  if (flatNav) {
+    return (
+      <>
+        {cluster.topics.map((topic, index) => (
+          <li key={topic.slug} className="contents">
+            <SectionTopicLink
+              topic={topic}
+              title={cluster.topics.length === 1 ? cluster.title : topic.title}
+              navId={cluster.topics.length === 1 ? cluster.id : topic.slug}
+              rowGapClass={index === 0 ? rowGapClass : "mt-0.5"}
+            />
+          </li>
+        ))}
+      </>
+    );
+  }
+
+  return (
+    <ClusterRow trackId={trackId} subjectHref={subjectHref} cluster={cluster} />
+  );
+}
+
+function SectionClusterList({
+  flatNav = false,
+  trackId,
+  subjectHref,
+  clusters,
+}: {
+  flatNav?: boolean;
+  trackId: TrackId;
+  subjectHref: string;
+  clusters: readonly NavCluster[];
+}) {
+  return (
+    <>
+      {clusters.map((cluster, index) => (
+        <SectionClusterNav
+          key={cluster.id}
+          flatNav={flatNav}
+          trackId={trackId}
+          subjectHref={subjectHref}
+          cluster={cluster}
+          rowGapClass={index === 0 ? NAV_ROW_GAP : "mt-0.5"}
+        />
+      ))}
+    </>
+  );
+}
+
 function TopicConceptNav({
   topic,
   concepts,
@@ -271,11 +409,12 @@ export function TopicRow({
   const sidebarConcepts = searching
     ? concepts
     : filterInterviewConcepts(topic, concepts);
-  const showConceptNav = sidebarConcepts.length > 0;
+  const showConceptNav =
+    !topic.hideSidebarConcepts && sidebarConcepts.length > 0;
   const topicOpen = hideTitle
     ? showConceptNav
     : searching
-      ? hasConcepts
+      ? !topic.hideSidebarConcepts && hasConcepts
       : showConceptNav && openTopicHref === topic.href;
   const onPath = !searching && active;
   const { isBookmarked } = useSidebarBookmarks();
@@ -510,14 +649,12 @@ export function SectionRow({
           <HighlightedText text={section.title} query={query} />
         </div>
         <ul className="contents">
-          {section.clusters.map((cluster) => (
-            <ClusterRow
-              key={cluster.id}
-              trackId={trackId}
-              subjectHref={subjectPath}
-              cluster={cluster}
-            />
-          ))}
+          <SectionClusterList
+            flatNav={section.flatNav}
+            trackId={trackId}
+            subjectHref={subjectPath}
+            clusters={section.clusters}
+          />
         </ul>
       </li>
     );
@@ -536,7 +673,7 @@ export function SectionRow({
     section,
     subjectPath,
     openSectionKey,
-    searching || hasActiveChild || (onHub && hashMatchesSection),
+    searching || hasActiveChild,
   );
   const isHitSection =
     first?.pathname === subjectPath && first.hash === `#${section.id}`;
@@ -580,7 +717,7 @@ export function SectionRow({
         }}
         data-search-hit={isHitSection ? "true" : undefined}
         aria-expanded={sectionOpen}
-        className={`${rowClass(isHitSection || onPath, stickHeader, "pl-2")}${
+        className={`${rowClass(isHitSection || onPath, stickHeader, "pl-4")}${
           pinInParent ? " sticky" : ""
         } ${NAV_ROW_GAP}`}
       >
@@ -594,14 +731,12 @@ export function SectionRow({
       </Link>
       <NavFold open={sectionOpen} instant={searching} unbox>
         <ul className="contents">
-          {section.clusters.map((cluster) => (
-            <ClusterRow
-              key={cluster.id}
-              trackId={trackId}
-              subjectHref={subjectPath}
-              cluster={cluster}
-            />
-          ))}
+          <SectionClusterList
+            flatNav={section.flatNav}
+            trackId={trackId}
+            subjectHref={subjectPath}
+            clusters={section.clusters}
+          />
         </ul>
       </NavFold>
     </li>
@@ -682,6 +817,14 @@ export function SubjectRow({
                   trackId={trackId}
                   subjectHref={subject.href}
                   section={section}
+                />
+              ))}
+              {subject.clustersAfterSections?.map((cluster) => (
+                <ClusterRow
+                  key={cluster.id}
+                  trackId={trackId}
+                  subjectHref={subject.href}
+                  cluster={cluster}
                 />
               ))}
             </>

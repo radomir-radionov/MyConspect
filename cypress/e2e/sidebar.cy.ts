@@ -619,6 +619,44 @@ describe("handbook sidebar", () => {
     cy.contains("button", "Next").should("not.exist");
   });
 
+  it("does not expand interview questions in the TypeScript sidebar", () => {
+    cy.visit("/en/frontend/ts-interview");
+    cy.nav("cluster", "interview")
+      .should("be.visible")
+      .and("not.have.attr", "aria-expanded");
+    cy.get(
+      '#handbook-sidebar [data-nav="topic"][data-nav-id="ts-interview"]',
+    ).should("not.exist");
+    cy.sidebar().contains("What is TypeScript").should("not.exist");
+  });
+
+  it("toggles TypeScript Reference open and closed on the hub", () => {
+    cy.visit("/en/frontend/typescript");
+    cy.nav("section", "reference").should(
+      "have.attr",
+      "aria-expanded",
+      "false",
+    );
+    cy.nav("section", "reference").click();
+    cy.nav("section", "reference").should("have.attr", "aria-expanded", "true");
+    cy.get('#handbook-sidebar [data-nav-id="utility-types"]').should(
+      "be.visible",
+    );
+    cy.get('#handbook-sidebar [data-nav-id="utility-types"]')
+      .should("have.class", "text-sm")
+      .and("not.contain", "+");
+
+    cy.nav("section", "reference").click();
+    cy.nav("section", "reference").should(
+      "have.attr",
+      "aria-expanded",
+      "false",
+    );
+    cy.get('#handbook-sidebar [data-nav-id="utility-types"]').should(
+      "not.be.visible",
+    );
+  });
+
   it("opens the chosen concept in detail view from the sidebar", () => {
     cy.visit(
       "/en/frontend/html-performance#core-web-vitals-html-developer-impact",
