@@ -1,6 +1,6 @@
 # Node.js — Interview
 
-Вопросы по Node.js, ответы не заполнены.
+Ответы заполнены для опубликованной части, остальные пустые.
 
 [ ← Вернуться в хаб](./8_nodejs.md)
 
@@ -27,6 +27,30 @@
 
 **Definition:**
 
+Node.js выполняет JavaScript вне браузера на V8, а libuv даёт слой ввода-вывода. Один процесс держит много соединений одновременно, потому что сетевой ввод-вывод не блокирует поток JavaScript.
+
+**How it works:**
+
+- У JavaScript на главном потоке один стек вызовов. Долгая работа запускается и завершается позже через цикл событий.
+- libuv выполняет файловый ввод-вывод, часть DNS-запросов и `uv_queue_work` в небольшом пуле потоков (по умолчанию четыре). Сетевой ввод-вывод остаётся на потоке цикла.
+- npm — менеджер пакетов и публичный реестр, которые идут вместе с Node.
+- Один язык может работать в браузере и на сервере, поэтому его берут для API, потоковой передачи и realtime.
+- Он лучше подходит для работы, где много ожидания ввода-вывода (HTTP API, прокси, чат), чем для длинных циклов на CPU в главном потоке. Такую работу уносят в worker threads или другой процесс.
+
+**Examples:**
+
+```js
+import http from "node:http";
+
+http.createServer((_req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("ok");
+}).listen(3000);
+```
+
+**Sources:**
+
+- [Node.js — About](https://nodejs.org/en/about)
 </details>
 
 <details>
@@ -36,6 +60,32 @@
 
 **Definition:**
 
+Главный поток JavaScript однопоточный. Дополнительные потоки даёт пул libuv для отдельных блокирующих задач и `worker_threads`, когда нужен ещё один изолят V8 для работы на CPU.
+
+**How it works:**
+
+- Пул libuv, размер которого задаёт `UV_THREADPOOL_SIZE` (по умолчанию 4), выполняет вызовы файловой системы, `dns.lookup` и часть crypto. Сетевые сокеты в этот пул не отдают.
+- `worker_threads` запускает отдельный изолят со своим циклом событий. Данные передают сообщениями или делят память через `SharedArrayBuffer`.
+- Воркер не делит обычные объекты с родителем. Данные клонируют или передают владение.
+- Дочерние процессы (`child_process`) — другой инструмент: целый новый процесс ОС, удобный для команды оболочки или границы изоляции.
+- Вынос плотного цикла освобождает главный цикл для сокетов. Воркер на каждый запрос обычно дороже пользы.
+
+**Examples:**
+
+```js
+import { Worker, isMainThread, parentPort } from "node:worker_threads";
+
+if (isMainThread) {
+  const worker = new Worker(new URL(import.meta.url));
+  worker.on("message", (n) => console.log(n));
+} else {
+  parentPort.postMessage(2 + 2);
+}
+```
+
+**Sources:**
+
+- [Node.js — Worker threads](https://nodejs.org/api/worker_threads.html)
 </details>
 
 <details>
@@ -45,6 +95,29 @@
 
 **Definition:**
 
+Программы на Node ждут событий — запрос, кусок файла, таймер — и запускают callback или реакцию промиса, когда событие произошло. `EventEmitter` — небольшой реестр, на котором построены большинство таких API.
+
+**How it works:**
+
+- Эмиттер хранит слушателей через `on` и доставляет их через `emit`. Слушатель выполняется позже, на цикле событий, а не в новом потоке.
+- Стек вызовов выполняет текущий JavaScript. Когда он пустеет, цикл берёт следующий таймер, callback ввода-вывода или закрытия.
+- HTTP-серверы, API файловой системы и сокеты — эмиттеры. Подписываются вместо блокировки до появления результата.
+- Ошибки эмиттера тоже события. Без слушателя `error` процесс может упасть.
+- Промисы и `async`/`await` сидят на том же цикле: исполненный промис — микрозадача, а не второй поток.
+
+**Examples:**
+
+```js
+import { EventEmitter } from "node:events";
+
+const bus = new EventEmitter();
+bus.on("ping", (n) => console.log(n));
+bus.emit("ping", 1);
+```
+
+**Sources:**
+
+- [Node.js — Events](https://nodejs.org/api/events.html)
 </details>
 
 <details>
@@ -54,6 +127,28 @@
 
 **Definition:**
 
+Цикл событий — это круг, который выполняет таймеры, callback ввода-вывода и закрытия, когда текущий стек JavaScript простаивает. Благодаря ему один поток чередует много операций.
+
+**How it works:**
+
+- Фазы libuv по порядку: таймеры (`setTimeout`, `setInterval`), отложенные callback, idle/prepare, poll (новый ввод-вывод), check (`setImmediate`), затем callback закрытия.
+- Очередь `process.nextTick` выполняется после текущей операции, до продолжения цикла. Реакции промисов идут как микрозадачи между фазами, после callback nextTick.
+- Poll ждёт ввод-вывод, когда больше ничего не готово. Таймеры и `setImmediate` — не одна очередь.
+- Долгий синхронный цикл блокирует все фазы, включая новые соединения.
+- Цикл живёт на поток. У worker thread свой цикл, и он не делит очередь родителя.
+
+**Examples:**
+
+```js
+setTimeout(() => console.log("timer"), 0);
+setImmediate(() => console.log("check"));
+Promise.resolve().then(() => console.log("promise"));
+process.nextTick(() => console.log("nextTick"));
+```
+
+**Sources:**
+
+- [Node.js — The event loop](https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick)
 </details>
 
 <details>
@@ -63,6 +158,20 @@
 
 **Definition:**
 
+Классический сервер «поток на запрос» тратит поток ОС на каждое соединение, в том числе пока ждёт ввод-вывод. Node держит один поток JavaScript и продолжает другую работу, пока ввод-вывод не завершился.
+
+**How it works:**
+
+- Блокирующий ввод-вывод держит вызывающего, пока диск или база не вернут результат. Неблокирующий регистрирует callback и сразу возвращается.
+- Серверы на Java, C# или PHP часто ставят другой язык на сервере и JavaScript в браузере. Node использует JavaScript с обеих сторон.
+- Node не компилирует скрипт в бинарник заранее. Файл меняют и запускают снова. Исключение — нативные дополнения.
+- Зависимости приходят из npm (или другого клиента) и `package.json`, а не из отдельного репозитория вроде Maven.
+- Модель выгодна при множестве простаивающих соединений. Тяжёлый по CPU запрос всё равно блокирует цикл, если его не унести с главного потока.
+- Развёртывание — обычно процесс и порт. Менеджер процессов, TLS и обратный прокси всё равно нужны.
+
+**Sources:**
+
+- [Node.js — About](https://nodejs.org/en/about)
 </details>
 
 <details>
@@ -72,6 +181,30 @@
 
 **Definition:**
 
+Неблокирующий вызов начинает работу, которая может занять время, и возвращается до её конца. Результат приходит позже на цикле событий, поэтому другой JavaScript успевает выполниться между ними.
+
+**How it works:**
+
+- `fs.readFile` просит libuv прочитать файл в пуле потоков и вызывает callback, когда байты готовы. Главный поток не стоит внутри чтения.
+- Парный `fs.readFileSync` блокирует. Цикл не примет новую работу, пока вызов не вернётся.
+- Сетевое чтение неблокирующее на самом потоке цикла. Ядро сообщает о готовности, и JavaScript запускает обработчик.
+- Неблокирующий не значит параллельный. Callback на одном потоке всё равно идут по одному.
+- Функция может выглядеть асинхронной и всё же блокировать, если callback делает длинное синхронное вычисление.
+
+**Examples:**
+
+```js
+import { readFile } from "node:fs";
+
+readFile("notes.txt", "utf8", (_err, text) => {
+  console.log(text.length);
+});
+console.log("started");
+```
+
+**Sources:**
+
+- [Node.js — Overview of blocking vs non-blocking](https://nodejs.org/en/learn/asynchronous-work/overview-of-blocking-vs-non-blocking)
 </details>
 
 <details>
@@ -81,6 +214,26 @@
 
 **Definition:**
 
+Бинарник `node` заменяют менеджером версий или установщиком с nodejs.org. `npm install` обновляет пакеты проекта, а не среду выполнения.
+
+**How it works:**
+
+- Менеджеры версий вроде `nvm`, `fnm` или `nvs` ставят выпуск рядом и переключают `node` в `PATH`.
+- Официальный установщик и пакеты ОС заменяют системный бинарник. На сервере фиксируют текущий LTS, а не плавают на «latest».
+- После этого проверяют `node -v`. Нативные дополнения пересобирают: ABI меняется между мажорными версиями.
+- `npm install -g npm` может обновить сам npm. Это не поддерживаемый способ перейти с одной мажорной версии Node на другую.
+
+**Examples:**
+
+```bash
+nvm install --lts
+nvm use --lts
+node -v
+```
+
+**Sources:**
+
+- [Node.js — Download](https://nodejs.org/en/download)
 </details>
 
 <details>
@@ -90,6 +243,27 @@
 
 **Definition:**
 
+npm — менеджер пакетов, который идёт с Node, и публичный реестр, откуда эти пакеты берутся. CLI ставит модули, записывает диапазоны версий и запускает скрипты проекта.
+
+**How it works:**
+
+- `npm install` читает `package.json`, скачивает пакеты из реестра в `node_modules` и пишет `package-lock.json`, чтобы дерево можно было повторить.
+- `npm init` создаёт `package.json`. `npm publish` выкладывает ваш пакет.
+- Скрипты жизненного цикла (`start`, `test`, `build`) лежат в `scripts` и запускаются через `npm run`.
+- Клиент и реестр — разные вещи. Yarn и pnpm — другие клиенты со своими lock-файлами; реестр у них может быть тот же.
+- Сайт — браузерный вид этого реестра, а не второй менеджер пакетов.
+
+**Examples:**
+
+```bash
+npm install express
+npm install --save-dev vitest
+npm run test
+```
+
+**Sources:**
+
+- [npm Docs — About npm](https://docs.npmjs.com/about-npm)
 </details>
 
 <details>
@@ -99,6 +273,28 @@
 
 **Definition:**
 
+Проект объявляет зависимости и скрипты в `package.json` и фиксирует установленное дерево в lock-файле. Менеджер пакетов ставит, обновляет и удаляет модули по этому описанию.
+
+**How it works:**
+
+- `npm init` создаёт манифест. `npm install <pkg>` добавляет зависимость; `--save-dev` записывает devDependency.
+- `npm update` двигает установленные пакеты внутри уже разрешённых диапазонов. Он не игнорирует диапазон и не прыгает на любой тег latest.
+- `npm uninstall <pkg>` убирает пакет из дерева и манифеста.
+- Коммитьте `package-lock.json`. У Yarn аналог — `yarn.lock`, у pnpm — `pnpm-lock.yaml`.
+- Скрипты в `package.json` — повторяемые команды проекта. В CI стоит запускать `npm ci`, чтобы поставить ровно lock-файл.
+
+**Examples:**
+
+```bash
+npm install lodash
+npm install --save-dev typescript
+npm update lodash
+npm ci
+```
+
+**Sources:**
+
+- [npm Docs — package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json)
 </details>
 
 <details>
@@ -108,6 +304,30 @@
 
 **Definition:**
 
+`package.json` — манифест проекта Node: имя, нужные пакеты и команды, которые можно запустить. Его читают и установщик, и среда выполнения.
+
+**How it works:**
+
+- `dependencies` нужны в рантайме. `devDependencies` нужны для сборки или тестов. `npm install` в production может пропустить вторые.
+- Диапазоны версий: `^` разрешает совместимые minor и patch, `~` — только patch, по semver.
+- `scripts` сопоставляет имя команде оболочки. `npm start` и `npm test` — обычные имена.
+- `main`, `exports`, `type` и `engines` говорят Node, как загружать пакет и какую среду вы ожидаете.
+- Создают файл через `npm init`. Не правьте установленные версии вручную без обновления lock-файла, иначе следующая установка разъедется.
+
+**Examples:**
+
+```json
+{
+  "name": "notes",
+  "type": "module",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "express": "^5.1.0" }
+}
+```
+
+**Sources:**
+
+- [npm Docs — package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json)
 </details>
 
 
@@ -120,6 +340,30 @@
 
 **Definition:**
 
+Встроенные модули лежат внутри бинарника `node`. Их импортируют со схемой `node:` и не ставят из реестра.
+
+**How it works:**
+
+- Система: `os` (память, CPU, платформа), `process`, `util`.
+- Файлы: `fs` и `path`.
+- Сеть: `http` и `https` для HTTP, `net` для TCP, `dgram` для UDP.
+- Данные: `stream`, `buffer`, `zlib`, `crypto`, `events`.
+- Процессы: `child_process` и `worker_threads`.
+- Предпочитайте `node:fs` голому имени, чтобы локальный файл `fs.js` не затенил встроенный модуль.
+
+**Examples:**
+
+```js
+import os from "node:os";
+import { createServer } from "node:http";
+
+console.log(os.freemem());
+createServer((_req, res) => res.end("ok")).listen(0);
+```
+
+**Sources:**
+
+- [Node.js — Core modules](https://nodejs.org/api/modules.html#built-in-modules)
 </details>
 
 <details>
@@ -129,6 +373,37 @@
 
 **Definition:**
 
+`http.createServer` строит сервер, чей слушатель запроса получает `req` и `res` на каждое соединение. `listen` занимает порт.
+
+**How it works:**
+
+- Слушатель выполняется на цикле событий для каждого запроса. URL читают из `req.url`, метод — из `req.method`.
+- Статус и заголовки пишут через `writeHead` (или `setHeader`) и заканчивают `res.end`. Пока нет `end`, клиент остаётся открытым.
+- Тело — читаемый поток. Для JSON POST куски собирают или отдают разбор фреймворку.
+- `server.listen(port)` начинает приём. Callback `listening` выполняется один раз, когда порт занят.
+- Это сырой сервер, который оборачивает Express. Маршрутизацию вы делаете сами.
+
+**Examples:**
+
+```js
+import http from "node:http";
+
+const server = http.createServer((req, res) => {
+  if (req.url === "/health") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+  res.writeHead(404);
+  res.end();
+});
+
+server.listen(3000);
+```
+
+**Sources:**
+
+- [Node.js — HTTP](https://nodejs.org/api/http.html)
 </details>
 
 <details>
@@ -138,6 +413,27 @@
 
 **Definition:**
 
+`node:fs` читает и пишет файлы, каталоги и метаданные на локальной машине. Это серверный API, страница в браузере его вызвать не может.
+
+**How it works:**
+
+- Асинхронные формы (`readFile`, `writeFile` и версии из `fs/promises`) сразу возвращают управление и заканчивают работу на цикле.
+- Синхронные формы (`readFileSync`) блокируют цикл событий. Они годятся для коротких скриптов, не для обработчика запроса.
+- Можно перечислить каталог, снять `stat`, переименовать, удалить и создать жёсткую или символическую ссылку.
+- Потоки (`createReadStream`, `createWriteStream`) двигают большие файлы кусками, а не одним буфером.
+- Пути — пути ОС. Собирайте их через `node:path`, а не склейкой строк.
+
+**Examples:**
+
+```js
+import { readFile } from "node:fs/promises";
+
+const text = await readFile(new URL("./notes.txt", import.meta.url), "utf8");
+```
+
+**Sources:**
+
+- [Node.js — File system](https://nodejs.org/api/fs.html)
 </details>
 
 <details>
@@ -147,6 +443,26 @@
 
 **Definition:**
 
+`Buffer` — кусок сырых байтов фиксированного размера. Node использует его для файлов, сокетов и crypto, где данные не обязательно текст.
+
+**How it works:**
+
+- Это подкласс `Uint8Array`. Длина фиксируется при выделении; больший объём требует новый буфер.
+- `Buffer.from(text, "utf8")` кодирует строку. `buf.toString("utf8")` декодирует байты.
+- `Buffer.alloc(n)` создаёт обнулённые байты. `Buffer.allocUnsafe` не обнуляет и может показать старую память, если не перезаписать каждый байт.
+- Срезы делят нижележащую память, пока вы не скопируете. Запись через один вид меняет другой.
+- Тела HTTP и куски файлов часто приходят буферами. Склеивайте их, только когда известен полный размер, или передавайте потоком.
+
+**Examples:**
+
+```js
+const buf = Buffer.from("café", "utf8");
+console.log(buf.length, buf.toString("utf8"));
+```
+
+**Sources:**
+
+- [Node.js — Buffer](https://nodejs.org/api/buffer.html)
 </details>
 
 <details>
@@ -156,6 +472,30 @@
 
 **Definition:**
 
+Поток двигает данные кусками, а не держит всю нагрузку в памяти. В Node четыре вида: readable, writable, duplex и transform.
+
+**How it works:**
+
+- Readable: чтение файла или тело HTTP-запроса. Его потребляют через `for await` или событие `data`.
+- Writable: запись файла или HTTP-ответ. Пишут куски через `write` и заканчивают `end`.
+- Duplex: оба направления, как у TCP-сокета.
+- Transform: duplex, который меняет куски по пути, например gzip или хеш.
+- `pipeline` из `node:stream/promises` соединяет их и передаёт ошибки и очистку.
+- Обычные случаи — HTTP и `fs.createReadStream`. Обратное давление (`write` вернул false, затем `drain`) не даёт быстрому читателю залить медленного писателя.
+
+**Examples:**
+
+```js
+import { createReadStream } from "node:fs";
+import { createGzip } from "node:zlib";
+import { pipeline } from "node:stream/promises";
+
+await pipeline(createReadStream("notes.txt"), createGzip(), process.stdout);
+```
+
+**Sources:**
+
+- [Node.js — Stream](https://nodejs.org/api/stream.html)
 </details>
 
 <details>

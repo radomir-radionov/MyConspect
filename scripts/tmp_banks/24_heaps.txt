@@ -1,0 +1,74 @@
+TITLE: Heaps and Maps
+SLUG: heaps-maps-questions
+FILE: 7_ds_heaps_maps_interview.md
+TRACK: data-structures
+SUBJECT: data-structures
+URL: https://devinterview.io/questions/data-structures-and-algorithms/heap-and-map-data-structures-interview-questions/
+SOURCE: Heaps And Maps
+HUB: 7_special_data_structures.md
+
+## Basic Heap Concepts
+What is a _Heap_?
+What is a _Priority Queue_?
+How does the _Binary Heap_ property differ between a max heap and a min heap?
+Can you explain heap property maintenance after an _Insert_ operation and a _Delete_ operation?
+_Insert_ an item into the _Heap_. Explain your actions.
+
+## Heaps Implementation and Optimization
+Compare _Heaps-Based_ vs. _Arrays-Based_ priority queue implementations.
+How can you implement a heap efficiently using _Dynamic Arrays_?
+Name some ways to implement _Priority Queue_.
+How does the _Lazy deletion_ technique work in a heap and what is its purpose?
+Explain _Heapify_ and where it is used in heap operations.
+
+## Heaps Sorting and Algorithms
+What is _Heap Sort_?
+How does _Heap Sort_ compare to _Quick Sort_ in terms of speed and memory usage?
+Describe the _algorithm_ for _Merging k Sorted Arrays_ using a heap.
+Implement a heap that efficiently supports _Find-Max and Find-Min_ operations.
+
+## Heap Applications
+What are some _Practical Applications_ of _Heaps_?
+How is a heap used in the _Huffman Coding_ algorithm?
+Explain how heaps are used in _Real-Time Scheduling_ systems.
+Discuss how heaps can manage efficiently _Data Stream Median Finding_.
+
+## Heaps Comparison and Choice
+What are the advantages of _Heaps_ over _Sorted Arrays_?
+What is the difference between _Heap_ and _Red-Black Tree_?
+When would you choose a _Fibonacci Heap_ over a _Binary Heap_?
+What situations might call for using a _Binomial Heap_?
+Compare and contrast the use cases of _Min-Heaps_ vs. _Max-Heaps_.
+
+## Heap Operations and Challenges
+Find _100 largest numbers_ in an _Array_ of 1 billion numbers.
+Implement the operation _Decrease-Key_ in a _Binary Heap_, and discuss its complexity.
+Solve the _Kth Smallest Element_ in a _Min Heap_ without modifying the heap.
+How could you implement a heap which supports the operation of _Deleting any element_ (not only the root)?
+
+## Map Data Structures Basics
+Define a _Map_ data structure and explain how it differs from a _Heap_.
+What is a _Hash Map_, and how does it work internally?
+Discuss various collision resolution strategies in a _Hash Map_.
+
+## Map Data Structures Implementation
+Implement a simple _Hash Map_ with _Chaining_ for _collision resolution_.
+How does a _Tree Map_ work, and when would you use it over a _hash map_?
+Could you implement a map using an _Array_? If so, what would be the limitations?
+
+## Maps Operations and Complexities
+What is the average-case and worst-case _Time Complexity_ for operations in a _Hash Map_?
+How do _Cuckoo Hashing_ and _Linear Probing_ improve _Hash Map_ performance?
+Explain the impact of the _Load Factor_ on a _Hash Map’s_ performance.
+
+## Maps in Algorithms and Applications
+Describe a scenario where a _Map_ is used in a _Caching System_ (like LRUCache).
+How are _maps_ used in the implementation of _Graph Data Structures_ like _adjacency lists_?
+Discuss the role of _maps_ in constructing an efficient _Word Dictionary_ or _Inverted Index_.
+
+## Maps and Heaps Coding Challenges
+Design a data structure that supports the following operations: _Insertion_, _Deletion_, _Get-Random Element_, where all operations have equal probability using both Heaps and Maps.
+Implement a _Counter Map_ to find and list the _k most frequent elements_ in an array.
+Write a solution for the _Sliding Window Maximum_ problem using Heaps.
+Solve the _Top K Frequent Words_ problem with a combination of _Heap_ and _Map_ data structures.
+Design a _Leaderboard_ system that supports fast player score updates and rank retrieval using both _Heaps and Maps_.

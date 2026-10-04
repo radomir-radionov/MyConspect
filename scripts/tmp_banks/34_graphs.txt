@@ -1,0 +1,82 @@
+TITLE: Graph Theory
+SLUG: graph-questions
+FILE: 7_algo_graphs_interview.md
+TRACK: algorithms
+SUBJECT: algorithms
+URL: https://devinterview.io/questions/data-structures-and-algorithms/graph-data-structure-interview-questions/
+SOURCE: Graph Theory
+HUB: 7_special_algorithms.md
+
+## Introduction to Graphs
+What is a _Graph_?
+What are some common _Types_ and _Categories_ of _Graphs_?
+What is the difference between a _Tree_ and a _Graph_?
+How can you determine the _Minimum number of edges_ for a graph to remain connected?
+Define _Euler Path_ and _Euler Circuit_ in the context of graph theory.
+
+## Graph Representations
+Compare _Adjacency Lists_ and _Adjacency Matrices_ for graph representation.
+What is an _Incidence Matrix_, and when would you use it?
+Discuss _Edge List_ as a graph representation and its use cases.
+Explain how to save space while storing a graph using _Compressed Sparse Row_ (CSR).
+
+## Graph Traversal Algorithms
+Explain the _Breadth-First Search_ (BFS) traversing method.
+Explain the _Depth-First Search_ (DFS) algorithm.
+What are the key differences between _BFS_ and _DFS_?
+Implement a method to check if there is a _Path between two vertices_ in a graph.
+Solve the problem of printing all _Paths from a source to destination_ in a Directed Graph with BFS or DFS.
+
+## Graph Properties and Types
+What is a _Bipartite Graph_? How to detect one?
+Define _Cyclic_ and _Acyclic_ graphs and explain how to identify them.
+Explain _Planar graphs_ and the conditions that make a graph planar.
+What are _Dense_ and _Sparse_ graphs? Discuss their density measures and typical use cases.
+
+## Graph Algorithms and Complexity
+Why the complexity of _DFS_ is _O(V+E)_?
+Provide an implementation for _Topological Sort_ in a Directed Acyclic Graph (DAG).
+Write an algorithm to detect a _Cycle in an undirected graph_.
+Discuss the complexity of finding _All Pair Shortest Paths_ in a weighted graph.
+
+## Memory and Performance in Graph Operations
+Why does _Breadth-First Search_ use more memory than _Depth-First Search_?
+Illustrate the difference in _Peak Memory Consumption_ between _DFS_ and _BFS_.
+How can _Graph Data Structures_ be optimized for better _Cache Locality_?
+Discuss methods to _Reduce Memory Usage_ in graph representations.
+
+## Shortest Path Algorithms
+What is the difference between _BFS_ and _Dijkstra’s_ algorithms when looking for the shortest path?
+Implement _Dijkstra’s Algorithm_ for finding the shortest path in a graph with non-negative edge weights.
+How does _Bellman-Ford Algorithm_ differ from Dijkstra’s and where would you use it?
+Explain the concept of _Floyd-Warshall Algorithm_ and its usage.
+
+## Heuristic-Based Graph Search Algorithms
+What is _A* Search_?
+What is the heuristic cost function in _A* Search_?
+Explain the difference between _Best-First Search_ and _A* Search_.
+Provide an implementation of the _Greedy Best-First Search_ and compare it to A*.
+How can you adapt _A* Search_ to work on a puzzle game like Sudoku?
+
+## Real-World Applications of Graphs
+What are some real-world _Applications_ of _Graphs_?
+Provide some practical examples of using _Depth-First Search_ vs _Breadth-First Search_.
+How do social networks use graphs for recommendations and features like friend suggestions?
+Explain how a GPS navigation system might use graph data structures and algorithms.
+
+## Advanced Graph Topics
+What is a _Graph Embedding_, and how is it applicable in machine learning?
+Describe the _Min-Cut Max-Flow Theorem_ and its significance in network flow problems.
+Discuss the concept of _Edge Coloring_ and its applications.
+Implement an algorithm that finds the _Minimum Spanning Tree_ of a graph.
+Explain the importance of _Graph Databases_ and how they differ from traditional relational databases.
+
+## Algorithms for Specific Graph Classes
+Discuss how algorithms might vary when dealing with _Weighted_ vs _Unweighted Graphs_.
+What special considerations are needed when implementing algorithms for _Directed_ vs _Undirected Graphs_?
+Provide an efficient algorithm for finding _Articulation Points_ in a graph.
+
+## Graph Challenges and Problem-Solving
+Solve the _Knight’s tour_ problem using graph traversal techniques.
+How would you design an algorithm to evaluate the connected components of an undirected graph?
+Implement a graph solution for the _River Crossing Problem_.

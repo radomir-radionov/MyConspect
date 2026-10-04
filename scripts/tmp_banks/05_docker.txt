@@ -1,0 +1,81 @@
+TITLE: Docker
+SLUG: docker-questions
+FILE: 0_sd_docker_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/docker-interview-questions/
+SOURCE: Docker
+HUB: 0_system_design.md
+
+## Docker Fundamentals
+What is _Docker_, and how is it different from _virtual machines_?
+Can you explain what a _Docker image_ is?
+How does a _Docker container_ differ from a _Docker image_?
+What is the _Docker Hub_, and what is it used for?
+Explain the _Dockerfile_ and its significance in _Docker_.
+How does _Docker_ use _layers_ to build images?
+What’s the difference between the `COPY` and `ADD` commands in a _Dockerfile_?
+What’s the purpose of the `.dockerignore` file?
+How would you go about creating a _Docker image_ from an existing _container_?
+In practice, how do you reduce the size of _Docker images_?
+What command is used to run a _Docker container_ from an _image_?
+Can you explain what a _Docker namespace_ is and its benefits?
+What is a _Docker volume_, and when would you use it?
+Explain the use and significance of the `docker-compose` tool.
+Can _Docker containers_ running on the same _host_ communicate with each other by default? If so, how?
+
+## Docker Networking
+Describe the different types of _networks_ in _Docker_.
+How do you create a _Docker network_?
+How could you connect a _container_ to a specific _network_?
+Can you explain how _Docker’s_ default _bridge network_ differs from a user-defined _bridge network_?
+How would you enable communication between _Docker containers_ on different _hosts_?
+
+## Docker Performance & Security
+How can resource constraints be applied to _containers_ in _Docker_?
+What are _Docker security profiles_, and how do they work?
+Explain how you would scan a _Docker image_ for vulnerabilities.
+What is the purpose of a _Docker Healthcheck_?
+Describe how you would handle sensitive data with _Docker_.
+
+## Docker Orchestration
+What is _Docker Swarm_, and when would you use it?
+Can you explain the difference between _Docker Swarm_ and _Kubernetes_?
+What is a _Docker Stack_?
+How do you deploy an application _stack_ in _Docker Swarm_?
+How does _Docker_ manage service replication and _load balancing_?
+
+## Docker CLI & API
+What command would you use to list all running _containers_?
+How can you stop all _containers_ running on a _host_ using a single command?
+Can you describe how you would execute a command inside a running _container_?
+What command would you use to display the logs of a _container_?
+Explain how to copy files from a _container_ to the local file system.
+How can you inspect the details of a specific _container_ via the _CLI_?
+Describe how to use _Docker’s REST API_ to start a _container_.
+
+## Docker Best Practices
+Explain the importance of minimizing the number of _layers_ in a _Dockerfile_.
+Discuss the best practices for tagging _Docker images_.
+When should you use a `.dockerignore` file?
+Why is it advised to run only one _process_ per _container_?
+How should you handle _logging_ in _Docker containers_?
+
+## Docker Troubleshooting & Optimization
+How would you diagnose high _CPU_ or _memory_ usage in a _container_?
+What steps would you take if a _container_ consistently fails shortly after starting?
+In what scenarios would you _prune Docker objects_, and how?
+How can you monitor the _performance_ of _Docker containers_?
+What common issues might arise when working with _Docker_ in a _CI/CD pipeline_?
+
+## Docker Deployment & Integration
+How do you define a multi-container application with `docker-compose`?
+What considerations must be made when deploying _Docker containers_ in a _production environment_?
+Explain the process of integrating _Docker_ with a _continuous integration_ system.
+How would you migrate a traditional on-premise application to a _Dockerized environment_?
+Describe how to automate the deployment of _Docker containers_ using a _CI/CD pipeline_.
+
+## Docker Storage & Persistence
+When would you use a _bind mount_ over a _volume_?
+How do you create a _Docker volume_, and what is its lifecycle?
+What strategies would you use for data persistence in _Docker clusters_?

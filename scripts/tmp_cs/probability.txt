@@ -1,0 +1,68 @@
+TITLE: Probability
+SLUG: probability-questions
+FILE: 7_algo_probability_interview.md
+TRACK: algorithms
+URL: https://devinterview.io/questions/machine-learning-and-data-science/probability-interview-questions/
+SOURCE: Probability
+HUB: 7_special_algorithms.md
+
+## Probability Basics
+What is probability, and how is it used in machine learning?
+Define the terms sample space and event in probability.
+What is the difference between discrete and continuous probability distributions?
+Explain the differences between joint, marginal, and conditional probabilities.
+What does it mean for two events to be independent?
+Describe Bayes' Theorem and provide an example of how it's used.
+What is a probability density function (PDF)?
+What is the role of the cumulative distribution function (CDF)?
+
+## Probabilistic Models and Theories
+Explain the Central Limit Theorem and its significance in machine learning.
+What is the Law of Large Numbers?
+Define expectation, variance, and covariance.
+What are the characteristics of a Gaussian (Normal) distribution?
+Explain the utility of the Binomial distribution in machine learning.
+How does the Poisson distribution differ from the Binomial distribution?
+What is the relevance of the Bernoulli distribution in machine learning?
+
+## Applying Probability in Machine Learning
+How do probabilistic models cope with uncertainty in predictions?
+In machine learning, what are Naive Bayes classifiers, and why are they naive?
+How does logistic regression utilize probability?
+What is the concept of entropy in information theory, and how does it relate to machine learning models?
+Explain the relationship between Maximum Likelihood Estimation (MLE) and probability.
+How is probability used in Bayesian inference for machine learning?
+
+## Practical Considerations of Probability in Machine Learning
+How can assuming independence in probabilistic models lead to inaccuracies?
+Describe how to update probabilities using the concept of prior, likelihood, and posterior.
+What strategies would you use to handle missing data in probabilistic models?
+How do you determine the significance of an observed effect using probability?
+What are p-values and confidence intervals, and how are they interpreted?
+
+## Specific Algorithms and Techniques
+Describe how a probabilistic graphical model (PGM) works.
+Explain the concepts of Markov Chains and how they apply to machine learning.
+How do Hidden Markov Models (HMMs) use probability in sequential data modeling?
+What is Expectation-Maximization (EM) algorithm and how does probability play a role in it?
+
+## Coding Challenges
+Write a Python function that calculates the probability of rolling a sum of S on two dice.
+Implement a function that simulates a biased coin flip n times and estimates the probability of heads.
+Code a Gaussian Naive Bayes classifier from scratch using Python.
+Simulate the Law of Large Numbers using Python: verify that as the number of coin tosses increases, the average of the results becomes closer to the expected value.
+Write a Python script that estimates the mean and variance of a dataset and plots the corresponding Gaussian distribution.
+
+## Scenario-Based Probability Questions
+How would you use probability to design a recommendation system model?
+Propose a method for predicting customer churn using probabilistic models.
+Discuss how you would use probabilities to detect anomalies in transaction data.
+Describe how you might use Bayesian methods to improve the performance of a spam classifier.
+Explain a situation where you would use Markov Chains for modeling customer behavior on a website.
+
+## Advanced Probability Concepts and Research
+How has the advent of Quantum Computing influenced probabilistic algorithms?
+What role does probability play in reinforcement learning and decision making?
+Describe how Monte Carlo simulations are used in machine learning for approximation of probabilities.
+How do GANs (Generative Adversarial Networks) utilize probability theory?
+What are the probabilistic underpinnings of Active Learning and how might they be utilized in algorithm design?

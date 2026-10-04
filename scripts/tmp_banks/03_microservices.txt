@@ -1,0 +1,88 @@
+TITLE: Microservices
+SLUG: microservices-questions
+FILE: 0_sd_microservices_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/microservices-interview-questions/
+SOURCE: Microservices
+HUB: 0_system_design.md
+
+## Microservices Fundamentals
+What is a _microservice_ and how does it differ from a _monolithic architecture_?
+Can you describe the principles behind the _microservices architecture_?
+What are the main benefits of using _microservices_?
+What are some of the challenges you might face when designing a _microservices architecture_?
+How do _microservices communicate_ with each other?
+What is _Domain-Driven Design (DDD)_ and how is it related to _microservices_?
+How would you decompose a _monolithic application_ into _microservices_?
+What strategies can be employed to manage transactions across multiple _microservices_?
+Explain the concept of ‘_Bounded Context_’ in the _microservices architecture_.
+How do you handle _failure_ in a _microservice_?
+
+## Design Patterns and Best Practices
+What design patterns are commonly used in _microservices architectures_?
+Can you describe the _API Gateway_ pattern and its benefits?
+Explain the ‘_Circuit Breaker_’ pattern. Why is it important in a _microservices ecosystem_?
+What is a ‘_Service Mesh_’? How does it aid in managing _microservices_?
+How do you ensure _data consistency_ across _microservices_?
+Discuss the strategies you would use for _testing microservices_.
+How can you prevent _configuration drift_ in a _microservices environment_?
+When should you use _synchronous_ vs. _asynchronous communication_ in _microservices_?
+What role does _containerization_ play in _microservices_?
+
+## Deployment and Operations
+What are the challenges of _deploying microservices_?
+Describe _blue-green deployment_ and how it applies to _microservices_.
+How does _canary releasing_ work, and how is it beneficial for _microservices deployments_?
+Explain the concept of ‘_Infrastructure as Code_’ and how it benefits _microservices management_.
+Describe what _Continuous Integration/Continuous Deployment (CI/CD) pipelines_ look like for _microservices_.
+How do you monitor _health_ and _performance_ of _microservices_?
+
+## Microservices and Data Management
+How do you handle _database schema changes_ in a _microservice architecture_?
+Discuss the pros and cons of using a _shared database_ vs. a _database-per-service_.
+Explain the concept of ‘_Event Sourcing_’ in the context of _microservices_.
+What is _Command Query Responsibility Segregation (CQRS)_ and how can it be applied to _microservices_?
+Can you discuss strategies for dealing with _data consistency_ without using _distributed transactions_?
+
+## Security
+How do you implement _authentication_ and _authorization_ in _microservices_?
+What are some common security concerns when handling _inter-service communication_?
+Describe how you would use _OAuth2_ or _JWT_ in a _microservices architecture_.
+What mechanisms would you implement to prevent or detect _security breaches_ at the _microservices level_?
+How do you ensure that _sensitive data_ is protected when using _microservices_?
+
+## Scalability and Performance
+How do you ensure that a _microservice_ is _scalable_?
+What _metrics_ would you monitor to assess a _microservice’s performance_?
+Discuss strategies to handle _high-load_ or _peak traffic_ in a _microservices architecture_.
+How do _Microservices handle load balancing_?
+In terms of performance, what would influence your decision to use a _message broker_ vs _direct service-to-service communication_?
+
+## Inter-Process Communication
+What are the advantages and drawbacks of using _REST_ over _gRPC_ in _microservice communication_?
+How would you implement _versioning_ in _microservices API_?
+What are the challenges of _network latency_ in _microservices_ and how can they be mitigated?
+Explain the difference between _message queues_ and _event buses_. In which scenarios would you use each?
+How can _transactional outbox patterns_ be used in _microservices_?
+
+## Resiliency and Reliability
+How would you design a _microservice_ to be _fault-tolerant_?
+Discuss the importance of _timeouts_ and _retry logic_ in a _microservices architecture_.
+What strategies can be used to achieve _high availability_ in _microservices_?
+How do you approach _disaster recovery_ in a _microservices-based system_?
+Explain how you would handle a _cascading failure_ in a _microservice ecosystem_.
+
+## Observability and Monitoring
+What tools or practices would you recommend for _logging_ in a _distributed microservices system_?
+How do you trace requests across boundaries of different _microservices_?
+Discuss the importance of _metrics and alerts_ in maintaining a _microservices architecture_.
+How do you handle _performance bottlenecks_ in _microservices_?
+What is _distributed tracing_ and which tools help you accomplish it in a _microservices setup_?
+
+## Containers and Orchestration
+Explain the role of _Docker_ in developing and deploying _microservices_.
+How do _container orchestration tools_ like _Kubernetes_ help with _microservice deployment_?
+Describe the lifecycle of a _container_ within a _microservices architecture_.
+How do you ensure that _containers_ are secure and up-to-date?
+What are the best practices for _container networking_ in the context of _microservices_?

@@ -1,6 +1,6 @@
 # Testing — Interview
 
-Testing interview questions, answers not filled in.
+Answers are filled for the published subset; the rest are still empty.
 
 [← Back to hub](./7_special_testing.md)
 
@@ -27,6 +27,20 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 
 **Definition:**
 
+Software testing is the discipline of checking that a system does what it should and of learning where it does not, before users pay for the mistake.
+
+**How it works:**
+
+- It finds defects: behavior that disagrees with a requirement or with an expectation you can state.
+- Finding them early cuts the cost and the blast radius. A bug in production is more expensive than the same bug next to the change that introduced it.
+- The result is evidence about quality, not a proof that no defects remain.
+- That evidence is also feedback for the process: repeated failures in one area say where the design or the requirements are weak.
+- Testing is not “trying the happy path once,” and it is not a phase that starts only after coding is finished.
+
+**Examples:**
+
+A checkout test that asserts the total is `price + tax` will fail the day someone changes rounding. That failure is the point of the test.
+
 </details>
 
 <details>
@@ -35,6 +49,18 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 ### Define the difference between verification and validation in software testing.
 
 **Definition:**
+
+Verification asks whether the product was built to its specification. Validation asks whether that specification is the product people actually need.
+
+**How it works:**
+
+- Verification answers “are we building it right?” Reviews, inspections, and walkthroughs of requirements, design, and code are typical, and so are tests traced to a written rule.
+- Validation answers “are we building the right thing?” Acceptance tests, alpha and beta use, and a user attempting a real task are typical.
+- A feature can pass verification and still fail validation: the tax calculation matches the spec, and the spec charges the wrong party.
+
+**Examples:**
+
+A review that checks the rounding rule against the requirements document is verification. A merchant running a real invoice through checkout is validation.
 
 </details>
 
@@ -45,6 +71,23 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 
 **Definition:**
 
+The software development life cycle is the path from a need to a running system and its upkeep. Testing has a job in every phase, not only in a single “QA” box at the end.
+
+**How it works:**
+
+- While needs are gathered, testing reviews them: prototypes and use cases show gaps and contradictions before code exists.
+- While the design is written, reviews check that the structure can satisfy those needs.
+- While code is written, unit tests check small pieces in isolation.
+- As pieces are combined, integration tests check the boundaries. System tests then exercise the whole product. Acceptance, including alpha and beta, asks whether it is fit to ship.
+- Stress and similar trials push the system past normal load before release. After deployment, checks confirm the live environment, and later maintenance re-runs tests as the system changes.
+
+**Examples:**
+
+```text
+needs reviewed → design reviewed → unit tests
+  → integration → system → acceptance → live checks
+```
+
 </details>
 
 <details>
@@ -53,6 +96,21 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 ### What are the different levels of software testing?
 
 **Definition:**
+
+Testing levels are the scopes you check, from one function up to a user deciding the product is acceptable.
+
+**How it works:**
+
+- Unit tests cover one function or class, usually while it is being written, with dependencies replaced. They form the wide base of the test pyramid. JUnit, NUnit, and pytest are typical runners.
+- Component tests check a larger unit, such as a service module, after the units inside it pass and before you wire it to the rest of the system.
+- Integration tests check the interfaces between those parts. Failures here are contracts and wiring, not the arithmetic inside one function.
+- System tests run the integrated product against its requirements, in an environment that resembles production.
+- Acceptance tests ask whether the result meets the customer’s conditions. They sit at the narrow top of the pyramid.
+- Alpha is that trial inside the organization. Beta is a limited trial with external users, often after an internal acceptance pass.
+
+**Examples:**
+
+A unit test calls `tax(100, 20)` and expects `20`. An integration test posts an order through the API and checks the row the database stored. A system test completes checkout in a browser.
 
 </details>
 
@@ -63,6 +121,19 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 
 **Definition:**
 
+Static testing examines artifacts without running them. Dynamic testing executes the software and compares what it does with what it should do.
+
+**How it works:**
+
+- Static work happens early: reviews of requirements and design, plus linters, type checkers, and other analyzers on the source. It can flag a missing requirement or a dangerous call that no test happens to execute.
+- Dynamic work needs a build. Unit, integration, system, and acceptance tests are all dynamic. They show behavior, including paths the review did not imagine.
+- Static analysis can tell you a line exists. Only execution tells you that line ran for a given input.
+- Use both. A review will not catch a wrong tax rate that type-checks, and a test will not catch a requirement that was never written down.
+
+**Examples:**
+
+A linter rejecting `eval(userInput)` is static. A test that posts that input and expects the value to be stored as text is dynamic.
+
 </details>
 
 <details>
@@ -71,6 +142,26 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 ### What is a test case, and what elements should it contain?
 
 **Definition:**
+
+A test case is one documented check: the situation, the steps, and the result that would count as a pass.
+
+**How it works:**
+
+- Give it an id and a title so people can talk about it.
+- State the purpose, the preconditions, and the steps that reproduce the situation.
+- Write the expected result before you run it. The actual result is what happened, filled in during the run.
+- Comments, the person responsible, and the last-updated time keep the case maintainable.
+- An automated test is the same record in code: arrange, act, assert.
+
+**Examples:**
+
+```text
+id: TAX-14
+title: Tax is added once
+precondition: a cart with one line of 100
+steps: set the rate to 20% and request the total
+expected: 120
+```
 
 </details>
 
@@ -81,6 +172,24 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 
 **Definition:**
 
+Coverage measures how much of the program a test suite actually exercises. A high number is not the same as a meaningful test.
+
+**How it works:**
+
+- Statement coverage (often reported as line coverage) is the share of statements that ran at least once.
+- Branch coverage asks whether each side of a decision ran, both the true and the false outcome of an `if`.
+- Path coverage asks whether every route through the decisions ran. The number of paths grows quickly, so full path coverage is rarely practical.
+- Two tests can hit the same lines with inputs that never threaten the bug you care about. Use coverage to find code that never runs, then decide which of that code needs a stronger assertion.
+
+**Examples:**
+
+```text
+if (rate < 0) reject();
+else total = price + price * rate;
+```
+
+A single call with `rate = 20` covers the `else` statement and misses the `reject` branch.
+
 </details>
 
 <details>
@@ -89,6 +198,19 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 ### What is the difference between white-box, black-box, and grey-box testing?
 
 **Definition:**
+
+Black-box testing treats the system as a surface of inputs and outputs. White-box testing uses the internal structure. Grey-box testing uses a limited view of that structure.
+
+**How it works:**
+
+- Black-box cases come from requirements and from the behavior a user can observe. You do not need the source. Equivalence classes and boundary values are typical techniques.
+- White-box cases come from the code: branches, loops, and error paths. They need the source and are what coverage tools measure.
+- Grey-box testing sits between them. You might know the database schema or the API shape and still not step through every function. It is common for integration tests.
+- The three answer different questions, so a change usually needs more than one of them.
+
+**Examples:**
+
+Black box: a total of 100 at 20% tax should display 120, whatever the formula is. White box: the negative-rate branch must call `reject`. Grey box: the order API must write one row with `total = 120`.
 
 </details>
 
@@ -99,6 +221,20 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 
 **Definition:**
 
+Regression testing re-checks behavior that already worked after a change, so a fix or a new feature does not break something else.
+
+**How it works:**
+
+- The trigger is a defect fix, a new feature, a refactor, or a dependency upgrade.
+- A full regression runs the broad suite. It is the safest and the slowest.
+- A selective regression runs the cases tied to the area that changed, plus a thin smoke pass over the rest.
+- Unit tests in CI are the regression net that runs on every commit. Broader UI passes, often with a browser driver such as Selenium, run on a schedule or before release. The pipeline itself may be Jenkins, GitLab CI, or another runner.
+- If the suite never fails, it is not protecting you. If it fails on irrelevant edits, it is too tightly bound to implementation details.
+
+**Examples:**
+
+After changing rounding, re-run the tax unit tests and one checkout flow. You do not need to re-test the password-reset screens unless the change touched shared code they use.
+
 </details>
 
 <details>
@@ -107,6 +243,26 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 ### Explain unit testing and which tools you might use for it.
 
 **Definition:**
+
+A unit test checks one small piece of behavior in isolation, fast enough to run on every change.
+
+**How it works:**
+
+- The unit does not talk to the real network, database, or clock. Those are replaced with fakes or stubs so a failure points at this unit.
+- The same inputs must produce the same result, on every machine.
+- Common runners are JUnit 5 and TestNG for Java, NUnit and xUnit for .NET, pytest and unittest for Python, Jest and Mocha for JavaScript, RSpec for Ruby, and GoogleTest for C++.
+- Build tools (Maven, Gradle, npm) and CI (Jenkins, GitHub Actions) execute them. An IDE runs the same tests locally.
+- JUnit organizes this with `@Test`, assertions such as `assertEquals`, and hooks: `@BeforeEach` / `@AfterEach` around every test, `@BeforeAll` / `@AfterAll` once per class.
+- The suite documents the intended behavior and makes a refactor safer. It fails when coverage is wishful, when tests share global state, or when they duplicate one another without a new assertion.
+
+**Examples:**
+
+```java
+@Test
+void addsTaxOnce() {
+    assertEquals(120, new Cart(100).total(20));
+}
+```
 
 </details>
 
@@ -117,6 +273,21 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 
 **Definition:**
 
+Integration testing checks that separately correct parts still work when they call each other.
+
+**How it works:**
+
+- The failures you want are wrong messages, mismatched types, bad error handling, and resource leaks at the boundary.
+- Top-down starts at the user-facing entry and replaces modules that are not ready with stubs. Architectural mistakes show up early. The stubs are the extra work.
+- Bottom-up starts at the leaves, with drivers calling them, and assembles upward. Real lower-level bugs surface before the UI exists.
+- Sandwich, or middle-out, builds from a core in both directions so the middle is real while the ends are still stubbed.
+- A hybrid slices the system vertically (one user path through every layer) or grows outward from a core area, then joins those slices.
+- Big-bang, wiring everything at once, is the version that makes the first failure hard to attribute. Prefer it only when the pieces are tiny.
+
+**Examples:**
+
+Top-down: the checkout handler runs against a stub payment service that always approves. Bottom-up: the real payment client is called by a small driver before the handler exists.
+
 </details>
 
 <details>
@@ -125,6 +296,19 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 ### What is system testing, and how does it differ from other types of testing?
 
 **Definition:**
+
+System testing runs the finished, integrated product against its requirements, the way it will be used, rather than against one module.
+
+**How it works:**
+
+- A unit test isolates one piece and replaces its neighbors. A system test uses the real composition in an environment that matches production as closely as you can afford.
+- Integration testing stops at “do these parts talk correctly?” System testing asks “does the whole product meet the specification?”
+- Acceptance testing asks a stakeholder whether the product is fit for their goal. System testing is still the team’s check against requirements, even when no customer is in the room.
+- Cases are end to end: a browser, the API, the database, and the external sandbox, not a mock of all of them.
+
+**Examples:**
+
+Place an order, pay with a sandbox card, and confirm the confirmation email and the stock decrement. That is a system test. Asking the merchant whether this flow is how they take payment is acceptance.
 
 </details>
 
@@ -135,6 +319,21 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 
 **Definition:**
 
+Acceptance testing decides whether the system is fit for the people who will use it or for the contract that ordered it. It is the last question before release, not another pass over individual functions.
+
+**How it works:**
+
+- Alpha runs inside the organization, with a controlled build, to find defects that block any external trial.
+- Beta gives a limited external group the real product so you learn what the lab missed.
+- User acceptance is performed by the customer or by people who represent them, against their scenarios.
+- Contract acceptance checks the deliverable against a written agreement. It is common on government and client work.
+- Regulation acceptance checks a legal or industry rule: health, finance, aviation.
+- Operational acceptance checks that the system can be run: backups, monitoring, failover, and the procedures the operators will follow.
+
+**Examples:**
+
+A clinic confirming that a prescription flow meets its procedure is user acceptance. A checklist that backups restore and alerts fire is operational acceptance.
+
 </details>
 
 <details>
@@ -144,6 +343,21 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 
 **Definition:**
 
+Test automation runs checks by machine so the same evidence can be produced on every change, without a person repeating the steps.
+
+**How it works:**
+
+- The run is the same every time, which removes missed steps and makes a failure attributable to the change rather than to the tester.
+- Repetitive checks become cheap, so they can sit in CI and block a release. The setup cost is paid once.
+- Reports name the failing assertion, and coverage tools show what never ran.
+- Fast feedback lets the author fix the break while the change is still in their head. The same results are what the team looks at together.
+- The pipeline, not a memory, decides that the suite ran before deploy.
+- Automation does not replace judgment about what is worth asserting. It makes the assertions you chose repeatable.
+
+**Examples:**
+
+A pull request runs the unit suite and a handful of API checks. The merge waits on that result instead of on someone clicking through checkout again.
+
 </details>
 
 <details>
@@ -152,6 +366,21 @@ Questions from [Devinterview.io — Testing](https://devinterview.io/questions/w
 ### When would you choose not to automate test cases?
 
 **Definition:**
+
+Leave a check manual when automating it would cost more than it can save, or when the thing you need to learn cannot be written as an assertion in advance.
+
+**How it works:**
+
+- A one-off scenario, a throwaway migration, or a check you will not run again is often faster by hand.
+- Exploratory testing is a person looking for behavior you did not predict. Scripting the paths you already know is a different activity.
+- A tiny or short-lived project may not recover the cost of the harness.
+- Sensitive or regulated data sometimes cannot be placed in an automated fixture.
+- A small localized fix can be confirmed with one manual pass if there is no suite around it yet.
+- The durable approach is mixed: explore first, then automate the cases that are repeated and high-risk. Tools can record what the explorer saw, but the exploration itself stays human.
+
+**Examples:**
+
+Automate “tax on a 100 line is 20” because it will run on every commit. Do not automate a one-time visual check of a printed poster that will never be generated again.
 
 </details>
 

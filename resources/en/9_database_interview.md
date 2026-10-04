@@ -1,6 +1,6 @@
 # Database — Interview
 
-SQL interview questions, answers not filled in.
+Answers are filled for the published subset; the rest are still empty.
 
 [← Back to hub](./9_database.md)
 
@@ -27,6 +27,28 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+SQL is the language for defining and querying relational data. You declare tables and constraints, change rows, and ask questions that the engine answers as sets.
+
+**How it works:**
+
+- DDL (`CREATE`, `ALTER`, `DROP`) defines schema objects. DML (`INSERT`, `UPDATE`, `DELETE`, `MERGE`) changes rows.
+- DQL is the `SELECT` that reads. DCL (`GRANT`, `REVOKE`) controls who may do what. TCL (`BEGIN`, `COMMIT`, `ROLLBACK`) groups changes into a transaction.
+- A relational engine checks types and constraints and uses indexes to avoid reading every row.
+- ACID transactions make a group of writes succeed or fail together and become durable after commit.
+- The same statement runs on PostgreSQL, MySQL, and SQL Server with small dialect differences in types, `LIMIT`, and upsert syntax.
+
+**Examples:**
+
+```sql
+SELECT customer_id, SUM(total) AS spent
+FROM orders
+WHERE placed_at >= DATE '2026-01-01'
+GROUP BY customer_id;
+```
+
+**Sources:**
+
+- [PostgreSQL — SQL syntax](https://www.postgresql.org/docs/current/sql-syntax.html)
 </details>
 
 <details>
@@ -36,6 +58,19 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+SQL databases store rows in tables with a declared schema and answer questions by joining those tables. NoSQL is a family of stores that drop that single table model to scale or to hold a different shape of data.
+
+**How it works:**
+
+- A relational schema fixes columns and relationships up front. Constraints and multi-row transactions are the default tool for integrity.
+- Document stores keep a JSON-like document per key. Key-value stores keep an opaque value. Wide-column stores keep sparse rows. Graph stores keep nodes and edges.
+- Relational systems have long favored scaling up and read replicas. Distributed SQL engines also shard while keeping SQL transactions. Many NoSQL systems shard first and offer a weaker consistency choice.
+- PostgreSQL can store JSON next to relational columns. That does not turn it into a document database; the query language is still SQL.
+- Pick tables when the data is related and you need strong constraints. Pick a document or key-value store when the access pattern is “load this blob by id” and joins are rare.
+
+**Sources:**
+
+- [PostgreSQL — Tutorial](https://www.postgresql.org/docs/current/tutorial-concepts.html)
 </details>
 
 <details>
@@ -45,6 +80,29 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+SQL statements fall into groups by job: defining objects, changing rows, reading them, granting access, and controlling transactions.
+
+**How it works:**
+
+- DQL: `SELECT`, with `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, joins, and `WITH` for common table expressions.
+- DDL: `CREATE`, `ALTER`, `DROP`. `TRUNCATE` removes all rows quickly and is treated as a schema-level operation in several engines.
+- DML: `INSERT`, `UPDATE`, `DELETE`, and `MERGE` (insert or update in one statement).
+- TCL: `COMMIT` makes work durable, `ROLLBACK` undoes it, `SAVEPOINT` marks a point inside the transaction.
+- DCL: `GRANT` and `REVOKE` assign privileges. Roles group those privileges.
+- The labels are a teaching split. A real script mixes them, and a `SELECT` can sit inside an `INSERT`.
+
+**Examples:**
+
+```sql
+BEGIN;
+UPDATE accounts SET balance = balance - 20 WHERE id = 7;
+UPDATE accounts SET balance = balance + 20 WHERE id = 9;
+COMMIT;
+```
+
+**Sources:**
+
+- [PostgreSQL — SQL commands](https://www.postgresql.org/docs/current/sql-commands.html)
 </details>
 
 <details>
@@ -54,6 +112,28 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+`SELECT` reads rows and returns a result set. It does not change stored data. The clause order you write is not the order the engine logically applies.
+
+**How it works:**
+
+- Logical order: `FROM` and joins, `WHERE`, `GROUP BY`, `HAVING`, window functions, `SELECT` list, `DISTINCT`, `ORDER BY`, then `LIMIT`.
+- The select list can compute expressions, aggregates, and `CASE`. `SELECT *` is convenient and brittle when columns change.
+- `WITH` names a subquery so a later clause can use it, including a recursive walk of a tree.
+- Window functions (`OVER (PARTITION BY ...)`) compute a value per row without collapsing the group the way `GROUP BY` does.
+- The planner may use an index, a sequential scan, or a join strategy. The statement describes the result, not the access path.
+
+**Examples:**
+
+```sql
+SELECT id, total,
+       SUM(total) OVER (PARTITION BY customer_id) AS customer_spent
+FROM orders
+WHERE status = 'paid';
+```
+
+**Sources:**
+
+- [PostgreSQL — SELECT](https://www.postgresql.org/docs/current/sql-select.html)
 </details>
 
 <details>
@@ -63,6 +143,29 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+`WHERE` filters rows before they are grouped. `HAVING` filters groups after aggregates are computed. Aggregates are legal in `HAVING` and not in `WHERE`.
+
+**How it works:**
+
+- `WHERE status = 'paid'` drops unpaid orders before `SUM` runs, so the aggregate is cheaper and can use an index on `status`.
+- `HAVING SUM(total) > 100` keeps only groups whose sum clears the bar. The sum does not exist yet at `WHERE` time.
+- You can use both: filter rows, group, then filter groups.
+- A condition on a plain column belongs in `WHERE`. Putting it in `HAVING` forces the engine to build groups it will throw away.
+- `GROUP BY` is what creates the buckets `HAVING` sees. Without grouping, `HAVING` is rarely what you want.
+
+**Examples:**
+
+```sql
+SELECT customer_id, SUM(total) AS spent
+FROM orders
+WHERE status = 'paid'
+GROUP BY customer_id
+HAVING SUM(total) > 100;
+```
+
+**Sources:**
+
+- [PostgreSQL — SELECT](https://www.postgresql.org/docs/current/sql-select.html)
 </details>
 
 <details>
@@ -72,6 +175,28 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+A join combines rows from two tables by a matching condition, usually a foreign key equal to a primary key. The join type decides what happens to rows that have no partner.
+
+**How it works:**
+
+- `INNER JOIN` keeps only pairs that match.
+- `LEFT JOIN` keeps every row from the left table and fills the right side with nulls when nothing matches. `RIGHT JOIN` is the mirror. `FULL JOIN` keeps unmatched rows from both sides.
+- `CROSS JOIN` forms every pair and has no match condition. It multiplies the row counts.
+- A self-join uses the same table twice under two aliases, for example an employee and their manager.
+- List the columns you need. `SELECT *` across a join duplicates key columns and breaks if either table grows.
+- In PostgreSQL the primary key is not a clustered index. The planner can hash-join, merge-join, or nest loops; an index on the join column helps the last two.
+
+**Examples:**
+
+```sql
+SELECT e.name, m.name AS manager
+FROM employees AS e
+LEFT JOIN employees AS m ON m.id = e.manager_id;
+```
+
+**Sources:**
+
+- [PostgreSQL — Table expressions](https://www.postgresql.org/docs/current/queries-table-expressions.html)
 </details>
 
 <details>
@@ -81,6 +206,28 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+A primary key is the column or column set that identifies one row. The engine rejects a second row with the same key and rejects nulls in those columns.
+
+**How it works:**
+
+- Uniqueness and `NOT NULL` are enforced. Updating a primary key is legal and usually a mistake, because every foreign key that points at it must move too.
+- Other tables reference it. That is what makes a join mean “this child belongs to that parent”.
+- InnoDB and SQL Server often store the table in primary-key order (a clustered index). PostgreSQL stores a heap and adds a unique B-tree index for the primary key. Those are not the same layout.
+- A surrogate key (`bigint` identity, or a time-ordered UUID) stays stable when a business attribute such as email changes. A natural key is fine when the attribute truly never changes.
+- Narrow keys keep indexes smaller. A wide text primary key is copied into every secondary index that points back at the row.
+
+**Examples:**
+
+```sql
+CREATE TABLE customers (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  email text NOT NULL UNIQUE
+);
+```
+
+**Sources:**
+
+- [PostgreSQL — Primary keys](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-PRIMARY-KEYS)
 </details>
 
 <details>
@@ -90,6 +237,30 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+A foreign key is a column whose values must match a candidate key in another table, or be null. It is how the database, not only the application, keeps relationships honest.
+
+**How it works:**
+
+- Inserting a child row whose parent id does not exist fails. Deleting a parent fails while children point at it, unless you set `ON DELETE CASCADE`, `SET NULL`, or `SET DEFAULT`.
+- `ON UPDATE` has the same choices when the parent key changes.
+- Nulls are allowed unless the column is also `NOT NULL`. A null foreign key means “no parent”, not “a parent we forgot”.
+- In PostgreSQL a foreign key is not indexed automatically. Add an index on the child column or deletes and joins on that column scan the child table.
+- The parent side must be a primary key or a unique constraint. A foreign key cannot point at an arbitrary non-unique column.
+- Cross-database foreign keys do not exist. Integrity across services is an application problem.
+
+**Examples:**
+
+```sql
+CREATE TABLE orders (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  customer_id bigint NOT NULL REFERENCES customers (id)
+);
+CREATE INDEX ON orders (customer_id);
+```
+
+**Sources:**
+
+- [PostgreSQL — Foreign keys](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-FK)
 </details>
 
 <details>
@@ -99,6 +270,28 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+SQL injection happens when untrusted text is concatenated into a statement and the engine parses it as SQL. The fix is to send the statement shape and the values separately.
+
+**How it works:**
+
+- A parameterized query, or a prepared statement, uses placeholders (`$1`, `?`). The driver binds values so a quote in the input cannot close the string.
+- Stored procedures help only if they also take parameters. Building SQL inside the procedure by concatenation is still injectable.
+- Validate shape where you can: an enum of sort columns, an integer cast for an id. Allow-lists beat block-lists for identifiers, which cannot be bound as values.
+- The database role should not own the schema or read other tenants’ tables. A bug then cannot `DROP` what the role cannot see.
+- ORMs are safe when they parameterize. String-built `.raw()` queries are not.
+- Escaping quotes by hand fails on encodings and on identifiers. Do not do it as the main defense.
+
+**Examples:**
+
+```sql
+PREPARE find_user (text) AS
+  SELECT id FROM users WHERE email = $1;
+EXECUTE find_user('ada@example.com');
+```
+
+**Sources:**
+
+- [OWASP — SQL injection](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html)
 </details>
 
 <details>
@@ -108,6 +301,27 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+Normalization splits tables so each fact is stored once and depends on the key that identifies it. The usual target for transactional data is third normal form.
+
+**How it works:**
+
+- First normal form: each column holds one value, not a list stuffed into a cell. An order’s lines become rows in another table.
+- Second normal form: on a composite key, every non-key column depends on the whole key, not on part of it. A product’s name does not belong on an order-line table whose key is `(order_id, product_id)` if the name depends only on `product_id`.
+- Third normal form: a non-key column does not depend on another non-key column. A customer’s city does not belong on the order if it depends on the customer, not on the order.
+- Boyce-Codd is a stricter form of the same idea. Fourth normal form removes independent multi-valued facts from one table.
+- The cost is more joins. That is usually cheaper than updating the same address in five rows and missing one.
+
+**Examples:**
+
+```text
+orders(id, customer_id, placed_at)
+order_lines(order_id, product_id, qty)
+customers(id, name)
+```
+
+**Sources:**
+
+- [PostgreSQL — Constraints and schema](https://www.postgresql.org/docs/current/ddl-constraints.html)
 </details>
 
 <details>
@@ -117,6 +331,19 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+Denormalization copies a fact into another table, or precomputes an aggregate, so a read does not join or scan as much. You accept extra writes to make that read cheaper.
+
+**How it works:**
+
+- A reporting table may store `customer_name` on each order so a dashboard does not join `customers` for every row.
+- A counter column (`comment_count`) avoids `COUNT(*)` on the hot path. The write path must update it in the same transaction or it drifts.
+- Materialized views and summary tables are controlled copies. Refresh them on a schedule or on the write.
+- Search and analytics stores often denormalize on purpose. The transactional store can stay normalized and feed them.
+- The risks are stale copies, heavier writes, and a schema that is harder to change because the same fact lives in several places.
+
+**Sources:**
+
+- [PostgreSQL — Materialized views](https://www.postgresql.org/docs/current/rules-materializedviews.html)
 </details>
 
 <details>
@@ -126,6 +353,27 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+An index is a structure the planner can use to find rows without reading the whole table. It speeds searches, sorts, and joins, and it slows writes because every change must update the index too.
+
+**How it works:**
+
+- A B-tree, the default in PostgreSQL, supports equality and range lookups and can deliver rows in key order so an `ORDER BY` skips a separate sort.
+- A covering index includes every column the query needs, so the engine does not visit the heap for those rows.
+- Hash indexes fit equality only. GIN and GiST serve full text, JSON, and geometric data. BRIN is a tiny index of value ranges per block, useful for huge naturally ordered tables.
+- Low selectivity (a boolean that is true for most rows) often makes a sequential scan cheaper. The planner is allowed to ignore your index.
+- Every extra index costs space and write time. Index the columns in `WHERE`, `JOIN`, and `ORDER BY`, then check the plan with `EXPLAIN`.
+- In PostgreSQL a primary key is a unique B-tree plus `NOT NULL`, not a command to physically cluster the heap.
+
+**Examples:**
+
+```sql
+CREATE INDEX orders_customer_idx ON orders (customer_id);
+EXPLAIN SELECT * FROM orders WHERE customer_id = 7;
+```
+
+**Sources:**
+
+- [PostgreSQL — Indexes](https://www.postgresql.org/docs/current/indexes.html)
 </details>
 
 <details>
@@ -135,6 +383,27 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+`GROUP BY` collapses rows that share the same key into one output row so an aggregate (`COUNT`, `SUM`, `AVG`) describes the group rather than a single row.
+
+**How it works:**
+
+- Every selected column must be in the group key or inside an aggregate. Engines that enforce this reject a stray column whose value would be ambiguous.
+- `WHERE` runs before grouping. `HAVING` filters the groups afterward.
+- The planner may hash the groups or sort them. An index on the grouping columns can make the sorted path cheap.
+- Window functions are the alternative when you want the aggregate and the original rows. `GROUP BY` throws the detail rows away.
+- Grouping a huge table is real work. Filter first, and do not group in the application by pulling every row if the database can aggregate.
+
+**Examples:**
+
+```sql
+SELECT status, COUNT(*) AS n
+FROM orders
+GROUP BY status;
+```
+
+**Sources:**
+
+- [PostgreSQL — Aggregate functions](https://www.postgresql.org/docs/current/tutorial-agg.html)
 </details>
 
 <details>
@@ -144,6 +413,29 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+A subquery is a `SELECT` nested inside another statement. It supplies a value, a list, or a table that the outer query uses.
+
+**How it works:**
+
+- A scalar subquery must return one column and at most one row. It can sit in the select list or in a comparison.
+- `IN` and `EXISTS` take a subquery that returns a set. `EXISTS` stops at the first match and is the usual way to test “has at least one child”.
+- A correlated subquery refers to the outer row and can run once per outer row. That becomes expensive. The planner often rewrites it as a join; when it cannot, a join or `LATERAL` is clearer.
+- A common table expression (`WITH`) names a subquery at the top. Prefer it when the nesting gets hard to read.
+- Window functions replace many correlated subqueries that compute a rank or a running total.
+
+**Examples:**
+
+```sql
+SELECT id, email
+FROM customers AS c
+WHERE EXISTS (
+  SELECT 1 FROM orders AS o WHERE o.customer_id = c.id
+);
+```
+
+**Sources:**
+
+- [PostgreSQL — Scalar subqueries](https://www.postgresql.org/docs/current/sql-expressions.html#SQL-SYNTAX-SCALAR-SUBQUERIES)
 </details>
 
 <details>
@@ -153,6 +445,29 @@ Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-a
 
 **Definition:**
 
+`ORDER BY` sorts the result. Without it, row order is not part of the contract, even if today’s plan happens to look sorted.
+
+**How it works:**
+
+- List columns or expressions left to right. Each can be `ASC` (the default) or `DESC`.
+- `NULLS FIRST` and `NULLS LAST` place nulls explicitly. The default depends on the direction and the engine.
+- If an index matches the sort, the planner can read it in order and skip a separate sort. A mismatched order, or an expression the index does not hold, sorts in memory or on disk.
+- A large sort that exceeds `work_mem` in PostgreSQL spills to temporary files.
+- `ORDER BY` applies to the final projection. Inside a subquery it does not promise order to the outer query unless that outer query sorts again or uses a feature that keeps order, such as `LIMIT` in the same query level.
+- `DISTINCT ON` in PostgreSQL needs a matching `ORDER BY` prefix when you want one row per group.
+
+**Examples:**
+
+```sql
+SELECT id, placed_at
+FROM orders
+ORDER BY placed_at DESC NULLS LAST, id
+LIMIT 20;
+```
+
+**Sources:**
+
+- [PostgreSQL — Sorting rows](https://www.postgresql.org/docs/current/queries-order.html)
 </details>
 
 <details>

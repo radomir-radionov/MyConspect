@@ -1,0 +1,50 @@
+TITLE: Availability & Reliability
+SLUG: availability-questions
+FILE: 0_sd_availability_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/availability-and-reliability-interview-questions/
+SOURCE: Availability & Reliability
+HUB: 0_system_design.md
+
+## Availability & Reliability Fundamentals
+What is the difference between _availability_ and _reliability_ in the context of a software system?
+How do you define system _availability_ and what are the key components to measure it?
+Can you explain the concept of “_Five Nines_” and how it relates to system _availability_?
+How does _redundancy_ contribute to the _reliability_ of a system?
+What is a _single point of failure (SPOF)_, and how can it be mitigated?
+Discuss the significance of _Mean Time Between Failures (MTBF)_ in _reliability engineering_.
+What is the role of _Mean Time to Repair (MTTR)_ in maintaining system _availability_?
+Can you differentiate between _high availability (HA)_ and _fault tolerance (FT)_?
+
+## Designing for Availability
+How would you architect a system for _high availability_?
+What design patterns are commonly used to improve system _availability_?
+How can _load balancing_ improve system availability, and what are some of its potential pitfalls?
+Explain the role of _health checks_ in maintaining an available system.
+What is the purpose of a _circuit breaker pattern_ in a distributed system?
+
+## Monitoring & Incident Response
+What are some key indicators you would monitor to ensure system _reliability_?
+How do you implement a monitoring system that accurately reflects system _availability_?
+Discuss the importance of _alerting_ and _on-call rotations_ in maintaining system _reliability_.
+What steps would you take to respond to an incident that reduces system _availability_?
+How can _post-mortem analysis_ improve future system _reliability_ and _availability_?
+
+## Scaling & Performance
+How does system _scalability_ impact _availability_?
+What strategies can be employed to scale a system while maintaining or improving _reliability_?
+Describe how _caching_ can affect system _reliability_ and what are some trade-offs.
+Explain the role of _rate limiting_ in preserving system _availability_.
+
+## Reliability in Distributed Systems
+How do _eventual consistency_ and _strong consistency_ differ and what are the _reliability_ implications?
+Describe the _CAP theorem_ and its relevance to system _availability_.
+Can you discuss how _quorum-based decision making_ in distributed systems affects _reliability_?
+What is the role of _distributed transactions_ in _reliability_, and what are the challenges associated with them?
+
+## Recovery Strategies
+What is a _disaster recovery plan_ and how does it relate to _reliability_?
+How do _backup_ and _restore operations_ impact system _availability_?
+Discuss the importance and challenges of _data replication_ in a highly available system.
+Explain how you would plan for a _failover strategy_ in a multi-region deployment to ensure _reliability_.

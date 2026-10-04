@@ -20,6 +20,28 @@
 | [Шаблоны проектирования](./7_special_patterns.md)                         | Каталог GoF: творческие, структурные и поведенческие модели.           |
 | [Проектирование системы — Интервью](./0_system_design_interview.md)       | Интервью вопросов и ответов по проектированию систем.                  |
 | [OOP — Интервью](./7_oop_interview.md)                                    | Вопросы по OOP, ответы не заполнены.                                   |
+| [API Design — собеседование](./0_sd_api_design_interview.md) | Вопросы по API Design, ответы не заполнены. |
+| [Databases — собеседование](./0_sd_databases_interview.md) | Вопросы по Databases, ответы не заполнены. |
+| [Microservices — собеседование](./0_sd_microservices_interview.md) | Вопросы по Microservices, ответы не заполнены. |
+| [Availability & Reliability — собеседование](./0_sd_availability_interview.md) | Вопросы по Availability & Reliability, ответы не заполнены. |
+| [Docker — собеседование](./0_sd_docker_interview.md) | Вопросы по Docker, ответы не заполнены. |
+| [NoSQL — собеседование](./0_sd_nosql_interview.md) | Вопросы по NoSQL, ответы не заполнены. |
+| [Caching — собеседование](./0_sd_caching_interview.md) | Вопросы по Caching, ответы не заполнены. |
+| [Domain-Driven Design — собеседование](./0_sd_ddd_interview.md) | Вопросы по Domain-Driven Design, ответы не заполнены. |
+| [Reactive Systems — собеседование](./0_sd_reactive_interview.md) | Вопросы по Reactive Systems, ответы не заполнены. |
+| [Reactive Programming — собеседование](./0_sd_reactive_programming_interview.md) | Вопросы по Reactive Programming, ответы не заполнены. |
+| [CAP Theorem — собеседование](./0_sd_cap_interview.md) | Вопросы по CAP Theorem, ответы не заполнены. |
+| [Kubernetes — собеседование](./0_sd_kubernetes_interview.md) | Вопросы по Kubernetes, ответы не заполнены. |
+| [SOA — собеседование](./0_sd_soa_interview.md) | Вопросы по SOA, ответы не заполнены. |
+| [Concurrency — собеседование](./0_sd_concurrency_interview.md) | Вопросы по Concurrency, ответы не заполнены. |
+| [Layering & Middleware — собеседование](./0_sd_layering_interview.md) | Вопросы по Layering & Middleware, ответы не заполнены. |
+| [Software Architecture — собеседование](./0_sd_architecture_interview.md) | Вопросы по Software Architecture, ответы не заполнены. |
+| [Cryptography — собеседование](./0_sd_cryptography_interview.md) | Вопросы по Cryptography, ответы не заполнены. |
+| [Load Balancing — собеседование](./0_sd_load_balancing_interview.md) | Вопросы по Load Balancing, ответы не заполнены. |
+| [XML — собеседование](./0_sd_xml_interview.md) | Вопросы по XML, ответы не заполнены. |
+| [Hadoop — собеседование](./0_sd_hadoop_interview.md) | Вопросы по Hadoop, ответы не заполнены. |
+| [Apache Spark — собеседование](./0_sd_spark_interview.md) | Вопросы по Apache Spark, ответы не заполнены. |
+
 
 ### Interview practice
 

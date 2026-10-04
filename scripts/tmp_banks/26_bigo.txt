@@ -1,0 +1,48 @@
+TITLE: Big-O Notation
+SLUG: big-o-questions
+FILE: 7_algo_big_o_interview.md
+TRACK: algorithms
+SUBJECT: algorithms
+URL: https://devinterview.io/questions/data-structures-and-algorithms/big-o-notation-interview-questions/
+SOURCE: Big-O Notation
+HUB: 7_special_algorithms.md
+
+## Fundamental Concepts of Big-O Notation
+What is _Big-O Notation_?
+Explain the difference between _Big-O_, _Big-Theta_, and _Big-Omega_ notations.
+Describe the role of _constants and lower-order terms_ in Big-O analysis.
+Give examples of how _amortized analysis_ can provide a more balanced complexity measure.
+Describe how the _coefficients of higher-order terms_ affect Big-O Notation in practical scenarios.
+Explain how _probabilistic algorithms_ can have a different Big-O Notation compared to deterministic ones.
+
+## Big-O in Common Data Structures and Algorithms
+Analyze the Big-O _time complexity_ of array operations.
+Discuss the Big-O _space complexity_ of using _linked lists_.
+Compare the Big-O complexities of various _sorting algorithms_.
+Evaluate the Big-O _time complexity_ of _binary search_.
+Determine the Big-O _time and space complexities_ of _hash table_ operations.
+Discuss the Big-O complexities of _tree_ operations, including binary search trees and AVL trees.
+Analyze the Big-O complexity of _graph_ algorithms, including traversal and shortest path algorithms.
+Discuss time and space complexities of various _heap operations_.
+
+## Practical Application and Analysis
+Provide examples of _space-time tradeoffs_ in algorithm design.
+Compare the complexities of _recursive_ and _iterative_ solutions to the same problem.
+Discuss Big-O implications when scaling applications _horizontally_ versus _vertically_.
+Analyze the Big-O of _database indexing_ and query retrieval.
+Evaluate how _caching layers_ influence the Big-O performance of a system.
+
+## Coding Challenges
+Calculate the Big-O Notation for a given _recursive algorithm_.
+Implement a _binary search algorithm_ and analyze its _time complexity_.
+Optimize a _nested loop algorithm_ to achieve a _better Big-O time complexity_.
+Create a _divide and conquer algorithm_ and explain its complexity.
+Implement a _dynamic programming_ solution and discuss its Big-O time complexity.
+Refactor a recursive algorithm to use _memoization_ and analyze the complexity change.
+Develop efficient _multi-threaded_ algorithms and evaluate their Big-O complexity.
+
+## Big-O Notation in Advanced Topics
+How does _data structure choice_ affect the Big-O complexity of an algorithm?
+Analyze the Big-O complexity of algorithms in a _distributed system_.
+Explore the Big-O complexity in the context of _concurrent_ and _parallel computing_.
+Discuss the relevance of Big-O Notation in _machine learning algorithms_.

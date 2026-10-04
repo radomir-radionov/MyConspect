@@ -1,0 +1,88 @@
+TITLE: XML
+SLUG: xml-questions
+FILE: 0_sd_xml_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/xml-interview-questions/
+SOURCE: XML
+HUB: 0_system_design.md
+
+## XML Fundamentals
+What is _XML_ and what does it stand for?
+What are the key features and _benefits_ of _XML_?
+Explain the _difference_ between _XML_ and _HTML_.
+What is an _XML document_ and what are its _main components_?
+Describe the _structure_ of an _XML element_.
+What is the _purpose_ of _XML attributes_?
+Explain the concept of _XML namespaces_.
+What is the _difference_ between _well-formed_ and _valid XML_?
+What is the _role_ of _XML declaration_ in an _XML document_?
+Describe the concept of _XML entities_ and their _usage_.
+
+## XML Syntax and Structure
+What are the _rules_ for naming _XML elements_ and _attributes_?
+Explain the _difference_ between _XML elements_ and _attributes_.
+What is the _purpose_ of _XML comments_ and how are they represented?
+Describe the concept of _XML processing instructions_.
+What is the _difference_ between an _empty element_ and a _self-closing element_ in _XML_?
+Explain the concept of _XML CDATA sections_ and their _usage_.
+What is the _purpose_ of the _XML prolog_ and what does it contain?
+Describe the concept of _XML character references_ and their _usage_.
+What is the _difference_ between an _XML document_ and an _XML fragment_?
+Explain the concept of _XML whitespace handling_.
+
+## XML Validation and Schemas
+What is _XML Schema_ and its _purpose_?
+Explain the _difference_ between _XML DTD_ and _XML Schema_.
+What are the key _components_ of an _XML Schema document_?
+Describe the concept of _XML Schema data types_.
+What is the _purpose_ of _XML Schema elements_ and _attributes_?
+Explain the concept of _XML Schema complex types_ and their _usage_.
+What is the _difference_ between _XML Schema simple types_ and _complex types_?
+Describe the concept of _XML Schema facets_ and their _usage_.
+What is the _purpose_ of _XML Schema namespace declarations_?
+Explain the concept of _XML Schema substitution groups_.
+
+## XML Parsing and Processing
+What is _XML parsing_ and why is it important?
+Explain the _difference_ between _DOM_ and _SAX parsing_.
+What are the _advantages_ and _disadvantages_ of using _DOM parsing_?
+Describe the concept of _XML XPath_ and its _usage_.
+What is the _purpose_ of _XML XSLT_ and how does it work?
+Explain the concept of _XML DOM traversal_ and _manipulation_.
+What is the _difference_ between _XML pull parsing_ and _push parsing_?
+Describe the concept of _XML streaming_ and its _benefits_.
+What is the _purpose_ of _XML SAX events_ and how are they handled?
+Explain the concept of _XML StAX (Streaming API for XML)_ and its _usage_.
+
+## XML Technologies and APIs
+What is _XML DOM (Document Object Model)_ and its _purpose_?
+Explain the concept of _XML SAX (Simple API for XML)_ and its _usage_.
+What is _XML JAXP (Java API for XML Processing)_ and its key _components_?
+Describe the concept of _XML JAXB (Java Architecture for XML Binding)_ and its _benefits_.
+What is the _purpose_ of _XML XQuery_ and how does it _differ_ from _XPath_?
+Explain the concept of _XML Namespaces_ and their _usage_ in _XML technologies_.
+What is _XML Signature_ and its _role_ in _XML security_?
+Describe the concept of _XML Encryption_ and its _purpose_.
+What is the _purpose_ of _XML Canonicalization_ and its _usage_?
+Explain the concept of _XML Catalogs_ and their _benefits_.
+
+## XML Best Practices and Design Patterns
+What are some _best practices_ for _designing XML schemas_?
+Explain the concept of _XML modularity_ and its _benefits_.
+What is the _purpose_ of _XML versioning_ and how is it achieved?
+Describe the concept of _XML internationalization_ and _localization_.
+What are some common _XML design patterns_ and their _usage_?
+Explain the concept of _XML data binding_ and its _advantages_.
+What is the _purpose_ of _XML data validation_ and how is it performed?
+Describe the concept of _XML data transformation_ and its _techniques_.
+What are some _best practices_ for _XML performance optimization_?
+Explain the concept of _XML security_ and its _key considerations_.
+
+## Advanced XML Topics
+What is _XML Signature_ and how does it ensure _data integrity_?
+Explain the concept of _XML Encryption_ and its _role_ in _data confidentiality_.
+What is the _purpose_ of _XML Digital Signatures_ and how are they created?
+Describe the concept of _XML Key Management_ and its _importance_.
+What is the _role_ of _XML_ in _web services_ and _service-oriented architectures (SOA)_?
+Explain the concept of _XML-based protocols_ such as _SOAP_ and _REST_.

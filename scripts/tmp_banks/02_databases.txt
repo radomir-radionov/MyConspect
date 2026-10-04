@@ -1,0 +1,74 @@
+TITLE: Databases
+SLUG: databases-questions
+FILE: 0_sd_databases_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/databases-interview-questions/
+SOURCE: Databases
+HUB: 0_system_design.md
+
+## Database Fundamentals
+What is a _database management system (DBMS)_, and can you name some examples?
+Explain the _ACID properties_ in the context of databases.
+What are the differences between _SQL_ and _NoSQL_ databases?
+Describe a _relational database schema_.
+What is a _primary key_, and why is it important?
+Can you explain what a _foreign key_ is and its role in the database?
+What is _database normalization_, and why do we use it?
+What is _denormalization_ and when would you consider it?
+Compare and contrast the _DROP_, _DELETE_, and _TRUNCATE_ commands.
+What is the difference between a _full join_ and an _inner join_?
+
+## SQL and Query Optimization
+How would you write an _SQL query_ to fetch duplicate records from a table?
+What is a _prepared statement_, and why would you use one?
+What is the _N+1 query problem_ and how can you solve it?
+Explain the function of _GROUP BY_ and _HAVING_ clauses in SQL.
+What are _indexes_ and how do they work in databases?
+What impact do _JOIN_ operations have on database performance?
+Define what a _subquery_ is and provide a use case for it.
+What is a _correlated subquery_?
+Describe how you would optimize a _slow SQL query_.
+Explain the _EXPLAIN statement_ and how you use it in query optimization.
+
+## Data Modeling and Design
+What is an _Entity-Relationship (ER) model_, and why is it useful?
+Describe the process of converting an _ER model_ into a _relational database schema_.
+How do you design a _scalable database schema_ for a high-traffic application?
+What is _database sharding_, and what are its benefits and drawbacks?
+Explain the term “_data integrity_” and how it’s enforced in databases.
+
+## Transactions and Concurrency Control
+Can you explain the concept of _transaction isolation levels_?
+What is a _deadlock_ in databases, and how can it be resolved?
+Describe _optimistic_ vs. _pessimistic locking_.
+How does a database ensure _consistency_ during concurrent transactions?
+What is a _savepoint_ in a database transaction?
+
+## Database Security
+What is _SQL injection_, and how do you prevent it?
+Explain the role of _access control_ in database security.
+What are the best practices for storing _passwords_ in a database?
+How do you secure data transmission to and from a database?
+Describe the use of _encryption_ within databases for data at rest.
+
+## Backup and Recovery
+What is a _database snapshot_, and when would you use one?
+Explain the difference between _logical_ and _physical backups_.
+How would you restore a database from a _backup file_?
+What are the common strategies for database _disaster recovery_?
+How does _point-in-time recovery_ work in databases?
+
+## Performance Tuning and Scaling
+How would you handle a scenario where your database’s read load significantly increases?
+What strategies exist for scaling _writes_ in a high-volume database system?
+Describe how _connection pooling_ benefits database performance.
+How do you monitor and identify database _performance bottlenecks_?
+What is _horizontal_ and _vertical scaling_ in databases?
+
+## NoSQL Databases
+Explain what a _document store_ is and give an example of where it’s appropriate to use.
+What is a _graph database_, and what are its typical use cases?
+Describe the _key-value store model_ and its typical applications.
+How do you choose between _consistency_ and _availability_ in a NoSQL database, referencing the _CAP theorem_?
+What is _eventual consistency_, and in what scenarios is it used?

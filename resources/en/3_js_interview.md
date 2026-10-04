@@ -1,6 +1,6 @@
 # JS — Interview
 
-JavaScript interview questions. Answers are not filled in.
+JavaScript interview questions. Answers are filled for the published subset; the rest are still empty.
 
 [← Back to JS hub](./3_js.md)
 
@@ -28,6 +28,31 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 
 **Definition:**
 
+JavaScript values are primitives or objects. A primitive is not an object and has no properties of its own; an object is a collection of properties, and functions are objects you can call.
+
+**How it works:**
+
+- The primitives are `undefined`, `null`, boolean, number, bigint, string, and symbol.
+- `typeof null` is `"object"`. That is a long-standing mistake in the operator, not a reason to treat `null` as an object.
+- Number is IEEE-754 double precision. Integers past `Number.MAX_SAFE_INTEGER` are not exact; bigint covers arbitrary-size integers and does not mix with number without an explicit conversion.
+- Symbol values are unique. Two `Symbol("id")` calls are never equal.
+- Ordinary objects, arrays, and dates are all objects. An array is an object with indexed properties and a `length`.
+- Functions are callable objects. `typeof function () {}` is `"function"`.
+- The language is dynamically typed. A binding can hold a number now and a string later.
+- Operators coerce values. `"5" - 1` becomes a number; `"5" + 1` becomes a string.
+
+**Examples:**
+
+```js
+typeof 1n;          // "bigint"
+typeof Symbol("id"); // "symbol"
+typeof null;        // "object"
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Data_structures
+
 </details>
 
 <details>
@@ -36,6 +61,33 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 ### What is the difference between null and undefined?
 
 **Definition:**
+
+`undefined` means no value was given. `null` means a value was given and that value is intentionally empty. They compare equal with `==` and not with `===`.
+
+**How it works:**
+
+- A `let` or `var` binding with no initializer is `undefined`. A missing argument is `undefined`. A missing property read is `undefined`.
+- Assign `null` when you want to say “there is nothing here” on purpose, such as “this search has no match yet.”
+- `typeof undefined` is `"undefined"`. `typeof null` is `"object"`.
+- `null == undefined` is true. `null === undefined` is false. Prefer `===` unless you mean both empties.
+- Setting a property to `null` keeps the key. `delete` removes the key. After either, a read of a missing key is `undefined`.
+- Default parameters trigger on `undefined`, not on `null`. `f(null)` does not apply a default of the form `function f(x = 1)`.
+- JSON has `null` and no `undefined`. `JSON.stringify` omits `undefined` in objects and turns it into `null` in arrays.
+
+**Examples:**
+
+```js
+let pending;
+const match = null;
+pending == match;   // true
+pending === match;  // false
+({ a: undefined }).hasOwnProperty("a"); // true, key exists
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
 </details>
 
@@ -46,6 +98,33 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 
 **Definition:**
 
+Coercion is a conversion of a value to another type. Explicit coercion is a function you call. Implicit coercion is what an operator does because it needs a number, a string, or a boolean.
+
+**How it works:**
+
+- Explicit: `Number("5")`, `String(5)`, `Boolean(1)`, `parseInt("10px", 10)`.
+- `+` with a string concatenates, so `1 + "2"` is `"12"`. Other arithmetic coerces to number, so `"5" - 1` is `4`.
+- `==` coerces when the types differ. `"4" == 4` is true. `===` does not coerce.
+- `if`, `while`, and the condition of `?:` use ToBoolean. Falsy values are `false`, `0`, `-0`, `0n`, `""`, `null`, `undefined`, and `NaN`.
+- `&&` and `||` return an operand, not necessarily a boolean. `"pier" && 0` is `0`. `"" || "tide"` is `"tide"`.
+- `Object.is` and `===` still treat `NaN` as not equal to itself. Number coercion of a non-numeric string is `NaN`.
+- Prefer explicit conversion at the boundary and `===` in comparisons, so the coercion is visible.
+
+**Examples:**
+
+```js
+Number("5");   // 5
+"5" - 1;       // 4
+1 + "2";       // "12"
+"4" == 4;      // true
+"4" === 4;     // false
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality
+- https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion
+
 </details>
 
 <details>
@@ -54,6 +133,36 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 ### Explain the concept of hoisting in JavaScript.
 
 **Definition:**
+
+Hoisting is the rule that a declaration is created for the whole scope before that scope runs. Only the declaration moves, in that sense. The initializer stays on its line.
+
+**How it works:**
+
+- A `function` declaration is created and initialized at the top of its scope, so a call above the declaration works.
+- `var` is created at the top of the function (or script) and initialized to `undefined`. The assignment runs where it is written. A read before that line sees `undefined`, not a `ReferenceError`.
+- `let` and `const` are hoisted too, but they stay uninitialized until their line. The gap is the temporal dead zone. A read there throws `ReferenceError`.
+- `const` must be initialized on the declaration line. `let` may be declared and assigned later.
+- A function expression assigned with `var` follows `var` rules: the name exists early, the function does not, until the assignment.
+- Class declarations are also in the temporal dead zone. They are not available above the declaration the way a `function` declaration is.
+- Declare bindings before use. Hoisting explains old code; it is not a style to rely on.
+
+**Examples:**
+
+```js
+sayPier(); // "Pier 4"
+function sayPier() { return "Pier 4"; }
+
+console.log(label); // undefined
+var label = "north";
+
+// console.log(code); ReferenceError
+let code = "NB";
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Glossary/Hoisting
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let
 
 </details>
 
@@ -64,6 +173,37 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 
 **Definition:**
 
+Scope is the region of code where a binding can be used. JavaScript has global scope, function scope, module scope, and block scope.
+
+**How it works:**
+
+- A binding outside every function and block, in a classic script, is global. In a browser that means a property of the global object for `var` and `function`. `let` and `const` at the top of a script are global bindings but do not become properties of `window`.
+- A module (`type="module"`) has its own scope. Top-level bindings are not global unless you put them on `globalThis`.
+- `var` is function-scoped. A `var` inside an `if` or `for` is visible to the whole function.
+- `let`, `const`, and `class` are block-scoped. A binding inside `{ }` is not visible outside that block, and not before its line.
+- An inner scope can read an outer binding. An outer scope cannot read an inner one. That lookup is lexical: it follows where the function was written, not where it was called.
+- A parameter belongs to the function scope.
+
+**Examples:**
+
+```js
+const pier = "4";
+function shift() {
+  const tide = "flood";
+  if (tide) {
+    let note = "gate open";
+    var flag = true;
+  }
+  return flag; // true, var ignores the block
+  // note is not visible here
+}
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Glossary/Scope
+- https://javascript.info/closure
+
 </details>
 
 <details>
@@ -72,6 +212,32 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 ### What is the difference between == and ===?
 
 **Definition:**
+
+`===` is strict equality: same value and no type conversion. `==` is abstract equality: if the types differ, it coerces, then compares.
+
+**How it works:**
+
+- `5 === "5"` is false. `5 == "5"` is true because the string becomes a number.
+- `null == undefined` is true. `null === undefined` is false. Neither equals `0` or `false` under `==`.
+- `0 == false` is true. `0 === false` is false.
+- `NaN === NaN` is false. Use `Number.isNaN` or `Object.is` when NaN is the question.
+- `===` skips the coercion steps, so it is the default for application code. The comparison is also easier to read.
+- `==` is a deliberate tool when you mean “null or undefined”: `value == null`. Anywhere else, the coercion table is too easy to get wrong.
+- Object equality is by reference for both operators, once the values are objects. Two distinct `{ a: 1 }` objects are not equal.
+
+**Examples:**
+
+```js
+0 == false;          // true
+0 === false;         // false
+null == undefined;   // true
+null === undefined;  // false
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality
 
 </details>
 
@@ -82,6 +248,34 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 
 **Definition:**
 
+A closure is a function together with the bindings of the scope where it was created. Those bindings stay available after the outer function has returned.
+
+**How it works:**
+
+- The outer function creates local bindings. The inner function reads or writes them. Returning the inner function (or registering it as a handler) keeps that environment alive.
+- Each call of the outer function makes a new environment. Two counters from two calls do not share a `count`.
+- Closures are how JavaScript hides state: the binding is not a property of the returned object, so outside code cannot read it by name.
+- Timers and event handlers close over the variables they use. A loop variable is a classic trap: `var` is one binding for every iteration; `let` in `for` is one binding per iteration.
+- A closure can keep a large object alive. Drop the reference to the inner function when the state should be collected.
+- If the closed-over binding is reassigned later, the inner function sees the new value. It captured the binding, not a frozen copy, unless you copied the value into a `const`.
+
+**Examples:**
+
+```js
+function makeCounter() {
+  let count = 0;
+  return () => ++count;
+}
+const next = makeCounter();
+next(); // 1
+next(); // 2
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures
+- https://javascript.info/closure
+
 </details>
 
 <details>
@@ -90,6 +284,35 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 ### What is the 'this' keyword and how does its context change?
 
 **Definition:**
+
+`this` is set by how a function is called, not by where a plain function is written. An arrow function does not have its own `this`; it uses the `this` of the surrounding scope.
+
+**How it works:**
+
+- A method call `obj.shift()` sets `this` to `obj`.
+- A plain call `shift()` sets `this` to `undefined` in strict mode and modules. In a classic non-strict script it is the global object.
+- `new Shift()` sets `this` to the new object.
+- `fn.call(obj, arg)`, `fn.apply(obj, args)`, and `fn.bind(obj)` set `this` explicitly. `bind` returns a new function with that `this` fixed.
+- An arrow function ignores `call`, `apply`, and `bind` for `this`. It keeps the `this` from where the arrow was created.
+- A listener registered as a method reference (`el.addEventListener("click", obj.save)`) is a plain call, so `this` is not `obj`. Pass `obj.save.bind(obj)` or an arrow that calls `obj.save()`.
+- Classes and modules are strict. Do not rely on `this` being `window`.
+
+**Examples:**
+
+```js
+const berth = {
+  name: "Pier 4",
+  label() { return this.name; },
+};
+const loose = berth.label;
+berth.label(); // "Pier 4"
+loose();       // undefined in strict mode
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this
+- https://javascript.info/object-methods
 
 </details>
 
@@ -100,6 +323,34 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 
 **Definition:**
 
+An arrow function is a function expression written with `=>`. It has a shorter form and it does not get its own `this`, `arguments`, or `new.target`.
+
+**How it works:**
+
+- One parameter and one expression need no parentheses or braces: `n => n + 1`. The expression’s value is the return value.
+- A block body uses braces and an explicit `return`.
+- `this` is lexical. An arrow inside a method sees the method’s `this`, which is why arrows are useful as callbacks there.
+- An arrow used as an event handler does not receive the element as `this`. The element is `event.currentTarget`.
+- Arrows cannot be constructors. `new` on an arrow throws.
+- They have no `prototype` and no own `arguments` object. Rest parameters cover the argument list.
+- They fit `map`, `filter`, and short callbacks. A method that should use the call-site `this` is still a regular method, not an arrow property, unless you want lexical `this` on purpose.
+
+**Examples:**
+
+```js
+const twice = (n) => n * 2;
+const berth = {
+  name: "Pier 4",
+  titles() {
+    return ["a", "b"].map((item) => `${this.name}:${item}`);
+  },
+};
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+
 </details>
 
 <details>
@@ -108,6 +359,30 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 ### What are template literals in JavaScript?
 
 **Definition:**
+
+A template literal is a string written in backticks. It may span lines, and `${expression}` inserts the value of an expression.
+
+**How it works:**
+
+- `` `Pier ${id}` `` converts the expression with the ordinary ToString rules and builds one string.
+- Newlines in the literal are part of the string. You do not need `\n` for a line break you actually typed.
+- Any expression is allowed inside `${}`, including a call or a conditional. Keep it small; a large block inside the braces is hard to read.
+- A tagged template calls a function with the string parts and the interpolated values. Libraries use that to escape HTML or build queries. An untagged literal does not escape HTML.
+- They are ordinary strings after evaluation. There is no special runtime type.
+- Older engines without template support need a transpile step. Current browsers implement them.
+
+**Examples:**
+
+```js
+const pier = 4;
+const line = `Berth at pier ${pier}`;
+const board = `North
+South`;
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
 
 </details>
 
@@ -120,6 +395,30 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 
 **Definition:**
 
+A higher-order function takes a function as an argument, returns a function, or both. That works because functions are values.
+
+**How it works:**
+
+- `map`, `filter`, and `reduce` take a function and return a new array (or a folded value). They do not need a hand-written loop at the call site.
+- `setTimeout`, `addEventListener`, and `Promise.prototype.then` take callbacks. The caller decides what happens later.
+- A function can return a function that closes over an argument, which is how you specialize behavior: `const twice = multiplyBy(2)`.
+- The returned function keeps the lexical environment of the factory. That is the closure, not a separate feature of `map`.
+- Higher-order functions are the usual way to share a repeated step (retry, log, authorize) without copying the step into every call.
+- They are still ordinary calls. There is no extra runtime type called “higher-order.”
+
+**Examples:**
+
+```js
+const multiplyBy = (factor) => (n) => n * factor;
+const twice = multiplyBy(2);
+[1, 2, 3].map(twice); // [2, 4, 6]
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Glossary/First-class_function
+- https://javascript.info/array-methods
+
 </details>
 
 <details>
@@ -128,6 +427,31 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 ### Can functions be assigned as values to variables in JavaScript?
 
 **Definition:**
+
+Yes. Functions are values, so a function can be stored in a binding, passed as an argument, returned, or placed in an array or object.
+
+**How it works:**
+
+- A function declaration creates a binding in its scope. A function expression or an arrow produces a value you assign: `const greet = function () {}`.
+- Assigning a function copies the reference. `const say = greet` does not clone the function. Calling `say()` calls the same function.
+- Reassigning the binding points it at a different function. Other bindings that still hold the old reference are unchanged.
+- Callbacks, event listeners, and module exports are this mechanism. You pass the function; the other side calls it.
+- A method is a function stored as a property. Pulling it off the object (`const fn = obj.save`) loses the method call, so `this` changes.
+- Names of function expressions help stack traces. Anonymous arrows do not name themselves.
+
+**Examples:**
+
+```js
+function greet() { return "hello"; }
+const say = greet;
+say(); // "hello"
+const later = () => "ahoy";
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Glossary/First-class_function
+- https://javascript.info/function-expressions
 
 </details>
 
@@ -138,6 +462,29 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 
 **Definition:**
 
+JavaScript can be written in a functional style because functions are values. Purity, immutable updates, and higher-order functions are conventions on top of that, not a separate runtime.
+
+**How it works:**
+
+- First-class functions let you pass `map` a transformer instead of writing the loop.
+- A pure function’s result depends only on its arguments and it does not change outside state. `n => n * 2` is pure. A function that writes `document.title` is not.
+- Prefer new arrays and objects (`map`, spread, `filter`) over mutating a shared list when many readers hold it.
+- Declarative array methods say what the result is. A `for` loop says how to build it. Both are valid; the methods shine when the step is “keep, drop, or reshape each item.”
+- JavaScript does not enforce immutability. `const` freezes the binding, not the object. A pure style is something you keep, or you use a library that helps.
+- Side effects belong at the edges: reading input, writing the DOM, calling the network. The calculation in the middle stays a function of its data.
+
+**Examples:**
+
+```js
+const open = [{ id: 1, free: true }, { id: 2, free: false }];
+const freeIds = open.filter((b) => b.free).map((b) => b.id);
+```
+
+**Sources:**
+
+- https://javascript.info/array-methods
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+
 </details>
 
 <details>
@@ -147,6 +494,33 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 
 **Definition:**
 
+An IIFE is a function expression that runs at once. Parentheses turn the function into an expression, and the trailing `()` calls it.
+
+**How it works:**
+
+- `(function () { const secret = 1; })();` creates a scope, runs it, and leaves `secret` unreachable outside.
+- That was the usual way to avoid global variables before modules and `let`.
+- A named IIFE can call itself for a small recursive job, and the name shows up in stack traces.
+- `!function () {}()` and `void function () {}()` are other ways to force an expression. The parentheses form is the one people recognize.
+- An arrow works too: `(() => { /* setup */ })();`
+- Today a module, or a plain block with `let` and `const`, gives you the scope without the ceremony. An IIFE still fits a one-off scope inside a classic script.
+- The function’s return value can be stored: `const api = (function () { return { open() {} }; })();`. That is the old module pattern.
+- Minifiers rename locals inside the IIFE. They do not leak those names unless the code assigned them to the global object.
+
+**Examples:**
+
+```js
+const pierId = (function () {
+  const seed = 4;
+  return `pier-${seed}`;
+})();
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Glossary/IIFE
+- https://javascript.info/function-expressions
+
 </details>
 
 <details>
@@ -155,6 +529,39 @@ Questions from [Devinterview.io — JavaScript](https://devinterview.io/question
 ### How do you create private variables in JavaScript?
 
 **Definition:**
+
+A binding is private when only the functions that close over it can see it. Modern classes can also use `#` fields, which are private per instance at runtime.
+
+**How it works:**
+
+- A factory closes over `let` bindings and returns only the functions that should be public. Callers never receive the binding itself.
+- A constructor can do the same: locals in the constructor are visible to methods defined in that constructor, and not on the prototype as data.
+- Methods created inside the constructor are per instance. A prototype method cannot see those constructor locals. `#` fields fix that: every method in the class body can read `#secret`, and outside code cannot.
+- `#` access from outside the class is a syntax error. TypeScript `private` is different: it is erased, and the property still exists at runtime.
+- An IIFE module returns a public object and keeps the rest closed over. ES modules replace that pattern: a binding that is not exported is already private to the module.
+- WeakMap keyed by the instance is the older way to attach private data to objects you do not control. New class code should prefer `#` fields.
+- Privacy here is visibility, not security against a modified environment. Do not treat it as a place to hide a secret from the page’s own scripts.
+
+**Examples:**
+
+```js
+function makeLocker(secret) {
+  return {
+    check(guess) { return guess === secret; },
+  };
+}
+
+class Locker {
+  #secret;
+  constructor(secret) { this.#secret = secret; }
+  check(guess) { return guess === this.#secret; }
+}
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures
 
 </details>
 

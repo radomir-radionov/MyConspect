@@ -1,0 +1,33 @@
+TITLE: CAP Theorem
+SLUG: cap-theorem-questions
+FILE: 0_sd_cap_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/
+SOURCE: CAP Theorem
+HUB: 0_system_design.md
+
+## CAP Theorem Fundamentals
+What is _CAP Theorem_ and why it’s important for _distributed systems_?
+How does the _CAP Theorem_ define _consistency_ in the context of a _distributed system_?
+What does _availability_ mean in _CAP Theorem_?
+Explain _partition tolerance_ in a _distributed system_ as stated by the _CAP Theorem_.
+
+## Real-World Implications and Trade-offs
+Give an example of a real system that favors _consistency_ over _availability_.
+Can you name a system that prefers _availability_ over _consistency_?
+What is meant by “_eventual consistency_” in the context of _CAP Theorem_?
+What trade-offs you might have to make in a _distributed system design_ due to the _CAP Theorem_.
+
+## Designing with CAP in Mind
+How would you design a system that requires _high availability_ and what trade-offs would you have to make according to the _CAP Theorem_?
+If a system is experiencing a _partition_ (network failure), what strategies can you employ to maintain service?
+Considering the _CAP Theorem_, how would you approach building a _distributed system_ that handles _sensitive financial transactions_?
+
+## CAP in Practice
+Describe a scenario where a system may switch from being _CA_ to _AP_ during its operation due to external factors.
+How do _quorums_ help in achieving _consistency_ or _availability_ in _distributed systems_, and how is this related to _CAP Theorem_?
+How do modern databases like _Cassandra_ or _DynamoDB_ address the challenges posed by the _CAP Theorem_?
+
+## Advanced Understanding of CAP
+Explain how concepts like _idempotency_, _commutativity_, and _convergence_ are important in designs that are influenced by the _CAP Theorem_.

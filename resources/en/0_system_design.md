@@ -20,6 +20,28 @@ Foundations, distributed systems, frontend architecture, principles, and pattern
 | [Design patterns](./7_special_patterns.md)                        | GoF catalog: creational, structural, and behavioral patterns.    |
 | [System design — Interview](./0_system_design_interview.md)       | Interview Q&A for system design.                                 |
 | [OOP — Interview](./7_oop_interview.md)                           | OOP interview questions, answers not filled in.                  |
+| [API Design — Interview](./0_sd_api_design_interview.md) | API Design interview questions, answers not filled in. |
+| [Databases — Interview](./0_sd_databases_interview.md) | Databases interview questions, answers not filled in. |
+| [Microservices — Interview](./0_sd_microservices_interview.md) | Microservices interview questions, answers not filled in. |
+| [Availability & Reliability — Interview](./0_sd_availability_interview.md) | Availability & Reliability interview questions, answers not filled in. |
+| [Docker — Interview](./0_sd_docker_interview.md) | Docker interview questions, answers not filled in. |
+| [NoSQL — Interview](./0_sd_nosql_interview.md) | NoSQL interview questions, answers not filled in. |
+| [Caching — Interview](./0_sd_caching_interview.md) | Caching interview questions, answers not filled in. |
+| [Domain-Driven Design — Interview](./0_sd_ddd_interview.md) | Domain-Driven Design interview questions, answers not filled in. |
+| [Reactive Systems — Interview](./0_sd_reactive_interview.md) | Reactive Systems interview questions, answers not filled in. |
+| [Reactive Programming — Interview](./0_sd_reactive_programming_interview.md) | Reactive Programming interview questions, answers not filled in. |
+| [CAP Theorem — Interview](./0_sd_cap_interview.md) | CAP Theorem interview questions, answers not filled in. |
+| [Kubernetes — Interview](./0_sd_kubernetes_interview.md) | Kubernetes interview questions, answers not filled in. |
+| [SOA — Interview](./0_sd_soa_interview.md) | SOA interview questions, answers not filled in. |
+| [Concurrency — Interview](./0_sd_concurrency_interview.md) | Concurrency interview questions, answers not filled in. |
+| [Layering & Middleware — Interview](./0_sd_layering_interview.md) | Layering & Middleware interview questions, answers not filled in. |
+| [Software Architecture — Interview](./0_sd_architecture_interview.md) | Software Architecture interview questions, answers not filled in. |
+| [Cryptography — Interview](./0_sd_cryptography_interview.md) | Cryptography interview questions, answers not filled in. |
+| [Load Balancing — Interview](./0_sd_load_balancing_interview.md) | Load Balancing interview questions, answers not filled in. |
+| [XML — Interview](./0_sd_xml_interview.md) | XML interview questions, answers not filled in. |
+| [Hadoop — Interview](./0_sd_hadoop_interview.md) | Hadoop interview questions, answers not filled in. |
+| [Apache Spark — Interview](./0_sd_spark_interview.md) | Apache Spark interview questions, answers not filled in. |
+
 
 ### Interview practice
 

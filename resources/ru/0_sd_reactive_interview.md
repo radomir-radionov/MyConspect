@@ -1,0 +1,532 @@
+# Reactive Systems — собеседование
+
+Ответы заполнены для опубликованной части, остальные пустые.
+
+[← К обзору](./0_system_design.md)
+
+### Related docs
+
+- [Reactive Systems — собеседование](./0_sd_reactive_interview.md)
+
+### Sections
+
+- [Interview Practice](#interview-practice)
+
+---
+
+## Interview Practice
+
+Questions from [Devinterview.io — Reactive Systems](https://devinterview.io/questions/software-architecture-and-system-design/reactive-systems-interview-questions/).
+
+### Reactive Systems Fundamentals
+
+<details>
+<summary>What are the defining characteristics of a Reactive System according to the Reactive Manifesto?</summary>
+
+### What are the defining characteristics of a Reactive System according to the Reactive Manifesto?
+
+**Definition:**
+
+Reactive Manifesto определяет реактивную систему четырьмя свойствами: отзывчивая, устойчивая, эластичная и на сообщениях.
+
+**How it works:**
+
+- Отзывчивая: отвечает вовремя, и медленные или упавшие части не замораживают вызывающего.
+- Устойчивая: остаётся отзывчивой, когда что-то падает, изолируя сбой и восстанавливаясь.
+- Эластичная: остаётся отзывчивой при меняющейся нагрузке, добавляя или убирая ресурсы.
+- На сообщениях: компоненты сотрудничают асинхронными сообщениями, и это даёт границы, которые нужны остальным трём.
+- Библиотека неблокирующих операторов — это реактивное программирование. Манифест — про систему, не только про API.
+
+**Examples:**
+
+Checkout публикует OrderPlaced и возвращается. Оплата, склад и почта каждый потребляют сообщение. Один из них может лежать, не держа HTTP-вызов открытым.
+</details>
+
+<details>
+<summary>How is back-pressure implemented in Reactive Systems to manage data flow?</summary>
+
+### How is back-pressure implemented in Reactive Systems to manage data flow?
+
+**Definition:**
+
+Обратное давление — как медленный потребитель говорит быстрому производителю сбавить, вместо того чтобы копить буфер, пока не кончится память.
+
+**How it works:**
+
+- В модели pull потребитель запрашивает ещё n элементов. Производитель остальное не шлёт. Это контракт Reactive Streams.
+- В модели push производитель шлёт, пока ограниченный буфер не полон, затем блокируется, отбрасывает или роняет поток.
+- Буфер гасит короткий всплеск и добавляет задержку. Неограниченный буфер — способ кончить память.
+- Отбрасывание оставляет последний элемент и выкидывает остальное. Оно годится для метрик, не для платежей.
+- Throttling или пакетирование ограничивают темп. Масштаб потребителей — другой рычаг, и он не помогает, если потребитель медленный на каждый элемент.
+
+**Examples:**
+
+```text
+потребитель: request(16)
+производитель: послать не больше 16, затем ждать
+потребитель: request(16), когда пачка закончена
+```
+</details>
+
+<details>
+<summary>Contrast Elasticity with Scalability with specific examples as they pertain to Reactive Systems.</summary>
+
+### Contrast Elasticity with Scalability with specific examples as they pertain to Reactive Systems.
+
+**Definition:**
+
+Масштабируемость — способность принять большую нагрузку, добавив ресурсы. Эластичность — делать это автоматически, в обе стороны, по мере изменения нагрузки.
+
+**How it works:**
+
+- Горизонтальный масштаб добавляет экземпляры и балансировщик. Социальная лента добавляет серверы приложения, когда растёт база пользователей. Этот рост может быть запланированной покупкой.
+- Вертикальный масштаб даёт одной машине больше CPU или памяти. У одной коробки всё ещё есть потолок, и отказ она не изолирует.
+- Эластичность смотрит на нагрузку и добавляет или убирает экземпляры без заявки. Платформа контейнеров поднимает сервис с 2 подов до 20 на распродажу и обратно до 2.
+- Реактивной системе нужна эластичность, чтобы отзывчивость держалась сквозь всплеск, а не только сквозь план ёмкости на следующий квартал.
+
+**Examples:**
+
+Покупка сервера базы побольше на год — вертикальный масштаб. Kubernetes HPA, который добавляет поды checkout, пока CPU высок, и убирает их, когда падает, — эластичность.
+</details>
+
+<details>
+<summary>Describe a strategy a Reactive System might use to maintain responsiveness during a component failure.</summary>
+
+### Describe a strategy a Reactive System might use to maintain responsiveness during a component failure.
+
+**Definition:**
+
+Вызывающего держат отзывчивым, не дожидаясь упавшей части: её изолируют, обходят и отвечают урезанным результатом.
+
+**How it works:**
+
+- Сообщения уже отвязывают вызывающего от процесса вызываемого. Лежащий потребитель оставляет сообщения в очереди.
+- Прозрачность расположения значит, что отправитель называет сервис, а не хост, поэтому маршрутизатор может выбрать живой экземпляр.
+- Circuit breaker перестаёт слать экземпляру, который уходит в таймаут, а балансировщик шлёт следующее сообщение в другое место.
+- Плавная деградация возвращает меньший ответ, например страницу без рекомендаций, вместо зависания.
+- Работа, которой можно быть устаревшей, остаётся доступной. Работа, которая должна быть линеаризуемой, роняет эту одну операцию, а не весь процесс.
+
+**Examples:**
+
+Рекомендации уходят в таймаут. Страница товара всё ещё возвращается за миллисекунды с пустым блоком рекомендаций. Breaker не зовёт этот сервис, пока проба не пройдёт.
+</details>
+
+<details>
+<summary>How does message-driven architecture contribute to the resilience of Reactive Systems?</summary>
+
+### How does message-driven architecture contribute to the resilience of Reactive Systems?
+
+**Definition:**
+
+Сообщения дают компонентам границу во времени и в сбое. Отправитель не делит стек вызовов с получателем, поэтому падение получателя — задержанное сообщение, а не мёртвый вызывающий.
+
+**How it works:**
+
+- Слабая связность: отправитель знает канал, не внутренности получателя.
+- Асинхронная доставка позволяет отправителю оставаться отзывчивым, пока работа идёт позже.
+- Ограниченная очередь — обратное давление. Когда она полна, производитель замедляется, а не выделяет память без предела.
+- Расположение не важно. Сообщение может обработать тот экземпляр, который жив.
+- Краткий простой становится повтором из очереди, если обработчик безопасен к двойному запуску.
+
+**Examples:**
+
+Checkout пишет OrderPlaced и возвращает «принято». Если почта лежит, сообщение ждёт. Успех checkout не зависит от SMTP.
+</details>
+
+<details>
+<summary>Identify a resiliency strategy in Reactive Systems and explain how it minimizes the impact of failures.</summary>
+
+### Identify a resiliency strategy in Reactive Systems and explain how it minimizes the impact of failures.
+
+**Definition:**
+
+Event sourcing держит журнал фактов только на добавление. Восстановление проигрывает журнал, поэтому упавший процесс собирает состояние заново, а не надеется, что изменяемая строка успела сброситься.
+
+**How it works:**
+
+- Команда — просьба что-то изменить. Событие — факт, что это изменилось.
+- Хранилище событий — источник истины. Текущее состояние — свёртка событий.
+- Падение после того, как событие устойчиво, не теряет зафиксированное. Перезапуск и проигрывание.
+- Потребители, пропустившие события, догоняют по журналу. Им не нужно, чтобы упавший процесс ещё был жив.
+- Изоляция всё ещё важна: журнал одного агрегата не обязан делить домен сбоя с другим.
+
+**Examples:**
+
+Списания со счёта — события, а не перезаписанный баланс. После смерти процесса новый проигрывает Debited и Credited и приходит к тому же балансу. Потерянный итог в памяти пересчитывается.
+</details>
+
+### Design Principles of Reactive Systems
+
+<details>
+<summary>Why are non-blocking I/O operations a necessity in Reactive Programming, and what problems do they solve?</summary>
+
+### Why are non-blocking I/O operations a necessity in Reactive Programming, and what problems do they solve?
+
+**Definition:**
+
+Неблокирующий ввод-вывод позволяет нескольким потокам держать в полёте много медленных операций. Поток, заблокированный на сокете, не может делать другую работу, поэтому отзывчивость рушится с ростом соединений.
+
+**How it works:**
+
+- Блокирующее чтение прибивает поток на всё ожидание. Потоки дороги, и пул кончается.
+- Пока потоки застряли, новые запросы стоят в очереди, и процесс выглядит лежащим, хотя CPU простаивает.
+- Неблокирующий вызов регистрирует интерес и возвращается. Callback или цикл событий продолжают, когда сокет готов.
+- Именно это делает возможными обратное давление и большое число соединений без потока на запрос.
+- Само по себе это не изолирует сбой. Неблокирующему вызову мёртвой зависимости всё ещё нужен таймаут.
+
+**Examples:**
+
+```text
+блокирующий: 1 запрос ждёт на потоке, пока ответит база
+неблокирующий: поток обслуживает другие запросы; результат базы возобновляет этот
+```
+</details>
+
+<details>
+<summary>In what ways can Domain-Driven Design (DDD) principles enhance the design of a Reactive System?</summary>
+
+### In what ways can Domain-Driven Design (DDD) principles enhance the design of a Reactive System?
+
+**Definition:**
+
+DDD решает, что значат сообщения и где модель может меняться. Реактивный runtime решает, как эти сообщения текут без блокировки.
+
+**How it works:**
+
+- Ограниченный контекст — естественная граница сервиса: одна модель, один домен сбоя, свой масштаб.
+- События предметной области уже факты в прошедшем времени — то, что система на сообщениях хочет публиковать.
+- Карта контекстов говорит, как контексты стыкуются — заказчик–поставщик, слой защиты — поэтому асинхронный контракт явный.
+- Модель предметной области свободна от деталей брокера. Край приложения превращает событие предметной области в сообщение.
+- Обратное давление на границе не даёт одному контексту затопить другой.
+
+**Examples:**
+
+Продажи испускают LeadConverted. Слой защиты биллинга отображает его в OpenAccount. Продажи не знают таблиц биллинга, и простой биллинга не блокирует команду продаж, как только событие сохранено.
+</details>
+
+<details>
+<summary>Provide an example of a system that is reactive without fulfilling all the Reactive Manifesto traits. Why does it qualify?</summary>
+
+### Provide an example of a system that is reactive without fulfilling all the Reactive Manifesto traits. Why does it qualify?
+
+**Definition:**
+
+Система может быть асинхронной и всё же не иметь устойчивости или эластичности. «Реактивная» в слабом смысле значит лишь, что она реагирует на сообщения. Манифест хочет все четыре свойства.
+
+**How it works:**
+
+- Отзывчивость и сообщения — лёгкая половина: принять работу в очередь и быстро ответить.
+- Устойчивости нужна изоляция. Если воркер и checkout делят один пул базы, застрявший воркер тормозит и checkout.
+- Эластичности нужно, чтобы число воркеров следовало глубине очереди. Один фиксированный процесс этого не делает.
+- Поэтому почтовик, который ставит сообщения в очередь, реактивен в бытовом смысле и не является реактивной системой, пока сбой не остаётся локальным, а ёмкость не двигается с нагрузкой.
+
+**Examples:**
+
+Почтовый воркер читает очередь и шлёт письма, поэтому веб-запрос возвращается сразу. Если этот воркер держит единственные соединения с базой, зависание в SMTP исчерпывает пул, и сайт встаёт. Очередь сделала его на сообщениях. Устойчивым она его не сделала.
+</details>
+
+<details>
+<summary>Describe how a Reactive System would differently address a transient failure versus a network partition.</summary>
+
+### Describe how a Reactive System would differently address a transient failure versus a network partition.
+
+**Definition:**
+
+Краткий сбой — короткая помеха, поэтому система повторяет. Разделение — длящийся разрез, поэтому бесконечные повторы только прячут выбор между ждать и идти дальше.
+
+**How it works:**
+
+- Краткий сбой: таймаут, сброс, недолгая перегрузка. Повтор с backoff и пределом, потому что сосед, как ожидается, вернётся.
+- Обработчик должен быть идемпотентным, иначе повтор удваивает эффект.
+- Разделение: сосед остаётся недоступен. Circuit breaker размыкается, чтобы вызывающие не выжидали каждый таймаут.
+- Работа, которой можно отстать, остаётся в очереди и завершается, когда разрез заживает. Работа, которой нельзя, роняет эту операцию.
+- Считать разделение краткой ошибкой — способ прибить потоки на повторах, пока процесс не перестанет отвечать.
+
+**Examples:**
+
+```text
+один таймаут: повторить дважды с backoff
+breaker размыкается после повторных таймаутов: перестать звать, поставить в очередь или упасть
+связь вернулась: проба half-open, затем осушить очередь
+```
+</details>
+
+<details>
+<summary>Discuss a particular transport layer technology you would recommend for Reactive Systems’ asynchronous communication and why.</summary>
+
+### Discuss a particular transport layer technology you would recommend for Reactive Systems’ asynchronous communication and why.
+
+**Definition:**
+
+Устойчивый журнал вроде Kafka подходит для реактивного трафика между сервисами: производители дописывают, потребители тянут в своём темпе, и медленный потребитель не выталкивает производителя из памяти.
+
+**How it works:**
+
+- Потребитель фиксирует смещения — это обратное давление в стиле pull. Следующую пачку он читает, когда готов.
+- Упавший потребитель продолжается с последнего зафиксированного смещения, а не теряет вызов в полёте.
+- Многие потребители могут делить горячий поток, или новый потребитель может читать с начала. Это выбор между горячим потоком и повторным чтением.
+- Ключи держат события агрегата по порядку в одном разделе. Другие агрегаты идут параллельно в других разделах.
+- Ошибки остаются у потребителя: ядовитое сообщение уходит в dead-letter, а не роняет запрос производителя.
+- Для одного процесса Reactive Streams поверх gRPC или RSocket несёт ту же идею request(n) без кластера. Между сервисами транспортом является журнал.
+
+**Examples:**
+
+Checkout дописывает OrderPlaced в топик `orders` и возвращается. Почта и биллинг — две группы потребителей. Почта может отстать на час, не замедляя биллинг или обработчик HTTP.
+</details>
+
+<details>
+<summary>Explain the role of Reactive Systems in processing continuous data streams, providing industry use cases.</summary>
+
+### Explain the role of Reactive Systems in processing continuous data streams, providing industry use cases.
+
+**Definition:**
+
+Реактивный обработчик потока остаётся отзывчивым, пока события не перестают приходить: он обрабатывает каждое событие, не блокируя поток на событие, и замедляет источник, когда отстаёт.
+
+**How it works:**
+
+- Вход не ограничен. Нет «запрос закончен», есть только окна, агрегаты и опоздавшие события.
+- Неблокирующий ввод-вывод и асинхронная передача держат одну машину на многих потоках.
+- Торговля и мошенничество смотрят на рыночные или платёжные события по мере того, как они случаются, а не в ночном пакете.
+- Телеметрия, IoT и мониторы пациентов — та же форма: датчики испускают, сервис реагирует, и медленный приёмник должен давить назад.
+- Чат, живой склад и аукционы рекламы — продуктовые версии того же цикла.
+
+**Examples:**
+
+Чат-сервер считает каждое сообщение событием на WebSocket. Зрители видят его без обновления. Если сокет одного клиента блокируется, этого клиента отбрасывают или буферизуют с пределом. Остальные клиенты комнаты продолжают получать.
+</details>
+
+### Implementing Reactive Systems
+
+<details>
+<summary>What is Event Sourcing, and how does it benefit Reactive Systems?</summary>
+
+### What is Event Sourcing, and how does it benefit Reactive Systems?
+
+**Definition:**
+
+Event sourcing хранит последовательность фактов и выводит текущее состояние, проигрывая их. Реактивной системе это выгодно, потому что журнал уже асинхронный поток, который можно проиграть снова.
+
+**How it works:**
+
+- Записи дописывают событие. Они не перезаписывают строку и не теряют причину.
+- Чтения используют проекцию, свёрнутую из событий. Проекция может отставать, что совпадает с eventual consistency.
+- Новый потребитель строит свою проекцию из того же журнала, не прося писателя меняться.
+- Аудит и отладка — сам журнал: видно факт, который привёл к плохому состоянию.
+- Цена — проектировать события так, чтобы их можно было проиграть, и версионировать, когда форма факта меняется.
+
+**Examples:**
+
+```text
+append StockReserved {sku:lamp, qty:1}
+append StockReleased {sku:lamp, qty:1}
+проекция: остаток = fold(events)
+```
+</details>
+
+<details>
+<summary>Differentiate between hot and cold reactive streams with examples of use cases.</summary>
+
+### Differentiate between hot and cold reactive streams with examples of use cases.
+
+**Definition:**
+
+Холодный поток производит элементы, потому что кто-то подписался, и каждый подписчик получает свою последовательность. Горячий поток производит элементы независимо от того, слушает ли кто-то, и подписчики делят то, что происходит сейчас.
+
+**How it works:**
+
+- Холодный: работа начинается на подписке и может повториться. Запрос к базе или HTTP-вызов на подписчика — холодные.
+- Горячий: работа уже идёт. Опоздавший подписчик пропускает то, что уже случилось, если поток ещё и не хранит журнал для проигрывания.
+- Холодный подходит запросу-ответу и разовым вычислениям.
+- Горячий подходит датчикам, ценам и событиям интерфейса, которые существуют независимо от одного слушателя.
+
+**Examples:**
+
+Просьба о снимке погоды запускает загрузку для этого вызывающего: холодно. Станция, которая каждую секунду испускает температуру и её делят все панели, — горячая. Панель, подключившаяся в 12:00, не видит 11:00, если нет проигрывания.
+</details>
+
+<details>
+<summary>Compare synchronous request-response communication with reactive message-driven communication in terms of scalability.</summary>
+
+### Compare synchronous request-response communication with reactive message-driven communication in terms of scalability.
+
+**Definition:**
+
+Синхронный запрос-ответ масштабируется лишь насколько позволяет самый медленный прыжок, которого ждёт вызывающий. Работа на сообщениях масштабируется добавлением потребителей, которые тянут из очереди, не держа исходный запрос.
+
+**How it works:**
+
+- Синхронная цепочка держит поток или соединение на всё ожидание. Больше клиентов — больше ждущих вызывающих, и один медленный сервис тормозит цепочку.
+- Сообщение позволяет принявшему вернуться, а очередь гасит всплеск. Потребители масштабируются независимо от принимающих.
+- Параллельные потребители на разных разделах делают работу одновременно. Задержка вызывающего — «принято», а не «закончено».
+- Падение одного потребителя не роняет принимающего. Сообщение остаётся другому потребителю.
+- Вы отдаёте один немедленный результат. Если пользователь должен увидеть исход сейчас, этот шаг остаётся синхронным и становится пределом масштаба.
+
+**Examples:**
+
+```text
+sync:      клиент ждёт, пока checkout зовёт склад, склад зовёт оплату
+сообщение: клиент получает "принято"; склад и оплата потребляют параллельно
+```
+</details>
+
+<details>
+<summary>Describe a design pattern uniquely suited for Reactive Systems and why it’s effective.</summary>
+
+### Describe a design pattern uniquely suited for Reactive Systems and why it’s effective.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Recommend a framework for developing Reactive Systems and discuss its core features.</summary>
+
+### Recommend a framework for developing Reactive Systems and discuss its core features.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how statefulness is managed in Reactive microservices while ensuring consistency.</summary>
+
+### Explain how statefulness is managed in Reactive microservices while ensuring consistency.
+
+**Definition:**
+
+</details>
+
+### Reactive Programming Paradigms
+
+<details>
+<summary>Discuss how functional programming principles can be leveraged in Reactive Systems to enhance resiliency.</summary>
+
+### Discuss how functional programming principles can be leveraged in Reactive Systems to enhance resiliency.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Contrast the Observer pattern with the Publish-Subscribe pattern, providing use cases in Reactive Programming.</summary>
+
+### Contrast the Observer pattern with the Publish-Subscribe pattern, providing use cases in Reactive Programming.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Provide a use case where Reactive Programming offers significant benefits over an imperative approach.</summary>
+
+### Provide a use case where Reactive Programming offers significant benefits over an imperative approach.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Define a “stream” in Reactive Programming, demonstrating its advantages over traditional collections like arrays or lists.</summary>
+
+### Define a “stream” in Reactive Programming, demonstrating its advantages over traditional collections like arrays or lists.
+
+**Definition:**
+
+</details>
+
+### Fault-tolerance and Reliability
+
+<details>
+<summary>How can the circuit breaker pattern prevent cascading failures in a Reactive System?</summary>
+
+### How can the circuit breaker pattern prevent cascading failures in a Reactive System?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Outline an effective back-pressure strategy for a Reactive System experiencing high load.</summary>
+
+### Outline an effective back-pressure strategy for a Reactive System experiencing high load.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe a supervision strategy in Reactive Systems and its role in managing failures.</summary>
+
+### Describe a supervision strategy in Reactive Systems and its role in managing failures.
+
+**Definition:**
+
+</details>
+
+### Performance and Scalability
+
+<details>
+<summary>Explain how Reactive Systems exploit multicore and distributed resources to improve performance.</summary>
+
+### Explain how Reactive Systems exploit multicore and distributed resources to improve performance.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What does “location transparency” mean in Reactive Systems, and how does this concept apply to a distributed data store?</summary>
+
+### What does “location transparency” mean in Reactive Systems, and how does this concept apply to a distributed data store?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Identify potential performance bottlenecks in a streaming Reactive System and suggest monitoring strategies.</summary>
+
+### Identify potential performance bottlenecks in a streaming Reactive System and suggest monitoring strategies.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe a method or tools you would use to test and ensure a Reactive System’s scalability under a simulated load.</summary>
+
+### Describe a method or tools you would use to test and ensure a Reactive System’s scalability under a simulated load.
+
+**Definition:**
+
+</details>
+
+### Tools and Technologies
+
+<details>
+<summary>List some key Reactive programming libraries and provide a brief overview of one framework’s core feature set.</summary>
+
+### List some key Reactive programming libraries and provide a brief overview of one framework’s core feature set.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What role do message queues play in Reactive Systems, and what characteristics are most important for them to have?</summary>
+
+### What role do message queues play in Reactive Systems, and what characteristics are most important for them to have?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are some common challenges faced when integrating Reactive Systems with non-reactive legacy systems, and how can they be mitigated?</summary>
+
+### What are some common challenges faced when integrating Reactive Systems with non-reactive legacy systems, and how can they be mitigated?
+
+**Definition:**
+
+</details>

@@ -1,0 +1,73 @@
+TITLE: Hadoop
+SLUG: hadoop-questions
+FILE: 0_sd_hadoop_interview.md
+TRACK: system-design
+URL: https://devinterview.io/questions/machine-learning-and-data-science/hadoop-interview-questions/
+SOURCE: Hadoop
+HUB: 0_system_design.md
+
+## Hadoop Fundamentals
+What is Hadoop and what are its core components?
+Explain the concept of a Hadoop Distributed File System (HDFS) and its architecture.
+How does MapReduce programming model work in Hadoop?
+What is YARN, and how does it improve Hadoop's resource management?
+Explain the role of the Namenode and Datanode in HDFS.
+What is a Rack Awareness algorithm in HDFS, and why is it important?
+What are some of the characteristics that differentiate Hadoop from traditional RDBMS?
+How can you secure a Hadoop cluster? Name some of the security mechanisms available.
+
+## Hadoop Ecosystem and Tools
+Describe the role of HBase in Hadoop ecosystem.
+What is Apache Hive and what types of problems does it solve?
+How does Apache Pig fit into the Hadoop ecosystem?
+Explain how Apache Flume helps with log and event data collection for Hadoop.
+What is Apache Sqoop and how does it interact with Hadoop?
+How does Apache Oozie help in workflow scheduling in Hadoop?
+What is Apache ZooKeeper and why is it important for Hadoop?
+Discuss the role of Apache Spark in the Hadoop ecosystem.
+
+## Data Management and Processing
+How does Hadoop handle the failure of a datanode?
+Explain the process of data replication in HDFS.
+What is speculative execution in Hadoop, and why is it used?
+How are large datasets processed in Hadoop?
+What is the significance of the input split in MapReduce jobs?
+How does partitioning work in Hadoop, and when is it used?
+Explain how reducers work in MapReduce and their interaction with shufflers.
+What are SequenceFiles in Hadoop?
+
+## Performance Tuning and Optimization
+Describe the ways to optimize a MapReduce job.
+How can you diagnose and troubleshoot Hadoop performance issues?
+What is the significance of combiner in the Hadoop MapReduce framework?
+Explain what you can do to optimize the performance of HDFS.
+How can job scheduling be optimized in Hadoop?
+What are the best practices for managing memory and CPU resources in a Hadoop cluster?
+
+## Coding Challenges
+Write a MapReduce job in Java that counts the number of words in a text file.
+Create an HDFS command script that copies files from a local file system to HDFS.
+Implement a simple Hive query to summarize data from a Hive table.
+Code a Pig Latin script to process and transform a dataset into a desired format.
+Automate a process to import data from a MySQL database into HDFS using Sqoop.
+Implement a Spark job in Scala or Python to perform a join operation on two datasets.
+Develop an Oozie workflow that schedules and runs a set of MapReduce and Hive jobs.
+Write a Java program to implement custom input and output format classes in Hadoop.
+
+## Advanced Hadoop Features and Architecture
+What is the concept of erasure coding in HDFS, and how does it differ from replication?
+Explain how Hadoop uses data locality to improve performance.
+How does Hadoop support different file formats, and what are some of them?
+What is Hadoop federation, and how can it scale a Hadoop cluster?
+Discuss the concept and benefits of a journal node in HDFS HA configuration.
+What are the implications of small files on HDFS performance and how can this be mitigated?
+
+## Troubleshooting and Maintenance
+How would you recover a Hadoop cluster from a Namenode failure?
+What considerations should be made for Hadoop cluster backup and disaster recovery?
+How would you monitor the health of a Hadoop cluster, and what tools would you use?
+Discuss a strategy for Hadoop cluster capacity planning and scaling.
+
+## Scenario-Based Questions and Use Case Discussions
+A company wants to process clickstream data in real-time. How would you integrate Hadoop and Spark to meet this requirement?
+Propose a data pipeline using Hadoop components to manage and analyze sensor data from IoT devices.

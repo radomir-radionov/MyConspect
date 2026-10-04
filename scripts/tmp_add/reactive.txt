@@ -1,0 +1,131 @@
+TITLE: Reactive Programming
+SLUG: reactive-programming-questions
+FILE: 0_sd_reactive_programming_interview.md
+TRACK: system-design
+URL: https://devinterview.io/questions/web-and-mobile-development/reactive-programming-interview-questions/
+SOURCE: Reactive Programming
+HUB: 0_system_design.md
+
+## Reactive Programming Fundamentals
+What is Reactive Programming, and how does it differ from Procedural Programming?
+Explain the concept of data streams in Reactive Programming.
+What is the Observer pattern, and how is it fundamental to Reactive Programming?
+Describe the role of Observables and Observers in Reactive Programming.
+How do you create an Observable stream?
+What is backpressure in the context of Reactive Programming?
+Explain the difference between cold and hot Observables.
+What is the role of the Subscription in Reactive Programming.
+How do you unsubscribe from a stream to prevent memory leaks?
+What are operators in Reactive Programming, and what are they used for?
+
+## Reactive Programming with RxJava
+What is RxJava, and how does it implement Reactive Programming?
+How does RxJava handle multithreading?
+Explain how the `flatMap` operator works in RxJava.
+What is the purpose of the `zip` operator in RxJava?
+How do you handle errors in an RxJava stream?
+Describe the differences between `map` and `flatMap` operators in RxJava.
+What is a `Scheduler` in RxJava?
+Explain the `Subject` class in RxJava.
+How can you achieve thread-safety in RxJava?
+What is the `debounce` operator in RxJava?
+
+## Reactive Programming with ReactiveX / RxJS
+What is Reactive Extensions (ReactiveX or Rx) and RxJS?
+Give an example of how to implement a simple RxJS Observable.
+How does RxJS's `Observable` differ from a Promise?
+Explain the concept of marble diagrams in RxJS.
+In RxJS, how would you convert an array to an Observable sequence?
+Describe the `switchMap` operator in RxJS.
+How do you handle backpressure in RxJS?
+What is the `BehaviorSubject` in RxJS?
+What are the uses of the `scan` operator in RxJS?
+How do you do error recovery in RxJS?
+
+## Reactive Streams and Project Reactor
+What is the Reactive Streams specification?
+Describe the main interfaces of the Reactive Streams API.
+How does backpressure work within the Reactive Streams API?
+What is Project Reactor, and how is it related to Reactive Streams?
+Compare and contrast Mono and Flux in Project Reactor.
+How does Project Reactor enable asynchronous and non-blocking operations?
+What are some strategies for testing Reactor flows?
+How do you convert blocking code to non-blocking reactive code in Reactor?
+In Reactor, how is `Context` used?
+What is the `transform` operator and how do you use it in Reactor?
+
+## Reactive Systems and Microservices
+Define Reactive Systems and how they relate to Reactive Programming.
+What role does Reactive Programming play in building microservices?
+Explain the difference between Reactive Systems and Reactive Programming.
+How can you ensure that Reactive Systems are resilient?
+Describe how you would implement backpressure across microservices.
+In a microservices architecture, how do Reactive Streams help manage resources?
+Discuss the advantages of using Reactive Programming in microservices communication.
+What are some challenges you might face when designing Reactive Systems?
+How does a message-driven system relate to Reactive Microservices?
+What are some of the most common Reactive libraries and frameworks for microservices?
+
+## Advanced Concepts in Reactive Programming
+Explain the concept of higher-order Observables.
+How do you implement custom operators in Rx libraries?
+What are the implications of unicast vs multicast Observables?
+How do you use `combineLatest`, `withLatestFrom`, and `zip` operators for combining multiple streams?
+Discuss the concept of side-effects in Reactive Streams and how to avoid them.
+Explain the difference between `takeUntil` and `takeWhile` operators.
+How does concurrency control work in Reactive Programming?
+What is the role of virtual time in testing Reactive applications?
+How do you manage state in Reactive Programming?
+Describe strategies to handle out-of-order messages in a Reactive system.
+
+## Tools and Frameworks in Reactive Programming
+List several popular Reactive Programming frameworks and their primary use cases.
+How does Akka Streams fit into the Reactive Programming paradigm?
+Discuss the integration of Reactive Programming libraries with traditional web frameworks.
+What are some Reactive Programming utilities provided by the Spring WebFlux framework?
+How do you debug a complex Reactive streams pipeline?
+What are the best tools for monitoring and troubleshooting Reactive applications?
+Explain how Reactive Programming can be used with Kafka Streams.
+How do you handle load balancing in a Reactive microservices setup?
+Discuss how Reactive Programming influences event-driven architecture.
+What is RSocket, and how does it support Reactive Programming patterns?
+
+## Design Patterns and Best Practices
+What are some common design patterns used in Reactive Programming?
+How do you apply commonly known Gang of Four patterns in Reactive Programming?
+What are some best practices for error handling in Reactive streams?
+Describe a scenario where Reactive Programming is not the ideal approach. Why?
+Explain the use of backpressure strategies, like buffering and dropping.
+How can you make your Reactive streams more composable and reusable?
+What are some best practices for scaling Reactive applications?
+How do you manage configuration changes in a Reactive system?
+Discuss the CQRS pattern in the context of Reactive Systems.
+What are the principles of the Reactive Manifesto?
+
+## Reactive Programming in Different Languages
+How is Reactive Programming implemented in languages like JavaScript, Scala, or Java?
+Compare the Reactor pattern in Java with Reactive Extensions in .NET.
+How do you use Reactive Programming in modern front-end frameworks like React or Angular?
+What are some considerations for using Reactive Programming in a functional programming language?
+How does the async-await pattern in modern languages relate to Reactive Programming?
+
+## Industry Case Studies and Analysis
+Provide examples of real-world use cases where Reactive Programming is applied.
+Analyze the impact of Reactive Programming on cloud-native application design.
+Discuss how large-scale streaming platforms benefit from Reactive Programming principles.
+How can Reactive Programming enhance the performance of IoT systems?
+Share a case study where the adoption of Reactive Programming solved a scalability issue.
+
+## Reactive Programming Challenges and Trade-offs
+What are the trade-offs of using Reactive Programming over traditional imperative programming models?
+Discuss some of the complexities and pitfalls that come with adopting Reactive Programming.
+How do you manage thread exhaustion in a Reactive application?
+Address the learning curve associated with Reactive Programming. How do you get a team up to speed?
+What are some known issues with debugging Reactive streams and how do you tackle them?
+
+## Future of Reactive Programming
+Predict how Reactive Programming might evolve in the next few years.
+How does Reactive Programming interact with AI and machine learning workloads?
+Discuss the relevance of Reactive Programming in the age of serverless architectures.
+What role might Reactive Programming play in the future of distributed systems and edge computing?
+How are current advancements in hardware affecting Reactive Programming paradigms?

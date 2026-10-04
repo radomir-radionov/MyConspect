@@ -1,6 +1,6 @@
 # Node.js — Interview
 
-Node.js interview questions, answers not filled in.
+Answers are filled for the published subset; the rest are still empty.
 
 [← Back to hub](./8_nodejs.md)
 
@@ -27,6 +27,30 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+Node.js runs JavaScript outside the browser on V8, with libuv providing the I/O layer. One process can keep many connections in flight because network I/O does not block the JavaScript thread.
+
+**How it works:**
+
+- JavaScript on the main thread has one call stack. Slow work is started and finished later through the event loop.
+- libuv runs file I/O, some DNS lookups, and `uv_queue_work` on a small thread pool (four threads by default). Network I/O stays on the loop thread.
+- npm is the package manager and the public registry that ships with Node.
+- The same language can run in the browser and on the server, which is why teams use it for APIs, streaming, and realtime services.
+- It fits I/O-heavy work (HTTP APIs, proxies, chat) better than long CPU loops on the main thread. CPU work belongs in worker threads or another process.
+
+**Examples:**
+
+```js
+import http from "node:http";
+
+http.createServer((_req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("ok");
+}).listen(3000);
+```
+
+**Sources:**
+
+- [Node.js — About](https://nodejs.org/en/about)
 </details>
 
 <details>
@@ -36,6 +60,32 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+The main JavaScript thread is single-threaded. Extra threads come from libuv’s pool for certain blocking jobs, and from `worker_threads` when you want another V8 isolate for CPU work.
+
+**How it works:**
+
+- The libuv pool, sized by `UV_THREADPOOL_SIZE` (default 4), runs filesystem calls, `dns.lookup`, and some crypto. Network sockets are not handed to that pool.
+- `worker_threads` starts a separate isolate with its own event loop. You pass messages, or share memory through `SharedArrayBuffer`.
+- A worker does not share ordinary objects with the parent. Data is cloned or transferred.
+- Child processes (`child_process`) are a different tool: a whole new OS process, useful for a shell command or an isolation boundary.
+- Offloading a tight loop keeps the main loop free to accept sockets. Creating a worker per request usually costs more than it saves.
+
+**Examples:**
+
+```js
+import { Worker, isMainThread, parentPort } from "node:worker_threads";
+
+if (isMainThread) {
+  const worker = new Worker(new URL(import.meta.url));
+  worker.on("message", (n) => console.log(n));
+} else {
+  parentPort.postMessage(2 + 2);
+}
+```
+
+**Sources:**
+
+- [Node.js — Worker threads](https://nodejs.org/api/worker_threads.html)
 </details>
 
 <details>
@@ -45,6 +95,29 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+Node programs wait for events — a request, a file chunk, a timer — and run a callback or a promise reaction when the event fires. The `EventEmitter` is the small registry most of those APIs are built on.
+
+**How it works:**
+
+- An emitter stores listeners with `on` and delivers them with `emit`. The listener runs later, on the event loop, not as a new thread.
+- The call stack runs the current JavaScript. When it empties, the loop takes the next timer, I/O callback, or close callback.
+- HTTP servers, filesystem APIs, and sockets are emitters. You subscribe instead of blocking until the result exists.
+- Errors on an emitter are events too. A missing `error` listener can crash the process.
+- Promises and `async`/`await` sit on the same loop: a resolved promise is a microtask, not a second thread.
+
+**Examples:**
+
+```js
+import { EventEmitter } from "node:events";
+
+const bus = new EventEmitter();
+bus.on("ping", (n) => console.log(n));
+bus.emit("ping", 1);
+```
+
+**Sources:**
+
+- [Node.js — Events](https://nodejs.org/api/events.html)
 </details>
 
 <details>
@@ -54,6 +127,28 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+The event loop is the cycle that runs timers, I/O callbacks, and close callbacks after the current JavaScript stack goes idle. It is what lets one thread interleave many operations.
+
+**How it works:**
+
+- libuv phases, in order: timers (`setTimeout`, `setInterval`), pending callbacks, idle/prepare, poll (new I/O), check (`setImmediate`), then close callbacks.
+- `process.nextTick` queues run after the current operation, before the loop continues. Promise reactions run as microtasks, also between phases, after nextTick callbacks.
+- Poll waits for I/O when there is nothing else ready. Timers and `setImmediate` are not the same queue.
+- A long synchronous loop blocks every phase, including new connections.
+- The loop lives per thread. A worker thread has its own loop and does not share the parent’s queue.
+
+**Examples:**
+
+```js
+setTimeout(() => console.log("timer"), 0);
+setImmediate(() => console.log("check"));
+Promise.resolve().then(() => console.log("promise"));
+process.nextTick(() => console.log("nextTick"));
+```
+
+**Sources:**
+
+- [Node.js — The event loop](https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick)
 </details>
 
 <details>
@@ -63,6 +158,20 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+A traditional thread-per-request server spends an OS thread on each connection, including while it waits on I/O. Node keeps one JavaScript thread and continues other work while I/O is outstanding.
+
+**How it works:**
+
+- Blocking I/O holds the caller until the disk or the database returns. Non-blocking I/O registers a callback and returns immediately.
+- Java, C#, or PHP servers often pair a different language on the server with JavaScript in the browser. Node uses JavaScript on both sides.
+- Node does not compile your script to a binary ahead of time. You change the file and run it again. Native addons are the exception.
+- Dependencies come from npm (or another client) and `package.json`, rather than a per-language repository such as Maven.
+- The model favors many idle connections. A CPU-heavy request still blocks the loop unless it is moved off the main thread.
+- Deployment is usually a process plus a port. It does not remove the need for a process manager, TLS, or a reverse proxy.
+
+**Sources:**
+
+- [Node.js — About](https://nodejs.org/en/about)
 </details>
 
 <details>
@@ -72,6 +181,30 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+Non-blocking means a function starts work that may take a while and returns before that work finishes. The result arrives later on the event loop, so other JavaScript can run in between.
+
+**How it works:**
+
+- `fs.readFile` asks libuv to read the file on the thread pool and invokes the callback when the bytes are ready. The main thread is not stuck inside the read.
+- The matching `fs.readFileSync` does block. The loop cannot accept new work until it returns.
+- Network reads are non-blocking on the loop thread itself. The kernel reports readiness, and JavaScript runs the handler.
+- Non-blocking is not the same as parallel. Callbacks on one thread still run one at a time.
+- A function can look async and still block if the callback does a long synchronous computation.
+
+**Examples:**
+
+```js
+import { readFile } from "node:fs";
+
+readFile("notes.txt", "utf8", (_err, text) => {
+  console.log(text.length);
+});
+console.log("started");
+```
+
+**Sources:**
+
+- [Node.js — Overview of blocking vs non-blocking](https://nodejs.org/en/learn/asynchronous-work/overview-of-blocking-vs-non-blocking)
 </details>
 
 <details>
@@ -81,6 +214,26 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+You replace the `node` binary with a version manager or with the installer published on nodejs.org. `npm install` updates packages in a project; it does not upgrade the runtime.
+
+**How it works:**
+
+- Version managers such as `nvm`, `fnm`, or `nvs` install a release side by side and switch the `node` on your `PATH`.
+- The official installer and OS packages replace the system binary. On a server, pin a current LTS rather than floating on “latest”.
+- Afterward, check `node -v`. Rebuild native addons, because the ABI changes between major versions.
+- `npm install -g npm` can update npm itself. It is not the supported way to move from one Node major to another.
+
+**Examples:**
+
+```bash
+nvm install --lts
+nvm use --lts
+node -v
+```
+
+**Sources:**
+
+- [Node.js — Download](https://nodejs.org/en/download)
 </details>
 
 <details>
@@ -90,6 +243,27 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+npm is the package manager shipped with Node and the public registry those packages come from. The CLI installs modules, records version ranges, and runs project scripts.
+
+**How it works:**
+
+- `npm install` reads `package.json`, downloads packages from the registry into `node_modules`, and writes `package-lock.json` so the tree can be repeated.
+- `npm init` creates `package.json`. `npm publish` uploads a package you own.
+- Lifecycle scripts (`start`, `test`, `build`) live under `scripts` and run with `npm run`.
+- The client and the registry are separate. Yarn and pnpm are other clients with their own lockfiles; they can use the same registry.
+- The website is a browser view of that registry, not a second package manager.
+
+**Examples:**
+
+```bash
+npm install express
+npm install --save-dev vitest
+npm run test
+```
+
+**Sources:**
+
+- [npm Docs — About npm](https://docs.npmjs.com/about-npm)
 </details>
 
 <details>
@@ -99,6 +273,28 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+A project declares dependencies and scripts in `package.json` and pins the installed tree in a lockfile. The package manager installs, updates, and removes modules from that declaration.
+
+**How it works:**
+
+- `npm init` creates the manifest. `npm install <pkg>` adds a dependency; `--save-dev` records a devDependency.
+- `npm update` moves installed packages inside the ranges you already allowed. It does not ignore the range and jump to any latest tag.
+- `npm uninstall <pkg>` removes it from the tree and the manifest.
+- Commit `package-lock.json`. Yarn’s equivalent is `yarn.lock`; pnpm uses `pnpm-lock.yaml`.
+- Scripts in `package.json` are the project’s repeatable commands. CI should run `npm ci` so it installs the lockfile exactly.
+
+**Examples:**
+
+```bash
+npm install lodash
+npm install --save-dev typescript
+npm update lodash
+npm ci
+```
+
+**Sources:**
+
+- [npm Docs — package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json)
 </details>
 
 <details>
@@ -108,6 +304,30 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+`package.json` is the manifest for a Node project: its name, the packages it needs, and the commands it can run. The installer and the runtime both read it.
+
+**How it works:**
+
+- `dependencies` are needed at runtime. `devDependencies` are needed to build or test. `npm install` in production can skip the latter.
+- Version ranges use `^` for compatible minor and patch updates and `~` for patch updates, under semver.
+- `scripts` maps a name to a shell command. `npm start` and `npm test` are the conventional ones.
+- `main`, `exports`, `type`, and `engines` tell Node how to load the package and which runtime you expect.
+- Create it with `npm init`. Do not hand-edit installed versions without a lockfile update, or the next install will drift.
+
+**Examples:**
+
+```json
+{
+  "name": "notes",
+  "type": "module",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "express": "^5.1.0" }
+}
+```
+
+**Sources:**
+
+- [npm Docs — package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json)
 </details>
 
 
@@ -120,6 +340,30 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+Core modules ship inside the `node` binary. You import them with the `node:` scheme and do not install them from the registry.
+
+**How it works:**
+
+- System: `os` (memory, CPUs, platform), `process`, `util`.
+- Files: `fs` and `path`.
+- Network: `http` and `https` for HTTP, `net` for TCP, `dgram` for UDP.
+- Data: `stream`, `buffer`, `zlib`, `crypto`, `events`.
+- Processes: `child_process` and `worker_threads`.
+- Prefer `node:fs` over the bare name so a local file named `fs.js` cannot shadow the builtin.
+
+**Examples:**
+
+```js
+import os from "node:os";
+import { createServer } from "node:http";
+
+console.log(os.freemem());
+createServer((_req, res) => res.end("ok")).listen(0);
+```
+
+**Sources:**
+
+- [Node.js — Core modules](https://nodejs.org/api/modules.html#built-in-modules)
 </details>
 
 <details>
@@ -129,6 +373,37 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+`http.createServer` builds a server whose request listener receives a `req` and a `res` for every connection. `listen` binds a port.
+
+**How it works:**
+
+- The listener runs on the event loop for each request. Read the URL from `req.url` and the method from `req.method`.
+- Write the status and headers with `writeHead` (or `setHeader`) and finish with `res.end`. Until `end`, the client stays open.
+- The body is a readable stream. For a JSON POST you collect chunks, or use a framework parser.
+- `server.listen(port)` starts accepting. The `listening` callback runs once the port is bound.
+- This is the raw server Express wraps. You handle routing yourself.
+
+**Examples:**
+
+```js
+import http from "node:http";
+
+const server = http.createServer((req, res) => {
+  if (req.url === "/health") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+  res.writeHead(404);
+  res.end();
+});
+
+server.listen(3000);
+```
+
+**Sources:**
+
+- [Node.js — HTTP](https://nodejs.org/api/http.html)
 </details>
 
 <details>
@@ -138,6 +413,27 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+`node:fs` reads and writes files, directories, and metadata on the local machine. It is a server API, not something a browser page can call.
+
+**How it works:**
+
+- Async forms (`readFile`, `writeFile`, and the `fs/promises` versions) return control immediately and finish on the loop.
+- Sync forms (`readFileSync`) block the event loop. They fit short scripts, not a request handler.
+- You can list directories, stat a path, rename, unlink, and create hard or symbolic links.
+- Streams (`createReadStream`, `createWriteStream`) move large files in chunks instead of one buffer.
+- Paths are OS paths. Join them with `node:path` rather than string concatenation.
+
+**Examples:**
+
+```js
+import { readFile } from "node:fs/promises";
+
+const text = await readFile(new URL("./notes.txt", import.meta.url), "utf8");
+```
+
+**Sources:**
+
+- [Node.js — File system](https://nodejs.org/api/fs.html)
 </details>
 
 <details>
@@ -147,6 +443,26 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+`Buffer` is a fixed-size chunk of raw bytes. Node uses it for files, sockets, and crypto, where the data is not necessarily text.
+
+**How it works:**
+
+- It is a subclass of `Uint8Array`. The length is fixed after allocation; a larger payload needs a new buffer.
+- `Buffer.from(text, "utf8")` encodes a string. `buf.toString("utf8")` decodes bytes.
+- `Buffer.alloc(n)` creates zeroed bytes. `Buffer.allocUnsafe` skips zeroing and can leak old memory if you do not overwrite every byte.
+- Slices share the underlying memory unless you copy. Writing through one view changes the other.
+- HTTP bodies and file chunks often arrive as buffers. Concatenate them only after you know the total size, or stream them.
+
+**Examples:**
+
+```js
+const buf = Buffer.from("café", "utf8");
+console.log(buf.length, buf.toString("utf8"));
+```
+
+**Sources:**
+
+- [Node.js — Buffer](https://nodejs.org/api/buffer.html)
 </details>
 
 <details>
@@ -156,6 +472,30 @@ Questions from [Devinterview.io — Node.js](https://devinterview.io/questions/w
 
 **Definition:**
 
+A stream moves data in chunks instead of holding the whole payload in memory. Node has four kinds: readable, writable, duplex, and transform.
+
+**How it works:**
+
+- Readable: a file read or an HTTP request body. You consume it with `for await` or the `data` event.
+- Writable: a file write or an HTTP response. You `write` chunks and `end`.
+- Duplex: both directions, as with a TCP socket.
+- Transform: a duplex that changes chunks as they pass, such as a gzip or a hash.
+- `pipeline` from `node:stream/promises` connects them and forwards errors and cleanup.
+- HTTP and `fs.createReadStream` are the usual cases. Backpressure (`write` returning false, then `drain`) stops a fast reader from overflowing a slow writer.
+
+**Examples:**
+
+```js
+import { createReadStream } from "node:fs";
+import { createGzip } from "node:zlib";
+import { pipeline } from "node:stream/promises";
+
+await pipeline(createReadStream("notes.txt"), createGzip(), process.stdout);
+```
+
+**Sources:**
+
+- [Node.js — Stream](https://nodejs.org/api/stream.html)
 </details>
 
 <details>

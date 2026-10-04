@@ -1,0 +1,87 @@
+TITLE: Linked Lists
+SLUG: linked-lists-questions
+FILE: 7_ds_linked_lists_interview.md
+TRACK: data-structures
+SUBJECT: data-structures
+URL: https://devinterview.io/questions/data-structures-and-algorithms/linked-list-data-structure-interview-questions/
+SOURCE: Linked Lists
+HUB: 7_special_data_structures.md
+
+## Basics of Linked Lists
+What is a _Linked List_?
+What are some pros and cons of _Linked List_ compared to _Arrays_?
+Explain the difference between _Singly Linked Lists_ and _Doubly Linked Lists_.
+How does a _Linked List_ manage memory allocation differently from an _Array_?
+What are the basic operations that can be performed on a _Linked List_?
+
+## Advantages and Use Cases of Linked Lists
+What are some real-life _Use Cases_ of _Linked Lists_?
+When is a _Circular Linked List_ useful?
+When is _Doubly Linked List_ more efficient than _Singly Linked List_?
+Describe a scenario where the use of a _Linked List_ is more suitable than a _Dynamic Array_.
+
+## Linked Lists vs. Other Data Structures
+Compare _Array-based_ vs _Linked List_ stack implementations.
+How do _Linked Lists_ perform in comparison with _Trees_ for various operations?
+When would you use a _Linked List_ over a _Hash Table_?
+
+## Traversal and Search in Linked Lists
+Is it possible to _Traverse a Linked List_ in _O(n1/2)_? (Jump Pointers).
+How to apply _Binary Search_ in _O(log n)_ on a _Sorted Linked List_? (Skip Lists).
+Is it possible to do _Binary Search_ on a _Doubly Linked List_ in _O(n)_ time?
+Implement a method to find the middle element of a _Linked List_.
+
+## Implementations and Conversions
+Implement a _Linked List_ using _Stack_.
+Reverse a _Singly Linked List_ using only _Two Pointers_.
+Convert a _Singly Linked List_ to a _Circular Linked List_.
+Convert a _Singly Linked List_ to a _Doubly Linked List_.
+Implement a _Doubly Linked List_ using _Stacks_ with minimal complexity.
+Convert a _Binary Tree_ into a _Doubly Linked List_.
+
+## Insertion and Deletion
+Implement a method to _Insert_ a node at a specific position in a _Linked List_.
+Describe how to _Delete_ a node in a _Linked List_ without having a head pointer.
+Implement an efficient function to _Append_ a node to the end of a _Linked List_.
+_Insert_ an item in a _Sorted Linked List_, while maintaining order.
+
+## Algorithms on Linked Lists
+Explain _Floyd’s Cycle Detection Algorithm_.
+Is there an algorithm _Better Than Floyd’s_ for _Cycle Detection_ in linked lists?
+Write an algorithm to _Shuffle_ a _Linked List_.
+Detect if a _List_ is _Cyclic_ using a _Hash Table_.
+Implement an algorithm to _Sort_ a _Linked List_.
+
+## Merging and Reversing
+Merge two sorted _Singly Linked Lists_ without creating new nodes.
+_Reverse_ a _Linked List_ recursively.
+Write a function that _Reverse K_ nodes of the _Linked List_ at a time.
+
+## Advanced Manipulations
+_Find the N-th element_ from the end of a _Singly Linked List_.
+Remove _Duplicates_ from an _Unsorted Linked List_.
+Find _Common Elements_ in two given _Linked Lists_ and return them as a new _Linked List_.
+_Split_ the _Linked List_ into _k_ consecutive parts.
+_Sum_ two numbers represented as _Linked Lists_.
+
+## Special Cases and Challenges
+Find a _Merge Point_ (Intersection) of two _Linked Lists_.
+Given a _Singly Linked List_, determine if it is a _Palindrome_.
+Find the length of a _Linked List_ that contains a _Cycle_.
+_Duplicate_ a _Linked List_ with _Random Pointers_ using _O(1)_ space.
+Implement a function to check if two _Singly Linked Lists_ intersect without using extra space.
+How would you rotate a _Linked List_ by k places?
+
+## Complexity and Analysis
+Discuss the _Time Complexity_ of various operations in _Linked Lists_.
+Assess the _Space Complexity_ of a _Linked List_ with auxiliary pointers, such as in a _Skip List_.
+Explain how _Recursion_ affects time and space complexity in _Linked List_ operations.
+
+## Linked List Problems and Solutions
+Solve the problem of finding the _Intersection Point_ of a Y-shaped _Linked List_.
+Write an algorithm to segregate even and odd nodes in a _Singly Linked List_.
+How can you sort a _Linked List_ that is sorted alternating between ascending and descending orders?
+Develop a method to swap pairs of nodes in a _Linked List_.
+Implement an algorithm to remove all _Odd-Indexed Nodes_ from a _Linked List_.
+Describe a technique to randomly select a node from a _Linked List_ with a uniform distribution.
+Implement a version of a _Linked List_ where each node has an additional arbitrary pointer to within the list.

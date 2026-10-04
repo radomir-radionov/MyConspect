@@ -1,0 +1,68 @@
+TITLE: Caching
+SLUG: caching-questions
+FILE: 0_sd_caching_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/caching-interview-questions/
+SOURCE: Caching
+HUB: 0_system_design.md
+
+## Caching Fundamentals
+Define _caching_ in the context of computer programming.
+What are the main purposes of using a _cache_ in a software application?
+Can you explain the concept of _cache hit_ and _cache miss_?
+Describe the impact of _cache size_ on performance.
+How does a _cache_ improve _data retrieval times_?
+What is the difference between _local caching_ and _distributed caching_?
+Explain the concept of _cache eviction_ and mention common strategies.
+What is a _cache key_ and how is it used?
+Explain the importance of _cache expiration_ and how it is managed.
+How does _cache invalidation_ work and why is it necessary?
+
+## Cache Implementation and Design
+Describe the steps involved in implementing a basic _cache system_.
+How would you handle _cache synchronization_ in a distributed environment?
+Explain the use of _hash maps_ in cache implementation.
+What are some common _caching algorithms_, and how do they differ?
+Explain the design considerations for a cache that supports _high concurrency_.
+How would you prevent _cache stampede_ in a high-load application?
+What are the trade-offs between _read-heavy_ and _write-heavy_ caching strategies?
+Describe the role of a _cache manifest_ in web applications.
+How do you ensure _consistency_ between _cache_ and primary data storage?
+Explain the use of _cache tagging_ and its benefits.
+
+## Caching in Distributed Systems
+Explain _distributed caching_ and its advantages over local caching.
+How do you handle _cache partitioning_ in _distributed systems_?
+Describe _consistency models_ in distributed caching (e.g., _eventual consistency_).
+What is _cache replication_ and how is it typically implemented?
+Name some strategies to avoid _cache coherence_ issues in distributed systems.
+How do you handle _network latency_ in distributed caching?
+What are the challenges in maintaining a _distributed cache_?
+Explain the concept of a _write-through cache_ in a distributed environment.
+How does a _distributed cache_ handle node failures?
+What is a _shared cache_, and how does it differ from a distributed cache?
+
+## Advanced Caching Concepts
+Explain the concept of a _content delivery network (CDN)_ and its relation to caching.
+Explain _edge caching_ and its use cases.
+What is _cache warming_ and when is it used?
+How does _query result caching_ work in database systems?
+Describe _object caching_ and its advantages in object-oriented programming.
+Discuss the impact of caching on _microservices architecture_.
+Explain how caching interacts with _serverless computing_ models.
+Describe _cache compression_ techniques and their trade-offs.
+How does _machine learning_ influence caching strategies?
+Discuss the role of caching in _IoT (Internet of Things)_ applications.
+
+## Caching Tools and Technologies
+What are some popular _caching systems_ and their key features?
+How do you configure _cache settings_ in a web server (e.g., _Nginx_, _Apache_)?
+Explain the role of _HTTP headers_ in web caching.
+How do caching mechanisms differ across various programming languages?
+Describe the use of caching in _mobile application_ development.
+What tools are available for monitoring and analyzing _cache performance_?
+Explain the integration of caching in _cloud computing_ services.
+How does caching work in _content management systems (CMS)_?
+What are the considerations for caching in a _serverless architecture_?
+Name some _caching strategies_ in big data processing and analytics.

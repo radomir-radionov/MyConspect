@@ -1,0 +1,54 @@
+TITLE: Reactive Systems
+SLUG: reactive-systems-questions
+FILE: 0_sd_reactive_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/reactive-systems-interview-questions/
+SOURCE: Reactive Systems
+HUB: 0_system_design.md
+
+## Reactive Systems Fundamentals
+What are the defining characteristics of a _Reactive System_ according to the _Reactive Manifesto_?
+How is _back-pressure_ implemented in _Reactive Systems_ to manage data flow?
+Contrast _Elasticity_ with _Scalability_ with specific examples as they pertain to _Reactive Systems_.
+Describe a strategy a _Reactive System_ might use to maintain _responsiveness_ during a component failure.
+How does _message-driven architecture_ contribute to the _resilience_ of _Reactive Systems_?
+Identify a _resiliency strategy_ in _Reactive Systems_ and explain how it minimizes the impact of failures.
+
+## Design Principles of Reactive Systems
+Why are _non-blocking I/O operations_ a necessity in _Reactive Programming_, and what problems do they solve?
+In what ways can _Domain-Driven Design (DDD)_ principles enhance the design of a _Reactive System_?
+Provide an example of a system that is reactive without fulfilling all the _Reactive Manifesto_ traits. Why does it qualify?
+Describe how a _Reactive System_ would differently address a _transient failure_ versus a _network partition_.
+Discuss a particular _transport layer technology_ you would recommend for _Reactive Systems’ asynchronous communication_ and why.
+Explain the role of _Reactive Systems_ in processing _continuous data streams_, providing industry use cases.
+
+## Implementing Reactive Systems
+What is _Event Sourcing_, and how does it benefit _Reactive Systems_?
+Differentiate between _hot_ and _cold reactive streams_ with examples of use cases.
+Compare _synchronous request-response_ communication with _reactive message-driven_ communication in terms of _scalability_.
+Describe a _design pattern_ uniquely suited for _Reactive Systems_ and why it’s effective.
+Recommend a _framework_ for developing _Reactive Systems_ and discuss its core features.
+Explain how _statefulness_ is managed in _Reactive microservices_ while ensuring _consistency_.
+
+## Reactive Programming Paradigms
+Discuss how _functional programming principles_ can be leveraged in _Reactive Systems_ to enhance _resiliency_.
+Contrast the _Observer pattern_ with the _Publish-Subscribe pattern_, providing use cases in _Reactive Programming_.
+Provide a use case where _Reactive Programming_ offers significant benefits over an _imperative_ approach.
+Define a “_stream_” in _Reactive Programming_, demonstrating its advantages over traditional collections like arrays or lists.
+
+## Fault-tolerance and Reliability
+How can the _circuit breaker pattern_ prevent _cascading failures_ in a _Reactive System_?
+Outline an effective _back-pressure strategy_ for a _Reactive System_ experiencing high load.
+Describe a _supervision strategy_ in _Reactive Systems_ and its role in managing failures.
+
+## Performance and Scalability
+Explain how _Reactive Systems_ exploit multicore and _distributed resources_ to improve _performance_.
+What does “_location transparency_” mean in _Reactive Systems_, and how does this concept apply to a _distributed data store_?
+Identify potential _performance bottlenecks_ in a _streaming Reactive System_ and suggest _monitoring strategies_.
+Describe a method or tools you would use to test and ensure a _Reactive System’s scalability_ under a simulated load.
+
+## Tools and Technologies
+List some key _Reactive programming libraries_ and provide a brief overview of one framework’s core feature set.
+What role do _message queues_ play in _Reactive Systems_, and what characteristics are most important for them to have?
+What are some common challenges faced when integrating _Reactive Systems_ with _non-reactive legacy systems_, and how can they be mitigated?

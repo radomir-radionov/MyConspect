@@ -15,6 +15,22 @@
 - [Trees & graphs](./7_special_data_structures_trees.md)
 - [Hash & heap](./7_special_data_structures_advanced.md)
 
+### Interview
+
+| Тема | О чём |
+| --- | --- |
+| [Arrays — собеседование](./7_ds_arrays_interview.md) | Вопросы по Arrays, ответы не заполнены. |
+| [Hash Tables — собеседование](./7_ds_hash_tables_interview.md) | Вопросы по Hash Tables, ответы не заполнены. |
+| [Stacks — собеседование](./7_ds_stacks_interview.md) | Вопросы по Stacks, ответы не заполнены. |
+| [Heaps and Maps — собеседование](./7_ds_heaps_maps_interview.md) | Вопросы по Heaps and Maps, ответы не заполнены. |
+| [Binary Tree — собеседование](./7_ds_binary_tree_interview.md) | Вопросы по Binary Tree, ответы не заполнены. |
+| [Linked Lists — собеседование](./7_ds_linked_lists_interview.md) | Вопросы по Linked Lists, ответы не заполнены. |
+| [Strings — собеседование](./7_ds_strings_interview.md) | Вопросы по Strings, ответы не заполнены. |
+| [Tree Data Structure — собеседование](./7_ds_trees_interview.md) | Вопросы по Tree Data Structure, ответы не заполнены. |
+| [Queues — собеседование](./7_ds_queues_interview.md) | Вопросы по Queues, ответы не заполнены. |
+| [Trie — собеседование](./7_ds_tries_interview.md) | Вопросы по Trie, ответы не заполнены. |
+| [Data Structures — собеседование](./7_ds_overview_interview.md) | Вопросы по Data Structures, ответы не заполнены. |
+
 ---
 
 ## Overview

@@ -1,0 +1,94 @@
+TITLE: Arrays
+SLUG: arrays-questions
+FILE: 7_ds_arrays_interview.md
+TRACK: data-structures
+SUBJECT: data-structures
+URL: https://devinterview.io/questions/data-structures-and-algorithms/array-data-structure-interview-questions/
+SOURCE: Arrays
+HUB: 7_special_data_structures.md
+
+## Fundamental Array Concepts
+What is an _Array_?
+What are _Dynamic Arrays_?
+What is an _Associative Array_ (Dictionary)?
+What defines the _Dimensionality_ of an array?
+
+## Array Types and Properties
+Name some _Advantages_ and _Disadvantages_ of arrays.
+Explain _Sparse_ and _Dense_ arrays.
+What are advantages and disadvantages of _Sorted Arrays_?
+What are the advantages of _Heaps_ over _Sorted Arrays_?
+
+## Array Operations and Management
+How does _Indexing_ work in arrays?
+_Merge_ two _Sorted Arrays_ into one _Sorted Array_.
+Implement three _Stacks_ with one _Array_.
+How do you perform _Array Rotation_ and what are its applications?
+_Reverse_ an _Array_ in place.
+_Remove Duplicates_ from a sorted array without using extra space.
+Implement a _Queue_ using an array.
+
+## Array-based Algorithms
+Check the _String_ for _Balanced Parentheses_, using linear time and constant space.
+Explain an algorithm to find the _Longest Consecutive Sequence_ in an unsorted array.
+Find the _“Kth” Largest Element_ in an _Array_.
+Explain how to do _Binary Search_ in a _Sorted Array_.
+Implement _Heap Sort_ using an _Array_.
+
+## Array Comparison
+What are some _pros_ and _cons_ of _Linked List_ compared to _Arrays_?
+Compare _Array-based_ vs _Linked List_ stack implementations.
+Compare _Dynamic Arrays_ with _Linked Lists_.
+
+## Advanced Array Topics and Techniques
+_Shuffle_ an _array_, ensuring that each element has an _equal probability_ of being in any position.
+Solve the _Rain Water Trapping_ problem using _arrays_.
+Explain the _two-pointer technique_ and give examples of its use in _array problems_.
+What are the _typical use cases_ for using an array in a _Sliding Window Algorithm_?
+_Find all pairs_ in an _Array_ with a given sum.
+
+## Array Optimization and Use Cases
+Explain the difference between _Column-major Order_ and _Row-major Order_ in _multidimensional arrays_.
+How is a _Circular Array_ useful, and how would you implement one?
+How to optimize operations in a _Very Large Array_ that has many zero elements (i.e., a _Sparse Array_).
+How would you create and work with a _Multi-Dimensional Array_?
+Explain the methodology for _Resizing_ a _Dynamic Array_ and its impact on time complexity.
+
+## Array Techniques and Optimization
+Implement _Binary Search_ in a _circularly sorted array_.
+Describe an algorithm for _Dutch National Flag_ sorting problem.
+How would you _multiply_ two large numbers represented as _integer arrays_?
+Explain how to implement an _Efficient Range Sum Query_ using arrays.
+Describe a _Space-Efficient Data Structure_ for sparse arrays.
+
+## Searching and Sorting Challenges
+Explain the _Quickselect_ algorithm and its relation to arrays.
+How can _Quicksort_ be optimized for arrays with many _duplicate elements_?
+Describe an algorithm to perform _Inversion Count_ in an array.
+Explain the application of _Binary Indexed Trees_ or _Fenwick Trees_ in the context of _arrays_.
+Design an algorithm for the _Skyline Problem_ using _arrays_.
+
+## Multidimensional Arrays and Matrices
+How would you implement an efficient _matrix transpose operation_?
+What are some efficient methods for performing _matrix multiplication_ using _arrays_?
+Solve the _Sudoku Solver_ problem using _arrays_.
+Flatten a _2D Matrix_ into a _1D Array_ without extra space.
+Implement an algorithm to search in a _Row-wise_ and _Column-wise_ _Sorted 2D Array_.
+
+## Specific Data Structures Using Arrays
+Explain how a _Priority Queue_ can be implemented using an _array_.
+How can we use arrays to implement a _Suffix Array_ and what is its usefulness?
+Design a _Double-ended Queue_ (Deque) using arrays.
+Provide the implementation of a _Trie_ data structure using an _array-based_ representation.
+
+## Advanced Algorithmic Problems
+Develop an algorithm to solve the _Kadane’s Algorithm_ (Maximum Subarray Problem).
+Solve the _Minimum Jumps to Reach End_ problem with _arrays_.
+Design a _data structure_ that supports _adding_ new elements, _removing_ specific elements, and _finding_ random elements efficiently.
+Solve the _0/1 Knapsack Problem_ using a _dynamic programming_ approach based on _arrays_.
+Develop an algorithm to find the _Median of Two Sorted Arrays_ of different sizes.
+
+## Performance and Memory Considerations
+Provide strategies for handling _Integer Overflow_ while working with numeric arrays.
+What are the implications of _Data Caching_ and _Locality of Reference_ in array operations?
+How to minimize _Page Faults_ while accessing large arrays in memory-constrained environments?

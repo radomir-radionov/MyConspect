@@ -1,0 +1,131 @@
+TITLE: React Native
+SLUG: react-native
+FILE: 4_react_native_interview.md
+TRACK: frontend
+URL: https://devinterview.io/questions/web-and-mobile-development/react-native-interview-questions/
+SOURCE: React Native
+FLAT: 1
+
+## React Native Fundamentals
+What is React Native and how does it differ from React?
+Can you explain the concept of "Learn once, write anywhere" in the context of React Native?
+How do you create a basic React Native application?
+What are components in React Native?
+Explain the purpose of the `render()` function in a React Native component.
+What is JSX and how is it used in React Native?
+Can you list some of the core components in React Native?
+How do you handle state management in React Native?
+What are props in React Native and how are they used?
+What is the significance of the Flexbox layout in React Native?
+How do you debug a React Native application?
+Explain the concept of hot reloading in React Native.
+How do you handle user input in React Native?
+What is a `TouchableHighlight` in React Native?
+Describe the View component and its purpose in React Native.
+How would you navigate between screens in a React Native app?
+Can you explain the use of the useState hook in React Native?
+How do you apply styles in React Native?
+What is the difference between `state` and `props` in React Native?
+How do you fetch and render a list of data using React Native?
+
+## React Native Intermediate Concepts
+What are the lifecycle methods of a React Native component?
+Explain the use of the useEffect hook in React Native.
+What are higher-order components in React Native?
+How do you use the Context API in React Native?
+Can you perform deep linking in React Native? If so, how?
+Explain the significance of keys in a list in React Native.
+How do you implement global state in a React Native app without using Redux or Context API?
+How do you optimize performance in a React Native app?
+What is the Virtual DOM and how does React Native utilize it?
+Describe how to implement animations in React Native.
+How does React Native handle layout for different device sizes and orientations?
+What is the difference between `StyleSheet.create` and plain JavaScript objects for styling?
+How do you use Redux for state management in React Native?
+What is the `useCallback` hook and how can it be useful in React Native?
+Explain how to use refs in React Native.
+How would you create a custom hook in React Native?
+In what ways can you improve the memory usage of a React Native app?
+What is the role of the React Native Bridge?
+How can you integrate a React Native app with a backend service?
+How do you secure sensitive data such as API keys in a React Native app?
+
+## React Native Styling and Layout
+How do you use the `StyleSheet` object to create styles?
+Can you explain how to use Flexbox for responsive layouts in React Native?
+How do you implement theming in a React Native application?
+What consideration should be taken when styling components for different platforms (iOS and Android)?
+How can you use third-party styling libraries like Styled Components in React Native?
+
+## React Native Data Management and Networking
+How do you handle state persistence in React Native?
+Explain how to make network requests using axios or fetch in React Native.
+What is GraphQL and how can it be used in a React Native app?
+How do you manage caching of network requests in React Native?
+What are the best practices for data validation in React Native forms?
+How can you integrate a React Native application with Redux Saga?
+Discuss the different ways to manage application state in React Native.
+How do you handle offline data synchronization in React Native?
+What are the benefits of using Apollo Client in React Native applications?
+
+## React Native Platform Specifics
+How does React Native handle platform-specific code?
+What are some common platform-specific components in React Native?
+Can you explain how to use the Platform module in React Native?
+How do you build a component that renders differently on iOS and Android?
+Describe a scenario where you might use `NativeModules` in React Native.
+How do you use `Linking` to handle external URLs in React Native?
+
+## React Native Performance Optimization
+What strategies can you employ to optimize the performance of a React Native application?
+How would you reduce the app bundle size in a React Native project?
+Explain how to use the `PureComponent` class for performance gains in React Native.
+Why is it important to avoid unnecessary renders in React Native, and how can you achieve this?
+What is the Hermes engine and how does it benefit React Native performance?
+
+## React Native Testing and Debugging
+What are some popular testing frameworks for React Native applications?
+How do you write a unit test for a React Native component?
+Describe the process for end-to-end testing in React Native.
+What are some common debugging techniques in React Native?
+What tools would you use for performance profiling in React Native?
+
+## React Native Navigation and Routing
+Compare and contrast React Navigation and React Native Navigation.
+How do you pass parameters between screens using React Navigation?
+Explain tab navigation in React Native.
+How can you implement deep linking with React Navigation?
+What is the difference between stack navigation and modal navigation in React Native?
+
+## React Native Build and Deployment
+What is the process to build and package a React Native app for production?
+How do you configure app signing for deploying a React Native app to the Google Play Store or Apple App Store?
+Explain the steps to update a React Native app already deployed on the app stores.
+What is CodePush and how can it be used in React Native apps?
+How do you manage different app environments (development, staging, production) in React Native?
+
+## React Native Ecosystem and Libraries
+List some common libraries that you would consider essential for React Native development.
+How do you integrate a navigation library like React Navigation into a React Native app?
+What is Expo, and what are its pros and cons?
+How would you integrate push notifications into a React Native app?
+Describe how you would use a library like React Native Elements to enhance the UI of your app.
+
+## Advanced React Native Topics
+What is the Flipper tool and how does it help in React Native development?
+Can you explain the use of Turbo Modules in React Native?
+Describe the process of linking native modules in a React Native app.
+What is Reanimated, and when would you use it in a React Native app?
+How do you create a bridge for a native module in React Native?
+Explain the concept of shared element transitions in React Native.
+How would you go about writing native code in Swift or Kotlin for React Native?
+What is "Fast Refresh" in React Native?
+How does React Native compile to native code?
+Can you integrate a React Native application into an existing native iOS or Android app?
+
+## React Native Best Practices
+What are the best practices for structuring a large React Native codebase?
+How should you handle sensitive data in a React Native app?
+What are the best practices for API interaction and data fetching in React Native?
+Discuss the importance of accessibility in React Native apps.
+How do you ensure that your React Native application is maintainable and scalable over time?

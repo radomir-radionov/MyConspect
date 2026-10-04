@@ -1,0 +1,84 @@
+TITLE: Strings
+SLUG: strings-questions
+FILE: 7_ds_strings_interview.md
+TRACK: data-structures
+SUBJECT: data-structures
+URL: https://devinterview.io/questions/data-structures-and-algorithms/string-data-structure-interview-questions/
+SOURCE: Strings
+HUB: 7_special_data_structures.md
+
+## Basic String Concepts
+What is a _String_ in _Data Structures_?
+Compare _Strings_ and _Character Arrays_.
+What is a _Null-Terminated_ String?
+Explain _Mutability_ and _Immutability_ in the context of _Strings_.
+How do different _programming languages_ implement and manipulate _Strings_?
+
+## String Properties and Operations
+Why are _Character arrays_ preferred over _Strings_ for passwords?
+Discuss how indexing works in _Strings_ and how it affects various operations.
+What are _Pascal Strings_?
+Explain how _String Concatenation_ works and the time complexity associated with it.
+Describe the _Time Complexity_ of substring search in _Strings_.
+
+## Advanced String Data Structures
+What is a _Rope_ data structure?
+Name key _Advantages_ and _Limitations_ of _Ropes_.
+What are some _Practical Applications_ of a _Ropes_?
+Compare _Ropes_ vs. _StringBuilders_.
+Compare the performance of _Strings_ vs. _Ropes_.
+
+## String Searching Algorithms
+Explain the _Boyer-Moore Algorithm_.
+Compare _Knuth-Morris-Pratt_, _Boyer-Moore_, and _Rabin-Karp_ search algorithms.
+Implement and discuss the complexity of the _Z-algorithm_ for pattern searching.
+How does the _BNDM algorithm_ work for string matching?
+
+## String Manipulation Challenges
+Check the _String_ for _Balanced Parentheses_, using _Linear Time_ and _Constant Space_.
+Remove the _Minimum Number_ of parentheses to make a _String_ valid.
+_Reverse_ a _String_ using _Stack_.
+Solve the _String Compression_ problem (e.g., “aaabccddd” to “a3b1c2d3”)?
+Write an algorithm to find the _Longest Palindromic Substring_ within a given string.
+
+## String Pattern Problems
+Check if a _String_ is a _Palindrome_.
+Find all _Permutations_ of a _String_.
+Check if two _Strings_ are _Anagrams_.
+Find the _Longest Repeating Subsequence_ in a _String_.
+Implement a solution to find the _Shortest Palindrome_ that can be formed by adding characters to the beginning of a given string.
+
+## Reversal and Transformation
+_Reverse_ the ordering of words in a _String_.
+Write a function to _Reverse_ each word in a sentence while preserving whitespace and initial word order.
+_Transform_ one string to another using a minimal number of append/delete operations.
+Implement an in-place algorithm to _Reverse a String_ without using additional buffer space.
+
+## String Comparison and Sorting
+Explain why _String Sorting_ differs from sorting other types of data and how to optimize it.
+Discuss the _Longest Common Prefix_ algorithm and its applications.
+Implement a solution for _Grouping Anagrams_ given an array of strings.
+How do you compare version numbers represented as strings?
+
+## Encoding and Encryption String Problems
+Describe how you would _Encode_ and _Decode_ a string using the _Run-Length Encoding_ algorithm.
+Implement a simple _String Encryption_ method such as Caesar Cipher and discuss its security.
+Explain the challenges of _Unicode Encoding_ and _Decoding_ in strings and how programming languages address these issues.
+
+## Regular Expressions and Pattern Matching
+How are _Regular Expressions_ used for string pattern matching and validation?
+Write a _regular expression_ to validate email addresses.
+Implement a _regex matcher_ to check if a _string_ conforms to a given _pattern_.
+
+## Multilingual and Locale-Specific Issues
+Discuss how strings are handled in a _Multilingual Context_ and the implications for data storage and manipulation.
+Explain the concept of _Locale-Specific Sorting_ and how it can affect string comparison algorithms.
+
+## Memory Efficient String Processing
+How can you _minimize memory usage_ when manipulating _large strings_?
+Discuss the use of _Flyweight Pattern_ for memory-efficient string storage.
+
+## String Data Structures Interview Challenges
+Detect if a _string_ has any _duplicate characters_ without using additional data structures.
+Check for an _Isomorphic String_ relationship between two given strings.
+Implement a _string tokenizer_ that can split a _string_ into _tokens_ based on _different delimiters_.

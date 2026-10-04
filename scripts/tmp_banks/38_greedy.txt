@@ -1,0 +1,73 @@
+TITLE: Greedy Algorithms
+SLUG: greedy-questions
+FILE: 7_algo_greedy_interview.md
+TRACK: algorithms
+SUBJECT: algorithms
+URL: https://devinterview.io/questions/data-structures-and-algorithms/greedy-algorithms-interview-questions/
+SOURCE: Greedy Algorithms
+HUB: 7_special_algorithms.md
+
+## Understanding Greedy Algorithms
+What is a _Greedy Algorithm_?
+What are _Greedy Algorithms_ used for?
+List some characteristics that are often present in problems that are solvable by _greedy algorithms_.
+What is the difference between _Greedy_ and _Heuristic_ algorithms?
+Compare _Greedy_ vs _Divide & Conquer_ vs _Dynamic Programming_ algorithms.
+Is _Dijkstra’s algorithm_ a _Greedy_ or _Dynamic Programming_ algorithm?
+Is there a way to _Mathematically Prove_ that a _Greedy Algorithm_ will yield the _Optimal Solution_?
+Explain the _Greedy Choice Property_ and its significance in _greedy algorithms_.
+
+## Greedy Algorithm Design
+Design a _greedy algorithm_ for making change using the fewest coins possible.
+Describe a greedy strategy for scheduling events that use the fewest number of resources.
+Explain how to apply a greedy approach to minimize the total waiting time for a given set of queries.
+Develop a _greedy algorithm_ for the _activity selection problem_ to maximize the number of activities.
+
+## Correctness and Optimization
+How can you establish the correctness of a _greedy algorithm_?
+What is the role of _sorting_ in many _greedy algorithms_, and why is it often necessary?
+Can _greedy algorithms_ be used to solve _optimization problems_? Give an example.
+
+## Greedy Algorithm Challenges
+Solve the _fractional knapsack problem_ using a greedy method.
+Implement a _greedy algorithm_ to arrange a group of intervals by their start times to minimize the number of rooms needed.
+Design a method using _greedy algorithms_ for minimizing the total number of platforms needed at a railway station.
+
+## Comparison and Analysis
+Discuss situations where a _greedy algorithm_ might not produce the _optimal solution_.
+Compare the efficiency of a _greedy algorithm_ to a _brute force approach_ for the _traveling salesman problem_.
+What is the _Huffman Coding algorithm_, and is it considered a _greedy algorithm_?
+
+## Real-World Applications
+How do _greedy algorithms_ apply to _network routing protocols_?
+Explain how _greedy algorithms_ can be used in _load balancing_ and _task scheduling_ in _distributed systems_.
+Describe an application of _greedy algorithms_ in _financial portfolio optimization_.
+
+## Greedy Algorithm Techniques and Methods
+Discuss the _primality of cuts_ and how it pertains to _greedy algorithms_.
+Describe the ‘_local ratio_’ technique and its application to _greedy algorithms_.
+What is the ‘_exchange argument_’ in the context of analyzing _greedy algorithms_?
+
+## Limitations and Failures
+Provide an example where a _greedy algorithm_ fails to achieve the _global optimum_.
+Explain why _greedy algorithms_ can be ineffective for the _coin change problem_ with non-standard denominations.
+Discuss the limitations of _greedy algorithms_ when applied to _graph coloring problems_.
+
+## Optimization Problems
+Solve the problem of finding the _largest number possible_ from a list of numbers using a _greedy approach_.
+Implement a _greedy solution_ for the _job sequencing problem_ with deadlines to maximize profit.
+Use _greedy algorithm_ to solve the ‘_Minimum Number of Arrows to Burst Balloons_’ problem.
+
+## Complex Greedy Strategy Implementations
+How would you optimize a network’s _bandwidth allocation_ using a _greedy strategy_?
+Write a _greedy solution_ for _compressing data_ using a _variable-length encoding scheme_.
+Implement a _greedy strategy_ to construct the _minimum spanning tree_ of a graph.
+
+## Advanced Theoretical Concepts
+What is a _matroid_, and how do _greedy algorithms_ relate to _matroid theory_?
+Explain the relationship between _greedy algorithms_ and the concept of _safe moves_.
+Discuss how _approximation algorithms_ use _greedy strategies_ to find near-optimal solutions.
+
+## Greedy Algorithms in Competitive Programming
+Design a _greedy algorithm_ to solve the ‘_Gas Station_’ problem commonly seen in competitive programming contests.
+Solve the ‘_Majority Element_’ problem under the _constraints_ of using a _single pass algorithm_ and _constant additional space_.

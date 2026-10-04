@@ -1,6 +1,6 @@
 # React — Redux interview
 
-Redux interview questions, answers not filled in.
+Redux interview questions. Answers are filled for the published subset; the rest are still empty.
 
 [← Back to hub](./4_react.md)
 
@@ -27,6 +27,28 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 
 **Definition:**
 
+Redux keeps application state in a single store and changes it only by dispatching actions. Reducers are pure functions that turn the current state and an action into the next state.
+
+**How it works:**
+
+- The store holds the state tree and the `dispatch` function. `getState()` reads the tree. `subscribe` hears about replacements.
+- An action is a plain object with a `type` string and, usually, a payload. It describes what happened, not how to mutate.
+- A reducer handles one slice. Given the same state and action, it returns the same next state and does not touch the network or the DOM.
+- The UI subscribes, often through React-Redux. A dispatch runs the root reducer, the store replaces the tree, and subscribed components render from the new values.
+- The loop is one-way: view, action, reducer, store, view. That is what makes a log of actions enough to replay a bug.
+- Redux itself is not tied to React. `react-redux` is the binding most apps use. Angular, Vue, and plain JavaScript can hold a store too.
+- Redux Toolkit (`configureStore`, `createSlice`) is the way to write this today. Hand-rolled action constants are the older style.
+
+**Examples:**
+
+```js
+const next = counterReducer(0, { type: "increment" });
+```
+
+**Sources:**
+
+- https://redux.js.org/tutorials/essentials/part-1-overview-concepts
+
 </details>
 
 <details>
@@ -35,6 +57,30 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 ### Can you describe the three principles that Redux is based upon?
 
 **Definition:**
+
+Redux states three rules. One store holds the state tree. That tree is read-only. It changes only when a pure reducer returns the next tree.
+
+**How it works:**
+
+- Single source of truth: one store, one object (or a map of slices). A fact such as “the selected pier” lives in one place, so two screens cannot disagree because they each kept a copy.
+- State is read-only. Views and middleware call `dispatch`. They do not assign `state.lane = "north"`. The store replaces the reference when the reducer returns.
+- Changes are pure functions. `reducer(state, action)` does not read the clock, does not write a global, and does not mutate `state`. The next value is a new object for the parts that changed.
+- Because actions are data and reducers are deterministic, DevTools can replay the list. That is time-travel debugging.
+- Purity is also why a reducer is a unit test with no mocks: pass a state and an action, assert the result.
+- Async work is not a fourth way to change state. Middleware does the work, then dispatches an ordinary action the reducer can see.
+
+**Examples:**
+
+```js
+function reducer(state = { n: 0 }, action) {
+  if (action.type === "increment") return { n: state.n + 1 };
+  return state;
+}
+```
+
+**Sources:**
+
+- https://redux.js.org/understanding/thinking-in-redux/three-principles
 
 </details>
 
@@ -45,6 +91,28 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 
 **Definition:**
 
+An action is a plain object that describes an event. It must have a `type` field, usually a string. Any other fields are the payload the reducer will read.
+
+**How it works:**
+
+- `{ type: "berth/selected", id: 4 }` is an action. The `type` is the case the reducer switches on. The `id` is data, not a function.
+- An action creator is a function that returns that object: `const selectBerth = (id) => ({ type: "berth/selected", id })`. Call sites stay short, and the shape lives in one place.
+- `createSlice` from Redux Toolkit generates the creator and the type string (`"berth/selected"`) from the reducer name and the case name.
+- Actions are serializable. Do not put a class instance, a promise, or a DOM node in one. DevTools and persistence depend on that.
+- Dispatching an action does not itself change state. A reducer has to handle the type. An unknown type leaves the state as it was.
+- TypeScript narrows the payload from the `type`, so a mismatched field is a compile error instead of an `undefined` in the reducer.
+
+**Examples:**
+
+```js
+const selectBerth = (id) => ({ type: "berth/selected", id });
+dispatch(selectBerth(4));
+```
+
+**Sources:**
+
+- https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow#actions
+
 </details>
 
 <details>
@@ -53,6 +121,28 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 ### How are actions used to change the state in a Redux application?
 
 **Definition:**
+
+Code calls `dispatch` with an action. The store passes the current state and that action to the root reducer, stores the returned tree, and notifies subscribers. Nothing else writes the tree.
+
+**How it works:**
+
+- UI code calls an action creator, then `dispatch`. In React that is `useDispatch()`.
+- Middleware sees the action before the reducer. A thunk middleware lets the “action” be a function; that function may `await` a request and then `dispatch` a plain object. The reducer still only sees plain actions.
+- The reducer switches on `action.type` and returns the next slice. Redux Toolkit’s Immer lets you write `state.n += 1` in the case, and the library produces the next immutable tree.
+- The store swaps in the returned reference. Components that selected a changed value render again. Components that selected an unchanged reference do not.
+- Updates inside the reducer are synchronous. The async gap lives in the middleware, between two dispatches (`pending`, then `fulfilled`).
+- If you mutate the existing state object and return it, subscribers see the same reference and skip the update. Return a new tree, or use Immer.
+
+**Examples:**
+
+```js
+store.dispatch({ type: "counter/increment" });
+store.getState(); // { counter: { n: 1 } }
+```
+
+**Sources:**
+
+- https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow
 
 </details>
 
@@ -63,6 +153,35 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 
 **Definition:**
 
+A reducer is a pure function `(state, action) => nextState`. It is the only place that decides the next value of its slice.
+
+**How it works:**
+
+- The first call receives `undefined` state. The reducer must return the initial state, usually through a default parameter.
+- It looks at `action.type`. A known type returns a new object. Any other type returns the current `state` unchanged, so the reference stays stable.
+- One reducer owns one slice: `counter`, `berths`, `session`. It does not handle the whole app in one switch if the app is large.
+- `combineReducers` (or the `reducer` map in `configureStore`) calls each slice with its own piece of state and the same action.
+- Immer, used by `createSlice`, tracks mutations inside the case and emits a new tree. The function is still pure from the outside.
+- A reducer does not dispatch, does not call `fetch`, and does not read `getState` from a store it closes over. Those are side effects.
+- Tests call the function directly. No store is required.
+
+**Examples:**
+
+```js
+function counter(state = { n: 0 }, action) {
+  switch (action.type) {
+    case "increment":
+      return { n: state.n + 1 };
+    default:
+      return state;
+  }
+}
+```
+
+**Sources:**
+
+- https://redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers
+
 </details>
 
 <details>
@@ -71,6 +190,29 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 ### How does Redux differ from local component state in React?
 
 **Definition:**
+
+Local state lives in one component and is updated with `useState`. Redux lives outside the tree, and any component can dispatch or select it without the value being passed through props.
+
+**How it works:**
+
+- Local state is the right default for a toggle, a field, or a draft that one component and its children use. It disappears when the component unmounts.
+- Passing that state through many layers is prop drilling. Lifting it to a parent fixes two or three siblings. It gets awkward when the readers are far apart.
+- A Redux slice survives navigation as long as the store does. Distant screens read the same selected pier without a common parent holding it.
+- Local updates are a setter call. Redux updates are actions, so the change is named and can be logged.
+- Redux adds a dependency, a store provider, and a discipline about serializable actions. That cost is wasted on a widget.
+- Use local state for UI that is local. Use Redux (or another store) when many features share client state, or when you need the action log. Server cache belongs in a query library, not in either place by accident.
+
+**Examples:**
+
+```jsx
+const [open, setOpen] = useState(false);          // one panel
+const pier = useSelector((s) => s.berth.id);      // any screen
+```
+
+**Sources:**
+
+- https://react.dev/learn/sharing-state-between-components
+- https://redux.js.org/tutorials/essentials/part-2-app-structure
 
 </details>
 
@@ -81,6 +223,30 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 
 **Definition:**
 
+The store is the object that holds the current state tree and accepts actions. An app has one store.
+
+**How it works:**
+
+- `getState()` returns the current tree. Treat it as read-only.
+- `dispatch(action)` runs middleware, then the root reducer, then replaces the tree.
+- `subscribe(listener)` calls the listener after a dispatch that replaced the tree. React-Redux uses this; components rarely subscribe by hand.
+- `replaceReducer` swaps the root reducer, which hot reloading uses. It is not part of ordinary app code.
+- `configureStore({ reducer })` creates the store, wires the thunk middleware, and turns on DevTools. `createStore` is the older function it replaces.
+- The store is created once, at startup, and passed to `<Provider store={store}>`. Calling `configureStore` inside a component creates a new tree every render.
+- There is no second store for “just this page” in a normal app. A slice is how you separate concerns inside the one tree.
+
+**Examples:**
+
+```js
+const store = configureStore({ reducer: { berth: berthReducer } });
+store.getState();
+```
+
+**Sources:**
+
+- https://redux.js.org/tutorials/fundamentals/part-4-store
+- https://redux.js.org/tutorials/essentials/part-2-app-structure
+
 </details>
 
 <details>
@@ -89,6 +255,27 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 ### Can you describe the concept of "single source of truth" in Redux?
 
 **Definition:**
+
+Single source of truth means one state tree holds the application state, and each fact is stored once. Components derive what they show from that tree instead of keeping a private copy.
+
+**How it works:**
+
+- A selector reads the pier id from `state.berth.id`. Every screen that selects it sees the same number after a dispatch.
+- Debugging starts from one snapshot. You do not hunt for which component last set a duplicate.
+- The tree can still be large. Selectors pick the slice a component needs, so it does not re-render when an unrelated slice changes.
+- The cost of one tree is contention: a badly normalized shape makes every update rewrite a huge object. Normalize lists by id.
+- “Single” does not mean “put the textarea draft in Redux.” Local state is a source of truth for local UI. The principle is: do not store the same fact in two places that can drift.
+- Server data has its own cache. Copying a query result into a slice creates a second source. Keep the cache in the query library.
+
+**Examples:**
+
+```js
+const id = useSelector((state) => state.berth.id);
+```
+
+**Sources:**
+
+- https://redux.js.org/understanding/thinking-in-redux/three-principles#single-source-of-truth
 
 </details>
 
@@ -99,6 +286,30 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 
 **Definition:**
 
+Define the reducers, then create one store when the app starts. `configureStore({ reducer })` is the current entry point.
+
+**How it works:**
+
+- A slice reducer is `createSlice({ name, initialState, reducers })`. The exported `slice.reducer` handles that key.
+- Pass a map when you have several slices: `reducer: { berth: berthReducer, session: sessionReducer }`. Each key is a branch of the tree. `combineReducers` is what that map does.
+- `preloadedState` is the optional second concern, for tests or for rehydrating a saved tree. Production code usually lets the reducers supply `initialState`.
+- Middleware is already included: thunk, immutability checks in development, and serializability checks. Add more with `middleware: (getDefault) => getDefault().concat(extra)`.
+- `createStore(rootReducer, preloadedState, applyMiddleware(thunk))` is the old three-argument form. Do not start a new app with it.
+- Render `<Provider store={store}>` once around the tree. `useDispatch` and `useSelector` read that context.
+- One store per JavaScript runtime. Tests build their own store so cases do not leak state.
+
+**Examples:**
+
+```js
+const store = configureStore({
+  reducer: { berth: berthReducer },
+});
+```
+
+**Sources:**
+
+- https://redux.js.org/tutorials/essentials/part-2-app-structure#creating-the-redux-store
+
 </details>
 
 <details>
@@ -107,6 +318,27 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 ### What is meant by "immutable state," and why is it important in Redux?
 
 **Definition:**
+
+Immutable update means a reducer returns a new object for what changed and does not alter the object it received. Redux uses that reference change to know that an update happened.
+
+**How it works:**
+
+- `useSelector` and `connect` compare the selected value with `===`. A new object re-renders. The same reference bails out. Mutating a field inside the old object and returning it skips the render and leaves DevTools with a lie.
+- History follows from the same rule. Each dispatch can keep the previous tree, which is how time-travel and undo work, because the old tree was not edited in place.
+- Shallow copy is enough when you copy every level you change: `{ ...state, berth: { ...state.berth, id: 4 } }`. A deep clone of the whole tree is wasted work.
+- `const state = getState()` does not make the object immutable. `const` only blocks reassignment of the binding.
+- Immer (inside `createSlice`) lets the case look like a mutation and still emits a new tree. Immutable.js is an older library of persistent collections; it fights the rest of the JavaScript ecosystem, so new code uses Immer.
+- This is not about threads. JavaScript reducers run on one turn of the event loop. The win is predictable change detection, not a lock.
+
+**Examples:**
+
+```js
+return { ...state, id: action.id };
+```
+
+**Sources:**
+
+- https://redux.js.org/usage/structuring-reducers/immutable-update-patterns
 
 </details>
 
@@ -117,6 +349,28 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 
 **Definition:**
 
+`combineReducers` takes a map of slice reducers and returns one root reducer. Each key becomes a key in the state tree, and each slice only sees its own branch.
+
+**How it works:**
+
+- `combineReducers({ notes, ui, session })` produces a state `{ notes, ui, session }`. The root calls every slice with the same action.
+- A slice returns its previous branch when it does not care about the action. That branch’s reference stays the same, so selectors of other slices do not fire.
+- The split is how a large app stays readable. The notes reducer does not contain a switch for login.
+- Slices can be reused or tested alone. The root is only the map.
+- `configureStore({ reducer: { notes, ui, session } })` calls `combineReducers` for you. You write the function yourself when you are composing stores the old way, or when one key needs a custom wrapper.
+- A slice must return its default state when the branch it receives is `undefined`. Otherwise the root throws on startup.
+- Do not reach into another slice’s state from a reducer. If a transition needs both, dispatch one action and let each slice respond, or put the shared fact in one slice.
+
+**Examples:**
+
+```js
+const root = combineReducers({ notes: notesReducer, ui: uiReducer });
+```
+
+**Sources:**
+
+- https://redux.js.org/api/combinereducers
+
 </details>
 
 <details>
@@ -125,6 +379,33 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 ### What are pure functions and side effects in the context of Redux?
 
 **Definition:**
+
+A pure function’s result depends only on its arguments, and it changes nothing outside itself. Reducers must be pure. Side effects — HTTP, timers, logs, random numbers — belong in middleware, not in the reducer.
+
+**How it works:**
+
+- `reducer(state, action)` may read `state` and `action` and must return the next state. Calling it twice with the same inputs returns the same output, and the inputs are unchanged.
+- A reducer that pushes into an array, writes `localStorage`, or calls `Date.now()` is impure. Replay and tests stop matching production.
+- An action is data. Dispatching it is the effect of the caller, not of the reducer. The reducer does not dispatch.
+- `redux-thunk` middleware accepts a function action. That function receives `dispatch` and `getState`, performs the request, and dispatches result actions (`pending`, `fulfilled`, `rejected`).
+- `redux-saga` runs generator workers that listen for actions and yield effects (`call`, `put`). It fits long, cancellable flows. Thunks fit a single request.
+- RTK Query and `createAsyncThunk` are the current wrappers around the thunk style, so you do not hand-write the three status actions every time.
+- Keep the reducer as the pure core even when the middleware around it is busy.
+
+**Examples:**
+
+```js
+const loadBerth = (id) => async (dispatch) => {
+  dispatch({ type: "berth/pending" });
+  const berth = await fetchBerth(id);
+  dispatch({ type: "berth/loaded", berth });
+};
+```
+
+**Sources:**
+
+- https://redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers#reducers
+- https://redux.js.org/tutorials/essentials/part-5-async-logic
 
 </details>
 
@@ -138,6 +419,32 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 
 **Definition:**
 
+Reducers stay synchronous. Async work goes through middleware. With redux-thunk, an action creator returns a function, and the middleware calls it with `dispatch` and `getState`.
+
+**How it works:**
+
+- `configureStore` adds thunk by default. You do not call `applyMiddleware(thunk)` unless you are on the old `createStore` path.
+- The function dispatches a start action, `await`s the request, then dispatches success or failure. The reducer stores the status so the UI can show a spinner or an error.
+- `createAsyncThunk("berth/load", async (id) => fetchBerth(id))` generates those three action types. `extraReducers` in a slice handles them.
+- Do not `await` inside a reducer. It cannot return a promise as the next state.
+- Race conditions are real: a slow response for pier 4 can arrive after the user picked pier 5. Ignore a result whose id is no longer selected, or abort the previous request.
+- Sagas are the alternative when the flow is a long state machine (debounce, cancel, wait for two actions). A single load does not need one.
+- RTK Query removes the hand-written thunk for server cache: a query endpoint fetches, caches, and refetches.
+
+**Examples:**
+
+```js
+export const loadBerth = createAsyncThunk("berth/load", async (id) => {
+  const res = await fetch(`/api/berths/${id}`);
+  return res.json();
+});
+```
+
+**Sources:**
+
+- https://redux.js.org/tutorials/essentials/part-5-async-logic
+- https://redux.js.org/usage/writing-logic-thunks
+
 </details>
 
 <details>
@@ -147,6 +454,30 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 
 **Definition:**
 
+A selector is a function from state to a value the UI needs. Components call it instead of reaching into the tree, and a memoized selector skips repeat work when the inputs did not change.
+
+**How it works:**
+
+- `const selectId = (state) => state.berth.id` is a selector. `useSelector(selectId)` subscribes the component to that result.
+- Derived data belongs here, not in the store: open berths are `state.list.filter((b) => b.open)`. Storing that array as well creates a second source.
+- `createSelector` from Reselect memoizes the derivation. It recomputes when the input slices change, not on every dispatch in the app.
+- `useSelector` uses `===`. A selector that returns a new object every time (`(s) => ({ id: s.berth.id })`) re-renders every time. Select a stable value, or memoize the object.
+- One module of selectors is the read API of a slice. Renaming a field then breaks one file, not every component.
+- Selectors stay pure. They do not dispatch and they do not close over a changing global.
+
+**Examples:**
+
+```js
+const selectOpen = createSelector(
+  (state) => state.berths,
+  (berths) => berths.filter((b) => b.open),
+);
+```
+
+**Sources:**
+
+- https://redux.js.org/usage/deriving-data-selectors
+
 </details>
 
 <details>
@@ -155,6 +486,30 @@ Questions from [Devinterview.io — Redux](https://devinterview.io/questions/web
 ### How does Redux handle the flow of data and actions?
 
 **Definition:**
+
+Data moves in one direction. The UI dispatches an action, middleware may intercept it, the reducer returns the next state, and subscribers read that state.
+
+**How it works:**
+
+- A click handler calls `dispatch(action)`. The action is a description (`{ type, payload }`), not a patch of the tree.
+- Middleware runs first, in order. A logger records the action. A thunk runs a function. Anything that calls `next(action)` forwards the plain action toward the reducer.
+- The root reducer hands the action to every slice. Each slice returns its next branch or the same branch.
+- The store saves the root return value and calls listeners. `useSelector` compares its last result and renders when it changed.
+- The component does not write `state` and does not pass a new tree to its parent. The next render pulls the new value from the store.
+- That direction is why a trace is a list of actions plus the state after each one. You never have to ask which child mutated a field.
+- Skipping a layer (a component writing the store object, a reducer fetching) breaks the trace. Put the fetch in the thunk and the field change in the reducer.
+
+**Examples:**
+
+```text
+click → dispatch({ type: "berth/selected", id: 4 })
+      → reducer returns { id: 4 }
+      → selector updates the label
+```
+
+**Sources:**
+
+- https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow
 
 </details>
 

@@ -1,0 +1,67 @@
+TITLE: Layering & Middleware
+SLUG: layering-questions
+FILE: 0_sd_layering_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/layering-and-middleware-interview-questions/
+SOURCE: Layering & Middleware
+HUB: 0_system_design.md
+
+## Layering & Middleware Fundamentals
+Can you explain what is meant by _layering_ in the context of software architecture and its benefits?
+Describe the three typical _layers_ you might find in a _three-tiered application architecture_ and their responsibilities.
+How does _middleware_ facilitate _decoupling_ of components in a system?
+
+## Middleware Functions and Implementations
+What are some common functionalities provided by _middleware_ in a _layered architecture_?
+Give an example of a _middleware solution_ that provides _service orchestration_.
+Explain the concept of a _service layer_ and its purpose in a _layered architecture_.
+Describe how _middleware_ can support both _synchronous_ and _asynchronous_ communication patterns.
+
+## Middleware Types and Use Cases
+How do _Object Request Brokers (ORBs)_ differ from _Message Oriented Middleware (MOM)_?
+In what scenario would you choose an _Enterprise Service Bus (ESB)_?
+When would you use _Remote Procedure Call (RPC)_ middleware, and what advantages does it offer?
+
+## Middleware Integration and Communication
+Explain how _middleware systems_ support _data format transformations_ between disparate technologies.
+Describe how _middleware_ handles _load balancing_ among multiple _server instances_.
+Can you discuss strategies for _scaling middleware solutions_ in response to increasing load?
+
+## Middleware Configuration and Optimization
+How can you configure _middleware_ to ensure _secure data transmission_?
+Explain how _middleware caching_ can improve the performance of a _multi-layered application_.
+What are some common performance concerns when integrating _middleware_ in a _layered architecture_?
+
+## Middleware Technologies and Standards
+Name and discuss several prominent _middleware technologies_ currently used in the industry and their typical _use cases_.
+How have _web services_ evolved to serve _middleware functions_ in modern applications?
+What is the significance of using _middleware that adheres to standards_ like _AMQP (Advanced Message Queuing Protocol)_?
+
+## Middleware Security and Reliability
+How does _middleware_ support _authentication and authorization_ across different _layers_?
+Describe how _middleware_ can assist with _data encryption_ during transit between application _layers_.
+Discuss how _middleware_ can provide _reliable message delivery_ and _fault tolerance_ in the case of network failures.
+
+## Middleware Testing and Debugging
+What are effective strategies for _testing middleware integration_ within a system?
+Explain how you would approach _debugging a performance bottleneck_ at the _middleware layer_.
+Describe an approach to simulating high _loads for middleware_ during the _testing phase_.
+
+## Middleware Design Patterns and Best Practices
+Describe the _Chain of Responsibility pattern_ and its role in _middleware layer design_.
+Can you name and describe one or two _middleware-related design patterns_ that enhance _scalability or maintainability_?
+What _best practices_ would you recommend for designing an effective _middleware layer_ in a modern application?
+
+## Middleware Specifics and Advanced Concepts
+How does _middleware_ support _orchestration and choreography_ in microservices architectures?
+Describe the role of _API Gateways_ as a form of _middleware_ in a _microservices environment_.
+Explain the concept of _middleware as a Service (MaaS)_ and how it can be leveraged in _cloud architectures_.
+
+## Middleware in Enterprise Context
+How do _enterprise service buses_ differ from more lightweight _middleware solutions_?
+Describe a scenario where _middleware_ plays a critical role in _enterprise application integration (EAI)_.
+
+## Middleware and Big Data
+How can _middleware solutions_ facilitate _Big Data processing_ and integration with traditional _enterprise systems_?
+Discuss the role of _middleware_ in streamlining data flows between _IoT devices_ and backend systems.

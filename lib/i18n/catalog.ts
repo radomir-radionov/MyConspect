@@ -218,6 +218,108 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Вопросы по Go, ответы не заполнены.",
   "DevOps interview questions, answers not filled in.":
     "Вопросы по DevOps, ответы не заполнены.",
+  "API Design interview questions, answers not filled in.":
+    "Вопросы по API Design, ответы не заполнены.",
+  "Databases interview questions, answers not filled in.":
+    "Вопросы по Databases, ответы не заполнены.",
+  "Microservices interview questions, answers not filled in.":
+    "Вопросы по Microservices, ответы не заполнены.",
+  "Availability & Reliability interview questions, answers not filled in.":
+    "Вопросы по Availability & Reliability, ответы не заполнены.",
+  "Docker interview questions, answers not filled in.":
+    "Вопросы по Docker, ответы не заполнены.",
+  "NoSQL interview questions, answers not filled in.":
+    "Вопросы по NoSQL, ответы не заполнены.",
+  "Caching interview questions, answers not filled in.":
+    "Вопросы по Caching, ответы не заполнены.",
+  "Domain-Driven Design interview questions, answers not filled in.":
+    "Вопросы по Domain-Driven Design, ответы не заполнены.",
+  "Reactive Systems interview questions, answers not filled in.":
+    "Вопросы по Reactive Systems, ответы не заполнены.",
+  "CAP Theorem interview questions, answers not filled in.":
+    "Вопросы по CAP Theorem, ответы не заполнены.",
+  "Kubernetes interview questions, answers not filled in.":
+    "Вопросы по Kubernetes, ответы не заполнены.",
+  "SOA interview questions, answers not filled in.":
+    "Вопросы по SOA, ответы не заполнены.",
+  "Concurrency interview questions, answers not filled in.":
+    "Вопросы по Concurrency, ответы не заполнены.",
+  "Layering & Middleware interview questions, answers not filled in.":
+    "Вопросы по Layering & Middleware, ответы не заполнены.",
+  "Software Architecture interview questions, answers not filled in.":
+    "Вопросы по Software Architecture, ответы не заполнены.",
+  "Cryptography interview questions, answers not filled in.":
+    "Вопросы по Cryptography, ответы не заполнены.",
+  "Load Balancing interview questions, answers not filled in.":
+    "Вопросы по Load Balancing, ответы не заполнены.",
+  "XML interview questions, answers not filled in.":
+    "Вопросы по XML, ответы не заполнены.",
+  "Arrays interview questions, answers not filled in.":
+    "Вопросы по Arrays, ответы не заполнены.",
+  "Divide & Conquer interview questions, answers not filled in.":
+    "Вопросы по Divide & Conquer, ответы не заполнены.",
+  "Hash Tables interview questions, answers not filled in.":
+    "Вопросы по Hash Tables, ответы не заполнены.",
+  "Sorting Algorithms interview questions, answers not filled in.":
+    "Вопросы по Sorting Algorithms, ответы не заполнены.",
+  "Stacks interview questions, answers not filled in.":
+    "Вопросы по Stacks, ответы не заполнены.",
+  "Heaps and Maps interview questions, answers not filled in.":
+    "Вопросы по Heaps and Maps, ответы не заполнены.",
+  "Dynamic Programming interview questions, answers not filled in.":
+    "Вопросы по Dynamic Programming, ответы не заполнены.",
+  "Big-O Notation interview questions, answers not filled in.":
+    "Вопросы по Big-O Notation, ответы не заполнены.",
+  "Binary Tree interview questions, answers not filled in.":
+    "Вопросы по Binary Tree, ответы не заполнены.",
+  "Fibonacci Sequence interview questions, answers not filled in.":
+    "Вопросы по Fibonacci Sequence, ответы не заполнены.",
+  "Linked Lists interview questions, answers not filled in.":
+    "Вопросы по Linked Lists, ответы не заполнены.",
+  "Strings interview questions, answers not filled in.":
+    "Вопросы по Strings, ответы не заполнены.",
+  "Tree Data Structure interview questions, answers not filled in.":
+    "Вопросы по Tree Data Structure, ответы не заполнены.",
+  "Queues interview questions, answers not filled in.":
+    "Вопросы по Queues, ответы не заполнены.",
+  "Bit Manipulation interview questions, answers not filled in.":
+    "Вопросы по Bit Manipulation, ответы не заполнены.",
+  "Graph Theory interview questions, answers not filled in.":
+    "Вопросы по Graph Theory, ответы не заполнены.",
+  "Recursion interview questions, answers not filled in.":
+    "Вопросы по Recursion, ответы не заполнены.",
+  "Trie interview questions, answers not filled in.":
+    "Вопросы по Trie, ответы не заполнены.",
+  "Searching Algorithms interview questions, answers not filled in.":
+    "Вопросы по Searching Algorithms, ответы не заполнены.",
+  "Greedy Algorithms interview questions, answers not filled in.":
+    "Вопросы по Greedy Algorithms, ответы не заполнены.",
+  "Blockchain interview questions, answers not filled in.":
+    "Вопросы по Blockchain, ответы не заполнены.",
+  "Backtracking interview questions, answers not filled in.":
+    "Вопросы по Backtracking, ответы не заполнены.",
+  "Genetic Algorithms interview questions, answers not filled in.":
+    "Вопросы по Genetic Algorithms, ответы не заполнены.",
+  "Hadoop interview questions, answers not filled in.":
+    "Вопросы по Hadoop, ответы не заполнены.",
+  "Linear Algebra interview questions, answers not filled in.":
+    "Вопросы по Linear Algebra, ответы не заполнены.",
+  "Probability interview questions, answers not filled in.":
+    "Вопросы по Probability, ответы не заполнены.",
+  "Scala interview questions, answers not filled in.":
+    "Вопросы по Scala, ответы не заполнены.",
+  "Redis interview questions, answers not filled in.":
+    "Вопросы по Redis, ответы не заполнены.",
+  "React Native interview questions, answers not filled in.":
+    "Вопросы по React Native, ответы не заполнены.",
+  "Reactive Programming interview questions, answers not filled in.":
+    "Вопросы по Reactive Programming, ответы не заполнены.",
+  "Apache Spark interview questions, answers not filled in.":
+    "Вопросы по Apache Spark, ответы не заполнены.",
+  "Data Structures interview questions, answers not filled in.":
+    "Вопросы по Data Structures, ответы не заполнены.",
+  "Q&A for algorithms.": "Вопросы/ответы по алгоритмам.",
+  "Q&A for data structures.": "Вопросы/ответы по структурам данных.",
   "Interview Q&A for system design.": "Вопросы/ответы по system design.",
   "Intl, RegExp, Signals (TC39), and eval.":
     "Intl, RegExp, Signals (TC39) и eval.",

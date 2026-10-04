@@ -1,0 +1,80 @@
+TITLE: Apache Spark
+SLUG: spark-questions
+FILE: 0_sd_spark_interview.md
+TRACK: system-design
+URL: https://devinterview.io/questions/machine-learning-and-data-science/apache-spark-interview-questions/
+SOURCE: Apache Spark
+HUB: 0_system_design.md
+
+## Spark Fundamentals
+What is Apache Spark and what are its main components?
+Explain how Apache Spark differs from Hadoop MapReduce.
+Describe the concept of RDDs (Resilient Distributed Datasets) in Spark.
+What are DataFrames in Spark and how do they compare to RDDs?
+What is lazy evaluation and how does it benefit Spark computations?
+How does Spark achieve fault tolerance?
+What is the role of Spark Driver and Executors?
+How does Spark's DAG (Directed Acyclic Graph) Scheduler work?
+
+## Spark Architecture and Ecosystem
+Explain the concept of a Spark Session and its purpose.
+How does Spark integrate with Hadoop components like HDFS and YARN?
+Describe the various ways to run Spark applications (cluster, client, local modes).
+What are Spark's data source APIs and how do you use them?
+Discuss the role of accumulators and broadcast variables in Spark.
+What is the significance of the Catalyst optimizer in Spark SQL?
+How does Tungsten contribute to Spark's performance?
+
+## Spark Programming and APIs
+Briefly describe the Spark Core API and its features.
+What are the transformations and actions in Spark RDDs?
+How do you handle partitioning in Spark to optimize performance?
+Illustrate the differences between map and flatMap functions in Spark.
+What are Key-Value pair RDDs, and when would you use them?
+Explain how to perform a join operation in Spark.
+Detail how window functions work in Spark SQL.
+
+## Spark Streaming and Real-Time Processing
+Describe the concept of discretized streams (DStreams) in Spark.
+How does Structured Streaming differ from DStream-based streaming?
+What are the fault-tolerance mechanisms in Spark Streaming?
+How do you handle late data and stateful processing in Spark Streaming?
+Explain watermarks and windowing operations in Structured Streaming.
+
+## Performance Tuning and Optimization
+What are some common Spark performance issues and how do you resolve them?
+How can you minimize data shuffling in Spark?
+Discuss the importance and methods of caching/persistence in Spark.
+Explain how you would monitor and log a Spark application.
+What is the role of partitioner objects in Spark and how do they affect performance?
+
+## Spark MLlib (Machine Learning Library)
+What are the main features of Spark MLlib?
+How does Spark MLlib handle machine learning pipelines?
+Describe a use case for MLlib's collaborative filtering algorithms.
+Explain the difference between Spark MLlib and external machine learning libraries.
+
+## Coding Challenges
+Write a Scala/Python Spark code snippet that reads a CSV file and calculates the average of a column.
+Implement a Spark streaming application that counts words in text data received from a socket.
+Code a Spark SQL query that finds the top 3 most occurring words in a DataFrame.
+Create a Spark job that joins two datasets on a key and summarizes data.
+Write a Python function using PySpark to filter out records with null values in a specific column.
+Implement a logistic regression model in Spark MLlib.
+Create a Spark Streaming application to aggregate event data by time windows.
+Write Spark code to calculate the PageRank of a simple website link graph.
+
+## Case Studies and Scenario-Based Questions
+How would you build a recommender system in Spark?
+Discuss a strategy to perform real-time sentiment analysis using Spark Streaming.
+Propose an ETL pipeline design using Spark to process large datasets.
+How would you use Spark to detect fraudulent behavior in financial transactions?
+Illustrate how you would use Spark to optimize marketing strategies based on customer behavior data.
+Explain a big data analytics project where Spark would be a better choice than other big data technologies and why.
+
+## Advanced Topics and Research
+Discuss the advancements in Spark 3.x and their impact on big data processing.
+Explain how Dynamic Resource Allocation works in Spark.
+How do you implement custom aggregations in Spark?
+What are the current research areas or challenges in the Apache Spark ecosystem?
+How does Spark support deep learning workloads and integration with popular deep learning frameworks?

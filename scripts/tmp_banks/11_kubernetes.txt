@@ -1,0 +1,74 @@
+TITLE: Kubernetes
+SLUG: kubernetes-questions
+FILE: 0_sd_kubernetes_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/kubernetes-interview-questions/
+SOURCE: Kubernetes
+HUB: 0_system_design.md
+
+## Kubernetes Basics
+What is _Kubernetes_, and why is it used for container _orchestration_?
+Describe the roles of _master_ and _worker nodes_ in the _Kubernetes_ architecture.
+How do _Pods_ facilitate the management of _containers_ in _Kubernetes_?
+What types of _Services_ exist in _Kubernetes_, and how do they facilitate _pod communication_?
+Explain the functionality of _Namespaces_ in _Kubernetes_.
+
+## Kubernetes Objects and Workloads
+Differentiate between _Deployments_, _StatefulSets_, and _DaemonSets_.
+How do _ReplicaSets_ ensure _pod availability_?
+What are _Jobs_ in _Kubernetes_, and when is it suitable to use them?
+How do _Labels_ and _Selectors_ work together in _Kubernetes_?
+What would you consider when performing a _rolling update_ in _Kubernetes_?
+
+## Kubernetes Networking
+How do _Services_ route traffic to _pods_ in _Kubernetes_?
+Describe the purpose of _Ingress_ and its key components.
+Explain _Kubernetes DNS_ resolution for _services_.
+What is the _Container Network Interface (CNI)_, and how does it integrate with _Kubernetes_?
+How do you implement _Network Policies_, and what are their benefits?
+
+## Kubernetes Storage
+How do _PersistentVolumes (PVs)_ and _PersistentVolumeClaims (PVCs)_ interact in _Kubernetes_?
+Explain _dynamic provisioning_ in relation to _StorageClasses_.
+What strategies exist for handling _persistent data_ when a _pod’s lifecycle_ ends?
+
+## Kubernetes Cluster Management
+Describe the process for _initializing a Kubernetes cluster_.
+What factors need to be considered when adding new _nodes_ to a _Kubernetes cluster_?
+How does _draining a node_ affect the running applications, and when should you perform this action?
+In what scenarios would you _scale a Kubernetes deployment_, and what tools would you use?
+
+## Kubernetes Security
+Explain _Role-Based Access Control (RBAC)_ in _Kubernetes_.
+Describe how to securely manage _Secrets_ in _Kubernetes_.
+What is a _security context_, and how does it apply to _pod security_?
+How do _NetworkPolicies_ contribute to _pod security_, and how would you implement them?
+
+## Observability and Monitoring
+Describe the role and capabilities of the _Metrics Server_ in a _Kubernetes cluster_.
+How can _Prometheus_ be configured to monitor _Kubernetes components_?
+Discuss the integration of _Grafana_ for _Kubernetes observability_.
+
+## Kubernetes Scheduling and Scalability
+How can you use _Node Selectors_ and _Affinity_ rules to influence _pod placement_?
+Explain _Horizontal Pod Autoscaling (HPA)_ and its _triggers_ within _Kubernetes_.
+
+## Kubernetes Troubleshooting and Debugging
+What steps would you take to troubleshoot a _pod_ that is not starting?
+How would you diagnose _network issues_ in _Kubernetes_?
+
+## Advanced Kubernetes Features
+Define _Custom Resource Definitions (CRDs)_ and their utility in _Kubernetes_.
+Discuss the functionalities provided by a _Service Mesh_ like _Istio_ in _Kubernetes_.
+What are the use cases for _Kubernetes Federation_?
+
+## Kubernetes Ecosystem and Tools
+How does _Helm_ enhance application management within _Kubernetes_?
+Explain the role of _Kustomize_ in _Kubernetes configuration management_.
+Describe the importance of a _Container Registry_ in a _Kubernetes environment_.
+
+## Best Practices in Kubernetes
+What best practices would you follow for _high availability_ in _Kubernetes deployments_?
+How do _ConfigMaps_ and _Secrets_ improve configuration management?
+Describe _multitenancy_ considerations for resource utilization in _Kubernetes_.

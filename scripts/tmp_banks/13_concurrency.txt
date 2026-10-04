@@ -1,0 +1,66 @@
+TITLE: Concurrency
+SLUG: concurrency-questions
+FILE: 0_sd_concurrency_interview.md
+TRACK: system-design
+SUBJECT: system-design
+URL: https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
+SOURCE: Concurrency
+HUB: 0_system_design.md
+
+## Concurrency Fundamentals
+What is _concurrency_ in programming and how does it differ from _parallelism_?
+Can you explain _race conditions_ and provide an example where one might occur?
+What is a _critical section_ in the context of _concurrent programming_?
+How does an _operating system_ ensure _mutual exclusion_ in _concurrent processes_?
+Can you describe the concept of _atomicity_ in relation to _concurrency_?
+How does a _deadlock_ occur and what are _common strategies_ to prevent it?
+What is a _livelock_ and how is it different from a _deadlock_?
+Can you explain the _producer-consumer problem_ and how can it be addressed using _concurrency mechanisms_?
+
+## Thread Management
+What is the difference between a _process_ and a _thread_?
+How are _threads_ typically created and managed in _modern operating systems_?
+What is a _thread pool_ and why might you use one?
+Can you explain the concept of a _context switch_ and how it affects _concurrency_?
+What are the benefits and disadvantages of using many _small threads_ vs. a few _large threads_?
+
+## Synchronization Mechanisms
+What is a _mutex_ and how does it work?
+What are _semaphores_ and how do they differ from _mutexes_?
+Can you explain what a _monitor_ is in the context of _concurrency_?
+How do _condition variables_ contribute to _thread synchronization_?
+What is a _read-write lock_ and when is it advantageous to use one?
+
+## Concurrency Patterns
+Can you describe the _fork/join_ parallelism pattern and its use cases?
+What is a _barrier_ and how is it used in _concurrent programming_?
+Describe an instance where a _message queue_ might be used in a _concurrent system_.
+How might _event-driven programming_ help in _handling concurrency_?
+Can you illustrate usage of the _publish-subscribe pattern_ in a _concurrent system_?
+
+## Concurrency in Practice
+How does one typically _handle exceptions_ in a concurrently executing _thread_?
+What is the advantage of using _non-blocking algorithms_ in a _multi-threaded application_?
+Can you describe a scenario where you would use _atomic operations_?
+How would you go about debugging a _concurrency issue_ like a _deadlock_ in a system?
+What measures would you take to ensure _thread-safety_ in a method that mutates _shared data_?
+
+## Performance and Scalability
+How can the use of _concurrency_ affect the _scalability_ of an application?
+What approaches can be taken to balance load effectively between _threads_?
+Can you discuss strategies to reduce _contention_ for _shared resources_ in a _concurrent program_?
+How does the concept of _concurrency_ relate to application _throughput_ and _latency_?
+
+## Advanced Topics
+What is _software transactional memory_ (STM) and how can it be used to manage _concurrency_?
+Explain the role of _lock-free_ and _wait-free algorithms_ in _concurrent programming_.
+How does the _actor model_ address _concurrency_, and what are its benefits?
+What are some challenges in testing _concurrent applications_, and how can they be mitigated?
+
+## Hardware and Concurrency
+How does the _hardware architecture_ of a _CPU_ relate to the way _concurrency_ is implemented in software?
+Can you explain the role of _cache coherency_ in _multi-processor_ or _multi-core systems_ in the context of _concurrency_?
+What are the potential impacts of _hardware-level parallelism_ on _software concurrency models_?
+
+## Modern Trends and Best Practices
+In the context of _modern multi-core processors_, how have _high-level concurrency abstractions_ evolved to simplify _concurrent programming_?
