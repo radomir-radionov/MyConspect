@@ -853,5 +853,3 @@ Choose by **reload vs JS routing** (MPA/SPA) and **when HTML is built** (CSR/SSR
 ---
 
 </details>
-
-<a name="13-security"></a>

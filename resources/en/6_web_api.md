@@ -8,15 +8,17 @@ HTTP, REST, auth, real-time, web app types, and security. Theory lives in the to
 
 ### Navigation
 
-| Topic | Covers |
-|------|--------|
-| [Web APIs — Core](./6_web_api_core.md) | Internet, DNS, and how the web stack fits together. |
-| [Web APIs — HTTP](./6_web_api_http.md) | HTTP, HTTPS, TLS, caching, CORS, and URL anatomy. |
-| [Web APIs — API styles](./6_web_api_rest.md) | REST, XML, SOAP, RPC, tRPC, and how they differ. |
-| [Web APIs — Auth & storage](./6_web_api_auth.md) | AuthN/AuthZ, sessions, JWT, OAuth, cookies, and storage. |
-| [Web APIs — Apps](./6_web_api_apps.md) | Protocols, real-time, and types of web apps. |
-| [Web APIs — Security](./6_web_api_security.md) | Browser security, CWV, and third-party integrations. |
-| [Web APIs — Interview](./6_web_api_interview.md) | Interview Q&A for HTTP and Web APIs. |
+| Topic                                                         | Covers                                                   |
+| ------------------------------------------------------------- | -------------------------------------------------------- |
+| [Web APIs — Core](./6_web_api_core.md)                        | Internet, DNS, and how the web stack fits together.      |
+| [Web APIs — HTTP](./6_web_api_http.md)                        | HTTP, HTTPS, TLS, caching, CORS, and URL anatomy.        |
+| [Web APIs — API styles](./6_web_api_rest.md)                  | REST, XML, SOAP, RPC, tRPC, and how they differ.         |
+| [Web APIs — Auth & storage](./6_web_api_auth.md)              | AuthN/AuthZ, sessions, JWT, OAuth, cookies, and storage. |
+| [Web APIs — Apps](./6_web_api_apps.md)                        | Protocols, real-time, and types of web apps.             |
+| [Web APIs — Security](./6_web_api_security.md)                | Browser security, CWV, and third-party integrations.     |
+| [Web APIs — Interview](./6_web_api_interview.md)              | Interview Q&A for HTTP and Web APIs.                     |
+| [WebSockets — Interview](./6_web_api_websockets_interview.md) | WebSocket interview questions, answers not filled in.    |
+| [PWA — Interview](./6_web_api_pwa_interview.md)               | PWA interview questions, answers not filled in.          |
 
 ### Interview practice
 

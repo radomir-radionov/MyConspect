@@ -6,7 +6,7 @@ Hooks reference and escape hatches.
 
 ### Related docs
 
-* [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
 
 ### Sections
 
@@ -48,9 +48,11 @@ Built-in hooks catalog
 **Examples:**
 
 ```tsx
-const [n, setN] = useState(0);           // UI data
+const [n, setN] = useState(0); // UI data
 const ref = useRef<HTMLInputElement>(null); // no re-render
-useEffect(() => { document.title = String(n); }, [n]); // after paint
+useEffect(() => {
+  document.title = String(n);
+}, [n]); // after paint
 ```
 
 **Sources:**
@@ -73,9 +75,9 @@ Rules of Hooks
 React stores hooks on the fiber as a **linked list** — first `useState` is slot 0, first `useEffect` is slot 1, etc. Each render walks the list in the **same order**. Conditional hooks shift slots → state attaches to wrong hook → crashes or silent bugs.
 
 1. Only call hooks at the **top level** — not inside conditions, loops, nested functions, `try`/`catch`/`finally`, or after an early `return`
-2. Only call hooks from **React function components** or **custom hooks** (`use`*)
+2. Only call hooks from **React function components** or **custom hooks** (`use`\*)
 
-**When to use:** Always. Enable `eslint-plugin-react-hooks` (`rules-of-hooks` + `exhaustive-deps`). Interview follow-up: *“If I need a hook only when logged in, I still call it every render and put `if (loggedIn)` inside the effect — I never skip the hook call.”*
+**When to use:** Always. Enable `eslint-plugin-react-hooks` (`rules-of-hooks` + `exhaustive-deps`). Interview follow-up: _“If I need a hook only when logged in, I still call it every render and put `if (loggedIn)` inside the effect — I never skip the hook call.”_
 
 **Examples:**
 
@@ -84,10 +86,12 @@ React stores hooks on the fiber as a **linked list** — first `useState` is slo
 if (loggedIn) useEffect(() => {}, []);
 
 // Good — condition inside effect
-useEffect(() => { if (loggedIn) subscribe(); }, [loggedIn]);
+useEffect(() => {
+  if (loggedIn) subscribe();
+}, [loggedIn]);
 ```
 
-**Thoughts:** *Same hooks, same order, every render.*
+**Thoughts:** _Same hooks, same order, every render._
 
 **See also:** [Rules of React](./4_react_core.md#rules-of-react) · [Custom hooks](#custom-hooks) · [React Fiber](./4_react_core.md#react-fiber)
 
@@ -116,18 +120,18 @@ useState
 - `set` identity is **stable** (safe to omit from effect deps). React [batches](./4_react_core.md#batching) updates after event handlers.
 - To **store a function** in state, wrap it: `useState(() => fn)` / `setFn(() => otherFn)` — otherwise React treats it as initializer/updater.
 
-*“State is a snapshot per render. I update immutably so `Object.is` sees a new reference. I use an updater when the next value depends on the previous one in the same event.”*
+_“State is a snapshot per render. I update immutably so `Object.is` sees a new reference. I use an updater when the next value depends on the previous one in the same event.”_
 
 **When to use:**
 
 Local UI — toggles, inputs, selections, modals. **Not** derived display data (compute in render) or server cache (Query / RSC).
 
-| API                         | Use                                         |
-| --------------------------- | ------------------------------------------- |
-| `useState(initial)`         | Cheap initial value                         |
-| `useState(createTodos)`     | Expensive init — pass the function, no `()` |
-| `setN(n => n + 1)`          | Next state from previous in same event      |
-| `setN(count + 1)`           | Fine when you already have the snapshot     |
+| API                     | Use                                         |
+| ----------------------- | ------------------------------------------- |
+| `useState(initial)`     | Cheap initial value                         |
+| `useState(createTodos)` | Expensive init — pass the function, no `()` |
+| `setN(n => n + 1)`      | Next state from previous in same event      |
+| `setN(count + 1)`       | Fine when you already have the snapshot     |
 
 #### Common pitfalls
 
@@ -136,23 +140,23 @@ Local UI — toggles, inputs, selections, modals. **Not** derived display data (
 **Pluses and minuses:**
 
 | +                                      | −                                              |
-| ----------------------------------------- | ------------------------------------------------- |
-| Simple mental model, stable setter        | Easy to mutate objects and skip updates           |
-| Lazy init + updater queue                 | Many related fields → `useReducer` is clearer     |
-| Batched with other `set`s in one event    | Storing functions needs extra `() =>` wrapping    |
+| -------------------------------------- | ---------------------------------------------- |
+| Simple mental model, stable setter     | Easy to mutate objects and skip updates        |
+| Lazy init + updater queue              | Many related fields → `useReducer` is clearer  |
+| Batched with other `set`s in one event | Storing functions needs extra `() =>` wrapping |
 
 **Examples:**
 
 ```tsx
 const [user, setUser] = useState<User | null>(null);
-setUser(u => (u ? { ...u, name: 'Ada' } : null));
+setUser((u) => (u ? { ...u, name: "Ada" } : null));
 
 // Interview trap — same reference, UI may not update
 // items.push(x); setItems(items);
-setItems(prev => [...prev, x]);
+setItems((prev) => [...prev, x]);
 ```
 
-**Thoughts:** *`set` queues the next snapshot; the current render’s variables never change.*
+**Thoughts:** _`set` queues the next snapshot; the current render’s variables never change._
 
 **See also:** [State as snapshot](./4_react_core.md#state-as-snapshot) · [useReducer](#usereducer-1) · [Batching](./4_react_core.md#batching)
 
@@ -175,28 +179,28 @@ useReducer
 
 `dispatch(action)` queues an update; on the next render React runs `reducer(prev, action)` (pure). Lazy init: `useReducer(reducer, initArg, initFn)` — `initFn(initArg)` runs once. Prefer throwing on unknown actions so typos fail loudly.
 
-*“`useReducer` when updates are a state machine. `useState` when it’s one value. `dispatch` is stable so children don’t need memoized callbacks just to call it.”*
+_“`useReducer` when updates are a state machine. `useState` when it’s one value. `dispatch` is stable so children don’t need memoized callbacks just to call it.”_
 
 **When to use:** Multi-field forms, wizards, “next state depends on several fields.” **Not** a single boolean/counter.
 
 **Pluses and minuses:**
 
-| +                                      | −                                  |
-| ----------------------------------------- | ------------------------------------- |
-| Centralized transitions, easy to test     | Boilerplate for tiny state            |
-| Stable `dispatch`                         | Overkill vs two `useState`s           |
-| Same idea as Redux, local to the tree     | Still not a global store              |
+| +                                     | −                           |
+| ------------------------------------- | --------------------------- |
+| Centralized transitions, easy to test | Boilerplate for tiny state  |
+| Stable `dispatch`                     | Overkill vs two `useState`s |
+| Same idea as Redux, local to the tree | Still not a global store    |
 
 **Examples:**
 
 ```tsx
-type Action = { type: 'increment' } | { type: 'set'; value: number };
+type Action = { type: "increment" } | { type: "set"; value: number };
 
 function reducer(state: { count: number }, action: Action) {
   switch (action.type) {
-    case 'increment':
+    case "increment":
       return { count: state.count + 1 };
-    case 'set':
+    case "set":
       return { count: action.value };
     default: {
       const _exhaustive: never = action;
@@ -206,7 +210,7 @@ function reducer(state: { count: number }, action: Action) {
 }
 
 const [state, dispatch] = useReducer(reducer, { count: 0 });
-dispatch({ type: 'increment' });
+dispatch({ type: "increment" });
 ```
 
 **See also:** [useReducer in Section 4](#usereducer) · [useState](#usestate)
@@ -230,7 +234,7 @@ useContext
 
 `createContext(default)` — default is used only if **no** Provider exists. `useContext(Ctx)` walks fibers upward. React 19: `<ThemeContext value={theme}>` (no `.Provider` required). Context is **not** a high-frequency store: every consumer re-renders on value change.
 
-*“Context for rare, tree-wide values. If many components re-render on every keystroke, the value is too hot — split or use a store.”*
+_“Context for rare, tree-wide values. If many components re-render on every keystroke, the value is too hot — split or use a store.”_
 
 **When to use:**
 
@@ -242,22 +246,24 @@ Theme, locale, auth session, DI of a client. **Not** a shopping cart that update
 
 **Pluses and minuses:**
 
-| +                         | −                                           |
-| ---------------------------- | ---------------------------------------------- |
-| Avoids prop drilling         | All consumers re-render on `value` change      |
-| Built-in, no extra library   | Easy to put too much in one object             |
+| +                          | −                                         |
+| -------------------------- | ----------------------------------------- |
+| Avoids prop drilling       | All consumers re-render on `value` change |
+| Built-in, no extra library | Easy to put too much in one object        |
 
 **Examples:**
 
 ```tsx
-const ThemeContext = createContext<'light' | 'dark'>('light');
+const ThemeContext = createContext<"light" | "dark">("light");
 
 function ThemedButton() {
   const theme = useContext(ThemeContext);
   return <button className={theme}>Click</button>;
 }
 
-<ThemeContext value={theme}><App /></ThemeContext>
+<ThemeContext value={theme}>
+  <App />
+</ThemeContext>;
 ```
 
 **See also:** [Context](./4_react_core.md#context) · [Props](./4_react_core.md#props)
@@ -287,15 +293,15 @@ useEffect
 6. **Strict Mode (dev):** extra setup → cleanup → setup on mount. Production mounts once. If you see double fetch/subscribe, your cleanup must undo setup (disconnect, `abort()`, clear interval).
 7. Default timing: after **paint** so the browser can show the UI first. Visual measure/position that would flicker → [`useLayoutEffect`](#uselayouteffect).
 
-| You write        | When setup runs                                      |
-| ---------------- | ---------------------------------------------------- |
-| no 2nd argument  | After every commit                                   |
-| `[]`             | After first commit (reconnect only if remounted)     |
-| `[roomId, url]`  | After first commit, then when those values change    |
+| You write       | When setup runs                                   |
+| --------------- | ------------------------------------------------- |
+| no 2nd argument | After every commit                                |
+| `[]`            | After first commit (reconnect only if remounted)  |
+| `[roomId, url]` | After first commit, then when those values change |
 
 Missing deps → **stale closure** (effect sees old `count` / `user`). Extra object/function deps created in render → effect re-runs every time (`{} !== {}`). Fix: depend on primitives, or **create the object/function inside** the effect (preferred over wrapping everything in `useCallback`).
 
-*“I use `useEffect` to connect to something React doesn’t own. The dependency array lists reactive values that should restart that connection. Cleanup disconnects so Strict Mode and prop changes don’t leak. If I’m only deriving UI data or handling a click, I don’t use an effect.”*
+_“I use `useEffect` to connect to something React doesn’t own. The dependency array lists reactive values that should restart that connection. Cleanup disconnects so Strict Mode and prop changes don’t leak. If I’m only deriving UI data or handling a click, I don’t use an effect.”_
 
 **When to use:**
 
@@ -313,11 +319,11 @@ Derived values (`fullName = first + last`), responding to a click (event handler
 
 **Pluses and minuses:**
 
-| +                                      | −                                                         |
-| ----------------------------------------- | ------------------------------------------------------------ |
-| Cleanup pairs with setup (no leaked subs) | Overused as a “lifecycle dump”                               |
-| Deps make re-sync explicit                | Stale closures / infinite loops if deps are wrong            |
-| Strict Mode surfaces missing cleanup      | Client-only; fetch-in-effect needs race handling             |
+| +                                         | −                                                 |
+| ----------------------------------------- | ------------------------------------------------- |
+| Cleanup pairs with setup (no leaked subs) | Overused as a “lifecycle dump”                    |
+| Deps make re-sync explicit                | Stale closures / infinite loops if deps are wrong |
+| Strict Mode surfaces missing cleanup      | Client-only; fetch-in-effect needs race handling  |
 
 **Examples:**
 
@@ -344,9 +350,9 @@ useEffect(() => {
 }, [person]);
 ```
 
-Do **not** make the effect callback `async` — a returned Promise is not cleanup. Use an inner `async` function or IIFE; abort/ignore in the returned cleanup. See [Task 4](./4_react_interview.md#task-4--async-fetch-in-useeffect).
+Do **not** make the effect callback `async` — a returned Promise is not cleanup. Use an inner `async` function or IIFE; abort/ignore in the returned cleanup.
 
-**Thoughts:** *Effects sync React with the outside world. Deps = when to re-sync. Cleanup = undo the last sync.*
+**Thoughts:** _Effects sync React with the outside world. Deps = when to re-sync. Cleanup = undo the last sync._
 
 **See also:** [You might not need an effect](#you-might-not-need-an-effect) · [useLayoutEffect](#uselayouteffect) · [useEffectEvent](#useeffectevent-react-192) · [Strict Mode](./4_react_core.md#strict-mode)
 
@@ -390,7 +396,7 @@ useLayoutEffect(() => {
 }, [items]);
 ```
 
-**Thoughts:** *Use when the user must not see a wrong frame.*
+**Thoughts:** _Use when the user must not see a wrong frame._
 
 **See also:** [Render pipeline](./4_react_core.md#render-pipeline) · [useEffect](#useeffect) · [useInsertionEffect](#useinsertioneffect)
 
@@ -415,7 +421,7 @@ useInsertionEffect
 
 **Pluses and minuses:**
 
-| +                                          | −                                                |
+| +                                             | −                                                   |
 | --------------------------------------------- | --------------------------------------------------- |
 | Correct ordering for CSS-in-JS injection      | Blocks layout if misused in app code                |
 | Dedicated API — no fighting `useLayoutEffect` | Cannot read layout from DOM (runs before mutations) |
@@ -447,7 +453,7 @@ useEffectEvent (React 19.2)
 
 **Definition:** `useEffectEvent(fn)` creates a stable function that always sees the latest props/state without being an effect dependency.
 
-**How it works:** Put *reactive* values (`roomId`) in the effect deps so the effect re-subscribes when they change. Put *event* logic (`muted`, `theme`) inside `useEffectEvent` so those values stay fresh without reconnecting.
+**How it works:** Put _reactive_ values (`roomId`) in the effect deps so the effect re-subscribes when they change. Put _event_ logic (`muted`, `theme`) inside `useEffectEvent` so those values stay fresh without reconnecting.
 
 **When to use:**
 
@@ -459,7 +465,7 @@ Putting the connection identity (`roomId`) inside the Effect Event so the effect
 
 **Pluses and minuses:**
 
-| +                                     | −                                                    |
+| +                                        | −                                                       |
 | ---------------------------------------- | ------------------------------------------------------- |
 | Fixes stale closures without dep churn   | Still experimental in spirit — team must know the split |
 | Separates reactive vs non-reactive logic | Do not call Effect Events from render                   |
@@ -468,12 +474,12 @@ Putting the connection identity (`roomId`) inside the Effect Event so the effect
 
 ```tsx
 const onConnected = useEffectEvent(() => {
-  showNotification('Connected!', theme); // always latest theme
+  showNotification("Connected!", theme); // always latest theme
 });
 
 useEffect(() => {
   const conn = createConnection(roomId);
-  conn.on('connected', onConnected);
+  conn.on("connected", onConnected);
   return () => conn.disconnect();
 }, [roomId]); // theme not needed in deps
 ```
@@ -499,15 +505,15 @@ useRef
 
 Same object identity every render (unlike `createRef()` in a function body). After commit, React sets `ref.current` to the DOM node when you pass `ref={el}` on a host element. Read/write `.current` in **effects and event handlers**, not during render (except one-time lazy init of `.current`).
 
-*“`useRef` is an instance variable. `useState` is for anything the user should see. I don’t read refs during render.”*
+_“`useRef` is an instance variable. `useState` is for anything the user should see. I don’t read refs during render.”_
 
 **When to use:**
 
-| Case              | Pattern                                                  |
-| ----------------- | -------------------------------------------------------- |
-| DOM access        | `inputRef.current?.focus()` in a click handler or effect |
-| Instance fields   | Timer id, WebSocket, previous prop (`prev.current = x`)  |
-| Avoid re-render   | Value the UI does not display                            |
+| Case            | Pattern                                                  |
+| --------------- | -------------------------------------------------------- |
+| DOM access      | `inputRef.current?.focus()` in a click handler or effect |
+| Instance fields | Timer id, WebSocket, previous prop (`prev.current = x`)  |
+| Avoid re-render | Value the UI does not display                            |
 
 #### Common pitfalls
 
@@ -515,22 +521,26 @@ Using ref for displayed data. `createRef()` inside a function component (new obj
 
 **Pluses and minuses:**
 
-| +                                      | −                                      |
-| ----------------------------------------- | ----------------------------------------- |
-| No extra renders for timers/DOM           | Changing `.current` won’t update the UI   |
-| Stable object — can omit from some deps   | Not a substitute for state                |
+| +                                       | −                                       |
+| --------------------------------------- | --------------------------------------- |
+| No extra renders for timers/DOM         | Changing `.current` won’t update the UI |
+| Stable object — can omit from some deps | Not a substitute for state              |
 
 **Examples:**
 
 ```tsx
 const inputRef = useRef<HTMLInputElement>(null);
-useEffect(() => { inputRef.current?.focus(); }, []);
+useEffect(() => {
+  inputRef.current?.focus();
+}, []);
 
 const prevCount = useRef<number>(undefined);
-useEffect(() => { prevCount.current = count; }, [count]);
+useEffect(() => {
+  prevCount.current = count;
+}, [count]);
 ```
 
-**See also:** [Refs (React 19: ref as prop)](#refs-react-19-ref-as-prop) · [useRef vs createRef?](./4_react_interview.md#useref-vs-createref)
+**See also:** [Refs (React 19: ref as prop)](#refs-react-19-ref-as-prop) · [useRef](#useref)
 
 **Sources:**
 
@@ -557,7 +567,7 @@ Deps compared with `Object.is`. If unchanged, return the previous cached value/f
 
 Wrapping every handler “just in case.” Prefer: children as JSX, don’t lift state too high, keep render pure, **move functions inside effects** instead of memoizing them as effect deps. React Compiler can make much of this automatic.
 
-*“I don’t wrap everything. I memoize when a measured child wrapped in `memo` re-renders because of a new function, or when a calculation is expensive. `useCallback(fn, deps)` is memoizing the function, not running it.”*
+_“I don’t wrap everything. I memoize when a measured child wrapped in `memo` re-renders because of a new function, or when a calculation is expensive. `useCallback(fn, deps)` is memoizing the function, not running it.”_
 
 **When to use:**
 
@@ -569,10 +579,10 @@ Sorted/filtered lists that are proven slow; stable `onSubmit` for a memoized for
 
 **Pluses and minuses:**
 
-| +                                      | −                                           |
-| ----------------------------------------- | ---------------------------------------------- |
-| Skip expensive work / keep `memo` working | Manual deps are easy to get wrong              |
-| Stabilize identities for child `memo`     | Compiler / children-as-JSX often enough        |
+| +                                         | −                                       |
+| ----------------------------------------- | --------------------------------------- |
+| Skip expensive work / keep `memo` working | Manual deps are easy to get wrong       |
+| Stabilize identities for child `memo`     | Compiler / children-as-JSX often enough |
 
 **Examples:**
 
@@ -582,11 +592,11 @@ const onSave = useCallback(() => save(user), [user]);
 
 // Fewer deps — updater instead of closing over `todos`
 const add = useCallback((text: string) => {
-  setTodos(todos => [...todos, { id: nextId++, text }]);
+  setTodos((todos) => [...todos, { id: nextId++, text }]);
 }, []);
 ```
 
-**Thoughts:** *`useMemo` caches a result; `useCallback` caches the function. Profile first; Compiler may replace both.*
+**Thoughts:** _`useMemo` caches a result; `useCallback` caches the function. Profile first; Compiler may replace both._
 
 **See also:** [React Compiler](./4_react_server.md#react-compiler) · [useEffect](#useeffect)
 
@@ -623,7 +633,7 @@ useTransition / useDeferredValue
 **Examples:**
 
 ```tsx
-const [query, setQuery] = useState('');
+const [query, setQuery] = useState("");
 const deferredQuery = useDeferredValue(query);
 const [isPending, startTransition] = useTransition();
 
@@ -633,10 +643,10 @@ function onChange(e: React.ChangeEvent<HTMLInputElement>) {
 }
 
 // Child receives deferredQuery — lags behind query during fast typing
-<SearchResults query={deferredQuery} />
+<SearchResults query={deferredQuery} />;
 ```
 
-**Thoughts:** *Transition defers work you schedule; deferred value lags a value you pass.*
+**Thoughts:** _Transition defers work you schedule; deferred value lags a value you pass._
 
 **See also:** [Concurrent rendering](./4_react_core.md#concurrent-rendering) · [React Fiber](./4_react_core.md#react-fiber)
 
@@ -664,8 +674,8 @@ React 19 hooks
 | Disable submit from nested button    | `useFormStatus`  |
 | Read Promise or Context in render    | `use()`          |
 
-| Hook             | Section                                       |
-| ---------------- | --------------------------------------------- |
+| Hook             | Section                                                          |
+| ---------------- | ---------------------------------------------------------------- |
 | `useActionState` | [Section 7 — useActionState](./4_react_server.md#useactionstate) |
 | `useOptimistic`  | [Section 7 — useOptimistic](./4_react_server.md#useoptimistic)   |
 | `use()`          | [Section 7 — use()](./4_react_server.md#use)                     |
@@ -686,7 +696,7 @@ return (
 
 `action` receives `(prevState, formData)` — not `formData` first.
 
-**Thoughts:** *Actions pattern — React tracks async form/mutation lifecycle so you don't.*
+**Thoughts:** _Actions pattern — React tracks async form/mutation lifecycle so you don't._
 
 **See also:** [Actions](./4_react_server.md#actions) · [Overview](./4_react_server.md#overview)
 
@@ -711,7 +721,7 @@ useId
 
 **Pluses and minuses:**
 
-| +                                    | −                                                |
+| +                                       | −                                                   |
 | --------------------------------------- | --------------------------------------------------- |
 | SSR/hydration-safe — no `Math.random()` | Not for list `key` props                            |
 | Pairs labels, inputs, ARIA attributes   | IDs contain `:` — escape in CSS selectors if needed |
@@ -727,7 +737,9 @@ function Field({ label }: { label: string }) {
     <>
       <label htmlFor={id}>{label}</label>
       <input id={id} aria-describedby={errorId} />
-      <span id={errorId} role="alert">Required</span>
+      <span id={errorId} role="alert">
+        Required
+      </span>
     </>
   );
 }
@@ -756,7 +768,7 @@ useSyncExternalStore
 
 **Pluses and minuses:**
 
-| +                                           | −                                                           |
+| +                                              | −                                                              |
 | ---------------------------------------------- | -------------------------------------------------------------- |
 | Prevents tearing during concurrent updates     | Verbose API — prefer Zustand/Redux hooks in apps               |
 | Official pattern for browser API subscriptions | `getSnapshot` must be referentially stable when data unchanged |
@@ -768,8 +780,8 @@ useSyncExternalStore
 function useWindowWidth() {
   return useSyncExternalStore(
     (onChange) => {
-      window.addEventListener('resize', onChange);
-      return () => window.removeEventListener('resize', onChange);
+      window.addEventListener("resize", onChange);
+      return () => window.removeEventListener("resize", onChange);
     },
     () => window.innerWidth,
     () => 0, // SSR fallback
@@ -800,7 +812,7 @@ useImperativeHandle
 
 **Pluses and minuses:**
 
-| +                                                | −                                                |
+| +                                                   | −                                                   |
 | --------------------------------------------------- | --------------------------------------------------- |
 | Encapsulates imperative DOM ops behind a stable API | Breaks declarative React model                      |
 | Useful for focus traps, media players, map widgets  | Harder to test and reason about than props          |
@@ -813,11 +825,22 @@ type InputHandle = { focus: () => void; clear: () => void };
 
 function TextField({ ref, label }: { ref?: Ref<InputHandle>; label: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  useImperativeHandle(ref, () => ({
-    focus: () => inputRef.current?.focus(),
-    clear: () => { if (inputRef.current) inputRef.current.value = ''; },
-  }), []);
-  return <><label>{label}</label><input ref={inputRef} /></>;
+  useImperativeHandle(
+    ref,
+    () => ({
+      focus: () => inputRef.current?.focus(),
+      clear: () => {
+        if (inputRef.current) inputRef.current.value = "";
+      },
+    }),
+    [],
+  );
+  return (
+    <>
+      <label>{label}</label>
+      <input ref={inputRef} />
+    </>
+  );
 }
 ```
 
@@ -842,7 +865,7 @@ useDebugValue
 
 **Pluses and minuses:**
 
-| +                                                    | −                                           |
+| +                                                       | −                                              |
 | ------------------------------------------------------- | ---------------------------------------------- |
 | Faster debugging of shared hooks (`useAuth`, `useCart`) | Dev-only benefit — no runtime user value       |
 | Optional lazy formatter avoids prod cost                | Only works inside custom hooks, not components |
@@ -852,14 +875,18 @@ useDebugValue
 
 ```tsx
 function useOnlineStatus() {
-  const online = useSyncExternalStore(subscribe, () => navigator.onLine, () => true);
-  useDebugValue(online ? 'Online' : 'Offline');
+  const online = useSyncExternalStore(
+    subscribe,
+    () => navigator.onLine,
+    () => true,
+  );
+  useDebugValue(online ? "Online" : "Offline");
   return online;
 }
 
 function useFriendStatus(friendId: string) {
   const status = useFriendStatusImpl(friendId);
-  useDebugValue(status, s => s === 'online' ? '🟢 Online' : '⚫ Offline');
+  useDebugValue(status, (s) => (s === "online" ? "🟢 Online" : "⚫ Offline"));
   return status;
 }
 ```
@@ -885,18 +912,18 @@ Each **call site** gets its own isolated state (two `useOnlineStatus()` calls �
 
 The same `useState` + `useEffect` combo appears in 2+ components. **Not** for sharing JSX (compose components) or for helpers that never call hooks.
 
-*“Custom hooks replace most HOCs for reusable behavior. They don’t share state between components unless I put shared state in context or an external store.”*
+_“Custom hooks replace most HOCs for reusable behavior. They don’t share state between components unless I put shared state in context or an external store.”_
 
 **Pluses and minuses:**
 
-| +                                  | −                             |
-| ------------------------------------- | -------------------------------- |
-| Reuse logic without HOC wrapper hell  | `use` prefix is required         |
-| Test the hook in isolation            | Over-extraction adds hops        |
+| +                                    | −                         |
+| ------------------------------------ | ------------------------- |
+| Reuse logic without HOC wrapper hell | `use` prefix is required  |
+| Test the hook in isolation           | Over-extraction adds hops |
 
 **Thoughts:**
 
-*Extract behavior, not markup. Each call has its own state.*
+_Extract behavior, not markup. Each call has its own state._
 
 **Example —** `useClickOutside`**:**
 
@@ -911,8 +938,8 @@ function useClickOutside<T extends HTMLElement>(
         onOutside();
       }
     }
-    document.addEventListener('mousedown', handle);
-    return () => document.removeEventListener('mousedown', handle);
+    document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
   }, [ref, onOutside]);
 }
 ```
@@ -934,7 +961,7 @@ You might not need an effect
 
 **How it works:**
 
-Ask: "Does this need to run *because the component was displayed* and touch something outside React?" If no → probably not an effect.
+Ask: "Does this need to run _because the component was displayed_ and touch something outside React?" If no → probably not an effect.
 
 | Need                           | Do instead of effect                       |
 | ------------------------------ | ------------------------------------------ |
@@ -952,12 +979,12 @@ Subscriptions, timers, third-party widgets, logging to analytics, syncing `docum
 
 ```tsx
 // Bad — effect for derived data
-useEffect(() => setFullName(first + ' ' + last), [first, last]);
+useEffect(() => setFullName(first + " " + last), [first, last]);
 // Good — compute during render
 const fullName = `${first} ${last}`;
 ```
 
-**Thoughts:** *Effects synchronize with the outside world — not with your own state.*
+**Thoughts:** _Effects synchronize with the outside world — not with your own state._
 
 **See also:** [useEffect](#useeffect) · [Purity](./4_react_core.md#purity)
 
@@ -986,7 +1013,7 @@ Refs (React 19: ref as prop)
 
 **Pluses and minuses:**
 
-| +                                                    | −                                                                   |
+| +                                                       | −                                                                      |
 | ------------------------------------------------------- | ---------------------------------------------------------------------- |
 | Imperative focus, scroll, measure, third-party DOM libs | Escapes declarative model — harder to test                             |
 | React 19 simplifies ref forwarding                      | Reading/writing `ref.current` during render is forbidden (except init) |
@@ -995,7 +1022,10 @@ Refs (React 19: ref as prop)
 **Examples:**
 
 ```tsx
-function MyInput({ ref, ...props }: { ref?: Ref<HTMLInputElement> } & InputHTMLAttributes<HTMLInputElement>) {
+function MyInput({
+  ref,
+  ...props
+}: { ref?: Ref<HTMLInputElement> } & InputHTMLAttributes<HTMLInputElement>) {
   return <input ref={ref} {...props} />;
 }
 
@@ -1004,7 +1034,9 @@ function Form() {
   return (
     <>
       <MyInput ref={inputRef} />
-      <button type="button" onClick={() => inputRef.current?.focus()}>Focus</button>
+      <button type="button" onClick={() => inputRef.current?.focus()}>
+        Focus
+      </button>
     </>
   );
 }
@@ -1033,7 +1065,7 @@ Portals
 
 **Pluses and minuses:**
 
-| +                                                 | −                                                          |
+| +                                                    | −                                                             |
 | ---------------------------------------------------- | ------------------------------------------------------------- |
 | Modals, tooltips, dropdowns render above page chrome | Need a dedicated mount point in HTML (`#modal-root`)          |
 | Preserves React context from parent                  | SSR: ensure portal target exists or render null until mounted |
@@ -1042,14 +1074,20 @@ Portals
 **Examples:**
 
 ```tsx
-function Modal({ children, onClose }: { children: ReactNode; onClose: () => void }) {
+function Modal({
+  children,
+  onClose,
+}: {
+  children: ReactNode;
+  onClose: () => void;
+}) {
   return createPortal(
     <div role="dialog" aria-modal="true" className="overlay" onClick={onClose}>
-      <div className="modal" onClick={e => e.stopPropagation()}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>,
-    document.getElementById('modal-root')!,
+    document.getElementById("modal-root")!,
   );
 }
 ```
@@ -1101,7 +1139,9 @@ class ErrorBoundary extends React.Component<
   { hasError: boolean }
 > {
   state = { hasError: false };
-  static getDerivedStateFromError() { return { hasError: true }; }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
   render() {
     return this.state.hasError ? this.props.fallback : this.props.children;
   }
@@ -1112,7 +1152,7 @@ class ErrorBoundary extends React.Component<
 
 No hook equivalent yet — use `react-error-boundary` library or class. React 19 doesn't change this.
 
-*Error boundaries catch render-time failures in children — not event or async errors.*
+_Error boundaries catch render-time failures in children — not event or async errors._
 
 **Sources:**
 
@@ -1148,7 +1188,7 @@ Assuming `lazy()` fetches at module eval time — it waits for **first render**.
 
 **Pluses and minuses:**
 
-| +                                       | −                                       |
+| +                                          | −                                          |
 | ------------------------------------------ | ------------------------------------------ |
 | Smaller initial bundle, faster TTI         | Loading flash if fallback not designed     |
 | Route-based splitting is automatic pattern | Nested lazies without planning → waterfall |
@@ -1157,7 +1197,7 @@ Assuming `lazy()` fetches at module eval time — it waits for **first render**.
 **Examples:**
 
 ```tsx
-const Settings = lazy(() => import('./Settings'));
+const Settings = lazy(() => import("./Settings"));
 
 function App({ openSettings }: { openSettings: boolean }) {
   return (
@@ -1172,7 +1212,7 @@ function App({ openSettings }: { openSettings: boolean }) {
 
 **Thoughts:**
 
-*The chunk loads on first render of the lazy component; Suspense shows fallback while* `import()` *is pending; React caches the module after that.*
+_The chunk loads on first render of the lazy component; Suspense shows fallback while_ `import()` _is pending; React caches the module after that._
 
 `lazy` only supports default exports. For named exports: `lazy(() => import('./Foo').then(m => ({ default: m.Foo })))`.
 

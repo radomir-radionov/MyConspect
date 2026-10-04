@@ -188,7 +188,9 @@ export default async function TopicPage({
         topicTitle={pageTitle}
         emptyMessage="No concepts were parsed from this topic."
         groupInterviewSections={
-          isInterviewTopic(loaded.topic) && !isInterviewTasksTopic(loaded.topic)
+          pageConcepts.some((concept) => Boolean(concept.group)) ||
+          (isInterviewTopic(loaded.topic) &&
+            !isInterviewTasksTopic(loaded.topic))
         }
       />
     </main>

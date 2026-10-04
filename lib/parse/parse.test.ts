@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { collectConceptBlocks } from "./parse";
+import { collectConceptBlocks, parseTopicOutline } from "./parse";
 
 test("collectConceptBlocks strips duplicate heading after anchor preamble", () => {
   const blocks = collectConceptBlocks(`
@@ -92,4 +92,40 @@ Implement \`Pick\` without the built-in utility.
 
   assert.equal(blocks.length, 1);
   assert.equal(blocks[0].title, "Task 1 — Short prompt");
+});
+
+test("interview topic headings group the following questions", () => {
+  const outline = parseTopicOutline(`
+## Interview Practice
+
+### HTML Basics
+
+<details>
+<summary>What does HTML stand for?</summary>
+
+### What does HTML stand for?
+
+**Definition:**
+
+</details>
+
+### Lists
+
+<details>
+<summary>What types of lists exist?</summary>
+
+### What types of lists exist?
+
+**Definition:**
+
+</details>
+`);
+
+  assert.deepEqual(
+    outline.map((item) => [item.group, item.title]),
+    [
+      ["HTML Basics", "What does HTML stand for?"],
+      ["Lists", "What types of lists exist?"],
+    ],
+  );
 });

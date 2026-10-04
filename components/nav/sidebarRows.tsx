@@ -222,8 +222,18 @@ function ConceptItems({
         const isFirstConcept =
           first?.pathname === topic.href && first.hash === `#${concept.id}`;
         const onPath = conceptActive && !searching;
+        const showGroup =
+          Boolean(concept.group) &&
+          concept.group !== concepts[index - 1]?.group;
         return (
           <li key={concept.id} className="contents">
+            {showGroup ? (
+              <p
+                className={`${indentClass} pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400`}
+              >
+                {concept.group}
+              </p>
+            ) : null}
             <ConceptLink
               topicHref={topic.href}
               concept={concept}

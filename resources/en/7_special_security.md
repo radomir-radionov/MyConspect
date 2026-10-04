@@ -600,5 +600,3 @@ Compromise via malicious or hijacked dependencies (npm packages, typosquatting).
 ---
 
 </details>
-
-<a name="15-tooling-misc"></a>

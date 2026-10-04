@@ -34,7 +34,7 @@ type ParsedEntry = {
   readonly promise: Promise<ParsedTopic>;
 };
 
-const PARSE_LOGIC_REVISION = 4;
+const PARSE_LOGIC_REVISION = 5;
 
 type ParseCache = {
   markdown: Map<string, StoredRead>;
@@ -163,12 +163,13 @@ export function loadTopicOutline(
   const { stamp, result } = loadDetailed(topic.file, locale);
   const key = cacheKey(locale, topic.file);
   const store = parseCache().outlines;
+  const outlineStamp = `${stamp}|rev:${PARSE_LOGIC_REVISION}`;
   const hit = store.get(key);
-  if (hit?.stamp === stamp) {
+  if (hit?.stamp === outlineStamp) {
     return hit.value;
   }
   const value = parseTopicOutline(result.markdown, locale);
-  store.set(key, { stamp, value });
+  store.set(key, { stamp: outlineStamp, value });
   return value;
 }
 
@@ -179,12 +180,13 @@ export function loadFileOutline(
   const { stamp, result } = loadDetailed(file, locale);
   const key = cacheKey(locale, file);
   const store = parseCache().outlines;
+  const outlineStamp = `${stamp}|rev:${PARSE_LOGIC_REVISION}`;
   const hit = store.get(key);
-  if (hit?.stamp === stamp) {
+  if (hit?.stamp === outlineStamp) {
     return hit.value;
   }
   const value = parseTopicOutline(result.markdown, locale);
-  store.set(key, { stamp, value });
+  store.set(key, { stamp: outlineStamp, value });
   return value;
 }
 

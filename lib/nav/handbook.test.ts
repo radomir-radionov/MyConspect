@@ -40,41 +40,77 @@ describe("handbookNav section layout", () => {
     }
   });
 
-  it("places TypeScript Interview and Tasks after Reference", () => {
+  it("lifts TypeScript interview topics to the Frontend track", () => {
     const typescript = findSubject("typescript");
-    assert.deepEqual(
-      typescript.clustersAfterSections?.map((cluster) => cluster.id),
-      ["interview", "tasks"],
+    assert.equal(typescript.clustersAfterSections, undefined);
+    const frontend = handbookNav("en").find((group) => group.id === "frontend");
+    const interview = frontend?.entries.find(
+      (entry) => entry.kind === "cluster" && entry.cluster.id === "interview",
+    );
+    const tasks = frontend?.entries.find(
+      (entry) => entry.kind === "cluster" && entry.cluster.id === "tasks",
+    );
+    assert.equal(interview?.kind, "cluster");
+    assert.equal(tasks?.kind, "cluster");
+    if (interview?.kind !== "cluster" || tasks?.kind !== "cluster") {
+      return;
+    }
+    assert.ok(
+      interview.cluster.topics.some((topic) => topic.slug === "ts-interview"),
+    );
+    assert.ok(
+      tasks.cluster.topics.some((topic) => topic.slug === "ts-interview-tasks"),
+    );
+    assert.equal(
+      interview.cluster.topics.find((topic) => topic.slug === "ts-interview")
+        ?.hideSidebarConcepts,
+      true,
     );
   });
 
   it("hides sidebar concepts for interview and task topics", () => {
-    const typescript = findSubject("typescript");
-    const interview = typescript.clustersAfterSections?.find(
-      (cluster) => cluster.id === "interview",
+    const frontend = handbookNav("en").find((group) => group.id === "frontend");
+    const interview = frontend?.entries.find(
+      (entry) => entry.kind === "cluster" && entry.cluster.id === "interview",
     );
-    const tasks = typescript.clustersAfterSections?.find(
-      (cluster) => cluster.id === "tasks",
+    const tasks = frontend?.entries.find(
+      (entry) => entry.kind === "cluster" && entry.cluster.id === "tasks",
     );
-    assert.equal(interview?.topics[0]?.hideSidebarConcepts, true);
-    assert.equal(tasks?.topics[0]?.hideSidebarConcepts, true);
-    assert.ok((interview?.topics[0]?.concepts.length ?? 0) > 0);
+    assert.equal(interview?.kind, "cluster");
+    assert.equal(tasks?.kind, "cluster");
+    if (interview?.kind !== "cluster" || tasks?.kind !== "cluster") {
+      return;
+    }
+    assert.ok(
+      interview.cluster.topics.every((topic) => topic.hideSidebarConcepts),
+    );
+    assert.ok(tasks.cluster.topics.every((topic) => topic.hideSidebarConcepts));
+    assert.ok((interview.cluster.topics[0]?.concepts.length ?? 0) > 0);
   });
 
   it("hides sidebar concepts for every interview and task topic", () => {
     for (const group of handbookNav("en")) {
       for (const entry of group.entries) {
+        if (
+          entry.kind === "cluster" &&
+          /interview|tasks/i.test(entry.cluster.id)
+        ) {
+          for (const topic of entry.cluster.topics) {
+            assert.equal(
+              topic.hideSidebarConcepts,
+              true,
+              `${group.id}/${entry.cluster.id}/${topic.slug}`,
+            );
+          }
+        }
         if (entry.kind !== "subject") {
           continue;
         }
         for (const cluster of allSubjectClusters(entry.subject)) {
+          if (!/interview|tasks/i.test(cluster.id)) {
+            continue;
+          }
           for (const topic of cluster.topics) {
-            const isInterviewLike =
-              /interview|tasks/i.test(topic.slug) ||
-              /interview|tasks/i.test(cluster.id);
-            if (!isInterviewLike) {
-              continue;
-            }
             assert.equal(
               topic.hideSidebarConcepts,
               true,
@@ -86,7 +122,37 @@ describe("handbookNav section layout", () => {
     }
   });
 
-  it("keeps Vue and Nuxt interview clusters as cluster rows without concept children", () => {
+  it("lifts Node.js interview topics to the Backend track", () => {
+    const nodejs = findSubject("nodejs");
+    assert.equal(
+      allSubjectClusters(nodejs).some((cluster) =>
+        /interview|tasks/i.test(cluster.id),
+      ),
+      false,
+    );
+    const backend = handbookNav("en").find((group) => group.id === "backend");
+    const interview = backend?.entries.find(
+      (entry) => entry.kind === "cluster" && entry.cluster.id === "interview",
+    );
+    assert.equal(interview?.kind, "cluster");
+    if (interview?.kind !== "cluster") {
+      return;
+    }
+    assert.equal(
+      interview.cluster.topics.find(
+        (topic) => topic.slug === "nodejs-interview",
+      )?.title,
+      "Node.js",
+    );
+    assert.equal(
+      interview.cluster.topics.find(
+        (topic) => topic.slug === "express-questions",
+      )?.title,
+      "Express",
+    );
+  });
+
+  it("lifts Vue and Nuxt interview topics to the Frontend track", () => {
     const vueNuxt = findSubject("vue-nuxt");
     const vueInterview = vueNuxt.sections
       ?.find((section) => section.id === "vue")
@@ -94,10 +160,28 @@ describe("handbookNav section layout", () => {
     const nuxtInterview = vueNuxt.sections
       ?.find((section) => section.id === "nuxt")
       ?.clusters.find((cluster) => cluster.id === "nuxt-interview");
+    assert.equal(vueInterview, undefined);
+    assert.equal(nuxtInterview, undefined);
 
-    assert.equal(vueInterview?.topics[0]?.hideSidebarConcepts, true);
-    assert.equal(nuxtInterview?.topics[0]?.hideSidebarConcepts, true);
-    assert.ok((vueInterview?.topics[0]?.concepts.length ?? 0) > 0);
+    const frontend = handbookNav("en").find((group) => group.id === "frontend");
+    const interview = frontend?.entries.find(
+      (entry) => entry.kind === "cluster" && entry.cluster.id === "interview",
+    );
+    assert.equal(interview?.kind, "cluster");
+    if (interview?.kind !== "cluster") {
+      return;
+    }
+    const vue = interview.cluster.topics.find(
+      (topic) => topic.slug === "vue-interview",
+    );
+    const nuxt = interview.cluster.topics.find(
+      (topic) => topic.slug === "nuxt-interview",
+    );
+    assert.equal(vue?.title, "Vue");
+    assert.equal(nuxt?.title, "Nuxt");
+    assert.equal(vue?.hideSidebarConcepts, true);
+    assert.equal(nuxt?.hideSidebarConcepts, true);
+    assert.ok((vue?.concepts.length ?? 0) > 0);
   });
 
   it("hides sidebar concepts on the behavior leaf topic", () => {

@@ -34,25 +34,39 @@ const SECTION_LABELS: Record<InterviewSection, string> = {
 };
 
 type ConceptGroup = {
-  readonly section: InterviewSection | null;
+  readonly key: string;
+  readonly label: string | null;
   readonly concepts: Concept[];
 };
+
+function groupLabel(concept: Concept): string | null {
+  if (concept.group) {
+    return concept.group;
+  }
+  if (concept.interviewSection) {
+    return SECTION_LABELS[concept.interviewSection];
+  }
+  return null;
+}
 
 function groupConcepts(
   concepts: readonly Concept[],
   groupInterviewSections: boolean,
 ): ConceptGroup[] {
   if (!groupInterviewSections) {
-    return [{ section: null, concepts: [...concepts] }];
+    return [{ key: "default", label: null, concepts: [...concepts] }];
   }
 
   const groups: ConceptGroup[] = [];
   let current: ConceptGroup | null = null;
 
   for (const concept of concepts) {
-    const section = concept.interviewSection ?? null;
-    if (!current || current.section !== section) {
-      current = { section, concepts: [] };
+    const label = groupLabel(concept);
+    const key = concept.group
+      ? `topic:${concept.group}`
+      : `section:${concept.interviewSection ?? "default"}`;
+    if (!current || current.key !== key) {
+      current = { key, label, concepts: [] };
       groups.push(current);
     }
     current.concepts.push(concept);
@@ -154,10 +168,10 @@ export function ConceptList({
   return (
     <div className="space-y-8">
       {groups.map((group) => (
-        <section key={group.section ?? "default"}>
-          {group.section ? (
+        <section key={group.key}>
+          {group.label ? (
             <h2 className="mb-3 text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-              {SECTION_LABELS[group.section]}
+              {group.label}
             </h2>
           ) : null}
           <ConceptIndexList
@@ -165,7 +179,7 @@ export function ConceptList({
             query={query}
             chrome={chrome}
             pathname={pathname}
-            topicTitle={group.section === null ? topicTitle : undefined}
+            topicTitle={group.label === null ? topicTitle : undefined}
           />
         </section>
       ))}

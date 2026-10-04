@@ -10,6 +10,7 @@ export type NavConcept = {
   readonly searchText?: string;
   readonly titleSearchText?: string;
   readonly interviewSection?: InterviewSection;
+  readonly group?: string;
 };
 
 export type NavTopic = {

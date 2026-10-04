@@ -1,6 +1,6 @@
 # TypeScript — Interview
 
-Вопросы и ответы для собеседования, устные вопросы и задачи на типы.
+Вопросы для собеседования по TypeScript. Ответы не заполнены.
 
 [← Назад к хабу](./5_ts.md)
 
@@ -8,2711 +8,952 @@
 
 [TypeScript — хаб](./5_ts.md) · [Типы](./5_ts_types.md) · [Сужение](./5_ts_narrowing.md) · [Функции](./5_ts_functions.md) · [Манипуляции типами](./5_ts_type_manipulation.md)
 
-### Main concepts
-
-| Section                                                     | Covers                                               |
-| ----------------------------------------------------------- | ---------------------------------------------------- |
-| [Overview](#overview)                                       | Обязательные темы и карта                            |
-| [Questions & Answers](#questions-answers)                   | Вопросы и ответы, от основ к продвинутым             |
-| [Coding tasks](#coding-tasks)                               | Задачи на типы — `Pick`, `Exclude`, `infer`, корзина |
-| [Quick oral questions](#quick-oral-questions-self-check)    | Пятнадцать вопросов для самопроверки                 |
-| [Oral questions (ITVDN)](#oral-questions-itvdn--typescript) | Устные вопросы в стиле курса                         |
-| [Oral questions (extra)](#oral-questions-extra)             | Флаги компилятора и модули                           |
-
 ### Sections
 
-- [Overview](#overview)
-- [Questions & Answers](#questions-answers)
-- [Coding tasks](#coding-tasks)
-- [Quick oral questions (self-check)](#quick-oral-questions-self-check)
-- [Oral questions (ITVDN — TypeScript)](#oral-questions-itvdn--typescript)
-- [Oral questions (extra)](#oral-questions-extra)
+- [Interview Practice](#interview-practice)
 
 ---
 
-## Overview
+## Interview Practice
 
-<details>
-<summary>Interview checklist</summary>
-
-**Definition:** Задачи на уровне типов и типичные вопросы с живым кодом на собеседовании по TypeScript.
-
-| Область       | Нужно знать                                                              |
-| ------------- | ------------------------------------------------------------------------ |
-| **Basics**    | `any` и `unknown` и `never`, сужение, объединения                        |
-| **Structure** | `interface` и `type`, дженерики, служебные типы                          |
-| **Safety**    | `strict`, размеченные объединения, исчерпываемость, `erasableSyntaxOnly` |
-| **Advanced**  | `infer`, условные и сопоставленные типы, `keyof`                         |
-| **Runtime**   | Типы стираются — внешние данные надо проверять (Zod)                     |
-
-**Sources:** [Type challenges](https://github.com/type-challenges/type-challenges)
-
-</details>
-
----
-
-## Questions & Answers
-
-Вопросы идут от основ языка к классам, инструментам, продвинутым типам, затем React и Node. Повторы из исходного списка сведены в один блок. Ответы описывают текущее поведение TypeScript; текст вставки не копируется.
-
-### Basics
-
-<details>
-  <summary>What is TypeScript?</summary>
-
-### What is TypeScript?
-
-**Definition:** Типизированное расширение JavaScript — типы проверяются во время компиляции и **стираются** в создаваемом JS. Добавляет интерфейсы, дженерики, перечисления и строгие проверки на нулевое значение без изменения семантики времени выполнения.
-
-| Плюсы                                              | Минусы                                 |
-| -------------------------------------------------- | -------------------------------------- |
-| Более безопасный рефакторинг, лучшая поддержка IDE | Дополнительный шаг компиляции          |
-| Постепенное принятие (`allowJs`)                   | `any` / `as` может обойти безопасность |
-| Обнаруживает ошибки перед развертыванием           | Типы не существуют во время выполнения |
-
-**How it works:** `tsc` (или esbuild/swc с `noEmit` check) анализирует код → сообщает об ошибках → выдает JS. Внешние данные (API, `JSON.parse`) по-прежнему требует проверки во время выполнения (Zod, io-ts), поскольку TS не может проверять полезную нагрузку сети.
-
-**When to use:** Любое поддерживаемое приложение, общие библиотеки, команды, кодовые базы NestJS/Angular.
-
-**Examples:**
-
-```typescript
-function greet(name: string): string {
-  return `Hello, ${name}`;
-}
-greet(42); // compile error: number not assignable to string
-```
-
-**Interview one-liner:** _"TypeScript — это JavaScript с дополнительными статическими типами — безопасность во время компиляции, среда выполнения по-прежнему JS."_
-
-**Sources:** [Справочник по TypeScript — введение](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-</details>
-
-<details>
-  <summary>What problems does TypeScript solve? Why in large projects?</summary>
-
-### What problems does TypeScript solve? Why in large projects?
-
-**Definition:** TypeScript добавляет в JavaScript дополнительные статические типы — перехватывая ошибки формы во время компиляции, прежде чем они попадут в рабочую среду.
-
-**Problems it solves:**
-
-- Опечатки и неверный доступ к свойствам (`user.nmae`)
-- Безопасность рефакторинга — переименуйте поле, компилятор найдет все варианты использования.
-- Самодокументируемые API — сигнатуры функций показывают намерение.
-- Улучшено автозаполнение и навигация в IDE.
-- Общие контракты между модулями внешнего и внутреннего интерфейса.
-
-**Why large projects:** Больше файлов, больше разработчиков, больше точек интеграции — типы масштабируют общение лучше, чем комментарии. `strict` Режим окупается, когда кодовая база переживет память любого отдельного разработчика.
-
-**Thoughts:** _Типы — это документация, которую обеспечивает компилятор._
-
-**See also:** [Что такое TypeScript?](#what-is-typescript) · вводный раздел
-
-</details>
-
-<details>
-  <summary>When can TypeScript hinder development?</summary>
-
-### When can TypeScript hinder development?
-
-**Definition:** TS помогает большинству поддерживаемых приложений, но требует затрат — особенно на ранних этапах проекта или при неправильном использовании.
-
-| Помеха                                          | смягчение последствий                                             |
-| ----------------------------------------------- | ----------------------------------------------------------------- |
-| Кривая обучения                                 | Начните с `strict` постепенно; использовать `allowJs`             |
-| Медленный CI при проверке типов всего монолита  | Ссылки на проекты, инкрементные сборки                            |
-| Борьба с компилятором в сложных дженериках      | Упрощать; не переусердствуйте с типами                            |
-| `any` / `as` аварийные люки обхода безопасности | Давать возможность `noImplicitAny`, проверка кода                 |
-| Сторонние библиотеки без типов                  | `@types/*`, местный `.d.ts`, `unknown` + Зод на границах          |
-| Скорость прототипирования                       | `// @ts-nocheck` только для файлов спайков, а не для производства |
-
-**Thoughts:** _TS причиняет боль, когда вы относитесь к типам как к бюрократии, а не как к ограждению, или когда команда отключает строгие проверки._
-
-</details>
-
-<details>
-  <summary>Is TypeScript strictly statically typed?</summary>
-
-### Is TypeScript strictly statically typed?
-
-**Definition:** TypeScript типизирован **постепенно**. Проверка статическая, но типы необязательны: `any`, утверждения и пропущенные аннотации отключают проверку значения.
-
-**How it works:** С `strict` значение без аннотации — ошибка (`noImplicitAny`), а не тихий `any`. Система типов не полностью надёжна: параметры методов по умолчанию бивариантны, а типы стираются, поэтому в рантайме значение всё ещё может иметь другую форму.
-
-**Examples:**
-
-```typescript
-function len(x: any) {
-  return x.length; // allowed, even if x is a number at runtime
-}
-```
-
-**Sources:** [Handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html) · [Everyday types — `any`](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
-
-</details>
-
-<details>
-  <summary>Is TypeScript a functional programming language?</summary>
-
-### Is TypeScript a functional programming language?
-
-**Definition:** TypeScript многопарадигменный, как JavaScript. Он типизирует функции первого класса, неизменяемость (`readonly`, `as const`) и объединения, а также классы.
-
-**How it works:** Язык не требует чистых функций, неизменяемых данных или алгебраических эффектов. Функциональный стиль можно писать; компилятор его не навязывает.
-
-**See also:** [Functions](./5_ts_functions.md) · [Why TypeScript for OOP if it emits JS?](#why-typescript-for-oop-if-it-emits-js)
-
-**Sources:** [Handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-</details>
-
-<details>
-  <summary>Which OOP principles does TypeScript support?</summary>
-
-### Which OOP principles does TypeScript support?
-
-**Definition:** Классы покрывают инкапсуляцию, наследование и подтиповый полиморфизм. Абстракцию выражают `interface` и `abstract class`. Типизация **структурная**, а не номинальная, как в Java или C#.
-
-**How it works:** Класс может `extend` один базовый класс и `implements` много интерфейсов. Множественного наследования классов нет. `private` и `protected` существуют только при компиляции; поля `#` — приватность в рантайме.
-
-**See also:** [Classes](./5_ts_classes.md) · [Why TypeScript for OOP if it emits JS?](#why-typescript-for-oop-if-it-emits-js)
-
-**Sources:** [Handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
-
-</details>
-
-<details>
-  <summary>Why TypeScript for OOP if it emits JS?</summary>
-
-### Why TypeScript for OOP if it emits JS?
-
-**Short answer:** В JS есть классы, но **нет интерфейсов**. TS позволяет проектировать отношения сущностей на основе абстракций и давать сбой во время компиляции. Среда выполнения по-прежнему JS, поэтому `private` стерто — используйте `#` для настоящего сокрытия.
-
-**How it works:** Писать `interface Ledger { addRecord(r: LedgerEntry): void }` первый. Реализации `implements Ledger`. Неправильная проводка (отсутствует поле, неправильный `kind`) представляет собой `tsc` ошибка. По той же причине, что и диагностика автомобиля перед поездкой.
-
-**When to use:** Приложения с интенсивным использованием предметной области, DI, команды. Не требуется для сценария из 20 строк.
-
-**See also:** [Classes](./5_ts_classes.md) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript) · [Doka — OOP](https://doka.guide/tools/oop/)
-
-</details>
-
-<details>
-  <summary>Which TypeScript features help a full-stack codebase?</summary>
-
-### Which TypeScript features help a full-stack codebase?
-
-**Definition:** Общие типы, дженерики и проверки `strict` позволяют одному контракту описывать данные по обе стороны HTTP или RPC.
-
-**How it works:** Публикуйте типы запроса и ответа из одного пакета (или выводите их из роутера). UI и сервер импортируют эти типы. Типы всё равно стираются, поэтому сервер должен проверять вход в рантайме.
-
-**See also:** [How to typify API response, object, array, and function?](#how-to-typify-api-response-object-array-and-function)
-
-**Sources:** [Handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-</details>
-
-<details>
-  <summary>Compiler vs transpiler?</summary>
-
-### Compiler vs transpiler?
-
-**Definition:** `tsc` **проверка типов** (компилятор) и **генерация JS** из TS (транспиляция между языками высокого уровня).
-
-| Роль       | `tsc`              |
-| ---------- | ------------------ |
-| Компилятор | Статический анализ |
-| Транспилер | TS → JS излучает   |
-
-**Examples:**
-
-```bash
-tsc --noEmit
-tsc
-```
-
-**Sources:** [TypeScript с нуля](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
-</details>
-
-<details>
-  <summary>What happens on build with type errors?</summary>
-
-### What happens on build with type errors?
-
-**Definition:** По умолчанию `tsc` **сообщает об ошибках, но может по-прежнему выдавать JS** — типы не блокируют вывод, если они не настроены.
-
-**How it works:**
-
-| Настройка/флаг        | Поведение                                                         |
-| --------------------- | ----------------------------------------------------------------- |
-| По умолчанию `tsc`    | Зарегистрированы ошибки; JS все еще может быть выпущен            |
-| `noEmitOnError: true` | Нет вывода JS, пока типы не пройдут                               |
-| `tsc --noEmit`        | Только проверка типа — никаких выбросов (обычно в CI)             |
-| Вите/esbuild/SWC      | Транспилировать без проверки типа; бегать `tsc --noEmit` отдельно |
-
-**Interview answer:** _В строгом режиме CI мы выполняем `tsc --noEmit` и провалить сборку из-за ошибок. Сами по себе бандлеры не гарантируют типобезопасность._
-
-**Thoughts:** _Проверка типов и транспиляция — это отдельные этапы в современных конвейерах._
-
-**Sources:** [tsconfig — noEmitOnError](https://www.typescriptlang.org/tsconfig#noEmitOnError)
-
-</details>
-
-<details>
-  <summary>How do you install and compile TypeScript?</summary>
-
-### How do you install and compile TypeScript?
-
-**Definition:** Установите пакет `typescript` и запускайте `tsc`. `tsc --watch` перекомпилирует файлы при изменении.
-
-**How it works:**
-
-```bash
-npm install --save-dev typescript
-npx tsc --init
-npx tsc --noEmit
-npx tsc --watch
-```
-
-`tsc --noEmit` type-checks without writing JavaScript. A project file is `tsconfig.json`. Global installs work, but a dev dependency pins the version for the repo.
-
-**See also:** [The Basics](./5_ts_basics.md)
-
-**Sources:** [TypeScript from scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
-</details>
-
-<details>
-  <summary>What is `tsconfig.json`?</summary>
-
-### What is `tsconfig.json`?
-
-**Definition:** Файл проекта: помечает каталог как проект TypeScript и задаёт опции компилятора, `include` и `exclude`.
-
-**How it works:** `compilerOptions.strict` включает семейство strict (`strictNullChecks`, `noImplicitAny`, `strictFunctionTypes` и другие). `target` и `module` управляют генерацией. `extends` переиспользует базовый конфиг. Пути в файле разрешаются от этого файла.
-
-**Examples:**
-
-```json
-{
-  "compilerOptions": {
-    "strict": true,
-    "target": "ES2022",
-    "module": "NodeNext",
-    "noEmit": true
-  },
-  "include": ["src"]
-}
-```
-
-**See also:** [Important strict compiler flags?](#important-strict-compiler-flags)
-
-**Sources:** [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
-
-</details>
-
-<details>
-  <summary>What is the difference between `.ts` and `.tsx`?</summary>
-
-### What is the difference between `.ts` and `.tsx`?
-
-**Definition:** `.ts` — TypeScript. `.tsx` — TypeScript, в котором может быть JSX. В `.tsx` утверждение пишут как `value as Type`, потому что `<Type>value` похоже на тег.
-
-**How it works:** Задайте `"jsx"` в `tsconfig` (`react-jsx` для современного автоматического рантайма). Файл `.tsx` проверяется как JSX; переименование в `.ts` делает JSX синтаксической ошибкой.
-
-**See also:** [JSX](./5_ts_jsx.md#jsx)
-
-**Sources:** [Handbook — JSX](https://www.typescriptlang.org/docs/handbook/jsx.html)
-
-</details>
-
-<details>
-  <summary>Explicit vs implicit type assignment?</summary>
-
-### Explicit vs implicit type assignment?
-
-**Definition:** Явная аннотация написана вами (`let n: number = 1`). Неявный тип выводится из инициализатора (`let n = 1`).
-
-**How it works:** Вывод смотрит на инициализатор. `let` расширяет литералы (`1` становится `number`). `const` сохраняет литеральный тип (`1`). Аннотируйте, если инициализатора нет, если нужен тип шире литерала или если возвращаемое значение функции надо сверить с контрактом.
-
-**Examples:**
-
-```typescript
-let count = 1; // number
-const mode = "compact"; // "compact"
-let id: string | number = "a1";
-```
-
-**See also:** [Type inference](./5_ts_type_inference.md) · [Type annotations](./5_ts_type_annotations.md)
-
-**Sources:** [Type inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
-
-</details>
-
-<details>
-  <summary>Type inference vs contextual typing?</summary>
-
-### Type inference vs contextual typing?
-
-**Definition:** Вывод идёт от значения к его типу. Контекстная типизация идёт от ожидаемого типа внутрь выражения без аннотации, обычно колбэка.
-
-**How it works:** `const xs = [1, 2]` выводится как `number[]`. В `xs.forEach(n => n.toFixed())` параметр `n` контекстно имеет тип `number`, потому что `forEach` ожидает `(value: number) => void`. Обработчики событий и перегрузки работают так же.
-
-**Examples:**
-
-```typescript
-window.addEventListener("click", (event) => {
-  event.clientX; // MouseEvent from the listener overload
-});
-```
-
-**Sources:** [Type inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
-
-</details>
-
-<details>
-  <summary>What are the built-in types in TypeScript?</summary>
-
-### What are the built-in types in TypeScript?
-
-**Definition:** Значения JavaScript плюс несколько типов, которые есть только в TypeScript.
-
-| Группа     | Типы                                                                   |
-| ---------- | ---------------------------------------------------------------------- |
-| Примитивы  | `string`, `number`, `boolean`, `bigint`, `symbol`, `null`, `undefined` |
-| Объекты    | формы объектов, массивы, кортежи, функции, классы                      |
-| Верх и низ | `any`, `unknown`, `never`, `void`                                      |
-| Особые     | литеральные типы, объединения, пересечения, `enum`                     |
-
-**How it works:** Имена вроде `String` (объект-обёртка) — не то же самое, что `string`. Предпочитайте строчные имена примитивов.
-
-**See also:** [Types](./5_ts_types.md) · [Primitives](./5_ts_primitives.md)
-
-**Sources:** [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
-
-</details>
-
-<details>
-  <summary>`any` vs `unknown` vs `never`?</summary>
-
-### `any` vs `unknown` vs `never`
-
-**Definition:** `any` отключает проверку; `unknown` требует сужения; `never` — пустой тип (недоступный).
-
-| Тип       | Поведение                   |
-| --------- | --------------------------- |
-| `any`     | Никаких проверок            |
-| `unknown` | Сузить перед использованием |
-| `never`   | Исчерпывание/броски         |
-
-**Examples:**
-
-```typescript
-function parse(input: unknown) {
-  if (typeof input === "string") return input.trim();
-}
-```
-
-**Sources:** [Повседневные типы](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
-
-</details>
-
-<details>
-  <summary>When is `any` acceptable?</summary>
-
-### When is `any` acceptable?
-
-**Definition:** `any` отключает проверку типов — используйте умеренно на границах, а не по умолчанию.
-
-**Acceptable cases:**
-
-- Постепенный переход с JS (`allowJs` кодовая база)
-- Код спайка прототипа (временный, с билетом для ввода позже)
-- Действительно динамические данные с немедленным сужением до `unknown`
-- Устаревший сторонний код без типов и времени на перенос
-
-**Prefer instead:** `unknown` + сужение, обобщения или тонкая типизированная оболочка вокруг нетипизированной библиотеки.
-
-**Thoughts:** _`any` это скальпель для границ миграции, а не образ жизни._
-
-**See also:** [`any` vs `unknown` vs `never`](#любой-против-неизвестного-против-никогда)
-
-</details>
-
-<details>
-  <summary>`void` vs `never`?</summary>
-
-### `void` vs `never`?
-
-**Definition:** `void` значит, что возвращаемое значение функции игнорируют (она возвращает `undefined` или ничего полезного). `never` значит, что функция не возвращает значение: она бросает ошибку или крутится вечно.
-
-**How it works:** Функция без `return` выводится как `void`, если результат не используют. `never` также получается в ветке `default` исчерпывающего `switch` и в невозможных пересечениях вроде `string & number`.
-
-**Examples:**
-
-```typescript
-function log(message: string): void {
-  console.log(message);
-}
-
-function fail(message: string): never {
-  throw new Error(message);
-}
-```
-
-**See also:** [`any` vs `unknown` vs `never`](#any-vs-unknown-vs-never)
-
-**Sources:** [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#void) · [`never`](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking)
-
-</details>
-
-<details>
-  <summary>`null` vs `undefined`?</summary>
-
-### `null` vs `undefined`?
-
-**Definition:** `undefined` значит, что значение не передали. `null` — явное пустое значение. С `strictNullChecks` ни то ни другое нельзя присвоить `string` и другим обычным типам.
-
-**How it works:** Отсутствующий инициализатор — это `undefined`. Необязательные свойства (`email?: string`) могут отсутствовать или быть `undefined`. В JSON часто встречается `null`. `??` и `?.` считают оба nullish; `||` также считает пустыми `0` и `""`.
-
-**See also:** [How to handle optional and `undefined` fields?](#how-to-handle-optional-and-undefined-fields) · [`null` and `undefined`](./5_ts_null_undefined.md)
-
-**Sources:** [Everyday types — null and undefined](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#null-and-undefined)
-
-</details>
-
-<details>
-  <summary>How to handle optional and `undefined` fields?</summary>
-
-### How to handle optional and `undefined` fields?
-
-**Definition:** С `strictNullChecks`, пропал и `undefined` должны обрабатываться явно.
-
-| Синтаксис                   | Значение                                                           |
-| --------------------------- | ------------------------------------------------------------------ |
-| `prop?: string`             | Может отсутствовать или `undefined`                                |
-| `prop: string \| undefined` | Должен присутствовать; значение может быть `undefined`             |
-| `obj.prop?.trim()`          | Необязательная цепочка — короткое замыкание на нуль/неопределенное |
-| `value ?? 'default'`        | Нулевое слияние — только для `null`/`undefined`                    |
-
-```typescript
-type User = { name: string; email?: string };
-
-function greet(user: User) {
-  const domain = user.email?.split("@")[1] ?? "unknown";
-  return `${user.name}@${domain}`;
-}
-```
-
-**Thoughts:** _`?` по реквизиту + `?.` и `??` на сайтах доступа — никогда не предполагайте, что поле существует._
-
-**See also:** [Необязательные свойства](./5_ts_objects.md#optional-properties) · [`null` и `undefined`](./5_ts_null_undefined.md#null-and-undefined)
-
-</details>
-
-<details>
-  <summary>What is the difference between `var`, `let`, and `const`?</summary>
-
-### What is the difference between `var`, `let`, and `const`?
+Вопросы из [Devinterview.io — TypeScript](https://devinterview.io/questions/web-and-mobile-development/typescript-interview-questions/).
 
-**Definition:** Это привязки JavaScript. TypeScript проверяет их типы и не меняет правила области видимости.
-
-| Ключевое слово | Область                                     | Переприсваивание                                       |
-| -------------- | ------------------------------------------- | ------------------------------------------------------ |
-| `var`          | функция или глобальная область; поднимается | да                                                     |
-| `let`          | блок; временная мёртвая зона                | да                                                     |
-| `const`        | блок                                        | нет (сама привязка). Поля объекта всё ещё можно менять |
-
-**How it works:** Предпочитайте `const`, затем `let`. `const` также сохраняет литеральные типы (`const role = "admin"` — это `"admin"`, а не `string`).
-
-**See also:** [Variables, scope, and hoisting](./3_js_variables.md#variables-scope-and-hoisting) · [Variable declaration](./5_ts_variable_declaration.md)
-
-**Sources:** [Variable declarations](https://www.typescriptlang.org/docs/handbook/variable-declarations.html)
-
-</details>
-
-<details>
-  <summary>How do you type an array in TypeScript?</summary>
-
-### How do you type an array in TypeScript?
-
-**Definition:** `T[]` и `Array<T>` — один и тот же тип. `ReadonlyArray<T>` (или `readonly T[]`) запрещает мутирующие методы.
-
-**Examples:**
-
-```typescript
-const ids: number[] = [1, 2];
-const names: Array<string> = ["ada"];
-const frozen: readonly string[] = ["a"];
-// frozen.push("b"); // error
-```
-
-**See also:** [Arrays](./5_ts_arrays.md)
-
-**Sources:** [Everyday types — arrays](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#arrays)
-
-</details>
-
-<details>
-  <summary>What is the difference between a tuple and an array?</summary>
-
-### What is the difference between a tuple and an array?
-
-**Definition:** Массив — список одного типа элементов и открытой длины. Кортеж фиксирует тип каждой позиции и, если нет rest-элемента, длину.
-
-**Examples:**
-
-```typescript
-const row: [string, number] = ["ada", 36];
-const point = [10, 20] as const; // readonly [10, 20]
-```
-
-Readonly-кортеж (`readonly [string, number]` или `as const`) нельзя дополнять и нельзя писать по индексу. Лишние элементы — ошибка, если кортеж не заканчивается на `...T[]`.
-
-**See also:** [Object types](./5_ts_objects.md)
-
-**Sources:** [Everyday types — tuples](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#tuple-types)
-
-</details>
-
-<details>
-  <summary>How do you type an object and optional properties?</summary>
-
-### How do you type an object and optional properties?
-
-**Definition:** Форму описывают через `type` или `interface`. `prop?: T` значит, что при `strictNullChecks` свойство может отсутствовать или быть `undefined`.
-
-**Examples:**
-
-```typescript
-type User = {
-  name: string;
-  email?: string;
-};
-
-const user: User = { name: "Ada" };
-```
-
-**See also:** [Object types](./5_ts_objects.md) · [`interface` vs `type`](#interface-vs-type)
-
-**Sources:** [Object types](https://www.typescriptlang.org/docs/handbook/2/objects.html)
-
-</details>
-
-<details>
-  <summary>What is the difference between `readonly` and `const`?</summary>
-
-### What is the difference between `readonly` and `const`?
-
-**Definition:** `const` замораживает **привязку**. `readonly` замораживает **свойство** или позицию массива/кортежа на этапе компиляции.
-
-**How it works:** `const user = { name: "Ada" }` всё ещё позволяет `user.name = "Grace"`. `readonly name: string` отвергает такое присваивание в системе типов. Ни то ни другое не глубокая заморозка в рантайме; для неё нужен `Object.freeze`.
-
-**Examples:**
-
-```typescript
-const user = { name: "Ada" };
-user.name = "Grace"; // allowed
-
-type Account = { readonly id: string };
-```
-
-**Sources:** [Object types — `readonly`](https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties)
-
-</details>
-
-<details>
-  <summary>How do enums work in TypeScript?</summary>
-
-### How do enums work in TypeScript?
-
-**Definition:** `enum` — набор именованных констант. В отличие от псевдонима типа, он порождает объект в рантайме.
-
-**How it works:** Числовой enum автоматически растёт от 0 и порождает обратное отображение. Строковый enum хранит строки и обратного отображения не имеет. `const enum` подставляется на месте и не порождает объект, но изолированным инструментам его труднее увидеть.
-
-**Examples:**
-
-```typescript
-enum Direction {
-  Up,
-  Down,
-}
-enum Role {
-  Admin = "admin",
-  Guest = "guest",
-}
-```
-
-**See also:** [Enums](./5_ts_enums.md) · [Why avoid `enum`?](#why-avoid-enum)
-
-**Sources:** [Enums](https://www.typescriptlang.org/docs/handbook/enums.html)
-
-</details>
-
-<details>
-  <summary>Why avoid `enum`?</summary>
-
-### Why avoid `enum`?
-
-**Definition:** Числовые перечисления добавляют объекты времени выполнения; `as const` + Union легче и не боится дрожания деревьев.
-
-**Examples:**
-
-```typescript
-const Status = { Active: "active", Removed: "removed" } as const;
-type Status = (typeof Status)[keyof typeof Status];
-```
-
-**Sources:** [Перечисления](https://www.typescriptlang.org/docs/handbook/enums.html)
-
-</details>
-
-<details>
-  <summary>How do optional chaining and nullish coalescing work?</summary>
-
-### How do optional chaining and nullish coalescing work?
-
-**Definition:** `?.` останавливается и возвращает `undefined`, если база — `null` или `undefined`. `??` берёт правую часть только для `null` или `undefined`, но не для `0` или `""`.
-
-**How it works:** Оба оператора — это JavaScript (необязательная цепочка с ES2020). TypeScript сужает тип после проверки и включает `undefined` в тип результата `?.`.
-
-**Examples:**
-
-```typescript
-const city = user.address?.city ?? "unknown";
-user.greet?.();
-```
-
-**See also:** [How to handle optional and `undefined` fields?](#how-to-handle-optional-and-undefined-fields)
-
-**Sources:** [TypeScript 3.7 — optional chaining](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#optional-chaining)
-
-</details>
-
-<details>
-  <summary>What are arrow functions in TypeScript?</summary>
-
-### What are arrow functions in TypeScript?
-
-**Definition:** Стрелочные функции — выражения функций JavaScript с лексическим `this`. TypeScript добавляет аннотации параметров и возвращаемого типа.
-
-**How it works:** У них нет собственного `this`, `arguments` и `prototype`, поэтому они плохо подходят как метод или конструктор. Для рекурсии их нельзя назвать, пока имя не привязано к `const` и вызов идёт по этому имени. Аннотации типов стоят перед `=>`.
-
-**Examples:**
-
-```typescript
-const add = (x: number, y: number): number => x + y;
-```
-
-**See also:** [Functions](./3_js_functions.md) · [Functions](./5_ts_functions.md)
-
-**Sources:** [More on functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-</details>
-
-<details>
-  <summary>What are anonymous functions in TypeScript?</summary>
-
-### What are anonymous functions in TypeScript?
-
-**Definition:** Выражение функции или стрелка без имени. TypeScript контекстно типизирует параметры, когда функцию передают в типизированный слот колбэка.
-
-**Examples:**
-
-```typescript
-const labels = [1, 2].map((n) => `n=${n}`);
-```
-
-Назовите функцию, если важны стек или рекурсия: `function parseRow(row: string) { ... }`.
-
-**Sources:** [More on functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-</details>
-
-<details>
-  <summary>How do `for` loops work in TypeScript?</summary>
-
-### How do `for` loops work in TypeScript?
-
-**Definition:** Те же циклы, что в JavaScript: `for`, `for...of`, `for...in` и методы массива. TypeScript типизирует переменную цикла.
-
-**How it works:** `for...of` даёт типы элементов. `for...in` даёт **ключи** (`string` у массивов) — частая ошибка. С `noUncheckedIndexedAccess` тип `arr[i]` — это `T | undefined`.
-
-**Examples:**
-
-```typescript
-for (const item of items) {
-  item.name;
-}
-```
-
-**See also:** [Control flow](./3_js_operators.md)
-
-**Sources:** [Iterators and generators](https://www.typescriptlang.org/docs/handbook/iterators-and-generators.html)
-
-</details>
-
-### Functions
-
-<details>
-  <summary>How do you type functions, parameters, and return values?</summary>
-
-### How do you type functions, parameters, and return values?
-
-**Definition:** Аннотируйте параметры и, если нужен проверяемый контракт, возвращаемый тип. Тип функции — это `(args) => result`.
-
-**Examples:**
-
-```typescript
-type Greeter = (name: string) => string;
-
-function greet(name: string): string {
-  return `Hello, ${name}`;
-}
-```
-
-**How it works:** Если не аннотировать возврат, TypeScript выводит его из операторов `return`. Аннотация ловит случайный возврат `undefined`. `void` значит, что вызывающий должен игнорировать результат.
-
-**See also:** [Functions](./5_ts_functions.md)
-
-**Sources:** [More on functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
-
-</details>
-
-<details>
-  <summary>Optional, default, rest parameters, and destructuring?</summary>
-
-### Optional, default, rest parameters, and destructuring?
-
-**Definition:** `?` помечает параметр, который можно не передать. Значение по умолчанию заполняет этот пропуск. Rest-параметр собирает хвост в массив. Деструктуризация типизирует исходный объект, а не каждое локальное имя отдельно.
-
-**Examples:**
-
-```typescript
-function page(path: string, size = 20, cursor?: string) {
-  return { path, size, cursor };
-}
-
-function sum(...nums: number[]) {
-  return nums.reduce((a, b) => a + b, 0);
-}
-
-function area({ w, h }: { w: number; h: number }) {
-  return w * h;
-}
-```
-
-**How it works:** Необязательные параметры идут после обязательных. Значение по умолчанию делает параметр необязательным на месте вызова. Тип rest — массив или кортеж, если вы его так записали.
-
-**See also:** [Rest, spread, and destructuring](./3_js_variables.md#rest-spread-and-destructuring)
-
-**Sources:** [More on functions](https://www.typescriptlang.org/docs/handbook/2/functions.html#optional-parameters)
-
-</details>
-
-<details>
-  <summary>How do function overloads work?</summary>
-
-### How do function overloads work?
-
-**Definition:** Напишите одну или несколько сигнатур вызова, затем одну реализацию, совместимую со всеми. Вызывающие видят только список перегрузок.
-
-**Examples:**
-
-```typescript
-function len(value: string): number;
-function len(value: unknown[]): number;
-function len(value: string | unknown[]): number {
-  return value.length;
-}
-```
-
-**How it works:** Сигнатура реализации скрыта. Порядок важен: TypeScript берёт первую подходящую перегрузку. Если тела одинаковые, лучше параметр-объединение.
-
-**See also:** [Functions](./5_ts_functions.md)
-
-**Sources:** [More on functions — overloads](https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads)
-
-</details>
-
-<details>
-  <summary>What are `this` types?</summary>
-
-### What are `this` types?
-
-**Definition:** Параметр `this` задаёт тип получателя функции. Возвращаемый тип `this` значит «тип того экземпляра, на котором вызвали метод», и сохраняет цепочку подклассов.
-
-**Examples:**
-
-```typescript
-class Box {
-  value = 0;
-  set(value: number): this {
-    this.value = value;
-    return this;
-  }
-}
-
-function onClick(this: HTMLElement) {
-  this.id;
-}
-```
-
-**How it works:** Стрелочные функции игнорируют параметр `this`, потому что своего `this` у них нет.
-
-**Sources:** [More on functions — `this`](https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function) · [Polymorphic `this`](https://www.typescriptlang.org/docs/handbook/2/classes.html#this-types)
-
-</details>
-
-### Narrowing and operators
-
-<details>
-  <summary>What are type assertions?</summary>
-
-### What are type assertions?
-
-**Definition:** `value as Type` говорит проверщику считать значение тем типом, который вы утверждаете. Это приведение на этапе компиляции, а не проверка в рантайме.
-
-**How it works:** Используйте, когда вы знаете больше, чем проверщик (узел DOM, только что проверенные данные). Несвязанные типы нельзя превратить друг в друга без `unknown` посередине. В `.tsx` предпочитайте `as`, а не `<Type>value`.
-
-**Examples:**
-
-```typescript
-const input = document.querySelector("#name") as HTMLInputElement;
-const data = JSON.parse(text) as User; // still unchecked at runtime
-```
-
-**See also:** [Assertions](./5_ts_assertions.md) · [How to typify API response, object, array, and function?](#how-to-typify-api-response-object-array-and-function)
-
-**Sources:** [Everyday types — assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions)
-
-</details>
-
-<details>
-  <summary>What is type narrowing and a type predicate?</summary>
-
-### What is type narrowing and a type predicate?
-
-**Definition:** Сужение — это анализ потока управления: после `typeof`, `instanceof`, `in` или сравнения тип в ветке становится уже. Предикат типа — функция, которая возвращает `value is Type`.
-
-**Examples:**
-
-```typescript
-function isUser(value: unknown): value is { name: string } {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    "name" in value &&
-    typeof value.name === "string"
-  );
-}
-```
-
-**See also:** [Narrowing](./5_ts_narrowing.md)
-
-**Sources:** [Narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
-
-</details>
-
-<details>
-  <summary>Union vs intersection?</summary>
-
-### Union vs intersection
-
-**Definition:** `A | B` — один из; `A & B` — должен удовлетворить всех. `string & number` невозможно.
-
-| Оператор | Значение          |
-| -------- | ----------------- |
-| `\|`     | любой тип         |
-| `&`      | объединить фигуры |
-
-**Examples:**
-
-```typescript
-let id: number | string;
-type Person = { name: string } & { age: number };
-```
-
-**Sources:** [Союзы](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types)
-
-</details>
-
-<details>
-  <summary>Union and literal types — where are they used?</summary>
-
-### Union and literal types — where are they used?
-
-**Definition:** Союзы (`A | B`) модель «один из»; литеральные типы (`'pending' | 'done'`) ограничиться определенными значениями.
-
-**Where used:**
-
-| Вариант использования        | Пример                                                           |
-| ---------------------------- | ---------------------------------------------------------------- |
-| Статус API                   | `type Status = 'idle' \| 'loading' \| 'error'`                   |
-| Дискриминированные профсоюзы | `{ kind: 'success'; data: T } \| { kind: 'error'; msg: string }` |
-| Ключи конфигурации           | `type Theme = 'light' \| 'dark'`                                 |
-| Функция ввода перегрузки     | `string \| number` ID                                            |
-| `as const` объекты           | Сохраняйте литералы вместо расширения до `string`                |
-
-**Thoughts:** _Лутеральные объединения + дискриминантное поле = безопасно. `switch` с проверкой полноты._
-
-**See also:** [Типы объединений](./5_ts_unions_literals.md#union-types) · [Литеральные типы](./5_ts_unions_literals.md#literal-types) · [Дискриминированные объединения](./5_ts_narrowing.md#discrimination-unions)
-
-</details>
-
-<details>
-  <summary>What is a discriminated union?</summary>
-
-### What is a discriminated union?
-
-**Definition:** Объединение объектов с общим литеральным полем (`kind`, `type`, `status`). Проверка этого поля сужает остальной объект.
-
-**How it works:** В `switch` присвойте остаток типу `never`, чтобы новый вариант стал ошибкой компиляции.
-
-**Examples:**
-
-```typescript
-type Shape =
-  | { kind: "circle"; radius: number }
-  | { kind: "square"; side: number };
-
-function area(shape: Shape): number {
-  switch (shape.kind) {
-    case "circle":
-      return Math.PI * shape.radius ** 2;
-    case "square":
-      return shape.side ** 2;
-    default: {
-      const _exhaustive: never = shape;
-      return _exhaustive;
-    }
-  }
-}
-```
-
-**See also:** [Narrowing](./5_ts_narrowing.md) · [Union and literal types](#union-and-literal-types--where-are-they-used)
-
-**Sources:** [Narrowing — discriminated unions](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions)
-
-</details>
-
-<details>
-  <summary>What do `keyof`, `typeof`, and `in` do?</summary>
-
-### What do `keyof`, `typeof`, and `in` do?
-
-**Definition:** У этих трёх имён разные роли. Два из них существуют и как типы, и как операторы JavaScript.
-
-| Форма                      | Роль                                            |
-| -------------------------- | ----------------------------------------------- |
-| `keyof User`               | объединение ключей этого типа                   |
-| `typeof value` в типе      | тип значения                                    |
-| `typeof value` в выражении | строка рантайм-типа JavaScript                  |
-| `"name" in value`          | проверка JavaScript; также страж типа           |
-| `K in keyof T`             | обход в сопоставленном типе, не цикл в рантайме |
-
-**Examples:**
-
-```typescript
-type User = { name: string; age: number };
-type Key = keyof User; // "name" | "age"
-
-const user = { name: "Ada" };
-type UserValue = typeof user;
-
-function hasName(value: object): value is { name: string } {
-  return "name" in value;
-}
-```
-
-**See also:** [Type manipulation](./5_ts_type_manipulation.md)
-
-**Sources:** [`keyof`](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html) · [`typeof` type operator](https://www.typescriptlang.org/docs/handbook/2/typeof-types.html)
-
-</details>
+### TypeScript Fundamentals
 
 <details>
-  <summary>What are indexed access types and index signatures?</summary>
+<summary>What is TypeScript and how does it differ from JavaScript?</summary>
 
-### What are indexed access types and index signatures?
+### What is TypeScript and how does it differ from JavaScript?
 
-**Definition:** Индексный доступ читает тип свойства: `User["name"]`. Сигнатура индекса описывает открытый набор ключей: `{ [key: string]: number }`.
+**Definition:**
 
-**Examples:**
-
-```typescript
-type User = { name: string; age: number };
-type Name = User["name"];
+</details>
 
-type Scores = { [subject: string]: number };
-```
+<details>
+<summary>Can you explain what is meant by "TypeScript is a superset of JavaScript"?</summary>
 
-**How it works:** `User[keyof User]` — это `string | number`. Сигнатура индекса требует, чтобы каждое именованное свойство было совместимо с типом значения. Если ключи известны, лучше `Record` или конкретная форма.
+### Can you explain what is meant by "TypeScript is a superset of JavaScript"?
 
-**Sources:** [Indexed access types](https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html) · [Object types — index signatures](https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is structural typing?</summary>
-
-### What is structural typing?
+<summary>What are the basic types available in TypeScript?</summary>
 
-**Definition:** TypeScript сравнивает типы по членам, а не по объявленному имени. Если у значения есть нужные поля, оно совместимо. В Java и C# номинальная типизация: важно объявленное имя.
+### What are the basic types available in TypeScript?
 
-**How it works:** Лишние поля допустимы, если значение уже лежит в переменной. Свежий объектный литерал проверяют на лишние свойства. Бренды (`type Id = string & { readonly brand: unique symbol }`) имитируют номинальные идентификаторы.
+**Definition:**
 
-**Examples:**
+</details>
 
-```typescript
-type Point = { x: number; y: number };
-const p: Point = { x: 1, y: 2, z: 3 }; // excess property check
-const extra = { x: 1, y: 2, z: 3 };
-const ok: Point = extra; // allowed
-```
+<details>
+<summary>How do you declare variables in TypeScript?</summary>
 
-**See also:** [Type compatibility](./5_ts_type_compatibility.md)
+### How do you declare variables in TypeScript?
 
-**Sources:** [Type compatibility](https://www.typescriptlang.org/docs/handbook/type-compatibility.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>`interface` vs `type`?</summary>
-
-### `interface` vs `type`
-
-**Definition:** Оба описывают формы объектов и работают с классами (`implements`). Структурная типизация означает, что совместимые фигуры назначаются друг другу независимо от ключевого слова.
+<summary>What are Interfaces in TypeScript and how do they work?</summary>
 
-**How it works:**
+### What are Interfaces in TypeScript and how do they work?
 
-| Особенность                             | `interface`                              | `type`                       |
-| --------------------------------------- | ---------------------------------------- | ---------------------------- |
-| Форма объекта                           | да                                       | да                           |
-| Продлить                                | `extends`                                | пересечение `&`              |
-| Декларация о слиянии                    | да — повторяющиеся имена объединяют поля | нет — дубликат = ошибка      |
-| Союз `A \| B`                           | нет                                      | да                           |
-| Кортеж `[string, number]`               | неловкий                                 | натуральный                  |
-| Сопоставленные/условные типы            | ограниченный                             | основной инструмент          |
-| Псевдоним примитивов `type ID = string` | нет                                      | да                           |
-| `implements` в классе                   | да                                       | да (часто через перекресток) |
+**Definition:**
 
-**When to use:**
-
-- **`interface`** — контракты общедоступных объектов (DTO, API плагинов), которые вы можете расширить позже (`declare module 'express-serve-static-core'`).
-- **`type`** — объединения, распознанные объединения, трубопроводы коммунального типа (`Pick`, `Omit`, `ReturnType`).
+</details>
 
-**Examples:**
+<details>
+<summary>Describe the Enum type and when you might use it.</summary>
 
-```typescript
-// interface — merging (common for augmenting library types)
-interface User {
-  id: string;
-}
-interface User {
-  email: string;
-} // merged
+### Describe the Enum type and when you might use it.
 
-// type — union (impossible with interface alone)
-type Result<T> = { ok: true; data: T } | { ok: false; error: string };
+**Definition:**
 
-// equivalent extension
-interface Admin extends User {
-  role: "admin";
-}
-type AdminUser = User & { role: "admin" };
-```
+</details>
 
-**Interview pitfall:** «Что быстрее?» — незначительная разница; выбирайте по выразительности. Не используйте `interface` для типов объединения; не используй `type` когда вам нужно расширение модуля.
+<details>
+<summary>How do you define and use a function in TypeScript?</summary>
 
-**Thoughts:** Для 90% форм объектов подойдет любой вариант — согласованность в кодовой базе важнее, чем ключевое слово.
+### How do you define and use a function in TypeScript?
 
-**Sources:** [Справочник — Различия между псевдонимами типов и интерфейсами] (https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Can you extend an `interface`?</summary>
-
-### Can you extend an `interface`?
+<summary>What does "type inference" mean in the context of TypeScript?</summary>
 
-**Definition:** Да - `interface` поддерживает `extends` для наследования и **объединения объявлений** для расширения.
+### What does "type inference" mean in the context of TypeScript?
 
-**How it works:**
+**Definition:**
 
-```typescript
-interface User {
-  id: string;
-}
-interface User {
-  email: string;
-} // merges — User has id + email
-
-interface Admin extends User {
-  role: "admin";
-}
-```
+</details>
 
-- `extends` — наследовать поля от другого интерфейса или класса.
-- Объединение деклараций — дубликат `interface` объединение имен (полезно для расширения модулей).
-- `type` использует пересечение (`&`) вместо; никакого слияния.
+<details>
+<summary>Explain the use of 'let' and 'const' in TypeScript.</summary>
 
-**Thoughts:** _Использовать `interface` когда вы можете продлить или увеличить; использовать `type` для профсоюзов._
+### Explain the use of 'let' and 'const' in TypeScript.
 
-**See also:** [`interface` vs `type`](#интерфейс-против-типа)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is declaration merging?</summary>
+<summary>How do you compile TypeScript files into JavaScript?</summary>
 
-### What is declaration merging?
+### How do you compile TypeScript files into JavaScript?
 
-**Definition:** Два объявления с одним именем сливаются в одно. Интерфейсы, пространства имён и некоторые другие формы сливаются. Повторный псевдоним `type` — ошибка.
+**Definition:**
 
-**How it works:** Ещё один `interface User` добавляет поля к `User`. Так библиотеки позволяют дополнять `Window` или экспортированный интерфейс модуля.
+</details>
 
-**Examples:**
+### TypeScript Classes and Objects
 
-```typescript
-interface User {
-  id: string;
-}
-interface User {
-  email: string;
-}
-```
+<details>
+<summary>Explain classes in TypeScript. How are they different from ES6 classes?</summary>
 
-**See also:** [Declaration merging](./5_ts_declaration_merging.md) · [Can you extend an `interface`?](#can-you-extend-an-interface)
+### Explain classes in TypeScript. How are they different from ES6 classes?
 
-**Sources:** [Declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html)
+**Definition:**
 
 </details>
-
-### Classes
 
 <details>
-  <summary>How do TypeScript classes differ from JavaScript classes?</summary>
+<summary>How do you implement Inheritance in TypeScript?</summary>
 
-### How do TypeScript classes differ from JavaScript classes?
+### How do you implement Inheritance in TypeScript?
 
-**Definition:** Синтаксис `class` порождает конструктор и прототип JavaScript. TypeScript добавляет типы параметров, модификаторы видимости, `abstract`, `override`, свойства параметров и `implements`.
+**Definition:**
 
-**How it works:** Эти добавления стираются или переписываются. `constructor(public name: string)` и объявляет свойство, и присваивает `this.name = name`. Свойство параметра — синтаксис TypeScript, не JavaScript, и `erasableSyntaxOnly` его отвергает.
-
-**Examples:**
+</details>
 
-```typescript
-class Person {
-  constructor(public name: string) {}
-  greet() {
-    return `Hello, ${this.name}`;
-  }
-}
-```
+<details>
+<summary>What are access modifiers and how do they work in TypeScript?</summary>
 
-**See also:** [Classes](./5_ts_classes.md) · [OOP in JavaScript](./3_js_oop.md)
+### What are access modifiers and how do they work in TypeScript?
 
-**Sources:** [Handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What access modifiers does TypeScript support?</summary>
-
-### What access modifiers does TypeScript support?
+<summary>Discuss Abstract classes and their purposes in TypeScript.</summary>
 
-**Definition:** `public`, `protected` и `private`. По умолчанию — `public`. Их проверяет только компилятор.
+### Discuss Abstract classes and their purposes in TypeScript.
 
-**How it works:** `public` виден везде. `protected` виден в классе и подклассах. `private` виден только в теле этого класса, но в сгенерированном JavaScript это обычное свойство. `#name` — приватное поле ECMAScript, оно есть в рантайме. Член TypeScript `private` всё ещё можно прочитать через приведение или из обычного JavaScript.
+**Definition:**
 
-**See also:** [Classes](./5_ts_classes.md)
-
-**Sources:** [Handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html#member-visibility)
-
 </details>
 
 <details>
-  <summary>Getters, setters, and calling the base constructor?</summary>
+<summary>Can you describe the use of Constructors within TypeScript classes?</summary>
 
-### Getters, setters, and calling the base constructor?
+### Can you describe the use of Constructors within TypeScript classes?
 
-**Definition:** `get` и `set` — аксессоры JavaScript. `super(...)` вызывает конструктор базы и должен выполниться до использования `this` в конструкторе наследника.
+**Definition:**
 
-**Examples:**
+</details>
 
-```typescript
-class Account {
-  constructor(protected balance: number) {}
-  get amount() {
-    return this.balance;
-  }
-}
+<details>
+<summary>What are Property Decorators and how do you use them?</summary>
 
-class Savings extends Account {
-  constructor(balance: number) {
-    super(balance);
-  }
-}
-```
+### What are Property Decorators and how do you use them?
 
-**Sources:** [Handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [Classes in JavaScript](./3_js_oop.md)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is an abstract class, and how does it differ from an interface?</summary>
+<summary>How do getters and setters work in TypeScript?</summary>
 
-### What is an abstract class, and how does it differ from an interface?
+### How do getters and setters work in TypeScript?
 
-**Definition:** `abstract class` может содержать реализованные методы и поля, и его нельзя создать через `new`. `interface` — только форма на этапе компиляции: без реализации, без генерации, и класс может реализовать много интерфейсов.
+**Definition:**
 
-**How it works:** Абстрактный класс — когда подклассы делят настоящий код. Интерфейс — когда нужен только контракт. Класс может `extend` один абстрактный класс и `implements` дополнительные интерфейсы.
-
-**See also:** [`extends` vs `implements`](#extends-vs-implements) · [Classes](./5_ts_classes.md)
-
-**Sources:** [Handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html#abstract-classes-and-members)
-
 </details>
 
 <details>
-  <summary>`extends` vs `implements`?</summary>
-
-### `extends` vs `implements`
+<summary>Explain Method Overloading in TypeScript.</summary>
 
-**Definition:** `extends` наследует один класс; `implements` удовлетворяет контрактам интерфейса без наследуемого кода.
+### Explain Method Overloading in TypeScript.
 
-| `extends`  | `implements`   |
-| ---------- | -------------- | ------------------------------ |
-| Цель       | класс          | интерфейс(ы)                   |
-| Реализация | унаследованный | должны предоставить участникам |
+**Definition:**
 
-**Sources:** [Классы](https://www.typescriptlang.org/docs/handbook/2/classes.html)
-
 </details>
 
 <details>
-  <summary>`readonly` fields and the `override` keyword?</summary>
+<summary>What is the purpose of the 'static' keyword in TypeScript Class?</summary>
 
-### `readonly` fields and the `override` keyword?
+### What is the purpose of the 'static' keyword in TypeScript Class?
 
-**Definition:** `readonly` у поля класса разрешает присваивание только в конструкторе (или в объявлении). `override` помечает метод, который заменяет метод базы; опечатка в имени тогда становится ошибкой.
+**Definition:**
 
-**Examples:**
+</details>
 
-```typescript
-class User {
-  constructor(readonly id: string) {}
-  label() {
-    return this.id;
-  }
-}
+### TypeScript Types and Type Assertions
 
-class Admin extends User {
-  override label() {
-    return `admin:${this.id}`;
-  }
-}
-```
+<details>
+<summary>How do you define custom types with Type Aliases?</summary>
 
-**How it works:** `noImplicitOverride` требует `override` у каждого переопределяемого члена. `readonly` стирается; `Object.freeze` он не вызывает.
+### How do you define custom types with Type Aliases?
 
-**Sources:** [Handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [`override`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-3.html#override-and-the---noimplicitoverride-flag)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Can you create a static class in TypeScript?</summary>
-
-### Can you create a static class in TypeScript?
+<summary>Can you explain Union types and provide an example?</summary>
 
-**Definition:** Ключевого слова `static class` нет. Можно повесить `static`-члены на класс или вынести функции в модуль.
+### Can you explain Union types and provide an example?
 
-**How it works:** Класс только со статическими методами всё ещё можно сконструировать, если конструктор не `private`. Обычная замена — модуль (`export function`). Абстрактному классу всё ещё нужен `new` у подкласса, если нужны экземпляры.
+**Definition:**
 
-**Examples:**
-
-```typescript
-class MathUtil {
-  private constructor() {}
-  static clamp(n: number, min: number, max: number) {
-    return Math.min(max, Math.max(min, n));
-  }
-}
-```
-
-**Sources:** [Handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html#static-members)
-
 </details>
 
 <details>
-  <summary>What is a singleton class in TypeScript?</summary>
-
-### What is a singleton class in TypeScript?
+<summary>How do Intersection types work in TypeScript?</summary>
 
-**Definition:** Приём, который допускает один экземпляр. Это не возможность языка. Спрячьте конструктор и откройте `getInstance()`.
+### How do Intersection types work in TypeScript?
 
-**Examples:**
+**Definition:**
 
-```typescript
-class Config {
-  private static instance: Config | undefined;
-  private constructor(readonly env: string) {}
-  static getInstance() {
-    Config.instance ??= new Config("dev");
-    return Config.instance;
-  }
-}
-```
-
-**How it works:** Модуль и так выполняется один раз, поэтому `const config = ...` на уровне модуля обычно проще класса-одиночки.
-
-**Sources:** [Handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html#static-members)
-
 </details>
 
 <details>
-  <summary>How does inheritance work, and when do you use a class vs an interface?</summary>
-
-### How does inheritance work, and when do you use a class vs an interface?
+<summary>What are Tuple types and when should they be used?</summary>
 
-**Definition:** `extends` копирует реализацию в цепочку прототипов, только один базовый класс. Интерфейс описывает форму и исчезает из генерации.
+### What are Tuple types and when should they be used?
 
-**When to use:** Класс — когда вы создаёте значения и делите методы. Интерфейс (или `type`) — когда вызывающим нужна только форма, особенно для тестовых двойников и данных из JSON. Когда одного базового класса мало, предпочитайте композицию или примеси.
+**Definition:**
 
-**See also:** [`extends` vs `implements`](#extends-vs-implements) · [`interface` vs `type`](#interface-vs-type)
-
-**Sources:** [Handbook — classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
-
 </details>
 
 <details>
-  <summary>What is a class created inside a function and returned?</summary>
-
-### What is a class created inside a function and returned?
-
-**Definition:** Функция может объявить класс и вернуть его (или вернуть `new`). Класс замыкает параметры функции. Так обычно устроены примеси и фабрики классов.
+<summary>Explain Type Assertions and why they are useful.</summary>
 
-**Examples:**
+### Explain Type Assertions and why they are useful.
 
-```typescript
-function createIdModel(prefix: string) {
-  return class Model {
-    id = `${prefix}-${crypto.randomUUID()}`;
-  };
-}
+**Definition:**
 
-const User = createIdModel("user");
-const user = new User();
-```
-
-**See also:** [What are mixins?](#what-are-mixins)
-
-**Sources:** [Mixins](https://www.typescriptlang.org/docs/handbook/mixins.html)
-
 </details>
 
 <details>
-  <summary>What are mixins?</summary>
-
-### What are mixins?
+<summary>How do you use the 'typeof' type guard in TypeScript?</summary>
 
-**Definition:** Функция, которая принимает класс и возвращает подкласс с дополнительными членами. В TypeScript и JavaScript один базовый класс, поэтому примеси складывают поведение.
+### How do you use the 'typeof' type guard in TypeScript?
 
-**Examples:**
+**Definition:**
 
-```typescript
-type Constructor<T = object> = new (...args: any[]) => T;
-
-function WithTimestamp<T extends Constructor>(Base: T) {
-  return class extends Base {
-    createdAt = new Date();
-  };
-}
+</details>
 
-class Entity {
-  id = 1;
-}
-class Stamped extends WithTimestamp(Entity) {}
-```
+<details>
+<summary>Can you create types from existing data using Type Inference?</summary>
 
-**See also:** [Mixins](./5_ts_mixins.md)
+### Can you create types from existing data using Type Inference?
 
-**Sources:** [Mixins](https://www.typescriptlang.org/docs/handbook/mixins.html)
+**Definition:**
 
 </details>
 
-### Modules and tooling
+### TypeScript Generics
 
 <details>
-  <summary>What are modules, and how do import and export work?</summary>
-
-### What are modules, and how do import and export work?
+<summary>What are Generics in TypeScript and why are they used?</summary>
 
-**Definition:** Файл с `import` или `export` верхнего уровня — модуль. Его область видимости — файл, а не глобальная область скрипта.
+### What are Generics in TypeScript and why are they used?
 
-**Examples:**
+**Definition:**
 
-```typescript
-export function add(a: number, b: number) {
-  return a + b;
-}
-export type { User } from "./user";
-
-import { add } from "./math";
-import type { User } from "./user";
-```
+</details>
 
-**How it works:** `import type` стирается и не создаёт рантайм-импорт. `verbatimModuleSyntax` заставляет это разделение. Опция `module` (`nodenext`, `esnext`, `commonjs`) задаёт форму генерации.
+<details>
+<summary>How do you create a generic function?</summary>
 
-**See also:** [Modules](./5_ts_modules.md)
+### How do you create a generic function?
 
-**Sources:** [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is the difference between namespaces and modules?</summary>
-
-### What is the difference between namespaces and modules?
+<summary>Discuss how Generic Interfaces can be defined.</summary>
 
-**Definition:** Пространство имён (`namespace App { ... }`) — глобальный или вложенный объект для группировки имён. Модуль — файл с импортами и экспортами.
+### Discuss how Generic Interfaces can be defined.
 
-**How it works:** Новый код должен использовать модули. Пространства имён остаются для старых кодовых баз и части слияния объявлений (глобальный `namespace Express`). `erasableSyntaxOnly` отвергает `namespace`, потому что он порождает объект в рантайме.
+**Definition:**
 
-**See also:** [Namespaces](./5_ts_namespaces.md) · [Namespaces and modules](./5_ts_namespaces_modules.md)
-
-**Sources:** [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html) · [Namespaces and modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
-
 </details>
 
 <details>
-  <summary>What is the difference between internal and external modules?</summary>
-
-### What is the difference between internal and external modules?
-
-**Definition:** Старые имена TypeScript. Внутренний модуль — сегодняшний `namespace`. Внешний модуль — сегодняшний файловый модуль (`import` / `export`).
+<summary>Explain how Generics work with Classes.</summary>
 
-**How it works:** Раньше ключевое слово `module` объявляло пространства имён. Сейчас для этой формы в документации `namespace`, а «module» — файлы ES или CommonJS. Не начинайте проект на старом разделении.
+### Explain how Generics work with Classes.
 
-**See also:** [What is the difference between namespaces and modules?](#what-is-the-difference-between-namespaces-and-modules)
+**Definition:**
 
-**Sources:** [Namespaces and modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
-
 </details>
 
 <details>
-  <summary>What are declaration files, `declare`, and `@types`?</summary>
+<summary>Can you provide an example of a generic constraint?</summary>
 
-### What are declaration files, `declare`, and `@types`?
+### Can you provide an example of a generic constraint?
 
-**Definition:** Файл `.d.ts` описывает типы для JavaScript, у которого своих типов нет. `declare` вводит значение или модуль, который есть в рантайме, но не реализован в этом файле.
+**Definition:**
 
-**How it works:** `npm install --save-dev @types/node` берёт декларации сообщества из DefinitelyTyped. Если пакета нет, напишите локальный окружающий модуль:
+</details>
 
-```typescript
-declare module "legacy-widget" {
-  export function init(): void;
-}
+### TypeScript Advanced Types and Techniques
 
-declare const BUILD_ID: string;
-```
+<details>
+<summary>What is a Discriminated Union in TypeScript?</summary>
 
-**See also:** [Modules](./5_ts_modules.md)
+### What is a Discriminated Union in TypeScript?
 
-**Sources:** [Declaration files](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>How do you generate `.d.ts` files, source maps, and debug TypeScript?</summary>
-
-### How do you generate `.d.ts` files, source maps, and debug TypeScript?
+<summary>How do you declare a Readonly type?</summary>
 
-**Definition:** `declaration` пишет `.d.ts` рядом с генерацией. `sourceMap` пишет `.js.map`, чтобы отладчик сопоставил сгенерированный JavaScript с TypeScript.
+### How do you declare a Readonly type?
 
-**How it works:**
+**Definition:**
 
-```bash
-npx tsc --declaration --emitDeclarationOnly --outDir dist
-npx tsc --sourceMap
-```
-
-`declaration: true` needs emit (or `emitDeclarationOnly`). Debug in the editor with those maps, or run Node's type stripping / `tsx` so you execute TypeScript without a separate compile. `.map` files are not loaded by the program unless the runtime is told to use them.
-
-**Sources:** [tsconfig — `declaration`](https://www.typescriptlang.org/tsconfig/#declaration) · [`sourceMap`](https://www.typescriptlang.org/tsconfig/#sourceMap)
-
 </details>
 
 <details>
-  <summary>Important strict compiler flags?</summary>
-
-### Important strict compiler flags
+<summary>Can you describe the use of Mapped types?</summary>
 
-**Definition:** `strict` позволяет `strictNullChecks`, `noImplicitAny`, `strictFunctionTypes`и соответствующие проверки.
+### Can you describe the use of Mapped types?
 
-| Флаг                       | Эффект                                  |
-| -------------------------- | --------------------------------------- |
-| `strictNullChecks`         | `null`/`undefined` не везде назначается |
-| `noUncheckedIndexedAccess` | Доступ к индексу может быть `undefined` |
+**Definition:**
 
-**Sources:** [tsconfig](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
-
 </details>
 
 <details>
-  <summary>What is `noImplicitAny`?</summary>
-
-### What is `noImplicitAny`?
+<summary>Explain Conditional types in TypeScript.</summary>
 
-**Definition:** Сообщать об ошибке, когда TypeScript иначе вывел бы `any`, потому что лучшего типа нет.
+### Explain Conditional types in TypeScript.
 
-**How it works:** Входит в `strict`. Параметр без типа или значение из нетипизированного импорта JavaScript надо аннотировать или дать лучший вывод. Этот флаг не даёт `any` расползтись по мигрирующей кодовой базе.
+**Definition:**
 
-**Examples:**
+</details>
 
-```typescript
-function greet(name) {
-  // error under noImplicitAny: Parameter 'name' implicitly has an 'any' type
-  return name;
-}
-```
+<details>
+<summary>What are Index types and how do you use the keyof keyword?</summary>
 
-**See also:** [Important strict compiler flags?](#important-strict-compiler-flags) · [When is `any` acceptable?](#when-is-any-acceptable)
+### What are Index types and how do you use the keyof keyword?
 
-**Sources:** [`noImplicitAny`](https://www.typescriptlang.org/tsconfig/#noImplicitAny)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is `outFile`, and how do you bundle TypeScript files?</summary>
+<summary>How does Type Casting differ from Type Assertions?</summary>
 
-### What is `outFile`, and how do you bundle TypeScript files?
+### How does Type Casting differ from Type Assertions?
 
-**Definition:** `outFile` склеивает генерацию в один файл JavaScript. Это работает только для значений `module`, которые поддерживают такую склейку (`amd`, `system` или скрипты без модулей). Проекты `nodenext` и `esnext` он не бандлит.
+**Definition:**
 
-**How it works:** Современные приложения бандлят Vite, webpack, esbuild или другим сборщиком, а типы проверяют через `tsc --noEmit`. Не используйте `outFile` для новой кодовой базы на ES-модулях.
-
-**Sources:** [`outFile`](https://www.typescriptlang.org/tsconfig/#outFile)
-
 </details>
 
 <details>
-  <summary>What is the TypeScript language service?</summary>
-
-### What is the TypeScript language service?
-
-**Definition:** API редактора для дополнений, краткой справки, переименования, перехода к определению и диагностик. `tsc` — пакетный компилятор; языковой сервис отвечает на вопросы IDE о той же программе.
+<summary>Discuss the Partial, Required, Readonly, and Pick utility types.</summary>
 
-**How it works:** VS Code и другие редакторы берут его из версии `typescript` в рабочей области. Он смотрит `tsconfig.json`, чтобы знать, какие файлы входят в проект. Неверный `include` выглядит как «IDE не понимает этот файл».
+### Discuss the Partial, Required, Readonly, and Pick utility types.
 
-**Sources:** [TypeScript from scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Is JSDoc an alternative to TypeScript?</summary>
+<summary>What is the 'never' type and when would it be used?</summary>
 
-### Is JSDoc an alternative to TypeScript?
+### What is the 'never' type and when would it be used?
 
-**Definition:** Комментарии JSDoc могут проверять типы в `.js`, если включены `allowJs` и `checkJs` (или файл начинается с `// @ts-check`). Это способ типизировать JavaScript, а не второй язык.
+**Definition:**
 
-**How it works:** Тот же проверщик читает `@param`, `@returns` и `/** @type {User} */`. Используйте для постепенной миграции или маленького пакета, который должен остаться `.js`. Переходите на `.ts`, когда аннотаций становится больше, чем кода.
-
-**Sources:** [JSDoc reference](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html)
-
 </details>
-
-<details>
-  <summary>How do you migrate a JavaScript project to TypeScript?</summary>
 
-### How do you migrate a JavaScript project to TypeScript?
+### TypeScript Modules and Namespaces
 
-**Definition:** Включите проверщик рядом с существующим JavaScript, затем переименовывайте файлы по мере типизации.
-
-**How it works:**
+<details>
+<summary>How do you organize code with Modules in TypeScript?</summary>
 
-1. Добавьте `typescript` и `tsconfig.json` с `allowJs: true`.
-2. Включите `checkJs` или `// @ts-check` на нескольких файлах.
-3. Включайте `strict`, когда шум станет приемлемым, или сразу ставьте `strict` на новых файлах.
-4. Переименовывайте горячие файлы из `.js` в `.ts` и заменяйте `any` настоящими типами.
-5. Добавьте `@types/*` или локальный `.d.ts` для зависимостей без типов.
-6. Держите `tsc --noEmit` в CI, даже если сборщик транспилирует сам.
+### How do you organize code with Modules in TypeScript?
 
-**Sources:** [Migrating from JavaScript](https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>How do you use TypeScript with Webpack, Vite, or Babel?</summary>
-
-### How do you use TypeScript with Webpack, Vite, or Babel?
-
-**Definition:** Сборщики обычно **транспилируют** TypeScript и снимают типы. Они не заменяют `tsc` для проверки типов.
+<summary>When would you use Namespaces?</summary>
 
-**How it works:** Vite сам преобразует `.ts` и `.tsx`; отдельный плагин TypeScript только чтобы загрузить эти файлы не нужен. Babel использует `@babel/preset-typescript`: он тоже снимает типы и не проверяет их. Webpack часто использует `ts-loader` или `babel-loader`. Запускайте `tsc --noEmit` (или `vue-tsc` / сборку ссылок проекта) в CI, чтобы ошибки типов ломали сборку.
+### When would you use Namespaces?
 
-**See also:** [What happens on build with type errors?](#what-happens-on-build-with-type-errors)
+**Definition:**
 
-**Sources:** [TypeScript from scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
 </details>
 
 <details>
-  <summary>How do you configure ESLint with TypeScript?</summary>
-
-### How do you configure ESLint with TypeScript?
+<summary>What is the difference between Internal and External modules?</summary>
 
-**Definition:** Направьте ESLint на `@typescript-eslint/parser`, чтобы он разбирал синтаксис TypeScript, и используйте типизированный плагин для правил, которые базовый ESLint не видит.
+### What is the difference between Internal and External modules?
 
-**How it works:** Установите `typescript`, `eslint`, `@typescript-eslint/parser` и `typescript-eslint` (пакет плоского конфига). Правила с типами включайте только для файлов из `tsconfig`, потому что они запускают проверщик. Не отключайте `no-explicit-any` глобально, если политика проекта — `strict`; сузьте исключение.
+**Definition:**
 
-**Sources:** [typescript-eslint — getting started](https://typescript-eslint.io/getting-started/)
-
 </details>
-
-### Advanced types
 
 <details>
-  <summary>What are generics, and how do you write a generic function?</summary>
+<summary>How do you export and import modules?</summary>
 
-### What are generics, and how do you write a generic function?
+### How do you export and import modules?
 
-**Definition:** Дженерик вводит параметр типа, чтобы одна реализация оставалась точной для многих типов. Вызывающий задаёт параметр, или TypeScript выводит его.
+**Definition:**
 
-**Examples:**
-
-```typescript
-function identity<T>(value: T): T {
-  return value;
-}
-
-const name = identity("Ada"); // string
-const n = identity(1); // number
-
-class Box<T> {
-  constructor(public value: T) {}
-}
-```
+</details>
 
-**How it works:** Без `<T>` функция `identity` вернула бы `any` или широкое объединение. Массивы, `Promise` и `Map` — обобщённые типы.
+<details>
+<summary>Can you describe module resolution and its strategies?</summary>
 
-**See also:** [Type manipulation](./5_ts_type_manipulation.md)
+### Can you describe module resolution and its strategies?
 
-**Sources:** [Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What are generic constraints?</summary>
+<summary>Discuss the compatibility of TypeScript modules with ES6 modules.</summary>
 
-### What are generic constraints?
+### Discuss the compatibility of TypeScript modules with ES6 modules.
 
-**Definition:** `T extends SomeType` ограничивает, что можно передать, и что можно делать с `T` внутри функции.
+**Definition:**
 
-**Examples:**
+</details>
 
-```typescript
-function pluck<T, K extends keyof T>(obj: T, key: K): T[K] {
-  return obj[key];
-}
+### TypeScript Decorators and Metadata
 
-pluck({ name: "Ada" }, "name");
-// pluck({ name: "Ada" }, "age"); // error
-```
+<details>
+<summary>What are Decorators and how do you use them?</summary>
 
-**How it works:** Ограничение — это тип, часто `keyof T` или форма объекта. Это не проверка в рантайме.
+### What are Decorators and how do you use them?
 
-**Sources:** [Generics — constraints](https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What are utility types?</summary>
-
-### What are utility types?
+<summary>Can you define Class Decorators and how they can alter Class behavior?</summary>
 
-**Definition:** Встроенные обобщённые типы, которые преобразуют другой тип: `Partial`, `Required`, `Readonly`, `Pick`, `Omit`, `Exclude`, `Extract`, `Record`, `ReturnType`, `Parameters` и другие.
+### Can you define Class Decorators and how they can alter Class behavior?
 
-**How it works:** Они написаны сопоставленными и условными типами. Их можно реализовать заново; на собеседовании ждут, что вы узнаете встроенные.
+**Definition:**
 
-**See also:** [Utility types](./5_ts_utility_types.md)
-
-**Sources:** [Utility types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
-
 </details>
 
 <details>
-  <summary>What is `Partial`?</summary>
-
-### What is `Partial`?
-
-**Definition:** `Partial<T>` делает каждое свойство `T` необязательным. Так типизируют патч, черновик формы или «сделать все поля необязательными».
+<summary>How do you use Method Decorators in TypeScript?</summary>
 
-**Examples:**
+### How do you use Method Decorators in TypeScript?
 
-```typescript
-type User = { name: string; email: string };
-type UserPatch = Partial<User>;
-// { name?: string; email?: string }
-```
+**Definition:**
 
-**How it works:** Это `{ [K in keyof T]?: T[K] }`. Глубина — один уровень. Вложенные объекты остаются обязательными, пока не написать глубокий вариант.
-
-**Sources:** [Utility types — `Partial`](https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype)
-
 </details>
 
 <details>
-  <summary>What is `Required`?</summary>
-
-### What is `Required`?
-
-**Definition:** `Required<T>` снимает `?` с каждого свойства, противоположность `Partial`.
+<summary>What are Accessor Decorators?</summary>
 
-**Examples:**
+### What are Accessor Decorators?
 
-```typescript
-type Draft = { title?: string };
-type Saved = Required<Draft>; // { title: string }
-```
+**Definition:**
 
-**Sources:** [Utility types — `Required`](https://www.typescriptlang.org/docs/handbook/utility-types.html#requiredtype)
-
 </details>
 
 <details>
-  <summary>What is `Readonly`?</summary>
-
-### What is `Readonly`?
+<summary>Explain how to use Property Decorators.</summary>
 
-**Definition:** `Readonly<T>` помечает каждое свойство `readonly`. Это типовой аналог неглубокой заморозки.
+### Explain how to use Property Decorators.
 
-**How it works:** Это не модификатор `readonly` на одном поле и не `const`, который защищает только привязку. `Readonly` не спускается во вложенные объекты.
+**Definition:**
 
-**Sources:** [Utility types — `Readonly`](https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype)
-
 </details>
 
 <details>
-  <summary>What is `Record`?</summary>
-
-### What is `Record`?
+<summary>How do Decorators compose in TypeScript?</summary>
 
-**Definition:** `Record<K, V>` — тип объекта, у которого ключи — `K`, а значения — `V`.
+### How do Decorators compose in TypeScript?
 
-**Examples:**
+**Definition:**
 
-```typescript
-type Page = "home" | "about";
-type Titles = Record<Page, string>;
-// { home: string; about: string }
-```
-
-**How it works:** `K` должен быть типом ключа (`string`, `number`, `symbol` или объединение литералов). Для карты, где ключи можно опустить, используйте `Partial<Record<K, V>>`.
-
-**Sources:** [Utility types — `Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)
-
 </details>
 
 <details>
-  <summary>What is the difference between `Pick` and `Omit`?</summary>
+<summary>Discuss Reflection and how it works with Decorators.</summary>
 
-### What is the difference between `Pick` and `Omit`?
+### Discuss Reflection and how it works with Decorators.
 
-**Definition:** Оба строят новый тип объекта из существующего. `Pick<T, K>` оставляет ключи из `K`. `Omit<T, K>` их удаляет.
+**Definition:**
 
-**Examples:**
+</details>
 
-```typescript
-type User = { name: string; email: string; age: number };
-type Preview = Pick<User, "name" | "age">;
-type PublicUser = Omit<User, "email">;
-```
+### TypeScript Configuration and Compilation
 
-**How it works:** Для `Pick` тип `K` должен быть `keyof T`. `Omit` — обычный способ взять подмножество, отбросив поля. `Exclude` — аналог для объединений, не для объектов.
+<details>
+<summary>Explain the purpose of 'tsconfig.json'.</summary>
 
-**See also:** [What is `Exclude`?](#what-is-exclude) · [Utility types](./5_ts_utility_types.md)
+### Explain the purpose of 'tsconfig.json'.
 
-**Sources:** [Utility types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is `Exclude`?</summary>
-
-### What is `Exclude`?
-
-**Definition:** `Exclude<T, U>` удаляет из объединения `T` каждый член, совместимый с `U`.
-
-**Examples:**
+<summary>How do you include and exclude files in compilation using 'tsconfig.json'?</summary>
 
-```typescript
-type Letters = "a" | "b" | "c";
-type WithoutC = Exclude<Letters, "c">; // "a" | "b"
-```
+### How do you include and exclude files in compilation using 'tsconfig.json'?
 
-**How it works:** Работает с объединениями. `Omit` работает с ключами объекта. `Extract<T, U>` оставляет члены, которые совпали.
+**Definition:**
 
-**Sources:** [Utility types — `Exclude`](https://www.typescriptlang.org/docs/handbook/utility-types.html#excludetype-excludedunion)
-
 </details>
 
 <details>
-  <summary>What are conditional types?</summary>
-
-### What are conditional types?
-
-**Definition:** `T extends U ? X : Y` выбирает тип по совместимости. Если `T` — голый параметр типа, проверка распределяется по объединению.
-
-**Examples:**
+<summary>What are some common compiler options in TypeScript?</summary>
 
-```typescript
-type IsString<T> = T extends string ? true : false;
-type A = IsString<"hi">; // true
-type B = IsString<number>; // false
-```
+### What are some common compiler options in TypeScript?
 
-**See also:** [Type manipulation](./5_ts_type_manipulation.md)
+**Definition:**
 
-**Sources:** [Conditional types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)
-
 </details>
 
 <details>
-  <summary>What are mapped types?</summary>
-
-### What are mapped types?
-
-**Definition:** Сопоставленный тип обходит ключи и строит новый тип объекта: `{ [K in keyof T]: ... }`.
-
-**Examples:**
+<summary>How does TypeScript support source maps?</summary>
 
-```typescript
-type Flags<T> = { [K in keyof T]: boolean };
-type UserFlags = Flags<{ name: string; admin: boolean }>;
-// { name: boolean; admin: boolean }
-```
+### How does TypeScript support source maps?
 
-**How it works:** Модификаторы `readonly` и `?` можно добавить или снять (`-?`). `Partial`, `Required` и `Readonly` — сопоставленные типы.
+**Definition:**
 
-**Sources:** [Mapped types](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html)
-
 </details>
 
 <details>
-  <summary>What is `infer`?</summary>
-
-### What is `infer`?
-
-**Definition:** Внутри условного типа `infer Name` захватывает тип из подходящей позиции. Так написаны `ReturnType` и `Parameters`.
-
-**Examples:**
+<summary>Discuss incremental build support in TypeScript.</summary>
 
-```typescript
-type GetReturn<T> = T extends (...args: never[]) => infer R ? R : never;
+### Discuss incremental build support in TypeScript.
 
-type R = GetReturn<(a: string) => number>; // number
-```
+**Definition:**
 
-**How it works:** `infer` допустим только в ветке `extends` условного типа. Его можно ограничить (`infer R extends string`).
-
-**See also:** [Type manipulation](./5_ts_type_manipulation.md)
-
-**Sources:** [Conditional types — `infer`](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types)
-
 </details>
 
 <details>
-  <summary>What are template literal types?</summary>
-
-### What are template literal types?
+<summary>Explain how the "noImplicitAny" compiler option works.</summary>
 
-**Definition:** Тот же синтаксис, что у шаблонных строк, но в позиции типа. Они строят объединения строк и разбирают шаблоны строк.
+### Explain how the "noImplicitAny" compiler option works.
 
-**Examples:**
+**Definition:**
 
-```typescript
-type EventName<T extends string> = `${T}Changed`;
-type UserEvent = EventName<"name" | "age">;
-// "nameChanged" | "ageChanged"
-```
-
-**How it works:** Они распределяются по объединениям. Вместе с `infer` могут разрезать строковый тип, например `` `${string}-${string}` ``.
-
-**Sources:** [Template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
-
 </details>
 
 <details>
-  <summary>What do `satisfies` and `as const` do?</summary>
-
-### What do `satisfies` and `as const` do?
+<summary>How do you enable strict null checks in TypeScript?</summary>
 
-**Definition:** `as const` просит самый узкий литеральный и readonly-тип. `satisfies Type` проверяет, что значение подходит под `Type`, и **сохраняет** выведенный узкий тип.
+### How do you enable strict null checks in TypeScript?
 
-**How it works:** `as Type` навязывает тип и может спрятать ошибку. `satisfies` ломает компиляцию, если значение не подходит, а у каждого свойства остаётся литеральный тип.
+**Definition:**
 
-**Examples:**
+</details>
 
-```typescript
-const routes = {
-  home: "/",
-  about: "/about",
-} as const;
+### TypeScript Typings and @types
 
-const palette = {
-  red: [255, 0, 0],
-  green: "#00ff00",
-} satisfies Record<string, string | number[]>;
-```
+<details>
+<summary>How do you manage type definitions for external libraries in TypeScript?</summary>
 
-**See also:** [Assertions](./5_ts_assertions.md)
+### How do you manage type definitions for external libraries in TypeScript?
 
-**Sources:** [`satisfies`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator) · [`const` assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is function type variance?</summary>
-
-### What is function type variance?
-
-**Definition:** Когда один тип функции совместим с другим, возвращаемые типы ковариантны, а при `strictFunctionTypes` типы параметров контравариантны.
+<summary>What is DefinitelyTyped and how is it related to TypeScript?</summary>
 
-**How it works:** Функцию с более конкретным возвратом можно использовать там, где ждут более широкий возврат. Функцию с **более широким** параметром можно использовать там, где ждут более узкий параметр: она справится с каждым значением, которое передаст вызывающий. Синтаксис метода (`method(x: Dog)`) остаётся бивариантным, чтобы обычные классовые приёмы компилировались; это менее безопасно.
+### What is DefinitelyTyped and how is it related to TypeScript?
 
-**See also:** [Type compatibility](./5_ts_type_compatibility.md)
+**Definition:**
 
-**Sources:** [`strictFunctionTypes`](https://www.typescriptlang.org/tsconfig/#strictFunctionTypes)
-
 </details>
 
 <details>
-  <summary>What is module augmentation?</summary>
-
-### What is module augmentation?
+<summary>Explain how to use typing files from npm.</summary>
 
-**Definition:** Добавление объявлений к существующему модулю из другого файла через `declare module "name" { ... }`. Опирается на слияние объявлений.
+### Explain how to use typing files from npm.
 
-**Examples:**
+**Definition:**
 
-```typescript
-import "express";
+</details>
 
-declare module "express-serve-static-core" {
-  interface Request {
-    userId?: string;
-  }
-}
-```
+### Integrating TypeScript with Frameworks
 
-**How it works:** В интерфейсы этого модуля можно добавлять члены. Псевдоним `type` так заменить нельзя. Дополняемый модуль должен быть модулем (в нём есть import или export).
+<details>
+<summary>How do you integrate TypeScript with Angular?</summary>
 
-**See also:** [What is declaration merging?](#what-is-declaration-merging)
+### How do you integrate TypeScript with Angular?
 
-**Sources:** [Declaration merging — module augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What are decorators?</summary>
-
-### What are decorators?
-
-**Definition:** Декоратор — функция, которую применяют через `@` к классу, методу, аксессору, свойству или параметру. TypeScript 5.0 следует стандартным декораторам стадии 3. Старая экспериментальная форма всё ещё доступна с `experimentalDecorators`.
-
-**How it works:** Стандартные декораторы получают декорируемое значение (и контекст) и могут заменить его. Они выполняются при определении класса, а не при каждом вызове, если только замена не оборачивает метод. У старых декораторов другая сигнатура (`target`, `propertyKey`, `descriptor`). Не смешивайте два режима в одном проекте.
-
-**Examples:**
+<summary>Explain integrating TypeScript with React.</summary>
 
-```typescript
-function logged<This, Args extends unknown[], R>(
-  original: (this: This, ...args: Args) => R,
-  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => R>,
-) {
-  return function (this: This, ...args: Args): R {
-    console.log(String(context.name));
-    return original.apply(this, args);
-  };
-}
+### Explain integrating TypeScript with React.
 
-class Greeter {
-  @logged
-  greet() {
-    return "hi";
-  }
-}
-```
+**Definition:**
 
-**See also:** [Decorators](./5_ts_decorators.md)
-
-**Sources:** [Decorators](https://www.typescriptlang.org/docs/handbook/decorators.html)
-
 </details>
 
 <details>
-  <summary>Which collections can you type in TypeScript?</summary>
-
-### Which collections can you type in TypeScript?
-
-**Definition:** TypeScript не добавляет свои виды коллекций. Он типизирует коллекции JavaScript.
+<summary>How do you use TypeScript with Vue.js?</summary>
 
-| Значение              | Тип                                                         |
-| --------------------- | ----------------------------------------------------------- |
-| список                | `T[]`, `Array<T>`, `ReadonlyArray<T>`                       |
-| фиксированные позиции | кортеж `[string, number]`                                   |
-| ключ-значение         | `Map<K, V>`, `Record<K, V>`                                 |
-| уникальные значения   | `Set<T>`                                                    |
-| слабые ссылки         | `WeakMap<object, V>`, `WeakSet<object>`                     |
-| именованные константы | объединение строк или `enum`, если вас устраивает генерация |
+### How do you use TypeScript with Vue.js?
 
-**See also:** [Map & Set](./3_js_variables.md#map--set--weakmap--weakset) · [Arrays](./5_ts_arrays.md)
+**Definition:**
 
-**Sources:** [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
-
 </details>
-
-### React and Node
 
 <details>
-  <summary>How do you type React props and state?</summary>
+<summary>Discuss using TypeScript in a Node.js application.</summary>
 
-### How do you type React props and state?
+### Discuss using TypeScript in a Node.js application.
 
-**Definition:** Пропсы — тип объекта у параметра функции. Состояние — аргумент типа `useState` либо выводится из начального значения.
+**Definition:**
 
-**Examples:**
-
-```tsx
-type Props = { title: string; count?: number };
+</details>
 
-function Header({ title, count = 0 }: Props) {
-  return (
-    <h1>
-      {title} ({count})
-    </h1>
-  );
-}
-```
+### TypeScript Tooling and Ecosystem
 
-**How it works:** Для пропсов подходят и `type`, и `interface`. `interface` — если ждёте слияние объявлений; `type` — для объединений. Не берите `React.FC` по умолчанию: он оборачивает тип возврата, раньше подразумевал `children` и усложняет дженерики. `children`, если нужны, — явное свойство (`children: React.ReactNode`).
+<details>
+<summary>What are the benefits of using tools like TSLint?</summary>
 
-**See also:** [JSX](./5_ts_jsx.md#jsx) · [React hooks](./4_react_hooks.md)
+### What are the benefits of using tools like TSLint?
 
-**Sources:** [React — using TypeScript](https://react.dev/learn/typescript)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>How do you type React hooks?</summary>
-
-### How do you type React hooks?
-
-**Definition:** Передавайте аргумент типа, когда начальное значение не несёт полный тип, особенно `null`.
-
-**Examples:**
+<summary>Can you describe how to set up a build process with TypeScript and Webpack?</summary>
 
-```tsx
-const [user, setUser] = useState<User | null>(null);
+### Can you describe how to set up a build process with TypeScript and Webpack?
 
-function useToggle(initial = false) {
-  const [on, setOn] = useState(initial);
-  const toggle = () => setOn((value) => !value);
-  return [on, toggle] as const;
-}
-```
+**Definition:**
 
-**How it works:** `useRef<HTMLInputElement>(null)` типизирует узел DOM. `useReducer` выводит тип из редюсера, если действие — размеченное объединение. Свои хуки — обычные функции: аннотируйте аргументы и возвращайте кортеж с `as const`, чтобы вызывающие не получили расширенный массив.
-
-**See also:** [React hooks](./4_react_hooks.md)
-
-**Sources:** [React — using TypeScript](https://react.dev/learn/typescript)
-
 </details>
 
 <details>
-  <summary>What is the difference between `JSX.Element` and `React.ReactNode`?</summary>
-
-### What is the difference between `JSX.Element` and `React.ReactNode`?
+<summary>How does TypeScript work with Babel?</summary>
 
-**Definition:** `JSX.Element` (и `React.ReactElement`) — объект, который возвращает `React.createElement`. `React.ReactNode` — всё, что React умеет отрисовать: элементы, строки, числа, фрагменты, порталы, `null`, `undefined` и массивы из этого.
+### How does TypeScript work with Babel?
 
-**How it works:** Тип возврата компонента обычно выводится; его редко аннотируют. Свойство `children` должно быть `React.ReactNode`, потому что вызывающие передают текст и фрагменты, а не только элементы. `JSX.Element` отвергает тип строкового потомка.
+**Definition:**
 
-**See also:** [JSX](./5_ts_jsx.md#jsx)
-
-**Sources:** [React — using TypeScript](https://react.dev/learn/typescript)
-
 </details>
 
 <details>
-  <summary>How do you type reusable components?</summary>
+<summary>Explain using TypeScript with Visual Studio Code or other IDEs.</summary>
 
-### How do you type reusable components?
+### Explain using TypeScript with Visual Studio Code or other IDEs.
 
-**Definition:** Сделайте компонент обобщённым, если он должен сохранить тип элемента вызывающего, так же как `Array<T>` сохраняет тип элемента.
+**Definition:**
 
-**Examples:**
-
-```tsx
-type ListProps<T> = {
-  items: readonly T[];
-  getKey: (item: T) => string;
-  render: (item: T) => React.ReactNode;
-};
+</details>
 
-function List<T>({ items, getKey, render }: ListProps<T>) {
-  return (
-    <ul>
-      {items.map((item) => (
-        <li key={getKey(item)}>{render(item)}</li>
-      ))}
-    </ul>
-  );
-}
-```
+### TypeScript Best Practices and Patterns
 
-**How it works:** Ставьте `<T>` на функцию, а не на `React.FC`. Ограничивайте `T`, когда компонент читает поле (`T extends { id: string }`).
+<details>
+<summary>What are the best practices for structuring a TypeScript application?</summary>
 
-**See also:** [What are generics, and how do you write a generic function?](#what-are-generics-and-how-do-you-write-a-generic-function)
+### What are the best practices for structuring a TypeScript application?
 
-**Sources:** [React — using TypeScript](https://react.dev/learn/typescript) · [Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>How do you use TypeScript with Node.js and Express?</summary>
-
-### How do you use TypeScript with Node.js and Express?
-
-**Definition:** Типизируйте процесс так же, как любую другую программу на TypeScript, а Express — через `@types/express` (у Express 5 могут быть свои типы; берите типы под установленный мажор).
-
-**Examples:**
+<summary>How do you handle async/await in TypeScript?</summary>
 
-```typescript
-import express, { type Request, type Response } from "express";
+### How do you handle async/await in TypeScript?
 
-const app = express();
+**Definition:**
 
-app.get("/health", (_req: Request, res: Response) => {
-  res.json({ ok: true });
-});
-```
-
-**How it works:** Установите `@types/node` для `process`, `Buffer` и глобалов. `req.body` остаётся `any`, пока вы не разберёте JSON и не проверите его. Не останавливайтесь на `req.body as User`.
-
-**See also:** [Express overview](./8_nodejs_http.md#express-overview) · [How to typify API response, object, array, and function?](#how-to-typify-api-response-object-array-and-function)
-
-**Sources:** [Handbook — modules](https://www.typescriptlang.org/docs/handbook/modules.html)
-
 </details>
 
 <details>
-  <summary>Error handling — static vs runtime?</summary>
-
-### Error handling — static vs runtime
-
-**Definition:** TypeScript обнаруживает ошибки формы во время компиляции; время выполнения все еще нужно `try/catch` и проверка схемы для внешних данных.
-
-| Слой             | Оснастка              |
-| ---------------- | --------------------- |
-| Время компиляции | `tsc`, IDE            |
-| Время выполнения | `try/catch`, Зод/ио-ц |
-
-**Examples:**
+<summary>Discuss how you manage state in TypeScript-based applications.</summary>
 
-```typescript
-function parseAge(input: string): number {
-  const n = Number(input);
-  if (Number.isNaN(n)) throw new Error("Invalid age");
-  return n;
-}
-```
+### Discuss how you manage state in TypeScript-based applications.
 
-**Sources:** [Повседневные типы](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>How to typify API response, object, array, and function?</summary>
-
-### How to typify API response, object, array, and function?
-
-**Definition:** Формы модели на границах; проверять внешние данные во время выполнения, поскольку типы TS удаляются.
-
-**API response:**
-
-```typescript
-type User = { id: string; name: string };
-type ApiResponse<T> = { data: T; meta: { page: number } };
-
-async function fetchUser(id: string): Promise<User> {
-  const res = await fetch(`/api/users/${id}`);
-  const json: unknown = await res.json();
-  // validate with Zod in production
-  return json as User;
-}
-```
-
-**Object (product):**
-
-```typescript
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  category: "food" | "electronics";
-};
-```
-
-**Array of objects:**
+<summary>What are some common design patterns used in TypeScript?</summary>
 
-```typescript
-const products: Product[] = await res.json();
-// or ReadonlyArray<Product> for immutability
-```
+### What are some common design patterns used in TypeScript?
 
-**Function with return object:**
+**Definition:**
 
-```typescript
-type CartSummary = { subtotal: number; discount: number; total: number };
-
-function calculateCart(items: CartItem[]): CartSummary {
-  return items.reduce(/* ... */, { subtotal: 0, discount: 0, total: 0 });
-}
-```
-
-**Thoughts:** _Типы описывают намерение; Zod/io-ts проверяет реальность на границе сети._
-
 </details>
-
----
 
-## Coding tasks
-
 <details>
-<summary>Task 1 — Fix AddressWithIdType intersection</summary>
+<summary>How do you debug a TypeScript application?</summary>
 
-`AddressType` задаёт `city: string`. Пересечение с `{ city: { id: string } }` даёт невозможный тип (`string & { id: string }`). `AddressType` и `address` не меняйте; исправьте только `AddressWithIdType`.
+### How do you debug a TypeScript application?
 
-```typescript
-type AddressType = {
-  country: string;
-  city: string;
-};
+**Definition:**
 
-type AddressWithIdType = AddressType & {
-  city: {
-    id: string;
-    value?: string;
-  };
-};
+</details>
 
-const address: AddressWithIdType = {
-  country: "Australia",
-  city: {
-    id: "bd2917ff-08ac-4e0a-a4d6-6185cd6e69c4",
-  },
-};
-```
+### TypeScript Testing and Quality Assurance
 
 <details>
-  <summary>Solution hint</summary>
-
-### Solution hint
-
-Используйте `Omit`, чтобы убрать конфликтующий ключ перед пересечением:
+<summary>How do you write unit tests for TypeScript code?</summary>
 
-```typescript
-type AddressWithIdType = Omit<AddressType, "city"> & {
-  city: {
-    id: string;
-    value?: string;
-  };
-};
-```
+### How do you write unit tests for TypeScript code?
 
-</details>
+**Definition:**
 
 </details>
-
----
 
 <details>
-<summary>Task 2 — Exclude a union member</summary>
-
-Реализуйте `RemoveC<T>`, чтобы `RemoveC<"a" | "b" | "c">` стал `"a" | "b"`.
-
-```typescript
-type Letters = "a" | "b" | "c";
+<summary>What testing frameworks are commonly used with TypeScript?</summary>
 
-type RemoveC<T> = unknown; // your implementation
+### What testing frameworks are commonly used with TypeScript?
 
-type LettersWithoutC = RemoveC<Letters>;
+**Definition:**
 
-declare function testFunction(option: "a" | "b");
-
-const validConst1: LettersWithoutC = "a";
-const validConst2: LettersWithoutC = "b";
-const invalidConst1: LettersWithoutC = "c"; // should error
-```
+</details>
 
 <details>
-  <summary>Solution</summary>
+<summary>Discuss how to perform end-to-end testing in TypeScript applications.</summary>
 
-```typescript
-type RemoveC<T> = Exclude<T, "c">;
-// or: T extends "c" ? never : T
-```
+### Discuss how to perform end-to-end testing in TypeScript applications.
 
-</details>
+**Definition:**
 
 </details>
 
----
+### TypeScript for Backend Development
 
 <details>
-<summary>Task 3 — Implement MyPick</summary>
-
-Реализуйте `MyPick<T, K>` как встроенный `Pick`.
+<summary>How do you use TypeScript with Express.js?</summary>
 
-```typescript
-interface Todo {
-  title: string;
-  description: string;
-  completed: boolean;
-}
+### How do you use TypeScript with Express.js?
 
-type TodoPreview = MyPick<Todo, "title" | "completed">;
-// { title: string; completed: boolean }
+**Definition:**
 
-const preview: TodoPreview = { title: "Learn TS", completed: false };
-```
+</details>
 
 <details>
-  <summary>Solution</summary>
+<summary>Discuss creating RESTful services with TypeScript.</summary>
 
-```typescript
-type MyPick<T, K extends keyof T> = {
-  [P in K]: T[P];
-};
-```
+### Discuss creating RESTful services with TypeScript.
 
-</details>
+**Definition:**
 
 </details>
 
----
-
 <details>
-<summary>Task 4 — Implement GetReturnType</summary>
+<summary>Explain how to handle data modeling in a TypeScript backend.</summary>
 
-Без встроенной утилиты:
+### Explain how to handle data modeling in a TypeScript backend.
 
-```typescript
-type MyReturn<T> = unknown; // your implementation
+**Definition:**
 
-declare const fn: (a: number, b: string) => boolean;
-type R = MyReturn<typeof fn>; // should be boolean
-```
+</details>
 
 <details>
-  <summary>Solution</summary>
+<summary>How do you manage database interactions in TypeScript?</summary>
 
-```typescript
-type MyReturn<T> = T extends (...args: never[]) => infer R ? R : never;
-```
+### How do you manage database interactions in TypeScript?
 
-</details>
+**Definition:**
 
 </details>
-
----
 
 <details>
-<summary>Task 5 — Implement DeepReadonly</summary>
+<summary>Discuss authentication and authorization strategies in TypeScript APIs.</summary>
 
-Сделайте каждое свойство (включая вложенные объекты) доступным только для чтения.
+### Discuss authentication and authorization strategies in TypeScript APIs.
 
-```typescript
-interface X {
-  a: number;
-  b: { c: string };
-}
+**Definition:**
 
-type RX = DeepReadonly<X>;
-// { readonly a: number; readonly b: { readonly c: string } }
+</details>
 
-declare const x: RX;
-// x.b.c = "no"; // should error
-```
+### TypeScript Advanced Practices
 
 <details>
-  <summary>Solution</summary>
+<summary>Discuss using TypeScript for Domain-driven Design (DDD).</summary>
 
-```typescript
-type DeepReadonly<T> = T extends object
-  ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
-  : T;
-```
+### Discuss using TypeScript for Domain-driven Design (DDD).
 
-</details>
+**Definition:**
 
 </details>
 
----
-
 <details>
-<summary>Task 6 — Implement Flatten</summary>
+<summary>How do you implement Event Sourcing in TypeScript?</summary>
 
-Снимите один уровень массива: `Flatten<string[][]>` → `string[]`.
+### How do you implement Event Sourcing in TypeScript?
 
-```typescript
-type Flatten<T> = unknown; // your implementation
+**Definition:**
 
-type A = Flatten<string[]>; // string
-type B = Flatten<number[][]>; // number[]
-type C = Flatten<boolean>; // boolean
-```
+</details>
 
 <details>
-  <summary>Solution</summary>
+<summary>Explain the concept of Isomorphic apps with TypeScript.</summary>
 
-```typescript
-type Flatten<T> = T extends (infer U)[] ? U : T;
-```
+### Explain the concept of Isomorphic apps with TypeScript.
 
-</details>
+**Definition:**
 
 </details>
 
----
+### TypeScript Types and ECMAScript Standards
 
 <details>
-<summary>Task 7 — Implement Parameters</summary>
+<summary>How does TypeScript align with the latest ECMAScript standards?</summary>
 
-Извлеките типы параметров функции как кортеж.
+### How does TypeScript align with the latest ECMAScript standards?
 
-```typescript
-type MyParameters<T> = unknown;
+**Definition:**
 
-declare function join(a: string, b: number): boolean;
-type P = MyParameters<typeof join>; // [string, number]
-```
+</details>
 
 <details>
-  <summary>Solution</summary>
+<summary>What enhancements has TypeScript brought to match ES6 and beyond?</summary>
 
-```typescript
-type MyParameters<T> = T extends (...args: infer P) => unknown ? P : never;
-```
+### What enhancements has TypeScript brought to match ES6 and beyond?
 
-</details>
+**Definition:**
 
 </details>
-
----
 
 <details>
-<summary>Task 8 — Cart aggregation (typed)</summary>
-
-Полностью типизированный расчёт корзины — зеркало [задачи 16 в 3_js_array.md](./3_js_array.md#interview-practice).
-
-```typescript
-type ProductCategory = "food" | "electronics" | "clothing";
+<summary>Discuss how TypeScript handles async iterators.</summary>
 
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  category: ProductCategory;
-};
+### Discuss how TypeScript handles async iterators.
 
-type CartItem = { product: Product; qty: number };
+**Definition:**
 
-type CartSummary = { subtotal: number; discount: number; total: number };
-
-type Discounts = Partial<Record<ProductCategory, number>>;
-
-function calculateCart(
-  items: CartItem[],
-  discounts: Discounts = {},
-): CartSummary {
-  return items.reduce<CartSummary>(
-    (acc, { product, qty }) => {
-      const lineSubtotal = product.price * qty;
-      const rate = discounts[product.category] ?? 0;
-      const lineDiscount = lineSubtotal * rate;
-      acc.subtotal += lineSubtotal;
-      acc.discount += lineDiscount;
-      acc.total += lineSubtotal - lineDiscount;
-      return acc;
-    },
-    { subtotal: 0, discount: 0, total: 0 },
-  );
-}
-```
-
-**Thoughts:**
+</details>
 
-- Литеральное объединение `ProductCategory` — поиск скидки типобезопасен.
-- `Partial<Record<...>>` — скидка нужна не каждой категории.
-- Возвращаемый тип `CartSummary` документирует контракт.
-- Размеченные варианты (например `DigitalProduct | PhysicalProduct`) расширяют это полем `kind` и сужением.
+### TypeScript Performance Optimization
 
 <details>
-  <summary>Variant with discriminated product types</summary>
+<summary>How do you optimize the performance of a TypeScript application?</summary>
 
-```typescript
-type BaseProduct = { id: string; name: string; price: number };
+### How do you optimize the performance of a TypeScript application?
 
-type FoodProduct = BaseProduct & { kind: "food"; expiryDays: number };
-type ElectronicsProduct = BaseProduct & {
-  kind: "electronics";
-  warrantyMonths: number;
-};
-type ClothingProduct = BaseProduct & { kind: "clothing"; size: string };
-
-type Product = FoodProduct | ElectronicsProduct | ClothingProduct;
-
-// Narrow in reduce:
-function getDiscountRate(product: Product, discounts: Discounts): number {
-  return discounts[product.kind] ?? 0;
-}
-```
-
-</details>
+**Definition:**
 
 </details>
 
----
-
-## Quick oral questions (self-check)
-
 <details>
-<summary>Quick oral questions (self-check)</summary>
+<summary>Discuss tree shaking in TypeScript.</summary>
 
-**Definition:** Пятнадцать вопросов для самопроверки по основным темам собеседования TypeScript; ответы в блоке ниже.
+### Discuss tree shaking in TypeScript.
 
-**Sources:** [Справочник TypeScript — введение](https://www.typescriptlang.org/docs/handbook/intro.html)
+**Definition:**
 
-1. В чём разница между `any` и `unknown`?
-2. Когда выбрать `interface`, а не `type`?
-3. Что меняет `strictNullChecks`?
-4. Чем структурная типизация отличается от номинальной?
-5. Что такое размеченное объединение и зачем с ним `never`?
-6. Что стирается при компиляции — есть ли модификаторы доступа в рантайме?
-7. `Exclude` и `Omit` — с чем работает каждый?
-8. Когда нужен `as const`?
-9. Что делает `satisfies` такого, чего не делает `as`?
-10. Когда выбрать карту вместо объединения?
-11. Чем компилятор отличается от транспилятора в контексте `tsc`?
-12. Что такое слияние объявлений у интерфейсов?
-13. Когда использовать `extends`, а когда `implements`?
-14. Что такое примеси и зачем они вместо множественного наследования?
-15. Что запрещает `erasableSyntaxOnly` и зачем его включать?
+</details>
 
 <details>
-  <summary>Answers</summary>
-
-### Answers
+<summary>Explain how to optimize bundle size with TypeScript.</summary>
 
-1. **`any` и `unknown`** — Оба принимают любое значение. `any` отключает проверку: можно вызывать методы и присваивать куда угодно без сужения. `unknown` — безопасный верхний тип: перед использованием нужно сузить (`typeof`, `in` и т.д.) или утвердить тип. Для внешних данных предпочитайте `unknown`.
+### Explain how to optimize bundle size with TypeScript.
 
-2. **`interface` вместо `type`** — Формы объектов, которые можно расширять или дополнять; слияние объявлений (например, глобалы). `type` — для объединений, кортежей, примитивов, сопоставленных и условных типов. Они **не** одинаковы.
+**Definition:**
 
-3. **`strictNullChecks`** — `null` и `undefined` больше нельзя присвоить любому типу. Нужны необязательная цепочка и явные проверки. Ловит ошибки «забыли обработать null». Без флага null тихо проходит везде.
-
-4. **Структурная и номинальная** — В TS типизация **структурная**: совместимость по форме, не по имени. Два типа с теми же полями взаимозаменяемы. В Java/C# типизация **номинальная**: важно имя класса. Бренды имитируют номинальные идентификаторы в TS.
+</details>
 
-5. **Размеченное объединение и `never`** — Объекты делят литеральное поле (`kind`, `type`), и TS сужает тип в `switch`. Присваивание объединения типу `never` в `default` требует исчерпываемости: новый вариант без ветки — ошибка компиляции.
+### TypeScript 4.x Features and Updates
 
-6. **Стирается при компиляции** — Аннотации, интерфейсы, дженерики и `private`/`protected` (только TS) стираются. **Нет** информации о типах в рантайме. Поля `#private` ECMAScript **есть** в рантайме. `public`/`private` в классах TS — только компиляция, если не использовать `#`.
+<details>
+<summary>What are the new features included in the latest TypeScript release?</summary>
 
-7. **`Exclude` и `Omit`** — `Exclude<T, U>` работает с **объединениями** (убирает члены, совместимые с `U`). `Omit<T, K>` работает с **типами объектов** (убирает ключи `K` из `T`). Разный вход, разная задача.
+### What are the new features included in the latest TypeScript release?
 
-8. **`as const`** — Когда нужны **литеральные типы**, а не расширенные примитивы (`"GET"`, а не `string`, readonly-кортеж, замороженный конфиг). Чинит вывод у литералов объектов и массивов. Замена ручному объединению литералов.
+**Definition:**
 
-9. **`satisfies` и `as`** — `satisfies Type` **проверяет**, что значение подходит под тип, и **сохраняет** узкий вывод (кортеж остаётся кортежем). `as Type` **навязывает** тип и **расширяет** вывод — это доверие, а не проверка.
+</details>
 
-10. **Карта вместо объединения** — Карта нужна, когда у каждого варианта свои поля или поведение по дискриминанту. Так не раздувается объединение несовместимых форм. Приём: `{ [K in Status]: Handler }[status]` вместо `A | B | C` с несвязанными полями.
+<details>
+<summary>How do you use Template Literal Types?</summary>
 
-11. **Компилятор и транспилятор (`tsc`)** — **Компилятор**: проверка типов. **Транспилятор**: TS → JS (с высокого уровня на высокий). `tsc` делает оба шага. В рантайме не работает ни тот ни другой — на выходе обычный JS.
+### How do you use Template Literal Types?
 
-12. **Слияние объявлений** — Несколько блоков `interface Foo { ... }` с **одним именем** сливаются в один интерфейс (поля складываются). Работает с `interface`, не с `type`. Часто дополняют `Window` и типы модулей.
+**Definition:**
 
-13. **`extends` и `implements`** — `extends`: класс наследует **один** базовый класс (реализация и цепочка прототипов). `implements`: класс обещает выполнить **один или несколько** контрактов интерфейса (только сигнатуры, без унаследованного кода).
+</details>
 
-14. **Примеси** — Функции, которые принимают класс и возвращают расширенный класс. Складывают поведение без множественного наследования (его нет в TS/JS). Стек: `class User extends WithId(WithTimestamp(Entity))`.
+<details>
+<summary>Discuss the improvements to Inference in Conditional Types.</summary>
 
-15. **`erasableSyntaxOnly`** — Флаг TS 5.8+: ошибка на синтаксис, который порождает рантайм-JS, придуманный TypeScript (свойства параметров конструктора, `enum`, `namespace`). Рантаймы и съёмщики типов (`tsc --noEmit`, съём типов в Node) тогда видят только стираемые типы. Пишите `this.x = x`, а не `constructor(public x: number)`.
+### Discuss the improvements to Inference in Conditional Types.
 
-</details>
+**Definition:**
 
 </details>
 
----
-
-## Oral questions (ITVDN — TypeScript)
-
 <details>
-<summary>Oral questions (ITVDN — TypeScript)</summary>
+<summary>What is the use of labeled tuple elements?</summary>
 
-**Definition:** Устные вопросы для самопроверки из курса TypeScript на ITVDN.
+### What is the use of labeled tuple elements?
 
-**Sources:** [Справочник TypeScript — введение](https://www.typescriptlang.org/docs/handbook/intro.html)
+**Definition:**
 
-79. Какие преимущества даёт типизация в TypeScript?
+</details>
 
-80. Какие средства TypeScript можно использовать для типизации (интерфейсы, типы, enum и т.д.)?
+### TypeScript Community and Development
 
-81. Чем интерфейс отличается от класса?
+<details>
+<summary>How can you contribute to the TypeScript community or TypeScript itself?</summary>
 
-82. Чем интерфейс отличается от абстрактного класса?
+### How can you contribute to the TypeScript community or TypeScript itself?
 
-83. Чем интерфейс отличается от типа?
+**Definition:**
 
 </details>
 
----
-
-## Oral questions (extra)
-
 <details>
-<summary>Oral questions (extra)</summary>
+<summary>Discuss the role of TypeScript in open-source development.</summary>
 
-**Definition:** Дополнительные устные вопросы про флаги компилятора и модули.
+### Discuss the role of TypeScript in open-source development.
 
-1. Что `noUncheckedIndexedAccess` меняет у `arr[i]`?
-2. Когда использовать `import type`, а когда `import`?
-3. Как ссылки проектов ускоряют сборку монорепозитория?
-4. Почему `as User` на `res.json()` небезопасно в проде?
-5. Чем ковариантные параметры функции отличаются от контравариантных?
-6. Когда полезен `const` у параметра типа?
-7. Что включает `composite: true` в `tsconfig`?
-
-<details>
-  <summary>Answers</summary>
+**Definition:**
 
-### Answers
+</details>
 
-1. **`noUncheckedIndexedAccess`** — Доступ по индексу возвращает `T | undefined`, а не `T`. `arr[i]` и `obj[key]` могут быть за границей или отсутствовать — перед использованием нужно сузить или поставить `??`. Безопаснее, но шумнее на старом коде.
+<details>
+<summary>Explain how to stay updated with TypeScript's changes and best practices.</summary>
 
-2. **`import type` и `import`** — `import type` / `export type` **стираются** при генерации — рантайм-импорта нет. Для символов, которые только типы. Импорт значения (`import { fn }`) остаётся в рантайме. `verbatimModuleSyntax` требует это разделение и не даёт сборщику затащить модуль только ради типов.
+### Explain how to stay updated with TypeScript's changes and best practices.
 
-3. **Ссылки проектов** — Делят монорепозиторий на **composite**-проекты с `references`. `tsc --build` проверяет типы и генерирует **инкрементально** — пересобираются только изменившиеся проекты. Зависимости собираются по порядку. CI быстрее, чем один огромный `tsc`.
+**Definition:**
 
-4. **`as User` на `res.json()`** — Утверждение **только на этапе компиляции**, проверки в рантайме нет. API может вернуть любую форму JSON; неверные данные падают в рантайме. На границе используйте `unknown` и проверку схемой (Zod и т.п.).
+</details>
 
-5. **Ковариантность и контравариантность** — **Возвращаемые типы** ковариантны: более узкий возврат можно подставить. **Типы параметров** контравариантны (с `strictFunctionTypes`): функцию с **более широким** входом можно поставить туда, где ждут **более узкий** вход. Методы по умолчанию бивариантны (нестрого, но удобно).
+### Transitioning from JavaScript to TypeScript
 
-6. **`const` у параметра типа** — Сохраняет **литеральный** вывод в дженериках: `routes<const T>(["/a", "/b"])` — кортеж литералов, а не `string[]`. Полезно для конфигов, маршрутов и API, где расширение теряет точность.
+<details>
+<summary>What steps should a JavaScript developer take to start using TypeScript effectively?</summary>
 
-7. **`composite: true`** — Помечает проект как часть графа **ссылок проектов**. Требует `declaration: true`. Включает инкрементальную сборку и позволяет другим проектам ссылаться на этот. Нужен для `tsc --build` в монорепозитории.
+### What steps should a JavaScript developer take to start using TypeScript effectively?
 
-</details>
+**Definition:**
 
 </details>

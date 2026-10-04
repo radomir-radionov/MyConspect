@@ -1,6 +1,6 @@
 # Git — Interview
 
-Интервью с вопросами и ответами и приложение-оболочка.
+Вопросы по Git, ответы не заполнены.
 
 [ ← Вернуться в хаб](./0_git.md)
 
@@ -11,487 +11,959 @@
 ### Sections
 
 - [Interview Practice](#interview-practice)
-- [Appendix — Shell basics](#appendix-shell-basics)
 
 ---
 
 ## Interview Practice
 
-<details>
-  <summary>Interview Practice</summary>
+Вопросы с [Devinterview.io — Git](https://devinterview.io/questions/web-and-mobile-development/git-interview-questions/).
 
-### Interview Practice
-
-Вопросы от [0_interview.md](0_interview.md). Попробуйте ответить, прежде чем открывать каждое решение.
-
-### Question index (0_interview.md)
-
-| # | Тема | Раздел |
-|---|-------|---------|
-| 131 | Конфликты окончания строки при каждом нажатии | 1 квартал |
-| 132 | `git fetch` | 2 квартал |
-| 133 | Гигиена Git | 3 квартал |
-| 137 | `merge` vs `rebase` | 4 квартал |
-| 138 | Плацдарм | Q5 |
-| 139 | Проверка кода | Q6 |
-| 37 | Git-поток | Q7 |
-| 38 | Сквош во время перезагрузки | Q8 |
-| 39 | Альтернативная система контроля версий | Q9 |
-| 40 | Соглашения Git | Q10 |
-
----
-
-### Questions & Answers
+### Git Fundamentals
 
 <details>
-  <summary>Q1. Every pull causes a conflict on the last line of all edited files. What is happening?</summary>
+<summary>What is Git and why is it used?</summary>
 
-### Q1. Every pull causes a conflict on the last line of all edited files. What is happening?
+### What is Git and why is it used?
 
-**Question:** Каждый раз, когда вы тянете, последняя строка конфликтует в каждом файле, который вы редактировали. Почему?
-
-**Answer:**
-
-Почти всегда это **несоответствие конца строки** (CRLF в Windows и LF в Unix).
-
-Git видит одно и то же логическое содержимое как разные байты. При слиянии он помечает каждую затронутую строку — часто это проявляется как конфликт в «последней строке» (где невидимый `\r` отличается).
-
-**Fix:**
-
-1. Команда согласовывает LF в репо: `* text=auto eol=lf` in `.gitattributes`
-2. Для каждого разработчика: `core.autocrlf=true` (Окна) или `input` (macOS/Линукс)
-3. Добавить `.editorconfig` с `end_of_line = lf`
-4. Перенормировать: `git add --renormalize .` + один коммит
-5. Каждый тянет один раз; конфликты должны прекратиться
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Q2. What does `git fetch` do?</summary>
+<summary>How does Git differ from other version control systems (VCS)?</summary>
 
-### Q2. What does `git fetch` do?
+### How does Git differ from other version control systems (VCS)?
 
-**Question:** Объяснять `git fetch`.
-
-**Answer:**
-
-`git fetch` загружает новые коммиты, ветки и теги с удаленного устройства в ваши **локальные ссылки для удаленного отслеживания** (например, `origin/main`). Он **не** изменяет вашу рабочую ветку или рабочий каталог.
-
-| Команда | Принести пульт? | Обновить местную ветку? | Объединить/перебазировать? |
-|---------|---------------|----------------------|---------------|
-| `git fetch` | Да | Нет | Нет |
-| `git pull` | Да | Да | Да (объединить или перебазировать) |
-| `git push` | Нет | Нет | Отправляет локальные коммиты на удаленные |
-
-Использовать `fetch` если вы хотите проверить удаленные изменения перед интеграцией: `git log main..origin/main`.
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Q3. What git hygiene approaches do you know?</summary>
+<summary>What is the difference between Git and GitHub?</summary>
 
-### Q3. What git hygiene approaches do you know?
+### What is the difference between Git and GitHub?
 
-**Question:** Назовите правила гигиены git для командных проектов.
-
-**Answer:**
-
-1. **Обычные коммиты** — согласованные сообщения с возможностью поиска.
-2. **Атомарные коммиты** — по одному логическому изменению.
-3. **Небольшие PR** — проверяемые различия (идеально — < 400 строк).
-4. **Именование ветвей** — `feature/`, `fix/`, `chore/` префиксы
-5. **Перебазируйте ветку функций** на главную перед PR (линейная история).
-6. **Никогда не отправляйте принудительно** общие ветки.
-7. **Хуки** — проверка/форматирование/проверка перед фиксацией/отправкой
-8. **`.gitignore`** — no `node_modules`, `.env`, строить артефакты
-9. **В истории нет секретов**; повернуть, если протечет
-10. **Удалите объединенные ветки** — уменьшите беспорядок
-11. **Подписанные коммиты** для производственных репозиториев
-12. ** Защищено `main`** — требуется PR + CI + проверка
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Q4. How do `git merge` and `git rebase` differ?</summary>
+<summary>What is a repository in Git?</summary>
 
-### Q4. How do `git merge` and `git rebase` differ?
+### What is a repository in Git?
 
-**Question:** Сравнивать `git merge` и `git rebase`. Когда использовать друг?
-
-**Answer:**
-
-
-| Объединить | Перебазировать |
-| --- | ------- |
-| Форма истории | Разветвленный (слияние коммитов) | Линейный |
-| Перезаписывает коммиты | Нет | Да (новые SHA) |
-| Конфликты | Однажды | За повторный коммит |
-| Безопасно в общей/перемещенной ветке | Да | **Нет** |
-
-**Используйте объединение** при интеграции завершенной функции в общую ветку или при сохранении точной истории ветки.**Используйте rebase**, чтобы обновить **локальную/частную** ветку функций до последней версии. `main` прежде чем открывать пиар — обзор почище диффа.
-
-**Golden rule:** не перебазируйте коммиты, которые уже удалили другие.
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Q5. What is the staging area in Git?</summary>
+<summary>Explain the concept of a commit in Git.</summary>
 
-### Q5. What is the staging area in Git?
+### Explain the concept of a commit in Git.
 
-**Question:** Объясните промежуточную область (индекс).
-
-**Answer:**
-
-**Промежуточная область** (индекс) — это промежуточный уровень между рабочим каталогом и репозиторием. Он содержит именно то, что войдет в следующий коммит.
-
-```
-Working directory  --git add-->  Index  --git commit-->  Repository
-```
-
-Почему он существует:
-
-* **Выборочная фиксация** — загружайте только часть ваших изменений (`git add -p`)
-* **Проверка перед фиксацией** — `git diff --staged` показывает, что вы собираетесь совершить
-* **Отделение WIP от готового** — редактируйте много файлов, коммитите только готовые
-
-Команды: `git add` (этап), `git restore --staged` (без сцены), `git commit` (заморозить индекс в фиксации).
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Q6. Describe the code review process.</summary>
+<summary>What is the difference between a working directory, staging area, and repository in Git?</summary>
 
-### Q6. Describe the code review process.
+### What is the difference between a working directory, staging area, and repository in Git?
 
-**Question:** Как вы проводите проверку кода? Правила конфликтов и разногласий?
-
-**Answer:**
-
-**Process:**
-
-1. Автор открывает PR с описанием, привязанным билетом, примечаниями к тестированию.
-2. CI запускается автоматически (lint, тесты, сборка)
-3. Рецензент читает диффы, оставляет комментарии (блокировка vs нит)
-4. Автор обращается к отзывам; отправляет новые коммиты
-5. Повторное рассмотрение до утверждения
-6. Слияние (сжатие или слияние в соответствии с политикой команды)
-
-**Reviewer checklist:**
-
-* Корректность и крайние случаи
-* Тесты включены
-* Никаких проблем с безопасностью (XSS, секреты, аутентификация)
-* Читабельное название и структура.
-* Соответствует соглашениям проекта
-
-**Resolving disagreements:**
-
-* Обсуждайте в пиар-комментариях аргументировано, а не мнением
-* Если нет консенсуса, обратитесь к техническому руководителю
-* Предпочитаете измеримые критерии (производительность, характеристики, руководство по стилю)
-* Для стилевых нитов: следуйте командному линтеру/конфигурации, а не личным предпочтениям.
-* Дебаты о временных рамках; отправить с последующим билетом, если не блокируется
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Q7. Describe Git Flow in two words (branches).</summary>
+<summary>Define branching in Git and its importance.</summary>
 
-### Q7. Describe Git Flow in two words (branches).
+### Define branching in Git and its importance.
 
-**Question:** Краткое изложение методологии Git Flow.
-
-**Answer:**
-
-**Долговечный `main` + `develop`**, с кратковременным `feature`, `release`, и `hotfix` ветки.
-
-| Филиал | От | В | Цель |
-|--------|------|------|---------|
-| `feature/*` | развивать | развивать | Новая работа |
-| `release/*` | развивать | главная + разработка | Подготовка к выпуску |
-| `hotfix/*` | главная | главная + разработка | Производственные исправления |
-
-`main` = производство. `develop` = интеграция. Подходит для версий релизов; тяжеловат для непрерывного развертывания — вместо этого рассмотрите GitHub Flow или транковый вариант.
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Q8. What does squashing commits during rebase mean?</summary>
+<summary>What is a HEAD in Git?</summary>
 
-### Q8. What does squashing commits during rebase mean?
+### What is a HEAD in Git?
 
-**Question:** Объясните сквош-фиксации во время интерактивного перебазирования.
-
-**Answer:**
-
-Интерактивная перебазировка (`git rebase -i`) позволяет **объединить несколько коммитов в один** перед слиянием.
-
-```
-pick abc1234 feat: add validation
-squash def5678 wip
-fixup ghi9012 typo
-```
-
-| Действие | Эффект |
-|--------|--------|
-| `squash` | Слияние с предыдущим коммитом; объединить сообщения |
-| `fixup` | Слияние с предыдущим; удалить это сообщение |
-| `pick` | Сохранить как есть |
-| `drop` | Удалить фиксацию |
-
-**Why:** запутать историю незавершенного производства (`wip`, `fix typo`, `fix tests`) в один чистый коммит для PR/слияния. Только в истории **неотправленных или частных** веток.
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Q9. Opinion on alternative version control systems?</summary>
+<summary>What does the clone operation in Git do?</summary>
 
-### Q9. Opinion on alternative version control systems?
+### What does the clone operation in Git do?
 
-**Question:** Какие альтернативы Git существуют и когда их можно использовать?
-
-**Answer:**
-
-| СВК | Сила | Слабость |
-|-----|----------|----------|
-| **СВН** | Простая ментальная модель; разрешения на уровне пути | Нет полной местной истории; ветвление болезненное |
-| **Ртутный** | Распространяется как Git; более простой интерфейс командной строки | Маленькая экосистема; снижение использования |
-| **Перфорс (Спираль)** | Огромные двоичные файлы, конвейеры игр/фильмов | Централизованный; дорогой/сложный |
-| **Гит** | Распределенная, ветвящаяся, экосистема | Крутая кривая обучения |Для веб-интерфейса и веб-интерфейса: **Git является стандартом**. SVN/Perforce появляются в устаревших корпоративных или игровых студиях. Знайте компромиссы; по умолчанию используется Git, если организация не требует иного. |
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Q10. What Git conventions do you use?</summary>
+<summary>How does Git store information?</summary>
 
-### Q10. What Git conventions do you use?
+### How does Git store information?
 
-**Question:** Каким соглашениям Git вы следуете?
+**Definition:**
 
-**Answer:**
+</details>
 
-**Commits:** [Обычные коммиты](https://www.conventionalcommits.org/) — `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`, `test:`, `ci:`
 
-**Branches:** `feature/JIRA-123-short-desc`, `fix/login-bug`, `chore/deps-update`
+### Basic Git Commands
 
-**PR titles:** соглашение о фиксации совпадения; ссылка на билет
+<details>
+<summary>How do you initialize a new Git repository?</summary>
 
-**Merge:** сквош для мелких деталей; коммит слияния для больших функций (политика команды)
+### How do you initialize a new Git repository?
 
-**Tags:** semver аннотированные теги для релизов (`v1.2.3`)
-
-**Hooks:** применять lint + обычный формат сообщения фиксации
-
-**Never:** секреты в репо, принудительное нажатие `main`, фиксируется как "fix", "wip", "asdf"
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Q11. Walk through a Git CLI feature from clone to delete branch</summary>
+<summary>Explain the purpose of the git status command.</summary>
 
-### Q11. Walk through a Git CLI feature from clone to delete branch
+### Explain the purpose of the git status command.
 
-**Question:** Какие команды вы выполняете от первого клонирования до создания функции?
-
-**Answer:** `clone` → `switch -c` (or `checkout -b`) → редактировать → `status` → `add` → `commit` → `push -u` → после проверки оформить ветку интеграции → `merge` → `branch -d`. Вытащить позже с помощью `git pull` (or `git pull --all` для получения каждого удаленного устройства, а затем интегрируйте только **текущий** восходящий поток). Полный цикл: [ежедневный рабочий процесс Git CLI](./0_git_core.md#workflow).
-
-</details>
-
----
-
-### Hands-on tasks
-
-### Task 1 — Recover deleted branch
-
-Ветка была удалена локально после слияния. Восстановить последний коммит.
-
-<details><summary>Solution</summary>
-
-`git reflog` → найти коммит SHA → `git checkout -b feature-restored <sha>`
-
-</details>
-
-### Task 2 — Interactive rebase squash
-
-Сведите последние 3 коммита в один перед PR.
-
-<details><summary>Solution</summary>
-
-`git rebase -i HEAD~3` → пометить коммиты как `squash` / `fixup` → редактировать сообщение.
-
-</details>
-
-### Task 3 — Resolve line-ending conflict
-
-Команда на Windows + Mac — предотвращайте конфликты CRLF.
-
-<details><summary>Solution</summary>
-
-`.gitattributes`: `* text=auto eol=lf`, перенормировать с помощью `git add --renormalize .`
-
-</details>
-
----
-
-### Quick oral questions (self-check)
-
-1. Какие три дерева есть в Git?
-2. Что такое ГОЛОВА? Что такое отсоединенная ГОЛОВКА?
-3. Разница между `git revert` и `git reset`?
-4. Когда возможно ускоренное слияние?
-5. Что означает `git cherry-pick` делать?
-6. Что такое `git reflog` используется для?
-7. Что означает `git bisect` делать?
-8. Почему `git reset --hard` опасный?
-9. Что такое `--force-with-lease` vs `--force`?
-10. В чем разница между облегченными и аннотированными тегами?
-11. Что означает `git stash` магазин?
-12. Как синхронизировать форк с восходящим потоком?
-13. Что такое `ORIG_HEAD`?
-14. Какие четыре типа объектов хранит Git?
-15. Почему не следует перебазировать отправленную общую ветку?
-16. Что означает `git rm --cached` делать?
-17. Что такое маркер конфликта слияния (`<<<<<<<`)?
-18. Что доказывает подписанный коммит?
-19. Что такое `git worktree` для?
-20. Что означает `git pull --rebase` делать vs по умолчанию?
-
-</details>
-
----
-
-<a name="appendix-shell"></a>
-
-## Appendix — Shell basics
-
-<details>
-  <summary>Appendix — Shell basics for Git Bash</summary>
-
-### Appendix — Shell basics for Git Bash
-
-**Definition:** Терминальная грамотность для пользователей Windows Git Bash. Не специфично для Git — полезно при работе из командной строки.
-
-<details>
-  <summary>List files</summary>
-
-### List files
-
-**Definition:** `ls` перечисляет содержимое каталога с дополнительными флагами для форматирования и сортировки.
-
-**Examples:**
-
-```bash
-ls
-ls -a                   # include hidden
-ls -a -1                # one column
-ls -hF -1 --sort=extension
-ls build/css
-ls /d/projects          # Windows path
-```
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Navigate</summary>
+<summary>What does the git add command do?</summary>
 
-### Navigate
+### What does the git add command do?
 
-**Definition:** `cd` меняет текущий рабочий каталог. `Tab` автозаполнение путей.
-
-**Examples:**
-
-```bash
-cd projects
-cd /d/projects
-cd /c/Program\ Files
-cd ..                   # parent
-cd -                    # previous directory
-cd !$                   # last argument of previous command
-```
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Create files and folders</summary>
+<summary>How do you create a commit in Git?</summary>
 
-### Create files and folders
+### How do you create a commit in Git?
 
-**Definition:** `mkdir` создает каталоги; `touch` создает пустые файлы.
-
-**Examples:**
-
-```bash
-mkdir project
-mkdir -p project/{css,js}
-touch index.html
-touch index.html css/style.css
-```
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Copy, move, delete</summary>
+<summary>What information is contained in a commit object in Git?</summary>
 
-### Copy, move, delete
+### What information is contained in a commit object in Git?
 
-**Definition:** `cp` копирует файлы/каталоги; `mv` перемещает или переименовывает; `rm` удаляет.
-
-**Examples:**
-
-```bash
-cp index.html catalog.html
-cp index.html old/
-cp -r temp/ temp2/
-mv index.html old/
-mv order.txt orderNew.txt
-rm ghost.png
-rm -rf old/
-```
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Useful one-liners</summary>
+<summary>How does git push differ from git fetch?</summary>
 
-### Useful one-liners
+### How does git push differ from git fetch?
 
-**Definition:** Общие команды оболочки для проверки и очистки.
-
-**Examples:**
-
-```bash
-pwd
-cat ~/.bash_profile
-grep -i -n --color 'pattern' file1 file2
-grep word -r project
-find . -iname '*ind*'
-rm -rf node_modules && npm i
-```
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Shell aliases</summary>
+<summary>Explain the purpose of the git pull command.</summary>
 
-### Shell aliases
+### Explain the purpose of the git pull command.
 
-**Definition:** Ярлыки для часто используемых команд, определенные в профиле оболочки.
-
-**Examples:**
-
-добавить в `~/.bash_profile` (macOS/Linux) или `C:/Users/NAME/.bash_profile` (Окна):
-
-```bash
-alias pro='cd /d/projects'
-alias gs='git status'
-alias gl='git log --oneline -10'
-```
-
-Перезагрузите терминал после изменений.
+**Definition:**
 
 </details>
 
+<details>
+<summary>Describe the use of the git branch command.</summary>
+
+### Describe the use of the git branch command.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you switch branches using git checkout?</summary>
+
+### How do you switch branches using git checkout?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the purpose of git merge?</summary>
+
+### What is the purpose of git merge?
+
+**Definition:**
+
 </details>
 
 
+### Git Branching and Merging
+
+<details>
+<summary>Explain the Git workflow you use most frequently.</summary>
+
+### Explain the Git workflow you use most frequently.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Can you describe the process of creating a new branch and merging it back into the main branch?</summary>
+
+### Can you describe the process of creating a new branch and merging it back into the main branch?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a merge conflict in Git and how do you resolve it?</summary>
+
+### What is a merge conflict in Git and how do you resolve it?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a fast-forward merge in Git?</summary>
+
+### What is a fast-forward merge in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Define a three-way merge.</summary>
+
+### Define a three-way merge.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you rebase a branch in Git?</summary>
+
+### How do you rebase a branch in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the pros and cons of rebasing vs. merging.</summary>
+
+### Explain the pros and cons of rebasing vs. merging.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the purpose of git tag?</summary>
+
+### What is the purpose of git tag?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you revert a commit that has already been pushed to the remote repository?</summary>
+
+### How do you revert a commit that has already been pushed to the remote repository?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the significance of the master branch in Git?</summary>
+
+### What is the significance of the master branch in Git?
+
+**Definition:**
+
+</details>
+
+
+### Git Workflows and Patterns
+
+<details>
+<summary>What is a distributed version control system and how does Git function as one?</summary>
+
+### What is a distributed version control system and how does Git function as one?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe the Git feature branch workflow.</summary>
+
+### Describe the Git feature branch workflow.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the Gitflow workflow.</summary>
+
+### Explain the Gitflow workflow.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a Forking workflow in Git?</summary>
+
+### What is a Forking workflow in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Discuss the Centralized workflow in Git.</summary>
+
+### Discuss the Centralized workflow in Git.
+
+**Definition:**
+
+</details>
+
+
+### Git Repository Management
+
+<details>
+<summary>Explain what a remote repository is in Git.</summary>
+
+### Explain what a remote repository is in Git.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe how you would change a Git remote URL.</summary>
+
+### Describe how you would change a Git remote URL.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you synchronize your local repository with a remote repository?</summary>
+
+### How do you synchronize your local repository with a remote repository?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you clean up unused branches in your local and remote repository?</summary>
+
+### How do you clean up unused branches in your local and remote repository?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe the steps to resolve a merge conflict in Git.</summary>
+
+### Describe the steps to resolve a merge conflict in Git.
+
+**Definition:**
+
+</details>
+
+
+### Git Stashing and Cleaning
+
+<details>
+<summary>What is git stash used for?</summary>
+
+### What is git stash used for?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you view stashed changes in Git?</summary>
+
+### How do you view stashed changes in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Can you apply a stash without removing it from the stash list?</summary>
+
+### Can you apply a stash without removing it from the stash list?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What does the git clean command do?</summary>
+
+### What does the git clean command do?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you remove a file from the working directory without deleting it from the repository?</summary>
+
+### How do you remove a file from the working directory without deleting it from the repository?
+
+**Definition:**
+
+</details>
+
+
+### Git Logging and History
+
+<details>
+<summary>How do you view the commit history in Git?</summary>
+
+### How do you view the commit history in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how to find a commit by a specific author in Git.</summary>
+
+### Explain how to find a commit by a specific author in Git.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you view the changes introduced in a commit?</summary>
+
+### How do you view the changes introduced in a commit?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Can you list the files changed in a specific commit?</summary>
+
+### Can you list the files changed in a specific commit?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What does the git blame command do?</summary>
+
+### What does the git blame command do?
+
+**Definition:**
+
+</details>
+
+
+### Git Tagging and Releases
+
+<details>
+<summary>What are Git tags and how are they different from branches?</summary>
+
+### What are Git tags and how are they different from branches?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you create, delete, and push tags?</summary>
+
+### How do you create, delete, and push tags?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is semantic versioning in the context of Git tagging?</summary>
+
+### What is semantic versioning in the context of Git tagging?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you checkout to a specific tag?</summary>
+
+### How would you checkout to a specific tag?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe how to create a release from a tag.</summary>
+
+### Describe how to create a release from a tag.
+
+**Definition:**
+
+</details>
+
+
+### Advanced Git Operations
+
+<details>
+<summary>What is a git submodule and when would you use one?</summary>
+
+### What is a git submodule and when would you use one?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the purpose of a git hook.</summary>
+
+### Explain the purpose of a git hook.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you perform a squash commit in Git?</summary>
+
+### How do you perform a squash commit in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a git bisect and how do you use it?</summary>
+
+### What is a git bisect and how do you use it?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you manually resolve a conflict during a git merge?</summary>
+
+### How do you manually resolve a conflict during a git merge?
+
+**Definition:**
+
+</details>
+
+
+### Git Configuration and Customization
+
+<details>
+<summary>How do you set your username and email in Git?</summary>
+
+### How do you set your username and email in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the scope of Git configuration files?</summary>
+
+### What is the scope of Git configuration files?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can you create aliases for Git commands?</summary>
+
+### How can you create aliases for Git commands?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the purpose of a .gitignore file?</summary>
+
+### What is the purpose of a .gitignore file?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you ignore files globally?</summary>
+
+### How would you ignore files globally?
+
+**Definition:**
+
+</details>
+
+
+### Git Security
+
+<details>
+<summary>How do you ensure your commits are signed with your GPG key?</summary>
+
+### How do you ensure your commits are signed with your GPG key?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are some common security practices for Git repositories?</summary>
+
+### What are some common security practices for Git repositories?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you encrypt sensitive data in a Git repository?</summary>
+
+### How do you encrypt sensitive data in a Git repository?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are some strategies for credential storage in Git?</summary>
+
+### What are some strategies for credential storage in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you revoke access to a Git repository?</summary>
+
+### How would you revoke access to a Git repository?
+
+**Definition:**
+
+</details>
+
+
+### Troubleshooting and Recovery
+
+<details>
+<summary>How do you find and restore a deleted file in a Git repository?</summary>
+
+### How do you find and restore a deleted file in a Git repository?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What steps would you take if you accidentally committed sensitive data?</summary>
+
+### What steps would you take if you accidentally committed sensitive data?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you handle detached HEAD state in Git?</summary>
+
+### How do you handle detached HEAD state in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how to recover a dropped stash in Git.</summary>
+
+### Explain how to recover a dropped stash in Git.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you amend the message of the last commit?</summary>
+
+### How do you amend the message of the last commit?
+
+**Definition:**
+
+</details>
+
+
+### Git Collaboration
+
+<details>
+<summary>What is a pull request and how does it work?</summary>
+
+### What is a pull request and how does it work?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you update a pull request?</summary>
+
+### How do you update a pull request?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a code review process in Git?</summary>
+
+### What is a code review process in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you handle a pull request conflict?</summary>
+
+### How do you handle a pull request conflict?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the difference between git pull and git fetch followed by git merge?</summary>
+
+### What is the difference between git pull and git fetch followed by git merge?
+
+**Definition:**
+
+</details>
+
+
+### Git Performance and Scalability
+
+<details>
+<summary>How do you handle large files in Git?</summary>
+
+### How do you handle large files in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are some ways to improve the performance of a large Git repository?</summary>
+
+### What are some ways to improve the performance of a large Git repository?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a shallow clone in Git and when would you use it?</summary>
+
+### What is a shallow clone in Git and when would you use it?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you reduce the repository size in Git?</summary>
+
+### How do you reduce the repository size in Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how Git LFS (Large File Storage) is used.</summary>
+
+### Explain how Git LFS (Large File Storage) is used.
+
+**Definition:**
+
+</details>
+
+
+### Git in Continuous Integration/Continuous Deployment (CI/CD)
+
+<details>
+<summary>How does Git integrate with CI/CD pipelines?</summary>
+
+### How does Git integrate with CI/CD pipelines?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe the process of automating deployments using Git.</summary>
+
+### Describe the process of automating deployments using Git.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you configure branch protection rules for a repository in the context of CI/CD?</summary>
+
+### How would you configure branch protection rules for a repository in the context of CI/CD?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What role do Git hooks play in automation?</summary>
+
+### What role do Git hooks play in automation?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can Git help in the rollback process of a failed deployment?</summary>
+
+### How can Git help in the rollback process of a failed deployment?
+
+**Definition:**
+
+</details>
+
+
+### Git with IDEs and Tools
+
+<details>
+<summary>How do you integrate Git with your preferred IDE?</summary>
+
+### How do you integrate Git with your preferred IDE?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Discuss the pros and cons of using a GUI tool for Git versus the command line.</summary>
+
+### Discuss the pros and cons of using a GUI tool for Git versus the command line.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What plugins are commonly used with Git in development environments?</summary>
+
+### What plugins are commonly used with Git in development environments?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you resolve merge conflicts using a visual tool?</summary>
+
+### How do you resolve merge conflicts using a visual tool?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the purpose of a Git bridge for version control systems?</summary>
+
+### What is the purpose of a Git bridge for version control systems?
+
+**Definition:**
+
+</details>
+
+
+### Advanced Git Topics
+
+<details>
+<summary>How do you handle large binary files in Git without using Git LFS?</summary>
+
+### How do you handle large binary files in Git without using Git LFS?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the purpose of the git rebase -i command?</summary>
+
+### What is the purpose of the git rebase -i command?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you set up a continuous backup process for Git repositories?</summary>
+
+### How would you set up a continuous backup process for Git repositories?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the impact of case sensitivity in Git and how to manage it across different operating systems.</summary>
+
+### Explain the impact of case sensitivity in Git and how to manage it across different operating systems.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you maintain multiple versions of a product using Git branches for each version?</summary>
+
+### How do you maintain multiple versions of a product using Git branches for each version?
+
+**Definition:**
+
+</details>

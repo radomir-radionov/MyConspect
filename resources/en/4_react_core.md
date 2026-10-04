@@ -513,7 +513,7 @@ function Tooltip({ text }: { text: string }) {
 
 **Thoughts:** _Trigger schedules → render computes (may repeat) → commit mutates once → paint →_ `useEffect`_._
 
-**See also:** [React vs ReactDOM](#react-vs-reactdom) · [useEffect vs useLayoutEffect?](./4_react_interview.md#useeffect-vs-uselayouteffect) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Concurrent rendering](#concurrent-rendering) · [Batching](#batching)
+**See also:** [React vs ReactDOM](#react-vs-reactdom) · [useLayoutEffect](./4_react_hooks.md#uselayouteffect) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Concurrent rendering](#concurrent-rendering) · [Batching](#batching)
 
 **Sources:**
 
@@ -852,7 +852,7 @@ Every item in `array.map()`. Use stable IDs from data (`todo.id`). Also use `key
 
 **Thoughts:** _Key = identity across renders, not list position._
 
-**See also:** [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Why list keys? Index as key?](./4_react_interview.md#why-list-keys-index-as-key)
+**See also:** [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Keys](#keys)
 
 **Sources:**
 

@@ -15,7 +15,7 @@ SQL, NoSQL, ORMs, and production data patterns. Theory lives in the topic files 
 | [NoSQL hub](./9_database_nosql.md)            | MongoDB, Redis, ClickHouse — [Core](./9_database_nosql_core.md) · [MongoDB](./9_database_mongodb.md) · [Redis](./9_database_redis.md) · [ClickHouse](./9_database_clickhouse.md). |
 | [DB — ORM](./9_database_orm.md)               | Prisma, Sequelize, Knex, Drizzle, and query builders.                                                                                                                             |
 | [DB — Production](./9_database_production.md) | Replication, sharding, caching, and OLTP scaling.                                                                                                                                 |
-| [DB — Interview](./9_database_interview.md)   | Interview Q&A for databases.                                                                                                                                                      |
+| [DB — Interview](./9_database_interview.md)   | SQL interview questions, answers not filled in.                                                                                                                                   |
 
 ### Interview practice
 

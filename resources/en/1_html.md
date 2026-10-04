@@ -21,7 +21,7 @@ Document structure, browser rendering, forms, media, accessibility, UX/UI princi
 | [UI principles](./7_special_ui.md)            | Visual hierarchy, spacing, feedback, and a11y.                        |
 | [HTML — SEO](./1_html_seo.md)                 | Crawlability, metadata, and structured data.                          |
 | [HTML — Advanced](./1_html_advanced.md)       | Web components, shadow DOM, and newer HTML APIs.                      |
-| [HTML — Interview](./1_html_interview.md)     | Interview Q&A and coding tasks for HTML.                              |
+| [HTML — Interview](./1_html_interview.md)     | HTML interview questions, answers not filled in.                      |
 
 ### Interview practice
 

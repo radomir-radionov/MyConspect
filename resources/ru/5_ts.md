@@ -20,7 +20,7 @@ Matches the [official TypeScript Handbook](https://www.typescriptlang.org/docs/h
 | [Type Manipulation](./5_ts_type_manipulation.md) | Generics, keyof, typeof, mapped and conditional types.              |
 | [Classes](./5_ts_classes.md)                     | Fields, visibility, inheritance, `implements`, abstract classes.    |
 | [Modules](./5_ts_modules.md)                     | ES modules, CommonJS, resolution, and emit targets.                 |
-| [Interview](./5_ts_interview.md)                 | Q&A and oral questions.                                             |
+| [Interview](./5_ts_interview.md)                 | Вопросы по TypeScript, ответы не заполнены.                         |
 | [Tasks](/frontend/typescript/ts-interview-tasks) | Type-level coding challenges.                                       |
 
 ### Navigation — Old (Common)

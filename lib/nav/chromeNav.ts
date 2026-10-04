@@ -71,5 +71,6 @@ function chromeConcept(concept: NavConcept): NavConcept {
     title: concept.title,
     titleSearchText: concept.titleSearchText,
     interviewSection: concept.interviewSection,
+    ...(concept.group ? { group: concept.group } : {}),
   };
 }

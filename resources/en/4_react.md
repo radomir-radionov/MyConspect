@@ -8,15 +8,16 @@ Components, hooks, rendering, RSC, and ecosystem patterns. Theory lives in the t
 
 ### Navigation
 
-| Topic                                       | Covers                                             |
-| ------------------------------------------- | -------------------------------------------------- |
-| [React — Core](./4_react_core.md)           | Library model, rendering, JSX, and state.          |
-| [React — Hooks](./4_react_hooks.md)         | Hooks reference and escape hatches.                |
-| [React — React 19](./4_react_server.md)     | React 19 APIs, SSR, and React Server Components.   |
-| [React — Core](./4_react_ecosystem.md)      | Routing, libraries, performance, and legacy.       |
-| [React — Redux](./4_react_redux.md)         | Redux Toolkit, global client state, and RTK Query. |
-| [React — TanStack](./4_react_tanstack.md)   | TanStack Query, Router, Table, Virtual, and Form.  |
-| [React — Interview](./4_react_interview.md) | Interview Q&A and coding tasks.                    |
+| Topic                                                   | Covers                                             |
+| ------------------------------------------------------- | -------------------------------------------------- |
+| [React — Core](./4_react_core.md)                       | Library model, rendering, JSX, and state.          |
+| [React — Hooks](./4_react_hooks.md)                     | Hooks reference and escape hatches.                |
+| [React — React 19](./4_react_server.md)                 | React 19 APIs, SSR, and React Server Components.   |
+| [React — Core](./4_react_ecosystem.md)                  | Routing, libraries, performance, and legacy.       |
+| [React — Redux](./4_react_redux.md)                     | Redux Toolkit, global client state, and RTK Query. |
+| [React — TanStack](./4_react_tanstack.md)               | TanStack Query, Router, Table, Virtual, and Form.  |
+| [React — Interview](./4_react_interview.md)             | React interview questions, answers not filled in.  |
+| [React — Redux interview](./4_react_redux_interview.md) | Redux interview questions, answers not filled in.  |
 
 ### Interview practice
 

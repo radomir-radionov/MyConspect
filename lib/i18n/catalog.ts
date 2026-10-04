@@ -179,18 +179,41 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Internet stack and HTTP.": "Интернет-стек и HTTP.",
   "Internet, DNS, and how the web stack fits together.":
     "Интернет, DNS и как складывается веб-стек.",
-  "Interview Q&A and coding tasks for HTML.":
-    "Вопросы/ответы и задачи по HTML.",
-  "Interview Q&A and coding tasks for JavaScript.":
-    "Вопросы/ответы и задачи по JavaScript.",
+  "HTML interview questions, answers not filled in.":
+    "Вопросы по HTML, ответы не заполнены.",
+  "CSS interview questions, answers not filled in.":
+    "Вопросы по CSS, ответы не заполнены.",
+  "JavaScript interview questions, answers not filled in.":
+    "Вопросы по JavaScript, ответы не заполнены.",
+  "Next.js interview questions, answers not filled in.":
+    "Вопросы по Next.js, ответы не заполнены.",
+  "React interview questions, answers not filled in.":
+    "Вопросы по React, ответы не заполнены.",
+  "TypeScript interview questions, answers not filled in.":
+    "Вопросы по TypeScript, ответы не заполнены.",
   "Interview Q&A and coding tasks.": "Вопросы/ответы и задачи по коду.",
-  "Interview Q&A and quick-fix cases.": "Вопросы/ответы и быстрые кейсы.",
-  "Interview Q&A and shell appendix.": "Вопросы/ответы и shell-приложение.",
-  "Interview Q&A and type challenges.": "Вопросы/ответы и type challenges.",
+  "Git interview questions, answers not filled in.":
+    "Вопросы по Git, ответы не заполнены.",
+  "Testing interview questions, answers not filled in.":
+    "Вопросы по тестированию, ответы не заполнены.",
+  "WebSocket interview questions, answers not filled in.":
+    "Вопросы по WebSockets, ответы не заполнены.",
+  "PWA interview questions, answers not filled in.":
+    "Вопросы по PWA, ответы не заполнены.",
+  "Redux interview questions, answers not filled in.":
+    "Вопросы по Redux, ответы не заполнены.",
+  "Express.js interview questions, answers not filled in.":
+    "Вопросы по Express.js, ответы не заполнены.",
+  "OOP interview questions, answers not filled in.":
+    "Вопросы по OOP, ответы не заполнены.",
+  "Web security interview questions, answers not filled in.":
+    "Вопросы по веб-безопасности, ответы не заполнены.",
   "Interview Q&A for build and CI.": "Вопросы/ответы по build и CI.",
-  "Interview Q&A for databases.": "Вопросы/ответы по базам данных.",
+  "SQL interview questions, answers not filled in.":
+    "Вопросы по SQL, ответы не заполнены.",
   "Interview Q&A for HTTP and Web APIs.": "Вопросы/ответы по HTTP и Web API.",
-  "Interview Q&A for Node.js.": "Вопросы/ответы по Node.js.",
+  "Node.js interview questions, answers not filled in.":
+    "Вопросы по Node.js, ответы не заполнены.",
   "Interview Q&A for system design.": "Вопросы/ответы по system design.",
   "Intl, RegExp, Signals (TC39), and eval.":
     "Intl, RegExp, Signals (TC39) и eval.",

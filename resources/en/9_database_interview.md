@@ -1,6 +1,6 @@
 # Database — Interview
 
-Interview Q&A for databases.
+SQL interview questions, answers not filled in.
 
 [← Back to hub](./9_database.md)
 
@@ -10,478 +10,954 @@ Interview Q&A for databases.
 
 ### Sections
 
-- [Questions & Answers](#questions-answers)
+- [Interview Practice](#interview-practice)
 
 ---
 
-## Questions & Answers
+## Interview Practice
+
+Questions from [Devinterview.io — SQL](https://devinterview.io/questions/web-and-mobile-development/sql-interview-questions/).
+
+### SQL Fundamentals
 
 <details>
-  <summary>HAVING vs WHERE?</summary>
+<summary>What is SQL and what is it used for?</summary>
 
-### HAVING vs WHERE?
-
-**Definition:** `WHERE` filters **rows** before aggregation; `HAVING` filters **groups** after `GROUP BY`.
-
-**How it works:**
-
-SQL execution order — `FROM` → `WHERE` → `GROUP BY` → `HAVING` → `SELECT` → `ORDER BY` → `LIMIT`.
-
-| Clause   | Filters         | Can use aggregates?         |
-| -------- | --------------- | --------------------------- |
-| `WHERE`  | Individual rows | No (`COUNT(*)` invalid)     |
-| `HAVING` | Groups          | Yes (`HAVING COUNT(*) > 5`) |
-
-**When to use:** "Authors with more than 5 books" → `HAVING`. "Books from 2020+" → `WHERE`. Topic: [WHERE vs HAVING](./9_database_sql.md#where-vs-having).
-
-**Examples:**
-
-```sql
-SELECT author_id, COUNT(*) AS cnt
-FROM books
-WHERE published_at >= '2020-01-01'   -- row filter first
-GROUP BY author_id
-HAVING COUNT(*) > 5;                -- group filter after
-```
-
-**Sources:** [PostgreSQL — SELECT](https://www.postgresql.org/docs/current/sql-select.html)
-
-</details>
-
-<details>
-  <summary>LEFT JOIN vs INNER JOIN?</summary>
-
-### LEFT JOIN vs INNER JOIN?
-
-**Definition:** **INNER JOIN** returns only rows with matches in both tables. **LEFT JOIN** returns all left-table rows; right side is NULL when no match.
-
-**How it works:**
-
-Join condition in `ON` — `FROM users u LEFT JOIN orders o ON o.user_id = u.id` keeps every user even with zero orders.
-
-| Join  | Use when                                               |
-| ----- | ------------------------------------------------------ |
-| INNER | Relationship required (only users with orders)         |
-| LEFT  | Optional relationship (all users, order total or NULL) |
-
-**When to use:** Wrong join type silently drops data — INNER when you meant LEFT loses users without orders. Topic: [Joins](./9_database_sql.md#joins).
-
-**Sources:** [PostgreSQL — Joins](https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-JOIN) · [Use The Index, Luke — Joins](https://use-the-index-luke.com/sql/join)
-
-</details>
-
-<details>
-  <summary>1NF vs 2NF vs 3NF vs BCNF?</summary>
-
-### 1NF vs 2NF vs 3NF vs BCNF?
+### What is SQL and what is it used for?
 
 **Definition:**
 
-Normal forms are stacked rules that remove redundancy. Target for OLTP is **3NF**. Theory: [Normal forms (1NF–3NF, BCNF)](./9_database_core.md#normal-forms-1nf3nf-bcnf).
-
-| Form     | Extra rule over the previous                                       |
-| -------- | ------------------------------------------------------------------ |
-| **1NF**  | Atomic values — no lists/nested tables in a cell                   |
-| **2NF**  | Non-key columns depend on the **entire** candidate key             |
-| **3NF**  | Non-key columns depend **only** on keys (no A → B → C via non-key) |
-| **BCNF** | Every determinant of a non-trivial FD is a **superkey**            |
-
-**How it works:** 2NF only bites on **composite** keys. Single-column PK tables that are 1NF are already 2NF. BCNF is 3NF plus “no leftover FDs from a non-key into a key.”
-
-**When to use:** “Why split `products` from `order_items`?” → 2NF/3NF. Checkout still copies `unit_price` → intentional denormalization, not a failed 3NF.
-
-**Sources:** [Database normalization](https://en.wikipedia.org/wiki/Database_normalization)
-
 </details>
 
 <details>
-  <summary>MongoDB embed vs reference?</summary>
+<summary>Describe the difference between SQL and NoSQL databases.</summary>
 
-### MongoDB embed vs reference?
+### Describe the difference between SQL and NoSQL databases.
 
 **Definition:**
 
-**Embed** nests related documents inside parent; **reference** stores `ObjectId` pointing to another collection.
-
-| Pattern   | Best for                         | Avoid when                                |
-| --------- | -------------------------------- | ----------------------------------------- |
-| Embed     | One-to-few, always read together | Unbounded arrays (comments on viral post) |
-| Reference | One-to-many, shared entities     | Need atomic update across many parents    |
-
-**How it works:** Embedded doc updates with parent in one read; reference needs second query or `$lookup` (like JOIN).
-
-**When to use:** User address embedded; product category referenced. 16 MB document limit caps embedding.
-
-**Sources:** [MongoDB — Data modeling](https://www.mongodb.com/docs/manual/core/data-modeling-introduction/)
-
 </details>
 
 <details>
-  <summary>N+1 problem?</summary>
+<summary>What are the different types of SQL commands?</summary>
 
-### N+1 problem?
-
-**Definition:** One query loads N parents, then N separate queries load children — 1 + N round trips.
-
-**How it works:**
-
-ORM lazy-loading triggers query per row in a loop. Fix with eager `include`, JOIN, or `WHERE id IN (...)`.
-
-| Fix        | Approach                            |
-| ---------- | ----------------------------------- |
-| ORM        | `include: { posts: true }`          |
-| SQL        | `LEFT JOIN` or batch `IN`           |
-| DataLoader | Batch + cache per request (GraphQL) |
-
-**Examples:**
-
-```ts
-// BAD
-const users = await prisma.user.findMany();
-for (const u of users)
-  u.posts = await prisma.post.findMany({ where: { authorId: u.id } });
-
-// GOOD
-const users = await prisma.user.findMany({ include: { posts: true } });
-```
-
-**Sources:** [Prisma — Relation queries](https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries)
-
-</details>
-
-<details>
-  <summary>What is ACID?</summary>
-
-### What is ACID?
-
-**Definition:** Transaction guarantees — **Atomicity** (all or nothing), **Consistency** (constraints hold), **Isolation** (concurrent txs don't corrupt), **Durability** (committed survives crash).
-
-**When to use:** Bank transfer — debit and credit in one transaction; `ROLLBACK` on any failure.
-
-**Thoughts:** Postgres default isolation is READ COMMITTED. Keep transactions short. Topics: [ACID](./9_database_core.md#acid), [COMMIT and ROLLBACK](./9_database_sql.md#commit-and-rollback).
-
-**Sources:** [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
-
-</details>
-
-<details>
-  <summary>Upsert — ON CONFLICT?</summary>
-
-### Upsert — ON CONFLICT?
-
-**Definition:** `INSERT ... ON CONFLICT (unique_col) DO UPDATE` — insert or update atomically in PostgreSQL.
-
-**When to use:** Idempotent webhooks, sync user profile by email, settings row per user. Topic: [Upsert](./9_database_sql.md#upsert-on-conflict).
-
-**Examples:**
-
-```sql
-INSERT INTO settings (user_id, theme) VALUES (1, 'dark')
-ON CONFLICT (user_id) DO UPDATE SET theme = EXCLUDED.theme;
-```
-
-**Sources:** [PostgreSQL — ON CONFLICT](https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT)
-
-</details>
-
-<details>
-  <summary>Foreign keys — why use them?</summary>
-
-### Foreign keys — why use them?
-
-**Definition:** FK ensures referential integrity — cannot insert `orders.user_id = 999` if user 999 does not exist.
-
-**When to use:** `ON DELETE RESTRICT` prevents deleting user with orders; `CASCADE` deletes children with parent (use carefully). Topics: [Primary key](./9_database_sql.md#primary-key), [Foreign key](./9_database_sql.md#foreign-key).
-
-**Sources:** [PostgreSQL — Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
-
-</details>
-
-<details>
-  <summary>Backup vs PITR?</summary>
-
-### Backup vs PITR?
-
-**Definition:** **Snapshot backup** restores to backup time. **PITR** replays WAL logs to recover to any second within retention.
-
-**When to use:** Accidental `DELETE` → PITR to minute before. Daily snapshot alone cannot recover midday mistake.
-
-**Thoughts:** Test restores regularly. Replication is not backup.
-
-**Sources:** [PostgreSQL — Backup](https://www.postgresql.org/docs/current/backup.html)
-
-</details>
-
-<details>
-  <summary>Scaling PostgreSQL to millions of users</summary>
-
-### Scaling PostgreSQL to millions of users
-
-**Definition:** Growing from a small OLTP database to millions of users is a **sequence of measured steps** — not immediate sharding.
-
-**How it works:**
-
-| Stage | Action                                                                    | What it fixes                     |
-| ----- | ------------------------------------------------------------------------- | --------------------------------- |
-| 1     | **Indexes** on `WHERE`, `JOIN`, `ORDER BY` columns                        | Slow queries, seq scans           |
-| 2     | **Query tuning** — fix N+1, avoid `SELECT *`, keyset pagination           | App-level round trips             |
-| 3     | **Connection pooling** (PgBouncer)                                        | `max_connections` exhaustion      |
-| 4     | **Redis cache** — cache-aside for hot keys (profile, config)              | Repeated identical reads          |
-| 5     | **Read replicas** — reports and read-heavy endpoints off replica          | Primary CPU / I/O                 |
-| 6     | **Denormalize** — snapshots for dashboards (order line items at checkout) | Expensive JOINs at read time      |
-| 7     | **Partitioning** — by date or `tenant_id` inside one DB                   | Large table maintenance, archival |
-| 8     | **Async work** — email, analytics, search indexing via queue              | Write path bloat                  |
-| 9     | **Sharding** — split by `user_id` / `tenant_id` across DBs                | Single-writer ceiling             |
-
-```mermaid
-flowchart LR
-  app[App servers]
-  cache[(Redis)]
-  primary[(Postgres primary)]
-  replica[(Read replica)]
-  queue[Message queue]
-
-  app --> cache
-  app -->|writes| primary
-  app -->|reads| replica
-  primary -->|replication| replica
-  app -->|async jobs| queue
-```
-
-**When to use:**
-
-1M users ≠ 1M QPS — clarify read/write ratio and hot paths in interview. Start with `EXPLAIN ANALYZE` and connection pool metrics.
-
-#### Common pitfalls
-
-- Sharding before indexing — operational nightmare for little gain.
-- Reading replica right after write — stale data (read-your-writes violation).
-- `OFFSET 100000` pagination — use keyset (`WHERE id > $cursor`).
-
-**Pluses and minuses:**
-
-| + (incremental scale)                  | −                                        |
-| -------------------------------------- | ---------------------------------------- |
-| Each step is reversible and measurable | Sharding adds cross-shard query pain     |
-| Most apps never need step 9            | Cache invalidation bugs cause stale data |
-
-**Thoughts:** _"Indexes, pool, cache, replicas — sharding last."_
-
-**Sources:** [PostgreSQL — High availability](https://www.postgresql.org/docs/current/high-availability.html) · [Use The Index, Luke](https://use-the-index-luke.com/)
-
-</details>
-
-<details>
-  <summary>Indexes you use every day (interview answer)</summary>
-
-### Indexes you use every day (interview answer)
+### What are the different types of SQL commands?
 
 **Definition:**
 
-Practical index patterns for typical Node/Postgres apps — what to say when asked "which indexes do you use daily?"
+</details>
 
-| Pattern             | SQL                                              | Why                        |
-| ------------------- | ------------------------------------------------ | -------------------------- |
-| Unique login        | `UNIQUE INDEX ON users(email)`                   | Fast lookup + constraint   |
-| FK + sort           | `INDEX ON orders(user_id, created_at DESC)`      | User's orders list         |
-| Partial active rows | `INDEX ON users(email) WHERE deleted_at IS NULL` | Smaller index, soft-delete |
-| JSONB field         | `GIN INDEX ON products USING gin(data)`          | `@>` / `?` queries on JSON |
-| Full-text           | `GIN ON to_tsvector('english', title)`           | Search, not `LIKE '%x%'`   |
+<details>
+<summary>Explain the purpose of the SELECT statement.</summary>
 
-**How it works:**
+### Explain the purpose of the SELECT statement.
 
-`EXPLAIN (ANALYZE, BUFFERS)` — want `Index Scan` or `Index Only Scan`, not `Seq Scan` on large tables.
-
-Every index slows `INSERT`/`UPDATE` — don't index low-cardinality columns alone (`status` with 3 values) unless partial.
-
-**Examples:**
-
-```sql
-CREATE UNIQUE INDEX idx_users_email ON users (lower(email));
-CREATE INDEX idx_orders_user_created ON orders (user_id, created_at DESC);
-CREATE INDEX idx_users_active_email ON users (email) WHERE deleted_at IS NULL;
-```
-
-**Sources:** [PostgreSQL — Indexes](https://www.postgresql.org/docs/current/indexes.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is Redis and how does it work?</summary>
+<summary>What is the difference between WHERE and HAVING clauses?</summary>
 
-### What is Redis and how does it work?
+### What is the difference between WHERE and HAVING clauses?
 
-**Definition:** In-memory data structure server — sub-ms latency for strings, hashes, lists, sets, sorted sets, streams.
-
-**How it works:**
-
-Key-value in RAM; optional RDB/AOF persistence; TTL auto-expires keys; single-threaded command processing (hot key = bottleneck).
-
-```js
-const hit = await redis.get(`user:${id}`);
-if (hit) return JSON.parse(hit);
-const user = await db.user.findUnique({ where: { id } });
-await redis.setex(`user:${id}`, 3600, JSON.stringify(user));
-```
-
-Primary durable store for financial data without careful persistence config.
-
-**When to use:** Cache-aside, sessions, rate limiting (`INCR` + TTL), pub/sub, Bull/BullMQ job queues, leaderboards (`ZADD`).
-
-**Sources:** [Redis docs](https://redis.io/docs/)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is Elasticsearch and how does it work?</summary>
+<summary>Define what a JOIN is in SQL and list its types.</summary>
 
-### What is Elasticsearch and how does it work?
+### Define what a JOIN is in SQL and list its types.
 
-**Definition:** Lucene-based distributed search engine — JSON documents in **indexes**, split into **shards** across **nodes**.
-
-**How it works:**
-
-Analyzer (char filter → tokenizer → token filters) builds an inverted index. Query DSL (`match`, `match_phrase`, `bool`) scores hits. Replicas give HA; coordinating nodes route.
-
-Primary transactional store.
-
-**When to use:** Full-text product search, logs. Keep Postgres/Mongo as source of truth; sync into ES.
-
-**Sources:** [NoSQL — Elasticsearch](./9_database_nosql_core.md#elasticsearch)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is RabbitMQ and how does it work?</summary>
+<summary>What is a primary key in a database?</summary>
 
-### What is RabbitMQ and how does it work?
+### What is a primary key in a database?
 
-**Definition:** Message broker (AMQP) — producers publish to **exchanges**, exchanges route to **queues**, consumers process messages asynchronously.
-
-**How it works:**
-
-- **Exchange types:** direct (routing key), fanout (broadcast), topic (`order.*`), headers.
-- **Ack/nack** — consumer confirms processing; unacked messages redelivered.
-- **Dead letter queue (DLQ)** — failed messages for inspection/retry.
-- Delivery: **at-least-once** by default — consumers must be **idempotent**.
-
-RabbitMQ — task queues and routing; Kafka — high-throughput event log with replay.
-
-**When to use:** Email sending, order processing, decouple microservices, absorb traffic spikes.
-
-**Sources:** [RabbitMQ tutorials](https://www.rabbitmq.com/tutorials)
-
-</details>
-
----
-
-### Tasks
-
-### Task 1 — Top 3 authors by book count
-
-<details><summary>Solution</summary>
-
-```sql
-SELECT a.name, COUNT(b.id) AS book_count
-FROM authors a
-JOIN books b ON b.author_id = a.id
-GROUP BY a.id, a.name
-ORDER BY book_count DESC LIMIT 3;
-```
-
-</details>
-
-### Task 2 — Last 3 comments per user
-
-<details><summary>Pattern</summary>
-
-`ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at DESC) <= 3`, or lateral subquery with `LIMIT 3` per user.
-
-</details>
-
-### Task 3 — Library schema
-
-Tables: `books`, `authors`, `members`, `loans`. Normalize authors; index `loans(book_id)`, `loans(member_id)`.
-
-### Task 4 — Fix N+1 with Prisma
-
-```ts
-prisma.user.findMany({
-  include: { comments: { take: 3, orderBy: { createdAt: "desc" } } },
-});
-```
-
----
-
-<details>
-  <summary>Junior — DB</summary>
-
-### Junior — DB
-
-123. Write a query to find the three authors with the most books.
-
-124. Write a query that selects the last three comments for a specific user.
-
-125. Design a simple database schema for a library.
-
-126. What is the SQL `HAVING` clause used for?
-
-127. What is `LEFT JOIN` used for?
-
-128. What is the difference between embed and reference relationships in MongoDB?
-
-129. Comments store `author_id` as a plain string instead of `ObjectId` — what is wrong?
-
-130. How do you apply schema changes in production?
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Middle — DB</summary>
+<summary>Explain what a foreign key is and how it is used.</summary>
 
-### Middle — DB
+### Explain what a foreign key is and how it is used.
 
-129. What is Redis and what is it used for?
-
-129b. What is Elasticsearch? Index vs shard vs analyzer? Why not use it as the source of truth?
-
-130. Which databases have you used? SQL vs NoSQL?
-
-131. Write a query returning the last three comments **per user**.
-
-132. A client asks you to choose a database for a new project. Your process?
-
-133. What is `package-lock.json` for? → [10_build.md — npm](#packages)
-
-134. `npm install` vs `npm ci`? → [10_build.md — npm](#packages)
-
-135. What are bundlers for? → [10_build.md — Bundling](#bundling)
-
-136. Modular script loading and bundler loaders. → [10_build.md — Webpack](#bundlers)
-
-See also (git, not databases): [0_git.md — Interview Practice](0_git_interview.md#interview-practice) — merge vs rebase, staging area, code review.
+**Definition:**
 
 </details>
 
 <details>
-  <summary>DB (general)</summary>
+<summary>How can you prevent SQL injections?</summary>
 
-### DB (general)
+### How can you prevent SQL injections?
 
-30. What alternative database types do you use?
-
-31. What is RDS and when is it not a good fit?
-
-32. What are SQL injections and how do you prevent them?
-
-33. Why use placeholders for database queries?
-
-34. How do you design a MongoDB cluster?
-
-35. What is the MongoDB Aggregation framework used for?
-
-36. Describe GraphQL.
+**Definition:**
 
 </details>
+
+<details>
+<summary>What is normalization? Explain with examples.</summary>
+
+### What is normalization? Explain with examples.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe the concept of denormalization and when you would use it.</summary>
+
+### Describe the concept of denormalization and when you would use it.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are indexes and how can they improve query performance?</summary>
+
+### What are indexes and how can they improve query performance?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the purpose of the GROUP BY clause.</summary>
+
+### Explain the purpose of the GROUP BY clause.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a subquery, and when would you use one?</summary>
+
+### What is a subquery, and when would you use one?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe the functions of the ORDER BY clause.</summary>
+
+### Describe the functions of the ORDER BY clause.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are aggregate functions in SQL?</summary>
+
+### What are aggregate functions in SQL?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the differences between INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL JOIN.</summary>
+
+### Explain the differences between INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL JOIN.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you insert a new row into a database table?</summary>
+
+### How do you insert a new row into a database table?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how to update records in a database table.</summary>
+
+### Explain how to update records in a database table.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a SQL View and what are its advantages?</summary>
+
+### What is a SQL View and what are its advantages?
+
+**Definition:**
+
+</details>
+
+
+### SQL Data Types and Operators
+
+<details>
+<summary>List the different data types available in SQL.</summary>
+
+### List the different data types available in SQL.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are the differences between CHAR, VARCHAR, and TEXT data types?</summary>
+
+### What are the differences between CHAR, VARCHAR, and TEXT data types?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you use the BETWEEN operator in SQL?</summary>
+
+### How do you use the BETWEEN operator in SQL?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe the use of the IN operator.</summary>
+
+### Describe the use of the IN operator.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the use of wildcard characters in SQL.</summary>
+
+### Explain the use of wildcard characters in SQL.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the purpose of the LIKE operator?</summary>
+
+### What is the purpose of the LIKE operator?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you handle NULL values in SQL?</summary>
+
+### How do you handle NULL values in SQL?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What does the COALESCE function do?</summary>
+
+### What does the COALESCE function do?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the difference between UNION and UNION ALL?</summary>
+
+### What is the difference between UNION and UNION ALL?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe the use of arithmetic operators in SQL queries.</summary>
+
+### Describe the use of arithmetic operators in SQL queries.
+
+**Definition:**
+
+</details>
+
+
+### SQL Advanced Queries
+
+<details>
+<summary>Explain how to use the CASE statement in SQL.</summary>
+
+### Explain how to use the CASE statement in SQL.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you perform a self JOIN?</summary>
+
+### How would you perform a self JOIN?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a cross JOIN and when would you use it?</summary>
+
+### What is a cross JOIN and when would you use it?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How to implement pagination in SQL queries?</summary>
+
+### How to implement pagination in SQL queries?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the concept of Common Table Expressions (CTEs) and recursive CTEs.</summary>
+
+### Explain the concept of Common Table Expressions (CTEs) and recursive CTEs.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are window functions and how are they used?</summary>
+
+### What are window functions and how are they used?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can you concatenate column values in SQL?</summary>
+
+### How can you concatenate column values in SQL?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the PIVOT operation and how would you apply it?</summary>
+
+### What is the PIVOT operation and how would you apply it?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the process of combining a query that uses a GROUP BY with one that uses ORDER BY.</summary>
+
+### Explain the process of combining a query that uses a GROUP BY with one that uses ORDER BY.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you find duplicate records in a table?</summary>
+
+### How would you find duplicate records in a table?
+
+**Definition:**
+
+</details>
+
+
+### Database Design & Architecture
+
+<details>
+<summary>What is the Entity-Relationship Model?</summary>
+
+### What is the Entity-Relationship Model?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the different types of database schema.</summary>
+
+### Explain the different types of database schema.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are Stored Procedures and how are they beneficial?</summary>
+
+### What are Stored Procedures and how are they beneficial?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a trigger in SQL and when should it be used?</summary>
+
+### What is a trigger in SQL and when should it be used?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe the concept of ACID in databases.</summary>
+
+### Describe the concept of ACID in databases.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is database sharding?</summary>
+
+### What is database sharding?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do database indexes work and what types are there?</summary>
+
+### How do database indexes work and what types are there?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe the process of data warehousing.</summary>
+
+### Describe the process of data warehousing.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the difference between OLTP and OLAP systems.</summary>
+
+### Explain the difference between OLTP and OLAP systems.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are materialized views and how do they differ from standard views?</summary>
+
+### What are materialized views and how do they differ from standard views?
+
+**Definition:**
+
+</details>
+
+
+### SQL Optimization and Performance
+
+<details>
+<summary>How do you identify and optimize slow-running queries?</summary>
+
+### How do you identify and optimize slow-running queries?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is query execution plan in SQL?</summary>
+
+### What is query execution plan in SQL?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how to use EXPLAIN or EXPLAIN ANALYZE.</summary>
+
+### Explain how to use EXPLAIN or EXPLAIN ANALYZE.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can indexing affect performance both positively and negatively?</summary>
+
+### How can indexing affect performance both positively and negatively?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe how to measure the performance of SQL queries.</summary>
+
+### Describe how to measure the performance of SQL queries.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you rewrite a query to improve its performance?</summary>
+
+### How would you rewrite a query to improve its performance?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are partitioned tables and how can they optimize performance?</summary>
+
+### What are partitioned tables and how can they optimize performance?
+
+**Definition:**
+
+</details>
+
+
+### SQL Security
+
+<details>
+<summary>How do you implement database encryption in SQL?</summary>
+
+### How do you implement database encryption in SQL?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are roles and how do they manage database access?</summary>
+
+### What are roles and how do they manage database access?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the concept of row-level security.</summary>
+
+### Explain the concept of row-level security.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe how to create and use user-defined functions (UDFs).</summary>
+
+### Describe how to create and use user-defined functions (UDFs).
+
+**Definition:**
+
+</details>
+
+
+### SQL Functions and Expressions
+
+<details>
+<summary>Describe scalar-valued and table-valued functions.</summary>
+
+### Describe scalar-valued and table-valued functions.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you define a stored procedure with input and output parameters?</summary>
+
+### How would you define a stored procedure with input and output parameters?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the difference between a function and a stored procedure?</summary>
+
+### What is the difference between a function and a stored procedure?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you use the CAST and CONVERT functions?</summary>
+
+### How do you use the CAST and CONVERT functions?
+
+**Definition:**
+
+</details>
+
+
+### Transaction Control and Locking
+
+<details>
+<summary>What is a database transaction?</summary>
+
+### What is a database transaction?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the concept of locking and its types in SQL databases.</summary>
+
+### Explain the concept of locking and its types in SQL databases.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are the properties of transactions?</summary>
+
+### What are the properties of transactions?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you manage transaction isolation levels?</summary>
+
+### How do you manage transaction isolation levels?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What does it mean to commit or roll back a transaction?</summary>
+
+### What does it mean to commit or roll back a transaction?
+
+**Definition:**
+
+</details>
+
+
+### SQL and Modern Data Ecosystems
+
+<details>
+<summary>How can SQL be integrated with big data technologies?</summary>
+
+### How can SQL be integrated with big data technologies?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Discuss the interoperability of SQL with cloud-based data stores.</summary>
+
+### Discuss the interoperability of SQL with cloud-based data stores.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is Data Lake and how can SQL interact with it?</summary>
+
+### What is Data Lake and how can SQL interact with it?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the interaction between SQL and NoSQL within the same application.</summary>
+
+### Explain the interaction between SQL and NoSQL within the same application.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How does SQL work within a microservices architecture?</summary>
+
+### How does SQL work within a microservices architecture?
+
+**Definition:**
+
+</details>
+
+
+### SQL Best Practices and Standards
+
+<details>
+<summary>What are some common SQL coding practices you follow?</summary>
+
+### What are some common SQL coding practices you follow?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can you ensure the portability of SQL scripts across different database systems?</summary>
+
+### How can you ensure the portability of SQL scripts across different database systems?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What methods do you use for version controlling SQL scripts?</summary>
+
+### What methods do you use for version controlling SQL scripts?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are the benefits of using stored procedures instead of embedding SQL queries in code?</summary>
+
+### What are the benefits of using stored procedures instead of embedding SQL queries in code?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you document SQL code effectively?</summary>
+
+### How do you document SQL code effectively?
+
+**Definition:**
+
+</details>
+
+
+### Analytical SQL Questions
+
+<details>
+<summary>How would you find the Nth highest salary from a table?</summary>
+
+### How would you find the Nth highest salary from a table?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you count the number of occurrences of a specific value in a column?</summary>
+
+### How do you count the number of occurrences of a specific value in a column?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can you calculate running totals in SQL?</summary>
+
+### How can you calculate running totals in SQL?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how to reverse the contents of a column without using a reverse function.</summary>
+
+### Explain how to reverse the contents of a column without using a reverse function.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What approach do you use for creating a calendar table, and what are its uses?</summary>
+
+### What approach do you use for creating a calendar table, and what are its uses?
+
+**Definition:**
+
+</details>
+
+
+### Data Manipulation and ETL
+
+<details>
+<summary>What is the process of Extract, Transform, Load (ETL)?</summary>
+
+### What is the process of Extract, Transform, Load (ETL)?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you import/export data from/to a flat file using SQL?</summary>
+
+### How do you import/export data from/to a flat file using SQL?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the steps for a basic ETL process in a data warehousing environment.</summary>
+
+### Explain the steps for a basic ETL process in a data warehousing environment.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you cleanse and format data using SQL queries?</summary>
+
+### How do you cleanse and format data using SQL queries?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What tools do you use for automating data import/export routines?</summary>
+
+### What tools do you use for automating data import/export routines?
+
+**Definition:**
+
+</details>
+
+
+### Domain-Specific SQL Scenarios
+
+<details>
+<summary>How would you model a many-to-many relationship in SQL?</summary>
+
+### How would you model a many-to-many relationship in SQL?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe how to manage hierarchical data in SQL.</summary>
+
+### Describe how to manage hierarchical data in SQL.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you approach writing SQL queries for a reporting application?</summary>
+
+### How would you approach writing SQL queries for a reporting application?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how to handle temporal data and time zones in SQL.</summary>
+
+### Explain how to handle temporal data and time zones in SQL.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you use SQL in financial applications for risk and portfolio analysis?</summary>
+
+### How do you use SQL in financial applications for risk and portfolio analysis?
+
+**Definition:**
+
+</details>
+
+
+### Troubleshooting and Debugging
+
+<details>
+<summary>What steps do you take to troubleshoot a failed SQL query?</summary>
+
+### What steps do you take to troubleshoot a failed SQL query?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can you recover data from a corrupt SQL database?</summary>
+
+### How can you recover data from a corrupt SQL database?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What methods do you employ to ensure data integrity?</summary>
+
+### What methods do you employ to ensure data integrity?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you decipher and resolve deadlocks in SQL?</summary>
+
+### How do you decipher and resolve deadlocks in SQL?
+
+**Definition:**
+
+</details>
+
+
+### Advanced Data Analysis in SQL
+
+<details>
+<summary>Explain how to use SQL for predictive analysis and machine learning purposes.</summary>
+
+### Explain how to use SQL for predictive analysis and machine learning purposes.
+
+**Definition:**
 
 </details>

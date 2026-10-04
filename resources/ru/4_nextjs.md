@@ -16,7 +16,7 @@
 | [Next.js — Маршрутизация](./4_nextjs_routing.md)     | App Router, файловые маршруты, навигация, метаданные и SEO.                            |
 | [Next.js — Оптимизации](./4_nextjs_optimizations.md) | Изображения, шрифты, скрипты, бандлинг и Core Web Vitals.                              |
 | [Next.js — Платформа](./4_nextjs_platform.md)        | Прокси, конфиг, Vercel, миграция и отладка.                                            |
-| [Next.js — Интервью](./4_nextjs_interview.md)        | Вопросы и ответы на интервью и задачи по кодированию.                                  |
+| [Next.js — Интервью](./4_nextjs_interview.md)        | Вопросы по Next.js, ответы не заполнены.                                               |
 
 ### Interview practice
 

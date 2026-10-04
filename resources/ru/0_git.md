@@ -8,12 +8,12 @@
 
 ### Navigation
 
-| Тема | Обложки |
-|------|--------|
-| [Git — Core](./0_git_core.md) | Объекты, коммиты и повседневный рабочий процесс. |
+| Тема                                    | Обложки                                                     |
+| --------------------------------------- | ----------------------------------------------------------- |
+| [Git — Core](./0_git_core.md)           | Объекты, коммиты и повседневный рабочий процесс.            |
 | [Git — Ветвление](./0_git_branching.md) | Филиалы, слияния, удаленное управление и совместная работа. |
-| [Git — Команда](./0_git_team.md) | Восстановление, командные практики, хуки и продвинутый Git. |
-| [Git — Интервью](./0_git_interview.md) | Интервью с вопросами и ответами и приложение-оболочка. |
+| [Git — Команда](./0_git_team.md)        | Восстановление, командные практики, хуки и продвинутый Git. |
+| [Git — Интервью](./0_git_interview.md)  | Вопросы по Git, ответы не заполнены.                        |
 
 ### Interview practice
 
@@ -26,13 +26,13 @@
 <details>
   <summary>Primary references</summary>
 
-* [Официальный сайт Git](https://git-scm.com/)
-* [Книга о Git](https://git-scm.com/book/en/v2)
-* [Документация GitHub — использование Git](https://docs.github.com/en/get-started/using-git)
-* [Учебные пособия по Atlassian Git](https://www.atlassian.com/git/tutorials/what-is-version-control)
-* [Глоссарий Atlassian Git](https://www.atlassian.com/git/glossary)
-* [Обычные коммиты](https://www.conventionalcommits.org/en/v1.0.0/)* [Основная шпаргалка по Git (ByteByteGo)](https://blog.bytebytego.com/i/162154465/essential-git-cheatsheet)
-* [Руководство по стилю фиксации (Эрик ВонБ)](https://gist.github.com/ericavonb/3c79e5035567c8ef3267)
+- [Официальный сайт Git](https://git-scm.com/)
+- [Книга о Git](https://git-scm.com/book/en/v2)
+- [Документация GitHub — использование Git](https://docs.github.com/en/get-started/using-git)
+- [Учебные пособия по Atlassian Git](https://www.atlassian.com/git/tutorials/what-is-version-control)
+- [Глоссарий Atlassian Git](https://www.atlassian.com/git/glossary)
+- [Обычные коммиты](https://www.conventionalcommits.org/en/v1.0.0/)\* [Основная шпаргалка по Git (ByteByteGo)](https://blog.bytebytego.com/i/162154465/essential-git-cheatsheet)
+- [Руководство по стилю фиксации (Эрик ВонБ)](https://gist.github.com/ericavonb/3c79e5035567c8ef3267)
 
 </details>
 
@@ -41,9 +41,9 @@
 
 ### Videos & courses
 
-* [Плейлист курса Git](https://www.youtube.com/playlist?list=PLDyvV36pndZFHXjXuwA_NywNrVQO0aQqb)
-* [Основные команды Git](https://www.youtube.com/watch?v=EsA-9E0umCo)
-* [Развертывание страниц GitHub](https://www.youtube.com/watch?v=dLX40HYzETY)
+- [Плейлист курса Git](https://www.youtube.com/playlist?list=PLDyvV36pndZFHXjXuwA_NywNrVQO0aQqb)
+- [Основные команды Git](https://www.youtube.com/watch?v=EsA-9E0umCo)
+- [Развертывание страниц GitHub](https://www.youtube.com/watch?v=dLX40HYzETY)
 
 </details>
 
@@ -54,8 +54,8 @@
 
 Протокол, `authorized_keys`, `sshd_config`и усиление защиты сервера: [DevOps — SSH](./15_devops.md#ssh). Этот блок предназначен только для удаленных устройств GitHub/Git.
 
-* [Git — Генерация ключей SSH](https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key)
-* [GitHub — Генерация нового ключа SSH] (https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)* [GitHub — Добавление нового ключа SSH] (https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+- [Git — Генерация ключей SSH](https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key)
+- [GitHub — Генерация нового ключа SSH] (https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)\* [GitHub — Добавление нового ключа SSH] (https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
 ```bash
 ssh-keygen -t ed25519 -C "your_email@example.com"
@@ -83,5 +83,4 @@ xclip -selection clipboard < ~/.ssh/id_ed25519.pub
 - [Командные практики](./0_git_team.md#team)
 - [Крючки и инструменты](./0_git_team.md#hooks-tooling)
 - [Продвинутые темы](./0_git_team.md#advanced)
-- [Interview Practice](#interview-practice)
-- [Приложение — Основы оболочки](./0_git_interview.md#appendix-shell)
+- [Interview Practice](./0_git_interview.md#interview-practice)

@@ -4,20 +4,20 @@ Deployment, containers, CI/CD integration, and production operations — intervi
 
 ### Related docs
 
-* [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [SDLC](./7_special_sdlc.md) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_modules.md#files--file-systems) · [Node — SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_core.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#internet) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
+- [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [SDLC](./7_special_sdlc.md) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_modules.md#files--file-systems) · [Node — SIGTERM](./15_devops.md#unix-process-management) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_core.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#internet) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
 
 ### Main concepts
 
-| Area | Topics |
-|------|--------|
-| **CI/CD** | Pipelines, GitHub Actions, GitLab CI, CircleCI, deploy strategies |
-| **Containers** | Docker (see [10_build.md](./10_build.md)), Compose |
-| **Orchestration** | Kubernetes Pod / Service / Deployment (basics) |
-| **Runtime** | Nginx, Apache httpd, env vars, secrets |
-| **Ops** | Health checks, logs, rollbacks, zero-downtime, [SSH](#ssh), [Unix processes](#unix-process-management), [firewall](#firewall--packet-filter) |
-| **Observability** | Structured logs, OpenTelemetry traces, Prometheus/Grafana |
-| **Cloud basics** | Preview deploys, CDN, SSL/TLS |
-| **AWS** | Lambda, API Gateway, S3, SQS, CloudWatch |
+| Area              | Topics                                                                                                                                       |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **CI/CD**         | Pipelines, GitHub Actions, GitLab CI, CircleCI, deploy strategies                                                                            |
+| **Containers**    | Docker (see [10_build.md](./10_build.md)), Compose                                                                                           |
+| **Orchestration** | Kubernetes Pod / Service / Deployment (basics)                                                                                               |
+| **Runtime**       | Nginx, Apache httpd, env vars, secrets                                                                                                       |
+| **Ops**           | Health checks, logs, rollbacks, zero-downtime, [SSH](#ssh), [Unix processes](#unix-process-management), [firewall](#firewall--packet-filter) |
+| **Observability** | Structured logs, OpenTelemetry traces, Prometheus/Grafana                                                                                    |
+| **Cloud basics**  | Preview deploys, CDN, SSL/TLS                                                                                                                |
+| **AWS**           | Lambda, API Gateway, S3, SQS, CloudWatch                                                                                                     |
 
 ### Sections
 
@@ -113,20 +113,20 @@ volumes:
 
 A runner checks out the repo, executes steps, uploads artifacts. Secrets come from the platform vault, not the repo. Matrix builds test Node versions in parallel.
 
-| | GitHub Actions | GitLab CI | CircleCI |
-|---|---------------|-----------|----------|
-| Config | `.github/workflows/*.yml` | `.gitlab-ci.yml` | `.circleci/config.yml` |
-| Native git | GitHub PRs, environments | GitLab MR pipelines | Orbs + GitHub/Bitbucket |
-| Typical use | Most JS OSS and startups | GitLab-hosted companies | Older enterprise setups |
+|             | GitHub Actions            | GitLab CI               | CircleCI                |
+| ----------- | ------------------------- | ----------------------- | ----------------------- |
+| Config      | `.github/workflows/*.yml` | `.gitlab-ci.yml`        | `.circleci/config.yml`  |
+| Native git  | GitHub PRs, environments  | GitLab MR pipelines     | Orbs + GitHub/Bitbucket |
+| Typical use | Most JS OSS and startups  | GitLab-hosted companies | Older enterprise setups |
 
 **When to use:** PR checks (`npm ci`, `tsc --noEmit`, tests). Production deploy on `main` after tests. Prefer `npm ci` over `npm install` in CI.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Same mental model: jobs + artifacts + secrets | Vendor lock-in on YAML helpers |
-| Preview deploys from PR (Vercel/Netlify) | Self-hosted runners need hardening |
+| +                                             | −                                  |
+| --------------------------------------------- | ---------------------------------- |
+| Same mental model: jobs + artifacts + secrets | Vendor lock-in on YAML helpers     |
+| Preview deploys from PR (Vercel/Netlify)      | Self-hosted runners need hardening |
 
 **Examples:**
 
@@ -140,7 +140,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '20', cache: 'npm' }
+        with: { node-version: "20", cache: "npm" }
       - run: npm ci
       - run: npm test
 ```
@@ -181,10 +181,10 @@ Putting a database in a Deployment without a Volume. Hitting Pod IP from another
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                  | −                                               |
+| ---------------------------------- | ----------------------------------------------- |
 | Self-heal and roll out without SSH | YAML and networking (CNI, Ingress) are a career |
-| Same API on GKE/EKS/AKS | Overkill for a single VPS + Docker Compose |
+| Same API on GKE/EKS/AKS            | Overkill for a single VPS + Docker Compose      |
 
 **Examples:**
 
@@ -232,11 +232,11 @@ spec:
 
 App SDK creates spans (`trace_id` + `span_id`). Collector receives OTLP (gRPC 4317 / HTTP 4318), batches, exports to Jaeger/Tempo (traces), Prometheus (metrics), Loki/ELK (logs). Grafana dashboards query those backends. Structured logs are JSON with the same `trace_id` so you can jump from a span to log lines.
 
-| Signal | Question | Typical backend |
-|--------|----------|-----------------|
-| Logs | What did this instance say? | Loki, CloudWatch, ELK |
-| Metrics | Is p99 latency up? | Prometheus + Grafana |
-| Traces | Which service was slow on this request? | Jaeger, Tempo, X-Ray |
+| Signal  | Question                                | Typical backend       |
+| ------- | --------------------------------------- | --------------------- |
+| Logs    | What did this instance say?             | Loki, CloudWatch, ELK |
+| Metrics | Is p99 latency up?                      | Prometheus + Grafana  |
+| Traces  | Which service was slow on this request? | Jaeger, Tempo, X-Ray  |
 
 **When to use:**
 
@@ -248,18 +248,18 @@ Microservices, serverless (X-Ray / OTel), SLOs. Start with structured JSON logs 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| One instrumentation, swap vendors | Collector is another moving part |
+| +                                    | −                                        |
+| ------------------------------------ | ---------------------------------------- |
+| One instrumentation, swap vendors    | Collector is another moving part         |
 | Trace-id ties logs to a user request | Cardinality explosions in metrics labels |
 
 **Examples:**
 
 ```js
-import { trace } from '@opentelemetry/api';
+import { trace } from "@opentelemetry/api";
 
-const tracer = trace.getTracer('checkout');
-await tracer.startActiveSpan('charge', async (span) => {
+const tracer = trace.getTracer("checkout");
+await tracer.startActiveSpan("charge", async (span) => {
   try {
     await stripe.charges.create({ amount });
   } finally {
@@ -299,9 +299,9 @@ await tracer.startActiveSpan('charge', async (span) => {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Fast static files + one entry for TLS | Config syntax is easy to get wrong |
+| +                                      | −                                               |
+| -------------------------------------- | ----------------------------------------------- |
+| Fast static files + one entry for TLS  | Config syntax is easy to get wrong              |
 | SPA fallback without Node serving HTML | `proxy_pass` trailing slash changes URI rewrite |
 
 **Examples:**
@@ -326,7 +326,7 @@ server {
 
 **Thoughts:**
 
-*Nginx maps URL → `location` → file (`root` + `try_files`) or upstream (`proxy_pass`) — that is how the server “knows which resource to send.”*
+_Nginx maps URL → `location` → file (`root` + `try_files`) or upstream (`proxy_pass`) — that is how the server “knows which resource to send.”_
 
 Same pattern in [10_build.md — Nginx](./10_build.md). Config syntax, FastCGI, systemd → [Nginx configuration](#nginx-configuration). Apache equivalent → [Apache HTTP Server](#apache-http-server). HTTP semantics / compression / Basic auth → [6_web_api.md — Web server](./6_web_api_http.md#web-server). CORS is browser-only → [3_js_browser.md](./3_js_browser_extra.md#cors-same-origin).
 
@@ -360,9 +360,9 @@ Treating `systemctl reload nginx` as a systemd-unit reload. Putting `root` on `l
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Event-driven, cheap static + TLS | Easy to misread `proxy_pass` trailing `/` |
+| +                                | −                                           |
+| -------------------------------- | ------------------------------------------- |
+| Event-driven, cheap static + TLS | Easy to misread `proxy_pass` trailing `/`   |
 | Graceful reload without downtime | Regex `location` order is easy to get wrong |
 
 **Examples:**
@@ -428,7 +428,7 @@ nginx -s reload          # or: sudo systemctl reload nginx
 sudo systemctl status nginx
 ```
 
-**Thoughts:** *Simple directives end with `;`; blocks are contexts. URI → longest `location` → file or upstream; apply with `-t` then `reload`, not a hard restart.*
+**Thoughts:** _Simple directives end with `;`; blocks are contexts. URI → longest `location` → file or upstream; apply with `-t` then `reload`, not a hard restart._
 
 **See also:** [Reverse proxy](#nginx--deployment) · [Apache HTTP Server](#apache-http-server) · [10_build.md — Nginx](./10_build.md)
 
@@ -463,11 +463,11 @@ Copying `Order Deny,Allow` from 2.2 into 2.4. Assuming directive names are case-
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| `.htaccess` without root access (shared hosting) | `.htaccess` on every request is slower |
-| Huge module ecosystem, virtual hosts | Prefork MPM: one thread/process per connection (slowloris-sensitive) |
-| Familiar on legacy PHP hosts | Mix of 2.2 vs 2.4 auth syntax in old tutorials |
+| +                                                | −                                                                    |
+| ------------------------------------------------ | -------------------------------------------------------------------- |
+| `.htaccess` without root access (shared hosting) | `.htaccess` on every request is slower                               |
+| Huge module ecosystem, virtual hosts             | Prefork MPM: one thread/process per connection (slowloris-sensitive) |
+| Familiar on legacy PHP hosts                     | Mix of 2.2 vs 2.4 auth syntax in old tutorials                       |
 
 **Examples:**
 
@@ -518,7 +518,7 @@ sudo systemctl reload httpd   # graceful; Debian: apache2
 sudo apachectl -k graceful
 ```
 
-**Thoughts:** *Containers (`<Directory>` / `<VirtualHost>`) scope directives; `.htaccess` is optional per-dir override; 2.4 auth is `Require`; test with `-t`, apply with graceful reload.*
+**Thoughts:** _Containers (`<Directory>` / `<VirtualHost>`) scope directives; `.htaccess` is optional per-dir override; 2.4 auth is `Require`; test with `-t`, apply with graceful reload._
 
 **See also:** [Nginx configuration](#nginx-configuration) · reverse proxy in [0_system_design.md](./0_system_design.md) · [10_build.md](./10_build.md)
 
@@ -545,23 +545,23 @@ sudo apachectl -k graceful
 4. **Invoke phase** — run handler with event payload.
 5. **Freeze or destroy** environment after idle timeout.
 
-| Concept | Detail |
-|---------|--------|
-| **Cold start** | New environment = extra latency (`initDurationMs` in platform report) |
-| **Warm start** | Reused environment — faster |
-| **Timeout** | Max 15 minutes per invocation |
-| **Memory** | 128 MB – 10 GB (more memory = more CPU) |
-| **Concurrency** | Account/region limits; reserved concurrency per function |
-| **State** | **Stateless** — persist to DB/S3/DynamoDB, not `/tmp` across invocations |
-| **Env vars** | Config + secrets (use Secrets Manager for sensitive values) |
+| Concept         | Detail                                                                   |
+| --------------- | ------------------------------------------------------------------------ |
+| **Cold start**  | New environment = extra latency (`initDurationMs` in platform report)    |
+| **Warm start**  | Reused environment — faster                                              |
+| **Timeout**     | Max 15 minutes per invocation                                            |
+| **Memory**      | 128 MB – 10 GB (more memory = more CPU)                                  |
+| **Concurrency** | Account/region limits; reserved concurrency per function                 |
+| **State**       | **Stateless** — persist to DB/S3/DynamoDB, not `/tmp` across invocations |
+| **Env vars**    | Config + secrets (use Secrets Manager for sensitive values)              |
 
-| Trigger | Use case |
-|---------|----------|
-| API Gateway | REST/HTTP API backend |
-| S3 | Image resize on upload |
-| SQS | Async job processing |
+| Trigger     | Use case                 |
+| ----------- | ------------------------ |
+| API Gateway | REST/HTTP API backend    |
+| S3          | Image resize on upload   |
+| SQS         | Async job processing     |
 | EventBridge | Cron (`rate(5 minutes)`) |
-| SNS | Fan-out notifications |
+| SNS         | Fan-out notifications    |
 
 ```
 Client → API Gateway → Lambda → DynamoDB / RDS / S3
@@ -572,17 +572,17 @@ Provisioned concurrency, smaller bundles, Node 20+ runtime, avoid huge dependenc
 
 CloudWatch Logs (automatic), X-Ray tracing, structured JSON logs via Lambda Powertools.
 
-*"Used Lambda behind API Gateway for event-driven endpoints — pay per request, no server management. Watch cold starts, keep functions stateless, env vars for config, IAM roles for least-privilege access to S3/SQS."*
+_"Used Lambda behind API Gateway for event-driven endpoints — pay per request, no server management. Watch cold starts, keep functions stateless, env vars for config, IAM roles for least-privilege access to S3/SQS."_
 
 **Examples:**
 
 ```js
 export const handler = async (event) => {
-  const body = JSON.parse(event.body ?? '{}');
+  const body = JSON.parse(event.body ?? "{}");
   // business logic
   return {
     statusCode: 200,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ok: true, input: body }),
   };
 };
@@ -601,21 +601,21 @@ export const handler = async (event) => {
 
 Quick map of AWS services commonly asked on fullstack/backend interviews.
 
-| Service | Role |
-|---------|------|
-| **Lambda** | Serverless functions |
-| **API Gateway** | HTTP/WebSocket API front door |
-| **S3** | Object storage (files, static assets) |
-| **RDS / Aurora** | Managed PostgreSQL/MySQL |
-| **DynamoDB** | Managed NoSQL key-value/document |
-| **SQS** | Message queue |
-| **SNS** | Pub/sub notifications |
-| **EventBridge** | Event bus + scheduling |
-| **CloudWatch** | Logs, metrics, alarms |
-| **IAM** | Roles, policies — who can call what |
-| **Secrets Manager** | Rotate and inject secrets |
-| **ECS/EKS** | Containers when Lambda is not enough |
-| **CloudFront** | CDN |
+| Service             | Role                                  |
+| ------------------- | ------------------------------------- |
+| **Lambda**          | Serverless functions                  |
+| **API Gateway**     | HTTP/WebSocket API front door         |
+| **S3**              | Object storage (files, static assets) |
+| **RDS / Aurora**    | Managed PostgreSQL/MySQL              |
+| **DynamoDB**        | Managed NoSQL key-value/document      |
+| **SQS**             | Message queue                         |
+| **SNS**             | Pub/sub notifications                 |
+| **EventBridge**     | Event bus + scheduling                |
+| **CloudWatch**      | Logs, metrics, alarms                 |
+| **IAM**             | Roles, policies — who can call what   |
+| **Secrets Manager** | Rotate and inject secrets             |
+| **ECS/EKS**         | Containers when Lambda is not enough  |
+| **CloudFront**      | CDN                                   |
 
 **How it works:** IAM role attached to Lambda grants `s3:GetObject`, `sqs:SendMessage`, etc. — never embed long-lived keys in code.
 
@@ -643,7 +643,7 @@ Quick map of AWS services commonly asked on fullstack/backend interviews.
 - Client talks to `sshd` (default TCP **22**). After key exchange, the session is encrypted. SSHv2 is built to resist passive sniffing and to authenticate the **host** so a naïve **MITM** cannot silently swap endpoints (you still must verify the host key on first connect).
 - **Public-key auth (preferred):** you keep a **private** key; the server stores the matching **public** key in `~/.ssh/authorized_keys` (one key per line). The client proves it holds the private key; the server never sees that private key. Algorithms: **Ed25519** (default for new keys), ECDSA, RSA. Asymmetric crypto: [Encryption](./7_special_security.md#encryption).
 - **Password / keyboard-interactive:** weaker (guessable, phishing, brute-force). Typical for the **first** login before a key is installed; then turn it off.
-- **Host-based / “by IP”:** OpenSSH `HostbasedAuthentication` (rhosts-style) is weak. An **IP allowlist** is not identity — NAT and shared IPv4 mean many users can sit behind one address. Use keys, then optionally restrict *who* may connect (`AllowUsers`, firewall) as defense in depth.
+- **Host-based / “by IP”:** OpenSSH `HostbasedAuthentication` (rhosts-style) is weak. An **IP allowlist** is not identity — NAT and shared IPv4 mean many users can sit behind one address. Use keys, then optionally restrict _who_ may connect (`AllowUsers`, firewall) as defense in depth.
 - **Do not copy the private key** between machines. Copy only `*.pub`. Protect the private key with a passphrase; use `ssh-agent` so you type it once per session.
 
 ```
@@ -668,11 +668,11 @@ Treating `id_rsa` as the modern default. Moving `/tmp/*.pub` **onto** `authorize
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| Encrypted shell, files, tunnels | Host-key TOFU: a first-connect MITM can still trick you if you skip fingerprint check |
-| Key auth: no password on the wire | Loose `~/.ssh` modes → sshd **ignores** `authorized_keys` (`StrictModes`) |
-| Ed25519 keys are short and strong | Root + password on the internet is an instant brute-force target |
+| +                                 | −                                                                                     |
+| --------------------------------- | ------------------------------------------------------------------------------------- |
+| Encrypted shell, files, tunnels   | Host-key TOFU: a first-connect MITM can still trick you if you skip fingerprint check |
+| Key auth: no password on the wire | Loose `~/.ssh` modes → sshd **ignores** `authorized_keys` (`StrictModes`)             |
+| Ed25519 keys are short and strong | Root + password on the internet is an instant brute-force target                      |
 
 **Examples:**
 
@@ -701,7 +701,7 @@ chmod 600 ~/.ssh/authorized_keys
 ssh root@192.0.2.50   # should not ask the account password (passphrase for the key still may)
 ```
 
-**Thoughts:** *SSH encrypts the session; identity is a private key the server never stores — put only the public half in `authorized_keys`, then disable passwords.*
+**Thoughts:** _SSH encrypts the session; identity is a private key the server never stores — put only the public half in `authorized_keys`, then disable passwords._
 
 **Sources:** [OpenSSH ssh(1)](https://github.com/openssh/openssh-portable/blob/master/ssh.1) · [sshd(8)](https://github.com/openssh/openssh-portable/blob/master/sshd.8) · [RFC 4251](https://www.rfc-editor.org/rfc/rfc4251) · [GitHub — generating an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) · [GitHub — adding a key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
@@ -722,17 +722,17 @@ ssh root@192.0.2.50   # should not ask the account password (passphrase for the 
 
 **How it works:**
 
-- **Windows:** Task Manager (GUI). **Unix:** CLI plus job control — the shell tracks *jobs* of the current terminal separately from system-wide PIDs.
-- **Foreground vs background** is *job control* (does the terminal wait for the command?), not CPU niceness. Foreground: the shell waits; you cannot type a new command until it exits (or you suspend it). Background: append `&`; the shell prints `[job_number] PID` and returns the prompt.
-- **Job vs PID:** `[1]` is the job index in *this* shell session. PID is global. `jobs` lists jobs (`+` = current, `-` = previous). `fg` / `bg` take a job spec (`%1`), not a PID.
+- **Windows:** Task Manager (GUI). **Unix:** CLI plus job control — the shell tracks _jobs_ of the current terminal separately from system-wide PIDs.
+- **Foreground vs background** is _job control_ (does the terminal wait for the command?), not CPU niceness. Foreground: the shell waits; you cannot type a new command until it exits (or you suspend it). Background: append `&`; the shell prints `[job_number] PID` and returns the prompt.
+- **Job vs PID:** `[1]` is the job index in _this_ shell session. PID is global. `jobs` lists jobs (`+` = current, `-` = previous). `fg` / `bg` take a job spec (`%1`), not a PID.
 - **Suspend / continue:** Ctrl+Z sends **SIGTSTP** (catchable stop from the terminal). Status becomes `suspended` / `Stopped`. `bg` continues it in the background; `fg` (no args) brings the current job (`+`) to the foreground. **SIGSTOP** also stops a process but cannot be caught (unlike SIGTSTP).
-- **Niceness (CPU priority):** Linux `nice` values run from **−20** (most CPU time) to **19** (least). Lower number = higher priority. Unprivileged users can only *raise* niceness (make themselves nicer / slower), not grab more CPU than others.
+- **Niceness (CPU priority):** Linux `nice` values run from **−20** (most CPU time) to **19** (least). Lower number = higher priority. Unprivileged users can only _raise_ niceness (make themselves nicer / slower), not grab more CPU than others.
 - **Inspect:** `top` — live CPU, RAM, swap, all processes (`q` quit, `?` help). Linux often uses `htop` (ncurses, cross-platform including macOS). `ps` = process status: `ps -A` (same as `-e`) all processes; `ps -Af` full-format listing. PID is in the PID column.
 - **Signals:** `kill PID` sends **SIGTERM** (15) by default — catchable, used for graceful exit. `kill -9 PID` / `kill -KILL PID` sends **SIGKILL**, which **cannot be caught, blocked, or ignored**. `sudo` is needed only if you do not own the process — not because `-9` is special.
 
 **When to use:**
 
-Long `ping` / logs in the background while you keep using the shell. Archive a large tree with low niceness so a DB keeps CPU. Find a runaway Node PID with `ps`/`top` and `kill` it. Deploy path: SIGTERM first (K8s / `docker stop`), SIGKILL only after the grace period — [Node SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm).
+Long `ping` / logs in the background while you keep using the shell. Archive a large tree with low niceness so a DB keeps CPU. Find a runaway Node PID with `ps`/`top` and `kill` it. Deploy path: SIGTERM first (K8s / `docker stop`), SIGKILL only after the grace period — [Node SIGTERM](./15_devops.md#unix-process-management).
 
 #### Common pitfalls
 
@@ -740,10 +740,10 @@ Calling foreground/background “process priority” (that is `nice`). Assuming 
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| PID is the handle for every ops tool | PID reuse: a late `kill` can hit a new process |
-| SIGTERM lets the app drain work | SIGKILL skips cleanup (locks, temp files, connections) |
+| +                                    | −                                                       |
+| ------------------------------------ | ------------------------------------------------------- |
+| PID is the handle for every ops tool | PID reuse: a late `kill` can hit a new process          |
+| SIGTERM lets the app drain work      | SIGKILL skips cleanup (locks, temp files, connections)  |
 | Job control is per-terminal and fast | `jobs`/`fg`/`bg` do not see processes started elsewhere |
 
 **Examples:**
@@ -777,7 +777,7 @@ kill 22495     # SIGTERM — prefer this
 kill -9 22495  # SIGKILL — last resort; sudo only if not your process
 ```
 
-**Thoughts:** *Identify with PID; job-control (`&` / `fg` / `bg` / Ctrl+Z) is only this shell; `nice` is CPU share; default `kill` is SIGTERM — SIGKILL (`-9`) cannot be handled.*
+**Thoughts:** _Identify with PID; job-control (`&` / `fg` / `bg` / Ctrl+Z) is only this shell; `nice` is CPU share; default `kill` is SIGTERM — SIGKILL (`-9`) cannot be handled._
 
 **Sources:** [kill(1)](https://man7.org/linux/man-pages/man1/kill.1.html) · [signal(7)](https://man7.org/linux/man-pages/man7/signal.7.html) · [nice(1)](https://man7.org/linux/man-pages/man1/nice.1.html) · [renice(1)](https://man7.org/linux/man-pages/man1/renice.1.html) · [ps(1)](https://man7.org/linux/man-pages/man1/ps.1.html) · [htop](https://htop.dev/)
 
@@ -806,10 +806,10 @@ Hide a Node port from the Internet (bind `127.0.0.1` **and** firewall). Block sc
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| Cheap host-level control | Easy to lock out SSH |
-| Kernel-speed | `iptables` vs `nftables` vs cloud SG overlap |
+| +                        | −                                            |
+| ------------------------ | -------------------------------------------- |
+| Cheap host-level control | Easy to lock out SSH                         |
+| Kernel-speed             | `iptables` vs `nftables` vs cloud SG overlap |
 
 **Examples:**
 
@@ -821,7 +821,7 @@ sudo iptables -L
 # Modern Linux prefers nftables; cloud VMs also use security groups — both must allow 443.
 ```
 
-**Thoughts:** *The kernel filters packets; the CLI only writes the rules — keep SSH allowed before you experiment.*
+**Thoughts:** _The kernel filters packets; the CLI only writes the rules — keep SSH allowed before you experiment._
 
 **Sources:** [iptables(8)](https://man7.org/linux/man-pages/man8/iptables.8.html) · [nftables](https://wiki.nftables.org/) · [Doka — Working with the network](https://doka.guide/tools/network/)
 
@@ -835,23 +835,23 @@ sudo iptables -L
 
 ### Question index
 
-| Topic | Answer |
-|-------|--------|
-| Nginx reverse proxy / which file to send | Q&A |
-| Nginx vs Apache config | Q&A |
-| Docker vs VM | Q&A |
-| Container lifecycle | [10_build.md](./10_build_docker.md#container-lifecycle) |
-| CI/CD pipeline stages | Q&A |
-| Blue-green / rolling deploy | Q&A |
-| Environment variables vs secrets | Q&A |
-| Health checks | Q&A |
-| AWS Lambda | Q&A |
-| AWS services map | Q&A |
-| Observability (logs / traces / metrics) | Q&A |
-| Pod vs Deployment vs Service | Q&A |
-| SSH keys vs password | Q&A |
-| PID / kill vs kill -9 | Q&A |
-| Firewall / iptables | Q&A |
+| Topic                                    | Answer                                                  |
+| ---------------------------------------- | ------------------------------------------------------- |
+| Nginx reverse proxy / which file to send | Q&A                                                     |
+| Nginx vs Apache config                   | Q&A                                                     |
+| Docker vs VM                             | Q&A                                                     |
+| Container lifecycle                      | [10_build.md](./10_build_docker.md#container-lifecycle) |
+| CI/CD pipeline stages                    | Q&A                                                     |
+| Blue-green / rolling deploy              | Q&A                                                     |
+| Environment variables vs secrets         | Q&A                                                     |
+| Health checks                            | Q&A                                                     |
+| AWS Lambda                               | Q&A                                                     |
+| AWS services map                         | Q&A                                                     |
+| Observability (logs / traces / metrics)  | Q&A                                                     |
+| Pod vs Deployment vs Service             | Q&A                                                     |
+| SSH keys vs password                     | Q&A                                                     |
+| PID / kill vs kill -9                    | Q&A                                                     |
+| Firewall / iptables                      | Q&A                                                     |
 
 ---
 
@@ -875,7 +875,7 @@ sudo iptables -L
 
 **When to use:** Production SPA + API on one domain; `index.html` fallback for client-side routing.
 
-**Thoughts:** *The browser asks for a URL; Nginx `location` + `try_files`/`proxy_pass` (or the app router) pick the bytes to return.*
+**Thoughts:** _The browser asks for a URL; Nginx `location` + `try_files`/`proxy_pass` (or the app router) pick the bytes to return._
 
 **See also:** [Reverse proxy](#nginx--deployment) · [Apache HTTP Server](#apache-http-server)
 
@@ -894,7 +894,7 @@ sudo iptables -L
 
 **When to use:** Nginx in front of Node/SPA; Apache on LAMP / shared hosting that only allows `.htaccess`.
 
-**Thoughts:** *Nginx = contexts + `location`; Apache = tagged containers + optional `.htaccess`; always syntax-check, then graceful reload.*
+**Thoughts:** _Nginx = contexts + `location`; Apache = tagged containers + optional `.htaccess`; always syntax-check, then graceful reload._
 
 **See also:** [Nginx configuration](#nginx-configuration) · [Apache HTTP Server](#apache-http-server)
 
@@ -1066,7 +1066,6 @@ Smaller production image (no devDependencies, no source), fewer attack surfaces,
 
 ---
 
-**usefull links**:  
+**usefull links**:
+
 - https://selectel.ru/blog/courses/network-protocols/
-
-

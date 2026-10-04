@@ -472,7 +472,7 @@ Prefer `web-vitals` over a raw `PerformanceObserver` on `paint`: field FCP also 
 
 **Thoughts:** FCP = first content pixels. Fix TTFB and blocking resources; still measure LCP and INP.
 
-**See also:** [Core Web Vitals](./1_html_performance.md#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [TTFB](#ttfb-time-to-first-byte) · [INP](#inp-interaction-to-next-paint) · [preload, prefetch, preconnect](#preload-prefetch-preconnect--prerender) · [HTML — first paint](./1_html_interview.md#what-happens-on-first-page-render)
+**See also:** [Core Web Vitals](./1_html_performance.md#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [TTFB](#ttfb-time-to-first-byte) · [INP](#inp-interaction-to-next-paint) · [preload, prefetch, preconnect](#preload-prefetch-preconnect--prerender) · [HTML — first paint](./1_html_rendering.md#first-render--full-pipeline)
 
 **Sources:**
 
@@ -822,7 +822,7 @@ Workflow: **profile** (RUM + APM/traces + Lighthouse/DevTools) → find p95/p99 
 | Client memo/code split        | Smoother INP, smaller bundles | Harder to debug, easy to over-memo  |
 | Premature micro-optimizations | —                             | Wasted time without metrics         |
 
-**Thoughts:** Client CWV and API latency are linked — slow TTFB blocks FCP/LCP; heavy client JS hurts INP even when the API is fast. Full React/Next/Vue client playbooks → [§10 Performance](./4_react_ecosystem.md#10-performance) · [Next optimizations](./4_nextjs_optimizations.md) · DB/query tuning → [N+1](./9_database_orm.md#n1-problem) · [Connection pooling](./9_database_orm.md#connection-pooling) · Node stack → [8_nodejs interview Q29](./8_nodejs_interview.md#a-project-has-performance-issues--how-do-you-find-fix-and-prevent-them).
+**Thoughts:** Client CWV and API latency are linked — slow TTFB blocks FCP/LCP; heavy client JS hurts INP even when the API is fast. Full React/Next/Vue client playbooks → [§10 Performance](./4_react_ecosystem.md#10-performance) · [Next optimizations](./4_nextjs_optimizations.md) · DB/query tuning → [N+1](./9_database_orm.md#n1-problem) · [Connection pooling](./9_database_orm.md#connection-pooling) · Node stack → [8_nodejs interview Q29](./8_nodejs_interview.md#interview-practice).
 
 **Sources:** [web.dev — Vitals](https://web.dev/articles/vitals) · [web.dev — Optimize TTFB](https://web.dev/articles/optimize-ttfb) · [MDN — Server-Timing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing) · [web.dev — Optimize long tasks](https://web.dev/articles/optimize-long-tasks)
 

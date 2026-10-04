@@ -856,5 +856,3 @@ if ("serviceWorker" in navigator) {
 ---
 
 </details>
-
-<a name="13-security"></a>

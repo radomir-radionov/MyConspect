@@ -290,8 +290,6 @@ pg_restore -d mydb_restored mydb.dump
 
 Incremental scaling path from small OLTP to millions of users — interview and production planning.
 
-See full version with diagram in [Interview Practice — Scaling PostgreSQL](./9_database_interview.md#scaling-postgresql-to-millions-of-users).
-
 **How it works:** indexes → query tuning → PgBouncer → Redis → read replicas → denormalize → partition → async queue → shard last.
 
 </details>

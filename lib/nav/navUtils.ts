@@ -17,15 +17,25 @@ type InterviewConcept = {
   readonly interviewSection?: InterviewSection;
 };
 
+export function isQuestionCluster(clusterId: string): boolean {
+  return (
+    clusterId === "interview" ||
+    clusterId.endsWith("-interview") ||
+    clusterId === "tasks" ||
+    clusterId.endsWith("-tasks")
+  );
+}
+
 export function shouldHideSidebarConcepts(
-  topic: Pick<Topic, "slug" | "hideSidebarConcepts"> & {
+  topic: Pick<Topic, "slug" | "hideSidebarConcepts" | "grouping"> & {
     readonly title?: string;
   },
 ): boolean {
   return (
     topic.hideSidebarConcepts === true ||
     isInterviewTopic({ slug: topic.slug, title: topic.title ?? "" }) ||
-    isInterviewTasksTopic(topic)
+    isInterviewTasksTopic(topic) ||
+    isQuestionCluster(topic.grouping?.cluster ?? "")
   );
 }
 

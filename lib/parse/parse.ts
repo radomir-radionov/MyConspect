@@ -20,11 +20,13 @@ export type Concept = {
   readonly searchText?: string;
   readonly titleSearchText?: string;
   readonly interviewSection?: InterviewSection;
+  readonly group?: string;
 };
 
 export type ConceptBlock = {
   readonly title: string;
   readonly body: string;
+  readonly group?: string;
 };
 
 export type ParsedTopic = {
@@ -110,6 +112,7 @@ export type ConceptOutline = {
   readonly searchText?: string;
   readonly titleSearchText?: string;
   readonly interviewSection?: InterviewSection;
+  readonly group?: string;
 };
 
 const CONCEPT_SEARCH_TEXT_MAX = 1600;
@@ -125,6 +128,7 @@ export function parseTopicOutline(
     id: uniqueId(slugify(block.title), usedIds),
     title: block.title,
     searchText: conceptSearchText(block.body),
+    ...(block.group ? { group: block.group } : {}),
   }));
   for (const item of interviewOutlineItems(interview, usedIds)) {
     outline.push(item);
@@ -223,12 +227,14 @@ type LocatedBlock = {
   readonly title: string;
   readonly body: string;
   readonly start: number;
+  readonly group?: string;
 };
 
 export function collectConceptBlocks(markdown: string): ConceptBlock[] {
-  return collectLocatedBlocks(markdown).map(({ title, body }) => ({
+  return collectLocatedBlocks(markdown).map(({ title, body, group }) => ({
     title,
     body,
+    ...(group ? { group } : {}),
   }));
 }
 
@@ -269,11 +275,15 @@ function partitionInterviewBlocks(markdown: string): {
   regular: ConceptBlock[];
   interview: ConceptBlock[];
 } {
-  const regionStart = interviewRegionStart(markdown);
+  const regionStart = interviewRegionStart(studyMarkdown(markdown));
   const regular: ConceptBlock[] = [];
   const interview: ConceptBlock[] = [];
   for (const block of collectLocatedBlocks(markdown)) {
-    const item = { title: block.title, body: block.body };
+    const item = {
+      title: block.title,
+      body: block.body,
+      ...(block.group ? { group: block.group } : {}),
+    };
     if (
       isInterviewNavItem(block.title) ||
       (regionStart !== -1 && block.start >= regionStart)
@@ -369,6 +379,7 @@ function interviewOutlineItems(
       titleSearchText: block.title,
       searchText: conceptSearchText(block.body),
       interviewSection,
+      ...(block.group ? { group: block.group } : {}),
     };
   });
 }
@@ -391,6 +402,7 @@ function interviewConceptItems(
         html,
         searchText,
         interviewSection,
+        ...(block.group ? { group: block.group } : {}),
       }),
     );
   });
@@ -510,7 +522,15 @@ function collectLocatedBlocks(markdown: string): LocatedBlock[] {
   const lower = markdown.toLowerCase();
   const blocks: LocatedBlock[] = [];
   let i = 0;
+  let currentGroup: string | undefined;
   let heading: { title: string; start: number; body: string[] } | undefined;
+
+  const topicGroup = (title: string): string | undefined => {
+    if (shouldSkipTitle(title) || isInterviewSectionTitle(title)) {
+      return undefined;
+    }
+    return title;
+  };
 
   const flushHeading = () => {
     if (!heading) {
@@ -523,6 +543,12 @@ function collectLocatedBlocks(markdown: string): LocatedBlock[] {
     );
     if (body && !shouldSkipTitle(title) && looksLikeConcept(body, title)) {
       blocks.push({ title, body, start: heading.start });
+      if (
+        currentGroup &&
+        normalizeTitle(currentGroup) === normalizeTitle(title)
+      ) {
+        currentGroup = undefined;
+      }
     }
     heading = undefined;
   };
@@ -539,7 +565,16 @@ function collectLocatedBlocks(markdown: string): LocatedBlock[] {
       const title = stripMd(extracted.title);
       const body = stripDuplicateTitleHeading(title, extracted.body);
       if (body && !shouldSkipTitle(title) && looksLikeConcept(body, title)) {
-        blocks.push({ title, body, start: detailsAt });
+        const group =
+          currentGroup && normalizeTitle(currentGroup) !== normalizeTitle(title)
+            ? currentGroup
+            : undefined;
+        blocks.push({
+          title,
+          body,
+          start: detailsAt,
+          ...(group ? { group } : {}),
+        });
       }
       i = extracted.end;
       continue;
@@ -548,9 +583,16 @@ function collectLocatedBlocks(markdown: string): LocatedBlock[] {
     const lineEnd = markdown.indexOf("\n", i);
     const end = lineEnd === -1 ? markdown.length : lineEnd;
     const line = markdown.slice(i, end);
-    const headingMatch = line.match(/^#{2,3}\s+(.+)$/);
+    const h3Match = line.match(/^###\s+(.+)$/);
+    const h2Match = line.match(/^##(?!#)\s+(.+)$/);
+    const headingMatch = h3Match ?? h2Match;
     if (headingMatch) {
       flushHeading();
+      if (h2Match) {
+        currentGroup = undefined;
+      } else if (h3Match) {
+        currentGroup = topicGroup(stripMd(h3Match[1]));
+      }
       heading = { title: stripMd(headingMatch[1]), start: i, body: [] };
       i = lineEnd === -1 ? markdown.length : lineEnd + 1;
       continue;

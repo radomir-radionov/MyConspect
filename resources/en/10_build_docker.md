@@ -6,7 +6,7 @@ Images, containers, Compose, and container lifecycle.
 
 ### Related docs
 
-* [Build — CI](./10_build_ci.md) · [Build — Bundlers](./10_build_bundlers.md) · [Build — Docker](./10_build_docker.md) · [Build — Infra](./10_build_infra.md) · [Build — Interview](./10_build_interview.md)
+- [Build — CI](./10_build_ci.md) · [Build — Bundlers](./10_build_bundlers.md) · [Build — Docker](./10_build_docker.md) · [Build — Infra](./10_build_infra.md) · [Build — Interview](./10_build_interview.md)
 
 ### Sections
 
@@ -46,12 +46,12 @@ Binding the app to `127.0.0.1` inside the container (host cannot reach it — li
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Same env on laptop, CI, prod | Networking, volumes, and Desktop VM have a learning curve |
-| Seconds to start vs a full VM | Shared kernel — not a VM; native modules must match **container** arch |
-| One process per container; Compose for stacks | Image bloat without multi-stage + `.dockerignore` |
-| Recipe in git (Dockerfile) | Harder to debug than a local process |
+| +                                             | −                                                                      |
+| --------------------------------------------- | ---------------------------------------------------------------------- |
+| Same env on laptop, CI, prod                  | Networking, volumes, and Desktop VM have a learning curve              |
+| Seconds to start vs a full VM                 | Shared kernel — not a VM; native modules must match **container** arch |
+| One process per container; Compose for stacks | Image bloat without multi-stage + `.dockerignore`                      |
+| Recipe in git (Dockerfile)                    | Harder to debug than a local process                                   |
 
 **Examples:**
 
@@ -73,13 +73,13 @@ docker run --rm -v "$PWD":/imgs dpokidov/imagemagick /imgs/in.png -resize 100x10
 
 ### Container vs virtual machine
 
-| | Container | Virtual Machine |
-|---|-----------|-----------------|
-| **Isolation** | Process-level (shared kernel) | Full OS per VM |
-| **Startup** | Seconds | Minutes |
-| **Resource usage** | Lightweight | Heavy (full OS) |
-| **Portability** | High (with arch match) | High |
-| **Use case** | Microservices, CI | Legacy apps, diff OS |
+|                    | Container                     | Virtual Machine      |
+| ------------------ | ----------------------------- | -------------------- |
+| **Isolation**      | Process-level (shared kernel) | Full OS per VM       |
+| **Startup**        | Seconds                       | Minutes              |
+| **Resource usage** | Lightweight                   | Heavy (full OS)      |
+| **Portability**    | High (with arch match)        | High                 |
+| **Use case**       | Microservices, CI             | Legacy apps, diff OS |
 
 **Sources:** [Docker — Containers](https://www.docker.com/resources/what-container/)
 
@@ -90,24 +90,24 @@ docker run --rm -v "$PWD":/imgs dpokidov/imagemagick /imgs/in.png -resize 100x10
 
 ### Core concepts
 
-| Concept | Definition |
-|---------|------------|
-| **Image** | Read-only layered template (union of diffs). Built from Dockerfile or pulled from a registry. Layers are reused across images. |
-| **Container** | Instance of an image: namespaces + cgroups + a **writable** top layer. Ephemeral by default. |
-| **Volume** | Docker-managed persistent directory (not a [bind mount](#bind-mounts)). Survives `docker rm`. Details: [Volumes](#volumes). |
-| **Network** | Virtual LAN between containers and/or the host. Compose creates a default user-defined bridge. |
-| **Registry** | Remote image store. Default: **Docker Hub**. Also GHCR, ECR, GCR/Artifact Registry, ACR, Yandex CR, etc. Prefer **official** images (`node`, `python`, `nginx`). |
-| **Dockerfile** | Recipe for an image (`FROM` then layers). |
-| **Compose file** | YAML for a multi-container app. |
+| Concept          | Definition                                                                                                                                                       |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Image**        | Read-only layered template (union of diffs). Built from Dockerfile or pulled from a registry. Layers are reused across images.                                   |
+| **Container**    | Instance of an image: namespaces + cgroups + a **writable** top layer. Ephemeral by default.                                                                     |
+| **Volume**       | Docker-managed persistent directory (not a [bind mount](#bind-mounts)). Survives `docker rm`. Details: [Volumes](#volumes).                                      |
+| **Network**      | Virtual LAN between containers and/or the host. Compose creates a default user-defined bridge.                                                                   |
+| **Registry**     | Remote image store. Default: **Docker Hub**. Also GHCR, ECR, GCR/Artifact Registry, ACR, Yandex CR, etc. Prefer **official** images (`node`, `python`, `nginx`). |
+| **Dockerfile**   | Recipe for an image (`FROM` then layers).                                                                                                                        |
+| **Compose file** | YAML for a multi-container app.                                                                                                                                  |
 
 **Network drivers (Linux Engine):**
 
-| Driver | Role |
-|--------|------|
-| **bridge** | Default. Isolated network; containers talk by IP (user-defined bridge: also by **name**). Typical app ↔ DB. |
-| **host** | No network namespace — container shares the host’s network (Linux). |
-| **none** | No networking. |
-| **overlay** | Multi-host (Swarm). Also **ipvlan** / **macvlan** for physical-looking NICs. |
+| Driver      | Role                                                                                                        |
+| ----------- | ----------------------------------------------------------------------------------------------------------- |
+| **bridge**  | Default. Isolated network; containers talk by IP (user-defined bridge: also by **name**). Typical app ↔ DB. |
+| **host**    | No network namespace — container shares the host’s network (Linux).                                         |
+| **none**    | No networking.                                                                                              |
+| **overlay** | Multi-host (Swarm). Also **ipvlan** / **macvlan** for physical-looking NICs.                                |
 
 ```mermaid
 flowchart LR
@@ -193,22 +193,22 @@ Reproducible Node/nginx images; CI artifacts; CLI tools packaged as `ENTRYPOINT`
 
 #### Instructions
 
-| Instruction | Role |
-|-------------|------|
-| `FROM` | Base image / new stage. Pin a tag (`node:20-alpine`), not bare `node` (`latest`). `AS name` for multi-stage. |
-| `RUN` | Shell command **at build time** — install packages, compile. Chain with `&&` in one `RUN` to cut layers. |
-| `COPY` | Copy from **build context** into the image. Prefer this. `COPY --from=stage` copies from another stage/image. |
-| `ADD` | Like `COPY`, plus remote URLs and auto-extract of local archives — easy to misuse; avoid unless you need that. |
-| `WORKDIR` | Working directory for later `RUN`/`COPY`/`CMD`/`ENTRYPOINT`. Created if missing. |
-| `ENV` | Env vars in the **image** (available at runtime and later build steps). |
-| `ARG` | **Build-time** vars (`docker build --build-arg KEY=val`). Not in the running container unless you copy into `ENV`. Visible in `docker history` — not for secrets. |
-| `USER` | UID/GID for later `RUN`/`CMD`/`ENTRYPOINT`. Create the user first; official `node` image already has `USER node`. |
-| `EXPOSE` | **Documents** the listen port. Does **not** publish to the host. Publish with `docker run -p host:container` or Compose `ports`. `-P` maps all `EXPOSE`d ports to random host ports. |
-| `VOLUME` | Declares a mount point (anonymous volume unless you mount something at run). Host path is **not** set in the Dockerfile — [Volumes](#volumes). |
-| `CMD` | Default command. Overridden by args after `docker run IMAGE …`. Only the last `CMD` counts. |
-| `ENTRYPOINT` | Main executable. `docker run` args are **appended** (exec form). Use with `CMD` for default flags. |
-| `HEALTHCHECK` | How the daemon probes liveness (`CMD` inside the container). |
-| `LABEL` | Image metadata. `STOPSIGNAL` / `SHELL` — stop signal and default shell. |
+| Instruction   | Role                                                                                                                                                                                 |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `FROM`        | Base image / new stage. Pin a tag (`node:20-alpine`), not bare `node` (`latest`). `AS name` for multi-stage.                                                                         |
+| `RUN`         | Shell command **at build time** — install packages, compile. Chain with `&&` in one `RUN` to cut layers.                                                                             |
+| `COPY`        | Copy from **build context** into the image. Prefer this. `COPY --from=stage` copies from another stage/image.                                                                        |
+| `ADD`         | Like `COPY`, plus remote URLs and auto-extract of local archives — easy to misuse; avoid unless you need that.                                                                       |
+| `WORKDIR`     | Working directory for later `RUN`/`COPY`/`CMD`/`ENTRYPOINT`. Created if missing.                                                                                                     |
+| `ENV`         | Env vars in the **image** (available at runtime and later build steps).                                                                                                              |
+| `ARG`         | **Build-time** vars (`docker build --build-arg KEY=val`). Not in the running container unless you copy into `ENV`. Visible in `docker history` — not for secrets.                    |
+| `USER`        | UID/GID for later `RUN`/`CMD`/`ENTRYPOINT`. Create the user first; official `node` image already has `USER node`.                                                                    |
+| `EXPOSE`      | **Documents** the listen port. Does **not** publish to the host. Publish with `docker run -p host:container` or Compose `ports`. `-P` maps all `EXPOSE`d ports to random host ports. |
+| `VOLUME`      | Declares a mount point (anonymous volume unless you mount something at run). Host path is **not** set in the Dockerfile — [Volumes](#volumes).                                       |
+| `CMD`         | Default command. Overridden by args after `docker run IMAGE …`. Only the last `CMD` counts.                                                                                          |
+| `ENTRYPOINT`  | Main executable. `docker run` args are **appended** (exec form). Use with `CMD` for default flags.                                                                                   |
+| `HEALTHCHECK` | How the daemon probes liveness (`CMD` inside the container).                                                                                                                         |
+| `LABEL`       | Image metadata. `STOPSIGNAL` / `SHELL` — stop signal and default shell.                                                                                                              |
 
 #### Common pitfalls
 
@@ -222,11 +222,11 @@ Reproducible Node/nginx images; CI artifacts; CLI tools packaged as `ENTRYPOINT`
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Same runtime on laptop and server | Bad layer order → slow rebuilds |
-| Cache + multi-stage keep images small | `latest` tags and huge context bloat CI |
-| Recipe is versioned with the app | Secrets in `ARG`/`ENV` leak into image history |
+| +                                     | −                                              |
+| ------------------------------------- | ---------------------------------------------- |
+| Same runtime on laptop and server     | Bad layer order → slow rebuilds                |
+| Cache + multi-stage keep images small | `latest` tags and huge context bloat CI        |
+| Recipe is versioned with the app      | Secrets in `ARG`/`ENV` leak into image history |
 
 **Examples:**
 
@@ -281,22 +281,22 @@ flowchart LR
   running -->|rm -f| gone
 ```
 
-| Command | Effect |
-|---------|--------|
-| `docker create` | Allocate from an image; not running |
-| `docker start` | Start a created or exited container |
-| `docker run` | `create` + `start` (often `--rm` to delete on exit) |
-| `docker pause` / `unpause` | Freeze / resume (cgroup freezer) |
-| `docker stop` | `SIGTERM` (or `STOPSIGNAL`), then `SIGKILL` after timeout |
-| `docker kill` | Immediate signal (`SIGKILL` by default) |
-| `docker restart` | Stop then start |
-| `docker rm` | Delete a **stopped** container (`-f` kills then removes) |
+| Command                    | Effect                                                    |
+| -------------------------- | --------------------------------------------------------- |
+| `docker create`            | Allocate from an image; not running                       |
+| `docker start`             | Start a created or exited container                       |
+| `docker run`               | `create` + `start` (often `--rm` to delete on exit)       |
+| `docker pause` / `unpause` | Freeze / resume (cgroup freezer)                          |
+| `docker stop`              | `SIGTERM` (or `STOPSIGNAL`), then `SIGKILL` after timeout |
+| `docker kill`              | Immediate signal (`SIGKILL` by default)                   |
+| `docker restart`           | Stop then start                                           |
+| `docker rm`                | Delete a **stopped** container (`-f` kills then removes)  |
 
 Restart policies (`--restart` / Compose `restart:`): `no` (default), `on-failure[:n]`, `always`, `unless-stopped`. Manual `stop` suppresses `always` until you start again. Exited containers stay in `docker ps -a` — a name conflict means an old stopped container still exists.
 
 **When to use:**
 
-Interview “describe the lifecycle”; K8s `SIGTERM` + Node graceful shutdown — [8_nodejs.md — SIGTERM](./8_nodejs_interview.md#graceful-shutdown--sigterm).
+Interview “describe the lifecycle”; K8s `SIGTERM` + Node graceful shutdown — [8_nodejs.md — SIGTERM](./15_devops.md#unix-process-management).
 
 #### Common pitfalls
 
@@ -317,13 +317,13 @@ Interview “describe the lifecycle”; K8s `SIGTERM` + Node graceful shutdown �
 
 **How it works:**
 
-| Type | Where data lives | Survives `docker rm`? | Typical use |
-|------|------------------|----------------------|-------------|
-| **[Volume](#volumes)** | Docker-managed dir (or a volume driver) | Yes, until `volume rm` / `prune` | Databases, shared app data |
-| **[Bind mount](#bind-mounts)** | Any host path you choose | Yes (host filesystem) | Dev source, host config |
-| **[tmpfs](#tmpfs-and-named-pipes)** | Host RAM (Linux) | No | Secrets, scratch, hot cache |
-| **Named pipe** | Windows npipe | IPC / session | Docker Engine API from a Windows container |
-| **Image mount** | Another image, read-only (containerd image store) | N/A | Extra tools/assets without rebuilding |
+| Type                                | Where data lives                                  | Survives `docker rm`?            | Typical use                                |
+| ----------------------------------- | ------------------------------------------------- | -------------------------------- | ------------------------------------------ |
+| **[Volume](#volumes)**              | Docker-managed dir (or a volume driver)           | Yes, until `volume rm` / `prune` | Databases, shared app data                 |
+| **[Bind mount](#bind-mounts)**      | Any host path you choose                          | Yes (host filesystem)            | Dev source, host config                    |
+| **[tmpfs](#tmpfs-and-named-pipes)** | Host RAM (Linux)                                  | No                               | Secrets, scratch, hot cache                |
+| **Named pipe**                      | Windows npipe                                     | IPC / session                    | Docker Engine API from a Windows container |
+| **Image mount**                     | Another image, read-only (containerd image store) | N/A                              | Extra tools/assets without rebuilding      |
 
 From the app’s view every type is just a directory or file. Overlay rule: mounting onto a **non-empty** container path **hides** the image files there (USB into `/mnt`). Exception: an **empty named volume** is **pre-filled** from the image (unless `volume-nocopy`).
 
@@ -337,10 +337,10 @@ Calling a bind mount a “volume”; storing prod data only in the writable laye
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
+| +                                  | −                                                           |
+| ---------------------------------- | ----------------------------------------------------------- |
 | Same path API inside the container | Different overlay, security, and portability rules per type |
-| Volumes do not bloat the image | Writable layer is slow and hard to extract |
+| Volumes do not bloat the image     | Writable layer is slow and hard to extract                  |
 
 **Thoughts:** Persist with **volumes**; edit host files with **bind mounts**; keep ephemeral/sensitive scratch in **tmpfs**.
 
@@ -374,11 +374,11 @@ Binding over `/usr` and breaking the image; `Z` on `/home`; Windows vs Unix path
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| Instant host ↔ container edits | Host layout must exist; not portable |
-| Simple local DX | Container can mutate host files (`ro` / `readonly` to prevent) |
-| | Slow / missing FS events on Docker Desktop |
+| +                              | −                                                              |
+| ------------------------------ | -------------------------------------------------------------- |
+| Instant host ↔ container edits | Host layout must exist; not portable                           |
+| Simple local DX                | Container can mutate host files (`ro` / `readonly` to prevent) |
+|                                | Slow / missing FS events on Docker Desktop                     |
 
 **Examples:**
 
@@ -463,10 +463,10 @@ DB data; share one dataset across containers; backup/migrate; high I/O on Docker
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| CLI/API; Linux + Windows containers | Awkward to browse from the host |
-| Drivers: NFS, remote, extra processing | Unused volumes pile up until `prune` |
+| +                                             | −                                       |
+| --------------------------------------------- | --------------------------------------- |
+| CLI/API; Linux + Windows containers           | Awkward to browse from the host         |
+| Drivers: NFS, remote, extra processing        | Unused volumes pile up until `prune`    |
 | Empty volume can be pre-filled from the image | Not for live-editing a host source tree |
 
 **Examples:**
@@ -532,10 +532,10 @@ volumes:
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| Fast; nothing left on disk by design | Linux only; one container; can OOM |
-| Better than baking secrets into the image | Can still hit swap |
+| +                                         | −                                  |
+| ----------------------------------------- | ---------------------------------- |
+| Fast; nothing left on disk by design      | Linux only; one container; can OOM |
+| Better than baking secrets into the image | Can still hit swap                 |
 
 **Examples:**
 
@@ -574,7 +574,7 @@ docker run -d -it --name tmptest --tmpfs /app node:lts
 services:
   frontend:
     image: example/webapp
-    build: ./webapp          # context; Dockerfile in that folder
+    build: ./webapp # context; Dockerfile in that folder
 
   backend:
     image: example/database
@@ -582,7 +582,7 @@ services:
       context: backend
       dockerfile: ../backend.Dockerfile
       args:
-        GIT_COMMIT: cdc3b19   # Dockerfile ARG
+        GIT_COMMIT: cdc3b19 # Dockerfile ARG
 ```
 
 ```bash
@@ -607,10 +607,10 @@ services:
 deploy:
   resources:
     limits:
-      cpus: "0.50"   # at most 0.5 CPU
+      cpus: "0.50" # at most 0.5 CPU
       memory: 50M
     reservations:
-      cpus: "0.25"   # scheduler should keep 0.25 CPU available
+      cpus: "0.25" # scheduler should keep 0.25 CPU available
       memory: 20M
 ```
 
@@ -686,11 +686,11 @@ Local full stack (app + DB + Redis), integration tests, small VPS / staging. Pro
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| One command for the whole stack | Not a cluster scheduler; no auto-scale like K8s |
-| Declarative, git-friendly YAML | `depends_on` waits for **start**, not “ready” (use healthchecks) |
-| DNS by service name; named volumes persist | `deploy.replicas` is Swarm/stack; local Compose uses `--scale` |
+| +                                          | −                                                                |
+| ------------------------------------------ | ---------------------------------------------------------------- |
+| One command for the whole stack            | Not a cluster scheduler; no auto-scale like K8s                  |
+| Declarative, git-friendly YAML             | `depends_on` waits for **start**, not “ready” (use healthchecks) |
+| DNS by service name; named volumes persist | `deploy.replicas` is Swarm/stack; local Compose uses `--scale`   |
 
 **Examples:**
 
@@ -779,14 +779,14 @@ Each key under `services` is an atomic unit: `image` and/or `build`, `ports`, `e
 
 ### Docker troubleshooting
 
-| Problem | Cause | Fix |
-|---------|-------|-----|
-| Can't reach app on `localhost:3000` | Dev server binds `127.0.0.1` inside container | Vite: `server.host: '0.0.0.0'` |
-| File changes not detected (HMR) | FS events don't propagate through bind mounts | `CHOKIDAR_USEPOLLING=true` in environment |
-| nodemon not restarting | Same FS event issue | `"dev": "nodemon -L index.js"` |
+| Problem                              | Cause                                            | Fix                                                                      |
+| ------------------------------------ | ------------------------------------------------ | ------------------------------------------------------------------------ |
+| Can't reach app on `localhost:3000`  | Dev server binds `127.0.0.1` inside container    | Vite: `server.host: '0.0.0.0'`                                           |
+| File changes not detected (HMR)      | FS events don't propagate through bind mounts    | `CHOKIDAR_USEPOLLING=true` in environment                                |
+| nodemon not restarting               | Same FS event issue                              | `"dev": "nodemon -L index.js"`                                           |
 | `bcrypt_lib.node: Exec format error` | Native module built for host arch, not container | Rebuild inside container: `npm rebuild bcrypt` or `npm ci` in Dockerfile |
-| Port conflict | Host port already in use | Use `HOST_DB_PORT` / `CONTAINER_DB_PORT` env vars |
-| CRA not hot-reloading in Docker | Chokidar issue on Docker Desktop | `CHOKIDAR_USEPOLLING=true` |
+| Port conflict                        | Host port already in use                         | Use `HOST_DB_PORT` / `CONTAINER_DB_PORT` env vars                        |
+| CRA not hot-reloading in Docker      | Chokidar issue on Docker Desktop                 | `CHOKIDAR_USEPOLLING=true`                                               |
 
 **Example — Vite in Docker:**
 
@@ -805,7 +805,7 @@ services:
 ```ts
 // vite.config.ts
 export default defineConfig({
-  server: { host: '0.0.0.0', port: 3000, watch: { usePolling: true } },
+  server: { host: "0.0.0.0", port: 3000, watch: { usePolling: true } },
 });
 ```
 
@@ -905,11 +905,11 @@ docker run -p HOST:CONTAINER myimage   # e.g. -p 5555:5432
 
 ### Orchestration (brief)
 
-| Tool | Purpose |
-|------|---------|
-| **Docker Compose** | Local / small multi-container apps |
-| **Docker Swarm** | Built-in Docker clustering (declining adoption) |
-| **Kubernetes** | Production container orchestration at scale |
+| Tool               | Purpose                                         |
+| ------------------ | ----------------------------------------------- |
+| **Docker Compose** | Local / small multi-container apps              |
+| **Docker Swarm**   | Built-in Docker clustering (declining adoption) |
+| **Kubernetes**     | Production container orchestration at scale     |
 
 **Thoughts:** Kubernetes is not part of Docker. Use Compose for dev; K8s (or managed: EKS, GKE, ECS) for production scale, rolling deploys, and self-healing.
 

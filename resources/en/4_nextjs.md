@@ -16,7 +16,7 @@ App Router, rendering, data, routing, optimizations, and the Next.js platform. T
 | [Next.js — Routing](./4_nextjs_routing.md)             | App Router, file-based routes, navigation, metadata, and SEO.        |
 | [Next.js — Optimizations](./4_nextjs_optimizations.md) | Images, fonts, scripts, bundling, and Core Web Vitals.               |
 | [Next.js — Platform](./4_nextjs_platform.md)           | Proxy, config, Vercel, migration, and debugging.                     |
-| [Next.js — Interview](./4_nextjs_interview.md)         | Interview Q&A and coding tasks.                                      |
+| [Next.js — Interview](./4_nextjs_interview.md)         | Next.js interview questions, answers not filled in.                  |
 
 ### Interview practice
 

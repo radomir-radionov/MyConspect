@@ -308,7 +308,7 @@ LCP — это время от начала навигации до момент
 Google разбивает LCP на четыре последовательные части (без пробелов). На **хорошо оптимизированной** странице _типичная_ доля составляет ~40% TTFB, <10% задержка загрузки ресурса, ~40% продолжительность загрузки ресурса, <10% задержка рендеринга элемента — реальные сайты различаются; исправьте большой фрагмент в _вашей_ атрибуции (`web-vitals/attribution`: `timeToFirstByte`, `resourceLoadDelay`, `resourceLoadDuration`, `elementRenderDelay`).
 
 | Подчасть                               | Что это такое                                 | Типичная доля (оптимизированная) |
-|  --------------------------------------  |  ---------------------------------------------  |  --------------------------------  |
+| -------------------------------------- | --------------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **ТТФБ**                               | Начало навигации → первый байт HTML           | ~40%                             |
 | **Задержка загрузки ресурса**          | Первый байт HTML → начало запроса ресурса LCP | <10%                             |
 | **Продолжительность загрузки ресурса** | Загрузка ресурса LCP                          | ~40%                             |
@@ -470,7 +470,7 @@ onFCP(console.log);
 
 **Thoughts:** FCP = первые пиксели контента. Исправление TTFB и блокировки ресурсов; еще измеряю LCP и INP.
 
-**See also:** [Core Web Vitals](./1_html_performance.md#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [TTFB](#ttfb-time-to-first-byte) · [INP](#inp-interaction-to-next-paint) · [preload, prefetch, preconnect](#preload-prefetch-preconnect--prerender) · [HTML — first краска](./1_html_interview.md#what-happens-on-first-page-render)
+**See also:** [Core Web Vitals](./1_html_performance.md#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [TTFB](#ttfb-time-to-first-byte) · [INP](#inp-interaction-to-next-paint) · [preload, prefetch, preconnect](#preload-prefetch-preconnect--prerender) · [HTML — first краска](./1_html_rendering.md#first-render--full-pipeline)
 
 **Sources:**
 
@@ -590,10 +590,10 @@ INP отслеживает **все** соответствующие взаим�
 Три фазы (сумма = задержка взаимодействия):
 
 | Фаза                            | Что                                                   | Типичная причина                                 |
-|  -------------------------------  |  -----------------------------------------------------  |  ------------------------------------------------  |
+| ------------------------------- | ----------------------------------------------------- | ------------------------------------------------ |
 | **Задержка ввода**              | Действие пользователя → запускается первый обработчик | Основной поток занят (JS, длинные задачи)        |
 | **Продолжительность обработки** | Обработчики + другая работа по синхронизации          | Обработчики тяжелых кликов, большой коммит React |
-| **Задержка презентации** | Обработчики готовы → обновлен фрейм | Верстка/рисовка, сторонний JS, огромный DOM |
+| **Задержка презентации**        | Обработчики готовы → обновлен фрейм                   | Верстка/рисовка, сторонний JS, огромный DOM      |
 
 FID (Core Vital до **марта 2024**) измерял только **первое** взаимодействие и только **задержку ввода**. INP заменил его: все клики/нажатия/клавиши, полный путь к следующей отрисовке. Lab Lighthouse без отчетов пользователей **TBT**, а не INP.
 
@@ -819,7 +819,7 @@ Workflow: **профилирование** (RUM + APM/traces + Lighthouse/DevToo
 | Memo/code split на клиенте        | Лучше INP, меньше бандл           | Сложнее отладка, легко пере-мemo        |
 | Преждевременная микро-оптимизация | —                                 | Потеря времени без метрик               |
 
-**Thoughts:** CWV клиента и latency API связаны — медленный TTFB блокирует FCP/LCP; тяжёлый client JS бьёт по INP даже при быстром API. Полные client-playbook → [§10 Performance](./4_react_ecosystem.md#10-performance) · [Next optimizations](./4_nextjs_optimizations.md) · БД/запросы → [N+1](./9_database_orm.md#n1-problem) · [Connection pooling](./9_database_orm.md#connection-pooling) · Node → [8_nodejs interview Q29](./8_nodejs_interview.md#a-project-has-performance-issues--how-do-you-find-fix-and-prevent-them).
+**Thoughts:** CWV клиента и latency API связаны — медленный TTFB блокирует FCP/LCP; тяжёлый client JS бьёт по INP даже при быстром API. Полные client-playbook → [§10 Performance](./4_react_ecosystem.md#10-performance) · [Next optimizations](./4_nextjs_optimizations.md) · БД/запросы → [N+1](./9_database_orm.md#n1-problem) · [Connection pooling](./9_database_orm.md#connection-pooling) · Node → [8_nodejs interview Q29](./8_nodejs_interview.md#interview-practice).
 
 **Sources:** [web.dev — Vitals](https://web.dev/articles/vitals) · [web.dev — Optimize TTFB](https://web.dev/articles/optimize-ttfb) · [MDN — Server-Timing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing) · [web.dev — Optimize long tasks](https://web.dev/articles/optimize-long-tasks)
 

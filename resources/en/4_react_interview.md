@@ -1,6 +1,6 @@
 # React — Interview
 
-Interview Q&A and coding tasks.
+React interview questions. Answers are not filled in.
 
 [← Back to hub](./4_react.md)
 
@@ -10,726 +10,956 @@ Interview Q&A and coding tasks.
 
 ### Sections
 
-- [Questions & Answers](#questions-answers)
-- [Coding tasks](#coding-tasks)
+- [Interview Practice](#interview-practice)
 
 ---
 
-## Questions & Answers
+## Interview Practice
 
-State vs props?
+Questions from [Devinterview.io — React](https://devinterview.io/questions/web-and-mobile-development/react-interview-questions/).
 
-<details>
-  <summary>State vs props?</summary>
-
-### State vs props?
-
-**Answer:** **Props** = read-only inputs from the parent. **State** = data the component owns; the setter schedules a re-render. Share across siblings → lift to the closest parent.
-
-**See also:** [State vs props](#state-vs-props) · [Lifting state up](./4_react_core.md#lifting-state-up)
-
-Why hooks? Custom hooks?
-
-</details>
+### React Basics
 
 <details>
-  <summary>Why hooks? Custom hooks?</summary>
+<summary>What is React and why is it used?</summary>
 
-### Why hooks? Custom hooks?
-
-**Answer:** Hooks let function components hold state and sync with the outside world without classes or `this`. Related logic sits together (`useEffect` for a subscription) instead of being split across `componentDidMount` / `componentDidUpdate` / `componentWillUnmount`. Custom `useX` reuses **that logic**; each call has its **own** state — two `useForm()` calls are two forms, not one shared store. Call order must be stable every render → [Rules of Hooks](./4_react_hooks.md#rules-of-hooks) (no hooks in `if` / loops; `eslint-plugin-react-hooks`). Classes remain for error boundaries if you don’t use a library.
-
-**See also:** [Hooks reference](./4_react_hooks.md#5-hooks-reference) · [Custom hooks](./4_react_hooks.md#custom-hooks)
-
-Fragments and portals?
-
-</details>
-
-<details>
-  <summary>Fragments and portals?</summary>
-
-### Fragments and portals?
-
-**Answer:** **Fragment** (`<>`) = extra grouping, zero DOM. **Portal** (`createPortal`) = DOM elsewhere (`document.body`) but React tree/events stay with the parent.
-
-**See also:** [Fragments](./4_react_core.md#fragments) · [Portals](./4_react_hooks.md#portals)
-
-useRef vs createRef?
-
-</details>
-
-<details>
-  <summary>useRef vs createRef?</summary>
-
-### useRef vs createRef?
-
-**Answer:** `useRef` is stable across renders. `createRef()` in a function body is a **new object every render** — use it only on class instances.
-
-**See also:** [useRef](./4_react_hooks.md#useref)
-
-Virtual DOM and reconciliation?
-
-</details>
-
-<details>
-  <summary>Virtual DOM and reconciliation?</summary>
-
-### Virtual DOM and reconciliation?
-
-**Answer:** Diff **element trees** (plain objects) by `type` + `key` — not a live DOM clone. Re-render ≠ DOM write. Fiber makes the walk interruptible.
-
-**See also:** [Virtual DOM & reconciliation](./4_react_core.md#virtual-dom--reconciliation) · [React Fiber](./4_react_core.md#react-fiber)
-
-Why list keys? Index as key?
-
-</details>
-
-<details>
-  <summary>Why list keys? Index as key?</summary>
-
-### Why list keys? Index as key?
-
-**Answer:** `key` is identity across renders. Index is OK only for **static** lists. Reorder/filter + index → wrong instance reuse and stale state. Never `key={Math.random()}`.
-
-**See also:** [Keys](./4_react_core.md#keys)
-
-Context vs Redux vs Zustand vs React Query?
-
-</details>
-
-<details>
-  <summary>Context vs Redux vs Zustand vs React Query?</summary>
-
-### Context vs Redux vs Zustand vs React Query?
-
-**Answer:** Context = rare shared values (theme/auth). Redux/Zustand = client app state. TanStack Query = server cache. URL = shareable filters. Don't put a hot cart in one Context.
-
-**See also:** [Context](./4_react_core.md#context) · [Redux core principles](./4_react_redux.md#redux-core-principles) · [When to use Redux](./4_react_redux.md#when-to-use-redux) · [TanStack Query vs RTK Query](./4_react_tanstack.md#tanstack-query-vs-rtk-query)
-
-How does React.lazy load a component when a condition becomes true?
-
-</details>
-
-<details>
-  <summary>How does React.lazy load a component when a condition becomes true?</summary>
-
-### How does React.lazy load a component when a condition becomes true?
-
-**Answer:** `lazy(() => import('./X'))` stores a loader. First render of `<X />` runs `import()`, Suspense shows fallback, React caches `default`. Later remounts reuse the chunk.
-
-**See also:** [React.lazy + Suspense](./4_react_hooks.md#reactlazy--suspense)
-
-useEffect vs useLayoutEffect?
-
-</details>
-
-<details>
-  <summary>useEffect vs useLayoutEffect?</summary>
-
-### useEffect vs useLayoutEffect?
-
-**Answer:** After DOM commit: `useInsertionEffect` (CSS-in-JS) → `useLayoutEffect` (**sync, before paint**, blocks the user from seeing a wrong frame) → browser paint → `useEffect` (after paint, default). Fetch, subscriptions, analytics → `useEffect`. Measure tooltip/focus without flicker → `useLayoutEffect`. Effects are **client-only**. Don’t treat them as `componentDidMount` — cleanup also runs when **deps change**, and Strict Mode runs an extra setup/cleanup in development.
-
-**See also:** [useEffect](./4_react_hooks.md#useeffect) · [useLayoutEffect](./4_react_hooks.md#uselayouteffect) · [Render pipeline](./4_react_core.md#render-pipeline)
-
-React library or framework?
-
-</details>
-
-<details>
-  <summary>React library or framework?</summary>
-
-### React library or framework?
-
-**Answer:** React is a **library** (you compose the stack). Next.js / React Router framework mode **invert control** (file routes, SSR/RSC).
-
-**See also:** [Library vs framework](./4_react_core.md#library-vs-framework)
-
-What is React?
-
-</details>
-
-<details>
-  <summary>What is React?</summary>
-
-### What is React?
-
-**Answer:** JS **library** for UIs from components — describe `UI = f(state)`; React reconciles the DOM.
-
-**See also:** [React overview](./4_react_core.md#react-overview)
-
-What is JSX? What does it compile to?
-
-</details>
-
-<details>
-  <summary>What is JSX? What does it compile to?</summary>
-
-### What is JSX? What does it compile to?
-
-**Answer:** Sugar for `createElement(type, props, ...children)`. Not HTML: `className`, camelCase, `{expr}`.
-
-**See also:** [JSX](./4_react_core.md#jsx)
-
-What happens when a component renders?
-
-</details>
-
-<details>
-  <summary>What happens when a component renders?</summary>
-
-### What happens when a component renders?
-
-**Answer:** React **calls** the function → element snapshot. Then commit may (or may not) touch the DOM. Concurrent render can repeat before one commit.
-
-**See also:** [Render pipeline](./4_react_core.md#render-pipeline)
-
-What is `useState`? Why not mutate state?
-
-</details>
-
-<details>
-  <summary>What is `useState`? Why not mutate state?</summary>
-
-### What is `useState`? Why not mutate state?
-
-**Answer:** `useState` returns `[snapshot, set]`. `set` **queues** the next render; it does not change the variable in the current closure (`console.log(count)` after `setCount` still shows the old value). React skips the update if `Object.is(next, current)` — mutating `items.push(x)` then `setItems(items)` keeps the same reference, so the UI may not update. Copy: `setItems([...items, x])` or an updater `setItems(prev => [...prev, x])`. Lazy init: pass `useState(createTodos)` not `createTodos()`. Prefer `useReducer` when many related fields change together.
-
-**See also:** [useState](./4_react_hooks.md#usestate) · [Task 2 — State mutation](#task-2--state-mutation)
-
-`useEffect` and the dependency array?
-
-</details>
-
-<details>
-  <summary>`useEffect` and the dependency array?</summary>
-
-### `useEffect` and the dependency array?
-
-**Answer:** After paint, React compares each dep with `Object.is`. **No array** = every commit. **`[]`** = first commit only (plus Strict Mode’s extra cycle in dev). **`[id, url]`** = re-run when those change: cleanup (old values) then setup (new values). List every reactive value the effect reads (`eslint` `exhaustive-deps`). Missing deps → stale closures. Object/function created in render as a dep → re-run every time. Prefer creating that object **inside** the effect; don’t make the effect callback `async`.
-
-**See also:** [useEffect](./4_react_hooks.md#useeffect) · [Task 3 — Object dependency in useEffect](#task-3--object-dependency-in-useeffect)
-
-Stale closures?
-
-</details>
-
-<details>
-  <summary>Stale closures?</summary>
-
-### Stale closures?
-
-**Answer:** A function “closes over” the props/state from the render that created it. An effect with `[]` that reads `count` always sees the **first** `count`. Fix: add `count` to deps, or use a functional updater `setCount(c => c + 1)`, or React 19.2 `useEffectEvent` for “read latest without re-subscribing.” Don’t “fix” it by omitting the deps array unless you truly want to re-run after every commit.
-
-**See also:** [useEffect](./4_react_hooks.md#useeffect) · [useEffectEvent](./4_react_hooks.md#useeffectevent-react-192)
-
-Why does `useEffect` run twice on mount?
-
-</details>
-
-<details>
-  <summary>Why does `useEffect` run twice on mount?</summary>
-
-### Why does `useEffect` run twice on mount?
-
-**Answer:** **Strict Mode, development only.** React runs setup → cleanup → setup to prove cleanup undoes setup. Production mounts once. Double network calls mean you need `AbortController` / ignore flag / real disconnect — not `useRef` to skip the second run.
-
-**See also:** [Strict Mode](./4_react_core.md#strict-mode) · [useEffect](./4_react_hooks.md#useeffect)
-
-`useState` vs `useReducer`?
-
-</details>
-
-<details>
-  <summary>`useState` vs `useReducer`?</summary>
-
-### `useState` vs `useReducer`?
-
-**Answer:** Same storage. `useState` for one value or independent fields. `useReducer` when the next state is a **transition** (`action` → new state): forms, wizards, “this field depends on that.” `dispatch` is stable; `setState` is too, but you often pass many setters. Not a replacement for Redux/Zustand (those are **global**).
-
-**See also:** [useState](./4_react_hooks.md#usestate) · [useReducer](#usereducer-1)
-
-`useRef` vs `useState`?
-
-</details>
-
-<details>
-  <summary>`useRef` vs `useState`?</summary>
-
-### `useRef` vs `useState`?
-
-**Answer:** Both persist across renders. `ref.current = x` does **not** re-render (DOM node, timer id, previous value). `setState` **does** — use it for anything on screen. Don’t read/write refs during render. `useRef` ≠ `createRef()` in function components (`createRef` is a new object every render).
-
-**See also:** [useRef](./4_react_hooks.md#useref) · [State](./4_react_core.md#state)
-
-`useCallback` vs `useMemo`?
-
-</details>
-
-<details>
-  <summary>`useCallback` vs `useMemo`?</summary>
-
-### `useCallback` vs `useMemo`?
-
-**Answer:** `useMemo(() => compute(), deps)` **runs** `compute` and caches the **result**. `useCallback(fn, deps)` caches **`fn` itself** (equivalent to `useMemo(() => fn, deps)`). Useful when a `memo` child would re-render because of a new function, or when the function is an effect dep. Not useful on every handler. Prefer moving functions **inside** `useEffect` over memoizing them as deps. Compiler can replace a lot of this.
-
-**See also:** [useMemo / useCallback](./4_react_hooks.md#usememo--usecallback)
-
-What are custom hooks?
-
-</details>
-
-<details>
-  <summary>What are custom hooks?</summary>
-
-### What are custom hooks?
-
-**Answer:** `function useX()` that calls other hooks. Share **behavior** (subscribe, form dirty-check), not JSX and not automatically shared state. Each call site is independent. The `use` prefix is how the linter applies the Rules of Hooks. Prefer hooks over HOCs for the same logic.
-
-**See also:** [Custom hooks](./4_react_hooks.md#custom-hooks)
-
-Context API — when to use?
-
-</details>
-
-<details>
-  <summary>Context API — when to use?</summary>
-
-### Context API — when to use?
-
-**Answer:** Theme, locale, auth — many consumers, rare updates. Not a hot store. Else: props, composition, lift state, URL, Zustand.
-
-**See also:** [Context](./4_react_core.md#context)
-
-HOC — what, why less common, vs hooks?
-
-</details>
-
-<details>
-  <summary>HOC — what, why less common, vs hooks?</summary>
-
-### HOC — what, why less common, vs hooks?
-
-**Answer:** `(Component) => Enhanced` injects props. Wrapper hell + prop clashes. Prefer hooks for the same logic.
-
-**See also:** [Composition patterns](./4_react_core.md#composition-patterns)
-
-Why did hooks replace class components?
-
-</details>
-
-<details>
-  <summary>Why did hooks replace class components?</summary>
-
-### Why did hooks replace class components?
-
-**Answer:** Related logic lives in one function (`useEffect` setup + cleanup) instead of three class methods. No `this` binding. Reuse via custom hooks instead of HOCs. Classes still exist (error boundaries unless a library provides one). Hooks are not “faster” by themselves — they match the function-component model.
-
-**See also:** [Class components (legacy)](./4_react_ecosystem.md#class-components-legacy)
-
-Why extra re-renders? How to reduce them?
-
-</details>
-
-<details>
-  <summary>Why extra re-renders? How to reduce them?</summary>
-
-### Why extra re-renders? How to reduce them?
-
-**Answer:** Parent/context/`memo` broken by new `{}`/`() =>`. Fix: move state down, split context, then `memo`/Compiler, virtualize lists. Profile first.
-
-**See also:** [Diagnosing re-renders](./4_react_ecosystem.md#diagnosing-re-renders)
-
-Why avoid creating objects in render?
-
-</details>
-
-<details>
-  <summary>Why avoid creating objects in render?</summary>
-
-### Why avoid creating objects in render?
-
-**Answer:** `style={{}}` / `onClick={() =>}` is a new reference each time → `memo` children still re-render. Stabilize with `useMemo` / `useCallback` when it matters.
-
-**See also:** [memo / useMemo / useCallback vs Compiler](./4_react_ecosystem.md#memo--usememo--usecallback-vs-compiler)
-
-React Fiber and concurrent rendering?
-
-</details>
-
-<details>
-  <summary>React Fiber and concurrent rendering?</summary>
-
-### React Fiber and concurrent rendering?
-
-**Sequence:** Queue update → render WIP (DFS: `beginWork` ↓ / `completeWork` ↑) → commit flags to DOM. Render is interruptible; commit is not. Render ≠ paint.
-
-**Chunks:** Fibers until `shouldYield()` (~5ms) — pause _between_ fibers, resume next; commit never yields.
-
-**Priority:** Scheduler _when_; lanes _which_ (sync > input > default > transition > idle). Urgent discards WIP. APIs: `useTransition`, `useDeferredValue`, `Suspense`, `createRoot`.
-
-**Thoughts:** _Work loop reconciles in memory; commit flushes atomically; Scheduler decides when._
-
-**See also:** [React Fiber](./4_react_core.md#react-fiber) · [Concurrent rendering](./4_react_core.md#concurrent-rendering)
-
-React and the browser DOM?
-
-</details>
-
-<details>
-  <summary>React and the browser DOM?</summary>
-
-### React and the browser DOM?
-
-**Definition:** `react-dom` bridges React's element tree to real DOM nodes via `createRoot`.
-
-**How it works:**
-
-- Reconciliation diffs trees — only changed nodes update
-- Batches multiple `setState` calls into one commit (React 18+)
-- Event delegation via synthetic events
-- Fiber prioritizes urgent updates
-
-`setState` **from browser view:** Schedules render → reconcile → commit DOM mutations → layout → paint → run effects.
-
-**Thoughts:** _React is faster than naive direct DOM not because VDOM is magic — because it batches, diffs, and minimizes writes._
-
-**See also:**
-
-[Virtual DOM and reconciliation?](#virtual-dom-and-reconciliation)
-
-SPA first render vs SSR?
-
-</details>
-
-<details>
-  <summary>SPA first render vs SSR?</summary>
-
-### SPA first render vs SSR?
+### What is React and why is it used?
 
 **Definition:**
 
-**SPA (CSR):** browser downloads JS bundle, executes, builds DOM client-side — blank/skeleton until JS runs. **SSR:** server sends HTML with content; browser hydrates.
+</details>
 
-|               | SPA (CSR)              | SSR               |
-| ------------- | ---------------------- | ----------------- |
-| First paint   | Slow (needs JS)        | Fast (HTML ready) |
-| SEO           | Weak without prerender | Strong            |
-| Interactivity | After hydration        | After hydration   |
+<details>
+<summary>How is React different from Angular or Vue?</summary>
 
-**Thoughts:** _SPA = client builds UI; SSR = server sends HTML first._
+### How is React different from Angular or Vue?
 
-**See also:**
-
-[SPA vs SSR vs RSC](./4_react_server.md#8-server-rendering--rsc) · [4_nextjs.md Interview Practice](./4_nextjs_interview.md#interview-practice) · [Types of web apps](./6_web_api_apps.md#types-of-web-apps)
-
-TanStack Query vs RTK Query — when?
+**Definition:**
 
 </details>
 
 <details>
-  <summary>TanStack Query vs RTK Query — when?</summary>
+<summary>What is a React component?</summary>
 
-### TanStack Query vs RTK Query — when?
+### What is a React component?
 
-**Definition:** Both cache **server** state. Pick TanStack Query unless the app already lives in Redux Toolkit.
-
-**How it works:**
-
-Query keys identify data; mutations invalidate keys. RTK Query generates hooks from `createApi` and stores the cache in Redux. UI toggles and form drafts stay in `useState` / Zustand — not in the server cache.
-
-| Pick               | When                                      |
-| ------------------ | ----------------------------------------- |
-| **TanStack Query** | New SPA, Zustand/Context for client state |
-| **RTK Query**      | Existing RTK store, one DevTools tree     |
-| **RSC** `fetch`    | Next.js App Router initial page data      |
-
-**Thoughts:** Server cache ≠ client store.
-
-**See also:**
-
-[TanStack Query vs RTK Query](./4_react_tanstack.md#tanstack-query-vs-rtk-query)
-
-How do you hide an Edit button the user cannot use?
+**Definition:**
 
 </details>
 
 <details>
-  <summary>How do you hide an Edit button the user cannot use?</summary>
+<summary>How do you create a component in React?</summary>
 
-### How do you hide an Edit button the user cannot use?
+### How do you create a component in React?
 
-**Definition:** Authorization (CASL) can hide UI, but the **mutation must deny** on the server.
-
-**How it works:** `<Can I="update" this={article}>` wraps the button. Server Action / API still calls `ability.cannot('update', article)` and returns 403. Roles map to rules; attributes (`authorId`) enable ABAC.
-
-**Thoughts:** Hide in UI; enforce on the server.
-
-**See also:**
-
-[CASL](./4_react_ecosystem.md#9-ecosystem--architecture)
-
-Is shadcn/ui an npm component library?
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Is shadcn/ui an npm component library?</summary>
+<summary>What is JSX and why do we use it in React?</summary>
 
-### Is shadcn/ui an npm component library?
+### What is JSX and why do we use it in React?
 
-**Definition:** No — the CLI copies source into `components/ui`. You own and edit the files (Radix + Tailwind).
-
-**When to use:** Product UI you will customize. When NOT: you need a locked third-party kit with only semver upgrades.
-
-**Thoughts:** Distribution of source, not a black-box dependency.
-
-**See also:**
-
-[shadcn/ui](./4_react_ecosystem.md#9-ecosystem--architecture)
-
-nuqs vs useSearchParams vs qs?
+**Definition:**
 
 </details>
 
 <details>
-  <summary>nuqs vs useSearchParams vs qs?</summary>
+<summary>Can you explain the virtual DOM in React?</summary>
 
-### nuqs vs useSearchParams vs qs?
+### Can you explain the virtual DOM in React?
 
-**Definition:** `useSearchParams` (Next.js) is a raw `URLSearchParams` view. **nuqs** adds typed parsers and `useState`-like setters. **qs** parses/stringifies nested objects (`a[b]=1`) — useful on the server, not a React state layer.
-
-**How it works:** Prefer nuqs when UI writes many typed filters to the URL. Prefer `useSearchParams` + `router.push` for a single throwaway param. Prefer `qs` (or `URLSearchParams`) when you only serialize on the API, not in React.
-
-**Thoughts:** nuqs is URL _state_. Query is server _cache_.
-
-**See also:**
-
-[nuqs](./4_react_ecosystem.md#9-ecosystem--architecture)
-
----
-
-Junior — React
-
-</details>
-
-### Junior — React
-
-1. Have you worked with class components? What are their characteristics? → [Class components (legacy)](./4_react_ecosystem.md#11-legacy--migration)
-2. What data belongs in component state vs props? Give an example. → [State vs props?](#questions--answers)
-3. Are you familiar with hooks? What are their advantages? Have you written custom hooks and why? → [Why hooks? Custom hooks?](#questions--answers)
-4. Are you familiar with fragments and portals? What are they for? → [Fragments](./4_react_core.md#fragments) · [Fragments and portals?](#questions--answers)
-5. When and why are refs used? → [useRef vs createRef?](#questions--answers)
-6. What component lifecycle methods do you know? → [Section 11 — Legacy](./4_react_ecosystem.md#11-legacy--migration)
-7. In which lifecycle method (or hook) should you fetch from the server? Why? → [useEffect vs useLayoutEffect?](#questions--answers)
-8. In which lifecycle method should you subscribe and unsubscribe from listeners? Why unsubscribe? → [useEffect](./4_react_hooks.md#5-hooks-reference)
-9. Have you worked with Context? When should you use it? → [Context vs Redux vs Zustand vs React Query?](#questions--answers)
-10. What is special about `PureComponent`? → [PureComponent](./4_react_ecosystem.md#11-legacy--migration)
-11. Have you worked with memoized selectors? What are they for and how do they work?
-12. What advantages do you see in React?
-13. Why is React fast? What is the Virtual DOM? → [Virtual DOM & reconciliation](./4_react_core.md#virtual-dom--reconciliation)
-14. Why do lists need keys? Can array indices be keys? When is that acceptable? → [Why list keys? Index as key?](#questions--answers)
-15. What is the core idea of Redux? → [Redux core principles](./4_react_redux.md#redux-core-principles)
-16. Working with styles in React → [Styling in React](./4_react_ecosystem.md#9-ecosystem--architecture) · CSS basics: [2_css.md](2_css.md)
-17. Is React a library or a framework? What is the difference? → [React library or framework?](#questions--answers)
-18. Can you use jQuery together with React? Why or why not?
-19. What is a codemod?
-20. How do you build good architecture for a React project? → [Feature-Sliced Design (FSD)](./4_react_ecosystem.md#9-ecosystem--architecture)
-21. List libraries you have used with React. → [TanStack Query vs RTK Query](./4_react_tanstack.md#tanstack-query-vs-rtk-query) · [CASL](./4_react_ecosystem.md#9-ecosystem--architecture) · [shadcn/ui](./4_react_ecosystem.md#9-ecosystem--architecture) · [orval](./4_react_ecosystem.md#9-ecosystem--architecture)
-22. What is the hardest thing you have implemented with React?
-
-Middle — React
-
-### Middle — React
-
-1. What is JSX? What is it based on? → [JSX](./4_react_core.md#3-describing-the-ui)
-2. How does the Virtual DOM algorithm work? → [Virtual DOM & reconciliation](./4_react_core.md#virtual-dom--reconciliation)
-3. Why is the `key` property needed when rendering lists? → [Keys](./4_react_core.md#2-rendering-model)
-4. What is the difference between function and class components? → [Class components (legacy)](./4_react_ecosystem.md#11-legacy--migration)
-5. Why and when must you pass props to `super()` in class components?
-6. Why must you use `setState()` to update internal component state?
-7. What is "lifting state up"? → [Lifting state up](./4_react_core.md#4-state--interactivity)
-8. What state management libraries for React do you know? Why are they needed? → [State management libraries](./4_react_redux.md#state-management-libraries)
-9. When should you use Redux? What are the alternatives?
-10. Redux vs MobX?
-11. Explain the basic principle of React Hooks. → [Hooks reference](./4_react_hooks.md#5-hooks-reference)
-12. What is the difference between `createRef` and `useRef`? → [useRef vs createRef?](#questions--answers)
-13. When should you use React refs? When should you not?
-14. What disadvantages of React do you see?
-15. What patterns do you use with React? → [Composition patterns](./4_react_core.md#3-describing-the-ui)
-16. How do you feel about typing with React? → [TypeScript](./5_ts.md)
-17. How do you build good architecture for a React project? → [Feature-Sliced Design (FSD)](./4_react_ecosystem.md#9-ecosystem--architecture)
-18. How do you optimize React apps? How do you measure performance? → [Performance](./4_react_ecosystem.md#10-performance)
-19. Can you embed one React app inside another React app?
-
-Junior — Practical tasks (React project)
-
-### Junior — Practical tasks (React project)
-
-1. Build a mini project — user list with create/edit form (Firebase + Bootstrap).
-
-Middle — Practical tasks (React)
-
-### Middle — Practical tasks (React)
-
-1. Implement a table with virtual scroll.
-
-## Coding tasks
-
-Task 1 — Unstable list keys
-
-<details>
-  <summary>Task 1 — Unstable list keys</summary>
-
-### Task 1 — Unstable list keys
-
-What happens on every render?
-
-```tsx
-const UserList = ({ users }) => {
-  return users.map((user) => <UserCard key={Math.random()} user={user} />);
-};
-```
-
-Fix:
-
-```tsx
-const UserList = ({ users }) => {
-  return users.map((user) => <UserCard key={user.id} user={user} />);
-};
-```
-
-Answer
-
-`Math.random()` produces a **new key on every render**. React treats each `UserCard` as a **different element** — it unmounts the old instance and mounts a new one. That causes:
-
-- unnecessary re-renders and DOM churn
-- lost local state inside `UserCard` (inputs, expanded rows, etc.)
-- broken animations and focus
-
-Use a **stable, unique** key (`user.id`). Index is acceptable only when the list is static and never reordered.
-
-Task 2 — State mutation
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Task 2 — State mutation</summary>
+<summary>What are the differences between a class component and a functional component?</summary>
 
-### Task 2 — State mutation
+### What are the differences between a class component and a functional component?
 
-What is wrong? Why might the UI not update?
-
-```tsx
-const [user, setUser] = useState({ name: "Anna" });
-
-user.name = "Kate";
-console.log(user.name); // "Kate"
-setUser(user);
-```
-
-Answer
-
-`useState` compares the **previous and next state by reference** (`Object.is`). Mutating `user.name` changes the object in place but **does not change the reference**, so React skips a re-render.
-
-Fix — return a **new object**:
-
-```tsx
-setUser({ ...user, name: "Kate" });
-// or
-setUser((prev) => ({ ...prev, name: "Kate" }));
-```
-
-`console.log(user.name)` prints `"Kate"` because the mutation happened in memory; the UI simply did not get a new render cycle.
-
-Task 3 — Object dependency in useEffect
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Task 3 — Object dependency in useEffect</summary>
+<summary>How do you handle events in React?</summary>
 
-### Task 3 — Object dependency in useEffect
+### How do you handle events in React?
 
-Find the cause:
-
-```tsx
-useEffect(() => {
-  loadData();
-}, [filters]); // filters is an object recreated every render
-```
-
-Fix:
-
-```tsx
-const filters = useMemo(() => ({ name, isActive }), [name, isActive]);
-
-useEffect(() => {
-  loadData();
-}, [name, isActive]);
-```
-
-Answer
-
-A **new** `filters` **object** is created on every render (`{}` !== `{}` by reference). `useEffect` sees a changed dependency each time → `loadData()` runs in a loop or far too often.
-
-Options:
-
-1. Depend on **primitives** (`name`, `isActive`) instead of the object.
-2. Memoize the object with `useMemo` when you must pass a composite value.
-3. Pass `filters` into `loadData(filters)` and list stable fields in the dependency array.
-
-Task 4 — Async fetch in useEffect
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Task 4 — Async fetch in useEffect</summary>
+<summary>What are state and props in React?</summary>
 
-### Task 4 — Async fetch in useEffect
+### What are state and props in React?
 
-Fix the problem:
+**Definition:**
 
-```tsx
-const fetchData = async () => {
-  const data = await api.get();
-  setData(data);
-};
+</details>
 
-useEffect(() => {
-  fetchData();
-}, []);
-```
+<details>
+<summary>How do you pass data between components in React?</summary>
 
-Answer
+### How do you pass data between components in React?
 
-Problems:
+**Definition:**
 
-1. **Race condition** — if the component unmounts or `fetchData` runs again, a late response can call `setState` on an unmounted component.
-2. **No cancellation** — stale responses can overwrite newer data.
-3. `useEffect` **callback must not be** `async` — an async function returns a Promise; React ignores it and cannot treat it as a cleanup function.
+</details>
 
-Fix — inline async IIFE + `AbortController`:
+### React State Management
 
-```tsx
-useEffect(() => {
-  const controller = new AbortController();
+<details>
+<summary>What is a stateful component?</summary>
 
-  (async () => {
-    try {
-      const data = await api.get({ signal: controller.signal });
-      setData(data);
-    } catch (err) {
-      if (err.name !== "AbortError") {
-        setError(err);
-      }
-    }
-  })();
+### What is a stateful component?
 
-  return () => controller.abort();
-}, []);
-```
+**Definition:**
 
-Alternatively use a data-fetching library (TanStack Query, SWR) or React 19 `use()` with Suspense — they handle abort, deduplication, and caching.
+</details>
+
+<details>
+<summary>Can you explain how useState works?</summary>
+
+### Can you explain how useState works?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you update the state of a parent component from a child component?</summary>
+
+### How do you update the state of a parent component from a child component?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is lifting state up in React?</summary>
+
+### What is lifting state up in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>When do you use Redux or Context API for state management?</summary>
+
+### When do you use Redux or Context API for state management?
+
+**Definition:**
+
+</details>
+
+### React Lifecycle & Hooks
+
+<details>
+<summary>Explain the lifecycle methods of a React class component.</summary>
+
+### Explain the lifecycle methods of a React class component.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do hooks work in React?</summary>
+
+### How do hooks work in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Can you describe the useEffect hook and its purpose?</summary>
+
+### Can you describe the useEffect hook and its purpose?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you fetch data with hooks in React?</summary>
+
+### How do you fetch data with hooks in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What rules do you have to follow when using hooks?</summary>
+
+### What rules do you have to follow when using hooks?
+
+**Definition:**
+
+</details>
+
+### Component Communication
+
+<details>
+<summary>How do props work in React?</summary>
+
+### How do props work in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is prop drilling and how can you avoid it?</summary>
+
+### What is prop drilling and how can you avoid it?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the Context API and its use cases.</summary>
+
+### Explain the Context API and its use cases.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you use render props?</summary>
+
+### How do you use render props?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the children prop?</summary>
+
+### What is the children prop?
+
+**Definition:**
+
+</details>
+
+### Performance Optimization
+
+<details>
+<summary>Why is performance optimization important in React?</summary>
+
+### Why is performance optimization important in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is React.memo and when would you use it?</summary>
+
+### What is React.memo and when would you use it?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How does PureComponent differ from Component in React?</summary>
+
+### How does PureComponent differ from Component in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Can you explain the concept of reconciliation in React?</summary>
+
+### Can you explain the concept of reconciliation in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can you prevent unnecessary re-renders in React?</summary>
+
+### How can you prevent unnecessary re-renders in React?
+
+**Definition:**
+
+</details>
+
+### Styling in React
+
+<details>
+<summary>How do you apply styles in a React application?</summary>
+
+### How do you apply styles in a React application?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is CSS-in-JS and how do you implement it in React?</summary>
+
+### What is CSS-in-JS and how do you implement it in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Can you describe how Styled-Components work?</summary>
+
+### Can you describe how Styled-Components work?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are the advantages of using Sass or LESS in a React project?</summary>
+
+### What are the advantages of using Sass or LESS in a React project?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you use inline styles in React?</summary>
+
+### How do you use inline styles in React?
+
+**Definition:**
+
+</details>
+
+### React Routing
+
+<details>
+<summary>What is React Router?</summary>
+
+### What is React Router?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you create dynamic routes in React?</summary>
+
+### How do you create dynamic routes in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you pass data to routes in React Router v5+?</summary>
+
+### How would you pass data to routes in React Router v5+?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you programmatically navigate using React Router?</summary>
+
+### How do you programmatically navigate using React Router?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are route guards and how can you implement them in React?</summary>
+
+### What are route guards and how can you implement them in React?
+
+**Definition:**
+
+</details>
+
+### React Patterns
+
+<details>
+<summary>What are higher-order components (HOCs)?</summary>
+
+### What are higher-order components (HOCs)?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the container/presenter (smart/dumb) component pattern.</summary>
+
+### Explain the container/presenter (smart/dumb) component pattern.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you implement a compound component pattern in React?</summary>
+
+### How would you implement a compound component pattern in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the use of custom hooks in React.</summary>
+
+### Explain the use of custom hooks in React.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is a render prop pattern?</summary>
+
+### What is a render prop pattern?
+
+**Definition:**
+
+</details>
+
+### Form Handling
+
+<details>
+<summary>How do you handle forms in React?</summary>
+
+### How do you handle forms in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is controlled and uncontrolled components?</summary>
+
+### What is controlled and uncontrolled components?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you validate forms in React?</summary>
+
+### How do you validate forms in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is Formik and how is it used in React forms?</summary>
+
+### What is Formik and how is it used in React forms?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you handle file uploads in React?</summary>
+
+### How do you handle file uploads in React?
+
+**Definition:**
+
+</details>
+
+### React with TypeScript
+
+<details>
+<summary>What are the benefits of using TypeScript with React?</summary>
+
+### What are the benefits of using TypeScript with React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you define types for props and state in TypeScript with React?</summary>
+
+### How do you define types for props and state in TypeScript with React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how to use interfaces with React components and TypeScript.</summary>
+
+### Explain how to use interfaces with React components and TypeScript.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do TypeScript generics enhance React components?</summary>
+
+### How do TypeScript generics enhance React components?
+
+**Definition:**
+
+</details>
+
+### Testing in React
+
+<details>
+<summary>Why is testing important in React?</summary>
+
+### Why is testing important in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are some common testing libraries for React?</summary>
+
+### What are some common testing libraries for React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you test a React component with Jest?</summary>
+
+### How do you test a React component with Jest?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Can you explain the difference between shallow rendering and mount rendering in Enzyme?</summary>
+
+### Can you explain the difference between shallow rendering and mount rendering in Enzyme?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is react-testing-library and how is it different from Enzyme?</summary>
+
+### What is react-testing-library and how is it different from Enzyme?
+
+**Definition:**
+
+</details>
+
+### Advanced React Topics
+
+<details>
+<summary>What are React fragments and why are they useful?</summary>
+
+### What are React fragments and why are they useful?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is React portal and when would you use it?</summary>
+
+### What is React portal and when would you use it?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How does error boundary work in React?</summary>
+
+### How does error boundary work in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is server-side rendering and how is it done with React?</summary>
+
+### What is server-side rendering and how is it done with React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Can you explain the concept of suspense and lazy loading in React?</summary>
+
+### Can you explain the concept of suspense and lazy loading in React?
+
+**Definition:**
+
+</details>
+
+### React and SEO
+
+<details>
+<summary>How does React affect SEO?</summary>
+
+### How does React affect SEO?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What strategies would you use to make a React application SEO-friendly?</summary>
+
+### What strategies would you use to make a React application SEO-friendly?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can server-side rendering improve SEO with React applications?</summary>
+
+### How can server-side rendering improve SEO with React applications?
+
+**Definition:**
+
+</details>
+
+### React Native
+
+<details>
+<summary>What is React Native and how is it different from React?</summary>
+
+### What is React Native and how is it different from React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you bridge native modules in React Native?</summary>
+
+### How do you bridge native modules in React Native?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Can you describe the layout system in React Native?</summary>
+
+### Can you describe the layout system in React Native?
+
+**Definition:**
+
+</details>
+
+### State Management Libraries & GraphQL
+
+<details>
+<summary>What is Apollo Client and how does it integrate with React?</summary>
+
+### What is Apollo Client and how does it integrate with React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you manage local state in Apollo Client?</summary>
+
+### How do you manage local state in Apollo Client?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is Redux and how does it contrast with the Context API?</summary>
+
+### What is Redux and how does it contrast with the Context API?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Can you detail the Redux workflow?</summary>
+
+### Can you detail the Redux workflow?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you handle side effects in Redux applications?</summary>
+
+### How do you handle side effects in Redux applications?
+
+**Definition:**
+
+</details>
+
+### React Development Environment & Tooling
+
+<details>
+<summary>How do you set up a React project from scratch?</summary>
+
+### How do you set up a React project from scratch?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is Babel and why do we use it with React?</summary>
+
+### What is Babel and why do we use it with React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is Webpack and what role does it play in React development?</summary>
+
+### What is Webpack and what role does it play in React development?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How does hot module replacement work in React?</summary>
+
+### How does hot module replacement work in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are the features of create-react-app and how do you eject from it?</summary>
+
+### What are the features of create-react-app and how do you eject from it?
+
+**Definition:**
+
+</details>
+
+### Integrations and API Handling
+
+<details>
+<summary>How do you handle API calls in React?</summary>
+
+### How do you handle API calls in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is Axios and how is it used over fetch in React applications?</summary>
+
+### What is Axios and how is it used over fetch in React applications?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you handle WebSocket connections in a React application?</summary>
+
+### How would you handle WebSocket connections in a React application?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are some strategies used to connect a React front end to a backend server?</summary>
+
+### What are some strategies used to connect a React front end to a backend server?
+
+**Definition:**
+
+</details>
+
+### Deployment and Optimization
+
+<details>
+<summary>How would you deploy a React application?</summary>
+
+### How would you deploy a React application?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you optimize the performance of a React application for production?</summary>
+
+### How do you optimize the performance of a React application for production?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are service workers and how can they benefit a React application?</summary>
+
+### What are service workers and how can they benefit a React application?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you configure HTTPS in a React app?</summary>
+
+### How do you configure HTTPS in a React app?
+
+**Definition:**
+
+</details>
+
+### Accessibility in React
+
+<details>
+<summary>Why is accessibility important in web development?</summary>
+
+### Why is accessibility important in web development?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can you make a React application accessible?</summary>
+
+### How can you make a React application accessible?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is ARIA and how it is used in React?</summary>
+
+### What is ARIA and how it is used in React?
+
+**Definition:**
+
+</details>
+
+### Internationalization and Localization
+
+<details>
+<summary>What is internationalization (i18n) in React?</summary>
+
+### What is internationalization (i18n) in React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you implement localization (l10n) in a React app?</summary>
+
+### How do you implement localization (l10n) in a React app?
+
+**Definition:**
+
+</details>
+
+### React Code Structure & Best Practices
+
+<details>
+<summary>How do you structure large React applications?</summary>
+
+### How do you structure large React applications?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are some best practices when writing React code?</summary>
+
+### What are some best practices when writing React code?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you ensure code quality and maintainability in a React project?</summary>
+
+### How do you ensure code quality and maintainability in a React project?
+
+**Definition:**
+
+</details>
+
+### React and Git Workflows
+
+<details>
+<summary>How do you manage feature branches in React development with Git?</summary>
+
+### How do you manage feature branches in React development with Git?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are your strategies for resolving merge conflicts in React projects?</summary>
+
+### What are your strategies for resolving merge conflicts in React projects?
+
+**Definition:**
+
+</details>
+
+### React Interviews Problem Solving and Scenarios
+
+<details>
+<summary>How would you handle a feature request or bug report in an ongoing React project?</summary>
+
+### How would you handle a feature request or bug report in an ongoing React project?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe your process for optimizing a component that has complex state logic and several child components.</summary>
+
+### Describe your process for optimizing a component that has complex state logic and several child components.
+
+**Definition:**
 
 </details>

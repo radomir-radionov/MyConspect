@@ -1,6 +1,6 @@
 # Node.js — Interview
 
-Вопросы и ответы на собеседовании по Node.js.
+Вопросы по Node.js, ответы не заполнены.
 
 [ ← Вернуться в хаб](./8_nodejs.md)
 
@@ -10,456 +10,996 @@
 
 ### Sections
 
-- [Questions & Answers](#questions-answers)
+- [Interview Practice](#interview-practice)
 
 ---
 
-## Questions & Answers
+## Interview Practice
+
+Вопросы с [Devinterview.io — Node.js](https://devinterview.io/questions/web-and-mobile-development/node-interview-questions/).
+
+### Node.js Basics
 
 <details>
-  <summary>What is REPL?</summary>
+<summary>What is Node.js and why is it used?</summary>
 
-### What is REPL?
+### What is Node.js and why is it used?
 
-**Definition:** Read-Eval-Print-Loop — интерактивная оболочка Node (`node` без файла). Немедленно оценивает выражения JS.
-
-**Examples:**
-
-```bash
-$ node
-> 2 + 2
-4
-> const fs = require('fs')
-```
-
-Полезно для быстрых экспериментов и отладки фрагментов.
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is a file vs a file system?</summary>
+<summary>How does Node.js handle child threads?</summary>
 
-### What is a file vs a file system?
+### How does Node.js handle child threads?
 
-**Definition:** **Файл** — это именованная последовательность байтов плюс атрибуты (разрешения, владелец, размер, метки времени, курсор чтения/записи). **Файловая система** отображает эту абстракцию на диски, поэтому программы не заботятся об оборудовании, а уникальные **пути** позволяют избежать конфликтов имен.
-
-**How it works:** Иерархические деревья (корень, каталоги, файлы как листья) победили плоские пространства имен. Unix рассматривает устройства и каталоги как файлы; открыть → чтение/запись → закрыть, с **дескрипторами файлов** ядра. Полные примечания: [Файлы и файловые системы](./8_nodejs_modules.md#files--file-systems).
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What are streams in Node.js?</summary>
+<summary>Describe the event-driven programming in Node.js.</summary>
 
-### What are streams in Node.js?
+### Describe the event-driven programming in Node.js.
 
-**Definition:** Интерфейсы для чтения/записи данных частями — `Readable`, `Writable`, `Duplex`, `Transform`. Обрабатывайте большие файлы, не загружая их все в память.
-
-**How it works:** приостановить чтение, когда записываемый буфер заполнен.
-
-**Examples:**
-
-```js
-createReadStream("./large.bin").pipe(res);
-```
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is middleware?</summary>
+<summary>What is the event loop in Node.js?</summary>
 
-### What is middleware?
+### What is the event loop in Node.js?
 
-**Definition:** Функции `(req, res, next) => {}` в экспресс-конвейере выполняется в порядке регистрации.
-
-**How it works:** Вызов `next()` пройти контроль; вызов `next(err)` за ошибки; отправить ответ (`res.json`) для завершения цепочки. Промежуточное программное обеспечение ошибок имеет 4 аргумента `(err, req, res, next)`.
-
-**When to use:** Ведение журнала, `express.json()`, авторизация (`req.user`), проверка, 404, центральный обработчик ошибок (последний).
-
-**Sources:** [промежуточное ПО expressjs.com](https://expressjs.com/en/guide/using-middleware.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>setImmediate vs setTimeout vs process.nextTick?</summary>
+<summary>What is the difference between Node.js and traditional web server technologies?</summary>
 
-### setImmediate vs setTimeout vs process.nextTick?
+### What is the difference between Node.js and traditional web server technologies?
 
-**Definition:** Узел планирует асинхронные обратные вызовы в разных очередях/фазах. Порядок имеет значение для производительности и правильности.
-
-**How it works:**
-
-1. Выполнить синхронный код.
-2. Слив**`process.nextTick`** очередь (вся она — может привести к остановке ввода-вывода).
-3. Слейте **микрозадачи** (`Promise.then`, `queueMicrotask`).
-4. Фаза цикла событий (таймеры → ожидание → бездействие → **опрос** → **проверка** → закрытие).
-5. **`setImmediate`** выполняется на этапе **проверки** (после опроса ввода-вывода).
-6. **`setTimeout(fn, 0)`** выполняется в фазе **таймеров** (следующая итерация цикла, если ожидается ввод-вывод).
-
-| API                | Очередь/фаза              | Когда                                        |
-| ------------------ | ------------------------- | -------------------------------------------- |
-| `process.nextTick` | следующая очередь очереди | До микрозадач и ввода-вывода                 |
-| `Promise.then`     | микрозадача               | После nextTick, перед следующей макрозадачой |
-| `setImmediate`     | этап проверки             | После обратных вызовов ввода-вывода в опросе |
-| `setTimeout(0)`    | фазовые таймеры           | После минимальной задержки (≥1 мс)           |
-
-**When to use:** Использовать `setImmediate` отложить работу после ввода-вывода; избегать рекурсивного `nextTick`. Предпочитать `queueMicrotask` над `nextTick` для отсрочки, подобной обещанию, в новом коде.
-
-**Pluses and minuses:**
-
-| +                                                      | −                                    |
-| ------------------------------------------------------ | ------------------------------------ |
-| `setImmediate` откладывает без блокировки ввода-вывода | Ментальная модель сложна             |
-| `nextTick` выполняется перед продолжением              | бесконечный `nextTick` голодает цикл |
-
-**Examples:**
-
-```js
-console.log("1");
-setTimeout(() => console.log("2"), 0);
-setImmediate(() => console.log("3"));
-Promise.resolve().then(() => console.log("4"));
-process.nextTick(() => console.log("5"));
-console.log("6");
-// 1, 6, 5, 4, 2, 3 (2 vs 3 order can vary at top level)
-```
-
-**Sources:** [цикл событий nodejs.org](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>ESM vs CommonJS?</summary>
+<summary>Explain what "non-blocking" means in Node.js.</summary>
 
-### ESM vs CommonJS?
+### Explain what "non-blocking" means in Node.js.
 
-См. **Модули → ESM и CommonJS (подробное описание)**.
-
-**Short answer:** ССЖ = `require`/`module.exports`, синхронно. ЕСМ = `import`/`export`, статический, `"type": "module"` or `.mjs`. ESM — это стандарт для нового кода Node и браузера; использовать `import.meta.url` для `__dirname`.
-
-**Sources:** [nodejs.org ESM](https://nodejs.org/api/esm.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What are worker_threads?</summary>
+<summary>How do you update Node.js to the latest version?</summary>
 
-### What are worker_threads?
+### How do you update Node.js to the latest version?
 
-**Definition:** Параллельные потоки JavaScript в одном процессе для работы **с привязкой к процессору** — отдельный вариант V8, `postMessage` МПК, опционально `SharedArrayBuffer`.
-
-**When to use:** Обработка изображений, шифрование, тяжелые вычисления — не для ввода-вывода (цикл событий уже справляется с этим). Используйте пул рабочих, а не один рабочий на запрос.
-
-**Sources:** [nodejs.org worker_threads](https://nodejs.org/api/worker_threads.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Graceful shutdown — SIGTERM?</summary>
+<summary>What is npm and what is it used for?</summary>
 
-### Graceful shutdown — SIGTERM?
+### What is npm and what is it used for?
 
-**Definition:** При развертывании/остановке поймайте **SIGTERM** → `server.close()` → завершить текущие запросы → закрыть пул БД → выйти.
-
-**When to use:** Kubernetes отправляет SIGTERM раньше SIGKILL (отсрочка ~30 секунд). Не проходите проверку работоспособности при сливе, поэтому трафик перемещается на новые модули.
-
-**Sources:** [сигналы процесса nodejs.org](https://nodejs.org/api/process.html#signal-events)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Why is Node.js single-threaded?</summary>
+<summary>How do you manage packages in a Node.js project?</summary>
 
-### Why is Node.js single-threaded?
+### How do you manage packages in a Node.js project?
 
-**Definition:** JavaScript работает в одном потоке; Пул потоков libuv обрабатывает блокировку ввода-вывода (fs, crypto). Работа, связанная с процессором, блокирует цикл событий.
-
-**How it works:** `worker_threads`, дочерние процессы или выгрузку в службу очереди/рабочую службу.
+**Definition:**
 
 </details>
 
 <details>
-  <summary>fork() vs spawn()?</summary>
+<summary>What is a package.json file?</summary>
 
-### fork() vs spawn()?
+### What is a package.json file?
 
-Оба из `child_process`.
+**Definition:**
 
-| Метод   | Цель                                       |
-| ------- | ------------------------------------------ |
-| `spawn` | общий процесс с потоковым stdio            |
-| `fork`  | создать Node-модуль с IPC (`process.send`) |
+</details>
 
-Использовать `fork` для работников кластера и обмена сообщениями между процессами.
+
+### Node.js Core Modules
+
+<details>
+<summary>Describe some of the core modules of Node.js.</summary>
+
+### Describe some of the core modules of Node.js.
+
+**Definition:**
 
 </details>
 
 <details>
-  <summary>JWT and bcrypt?</summary>
+<summary>How do you create a simple server in Node.js using the HTTP module?</summary>
 
-### JWT and bcrypt?
+### How do you create a simple server in Node.js using the HTTP module?
 
-| Инструмент | Роль                                                                                                                                                                 |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **JWT**    | Подписанный токен (`header.payload.signature`) для аутентификации без гражданства; проверить подпись + `exp` серверная часть; короткий TTL + обновление для отзыва   |
-| **bcrypt** | Медленный адаптивный хеш для паролей; `bcrypt.hash(plain, rounds)` хранить хэш; `bcrypt.compare(plain, hash)` — никогда не храните и не регистрируйте простые пароли |
-
-**How it works:** Войти → `bcrypt.compare` → выдать JWT с `sub`, `role`, `exp`. Промежуточное ПО `jwt.verify` на охраняемых маршрутах.
-
-**When to use:** bcrypt раунды 10–12; Секрет JWT в env; HttpOnly cookie или `Authorization: Bearer` заголовок.
-
-**Sources:** [jwt.io](https://jwt.io/) · [npm bcrypt](https://www.npmjs.com/package/bcrypt)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>What is Node.js? What is libuv?</summary>
+<summary>Explain the purpose of the File System (fs) module.</summary>
 
-### What is Node.js? What is libuv?
+### Explain the purpose of the File System (fs) module.
 
-**Definition:** Node.js — это среда выполнения JavaScript на стороне сервера, построенная на **V8** (выполняет JS) и **libuv** (уровень асинхронной платформы).
-
-**How it works:**
-
-- **Цикл событий** — планирует таймеры, обратные вызовы ввода-вывода, `setImmediate`, закрытие обработчиков.
-- **Пул потоков** (по умолчанию 4) — блокировка работы: файловой системы, DNS, криптографии (`UV_THREADPOOL_SIZE` для настройки).
-- **Сетевой ввод-вывод** — `epoll` / `kqueue` /IOCP — один поток обрабатывает множество соединений.
-
-_"JS работает в одном потоке; libuv обрабатывает асинхронный ввод-вывод и выгружает операции блокировки в пул потоков."_
-
-**Sources:** [nodejs.org — О программе](https://nodejs.org/en/about) · [libuv docs](http://docs.libuv.org/en/v1.x/)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>How does the event loop work?</summary>
+<summary>What is the Buffer class in Node.js?</summary>
 
-### How does the event loop work?
+### What is the Buffer class in Node.js?
 
-**Definition:** Механизм, который запускает обратные вызовы JS после завершения асинхронных операций.
-
-**How it works:**
-
-таймеры → ожидание → простой/подготовка → **опрос** (I/O) → проверка (`setImmediate`) → закрыть.
-
-осушать `process.nextTick`, затем микрозадачи (`Promise.then`).
-
-| Очередь     | Примеры                                                                                             |
-| ----------- | --------------------------------------------------------------------------------------------------- |
-| `nextTick`  | Запускается перед другими микрозадачами — может привести к остановке ввода-вывода, если рекурсивный |
-| Микрозадачи | `Promise.then`, `queueMicrotask`                                                                    |
-| Макрозадачи | `setTimeout`, обратные вызовы ввода-вывода, `setImmediate`                                          |
-
-**When to use:**
-
-#### Pitfall
-
-Длинный синхронный цикл в основном потоке блокирует всех клиентов — разгружайте процессор `worker_threads`.
-
-**Sources:** [nodejs.org — Цикл событий](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>cluster vs worker_threads?</summary>
+<summary>What are streams in Node.js and what types are available?</summary>
 
-### cluster vs worker_threads?
+### What are streams in Node.js and what types are available?
 
-| **кластер**                              | **worker_threads**                                     |
-|  ---------------------  |  ----------------------------------------  |
-| Единица               | Отдельный **процесс** (собственный V8)   | **Поток** в том же процессе                            |
-| Вариант использования | Масштабирование HTTP-сервера по ядрам ЦП | JS с привязкой к процессору (хэш, анализ, изображение) |
-| Связь                 | МПК (`process.send`)                     | `postMessage`, `SharedArrayBuffer`                     |
-| Аварийная изоляция    | Авария рабочего ≠ всегда убивать всех    | Ошибка работника может повлиять на процесс             |
-
-**Rule:** кластер для многоядерного HTTP; worker_threads для параллельных вычислений — не один рабочий на запрос.
-
-**Sources:** [кластер nodejs.org](https://nodejs.org/api/cluster.html) · [worker_threads](https://nodejs.org/api/worker_threads.html)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>NestJS — full request path and decorators?</summary>
+<summary>How do you read and write files in Node.js?</summary>
 
-### NestJS — full request path and decorators?
+### How do you read and write files in Node.js?
 
-**Path:** Промежуточное ПО → Защита → Перехватчики (до) → Трубы → Контроллер → Сервис → Перехватчики (после) → Фильтры исключений (при ошибке).
-
-**Key decorators:**
-
-- `@Module`, `@Controller`, `@Injectable` — структура + ДИ
-- `@Get` / `@Post`, `@Body`, `@Param` — маршрутизация
-- `@UseGuards` — авторизация/роли (`CanActivate`)
-- `@UsePipes(ValidationPipe)` — Проверка DTO
-- `@UseInterceptors` — логирование, картирование ответов
-- `@Catch()` — фильтры исключений
-
-Охранники бегут глобально → контроллер → маршрут; заказать внутри `@UseGuards(A, B)` слева направо.
-
-**Sources:** [NestJS — жизненный цикл запроса](https://docs.nestjs.com/faq/request-lifecycle)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>NestJS vs Express vs Fastify?</summary>
+<summary>How do you use the EventEmitter in Node.js?</summary>
 
-### NestJS vs Express vs Fastify?
+### How do you use the EventEmitter in Node.js?
 
-Express/Fastify = уровень HTTP. Гнездо = ​​каркас (модули, DI, ограждения, каналы) поверх любого адаптера.
-
-**Выберите Nest**, чтобы обеспечить слаженность работы команды, тестирование и микросервисы. **Выберите Express**, чтобы получить минимальное количество API. **Выберите Fastify**, чтобы получить чистую скорость и проверку схемы. Адаптер Nest + Fastify сочетает в себе структуру и пропускную способность.
-
-**Sources:** [NestJS — Первые шаги](https://docs.nestjs.com/first-steps)
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Node.js vs Go vs Elixir?</summary>
+<summary>What is the QueryString module?</summary>
 
-### Node.js vs Go vs Elixir?
+### What is the QueryString module?
 
-**Узел** — API ввода-вывода, полный стек TS, npm, цикл событий. **Go** — горутины, статические двоичные файлы, сервисы CPU+I/O. **Эликсир** — актеры, отказоустойчивость, режим реального времени (Phoenix Channels).
-
-Выберите Node для типичных веб-серверов с командой JS; Выбирайте работников, которым важна производительность; Эликсир для постоянно работающих систем реального времени.
-
-См. раздел [Выбор среды выполнения серверной части](./8_nodejs_http.md#runtime-choice).
-
-</details>
-
----
-
-### Tasks
-
-### Task 1 — Fix async route error
-
-```js
-router.post("/users", async (req, res) => {
-  const user = await db.createUser(req.body);
-  res.json(user);
-});
-```
-
-Чего не хватает?
-
-<details><summary>Answer</summary>
-
-`try/catch` or `express-async-errors` — необработанный отказ приводит к сбою процесса или зависанию без ответа.
-
-</details>
-
-### Task 2 — Readable stream pipe
-
-Перенаправить большой файл в HTTP-ответ с противодавлением.
-
-<details><summary>Solution</summary>
-
-```js
-import { createReadStream } from "fs";
-app.get("/file", (req, res) => {
-  createReadStream("./large.bin").pipe(res);
-});
-```
-
-</details>
-
----
-
-<details>
-  <summary>A project has performance issues — how do you find, fix, and prevent them?</summary>
-
-### A project has performance issues — how do you find, fix, and prevent them?
-
-**Answer:** **Find:** RUM (Core Web Vitals, p95 latency API), APM/traces (`trace_id`), Node `--inspect`/clinic.js, DB `EXPLAIN`, load tests. **Fix API:** индексы, N+1, pagination, кэш, compression, тяжёлую работу в очереди, размер pool. **Fix client:** профиль React/Vue, split/lazy бандлы, long tasks, LCP-ресурсы. **Prevent:** SLO alerts, bundle/Lighthouse CI budgets, review запросов в PR, регрессионные load tests.
-
-**See also:** [API and client performance optimization](./6_web_api_performance.md#api-and-client-performance-optimization) · [Connection pooling](./9_database_orm.md#connection-pooling) · [N+1 problem](./9_database_orm.md#n1-problem)
-
----
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Junior — Back-end</summary>
+<summary>How do you manage path operations in Node.js?</summary>
 
-### Junior — Back-end
+### How do you manage path operations in Node.js?
 
-117. Что такое РЕПЛ?
+**Definition:**
 
-118. Что такое потоки в Node.js?
+</details>
 
-119. Что такое промежуточное программное обеспечение?
 
-120. Что такое `setImmediate` используется для?
+### Asynchronous Programming
 
-121. Что такое `app.param()` в Экспрессе?
+<details>
+<summary>What are callbacks in Node.js?</summary>
 
-122. Что такое аутентификация на основе токенов?
+### What are callbacks in Node.js?
+
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Middle — Back-end</summary>
+<summary>What is callback hell and how can it be avoided?</summary>
 
-### Middle — Back-end
+### What is callback hell and how can it be avoided?
 
-117. Почему Node.js однопоточный, а не многопоточный?
-
-118. Что такое событийно-ориентированное развитие?
-
-119. Сравните `fork()` и `spawn()`.
-
-120. Какие фреймворки Node.js вы использовали? В чем различия?
-
-121. Опишите конечную точку, которая сохраняет файл размером 4 ГБ от клиента на S3 или другой CDN.
-
-122. Что такое микросервисы и зачем их использовать?
-
-123. Когда бы вы выбрали монолит вместо микросервисов?
-
-124. Как узнать, что приложение в данный момент работоспособно?
-
-125. Как узнать, что приложение работало исправно в течение последних трех дней?
-
-126.Как bcrypt проверяет пароль?
-
-127. Что такое JWT?
-
-128. Джуниор отправил этот код на проверку. В чем дело? Как исправить?
-
-```js
-router.post("/users", async (req, res, next) => {
-  const user = await db.createUser(req);
-  if (user) {
-    return res.json(users);
-  }
-  res.json({ error: "can not create user" });
-});
-```
+**Definition:**
 
 </details>
 
 <details>
-  <summary>Back-end</summary>
+<summary>Explain promises in Node.js.</summary>
 
-### Back-end
+### Explain promises in Node.js.
 
-25. Сравните модули CommonJS, AMD и импорт ES6.
-
-26. Какой серверный фреймворк вы бы выбрали и почему?
-
-27. Опишите своими словами, как работает OAuth v2.
-
-28. В проекте есть утечки памяти. Как их обнаружить, исправить и предотвратить?
-
-29. У проекта есть проблемы с производительностью. Как их обнаружить, исправить и предотвратить?
+**Definition:**
 
 </details>
 
 <details>
-  <summary>General</summary>
+<summary>How do async/await functions work in Node.js?</summary>
 
-### General
+### How do async/await functions work in Node.js?
 
-7. Что такое двигатель V8?
+**Definition:**
 
 </details>
+
+<details>
+<summary>What is the difference between synchronous and asynchronous methods in the fs module?</summary>
+
+### What is the difference between synchronous and asynchronous methods in the fs module?
+
+**Definition:**
+
+</details>
+
+
+### Networking in Node.js
+
+<details>
+<summary>How does Node.js handle HTTP requests and responses?</summary>
+
+### How does Node.js handle HTTP requests and responses?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is Express.js and why is it important for Node.js?</summary>
+
+### What is Express.js and why is it important for Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you create a RESTful API with Node.js?</summary>
+
+### How do you create a RESTful API with Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is middleware in the context of Node.js?</summary>
+
+### What is middleware in the context of Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you ensure security in HTTP headers with Node.js?</summary>
+
+### How do you ensure security in HTTP headers with Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Error Handling & Debugging
+
+<details>
+<summary>How do you handle errors in Node.js?</summary>
+
+### How do you handle errors in Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe some error first callback patterns in Node.js.</summary>
+
+### Describe some error first callback patterns in Node.js.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are some common debugging techniques for Node.js applications?</summary>
+
+### What are some common debugging techniques for Node.js applications?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain process.nextTick().</summary>
+
+### Explain process.nextTick().
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the global object in Node.js?</summary>
+
+### What is the global object in Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Testing in Node.js
+
+<details>
+<summary>What frameworks are available for testing Node.js applications?</summary>
+
+### What frameworks are available for testing Node.js applications?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the concept of mocking in Node.js.</summary>
+
+### Explain the concept of mocking in Node.js.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Why is benchmarking important in Node.js?</summary>
+
+### Why is benchmarking important in Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you test an HTTP server in Node.js?</summary>
+
+### How do you test an HTTP server in Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Node.js with Databases
+
+<details>
+<summary>How do you connect a MySQL database with Node.js?</summary>
+
+### How do you connect a MySQL database with Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how NoSQL databases like MongoDB can be used with Node.js.</summary>
+
+### Explain how NoSQL databases like MongoDB can be used with Node.js.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What's the role of ORM in Node.js?</summary>
+
+### What's the role of ORM in Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Node.js Performance
+
+<details>
+<summary>How can you monitor the performance of a Node.js app?</summary>
+
+### How can you monitor the performance of a Node.js app?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is clustering in Node.js and how does it work?</summary>
+
+### What is clustering in Node.js and how does it work?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can you prevent memory leaks in a Node.js application?</summary>
+
+### How can you prevent memory leaks in a Node.js application?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the use of the --inspect flag in Node.js.</summary>
+
+### Explain the use of the --inspect flag in Node.js.
+
+**Definition:**
+
+</details>
+
+
+### Concurrency in Node.js
+
+<details>
+<summary>How does Node.js handle concurrency?</summary>
+
+### How does Node.js handle concurrency?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the difference between process and child_process modules?</summary>
+
+### What is the difference between process and child_process modules?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do worker threads work in Node.js?</summary>
+
+### How do worker threads work in Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Node.js and Microservices
+
+<details>
+<summary>How is Node.js used in microservices architecture?</summary>
+
+### How is Node.js used in microservices architecture?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain inter-process communication in a Node.js microservice architecture.</summary>
+
+### Explain inter-process communication in a Node.js microservice architecture.
+
+**Definition:**
+
+</details>
+
+
+### Security in Node.js
+
+<details>
+<summary>What are some common security best practices for Node.js applications?</summary>
+
+### What are some common security best practices for Node.js applications?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you protect your Node.js application from XSS attacks?</summary>
+
+### How would you protect your Node.js application from XSS attacks?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are environment variables and how could you use them in Node.js?</summary>
+
+### What are environment variables and how could you use them in Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Node.js and WebSockets
+
+<details>
+<summary>What are WebSockets and how do they work with Node.js?</summary>
+
+### What are WebSockets and how do they work with Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you set up a WebSocket server in Node.js?</summary>
+
+### How do you set up a WebSocket server in Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Node.js Deployment
+
+<details>
+<summary>How do you deploy a Node.js application in production?</summary>
+
+### How do you deploy a Node.js application in production?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is PM2 and how is it used in Node.js?</summary>
+
+### What is PM2 and how is it used in Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how you would use Docker with a Node.js application.</summary>
+
+### Explain how you would use Docker with a Node.js application.
+
+**Definition:**
+
+</details>
+
+
+### Node.js and Version Control
+
+<details>
+<summary>How do you manage versioning of a Node.js API?</summary>
+
+### How do you manage versioning of a Node.js API?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are semantic versioning (semver) and its importance in Node.js development?</summary>
+
+### What are semantic versioning (semver) and its importance in Node.js development?
+
+**Definition:**
+
+</details>
+
+
+### Node.js Advanced Topics
+
+<details>
+<summary>What is the difference between exports and module.exports in Node.js?</summary>
+
+### What is the difference between exports and module.exports in Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How can you create a simple TCP server in Node.js?</summary>
+
+### How can you create a simple TCP server in Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is REPL in Node.js?</summary>
+
+### What is REPL in Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain the role of a reverse proxy with Node.js applications.</summary>
+
+### Explain the role of a reverse proxy with Node.js applications.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do Node.js streams enhance performance?</summary>
+
+### How do Node.js streams enhance performance?
+
+**Definition:**
+
+</details>
+
+
+### Frameworks and Libraries in Node.js
+
+<details>
+<summary>Describe some popular frameworks and libraries in the Node.js ecosystem.</summary>
+
+### Describe some popular frameworks and libraries in the Node.js ecosystem.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How is Koa different from Express.js?</summary>
+
+### How is Koa different from Express.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is NestJS and when would you choose it for your Node.js project?</summary>
+
+### What is NestJS and when would you choose it for your Node.js project?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are the benefits of using TypeScript with Node.js?</summary>
+
+### What are the benefits of using TypeScript with Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Integrations & Third-Party Node.js Modules
+
+<details>
+<summary>How would you integrate a Node.js app with a third-party API?</summary>
+
+### How would you integrate a Node.js app with a third-party API?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is Socket.IO and how does it work with Node.js?</summary>
+
+### What is Socket.IO and how does it work with Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Explain how GraphQL can be used with Node.js.</summary>
+
+### Explain how GraphQL can be used with Node.js.
+
+**Definition:**
+
+</details>
+
+
+### Node.js with Frontend Technologies
+
+<details>
+<summary>How does Node.js interact with frontend frameworks like Angular or React?</summary>
+
+### How does Node.js interact with frontend frameworks like Angular or React?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is server-side rendering and how can it be achieved with Node.js?</summary>
+
+### What is server-side rendering and how can it be achieved with Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Node.js Best Practices
+
+<details>
+<summary>What are some coding conventions and best practices in Node.js?</summary>
+
+### What are some coding conventions and best practices in Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you ensure your Node.js application adheres to the twelve-factor app principles?</summary>
+
+### How do you ensure your Node.js application adheres to the twelve-factor app principles?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is code linting and how is it applied in Node.js?</summary>
+
+### What is code linting and how is it applied in Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Scaling Node.js Applications
+
+<details>
+<summary>What are some strategies for scaling Node.js applications?</summary>
+
+### What are some strategies for scaling Node.js applications?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you handle session management in a scaled Node.js application?</summary>
+
+### How do you handle session management in a scaled Node.js application?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How does the use of microservices affect the scalability of a Node.js application?</summary>
+
+### How does the use of microservices affect the scalability of a Node.js application?
+
+**Definition:**
+
+</details>
+
+
+### Node.js and Message Queues
+
+<details>
+<summary>What are message queues and how are they used in Node.js?</summary>
+
+### What are message queues and how are they used in Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you implement RabbitMQ with Node.js?</summary>
+
+### How do you implement RabbitMQ with Node.js?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is the significance of ZeroMQ in Node.js applications?</summary>
+
+### What is the significance of ZeroMQ in Node.js applications?
+
+**Definition:**
+
+</details>
+
+
+### Node.js and Cloud Services
+
+<details>
+<summary>How do cloud platforms like AWS, Azure, or GCP facilitate Node.js application deployment?</summary>
+
+### How do cloud platforms like AWS, Azure, or GCP facilitate Node.js application deployment?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What is serverless architecture, and how does it relate to Node.js?</summary>
+
+### What is serverless architecture, and how does it relate to Node.js?
+
+**Definition:**
+
+</details>
+
+
+### Environment Management
+
+<details>
+<summary>How can you manage multiple Node.js versions on the same machine?</summary>
+
+### How can you manage multiple Node.js versions on the same machine?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are .env files and how do they work in a Node.js application?</summary>
+
+### What are .env files and how do they work in a Node.js application?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe the usage of the config module in Node.js.</summary>
+
+### Describe the usage of the config module in Node.js.
+
+**Definition:**
+
+</details>
+
+
+### Node.js and Continuous Integration/Continuous Deployment (CI/CD)
+
+<details>
+<summary>What is continuous integration/deployment and how is it implemented for Node.js apps?</summary>
+
+### What is continuous integration/deployment and how is it implemented for Node.js apps?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How do you set up a CI/CD pipeline for a Node.js project?</summary>
+
+### How do you set up a CI/CD pipeline for a Node.js project?
+
+**Definition:**
+
+</details>
+
+
+### Node.js Interview Problem Solving and Scenarios
+
+<details>
+<summary>How would you troubleshoot a slow running Node.js application?</summary>
+
+### How would you troubleshoot a slow running Node.js application?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe how to handle file uploads in a Node.js application.</summary>
+
+### Describe how to handle file uploads in a Node.js application.
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>How would you handle heavy computation tasks in a Node.js application?</summary>
+
+### How would you handle heavy computation tasks in a Node.js application?
+
+**Definition:**
+
+</details>
+
+
+### Node.js and DevOps
+
+<details>
+<summary>What is the role of a Node.js application in DevOps?</summary>
+
+### What is the role of a Node.js application in DevOps?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>Describe containerization and its benefits for Node.js applications.</summary>
+
+### Describe containerization and its benefits for Node.js applications.
+
+**Definition:**
+
+</details>
+
+
+### Node.js and IoT
+
+<details>
+<summary>How is Node.js used in IoT (Internet of Things)?</summary>
+
+### How is Node.js used in IoT (Internet of Things)?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What would you consider when developing a Node.js application for IoT devices?</summary>
+
+### What would you consider when developing a Node.js application for IoT devices?
+
+**Definition:**
+
+</details>
+
+
+### Node.js and Machine Learning
+
+<details>
+<summary>Can you use Node.js for machine learning? If so, how?</summary>
+
+### Can you use Node.js for machine learning? If so, how?
+
+**Definition:**
+
+</details>
+
+<details>
+<summary>What are some machine learning libraries or tools available for Node.js?</summary>
+
+### What are some machine learning libraries or tools available for Node.js?
+
+**Definition:**
+
+</details>
+
+
+### APIs and Node.js
+
+<details>
+<summary>What are best practices for designing RESTful APIs in Node.js?</summary>
+
+### What are best practices for designing RESTful APIs in Node.js?
+
+**Definition:**
 
 </details>

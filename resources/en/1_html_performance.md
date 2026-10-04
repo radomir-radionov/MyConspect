@@ -377,7 +377,7 @@ Prefer `web-vitals` over a raw `PerformanceObserver` on `paint`: field FCP also 
 
 **Thoughts:** FCP = first content pixels. Fix TTFB and blocking resources; still measure LCP and INP.
 
-**See also:** [Core Web Vitals](#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [TTFB](#ttfb-time-to-first-byte) · [INP](#inp-interaction-to-next-paint) · [preload, prefetch, preconnect](./6_web_api_performance.md#preload-prefetch-preconnect--prerender) · [HTML — first paint](./1_html_interview.md#what-happens-on-first-page-render)
+**See also:** [Core Web Vitals](#core-web-vitals) · [LCP](#lcp-largest-contentful-paint) · [TTFB](#ttfb-time-to-first-byte) · [INP](#inp-interaction-to-next-paint) · [preload, prefetch, preconnect](./6_web_api_performance.md#preload-prefetch-preconnect--prerender) · [HTML — first paint](./1_html_rendering.md#first-render--full-pipeline)
 
 **Sources:**
 
