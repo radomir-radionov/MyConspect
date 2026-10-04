@@ -140,7 +140,7 @@ https://highload.tech/blogs/fundament-dlya-javascript-razrabotchika-kak-otvetit-
 
 ### build / devops
 
-**Conspect:** [10_build.md → Практика проведения собеседований](10_build_interview.md#interview-practice) · [0_git.md → Практика проведения собеседований](0_git_interview.md#interview-practice) · [15_devops.md → Практика собеседований](15_devops.md#interview-practice)
+**Conspect:** [10_build.md → Практика проведения собеседований](10_build_interview.md#interview-practice) · [0_git.md → Практика проведения собеседований](0_git_interview.md#interview-practice) · [15_devops.md → Практика собеседований](15_devops.md#interview-practice) · [DevOps — собеседование](15_devops_interview.md#interview-practice) · [Go — собеседование](17_go_interview.md#interview-practice)
 
 ### Frontend interview checklist (your list)
 

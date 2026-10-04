@@ -4,7 +4,7 @@ Deployment, containers, CI/CD integration, and production operations — intervi
 
 ### Related docs
 
-- [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [SDLC](./7_special_sdlc.md) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_modules.md#files--file-systems) · [Node — SIGTERM](./15_devops.md#unix-process-management) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_core.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#internet) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Interview hub](./0_interview.md)
+- [Build & Tooling](./10_build.md) · [What is CI/CD](./10_build_interview.md#what-is-cicd) · [GitHub Actions](./10_build_ci.md#github-actions) · [SDLC](./7_special_sdlc.md) · [Node.js](./8_nodejs.md) · [Files & file systems](./8_nodejs_modules.md#files--file-systems) · [Node — SIGTERM](./15_devops.md#unix-process-management) · [System Design](./0_system_design.md) · [OS processes & signals](./0_system_design_core.md#processes-multitasking) · [Web server](./6_web_api_http.md#web-server) · [How the Internet works](./6_web_api_core.md#internet) · [Ports & sockets](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Encryption](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [DevOps — Interview](./15_devops_interview.md) · [Interview hub](./0_interview.md)
 
 ### Main concepts
 

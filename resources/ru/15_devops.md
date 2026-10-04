@@ -4,7 +4,7 @@
 
 ### Related docs
 
-- [Сборка и инструменты](./10_build.md) · [Что такое CI/CD](./10_build_interview.md#what-is-cicd) · [Действия GitHub](./10_build_ci.md#github-actions) · [SDLC](./7_special_sdlc.md) · [Node.js](./8_nodejs.md) · [Файлы и файловые системы](./8_nodejs_modules.md#files--file-systems) · [Node — SIGTERM](./15_devops.md#unix-process-management) · [Проектирование системы](./0_system_design.md) · [Процессы ОС & сигналы](./0_system_design_core.md#processes-multitasking) · [Веб-сервер](./6_web_api_http.md#web-server) · [Как работает Интернет](./6_web_api_core.md#internet) · [Порты и сокеты](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Шифрование](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [Центр интервью](./0_interview.md)
+- [Сборка и инструменты](./10_build.md) · [Что такое CI/CD](./10_build_interview.md#what-is-cicd) · [Действия GitHub](./10_build_ci.md#github-actions) · [SDLC](./7_special_sdlc.md) · [Node.js](./8_nodejs.md) · [Файлы и файловые системы](./8_nodejs_modules.md#files--file-systems) · [Node — SIGTERM](./15_devops.md#unix-process-management) · [Проектирование системы](./0_system_design.md) · [Процессы ОС & сигналы](./0_system_design_core.md#processes-multitasking) · [Веб-сервер](./6_web_api_http.md#web-server) · [Как работает Интернет](./6_web_api_core.md#internet) · [Порты и сокеты](./6_web_api_apps.md#ports-sockets--network-services) · [OSI & TCP/IP](./6_web_api_apps.md#osi--tcpip-models) · [Шифрование](./7_special_security.md#encryption) · [Git — SSH](./0_git.md#ssh-setup) · [DevOps — собеседование](./15_devops_interview.md) · [Центр интервью](./0_interview.md)
 
 ### Main concepts
 

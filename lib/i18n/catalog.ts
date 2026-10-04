@@ -214,6 +214,10 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Interview Q&A for HTTP and Web APIs.": "Вопросы/ответы по HTTP и Web API.",
   "Node.js interview questions, answers not filled in.":
     "Вопросы по Node.js, ответы не заполнены.",
+  "Go interview questions, answers not filled in.":
+    "Вопросы по Go, ответы не заполнены.",
+  "DevOps interview questions, answers not filled in.":
+    "Вопросы по DevOps, ответы не заполнены.",
   "Interview Q&A for system design.": "Вопросы/ответы по system design.",
   "Intl, RegExp, Signals (TC39), and eval.":
     "Intl, RegExp, Signals (TC39) и eval.",

@@ -148,7 +148,7 @@ https://highload.tech/blogs/eto-ogromnyj-probel-u-bolshinstva-razrabotchikov-6-g
 
 ### build / devops
 
-**Conspect:** [10_build.md → Interview Practice](10_build_interview.md#interview-practice) · [0_git.md → Interview Practice](0_git_interview.md#interview-practice) · [15_devops.md → Interview Practice](15_devops.md#interview-practice)
+**Conspect:** [10_build.md → Interview Practice](10_build_interview.md#interview-practice) · [0_git.md → Interview Practice](0_git_interview.md#interview-practice) · [15_devops.md → Interview Practice](15_devops.md#interview-practice) · [DevOps — Interview](15_devops_interview.md#interview-practice) · [Go — Interview](17_go_interview.md#interview-practice)
 
 ### Frontend interview checklist (your list)
 
