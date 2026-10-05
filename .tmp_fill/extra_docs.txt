@@ -1,0 +1,551 @@
+
+
+===== https://spark.apache.org/docs/latest/rdd-programming-guide.html
+RDD Programming Guide - Spark 4.2.0 Documentation
+At a high level, every Spark application consists of a
+on a cluster. The main abstraction Spark provides is a
+(RDD), which is a collection of elements partitioned across the nodes of the cluster that can be operated on in parallel. RDDs are created by starting with a file in the Hadoop file system (or any other Hadoop-supported file system), or an existing Scala collection in the driver program, and transforming it. Users may also ask Spark to
+an RDD in memory, allowing it to be reused efficiently across parallel operations. Finally, RDDs automatically recover from node failures.
+that can be used in parallel operations. By default, when Spark runs a function in parallel as a set of tasks on different nodes, it ships a copy of each variable used in the function to each task. Sometimes, a variable needs to be shared across tasks, or between tasks and the driver program. Spark supports two types of shared variables:
+, which can be used to cache a value in memory on all nodes, and
+, which are variables that are only “added” to, such as counters and sums.
+This guide shows each of these features in each of Spark’s supported languages. It is easiest to follow
+along with if you launch Spark’s interactive shell – either
+Spark 4.2.0 works with Python 3.10+. It can use the standard CPython interpreter,
+Spark applications in Python can either be run with the
+script which includes Spark at runtime, or by including it in your setup.py as:
+To run Spark applications in Python without pip installing PySpark, use the
+This script will load Spark’s Java/Scala libraries and allow you to submit applications to a cluster.
+If you wish to access HDFS data, you need to use a build of PySpark linking
+Finally, you need to import some Spark classes into your program. Add the following line:
+PySpark requires the same minor version of Python in both driver and workers. It uses the default python version in PATH,
+you can specify which version of Python you want to use by
+Spark 4.2.0 is built and distributed to work with Scala 2.13
+by default. (Spark can be built to work with other versions of Scala, too.) To write
+applications in Scala, you will need to use a compatible Scala version (e.g. 2.13.X).
+To write a Spark application, you need to add a Maven dependency on Spark. Spark is available through Maven Central at:
+In addition, if you wish to access an HDFS cluster, you need to add a dependency on
+Finally, you need to import some Spark classes into your program. Add the following lines:
+(Before Spark 1.3.0, you need to explicitly
+to enable essential implicit conversions.)
+for concisely writing functions, otherwise you can use the classes in the
+Note that support for Java 7 was removed in Spark 2.2.0.
+To write a Spark application in Java, you need to add a dependency on Spark. Spark is available through Maven Central at:
+In addition, if you wish to access an HDFS cluster, you need to add a dependency on
+Finally, you need to import some Spark classes into your program. Add the following lines:
+org.apache.spark.api.java.JavaSparkContext
+The first thing a Spark program must do is to create a
+that contains information about your application.
+The first thing a Spark program must do is to create a
+that contains information about your application.
+Only one SparkContext should be active per JVM. You must
+the active SparkContext before creating a new one.
+The first thing a Spark program must do is to create a
+that contains information about your application.
+parameter is a name for your application to show on the cluster UI.
+or a special “local” string to run in local mode.
+In practice, when running on a cluster, you will not want to hardcode
+receive it there. However, for local testing and unit tests, you can pass “local” to run Spark
+In the PySpark shell, a special interpreter-aware SparkContext is already created for you, in the
+. Making your own SparkContext will not work. You can set which master the
+argument, and you can add Python .zip, .egg or .py files
+to the runtime path by passing a comma-separated list to
+(e.g. Spark Packages) to your shell session by supplying a comma-separated list of Maven coordinates
+argument. Any additional repositories where dependencies might exist (e.g. Sonatype)
+to the search path (in order to later be able to
+It is also possible to launch the PySpark shell in
+enhanced Python interpreter. PySpark works with IPython 1.0.0 and later. To
+To use the Jupyter notebook (previously known as the IPython notebook),
+After the Jupyter Notebook server is launched, you can create a new notebook from
+the “Files” tab. Inside the notebook, you can input the command
+your notebook before you start to try Spark from the Jupyter notebook.
+In the Spark shell, a special interpreter-aware SparkContext is already created for you, in the
+. Making your own SparkContext will not work. You can set which master the
+argument, and you can add JARs to the classpath
+(e.g. Spark Packages) to your shell session by supplying a comma-separated list of Maven coordinates
+argument. Any additional repositories where dependencies might exist (e.g. Sonatype)
+To include a dependency using Maven coordinates:
+(RDD), which is a fault-tolerant collection of elements that can be operated on in parallel. There are two ways to create RDDs:
+an existing collection in your driver program, or referencing a dataset in an external storage system, such as a
+shared filesystem, HDFS, HBase, or any data source offering a Hadoop InputFormat.
+Parallelized collections are created by calling
+method on an existing iterable or collection in your driver program. The elements of the collection are copied to form a distributed dataset that can be operated on in parallel. For example, here is how to create a parallelized collection holding the numbers 1 to 5:
+) can be operated on in parallel. For example, we can call
+We describe operations on distributed datasets later on.
+Parallelized collections are created by
+
+===== https://spark.apache.org/docs/latest/ml-guide.html
+MLlib: Main Guide - Spark 4.2.0 Documentation
+Extracting, transforming and selecting features
+MLlib is Spark’s machine learning (ML) library.
+Its goal is to make practical machine learning scalable and easy.
+At a high level, it provides tools such as:
+ML Algorithms: common learning algorithms such as classification, regression, clustering, and collaborative filtering
+Featurization: feature extraction, transformation, dimensionality reduction, and selection
+Pipelines: tools for constructing, evaluating, and tuning ML Pipelines
+Persistence: saving and load algorithms, models, and Pipelines
+Utilities: linear algebra, statistics, data handling, etc.
+Announcement: DataFrame-based API is primary API
+The MLlib RDD-based API is now in maintenance mode.
+The primary Machine Learning API for Spark is now the
+MLlib will still support the RDD-based API in
+MLlib will not add new features to the RDD-based API.
+In the Spark 2.x releases, MLlib will add features to the DataFrames-based API to reach feature parity with the RDD-based API.
+Why is MLlib switching to the DataFrame-based API?
+DataFrames provide a more user-friendly API than RDDs. The many benefits of DataFrames include Spark Datasources, SQL/DataFrame queries, Tungsten and Catalyst optimizations, and uniform APIs across languages.
+The DataFrame-based API for MLlib provides a uniform API across ML algorithms and across multiple languages.
+DataFrames facilitate practical ML Pipelines, particularly feature transformations. See the
+“Spark ML” is not an official name but occasionally used to refer to the MLlib DataFrame-based API.
+Scala package name used by the DataFrame-based API,
+and the “Spark ML Pipelines” term we used initially to emphasize the pipeline concept.
+No. MLlib includes both the RDD-based API and the DataFrame-based API.
+The RDD-based API is now in maintenance mode.
+But neither API is deprecated, nor MLlib as a whole.
+. Those packages may call native acceleration libraries such as
+if they are available as system libraries or in runtime library paths.
+However, native acceleration libraries can’t be distributed with Spark. See
+for how to enable accelerated linear algebra processing. If accelerated native libraries are not enabled, you will see a warning message like below and a pure JVM implementation will be used instead:
+WARNING: Failed to load implementation from:dev.ludovic.netlib.blas.JNIBLAS
+The list below highlights some of the new features and enhancements added to MLlib in the
+Tree-Based Feature Transformation was added
+Added Spark ML listener for tracking ML pipeline status
+Fit with validation set was added to Gradient Boosted Trees in Python
+) and Complement Naive Bayes Classifier (
+ML function parity between Scala and Python
+is made public in all the Classification models.
+is made public in all the Classification models except
+To learn more about the benefits and background of system optimised natives, you may wish to
+
+===== https://spark.apache.org/docs/latest/graphx-programming-guide.html
+Map Reduce Triplets Transition Guide (Legacy)
+GraphX is a new component in Spark for graphs and graph-parallel computation. At a high level,
+abstraction: a directed multigraph with properties
+attached to each vertex and edge. To support graph computation, GraphX exposes a set of fundamental
+API. In addition, GraphX includes a growing collection of graph
+To get started you first need to import Spark and GraphX into your project, as follows:
+// To make some of the examples work we will also need RDD
+If you are not using the Spark shell you will also need a
+with user defined objects attached to each vertex and edge. A directed multigraph is a directed
+graph with potentially multiple parallel edges sharing the same source and destination vertex. The
+ability to support parallel edges simplifies modeling scenarios where there can be multiple
+relationships (e.g., co-worker and friend) between the same vertices. Each vertex is keyed by a
+). GraphX does not impose any ordering constraints on
+the vertex identifiers. Similarly, edges have corresponding source and destination vertex
+The property graph is parameterized over the vertex (
+are the types of the objects associated with each vertex and edge respectively.
+GraphX optimizes the representation of vertex and edge types when they are primitive data types
+(e.g., int, double, etc…) reducing the in memory footprint by storing them in specialized
+In some cases it may be desirable to have vertices with different property types in the same graph.
+This can be accomplished through inheritance. For example to model users and products as a
+bipartite graph we might do the following:
+Like RDDs, property graphs are immutable, distributed, and fault-tolerant. Changes to the values or
+structure of the graph are accomplished by producing a new graph with the desired changes. Note
+that substantial parts of the original graph (i.e., unaffected structure, attributes, and indices)
+are reused in the new graph reducing the cost of this inherently functional data structure. The
+graph is partitioned across the executors using a range of vertex partitioning heuristics. As with
+RDDs, each partition of the graph can be recreated on a different machine in the event of a failure.
+Logically the property graph corresponds to a pair of typed collections (RDDs) encoding the
+properties for each vertex and edge. As a consequence, the graph class contains members to access
+functionality built around graph computation and leverage internal optimizations. We discuss the
+but for now they can be thought of as simply RDDs of the form:
+Suppose we want to construct a property graph consisting of the various collaborators on the GraphX
+project. The vertex property might contain the username and occupation. We could annotate edges
+with a string describing the relationships between collaborators:
+The resulting graph would have the type signature:
+There are numerous ways to construct a property graph from raw files, RDDs, and even synthetic
+generators and these are discussed in more detail in the section on
+. Probably the most general method is to use the
+code constructs a graph from a collection of RDDs:
+// Assume the SparkContext has already been constructed
+// Define a default user in case there are relationship with missing user
+corresponding to the source and destination vertex identifiers. In addition, the
+We can deconstruct a graph into the respective vertex and edge views by using the
+We could have also used the case class type constructor as in the following:
+In addition to the vertex and edge views of the property graph, GraphX also exposes a triplet view.
+The triplet view logically joins the vertex and edge properties yielding an
+can be expressed in the following SQL expression:
+members which contain the source and destination properties respectively. We can use the
+triplet view of a graph to render a collection of strings describing relationships between users.
+// Use the triplets view to create an RDD of facts.
+have a collection of basic operators that take user defined functions and produce new graphs with
+transformed properties and structure. The core operators that have optimized implementations are
+and convenient operators that are expressed as a compositions of the
+are automatically available as members of
+compute the in-degree of each vertex (defined in
+// Use the implicit GraphOps.inDegrees operator
+The reason for differentiating between core graph operations and
+able to support different graph representations in the future. Each graph representation must
+provide implementations of the core operations and reuse many of the useful operations defined in
+The following is a quick summary of the functionality defined in both
+but presented as members of Graph for simplicity. Note that some function
+signatures have been simplified (e.g., default arguments and type constraints removed) and some more
+advanced functionality has been removed so please consult the API docs for the official list of
+/** Summary of the functionality in the property graph */
+// Information about the Graph ===================================================================
+// Views of the graph as collections =============================================================
+// Functions for caching graphs ==================================================================
+// Change the partitioning heuristic ============================================================
+// Transform vertex and edge attributes ==========================================================
+// Modify the graph structure ====================================================================
+// Join RDDs with the graph ======================================================================
+// Aggregate information about adjacent triplets =================================================
+// Iterative graph-parallel computation ==========================================================
+// Basic graph algorithms ===============================
+
+===== https://doc.akka.io/libraries/akka-core/current/typed/index.html
+Request-Response with ask between two actors
+Request-Response with ask from outside an Actor
+Child actors are stopped when parent is restarting
+Found an error in this documentation? The source code for this page can be found
+Please feel free to edit and contribute a pull request.
+
+===== https://reactivex.io/documentation/scheduler.html
+If you want to introduce multithreading into your cascade of Observable operators, you can do so by instructing
+those operators (or particular Observables) to operate on particular
+Some ReactiveX Observable operators have variants that take a Scheduler as a parameter. These instruct the
+operator to do some or all of its work on a particular Scheduler.
+By default, an Observable and the chain of operators that you apply to it will do its work, and will notify
+its observers, on the same thread on which its
+operator changes this behavior by specifying a different Scheduler
+on which the Observable should operate. The
+different Scheduler that the Observable will use to send notifications to its observers.
+the Observable will begin operating on, no matter at what point in the chain of operators that operator is
+, on the other hand, affects the thread that the Observable
+where that operator appears. For this reason, you may call
+multiple times at various points during the chain of Observable
+operators in order to change on which threads certain of those operators operate.
+You obtain a Scheduler from the factory methods described in
+. The following table shows the varieties of Scheduler that
+are available to you by means of these methods in RxGroovy:
+meant for computational work such as event-loops and callback processing; do not use this scheduler for I/O (use
+instead); the number of threads, by default, is equal to the number of processors
+schedules work to begin immediately in the current thread
+meant for I/O-bound work such as asynchronous performance of blocking I/O, this scheduler is backed by a thread-pool that will grow as needed; for ordinary computational work, switch to
+, which is something like a new thread scheduler with thread caching
+creates a new thread for each unit of work
+queues work to begin on the current thread after any already-queued work
+Default Schedulers for RxGroovy Observable Operators
+Some Observable operators in RxGroovy have alternate forms that allow you to set which Scheduler the
+operator will use for (at least some part of) its operation. Others do not operate on any particular
+Scheduler, or operate on a particular default Scheduler. Those that have a particular default Scheduler
+timeout(firstTimeoutSelector, timeoutSelector)
+timeout(firstTimeoutSelector, timeoutSelector, other)
+allows you to exercise fine-tuned manual control over how the
+Scheduler’s clock behaves. This can be useful for testing interactions that depend on precise
+arrangements of actions in time. This Scheduler has three additional methods:
+advances the Scheduler’s clock to a particular point in time
+advances the Scheduler’s clock forward by a particular amount of time
+start any unstarted actions that have been scheduled for a time equal to or earlier than the present
+You obtain a Scheduler from the factory methods described in
+. The following table shows the varieties of Scheduler that
+are available to you by means of these methods in RxJava:
+meant for computational work such as event-loops and callback processing; do not use this scheduler for I/O (use
+instead); the number of threads, by default, is equal to the number of processors
+schedules work to begin immediately in the current thread
+meant for I/O-bound work such as asynchronous performance of blocking I/O, this scheduler is backed by a thread-pool that will grow as needed; for ordinary computational work, switch to
+, which is something like a new thread scheduler with thread caching
+creates a new thread for each unit of work
+queues work to begin on the current thread after any already-queued work
+Default Schedulers for RxJava 1.x Observable Operators
+Some Observable operators in RxJava have alternate forms that allow you to set which Scheduler the operator
+will use for (at least some part of) its operation. Others do not operate on any particular Scheduler, or
+operate on a particular default Scheduler. Those that have a particular default Scheduler include:
+timeout(firstTimeoutSelector, timeoutSelector)
+timeout(firstTimeoutSelector, timeoutSelector, other)
+Aside from passing these Schedulers in to RxJava Observable operators, you can also use them to
+schedule your own work on Subscriptions. The following example uses
+worker = Schedulers.newThread().createWorker();
+worker = Schedulers.newThread().createWorker();
+// recurse until unsubscribed (schedule will do nothing if unsubscribed)
+methods, so you can stop work when a subscription is cancelled, or you can cancel the
+subscription from within the scheduled task:
+Worker worker = Schedulers.newThread().createWorker();
+Subscription mySubscription = worker.schedule(new Action0() {
+if(QUIT == status) { worker.unsubscribe(); }
+and so you can (and should, eventually) call
+method to signal that it can halt work and release resources:
+that delays your action on the given Scheduler until a certain timespan has passed. The
+after 500ms have passed according to that Scheduler’s clock:
+someScheduler.schedule(someAction, 500, TimeUnit.MILLISECONDS);
+allows you to schedule an action to take place at regular intervals. The following example
+have passed, and then every 250ms thereafter:
+someScheduler.schedulePeriodically(someAction, 500, 250, TimeUnit.MILLISECONDS);
+allows you to exercise fine-tuned manual control over how the
+Scheduler’s clock behaves. This can be useful for testing interactions that depend on precise
+arrangements of actions in time. This Scheduler has three additional methods:
+advances the Scheduler’s clock to a particular point in time
+advances the Scheduler’s clock forward by a particular amount of time
+start any unstarted actions that have been scheduled for a time equal to or earlier than the present
+objects. The following table shows the varieties of Scheduler that are available to you in RxJS:.
+schedules work as soon as possible on the current thread
+schedules work as though it were occurring at an arbitrary historical time
+schedules work immediately on the current thread
+
+===== https://reactivex.io/documentation/subject.html
+A Subject is a sort of bridge or proxy that is available in some implementations of ReactiveX that acts both as
+an observer and as an Observable. Because it is an observer, it can subscribe to one or more Observables, and
+because it is an Observable, it can pass through the items it observes by reemitting them, and it can also emit
+Because a Subject subscribes to an Observable, it will trigger that Observable to begin emitting items (if that
+Observable is “cold” — that is, if it waits for a subscription before it begins to emit items). This can have
+the effect of making the resulting Subject a “hot” Observable variant of the original “cold” Observable.
+In most ReactiveX implementations, especially those that can run in a multi-threaded environment, subjects on their observer side are
+from multiple threads can result in an undefined state.
+Most ReactiveX implementations therefore offer a special operator that makes the observer side thread safe as well. Look for the
+that are designed for particular use cases. Not all of these
+are available in all implementations, and some implementations use other naming conventions (for example, in
+RxScala, what is called a “PublishSubject” here is known simply as a “Subject”):
+emits the last value (and only the last value) emitted by the source Observable,
+and only after that source Observable completes. (If the source Observable does not emit any values, the
+also completes without emitting any values.)
+It will also emit this same final value to any subsequent observers. However, if the source Observable
+will not emit any items, but will simply pass along
+the error notification from the source Observable.
+, it begins by emitting the item most recently
+emitted by the source Observable (or a seed/default value if none has yet been emitted) and then continues to
+emit any other items emitted later by the source Observable(s).
+However, if the source Observable terminates with an error, the
+items to subsequent observers, but will simply pass along the error notification from the source Observable.
+emits to an observer only those items that are emitted by the source Observable(s)
+subsequent to the time of the subscription.
+may begin emitting items immediately upon creation (unless you have
+taken steps to prevent this), and so there is a risk that one or more items may be lost between the time the
+Subject is created and the observer subscribes to it. If you need to guarantee delivery of all items from the
+source Observable, you’ll need either to form that Observable with
+so that you can manually reintroduce “cold” Observable
+behavior (checking to see that all observers have subscribed before beginning to emit items), or switch to
+If the source Observable terminates with an error, the
+subsequent observers, but will simply pass along the error notification from the source Observable.
+emits to any observer all of the items that were emitted by the source
+Observable(s), regardless of when the observer subscribes.
+that will throw away old items once the replay buffer
+threatens to grow beyond a certain size, or when a specified timespan has passed since the items were
+as an observer, take care not to call its
+methods) from multiple threads, as this could lead to coincident
+ambiguity in the resulting Subject as to which item or notification should be replayed first.
+In certain ReactiveX flavors and versions, such as
+, there are a couple of more subject types available, fulfilling some extra common roles.
+A Subject that queues up events until a single Observer subscribes to it, replays those events to it until the Observer catches up
+and then switches to relaying events live to this single Observer until this UnicastSubject terminates or the Observer disposes.
+Represents a hot Single-like source and consumer of events similar to Subjects. Since a Single can only ever emit an item or error, a SingleSubject is
+Represents a hot Maybe-like source and consumer of events similar to Subjects. Since a Maybe can only ever emit an item, an error or become completed, a MaybeSubject is
+Represents a hot Completable-like source and consumer of events similar to Subjects. Since a Completable can only ever complete or hold an error, a CompletableSubject is
+s with very similar naming to the other Subjects above.
+These behave pretty much the same with the exception that they will not overflow their subscribers if they don't request more items. In general, these subjects
+don't coordinate between their subscribers and may fail them individually if they can not keep up.
+pictured above, does coordinate between its subscribers with respect to backpressure.
+subject types do not have processor variants because these do not need to support backpressure and
+Processors also implement the Reactive Streams
+they are compatible across the Reactive Streams ecosystem in Java.
+and you want to pass it along to some other agent without exposing its
+interface, you can mask it by calling its
+and you want to pass it along to some other agent without exposing its
+interface, you can mask it by calling its
+and you want to pass it along to some other agent without exposing its
+interface, you can mask it by calling its
+is a collection of open source projects. The content of this
+page is licensed under Creative Commons Attribution 3.0 License, and
+code samples are licensed under the BSD License.
+
+===== https://reactivex.io/documentation/operators/debounce.html
+only emit an item from an Observable if a particular timespan has passed without it emitting another item
+operator filters out items emitted by the source Observable that
+are rapidly followed by another emitted item.
+Note that the last item emitted by the source Observable will be emitted in turn by this operator even if
+notification is issued within the time window you
+specify since that item’s emission. That is to say: an
+variant) throttles at a periodic time interval that you choose by passing in a
+a quantity of such units as parameters to the operator.
+, but you can optionally pass in a Scheduler of your choosing as
+throttleWithTimeout(long,TimeUnit,Scheduler)
+alias) that throttles the source Observable by applying a function to each item it emits, this function
+generating an Observable. If the source Observable emits another item before this newly-generated
+does not by default operate on any particular
+Note that the last item emitted by the source Observable will be emitted in turn by this operator even if
+notification is issued within the time window you
+specify since that item’s emission. That is to say: an
+variant) throttles at a periodic time interval that you choose by passing in a
+a quantity of such units as parameters to the operator.
+, but you can optionally pass in a Scheduler of your choosing as
+throttleWithTimeout(long,TimeUnit,Scheduler)
+alias) that throttles the source Observable by applying a function to each item it emits, this function
+generating an Observable. If the source Observable emits another item before this newly-generated
+does not by default operate on any particular
+debounce debounceWithSelector throttleWithTimeout
+accepts as its parameter a duration, defined as an integer number of milliseconds, and it suppresses any
+emitted items that are followed by other emitted items during that duration since the first item’s
+// Delay each item by time and project value;
+operator throttles the source Observable by applying a function to
+each item it emits, this function generating an Observable. If the source Observable emits another item
+before this newly-generated Observable terminates,
+Returns an Observable that emits only the first item emitted by the source Observable during sequential time windows of a specified duration. If items are emitted on the source observable prior to the expiration of the time period, the last item emitted on the source observable will be emitted.
+//from https://github.com/ReactiveX/RxPHP/blob/master/demo/throttle/throttle.php
+// Delay each item by time and project value;
+$subscription = $source->subscribe($stdoutObserver);
+debounce throttle_with_selector throttle_with_timeout
+is a collection of open source projects. The content of this
+page is licensed under Creative Commons Attribution 3.0 License, and
+code samples are licensed under the BSD License.
+
+===== https://www.reactive-streams.org/
+Reactive Streams is an initiative to provide a standard for asynchronous stream processing with non-blocking back pressure. This encompasses efforts aimed at runtime environments (JVM and JavaScript) as well as network protocols.
+, are 1:1 semantically equivalent to their respective Reactive Streams counterparts. This means that there will be a migratory period, while libraries move to adopt the new types in the JDK, however this period is expected to be short - due to the full semantic equivalence of the libraries, as well as the Reactive Streams <-> Flow adapter library as well as a TCK compatible directly with the JDK Flow types.
+if you are interested in learning more about
+Handling streams of data—especially “live” data whose volume is not predetermined—requires special care in an asynchronous system. The most prominent issue is that resource consumption needs to be controlled such that a fast data source does not overwhelm the stream destination. Asynchrony is needed in order to enable the parallel use of computing resources, on collaborating network hosts or multiple CPU cores within a single machine.
+The main goal of Reactive Streams is to govern the exchange of stream data across an asynchronous boundary—think passing elements on to another thread or thread-pool—while ensuring that the receiving side is not forced to buffer arbitrary amounts of data. In other words, back pressure is an integral part of this model in order to allow the queues which mediate between threads to be bounded. The benefits of asynchronous processing would be negated if the communication of back pressure were synchronous (see also the
+), therefore care has to be taken to mandate fully non-blocking and asynchronous behavior of all aspects of a Reactive Streams implementation.
+It is the intention of this specification to allow the creation of many conforming implementations, which by virtue of abiding by the rules will be able to interoperate smoothly, preserving the aforementioned benefits and characteristics across the whole processing graph of a stream application.
+The scope of Reactive Streams is to find a minimal set of interfaces, methods and protocols that will describe the necessary operations and entities to achieve the goal—asynchronous streams of data with non-blocking back pressure.
+End-user DSLs or protocol binding APIs have purposefully been left out of the scope to encourage and enable different implementations that potentially use different programming languages to stay as true as possible to the idioms of their platform.
+We anticipate that acceptance of this Reactive Streams specification and experience with its implementations will together lead to wide integration, for example including Java platform support in future JDK releases or network protocol support in future web browsers.
+The basic semantics define how the transmission of stream elements is regulated through back-pressure. How elements are transmitted, their representation during transfer, or how back-pressure is signaled is not part of this specification.
+This working group applies the basic semantics to a set of programming interfaces whose main purpose is to allow the interoperation of different conforming implementations and language bindings for passing streams between objects and threads within the JVM, using the shared memory heap.
+we have released version 1.0.4 of Reactive Streams for the JVM, including Java
+Corresponding code artifacts are available on Maven Central:
+<artifactId>reactive-streams</artifactId>
+<artifactId>reactive-streams-tck</artifactId>
+<artifactId>reactive-streams-tck-flow</artifactId>
+<artifactId>reactive-streams-examples</artifactId>
+The source code for these is available on
+. Please use github issues for providing feedback.
+All artifacts and specifications are released under MIT No Attribution (SPDX: MIT-0).
+To get started implementing the final specification, it is recommended to start by reading the
+. If you have an issue with any of the above, please take a look at
+This working group defines a minimal set of object properties for observing a stream of elements within a JavaScript runtime environment. The goal is to provide a testable specification that allows different implementations to interoperate within that same runtime environment.
+This working group defines network protocols for passing reactive streams over various transport media that involve serialization and deserialization of the data elements. Examples of such transports are TCP, UDP, HTTP and WebSockets.
+
+===== https://docs.scala-lang.org/overviews/scala-book/abstract-classes.html
+JavaScript is currently disabled, code tabs will still work,
+Scala also has a concept of an abstract class that is similar to Java’s abstract class. But because traits are so powerful, you rarely need to use an abstract class. In fact, you only need to use an abstract class when:
+You want to create a base class that requires constructor arguments
+Your Scala code will be called from Java code
+Scala traits don’t allow constructor parameters
+Regarding the first reason, Scala traits don’t allow constructor parameters:
+Therefore, you need to use an abstract class whenever a base behavior must have constructor parameters:
+However, be aware that a class can extend only one abstract class.
+When Scala code will be called from Java code
+Regarding the second point — the second time when you’ll need to use an abstract class — because Java doesn’t know anything about Scala traits, if you want to call your Scala code from Java code, you’ll need to use an abstract class rather than a trait.
+The abstract class syntax is similar to the trait syntax. For example, here’s an abstract class named
+The REPL shows that this all works as advertised:
+All of that code is similar to Java, so we won’t explain it in detail. One thing to notice is how the
+Therefore, this example shows how to pass the constructor parameter from the
+abstract class. You can verify that this works with this code:
+We encourage you to copy and paste that code into the REPL to be sure that it works as expected, and then experiment with it as desired.
+Supplying Default Values for Constructor Parameters
+Enumerations (and a Complete Pizza Class)
+Writing BDD Style Tests with ScalaTest and sbt
+
+===== https://docs.scala-lang.org/overviews/scala-book/companion-objects.html
+JavaScript is currently disabled, code tabs will still work,
+, and has the same name as the class. For instance, when the following code is saved in a file named
+object is considered to be a companion object to the
+This has several benefits. First, a companion object and its class can access each other’s private members (fields and methods). This means that the
+method in this class will work because it can access the
+A companion object offers much more functionality than this, and we’ll demonstrate a few of its most important features in the rest of this lesson.
+You probably noticed in some examples in this book that you can create new instances of certain classes without having to use the
+keyword before the class name, as in this example:
+This functionality comes from the use of companion objects. What happens is that when you define an
+method in a companion object, it has a special meaning to the Scala compiler. There’s a little syntactic sugar baked into Scala that lets you type this code:
+and during the compilation process the compiler turns that code into this code:
+, and Scala’s syntactic sugar lets you use the syntax shown, creating new class instances without using the
+To demonstrate how this feature works, here’s a class named
+To test this code, paste both the class and the object in the Scala REPL at the same time using this technique:
+Start the Scala REPL from your command line (with the
+// Entering paste mode (ctrl-D to finish)
+Now paste both the class and object into the REPL at the same time
+Press Ctrl-D to finish the “paste” process
+When that process works you should see this output in the REPL:
+The REPL requires that a class and its companion object be entered at the same time with this technique.
+in the companion object. More importantly, you can also create a new instance like this:
+To be clear, what happens in this process is:
+class that matches the type signature you entered
+method, it uses it; if it doesn’t, you get a compiler error
+methods in a companion object to provide multiple constructors. The following code shows how to create both one- and two-argument constructors. Because we introduced
+values in the previous lesson, this example also shows how to use
+If you paste that code into the REPL as before, you’ll see that you can create new
+When you print those values you’ll see these results:
+When running tests like this, it’s best to clear the REPL’s memory. To do this, use the
+object instances. We’ll demonstrate this with an example.
+Notice that the companion object defines an
+method. That method takes an input parameter of the type
+instance it’s given. In Scala, when you put an
+method in a companion object, it’s said that you’ve created an
+method, because you’ve created a way to extract the fields out of the object.
+, but you can write it to return anything. Here’s an example that returns the two fields in a tuple:
+Here’s what that method looks like in the REPL:
+method returns the class fields as a tuple, you can also do this:
+to create an extractor is that if you follow the proper Scala conventions, they enable a convenient form of pattern-matching in match expressions.
+We’ll discuss that more in the next lesson, but as you’ll see, the story gets even better: You rarely need to write an
+method yourself. Instead, what happens is that you get
+methods for free when you create your classes as
+rather than as the “regular” Scala classes you’ve seen so far. We’ll dive into case classes in the next lesson.
+A companion object and its class can access each other’s private members
+method lets you create new instances of a class without using the
+method lets you de-construct an instance of a class into its individual components
+Supplying Default Values for Constructor Parameters
+Enumerations (and a Complete Pizza Class)
+Writing BDD Style Tests with ScalaTest and sbt
+
+===== https://docs.scala-lang.org/overviews/scala-book/sbt-scalatest-intro.html
+JavaScript is currently disabled, code tabs will still work,
+In the next few lessons you’ll see a couple of tools that are commonly used in Scala projects:
+We’ll start by showing how to use sbt, and then you’ll see how to use ScalaTest and sbt together to build and test your Scala projects.
+Supplying Default Values for Constructor Parameters
+Enumerations (and a Complete Pizza Class)
+Writing BDD Style Tests with ScalaTest and sbt
+
+===== https://docs.scala-lang.org/overviews/collections-2.13/seqs.html
+The sequence traits Seq, IndexedSeq, and LinearSeq |
+The sequence traits Seq, IndexedSeq, and LinearSeq
+JavaScript is currently disabled, code tabs will still work,
+trait represents sequences. A sequence is a kind of iterable that has a
+and whose elements have fixed index positions, starting from
+The operations on sequences, summarized in the table below, fall into the following categories:
+operation means indexing; hence a sequence of type
+argument (an index) and which yields a sequence element of type
+. The elements of a sequence are indexed from zero up to the
+method allows you to compare the lengths of a sequences with an Int or with an
+even if the sequences has infinite length.
+, which return the index of an element equal to a given value or matching some predicate.
+, which return new sequences obtained by adding elements at the front or the end of a sequence.
+, which return a new sequence obtained by replacing some elements of the original sequence.
+, which sort sequence elements according to various criteria.
+, which yield or process sequence elements in reverse order.
+, which relate two sequences or search an element in a sequence.
+, which perform set-like operations on the elements of two sequences or remove duplicates.
+If a sequence is mutable, it offers in addition a side-effecting
+method, which lets sequence elements be updated. As always in Scala, syntax like
+gives convenient assignment syntax for free. Note the difference between
+changes a sequence element in place, and is only available for mutable sequences.
+is available for all sequences and always returns a new sequence instead of modifying the original.
+. Works even if the sequence is infinite, for example
+such that successive elements starting from that index form the sequence
+such that successive elements starting from that index form the sequence
+The index of the first element in xs that satisfies
+The length of the longest uninterrupted segment of elements in
+A new sequence that consists of all the elements of
+A new sequence that consists of all the elements of
+The sequence resulting from appending the value
+A new sequence obtained by sorting the elements of
+using the standard ordering of the element type of
+A new sequence obtained by sorting the elements of
+A new sequence obtained by sorting the elements of
+. Comparison between two elements proceeds by mapping the function
+contain the same elements in the same order
+that contains no duplicated element after applying the transforming function
+List("foo", "bar", "quux").distinctBy(_.length) == List("foo", "quux")
+. These do not add any new operations to the immutable branch, but each offers different performance characteristics: A linear sequence has efficient
+operations, whereas an indexed sequence has efficient
+operations. Frequently used linear sequences are
+class provides an interesting compromise between indexed and linear access. It has both effectively constant time indexing overhead and constant time linear access overhead. Because of this, vectors are a good foundation for mixed access patterns where both indexed and linear accesses are used. You’ll learn more on vectors
+adds operations for transforming its elements in place (by contrast with
+according to the given comparison function
+according to an ordering defined on the result of the application of the function
+An important sub-category of mutable sequences is
+s. They allow not only updates of existing elements but also element additions, insertions and removals. The principal new methods supported by a buffer are
+for element removal. These operations are summarized in the following table.
+Two often used implementations of buffers are
+, and supports efficient conversion of its elements to a
+is backed by an array, and can be quickly converted into one.
+The sequence traits Seq, IndexedSeq, and LinearSeq
+Conversions Between Java and Scala Collections
+Conversion Between Option and the Collections

@@ -1,6 +1,6 @@
 # Backtracking — собеседование
 
-Ответы заполнены для опубликованной части, остальные пустые.
+Ответы на вопросы этого файла заполнены.
 
 [← К обзору](./7_special_algorithms.md)
 
@@ -316,6 +316,40 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Нужно поставить n ферзей на доску n×n так, чтобы никакие два не делили строку, столбец или диагональ. GeeksforGeeks оценивает простой перебор с возвратом как O(n!) времени и O(n²) дополнительной памяти на доску и рекурсию, а форму с хешами как O(n!) времени и O(n) памяти. Для n = 4 списки столбцов — `[2, 4, 1, 3]` и `[3, 1, 4, 2]`. Для n = 3 решения нет.
+
+**How it works:**
+
+- Один ферзь на строку. Столбец в строке `r` должен быть свободен, и свободны обе диагонали `r - c` и `r + c`.
+- Ставят ферзя, идут в следующую строку и снимают его. Это снятие и есть возврат.
+- Факториальная оценка — перестановка столбцов до отсечения диагоналей. Множества делают проверку безопасности O(1); битовая маска — та же идея.
+- Глубина рекурсии — n, один кадр на строку.
+
+**Examples:**
+
+```text
+def solve_nqueens(n):
+    cols, d1, d2 = set(), set(), set()
+    board, res = [], []
+    def dfs(r):
+        if r == n:
+            res.append(board[:])
+            return
+        for c in range(n):
+            if c in cols or (r - c) in d1 or (r + c) in d2:
+                continue
+            cols.add(c); d1.add(r - c); d2.add(r + c); board.append(c + 1)
+            dfs(r + 1)
+            cols.remove(c); d1.remove(r - c); d2.remove(r + c); board.pop()
+    dfs(0)
+    return res
+```
+
+`solve_nqueens(4)` равно `[[2, 4, 1, 3], [3, 1, 4, 2]]`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -325,6 +359,48 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Нужно заполнить сетку 9×9 так, чтобы каждая строка, столбец и квадрат 3×3 содержали цифры от 1 до 9 по одному разу. Перебор с возвратом пробует цифру в следующей пустой клетке и снимает её, когда частичную сетку нельзя закончить. Та же схема «поставить и снять» — то, чем GeeksforGeeks решает N ферзей и оценивает как O(n!) до отсечения; здесь у пустой клетки не больше 9 кандидатов.
+
+**How it works:**
+
+- Ищут следующую пустую клетку. Если её нет, сетка решена.
+- Цифра законна, когда её нет в этой строке, столбце и квадрате.
+- Пишут цифру, идут в рекурсию и при неудаче возвращают пустую метку.
+- Индекс квадрата — `(row // 3) * 3 + (col // 3)`. Отсечение происходит на первой конфликтной цифре, поэтому дерево 9^k для k пустых клеток не обходится целиком.
+
+**Examples:**
+
+```text
+def solve_sudoku(board):
+    def ok(r, c, d):
+        if d in board[r]:
+            return False
+        if any(board[i][c] == d for i in range(9)):
+            return False
+        br, bc = 3 * (r // 3), 3 * (c // 3)
+        return all(board[i][j] != d for i in range(br, br + 3) for j in range(bc, bc + 3))
+    def dfs():
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] != ".":
+                    continue
+                for d in "123456789":
+                    if not ok(r, c, d):
+                        continue
+                    board[r][c] = d
+                    if dfs():
+                        return True
+                    board[r][c] = "."
+                return False
+        return True
+    return dfs()
+```
+
+Пустая клетка, которая уже видит 1–8 в своей строке, принимает только 9, и поиск идёт дальше.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -334,6 +410,43 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Крыса начинает в левом верхнем углу лабиринта из 0 и 1 и может идти в открытую соседнюю клетку. Поиск помечает текущую клетку, идёт в рекурсию и снимает пометку, чтобы другой маршрут мог её использовать. Тупики откатываются. Ветвление — та же схема «поставить и снять», которой GeeksforGeeks пользуется для N ферзей.
+
+**How it works:**
+
+- Открыты только клетки со значением 1. Ходы обычно вправо и вниз или во все четыре стороны, если условие это разрешает.
+- Путь, который дошёл до правого нижнего угла, — ответ. Клетки записывают, затем откатывают, чтобы поздние пути всё ещё нашлись.
+- Без снятия пометки поиск навсегда считал бы клетку текущего пути стеной.
+- В худшем случае каждую открытую клетку пробуют из каждого префикса, поэтому дерево растёт с числом выборов на шаге. У лабиринта только вправо и вниз на открытой сетке n×n число путей биномиально, и поиск их перечисляет.
+
+**Examples:**
+
+```text
+def maze_paths(maze):
+    n = len(maze)
+    path, res = [], []
+    def dfs(r, c):
+        if not (0 <= r < n and 0 <= c < n) or maze[r][c] != 1:
+            return
+        path.append((r, c))
+        maze[r][c] = -1
+        if (r, c) == (n - 1, n - 1):
+            res.append(path[:])
+        else:
+            dfs(r, c + 1)
+            dfs(r + 1, c)
+        maze[r][c] = 1
+        path.pop()
+    if maze and maze[0][0] == 1:
+        dfs(0, 0)
+    return res
+```
+
+На `[[1, 0], [1, 1]]` единственный путь — `(0, 0) → (1, 0) → (1, 1)`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -343,6 +456,41 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Перестановка — это порядок символов. Перебор с возвратом меняет следующую позицию с каждым поздним кандидатом и меняет обратно. Перечисление пишет n! строк, а копирование строки длины n делает цену вывода Θ(n · n!), то же факториальное семейство, которое GeeksforGeeks записывает как O(n!) для дерева N ферзей.
+
+**How it works:**
+
+- На индексе `i` каждый индекс `j >= i` — выбор для позиции `i`.
+- Меняют местами, идут к `i + 1`, меняют обратно.
+- Повторяющийся символ на той же глубине пропускают, если вход повторяется, чтобы одинаковые перестановки не выдать дважды.
+- Глубина рекурсии — n. Листья — перестановки.
+
+**Examples:**
+
+```text
+def permutations(s):
+    chars, out = list(s), []
+    def dfs(i):
+        if i == len(chars):
+            out.append("".join(chars))
+            return
+        seen = set()
+        for j in range(i, len(chars)):
+            if chars[j] in seen:
+                continue
+            seen.add(chars[j])
+            chars[i], chars[j] = chars[j], chars[i]
+            dfs(i + 1)
+            chars[i], chars[j] = chars[j], chars[i]
+    dfs(0)
+    return out
+```
+
+`permutations("ab")` равно `["ab", "ba"]`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -352,6 +500,40 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Для каждого элемента решают, входит ли он в подмножество, и откатывают выбор. GeeksforGeeks оценивает эту рекурсию «взять или пропустить» как O(2^n) времени и O(n) памяти. Таблица DP на той же странице — O(sum · n); перебор с возвратом — дерево, которое таблица сжимает.
+
+**How it works:**
+
+- Оставшаяся цель и следующий индекс — состояние.
+- Оставшаяся цель 0 — попадание. Отрицательная цель или кончившийся массив — промах.
+- Сначала включают, потом исключают. Добавление и снятие выбранного значения собирает одно подмножество-свидетель.
+- Сортировка и остановка, когда следующее значение больше остатка, отсекает ветки и не меняет худший случай O(2^n) рекурсии со страницы.
+
+**Examples:**
+
+```text
+def subset_sums(arr, target):
+    arr = sorted(arr)
+    res, cur = [], []
+    def dfs(i, left):
+        if left == 0:
+            res.append(cur[:])
+            return
+        if i == len(arr) or left < 0:
+            return
+        cur.append(arr[i])
+        dfs(i + 1, left - arr[i])
+        cur.pop()
+        dfs(i + 1, left)
+    dfs(0, target)
+    return res
+```
+
+`subset_sums([3, 34, 4, 12, 5, 2], 9)` содержит `[4, 5]`.
+
+**Sources:**
+
+- [GeeksforGeeks — Subset sum](https://www.geeksforgeeks.org/dsa/subset-sum-problem-dp-25/)
 </details>
 
 <details>
@@ -361,6 +543,32 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Кроссворд кладёт каждое словарное слово в слот нужной длины и снимает его, когда следующее слово уже не встаёт. Это схема N ферзей: выбрать, уйти в рекурсию и откатить. Неограниченный поиск GeeksforGeeks оценивает как O(n!).
+
+**How it works:**
+
+- Слоты — ряды пустых клеток по горизонтали или вертикали. Слово входит в слот, только если длина совпала и каждая занятая клетка согласна.
+- Пишут слово, помечают слот занятым, идут к следующему слоту и стирают буквы, которые написало это слово.
+- Общие клетки — ограничения. Буква горизонтального слова отсекает вертикальное, которое её пересекает.
+- Коэффициент ветвления — число неиспользованных слов этой длины.
+
+**Examples:**
+
+```text
+def fits(grid, slot, word):
+    (r, c, dr, dc) = slot
+    for k, ch in enumerate(word):
+        cell = grid[r + dr * k][c + dc * k]
+        if cell not in ("-", ch):
+            return False
+    return True
+```
+
+Слот длины 3, у которого средняя клетка уже `A`, принимает `CAT` и отвергает `DOG`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -370,6 +578,37 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Нужно понять, лежит ли слово в сетке путём по соседним клеткам, без повторного использования клетки. Клетку помечают, пробуют четырёх соседей для следующей буквы и снимают пометку. Это снятие — тот же шаг возврата, что у N ферзей.
+
+**How it works:**
+
+- Каждая клетка, совпавшая с первой буквой, — старт.
+- От совпавшего префикса длины `k` сосед должен равняться следующей букве и не лежать на текущем пути.
+- Пометка запрещает повтор. Её снятие позволяет другому пути взять клетку позже.
+- На шаге не больше 4 соседей, а путь не длиннее слова, поэтому один старт исследует дерево с ветвлением 4 и глубиной, равной слову.
+
+**Examples:**
+
+```text
+def exist(board, word):
+    m, n = len(board), len(board[0])
+    def dfs(r, c, k):
+        if k == len(word):
+            return True
+        if not (0 <= r < m and 0 <= c < n) or board[r][c] != word[k]:
+            return False
+        saved, board[r][c] = board[r][c], "#"
+        ok = any(dfs(r + dr, c + dc, k + 1) for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+        board[r][c] = saved
+        return ok
+    return any(dfs(r, c, 0) for r in range(m) for c in range(n))
+```
+
+`exist([["A","B"],["C","D"]], "ABD")` истинно по пути `A → B → D`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 ### Advanced Problem Solving with Backtracking
@@ -381,6 +620,42 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Назначают каждой вершине цвет из 1..m так, чтобы ни одно ребро не соединяло вершины одного цвета. Пробуют цвет, идут к следующей вершине и откатывают. Неограниченное назначение m цветов n вершинам — дерево m^n; N ферзей — частный случай, который GeeksforGeeks оценивает как O(n!), когда выборы образуют перестановку.
+
+**How it works:**
+
+- Вершины красят по порядку. Цвет законен, когда ни один уже покрашенный сосед его не держит.
+- Если ни один цвет не подходит, поиск возвращается, и предыдущая вершина пробует следующий цвет.
+- m = 1 удаётся только на графе без рёбер. Двудольный граф 2-раскрашиваем; поиск обнаруживает это успехом или исчерпанием дерева.
+- Глубина рекурсии — число вершин.
+
+**Examples:**
+
+```text
+def colorable(n, edges, m):
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        adj[u].append(v); adj[v].append(u)
+    color = [0] * n
+    def dfs(v):
+        if v == n:
+            return True
+        for c in range(1, m + 1):
+            if any(color[u] == c for u in adj[v]):
+                continue
+            color[v] = c
+            if dfs(v + 1):
+                return True
+            color[v] = 0
+        return False
+    return dfs(0)
+```
+
+Треугольник не 2-раскрашиваем и 3-раскрашиваем.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -390,6 +665,39 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Тур коня посещает каждую клетку шахматной доски ровно один раз ходами коня. Ставят коня, идут в рекурсию и снимают его, когда ветка умирает. Пометка доски — тот же откат, которым GeeksforGeeks пользуется, когда постановка ферзя не удалась.
+
+**How it works:**
+
+- С клетки у коня не больше восьми Г-образных ходов. Клетки вне доски и уже посещённые незаконны.
+- Путь из n² посещений — тур. Поиск пишет номер хода на доску и стирает его на обратном пути.
+- Сырое дерево огромно. Эвристика Варнсдорфа, выбор клетки с наименьшим числом продолжений, — упорядочивание того же поиска, а не другая задача.
+- Глубина — число клеток.
+
+**Examples:**
+
+```text
+def knight_tour(n=5):
+    board = [[-1] * n for _ in range(n)]
+    moves = [(1, 2), (1, -2), (-1, 2), (-1, -2), (2, 1), (2, -1), (-2, 1), (-2, -1)]
+    def dfs(r, c, step):
+        board[r][c] = step
+        if step == n * n - 1:
+            return True
+        for dr, dc in moves:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < n and 0 <= nc < n and board[nr][nc] == -1 and dfs(nr, nc, step + 1):
+                return True
+        board[r][c] = -1
+        return False
+    return board if dfs(0, 0, 0) else None
+```
+
+На доске 5×5 тур из угла существует; первая клетка хранит 0, последняя — 24.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -399,6 +707,48 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Криптарифм вроде `SEND + MORE = MONEY` назначает каждой букве свою цифру так, чтобы уравнение выполнялось, а ведущие цифры не были нулём. Пробуют цифру, идут к следующей букве и откатывают. Различные цифры — перестановка подмножества 0–9, то же факториальное семейство поиска, что и N ферзей.
+
+**How it works:**
+
+- Каждую новую букву отображают в неиспользованную цифру. Первая буква слова не может быть 0.
+- Когда все буквы назначены, считают сумму. Совпадение — решение.
+- Проверка по столбцам с переносом отсекает до последней буквы: столбец, который уже не сходится, поздние буквы не спасут.
+- Десять цифр и k различных букв дают P(10, k) листьев до этого отсечения.
+
+**Examples:**
+
+```text
+def solve_send_more():
+    letters = "SENDMORY"
+    used = [False] * 10
+    assign = {}
+    def value(word):
+        n = 0
+        for ch in word:
+            n = n * 10 + assign[ch]
+        return n
+    def dfs(i):
+        if i == len(letters):
+            return value("SEND") + value("MORE") == value("MONEY")
+        for d in range(10):
+            if used[d] or (d == 0 and letters[i] in "SM"):
+                continue
+            used[d] = True
+            assign[letters[i]] = d
+            if dfs(i + 1):
+                return True
+            used[d] = False
+        return False
+    dfs(0)
+    return assign
+```
+
+Одно известное решение — `9567 + 1085 = 10652`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -408,6 +758,47 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Гамильтонов путь посещает каждую вершину один раз. Его строят, дописывая неиспользованного соседа и снимая вершину, когда ветка не удалась. Поиск — перестановка вершин, отфильтрованная рёбрами, поэтому он в семействе O(n!), которое GeeksforGeeks указывает для N ферзей.
+
+**How it works:**
+
+- Начинают с каждой вершины, если путь может начаться где угодно, или с заданного истока.
+- Путь гамильтонов, когда в нём все вершины.
+- Кандидаты — только соседи по графу, поэтому отсутствующие рёбра отсекаются до листа.
+- Цикл — тот же поиск плюс ребро от последней вершины к первой.
+
+**Examples:**
+
+```text
+def ham_path(n, edges):
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        adj[u].append(v); adj[v].append(u)
+    path = []
+    def dfs(u, seen):
+        path.append(u)
+        if len(path) == n:
+            return True
+        for v in adj[u]:
+            if v in seen:
+                continue
+            seen.add(v)
+            if dfs(v, seen):
+                return True
+            seen.remove(v)
+        path.pop()
+        return False
+    for s in range(n):
+        if dfs(s, {s}):
+            return path
+    return None
+```
+
+Путь-граф `0—1—2` даёт гамильтонов путь вроде `[0, 1, 2]`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -417,6 +808,38 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Режут строку на каждом словарном слове, которое совпало с префиксом, затем откатывают выбор и пробуют следующее слово. GeeksforGeeks оценивает эту рекурсию без мемоизации как O(2^n). DP на той же странице переиспользует перекрывающиеся префиксы и стоит O(n · m · L).
+
+**How it works:**
+
+- С индекса `i` пробуют каждое словарное слово, равное `s[i:i+len]`.
+- Совпадение дописывает слово и уходит в рекурсию с нового индекса. Неудача снимает слово.
+- Достижение `i == len(s)` записывает одно разбиение.
+- `"ilike"` со словарём `{i, like, gfg}` даёт `["i", "like"]`. Экспоненциальная оценка — наивный подход страницы, до булева DP.
+
+**Examples:**
+
+```text
+def word_break_bt(s, words):
+    words, res, cur = set(words), [], []
+    def dfs(i):
+        if i == len(s):
+            res.append(cur[:])
+            return
+        for w in words:
+            if s.startswith(w, i):
+                cur.append(w)
+                dfs(i + len(w))
+                cur.pop()
+    dfs(0)
+    return res
+```
+
+`word_break_bt("ilike", ["i", "like", "gfg"])` равно `[["i", "like"]]`.
+
+**Sources:**
+
+- [GeeksforGeeks — Word Break](https://www.geeksforgeeks.org/dsa/word-break-problem-dp-32/)
 </details>
 
 <details>
@@ -426,6 +849,39 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Режут строку на непрерывные куски, каждый из которых — палиндром. Пробуют каждый конец следующего куска, оставляют его, только если срез читается одинаково в обе стороны, и снимают на обратном пути. Дерево «каждый разрез» — рекурсия O(2^n), которую GeeksforGeeks указывает для поиска word break без памяти; здесь проверка словаря — проверка палиндрома.
+
+**How it works:**
+
+- С индекса `i` каждый `j > i` — кандидат на разрез.
+- `s[i:j]` оставляют, только когда он равен своему развороту.
+- Разбиение закончено при `i == len(s)`.
+- `"aab"` даёт `["a", "a", "b"]` и `["aa", "b"]`.
+
+**Examples:**
+
+```text
+def pal_parts(s):
+    res, cur = [], []
+    def dfs(i):
+        if i == len(s):
+            res.append(cur[:])
+            return
+        for j in range(i + 1, len(s) + 1):
+            piece = s[i:j]
+            if piece == piece[::-1]:
+                cur.append(piece)
+                dfs(j)
+                cur.pop()
+    dfs(0)
+    return res
+```
+
+`pal_parts("aab")` равно `[["a", "a", "b"], ["aa", "b"]]`.
+
+**Sources:**
+
+- [GeeksforGeeks — Word Break](https://www.geeksforgeeks.org/dsa/word-break-problem-dp-32/)
 </details>
 
 <details>
@@ -435,6 +891,40 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Выбирают числа, которые дают цель. Если повтор разрешён, тот же индекс можно взять снова; если нет, поиск идёт к следующему индексу. В обоих случаях выбор снимают. GeeksforGeeks оценивает рекурсию «взять или пропустить» для подмножества как O(2^n); повтор строит другое дерево, которое всё равно отсекается, когда частичная сумма превысила цель.
+
+**How it works:**
+
+- Кандидатов сортируют, чтобы значение больше остатка останавливало цикл.
+- Дописывают кандидата, идут в рекурсию с уменьшенным остатком, снимают его.
+- Старт следующего выбора с `i` разрешает повтор. Старт с `i + 1` берёт каждый элемент один раз — это сумма подмножества.
+- Остаток 0 записывает текущую комбинацию.
+
+**Examples:**
+
+```text
+def combination_sum(candidates, target):
+    candidates = sorted(candidates)
+    res, cur = [], []
+    def dfs(start, left):
+        if left == 0:
+            res.append(cur[:])
+            return
+        for i in range(start, len(candidates)):
+            if candidates[i] > left:
+                break
+            cur.append(candidates[i])
+            dfs(i, left - candidates[i])
+            cur.pop()
+    dfs(0, target)
+    return res
+```
+
+`combination_sum([2, 3, 6, 7], 7)` содержит `[7]` и `[2, 2, 3]`.
+
+**Sources:**
+
+- [GeeksforGeeks — Subset sum](https://www.geeksforgeeks.org/dsa/subset-sum-problem-dp-25/)
 </details>
 
 <details>
@@ -444,6 +934,43 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Адрес IPv4 — четыре целых от 0 до 255, записанных десятично без ведущего нуля. Перебор с возвратом выбирает длину следующего сегмента, от 1 до 3 цифр, и откатывает её. Сегментов только четыре, поэтому дерево крошечное рядом с поиском N ферзей за O(n!): не больше 3^4 листьев до числовых проверок.
+
+**How it works:**
+
+- Сегмент незаконен, если у него ведущий ноль и длина больше 1, или если значение больше 255.
+- После четырёх сегментов вход должен быть израсходован точно.
+- `"25525511135"` даёт `255.255.111.35` и `255.255.11.135`.
+- Снятие сегмента и позволяет попробовать следующую длину.
+
+**Examples:**
+
+```text
+def restore_ip(s):
+    res, cur = [], []
+    def dfs(i):
+        if len(cur) == 4:
+            if i == len(s):
+                res.append(".".join(cur))
+            return
+        for length in (1, 2, 3):
+            if i + length > len(s):
+                break
+            piece = s[i:i + length]
+            if (piece[0] == "0" and length > 1) or int(piece) > 255:
+                continue
+            cur.append(piece)
+            dfs(i + length)
+            cur.pop()
+    dfs(0)
+    return res
+```
+
+`restore_ip("25525511135")` равно `["255.255.11.135", "255.255.111.35"]`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -453,6 +980,37 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Перечисляют каждый ориентированный путь от истока к стоку. Дописывают текущую вершину, идут по исходящим рёбрам и снимают вершину, чтобы следующее ребро пробовалось с того же префикса. На DAG это не может зациклиться. Форма — поиск в лабиринте: каждый выбор откатывают.
+
+**How it works:**
+
+- Путь начинают как `[source]`.
+- Когда последняя вершина — сток, путь копируют в ответы.
+- Иначе пробуют каждого соседа. Снятие гарантирует, что сосед не останется на пути, который его не выбирал.
+- Пути DAG конечны. Ориентированному циклу нужен набор посещённых, иначе рекурсия не кончится.
+
+**Examples:**
+
+```text
+def all_paths(graph, target):
+    res = []
+    def dfs(u, path):
+        if u == target:
+            res.append(path[:])
+            return
+        for v in graph[u]:
+            path.append(v)
+            dfs(v, path)
+            path.pop()
+    dfs(0, [0])
+    return res
+```
+
+`all_paths([[1, 2], [3], [3], []], 3)` равно `[[0, 1, 3], [0, 2, 3]]`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 ### Real-World Applications of Backtracking
@@ -464,6 +1022,34 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Дерево игры обходят, делая ход, ища ответ и откатывая ход. Это перебор с возвратом. N ферзей — та же структура управления на доске; игра двух лиц добавляет соперника, который выбирает ход, худший для вас.
+
+**How it works:**
+
+- Глубина рекурсии — полуход. Лист — конечная позиция или отсечка по глубине со статической оценкой.
+- Минимакс берёт максимум на вашем ходу и минимум на ходу соперника. Альфа-бета отсекает ветку, чей счёт не может побить уже найденный лучший, — та же идея, что отвергнуть битое поле ферзя до углубления.
+- Откат возвращает доску, чтобы следующий братский ход пробовался из родительской позиции.
+- Полное дерево игры вроде шахмат не перечисляют. Оценка — коэффициент ветвления в степени глубины поиска, уменьшенный отсечением.
+
+**Examples:**
+
+```text
+def negamax(board, depth, generate, apply, undo, evaluate):
+    if depth == 0:
+        return evaluate(board)
+    best = -10**9
+    for move in generate(board):
+        apply(board, move)
+        best = max(best, -negamax(board, depth - 1, generate, apply, undo, evaluate))
+        undo(board, move)
+    return best
+```
+
+Каждая пара `apply` / `undo` — одно ребро дерева игры.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -473,6 +1059,44 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Маршрут строят прыжок за прыжком. Если частичный путь превысил границу цены, повторил узел или нарушил ёмкость, последний прыжок снимают и пробуют другого соседа. Это возврат в лабиринте, уже использованный для путей по сетке, плюс числовая граница.
+
+**How it works:**
+
+- Состояние — текущий узел, путь и цена на данный момент.
+- Соседа пропускают, если он уже на пути или если `cost + edge` больше лучшего полного маршрута.
+- Достижение цели записывает путь и сжимает границу, поэтому поздние ветки умирают раньше.
+- Без границы поиск перечисляет простые пути, что на плотном графе сидит в факториальном семействе N ферзей. Граница — отсечение, а не обещание полиномиального времени.
+
+**Examples:**
+
+```text
+def cheapest(n, edges, src, dst):
+    adj = [[] for _ in range(n)]
+    for u, v, w in edges:
+        adj[u].append((v, w))
+    best = [10**18]
+    def dfs(u, cost, seen):
+        if cost >= best[0]:
+            return
+        if u == dst:
+            best[0] = cost
+            return
+        for v, w in adj[u]:
+            if v in seen:
+                continue
+            seen.add(v)
+            dfs(v, cost + w, seen)
+            seen.remove(v)
+    dfs(src, 0, {src})
+    return best[0]
+```
+
+Первый допустимый путь ставит потолок; частичный путь выше этого потолка откатывают сразу.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -482,6 +1106,41 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Порядок соединений — перестановка таблиц. Перебор с возвратом строит этот порядок, оценивает цену частичного соединения и бросает порядок, чья частичная цена уже проигрывает лучшему полному плану. Дерево поиска — дерево перестановок, которое GeeksforGeeks оценивает как O(n!) для N ферзей, отсечённое границей цены.
+
+**How it works:**
+
+- На шаге `k` дописывают таблицу, которая ещё не соединена и чьи предикаты связаны с текущим множеством, если правило левостороннего или кустистого плана этого требует.
+- Прибавляют оценку кардинальности или ввода-вывода этого соединения. Если она выше лучшего законченного плана, таблицу снимают.
+- Законченный порядок всех таблиц обновляет лучший план.
+- Динамическое программирование по подмножествам таблиц заменяет это дерево, когда таблиц достаточно мало, чтобы хранить `2^n` состояний. Перебор с возвратом остаётся, когда такая таблица не помещается.
+
+**Examples:**
+
+```text
+def best_join(tables, cost):
+    best = [10**18]
+    def dfs(order, so_far):
+        if so_far >= best[0]:
+            return
+        if len(order) == len(tables):
+            best[0] = so_far
+            return
+        for t in tables:
+            if t in order:
+                continue
+            order.append(t)
+            dfs(order, so_far + cost(order))
+            order.pop()
+    dfs([], 0)
+    return best[0]
+```
+
+`cost` — оценка оптимизатора для уже построенного соединения. Проигрывающий префикс снимают.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -491,4 +1150,39 @@ stack: [(col=0, next_row=0)]
 
 **Definition:**
 
+Планирование назначает каждой задаче ресурс и время и снимает назначение, когда оно сталкивается с уже поставленной задачей. Раскраска графа — частный случай назначения временных слотов так, чтобы конфликтующие задачи различались, а N ферзей — досковая версия того же цикла «выбрать и откатить».
+
+**How it works:**
+
+- Упорядочивают задачи. Для следующей пробуют каждый допустимый слот, который не пересекается с конфликтующей задачей на том же ресурсе.
+- Ставят её, идут в рекурсию и очищают слот при неудаче.
+- Граница на длительность расписания отсекает частичный план, который уже длится дольше лучшего законченного.
+- Неограниченное назначение экспоненциально по числу задач — по той же причине страница N ферзей даёт факториальный худший случай до отсечения диагоналей.
+
+**Examples:**
+
+```text
+def schedule(tasks, slots, conflicts):
+    assign = {}
+    def ok(task, slot):
+        return all(assign.get(other) != slot for other in conflicts(task))
+    def dfs(i):
+        if i == len(tasks):
+            return True
+        for slot in slots:
+            if not ok(tasks[i], slot):
+                continue
+            assign[tasks[i]] = slot
+            if dfs(i + 1):
+                return True
+            del assign[tasks[i]]
+        return False
+    return assign if dfs(0) else None
+```
+
+Две конфликтующие задачи не могут получить один слот; неудачный слот удаляют, прежде чем пробовать следующий.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>

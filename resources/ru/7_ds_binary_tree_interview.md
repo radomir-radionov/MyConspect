@@ -1,6 +1,6 @@
 # Binary Tree — собеседование
 
-Ответы заполнены для опубликованной части, остальные пустые.
+Ответы заполнены для всех вопросов в этом файле.
 [← К обзору](./7_special_data_structures.md)
 
 ### Related docs
@@ -296,7 +296,24 @@ BST даёт упорядоченный поиск, преемника и зап
 ### How does Inserting or Deleting nodes affect a Red-Black Tree?
 
 **Definition:**
+Вставка и удаление могут нарушить правила цвета или равную чёрную высоту. Дерево чинит путь перекраской и поворотами, высота остаётся O(log n), а поиск, вставка и удаление остаются O(log n).
 
+**How it works:**
+- Во введении высота ограничена O(log n), а поиск, вставка и удаление в худшем случае занимают O(log n). Обычное BST может занять O(n), если выродится.
+- Вставка кладёт ключ по правилу BST и красит новый узел в красный, затем чинит пары красный-красный. Статья о вставке указывает время O(log N) и память O(N) на дерево из N узлов.
+- Удаление убирает узел BST и восстанавливает чёрную высоту. Введение включает удаление в тот же худший случай O(log n). Поворот меняет постоянное число детских указателей.
+- **Time:** O(log n) на вставку и удаление. **Space:** O(N) на хранение дерева.
+
+**Examples:**
+```text
+insert 10, 20, 30 into an empty red-black tree
+30 would make a right spine; a rotation makes 20 the black root
+left 10, right 30
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tree/
+- https://www.geeksforgeeks.org/dsa/red-black-tree-set-2-insert/
 </details>
 
 <details>
@@ -305,7 +322,30 @@ BST даёт упорядоченный поиск, преемника и зап
 ### What is the time complexity for Insert into Red-Black Tree?
 
 **Definition:**
+Вставка в красно-чёрное дерево занимает O(log N) времени. N — число узлов. Спуск — это поиск в BST, а починка на обратном пути не меняет границу.
 
+**How it works:**
+- Статья о вставке указывает время O(log N) и память O(N), где N — число узлов.
+- Введение даёт ту же худшую границу вставки O(log n), потому что высота O(log n). Вставка в перекошенное BST — O(n).
+- Новый узел красится в красный. Перекраска и короткая серия поворотов чинят красного родителя.
+- **Time:** O(log N). **Space:** O(N) на хранимые узлы. Рекурсивная вставка ещё занимает стек вызовов; для сбалансированного дерева статья об AVL указывает такой стек как O(log n).
+
+**Examples:**
+```text
+def insert(root, key):  # then fix red-red on the path
+    if root is None:
+        return Node(key, RED)
+    if key < root.key:
+        root.left = insert(root.left, key)
+    else:
+        root.right = insert(root.right, key)
+    return repair(root)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/red-black-tree-set-2-insert/
+- https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tree/
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-1-insertion/
 </details>
 
 <details>
@@ -314,7 +354,24 @@ BST даёт упорядоченный поиск, преемника и зап
 ### How does tree balancing improve search operation performance in a tree?
 
 **Definition:**
+Поиск в BST идёт по одному пути от корня к листу и стоит O(h). Баланс держит h равной O(log n). Без него вставки по порядку делают цепочку, и поиск стоит O(n).
 
+**How it works:**
+- Статья о BST указывает поиск как O(h) по времени. Рекурсивная форма использует O(h) дополнительной памяти. Итеративная — O(h) по времени и O(1) дополнительно.
+- Статья об AVL говорит, что операции BST стоят O(h) и становятся O(n) на перекошенном дереве. Если высота после каждой вставки и удаления остаётся O(log n), верхняя граница — O(log n). Высота AVL всегда O(log n).
+- Красно-чёрное дерево даёт то же улучшение: высота O(log n) и поиск O(log n) против O(n) у обычного BST.
+- **Time:** O(log n) на AVL или красно-чёрном дереве, O(h) на обычном BST, O(n) если BST — цепочка. **Space:** O(1) дополнительно для итеративного поиска.
+
+**Examples:**
+```text
+# sorted inserts 1,2,3,4: search 4 walks 4 nodes
+# after AVL rotations the same search walks about log2(4) nodes
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/binary-search-tree-set-1-search-and-insertion/
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-1-insertion/
+- https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tree/
 </details>
 
 <details>
@@ -323,7 +380,28 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Discuss the concept of immutable binary trees and its implications in functional programming.
 
 **Definition:**
+Неизменяемое двоичное дерево не меняет узел на месте. Обновление строит новый корень. Поддеревья, которых обновление не коснулось, общие со старым корнем, поэтому прежняя версия остаётся верной.
 
+**How it works:**
+- Статья о персистентных структурах хранит каждую версию. Один способ копирует узлы, которые должны измениться, и связывает их заново. Неизменённые узлы остаются как есть, поэтому две версии делят поддерево.
+- Метод толстых узлов на той странице, у Слейтора, Тарьяна и их группы, хранит историю правки в узле. Статья указывает амортизированные O(1) времени и памяти на доступ и обновление.
+- Поиск по-прежнему идёт по правилу BST от того корня, который у вас есть. Поиск в статье о BST — O(h). Баланс всё ещё важен: общий хребет длины n даёт поиск O(n) на этой версии.
+- Функциональный код возвращает новый корень из вставки. Кто сохранил старый корень, видит старое дерево.
+- **Time:** поиск BST O(h) на выбранной версии. Доступ и обновление толстого узла амортизированно O(1). **Space:** неизменённые узлы общие; толстый узел амортизированно O(1) дополнительно.
+
+**Examples:**
+```text
+def insert(node, key):
+    if node is None:
+        return Node(key)
+    if key < node.key:
+        return Node(node.key, insert(node.left, key), node.right)
+    return Node(node.key, node.left, insert(node.right, key))
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/persistent-data-structures/
+- https://www.geeksforgeeks.org/dsa/binary-search-tree-set-1-search-and-insertion/
 </details>
 
 ### Comparisons Between Tree Varieties
@@ -334,7 +412,24 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Explain the difference between Binary Tree and Binary Search Tree.
 
 **Definition:**
+У узла двоичного дерева не больше двух детей и нет порядка ключей. BST — двоичное дерево, в левом поддереве которого ключи меньше, в правом больше, и то же правило действует в каждом поддереве.
 
+**How it works:**
+- Статья сравнения указывает средние вставку, удаление и поиск как O(n) на двоичном дереве, потому что поиск может обойти всё дерево. На BST эти три операции — O(h), где h — высота.
+- Память обеих структур O(n). Она зависит от числа узлов, а не от порядка.
+- Вставка в BST идёт по ключу. У обычного двоичного дерева правила ключа нет. Поиск в статье о BST — O(h) по времени, стек O(h) в рекурсии, O(1) дополнительно в цикле.
+- Симметричный обход BST даёт ключи по порядку. На обычном дереве это только «левый, узел, правый».
+- **Time:** O(n) в среднем для поиска в двоичном дереве; O(h) для поиска в BST. **Space:** O(n) на хранение любого из них.
+
+**Examples:**
+```text
+# binary tree:  5 with left 9 and right 1  — legal
+# BST:          5 with left 1 and right 9  — required
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/difference-between-binary-tree-and-binary-search-tree/
+- https://www.geeksforgeeks.org/dsa/binary-search-tree-set-1-search-and-insertion/
 </details>
 
 <details>
@@ -343,7 +438,25 @@ BST даёт упорядоченный поиск, преемника и зап
 ### What is the difference between Heap and Red-Black Tree?
 
 **Definition:**
+Двоичная куча — полное двоичное дерево с порядком кучи: в max-куче родитель не меньше детей, в min-куче не больше. Красно-чёрное дерево — BST с правилами цвета. Куча быстро находит крайний ключ. Красно-чёрное дерево быстро находит произвольный ключ.
 
+**How it works:**
+- Введение в кучу указывает heapify, вставку и удаление корня как O(log n). getMax или getMin — O(1), потому что крайний элемент в корне.
+- Введение в красно-чёрное дерево указывает поиск, вставку и удаление как O(log n) в худшем случае при высоте O(log n).
+- Куча не хранит «слева меньше, справа больше». Поиск произвольного ключа не входит в перечисленные операции кучи за O(log n). Поиск в красно-чёрном дереве использует порядок BST.
+- Кучи лежат в массивах. У красно-чёрного узла есть цвет и два детских указателя.
+- **Time:** вставка и извлечение из кучи O(log n), просмотр корня O(1). Поиск, вставка и удаление в красно-чёрном дереве O(log n).
+
+**Examples:**
+```text
+# max-heap array [10, 7, 9]: root 10, children need not be sorted
+# red-black: search 7 goes left or right by key, O(log n)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/introduction-to-heap-data-structure/
+- https://www.geeksforgeeks.org/dsa/binary-heap/
+- https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tree/
 </details>
 
 <details>
@@ -352,7 +465,26 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Compare Trie vs. Binary Search Trie.
 
 **Definition:**
+Trie хранит по символу на ребре, поэтому слово длины n — это путь из n шагов. Вставка и поиск — O(n) по этой длине. BST хранит целый ключ в узле и ищет за O(h), что становится O(n), если дерево перекошено.
 
+**How it works:**
+- Статья о trie указывает вставку как O(n) по времени и O(n) дополнительной памяти, поиск как O(n) по времени и O(1) дополнительно, где n — длина слова. Там сказано, что это быстрее BST.
+- Поиск префикса тоже O(n) по времени и O(1) дополнительно. Обход останавливается на последнем символе префикса. Все слова под этим узлом делят префикс.
+- Поиск в BST — O(h). Сбалансированное дерево делает h равной O(log N) для N ключей, по статьям об AVL и красно-чёрном дереве, но сравнение идёт по целым ключам и префиксы не делятся.
+- **Time:** вставка и поиск в trie O(n) по длине слова. Поиск в BST O(h). **Space:** вставка в trie O(n) дополнительно на новое слово; поиск O(1) дополнительно.
+
+**Examples:**
+```text
+insert "cat", then "car"
+trie: c -> a -> t
+             -> r
+BST of whole keys compares "cat" and "car" at one node
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/trie-insert-and-search/
+- https://www.geeksforgeeks.org/dsa/binary-search-tree-set-1-search-and-insertion/
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-1-insertion/
 </details>
 
 <details>
@@ -361,7 +493,26 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Compare Red-Black Trees and AVL Trees.
 
 **Definition:**
+Оба — BST с высотой O(log n), поэтому поиск, вставка и удаление занимают O(log n). AVL держит высоты двух детей в пределах 1 и поворачивает дерево, как только фактор баланса выходит из {−1, 0, +1}. Красно-чёрное дерево допускает более свободную высоту и чинится цветами.
 
+**How it works:**
+- Статья о вставке в AVL указывает высоту O(log n), время вставки O(log n) и дополнительную память O(log n) на стек. Удаление тоже O(log n) по времени и O(log n) дополнительно. Сами повороты занимают постоянное время.
+- Введение в красно-чёрное дерево указывает высоту O(log n) и худший случай поиска, вставки и удаления O(log n). Статья о вставке указывает время O(log N) и память хранения O(N).
+- AVL строже, поэтому путь поиска чуть короче, а обновления поворачивают чаще. Красно-чёрные обновления сначала перекрашивают и поворачивают реже. Оба лучше перекошенного BST за O(n).
+- **Time:** операции O(log n) у обоих. **Space:** стек рекурсии O(log n) для рекурсивных вставки и удаления AVL; O(N) на хранение любого из деревьев.
+
+**Examples:**
+```text
+# insert sorted 1..n
+# AVL: balance factor stays in -1..1, height O(log n)
+# red-black: black-height stays equal, height O(log n)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-1-insertion/
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-2-deletion/
+- https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tree/
+- https://www.geeksforgeeks.org/dsa/red-black-tree-set-2-insert/
 </details>
 
 <details>
@@ -370,7 +521,25 @@ BST даёт упорядоченный поиск, преемника и зап
 ### When standard BSTs might be preferred over AVL Trees?
 
 **Definition:**
+Обычного BST хватает, когда высота и так мала, и лишние повороты AVL не окупаются. Поиск, вставка и удаление в любом случае O(h). AVL тратит повороты, чтобы удержать h равной O(log n).
 
+**How it works:**
+- Статья о BST указывает поиск как O(h). Итеративный поиск — O(1) дополнительной памяти. Нет фактора баланса и нет поворотов.
+- Статья об AVL говорит, что цена O(n) появляется на перекошенном дереве, а вставка AVL — O(log n) вместе с поворотами и стеком O(log n). Если вставки не упорядочены, h часто и так около log n.
+- Дерево, которое строят один раз и потом только ищут, не нуждается в перебалансировке удаления.
+- AVL или красно-чёрное дерево нужны, когда порядок вставки может быть отсортирован.
+- **Time:** BST O(h): это O(n), если дерево перекошено, и O(log n), если высота уже логарифмическая. Вставка и удаление AVL — O(log n).
+
+**Examples:**
+```text
+# random keys: a plain BST search is O(h) with h near log n
+# keys 1,2,3,...,n: the plain BST is a chain, O(n); use AVL
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/binary-search-tree-set-1-search-and-insertion/
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-1-insertion/
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-2-deletion/
 </details>
 
 <details>
@@ -379,7 +548,26 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Compare the performance of a Splay Tree versus a Red-Black Tree under various operations.
 
 **Definition:**
+Splay-дерево поднимает запрошенный узел в корень. Одна операция может занять O(n). На последовательности статья указывает среднее O(log n) на операцию. Красно-чёрное дерево ограничивает каждый поиск, вставку и удаление худшим случаем O(log n).
 
+**How it works:**
+- Статья о splay говорит, что одна операция BST — это O(n) на перекошенном дереве, а AVL или красно-чёрное дерево делают худший случай O(log n). Затем она указывает, что одна операция splay может занять Θ(n) в худшем случае, а в среднем все операции splay идут за O(log n). Недавно использованный ключ оказывается в корне, и следующий поиск этого ключа — O(1).
+- M операций описаны как O(M log N) суммарно, хотя одна из них может стоить O(N).
+- Поиск, вставка и удаление в красно-чёрном дереве — O(log n) в худшем случае, высота O(log n).
+- Splay не хранит ни цвет, ни фактор баланса.
+- **Time:** splay в среднем O(log n), одна операция в худшем случае Θ(n). Красно-чёрное дерево в худшем случае O(log n).
+
+**Examples:**
+```text
+# lookup 5 twice in a splay tree:
+# first walk can be long, then 5 is the root
+# second lookup starts at 5
+# red-black: both lookups are O(log n)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/splay-tree-set-1-insert/
+- https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tree/
 </details>
 
 <details>
@@ -388,7 +576,25 @@ BST даёт упорядоченный поиск, преемника и зап
 ### How does a B+ Tree differ from a B-Tree and in what situations might it be preferred?
 
 **Definition:**
+B-дерево хранит ключи и данные и во внутренних узлах, и в листьях. B+ дерево хранит данные только в листьях. Внутренние узлы держат ключи для навигации, а листья связаны в список. Просмотры диапазона предпочитают B+ дерево. Точечное обновление, которое может остановиться во внутреннем узле, — случай B-дерева.
 
+**How it works:**
+- Статья о B-дереве указывает поиск, вставку и удаление как O(log n), а полный обход как O(n).
+- Статья о B+ хранит запись каждого ключа в листе, связывает листья через Pnext и оставляет внутренние узлы только ключами маршрута. Поиск начинается в корне, идёт по внутренним узлам и заканчивается в листе. Все листья на одном уровне.
+- Вставка расщепляет полный лист и поднимает копию среднего ключа. Удаление берёт ключ у соседа или сливает узлы. Статья говорит, что B+ дерево той же высоты вмещает больше записей во внутренних узлах, чем B-дерево, потому что в них нет записей, и поиск короче.
+- B+ выбирают для индексов баз и файловых систем с запросами диапазона: список листьев последователен. Статья отмечает и цену: точное совпадение всё равно доходит до листа, а связи листьев занимают лишние указатели.
+- **Time:** поиск, вставка и удаление в B-дереве O(log n). **Space:** у B+ дополнительные указатели листьев; внутренние узлы держат только ключи.
+
+**Examples:**
+```text
+# B-tree: internal node may hold the record for key 10
+# B+ tree: 10 in an internal node is only a router
+# the record lives in the leaf, whose next leaf holds 11, 12, ...
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/introduction-of-b-tree/
+- https://www.geeksforgeeks.org/dsa/b-tree-set-1-introduction-2/
 </details>
 
 ### Tree Implementations and Traversals
@@ -399,7 +605,24 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Name some ways to implement Priority Queue.
 
 **Definition:**
+Очередь с приоритетом следующей извлекает наименьший или наибольший ключ. Двоичная куча делает вставку и извлечение за O(log n) и просмотр корня за O(1). Сбалансированное BST, например красно-чёрное дерево, делает вставку, поиск минимума и удаление минимума за O(log n) по границам упорядоченных ключей.
 
+**How it works:**
+- Статья об очереди с приоритетом указывает O(log n) для операций, кроме getMax, который O(1), и память O(n). Это совпадает с введением в кучу: вставка, удаление корня и heapify — O(log n), getMax и getMin — O(1).
+- Красно-чёрное дерево поддерживает те же упорядоченные операции в худшем случае за O(log n). Минимум — самый левый узел. Его удаление — удаление в красно-чёрном дереве, тоже O(log n).
+- Куча лежит в массиве и не хранит указатели BST. Дерево держит ключи упорядоченными, поэтому умеет искать произвольный ключ за O(log n); в перечисленных операциях кучи этого нет.
+- **Time:** вставка и извлечение из кучи O(log n), просмотр корня O(1). Вставка и удаление минимума в красно-чёрном дереве O(log n). **Space:** O(n) для очереди на куче.
+
+**Examples:**
+```text
+# heap: push 4, 1, 7; peek() == 1 for a min-heap; pop() == 1
+# red-black: insert the same keys; delete the leftmost node
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/priority-queue-set-1-introduction/
+- https://www.geeksforgeeks.org/dsa/introduction-to-heap-data-structure/
+- https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tree/
 </details>
 
 <details>
@@ -408,7 +631,28 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Classify Tree Traversal Algorithms.
 
 **Definition:**
+Обходы бывают в глубину и в ширину. В глубину: прямой (узел, левый, правый), симметричный (левый, узел, правый) и обратный (левый, правый, узел). В ширину — по уровням, уровень за уровнем через очередь.
 
+**How it works:**
+- Итеративный прямой обход со стеком — O(n) по времени и O(n) по памяти. Прямой обход Морриса — O(n) и O(1).
+- Симметричный обход Морриса проходит каждое ребро постоянное число раз: O(n) по времени и O(1) дополнительно.
+- Обход по уровням с очередью — O(n) по времени и O(n) по памяти. Рекурсивный вариант на той странице имеет те же границы.
+- Прямой, симметричный и обратный обходы — одно семейство DFS. Меняется только момент записи узла. Обход по уровням — это BFS.
+- **Time:** O(n) для каждого полного обхода. **Space:** O(n) для стека или очереди, O(1) дополнительно для Морриса.
+
+**Examples:**
+```text
+# tree: 1 with left 2 and right 3; 2 has left 4
+# preorder  1 2 4 3
+# inorder   4 2 1 3
+# postorder 4 2 3 1
+# level     1 2 3 4
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/iterative-preorder-traversal/
+- https://www.geeksforgeeks.org/dsa/inorder-tree-traversal-without-recursion-and-without-stack/
+- https://www.geeksforgeeks.org/dsa/level-order-tree-traversal/
 </details>
 
 <details>
@@ -417,7 +661,27 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Implement Pre-order Traversal of Binary Tree using Recursion.
 
 **Definition:**
+Прямой обход посещает узел, затем левое поддерево, затем правое. Рекурсивная функция записывает узел и делает эти два вызова. Пустой ребёнок сразу возвращается.
 
+**How it works:**
+- Каждый узел посещается один раз — это время O(n), которое статья об итеративном прямом обходе указывает для обходов со стеком и для Морриса.
+- Форма со стеком на той странице занимает O(n) памяти. Прямой обход Морриса — O(n) по времени и O(1) по памяти, потому что стека нет. Рекурсивная форма использует стек вызовов вместо явного стека.
+- Порядок фиксирован: записать, левый, правый.
+- **Time:** O(n). **Space:** O(n) для прямого обхода с явным стеком; у Морриса дополнительно O(1).
+
+**Examples:**
+```text
+def preorder(node):
+    if node is None:
+        return
+    print(node.data)
+    preorder(node.left)
+    preorder(node.right)
+# 1, left 2, right 3 -> 1 2 3
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/iterative-preorder-traversal/
 </details>
 
 <details>
@@ -426,7 +690,28 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Implement Iterative Pre-order Traversal of a Binary Tree without Recursion.
 
 **Definition:**
+Корень кладётся в стек. Узел снимается и записывается, затем кладутся правый ребёнок и левый. Следующим снимается левый. Обход Морриса убирает стек, временно прошивая узел с его предшественником.
 
+**How it works:**
+- Простой прямой обход со стеком в статье — O(n) по времени и O(n) по памяти. Вариант с текущим указателем и стеком — те же O(n) и O(n).
+- Прямой обход Морриса — O(n) по времени и O(1) по памяти. Каждый узел всё равно посещается один раз, временные нити снимаются до конца обхода.
+- Сначала кладётся правый ребёнок, потом левый. Стек снимает последнюю вершину, поэтому левое поддерево идёт раньше правого, как в рекурсии.
+- **Time:** O(n). **Space:** O(n) со стеком, O(1) дополнительно у Морриса.
+
+**Examples:**
+```text
+st = [root]
+while st:
+    node = st.pop()
+    if node is None:
+        continue
+    print(node.data)
+    st.append(node.right)
+    st.append(node.left)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/iterative-preorder-traversal/
 </details>
 
 <details>
@@ -435,7 +720,31 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Convert a Binary Tree into a Doubly Linked List.
 
 **Definition:**
+Симметричный обход идёт «левый, узел, правый». Левый указатель каждого узла направляется на предыдущий узел обхода, а правый указатель предыдущего — на текущий. Первый узел обхода — голова списка.
 
+**How it works:**
+- Поиск предшественника в каждом узле — O(n) по времени и O(h) по памяти. Один симметричный проход с предыдущим указателем — O(n) и O(h).
+- Перевод Морриса — O(n) по времени и O(1) дополнительно. Нити находят предшественника без стека, а затем становятся ссылками списка.
+- Список идёт в порядке симметричного обхода. На BST это порядок ключей.
+- **Time:** O(n). **Space:** O(h) для рекурсивного прохода, O(1) дополнительно для Морриса.
+
+**Examples:**
+```text
+prev = None
+def join(node):
+    global prev
+    if node is None:
+        return
+    join(node.left)
+    node.left = prev
+    if prev:
+        prev.right = node
+    prev = node
+    join(node.right)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/convert-binary-tree-to-doubly-linked-list-using-inorder-traversal/
 </details>
 
 <details>
@@ -444,7 +753,24 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Build a Binary Expression Tree for the given expression.
 
 **Definition:**
+Дерево выражения хранит оператор во внутреннем узле и операнд в листе. Симметричный обход со скобками печатает выражение. Статья строит дерево проходом по постфиксной записи: операнды становятся листьями, оператор снимает два дерева и становится их родителем.
 
+**How it works:**
+- Статья указывает время O(n) и дополнительную память O(n). Один проход по выражению кладёт узлы. Стек держит поддеревья, у которых ещё нет родителя.
+- Для оператора сначала снимается правый ребёнок, затем левый, потому что левый операнд попал в стек раньше.
+- Симметричный обход `A + B * C / D` — пример, который печатает статья. Узлы операторов стоят над операндами, поэтому приоритет — это форма дерева.
+- **Time:** O(n). **Space:** O(n) дополнительно.
+
+**Examples:**
+```text
+# postfix A B C * +
+# push A, push B, push C
+# '*' pops C and B -> node(*, B, C)
+# '+' pops that node and A -> node(+, A, node(*, B, C))
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/expression-tree/
 </details>
 
 <details>
@@ -453,7 +779,27 @@ BST даёт упорядоченный поиск, преемника и зап
 ### What is Morris Traversal for a Tree? How to implement one?
 
 **Definition:**
+Обход Морриса проходит двоичное дерево без стека и без рекурсии. Пустой правый указатель симметричного предшественника временно направляется на узел. Когда эта нить встречается второй раз, она снимается, и узел обрабатывается. Прошитое дерево — та же связь, только постоянная, а не временная.
 
+**How it works:**
+- Статья о симметричном обходе Морриса указывает время O(n), потому что каждое ребро проходится не больше трёх раз, и дополнительную память O(1).
+- Прямой обход Морриса на странице итеративного прямого обхода — тоже O(n) и O(1).
+- Если левого ребёнка нет, узел посещается и ход идёт вправо. Иначе ищется предшественник: если нити нет, она ставится и ход идёт влево; если нить уже есть, она снимается, узел посещается и ход идёт вправо.
+- Постоянное прошитое дерево использует пустые ссылки как указатели на предшественника или преемника. Моррис создаёт нить только на время визита.
+- **Time:** O(n). **Space:** O(1) дополнительно.
+
+**Examples:**
+```text
+# Morris inorder step when node has a left child:
+# pred = rightmost of node.left
+# if pred.right is None: pred.right = node; go left
+# else: pred.right = None; visit node; go right
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/inorder-tree-traversal-without-recursion-and-without-stack/
+- https://www.geeksforgeeks.org/dsa/iterative-preorder-traversal/
+- https://www.geeksforgeeks.org/dsa/threaded-binary-tree/
 </details>
 
 <details>
@@ -462,7 +808,28 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Explain how to perform level-order traversal in a binary tree and its applications.
 
 **Definition:**
+Обход по уровням посещает корень, затем обоих детей, затем их детей. Очередь держит следующие узлы. Рекурсивная форма на той же странице группирует узлы по глубине. В обоих случаях каждый узел посещается один раз.
 
+**How it works:**
+- Метод с очередью — O(n) по времени и O(n) по памяти. Кладётся корень. Пока очередь не пуста, узел снимается, записывается, и в очередь кладутся его непустые дети.
+- Рекурсивный метод — тоже O(n) и O(n). Он начинает с уровня 0 и дописывает узел в список этого уровня.
+- Ширина очереди — это самый широкий уровень; статья ограничивает память всего обхода как O(n).
+- Так получают левый или правый узел каждого уровня, глубину дерева и кратчайший путь в дереве без весов.
+- **Time:** O(n). **Space:** O(n).
+
+**Examples:**
+```text
+from collections import deque
+q = deque([root])
+while q:
+    node = q.popleft()
+    print(node.data)
+    if node.left: q.append(node.left)
+    if node.right: q.append(node.right)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/level-order-tree-traversal/
 </details>
 
 <details>
@@ -471,7 +838,26 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Describe the use of BFS and DFS in binary trees and how they relate to tree traversals.
 
 **Definition:**
+Поиск в ширину на двоичном дереве — это обход по уровням: очередь раскрывает обоих детей после узла. Поиск в глубину — прямой, симметричный или обратный обход: стек вызовов или явный стек заканчивает одно поддерево раньше другого.
 
+**How it works:**
+- Обход по уровням — O(n) по времени и O(n) по памяти с очередью.
+- Итеративный прямой обход, DFS который записывает узел до детей, — O(n) и O(n) со стеком. DFS Морриса — O(n) и O(1).
+- BFS находит самый близкий к корню узел, потому что уровень k кончается раньше уровня k+1. DFS занимает меньше дополнительной памяти, когда применим Моррис, O(1), и это обход, который нужен деревьям выражений и симметричному обходу BST.
+- Если идти только по детским указателям, отдельное множество посещённых, нужное графовому DFS, необязательно. Разница — стек или очередь.
+- **Time:** O(n) для полного BFS или DFS. **Space:** O(n) для очереди или явного стека, O(1) дополнительно для Морриса.
+
+**Examples:**
+```text
+# BFS: queue, level order 1 2 3 4
+# DFS preorder: stack, 1 2 4 3
+# same tree, different container
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/level-order-tree-traversal/
+- https://www.geeksforgeeks.org/dsa/iterative-preorder-traversal/
+- https://www.geeksforgeeks.org/dsa/inorder-tree-traversal-without-recursion-and-without-stack/
 </details>
 
 ### Advanced Tree Concepts and Applications
@@ -482,7 +868,30 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Implement a Map data structure using Binary Search Tree.
 
 **Definition:**
+Такое отображение хранит ключ и значение в каждом узле BST. Поиск, вставка и обновление идут по одному пути: влево, если ключ меньше, вправо, если больше. Статья о BST указывает этот поиск как O(h) по времени.
 
+**How it works:**
+- Рекурсивный поиск — O(h) по времени и O(h) дополнительно. Итеративный поиск — O(h) и O(1) дополнительно.
+- На AVL или красно-чёрном дереве высота O(log n), поэтому операции занимают O(log n). Вставки по порядку без баланса — O(n).
+- Вставка создаёт лист, когда путь сходит с дерева. Равный ключ заменяет значение и не добавляет второй узел. Статья сравнения говорит, что при строгом порядке в BST нет повторов.
+- Симметричный обход выдаёт пары по ключу. Хеш-отображение этого не делает.
+- **Time:** O(h), и это O(log n) на AVL или красно-чёрном дереве. **Space:** O(1) дополнительно для итеративного поиска, O(n) на узлы.
+
+**Examples:**
+```text
+def get(node, key):
+    while node:
+        if key == node.key:
+            return node.value
+        node = node.left if key < node.key else node.right
+    return None
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/binary-search-tree-set-1-search-and-insertion/
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-1-insertion/
+- https://www.geeksforgeeks.org/dsa/introduction-to-red-black-tree/
+- https://www.geeksforgeeks.org/dsa/difference-between-binary-tree-and-binary-search-tree/
 </details>
 
 <details>
@@ -491,7 +900,29 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Explain the process of Tree Rotation and its use cases.
 
 **Definition:**
+Поворот переписывает три детских указателя: один узел поднимается, а симметричный порядок BST не меняется. AVL и красно-чёрные деревья делают это после вставки или удаления, если форма стала слишком высокой. Статья об удалении в AVL говорит, что левый или правый поворот занимает постоянное время, потому что меняются лишь несколько указателей.
 
+**How it works:**
+- Правый поворот узла y, чей левый ребёнок x, делает x родителя. y становится правым ребёнком x. Старое правое поддерево x становится левым поддеревом y.
+- Левый поворот зеркален. AVL делает один поворот при прямом перекосе и два при зигзаге. Статья о вставке держит высоту O(log n), поэтому вся вставка вместе с поворотами — O(log n) по времени и O(log n) стека.
+- Вставка в красно-чёрное дерево — O(log N). Часть случаев лечится перекраской. Поворот лечит остальные, всё ещё на пути длины O(log n).
+- Повороты splay поднимают запрошенный узел до корня. Один splay может быть Θ(n). В среднем O(log n).
+- **Time:** один поворот занимает постоянное время. Вставка AVL с поворотами — O(log n).
+
+**Examples:**
+```text
+# right_rotate(y):
+# x = y.left
+# y.left = x.right
+# x.right = y
+# return x
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-2-deletion/
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-1-insertion/
+- https://www.geeksforgeeks.org/dsa/red-black-tree-set-2-insert/
+- https://www.geeksforgeeks.org/dsa/splay-tree-set-1-insert/
 </details>
 
 <details>
@@ -500,7 +931,27 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Discuss the concept of Threaded Binary Trees.
 
 **Definition:**
+Прошитое двоичное дерево хранит симметричного предшественника или преемника в детском указателе, который иначе был бы пуст. Обход Морриса пользуется такой нитью только пока идёт обход, а потом снимает её. Постоянная нить позволяет следующему шагу симметричного обхода идти по указателю, а не по стеку.
 
+**How it works:**
+- Статья о симметричном обходе Морриса указывает время O(n) и дополнительную память O(1). Каждое ребро проходится не больше трёх раз. Это граница обхода по временным нитям.
+- Правая нить указывает на симметричного преемника, левая — на предшественника. Бит в узле отличает нить от настоящего ребёнка, иначе следующая вставка примет преемника за поддерево.
+- Прямой обход Морриса — другой обход за O(n) времени и O(1) памяти.
+- Прошивка строится одним симметричным проходом. После этого преемник узла с правой нитью — сам этот указатель. Преемник узла с настоящим правым ребёнком — самый левый узел этого ребёнка.
+- **Time:** O(n) для обхода Морриса. **Space:** O(1) дополнительно.
+
+**Examples:**
+```text
+# node with no right child:
+# node.right = inorder successor
+# node.right_is_thread = True
+# Morris sets that link, visits, then clears it
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/threaded-binary-tree/
+- https://www.geeksforgeeks.org/dsa/inorder-tree-traversal-without-recursion-and-without-stack/
+- https://www.geeksforgeeks.org/dsa/iterative-preorder-traversal/
 </details>
 
 <details>
@@ -509,7 +960,26 @@ BST даёт упорядоченный поиск, преемника и зап
 ### In what scenarios would a Recursive Tree Traversal be impractical?
 
 **Definition:**
+Рекурсивный обход непрактичен, когда глубина может достичь n: каждый вызов держит кадр, а вопросы к собеседованию ограничивают эту дополнительную память как O(n) в худшем случае. Дерево-цепочка — именно этот случай. Стек вызовов переполняется раньше, чем обход кончается.
 
+**How it works:**
+- У сбалансированного AVL или красно-чёрного дерева высота O(log n), поэтому рекурсивный стек — это O(log n), как в статье о вставке AVL. Перекошенное BST имеет высоту O(n), и та же рекурсия занимает O(n) кадров.
+- Симметричный и прямой обходы Морриса — O(n) по времени и O(1) дополнительно. Их берут, когда высота неизвестна и стек из n кадров неприемлем.
+- Явный стек, как в итеративном прямом обходе, тоже занимает O(n), но это память кучи, а не более тесный машинный стек вызовов. Вопросы о рекурсии советуют такую замену, когда глубина может переполнить стек.
+- **Time:** обход всё равно O(n). **Space:** рекурсия O(высоты), вплоть до O(n); Моррис дополнительно O(1).
+
+**Examples:**
+```text
+# skewed right spine of 100000 nodes:
+# recursive inorder: 100000 frames
+# Morris inorder: a few pointers, O(1) extra
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/commonly-asked-data-structure-interview-questions-on-recursion/
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-1-insertion/
+- https://www.geeksforgeeks.org/dsa/inorder-tree-traversal-without-recursion-and-without-stack/
+- https://www.geeksforgeeks.org/dsa/iterative-preorder-traversal/
 </details>
 
 <details>
@@ -518,7 +988,23 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Discuss the Space Complexity for storing a binary tree.
 
 **Definition:**
+Хранение двоичного дерева занимает память, пропорциональную числу узлов. Статья сравнения указывает O(n) для двоичного дерева и O(n) для BST. В узле значение и две детские ссылки. Биты баланса или цвет — постоянный множитель сверху.
 
+**How it works:**
+- n узлов — это n значений и до 2n детских указателей. У листьев дети пустые. Граница O(n) не меняется, если многие дети пусты.
+- У полного по уровням дерева высоты h число узлов 2^(h+1) − 1, по формуле статьи об идеальном дереве. В массиве узел с индексом i имеет детей 2i+1 и 2i+2. Для такого дерева массив всё ещё Θ(n).
+- Память обхода — отдельно. Очередь уровней — это O(n) дополнительно. Обход Морриса — O(1) дополнительно и не меняет O(n) хранения самого дерева.
+- **Space:** O(n) на хранение дерева.
+
+**Examples:**
+```text
+# n = 3: nodes [5, 1, 9], six child slots, four of them null
+# still O(n) nodes allocated
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/difference-between-binary-tree-and-binary-search-tree/
+- https://www.geeksforgeeks.org/dsa/perfect-binary-tree/
 </details>
 
 <details>
@@ -527,7 +1013,29 @@ BST даёт упорядоченный поиск, преемника и зап
 ### How to determine if a given binary tree is a full binary tree?
 
 **Definition:**
+В полном двоичном дереве у каждого узла либо ноль детей, либо два. Один ребёнок делает дерево неполным. Проверка обходит каждый узел и отвергает первый, у которого ровно один ребёнок.
 
+**How it works:**
+- Рекурсивная статья указывает время O(n) и память O(n). Пустой узел принимается. Лист принимается. Узел с двумя детьми продолжает обход в обоих. Узел с одним ребёнком возвращает ложь.
+- Обход по уровням на той же странице — тоже O(n) и O(n). Очередь посещает каждый узел и применяет ту же проверку.
+- Это не проверка идеального дерева. Полное дерево может не иметь целого уровня с одной стороны, лишь бы ни у кого не было одного ребёнка. Идеальное дерево ещё требует, чтобы каждый уровень был заполнен.
+- **Time:** O(n). **Space:** O(n).
+
+**Examples:**
+```text
+def is_full(node):
+    if node is None:
+        return True
+    if node.left is None and node.right is None:
+        return True
+    if node.left is None or node.right is None:
+        return False
+    return is_full(node.left) and is_full(node.right)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/check-whether-binary-tree-full-binary-tree-not/
+- https://www.geeksforgeeks.org/dsa/perfect-binary-tree/
 </details>
 
 <details>
@@ -536,7 +1044,29 @@ BST даёт упорядоченный поиск, преемника и зап
 ### What are the characteristics of a perfect binary tree and how do you identify one?
 
 **Definition:**
+Идеальное двоичное дерево заполнено на каждом уровне. У каждого внутреннего узла два ребёнка, и все листья на одном уровне. Статья указывает число листьев 2^h, число внутренних узлов 2^h − 1, общее число 2^(h+1) − 1 и высоту log(n + 1) − 1.
 
+**How it works:**
+- Проверка в два прохода находит глубину, затем убеждается, что каждый лист на этой глубине и что ни у одного узла нет одного ребёнка. Время O(n), память O(h).
+- Один DFS — тоже O(n) и O(h). Он запоминает уровень первого листа и требует, чтобы остальные листья совпали с ним, а у каждого не-листа было два ребёнка.
+- Пустое дерево эти функции считают идеальным. Корень с двумя листьями идеален. Корень, у которого одна сторона глубже, — нет.
+- В массиве левый ребёнок индекса i лежит в 2i+1, правый в 2i+2.
+- **Time:** O(n). **Space:** O(h).
+
+**Examples:**
+```text
+def is_perfect(node, level, leaf_level):
+    if node is None:
+        return True
+    if node.left is None and node.right is None:
+        return level == leaf_level[0]
+    if node.left is None or node.right is None:
+        return False
+    return is_perfect(node.left, level + 1, leaf_level) and is_perfect(node.right, level + 1, leaf_level)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/perfect-binary-tree/
 </details>
 
 <details>
@@ -545,7 +1075,27 @@ BST даёт упорядоченный поиск, преемника и зап
 ### How can you serialize and deserialize a binary tree?
 
 **Definition:**
+Сериализация пишет узлы фиксированным обходом и пишет −1 для пустого ребёнка. Десериализация читает эту последовательность и восстанавливает те же связи. Прямой обход делает это рекурсией. Обход по уровням делает это очередью. Оба варианта — O(n) по времени и O(n) по памяти.
 
+**How it works:**
+- Рекурсивный прямой обход дописывает значение, затем левое поддерево, затем правое. На обратном пути −1 означает отсутствующего ребёнка. Статья указывает O(n) по времени и O(n) по памяти.
+- Обход по уровням кладёт корень, пишет значение или −1 и ставит в очередь детей, включая пустых. Сборка создаёт корень из первого значения и цепляет левого и правого по мере прихода следующих значений. Те же O(n) и O(n).
+- Маркер должен быть значением, которого нет в узлах, либо отдельным битом. Статья использует −1.
+- **Time:** O(n). **Space:** O(n).
+
+**Examples:**
+```text
+def serialize(node, out):
+    if node is None:
+        out.append(-1)
+        return
+    out.append(node.data)
+    serialize(node.left, out)
+    serialize(node.right, out)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/serialize-deserialize-binary-tree/
 </details>
 
 <details>
@@ -554,7 +1104,28 @@ BST даёт упорядоченный поиск, преемника и зап
 ### How to check if a binary tree is height-balanced?
 
 **Definition:**
+Дерево сбалансировано по высоте, если в каждом узле высоты левого и правого поддеревьев отличаются не больше чем на единицу и оба поддерева тоже сбалансированы. Проверка за один проход возвращает сразу высоту и флаг баланса.
 
+**How it works:**
+- Если считать высоту заново в каждом узле, время O(n²) и память O(h). Каждый просчёт высоты повторяет работу, которую родитель уже делал.
+- Ожидаемый один проход — O(n) по времени и O(h) по памяти. У пустого ребёнка высота 0. Узел несбалансирован, если модуль разности высот детей больше 1 или если любой ребёнок уже вернул несбалансированность. Иначе высота узла — 1 плюс большая из высот детей.
+- Деревья AVL поддерживают это свойство при каждом обновлении и держат высоту O(log n). Эта проверка только сообщает, есть ли свойство у данного дерева.
+- **Time:** O(n) за один проход, O(n²) если высоту каждый раз считают заново. **Space:** O(h).
+
+**Examples:**
+```text
+def check(node):
+    if node is None:
+        return 0, True
+    lh, lok = check(node.left)
+    rh, rok = check(node.right)
+    ok = lok and rok and abs(lh - rh) <= 1
+    return 1 + max(lh, rh), ok
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/how-to-determine-if-a-binary-tree-is-balanced/
+- https://www.geeksforgeeks.org/dsa/avl-tree-set-1-insertion/
 </details>
 
 <details>
@@ -563,7 +1134,23 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Describe the application of Binary Trees in networking (e.g., routing, addressing).
 
 **Definition:**
+Поиск маршрута идёт по двоичному trie битов адреса. Налево — 0, направо — 1, и самый длинный префикс, помеченный как маршрут, и есть совпадение. Статья о trie указывает проход по ключу длины n как O(n) по времени.
 
+**How it works:**
+- Вставка префикса длины n — O(n) по времени и O(n) дополнительно на новые узлы. Поиск — O(n) по времени и O(1) дополнительно. Для IPv4 n не больше 32, для IPv6 не больше 128. Граница идёт по длине битов, а не по числу маршрутов, поэтому статья говорит, что это быстрее BST целых ключей.
+- Поиск префикса останавливается на последнем бите запроса, для которого ещё есть узел. Автодополнение на той же структуре перечисляет все слова под узлом; маршрутизация по самому длинному префиксу помнит последний помеченный маршрут вдоль пути.
+- BST полных адресов ищет за O(h). Префиксы оно не делит, а перекошенное дерево — это O(n) по числу маршрутов.
+- **Time:** O(n) по длине битов для поиска в trie. **Space:** O(n) дополнительно на вставку одного префикса.
+
+**Examples:**
+```text
+# insert prefixes 0, 01, 011
+# lookup 0110 walks 0 -> 1 -> 1 and keeps the route marked at 011
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/trie-insert-and-search/
+- https://www.geeksforgeeks.org/dsa/auto-complete-feature-using-trie/
 </details>
 
 <details>
@@ -572,7 +1159,29 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Explain the concept of Path Sum in a binary tree and how it is calculated.
 
 **Definition:**
+Сумма пути от корня к листу складывает значения от корня вниз до листа. Текущее значение вычитается, и рекурсия идёт в каждого ребёнка. Лист подходит, если оставшаяся цель равна значению листа. Форма одного прохода — это проверка баланса: O(n) по времени и O(h) по памяти.
 
+**How it works:**
+- Ожидаемый один проход в статье о балансе высоты — O(n) по времени и O(h) по памяти. Сумма пути посещает каждый узел один раз той же рекурсией, но несёт оставшуюся сумму вместо высоты.
+- В пустом узле возвращается ложь. В листе возвращается, равна ли оставшаяся цель листу. Иначе спрашивается левый ребёнок с целью минус значение, затем правый.
+- Любой путь, не только от корня к листу, — другая задача. Здесь цель именно на пути от корня к листу.
+- У идеального дерева высота log(n + 1) − 1, поэтому глубина рекурсии на такой форме равна этой высоте. У перекошенного дерева стек O(h) становится O(n) кадров.
+- **Time:** O(n). **Space:** O(h).
+
+**Examples:**
+```text
+def has_path(node, target):
+    if node is None:
+        return False
+    if node.left is None and node.right is None:
+        return node.data == target
+    rest = target - node.data
+    return has_path(node.left, rest) or has_path(node.right, rest)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/how-to-determine-if-a-binary-tree-is-balanced/
+- https://www.geeksforgeeks.org/dsa/perfect-binary-tree/
 </details>
 
 <details>
@@ -581,7 +1190,29 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Find the lowest common ancestor (LCA) of two nodes in a binary tree.
 
 **Definition:**
+LCA — самый глубокий узел, для которого обе цели являются потомками; узел считается потомком самого себя. У обычного двоичного дерева нет порядка BST, поэтому поиск смотрит в обе стороны. Ожидаемый один проход возвращает узел, как только стороны расходятся.
 
+**How it works:**
+- Проверка каждого узла как кандидата — O(n²) по времени и O(h) по памяти.
+- Сохранение обоих путей от корня и их сравнение — O(n) по времени и O(n) по памяти.
+- Ожидаемый один проход — O(n) по времени и O(h) по памяти. Пустой узел возвращает null. Узел, который совпал с одной из целей, возвращает себя. Иначе объединяются левый и правый результаты: оба непусты — этот узел и есть LCA; один непуст — предок на этой стороне.
+- Короткий путь BST, один путь за O(h), здесь не действует, если дерево не BST.
+- **Time:** O(n) в ожидаемом методе. **Space:** O(h).
+
+**Examples:**
+```text
+def lca(node, a, b):
+    if node is None or node is a or node is b:
+        return node
+    left = lca(node.left, a, b)
+    right = lca(node.right, a, b)
+    if left and right:
+        return node
+    return left or right
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/lowest-common-ancestor-binary-tree-set-1/
 </details>
 
 <details>
@@ -590,7 +1221,25 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Can a binary tree be reconstructed from its inorder and preorder (or postorder) traversals?
 
 **Definition:**
+Да, если ключи уникальны. Первое значение прямого обхода — корень. Индекс этого ключа в массиве симметричного обхода отделяет левое поддерево от правого. То же правило собирает каждую сторону. Обратный обход берёт корнем последнее значение, а не первое.
 
+**How it works:**
+- Наивный поиск корня в массиве симметричного обхода — O(n²) по времени и O(h) по памяти. На каждом уровне можно просмотреть оставшийся кусок.
+- Ожидаемый метод кладёт индексы симметричного обхода в хеш-отображение, и каждый корень находится за O(1). Статья указывает O(n) по времени и O(n) по памяти.
+- Курсор прямого обхода сдвигается на один для корня, затем строится левое поддерево из следующих значений, затем правое. Границы симметричного обхода сжимаются до левого и правого кусков.
+- Повторяющиеся ключи делают индекс неоднозначным. Разрез в статье предполагает один индекс на значение корня.
+- **Time:** O(n) с отображением, O(n²) если каждый корень ищут просмотром. **Space:** O(n) на отображение, рекурсия O(h) в наивной форме.
+
+**Examples:**
+```text
+# preorder 1,2,3 and inorder 2,1,3
+# root 1, left inorder [2], right inorder [3]
+def build(pre, inorder, idx):
+    ...
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/construct-tree-from-given-inorder-and-preorder-traversal/
 </details>
 
 <details>
@@ -599,7 +1248,27 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Implement a function to check if a binary tree is symmetric (a mirror image of itself).
 
 **Definition:**
+Дерево симметрично, когда левое поддерево — зеркало правого. Два узла зеркальны, если их значения равны, левый ребёнок одного зеркалит правого ребёнка другого, а правый ребёнок одного — левого ребёнка другого. Один DFS в статье об идеальном дереве, рекурсивная проверка каждого узла, занимает O(n) времени и O(h) памяти.
 
+**How it works:**
+- Пустое дерево симметрично. Один узел симметричен. Левый и правый дети корня сравниваются с правилом переставленных детей.
+- Обход смотрит каждый узел один раз, той же полной рекурсивной формой, что и проверка идеального дерева: O(n) по времени и O(h) по памяти.
+- Одного равенства симметричных обходов мало. Зеркальная пара — это левый с правым, а не левый с левым.
+- **Time:** O(n). **Space:** O(h).
+
+**Examples:**
+```text
+def mirror(a, b):
+    if a is None or b is None:
+        return a is b
+    return a.data == b.data and mirror(a.left, b.right) and mirror(a.right, b.left)
+
+def symmetric(root):
+    return root is None or mirror(root.left, root.right)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/perfect-binary-tree/
 </details>
 
 <details>
@@ -608,7 +1277,27 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Describe how binary trees can be used in decision-making processes (e.g., decision trees in AI).
 
 **Definition:**
+Дерево решений — модель обучения с учителем для классификации или регрессии. Внутренние узлы — проверки признаков, ветви — ответы, листья — прогноз. Статья строит его рекурсивными разрезами: выбирается признак с наибольшим приростом информации, затем каждый ребёнок строится на подмножестве, ушедшем по этой ветви.
 
+**How it works:**
+- Прирост информации — это энтропия родителя минус взвешенная энтропия детей. У чистого ребёнка энтропия 0. Индекс Джини равен 1 − Σ pᵢ². Статья говорит, что меньший Джини предпочтительнее, и что критерий sklearn по умолчанию — gini.
+- Построение останавливается, когда подмножество чистое, когда признаки кончились или когда примеры кончились. Лист тогда — метка большинства, либо большинство родителя, если подмножество пусто.
+- Прогноз начинается в корне и идёт по одной ветви на проверку до листа. У идеального двоичного дерева высота log(n + 1) − 1, поэтому такой путь состоит из стольких проверок.
+- Статья не даёт формулы времени обучения. Прогноз — один путь, а не просмотр всех узлов.
+- **Space:** по узлу на проверку плюс листья. **Time:** один путь от корня к листу для прогноза.
+
+**Examples:**
+```text
+# income > 50000?
+#   no  -> leaf "No Purchase"
+#   yes -> age > 30?
+#            no  -> "No Purchase"
+#            yes -> "Purchase" 
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/decision-tree-introduction-example/
+- https://www.geeksforgeeks.org/dsa/perfect-binary-tree/
 </details>
 
 <details>
@@ -617,7 +1306,28 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Discuss the role of binary trees in garbage collection algorithms like the mark-and-sweep algorithm.
 
 **Definition:**
+Пометка и очистка освобождает объекты кучи, до которых программа уже не доходит. Фаза пометки — поиск в глубину от корней по ссылкам объектов, и она ставит бит пометки каждому достижимому объекту. Фаза очистки просматривает кучу и освобождает каждый объект, у которого бит всё ещё ложен. Граф объектов не обязан быть двоичным деревом; двоичное дерево — частный случай, где у объекта две детские ссылки.
 
+**How it works:**
+- В статье бит пометки вначале ложен. Mark(root) ставит его в истину и вызывает Mark для каждого объекта по ссылке. Циклы безопасны: помеченный объект не обходится снова, поэтому поиск не зацикливается.
+- Итеративный DFS на графе — O(V + E) по времени и O(V) по памяти. Здесь V — достижимые объекты, E — ссылки, по которым от них идут.
+- Очистка проходит каждый объект кучи. Истинный бит сбрасывается к следующему сбору. Ложный бит освобождает объект. Статья называет две цены и не даёт отдельной границы O: программа стоит, пока работает сборщик, а свободная память дробится, так что следующее выделение может не пройти, даже если свободных байт хватило бы в одном куске.
+- Сборщик двоичного дерева помечает узел, затем левого ребёнка, затем правого. Это тот же прямой DFS с двумя ссылками.
+- **Time:** пометка O(V + E) по границе DFS. **Space:** O(V) на стек DFS и состояние посещения.
+
+**Examples:**
+```text
+def mark(obj):
+    if obj is None or obj.marked:
+        return
+    obj.marked = True
+    mark(obj.left)
+    mark(obj.right)
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/mark-and-sweep-garbage-collection-algorithm/
+- https://www.geeksforgeeks.org/dsa/iterative-depth-first-traversal/
 </details>
 
 <details>
@@ -626,7 +1336,25 @@ BST даёт упорядоченный поиск, преемника и зап
 ### Explain how trie data structures are used in implementing autocomplete features.
 
 **Definition:**
+Автодополнение вставляет каждое слово в trie, по символу на шаг. Запрос проходит по уже набранным символам. Каждое слово под этим узлом — вариант завершения. Статья об автодополнении указывает время O(N · L), где N — число слов, а L — длина самого длинного слова.
 
+**How it works:**
+- Вставка одного слова длины n в trie — O(n) по времени и O(n) дополнительно. Поиск и поиск префикса — O(n) по времени и O(1) дополнительно. Граница автодополнения O(N · L) покрывает построение trie и сбор завершений по всему словарю.
+- Проход по набранному префиксу сразу кончается, если у символа нет ребра. Предлагать нечего.
+- От оставшегося узла DFS или BFS перечисляет отметки конца слова ниже. Общий префикс значит, что "hell" хранится один раз для "hello", "help" и "helping".
+- BST целых строк сравнивает ключи целиком и не делит префиксы. Статья о trie говорит, что проход по символам быстрее BST.
+- **Time:** O(N · L) для прохода по словарю в статье об автодополнении. Поиск одного префикса — O(n).
+
+**Examples:**
+```text
+# insert hello, help, helping
+# query "hel" lands on the node after l
+# completions: hello, help, helping
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/auto-complete-feature-using-trie/
+- https://www.geeksforgeeks.org/dsa/trie-insert-and-search/
 </details>
 
 <details>
@@ -635,5 +1363,22 @@ BST даёт упорядоченный поиск, преемника и зап
 ### What is Huffman Coding, and how is a binary tree used in this compression technique?
 
 **Definition:**
+Кодирование Хаффмана строит двоичное дерево частот символов. На каждом шаге два самых редких узла соединяются под новым родителем, частота которого — их сумма. Левое ребро — бит 0, правое — бит 1. Путь от корня к листу — код символа. Статья указывает время O(n log n), где n — число различных символов, и память O(n).
 
+**How it works:**
+- Листья — это символы. Внутренние узлы нужны только чтобы складывать частоты. Min-куча достаёт два наименьших узла операциями кучи O(log n), и так n раз — отсюда граница O(n log n).
+- Ничей код не является префиксом другого, потому что символ бывает только листом. Декодирование читает биты от корня, пока не попадёт в лист, выдаёт символ и возвращается в корень.
+- Это не BST. Порядок детей — это бит, а не порядок ключа. Частые символы оказываются ближе к корню, потому что их присоединяют позже.
+- **Time:** O(n log n). **Space:** O(n).
+
+**Examples:**
+```text
+# frequencies a:5, b:2, c:1
+# join b and c into 3; join that with a
+# a -> 0, b -> 10, c -> 11
+```
+
+**Sources:**
+- https://www.geeksforgeeks.org/dsa/huffman-coding-greedy-algo-3/
+- https://www.geeksforgeeks.org/dsa/introduction-to-heap-data-structure/
 </details>

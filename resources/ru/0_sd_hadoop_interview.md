@@ -1,6 +1,6 @@
 # Hadoop — собеседование
 
-Ответы заполнены для опубликованной части, остальные пустые.
+Ответы заполнены.
 
 [← К обзору](./0_system_design.md)
 
@@ -328,6 +328,25 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Spark работает как приложение на YARN, менеджере ресурсов Hadoop, и читает данные из HDFS. Это не замена файловой системе.
+
+**How it works:**
+
+- HDFS хранит большие файлы блоками на DataNode. NameNode держит пространство имён и карту блоков. Данные пользователей через NameNode не идут. Модель — записал один раз, читаешь много раз, с упором на пропускную способность на обычном железе.
+- Руководство по RDD говорит, что RDD можно создать из файла в файловой системе Hadoop. Чтобы трогать HDFS, добавляют зависимость hadoop-client и направляют HADOOP_CONF_DIR или YARN_CONF_DIR на клиентскую конфигурацию.
+- spark-submit --master yarn берёт адрес ResourceManager из этой конфигурации Hadoop. В режиме cluster драйвер работает внутри application master YARN, и клиент может уйти. В режиме client драйвер остаётся в процессе клиента.
+- Spark может сохранить RDD в памяти для повторного использования, ради этого его и ставят рядом с пакетным MapReduce на тех же файлах HDFS. Восстановление потерянной партиции — родословная RDD. Восстановление потерянного диска — по-прежнему повторная репликация HDFS.
+- Java 17 требуется Spark 4.0.0 и новее. Hadoop поддерживает Java 17 с версии 3.5.0. Более старому кластеру YARN нужен отдельный JDK для приложения Spark.
+
+**When to use:**
+
+Spark на YARN — когда байты уже лежат в HDFS и нужны параллельные операции в памяти. Репликация HDFS и NameNode нужны независимо от того, Spark ли считает.
+
+**Sources:**
+
+- https://spark.apache.org/docs/latest/running-on-yarn.html
+- https://spark.apache.org/docs/latest/rdd-programming-guide.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 ### Data Management and Processing
@@ -339,6 +358,19 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+HDFS ожидает отказ DataNode. NameNode замечает пропавший heartbeat и реплицирует блоки, у которых число копий упало ниже заданного.
+
+**How it works:**
+
+- Каждый DataNode шлёт Heartbeat и Blockreport. Heartbeat значит, что узел жив. Blockreport перечисляет его блоки.
+- Нет недавнего heartbeat: NameNode помечает DataNode мёртвым и не шлёт ему новый ввод-вывод. Таймаут по умолчанию намеренно длинный, больше 10 минут, чтобы мигание не вызвало шторм репликации. Более короткий интервал «устаревший» можно настроить.
+- Смерть узла, порченая реплика, мёртвый диск или повышенный коэффициент репликации заставляют NameNode заново реплицировать недореплицированные блоки.
+- Клиенты сверяют контрольную сумму. Если реплика не сошлась, клиент может прочитать другую.
+- Данные пользователей через NameNode не идут. Потеря DataNode — потеря копий блоков, не пространства имён.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -348,6 +380,26 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Каждый файл — последовательность блоков, и каждый блок лежит на нескольких DataNode. Размещение решает NameNode. Клиенты пишут через конвейер.
+
+**How it works:**
+
+- Размер блока и коэффициент репликации задаются на файл. Все блоки, кроме последнего, одного размера. Типичный блок — 128 MB. Файлы пишутся один раз, кроме дописывания и усечения, и у файла один писатель.
+- NameNode выбирает DataNode для блока. При коэффициенте три клиент пишет в первый DataNode, тот пересылает порцию второму, второй — третьему. Узел может принимать и пересылать одновременно.
+- Размещение реплик учитывает стойки, чтобы копии не лежали на одной стойке. Каждое решение о репликации принимает NameNode.
+- Клиент сверяет контрольные суммы и может перейти на другую реплику.
+- Больше реплик стоят диска и сети. Так HDFS остаётся доступным, когда железо отказывает. Дизайн считает это нормой.
+
+**Examples:**
+
+```text
+client -> DN1 -> DN2 -> DN3
+replication factor 3, block typically 128 MB
+```
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -357,6 +409,20 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Каркас MapReduce оставляет слоты задач под speculative-tasks и под упавшие задачи, чтобы одна медленная задача не была единственной копией этой работы.
+
+**How it works:**
+
+- Заметка учебника о размере держит число reduce-задач чуть ниже целого коэффициента, чтобы оставить несколько слотов reduce для speculative-tasks и упавших задач.
+- Упавшим задачам нужно где выполниться снова. Ту же запасную ёмкость каркас использует для speculative-tasks.
+- Больше reduce-задач добавляет накладные расходы каркаса и улучшает баланс, и снижает цену отказа. Ноль reduce-задач законен: выход map тогда идёт прямо в FileSystem и не сортируется.
+- Это ёмкость внутри задания, не повторная репликация HDFS. Мёртвый DataNode лечит NameNode, копируя блоки. Медленная задача — забота планирования MapReduce.
+- Не занимайте каждый слот первой попыткой. Причина запасных слотов в учебнике — эти дополнительные задачи.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -366,6 +432,21 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+HDFS хранит файл большими реплицированными блоками. MapReduce отдаёт каждому mapper один input split, а reducer собирает по ключу после shuffle.
+
+**How it works:**
+
+- HDFS сделан для потоковой пропускной способности на больших файлах, не для интерактивных правок с малой задержкой. Типичный файл — от гигабайт до терабайт. Вычисление переносят к данным.
+- InputSplit — то, что обрабатывает один Mapper. FileSplit — значение по умолчанию. RecordReader превращает байтовый split в записи.
+- Mapper порождает пары ключ-значение. Combiner может агрегировать локально. Partitioner назначает ключи reducer. Reducer получает iterable значений на ключ.
+- Учебник WordCount собирает это через Job, TokenizerMapper и IntSumReducer, который стоит и combiner, и reducer.
+- Spark на YARN может прочитать тот же файл HDFS в RDD и преобразовать его в памяти. Байты всё ещё лежат в HDFS.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://spark.apache.org/docs/latest/running-on-yarn.html
 </details>
 
 <details>
@@ -375,6 +456,20 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+InputSplit — данные, которые обрабатывает один Mapper. Обычно это диапазон байтов. RecordReader превращает этот диапазон в записи.
+
+**How it works:**
+
+- FileSplit — InputSplit по умолчанию. Он ставит mapreduce.map.input.file в путь входного файла этого логического split.
+- Split не обязан быть одним блоком HDFS, но локальность — смысл переноса вычисления к данным. Mapper должен работать рядом с байтами, которые читает.
+- Границы записей — дело RecordReader. Mapper видит ключи и значения, не сырые края split.
+- Слишком много крошечных split — слишком много map-задач и больше накладных расходов каркаса. Учебник отмечает, что больше задач улучшает баланс и добавляет накладные расходы.
+- Split — граница вычисления. Репликация лежащего под ним блока — забота HDFS.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -384,6 +479,19 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Partitioner назначает промежуточные ключи reduce-задачам. Ключи, которые надо агрегировать вместе, должны попасть на один reducer.
+
+**How it works:**
+
+- Учебник говорит прямо: partitioner делит пространство ключей и управляет распределением ключей промежуточного выхода map.
+- После map пары уходят shuffle на reducer, выбранный для этого ключа. Reducer затем видит каждое значение ключей, которыми владеет.
+- Это нужно, когда reducer больше одного. При нуле reducer шага раздела нет: выход map пишется прямо в FileSystem и не сортируется.
+- Плохой раздел отправляет все ключи одному reducer. Заметка учебника о большем числе reducer — про баланс. Запасные слоты всё ещё оставляют для speculative-tasks и отказов.
+- Это не размещение блоков HDFS. Блоки размещает NameNode. Ключи размещает partitioner.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
 </details>
 
 <details>
@@ -393,6 +501,27 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Reducer получает для каждого своего ключа значения, которые mapper породили для этого ключа. Shuffle — перевозка этих пар от mapper к нужному reducer.
+
+**How it works:**
+
+- В учебнике WordCount reducer реализует reduce(Text key, Iterable values, Context). Он суммирует значения этого ключа.
+- Partitioner выбирает, какой reducer владеет ключом. Shuffle доставляет пары. Каркас сортирует выход map перед reducer, когда reducer есть.
+- Combiner может сначала суммировать локально на стороне map, в примере тем же классом IntSumReducer, чтобы меньше пар шло по сети.
+- Ноль reduce-задач пропускает это. Выход map идёт по пути из FileOutputFormat.setOutputPath и не сортируется.
+- Больше reducer размазывает shuffle и снижает цену одного отказа ценой накладных расходов каркаса.
+
+**Examples:**
+
+```java
+job.setMapperClass(TokenizerMapper.class);
+job.setCombinerClass(IntSumReducer.class);
+job.setReducerClass(IntSumReducer.class);
+```
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
 </details>
 
 <details>
@@ -402,6 +531,21 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Собственный выход MapReduce — файл записей, который пишет RecordWriter. HDFS хранит этот файл блоками; формат записи — выбор задания, не размер блока.
+
+**How it works:**
+
+- OutputFormat описывает выход задания. Каркас пишет записи через RecordWriter. FileOutputFormat.setOutputPath задаёт, куда идёт выход map, когда reducer нет, и куда идёт выход задания в остальных случаях.
+- HDFS затем хранит этот файл реплицированными блоками, обычно 128 MB, с записью один раз, кроме append и truncate.
+- NameNode хранит запись пространства имён. Байты лежат на DataNode. Плотный контейнер многих записей держит пространство имён меньше, чем файл на каждую запись. Это совпадает с тем, что HDFS настроен на большие файлы.
+- Задание WordCount пишет ключи Text и значения IntWritable. Эта пара — запись. Границы блоков — забота HDFS.
+- Spark потом может прочитать файл, который поддерживает Hadoop, в RDD. Формат файла не меняет решения NameNode о репликации.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://spark.apache.org/docs/latest/rdd-programming-guide.html
 </details>
 
 ### Performance Tuning and Optimization
@@ -413,6 +557,20 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Урежьте байты на shuffle, балансируйте reducer и оставьте запасные слоты. Не ждите, что NameNode будет стримить данные файла.
+
+**How it works:**
+
+- Combiner агрегирует на стороне map. WordCount использует IntSumReducer и как combiner, и как reducer, чтобы по сети шли счётчики, а не каждый токен.
+- Partitioner должен размазывать ключи. Один горячий ключ делает один reducer всем заданием.
+- Больше reducer улучшает баланс и снижает цену отказа и добавляет накладные расходы. Учебник оставляет несколько слотов для speculative-tasks и упавших задач.
+- Input split должен следовать локальности данных. Правило HDFS: перенести вычисление дешевле, чем перенести данные.
+- Сжатие выхода map перечислено в учебнике среди полезных возможностей. Путь выхода всё ещё FileOutputFormat. Ноль reducer пропускает сортировку, когда она правда не нужна.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -422,6 +580,21 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Отделите проблему метаданных на NameNode от проблемы данных на DataNode и от перекошенного shuffle MapReduce.
+
+**How it works:**
+
+- Если задания не могут открыть или перечислить файлы, смотрите NameNode. Он держит пространство имён. FsImage и EditLog — его центральные структуры. Данные пользователей через него не идут.
+- Если чтения падают или медленные, проверьте мёртвые DataNode и недореплицированные блоки. Пропавшие heartbeat при длинном таймауте по умолчанию задерживают повторную репликацию. Контрольные суммы говорят, что реплика порчена.
+- Если один reducer работает вечно, причина — partitioner или горячий ключ. Счётчики — возможность учебника видеть прогресс задач.
+- Журналы задач — часть среды задач в учебнике. Map-задача далеко от своего split нарушает локальность.
+- У Spark на том же кластере свой интерфейс драйвера. Не отлаживайте стадию RDD только heartbeat NameNode.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://spark.apache.org/docs/latest/rdd-programming-guide.html
 </details>
 
 <details>
@@ -431,6 +604,19 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Combiner агрегирует выход map локально, до shuffle, чтобы сеть несла меньше данных. В WordCount это тот же класс, что и reducer.
+
+**How it works:**
+
+- Учебник ставит job.setCombinerClass(IntSumReducer.class) и тот же класс как reducer. Пары каждого map сортируются по ключу и затем агрегируются локально.
+- Документированный локальный результат — счётчики вроде Hello 1 и World 2 на этом map, а не каждый сырой токен.
+- Reducer всё ещё видит iterable на ключ и суммирует снова. Combiner должен быть безопасен при повторном применении для агрегации задания. Сумма — да. Среднее, записанное одним числом, — нет, если значение не несёт счётчик.
+- Combiner не меняет разделение. Ключи всё ещё идут к reducer, которого выбрал partitioner.
+- При нуле reducer нет shuffle, который можно ужать.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
 </details>
 
 <details>
@@ -440,6 +626,19 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Держите файлы большими, реплики с учётом стоек и NameNode вне пути данных.
+
+**How it works:**
+
+- HDFS настроен на большие файлы и потоковую пропускную способность. Типичный блок — 128 MB. Пространство имён из крошечных файлов тратит NameNode на метаданные.
+- Коэффициент репликации — на файл. Поднимайте его для данных, которые нельзя потерять. Не поднимайте для каждого временного файла. Конвейер записи копирует каждую порцию на каждую реплику.
+- Размещение с учётом стоек улучшает надёжность и полосу. Цели выбирает NameNode.
+- Таймаут мёртвого узла по умолчанию длинный, чтобы не было шторма репликации. Для чтений, чувствительных к задержке, дизайн позволяет более короткий интервал устаревания, чтобы клиенты обходили устаревшие узлы.
+- Несколько синхронных копий FsImage и EditLog защищают метаданные и могут замедлить операции пространства имён. Этот обмен принят, потому что приложения интенсивны по данным, не по метаданным. HA с Journal — рекомендуемый вариант устойчивости.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -449,6 +648,20 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Отправляйте задание MapReduce в очередь, подбирайте число map и reduce под split и пространство ключей и оставляйте место для повторов.
+
+**How it works:**
+
+- Учебник перечисляет отправку заданий в очереди как пользовательскую возможность, рядом со счётчиками и distributed cache.
+- Параллельность map следует input split. Параллельность reduce следует тому, как вы делите ключи. Слишком мало reducer — перекос. Слишком много — накладные расходы.
+- Оставляйте слоты для speculative-tasks и упавших задач, а не заполняйте каждый слот первой волной.
+- YARN — менеджер ресурсов, которым пользуется и Spark. spark-submit --master yarn --queue thequeue ставит приложение в очередь. В режиме cluster драйвер работает в application master.
+- Очередь не чинит недореплицированные блоки. Это остаётся за NameNode.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://spark.apache.org/docs/latest/running-on-yarn.html
 </details>
 
 <details>
@@ -458,6 +671,21 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Учебник считает память задачи и параметры map/reduce конфигурацией задания. Размещение блоков HDFS — отдельный бюджет от кучи задач.
+
+**How it works:**
+
+- У выполнения задач MapReduce есть раздел управления памятью и отдельные параметры map и shuffle/reduce. Задайте их на задании, а не надейтесь, что куча по умолчанию вместит split.
+- Combiner режет байты shuffle, а значит и память на стороне reduce.
+- Ноль reducer избегает буфера сортировки, когда агрегация не нужна.
+- На YARN пример Spark явно задаёт --driver-memory и --executor-memory. Та же идея: размер контейнера — это запрос, не всё свободное на машине.
+- DataNode хранит блоки на диске. Не задавайте кучу задачи так, будто весь блок 128 MB должен стать одним объектом Java. RecordReader идёт по записям.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://spark.apache.org/docs/latest/running-on-yarn.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 ### Coding Challenges
@@ -469,6 +697,34 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Задание WordCount из учебника MapReduce отображает токены в 1 и суммирует их в combiner и reducer.
+
+**How it works:**
+
+- Job создают с именем. Задают класс jar, mapper, combiner, reducer и классы выходного ключа и значения.
+- FileInputFormat добавляет входной путь. FileOutputFormat задаёт выходной путь. waitForCompletion запускает задание.
+- Mapper порождает Text и IntWritable. Reducer суммирует iterable для каждого слова. Combiner — тот же класс reducer, поэтому каждый map сначала агрегирует.
+- Input split и record reader кормят mapper. Блок HDFS вы сами не открываете.
+- Код выхода процесса — 0, только если waitForCompletion вернул true.
+
+**Examples:**
+
+```java
+Job job = Job.getInstance(conf, "word count");
+job.setJarByClass(WordCount.class);
+job.setMapperClass(TokenizerMapper.class);
+job.setCombinerClass(IntSumReducer.class);
+job.setReducerClass(IntSumReducer.class);
+job.setOutputKeyClass(Text.class);
+job.setOutputValueClass(IntWritable.class);
+FileInputFormat.addInputPath(job, new Path(args[0]));
+FileOutputFormat.setOutputPath(job, new Path(args[1]));
+System.exit(job.waitForCompletion(true) ? 0 : 1);
+```
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
 </details>
 
 <details>
@@ -478,6 +734,28 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Команда put оболочки файловой системы копирует один или несколько локальных путей в целевую файловую систему.
+
+**How it works:**
+
+- Использование: hadoop fs -put с необязательными флагами, затем источники и назначение.
+- Копирование падает, если файл назначения уже есть, если не задан -f. -f перезаписывает.
+- -p сохраняет времена, владельца и права, когда их можно перенести между файловыми системами.
+- -l позволяет DataNode записать файл на диск лениво и форсирует коэффициент репликации 1. Документация оболочки говорит, что это снижает долговечность. Не используйте это для данных, которые надо сохранить.
+- У той же оболочки есть mkdir, rm и cat. На странице дизайна HDFS они даны в формах bin/hadoop dfs и bin/hadoop fs. put — команда копирования внутрь на странице FileSystemShell.
+
+**Examples:**
+
+```text
+hadoop fs -put ./events/ /data/events
+# overwrite:
+hadoop fs -put -f ./events/part-0 /data/events/part-0
+```
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -487,6 +765,29 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+HiveQL SELECT читает таблицу, фильтрует через WHERE и агрегирует через GROUP BY. Имена таблиц и столбцов нечувствительны к регистру.
+
+**How it works:**
+
+- SELECT select_expr FROM table_reference WHERE condition GROUP BY col_list — форма из руководства языка.
+- Сводка — это GROUP BY плюс агрегат в списке выбора. HAVING может фильтровать группы. Пример руководства: SELECT col1 FROM t1 GROUP BY col1 HAVING SUM(col2) > 10.
+- Без предиката раздела SELECT сканирует всю таблицу. Если таблица создана с PARTITIONED BY, предикат по этому столбцу в WHERE отсекает разделы. Руководство показывает это на page_views.date.
+- LIMIT n ограничивает строки. ORDER BY вместе с LIMIT возвращает упорядоченный префикс, как в примере customers.
+- Hive не размещает блоки HDFS. Файлы таблицы — всё ещё файлы HDFS с обычной репликацией.
+
+**Examples:**
+
+```sql
+SELECT region, SUM(amount)
+FROM sales
+WHERE amount > 10
+GROUP BY region
+```
+
+**Sources:**
+
+- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Select
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -496,6 +797,22 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Тот же конвейер, который учебник MapReduce расписывает на Java: прочитать записи, оставить поля, отфильтровать и агрегировать по ключу. Pig Latin — отдельный язык для этого конвейера. Операции ниже — те, которые реально задают руководства MapReduce и Hive.
+
+**How it works:**
+
+- Mapper порождает поля, которые вы оставляете. Combiner и reducer агрегируют по ключу, как WordCount с TokenizerMapper и IntSumReducer.
+- SELECT … WHERE … GROUP BY в Hive — декларативная форма этого фильтра и агрегата, когда данные — таблица Hive.
+- put в HDFS кладёт исходный файл. Задание затем берёт FileInputFormat на этом пути.
+- Не подставляйте выдуманное имя оператора Pig вместо этого. Если в среде стандарт — Pig, сверьтесь с его текущим руководством. Семантика, которую надо сохранить, — та, что выше.
+- Результат держите в больших файлах. HDFS настроен на большие блоки, обычно 128 MB, а не на файл на каждую запись.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Select
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -505,6 +822,21 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Осевшие байты должны стать файлом HDFS через оболочку файловой системы или входной путь задания. Инструмент импорта из базы полезен, только если его выход — этот файл.
+
+**How it works:**
+
+- hadoop fs -put копирует локальные файлы в HDFS. Если выгрузка уже породила файлы, put — документированное копирование. -f перезаписывает. Избегайте -l, когда нужна обычная репликация. Он форсирует коэффициент 1.
+- Когда путь есть, задание MapReduce направляет на него FileInputFormat, или таблица Hive его читает.
+- HDFS реплицирует блоки, обычно с коэффициентом файла, через конвейер записи.
+- Не направляйте NameNode на базу. Данные пользователей через NameNode не идут. Импорт пишет блоки на DataNode.
+- Отказавший DataNode во время записи обрабатывает конвейер, а позже — повторная репликация, если реплика потеряна. Импорт не закончен, пока файл не закрыт и реплики не существуют.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
 </details>
 
 <details>
@@ -514,6 +846,28 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+На RDD пар join возвращает (K, (V, W)) для каждой пары значений с общим ключом. Spark может прочитать оба входа из HDFS.
+
+**How it works:**
+
+- Руководство RDD определяет join(otherDataset, [numPartitions]) на наборах типов (K, V) и (K, W). leftOuterJoin, rightOuterJoin и fullOuterJoin — внешние формы.
+- Соберите один SparkContext из SparkConf. Один контекст на JVM. В кластере master задаёт spark-submit. Для YARN этот master — yarn.
+- textFile по пути HDFS требует конфигурацию Hadoop в classpath, HADOOP_CONF_DIR или YARN_CONF_DIR и зависимость hadoop-client.
+- numPartitions у join управляет партициями shuffle. Это та же забота, что partitioner в MapReduce: один горячий ключ попадает в одну партицию.
+- persist у RDD, который вы соединяете больше одного раза. Руководство говорит, что persistence переиспользует набор между действиями.
+
+**Examples:**
+
+```scala
+val left = sc.textFile(pathA).map(parseLeft)   // (K, V)
+val right = sc.textFile(pathB).map(parseRight) // (K, W)
+val joined = left.join(right)
+```
+
+**Sources:**
+
+- https://spark.apache.org/docs/latest/rdd-programming-guide.html
+- https://spark.apache.org/docs/latest/running-on-yarn.html
 </details>
 
 <details>
@@ -523,6 +877,22 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Поток работ — последовательность задания MapReduce и запроса Hive. Примитивы, которые реально можно запустить по полученным руководствам, — waitForCompletion и SELECT в Hive.
+
+**How it works:**
+
+- Задание MapReduce — Job в форме WordCount: задать mapper, combiner, reducer, входной путь, выходной путь, затем waitForCompletion.
+- Шаг Hive — SELECT с WHERE и GROUP BY по таблице, чьи файлы уже в HDFS. Предикаты раздела отсекают скан.
+- Упорядочьте их так, чтобы путь таблицы Hive существовал до запроса. put или выходной путь MapReduce создаёт этот файл.
+- Очереди YARN — то, как кластер планирует контейнеры. Учебник MapReduce перечисляет отправку заданий в очереди. Spark использует --queue, когда считает Spark.
+- Планировщик, который игнорирует неудачный waitForCompletion и всё равно запускает запрос, суммирует отсутствующий путь. Код выхода задания — это ворота.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Select
+- https://spark.apache.org/docs/latest/running-on-yarn.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html
 </details>
 
 <details>
@@ -532,6 +902,20 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Свой входной формат всё равно должен порождать InputSplit и RecordReader. Свой выходной формат всё равно должен дать RecordWriter. Задание затем называет эти классы.
+
+**How it works:**
+
+- InputSplit — байтовый кусок, который обрабатывает один mapper. FileSplit — значение по умолчанию, и он ставит mapreduce.map.input.file. RecordReader показывает mapper записи.
+- OutputFormat — спецификация выхода. Каркас пишет через RecordWriter. FileOutputFormat.setOutputPath — куда идёт файловый выход по умолчанию.
+- Класс формата выбирают на Job так же, как учебник выбирает классы mapper и reducer. Mapper должен по-прежнему видеть ключи и значения, а не смещения блоков HDFS, если только запись — не это смещение.
+- Байты, которые вы пишете, — файл HDFS. Репликация и размер блока остаются настройками HDFS, обычно блоки 128 MB.
+- Границы записей держите внутри RecordReader. Split, который режет запись пополам, — проблема читателя. Поэтому учебник отдаёт границы RecordReader.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 ### Advanced Hadoop Features and Architecture
@@ -543,6 +927,19 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Документированная отказоустойчивость данных файлов в архитектуре HDFS — репликация: полные копии каждого блока, а не схема чётности.
+
+**How it works:**
+
+- Файл — последовательность блоков. Блоки реплицируются. Коэффициент настраивается на файл. При коэффициенте три конвейер записи хранит три полные копии.
+- Потерянный DataNode роняет коэффициент репликации своих блоков. NameNode реплицирует заново, пока коэффициент снова не выполнен. Клиент, у которого не сошлась контрольная сумма, читает другую полную реплику.
+- Это стоит диска, равного коэффициенту, умноженному на данные. Дизайн принимает цену, потому что отказ железа — норма.
+- Страница архитектуры не задаёт схему чётности или erasure. Не описывайте её так, будто она из этого документа. Механизм, который она задаёт, — лишние полные реплики и контрольные суммы.
+- Метаданные — снова другое: несколько копий FsImage и EditLog или HA с Journal. Это тоже не erasure coding блоков.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -552,6 +949,21 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+HDFS кладёт блоки на DataNode и ожидает, что вычисление побежит рядом с этими блоками, потому что перенести вычисление дешевле, чем перенести данные.
+
+**How it works:**
+
+- Дизайн прямо называет это допущение и говорит, что HDFS даёт приложениям интерфейсы, чтобы перенести себя ближе к данным.
+- InputSplit mapper должен быть байтами на близком узле. FileSplit называет файл. Выигрыш планировщика — задача на узле, который уже хранит блок.
+- Репликация облегчает локальность: коэффициент три значит, что задачу могут принять три узла. Размещение с учётом стоек держит копии больше чем на одной стойке, чтобы локальность и устойчивость к отказам были возможны вместе.
+- NameNode не стримит данные пользователей. Задание, которое читает всё через NameNode, отказалось от локальности.
+- У Spark на YARN тот же интерес. RDD, созданный из файла HDFS, разрезан на партиции. Shuffle, например join, двигает данные и является дорогой частью. Чтение файла всё ещё должно быть локальным.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://spark.apache.org/docs/latest/rdd-programming-guide.html
 </details>
 
 <details>
@@ -561,6 +973,22 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+HDFS хранит байты в блоках. Раскладку записей выбирают входной и выходной форматы MapReduce или читатель вроде Spark.
+
+**How it works:**
+
+- FileSplit плюс RecordReader — способ по умолчанию, которым mapper видит записи. Другой RecordReader — другой формат на тех же блоках.
+- OutputFormat и RecordWriter выбирают, как пишется результат. WordCount пишет Text и IntWritable через выходные классы задания.
+- Hive читает таблицы. SELECT не интересуется размером блока 128 MB. Отсечение разделов интересуется столбцом раздела.
+- textFile в Spark читает файловую систему, которую поддерживает Hadoop, в RDD строк. Это один формат: текстовые строки. join затем работает на парах, которые вы разобрали.
+- NameNode всё ещё хранит одну запись пространства имён на файл. Формат, который создаёт миллионы маленьких файлов, давит на метаданные, даже если каждый файл — допустимый формат.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Select
+- https://spark.apache.org/docs/latest/rdd-programming-guide.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -570,6 +998,20 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Документированный дизайн HDFS — один NameNode на пространство имён. Это просто, и это же потолок метаданных. Данные масштабируются добавлением DataNode.
+
+**How it works:**
+
+- Один NameNode распоряжается пространством имён. Данные пользователей через него не идут. Ёмкость для байтов — больше DataNode и больше блоков.
+- NameNode может держать несколько синхронных копий FsImage и EditLog. Это защищает метаданные и может снизить число операций пространства имён в секунду. От приложений ждут интенсивности по данным, не по метаданным.
+- Высокая доступность использует несколько NameNode с общим хранилищем или, что предпочтительно, распределённый журнал правок под названием Journal. Это переключение одного пространства имён, не второе независимое пространство.
+- Добавление DataNode масштабирует хранение и места, где mapper может работать локально. Оно не снимает с NameNode роль пространства имён.
+- Spark и MapReduce масштабируют вычисления на YARN большим числом задач и узлов. Блоки они всё равно ищут через это пространство имён.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://spark.apache.org/docs/latest/running-on-yarn.html
 </details>
 
 <details>
@@ -579,6 +1021,19 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Journal — рекомендуемый распределённый журнал правок для высокой доступности с несколькими NameNode.
+
+**How it works:**
+
+- FsImage и EditLog — центральные структуры метаданных. Их порча может сделать экземпляр нерабочим.
+- NameNode может держать несколько копий и обновлять их синхронно. Это безопасно и может замедлить пропускную способность пространства имён.
+- Другой вариант дизайна — высокая доступность с несколькими NameNode, либо с общим хранилищем NFS, либо с распределённым журналом правок под названием Journal. Journal — рекомендуемый подход.
+- При перезапуске NameNode выбирает последний согласованный FsImage и EditLog.
+- Journal не реплицирует блоки файлов. Реплики блоков остаются на DataNode согласно коэффициенту репликации. Journal — то, как запасные NameNode делят поток правок одного пространства имён.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -588,6 +1043,21 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+HDFS настроен на большие файлы. Типичный блок — 128 MB. Много маленьких файлов превращается в много записей пространства имён на единственном NameNode и в много map-задач.
+
+**How it works:**
+
+- NameNode держит пространство имён и карту блоков. Данные пользователей через него не идут, но каждый файл — всё ещё объект метаданных. Дизайн говорит, что приложения не интенсивны по метаданным. Поток маленьких файлов ломает это допущение.
+- Файл меньше блока всё равно занимает отображение блока. Вы платите памятью NameNode за мало данных.
+- MapReduce сопоставляет split задаче. Куча крошечных файлов становится кучей задач и теми накладными расходами каркаса, о которых предупреждает учебник.
+- Смягчение, которое остаётся внутри документации: пишите большие файлы, дайте RecordWriter упаковать много записей в один выходной путь и используйте разделы Hive только там, где предикат может отсечь скан. Не создавайте один файл HDFS на событие.
+- Репликация умножает то, что вы сохранили. Коэффициент три на миллионах крошечных файлов умножает метаданные и блоки.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Select
 </details>
 
 ### Troubleshooting and Maintenance
@@ -599,6 +1069,19 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Восстановление метаданных использует последний согласованный FsImage и EditLog или запасной NameNode, который кормит Journal. Данные блоков всё ещё на DataNode.
+
+**How it works:**
+
+- Дизайн называет три обычных отказа: NameNode, DataNode и сетевые разделения.
+- FsImage и EditLog центральны. NameNode может держать несколько копий и обновлять их синхронно. При перезапуске он выбирает последнюю согласованную пару.
+- Рекомендуемый путь HA — несколько NameNode с распределённым журналом правок, Journal, а не только общий NFS.
+- Пока NameNode лежит, лежит пространство имён. DataNode всё ещё держат блоки, но клиентам нужен NameNode, чтобы разрешать пути. Повторная репликация блоков это не чинит.
+- Когда пространство имён вернулось, недореплицированные блоки — отдельный проход: heartbeat и повторная репликация. Снимки могут откатить порченый экземпляр к известному времени.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -608,6 +1091,21 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Сохраняйте пространство имён и держите реплики блоков. Снимок может вернуть экземпляр к известному времени. Репликация — не резервная копия плохой записи.
+
+**How it works:**
+
+- FsImage и EditLog — метаданные, которые нельзя собрать из одних DataNode. Несколько синхронных копий или Journal в HA — защита из дизайна. План резервного копирования должен включать эти файлы.
+- Реплики блоков переживают диск DataNode. Они не переживают приложение, которое перезаписало или удалило файл на каждой реплике. Снимки хранят копию на момент времени и могут откатить порченый экземпляр.
+- put -l форсирует коэффициент репликации 1, и документация говорит, что это снижает долговечность. Не используйте его для данных, которые надо восстановить.
+- Восстановление старого FsImage отматывает пространство имён. Файлы, созданные после этого образа, исчезают из пространства имён, даже если блоки остались.
+- Вычислительные задания заменяемы. WordCount можно отправить снова. Файл, который он читал, нельзя, если реплики или снимок его больше не держат.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
 </details>
 
 <details>
@@ -617,6 +1115,21 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Смотрите живость NameNode, heartbeat DataNode, недореплицированные блоки и прогресс задач MapReduce.
+
+**How it works:**
+
+- DataNode шлют heartbeat и отчёты о блоках. Отсутствие heartbeat — то, как NameNode объявляет узел мёртвым. Длинный таймаут по умолчанию значит, что дашборд должен показывать и устаревшие узлы, которые дизайн позволяет пометить раньше.
+- Недореплицированные блоки — очередь, которую NameNode пытается залечить. Растущая очередь после отказа диска ожидаема. Очередь, которая никогда не рассасывается, — нет.
+- Ошибки контрольных сумм значат, что клиенты отвергают реплики. Это порча, не медлительность.
+- Учебник MapReduce показывает счётчики, журналы задач и статус отправки через waitForCompletion. Застрявший reducer — сигнал перекоса.
+- Здоровье FsImage и EditLog — сигнал метаданных. HA с Journal должен показывать, какой NameNode активен. Собственный интерфейс Spark — другой процесс, когда задание — Spark на YARN.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://spark.apache.org/docs/latest/running-on-yarn.html
 </details>
 
 <details>
@@ -626,6 +1139,21 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Планируйте байты как блоки на DataNode, а метаданные как объекты пространства имён на NameNode. Они масштабируются не одинаково.
+
+**How it works:**
+
+- Блок 128 MB и коэффициент репликации три превращают терабайт пользовательских данных в больше чем три терабайта диска плюс трафик конвейера на записи.
+- NameNode держит карту этих блоков. Большие файлы держат карту меньше. Маленькие файлы исчерпывают её первыми.
+- Добавляйте DataNode, чтобы добавить диск и локальные слоты map. Ребаланс может перенести данные, когда свободное место неравномерно. Дизайн говорит, что архитектура совместима со схемами ребаланса.
+- Слоты reduce и map добавляйте с учётом накладных расходов из учебника. Оставьте место для speculative-tasks и отказов.
+- Для вычислений сверх MapReduce добавьте ёмкость YARN и запускайте Spark с явной памятью executor. Пространство имён HDFS — всё ещё один NameNode, если вы не в схеме HA с Journal, и это всё ещё одно пространство имён.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://spark.apache.org/docs/latest/running-on-yarn.html
 </details>
 
 ### Scenario-Based Questions and Use Case Discussions
@@ -637,6 +1165,22 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Кладите поток файлами в HDFS и дайте Spark на YARN преобразовать эти файлы. HDFS — долговечное хранилище. Spark — параллельное вычисление.
+
+**How it works:**
+
+- hadoop fs -put или конвейер записи кладёт байты на DataNode с репликацией. Не используйте put -l, если нужен обычный коэффициент.
+- spark-submit --master yarn запускает приложение на том же кластере. Режим cluster держит драйвер в application master. HADOOP_CONF_DIR должен указывать на клиентскую конфигурацию Hadoop.
+- RDD из textFile разрезан по кластеру. map и flatMap преобразуют строки. join — это join RDD пар. persist, если несколько действий перечитывают одни данные.
+- HDFS сделан для высокой пропускной способности, не для интерактивных правок с малой задержкой. Настоящий путь «событие за событием» всё равно должен ограничить буфер. Пакетный файл в HDFS — долговечная копия, которую дизайн реально задаёт.
+- Держите файлы большими. Файл на каждый клик исчерпает NameNode. Сворачивайте клики в файлы порядка блока 128 MB.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://spark.apache.org/docs/latest/running-on-yarn.html
+- https://spark.apache.org/docs/latest/rdd-programming-guide.html
 </details>
 
 <details>
@@ -646,4 +1190,22 @@ ZooKeeper — небольшое реплицированное хранилищ
 
 **Definition:**
 
+Копируйте файлы датчиков в HDFS, держите их большими и реплицированными, затем суммируйте через Hive или MapReduce и при необходимости соединяйте в Spark.
+
+**How it works:**
+
+- hadoop fs -put кладёт файлы. Долговечность держит репликация, не put -l. Блоки обычно 128 MB и идут конвейером на DataNode-реплики.
+- Задание MapReduce или SELECT … GROUP BY в Hive суммирует по датчику или по часу. Столбец раздела в WHERE отсекает скан Hive.
+- join в Spark соединяет сводку со справочной таблицей, если обе — RDD пар, и работает на YARN по тем же путям HDFS.
+- NameNode должен оставаться небольшим. Сворачивайте показания в большие файлы. Наблюдайте heartbeat и недореплицированные блоки.
+- Снимки или NameNode на Journal — путь восстановления. Реплики защищают диски. Они не защищают плохое удаление на каждой копии.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Select
+- https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+- https://spark.apache.org/docs/latest/rdd-programming-guide.html
+- https://spark.apache.org/docs/latest/running-on-yarn.html
 </details>

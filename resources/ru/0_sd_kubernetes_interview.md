@@ -1,6 +1,6 @@
 # Kubernetes — собеседование
 
-Ответы заполнены для опубликованной части, остальные пустые.
+Ответы заполнены.
 
 [← К обзору](./0_system_design.md)
 
@@ -506,6 +506,31 @@ spec:
 
 **Definition:**
 
+PersistentVolume — это хранилище кластера со своим жизненным циклом. PersistentVolumeClaim — запрос пользователя на объём и режим доступа. Управляющий контур связывает одну заявку с одним томом.
+
+**How it works:**
+
+- Администратор создаёт PV заранее, либо provisioner создаёт том под заявку. PV — ресурс кластера, как и узел, и он переживает отдельный Pod.
+- Заявка просит ёмкость и режим доступа: ReadWriteOnce, ReadOnlyMany, ReadWriteMany или ReadWriteOncePod. Цикл управления связывает её с подходящим PV. Связь один к одному через ClaimRef.
+- Pod не называет PV. Он монтирует заявку. Кластер находит связанный том и монтирует его.
+- Если подходящего тома нет, заявка остаётся несвязанной. PV на 50Gi не закрывает заявку на 100Gi.
+- Storage Object in Use Protection не даёт сразу удалить PVC, которую ещё использует Pod, и PV, всё ещё связанный с PVC.
+
+**When to use:**
+
+Заявку берут, когда данные диска должны пережить перезапуск Pod. emptyDir подходит, когда данные могут исчезнуть вместе с Pod.
+
+**Examples:**
+
+```text
+PVC просит 30Gi ReadWriteOnce
+контроллер связывает подходящий PV
+Pod volumes.persistentVolumeClaim.claimName = эта PVC
+```
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 </details>
 
 <details>
@@ -515,6 +540,35 @@ spec:
 
 **Definition:**
 
+Динамическое выделение создаёт PersistentVolume, когда заявка просит StorageClass и статический том не подходит. Класс — это предложение администратора определённого типа хранилища.
+
+**How it works:**
+
+- StorageClass называет provisioner и параметры, например производительность. Заявка ставит storageClassName в имя этого класса.
+- Пустое имя класса отключает динамическое выделение для этой заявки.
+- Привязка бывает Immediate, это значение по умолчанию, или WaitForFirstConsumer: том ждёт Pod, который использует заявку, чтобы учесть топологию.
+- Динамический том наследует политику возврата своего StorageClass. По умолчанию это Delete: удаление заявки удаляет том. Retain оставляет том в фазе Released, чтобы администратор мог забрать данные.
+- Admission-плагин DefaultStorageClass может подставить класс по умолчанию, если заявка его не указала.
+
+**When to use:**
+
+Динамическое выделение берут, когда пользователи сами просят размер и класс, без заранее созданных дисков. Статические PV — когда диск уже существует вне кластера.
+
+**Examples:**
+
+```yaml
+storageClassName: fast
+accessModes: [ReadWriteOnce]
+resources:
+  requests:
+    storage: 30Gi
+```
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/storage/dynamic-provisioning/
+- https://kubernetes.io/docs/concepts/storage/storage-classes/
+- https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 </details>
 
 <details>
@@ -524,6 +578,23 @@ spec:
 
 **Definition:**
 
+Удаление Pod не удаляет связанный PersistentVolume. Судьба байтов зависит от заявки, политики возврата и от того, держит ли контроллер вроде StatefulSet эту заявку.
+
+**How it works:**
+
+- Том, смонтированный из заявки, остаётся после исчезновения Pod. Следующий Pod с той же заявкой видит те же данные.
+- Удаление PVC запускает возврат. Retain оставляет PV в Released и сохраняет внешний диск. Delete удаляет PV и, если плагин умеет, внешний ресурс. Recycle устарел; вместо него рекомендуют динамическое выделение.
+- Защита объекта откладывает удаление, пока Pod ещё использует заявку или PV ещё связан.
+- Уменьшение StatefulSet удаляет Pod, но оставляет их PVC связанными, поэтому данные на месте, когда порядковый номер возвращается.
+
+**When to use:**
+
+Retain — когда данные ценные и решение принимает человек. Delete — когда жизнь данных равна жизни заявки. Заявка StatefulSet на каждый порядковый номер — когда личность и диск должны держаться вместе.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+- https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/
 </details>
 
 ### Kubernetes Cluster Management
@@ -535,6 +606,23 @@ spec:
 
 **Definition:**
 
+Кластер — это управляющий контур плюс рабочие узлы. Инициализация поднимает API, хранилище состояния, планировщик и контроллеры, затем узлы, которые могут запускать Pod.
+
+**How it works:**
+
+- Управляющий контур: kube-apiserver (HTTP API), etcd (согласованное хранилище данных API), kube-scheduler (привязывает ещё не назначенные Pod к узлам) и kube-controller-manager (запускает контроллеры). cloud-controller-manager необязателен.
+- На каждом узле работает kubelet, который поддерживает Pod и их контейнеры, среда выполнения контейнеров и при желании kube-proxy для правил Service.
+- Дополнения вроде кластерного DNS не входят в это ядро, но рабочий кластер обычно ставит их после того, как API отвечает.
+- Документация предлагает minikube или учебный playground, если нужен кластер только чтобы попробовать API. Промышленная схема — это выбор того, как развернуть те же компоненты.
+
+**When to use:**
+
+Одноузловой локальный кластер достаточен, чтобы учить API. Несколько машин управляющего контура и высокодоступный etcd — форма кластера, от которого зависят другие люди.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/
 </details>
 
 <details>
@@ -544,6 +632,21 @@ spec:
 
 **Definition:**
 
+Новый узел входит в кластер, когда на нём работают компоненты узла и планировщик может ставить на него Pod. Ёмкость, метки и taint решают, что туда реально попадёт.
+
+**How it works:**
+
+- Узлу нужны kubelet и среда выполнения контейнеров. kube-proxy необязателен и держит сетевые правила Service.
+- Планировщик ставит Pod, которым хватает свободных CPU и памяти. Узел без запаса не получит Pod с большим запросом.
+- Метки позволяют потом целиться в узел через nodeSelector или affinity. Для границы безопасности берите ключи, которые kubelet не может переписать, например префикс node-restriction.kubernetes.io/.
+- Осушенный узел несёт taint unschedulable. Новые Pod без toleration туда не встанут. Обычное исключение — DaemonSet.
+- Добавление узлов само по себе не копирует данные управляющего контура. Состояние кластера остаётся в etcd и API-сервере.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+- https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
 </details>
 
 <details>
@@ -553,6 +656,31 @@ spec:
 
 **Definition:**
 
+Осушение выселяет Pod с узла, чтобы можно было обслуживать машину. Нагрузки с PodDisruptionBudget остаются доступны только в пределах заданного бюджета.
+
+**How it works:**
+
+- kubectl drain выселяет Pod, соблюдает их grace period и PodDisruptionBudget. Когда команда успешно завершается, выселенные Pod исчезли, а узел не принимает новые.
+- Pod DaemonSet контроллер тут же создаёт заново, и они игнорируют taint unschedulable. Без --ignore-daemonsets drain не закончит их за вас.
+- Pod, у которого в spec задан nodeName, привязан к этому узлу и может продолжать работать там после осушения.
+- Так делают перед обслуживанием ядра, железа или виртуальной машины. После обслуживания kubectl uncordon снова разрешает планирование.
+- Одна команда drain — один узел. Параллельные drain разных узлов всё равно чтут тот же бюджет: StatefulSet с minAvailable 2 не опустится ниже.
+
+**When to use:**
+
+Осушайте узел перед перезагрузкой или удалением. Не осушайте, если оставшиеся реплики не укладываются в бюджет нарушений.
+
+**Examples:**
+
+```text
+kubectl drain --ignore-daemonsets <node name>
+# обслуживание
+kubectl uncordon <node name>
+```
+
+**Sources:**
+
+- https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
 </details>
 
 <details>
@@ -562,6 +690,23 @@ spec:
 
 **Definition:**
 
+Масштабируйте Deployment, когда спрос больше не совпадает с числом реплик или с CPU и памятью каждой реплики. Kubernetes меняет число (горизонтально) или ресурсы (вертикально), вручную или контроллером.
+
+**How it works:**
+
+- Ручной горизонтальный масштаб меняет число реплик. Ручной вертикальный — патчит запросы ресурсов контейнера.
+- HorizontalPodAutoscaler — встроенный ресурс и контроллер. Он периодически ставит число реплик по наблюдаемой утилизации, например CPU или памяти.
+- VerticalPodAutoscaler — дополнение, не ядро Kubernetes. Ему нужен Metrics Server. По документации автомасштабирования он пока не меняет размер Pod на месте; изменение ресурсов контейнера на месте — отдельная стабильная возможность, её применяют вручную.
+- KEDA, проект CNCF, масштабирует по событиям вроде глубины очереди или по расписанию cron. Пропорциональные автоскейлеры кластера смотрят на число узлов или ядер и тоже живут отдельными проектами.
+- Если реплики всё равно не помещаются, масштабируют сам кластер: добавляют или убирают узлы.
+
+**When to use:**
+
+HPA — когда нагрузка это CPU, память или метрика, которая следует за частотой запросов. KEDA — когда сигнал это очередь или расписание. Больше узлов — когда заполнен сам кластер.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
 </details>
 
 ### Kubernetes Security
@@ -573,6 +718,24 @@ spec:
 
 **Definition:**
 
+RBAC Kubernetes выдаёт пользователю или ServiceAccount только те глаголы API, которые нужны роли. Role и привязки — объекты, которыми это выражают.
+
+**How it works:**
+
+- Предпочитайте Role и RoleBinding в одном пространстве имён. ClusterRoleBinding даёт те же права во всех пространствах.
+- Избегайте шаблонов, особенно на все ресурсы. Kubernetes расширяем, поэтому шаблон покроет и типы, которых ещё нет.
+- Не пользуйтесь cluster-admin в повседневной работе. Не добавляйте людей в system:masters: эта группа вообще пропускает проверки RBAC.
+- list и watch на Secrets раскрывают содержимое, не только get. Право создавать Pod позволяет смонтировать Secrets и ConfigMaps этого пространства и работать от любого ServiceAccount там.
+- Создание PersistentVolume может означать hostPath и файловую систему узла. Создание PV оставляют доверенным операторам и provisioner управляющего контура. Пользователи берут диск через заявки.
+- Глаголы escalate, bind и impersonate, плюс одобрение CSR и serviceaccounts/token, могут поднять привилегии. Привязки просматривают по расписанию.
+
+**When to use:**
+
+RoleBinding в пространстве имён — для команд приложений. Права на весь кластер — только у немногих контроллеров, которым видны все пространства.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/security/rbac-good-practices/
 </details>
 
 <details>
@@ -582,6 +745,21 @@ spec:
 
 **Definition:**
 
+Secret хранит небольшое чувствительное значение — пароль, токен или ключ — вне образа и вне spec Pod. По умолчанию этот объект в etcd не зашифрован.
+
+**How it works:**
+
+- Secrets лежат в etcd без шифрования, пока не включено шифрование покоя. Кто читает API или etcd, читает и их. Кто может создать Pod в пространстве имён, может прочитать Secrets там, в том числе создав Deployment.
+- Включите шифрование покоя, сузьте RBAC до минимума, ограничьте, какие контейнеры монтируют Secret, и рассмотрите внешнее хранилище секретов.
+- Pod может взять Secret как переменную окружения, том (включая ключ-dotfile) или учётные данные для pull, чтобы kubelet тянул образ из закрытого реестра.
+- Те же байты не кладут в ConfigMap. ConfigMap — для несекретных данных и не является механизмом секретности.
+- list и watch по Secrets возвращают данные, поэтому эти глаголы так же чувствительны, как get.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/configuration/secret/
+- https://kubernetes.io/docs/concepts/security/rbac-good-practices/
+- https://kubernetes.io/docs/concepts/configuration/configmap/
 </details>
 
 <details>
@@ -591,6 +769,23 @@ spec:
 
 **Definition:**
 
+Безопасность Pod — это ограничения, которые не дают нагрузке превратиться в доступ к узлу. Kubernetes добивается этого политикой admission и тем, что не выдаёт мощные ServiceAccount, а не только полем одного контейнера.
+
+**How it works:**
+
+- Право создавать Pod уже сильное: Pod может смонтировать Secrets и ConfigMaps и работать от любого ServiceAccount пространства. Привилегированный Pod может дотянуться до узла.
+- Если вызывающей стороне нет полного доверия, включайте стандарт Pod Security Baseline или Restricted через Pod Security admission или равноценный контроль.
+- Мощные Pod не ставят рядом с недоверенными. Taint, toleration, node affinity или pod anti-affinity их разводят. Привилегированных DaemonSet должно быть мало, и у них минимум прав.
+- Ставьте automountServiceAccountToken: false, если Pod не должен звать API.
+- Граница аренды — пространство имён. Права внутри одного пространства — слабая стена.
+
+**When to use:**
+
+Restricted — для нагрузок, открытых в сеть. Baseline — когда образу всё же нужны несколько проверенных возможностей хоста. Privileged — только компонентам, которым обязательно касаться узла.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/security/rbac-good-practices/
 </details>
 
 <details>
@@ -600,6 +795,23 @@ spec:
 
 **Definition:**
 
+NetworkPolicy ограничивает, какие соединения Pod может принять или открыть, на уровне IP и порта, для TCP, UDP и SCTP. Без сетевого плагина, который её исполняет, она ничего не делает.
+
+**How it works:**
+
+- По умолчанию Pod не изолирован: разрешены весь входящий и весь исходящий трафик. Политика, которая выбирает Pod и указывает Ingress или Egress в policyTypes, изолирует это направление.
+- После изоляции разрешены только соединения из объединения подходящих политик, плюс ответный трафик и трафик к узлу и от узла. Pod не может заблокировать сам себя.
+- Собеседники — другие Pod, пространства имён или блоки CIDR, их выбирают селекторами. Правило egress источника и правило ingress назначения оба должны разрешить соединение.
+- Политики складываются. Порядок не важен.
+- В пространстве имён ставят запрет по умолчанию, затем разрешают конкретные порты приложения. Объект политики без плагина, который её применяет, пуст.
+
+**When to use:**
+
+NetworkPolicy — для ограничений восток-запад внутри кластера. Это не замена RBAC, и она не видит трафик, который не касается Pod.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/services-networking/network-policies/
 </details>
 
 ### Observability and Monitoring
@@ -611,6 +823,23 @@ spec:
 
 **Definition:**
 
+Metrics Server — дополнение кластера, которое отдаёт текущие CPU и память, чтобы контроллеры автомасштабирования видели утилизацию. Это не часть ядра управляющего контура.
+
+**How it works:**
+
+- HorizontalPodAutoscaler меняет число реплик по наблюдаемой утилизации ресурсов, например CPU или памяти. Эти числа должны приходить из конвейера метрик.
+- VerticalPodAutoscaler, сам по себе дополнение, требует установленный Metrics Server.
+- Обзор компонентов называет мониторинг ресурсов контейнеров дополнением: он собирает и хранит метрики контейнеров отдельно от etcd и API-сервера.
+- Он отвечает на вопрос «сколько Pod потребляет сейчас». Это не долгое хранилище мониторинга.
+
+**When to use:**
+
+Ставьте его, когда HPA или VPA должны масштабироваться по CPU или памяти. Отдельную систему мониторинга оставляют для истории и оповещений.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
+- https://kubernetes.io/docs/concepts/overview/components/
 </details>
 
 <details>
@@ -620,6 +849,24 @@ spec:
 
 **Definition:**
 
+Prometheus не является компонентом Kubernetes. Кластер ждёт дополнение, которое собирает метрики контейнеров; Prometheus — одна из систем, которые команды ставят рядом с API-сервером для этой работы.
+
+**How it works:**
+
+- Ядро: API-сервер, etcd, планировщик, менеджер контроллеров, kubelet и среда выполнения. Их здоровье — это управляющий контур. Сбор метрик в обзоре компонентов указан отдельно как дополнение.
+- Скрейпер направляют на компоненты, которые уже работают, и не дают ему cluster-admin. Практика RBAC — минимум прав и никакого шаблонного чтения.
+- Автомасштабированию всё равно нужен короткий путь метрик ресурсов, например Metrics Server, для CPU и памяти. Дополнение мониторинга — место для истории.
+- Дашборды не кладут в тот же etcd вместо дополнения метрик. etcd хранит объекты API.
+
+**When to use:**
+
+Берите его, когда нужен временной ряд метрик кластера и нагрузок. Metrics Server — когда единственный потребитель это HPA или VPA.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
+- https://kubernetes.io/docs/concepts/security/rbac-good-practices/
 </details>
 
 <details>
@@ -629,6 +876,24 @@ spec:
 
 **Definition:**
 
+Grafana не входит в Kubernetes. Наблюдаемость в кластере — забота дополнений: метрики ресурсов и журналы уровня кластера, которые читает система вне управляющего контура.
+
+**How it works:**
+
+- Страница компонентов называет два подходящих дополнения: мониторинг ресурсов контейнеров и журналы уровня кластера, которые складывают логи контейнеров в центральное хранилище.
+- Дашборд читает эти хранилища. Он не заменяет API-сервер, и ему не нужны права cluster-admin только чтобы рисовать графики.
+- HPA по-прежнему масштабируется из конвейера метрик ресурсов, а не из запроса дашборда.
+- Учётные данные дашборда хранят как любой Secret: шифрование покоя, RBAC с минимумом прав и никакой копии в ConfigMap.
+
+**When to use:**
+
+Дашборд нужен, когда люди смотрят те же ряды, которые дополнение уже хранит. Он не нужен, если единственное решение — число реплик HPA.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
+- https://kubernetes.io/docs/concepts/configuration/secret/
 </details>
 
 ### Kubernetes Scheduling and Scalability
@@ -640,6 +905,25 @@ spec:
 
 **Definition:**
 
+nodeSelector и affinity говорят планировщику, на каких узлах может работать Pod. Планировщик и так раскладывает Pod по узлам со свободными ресурсами; эти поля добавляют ограничение.
+
+**How it works:**
+
+- nodeSelector — простая форма. Pod работает только на узлах, у которых есть каждая указанная метка.
+- Affinity выразительнее. Обязательное правило должно совпасть. Предпочтительное всё равно позволяет планирование, если совпадения нет. Pod affinity и anti-affinity смотрят на метки других Pod, поэтому два сервиса можно посадить вместе или врозь.
+- nodeName обходит планировщик и привязывает Pod к этому узлу. Осушенный узел всё равно запустит Pod с nodeName.
+- Для меток изоляции берите префикс, который kubelet не может сменить. Admission-плагин NodeRestriction запрещает kubelet писать в node-restriction.kubernetes.io/.
+- Назначение делает kube-scheduler, компонент управляющего контура.
+
+**When to use:**
+
+nodeSelector — для жёсткой метки вроде типа диска. Предпочтительный affinity — когда размещение это смещение. Anti-affinity — когда две копии не должны делить домен отказа.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
 </details>
 
 <details>
@@ -649,6 +933,23 @@ spec:
 
 **Definition:**
 
+HorizontalPodAutoscaler — объект API Kubernetes и контроллер, который меняет число реплик нагрузки так, чтобы оно следовало за наблюдаемой утилизацией.
+
+**How it works:**
+
+- Он периодически подстраивает реплики объекта, который управляет Pod, например Deployment, по сигналам вроде использования CPU или памяти.
+- Это горизонтальное масштабирование. Вертикальное меняет ресурсы существующих Pod и устроено иначе. VPA — дополнение и требует Metrics Server.
+- Ручное масштабирование остаётся: меняют число реплик или патчат запросы ресурсов без контроллера.
+- KEDA может масштабировать ту же идею от событий, например сообщений в очереди, или от расписания cron. Это не встроенные триггеры HPA.
+- Если лишние Pod не помещаются, следующий шаг — больше узлов, а не большее число HPA, которое не планируется.
+
+**When to use:**
+
+HPA — когда число реплик должно следовать за CPU, памятью или другой метрикой утилизации. Скейлер по очереди — когда триггер это хвост, а не CPU.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
 </details>
 
 ### Kubernetes Troubleshooting and Debugging
@@ -660,6 +961,23 @@ spec:
 
 **Definition:**
 
+Pod стартует, когда планировщик может его разместить, а kubelet — запустить контейнеры. Pod, который не становится Ready, застрял на одном из этих двух шагов.
+
+**How it works:**
+
+- Если он Pending, планировщик его не привязал. Сверьте запросы со свободными ресурсами узла, nodeSelector и affinity, taint и PVC, которая ещё не связана. Заявка с WaitForFirstConsumer ждёт, пока размещение возможно. Заявка больше любого PV будет ждать бесконечно.
+- Если он назначен, но контейнеры не идут, сбой у kubelet или среды выполнения: образ не скачивается, либо нет Secret или ConfigMap, на который есть ссылка. Pull из закрытого реестра требует Secret, которым может пользоваться kubelet.
+- NetworkPolicy не мешает контейнеру стартовать. Она отбрасывает соединения уже после подъёма Pod, и только если плагин её применяет.
+- kubectl drain здесь не инструмент. Drain выселяет уже работающие Pod, чтобы обслужить узел.
+- Защита хранилища может оставить PVC в Terminating с finalizer kubernetes.io/pvc-protection, пока Pod её использует. Тогда новая заявка с тем же именем не свяжется.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+- https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+- https://kubernetes.io/docs/concepts/configuration/secret/
+- https://kubernetes.io/docs/concepts/services-networking/network-policies/
 </details>
 
 <details>
@@ -669,6 +987,20 @@ spec:
 
 **Definition:**
 
+Сеть Kubernetes — это правила Service у kube-proxy плюс то, что делает сетевой плагин кластера. NetworkPolicy влияет на трафик только если плагин её исполняет.
+
+**How it works:**
+
+- kube-proxy на узле держит правила, которые реализуют Service. Если он не работает, первыми под подозрением VIP Service. Трафик по IP Pod — дело плагина, не kube-proxy.
+- По умолчанию Pod принимает и открывает любые соединения. После изоляции направления действует только объединение подходящих правил, и оба конца должны разрешить поток.
+- Объект политики в кластере, чей плагин не применяет NetworkPolicy, ничего не меняет. Это похоже на ошибку политики, а на деле нет контроллера.
+- Трафик к узлу, где работает Pod, и от него всегда разрешён, независимо от IP Pod. Pod не может заблокировать сам себя.
+- DNS — дополнение, не компонент управляющего контура. Имена не резолвятся, а IP работает — смотрите это дополнение, не API-сервер.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/services-networking/network-policies/
+- https://kubernetes.io/docs/concepts/overview/components/
 </details>
 
 ### Advanced Kubernetes Features
@@ -680,6 +1012,24 @@ spec:
 
 **Definition:**
 
+CustomResourceDefinition добавляет тип ресурса в API-сервер. После создания CRD у API появляется REST-путь для каждой перечисленной версии.
+
+**How it works:**
+
+- Имя CRD — это plural.group. spec.group и spec.versions задают путь /apis/<group>/<version>. spec.scope — namespaced или cluster-scoped.
+- Удаление пространства имён удаляет пользовательские объекты в нём. Сам объект CRD не принадлежит пространству имён.
+- У каждой версии есть флаг served. API-сервер отдаёт только версии, которые вы отметили served.
+- Контроллеры и дополнения используют CRD для поведения, которого нет у встроенных Pod или Service. Документация автомасштабирования отмечает, что VPA ставится как custom resource, а не как тип ядра API.
+- На текущей странице задачи CRD доступны с Kubernetes 1.16. Проверьте kubectl version, прежде чем применять манифест под более новый API.
+
+**When to use:**
+
+CRD добавляют, когда контроллеру нужно хранить свои объекты в API. ConfigMap — когда Pod нужны только пары ключ-значение.
+
+**Sources:**
+
+- https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
 </details>
 
 <details>
@@ -689,6 +1039,26 @@ spec:
 
 **Definition:**
 
+Сервисная сеть не является компонентом управляющего контура Kubernetes. Kubernetes уже даёт Service, kube-proxy и NetworkPolicy; сеть — дополнительный слой, который команды ставят рядом.
+
+**How it works:**
+
+- kube-proxy реализует пересылку Service на узле. NetworkPolicy, если плагин её применяет, разрешает или запрещает соединения по Pod, пространству имён или CIDR.
+- Эти два механизма не повторяют вызов, не перекладывают трафик между версиями и не добавляют взаимную идентичность соединения. Поэтому сеть ставят отдельным ПО.
+- К сети применяют тот же RBAC, что и к любому мощному дополнению: никакого cluster-admin на повседневный трафик и никакого шаблонного чтения Secrets.
+- Sidecar сети, который монтирует каждый Secret пространства, — тот же риск, который страница RBAC описывает для любого создателя Pod.
+- Настройки сети без секретов кладут в ConfigMap, учётные данные — в Secret.
+
+**When to use:**
+
+Сеть добавляют, когда нужно поведение, которого нет в API Service и NetworkPolicy. Остаются на Service и NetworkPolicy, когда хватает списков доступа и виртуальных IP.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/concepts/services-networking/network-policies/
+- https://kubernetes.io/docs/concepts/security/rbac-good-practices/
+- https://kubernetes.io/docs/concepts/configuration/secret/
 </details>
 
 <details>
@@ -698,6 +1068,25 @@ spec:
 
 **Definition:**
 
+Федерация — способ направить несколько кластеров на одну задачу. У каждого кластера свой управляющий контур: свой API-сервер и свой etcd.
+
+**How it works:**
+
+- Планировщик одного кластера ставит Pod только на узлы этого кластера. Второй регион — это второй кластер, а не метка узла.
+- Федерацию берут, когда приложение должно работать больше чем в одном таком кластере: второй домен отказа или пользователи близко к нескольким регионам.
+- Node affinity и topology spread двигают Pod только внутри одного кластера. Они не заменяют второй управляющий контур.
+- RBAC, Secrets и NetworkPolicy не переходят между кластерами. Каждому кластеру нужны свои привязки с минимумом прав и своё шифрование Secrets в покое.
+- Добавление узлов масштабирует один кластер. Федерация — шаг после того, как домена отказа одного кластера мало.
+
+**When to use:**
+
+Несколько кластеров — когда недопустим простой одного управляющего контура или одного региона. Один кластер с topology spread — когда копиям нужны только разные узлы.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+- https://kubernetes.io/docs/concepts/security/rbac-good-practices/
 </details>
 
 ### Kubernetes Ecosystem and Tools
@@ -709,6 +1098,22 @@ spec:
 
 **Definition:**
 
+Helm не является API Kubernetes. Kubernetes применяет объекты вроде Deployment, Service, ConfigMap и CRD; Helm — клиент, который собирает эти объекты из пакета и отправляет их.
+
+**How it works:**
+
+- Чарт — набор манифестов с параметрами под одно окружение. Тот же чарт может задать другой ConfigMap или число реплик в другом кластере.
+- API-сервер всё равно хранит получившиеся объекты. etcd не знает, что чарт существовал.
+- CRD, которые ставит чарт, подчиняются правилам CRD: определение на уровне кластера, а имена пользовательских объектов умирают вместе с пространством имён.
+- Secrets из чарта по-прежнему не зашифрованы в etcd, пока не включено шифрование покоя, и им всё ещё нужен RBAC с минимумом прав.
+- Чарт удобен, когда много объектов ставят вместе. Один манифест — когда выпуск это один Deployment.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/
+- https://kubernetes.io/docs/concepts/configuration/secret/
+- https://kubernetes.io/docs/concepts/configuration/configmap/
 </details>
 
 <details>
@@ -718,6 +1123,24 @@ spec:
 
 **Definition:**
 
+Kustomize накладывает патчи на обычные манифесты Kubernetes под окружение и не превращает их в язык шаблонов. API-сервер по-прежнему получает обычные объекты.
+
+**How it works:**
+
+- Базовые манифесты держат Deployment, Service, ConfigMap или Secret. Overlay меняет имена, метки или несколько полей для одного окружения.
+- Данные ConfigMap не секретны и ограничены 1 MiB. Секретные значения остаются в Secrets, с шифрованием покоя.
+- ConfigMap, смонтированный томом, kubelet со временем обновляет. Те же данные в переменных окружения не обновляются; Pod нужно перезапустить. Монтирование через subPath тоже не видит обновлений.
+- immutable: true у ConfigMap или Secret запрещает менять data. Объект удаляют и создают заново. Это снижает нагрузку watch на apiserver, когда тысячи Pod их монтируют.
+- Pod и ConfigMap должны быть в одном пространстве имён, если только приложение само не читает API.
+
+**When to use:**
+
+Overlay — когда окружения отличаются небольшим патчем. Чарт — когда нужна упакованная установка с записанным выпуском.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/configuration/configmap/
+- https://kubernetes.io/docs/concepts/configuration/secret/
 </details>
 
 <details>
@@ -727,6 +1150,21 @@ spec:
 
 **Definition:**
 
+Среда выполнения контейнеров на каждом узле скачивает образы и запускает их. Реестр — место, где образы лежат; kubelet их скачивает, в том числе из закрытого реестра с помощью Secret.
+
+**How it works:**
+
+- Компоненты узла: kubelet, необязательный kube-proxy и среда выполнения контейнеров. Без среды выполнения образ не из чего запускать.
+- Secret может хранить учётные данные реестра, чтобы kubelet скачал закрытый образ. Этот Secret чувствителен: нужны шифрование покоя и RBAC с минимумом прав.
+- Кто может создать Pod в пространстве имён, может пользоваться Secrets там, поэтому Secret закрытого реестра этому человеку доступен.
+- Выбор образа отдельно от планирования. nodeSelector может требовать узел с локальным диском или меткой, но образ он не хранит.
+- Пароли не зашивают в образ. Secret для того и есть, чтобы секретные данные не попадали в образ и в spec Pod.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/concepts/configuration/secret/
+- https://kubernetes.io/docs/concepts/security/rbac-good-practices/
 </details>
 
 ### Best Practices in Kubernetes
@@ -738,6 +1176,23 @@ spec:
 
 **Definition:**
 
+Высокая доступность значит, что управляющий контур продолжает отвечать, а у нагрузки остаётся кворум готовых Pod. etcd — согласованное хранилище, от которого зависят эти решения.
+
+**How it works:**
+
+- Управляющий контур держат так, чтобы API-сервер и etcd оставались доступны. Страница компонентов называет etcd согласованным и высокодоступным хранилищем всех данных API. Один etcd — одно место, где эти данные могут остановиться.
+- Реплики разносят anti-affinity или ограничениями топологии, чтобы потеря одного узла не была потерей всех реплик. Планировщик и так обходит узлы без свободных ресурсов.
+- PodDisruptionBudget ставят до того, как кто-то осушит узел. Drain не выселит ниже minAvailable.
+- HPA добавляет реплики, когда растёт нагрузка. Он не заменяет исчезнувший узел; для этого нужна ёмкость в другом месте.
+- Secrets шифруют в покое и сужают RBAC, чтобы запасной узел управляющего контура не был ещё и запасной копией всех паролей открытым текстом.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
+- https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+- https://kubernetes.io/docs/concepts/configuration/secret/
 </details>
 
 <details>
@@ -747,6 +1202,33 @@ spec:
 
 **Definition:**
 
+ConfigMap хранит несекретные настройки в парах ключ-значение. Secret хранит небольшие секретные значения. Оба позволяют менять конфигурацию без пересборки образа.
+
+**How it works:**
+
+- У ConfigMap есть data для строк UTF-8 и binaryData для base64. Ключи не должны пересекаться. Объект не больше 1 MiB. Он не зашифрован, и пароль туда класть нельзя.
+- Pod в том же пространстве имён может взять ConfigMap как аргументы контейнера, переменные окружения или файлы на томе только для чтения. Тома со временем обновляются; переменные окружения нет, и subPath тоже нет.
+- Secret — секретный аналог: пароли, токены, ключи и учётные данные закрытого реестра. Включите шифрование покоя, иначе etcd хранит их открыто.
+- immutable: true замораживает data. Это убирает случайные правки и снижает watch на apiserver, когда объект монтируют много Pod.
+- spec статического Pod не может ссылаться на ConfigMap или другие объекты API.
+
+**When to use:**
+
+ConfigMap — для хостов, флагов и файлов, которые может читать всё пространство имён. Secret — для всего, что не должно всплывать при разборе манифеста.
+
+**Examples:**
+
+```yaml
+# ConfigMap
+data:
+  DATABASE_HOST: db.internal
+# Secret — секретно, шифруйте etcd в покое
+```
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/configuration/configmap/
+- https://kubernetes.io/docs/concepts/configuration/secret/
 </details>
 
 <details>
@@ -756,4 +1238,21 @@ spec:
 
 **Definition:**
 
+Пространства имён — граница Kubernetes между арендаторами. Для всего, что Pod внутри пространства может смонтировать, это слабая стена, поэтому сверху нужны лимиты потребления и политика admission.
+
+**How it works:**
+
+- Разные уровни доверия разносят по разным пространствам имён. Права внутри одного пространства считают общими: создатель Pod может читать Secrets и ConfigMaps и работать от любого ServiceAccount этого пространства.
+- Resource quota ограничивает, сколько объектов арендатор может создать. Страница RBAC отмечает, что безудержное создание объектов может исчерпать etcd; квоты — названное там смягчение.
+- Арендаторам не дают создавать PersistentVolume. hostPath PV — это доступ к диску узла. Арендаторы просят хранилище заявками.
+- NetworkPolicy действует в пространстве имён и складывается, но только если плагин её применяет. Без этого арендаторы делят открытую сеть.
+- HPA и requests не дают нагрузке одного арендатора занять все свободные ядра только если requests заданы. Pod без requests легко поставить и легко им задушить соседей.
+- Метки пространств ставят осторожно. Страница RBAC предупреждает, что пользователь, который может патчить метки пространства, может ослабить Pod Security или выбор NetworkPolicy.
+
+**Sources:**
+
+- https://kubernetes.io/docs/concepts/security/rbac-good-practices/
+- https://kubernetes.io/docs/concepts/services-networking/network-policies/
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
+- https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 </details>

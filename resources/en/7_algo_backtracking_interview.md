@@ -1,6 +1,6 @@
 # Backtracking — Interview
 
-Answers are filled for the published subset; the rest are still empty.
+Interview answers in this file are filled.
 
 [← Back to hub](./7_special_algorithms.md)
 
@@ -316,6 +316,40 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+Place n queens on an n×n board so that no two share a row, column, or diagonal. GeeksforGeeks times plain backtracking at O(n!) time and O(n²) auxiliary space for the board and the recursion, and the hashed form at O(n!) time and O(n) space. For n = 4 the column lists are `[2, 4, 1, 3]` and `[3, 1, 4, 2]`. For n = 3 there is no solution.
+
+**How it works:**
+
+- One queen per row. The column chosen in row `r` must be free, and so must both diagonals `r - c` and `r + c`.
+- Place the queen, recurse to the next row, then remove it. That undo is the backtrack.
+- The factorial bound is the permutation of columns before diagonal pruning. Hash sets make the safety test O(1); a bit mask is the same idea.
+- The recursion depth is n, one frame per row.
+
+**Examples:**
+
+```text
+def solve_nqueens(n):
+    cols, d1, d2 = set(), set(), set()
+    board, res = [], []
+    def dfs(r):
+        if r == n:
+            res.append(board[:])
+            return
+        for c in range(n):
+            if c in cols or (r - c) in d1 or (r + c) in d2:
+                continue
+            cols.add(c); d1.add(r - c); d2.add(r + c); board.append(c + 1)
+            dfs(r + 1)
+            cols.remove(c); d1.remove(r - c); d2.remove(r + c); board.pop()
+    dfs(0)
+    return res
+```
+
+`solve_nqueens(4)` is `[[2, 4, 1, 3], [3, 1, 4, 2]]`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -325,6 +359,48 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+Fill a 9×9 grid so each row, column, and 3×3 box contains the digits 1 through 9 once. Backtracking tries a digit in the next empty cell and undoes it when the partial grid cannot be finished. The same place-and-undo shape is what GeeksforGeeks uses for N-queens, timed there at O(n!) before pruning; here each empty cell has at most 9 candidates.
+
+**How it works:**
+
+- Scan for the next empty cell. If none remains, the grid is solved.
+- A digit is legal when it is absent from that row, column, and box.
+- Write the digit, recurse, and on failure write the empty mark back.
+- The box index is `(row // 3) * 3 + (col // 3)`. Pruning happens at the first conflicting digit, so the 9^k tree of k empty cells is not fully walked.
+
+**Examples:**
+
+```text
+def solve_sudoku(board):
+    def ok(r, c, d):
+        if d in board[r]:
+            return False
+        if any(board[i][c] == d for i in range(9)):
+            return False
+        br, bc = 3 * (r // 3), 3 * (c // 3)
+        return all(board[i][j] != d for i in range(br, br + 3) for j in range(bc, bc + 3))
+    def dfs():
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] != ".":
+                    continue
+                for d in "123456789":
+                    if not ok(r, c, d):
+                        continue
+                    board[r][c] = d
+                    if dfs():
+                        return True
+                    board[r][c] = "."
+                return False
+        return True
+    return dfs()
+```
+
+An empty cell that already sees 1–8 in its row accepts only 9, then the search continues.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -334,6 +410,43 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+A rat starts at the top-left of a 0/1 maze and may move to an open neighbor. The search marks the current cell, recurses, and unmarks it so another route can use it. Dead ends undo. The branching is the same place-and-undo pattern GeeksforGeeks uses for N-queens.
+
+**How it works:**
+
+- Only cells with value 1 are open. Moves are typically right and down, or all four directions when the statement allows them.
+- A path that reaches the bottom-right is an answer. Record the cells, then undo so later paths are still found.
+- Without the unmark, the search would treat a cell on the current path as a wall forever.
+- In the worst case every open cell is tried from every prefix, so the tree grows with the number of choices per step. A maze of only right and down moves on an open n×n grid has a binomial number of paths, and the search lists them.
+
+**Examples:**
+
+```text
+def maze_paths(maze):
+    n = len(maze)
+    path, res = [], []
+    def dfs(r, c):
+        if not (0 <= r < n and 0 <= c < n) or maze[r][c] != 1:
+            return
+        path.append((r, c))
+        maze[r][c] = -1
+        if (r, c) == (n - 1, n - 1):
+            res.append(path[:])
+        else:
+            dfs(r, c + 1)
+            dfs(r + 1, c)
+        maze[r][c] = 1
+        path.pop()
+    if maze and maze[0][0] == 1:
+        dfs(0, 0)
+    return res
+```
+
+On `[[1, 0], [1, 1]]` the only path is `(0, 0) → (1, 0) → (1, 1)`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -343,6 +456,41 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+A permutation is an ordering of the characters. Backtracking swaps the next position with each later candidate and swaps back. Listing them writes n! strings, and copying a string of length n makes the output cost Θ(n · n!), the same factorial family GeeksforGeeks states as O(n!) for the N-queens search tree.
+
+**How it works:**
+
+- At index `i`, every index `j >= i` is a choice for position `i`.
+- Swap, recurse to `i + 1`, swap back.
+- Skip a duplicate character at the same depth if the input repeats, so identical permutations are not emitted twice.
+- The recursion depth is n. The leaves are the permutations.
+
+**Examples:**
+
+```text
+def permutations(s):
+    chars, out = list(s), []
+    def dfs(i):
+        if i == len(chars):
+            out.append("".join(chars))
+            return
+        seen = set()
+        for j in range(i, len(chars)):
+            if chars[j] in seen:
+                continue
+            seen.add(chars[j])
+            chars[i], chars[j] = chars[j], chars[i]
+            dfs(i + 1)
+            chars[i], chars[j] = chars[j], chars[i]
+    dfs(0)
+    return out
+```
+
+`permutations("ab")` is `["ab", "ba"]`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -352,6 +500,40 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+Decide for each element whether it joins the subset, then undo that choice. GeeksforGeeks times this include-or-skip recursion at O(2^n) time and O(n) space. The DP table on the same page is O(sum · n); backtracking is the tree the table compresses.
+
+**How it works:**
+
+- The remaining target and the next index are the state.
+- A remaining target of 0 is a hit. A negative target or a finished array is a miss.
+- Explore include, then exclude. Appending and popping the chosen value builds one witness subset.
+- Sorting and stopping when the next value exceeds the remainder prunes, and does not change the O(2^n) worst case of the page’s recursion.
+
+**Examples:**
+
+```text
+def subset_sums(arr, target):
+    arr = sorted(arr)
+    res, cur = [], []
+    def dfs(i, left):
+        if left == 0:
+            res.append(cur[:])
+            return
+        if i == len(arr) or left < 0:
+            return
+        cur.append(arr[i])
+        dfs(i + 1, left - arr[i])
+        cur.pop()
+        dfs(i + 1, left)
+    dfs(0, target)
+    return res
+```
+
+`subset_sums([3, 34, 4, 12, 5, 2], 9)` includes `[4, 5]`.
+
+**Sources:**
+
+- [GeeksforGeeks — Subset sum](https://www.geeksforgeeks.org/dsa/subset-sum-problem-dp-25/)
 </details>
 
 <details>
@@ -361,6 +543,32 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+A crossword places each dictionary word into a slot of the right length, then undoes the placement when a later word no longer fits. It is the N-queens pattern of choose, recurse, and undo, whose unconstrained search GeeksforGeeks bounds by O(n!).
+
+**How it works:**
+
+- Slots are runs of empty cells across or down. A word fits a slot only when the length matches and every filled cell agrees.
+- Write the word, mark the slot used, recurse to the next slot, then erase letters that this word wrote.
+- Shared cells are the constraints. A letter written by an across word prunes the down word that crosses it.
+- The branching factor is the number of unused words of that length.
+
+**Examples:**
+
+```text
+def fits(grid, slot, word):
+    (r, c, dr, dc) = slot
+    for k, ch in enumerate(word):
+        cell = grid[r + dr * k][c + dc * k]
+        if cell not in ("-", ch):
+            return False
+    return True
+```
+
+A slot of length 3 whose middle cell is already `A` accepts `CAT` and rejects `DOG`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -370,6 +578,37 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+Find whether a word sits in a grid by a path of adjacent cells, without reusing a cell. Mark the cell, try four neighbors for the next letter, then unmark. That undo is the same backtracking step as N-queens.
+
+**How it works:**
+
+- Every cell that matches the first letter is a start.
+- From a matched prefix of length `k`, a neighbor must equal the next character and must not be on the current path.
+- The mark prevents reuse. Removing it lets another path use the cell later.
+- Each step has at most 4 neighbors and the path is at most the word length, so one start explores a tree of branching 4 and depth equal to the word.
+
+**Examples:**
+
+```text
+def exist(board, word):
+    m, n = len(board), len(board[0])
+    def dfs(r, c, k):
+        if k == len(word):
+            return True
+        if not (0 <= r < m and 0 <= c < n) or board[r][c] != word[k]:
+            return False
+        saved, board[r][c] = board[r][c], "#"
+        ok = any(dfs(r + dr, c + dc, k + 1) for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+        board[r][c] = saved
+        return ok
+    return any(dfs(r, c, 0) for r in range(m) for c in range(n))
+```
+
+`exist([["A","B"],["C","D"]], "ABD")` is true along `A → B → D`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 ### Advanced Problem Solving with Backtracking
@@ -381,6 +620,42 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+Assign each vertex a color from 1..m so that no edge joins two vertices of the same color. Try a color, recurse to the next vertex, and undo. An unconstrained assignment of m colors to n vertices is an m^n tree; N-queens is the special case GeeksforGeeks bounds by O(n!) when the choices are a permutation.
+
+**How it works:**
+
+- Vertices are colored in order. A color is legal when no already-colored neighbor holds it.
+- If no color fits, the search returns and the previous vertex tries its next color.
+- m = 1 succeeds only on a graph with no edges. A bipartite graph is 2-colorable; the search discovers that by succeeding or exhausting the tree.
+- The recursion depth is the number of vertices.
+
+**Examples:**
+
+```text
+def colorable(n, edges, m):
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        adj[u].append(v); adj[v].append(u)
+    color = [0] * n
+    def dfs(v):
+        if v == n:
+            return True
+        for c in range(1, m + 1):
+            if any(color[u] == c for u in adj[v]):
+                continue
+            color[v] = c
+            if dfs(v + 1):
+                return True
+            color[v] = 0
+        return False
+    return dfs(0)
+```
+
+A triangle is not 2-colorable and is 3-colorable.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -390,6 +665,39 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+A knight’s tour visits every square of a chessboard exactly once by knight moves. Place the knight, recurse, and remove it when a branch dies. The board mark is the same undo GeeksforGeeks uses when a queen placement fails.
+
+**How it works:**
+
+- From a square, a knight has at most eight L-shaped moves. Off-board and already visited squares are illegal.
+- A path of n² visits is a tour. The search records the move index on the board and clears it on the way back.
+- The raw tree is huge. Warnsdorff’s heuristic, choosing the square with the fewest onward moves, is an ordering of the same search, not a different problem.
+- Depth is the number of squares.
+
+**Examples:**
+
+```text
+def knight_tour(n=5):
+    board = [[-1] * n for _ in range(n)]
+    moves = [(1, 2), (1, -2), (-1, 2), (-1, -2), (2, 1), (2, -1), (-2, 1), (-2, -1)]
+    def dfs(r, c, step):
+        board[r][c] = step
+        if step == n * n - 1:
+            return True
+        for dr, dc in moves:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < n and 0 <= nc < n and board[nr][nc] == -1 and dfs(nr, nc, step + 1):
+                return True
+        board[r][c] = -1
+        return False
+    return board if dfs(0, 0, 0) else None
+```
+
+On a 5×5 board a tour from the corner exists; the first cell stores 0 and the last stores 24.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -399,6 +707,48 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+A cryptarithm such as `SEND + MORE = MONEY` assigns a distinct digit to each letter so the equation holds, and leading digits are not zero. Try a digit, recurse to the next letter, and undo. Distinct digits are a permutation of a subset of 0–9, the same factorial search family as N-queens.
+
+**How it works:**
+
+- Map each new letter to an unused digit. The first letter of a word cannot be 0.
+- Once every letter is assigned, evaluate the sum. A match is a solution.
+- Column-by-column checking with a carry prunes before the last letter: a column that already disagrees cannot be saved by later letters.
+- Ten digits and k distinct letters give P(10, k) leaves before that pruning.
+
+**Examples:**
+
+```text
+def solve_send_more():
+    letters = "SENDMORY"
+    used = [False] * 10
+    assign = {}
+    def value(word):
+        n = 0
+        for ch in word:
+            n = n * 10 + assign[ch]
+        return n
+    def dfs(i):
+        if i == len(letters):
+            return value("SEND") + value("MORE") == value("MONEY")
+        for d in range(10):
+            if used[d] or (d == 0 and letters[i] in "SM"):
+                continue
+            used[d] = True
+            assign[letters[i]] = d
+            if dfs(i + 1):
+                return True
+            used[d] = False
+        return False
+    dfs(0)
+    return assign
+```
+
+One well-known solution is `9567 + 1085 = 10652`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -408,6 +758,47 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+A Hamiltonian path visits each vertex once. Build it by appending an unused neighbor and popping that vertex when the branch fails. The search is a permutation of the vertices filtered by edges, so it sits in the O(n!) family GeeksforGeeks states for N-queens.
+
+**How it works:**
+
+- Start at every vertex if the path may begin anywhere, or at a given source.
+- The path is Hamiltonian when it contains every vertex.
+- Only graph neighbors are candidates, which prunes non-edges before the leaf.
+- A cycle is the same search with an extra edge from the last vertex back to the first.
+
+**Examples:**
+
+```text
+def ham_path(n, edges):
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        adj[u].append(v); adj[v].append(u)
+    path = []
+    def dfs(u, seen):
+        path.append(u)
+        if len(path) == n:
+            return True
+        for v in adj[u]:
+            if v in seen:
+                continue
+            seen.add(v)
+            if dfs(v, seen):
+                return True
+            seen.remove(v)
+        path.pop()
+        return False
+    for s in range(n):
+        if dfs(s, {s}):
+            return path
+    return None
+```
+
+The path graph `0—1—2` yields a Hamiltonian path such as `[0, 1, 2]`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -417,6 +808,38 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+Split the string at every dictionary word that matches a prefix, then undo that choice and try the next word. GeeksforGeeks times this recursion, with no memoization, at O(2^n). The DP on the same page reuses the overlapping prefixes and is O(n · m · L).
+
+**How it works:**
+
+- From index `i`, try every dictionary word equal to `s[i:i+len]`.
+- A match appends the word and recurses at the new index. Failure pops the word.
+- Reaching `i == len(s)` records one segmentation.
+- `"ilike"` with `{i, like, gfg}` yields `["i", "like"]`. The exponential bound is the page’s naive approach, before the boolean DP.
+
+**Examples:**
+
+```text
+def word_break_bt(s, words):
+    words, res, cur = set(words), [], []
+    def dfs(i):
+        if i == len(s):
+            res.append(cur[:])
+            return
+        for w in words:
+            if s.startswith(w, i):
+                cur.append(w)
+                dfs(i + len(w))
+                cur.pop()
+    dfs(0)
+    return res
+```
+
+`word_break_bt("ilike", ["i", "like", "gfg"])` is `[["i", "like"]]`.
+
+**Sources:**
+
+- [GeeksforGeeks — Word Break](https://www.geeksforgeeks.org/dsa/word-break-problem-dp-32/)
 </details>
 
 <details>
@@ -426,6 +849,39 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+Cut the string into contiguous pieces that are all palindromes. Try every end of the next piece, keep it only when the slice reads the same both ways, and pop it on the way back. The include-every-cut tree is the O(2^n) recursion GeeksforGeeks states for the unmemoized word-break search; here the dictionary test is the palindrome check.
+
+**How it works:**
+
+- From index `i`, every `j > i` is a candidate cut.
+- `s[i:j]` is kept only when it equals its reverse.
+- A partition is complete at `i == len(s)`.
+- `"aab"` yields `["a", "a", "b"]` and `["aa", "b"]`.
+
+**Examples:**
+
+```text
+def pal_parts(s):
+    res, cur = [], []
+    def dfs(i):
+        if i == len(s):
+            res.append(cur[:])
+            return
+        for j in range(i + 1, len(s) + 1):
+            piece = s[i:j]
+            if piece == piece[::-1]:
+                cur.append(piece)
+                dfs(j)
+                cur.pop()
+    dfs(0)
+    return res
+```
+
+`pal_parts("aab")` is `[["a", "a", "b"], ["aa", "b"]]`.
+
+**Sources:**
+
+- [GeeksforGeeks — Word Break](https://www.geeksforgeeks.org/dsa/word-break-problem-dp-32/)
 </details>
 
 <details>
@@ -435,6 +891,40 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+Pick numbers that add up to a target. If reuse is allowed, the same index may be chosen again; if not, the search moves to the next index. Either way the choice is popped. GeeksforGeeks times the include-or-skip subset recursion at O(2^n); reuse makes a different tree, still pruned when the partial sum exceeds the target.
+
+**How it works:**
+
+- Sort the candidates so a value larger than the remainder can stop the loop.
+- Append a candidate, recurse with the reduced remainder, pop it.
+- Starting the next pick at `i` allows reuse. Starting at `i + 1` uses each element once, which is subset sum.
+- A remainder of 0 records the current combination.
+
+**Examples:**
+
+```text
+def combination_sum(candidates, target):
+    candidates = sorted(candidates)
+    res, cur = [], []
+    def dfs(start, left):
+        if left == 0:
+            res.append(cur[:])
+            return
+        for i in range(start, len(candidates)):
+            if candidates[i] > left:
+                break
+            cur.append(candidates[i])
+            dfs(i, left - candidates[i])
+            cur.pop()
+    dfs(0, target)
+    return res
+```
+
+`combination_sum([2, 3, 6, 7], 7)` includes `[7]` and `[2, 2, 3]`.
+
+**Sources:**
+
+- [GeeksforGeeks — Subset sum](https://www.geeksforgeeks.org/dsa/subset-sum-problem-dp-25/)
 </details>
 
 <details>
@@ -444,6 +934,43 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+An IPv4 address is four integers from 0 to 255, written in decimal without a leading zero. Backtracking chooses the next segment length, 1 to 3 digits, and undoes it. There are only four segments, so the tree is tiny compared with the O(n!) N-queens search: at most 3^4 leaves before the numeric checks.
+
+**How it works:**
+
+- A segment is illegal when it has a leading zero and length greater than 1, or when its value exceeds 255.
+- After four segments the input must be consumed exactly.
+- `"25525511135"` yields `255.255.111.35` and `255.255.11.135`.
+- Popping the segment is what lets the next length be tried.
+
+**Examples:**
+
+```text
+def restore_ip(s):
+    res, cur = [], []
+    def dfs(i):
+        if len(cur) == 4:
+            if i == len(s):
+                res.append(".".join(cur))
+            return
+        for length in (1, 2, 3):
+            if i + length > len(s):
+                break
+            piece = s[i:i + length]
+            if (piece[0] == "0" and length > 1) or int(piece) > 255:
+                continue
+            cur.append(piece)
+            dfs(i + length)
+            cur.pop()
+    dfs(0)
+    return res
+```
+
+`restore_ip("25525511135")` is `["255.255.11.135", "255.255.111.35"]`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -453,6 +980,37 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+List every directed path from the source to the target. Append the current vertex, recurse along outgoing edges, and pop the vertex so the next edge is tried from the same prefix. On a DAG this cannot loop. The shape is the maze search: each choice is undone.
+
+**How it works:**
+
+- The path starts as `[source]`.
+- When the last vertex is the target, copy the path into the answers.
+- Otherwise try each neighbor. Popping guarantees the neighbor is not left on a path that did not choose it.
+- A DAG’s paths are finite. A directed cycle needs a seen-set, or the recursion does not terminate.
+
+**Examples:**
+
+```text
+def all_paths(graph, target):
+    res = []
+    def dfs(u, path):
+        if u == target:
+            res.append(path[:])
+            return
+        for v in graph[u]:
+            path.append(v)
+            dfs(v, path)
+            path.pop()
+    dfs(0, [0])
+    return res
+```
+
+`all_paths([[1, 2], [3], [3], []], 3)` is `[[0, 1, 3], [0, 2, 3]]`.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 ### Real-World Applications of Backtracking
@@ -464,6 +1022,34 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+A game tree is explored by making a move, searching the reply, and undoing the move. That is backtracking. N-queens is the same control structure on a board; a two-player game adds an opponent who chooses the move that is worst for you.
+
+**How it works:**
+
+- The recursion depth is the ply. A leaf is a terminal position or a depth cutoff with a static score.
+- Minimax takes the max at your turn and the min at the opponent’s turn. Alpha-beta prunes a branch whose score cannot beat the best already found, the same idea as rejecting an attacked queen square before going deeper.
+- Undo restores the board so the next sibling move is tried from the parent position.
+- The full tree of a game such as chess is not enumerated. The bound is the branching factor raised to the searched depth, cut down by pruning.
+
+**Examples:**
+
+```text
+def negamax(board, depth, generate, apply, undo, evaluate):
+    if depth == 0:
+        return evaluate(board)
+    best = -10**9
+    for move in generate(board):
+        apply(board, move)
+        best = max(best, -negamax(board, depth - 1, generate, apply, undo, evaluate))
+        undo(board, move)
+    return best
+```
+
+Each `apply` / `undo` pair is one edge of the game tree.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -473,6 +1059,44 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+A route is built hop by hop. If the partial path exceeds a cost bound, repeats a node, or violates a capacity, the last hop is removed and another neighbor is tried. That is the maze backtracking already used for grid paths, with an extra numeric bound.
+
+**How it works:**
+
+- The state is the current node, the path, and the cost so far.
+- A neighbor is skipped when it is already on the path or when `cost + edge` exceeds the best complete route found.
+- Reaching the destination records the path and tightens the bound, so later branches die earlier.
+- Without the bound the search lists simple paths, which on a dense graph sits in the factorial family of N-queens. The bound is a prune, not a promise of polynomial time.
+
+**Examples:**
+
+```text
+def cheapest(n, edges, src, dst):
+    adj = [[] for _ in range(n)]
+    for u, v, w in edges:
+        adj[u].append((v, w))
+    best = [10**18]
+    def dfs(u, cost, seen):
+        if cost >= best[0]:
+            return
+        if u == dst:
+            best[0] = cost
+            return
+        for v, w in adj[u]:
+            if v in seen:
+                continue
+            seen.add(v)
+            dfs(v, cost + w, seen)
+            seen.remove(v)
+    dfs(src, 0, {src})
+    return best[0]
+```
+
+The first feasible path sets a ceiling; a partial path above that ceiling is undone immediately.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -482,6 +1106,41 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+A join order is a permutation of the tables. Backtracking builds that order, estimates the cost of the partial join, and abandons an order whose partial cost already loses to the best complete plan. The search tree is the permutation tree GeeksforGeeks bounds by O(n!) for N-queens, pruned by the cost bound.
+
+**How it works:**
+
+- At step `k`, append a table that is not yet joined and whose predicates connect to the current set when a bushy or left-deep rule requires it.
+- Add the estimated cardinality or I/O of that join. If it exceeds the best finished plan, pop the table.
+- A finished order of all tables updates the best plan.
+- Dynamic programming over subsets of tables replaces this tree when the number of tables is small enough to store `2^n` states. Backtracking is what remains when that table does not fit.
+
+**Examples:**
+
+```text
+def best_join(tables, cost):
+    best = [10**18]
+    def dfs(order, so_far):
+        if so_far >= best[0]:
+            return
+        if len(order) == len(tables):
+            best[0] = so_far
+            return
+        for t in tables:
+            if t in order:
+                continue
+            order.append(t)
+            dfs(order, so_far + cost(order))
+            order.pop()
+    dfs([], 0)
+    return best[0]
+```
+
+`cost` is the optimizer’s estimate of the join built so far. A losing prefix is popped.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>
 
 <details>
@@ -491,4 +1150,39 @@ In the worst case backtracking still walks a full exponential tree, the same ord
 
 **Definition:**
 
+Scheduling assigns each task a resource and a time and undoes the assignment when it collides with a task already placed. Graph coloring is the special case of assigning time slots so that conflicting tasks differ, and N-queens is the board-shaped version of the same choose-and-undo loop.
+
+**How it works:**
+
+- Order the tasks. For the next task, try each feasible slot that does not overlap a conflicting task on the same resource.
+- Place it, recurse, and clear the slot on failure.
+- A bound on the makespan prunes a partial schedule that already runs longer than the best finished one.
+- The unconstrained assignment is exponential in the number of tasks, the same reason the N-queens page gives a factorial worst case before diagonal pruning.
+
+**Examples:**
+
+```text
+def schedule(tasks, slots, conflicts):
+    assign = {}
+    def ok(task, slot):
+        return all(assign.get(other) != slot for other in conflicts(task))
+    def dfs(i):
+        if i == len(tasks):
+            return True
+        for slot in slots:
+            if not ok(tasks[i], slot):
+                continue
+            assign[tasks[i]] = slot
+            if dfs(i + 1):
+                return True
+            del assign[tasks[i]]
+        return False
+    return assign if dfs(0) else None
+```
+
+Two tasks that conflict cannot receive the same slot; the failed slot is deleted before the next one is tried.
+
+**Sources:**
+
+- [GeeksforGeeks — N Queen Problem](https://www.geeksforgeeks.org/dsa/n-queen-problem-backtracking-3/)
 </details>

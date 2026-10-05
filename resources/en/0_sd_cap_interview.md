@@ -27,21 +27,46 @@ Questions from [Devinterview.io — CAP Theorem](https://devinterview.io/questio
 
 **Definition:**
 
-Brewer’s conjecture, later proved for a precise model by Gilbert and Lynch, says a distributed store cannot promise linearizable consistency, availability, and partition tolerance together. The theorem matters because real networks do split, so the choice during a split is a design decision, not an accident.
+The CAP Theorem, proposed by Eric Brewer in 2000, serves as a fundamental principle for distributed systems. It postulates that of the three potential system attributes - Consistency, Availability, and Partition tolerance (known as "CAP") - it's impossible for a distributed system to simultaneously guarantee all three.
 
 **How it works:**
 
-- Consistency means a read returns the latest completed write, or fails, as if there were a single copy.
-- Availability means every request that reaches a node that has not crashed gets a response that is not an error. The value does not have to be the newest write.
-- Partition tolerance means the system keeps operating when messages between nodes are lost or delayed.
-- While the network is healthy, a system can offer both consistency and availability. The theorem binds only when a partition is present.
-- A CP design, typical of a primary with required synchronous replicas, refuses an operation it cannot make linearizable.
-- An AP design, typical of Cassandra or DynamoDB on an eventually consistent read, answers from reachable replicas and repairs afterward.
-- A design that assumes the network never splits can look consistent and available, but it is not a distributed system under partition.
+The Three Attributes
 
-**Examples:**
+Consistency (C): All nodes in the system have the same data at the same time. Any data written to the system is immediately visible to all nodes.
 
-Two replicas lose the link between them. The CP replica rejects the write. The AP replica accepts it locally, and the two copies are merged after the link returns. Spanner spends coordination to stay linearizable when a quorum is reachable. DynamoDB’s default read stays available and may lag the latest write.
+Availability (A): Every request made to the system receives a response, either with the requested data or an error message.
+
+Partition Tolerance (P): The system continues to operate – ensuring both C and A as defined above – despite network partitions (i.e., messages lost or the failure of part of the network).
+
+In essence, while any two of the CAP triad are attainable, a distributed system cannot universally ensure all three attributes.
+
+Understanding the Trade-offs
+
+CP Systems: Emphasize Consistency and Partition Tolerance. These systems ace at safeguarding data integrity but may sacrifice availability during network partitions. Example: Most traditional RDBMS setups where data consistency is vital.
+
+AP Systems: Prioritize Availability and Partition Tolerance, granting tolerance against network partitions but permitting temporary inconsistencies for high availability. Example: DynamoDB and other NoSQL databases that emphasize on high availability.
+
+CA Systems: Ensure Consistency and Availability but do not commit to Partition Tolerance. These systems are often not considered true distributed systems because they can't operate if the full network is not reachable. Example: Locally replicated databases where all instances are expected to maintain consistency.
+
+CAP Theorem in Real-World Examples
+
+Google's Spanner: Balances between strong consistency and low latency using atomic clocks but not under network partitions.
+
+Amazon's DynamoDB: Ensures availability and performance at the expenses of strong consistency, offering tunable consistency levels for read operations.
+
+Cassandra and Riak: Favored by distributed systems for their AP potential, especially in settings where availability and partition tolerance are crucial.
+
+Why CAP Matters
+
+Understanding the CAP theorem is foundational for the design, deployment, and operation of distributed systems. It helps in making informed decisions about the data store's design, performance, and trade-offs, aligning with the specific needs of the application.
+
+While it's tempting to achieve the "Holy Grail" of a system that delivers on all three CAP attributes, in practice, prioritizing two may streamline the system's potential issues and enhance its overall functionality.
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 <details>
@@ -51,20 +76,24 @@ Two replicas lose the link between them. The CP replica rejects the write. The A
 
 **Definition:**
 
-In CAP, consistency means linearizability: once a write completes, every later read sees that write or a newer one, or the read fails. It is not a promise that replicas will match sometime later.
+In the context of distributed systems, consistency emphasizes that all nodes in the system reflect the most recent write to any part of the system.
 
 **How it works:**
 
-- A consistent system behaves like one copy, even though the data is stored on several nodes.
-- If a node cannot confirm it holds the latest completed write, it refuses the request instead of returning a stale value.
-- That refusal is what availability gives up while a partition lasts.
-- Eventual consistency is the weaker model you get when you drop CAP consistency: updates propagate, and replicas agree only after the updates stop.
-- Strong consistency keeps one order of writes visible to everyone, and it needs coordination, so a cut network can make the operation fail.
-- Causal consistency sits between them: it preserves cause and effect, but it still allows replicas to lag.
+The CAP theorem, however, suggests that in the presence of a network partition (P), a choice has to be made between availability and consistency.
 
-**Examples:**
+This results in two main consistency models:
 
-A client writes `balance = 40` and gets success. The next read, on any replica the system still serves, must return 40 or a later value. If the replica is cut off from the leader, a linearizable read returns an error rather than the old balance of 100.
+Eventual Consistency: Under this model, updates made to the system will propagate and reach all nodes eventually. While this means that the system may not immediately reflect the latest changes, it is still considered "consistent."
+
+Strong Consistency: Unlike eventual consistency, systems following strong consistency guarantee that all nodes will have the most recent version of data at all times. This approach prioritizes consistency over availability in the face of network partitions.
+
+It's important to note that while strong consistency provides powerful guarantees, it can lead to reduced availability during network partitions, making the system less resilient.
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 <details>
@@ -74,19 +103,32 @@ A client writes `balance = 40` and gets success. The next read, on any replica t
 
 **Definition:**
 
-Availability in CAP means every request that arrives at a node that has not crashed receives a non-error response, without waiting to learn whether the other nodes agree. The response may be stale.
+Availability in the context of CAP theorem refers to the system's ability to process and respond to user requests in a timely fashion, even when certain components or nodes within the system are faulty or unreachable.
 
 **How it works:**
 
-- “Available” means the node answers. It does not mean the answer is the latest write.
-- A timeout or an error because a quorum cannot be reached is a failure of availability, even if the node itself is up.
-- During a partition the system either keeps answering (and may disagree with the other side) or stops answering so it can stay linearizable.
-- How fresh the answer is depends on the consistency model you chose: eventual, causal, or strong.
-- Replication, sharding, and failover change how often a live node can still answer, but they do not remove the choice while the network is split.
+A system that's designed for high availability ensures that, despite errors or network partitions, it remains operational and capable of serving user requests to the best of its abilities.
 
-**Examples:**
+The traditional shorthand for this principle, as coined by Eric Brewer, is as follows:
 
-A replica is up but cannot reach the leader. An available system returns the value it has locally. A system that waits for a majority and then returns an error has chosen consistency. DNS is the everyday case: a resolver answers from its cache while the authority is unreachable.
+CAP: It's important for a system to strive for both consistency and partition tolerance. Yet, in real-world distributed systems, achieving absolute simultaneous consistency and partition tolerance might be impractical. As a result, design choices are often made to prioritize one of these properties over the other. The most common trade-off is between consistency and availability, leading to the well-established CAP theorem.
+
+The standard analogy that captures the CAP theorem's trade-offs is the situation of a network partition:
+
+Consistency vs. Availability: Imagine a scenario where network segments are partitioned, and nodes in one segment are unable to communicate with nodes in another segment. In this situation, a system must choose to either maintain consistency and disallow writes (C and P) or remain available but allow for temporary inconsistencies (Possibly A and P).
+
+Equilibrium Point: With only one segment remaining reachable, a system essentially operates as a centralized or non-partition-tolerant system. Unclearly, it should compromise on availability (A) or consistency (C).
+
+Operating Beyond the Equilibrium Point: Struggling to stay consistent or available is a significant risk for distributed systems. In contrast, relaxing the consistency requirements (Possibly A) can sometimes reduce the complexity of ensuring liveliness. Ensuring partition tolerance during such scenarios is equally critical.
+
+Consistency Models: The level of consistency that the system provides depends on its design and the chosen consistency mechanism. Different models, such as eventual consistency, causal consistency, or strong consistency, offer varying degrees of accuracy about the data.
+
+The system's architecture and the strategies it employs, like data partitioning, replication, and fault-tolerance mechanisms, significantly influence its capacity in balancing both consistency and availability.
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 <details>
@@ -96,19 +138,85 @@ A replica is up but cannot reach the leader. An available system returns the val
 
 **Definition:**
 
-Partition tolerance means the system continues to operate when the network drops or delays messages between nodes. Nodes on both sides of the cut may still be running.
+Partition tolerance in the context of the CAP theorem refers to a distributed system's ability to remain operational even when communication between system components (nodes) is partitioned or disrupted.
 
 **How it works:**
 
-- A partition is a cut in communication, not necessarily a crashed machine.
-- A system that is not partition tolerant can keep both consistency and availability only by stopping as a whole, or by not being distributed.
-- In practice a wide-area system must tolerate partitions, so while one lasts the real choice is consistency or availability.
-- After the cut heals, replicas exchange what they missed and apply a merge rule.
-- Geo-distributed services expect this: a region can keep serving while the link to another region is down.
+In other words, a Partition-Tolerant (P) system can maintain its functionality in the presence of network failures and communication breakdowns. This characteristic is particularly crucial for distributed systems that operate on unreliable networks, where occasional partitioning is an expected condition.
+
+Core Concepts
+
+Network Partitions: These occur when nodes within a distributed system are separated due to network issues, making communication between partitioned nodes difficult or impossible.
+
+CAP Trade-offs: The CAP theorem highlights that due to practical design constraints, it's not possible for a distributed system to simultaneously guarantee Consistency, Availability, and Partition Tolerance. Therefore, system designers must make trade-offs based on the specific requirements of their applications.
+
+Examples
+
+Real-time Collaboration Tools: Often prioritize Availability over Absolute Consistency. For example, in multi-user text editors like Google Docs, users might observe occasional "conflicts" in edited text.
+
+Distributed Databases: Some distributed databases focus on Eventual Consistency and high Availability, especially during network partitions. They synchronize data across partitions after the network is restored.
+
+Semi-Synchronous Replication: Systems employing a hybrid model might temporarily switch from strong consistency to eventual consistency during partition scenarios.
+
+Geographically Distributed Systems: Systems functioning across multiple data centers or geographical regions are designed to handle network partitions for improved performance, fault tolerance, and disaster recovery.
 
 **Examples:**
 
-Node A records `name = Ada` and node B, cut off, records `name = Bo`. Each side still answers. When the link returns, a last-writer-wins merge keeps the value with the later timestamp, and the other write is discarded. A collaborative editor does the same kind of thing: both users keep typing, and the document reconciles overlapping edits.
+Code Example: PACELC Theorem in Dynamo-Style Databases
+
+Here is the code:
+
+```python
+from datetime import datetime
+
+def get_timestamp():
+    return datetime.utcnow().timestamp()
+
+class DynamoDB:
+    data = {}
+    
+    @staticmethod
+    def get(key):
+        return DynamoDB.data.get(key, {}).get('value')
+
+    @staticmethod
+    def put(key, value):
+        timestamp = get_timestamp()
+        DynamoDB.data[key] = {'value': value, 'timestamp': timestamp}
+
+    @staticmethod
+    def find_in_range(start, end):
+        return {key: entry['value'] for key, entry in DynamoDB.data.items() if start <= entry['timestamp'] <= end}
+```
+
+In this simplified example:
+
+- put() adds a key-value pair with a timestamp.
+- get() retrieves the last value for a given key.
+- find_in_range() finds values within a given timestamp range, which allows systems to merge data after a partition heals.
+
+In a partitioned state:
+
+```python
+# Node A
+DynamoDB.put('name', 'Alice')
+
+# Node B
+DynamoDB.put('name', 'Bob')
+DynamoDB.get('name')  # Returns 'Bob' as it has the most recent timestamp
+```
+
+After the partition heals:
+
+```python
+# Node A and Node B are now synchronized
+DynamoDB.get('name')  # Can return either 'Alice' or 'Bob' based on the last update.
+```
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 ### Real-World Implications and Trade-offs
@@ -120,25 +228,42 @@ Node A records `name = Ada` and node B, cut off, records `name = Bo`. Each side 
 
 **Definition:**
 
-A relational primary that refuses a commit when a required synchronous replica is unreachable favors consistency. ZooKeeper and etcd do the same: without a quorum they reject writes, and often reads, rather than serve two views of one key.
+A notable example of a real system that prioritizes Consistency over Availability is relational databases like MySQL or PostgreSQL in their default configuration.
 
 **How it works:**
 
-- The commit waits until the replicas that must agree have the new value.
-- If that set cannot be reached, the client gets an error instead of a success that only one side recorded.
-- Readers that do get a response see a committed value, not a write that might roll back.
-- The cost is downtime or rejected traffic on the minority side of a partition.
-- That trade fits ledgers, inventory that must not oversell, and records where a wrong value is worse than a failed request.
+Whenever these databases encounter network partitions or service failures, they tend to favour data consistency even if it means sacrificing availability, making them an apt match for organizations where data integrity is non-negotiable.
+
+In this scenario, MySQL might fail to respond to some client requests if it cannot guarantee consistency across all its nodes.
+
+**When to use:**
+
+When to Use Consistency Over Availability
+
+Banking Systems: They require absolute data consistency, especially when handling transactions or managing account information.
+
+E-commerce Platforms: During flash sales or when stock is running low, it’s critical to prevent overselling to ensure the displayed product quantity is accurate.
+
+Data-Integrity-Critical Applications: Systems where any data corruption could have severe repercussions, such as those managing sensitive personal or health-related information.
 
 **Examples:**
 
+Code example: SELECT from MySQL leading AP system in a CP stance
+
+Here is the SQL query code:
+
 ```sql
-BEGIN;
-UPDATE accounts SET balance = balance - 25 WHERE id = 42 AND balance >= 25;
-COMMIT; -- errors if the synchronous standby cannot acknowledge
+-- Retrieve the latest loan record for user with ID 108 and limit the result to one record
+SELECT * FROM loan_information
+WHERE user_id = 108
+ORDER BY loan_date DESC
+LIMIT 1;
 ```
 
-Until the standby is reachable again, the transfer does not commit. A later successful read shows the old balance, not a debit that existed on only one node.
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 <details>
@@ -148,24 +273,49 @@ Until the standby is reachable again, the transfer does not commit. A later succ
 
 **Definition:**
 
-Apache Cassandra, when a request uses consistency level `ONE`, prefers availability: any reachable replica can accept the operation, and another replica may still hold an older value until repair. DynamoDB’s default reads make the same choice.
+A system that favors availability over strong consistency belongs to the "AP" side of the CAP theorem.
+
+Such systems aim to remain operational and respond to client requests, even if there are potential data inconsistencies across distributed components.
 
 **How it works:**
 
-- Nodes are peers. There is no single primary that every request must reach.
-- A consistent hash ring places each key on a set of replicas, so the loss of some nodes does not stop the ring.
-- The consistency level is chosen per request. `ONE` answers if a single replica responds. `QUORUM` waits for a majority and can fail during a partition.
-- While replicas disagree, reads can return different values. Hinted handoff and repair push them back together.
-- The system stays up through a partition and reconciles afterward.
+Apache Cassandra
+
+Apache Cassandra is a prime example of an "AP" system that emphasizes high availability and partition tolerance, compromising logical consistency.
+
+Core Design Principles
+
+Peer-to-Peer Structure: Nodes collaborate equally, without centralized control.
+
+Tunable Consistency: Administrators can adjust levels of consistency based on deployment needs.
+
+Distributed Hash Table (DHT): Utilizes consistent hashing and replication for efficient data distribution and fault tolerance.
 
 **Examples:**
 
-```sql
-INSERT INTO cart (user_id, sku) VALUES (7, 'lamp') USING CONSISTENCY ONE;
-SELECT sku FROM cart WHERE user_id = 7 USING CONSISTENCY ONE;
+Code Example: Setting Consistency Level in Cassandra
+
+Here is the Java code:
+
+```java
+import com.datastax.driver.core.ConsistencyLevel;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.mapping.Mapper;
+
+// Establish the Cassandra database session
+Session session = ...
+
+// Create a mapper for the desired Entity class
+Mapper<MyEntity> myEntityMapper = new MappingManager(session).mapper(MyEntity.class);
+
+// Set the desired Consistency Level for the operation
+myEntityMapper.setDefaultSaveOptions(Mapper.Option.consistencyLevel(ConsistencyLevel.QUORUM));
 ```
 
-The insert succeeds on the local replica even if the others are cut off. A select on another replica can miss `lamp` until the write is repaired.
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 <details>
@@ -175,20 +325,71 @@ The insert succeeds on the local replica even if the others are cut off. A selec
 
 **Definition:**
 
-Eventual consistency means that if updates stop, every replica that keeps receiving the missed updates converges to the same value. While updates are still flowing, reads are allowed to disagree.
+In the context of the CAP Theorem, "eventual consistency" means that given time without further updates, all replicas or nodes in a distributed system will reach a consistent state.
 
 **How it works:**
 
-- The system can accept a write on a reachable replica without waiting for every copy.
-- There is no single global moment when all nodes flip together. Each replica applies updates as they arrive.
-- A conflict rule — last writer wins, a version vector, or a merge function — turns divergent updates into one state.
-- It does not by itself promise that your next read sees your own last write. That needs an extra session guarantee.
-- The costs are stale reads, harder application logic, and a window where you cannot yet say the system has settled.
-- This is the consistency you usually keep when a system stays available through a partition.
+This consistency model doesn't require a system to immediately reflect all changes to all nodes and enables system operations to proceed even if some replicas can't be reached or are temporarily offline.
+
+Eventual consistency guarantees:
+
+Liveness: The system continues to make progress.
+
+Safety Under Quorum: Consistency is ensured as long as operations are handled by a sufficient number of nodes.
+
+Resolved Conflicts: When two nodes present conflicting updates, after their eventual reconciliation, a consistent state emerges.
+
+Global States in Eventual Consistency
+
+The journey to consistency doesn't follow a global clock. Instead, it unfolds at a local level. Each node, or groups of nodes, evolves toward consistency independently.
+
+Resolving Conflicts
+
+It's crucial for systems designed with eventual consistency to have conflict resolution mechanisms. These ensure disparate updates, which occurred in isolation, are later integrated in a coherent manner.
+
+Example: Amazon Shopping Cart
+
+Imagine you and a friend both add the last available item to your Amazon shopping carts at the same time. A system designed with eventual consistency might initially allow both actions. However, upon checkout, the system notices the conflict and triggers a resolution, ensuring only one cart can complete the purchase.
+
+**Pluses and minuses:**
+
+Potential Concerns
+
+- Complexities in Development: Crafting systems with adequate conflict resolution can be intricate.
+- Hazards of Stale Data: As updates can take time to propagate, users may view outdated information.
+- Uncertain Termination: Until all nodes are consistent, there's no absolute certainty that the system has reached a stable state.
 
 **Examples:**
 
-Two shoppers add the last lamp to two carts while the catalog replicas are split. Both adds succeed. When the replicas merge, one cart keeps the lamp and the other is told the item is gone. Until that merge, the two carts disagree, and that disagreement is allowed.
+Code Example: Eventual Consistency
+
+Here is the Python code:
+
+```python
+class ShoppingCart:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, item):
+        self.items.append(item)
+
+    def remove_item(self, item):
+        if item in self.items:
+            self.items.remove(item)
+
+    def checkout(self):
+        # Simulating eventual consistency
+        time.sleep(1)
+        if len(self.items) == 0:
+            print("Checkout successful!")
+        else:
+            print("Checkout failed due to inconsistency. Please try again.")
+```
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 <details>
@@ -198,20 +399,56 @@ Two shoppers add the last lamp to two carts while the catalog replicas are split
 
 **Definition:**
 
-Because partitions happen, a distributed design must say which guarantee it will drop while the network is split. You cannot keep linearizability, an answer to every live node, and continued operation through message loss all at once.
+The CAP theorem, also known as Brewer's theorem, places constraints on distributed systems. As per the theorem, a system can guarantee at most two out of three characteristics: Consistency, Availability, and Partition tolerance.
 
 **How it works:**
 
-- A CP design serves only when it can confirm the latest write, usually with a majority. Clients see errors, not silent lost updates. Primary–replica SQL and a quorum-tuned store sit here.
-- An AP design answers from whatever replicas it can reach. Copies may disagree until repair. Cassandra and Couchbase are built around this default.
-- Waiting for a quorum also adds latency when the network is merely slow, not fully cut.
-- Some operations can be stricter than others: a checkout uses a quorum, a product view uses one replica.
-- Stores such as Cassandra, Riak, and DynamoDB expose that dial per request instead of one global mode.
-- Money movement and scientific records tend to pick CP. Feeds, catalogs, and carts often pick AP and reconcile.
+Let's look in detail at the trade-offs and system design considerations for distributed databases in view of CAP theorem.
 
-**Examples:**
+1. CP Systems: Consistency and Partition Tolerance
 
-A catalog page reads with one replica so it stays up during a regional blip, and may show yesterday’s price for a few seconds. The payment call uses a majority and fails closed if that majority is gone. Same database, two different points on the trade-off.
+- Characteristics
+
+Consistency: All nodes in the system have the most recent data copy. Any read or write operation occurs on the most recent data.
+
+Partition Tolerance: The system continues to function despite network partitions or lost messages.
+
+- Trade-offs
+
+These systems potentially become unavailable if they cannot confirm that a majority of nodes have been reached. This is inherently a part of being partition tolerant. The system will refuse operations that it cannot guarantee as complete. The primary use case for these systems is in situations where data integrity is crucial and can outweigh temporarily lost availability.
+
+- Real-world Examples: - Most traditional RDBMS configurations with primary-replica setups lean towards this model. In the context of specific databases, technologies like MongoDB or Apache HBase can be tweaked to exhibit these characteristics by adjusting the number of nodes that constitute a primary shard.
+
+2. AP Systems: Availability and Partition Tolerance
+
+- Characteristics
+
+Availability: The system ensures that all write and read requests receive a response, even in the face of network difficulties or the loss of a subset of nodes.
+
+Partition Tolerance: The system will continue to operate despite network partitions or message loss.
+
+- Trade-offs
+
+These systems can potentially sacrifice consistency in favor of availability. In other words, at any given point in time, different nodes might have or return different views of the data.
+
+- Real-world Examples: - Databases like Couchbase or Cassandra are inherently designed to provide availability over strict consistency.
+
+3. CP vs AP Scenarios: Making the Right Design Choice
+
+- Business Considerations:
+
+Businesses where data accuracy is top priority, like financial institutions or scientific research labs, would favor systems of strong consistency (CP systems). Conversely, systems handling heavy user loads and real-time data are more likely to seek availability and performance, making AP systems a better fit.
+
+- Middle Grounds: Several databases implement mechanisms to balance these extremes, offering tunable consistency settings. For example, DynamoDB and Riak furnish users with control over certain consistency parameters, catering to varying application needs.
+
+- Dynamic Choice:
+
+Some systems adapt their consistency and availability modes in response to changing factors like network speed and latency. Techniques like eventual consistency and quorum reads allow systems such as Riak and Cassandra to navigate between CP and AP characteristics as the situation demands.
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 ### Designing with CAP in Mind
@@ -223,20 +460,34 @@ A catalog page reads with one replica so it stays up during a regional blip, and
 
 **Definition:**
 
-A system that must keep answering through failures takes an AP stance: a reachable replica serves the request, and replication is asynchronous. The price is temporary disagreement between copies.
+When designing a distributed system that requires high availability, you are primarily focusing on ensuring that the system can continue to provide a reliable service in the presence of failures. However, striving for high availability inevitably leads to trade-offs in terms of both consistency and partition tolerance, which are fundamental concepts in the CAP Theorem.
 
 **How it works:**
 
-- Treat partition tolerance as given. The guarantee you relax is linearizability, not the ability to survive a cut.
-- Accept reads and writes on the side of the partition that clients can still reach.
-- Replicate in the background, then converge with a conflict rule once the link returns.
-- Make writes idempotent so a retry does not apply twice.
-- Keep a stricter path only for the few operations that cannot tolerate a stale or double result, and accept that those calls may fail during the split.
-- Cassandra, Riak, and DynamoDB on eventually consistent reads are the usual reference shapes.
+Theoretical Background: CAP Theorem Implications
 
-**Examples:**
+Systems that emphasize high availability and partition tolerance while relaxing strict consistency are commonly termed as AP systems (Availability and Partition tolerance systems). These systems usually maintain a form of eventual consistency, which means that the data will become consistent over time.
 
-A product catalog is deployed in two regions. Each region writes views and carts locally. A reader in one region can miss a price change made in the other until async replication lands. The charge against a saved card still goes through a single ledger that rejects the call if it cannot form a quorum.
+Key Characteristics of AP systems
+
+Primary Focus: High availability and continued operations in the face of network partitions.
+
+Consequence: Temporary inconsistencies in data, which are resolved over time.
+
+Examples: Apache Cassandra, Riak, DynamoDB.
+
+Trade-Offs
+
+Consistency: Eventual consistency is typically aimed for, where all replicas of the data will converge, but there might be temporary inconsistencies.
+
+Availability: The system will prioritize serving read and write operations, even in the presence of failures or when certain nodes are inaccessible.
+
+Partition Tolerance: The system will strive to remain operational even when network partitions occur.
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 <details>
@@ -246,28 +497,59 @@ A product catalog is deployed in two regions. Each region writes views and carts
 
 **Definition:**
 
-During a partition, pick a side of the CAP choice on purpose, then keep a path for the service you still intend to offer. “Keep both consistency and availability while messages are lost” is not a strategy the theorem allows.
+When a distributed system experiences network partitions, ensuring consistency, availability, and partition tolerance can be challenging. However, certain strategies can help the system maintain its functions.
 
 **How it works:**
 
-- Detect the cut with timeouts and failed heartbeats, not with an infinite wait.
-- CP: only the side that can still form a quorum accepts writes. The other side returns errors or goes read-only against data it already committed.
-- AP: both sides keep serving. Queue missed updates, use hinted handoff, and merge when the link returns.
-- Prefer a single writer, or fence the old leader, so two sides do not both believe they are primary.
-- A cache or a degraded response can cover a read when the authoritative store is on the other side of the cut. Label that response as possibly stale.
-- After healing, reconcile before you tell clients the data is settled.
+CAP during Partition
+
+Network partitions force distributed systems to choose between consistency and availability. Let's look at the strategies, also known as Brewer's Conjecture, that help systems handle this delicate balance.
+
+CAP Strategies
+
+CA Pattern: Opt for consistency and availability during network partitions. Resume normal operations when the network is stable.
+
+CP Pattern: Prioritize consistency over availability. The system might have to be slower, respond with errors, or go offline altogether when a partition occurs.
+
+AP Pattern: In case of partition, focus on availability over strict consistency. The system continues to serve requests but might return divergent versions of the data on either side of the partition.
 
 **Examples:**
 
-```text
-on read:
-  try quorum
-  on partition: return local replica and mark the response stale
-on write:
-  if quorum possible: commit
-  else: reject   # CP path for money
-        # or append to a local log for later merge  # AP path for a cart
+Code Example: Consistency over Availability
+
+Here is the Python code:
+
+```python
+def read_data_from_node(node, data_store):
+    try:
+        data = data_store[node].read()
+        return data
+    except NetworkError:
+        # Log the error or handle it, and possibly retry
+        pass
+
+def read_from_replicas(replica_nodes, data_store):
+    for node in replica_nodes:
+        data = read_data_from_node(node, data_store)
+        if data:
+            return data
+    # If none of the replicas returned valid data
+    raise UnavailableException("None of the replicas returned valid data")
+
+# Usage:
+try:
+    data = read_from_replicas(replica_nodes, data_store)
+    process_data(data)
+except UnavailableException:
+    fallback_to_local_cache()
 ```
+
+In this example, when reading from replicas in a CP system, it prioritizes consistency but ensures that the system remains available, falling back to a local cache if needed.
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 <details>
@@ -277,21 +559,77 @@ on write:
 
 **Definition:**
 
-For a ledger, favor consistency over availability. A debit that cannot be confirmed with a quorum should fail, not apply on both sides of a partition.
+When dealing with sensitive financial transactions, it's crucial to consider the CAP (Consistency, Availability, Partition Tolerance) theorem to ensure the system's integrity and reliability. Here is a summary of the CAP theorem:
 
 **How it works:**
 
-- One account has one writer at a time, or a consensus group that commits only after a majority acknowledges.
-- Synchronous replication of the committed balance. An asynchronous copy is fine for reporting, not for the decision to debit.
-- Idempotency keys so a client retry does not charge twice after a timeout.
-- A write-ahead log gives every replica the same order of committed operations once it receives them.
-- Latency goes up because the commit waits for the quorum. That delay is accepted so two regions cannot both spend the same balance.
-- Historical statements can be read from a replica. The commit path cannot.
-- After a partition, recovery replays the log. It does not invent a second successful debit.
+Consistency: All nodes in the system have the same data at the same time.
+
+Availability: Every request gets a response, either with the requested data or an error message.
+
+Partition Tolerance: The system continues to operate even when network partitions occur.
+
+Essential Considerations
+
+Sensitivity to CAP Components
+
+While all three components are important, in a financial system, maintaining consistency is critical, since data integrity is paramount. Therefore, the system should not relax on consistency for the sake of high availability or partition tolerance.
+
+Latency vs. Freshness
+
+In a distributed system, data transmission speed across nodes can vary, leading to different latencies in data updates. The challenge is to balance the need for real-time data updates with the potential latency across distributed nodes.
+
+Mechanisms for Recovery
+
+Robust error-recovery mechanisms should be in place to ensure data consistency across nodes, primarily after network partitions.
+
+Data Synchronization Methods
+
+Consistency with Strong Server-Driven Data Management
+
+Direct Client-Server Communication: This approach ensures data consistency and allows the server to validate incoming data. For efficiency in financial systems, it's important to minimize unnecessary writes, especially if the data doesn't need to be regularly updated, using techniques such as caching and batching.
+
+Asynchronous Replication Methods
+
+Write-Ahead Log (WAL): One common method of ensuring consistent, distributed data updates is through WAL, where write operations are queued and then executed in the same order on all nodes.
+
+Quorum-based Mechanisms: Implement ing a majority-rules system can ensure that a data update gets acknowledged by a majority of nodes before it is considered successful, maintaining data integrity.
 
 **Examples:**
 
-Three ledger nodes, write quorum 2. A transfer is committed only after two nodes persist `debit 25 from account 42, key pay-91`. If the client retries `pay-91`, the second attempt sees the key and does not debit again. If only one node is reachable, the transfer returns an error and the balance stays unchanged.
+Code Example: Quorum-based Mechanism
+
+Here is the Java code:
+
+```java
+public class QuorumBasedConsistency {
+    private Map<Node, boolean> acks = new HashMap<>();
+
+    private boolean isQuorumReached() {
+        int ackCount = acks.values().stream().filter(ack -> ack).count();
+        return ackCount > acks.size() / 2;
+    }
+
+    public synchronized void initiateDataUpdate(Data data) {
+        acks.clear();
+        for (Node node : connectedNodes) {
+            sendUpdateRequest(node, data);
+        }
+    }
+
+    public synchronized void recordAcknowledge(Node node) {
+        acks.put(node, true);
+        if (isQuorumReached()) {
+            commitDataUpdate();
+        }
+    }
+}
+```
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 ### CAP in Practice
@@ -303,19 +641,38 @@ Three ledger nodes, write quorum 2. A transfer is committed only after two nodes
 
 **Definition:**
 
-A service can look consistent and available only while every replica can still talk. When a partition appears, operators who keep serving have switched that service to AP behavior. The theorem did not change. The network did.
+A CAP Theorem analysis reveals that it's challenging for a distributed system to simultaneously guarantee all three of the following:
+
+- Consistency (every read receives the most recent write or an error)
+- Availability (every request receives a response, without guarantee of data consistency)
+- Partition Tolerance (the system operates despite network failures)
 
 **How it works:**
 
-- In the healthy case a cart write is committed through one primary, and the next read sees that write. People label this CA, but it depends on an intact network.
-- Heartbeats notice that a second region can no longer reach the primary.
-- To stay up, that region accepts cart edits locally and replicates them later. Copies may diverge until a merge.
-- Availability is kept. Linearizability is not. That is the AP choice for the duration of the cut.
-- When the link returns, the regions reconcile carts before they again claim a single latest version.
+Use-Case: E-Commerce Platform
 
-**Examples:**
+Initially, the shopping cart service on an e-commerce platform operates in a CA (Consistent and Available) mode. Upon detecting network issues, the system transitions to an AP (Available and Partition-Tolerant) configuration.
 
-Before the cut, adding a shirt and reloading the cart always shows the shirt, because both calls hit the primary. During a split between regions, the distant region still lets the shopper add a hat, stored only locally. After the link heals, the two carts are merged. For a few minutes the hat was invisible to the primary, which is the inconsistency the team accepted in order to keep the cart usable.
+CA Mode
+
+Consistency: When a user adds an item to their cart and performs a subsequent query, they receive the most recent data without the risk of outdated or conflicting information. The system employs strong consistency mechanisms like two-phase commit or serializable transactions.
+
+Availability: Users, under normal conditions, consistently interact with the service. Any request made to the system delivers an immediate response, ensuring the service is available.
+
+Partition Tolerance: The system's ability to operate during potential network partitions isn't the primary concern here.
+
+AP Mode
+
+Consistency: The service temporarily relaxes its consistency models to ensure that it remains available at the expense of delivering potentially inconsistent data. For instance, in the cache, writes might be performed asynchronously, leading to a period where the most recent write isn't reflected.
+
+Availability: The service guarantees that every non-failing request receives a response. The focus here is on remaining accessible despite those network hiccups that can cause partitions.
+
+Partition Tolerance: The service adapts to the detected partition, modifying its operations to continue serving user requests, even if that means making compromises in consistency guarantees.
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 <details>
@@ -325,19 +682,73 @@ Before the cut, adding a shirt and reloading the cart always shows the shirt, be
 
 **Definition:**
 
-A quorum is the smallest set of replicas that must acknowledge an operation before the system treats it as done. The sizes of the read quorum and the write quorum are the dial between CAP consistency and availability.
+In distributed systems, quorums enable trade-offs between strong consistency and high availability. This is closely related to CAP theorem which states that it's not possible for a distributed system to always guarantee all three of the following simultaneously:
+
+- Consistency (all nodes see the same data)
+- Availability (every request receives a response, not an error)
+- Partition Tolerance (the system continues to operate despite arbitrary message loss or failure of part of the network)
 
 **How it works:**
 
-- If the read set and the write set must overlap, a read intersects a replica that saw the latest write. The usual rule is R + W greater than the number of replicas.
-- A larger quorum is closer to consistency and more likely to fail when a partition leaves too few replicas reachable.
-- A quorum of one still answers when a single replica is up, and it can miss a write that landed elsewhere.
-- During a partition, a quorum that cannot be formed turns the operation into an error. That is the consistent choice.
-- Shrinking the quorum keeps the operation available and allows two sides to accept writes that later conflict.
+While not intuitive at first, the use of quorums for data operations makes the relationships between CAP components clearer. Quorum-based systems partition data into subsets, and operations must gather agreement from a certain number of subsets to proceed.
+
+A read quorum is the minimum number of nodes that need to agree when reading data, while a write quorum is the minimum number needed for writing/modifying data. The balance between these two quorums influences the system's CP or AP characteristics.
+
+CAP Theorem and Quorum Systems: A Trade-Off
+
+Quorum for Strong Consistency: A high-read and high-write quorum can ensure that recent writes are visible to subsequent reads, ensuring strong consistency at the possible expense of availability during network partitions.
+
+Quorum for High Availability: Reducing the quorum requirements for reads and writes prioritizes availability by potentially allowing conflicting writes.
 
 **Examples:**
 
-Three replicas. W = 2 and R = 2 overlap, so a read sees the newest committed write, and the call fails if two replicas are unreachable. W = 1 and R = 1 succeed against any single replica, and a read can return a value the other two have already replaced.
+Code Example: Significance of Quorums in Distributed Databases
+
+Here is the Python code:
+
+```python
+from typing import List, Set
+
+# Example of distributed set using quorums
+class DistributedSet:
+    def __init__(self, nodes: List[str], read_quorum: int, write_quorum: int):
+        self.nodes = nodes
+        self.read_quorum = read_quorum
+        self.write_quorum = write_quorum
+
+    # Reads the set using a defined read quorum
+    def read(self) -> Set:
+        results = self.read_from_quorum()
+        if self.is_quorum_achieved(results, self.read_quorum):
+            return self.process_data(results)
+
+    # Writes to the set using a defined write quorum
+    def write(self, item):
+        write_results = self.write_to_quorum(item)
+        if self.is_quorum_achieved(write_results, self.write_quorum):
+            return True
+
+    # Reads data from nodes and returns a set of results
+    def read_from_quorum(self) -> Set:
+        pass  # Implement as per the distributed system settings
+
+    # Writes data to nodes and returns a set of write acknowledgements
+    def write_to_quorum(self, item):
+        pass  # Implement as per the distributed system settings
+
+    # Verifies if a quorum is met using the results and the required threshold
+    def is_quorum_achieved(self, results: Set, threshold: int) -> bool:
+        return len(results) >= threshold
+
+    # Processes the data received and constructs a set
+    def process_data(self, results: Set) -> Set:
+        return set(results)
+```
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 <details>
@@ -347,20 +758,46 @@ Three replicas. W = 2 and R = 2 overlap, so a read sees the newest committed wri
 
 **Definition:**
 
-Cassandra and DynamoDB do not escape CAP. They expose the consistency-versus-availability choice per request, and they stay up when some replicas are unreachable.
+While it's impossible for any distributed system to simultaneously guarantee consistency, availability, and partition tolerance due to the CAP Theorem, modern databases like Cassandra and DynamoDB offer robust ways to manage these trade-offs.
 
 **How it works:**
 
-- Cassandra is masterless. Any replica of a key can coordinate a request, so the loss of one node does not take the key offline.
-- Its consistency level is per statement. `ONE` or `LOCAL_ONE` favors an answer. `QUORUM` or `ALL` favors a fresher value and can fail when those replicas are cut off.
-- Hinted handoff, read repair, and anti-entropy push replicas back together after they diverge.
-- DynamoDB partitions by key. A strongly consistent read is served by the leader of that partition and can fail if the leader cannot be reached.
-- The default DynamoDB read is eventually consistent, so the API keeps answering from a replica that might lag by a short time.
-- Inside one partition, writes are ordered by the leader. Across a network split, the product still has to refuse the strict read or serve a possibly stale one.
+Cassandra
 
-**Examples:**
+Key Architectural Features
 
-A Cassandra query for a shopping cart uses `LOCAL_QUORUM` in the same region and `ONE` for a product-name lookup that can tolerate a stale title. A DynamoDB `GetItem` without a strong-consistency flag may return the previous price; the same call with the flag waits for the partition leader and errors if that leader is unavailable.
+Consistency and Partition Tolerance: Utilizes a tunable consistency model to navigate the consistency-partition tolerance spectrum.
+
+Availability and Partition Tolerance: Remains available even in the presence of network partitions, thanks to its decentralized, masterless architecture.
+
+Key Mechanisms
+
+Quorum-Based Consistency: By default, it requires a majority of replicas to acknowledge for read and write operations, ensuring strong consistency in a multi-datacenter setup. However, this mechanism can be adjusted for lower latency at the cost of consistency.
+
+Tunable CAP: Offers configurable levels of consistency for reads and writes.
+
+DynamoDB
+
+Key Architectural Features
+
+Consistency and Partition Tolerance: Offers two consistency models - eventual consistency and strong consistency - that can be selected based on application-specific requirements.
+
+Availability and Partition Tolerance: Prioritizes fault tolerance and remains highly available unless the whole system becomes partitioned.
+
+Key Mechanisms
+
+Primary Key Consistency: Its partitioning mechanism ensures that consistent reads and writes are guaranteed within the same partition (i.e., using the same primary key).
+
+Configurable Consistency: Provides a means for developers to choose the desired consistency level for read operations.
+
+Conclusion
+
+Both Cassandra and DynamoDB exemplify nuanced ways modern databases navigate the CAP trade-offs, offering a spectrum of options for users to tailor their systems.
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>
 
 ### Advanced Understanding of CAP
@@ -372,17 +809,50 @@ A Cassandra query for a shopping cart uses `LOCAL_QUORUM` in the same region and
 
 **Definition:**
 
-An AP design stays available by accepting updates that replicas have not all seen yet. Idempotency, commutativity, and convergence are what stop those updates from becoming a permanent disagreement.
+In distributed systems, conformity with the CAP Theorem often leads to the use of strategies emphasizing commutativity, idempotence, and eventual consistency. Let's see how these concepts play a vital role.
 
 **How it works:**
 
-- Idempotency: doing the operation again leaves the same state. A timeout retry is then safe. Setting a key to a value is idempotent. A bare increment is not.
-- Commutativity: applying two updates in either order yields the same state. Replicas that receive messages in different orders can still agree.
-- Convergence: replicas that have seen the same set of updates reach the same state. A merge function or a conflict-free replicated data type provides that.
-- Without the three, staying available through a partition produces split histories that no later repair can reconcile cleanly.
-- Conflict rules and caches of the latest value per key are practical forms of the same idea.
+Practical Applications
+
+RESTful Systems: REST API methods that are idempotent and commutative, like PUT, seamlessly fit the principles of the CAP theorem.
+
+State-Based Systems: Commutativity and idempotence support eventual consistency by enabling systems to accept and align states.
+
+Conflict Resolution Mechanisms: Often based on commutativity and idempotence of operations, these mechanisms help in situations where multiple parties modify the same resource.
+
+Caching Strategies: Idempotent operations are more cacheable, enhancing performance. Caches propagate the latest values for keys, ensuring approximate convergence.
 
 **Examples:**
 
-Two sides of a partition both add a cart line with its own id. The merge is a set union, so order does not matter and repeating an id changes nothing. Two sides that both do `count = count + 1` on a plain integer do not converge: each thinks the count rose by one, and a later repair cannot tell the increments apart.
+Code Example: Idempotency and Commutativity
+
+Here is the Python code:
+
+```python
+class Counter:
+    def __init__(self):
+        self.value = 0
+
+    def increment_safe(self):
+        # Idempotent and commutative operation
+        self.value += 1
+
+    def assert_state(self, expected_value):
+        # Asserting state remains consistent despite any re-applications
+        assert self.value == expected_value
+       
+ # Example Usage
+counter = Counter()
+counter.increment_safe()
+counter.increment_safe()
+
+# assert_state should pass since increment is idempotent
+counter.assert_state(1)
+```
+
+**Sources:**
+
+- [Devinterview.io — CAP Theorem](https://devinterview.io/questions/software-architecture-and-system-design/cap-theorem-interview-questions/)
+
 </details>

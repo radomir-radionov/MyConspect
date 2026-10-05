@@ -1,6 +1,6 @@
 # Reactive Systems — Interview
 
-Answers are filled for the published subset; the rest are still empty.
+Answers are filled.
 
 [← Back to hub](./0_system_design.md)
 
@@ -377,6 +377,19 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+Supervision fits Reactive Systems: a component does not repair itself. Another component is delegated to restart it, and the failure stays inside that boundary.
+
+**How it works:**
+
+- The manifesto achieves resilience by replication, containment, isolation, and delegation. The client of a failed component is not the one handling the failure.
+- Failures can be messages. The same message-passing boundary works inside one host or across a cluster, which is location transparency.
+- A supervisor decides stop, restart, or escalate. That is containment: one bad stream does not have to take the process down with it.
+- Pair it with back-pressure so the restarted component is not immediately flooded by a queue that grew without a bound.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.reactive-streams.org/
 </details>
 
 <details>
@@ -386,6 +399,34 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+RxJava is a JVM library for composing asynchronous sequences. Use Flowable when the volume is unbounded and the consumer must be able to slow the producer.
+
+**How it works:**
+
+- map applies a function to each item and emits the results. flatMap turns each item into an inner sequence and merges those inners, so items may interleave. concatMap keeps order.
+- Schedulers stand in for threads. subscribeOn(Schedulers.io()) moves a blocking call off the caller. computation is for CPU work. A flow stays sequential: one lambda runs items one after another on the scheduler thread it was given.
+- Reactive Streams, which JDK Flow matches, is the interop layer: Publisher, and a Subscriber that requests credit so a fast source cannot force an unbounded buffer.
+- The manifesto's message-driven property is the system-level version of the same idea. RxJava is the in-process library, not the whole cluster.
+
+**When to use:**
+
+RxJava or Reactor on the JVM when you compose asynchronous calls in one process. A message broker when the boundary is another service.
+
+**Examples:**
+
+```text
+Flowable.fromCallable(this::blockingRead)
+    .subscribeOn(Schedulers.io())
+    .observeOn(Schedulers.single())
+```
+
+**Sources:**
+
+- https://github.com/ReactiveX/RxJava/wiki/Transforming-Observables
+- https://reactivex.io/documentation/operators/map.html
+- https://reactivex.io/documentation/operators/flatmap.html
+- https://www.reactive-streams.org/
+- https://www.reactivemanifesto.org/
 </details>
 
 <details>
@@ -395,6 +436,20 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+Keep durable state in one place that can still choose consistency during a partition, and keep the reactive pipeline as a stream of messages about that state.
+
+**How it works:**
+
+- Brewer: during a partition you either stop updates on one side or you accept divergence. Eventual consistency is the availability-leaning choice and needs a recovery step that compensates.
+- A reactive service should not hide that choice inside an unbounded buffer. Reactive Streams requires the receiver to grant credit so the queue between threads stays bounded.
+- The manifesto isolates components with asynchronous messages. Location-transparent messaging means the same failure handling works on one host or across a cluster. The store behind the messages is still subject to CAP.
+- Soft state in the pipeline, such as a window that can be rebuilt, is Brewer's BASE. Do not treat that window as the only copy.
+
+**Sources:**
+
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactive-streams.org/
+- https://www.reactivemanifesto.org/
 </details>
 
 ### Reactive Programming Paradigms
@@ -406,6 +461,20 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+Pure transformations make a stage restartable: the same input produces the same output, so a supervisor can run it again without repairing hidden state.
+
+**How it works:**
+
+- map is that shape. It applies a function to each item. The operator does not by itself pick a thread.
+- Side effects inside the function, such as writing a shared variable, break the assumption. RxJava documents that a single flow processes items one after another on the assigned thread, but a shared mutable cell is still a race if another flow touches it.
+- Isolation in the manifesto is the system version: a failed component is restarted from the messages it was given, and the client does not hold its internal variables.
+- Impure edges, such as a database write, stay at the boundary. The core of the pipeline stays a function of its messages.
+
+**Sources:**
+
+- https://reactivex.io/documentation/operators/map.html
+- https://www.reactivemanifesto.org/
+- https://docs.scala-lang.org/overviews/scala-book/pure-functions.html
 </details>
 
 <details>
@@ -415,6 +484,24 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+Observer is a direct callback list. Publish-subscribe puts a message boundary between the producer and the consumers so they do not share a call stack.
+
+**How it works:**
+
+- The manifesto relies on asynchronous message-passing for loose coupling, isolation, and location transparency. Failures are delegated as messages. That is publish-subscribe at system scale.
+- An Rx observable is closer to observer until it crosses a scheduler or a process. subscribe attaches a consumer. observeOn moves the notification onto another scheduler.
+- Publish-subscribe matters when the consumer may be slow or remote. Reactive Streams then requires demand signaling so the publisher does not buffer without a bound.
+- Use a direct observable for UI events in one process. Use a queue or broker when a down consumer must not stop the producer, and when you need the manifesto's isolation.
+
+**When to use:**
+
+Observer when both sides are in one process and the rate is already bounded. Publish-subscribe when the consumer can be down or far away.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.reactive-streams.org/
+- https://github.com/reactivex/rxjava/blob/4.x/README.md
 </details>
 
 <details>
@@ -424,6 +511,25 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+A fan-out of per-item async calls is the case: each id becomes its own request, and flatMap merges the results without a thread blocked per call.
+
+**How it works:**
+
+- flatMap applies a function that returns an inner observable and merges the inners. Order is not guaranteed. An optional concurrency argument caps how many inners are subscribed at once.
+- The imperative version waits for each call, or starts threads and a shared list. The shared list is a race. The reactive version keeps the join inside the operator.
+- Reactive Streams back-pressure still applies if the merged result is faster than the subscriber. Otherwise the merge only moved the buffer.
+- This pays off for many in-flight network calls. A short CPU loop over an array does not need it. map is enough when each item becomes one value, not a new request.
+
+**Examples:**
+
+```text
+ids.flatMap(id -> fetch(id), 8)
+```
+
+**Sources:**
+
+- https://reactivex.io/documentation/operators/flatmap.html
+- https://www.reactive-streams.org/
 </details>
 
 <details>
@@ -433,6 +539,20 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+A stream is a sequence of elements that arrive over time, possibly without a known end, pushed across an asynchronous boundary with back-pressure.
+
+**How it works:**
+
+- Reactive Streams exists because live data has no predetermined volume. A fast source must not force the destination to buffer arbitrarily. Asynchrony lets cores or hosts work in parallel.
+- A list is a finished collection. You can ask for its size and index it. A stream may still be producing. Completion and error are events, not a return value you already hold.
+- The JDK Flow interfaces match the Reactive Streams interfaces. Libraries interoperate if they follow that protocol.
+- map and flatMap are how you transform the stream without copying it into a new list first. flatMap is for when one element becomes another stream.
+
+**Sources:**
+
+- https://www.reactive-streams.org/
+- https://reactivex.io/documentation/operators/map.html
+- https://reactivex.io/documentation/operators/flatmap.html
 </details>
 
 ### Fault-tolerance and Reliability
@@ -444,6 +564,22 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+A circuit breaker stops calling a dependency that is already failing, so the caller stays responsive and the dependency gets a bounded load instead of a retry storm.
+
+**How it works:**
+
+- The manifesto's resilience is containment and isolation. A component that keeps retrying a dead neighbor spends its own threads and spreads the failure.
+- Brewer's deadline is the same decision: past the timeout you cancel, which lowers availability for that call, or you proceed and risk a bad result. A breaker is the cancel path made explicit, with a cool-down before the next try.
+- Reactive Streams back-pressure limits a fast healthy source. It does not by itself notice that the remote side is returning errors. The breaker is that extra gate.
+- When the breaker is open, answer from a fallback or fail that call. Do not buffer every rejected request. An unbounded buffer recreates the overload the spec forbids.
+- Half-open means a few trial calls, not a return to full concurrency. flatMap's max-concurrency cap is a related knob on the success path.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactive-streams.org/
+- https://reactivex.io/documentation/operators/flatmap.html
 </details>
 
 <details>
@@ -453,6 +589,22 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+The subscriber requests a finite credit, the publisher sends only that many elements, and overflow is handled by a bounded policy rather than an ever-growing queue.
+
+**How it works:**
+
+- Reactive Streams governs exchange across an asynchronous boundary so the destination is not forced to buffer an arbitrary amount. Back-pressure signaling itself must be asynchronous. A synchronous request would cancel the benefit.
+- JDK Flow is semantically the same protocol. Version 1.0.4 is the JVM artifact set: API, specification, and a TCK.
+- The manifesto applies the same idea to queues between components: shape the queue and apply back-pressure when necessary.
+- flatMap accepts a concurrency limit so one outer stream cannot subscribe to unbounded inners.
+- If the producer cannot slow down, drop or fail with a bounded buffer and a metric. Do not pretend an infinite queue is back-pressure. During a partition, Brewer's choice still applies: refuse or diverge.
+
+**Sources:**
+
+- https://www.reactive-streams.org/
+- https://www.reactivemanifesto.org/
+- https://reactivex.io/documentation/operators/flatmap.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -462,6 +614,21 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+Supervision delegates recovery to a parent. The child reports failure as a message. The parent restarts, stops, or escalates, and the caller of the parent stays responsive.
+
+**How it works:**
+
+- The manifesto: failures are contained, components are isolated, and recovery of each component is delegated to another. The client is not burdened with handling those failures. Replication keeps the service available while one copy is down.
+- Message-passing is the boundary that makes this work the same way in-process and across a cluster.
+- Restart only works if the child can be rebuilt from its inputs. A pure map stage can. A stage that mutated a hidden counter cannot, unless that counter is in the messages.
+- Do not restart in a tight loop against a dead dependency. Combine supervision with a breaker and with back-pressure so the restart is not immediately overloaded.
+- Escalate when the parent cannot restore the invariant. That matches Brewer's recovery step: compensate, do not silently resume both writers.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.reactive-streams.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 ### Performance and Scalability
@@ -473,6 +640,21 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+Asynchrony lets stages run on other cores or other hosts while the caller does not block, and back-pressure keeps that parallelism from allocating unbounded queues.
+
+**How it works:**
+
+- Reactive Streams states the reason explicitly: asynchrony enables parallel use of cores on one machine or of collaborating hosts. The protocol keeps the queues between them bounded.
+- RxJava schedulers are the in-process tool. computation for CPU-bound work, io for blocking calls, single for a sequential handoff. observeOn shifts the downstream stage onto another scheduler. Items inside one stage still run one after another.
+- The manifesto's elasticity is the cluster version: shard or replicate, avoid a central bottleneck, and scale from live measurements.
+- Parallelism does not remove CAP. Two hosts that both write during a partition diverge. Moving work to more cores does not create a single up-to-date copy.
+
+**Sources:**
+
+- https://www.reactive-streams.org/
+- https://github.com/reactivex/rxjava/blob/4.x/README.md
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -482,6 +664,20 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+Location transparency means a message is handled with the same semantics whether the receiver is local or remote. The store behind it still has a real place, and a partition still forces a consistency choice.
+
+**How it works:**
+
+- The manifesto: explicit message-passing creates a boundary for loose coupling, isolation, and location transparency. Failure management uses the same constructs on one host or across a cluster.
+- That does not make the data one copy. Brewer: if the nodes cannot talk, either one side stops taking updates or the copies diverge. Asynchronous remote replicas, as in his PNUTS and Facebook examples, are stale until they catch up.
+- A client that addresses a logical name can be moved when a supervisor restarts the owner elsewhere. The bytes still live on the nodes that hold them.
+- Back-pressure must cross that boundary too. A local call that blocks until the remote buffer grows is not the non-blocking communication the manifesto describes.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactive-streams.org/
 </details>
 
 <details>
@@ -491,6 +687,23 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+The usual bottlenecks are an unbounded queue, a blocking call on a small scheduler, and a stage that cannot request credit fast enough.
+
+**How it works:**
+
+- Reactive Streams calls out the failure mode: if back-pressure were synchronous, or if the destination buffered without a bound, the point of asynchrony is lost.
+- RxJava's io scheduler is for blocking work. Running a blocking call on the computation pool, which is sized for CPU work, stalls every other stage on that pool.
+- flatMap without a concurrency cap subscribes to every inner at once. That is a bottleneck of sockets and memory, not of CPU.
+- The manifesto says elasticity depends on live performance measures. Watch queue depth, request credit, and error rate. An open breaker or a dropped element is a signal, not only a log line.
+- A timeout that never fires looks like high latency and is Brewer's hidden choice of consistency. Measure how often calls pass the deadline.
+
+**Sources:**
+
+- https://www.reactive-streams.org/
+- https://github.com/reactivex/rxjava/blob/4.x/README.md
+- https://reactivex.io/documentation/operators/flatmap.html
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -500,6 +713,21 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+Drive the stream with a controlled producer, assert that the consumer's demand bounds the queue, and include a scheduler you can advance in tests.
+
+**How it works:**
+
+- Reactive Streams publishes a TCK with the 1.0.4 artifacts so an implementation can be checked against the specification, including demand and completion rules.
+- RxJava's test scheduler is one of the schedulers the parallel-flow notes name, alongside computation and io. It lets a test decide when time moves instead of sleeping.
+- A load test should show a bounded queue while the producer is faster than the consumer. If heap grows with input rate, back-pressure is not in effect.
+- Also fail a dependency and confirm the supervisor or breaker contains it. The manifesto's resilience is part of scalability: extra load plus one dead neighbor must not exhaust threads.
+- Do not only test the happy path on a single thread. Asynchrony is the case the spec is about.
+
+**Sources:**
+
+- https://www.reactive-streams.org/
+- https://github.com/reactivex/rxjava/wiki/Parallel-flows
+- https://www.reactivemanifesto.org/
 </details>
 
 ### Tools and Technologies
@@ -511,6 +739,21 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+Reactive Streams is the small interop spec. RxJava is a full operator library on the JVM that can speak that protocol through Flowable.
+
+**How it works:**
+
+- The spec's scope is deliberately minimal: interfaces and rules for asynchronous streams with non-blocking back-pressure. End-user DSLs are out of scope so each platform can stay idiomatic. JVM interfaces are the 1.0.4 release. JDK Flow is semantically equivalent.
+- RxJava adds the DSL: map for one-to-one transforms, flatMap to merge inner sequences, schedulers for concurrency, and subscribeOn / observeOn to place work.
+- The Reactive Manifesto is not a library. It names the four system properties those libraries are often used to approach: responsive, resilient, elastic, message-driven.
+- Pick the library for in-process composition. Pick a broker when the stream must leave the process. The spec also points at network protocols as a separate working group.
+
+**Sources:**
+
+- https://www.reactive-streams.org/
+- https://reactivex.io/documentation/operators/map.html
+- https://reactivex.io/documentation/operators/flatmap.html
+- https://www.reactivemanifesto.org/
 </details>
 
 <details>
@@ -520,6 +763,21 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+Queues are the boundary between components. They must be bounded, or they must push back, or they become the buffer the Reactive Streams spec exists to forbid.
+
+**How it works:**
+
+- The manifesto: explicit message-passing gives loose coupling, isolation, and location transparency. Load is managed by shaping and monitoring queues and by applying back-pressure. Non-blocking communication uses resources only while the recipient is active.
+- A queue that grows without a limit hides overload until memory runs out. That is not elasticity.
+- Asynchronous replication of a queue, like any other copy, can lose the latest message if the primary dies first. Brewer's recovery step still applies. Do not treat the queue as a single up-to-date copy unless the broker gives you that.
+- The important properties are a bound, demand or credit, isolation of a slow consumer, and a visible depth so you can scale or refuse.
+- Failures travel as messages too, so a poison message needs a stop or a dead-letter path rather than a restart loop.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.reactive-streams.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -529,4 +787,20 @@ message: client gets "accepted"; stock and payment consume in parallel
 
 **Definition:**
 
+A legacy API blocks a thread until it returns. Dropping that call onto an event loop stalls every other stream on that loop. The mitigation is a scheduler meant for blocking work, plus a bound on how many calls run.
+
+**How it works:**
+
+- RxJava's own example of a slow callable uses subscribeOn(Schedulers.io()) and then observeOn to hop back. io is the pool for that blocking edge. computation is not.
+- The reactive side still needs credit. If the legacy system cannot slow down, put a bounded queue in front and fail or shed load when it is full. An infinite adapter queue breaks the Reactive Streams goal.
+- Timeouts are mandatory. A legacy call with no deadline is Brewer's "retry until consistent": availability waits. Cancel and surface the failure to the supervisor.
+- Do not wrap the legacy client in flatMap with unlimited concurrency. Cap the inners.
+- Consistency does not improve because the edge is reactive. If the legacy store is the single copy, say so. If it replicates asynchronously, readers can see a stale value.
+
+**Sources:**
+
+- https://github.com/reactivex/rxjava/blob/4.x/README.md
+- https://www.reactive-streams.org/
+- https://reactivex.io/documentation/operators/flatmap.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>

@@ -1,6 +1,6 @@
 # Trie — Interview
 
-Answers are filled for the published subset; the rest are still empty.
+Answers cover the published question list.
 [← Back to hub](./7_special_data_structures.md)
 
 ### Related docs
@@ -344,6 +344,26 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+A compressed trie, also called a radix tree, stores the same set of strings as a character trie but merges a chain of single-child nodes into one edge labeled with a string.
+
+**How it works:**
+
+- In a plain trie each edge is one character, so a long unique tail is a spine of nodes that never branch.
+- Compression replaces that spine with one edge. The label is often a slice `(start, end)` into the original key, not a copied string.
+- Lookup still follows the query from the root. On a compressed edge it must match the whole label, not a single character.
+- Wikipedia notes the radix tree as the usual space optimization of a trie. A Patricia trie is the same idea on bits.
+
+**When to use:**
+
+Use it when keys share a prefix and then run off into long unique suffixes, so node objects dominate memory.
+
+**Examples:**
+
+Keys `romane` and `romanus` share `roman`. A radix tree then has two edges, `e` and `us`, instead of five extra single-child nodes.
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 ### Advanced Operations in Tries
@@ -355,6 +375,26 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+Insert every string, then walk from the root while the current node has exactly one child and is not itself the end of a shorter key. The characters on that path are the longest common prefix.
+
+**How it works:**
+
+- If one key is a prefix of the others, stop at the node marked as a word. Extending further would drop that shorter key.
+- If the root already has two or more children, the common prefix is empty.
+- Building the trie is O(total characters). The walk is O(length of the prefix).
+- The same walk is what a radix tree stores on its first edge when every key shares that prefix.
+
+**Examples:**
+
+```text
+insert ten, tea, ted
+root -t-> node -e-> node
+the only path is "te"; the next node branches to n/a/d
+```
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
@@ -364,6 +404,28 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+A word is a node with the end-of-key flag set. Count those flags with a depth-first walk, or keep a counter that insert and delete update.
+
+**How it works:**
+
+- Do not count every node. Intermediate nodes are prefixes, not stored words, unless they were inserted as words.
+- A full scan is O(number of nodes), which is proportional to the total stored characters in an uncompressed trie.
+- An incremental counter is O(1) per query and stays correct if delete clears the flag only when that exact word is removed.
+- Shared prefixes do not double-count: `tea` and `team` are two flags on one path.
+
+**Examples:**
+
+```text
+def count_words(node):
+    total = 1 if node.is_word else 0
+    for child in node.children.values():
+        total += count_words(child)
+    return total
+```
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
@@ -373,6 +435,40 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+Walk the prefix. If any edge is missing, the answer is empty. Otherwise collect every end-of-word node in the subtree, appending the characters along the way.
+
+**How it works:**
+
+- The walk to the prefix node is O(length of the prefix) child lookups.
+- The collection visits only the subtree, so the cost tracks how many completions exist, not the whole dictionary.
+- This is the autocomplete operation Wikipedia describes: the trie is organized by shared prefixes so completion lists fall out of one subtree.
+- Sort the children if the caller wants lexicographic order. A hash map of children does not give that order by itself.
+
+**When to use:**
+
+Use a trie here when the product is prefix completion. A hash set of whole words can test membership but cannot list completions without scanning every key.
+
+**Examples:**
+
+```text
+def words_with(node, prefix):
+    for ch in prefix:
+        node = node.children.get(ch)
+        if node is None:
+            return []
+    out = []
+    def dfs(n, path):
+        if n.is_word:
+            out.append(prefix + path)
+        for ch, child in n.children.items():
+            dfs(child, path + ch)
+    dfs(node, "")
+    return out
+```
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
@@ -382,6 +478,27 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+Insert the dictionary into a trie, then start a depth-first search from every cell. At each step follow the edge for that letter and skip branches the trie does not contain.
+
+**How it works:**
+
+- Mark the current cell visited for this path so a letter is not reused, then unmark it on the way back.
+- A missing child means this path cannot spell any dictionary word. That prune is the reason to use a trie instead of testing each word against the grid.
+- When the node is marked as a word, record it. Keep walking if longer words continue through the same prefix.
+- Time is bounded by the grid size times branching, and the trie cuts branches that no word uses.
+
+**Examples:**
+
+```text
+board of letters, dict = {oath, pea, eat}
+insert into trie
+from each cell, dfs: consume letter, move 4-direction, backtrack
+emit a word when is_word is set
+```
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 ### Optimization and Efficiency
@@ -393,6 +510,22 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+Search follows one edge per character of the query. Wikipedia lists trie search as O(n) in the key length, in both the average and the worst case, rather than a scan of every stored string.
+
+**How it works:**
+
+- A linear scan of D words of length L costs O(D·L) character comparisons in the worst case.
+- A trie pays O(L) child lookups. The dictionary size shows up only in how expensive one child lookup is (array index versus a map).
+- Failed searches stop at the first missing edge, so a wrong prefix does not read the rest of the dictionary.
+- The trade is memory: an uncompressed trie can use O(total characters) nodes, and Wikipedia lists worst-case space as O(w·n) for alphabet width w.
+
+**When to use:**
+
+Prefer the trie when many queries share prefixes or you need the worst-case bound to depend on the query length. A hash table of whole words is often faster for exact lookup and uses less memory when prefixes are not shared.
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
@@ -402,6 +535,22 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+An uncompressed trie spends a node per character and often a wide array of empty child slots. Compression, a smaller child map, and bitwise keys cut that overhead.
+
+**How it works:**
+
+- Replace a fixed alphabet array with a hash map or a sorted list of the children that exist. Lookup inside the node gets slightly more expensive; empty slots disappear.
+- Collapse single-child chains into one radix-tree edge. Wikipedia calls this the notable space optimization.
+- A bitwise trie uses one bit per level instead of a whole character, which suits integers and addresses.
+- At a leaf, store the remaining suffix as one string instead of a node per character.
+
+**When to use:**
+
+Compress when the trie is large and most nodes have one child. Keep a flat array only for a tiny alphabet where the index is worth the empty slots.
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
@@ -411,6 +560,22 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+Memory pooling allocates many trie nodes from one pre-sized block (an arena) instead of asking the allocator for each node separately.
+
+**How it works:**
+
+- A trie node is small and there are many of them. Per-node allocation scatters them across the heap, so a walk jumps through unrelated cache lines.
+- An arena hands out nodes with bump allocation. Freeing the whole trie is one release of the block, which matches a dictionary you build and then discard.
+- Individual delete is harder: the pool usually does not return one node to the OS. A free list inside the arena covers that if words are removed often.
+- The lookup algorithm does not change. Only the addresses of the child pointers get closer together.
+
+**When to use:**
+
+Pool nodes when the trie is rebuilt in bulk or lives for the process lifetime. Skip the pool for a tiny dictionary where allocator overhead is invisible.
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 ### Implementation Challenges
@@ -422,6 +587,28 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+Write the tree in preorder: for each node store the edge character, the end-of-word flag, the child count, then the children. Reading that stream rebuilds the same links.
+
+**How it works:**
+
+- Preorder matches the structure Wikipedia sketches: a node is a set of child links plus an optional value at a terminal.
+- Store children in sorted character order so the bytes are stable across runs.
+- A radix-tree edge must also store the label length, or the label itself, or the stream cannot tell where the next node starts.
+- JSON of nested maps is a readable form of the same walk. A binary preorder is smaller and faster to load.
+
+**Examples:**
+
+```text
+write(node):
+    emit is_word, child_count
+    for ch, child in sorted(node.children):
+        emit ch
+        write(child)
+```
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
@@ -431,6 +618,46 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+A literal character follows one edge. `?` tries every child once. `*` tries both “consume no extra character” and “consume one child and keep the star”, with memoization so the same (node, pattern index) pair is not expanded twice.
+
+**How it works:**
+
+- Without a memo key the star branches exponentially on long patterns.
+- `?` must not match the end of the key. It consumes exactly one existing edge.
+- A match succeeds only if the pattern is exhausted on a node marked as a word, or a trailing `*` can stay on that node.
+- This walks the trie Wikipedia defines (child link per character). It does not require a second index structure.
+
+**When to use:**
+
+Use the wildcard walk for pattern search over a dictionary (`a?c`, `a*c`). For a single pattern against one text, a regular expression is enough and a trie adds nothing.
+
+**Examples:**
+
+```text
+def match(node, pat, i, memo):
+    key = (id(node), i)
+    if key in memo:
+        return memo[key]
+    if i == len(pat):
+        memo[key] = node.is_word
+        return node.is_word
+    ok = False
+    if pat[i] == "*":
+        ok = match(node, pat, i + 1, memo) or any(
+            match(child, pat, i, memo) for child in node.children.values()
+        )
+    elif pat[i] == "?":
+        ok = any(match(child, pat, i + 1, memo) for child in node.children.values())
+    else:
+        child = node.children.get(pat[i])
+        ok = child is not None and match(child, pat, i + 1, memo)
+    memo[key] = ok
+    return ok
+```
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
@@ -440,6 +667,22 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+Index each word in a trie, then answer a subsequence query by a walk that may skip characters of the stored word. Memoize the pair (node, position in the query) so the search stays practical.
+
+**How it works:**
+
+- A full subsequence trie, with an edge for every later character, is exponential in word length. Do not materialize it.
+- The query `tse` against a stored word matches if those letters appear in order. From a node, either take the edge equal to the next query character, or the search is allowed to have skipped earlier stored letters only if you stored the original word and scan it. On a plain trie the cheaper exact tool is prefix search.
+- For “letters of the query appear in order inside some dictionary word”, depth-first search from the root: at each node try the child for the current query character (advance the query) and also try every child without advancing, which means skipping a stored letter. Memoization is required.
+- Exact word and prefix queries still use the ordinary O(length) walk. The subsequence walk is the extra operation.
+
+**When to use:**
+
+Use the skip-walk when the product is subsequence lookup (`tse` inside `these`). Use ordinary trie search when the query is a prefix or a whole word.
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
@@ -449,6 +692,35 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+One node holds a map of children and an end-of-word flag. `insert` creates missing edges, `search` requires the flag at the end of the walk, and `startsWith` only requires the walk to finish.
+
+**How it works:**
+
+- Each operation does one child lookup per character. With a hash map that is expected O(L). With a fixed alphabet array it is strict O(L).
+- `search("app")` is false when only `apple` was inserted, because the node after `app` is not terminal. `startsWith("app")` is true.
+- Wikipedia’s search stops on a null link. That is the failure case for both operations.
+- Keep the root empty. Do not store the character on the node; the incoming edge is the character.
+
+**Examples:**
+
+```text
+def insert(root, word):
+    node = root
+    for ch in word:
+        node = node.children.setdefault(ch, Node())
+    node.is_word = True
+
+def search(root, word):
+    node = walk(root, word)
+    return node is not None and node.is_word
+
+def starts_with(root, prefix):
+    return walk(root, prefix) is not None
+```
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
@@ -458,4 +730,20 @@ Text `banana`. The suffix `ana` is inserted, so the pattern `ana` walks that pat
 
 **Definition:**
 
+A character trie is not rebalanced by rotations. Its depth is the key length, which Wikipedia’s bounds already treat as n in the O(n) search. “Balance” here means keeping that depth honest and keeping each node’s child directory cheap.
+
+**How it works:**
+
+- Unary chains make the tree tall without adding choices. A radix compression shortens depth to the number of branching points plus label length.
+- The shape follows the data. Many keys that share a short prefix and then differ produce a wide level. A few very long keys produce a deep path. You cannot rotate a long key up the way an AVL tree rotates a node.
+- Inside one node, a fixed array is O(1) and wide; a tree or sorted vector of children is balanced in the number of children and costs O(log alphabet) per step.
+- Worst-case space in the Wikipedia table grows with alphabet width times key length. Shrinking the alphabet (bits instead of characters) changes both width and depth.
+
+**When to use:**
+
+Compress unary paths when depth is wasted on non-branching chains. Switch the child container when one node’s alphabet is large and sparse. Do not import AVL rotations onto the trie itself.
+
+**Sources:**
+
+https://en.wikipedia.org/wiki/Trie
 </details>

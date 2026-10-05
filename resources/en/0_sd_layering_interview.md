@@ -1,6 +1,6 @@
 # Layering & Middleware — Interview
 
-Answers are filled for the published subset; the rest are still empty.
+Answers are filled.
 
 [← Back to hub](./0_system_design.md)
 
@@ -411,6 +411,23 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Middleware adds a hop. The risks are an extra copy of the message, a thread blocked in that hop, and a queue that grows without a bound.
+
+**How it works:**
+
+- AMQP defines a binary peer-to-peer transport for messages between two processes. That hop is real network time, not a function call.
+- SOAP is another hop: an XML envelope over an underlying protocol. Parsing the envelope costs CPU the business function never sees.
+- Reactive Streams exists because a fast source must not force the next layer to buffer arbitrarily. A synchronous handoff between layers cancels the benefit of asynchrony.
+- The manifesto says a central bottleneck defeats elasticity. One shared middleware node that every layer must pass is that bottleneck.
+- Measure queue depth and the deadline, not only the business method. Brewer treats a timeout as the moment you cancel or risk inconsistency.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/soap12-part1/
+- https://www.reactive-streams.org/
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 ### Middleware Technologies and Standards
@@ -422,6 +439,27 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Three different jobs get called middleware: a messaging protocol, a service envelope, and a description of the service.
+
+**How it works:**
+
+- AMQP 1.0 is an open internet protocol for business messaging. It is a binary wire protocol for reliable exchange between two parties, with a layered specification: types, transport, messaging, transactions, and security.
+- SOAP 1.2 is a W3C messaging framework for structured information in a distributed environment. Use it when the contract is an XML envelope that can ride on more than one underlying protocol.
+- WSDL 2.0 describes what a Web service offers. It is not the pipe. It is the document callers bind to.
+- WS-Security is the OASIS layer on SOAP for integrity, confidentiality, and tokens. Use it when the envelope itself must carry proof.
+- Reactive Streams is the in-process contract for back-pressure between those hops. It is not a broker.
+
+**When to use:**
+
+AMQP when two processes exchange business messages. SOAP plus WSDL when callers need a described Web service. WS-Security when that message must prove who sent it.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/soap12-part1/
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.reactive-streams.org/
 </details>
 
 <details>
@@ -431,6 +469,23 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+A Web service is middleware when the caller depends on a description and an envelope instead of a shared library in the same process.
+
+**How it works:**
+
+- WSDL 2.0 describes the service from an abstract model. That description is the boundary between teams.
+- SOAP carries the structured message and can be extended. WS-Security is one such extension: integrity, confidentiality, and tokens on the same envelope.
+- The hop is still a network hop. It has the same performance worries as any middleware: parsing, a deadline, and a queue.
+- AMQP covers the case where the interaction is a business message rather than a request envelope. Its transport is a binary peer-to-peer protocol between two processes.
+- Back-pressure still applies. A Web service that accepts every call into an unbounded buffer fails the Reactive Streams goal.
+
+**Sources:**
+
+- https://www.w3.org/TR/wsdl20/
+- https://www.w3.org/TR/soap12-part1/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.reactive-streams.org/
 </details>
 
 <details>
@@ -440,6 +495,21 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+AMQP is an open protocol for the reliable exchange of business messages. Two parties can interoperate without sharing a vendor's private client.
+
+**How it works:**
+
+- The overview defines a binary wire-level protocol. Part 2 is the transport: an efficient binary peer-to-peer protocol for messages between two processes over a network.
+- Part 3 is the message format with a concrete encoding. Part 4 groups interactions in atomic transactions. Part 5 is the security layers.
+- A private broker protocol locks the next layer to one product. A standard wire format lets you replace the broker and keep the messages.
+- Reliability here is the protocol's exchange, not a promise that both sides stay up. A partition still forces Brewer's choice if both sides keep sending updates they cannot reconcile.
+- Pair the standard with a bounded queue. The manifesto's back-pressure is not granted by the fact that the bytes follow AMQP.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactivemanifesto.org/
 </details>
 
 ### Middleware Security and Reliability
@@ -451,6 +521,21 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+The message carries the proof. WS-Security binds tokens to SOAP content, and AMQP specifies security as its own layer rather than hiding identity in each application.
+
+**How it works:**
+
+- WS-Security associates security tokens with message content and allows more than one format. One token can prove identity and another a business certification.
+- The application layer then sees a checked token instead of inventing a side channel per service. WSDL still only describes the operations.
+- AMQP part 5 defines the security layers of that protocol, separate from the message format and the transport.
+- Authorization is the decision after the token is accepted. The standard does not choose your roles. It gives you a token the next layer can trust.
+- Replicas must accept the same formats. Otherwise the layer behind a failover sees a different caller.
+
+**Sources:**
+
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/wsdl20/
 </details>
 
 <details>
@@ -460,6 +545,21 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Encryption belongs on the message or on the messaging security layer, so the bytes stay confidential after they leave the sender's process.
+
+**How it works:**
+
+- WS-Security enhances SOAP to provide confidentiality as well as integrity. The mechanisms are meant to accommodate a variety of encryption technologies.
+- It describes opaque encrypted keys. The application payload can be protected in the envelope instead of assuming every hop is a private LAN.
+- AMQP part 5 defines security layers for that protocol, separate from the message encoding in part 3.
+- Encryption of the hop does not encrypt your logs or your store. Confidentiality in transit is one layer. Data at rest is another decision.
+- Do not invent a cipher. Use the mechanism the specification you chose already names. RSA as in RFC 8017 is a public-key construction with a modulus and exponent, not a message format by itself.
+
+**Sources:**
+
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.rfc-editor.org/rfc/rfc8017#section-3.1
 </details>
 
 <details>
@@ -469,6 +569,22 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+AMQP's purpose is the reliable exchange of business messages between two parties. A network partition still means one side may not have the message.
+
+**How it works:**
+
+- The protocol is a binary peer-to-peer transport between two processes. Reliability is a property of that exchange, defined across the specification's parts, including transactions in part 4.
+- If heartbeats or acknowledgements stop, you have Brewer's timeout: cancel the send or risk two histories. Retrying forever chooses consistency and spends availability.
+- The manifesto delegates recovery and uses replication so one failed path does not have to be the only path. The client should not be the component that reconstructs the broker.
+- A queue without a bound hides the failure until memory runs out. Back-pressure, as in Reactive Streams, keeps the sender from flooding a peer it cannot reach.
+- Transactions in AMQP group interactions so a set of messages commits together. They do not make a partitioned network into one copy of the data.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactivemanifesto.org/
+- https://www.reactive-streams.org/
 </details>
 
 ### Middleware Testing and Debugging
@@ -480,6 +596,23 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Test the wire contract: an AMQP message or a SOAP envelope that matches the description, including the failure when the other process does not answer.
+
+**How it works:**
+
+- AMQP's transport is between two processes. A test that calls a local function never sees the encoding in parts 1 and 3.
+- For a Web service, assert against the WSDL. Send the SOAP envelope the description implies, and a WS-Security header when policy requires a token.
+- Include a timeout. The useful assertion is that the caller stops or degrades, which is the availability choice, not that a thread blocks until the test harness kills it.
+- Include a full queue. The next layer must not allocate without a bound.
+- Use keys you own for token tests. The test shows rejection of a bad token. It does not show how to forge one.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/wsdl20/
+- https://www.w3.org/TR/soap12-part1/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -489,6 +622,22 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Find which hop holds the messages: the AMQP peer, the SOAP parse, or a queue that is not pushing back.
+
+**How it works:**
+
+- Time the business function and the hop separately. If the function is fast and the call is slow, the layer between them is the bottleneck.
+- AMQP is a network protocol between two processes. A slow peer, a full link, or a security layer in part 5 can dominate a small payload.
+- SOAP adds XML. A huge envelope or a token check on every call shows up as CPU in the middleware, not in the domain code.
+- Queue depth is the Reactive Streams signal. Growth without a matching consumer means back-pressure is missing.
+- A deadline that never fires looks like slowness and is actually an unbounded wait. That is the consistency-over-availability choice Brewer describes.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/soap12-part1/
+- https://www.reactive-streams.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -498,6 +647,23 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Send protocol messages faster than the consumer can finish them, and assert that the queue stays bounded and the deadline is honored.
+
+**How it works:**
+
+- For AMQP, producers and the peer are two processes. The load is on the wire format, not on an in-memory method call.
+- For SOAP, send envelopes that match the WSDL, with the security header you will require in production. A test that skips WS-Security measures a cheaper path than you will ship.
+- The failure to look for is the one Reactive Streams names: memory growing with the offer rate. A passing test has a flat queue and rejected or delayed producers.
+- Record latency against a deadline. Past it, the system must cancel or degrade on purpose.
+- One saturated replica is not a cluster test. Add a second consumer only after you know the first consumer's cap. The manifesto's elasticity is a measured reaction, not an unbounded thread pool.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.reactive-streams.org/
+- https://www.reactivemanifesto.org/
 </details>
 
 ### Middleware Design Patterns and Best Practices
@@ -509,6 +675,23 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Chain of Responsibility passes a message through handlers until one of them deals with it. Middleware is that chain: transport, security, then the application.
+
+**How it works:**
+
+- AMQP is specified as layers: types, transport, messaging, transactions, and security. Each part has a job. The application does not reimplement the transport.
+- SOAP's extensible header is the same shape. WS-Security can handle integrity and tokens. The operation in the body is a later handler.
+- A reactive operator chain is the in-process version. flatMap and map each see the item and pass a result downstream. They do not all have to know the source.
+- The chain needs a stop. An unbounded sequence of handlers that each buffer a copy recreates the queue Reactive Streams forbids.
+- Order matters for security. The token is checked before the application handler runs. A handler that acts first and authenticates later has already done the work.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/soap12-part1/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://reactivex.io/documentation/operators/flatmap.html
+- https://www.reactive-streams.org/
 </details>
 
 <details>
@@ -518,6 +701,22 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+A layered protocol keeps each concern replaceable. Back-pressure keeps a fast producer from burying the next stage.
+
+**How it works:**
+
+- AMQP's split into transport, messaging, transactions, and security means you can reason about delivery without rereading the security layer, and the reverse. That is maintainability.
+- WSDL separates the description from any one implementation. A new replica can honor the same document. That is how you scale without rewriting callers.
+- Reactive Streams is the scalability pattern: the consumer grants credit, so the queue between stages stays bounded while you add consumers.
+- The manifesto adds replication and the removal of a central bottleneck. A single middleware box that every message must enter will not scale with another application instance.
+- Publish-subscribe, in the manifesto's message-driven sense, isolates a slow consumer behind the queue instead of inside the caller's stack.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/wsdl20/
+- https://www.reactive-streams.org/
+- https://www.reactivemanifesto.org/
 </details>
 
 <details>
@@ -527,6 +726,24 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Give the layer a standard contract, a security check before work, a deadline, and a bounded queue.
+
+**How it works:**
+
+- Prefer an open wire protocol such as AMQP, or a described envelope such as SOAP plus WSDL, so the next team is not tied to your classes.
+- Put tokens and confidentiality in the security layer. WS-Security and AMQP part 5 exist so each application does not invent that.
+- Do not block the calling thread on the hop. Reactive Streams and the manifesto both want asynchronous boundaries and back-pressure.
+- Set a timeout and decide the failure. Brewer: past the deadline you cancel or you risk two copies of the truth.
+- Keep the layer thin. Map-style transformation of a message is fine. Hiding a second remote call inside every handler, with no concurrency cap, recreates a bottleneck.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/soap12-part1/
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.reactive-streams.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 ### Middleware Specifics and Advanced Concepts
@@ -538,6 +755,23 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Orchestration is one party telling others the next message. Choreography is each party reacting to messages under a shared protocol, with no hidden central call stack.
+
+**How it works:**
+
+- AMQP exchanges business messages between two parties. A choreography is a set of those exchanges. Each service consumes a message and may emit another.
+- WSDL makes the request style explicit: a caller invokes a described operation. An orchestrator is a caller that sequences those operations.
+- SOAP headers carry the token so each hop can check identity without the orchestrator unwrapping a private session.
+- The manifesto's message-driven property is the choreography end: asynchronous messages, isolation, and location transparency. Back-pressure keeps one slow dancer from being flooded.
+- A partition still splits the dance. Brewer: you cannot have every participant both up to date and always available while they cannot talk. The protocol must say who waits.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/wsdl20/
+- https://www.w3.org/TR/soap12-part1/
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -547,6 +781,23 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+A gateway is the first hop that terminates a caller, checks the contract and the token, and forwards a bounded amount of work to a described service.
+
+**How it works:**
+
+- WSDL, or any published description, is what the gateway allows. A route that is not in the contract is not a service. It is a back door.
+- WS-Security or the gateway's check of a token happens before the application. The token format is the one the policy names.
+- The gateway is middleware, so it can become the central bottleneck the manifesto warns about. It needs more than one replica and must not buffer without a bound.
+- Timeouts at the gateway are the deadline. Past it, fail the call. Retrying the downstream service forever chooses consistency and holds the caller's connection.
+- SOAP and AMQP behind the gateway stay their own protocols. The gateway translates at the edge. It should not reimplement their security layers incorrectly. AMQP part 5 and WS-Security already define those layers.
+
+**Sources:**
+
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 </details>
 
 <details>
@@ -556,6 +807,23 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Middleware as a service means the messaging or the service bus is operated for you, and your application still speaks a standard protocol to it.
+
+**How it works:**
+
+- AMQP is a wire protocol between two processes. A hosted broker is useful only if your process speaks that protocol, or a documented equivalent, rather than a private SDK call you cannot move.
+- SOAP and WSDL remain the contract if the hosted piece is a Web-service front. The operator running the cluster does not change the description callers use.
+- You still own the deadline, the token policy, and the queue bound. A vendor's scale does not remove Brewer's partition between regions.
+- The manifesto's elasticity is why the hosting helps: replicas and no single box you patch by hand. Back-pressure is still your requirement on the client side.
+- Lock-in is the risk. If the only API is a vendor class that is not AMQP, SOAP, or a published description, you did not buy middleware as a replaceable layer.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/soap12-part1/
+- https://www.w3.org/TR/wsdl20/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactivemanifesto.org/
 </details>
 
 ### Middleware in Enterprise Context
@@ -567,6 +835,23 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+A bus is a central place that routes, transforms, and often inspects every message. A lightweight broker is a transport between two parties, such as AMQP's peer-to-peer protocol.
+
+**How it works:**
+
+- AMQP part 2 is a peer-to-peer protocol for transporting messages between two processes. The application keeps its own logic. The protocol does not require a product that rewrites every message.
+- An enterprise bus tends to own transformation, routing, and policy in one cluster. That can implement the chain of handlers, and it can become the bottleneck the manifesto says to avoid.
+- SOAP plus WSDL is closer to a described call than to a bus. The description is per service. A bus that hides those descriptions makes the contract unreadable.
+- WS-Security can live on the message either way. Centralizing it in the bus is convenient and dangerous if the bus is the only place tokens are checked and the bus is down.
+- Prefer the light transport when the interaction is a business message with a bounded queue. Prefer a bus only when many legacy transforms truly have to live in one mediated place, and give that place replicas and a deadline.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/soap12-part1/
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.reactivemanifesto.org/
 </details>
 
 <details>
@@ -576,6 +861,24 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Two existing systems exchange a business message without sharing a database or a language. AMQP or a SOAP contract is the seam.
+
+**How it works:**
+
+- AMQP is aimed at reliable exchange of business messages between two parties, with a concrete message encoding. A billing system and a warehouse can send those messages without linking their processes.
+- If one side is a Web service, WSDL describes the operation and SOAP carries it. WS-Security puts a token on that envelope so the other enterprise can check who sent it.
+- The middleware is critical because a direct database link would couple their schemas and their outages. A message lets one side be down while the other keeps a bounded queue.
+- That queue is not infinite. Reactive Streams' rule still holds across the integration. A week of undelivered orders is a business incident, not a buffer.
+- When the link partitions, decide which side may proceed. Two writers that both assume the message arrived will diverge, which is Brewer's case.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.w3.org/TR/wsdl20/
+- https://www.w3.org/TR/soap12-part1/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.reactive-streams.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 ### Middleware and Big Data
@@ -587,6 +890,23 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+The enterprise system emits a business message. The processing system reads that stream with a bounded handoff, instead of querying the enterprise database directly.
+
+**How it works:**
+
+- AMQP is the exchange of business messages between two parties. A warehouse event can leave the enterprise system as such a message.
+- Spark can then read files or streams and transform them as RDDs: map applies a function per element, flatMap can turn one record into many. That compute layer is not the enterprise bus.
+- HDFS stores the large file as replicated blocks. The message layer is how events arrive. The file system is where a batch job reads once the bytes are at rest.
+- Do not let the enterprise transaction wait on the whole analytics job. The middleware hop acknowledges the message. The batch is separate. A partition between them is Brewer's problem only for the state you claimed was one copy.
+- Back-pressure matters more as volume grows. Reactive Streams is the rule for the live path. An RDD job is the batch path, with its own partitions.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://spark.apache.org/docs/latest/rdd-programming-guide.html
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://www.reactive-streams.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -596,4 +916,21 @@ The second request for that id returns from memory. A price change deletes the k
 
 **Definition:**
 
+Devices should send a small standard message to a peer that can be slow, not open a private session into the backend database.
+
+**How it works:**
+
+- AMQP's transport is a binary peer-to-peer protocol between two processes over a network. A device or a gateway process can speak that protocol. Part 5 is where security for that hop is specified.
+- The backend then consumes at its own pace. Reactive Streams is the rule if the device is faster than the consumer: credit, not an arbitrary buffer.
+- A SOAP envelope is a poor fit for a tiny device if the XML cost dominates. WSDL still helps at the backend boundary, where a described operation ingests the already-queued message.
+- The manifesto's elasticity matters when many devices wake at once. Replicate the consumer. Do not put one process on the path of every device.
+- A device that cannot store a large backlog needs the queue on the other side, with a deadline and a clear drop or delay policy. Two copies of a reading after a partition must be reconciled. That is Brewer's recovery step, not a reason to let the device retry forever.
+
+**Sources:**
+
+- https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+- https://www.reactive-streams.org/
+- https://www.w3.org/TR/wsdl20/
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>

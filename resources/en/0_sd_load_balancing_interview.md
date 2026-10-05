@@ -1,6 +1,6 @@
 # Load Balancing — Interview
 
-Answers are filled for the published subset; the rest are still empty.
+Answers are filled for every question in this note.
 
 [← Back to hub](./0_system_design.md)
 
@@ -27,20 +27,81 @@ Questions from [Devinterview.io — Load Balancing](https://devinterview.io/ques
 
 **Definition:**
 
-Load balancing spreads incoming work across a pool of servers so no single machine has to carry the whole demand, and so a dead machine can be skipped.
+**Load balancing** is about evenly distributing incoming network traffic across a group of backend servers or resources to optimize system performance, reliability, and uptime.
+
+This distribution increases the throughput of the system by minimizing the response time and maximizing the resources' usage.
 
 **How it works:**
 
-- Clients use one address. The balancer picks a healthy backend and forwards the connection or the request.
-- The usual aims are availability (survive a lost server), scale (add servers instead of a bigger one), and steadier latency.
-- Simple policies: round-robin, weighted round-robin, least connections, least response time.
-- Stickier or smarter policies: hash the client address, route by URL or header, and take a server out when health checks fail.
-- Adaptive policies watch live load. Static ones follow a fixed order and do not care that one server is slower.
-- The balancer is now part of the request path. It needs its own redundancy, or it becomes the outage.
+Key Objectives
 
-**Examples:**
+- **High Availability**: Ensuring that the provided service is robust and uninterrupted, even in the face of server failures.
+- **Scalability**: Accommodating varying levels of traffic without forfeiting performance or reliability.
+- **Reliability**: Consistently providing high-performing and equitable access to resources or services.
 
-Four API processes sit behind one DNS name. Each request goes to the next healthy process. Pull one process out and the other three keep answering. Clients do not store the four addresses.
+Load Balancing Strategies
+
+Round Robin
+
+- **Mechanism**: Requests are allocated to a list of servers in sequential order.
+- **Pros**: Simple to implement; Equal distribution under normal operating conditions.
+- **Cons**: Does not take server load or other performance metrics into account; Effectiveness can vary.
+
+Weighted Round Robin
+
+- **Mechanism**: Servers still rotate in a sequence, but each has a specified weight, influencing how many requests it's assigned.
+- **Pros**: Allows for rough load level management without more complex metric tracking.
+- **Cons**: Inadequate granularity and adaptability for dynamic workloads.
+
+Least Connections
+
+- **Mechanism**: Channels traffic to the server with the fewest existing connections.
+- **Pros**: Can lead to more balanced server loads in many cases.
+- **Cons**: Not always effective with persistent connections or when requests vary significantly in resource requirements.
+
+Least Response Time
+
+- **Mechanism**: Routes new requests to the server with the most efficient and fastest response time.
+- **Pros**: Optimizes for real-time system efficiency.
+- **Cons**: Can become unreliable if server speeds fluctuate or if connections exhibit latency or instability.
+
+Advanced Load Balancing Strategies
+
+IP Hashing
+
+- **Mechanism**: Uses a hash of the client's IP address to decide the server to which it will be sent.
+- **Pros**: Useful for session-specific apps and databases; Can maintain consistency of stateful connections.
+
+Content-Based Routing
+
+- **Mechanism**: Analyzes specific attributes of the incoming request, such as the URL or HTTP header content, to strategically dispatch the traffic.
+- **Pros**: Valuable for multifaceted architectures or when particular requests need to be managed differently than others. Can be combined with other methods for nuanced traffic control.
+
+Health Monitoring and Adaptive Routing
+
+- **Mechanism**: Actively monitors server health using various criteria and dynamically adjusts routing based on the assessments.
+- **Pros**: Crucial for maintaining system reliability and performance, especially in highly dynamic and volatile environments.
+
+Load Balancing Algorithms
+
+- **Adaptive Algorithms**: Utilize real-time data to make traffic distribution decisions.
+- **Non-Adaptive Algorithms**: Rely on predefined parameters to allocate traffic consistently.
+
+Basics of Adaptive and Non-Adaptive Algorithms
+
+- **Adaptive**: Assessments of traffic and server performance are periodic or continuous, using dynamic data to make informed routing choices.
+- **Non-Adaptive**: Traffic and server performance are evaluated based on fixed parameters, making routing choices consistent over time.
+
+Web Service Example
+
+In the context of a modern web service, imagine a popular e-commerce website that uses load balancing. The site operates multiple backend servers, distributing the traffic using a round-robin approach. Each server is designated a specific weight, and the server with the least number of connections receives the next incoming request.
+
+The service also employs adaptive routing algorithms. Regular health checks and performance assessments are conducted, and servers that display signs of deterioration, such as a sudden increase in response time, are temporarily removed from the pool of active servers to ensure the utmost reliability for incoming client requests.
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -50,20 +111,44 @@ Four API processes sit behind one DNS name. Each request goes to the next health
 
 **Definition:**
 
-The point of a load balancer is to use a pool well: share capacity, drop failed members, and keep latency acceptable as traffic grows.
+**Load balancing** primarily aims to achieve **optimal resource utilization**, **enhanced reliability**, and **improved performance** across a network.
 
 **How it works:**
 
-- Spread work so one hot server is not saturated while others idle.
-- Raise reliability: a health check removes a bad member, and the rest keep serving.
-- Cut tail latency by avoiding the overloaded or slow instance.
-- Give you a single place to add capacity. Horizontal scale is “add a backend,” not “resize the only machine.”
-- Hardware appliances, software proxies, and CDN edges are different places to do that job. The objective is the same.
-- A balancer does not fix a slow database behind every server. It only helps when the bottleneck is the pool you are spreading.
+Key Objectives
 
-**Examples:**
+- **Optimizing Resources**: Evenly distributing workload across servers to prevent individual servers from becoming overloaded, and resources from being underutilized.
+- **Enhancing Reliability**: Minimizing service downtime and ensuring high availability by rerouting traffic to healthy servers in case of failures.
+- **Improving Performance**: Reducing response times and ensuring smooth user experience by directing requests to servers that can handle them most efficiently.
 
-Checkout p95 climbs because one of three app servers is at 100% CPU and the other two are at 30%. Least-connections stops sending new work to the hot one. If all three are hot, you add a fourth. The balancer’s job was the uneven spread, not the query.
+How Does it Work?
+
+- **Load Distribution**: Incoming traffic is efficiently distributed among multiple servers, ensuring no single server is overwhelmed.
+
+- **Health Monitoring**: Systems continuously evaluate server health, removing or redirecting traffic from failing or slow servers to healthy ones.
+
+Load Balancing Algorithms
+
+1. **Round Robin**: Cyclically routes traffic to each server sequentially. While simple, it doesn't consider real-time server load.
+
+2. **Least Connections**: Routes traffic to the server with the fewest active connections, ensuring a more balanced workload.
+
+3. **Weighted Round Robin**: Servers are assigned "weights" representing their capacity. Higher-weighted servers receive more traffic, suitable for disparities in server capabilities.
+
+4. **IP Hash**: The client's IP address is hashed to determine which server will handle the request. It's useful in maintaining session persistence.
+
+Implementations
+
+- **Hardware Load Balancers**: Specialized devices designed for traffic management. They ensure high performance but can be costly.
+
+- **Software Load Balancers**: Software-based solutions offer flexibility and can be hosted in the cloud or on-premises. Examples include Nginx, HAProxy, and AWS Elastic Load Balancing.
+
+- **Content Delivery Networks (CDNs)**: They use globally distributed servers to cache and deliver web content, reducing load on origin servers and improving performance. Common CDN providers include Cloudflare, Akamai, and Fastly.
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -73,20 +158,39 @@ Checkout p95 climbs because one of three app servers is at 100% CPU and the othe
 
 **Definition:**
 
-A hardware load balancer is a dedicated appliance. A software load balancer is a program you run on ordinary servers or as a managed cloud service.
+Both hardware and software load balancers are used to ensure **efficient traffic distribution** and to offer services like SSL termination or DDoS protection.
 
-**How it works:**
+Let's look at the Benefits and Limitations of each.
 
-- Appliances are built around packet processing, often with a fixed setup and a vendor support path. They can push high throughput with predictable latency.
-- They cost more up front, scale by buying another box or a license, and are slow to change when you need a new routing rule.
-- Software (NGINX, HAProxy, Envoy, a cloud balancer) runs on commodity machines. You add instances, change config in git, and pay for capacity you use.
-- The limits are the host: CPU for TLS, a learning curve, and the need to operate the proxy yourself unless the cloud runs it.
-- Cloud load balancers are software you do not rack. You still choose algorithms, health checks, and TLS behavior.
-- Many systems use both: an appliance or cloud balancer at the edge, and a software proxy closer to the services.
+**Pluses and minuses:**
 
-**Examples:**
+Benefits of Hardware Load Balancer
 
-A data-center pair of appliances terminates TLS for a legacy VLAN. A Kubernetes cluster uses a software ingress controller for per-service routes. Replacing a route in the second case is a config change. Replacing it on the appliance is a change window.
+- **Optimized Processing**: When specialized hardware is the central controller, the distribution of tasks is generally quicker, leading to better overall performance.
+- **Streamlined Setup**: Many hardware solutions come preconfigured, requiring minimal or **no additional setup**, which is beneficial in quick deployment scenarios.
+- **Reliability**: Hardware is engineered to be robust and resilient, making it a dependable choice.
+
+Limitations of Hardware Load Balancer
+
+- **Cost**: Typically, hardware-based solutions are costlier as they involve a separate physical device.
+- **Scalability**: Hardware load balancers can be inflexible when it comes to scaling. Expanding beyond the initial hardware's capacity can be challenging and might even require complete replacements at times. This can lead to **downtime**.
+
+Benefits of Software Load Balancer
+
+- **Cost Efficiency**: Software-based solutions are often more cost-effective due to their dependency on existing infrastructure, like virtual machines or containers.
+- **Scalability**: Most software load balancers are designed with scalability in mind. They can be **easily replicated** or **scaled up or down**, catering to varying loads and traffic patterns.
+- **Customizability**: Software solutions are flexible and can be tailored to the specific needs of an application or deployment.
+
+Limitations of Software Load Balancer
+
+- **Learning Curve**: Setting up and configuring software load balancers might require technical expertise and more time compared to hardware alternatives.
+- **Resource Usage**: On shared infrastructure, there can be competition for resources, leading to potential bottlenecks.
+- **Performance**: In some cases, especially if the host is under heavy load or lacks the necessary resources, the performance might be inferior to hardware solutions.
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -96,25 +200,132 @@ A data-center pair of appliances terminates TLS for a legacy VLAN. A Kubernetes 
 
 **Definition:**
 
-An algorithm is the rule that picks the next backend. Simpler rules ignore live load. Heavier ones look at connections, latency, or a key from the request.
+**Load Balancing Algorithms** aim to evenly distribute incoming network or application traffic across multiple backend servers. Let's look at the some of the most common methods used for this task.
 
 **How it works:**
 
-- Round-robin walks the list in order, then starts over. Every healthy server gets a turn.
-- Least connections sends the request to the server with the fewest open connections. It favors servers that finish work faster.
-- A hash of the client IP (or a header) always picks the same server for that key, until the pool changes.
-- Weighted round-robin and weighted least connections give a larger machine more turns or a higher connection budget.
-- Least response time prefers the server that has been answering quickly, sometimes combined with connection count.
-- Dynamic policies add health and load samples so a slow member is chosen less often. Content-based rules pick a pool from the URL or a header before the algorithm runs inside that pool.
+Round Robin
+
+**Overview**
+This algorithm sequentially distributes incoming connections to the next available server. Once the last server is reached, the algorithm starts over from the first.
+
+**Advantages**
+- Easy to implement.
+- Fairly balanced.
+
+**Limitations**
+- Not effective if the servers have varying capabilities or loads.
+- Doesn't consider real-time server performance.
+
+Least Connections
+
+**Overview**
+Servers with the least active connections are chosen. This approach is effective in balancing traffic if servers have different capacities.
+
+**Advantages**
+- More effective with servers of varying capabilities and loads.
+
+**Limitations**
+- Can lead to overloading if connections to fast servers are prolonged.
+- Requires continuous monitoring of server loads.
+
+IP Hash
+
+**Overview**
+Using a hash function applied to the client's IP address, a server is selected. This ensures that requests from the same client always go to the same server.
+
+**Advantages**
+- Useful for stateful applications like online gaming and shopping carts.
+- Simplifies client-side session management.
+
+**Limitations**
+- Doesn't account for server loads.
+- Can pose issues for fault tolerance and dynamic scaling.
+
+Weighted Round Robin
+
+**Overview**
+This is an extension of the Round Robin. Here, a weight is assigned to each server based on its capabilities or resources.
+The algorithm distributes connections to servers based on their weights.
+
+**Advantages**
+- Allows biasing the distribution based on server capabilities.
+- Adaptable to server loads by adjusting weights dynamically.
+
+**Limitations**
+- Administrators must handle weights carefully.
+- Conservative approach in dynamically adjusting weights can be a concern in rapidly changing server conditions.
+
+Weighted Least Connections
+
+**Overview**
+Weighted Least Connections adaptively considers both the weights assigned to servers and their current connection loads.
+
+**Advantages**
+- Combines the benefits of Least Connections and Weighted Round Robin.
+- Adaptable to server loads and capabilities.
+
+**Limitations**
+- Management of weights becomes crucial.
+- Requires continuous monitoring to adjust weights and ensure load is distributed optimally.
+
+Source IP Affinity or IP Persistence
+
+**Overview**
+Requests from a particular source IP (like a user or a client) are persistently served by the same server. If that server is unavailable, another server is chosen.
+
+**Advantages**
+- Useful for stateful applications.
+- Helps avoid data inconsistency or loss.
+
+**Limitations**
+- Can neglect server loads.
+- Can cause server imbalances due to sticky sessions.
+
+Least Response Time
+
+**Overview**
+This approach selects the server that has the shortest response time or latency to the client. It is an effective means for providing high-quality user experience.
+
+**Advantages**
+- Focuses on minimizing latency for the best UX.
+- Adaptable to server performance.
+
+**Limitations**
+- Often requires periodic latency measurements.
+- Might not always ensure fair load distribution.
+
+Dynamic Load Balancers
+
+While the traditional algorithms are static in nature, dynamic load balancers harness AI and machine learning to make real-time adjustments, taking into consideration factors like server health, historical performance, and demand patterns.
+
+Advanced Routing Mechanisms
+
+**Overview**
+Modern load balancers employ sophisticated algorithms such as Performance-Based Routing, which direct traffic based on current server performance, offering low latency and high availability.
 
 **Examples:**
 
-```text
-servers = [A, B, C]
-next = servers[i % 3]; i += 1     # round-robin
+Code Example: Round Robin Load Balancing
+
+Here is the Python code:
+
+```python
+class RoundRobinBalancer:
+    def __init__(self, servers):
+        self.servers = servers
+        self.index = 0
+
+    def route(self, request):
+        server = self.servers[self.index]
+        self.index = (self.index + 1) % len(self.servers)
+        return server
 ```
 
-With weights 5, 1, 1, A would be chosen five times for each turn of B and of C. Least connections would ignore that schedule and look at open sockets instead.
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -124,26 +335,51 @@ With weights 5, 1, 1, A would be chosen five times for each turn of B and of C. 
 
 **Definition:**
 
-A sticky session sends later requests from the same client to the same backend, so a server can keep using state it stored locally for that client.
+**Sticky sessions**, also known as session persistency, are a method used by load balancers to ensure that a user's subsequent requests are directed to the same server that handled their initial request.
+
+This approach becomes necessary in cases when the user's session or client state is tied to a specific server. This commonly occurs in stateful applications or certain web frameworks where persistence mechanisms like local server storage or in-memory caching are used.
 
 **How it works:**
 
-- The balancer remembers a key: the client IP, or a cookie it sets on the first response.
-- The next request with that key skips the normal rotation and returns to the same server while the entry lasts.
-- That lets an in-memory session, a websocket, or an upload in progress stay on one process.
-- The cost is uneven load. A busy user pins a server. A dead server drops everyone stuck to it unless you can rebuild the session.
-- Prefer a shared session store or a stateless token. Then any server can take the next request and stickiness is unnecessary.
-- If you keep it, set a timeout and a fallback when the chosen server fails its health check.
+Benefits and Drawbacks
+
+- **Benefits**: Simplifies session management and can enhance application performance by reducing the need for repeated session data lookups or storage updates.
+
+- **Drawbacks**: Can lead to uneven server loads (if client sessions aren't perfectly balanced). It can also reduce the robustness of the system as a whole (because if a server goes down, all the clients with sticky sessions to that server will lose their session).
+
+Implementations
+
+Several load balancing tools and technologies, such as HAProxy, Nginx, and Amazon Elastic Load Balancer (ELB), offer sticky session support. This usually involves configuration and sometimes also specific code or architecture requirements in the backend applications.
 
 **Examples:**
 
-```text
-# first response sets a cookie the balancer understands
-Set-Cookie: SERVERID=b
-# later requests with that cookie go back to b
+Code Example: Using Sticky Sessions in Nginx
+
+Here is the Nginx configuration block to use sticky session:
+
+```nginx
+upstream backend {
+    server backend1.example.com;
+    server backend2.example.com;
+    hash $request_uri consistent;
+}
+
+server {
+    listen 80;
+    location / {
+        proxy_pass http://backend;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+    }
+}
 ```
 
-Without the cookie, round-robin would land the next call on A, which has never seen this user’s cart.
+The `hash` and `consistent` modifiers ensure that requests matching a particular hash value (commonly based on a client's attributes, like IP address or session ID) are consistently directed to the same server.
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -153,20 +389,36 @@ Without the cookie, round-robin would land the next call on A, which has never s
 
 **Definition:**
 
-Reliability improves because a failed or overloaded instance stops being a single point of failure for the whole service. The pool answers while that instance is out.
+**Load balancing** can greatly enhance the reliability of applications. It achieves this through several key mechanisms, making it an integral part of high-availability infrastructures.
 
 **How it works:**
 
-- More than one backend means the service survives a crash, a deploy, or a full disk on one machine.
-- Health checks stop sending traffic to a member that is down or too slow, and put it back when it recovers.
-- Spreading connections avoids a pile-up on one process that would otherwise time out everyone.
-- TLS can end at the balancer so every backend is not a separate certificate problem. That is convenience. The reliability piece is still the pool.
-- Session stickiness and a local cache cut against this: they make one server special. Shared state keeps any survivor able to serve.
-- The balancer itself must be redundant (a pair, or an anycast cloud balancer). One proxy is a new single point of failure.
+Key Benefits
 
-**Examples:**
+- **Increased Throughput**: Load balancers can distribute incoming requests across a cluster of servers, ensuring efficient use of resources.
 
-Two app servers and a balancer. You restart one for a deploy. Health checks mark it down, the other takes the traffic, and the restarted one rejoins when `/ready` succeeds. Users see a blip only for requests that were already on the restarting process.
+- **Redundancy**: In several real-world scenarios, multiple application servers exist to prevent a single point of failure. A load balancer directs traffic away from any failing instances.
+
+- **Resource Optimization**: Load balancers enable dynamic allocation of resources, adjusting server workloads based on current traffic conditions.
+
+- **SSL Termination**: Certain load balancers can offload SSL/TLS encryption and decryption work from the servers, improving their overall efficiency.
+
+- **Health Monitoring**: Load balancers often perform health checks on servers in the pool, ensuring they are operational before sending traffic their way.
+
+How Load Balancing Enhances Reliability
+
+- **SSL Termination**: Instead of individual servers handling SSL/TLS connections, the load balancer does so, reducing this overhead on the server's end.
+
+- **Session Persistence**: When necessary, load balancers can ensure that requests from the same client are sent to the same server. This is important for maintaining session state in stateful applications.
+
+- **Database Connection Pooling**: Load balancers manage the pool of connections, providing a consistent connection experience for clients.
+
+- **Fault Tolerance With Clustering**: Load balancers are often set up in clusters themselves for fault tolerance, ensuring uninterrupted service.
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -176,25 +428,71 @@ Two app servers and a balancer. You restart one for a deploy. Health checks mark
 
 **Definition:**
 
-A health check decides whether a backend may receive traffic. Active checks probe on a timer. Passive checks watch the real requests you already sent.
+**Health checks**, also known as **heartbeat monitoring**, are vital for ensuring that backend servers in a load balancer pool are operational. Health checks can be either active or passive.
 
 **How it works:**
 
-- An active check opens a TCP port or sends HTTP `GET /ready` every few seconds. A timeout, a refused connection, or a non-2xx marks the member down after a small number of failures.
-- The path should mean “I can serve,” not merely “the process is listening.” A ready check that depends on the database fails when the database is gone.
-- A passive check counts errors and timeouts on live traffic. Too many, and the member is removed without a separate probe.
-- Passive checks spend nothing when traffic is quiet, and they see the failures users see. They are slow to notice a server that is down but not being hit.
-- Use both: a probe for machines with no traffic, and error rates for machines that are up but failing requests.
-- When the member passes again for N successes, it returns to the pool. Do not flap it on a single success.
+Active Health Checks
+
+Active health checks involve the load balancer directly testing the server's health. Typically, it sends a small, defined request and expects a specific response to determine the server's current status. If the server meets the predefined criteria, it is considered healthy and stays in rotation. Otherwise, it is marked as unhealthy and taken out.
+
+This process is useful in detecting a wide range of potential problems, from the server being offline to specific service misconfigurations.
+
+Example: HTTP GET Request
+
+The load balancer sends an HTTP GET request to a predefined endpoint, like `/health`. It expects a 200 OK response to consider the server healthy.
+
+Passive Health Checks
+
+Passive health checks rely on external signals to determine the server's state. These signals may come from several sources, such as the servers themselves reporting their status or other monitoring systems sending data to the load balancer.
+
+Benefits of Passive Health Checks
+
+Multiple signals indicating a problem can give a more accurate picture of the server's state, reducing false positives and negatives.
+
+For example, a server may still be serving HTTP 200 OK, but warning logs could indicate an impending issue effectively.
 
 **Examples:**
 
-```text
-GET /ready every 5s, timeout 1s
-unhealthy after 3 failures, healthy after 2 successes
+Code Example: Implementing Health Checks in Node.js
+
+Here is the Node.js code:
+
+```javascript
+const http = require('http');
+
+// Define a health-check endpoint
+const healthCheckPath = '/_healthcheck';
+
+// Set up a simple HTTP server
+const server = http.createServer((req, res) => {
+    if (req.url === healthCheckPath) {
+        res.writeHead(200);
+        res.end();
+    } else {
+        // Process normal traffic here
+    }
+});
+
+// Start the server
+server.on('listening', () => {
+    console.log(`Server is listening on port ${server.address().port}`);
+});
+
+server.listen(3000);
+
+// Gracefully handle server shut down events
+process.on('SIGINT', () => {
+    server.close(() => {
+        console.log('Server gracefully shut down.');
+    });
+});
 ```
 
-A process that accepts TCP but returns 500 from `/ready` is removed. A TCP-only check would have kept sending it users.
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -204,20 +502,26 @@ A process that accepts TCP but returns 500 from `/ready` is removed. A TCP-only 
 
 **Definition:**
 
-Round-robin gives each healthy server the next request in turn. It is simple and fair only when every request costs about the same and every server is the same size.
+**Round-robin load balancing** distributes traffic evenly across servers, and is especially effective when servers exhibit homogenous performance.
 
-**How it works:**
+**Pluses and minuses:**
 
-- Advantage: trivial to implement and explain. No per-server counters beyond the rotating index.
-- Advantage: over many short, similar requests, each server receives about the same count.
-- Disadvantage: a long request counts as one turn. One server can be busy with a heavy call while the next light call still lands on it.
-- Disadvantage: a slower or smaller machine gets the same share as a fast one, so it queues.
-- Disadvantage: it ignores response time. A server that is erroring but still “up” keeps its turn until a health check removes it.
-- Use it for equal servers and cheap, similar work. Move to least connections or weights when request cost or machine size varies.
+Advantages
 
-**Examples:**
+- **Simplicity**: The round-robin algorithm is straightforward to implement and manage.
 
-Three identical stateless API servers and 1 ms handlers: round-robin is enough. The same rotation in front of image resizing, where one request takes 2 seconds, piles those jobs onto whoever’s turn it is. Least connections would skip the server already resizing.
+- **Equal Distribution**: It ensures that all servers receive an equivalent number of requests, promoting balance in the system.
+
+Disadvantages
+
+-  **No Benefit from Caching**: The lack of session affinity, or sticky sessions, might hinder the advantages of caching, instead leading to cache misses.
+
+- **Performance Variability**: Servers' differing performance or computational loads might not be optimally accommodated, potentially leading to latency or throughput issues.
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -227,20 +531,44 @@ Three identical stateless API servers and 1 ms handlers: round-robin is enough. 
 
 **Definition:**
 
-Least connections sends the next request to the backend that currently has the fewest open connections. It tracks in-flight work, not just whose turn it is.
+**Least Connections** is a key method for **load balancing**, ensuring that traffic is consistently directed to the server with the fewest active connections.
 
 **How it works:**
 
-- A long request holds a connection. Round-robin does not notice. Least connections does, and prefers a server that has already finished.
-- That fits HTTP/1.1 keep-alive, websockets, and any mix of cheap and expensive calls.
-- It assumes one connection is one unit of load. A server with few connections but a huge CPU job can still be the wrong pick. Pair it with response time or a weight if costs differ that much.
-- The balancer must see the connections. If something else terminates them, the counts lie.
-- New servers start at zero connections, so they can be flooded on join. A slow-start ramp avoids that.
-- Weights scale the comparison: a machine twice as large can hold twice as many connections before it looks “busier.”
+Importance of Load Balancing
+
+- **Efficient Resource Usage**: By evenly distributing incoming traffic, the system strives to prevent any single application or server from being overburdened, leading to optimal resource employment.
+  - **High Availability**: In the event of malfunctions or traffic spikes, a load balancer can redirect requests away from problematic servers to those better equipped to handle the load.
+  - **Improved Scalability**: Load balancers are a pivotal tool in auto-scaling scenarios as they can seamlessly distribute incoming traffic among a larger number of instances.
+  - **Enhanced Security**: Certain load balancing strategies enhance security, such as SSL offloading, which allows the load balancer to manage encryption and decryption, alleviating this task from backend servers.
+
+The Significance of "Least Connections" Method
+
+- **Fair Request Allocation**: This method aims to manage server workload effectively by directing traffic to the least busy server, ensuring servers aren't overloaded.
+  - **Optimum Throughput**: As stated above, this method helps make sure connections are distributed evenly among available servers, thereby avoiding server bottlenecks and maintaining optimal performance.
+  - **Consistent Response**: Even though perfect balance might be challenging in practice, load balancer algorithms like "Least Connections" ensure attempts are made to keep response time and throughput consistent across servers.
 
 **Examples:**
 
-Server A has 40 open downloads. Server B has 3. The next request goes to B even if round-robin would have chosen A. When a download on A finishes, A’s count drops and it becomes eligible again.
+Code Example: Least Connections Algorithm
+
+Here is the Python code:
+
+```python
+def least_connections_server(servers):
+    return min(servers, key=lambda server: server.active_connections)
+```
+
+In the above example:
+
+- `servers` is a list of available server objects.
+- `active_connections` represents the current number of active connections on a server.
+- The `min` function, with `key` set to a lambda function, returns the server object with the minimum active connections.
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -250,21 +578,78 @@ Server A has 40 open downloads. Server B has 3. The next request goes to B even 
 
 **Definition:**
 
-When a server fails, the balancer stops sending it new work and keeps serving from the members that are still healthy.
+**Load Balancers** manage multiple servers. When one fails, the **Load Balancer** no longer directs traffic to it, ensuring seamless functionality. Here is a list of mechanisms it uses.
 
 **How it works:**
 
-- Active probes or a run of real errors mark the member down. In-flight requests on it fail. New requests go to the others.
-- The algorithm (round-robin, least connections, weighted) then runs only on the remaining set.
-- Sticky clients of the dead server must be reassigned or they keep failing. A shared session store makes that reassignment painless.
-- If TLS ends at the balancer, backends can die without clients renegotiating with a new certificate.
-- One balancer is not enough. A second balancer, or a cloud balancer with its own failover, has to take over the virtual address.
-- Put the member back only after consecutive successful checks. Optionally drain it first on a planned stop so existing connections finish.
-- A backup pool (a smaller standby group) can take overflow when the primary pool is too small after the loss.
+Server Health Checks
+
+The load balancer continuously monitors server health, often through periodic checks. If a server misses several health checks, it's presumed **unavailable** and taken out of rotation.
+
+Load Balancing Algorithms
+
+Load balancers deploy various **algorithms** to route traffic to available servers:
+
+- **Round Robin**: Cyclically directs traffic to servers in a queue.
+- **Least Connections**: Sends traffic to the server with the fewest active connections, promoting efficiency.
+- **Weighted Round Robin**: Accounts for server capacity by assigning weights. Servers with higher weights handle more traffic.
+
+SSL Termination
+
+For secure connections using HTTPS, the load balancer might employ SSL Termination, decrypting incoming requests and re-encrypting responses. This can create performance discrepancies.
+
+Sticky Sessions
+
+When a user establishes a session, the load balancer routes subsequent requests from that user to the same server. This ensures session state is maintained.
+
+Redundant Load Balancers
+
+To avert potential load balancer failures, a backup or secondary load balancer might be deployed, ensuring no single point of failure.
+
+Elastic Scalability
+
+Modern load balancers, especially in cloud environments, support elastic scalability. This means they can quickly adapt, managing more servers in response to increased traffic.
+
+Ensuring Data Consistency
+
+With multiple servers catering to database operations, maintaining data consistency is crucial. Load balancers may use techniques such as server affinity or database locking to ensure this.
+
+Service Health Metrics
+
+Additionally, a load balancer might record various metrics of server health, such as response times and error rates.
+
+Deploying Backup Servers
+
+Some load balancers are designed to have a pool of backup servers, which only become active when the primary servers fail. This setup can be particularly useful for managing unexpected spikes in traffic or cloud infrastructure issues.
 
 **Examples:**
 
-Three servers, one fails `/ready` three times. The balancer’s rotation becomes the other two. A user whose cookie pointed at the dead server is sent to a live one on the next request. Ten minutes later the server passes two checks and re-enters the rotation.
+Example: Nginx Configuration
+
+Here’s a `Nginx` configuration using the `upstream` module for load balancing and server monitoring:
+
+```nginx
+http {
+    upstream myapp1 {
+        server backend1.example.com weight=5;
+        server backend2.example.com;
+        server backend3.example.com;
+
+        # Health check
+        check interval=3000 rise=2 fall=3 timeout=1000;
+
+        # Backup server
+        backup;
+    }
+
+    ...
+}
+```
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 ### Load Balancing Strategies
@@ -276,19 +661,32 @@ Three servers, one fails `/ready` three times. The balancer’s rotation becomes
 
 **Definition:**
 
-Stateless backends can take any request, so the balancer is free to use a pure spreading algorithm. Stateful backends remember the client, so the balancer has to keep sending that client to the same place or the state has to move.
+**Load balancers** handle traffic distribution differently in stateless and stateful scenarios, often using different algorithms for each.
 
 **How it works:**
 
-- Stateless: each request carries what the server needs (a token, an idempotency key). Round-robin or least connections is enough. Any survivor handles the next call.
-- Stateful: the server holds a session, a websocket, or a partial upload in memory. The balancer uses a cookie or an IP hash (stickiness) so the next packet hits that memory.
-- Stateful distribution is uneven and fragile when that server dies. The state is gone unless it was also written somewhere shared.
-- The usual fix is to make the tier stateless from the balancer’s point of view: session in Redis, files in object storage. The algorithm goes back to pure spreading.
-- Do not confuse “stateful balancer” with “stateful app.” The balancer can remember a sticky map even when you wish the app did not need it.
+Stateless Behavior
 
-**Examples:**
+In a "stateless" setup, each **user request** is independent.
 
-`GET /products/1` with no session is stateless: any of four servers may answer. A websocket chat pinned by cookie is stateful: only the server that accepted the upgrade has the socket. Putting chat messages in a shared bus lets a reconnect land anywhere.
+Traffic Distribution
+
+- **Algorithm**: Round Robin or IP Hash
+- **Mechanism**: The load balancer selects the next available server, bearing in mind server weights if applicable.
+
+Stateful Behavior
+
+In a "stateful" setup, there is a **persistent connection** between a user and a server due to ongoing **session data**.
+
+Traffic Distribution
+
+- **Algorithm**: Least Connection or Session Stickiness
+- **Mechanism**: To maintain session continuity, the load balancer consistently directs a user to the server where the session was initially established. Common methods for achieving this include **source-IP affinity** and **HTTP cookie-based persistence**.
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -298,20 +696,49 @@ Stateless backends can take any request, so the balancer is free to use a pure s
 
 **Definition:**
 
-Session persistence means the balancer keeps choosing the same backend for a client so that client’s session remains valid. It matters when that session lives on one server.
+**Session Persistence**, often called **Session Stickiness**, is a technique used in **load balancing** to ensure that all requests from a single client are directed to the same server.
 
 **How it works:**
 
-- Users stay logged in, multi-step forms keep their place, and a server-side cart does not vanish between requests.
-- A write that must see the previous write on the same process also depends on it, until you move that sequence to a shared store.
-- Mechanisms: a sticky cookie, source-IP affinity, or a consistent hash of a session id.
-- The better long-term mechanism is not persistence at all: put the session in a store every server can read. Then persistence is optional.
-- Avoid it when it pins too much traffic to one machine, when clients share one NAT address (IP affinity then sticks a whole office), or when you need to drain a server freely.
-- If you use it, expire the map and reassign on health-check failure so a dead server does not trap the user.
+Importance of Session Persistence
 
-**Examples:**
+- **User Experience**: Many applications, like e-commerce platforms or social media sites, tailor user experiences based on session-state information. For instance, a shopping cart typically requires persistence.
 
-A checkout wizard stores step 2 only in process memory. Without persistence, step 3 hits another process and the wizard restarts. Moving the wizard state to the session store lets any server render step 3, and the balancer can round-robin again.
+- **Database Consistency**: To maintain integrity, certain operations must be carried out consistently on a single server, especially in **multi-tier architecture** and **stateful applications**.
+
+- **Security**: Ensuring client-server proximity can minimize potential security risks, like cross-site request forgery (**CSRF**).
+
+How Load Balancer Manages Flexibility and Statelessness
+
+Modern web architectures, favoring statelessness and flexibility, resolve these issues primarily through **intelligent design** and **session storage**.
+
+Techniques
+
+- **Round-Robin**: This technique rotates request distribution among servers in a circular manner. It's simple but doesn't guarantee that all client requests will go to the same server.
+
+- **Sticky Sessions**: Also known as **Session Affinity**, this method uses mechanisms, such as **HTTP cookies** or **dynamic rule-designators**, to direct a client to the same server for the duration of its session.
+
+- **Load Balancer Persistence Modes**: Some advanced load balancers offer specific algorithms to maintain session stickiness. Common modes include:
+  - Source IP Affinity
+  - Cookie-Based Persistence
+  - SSL Persistence
+
+- **Shared Session State Across Servers**: By centralizing session data in a **shared database** or **cache**, all servers under the load balancer can access this data, ensuring session uniformity.
+
+When to Avoid Session Persistence
+
+While it can help with efficiency in certain scenarios, it's essential to recognize when **session persistence** might not be the best choice:
+
+- **Server Overload**: If a particular server is overwhelmed with session-bound traffic, session persistence can exacerbate the problem.
+
+- **Scalability**: As your traffic grows, session persistence can lead to scalability challenges since it restricts client-server flexibility.
+
+- **Operational Challenges**: Tools like **content caching** or load balancer alterations can become less effective or difficult to manage with session stickiness in place.
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -321,25 +748,52 @@ A checkout wizard stores step 2 only in process memory. Without persistence, ste
 
 **Definition:**
 
-DNS load balancing hands different clients different IP addresses for one name, so they connect to different servers before any proxy sees the packet.
+While not a direct load balancer, **Domain Name System (DNS)** skillfully complements load balancing to distribute traffic among multiple servers.
 
 **How it works:**
 
-- Round-robin DNS returns several A or AAAA records and rotates their order. Resolvers and clients pick one.
-- It is simple and has no proxy hop. It also has weak control: caches ignore your TTL, and a dead IP keeps being handed out until caches expire.
-- There is no per-request health check in plain DNS. A record can point at a server that is already down.
-- Weighted or geo DNS (often a DNS service, not a static zone) returns an address based on region or a weight. That is how global traffic is steered.
-- Clients that pin one answer stay there. You cannot rebalance an open connection by changing DNS.
-- Use DNS to choose a site or a balancer. Use a real balancer behind that address to choose a live process.
+DNS Mechanisms for Load Balancing
+
+1. **Round Robin (RR)**:
+   DNS servers traditionally leverage RR to cycle through multiple IP addresses that correspond to various servers in a load balancing pool. While it's simple and easy to administer, RR can't dynamically adjust traffic based on server loads.
+
+2. **Weighted Round Robin (WRR)**:
+   Builds on RR by assigning each IP address a weight based on server capabilities or capacities, thereby directing more or less traffic to each server.
+
+3. **Least Connections**:
+   More advanced load balancing mechanisms, like Weighted Least Connections, incorporate intelligence about the number of active connections on servers to route traffic effectively.
+
+4. **Geographical Load Balancing**:
+   DNS can also be optimized to manage traffic based on global geography, directing users to the closest server to minimize latency.
 
 **Examples:**
 
-```text
-shop.example.  30  IN  A  203.0.113.10
-shop.example.  30  IN  A  203.0.113.11
+Code Example: Simple Round Robin DNS
+
+Here is the Python code:
+
+```python
+from itertools import cycle
+
+# Replace with actual server IPs
+server_ips = ["192.168.1.1", "192.168.1.2", "192.168.1.3"]
+
+# Use cycle for round-robin behavior
+server_cycle = cycle(server_ips)
+
+# Simulate DNS query
+def get_next_server():
+    return next(server_cycle)
+
+# Test with multiple queries
+for _ in range(6):
+    print(get_next_server())
 ```
 
-Half the resolvers try the first address. If `.10` dies, those clients fail until the record ages out. A balancer at each address can still fail over inside the site without waiting on DNS.
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -349,26 +803,73 @@ Half the resolvers try the first address. If `.10` dies, those clients fail unti
 
 **Definition:**
 
-Use weights when backends should not get equal shares: they differ in size, you are canarying a release, or you are draining a machine.
+**Weighted Load Balancing** adjusts server traffic in a manner that doesn't merely distribute load evenly across all servers. Instead, weighted balancing allows for load assignment depending on server capacities and resource allocation levels.
 
 **How it works:**
 
-- A weight is a relative share. Weights 5 and 1 send about five requests to the first server for each one to the second, in weighted round-robin.
-- Weighted least connections scales how many connections count as “full” on a bigger box.
-- A new version can take weight 1 while the old takes 9, so a canary sees a slice of traffic.
-- A server you are about to remove gets weight 0, finishes what it has, and then leaves.
-- Weights do not fix a server that is unhealthy. Health checks still remove it. A high weight on a sick server just fails more users until the check trips.
-- Revisit weights when you resize a machine. A leftover “5” on a small VM recreates the overload you meant to avoid.
+Common Use-Cases
+
+1. **Performance Optimization**: In instances with heterogeneous servers, you might benefit from routing more traffic to more capable servers.
+
+2. **Cost-Effective Scaling**: In cloud or virtual environments where servers are billed based on resource usage, weighted balancing can be used to minimize costs.
+
+3. **Task Segregation**: For unique server tasks, you can distribute load based on task requirements, leveraging weighted balancing.
+
+4. **Disaster Recovery Preparedness**: In setups with dedicated backup systems, such as active-passive configurations, keeping a portion of the server capacity unused is crucial for swift transitions in case of calamities.
 
 **Examples:**
 
-```text
-A weight 9   # current release, large instances
-B weight 1   # canary
-C weight 0   # draining
+Code Example: Round-Robin with Weights
+
+Here is the Python code:
+
+```python
+from itertools import cycle
+
+class WeightedRoundRobinBalancer:
+    def __init__(self, servers):
+        self.servers = servers
+        self.weights = {server: servers[server]['weight'] for server in servers}
+        self.cycle = cycle(self._expand_servers())
+
+    def _expand_servers(self):
+        expanded = [[key] * self.weights[key] for key in self.weights]
+        flattened = [item for sublist in expanded for item in sublist]
+        return flattened
+
+    def next_server(self):
+        return next(self.cycle)
 ```
 
-About 90% of new requests go to A, 10% to B, and none to C. Raise B’s weight only after its error rate looks like A’s.
+Code Example: Testing the Round-Robin Weighted Balancer
+
+Here is the Python code:
+
+```python
+servers = {
+    'Server1': {'ip': '192.168.1.1', 'weight': 5},
+    'Server2': {'ip': '192.168.1.2', 'weight': 3},
+    'Server3': {'ip': '192.168.1.3', 'weight': 2}
+}
+
+# Create and initialize WeightedRoundRobinBalancer
+wrr = WeightedRoundRobinBalancer(servers)
+
+# Test the Balancer by firing 10 requests
+results = {server: 0 for server in servers}
+for _ in range(10):
+    server = wrr.next_server()
+    results[server] += 1
+
+# Print the results
+for server, count in results.items():
+    print(f'{server} received {count} requests. (Weight: {servers[server]["weight"]}, IP: {servers[server]["ip"]})')
+```
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -378,20 +879,34 @@ About 90% of new requests go to A, 10% to B, and none to C. Raise B’s weight o
 
 **Definition:**
 
-A load balancer is one of the places that can absorb or shed abusive traffic before it reaches the application. It is not a complete defense by itself.
+Load balancers are essential in distributing traffic across servers to optimize performance. They also play a crucial role in mitigating DDoS attacks by detecting and filtering malicious traffic.
 
 **How it works:**
 
-- The pool has more capacity than one server, so a modest flood is spread instead of melting a single process.
-- Rate limits and connection caps per client address shed traffic that exceeds a budget. Legitimate bursts need a budget that is not tiny.
-- The edge can drop traffic that never completes a handshake, and can challenge obvious bots, so the origin only sees clients that finish the check.
-- Anycast and a large edge network (a CDN or a cloud balancer) sink volumetric floods far from your origin. Your own two proxies cannot.
-- Health checks must not mark every server down just because the flood made them slow, or the balancer will empty the pool and finish the outage.
-- Application attacks (abusive but well-formed requests) need limits and a firewall at the edge. Spreading them evenly still does the damage, only on more servers.
+How Load Balancers Mitigate DDoS Attacks
+
+1. **Traffic Distribution**: Load balancers ensure equitable traffic distribution across multiple servers, which prevents the overloading of a single server and distribution of attack traffic.
+
+2. **Layer 4 SYN Flood Protection**: Modern load balancers can mitigate SYN flood attacks, which flood servers with TCP connection requests, by employing intelligent connection tracking and state management.
+
+3. **Layer 7 Application DDoS Protection**: Advanced load balancers can detect application layer (Layer 7) DDoS attacks by monitoring HTTP and HTTPS requests. They can also identify and filter out malicious traffic patterns targeting specific URLs or application endpoints.
+
+4. **Behavior-based Detection**: Some load balancers leverage real-time traffic analysis that can identify abnormal behavior, such as excessive requests from a single source, and dynamically adjust traffic flow accordingly.
 
 **Examples:**
 
-A spike of connection attempts hits the cloud balancer. Per-address limits and handshake checks drop most of them. The origin’s autoscaling adds two instances for the traffic that remains. The application still has its own limit on expensive search calls, because those look like normal HTTP.
+Code Example: SYN Flood Protection with iptables
+
+Here is the `iptables` configuration
+
+```bash
+sudo iptables -A INPUT -p tcp --syn -m limit --limit 1/s --limit-burst 3 -j ACCEPT
+```
+
+**Sources:**
+
+- [Devinterview.io — Load Balancing](https://devinterview.io/questions/software-architecture-and-system-design/load-balancing-interview-questions/)
+
 </details>
 
 <details>
@@ -401,6 +916,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The Elastic Load Balancing page does not use the words horizontal and vertical. It adds registered targets and Availability Zones, and it scales the load balancer as traffic changes.
+
+**How it works:**
+
+A load balancer node in each enabled Availability Zone routes only to healthy targets. Application Load Balancers must use at least two Availability Zones. As traffic changes, Elastic Load Balancing scales the load balancer and updates DNS, whose TTL is 60 seconds. A bigger machine for one target is not described. Targets that sit in an Availability Zone you did not enable receive no traffic.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -410,6 +934,19 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Pick the balancer by the routing algorithm the page documents, and by whether traffic should cross Availability Zones.
+
+**How it works:**
+
+An Application Load Balancer evaluates listener rules in priority order and then uses the target group’s algorithm. The default is round robin. A Network Load Balancer uses a flow hash of protocol, source IP and port, destination IP and port, and TCP sequence number, and keeps each TCP connection on one target. A Classic Load Balancer uses round robin for TCP and least outstanding requests for HTTP and HTTPS. With cross-zone balancing off, a node sends only to targets in its own zone. The page’s example is two targets in one zone and eight in the other: without cross-zone, those two each get 25 percent and the eight each get 6.25 percent. With cross-zone, each of the ten gets 10 percent.
+
+**When to use:**
+
+Use an Application Load Balancer when you have listener rules and want the default round robin. Use a Network Load Balancer when each TCP connection must stay on one target. Turn cross-zone on when targets are spread unevenly across zones.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -419,6 +956,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page does not define global server load balancing. Locally, Amazon DNS returns the IP of a load balancer node, and that node picks a healthy target.
+
+**How it works:**
+
+Route 53 is what the page says answers with a node IP. The DNS TTL is 60 seconds. A zonal shift, which is an Application Recovery Controller capability, stops the load balancer sending traffic for that resource to one impaired Availability Zone. You can shift only one zone at a time. In-progress connections there can take up to a few minutes to finish.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 ### Load Balancer Configuration & Performance
@@ -430,6 +976,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page’s health signal is whether a registered target is healthy. It does not publish a metric list.
+
+**How it works:**
+
+Unhealthy targets receive no new traffic until they are healthy again. Cross-zone on or off changes what share each target gets, which the page calculates for a 2-and-8 split. DNS TTL is 60 seconds. Application Load Balancer header limits are hard: request line 16 K, one header 16 K, response headers 32 K, request headers 64 K.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -439,6 +994,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+A listener is a protocol and a port from clients to the load balancer, and another protocol and port from the load balancer to the targets.
+
+**How it works:**
+
+Application Load Balancers support HTTP/2 on the front only with HTTPS listeners, up to 128 parallel requests on one HTTP/2 connection. The back end is HTTP/1.1 by default, and can be set to HTTP/2 or gRPC. The page does not walk through installing a certificate.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -448,6 +1012,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Direct server return is not on this page. Targets receive requests on private IP addresses from the load balancer.
+
+**How it works:**
+
+Both internet-facing and internal load balancers send to targets using private IPs, so the targets do not need public addresses. The return path that bypasses the load balancer is not described.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -457,6 +1030,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page does not describe a cache. It does describe connection multiplexing, which it says improves latency and reduces load on the application.
+
+**How it works:**
+
+Application and Classic Load Balancers can send requests from many client connections through one backend connection. Setting Connection: close on the response disables that reuse. They support pipelined HTTP on the front and not on the back.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -466,6 +1048,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page’s multi-tier pattern is an internet-facing load balancer for web servers and an internal load balancer for application servers.
+
+**How it works:**
+
+Internet-facing nodes have public IPs. Internal nodes have only private IPs, and clients must be able to reach the VPC. Web servers call the internal balancer; application servers never need a public address. The page does not discuss service discovery.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -475,6 +1066,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page says the load balancer monitors registered targets and routes only to healthy ones. It does not list the health-check settings.
+
+**How it works:**
+
+An unhealthy target stops receiving traffic. Traffic resumes when the target is healthy again. A target in a disabled Availability Zone stays registered and still receives nothing. Application Load Balancers require two or more enabled zones.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -484,6 +1084,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page does not name connection draining. The closest behavior is a zonal shift: existing connections in the affected zone can take up to a few minutes to complete.
+
+**How it works:**
+
+During that shift the load balancer stops sending new traffic for the resource to that Availability Zone. Disabling a zone also stops new traffic there while leaving the targets registered. No deregistration delay value is published.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 ### Load Balancing in Cloud and Hybrid Environments
@@ -495,6 +1104,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+This page documents Elastic Load Balancing only. It does not compare Azure Load Balancer or an on-premises appliance.
+
+**How it works:**
+
+An AWS load balancer accepts clients on listeners, monitors target health, and routes to healthy targets in enabled Availability Zones. Internet-facing nodes have public IPs. Internal nodes have private IPs. DNS for the balancer is in amazonaws.com, with a 60-second TTL.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -504,6 +1122,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page says Elastic Load Balancing scales the load balancer as application traffic changes, and updates DNS. It does not describe an Auto Scaling group.
+
+**How it works:**
+
+The DNS TTL is 60 seconds so node addresses can be remapped. You still register targets, and each enabled zone should have at least one. Scaling the load balancer is not the same statement as scaling the target fleet.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -513,6 +1140,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Multi-cloud balancing is not on this page.
+
+**How it works:**
+
+What the page does describe is more than one Availability Zone inside AWS. If one zone is unavailable or has no healthy targets, the load balancer can use healthy targets in another enabled zone. A zonal shift removes one zone. Cross-region and other clouds are not described.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -522,6 +1158,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page’s private-plus-public layout is an internet-facing load balancer in front of web servers and an internal load balancer in front of application servers.
+
+**How it works:**
+
+Clients on the internet hit the public nodes. Application servers have only private addresses and receive traffic from the internal balancer. That is two schemes, internet-facing and internal, not a named hybrid-cloud product.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 ### Advanced Load Balancing Topics
@@ -533,6 +1178,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Cross-region load balancing is not on this page. The documented zone control is inside one Region.
+
+**How it works:**
+
+Enable multiple Availability Zones so a failed zone does not stop routing. A zonal shift moves one resource away from one impaired zone in that Region. It cannot target multiple zones at once. The page does not say when a second Region is required.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -542,6 +1196,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page does not say the balancer matches on Content-Type. An Application Load Balancer does choose a listener rule by priority and then a target group.
+
+**How it works:**
+
+Routing is independent per target group, even if one target is in several groups. The default algorithm inside the group is round robin. The conditions a rule may test are not listed on this page.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -551,6 +1214,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Stop new traffic before the server goes away. Marking a target unhealthy does that. Disabling its Availability Zone also stops traffic while the target stays registered.
+
+**How it works:**
+
+A zonal shift stops new traffic to the impaired zone and allows in-progress connections there to finish, typically within a few minutes. The page does not name a drain timeout you configure on the target.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -560,6 +1232,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+An API gateway is not on this page.
+
+**How it works:**
+
+The documented front is the listener. Application Load Balancers accept GET, HEAD, POST, PUT, DELETE, OPTIONS, and PATCH, and add X-Forwarded-For, X-Forwarded-Proto, and X-Forwarded-Port. That is the load balancer’s own front, not a gateway product.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -569,6 +1250,19 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page does not name affinity. A Network Load Balancer does keep one TCP connection on one target for the life of that connection.
+
+**How it works:**
+
+Its flow hash uses protocol, source IP and port, destination IP and port, and TCP sequence number. Different source ports from the same client can land on different targets. An Application Load Balancer’s default is round robin, chosen independently for each target group. There is no cookie setting on this page.
+
+**When to use:**
+
+Use the Network Load Balancer’s per-connection routing when the connection itself must stay on one target. Use the Application Load Balancer default when each request may go to the next healthy target.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -578,6 +1272,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page’s targets are registered endpoints such as EC2 instances. Docker and Kubernetes are not named.
+
+**How it works:**
+
+You register targets, enable the Availability Zone they run in, and the node routes to healthy ones. IP target groups can be IPv4 or IPv6. The page does not describe a pod or a Service.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -587,6 +1290,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page does not use the words reverse proxy. The load balancer accepts the client connection and opens its own connection to a target’s private IP.
+
+**How it works:**
+
+Application and Classic Load Balancers add X-Forwarded-For, X-Forwarded-Proto, and X-Forwarded-Port, and they multiplex many front connections onto one backend connection. Application Load Balancers lowercase hostnames before forwarding. After a WebSocket upgrade, listener rules no longer apply.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -596,6 +1308,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Application Load Balancers support an upgrade from HTTP to WebSockets. After the upgrade, listener routing rules and AWS WAF integrations no longer apply.
+
+**How it works:**
+
+A Network Load Balancer already pins each TCP connection to one target for the life of the connection, which is the persistent-connection behavior on that balancer. Gateway Load Balancers keep a flow on one appliance using a 5-tuple hash and GENEVE on port 6081.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -605,6 +1326,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Machine learning is not on this page. The documented choices are fixed algorithms.
+
+**How it works:**
+
+Application Load Balancer default is round robin after rule priority. Network and Gateway Load Balancers hash the flow. Classic Load Balancers use round robin for TCP and least outstanding requests for HTTP and HTTPS. No model is trained.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -614,6 +1344,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+When traffic changes, Elastic Load Balancing scales the load balancer and updates DNS. The TTL is 60 seconds.
+
+**How it works:**
+
+Enable multiple Availability Zones, and for an Application Load Balancer at least two. Cross-zone balancing stops a small zone from taking a disproportionate share. A zonal shift can pull traffic off one impaired zone. The page does not describe a queue in front of the balancer.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 ### Load Balancing and Security
@@ -625,6 +1364,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Internet-facing nodes have public addresses. Internal nodes do not. In both cases the balancer reaches targets only by private IP, so targets need no public address.
+
+**How it works:**
+
+That is the exposure boundary on the page. Application and Classic Load Balancers also add the X-Forwarded-* headers. The page does not claim the balancer inspects application payloads for attacks.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -634,6 +1382,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+This page does not say a load balancer blocks SQL injection or XSS.
+
+**How it works:**
+
+It routes by listener rule, target health, and the algorithm for the balancer type. AWS WAF is mentioned only to say that after an HTTP-to-WebSocket upgrade, WAF integrations no longer apply. No filter for SQL or script content is specified.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -643,6 +1400,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+AWS WAF is integrated with Application Load Balancers until a connection upgrades to WebSockets. After the upgrade, those integrations no longer apply.
+
+**How it works:**
+
+The page does not show how to attach a firewall rule. It does say the upgrade is the point where both listener rules and WAF stop applying to that connection.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -652,6 +1418,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page does not document certificate installation. It does require HTTPS listeners for HTTP/2 on an Application Load Balancer.
+
+**How it works:**
+
+Front protocols for an Application Load Balancer include HTTP/2 only together with HTTPS. Network Load Balancer target groups can use TLS. Classic Load Balancers are not given a certificate procedure here. Clients of an internet-facing balancer use the public node addresses returned by DNS.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -661,6 +1436,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The listener has one protocol toward the client and another toward the target. An Application Load Balancer can take HTTPS on the front and use HTTP/1.1 on the back by default.
+
+**How it works:**
+
+You can change the backend protocol version to HTTP/2 or gRPC. HTTP/2 on the front is only with HTTPS, and one such connection can carry up to 128 requests. The page does not discuss the private key remaining on the balancer or the trust boundary that creates.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -670,6 +1454,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Rate limiting is not on this page. The hard size limits are not a request rate.
+
+**How it works:**
+
+For an Application Load Balancer the request line is 16 K, a single header is 16 K, the response headers are 32 K, and the request headers are 64 K. Those limits cannot be changed. Separately, one HTTP/2 connection carries at most 128 parallel requests.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 ### Load Balancing Troubleshooting and Problem Solving
@@ -681,6 +1474,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Check rule priority, whether the target’s Availability Zone is enabled, whether the target is healthy, and whether cross-zone balancing is on.
+
+**How it works:**
+
+An Application Load Balancer applies the first matching listener rule by priority and then the group’s algorithm. Targets in a zone that is not enabled stay registered and get no traffic. With cross-zone off, a node cannot send to targets in another zone, so a 2-versus-8 split is uneven. A Network Load Balancer also hashes the TCP sequence number, so connections from one client need not share a target.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -690,6 +1492,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+If the load balancer has marked the target unhealthy, it stops routing there even though the process is running. Routing resumes only when the target is healthy again.
+
+**How it works:**
+
+The page does not list the health-check path, interval, or threshold. It does say a registered target in a disabled Availability Zone also receives nothing while remaining registered. Those are the two documented reasons a live process gets no traffic.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -699,6 +1510,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Compare target counts per zone with cross-zone balancing, and look at connection reuse.
+
+**How it works:**
+
+The page’s 2-and-8 example shows the small zone’s targets taking 25 percent each when cross-zone is off, and 10 percent each when it is on. Multiplexing many front connections onto one backend connection is what the page says improves latency. Connection: close turns that off. Header limits and a failed path-MTU discovery drop or fragment packets. Internet gateway MTU on the page is 1500, while load balancer nodes use jumbo frames (9001, or 8500 for Gateway Load Balancers).
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -708,6 +1528,15 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+The page says Elastic Load Balancing scales the load balancer as traffic changes and republishes DNS with a 60-second TTL.
+
+**How it works:**
+
+Enable every zone that has targets, and at least two for an Application Load Balancer. Cross-zone balancing lets each node use targets in every enabled zone, which is how the 2-and-8 example becomes an even 10 percent. Clients keep a node address until the TTL expires. The page does not say to replace the balancer with a larger instance type.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>
 
 <details>
@@ -717,4 +1546,13 @@ A spike of connection attempts hits the cloud balancer. Per-address limits and h
 
 **Definition:**
 
+Look at multiplexing, uneven zones, packet size, and targets the balancer is skipping.
+
+**How it works:**
+
+Connection: close disables multiplexing, which the page says is what improves latency. Cross-zone off with uneven target counts gives the 25 percent and 6.25 percent split. Packets larger than a hop’s MTU are dropped with ICMP type 3 code 4 when Don’t Fragment is set; the page says jumbo frames on the nodes do not help if path MTU discovery is broken. A WebSocket upgrade no longer uses listener rules. A zonal shift can spend up to a few minutes finishing connections in the zone you are leaving.
+
+**Sources:**
+
+- [How Elastic Load Balancing works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html)
 </details>

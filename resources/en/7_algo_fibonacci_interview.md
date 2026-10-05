@@ -1,6 +1,6 @@
 # Fibonacci Sequence — Interview
 
-Answers are filled for the published subset; the rest are still empty.
+Interview answers in this file are filled.
 
 [← Back to hub](./7_special_algorithms.md)
 
@@ -423,6 +423,40 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Compute `F(n) mod m` without building `F(n)`. Fast doubling, from the matrix form on CP-Algorithms, uses `F(2k) = F(k) · (2 F(k+1) − F(k))` and `F(2k+1) = F(k)² + F(k+1)²`. Every product is reduced modulo m, so a factor never exceeds `(m − 1)²` before the remainder. The recurrence halves the index, so the cost is O(log n) arithmetic steps, the same bound the page gives for matrix powering.
+
+**How it works:**
+
+- The pair returned for `k` is `(F(k) mod m, F(k+1) mod m)`.
+- `(2b − a) % m` is taken before the multiply, and both squares are reduced, then added modulo m. That is the modular multiplication: the product of two residues is reduced before it is used again.
+- A linear loop that adds modulo m is O(n) and also correct. Doubling is the logarithmic form.
+- `F(10) = 55`, so `fib_mod(10, 100)` is 55 and `fib_mod(11, 10)` is 9.
+
+**Examples:**
+
+```text
+def mul(x, y, m):
+    return (x % m) * (y % m) % m
+
+def fib_mod(n, m):
+    def rec(k):
+        if k == 0:
+            return 0, 1 % m
+        a, b = rec(k >> 1)
+        c = mul(a, (2 * b - a) % m, m)
+        d = (mul(a, a, m) + mul(b, b, m)) % m
+        if k & 1:
+            return d, (c + d) % m
+        return c, d
+    return rec(n)[0]
+```
+
+`fib_mod(10, 100)` is 55. `fib_mod(11, 10)` is 9.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
+- [CP-Algorithms — Binary exponentiation](https://cp-algorithms.com/algebra/binary-exp.html)
 </details>
 
 <details>
@@ -432,6 +466,39 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+The last k decimal digits are `F(n) mod 10^k`. Use the same modular fast doubling, with modulus `10^k`, so the product of two residues is reduced before it can overflow that modulus. CP-Algorithms places the doubling identities at O(log n).
+
+**How it works:**
+
+- `10^k` replaces `m`. The last k digits are the residue, including leading zeros if you print a fixed width.
+- A linear loop of k-digit additions is O(n) big-digit steps. Doubling does O(log n) multiplications of k-digit numbers.
+- `F(10) = 55`, so the last digit is 5 and the last two digits are 55.
+- This is the Pisano sequence for modulus `10^k`, but you do not need the period to compute one term.
+
+**Examples:**
+
+```text
+def mul(x, y, m):
+    return (x % m) * (y % m) % m
+
+def fib_mod(n, m):
+    def rec(k):
+        if k == 0:
+            return 0, 1 % m
+        a, b = rec(k >> 1)
+        c = mul(a, (2 * b - a) % m, m)
+        d = (mul(a, a, m) + mul(b, b, m)) % m
+        if k & 1:
+            return d, (c + d) % m
+        return c, d
+    return rec(n)[0]
+```
+
+`fib_mod(10, 10)` is 5. `fib_mod(10, 100)` is 55.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -441,6 +508,32 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Walk the sequence with the linear recurrence until the term meets or passes the candidate. CP-Algorithms defines `F(0) = 0`, `F(1) = 1`, and `F(n) = F(n−1) + F(n−2)`, and Binet’s formula shows `F(n)` grows like `φ^n / √5`, so the index you reach is proportional to the logarithm of the candidate.
+
+**How it works:**
+
+- Keep two consecutive terms. Stop when the latest is equal to `x` (yes) or greater than `x` (no).
+- `0` and `1` are Fibonacci. `4` is not: the walk hits 3, then 5.
+- The number of additions is the index `m` with `F(m) ≥ x`. Exponential growth makes `m` logarithmic in `x`, not linear in the value.
+- Rounding `φ^n / √5` to the nearest integer is the closed form on the page, and the page warns that fractional precision makes it impractical for large n. The integer walk does not have that error.
+
+**Examples:**
+
+```text
+def is_fib(x):
+    if x < 0:
+        return False
+    a, b = 0, 1
+    while a < x:
+        a, b = b, a + b
+    return a == x
+```
+
+`is_fib(21)` is true. `is_fib(4)` is false.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -450,6 +543,34 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Fast doubling evaluates the index by halves. CP-Algorithms derives `F(2k+1) = F(k+1)² + F(k)²` and `F(2k) = F(k) · (2 F(k+1) − F(k))` by squaring the matrix form, and the recursion depth is O(log n).
+
+**How it works:**
+
+- The call on `n >> 1` returns `F(floor n/2)` and the next term.
+- Even `n = 2k` returns the first identity. Odd `n` returns the second, and the following term is their sum.
+- Each level does a constant number of multiplications, and there are O(log n) levels.
+- The integer products are the full Fibonacci numbers. For a residue, reduce every product modulo m, as in the modular version.
+
+**Examples:**
+
+```text
+def fib_pair(n):
+    if n == 0:
+        return 0, 1
+    a, b = fib_pair(n >> 1)
+    c = a * (2 * b - a)
+    d = a * a + b * b
+    if n & 1:
+        return d, c + d
+    return c, d
+```
+
+`fib_pair(10)[0]` is 55. `fib_pair(11)[0]` is 89.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 ### Fibonacci Sequence in Data Structures
@@ -461,6 +582,27 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+A Fibonacci heap keeps trees whose minimum size grows with the Fibonacci numbers. CP-Algorithms records that `F(n)` grows like `φ^n / √5`. A tree whose smallest possible size at rank `d` is a Fibonacci number therefore has rank logarithmic in the number of nodes, because the exponential outgrows any larger rank.
+
+**How it works:**
+
+- The linking rule that produces that size bound is what the heap is named for. The sequence is not stored in the heap; it is the lower bound on tree size.
+- A logarithmic rank means a root list and the cascading cuts stay proportional to a logarithm of the heap, which is why decrease-key can be cheap in the amortized accounting.
+- A binary heap pays a logarithm for decrease-key in the worst case of one operation. The Fibonacci bound is the reason a graph algorithm with many decrease-key steps, such as Dijkstra with a decrease on every edge relaxation, considers this heap.
+- The sequence page does not define the heap operations. The benefit that comes from the sequence itself is the exponential size lower bound, hence the logarithmic rank.
+
+**Examples:**
+
+```text
+# F(d+2) grows like phi^(d+2)/sqrt(5).
+# A rank-d tree with at least F(d+2) nodes has d = O(log n).
+```
+
+`F(10) = 55` already forces a rank-8 style tree to hold dozens of nodes, and the closed form on the page keeps making the next ranks larger by about `φ`.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -470,6 +612,33 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Store every term up to `n`. CP-Algorithms’ linear method computes `F(n)` in O(n) from the two previous terms; keeping the array uses O(n) extra memory instead of the O(1) pair.
+
+**How it works:**
+
+- `a[0] = 0`, `a[1] = 1`, and `a[i] = a[i-1] + a[i-2]`.
+- Each index is written once, so the loop is Θ(n) additions.
+- The array answers later “what is `F(i)`?” in O(1) after that build. The two-variable loop forgets the prefix.
+- The values are the full integers. A fixed-width word overflows; the page’s growth formula is why.
+
+**Examples:**
+
+```text
+def fib_array(n):
+    if n == 0:
+        return [0]
+    a = [0] * (n + 1)
+    a[1] = 1
+    for i in range(2, n + 1):
+        a[i] = a[i - 1] + a[i - 2]
+    return a
+```
+
+`fib_array(6)` is `[0, 1, 1, 2, 3, 5, 8]`.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -479,6 +648,28 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+A traditional queue is FIFO: enqueue and dequeue are the only operations, and it does not reorder by priority. A priority queue whose trees obey the Fibonacci size bound is preferred when the algorithm decreases keys many times, because that bound, using the exponential growth CP-Algorithms gives for `F(n)`, keeps the rank logarithmic in the number of nodes.
+
+**How it works:**
+
+- Breadth-first search wants a FIFO queue. Nothing about Fibonacci numbers helps a pure FIFO buffer.
+- Dijkstra relaxes edges and decreases the key of a vertex already in the queue. A binary heap pays a logarithm per decrease. The Fibonacci rank bound is what makes a heap with that name a candidate there.
+- The sequence is the size lower bound, not the order of service. Items are not dequeued in Fibonacci order.
+- If the workload is only push and pop at the ends, the plain queue is the right structure. The extra trees buy decrease-key, which a FIFO queue does not offer.
+
+**Examples:**
+
+```text
+# FIFO queue: append and pop(0). No decrease-key.
+# Fibonacci heap: rank-d trees hold at least a Fibonacci number of nodes,
+# so rank stays logarithmic as F(n) grows like phi^n / sqrt(5).
+```
+
+Use the FIFO queue for BFS. Consider the Fibonacci-ranked heap when a shortest-path search decreases keys.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 ### Advanced Fibonacci Concepts
@@ -490,6 +681,32 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+The sequence of Fibonacci numbers modulo m is periodic. CP-Algorithms proves it for a prime modulus `p`: there are only `p²` possible consecutive pairs, so among the first `p² + 1` pairs two match, and the sequence of pairs therefore repeats. The proof also shows the repetition starts at `(F(0), F(1))`, so there is no pre-period. The Pisano period `π(m)` is the length of that cycle. Then `F(n) mod m = F(n mod π(m)) mod m`.
+
+**How it works:**
+
+- For modulus 2 the residues are `0, 1, 1` and then they repeat, so `π(2) = 3`.
+- Finding the period means simulating the pair recurrence until `(0, 1)` returns. The pair argument caps a prime modulus at `p²` steps.
+- After the period is known, a huge index is reduced before the linear or doubling computation.
+- Doubling modulo m does not need the period. The period is a reduction of the index, useful when many queries share one m.
+
+**Examples:**
+
+```text
+def pisano(m):
+    a, b, length = 0, 1, 0
+    while True:
+        a, b = b, (a + b) % m
+        length += 1
+        if a == 0 and b == 1:
+            return length
+```
+
+`pisano(2)` is 3. `F(8) = 21`, and `8 mod 3 = 2`, so `F(8) mod 2 = F(2) mod 2 = 1`.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -499,6 +716,31 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+CP-Algorithms states `gcd(F(m), F(n)) = F(gcd(m, n))`, and that Fibonacci numbers are the worst possible inputs for the Euclidean algorithm (Lamé’s theorem).
+
+**How it works:**
+
+- The gcd identity is about the indices, not an extra factor. `gcd(F(6), F(9)) = gcd(8, 34) = 2`, and `F(gcd(6, 9)) = F(3) = 2`.
+- Euclid replaces `(a, b)` with `(b, a mod b)`. On consecutive Fibonacci numbers the remainder is the previous Fibonacci number, so each step peels exactly one index.
+- That is the slowest the subtraction of indices can go, which is why those inputs maximize the number of divisions for a given size.
+- The closed form is not required for the identity. The page notes it can be proved from the addition formula.
+
+**Examples:**
+
+```text
+def egcd_steps(a, b):
+    steps = 0
+    while b:
+        a, b = b, a % b
+        steps += 1
+    return steps
+```
+
+`egcd_steps(F(12), F(11))` takes more division steps than a random pair of the same magnitude, because each remainder is the previous Fibonacci number.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -508,6 +750,31 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Yes, for the indexing on CP-Algorithms, `F(0) = 0`, `F(1) = 1`, `F(2) = 1`, and `F(n) = F(n−1) + F(n−2)`. The sum of the first n positive terms is `F(1) + … + F(n) = F(n+2) − 1`.
+
+**How it works:**
+
+- Base `n = 1`: `F(1) = 1` and `F(3) − 1 = 2 − 1 = 1`.
+- Assume the sum through `n` is `F(n+2) − 1`. Add `F(n+1)`: the total is `F(n+2) + F(n+1) − 1 = F(n+3) − 1`, which is the claim for `n + 1`.
+- The inductive step is exactly the defining recurrence.
+- Check: `1 + 1 + 2 + 3 + 5 = 12` and `F(7) − 1 = 13 − 1 = 12`.
+
+**Examples:**
+
+```text
+def sum_first(n):
+    a, b, total = 0, 1, 0
+    for _ in range(n):
+        a, b = b, a + b
+        total += a
+    return total
+```
+
+`sum_first(5)` is 12, and `F(7) − 1` is 12.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 ### Fibonacci Numbers in Sorting and Searching Algorithms
@@ -519,6 +786,47 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Fibonacci search splits a sorted array at a Fibonacci index instead of at the midpoint. CP-Algorithms shows `F(n)` grows like `φ^n / √5`, so each step throws away a constant fraction of the remaining interval and the number of probes is logarithmic in the length, the same class as binary search.
+
+**How it works:**
+
+- Build the smallest Fibonacci number that is at least the array length. The split index is `offset + F(k−2)`.
+- If the key is larger, the eliminated prefix has size `F(k−2)` and the new window is the following Fibonacci size. If it is smaller, the window shrinks to `F(k−2)`.
+- The index updates are additions and subtractions of earlier Fibonacci numbers. That avoids a division at the split, which is the practical reason to prefer it on a machine where division is the expensive step.
+- It does not change the sorted-array assumption. An unsorted array still needs a different search.
+
+**Examples:**
+
+```text
+def fib_search(arr, x):
+    n = len(arr)
+    if n == 0:
+        return -1
+    fib2, fib1 = 0, 1
+    fib = fib2 + fib1
+    while fib < n:
+        fib2, fib1 = fib1, fib
+        fib = fib1 + fib2
+    offset = -1
+    while fib > 1:
+        i = min(offset + fib2, n - 1)
+        if arr[i] < x:
+            fib, fib1, fib2 = fib1, fib2, fib1 - fib2
+            offset = i
+        elif arr[i] > x:
+            fib, fib1, fib2 = fib2, fib1 - fib2, 2 * fib2 - fib1
+        else:
+            return i
+    if fib1 and offset + 1 < n and arr[offset + 1] == x:
+        return offset + 1
+    return -1
+```
+
+On a sorted array the probe count follows the Fibonacci index of the length, and Binet’s growth makes that index `O(log n)`.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -528,6 +836,47 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Both searches find a key in a sorted array with a logarithmic number of comparisons. Binary search halves the interval, one division per step. Fibonacci search moves the window by Fibonacci sizes, using the exponential growth CP-Algorithms gives for `F(n)`, so the depth is also `O(log n)`. The difference is the split arithmetic, not the asymptotic class.
+
+**How it works:**
+
+- Binary search computes `mid = (lo + hi) // 2` and discards one half.
+- Fibonacci search discards either `F(k−2)` or the complementary Fibonacci block. Because `F(k) / F(k−1)` approaches `φ`, the larger remaining piece is about `1/φ` of the window, a constant factor.
+- Neither is faster than the other by more than a constant on comparisons. Fibonacci search wins only when the division in the midpoint is the cost you are avoiding.
+- Both return the index or a miss. Both require a sorted array.
+
+**Examples:**
+
+```text
+def fib_search(arr, x):
+    n = len(arr)
+    if n == 0:
+        return -1
+    fib2, fib1 = 0, 1
+    fib = fib2 + fib1
+    while fib < n:
+        fib2, fib1 = fib1, fib
+        fib = fib1 + fib2
+    offset = -1
+    while fib > 1:
+        i = min(offset + fib2, n - 1)
+        if arr[i] < x:
+            fib, fib1, fib2 = fib1, fib2, fib1 - fib2
+            offset = i
+        elif arr[i] > x:
+            fib, fib1, fib2 = fib2, fib1 - fib2, 2 * fib2 - fib1
+        else:
+            return i
+    if fib1 and offset + 1 < n and arr[offset + 1] == x:
+        return offset + 1
+    return -1
+```
+
+`fib_search([10, 22, 35, 40, 45, 50, 80, 82, 85, 90, 100], 85)` finds index 8. Binary search on the same array also takes a handful of comparisons, `O(log n)` for both.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -537,6 +886,31 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+It can tighten a bound, and it can be the input that forces the worst case. CP-Algorithms gives both. Matrix powering computes `F(n)` in `O(log n)` instead of the linear loop’s `O(n)`. Lamé’s theorem says consecutive Fibonacci numbers are the worst inputs to Euclid’s algorithm: each remainder is the previous Fibonacci number, so the division count tracks the index.
+
+**How it works:**
+
+- The linear loop writes one term per index. Binary exponentiation of the 2×2 matrix squares the index, which is `O(log n)` multiplications. That is an optimization of the running time, and the page states it.
+- Euclid on `(F(n+1), F(n))` peels one index per division. No pair of that magnitude forces more steps. The sequence here describes the worst case rather than speeding the algorithm up.
+- Fast doubling is the same logarithmic optimization written without an explicit matrix.
+- Replacing a linear Fibonacci loop with doubling is the clean example of the sequence improving a running time.
+
+**Examples:**
+
+```text
+def fib_linear(n):
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+```
+
+`fib_linear` is Θ(n). Fast doubling on the same page is O(log n).
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
+- [CP-Algorithms — Binary exponentiation](https://cp-algorithms.com/algebra/binary-exp.html)
 </details>
 
 ### Fibonacci Sequence Mathematical Questions
@@ -548,6 +922,28 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+With the CP-Algorithms indexing `F(0) = 0`, `F(1) = 1`, `F(2) = 1`, the first n even-indexed terms are `F(2) + F(4) + … + F(2n)`. The identity the recurrence proves is `F(2) + … + F(2n) = F(2n+1) − 1`. That is the next odd-indexed term after `F(2n)`, minus 1, not `F(n+1) − 1`. For `n = 2` the sum is `1 + 3 = 4` and `F(5) − 1 = 4`, while `F(3) − 1 = 1`.
+
+**How it works:**
+
+- Base `n = 1`: `F(2) = 1` and `F(3) − 1 = 1`.
+- Assume the sum through `F(2n)` is `F(2n+1) − 1`. Add `F(2n+2)`.
+- `F(2n+1) − 1 + F(2n+2) = F(2n+3) − 1`, by the defining recurrence `F(2n+3) = F(2n+2) + F(2n+1)`.
+- The inductive claim for `n + 1` is exactly that. The “(n+1)st” wording matches only if the index in view is `2n+1`, the odd place just after the last even term.
+
+**Examples:**
+
+```text
+# n = 3: F(2)+F(4)+F(6) = 1+3+8 = 12
+# F(7)-1 = 13-1 = 12
+# F(n+1)-1 = F(4)-1 = 2, which is not the sum
+```
+
+The induction above is the statement that holds.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -557,6 +953,29 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+CP-Algorithms gives Binet’s formula, already known to de Moivre: `F(n) = (φ^n − ψ^n) / √5`, where `φ = (1+√5)/2` and `ψ = (1−√5)/2`. Because `|ψ^n| < 1` and shrinks exponentially, `F(n)` is the integer nearest to `φ^n / √5`. The page says both formulas are of little use in practical calculations, because they need very high fractional accuracy.
+
+**How it works:**
+
+- The closed form is exact in real arithmetic. In floating point, `φ^n` for large n is not exact, and rounding to the nearest integer then picks the wrong Fibonacci number.
+- The integer recurrence, the linear loop, and fast doubling use only integer additions and multiplications.
+- Doubling is `O(log n)` integer steps. Binet looks like `O(1)` and is not reliable once `n` outgrows the mantissa.
+- The formula is still the right tool for asymptotics: it is why the index of a value is logarithmic and why Fibonacci search’s split ratio tends to `φ`.
+
+**Examples:**
+
+```text
+import math
+def binet(n):
+    phi = (1 + math.sqrt(5)) / 2
+    return round(phi ** n / math.sqrt(5))
+```
+
+`binet(10)` is 55. For a large n the same rounding is the method the page advises against; use `fib_pair` instead.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -566,6 +985,34 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Yes. The rising diagonals of Pascal’s triangle sum to Fibonacci numbers. With `F(0) = 0`, `F(1) = 1` and the recurrence from CP-Algorithms, `F(n+1) = Σ_k C(n−k, k)`, where the binomial coefficient is 0 when the bottom index is out of range.
+
+**How it works:**
+
+- For `n = 5`: `C(5,0) + C(4,1) + C(3,2) = 1 + 4 + 3 = 8 = F(6)`.
+- For `n = 4`: `C(4,0) + C(3,1) + C(2,2) = 1 + 3 + 1 = 5 = F(5)`.
+- The binomial recurrence `C(n, k) = C(n−1, k) + C(n−1, k−1)` is why the diagonal sums obey the Fibonacci recurrence. Each new diagonal adds the two previous diagonal sums.
+- This is an identity between two integer tables. It is not a faster way to compute `F(n)` than doubling, which the same page places at `O(log n)`.
+
+**Examples:**
+
+```text
+def diag(n):
+    total, k = 0, 0
+    while n - k >= k:
+        term = 1
+        for i in range(k):
+            term = term * (n - k - i) // (i + 1)
+        total += term
+        k += 1
+    return total
+```
+
+`diag(5)` is 8, which is `F(6)`.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 <details>
@@ -575,6 +1022,30 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Keep only the last two terms. CP-Algorithms writes this as the linear solution: O(n) time and O(1) additional memory, from `F(0) = 0` and `F(1) = 1`.
+
+**How it works:**
+
+- Replace the pair `(a, b)` with `(b, a + b)`, `n` times. The first component is `F(n)`.
+- Nothing earlier is stored. If you need the whole list, use the array form, which is O(n) memory.
+- The additions are on the full integers. For a residue, add modulo m.
+- This is the algorithm doubling improves from O(n) to O(log n).
+
+**Examples:**
+
+```text
+def fib(n):
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+```
+
+`fib(0)` is 0, `fib(1)` is 1, `fib(7)` is 13.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>
 
 ### Fibonacci Numbers in Theoretical Computer Science
@@ -586,6 +1057,29 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Two uses are on the CP-Algorithms page. The closed form `φ^n / √5` turns a recurrence `T(n) = T(n−1) + T(n−2)` into an exponential, the same growth as the naive Fibonacci recursion. The matrix form turns the constructive recurrence into `O(log n)` multiplications. Lamé’s theorem uses the sequence as the worst-case input of Euclid, so the division count is the Fibonacci index of the inputs.
+
+**How it works:**
+
+- A recurrence that adds the two previous subproblems solves to Θ(φ^n). That is why the naive recursive Fibonacci function is exponential, not linear.
+- The same sequence, computed by squaring a 2×2 matrix, is O(log n). The analysis changed because the algorithm changed.
+- Euclid’s step count on integers near `F(n)` is proportional to `n`, and `n` is logarithmic in the value because of Binet. The worst-case time of Euclid is therefore logarithmic in the input value, and the Fibonacci inputs are what prove the constant.
+- Fibonacci search’s comparison count is the same logarithm: the window shrinks by `φ` each step.
+
+**Examples:**
+
+```text
+# Naive recursion: T(n) = T(n-1) + T(n-2) + O(1) = Theta(phi^n)
+# Matrix power or fast doubling: O(log n)
+# Euclid on F(n+1), F(n): Theta(n) divisions, and n = Theta(log F(n))
+```
+
+The sequence is both the solution of the bad recurrence and the witness for Euclid’s worst case.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
+- [CP-Algorithms — Binary exponentiation](https://cp-algorithms.com/algebra/binary-exp.html)
 </details>
 
 <details>
@@ -595,6 +1089,29 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+The sequence separates two complexities of one problem. CP-Algorithms computes `F(n)` in O(n) by the linear loop and in O(log n) by raising the matrix `[[1,1],[1,0]]` to the n-th power. The naive recursion that branches into `n−1` and `n−2` is exponential, because the closed form grows like `φ^n`. The same numbers are the worst-case inputs of the Euclidean algorithm.
+
+**How it works:**
+
+- Exponential, linear, and logarithmic are three algorithms for one sequence. The complexity is a property of the algorithm, and the closed form tells you which recurrence you solved.
+- Binary exponentiation is why the matrix method is logarithmic: there are O(log n) squarings. The page on exponentiation states that bound, and the Fibonacci page points at it.
+- Lamé’s theorem is a lower-bound style example inside an upper bound: no input makes Euclid slower than the Fibonacci pair of that size, and that pair takes a logarithmic number of divisions in the value.
+- A Fibonacci heap’s rank bound is the same growth applied to a data structure: exponential minimum size implies logarithmic degree.
+
+**Examples:**
+
+```text
+# F(n) by recursion: Theta(phi^n)
+# F(n) by the two-variable loop: Theta(n)
+# F(n) by matrix power: O(log n)
+```
+
+`φ = (1+√5)/2` is the base the page uses for the exponential.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
+- [CP-Algorithms — Binary exponentiation](https://cp-algorithms.com/algebra/binary-exp.html)
 </details>
 
 ### Fibonacci Sequence Interview Challenges
@@ -606,4 +1123,37 @@ In a language with fixed words, store `a` and `b` as digit lists and add them wi
 
 **Definition:**
 
+Walk a matrix in spiral order and write `F(0), F(1), F(2), …` from the two-variable loop. That loop is the O(n) method on CP-Algorithms; here n is the number of cells, so an `s×s` matrix takes Θ(s²) writes and Θ(1) extra memory beyond the matrix.
+
+**How it works:**
+
+- Empty cells start as `None`, because `F(0) = 0` and 0 cannot mark “not yet written”.
+- The direction order is right, down, left, up. A step that would leave the matrix or land on a filled cell turns to the next direction.
+- Each cell is written once, so the fill is Θ(s²).
+- A 2×2 spiral is `[[0, 1], [2, 1]]`: `0` at the start, then right to `1`, down to `1`, left to `2`.
+
+**Examples:**
+
+```text
+def fib_spiral(size):
+    grid = [[None] * size for _ in range(size)]
+    dirs = ((0, 1), (1, 0), (0, -1), (-1, 0))
+    r = c = turn = 0
+    a, b = 0, 1
+    for _ in range(size * size):
+        grid[r][c] = a
+        a, b = b, a + b
+        nr, nc = r + dirs[turn][0], c + dirs[turn][1]
+        if not (0 <= nr < size and 0 <= nc < size and grid[nr][nc] is None):
+            turn = (turn + 1) % 4
+            nr, nc = r + dirs[turn][0], c + dirs[turn][1]
+        r, c = nr, nc
+    return grid
+```
+
+`fib_spiral(2)` is `[[0, 1], [2, 1]]`.
+
+**Sources:**
+
+- [CP-Algorithms — Fibonacci numbers](https://cp-algorithms.com/algebra/fibonacci-numbers.html)
 </details>

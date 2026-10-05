@@ -1,6 +1,6 @@
 # Availability & Reliability — Interview
 
-Answers are filled for the published subset; the rest are still empty.
+Answers are filled.
 
 [← Back to hub](./0_system_design.md)
 
@@ -365,6 +365,21 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+Alerting is how a person learns that the system stopped being responsive or that a partition was detected. An on-call rotation is who is delegated to recover it.
+
+**How it works:**
+
+- The Reactive Manifesto says responsiveness is what makes problems detectable quickly. A system that only fails silently is not resilient. Recovery is delegated to another component, and for decisions a program cannot make, that delegate is a person.
+- Brewer's partition handling starts with detection. An alert is the human-visible form of that detection: a deadline was missed, or a side stopped answering.
+- Page on the user-visible failure, not on every internal twitch. A node drain that respects a PodDisruptionBudget is maintenance, not an outage, if minAvailable held.
+- The rotation matters because recovery has a time bound. Retrying with no owner and no deadline chooses consistency by waiting forever, which is the availability loss Brewer describes.
+- Afterward, the same person should be able to say whether the system entered an explicit degraded mode or kept accepting writes on both sides.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
 </details>
 
 <details>
@@ -374,6 +389,21 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+Treat the incident as a partition or a failed component: detect it, limit what still runs, keep a bounded response, then recover.
+
+**How it works:**
+
+- Brewer's partition strategy is three steps: detect the partition, enter an explicit mode that can refuse some operations, then recover and compensate for mistakes made while split.
+- During the split, choosing to proceed risks inconsistency. Choosing to cancel the operation reduces availability on purpose. Retrying forever is choosing consistency over availability.
+- On Kubernetes, a node that is harming availability is drained so Pods move, while a PodDisruptionBudget stops the drain from removing the last healthy replicas.
+- HDFS detects a dead DataNode by missing heartbeats and re-replicates blocks. The NameNode does not sit on the data path, so recovery is about block placement, not about proxying every byte.
+- Say what is still served and what is refused. A timeout is already the moment the availability decision is made.
+
+**Sources:**
+
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -383,6 +413,22 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+A post-mortem turns one outage into a change in detection, partition behavior, or recovery, so the next failure stays inside a bound.
+
+**How it works:**
+
+- Brewer's point is that partitions are rare, so most of the time you can have both consistency and availability, but only if detection and recovery are designed. The review asks whether those three steps existed.
+- Check whether the system forfeited availability by retrying with no deadline, or forfeited consistency by accepting writes on both sides with no compensation.
+- On Kubernetes, ask whether a PodDisruptionBudget would have kept minAvailable during the drain or the node loss, and whether etcd was a single copy of API state.
+- On HDFS, ask whether replication and heartbeat timeouts matched the failure. Hardware failure is assumed; a review that only says "the disk died" has not found a gap.
+- Record the user-visible symptom in the manifesto's terms: the system stopped being responsive, or it answered with data the other side would reject.
+
+**Sources:**
+
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactivemanifesto.org/
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 ### Scaling & Performance
@@ -394,6 +440,21 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+Scaling adds parts that can fail and paths that can partition. Availability holds only if the extra capacity does not become a new single place that must be up.
+
+**How it works:**
+
+- The manifesto's elastic property is staying responsive as load changes, by sharding or replicating and by avoiding a central bottleneck. Back-pressure keeps a fast source from exhausting the destination.
+- HDFS is built for large data sets on many nodes and assumes some component is always down. Throughput, not low latency, is the goal. More nodes raise capacity and make failure detection mandatory.
+- Kubernetes horizontal scaling adds Pods. If the cluster has no free CPU or memory, the new Pods stay unscheduled and availability does not rise. Scaling the node pool is the next step the autoscaling docs name.
+- Brewer notes that wide-area copies kept for scale often accept staleness. Yahoo's PNUTS kept the master local and copied remotely in the background; that is a scale choice that spends consistency.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -403,6 +464,23 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+Scale by adding copies and shards that can fail independently, and keep a recovery path that does not require every copy to be reachable.
+
+**How it works:**
+
+- Manifesto resilience is replication plus isolation: one component can fail and another recovers it, and the caller is not the one handling that failure.
+- HDFS stores each block on multiple DataNodes. A lost disk is repaired by re-replication. Computation is moved toward the data so the network is not the bottleneck that takes the job down.
+- Kubernetes spreads Pods with the scheduler and can add replicas with an HPA when utilization rises. A disruption budget keeps a minimum number ready while a node is removed.
+- etcd is described as a consistent and highly available store for API data. One etcd process is not that design.
+- During a partition, Brewer says independent shards can still make progress. Global invariants cannot. Shard so a cut does not freeze every key.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -412,6 +490,25 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+A cache keeps answering when the origin is slow or briefly down. The trade-off is a copy that can disagree with the source.
+
+**How it works:**
+
+- Brewer describes caches and logged updates as the practical way his group raised availability, and the cost was less consistency.
+- A read served from the copy is available even when the source is partitioned away. It is not a single up-to-date copy, which is Brewer's definition of consistency.
+- Facebook's pattern in the same article keeps a closer copy that may be stale, and sends the user's own reads to the master for a short time after a write. That bounds how long the person who wrote sees the old value.
+- Kubernetes Secrets are a poor cache of credentials: they sit in etcd, unencrypted unless encryption at rest is on. Caching them in a ConfigMap would drop even that separation.
+- HDFS is not a cache. It is the durable copy, with replication as the reliability mechanism. Do not treat a replicated cache as the only copy of data you cannot regenerate.
+
+**When to use:**
+
+Cache a read that tolerates a bounded stale value. Do not cache the only copy of a write that must survive the cache process.
+
+**Sources:**
+
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 <details>
@@ -421,6 +518,23 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+Rate limiting and back-pressure stop a fast sender from using up the receiver, so the system stays responsive instead of accepting unbounded work.
+
+**How it works:**
+
+- The manifesto says message queues are how you shape load, and back-pressure is applied when the receiver cannot keep up. Non-blocking communication spends resources only while the recipient is active.
+- Reactive Streams exists for the same reason: a fast source must not force the destination to buffer an arbitrary amount. The exchange across a thread or a network is asynchronous, and the receiver grants credit.
+- Brewer's latency view is a deadline. Past the deadline you either refuse the operation (less availability for that call) or proceed and risk inconsistency. A limit is the refuse path, chosen before the process runs out of memory.
+- HDFS favors high throughput over low latency and assumes batch jobs, not an open flood of interactive calls. A limit in front of a NameNode metadata operation protects the single metadata service.
+- An HPA adds Pods as CPU rises. That is capacity, not a limit. Without a limit, the autoscaler can add replicas until the cluster is full and then availability falls anyway.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.reactive-streams.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://kubernetes.io/docs/concepts/workloads/autoscaling/
 </details>
 
 ### Reliability in Distributed Systems
@@ -432,6 +546,20 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+Strong consistency here means a single up-to-date copy. Eventual consistency means copies may disagree for a while and converge after they can talk again.
+
+**How it works:**
+
+- CAP consistency is single-copy consistency: one up-to-date value. ACID consistency is a different word; it means the transaction kept the database rules, such as unique keys.
+- BASE, which Brewer names as the availability-leaning end, includes soft state and eventual consistency. Those techniques keep working through a partition and therefore raise availability.
+- If both sides of a partition accept updates, the copies diverge. Recovery has to compensate. If only one side accepts updates, the other side is unavailable for writes and the copy stays single.
+- Asynchronous remote copies, as in the PNUTS example, make the local master fast and the remote copy stale until replication catches up. A reader of the remote copy can see an older value and still be "successful".
+- Redis replication is asynchronous. A lock written on the master can be missing on the replica if the master dies first, so a second client can also hold it. That is an eventual copy that breaks mutual exclusion.
+
+**Sources:**
+
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/
 </details>
 
 <details>
@@ -441,6 +569,19 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+During a network partition, a shared-data system cannot be both perfectly consistent and perfectly available. The rest of the time it can pursue both.
+
+**How it works:**
+
+- Consistency means one up-to-date copy. Availability means that copy accepts updates. Partition tolerance means the system keeps going when messages are lost.
+- The "pick two of three" slogan oversimplifies. Partitions are rare. While the network is whole, there is no reason to give up either property. The prohibition is only perfect C and perfect A while partitioned.
+- Two nodes that cannot talk: if either may write, the copies diverge. If writes stop on one side, that side is unavailable. Retrying with no deadline, including via a protocol that needs a quorum, is choosing consistency.
+- A partition is a timeout in practice. Some nodes may see it and others may not. Tighter deadlines enter partition mode during slowness, not only during a hard cut.
+- The design Brewer recommends: detect, enter an explicit mode that may limit operations, then recover and restore invariants. Availability is a percentage, not a bit.
+
+**Sources:**
+
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -450,6 +591,21 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+A quorum lets the side that can still talk to a majority keep a single up-to-date decision. The minority side stops, which spends availability to keep consistency.
+
+**How it works:**
+
+- Brewer describes Paxos and atomic multicast as the case where the primary partition stays consistent and available, and the outside is not served. That is a quorum: progress requires the communicating majority.
+- Retrying until a quorum answers delays the call. If the wait has no bound, the operation chooses consistency over availability. A deadline forces the choice into the open.
+- Shards can each have their own quorum. A partition that does not cut a shard's majority lets that shard proceed. A global invariant that spans shards cannot be kept by either side alone.
+- Redis's warning on replicated locks is the opposite of a quorum. A master and an asynchronous replica are not a majority vote. The replica can miss the lock write and grant it again.
+- etcd is the Kubernetes component described as consistent and highly available for API data. Treating a single node as that store drops the quorum.
+
+**Sources:**
+
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/
+- https://kubernetes.io/docs/concepts/overview/components/
 </details>
 
 <details>
@@ -459,6 +615,20 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+A distributed transaction tries to keep one outcome across nodes. Across a partition it cannot have ACID isolation on both sides, so reliability depends on compensation after the cut heals.
+
+**How it works:**
+
+- Brewer: serializability needs communication, so it fails across a partition. If you require ACID isolation, at most one side may proceed.
+- Atomicity and durability are still useful on each side. Recovery is easier when each side has a durable history. Operations that broke an invariant during the split can be detected and compensated.
+- Two-phase commit is one of the protocols he names as "retry until consistent". With no deadline it chooses consistency and the caller waits, which is an availability loss.
+- ACID's C (rules such as unique keys) is broader than CAP's C (one copy). Partition recovery has to restore the rules, not only pick a winner value.
+- HDFS does not offer multi-file transactions. Its coherency model is write-once, read-many, with append and truncate rather than arbitrary updates, which avoids a distributed commit for the common path.
+
+**Sources:**
+
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
 </details>
 
 ### Recovery Strategies
@@ -470,6 +640,23 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+A disaster recovery plan is the recovery half of failure handling: how you restore a single up-to-date copy after a site or a disk is gone, and what you refuse until that is done.
+
+**How it works:**
+
+- Brewer's third step after a partition is a recovery process that restores consistency and compensates for mistakes. A plan that only fails over without a merge step leaves two histories.
+- HDFS persists filesystem metadata on the NameNode. A metadata disk failure is a different problem from a DataNode disk failure, which re-replication can heal. The plan has to say which disk you can lose.
+- Kubernetes etcd holds all API objects. High availability of that store is the control-plane recovery story. A workload's bytes are a separate story: a PersistentVolume with reclaim Delete disappears with the claim.
+- The manifesto puts recovery outside the failed component. Another component is delegated to restart it, and replication is what keeps the service responsive while that happens.
+- Practice the deadline. A plan with no time bound retries forever and chooses consistency by accident.
+
+**Sources:**
+
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+- https://www.reactivemanifesto.org/
 </details>
 
 <details>
@@ -479,6 +666,22 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+Backup copies state so restore can rebuild it. Restore is unavailable time unless a replica is already serving, and a restore from a stale backup spends consistency.
+
+**How it works:**
+
+- HDFS replication is the online copy: clients read from DataNodes while a failed disk is re-replicated. That is not the same as restoring a cold backup, which waits until the bytes are copied back.
+- A PersistentVolume reclaim policy of Retain keeps the disk after the claim is deleted so an administrator can recover it. Delete removes the external asset. A backup that assumes Delete has nothing left to copy.
+- Brewer's recovery step can reverse durable operations that violated an invariant. A restore that replays every write from both sides without that check brings the mistake back.
+- Taking the only NameNode metadata disk offline to copy it is an availability hit on the metadata path. HDFS is designed so user data does not flow through the NameNode; the metadata path is the one a backup must not block casually.
+- etcd is the Kubernetes copy of API state. Restoring an older snapshot rewinds objects. Workloads that were created after the snapshot disappear from the API even if their disks remain.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://kubernetes.io/docs/concepts/overview/components/
 </details>
 
 <details>
@@ -488,6 +691,22 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+Replication keeps a second copy so a lost disk or a lost node does not take the data with it. The challenge is that the copies are not one copy until they have exchanged the latest write.
+
+**How it works:**
+
+- HDFS splits files into blocks and stores them on a set of DataNodes. The NameNode maps blocks to nodes and orders replication. DataNodes send heartbeats; missing heartbeats trigger re-replication. User data does not pass through the NameNode.
+- The placement goal is fault tolerance on commodity hardware, where some component is always failing. More replicas cost disk and network.
+- Asynchronous replication does not transfer a write before the master can die. Redis documents that race for locks: the replica never saw the key, so mutual exclusion fails.
+- Brewer's remote-copy examples accept staleness to avoid wide-area latency. A reader must know which copy is allowed to be old.
+- Kubernetes can run many Pods, but Pods are not data replicas. The bytes live on the volume. Replicating the Pod without replicating the volume only replicates the process.
+
+**Sources:**
+
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 </details>
 
 <details>
@@ -497,4 +716,22 @@ A check every minute logs in and loads the account page from outside the data ce
 
 **Definition:**
 
+Multi-region failover is a partition plan: decide which region may accept writes, how the other region catches up, and what clients see during the cut.
+
+**How it works:**
+
+- Brewer: wide-area systems cannot pretend partitions will not happen. During the cut you either stop writes on one side or you accept divergence and compensate later. A failover that promotes both regions is the divergence choice.
+- One pattern he cites keeps the master in one place, so remote readers may see a stale copy, and after a user writes, that user's reads go to the master for a short time. Another keeps the master near the user and replicates outward asynchronously.
+- Detection is local. Not every region will notice the cut at the same moment. Enter an explicit mode instead of letting timeouts pile up.
+- Each region that is a Kubernetes cluster has its own API server and etcd. Draining a node fails Pods over inside one cluster. It does not move a volume to another region. PersistentVolume topology is a per-cluster fact; WaitForFirstConsumer only waits for a Pod in that cluster.
+- HDFS replication is inside one cluster's DataNodes. A second region needs its own copy strategy. The NameNode metadata for one cluster is not the namespace of the other.
+- Practice the return path. Failover without a rule for who is master after the network returns leaves two writers.
+
+**Sources:**
+
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://kubernetes.io/docs/concepts/overview/components/
+- https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+- https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
 </details>

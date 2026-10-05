@@ -1,6 +1,6 @@
 # Cryptography — Interview
 
-Answers are filled for the published subset; the rest are still empty.
+Answers are filled for every question in this note.
 
 [← Back to hub](./0_system_design.md)
 
@@ -389,6 +389,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+RSA is a public-key construction. The public key is a modulus and an exponent. The private key is the matching private exponent, or the prime factors that make that exponent usable.
+
+**How it works:**
+
+- RFC 8017 defines an RSA public key as two components: the modulus n and the public exponent e. In a valid key, n is a product of u distinct odd primes, u at least 2, and e is an integer between 3 and n - 1 with GCD(e, lambda(n)) = 1. The first two primes are conventionally p and q.
+- The private key may be the pair (n, d), the private exponent, or the factors and CRT coefficients (p, q, dP, dQ, qInv, and further triplets if there are more primes). Those two representations are the ones the RFC specifies.
+- Encryption and signature are different schemes on those primitives. The RFC specifies RSAES-OAEP and RSAES-PKCS1-v1_5 for encryption, and separate signature schemes. Do not use the raw modular exponent as the whole scheme.
+- Security depends on the private factors staying secret and on using the scheme the RFC specifies, including its padding. Publishing n and e is the point of the public key. Publishing d or the primes breaks it.
+- This note does not describe how to recover factors or how to break a padding check. Validation belongs to an implementation of the RFC, not to an attack procedure.
+
+**When to use:**
+
+Use the public key to encrypt to one holder or to check a signature. Use the private key only on the holder. Prefer the OAEP encryption scheme the RFC specifies over inventing a padding.
+
+**Sources:**
+
+- https://www.rfc-editor.org/rfc/rfc8017#section-3.1
 </details>
 
 <details>
@@ -398,6 +415,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Quantum cryptography uses properties of quantum states, most often to agree a shared key. The impact that NIST is standardizing for is different: a future quantum computer may defeat many of today’s widely used public-key systems.
+
+**How it works:**
+
+- Quantum key distribution relies on the fact that measuring a quantum state disturbs it, so an on-path observer can be noticed while the key is being established. It does not replace a symmetric cipher by itself.
+- NIST’s post-quantum project treats large quantum computers as a future threat to current public-key cryptography, not as a reason to abandon symmetric encryption wholesale.
+- In August 2024 NIST published three principal standards: FIPS 203 (ML-KEM, key establishment), FIPS 204 (ML-DSA, signatures), and FIPS 205 (SLH-DSA, hash-based signatures).
+- Those standards are meant to be deployed now. Under NIST IR 8547, quantum-vulnerable algorithms are to be removed from NIST standards by 2035, with high-risk systems moving earlier.
+- Falcon and HQC were selected for further standardization as additional options. They are not the three standards already published.
+
+**When to use:**
+
+Use a published PQC scheme when you are migrating key establishment or signatures off algorithms NIST calls quantum-vulnerable. Keep a vetted symmetric cipher for bulk data, with the key sizes your current standard already requires.
+
+**Sources:**
+
+- https://csrc.nist.gov/projects/post-quantum-cryptography
 </details>
 
 ### Cryptanalysis
@@ -409,6 +443,18 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Cryptanalysis is the study of mathematical techniques for attempting to defeat cryptographic techniques and information-system security, including looking for errors or weaknesses in an algorithm or in its implementation. It also covers operations that defeat cryptographic protection without an initial knowledge of the key.
+
+**How it works:**
+
+- NIST SP 800-57 Part 1 Rev. 5 uses that definition. The work is analysis of the design or the implementation, not a normal use of the key.
+- A weakness may sit in the algorithm itself or only in how a product implements it. Both are in scope for the term.
+- Interview answers stay at this level: name the kind of weakness (short key, bad mode, leaky implementation) and the impact (the protection no longer holds). They do not walk through a procedure.
+- Designers answer cryptanalysis by using standardized algorithms, published schemes, and implementations that have been reviewed against those schemes.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/cryptanalysis
 </details>
 
 <details>
@@ -418,6 +464,22 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A brute-force search tries keys from the key space until one works. The protection is to make that search impractical, not to hide which algorithm you used.
+
+**How it works:**
+
+- The cost tracks the size of the key space. A longer key is a larger space, which is why retired short-key ciphers are not a match for AES.
+- For passwords, NIST SP 800-63B requires verifiers to store a salted password hash from a password hashing scheme that also takes a cost factor. The cost factor should be as high as practical, and raised over time as computers get faster, so each guess is expensive.
+- The same publication treats a password as a memorized secret sent over an authenticated protected channel. Limiting guesses at the verifier is part of keeping online guessing impractical.
+- This note does not describe how to search a key space or a password file.
+
+**When to use:**
+
+Prefer a standardized cipher with a modern key length for data, and a salted password hash with a high cost factor for memorized secrets. A fast general-purpose hash is the wrong tool for a password.
+
+**Sources:**
+
+- https://pages.nist.gov/800-63-4/sp800-63b.html
 </details>
 
 <details>
@@ -427,6 +489,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A manipulator in the middle sits on the path between two parties and can read or change what they exchange. Prevention is to authenticate the peer, not to hope the path is private.
+
+**How it works:**
+
+- MDN describes TLS as a client/server protocol that uses cryptography so a third party cannot eavesdrop on or tamper with the messages. The server must present a valid digital certificate that confirms its identity before the secure connection is established.
+- Both sides can authenticate if each presents its own certificate. That is mutual authentication.
+- The `Secure` attribute on `Set-Cookie` sends the cookie only on `https:` (except localhost). MDN states that this makes the cookie more resistant to a manipulator in the middle. `Secure` does not by itself stop a script from reading the cookie if `HttpOnly` is absent.
+- This note does not describe how to insert a party onto a path.
+
+**When to use:**
+
+Use TLS with a certificate the client can check whenever the bytes cross a network you do not control. Add `Secure` and `HttpOnly` on cookies that must not travel in the clear or be readable from page script.
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Glossary/TLS
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 </details>
 
 <details>
@@ -436,6 +515,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A side-channel attack is enabled by leakage from a physical or deployed cryptosystem. NIST lists timing, power consumption, and electromagnetic and acoustic emissions as characteristics that can be used.
+
+**How it works:**
+
+- The cipher’s math can be sound while the implementation still leaks. The leak is a measurement of how the device behaves, not a field in the ciphertext.
+- NIST SP 800-63-4, SP 800-227, and SP 1800-21B all use that framing: timing, power, electromagnetic emissions, and acoustic emissions.
+- FIPS 140-3 includes non-invasive security among the areas a cryptographic module must address, alongside physical security and self-tests.
+- This note does not describe how to measure a device or how to turn a measurement into a key.
+
+**When to use:**
+
+Treat constant-time, reviewed implementations and a validated module as the response when the key is valuable enough that a lab measurement matters. Algorithm choice alone does not close a side channel.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/side_channel_attack
+- https://csrc.nist.gov/pubs/fips/140-3/final
 </details>
 
 <details>
@@ -445,6 +541,19 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A chosen-plaintext setting is one in which the analyst can obtain ciphertext for plaintexts they select. A confidentiality scheme is expected to keep the plaintext hidden even in that setting.
+
+**How it works:**
+
+- NIST defines cryptanalysis as the study of techniques for attempting to defeat cryptographic protection, including weaknesses in an algorithm or its implementation. Chosen plaintext is one of the models used in that study.
+- The analyst’s extra power is access to an encryption operation, not knowledge of the key. The security claim is that this access still does not reveal other plaintexts.
+- RSA in this note is not raw modular exponentiation. RFC 8017 specifies RSAES-OAEP and RSAES-PKCS1-v1_5 as the encryption schemes. The padding is part of the scheme, which is why interviews reject “encrypt the message as m^e mod n” as the whole design.
+- This note does not describe how to choose plaintexts or how to use the resulting ciphertexts.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/cryptanalysis
+- https://www.rfc-editor.org/rfc/rfc8017#section-3.1
 </details>
 
 <details>
@@ -454,6 +563,18 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Frequency analysis matters for ciphers that preserve the frequency of symbols, such as a simple substitution in which one letter always becomes the same other letter. The ciphertext then still carries the language’s letter frequencies.
+
+**How it works:**
+
+- A classical substitution cipher maps each symbol to one symbol. Common letters stay common, only under a different name. That is the property the analysis uses.
+- A modern block cipher does not keep that property. AES, covered earlier in this note, mixes substitution with a keyed permutation across the whole block, so a single letter’s frequency does not appear as a single ciphertext symbol’s frequency.
+- The impact is limited to ciphers that leak symbol frequency. It is not a property of AES, and it is not a procedure this note will spell out.
+- If a design still encrypts letter by letter with a fixed substitution, it has this weakness regardless of how the alphabet is scrambled.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/cryptanalysis
 </details>
 
 ### Hash Functions and Digital Signatures
@@ -465,6 +586,32 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A hash function maps a message to a digest with no secret. HMAC is a message authentication code: the same kind of hash, plus a shared secret key, so only a holder of the key can produce or check the tag.
+
+**How it works:**
+
+- RFC 2104 defines HMAC as a MAC built from any iterative cryptographic hash, denoted H, and a secret shared key. The strength depends on the properties of that hash.
+- The RFC’s goals are to use existing hash functions unchanged, keep their performance, handle keys simply, rest the analysis on assumptions about H, and swap H when a better hash appears.
+- The RFC’s 1997 examples are HMAC-MD5 and HMAC-SHA1. Those names illustrate the construction. A current call is Node’s `crypto.createHmac(algorithm, key)`, for example `createHmac('sha256', key)`, then `update` and `digest`.
+- A bare hash is public. Anyone who has the message can recompute it, so it does not authenticate the sender. HMAC does, because the key is required on both sides.
+- Compare tags with a constant-time compare. Node’s `crypto.timingSafeEqual` requires the two buffers to have the same length.
+
+**When to use:**
+
+Use a hash when you need a fingerprint and no one has to prove they hold a key. Use HMAC when two parties share a secret and must detect a changed message.
+
+**Examples:**
+
+```js
+import { createHmac } from 'node:crypto';
+
+const tag = createHmac('sha256', key).update(message).digest('hex');
+```
+
+**Sources:**
+
+- https://www.rfc-editor.org/rfc/rfc2104.html
+- https://nodejs.org/api/crypto.html#cryptocreatehmacalgorithm-key-options
 </details>
 
 <details>
@@ -474,6 +621,18 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A collision is two different inputs that a hash function maps to the same digest. It matters because a digital signature is a hash of the data followed by a signature function: a collision means one signature can verify for a different message.
+
+**How it works:**
+
+- NIST SP 800-107 describes a digital signature as those two functions in that order. Origin authentication, integrity, and non-repudiation are claims about the message that was hashed.
+- If a second message hashes to the same digest, the signature check succeeds for the second message as well. The private key never touched that second message.
+- A cryptographic hash is expected to make finding such a pair impractical. A hash that does not is the wrong function under a signature.
+- This note does not describe how to search for a colliding pair.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/digital_signature
 </details>
 
 <details>
@@ -483,6 +642,19 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+The birthday bound is the point at which a collision between two hash outputs becomes plausible: on the order of the square root of the number of possible digests, not after a search of every digest. For an n-bit hash that is about 2^(n/2) evaluations.
+
+**How it works:**
+
+- The name comes from the same counting as the birthday paradox: matches show up much earlier than a scan of the whole space.
+- The impact on hash choice is direct. A 128-bit collision bound needs a hash whose output is about 256 bits, which is why SHA-256 is the usual answer when that bound is the requirement.
+- RFC 6962’s Merkle tree separates leaf hashes and inner hashes (a `0x00` prefix on a leaf, a `0x01` prefix on an inner node) and says that domain separation is required to give second-preimage resistance. That is a concrete place where hash collisions are a design constraint, not an afterthought.
+- This note does not describe a search that looks for the collision.
+
+**Sources:**
+
+- https://www.rfc-editor.org/rfc/rfc6962#section-2.1
+- https://csrc.nist.gov/glossary/term/digital_signature
 </details>
 
 <details>
@@ -492,6 +664,19 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A digital signature is the result of a cryptographic transformation of data. When it is implemented properly, NIST says it provides origin authentication, data integrity, and signatory non-repudiation. It does not provide confidentiality.
+
+**How it works:**
+
+- NIST SP 800-63-4 describes the operation as asymmetric: the private key signs, and the public key verifies.
+- NIST SP 800-107 describes the transformation as two functions in order: a hash of the data, then a signature function on that hash. A changed message hashes differently, so verification fails. That is the integrity check.
+- Authenticity is the check that the public key which verifies the signature belongs to the signer you meant. The signature does not by itself tell you whose key that is; a certificate or another trusted binding does.
+- Non-repudiation is the claim that only the private-key holder could have produced the signature. NIST also notes that signatures do not provide replay protection.
+- This note does not describe how to forge a signature.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/digital_signature
 </details>
 
 <details>
@@ -501,6 +686,24 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+RSA signatures and RSA encryption use the same kind of key pair and different schemes. RFC 8017 specifies RSASSA-PSS and RSASSA-PKCS1-v1_5 for signatures, and RSAES-OAEP and RSAES-PKCS1-v1_5 for encryption.
+
+**How it works:**
+
+- A signature uses the private key to sign and the public key to verify. NIST states that this gives authenticity, integrity, and non-repudiation, and not confidentiality.
+- Encryption uses the public key so that only the private-key holder can read the message. That is confidentiality for one recipient, not a signature.
+- The public key in RFC 8017 is the modulus n and the public exponent e. The private key is the private exponent d, or the prime factors and CRT coefficients. Publishing n and e is the point. Publishing d or the primes is not.
+- Do not treat raw modular exponentiation as either scheme. The RFC specifies the padding and the encoding for each scheme, and the two jobs are not interchangeable.
+- Prefer the OAEP encryption scheme and the PSS signature scheme the RFC specifies when you are choosing among the schemes it lists.
+
+**When to use:**
+
+Sign when you need integrity and origin. Encrypt when you need confidentiality to the holder of the private key. Use a separate key pair for each job.
+
+**Sources:**
+
+- https://www.rfc-editor.org/rfc/rfc8017#section-3.1
+- https://csrc.nist.gov/glossary/term/digital_signature
 </details>
 
 <details>
@@ -510,6 +713,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+NIST describes a digital signature as a hash of the data followed by a signature function. The signature checks the hash, so the hash has to be a function for which a second message with the same digest is impractical.
+
+**How it works:**
+
+- Integrity fails open if a second message collides with the signed hash: verification succeeds for a message the private key never signed.
+- The birthday bound puts that collision near 2^(n/2) evaluations for an n-bit digest. A hash whose output is too short does not meet a collision requirement even when the signature math is fine.
+- RFC 2104 already treated the hash as replaceable, and its 1997 examples (MD5, SHA-1) are not what you put under a new signature. Node’s `createHmac('sha256', key)` shows the modern habit: name a current hash explicitly.
+- XML Signature 1.1, in a related standard, called out additional hash algorithms as a conformance change for the same reason: the hash under the signature is part of the security claim.
+
+**When to use:**
+
+Hash with a current approved function such as SHA-256 or stronger, then sign that digest with the signature scheme. Do not sign with MD5 or SHA-1 in a new design.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/digital_signature
+- https://www.w3.org/TR/xmldsig-core1/#sec-Overview
 </details>
 
 <details>
@@ -519,6 +739,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A Merkle hash tree commits a list of entries to one root hash. RFC 6962 uses a binary Merkle hash tree so a log can be audited efficiently: a leaf can be shown to sit under the signed root without sending every entry.
+
+**How it works:**
+
+- The hash in that RFC is SHA-256. The input is an ordered list of data entries. Those entries are hashed to form the leaves. The output is a single 32-byte Merkle Tree Hash.
+- An empty list hashes as SHA-256 of an empty string. A single entry (a leaf) is SHA-256 of `0x00` concatenated with the entry. For a longer list, the root is SHA-256 of `0x01` concatenated with the hashes of the left and right parts. The RFC says this domain separation is required for second-preimage resistance.
+- The tree need not be a full power of two. Its shape is fixed by the number of leaves.
+- A Merkle audit path is the shortest list of extra nodes needed to recompute the root from one leaf. If that root matches the signed root, the leaf is in the tree.
+- Certificate Transparency uses this so a client can check inclusion. The same shape appears wherever a signed root must cover many items.
+
+**Examples:**
+
+A log signs one root. A client that holds one certificate and the audit path recomputes the root and compares it to the signed root. The client does not need every certificate in the log.
+
+**Sources:**
+
+- https://www.rfc-editor.org/rfc/rfc6962#section-2.1
 </details>
 
 ### Key Management and Protocols
@@ -530,6 +767,19 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Key distribution is getting keying material to the parties who must use it, with the protection that type of key requires. NIST SP 800-57 Part 1 Rev. 5 is the general guidance: security services, algorithms, key types, and the protection each type needs.
+
+**How it works:**
+
+- A secret or private key must stay confidential on the way. A public key must stay unmodified, because a substituted public key sends data to the wrong holder or verifies the wrong signer.
+- Symmetric encryption needs the same secret at both ends before any ciphertext is useful. That shared secret is the distribution problem.
+- Asymmetric encryption publishes the public key and keeps the private key at one holder. Distribution then becomes an integrity problem for the public key, which is what a certificate is for.
+- Diffie-Hellman, below, agrees a shared secret without sending that secret. It still needs the parties to authenticate each other, or the agreed secret is with the wrong peer.
+- SP 800-57 discusses the functions of key management and the issues that show up when cryptography is actually used. Generation, storage, and who may see each key are part of distribution, not a later cleanup.
+
+**Sources:**
+
+- https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final
 </details>
 
 <details>
@@ -539,6 +789,24 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Diffie-Hellman lets two parties agree a shared secret. Each keeps a private value and sends a public value. The secret is computed from one side’s private value and the other side’s public value. It is not sent on the wire.
+
+**How it works:**
+
+- Node’s `crypto.createDiffieHellman(prime[, primeEncoding][, generator][, generatorEncoding])` builds a key-exchange object from a prime and an optional generator. The generator defaults to 2.
+- `crypto.diffieHellman({ privateKey, publicKey })` computes the shared secret. Both keys must be the same asymmetric type and must support DH or ECDH. The return value is a `Buffer`.
+- The primary use is key agreement: the shared secret becomes keying material for a symmetric cipher, so the long-term problem is no longer “ship the symmetric key.”
+- Agreement is not authentication. TLS 1.3 uses (EC)DHE with a pre-shared key when it wants forward secrecy together with shared keys. A PSK used alone, the RFC says, drops forward secrecy for the application data.
+- This note does not include parameters chosen so that the exchange is weak, and it does not describe how to recover a private value.
+
+**When to use:**
+
+Use DH or ECDH when two parties need a fresh shared secret and can authenticate the public values. Use the Node functions only with keys that already support DH or ECDH.
+
+**Sources:**
+
+- https://nodejs.org/api/crypto.html#cryptocreatediffiehellmanprime-primeencoding-generator-generatorencoding
+- https://www.rfc-editor.org/rfc/rfc8446#section-1.2
 </details>
 
 <details>
@@ -548,6 +816,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Key escrow, in the NIST glossary, is the retention of the private component of the key pair associated with a subscriber’s encryption certificate, so that the key can be recovered.
+
+**How it works:**
+
+- The purpose is recovery. If the holder loses the private decryption key, retained material can still decrypt data that was encrypted to that certificate.
+- The glossary ties the retained component to an encryption certificate. A signature key is a different object: escrow of a signing key would let someone else produce signatures, which is not the recovery goal stated there.
+- Escrow is a policy and a storage problem. SP 800-57 Part 1 requires each type of keying material to be protected as that type requires. Escrowed private keys need the same confidentiality as any other private decryption key, plus a rule for who may ask for recovery.
+- It is not a substitute for a backup you do not control. It is an intentional copy, held so recovery is possible.
+
+**When to use:**
+
+Use escrow when the organization must be able to decrypt data after the holder is gone, and when policy allows a copy of that decryption key. Do not escrow a signing key in order to decrypt.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/key_escrow
+- https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final
 </details>
 
 <details>
@@ -557,6 +842,20 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A certificate authority binds a name to a public key by signing that binding. TLS then uses the certificate so the client can confirm the server’s identity before the secure session.
+
+**How it works:**
+
+- MDN states that a TLS server must provide a valid digital certificate confirming its identity in order to establish a secure connection. Without that check, the client cannot tell which public key belongs to the name it asked for.
+- A digital signature, per NIST, gives origin authentication and integrity when the private key signs and the public key verifies. The CA’s signature on the certificate is that operation applied to the name and the subject public key.
+- The client already trusts the CA’s public key (or a chain up to one it trusts). Checking the signature fails if the certificate was altered.
+- Both parties may present certificates. MDN calls that mutual authentication.
+- The CA does not encrypt the traffic. TLS does that after the identity check. The CA’s job is the binding the check relies on.
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Glossary/TLS
+- https://csrc.nist.gov/glossary/term/digital_signature
 </details>
 
 <details>
@@ -566,6 +865,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Forward secrecy means a later compromise of a long-term key does not reveal earlier session keys. NIST’s glossary defines perfect forward secrecy for IPsec as a new secret key created and shared through a new Diffie-Hellman exchange for each IPsec security association.
+
+**How it works:**
+
+- The IPsec wording in NIST SP 800-77 Rev. 1 is specific: each security association gets its own Diffie-Hellman secret, so an old key cannot be used against newer keys that still protect integrity and confidentiality.
+- TLS 1.3 states the same property for pre-shared keys. A PSK used with (EC)DHE key exchange provides forward secrecy in combination with the shared keys. A PSK used alone loses forward secrecy for the application data.
+- The session key is what encrypts the data. If that key was produced by a fresh Diffie-Hellman and then discarded, a later copy of the long-term key does not recompute it.
+- RSA key transport of a session key does not have this property: the long-term private key can still decrypt the transported session key.
+
+**When to use:**
+
+Prefer a fresh Diffie-Hellman (or ECDH) per session when recorded traffic must stay confidential even if a long-term key is later copied. In TLS 1.3, that means (EC)DHE, including with a PSK, rather than a PSK alone.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/perfect_forward_secrecy
+- https://www.rfc-editor.org/rfc/rfc8446#section-1.2
 </details>
 
 ### Authentication and Access Control
@@ -577,6 +893,19 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Authentication shows that a claimant controls an authenticator bound to the subscriber. NIST SP 800-63B requires approved cryptographic techniques at Authentication Assurance Level 2 and above, and uses cryptography so a verifier can check that control without receiving a copy of a long-term private key.
+
+**How it works:**
+
+- A password is “something you know.” It is sent over an authenticated protected channel. The verifier stores a salted hash, not the password. That hash is a cryptographic primitive used so a stolen store is not the password list.
+- Single-factor and multi-factor cryptographic authenticators prove possession of a key. The output is generally some type of signed message. At AAL3, multi-factor cryptographic authenticators must use public-key cryptography so the verifier’s copy of the check does not expose the authentication secret.
+- TLS supplies the authenticated protected channel those passwords and protocol messages travel in. MDN requires the server certificate before that channel exists.
+- Authentication is not authorization. Cryptography here answers “who controls this authenticator,” not “what that identity may do.”
+
+**Sources:**
+
+- https://pages.nist.gov/800-63-4/sp800-63b.html
+- https://developer.mozilla.org/en-US/docs/Glossary/TLS
 </details>
 
 <details>
@@ -586,6 +915,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Multi-factor authentication requires proof of possession and control of two distinct authentication factors. NIST SP 800-63B defines Authentication Assurance Level 2 that way, and requires approved cryptographic techniques there.
+
+**How it works:**
+
+- AAL2 allows either one multi-factor authenticator or a combination of two single-factor authenticators. A multi-factor authenticator needs two factors for a single authentication event, such as a cryptographic device that will not run until a biometric sensor activates it.
+- Permitted multi-factor types at AAL2 include a multi-factor out-of-band authenticator, a multi-factor one-time password, and multi-factor cryptographic authentication.
+- Multi-factor cryptographic authentication proves control of a key that is activated by a second factor. The output is generally a signed message. The key is “something you have”; the activation factor is “something you know” or “something you are.”
+- At AAL3 those authenticators must use public-key cryptography so compromise of the verifier does not reveal the authentication secret.
+- A password alone is one factor, “something you know,” and NIST says passwords are not phishing-resistant. Adding a second factor is what moves the event to AAL2.
+
+**When to use:**
+
+Use a multi-factor authenticator, or two distinct factors, when the account needs AAL2 or higher. Use public-key cryptographic authentication when the verifier must not hold a copy of the authentication secret.
+
+**Sources:**
+
+- https://pages.nist.gov/800-63-4/sp800-63b.html
 </details>
 
 <details>
@@ -595,6 +941,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+OAuth 2.0 is an authorization framework. RFC 6749 says it lets a third-party application obtain limited access to an HTTP service, either on behalf of a resource owner or on its own behalf. It obsoletes the OAuth 1.0 protocol in RFC 5849.
+
+**How it works:**
+
+- The resource owner approves the access. The application receives a limited grant, not the owner’s password.
+- “On its own behalf” is the other case in the abstract: the application is the client, and there is no end-user approval step for that client’s own access.
+- OAuth is not itself a login protocol. Authentication of the user is what the approval step relies on. OpenID Connect and similar layers add an identity token on top; RFC 6749’s job is the limited access.
+- Cryptography shows up in the HTTPS channel those HTTP requests use, and in any token that must be integrity-protected. The RFC’s subject is the authorization grant, not a new cipher.
+- RFC 8252, RFC 8996, and RFC 9700 are later updates listed on the RFC 6749 page. Read those before treating every 2012 grant type as still recommended.
+
+**When to use:**
+
+Use OAuth 2.0 when an application needs limited access to an HTTP API without collecting the resource owner’s password. Do not treat the access token as proof of identity unless a profile you have actually adopted says it is.
+
+**Sources:**
+
+- https://www.rfc-editor.org/rfc/rfc6749#section-1.1
 </details>
 
 <details>
@@ -604,6 +967,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Role-based access control decides what a subject may do from a role, not from the subject’s individual identity. NIST SP 800-53 Rev. 5 describes a role as a collection of access authorizations a user receives by assuming that role. A role may apply to one person or to several.
+
+**How it works:**
+
+- NIST SP 800-95, citing the OASIS XACML profile, says permitted actions are identified with roles rather than with individual subject identities. Permissions may be inherited through a role hierarchy.
+- RBAC is an authorization model. It does not encrypt data and it does not define a cipher.
+- The cryptographic piece sits in front of the role check and around the data that carries the role. The subject must be authenticated (NIST SP 800-63B). A token or assertion that states the role needs integrity, which is a signature or a MAC, or the role can be rewritten in transit.
+- Confidentiality of the resource is a separate decision. RBAC can allow a role to read a field that is still encrypted to a different key.
+
+**When to use:**
+
+Use RBAC when many people share the same job and you want to grant the job, not each person. Authenticate the subject and protect the integrity of the role statement. Do not expect the role model itself to be a cryptographic algorithm.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/role_based_access_control
+- https://pages.nist.gov/800-63-4/sp800-63b.html
 </details>
 
 ### Cryptography in Software and Applications
@@ -615,6 +995,21 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+HTTPS is HTTP over TLS. TLS is the protocol that gives the HTTP messages confidentiality and integrity, and that checks the server’s identity with a certificate.
+
+**How it works:**
+
+- RFC 8446 says TLS lets client/server applications communicate over the Internet in a way designed to prevent eavesdropping, tampering, and message forgery.
+- MDN states that the server must provide a valid digital certificate confirming its identity before the secure connection is established. That certificate is how the client knows which public key belongs to the name.
+- The session that follows uses the keys the handshake agreed. TLS 1.3 can combine a pre-shared key with (EC)DHE so the application data has forward secrecy. A PSK alone does not.
+- Cookies set over that channel should carry `Secure`, so the browser sends them only on `https:`. `HttpOnly` keeps page script from reading them. Those are HTTP attributes on top of TLS, not a second encryption layer.
+- Major browsers removed TLS 1.0 and 1.1 in early 2020. MDN says the server needs TLS 1.2 or 1.3.
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Glossary/TLS
+- https://www.rfc-editor.org/rfc/rfc8446#section-1.2
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 </details>
 
 <details>
@@ -624,6 +1019,20 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A TLS certificate is the digital certificate a TLS peer presents to confirm its identity. MDN says every modern browser requires the server to provide a valid one before a secure connection is established. SSL is the former name of the protocol; the certificate’s job did not change when the protocol was renamed TLS.
+
+**How it works:**
+
+- The certificate carries the server’s public key and an issuer’s signature over that binding. Checking the signature with a trusted issuer’s public key is what makes the binding trustworthy. NIST’s definition of a digital signature is the operation: private key signs, public key verifies, and the result supports origin authentication and integrity.
+- After the identity check, the handshake agrees the keys that protect the application data. RFC 8446 designs TLS to prevent eavesdropping, tampering, and message forgery. The certificate does not itself encrypt the HTTP body.
+- The client may also present a certificate. MDN calls that mutual authentication.
+- A certificate the client cannot chain to a trust anchor does not establish the session the browser will accept, even if the bytes on the wire are otherwise well formed.
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Glossary/TLS
+- https://csrc.nist.gov/glossary/term/digital_signature
+- https://www.rfc-editor.org/rfc/rfc8446#section-1.2
 </details>
 
 <details>
@@ -633,6 +1042,19 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A blockchain uses hash chaining so a change in an earlier block changes every later hash, signatures so only the key holder authorizes a transaction, and often a Merkle tree so one root commits to many transactions.
+
+**How it works:**
+
+- A hash link means each block includes the digest of the previous block. Changing an earlier block changes that digest, so the chain of hashes no longer matches. That is the integrity property from the hash, the same property a digital signature relies on when it signs a digest.
+- NIST describes a signature as a private-key operation that supports origin authentication, integrity, and non-repudiation, and not confidentiality. A transaction signature is that operation: verifiers use the public key, and the signer cannot later claim a different message under the same signature unless the hash collides.
+- RFC 6962 shows the Merkle shape used for a signed root over many leaves. A light client recomputes the root from one leaf and an audit path and compares it to the signed root.
+- Confidentiality is not what those three primitives provide. A public chain publishes the transactions. Encryption is a separate choice when the payload must stay private.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/digital_signature
+- https://www.rfc-editor.org/rfc/rfc6962#section-2.1
 </details>
 
 <details>
@@ -642,6 +1064,35 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A password hashing scheme turns a password into a stored verifier. NIST SP 800-63B says verifiers must salt and hash passwords with a scheme that takes a password, a salt, and a cost factor, so a stolen file does not give the password and each guess is expensive.
+
+**How it works:**
+
+- The salt makes two equal passwords store as different hashes. The cost factor is what makes each guess slow. NIST says the cost factor should be as high as practical without hurting verifier performance, and it should be raised over time as computers get faster.
+- A fast hash such as a bare SHA-256 is the wrong primitive. It has no cost factor, so a stolen file can be tested at the speed of the hash.
+- Node’s `crypto.pbkdf2(password, salt, iterations, keylen, digest, callback)` is one such function: an HMAC digest is applied for `iterations` passes to derive `keylen` bytes. The Node documentation says the salt should be random and at least 16 bytes, and iterations should be a positive number set as high as possible.
+- The password still travels to the verifier. NIST requires an authenticated protected channel for that request. Hashing replaces storage, not TLS.
+- This note does not describe how to test a stolen hash file.
+
+**When to use:**
+
+Use a password hashing scheme with a per-password salt and a high cost factor for any centrally verified password. Use PBKDF2 from `node:crypto` when that is the approved function you have adopted, with a random salt of at least 16 bytes.
+
+**Examples:**
+
+```js
+import { pbkdf2 } from 'node:crypto';
+
+pbkdf2(password, salt, iterations, 64, 'sha512', (err, derivedKey) => {
+  if (err) throw err;
+  // store salt and derivedKey, not the password
+});
+```
+
+**Sources:**
+
+- https://pages.nist.gov/800-63-4/sp800-63b.html
+- https://nodejs.org/api/crypto.html#cryptopbkdf2password-salt-iterations-keylen-digest-callback
 </details>
 
 <details>
@@ -651,6 +1102,29 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A cookie is a name-value pair the server sends in `Set-Cookie` and the browser sends back later. The cryptographic measures are the HTTPS channel that carries it, plus attributes that keep it off unencrypted requests and away from page script.
+
+**How it works:**
+
+- MDN defines `Set-Cookie` as the response header that sends the cookie. `Secure` means the cookie is sent only on `https:` (localhost excepted), which MDN says makes it more resistant to a manipulator in the middle.
+- `HttpOnly` forbids JavaScript from reading the cookie through `Document.cookie`. The cookie is still sent on `fetch` and `XMLHttpRequest`. MDN says this mitigates cross-site scripting against the cookie.
+- `SameSite` controls whether the cookie is sent on cross-site requests. `Strict` sends it only for same-site requests. `Lax` also sends it on top-level navigations that use a safe method. `None` requires `Secure`.
+- `__Host-` cookies must be set with `Secure` from HTTPS, must not set `Domain`, and must set `Path=/`. That keeps the cookie on the host that set it.
+- None of these attributes encrypt the cookie value. TLS encrypts it on the wire. A value that must stay secret from the browser’s script also needs `HttpOnly`.
+
+**When to use:**
+
+Set `Secure`, `HttpOnly`, and an explicit `SameSite` on a session cookie. Use the `__Host-` prefix when the cookie must be host-only and path `/`.
+
+**Examples:**
+
+```http
+Set-Cookie: sessionId=38afes7a8; Secure; HttpOnly; SameSite=Lax; Path=/
+```
+
+**Sources:**
+
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 </details>
 
 ### Advanced Topics
@@ -662,6 +1136,22 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Fully homomorphic encryption computes on encrypted data. NIST’s privacy-enhancing cryptography project describes it as computing over encrypted data without learning the plaintext input or output, while still applying the intended function. The result is ciphertext of the result.
+
+**How it works:**
+
+- The worker applies the function to ciphertexts. It does not decrypt. The holder of the decryption key obtains the plaintext of the function’s output, not a view of the intermediate values.
+- NIST groups FHE with other privacy-enhancing tools (zero-knowledge proofs, secure multi-party computation) whose point is to let parties interact without revealing extraneous private information.
+- The same page points at HomomorphicEncryption.org as an open effort toward standardizing fully homomorphic encryption. This note does not name a parameter set or a library call that page does not specify.
+- Potential uses NIST lists around these tools include statistics over distributed data and delegating computation to a party who must not see the plaintext.
+
+**When to use:**
+
+Consider FHE when a party must compute on data it is not allowed to see in the clear, and when the cost of that computation is acceptable. For a joint function over several parties’ inputs, NIST’s description of multi-party computation is the closer match.
+
+**Sources:**
+
+- https://csrc.nist.gov/projects/privacy-enhancing-cryptography
 </details>
 
 <details>
@@ -671,6 +1161,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A zero-knowledge proof lets a prover convince a verifier that a statement is true without providing any more information than that one bit: true rather than false. NISTIR 8301 states it that way. NIST’s privacy-enhancing cryptography page adds the usual interview form: prove knowledge of a secret solution without revealing the solution.
+
+**How it works:**
+
+- The verifier learns that the statement holds. The verifier does not learn the witness, the secret that makes the statement true.
+- Privacy is that gap. The proof is not a copy of the secret and not an encryption of the secret for the verifier to decrypt.
+- NIST lists identification and authentication among the application areas, including a credential that proves a predicate on private data (for example, that a person is of voting age) while the rest of the data stays hidden.
+- The glossary definition is the security claim. It is not a circuit, a curve, or a proof system this note will instantiate.
+
+**When to use:**
+
+Use a zero-knowledge proof when the verifier needs to accept a fact and must not receive the underlying secret. If the verifier must learn the result of a function on several parties’ private inputs, multi-party computation is the closer NIST description.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/zero_knowledge_proof
+- https://csrc.nist.gov/projects/privacy-enhancing-cryptography
 </details>
 
 <details>
@@ -680,6 +1187,22 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Secure multi-party computation lets several parties jointly compute a function over inputs that stay distributed, without each party revealing its input. NIST describes the result as what a trusted third party would have computed: correct outputs, and no sharing of the inputs.
+
+**How it works:**
+
+- The parties are often mutually distrustful. The protocol replaces the trusted party. Each party learns the agreed output, not the other parties’ inputs.
+- NIST’s privacy-enhancing cryptography project lists MPC next to fully homomorphic encryption and zero-knowledge proofs. FHE is one party computing on ciphertext. MPC is several parties, each holding an input.
+- One example on that page is a calculation whose data sits at multiple sources that cannot release the data. The function still runs, and the sources do not publish their rows.
+- NIST is also gathering reference material on threshold schemes, and it treats multi-party computation as the baseline paradigm for those schemes. This note does not specify a protocol, a round count, or a library.
+
+**When to use:**
+
+Use MPC when the inputs belong to different parties and none of them should see the others’ inputs, but all of them need the function’s result. If a single worker can compute on ciphertext alone, FHE matches that shape more closely.
+
+**Sources:**
+
+- https://csrc.nist.gov/projects/privacy-enhancing-cryptography
 </details>
 
 <details>
@@ -689,6 +1212,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Post-quantum cryptography is cryptography meant to stay secure against a future quantum computer. NIST’s project exists to protect information from machines that may be years or decades away and that could defeat many of today’s widely used public-key systems.
+
+**How it works:**
+
+- The algorithms are classical: they run on today’s computers. “Post-quantum” describes the threat they are designed against, not a quantum device you must deploy.
+- In August 2024 NIST released three principal standards. FIPS 203 is ML-KEM, a key-encapsulation mechanism. FIPS 204 is ML-DSA, a lattice-based signature. FIPS 205 is SLH-DSA, a stateless hash-based signature.
+- NIST says those three should be put into use now and will be the foundation for most deployments. Falcon (signatures) and HQC (key encapsulation) were selected for further standardization.
+- Under the timeline in NIST IR 8547, NIST will remove quantum-vulnerable algorithms from its standards by 2035. High-risk systems are expected to move earlier. Migration means finding where the vulnerable algorithms are used and replacing them.
+- This is not quantum key distribution. QKD uses quantum states to agree a key. PQC replaces the public-key algorithms a quantum computer would threaten.
+
+**When to use:**
+
+Start with ML-KEM for key establishment and ML-DSA or SLH-DSA for signatures when you are leaving a quantum-vulnerable public-key algorithm. Inventory first, then replace.
+
+**Sources:**
+
+- https://csrc.nist.gov/projects/post-quantum-cryptography
 </details>
 
 ### Standards and Protocols
@@ -700,6 +1240,21 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+NIST is the National Institute of Standards and Technology, a U.S. federal laboratory. In cryptography it publishes Federal Information Processing Standards and Special Publications, and it runs the programs that select and validate algorithms and modules.
+
+**How it works:**
+
+- FIPS are the standards federal agencies use for cryptographic modules and for algorithms NIST has standardized. FIPS 140-3 is the current module standard. FIPS 203, 204, and 205 are the principal post-quantum standards released in August 2024.
+- Special Publications such as SP 800-57 Part 1 Rev. 5 give key-management guidance, and SP 800-63B gives authenticator requirements, including how passwords are stored.
+- The Cryptographic Module Validation Program, a joint effort with the Canadian Centre for Cyber Security, validates modules against those FIPS so agencies have a metric when they buy equipment.
+- The post-quantum project ran an international competition and now tells organizations to migrate. NIST’s role there is selection, publication, and a transition timeline, not operation of anyone’s production keys.
+- The glossary and the publications are the interview sources. NIST does not replace a vendor’s implementation; it says which algorithms and which module requirements a federal system must meet.
+
+**Sources:**
+
+- https://csrc.nist.gov/projects/post-quantum-cryptography
+- https://csrc.nist.gov/projects/cryptographic-module-validation-program
+- https://csrc.nist.gov/pubs/fips/140-3/final
 </details>
 
 <details>
@@ -709,6 +1264,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+A cryptographic module is validated under the Cryptographic Module Validation Program against FIPS 140-3, which superseded FIPS 140-2. Independent laboratories test the module. CMVP reviews the submission and, on success, lists the module.
+
+**How it works:**
+
+- FIPS 140-3, published 22 March 2019, defines four increasing qualitative levels. The areas include module specification, interfaces, roles, services, and authentication, software and firmware security, the operating environment, physical security, non-invasive security, management of sensitive security parameters, self-tests, life-cycle assurance, and mitigation of other attacks.
+- CMVP is joint work by NIST and the Canadian Centre for Cyber Security. Testing laboratories are accredited by NVLAP. CMVP began accepting FIPS 140-3 submissions on 22 September 2020. It stopped accepting FIPS 140-2 submissions for new certificates; the last new-certificate date in the program table is 22 September 2021, with a narrower exception through 1 April 2022.
+- A validated module is Active for 5 years, or 2 years for an interim validation. FIPS 140-2 modules may still be used for new systems through 21 September 2026. After that they move to the Historical list and are only for existing systems.
+- For U.S. federal agencies, if cryptography is required, CMVP states that non-validated cryptography is treated as providing no protection: the data is unprotected plaintext. A revoked module may no longer be used.
+
+**When to use:**
+
+Buy or build to FIPS 140-3 when a federal system must cryptographically protect information. Treat a FIPS 140-2 module as a legacy validation with the 21 September 2026 limit for new systems.
+
+**Sources:**
+
+- https://csrc.nist.gov/pubs/fips/140-3/final
+- https://csrc.nist.gov/projects/cryptographic-module-validation-program
 </details>
 
 <details>
@@ -718,6 +1290,22 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Common Criteria is the governing document that provides a comprehensive, rigorous method for specifying security function and assurance requirements for products and systems. That is the NIST glossary definition, drawn from CNSSI 4009-2022.
+
+**How it works:**
+
+- The method separates what the product claims to do (security functions) from how strongly that claim was examined (assurance). A buyer can ask for a given set of requirements instead of trusting a vendor’s brochure.
+- It is a product-evaluation framework. It is not a cipher and not FIPS 140-3. FIPS 140-3 and CMVP validate a cryptographic module. Common Criteria evaluates an IT product against a stated security target.
+- NIST SP 800-53 Rev. 5 and SP 800-37 Rev. 2 point at the same glossary entry when they need a name for that evaluation method. Usage is procurement and assurance: require an evaluation against a protection profile or a security target when the buyer needs a third-party examination of the product’s security claims.
+- This note does not list evaluation assurance levels, because the glossary page does not define them.
+
+**When to use:**
+
+Use Common Criteria when you need a rigorous statement of a product’s security functions and of the assurance applied to that statement. Use CMVP when the question is specifically whether a cryptographic module meets FIPS 140-3.
+
+**Sources:**
+
+- https://csrc.nist.gov/glossary/term/common_criteria
 </details>
 
 <details>
@@ -727,6 +1315,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+TLS lets a client and a server communicate over the Internet in a way designed to prevent eavesdropping, tampering, and message forgery. RFC 8446 specifies TLS 1.3. MDN states that TLS was formerly called SSL.
+
+**How it works:**
+
+- Both are client/server protocols. The server presents a valid digital certificate so the client can confirm its identity. Mutual authentication is possible when the client presents a certificate too.
+- TLS 1.3 obsoletes RFC 5246 (TLS 1.2’s previous base, as cited by RFC 8446) in the sense that RFC 8446 is the current protocol specification and also sets new requirements for TLS 1.2 implementations. MDN says major browsers removed TLS 1.0 and 1.1 in early 2020, so a server needs TLS 1.2 or 1.3.
+- Forward secrecy in TLS 1.3 comes from (EC)DHE. A pre-shared key used with (EC)DHE keeps it. A pre-shared key used alone loses it for the application data.
+- SSL is the predecessor name. New work speaks TLS. The purpose did not change: an authenticated channel that hides and protects the bytes.
+
+**When to use:**
+
+Use TLS 1.3 where both peers support it, and TLS 1.2 where you still need that generation. Do not design for SSL or for TLS 1.0 or 1.1.
+
+**Sources:**
+
+- https://www.rfc-editor.org/rfc/rfc8446#section-1.2
+- https://developer.mozilla.org/en-US/docs/Glossary/TLS
 </details>
 
 <details>
@@ -736,6 +1341,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+S/MIME is Secure/Multipurpose Internet Mail Extensions. RFC 8551 defines version 4.0 as a consistent way to send and receive secure MIME data. It obsoletes RFC 5751.
+
+**How it works:**
+
+- Digital signatures provide authentication, message integrity, and non-repudiation with proof of origin.
+- Encryption provides data confidentiality.
+- Compression can be used to reduce data size. It is a third operation the RFC lists, not a security service.
+- The protected object is MIME data, so the standard fits email and any other MIME body, not a TLS session and not a raw packet.
+- The signature and encryption services match the NIST split: a signature does not make the body confidential, and encryption does not by itself prove who sent it. S/MIME can apply both.
+
+**When to use:**
+
+Use S/MIME when the message is MIME and you need signed origin, integrity, or confidentiality of that message as it sits in a mailbox or is forwarded. Use TLS when you need the transport protected, including messages that are not MIME.
+
+**Sources:**
+
+- https://www.rfc-editor.org/rfc/rfc8551#section-1
 </details>
 
 ### Practical Implementation and Best Practices
@@ -747,6 +1369,23 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Use a hardware cryptographic module when the private or secret key must stay inside a module that has been validated for physical security, interfaces, and management of sensitive security parameters. An HSM is that kind of module: the key is used on the device instead of being loaded into ordinary process memory as an exportable file.
+
+**How it works:**
+
+- FIPS 140-3’s requirements include physical security, non-invasive security, roles and authentication, self-tests, and management of sensitive security parameters. Those are the properties you are buying, not a faster CPU.
+- CMVP says that for U.S. federal agencies, if cryptography is required, non-validated cryptography is treated as no protection. A validated module is the metric agencies use when they procure equipment.
+- The application calls the module for signing or decryption. The private key does not need to leave the module for those operations.
+- A software library on a general-purpose server is the right default for low-value development keys. It is the wrong place for a key whose copy would let someone else sign or decrypt production data.
+
+**When to use:**
+
+Use an HSM or another validated hardware module for production signing keys, decryption keys that must survive a host compromise, and any federal system that must meet FIPS 140-3. Prefer a module with a current FIPS 140-3 validation over a new deployment that only has FIPS 140-2.
+
+**Sources:**
+
+- https://csrc.nist.gov/pubs/fips/140-3/final
+- https://csrc.nist.gov/projects/cryptographic-module-validation-program
 </details>
 
 <details>
@@ -756,4 +1395,20 @@ A payment device that still speaks two-key 3DES can talk to an old peer. A new d
 
 **Definition:**
 
+Manage keys by the type of key and the security service it provides. NIST SP 800-57 Part 1 Rev. 5 is the general recommendation: which algorithms and key types to use, what protection each type of keying material requires, and which management functions the organization has to operate.
+
+**How it works:**
+
+- Name the service first. Confidentiality, integrity, and origin authentication are different services, and NIST’s glossary does not treat a signature key as a confidentiality key. Use separate keys for signing and for encryption. RFC 8017 already splits RSA signature schemes from RSA encryption schemes.
+- Protect each type as that type requires. Secret and private keys need confidentiality. Public keys need integrity, which is what a certificate provides. SP 800-57 is where those protection requirements are specified.
+- Generate and store high-value private keys in a module validated under CMVP when the data must be cryptographically protected for a federal system. CMVP treats non-validated cryptography as providing no protection in that case.
+- Distribution is part of management. A shared symmetric key has to reach the other party without being copied by anyone else. A public key has to arrive unmodified.
+- Passwords are not general-purpose keys. SP 800-63B requires a salted password hash with a cost factor, on an authenticated channel. Do not store them next to encryption keys as raw strings.
+- Plan for recovery of encryption keys only when policy allows escrow or backup of that specific key. Do not copy a signing key in order to decrypt.
+
+**Sources:**
+
+- https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final
+- https://csrc.nist.gov/projects/cryptographic-module-validation-program
+- https://pages.nist.gov/800-63-4/sp800-63b.html
 </details>

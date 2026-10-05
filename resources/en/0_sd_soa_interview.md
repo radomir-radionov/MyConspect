@@ -1,6 +1,6 @@
 # SOA — Interview
 
-Answers are filled for the published subset; the rest are still empty.
+Answers are filled.
 
 [← Back to hub](./0_system_design.md)
 
@@ -396,6 +396,23 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Keep each service able to answer during a failure by replicating it, and decide explicitly what happens when the network between services splits.
+
+**How it works:**
+
+- SOAP is a messaging framework for a decentralized, distributed environment. A service that exists on only one machine is down when that machine is down.
+- Brewer: during a partition you either stop updates on one side or you accept divergence and compensate later. Retrying with no deadline chooses consistency and the caller waits.
+- The Reactive Manifesto gets resilience from replication, containment, isolation, and delegation. The client of a failed service should not be the component that repairs it.
+- Publish the contract in WSDL so a second copy of the service still offers the same operations. Clients bind to the contract, not to one host name baked into code.
+- Bound the queue in front of the service. Reactive Streams exists so a fast caller cannot force an unbounded buffer on a slow service.
+
+**Sources:**
+
+- https://www.w3.org/TR/soap12-part1/
+- https://www.w3.org/TR/wsdl20/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactivemanifesto.org/
+- https://www.reactive-streams.org/
 </details>
 
 <details>
@@ -405,6 +422,20 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+WS-Security is an OASIS standard that adds integrity and confidentiality to SOAP messages and binds security tokens to that content.
+
+**How it works:**
+
+- The specification enhances SOAP messaging. SOAP itself is the envelope. WS-Security is how that envelope carries proof and protection.
+- It is built to fit many security models and encryption technologies. It does not pick one token format. A message can carry one token for identity and another for a business certification.
+- It also describes binary security tokens, a framework for XML tokens, and opaque encrypted keys.
+- In a service-oriented system the caller and the service are different parties. The message has to stay protected after it leaves the caller's process, which is what message-level integrity and confidentiality are for.
+- This is not a procedure for breaking a token or a signature. Verification belongs to an implementation of the standard.
+
+**Sources:**
+
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.w3.org/TR/soap12-part1/
 </details>
 
 ### SOA Standards and Protocols
@@ -416,6 +447,21 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+A standard contract lets a caller and a service evolve separately. SOAP defines a message that can travel over more than one underlying protocol.
+
+**How it works:**
+
+- SOAP 1.2 is a lightweight protocol for exchanging structured information in a decentralized, distributed environment. Part 1 defines an extensible messaging framework and a message construct.
+- Because the message is XML and the framework is extensible, a new header such as WS-Security can be added without inventing a new envelope.
+- WSDL 2.0 is the XML language that describes what the service offers, from an abstract model. Callers generate or check clients against that description instead of a private binary layout.
+- The same description can be honored by a second implementation. That is the SOA point: the consumer depends on the contract, not on one team's library.
+- A timeout and a bounded queue still matter. A standard envelope does not by itself keep a slow service from being overwhelmed.
+
+**Sources:**
+
+- https://www.w3.org/TR/soap12-part1/
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
 </details>
 
 <details>
@@ -425,6 +471,21 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+WSDL 2.0 is an XML language for describing a Web service from an abstract model of what the service offers.
+
+**How it works:**
+
+- The specification defines the core language and the conformance criteria for documents in that language.
+- The description is the contract. Operations, messages, and where the service is reached live in that document, so a caller does not read the service's source.
+- SOAP carries the message. WSDL describes the service. WS-Security protects the message. They are three different documents with three jobs.
+- A second deployment of the same description is still the same service from the caller's point of view. That is how you put a replica behind one contract.
+- Changing the description is a contract change. Callers that were generated from the old document need a deliberate update, not a silent drift.
+
+**Sources:**
+
+- https://www.w3.org/TR/wsdl20/
+- https://www.w3.org/TR/soap12-part1/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
 </details>
 
 <details>
@@ -434,6 +495,22 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Discovery is how a caller finds a service description. The description it needs, once found, is a WSDL document of what the service offers.
+
+**How it works:**
+
+- WSDL 2.0 is the XML language for that description, based on an abstract model of the service. A registry's job is to point a caller at such a description rather than at a hard-coded URL in source.
+- SOAP then exchanges the message the description named. The registry does not replace the message framework.
+- WS-Security still applies after discovery. Finding a service is not the same as trusting its message. Tokens travel with the SOAP content.
+- Treat a discovered endpoint as replaceable. Availability comes from another replica that honors the same WSDL, not from caching one host forever.
+- A discovered description can be stale. Compare the contract you call with the contract you generated against, the same way a partition needs an explicit recovery step.
+
+**Sources:**
+
+- https://www.w3.org/TR/wsdl20/
+- https://www.w3.org/TR/soap12-part1/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -443,6 +520,21 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+OASIS publishes standards that sit on top of the SOAP message, including WS-Security for integrity, confidentiality, and tokens.
+
+**How it works:**
+
+- The WS-Security 1.1.1 document is an OASIS standard. It enhances SOAP messaging rather than replacing it.
+- That split is the point of a standards body here: the message framework is W3C SOAP, the service description is W3C WSDL, and message security is an OASIS specification. A service can adopt them independently.
+- The security specification is extensible about token formats. OASIS did not freeze SOA to one identity product.
+- Teams still have to implement the standard. Publishing it does not deploy it. Encryption and signatures exist only if the endpoint follows the specification.
+- Governance in a SOA program is largely deciding which of these published contracts are mandatory.
+
+**Sources:**
+
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.w3.org/TR/soap12-part1/
+- https://www.w3.org/TR/wsdl20/
 </details>
 
 ### Securing SOA Applications
@@ -454,6 +546,22 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Messages cross a trust boundary. The concerns are integrity, confidentiality, and which token proves the caller, plus availability when a dependency fails.
+
+**How it works:**
+
+- WS-Security names integrity and confidentiality of the SOAP message, and a way to associate security tokens with that content. No single token type is required.
+- A token in the message is not protection if the private key or the shared secret leaks. RFC 8017's RSA public key is the modulus and exponent you can publish. The private exponent stays with the holder.
+- The description in WSDL tells callers the shape of the service. It does not authenticate them. Discovery and authorization are separate steps.
+- A compromised or overloaded dependency is also a security failure. Isolation and a bounded queue keep one bad service from exhausting the caller.
+- Do not invent a padding or a token format. Use the scheme the specification names.
+
+**Sources:**
+
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.rfc-editor.org/rfc/rfc8017#section-3.1
+- https://www.w3.org/TR/wsdl20/
+- https://www.reactive-streams.org/
 </details>
 
 <details>
@@ -463,6 +571,22 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Put proof of identity in the message as a security token, and keep the private material that backs that token with the caller, not in the WSDL.
+
+**How it works:**
+
+- WS-Security associates tokens with message content and allows more than one format. One token can prove identity and another can prove a business certification.
+- The service checks the token against the rules of that format. The WSDL describes operations. It is not the identity store.
+- SOAP's extensible header is where this proof rides, so intermediaries can see a header without each service inventing a side channel.
+- Replica services must accept the same token formats. Otherwise failover changes who the caller is allowed to be.
+- Rotate and store secrets as secrets. An RSA private exponent is not part of the public key you publish.
+
+**Sources:**
+
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.w3.org/TR/soap12-part1/
+- https://www.w3.org/TR/wsdl20/
+- https://www.rfc-editor.org/rfc/rfc8017#section-3.1
 </details>
 
 <details>
@@ -472,6 +596,30 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+A security token is a claim carried with the SOAP message. WS-Security binds tokens to content and does not require one token format.
+
+**How it works:**
+
+- The specification is extensible: multiple token formats are allowed. The text's example is one format for proof of identity and another for proof of a business certification.
+- It describes how to encode binary security tokens, a framework for XML-based tokens, and how to include opaque encrypted keys.
+- The token supports integrity and confidentiality of the message. It is not a replacement for the SOAP envelope.
+- Receivers must understand the format they accept. An unknown token is not silently trusted.
+- Publishing the matching public key, such as an RSA modulus and exponent, lets others check a signature. The private exponent stays private.
+
+**Examples:**
+
+```text
+SOAP envelope
+  WS-Security header
+    token: proof of identity
+    token: business certification
+  body: the operation
+```
+
+**Sources:**
+
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.rfc-editor.org/rfc/rfc8017#section-3.1
 </details>
 
 ### SOA Testing
@@ -483,6 +631,22 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Test the contract in the WSDL and the message on the wire, including the security header, not only the code inside one service.
+
+**How it works:**
+
+- WSDL is the abstract model of what the service offers. A test that calls an operation the description does not list is testing a private path.
+- SOAP tests should send a real envelope. A unit test of a function with no envelope misses header handling.
+- Include a WS-Security header case: missing token, token present, and a body that must fail integrity if the protected content changes. Do not describe how to forge a token. The test uses keys you own.
+- Contract tests belong at the boundary because the caller is another team. A green internal test does not prove their generated client still matches.
+- Add a timeout test. A dependency that never returns is the availability failure Brewer describes, and the caller must stop waiting.
+
+**Sources:**
+
+- https://www.w3.org/TR/wsdl20/
+- https://www.w3.org/TR/soap12-part1/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -492,6 +656,22 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+A monolith calls functions in one process. A SOA system calls contracts over a network, so tests must include the message, the token, and the failure of the other side.
+
+**How it works:**
+
+- WSDL and SOAP are the seam. A refactor inside the service is invisible if the description and the envelope stay the same. A test that only loads classes will not see a broken envelope.
+- The other service may be down, slow, or partitioned. Brewer's choice appears in the test: after a deadline, does the caller fail or does it proceed with a stale result?
+- Security tokens are part of the message. A test identity has to be a token format the service accepts, not a thread-local user object.
+- Versions drift. Two teams can deploy two WSDL revisions. The test has to pin the description it was written against.
+- Shared mutable fixtures are a poor fit. One test's data is another service's database. Isolate the contract you own and stub the description you call.
+
+**Sources:**
+
+- https://www.w3.org/TR/wsdl20/
+- https://www.w3.org/TR/soap12-part1/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -501,6 +681,23 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Drive the SOAP operation from the WSDL at a rising rate and watch whether the service stays responsive or the queue grows without a bound.
+
+**How it works:**
+
+- The contract under load is the same description callers use. Hit the operations WSDL lists, with a valid WS-Security header, or you are measuring a path production will reject.
+- Reactive Streams states the failure you are looking for: a fast source must not force an arbitrary buffer. If memory grows with the send rate, back-pressure or a limit is missing.
+- Record the deadline. Brewer treats a timeout as the moment you either cancel or risk inconsistency. A load test with no deadline hides that choice.
+- Scale the replica count only after one replica's limit is known. More copies do not help if every copy waits on the same unlocked dependency.
+- Keep the security check on. A load test that skips token validation measures a service you will not deploy.
+
+**Sources:**
+
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.reactive-streams.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactivemanifesto.org/
 </details>
 
 ### Performance and Scalability
@@ -512,6 +709,23 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Watch the time to answer, the queue depth, and token failures. The manifesto treats a timely response as the way you notice a problem.
+
+**How it works:**
+
+- Responsiveness is the signal. A service that stops answering, or answers past its deadline, is the availability event. CPU inside one process is a clue, not the definition.
+- Queue depth tells you whether back-pressure is working. Reactive Streams forbids an arbitrary buffer. A depth that only grows is the bug.
+- Count WS-Security failures separately from application faults. A spike in rejected tokens is an identity problem. A spike in slow successes is capacity or a dependency.
+- During a partition, not every caller will see the failure at the same moment. Brewer notes there is no single global view of the cut. Dashboards per caller still matter.
+- Alert on the contract: the operation in the WSDL, not on a private method name.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.reactive-streams.org/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.w3.org/TR/wsdl20/
 </details>
 
 <details>
@@ -521,6 +735,23 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Add replicas that honor the same WSDL, and keep each replica from taking unbounded work. Move to more than one site only with an explicit partition plan.
+
+**How it works:**
+
+- Elasticity in the manifesto is staying responsive as load changes, by sharding or replicating and avoiding a central bottleneck.
+- Every replica must accept the same SOAP contract and the same token formats. Scaling a binary that drifted from the WSDL splits the service in two.
+- Cap concurrency at the edge. flatMap-style fan-out without a limit, or an unlimited SOAP thread per call, exhausts the pool before CPU is the issue.
+- A shared dependency that cannot scale becomes the bottleneck. Isolate it and give it a deadline.
+- Across regions, Brewer still applies. Two sites that both take writes while they cannot talk will diverge. Pick a writer or plan compensation.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactive-streams.org/
 </details>
 
 <details>
@@ -530,6 +761,23 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+A dependency is another SOAP contract. Call it with a deadline, a concurrency cap, and a fallback that does not pretend the latest write succeeded.
+
+**How it works:**
+
+- SOAP over a network can stall. Reactive Streams requires the caller not to buffer an arbitrary amount while it waits.
+- The manifesto isolates the failure. A dead dependency is contained. The caller stays responsive by refusing or by using a clearly stale copy, which is Brewer's availability-versus-consistency choice.
+- Do not let every inbound request open an unbounded number of outbound calls. A cap is the same idea as flatMap's concurrency argument.
+- WSDL tells you the operations you depend on. A hidden call that is not in the description will not show up in the contract test until production.
+- If two services call each other, a slowdown cycles. Break the cycle with a queue that has a bound and a token that does not have to be re-checked in a loop.
+
+**Sources:**
+
+- https://www.w3.org/TR/soap12-part1/
+- https://www.reactive-streams.org/
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.w3.org/TR/wsdl20/
 </details>
 
 ### SOA Governance
@@ -541,6 +789,22 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Governance is the decision about which contracts are mandatory: the WSDL you publish, the SOAP envelope you accept, and the token formats you trust.
+
+**How it works:**
+
+- WSDL is the service description. Governance says who may change it and how callers learn about the change.
+- WS-Security is optional until a policy requires it. Governance makes integrity, confidentiality, and an accepted token format part of the contract, not a local habit.
+- OASIS and W3C publish the documents. Governance is the local rule that those documents are what this estate implements.
+- Without that rule, two teams invent two envelopes and discovery cannot find a single description.
+- Governance also includes the availability rule: a deadline, a replica policy, and what a partition is allowed to do. Brewer's detect-limit-recover is a policy, not only a theorem.
+
+**Sources:**
+
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.w3.org/TR/soap12-part1/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -550,6 +814,21 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Require every accepted SOAP message to carry a WS-Security token in an allowed format, and reject the message when integrity does not hold.
+
+**How it works:**
+
+- The specification's job is integrity, confidentiality, and associating tokens with content. A policy names which of those this estate turns on.
+- No specific token type is required by the standard, so the policy must say which formats this service accepts. An unknown format is rejected.
+- The matching WSDL is published only for operations that enforce the policy. A back door that skips the header is outside the contract.
+- Pair it with a deadline. A message that is authentic but whose handler never returns is still an availability failure.
+- The policy is checked in tests with keys you control. It is not a guide to forging tokens.
+
+**Sources:**
+
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.w3.org/TR/wsdl20/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>
 
 <details>
@@ -559,6 +838,22 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+An SLA states the response bound callers can expect from a described operation, and what the service will do when it cannot meet that bound.
+
+**How it works:**
+
+- The manifesto treats a timely response as the core of usefulness, and a consistent upper bound as what makes failures detectable.
+- WSDL names the operation. The SLA names the time and the success rate for that operation. A contract with no bound cannot be monitored.
+- Brewer's practical partition is a timeout. The SLA is that timeout made into a promise: past it, the call is failed or degraded on purpose, not retried forever.
+- The promise has to survive a replica. Every copy that honors the WSDL is inside the same SLA, or callers see a different service.
+- Back-pressure is how you keep the promise. Accepting unlimited SOAP calls and then missing the bound is not an SLA. It is an unbounded queue.
+
+**Sources:**
+
+- https://www.reactivemanifesto.org/
+- https://www.w3.org/TR/wsdl20/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactive-streams.org/
 </details>
 
 ### Troubleshooting and Maintenance
@@ -570,6 +865,23 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+Separate a bad contract, a rejected token, a missed deadline, and a down dependency. They look alike if you only watch one process.
+
+**How it works:**
+
+- Check the WSDL the caller used against the WSDL the service deployed. A drift there fails before business code runs.
+- Check the WS-Security header. Integrity and token format failures are specified separately from a fault inside the operation.
+- If the call passes the deadline, treat it as Brewer's partition decision. See whether the caller cancelled or kept going. Look at the dependency the same way.
+- Watch queue depth. An arbitrary buffer means the service accepted more SOAP work than it can finish. That is the Reactive Streams failure mode.
+- A replica that fails alone is containment working. A failure of every replica together points at the shared dependency or at the contract they all share.
+
+**Sources:**
+
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- https://www.reactive-streams.org/
+- https://www.reactivemanifesto.org/
 </details>
 
 <details>
@@ -579,4 +891,20 @@ Reserve stock (commit), then charge the card. If the charge is declined, call `r
 
 **Definition:**
 
+A service is born as a WSDL, secured by a token policy, run as replaceable replicas, and retired by withdrawing the description callers discover.
+
+**How it works:**
+
+- Design the description first. WSDL 2.0 is the abstract model of what is offered. Implementation follows that document.
+- Before traffic, require the WS-Security policy: integrity, confidentiality as needed, and the token formats you accept.
+- In production, keep replicas and a deadline. Monitor responsiveness and queue depth. A partition plan says who may write.
+- A compatible change stays inside the published description. An incompatible change is a new description, and old callers keep the old one until they move.
+- Retirement removes the description from discovery and drains callers. Deleting one host while the WSDL still advertises it only creates timeouts.
+
+**Sources:**
+
+- https://www.w3.org/TR/wsdl20/
+- https://docs.oasis-open.org/wss-m/wss/v1.1.1/os/wss-SOAPMessageSecurity-v1.1.1-os.html
+- https://www.reactivemanifesto.org/
+- https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 </details>

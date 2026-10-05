@@ -1,6 +1,6 @@
 # Concurrency — Interview
 
-Answers are filled for the published subset; the rest are still empty.
+Answers are filled for every question in this note.
 
 [← Back to hub](./0_system_design.md)
 
@@ -27,25 +27,85 @@ Questions from [Devinterview.io — Concurrency](https://devinterview.io/questio
 
 **Definition:**
 
-Concurrency is structuring work so several tasks can be in progress at once, even if the machine runs only one at a time. Parallelism is actually executing more than one task at the same instant.
+Concurrency describes a system's capability to deal with a large number of tasks that might start, run, and complete independently of each other. This is the hallmark of multi-tasking operating systems.
+
+In contrast, parallelism revolves around performing multiple tasks simultaneously. Such systems often leverage multi-core processors.
 
 **How it works:**
 
-- A concurrent program on one core interleaves tasks: the scheduler switches, or the code yields at a blocking call. Progress overlaps in time. Execution does not.
-- Parallelism needs hardware that can run those tasks together, usually several cores. The tasks may also be concurrent, but a single parallel split of one job need not deal with independent lifetimes.
-- A single-core server handling many sockets is concurrent and not parallel. A matrix multiply spread across cores can be parallel. A thread pool on many cores is both.
-- Shared memory then needs a rule so overlapping tasks do not corrupt it: locks, atomic operations, transactional memory, immutable data, or messages that copy the data instead of sharing it.
+#### Key Concepts
+
+Concurrency and parallelism can coexist, but they don't necessarily require each other. A program can be:
+
+Concurrent but not parallel: e.g., a single-core processor multitasking
+Parallel but not concurrent: e.g., divided tasks distributed across multiple cores
+
+#### Mechanisms
+
+Concurrency: Achieved through contextual task-switching. For example, using time slicing or handcrafted interruption points in the code.
+Parallelism: Achieved when the system can truly execute multiple tasks in parallel, typically in the context of multi-core systems.
+
+#### Thread-Safety and Shared Resources
+
+In a concurrent environment, multiple threads or tasks can access shared resources simultaneously. Without proper handling, this can lead to race conditions, corrupting the data.
+
+#### Ensuring thread-safety involves employing strategies like:
+
+Locking
+Atomic Operations
+Transactional Memory
+Immutable Data
+Message Passing
+
+#### Code Example: Concurrency and Parallelism
+
+Here is the Python code:
 
 **Examples:**
 
 ```python
-# concurrent: two tasks in flight; on one core they take turns
-t1 = threading.Thread(target=read_socket)
-t2 = threading.Thread(target=read_socket)
-t1.start(); t2.start()
+import threading
+
+# Two independent tasks that can run concurrently
+def task_1():
+    print("Starting Task 1")
+    # Simulate some time-consuming work
+    for i in range(10000000):
+        pass
+    print("Completed Task 1")
+
+def task_2():
+    print("Starting Task 2")
+    # Simulate some time-consuming work
+    for i in range(10000000):
+        pass
+    print("Completed Task 2")
+
+# Create and start thread objects to achieve concurrency on a single-core system
+thread1 = threading.Thread(target=task_1)
+thread2 = threading.Thread(target=task_2)
+thread1.start()
+thread2.start()
+
+# In a multi-core system, the tasks can also run in parallel
+# To emulate this behavior on a single-core system, we can use:
+# Python's "concurrent.futures" module.
+from concurrent.futures import ThreadPoolExecutor
+
+# Create a thread pool
+executor = ThreadPoolExecutor()
+
+# Submit the tasks for parallel execution
+task1_future = executor.submit(task_1)
+task2_future = executor.submit(task_2)
+
+# Proper cleanup
+executor.shutdown()
 ```
 
-On a two-core machine those threads can also run in parallel. On one core they still overlap their waits.
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -55,19 +115,67 @@ On a two-core machine those threads can also run in parallel. On one core they s
 
 **Definition:**
 
-A race condition is a bug whose result depends on the timing of tasks that share state. The same inputs can produce different outputs because the steps interleave.
+Race conditions arise in multithreaded or distributed systems when the final outcome depends on the sequence or timing of thread or process execution, which in turn may lead to inconsistent or unexpected behavior.
 
 **How it works:**
 
-- It needs shared mutable state and at least one update that is not atomic: a read, a modify, and a write that another task can slip between.
-- The window also shows up around I/O and the network, where “check then act” spans more than one instruction.
-- A lost update, a double spend of one ticket, or a torn write are typical outcomes.
-- Close the window with a lock around the whole read-modify-write, with an atomic instruction, with immutable snapshots, or by giving each task its own copy and merging later.
-- Tests that pass once do not prove it is gone. The interleaving has to be forced or the shared update removed.
+#### Key Factors
+
+Shared Resources: For a race condition to occur, threads or processes must access and potentially alter shared resources or data.
+Non-Atomic Operations: Processes might rely on multiple operations, such as read-modify-write operations, which can be interrupted between steps.
+
+#### Common Source of Race Conditions
+
+Network Communication: In distributed systems, delays in network communication can lead to race conditions.
+I/O Operations: File or database writes can lead to race conditions if data is not consistently updated.
+Split I/O: Using multiple modules for I/O can introduce the possibility of race conditions.
+
+#### Code Example: Race Conditions
+
+#### Consider the following Python code:
+
+Here is the Python code:
+
+#### Mitigating Race Conditions
+
+Synchronization: Techniques such as locks, semaphores, and barriers ensure exclusive access to shared resources, thus preventing race conditions.
+Atomic Operations: Many programming languages and libraries provide primitive operations that are atomic, ensuring they are not interrupted.
+Use of Immutable Data: In some scenarios, using immutable, or read-only data can help avoid race conditions.
+Order Encapsulation: Establish a clear order in which methods or operations should execute to ensure consistency.
+Parallel Programming Best Practices: Staying updated with best practices in parallel programming and adopting them can help in identifying and mitigating race conditions.
 
 **Examples:**
 
-Two threads both read `seats == 1`, both decide to sell, both write `seats = 0`. Two buyers get one seat. A mutex around the read and the decrement, or an atomic compare-and-swap from 1 to 0, lets only one sale succeed.
+```python
+import threading
+
+# Shared resource
+counter = 0
+
+def increment_counter():
+    global counter
+    for _ in range(1000000):
+        counter += 1
+
+# Create threads
+thread1 = threading.Thread(target=increment_counter)
+thread2 = threading.Thread(target=increment_counter)
+
+# Start threads
+thread1.start()
+thread2.start()
+
+# Wait for both threads to finish
+thread1.join()
+thread2.join()
+
+# Expected value (though uncertain due to the race condition)
+print(f"Expected: 2000000, Actual: {counter}")
+```
+
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -77,25 +185,39 @@ Two threads both read `seats == 1`, both decide to sell, both write `seats = 0`.
 
 **Definition:**
 
-A critical section is the stretch of code that touches shared state and must not run in more than one task at a time.
+In concurrent programming, a critical section is a part of the code where shared resources are being accessed by multiple threads. It's essential to manage access to these sections to prevent inconsistencies and ensure data integrity.
+
+Synchronization techniques, such as locks or semaphores, are used to regulate access to critical sections.
 
 **How it works:**
 
-- The goal is mutual exclusion: one task inside, others waiting, and a waiting task eventually getting in.
-- The shared data stays consistent because the read-modify-write finishes before anyone else starts it.
-- The section should be short. A long one serializes the program and can starve other tasks.
-- Locks, semaphores, and monitors are the usual way in. Forgetting to leave, or taking two locks in different orders, deadlocks. Two tasks endlessly yielding to each other livelock. A task that always loses the race starves.
-- Correctness here is not free performance. Measure hold time. If the section only needs to publish an immutable value, you may not need the lock at all.
+#### Objectives of Critical Sections
 
-**Examples:**
+Data Integrity: Guarantee that shared resources are consistent and not left in intermediate states.
+Efficiency: Ensure that non-critical tasks can be executed concurrently for optimal resource utilization.
+Independence: Encourage thread independence within non-critical sections.
 
-```text
-lock(mu)
-  balance = balance - amount   # critical section
-unlock(mu)
-```
+#### Common Pitfalls
 
-Two withdrawals can no longer both read the old balance and both write it back.
+Deadlocks: Occur when two or more threads are blocked indefinitely, waiting for each other.
+Live Locks: Threads are both active but unable to progress.
+Resource Starvation: One or more threads are unable to access the critical section.
+
+#### Role of Synchronization Mechanisms
+
+Locks, the most frequently used mechanism, help coordinate access to shared resources by employing locks or flags. If a thread tries to enter a critical section and a lock is already set, the thread is suspended until the lock is released.
+
+Semaphores enable more sophisticated control over access to resources by managing a digital counter referred to as the "semaphore value". Threads can acquire or release "permits" to interact with shared resources. The most common type, a binary semaphore, acts much like a lock.
+
+#### Relationship to Performance
+
+While critical sections are crucial for maintaining data consistency, excessive use of locks can lead to performance degradation due to synchronization overheads.
+
+It's a balancing act: efficient programs aim to minimize the time spent within critical sections and optimize the number of lock/unlock operations.
+
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -105,28 +227,57 @@ Two withdrawals can no longer both read the old balance and both write it back.
 
 **Definition:**
 
-The kernel gives tasks a way to wait so that only one of them executes a critical section, using hardware atomics underneath.
+Operating Systems prevent race conditions and ensure mutual exclusion using various mechanisms such as locking, timing, and hardware support.
 
 **How it works:**
 
-- A mutex or a binary semaphore has two states. `lock` waits if it is taken and then marks it taken. `unlock` wakes one waiter.
-- The CPU provides an atomic test-and-set or compare-and-swap so two cores cannot both observe the lock as free and both take it.
-- If the lock is busy, the kernel parks the thread instead of spinning forever, and a scheduler runs someone else.
-- Disabling interrupts can exclude other code on a single core. It does not stop another core, so multiprocessor kernels use atomics.
-- Higher-level tools sit on the same idea: futexes in Linux, critical sections in Windows, and language locks that call them.
-- The OS does not know your data invariant. It only guarantees the lock protocol. The program still has to lock every path that touches the data, in a consistent order.
+#### Key Mechanisms
+
+Locking: Operating systems use locks, accessed through primitives like lock() and unlock(), to restrict concurrent access to shared resources.
+
+Timing: Time delay techniques, such as busy-wait loops, help coordinate access among processes.
+
+Hardware Support: Modern CPUs rely on hardware features like atomic instructions and caching strategies for efficient synchronization.
+
+Code Example: Using Mutex Locks in C++
+
+Here is the C++ code:
+
+In this code, both processA and processB attempt to lock the resourceMutex before accessing the shared resource. If the mutex is already locked by the other process, the calling process will be blocked until the mutex is released, ensuring mutual exclusion.
 
 **Examples:**
 
 ```cpp
-std::mutex mu;
-void withdraw(int amount) {
-  std::lock_guard<std::mutex> hold(mu);
-  balance -= amount;
+#include <iostream>
+#include <thread>
+#include <mutex>
+
+std::mutex resourceMutex;
+
+void processA() {
+    resourceMutex.lock();
+    std::cout << "Process A is accessing the shared resource.\n";
+    resourceMutex.unlock();
+}
+
+void processB() {
+    resourceMutex.lock();
+    std::cout << "Process B is accessing the shared resource.\n";
+    resourceMutex.unlock();
+}
+
+int main() {
+    std::thread t1(processA);
+    std::thread t2(processB);
+    t1.join();
+    t2.join();
+    return 0;
 }
 ```
 
-`lock_guard` locks on construction and unlocks on destruction, including when the function throws.
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -136,20 +287,41 @@ void withdraw(int amount) {
 
 **Definition:**
 
-An atomic operation finishes as a whole or not at all, as far as other tasks can see. Nobody observes a half-updated value.
+Atomicity in concurrency refers to operations that appear to happen indivisibly. An operation is either fully executed or not at all, meaning that concurrent operations do not observe intermediary states, thereby avoiding data inconsistency.
 
 **How it works:**
 
-- A machine word store is often atomic in hardware. A read-modify-write of a balance is not, unless you use an atomic instruction or a lock.
-- Atomics cover counters, flags, and compare-and-swap loops that publish a new pointer only when the old one is still current.
-- A non-atomic update can tear: another task reads a mix of old and new bytes, or loses its own update.
-- Atomicity of one instruction is not the same as a transaction. Several atomic steps can still interleave unless you group them.
-- Isolation and durability are separate. An atomic memory write can still sit in a cache and be lost on power failure. A database commit is a stronger promise.
-- Hardware memory models decide when other cores see the write. A language atomic also inserts the needed ordering. A plain store may not.
+#### Non-Atomic Operation
 
-**Examples:**
+Standard operations on most data types (e.g., integers, longs, pointers).
 
-`count++` on a shared `int` can lose increments: both cores read 7 and both write 8. `std::atomic<int>::fetch_add(1)` makes the increment one step, so two callers end at 9.
+An example of a non-atomic operation is an integer ++ operation in many programming languages. It involves three steps: read the current value, increment it, and store it back. During multi-threaded access, another thread might have modified the value of the integer between the read and write steps, leading to a data inconsistency.
+
+#### The Importance of Operation Atomicity
+
+Consistency: Ensures that an operation either completes as a whole or does not take effect at all.
+
+Isolation: Guarantees that the operation occurs independently of any other concurrent operations.
+
+Durability: Maintains the integrity of data, especially during failure or interruption, to prevent data corruption.
+
+#### Considerations
+
+Hardware Influence: Some hardware architectures might provide implicit atomicity for certain types of operations or memory locations, aiding in thread and data safety.
+Software Relying on Atomicity: Concurrency control mechanisms in multithreaded applications, such as locks, semaphores, or certain data structures (e.g., atomic variables, compare-and-swap mechanisms), depend on the notion of operation atomicity for consistency and integrity.
+Data Integrity: Ensuring data integrity within a multi-threaded environment is a fundamental requirement. Both multi-threaded locks and atomic operations play vital roles.
+
+**When to use:**
+
+#### Use-Cases for Atomic Operation
+
+Multi-Step State Transitions: Complex transformations across multiple interdependent data points, like when transferring money between bank accounts or during a database commit or rollback.
+
+Shared Resource Modifications: Consistent, reliable updates to data structures, arrays, lists, and databases that are accessed and modified by multiple threads simultaneously.
+
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -159,28 +331,98 @@ An atomic operation finishes as a whole or not at all, as far as other tasks can
 
 **Definition:**
 
-A deadlock is a set of tasks that each hold a resource the others need and will not let go. None of them can run.
+Deadlocks in concurrent systems happen when two or more threads are blocked forever, waiting for each other.
 
 **How it works:**
 
-- It takes four conditions together: exclusive use, hold-and-wait, no preemption, and a cycle of waits.
-- Classic shape: thread A holds lock 1 and wants lock 2, thread B holds lock 2 and wants lock 1.
-- Break the cycle by always acquiring locks in one global order.
-- Break hold-and-wait with `try_lock`: if the second lock is busy, drop the first and retry, ideally with a backoff so both sides do not spin in step.
-- Timeouts turn a stuck wait into an error the caller can undo.
-- A detector can build the wait graph and abort one task. Prevention is simpler when you control the lock order.
-- Avoid calling out to unknown code while holding a lock. That code may take another lock you did not account for.
+#### Common resources leading to deadlock are:
+
+Synchronized Data
+Memory
+Files
+Or Hardware Devices
+Let's take a look at some common deadlock scenarios and their solutions:
+
+#### Deadlock Scenarios and Solutions
+
+#### Mutual Exclusion
+
+Problem: Resource can only be accessed by one thread at a time.
+Solution: Relax this requirement if possible.
+
+#### Hold and Wait
+
+Problem: Threads holding resources are waiting for others, leading to deadlock.
+Solution: Introduce a mechanism ensuring a thread doesn't hold resources while waiting for more.
+
+#### No Preemption
+
+Problem: Resources are not preemptible, meaning a thread might hold a resource indefinitely.
+Solution: Introduce a mechanism for resource preemption when necessary.
+
+#### Circular Wait
+
+Problem: Threads form a circular chain of resource dependencies.
+Solution: Order your resource requests or use a mechanism to detect and break circular wait chains.
+
+#### Code Example: Deadlock Scenario and Resolution
+
+Here is the Java code:
 
 **Examples:**
 
-```text
-# deadlocks if the other thread takes b then a
-lock(a); lock(b); transfer(); unlock(b); unlock(a)
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-# both threads sort the addresses and lock the lower one first
+public class DeadlockExample {
+    private Lock lock1 = new ReentrantLock();
+    private Lock lock2 = new ReentrantLock();
+
+    public void method1() {
+        lock1.lock();
+        System.out.println("Method1: Acquired lock1");
+
+        // Intentional sleep to exaggerate deadlock scenario
+        try { 
+            Thread.sleep(1000); 
+        } catch (InterruptedException e) { 
+            e.printStackTrace(); 
+        }
+
+        lock2.lock();
+        System.out.println("Method1: Acquired lock2");
+
+        lock1.unlock();
+        lock2.unlock();
+    }
+
+    public void method2() {
+        lock2.lock();
+        System.out.println("Method2: Acquired lock2");
+
+        lock1.lock();
+        System.out.println("Method2: Acquired lock1");
+
+        lock1.unlock();
+        lock2.unlock();
+    }
+
+    public static void main(String[] args) {
+        DeadlockExample example = new DeadlockExample();
+
+        Thread t1 = new Thread(example::method1);
+        Thread t2 = new Thread(example::method2);
+
+        t1.start();
+        t2.start();
+    }
+}
 ```
 
-If every transfer locks the two accounts in address order, the cycle cannot form.
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -190,19 +432,67 @@ If every transfer locks the two accounts in address order, the cycle cannot form
 
 **Definition:**
 
-In a livelock the tasks are not stuck waiting. They keep reacting to each other and still make no progress. A deadlock is the opposite: everyone is waiting and nobody runs.
+Both livelocks and deadlocks represent unwanted states in concurrent systems, but they differ in behavior and resolution methods.
 
 **How it works:**
 
-- Deadlock: threads sleep on locks and will never wake, because each wakeup depends on someone in the set.
-- Livelock: threads run, drop what they hold, and try again, forever, often in lockstep.
-- It shows up with polite retry. Two tasks both see a collision, both back off the same way, both collide again.
-- CPU use stays high, which is how you tell it from a deadlock in a trace. A deadlock looks idle.
-- Break the symmetry with random backoff, a queue, or a rule that one side proceeds and the other waits.
+#### Characteristics
+
+Deadlock: This state occurs when multiple processes are each waiting for the others to release resources, resulting in a standstill. Traditional deadlock detection may not always work due to circular dependencies in resource acquisition.
+
+Livelock: In a livelock, processes are active but make no progress due to repeated, cyclic interaction. This can resemble a polite dance, where participants continuously step aside for one another.
+
+#### Example
+
+Deadlock: Two threads need access to resources A and B, but each is holding one resource and waiting for the other. This results in a standstill; neither thread can continue.
+
+#### Deadlock Example
+
+Livelock: Two threads continuously yield resources, thinking they are trying to be cooperative. However, this back-and-forth dance does not lead to any progress.
+
+Code Example: Livelock
+
+Here is the Python code:
 
 **Examples:**
 
-Two people in a narrow hall each step left, still face each other, each step left again. They are moving and never pass. One person standing still while the other passes is the fix. In code, two threads that `try_lock`, fail, unlock, and retry with the same timing do the same thing. A random sleep between retries lets one of them win.
+```python
+import threading
+
+def worker1(lock1, lock2):
+    while True:
+        print("Worker 1: Trying lock 1")
+        with lock1:
+            print("Worker 1: Acquired lock 1")
+            print("Worker 1: Releasing lock 1")
+        print("Worker 1: Trying to acquire lock 2")
+        with lock2:
+            print("Worker 1: Acquired both locks!")
+            print("Worker 1: Releasing lock 2")
+
+def worker2(lock1, lock2):
+    while True:
+        print("Worker 2: Trying lock 2")
+        with lock2:
+            print("Worker 2: Acquired lock 2")
+            print("Worker 2: Releasing lock 2")
+        print("Worker 2: Trying to acquire lock 1")
+        with lock1:
+            print("Worker 2: Acquired both locks!")
+            print("Worker 2: Releasing lock 1")
+
+lock1 = threading.Lock()
+lock2 = threading.Lock()
+
+t1 = threading.Thread(target=worker1, args=(lock1, lock2))
+t2 = threading.Thread(target=worker2, args=(lock1, lock2))
+t1.start()
+t2.start()
+```
+
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -212,27 +502,101 @@ Two people in a narrow hall each step left, still face each other, each step lef
 
 **Definition:**
 
-Producers put items into a shared buffer. Consumers take them out. The buffer must not overflow, underflow, or be updated by two tasks at once.
+The Producer-Consumer Problem represents a classic synchronization challenge in computer science. It deals with an active producer and a consumer, both of whom access a shared, limited-size buffer.
 
 **How it works:**
 
-- The buffer has a fixed capacity. A producer waits when it is full. A consumer waits when it is empty.
-- A mutex guards the slots so two producers cannot write the same index.
-- Two signals cover the waits: one counts empty slots, one counts filled slots. A condition variable pair does the same job: wait, change the buffer, notify.
-- The lock is not held while the producer builds the item or the consumer uses it. It is held only around the slot update.
-- A poison pill or a closed flag lets consumers exit when production is finished.
-- This is the pattern behind thread-pool queues and log pipelines.
+#### Key Components
+
+Producer: Generates data items and places them in the buffer.
+Consumer: Removes items from the buffer.
+Buffer: Acts as a shared resource between the producer and consumer.
+
+#### Challenges
+
+Data Integrity: Making sure the producer doesn't add items to a full buffer, and the consumer doesn't retrieve from an empty one.
+Synchronization: Coordinating the actions of the producer and the consumer to prevent issues such as data corruption or deadlock.
+
+#### Concurrency Mechanisms
+
+Several strategies use concurrency mechanisms to address the Producer-Consumer Problem:
+
+Locks/Mutexes: Classic methods that utilize mutual exclusion.
+
+Condition Variables: Used in conjunction with locks and mutexes for more robust synchronization. These ensure threads are notified when a certain condition becomes true.
+
+Semaphores: A generalization of locks/mutexes that can regulate access to a shared resource using a counter.
+
+#### Core Challenges
+
+Deadlock: A scenario where both the producer and consumer are head-locked, resulting in a system standstill.
+
+A common approach to resolving deadlock involves using timed conditional waits, so a thread does not wait indefinitely without knowing if a situation will change.
+Starvation: A potential risk when a thread, either the producer or consumer, is not granted access to the shared resource despite being ready.
+
+Solutions include ensuring that waiting threads are served in a fair order or through mechanisms like the "turn" variable.
+Synchronization: Ensuring actions are well-coordinated can be achieved through a combination of locks, condition variables, and semaphores.
+
+Data Integrity: It is essential to make sure the buffer is accessed in a thread-safe manner.
+
+A practical way to achieve this would be to use locks or other synchronization mechanism for controlled access to the buffer, ensuring data integrity.
+Performance Concerns: An inefficient design can lead to issues like overproduction or redundant waiting. This can result in poor resource utilization or increased latencies.
+
+#### Code Example: Producer and Consumer
+
+Here is the Python code:
 
 **Examples:**
 
-```text
-empty = capacity; filled = 0; mutex = free
-produce: wait empty; lock; push; unlock; signal filled
-consume: wait filled; lock; pop; unlock; signal empty
+```python
+from threading import Thread, Lock, Condition
+import time
+from queue import Queue
+
+# initialize buffer, shared by producer and consumer
+buffer = Queue(maxsize=10)
+
+# lock for controlled buffer access
+lock = Lock()
+
+# condition to signal when the buffer is not full/empty
+buffer_not_full = Condition(lock)
+buffer_not_empty = Condition(lock)
+
+class Producer(Thread):
+    def run(self):
+        for i in range(100):
+            with buffer_not_full:
+                while buffer.full():
+                    buffer_not_full.wait()
+                with lock:
+                    buffer.put(i)
+                    print(f"Produced: {i}")
+                buffer_not_empty.notify()
+
+class Consumer(Thread):
+    def run(self):
+        for i in range(100):
+            with buffer_not_empty:
+                while buffer.empty():
+                    buffer_not_empty.wait()
+                with lock:
+                    item = buffer.get()
+                    print(f"Consumed: {item}")
+                buffer_not_full.notify()
+
+# start producer and consumer threads
+producer = Producer()
+consumer = Consumer()
+producer.start()
+consumer.start()
 ```
 
-With capacity 1, the consumer cannot pop before a push, and the producer cannot push twice without a pop.
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
+
 
 ### Thread Management
 
@@ -243,20 +607,27 @@ With capacity 1, the consumer cannot pop before a push, and the producer cannot 
 
 **Definition:**
 
-A process is an isolated execution with its own address space. A thread is a schedulable flow of control inside a process, sharing that address space with its sibling threads.
+Processes and threads are fundamental to multi-tasking and concurrency in computational systems. They operate at different levels - process at the operating system level and thread at the application level.
 
 **How it works:**
 
-- Each process has its own virtual memory, file-descriptor table, and at least one thread. One process cannot read another’s heap unless they set up shared memory on purpose.
-- Threads in one process share code, heap, and open files. Each has its own stack, registers, and program counter.
-- Creating a process is heavier: the kernel copies or marks the address space. Creating a thread mostly adds a stack and a scheduler entry.
-- A fault in a thread can take down the whole process, because the memory is shared. A fault in a process stays inside it.
-- Context switches between processes flush more state (address space) than switches between threads of one process.
-- Use processes to isolate failures and privileges. Use threads to share data and overlap work cheaply, and then you must synchronize that share.
+#### Key Distinctions
 
-**Examples:**
+Unit of Scheduling - Process is the unit of CPU time, whereas a thread is a lightweight process that can be scheduled for CPU time.
 
-A browser uses a process per site so one crash does not read another site’s memory. Inside the renderer, threads share the DOM and must lock it. `fork` gives the child a separate address space. `pthread_create` does not.
+Memory - Each process has its private memory space, while all threads within a process share the same memory space, providing faster communication.
+
+Creation Overhead - Processes are heavier to create, with more startup overhead like memory allocation and initialization. Threads are lightweight and are created quickly.
+
+Communication and Synchronization - Processes communicate via inter-process communication (IPC) tools such as pipes and sockets. In contrast, threads can communicate more directly through shared memory and are typically synchronized using techniques such as locks.
+
+Fault Isolation - Processes are more resilient to faults as an issue in one process won't affect others. Threads, being part of the same process, can potentially cause all of them to crash due to memory and resource sharing.
+
+Programming Complexity - Threads within a process share resources and need careful management, making them suitable for efficiency gains in certain scenarios. Processes are more isolated and easier to manage, but the communication and context switching can be more complicated, leading to potential inefficiencies in resource use.
+
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -266,25 +637,65 @@ A browser uses a process per site so one crash does not read another site’s me
 
 **Definition:**
 
-A thread starts as a kernel object the scheduler can run, block, and destroy. Libraries differ in how many of those kernel threads sit under the threads the program sees.
+Threads are units of execution within a process. They allow for concurrent tasks and share resources like memory and file handles. Operating systems in use today employ a range of thread management models such as Many to Many, One to One, and Many to One.
 
 **How it works:**
 
-- Many-to-one: several user-level “green” threads share one kernel thread. Switching is cheap, but one blocking call stalls all of them, and they cannot use extra cores.
-- One-to-one: each program thread is a kernel thread. This is the usual model (POSIX threads on Linux via NPTL, Windows threads). They run truly in parallel and block independently. The cost is a kernel scheduling entry per thread.
-- Many-to-many: a set of user threads is multiplexed onto a smaller set of kernel threads. It tries to keep both cheap switching and parallelism. It is harder to build, so fewer systems use it as the default.
-- The kernel saves registers and a stack pointer, chooses a ready thread, and resumes it. Libraries such as pthreads expose create, join, and detach on top.
-- Detach means nobody will `join` it. Join waits for it to finish and collects its result. A thread that is neither joined nor detached leaks the control block.
+#### Thread Management Models
+
+#### Many-to-Many
+
+In this model, multiple threads from a single process are mapped to multiple kernel threads, offering the best flexibility in terms of scheduling. However, it incurs considerable overhead since both the library and the kernel need to manage threads.
+
+#### One-to-One
+
+Each thread is affiliated with a separate kernel thread, ensuring the parallelism of the tasks. It is more resource-intensive because of additional overhead and kernel involvement.
+
+#### Many-to-One
+
+This model maps multiple user-level threads to a single kernel thread, providing efficient management at the cost of limited parallelism due to potential blocking.
+
+Operating System Support
+
+#### Thread Libraries
+
+These are libraries associated with a specific programming language or software environment, managing threads entirely in user-space, without kernel support. They can be one of:
+
+Green Threads: These tend to be relatively lightweight and offer features like cooperative multi-threading.
+POSIX Threads: Commonly used in Unix-like systems, they execute system calls to the kernel for certain thread operations.
+
+#### Kernel-Level Support
+
+Some operating systems offer built-in support for threads at the kernel level, allowing for more direct control and enhanced performance.
+
+#### Hybrid Models
+
+In recent years, a hybrid approach has emerged, combining user-level and kernel-level thread management, aiming to achieve both flexibility and performance.
+
+#### Code Example: Thread Creation
+
+Here is the Python code to create threads using the threading module:
+
+In this example, two threads are created using the Thread class, with each executing the task function. The start method is invoked to initiate their execution.
 
 **Examples:**
 
-```c
-pthread_t t;
-pthread_create(&t, NULL, worker, arg);
-pthread_join(t, NULL);
+```python
+import threading
+
+def task():
+    print("Running in thread", threading.get_ident())
+
+thread1 = threading.Thread(target=task)
+thread2 = threading.Thread(target=task)
+
+thread1.start()
+thread2.start()
 ```
 
-`pthread_create` asks the kernel for a thread that runs `worker`. `pthread_join` blocks until that thread returns.
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -294,25 +705,59 @@ pthread_join(t, NULL);
 
 **Definition:**
 
-A thread pool is a fixed set of worker threads that pull tasks from a queue. You reuse the threads instead of creating one per task.
+A thread pool is a mechanism to manage and limit the number of active threads executing tasks in an application.
 
 **How it works:**
 
-- Creating a thread allocates a stack and talks to the kernel. Doing that for every short request costs more than the work.
-- The pool caps how many tasks run at once, so a burst cannot start tens of thousands of threads and exhaust memory.
-- Callers submit a closure or a job. A free worker takes it. If all workers are busy, the job waits in the queue.
-- The same pool serves request handlers, batch chunks, and background jobs.
-- Too small a pool queues latency. Too large a pool spends the machine on context switches. Size it around the cores for CPU work, and higher for work that mostly waits on I/O.
-- Shut the pool down by closing the queue and joining the workers, so tasks are not abandoned in the middle.
+#### Benefits of Using a Thread Pool
+
+Improved Performance: Thread pools, by reusing threads for multiple tasks, eliminate the overhead of thread creation and destruction. This strategy improves application responsiveness and performance.
+
+Resource Management: The invocation of too many threads in a short time can clutter system resources. A thread pool resolves this issue by regulating the count of active threads, ensuring optimal resource utilization.
+
+Convenience and Readability: Instead of managing thread lifecycles manually, developers can submit tasks to a thread pool, which takes charge of execution.
+
+#### Code Example: Thread Pool
+
+Here is the Java code:
+
+**When to use:**
+
+#### Common Use Cases
+
+Asynchronous Processing: Provides a means to execute tasks in the background, typical of web servers, graphical user interfaces, and more.
+
+Batch Processing: Useful for executing a series of tasks or data operations, for example, in data processing applications.
+
+Load Management: Enables throttling the execution of tasks during periods of high system load or to control resource consumption.
 
 **Examples:**
 
-```python
-with ThreadPoolExecutor(max_workers=4) as pool:
-    pool.map(resize_image, paths)
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ThreadPoolExample {
+
+    public static void main(String[] args) {
+        // Creates a thread pool of up to 5 threads
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+
+        for (int i = 0; i < 10; i++) {
+            final int taskId = i;
+            // Submits tasks to the thread pool
+            executor.submit(() -> System.out.println("Task " + taskId + " executed by thread: " + Thread.currentThread().getName()));
+        }
+
+        // Shuts down the thread pool
+        executor.shutdown();
+    }
+}
 ```
 
-Four threads resize the whole list. The program does not start one thread per file.
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -322,20 +767,74 @@ Four threads resize the whole list. The program does not start one thread per fi
 
 **Definition:**
 
-A context switch is the kernel saving one thread’s CPU state and restoring another’s so the core can run the second thread.
+Let's understand what is a context switch and its role in concurrency.
+
+What is a Context Switch?
+A context switch is the process of saving the state of a running thread or process and restoring the state of another one so that both can appear to run simultaneously.
+
+Various events can trigger a context switch:
+
+A thread voluntarily yielding the CPU, such as when an I/O operation is being performed.
+A higher-priority thread becoming ready to run.
+The OS employing preemption of a thread due to time slicing, where a time quantum is reached.
 
 **How it works:**
 
-- The saved state is registers, the stack pointer, and the program counter, plus whatever the kernel needs to resume the address space.
-- The scheduler does this when a thread blocks, when its time slice ends, or when a higher-priority thread becomes ready.
-- Switching threads of one process is cheaper than switching processes, because the page tables can stay.
-- It is still not free: caches and the TLB hold the previous thread’s lines, pipelines drain, and the kernel runs.
-- Too many runnable threads make the core spend more time switching than working. That is why a pool bounds concurrency.
-- Voluntary switches at a blocking I/O call are useful: the core runs someone else during the wait. Involuntary switches in a tight CPU loop are pure overhead.
+#### Role of CPU Scheduler
+
+The CPU Scheduler manages how CPU cores are assigned to threads or processes. It's responsible for deciding and implementing the switching of execution contexts quickly and efficiently.
+
+#### Code Example: Context Switch & Concurrency
+
+Here is the Java code:
 
 **Examples:**
 
-A thread calls `read` on an empty socket. The kernel saves its registers, marks it waiting, and runs another thread on that core. When the packet arrives, the waiting thread is marked ready and will be switched back in.
+```java
+public class ContextSwitchExample {
+    public static void main(String[] args) {
+        Thread t1 = new Thread(new MyTask("Task 1", 50));
+        Thread t2 = new Thread(new MyTask("Task 2", 100));
+
+        t1.start();
+        t2.start();
+
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("An error occurred in thread execution.");
+        }
+    }
+}
+
+class MyTask implements Runnable {
+    private String name;
+    private int delay;
+
+    public MyTask(String name, int delay) {
+        this.name = name;
+        this.delay = delay;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Task " + name + " is running.");
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("Task " + name + " was interrupted.");
+        }
+        System.out.println("Task " + name + " completed.");
+    }
+}
+```
+
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -345,20 +844,48 @@ A thread calls `read` on an empty socket. The kernel saves its registers, marks 
 
 **Definition:**
 
-Many short-lived threads match many small tasks. Fewer long-lived threads match heavy work and a pool. The trade-off is overhead versus idle time.
+Thread size can significantly impact system performance in various ways. Here, we look at the pros and cons of many small threads versus few large threads.
 
 **How it works:**
 
-- Many small threads can keep a core busy while others wait on I/O, and they isolate a slow task to one thread. Creating and switching them costs stack memory and scheduler time, and shared-data bugs multiply.
-- A few large threads waste less on switching and are easier to reason about. A blocking call in one of them stalls a bigger share of the program, and a burst of small tasks queues behind the long ones.
-- CPU-bound work rarely benefits from more threads than cores. I/O-bound work often does, up to the point where memory and switches dominate.
-- Prefer a pool of long-lived workers and a queue of small tasks. You get the small units of work without a thread per unit.
-- Unbounded `thread-per-request` falls over when traffic spikes. A fixed pool pushes the spike into a queue you can shed.
+#### Many Small Threads
 
-**Examples:**
+#### Benefits:
 
-Resizing 10_000 photos with one thread per photo can allocate gigabytes of stacks before any image finishes. Eight pooled workers and a queue of paths use eight stacks and finish the same list.
+Resource Segregation: Ideal for isolating resources, enabling efficient resource management and security measures.
+Work Granularity: Suitable for fine-grained tasks and optimized performance on multi-core systems.
+Responsiveness: Ensures swift system responsiveness due to minimized task queuing and context-switching.
+
+#### Disadvantages:
+
+Thread Overhead: Coordinating many threads can result in increased management overhead.
+Latency Impact: Short tasks might be delayed by thread scheduling, affecting their response times.
+Latch Resource Handling: Numerous threads can lead to latch resource contention, unwarranted locks, or excessive memory usage.
+
+#### Few Large Threads
+
+#### Benefits:
+
+Lower Overhead: Eases computational and memory management due to a reduced number of threads.
+Task Prioritization: Streamlines critical task execution and ensures prioritized focus.
+Resource Efficiency: More effective use of system resources like CPU caches and memory.
+
+#### Disadvantages:
+
+Potential Workstarvation: Lengthy operations might monopolize thread execution, leading to non-responsiveness.
+Complexity in Design: Demanding to intricately manage inter-thread communication and resource sharing in such a setup.
+
+#### Best Practices
+
+Task-Dependent Selection: Tailor thread size to the nature of the tasks; use many small threads for short-lived tasks and few large threads for long-running ones.
+Dynamic Adaption: Employ strategies like dynamic thread pools, adjusting thread count based on system load, and task arrival rate for an optimal balance.
+Distributed Workload: For larger programs, consider using a mix of small and large threads to distribute the computational load more evenly.
+
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
+
 
 ### Synchronization Mechanisms
 
@@ -369,25 +896,41 @@ Resizing 10_000 photos with one thread per photo can allocate gigabytes of stack
 
 **Definition:**
 
-A mutex (mutual exclusion lock) lets only one thread hold it. The holder is the only thread that may run the section the mutex guards.
+In computer science, a mutex (short for "mutual exclusion") is a synchronization mechanism that ensures only one thread can access a shared resource at a time.
 
 **How it works:**
 
-- `lock` returns at once if the mutex is free, and otherwise blocks until the holder unlocks.
-- `unlock` must be done by the owner. A normal mutex is not a counter anyone may signal.
-- `try_lock` returns immediately if it cannot acquire. A timed lock waits only until a deadline.
-- A reentrant (recursive) mutex lets the owner lock again without deadlocking itself. A plain mutex deadlocks if the owner locks twice.
-- Pitfalls: locking A then B in one thread and B then A in another deadlocks. A low-priority holder can block a high-priority waiter (priority inversion) unless the protocol boosts the holder. Under contention, threads spend time waiting instead of working.
-- Keep the hold short and unlock on every path, including exceptions. RAII wrappers do that.
+#### How a Mutex Works
 
-**Examples:**
+A mutex employs a simple lock/unlock interface:
 
-```python
-with lock:          # lock on enter, unlock on exit
-    inventory[sku] -= 1
-```
+Lock: When a thread wants to access a shared resource, it first locks the mutex. If the mutex is already locked by another thread, the current thread is either blocked or can choose to perform other actions, such as waiting in a loop or executing different code paths.
 
-A second thread stops at `with lock` until the first block finishes.
+Unlock: After a thread is done with the resource, it unlocks the mutex, making it available for other threads.
+
+This two-step process ensures that access to shared resources is properly controlled, and race conditions are avoided.
+
+#### Mutex Variants
+
+Reentrant Mutex: Also known as a recursive mutex, it allows a thread to re-lock a mutex it already locked, avoiding a deadlock. However, the mutex must be unlocked a corresponding number of times to make it available to other threads.
+
+Timed Mutex: Indicates the maximum time a thread should be blocked while waiting for a mutex. If the waiting time exceeds this limit, the calling thread continues execution without the mutex and performs other actions.
+
+Try Lock: A non-blocking version of lock. If the mutex is available, it's locked, and the calling thread continues execution. If not, the thread doesn't wait and can execute other tasks or try again later.
+
+#### Common Pitfalls with Mutex
+
+Deadlocks: This occurs when two or more threads are waiting for each other to release resources, leading to a standstill. Resource acquisition in a program should be designed in such a way that a deadlock never occurs.
+
+Priority Inversion: A lower-priority task holds a mutex needed by a higher-priority task, causing the higher-priority task to wait longer for the resource.
+
+Lock Contention: If a mutex is frequently accessed by multiple threads, it can lead to lock contention, causing threads to wait unnecessarily.
+
+Performance Impact: Repeated locking and unlocking can add overhead, especially if the critical section is small and the contention is high.
+
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -397,27 +940,133 @@ A second thread stops at `with lock` until the first block finishes.
 
 **Definition:**
 
-A semaphore is a counter that tasks wait on and signal. A mutex is a lock with an owner, meant for one thread in a critical section.
+Mutexes and semaphores are synchronization mechanisms fundamental to multi-threading. Here is a detailed comparison:
 
 **How it works:**
 
-- A mutex is binary and owned. The thread that locked it is the one that must unlock it. It guards code and data.
-- A semaphore starts at N. `wait` (P) decrements and blocks if the count would go negative. `signal` (V) increments and wakes a waiter. There is no owner: one task can signal what another waited on.
-- A binary semaphore looks like a mutex but still has no ownership and is not tied to “this thread may enter.”
-- Use a mutex for exclusive access to a structure. Use a counting semaphore for a pool of N identical resources, or for the empty and full counts in a producer-consumer buffer.
-- Semaphores do not by themselves remember which thread is inside. They also do not prevent priority inversion the way some mutex protocols do.
-- Combining them is normal: a mutex protects the buffer indexes, and two semaphores track empty and filled slots.
+#### Key Characteristics
+
+#### Mutexes
+
+Ownership: A mutex provides exclusive ownership, ensuring only the thread that locks it can unlock it.
+State: Binary in nature, a mutex is either locked or unlocked.
+
+#### Semaphores
+
+Ownership: No thread has exclusive ownership of a semaphore. Any thread can signal it, which can be useful in various synchronization scenarios.
+State: Analog, representing a count of available resources or a specified numerical value.
+
+#### Underlying Operations
+
+Mutex: Uses lock and unlock operations.
+Semaphore: Employs wait and signal (or post) operations.
+
+#### Operations in Detail
+
+#### Mutexes
+
+Lock: If available, it locks the mutex; if not, the calling thread waits.
+Unlock: Releases the mutex, potentially allowing another thread to acquire it.
+
+#### Semaphores
+
+Wait: If the semaphore's count is non-zero, it decrements the count and proceeds. If the count is zero, it waits.
+Signal: Increments the semaphore's count.
+
+#### Code Example: Using Mutexes and Semaphores
+
+Here is the Python code:
+
+In this code, a Lock object acts as a mutex to ensure mutual exclusion over the shared variable x.
+
+Here is the output after running the code:
+
+**When to use:**
+
+#### Use Cases
+
+#### Mutexes
+
+Guarded Access: Useful when a resource, say a file or data structure, must be exclusively owned by a single thread at a time.
+
+#### Semaphores
+
+Resource Management: When managing a finite set of resources, semaphores are apt.
+
+For instance, if there are ten spaces in a parking lot, a semaphore initialized to ten can serve as a parking lot manager.
+
+Multi-thread Synchronization: Especially in scenarios where threads need to align activity in predefined ways. A semaphore can act as a signaling and synchronization mechanism.
+
+Producer-Consumer: Often used in concurrent programming to facilitate communication between producer and consumer threads.
 
 **Examples:**
 
-```text
-licenses = Semaphore(3)   # three seats
-licenses.wait()           # take one; block if zero
-use_tool()
-licenses.signal()         # return it; any thread may do this
+```python
+import threading
+
+# global variable x for modifying it
+x = 0
+
+def increment():
+    """
+    function to increment global variable x
+    """
+    global x
+    x += 1
+
+def thread_task(mutex):
+    """
+    task for thread
+    calls increment function 1000000 times.
+    """
+    for _ in range(1000000):
+        mutex.acquire()
+        increment()
+        mutex.release()
+
+def main_task():
+    global x
+    # setting global variable x as 0
+    x = 0
+
+    # creating a lock
+    mutex = threading.Lock()
+
+    # creating threads
+    t1 = threading.Thread(target=thread_task, args=(mutex,))
+    t2 = threading.Thread(target=thread_task, args=(mutex,))
+
+    # start threads
+    t1.start()
+    t2.start()
+
+    # wait until threads finish their job
+    t1.join()
+    t2.join()
+
+if __name__ == "__main__":
+    for i in range(10):
+        main_task()
+        # after exiting the for loop, x should have become 2000000
+        print("iterations: {0}, x = {1}".format(i+1, x))
 ```
 
-A mutex would be wrong here: the thread that releases the seat may not be the one that took it, and three users may hold a seat at once.
+```text
+iterations: 1, x = 2000000
+iterations: 2, x = 2000000
+iterations: 3, x = 2000000
+iterations: 4, x = 2000000
+iterations: 5, x = 2000000
+iterations: 6, x = 2000000
+iterations: 7, x = 2000000
+iterations: 8, x = 2000000
+iterations: 9, x = 2000000
+iterations: 10, x = 2000000
+```
+
+**Sources:**
+
+- https://devinterview.io/questions/software-architecture-and-system-design/concurrency-interview-questions/
 </details>
 
 <details>
@@ -427,6 +1076,17 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+Java’s tutorial describes the monitor as the intrinsic lock behind `synchronized`. That lock is reentrant. Only the thread that owns it runs the synchronized code.
+
+**How it works:**
+
+A synchronized method acquires the lock of the receiver. `wait` on an object throws if the caller does not own that object’s intrinsic lock, so a synchronized method is the tutorial’s way to take it. `Lock` in `java.util.concurrent.locks` is the explicit version: one thread owns a `Lock` at a time, and it can back out with `tryLock` or `lockInterruptibly`.
+
+**Sources:**
+
+- [Intrinsic Locks and Synchronization](https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html)
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -436,6 +1096,28 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+A condition variable lets a thread wait until another thread signals that a predicate may have become true. In the tutorial that is `Object.wait`, `notify`, and `notifyAll`, and a `Lock` exposes the same idea through a `Condition`.
+
+**How it works:**
+
+`wait` must run while the thread owns the intrinsic lock. It releases that lock and suspends. The waiter always retests the predicate in a loop, because the wakeup may be for a different event or the predicate may already be false again. `notifyAll` wakes every waiter on that lock. `notify` wakes one thread, and the tutorial says that is useful when many threads do similar work and you do not care which one runs. After the notifying thread releases the lock, a waiter reacquires it and returns from `wait`.
+
+**Examples:**
+
+```java
+public synchronized void guardedJoy() {
+    while (!joy) {
+        try {
+            wait();
+        } catch (InterruptedException e) {}
+    }
+}
+```
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
 </details>
 
 <details>
@@ -445,6 +1127,16 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The fetched tutorial pages do not define a read-write lock. They define a lock that one thread owns at a time, both the intrinsic lock and `Lock`.
+
+**How it works:**
+
+`synchronized` and `ReentrantLock` in the Safelock example exclude every other thread, readers included. `tryLock` returns immediately when the lock is not free, and `lockInterruptibly` returns if the thread is interrupted before acquisition. Those are the documented alternatives to blocking on a single exclusive lock, not a mode that allows shared readers.
+
+**Sources:**
+
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 ### Concurrency Patterns
@@ -456,6 +1148,16 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The fetched pages do not describe fork/join or a pool that splits a task and joins the results.
+
+**How it works:**
+
+What they do show is starting independent threads. `ProducerConsumerExample` starts one `Thread` for `Producer` and one for `Consumer`. Safelock starts two `BowLoop` threads. Each `run` method is the body. There is no documented join of partial results on these pages.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
 </details>
 
 <details>
@@ -465,6 +1167,15 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The fetched pages do not define a barrier that waits until a fixed number of threads arrive.
+
+**How it works:**
+
+The guarded block is the coordination they do define. A thread loops on a predicate and calls `wait` until another thread sets the predicate and calls `notifyAll`. In `Drop`, the consumer waits while `empty` is true, and the producer waits while it is false. That is one condition, not a count of arrivals.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -474,6 +1185,28 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The tutorial’s `Drop` is a one-slot handoff between a producer thread and a consumer thread, not a multi-element queue class.
+
+**How it works:**
+
+`put` waits while `empty` is false, stores the message, sets `empty` to false, and calls `notifyAll`. `take` waits while `empty` is true, sets `empty` back to true, notifies, and returns the message. The producer sends DONE as the last message. The page says to look at the Java Collections Framework before writing your own shared structure.
+
+**Examples:**
+
+```java
+public synchronized void put(String message) {
+    while (!empty) {
+        try { wait(); } catch (InterruptedException e) {}
+    }
+    empty = false;
+    this.message = message;
+    notifyAll();
+}
+```
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -483,6 +1216,15 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The tutorial replaces a spin loop with a wait for a notification. The thread does not run while the event has not happened.
+
+**How it works:**
+
+`while (!joy) {}` is the wasteful poll. `while (!joy) { wait(); }` suspends until `notifyAll`. The wakeup is the event. The loop is required because the notification might not be the event this thread wanted. `wait` can throw `InterruptedException`.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -492,6 +1234,19 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The tutorial does not name publish-subscribe. `notifyAll` wakes every thread waiting on that lock, and `notify` wakes one.
+
+**How it works:**
+
+In `Drop`, both `put` and `take` call `notifyAll` after changing `empty`. Every waiter reacquires the lock and retests its predicate. `notify` is documented for the case of many threads doing similar work, where any one of them may proceed. There is no topic or subscriber list on the page.
+
+**When to use:**
+
+Use `notifyAll` when waiters are checking different predicates, as producer and consumer do on `empty`. Use `notify` when any single similar worker may take the wakeup.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 ### Concurrency in Practice
@@ -503,6 +1258,23 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+On these pages, `wait` and `Thread.sleep` throw `InterruptedException`. The samples catch it and continue.
+
+**How it works:**
+
+`guardedJoy`, `Drop.put`, `Drop.take`, `Producer`, and `Consumer` all use `catch (InterruptedException e) {}`. The guarded-block page says the example ignores the exception because it only cares about the predicate `joy`. The pages do not define an uncaught-exception handler.
+
+**Examples:**
+
+```java
+try {
+    wait();
+} catch (InterruptedException e) {}
+```
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -512,6 +1284,26 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The tutorial’s non-blocking acquisition is `tryLock`. It returns if the lock is not available immediately, or before a timeout if one was specified. `lockInterruptibly` returns if the thread is interrupted before it gets the lock.
+
+**How it works:**
+
+Safelock calls `tryLock` on both friends’ locks. If either fails, it unlocks whichever one succeeded and does not bow. That backs out of the deadlock in which each thread holds one lock and waits for the other. The page does not call this wait-free or lock-free.
+
+**Examples:**
+
+```java
+myLock = lock.tryLock();
+yourLock = bower.lock.tryLock();
+if (!(myLock && yourLock)) {
+    if (myLock) lock.unlock();
+    if (yourLock) bower.lock.unlock();
+}
+```
+
+**Sources:**
+
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
 </details>
 
 <details>
@@ -521,6 +1313,16 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The fetched pages do not define an atomic class or a compare-and-swap operation.
+
+**How it works:**
+
+The mutual exclusion they do define is the intrinsic lock and `Lock`: one thread at a time runs the synchronized `put` or `take`, so the updates to `empty` and `message` are not interleaved with another thread’s update of those fields. That is a lock around the update, not an atomic variable.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
 </details>
 
 <details>
@@ -530,6 +1332,15 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The liveness example deadlocks when two threads take the same two locks in opposite orders. Safelock avoids that by taking both locks with `tryLock` and releasing both if either acquisition fails.
+
+**How it works:**
+
+`impendingBow` sets `myLock` and `yourLock` from the two `tryLock` calls. The `finally` block unlocks any lock that was acquired when both are not held. The bow proceeds only when both calls returned true, and the matching `unlock` calls run in a `finally` after the bow. The pages do not describe a debugger or a thread dump.
+
+**Sources:**
+
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
 </details>
 
 <details>
@@ -539,6 +1350,16 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+Make the method synchronized so the caller owns the object’s intrinsic lock for the whole update, or hold a `Lock` around the same update.
+
+**How it works:**
+
+`Drop.put` and `Drop.take` are synchronized. They change `empty` and `message` only while holding that lock, and they `wait` inside the loop that tests `empty`. A `Lock` has the same single-owner rule. `tryLock` is the variant that does not wait when the lock is busy.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
 </details>
 
 ### Performance and Scalability
@@ -550,6 +1371,15 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The tutorial does not give a scalability formula. It does say a polling loop wastes the processor because it runs continuously while waiting.
+
+**How it works:**
+
+`wait` suspends the thread instead of spinning, and the thread runs again only after a notification and a successful retest of the predicate. Two threads in the producer-consumer example overlap only when each is in `Thread.sleep` or not holding the `Drop` lock. While one is inside `put` or `take`, the other cannot enter those methods.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -559,6 +1389,15 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The tutorial’s split is one producer thread and one consumer thread, plus `notify` when any similar worker may take the job.
+
+**How it works:**
+
+`ProducerConsumerExample` starts exactly those two threads. `notify` wakes a single waiting thread and is documented for a large number of threads doing similar chores, where it does not matter which one runs. `notifyAll` wakes every waiter, which is what `Drop` uses so both the producer and the consumer retest `empty`. The pages do not describe a work-stealing schedule.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -568,6 +1407,16 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+`tryLock` does not wait on a busy lock, and Safelock releases a lock it already took if the second lock is not free. That keeps threads from sitting on each other’s locks.
+
+**How it works:**
+
+The intrinsic lock is still exclusive: a synchronized method admits one thread. The producer and consumer contend on `Drop` only for `put` and `take`; the tutorial moves the random pause to `Thread.sleep` outside those methods. `lockInterruptibly` lets a thread leave the queue when it is interrupted.
+
+**Sources:**
+
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -577,6 +1426,15 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The pages do not publish throughput or latency numbers. They contrast a thread that spins with a thread that suspends in `wait`.
+
+**How it works:**
+
+The spinning `while (!joy) {}` occupies a processor the whole time. `wait` releases the lock and suspends, so another thread can take that lock and do the update. The sleeper in `Producer` and `Consumer` uses `Thread.sleep` between messages, which also leaves the processor. No page here converts that into a latency bound.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 ### Advanced Topics
@@ -588,6 +1446,16 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The fetched tutorial does not describe software transactional memory.
+
+**How it works:**
+
+The documented alternative is a lock around a short critical section. `Drop`’s synchronized methods update `message` and `empty` and then notify. Safelock’s `tryLock` pair either gets both locks or rolls the attempt back by unlocking. There is no transaction object that commits memory writes on these pages.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
 </details>
 
 <details>
@@ -597,6 +1465,15 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The tutorial never uses the terms lock-free or wait-free. `tryLock` can fail immediately, and the caller must decide what to do instead of entering the critical section.
+
+**How it works:**
+
+In Safelock a failed `tryLock` means the bow is skipped and any lock already held is released. That attempt does not wait. It is not a guarantee that some thread completes a bow in a bounded number of its own steps, which these pages do not claim.
+
+**Sources:**
+
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
 </details>
 
 <details>
@@ -606,6 +1483,15 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The fetched pages do not describe the actor model. They do isolate communication in one shared object, `Drop`, with synchronized `put` and `take`.
+
+**How it works:**
+
+The producer never reads the consumer’s locals. It only calls `drop.put`. The consumer only calls `drop.take`. Each side waits on `empty` rather than touching the other thread’s stack. That is a shared object with a lock, which the page tells you to replace with a collections class when you are done learning the pattern.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -615,6 +1501,16 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The tutorial does not describe a test harness. Its examples start threads that sleep a random number of milliseconds, so the interleaving changes from run to run.
+
+**How it works:**
+
+`Producer` and `Consumer` call `Thread.sleep(random.nextInt(5000))`. Safelock’s `BowLoop` sleeps `random.nextInt(10)` and loops forever. A failure such as the original bow deadlock depends on order. The mitigation shown on the page is not a test scheduler; it is `tryLock` so a bad order backs out instead of waiting forever.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
 </details>
 
 ### Hardware and Concurrency
@@ -626,6 +1522,16 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+These tutorial pages do not describe cores, caches, or a memory model beyond the lock.
+
+**How it works:**
+
+What they specify is software exclusion. One thread owns the intrinsic lock or the `Lock`. `wait` releases that lock so another thread can acquire it. A polling loop keeps using the processor while it waits. No instruction or cache line is named.
+
+**Sources:**
+
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -635,6 +1541,15 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+Cache coherency is not discussed on the fetched pages.
+
+**How it works:**
+
+The mechanism they give for making one thread’s write visible to another is the lock handoff. The producer writes `message` and `empty` while holding the lock, calls `notifyAll`, and later releases the lock. The consumer reacquires that lock when `wait` returns and then reads those fields. The pages do not mention a cache protocol.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 <details>
@@ -644,6 +1559,15 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The pages do not analyze hardware parallelism. They show two software threads sharing one locked object.
+
+**How it works:**
+
+Starting a second `Thread` does not by itself remove the lock. `put` and `take` still run one at a time. The random `sleep` is where the two threads can overlap. A busy `while (!joy) {}` would occupy a processor for the whole wait even if another processor is free.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
 </details>
 
 ### Modern Trends and Best Practices
@@ -655,4 +1579,14 @@ A mutex would be wrong here: the thread that releases the seat may not be the on
 
 **Definition:**
 
+The tutorial’s step up from a raw spin loop is the intrinsic lock, then `Lock` and `Condition`, and then the advice to use a collection instead of a hand-written `Drop`.
+
+**How it works:**
+
+Synchronized methods hide the acquire and release of the intrinsic lock. `ReentrantLock.tryLock` adds a way to back out. `Condition` is the wait/notify partner of a `Lock`. The guarded-block page ends by pointing at the Java Collections Framework so you do not keep rewriting `Drop`. The pages do not tie that ladder to a processor generation.
+
+**Sources:**
+
+- [Guarded Blocks](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
+- [Lock Objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
 </details>
