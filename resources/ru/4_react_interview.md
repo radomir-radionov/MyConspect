@@ -1,6 +1,6 @@
 # React — Interview
 
-Вопросы для собеседования по React. Ответы заполнены для опубликованной части, остальные пустые.
+Вопросы для собеседования по React. Ответы заполнены для всего списка.
 
 [← Вернуться в центр](./4_react.md)
 
@@ -55,7 +55,7 @@ React — это декларативная компонентная библи�
 
 #### JSX: Транспиляция в React элементы
 
-JSX остается расширением синтаксиса JavaScript. В современных инструментах сборки (например, Vite, Rspack) JSX преобразуется в вызовы среды выполнения _jsx, оптимизированные для конкретной цели рендеринга (клиент или сервер).
+JSX остается расширением синтаксиса JavaScript. В современных инструментах сборки (например, Vite, Rspack) JSX преобразуется в вызовы среды выполнения \_jsx, оптимизированные для конкретной цели рендеринга (клиент или сервер).
 
 **When to use:**
 
@@ -76,9 +76,9 @@ JSX остается расширением синтаксиса JavaScript. В 
 Следующий фрагмент демонстрирует переход к useActionState и современным функциональным шаблонам, заменяющим устаревшее управление состоянием на основе классов.
 
 ```tsx
-'use client'; // Required for interactivity in RSC environments
+"use client"; // Required for interactivity in RSC environments
 
-import { useActionState } from 'react';
+import { useActionState } from "react";
 
 // Modern approach: Server Actions integration
 async function incrementCounter(previousState, formData) {
@@ -264,12 +264,13 @@ React обеспечивает однонаправленный поток да�
 
 #### Резюме технического аудита
 
-| Особенность | Унаследованный статус | Стандарт 2026 г. |
-| --- | --- | --- |
-| Тип компонента | На основе классов | Функциональные (Hooks) |
-| Проверка типов | PropTypes | TypeScript (Interface/Types) |
-| Получение данных | componentDidMount | use API / TanStack Query |
-| Рендеринг | Клиентская сторона (CSR) | Server Components (RSC) / Потоковая передача |
+| Особенность      | Унаследованный статус    | Стандарт 2026 г.                             |
+| ---------------- | ------------------------ | -------------------------------------------- |
+| Тип компонента   | На основе классов        | Функциональные (Hooks)                       |
+| Проверка типов   | PropTypes                | TypeScript (Interface/Types)                 |
+| Получение данных | componentDidMount        | use API / TanStack Query                     |
+| Рендеринг        | Клиентская сторона (CSR) | Server Components (RSC) / Потоковая передача |
+
 #### Ключевые выводы
 
 Функциональные компоненты являются стандартными; избегайте занятий по новой архитектуре.
@@ -545,29 +546,32 @@ React нормализует события, чтобы они имели оди
 #### Пример кода: шаблон функционального компонента (React 19)
 
 ```tsx
-import { useState, useCallback, FormEvent, ChangeEvent } from 'react';
+import { useState, useCallback, FormEvent, ChangeEvent } from "react";
 
 export default function Form() {
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>("");
 
   // useCallback optimizes performance by memoizing the handler reference
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   }, []);
 
-  const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Submitted:', value);
-  }, [value]);
+  const handleSubmit = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      console.log("Submitted:", value);
+    },
+    [value],
+  );
 
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="name-input">Name:</label>
-      <input 
+      <input
         id="name-input"
-        type="text" 
-        value={value} 
-        onChange={handleChange} 
+        type="text"
+        value={value}
+        onChange={handleChange}
       />
       <button type="submit">Submit</button>
     </form>
@@ -632,9 +636,9 @@ export default function Form() {
 #### Пример кода: модернизированное состояние и реквизиты
 
 ```tsx
-'use client';
+"use client";
 
-import React, { useState, memo } from 'react';
+import React, { useState, memo } from "react";
 
 // Use memo to prevent unnecessary re-renders of stable children
 const Button = memo(({ text, color, onClick }) => {
@@ -646,15 +650,15 @@ const Button = memo(({ text, color, onClick }) => {
 });
 
 const ColorPicker = () => {
-  const [color, setColor] = useState('blue');
+  const [color, setColor] = useState("blue");
 
   // useCallback здесь для краткости опущено,
   // но рекомендуется для сложных сценариев бурения винтов.
   return (
     <div>
       <p>Current Color: {color}</p>
-      <Button text="Red" color="red" onClick={() => setColor('red')} />
-      <Button text="Blue" color="blue" onClick={() => setColor('blue')} />
+      <Button text="Red" color="red" onClick={() => setColor("red")} />
+      <Button text="Blue" color="blue" onClick={() => setColor("blue")} />
     </div>
   );
 };
@@ -728,8 +732,8 @@ export function DropDown({ options, onSelect, selected }: DropDownProps) {
     <nav>
       <p>Current: {selected}</p>
       {options.map((opt) => (
-        <button 
-          key={opt} 
+        <button
+          key={opt}
           onClick={() => onSelect(opt)}
           aria-pressed={selected === opt}
         >
@@ -741,19 +745,19 @@ export function DropDown({ options, onSelect, selected }: DropDownProps) {
 }
 
 // src/App.tsx
-import { useState } from 'react';
-import { DropDown } from './components/DropDown';
+import { useState } from "react";
+import { DropDown } from "./components/DropDown";
 
 export default function App() {
-  const [selection, setSelection] = useState<string>('Apple');
-  const options = ['Apple', 'Banana', 'Cherry'];
+  const [selection, setSelection] = useState<string>("Apple");
+  const options = ["Apple", "Banana", "Cherry"];
 
   return (
     <main>
-      <DropDown 
-        options={options} 
-        onSelect={setSelection} 
-        selected={selection} 
+      <DropDown
+        options={options}
+        onSelect={setSelection}
+        selected={selection}
       />
       <section>You selected: {selection}</section>
     </main>
@@ -808,7 +812,7 @@ export default function App() {
 В React 19 используйте хук useState. Такой подход устраняет проблемы привязки this и сокращает количество шаблонного кода.
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ClickCounter = () => {
   // useState возвращает текущее значение и функцию установки.
@@ -869,20 +873,18 @@ useState в Modern React (2026) useState — это фундаментальны
 **Examples:**
 
 ```js
-Lazy Initialization: Passing a function to useState (e.g., useState(() => expensiveCalculation())) ensures the function executes only during the initial mount. This prevents unnecessary overhead during subsequent render cycles, which occur with 
+Lazy Initialization: Passing a function to useState (e.g., useState(() => expensiveCalculation())) ensures the function executes only during the initial mount. This prevents unnecessary overhead during subsequent render cycles, which occur with
 ```
 
 ```tsx
-import { useState } from 'react';
+import { useState } from "react";
 
 const Counter = () => {
   // 2026 Best Practice: Using an arrow function for atomic updates
   const [count, setCount] = useState(0);
 
   return (
-    <button onClick={() => setCount((prev) => prev + 1)}>
-      Count: {count}
-    </button>
+    <button onClick={() => setCount((prev) => prev + 1)}>Count: {count}</button>
   );
 };
 ```
@@ -927,11 +929,11 @@ React обеспечивает однонаправленный поток да�
 
 ```tsx
 // Parent.jsx
-import { useState, useCallback } from 'react';
-import { Child } from './Child';
+import { useState, useCallback } from "react";
+import { Child } from "./Child";
 
 export const Parent = () => {
-  const [data, setData] = useState('');
+  const [data, setData] = useState("");
 
   // useCallback предотвращает ненужный повторный рендеринг дочернего элемента
   const handleUpdate = useCallback((newValue) => {
@@ -942,12 +944,12 @@ export const Parent = () => {
 };
 
 // Child.jsx
-import { memo } from 'react';
+import { memo } from "react";
 
 // memo гарантирует, что дочерний элемент выполняет повторный рендеринг только в случае изменения реквизита
 export const Child = memo(({ onUpdate }) => {
   return (
-    <button onClick={() => onUpdate('Updated via memoized callback')}>
+    <button onClick={() => onUpdate("Updated via memoized callback")}>
       Update Parent
     </button>
   );
@@ -1011,20 +1013,28 @@ Lifting State Up — это архитектурный шаблон переме
 #### Родительский компонент: RectangleAreaCalculator
 
 ```tsx
-import { useState } from 'react';
+import { useState } from "react";
 
 const RectangleAreaCalculator = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setDimensions(prev => ({ ...prev, [name]: Number(value) }));
+    setDimensions((prev) => ({ ...prev, [name]: Number(value) }));
   };
 
   return (
     <section>
-      <ShapeInput name="width" value={dimensions.width} onChange={handleChange} />
-      <ShapeInput name="height" value={dimensions.height} onChange={handleChange} />
+      <ShapeInput
+        name="width"
+        value={dimensions.width}
+        onChange={handleChange}
+      />
+      <ShapeInput
+        name="height"
+        value={dimensions.height}
+        onChange={handleChange}
+      />
       <ShapeArea area={dimensions.width * dimensions.height} />
     </section>
   );
@@ -1035,13 +1045,13 @@ const RectangleAreaCalculator = () => {
 
 ```html
 const ShapeInput = ({ name, value, onChange }) => (
-  <div>
-    <label>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
-    <input name={name} type="number" value={value} onChange={onChange} />
-  </div>
-);
-
-const ShapeArea = ({ area }) => <div>Area: {area}</div>;
+<div>
+  <label>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
+  <input name="{name}" type="number" value="{value}" onChange="{onChange}" />
+</div>
+); const ShapeArea = ({ area }) =>
+<div>Area: {area}</div>
+;
 ```
 
 **Sources:**
@@ -1086,13 +1096,14 @@ Context API — это механизм внедрения зависимост�
 
 #### Сводка технического сравнения
 
-| Особенность | Redux Toolkit | Context API |
-| --- | --- | --- |
-| Основное использование | Сложное, высокочастотное состояние | Конфигурация, внедрение зависимостей |
-| Производительность | Выборочный рендеринг (селекторы) | Полный повторный рендеринг поддерева (по умолчанию) |
-| Шаблон | Умеренный (стандартизован через RTK) | Минимальный |
-| Инструменты разработчика | Родное путешествие во времени | Ограничено (React только для DevTools) |
-| Сложность | Масштабирование от O(1) до O(log n) | O(n) поведение рендеринга |
+| Особенность              | Redux Toolkit                        | Context API                                         |
+| ------------------------ | ------------------------------------ | --------------------------------------------------- |
+| Основное использование   | Сложное, высокочастотное состояние   | Конфигурация, внедрение зависимостей                |
+| Производительность       | Выборочный рендеринг (селекторы)     | Полный повторный рендеринг поддерева (по умолчанию) |
+| Шаблон                   | Умеренный (стандартизован через RTK) | Минимальный                                         |
+| Инструменты разработчика | Родное путешествие во времени        | Ограничено (React только для DevTools)              |
+| Сложность                | Масштабирование от O(1) до O(log n)  | O(n) поведение рендеринга                           |
+
 - **Заключение аудита**: отдайте предпочтение Context API для глобальных конфигураций пользовательского интерфейса и Redux Toolkit для бизнес-логики приложения, состояния формы и синхронизации кэша сервера. Откажитесь от использования устаревших шаблонов подключения на основе классов в пользу текущего API на основе перехватчиков.
 
 **When to use:**
@@ -1341,7 +1352,9 @@ function FeedbackForm() {
     return <h1>Thank you!</h1>;
   }
 
-  return <textarea value={message} onChange={(e) => setMessage(e.target.value)} />;
+  return (
+    <textarea value={message} onChange={(e) => setMessage(e.target.value)} />
+  );
 }
 ```
 
@@ -1388,7 +1401,10 @@ function Avatar({ person, size }) {
   );
 }
 
-<Avatar size={100} person={{ name: "Katsuko Saruhashi", imageId: "YfeOqp2" }} />
+<Avatar
+  size={100}
+  person={{ name: "Katsuko Saruhashi", imageId: "YfeOqp2" }}
+/>;
 ```
 
 **Sources:**
@@ -1539,8 +1555,11 @@ function Card({ children }) {
 }
 
 <Card>
-  <Avatar size={100} person={{ name: "Katsuko Saruhashi", imageId: "YfeOqp2" }} />
-</Card>
+  <Avatar
+    size={100}
+    person={{ name: "Katsuko Saruhashi", imageId: "YfeOqp2" }}
+  />
+</Card>;
 ```
 
 **Sources:**
@@ -1658,7 +1677,12 @@ const Profile = memo(function Profile({ person }) {
 ```jsx
 class Greeting extends PureComponent {
   render() {
-    return <h3>Hello{this.props.name && ", "}{this.props.name}!</h3>;
+    return (
+      <h3>
+        Hello{this.props.name && ", "}
+        {this.props.name}!
+      </h3>
+    );
   }
 }
 ```
@@ -1693,9 +1717,9 @@ class Greeting extends PureComponent {
 **Examples:**
 
 ```jsx
-{people.map((person) => (
-  <li key={person.id}>{person.name}</li>
-))}
+{
+  people.map((person) => <li key={person.id}>{person.name}</li>);
+}
 ```
 
 **Sources:**
@@ -1729,10 +1753,7 @@ class Greeting extends PureComponent {
 **Examples:**
 
 ```jsx
-const visibleTodos = useMemo(
-  () => filterTodos(todos, tab),
-  [todos, tab]
-);
+const visibleTodos = useMemo(() => filterTodos(todos, tab), [todos, tab]);
 
 return <List items={visibleTodos} />;
 ```
@@ -1774,7 +1795,7 @@ DOM-узел стилизуют строкой `className`, которая со�
   className="avatar"
   style={{
     width: user.imageSize,
-    height: user.imageSize
+    height: user.imageSize,
   }}
 />
 ```
@@ -1930,7 +1951,7 @@ Prop `style` принимает объект JavaScript. Имена свойст
 <ul
   style={{
     backgroundColor: "black",
-    color: "pink"
+    color: "pink",
   }}
 >
   <li>Improve the videophone</li>
@@ -2401,10 +2422,7 @@ export default function MyForm() {
 ```jsx
 const [firstName, setFirstName] = useState("");
 
-<input
-  value={firstName}
-  onChange={(e) => setFirstName(e.target.value)}
-/>
+<input value={firstName} onChange={(e) => setFirstName(e.target.value)} />;
 ```
 
 **Sources:**
@@ -2434,12 +2452,12 @@ const [firstName, setFirstName] = useState("");
 **Examples:**
 
 ```jsx
-<button
-  disabled={answer.length === 0 || status === "submitting"}
->
+<button disabled={answer.length === 0 || status === "submitting"}>
   Submit
-</button>
-{error !== null && <p className="Error">{error.message}</p>}
+</button>;
+{
+  error !== null && <p className="Error">{error.message}</p>;
+}
 ```
 
 **Sources:**
@@ -2538,6 +2556,28 @@ function UploadForm() {
 
 **Definition:**
 
+TypeScript проверяет props компонента и state хуков до запуска приложения. Поддержка JSX встроена; `@types/react` и `@types/react-dom` добавляют типы DOM и хуков.
+
+**How it works:**
+
+#### Что это даёт
+
+- Тип prop, например `title: string`, проверяется в месте вызова и виден в редакторе.
+- Файлы с JSX используют расширение `.tsx`.
+- В `tsconfig.json` нужен `jsx` (для большинства приложений хватает `preserve`) и `dom` в `lib`, если цель — браузер.
+- Типы хуков выводятся из начального значения. Явный аргумент типа добавляют, только когда вывода мало, например для union.
+
+**Examples:**
+
+```tsx
+function MyButton({ title }: { title: string }) {
+  return <button>{title}</button>;
+}
+```
+
+**Sources:**
+
+- [React — Using TypeScript](https://react.dev/learn/typescript)
 </details>
 
 <details>
@@ -2547,6 +2587,33 @@ function UploadForm() {
 
 **Definition:**
 
+Props типизируют объектом на параметре функции. Тип state у `useState` выводится сам, а аргумент типа передают, когда state — это union или он начинается пустым.
+
+**How it works:**
+
+#### Props
+
+- Встроенного `{ title: string }` хватает для одного поля. Именованный `interface` или `type` удобнее, когда полей несколько.
+- Дети обычно имеют тип `React.ReactNode`. `React.ReactElement` — это только JSX-элементы, не строки и не числа.
+- `React.CSSProperties` типизирует объект, который передают в `style`.
+
+#### State
+
+- `useState(false)` выводит `boolean`. `useState<Status>("idle")` — форма для union строк.
+- Связанные состояния группируют в один объект и описывают каждый вариант: `{ status: "success"; data: any }` или `{ status: "error"; error: Error }`.
+- Для `useReducer` типизируют начальное состояние и аргументы reducer. Дальше `useReducer` выводит state из этого начального значения.
+
+**Examples:**
+
+```ts
+type Status = "idle" | "loading" | "success" | "error";
+
+const [status, setStatus] = useState<Status>("idle");
+```
+
+**Sources:**
+
+- [React — Using TypeScript](https://react.dev/learn/typescript)
 </details>
 
 <details>
@@ -2556,6 +2623,33 @@ function UploadForm() {
 
 **Definition:**
 
+Interface описывает объект props. Функция компонента деструктурирует этот объект и помечает параметр этим interface.
+
+**How it works:**
+
+#### Объект props
+
+- Руководство TypeScript для React типизирует props либо `interface`, либо `type`. Оба варианта — объектные типы.
+- Необязательные поля пишут с `?`. Поле может быть union, например `version?: "experimental" | "canary" | "rc"`.
+- Значение по умолчанию задают в деструктуризации, например `tags = []` или `active = false`.
+- `children` в этом interface имеет тип `React.ReactNode`, если компонент оборачивает произвольное содержимое.
+
+**Examples:**
+
+```tsx
+interface MyButtonProps {
+  title: string;
+  disabled: boolean;
+}
+
+function MyButton({ title, disabled }: MyButtonProps) {
+  return <button disabled={disabled}>{title}</button>;
+}
+```
+
+**Sources:**
+
+- [React — Using TypeScript](https://react.dev/learn/typescript)
 </details>
 
 <details>
@@ -2565,6 +2659,44 @@ function UploadForm() {
 
 **Definition:**
 
+Generic связывает два типа. Типы хуков React используют это для state, и компонент может сделать то же самое, чтобы список и его render callback делили один тип элемента.
+
+**How it works:**
+
+#### Хуки
+
+- `useState<Status>("idle")` говорит setter, что допустим только `Status`.
+- `useReducer` выводит тип из типизированного начального состояния. Тип state можно передать и так: `useReducer<State>(reducer, initialState)`.
+- В strict mode у `useCallback` нужен тип параметра. `useCallback<React.ChangeEventHandler<HTMLInputElement>>` задаёт тип события, и setter видит `event.currentTarget.value`.
+
+#### Обобщённый компонент
+
+- Параметр типа на функции связывает `items` с аргументом `renderItem`.
+- В документации есть и ограничение: TypeScript не может сузить `children` до одного конкретного типа компонента.
+
+**Examples:**
+
+```tsx
+function List<Item extends { id: string }>({
+  items,
+  renderItem,
+}: {
+  items: Item[];
+  renderItem: (item: Item) => React.ReactNode;
+}) {
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={item.id}>{renderItem(item)}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**Sources:**
+
+- [React — Using TypeScript](https://react.dev/learn/typescript)
 </details>
 
 ### Testing in React
@@ -2576,6 +2708,29 @@ function UploadForm() {
 
 **Definition:**
 
+Тест React рендерит компонент и проверяет то, что пользователь видит и делает. Так ловят неверный prop или сломанный клик без ручного открытия браузера.
+
+**How it works:**
+
+#### Подготовка, действие, проверка
+
+- Компонент рендерят с теми props, которые важны.
+- Выполняют действие пользователя, например клик.
+- Проверяют получившийся текст, роль или состояние disabled.
+- Тест падает, когда контракт UI меняется. Это сигнал обновить компонент или тест.
+
+**Examples:**
+
+```jsx
+test("has correct welcome text", () => {
+  render(<Welcome firstName="John" lastName="Doe" />);
+  expect(screen.getByRole("heading")).toHaveTextContent("Welcome, John Doe");
+});
+```
+
+**Sources:**
+
+- [Testing Library — React example](https://testing-library.com/docs/react-testing-library/example-intro)
 </details>
 
 <details>
@@ -2585,6 +2740,30 @@ function UploadForm() {
 
 **Definition:**
 
+Обычный набор — Jest как запуск, React Testing Library для рендера, `user-event` для действий и `jest-dom` для проверок DOM. Enzyme — более старый рендерер, от которого эти руководства уходят.
+
+**How it works:**
+
+#### Роли
+
+- Jest даёт `test` и `expect`.
+- `@testing-library/react` даёт `render` и `screen`.
+- `@testing-library/user-event` даёт `userEvent.click`.
+- `@testing-library/jest-dom` добавляет матчеры вроде `toHaveTextContent` и `toBeDisabled`.
+- `shallow` и `mount` из Enzyme встречаются в заметках о переходе. Новые тесты в этом руководстве используют `render`.
+
+**Examples:**
+
+```jsx
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom";
+```
+
+**Sources:**
+
+- [Testing Library — React example](https://testing-library.com/docs/react-testing-library/example-intro)
+- [Testing Library — Migrate from Enzyme](https://testing-library.com/docs/react-testing-library/migrate-from-enzyme)
 </details>
 
 <details>
@@ -2594,6 +2773,32 @@ function UploadForm() {
 
 **Definition:**
 
+Jest запускает функцию `test`. Внутри React Testing Library рендерит компонент, `user-event` выполняет действие, а `expect` проверяет DOM.
+
+**How it works:**
+
+#### Один тест
+
+- Подготовка: `render(<Fetch url="/greeting" />)`.
+- Действие: `await userEvent.click(screen.getByText("Load Greeting"))`, затем `await screen.findByRole("heading")` для асинхронного результата.
+- Проверка: `expect(screen.getByRole("heading")).toHaveTextContent("hello there")` и `expect(screen.getByRole("button")).toBeDisabled()`.
+- `render` убирает дерево после каждого теста.
+
+**Examples:**
+
+```jsx
+test("loads and displays greeting", async () => {
+  render(<Fetch url="/greeting" />);
+  await userEvent.click(screen.getByText("Load Greeting"));
+  await screen.findByRole("heading");
+  expect(screen.getByRole("heading")).toHaveTextContent("hello there");
+  expect(screen.getByRole("button")).toBeDisabled();
+});
+```
+
+**Sources:**
+
+- [Testing Library — React example](https://testing-library.com/docs/react-testing-library/example-intro)
 </details>
 
 <details>
@@ -2603,6 +2808,31 @@ function UploadForm() {
 
 **Definition:**
 
+`shallow` в Enzyme рендерит только проверяемый компонент и не рендерит его дочерние компоненты. `mount` рендерит всё дерево. `render` из React Testing Library ближе к `mount`.
+
+**How it works:**
+
+#### Что видит каждый способ
+
+- `shallow(<Welcome />)`, затем `wrapper.find("h1")` читает собственный вывод родителя. Дочерние компоненты остаются нерендеренными.
+- `mount` проходит реальный вывод детей, поэтому проверки видят вложенную разметку.
+- Тест после перехода, которому нужны заголовок, значения формы или вложенные элементы, использует полный рендер. `shallow` останавливается на собственных элементах компонента.
+
+**When to use:**
+
+- `shallow` используют, только когда проверка про собственный элемент этого компонента, а не про то, что рендерят дети.
+- `mount` используют, когда поведение зависит от отрендеренных детей.
+
+**Examples:**
+
+```jsx
+const wrapper = shallow(<Welcome firstName="John" lastName="Doe" />);
+expect(wrapper.find("h1").text()).toEqual("Welcome, John Doe");
+```
+
+**Sources:**
+
+- [Testing Library — Migrate from Enzyme](https://testing-library.com/docs/react-testing-library/migrate-from-enzyme)
 </details>
 
 <details>
@@ -2612,6 +2842,31 @@ function UploadForm() {
 
 **Definition:**
 
+React Testing Library рендерит компонент так, как его встречает пользователь, и ищет узлы по роли и тексту. Enzyme ищет узлы по дереву компонентов, а его `shallow` пропускает дочерние компоненты.
+
+**How it works:**
+
+#### Разница
+
+- `render` из `@testing-library/react` ближе к `mount` в Enzyme, чем к `shallow`, и убирает дерево после каждого теста.
+- Запросы вроде `screen.getByRole("heading")` и `screen.getByRole("form")` говорят о дереве доступности. У формы должен быть `name`, чтобы появилась неявная роль `form`.
+- `toHaveTextContent` и `toHaveFormValues` проверяют этот вывод. Примеры Enzyme вместо этого вызывают `wrapper.find("h1")` или `wrapper.find('input[name="firstName"]')`.
+
+**When to use:**
+
+- React Testing Library берут для новых тестов, которые описывают то, что человек видит и нажимает.
+- Enzyme остаётся в старых наборах. Руководство по переходу переписывает такие тесты через `render` и `screen`.
+
+**Examples:**
+
+```jsx
+render(<Welcome firstName="John" lastName="Doe" />);
+expect(screen.getByRole("heading")).toHaveTextContent("Welcome, John Doe");
+```
+
+**Sources:**
+
+- [Testing Library — Migrate from Enzyme](https://testing-library.com/docs/react-testing-library/migrate-from-enzyme)
 </details>
 
 ### Advanced React Topics
@@ -2623,6 +2878,36 @@ function UploadForm() {
 
 **Definition:**
 
+Fragment группирует несколько элементов, когда компонент должен вернуть одного родителя. Короткая форма `<>...</>` не добавляет лишний узел в DOM.
+
+**How it works:**
+
+#### Зачем обёртка
+
+- JSX в `return` требует одного родителя. Два соседних тега без обёртки невалидны.
+- Обёртка `<div>` — настоящий узел DOM. Она может сломать таблицу, список или flex, который ждёт самих детей.
+- `<>...</>` группирует этих соседей и не оставляет в DOM лишний узел.
+
+**Examples:**
+
+```jsx
+function AboutPage() {
+  return (
+    <>
+      <h1>About</h1>
+      <p>
+        Hello there.
+        <br />
+        How do you do?
+      </p>
+    </>
+  );
+}
+```
+
+**Sources:**
+
+- [React — Writing Markup with JSX](https://react.dev/learn/writing-markup-with-jsx)
 </details>
 
 <details>
@@ -2632,6 +2917,34 @@ function UploadForm() {
 
 **Definition:**
 
+`createPortal(children, domNode, key?)` рендерит детей в узел DOM вне DOM родителя, но в дереве React они остаются детьми этого компонента.
+
+**How it works:**
+
+#### Что не меняется
+
+- `domNode` уже должен существовать, например `document.body` или узел из `document.getElementById()`.
+- Портал по-прежнему читает context от родителя React, и события всплывают по дереву React.
+- Другой DOM-узел на следующем рендере пересоздаёт содержимое портала.
+- Его берут, когда позиция в DOM должна выйти из родителя, который обрезает overflow или создаёт stacking context, например диалог или подсказка на `document.body`.
+
+**Examples:**
+
+```jsx
+import { createPortal } from "react-dom";
+
+<div>
+  <p>This child is placed in the parent div.</p>
+  {createPortal(
+    <p>This child is placed in the document body.</p>,
+    document.body,
+  )}
+</div>;
+```
+
+**Sources:**
+
+- [React — createPortal](https://react.dev/reference/react-dom/createPortal)
 </details>
 
 <details>
@@ -2641,6 +2954,41 @@ function UploadForm() {
 
 **Definition:**
 
+Error boundary — это классовый компонент, который ловит ошибку рендера в детях и показывает запасной UI. Он реализует `static getDerivedStateFromError` и, если нужен лог, `componentDidCatch`.
+
+**How it works:**
+
+#### Что он ловит
+
+- `getDerivedStateFromError` возвращает state вроде `{ hasError: true }`, чтобы следующий рендер показал `this.props.fallback`.
+- `componentDidCatch(error, info)` выполняется после этого обновления. `info.componentStack` — стек компонентов.
+- Рискованное дерево оборачивают: `<ErrorBoundary fallback={<p>Something went wrong</p>}><Profile /></ErrorBoundary>`.
+- Он не ловит ошибки в обработчиках событий, при серверном рендере, в самом boundary и в асинхронных колбэках вроде `setTimeout`. Исключение — ошибка внутри функции, переданной в `startTransition`.
+
+**Examples:**
+
+```jsx
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    logErrorToMyService(error, info.componentStack);
+  }
+
+  render() {
+    if (this.state.hasError) return this.props.fallback;
+    return this.props.children;
+  }
+}
+```
+
+**Sources:**
+
+- [React — Component](https://react.dev/reference/react/Component)
 </details>
 
 <details>
@@ -2650,6 +2998,32 @@ function UploadForm() {
 
 **Definition:**
 
+Серверный рендеринг получает HTML из дерева React на сервере. `renderToString` возвращает эту HTML-строку. На клиенте `hydrateRoot` вешает обработчики на уже отправленную разметку.
+
+**How it works:**
+
+#### Два вызова
+
+- В серверном маршруте `const html = renderToString(<App />)`, и `html` отправляют в ответе.
+- `renderToString` не ждёт компонент, который приостановлен. Он пишет ближайший fallback у `<Suspense>`, а настоящее содержимое появляется после загрузки клиента.
+- Потоковые серверные API — задокументированная замена, когда содержимое должно приходить частями по мере готовности.
+- Клиентское приложение из Vite, Parcel или Rsbuild этого не включает. Руководство «с нуля» говорит добавить SSR самим или начать с фреймворка, где он уже есть.
+
+**Examples:**
+
+```js
+import { renderToString } from "react-dom/server";
+
+app.use("/", (request, response) => {
+  const html = renderToString(<App />);
+  response.send(html);
+});
+```
+
+**Sources:**
+
+- [React — renderToString](https://react.dev/reference/react-dom/server/renderToString)
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 <details>
@@ -2659,6 +3033,43 @@ function UploadForm() {
 
 **Definition:**
 
+`lazy` загружает модуль компонента по требованию. `<Suspense>` показывает `fallback`, пока эта загрузка или другая приостановка не закончится.
+
+**How it works:**
+
+#### Разделение модуля
+
+- `const MarkdownPreview = lazy(() => import("./MarkdownPreview.js"))` возвращает компонент, который рендерят как обычный.
+- Его оборачивают в `<Suspense fallback={<Loading />}>`. Пока import не завершён, React рендерит `Loading`.
+- Ленивый компонент рендерят, только когда он нужен, например после того как флажок включает превью.
+- `renderToString` этого не ждёт. Он пишет fallback в HTML. Потоковый серверный рендеринг — путь, который может отправить готовое содержимое с сервера.
+
+**Examples:**
+
+```jsx
+import { Suspense, lazy, useState } from "react";
+
+const MarkdownPreview = lazy(() => import("./MarkdownPreview.js"));
+
+export default function Editor() {
+  const [showPreview, setShowPreview] = useState(false);
+  return (
+    <>
+      <button onClick={() => setShowPreview(true)}>Preview</button>
+      {showPreview && (
+        <Suspense fallback={<p>Loading...</p>}>
+          <MarkdownPreview markdown="Hello" />
+        </Suspense>
+      )}
+    </>
+  );
+}
+```
+
+**Sources:**
+
+- [React — lazy](https://react.dev/reference/react/lazy)
+- [React — renderToString](https://react.dev/reference/react-dom/server/renderToString)
 </details>
 
 ### React and SEO
@@ -2670,6 +3081,21 @@ function UploadForm() {
 
 **Definition:**
 
+Клиентское приложение React сначала отдаёт оболочку и заполняет её после выполнения JavaScript. Краулер, который этот JavaScript не запускает, видит мало страницы. Серверный рендеринг кладёт HTML компонентов в первый ответ.
+
+**How it works:**
+
+#### Что в первом ответе
+
+- Vite, Parcel и Rsbuild начинают как одностраничные приложения. Загружается HTML, затем клиент рендерит дерево.
+- `renderToString(<App />)` сразу отправляет готовую разметку. `hydrateRoot` делает её интерактивной на клиенте.
+- Если ребёнок приостановлен, `renderToString` пишет fallback `<Suspense>`, а не готовое содержимое.
+- Семантические теги важны и после появления HTML. Вспомогательные технологии и многие разборщики ждут настоящую `<button>` или ссылку, а не кликабельный `<div>`.
+
+**Sources:**
+
+- [React — renderToString](https://react.dev/reference/react-dom/server/renderToString)
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 <details>
@@ -2679,6 +3105,25 @@ function UploadForm() {
 
 **Definition:**
 
+Стратегию рендеринга выбирают для каждого маршрута, для индексируемых страниц отдают настоящий HTML и оставляют разметку семантической. Документация React перечисляет для этого SPA, потоковый SSR, SSG и React Server Components.
+
+**How it works:**
+
+#### Рендеринг
+
+- Одностраничное приложение — значение по умолчанию у Vite, Parcel и Rsbuild. Первая отрисовка у него самая медленная, потому что страницу собирает клиент.
+- Потоковый SSR отправляет готовый HTML с сервера. SSG пишет статический HTML на сборке. React Server Components смешивают серверные и интерактивные компоненты в одном дереве.
+- Роутер должен уметь выбрать стратегию на маршрут. Посадочная страница может быть статической, а лента — серверно отрендеренной.
+- Код делят по маршрутам через `lazy`, чтобы первая загрузка была меньше. Данные маршрута предзагружают в loader, а не запрашивают только после рендера компонента: иначе получается водопад.
+
+#### Разметка
+
+- Для клика берут `<button>`, для перехода — ссылку, чтобы страница была понятна без догадок по обработчикам.
+
+**Sources:**
+
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
+- [React — lazy](https://react.dev/reference/react/lazy)
 </details>
 
 <details>
@@ -2688,6 +3133,30 @@ function UploadForm() {
 
 **Definition:**
 
+Серверный рендеринг кладёт готовый HTML компонентов в первый ответ, поэтому содержимое есть до выполнения клиентского JavaScript. `renderToString` создаёт эту строку, а `hydrateRoot` присоединяет к ней приложение.
+
+**How it works:**
+
+#### HTML, который может прочитать краулер
+
+- Чисто клиентский рендер начинает с пустого корня и заполняет его позже. Ответ `renderToString(<App />)` уже содержит заголовки и текст.
+- Гидратация сохраняет этот HTML и добавляет обработчики, а не заменяет страницу вторым пустым рендером.
+- `renderToString` всё равно пишет fallback `<Suspense>`, если ребёнок приостановлен. Потоковый SSR — задокументированный способ отправить готовые части по мере завершения.
+- Руководство «с нуля» связывает это с Time to First Byte, First Contentful Paint и Largest Contentful Paint, когда маршруту действительно нужен серверный HTML.
+
+**Examples:**
+
+```js
+import { renderToString } from "react-dom/server";
+
+const html = renderToString(<App />);
+response.send(html);
+```
+
+**Sources:**
+
+- [React — renderToString](https://react.dev/reference/react-dom/server/renderToString)
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 ### React Native
@@ -2699,6 +3168,20 @@ function UploadForm() {
 
 **Definition:**
 
+React Native запускает компонентную модель React на iOS и Android с нативными видами. Сам React — библиотека UI; React Native — хост, и это не DOM браузера.
+
+**How it works:**
+
+#### Два хоста
+
+- Компоненты React по-прежнему возвращают дерево и хранят state хуками. Хост рисует нативные элементы, а не HTML.
+- Проекты React Native собирает Metro. Руководство React «с нуля» говорит, что Metro целится в iOS и Android и не имеет многих возможностей Vite, Parcel и Rsbuild, поэтому для веба начинают с этих инструментов, если приложение не нативное.
+- Раскладка — Flexbox, с другими значениями по умолчанию, чем CSS в вебе: `flexDirection` равен `column`, `flexShrink` равен `0`, а `flex` — одно число.
+
+**Sources:**
+
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
+- [React Native — Layout with Flexbox](https://reactnative.dev/docs/flexbox)
 </details>
 
 <details>
@@ -2708,6 +3191,28 @@ function UploadForm() {
 
 **Definition:**
 
+Turbo Native Module открывает API платформы, которого в React Native ещё нет. Пишут типизированную JavaScript-спецификацию, запускают Codegen, вызывают спецификацию из кода приложения и реализуют сгенерированный нативный интерфейс.
+
+**How it works:**
+
+#### Четыре шага
+
+- Спецификацию описывают на Flow или TypeScript.
+- Сборку зависимостей настраивают так, чтобы Codegen превратил спецификацию в нативные интерфейсы.
+- Спецификацию импортируют в код приложения и вызывают её методы, например `SampleTurboModule.reverseString(value)`.
+- Реализацию iOS и Android (или C++) пишут по этим сгенерированным интерфейсам и регистрируют модуль в runtime.
+
+**Examples:**
+
+```tsx
+import SampleTurboModule from "./specs/NativeSampleModule";
+
+const reversed = SampleTurboModule.reverseString(value);
+```
+
+**Sources:**
+
+- [React Native — Native Modules](https://reactnative.dev/docs/turbo-native-modules)
 </details>
 
 <details>
@@ -2717,6 +3222,31 @@ function UploadForm() {
 
 **Definition:**
 
+React Native раскладывает детей через Flexbox. Значения по умолчанию отличаются от CSS в вебе: `flexDirection` — `column`, `alignContent` — `flex-start`, `flexShrink` — `0`, а `flex` принимает одно число.
+
+**How it works:**
+
+#### Свойства, которые сочетают
+
+- `flexDirection`, `alignItems` и `justifyContent` — обычная тройка для ряда или колонки.
+- `gap`, `rowGap` и `columnGap` задают промежуток между элементами. Поддерживаются значения в пикселях; процентные gap отмечены как более поздняя работа.
+- Margin ребёнка не схлопывается так, как часто ждут, поэтому `gap` на родителе прямо разделяет карточки и не удваивает внутренний промежуток.
+
+**Examples:**
+
+```tsx
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+```
+
+**Sources:**
+
+- [React Native — Layout with Flexbox](https://reactnative.dev/docs/flexbox)
 </details>
 
 ### State Management Libraries & GraphQL
@@ -2728,6 +3258,38 @@ function UploadForm() {
 
 **Definition:**
 
+Apollo Client — это GraphQL-клиент, который руководство React «с нуля» называет для GraphQL API. `ApolloProvider` кладёт `ApolloClient` в context, чтобы компоненты под ним могли выполнять операции.
+
+**How it works:**
+
+#### Provider
+
+- `new ApolloClient({ uri, cache: new InMemoryCache() })` указывает на GraphQL-endpoint и хранит результаты в нормализованном кэше.
+- `<ApolloProvider client={client}>` рендерят близко к корню, выше любого компонента, которому нужны данные GraphQL.
+- `useMutation(mutation, options?)` возвращает `[mutateFunction, { data }]`. Документ мутации описывает запись; `data` — результат мутации.
+
+**Examples:**
+
+```jsx
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
+
+const client = new ApolloClient({
+  uri: "https://flyby-router-demo.herokuapp.com/",
+  cache: new InMemoryCache(),
+});
+
+root.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+);
+```
+
+**Sources:**
+
+- [Apollo Client — Get started](https://www.apollographql.com/docs/react/get-started)
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 <details>
@@ -2737,6 +3299,40 @@ function UploadForm() {
 
 **Definition:**
 
+Apollo Client может хранить локальные поля в своём кэше или в reactive variables. Поля с `@client` вычисляются локально. Начиная с Apollo Client 3 локальные записи идут через `writeQuery`, `writeFragment` или reactive variables, а не через локальные мутации.
+
+**How it works:**
+
+#### Локальные поля
+
+- `localState: new LocalState({ resolvers })` отвечает на поля `@client`. Резолвер поля может читать кэш через `cache.readQuery`.
+- Кэш заполняют через `cache.writeQuery` до первого чтения, чтобы у локального списка вроде `cartItems` было значение.
+- Внутри этих резолверов не читают reactive variables. В документации эта связка не описана и не протестирована.
+- Старые приложения задавали локальные мутации через `@client` и локальные резолверы. Текущие документы говорят обновлять локальное состояние через `writeQuery`, `writeFragment` или reactive variable.
+
+**Examples:**
+
+```js
+const client = new ApolloClient({
+  cache,
+  link: new HttpLink({ uri: "http://localhost:4000/graphql" }),
+  localState: new LocalState({
+    resolvers: {
+      Launch: {
+        isInCart: (launch, _args, { cache }) => {
+          const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
+          return cartItems.includes(launch.id);
+        },
+      },
+    },
+  }),
+});
+```
+
+**Sources:**
+
+- [Apollo Client — Local resolvers](https://www.apollographql.com/docs/react/local-state/local-resolvers)
+- [Apollo Client — Managing state with field policies](https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies)
 </details>
 
 <details>
@@ -2746,6 +3342,40 @@ function UploadForm() {
 
 **Definition:**
 
+Redux хранит состояние приложения в store и обновляет его, отправляя actions в reducers. Context передаёт значение любому компоненту под provider. Context — способ самого React избежать prop drilling; Redux Toolkit — текущий способ собрать store.
+
+**How it works:**
+
+#### Два механизма
+
+- `createContext` вместе с `<ThemeContext value={theme}>` делает так, что `useContext(ThemeContext)` возвращает это значение. Каждый потребитель этого context обновляется, когда значение меняется.
+- `configureStore({ reducer })` создаёт store Redux, добавляет middleware thunk и включает расширение DevTools. `createSlice` задаёт reducers и создатели actions.
+- Компонент читает срез через `useSelector` и шлёт action через `useDispatch` из React-Redux. `<Provider store={store}>` кладёт store на дерево.
+- Context не даёт типы actions, reducers и это middleware store. Значение context — это то, что вы положили в provider.
+
+**When to use:**
+
+- Context берут, чтобы передать значение, нужное многим уровням, например текущую тему или объект текущего пользователя из документации React.
+- Redux берут, когда обновления — это actions, которые применяют reducers, и многим компонентам нужно читать срезы одного store.
+
+**Examples:**
+
+```tsx
+export const counterSlice = createSlice({
+  name: "counter",
+  initialState: { value: 0 },
+  reducers: {
+    increment(state) {
+      state.value += 1;
+    },
+  },
+});
+```
+
+**Sources:**
+
+- [Redux Toolkit — createSlice](https://redux-toolkit.js.org/api/createSlice)
+- [React — useContext](https://react.dev/reference/react/useContext)
 </details>
 
 <details>
@@ -2755,6 +3385,30 @@ function UploadForm() {
 
 **Definition:**
 
+Событие UI отправляет action. Reducer возвращает следующее состояние. Store его сохраняет, и компоненты, которые выбрали этот срез, рендерятся снова.
+
+**How it works:**
+
+#### Цикл
+
+- `createSlice` задаёт имя среза, начальное состояние и reducers. Каждый reducer становится создателем action. С Immer reducer может присваивать поля `state`, а библиотека записывает следующее неизменяемое значение.
+- `configureStore({ reducer: { counter: counterSlice.reducer } })` собирает корневое состояние. Он добавляет redux-thunk и расширение DevTools.
+- Дерево рендерят внутри `<Provider store={store}>`.
+- `useDispatch` отправляет `increment()`. `useSelector(state => state.counter.value)` читает число для этого компонента.
+
+**Examples:**
+
+```tsx
+const value = useAppSelector((state) => state.counter.value);
+const dispatch = useAppDispatch();
+
+return <button onClick={() => dispatch(increment())}>{value}</button>;
+```
+
+**Sources:**
+
+- [Redux Toolkit — configureStore](https://redux-toolkit.js.org/api/configureStore)
+- [Redux Toolkit — createSlice](https://redux-toolkit.js.org/api/createSlice)
 </details>
 
 <details>
@@ -2764,6 +3418,37 @@ function UploadForm() {
 
 **Definition:**
 
+Побочные эффекты остаются вне reducer. `createAsyncThunk` выполняет асинхронную работу и возвращает результат. `configureStore` уже добавляет middleware thunk, который позволяет отправить эту функцию.
+
+**How it works:**
+
+#### Вне reducer
+
+- Reducer только считает следующее состояние. Запросу там не место.
+- `createAsyncThunk("todos/save", async (todo) => { await fetch(...); return todo })` выполняет запрос и возвращает значение, которое extra reducers могут сохранить.
+- `createListenerMiddleware` — другой API Toolkit для логики, которая должна выполниться после отправки action.
+- Свой запасной выход React для соединения — `useEffect`. Это отдельно от store: его берут для подписки, которая не является action.
+
+**Examples:**
+
+```ts
+const todoSaved = createAsyncThunk(
+  "todos/save",
+  async (todo: { id: string }) => {
+    await fetch("/api/todos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(todo),
+    });
+    return todo;
+  },
+);
+```
+
+**Sources:**
+
+- [Redux Toolkit — createAsyncThunk](https://redux-toolkit.js.org/api/createAsyncThunk)
+- [Redux Toolkit — configureStore](https://redux-toolkit.js.org/api/configureStore)
 </details>
 
 ### React Development Environment & Tooling
@@ -2775,6 +3460,27 @@ function UploadForm() {
 
 **Definition:**
 
+Ставят инструмент сборки, который понимает JSX и даёт dev-сервер плюс production-сборку. Документация React начинает с Vite, Parcel или Rsbuild и советует предпочесть фреймворк, если маршруты, загрузка данных и серверный рендеринг уже должны быть решены.
+
+**How it works:**
+
+#### Первая команда
+
+- `npm create vite@latest my-app -- --template react-ts` создаёт TypeScript-приложение React. У Vite есть fast refresh, JSX и место для плагина Babel или SWC.
+- Parcel начинают с `npm install --save-dev parcel`. Rsbuild начинают с `npx create-rsbuild --template react`.
+- Эти инструменты дают клиентское приложение. Роутер, библиотеку данных и стратегию рендеринга добавляют, если они нужны продукту.
+- Исключение — React Native: его собирает Metro, не Vite.
+
+**Examples:**
+
+```bash
+npm create vite@latest my-app -- --template react-ts
+```
+
+**Sources:**
+
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
+- [React — Creating a React App](https://react.dev/learn/creating-a-react-app)
 </details>
 
 <details>
@@ -2784,6 +3490,30 @@ function UploadForm() {
 
 **Definition:**
 
+Babel компилирует JavaScript, который браузеры ещё не выполняют, включая JSX. В текущих проектах React этот шаг часто делает Vite, Parcel или Rsbuild через Babel или SWC.
+
+**How it works:**
+
+#### Где он стоит
+
+- Руководство «с нуля» говорит, что экосистема плагинов Vite покрывает fast refresh, JSX и Babel/SWC. Чтобы начать приложение, JSX-трансформ руками не пишут.
+- React Compiler можно добавить как Babel-плагин `babel-plugin-react-compiler` внутрь `@vitejs/plugin-react` на версиях до 6.0.0.
+- Опция `jsx` в TypeScript всё равно должна быть задана, чтобы файлы `.tsx` проходили проверку типов. В JavaScript для браузера код выпускает сборщик.
+
+**Examples:**
+
+```js
+react({
+  babel: {
+    plugins: ["babel-plugin-react-compiler"],
+  },
+});
+```
+
+**Sources:**
+
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
+- [React — React Compiler installation](https://react.dev/learn/react-compiler/installation)
 </details>
 
 <details>
@@ -2793,6 +3523,20 @@ function UploadForm() {
 
 **Definition:**
 
+Webpack — сборщик модулей. Текущее руководство React «с нуля» не начинает проект с конфига Webpack. Оно начинает с Vite, Parcel или Rsbuild: они упаковывают модули, запускают dev-сервер и выпускают production-сборку.
+
+**How it works:**
+
+#### Что здесь делает сборщик
+
+- Он превращает JSX и импорты в файлы, которые браузер может загрузить, и может делить эти файлы по маршрутам.
+- Vite — задокументированный вариант по умолчанию, и он же инструмент сборки в каркасе React Router.
+- Rsbuild описан как основанный на Rspack, с fast refresh и JSX для React. Parcel — третий вариант на той же странице.
+- Берут один из этих инструментов, если ограничение не заставляет выбрать другой сборщик. Смысл руководства — dev-сервер и production-сборка, а не конкретный файл конфига.
+
+**Sources:**
+
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 <details>
@@ -2802,6 +3546,21 @@ function UploadForm() {
 
 **Definition:**
 
+Hot module replacement подменяет изменённый модуль в уже запущенном dev-приложении без полной перезагрузки страницы. В React-приложении на Vite React Fast Refresh пользуется HMR API Vite: правка компонента обновляет этот компонент и сохраняет state, который не менялся.
+
+**How it works:**
+
+#### Цикл разработки
+
+- Vite отдаёт нативные ES-модули и открывает HMR API. Клиент в браузере говорит с dev-сервером по WebSocket.
+- React-шаблон из `create-vite` уже подключает React Fast Refresh. Вручную это не настраивают.
+- Fast Refresh применяет изменённый компонент. Правка, которую нельзя применить безопасно, перезагружает страницу.
+- `server.hmr` может выключить оверлей ошибки. `server.ws: false` выключает WebSocket-соединение.
+
+**Sources:**
+
+- [Vite — Features: Hot Module Replacement](https://vite.dev/guide/features.html#hot-module-replacement)
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 <details>
@@ -2811,6 +3570,26 @@ function UploadForm() {
 
 **Definition:**
 
+Create React App устарел для новых приложений с 14 февраля 2025 года. Раньше он давал одну конфигурацию для JSX, dev-сервера, линтинга, тестов и минифицированной production-сборки. `npm run eject` копирует эту скрытую конфигурацию в проект, и отменить это нельзя. Новую работу начинают с фреймворка или с Vite, Parcel либо Rsbuild.
+
+**How it works:**
+
+#### Какие скрипты он давал
+
+- `npm start` поднимал приложение на `http://localhost:3000` и перезагружал его при правках.
+- `npm test` запускал тесты в режиме наблюдения.
+- `npm run build` писал минифицированный бандл с хешами в именах файлов в папку `build`.
+- `npm run eject` убирает единственную зависимость сборки и копирует webpack, Babel, ESLint и остальное в проект. Остальные скрипты продолжают работать, но смотрят уже на эти скопированные файлы. Дальше эту конфигурацию поддерживаете вы.
+
+**When to use:**
+
+- Новое приложение с Create React App не начинают. Свежая установка печатает предупреждение об устаревании и отсылает на react.dev.
+- Существующее приложение переносят на фреймворк или на Vite, Parcel либо Rsbuild. Eject нужен только если старой конфигурацией надо владеть самому и одностороннее копирование приемлемо.
+
+**Sources:**
+
+- [React — Sunsetting Create React App](https://react.dev/blog/2025/02/14/sunsetting-create-react-app)
+- [Create React App — Available Scripts](https://create-react-app.dev/docs/available-scripts/)
 </details>
 
 ### Integrations and API Handling
@@ -2822,6 +3601,56 @@ function UploadForm() {
 
 **Definition:**
 
+На клиенте `fetch` вызывают внутри `useEffect`, результат держат в state и отбрасывают ответ, который пришёл после cleanup эффекта. Во фреймворке данные грузят в loader маршрута или в Server Function, чтобы запрос не ждал первого клиентского рендера.
+
+**How it works:**
+
+#### Где начинается запрос
+
+- Эффект выполняется после отрисовки. Флаг в cleanup отбрасывает устаревший результат, когда зависимость меняется или компонент размонтируется.
+- `fetch` отклоняет промис при сетевой ошибке. Ошибочный HTTP-статус, например 404, промис всё равно выполняет, поэтому перед `response.json()` проверяют `response.ok`.
+- Loader фреймворка или модуль с `'use server'` может начать запрос вместе с маршрутом. Запрос только после рендера компонента — это водопад, о котором предупреждает документация React.
+
+**Examples:**
+
+```jsx
+import { useEffect, useState } from "react";
+
+function Albums() {
+  const [albums, setAlbums] = useState(null);
+
+  useEffect(() => {
+    let ignore = false;
+    fetch("/api/albums")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!ignore) setAlbums(data);
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  if (albums === null) return <p>Loading…</p>;
+  return (
+    <ul>
+      {albums.map((album) => (
+        <li key={album.id}>{album.title}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**Sources:**
+
+- [React — useEffect](https://react.dev/reference/react/useEffect)
+- [MDN — Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 </details>
 
 <details>
@@ -2831,6 +3660,37 @@ function UploadForm() {
 
 **Definition:**
 
+Axios — сторонний HTTP-клиент. `axios.get(url)` возвращает объект ответа, тело лежит в `response.data`. `fetch` встроен в браузер: он возвращает `Response`, а тело читают через `response.json()` после проверки `response.ok`.
+
+**How it works:**
+
+#### Что ставят в проект
+
+- `npm install axios`, затем `import axios from "axios"`.
+- В конфиг запроса передают `timeout`, чтобы зависший вызов не висел бесконечно. Во введении Axios указан `timeout: 5000`.
+- Для `fetch` пакет не нужен. Статус и разбор тела всё равно обрабатывают сами. Cleanup в `useEffect` одинаков в обоих случаях: это React, а не HTTP-клиент.
+
+**When to use:**
+
+- `fetch` берут, когда встроенного API достаточно.
+- Axios берут, когда проект уже от него зависит, или когда нужен его конфиг запроса, например `timeout`, вместо обвязки вокруг `fetch`.
+
+**Examples:**
+
+```js
+import axios from "axios";
+
+const response = await axios.get(
+  "https://jsonplaceholder.typicode.com/posts/1",
+  { timeout: 5000 },
+);
+console.log(response.data);
+```
+
+**Sources:**
+
+- [Axios — First steps](https://axios-http.com/docs/intro)
+- [MDN — Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 </details>
 
 <details>
@@ -2840,6 +3700,43 @@ function UploadForm() {
 
 **Definition:**
 
+`WebSocket` открывают, пока компонент смонтирован, слушают `message` и в cleanup эффекта вызывают `close()`, чтобы сокет не пережил компонент.
+
+**How it works:**
+
+#### Время жизни сокета
+
+- `new WebSocket(url)` открывает соединение. `send()` пишет. Событие `message` несёт `event.data`.
+- Функция cleanup выполняется при размонтировании и перед повторным запуском эффекта. Там сокет закрывают.
+- У WebSocket API нет обратного давления. Если сообщения приходят быстрее, чем страница их обрабатывает, MDN указывает на `WebSocketStream`.
+- В dev-сервере Vite `server.proxy` может проксировать WebSocket-путь, если у записи задано `ws: true`.
+
+**Examples:**
+
+```jsx
+import { useEffect, useState } from "react";
+
+function Ticker() {
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    const socket = new WebSocket("wss://example.com/feed");
+    socket.addEventListener("message", (event) => {
+      setText(event.data);
+    });
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  return <p>{text}</p>;
+}
+```
+
+**Sources:**
+
+- [MDN — WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+- [React — useEffect](https://react.dev/reference/react/useEffect)
 </details>
 
 <details>
@@ -2849,6 +3746,26 @@ function UploadForm() {
 
 **Definition:**
 
+Браузер может вызвать API через `fetch`, dev-сервер Vite может проксировать этот вызов, а фреймворк может выполнить запрос на сервере и передать результат в интерфейс.
+
+**How it works:**
+
+#### Три места, откуда стартует запрос
+
+- `fetch("/api/...")` на тот же origin из эффекта или loader маршрута. Fetch связан с CORS, поэтому чужой origin зависит от того, разрешает ли сервер origin браузера.
+- В dev-режиме Vite `server.proxy` пересылает префикс вроде `/api` на другой хост. Браузер остаётся на origin Vite.
+- Loader маршрута или функция в модуле `'use server'` выполняется рядом с данными. Документация React противопоставляет это запросу внутри `useEffect`, который начинается только после рендера компонента.
+
+**When to use:**
+
+- Прокси в разработке, когда API слушает другой порт.
+- Loader или Server Function, когда страница должна получить данные вместе с маршрутом.
+- Клиентский `fetch`, когда вызов зависит от того, что есть только в браузере после загрузки страницы.
+
+**Sources:**
+
+- [Vite — server.proxy](https://vite.dev/config/server-options.html#server-proxy)
+- [React — Sunsetting Create React App](https://react.dev/blog/2025/02/14/sunsetting-create-react-app)
 </details>
 
 ### Deployment and Optimization
@@ -2860,6 +3777,21 @@ function UploadForm() {
 
 **Definition:**
 
+Собирают статические файлы и кладут эту папку на хост либо выкладывают фреймворк, который уже ведёт маршруты и рендеринг. `vite preview` только проверяет сборку на вашей машине. Это не production-сервер.
+
+**How it works:**
+
+#### Что отдают пользователю
+
+- `npm run build` запускает `vite build` и по умолчанию пишет production-файлы в `dist`. Файлы минифицированы.
+- Папку `dist` заливают на статический хостинг. Клиентскому роутеру нужно, чтобы этот хост отдавал приложение по этим URL.
+- Приложение на фреймворке выкладывают на хост этого фреймворка или на любой хост, который запускает его серверную сборку. Документация React указывает на фреймворк, когда маршруты и загрузка данных должны быть вместе.
+- Старый проект Create React App пишет `build`, а не `dist`. Для новых приложений этот инструмент устарел.
+
+**Sources:**
+
+- [Vite — Deploying a Static Site](https://vite.dev/guide/static-deploy)
+- [React — Creating a React App](https://react.dev/learn/creating-a-react-app)
 </details>
 
 <details>
@@ -2869,6 +3801,37 @@ function UploadForm() {
 
 **Definition:**
 
+Отдают production-сборку, код не с первого экрана грузят через `lazy` и `Suspense`, а мемоизацию рендеров оставляют React Compiler. `memo` руками добавляют только когда всё ещё нужен точный кеш.
+
+**How it works:**
+
+#### Путь в production
+
+- `vite build` или production-сборка фреймворка минифицирует файлы и добавляет хеши. Пользователи не запускают dev-сервер.
+- `lazy(() => import("./MarkdownPreview.js"))` грузит этот модуль при первом рендере. Его оборачивают в `<Suspense fallback={...}>`. У ленивого файла должен быть default export.
+- React Compiler мемоизирует по своему разбору. Уже написанные `useMemo`, `useCallback` и `memo` он сохраняет. В новом коде можно опираться на компилятор и вызывать эти хуки, когда значение обязано остаться стабильным, например как зависимость эффекта.
+- Фреймворк может делить код по маршрутам и начинать загрузку вместе с переходом, а не ждать рендера компонента.
+
+**Examples:**
+
+```jsx
+import { lazy, Suspense } from "react";
+
+const MarkdownPreview = lazy(() => import("./MarkdownPreview.js"));
+
+export function Preview() {
+  return (
+    <Suspense fallback={<p>Loading…</p>}>
+      <MarkdownPreview />
+    </Suspense>
+  );
+}
+```
+
+**Sources:**
+
+- [React — lazy](https://react.dev/reference/react/lazy)
+- [React — React Compiler introduction](https://react.dev/learn/react-compiler/introduction)
 </details>
 
 <details>
@@ -2878,6 +3841,28 @@ function UploadForm() {
 
 **Definition:**
 
+Service worker — скрипт, который браузер выполняет вне главного потока, между страницей и сетью. Он может ответить на запрос из кеша, когда сети нет, и может принимать push-сообщения. Он работает только в безопасном контексте: HTTPS или `http://localhost`.
+
+**How it works:**
+
+#### Что он даёт приложению
+
+- Его регистрируют через `navigator.serviceWorker.register("/sw.js")`.
+- Жизненный цикл: загрузка, затем install, затем activate. На `install` открывают кеш и кладут туда файлы, нужные офлайн-странице. На `activate` удаляют кеши предыдущего worker.
+- Обработчик `fetch` вызывает `event.respondWith(...)` и возвращает либо кешированный `Response`, либо ответ сети.
+- У worker нет DOM. React по-прежнему рисует страницу. Worker только решает, как отвечать на запросы.
+
+**Examples:**
+
+```js
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+```
+
+**Sources:**
+
+- [MDN — Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 </details>
 
 <details>
@@ -2887,6 +3872,20 @@ function UploadForm() {
 
 **Definition:**
 
+Production HTTPS — это TLS-сертификат хоста перед собранным приложением. Для dev-сервера Vite `server.https` — объект опций, который передаётся в `https.createServer()`. Service worker и другие мощные API работают только в безопасном контексте.
+
+**How it works:**
+
+#### Сертификат для dev и настоящий хост
+
+- `server.https` требует настоящий сертификат. Если добавить `@vitejs/plugin-basic-ssl` в плагины Vite, он создаёт и кеширует самоподписанный сертификат. Документация Vite всё равно советует свой сертификат.
+- Эта настройка для dev-сервера. Production-хост она не конфигурирует. У выложенного сайта сертификат даёт хост или CDN.
+- Браузеры считают `http://localhost` безопасным контекстом, поэтому локальная проверка service worker обходится без этого сертификата.
+
+**Sources:**
+
+- [Vite — server.https](https://vite.dev/config/server-options.html#server-https)
+- [MDN — Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 </details>
 
 ### Accessibility in React
@@ -2898,6 +3897,19 @@ function UploadForm() {
 
 **Definition:**
 
+Доступность значит, что сайт работает для как можно большего числа людей, включая тех, кто пользуется скринридером, увеличением, клавиатурой или субтитрами. MDN отдельно называет удобство для всех, SEO от семантического HTML и законодательные требования в части стран.
+
+**How it works:**
+
+#### Что это меняет в работе
+
+- Её закладывают в начале. Проблема, найденная поздно, дороже в исправлении, как и поздний баг.
+- Проверяют клавиатурой и хотя бы одной вспомогательной технологией. Автоматическая проверка не покрывает всю страницу.
+- WCAG делит критерии на воспринимаемость, управляемость, понятность и надёжность. В части стран связанные правила становятся законом, например EN 301 549 в ЕС и Section 508 в США.
+
+**Sources:**
+
+- [MDN — What is accessibility?](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/What_is_accessibility)
 </details>
 
 <details>
@@ -2907,6 +3919,41 @@ function UploadForm() {
 
 **Definition:**
 
+Берут HTML-элемент, у которого это поведение уже есть. React его не заменяет: обработчик клика ставят на `<button>`, а каждое свойство `aria-*` называется так же, как атрибут в HTML.
+
+**How it works:**
+
+#### Сначала разметка
+
+- Настоящий `<button>` доступен с клавиатуры. `<div onClick>` — нет. Если кнопка должна выглядеть иначе, её оформляют через CSS.
+- У каждого поля есть подпись. Подсказку связывают с полем через `aria-describedby` и id из `useId()`, чтобы две копии компонента не делили один id.
+- Текущую ссылку страницы помечают `aria-current="page"` на `<a>`, а не собирают свой виджет выбора.
+
+**Examples:**
+
+```jsx
+import { useId } from "react";
+
+function PasswordField() {
+  const passwordHintId = useId();
+  return (
+    <>
+      <label>
+        Password:
+        <input type="password" aria-describedby={passwordHintId} />
+      </label>
+      <p id={passwordHintId}>
+        The password should contain at least 18 characters
+      </p>
+    </>
+  );
+}
+```
+
+**Sources:**
+
+- [React — useId](https://react.dev/reference/react/useId)
+- [React — Responding to events](https://react.dev/learn/responding-to-events)
 </details>
 
 <details>
@@ -2916,6 +3963,33 @@ function UploadForm() {
 
 **Definition:**
 
+ARIA — набор ролей и атрибутов, которые описывают виджет вспомогательным технологиям, когда одного HTML недостаточно. В React эти имена — props: `role` и `aria-*` точно совпадают с именами атрибутов HTML.
+
+**How it works:**
+
+#### Сначала нативный элемент, потом ARIA
+
+- Предпочитают нативный элемент. У `<progress value={75} max={100}>` уже есть семантика, которую пришлось бы заново собирать на `<div role="progressbar">`, включая поведение, которое иначе подделывает скрипт.
+- Первое правило MDN: если у нативного элемента уже есть нужные семантика и поведение, используют его. Неверная ARIA вреднее, чем её отсутствие.
+- React предупреждает, если prop `aria-*` нет в спецификации WAI-ARIA. Prop `aria-role` не существует. Prop называется `role`.
+
+**When to use:**
+
+- ARIA берут для виджета, которого нет в HTML, или для состояния, которое HTML не выражает, и клавиатурное поведение пишут сами.
+- ARIA не ставят на элементы и ориентиры, у которых нужная роль уже есть.
+
+**Examples:**
+
+```jsx
+<progress value={75} max={100}>
+  75%
+</progress>
+```
+
+**Sources:**
+
+- [MDN — ARIA](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
+- [React — Common components](https://react.dev/reference/react-dom/components/common)
 </details>
 
 ### Internationalization and Localization
@@ -2927,6 +4001,26 @@ function UploadForm() {
 
 **Definition:**
 
+Интернационализация (i18n) — это проектирование интерфейса так, чтобы его можно было адаптировать к другому языку или региону: письменность, единицы измерения, форматы дат и чисел. Каталог переводов React не поставляет. Форматы на платформе делает `Intl`.
+
+**How it works:**
+
+#### Что готовят заранее
+
+- Видимые строки держат отдельно от раскладки, чтобы локаль могла их заменить. Локализация — следующий шаг, который заполняет тексты для одной аудитории.
+- Значения форматируют через `Intl.DateTimeFormat` и `Intl.NumberFormat`. Передают `navigator.language` или список `navigator.languages`, а не зашитый шаблон.
+- `Intl` — не конструктор. Вызывают статические конструкторы, например `new Intl.NumberFormat(locale)`.
+
+**Examples:**
+
+```jsx
+const formatted = new Intl.NumberFormat(navigator.language).format(26254.39);
+```
+
+**Sources:**
+
+- [MDN — Internationalization (i18n)](https://developer.mozilla.org/en-US/docs/Glossary/Internationalization_and_localization)
+- [MDN — Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
 </details>
 
 <details>
@@ -2936,6 +4030,27 @@ function UploadForm() {
 
 **Definition:**
 
+Локализация адаптирует приложение под одну аудиторию: её строки, а также даты, числа и категории множественного числа. Форматы в браузере делает `Intl`. Каталог сообщений — ваши данные, выбранные по id локали, например `de-DE`.
+
+**How it works:**
+
+#### Одна локаль на рендер
+
+- Сообщения хранят по локалям и рисуют набор, который совпадает с активной локалью.
+- `new Intl.DateTimeFormat("de-DE").format(date)` и `new Intl.NumberFormat("de-DE").format(count)` следуют этому региону. `Intl.PluralRules` возвращает категорию множественного числа для локали.
+- `navigator.languages` — упорядоченный список предпочтений. `Intl` выбирает ближайшую локаль, которую среда действительно поддерживает.
+
+**Examples:**
+
+```jsx
+const date = new Date("2012-05-24");
+const label = new Intl.DateTimeFormat("de-DE").format(date);
+```
+
+**Sources:**
+
+- [MDN — Internationalization (i18n)](https://developer.mozilla.org/en-US/docs/Glossary/Internationalization_and_localization)
+- [MDN — Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
 </details>
 
 ### React Code Structure & Best Practices
@@ -2947,6 +4062,20 @@ function UploadForm() {
 
 **Definition:**
 
+React не требует раскладки папок. Приложение строят как дерево компонентов, которое совпадает с интерфейсом, а state держат в ближайшем родителе, который нужен обоим детям.
+
+**How it works:**
+
+#### Следовать экрану
+
+- Thinking in React начинает с макета: назвать каждую часть, собрать статическое дерево через props, затем добавить state только для данных, которые меняются.
+- На большом экране идут от меньших компонентов вверх. Если компонент вырастает дальше одной задачи, его делят.
+- Когда два компонента должны меняться вместе, этот state поднимают к их ближайшему общему родителю. Много далёких читателей могут делить провайдер с state и `dispatch` из `useReducer`, как в примере со списком задач.
+
+**Sources:**
+
+- [React — Thinking in React](https://react.dev/learn/thinking-in-react)
+- [React — Sharing state between components](https://react.dev/learn/sharing-state-between-components)
 </details>
 
 <details>
@@ -2956,6 +4085,21 @@ function UploadForm() {
 
 **Definition:**
 
+Хуки вызывают на верхнем уровне, каждому соседу дают стабильный key из данных и берут HTML-элемент, который совпадает с поведением. State добавляют только для данных, которые меняются со временем.
+
+**How it works:**
+
+#### Правила, которые документация повторяет
+
+- Правила хуков: хук не вызывают внутри условия, цикла или после раннего return. `use` может быть условным. `eslint-plugin-react-hooks` помечает запрещённые вызовы.
+- Key уникальны среди соседей и не создаются во время рендера. Руководство по спискам берёт id из данных, например `key={person.id}`.
+- Сначала собирают статический интерфейс через props. State — для интерактива.
+- Элемент, который обрабатывает клик, — это `<button>`, а не `<div onClick>`.
+
+**Sources:**
+
+- [React — Rules of Hooks](https://react.dev/reference/eslint-plugin-react-hooks/lints/rules-of-hooks)
+- [React — Rendering lists](https://react.dev/learn/rendering-lists)
 </details>
 
 <details>
@@ -2965,6 +4109,20 @@ function UploadForm() {
 
 **Definition:**
 
+Правила хуков держат в линтере, типы проверяют вне трансформа Vite, а production-сборку считают тем артефактом, который вливают. Vite транспилирует TypeScript. Типы он не проверяет.
+
+**How it works:**
+
+#### Проверки, которые совпадают с инструментами
+
+- `eslint-plugin-react-hooks` принуждает к правилам хуков. React Compiler сохраняет уже написанные `useMemo`, `useCallback` и `memo`, а неполные списки зависимостей мешают ему проследить поток данных.
+- Рядом со сборкой запускают `tsc --noEmit`. В разработке `tsc --noEmit --watch` может идти отдельным процессом.
+- Отдают то, что собрал `npm run build`. `vite preview` только раздаёт этот результат на вашей машине.
+
+**Sources:**
+
+- [React — Rules of Hooks](https://react.dev/reference/eslint-plugin-react-hooks/lints/rules-of-hooks)
+- [Vite — Features: TypeScript, transpile only](https://vite.dev/guide/features.html#transpile-only)
 </details>
 
 ### React and Git Workflows
@@ -2976,6 +4134,30 @@ function UploadForm() {
 
 **Definition:**
 
+Фичу делают на своей ветке, чтобы ветка поставки оставалась пригодной к выпуску. В книге Git это `git checkout -b`, коммиты на этой ветке, затем `git merge` обратно и `git branch -d`, когда ветка закончена. Ветку поставки в книге зовут `master`.
+
+**How it works:**
+
+#### Одна тема — одна ветка
+
+- `git checkout -b iss53` создаёт ветку и переключается на неё. Следующие коммиты двигают эту ветку.
+- Уходят с ветки только при чистом рабочем дереве. Git отказывает в переключении, если незакоммиченные правки пересекаются с другой веткой.
+- Хотфикс — своя ветка от ветки поставки, затем merge. Если merge может быть fast-forward, Git только двигает указатель ветки.
+- После вливания фичи тематическую ветку удаляют через `git branch -d`.
+
+**Examples:**
+
+```bash
+git checkout -b iss53
+git commit -a -m "Create new footer [issue 53]"
+git checkout master
+git merge iss53
+git branch -d iss53
+```
+
+**Sources:**
+
+- [Git — Basic Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
 </details>
 
 <details>
@@ -2985,6 +4167,31 @@ function UploadForm() {
 
 **Definition:**
 
+Конфликт значит, что обе стороны правили одни и те же строки, поэтому Git остановил merge и оставил маркеры в файле. Файл правят до нужного кода, делают `git add`, затем `git commit` или `git merge --continue`.
+
+**How it works:**
+
+#### Маркеры, затем коммит
+
+- Маркеры — это `<<<<<<<`, `=======` и `>>>>>>>`. Часть до `=======` — ваша сторона (`HEAD`). Часть после — ветка, которую вливают.
+- `git status` показывает эти пути как неслитые, например `both modified`.
+- Маркеры убирают. `git add` делают на каждый разрешённый файл. `git mergetool` открывает визуальный инструмент, если он нужен.
+- `git merge --abort` возвращает состояние до merge. Локальную работу коммитят или прячут в stash до merge, чтобы abort было куда вернуться. Пересекающиеся незакоммиченные правки заставляют `git merge` остановиться ещё до старта.
+
+**Examples:**
+
+```jsx
+<<<<<<< HEAD
+return <button type="submit">Save</button>;
+=======
+return <button type="submit">Save changes</button>;
+>>>>>>> iss53
+```
+
+**Sources:**
+
+- [Git — git-merge](https://git-scm.com/docs/git-merge)
+- [Git — Basic Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
 </details>
 
 ### React Interviews Problem Solving and Scenarios
@@ -2996,6 +4203,21 @@ function UploadForm() {
 
 **Definition:**
 
+Воспроизводят это на своей ветке, записывают ожидаемое состояние интерфейса и вливают только после успешной production-сборки. Баг и запрос фичи делят эту форму ветки. Баг — сломанное состояние. Фича — состояние, которого в интерфейсе ещё нет.
+
+**How it works:**
+
+#### От отчёта до merge
+
+- Отчёт пересказывают как визуальные состояния затронутых компонентов. Thinking in React начинается отсюда, до нового state.
+- `git checkout -b` от ветки поставки, чтобы изменение осталось отдельным. Книга Git так ведёт и пользовательскую историю, и хотфикс.
+- Для бага делают самую маленькую проверку, которая падает, и меняют компонент, пока она не проходит. Для фичи расширяют дерево компонентов и поднимают state только когда его должен делить второй компонент.
+- Вливают, когда `git status` не показывает неслитых путей и `npm run build` проходит. Тематическую ветку после merge удаляют.
+
+**Sources:**
+
+- [Git — Basic Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
+- [React — Thinking in React](https://react.dev/learn/thinking-in-react)
 </details>
 
 <details>
@@ -3005,4 +4227,27 @@ function UploadForm() {
 
 **Definition:**
 
+Переходы переносят в reducer, детей делят так, чтобы каждый рисовал меньший кусок, и делят этот state через context там, где проблемой становятся длинные списки props. Мемоизацию оставляют React Compiler. Ручной `memo` держат, пока проверка не покажет, что его можно снять.
+
+**How it works:**
+
+#### Форма state, затем цена рендера
+
+- `useReducer(reducer, initialArg)` возвращает текущий state и `dispatch`. Reducer принимает `(state, action)` и возвращает следующий state. Неизвестные действия бросают ошибку.
+- `state` и `dispatch` кладут в context, когда их читают много детей, как в примере со списком задач с двумя провайдерами. Ребёнок, который правит одну строку, держит свой UI-state, например `isEditing`, в `useState`.
+- Общий state сначала поднимают к ближайшему общему родителю, и только потом берут context.
+- React Compiler мемоизирует обычные компоненты и сохраняет уже написанные `memo`, `useMemo` и `useCallback`. Тяжёлого ребёнка не с первого экрана можно сделать `lazy` внутри `Suspense`.
+
+**Examples:**
+
+```jsx
+const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+
+dispatch({ type: "deleted", id: task.id });
+```
+
+**Sources:**
+
+- [React — useReducer](https://react.dev/reference/react/useReducer)
+- [React — React Compiler introduction](https://react.dev/learn/react-compiler/introduction)
 </details>

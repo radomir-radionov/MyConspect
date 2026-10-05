@@ -2989,6 +2989,79 @@ export function trackBrowseCards(track: TrackId): readonly BrowseCard[] {
   return cards;
 }
 
+function isTrackQuestionCluster(clusterId: string): boolean {
+  return (
+    clusterId === "interview" ||
+    clusterId.endsWith("-interview") ||
+    clusterId === "tasks" ||
+    clusterId.endsWith("-tasks")
+  );
+}
+
+function isTasksCluster(clusterId: string): boolean {
+  return clusterId === "tasks" || clusterId.endsWith("-tasks");
+}
+
+function questionCardTitle(
+  subject: Subject,
+  cluster: TopicCluster,
+  topic: Topic,
+): string {
+  if (topic.title !== "Interview" && topic.title !== "Tasks") {
+    return topic.title;
+  }
+  const section = subject.sections?.find((item) => item.id === cluster.section);
+  return section?.title ?? subject.title;
+}
+
+/** Interview and Tasks topics lifted to the track, matching the sidebar clusters. */
+export function trackQuestionSections(track: TrackId): readonly {
+  readonly id: "interview" | "tasks";
+  readonly title: string;
+  readonly items: readonly BrowseCard[];
+}[] {
+  const interview: BrowseCard[] = [];
+  const tasks: BrowseCard[] = [];
+  const seenSubjects = new Set<string>();
+
+  for (const topic of topicsForTrack(track)) {
+    if (!topic.grouping || seenSubjects.has(topic.grouping.subject)) {
+      continue;
+    }
+    seenSubjects.add(topic.grouping.subject);
+    const subject = getSubject(track, topic.grouping.subject);
+    if (!subject) {
+      continue;
+    }
+    for (const cluster of subject.clusters) {
+      if (!isTrackQuestionCluster(cluster.id)) {
+        continue;
+      }
+      const bucket = isTasksCluster(cluster.id) ? tasks : interview;
+      for (const item of topicsForCluster(subject, cluster.id)) {
+        bucket.push({
+          href: topicHref(item),
+          title: questionCardTitle(subject, cluster, item),
+          description: item.blurb,
+        });
+      }
+    }
+  }
+
+  const sections: {
+    id: "interview" | "tasks";
+    title: string;
+    items: BrowseCard[];
+  }[] = [];
+  if (interview.length > 0) {
+    sections.push({ id: "interview", title: "Interview", items: interview });
+  }
+  if (tasks.length > 0) {
+    sections.push({ id: "tasks", title: "Tasks", items: tasks });
+  }
+  return sections;
+}
+
 export function subjectClusterCards(subject: Subject): readonly {
   readonly cluster: TopicCluster;
   readonly items: readonly BrowseCard[];

@@ -11,6 +11,7 @@ import {
   subjectClusterCards,
   subjectForTrack,
   trackBrowseCards,
+  trackQuestionSections,
 } from "@/lib/catalog";
 import { catalogBlurb } from "@/lib/i18n/catalog";
 import {
@@ -182,6 +183,22 @@ export default async function TrackPage({
       </p>
       <div className="mt-8">
         <CardGrid items={localizeCards(locale, trackBrowseCards(track.id))} />
+      </div>
+      <div className="catalog-sections mt-8 space-y-4 md:hidden">
+        {trackQuestionSections(track.id).map((section) => (
+          <details
+            key={section.id}
+            id={section.id}
+            className="scroll-mt-24 rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
+          >
+            <summary className="cursor-pointer px-4 py-3 text-left text-xl font-semibold tracking-tight text-zinc-900 sm:px-5 sm:py-4 dark:text-zinc-50">
+              {catalogBlurb(locale, section.title)}
+            </summary>
+            <div className="border-t border-zinc-200 px-4 pt-4 pb-5 sm:px-5 sm:pb-6 dark:border-zinc-800">
+              <CardGrid items={localizeCards(locale, section.items)} />
+            </div>
+          </details>
+        ))}
       </div>
     </main>
   );

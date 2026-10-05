@@ -1,6 +1,6 @@
 # React — Interview
 
-React interview questions. Answers are filled for the published subset; the rest are still empty.
+React interview questions. Answers are filled for the full list.
 
 [← Back to hub](./4_react.md)
 
@@ -2546,6 +2546,28 @@ function UploadForm() {
 
 **Definition:**
 
+TypeScript checks component props and Hook state before the app runs. React’s JSX support is built in; `@types/react` and `@types/react-dom` add the DOM and Hook types.
+
+**How it works:**
+
+#### What you gain
+
+- A prop type such as `title: string` is checked at the call site and shows up in the editor.
+- Files that contain JSX use the `.tsx` extension.
+- `tsconfig.json` needs `jsx` set ( `preserve` is enough for most apps) and `dom` in `lib` when you target the browser.
+- Hook types are inferred from the initial value. You add an explicit argument only when inference is not enough, such as a union.
+
+**Examples:**
+
+```tsx
+function MyButton({ title }: { title: string }) {
+  return <button>{title}</button>;
+}
+```
+
+**Sources:**
+
+- [React — Using TypeScript](https://react.dev/learn/typescript)
 </details>
 
 <details>
@@ -2555,6 +2577,33 @@ function UploadForm() {
 
 **Definition:**
 
+Type props as an object on the function parameter. Let `useState` infer the state type, or pass a type argument when the state is a union or starts empty.
+
+**How it works:**
+
+#### Props
+
+- An inline `{ title: string }` is enough for one field. A named `interface` or `type` is easier once there are several fields.
+- Children are usually `React.ReactNode`. `React.ReactElement` is only JSX elements, not strings or numbers.
+- `React.CSSProperties` types the object passed to `style`.
+
+#### State
+
+- `useState(false)` infers `boolean`. `useState<Status>("idle")` is the form for a string union.
+- Group related states as one object and describe each possibility: `{ status: "success"; data: any }` or `{ status: "error"; error: Error }`.
+- For `useReducer`, type the initial state and the reducer arguments. `useReducer` then infers the state from that initial value.
+
+**Examples:**
+
+```ts
+type Status = "idle" | "loading" | "success" | "error";
+
+const [status, setStatus] = useState<Status>("idle");
+```
+
+**Sources:**
+
+- [React — Using TypeScript](https://react.dev/learn/typescript)
 </details>
 
 <details>
@@ -2564,6 +2613,33 @@ function UploadForm() {
 
 **Definition:**
 
+An interface describes the props object. The component function destructures that object and annotates the parameter with the interface.
+
+**How it works:**
+
+#### The props object
+
+- React’s TypeScript guide types props with either an `interface` or a `type`. Both are object types.
+- Optional fields use `?`. A field can be a union, such as `version?: "experimental" | "canary" | "rc"`.
+- Default a prop in the destructuring, for example `tags = []` or `active = false`.
+- `children` on that interface is `React.ReactNode` when the component wraps arbitrary content.
+
+**Examples:**
+
+```tsx
+interface MyButtonProps {
+  title: string;
+  disabled: boolean;
+}
+
+function MyButton({ title, disabled }: MyButtonProps) {
+  return <button disabled={disabled}>{title}</button>;
+}
+```
+
+**Sources:**
+
+- [React — Using TypeScript](https://react.dev/learn/typescript)
 </details>
 
 <details>
@@ -2573,6 +2649,44 @@ function UploadForm() {
 
 **Definition:**
 
+A generic keeps two types in lockstep. React’s Hook types use that for state, and a component can use the same idea so a list and its render callback share one item type.
+
+**How it works:**
+
+#### Hooks
+
+- `useState<Status>("idle")` tells the setter that only a `Status` is allowed.
+- `useReducer` infers from a typed initial state. You can also pass the state type as `useReducer<State>(reducer, initialState)`.
+- In strict mode, `useCallback` needs a parameter type. `useCallback<React.ChangeEventHandler<HTMLInputElement>>` supplies the event type and the setter sees `event.currentTarget.value`.
+
+#### A generic component
+
+- A type parameter on the function ties `items` to the argument of `renderItem`.
+- The docs also note a limit: TypeScript cannot restrict `children` to one particular component type.
+
+**Examples:**
+
+```tsx
+function List<Item extends { id: string }>({
+  items,
+  renderItem,
+}: {
+  items: Item[];
+  renderItem: (item: Item) => React.ReactNode;
+}) {
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={item.id}>{renderItem(item)}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**Sources:**
+
+- [React — Using TypeScript](https://react.dev/learn/typescript)
 </details>
 
 ### Testing in React
@@ -2584,6 +2698,29 @@ function UploadForm() {
 
 **Definition:**
 
+A React test renders the component and checks what the user can see and do. That catches a wrong prop or a broken click without opening the browser by hand.
+
+**How it works:**
+
+#### Arrange, act, assert
+
+- Render the component with the props you care about.
+- Perform the user action, such as a click.
+- Assert on the resulting text, role, or disabled state.
+- The test fails when the UI contract changes, which is the signal to update the component or the test.
+
+**Examples:**
+
+```jsx
+test("has correct welcome text", () => {
+  render(<Welcome firstName="John" lastName="Doe" />);
+  expect(screen.getByRole("heading")).toHaveTextContent("Welcome, John Doe");
+});
+```
+
+**Sources:**
+
+- [Testing Library — React example](https://testing-library.com/docs/react-testing-library/example-intro)
 </details>
 
 <details>
@@ -2593,6 +2730,30 @@ function UploadForm() {
 
 **Definition:**
 
+The usual set is Jest as the runner, React Testing Library to render, `user-event` to act, and `jest-dom` for DOM assertions. Enzyme is the older renderer those guides migrate away from.
+
+**How it works:**
+
+#### Roles
+
+- Jest provides `test` and `expect`.
+- `@testing-library/react` provides `render` and `screen`.
+- `@testing-library/user-event` provides `userEvent.click`.
+- `@testing-library/jest-dom` adds matchers such as `toHaveTextContent` and `toBeDisabled`.
+- Enzyme’s `shallow` and `mount` appear in migration notes. New tests in that guide use `render` instead.
+
+**Examples:**
+
+```jsx
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom";
+```
+
+**Sources:**
+
+- [Testing Library — React example](https://testing-library.com/docs/react-testing-library/example-intro)
+- [Testing Library — Migrate from Enzyme](https://testing-library.com/docs/react-testing-library/migrate-from-enzyme)
 </details>
 
 <details>
@@ -2602,6 +2763,32 @@ function UploadForm() {
 
 **Definition:**
 
+Jest runs a `test` function. Inside it, React Testing Library renders the component, `user-event` performs the action, and `expect` checks the DOM.
+
+**How it works:**
+
+#### One test
+
+- Arrange: `render(<Fetch url="/greeting" />)`.
+- Act: `await userEvent.click(screen.getByText("Load Greeting"))`, then `await screen.findByRole("heading")` for the async result.
+- Assert: `expect(screen.getByRole("heading")).toHaveTextContent("hello there")` and `expect(screen.getByRole("button")).toBeDisabled()`.
+- `render` cleans up after each test.
+
+**Examples:**
+
+```jsx
+test("loads and displays greeting", async () => {
+  render(<Fetch url="/greeting" />);
+  await userEvent.click(screen.getByText("Load Greeting"));
+  await screen.findByRole("heading");
+  expect(screen.getByRole("heading")).toHaveTextContent("hello there");
+  expect(screen.getByRole("button")).toBeDisabled();
+});
+```
+
+**Sources:**
+
+- [Testing Library — React example](https://testing-library.com/docs/react-testing-library/example-intro)
 </details>
 
 <details>
@@ -2611,6 +2798,31 @@ function UploadForm() {
 
 **Definition:**
 
+Enzyme’s `shallow` renders only the component under test and does not render its child components. `mount` renders the full tree. React Testing Library’s `render` is the closer match to `mount`.
+
+**How it works:**
+
+#### What each one sees
+
+- `shallow(<Welcome />)` then `wrapper.find("h1")` reads the parent’s own output. Child components stay unrendered.
+- `mount` walks the real child output, so assertions can see nested markup.
+- A migration test that needs the heading, the form values, or nested controls uses a full render. `shallow` is the one that stops at the component’s own elements.
+
+**When to use:**
+
+- Use `shallow` only when the assertion is about that component’s own element and not about what its children render.
+- Use `mount` when the behavior depends on the rendered children.
+
+**Examples:**
+
+```jsx
+const wrapper = shallow(<Welcome firstName="John" lastName="Doe" />);
+expect(wrapper.find("h1").text()).toEqual("Welcome, John Doe");
+```
+
+**Sources:**
+
+- [Testing Library — Migrate from Enzyme](https://testing-library.com/docs/react-testing-library/migrate-from-enzyme)
 </details>
 
 <details>
@@ -2620,6 +2832,31 @@ function UploadForm() {
 
 **Definition:**
 
+React Testing Library renders the component the way a user meets it and finds nodes by role and text. Enzyme finds nodes through the component tree, and its `shallow` renderer skips child components.
+
+**How it works:**
+
+#### The difference
+
+- `render` from `@testing-library/react` is closer to Enzyme’s `mount` than to `shallow`, and it cleans up after each test.
+- Queries such as `screen.getByRole("heading")` and `screen.getByRole("form")` talk about the accessibility tree. A form needs a `name` to have the implicit `form` role.
+- `toHaveTextContent` and `toHaveFormValues` assert on that output. Enzyme examples instead call `wrapper.find("h1")` or `wrapper.find('input[name="firstName"]')`.
+
+**When to use:**
+
+- Use React Testing Library for new tests that describe what a person sees and clicks.
+- Enzyme remains in older suites. The migration guide rewrites those tests with `render` and `screen`.
+
+**Examples:**
+
+```jsx
+render(<Welcome firstName="John" lastName="Doe" />);
+expect(screen.getByRole("heading")).toHaveTextContent("Welcome, John Doe");
+```
+
+**Sources:**
+
+- [Testing Library — Migrate from Enzyme](https://testing-library.com/docs/react-testing-library/migrate-from-enzyme)
 </details>
 
 ### Advanced React Topics
@@ -2631,6 +2868,32 @@ function UploadForm() {
 
 **Definition:**
 
+A fragment groups several elements when a component must return one parent. The short form `<>...</>` adds no extra node to the DOM.
+
+**How it works:**
+
+#### Why the wrapper exists
+
+- JSX in a `return` needs a single parent. Two sibling tags without a wrapper are invalid.
+- A `<div>` wrapper is a real DOM node. It can break a table, a list, or a flex layout that expects the children themselves.
+- `<>...</>` groups those siblings and leaves the DOM without that extra node.
+
+**Examples:**
+
+```jsx
+function AboutPage() {
+  return (
+    <>
+      <h1>About</h1>
+      <p>Hello there.<br />How do you do?</p>
+    </>
+  );
+}
+```
+
+**Sources:**
+
+- [React — Writing Markup with JSX](https://react.dev/learn/writing-markup-with-jsx)
 </details>
 
 <details>
@@ -2640,6 +2903,34 @@ function UploadForm() {
 
 **Definition:**
 
+`createPortal(children, domNode, key?)` renders children into a DOM node outside the parent’s DOM, while they stay children of the component in the React tree.
+
+**How it works:**
+
+#### What stays the same
+
+- `domNode` must already exist, for example `document.body` or a node from `document.getElementById()`.
+- The portal still reads context from the React parent, and events bubble through the React tree.
+- Passing a different DOM node on a later render recreates the portal content.
+- Use it when the DOM position must escape a parent that clips overflow or creates a stacking context, such as a dialog or tooltip rendered on `document.body`.
+
+**Examples:**
+
+```jsx
+import { createPortal } from "react-dom";
+
+<div>
+  <p>This child is placed in the parent div.</p>
+  {createPortal(
+    <p>This child is placed in the document body.</p>,
+    document.body
+  )}
+</div>
+```
+
+**Sources:**
+
+- [React — createPortal](https://react.dev/reference/react-dom/createPortal)
 </details>
 
 <details>
@@ -2649,6 +2940,41 @@ function UploadForm() {
 
 **Definition:**
 
+An error boundary is a class component that catches a render error in its children and shows a fallback. It implements `static getDerivedStateFromError` and, when you need a log, `componentDidCatch`.
+
+**How it works:**
+
+#### What it catches
+
+- `getDerivedStateFromError` returns state such as `{ hasError: true }` so the next render can show `this.props.fallback`.
+- `componentDidCatch(error, info)` runs after that update. `info.componentStack` is the component stack.
+- Wrap the risky tree: `<ErrorBoundary fallback={<p>Something went wrong</p>}><Profile /></ErrorBoundary>`.
+- It does not catch errors in event handlers, in server rendering, in the boundary itself, or in async callbacks such as `setTimeout`. An exception is an error thrown inside the function passed to `startTransition`.
+
+**Examples:**
+
+```jsx
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    logErrorToMyService(error, info.componentStack);
+  }
+
+  render() {
+    if (this.state.hasError) return this.props.fallback;
+    return this.props.children;
+  }
+}
+```
+
+**Sources:**
+
+- [React — Component](https://react.dev/reference/react/Component)
 </details>
 
 <details>
@@ -2658,6 +2984,32 @@ function UploadForm() {
 
 **Definition:**
 
+Server-side rendering produces HTML from a React tree on the server. `renderToString` returns that HTML string. On the client, `hydrateRoot` attaches event handlers to the markup that was sent.
+
+**How it works:**
+
+#### The two calls
+
+- In the server route, `const html = renderToString(<App />)` and send `html` on the response.
+- `renderToString` does not wait for a component that suspends. It emits the nearest `<Suspense>` fallback, and the real content appears after the client loads.
+- Streaming server APIs are the documented alternative when content should arrive in chunks as it resolves.
+- A client-only app from Vite, Parcel, or Rsbuild does not include this. The from-scratch guide says to add SSR yourself or start from a framework that already has it.
+
+**Examples:**
+
+```js
+import { renderToString } from "react-dom/server";
+
+app.use("/", (request, response) => {
+  const html = renderToString(<App />);
+  response.send(html);
+});
+```
+
+**Sources:**
+
+- [React — renderToString](https://react.dev/reference/react-dom/server/renderToString)
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 <details>
@@ -2667,6 +3019,43 @@ function UploadForm() {
 
 **Definition:**
 
+`lazy` loads a component’s module on demand. `<Suspense>` shows a `fallback` until that load, or another suspend, finishes.
+
+**How it works:**
+
+#### Split the module
+
+- `const MarkdownPreview = lazy(() => import("./MarkdownPreview.js"))` returns a component you render like any other.
+- Wrap it in `<Suspense fallback={<Loading />}>`. While the import is pending, React renders `Loading`.
+- Render the lazy component only when it is needed, for example after a checkbox turns the preview on.
+- `renderToString` does not wait for this. It writes the fallback into the HTML. Streaming server rendering is the path that can send the resolved content from the server.
+
+**Examples:**
+
+```jsx
+import { Suspense, lazy, useState } from "react";
+
+const MarkdownPreview = lazy(() => import("./MarkdownPreview.js"));
+
+export default function Editor() {
+  const [showPreview, setShowPreview] = useState(false);
+  return (
+    <>
+      <button onClick={() => setShowPreview(true)}>Preview</button>
+      {showPreview && (
+        <Suspense fallback={<p>Loading...</p>}>
+          <MarkdownPreview markdown="Hello" />
+        </Suspense>
+      )}
+    </>
+  );
+}
+```
+
+**Sources:**
+
+- [React — lazy](https://react.dev/reference/react/lazy)
+- [React — renderToString](https://react.dev/reference/react-dom/server/renderToString)
 </details>
 
 ### React and SEO
@@ -2678,6 +3067,21 @@ function UploadForm() {
 
 **Definition:**
 
+A client-only React app sends a shell first and fills it after JavaScript runs. A crawler that does not run that JavaScript sees little of the page. Server rendering puts the component HTML in the first response.
+
+**How it works:**
+
+#### What the first response contains
+
+- Vite, Parcel, and Rsbuild start as single-page apps. The HTML page loads, then the client renders the tree.
+- `renderToString(<App />)` sends the rendered markup immediately. `hydrateRoot` makes that markup interactive on the client.
+- If a child suspends, `renderToString` writes the `<Suspense>` fallback, not the finished content.
+- Semantic tags still matter after the HTML exists. A real `<button>` or link is what assistive tech and many parsers expect, not a clickable `<div>`.
+
+**Sources:**
+
+- [React — renderToString](https://react.dev/reference/react-dom/server/renderToString)
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 <details>
@@ -2687,6 +3091,25 @@ function UploadForm() {
 
 **Definition:**
 
+Pick a rendering strategy per route, send real HTML for the pages that must be indexed, and keep the markup semantic. The React docs list SPA, streaming SSR, SSG, and React Server Components for that choice.
+
+**How it works:**
+
+#### Rendering
+
+- A single-page app is the default of Vite, Parcel, and Rsbuild. It is the slowest first paint because the client builds the page.
+- Streaming SSR sends rendered HTML from the server. SSG writes static HTML at build time. React Server Components mix server-only and interactive components in one tree.
+- The router should be able to choose the strategy per route. A landing page can be static, and a feed can be server-rendered.
+- Split code by route with `lazy` so the first load is smaller. Prefetch the route’s data in a loader instead of fetching only after the component renders, which creates a waterfall.
+
+#### Markup
+
+- Use a `<button>` for a click and a link for navigation so the page is understandable without guessing from event handlers.
+
+**Sources:**
+
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
+- [React — lazy](https://react.dev/reference/react/lazy)
 </details>
 
 <details>
@@ -2696,6 +3119,30 @@ function UploadForm() {
 
 **Definition:**
 
+Server rendering puts the finished component HTML in the first response, so the content is present before client JavaScript runs. `renderToString` produces that string, and `hydrateRoot` attaches the app to it.
+
+**How it works:**
+
+#### The HTML a crawler can read
+
+- A client-only render starts from an empty root and fills it later. The server response from `renderToString(<App />)` already contains the headings and text.
+- Hydration keeps that HTML and adds the event handlers, instead of replacing the page with a second empty render.
+- `renderToString` still writes a `<Suspense>` fallback when a child suspends. Streaming SSR is the documented way to send the resolved chunks as they finish.
+- The from-scratch guide ties this to Time to First Byte, First Contentful Paint, and Largest Contentful Paint when the route actually needs server HTML.
+
+**Examples:**
+
+```js
+import { renderToString } from "react-dom/server";
+
+const html = renderToString(<App />);
+response.send(html);
+```
+
+**Sources:**
+
+- [React — renderToString](https://react.dev/reference/react-dom/server/renderToString)
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 ### React Native
@@ -2707,6 +3154,20 @@ function UploadForm() {
 
 **Definition:**
 
+React Native runs React’s component model on iOS and Android with native views. React itself is the UI library; React Native is the host that is not the browser DOM.
+
+**How it works:**
+
+#### Two hosts
+
+- React components still return a tree and keep state with Hooks. The host renders native controls instead of HTML elements.
+- React Native projects bundle with Metro. The React from-scratch guide says Metro targets iOS and Android and lacks many features of Vite, Parcel, and Rsbuild, so those web tools are the start unless the app is native.
+- Layout is Flexbox, with different defaults from CSS on the web: `flexDirection` is `column`, `flexShrink` is `0`, and `flex` is a single number.
+
+**Sources:**
+
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
+- [React Native — Layout with Flexbox](https://reactnative.dev/docs/flexbox)
 </details>
 
 <details>
@@ -2716,6 +3177,28 @@ function UploadForm() {
 
 **Definition:**
 
+A Turbo Native Module exposes a platform API that React Native does not already provide. You write a typed JavaScript spec, run Codegen, call the spec from application code, and implement the generated native interface.
+
+**How it works:**
+
+#### The four steps
+
+- Define the spec in Flow or TypeScript.
+- Configure the dependency tool to run Codegen so the spec becomes native interfaces.
+- Import the spec from application code and call its methods, for example `SampleTurboModule.reverseString(value)`.
+- Write the iOS and Android (or C++) implementation against those generated interfaces and register the module with the runtime.
+
+**Examples:**
+
+```tsx
+import SampleTurboModule from "./specs/NativeSampleModule";
+
+const reversed = SampleTurboModule.reverseString(value);
+```
+
+**Sources:**
+
+- [React Native — Native Modules](https://reactnative.dev/docs/turbo-native-modules)
 </details>
 
 <details>
@@ -2725,6 +3208,31 @@ function UploadForm() {
 
 **Definition:**
 
+React Native lays out children with Flexbox. The defaults differ from CSS on the web: `flexDirection` is `column`, `alignContent` is `flex-start`, `flexShrink` is `0`, and `flex` takes a single number.
+
+**How it works:**
+
+#### The properties you combine
+
+- `flexDirection`, `alignItems`, and `justifyContent` are the usual trio for a row or a column.
+- `gap`, `rowGap`, and `columnGap` set the space between items. Pixel values are supported; percentage gaps were called out as later work.
+- A child margin does not collapse the way authors often expect, so `gap` on the parent is the direct way to separate cards without doubling the inner space.
+
+**Examples:**
+
+```tsx
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+```
+
+**Sources:**
+
+- [React Native — Layout with Flexbox](https://reactnative.dev/docs/flexbox)
 </details>
 
 ### State Management Libraries & GraphQL
@@ -2736,6 +3244,38 @@ function UploadForm() {
 
 **Definition:**
 
+Apollo Client is the GraphQL client React’s from-scratch guide names for a GraphQL API. `ApolloProvider` puts an `ApolloClient` on context so components under it can run operations.
+
+**How it works:**
+
+#### The provider
+
+- `new ApolloClient({ uri, cache: new InMemoryCache() })` points at the GraphQL endpoint and stores results in the normalized cache.
+- Render `<ApolloProvider client={client}>` near the root, above any component that needs GraphQL data.
+- `useMutation(mutation, options?)` returns `[mutateFunction, { data }]`. The mutation document describes the write; `data` is the mutation result.
+
+**Examples:**
+
+```jsx
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
+
+const client = new ApolloClient({
+  uri: "https://flyby-router-demo.herokuapp.com/",
+  cache: new InMemoryCache(),
+});
+
+root.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>
+);
+```
+
+**Sources:**
+
+- [Apollo Client — Get started](https://www.apollographql.com/docs/react/get-started)
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 <details>
@@ -2745,6 +3285,40 @@ function UploadForm() {
 
 **Definition:**
 
+Apollo Client can store local fields in its cache or in reactive variables. Fields marked `@client` are resolved locally. For Apollo Client 3 and later, local writes go through `writeQuery`, `writeFragment`, or reactive variables, not through local-only mutations.
+
+**How it works:**
+
+#### Local fields
+
+- `localState: new LocalState({ resolvers })` answers `@client` fields. A field resolver can read the cache with `cache.readQuery`.
+- Seed the cache with `cache.writeQuery` before the first read so a local list such as `cartItems` has a value.
+- Do not read reactive variables inside those resolvers. The docs say that combination is not documented or tested.
+- Older apps defined local mutations with `@client` and local resolvers. Current docs tell you to update local state with `writeQuery`, `writeFragment`, or a reactive variable instead.
+
+**Examples:**
+
+```js
+const client = new ApolloClient({
+  cache,
+  link: new HttpLink({ uri: "http://localhost:4000/graphql" }),
+  localState: new LocalState({
+    resolvers: {
+      Launch: {
+        isInCart: (launch, _args, { cache }) => {
+          const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
+          return cartItems.includes(launch.id);
+        },
+      },
+    },
+  }),
+});
+```
+
+**Sources:**
+
+- [Apollo Client — Local resolvers](https://www.apollographql.com/docs/react/local-state/local-resolvers)
+- [Apollo Client — Managing state with field policies](https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies)
 </details>
 
 <details>
@@ -2754,6 +3328,40 @@ function UploadForm() {
 
 **Definition:**
 
+Redux keeps application state in a store and updates it by dispatching actions to reducers. Context passes a value to any component underneath a provider. Context is how React itself avoids prop drilling; Redux Toolkit is the current way to build the store.
+
+**How it works:**
+
+#### Two mechanisms
+
+- `createContext` plus `<ThemeContext value={theme}>` makes `useContext(ThemeContext)` return that value. Every consumer of that context updates when the value changes.
+- `configureStore({ reducer })` creates the Redux store, adds the thunk middleware, and turns on the DevTools extension. `createSlice` defines the reducers and the action creators.
+- A component reads a slice with `useSelector` and sends an action with `useDispatch` from React-Redux. `<Provider store={store}>` puts the store on the tree.
+- Context does not give you action types, reducers, or that store middleware. A context value is whatever you put on the provider.
+
+**When to use:**
+
+- Use context to pass a value that many layers need, such as the current theme or the current user object in the React docs.
+- Use Redux when the updates are actions applied by reducers and many components must read slices of one store.
+
+**Examples:**
+
+```tsx
+export const counterSlice = createSlice({
+  name: "counter",
+  initialState: { value: 0 },
+  reducers: {
+    increment(state) {
+      state.value += 1;
+    },
+  },
+});
+```
+
+**Sources:**
+
+- [Redux Toolkit — createSlice](https://redux-toolkit.js.org/api/createSlice)
+- [React — useContext](https://react.dev/reference/react/useContext)
 </details>
 
 <details>
@@ -2763,6 +3371,30 @@ function UploadForm() {
 
 **Definition:**
 
+A UI event dispatches an action. A reducer returns the next state. The store saves it, and components that selected that slice render again.
+
+**How it works:**
+
+#### The loop
+
+- `createSlice` names the slice, the initial state, and the reducers. Each reducer becomes an action creator. With Immer, a reducer may assign fields on `state` and the library writes the next immutable value.
+- `configureStore({ reducer: { counter: counterSlice.reducer } })` builds the root state. It adds redux-thunk and the DevTools extension.
+- Render the tree inside `<Provider store={store}>`.
+- `useDispatch` sends `increment()`. `useSelector(state => state.counter.value)` reads the number for that component.
+
+**Examples:**
+
+```tsx
+const value = useAppSelector((state) => state.counter.value);
+const dispatch = useAppDispatch();
+
+return <button onClick={() => dispatch(increment())}>{value}</button>;
+```
+
+**Sources:**
+
+- [Redux Toolkit — configureStore](https://redux-toolkit.js.org/api/configureStore)
+- [Redux Toolkit — createSlice](https://redux-toolkit.js.org/api/createSlice)
 </details>
 
 <details>
@@ -2772,6 +3404,37 @@ function UploadForm() {
 
 **Definition:**
 
+Side effects stay outside the reducer. `createAsyncThunk` runs the async work and returns the result. `configureStore` already adds the thunk middleware that lets you dispatch that function.
+
+**How it works:**
+
+#### Outside the reducer
+
+- A reducer only computes the next state. A request does not belong there.
+- `createAsyncThunk("todos/save", async (todo) => { await fetch(...); return todo })` performs the request and returns the value the extra reducers can store.
+- `createListenerMiddleware` is the other Toolkit API for logic that should run after an action is dispatched.
+- React’s own escape hatch for a connection is `useEffect`. That is separate from the store: use it for a subscription that is not an action.
+
+**Examples:**
+
+```ts
+const todoSaved = createAsyncThunk(
+  "todos/save",
+  async (todo: { id: string }) => {
+    await fetch("/api/todos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(todo),
+    });
+    return todo;
+  },
+);
+```
+
+**Sources:**
+
+- [Redux Toolkit — createAsyncThunk](https://redux-toolkit.js.org/api/createAsyncThunk)
+- [Redux Toolkit — configureStore](https://redux-toolkit.js.org/api/configureStore)
 </details>
 
 ### React Development Environment & Tooling
@@ -2783,6 +3446,27 @@ function UploadForm() {
 
 **Definition:**
 
+Install a build tool that understands JSX and gives you a dev server plus a production build. The React docs start with Vite, Parcel, or Rsbuild, and they say to prefer a framework when you need routing, data fetching, and server rendering already solved.
+
+**How it works:**
+
+#### The first command
+
+- `npm create vite@latest my-app -- --template react-ts` scaffolds a TypeScript React app. Vite ships fast refresh, JSX, and a plugin slot for Babel or SWC.
+- Parcel starts with `npm install --save-dev parcel`. Rsbuild starts with `npx create-rsbuild --template react`.
+- Those tools give a client-only app. You still add a router, a data library, and a rendering strategy if the product needs them.
+- React Native is the exception: it bundles with Metro, not with Vite.
+
+**Examples:**
+
+```bash
+npm create vite@latest my-app -- --template react-ts
+```
+
+**Sources:**
+
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
+- [React — Creating a React App](https://react.dev/learn/creating-a-react-app)
 </details>
 
 <details>
@@ -2792,6 +3476,30 @@ function UploadForm() {
 
 **Definition:**
 
+Babel compiles JavaScript that browsers do not run yet, including JSX. Current React setups often let Vite, Parcel, or Rsbuild run Babel or SWC for that compile step.
+
+**How it works:**
+
+#### Where it sits
+
+- The from-scratch guide says Vite’s plugin ecosystem covers fast refresh, JSX, and Babel/SWC. You do not hand-write a JSX transform to start an app.
+- The React Compiler can be added as the Babel plugin `babel-plugin-react-compiler` inside `@vitejs/plugin-react` on versions before 6.0.0.
+- TypeScript’s `jsx` option still has to be set so `.tsx` files typecheck. The bundler is what emits the JavaScript the browser runs.
+
+**Examples:**
+
+```js
+react({
+  babel: {
+    plugins: ["babel-plugin-react-compiler"],
+  },
+});
+```
+
+**Sources:**
+
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
+- [React — React Compiler installation](https://react.dev/learn/react-compiler/installation)
 </details>
 
 <details>
@@ -2801,6 +3509,20 @@ function UploadForm() {
 
 **Definition:**
 
+Webpack is a module bundler. The current React from-scratch guide does not start a project with a Webpack config. It starts with Vite, Parcel, or Rsbuild, which package the modules, run a dev server, and emit a production build.
+
+**How it works:**
+
+#### What a bundler does here
+
+- It turns the JSX and the imports into files a browser can load, and it can split those files by route.
+- Vite is the documented default and is also the build tool inside the React Router framework setup.
+- Rsbuild is described as Rspack-powered, with React fast refresh and JSX included. Parcel is the third option on the same page.
+- Use one of those tools unless a constraint forces a different bundler. The guide’s point is the dev server and the production build, not a particular config file.
+
+**Sources:**
+
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 <details>
@@ -2810,6 +3532,21 @@ function UploadForm() {
 
 **Definition:**
 
+Hot module replacement swaps a changed module into the running dev app without a full page reload. In a Vite React app, React Fast Refresh uses Vite’s HMR API so a component edit updates that component and keeps state that did not change.
+
+**How it works:**
+
+#### The dev loop
+
+- Vite serves native ES modules and exposes an HMR API. The browser client talks to the dev server over a WebSocket.
+- The React template from `create-vite` already wires React Fast Refresh. You do not set that up by hand.
+- Fast Refresh applies the component that changed. An edit that cannot be applied safely reloads the page.
+- `server.hmr` can turn the error overlay off. `server.ws: false` turns the WebSocket connection off.
+
+**Sources:**
+
+- [Vite — Features: Hot Module Replacement](https://vite.dev/guide/features.html#hot-module-replacement)
+- [React — Build a React app from Scratch](https://react.dev/learn/build-a-react-app-from-scratch)
 </details>
 
 <details>
@@ -2819,6 +3556,26 @@ function UploadForm() {
 
 **Definition:**
 
+Create React App is deprecated for new apps as of 14 February 2025. It used to give one config for JSX, a dev server, linting, tests, and a minified production build. `npm run eject` copies that hidden config into the project and cannot be undone. New work starts from a framework, or from Vite, Parcel, or Rsbuild.
+
+**How it works:**
+
+#### The scripts it shipped
+
+- `npm start` served the app at `http://localhost:3000` and reloaded on edits.
+- `npm test` launched the test runner in watch mode.
+- `npm run build` wrote a minified bundle with hashed filenames into the `build` folder.
+- `npm run eject` removes the single build dependency and copies webpack, Babel, ESLint, and the rest into the project. The other scripts still run, but they point at those copied files. You are then maintaining that config yourself.
+
+**When to use:**
+
+- Do not start a new app with Create React App. A new install prints a deprecation warning and points at react.dev.
+- For an existing app, migrate to a framework, or to Vite, Parcel, or Rsbuild. Eject only when you must own the old config and you accept that the copy is one-way.
+
+**Sources:**
+
+- [React — Sunsetting Create React App](https://react.dev/blog/2025/02/14/sunsetting-create-react-app)
+- [Create React App — Available Scripts](https://create-react-app.dev/docs/available-scripts/)
 </details>
 
 ### Integrations and API Handling
@@ -2830,6 +3587,56 @@ function UploadForm() {
 
 **Definition:**
 
+On the client, call `fetch` inside `useEffect`, keep the result in state, and ignore a response that arrives after the effect has cleaned up. In a framework, load the data in a route loader or a Server Function so the request is not waiting on the first client render.
+
+**How it works:**
+
+#### Where the request starts
+
+- The effect runs after paint. A cleanup flag drops a stale result when the dependency changes or the component unmounts.
+- `fetch` rejects on a network failure. An HTTP error status such as 404 still fulfills the promise, so check `response.ok` before `response.json()`.
+- A framework loader, or a module marked `'use server'`, can start the request with the route. Fetching only after the component renders is the waterfall the React docs warn about.
+
+**Examples:**
+
+```jsx
+import { useEffect, useState } from "react";
+
+function Albums() {
+  const [albums, setAlbums] = useState(null);
+
+  useEffect(() => {
+    let ignore = false;
+    fetch("/api/albums")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!ignore) setAlbums(data);
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  if (albums === null) return <p>Loading…</p>;
+  return (
+    <ul>
+      {albums.map((album) => (
+        <li key={album.id}>{album.title}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**Sources:**
+
+- [React — useEffect](https://react.dev/reference/react/useEffect)
+- [MDN — Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 </details>
 
 <details>
@@ -2839,6 +3646,37 @@ function UploadForm() {
 
 **Definition:**
 
+Axios is a third-party HTTP client. `axios.get(url)` returns a response object, and the body is on `response.data`. `fetch` is built into the browser: it returns a `Response`, and you read the body with `response.json()` after checking `response.ok`.
+
+**How it works:**
+
+#### What you install
+
+- `npm install axios`, then `import axios from "axios"`.
+- Pass `timeout` on the request config so a stalled call does not hang. The Axios intro uses `timeout: 5000`.
+- `fetch` needs no package. You still check the status and parse the body yourself. The same `useEffect` cleanup applies either way, because that part is React, not the HTTP client.
+
+**When to use:**
+
+- Use `fetch` when the built-in API is enough.
+- Use Axios when the project already depends on it, or when you want its request config, such as `timeout`, instead of writing that around `fetch`.
+
+**Examples:**
+
+```js
+import axios from "axios";
+
+const response = await axios.get(
+  "https://jsonplaceholder.typicode.com/posts/1",
+  { timeout: 5000 },
+);
+console.log(response.data);
+```
+
+**Sources:**
+
+- [Axios — First steps](https://axios-http.com/docs/intro)
+- [MDN — Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 </details>
 
 <details>
@@ -2848,6 +3686,43 @@ function UploadForm() {
 
 **Definition:**
 
+Open a `WebSocket` while the component is mounted, listen for `message`, and call `close()` in the effect cleanup so the socket does not outlive the component.
+
+**How it works:**
+
+#### Lifetime of the socket
+
+- `new WebSocket(url)` starts the connection. `send()` writes. A `message` event carries `event.data`.
+- The cleanup function runs on unmount and before the effect runs again. That is where the socket closes.
+- The WebSocket API has no backpressure. If messages arrive faster than the page can handle them, MDN points at `WebSocketStream` instead.
+- In Vite dev, `server.proxy` can forward a WebSocket path when the entry sets `ws: true`.
+
+**Examples:**
+
+```jsx
+import { useEffect, useState } from "react";
+
+function Ticker() {
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    const socket = new WebSocket("wss://example.com/feed");
+    socket.addEventListener("message", (event) => {
+      setText(event.data);
+    });
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  return <p>{text}</p>;
+}
+```
+
+**Sources:**
+
+- [MDN — WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+- [React — useEffect](https://react.dev/reference/react/useEffect)
 </details>
 
 <details>
@@ -2857,6 +3732,26 @@ function UploadForm() {
 
 **Definition:**
 
+The browser can call the API with `fetch`, the Vite dev server can proxy that call, or a framework can run the request on the server and pass the result into the UI.
+
+**How it works:**
+
+#### Three places the request can start
+
+- A same-origin `fetch("/api/...")` from an effect or a route loader. Fetch is integrated with CORS, so a cross-origin URL depends on the server allowing that browser origin.
+- In Vite dev, `server.proxy` forwards a prefix such as `/api` to another host. The browser stays on the Vite origin.
+- A route loader, or a function in a `'use server'` module, runs next to the data. The React docs contrast that with fetching inside `useEffect`, which starts only after the component renders.
+
+**When to use:**
+
+- Proxy in development when the API listens on another port.
+- A loader or a Server Function when the page should receive the data with the route.
+- A client `fetch` when the call depends on something that exists only in the browser after the page is up.
+
+**Sources:**
+
+- [Vite — server.proxy](https://vite.dev/config/server-options.html#server-proxy)
+- [React — Sunsetting Create React App](https://react.dev/blog/2025/02/14/sunsetting-create-react-app)
 </details>
 
 ### Deployment and Optimization
@@ -2868,6 +3763,21 @@ function UploadForm() {
 
 **Definition:**
 
+Build the static files and put that folder on a host, or deploy the framework that already owns routing and rendering. `vite preview` only checks the build on your machine. It is not a production server.
+
+**How it works:**
+
+#### What you ship
+
+- `npm run build` runs `vite build` and writes the production assets to `dist` by default. The files are minified.
+- Upload `dist` to static hosting. A client-side router needs that host to serve the app for those URLs.
+- A framework app deploys to that framework’s host, or to any host that runs its server build. The React docs point at a framework when routing and data loading belong together.
+- An old Create React App project writes `build` instead of `dist`. That tool is deprecated for new apps.
+
+**Sources:**
+
+- [Vite — Deploying a Static Site](https://vite.dev/guide/static-deploy)
+- [React — Creating a React App](https://react.dev/learn/creating-a-react-app)
 </details>
 
 <details>
@@ -2877,6 +3787,37 @@ function UploadForm() {
 
 **Definition:**
 
+Ship the production build, load code that is not on the first screen with `lazy` and `Suspense`, and let React Compiler memoize renders. Add `memo` by hand only when you still need a precise cache.
+
+**How it works:**
+
+#### The production path
+
+- `vite build`, or the framework’s production build, minifies and hashes the assets. Users do not run the dev server.
+- `lazy(() => import("./MarkdownPreview.js"))` loads that module the first time it renders. Wrap it in `<Suspense fallback={...}>`. The lazy file must use a default export.
+- React Compiler memoizes from its analysis. It keeps `useMemo`, `useCallback`, and `memo` that are already in the file. New code can rely on the compiler and use those hooks when a value must stay stable, for example as an effect dependency.
+- A framework can split by route and start that download with the navigation, instead of waiting until the component renders.
+
+**Examples:**
+
+```jsx
+import { lazy, Suspense } from "react";
+
+const MarkdownPreview = lazy(() => import("./MarkdownPreview.js"));
+
+export function Preview() {
+  return (
+    <Suspense fallback={<p>Loading…</p>}>
+      <MarkdownPreview />
+    </Suspense>
+  );
+}
+```
+
+**Sources:**
+
+- [React — lazy](https://react.dev/reference/react/lazy)
+- [React — React Compiler introduction](https://react.dev/learn/react-compiler/introduction)
 </details>
 
 <details>
@@ -2886,6 +3827,28 @@ function UploadForm() {
 
 **Definition:**
 
+A service worker is a script the browser runs off the main thread, between the page and the network. It can answer a request from a cache when the network is down, and it can receive push messages. It runs only in a secure context: HTTPS, or `http://localhost`.
+
+**How it works:**
+
+#### What it does for the app
+
+- Register it with `navigator.serviceWorker.register("/sw.js")`.
+- The lifecycle is download, then install, then activate. On `install`, open a cache and store the files the offline page needs. On `activate`, delete caches from the previous worker.
+- A `fetch` handler calls `event.respondWith(...)` and returns either a cached `Response` or a network response.
+- The worker has no DOM. React still renders in the page. The worker only decides how requests are answered.
+
+**Examples:**
+
+```js
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+```
+
+**Sources:**
+
+- [MDN — Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 </details>
 
 <details>
@@ -2895,6 +3858,20 @@ function UploadForm() {
 
 **Definition:**
 
+Production HTTPS is the host’s TLS certificate in front of the built app. For the Vite dev server, `server.https` is an options object passed to `https.createServer()`. Service workers and other powerful APIs run only in a secure context.
+
+**How it works:**
+
+#### Dev certificate and the real host
+
+- `server.https` needs a valid certificate. Adding `@vitejs/plugin-basic-ssl` to the Vite plugins creates and caches a self-signed certificate. The Vite docs still say to prefer your own certificate.
+- That setting is for the dev server. It does not configure the production host. The deployed site gets its certificate from the host or the CDN.
+- Browsers treat `http://localhost` as a secure context, so a local service-worker check does not need that certificate.
+
+**Sources:**
+
+- [Vite — server.https](https://vite.dev/config/server-options.html#server-https)
+- [MDN — Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 </details>
 
 ### Accessibility in React
@@ -2906,6 +3883,19 @@ function UploadForm() {
 
 **Definition:**
 
+Accessibility means the site works for as many people as possible, including people who use a screen reader, magnification, a keyboard, or captions. MDN also lists better usability for everyone, SEO from semantic HTML, and legal requirements in some countries.
+
+**How it works:**
+
+#### What that changes in the work
+
+- Plan it at the start. A problem found late costs more to fix, the same way a late bug does.
+- Test with the keyboard and with at least one assistive technology. An automated checker does not cover the whole page.
+- WCAG groups the criteria as perceivable, operable, understandable, and robust. Some countries turn related rules into law, such as EN 301 549 in the EU and Section 508 in the US.
+
+**Sources:**
+
+- [MDN — What is accessibility?](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/What_is_accessibility)
 </details>
 
 <details>
@@ -2915,6 +3905,41 @@ function UploadForm() {
 
 **Definition:**
 
+Use the HTML element that already has the behavior. React does not replace that: a click handler belongs on `<button>`, and every `aria-*` prop uses the same attribute name as in HTML.
+
+**How it works:**
+
+#### Markup first
+
+- A real `<button>` is keyboard accessible. A `<div onClick>` is not. Style the button with CSS if it should look like something else.
+- Label each input. Tie a hint to the field with `aria-describedby` and an id from `useId()`, so two copies of the component do not share one id.
+- Mark the current page link with `aria-current="page"` on the `<a>`, instead of building a custom selection widget.
+
+**Examples:**
+
+```jsx
+import { useId } from "react";
+
+function PasswordField() {
+  const passwordHintId = useId();
+  return (
+    <>
+      <label>
+        Password:
+        <input type="password" aria-describedby={passwordHintId} />
+      </label>
+      <p id={passwordHintId}>
+        The password should contain at least 18 characters
+      </p>
+    </>
+  );
+}
+```
+
+**Sources:**
+
+- [React — useId](https://react.dev/reference/react/useId)
+- [React — Responding to events](https://react.dev/learn/responding-to-events)
 </details>
 
 <details>
@@ -2924,6 +3949,33 @@ function UploadForm() {
 
 **Definition:**
 
+ARIA is a set of roles and attributes that describe a widget to assistive technologies when HTML alone cannot. In React, those names are props: `role` and `aria-*` match the HTML attribute names exactly.
+
+**How it works:**
+
+#### Native element, then ARIA
+
+- Prefer the native element. `<progress value={75} max={100}>` already has the semantics that a `<div role="progressbar">` must recreate, including the behavior a script would otherwise have to fake.
+- MDN’s first rule: if a native element already has the semantics and behavior, use it. Incorrect ARIA does more harm than leaving it out.
+- React warns when an `aria-*` prop is not in the WAI-ARIA spec. There is no `aria-role` prop. The prop is `role`.
+
+**When to use:**
+
+- Use ARIA for a widget HTML does not provide, or for a state HTML cannot express, and implement the keyboard behavior yourself.
+- Skip ARIA on controls and landmarks that already expose the right role.
+
+**Examples:**
+
+```jsx
+<progress value={75} max={100}>
+  75%
+</progress>
+```
+
+**Sources:**
+
+- [MDN — ARIA](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
+- [React — Common components](https://react.dev/reference/react-dom/components/common)
 </details>
 
 ### Internationalization and Localization
@@ -2935,6 +3987,26 @@ function UploadForm() {
 
 **Definition:**
 
+Internationalization (i18n) is designing the UI so another language or region can adapt it: writing system, units, and date and number formats. React does not ship a translation catalog. The platform API for the formats is `Intl`.
+
+**How it works:**
+
+#### What you prepare
+
+- Keep the visible strings out of the layout so a locale can replace them. Localization is the later step that fills in one audience.
+- Format values with `Intl.DateTimeFormat` and `Intl.NumberFormat`. Pass `navigator.language`, or the list `navigator.languages`, instead of a hard-coded pattern.
+- `Intl` is not a constructor. You call the static constructors, for example `new Intl.NumberFormat(locale)`.
+
+**Examples:**
+
+```jsx
+const formatted = new Intl.NumberFormat(navigator.language).format(26254.39);
+```
+
+**Sources:**
+
+- [MDN — Internationalization (i18n)](https://developer.mozilla.org/en-US/docs/Glossary/Internationalization_and_localization)
+- [MDN — Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
 </details>
 
 <details>
@@ -2944,6 +4016,27 @@ function UploadForm() {
 
 **Definition:**
 
+Localization adapts the app for one audience: that audience’s strings, plus its dates, numbers, and plural categories. `Intl` does the format part in the browser. The message catalog is your data, chosen by a locale id such as `de-DE`.
+
+**How it works:**
+
+#### One locale at render time
+
+- Store messages by locale and render the set that matches the active locale.
+- `new Intl.DateTimeFormat("de-DE").format(date)` and `new Intl.NumberFormat("de-DE").format(count)` follow that region. `Intl.PluralRules` returns the plural category for the locale.
+- `navigator.languages` is an ordered preference list. `Intl` picks the closest locale the runtime actually supports.
+
+**Examples:**
+
+```jsx
+const date = new Date("2012-05-24");
+const label = new Intl.DateTimeFormat("de-DE").format(date);
+```
+
+**Sources:**
+
+- [MDN — Internationalization (i18n)](https://developer.mozilla.org/en-US/docs/Glossary/Internationalization_and_localization)
+- [MDN — Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
 </details>
 
 ### React Code Structure & Best Practices
@@ -2955,6 +4048,20 @@ function UploadForm() {
 
 **Definition:**
 
+React does not require a folder layout. Structure the app as a component tree that matches the UI, and keep state in the closest parent that both children need.
+
+**How it works:**
+
+#### Follow the screen
+
+- Thinking in React starts from the mockup: name each piece, build the static tree with props, then add state only for data that changes.
+- On a large screen, build from the smaller components upward. If a component grows past one job, split it.
+- When two components must change together, lift that state to their closest common parent. Many distant readers can share a provider that holds `useReducer` state and `dispatch`, as in the tasks example.
+
+**Sources:**
+
+- [React — Thinking in React](https://react.dev/learn/thinking-in-react)
+- [React — Sharing state between components](https://react.dev/learn/sharing-state-between-components)
 </details>
 
 <details>
@@ -2964,6 +4071,21 @@ function UploadForm() {
 
 **Definition:**
 
+Call hooks at the top level, give each sibling a stable key from the data, and use the HTML element that matches the behavior. Add state only for data that changes over time.
+
+**How it works:**
+
+#### The rules the docs repeat
+
+- Rules of Hooks: do not call a hook inside a condition, a loop, or after an early return. `use` may be conditional. `eslint-plugin-react-hooks` flags the illegal calls.
+- Keys are unique among siblings and are not created during render. The list guide uses an id from the data, such as `key={person.id}`.
+- Build the static UI with props first. State is for interactivity.
+- A control that handles a click is a `<button>`, not a `<div onClick>`.
+
+**Sources:**
+
+- [React — Rules of Hooks](https://react.dev/reference/eslint-plugin-react-hooks/lints/rules-of-hooks)
+- [React — Rendering lists](https://react.dev/learn/rendering-lists)
 </details>
 
 <details>
@@ -2973,6 +4095,20 @@ function UploadForm() {
 
 **Definition:**
 
+Keep the hook rules in the linter, typecheck outside Vite’s transform, and treat the production build as the artifact you merge. Vite transpiles TypeScript. It does not check types.
+
+**How it works:**
+
+#### Checks that match the tools
+
+- `eslint-plugin-react-hooks` enforces the Rules of Hooks. React Compiler keeps `useMemo`, `useCallback`, and `memo` you already wrote, and incomplete dependency lists stop it from following the data flow.
+- Run `tsc --noEmit` next to the build. During development, `tsc --noEmit --watch` can run in a separate process.
+- `npm run build` is what you ship. `vite preview` only serves that output on your machine.
+
+**Sources:**
+
+- [React — Rules of Hooks](https://react.dev/reference/eslint-plugin-react-hooks/lints/rules-of-hooks)
+- [Vite — Features: TypeScript, transpile only](https://vite.dev/guide/features.html#transpile-only)
 </details>
 
 ### React and Git Workflows
@@ -2984,6 +4120,30 @@ function UploadForm() {
 
 **Definition:**
 
+Do the feature on its own branch so the production branch stays releasable. The Git book’s workflow is `git checkout -b`, commits on that branch, then `git merge` back and `git branch -d` when the branch is done. The book’s production branch is named `master`.
+
+**How it works:**
+
+#### One topic, one branch
+
+- `git checkout -b iss53` creates the branch and switches to it. Later commits move that branch.
+- Switch away only with a clean worktree. Git refuses the switch when uncommitted edits overlap the other branch.
+- A hotfix is its own branch from the production branch, then a merge. If that merge can fast-forward, Git only moves the branch pointer.
+- After the feature is merged, delete the topic branch with `git branch -d`.
+
+**Examples:**
+
+```bash
+git checkout -b iss53
+git commit -a -m "Create new footer [issue 53]"
+git checkout master
+git merge iss53
+git branch -d iss53
+```
+
+**Sources:**
+
+- [Git — Basic Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
 </details>
 
 <details>
@@ -2993,6 +4153,31 @@ function UploadForm() {
 
 **Definition:**
 
+A conflict means both sides edited the same lines, so Git stopped the merge and left markers in the file. Edit the file down to the code you want, `git add` it, then `git commit` or `git merge --continue`.
+
+**How it works:**
+
+#### Markers, then a commit
+
+- The markers are `<<<<<<<`, `=======`, and `>>>>>>>`. The part before `=======` is your side (`HEAD`). The part after it is the branch you merged.
+- `git status` lists those paths as unmerged, for example `both modified`.
+- Remove the markers. `git add` each resolved file. `git mergetool` opens a visual tool if you want one.
+- `git merge --abort` restores the pre-merge state. Commit or stash local work before the merge so that abort has a clean tree to return to. Overlapping uncommitted edits make `git merge` stop before it starts.
+
+**Examples:**
+
+```jsx
+<<<<<<< HEAD
+return <button type="submit">Save</button>;
+=======
+return <button type="submit">Save changes</button>;
+>>>>>>> iss53
+```
+
+**Sources:**
+
+- [Git — git-merge](https://git-scm.com/docs/git-merge)
+- [Git — Basic Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
 </details>
 
 ### React Interviews Problem Solving and Scenarios
@@ -3004,6 +4189,21 @@ function UploadForm() {
 
 **Definition:**
 
+Reproduce it on its own branch, write the expected UI state, and merge only after the production build succeeds. A bug and a feature request share that branch shape. The bug is a broken state. The feature is a state the UI does not have yet.
+
+**How it works:**
+
+#### From the report to the merge
+
+- Restate the report as visual states of the components involved. Thinking in React starts there, before new state.
+- `git checkout -b` from the production branch so the change stays isolated. The Git book uses that for both a user story and a hotfix.
+- For a bug, make the smallest check that fails, then change the component until that check passes. For a feature, extend the component tree and lift state only when a second component must share it.
+- Merge when `git status` shows no unmerged paths and `npm run build` succeeds. Delete the topic branch after the merge.
+
+**Sources:**
+
+- [Git — Basic Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
+- [React — Thinking in React](https://react.dev/learn/thinking-in-react)
 </details>
 
 <details>
@@ -3013,4 +4213,27 @@ function UploadForm() {
 
 **Definition:**
 
+Move the transitions into a reducer, split children so each one renders a smaller piece, and share that state through context where prop lists are the problem. Let React Compiler memoize. Keep hand-written `memo` until a test shows it is safe to remove.
+
+**How it works:**
+
+#### State shape, then render cost
+
+- `useReducer(reducer, initialArg)` returns the current state and `dispatch`. The reducer takes `(state, action)` and returns the next state. Unknown actions throw.
+- Put `state` and `dispatch` in context when many children read them, as the tasks example does with two providers. A child that only edits one row keeps its own UI state, such as `isEditing`, in `useState`.
+- Lift shared state to the closest common parent before reaching for context.
+- React Compiler memoizes ordinary components and preserves existing `memo`, `useMemo`, and `useCallback`. A heavy child that is not on the first screen can be `lazy` inside `Suspense`.
+
+**Examples:**
+
+```jsx
+const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+
+dispatch({ type: "deleted", id: task.id });
+```
+
+**Sources:**
+
+- [React — useReducer](https://react.dev/reference/react/useReducer)
+- [React — React Compiler introduction](https://react.dev/learn/react-compiler/introduction)
 </details>
