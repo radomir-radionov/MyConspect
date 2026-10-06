@@ -16,17 +16,12 @@ import {
 } from "@/lib/catalog";
 import { catalogBlurb } from "@/lib/i18n/catalog";
 import {
-  behaviorPageTitle,
   isBehaviorQuestionsTopic,
   localizeBehaviorOutline,
 } from "@/lib/i18n/behaviorQuestions";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
 import { withLocale } from "@/lib/i18n/paths";
-import {
-  loadFileOutline,
-  loadTopicOutline,
-  type ConceptOutline,
-} from "@/lib/parse";
+import { loadFileOutline, loadTopicOutline } from "@/lib/parse";
 import {
   filterInterviewConcepts,
   isQuestionCluster,
@@ -37,9 +32,12 @@ import type {
   NavCluster,
   NavEntry,
   NavGroup,
+  NavRootSection,
+  NavRootSectionId,
   NavSubject,
   NavTopic,
 } from "./types";
+import { allNavGroups } from "./sections";
 
 function localizeHref(locale: Locale, href: string): string {
   return withLocale(locale, href);
@@ -271,7 +269,42 @@ function questionClusterEntry(
   };
 }
 
-function hoistQuestionClusters(
+function subjectHasNavContent(subject: NavSubject): boolean {
+  if (subject.clusters.length > 0) {
+    return true;
+  }
+  if ((subject.clustersAfterSections?.length ?? 0) > 0) {
+    return true;
+  }
+  return (
+    subject.sections?.some((section) => section.clusters.length > 0) ?? false
+  );
+}
+
+function stripQuestionEntries(
+  entries: readonly NavEntry[],
+  trackId: TrackId,
+  locale: Locale,
+): readonly NavEntry[] {
+  const next: NavEntry[] = [];
+  for (const entry of entries) {
+    if (entry.kind === "topic") {
+      next.push(entry);
+      continue;
+    }
+    if (entry.kind !== "subject") {
+      next.push(entry);
+      continue;
+    }
+    const pulled = takeQuestionClusters(trackId, entry.subject, locale);
+    if (subjectHasNavContent(pulled.subject)) {
+      next.push({ kind: "subject", subject: pulled.subject });
+    }
+  }
+  return next;
+}
+
+function interviewOnlyEntries(
   entries: readonly NavEntry[],
   trackId: TrackId,
   locale: Locale,
@@ -279,80 +312,161 @@ function hoistQuestionClusters(
 ): readonly NavEntry[] {
   const interview: NavTopic[] = [];
   const tasks: NavTopic[] = [];
-  const next: NavEntry[] = [];
-
   for (const entry of entries) {
     if (entry.kind !== "subject") {
-      next.push(entry);
       continue;
     }
     const pulled = takeQuestionClusters(trackId, entry.subject, locale);
     interview.push(...pulled.interview);
     tasks.push(...pulled.tasks);
-    next.push({ kind: "subject", subject: pulled.subject });
   }
-
-  const interviewEntry = questionClusterEntry(
-    localizedTrackHref,
-    "interview",
-    catalogBlurb(locale, "Interview"),
-    interview,
-  );
+  const next: NavEntry[] = interview.map((topic) => ({
+    kind: "topic" as const,
+    topic,
+  }));
   const tasksEntry = questionClusterEntry(
     localizedTrackHref,
     "tasks",
     catalogBlurb(locale, "Tasks"),
     tasks,
   );
-  if (interviewEntry) {
-    next.push(interviewEntry);
-  }
   if (tasksEntry) {
     next.push(tasksEntry);
   }
   return next;
 }
 
-export function handbookNav(
-  locale: Locale = DEFAULT_LOCALE,
-): readonly NavGroup[] {
-  return TRACKS.map((track) => {
-    const href = localizeHref(locale, trackHref(track.id));
-    const leaf = leafTopicForTrack(track.id);
-    if (leaf && sameTitle(leaf.title, track.title)) {
-      return {
-        id: track.id,
-        title: catalogBlurb(locale, track.title),
-        href,
-        entries: [],
-        leafTopic: toNavTopic(leaf, locale),
-      };
-    }
-
-    const entries = entriesForTrack(track.id, locale);
-    const only = entries.length === 1 ? entries[0] : undefined;
-    if (
-      only?.kind === "subject" &&
-      sameTitle(only.subject.title, track.title)
-    ) {
-      return {
-        id: track.id,
-        title: catalogBlurb(locale, track.title),
-        href,
-        hubTopic: hubNavTopic(track.id, locale),
-        entries: only.subject.clusters.map((cluster) => ({
-          kind: "cluster" as const,
-          subjectHref: only.subject.href,
-          cluster,
-        })),
-      };
-    }
-
+function interviewsNavGroup(
+  track: (typeof TRACKS)[number],
+  entries: readonly NavEntry[],
+  locale: Locale,
+  href: string,
+): NavGroup | null {
+  if (entries.length === 0) {
+    return null;
+  }
+  const interviewTopics = entries.flatMap((entry) =>
+    entry.kind === "topic" ? [entry.topic] : [],
+  );
+  const hasTasks = entries.some(
+    (entry) => entry.kind === "cluster" && entry.cluster.id === "tasks",
+  );
+  if (interviewTopics.length === 1 && !hasTasks) {
     return {
       id: track.id,
       title: catalogBlurb(locale, track.title),
       href,
-      entries: hoistQuestionClusters(entries, track.id, locale, href),
+      entries: [],
+      leafTopic: interviewTopics[0],
     };
-  });
+  }
+  return {
+    id: track.id,
+    title: catalogBlurb(locale, track.title),
+    href,
+    entries,
+  };
+}
+
+function buildTrackNavGroup(
+  track: (typeof TRACKS)[number],
+  locale: Locale,
+  section: NavRootSectionId,
+): NavGroup | null {
+  const href = localizeHref(locale, trackHref(track.id));
+  const leaf = leafTopicForTrack(track.id);
+  const isLeafTrack = Boolean(leaf && sameTitle(leaf.title, track.title));
+
+  if (section === "conspect" && isLeafTrack) {
+    return null;
+  }
+
+  if (section === "interviews" && isLeafTrack) {
+    return {
+      id: track.id,
+      title: catalogBlurb(locale, track.title),
+      href,
+      entries: [],
+      leafTopic: toNavTopic(leaf!, locale),
+    };
+  }
+
+  const rawEntries = entriesForTrack(track.id, locale);
+  const only = rawEntries.length === 1 ? rawEntries[0] : undefined;
+  const isSingleSubjectTrack =
+    only?.kind === "subject" && sameTitle(only.subject.title, track.title);
+
+  if (section === "conspect" && isSingleSubjectTrack) {
+    const pulled = takeQuestionClusters(track.id, only.subject, locale);
+    const clusters = pulled.subject.clusters;
+    if (clusters.length === 0 && !hubNavTopic(track.id, locale)) {
+      return null;
+    }
+    return {
+      id: track.id,
+      title: catalogBlurb(locale, track.title),
+      href,
+      hubTopic: hubNavTopic(track.id, locale),
+      entries: clusters.map((cluster) => ({
+        kind: "cluster" as const,
+        subjectHref: pulled.subject.href,
+        cluster,
+      })),
+    };
+  }
+
+  if (section === "interviews" && isSingleSubjectTrack) {
+    return interviewsNavGroup(
+      track,
+      interviewOnlyEntries(rawEntries, track.id, locale, href),
+      locale,
+      href,
+    );
+  }
+
+  const entries =
+    section === "conspect"
+      ? stripQuestionEntries(rawEntries, track.id, locale)
+      : interviewOnlyEntries(rawEntries, track.id, locale, href);
+
+  if (section === "interviews") {
+    return interviewsNavGroup(track, entries, locale, href);
+  }
+
+  if (entries.length === 0) {
+    return null;
+  }
+
+  return {
+    id: track.id,
+    title: catalogBlurb(locale, track.title),
+    href,
+    entries,
+  };
+}
+
+function buildNavSection(
+  id: NavRootSectionId,
+  title: string,
+  locale: Locale,
+): NavRootSection {
+  const groups = TRACKS.map((track) =>
+    buildTrackNavGroup(track, locale, id),
+  ).filter((group): group is NavGroup => group !== null);
+  return { id, title, groups };
+}
+
+export function handbookNavSections(
+  locale: Locale = DEFAULT_LOCALE,
+): readonly NavRootSection[] {
+  return [
+    buildNavSection("conspect", catalogBlurb(locale, "Conspect"), locale),
+    buildNavSection("interviews", catalogBlurb(locale, "Interviews"), locale),
+  ];
+}
+
+export function handbookNav(
+  locale: Locale = DEFAULT_LOCALE,
+): readonly NavGroup[] {
+  return allNavGroups(handbookNavSections(locale));
 }

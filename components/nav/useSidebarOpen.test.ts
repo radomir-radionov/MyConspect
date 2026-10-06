@@ -1,49 +1,36 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import type { NavGroup } from "@/lib/nav";
+import type { NavRootSection } from "@/lib/nav";
 import { queueHandbookHref, takePendingHashForPath } from "./hash";
 import { sidebarNavLocation } from "./useSidebarOpen";
 
-const groups: readonly NavGroup[] = [
+const sections: readonly NavRootSection[] = [
   {
-    id: "frontend",
-    title: "Frontend",
-    href: "/en/frontend",
-    entries: [
+    id: "interviews",
+    title: "Interviews",
+    groups: [
       {
-        kind: "cluster",
-        subjectHref: "/en/frontend",
-        cluster: {
-          id: "interview",
-          title: "Interview",
-          href: "/en/frontend",
-          topics: [],
-        },
+        id: "frontend",
+        title: "Frontend",
+        href: "/en/frontend",
+        entries: [],
       },
-    ],
-  },
-  {
-    id: "backend",
-    title: "Backend",
-    href: "/en/backend",
-    entries: [
       {
-        kind: "cluster",
-        subjectHref: "/en/backend",
-        cluster: {
-          id: "interview",
-          title: "Interview",
-          href: "/en/backend",
-          topics: [
-            {
+        id: "backend",
+        title: "Backend",
+        href: "/en/backend",
+        entries: [
+          {
+            kind: "topic",
+            topic: {
               slug: "nodejs-interview",
               href: "/en/backend/nodejs-interview",
               title: "Node.js",
               blurb: "",
               concepts: [],
             },
-          ],
-        },
+          },
+        ],
       },
     ],
   },
@@ -52,7 +39,7 @@ const groups: readonly NavGroup[] = [
 test("queued track change ignores the previous track hash", () => {
   queueHandbookHref("/en/backend");
   try {
-    const nav = sidebarNavLocation(groups, "/en/frontend", "#interview");
+    const nav = sidebarNavLocation(sections, "/en/frontend", "#interview");
     assert.equal(nav.pathname, "/en/backend");
     assert.equal(nav.hash, "");
     assert.equal(nav.location.clusterKey, null);
@@ -61,7 +48,7 @@ test("queued track change ignores the previous track hash", () => {
   }
 });
 
-test("an interview topic still opens its cluster", () => {
-  const nav = sidebarNavLocation(groups, "/en/backend/nodejs-interview", "");
-  assert.equal(nav.location.clusterKey, "/en/backend#interview");
+test("an interview topic does not open a cluster", () => {
+  const nav = sidebarNavLocation(sections, "/en/backend/nodejs-interview", "");
+  assert.equal(nav.location.clusterKey, null);
 });

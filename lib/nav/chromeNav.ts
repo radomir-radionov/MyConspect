@@ -3,9 +3,19 @@ import type {
   NavConcept,
   NavEntry,
   NavGroup,
+  NavRootSection,
   NavSubject,
   NavTopic,
 } from "./types";
+
+export function withoutSearchTextSections(
+  sections: readonly NavRootSection[],
+): NavRootSection[] {
+  return sections.map((section) => ({
+    ...section,
+    groups: withoutSearchText(section.groups),
+  }));
+}
 
 export function withoutSearchText(groups: readonly NavGroup[]): NavGroup[] {
   return groups.map((group) => ({

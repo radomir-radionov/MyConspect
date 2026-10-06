@@ -689,6 +689,7 @@ body {
 }
 
 #handbook-nav-aside [data-nav-path="true"] {
+  position: sticky;
   top: var(--nav-sticky-top-track, var(--nav-sticky-inset));
   z-index: 20;
   background-color: var(--path-bg);
@@ -696,6 +697,11 @@ body {
 
 #handbook-nav-aside li[data-nav-path="true"] {
   background-color: var(--path-bg);
+}
+
+#handbook-nav-aside [data-nav="root-section"][data-nav-path="true"] {
+  top: var(--nav-sticky-top-root-section, var(--nav-sticky-inset));
+  z-index: 27;
 }
 
 #handbook-nav-aside [data-nav="track"][data-nav-path="true"] {

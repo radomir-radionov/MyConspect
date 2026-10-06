@@ -31,59 +31,59 @@ Redux is a predictable state container principally designed for JavaScript appli
 
 **How it works:**
 
-Core Concepts
+**Core Concepts**
 
-Store
+**Store**
 
 The store is at Redux's nucleus and acts as a single source of truth. Here, you'll find the current state alongside the ability to dispatch actions.
 
-Actions
+**Actions**
 
 Actions are payloads of data - typically objects - that describe what needs to happen. These are dispatched to the store.
 
-Reducers
+**Reducers**
 
 Reducers are pure functions that specify how the state changes in response to actions. Each reducer handles a particular part of the state and combines to produce the full state.
 
-View
+**View**
 
 The user interface (UI) or the output your app produces, is ideally a direct derivative of the current state. Both are connected through subscription and rendering.
 
-Data Flow
+**Data Flow**
 
 Redux follows a straightforward loop, or unidirectional data flow, that tallies with its action-reducer-store structure.
 
-Acquiring Action:
+**Acquiring Action:**
 
 The UI elements, like buttons, yield actions.
 
-Dispatcher Role:
+**Dispatcher Role:**
 
 Through store.dispatch(action), these actions are transmitted to the store.
 
-Action Execution and State Mutation:
+**Action Execution and State Mutation:**
 
 With defined logic, reducers modify the state, originating a new state tree.
 
-State Change Subscription notification:
+**State Change Subscription notification:**
 
 Subscribed UI segments receive alerts about the state change and update correspondingly.
 
-Render Action:
+**Render Action:**
 
 The updated state triggers view re-renders, aligning the UI with the latest state.
 
-Application Across Tech Stacks
+**Application Across Tech Stacks**
 
 While most associates developed Redux for React, the library is platform-agnostic. Adaptors and connectors permit its use with a spectrum of libraries, chiefly react-redux. Other integrations include Angular, Vue.js, and vanilla JavaScript applications.
 
 **Pluses and minuses:**
 
-Key Benefits
+**Key Benefits**
 
-- Increased Predictability: The sequence of state alterations is preset and controlled.
-- Simplified State Management: Every part of the state is stored in one location.
-- Streamlined Code Execution: Reducers define state modifications, making it easier to trace changes. Debugging becomes more straightforward and time-efficient.
+- **Increased Predictability:** The sequence of state alterations is preset and controlled.
+- **Simplified State Management:** Every part of the state is stored in one location.
+- **Streamlined Code Execution:** Reducers define state modifications, making it easier to trace changes. Debugging becomes more straightforward and time-efficient.
 
 **Sources:**
 
@@ -102,33 +102,33 @@ Let's look at the three key principles forming the backbone of Redux: Single Sou
 
 **How it works:**
 
-Single Source of Truth
+**Single Source of Truth**
 
 The state of your whole application is stored in a single tree or object within the Redux store. This makes it easier to identify where and how the state is changing, leading to better predictability and manageability.
 
-Core Benefit
+**Core Benefit**
 
-Centralized View of State: You can get a comprehensive snapshot of your app's state at any point in time, making debugging and tracking data flow easier.
+**Centralized View of State:** You can get a comprehensive snapshot of your app's state at any point in time, making debugging and tracking data flow easier.
 
-State is Read-Only
+**State is Read-Only**
 
 In a Redux setup, the state is never modified directly. Any required changes are implemented by dispatching actions capturing the point-by-point changes expected in the state.
 
-Core Benefits
+**Core Benefits**
 
-Clarity and Control: By preventing direct state alterations, Redux emphasizes a controlled and defined mechanism for state mutation, which is the action creator.
+**Clarity and Control:** By preventing direct state alterations, Redux emphasizes a controlled and defined mechanism for state mutation, which is the action creator.
 
-Time-Travel Debugging: Because actions are recorded, you have the option to revert to specific application states for debugging.
+**Time-Travel Debugging:** Because actions are recorded, you have the option to revert to specific application states for debugging.
 
-Changes with Pure Functions
+**Changes with Pure Functions**
 
 The state changes in Redux are driven by pure functions called reducers. These functions take the current state and an action as input, and then return a new state without altering the previous state.
 
-Core Benefits
+**Core Benefits**
 
-Predictable Outcomes: Since reducers are deterministic, their output for any given input and action will always be the same, ensuring consistency.
+**Predictable Outcomes:** Since reducers are deterministic, their output for any given input and action will always be the same, ensuring consistency.
 
-Testability and Maintainability: Pure functions are easier to test and understand, making your codebase more reliable and maintainable.
+**Testability and Maintainability:** Pure functions are easier to test and understand, making your codebase more reliable and maintainable.
 
 **Sources:**
 
@@ -147,21 +147,21 @@ Let's start with an overview of actions in Redux before jumping into the code.
 
 **How it works:**
 
-Actions in Redux
+**Actions in Redux**
 
 In Redux, an action encapsulates a "payload" of data meant to change the state. It also carries a descriptive type, defining the nature of the state change.
 
 Actions are dispatched by the front-end components and processed by reducers, which are pure functions, ensuring predictability.
 
-Anatomy of an Action
+**Anatomy of an Action**
 
 An action in Redux is created as an object literal with at least one mandatory property, type. Optionally, you can have additional data known as the "payload".
 
-Considerations
+**Considerations**
 
-Encapsulation: The type and payload ensure actions are descriptive and structured, simplifying code readability and debugging.
+**Encapsulation:** The type and payload ensure actions are descriptive and structured, simplifying code readability and debugging.
 
-Type Safety: Utilizing TypeScript (or a similar language) for actions brings robust type checking to the development process.
+**Type Safety:** Utilizing TypeScript (or a similar language) for actions brings robust type checking to the development process.
 
 For added safety and consistency, consider using action creators.
 
@@ -171,29 +171,29 @@ Here's a typical structure:
 
 ```js
 const myAction = {
-  type: 'ADD_TODO',
+  type: "ADD_TODO",
   payload: {
     id: 1,
-    text: 'Buy groceries'
-  }
+    text: "Buy groceries",
+  },
 };
 ```
 
-Code Example: Action
+**Code Example:** Action
 
 Here's the TypeScript code:
 
 ```ts
 // Defining the Action Interface
 interface AddTodoAction {
-  type: 'ADD_TODO';
+  type: "ADD_TODO";
   payload: { id: number; text: string };
 }
 
 // Creating an action
 const addTodoAction: AddTodoAction = {
-  type: 'ADD_TODO',
-  payload: { id: 1, text: 'Buy groceries' }
+  type: "ADD_TODO",
+  payload: { id: 1, text: "Buy groceries" },
 };
 ```
 
@@ -214,38 +214,38 @@ Redux follows a strict unidirectional data flow pattern, which means that action
 
 **How it works:**
 
-The Cycle of Action and State
+**The Cycle of Action and State**
 
-Action Creation: You use Action Creators to create actions.
+**Action Creation:** You use Action Creators to create actions.
 
-Dispatch: Actions are dispatched using store.dispatch(action). Here, the store is the single source of truth in a Redux app and is responsible for action delivery to reducers.
+**Dispatch:** Actions are dispatched using store.dispatch(action). Here, the store is the single source of truth in a Redux app and is responsible for action delivery to reducers.
 
-Reducer Listening: Reducers, which are pure functions, listen for dispatched actions. If a matching action is identified, the reducer performs the necessary state modifications and returns the new state.
+**Reducer Listening:** Reducers, which are pure functions, listen for dispatched actions. If a matching action is identified, the reducer performs the necessary state modifications and returns the new state.
 
-Store Update: The updated state is then stored, and any bound UI components are notified for necessary updates.
+**Store Update:** The updated state is then stored, and any bound UI components are notified for necessary updates.
 
-Key Points to Remember
+**Key Points to Remember**
 
 State is read-only: Direct changes to state are not allowed. Instead, an action generator must be dispatched.
 
-Synchronous Updates: Reducers are responsible for synchronous state updates. Any asynchronous logic (like API calls) is typically handled by middleware like Redux Thunk.
+**Synchronous Updates:** Reducers are responsible for synchronous state updates. Any asynchronous logic (like API calls) is typically handled by middleware like Redux Thunk.
 
-Single Source of Truth: The application's state is maintained in a single store, making it easier to manage and debug.
+**Single Source of Truth:** The application's state is maintained in a single store, making it easier to manage and debug.
 
-Handling State with Reducers
+**Handling State with Reducers**
 
 Reducers, pure functions, are the cornerstone in the state modification process. When they receive an action and the current state, they decide how to modify that state. Upon returning a new, updated state, the global store replaces the current state with this new state.
 
 **Examples:**
 
-Code Example: Dispatching an Action
+**Code Example:** Dispatching an Action
 
 Here is the JavaScript code:
 
 ```js
 // Action Creator
 function increment() {
-  return { type: 'INCREMENT' };
+  return { type: "INCREMENT" };
 }
 
 // Dispatching the action
@@ -271,34 +271,34 @@ A reducer in Redux is a pure function responsible for managing specific parts of
 
 **How it works:**
 
-Key Characteristics
+**Key Characteristics**
 
-Predictability: Given the same input, a reducer will always produce the same output, making state management more predictable.
+**Predictability:** Given the same input, a reducer will always produce the same output, making state management more predictable.
 
-Immutability: Reducers handle state immutably, ensuring that every state transition results in a new state object. This helps to avoid side effects and enhances the efficiency of UI and state management libraries like React and their change detection algorithms.
+**Immutability:** Reducers handle state immutably, ensuring that every state transition results in a new state object. This helps to avoid side effects and enhances the efficiency of UI and state management libraries like React and their change detection algorithms.
 
-Single Responsibility: Each reducer is geared towards managing a particular slice of application state. This limited scope aids in keeping the codebase organized and makes it easier to debug and maintain.
+**Single Responsibility:** Each reducer is geared towards managing a particular slice of application state. This limited scope aids in keeping the codebase organized and makes it easier to debug and maintain.
 
-Methods and Libraries
+**Methods and Libraries**
 
 Redux provides utility functions, such as combineReducers(), to help manage multiple reducers, each responsible for a distinct part of the application state. Libraries like immer and Redux Toolkit further simplify the process of writing reducers, especially for handling immutable state updates.
 
-Practical Application
+**Practical Application**
 
 Associating actions with reducers allows for a modular and data-driven approach to state management. For instance, clicking a button might dispatch an 'increment' action, processed by the counterReducer to adjust the count value.
 
 **Examples:**
 
-Code Example: Reducer
+**Code Example:** Reducer
 
 Here is the JavaScript code:
 
 ```js
 const counterReducer = (state = { count: 0 }, action) => {
   switch (action.type) {
-    case 'increment':
+    case "increment":
       return { count: state.count + 1 };
-    case 'decrement':
+    case "decrement":
       return { count: state.count - 1 };
     default:
       return state;
@@ -325,46 +325,46 @@ Let's look at the key differences between using Local Component State and Redux 
 
 **How it works:**
 
-Why Use Global State Management
+**Why Use Global State Management**
 
 Managing state globally:
 
 - Is especially useful for larger applications, as it streamlines access and updates to state across components.
 - Simplifies data sharing between components located at different levels of component hierarchy.
 
-Advantages and Limitations of Local Component State
+**Advantages and Limitations of Local Component State**
 
-Advantages
+**Advantages**
 
-Simplicity: It's quick and easy to set up local state within a component.
+**Simplicity:** It's quick and easy to set up local state within a component.
 
-Scoped Updates: Changes to local state are contained within the component, making it easier to manage and reason about.
+**Scoped Updates:** Changes to local state are contained within the component, making it easier to manage and reason about.
 
-Limitations
+**Limitations**
 
-State Duplication: Keeping similar state in sync across multiple components can lead to inconsistencies and bugs.
+**State Duplication:** Keeping similar state in sync across multiple components can lead to inconsistencies and bugs.
 
-Passing State and Event Handlers: Necessitates drilling down state and event handlers to nested and related components.
+**Passing State and Event Handlers:** Necessitates drilling down state and event handlers to nested and related components.
 
-Hierarchical Data Flow: Forces a one-way, parent-to-child data flow, making certain patterns unwieldy to implement.
+**Hierarchical Data Flow:** Forces a one-way, parent-to-child data flow, making certain patterns unwieldy to implement.
 
-Advantages of Global State Management with Redux
+**Advantages of Global State Management with Redux**
 
-Centralized State: Provides a single source of truth, which safeguards against inconsistencies across the application.
+**Centralized State:** Provides a single source of truth, which safeguards against inconsistencies across the application.
 
-Predictable State Updates: Leveraging reducers ensures controlled and consistent state modifications.
+**Predictable State Updates:** Leveraging reducers ensures controlled and consistent state modifications.
 
-Data Sharing: Facilitates data sharing between components without the need for prop drilling.
+**Data Sharing:** Facilitates data sharing between components without the need for prop drilling.
 
-Time-Travel Debugging: Through tools like Redux DevTools, it makes it possible to revisit and review the state at any point in time during the application's lifecycle.
+**Time-Travel Debugging:** Through tools like Redux DevTools, it makes it possible to revisit and review the state at any point in time during the application's lifecycle.
 
 **When to use:**
 
-When to Choose Which Approach
+**When to Choose Which Approach**
 
-Local State: Opt for local state management for simpler, predominantly UI-related state or for small-scale applications with minimal state requirements or data sharing needs.
+**Local State:** Opt for local state management for simpler, predominantly UI-related state or for small-scale applications with minimal state requirements or data sharing needs.
 
-Redux (or Another Global State Management): Choose a global state management system when working with larger-scale applications, multi-level state dependencies, or when extensive data sharing and consistency across the application is critical.
+**Redux (or Another Global State Management):** Choose a global state management system when working with larger-scale applications, multi-level state dependencies, or when extensive data sharing and consistency across the application is critical.
 
 **Sources:**
 
@@ -383,15 +383,15 @@ In the context of Redux, the store is a key component that acts as a central dat
 
 **How it works:**
 
-Store Components
+**Store Components**
 
-State: Maintains the current data state, which is read-only. To update it, you dispatch actions.
+**State:** Maintains the current data state, which is read-only. To update it, you dispatch actions.
 
-Reducers: Action-specific functions are responsible for modifying the state and are combined using combineReducers().
+**Reducers:** Action-specific functions are responsible for modifying the state and are combined using combineReducers().
 
-Listeners: Registered callbacks are notified whenever the state is updated.
+**Listeners:** Registered callbacks are notified whenever the state is updated.
 
-Store Mechanics
+**Store Mechanics**
 
 getState(): Use this method to access the current state.
 
@@ -401,13 +401,13 @@ subscribe(listener): Keep listeners updated on state changes by registering them
 
 replaceReducer(nextReducer): Use the provided reducer to update state-handling logic.
 
-Store Core Principles
+**Store Core Principles**
 
-Single Source of Truth: All application data is managed through a single store, ensuring consistency.
+**Single Source of Truth:** All application data is managed through a single store, ensuring consistency.
 
-State is Read-Only: Prevent accidental state modifications outside reducers to maintain a deterministic behavior.
+**State is Read-Only:** Prevent accidental state modifications outside reducers to maintain a deterministic behavior.
 
-Store Setup
+**Store Setup**
 
 To establish a Redux store in your application, use the createStore() function and pass in your app's reducers. Then, you can:
 
@@ -432,18 +432,18 @@ Redux, a predictable state container, adheres to the single source of truth prin
 
 **Pluses and minuses:**
 
-Key Benefits
+**Key Benefits**
 
-- Consistency: All components reflect the latest state, minimizing data inconsistencies.
-- Easy Debugging: A single point to monitor state changes improves debugging.
-- Conciseness and Clarity: The central state tree simplifies data management and visibility.
-- Correctness Guarantee: No parallel updates are possible, leading to improved application stability.
+- **Consistency:** All components reflect the latest state, minimizing data inconsistencies.
+- **Easy Debugging:** A single point to monitor state changes improves debugging.
+- **Conciseness and Clarity:** The central state tree simplifies data management and visibility.
+- **Correctness Guarantee:** No parallel updates are possible, leading to improved application stability.
 
-Potential Drawbacks and Solutions
+**Potential Drawbacks and Solutions**
 
-Performance Implications: Extract only necessary parts of the state for components, often accomplished through selectors.
+**Performance Implications:** Extract only necessary parts of the state for components, often accomplished through selectors.
 
-Possible Bottlenecks: Employ subscriptions or alternative mechanisms for efficient data flow while recognizing the trade-offs.
+**Possible Bottlenecks:** Employ subscriptions or alternative mechanisms for efficient data flow while recognizing the trade-offs.
 
 **Sources:**
 
@@ -468,21 +468,21 @@ You can create a Redux Store in any of the three ways:
 
 **How it works:**
 
-Steps to Create a Redux Store
+**Steps to Create a Redux Store**
 
-Define the Reducer
+**Define the Reducer**
 
 First, you have to define at least one reducer, a function that determines the shape and state transitions of the store.
 
 If you are going to use multiple reducers, to manage different parts of the state tree, you will need to combine them.
 
-Create a Reducer Function
+**Create a Reducer Function**
 
-Import Additional Reducers
+**Import Additional Reducers**
 
 If you have more than one reducer, use combineReducers to manage them together.
 
-Optional: Add Initial State and Middlewares
+**Optional:** Add Initial State and Middlewares
 
 A central state can be provided as initial state, for the reducers to pick up their specific sections.
 
@@ -498,9 +498,9 @@ const initialState = { count: 0 };
 
 const counterReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'INCREMENT':
+    case "INCREMENT":
       return { count: state.count + 1 };
-    case 'DECREMENT':
+    case "DECREMENT":
       return { count: state.count - 1 };
     default:
       return state;
@@ -512,8 +512,8 @@ export default counterReducer;
 
 ```js
 // reducers/index.js
-import { combineReducers } from 'redux';
-import counterReducer from './counterReducer';
+import { combineReducers } from "redux";
+import counterReducer from "./counterReducer";
 
 const reducers = combineReducers({
   counter: counterReducer,
@@ -525,9 +525,9 @@ export default reducers;
 
 ```js
 // reducers/index.js
-import { combineReducers } from 'redux';
-import counterReducer from './counterReducer';
-import userReducer from './userReducer';
+import { combineReducers } from "redux";
+import counterReducer from "./counterReducer";
+import userReducer from "./userReducer";
 
 const reducers = combineReducers({
   counter: counterReducer,
@@ -539,8 +539,8 @@ export default reducers;
 
 ```js
 // store.js
-import { createStore, applyMiddleware, compose } from 'redux';
-import reducers from './reducers';
+import { createStore, applyMiddleware, compose } from "redux";
+import reducers from "./reducers";
 
 const store = createStore(
   reducers,
@@ -548,13 +548,13 @@ const store = createStore(
     counter: { count: 10 },
     // Additional initial states for more reducers
   },
-  compose(applyMiddleware(middleware1, middleware2))
+  compose(applyMiddleware(middleware1, middleware2)),
 );
 
 export default store;
 ```
 
-Complete Example
+**Complete Example**
 
 Here is the complete example with all the steps:
 
@@ -620,32 +620,32 @@ Immutable State is a key concept in Redux, which ensures that the state of an ap
 
 **How it works:**
 
-Persisting Immutability in Javascript
+**Persisting Immutability in Javascript**
 
 The const declaration in JavaScript, while not offering immutability for object properties, does ensure that the reference itself (the state object in the context of Redux) remains constant, aligning with Redux's immutability requirement.
 
-Ways to Ensure Immutability in Redux
+**Ways to Ensure Immutability in Redux**
 
-Spread Operator: For shallow cloning of state objects
+**Spread Operator:** For shallow cloning of state objects
 
-Deep Clone: For nested objects and arrays. However, this approach might be inefficient for large state objects and should be used judiciously.
+**Deep Clone:** For nested objects and arrays. However, this approach might be inefficient for large state objects and should be used judiciously.
 
-Immutability Libraries
+**Immutability Libraries**
 
 To simplify working with immutable data, you can use libraries such as:
 
-Immer: Offers a minimalistic API for immutable state management
+**Immer:** Offers a minimalistic API for immutable state management
 
-Immutable.js: Provides a complete data structure library, including both primitive and collection data types. Though powerful, it can be challenging to integrate with existing codebases due to its API differences.
+**Immutable.js:** Provides a complete data structure library, including both primitive and collection data types. Though powerful, it can be challenging to integrate with existing codebases due to its API differences.
 
 **Pluses and minuses:**
 
-Advantages of Immutable State in Redux
+**Advantages of Immutable State in Redux**
 
-- State History: By preserving each state change, you can step forward or backward in time, aiding debugging and enabling features like undo/redo.
-- Performance Optimizations: Redux utilizes reference equality checks. If the new and old states are the same, components avoid unnecessary re-renders.
-- Simplified Component Updates: With unchanged objects, components can avoid updating unless their inputs change.
-- Threading Safety: In multi-threaded applications, immutable objects guarantee that state changes don't create race conditions.
+- **State History:** By preserving each state change, you can step forward or backward in time, aiding debugging and enabling features like undo/redo.
+- **Performance Optimizations:** Redux utilizes reference equality checks. If the new and old states are the same, components avoid unnecessary re-renders.
+- **Simplified Component Updates:** With unchanged objects, components can avoid updating unless their inputs change.
+- **Threading Safety:** In multi-threaded applications, immutable objects guarantee that state changes don't create race conditions.
 
 **Sources:**
 
@@ -668,31 +668,31 @@ Each of the imported reducers is a slice of the overall state tree. When an acti
 
 **Pluses and minuses:**
 
-Benefits of combineReducers
+**Benefits of combineReducers**
 
-- Code Modularity: By organizing reducers into smaller modules, it even becomes easier to share and reuse them across different parts of the application.
-- Convenience and Clarity: Instead of dealing with a single overwhelmingly large reducer, developers can manage logically distinct parts of the application separately.
-- Selective Data Handling: Reducers can act in specified functional areas only, keeping the rest of the state untouched.
-- Efficient Data Flow: Each reducer only 'listens' to that part of the state that is relevant, potentially improving performance.
+- **Code Modularity:** By organizing reducers into smaller modules, it even becomes easier to share and reuse them across different parts of the application.
+- **Convenience and Clarity:** Instead of dealing with a single overwhelmingly large reducer, developers can manage logically distinct parts of the application separately.
+- **Selective Data Handling:** Reducers can act in specified functional areas only, keeping the rest of the state untouched.
+- **Efficient Data Flow:** Each reducer only 'listens' to that part of the state that is relevant, potentially improving performance.
 
 **Examples:**
 
-Code Example: combineReducers in Action
+**Code Example:** combineReducers in Action
 
 Consider a note-taking app, which might have three distinct state trees: notes, ui, and user.
 
 Here is how combineReducers can be employed:
 
 ```js
-import { combineReducers } from 'redux';
-import notesReducer from './notesReducer';
-import uiReducer from './uiReducer';
-import userReducer from './userReducer';
+import { combineReducers } from "redux";
+import notesReducer from "./notesReducer";
+import uiReducer from "./uiReducer";
+import userReducer from "./userReducer";
 
 const rootReducer = combineReducers({
   notes: notesReducer,
   ui: uiReducer,
-  user: userReducer
+  user: userReducer,
 });
 
 export default rootReducer;
@@ -715,45 +715,45 @@ In the context of Redux, actions alter state through reducers, and middlewares h
 
 **How it works:**
 
-Fundamental Concepts
+**Fundamental Concepts**
 
-Actions: Objects describing a state change.
+**Actions:** Objects describing a state change.
 
-Reducers: Pure functions defining the state change.
+**Reducers:** Pure functions defining the state change.
 
-State: An immutable object accessible throughout the app.
+**State:** An immutable object accessible throughout the app.
 
-Pure Functions
+**Pure Functions**
 
 Reducers must be pure, that is, their behavior should be entirely predictable.
 
-Determination of Output: Output should be a direct result of input. The function should not base its output on any external state or data.
+**Determination of Output:** Output should be a direct result of input. The function should not base its output on any external state or data.
 
-No Side Effects: They should not cause alterations outside their scope, like modifying global variables or invoking functions that perform I/O operations.
+**No Side Effects:** They should not cause alterations outside their scope, like modifying global variables or invoking functions that perform I/O operations.
 
-Idempotence: Executing the function multiple times with the same input should provide consistent outcomes and not provoke side effects.
+**Idempotence:** Executing the function multiple times with the same input should provide consistent outcomes and not provoke side effects.
 
-Redux utilizes the principle of immutability: once in place, actions or state don't undergo alteration. Instead, they generate a 'new' state that replaces the existing one in its entirety.
+**Redux utilizes the principle of immutability:** once in place, actions or state don't undergo alteration. Instead, they generate a 'new' state that replaces the existing one in its entirety.
 
-Side Effects
+**Side Effects**
 
 Side effects allude to alterations induced by a function that aren't limited to its return value. Side-effectful functions can engage in various actions that extend beyond their obvious purpose. While some side effects are necessary, keeping them compartmentalized is crucial to maintaining code stability and ease of debugging. Side-effect management in Redux is facilitated by middlewares, like redux-thunk or redux-saga.
 
-Side Effect Management Methods
+**Side Effect Management Methods**
 
 Various Redux-specific libraries, such as Thunks or Sagas, provide mechanisms to tackle side effects in a structured way.
 
-Thunks
+**Thunks**
 
 Thunks are functions that can generate other functions, permitting activities that extend past straightforward dispatch. redux-thunk is a well-established middleware that empowers thunks in a Redux store.
 
-Sagas
+**Sagas**
 
 Sagas are designed on the concept of cooperative concurrency to streamline actions with side effects. In a redux-saga powered store, you interact with such sagas using the middleware applyMiddleware(sagaMiddleware). This is immensely useful for simultaneous operations and complex co-dependencies, especially with asynchronous processes.
 
 **Examples:**
 
-Code Example: Impure Reducer
+**Code Example:** Impure Reducer
 
 This is the Python code:
 
@@ -770,7 +770,7 @@ def increment_counter():
 # Result: Output is unpredictable and changes external state
 ```
 
-Code Example: Thunk in Action
+**Code Example:** Thunk in Action
 
 This is the JavaScript Code:
 
@@ -781,23 +781,23 @@ const incrementAsync = () => {
   return (dispatch) => {
     // Asynchronous Operation
     setTimeout(() => {
-      dispatch({ type: 'INCREMENT' }); // Dispatch a regular action after a delay
+      dispatch({ type: "INCREMENT" }); // Dispatch a regular action after a delay
     }, 2000);
   };
 };
 ```
 
-Code Example: Saga for Input Validation
+**Code Example:** Saga for Input Validation
 
 Here is the JavaScript code:
 
 ```js
-import { takeLatest, call, put } from 'redux-saga/effects';
-import { START_SUBMIT, SUCCESS_SUBMIT, FAILED_SUBMIT } from './actionTypes';
-import { validateInput } from './api';
+import { takeLatest, call, put } from "redux-saga/effects";
+import { START_SUBMIT, SUCCESS_SUBMIT, FAILED_SUBMIT } from "./actionTypes";
+import { validateInput } from "./api";
 
 function* submitForm(action) {
-  const {input} = action.payload;
+  const { input } = action.payload;
   try {
     yield call(validateInput, input);
     yield put({ type: SUCCESS_SUBMIT });
@@ -817,7 +817,6 @@ export default function* formSaga() {
 
 </details>
 
-
 ### Redux Core Concepts
 
 <details>
@@ -833,25 +832,25 @@ With redux-thunk, action creators can return functions instead of plain action o
 
 **How it works:**
 
-How Redux-Thunk Works
+**How Redux-Thunk Works**
 
-Configuration: When setting up the Redux store, use applyMiddleware to incorporate redux-thunk.
+**Configuration:** When setting up the Redux store, use applyMiddleware to incorporate redux-thunk.
 
-Action Dispatch: When an action creator returns a function, redux-thunk intercepts it. This function is then given dispatch as its first parameter.
+**Action Dispatch:** When an action creator returns a function, redux-thunk intercepts it. This function is then given dispatch as its first parameter.
 
-Async Control: Inside the function, you can manually dispatch actions, often used to denote the start and completion of an asynchronous flow.
+**Async Control:** Inside the function, you can manually dispatch actions, often used to denote the start and completion of an asynchronous flow.
 
 **Examples:**
 
-Code Example: Using Thunk Middleware in Redux
+**Code Example:** Using Thunk Middleware in Redux
 
 Here is the JavaScript code:
 
 ```js
 // configureStore.js
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from './reducers';
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import rootReducer from "./reducers";
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 export default store;
@@ -859,12 +858,12 @@ export default store;
 // actions.js
 export const fetchData = () => {
   return async (dispatch) => {
-    dispatch({ type: 'FETCH_DATA_REQUEST' });
+    dispatch({ type: "FETCH_DATA_REQUEST" });
     try {
       const data = await someAPICall();
-      dispatch({ type: 'FETCH_DATA_SUCCESS', payload: data });
+      dispatch({ type: "FETCH_DATA_SUCCESS", payload: data });
     } catch (err) {
-      dispatch({ type: 'FETCH_DATA_FAILURE', error: err.message });
+      dispatch({ type: "FETCH_DATA_FAILURE", error: err.message });
     }
   };
 };
@@ -873,11 +872,11 @@ export const fetchData = () => {
 const initialState = { data: null, loading: false, error: null };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'FETCH_DATA_REQUEST':
+    case "FETCH_DATA_REQUEST":
       return { ...state, loading: true, error: null };
-    case 'FETCH_DATA_SUCCESS':
+    case "FETCH_DATA_SUCCESS":
       return { ...state, data: action.payload, loading: false };
-    case 'FETCH_DATA_FAILURE':
+    case "FETCH_DATA_FAILURE":
       return { ...state, loading: false, error: action.error };
     default:
       return state;
@@ -902,33 +901,33 @@ A selector in Redux is a pure function that efficiently computes derived data fr
 
 **How it works:**
 
-Purpose
+**Purpose**
 
 The key purpose of selectors is to offer:
 
-Data Transformation: Selectors calculate computed data, such as derived state or complex aggregations.
+**Data Transformation:** Selectors calculate computed data, such as derived state or complex aggregations.
 
-Performance Optimization: They help prevent expensive recalculations and re-renders in components by caching results.
+**Performance Optimization:** They help prevent expensive recalculations and re-renders in components by caching results.
 
-Core Segments
+**Core Segments**
 
-State Slice: Selects a relevant part of the application state.
+**State Slice:** Selects a relevant part of the application state.
 
-Data Transformation: Computes and processes the state slice to generate derived data.
+**Data Transformation:** Computes and processes the state slice to generate derived data.
 
-Caching Mechanism: Efficiently handles and updates the selector's result cache.
+**Caching Mechanism:** Efficiently handles and updates the selector's result cache.
 
-Role in Redux Architecture
+**Role in Redux Architecture**
 
-Input Source: Selectors receive the complete state object from the store as their input.
+**Input Source:** Selectors receive the complete state object from the store as their input.
 
-Centralized Data Access: They serve as the primary data source for Redux-connected components.
+**Centralized Data Access:** They serve as the primary data source for Redux-connected components.
 
-Efficiency and Consistency: By transforming and caching state data, selectors improve overall application performance.
+**Efficiency and Consistency:** By transforming and caching state data, selectors improve overall application performance.
 
 **Examples:**
 
-Code Example: Selectors in Redux
+**Code Example:** Selectors in Redux
 
 Here is the JavaScript code:
 
@@ -954,8 +953,8 @@ const appState = {
 const getUser = (state) => state.user;
 const getUserEmail = (state) => getUser(state).email;
 const getElectronicsProducts = (state) => {
-  return state.products.list.filter((product) =>
-    product.category === "electronics"
+  return state.products.list.filter(
+    (product) => product.category === "electronics",
   );
 };
 
@@ -968,11 +967,17 @@ console.log(getElectronicsProducts(appState));
 const getAllProducts = (state) => state.products.list;
 const memoizedElectronicsSelector = createSelector(
   [getAllProducts],
-  (products) => products.filter((product) => product.category === "electronics")
+  (products) =>
+    products.filter((product) => product.category === "electronics"),
 );
 
 // Add a new product to trigger re-calculation
-appState.products.list.push({ id: 4, name: "Product 4", price: 300, category: "electronics" });
+appState.products.list.push({
+  id: 4,
+  name: "Product 4",
+  price: 300,
+  category: "electronics",
+});
 // Re-run the memoized selector
 console.log(memoizedElectronicsSelector(appState));
 // Output: [ { id: 1, name: "Product 1", price: 100, category: "electronics" }, { id: 3, name: "Product 3", price: 200, category: "electronics" }, { id: 4, name: "Product 4", price: 300, category: "electronics" } ]
@@ -995,26 +1000,26 @@ In Redux, the unidirectional data flow concept ensures data consistency by using
 
 **How it works:**
 
-Key Elements
+**Key Elements**
 
-Actions: These are objects with a type attribute, describing what needs to change in the application. Actions are dispatched from components and received by reducers.
+**Actions:** These are objects with a type attribute, describing what needs to change in the application. Actions are dispatched from components and received by reducers.
 
-Reducers: These are pure functions that specify how the application's state should transform in response to actions.
+**Reducers:** These are pure functions that specify how the application's state should transform in response to actions.
 
-Store: It's a single source of truth. It holds the application's state tree and is responsible for:
+**Store:** It's a single source of truth. It holds the application's state tree and is responsible for:
 
 - State modification through reducers.
 - State dispatch as actions are sent.
 
-One-Way Data Flow
+**One-Way Data Flow**
 
-Action Dispatch: Components dispatch actions (through store.dispatch(action)).
+**Action Dispatch:** Components dispatch actions (through store.dispatch(action)).
 
-Reducer Receipt: The store sends the action to the appropriate reducers.
+**Reducer Receipt:** The store sends the action to the appropriate reducers.
 
-State Changes: The reducer modifies the state based on the dispatched action.
+**State Changes:** The reducer modifies the state based on the dispatched action.
 
-State Subscription: The modified state is broadcast to subscribed components.
+**State Subscription:** The modified state is broadcast to subscribed components.
 
 **Sources:**
 
@@ -1203,7 +1208,6 @@ const store = configureStore({
 - [Redux style guide](https://redux.js.org/style-guide/)
 </details>
 
-
 ### Working with Redux Actions
 
 <details>
@@ -1337,10 +1341,13 @@ A thunk is a function you dispatch. The thunk middleware calls it with `dispatch
 **Examples:**
 
 ```js
-const fetchUserById = createAsyncThunk("users/fetchByIdStatus", async (userId) => {
-  const response = await userAPI.fetchById(userId);
-  return response.data;
-});
+const fetchUserById = createAsyncThunk(
+  "users/fetchByIdStatus",
+  async (userId) => {
+    const response = await userAPI.fetchById(userId);
+    return response.data;
+  },
+);
 dispatch(fetchUserById(123));
 ```
 
@@ -1350,7 +1357,6 @@ dispatch(fetchUserById(123));
 - [Fundamentals — async logic](https://redux.js.org/tutorials/fundamentals/part-6-async-logic)
 - [Redux Toolkit usage guide](https://redux-toolkit.js.org/usage/usage-guide)
 </details>
-
 
 ### Reducers and State Management
 
@@ -1376,7 +1382,7 @@ extraReducers: (builder) => {
   builder.addCase(fetchUserById.fulfilled, (state, action) => {
     state.entities.push(action.payload);
   });
-}
+};
 ```
 
 **Sources:**
@@ -1560,7 +1566,6 @@ Mutating state, doing I/O, and trusting `action.payload` to be the next state ar
 - [Redux style guide](https://redux.js.org/style-guide/)
 </details>
 
-
 ### Redux Middleware and Side Effects
 
 <details>
@@ -1616,7 +1621,8 @@ redux-saga runs generator functions in middleware in response to actions. redux-
 const sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
   reducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(sagaMiddleware),
 });
 sagaMiddleware.run(mySaga);
 ```
@@ -1704,7 +1710,6 @@ Middleware is how the store grows features without putting them in reducers: asy
 - [createListenerMiddleware](https://redux-toolkit.js.org/api/createListenerMiddleware)
 </details>
 
-
 ### Redux and UI Integration
 
 <details>
@@ -1783,10 +1788,9 @@ They are the first two arguments to `connect`. `mapStateToProps(state, ownProps?
 **Examples:**
 
 ```js
-connect(
-  (state, ownProps) => ({ todo: state.todos[ownProps.id] }),
-  { todoToggled },
-)(TodoRow);
+connect((state, ownProps) => ({ todo: state.todos[ownProps.id] }), {
+  todoToggled,
+})(TodoRow);
 ```
 
 **Sources:**
@@ -1904,7 +1908,6 @@ const selected = useSelector(selectorReturningObject, shallowEqual);
 - [Redux style guide](https://redux.js.org/style-guide/)
 - [Hooks API](https://react-redux.js.org/api/hooks)
 </details>
-
 
 ### Advanced Redux Patterns
 
@@ -2041,7 +2044,6 @@ Ducks means one module owns a feature’s action types, action creators, and red
 - [Redux style guide](https://redux.js.org/style-guide/)
 </details>
 
-
 ### Redux State Normalization
 
 <details>
@@ -2125,7 +2127,6 @@ Store ids on the entity when you always navigate one way. Use a join table when 
 
 - [Normalizing state shape](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape)
 </details>
-
 
 ### Redux Ecosystem and Utilities
 
@@ -2241,7 +2242,6 @@ const store = configureStore({
 - [Redux style guide](https://redux.js.org/style-guide/)
 - [Redux Toolkit getting started](https://redux-toolkit.js.org/introduction/getting-started)
 </details>
-
 
 ### Testing Redux Applications
 
@@ -2367,7 +2367,6 @@ Use the store from `configureStore`, the reducer as a plain function, and DevToo
 - [Redux style guide](https://redux.js.org/style-guide/)
 </details>
 
-
 ### Redux with Other Frameworks and Libraries
 
 <details>
@@ -2461,7 +2460,6 @@ Create the store, dispatch actions, and read `getState()`. Skip `Provider`. Do n
 - [createStore](https://redux.js.org/api/createStore)
 - [Redux Toolkit getting started](https://redux-toolkit.js.org/introduction/getting-started)
 </details>
-
 
 ### Scaling Redux for Large Applications
 
@@ -2570,7 +2568,6 @@ Split by feature, normalize entities, keep derived data in selectors, and model 
 - [RTK Query overview](https://redux-toolkit.js.org/rtk-query/overview)
 </details>
 
-
 ### Redux Performance Optimization
 
 <details>
@@ -2665,7 +2662,6 @@ Normalize the collection, update one entity per action, and select by id so freq
 - [Redux style guide](https://redux.js.org/style-guide/)
 </details>
 
-
 ### Redux and Forms
 
 <details>
@@ -2734,7 +2730,6 @@ The draft is visible in DevTools and to any subscriber. Every keystroke is an ac
 - [Redux style guide](https://redux.js.org/style-guide/)
 </details>
 
-
 ### Redux and Authentication
 
 <details>
@@ -2744,7 +2739,7 @@ The draft is visible in DevTools and to any subscriber. Every keystroke is an ac
 
 **Definition:**
 
-Store the serializable session facts you must render: user id, status, and maybe a non-secret display name. Drive login and logout with thunks that then dispatch plain actions.
+**Store the serializable session facts you must render:** user id, status, and maybe a non-secret display name. Drive login and logout with thunks that then dispatch plain actions.
 
 **How it works:**
 
@@ -2807,7 +2802,6 @@ builder.addCase(login.fulfilled, (state, action) => {
 - [Redux style guide](https://redux.js.org/style-guide/)
 - [Essentials — async logic](https://redux.js.org/tutorials/essentials/part-5-async-logic)
 </details>
-
 
 ### Migrating to Redux and State Hydration
 
@@ -2873,7 +2867,6 @@ Two sources of truth and a second store are the usual breaks. Keep one store, an
 - [Redux style guide](https://redux.js.org/style-guide/)
 - [RTK Query overview](https://redux-toolkit.js.org/rtk-query/overview)
 </details>
-
 
 ### Redux Future and Community
 
@@ -2942,7 +2935,6 @@ Redux stays the predictable store for client state that many features share. RTK
 - [Redux Toolkit getting started](https://redux-toolkit.js.org/introduction/getting-started)
 - [Redux style guide](https://redux.js.org/style-guide/)
 </details>
-
 
 ### Advanced State Modeling in Redux
 
@@ -3038,7 +3030,6 @@ Keep `past`, `present`, and `future` for the branch you can undo. An undo action
 - [Redux style guide](https://redux.js.org/style-guide/)
 </details>
 
-
 ### Redux Interoperability
 
 <details>
@@ -3103,7 +3094,6 @@ Server records live in an entity adapter or in RTK Query’s cache. Local UI sta
 - [RTK Query overview](https://redux-toolkit.js.org/rtk-query/overview)
 - [Normalizing state shape](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape)
 </details>
-
 
 ### Redux API Requests and Caching
 
@@ -3179,7 +3169,7 @@ Use RTK Query’s `createApi` for both. REST endpoints use `fetchBaseQuery` and 
 
 **How it works:**
 
-- **REST**: `build.query({ query: (name) => \`pokemon/${name}\` })` issues GET against the base URL. Mutations use `build.mutation`.
+- **REST**: `build.query({ query: (name) => \`pokemon/${name}\` })`issues GET against the base URL. Mutations use`build.mutation`.
 - **Hooks**: Import `createApi` from `@reduxjs/toolkit/query/react` so the endpoint exports `useGetPokemonByNameQuery`.
 - **Fallback**: A single REST call can stay a `createAsyncThunk` plus `extraReducers` when you do not want a cache.
 

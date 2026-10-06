@@ -43,14 +43,16 @@ import {
   isOnSubjectPath,
 } from "./location";
 import { NavCautionBadge } from "./NavCautionBadge";
+import { clusterNavigateHref } from "@/lib/nav/sections";
 import {
   closeNavSoon,
   NAV_ROW_GAP,
   rowClass,
+  useScopedSidebarFold,
   useSidebarActive,
   useSidebarBookmarks,
   useSidebarChrome,
-  useSidebarFold,
+  useSidebarFoldScope,
   useSidebarHighlight,
 } from "./sidebarContext";
 
@@ -409,8 +411,8 @@ export function TopicRow({
   const { query, mode, pathname, searching, first, pinNav, onNavigate } =
     useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
-  const { getTrackFold, patchTrackFold } = useSidebarFold();
-  const { topicHref: openTopicHref } = getTrackFold(trackId);
+  const { fold, patchFold } = useScopedSidebarFold();
+  const { topicHref: openTopicHref } = fold(trackId);
   const active = isActiveHref(highlightPathname, topic.href);
   const isHitTopic = first?.pathname === topic.href;
   const isFirstTopic = isHitTopic && first.hash === "";
@@ -465,7 +467,7 @@ export function TopicRow({
               applySameDocumentHref(pathname, "", pathname);
             }
             if (!searching && showConceptNav) {
-              patchTrackFold(trackId, {
+              patchFold(trackId, {
                 topicHref: openTopicHref === topic.href ? null : topic.href,
               });
             }
@@ -475,7 +477,7 @@ export function TopicRow({
             return;
           }
           queueHandbookHref(topic.href);
-          patchTrackFold(trackId, {
+          patchFold(trackId, {
             topicHref: showConceptNav ? topic.href : null,
           });
           if (!showConceptNav) {
@@ -532,10 +534,12 @@ export function ClusterRow({
   const { query, pathname, searching, first, pinNav, goToPath, onNavigate } =
     useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
-  const { getTrackFold, patchTrackFold } = useSidebarFold();
-  const { clusterKey: openClusterKey } = getTrackFold(trackId);
+  const { fold, patchFold } = useScopedSidebarFold();
+  const sectionId = useSidebarFoldScope();
+  const { clusterKey: openClusterKey } = fold(trackId);
   const { activeConceptId } = useSidebarActive();
   const onlyTopic = cluster.topics.length === 1 ? cluster.topics[0] : null;
+  const navigateHref = clusterNavigateHref(cluster, sectionId, subjectPath);
 
   if (onlyTopic && sameTitle(cluster.title, onlyTopic.title)) {
     return (
@@ -559,25 +563,29 @@ export function ClusterRow({
     !searching &&
     (active ||
       cluster.topics.some((topic) => topic.href === highlightPathname));
-  const pinInParent = onPath && !clusterOpen;
-  const stickHeader = onPath && !pinInParent;
 
   return (
     <li className="contents">
       <Link
-        href={cluster.href}
+        href={navigateHref}
         prefetch={false}
         scroll={false}
         data-nav="cluster"
         data-nav-id={cluster.id}
-        data-nav-path={stickHeader ? "true" : undefined}
-        data-nav-pin={pinInParent ? "cluster" : undefined}
+        data-nav-pin={onPath ? "cluster" : undefined}
         onClick={(event) => {
           pinNav(event.currentTarget);
           if (onHub) {
             event.preventDefault();
+            if (sectionId === "interviews" && cluster.topics[0]) {
+              patchFold(trackId, { clusterKey: key });
+              queueHandbookHref(cluster.topics[0].href);
+              goToPath(cluster.topics[0].href);
+              closeNavSoon(onNavigate);
+              return;
+            }
             if (onlyTopic) {
-              patchTrackFold(trackId, { clusterKey: key });
+              patchFold(trackId, { clusterKey: key });
               queueHandbookHref(onlyTopic.href);
               goToPath(onlyTopic.href);
               closeNavSoon(onNavigate);
@@ -587,11 +595,11 @@ export function ClusterRow({
             const sameHash = window.location.hash === next;
             if (!searching) {
               if (sameHash) {
-                patchTrackFold(trackId, {
+                patchFold(trackId, {
                   clusterKey: openClusterKey === key ? null : key,
                 });
               } else {
-                patchTrackFold(trackId, { clusterKey: key });
+                patchFold(trackId, { clusterKey: key });
               }
             }
             if (!sameHash) {
@@ -599,15 +607,13 @@ export function ClusterRow({
             }
             return;
           }
-          patchTrackFold(trackId, { clusterKey: key });
-          queueHandbookHref(cluster.href);
+          patchFold(trackId, { clusterKey: key });
+          queueHandbookHref(navigateHref);
         }}
         data-search-hit={isHitCluster ? "true" : undefined}
         aria-current={active ? "location" : undefined}
         aria-expanded={clusterOpen}
-        className={`${rowClass(isHitCluster || active || onPath, stickHeader, "pl-4")}${
-          pinInParent ? " sticky" : ""
-        } ${NAV_ROW_GAP}`}
+        className={`${rowClass(isHitCluster || active || onPath, onPath, "pl-4")} ${NAV_ROW_GAP}`}
       >
         <RowTitle
           text={cluster.title}
@@ -646,7 +652,7 @@ export function SectionRow({
 }) {
   const { query, pathname, searching, first, pinNav } = useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
-  const { getTrackFold, patchTrackFold } = useSidebarFold();
+  const { fold, patchFold } = useScopedSidebarFold();
   const { activeConceptId } = useSidebarActive();
   const collapsible = isNavSectionCollapsible(section);
 
@@ -671,7 +677,7 @@ export function SectionRow({
   }
 
   const key = sectionKey(subjectPath, section.id);
-  const { sectionKey: openSectionKey } = getTrackFold(trackId);
+  const { sectionKey: openSectionKey } = fold(trackId);
   const onHub = pathname === subjectPath;
   const hashMatchesSection = activeConceptId === section.id;
   const hasActiveChild = section.clusters.some(
@@ -688,8 +694,6 @@ export function SectionRow({
   const isHitSection =
     first?.pathname === subjectPath && first.hash === `#${section.id}`;
   const onPath = !searching && (hashMatchesSection || hasActiveChild);
-  const pinInParent = onPath && !sectionOpen;
-  const stickHeader = onPath && !pinInParent;
 
   return (
     <li className="contents">
@@ -699,8 +703,7 @@ export function SectionRow({
         scroll={false}
         data-nav="section"
         data-nav-id={section.id}
-        data-nav-path={stickHeader ? "true" : undefined}
-        data-nav-pin={pinInParent ? "section" : undefined}
+        data-nav-pin={onPath ? "section" : undefined}
         onClick={(event) => {
           pinNav(event.currentTarget);
           if (onHub) {
@@ -710,11 +713,11 @@ export function SectionRow({
             if (!searching) {
               const closed = closedSectionKey(subjectPath, section.id);
               if (sameHash) {
-                patchTrackFold(trackId, {
+                patchFold(trackId, {
                   sectionKey: sectionOpen ? closed : key,
                 });
               } else {
-                patchTrackFold(trackId, { sectionKey: key });
+                patchFold(trackId, { sectionKey: key });
               }
             }
             if (!sameHash) {
@@ -722,14 +725,12 @@ export function SectionRow({
             }
             return;
           }
-          patchTrackFold(trackId, { sectionKey: key });
+          patchFold(trackId, { sectionKey: key });
           queueHandbookHref(`${subjectPath}#${section.id}`);
         }}
         data-search-hit={isHitSection ? "true" : undefined}
         aria-expanded={sectionOpen}
-        className={`${rowClass(isHitSection || onPath, stickHeader, "pl-4")}${
-          pinInParent ? " sticky" : ""
-        } ${NAV_ROW_GAP}`}
+        className={`${rowClass(isHitSection || onPath, onPath, "pl-4")} ${NAV_ROW_GAP}`}
       >
         <RowTitle
           text={section.title}
@@ -762,8 +763,8 @@ export function SubjectRow({
 }) {
   const { query, pathname, searching, first, pinNav } = useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
-  const { getTrackFold, patchTrackFold } = useSidebarFold();
-  const { subjectHref: openSubjectHref } = getTrackFold(trackId);
+  const { fold, patchFold } = useScopedSidebarFold();
+  const { subjectHref: openSubjectHref } = fold(trackId);
   const active = isActiveHref(highlightPathname, subject.href);
   const subjectOpen = searching || openSubjectHref === subject.href;
   const isHitSubject = first?.pathname === subject.href && first.hash === "";
@@ -784,7 +785,7 @@ export function SubjectRow({
           if (pathname === subject.href) {
             event.preventDefault();
             if (!searching) {
-              patchTrackFold(trackId, {
+              patchFold(trackId, {
                 subjectHref:
                   openSubjectHref === subject.href ? null : subject.href,
               });
@@ -792,7 +793,7 @@ export function SubjectRow({
             return;
           }
           queueHandbookHref(subject.href);
-          patchTrackFold(trackId, { subjectHref: subject.href });
+          patchFold(trackId, { subjectHref: subject.href });
         }}
         data-search-hit={isHitSubject ? "true" : undefined}
         aria-current={active ? "page" : undefined}

@@ -211,12 +211,52 @@ function buildFullTrackChain(group: NavGroup): NavStep[] {
   return chain;
 }
 
+function activeNavGroupForPath(
+  groups: readonly NavGroup[],
+  pathname: string,
+): NavGroup | undefined {
+  const matches = groups.filter((item) => isActiveTrack(pathname, item.href));
+  if (matches.length === 0) {
+    return undefined;
+  }
+  if (matches.length === 1) {
+    return matches[0];
+  }
+  for (const group of matches) {
+    if (
+      group.leafTopic &&
+      (pathname === group.href || pathname === group.leafTopic.href)
+    ) {
+      return group;
+    }
+    if (findTopicInGroup(group, pathname)) {
+      return group;
+    }
+    const subject = findSubjectForPath(group, pathname);
+    if (subject && pathname === subject.href) {
+      return group;
+    }
+    if (findClusterForPath(group, pathname)) {
+      return group;
+    }
+  }
+  for (const group of matches) {
+    if (
+      pathname === group.href &&
+      group.entries.some((entry) => entry.kind === "subject")
+    ) {
+      return group;
+    }
+  }
+  return matches[0];
+}
+
 export function navChainForPath(
   groups: readonly NavGroup[],
   pathname: string,
   hash: string,
 ): readonly NavStep[] | null {
-  const group = groups.find((item) => isActiveTrack(pathname, item.href));
+  const group = activeNavGroupForPath(groups, pathname);
   if (!group) {
     return null;
   }

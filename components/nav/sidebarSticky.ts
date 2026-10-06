@@ -4,6 +4,7 @@ import { HANDBOOK_NAV_ASIDE_ID, HANDBOOK_SIDEBAR_ID } from "@/constants";
 
 const PATH_ATTR = "data-nav-path";
 const TOP_VARS = {
+  "root-section": "--nav-sticky-top-root-section",
   track: "--nav-sticky-top-track",
   subject: "--nav-sticky-top-subject",
   section: "--nav-sticky-top-section",
@@ -42,6 +43,7 @@ function topVarName(element: HTMLElement) {
       .querySelector<HTMLElement>(":scope > [data-nav]")
       ?.getAttribute("data-nav");
   switch (kind) {
+    case "root-section":
     case "track":
     case "subject":
     case "section":

@@ -301,11 +301,11 @@ describe("handbook sidebar", () => {
 
   it("shows React Ecosystem Core without a duplicate Ecosystem crumb", () => {
     cy.visit("/en/frontend/react-ecosystem");
-    cy.contains("nav[aria-label='Breadcrumbs']", "Ecosystem").should(
+    cy.contains("nav[aria-label='Breadcrumb']", "Ecosystem").should(
       "be.visible",
     );
-    cy.contains("nav[aria-label='Breadcrumbs']", "Core").should("be.visible");
-    cy.contains("nav[aria-label='Breadcrumbs'] li", "Ecosystem").should(
+    cy.contains("nav[aria-label='Breadcrumb']", "Core").should("be.visible");
+    cy.contains("nav[aria-label='Breadcrumb'] li", "Ecosystem").should(
       "have.length",
       1,
     );
@@ -318,10 +318,10 @@ describe("handbook sidebar", () => {
 
   it("shows Redux under React Ecosystem in breadcrumbs", () => {
     cy.visit("/en/frontend/react-redux");
-    cy.contains("nav[aria-label='Breadcrumbs']", "Ecosystem").should(
+    cy.contains("nav[aria-label='Breadcrumb']", "Ecosystem").should(
       "be.visible",
     );
-    cy.contains("nav[aria-label='Breadcrumbs']", "Redux").should("be.visible");
+    cy.contains("nav[aria-label='Breadcrumb']", "Redux").should("be.visible");
     cy.contains("h1", "Redux");
     cy.nav("cluster", "ecosystem").should("have.attr", "aria-expanded", "true");
     cy.nav("topic", "react-redux").should("be.visible").and("contain", "Redux");
@@ -329,11 +329,11 @@ describe("handbook sidebar", () => {
 
   it("shows TanStack under React Ecosystem in breadcrumbs", () => {
     cy.visit("/en/frontend/react-tanstack");
-    cy.contains("nav[aria-label='Breadcrumbs']", "React").should("be.visible");
-    cy.contains("nav[aria-label='Breadcrumbs']", "Ecosystem").should(
+    cy.contains("nav[aria-label='Breadcrumb']", "React").should("be.visible");
+    cy.contains("nav[aria-label='Breadcrumb']", "Ecosystem").should(
       "be.visible",
     );
-    cy.contains("nav[aria-label='Breadcrumbs']", "TanStack").should(
+    cy.contains("nav[aria-label='Breadcrumb']", "TanStack").should(
       "be.visible",
     );
     cy.contains("h1", "TanStack");
@@ -621,12 +621,9 @@ describe("handbook sidebar", () => {
 
   it("does not expand interview questions in the TypeScript sidebar", () => {
     cy.visit("/en/frontend/ts-interview");
-    cy.nav("cluster", "interview")
+    cy.nav("topic", "ts-interview")
       .should("be.visible")
       .and("not.have.attr", "aria-expanded");
-    cy.get(
-      '#handbook-sidebar [data-nav="topic"][data-nav-id="ts-interview"]',
-    ).should("not.exist");
     cy.sidebar().contains("What is TypeScript").should("not.exist");
   });
 

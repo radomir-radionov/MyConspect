@@ -43,6 +43,19 @@ export {
   toggleBookmark,
 } from "./bookmarks";
 export type { Bookmark, BookmarkInput } from "./bookmarks";
+export {
+  allNavGroups,
+  clusterNavigateHref,
+  groupLandingHref,
+  groupNavigateHref,
+  inferNavRootSection,
+  navGroupsForPath,
+  navGroupsForRootSection,
+  navTrackScope,
+  sectionGroupLandingHref,
+  sectionSwitchHref,
+} from "./sections";
+export type { NavTrackScope } from "./sections";
 export type {
   ChromeCopy,
   Crumb,
@@ -52,6 +65,8 @@ export type {
   NavConcept,
   NavEntry,
   NavGroup,
+  NavRootSection,
+  NavRootSectionId,
   NavSection,
   NavSubject,
   NavTopic,

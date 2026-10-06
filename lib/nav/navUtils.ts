@@ -26,6 +26,15 @@ export function isQuestionCluster(clusterId: string): boolean {
   );
 }
 
+export function isInterviewSectionTopic(
+  topic: Pick<Topic, "slug" | "title" | "grouping">,
+): boolean {
+  if (isInterviewTasksTopic(topic) || isInterviewTopic(topic)) {
+    return true;
+  }
+  return isQuestionCluster(topic.grouping?.cluster ?? "");
+}
+
 export function shouldHideSidebarConcepts(
   topic: Pick<Topic, "slug" | "hideSidebarConcepts" | "grouping"> & {
     readonly title?: string;

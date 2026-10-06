@@ -2,7 +2,7 @@
 
 import { createContext, useContext, type ReactNode } from "react";
 import type { TrackId } from "@/lib/catalog";
-import type { SearchMode } from "@/lib/nav";
+import type { NavRootSectionId, SearchMode } from "@/lib/nav";
 import type { NavLocation } from "./location";
 
 export type SearchHit = {
@@ -31,8 +31,12 @@ export type SidebarBookmarksValue = {
 };
 
 export type SidebarFoldValue = {
-  getTrackFold: (trackId: TrackId) => NavLocation;
-  patchTrackFold: (trackId: TrackId, patch: Partial<NavLocation>) => void;
+  getTrackFold: (sectionId: NavRootSectionId, trackId: TrackId) => NavLocation;
+  patchTrackFold: (
+    sectionId: NavRootSectionId,
+    trackId: TrackId,
+    patch: Partial<NavLocation>,
+  ) => void;
 };
 
 export type SidebarActiveValue = {
@@ -47,6 +51,7 @@ const SidebarBookmarksContext = createContext<SidebarBookmarksValue | null>(
   null,
 );
 const SidebarFoldContext = createContext<SidebarFoldValue | null>(null);
+const SidebarFoldScopeContext = createContext<NavRootSectionId | null>(null);
 const SidebarActiveContext = createContext<SidebarActiveValue | null>(null);
 
 export function SidebarNavProvider({
@@ -109,6 +114,41 @@ export function useSidebarFold() {
     throw new Error("useSidebarFold must be used within TopicSidebar");
   }
   return value;
+}
+
+export function SidebarFoldScopeProvider({
+  sectionId,
+  children,
+}: {
+  sectionId: NavRootSectionId;
+  children: ReactNode;
+}) {
+  return (
+    <SidebarFoldScopeContext.Provider value={sectionId}>
+      {children}
+    </SidebarFoldScopeContext.Provider>
+  );
+}
+
+export function useSidebarFoldScope(): NavRootSectionId {
+  const sectionId = useContext(SidebarFoldScopeContext);
+  if (!sectionId) {
+    throw new Error(
+      "useSidebarFoldScope must be used within SidebarFoldScopeProvider",
+    );
+  }
+  return sectionId;
+}
+
+export function useScopedSidebarFold() {
+  const sectionId = useSidebarFoldScope();
+  const { getTrackFold, patchTrackFold } = useSidebarFold();
+  return {
+    sectionId,
+    fold: (trackId: TrackId) => getTrackFold(sectionId, trackId),
+    patchFold: (trackId: TrackId, patch: Partial<NavLocation>) =>
+      patchTrackFold(sectionId, trackId, patch),
+  };
 }
 
 export function useSidebarActive() {

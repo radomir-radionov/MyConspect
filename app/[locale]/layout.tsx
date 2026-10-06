@@ -3,8 +3,8 @@ import { HandbookShell } from "@/components/nav";
 import { LocaleHtmlLang } from "@/components/nav/LocaleHtmlLang";
 import { chromeFor } from "@/lib/i18n/chrome";
 import { isLocale, localeStaticParams, type Locale } from "@/lib/i18n/locales";
-import { withoutSearchText } from "@/lib/nav/chromeNav";
-import { handbookNav } from "@/lib/nav/handbook";
+import { withoutSearchTextSections } from "@/lib/nav/chromeNav";
+import { handbookNavSections } from "@/lib/nav/handbook";
 import {
   formatSiteLastUpdated,
   siteLastUpdatedIso,
@@ -29,7 +29,7 @@ export default async function LocaleLayout({
     <>
       <LocaleHtmlLang locale={locale} />
       <HandbookShell
-        groups={withoutSearchText(handbookNav(locale))}
+        sections={withoutSearchTextSections(handbookNavSections(locale))}
         chrome={chromeFor(locale)}
         lastUpdatedIso={lastUpdatedIso}
         lastUpdatedLabel={formatSiteLastUpdated(lastUpdatedIso)}

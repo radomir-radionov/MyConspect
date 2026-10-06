@@ -151,6 +151,7 @@ export function ConceptList({
         concept={concept}
         notesQuery={notesQuery}
         chrome={chrome}
+        asPageTitle
       />
     );
   }
@@ -270,10 +271,12 @@ function ConceptDetail({
   concept,
   notesQuery,
   chrome,
+  asPageTitle = false,
 }: {
   concept: Concept;
   notesQuery: string;
   chrome: ChromeCopy;
+  asPageTitle?: boolean;
 }) {
   const { showBack, showNext, goBack, goNext } = useHandbookTopicNav({
     conceptOpen: true,
@@ -284,7 +287,7 @@ function ConceptDetail({
       <ConceptTitleHeader
         title={concept.title}
         chrome={chrome}
-        variant="detail"
+        variant={asPageTitle ? "index" : "detail"}
         showBack={showBack}
         onBack={goBack}
         showNext={showNext}

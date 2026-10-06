@@ -4,8 +4,13 @@ import type { Locale } from "./locales";
 const RU_BLURBS: Readonly<Record<string, string>> = {
   "2024+ CSS features and advanced phase-2 topics.":
     "Возможности CSS 2024+ и продвинутые темы phase-2.",
+  "AAA and the test pyramid.": "AAA и пирамида тестов.",
+  "AAA, pyramid, layers, practices, and tooling.":
+    "AAA, пирамида, слои, практики и инструменты.",
   "AAA, the test pyramid, doubles, and Jest.":
     "AAA, пирамида тестов, doubles и Jest.",
+  "AMQP exchanges, queues, routing, and task queues.":
+    "AMQP exchanges, очереди, маршрутизация и task queues.",
   "Accessibility, SEO, and advanced APIs.":
     "Доступность, SEO и продвинутые API.",
   "ACID, CAP, transactions, and normalization.":
@@ -24,6 +29,13 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Основы алгоритмов и анализ сложности.",
   "App Router, data, routing, and the Next.js platform.":
     "App Router, данные, маршрутизация и платформа Next.js.",
+  "App Router, file-based routes, navigation, and metadata.":
+    "App Router, файловые маршруты, навигация и metadata.",
+  "App Router, file-based routes, navigation, metadata, and SEO.":
+    "App Router, файловые маршруты, навигация, metadata и SEO.",
+  "AWS, GCP, Azure, and managed infrastructure.":
+    "AWS, GCP, Azure и managed-инфраструктура.",
+  "AWS, GCP, and Azure.": "AWS, GCP и Azure.",
   "App types and security.": "Типы приложений и безопасность.",
   "Architecture, libraries, performance, and legacy.":
     "Архитектура, библиотеки, производительность и legacy.",
@@ -33,7 +45,15 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Массивы, деревья, графы, кучи и выбор структуры.",
   "AuthN/AuthZ, sessions, JWT, OAuth, cookies, and storage.":
     "AuthN/AuthZ, сессии, JWT, OAuth, cookies и storage.",
+  "Basic value types — string, number, boolean, arrays, any, null, undefined.":
+    "Базовые типы значений — string, number, boolean, arrays, any, null, undefined.",
+  "Best common type, contextual typing, and inference.":
+    "Best common type, контекстная типизация и вывод типов.",
   "Big O and algorithm fundamentals.": "Big O и основы алгоритмов.",
+  "Broker fundamentals and selection.":
+    "Основы брокеров сообщений и выбор решения.",
+  "Broker fundamentals, queue vs log, and broker selection.":
+    "Основы брокеров, queue vs log и выбор брокера.",
   "Big O, common algorithms, and interview patterns.":
     "Big O, типовые алгоритмы и паттерны для собеседований.",
   "Binary trees, BFS/DFS traversal, graph representations, and tries for prefix search — including recursive vs iterative trade-offs.":
@@ -44,6 +64,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Ветки, remote и командные практики.",
   "Browser security, Core Web Vitals, and integrations.":
     "Безопасность браузера, Core Web Vitals и интеграции.",
+  "Browser security and third-party integrations.":
+    "Безопасность браузера и сторонние интеграции.",
   "Bundlers, CI, Docker, and delivery.": "Бандлеры, CI, Docker и доставка.",
   "Call signatures, overloads, and this typing.":
     "Сигнатуры вызова, перегрузки и типизация this.",
@@ -56,6 +78,20 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "CI/CD, package managers, and task runners.":
     "CI/CD, менеджеры пакетов и task runners.",
   "CI/CD, packages, and bundlers.": "CI/CD, пакеты и бандлеры.",
+  "Cache, sessions, data structures, and TTL.":
+    "Кэш, сессии, структуры данных и TTL.",
+  "Cloud fundamentals and provider comparison.":
+    "Основы облаков и сравнение провайдеров.",
+  "Coding tasks and live-coding challenges.":
+    "Задачи по коду и live-coding challenges.",
+  "Column-store OLAP, analytics, and fast aggregates.":
+    "Column-store OLAP, аналитика и быстрые агрегаты.",
+  "Compiler directives, ambient declarations, and declare.":
+    "Директивы компилятора, ambient declarations и declare.",
+  "Compose classes from partial building blocks.":
+    "Композиция классов из частичных building blocks.",
+  "Compute Engine, Cloud Storage, Cloud SQL, Cloud Run, Pub/Sub.":
+    "Compute Engine, Cloud Storage, Cloud SQL, Cloud Run и Pub/Sub.",
   "Components, hooks, server rendering, and ecosystem.":
     "Компоненты, хуки, серверный рендеринг и экосистема.",
   "Composition, MVC, layers/DDD, data flow, and frontend structure.":
@@ -81,10 +117,19 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Каркас документа, метаданные, элементы и атрибуты.",
   "Document structure, semantics, rendering, forms, a11y, and SEO.":
     "Структура документа, семантика, рендеринг, формы, a11y и SEO.",
+  "Document structure, semantics, rendering, forms, a11y, UX/UI, and SEO.":
+    "Структура документа, семантика, рендеринг, формы, a11y, UX/UI и SEO.",
+  "Documents, aggregation, and Mongoose.": "Документы, агрегации и Mongoose.",
   "Document, events, and extra browser APIs.":
     "Document, события и дополнительные браузерные API.",
   "DOM tree, querying, mutation, BOM, and script loading.":
     "DOM-дерево, поиск, мутации, BOM и загрузка скриптов.",
+  "EC2, S3, RDS, Lambda, SQS, and common AWS services.":
+    "EC2, S3, RDS, Lambda, SQS и типовые сервисы AWS.",
+  "ES modules, CommonJS, resolution, and module emit targets.":
+    "ES modules, CommonJS, resolution и цели emit модулей.",
+  "ES modules, import/export, and module resolution.":
+    "ES modules, import/export и module resolution.",
   "Don't Repeat Yourself, Keep It Simple, You Aren't Gonna Need It.":
     "Не повторяйся, держи простоту, тебе это не понадобится (DRY, KISS, YAGNI).",
   "Editor and browser developer tools.":
@@ -112,15 +157,33 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Foundations and distributed-systems basics.":
     "Основы и база распределённых систем.",
   "Foundations and SQL.": "Основы и SQL.",
+  "Fields, visibility, inheritance, implements, and abstract classes.":
+    "Поля, видимость, наследование, implements и абстрактные классы.",
   "Framework model, App Router, and design principles.":
     "Модель фреймворка, App Router и принципы проектирования.",
+  "Framework model, rendering, and streaming.":
+    "Модель фреймворка, рендеринг и streaming.",
+  "Function types, generics, parameters, overloads, and this.":
+    "Типы функций, дженерики, параметры, перегрузки и this.",
   "Rendering strategies, Server/Client boundaries, and streaming.":
     "Стратегии рендеринга, границы Server/Client и потоковая передача.",
   "Framework model and design principles.":
     "Модель фреймворка и принципы проектирования.",
   "Generics, type operators, and utility types.":
     "Дженерики, type operators и utility types.",
+  "Generics, keyof, typeof, conditional and mapped types.":
+    "Дженерики, keyof, typeof, conditional и mapped types.",
   "Git, tooling, and adjacent topics.": "Git, тулинг и смежные темы.",
+  "Handbook, language reference, and typing JavaScript.":
+    "Справочник, language reference и типизация JavaScript.",
+  "IaaS/PaaS/SaaS, regions, shared responsibility, and provider comparison.":
+    "IaaS/PaaS/SaaS, регионы, shared responsibility и сравнение провайдеров.",
+  "Integration, system, E2E, visual, performance, and security testing.":
+    "Интеграционное, системное, E2E, визуальное, performance и security-тестирование.",
+  "Integration, system, E2E, visual, performance, security.":
+    "Интеграционное, системное, E2E, визуальное, performance и security.",
+  "Interface, namespace, class, and enum merging.":
+    "Слияние interface, namespace, class и enum.",
   "GoF creational, structural, and behavioral patterns.":
     "Порождающие, структурные и поведенческие паттерны GoF.",
   "Handlers, bubbling, capturing, delegation, and custom events.":
@@ -323,10 +386,24 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Interview Q&A for system design.": "Вопросы/ответы по system design.",
   "Intl, RegExp, Signals (TC39), and eval.":
     "Intl, RegExp, Signals (TC39) и eval.",
+  "JSX in .tsx, intrinsic elements, and component typing.":
+    "JSX в .tsx, intrinsic elements и типизация компонентов.",
+  "Jakob, Fitts, Hick, Miller, Postel, and related cognitive effects.":
+    "Jakob, Fitts, Hick, Miller, Postel и связанные когнитивные эффекты.",
+  "Jest, Vitest, RTL, MSW, and code coverage.":
+    "Jest, Vitest, RTL, MSW и code coverage.",
+  "Jest, Vitest, RTL, MSW, and coverage.": "Jest, Vitest, RTL, MSW и coverage.",
   "Intl, RegExp, Signals, and other extras.":
     "Intl, RegExp, Signals и другие дополнения.",
+  "Kafka, RabbitMQ, NATS, and async messaging patterns.":
+    "Kafka, RabbitMQ, NATS и паттерны асинхронного messaging.",
+  "Kafka, RabbitMQ, and NATS.": "Kafka, RabbitMQ и NATS.",
   "Landmarks, headings, lists, and phrasing elements that carry meaning.":
     "Landmarks, заголовки, списки и phrasing-элементы со смыслом.",
+  "Legacy namespace organization and ambient declarations.":
+    "Legacy namespace organization и ambient declarations.",
+  "Loading metrics, resource hints, and browser performance APIs.":
+    "Метрики загрузки, resource hints и browser performance API.",
   "Language reference and advanced topics.":
     "Справочник по языку и продвинутые темы.",
   "Language reference.": "Справочник по языку.",
@@ -344,12 +421,25 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Сопоставьте паттерны доступа со структурой, затем изучите линейные коллекции, деревья и графы, а также hash lookup и кучи.",
   "MongoDB, Redis, Elasticsearch, and store selection.":
     "MongoDB, Redis, Elasticsearch и выбор хранилища.",
+  "MongoDB, Redis, and ClickHouse.": "MongoDB, Redis и ClickHouse.",
+  "NoSQL types, selection matrix, and Elasticsearch.":
+    "Типы NoSQL, матрица выбора и Elasticsearch.",
+  "Numeric and string enums, const enums, and as const alternatives.":
+    "Числовые и строковые enum, const enum и альтернативы as const.",
   "Nine patterns for assigning responsibilities to objects.":
     "Девять паттернов назначения ответственности объектам.",
   "Node.js and databases.": "Node.js и базы данных.",
+  "Node.js, databases, message brokers, and cloud services.":
+    "Node.js, базы данных, брокеры сообщений и облачные сервисы.",
   "NoSQL, ORM, and query builders.": "NoSQL, ORM и query builders.",
+  "Object shapes, interfaces, optional properties, and tuples.":
+    "Формы объектов, interfaces, optional properties и tuples.",
+  "Object shapes, optional and readonly properties, index signatures, tuples.":
+    "Формы объектов, optional и readonly properties, index signatures и tuples.",
   "Objects, classes, generics, and utilities.":
     "Объекты, классы, дженерики и утилиты.",
+  "Partial, Pick, Omit, Record, ReturnType, and built-in utilities.":
+    "Partial, Pick, Omit, Record, ReturnType и встроенные utility types.",
   "Objects, commits, and everyday workflow.":
     "Объекты, коммиты и повседневный workflow.",
   "OOP pillars and the five SOLID principles for modules and APIs.":
@@ -386,6 +476,9 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Прототипы, классы и объектные паттерны.",
   "Python language notes.": "Заметки по языку Python.",
   "Q&A and coding tasks.": "Вопросы/ответы и задачи по коду.",
+  "Q&A and oral questions.": "Вопросы/ответы и устные вопросы.",
+  "Quick-reference cards and interview memorization checklist.":
+    "Карточки quick-reference и чеклист для запоминания на собеседовании.",
   "Q&A and leftover tooling notes that still sit outside subject interviews.":
     "Вопросы/ответы и оставшиеся заметки по тулингу вне subject-интервью.",
   "Q&A and shell appendix.": "Вопросы/ответы и shell-приложение.",
@@ -401,6 +494,10 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Q&A for system design.": "Вопросы/ответы по system design.",
   "React 19 APIs, SSR, and React Server Components.":
     "API React 19, SSR и React Server Components.",
+  "Redux Toolkit, global client state, and RTK Query.":
+    "Redux Toolkit, глобальный client state и RTK Query.",
+  "Routing, libraries, performance, and legacy.":
+    "Маршрутизация, библиотеки, производительность и legacy.",
   "React 19, SSR, and React Server Components.":
     "React 19, SSR и React Server Components.",
   "Recovery, team practices, hooks, and advanced Git.":
@@ -436,8 +533,18 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Язык SQL, схема, joins, объекты, индексы и PostgreSQL.",
   "SQL, NoSQL, ORMs, and production data patterns.":
     "SQL, NoSQL, ORM и продакшен-паттерны работы с данными.",
+  "Stage 2 and stage 3 decorators for classes and members.":
+    "Stage 2 и stage 3 decorators для классов и членов.",
+  "Static type-checking, compiler, tsconfig, and intro for JS programmers.":
+    "Статическая проверка типов, компилятор, tsconfig и введение для JS-разработчиков.",
   "Static typing, tsconfig, and everyday types.":
     "Статическая типизация, tsconfig и повседневные типы.",
+  "Structural subtyping, assignability, and variance.":
+    "Структурная подтипизация, assignability и variance.",
+  "Subjects, pub/sub, request-reply, and JetStream.":
+    "Subjects, pub/sub, request-reply и JetStream.",
+  "Symbol.iterator, iterables, generators, and for..of.":
+    "Symbol.iterator, iterables, generators и for..of.",
   "Static typing, tsconfig, narrowing, and functions.":
     "Статическая типизация, tsconfig, сужение типов и функции.",
   "Storage, CORS, observers, History, URL, files, and UI timing.":
@@ -446,8 +553,14 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Структура, семантика, формы и медиа.",
   "Styles, app structure, design patterns, data, and infra.":
     "Стили, структура приложения, паттерны, данные и инфра.",
+  "TDD, BDD, doubles, and making tests easy.":
+    "TDD, BDD, doubles и упрощение тестов.",
+  "TDD, BDD, test doubles, and making tests easy.":
+    "TDD, BDD, test doubles и упрощение тестов.",
   "TanStack Query, Router, Table, Virtual, Form, and ecosystem tools.":
     "TanStack Query, Router, Table, Virtual, Form и инструменты экосистемы.",
+  "Topics, partitions, consumer groups, and event streaming.":
+    "Topics, partitions, consumer groups и event streaming.",
   "Transforms, transitions, animations, and visual effects.":
     "Transforms, transitions, анимации и визуальные эффекты.",
   "Transpilers, bundling concepts, bundlers, and code quality.":
@@ -458,6 +571,12 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Two pointers, sliding window и greedy vs DP.",
   "Types, compiler, generics, and typing JavaScript.":
     "Типы, компилятор, дженерики и типизация JavaScript.",
+  "Unique primitive keys and unique symbol types.":
+    "Уникальные примитивные ключи и unique symbol types.",
+  "VMs, Blob Storage, Azure SQL, Functions, and Service Bus.":
+    "VMs, Blob Storage, Azure SQL, Functions и Service Bus.",
+  "Visual hierarchy, consistency, spacing, feedback, and accessibility.":
+    "Визуальная иерархия, консистентность, отступы, feedback и доступность.",
   "Typography, color, decoration, form styling, and print.":
     "Типографика, цвет, декорация, стили форм и печать.",
   "URL to pixels: parse, CSSOM, render tree, layout, paint, composite.":
@@ -474,8 +593,14 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Web components, shadow DOM и новые HTML API.",
   "What computation is, plus programming paradigms and logic programming.":
     "Что такое вычисления, парадигмы программирования и логическое программирование.",
+  "When to use ES modules vs legacy namespaces.":
+    "Когда использовать ES modules vs legacy namespaces.",
+  "var vs let vs const and destructuring with types.":
+    "var vs let vs const и деструктуризация с типами.",
   "Working with coding agents and docs tools.":
     "Работа с кодинг-агентами и инструментами документации.",
+  Conspect: "Конспект",
+  Interviews: "Собеседования",
 };
 
 /** Return localized catalog blurb; falls back to English when RU is missing. */

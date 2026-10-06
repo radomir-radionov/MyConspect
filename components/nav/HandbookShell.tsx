@@ -24,7 +24,8 @@ import { ScrollToTopButton } from "./ScrollToTopButton";
 import { useResetMainScroll } from "./useResetMainScroll";
 import { useSidebarCollapsed } from "./useSidebarCollapsed";
 import { useHandbookShortcuts } from "./useHandbookShortcuts";
-import type { ChromeCopy, NavGroup } from "@/lib/nav";
+import type { ChromeCopy, NavRootSection } from "@/lib/nav";
+import { allNavGroups } from "@/lib/nav/sections";
 
 const SIDEBAR_MOTION =
   "transition-[width,transform,box-shadow] duration-200 ease-out motion-reduce:transition-none";
@@ -41,18 +42,19 @@ const PEEK_LEAVE_MS = 80;
 const PEEK_TOGGLE_LOCK_MS = 300;
 
 export function HandbookShell({
-  groups,
+  sections,
   chrome,
   lastUpdatedIso,
   lastUpdatedLabel,
   children,
 }: {
-  groups: readonly NavGroup[];
+  sections: readonly NavRootSection[];
   chrome: ChromeCopy;
   lastUpdatedIso: string;
   lastUpdatedLabel: string;
   children: React.ReactNode;
 }) {
+  const groups = useMemo(() => allNavGroups(sections), [sections]);
   const { navOpen, closeNav, toggleNav, openNav } = useMobileNav();
   const { collapsed, expandSidebar, toggleSidebar } = useSidebarCollapsed();
   const [searchSheetDismissed, setSearchSheetDismissed] = useState(false);
@@ -69,7 +71,6 @@ export function HandbookShell({
     query,
     deferredQuery,
     mode,
-    searchGroups,
     changeQuery,
     clearQuery,
     changeMode,
@@ -147,6 +148,7 @@ export function HandbookShell({
       <div className="flex h-dvh max-h-dvh flex-col overflow-hidden">
         <div className="relative z-50 shrink-0 overflow-visible">
           <SiteHeader
+            sections={sections}
             query={query}
             onQueryChange={onQueryChange}
             onHomeClick={onHomeClick}
@@ -209,7 +211,7 @@ export function HandbookShell({
                   style={{ overscrollBehavior: "contain" }}
                 >
                   <TopicSidebar
-                    groups={searchGroups}
+                    sections={sections}
                     query={sidebarQuery}
                     chrome={chrome}
                     onNavigate={selectNavResult}

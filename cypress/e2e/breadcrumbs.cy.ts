@@ -5,7 +5,7 @@ describe("handbook breadcrumbs", () => {
 
   it("lives in the content pane and stays stuck while that pane scrolls", () => {
     cy.visit("/en/data-structures/data-structures-trees#tree");
-    cy.contains("h1", "Trees & graphs");
+    cy.contains("h2", "Tree");
     cy.mainScroller()
       .find("nav[aria-label='Breadcrumb']")
       .should("be.visible")

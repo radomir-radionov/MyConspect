@@ -66,6 +66,14 @@ export type NavGroup = {
   readonly hubTopic?: NavTopic;
 };
 
+export type NavRootSectionId = "conspect" | "interviews";
+
+export type NavRootSection = {
+  readonly id: NavRootSectionId;
+  readonly title: string;
+  readonly groups: readonly NavGroup[];
+};
+
 export type Crumb = {
   readonly label: string;
   readonly href?: string;
@@ -87,6 +95,9 @@ export type ChromeCopy = {
   readonly inNotes: string;
   readonly clearSearch: string;
   readonly topicsNav: string;
+  readonly sectionNav: string;
+  readonly conspectNav: string;
+  readonly interviewsNav: string;
   readonly openMenu: string;
   readonly closeMenu: string;
   readonly collapseSidebar: string;

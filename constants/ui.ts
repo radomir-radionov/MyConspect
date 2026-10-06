@@ -13,3 +13,5 @@ export const SEARCH_INDEX_HREF = "/search-index";
 export const NAV_FOLD_OPEN_MS = 220;
 export const SIDEBAR_PIN_HOLD_MS = NAV_FOLD_OPEN_MS + 200;
 export const SIDEBAR_COLLAPSE_ALL_EVENT = "myconspect:sidebar-collapse-all";
+export const SIDEBAR_COLLAPSE_TRACKS_EVENT =
+  "myconspect:sidebar-collapse-tracks";

@@ -123,9 +123,15 @@ export function ConceptTitleHeader({
 
   return (
     <div className={variant === "detail" ? DETAIL_HEADER : INDEX_HEADER}>
-      <h2 className="col-start-1 row-start-1 min-w-0 break-words text-2xl font-semibold leading-8 tracking-tight text-zinc-900 dark:text-zinc-50">
-        {title}
-      </h2>
+      {variant === "detail" ? (
+        <h2 className="col-start-1 row-start-1 min-w-0 break-words text-2xl font-semibold leading-8 tracking-tight text-zinc-900 dark:text-zinc-50">
+          {title}
+        </h2>
+      ) : (
+        <h1 className="col-start-1 row-start-1 min-w-0 break-words text-2xl font-semibold leading-8 tracking-tight text-zinc-900 dark:text-zinc-50">
+          {title}
+        </h1>
+      )}
       {hasActions ? (
         <span className="col-start-2 row-start-1 inline-flex shrink-0 items-center justify-end justify-self-end gap-1.5">
           <ConceptNavGroup

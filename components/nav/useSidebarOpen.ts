@@ -9,9 +9,17 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import { SIDEBAR_COLLAPSE_ALL_EVENT } from "@/constants";
+import {
+  SIDEBAR_COLLAPSE_ALL_EVENT,
+  SIDEBAR_COLLAPSE_TRACKS_EVENT,
+} from "@/constants";
 import type { TrackId } from "@/lib/catalog";
-import type { NavGroup } from "@/lib/nav";
+import type { NavRootSection, NavRootSectionId } from "@/lib/nav";
+import {
+  navGroupsForPath,
+  navTrackScope,
+  type NavTrackScope,
+} from "@/lib/nav/sections";
 import { hashIdFrom } from "@/lib/nav/navUtils";
 import { handbookLocation } from "./hash";
 import { isHomePath, locationForPath, type NavLocation } from "./location";
@@ -64,8 +72,8 @@ function foldFromSync(
 }
 
 export function collapseAllSidebarTracks(
-  setOpenTrackIds: Dispatch<SetStateAction<Set<TrackId>>>,
-  setTrackFolds: Dispatch<SetStateAction<Map<TrackId, NavLocation>>>,
+  setOpenTrackIds: Dispatch<SetStateAction<Set<NavTrackScope>>>,
+  setTrackFolds: Dispatch<SetStateAction<Map<NavTrackScope, NavLocation>>>,
 ) {
   setOpenTrackIds(new Set());
   setTrackFolds(new Map());
@@ -78,25 +86,33 @@ export function dispatchSidebarCollapseAll() {
   window.dispatchEvent(new Event(SIDEBAR_COLLAPSE_ALL_EVENT));
 }
 
+export function dispatchSidebarCollapseTracks() {
+  if (typeof window === "undefined") {
+    return;
+  }
+  window.dispatchEvent(new Event(SIDEBAR_COLLAPSE_TRACKS_EVENT));
+}
+
 export function foldRevision(
-  folds: ReadonlyMap<TrackId, NavLocation>,
-  openTracks: ReadonlySet<TrackId>,
+  folds: ReadonlyMap<NavTrackScope, NavLocation>,
+  openTracks: ReadonlySet<NavTrackScope>,
 ): string {
   return [...openTracks]
     .sort()
-    .map((id) => {
-      const fold = folds.get(id) ?? EMPTY_FOLD;
-      return `${id}:${fold.subjectHref ?? ""}:${fold.clusterKey ?? ""}:${fold.sectionKey ?? ""}:${fold.topicHref ?? ""}`;
+    .map((scope) => {
+      const fold = folds.get(scope) ?? EMPTY_FOLD;
+      return `${scope}:${fold.subjectHref ?? ""}:${fold.clusterKey ?? ""}:${fold.sectionKey ?? ""}:${fold.topicHref ?? ""}`;
     })
     .join("|");
 }
 
 export function sidebarNavLocation(
-  groups: readonly NavGroup[],
+  sections: readonly NavRootSection[],
   pathname: string,
   hash: string,
 ): { pathname: string; hash: string; location: NavLocation } {
   const located = handbookLocation(pathname, hash);
+  const groups = navGroupsForPath(sections, located.pathname);
   return {
     pathname: located.pathname,
     hash: located.hash,
@@ -105,35 +121,47 @@ export function sidebarNavLocation(
 }
 
 export function useSidebarOpen({
-  groups,
+  sections,
   pathname,
   hash,
   searching,
   activeTrackId,
+  activeRootSectionId,
 }: {
-  groups: readonly NavGroup[];
+  sections: readonly NavRootSection[];
   pathname: string;
   hash: string;
   searching: boolean;
   activeTrackId: TrackId | null;
+  activeRootSectionId: NavRootSectionId;
 }) {
-  const nav = sidebarNavLocation(groups, pathname, hash);
+  const nav = sidebarNavLocation(sections, pathname, hash);
   const { location } = nav;
   const activeConceptId = hashIdFrom(nav.hash);
-  const [openTrackIds, setOpenTrackIds] = useState<Set<TrackId>>(() =>
-    activeTrackId ? new Set([activeTrackId]) : new Set(),
+  const activeTrackScope =
+    activeTrackId !== null
+      ? navTrackScope(activeRootSectionId, activeTrackId)
+      : null;
+  const [openRootSectionIds, setOpenRootSectionIds] = useState<
+    Set<NavRootSectionId>
+  >(() => new Set([activeRootSectionId]));
+  const [openTrackIds, setOpenTrackIds] = useState<Set<NavTrackScope>>(() =>
+    activeTrackScope ? new Set([activeTrackScope]) : new Set(),
   );
-  const [trackFolds, setTrackFolds] = useState<Map<TrackId, NavLocation>>(
+  const [trackFolds, setTrackFolds] = useState<Map<NavTrackScope, NavLocation>>(
     () => {
-      if (!activeTrackId) {
+      if (!activeTrackScope) {
         return new Map();
       }
-      return new Map([[activeTrackId, location]]);
+      return new Map([[activeTrackScope, location]]);
     },
   );
-  const navSnapshotRef = useRef<NavSnapshot>({
+  const navSnapshotRef = useRef<
+    NavSnapshot & { activeRootSectionId: NavRootSectionId }
+  >({
     searching,
     activeTrackId,
+    activeRootSectionId,
     pathname: nav.pathname,
     hash: nav.hash,
     activeConceptId,
@@ -144,6 +172,7 @@ export function useSidebarOpen({
     if (
       searching === snapshot.searching &&
       activeTrackId === snapshot.activeTrackId &&
+      activeRootSectionId === snapshot.activeRootSectionId &&
       nav.pathname === snapshot.pathname &&
       nav.hash === snapshot.hash &&
       activeConceptId === snapshot.activeConceptId
@@ -154,17 +183,20 @@ export function useSidebarOpen({
       syncOpenState({
         snapshot,
         activeTrackId,
+        activeRootSectionId,
         pathname: nav.pathname,
         hash: nav.hash,
         activeConceptId,
         location,
         setOpenTrackIds,
         setTrackFolds,
+        setOpenRootSectionIds,
       });
     }
     navSnapshotRef.current = {
       searching,
       activeTrackId,
+      activeRootSectionId,
       pathname: nav.pathname,
       hash: nav.hash,
       activeConceptId,
@@ -172,6 +204,7 @@ export function useSidebarOpen({
   }, [
     searching,
     activeTrackId,
+    activeRootSectionId,
     nav.pathname,
     nav.hash,
     activeConceptId,
@@ -179,16 +212,22 @@ export function useSidebarOpen({
   ]);
 
   const getTrackFold = useCallback(
-    (trackId: TrackId): NavLocation => trackFolds.get(trackId) ?? EMPTY_FOLD,
+    (sectionId: NavRootSectionId, trackId: TrackId): NavLocation =>
+      trackFolds.get(navTrackScope(sectionId, trackId)) ?? EMPTY_FOLD,
     [trackFolds],
   );
 
   const patchTrackFold = useCallback(
-    (trackId: TrackId, patch: Partial<NavLocation>) => {
+    (
+      sectionId: NavRootSectionId,
+      trackId: TrackId,
+      patch: Partial<NavLocation>,
+    ) => {
+      const scope = navTrackScope(sectionId, trackId);
       setTrackFolds((previous) => {
         const next = new Map(previous);
-        const current = next.get(trackId) ?? EMPTY_FOLD;
-        next.set(trackId, { ...current, ...patch });
+        const current = next.get(scope) ?? EMPTY_FOLD;
+        next.set(scope, { ...current, ...patch });
         return next;
       });
     },
@@ -196,37 +235,83 @@ export function useSidebarOpen({
   );
 
   useEffect(() => {
-    function onCollapseAll() {
+    function onCollapseTracks() {
       collapseAllSidebarTracks(setOpenTrackIds, setTrackFolds);
     }
+    function onCollapseAll() {
+      onCollapseTracks();
+      setOpenRootSectionIds(new Set(["conspect"]));
+    }
+    window.addEventListener(SIDEBAR_COLLAPSE_TRACKS_EVENT, onCollapseTracks);
     window.addEventListener(SIDEBAR_COLLAPSE_ALL_EVENT, onCollapseAll);
-    return () =>
+    return () => {
+      window.removeEventListener(
+        SIDEBAR_COLLAPSE_TRACKS_EVENT,
+        onCollapseTracks,
+      );
       window.removeEventListener(SIDEBAR_COLLAPSE_ALL_EVENT, onCollapseAll);
+    };
   }, []);
 
-  const toggleTrackId = useCallback((trackId: TrackId) => {
-    setOpenTrackIds((previous) => {
-      if (previous.has(trackId)) {
+  const toggleRootSectionId = useCallback((sectionId: NavRootSectionId) => {
+    setOpenRootSectionIds((previous) => {
+      if (previous.has(sectionId)) {
         return new Set();
       }
-      return new Set([trackId]);
+      return new Set([sectionId]);
     });
   }, []);
 
-  const ensureTrackOpen = useCallback((trackId: TrackId) => {
-    setOpenTrackIds((previous) => {
-      if (previous.size === 1 && previous.has(trackId)) {
+  const ensureRootSectionOpen = useCallback((sectionId: NavRootSectionId) => {
+    setOpenRootSectionIds((previous) => {
+      if (previous.size === 1 && previous.has(sectionId)) {
         return previous;
       }
-      return new Set([trackId]);
+      return new Set([sectionId]);
     });
   }, []);
+
+  const toggleTrackId = useCallback(
+    (sectionId: NavRootSectionId, trackId: TrackId) => {
+      const scope = navTrackScope(sectionId, trackId);
+      setOpenTrackIds((previous) => {
+        if (previous.has(scope)) {
+          return new Set();
+        }
+        return new Set([scope]);
+      });
+    },
+    [],
+  );
+
+  const ensureTrackOpen = useCallback(
+    (sectionId: NavRootSectionId, trackId: TrackId) => {
+      const scope = navTrackScope(sectionId, trackId);
+      setOpenTrackIds((previous) => {
+        if (previous.size === 1 && previous.has(scope)) {
+          return previous;
+        }
+        return new Set([scope]);
+      });
+    },
+    [],
+  );
+
+  const isTrackOpen = useCallback(
+    (sectionId: NavRootSectionId, trackId: TrackId) =>
+      openTrackIds.has(navTrackScope(sectionId, trackId)),
+    [openTrackIds],
+  );
 
   return {
     activeConceptId,
-    openTrackIds,
+    openRootSectionIds,
+    toggleRootSectionId,
+    ensureRootSectionOpen,
     toggleTrackId,
     ensureTrackOpen,
+    isTrackOpen,
+    openTrackIds,
     trackFolds,
     getTrackFold,
     patchTrackFold,
@@ -236,43 +321,70 @@ export function useSidebarOpen({
 function syncOpenState({
   snapshot,
   activeTrackId,
+  activeRootSectionId,
   pathname,
   hash,
   activeConceptId,
   location,
   setOpenTrackIds,
   setTrackFolds,
+  setOpenRootSectionIds,
 }: {
-  snapshot: NavSnapshot;
+  snapshot: NavSnapshot & { activeRootSectionId: NavRootSectionId };
   activeTrackId: TrackId | null;
+  activeRootSectionId: NavRootSectionId;
   pathname: string;
   hash: string;
   activeConceptId: string;
   location: NavLocation;
-  setOpenTrackIds: Dispatch<SetStateAction<Set<TrackId>>>;
-  setTrackFolds: Dispatch<SetStateAction<Map<TrackId, NavLocation>>>;
+  setOpenTrackIds: Dispatch<SetStateAction<Set<NavTrackScope>>>;
+  setTrackFolds: Dispatch<SetStateAction<Map<NavTrackScope, NavLocation>>>;
+  setOpenRootSectionIds: Dispatch<SetStateAction<Set<NavRootSectionId>>>;
 }) {
   const leftSearch = snapshot.searching;
+  const activeTrackScope =
+    activeTrackId !== null
+      ? navTrackScope(activeRootSectionId, activeTrackId)
+      : null;
   if (!leftSearch && pathname !== snapshot.pathname && isHomePath(pathname)) {
     collapseAllSidebarTracks(setOpenTrackIds, setTrackFolds);
+    setOpenRootSectionIds(new Set(["conspect"]));
+    return;
+  }
+  if (!leftSearch && activeRootSectionId !== snapshot.activeRootSectionId) {
+    collapseAllSidebarTracks(setOpenTrackIds, setTrackFolds);
+    setOpenRootSectionIds(new Set([activeRootSectionId]));
     return;
   }
   if (
     leftSearch ||
-    activeTrackId !== snapshot.activeTrackId ||
+    activeRootSectionId !== snapshot.activeRootSectionId ||
     pathname !== snapshot.pathname
   ) {
-    if (activeTrackId) {
+    setOpenRootSectionIds((previous) => {
+      if (previous.size === 1 && previous.has(activeRootSectionId)) {
+        return previous;
+      }
+      return new Set([activeRootSectionId]);
+    });
+  }
+  if (
+    leftSearch ||
+    activeTrackId !== snapshot.activeTrackId ||
+    activeRootSectionId !== snapshot.activeRootSectionId ||
+    pathname !== snapshot.pathname
+  ) {
+    if (activeTrackScope) {
       setOpenTrackIds((previous) => {
-        if (previous.size === 1 && previous.has(activeTrackId)) {
+        if (previous.size === 1 && previous.has(activeTrackScope)) {
           return previous;
         }
-        return new Set([activeTrackId]);
+        return new Set([activeTrackScope]);
       });
     }
   }
   if (leftSearch || pathname !== snapshot.pathname || hash !== snapshot.hash) {
-    if (activeTrackId) {
+    if (activeTrackScope) {
       const clearingHash =
         !leftSearch &&
         pathname === snapshot.pathname &&
@@ -281,18 +393,21 @@ function syncOpenState({
       setTrackFolds((previous) => {
         const next = new Map(previous);
         next.set(
-          activeTrackId,
-          foldFromSync(location, previous.get(activeTrackId), clearingHash),
+          activeTrackScope,
+          foldFromSync(location, previous.get(activeTrackScope), clearingHash),
         );
         return next;
       });
     }
   } else if (activeConceptId && activeConceptId !== snapshot.activeConceptId) {
-    if (activeTrackId && location.topicHref) {
+    if (activeTrackScope && location.topicHref) {
       setTrackFolds((previous) => {
         const next = new Map(previous);
-        const current = next.get(activeTrackId) ?? EMPTY_FOLD;
-        next.set(activeTrackId, { ...current, topicHref: location.topicHref });
+        const current = next.get(activeTrackScope) ?? EMPTY_FOLD;
+        next.set(activeTrackScope, {
+          ...current,
+          topicHref: location.topicHref,
+        });
         return next;
       });
     }
