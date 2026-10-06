@@ -4,7 +4,7 @@ import type { PointerEvent } from "react";
 import { HANDBOOK_SIDEBAR_ID } from "@/constants";
 
 const RAIL_EDGE = "2.5rem";
-const OPEN_CENTER = "10rem";
+const OPEN_CENTER = "9.375rem";
 
 export function SidebarDockButton({
   collapsed,

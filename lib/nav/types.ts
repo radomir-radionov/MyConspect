@@ -97,7 +97,9 @@ export type ChromeCopy = {
   readonly topicsNav: string;
   readonly sectionNav: string;
   readonly conspectNav: string;
+  readonly conspectNavHint: string;
   readonly interviewsNav: string;
+  readonly interviewsNavHint: string;
   readonly openMenu: string;
   readonly closeMenu: string;
   readonly collapseSidebar: string;

@@ -1,34 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   HANDBOOK_HEADER_ID,
   HANDBOOK_SEARCH_INPUT_ID,
   HANDBOOK_SIDEBAR_ID,
 } from "@/constants";
-import {
-  inferNavRootSection,
-  sectionSwitchHref,
-  type ChromeCopy,
-  type NavRootSection,
-  type NavRootSectionId,
-  type SearchMode,
-} from "@/lib/nav";
+import { type ChromeCopy, type SearchMode } from "@/lib/nav";
 import {
   homeHref,
   instructionsHref,
   localeFromPathname,
 } from "@/lib/i18n/paths";
 import { SITE_NAME } from "@/lib/site";
-import { dispatchSidebarCollapseTracks } from "./useSidebarOpen";
 import { ContactLinks } from "./ContactLinks";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { SiteMark } from "./SiteMark";
 import { ThemeToggle } from "./ThemeToggle";
 
 export function SiteHeader({
-  sections,
   query,
   onQueryChange,
   onHomeClick,
@@ -38,7 +29,6 @@ export function SiteHeader({
   navOpen,
   onToggleNav,
 }: {
-  sections: readonly NavRootSection[];
   query: string;
   onQueryChange: (value: string) => void;
   onHomeClick: () => void;
@@ -50,17 +40,6 @@ export function SiteHeader({
 }) {
   const pathname = usePathname() ?? "/en";
   const locale = localeFromPathname(pathname);
-  const router = useRouter();
-  const activeSection = inferNavRootSection(pathname);
-
-  const onSelectSection = (sectionId: NavRootSectionId) => {
-    if (sectionId === activeSection) {
-      return;
-    }
-    dispatchSidebarCollapseTracks();
-    const href = sectionSwitchHref(sections, pathname, sectionId);
-    router.push(href, { scroll: false });
-  };
 
   return (
     <div id={HANDBOOK_HEADER_ID} className="relative z-40 shrink-0">
@@ -78,31 +57,9 @@ export function SiteHeader({
               </span>
               <span className="sr-only sm:hidden">{SITE_NAME}</span>
             </Link>
-            <span
-              aria-hidden="true"
-              className="ml-1 hidden h-6 w-px shrink-0 bg-zinc-200 sm:ml-2 sm:block dark:bg-zinc-800"
-            />
-            <div
-              role="radiogroup"
-              aria-label={chrome.sectionNav}
-              className="ml-1.5 flex h-7 max-w-[min(42vw,11rem)] shrink-0 rounded-md bg-zinc-100 p-0.5 sm:ml-2 sm:max-w-none dark:bg-zinc-800"
-            >
-              <SectionButton
-                checked={activeSection === "conspect"}
-                label={chrome.conspectNav}
-                value="conspect"
-                onSelect={onSelectSection}
-              />
-              <SectionButton
-                checked={activeSection === "interviews"}
-                label={chrome.interviewsNav}
-                value="interviews"
-                onSelect={onSelectSection}
-              />
-            </div>
           </div>
           <div className="flex min-w-0 flex-1 items-center px-1.5 sm:px-3">
-            <div className="relative w-full min-w-0 max-w-2xl">
+            <div className="relative min-w-0 flex-1 max-w-2xl">
               <label className="block min-w-0">
                 <span className="sr-only">
                   {mode === "notes"
@@ -142,8 +99,8 @@ export function SiteHeader({
                   }
                   className={
                     query.length > 0
-                      ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[6.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[9.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
-                      : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[4.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[7.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                      ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[6.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[9.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
+                      : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[4.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[7.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
                   }
                 />
               </label>
@@ -193,10 +150,6 @@ export function SiteHeader({
             </div>
           </div>
           <div className="sticky right-0 z-10 hidden shrink-0 items-center gap-0.5 bg-white pr-(--chrome-inline) pl-2 md:flex dark:bg-zinc-950">
-            <span
-              aria-hidden="true"
-              className="mr-1 h-6 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800"
-            />
             <LanguageSwitcher locale={locale} />
             <ThemeToggle />
           </div>
@@ -310,37 +263,6 @@ function MenuGlyph({ open }: { open: boolean }) {
         />
       )}
     </svg>
-  );
-}
-
-function SectionButton({
-  checked,
-  label,
-  value,
-  onSelect,
-}: {
-  checked: boolean;
-  label: string;
-  value: NavRootSectionId;
-  onSelect: (sectionId: NavRootSectionId) => void;
-}) {
-  return (
-    <button
-      type="button"
-      role="radio"
-      aria-checked={checked}
-      aria-label={label}
-      title={label}
-      data-nav-section={value}
-      onClick={() => onSelect(value)}
-      className={
-        checked
-          ? "inline-flex h-6 min-w-0 flex-1 cursor-pointer items-center justify-center truncate rounded bg-white px-1.5 text-[11px] font-medium text-zinc-900 shadow-sm sm:flex-none sm:px-2 sm:text-xs dark:bg-zinc-700 dark:text-zinc-50"
-          : "inline-flex h-6 min-w-0 flex-1 cursor-pointer items-center justify-center truncate rounded px-1.5 text-[11px] font-medium text-zinc-500 hover:text-zinc-800 sm:flex-none sm:px-2 sm:text-xs dark:text-zinc-400 dark:hover:text-zinc-100"
-      }
-    >
-      {label}
-    </button>
   );
 }
 

@@ -70,6 +70,7 @@ import {
   useSidebarHighlight,
 } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
+import { SectionSwitcher } from "./SectionSwitcher";
 import { foldRevision, useSidebarOpen } from "./useSidebarOpen";
 
 export const TopicSidebar = memo(function TopicSidebar({
@@ -260,6 +261,9 @@ export const TopicSidebar = memo(function TopicSidebar({
         className="relative isolate px-2 py-3"
       >
         <div data-nav-sticky-cover="" aria-hidden="true" />
+        <div className="mb-3 px-2">
+          <SectionSwitcher sections={sections} chrome={chrome} />
+        </div>
         {!searching ? (
           <BookmarksPanel chrome={chrome} onNavigate={onNavigate} />
         ) : null}

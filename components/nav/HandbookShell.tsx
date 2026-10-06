@@ -33,9 +33,10 @@ const SIDEBAR_MOBILE_FRAME =
   "fixed inset-x-0 top-14 z-30 flex h-[calc(100dvh-3.5rem)] w-full flex-col";
 const SIDEBAR_DESKTOP =
   "md:pointer-events-auto md:z-20 md:cursor-pointer md:shrink-0 md:translate-x-0 md:overflow-visible md:border-r md:border-zinc-200 dark:md:border-zinc-800";
-const SIDEBAR_DESKTOP_OPEN = `${SIDEBAR_DESKTOP} md:relative md:inset-auto md:top-auto md:right-auto md:bottom-auto md:left-auto md:h-auto md:w-80 md:shadow-none`;
+const SIDEBAR_DESKTOP_WIDTH = "md:w-[300px]";
+const SIDEBAR_DESKTOP_OPEN = `${SIDEBAR_DESKTOP} md:relative md:inset-auto md:top-auto md:right-auto md:bottom-auto md:left-auto md:h-auto ${SIDEBAR_DESKTOP_WIDTH} md:shadow-none`;
 const SIDEBAR_DESKTOP_COLLAPSED = `${SIDEBAR_DESKTOP} md:absolute md:inset-y-0 md:left-0 md:top-0 md:bottom-0 md:h-auto md:w-10 md:shadow-none`;
-const SIDEBAR_DESKTOP_PEEK = `${SIDEBAR_DESKTOP} md:absolute md:inset-y-0 md:left-0 md:top-0 md:bottom-0 md:z-30 md:h-auto md:w-80 md:shadow-lg`;
+const SIDEBAR_DESKTOP_PEEK = `${SIDEBAR_DESKTOP} md:absolute md:inset-y-0 md:left-0 md:top-0 md:bottom-0 md:z-30 md:h-auto ${SIDEBAR_DESKTOP_WIDTH} md:shadow-lg`;
 const SIDEBAR_PANEL_MOTION =
   "flex min-h-0 flex-1 flex-col overflow-hidden transition-opacity duration-200 ease-out motion-reduce:transition-none";
 const PEEK_LEAVE_MS = 80;
@@ -148,7 +149,6 @@ export function HandbookShell({
       <div className="flex h-dvh max-h-dvh flex-col overflow-hidden">
         <div className="relative z-50 shrink-0 overflow-visible">
           <SiteHeader
-            sections={sections}
             query={query}
             onQueryChange={onQueryChange}
             onHomeClick={onHomeClick}
@@ -204,7 +204,9 @@ export function HandbookShell({
                   : `${SIDEBAR_PANEL_MOTION} min-w-0 opacity-100`
               }
             >
-              <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col md:w-80">
+              <div
+                className={`flex h-full min-h-0 min-w-0 flex-1 flex-col ${SIDEBAR_DESKTOP_WIDTH}`}
+              >
                 <div
                   id={HANDBOOK_NAV_ASIDE_ID}
                   className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto"

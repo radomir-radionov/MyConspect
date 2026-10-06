@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -58,65 +57,28 @@ export function NavFold({
   const skipMotion = instant || reducedMotion;
   const gridRef = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState(() => open || skipMotion);
-  const [settled, setSettled] = useState(() => open || skipMotion);
+  const [prevOpen, setPrevOpen] = useState(open);
 
-  if (open) {
-    if (skipMotion) {
-      if (!expanded) {
-        setExpanded(true);
-      }
-      if (!settled) {
-        setSettled(true);
-      }
-    } else if (settled && !expanded) {
-      setSettled(false);
-    }
+  // NavFold stays mounted while closed (`return null`), so expanded can stay false
+  // across open/close cycles. Sync on the transition so the first open does not
+  // flash an empty 0fr grid before children paint.
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    setExpanded(open || skipMotion);
   }
 
   useLayoutEffect(() => {
-    if (!open || skipMotion || expanded) {
+    if (!open || unbox || skipMotion || expanded) {
       return;
     }
-    let inner = 0;
-    const frame = window.requestAnimationFrame(() => {
-      inner = window.requestAnimationFrame(() => setExpanded(true));
-    });
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.cancelAnimationFrame(inner);
-    };
-  }, [open, skipMotion, expanded]);
-
-  useEffect(() => {
-    const node = gridRef.current;
-    if (!open || !node || skipMotion || !expanded) {
-      return;
-    }
-    const finish = (event: TransitionEvent) => {
-      if (
-        event.target !== node ||
-        event.propertyName !== "grid-template-rows"
-      ) {
-        return;
-      }
-      setSettled(true);
-    };
-    node.addEventListener("transitionend", finish);
-    const timeout = window.setTimeout(
-      () => setSettled(true),
-      NAV_FOLD_OPEN_MS + 40,
-    );
-    return () => {
-      node.removeEventListener("transitionend", finish);
-      window.clearTimeout(timeout);
-    };
-  }, [open, skipMotion, expanded]);
+    setExpanded(true);
+  }, [open, unbox, skipMotion, expanded]);
 
   if (!open) {
     return null;
   }
 
-  if (unbox && expanded && settled) {
+  if (unbox || skipMotion) {
     return <>{children}</>;
   }
 
