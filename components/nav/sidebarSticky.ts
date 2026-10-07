@@ -14,7 +14,10 @@ const TOP_VARS = {
   concept: "--nav-sticky-top-concept",
 } as const;
 
-/** Guide lines hang under the pinned row of their level, so they start where its child rows do. */
+/**
+ * The track row draws the thick guide. The subject row draws the thin guide
+ * that continues under every later active row.
+ */
 const GUIDE_VARS: Record<string, string | undefined> = {
   track: "--nav-guide-track",
   subject: "--nav-guide-subject",
@@ -135,14 +138,17 @@ export function measureStickyPathVars(
   for (const element of pathElements(nav)) {
     vars[topVarName(element)] = `${top}px`;
     top += element.offsetHeight + gap;
-    const guideVar =
-      GUIDE_VARS[
-        element.getAttribute("data-nav") ??
-          element.getAttribute("data-nav-pin") ??
-          ""
-      ];
+    const kind =
+      element.getAttribute("data-nav") ??
+      element.getAttribute("data-nav-pin") ??
+      "";
+    const guideVar = GUIDE_VARS[kind];
     if (guideVar) {
-      vars[guideVar] = `${top}px`;
+      // The thick line starts with the first child. The thin line starts at
+      // the subject row's bottom so each later active row has a connector,
+      // and the first row does not get a second line.
+      const guideTop = kind === "track" ? top : top - gap;
+      vars[guideVar] = `${guideTop}px`;
     }
   }
   vars["--nav-sticky-cover"] = `${measureStickyCover(nav, vars)}px`;

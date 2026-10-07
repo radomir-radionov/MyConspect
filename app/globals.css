@@ -676,9 +676,13 @@ body {
 }
 
 #handbook-nav-aside [data-nav-guide] {
+  /* Stop where the last row's rounded corner starts, so nothing hangs below it. */
   --nav-guide-height: max(
     0px,
-    calc(var(--nav-sticky-cover) - var(--nav-guide-top))
+    calc(
+      var(--nav-sticky-cover) - var(--nav-guide-top) - var(--nav-sticky-gap) -
+        0.375rem
+    )
   );
   position: sticky;
   top: var(--nav-guide-top);
