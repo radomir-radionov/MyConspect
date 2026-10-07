@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Kubernetes](https://devinterview.io/question
 ### Kubernetes Basics
 
 <details>
-<summary>What is Kubernetes, and why is it used for container orchestration?</summary>
+<summary>Что такое Kubernetes, and why is it used for container orchestration?</summary>
 
-### What is Kubernetes, and why is it used for container orchestration?
+### Что такое Kubernetes, and why is it used for container orchestration?
 
 **Definition:**
 
@@ -64,9 +64,9 @@ spec:
 </details>
 
 <details>
-<summary>Describe the roles of master and worker nodes in the Kubernetes architecture.</summary>
+<summary>Опишите the roles of master and worker nodes in the Kubernetes architecture.</summary>
 
-### Describe the roles of master and worker nodes in the Kubernetes architecture.
+### Опишите the roles of master and worker nodes in the Kubernetes architecture.
 
 **Definition:**
 
@@ -89,9 +89,9 @@ spec:
 </details>
 
 <details>
-<summary>How do Pods facilitate the management of containers in Kubernetes?</summary>
+<summary>Как Pods facilitate the management of containers in Kubernetes?</summary>
 
-### How do Pods facilitate the management of containers in Kubernetes?
+### Как Pods facilitate the management of containers in Kubernetes?
 
 **Definition:**
 
@@ -129,9 +129,9 @@ spec:
 </details>
 
 <details>
-<summary>What types of Services exist in Kubernetes, and how do they facilitate pod communication?</summary>
+<summary>Какие типы Services есть в Kubernetes и как они обеспечивают pod communication?</summary>
 
-### What types of Services exist in Kubernetes, and how do they facilitate pod communication?
+### Какие типы Services есть в Kubernetes и как они обеспечивают pod communication?
 
 **Definition:**
 
@@ -166,9 +166,9 @@ spec:
 </details>
 
 <details>
-<summary>Explain the functionality of Namespaces in Kubernetes.</summary>
+<summary>Объясните the functionality of Namespaces in Kubernetes.</summary>
 
-### Explain the functionality of Namespaces in Kubernetes.
+### Объясните the functionality of Namespaces in Kubernetes.
 
 **Definition:**
 
@@ -191,9 +191,9 @@ Namespace — граница имён и политик внутри одног�
 ### Kubernetes Objects and Workloads
 
 <details>
-<summary>Differentiate between Deployments, StatefulSets, and DaemonSets.</summary>
+<summary>Различите between Deployments, StatefulSets, and DaemonSets.</summary>
 
-### Differentiate between Deployments, StatefulSets, and DaemonSets.
+### Различите between Deployments, StatefulSets, and DaemonSets.
 
 **Definition:**
 
@@ -213,9 +213,9 @@ Deployment, StatefulSet и DaemonSet все поддерживают поды з
 </details>
 
 <details>
-<summary>How do ReplicaSets ensure pod availability?</summary>
+<summary>Как ReplicaSets ensure pod availability?</summary>
 
-### How do ReplicaSets ensure pod availability?
+### Как ReplicaSets ensure pod availability?
 
 **Definition:**
 
@@ -256,9 +256,9 @@ spec:
 </details>
 
 <details>
-<summary>What are Jobs in Kubernetes, and when is it suitable to use them?</summary>
+<summary>Что такое Jobs in Kubernetes, and when is it suitable to use them?</summary>
 
-### What are Jobs in Kubernetes, and when is it suitable to use them?
+### Что такое Jobs in Kubernetes, and when is it suitable to use them?
 
 **Definition:**
 
@@ -280,9 +280,9 @@ Job запускает поды, пока заданное число не за�
 </details>
 
 <details>
-<summary>How do Labels and Selectors work together in Kubernetes?</summary>
+<summary>Как Labels and Selectors work together in Kubernetes?</summary>
 
-### How do Labels and Selectors work together in Kubernetes?
+### Как Labels and Selectors work together in Kubernetes?
 
 **Definition:**
 
@@ -317,9 +317,9 @@ Deployment, Service и NetworkPolicy могут использовать одн�
 </details>
 
 <details>
-<summary>What would you consider when performing a rolling update in Kubernetes?</summary>
+<summary>Что бы вы you consider when performing a rolling update in Kubernetes?</summary>
 
-### What would you consider when performing a rolling update in Kubernetes?
+### Что бы вы you consider when performing a rolling update in Kubernetes?
 
 **Definition:**
 
@@ -350,9 +350,9 @@ strategy:
 ### Kubernetes Networking
 
 <details>
-<summary>How do Services route traffic to pods in Kubernetes?</summary>
+<summary>Как Services route traffic to pods in Kubernetes?</summary>
 
-### How do Services route traffic to pods in Kubernetes?
+### Как Services route traffic to pods in Kubernetes?
 
 **Definition:**
 
@@ -383,9 +383,9 @@ spec:
 </details>
 
 <details>
-<summary>Describe the purpose of Ingress and its key components.</summary>
+<summary>Опишите the puRPOse of Ingress and its key components.</summary>
 
-### Describe the purpose of Ingress and its key components.
+### Опишите the puRPOse of Ingress and its key components.
 
 **Definition:**
 
@@ -406,9 +406,9 @@ Ingress описывает маршрутизацию HTTP и HTTPS снаруж
 </details>
 
 <details>
-<summary>Explain Kubernetes DNS resolution for services.</summary>
+<summary>Объясните Kubernetes DNS resolution for services.</summary>
 
-### Explain Kubernetes DNS resolution for services.
+### Объясните Kubernetes DNS resolution for services.
 
 **Definition:**
 
@@ -430,9 +430,9 @@ Ingress описывает маршрутизацию HTTP и HTTPS снаруж
 </details>
 
 <details>
-<summary>What is the Container Network Interface (CNI), and how does it integrate with Kubernetes?</summary>
+<summary>Что такое the container Network interface (CNI), and how does it integrate with Kubernetes?</summary>
 
-### What is the Container Network Interface (CNI), and how does it integrate with Kubernetes?
+### Что такое the container Network interface (CNI), and how does it integrate with Kubernetes?
 
 **Definition:**
 
@@ -454,9 +454,9 @@ CNI — интерфейс плагина, через который kubelet п�
 </details>
 
 <details>
-<summary>How do you implement Network Policies, and what are their benefits?</summary>
+<summary>Как you implement Network Policies, and what are their benefits?</summary>
 
-### How do you implement Network Policies, and what are their benefits?
+### Как you implement Network Policies, and what are their benefits?
 
 **Definition:**
 
@@ -500,9 +500,9 @@ spec:
 ### Kubernetes Storage
 
 <details>
-<summary>How do PersistentVolumes (PVs) and PersistentVolumeClaims (PVCs) interact in Kubernetes?</summary>
+<summary>Как PersistentVolumes (PVs) and PersistentVolumeClaims (PVCs) interact in Kubernetes?</summary>
 
-### How do PersistentVolumes (PVs) and PersistentVolumeClaims (PVCs) interact in Kubernetes?
+### Как PersistentVolumes (PVs) and PersistentVolumeClaims (PVCs) interact in Kubernetes?
 
 **Definition:**
 
@@ -534,9 +534,9 @@ Pod volumes.persistentVolumeClaim.claimName = эта PVC
 </details>
 
 <details>
-<summary>Explain dynamic provisioning in relation to StorageClasses.</summary>
+<summary>Объясните dynamic provisioning in relation to StorageClasses.</summary>
 
-### Explain dynamic provisioning in relation to StorageClasses.
+### Объясните dynamic provisioning in relation to StorageClasses.
 
 **Definition:**
 
@@ -572,9 +572,9 @@ resources:
 </details>
 
 <details>
-<summary>What strategies exist for handling persistent data when a pod’s lifecycle ends?</summary>
+<summary>Какие стратегии exist for handling persistent data when a pod’s lifecycle ends?</summary>
 
-### What strategies exist for handling persistent data when a pod’s lifecycle ends?
+### Какие стратегии exist for handling persistent data when a pod’s lifecycle ends?
 
 **Definition:**
 
@@ -600,9 +600,9 @@ Retain — когда данные ценные и решение принима
 ### Kubernetes Cluster Management
 
 <details>
-<summary>Describe the process for initializing a Kubernetes cluster.</summary>
+<summary>Опишите the process for initializing a Kubernetes cluster.</summary>
 
-### Describe the process for initializing a Kubernetes cluster.
+### Опишите the process for initializing a Kubernetes cluster.
 
 **Definition:**
 
@@ -626,9 +626,9 @@ Retain — когда данные ценные и решение принима
 </details>
 
 <details>
-<summary>What factors need to be considered when adding new nodes to a Kubernetes cluster?</summary>
+<summary>Какие факторы учитывать при добавлении new nodes в Kubernetes cluster?</summary>
 
-### What factors need to be considered when adding new nodes to a Kubernetes cluster?
+### Какие факторы учитывать при добавлении new nodes в Kubernetes cluster?
 
 **Definition:**
 
@@ -650,9 +650,9 @@ Retain — когда данные ценные и решение принима
 </details>
 
 <details>
-<summary>How does draining a node affect the running applications, and when should you perform this action?</summary>
+<summary>Как draining a node affect the running applications, and when should you perform this action?</summary>
 
-### How does draining a node affect the running applications, and when should you perform this action?
+### Как draining a node affect the running applications, and when should you perform this action?
 
 **Definition:**
 
@@ -684,9 +684,9 @@ kubectl uncordon <node name>
 </details>
 
 <details>
-<summary>In what scenarios would you scale a Kubernetes deployment, and what tools would you use?</summary>
+<summary>В what scenarios would you scale a Kubernetes deployment, and what tools would you use?</summary>
 
-### In what scenarios would you scale a Kubernetes deployment, and what tools would you use?
+### В what scenarios would you scale a Kubernetes deployment, and what tools would you use?
 
 **Definition:**
 
@@ -712,9 +712,9 @@ HPA — когда нагрузка это CPU, память или метрик
 ### Kubernetes Security
 
 <details>
-<summary>Explain Role-Based Access Control (RBAC) in Kubernetes.</summary>
+<summary>Объясните Role-BASEd Access Control (RBAC) in Kubernetes.</summary>
 
-### Explain Role-Based Access Control (RBAC) in Kubernetes.
+### Объясните Role-BASEd Access Control (RBAC) in Kubernetes.
 
 **Definition:**
 
@@ -739,9 +739,9 @@ RoleBinding в пространстве имён — для команд при�
 </details>
 
 <details>
-<summary>Describe how to securely manage Secrets in Kubernetes.</summary>
+<summary>Опишите how to securely manage Secrets in Kubernetes.</summary>
 
-### Describe how to securely manage Secrets in Kubernetes.
+### Опишите how to securely manage Secrets in Kubernetes.
 
 **Definition:**
 
@@ -763,9 +763,9 @@ Secret хранит небольшое чувствительное значен
 </details>
 
 <details>
-<summary>What is a security context, and how does it apply to pod security?</summary>
+<summary>Что такое security context, and how does it apply to pod security?</summary>
 
-### What is a security context, and how does it apply to pod security?
+### Что такое security context, and how does it apply to pod security?
 
 **Definition:**
 
@@ -789,9 +789,9 @@ Restricted — для нагрузок, открытых в сеть. Baseline �
 </details>
 
 <details>
-<summary>How do NetworkPolicies contribute to pod security, and how would you implement them?</summary>
+<summary>Как NetworkPolicies contribute to pod security, and how would you implement them?</summary>
 
-### How do NetworkPolicies contribute to pod security, and how would you implement them?
+### Как NetworkPolicies contribute to pod security, and how would you implement them?
 
 **Definition:**
 
@@ -817,9 +817,9 @@ NetworkPolicy — для ограничений восток-запад внут
 ### Observability and Monitoring
 
 <details>
-<summary>Describe the role and capabilities of the Metrics Server in a Kubernetes cluster.</summary>
+<summary>Опишите the role and CAPabilities of the Metrics Server in a Kubernetes cluster.</summary>
 
-### Describe the role and capabilities of the Metrics Server in a Kubernetes cluster.
+### Опишите the role and CAPabilities of the Metrics Server in a Kubernetes cluster.
 
 **Definition:**
 
@@ -843,9 +843,9 @@ Metrics Server — дополнение кластера, которое отд�
 </details>
 
 <details>
-<summary>How can Prometheus be configured to monitor Kubernetes components?</summary>
+<summary>Как Prometheus be configured to monitor Kubernetes components?</summary>
 
-### How can Prometheus be configured to monitor Kubernetes components?
+### Как Prometheus be configured to monitor Kubernetes components?
 
 **Definition:**
 
@@ -870,9 +870,9 @@ Prometheus не является компонентом Kubernetes. Класте
 </details>
 
 <details>
-<summary>Discuss the integration of Grafana for Kubernetes observability.</summary>
+<summary>Обсудите the integration of Grafana for Kubernetes observability.</summary>
 
-### Discuss the integration of Grafana for Kubernetes observability.
+### Обсудите the integration of Grafana for Kubernetes observability.
 
 **Definition:**
 
@@ -899,9 +899,9 @@ Grafana не входит в Kubernetes. Наблюдаемость в клас�
 ### Kubernetes Scheduling and Scalability
 
 <details>
-<summary>How can you use Node Selectors and Affinity rules to influence pod placement?</summary>
+<summary>Как you use Node Selectors and Affinity rules to influence pod placement?</summary>
 
-### How can you use Node Selectors and Affinity rules to influence pod placement?
+### Как you use Node Selectors and Affinity rules to influence pod placement?
 
 **Definition:**
 
@@ -927,9 +927,9 @@ nodeSelector — для жёсткой метки вроде типа диска
 </details>
 
 <details>
-<summary>Explain Horizontal Pod Autoscaling (HPA) and its triggers within Kubernetes.</summary>
+<summary>Объясните Horizontal Pod Autoscaling (HPA) and its triggers within Kubernetes.</summary>
 
-### Explain Horizontal Pod Autoscaling (HPA) and its triggers within Kubernetes.
+### Объясните Horizontal Pod Autoscaling (HPA) and its triggers within Kubernetes.
 
 **Definition:**
 
@@ -955,9 +955,9 @@ HPA — когда число реплик должно следовать за 
 ### Kubernetes Troubleshooting and Debugging
 
 <details>
-<summary>What steps would you take to troubleshoot a pod that is not starting?</summary>
+<summary>Какие шаги вы предпримете для troubleshooting pod, который не запускается?</summary>
 
-### What steps would you take to troubleshoot a pod that is not starting?
+### Какие шаги вы предпримете для troubleshooting pod, который не запускается?
 
 **Definition:**
 
@@ -981,9 +981,9 @@ Pod стартует, когда планировщик может его раз
 </details>
 
 <details>
-<summary>How would you diagnose network issues in Kubernetes?</summary>
+<summary>Как бы вы diagnose network issues in Kubernetes?</summary>
 
-### How would you diagnose network issues in Kubernetes?
+### Как бы вы diagnose network issues in Kubernetes?
 
 **Definition:**
 
@@ -1006,9 +1006,9 @@ Pod стартует, когда планировщик может его раз
 ### Advanced Kubernetes Features
 
 <details>
-<summary>Define Custom Resource Definitions (CRDs) and their utility in Kubernetes.</summary>
+<summary>Определите Custom Resource Definitions (CRDs) and their utility in Kubernetes.</summary>
 
-### Define Custom Resource Definitions (CRDs) and their utility in Kubernetes.
+### Определите Custom Resource Definitions (CRDs) and their utility in Kubernetes.
 
 **Definition:**
 
@@ -1033,9 +1033,9 @@ CRD добавляют, когда контроллеру нужно храни�
 </details>
 
 <details>
-<summary>Discuss the functionalities provided by a Service Mesh like Istio in Kubernetes.</summary>
+<summary>Обсудите the functionalities provided by a service mesh like Istio in Kubernetes.</summary>
 
-### Discuss the functionalities provided by a Service Mesh like Istio in Kubernetes.
+### Обсудите the functionalities provided by a service mesh like Istio in Kubernetes.
 
 **Definition:**
 
@@ -1062,9 +1062,9 @@ CRD добавляют, когда контроллеру нужно храни�
 </details>
 
 <details>
-<summary>What are the use cases for Kubernetes Federation?</summary>
+<summary>Что такое the use cases for Kubernetes Federation?</summary>
 
-### What are the use cases for Kubernetes Federation?
+### Что такое the use cases for Kubernetes Federation?
 
 **Definition:**
 
@@ -1092,9 +1092,9 @@ CRD добавляют, когда контроллеру нужно храни�
 ### Kubernetes Ecosystem and Tools
 
 <details>
-<summary>How does Helm enhance application management within Kubernetes?</summary>
+<summary>Как Helm enhance application management within Kubernetes?</summary>
 
-### How does Helm enhance application management within Kubernetes?
+### Как Helm enhance application management within Kubernetes?
 
 **Definition:**
 
@@ -1117,9 +1117,9 @@ Helm не является API Kubernetes. Kubernetes применяет объ�
 </details>
 
 <details>
-<summary>Explain the role of Kustomize in Kubernetes configuration management.</summary>
+<summary>Объясните the role of Kustomize in Kubernetes configuration management.</summary>
 
-### Explain the role of Kustomize in Kubernetes configuration management.
+### Объясните the role of Kustomize in Kubernetes configuration management.
 
 **Definition:**
 
@@ -1144,9 +1144,9 @@ Overlay — когда окружения отличаются небольши�
 </details>
 
 <details>
-<summary>Describe the importance of a Container Registry in a Kubernetes environment.</summary>
+<summary>Опишите the importance of a container Registry in a Kubernetes environment.</summary>
 
-### Describe the importance of a Container Registry in a Kubernetes environment.
+### Опишите the importance of a container Registry in a Kubernetes environment.
 
 **Definition:**
 
@@ -1170,9 +1170,9 @@ Overlay — когда окружения отличаются небольши�
 ### Best Practices in Kubernetes
 
 <details>
-<summary>What best practices would you follow for high availability in Kubernetes deployments?</summary>
+<summary>Какие best practices вы следуете для high availability в Kubernetes deployments?</summary>
 
-### What best practices would you follow for high availability in Kubernetes deployments?
+### Какие best practices вы следуете для high availability в Kubernetes deployments?
 
 **Definition:**
 
@@ -1196,9 +1196,9 @@ Overlay — когда окружения отличаются небольши�
 </details>
 
 <details>
-<summary>How do ConfigMaps and Secrets improve configuration management?</summary>
+<summary>Как ConfigMaps and Secrets improve configuration management?</summary>
 
-### How do ConfigMaps and Secrets improve configuration management?
+### Как ConfigMaps and Secrets improve configuration management?
 
 **Definition:**
 
@@ -1232,9 +1232,9 @@ data:
 </details>
 
 <details>
-<summary>Describe multitenancy considerations for resource utilization in Kubernetes.</summary>
+<summary>Опишите multitenancy considerations for resource utilization in Kubernetes.</summary>
 
-### Describe multitenancy considerations for resource utilization in Kubernetes.
+### Опишите multitenancy considerations for resource utilization in Kubernetes.
 
 **Definition:**
 

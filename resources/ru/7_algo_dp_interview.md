@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Dynamic Programming](https://devinterview.io
 ### Basic Dynamic Programming Concepts
 
 <details>
-<summary>What is Dynamic Programming and how does it differ from recursion?</summary>
+<summary>Что такое dynamic programming and how does it differ from recursion?</summary>
 
-### What is Dynamic Programming and how does it differ from recursion?
+### Что такое dynamic programming and how does it differ from recursion?
 
 **Definition:**
 
@@ -43,9 +43,9 @@ Questions from [Devinterview.io — Dynamic Programming](https://devinterview.io
 </details>
 
 <details>
-<summary>Can you explain the concept of overlapping subproblems?</summary>
+<summary>Можете ли вы объяснить концепцию перекрывающихся подзадач?</summary>
 
-### Can you explain the concept of overlapping subproblems?
+### Можете ли вы объяснить концепцию перекрывающихся подзадач?
 
 **Definition:**
 
@@ -64,9 +64,9 @@ Questions from [Devinterview.io — Dynamic Programming](https://devinterview.io
 </details>
 
 <details>
-<summary>Define memoization and how it improves performance in Dynamic Programming.</summary>
+<summary>Определите memoization и как она улучшает производительность в dynamic programming.</summary>
 
-### Define memoization and how it improves performance in Dynamic Programming.
+### Определите memoization и как она улучшает производительность в dynamic programming.
 
 **Definition:**
 
@@ -92,9 +92,9 @@ fib(n):
 </details>
 
 <details>
-<summary>What is the difference between top-down and bottom-up approaches in Dynamic Programming?</summary>
+<summary>Что такое the difference between top-down and bottom-up approaches in dynamic programming?</summary>
 
-### What is the difference between top-down and bottom-up approaches in Dynamic Programming?
+### Что такое the difference between top-down and bottom-up approaches in dynamic programming?
 
 **Definition:**
 
@@ -113,9 +113,9 @@ fib(n):
 </details>
 
 <details>
-<summary>Explain the importance of state definition in Dynamic Programming solutions.</summary>
+<summary>Объясните важность определения состояния в решениях Dynamic Programming.</summary>
 
-### Explain the importance of state definition in Dynamic Programming solutions.
+### Объясните важность определения состояния в решениях Dynamic Programming.
 
 **Definition:**
 
@@ -138,9 +138,9 @@ fib(n):
 ### Fundamental Dynamic Programming Problems
 
 <details>
-<summary>Compute the Fibonacci sequence using Dynamic Programming.</summary>
+<summary>Вычислите последовательность Fibonacci с помощью dynamic programming.</summary>
 
-### Compute the Fibonacci sequence using Dynamic Programming.
+### Вычислите последовательность Fibonacci с помощью dynamic programming.
 
 **Definition:**
 
@@ -166,9 +166,9 @@ return fib[n]
 </details>
 
 <details>
-<summary>Implement a solution to the Coin Change Problem using DP.</summary>
+<summary>Реализуйте a solution to the Coin Change Problem using DP.</summary>
 
-### Implement a solution to the Coin Change Problem using DP.
+### Реализуйте a solution to the Coin Change Problem using DP.
 
 **Definition:**
 
@@ -189,9 +189,9 @@ return fib[n]
 </details>
 
 <details>
-<summary>Use Dynamic Programming approach to solve the 0/1 Knapsack problem.</summary>
+<summary>Используйте dynamic programming для решения задачи 0/1 Knapsack.</summary>
 
-### Use Dynamic Programming approach to solve the 0/1 Knapsack problem.
+### Используйте dynamic programming для решения задачи 0/1 Knapsack.
 
 **Definition:**
 
@@ -211,9 +211,9 @@ return fib[n]
 </details>
 
 <details>
-<summary>Implement an algorithm for computing the longest common subsequence of two sequences.</summary>
+<summary>Реализуйте an alGorithm for computing the longest common subsequence of two sequences.</summary>
 
-### Implement an algorithm for computing the longest common subsequence of two sequences.
+### Реализуйте an alGorithm for computing the longest common subsequence of two sequences.
 
 **Definition:**
 
@@ -232,9 +232,9 @@ return fib[n]
 </details>
 
 <details>
-<summary>Solve matrix chain multiplication problem with Dynamic Programming.</summary>
+<summary>Решите matrix chain multiplication problem with dynamic programming.</summary>
 
-### Solve matrix chain multiplication problem with Dynamic Programming.
+### Решите matrix chain multiplication problem with dynamic programming.
 
 **Definition:**
 
@@ -256,9 +256,9 @@ return fib[n]
 ### Optimizing Dynamic Programming Solutions
 
 <details>
-<summary>What are the trade-offs between memoization and tabulation in Dynamic Programming?</summary>
+<summary>Что такое the trade-offs between memoization and tabulation in dynamic programming?</summary>
 
-### What are the trade-offs between memoization and tabulation in Dynamic Programming?
+### Что такое the trade-offs between memoization and tabulation in dynamic programming?
 
 **Definition:**
 
@@ -278,9 +278,9 @@ return fib[n]
 </details>
 
 <details>
-<summary>How do you determine the time complexity of a Dynamic Programming algorithm?</summary>
+<summary>Как вы определяете значение time complexity для алгоритма Dynamic Programming?</summary>
 
-### How do you determine the time complexity of a Dynamic Programming algorithm?
+### Как вы определяете значение time complexity для алгоритма Dynamic Programming?
 
 **Definition:**
 
@@ -300,9 +300,9 @@ return fib[n]
 </details>
 
 <details>
-<summary>Describe techniques to optimize space complexity in Dynamic Programming problems.</summary>
+<summary>Описать методы оптимизации space complexity для решения проблем Dynamic Programming.</summary>
 
-### Describe techniques to optimize space complexity in Dynamic Programming problems.
+### Описать методы оптимизации space complexity для решения проблем Dynamic Programming.
 
 **Definition:**
 
@@ -323,9 +323,9 @@ return fib[n]
 </details>
 
 <details>
-<summary>What is state transition, and how do you derive state transition relations?</summary>
+<summary>Что такое state transition, and how do you derive state transition relations?</summary>
 
-### What is state transition, and how do you derive state transition relations?
+### Что такое state transition, and how do you derive state transition relations?
 
 **Definition:**
 
@@ -352,9 +352,9 @@ dp[i][w] = max(dp[i-1][w],
 ### String-related Dynamic Programming Questions
 
 <details>
-<summary>Find the longest palindromic substring in a given string.</summary>
+<summary>Найдите самый длинный палиндром substring в заданной строке.</summary>
 
-### Find the longest palindromic substring in a given string.
+### Найдите самый длинный палиндром substring в заданной строке.
 
 **Definition:**
 
@@ -374,9 +374,9 @@ dp[i][w] = max(dp[i-1][w],
 </details>
 
 <details>
-<summary>Provide a Dynamic Programming solution for the edit distance problem.</summary>
+<summary>Приведите a dynamic programming solution for the edit distance problem.</summary>
 
-### Provide a Dynamic Programming solution for the edit distance problem.
+### Приведите a dynamic programming solution for the edit distance problem.
 
 **Definition:**
 
@@ -411,9 +411,9 @@ def edit_distance(a, b):
 </details>
 
 <details>
-<summary>Explain Dynamic Programming on strings with the example of word break problem.</summary>
+<summary>Объясните работу Dynamic Programming со строками на примере задачи Word Break.</summary>
 
-### Explain Dynamic Programming on strings with the example of word break problem.
+### Объясните работу Dynamic Programming со строками на примере задачи Word Break.
 
 **Definition:**
 
@@ -451,9 +451,9 @@ def word_break(s, words):
 ### Sequence and Subsequence related Problems
 
 <details>
-<summary>Solve the Longest Increasing Subsequence problem using Dynamic Programming.</summary>
+<summary>Решите the longest increasing subsequence problem using dynamic programming.</summary>
 
-### Solve the Longest Increasing Subsequence problem using Dynamic Programming.
+### Решите the longest increasing subsequence problem using dynamic programming.
 
 **Definition:**
 
@@ -487,9 +487,9 @@ def lis(arr):
 </details>
 
 <details>
-<summary>Solve the Maximum Sum Increasing Subsequence problem with DP.</summary>
+<summary>Решите the Maximum Sum Increasing subsequence problem with DP.</summary>
 
-### Solve the Maximum Sum Increasing Subsequence problem with DP.
+### Решите the Maximum Sum Increasing subsequence problem with DP.
 
 **Definition:**
 
@@ -522,9 +522,9 @@ def msis(arr):
 </details>
 
 <details>
-<summary>Implement an algorithm for finding the number of subsequences with a given sum in an array.</summary>
+<summary>Реализуйте an alGorithm for finding the number of subsequences with a given sum in an array.</summary>
 
-### Implement an algorithm for finding the number of subsequences with a given sum in an array.
+### Реализуйте an alGorithm for finding the number of subsequences with a given sum in an array.
 
 **Definition:**
 
@@ -560,9 +560,9 @@ def count_subsequences(arr, target):
 ### Partitioning Problems
 
 <details>
-<summary>Solve the partition problem using Dynamic Programming.</summary>
+<summary>Решите the partition problem using dynamic programming.</summary>
 
-### Solve the partition problem using Dynamic Programming.
+### Решите the partition problem using dynamic programming.
 
 **Definition:**
 
@@ -599,9 +599,9 @@ def can_partition(arr):
 </details>
 
 <details>
-<summary>Provide a Dynamic Programming solution for the subset sum problem.</summary>
+<summary>Приведите a dynamic programming solution for the subset sum problem.</summary>
 
-### Provide a Dynamic Programming solution for the subset sum problem.
+### Приведите a dynamic programming solution for the subset sum problem.
 
 **Definition:**
 
@@ -634,9 +634,9 @@ def subset_sum(arr, target):
 </details>
 
 <details>
-<summary>Solve the Balanced Partition problem dynamically.</summary>
+<summary>Решите the Balanced Partition problem dynamically.</summary>
 
-### Solve the Balanced Partition problem dynamically.
+### Решите the Balanced Partition problem dynamically.
 
 **Definition:**
 
@@ -676,9 +676,9 @@ def min_partition_diff(arr):
 ### Path-finding Dynamic Programming Questions
 
 <details>
-<summary>Solve the unique paths problem in a grid with obstacles using DP.</summary>
+<summary>Решите the unique paths problem in a grid with obstacles using DP.</summary>
 
-### Solve the unique paths problem in a grid with obstacles using DP.
+### Решите the unique paths problem in a grid with obstacles using DP.
 
 **Definition:**
 
@@ -717,9 +717,9 @@ def unique_paths(grid):
 </details>
 
 <details>
-<summary>Use Dynamic Programming to solve the minimum cost path problem in a grid.</summary>
+<summary>Используйте dynamic programming для решения задачи minimum cost path в сетке.</summary>
 
-### Use Dynamic Programming to solve the minimum cost path problem in a grid.
+### Используйте dynamic programming для решения задачи minimum cost path в сетке.
 
 **Definition:**
 
@@ -756,9 +756,9 @@ def min_cost(cost):
 </details>
 
 <details>
-<summary>Find the longest path in a matrix with given constraints.</summary>
+<summary>Найдите самый длинный путь в маtrieце с заданными ограничениями.</summary>
 
-### Find the longest path in a matrix with given constraints.
+### Найдите самый длинный путь в маtrieце с заданными ограничениями.
 
 **Definition:**
 
@@ -805,9 +805,9 @@ def longest_increasing_path(matrix):
 ### Advanced Dynamic Programming Problems
 
 <details>
-<summary>Solving the word wrap problem using DP.</summary>
+<summary>Решение задачи word wrap с помощью DP.</summary>
 
-### Solving the word wrap problem using DP.
+### Решение задачи word wrap с помощью DP.
 
 **Definition:**
 
@@ -846,9 +846,9 @@ def word_wrap(lengths, k):
 </details>
 
 <details>
-<summary>Implement an algorithm for the maximal square problem in a 2D binary matrix.</summary>
+<summary>Реализуйте an alGorithm for the maximal square problem in a 2D binary matrix.</summary>
 
-### Implement an algorithm for the maximal square problem in a 2D binary matrix.
+### Реализуйте an alGorithm for the maximal square problem in a 2D binary matrix.
 
 **Definition:**
 
@@ -889,9 +889,9 @@ def maximal_square(matrix):
 </details>
 
 <details>
-<summary>Apply Dynamic Programming to solve the maximum profit in job scheduling.</summary>
+<summary>Примените dynamic programming для решения максимальной прибыли при планировании работ.</summary>
 
-### Apply Dynamic Programming to solve the maximum profit in job scheduling.
+### Примените dynamic programming для решения максимальной прибыли при планировании работ.
 
 **Definition:**
 
@@ -929,9 +929,9 @@ def job_profit(jobs):
 ### Dynamic Programming in Graphs
 
 <details>
-<summary>How Dynamic Programming can be used for finding shortest paths in graphs (e.g., Floyd-Warshall algorithm)?</summary>
+<summary>Как Dynamic Programming можно использовать для поиска shortest path в graphs (например, Floyd-Warshall algorithm)?</summary>
 
-### How Dynamic Programming can be used for finding shortest paths in graphs (e.g., Floyd-Warshall algorithm)?
+### Как Dynamic Programming можно использовать для поиска shortest path в graphs (например, Floyd-Warshall algorithm)?
 
 **Definition:**
 
@@ -965,9 +965,9 @@ def floyd(dist, inf):
 </details>
 
 <details>
-<summary>How to use Dynamic Programming to find the number of ways to reach a given vertex in a directed acyclic graph?</summary>
+<summary>Как use dynamic programming to find the number of ways to reach a given vertex in a directed acyclic graph?</summary>
 
-### How to use Dynamic Programming to find the number of ways to reach a given vertex in a directed acyclic graph?
+### Как use dynamic programming to find the number of ways to reach a given vertex in a directed acyclic graph?
 
 **Definition:**
 
@@ -1019,9 +1019,9 @@ def ways_to(n, edges, source, target):
 ### Game Theory and Dynamic Programming
 
 <details>
-<summary>Implement an algorithm to solve the Nim Game using Dynamic Programming.</summary>
+<summary>Реализуйте an alGorithm to solve the Nim GAme using dynamic programming.</summary>
 
-### Implement an algorithm to solve the Nim Game using Dynamic Programming.
+### Реализуйте an alGorithm to solve the Nim GAme using dynamic programming.
 
 **Definition:**
 
@@ -1052,9 +1052,9 @@ def nim_winning(heaps):
 </details>
 
 <details>
-<summary>Apply Dynamic Programming to solve the minimax problem in game theory.</summary>
+<summary>Примените dynamic programming для решения минимаксной задачи в игре ORy.</summary>
 
-### Apply Dynamic Programming to solve the minimax problem in game theory.
+### Примените dynamic programming для решения минимаксной задачи в игре ORy.
 
 **Definition:**
 
@@ -1088,9 +1088,9 @@ def minimax(state, is_max, moves, score, terminal):
 ### Stochastic Dynamic Programming Questions
 
 <details>
-<summary>Can Dynamic Programming be used to solve problems with probabilistic states? Provide an example.</summary>
+<summary>Можно ли использовать dynamic programming для решения проблем с состояниями probabilistic? Приведите пример.</summary>
 
-### Can Dynamic Programming be used to solve problems with probabilistic states? Provide an example.
+### Можно ли использовать dynamic programming для решения проблем с состояниями probabilistic? Приведите пример.
 
 **Definition:**
 
@@ -1133,9 +1133,9 @@ def ruin(p, i, n):
 </details>
 
 <details>
-<summary>How does Stochastic Dynamic Programming differ from deterministic Dynamic Programming, and what are its applications?</summary>
+<summary>Чем стохастический Dynamic Programming отличается от deterministic Dynamic Programming и каковы его области применения?</summary>
 
-### How does Stochastic Dynamic Programming differ from deterministic Dynamic Programming, and what are its applications?
+### Чем стохастический Dynamic Programming отличается от deterministic Dynamic Programming и каковы его области применения?
 
 **Definition:**
 

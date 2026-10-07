@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Queues](https://devinterview.io/questions/da
 ### Queue Fundamentals
 
 <details>
-<summary>What is a Queue?</summary>
+<summary>Что такое queue?</summary>
 
-### What is a Queue?
+### Что такое queue?
 
 **Definition:**
 
@@ -41,9 +41,9 @@ Enqueue 1, затем 2, затем 3. Dequeue возвращает 1, зате�
 </details>
 
 <details>
-<summary>Explain the FIFO (First In, First Out) policy that characterizes a Queue.</summary>
+<summary>Объясните политику FIFO (Первый вошел, первый вышел), которая характеризует queue.</summary>
 
-### Explain the FIFO (First In, First Out) policy that characterizes a Queue.
+### Объясните политику FIFO (Первый вошел, первый вышел), которая характеризует queue.
 
 **Definition:**
 
@@ -58,9 +58,9 @@ FIFO значит, что порядок ухода совпадает с пор
 </details>
 
 <details>
-<summary>Name some Types of Queues.</summary>
+<summary>Назовите some Types of queues.</summary>
 
-### Name some Types of Queues.
+### Назовите some Types of queues.
 
 **Definition:**
 
@@ -75,9 +75,9 @@ FIFO значит, что порядок ухода совпадает с пор
 </details>
 
 <details>
-<summary>What is a Priority Queue and how does it differ from a standard Queue?</summary>
+<summary>Что такое priority queue and how does it differ from a standard queue?</summary>
 
-### What is a Priority Queue and how does it differ from a standard Queue?
+### Что такое priority queue and how does it differ from a standard queue?
 
 **Definition:**
 
@@ -92,9 +92,9 @@ FIFO значит, что порядок ухода совпадает с пор
 </details>
 
 <details>
-<summary>When should I use a Stack or a Queue instead of Arrays/Lists?</summary>
+<summary>Когда should I use a stack or a queue instead of arrays/Lists?</summary>
 
-### When should I use a Stack or a Queue instead of Arrays/Lists?
+### Когда should I use a stack or a queue instead of arrays/Lists?
 
 **Definition:**
 
@@ -109,9 +109,9 @@ FIFO значит, что порядок ухода совпадает с пор
 </details>
 
 <details>
-<summary>How do you reverse a Queue?</summary>
+<summary>Как вы можете отменить queue?</summary>
 
-### How do you reverse a Queue?
+### Как вы можете отменить queue?
 
 **Definition:**
 
@@ -130,9 +130,9 @@ FIFO значит, что порядок ухода совпадает с пор
 </details>
 
 <details>
-<summary>Can a queue be implemented as a static data structure and if so, what are the limitations?</summary>
+<summary>Можно ли реализовать queue в виде статической структуры данных AND, если да, то каковы ограничения?</summary>
 
-### Can a queue be implemented as a static data structure and if so, what are the limitations?
+### Можно ли реализовать queue в виде статической структуры данных AND, если да, то каковы ограничения?
 
 **Definition:**
 
@@ -149,9 +149,9 @@ FIFO значит, что порядок ухода совпадает с пор
 ### Queue Operations
 
 <details>
-<summary>Write an algorithm to enqueue and dequeue an item from a Queue.</summary>
+<summary>Напишите an alGorithm to enqueue and dequeue an item from a queue.</summary>
 
-### Write an algorithm to enqueue and dequeue an item from a Queue.
+### Напишите an alGorithm to enqueue and dequeue an item from a queue.
 
 **Definition:**
 
@@ -182,9 +182,9 @@ dequeue():
 </details>
 
 <details>
-<summary>How to implement a Queue such that enqueue has O(1) and dequeue has O(n) complexity?</summary>
+<summary>Как implement a queue such that enqueue has O(1) and dequeue has O(n) complexity?</summary>
 
-### How to implement a Queue such that enqueue has O(1) and dequeue has O(n) complexity?
+### Как implement a queue such that enqueue has O(1) and dequeue has O(n) complexity?
 
 **Definition:**
 
@@ -199,9 +199,9 @@ dequeue():
 </details>
 
 <details>
-<summary>Discuss a scenario where dequeue must be prioritized over enqueue in terms of complexity.</summary>
+<summary>Обсудите сценарий, в котором dequeue должен иметь приоритет над enqueue с точки зрения сложности.</summary>
 
-### Discuss a scenario where dequeue must be prioritized over enqueue in terms of complexity.
+### Обсудите сценарий, в котором dequeue должен иметь приоритет над enqueue с точки зрения сложности.
 
 **Definition:**
 
@@ -216,9 +216,9 @@ dequeue():
 </details>
 
 <details>
-<summary>Explain how you can efficiently track the Minimum or Maximum element in a Queue.</summary>
+<summary>Объясните, как вы можете эффективно отслеживать минимальный или максимальный элемент в queue.</summary>
 
-### Explain how you can efficiently track the Minimum or Maximum element in a Queue.
+### Объясните, как вы можете эффективно отслеживать минимальный или максимальный элемент в queue.
 
 **Definition:**
 
@@ -237,9 +237,9 @@ dequeue():
 </details>
 
 <details>
-<summary>Discuss an algorithm to merge two or more Queues into one with efficient Dequeuing.</summary>
+<summary>Обсудите алгоритм объединения двух или более queues в один с помощью эффективного dequeuing.</summary>
 
-### Discuss an algorithm to merge two or more Queues into one with efficient Dequeuing.
+### Обсудите алгоритм объединения двух или более queues в один с помощью эффективного dequeuing.
 
 **Definition:**
 
@@ -256,9 +256,9 @@ dequeue():
 ### Queue Implementation Details
 
 <details>
-<summary>Name some Queue Implementations. Compare their efficiency.</summary>
+<summary>Назовите some queue Implementations. Compare their efficiency.</summary>
 
-### Name some Queue Implementations. Compare their efficiency.
+### Назовите some queue Implementations. Compare their efficiency.
 
 **Definition:**
 
@@ -273,9 +273,9 @@ dequeue():
 </details>
 
 <details>
-<summary>Describe an array-based implementation of a Queue and its disadvantages.</summary>
+<summary>Опишите реализацию array на основе queue AND его недостатки.</summary>
 
-### Describe an array-based implementation of a Queue and its disadvantages.
+### Опишите реализацию array на основе queue AND его недостатки.
 
 **Definition:**
 
@@ -290,9 +290,9 @@ dequeue():
 </details>
 
 <details>
-<summary>What are the benefits of implementing a Queue with a Doubly Linked List versus a Singly Linked List?</summary>
+<summary>Что такое the benefits of implementing a queue with a doubly linked List versus a singly linked List?</summary>
 
-### What are the benefits of implementing a Queue with a Doubly Linked List versus a Singly Linked List?
+### Что такое the benefits of implementing a queue with a doubly linked List versus a singly linked List?
 
 **Definition:**
 
@@ -307,9 +307,9 @@ dequeue():
 </details>
 
 <details>
-<summary>Explain the algorithm behind a Circular Queue and some potential issues that might arise.</summary>
+<summary>Объясните алгоритм, лежащий в основе циклического queue, и некоторые потенциальные проблемы, которые могут возникнуть.</summary>
 
-### Explain the algorithm behind a Circular Queue and some potential issues that might arise.
+### Объясните алгоритм, лежащий в основе циклического queue, и некоторые потенциальные проблемы, которые могут возникнуть.
 
 **Definition:**
 
@@ -337,9 +337,9 @@ enqueue 4, 5 -> [5, 2, 3, 4]
 </details>
 
 <details>
-<summary>How to manage a Full Circular Queue Event?</summary>
+<summary>Как manage a Full Circular queue Event?</summary>
 
-### How to manage a Full Circular Queue Event?
+### Как manage a Full Circular queue Event?
 
 **Definition:**
 
@@ -364,9 +364,9 @@ enqueue 4, 5 -> [5, 2, 3, 4]
 ### Queue Implementation Challenges
 
 <details>
-<summary>Implement a Queue using Two Stacks.</summary>
+<summary>Реализуйте a queue using Two stacks.</summary>
 
-### Implement a Queue using Two Stacks.
+### Реализуйте a queue using Two stacks.
 
 **Definition:**
 
@@ -394,9 +394,9 @@ dequeue pops 2 from s2, no second move
 </details>
 
 <details>
-<summary>Implement a Queue using only One Stack.</summary>
+<summary>Реализуйте a queue using only One stack.</summary>
 
-### Implement a Queue using only One Stack.
+### Реализуйте a queue using only One stack.
 
 **Definition:**
 
@@ -428,9 +428,9 @@ function dequeue(stack) {
 </details>
 
 <details>
-<summary>Implement a Stack using Two Queues with efficient Push.</summary>
+<summary>Реализуйте a stack using Two queues with efficient Push.</summary>
 
-### Implement a Stack using Two Queues with efficient Push.
+### Реализуйте a stack using Two queues with efficient Push.
 
 **Definition:**
 
@@ -461,9 +461,9 @@ pop: move 1 and 2 to q2, dequeue 3, swap -> q1 [1, 2]
 </details>
 
 <details>
-<summary>Write code for a Double-Ended Queue (Deque) and explain its usage.</summary>
+<summary>Напишите code for a Double-Ended queue (deque) and explain its usage.</summary>
 
-### Write code for a Double-Ended Queue (Deque) and explain its usage.
+### Напишите code for a Double-Ended queue (deque) and explain its usage.
 
 **Definition:**
 
@@ -498,9 +498,9 @@ function pushFront(q, x) {
 </details>
 
 <details>
-<summary>Describe how to implement a Blocking Queue and a use case for it.</summary>
+<summary>Опишите, как реализовать блокировку queue и вариант ее использования.</summary>
 
-### Describe how to implement a Blocking Queue and a use case for it.
+### Опишите, как реализовать блокировку queue и вариант ее использования.
 
 **Definition:**
 
@@ -525,9 +525,9 @@ function pushFront(q, x) {
 </details>
 
 <details>
-<summary>Solve for a queue that automatically resizes to hold new elements.</summary>
+<summary>Решите for a queue that automatically resizes to hold new elements.</summary>
 
-### Solve for a queue that automatically resizes to hold new elements.
+### Решите for a queue that automatically resizes to hold new elements.
 
 **Definition:**
 
@@ -558,9 +558,9 @@ start=0 end=4
 </details>
 
 <details>
-<summary>Create a Queue data structure with O(1) complexity for enqueue, dequeue, and finding the maximum element.</summary>
+<summary>Создайте структуру данных queue с помощью O(1) сложность fOR enqueue, dequeue, ANDZ поиск максимального элемента.</summary>
 
-### Create a Queue data structure with O(1) complexity for enqueue, dequeue, and finding the maximum element.
+### Создайте структуру данных queue с помощью O(1) сложность fOR enqueue, dequeue, ANDZ поиск максимального элемента.
 
 **Definition:**
 
@@ -592,9 +592,9 @@ max is still 3
 ### Queue Types and Variants
 
 <details>
-<summary>Explain the difference between a Linear Queue and a Circular Queue.</summary>
+<summary>Объясните разницу между линейным queue и круговым queue.</summary>
 
-### Explain the difference between a Linear Queue and a Circular Queue.
+### Объясните разницу между линейным queue и круговым queue.
 
 **Definition:**
 
@@ -618,9 +618,9 @@ max is still 3
 </details>
 
 <details>
-<summary>What is a Monotonic Queue, and how do you implement it?</summary>
+<summary>Что такое Monotonic queue, and how do you implement it?</summary>
 
-### What is a Monotonic Queue, and how do you implement it?
+### Что такое Monotonic queue, and how do you implement it?
 
 **Definition:**
 
@@ -649,9 +649,9 @@ window max is the front, 3
 </details>
 
 <details>
-<summary>Describe a Bounded Queue. What considerations are necessary when implementing one?</summary>
+<summary>Опишите ограниченный queue. Какие соображения необходимы при его реализации?</summary>
 
-### Describe a Bounded Queue. What considerations are necessary when implementing one?
+### Опишите ограниченный queue. Какие соображения необходимы при его реализации?
 
 **Definition:**
 
@@ -676,9 +676,9 @@ window max is the front, 3
 </details>
 
 <details>
-<summary>What is the difference between a Single-Ended Queue and a Double-Ended Queue?</summary>
+<summary>Что такое the difference between a Single-Ended queue and a Double-Ended queue?</summary>
 
-### What is the difference between a Single-Ended Queue and a Double-Ended Queue?
+### Что такое the difference between a Single-Ended queue and a Double-Ended queue?
 
 **Definition:**
 
@@ -705,9 +705,9 @@ window max is the front, 3
 ### Queue-Related Algorithms and Problem Solving
 
 <details>
-<summary>Implement a Queue Algorithm to sort a given list of integers.</summary>
+<summary>Реализуйте a queue AlGorithm to sort a given list of integers.</summary>
 
-### Implement a Queue Algorithm to sort a given list of integers.
+### Реализуйте a queue AlGorithm to sort a given list of integers.
 
 **Definition:**
 
@@ -735,9 +735,9 @@ window max is the front, 3
 </details>
 
 <details>
-<summary>Implement an algorithm to reverse the first k elements of a Queue.</summary>
+<summary>Реализуйте an alGorithm to reverse the first k elements of a queue.</summary>
 
-### Implement an algorithm to reverse the first k elements of a Queue.
+### Реализуйте an alGorithm to reverse the first k elements of a queue.
 
 **Definition:**
 
@@ -766,9 +766,9 @@ rotate 2 -> [3, 2, 1, 4, 5]
 </details>
 
 <details>
-<summary>How can Queues be used in the implementation of a Cache Eviction Policy, like FIFO?</summary>
+<summary>Как можно использовать queues при реализации политики удаления кэша, такой как FIFO?</summary>
 
-### How can Queues be used in the implementation of a Cache Eviction Policy, like FIFO?
+### Как можно использовать queues при реализации политики удаления кэша, такой как FIFO?
 
 **Definition:**
 
@@ -793,9 +793,9 @@ FIFO — когда правило вытеснения совпадает с п
 </details>
 
 <details>
-<summary>Provide an algorithm for rotating a Queue by a certain number of elements.</summary>
+<summary>Приведите an alGorithm for rotating a queue by a certain number of elements.</summary>
 
-### Provide an algorithm for rotating a Queue by a certain number of elements.
+### Приведите an alGorithm for rotating a queue by a certain number of elements.
 
 **Definition:**
 
@@ -823,9 +823,9 @@ dequeue/enqueue 2 -> [3, 4, 1, 2]
 </details>
 
 <details>
-<summary>How would you use a Queue to generate binary numbers from 1 to N?</summary>
+<summary>Как бы вы use a queue to generate binary numbers from 1 to N?</summary>
 
-### How would you use a Queue to generate binary numbers from 1 to N?
+### Как бы вы use a queue to generate binary numbers from 1 to N?
 
 **Definition:**
 
@@ -856,9 +856,9 @@ dequeue 100 -> record 4
 ### Advanced Queue Concepts
 
 <details>
-<summary>Explain how a Queue can be utilized in Graph Traversal Algorithms.</summary>
+<summary>Объясните, как queue может быть использован в алгоритмах graph и traversal.</summary>
 
-### Explain how a Queue can be utilized in Graph Traversal Algorithms.
+### Объясните, как queue может быть использован в алгоритмах graph и traversal.
 
 **Definition:**
 
@@ -882,9 +882,9 @@ dequeue 100 -> record 4
 </details>
 
 <details>
-<summary>Describe the application of Queues in Scheduling Algorithms, such as Round Robin Scheduling.</summary>
+<summary>Описать применение queues в алгоритмах планирования, таких как циклическое планирование.</summary>
 
-### Describe the application of Queues in Scheduling Algorithms, such as Round Robin Scheduling.
+### Описать применение queues в алгоритмах планирования, таких как циклическое планирование.
 
 **Definition:**
 
@@ -908,9 +908,9 @@ Round-robin — когда каждый готовый процесс долже
 </details>
 
 <details>
-<summary>Explain a scenario where Queues are used in a multi-threading environment.</summary>
+<summary>Объясните сценарий, в котором queues используются в многопоточной среде.</summary>
 
-### Explain a scenario where Queues are used in a multi-threading environment.
+### Объясните сценарий, в котором queues используются в многопоточной среде.
 
 **Definition:**
 
@@ -935,9 +935,9 @@ Round-robin — когда каждый готовый процесс долже
 </details>
 
 <details>
-<summary>What is a Dequeuable Priority Queue, and when might one be used?</summary>
+<summary>Что такое dequeuable priority queue, and when might one be used?</summary>
 
-### What is a Dequeuable Priority Queue, and when might one be used?
+### Что такое dequeuable priority queue, and when might one be used?
 
 **Definition:**
 
@@ -961,9 +961,9 @@ Round-robin — когда каждый готовый процесс долже
 </details>
 
 <details>
-<summary>Discuss the role of Queues in the Breadth-First Search (BFS) and `A*` Search Algorithms.</summary>
+<summary>Обсудите the role of queues in the breadth-first search (BFS) and `A*` Search AlGorithms.</summary>
 
-### Discuss the role of Queues in the Breadth-First Search (BFS) and `A*` Search Algorithms.
+### Обсудите the role of queues in the breadth-first search (BFS) and `A*` Search AlGorithms.
 
 **Definition:**
 
@@ -990,9 +990,9 @@ FIFO — когда у каждого ребра одна и та же цена.
 ### Real-World Queue Applications
 
 <details>
-<summary>How are Queues used in Event-Driven Programming and Message Queuing Systems?</summary>
+<summary>Как queues используется в программировании на основе событий и системах массового обслуживания сообщений?</summary>
 
-### How are Queues used in Event-Driven Programming and Message Queuing Systems?
+### Как queues используется в программировании на основе событий и системах массового обслуживания сообщений?
 
 **Definition:**
 
@@ -1015,9 +1015,9 @@ FIFO — когда у каждого ребра одна и та же цена.
 </details>
 
 <details>
-<summary>Discuss the importance of Queues in Operating Systems, specifically in Process Management.</summary>
+<summary>Обсудите важность queues в операционных системах, особенно в управлении процессами.</summary>
 
-### Discuss the importance of Queues in Operating Systems, specifically in Process Management.
+### Обсудите важность queues в операционных системах, особенно в управлении процессами.
 
 **Definition:**
 
@@ -1042,9 +1042,9 @@ FIFO-очередь готовых соответствует равному д�
 </details>
 
 <details>
-<summary>Explain how a Consumer-Producer Model can be implemented using a Queue.</summary>
+<summary>Объясните, как можно реализовать модель взаимодействия потребителя и производителя с помощью queue.</summary>
 
-### Explain how a Consumer-Producer Model can be implemented using a Queue.
+### Объясните, как можно реализовать модель взаимодействия потребителя и производителя с помощью queue.
 
 **Definition:**
 
@@ -1075,9 +1075,9 @@ producer enqueue C
 </details>
 
 <details>
-<summary>Describe an application of Queues in Network Packet Routing and Load Balancing.</summary>
+<summary>Опишите применение queues в маршрутизации сетевых пакетов и балансировке нагрузки.</summary>
 
-### Describe an application of Queues in Network Packet Routing and Load Balancing.
+### Опишите применение queues в маршрутизации сетевых пакетов и балансировке нагрузки.
 
 **Definition:**
 
@@ -1103,9 +1103,9 @@ producer enqueue C
 ### Queue Performance and Optimization
 
 <details>
-<summary>What strategies can be implemented to reduce Time Complexity in queue operations?</summary>
+<summary>Какие стратегии снижают time complexity операций queue?</summary>
 
-### What strategies can be implemented to reduce Time Complexity in queue operations?
+### Какие стратегии снижают time complexity операций queue?
 
 **Definition:**
 
@@ -1130,9 +1130,9 @@ producer enqueue C
 </details>
 
 <details>
-<summary>Name the Most Efficient way to implement Stack and Queue together.</summary>
+<summary>Назовите the Most Efficient way to implement stack and queue together.</summary>
 
-### Name the Most Efficient way to implement Stack and Queue together.
+### Назовите the Most Efficient way to implement stack and queue together.
 
 **Definition:**
 
@@ -1157,9 +1157,9 @@ producer enqueue C
 </details>
 
 <details>
-<summary>How do modern CPUs and Memory Caching behavior affect the performance of queue operations?</summary>
+<summary>Как поведение современных процессоров и памяти caching влияет на производительность операций queue?</summary>
 
-### How do modern CPUs and Memory Caching behavior affect the performance of queue operations?
+### Как поведение современных процессоров и памяти caching влияет на производительность операций queue?
 
 **Definition:**
 
@@ -1185,9 +1185,9 @@ producer enqueue C
 ### Queue Implementation with Constraints
 
 <details>
-<summary>Design a queue which supports a rolling average query with O(1) time complexity.</summary>
+<summary>Разработайте queue, который поддерживает запрос скользящего среднего с помощью O(1) time complexity.</summary>
 
-### Design a queue which supports a rolling average query with O(1) time complexity.
+### Разработайте queue, который поддерживает запрос скользящего среднего с помощью O(1) time complexity.
 
 **Definition:**
 
@@ -1213,9 +1213,9 @@ dequeue 2 -> sum 4, count 1, average 4
 </details>
 
 <details>
-<summary>Implement a queue with constraints that minimizes total wait time for dequeuing.</summary>
+<summary>Реализуйте a queue with constraints that minimizes total wait time for dequeuing.</summary>
 
-### Implement a queue with constraints that minimizes total wait time for dequeuing.
+### Реализуйте a queue with constraints that minimizes total wait time for dequeuing.
 
 **Definition:**
 
@@ -1240,9 +1240,9 @@ FIFO-очередь обслуживает в порядке прихода. О�
 </details>
 
 <details>
-<summary>Implement an Immutable Queue in a functional programming style.</summary>
+<summary>Реализуйте an immutable queue in a functional programming style.</summary>
 
-### Implement an Immutable Queue in a functional programming style.
+### Реализуйте an immutable queue in a functional programming style.
 
 **Definition:**
 
@@ -1271,9 +1271,9 @@ dequeue -> reverse rear, front [1, 2], pop 1
 ### Queue in Distributed Systems
 
 <details>
-<summary>Explain the concept of a Distributed Queue and its role in distributed systems.</summary>
+<summary>Объясните концепцию распределенного queue и его роль в distributed systems.</summary>
 
-### Explain the concept of a Distributed Queue and its role in distributed systems.
+### Объясните концепцию распределенного queue и его роль в distributed systems.
 
 **Definition:**
 
@@ -1296,9 +1296,9 @@ dequeue -> reverse rear, front [1, 2], pop 1
 </details>
 
 <details>
-<summary>How would you design a fault-tolerant Queuing System that ensures message delivery even after a crash?</summary>
+<summary>Как бы вы design a fault-tolerant Queuing System that ensures message delivery even after a crash?</summary>
 
-### How would you design a fault-tolerant Queuing System that ensures message delivery even after a crash?
+### Как бы вы design a fault-tolerant Queuing System that ensures message delivery even after a crash?
 
 **Definition:**
 
@@ -1321,9 +1321,9 @@ dequeue -> reverse rear, front [1, 2], pop 1
 </details>
 
 <details>
-<summary>Describe a scenario where a queue is used for Load Leveling in a distributed application.</summary>
+<summary>Опишите сценарий, в котором используется queue fOR Выравнивание нагрузки в распределенном приложении.</summary>
 
-### Describe a scenario where a queue is used for Load Leveling in a distributed application.
+### Опишите сценарий, в котором используется queue fOR Выравнивание нагрузки в распределенном приложении.
 
 **Definition:**
 
@@ -1349,9 +1349,9 @@ dequeue -> reverse rear, front [1, 2], pop 1
 ### Queue Interview Challenges
 
 <details>
-<summary>Create a simulation of a Queue at a grocery store, including multiple cashier lines.</summary>
+<summary>Создайте имитацию queue в продуктовом магазине, включая несколько кассовых линий.</summary>
 
-### Create a simulation of a Queue at a grocery store, including multiple cashier lines.
+### Создайте имитацию queue в продуктовом магазине, включая несколько кассовых линий.
 
 **Definition:**
 
@@ -1379,9 +1379,9 @@ one service step dequeues A and C
 </details>
 
 <details>
-<summary>Implement a queue that supports finding the kth Last Element from the tail.</summary>
+<summary>Реализуйте a queue that supports finding the kth Last Element from the tail.</summary>
 
-### Implement a queue that supports finding the kth Last Element from the tail.
+### Реализуйте a queue that supports finding the kth Last Element from the tail.
 
 **Definition:**
 
@@ -1408,9 +1408,9 @@ kth last is index (1 - 2 + 4) % 4 = 3, value 4
 </details>
 
 <details>
-<summary>Design a queue that, after enqueuing an item, returns the Median of all elements in the queue.</summary>
+<summary>Разработайте queue, который после помещения элемента в queue возвращает медиану всех элементов в queue.</summary>
 
-### Design a queue that, after enqueuing an item, returns the Median of all elements in the queue.
+### Разработайте queue, который после помещения элемента в queue возвращает медиану всех элементов в queue.
 
 **Definition:**
 
@@ -1438,9 +1438,9 @@ enqueue 2 -> lower [1, 2], upper [3], median 2
 </details>
 
 <details>
-<summary>Solve the problem of implementing a queue with automatic priority adjustment based on the frequency of element access.</summary>
+<summary>Решите the problem of implementing a queue with automatic priority adjustment BASEd on the frequency of element access.</summary>
 
-### Solve the problem of implementing a queue with automatic priority adjustment based on the frequency of element access.
+### Решите the problem of implementing a queue with automatic priority adjustment BASEd on the frequency of element access.
 
 **Definition:**
 

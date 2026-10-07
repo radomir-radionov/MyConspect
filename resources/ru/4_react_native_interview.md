@@ -20,9 +20,9 @@ Questions from [Devinterview.io — React Native](https://devinterview.io/questi
 ### React Native Fundamentals
 
 <details>
-<summary>What is React Native and how does it differ from React?</summary>
+<summary>Что такое React Native and how does it differ from React?</summary>
 
-### What is React Native and how does it differ from React?
+### Что такое React Native and how does it differ from React?
 
 **Definition:**
 
@@ -80,9 +80,9 @@ const MyComponent = () => {
 </details>
 
 <details>
-<summary>Can you explain the concept of "Learn once, write anywhere" in the context of React Native?</summary>
+<summary>Можете ли вы explain the concept of "Learn once, write anywhere" in the context of React Native?</summary>
 
-### Can you explain the concept of "Learn once, write anywhere" in the context of React Native?
+### Можете ли вы explain the concept of "Learn once, write anywhere" in the context of React Native?
 
 **Definition:**
 
@@ -134,9 +134,9 @@ const MyComponent = () => {
 </details>
 
 <details>
-<summary>How do you create a basic React Native application?</summary>
+<summary>Как you create a basic React Native application?</summary>
 
-### How do you create a basic React Native application?
+### Как you create a basic React Native application?
 
 **Definition:**
 
@@ -219,9 +219,9 @@ yarn ios
 </details>
 
 <details>
-<summary>What are components in React Native?</summary>
+<summary>Что такое components in React Native?</summary>
 
-### What are components in React Native?
+### Что такое components in React Native?
 
 **Definition:**
 
@@ -303,9 +303,9 @@ export default CustomText;
 </details>
 
 <details>
-<summary>Explain the purpose of the `render()` function in a React Native component.</summary>
+<summary>Объясните the puRPOse of the `render()` function in a React Native component.</summary>
 
-### Explain the purpose of the `render()` function in a React Native component.
+### Объясните the puRPOse of the `render()` function in a React Native component.
 
 **Definition:**
 
@@ -415,9 +415,9 @@ class MyComponent extends Component {
 </details>
 
 <details>
-<summary>What is JSX and how is it used in React Native?</summary>
+<summary>Что такое JSX and how is it used in React Native?</summary>
 
-### What is JSX and how is it used in React Native?
+### Что такое JSX and how is it used in React Native?
 
 **Definition:**
 
@@ -493,9 +493,9 @@ return <View style={styles.container}><Text>Hello, React Native!</Text></View>;
 </details>
 
 <details>
-<summary>Can you list some of the core components in React Native?</summary>
+<summary>Можете ли вы list some of the core components in React Native?</summary>
 
-### Can you list some of the core components in React Native?
+### Можете ли вы list some of the core components in React Native?
 
 **Definition:**
 
@@ -571,9 +571,9 @@ TabBarIOS.Item: Представляет элемент в компоненте 
 </details>
 
 <details>
-<summary>How do you handle state management in React Native?</summary>
+<summary>Как you handle state management in React Native?</summary>
 
-### How do you handle state management in React Native?
+### Как you handle state management in React Native?
 
 **Definition:**
 
@@ -658,9 +658,9 @@ const MyComponent = () => {
 </details>
 
 <details>
-<summary>What are props in React Native and how are they used?</summary>
+<summary>Что такое props in React Native and how are they used?</summary>
 
-### What are props in React Native and how are they used?
+### Что такое props in React Native and how are they used?
 
 **Definition:**
 
@@ -725,9 +725,9 @@ export default WeatherCard;
 </details>
 
 <details>
-<summary>What is the significance of the Flexbox layout in React Native?</summary>
+<summary>Что такое the significance of the Flexbox layout in React Native?</summary>
 
-### What is the significance of the Flexbox layout in React Native?
+### Что такое the significance of the Flexbox layout in React Native?
 
 **Definition:**
 
@@ -811,9 +811,9 @@ const styles = StyleSheet.create({
 </details>
 
 <details>
-<summary>How do you debug a React Native application?</summary>
+<summary>Как you debug a React Native application?</summary>
 
-### How do you debug a React Native application?
+### Как you debug a React Native application?
 
 **Definition:**
 
@@ -875,9 +875,9 @@ HMR (Горячая замена модулей): HMR обеспечивает �
 </details>
 
 <details>
-<summary>Explain the concept of hot reloading in React Native.</summary>
+<summary>Объясните the concept of hot reloading in React Native.</summary>
 
-### Explain the concept of hot reloading in React Native.
+### Объясните the concept of hot reloading in React Native.
 
 **Definition:**
 
@@ -916,9 +916,9 @@ if (__DEV__) {
 </details>
 
 <details>
-<summary>How do you handle user input in React Native?</summary>
+<summary>Как you handle user input in React Native?</summary>
 
-### How do you handle user input in React Native?
+### Как you handle user input in React Native?
 
 **Definition:**
 
@@ -1021,9 +1021,9 @@ TextArea предлагает поле для ввода текста с нес�
 </details>
 
 <details>
-<summary>What is a `TouchableHighlight` in React Native?</summary>
+<summary>Что такое `TouchableHighlight` in React Native?</summary>
 
-### What is a `TouchableHighlight` in React Native?
+### Что такое `TouchableHighlight` in React Native?
 
 **Definition:**
 
@@ -1075,9 +1075,9 @@ const App = () => (
 </details>
 
 <details>
-<summary>Describe the View component and its purpose in React Native.</summary>
+<summary>Опишите the View component and its puRPOse in React Native.</summary>
 
-### Describe the View component and its purpose in React Native.
+### Опишите the View component and its puRPOse in React Native.
 
 **Definition:**
 
@@ -1123,9 +1123,9 @@ View в React Native функционирует аналогично <div> в в
 </details>
 
 <details>
-<summary>How would you navigate between screens in a React Native app?</summary>
+<summary>Как бы вы naviGAte between screens in a React Native app?</summary>
 
-### How would you navigate between screens in a React Native app?
+### Как бы вы naviGAte between screens in a React Native app?
 
 **Definition:**
 
@@ -1171,9 +1171,9 @@ export default createStaticNavigation(RootStack);
 </details>
 
 <details>
-<summary>Can you explain the use of the useState hook in React Native?</summary>
+<summary>Можете ли вы explain the use of the useState hook in React Native?</summary>
 
-### Can you explain the use of the useState hook in React Native?
+### Можете ли вы explain the use of the useState hook in React Native?
 
 **Definition:**
 
@@ -1207,9 +1207,9 @@ export function Counter() {
 </details>
 
 <details>
-<summary>How do you apply styles in React Native?</summary>
+<summary>Как you apply styles in React Native?</summary>
 
-### How do you apply styles in React Native?
+### Как you apply styles in React Native?
 
 **Definition:**
 
@@ -1246,9 +1246,9 @@ const styles = StyleSheet.create({
 </details>
 
 <details>
-<summary>What is the difference between `state` and `props` in React Native?</summary>
+<summary>Что такое the difference between `state` and `props` in React Native?</summary>
 
-### What is the difference between `state` and `props` in React Native?
+### Что такое the difference between `state` and `props` in React Native?
 
 **Definition:**
 
@@ -1279,9 +1279,9 @@ function Greeting({name}: {name: string}) {
 </details>
 
 <details>
-<summary>How do you fetch and render a list of data using React Native?</summary>
+<summary>Как you fetch and render a list of data using React Native?</summary>
 
-### How do you fetch and render a list of data using React Native?
+### Как you fetch and render a list of data using React Native?
 
 **Definition:**
 
@@ -1320,9 +1320,9 @@ useEffect(() => {
 ### React Native Intermediate Concepts
 
 <details>
-<summary>What are the lifecycle methods of a React Native component?</summary>
+<summary>Что такое the lifecycle methods of a React Native component?</summary>
 
-### What are the lifecycle methods of a React Native component?
+### Что такое the lifecycle methods of a React Native component?
 
 **Definition:**
 
@@ -1348,9 +1348,9 @@ useEffect(() => {
 </details>
 
 <details>
-<summary>Explain the use of the useEffect hook in React Native.</summary>
+<summary>Объясните the use of the useEffect hook in React Native.</summary>
 
-### Explain the use of the useEffect hook in React Native.
+### Объясните the use of the useEffect hook in React Native.
 
 **Definition:**
 
@@ -1376,9 +1376,9 @@ useEffect(() => {
 </details>
 
 <details>
-<summary>What are higher-order components in React Native?</summary>
+<summary>Что такое higher-order components in React Native?</summary>
 
-### What are higher-order components in React Native?
+### Что такое higher-order components in React Native?
 
 **Definition:**
 
@@ -1410,9 +1410,9 @@ function withOnline<P extends object>(Screen: React.ComponentType<P>) {
 </details>
 
 <details>
-<summary>How do you use the Context API in React Native?</summary>
+<summary>Как you use the Context API in React Native?</summary>
 
-### How do you use the Context API in React Native?
+### Как you use the Context API in React Native?
 
 **Definition:**
 
@@ -1448,9 +1448,9 @@ function HomeScreen() {
 </details>
 
 <details>
-<summary>Can you perform deep linking in React Native? If so, how?</summary>
+<summary>Можете ли вы perform deep linking in React Native? If so, how?</summary>
 
-### Can you perform deep linking in React Native? If so, how?
+### Можете ли вы perform deep linking in React Native? If so, how?
 
 **Definition:**
 
@@ -1477,9 +1477,9 @@ return () => subscription.remove();
 </details>
 
 <details>
-<summary>Explain the significance of keys in a list in React Native.</summary>
+<summary>Объясните the significance of keys in a list in React Native.</summary>
 
-### Explain the significance of keys in a list in React Native.
+### Объясните the significance of keys in a list in React Native.
 
 **Definition:**
 
@@ -1506,9 +1506,9 @@ return () => subscription.remove();
 </details>
 
 <details>
-<summary>How do you implement global state in a React Native app without using Redux or Context API?</summary>
+<summary>Как you implement global state in a React Native app without using Redux or Context API?</summary>
 
-### How do you implement global state in a React Native app without using Redux or Context API?
+### Как you implement global state in a React Native app without using Redux or Context API?
 
 **Definition:**
 
@@ -1552,9 +1552,9 @@ export function useSession() {
 </details>
 
 <details>
-<summary>How do you optimize performance in a React Native app?</summary>
+<summary>Как you optimize performance in a React Native app?</summary>
 
-### How do you optimize performance in a React Native app?
+### Как you optimize performance in a React Native app?
 
 **Definition:**
 
@@ -1581,9 +1581,9 @@ Animated.timing(opacity, {
 </details>
 
 <details>
-<summary>What is the Virtual DOM and how does React Native utilize it?</summary>
+<summary>Что такое the Virtual DOM and how does React Native utilize it?</summary>
 
-### What is the Virtual DOM and how does React Native utilize it?
+### Что такое the Virtual DOM and how does React Native utilize it?
 
 **Definition:**
 
@@ -1610,9 +1610,9 @@ return (
 </details>
 
 <details>
-<summary>Describe how to implement animations in React Native.</summary>
+<summary>Опишите how to implement animations in React Native.</summary>
 
-### Describe how to implement animations in React Native.
+### Опишите how to implement animations in React Native.
 
 **Definition:**
 
@@ -1641,9 +1641,9 @@ return <Animated.View style={{opacity: fade}} />;
 </details>
 
 <details>
-<summary>How does React Native handle layout for different device sizes and orientations?</summary>
+<summary>Как React Native handle layout for different device sizes and orientations?</summary>
 
-### How does React Native handle layout for different device sizes and orientations?
+### Как React Native handle layout for different device sizes and orientations?
 
 **Definition:**
 
@@ -1669,9 +1669,9 @@ return <View style={{flexDirection: landscape ? 'row' : 'column', flex: 1}} />;
 </details>
 
 <details>
-<summary>What is the difference between `StyleSheet.create` and plain JavaScript objects for styling?</summary>
+<summary>Что такое the difference between `StyleSheet.create` and plain JavaScript objects for styling?</summary>
 
-### What is the difference between `StyleSheet.create` and plain JavaScript objects for styling?
+### Что такое the difference between `StyleSheet.create` and plain JavaScript objects for styling?
 
 **Definition:**
 
@@ -1702,9 +1702,9 @@ const styles = StyleSheet.create({
 </details>
 
 <details>
-<summary>How do you use Redux for state management in React Native?</summary>
+<summary>Как you use Redux for state management in React Native?</summary>
 
-### How do you use Redux for state management in React Native?
+### Как you use Redux for state management in React Native?
 
 **Definition:**
 
@@ -1739,9 +1739,9 @@ export function App() {
 </details>
 
 <details>
-<summary>What is the `useCallback` hook and how can it be useful in React Native?</summary>
+<summary>Что такое the `usecallback` hook and how can it be useful in React Native?</summary>
 
-### What is the `useCallback` hook and how can it be useful in React Native?
+### Что такое the `usecallback` hook and how can it be useful in React Native?
 
 **Definition:**
 
@@ -1768,9 +1768,9 @@ const renderItem = useCallback(
 </details>
 
 <details>
-<summary>Explain how to use refs in React Native.</summary>
+<summary>Объясните how to use refs in React Native.</summary>
 
-### Explain how to use refs in React Native.
+### Объясните how to use refs in React Native.
 
 **Definition:**
 
@@ -1796,9 +1796,9 @@ const input = useRef<TextInput>(null);
 </details>
 
 <details>
-<summary>How would you create a custom hook in React Native?</summary>
+<summary>Как бы вы create a custom hook in React Native?</summary>
 
-### How would you create a custom hook in React Native?
+### Как бы вы create a custom hook in React Native?
 
 **Definition:**
 
@@ -1827,9 +1827,9 @@ function useInitialURL() {
 </details>
 
 <details>
-<summary>In what ways can you improve the memory usage of a React Native app?</summary>
+<summary>В what ways can you improve the memory usage of a React Native app?</summary>
 
-### In what ways can you improve the memory usage of a React Native app?
+### В what ways can you improve the memory usage of a React Native app?
 
 **Definition:**
 
@@ -1858,9 +1858,9 @@ Hermes компилирует байткод на этапе сборки и с�
 </details>
 
 <details>
-<summary>What is the role of the React Native Bridge?</summary>
+<summary>Что такое the role of the React Native bridge?</summary>
 
-### What is the role of the React Native Bridge?
+### Что такое the role of the React Native bridge?
 
 **Definition:**
 
@@ -1884,9 +1884,9 @@ newArchEnabled=true
 </details>
 
 <details>
-<summary>How can you integrate a React Native app with a backend service?</summary>
+<summary>Как you integrate a React Native app with a backend service?</summary>
 
-### How can you integrate a React Native app with a backend service?
+### Как you integrate a React Native app with a backend service?
 
 **Definition:**
 
@@ -1914,9 +1914,9 @@ const order = await response.json();
 </details>
 
 <details>
-<summary>How do you secure sensitive data such as API keys in a React Native app?</summary>
+<summary>Как you secure sensitive data such as API keys in a React Native app?</summary>
 
-### How do you secure sensitive data such as API keys in a React Native app?
+### Как you secure sensitive data such as API keys in a React Native app?
 
 **Definition:**
 
@@ -1942,9 +1942,9 @@ await SecureStore.setItemAsync('session', token);
 ### React Native Styling and Layout
 
 <details>
-<summary>How do you use the `StyleSheet` object to create styles?</summary>
+<summary>Как you use the `StyleSheet` object to create styles?</summary>
 
-### How do you use the `StyleSheet` object to create styles?
+### Как you use the `StyleSheet` object to create styles?
 
 **Definition:**
 
@@ -1969,9 +1969,9 @@ const styles = StyleSheet.create({
 </details>
 
 <details>
-<summary>Can you explain how to use Flexbox for responsive layouts in React Native?</summary>
+<summary>Можете ли вы explain how to use Flexbox for responsive layouts in React Native?</summary>
 
-### Can you explain how to use Flexbox for responsive layouts in React Native?
+### Можете ли вы explain how to use Flexbox for responsive layouts in React Native?
 
 **Definition:**
 
@@ -1999,9 +1999,9 @@ Flexbox в React Native распределяет свободное место �
 </details>
 
 <details>
-<summary>How do you implement theming in a React Native application?</summary>
+<summary>Как you implement theming in a React Native application?</summary>
 
-### How do you implement theming in a React Native application?
+### Как you implement theming in a React Native application?
 
 **Definition:**
 
@@ -2026,9 +2026,9 @@ return <View style={{flex: 1, backgroundColor: background}} />;
 </details>
 
 <details>
-<summary>What consideration should be taken when styling components for different platforms (iOS and Android)?</summary>
+<summary>Какие consideration учитывать при styling components для разных platforms (iOS и Android)?</summary>
 
-### What consideration should be taken when styling components for different platforms (iOS and Android)?
+### Какие consideration учитывать при styling components для разных platforms (iOS и Android)?
 
 **Definition:**
 
@@ -2060,9 +2060,9 @@ const styles = StyleSheet.create({
 </details>
 
 <details>
-<summary>How can you use third-party styling libraries like Styled Components in React Native?</summary>
+<summary>Как you use third-party styling libraries like Styled Components in React Native?</summary>
 
-### How can you use third-party styling libraries like Styled Components in React Native?
+### Как you use third-party styling libraries like Styled Components in React Native?
 
 **Definition:**
 
@@ -2096,9 +2096,9 @@ const Title = styled.Text`
 ### React Native Data Management and Networking
 
 <details>
-<summary>How do you handle state persistence in React Native?</summary>
+<summary>Как you handle state persistence in React Native?</summary>
 
-### How do you handle state persistence in React Native?
+### Как you handle state persistence in React Native?
 
 **Definition:**
 
@@ -2126,9 +2126,9 @@ await AsyncStorage.setItem('draft', JSON.stringify(draft));
 </details>
 
 <details>
-<summary>Explain how to make network requests using axios or fetch in React Native.</summary>
+<summary>Объясните how to make network requests using axios or fetch in React Native.</summary>
 
-### Explain how to make network requests using axios or fetch in React Native.
+### Объясните how to make network requests using axios or fetch in React Native.
 
 **Definition:**
 
@@ -2156,9 +2156,9 @@ const json = await response.json();
 </details>
 
 <details>
-<summary>What is GraphQL and how can it be used in a React Native app?</summary>
+<summary>Что такое GraphQL and how can it be used in a React Native app?</summary>
 
-### What is GraphQL and how can it be used in a React Native app?
+### Что такое GraphQL and how can it be used in a React Native app?
 
 **Definition:**
 
@@ -2185,9 +2185,9 @@ const response = await fetch('https://api.example.com/graphql', {
 </details>
 
 <details>
-<summary>How do you manage caching of network requests in React Native?</summary>
+<summary>Как you manage caching of network requests in React Native?</summary>
 
-### How do you manage caching of network requests in React Native?
+### Как you manage caching of network requests in React Native?
 
 **Definition:**
 
@@ -2214,9 +2214,9 @@ await AsyncStorage.setItem(url, JSON.stringify(fresh));
 </details>
 
 <details>
-<summary>What are the best practices for data validation in React Native forms?</summary>
+<summary>Что такое the best practices for data validation in React Native forms?</summary>
 
-### What are the best practices for data validation in React Native forms?
+### Что такое the best practices for data validation in React Native forms?
 
 **Definition:**
 
@@ -2246,9 +2246,9 @@ function onSubmit() {
 </details>
 
 <details>
-<summary>How can you integrate a React Native application with Redux Saga?</summary>
+<summary>Как you integrate a React Native application with Redux Saga?</summary>
 
-### How can you integrate a React Native application with Redux Saga?
+### Как you integrate a React Native application with Redux Saga?
 
 **Definition:**
 
@@ -2280,9 +2280,9 @@ function* loadMovies() {
 </details>
 
 <details>
-<summary>Discuss the different ways to manage application state in React Native.</summary>
+<summary>Обсудите the different ways to manage application state in React Native.</summary>
 
-### Discuss the different ways to manage application state in React Native.
+### Обсудите the different ways to manage application state in React Native.
 
 **Definition:**
 
@@ -2310,9 +2310,9 @@ const [query, setQuery] = useState('');
 </details>
 
 <details>
-<summary>How do you handle offline data synchronization in React Native?</summary>
+<summary>Как you handle offline data synchronization in React Native?</summary>
 
-### How do you handle offline data synchronization in React Native?
+### Как you handle offline data synchronization in React Native?
 
 **Definition:**
 
@@ -2341,9 +2341,9 @@ useEffect(() => {
 </details>
 
 <details>
-<summary>What are the benefits of using Apollo Client in React Native applications?</summary>
+<summary>Что такое the benefits of using Apollo Client in React Native applications?</summary>
 
-### What are the benefits of using Apollo Client in React Native applications?
+### Что такое the benefits of using Apollo Client in React Native applications?
 
 **Definition:**
 
@@ -2373,9 +2373,9 @@ return <Text>{data?.viewer.name}</Text>;
 ### React Native Platform Specifics
 
 <details>
-<summary>How does React Native handle platform-specific code?</summary>
+<summary>Как React Native handle platform-specific code?</summary>
 
-### How does React Native handle platform-specific code?
+### Как React Native handle platform-specific code?
 
 **Definition:**
 
@@ -2398,9 +2398,9 @@ import BigButton from './BigButton';
 </details>
 
 <details>
-<summary>What are some common platform-specific components in React Native?</summary>
+<summary>Что такое some common platform-specific components in React Native?</summary>
 
-### What are some common platform-specific components in React Native?
+### Что такое some common platform-specific components in React Native?
 
 **Definition:**
 
@@ -2424,9 +2424,9 @@ const label = Platform.OS === 'ios' ? 'iOS menu' : 'Android menu';
 </details>
 
 <details>
-<summary>Can you explain how to use the Platform module in React Native?</summary>
+<summary>Можете ли вы explain how to use the Platform module in React Native?</summary>
 
-### Can you explain how to use the Platform module in React Native?
+### Можете ли вы explain how to use the Platform module in React Native?
 
 **Definition:**
 
@@ -2448,9 +2448,9 @@ const color = Platform.select({ios: 'red', android: 'green', default: 'blue'});
 </details>
 
 <details>
-<summary>How do you build a component that renders differently on iOS and Android?</summary>
+<summary>Как you build a component that renders differently on iOS and Android?</summary>
 
-### How do you build a component that renders differently on iOS and Android?
+### Как you build a component that renders differently on iOS and Android?
 
 **Definition:**
 
@@ -2480,9 +2480,9 @@ const Widget = Platform.select({
 </details>
 
 <details>
-<summary>Describe a scenario where you might use `NativeModules` in React Native.</summary>
+<summary>Опишите a scenario where you might use `NativeModules` in React Native.</summary>
 
-### Describe a scenario where you might use `NativeModules` in React Native.
+### Опишите a scenario where you might use `NativeModules` in React Native.
 
 **Definition:**
 
@@ -2511,9 +2511,9 @@ await NativeModules.CalendarModule.createEvent('Lunch', 'Office');
 </details>
 
 <details>
-<summary>How do you use `Linking` to handle external URLs in React Native?</summary>
+<summary>Как you use `Linking` to handle external URLs in React Native?</summary>
 
-### How do you use `Linking` to handle external URLs in React Native?
+### Как you use `Linking` to handle external URLs in React Native?
 
 **Definition:**
 
@@ -2539,9 +2539,9 @@ if (supported) await Linking.openURL(url);
 ### React Native Performance Optimization
 
 <details>
-<summary>What strategies can you employ to optimize the performance of a React Native application?</summary>
+<summary>Какие стратегии can you employ to optimize the performance of a React Native application?</summary>
 
-### What strategies can you employ to optimize the performance of a React Native application?
+### Какие стратегии can you employ to optimize the performance of a React Native application?
 
 **Definition:**
 
@@ -2564,9 +2564,9 @@ if (supported) await Linking.openURL(url);
 </details>
 
 <details>
-<summary>How would you reduce the app bundle size in a React Native project?</summary>
+<summary>Как бы вы reduce the app bundle size in a React Native project?</summary>
 
-### How would you reduce the app bundle size in a React Native project?
+### Как бы вы reduce the app bundle size in a React Native project?
 
 **Definition:**
 
@@ -2590,9 +2590,9 @@ const isHermes = () => !!(global as {HermesInternal?: unknown}).HermesInternal;
 </details>
 
 <details>
-<summary>Explain how to use the `PureComponent` class for performance gains in React Native.</summary>
+<summary>Объясните how to use the `PureComponent` class for performance GAins in React Native.</summary>
 
-### Explain how to use the `PureComponent` class for performance gains in React Native.
+### Объясните how to use the `PureComponent` class for performance GAins in React Native.
 
 **Definition:**
 
@@ -2623,9 +2623,9 @@ class Row extends React.PureComponent<{title: string}> {
 </details>
 
 <details>
-<summary>Why is it important to avoid unnecessary renders in React Native, and how can you achieve this?</summary>
+<summary>Почему is it important to avoid unnecessary renders in React Native, and how can you achieve this?</summary>
 
-### Why is it important to avoid unnecessary renders in React Native, and how can you achieve this?
+### Почему is it important to avoid unnecessary renders in React Native, and how can you achieve this?
 
 **Definition:**
 
@@ -2648,9 +2648,9 @@ startTransition(() => setTileCount(next));
 </details>
 
 <details>
-<summary>What is the Hermes engine and how does it benefit React Native performance?</summary>
+<summary>Что такое the Hermes engine and how does it benefit React Native performance?</summary>
 
-### What is the Hermes engine and how does it benefit React Native performance?
+### Что такое the Hermes engine and how does it benefit React Native performance?
 
 **Definition:**
 
@@ -2674,9 +2674,9 @@ const isHermes = () => !!global.HermesInternal;
 ### React Native Testing and Debugging
 
 <details>
-<summary>What are some popular testing frameworks for React Native applications?</summary>
+<summary>Что такое some popular testing frameworks for React Native applications?</summary>
 
-### What are some popular testing frameworks for React Native applications?
+### Что такое some popular testing frameworks for React Native applications?
 
 **Definition:**
 
@@ -2701,9 +2701,9 @@ test('adds a row', () => {
 </details>
 
 <details>
-<summary>How do you write a unit test for a React Native component?</summary>
+<summary>Как you write a unit test for a React Native component?</summary>
 
-### How do you write a unit test for a React Native component?
+### Как you write a unit test for a React Native component?
 
 **Definition:**
 
@@ -2730,9 +2730,9 @@ test('given empty list, user can add banana', () => {
 </details>
 
 <details>
-<summary>Describe the process for end-to-end testing in React Native.</summary>
+<summary>Опишите the process for end-to-end testing in React Native.</summary>
 
-### Describe the process for end-to-end testing in React Native.
+### Опишите the process for end-to-end testing in React Native.
 
 **Definition:**
 
@@ -2759,9 +2759,9 @@ detox test --configuration ios.sim.release
 </details>
 
 <details>
-<summary>What are some common debugging techniques in React Native?</summary>
+<summary>Что такое some common debugging techniques in React Native?</summary>
 
-### What are some common debugging techniques in React Native?
+### Что такое some common debugging techniques in React Native?
 
 **Definition:**
 
@@ -2784,9 +2784,9 @@ LogBox.ignoreLogs([/GraphQL error:.*/]);
 </details>
 
 <details>
-<summary>What tools would you use for performance profiling in React Native?</summary>
+<summary>Какие инструменты would you use for performance profiling in React Native?</summary>
 
-### What tools would you use for performance profiling in React Native?
+### Какие инструменты would you use for performance profiling in React Native?
 
 **Definition:**
 
@@ -2812,9 +2812,9 @@ npm run android -- --mode=release
 ### React Native Navigation and Routing
 
 <details>
-<summary>Compare and contrast React Navigation and React Native Navigation.</summary>
+<summary>Сравните and contrast React NaviGAtion and React Native NaviGAtion.</summary>
 
-### Compare and contrast React Navigation and React Native Navigation.
+### Сравните and contrast React NaviGAtion and React Native NaviGAtion.
 
 **Definition:**
 
@@ -2843,9 +2843,9 @@ const RootStack = createNativeStackNavigator({
 </details>
 
 <details>
-<summary>How do you pass parameters between screens using React Navigation?</summary>
+<summary>Как you pass parameters between screens using React NaviGAtion?</summary>
 
-### How do you pass parameters between screens using React Navigation?
+### Как you pass parameters between screens using React NaviGAtion?
 
 **Definition:**
 
@@ -2872,9 +2872,9 @@ function ProfileScreen({route}) {
 </details>
 
 <details>
-<summary>Explain tab navigation in React Native.</summary>
+<summary>Объясните tab naviGAtion in React Native.</summary>
 
-### Explain tab navigation in React Native.
+### Объясните tab naviGAtion in React Native.
 
 **Definition:**
 
@@ -2902,9 +2902,9 @@ const RootStack = createNativeStackNavigator({
 </details>
 
 <details>
-<summary>How can you implement deep linking with React Navigation?</summary>
+<summary>Как you implement deep linking with React NaviGAtion?</summary>
 
-### How can you implement deep linking with React Navigation?
+### Как you implement deep linking with React NaviGAtion?
 
 **Definition:**
 
@@ -2931,9 +2931,9 @@ const linking = {
 </details>
 
 <details>
-<summary>What is the difference between stack navigation and modal navigation in React Native?</summary>
+<summary>Что такое the difference between stack naviGAtion and modal naviGAtion in React Native?</summary>
 
-### What is the difference between stack navigation and modal navigation in React Native?
+### Что такое the difference between stack naviGAtion and modal naviGAtion in React Native?
 
 **Definition:**
 
@@ -2965,9 +2965,9 @@ Native stack из руководства регистрирует экраны �
 ### React Native Build and Deployment
 
 <details>
-<summary>What is the process to build and package a React Native app for production?</summary>
+<summary>Что такое the process to build and package a React Native app for production?</summary>
 
-### What is the process to build and package a React Native app for production?
+### Что такое the process to build and package a React Native app for production?
 
 **Definition:**
 
@@ -2992,9 +2992,9 @@ npm run ios -- --mode=Release
 </details>
 
 <details>
-<summary>How do you configure app signing for deploying a React Native app to the Google Play Store or Apple App Store?</summary>
+<summary>Как you configure app signing for deploying a React Native app to the Google Play Store or Apple App Store?</summary>
 
-### How do you configure app signing for deploying a React Native app to the Google Play Store or Apple App Store?
+### Как you configure app signing for deploying a React Native app to the Google Play Store or Apple App Store?
 
 **Definition:**
 
@@ -3024,9 +3024,9 @@ signingConfigs {
 </details>
 
 <details>
-<summary>Explain the steps to update a React Native app already deployed on the app stores.</summary>
+<summary>Объясните the steps to update a React Native app already deployed on the app stores.</summary>
 
-### Explain the steps to update a React Native app already deployed on the app stores.
+### Объясните the steps to update a React Native app already deployed on the app stores.
 
 **Definition:**
 
@@ -3050,9 +3050,9 @@ npm run android -- --mode=release
 </details>
 
 <details>
-<summary>What is CodePush and how can it be used in React Native apps?</summary>
+<summary>Что такое CodePush and how can it be used in React Native apps?</summary>
 
-### What is CodePush and how can it be used in React Native apps?
+### Что такое CodePush and how can it be used in React Native apps?
 
 **Definition:**
 
@@ -3081,9 +3081,9 @@ Microsoft описывает отдельный сервер CodePush, кото�
 </details>
 
 <details>
-<summary>How do you manage different app environments (development, staging, production) in React Native?</summary>
+<summary>Как you manage different app environments (development, staging, production) in React Native?</summary>
 
-### How do you manage different app environments (development, staging, production) in React Native?
+### Как you manage different app environments (development, staging, production) in React Native?
 
 **Definition:**
 
@@ -3109,9 +3109,9 @@ const apiHost = __DEV__ ? 'https://staging.example.com' : 'https://api.example.c
 ### React Native Ecosystem and Libraries
 
 <details>
-<summary>List some common libraries that you would consider essential for React Native development.</summary>
+<summary>Перечислите some common libraries that you would consider essential for React Native development.</summary>
 
-### List some common libraries that you would consider essential for React Native development.
+### Перечислите some common libraries that you would consider essential for React Native development.
 
 **Definition:**
 
@@ -3136,9 +3136,9 @@ npx expo install react-native-screens react-native-safe-area-context
 </details>
 
 <details>
-<summary>How do you integrate a navigation library like React Navigation into a React Native app?</summary>
+<summary>Как you integrate a naviGAtion library like React NaviGAtion into a React Native app?</summary>
 
-### How do you integrate a navigation library like React Navigation into a React Native app?
+### Как you integrate a naviGAtion library like React NaviGAtion into a React Native app?
 
 **Definition:**
 
@@ -3163,9 +3163,9 @@ export default function App() {
 </details>
 
 <details>
-<summary>What is Expo, and what are its pros and cons?</summary>
+<summary>Что такое Expo, and what are its pros and cons?</summary>
 
-### What is Expo, and what are its pros and cons?
+### Что такое Expo, and what are its pros and cons?
 
 **Definition:**
 
@@ -3192,9 +3192,9 @@ npx create-expo-app@latest --template react-navigation/template
 </details>
 
 <details>
-<summary>How would you integrate push notifications into a React Native app?</summary>
+<summary>Как бы вы integrate push notifications into a React Native app?</summary>
 
-### How would you integrate push notifications into a React Native app?
+### Как бы вы integrate push notifications into a React Native app?
 
 **Definition:**
 
@@ -3222,9 +3222,9 @@ await fetch('https://api.example.com/devices', {
 </details>
 
 <details>
-<summary>Describe how you would use a library like React Native Elements to enhance the UI of your app.</summary>
+<summary>Опишите how you would use a library like React Native Elements to enhance the UI of your app.</summary>
 
-### Describe how you would use a library like React Native Elements to enhance the UI of your app.
+### Опишите how you would use a library like React Native Elements to enhance the UI of your app.
 
 **Definition:**
 
@@ -3255,9 +3255,9 @@ await fetch('https://api.example.com/devices', {
 ### Advanced React Native Topics
 
 <details>
-<summary>What is the Flipper tool and how does it help in React Native development?</summary>
+<summary>Что такое the Flipper tool and how does it help in React Native development?</summary>
 
-### What is the Flipper tool and how does it help in React Native development?
+### Что такое the Flipper tool and how does it help in React Native development?
 
 **Definition:**
 
@@ -3281,9 +3281,9 @@ j
 </details>
 
 <details>
-<summary>Can you explain the use of Turbo Modules in React Native?</summary>
+<summary>Можете ли вы explain the use of Turbo Modules in React Native?</summary>
 
-### Can you explain the use of Turbo Modules in React Native?
+### Можете ли вы explain the use of Turbo Modules in React Native?
 
 **Definition:**
 
@@ -3312,9 +3312,9 @@ export default TurboModuleRegistry.getEnforcing<Spec>('Calendar');
 </details>
 
 <details>
-<summary>Describe the process of linking native modules in a React Native app.</summary>
+<summary>Опишите the process of linking native modules in a React Native app.</summary>
 
-### Describe the process of linking native modules in a React Native app.
+### Опишите the process of linking native modules in a React Native app.
 
 **Definition:**
 
@@ -3339,9 +3339,9 @@ cd ios && pod install
 </details>
 
 <details>
-<summary>What is Reanimated, and when would you use it in a React Native app?</summary>
+<summary>Что такое Reanimated, and when would you use it in a React Native app?</summary>
 
-### What is Reanimated, and when would you use it in a React Native app?
+### Что такое Reanimated, and when would you use it in a React Native app?
 
 **Definition:**
 
@@ -3368,9 +3368,9 @@ Animated.timing(value, {toValue: 1, duration: 180, useNativeDriver: true}).start
 </details>
 
 <details>
-<summary>How do you create a bridge for a native module in React Native?</summary>
+<summary>Как you create a bridge for a native module in React Native?</summary>
 
-### How do you create a bridge for a native module in React Native?
+### Как you create a bridge for a native module in React Native?
 
 **Definition:**
 
@@ -3396,9 +3396,9 @@ export interface Spec extends TurboModule {
 </details>
 
 <details>
-<summary>Explain the concept of shared element transitions in React Native.</summary>
+<summary>Объясните the concept of SHAred element transitions in React Native.</summary>
 
-### Explain the concept of shared element transitions in React Native.
+### Объясните the concept of SHAred element transitions in React Native.
 
 **Definition:**
 
@@ -3422,9 +3422,9 @@ navigation.navigate('Photo', {id: photo.id});
 </details>
 
 <details>
-<summary>How would you go about writing native code in Swift or Kotlin for React Native?</summary>
+<summary>Как бы вы Go about writing native code in Swift or Kotlin for React Native?</summary>
 
-### How would you go about writing native code in Swift or Kotlin for React Native?
+### Как бы вы Go about writing native code in Swift or Kotlin for React Native?
 
 **Definition:**
 
@@ -3449,9 +3449,9 @@ export interface Spec extends TurboModule {
 </details>
 
 <details>
-<summary>What is "Fast Refresh" in React Native?</summary>
+<summary>Что такое "Fast Refresh" in React Native?</summary>
 
-### What is "Fast Refresh" in React Native?
+### Что такое "Fast Refresh" in React Native?
 
 **Definition:**
 
@@ -3476,9 +3476,9 @@ export function Splash() {
 </details>
 
 <details>
-<summary>How does React Native compile to native code?</summary>
+<summary>Как React Native compile to native code?</summary>
 
-### How does React Native compile to native code?
+### Как React Native compile to native code?
 
 **Definition:**
 
@@ -3501,9 +3501,9 @@ npm run ios -- --mode=Release
 </details>
 
 <details>
-<summary>Can you integrate a React Native application into an existing native iOS or Android app?</summary>
+<summary>Можете ли вы integrate a React Native application into an existing native iOS or Android app?</summary>
 
-### Can you integrate a React Native application into an existing native iOS or Android app?
+### Можете ли вы integrate a React Native application into an existing native iOS or Android app?
 
 **Definition:**
 
@@ -3529,9 +3529,9 @@ hermesEnabled=true
 ### React Native Best Practices
 
 <details>
-<summary>What are the best practices for structuring a large React Native codebase?</summary>
+<summary>Что такое the best practices for structuring a large React Native codeBASE?</summary>
 
-### What are the best practices for structuring a large React Native codebase?
+### Что такое the best practices for structuring a large React Native codeBASE?
 
 **Definition:**
 
@@ -3556,9 +3556,9 @@ src/orders/loadOrders.test.ts
 </details>
 
 <details>
-<summary>How should you handle sensitive data in a React Native app?</summary>
+<summary>Как следует you handle sensitive data in a React Native app?</summary>
 
-### How should you handle sensitive data in a React Native app?
+### Как следует you handle sensitive data in a React Native app?
 
 **Definition:**
 
@@ -3580,9 +3580,9 @@ await SecureStore.setItemAsync('accessToken', token);
 </details>
 
 <details>
-<summary>What are the best practices for API interaction and data fetching in React Native?</summary>
+<summary>Что такое the best practices for API interaction and data fetching in React Native?</summary>
 
-### What are the best practices for API interaction and data fetching in React Native?
+### Что такое the best practices for API interaction and data fetching in React Native?
 
 **Definition:**
 
@@ -3608,9 +3608,9 @@ return response.json();
 </details>
 
 <details>
-<summary>Discuss the importance of accessibility in React Native apps.</summary>
+<summary>Обсудите the importance of accessibility in React Native apps.</summary>
 
-### Discuss the importance of accessibility in React Native apps.
+### Обсудите the importance of accessibility in React Native apps.
 
 **Definition:**
 
@@ -3635,9 +3635,9 @@ VoiceOver на iOS и TalkBack на Android — экранные дикторы 
 </details>
 
 <details>
-<summary>How do you ensure that your React Native application is maintainable and scalable over time?</summary>
+<summary>Как you ensure that your React Native application is maintainable and Scalable over time?</summary>
 
-### How do you ensure that your React Native application is maintainable and scalable over time?
+### Как you ensure that your React Native application is maintainable and Scalable over time?
 
 **Definition:**
 

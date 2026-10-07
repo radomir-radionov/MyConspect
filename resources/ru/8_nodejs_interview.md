@@ -21,9 +21,9 @@
 ### Node.js Basics
 
 <details>
-<summary>What is Node.js and why is it used?</summary>
+<summary>Что такое Node.js and why is it used?</summary>
 
-### What is Node.js and why is it used?
+### Что такое Node.js and why is it used?
 
 **Definition:**
 
@@ -73,9 +73,9 @@ http
 </details>
 
 <details>
-<summary>How does Node.js handle child threads?</summary>
+<summary>Как Node.js handle child threads?</summary>
 
-### How does Node.js handle child threads?
+### Как Node.js handle child threads?
 
 **Definition:**
 
@@ -127,9 +127,9 @@ if (isMainThread) {
 </details>
 
 <details>
-<summary>Describe the event-driven programming in Node.js.</summary>
+<summary>Опишите the event-driven programming in Node.js.</summary>
 
-### Describe the event-driven programming in Node.js.
+### Опишите the event-driven programming in Node.js.
 
 **Definition:**
 
@@ -177,9 +177,9 @@ emitter.emit("event-name", "Some Payload");
 </details>
 
 <details>
-<summary>What is the event loop in Node.js?</summary>
+<summary>Что такое the event loop in Node.js?</summary>
 
-### What is the event loop in Node.js?
+### Что такое the event loop in Node.js?
 
 **Definition:**
 
@@ -230,9 +230,9 @@ console.log("End");
 </details>
 
 <details>
-<summary>What is the difference between Node.js and traditional web server technologies?</summary>
+<summary>Что такое the difference between Node.js and traditional web server technologies?</summary>
 
-### What is the difference between Node.js and traditional web server technologies?
+### Что такое the difference between Node.js and traditional web server technologies?
 
 **Definition:**
 
@@ -261,9 +261,9 @@ console.log("End");
 </details>
 
 <details>
-<summary>Explain what "non-blocking" means in Node.js.</summary>
+<summary>Объясните what "non-blocking" means in Node.js.</summary>
 
-### Explain what "non-blocking" means in Node.js.
+### Объясните what "non-blocking" means in Node.js.
 
 **Definition:**
 
@@ -307,9 +307,9 @@ console.log("This message is displayed immediately.");
 </details>
 
 <details>
-<summary>How do you update Node.js to the latest version?</summary>
+<summary>Как you update Node.js to the latest version?</summary>
 
-### How do you update Node.js to the latest version?
+### Как you update Node.js to the latest version?
 
 **Definition:**
 
@@ -345,9 +345,9 @@ npm -v
 </details>
 
 <details>
-<summary>What is npm and what is it used for?</summary>
+<summary>Что такое npm and what is it used for?</summary>
 
-### What is npm and what is it used for?
+### Что такое npm and what is it used for?
 
 **Definition:**
 
@@ -391,9 +391,9 @@ npm run test
 </details>
 
 <details>
-<summary>How do you manage packages in a Node.js project?</summary>
+<summary>Как you manage packages in a Node.js project?</summary>
 
-### How do you manage packages in a Node.js project?
+### Как you manage packages in a Node.js project?
 
 **Definition:**
 
@@ -430,9 +430,9 @@ npm ci
 </details>
 
 <details>
-<summary>What is a package.json file?</summary>
+<summary>Что такое package.JSON file?</summary>
 
-### What is a package.json file?
+### Что такое package.JSON file?
 
 **Definition:**
 
@@ -478,9 +478,9 @@ npm ci
 ### Node.js Core Modules
 
 <details>
-<summary>Describe some of the core modules of Node.js.</summary>
+<summary>Опишите some of the core modules of Node.js.</summary>
 
-### Describe some of the core modules of Node.js.
+### Опишите some of the core modules of Node.js.
 
 **Definition:**
 
@@ -516,9 +516,9 @@ createServer((_req, res) => res.end("ok")).listen(0);
 </details>
 
 <details>
-<summary>How do you create a simple server in Node.js using the HTTP module?</summary>
+<summary>Как you create a simple server in Node.js using the HTTP module?</summary>
 
-### How do you create a simple server in Node.js using the HTTP module?
+### Как you create a simple server in Node.js using the HTTP module?
 
 **Definition:**
 
@@ -563,9 +563,9 @@ server.listen(8080);
 </details>
 
 <details>
-<summary>Explain the purpose of the File System (fs) module.</summary>
+<summary>Объясните the puRPOse of the File System (fs) module.</summary>
 
-### Explain the purpose of the File System (fs) module.
+### Объясните the puRPOse of the File System (fs) module.
 
 **Definition:**
 
@@ -605,9 +605,9 @@ console.log("Synchronous read:", syncText);
 </details>
 
 <details>
-<summary>What is the Buffer class in Node.js?</summary>
+<summary>Что такое the Buffer class in Node.js?</summary>
 
-### What is the Buffer class in Node.js?
+### Что такое the Buffer class in Node.js?
 
 **Definition:**
 
@@ -650,9 +650,9 @@ console.log(head.toString());
 </details>
 
 <details>
-<summary>What are streams in Node.js and what types are available?</summary>
+<summary>Что такое streams in Node.js and what types are available?</summary>
 
-### What are streams in Node.js and what types are available?
+### Что такое streams in Node.js and what types are available?
 
 **Definition:**
 
@@ -694,9 +694,9 @@ await pipeline(
 </details>
 
 <details>
-<summary>How do you read and write files in Node.js?</summary>
+<summary>Как you read and write files in Node.js?</summary>
 
-### How do you read and write files in Node.js?
+### Как you read and write files in Node.js?
 
 **Definition:**
 
@@ -734,9 +734,9 @@ console.log(text);
 </details>
 
 <details>
-<summary>How do you use the EventEmitter in Node.js?</summary>
+<summary>Как you use the EventEmitter in Node.js?</summary>
 
-### How do you use the EventEmitter in Node.js?
+### Как you use the EventEmitter in Node.js?
 
 **Definition:**
 
@@ -783,9 +783,9 @@ jobs.emit("error", new Error("disk full"));
 </details>
 
 <details>
-<summary>What is the QueryString module?</summary>
+<summary>Что такое the QueryString module?</summary>
 
-### What is the QueryString module?
+### Что такое the QueryString module?
 
 **Definition:**
 
@@ -827,9 +827,9 @@ console.log(params.get("foo"));
 </details>
 
 <details>
-<summary>How do you manage path operations in Node.js?</summary>
+<summary>Как you manage path operations in Node.js?</summary>
 
-### How do you manage path operations in Node.js?
+### Как you manage path operations in Node.js?
 
 **Definition:**
 
@@ -872,9 +872,9 @@ console.log(fileUrl.pathname);
 ### Asynchronous Programming
 
 <details>
-<summary>What are callbacks in Node.js?</summary>
+<summary>Что такое callbacks in Node.js?</summary>
 
-### What are callbacks in Node.js?
+### Что такое callbacks in Node.js?
 
 **Definition:**
 
@@ -915,9 +915,9 @@ readFile(new URL("./note.txt", import.meta.url), "utf8", (err, data) => {
 </details>
 
 <details>
-<summary>What is callback hell and how can it be avoided?</summary>
+<summary>Что такое callback hell and how can it be avoided?</summary>
 
-### What is callback hell and how can it be avoided?
+### Что такое callback hell and how can it be avoided?
 
 **Definition:**
 
@@ -960,9 +960,9 @@ try {
 </details>
 
 <details>
-<summary>Explain promises in Node.js.</summary>
+<summary>Объясните promises in Node.js.</summary>
 
-### Explain promises in Node.js.
+### Объясните promises in Node.js.
 
 **Definition:**
 
@@ -1003,9 +1003,9 @@ readFile(new URL("./note.txt", import.meta.url), "utf8")
 </details>
 
 <details>
-<summary>How do async/await functions work in Node.js?</summary>
+<summary>Как async/await functions work in Node.js?</summary>
 
-### How do async/await functions work in Node.js?
+### Как async/await functions work in Node.js?
 
 **Definition:**
 
@@ -1047,9 +1047,9 @@ try {
 </details>
 
 <details>
-<summary>What is the difference between synchronous and asynchronous methods in the fs module?</summary>
+<summary>Что такое the difference between synchronous and asynchronous methods in the fs module?</summary>
 
-### What is the difference between synchronous and asynchronous methods in the fs module?
+### Что такое the difference between synchronous and asynchronous methods in the fs module?
 
 **Definition:**
 
@@ -1093,9 +1093,9 @@ console.log("sync", syncText);
 ### Networking in Node.js
 
 <details>
-<summary>How does Node.js handle HTTP requests and responses?</summary>
+<summary>Как Node.js handle HTTP requests and responses?</summary>
 
-### How does Node.js handle HTTP requests and responses?
+### Как Node.js handle HTTP requests and responses?
 
 **Definition:**
 
@@ -1138,9 +1138,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>What is Express.js and why is it important for Node.js?</summary>
+<summary>Что такое Express.js and why is it important for Node.js?</summary>
 
-### What is Express.js and why is it important for Node.js?
+### Что такое Express.js and why is it important for Node.js?
 
 **Definition:**
 
@@ -1183,9 +1183,9 @@ app.listen(3000);
 </details>
 
 <details>
-<summary>How do you create a RESTful API with Node.js?</summary>
+<summary>Как you create a RESTful API with Node.js?</summary>
 
-### How do you create a RESTful API with Node.js?
+### Как you create a RESTful API with Node.js?
 
 **Definition:**
 
@@ -1237,9 +1237,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>What is middleware in the context of Node.js?</summary>
+<summary>Что такое middleware in the context of Node.js?</summary>
 
-### What is middleware in the context of Node.js?
+### Что такое middleware in the context of Node.js?
 
 **Definition:**
 
@@ -1288,9 +1288,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>How do you ensure security in HTTP headers with Node.js?</summary>
+<summary>Как you ensure security in HTTP headers with Node.js?</summary>
 
-### How do you ensure security in HTTP headers with Node.js?
+### Как you ensure security in HTTP headers with Node.js?
 
 **Definition:**
 
@@ -1336,9 +1336,9 @@ server.listen(8000);
 ### Error Handling & Debugging
 
 <details>
-<summary>How do you handle errors in Node.js?</summary>
+<summary>Как you handle errors in Node.js?</summary>
 
-### How do you handle errors in Node.js?
+### Как you handle errors in Node.js?
 
 **Definition:**
 
@@ -1385,9 +1385,9 @@ try {
 </details>
 
 <details>
-<summary>Describe some error first callback patterns in Node.js.</summary>
+<summary>Опишите some error first callback patterns in Node.js.</summary>
 
-### Describe some error first callback patterns in Node.js.
+### Опишите some error first callback patterns in Node.js.
 
 **Definition:**
 
@@ -1447,9 +1447,9 @@ alwaysAsync("ok", (_err, value) => {
 </details>
 
 <details>
-<summary>What are some common debugging techniques for Node.js applications?</summary>
+<summary>Что такое some common debugging techniques for Node.js applications?</summary>
 
-### What are some common debugging techniques for Node.js applications?
+### Что такое some common debugging techniques for Node.js applications?
 
 **Definition:**
 
@@ -1491,9 +1491,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>Explain process.nextTick().</summary>
+<summary>Объясните process.nextTick().</summary>
 
-### Explain process.nextTick().
+### Объясните process.nextTick().
 
 **Definition:**
 
@@ -1536,9 +1536,9 @@ console.log("scheduled");
 </details>
 
 <details>
-<summary>What is the global object in Node.js?</summary>
+<summary>Что такое the global object in Node.js?</summary>
 
-### What is the global object in Node.js?
+### Что такое the global object in Node.js?
 
 **Definition:**
 
@@ -1577,9 +1577,9 @@ console.log(params.get("q"));
 ### Testing in Node.js
 
 <details>
-<summary>What frameworks are available for testing Node.js applications?</summary>
+<summary>Какие frameworks доступны для testing Node.js applications?</summary>
 
-### What frameworks are available for testing Node.js applications?
+### Какие frameworks доступны для testing Node.js applications?
 
 **Definition:**
 
@@ -1619,9 +1619,9 @@ describe("sum", () => {
 </details>
 
 <details>
-<summary>Explain the concept of mocking in Node.js.</summary>
+<summary>Объясните the concept of mocking in Node.js.</summary>
 
-### Explain the concept of mocking in Node.js.
+### Объясните the concept of mocking in Node.js.
 
 **Definition:**
 
@@ -1660,9 +1660,9 @@ test("records a call", (t) => {
 </details>
 
 <details>
-<summary>Why is benchmarking important in Node.js?</summary>
+<summary>Почему is benchmarking important in Node.js?</summary>
 
-### Why is benchmarking important in Node.js?
+### Почему is benchmarking important in Node.js?
 
 **Definition:**
 
@@ -1701,9 +1701,9 @@ console.log({ n, elapsedMs });
 </details>
 
 <details>
-<summary>How do you test an HTTP server in Node.js?</summary>
+<summary>Как you test an HTTP server in Node.js?</summary>
 
-### How do you test an HTTP server in Node.js?
+### Как you test an HTTP server in Node.js?
 
 **Definition:**
 
@@ -1773,9 +1773,9 @@ it("GET / returns ok", async () => {
 ### Node.js with Databases
 
 <details>
-<summary>How do you connect a MySQL database with Node.js?</summary>
+<summary>Как you connect a MySQL dataBASE with Node.js?</summary>
 
-### How do you connect a MySQL database with Node.js?
+### Как you connect a MySQL dataBASE with Node.js?
 
 **Definition:**
 
@@ -1820,9 +1820,9 @@ console.log(rows);
 </details>
 
 <details>
-<summary>Explain how NoSQL databases like MongoDB can be used with Node.js.</summary>
+<summary>Объясните how NoSQL dataBASEs like MongoDB can be used with Node.js.</summary>
 
-### Explain how NoSQL databases like MongoDB can be used with Node.js.
+### Объясните how NoSQL dataBASEs like MongoDB can be used with Node.js.
 
 **Definition:**
 
@@ -1864,9 +1864,9 @@ console.log(found);
 </details>
 
 <details>
-<summary>What's the role of ORM in Node.js?</summary>
+<summary>Какова роль ORM в Node.js?</summary>
 
-### What's the role of ORM in Node.js?
+### Какова роль ORM в Node.js?
 
 **Definition:**
 
@@ -1905,9 +1905,9 @@ console.log(notes);
 ### Node.js Performance
 
 <details>
-<summary>How can you monitor the performance of a Node.js app?</summary>
+<summary>Как you monitor the performance of a Node.js app?</summary>
 
-### How can you monitor the performance of a Node.js app?
+### Как you monitor the performance of a Node.js app?
 
 **Definition:**
 
@@ -1956,9 +1956,9 @@ setInterval(() => {
 </details>
 
 <details>
-<summary>What is clustering in Node.js and how does it work?</summary>
+<summary>Что такое clustering in Node.js and how does it work?</summary>
 
-### What is clustering in Node.js and how does it work?
+### Что такое clustering in Node.js and how does it work?
 
 **Definition:**
 
@@ -2005,9 +2005,9 @@ if (cluster.isPrimary) {
 </details>
 
 <details>
-<summary>How can you prevent memory leaks in a Node.js application?</summary>
+<summary>Как you prevent memory leaks in a Node.js application?</summary>
 
-### How can you prevent memory leaks in a Node.js application?
+### Как you prevent memory leaks in a Node.js application?
 
 **Definition:**
 
@@ -2054,9 +2054,9 @@ console.log(process.memoryUsage().heapUsed);
 </details>
 
 <details>
-<summary>Explain the use of the --inspect flag in Node.js.</summary>
+<summary>Объясните the use of the --inspect flag in Node.js.</summary>
 
-### Explain the use of the --inspect flag in Node.js.
+### Объясните the use of the --inspect flag in Node.js.
 
 **Definition:**
 
@@ -2103,9 +2103,9 @@ node --inspect-brk server.js
 ### Concurrency in Node.js
 
 <details>
-<summary>How does Node.js handle concurrency?</summary>
+<summary>Как Node.js handle concurrency?</summary>
 
-### How does Node.js handle concurrency?
+### Как Node.js handle concurrency?
 
 **Definition:**
 
@@ -2146,9 +2146,9 @@ console.log(a.length, b.length);
 </details>
 
 <details>
-<summary>What is the difference between process and child_process modules?</summary>
+<summary>Что такое the difference between process and child_process modules?</summary>
 
-### What is the difference between process and child_process modules?
+### Что такое the difference between process and child_process modules?
 
 **Definition:**
 
@@ -2189,9 +2189,9 @@ child.stdout.on("data", (chunk) => {
 </details>
 
 <details>
-<summary>How do worker threads work in Node.js?</summary>
+<summary>Как worker threads work in Node.js?</summary>
 
-### How do worker threads work in Node.js?
+### Как worker threads work in Node.js?
 
 **Definition:**
 
@@ -2237,9 +2237,9 @@ if (isMainThread) {
 ### Node.js and Microservices
 
 <details>
-<summary>How is Node.js used in microservices architecture?</summary>
+<summary>Как Node.js used in microservices architecture?</summary>
 
-### How is Node.js used in microservices architecture?
+### Как Node.js used in microservices architecture?
 
 **Definition:**
 
@@ -2283,9 +2283,9 @@ server.listen(process.env.PORT ?? 8000);
 </details>
 
 <details>
-<summary>Explain inter-process communication in a Node.js microservice architecture.</summary>
+<summary>Объясните inter-process communication in a Node.js microservice architecture.</summary>
 
-### Explain inter-process communication in a Node.js microservice architecture.
+### Объясните inter-process communication in a Node.js microservice architecture.
 
 **Definition:**
 
@@ -2328,9 +2328,9 @@ child.send({ type: "ping" });
 ### Security in Node.js
 
 <details>
-<summary>What are some common security best practices for Node.js applications?</summary>
+<summary>Что такое some common security best practices for Node.js applications?</summary>
 
-### What are some common security best practices for Node.js applications?
+### Что такое some common security best practices for Node.js applications?
 
 **Definition:**
 
@@ -2384,9 +2384,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>How would you protect your Node.js application from XSS attacks?</summary>
+<summary>Как бы вы protect your Node.js application from XSS attacks?</summary>
 
-### How would you protect your Node.js application from XSS attacks?
+### Как бы вы protect your Node.js application from XSS attacks?
 
 **Definition:**
 
@@ -2441,9 +2441,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>What are environment variables and how could you use them in Node.js?</summary>
+<summary>Что такое environment variables and how could you use them in Node.js?</summary>
 
-### What are environment variables and how could you use them in Node.js?
+### Что такое environment variables and how could you use them in Node.js?
 
 **Definition:**
 
@@ -2490,9 +2490,9 @@ http
 ### Node.js and WebSockets
 
 <details>
-<summary>What are WebSockets and how do they work with Node.js?</summary>
+<summary>Что такое WebSockets and how do they work with Node.js?</summary>
 
-### What are WebSockets and how do they work with Node.js?
+### Что такое WebSockets and how do they work with Node.js?
 
 **Definition:**
 
@@ -2535,9 +2535,9 @@ socket.addEventListener("message", (event) => {
 </details>
 
 <details>
-<summary>How do you set up a WebSocket server in Node.js?</summary>
+<summary>Как you set up a WebSocket server in Node.js?</summary>
 
-### How do you set up a WebSocket server in Node.js?
+### Как you set up a WebSocket server in Node.js?
 
 **Definition:**
 
@@ -2589,9 +2589,9 @@ server.listen(8000);
 ### Node.js Deployment
 
 <details>
-<summary>How do you deploy a Node.js application in production?</summary>
+<summary>Как you deploy a Node.js application in production?</summary>
 
-### How do you deploy a Node.js application in production?
+### Как you deploy a Node.js application in production?
 
 **Definition:**
 
@@ -2638,9 +2638,9 @@ process.on("SIGTERM", () => {
 </details>
 
 <details>
-<summary>What is PM2 and how is it used in Node.js?</summary>
+<summary>Что такое PM2 and how is it used in Node.js?</summary>
 
-### What is PM2 and how is it used in Node.js?
+### Что такое PM2 and how is it used in Node.js?
 
 **Definition:**
 
@@ -2685,9 +2685,9 @@ pm2 start server.js -i max
 </details>
 
 <details>
-<summary>Explain how you would use Docker with a Node.js application.</summary>
+<summary>Объясните how you would use Docker with a Node.js application.</summary>
 
-### Explain how you would use Docker with a Node.js application.
+### Объясните how you would use Docker with a Node.js application.
 
 **Definition:**
 
@@ -2729,9 +2729,9 @@ CMD ["node", "server.js"]
 ### Node.js and Version Control
 
 <details>
-<summary>How do you manage versioning of a Node.js API?</summary>
+<summary>Как you manage versioning of a Node.js API?</summary>
 
-### How do you manage versioning of a Node.js API?
+### Как you manage versioning of a Node.js API?
 
 **Definition:**
 
@@ -2788,9 +2788,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>What are semantic versioning (semver) and its importance in Node.js development?</summary>
+<summary>Что такое semantic versioning (semver) and its importance in Node.js development?</summary>
 
-### What are semantic versioning (semver) and its importance in Node.js development?
+### Что такое semantic versioning (semver) and its importance in Node.js development?
 
 **Definition:**
 
@@ -2832,9 +2832,9 @@ server.listen(8000);
 ### Node.js Advanced Topics
 
 <details>
-<summary>What is the difference between exports and module.exports in Node.js?</summary>
+<summary>Что такое the difference between exports and module.exports in Node.js?</summary>
 
-### What is the difference between exports and module.exports in Node.js?
+### Что такое the difference between exports and module.exports in Node.js?
 
 **Definition:**
 
@@ -2875,9 +2875,9 @@ module.exports = class Square {
 </details>
 
 <details>
-<summary>How can you create a simple TCP server in Node.js?</summary>
+<summary>Как you create a simple TCP server in Node.js?</summary>
 
-### How can you create a simple TCP server in Node.js?
+### Как you create a simple TCP server in Node.js?
 
 **Definition:**
 
@@ -2920,9 +2920,9 @@ server.listen(8124, "127.0.0.1");
 </details>
 
 <details>
-<summary>What is REPL in Node.js?</summary>
+<summary>Что такое REPL in Node.js?</summary>
 
-### What is REPL in Node.js?
+### Что такое REPL in Node.js?
 
 **Definition:**
 
@@ -2960,9 +2960,9 @@ node
 </details>
 
 <details>
-<summary>Explain the role of a reverse proxy with Node.js applications.</summary>
+<summary>Объясните the role of a reverse proxy with Node.js applications.</summary>
 
-### Explain the role of a reverse proxy with Node.js applications.
+### Объясните the role of a reverse proxy with Node.js applications.
 
 **Definition:**
 
@@ -3003,9 +3003,9 @@ server.listen(8000, "127.0.0.1");
 </details>
 
 <details>
-<summary>How do Node.js streams enhance performance?</summary>
+<summary>Как Node.js streams enhance performance?</summary>
 
-### How do Node.js streams enhance performance?
+### Как Node.js streams enhance performance?
 
 **Definition:**
 
@@ -3048,9 +3048,9 @@ await pipeline(
 ### Frameworks and Libraries in Node.js
 
 <details>
-<summary>Describe some popular frameworks and libraries in the Node.js ecosystem.</summary>
+<summary>Опишите some popular frameworks and libraries in the Node.js ecosystem.</summary>
 
-### Describe some popular frameworks and libraries in the Node.js ecosystem.
+### Опишите some popular frameworks and libraries in the Node.js ecosystem.
 
 **Definition:**
 
@@ -3091,9 +3091,9 @@ http
 </details>
 
 <details>
-<summary>How is Koa different from Express.js?</summary>
+<summary>Как Koa different from Express.js?</summary>
 
-### How is Koa different from Express.js?
+### Как Koa different from Express.js?
 
 **Definition:**
 
@@ -3135,9 +3135,9 @@ app.listen(3000);
 </details>
 
 <details>
-<summary>What is NestJS and when would you choose it for your Node.js project?</summary>
+<summary>Что такое NestJS and when would you choose it for your Node.js project?</summary>
 
-### What is NestJS and when would you choose it for your Node.js project?
+### Что такое NestJS and when would you choose it for your Node.js project?
 
 **Definition:**
 
@@ -3178,9 +3178,9 @@ export class HealthController {
 </details>
 
 <details>
-<summary>What are the benefits of using TypeScript with Node.js?</summary>
+<summary>Что такое the benefits of using TypeScript with Node.js?</summary>
 
-### What are the benefits of using TypeScript with Node.js?
+### Что такое the benefits of using TypeScript with Node.js?
 
 **Definition:**
 
@@ -3224,9 +3224,9 @@ server.listen(8000);
 ### Integrations & Third-Party Node.js Modules
 
 <details>
-<summary>How would you integrate a Node.js app with a third-party API?</summary>
+<summary>Как бы вы integrate a Node.js app with a third-party API?</summary>
 
-### How would you integrate a Node.js app with a third-party API?
+### Как бы вы integrate a Node.js app with a third-party API?
 
 **Definition:**
 
@@ -3272,9 +3272,9 @@ console.log(notes);
 </details>
 
 <details>
-<summary>What is Socket.IO and how does it work with Node.js?</summary>
+<summary>Что такое Socket.IO and how does it work with Node.js?</summary>
 
-### What is Socket.IO and how does it work with Node.js?
+### Что такое Socket.IO and how does it work with Node.js?
 
 **Definition:**
 
@@ -3324,9 +3324,9 @@ server.listen(3000);
 </details>
 
 <details>
-<summary>Explain how GraphQL can be used with Node.js.</summary>
+<summary>Объясните how GraphQL can be used with Node.js.</summary>
 
-### Explain how GraphQL can be used with Node.js.
+### Объясните how GraphQL can be used with Node.js.
 
 **Definition:**
 
@@ -3371,9 +3371,9 @@ console.log(result.data);
 ### Node.js with Frontend Technologies
 
 <details>
-<summary>How does Node.js interact with frontend frameworks like Angular or React?</summary>
+<summary>Как Node.js interact with frontend frameworks like Angular or React?</summary>
 
-### How does Node.js interact with frontend frameworks like Angular or React?
+### Как Node.js interact with frontend frameworks like Angular or React?
 
 **Definition:**
 
@@ -3421,9 +3421,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>What is server-side rendering and how can it be achieved with Node.js?</summary>
+<summary>Что такое server-side rendering and how can it be achieved with Node.js?</summary>
 
-### What is server-side rendering and how can it be achieved with Node.js?
+### Что такое server-side rendering and how can it be achieved with Node.js?
 
 **Definition:**
 
@@ -3473,9 +3473,9 @@ http
 ### Node.js Best Practices
 
 <details>
-<summary>What are some coding conventions and best practices in Node.js?</summary>
+<summary>Что такое some coding conventions and best practices in Node.js?</summary>
 
-### What are some coding conventions and best practices in Node.js?
+### Что такое some coding conventions and best practices in Node.js?
 
 **Definition:**
 
@@ -3519,9 +3519,9 @@ try {
 </details>
 
 <details>
-<summary>How do you ensure your Node.js application adheres to the twelve-factor app principles?</summary>
+<summary>Как you ensure your Node.js application adheres to the twelve-factor app principles?</summary>
 
-### How do you ensure your Node.js application adheres to the twelve-factor app principles?
+### Как you ensure your Node.js application adheres to the twelve-factor app principles?
 
 **Definition:**
 
@@ -3563,9 +3563,9 @@ console.log("listening");
 </details>
 
 <details>
-<summary>What is code linting and how is it applied in Node.js?</summary>
+<summary>Что такое code linting and how is it applied in Node.js?</summary>
 
-### What is code linting and how is it applied in Node.js?
+### Что такое code linting and how is it applied in Node.js?
 
 **Definition:**
 
@@ -3604,9 +3604,9 @@ console.log("listening");
 ### Scaling Node.js Applications
 
 <details>
-<summary>What are some strategies for scaling Node.js applications?</summary>
+<summary>Что такое some strategies for scaling Node.js applications?</summary>
 
-### What are some strategies for scaling Node.js applications?
+### Что такое some strategies for scaling Node.js applications?
 
 **Definition:**
 
@@ -3653,9 +3653,9 @@ if (cluster.isPrimary) {
 </details>
 
 <details>
-<summary>How do you handle session management in a scaled Node.js application?</summary>
+<summary>Как you handle session management in a scaled Node.js application?</summary>
 
-### How do you handle session management in a scaled Node.js application?
+### Как you handle session management in a scaled Node.js application?
 
 **Definition:**
 
@@ -3704,9 +3704,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>How does the use of microservices affect the scalability of a Node.js application?</summary>
+<summary>Как the use of microservices affect the Scalability of a Node.js application?</summary>
 
-### How does the use of microservices affect the scalability of a Node.js application?
+### Как the use of microservices affect the Scalability of a Node.js application?
 
 **Definition:**
 
@@ -3747,9 +3747,9 @@ if (!response.ok) {
 ### Node.js and Message Queues
 
 <details>
-<summary>What are message queues and how are they used in Node.js?</summary>
+<summary>Что такое message queues and how are they used in Node.js?</summary>
 
-### What are message queues and how are they used in Node.js?
+### Что такое message queues and how are they used in Node.js?
 
 **Definition:**
 
@@ -3791,9 +3791,9 @@ if (isMainThread) {
 </details>
 
 <details>
-<summary>How do you implement RabbitMQ with Node.js?</summary>
+<summary>Как you implement RabbitMQ with Node.js?</summary>
 
-### How do you implement RabbitMQ with Node.js?
+### Как you implement RabbitMQ with Node.js?
 
 **Definition:**
 
@@ -3838,9 +3838,9 @@ channel.consume("notes", (msg) => {
 </details>
 
 <details>
-<summary>What is the significance of ZeroMQ in Node.js applications?</summary>
+<summary>Что такое the significance of ZeroMQ in Node.js applications?</summary>
 
-### What is the significance of ZeroMQ in Node.js applications?
+### Что такое the significance of ZeroMQ in Node.js applications?
 
 **Definition:**
 
@@ -3879,9 +3879,9 @@ await publisher.send(["notes", "hello"]);
 ### Node.js and Cloud Services
 
 <details>
-<summary>How do cloud platforms like AWS, Azure, or GCP facilitate Node.js application deployment?</summary>
+<summary>Как cloud platforms like AWS, Azure, or GCP facilitate Node.js application deployment?</summary>
 
-### How do cloud platforms like AWS, Azure, or GCP facilitate Node.js application deployment?
+### Как cloud platforms like AWS, Azure, or GCP facilitate Node.js application deployment?
 
 **Definition:**
 
@@ -3924,9 +3924,9 @@ http
 </details>
 
 <details>
-<summary>What is serverless architecture, and how does it relate to Node.js?</summary>
+<summary>Что такое serverless architecture, and how does it relate to Node.js?</summary>
 
-### What is serverless architecture, and how does it relate to Node.js?
+### Что такое serverless architecture, and how does it relate to Node.js?
 
 **Definition:**
 
@@ -3968,9 +3968,9 @@ export async function handler(event) {
 ### Environment Management
 
 <details>
-<summary>How can you manage multiple Node.js versions on the same machine?</summary>
+<summary>Как you manage multiple Node.js versions on the same machine?</summary>
 
-### How can you manage multiple Node.js versions on the same machine?
+### Как you manage multiple Node.js versions on the same machine?
 
 **Definition:**
 
@@ -4010,9 +4010,9 @@ node --version
 </details>
 
 <details>
-<summary>What are .env files and how do they work in a Node.js application?</summary>
+<summary>Что такое .env files and how do they work in a Node.js application?</summary>
 
-### What are .env files and how do they work in a Node.js application?
+### Что такое .env files and how do they work in a Node.js application?
 
 **Definition:**
 
@@ -4049,9 +4049,9 @@ console.log(Boolean(process.env.DATABASE_URL));
 </details>
 
 <details>
-<summary>Describe the usage of the config module in Node.js.</summary>
+<summary>Опишите the usage of the config module in Node.js.</summary>
 
-### Describe the usage of the config module in Node.js.
+### Опишите the usage of the config module in Node.js.
 
 **Definition:**
 
@@ -4089,9 +4089,9 @@ console.log(port);
 ### Node.js and Continuous Integration/Continuous Deployment (CI/CD)
 
 <details>
-<summary>What is continuous integration/deployment and how is it implemented for Node.js apps?</summary>
+<summary>Что такое continuous integration/deployment and how is it implemented for Node.js apps?</summary>
 
-### What is continuous integration/deployment and how is it implemented for Node.js apps?
+### Что такое continuous integration/deployment and how is it implemented for Node.js apps?
 
 **Definition:**
 
@@ -4135,9 +4135,9 @@ jobs:
 </details>
 
 <details>
-<summary>How do you set up a CI/CD pipeline for a Node.js project?</summary>
+<summary>Как you set up a CI/CD pipeline for a Node.js project?</summary>
 
-### How do you set up a CI/CD pipeline for a Node.js project?
+### Как you set up a CI/CD pipeline for a Node.js project?
 
 **Definition:**
 
@@ -4181,9 +4181,9 @@ jobs:
 ### Node.js Interview Problem Solving and Scenarios
 
 <details>
-<summary>How would you troubleshoot a slow running Node.js application?</summary>
+<summary>Как бы вы troubleshoot a SLOw running Node.js application?</summary>
 
-### How would you troubleshoot a slow running Node.js application?
+### Как бы вы troubleshoot a SLOw running Node.js application?
 
 **Definition:**
 
@@ -4228,9 +4228,9 @@ setInterval(() => {
 </details>
 
 <details>
-<summary>Describe how to handle file uploads in a Node.js application.</summary>
+<summary>Опишите how to handle file uploads in a Node.js application.</summary>
 
-### Describe how to handle file uploads in a Node.js application.
+### Опишите how to handle file uploads in a Node.js application.
 
 **Definition:**
 
@@ -4285,9 +4285,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>How would you handle heavy computation tasks in a Node.js application?</summary>
+<summary>Как бы вы handle heavy computation tasks in a Node.js application?</summary>
 
-### How would you handle heavy computation tasks in a Node.js application?
+### Как бы вы handle heavy computation tasks in a Node.js application?
 
 **Definition:**
 
@@ -4336,9 +4336,9 @@ if (isMainThread) {
 ### Node.js and DevOps
 
 <details>
-<summary>What is the role of a Node.js application in DevOps?</summary>
+<summary>Что такое the role of a Node.js application in DevOps?</summary>
 
-### What is the role of a Node.js application in DevOps?
+### Что такое the role of a Node.js application in DevOps?
 
 **Definition:**
 
@@ -4388,9 +4388,9 @@ process.on("SIGTERM", () => {
 </details>
 
 <details>
-<summary>Describe containerization and its benefits for Node.js applications.</summary>
+<summary>Опишите containerization and its benefits for Node.js applications.</summary>
 
-### Describe containerization and its benefits for Node.js applications.
+### Опишите containerization and its benefits for Node.js applications.
 
 **Definition:**
 
@@ -4433,9 +4433,9 @@ CMD ["node", "server.js"]
 ### Node.js and IoT
 
 <details>
-<summary>How is Node.js used in IoT (Internet of Things)?</summary>
+<summary>Как Node.js used in IoT (Internet of Things)?</summary>
 
-### How is Node.js used in IoT (Internet of Things)?
+### Как Node.js used in IoT (Internet of Things)?
 
 **Definition:**
 
@@ -4479,9 +4479,9 @@ server.listen(8000);
 </details>
 
 <details>
-<summary>What would you consider when developing a Node.js application for IoT devices?</summary>
+<summary>Что бы вы you consider when developing a Node.js application for IoT devices?</summary>
 
-### What would you consider when developing a Node.js application for IoT devices?
+### Что бы вы you consider when developing a Node.js application for IoT devices?
 
 **Definition:**
 
@@ -4525,9 +4525,9 @@ if (!response.ok) {
 ### Node.js and Machine Learning
 
 <details>
-<summary>Can you use Node.js for machine learning? If so, how?</summary>
+<summary>Можете ли вы use Node.js for machine learning? If so, how?</summary>
 
-### Can you use Node.js for machine learning? If so, how?
+### Можете ли вы use Node.js for machine learning? If so, how?
 
 **Definition:**
 
@@ -4573,9 +4573,9 @@ console.log(prediction);
 </details>
 
 <details>
-<summary>What are some machine learning libraries or tools available for Node.js?</summary>
+<summary>Что такое some machine learning libraries or tools available for Node.js?</summary>
 
-### What are some machine learning libraries or tools available for Node.js?
+### Что такое some machine learning libraries or tools available for Node.js?
 
 **Definition:**
 
@@ -4614,9 +4614,9 @@ console.log(session.inputNames);
 ### APIs and Node.js
 
 <details>
-<summary>What are best practices for designing RESTful APIs in Node.js?</summary>
+<summary>Что такое best practices for designing RESTful APIs in Node.js?</summary>
 
-### What are best practices for designing RESTful APIs in Node.js?
+### Что такое best practices for designing RESTful APIs in Node.js?
 
 **Definition:**
 

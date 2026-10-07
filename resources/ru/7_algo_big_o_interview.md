@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Big-O Notation](https://devinterview.io/ques
 ### Fundamental Concepts of Big-O Notation
 
 <details>
-<summary>What is Big-O Notation?</summary>
+<summary>Что такое Big-O Notation?</summary>
 
-### What is Big-O Notation?
+### Что такое Big-O Notation?
 
 **Definition:**
 
@@ -101,9 +101,9 @@ def linear_search(arr, target):
 </details>
 
 <details>
-<summary>Explain the difference between Big-O, Big-Theta, and Big-Omega notations.</summary>
+<summary>Объясните разницу между обозначениями Big-O, Big-Theta и Big-Omega.</summary>
 
-### Explain the difference between Big-O, Big-Theta, and Big-Omega notations.
+### Объясните разницу между обозначениями Big-O, Big-Theta и Big-Omega.
 
 **Definition:**
 
@@ -145,9 +145,9 @@ Big-Omega обеспечивает **наилучшую временную сл�
 </details>
 
 <details>
-<summary>Describe the role of constants and lower-order terms in Big-O analysis.</summary>
+<summary>Опишите роль констант и lower-order terms в анализе Big-O.</summary>
 
-### Describe the role of constants and lower-order terms in Big-O analysis.
+### Опишите роль констант и lower-order terms в анализе Big-O.
 
 **Definition:**
 
@@ -178,9 +178,9 @@ Big-Omega обеспечивает **наилучшую временную сл�
 </details>
 
 <details>
-<summary>Give examples of how amortized analysis can provide a more balanced complexity measure.</summary>
+<summary>Приведите примеры того, как amortized analysis может обеспечить более сбалансированную оценку сложности.</summary>
 
-### Give examples of how amortized analysis can provide a more balanced complexity measure.
+### Приведите примеры того, как amortized analysis может обеспечить более сбалансированную оценку сложности.
 
 **Definition:**
 
@@ -268,9 +268,9 @@ def fibonacci(n, memo={}):
 </details>
 
 <details>
-<summary>Describe how the coefficients of higher-order terms affect Big-O Notation in practical scenarios.</summary>
+<summary>Опишите, как коэффициенты higher-order terms влияют на Big-O Notation в практических сценариях.</summary>
 
-### Describe how the coefficients of higher-order terms affect Big-O Notation in practical scenarios.
+### Опишите, как коэффициенты higher-order terms влияют на Big-O Notation в практических сценариях.
 
 **Definition:**
 
@@ -310,9 +310,9 @@ def fibonacci(n, memo={}):
 </details>
 
 <details>
-<summary>Explain how probabilistic algorithms can have a different Big-O Notation compared to deterministic ones.</summary>
+<summary>Объясните, как алгоритмы probabilistic могут иметь другой Big-O Notation по сравнению с алгоритмами deterministic.</summary>
 
-### Explain how probabilistic algorithms can have a different Big-O Notation compared to deterministic ones.
+### Объясните, как алгоритмы probabilistic могут иметь другой Big-O Notation по сравнению с алгоритмами deterministic.
 
 **Definition:**
 
@@ -353,9 +353,9 @@ def fibonacci(n, memo={}):
 ### Big-O in Common Data Structures and Algorithms
 
 <details>
-<summary>Analyze the Big-O time complexity of array operations.</summary>
+<summary>Проанализируйте time complexity Big-O операций с array.</summary>
 
-### Analyze the Big-O time complexity of array operations.
+### Проанализируйте time complexity Big-O операций с array.
 
 **Definition:**
 
@@ -402,9 +402,9 @@ def fibonacci(n, memo={}):
 </details>
 
 <details>
-<summary>Discuss the Big-O space complexity of using linked lists.</summary>
+<summary>Обсудите Big-O space complexity при использовании linked lists.</summary>
 
-### Discuss the Big-O space complexity of using linked lists.
+### Обсудите Big-O space complexity при использовании linked lists.
 
 **Definition:**
 
@@ -432,9 +432,9 @@ def fibonacci(n, memo={}):
 </details>
 
 <details>
-<summary>Compare the Big-O complexities of various sorting algorithms.</summary>
+<summary>Сравните сложности Big-O различных sORting algOR.</summary>
 
-### Compare the Big-O complexities of various sorting algorithms.
+### Сравните сложности Big-O различных sORting algOR.
 
 **Definition:**
 
@@ -508,9 +508,9 @@ def fibonacci(n, memo={}):
 </details>
 
 <details>
-<summary>Evaluate the Big-O time complexity of binary search.</summary>
+<summary>Оцените соотношение Big-O, time complexity и binary search.</summary>
 
-### Evaluate the Big-O time complexity of binary search.
+### Оцените соотношение Big-O, time complexity и binary search.
 
 **Definition:**
 
@@ -574,9 +574,9 @@ Return "not found"
 </details>
 
 <details>
-<summary>Determine the Big-O time and space complexities of hash table operations.</summary>
+<summary>Определите временные и пространственные сложности Big-O операций hash table.</summary>
 
-### Determine the Big-O time and space complexities of hash table operations.
+### Определите временные и пространственные сложности Big-O операций hash table.
 
 **Definition:**
 
@@ -621,9 +621,9 @@ Return "not found"
 </details>
 
 <details>
-<summary>Discuss the Big-O complexities of tree operations, including binary search trees and AVL trees.</summary>
+<summary>Обсудите сложности операций с деревьями, связанные с Big-O, включая Binary Search Trees и AVL trees.</summary>
 
-### Discuss the Big-O complexities of tree operations, including binary search trees and AVL trees.
+### Обсудите сложности операций с деревьями, связанные с Big-O, включая Binary Search Trees и AVL trees.
 
 **Definition:**
 
@@ -761,9 +761,9 @@ def left_rotate(z):
 </details>
 
 <details>
-<summary>Analyze the Big-O complexity of graph algorithms, including traversal and shortest path algorithms.</summary>
+<summary>Проанализируйте сложность Big-O graph algORZithms, включая traveRSAZl ANDZ shortest path algORZithms.</summary>
 
-### Analyze the Big-O complexity of graph algorithms, including traversal and shortest path algorithms.
+### Проанализируйте сложность Big-O graph algORZithms, включая traveRSAZl ANDZ shortest path algORZithms.
 
 **Definition:**
 
@@ -820,9 +820,9 @@ def left_rotate(z):
 </details>
 
 <details>
-<summary>Discuss time and space complexities of various heap operations.</summary>
+<summary>Обсудите временные и пространственные сложности различных операций heap.</summary>
 
-### Discuss time and space complexities of various heap operations.
+### Обсудите временные и пространственные сложности различных операций heap.
 
 **Definition:**
 
@@ -908,9 +908,9 @@ print(heapq._heappop_max(max_heap))  # Output: 3
 ### Practical Application and Analysis
 
 <details>
-<summary>Provide examples of space-time tradeoffs in algorithm design.</summary>
+<summary>Приведите examples of space-time tradeoffs in alGorithm design.</summary>
 
-### Provide examples of space-time tradeoffs in algorithm design.
+### Приведите examples of space-time tradeoffs in alGorithm design.
 
 **Definition:**
 
@@ -973,9 +973,9 @@ def huffman_compress(data):
 
 
 <details>
-<summary>Compare the complexities of recursive and iterative solutions to the same problem.</summary>
+<summary>Сравните сложности рекурсивных AND итеративных решений одной и той же задачи.</summary>
 
-### Compare the complexities of recursive and iterative solutions to the same problem.
+### Сравните сложности рекурсивных AND итеративных решений одной и той же задачи.
 
 **Definition:**
 
@@ -1008,9 +1008,9 @@ def recursive_halve(n):
 </details>
 
 <details>
-<summary>Discuss Big-O implications when scaling applications horizontally versus vertically.</summary>
+<summary>Обсудите последствия Big-O при горизонтальном и вертикальном масштабировании приложений.</summary>
 
-### Discuss Big-O implications when scaling applications horizontally versus vertically.
+### Обсудите последствия Big-O при горизонтальном и вертикальном масштабировании приложений.
 
 **Definition:**
 
@@ -1026,9 +1026,9 @@ def recursive_halve(n):
 </details>
 
 <details>
-<summary>Analyze the Big-O of database indexing and query retrieval.</summary>
+<summary>Проанализируйте запрос Big-O индексирования базы данных AND retrieval.</summary>
 
-### Analyze the Big-O of database indexing and query retrieval.
+### Проанализируйте запрос Big-O индексирования базы данных AND retrieval.
 
 **Definition:**
 
@@ -1045,9 +1045,9 @@ def recursive_halve(n):
 </details>
 
 <details>
-<summary>Evaluate how caching layers influence the Big-O performance of a system.</summary>
+<summary>Оцените, как уровни caching влияют на производительность системы Big-O.</summary>
 
-### Evaluate how caching layers influence the Big-O performance of a system.
+### Оцените, как уровни caching влияют на производительность системы Big-O.
 
 **Definition:**
 
@@ -1065,9 +1065,9 @@ def recursive_halve(n):
 ### Coding Challenges
 
 <details>
-<summary>Calculate the Big-O Notation for a given recursive algorithm.</summary>
+<summary>Рассчитайте Big-O Notation fOR заданный рекурсивный algORZithm.</summary>
 
-### Calculate the Big-O Notation for a given recursive algorithm.
+### Рассчитайте Big-O Notation fOR заданный рекурсивный algORZithm.
 
 **Definition:**
 
@@ -1093,9 +1093,9 @@ def recurse(n):
 </details>
 
 <details>
-<summary>Implement a binary search algorithm and analyze its time complexity.</summary>
+<summary>Реализуйте a binary search alGorithm and analyze its time complexity.</summary>
 
-### Implement a binary search algorithm and analyze its time complexity.
+### Реализуйте a binary search alGorithm and analyze its time complexity.
 
 **Definition:**
 
@@ -1127,9 +1127,9 @@ def binary_search(arr, x):
 </details>
 
 <details>
-<summary>Optimize a nested loop algorithm to achieve a better Big-O time complexity.</summary>
+<summary>Оптимизируйте a nested lOOP alGorithm to achieve a better Big-O time complexity.</summary>
 
-### Optimize a nested loop algorithm to achieve a better Big-O time complexity.
+### Оптимизируйте a nested lOOP alGorithm to achieve a better Big-O time complexity.
 
 **Definition:**
 
@@ -1156,9 +1156,9 @@ def nested_quadratic(n):
 </details>
 
 <details>
-<summary>Create a divide and conquer algorithm and explain its complexity.</summary>
+<summary>Создайте divide and conquer algOR Zithm AND, объясните его сложность.</summary>
 
-### Create a divide and conquer algorithm and explain its complexity.
+### Создайте divide and conquer algOR Zithm AND, объясните его сложность.
 
 **Definition:**
 
@@ -1183,9 +1183,9 @@ def recurse(n):
 </details>
 
 <details>
-<summary>Implement a dynamic programming solution and discuss its Big-O time complexity.</summary>
+<summary>Реализуйте a dynamic programming solution and discuss its Big-O time complexity.</summary>
 
-### Implement a dynamic programming solution and discuss its Big-O time complexity.
+### Реализуйте a dynamic programming solution and discuss its Big-O time complexity.
 
 **Definition:**
 
@@ -1212,9 +1212,9 @@ def fill_table(n):
 </details>
 
 <details>
-<summary>Refactor a recursive algorithm to use memoization and analyze the complexity change.</summary>
+<summary>Отрефакторьте a Recursive alGorithm to use memoization and analyze the complexity change.</summary>
 
-### Refactor a recursive algorithm to use memoization and analyze the complexity change.
+### Отрефакторьте a Recursive alGorithm to use memoization and analyze the complexity change.
 
 **Definition:**
 
@@ -1230,9 +1230,9 @@ def fill_table(n):
 </details>
 
 <details>
-<summary>Develop efficient multi-threaded algorithms and evaluate their Big-O complexity.</summary>
+<summary>Разработайте эффективные алгоритмы multi-threaded и оцените их сложность Big-O.</summary>
 
-### Develop efficient multi-threaded algorithms and evaluate their Big-O complexity.
+### Разработайте эффективные алгоритмы multi-threaded и оцените их сложность Big-O.
 
 **Definition:**
 
@@ -1250,9 +1250,9 @@ def fill_table(n):
 ### Big-O Notation in Advanced Topics
 
 <details>
-<summary>How does data structure choice affect the Big-O complexity of an algorithm?</summary>
+<summary>Как выбор структуры данных влияет на сложность алгоритма Big-O?</summary>
 
-### How does data structure choice affect the Big-O complexity of an algorithm?
+### Как выбор структуры данных влияет на сложность алгоритма Big-O?
 
 **Definition:**
 
@@ -1268,9 +1268,9 @@ def fill_table(n):
 </details>
 
 <details>
-<summary>Analyze the Big-O complexity of algorithms in a distributed system.</summary>
+<summary>Проанализируйте сложность Big-O алгоритмов в distributed system.</summary>
 
-### Analyze the Big-O complexity of algorithms in a distributed system.
+### Проанализируйте сложность Big-O алгоритмов в distributed system.
 
 **Definition:**
 
@@ -1286,9 +1286,9 @@ def fill_table(n):
 </details>
 
 <details>
-<summary>Explore the Big-O complexity in the context of concurrent and parallel computing.</summary>
+<summary>Исследуйте сложность Big-O в контексте concurrent и parallel computing.</summary>
 
-### Explore the Big-O complexity in the context of concurrent and parallel computing.
+### Исследуйте сложность Big-O в контексте concurrent и parallel computing.
 
 **Definition:**
 
@@ -1304,9 +1304,9 @@ def fill_table(n):
 </details>
 
 <details>
-<summary>Discuss the relevance of Big-O Notation in machine learning algorithms.</summary>
+<summary>Обсудите значимость Big-O Notation в алгоритмах machine learning.</summary>
 
-### Discuss the relevance of Big-O Notation in machine learning algorithms.
+### Обсудите значимость Big-O Notation в алгоритмах machine learning.
 
 **Definition:**
 

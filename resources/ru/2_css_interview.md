@@ -21,9 +21,9 @@
 ### CSS Basics
 
 <details>
-<summary>What does CSS stand for and what is its primary use?</summary>
+<summary>Что означает CSS stand for and what is its Primary use?</summary>
 
-### What does CSS stand for and what is its primary use?
+### Что означает CSS stand for and what is its Primary use?
 
 **Definition:**
 
@@ -128,9 +128,9 @@ footer {
 </details>
 
 <details>
-<summary>How do you include CSS in your HTML document?</summary>
+<summary>Как you include CSS in your HTML document?</summary>
 
-### How do you include CSS in your HTML document?
+### Как you include CSS in your HTML document?
 
 **Definition:**
 
@@ -195,9 +195,9 @@ footer {
 </details>
 
 <details>
-<summary>Can you explain the difference between class and ID selectors?</summary>
+<summary>Можете ли вы explain the difference between class and ID selectors?</summary>
 
-### Can you explain the difference between class and ID selectors?
+### Можете ли вы explain the difference between class and ID selectors?
 
 **Definition:**
 
@@ -262,9 +262,9 @@ footer {
 </details>
 
 <details>
-<summary>What are pseudo-classes in CSS?</summary>
+<summary>Что такое pseudo-Classes in CSS?</summary>
 
-### What are pseudo-classes in CSS?
+### Что такое pseudo-Classes in CSS?
 
 **Definition:**
 
@@ -293,9 +293,9 @@ footer {
 </details>
 
 <details>
-<summary>Describe how to implement a CSS reset and why it is useful.</summary>
+<summary>Опишите how to implement a CSS reset and why it is useful.</summary>
 
-### Describe how to implement a CSS reset and why it is useful.
+### Опишите how to implement a CSS reset and why it is useful.
 
 **Definition:**
 
@@ -349,9 +349,9 @@ h1 {
 ### Selectors and Combinators
 
 <details>
-<summary>How do you select elements by attribute in CSS?</summary>
+<summary>Как you select elements by attribute in CSS?</summary>
 
-### How do you select elements by attribute in CSS?
+### Как you select elements by attribute in CSS?
 
 **Definition:**
 
@@ -410,9 +410,9 @@ h1 {
 </details>
 
 <details>
-<summary>What is a pseudo-element, and what are they used for?</summary>
+<summary>Что такое pseudo-element, and what are they used for?</summary>
 
-### What is a pseudo-element, and what are they used for?
+### Что такое pseudo-element, and what are they used for?
 
 **Definition:**
 
@@ -473,9 +473,9 @@ h1 {
 </details>
 
 <details>
-<summary>Explain the difference between the child combinator and the descendant combinator.</summary>
+<summary>Объясните the difference between the child combinator and the descendant combinator.</summary>
 
-### Explain the difference between the child combinator and the descendant combinator.
+### Объясните the difference between the child combinator and the descendant combinator.
 
 **Definition:**
 
@@ -536,9 +536,9 @@ nav li {
 </details>
 
 <details>
-<summary>How would you select all direct children elements of a particular type?</summary>
+<summary>Как бы вы select all direct children elements of a particular type?</summary>
 
-### How would you select all direct children elements of a particular type?
+### Как бы вы select all direct children elements of a particular type?
 
 **Definition:**
 
@@ -560,9 +560,9 @@ ul > li {
 </details>
 
 <details>
-<summary>What are the universal selector and the sibling combinator, and when would you use them?</summary>
+<summary>Что такое the univeRSAl selector and the sibling combinator, and when would you use them?</summary>
 
-### What are the universal selector and the sibling combinator, and when would you use them?
+### Что такое the univeRSAl selector and the sibling combinator, and when would you use them?
 
 **Definition:**
 
@@ -667,9 +667,9 @@ HTML:
 ### Box Model and Layout
 
 <details>
-<summary>What is the CSS Box Model?</summary>
+<summary>Что такое the CSS Box Model?</summary>
 
-### What is the CSS Box Model?
+### Что такое the CSS Box Model?
 
 **Definition:**
 
@@ -748,9 +748,9 @@ HTML:
 </details>
 
 <details>
-<summary>Explain margin collapsing.</summary>
+<summary>Объясните margin collapsing.</summary>
 
-### Explain margin collapsing.
+### Объясните margin collapsing.
 
 **Definition:**
 
@@ -802,9 +802,9 @@ HTML:
 </details>
 
 <details>
-<summary>What are the different values for the box-sizing property and what do they do?</summary>
+<summary>Что такое the different values for the box-sizing property and what do they do?</summary>
 
-### What are the different values for the box-sizing property and what do they do?
+### Что такое the different values for the box-sizing property and what do they do?
 
 **Definition:**
 
@@ -828,9 +828,9 @@ HTML:
 </details>
 
 <details>
-<summary>How do you center a block element with CSS?</summary>
+<summary>Как you center a block element with CSS?</summary>
 
-### How do you center a block element with CSS?
+### Как you center a block element with CSS?
 
 **Definition:**
 
@@ -890,9 +890,9 @@ HTML:
 </details>
 
 <details>
-<summary>What is the difference between block, inline, and inline-block elements?</summary>
+<summary>Что такое the difference between block, inline, and inline-block elements?</summary>
 
-### What is the difference between block, inline, and inline-block elements?
+### Что такое the difference between block, inline, and inline-block elements?
 
 **Definition:**
 
@@ -940,9 +940,9 @@ div, span {
 ### Positioning and Stacking Contexts
 
 <details>
-<summary>Explain the different values for the position property.</summary>
+<summary>Объясните the different values for the position property.</summary>
 
-### Explain the different values for the position property.
+### Объясните the different values for the position property.
 
 **Definition:**
 
@@ -988,9 +988,9 @@ div, span {
 </details>
 
 <details>
-<summary>Describe z-index and how stacking order is controlled in CSS.</summary>
+<summary>Опишите z-index and how stacking order is controlled in CSS.</summary>
 
-### Describe z-index and how stacking order is controlled in CSS.
+### Опишите z-index and how stacking order is controlled in CSS.
 
 **Definition:**
 
@@ -1035,9 +1035,9 @@ div, span {
 </details>
 
 <details>
-<summary>How do you create a sticky footer with CSS?</summary>
+<summary>Как you create a sticky footer with CSS?</summary>
 
-### How do you create a sticky footer with CSS?
+### Как you create a sticky footer with CSS?
 
 **Definition:**
 
@@ -1077,9 +1077,9 @@ main {
 </details>
 
 <details>
-<summary>Can you explain how to create a fixed header that remains at the top on scroll?</summary>
+<summary>Можете ли вы explain how to create a fixed header that remains at the top on scroll?</summary>
 
-### Can you explain how to create a fixed header that remains at the top on scroll?
+### Можете ли вы explain how to create a fixed header that remains at the top on scroll?
 
 **Definition:**
 
@@ -1119,9 +1119,9 @@ main {
 </details>
 
 <details>
-<summary>When would you use position: sticky?</summary>
+<summary>Когда would you use position: sticky?</summary>
 
-### When would you use position: sticky?
+### Когда would you use position: sticky?
 
 **Definition:**
 
@@ -1157,9 +1157,9 @@ dt {
 ### Styling Text and Fonts
 
 <details>
-<summary>How do you change the font of text in CSS?</summary>
+<summary>Как you change the font of text in CSS?</summary>
 
-### How do you change the font of text in CSS?
+### Как you change the font of text in CSS?
 
 **Definition:**
 
@@ -1192,9 +1192,9 @@ body {
 </details>
 
 <details>
-<summary>What is a web-safe font?</summary>
+<summary>Что такое web-safe font?</summary>
 
-### What is a web-safe font?
+### Что такое web-safe font?
 
 **Definition:**
 
@@ -1227,9 +1227,9 @@ body {
 </details>
 
 <details>
-<summary>When would you use a font shorthand property?</summary>
+<summary>Когда would you use a font shorthand property?</summary>
 
-### When would you use a font shorthand property?
+### Когда would you use a font shorthand property?
 
 **Definition:**
 
@@ -1262,9 +1262,9 @@ h1 {
 </details>
 
 <details>
-<summary>How can you include and use custom fonts on a webpage?</summary>
+<summary>Как you include and use custom fonts on a webpage?</summary>
 
-### How can you include and use custom fonts on a webpage?
+### Как you include and use custom fonts on a webpage?
 
 **Definition:**
 
@@ -1305,9 +1305,9 @@ body {
 </details>
 
 <details>
-<summary>What is the difference between em and rem units?</summary>
+<summary>Что такое the difference between em and rem units?</summary>
 
-### What is the difference between em and rem units?
+### Что такое the difference between em and rem units?
 
 **Definition:**
 
@@ -1348,9 +1348,9 @@ h1 {
 ### Colors, Backgrounds, and Gradients
 
 <details>
-<summary>How do you add a background image to an element?</summary>
+<summary>Как you add a background image to an element?</summary>
 
-### How do you add a background image to an element?
+### Как you add a background image to an element?
 
 **Definition:**
 
@@ -1386,9 +1386,9 @@ h1 {
 </details>
 
 <details>
-<summary>What is the difference between hex codes, RGB, and named color values?</summary>
+<summary>Что такое the difference between hex codes, RGB, and named color values?</summary>
 
-### What is the difference between hex codes, RGB, and named color values?
+### Что такое the difference between hex codes, RGB, and named color values?
 
 **Definition:**
 
@@ -1423,9 +1423,9 @@ h1 {
 </details>
 
 <details>
-<summary>What are alpha transparency and RGBA?</summary>
+<summary>Что такое alpha transparency and RGBA?</summary>
 
-### What are alpha transparency and RGBA?
+### Что такое alpha transparency and RGBA?
 
 **Definition:**
 
@@ -1457,9 +1457,9 @@ h1 {
 </details>
 
 <details>
-<summary>How do you create a gradient background with CSS?</summary>
+<summary>Как you create a gradient background with CSS?</summary>
 
-### How do you create a gradient background with CSS?
+### Как you create a gradient background with CSS?
 
 **Definition:**
 
@@ -1492,9 +1492,9 @@ h1 {
 </details>
 
 <details>
-<summary>Explain how to implement multiple backgrounds on a single element.</summary>
+<summary>Объясните how to implement multiple backgrounds on a single element.</summary>
 
-### Explain how to implement multiple backgrounds on a single element.
+### Объясните how to implement multiple backgrounds on a single element.
 
 **Definition:**
 
@@ -1533,9 +1533,9 @@ h1 {
 ### Flexbox
 
 <details>
-<summary>Describe Flexbox and its advantages.</summary>
+<summary>Опишите Flexbox and its advantages.</summary>
 
-### Describe Flexbox and its advantages.
+### Опишите Flexbox and its advantages.
 
 **Definition:**
 
@@ -1570,9 +1570,9 @@ Flexbox — одномерная раскладка. `display: flex` делае�
 </details>
 
 <details>
-<summary>How does flex-grow work?</summary>
+<summary>Как flex-grow work?</summary>
 
-### How does flex-grow work?
+### Как flex-grow work?
 
 **Definition:**
 
@@ -1609,9 +1609,9 @@ Flexbox — одномерная раскладка. `display: flex` делае�
 </details>
 
 <details>
-<summary>Explain the difference between justify-content and align-items.</summary>
+<summary>Объясните the difference between justify-content and align-items.</summary>
 
-### Explain the difference between justify-content and align-items.
+### Объясните the difference between justify-content and align-items.
 
 **Definition:**
 
@@ -1647,9 +1647,9 @@ Flexbox — одномерная раскладка. `display: flex` делае�
 </details>
 
 <details>
-<summary>When would you use align-self?</summary>
+<summary>Когда would you use align-self?</summary>
 
-### When would you use align-self?
+### Когда would you use align-self?
 
 **Definition:**
 
@@ -1686,9 +1686,9 @@ Flexbox — одномерная раскладка. `display: flex` делае�
 </details>
 
 <details>
-<summary>How do you create equal-width columns using Flexbox?</summary>
+<summary>Как you create equal-width columns using Flexbox?</summary>
 
-### How do you create equal-width columns using Flexbox?
+### Как you create equal-width columns using Flexbox?
 
 **Definition:**
 
@@ -1727,9 +1727,9 @@ Flexbox — одномерная раскладка. `display: flex` делае�
 ### CSS Grid
 
 <details>
-<summary>What is the CSS Grid layout, and why is it useful?</summary>
+<summary>Что такое the CSS Grid layout, and why is it useful?</summary>
 
-### What is the CSS Grid layout, and why is it useful?
+### Что такое the CSS Grid layout, and why is it useful?
 
 **Definition:**
 
@@ -1763,9 +1763,9 @@ CSS Grid — двумерная раскладка. `display: grid` делит �
 </details>
 
 <details>
-<summary>How do you define grid columns and rows?</summary>
+<summary>Как you define grid columns and rows?</summary>
 
-### How do you define grid columns and rows?
+### Как you define grid columns and rows?
 
 **Definition:**
 
@@ -1800,9 +1800,9 @@ CSS Grid — двумерная раскладка. `display: grid` делит �
 </details>
 
 <details>
-<summary>What is the difference between grid-template-areas and grid-template-columns?</summary>
+<summary>Что такое the difference between grid-template-areas and grid-template-columns?</summary>
 
-### What is the difference between grid-template-areas and grid-template-columns?
+### Что такое the difference between grid-template-areas and grid-template-columns?
 
 **Definition:**
 
@@ -1843,9 +1843,9 @@ header {
 </details>
 
 <details>
-<summary>How do you place items in the CSS Grid layout?</summary>
+<summary>Как you place items in the CSS Grid layout?</summary>
 
-### How do you place items in the CSS Grid layout?
+### Как you place items in the CSS Grid layout?
 
 **Definition:**
 
@@ -1879,9 +1879,9 @@ header {
 </details>
 
 <details>
-<summary>How is overlapping of grid items handled in CSS Grid?</summary>
+<summary>Как overlapping of grid items handled in CSS Grid?</summary>
 
-### How is overlapping of grid items handled in CSS Grid?
+### Как overlapping of grid items handled in CSS Grid?
 
 **Definition:**
 
@@ -1924,9 +1924,9 @@ Grid-элементы перекрываются, когда их диапазо
 ### Responsive Design and Media Queries
 
 <details>
-<summary>What is a media query?</summary>
+<summary>Что такое media query?</summary>
 
-### What is a media query?
+### Что такое media query?
 
 **Definition:**
 
@@ -1963,9 +1963,9 @@ Grid-элементы перекрываются, когда их диапазо
 </details>
 
 <details>
-<summary>How does the viewport meta tag assist with mobile responsive designs?</summary>
+<summary>Как the viewport meta tag assist with mobile responsive designs?</summary>
 
-### How does the viewport meta tag assist with mobile responsive designs?
+### Как the viewport meta tag assist with mobile responsive designs?
 
 **Definition:**
 
@@ -1995,9 +1995,9 @@ Grid-элементы перекрываются, когда их диапазо
 </details>
 
 <details>
-<summary>Describe how to create a mobile-first responsive design.</summary>
+<summary>Опишите how to create a mobile-first responsive design.</summary>
 
-### Describe how to create a mobile-first responsive design.
+### Опишите how to create a mobile-first responsive design.
 
 **Definition:**
 
@@ -2038,9 +2038,9 @@ Grid-элементы перекрываются, когда их диапазо
 </details>
 
 <details>
-<summary>How can you build a layout that changes from a two-column to a single-column with media queries?</summary>
+<summary>Как you build a layout that changes from a two-column to a single-column with media queries?</summary>
 
-### How can you build a layout that changes from a two-column to a single-column with media queries?
+### Как you build a layout that changes from a two-column to a single-column with media queries?
 
 **Definition:**
 
@@ -2080,9 +2080,9 @@ Grid-элементы перекрываются, когда их диапазо
 </details>
 
 <details>
-<summary>Explain the use of min-width and max-width in media queries.</summary>
+<summary>Объясните the use of min-width and max-width in media queries.</summary>
 
-### Explain the use of min-width and max-width in media queries.
+### Объясните the use of min-width and max-width in media queries.
 
 **Definition:**
 
@@ -2125,9 +2125,9 @@ Grid-элементы перекрываются, когда их диапазо
 ### Transitions and Animations
 
 <details>
-<summary>How do you create a CSS transition?</summary>
+<summary>Как you create a CSS transition?</summary>
 
-### How do you create a CSS transition?
+### Как you create a CSS transition?
 
 **Definition:**
 
@@ -2164,9 +2164,9 @@ Grid-элементы перекрываются, когда их диапазо
 </details>
 
 <details>
-<summary>What is the difference between a CSS transition and animation?</summary>
+<summary>Что такое the difference between a CSS transition and animation?</summary>
 
-### What is the difference between a CSS transition and animation?
+### Что такое the difference between a CSS transition and animation?
 
 **Definition:**
 
@@ -2203,9 +2203,9 @@ Grid-элементы перекрываются, когда их диапазо
 </details>
 
 <details>
-<summary>How do you animate an item's entrance and exit on the page?</summary>
+<summary>Как you animate an item's entrance and exit on the page?</summary>
 
-### How do you animate an item's entrance and exit on the page?
+### Как you animate an item's entrance and exit on the page?
 
 **Definition:**
 
@@ -2246,9 +2246,9 @@ Grid-элементы перекрываются, когда их диапазо
 </details>
 
 <details>
-<summary>Can you explain how to use @keyframes?</summary>
+<summary>Можете ли вы explain how to use @keyframes?</summary>
 
-### Can you explain how to use @keyframes?
+### Можете ли вы explain how to use @keyframes?
 
 **Definition:**
 
@@ -2291,9 +2291,9 @@ Grid-элементы перекрываются, когда их диапазо
 </details>
 
 <details>
-<summary>How do you set the timing functions in CSS animations?</summary>
+<summary>Как you set the timing functions in CSS animations?</summary>
 
-### How do you set the timing functions in CSS animations?
+### Как you set the timing functions in CSS animations?
 
 **Definition:**
 
@@ -2332,9 +2332,9 @@ Grid-элементы перекрываются, когда их диапазо
 ### Advanced CSS Techniques
 
 <details>
-<summary>What is a CSS preprocessor and why would you use one?</summary>
+<summary>Что такое CSS preprocessor and why would you use one?</summary>
 
-### What is a CSS preprocessor and why would you use one?
+### Что такое CSS preprocessor and why would you use one?
 
 **Definition:**
 
@@ -2373,9 +2373,9 @@ $brand: #1e90ff;
 </details>
 
 <details>
-<summary>Describe the importance of using CSS variables (custom properties).</summary>
+<summary>Опишите the importance of using CSS variables (custom properties).</summary>
 
-### Describe the importance of using CSS variables (custom properties).
+### Опишите the importance of using CSS variables (custom properties).
 
 **Definition:**
 
@@ -2412,9 +2412,9 @@ h1 {
 </details>
 
 <details>
-<summary>How do you use CSS modules?</summary>
+<summary>Как you use CSS modules?</summary>
 
-### How do you use CSS modules?
+### Как you use CSS modules?
 
 **Definition:**
 
@@ -2454,9 +2454,9 @@ document.querySelector("button").className = styles.button;
 </details>
 
 <details>
-<summary>Can you explain the concept of CSS-in-JS?</summary>
+<summary>Можете ли вы explain the concept of CSS-in-JS?</summary>
 
-### Can you explain the concept of CSS-in-JS?
+### Можете ли вы explain the concept of CSS-in-JS?
 
 **Definition:**
 
@@ -2490,9 +2490,9 @@ const Button = styled.button`
 </details>
 
 <details>
-<summary>What tools would you use for CSS linting and formatting?</summary>
+<summary>Какие инструменты would you use for CSS linting and formatting?</summary>
 
-### What tools would you use for CSS linting and formatting?
+### Какие инструменты would you use for CSS linting and formatting?
 
 **Definition:**
 
@@ -2528,9 +2528,9 @@ Stylelint ловит неверный или нежелательный CSS, а 
 ### Styling Forms and User Interfaces
 
 <details>
-<summary>How do you style a submit button to appear as a regular link?</summary>
+<summary>Как you style a submit button to appear as a regular link?</summary>
 
-### How do you style a submit button to appear as a regular link?
+### Как you style a submit button to appear as a regular link?
 
 **Definition:**
 
@@ -2569,9 +2569,9 @@ button.link {
 </details>
 
 <details>
-<summary>How can you create custom checkboxes and radio buttons with CSS?</summary>
+<summary>Как you create custom checkboxes and radio buttons with CSS?</summary>
 
-### How can you create custom checkboxes and radio buttons with CSS?
+### Как you create custom checkboxes and radio buttons with CSS?
 
 **Definition:**
 
@@ -2612,9 +2612,9 @@ input[type="checkbox"]:checked {
 </details>
 
 <details>
-<summary>Describe how to style a dropdown select box without JavaScript.</summary>
+<summary>Опишите how to style a dropdown select box without JavaScript.</summary>
 
-### Describe how to style a dropdown select box without JavaScript.
+### Опишите how to style a dropdown select box without JavaScript.
 
 **Definition:**
 
@@ -2651,9 +2651,9 @@ select.custom {
 </details>
 
 <details>
-<summary>What is the best practice for styling placeholder text of an input field?</summary>
+<summary>Что такое the best practice for styling placeholder text of an input field?</summary>
 
-### What is the best practice for styling placeholder text of an input field?
+### Что такое the best practice for styling placeholder text of an input field?
 
 **Definition:**
 
@@ -2687,9 +2687,9 @@ input::placeholder {
 </details>
 
 <details>
-<summary>How do you implement focus styles for accessibility?</summary>
+<summary>Как you implement focus styles for accessibility?</summary>
 
-### How do you implement focus styles for accessibility?
+### Как you implement focus styles for accessibility?
 
 **Definition:**
 
@@ -2725,9 +2725,9 @@ button:focus-visible {
 ### Layout Debugging and Troubleshooting
 
 <details>
-<summary>How do you diagnose and solve layout issues?</summary>
+<summary>Как you diagnose and solve layout issues?</summary>
 
-### How do you diagnose and solve layout issues?
+### Как you diagnose and solve layout issues?
 
 **Definition:**
 
@@ -2762,9 +2762,9 @@ button:focus-visible {
 </details>
 
 <details>
-<summary>Can you explain how to fix a layout that has unexpectedly broken columns?</summary>
+<summary>Можете ли вы explain how to fix a layout that has unexpectedly broken columns?</summary>
 
-### Can you explain how to fix a layout that has unexpectedly broken columns?
+### Можете ли вы explain how to fix a layout that has unexpectedly broken columns?
 
 **Definition:**
 
@@ -2803,9 +2803,9 @@ button:focus-visible {
 </details>
 
 <details>
-<summary>Describe approaches to resolving common browser compatibility issues in CSS.</summary>
+<summary>Опишите approaches to resolving common browser compatibility issues in CSS.</summary>
 
-### Describe approaches to resolving common browser compatibility issues in CSS.
+### Опишите approaches to resolving common browser compatibility issues in CSS.
 
 **Definition:**
 
@@ -2845,9 +2845,9 @@ button:focus-visible {
 </details>
 
 <details>
-<summary>How would you determine which styles are applied to an element when multiple styles collide?</summary>
+<summary>Как бы вы determine which styles are applied to an element when multiple styles collide?</summary>
 
-### How would you determine which styles are applied to an element when multiple styles collide?
+### Как бы вы determine which styles are applied to an element when multiple styles collide?
 
 **Definition:**
 
@@ -2884,9 +2884,9 @@ button:focus-visible {
 </details>
 
 <details>
-<summary>What common CSS problems might cause performance issues?</summary>
+<summary>Какие типичные CSS problems могут вызвать performance issues?</summary>
 
-### What common CSS problems might cause performance issues?
+### Какие типичные CSS problems могут вызвать performance issues?
 
 **Definition:**
 
@@ -2926,9 +2926,9 @@ button:focus-visible {
 ### CSS 3D Transforms and Visual Effects
 
 <details>
-<summary>How do you utilize 3D transforms in CSS?</summary>
+<summary>Как you utilize 3D transforms in CSS?</summary>
 
-### How do you utilize 3D transforms in CSS?
+### Как you utilize 3D transforms in CSS?
 
 **Definition:**
 
@@ -2967,9 +2967,9 @@ button:focus-visible {
 </details>
 
 <details>
-<summary>Explain how to use the perspective property in CSS.</summary>
+<summary>Объясните how to use the perspective property in CSS.</summary>
 
-### Explain how to use the perspective property in CSS.
+### Объясните how to use the perspective property in CSS.
 
 **Definition:**
 
@@ -3004,9 +3004,9 @@ button:focus-visible {
 </details>
 
 <details>
-<summary>What is backface visibility?</summary>
+<summary>Что такое backface visibility?</summary>
 
-### What is backface visibility?
+### Что такое backface visibility?
 
 **Definition:**
 
@@ -3039,9 +3039,9 @@ button:focus-visible {
 </details>
 
 <details>
-<summary>How do you create a flip card effect using CSS?</summary>
+<summary>Как you create a flip card effect using CSS?</summary>
 
-### How do you create a flip card effect using CSS?
+### Как you create a flip card effect using CSS?
 
 **Definition:**
 
@@ -3095,9 +3095,9 @@ button:focus-visible {
 </details>
 
 <details>
-<summary>What are some examples of visual effects you can achieve with CSS filters?</summary>
+<summary>Что такое some examples of visual effects you can achieve with CSS filters?</summary>
 
-### What are some examples of visual effects you can achieve with CSS filters?
+### Что такое some examples of visual effects you can achieve with CSS filters?
 
 **Definition:**
 
@@ -3132,9 +3132,9 @@ img.muted {
 ### Layout and Design Principles
 
 <details>
-<summary>What are the principles of responsive web design?</summary>
+<summary>Что такое the principles of responsive web design?</summary>
 
-### What are the principles of responsive web design?
+### Что такое the principles of responsive web design?
 
 **Definition:**
 
@@ -3169,9 +3169,9 @@ img {
 </details>
 
 <details>
-<summary>How would you approach designing a grid system with CSS?</summary>
+<summary>Как бы вы approach designing a grid system with CSS?</summary>
 
-### How would you approach designing a grid system with CSS?
+### Как бы вы approach designing a grid system with CSS?
 
 **Definition:**
 
@@ -3211,9 +3211,9 @@ img {
 </details>
 
 <details>
-<summary>Describe the principle of "mobile-first" design.</summary>
+<summary>Опишите the principle of "mobile-first" design.</summary>
 
-### Describe the principle of "mobile-first" design.
+### Опишите the principle of "mobile-first" design.
 
 **Definition:**
 
@@ -3255,9 +3255,9 @@ Mobile-first значит, что CSS по умолчанию — узкая р�
 </details>
 
 <details>
-<summary>What are some techniques for maintaining aspect ratios in responsive designs?</summary>
+<summary>Что такое some techniques for maintaining aspect ratios in responsive designs?</summary>
 
-### What are some techniques for maintaining aspect ratios in responsive designs?
+### Что такое some techniques for maintaining aspect ratios in responsive designs?
 
 **Definition:**
 
@@ -3292,9 +3292,9 @@ Mobile-first значит, что CSS по умолчанию — узкая р�
 </details>
 
 <details>
-<summary>How do you ensure your design is accessible and inclusive?</summary>
+<summary>Как you ensure your design is accessible and inclusive?</summary>
 
-### How do you ensure your design is accessible and inclusive?
+### Как you ensure your design is accessible and inclusive?
 
 **Definition:**
 
@@ -3339,9 +3339,9 @@ button:focus-visible {
 ### Print Stylesheets and CSS for Print
 
 <details>
-<summary>How do you create a print stylesheet for your web page?</summary>
+<summary>Как you create a print stylesheet for your web page?</summary>
 
-### How do you create a print stylesheet for your web page?
+### Как you create a print stylesheet for your web page?
 
 **Definition:**
 
@@ -3379,9 +3379,9 @@ button:focus-visible {
 </details>
 
 <details>
-<summary>What are the common best practices when creating CSS for print?</summary>
+<summary>Что такое the common best practices when creating CSS for print?</summary>
 
-### What are the common best practices when creating CSS for print?
+### Что такое the common best practices when creating CSS for print?
 
 **Definition:**
 
@@ -3418,9 +3418,9 @@ CSS для печати должен показать содержимое, сп
 </details>
 
 <details>
-<summary>Explain the use of page-break in CSS.</summary>
+<summary>Объясните the use of page-break in CSS.</summary>
 
-### Explain the use of page-break in CSS.
+### Объясните the use of page-break in CSS.
 
 **Definition:**
 
@@ -3457,9 +3457,9 @@ figure {
 </details>
 
 <details>
-<summary>How can you test the print version of your web page?</summary>
+<summary>Как you test the print version of your web page?</summary>
 
-### How can you test the print version of your web page?
+### Как you test the print version of your web page?
 
 **Definition:**
 
@@ -3495,9 +3495,9 @@ figure {
 </details>
 
 <details>
-<summary>What are some challenges when designing CSS for print?</summary>
+<summary>Что такое some challenges when designing CSS for print?</summary>
 
-### What are some challenges when designing CSS for print?
+### Что такое some challenges when designing CSS for print?
 
 **Definition:**
 
@@ -3540,9 +3540,9 @@ figure {
 ### Pseudo-Elements and Pseudo-Classes
 
 <details>
-<summary>Describe the purpose of the ::before and ::after pseudo-elements.</summary>
+<summary>Опишите the puRPOse of the ::before and ::after pseudo-elements.</summary>
 
-### Describe the purpose of the ::before and ::after pseudo-elements.
+### Опишите the puRPOse of the ::before and ::after pseudo-elements.
 
 **Definition:**
 
@@ -3580,9 +3580,9 @@ a[href]::after {
 </details>
 
 <details>
-<summary>What is the :hover pseudo-class and how does it work?</summary>
+<summary>Что такое the :hover pseudo-class and how does it work?</summary>
 
-### What is the :hover pseudo-class and how does it work?
+### Что такое the :hover pseudo-class and how does it work?
 
 **Definition:**
 
@@ -3615,9 +3615,9 @@ a:hover {
 </details>
 
 <details>
-<summary>Explain the difference between :nth-child and :nth-of-type.</summary>
+<summary>Объясните the difference between :nth-child and :nth-of-type.</summary>
 
-### Explain the difference between :nth-child and :nth-of-type.
+### Объясните the difference between :nth-child and :nth-of-type.
 
 **Definition:**
 
@@ -3655,9 +3655,9 @@ span:nth-of-type(2n + 1) {
 </details>
 
 <details>
-<summary>How do :first-child and :last-child work?</summary>
+<summary>Как :first-child and :last-child work?</summary>
 
-### How do :first-child and :last-child work?
+### Как :first-child and :last-child work?
 
 **Definition:**
 
@@ -3695,9 +3695,9 @@ li:last-child {
 </details>
 
 <details>
-<summary>What is the :not pseudo-class and when would you use it?</summary>
+<summary>Что такое the :not pseudo-class and when would you use it?</summary>
 
-### What is the :not pseudo-class and when would you use it?
+### Что такое the :not pseudo-class and when would you use it?
 
 **Definition:**
 
@@ -3732,9 +3732,9 @@ p:not(.fancy) {
 ### CSS Performance Optimization
 
 <details>
-<summary>How does the complexity of selectors impact performance?</summary>
+<summary>Как the complexity of selectors impact performance?</summary>
 
-### How does the complexity of selectors impact performance?
+### Как the complexity of selectors impact performance?
 
 **Definition:**
 
@@ -3768,9 +3768,9 @@ p:not(.fancy) {
 </details>
 
 <details>
-<summary>What strategies would you use to optimize the rendering path of CSS?</summary>
+<summary>Какие стратегии would you use to optimize the rendering path of CSS?</summary>
 
-### What strategies would you use to optimize the rendering path of CSS?
+### Какие стратегии would you use to optimize the rendering path of CSS?
 
 **Definition:**
 
@@ -3801,9 +3801,9 @@ p:not(.fancy) {
 </details>
 
 <details>
-<summary>How do you minimize CSS repaints and reflows?</summary>
+<summary>Как you minimize CSS repaints and reflows?</summary>
 
-### How do you minimize CSS repaints and reflows?
+### Как you minimize CSS repaints and reflows?
 
 **Definition:**
 
@@ -3842,9 +3842,9 @@ Reflow (раскладка) заново считает геометрию. Repa
 </details>
 
 <details>
-<summary>What are some of the best practices for writing efficient CSS?</summary>
+<summary>Что такое some of the best practices for writing efficient CSS?</summary>
 
-### What are some of the best practices for writing efficient CSS?
+### Что такое some of the best practices for writing efficient CSS?
 
 **Definition:**
 
@@ -3883,9 +3883,9 @@ Reflow (раскладка) заново считает геометрию. Repa
 </details>
 
 <details>
-<summary>How do you optimize CSS for critical rendering path and fast load times?</summary>
+<summary>Как you optimize CSS for critical rendering path and fast load times?</summary>
 
-### How do you optimize CSS for critical rendering path and fast load times?
+### Как you optimize CSS for critical rendering path and fast load times?
 
 **Definition:**
 
@@ -3921,9 +3921,9 @@ Reflow (раскладка) заново считает геометрию. Repa
 ### Scalable and Maintainable CSS
 
 <details>
-<summary>What is Object-Oriented CSS (OOCSS)?</summary>
+<summary>Что такое Object-Oriented CSS (OOCSS)?</summary>
 
-### What is Object-Oriented CSS (OOCSS)?
+### Что такое Object-Oriented CSS (OOCSS)?
 
 **Definition:**
 
@@ -3961,9 +3961,9 @@ OOCSS отделяет повторно используемую структу�
 </details>
 
 <details>
-<summary>Can you explain the BEM (Block Element Modifier) naming convention?</summary>
+<summary>Можете ли вы explain the BEM (block Element Modifier) naming convention?</summary>
 
-### Can you explain the BEM (Block Element Modifier) naming convention?
+### Можете ли вы explain the BEM (block Element Modifier) naming convention?
 
 **Definition:**
 
@@ -4001,9 +4001,9 @@ BEM называет компонент блоком, его части элем
 </details>
 
 <details>
-<summary>What are the advantages of using a CSS framework like Bootstrap or TailwindCSS?</summary>
+<summary>Что такое the advantages of using a CSS framework like Bootstrap or TailwindCSS?</summary>
 
-### What are the advantages of using a CSS framework like Bootstrap or TailwindCSS?
+### Что такое the advantages of using a CSS framework like Bootstrap or TailwindCSS?
 
 **Definition:**
 
@@ -4034,9 +4034,9 @@ BEM называет компонент блоком, его части элем
 </details>
 
 <details>
-<summary>How do you ensure CSS scalability and maintainability in a large project?</summary>
+<summary>Как you ensure CSS Scalability and maintainability in a large project?</summary>
 
-### How do you ensure CSS scalability and maintainability in a large project?
+### Как you ensure CSS Scalability and maintainability in a large project?
 
 **Definition:**
 
@@ -4075,9 +4075,9 @@ BEM называет компонент блоком, его части элем
 </details>
 
 <details>
-<summary>What are some CSS architecture approaches for large-scale applications?</summary>
+<summary>Что такое some CSS architecture approaches for large-scale applications?</summary>
 
-### What are some CSS architecture approaches for large-scale applications?
+### Что такое some CSS architecture approaches for large-scale applications?
 
 **Definition:**
 
@@ -4116,9 +4116,9 @@ BEM называет компонент блоком, его части элем
 ### CSS Special Cases and Practical Scenarios
 
 <details>
-<summary>How would you create a CSS-only hamburger menu toggle?</summary>
+<summary>Как бы вы create a CSS-only hamburger menu toggle?</summary>
 
-### How would you create a CSS-only hamburger menu toggle?
+### Как бы вы create a CSS-only hamburger menu toggle?
 
 **Definition:**
 
@@ -4162,9 +4162,9 @@ nav {
 </details>
 
 <details>
-<summary>Explain how to make a pure CSS carousel or slider.</summary>
+<summary>Объясните how to make a pure CSS carousel or SLIder.</summary>
 
-### Explain how to make a pure CSS carousel or slider.
+### Объясните how to make a pure CSS carousel or SLIder.
 
 **Definition:**
 
@@ -4205,9 +4205,9 @@ nav {
 </details>
 
 <details>
-<summary>How do you create a masonry layout with CSS?</summary>
+<summary>Как you create a masonry layout with CSS?</summary>
 
-### How do you create a masonry layout with CSS?
+### Как you create a masonry layout with CSS?
 
 **Definition:**
 
@@ -4242,9 +4242,9 @@ nav {
 </details>
 
 <details>
-<summary>How would you apply CSS to a web application that should print as well as display on screen?</summary>
+<summary>Как бы вы apply CSS to a web application that should print as well as display on screen?</summary>
 
-### How would you apply CSS to a web application that should print as well as display on screen?
+### Как бы вы apply CSS to a web application that should print as well as display on screen?
 
 **Definition:**
 
@@ -4284,9 +4284,9 @@ article {
 </details>
 
 <details>
-<summary>How do you create a seamless waterfall flow of elements in a responsive design?</summary>
+<summary>Как you create a seamless waterfall flow of elements in a responsive design?</summary>
 
-### How do you create a seamless waterfall flow of elements in a responsive design?
+### Как you create a seamless waterfall flow of elements in a responsive design?
 
 **Definition:**
 

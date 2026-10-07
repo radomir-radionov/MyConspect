@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Domain Driven Design](https://devinterview.i
 ### DDD Fundamentals
 
 <details>
-<summary>What is Domain-Driven Design (DDD) and what are its core principles?</summary>
+<summary>Что такое domain-driven design (DDD) and what are its core principles?</summary>
 
-### What is Domain-Driven Design (DDD) and what are its core principles?
+### Что такое domain-driven design (DDD) and what are its core principles?
 
 **Definition:**
 
@@ -66,9 +66,9 @@ Questions from [Devinterview.io — Domain Driven Design](https://devinterview.i
 </details>
 
 <details>
-<summary>How does DDD differ from traditional data-driven or service-driven approaches?</summary>
+<summary>Как DDD differ from traditional data-driven or service-driven approaches?</summary>
 
-### How does DDD differ from traditional data-driven or service-driven approaches?
+### Как DDD differ from traditional data-driven or service-driven approaches?
 
 **Definition:**
 
@@ -184,9 +184,9 @@ class Order:
 </details>
 
 <details>
-<summary>What is the difference between the Domain Model and the Data Model in DDD?</summary>
+<summary>Что такое the difference between the Domain Model and the Data Model in DDD?</summary>
 
-### What is the difference between the Domain Model and the Data Model in DDD?
+### Что такое the difference between the Domain Model and the Data Model in DDD?
 
 **Definition:**
 
@@ -278,9 +278,9 @@ class OrderItemTable(SQLModel, table=True):
 </details>
 
 <details>
-<summary>Can you explain what Bounded Contexts are in DDD, and why they are important?</summary>
+<summary>Можете ли вы explain what bounded contexts are in DDD, and why they are important?</summary>
 
-### Can you explain what Bounded Contexts are in DDD, and why they are important?
+### Можете ли вы explain what bounded contexts are in DDD, and why they are important?
 
 **Definition:**
 
@@ -316,9 +316,9 @@ class OrderItemTable(SQLModel, table=True):
 </details>
 
 <details>
-<summary>What strategies can you use to define Bounded Contexts in a large system?</summary>
+<summary>Какие стратегии can you use to define bounded contexts in a large system?</summary>
 
-### What strategies can you use to define Bounded Contexts in a large system?
+### Какие стратегии can you use to define bounded contexts in a large system?
 
 **Definition:**
 
@@ -366,9 +366,9 @@ class OrderItemTable(SQLModel, table=True):
 </details>
 
 <details>
-<summary>How do you integrate multiple Bounded Contexts within a single system?</summary>
+<summary>Как you integrate multiple bounded contexts within a single system?</summary>
 
-### How do you integrate multiple Bounded Contexts within a single system?
+### Как you integrate multiple bounded contexts within a single system?
 
 **Definition:**
 
@@ -422,9 +422,9 @@ class OrderItemTable(SQLModel, table=True):
 </details>
 
 <details>
-<summary>Why is Ubiquitous Language important in DDD, and how do you establish it?</summary>
+<summary>Почему is Ubiquitous Language important in DDD, and how do you establish it?</summary>
 
-### Why is Ubiquitous Language important in DDD, and how do you establish it?
+### Почему is Ubiquitous Language important in DDD, and how do you establish it?
 
 **Definition:**
 
@@ -469,9 +469,9 @@ class OrderItemTable(SQLModel, table=True):
 </details>
 
 <details>
-<summary>What is the role of Entities in DDD, and how do they differ from Value Objects?</summary>
+<summary>Что такое the role of Entities in DDD, and how do they differ from Value Objects?</summary>
 
-### What is the role of Entities in DDD, and how do they differ from Value Objects?
+### Что такое the role of Entities in DDD, and how do they differ from Value Objects?
 
 **Definition:**
 
@@ -554,9 +554,9 @@ assert customer_1 == customer_2
 </details>
 
 <details>
-<summary>How would you identify Aggregates in a domain model, and what boundary rules apply to them?</summary>
+<summary>Как бы вы identify aggregates in a domain model, and what boundary rules apply to them?</summary>
 
-### How would you identify Aggregates in a domain model, and what boundary rules apply to them?
+### Как бы вы identify aggregates in a domain model, and what boundary rules apply to them?
 
 **Definition:**
 
@@ -638,9 +638,9 @@ class Order(BaseModel):
 </details>
 
 <details>
-<summary>Can you explain what a Domain Event is and give an example of when it might be used?</summary>
+<summary>Можете ли вы explain what a Domain Event is and give an example of when it might be used?</summary>
 
-### Can you explain what a Domain Event is and give an example of when it might be used?
+### Можете ли вы explain what a Domain Event is and give an example of when it might be used?
 
 **Definition:**
 
@@ -692,9 +692,9 @@ class Order(BaseModel):
 ### Tactical Design in DDD
 
 <details>
-<summary>How do Repositories function in DDD and what is their main responsibility?</summary>
+<summary>Как Repositories function in DDD and what is their main responsibility?</summary>
 
-### How do Repositories function in DDD and what is their main responsibility?
+### Как Repositories function in DDD and what is their main responsibility?
 
 **Definition:**
 
@@ -755,9 +755,9 @@ class PostgresCustomerRepository:
 </details>
 
 <details>
-<summary>What is the difference between a Repository and a Service in DDD?</summary>
+<summary>Что такое the difference between a Repository and a Service in DDD?</summary>
 
-### What is the difference between a Repository and a Service in DDD?
+### Что такое the difference between a Repository and a Service in DDD?
 
 **Definition:**
 
@@ -840,9 +840,9 @@ class OrderOrchestrator:
 </details>
 
 <details>
-<summary>How would you handle complex domain logic that involves multiple entities and value objects?</summary>
+<summary>Как бы вы handle complex domain logic that involves multiple entities and value objects?</summary>
 
-### How would you handle complex domain logic that involves multiple entities and value objects?
+### Как бы вы handle complex domain logic that involves multiple entities and value objects?
 
 **Definition:**
 
@@ -920,9 +920,9 @@ class BlogPost:
 </details>
 
 <details>
-<summary>Can you delineate the role of a Domain Service versus an Application Service?</summary>
+<summary>Можете ли вы delineate the role of a Domain Service versus an Application Service?</summary>
 
-### Can you delineate the role of a Domain Service versus an Application Service?
+### Можете ли вы delineate the role of a Domain Service versus an Application Service?
 
 **Definition:**
 
@@ -1001,9 +1001,9 @@ public class OrderApplicationService {
 </details>
 
 <details>
-<summary>What considerations are there for implementing Aggregates to ensure transactional consistency?</summary>
+<summary>Какие соображения are there for implementing aggregates to ensure transactional consistency?</summary>
 
-### What considerations are there for implementing Aggregates to ensure transactional consistency?
+### Какие соображения are there for implementing aggregates to ensure transactional consistency?
 
 **Definition:**
 
@@ -1080,9 +1080,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>How do you deal with performance issues when loading large Aggregates?</summary>
+<summary>Как you deal with performance issues when loading large aggregates?</summary>
 
-### How do you deal with performance issues when loading large Aggregates?
+### Как you deal with performance issues when loading large aggregates?
 
 **Definition:**
 
@@ -1102,9 +1102,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>In what scenarios might you use a Specification pattern in DDD?</summary>
+<summary>В what scenarios might you use a Specification pattern in DDD?</summary>
 
-### In what scenarios might you use a Specification pattern in DDD?
+### В what scenarios might you use a Specification pattern in DDD?
 
 **Definition:**
 
@@ -1120,9 +1120,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>What are some Domain Modeling strategies to enforce invariants within an Aggregate?</summary>
+<summary>Что такое some Domain Modeling strategies to enforce invariants within an aggregate?</summary>
 
-### What are some Domain Modeling strategies to enforce invariants within an Aggregate?
+### Что такое some Domain Modeling strategies to enforce invariants within an aggregate?
 
 **Definition:**
 
@@ -1138,9 +1138,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>Can you discuss strategies for dealing with concurrency and synchronization within Aggregates?</summary>
+<summary>Можете ли вы discuss strategies for dealing with concurrency and synchronization within aggregates?</summary>
 
-### Can you discuss strategies for dealing with concurrency and synchronization within Aggregates?
+### Можете ли вы discuss strategies for dealing with concurrency and synchronization within aggregates?
 
 **Definition:**
 
@@ -1158,9 +1158,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 ### Domain Events and Event Sourcing
 
 <details>
-<summary>How can Domain Events help in designing a loosely coupled system?</summary>
+<summary>Как Domain Events help in designing a loosely coupled system?</summary>
 
-### How can Domain Events help in designing a loosely coupled system?
+### Как Domain Events help in designing a loosely coupled system?
 
 **Definition:**
 
@@ -1176,9 +1176,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>What is Event Sourcing, and how does it differ from standard persistence mechanisms?</summary>
+<summary>Что такое event sourcing, and how does it differ from standard persistence mechanisms?</summary>
 
-### What is Event Sourcing, and how does it differ from standard persistence mechanisms?
+### Что такое event sourcing, and how does it differ from standard persistence mechanisms?
 
 **Definition:**
 
@@ -1194,9 +1194,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>Can you explain how CQRS (Command Query Responsibility Segregation) complements DDD?</summary>
+<summary>Можете ли вы explain how CQRS (command Query Responsibility SegreGAtion) complements DDD?</summary>
 
-### Can you explain how CQRS (Command Query Responsibility Segregation) complements DDD?
+### Можете ли вы explain how CQRS (command Query Responsibility SegreGAtion) complements DDD?
 
 **Definition:**
 
@@ -1212,9 +1212,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>In what situations would you choose to implement Event Sourcing in a DDD context?</summary>
+<summary>В what situations would you choose to implement event sourcing in a DDD context?</summary>
 
-### In what situations would you choose to implement Event Sourcing in a DDD context?
+### В what situations would you choose to implement event sourcing in a DDD context?
 
 **Definition:**
 
@@ -1230,9 +1230,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>How do you typically handle events that should trigger side effects in other Bounded Contexts?</summary>
+<summary>Как you typically handle events that should trigger side effects in other bounded contexts?</summary>
 
-### How do you typically handle events that should trigger side effects in other Bounded Contexts?
+### Как you typically handle events that should trigger side effects in other bounded contexts?
 
 **Definition:**
 
@@ -1250,9 +1250,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 ### Strategic Design and DDD Implementation
 
 <details>
-<summary>How does DDD address the issue of complex domain logic changes over time?</summary>
+<summary>Как DDD address the issue of complex domain logic changes over time?</summary>
 
-### How does DDD address the issue of complex domain logic changes over time?
+### Как DDD address the issue of complex domain logic changes over time?
 
 **Definition:**
 
@@ -1268,9 +1268,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>Describe the concept of a context map in DDD and its purpose.</summary>
+<summary>Опишите the concept of a context Map in DDD and its puRPOse.</summary>
 
-### Describe the concept of a context map in DDD and its purpose.
+### Опишите the concept of a context Map in DDD and its puRPOse.
 
 **Definition:**
 
@@ -1286,9 +1286,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>What is the Anti-Corruption Layer in DDD, and when would you use one?</summary>
+<summary>Что такое the Anti-Corruption Layer in DDD, and when would you use one?</summary>
 
-### What is the Anti-Corruption Layer in DDD, and when would you use one?
+### Что такое the Anti-Corruption Layer in DDD, and when would you use one?
 
 **Definition:**
 
@@ -1304,9 +1304,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>How might you implement a Policy in DDD, and what are its advantages?</summary>
+<summary>Как you implement a Policy in DDD, and what are its advantages?</summary>
 
-### How might you implement a Policy in DDD, and what are its advantages?
+### Как you implement a Policy in DDD, and what are its advantages?
 
 **Definition:**
 
@@ -1322,9 +1322,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>Can you give an example of how DDD can coexist with microservices architecture?</summary>
+<summary>Можете ли вы give an example of how DDD can coexist with microservices architecture?</summary>
 
-### Can you give an example of how DDD can coexist with microservices architecture?
+### Можете ли вы give an example of how DDD can coexist with microservices architecture?
 
 **Definition:**
 
@@ -1340,9 +1340,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>What factors would influence the decision to refactor a legacy system with a DDD approach?</summary>
+<summary>Какие факторы влияют на решение рефакторить legacy system с DDD approach?</summary>
 
-### What factors would influence the decision to refactor a legacy system with a DDD approach?
+### Какие факторы влияют на решение рефакторить legacy system с DDD approach?
 
 **Definition:**
 
@@ -1360,9 +1360,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 ### Advanced DDD Concepts
 
 <details>
-<summary>Explain how DDD principles can be applied at different scales in a software project.</summary>
+<summary>Объясните how DDD principles can be applied at different scales in a software project.</summary>
 
-### Explain how DDD principles can be applied at different scales in a software project.
+### Объясните how DDD principles can be applied at different scales in a software project.
 
 **Definition:**
 
@@ -1378,9 +1378,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>How can DDD help in understanding and aligning complex organizational structures?</summary>
+<summary>Как DDD help in understanding and aligning complex orGAnizational structures?</summary>
 
-### How can DDD help in understanding and aligning complex organizational structures?
+### Как DDD help in understanding and aligning complex orGAnizational structures?
 
 **Definition:**
 
@@ -1396,9 +1396,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>How does DDD assist in creating a pluggable component architecture?</summary>
+<summary>Как DDD assist in creating a plugGAble component architecture?</summary>
 
-### How does DDD assist in creating a pluggable component architecture?
+### Как DDD assist in creating a plugGAble component architecture?
 
 **Definition:**
 
@@ -1414,9 +1414,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>How does DDD help manage distributed systems complexity, particularly in consistency management?</summary>
+<summary>Как DDD help manage distributed systems complexity, particularly in consistency management?</summary>
 
-### How does DDD help manage distributed systems complexity, particularly in consistency management?
+### Как DDD help manage distributed systems complexity, particularly in consistency management?
 
 **Definition:**
 
@@ -1432,9 +1432,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>What are the challenges involved in implementing DDD in a large, multidisciplinary team?</summary>
+<summary>Что такое the challenges involved in implementing DDD in a large, multidisciplinary team?</summary>
 
-### What are the challenges involved in implementing DDD in a large, multidisciplinary team?
+### Что такое the challenges involved in implementing DDD in a large, multidisciplinary team?
 
 **Definition:**
 
@@ -1452,9 +1452,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 ### Practical Considerations
 
 <details>
-<summary>What are common pitfalls when transitioning an existing project to DDD?</summary>
+<summary>Что такое common pitfalls when transitioning an existing project to DDD?</summary>
 
-### What are common pitfalls when transitioning an existing project to DDD?
+### Что такое common pitfalls when transitioning an existing project to DDD?
 
 **Definition:**
 
@@ -1470,9 +1470,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>How do you measure the success of DDD implementation in a project?</summary>
+<summary>Как you measure the success of DDD implementation in a project?</summary>
 
-### How do you measure the success of DDD implementation in a project?
+### Как you measure the success of DDD implementation in a project?
 
 **Definition:**
 
@@ -1488,9 +1488,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>What tools or frameworks are supportive of DDD and why?</summary>
+<summary>Какие инструменты or frameworks are supportive of DDD and why?</summary>
 
-### What tools or frameworks are supportive of DDD and why?
+### Какие инструменты or frameworks are supportive of DDD and why?
 
 **Definition:**
 
@@ -1506,9 +1506,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>How would you address the training and knowledge transfer needed for a team new to DDD?</summary>
+<summary>Как бы вы address the training and knowledge transfer needed for a team new to DDD?</summary>
 
-### How would you address the training and knowledge transfer needed for a team new to DDD?
+### Как бы вы address the training and knowledge transfer needed for a team new to DDD?
 
 **Definition:**
 
@@ -1524,9 +1524,9 @@ def update_aggregate(repo: Repository, aggregate: AggregateRoot, amount: float):
 </details>
 
 <details>
-<summary>Can you provide an example of a project where DDD provided clear benefits over other design approaches?</summary>
+<summary>Можете ли вы provide an example of a project where DDD provided clear benefits over other design approaches?</summary>
 
-### Can you provide an example of a project where DDD provided clear benefits over other design approaches?
+### Можете ли вы provide an example of a project where DDD provided clear benefits over other design approaches?
 
 **Definition:**
 

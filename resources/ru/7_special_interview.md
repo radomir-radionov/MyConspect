@@ -96,9 +96,9 @@ Default in all modern code. Avoid spaghetti jumps.
 ## Questions & Answers
 
 <details>
-  <summary>Imperative vs declarative — how vs what?</summary>
+  <summary>Imperative vs declarative — как vs что?</summary>
 
-### Imperative vs declarative — how vs what?
+### Imperative vs declarative — как vs что?
 
 **Definition:** Imperative lists _commands in order_. Declarative states _the result_; another layer (engine, `filter`, SQL optimizer) chooses the steps.
 
@@ -115,9 +115,9 @@ _Как_ (команды) vs _что_ (результат). Алгоритм —
 </details>
 
 <details>
-  <summary>What is a pure function?</summary>
+  <summary>Что такое pure function?</summary>
 
-### What is a pure function?
+### Что такое pure function?
 
 **Definition:** Same arguments → same return value; **no side effects** (no writes/reads of hidden outer state, no I/O inside the function).
 
@@ -138,9 +138,9 @@ _Как_ (команды) vs _что_ (результат). Алгоритм —
 </details>
 
 <details>
-  <summary>Why are JS functions first-class? Implement compose.</summary>
+  <summary>Почему функции в JS first-class? Реализуйте compose.</summary>
 
-### Why are JS functions first-class? Implement compose.
+### Почему функции в JS first-class? Реализуйте compose.
 
 **First-class (first-class citizen):** A function can be (1) assigned to a variable, (2) passed as an argument, (3) returned from another function.
 
@@ -168,9 +168,9 @@ const compose =
 </details>
 
 <details>
-  <summary>Two Sum — why Map, not a plain object?</summary>
+  <summary>Two Sum — почему Map, а не обычный object?</summary>
 
-### Two Sum — why Map, not a plain object?
+### Two Sum — почему Map, а не обычный object?
 
 **Definition:** Unsorted Two Sum is a complement lookup: for each number, ask “have I already seen `target - x`?”
 
@@ -183,9 +183,9 @@ const compose =
 </details>
 
 <details>
-  <summary>Walk a tree without overflowing the stack?</summary>
+  <summary>Как обойти tree без переполнения stack?</summary>
 
-### Walk a tree without overflowing the stack?
+### Как обойти tree без переполнения stack?
 
 **Definition:** DFS can be recursive (call stack) or iterative (explicit stack). Skip `null` children.
 
@@ -198,9 +198,9 @@ const compose =
 </details>
 
 <details>
-  <summary>What are classes (Classes)?</summary>
+  <summary>Что такое classes (Classes)?</summary>
 
-### What are classes (Classes)?
+### Что такое classes (Classes)?
 
 **Short answer:** A **class** is a blueprint for creating objects: fields hold data, methods hold behavior, `constructor` runs on `new`. In JS it is **syntax sugar over prototypes**.
 
@@ -230,9 +230,9 @@ history.addRecord({ amount: 100, dateTime: Date.now() });
 </details>
 
 <details>
-  <summary>SOLID in JavaScript?</summary>
+  <summary>SOLID в JavaScript?</summary>
 
-### SOLID in JavaScript?
+### SOLID в JavaScript?
 
 **Short answer:** Те же пять принципов ООП — для **модулей, функций и компонентов**, не только `class`.
 
@@ -250,12 +250,12 @@ history.addRecord({ amount: 100, dateTime: Date.now() });
 Both are one-to-many notification patterns, but differ in **coupling** and **topology**.
 
 
-| Observer                                                       | Pub/Sub                                                   |
-|  ------------  |  --------------------------------------------------------------  |
-| **Coupling** | Subject **knows** observers directly                           | Publishers and subscribers **don't know** each other      |
-| **Mediator** | None — direct registration                                     | **Broker / event bus** in between                         |
-| **Delivery** | Synchronous callback list                                      | Often async (message queue)                               |
-| **Examples** | DOM `addEventListener`, Redux `subscribe`, Node `EventEmitter` | Redis pub/sub, RabbitMQ, MQTT, browser `BroadcastChannel` |
+| | Observer                                                       | Pub/Sub                                                   |
+| | ------------  |  --------------------------------------------------------------  |
+| | **Coupling** | Subject **knows** observers directly                           | Publishers and subscribers **don't know** each other      |
+| | **Mediator** | None — direct registration                                     | **Broker / event bus** in between                         |
+| | **Delivery** | Synchronous callback list                                      | Often async (message queue)                               |
+| | **Examples** | DOM `addEventListener`, Redux `subscribe`, Node `EventEmitter` | Redis pub/sub, RabbitMQ, MQTT, browser `BroadcastChannel` |
 
 **How it works:**
 
@@ -316,9 +316,9 @@ const bus = {
 </details>
 
 <details>
-  <summary>MVC data flow, fat vs thin controller, MVC vs MVP vs MVVM?</summary>
+  <summary>Поток данных в MVC, fat vs thin controller, MVC vs MVP vs MVVM?</summary>
 
-### MVC data flow, fat vs thin controller, MVC vs MVP vs MVVM?
+### Поток данных в MVC, fat vs thin controller, MVC vs MVP vs MVVM?
 
 **Definition:** Classic MVC is a **circle**: User → View → Controller → Model → View redraws. Model is independent; View shows it; Controller translates intent.
 
@@ -445,9 +445,9 @@ Using Singleton for convenience (global config in every module) — fails tests 
 </details>
 
 <details>
-  <summary>Common patterns (interview)?</summary>
+  <summary>Общие закономерности (интервью)?</summary>
 
-### Common patterns (interview)?
+### Общие закономерности (интервью)?
 
 **Quick catalog** — name, category, one-line use case. Architecture (MVC, Flux, layers) is a larger cut; these are local tools. See [Architecture vs design patterns](./7_special_architecture.md#architecture-vs-design-patterns).
 
@@ -486,9 +486,9 @@ Using Singleton for convenience (global config in every module) — fails tests 
 </details>
 
 <details>
-  <summary>Why write tests? What is AAA?</summary>
+  <summary>Почему write tests? What is AAA?</summary>
 
-### Why write tests? What is AAA?
+### Почему write tests? What is AAA?
 
 **Definition:** A test is code that checks assumptions about other code. It documents the contract, catches regressions, and makes refactors and dependency upgrades safer.
 
@@ -499,9 +499,9 @@ Using Singleton for convenience (global config in every module) — fails tests 
 </details>
 
 <details>
-  <summary>How do you set up Jest for Node and the browser?</summary>
+  <summary>Как вы настраиваете Jest для Node и браузера?</summary>
 
-### How do you set up Jest for Node and the browser?
+### Как вы настраиваете Jest для Node и браузера?
 
 **Definition:** Default `testEnvironment` is **`node`**. For DOM, use **`jsdom`** globally or per file via `/** @jest-environment jsdom */`. Mock `fetch` with `jest.fn` returning `{ json }`; mock modules with `jest.mock`.
 
@@ -531,9 +531,9 @@ Using Singleton for convenience (global config in every module) — fails tests 
 </details>
 
 <details>
-  <summary>Unit tests passed but the app is broken — what next?</summary>
+  <summary>Unit tests прошли, но приложение сломано — что дальше?</summary>
 
-### Unit tests passed but the app is broken — what next?
+### Unit tests прошли, но приложение сломано — что дальше?
 
 **Definition:** Units never prove **wiring**. **Integration** tests a group of modules (still not the whole product). **System** tests the assembled app: E2E (user flow), screenshots (UI pixels), performance (Web Vitals / Lighthouse), security (escape, cookies, API).
 
@@ -546,9 +546,9 @@ Using Singleton for convenience (global config in every module) — fails tests 
 </details>
 
 <details>
-  <summary>XSS vs stored XSS — how do you mitigate?</summary>
+  <summary>XSS vs stored XSS — как смягчить?</summary>
 
-### XSS vs stored XSS — how do you mitigate?
+### XSS vs stored XSS — как смягчить?
 
 **Definition:** XSS runs attacker script **in your origin**. **Reflected** — in that response (often a query string). **Stored** — saved and replayed for later viewers. **DOM** — client JS writes untrusted strings into the DOM.
 
@@ -576,9 +576,9 @@ Using Singleton for convenience (global config in every module) — fails tests 
 </details>
 
 <details>
-  <summary>Why is SQL injection not XSS?</summary>
+  <summary>Почему is SQL injection not XSS?</summary>
 
-### Why is SQL injection not XSS?
+### Почему is SQL injection not XSS?
 
 **Definition:** SQLi changes **SQL structure** (concatenated input). XSS changes **HTML/JS** in the browser. Same class of bug (untrusted data treated as code), different language.
 
@@ -606,9 +606,9 @@ Using Singleton for convenience (global config in every module) — fails tests 
 </details>
 
 <details>
-  <summary>Why methodologies / Waterfall vs Agile?</summary>
+  <summary>Почему methodologies / Waterfall vs Agile?</summary>
 
-### Why methodologies / Waterfall vs Agile?
+### Почему methodologies / Waterfall vs Agile?
 
 **Definition:** A methodology is how the team coordinates delivery under uncertainty. **Waterfall** freezes a full spec and runs phases once. **Agile** repeats a short full cycle so hypotheses can be killed or grown quickly.
 
@@ -634,9 +634,9 @@ Using Singleton for convenience (global config in every module) — fails tests 
 ---
 
 <details>
-  <summary>Middle — General</summary>
+  <summary>Общие</summary>
 
-### Middle — General
+### Общие
 
 1. Describe the testing pyramid.
 
@@ -665,9 +665,9 @@ Using Singleton for convenience (global config in every module) — fails tests 
 </details>
 
 <details>
-  <summary>General</summary>
+  <summary>Общие</summary>
 
-### General
+### Общие
 
 1. Describe functional programming. (Red → green: purity, immutability, composition, HOF, functional core / imperative shell.)
 
@@ -682,9 +682,9 @@ Using Singleton for convenience (global config in every module) — fails tests 
 </details>
 
 <details>
-  <summary>Middle — Practical tasks (process)</summary>
+  <summary>Middle — Практические задачи (процесс)</summary>
 
-### Middle — Practical tasks (process)
+### Middle — Практические задачи (процесс)
 
 148. If you have a project with tight deadlines and non-critical performance requirements...
 

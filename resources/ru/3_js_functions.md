@@ -78,12 +78,12 @@ Function forms, `this`, higher-order functions, `call`/`apply`/`bind`, debounce,
 - Both create functions with dynamic `this` (unless arrow).
 
 
-| Declaration              | Expression                |
-|  --------  |  ------------------------  |
-| Syntax   | `function f() {}`        | `const f = function() {}` |
-| Hoisting | Yes — callable before line | No |
-| Name     | Required                 | Optional (NFE for recursion) |
-| `this`   | Dynamic                  | Dynamic (unless arrow) |
+| | Declaration              | Expression                |
+| | --------  |  ------------------------  |
+| | Syntax   | `function f() {}`        | `const f = function() {}` |
+| | Hoisting | Yes — callable before line | No |
+| | Name     | Required                 | Optional (NFE for recursion) |
+| | `this`   | Dynamic                  | Dynamic (unless arrow) |
 
 **When to use:**
 
@@ -151,13 +151,13 @@ const double = function (n) {
 - Always anonymous in syntax (name inferred from variable in assignments).
 
 
-| Arrow   | Regular          |
-|  -----------  |  -------  |
-| `this`      | Lexical (from outer scope) | Dynamic (call site) |
-| `arguments` | No — use rest `...args` | Yes |
-| `new`       | No      | Yes              |
-| Hoisting    | No      | Declaration: yes |
-| Methods     | Poor choice for object methods | Use for `obj.method()` |
+| | Arrow   | Regular          |
+| | -----------  |  -------  |
+| | `this`      | Lexical (from outer scope) | Dynamic (call site) |
+| | `arguments` | No — use rest `...args` | Yes |
+| | `new`       | No      | Yes              |
+| | Hoisting    | No      | Declaration: yes |
+| | Methods     | Poor choice for object methods | Use for `obj.method()` |
 
 **When to use:**
 

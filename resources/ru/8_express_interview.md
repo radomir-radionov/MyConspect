@@ -21,9 +21,9 @@
 ### Express.js Fundamentals
 
 <details>
-<summary>What is Express.js, and how does it relate to Node.js?</summary>
+<summary>Что такое Express.js, and how does it relate to Node.js?</summary>
 
-### What is Express.js, and how does it relate to Node.js?
+### Что такое Express.js, and how does it relate to Node.js?
 
 **Definition:**
 
@@ -82,9 +82,9 @@ app.listen(port, () => {
 </details>
 
 <details>
-<summary>Explain the concept of middleware in Express.js.</summary>
+<summary>Объясните the concept of middleware in Express.js.</summary>
 
-### Explain the concept of middleware in Express.js.
+### Объясните the concept of middleware in Express.js.
 
 **Definition:**
 
@@ -173,9 +173,9 @@ app.listen(3000);
 </details>
 
 <details>
-<summary>How would you set up a basic Express.js application?</summary>
+<summary>Как бы вы set up a basic Express.js application?</summary>
 
-### How would you set up a basic Express.js application?
+### Как бы вы set up a basic Express.js application?
 
 **Definition:**
 
@@ -238,9 +238,9 @@ node app.js
 </details>
 
 <details>
-<summary>What is the purpose of the app.use() function?</summary>
+<summary>Что такое the puRPOse of the app.use() function?</summary>
 
-### What is the purpose of the app.use() function?
+### Что такое the puRPOse of the app.use() function?
 
 **Definition:**
 
@@ -310,9 +310,9 @@ app.use(function(err, req, res, next) {
 </details>
 
 <details>
-<summary>How do you serve static files using Express.js?</summary>
+<summary>Как you serve static files using Express.js?</summary>
 
-### How do you serve static files using Express.js?
+### Как you serve static files using Express.js?
 
 **Definition:**
 
@@ -377,9 +377,9 @@ app.use('/static', express.static('public'));
 </details>
 
 <details>
-<summary>Discuss the difference between app.get() and app.post() in Express.js.</summary>
+<summary>Обсудите the difference between app.get() and app.post() in Express.js.</summary>
 
-### Discuss the difference between app.get() and app.post() in Express.js.
+### Обсудите the difference between app.get() and app.post() in Express.js.
 
 **Definition:**
 
@@ -436,9 +436,9 @@ app.post('/users/register', (req, res) => {
 </details>
 
 <details>
-<summary>How do you retrieve the URL parameters from a GET request in Express.js?</summary>
+<summary>Как you reTrieve the URL parameters from a GET request in Express.js?</summary>
 
-### How do you retrieve the URL parameters from a GET request in Express.js?
+### Как you reTrieve the URL parameters from a GET request in Express.js?
 
 **Definition:**
 
@@ -495,9 +495,9 @@ app.get('/search', (req, res) => {
 </details>
 
 <details>
-<summary>What are route handlers, and how would you implement them?</summary>
+<summary>Что такое route handlers, and how would you implement them?</summary>
 
-### What are route handlers, and how would you implement them?
+### Что такое route handlers, and how would you implement them?
 
 **Definition:**
 
@@ -543,9 +543,9 @@ In this example, the route handler is (req, res) => { res.send('Hello, World!');
 </details>
 
 <details>
-<summary>How do you enable CORS in an Express.js application?</summary>
+<summary>Как you enable CORS in an Express.js application?</summary>
 
-### How do you enable CORS in an Express.js application?
+### Как you enable CORS in an Express.js application?
 
 **Definition:**
 
@@ -613,9 +613,9 @@ app.use((req, res, next) => {
 </details>
 
 <details>
-<summary>Explain the use of next() in Express.js middleware.</summary>
+<summary>Объясните the use of next() in Express.js middleware.</summary>
 
-### Explain the use of next() in Express.js middleware.
+### Объясните the use of next() in Express.js middleware.
 
 **Definition:**
 
@@ -675,9 +675,9 @@ Error Handling: If a middleware detects an error, it can short-circuit the regul
 ### Routing and Requests
 
 <details>
-<summary>What is the role of the express.Router class?</summary>
+<summary>Что такое the role of the Express.Router class?</summary>
 
-### What is the role of the express.Router class?
+### Что такое the role of the Express.Router class?
 
 **Definition:**
 
@@ -742,9 +742,9 @@ app.use('/routerExample', router);
 </details>
 
 <details>
-<summary>How do you handle 404 errors in Express.js?</summary>
+<summary>Как you handle 404 errors in Express.js?</summary>
 
-### How do you handle 404 errors in Express.js?
+### Как you handle 404 errors in Express.js?
 
 **Definition:**
 
@@ -826,9 +826,9 @@ app.listen(port, () => {
 </details>
 
 <details>
-<summary>What are the differences between req.query and req.params?</summary>
+<summary>Что такое the differences between req.query and req.params?</summary>
 
-### What are the differences between req.query and req.params?
+### Что такое the differences between req.query and req.params?
 
 **Definition:**
 
@@ -879,9 +879,9 @@ app.listen(port, () => console.log(`Listening on port ${port}!`));
 </details>
 
 <details>
-<summary>Describe the purpose of req.body and how you would access it.</summary>
+<summary>Опишите the puRPOse of req.body and how you would access it.</summary>
 
-### Describe the purpose of req.body and how you would access it.
+### Опишите the puRPOse of req.body and how you would access it.
 
 **Definition:**
 
@@ -972,9 +972,9 @@ fetch('/form-endpoint', {
 </details>
 
 <details>
-<summary>How do you create a middleware that logs the request method and URL for every request?</summary>
+<summary>Как you create a middleware that logs the request method and URL for every request?</summary>
 
-### How do you create a middleware that logs the request method and URL for every request?
+### Как you create a middleware that logs the request method and URL for every request?
 
 **Definition:**
 
@@ -1032,9 +1032,9 @@ app.listen(3000, () => {
 </details>
 
 <details>
-<summary>Explain how you would implement nested routes in Express.js.</summary>
+<summary>Объясните how you would implement nested routes in Express.js.</summary>
 
-### Explain how you would implement nested routes in Express.js.
+### Объясните how you would implement nested routes in Express.js.
 
 **Definition:**
 
@@ -1071,9 +1071,9 @@ app.use('/users', users)
 - [Express — Using middleware](https://expressjs.com/en/guide/using-middleware.html)
 </details>
 <details>
-<summary>How can you capture and respond to URL parameters in a route?</summary>
+<summary>Как you CAPture and respond to URL parameters in a route?</summary>
 
-### How can you capture and respond to URL parameters in a route?
+### Как you CAPture and respond to URL parameters in a route?
 
 **Definition:**
 
@@ -1100,9 +1100,9 @@ app.get('/user/:id', (req, res) => {
 - [Express — Routing](https://expressjs.com/en/guide/routing.html)
 </details>
 <details>
-<summary>How do you serve different content types (e.g., JSON, HTML) with Express.js responses?</summary>
+<summary>Как you serve different content types (e.g., JSON, HTML) with Express.js responses?</summary>
 
-### How do you serve different content types (e.g., JSON, HTML) with Express.js responses?
+### Как you serve different content types (e.g., JSON, HTML) with Express.js responses?
 
 **Definition:**
 
@@ -1142,9 +1142,9 @@ app.get('/item', (req, res) => {
 - [Express — res.json](https://expressjs.com/en/api.html#res.json)
 </details>
 <details>
-<summary>What are best practices for structuring a large Express.js application with multiple routes?</summary>
+<summary>Что такое best practices for structuring a large Express.js application with multiple routes?</summary>
 
-### What are best practices for structuring a large Express.js application with multiple routes?
+### Что такое best practices for structuring a large Express.js application with multiple routes?
 
 **Definition:**
 
@@ -1181,9 +1181,9 @@ app.use((req, res) => {
 ### Middleware and Error Handling
 
 <details>
-<summary>Explain the concept and use of built-in middleware in Express.js.</summary>
+<summary>Объясните the concept and use of built-in middleware in Express.js.</summary>
 
-### Explain the concept and use of built-in middleware in Express.js.
+### Объясните the concept and use of built-in middleware in Express.js.
 
 **Definition:**
 
@@ -1211,9 +1211,9 @@ app.use(express.static('public'))
 - [Express — req.body](https://expressjs.com/en/api.html#req.body)
 </details>
 <details>
-<summary>How do you write custom middleware functions in Express.js?</summary>
+<summary>Как you write custom middleware functions in Express.js?</summary>
 
-### How do you write custom middleware functions in Express.js?
+### Как you write custom middleware functions in Express.js?
 
 **Definition:**
 
@@ -1242,9 +1242,9 @@ app.use((req, res, next) => {
 - [Express — Error handling](https://expressjs.com/en/guide/error-handling.html)
 </details>
 <details>
-<summary>How do you handle file uploads in Express.js?</summary>
+<summary>Как you handle file uploads in Express.js?</summary>
 
-### How do you handle file uploads in Express.js?
+### Как you handle file uploads in Express.js?
 
 **Definition:**
 
@@ -1280,9 +1280,9 @@ app.post('/profile', upload.single('avatar'), (req, res) => {
 - [Express — express.json](https://expressjs.com/en/api.html#express.json)
 </details>
 <details>
-<summary>What is express-session, and how would you use it?</summary>
+<summary>Что такое Express-session, and how would you use it?</summary>
 
-### What is express-session, and how would you use it?
+### Что такое Express-session, and how would you use it?
 
 **Definition:**
 
@@ -1322,9 +1322,9 @@ app.use(session({
 - [Express — express-session](https://expressjs.com/en/resources/middleware/session.html)
 </details>
 <details>
-<summary>Discuss error handling in an Express.js application. How do you define an error-handling middleware?</summary>
+<summary>Обсудите error handling in an Express.js application. How do you define an error-handling middleware?</summary>
 
-### Discuss error handling in an Express.js application. How do you define an error-handling middleware?
+### Обсудите error handling in an Express.js application. How do you define an error-handling middleware?
 
 **Definition:**
 
@@ -1353,9 +1353,9 @@ app.use((err, req, res, next) => {
 - [Express — Error handling](https://expressjs.com/en/guide/error-handling.html)
 </details>
 <details>
-<summary>Provide an example of using third-party middleware, such as body-parser or morgan.</summary>
+<summary>Приведите an example of using third-party middleware, such as body-parser or morGAn.</summary>
 
-### Provide an example of using third-party middleware, such as body-parser or morgan.
+### Приведите an example of using third-party middleware, such as body-parser or morGAn.
 
 **Definition:**
 
@@ -1389,9 +1389,9 @@ app.get('/', (req, res) => {
 - [Express — Production performance](https://expressjs.com/en/advanced/best-practice-performance.html)
 </details>
 <details>
-<summary>How do you protect against SQL injection or other security threats in Express.js?</summary>
+<summary>Как you protect aGAinst SQL injection or other security threats in Express.js?</summary>
 
-### How do you protect against SQL injection or other security threats in Express.js?
+### Как you protect aGAinst SQL injection or other security threats in Express.js?
 
 **Definition:**
 
@@ -1423,9 +1423,9 @@ app.get('/user', async (req, res) => {
 ### Response and Performance
 
 <details>
-<summary>How would you implement caching in an Express.js application?</summary>
+<summary>Как бы вы implement caching in an Express.js application?</summary>
 
-### How would you implement caching in an Express.js application?
+### Как бы вы implement caching in an Express.js application?
 
 **Definition:**
 
@@ -1461,9 +1461,9 @@ app.get('/catalog', (req, res) => {
 - [Express — Production performance](https://expressjs.com/en/advanced/best-practice-performance.html)
 </details>
 <details>
-<summary>How do you set cookies and get cookies in an Express.js application?</summary>
+<summary>Как you set cookies and get cookies in an Express.js application?</summary>
 
-### How do you set cookies and get cookies in an Express.js application?
+### Как you set cookies and get cookies in an Express.js application?
 
 **Definition:**
 
@@ -1495,9 +1495,9 @@ app.get('/', (req, res) => {
 - [Express — res.cookie](https://expressjs.com/en/api.html#res.cookie)
 </details>
 <details>
-<summary>What are ways to improve the performance of Express.js applications?</summary>
+<summary>Что такое ways to improve the performance of Express.js applications?</summary>
 
-### What are ways to improve the performance of Express.js applications?
+### Что такое ways to improve the performance of Express.js applications?
 
 **Definition:**
 
@@ -1517,9 +1517,9 @@ app.get('/', (req, res) => {
 - [Express — Production performance](https://expressjs.com/en/advanced/best-practice-performance.html)
 </details>
 <details>
-<summary>How do you configure an Express.js app for a reverse proxy, like Nginx?</summary>
+<summary>Как you configure an Express.js app for a reverse proxy, like Nginx?</summary>
 
-### How do you configure an Express.js app for a reverse proxy, like Nginx?
+### Как you configure an Express.js app for a reverse proxy, like Nginx?
 
 **Definition:**
 
@@ -1546,9 +1546,9 @@ app.set('trust proxy', 1)
 - [Express — express-session](https://expressjs.com/en/resources/middleware/session.html)
 </details>
 <details>
-<summary>Explain the purpose of template engines. How would you integrate one with Express.js?</summary>
+<summary>Объясните the puRPOse of template engines. How would you integrate one with Express.js?</summary>
 
-### Explain the purpose of template engines. How would you integrate one with Express.js?
+### Объясните the puRPOse of template engines. How would you integrate one with Express.js?
 
 **Definition:**
 
@@ -1587,9 +1587,9 @@ app.get('/', (req, res) => {
 ### Testing and Debugging
 
 <details>
-<summary>How do you test an Express.js application?</summary>
+<summary>Как you test an Express.js application?</summary>
 
-### How do you test an Express.js application?
+### Как you test an Express.js application?
 
 **Definition:**
 
@@ -1624,9 +1624,9 @@ server.listen(0, async () => {
 - [Node.js — HTTP](https://nodejs.org/api/http.html)
 </details>
 <details>
-<summary>Discuss common debugging techniques for Express.js applications.</summary>
+<summary>Обсудите common debugging techniques for Express.js applications.</summary>
 
-### Discuss common debugging techniques for Express.js applications.
+### Обсудите common debugging techniques for Express.js applications.
 
 **Definition:**
 
@@ -1647,9 +1647,9 @@ server.listen(0, async () => {
 - [Node.js — Debugger](https://nodejs.org/api/debugger.html)
 </details>
 <details>
-<summary>What is the role of environment variables in an Express.js application?</summary>
+<summary>Что такое the role of environment variables in an Express.js application?</summary>
 
-### What is the role of environment variables in an Express.js application?
+### Что такое the role of environment variables in an Express.js application?
 
 **Definition:**
 
@@ -1678,9 +1678,9 @@ if (app.get('env') === 'production') {
 - [Express — express-session](https://expressjs.com/en/resources/middleware/session.html)
 </details>
 <details>
-<summary>How do you use a debugger with an Express.js app running in Node.js?</summary>
+<summary>Как you use a debugger with an Express.js app running in Node.js?</summary>
 
-### How do you use a debugger with an Express.js app running in Node.js?
+### Как you use a debugger with an Express.js app running in Node.js?
 
 **Definition:**
 
@@ -1708,9 +1708,9 @@ node --inspect server.js
 ### Express.js with Databases
 
 <details>
-<summary>How would you connect a MongoDB database with an Express.js application?</summary>
+<summary>Как бы вы connect a MongoDB dataBASE with an Express.js application?</summary>
 
-### How would you connect a MongoDB database with an Express.js application?
+### Как бы вы connect a MongoDB dataBASE with an Express.js application?
 
 **Definition:**
 
@@ -1742,9 +1742,9 @@ app.get('/notes', async (req, res) => {
 - [MongoDB Node.js driver — Connect](https://www.mongodb.com/docs/drivers/node/current/connect/connection/)
 </details>
 <details>
-<summary>Explain how to integrate an ORM like Sequelize with Express.js.</summary>
+<summary>Объясните how to integrate an ORM like Sequelize with Express.js.</summary>
 
-### Explain how to integrate an ORM like Sequelize with Express.js.
+### Объясните how to integrate an ORM like Sequelize with Express.js.
 
 **Definition:**
 
@@ -1773,9 +1773,9 @@ app.get('/notes', async (req, res) => {
 - [Sequelize — Getting started](https://sequelize.org/docs/v6/getting-started/)
 </details>
 <details>
-<summary>How do you handle database errors in Express.js?</summary>
+<summary>Как you handle dataBASE errors in Express.js?</summary>
 
-### How do you handle database errors in Express.js?
+### Как you handle dataBASE errors in Express.js?
 
 **Definition:**
 
@@ -1805,9 +1805,9 @@ app.use((err, req, res, next) => {
 - [Express — Production performance](https://expressjs.com/en/advanced/best-practice-performance.html)
 </details>
 <details>
-<summary>What are the advantages of using a database pooling mechanism in an Express.js app?</summary>
+<summary>Что такое the advantages of using a dataBASE pooling mechanism in an Express.js app?</summary>
 
-### What are the advantages of using a database pooling mechanism in an Express.js app?
+### Что такое the advantages of using a dataBASE pooling mechanism in an Express.js app?
 
 **Definition:**
 
@@ -1834,9 +1834,9 @@ app.use((err, req, res, next) => {
 ### Authentication and Authorization
 
 <details>
-<summary>Describe how you would implement user authentication in Express.js.</summary>
+<summary>Опишите how you would implement user authentication in Express.js.</summary>
 
-### Describe how you would implement user authentication in Express.js.
+### Опишите how you would implement user authentication in Express.js.
 
 **Definition:**
 
@@ -1869,9 +1869,9 @@ app.post('/login', async (req, res) => {
 - [Express — express-session](https://expressjs.com/en/resources/middleware/session.html)
 </details>
 <details>
-<summary>Explain how sessions are managed in Express.js.</summary>
+<summary>Объясните how sessions are managed in Express.js.</summary>
 
-### Explain how sessions are managed in Express.js.
+### Объясните how sessions are managed in Express.js.
 
 **Definition:**
 
@@ -1895,9 +1895,9 @@ app.post('/login', async (req, res) => {
 - [Express — Production performance](https://expressjs.com/en/advanced/best-practice-performance.html)
 </details>
 <details>
-<summary>Discuss how you would handle user roles and permissions in an Express.js application.</summary>
+<summary>Обсудите how you would handle user roles and permissions in an Express.js application.</summary>
 
-### Discuss how you would handle user roles and permissions in an Express.js application.
+### Обсудите how you would handle user roles and permissions in an Express.js application.
 
 **Definition:**
 
@@ -1932,9 +1932,9 @@ function requireRole(role) {
 - [Express — Error handling](https://expressjs.com/en/guide/error-handling.html)
 </details>
 <details>
-<summary>How can you secure passwords and sensitive information in your Express.js app?</summary>
+<summary>Как you secure passwords and sensitive information in your Express.js app?</summary>
 
-### How can you secure passwords and sensitive information in your Express.js app?
+### Как you secure passwords and sensitive information in your Express.js app?
 
 **Definition:**
 
@@ -1956,9 +1956,9 @@ function requireRole(role) {
 ### Integration and Configuration
 
 <details>
-<summary>How do you integrate a third-party API in an Express.js application?</summary>
+<summary>Как you integrate a third-party API in an Express.js application?</summary>
 
-### How do you integrate a third-party API in an Express.js application?
+### Как you integrate a third-party API in an Express.js application?
 
 **Definition:**
 
@@ -1989,9 +1989,9 @@ app.get('/weather', async (req, res) => {
 - [MDN — fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 </details>
 <details>
-<summary>Explain the steps to deploy an Express.js application to a cloud provider like AWS or Heroku.</summary>
+<summary>Объясните the steps to deploy an Express.js application to a cloud provider like AWS or Heroku.</summary>
 
-### Explain the steps to deploy an Express.js application to a cloud provider like AWS or Heroku.
+### Объясните the steps to deploy an Express.js application to a cloud provider like AWS or Heroku.
 
 **Definition:**
 
@@ -2011,9 +2011,9 @@ app.get('/weather', async (req, res) => {
 - [Express — Security best practices](https://expressjs.com/en/advanced/best-practice-security.html)
 </details>
 <details>
-<summary>How can you ensure that your Express.js application is scalable?</summary>
+<summary>Как you ensure that your Express.js application is Scalable?</summary>
 
-### How can you ensure that your Express.js application is scalable?
+### Как you ensure that your Express.js application is Scalable?
 
 **Definition:**
 
@@ -2032,9 +2032,9 @@ app.get('/weather', async (req, res) => {
 - [Express — Production performance](https://expressjs.com/en/advanced/best-practice-performance.html)
 </details>
 <details>
-<summary>What is the Twelve-Factor App methodology, and how does it apply to Express.js?</summary>
+<summary>Что такое the Twelve-Factor App methodology, and how does it apply to Express.js?</summary>
 
-### What is the Twelve-Factor App methodology, and how does it apply to Express.js?
+### Что такое the Twelve-Factor App methodology, and how does it apply to Express.js?
 
 **Definition:**
 
@@ -2059,9 +2059,9 @@ app.get('/weather', async (req, res) => {
 ### Coding Challenges
 
 <details>
-<summary>Write an Express.js middleware function that limits requests to 100 per hour per IP address.</summary>
+<summary>Напишите an Express.js middleware function that limits requests to 100 per hour per IP address.</summary>
 
-### Write an Express.js middleware function that limits requests to 100 per hour per IP address.
+### Напишите an Express.js middleware function that limits requests to 100 per hour per IP address.
 
 **Definition:**
 
@@ -2101,9 +2101,9 @@ app.use(limit100PerHour)
 - [Express — Security best practices](https://expressjs.com/en/advanced/best-practice-security.html)
 </details>
 <details>
-<summary>Create an Express.js route that accepts a JSON payload and responds with the same payload in reverse order.</summary>
+<summary>Создайте an Express.js route that accepts a JSON payload and responds with the same payload in reverse order.</summary>
 
-### Create an Express.js route that accepts a JSON payload and responds with the same payload in reverse order.
+### Создайте an Express.js route that accepts a JSON payload and responds with the same payload in reverse order.
 
 **Definition:**
 
@@ -2134,9 +2134,9 @@ app.post('/reverse', (req, res) => {
 - [Express — express.json](https://expressjs.com/en/api.html#express.json)
 </details>
 <details>
-<summary>Develop a simple REST API with Express.js that includes CRUD operations for managing books. Include route definitions and handler functions that interact with a placeholder data store.</summary>
+<summary>Разработайте a simple REST API with Express.js that includes CRUD operations for managing books. Include route definitions and handler functions that interact with a placeholder data store.</summary>
 
-### Develop a simple REST API with Express.js that includes CRUD operations for managing books. Include route definitions and handler functions that interact with a placeholder data store.
+### Разработайте a simple REST API with Express.js that includes CRUD operations for managing books. Include route definitions and handler functions that interact with a placeholder data store.
 
 **Definition:**
 
@@ -2193,9 +2193,9 @@ app.delete('/books/:id', (req, res) => {
 ### Advanced Topics and Best Practices
 
 <details>
-<summary>Discuss strategies for building a real-time application with Express.js.</summary>
+<summary>Обсудите strategies for building a real-time application with Express.js.</summary>
 
-### Discuss strategies for building a real-time application with Express.js.
+### Обсудите strategies for building a real-time application with Express.js.
 
 **Definition:**
 
@@ -2230,9 +2230,9 @@ server.listen(process.env.PORT || 3000)
 - [MDN — WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
 </details>
 <details>
-<summary>What are some common optimization techniques for Express.js applications?</summary>
+<summary>Что такое some common optimization techniques for Express.js applications?</summary>
 
-### What are some common optimization techniques for Express.js applications?
+### Что такое some common optimization techniques for Express.js applications?
 
 **Definition:**
 
@@ -2253,9 +2253,9 @@ server.listen(process.env.PORT || 3000)
 - [Express — express.static](https://expressjs.com/en/api.html#express.static)
 </details>
 <details>
-<summary>Explain the concept and benefits of server-side rendering with Express.js and a templating engine.</summary>
+<summary>Объясните the concept and benefits of server-side rendering with Express.js and a templating engine.</summary>
 
-### Explain the concept and benefits of server-side rendering with Express.js and a templating engine.
+### Объясните the concept and benefits of server-side rendering with Express.js and a templating engine.
 
 **Definition:**
 
@@ -2286,9 +2286,9 @@ app.get('/books/:id', async (req, res) => {
 - [Express — Production performance](https://expressjs.com/en/advanced/best-practice-performance.html)
 </details>
 <details>
-<summary>How do you ensure that your Express.js code is maintainable and follows best practices?</summary>
+<summary>Как you ensure that your Express.js code is maintainable and follows best practices?</summary>
 
-### How do you ensure that your Express.js code is maintainable and follows best practices?
+### Как you ensure that your Express.js code is maintainable and follows best practices?
 
 **Definition:**
 
@@ -2312,9 +2312,9 @@ app.get('/books/:id', async (req, res) => {
 ### Case Studies and Scenario-Based Questions
 
 <details>
-<summary>How would you structure an Express.js application for a large-scale e-commerce platform?</summary>
+<summary>Как бы вы structure an Express.js application for a large-scale e-commerce platform?</summary>
 
-### How would you structure an Express.js application for a large-scale e-commerce platform?
+### Как бы вы structure an Express.js application for a large-scale e-commerce platform?
 
 **Definition:**
 
@@ -2335,9 +2335,9 @@ app.get('/books/:id', async (req, res) => {
 - [Express — Security best practices](https://expressjs.com/en/advanced/best-practice-security.html)
 </details>
 <details>
-<summary>Describe the key considerations for building a secure API with Express.js.</summary>
+<summary>Опишите the key considerations for building a secure API with Express.js.</summary>
 
-### Describe the key considerations for building a secure API with Express.js.
+### Опишите the key considerations for building a secure API with Express.js.
 
 **Definition:**
 
@@ -2358,9 +2358,9 @@ app.get('/books/:id', async (req, res) => {
 - [Express — express.json](https://expressjs.com/en/api.html#express.json)
 </details>
 <details>
-<summary>Discuss how to handle session management in a distributed Express.js application.</summary>
+<summary>Обсудите how to handle session management in a distributed Express.js application.</summary>
 
-### Discuss how to handle session management in a distributed Express.js application.
+### Обсудите how to handle session management in a distributed Express.js application.
 
 **Definition:**
 
@@ -2381,9 +2381,9 @@ app.get('/books/:id', async (req, res) => {
 - [Express — express-session](https://expressjs.com/en/resources/middleware/session.html)
 </details>
 <details>
-<summary>What are the implications of microservices architecture for an Express.js application?</summary>
+<summary>Что такое the implications of microservices architecture for an Express.js application?</summary>
 
-### What are the implications of microservices architecture for an Express.js application?
+### Что такое the implications of microservices architecture for an Express.js application?
 
 **Definition:**
 

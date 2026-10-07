@@ -115,13 +115,13 @@ Flux vs Redux
 Оба описывают обновления plain **action** объектами и держат логику мутаций вне UI. Поток один: событие → action → обновление state → re-render.
 
 
-| Flux                                            | Redux                                                            |
-|  ----------------  |  -----------------------------------------------  |
-| **Stores**       | Несколько stores (по домену)                    | **Один** глобальный store                                        |
-| **Dispatcher**   | Центральный хаб маршрутизирует actions в stores | **Без dispatcher** — `store.dispatch` вызывает reducers напрямую |
-| **Update logic** | Stores могут обновлять себя сами                | **Только чистые reducers** — `(state, action) => newState`       |
-| **Data shape**   | Часто мутирующие обновления                     | **Обязательная иммутабельность** (копия, не мутация)             |
-| **Composition**  | Event emitters + много слушателей               | Чистые функции — легко тестировать и композировать               |
+| | Flux                                            | Redux                                                            |
+| | ----------------  |  -----------------------------------------------  |
+| | **Stores**       | Несколько stores (по домену)                    | **Один** глобальный store                                        |
+| | **Dispatcher**   | Центральный хаб маршрутизирует actions в stores | **Без dispatcher** — `store.dispatch` вызывает reducers напрямую |
+| | **Update logic** | Stores могут обновлять себя сами                | **Только чистые reducers** — `(state, action) => newState`       |
+| | **Data shape**   | Часто мутирующие обновления                     | **Обязательная иммутабельность** (копия, не мутация)             |
+| | **Composition**  | Event emitters + много слушателей               | Чистые функции — легко тестировать и композировать               |
 
 Модель Flux: `(state, action) => state`. Redux сохраняет форму, но убирает слой Dispatcher — reducers это функции, а не event emitters.
 
@@ -807,11 +807,11 @@ State management libraries
 | **Context + useReducer** | Маленькие apps, theme/locale                                            |
 
 
-| Flux                        | Redux                    |
-|  -------  |  ---------------------------  |
-| Stores  | Несколько                   | Одно хранилище           |
-| Updates | Stores обновляют себя       | Только чистые reducers   |
-| Flow    | Action → Dispatcher → Store | Action → Reducer → Store |
+| | Flux                        | Redux                    |
+| | -------  |  ---------------------------  |
+| | Stores  | Несколько                   | Одно хранилище           |
+| | Updates | Stores обновляют себя       | Только чистые reducers   |
+| | Flow    | Action → Dispatcher → Store | Action → Reducer → Store |
 
 **When to use:** Полный гайд — [When to use Redux](#when-to-use-redux).
 

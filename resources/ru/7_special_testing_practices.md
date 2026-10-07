@@ -142,11 +142,11 @@ Scenario: Successful login
 ```
 
 
-| TDD              | BDD                    |
-|  --------  |  ----------------  |
-| Focus    | Code correctness | Behavior / user value  |
-| Language | Code tests       | Often natural language |
-| Audience | Developers       | Devs + PM + QA         |
+| | TDD              | BDD                    |
+| | --------  |  ----------------  |
+| | Focus    | Code correctness | Behavior / user value  |
+| | Language | Code tests       | Often natural language |
+| | Audience | Developers       | Devs + PM + QA         |
 
 **Mocha-style `describe` / `it` (tutorial / classic BDD runners):**
 

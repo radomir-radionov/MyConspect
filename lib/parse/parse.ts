@@ -11,6 +11,8 @@ export type InterviewSection = "questions" | "tasks";
 export type ParseOptions = {
   readonly hideAnswers?: boolean;
   readonly locale?: Locale;
+  /** English twin markdown — stable interview question anchors for non-default locales. */
+  readonly anchorMarkdown?: string;
 };
 
 export type Concept = {
@@ -117,12 +119,27 @@ export type ConceptOutline = {
 
 const CONCEPT_SEARCH_TEXT_MAX = 1600;
 
+export function extractInterviewAnchorTitles(
+  markdown: string,
+): readonly string[] {
+  const rewritten = rewriteNoteLinks(markdown, DEFAULT_LOCALE);
+  const { interview } = partitionInterviewBlocks(rewritten);
+  return orderedInterviewBlocks(interview).map((block) => {
+    const interviewSection = interviewSectionForTitle(block.title);
+    return cleanInterviewTitle(block.title, interviewSection);
+  });
+}
+
 export function parseTopicOutline(
   markdown: string,
   locale: Locale = DEFAULT_LOCALE,
+  options: ParseOptions = {},
 ): readonly ConceptOutline[] {
   const rewritten = rewriteNoteLinks(markdown, locale);
   const { regular, interview } = partitionInterviewBlocks(rewritten);
+  const anchorTitles = options.anchorMarkdown
+    ? extractInterviewAnchorTitles(options.anchorMarkdown)
+    : undefined;
   const usedIds = new Set<string>();
   const outline: ConceptOutline[] = regular.map((block) => ({
     id: uniqueId(slugify(block.title), usedIds),
@@ -130,7 +147,7 @@ export function parseTopicOutline(
     searchText: conceptSearchText(block.body),
     ...(block.group ? { group: block.group } : {}),
   }));
-  for (const item of interviewOutlineItems(interview, usedIds)) {
+  for (const item of interviewOutlineItems(interview, usedIds, anchorTitles)) {
     outline.push(item);
   }
   return outline;
@@ -243,6 +260,9 @@ async function collectConcepts(
   options: ParseOptions = {},
 ): Promise<Concept[]> {
   const { regular, interview } = partitionInterviewBlocks(markdown);
+  const anchorTitles = options.anchorMarkdown
+    ? extractInterviewAnchorTitles(options.anchorMarkdown)
+    : undefined;
   const usedIds = new Set<string>();
   const regularConcepts = regular.map((block) => {
     const id = uniqueId(slugify(block.title), usedIds);
@@ -263,6 +283,7 @@ async function collectConcepts(
     interview,
     usedIds,
     renderInterviewConcept,
+    anchorTitles,
   );
   const [renderedRegular, renderedInterview] = await Promise.all([
     Promise.all(regularConcepts),
@@ -367,16 +388,62 @@ function orderedInterviewBlocks(
   return [...questions, ...tasks];
 }
 
+function interviewTitleSearchText(
+  displayTitle: string,
+  anchorTitle: string | undefined,
+  rawTitle: string,
+): string {
+  const parts = [displayTitle];
+  if (anchorTitle && anchorTitle !== displayTitle) {
+    parts.push(anchorTitle);
+  }
+  if (
+    rawTitle !== displayTitle &&
+    rawTitle !== anchorTitle &&
+    !parts.includes(rawTitle)
+  ) {
+    parts.push(rawTitle);
+  }
+  return parts.join(" ").trim();
+}
+
+function warnInterviewAnchorMismatch(
+  anchorCount: number,
+  blockCount: number,
+): void {
+  if (anchorCount === blockCount) {
+    return;
+  }
+  if (process.env.NODE_ENV === "production") {
+    return;
+  }
+  console.warn(
+    `Interview anchor count mismatch: ${anchorCount} anchors vs ${blockCount} blocks`,
+  );
+}
+
 function interviewOutlineItems(
   blocks: readonly ConceptBlock[],
   usedIds: Set<string>,
+  anchorTitles?: readonly string[],
 ): ConceptOutline[] {
-  return orderedInterviewBlocks(blocks).map((block) => {
+  const ordered = orderedInterviewBlocks(blocks);
+  if (anchorTitles) {
+    warnInterviewAnchorMismatch(anchorTitles.length, ordered.length);
+  }
+  return ordered.map((block, index) => {
     const interviewSection = interviewSectionForTitle(block.title);
+    const title = cleanInterviewTitle(block.title, interviewSection);
+    const anchorTitle = anchorTitles?.[index];
+    const idSource = anchorTitle ?? block.title;
     return {
-      id: uniqueId(slugify(block.title), usedIds),
-      title: cleanInterviewTitle(block.title, interviewSection),
-      titleSearchText: block.title,
+      id: uniqueId(slugify(idSource), usedIds),
+      title,
+      titleSearchText: interviewTitleSearchText(
+        title,
+        anchorTitle,
+        block.title,
+      ),
       searchText: conceptSearchText(block.body),
       interviewSection,
       ...(block.group ? { group: block.group } : {}),
@@ -388,17 +455,28 @@ function interviewConceptItems(
   blocks: readonly ConceptBlock[],
   usedIds: Set<string>,
   render: (block: ConceptBlock) => Promise<string>,
+  anchorTitles?: readonly string[],
 ): Promise<Concept[]> {
-  const items = orderedInterviewBlocks(blocks).map((block) => {
+  const ordered = orderedInterviewBlocks(blocks);
+  if (anchorTitles) {
+    warnInterviewAnchorMismatch(anchorTitles.length, ordered.length);
+  }
+  const items = ordered.map((block, index) => {
     const interviewSection = interviewSectionForTitle(block.title);
-    const id = uniqueId(slugify(block.title), usedIds);
+    const anchorTitle = anchorTitles?.[index];
+    const idSource = anchorTitle ?? block.title;
+    const id = uniqueId(slugify(idSource), usedIds);
     const title = cleanInterviewTitle(block.title, interviewSection);
     const searchText = conceptSearchText(block.body);
     return render(block).then(
       (html): Concept => ({
         id,
         title,
-        titleSearchText: block.title,
+        titleSearchText: interviewTitleSearchText(
+          title,
+          anchorTitle,
+          block.title,
+        ),
         html,
         searchText,
         interviewSection,

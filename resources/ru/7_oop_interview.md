@@ -21,9 +21,9 @@
 ### OOP Fundamentals
 
 <details>
-<summary>What is Object-Oriented Programming (OOP)?</summary>
+<summary>Что такое Object-Oriented Programming (OOP)?</summary>
 
-### What is Object-Oriented Programming (OOP)?
+### Что такое Object-Oriented Programming (OOP)?
 
 **Definition:**
 
@@ -146,9 +146,9 @@ public class Zoo {
 </details>
 
 <details>
-<summary>What is the difference between procedural and Object-Oriented programming?</summary>
+<summary>Что такое the difference between procedural and Object-Oriented programming?</summary>
 
-### What is the difference between procedural and Object-Oriented programming?
+### Что такое the difference between procedural and Object-Oriented programming?
 
 **Definition:**
 
@@ -239,9 +239,9 @@ public class Main {
 </details>
 
 <details>
-<summary>What is encapsulation?</summary>
+<summary>Что такое encapsulation?</summary>
 
-### What is encapsulation?
+### Что такое encapsulation?
 
 **Definition:**
 
@@ -314,9 +314,9 @@ public class Car {
 </details>
 
 <details>
-<summary>What is polymorphism? Explain overriding and overloading.</summary>
+<summary>Что такое polymorphism? Объясните overriding и overloading.</summary>
 
-### What is polymorphism? Explain overriding and overloading.
+### Что такое polymorphism? Объясните overriding и overloading.
 
 **Definition:**
 
@@ -391,9 +391,9 @@ public:
 </details>
 
 <details>
-<summary>What is inheritance? Name some types of inheritance.</summary>
+<summary>Что такое inheritance? Назовите типы inheritance.</summary>
 
-### What is inheritance? Name some types of inheritance.
+### Что такое inheritance? Назовите типы inheritance.
 
 **Definition:**
 
@@ -481,9 +481,9 @@ class J extends H { }  // Class J also inherits from class H
 </details>
 
 <details>
-<summary>What is an abstraction? Name some abstraction techniques.</summary>
+<summary>Что такое abstraction? Назовите техники abstraction.</summary>
 
-### What is an abstraction? Name some abstraction techniques.
+### Что такое abstraction? Назовите техники abstraction.
 
 **Definition:**
 
@@ -566,9 +566,9 @@ public class Main {
 </details>
 
 <details>
-<summary>What is a class in OOP?</summary>
+<summary>Что такое class in OOP?</summary>
 
-### What is a class in OOP?
+### Что такое class in OOP?
 
 **Definition:**
 
@@ -633,9 +633,9 @@ for _ in range(15):
 </details>
 
 <details>
-<summary>What is an object in OOP?</summary>
+<summary>Что такое object in OOP?</summary>
 
-### What is an object in OOP?
+### Что такое object in OOP?
 
 **Definition:**
 
@@ -674,9 +674,9 @@ myDog = Dog("Buddy", "Golden Retriever")
 </details>
 
 <details>
-<summary>How do access specifiers work and what are they typically?</summary>
+<summary>Как работают спецификаторы доступа и каковы они обычно?</summary>
 
-### How do access specifiers work and what are they typically?
+### Как работают спецификаторы доступа и каковы они обычно?
 
 **Definition:**
 
@@ -735,9 +735,9 @@ public class Car {
 </details>
 
 <details>
-<summary>Name some ways to overload a method.</summary>
+<summary>Назовите some ways to overload a method.</summary>
 
-### Name some ways to overload a method.
+### Назовите some ways to overload a method.
 
 **Definition:**
 
@@ -798,9 +798,9 @@ public void printDetails(double salary) {
 </details>
 
 <details>
-<summary>What is cohesion in OOP?</summary>
+<summary>Что такое cohesion in OOP?</summary>
 
-### What is cohesion in OOP?
+### Что такое cohesion in OOP?
 
 **Definition:**
 
@@ -859,9 +859,9 @@ public class FileUtility {
 </details>
 
 <details>
-<summary>What is coupling in OOP?</summary>
+<summary>Что такое coupling in OOP?</summary>
 
-### What is coupling in OOP?
+### Что такое coupling in OOP?
 
 **Definition:**
 
@@ -896,9 +896,9 @@ public class FileUtility {
 ### Class Relationships and Design
 
 <details>
-<summary>What is a constructor and how is it used?</summary>
+<summary>Что такое constructor and how is it used?</summary>
 
-### What is a constructor and how is it used?
+### Что такое constructor and how is it used?
 
 **Definition:**
 
@@ -1017,9 +1017,9 @@ class Car {
 </details>
 
 <details>
-<summary>Describe the concept of destructor or finalizer in OOP.</summary>
+<summary>Опишите концепцию деструктора или финализатора в OOP.</summary>
 
-### Describe the concept of destructor or finalizer in OOP.
+### Опишите концепцию деструктора или финализатора в OOP.
 
 **Definition:**
 
@@ -1098,9 +1098,9 @@ int main() {
 </details>
 
 <details>
-<summary>Compare inheritance vs. mixin vs. composition.</summary>
+<summary>Сравните inheritance с микшином и составом.</summary>
 
-### Compare inheritance vs. mixin vs. composition.
+### Сравните inheritance с микшином и составом.
 
 **Definition:**
 
@@ -1140,9 +1140,9 @@ int main() {
 </details>
 
 <details>
-<summary>Explain the concept of an interface and how it differs from an abstract class.</summary>
+<summary>Объясните концепцию interface и чем она отличается от abstract class.</summary>
 
-### Explain the concept of an interface and how it differs from an abstract class.
+### Объясните концепцию interface и чем она отличается от abstract class.
 
 **Definition:**
 
@@ -1177,9 +1177,9 @@ abstract class Shape {
 </details>
 
 <details>
-<summary>Can a class have multiple parents in a single-inheritance system?</summary>
+<summary>Может ли класс иметь несколько родителей в одной системе inheritance?</summary>
 
-### Can a class have multiple parents in a single-inheritance system?
+### Может ли класс иметь несколько родителей в одной системе inheritance?
 
 **Definition:**
 
@@ -1209,9 +1209,9 @@ class Circle extends Shape implements Drawable, Colorable {
 </details>
 
 <details>
-<summary>How would you design a class to prevent it from being subclassed?</summary>
+<summary>Как бы вы design a class to prevent it from being subclassed?</summary>
 
-### How would you design a class to prevent it from being subclassed?
+### Как бы вы design a class to prevent it from being subclassed?
 
 **Definition:**
 
@@ -1241,9 +1241,9 @@ public final class Money {
 </details>
 
 <details>
-<summary>Explain the 'is-a' vs 'has-a' relationship in OOP.</summary>
+<summary>Объясните соотношение "есть" и "есть" в OOP.</summary>
 
-### Explain the 'is-a' vs 'has-a' relationship in OOP.
+### Объясните соотношение "есть" и "есть" в OOP.
 
 **Definition:**
 
@@ -1274,9 +1274,9 @@ class ElectricCar extends Car { } // is-a Car
 </details>
 
 <details>
-<summary>Explain how aggregation relationship is represented in OOP.</summary>
+<summary>Объясните, как взаимосвязь aggreGAtion представлена в OOP.</summary>
 
-### Explain how aggregation relationship is represented in OOP.
+### Объясните, как взаимосвязь aggreGAtion представлена в OOP.
 
 **Definition:**
 
@@ -1308,9 +1308,9 @@ class Department {
 </details>
 
 <details>
-<summary>What is method overriding, and what rules apply to it?</summary>
+<summary>Что такое method overriding, and what rules apply to it?</summary>
 
-### What is method overriding, and what rules apply to it?
+### Что такое method overriding, and what rules apply to it?
 
 **Definition:**
 
@@ -1338,9 +1338,9 @@ class Cat extends Animal {
 </details>
 
 <details>
-<summary>Describe the use of static methods and when they are appropriate.</summary>
+<summary>Опишите использование статических методов и когда они уместны.</summary>
 
-### Describe the use of static methods and when they are appropriate.
+### Опишите использование статических методов и когда они уместны.
 
 **Definition:**
 
@@ -1375,9 +1375,9 @@ public class Bicycle {
 ### Advanced OOP Concepts
 
 <details>
-<summary>What is multiple inheritance and what are some of its disadvantages?</summary>
+<summary>Что такое multiple inheritance and what are some of its disadvantages?</summary>
 
-### What is multiple inheritance and what are some of its disadvantages?
+### Что такое multiple inheritance and what are some of its disadvantages?
 
 **Definition:**
 
@@ -1400,9 +1400,9 @@ public class Bicycle {
 </details>
 
 <details>
-<summary>Can you explain the 'diamond problem' in multiple inheritance?</summary>
+<summary>Можете ли вы объяснить «проблему с бриллиантами» в нескольких inheritance?</summary>
 
-### Can you explain the 'diamond problem' in multiple inheritance?
+### Можете ли вы объяснить «проблему с бриллиантами» в нескольких inheritance?
 
 **Definition:**
 
@@ -1433,9 +1433,9 @@ class Child implements Parent1, Parent2 {
 </details>
 
 <details>
-<summary>How does OOP languages support polymorphism under the hood?</summary>
+<summary>Как языки OOP поддерживают polymorphism под капотом?</summary>
 
-### How does OOP languages support polymorphism under the hood?
+### Как языки OOP поддерживают polymorphism под капотом?
 
 **Definition:**
 
@@ -1460,9 +1460,9 @@ Animal.testClassMethod();      // "The static method in Animal"
 </details>
 
 <details>
-<summary>What are generics, and how can they be useful in OOP?</summary>
+<summary>Что такое generics, and how can they be useful in OOP?</summary>
 
-### What are generics, and how can they be useful in OOP?
+### Что такое generics, and how can they be useful in OOP?
 
 **Definition:**
 
@@ -1490,9 +1490,9 @@ String s = list.get(0); // no cast
 </details>
 
 <details>
-<summary>Explain the concept of object composition and its benefits.</summary>
+<summary>Объясните концепцию объектной композиции и ее преимущества.</summary>
 
-### Explain the concept of object composition and its benefits.
+### Объясните концепцию объектной композиции и ее преимущества.
 
 **Definition:**
 
@@ -1520,9 +1520,9 @@ class Car {
 </details>
 
 <details>
-<summary>What is Liskov Substitution Principle (LSP)? Provide some examples of violation and adherence.</summary>
+<summary>Что такое Liskov Substitution Principle (LSP)? Приведите примеры нарушения и соблюдения.</summary>
 
-### What is Liskov Substitution Principle (LSP)? Provide some examples of violation and adherence.
+### Что такое Liskov Substitution Principle (LSP)? Приведите примеры нарушения и соблюдения.
 
 **Definition:**
 
@@ -1549,9 +1549,9 @@ class Cat extends Animal {
 </details>
 
 <details>
-<summary>What is the dependency inversion principle?</summary>
+<summary>Что такое the dependency inversion principle?</summary>
 
-### What is the dependency inversion principle?
+### Что такое the dependency inversion principle?
 
 **Definition:**
 
@@ -1580,9 +1580,9 @@ class PaymentService {
 </details>
 
 <details>
-<summary>How can the open/closed principle guide object-oriented design?</summary>
+<summary>Как принцип открытости/закрытости может служить руководством к объектно-ориентированному проектированию?</summary>
 
-### How can the open/closed principle guide object-oriented design?
+### Как принцип открытости/закрытости может служить руководством к объектно-ориентированному проектированию?
 
 **Definition:**
 
@@ -1599,9 +1599,9 @@ class PaymentService {
 </details>
 
 <details>
-<summary>Describe how the Interface Segregation Principle affects system design.</summary>
+<summary>Описать, как принцип interface SegreGAtion влияет на проектирование системы.</summary>
 
-### Describe how the Interface Segregation Principle affects system design.
+### Описать, как принцип interface SegreGAtion влияет на проектирование системы.
 
 **Definition:**
 
@@ -1629,9 +1629,9 @@ class SimplePrinter implements Printer {
 </details>
 
 <details>
-<summary>What is a mixin, and how does it differ from traditional inheritance?</summary>
+<summary>Что такое mixin, and how does it differ from traditional inheritance?</summary>
 
-### What is a mixin, and how does it differ from traditional inheritance?
+### Что такое mixin, and how does it differ from traditional inheritance?
 
 **Definition:**
 
@@ -1668,9 +1668,9 @@ class User(JsonMixin):
 ### Practical Use and Patterns
 
 <details>
-<summary>How would you refactor a class that has too many responsibilities?</summary>
+<summary>Как бы вы refactor a class that has too many responsibilities?</summary>
 
-### How would you refactor a class that has too many responsibilities?
+### Как бы вы refactor a class that has too many responsibilities?
 
 **Definition:**
 
@@ -1701,9 +1701,9 @@ class OrderService {
 </details>
 
 <details>
-<summary>Describe a singleton pattern and discuss its pros and cons.</summary>
+<summary>Опишите рисунок singleton AND обсудите его плюсы AND минусы.</summary>
 
-### Describe a singleton pattern and discuss its pros and cons.
+### Опишите рисунок singleton AND обсудите его плюсы AND минусы.
 
 **Definition:**
 
@@ -1723,9 +1723,9 @@ class OrderService {
 </details>
 
 <details>
-<summary>What is a factory method, and when should it be used?</summary>
+<summary>Что такое factory method, and when should it be used?</summary>
 
-### What is a factory method, and when should it be used?
+### Что такое factory method, and when should it be used?
 
 **Definition:**
 
@@ -1760,9 +1760,9 @@ class DocumentFactory {
 </details>
 
 <details>
-<summary>Explain the builder pattern and where you might apply it.</summary>
+<summary>Объясните, что такое шаблон builder и где его можно применить.</summary>
 
-### Explain the builder pattern and where you might apply it.
+### Объясните, что такое шаблон builder и где его можно применить.
 
 **Definition:**
 
@@ -1792,9 +1792,9 @@ User user = new UserBuilder()
 </details>
 
 <details>
-<summary>What is the prototype pattern, and how does it relate to OOP?</summary>
+<summary>Что такое the prototype pattern, and how does it relate to OOP?</summary>
 
-### What is the prototype pattern, and how does it relate to OOP?
+### Что такое the prototype pattern, and how does it relate to OOP?
 
 **Definition:**
 
@@ -1814,9 +1814,9 @@ User user = new UserBuilder()
 </details>
 
 <details>
-<summary>When would you use the Adapter pattern?</summary>
+<summary>Когда would you use the adapter pattern?</summary>
 
-### When would you use the Adapter pattern?
+### Когда would you use the adapter pattern?
 
 **Definition:**
 
@@ -1846,9 +1846,9 @@ class FahrenheitAdapter implements Temperature {
 </details>
 
 <details>
-<summary>Can you explain the use of the Decorator pattern?</summary>
+<summary>Можете ли вы объяснить использование шаблона decorator?</summary>
 
-### Can you explain the use of the Decorator pattern?
+### Можете ли вы объяснить использование шаблона decorator?
 
 **Definition:**
 
@@ -1877,9 +1877,9 @@ class LoggingAccount implements Account {
 </details>
 
 <details>
-<summary>Describe the Observer pattern and a scenario in which you might use it.</summary>
+<summary>Опишите шаблон Observer и сценарий, в котором вы можете его использовать.</summary>
 
-### Describe the Observer pattern and a scenario in which you might use it.
+### Опишите шаблон Observer и сценарий, в котором вы можете его использовать.
 
 **Definition:**
 
@@ -1896,9 +1896,9 @@ class LoggingAccount implements Account {
 </details>
 
 <details>
-<summary>What are the advantages of using the Command pattern?</summary>
+<summary>Что такое the advantages of using the command pattern?</summary>
 
-### What are the advantages of using the Command pattern?
+### Что такое the advantages of using the command pattern?
 
 **Definition:**
 
@@ -1918,9 +1918,9 @@ class LoggingAccount implements Account {
 </details>
 
 <details>
-<summary>How does the Strategy pattern provide flexibility in objects?</summary>
+<summary>Как the strategy pattern provide flexibility in objects?</summary>
 
-### How does the Strategy pattern provide flexibility in objects?
+### Как the strategy pattern provide flexibility in objects?
 
 **Definition:**
 
@@ -1951,9 +1951,9 @@ class Order {
 ### OOP Best Practices
 
 <details>
-<summary>What are some common OOP design anti-patterns?</summary>
+<summary>Что такое some common OOP design anti-patterns?</summary>
 
-### What are some common OOP design anti-patterns?
+### Что такое some common OOP design anti-patterns?
 
 **Definition:**
 
@@ -1971,9 +1971,9 @@ class Order {
 </details>
 
 <details>
-<summary>How do you ensure that your objects are properly encapsulated?</summary>
+<summary>Как вы гарантируете, что ваши объекты должным образом защищены enCAPsulated?</summary>
 
-### How do you ensure that your objects are properly encapsulated?
+### Как вы гарантируете, что ваши объекты должным образом защищены enCAPsulated?
 
 **Definition:**
 
@@ -2005,9 +2005,9 @@ public final class Money {
 </details>
 
 <details>
-<summary>Name some techniques for reducing coupling between classes.</summary>
+<summary>Назовите some techniques for reducing coupling between Classes.</summary>
 
-### Name some techniques for reducing coupling between classes.
+### Назовите some techniques for reducing coupling between Classes.
 
 **Definition:**
 
@@ -2026,9 +2026,9 @@ public final class Money {
 </details>
 
 <details>
-<summary>How does immutability help in object-oriented design, and how can it be implemented?</summary>
+<summary>Как неизменяемость помогает в объектно-ориентированном проектировании и как ее можно реализовать?</summary>
 
-### How does immutability help in object-oriented design, and how can it be implemented?
+### Как неизменяемость помогает в объектно-ориентированном проектировании и как ее можно реализовать?
 
 **Definition:**
 
@@ -2055,9 +2055,9 @@ public final class Point {
 </details>
 
 <details>
-<summary>What tools or techniques would you use to document an object-oriented design?</summary>
+<summary>Какие инструменты или техники вы используете для документирования object-oriented design?</summary>
 
-### What tools or techniques would you use to document an object-oriented design?
+### Какие инструменты или техники вы используете для документирования object-oriented design?
 
 **Definition:**
 
@@ -2074,9 +2074,9 @@ public final class Point {
 </details>
 
 <details>
-<summary>How do you address circular dependencies in an OOP system?</summary>
+<summary>Как вы решаете проблему циклических зависимостей в системе OOP?</summary>
 
-### How do you address circular dependencies in an OOP system?
+### Как вы решаете проблему циклических зависимостей в системе OOP?
 
 **Definition:**
 
@@ -2095,9 +2095,9 @@ Python отвергает несогласованную иерархию оши
 </details>
 
 <details>
-<summary>Explain how to apply unit testing to object-oriented code.</summary>
+<summary>Объясните, как применить unit testing к объектно-ориентированному коду.</summary>
 
-### Explain how to apply unit testing to object-oriented code.
+### Объясните, как применить unit testing к объектно-ориентированному коду.
 
 **Definition:**
 
@@ -2124,9 +2124,9 @@ class TestOrder:
 </details>
 
 <details>
-<summary>What strategies can be used to safely refactor legacy object-oriented code?</summary>
+<summary>Какие стратегии безопасно рефакторят legacy object-oriented code?</summary>
 
-### What strategies can be used to safely refactor legacy object-oriented code?
+### Какие стратегии безопасно рефакторят legacy object-oriented code?
 
 **Definition:**
 
@@ -2145,9 +2145,9 @@ class TestOrder:
 </details>
 
 <details>
-<summary>How can the principles of OOP help in achieving a modular and maintainable codebase?</summary>
+<summary>Как принципы OOP могут помочь в создании модульной и поддерживаемой кодовой базы?</summary>
 
-### How can the principles of OOP help in achieving a modular and maintainable codebase?
+### Как принципы OOP могут помочь в создании модульной и поддерживаемой кодовой базы?
 
 **Definition:**
 
@@ -2165,9 +2165,9 @@ class TestOrder:
 </details>
 
 <details>
-<summary>How do you balance the use of OOP principles with performance considerations in a system design?</summary>
+<summary>Как вы сочетаете использование принципов OOP с соображениями производительности при проектировании системы?</summary>
 
-### How do you balance the use of OOP principles with performance considerations in a system design?
+### Как вы сочетаете использование принципов OOP с соображениями производительности при проектировании системы?
 
 **Definition:**
 

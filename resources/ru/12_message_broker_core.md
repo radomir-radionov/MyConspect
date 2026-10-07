@@ -86,12 +86,12 @@
 **Definition:** Две модели async messaging — **queue** (consume and delete) vs **append-only log** (consume and remember offset).
 
 
-| Queue (RabbitMQ, NATS Core)  | Log (Kafka, NATS JetStream)            |
-|  -----------------  |  ----------------------------  |
-| Message lifecycle | Удаляется после ack          | Хранится по retention policy           |
-| Replay            | Плохо — сообщение исчезло    | First-class — rewind offset            |
-| Fan-out           | Exchanges / несколько queues | Consumer groups + partitions           |
-| Typical use       | Task queues, RPC-style work  | Event sourcing, analytics, audit trail |
+| | Queue (RabbitMQ, NATS Core)  | Log (Kafka, NATS JetStream)            |
+| | -----------------  |  ----------------------------  |
+| | Message lifecycle | Удаляется после ack          | Хранится по retention policy           |
+| | Replay            | Плохо — сообщение исчезло    | First-class — rewind offset            |
+| | Fan-out           | Exchanges / несколько queues | Consumer groups + partitions           |
+| | Typical use       | Task queues, RPC-style work  | Event sourcing, analytics, audit trail |
 
 **When to use:** Задача выполняется один раз → queue. Несколько команд читают одну историю в разном темпе → log.
 
@@ -111,14 +111,14 @@
 **Definition:** Три популярных брокера — выбор по **модели доставки**, пропускной способности и операционной нагрузке.
 
 
-| RabbitMQ                                 | Kafka                                      | NATS                                                              |
-|  ----------  |  ----------------------------------------  |  ------------------------------------------  |
-| Model      | Queue + exchange (AMQP)                  | Append-only distributed log                | Лёгкий pub/sub; JetStream добавляет persistence                   |
-| Routing    | Богатый (direct, fanout, topic, headers) | Topic + partition key                      | Subject wildcards (`orders.*`)                                    |
-| Replay     | Плохо (после ack сообщение удалено)      | First-class (consumer offset)              | JetStream streams; Core NATS — fire-and-forget                    |
-| Throughput | Тысячи–десятки k msg/s                   | Сотни k+ msg/s                             | Миллионы msg/s (Core); JetStream жертвует скоростью за durability |
-| Ops        | Erlang cluster, management UI            | Cluster, disk, partition tuning            | Один маленький binary; кластеризация проще                        |
-| Best fit   | Task queues, сложная маршрутизация       | Event streaming, analytics, event sourcing | Microservices mesh, IoT, low-latency fan-out                      |
+| | RabbitMQ                                 | Kafka                                      | NATS                                                              |
+| | ----------  |  ----------------------------------------  |  ------------------------------------------  |
+| | Model      | Queue + exchange (AMQP)                  | Append-only distributed log                | Лёгкий pub/sub; JetStream добавляет persistence                   |
+| | Routing    | Богатый (direct, fanout, topic, headers) | Topic + partition key                      | Subject wildcards (`orders.*`)                                    |
+| | Replay     | Плохо (после ack сообщение удалено)      | First-class (consumer offset)              | JetStream streams; Core NATS — fire-and-forget                    |
+| | Throughput | Тысячи–десятки k msg/s                   | Сотни k+ msg/s                             | Миллионы msg/s (Core); JetStream жертвует скоростью за durability |
+| | Ops        | Erlang cluster, management UI            | Cluster, disk, partition tuning            | Один маленький binary; кластеризация проще                        |
+| | Best fit   | Task queues, сложная маршрутизация       | Event streaming, analytics, event sourcing | Microservices mesh, IoT, low-latency fan-out                      |
 
 **When to use:**
 

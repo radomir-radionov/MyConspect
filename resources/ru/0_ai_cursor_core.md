@@ -1,10 +1,10 @@
 # Cursor — Core
 
-Повседневные привычки агента: шорткаты, Run Modes, циклы проверки и community-конфиги. Глубже — [Skills](./0_ai_cursor_skills.md), [Rules](./0_ai_cursor_rules.md) и [Plugins](./0_ai_cursor_plugins.md).
+Повседневные привычки агента: шорткаты, Run Modes, циклы проверки и community-конфиги. Глубже — [Skills](./0_ai_cursor_skills.md), [Rules](./0_ai_cursor_rules.md), [Plugins](./0_ai_cursor_plugins.md), [Subagents](./0_ai_cursor_subagents.md), [Hooks](./0_ai_cursor_hooks.md).
 
 ### Related docs
 
-- [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
+- [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
@@ -218,3 +218,9 @@ A: Нетривиальные задачи редко one-shot; suite даёт �
 
 **Q: What is cursor.directory for?**  
 A: Community discovery rules, MCP и plugins — аудируй перед install; официальный marketplace по-прежнему путь publish/install для Cursor Plugins.
+
+**Q: Subagents vs skills — when to use which?**  
+A: Полные заметки: [Subagents](./0_ai_cursor_subagents.md#subagents-vs-skills).
+
+**Q: What do Cursor hooks do?**  
+A: Полные заметки: [Hooks](./0_ai_cursor_hooks.md#what-are-hooks).

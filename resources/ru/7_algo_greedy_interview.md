@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Greedy Algorithms](https://devinterview.io/q
 ### Understanding Greedy Algorithms
 
 <details>
-<summary>What is a Greedy Algorithm?</summary>
+<summary>Что такое greedy algorithm?</summary>
 
-### What is a Greedy Algorithm?
+### Что такое greedy algorithm?
 
 **Definition:**
 
@@ -44,9 +44,9 @@ Questions from [Devinterview.io — Greedy Algorithms](https://devinterview.io/q
 </details>
 
 <details>
-<summary>What are Greedy Algorithms used for?</summary>
+<summary>Что такое greedy algorithms used for?</summary>
 
-### What are Greedy Algorithms used for?
+### Что такое greedy algorithms used for?
 
 **Definition:**
 
@@ -68,9 +68,9 @@ Questions from [Devinterview.io — Greedy Algorithms](https://devinterview.io/q
 </details>
 
 <details>
-<summary>List some characteristics that are often present in problems that are solvable by greedy algorithms.</summary>
+<summary>Перечислите some characteristics that are often present in problems that are solvable by greedy algorithms.</summary>
 
-### List some characteristics that are often present in problems that are solvable by greedy algorithms.
+### Перечислите some characteristics that are often present in problems that are solvable by greedy algorithms.
 
 **Definition:**
 
@@ -92,9 +92,9 @@ Questions from [Devinterview.io — Greedy Algorithms](https://devinterview.io/q
 </details>
 
 <details>
-<summary>What is the difference between Greedy and Heuristic algorithms?</summary>
+<summary>Что такое the difference between greedy and Heuristic alGorithms?</summary>
 
-### What is the difference between Greedy and Heuristic algorithms?
+### Что такое the difference between greedy and Heuristic alGorithms?
 
 **Definition:**
 
@@ -115,9 +115,9 @@ Questions from [Devinterview.io — Greedy Algorithms](https://devinterview.io/q
 </details>
 
 <details>
-<summary>Compare Greedy vs Divide & Conquer vs Dynamic Programming algorithms.</summary>
+<summary>Сравните greedy, Divide & Conquer и алгоритмы dynamic programming.</summary>
 
-### Compare Greedy vs Divide & Conquer vs Dynamic Programming algorithms.
+### Сравните greedy, Divide & Conquer и алгоритмы dynamic programming.
 
 **Definition:**
 
@@ -139,9 +139,9 @@ Questions from [Devinterview.io — Greedy Algorithms](https://devinterview.io/q
 </details>
 
 <details>
-<summary>Is Dijkstra’s algorithm a Greedy or Dynamic Programming algorithm?</summary>
+<summary>Является ли Dijkstra’s alGorithm a greedy or dynamic programming alGorithm?</summary>
 
-### Is Dijkstra’s algorithm a Greedy or Dynamic Programming algorithm?
+### Является ли Dijkstra’s alGorithm a greedy or dynamic programming alGorithm?
 
 **Definition:**
 
@@ -161,9 +161,9 @@ Questions from [Devinterview.io — Greedy Algorithms](https://devinterview.io/q
 </details>
 
 <details>
-<summary>Is there a way to Mathematically Prove that a Greedy Algorithm will yield the Optimal Solution?</summary>
+<summary>Можно ли математически доказать, что greedy algorithm даёт оптимальное решение?</summary>
 
-### Is there a way to Mathematically Prove that a Greedy Algorithm will yield the Optimal Solution?
+### Можно ли математически доказать, что greedy algorithm даёт оптимальное решение?
 
 **Definition:**
 
@@ -183,9 +183,9 @@ Questions from [Devinterview.io — Greedy Algorithms](https://devinterview.io/q
 </details>
 
 <details>
-<summary>Explain the Greedy Choice Property and its significance in greedy algorithms.</summary>
+<summary>Объясните свойство выбора greedy и его значение в greedy algorithms.</summary>
 
-### Explain the Greedy Choice Property and its significance in greedy algorithms.
+### Объясните свойство выбора greedy и его значение в greedy algorithms.
 
 **Definition:**
 
@@ -207,9 +207,9 @@ Questions from [Devinterview.io — Greedy Algorithms](https://devinterview.io/q
 ### Greedy Algorithm Design
 
 <details>
-<summary>Design a greedy algorithm for making change using the fewest coins possible.</summary>
+<summary>Создайте greedy algorithm для внесения сдачи с использованием наименьшего количества монет.</summary>
 
-### Design a greedy algorithm for making change using the fewest coins possible.
+### Создайте greedy algorithm для внесения сдачи с использованием наименьшего количества монет.
 
 **Definition:**
 
@@ -237,9 +237,9 @@ for coin in denominations_desc:
 </details>
 
 <details>
-<summary>Describe a greedy strategy for scheduling events that use the fewest number of resources.</summary>
+<summary>Опишите события планирования greedy strategy fOR, которые используют наименьшее количество ресурсов.</summary>
 
-### Describe a greedy strategy for scheduling events that use the fewest number of resources.
+### Опишите события планирования greedy strategy fOR, которые используют наименьшее количество ресурсов.
 
 **Definition:**
 
@@ -260,9 +260,9 @@ for coin in denominations_desc:
 </details>
 
 <details>
-<summary>Explain how to apply a greedy approach to minimize the total waiting time for a given set of queries.</summary>
+<summary>Объясните, как применить подход greedy, чтобы минимизировать общее время ожидания для данного набора запросов.</summary>
 
-### Explain how to apply a greedy approach to minimize the total waiting time for a given set of queries.
+### Объясните, как применить подход greedy, чтобы минимизировать общее время ожидания для данного набора запросов.
 
 **Definition:**
 
@@ -283,9 +283,9 @@ for coin in denominations_desc:
 </details>
 
 <details>
-<summary>Develop a greedy algorithm for the activity selection problem to maximize the number of activities.</summary>
+<summary>Разработайте greedy algorithm для задачи выбора действий, чтобы максимизировать количество действий.</summary>
 
-### Develop a greedy algorithm for the activity selection problem to maximize the number of activities.
+### Разработайте greedy algorithm для задачи выбора действий, чтобы максимизировать количество действий.
 
 **Definition:**
 
@@ -317,9 +317,9 @@ for activity in activities:
 ### Correctness and Optimization
 
 <details>
-<summary>How can you establish the correctness of a greedy algorithm?</summary>
+<summary>Как вы можете установить корректность greedy algorithm?</summary>
 
-### How can you establish the correctness of a greedy algorithm?
+### Как вы можете установить корректность greedy algorithm?
 
 **Definition:**
 
@@ -339,9 +339,9 @@ Prim растит дерево `T`. Легчайшее ребро с одним 
 </details>
 
 <details>
-<summary>What is the role of sorting in many greedy algorithms, and why is it often necessary?</summary>
+<summary>Что такое the role of sorting in many greedy algorithms, and why is it often necessary?</summary>
 
-### What is the role of sorting in many greedy algorithms, and why is it often necessary?
+### Что такое the role of sorting in many greedy algorithms, and why is it often necessary?
 
 **Definition:**
 
@@ -362,9 +362,9 @@ Prim растит дерево `T`. Легчайшее ребро с одним 
 </details>
 
 <details>
-<summary>Can greedy algorithms be used to solve optimization problems? Give an example.</summary>
+<summary>Можно ли использовать greedy algorithms для решения задач оптимизации? Приведите пример.</summary>
 
-### Can greedy algorithms be used to solve optimization problems? Give an example.
+### Можно ли использовать greedy algorithms для решения задач оптимизации? Приведите пример.
 
 **Definition:**
 
@@ -386,9 +386,9 @@ Prim растит дерево `T`. Легчайшее ребро с одним 
 ### Greedy Algorithm Challenges
 
 <details>
-<summary>Solve the fractional knapsack problem using a greedy method.</summary>
+<summary>Решите the fractional knapsack problem using a greedy method.</summary>
 
-### Solve the fractional knapsack problem using a greedy method.
+### Решите the fractional knapsack problem using a greedy method.
 
 **Definition:**
 
@@ -422,9 +422,9 @@ for item in items:
 </details>
 
 <details>
-<summary>Implement a greedy algorithm to arrange a group of intervals by their start times to minimize the number of rooms needed.</summary>
+<summary>Реализуйте a greedy algorithm to arrange a group of intervals by their start times to minimize the number of rooms needed.</summary>
 
-### Implement a greedy algorithm to arrange a group of intervals by their start times to minimize the number of rooms needed.
+### Реализуйте a greedy algorithm to arrange a group of intervals by their start times to minimize the number of rooms needed.
 
 **Definition:**
 
@@ -456,9 +456,9 @@ while i < n and j < n:
 </details>
 
 <details>
-<summary>Design a method using greedy algorithms for minimizing the total number of platforms needed at a railway station.</summary>
+<summary>Разработайте метод с помощью greedy algorithms для минимизации общего количества платформ, необходимых на железнодорожной станции.</summary>
 
-### Design a method using greedy algorithms for minimizing the total number of platforms needed at a railway station.
+### Разработайте метод с помощью greedy algorithms для минимизации общего количества платформ, необходимых на железнодорожной станции.
 
 **Definition:**
 
@@ -489,9 +489,9 @@ sort(arr); sort(dep)
 ### Comparison and Analysis
 
 <details>
-<summary>Discuss situations where a greedy algorithm might not produce the optimal solution.</summary>
+<summary>Обсудите ситуации, когда greedy algorithm может не дать оптимального решения.</summary>
 
-### Discuss situations where a greedy algorithm might not produce the optimal solution.
+### Обсудите ситуации, когда greedy algorithm может не дать оптимального решения.
 
 **Definition:**
 
@@ -515,9 +515,9 @@ sort(arr); sort(dep)
 </details>
 
 <details>
-<summary>Compare the efficiency of a greedy algorithm to a brute force approach for the traveling salesman problem.</summary>
+<summary>Сравните эффективность greedy algorithm с подходом brute force для задачи коммивояжера.</summary>
 
-### Compare the efficiency of a greedy algorithm to a brute force approach for the traveling salesman problem.
+### Сравните эффективность greedy algorithm с подходом brute force для задачи коммивояжера.
 
 **Definition:**
 
@@ -548,9 +548,9 @@ for edge in edges:
 </details>
 
 <details>
-<summary>What is the Huffman Coding algorithm, and is it considered a greedy algorithm?</summary>
+<summary>Что такое the Huffman Coding alGorithm, and is it considered a greedy algorithm?</summary>
 
-### What is the Huffman Coding algorithm, and is it considered a greedy algorithm?
+### Что такое the Huffman Coding alGorithm, and is it considered a greedy algorithm?
 
 **Definition:**
 
@@ -583,9 +583,9 @@ while heap.size > 1:
 ### Real-World Applications
 
 <details>
-<summary>How do greedy algorithms apply to network routing protocols?</summary>
+<summary>Как greedy algorithms применяется к протоколам сетевой маршрутизации?</summary>
 
-### How do greedy algorithms apply to network routing protocols?
+### Как greedy algorithms применяется к протоколам сетевой маршрутизации?
 
 **Definition:**
 
@@ -613,9 +613,9 @@ forward packet to next
 </details>
 
 <details>
-<summary>Explain how greedy algorithms can be used in load balancing and task scheduling in distributed systems.</summary>
+<summary>Объясните, как greedy algorithms можно использовать для балансировки нагрузки и планирования задач в distributed systems.</summary>
 
-### Explain how greedy algorithms can be used in load balancing and task scheduling in distributed systems.
+### Объясните, как greedy algorithms можно использовать для балансировки нагрузки и планирования задач в distributed systems.
 
 **Definition:**
 
@@ -644,9 +644,9 @@ for job in jobs:
 </details>
 
 <details>
-<summary>Describe an application of greedy algorithms in financial portfolio optimization.</summary>
+<summary>Опишите применение greedy algorithms в финансовой оптимизации портфеля.</summary>
 
-### Describe an application of greedy algorithms in financial portfolio optimization.
+### Опишите применение greedy algorithms в финансовой оптимизации портфеля.
 
 **Definition:**
 
@@ -678,9 +678,9 @@ buy a fraction of the next position with what is left
 ### Greedy Algorithm Techniques and Methods
 
 <details>
-<summary>Discuss the primality of cuts and how it pertains to greedy algorithms.</summary>
+<summary>Обсудите Prim-возможности сокращений и то, как это связано с greedy algorithms.</summary>
 
-### Discuss the primality of cuts and how it pertains to greedy algorithms.
+### Обсудите Prim-возможности сокращений и то, как это связано с greedy algorithms.
 
 **Definition:**
 
@@ -709,9 +709,9 @@ while grown is not all vertices:
 </details>
 
 <details>
-<summary>Describe the ‘local ratio’ technique and its application to greedy algorithms.</summary>
+<summary>Описать метод «локального соотношения» и его применение к greedy algorithms.</summary>
 
-### Describe the ‘local ratio’ technique and its application to greedy algorithms.
+### Описать метод «локального соотношения» и его применение к greedy algorithms.
 
 **Definition:**
 
@@ -742,9 +742,9 @@ while the instance is not covered:
 </details>
 
 <details>
-<summary>What is the ‘exchange argument’ in the context of analyzing greedy algorithms?</summary>
+<summary>Что такое the ‘exchange argument’ in the context of analyzing greedy algorithms?</summary>
 
-### What is the ‘exchange argument’ in the context of analyzing greedy algorithms?
+### Что такое the ‘exchange argument’ in the context of analyzing greedy algorithms?
 
 **Definition:**
 
@@ -771,9 +771,9 @@ while the instance is not covered:
 ### Limitations and Failures
 
 <details>
-<summary>Provide an example where a greedy algorithm fails to achieve the global optimum.</summary>
+<summary>Приведите an example where a greedy algorithm fails to achieve the global optimum.</summary>
 
-### Provide an example where a greedy algorithm fails to achieve the global optimum.
+### Приведите an example where a greedy algorithm fails to achieve the global optimum.
 
 **Definition:**
 
@@ -796,9 +796,9 @@ while the instance is not covered:
 </details>
 
 <details>
-<summary>Explain why greedy algorithms can be ineffective for the coin change problem with non-standard denominations.</summary>
+<summary>Объясните, почему greedy algorithms может быть неэффективен при размене монет нестандартного номинала.</summary>
 
-### Explain why greedy algorithms can be ineffective for the coin change problem with non-standard denominations.
+### Объясните, почему greedy algorithms может быть неэффективен при размене монет нестандартного номинала.
 
 **Definition:**
 
@@ -827,9 +827,9 @@ for coin in denominations_desc:
 </details>
 
 <details>
-<summary>Discuss the limitations of greedy algorithms when applied to graph coloring problems.</summary>
+<summary>Обсудите ограничения greedy algorithms применительно к проблемам graph coloring.</summary>
 
-### Discuss the limitations of greedy algorithms when applied to graph coloring problems.
+### Обсудите ограничения greedy algorithms применительно к проблемам graph coloring.
 
 **Definition:**
 
@@ -860,9 +860,9 @@ for v in order:
 ### Optimization Problems
 
 <details>
-<summary>Solve the problem of finding the largest number possible from a list of numbers using a greedy approach.</summary>
+<summary>Решите the problem of finding the largest number possible from a list of numbers using a greedy approach.</summary>
 
-### Solve the problem of finding the largest number possible from a list of numbers using a greedy approach.
+### Решите the problem of finding the largest number possible from a list of numbers using a greedy approach.
 
 **Definition:**
 
@@ -892,9 +892,9 @@ return "0" if numbers[0] == "0" else "".join(numbers)
 </details>
 
 <details>
-<summary>Implement a greedy solution for the job sequencing problem with deadlines to maximize profit.</summary>
+<summary>Реализуйте a greedy solution for the job sequencing problem with deadlines to maximize profit.</summary>
 
-### Implement a greedy solution for the job sequencing problem with deadlines to maximize profit.
+### Реализуйте a greedy solution for the job sequencing problem with deadlines to maximize profit.
 
 **Definition:**
 
@@ -923,9 +923,9 @@ for job in jobs:
 </details>
 
 <details>
-<summary>Use greedy algorithm to solve the ‘Minimum Number of Arrows to Burst Balloons’ problem.</summary>
+<summary>Используйте greedy algorithm to solve the ‘Minimum Number of Arrows to Burst Balloons’ problem.</summary>
 
-### Use greedy algorithm to solve the ‘Minimum Number of Arrows to Burst Balloons’ problem.
+### Используйте greedy algorithm to solve the ‘Minimum Number of Arrows to Burst Balloons’ problem.
 
 **Definition:**
 
@@ -958,9 +958,9 @@ for start, stop in points[1:]:
 ### Complex Greedy Strategy Implementations
 
 <details>
-<summary>How would you optimize a network’s bandwidth allocation using a greedy strategy?</summary>
+<summary>Как бы вы optimize a network’s bandwidth allocation using a greedy strategy?</summary>
 
-### How would you optimize a network’s bandwidth allocation using a greedy strategy?
+### Как бы вы optimize a network’s bandwidth allocation using a greedy strategy?
 
 **Definition:**
 
@@ -988,9 +988,9 @@ grant a fraction of the next demand
 </details>
 
 <details>
-<summary>Write a greedy solution for compressing data using a variable-length encoding scheme.</summary>
+<summary>Напишите a greedy solution for compressing data using a variable-length encoding scheme.</summary>
 
-### Write a greedy solution for compressing data using a variable-length encoding scheme.
+### Напишите a greedy solution for compressing data using a variable-length encoding scheme.
 
 **Definition:**
 
@@ -1021,9 +1021,9 @@ emit the root-to-leaf bits
 </details>
 
 <details>
-<summary>Implement a greedy strategy to construct the minimum spanning tree of a graph.</summary>
+<summary>Реализуйте a greedy strategy to construct the minimum spanning tree of a graph.</summary>
 
-### Implement a greedy strategy to construct the minimum spanning tree of a graph.
+### Реализуйте a greedy strategy to construct the minimum spanning tree of a graph.
 
 **Definition:**
 
@@ -1056,9 +1056,9 @@ for u, v, w in edges:
 ### Advanced Theoretical Concepts
 
 <details>
-<summary>What is a matroid, and how do greedy algorithms relate to matroid theory?</summary>
+<summary>Что такое matroid, and how do greedy algorithms relate to matroid theory?</summary>
 
-### What is a matroid, and how do greedy algorithms relate to matroid theory?
+### Что такое matroid, and how do greedy algorithms relate to matroid theory?
 
 **Definition:**
 
@@ -1089,9 +1089,9 @@ for element in elements:
 </details>
 
 <details>
-<summary>Explain the relationship between greedy algorithms and the concept of safe moves.</summary>
+<summary>Объясните взаимосвязь между greedy algorithms и концепцией безопасных действий.</summary>
 
-### Explain the relationship between greedy algorithms and the concept of safe moves.
+### Объясните взаимосвязь между greedy algorithms и концепцией безопасных действий.
 
 **Definition:**
 
@@ -1115,9 +1115,9 @@ for element in elements:
 </details>
 
 <details>
-<summary>Discuss how approximation algorithms use greedy strategies to find near-optimal solutions.</summary>
+<summary>Обсудите, как алгоритмы аппроксимации используют стратегии greedy для поиска почти оптимальных решений.</summary>
 
-### Discuss how approximation algorithms use greedy strategies to find near-optimal solutions.
+### Обсудите, как алгоритмы аппроксимации используют стратегии greedy для поиска почти оптимальных решений.
 
 **Definition:**
 
@@ -1144,9 +1144,9 @@ for element in elements:
 ### Greedy Algorithms in Competitive Programming
 
 <details>
-<summary>Design a greedy algorithm to solve the ‘Gas Station’ problem commonly seen in competitive programming contests.</summary>
+<summary>Создайте greedy algorithm для решения проблемы «GAs Station», часто встречающейся на соревнованиях по программированию.</summary>
 
-### Design a greedy algorithm to solve the ‘Gas Station’ problem commonly seen in competitive programming contests.
+### Создайте greedy algorithm для решения проблемы «GAs Station», часто встречающейся на соревнованиях по программированию.
 
 **Definition:**
 
@@ -1181,9 +1181,9 @@ return start if total >= 0 else -1
 </details>
 
 <details>
-<summary>Solve the ‘Majority Element’ problem under the constraints of using a single pass algorithm and constant additional space.</summary>
+<summary>Решите the ‘Majority Element’ problem under the constraints of using a single pass alGorithm and constant additional space.</summary>
 
-### Solve the ‘Majority Element’ problem under the constraints of using a single pass algorithm and constant additional space.
+### Решите the ‘Majority Element’ problem under the constraints of using a single pass alGorithm and constant additional space.
 
 **Definition:**
 

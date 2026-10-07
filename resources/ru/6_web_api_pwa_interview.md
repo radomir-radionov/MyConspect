@@ -21,9 +21,9 @@
 ### PWA Fundamentals
 
 <details>
-<summary>What is a Progressive Web App (PWA)?</summary>
+<summary>Что такое Progressive Web App (PWA)?</summary>
 
-### What is a Progressive Web App (PWA)?
+### Что такое Progressive Web App (PWA)?
 
 **Definition:**
 
@@ -44,9 +44,9 @@
 </details>
 
 <details>
-<summary>How do PWAs differ from traditional web applications?</summary>
+<summary>Как PWAs differ from traditional web applications?</summary>
 
-### How do PWAs differ from traditional web applications?
+### Как PWAs differ from traditional web applications?
 
 **Definition:**
 
@@ -73,9 +73,9 @@
 </details>
 
 <details>
-<summary>Can you list the core pillars of a PWA?</summary>
+<summary>Можете ли вы list the core pillars of a PWA?</summary>
 
-### Can you list the core pillars of a PWA?
+### Можете ли вы list the core pillars of a PWA?
 
 **Definition:**
 
@@ -97,9 +97,9 @@
 </details>
 
 <details>
-<summary>What are the advantages of developing a PWA over a native app?</summary>
+<summary>Что такое the advantages of developing a PWA over a native app?</summary>
 
-### What are the advantages of developing a PWA over a native app?
+### Что такое the advantages of developing a PWA over a native app?
 
 **Definition:**
 
@@ -120,9 +120,9 @@ PWA поставляется как сайт: одна кодовая база, 
 </details>
 
 <details>
-<summary>What is the role of the service worker in a PWA?</summary>
+<summary>Что такое the role of the Service Worker in a PWA?</summary>
 
-### What is the role of the service worker in a PWA?
+### Что такое the role of the Service Worker in a PWA?
 
 **Definition:**
 
@@ -153,9 +153,9 @@ self.addEventListener("fetch", (event) => {
 </details>
 
 <details>
-<summary>How do you make a web app installable on a user's home screen?</summary>
+<summary>Как you make a web app installable on a user's home screen?</summary>
 
-### How do you make a web app installable on a user's home screen?
+### Как you make a web app installable on a user's home screen?
 
 **Definition:**
 
@@ -188,9 +188,9 @@ self.addEventListener("fetch", (event) => {
 </details>
 
 <details>
-<summary>What is a manifest file and what is its significance in PWAs?</summary>
+<summary>Что такое manifest file and what is its significance in PWAs?</summary>
 
-### What is a manifest file and what is its significance in PWAs?
+### Что такое manifest file and what is its significance in PWAs?
 
 **Definition:**
 
@@ -217,9 +217,9 @@ self.addEventListener("fetch", (event) => {
 </details>
 
 <details>
-<summary>What is the purpose of the 'Add to Home Screen' feature?</summary>
+<summary>Что такое the puRPOse of the 'Add to Home Screen' feature?</summary>
 
-### What is the purpose of the 'Add to Home Screen' feature?
+### Что такое the puRPOse of the 'Add to Home Screen' feature?
 
 **Definition:**
 
@@ -240,9 +240,9 @@ self.addEventListener("fetch", (event) => {
 </details>
 
 <details>
-<summary>How can you detect if your web app has been added to the user's home screen?</summary>
+<summary>Как you detect if your web app has been added to the user's home screen?</summary>
 
-### How can you detect if your web app has been added to the user's home screen?
+### Как you detect if your web app has been added to the user's home screen?
 
 **Definition:**
 
@@ -270,9 +270,9 @@ const installed = window.matchMedia("(display-mode: standalone)").matches
 </details>
 
 <details>
-<summary>Explain how PWAs achieve offline functionality.</summary>
+<summary>Объясните how PWAs achieve offline functionality.</summary>
 
-### Explain how PWAs achieve offline functionality.
+### Объясните how PWAs achieve offline functionality.
 
 **Definition:**
 
@@ -300,9 +300,9 @@ await cache.addAll(["/", "/app.css", "/app.js"]);
 </details>
 
 <details>
-<summary>What are the security requirements for a PWA?</summary>
+<summary>Что такое the security requirements for a PWA?</summary>
 
-### What are the security requirements for a PWA?
+### Что такое the security requirements for a PWA?
 
 **Definition:**
 
@@ -323,9 +323,9 @@ PWA — сайт с дополнительными возможностями, �
 </details>
 
 <details>
-<summary>Can you delineate between App Shell and content in a PWA context?</summary>
+<summary>Можете ли вы delineate between App Shell and content in a PWA context?</summary>
 
-### Can you delineate between App Shell and content in a PWA context?
+### Можете ли вы delineate between App Shell and content in a PWA context?
 
 **Definition:**
 
@@ -352,9 +352,9 @@ network, then cache: /api/notes
 </details>
 
 <details>
-<summary>How does a PWA function on a low-bandwidth or offline network?</summary>
+<summary>Как a PWA function on a low-bandwidth or offline network?</summary>
 
-### How does a PWA function on a low-bandwidth or offline network?
+### Как a PWA function on a low-bandwidth or offline network?
 
 **Definition:**
 
@@ -375,9 +375,9 @@ network, then cache: /api/notes
 </details>
 
 <details>
-<summary>What are push notifications in the context of PWAs?</summary>
+<summary>Что такое push notifications in the context of PWAs?</summary>
 
-### What are push notifications in the context of PWAs?
+### Что такое push notifications in the context of PWAs?
 
 **Definition:**
 
@@ -406,9 +406,9 @@ self.addEventListener("push", (event) => {
 </details>
 
 <details>
-<summary>Can you explain the concept of background sync in PWAs?</summary>
+<summary>Можете ли вы explain the concept of background sync in PWAs?</summary>
 
-### Can you explain the concept of background sync in PWAs?
+### Можете ли вы explain the concept of background sync in PWAs?
 
 **Definition:**
 
@@ -437,9 +437,9 @@ self.addEventListener("sync", (event) => {
 </details>
 
 <details>
-<summary>What is a service worker lifecycle?</summary>
+<summary>Что такое Service Worker lifecycle?</summary>
 
-### What is a service worker lifecycle?
+### Что такое Service Worker lifecycle?
 
 **Definition:**
 
@@ -473,9 +473,9 @@ self.addEventListener("activate", (event) => {
 </details>
 
 <details>
-<summary>How do you handle compatibility issues across different browsers for PWAs?</summary>
+<summary>Как you handle compatibility issues across different browsers for PWAs?</summary>
 
-### How do you handle compatibility issues across different browsers for PWAs?
+### Как you handle compatibility issues across different browsers for PWAs?
 
 **Definition:**
 
@@ -496,9 +496,9 @@ self.addEventListener("activate", (event) => {
 </details>
 
 <details>
-<summary>How would you test a PWA?</summary>
+<summary>Как бы вы test a PWA?</summary>
 
-### How would you test a PWA?
+### Как бы вы test a PWA?
 
 **Definition:**
 
@@ -521,9 +521,9 @@ self.addEventListener("activate", (event) => {
 </details>
 
 <details>
-<summary>What is the role of HTTPS in PWAs?</summary>
+<summary>Что такое the role of HTTPS in PWAs?</summary>
 
-### What is the role of HTTPS in PWAs?
+### Что такое the role of HTTPS in PWAs?
 
 **Definition:**
 
@@ -545,9 +545,9 @@ Service workers и устанавливаемые PWA требуют безоп�
 </details>
 
 <details>
-<summary>What are the limitations of PWAs?</summary>
+<summary>Что такое the limitations of PWAs?</summary>
 
-### What are the limitations of PWAs?
+### Что такое the limitations of PWAs?
 
 **Definition:**
 
@@ -572,9 +572,9 @@ PWA — всё ещё сайт. Он не получает все нативны
 ### Service Workers
 
 <details>
-<summary>What is the role of the 'install' event in a service worker?</summary>
+<summary>Что такое the role of the 'install' event in a Service Worker?</summary>
 
-### What is the role of the 'install' event in a service worker?
+### Что такое the role of the 'install' event in a Service Worker?
 
 **Definition:**
 
@@ -605,9 +605,9 @@ self.addEventListener("install", (event) => {
 </details>
 
 <details>
-<summary>How do you cache assets using service workers?</summary>
+<summary>Как you cache assets using Service Workers?</summary>
 
-### How do you cache assets using service workers?
+### Как you cache assets using Service Workers?
 
 **Definition:**
 
@@ -628,9 +628,9 @@ self.addEventListener("install", (event) => {
 </details>
 
 <details>
-<summary>Can you explain how service worker updates are managed?</summary>
+<summary>Можете ли вы explain how Service Worker updates are managed?</summary>
 
-### Can you explain how service worker updates are managed?
+### Можете ли вы explain how Service Worker updates are managed?
 
 **Definition:**
 
@@ -652,9 +652,9 @@ self.addEventListener("install", (event) => {
 </details>
 
 <details>
-<summary>What different caching strategies can be implemented with service workers?</summary>
+<summary>Какие caching strategies можно реализовать с service workers?</summary>
 
-### What different caching strategies can be implemented with service workers?
+### Какие caching strategies можно реализовать с service workers?
 
 **Definition:**
 
@@ -677,9 +677,9 @@ Cache first для оболочки. Stale-while-revalidate для ресурс�
 </details>
 
 <details>
-<summary>Describe how you would use a service worker to intercept network requests.</summary>
+<summary>Опишите how you would use a Service Worker to intercept network requests.</summary>
 
-### Describe how you would use a service worker to intercept network requests.
+### Опишите how you would use a Service Worker to intercept network requests.
 
 **Definition:**
 
@@ -709,9 +709,9 @@ self.addEventListener("fetch", (event) => {
 </details>
 
 <details>
-<summary>What is a FetchEvent in the context of service workers?</summary>
+<summary>Что такое FetchEvent in the context of Service Workers?</summary>
 
-### What is a FetchEvent in the context of service workers?
+### Что такое FetchEvent in the context of Service Workers?
 
 **Definition:**
 
@@ -730,9 +730,9 @@ FetchEvent — объект, который передают слушателю 
 </details>
 
 <details>
-<summary>How do you handle errors in a service worker script?</summary>
+<summary>Как you handle errors in a Service Worker script?</summary>
 
-### How do you handle errors in a service worker script?
+### Как you handle errors in a Service Worker script?
 
 **Definition:**
 
@@ -753,9 +753,9 @@ FetchEvent — объект, который передают слушателю 
 </details>
 
 <details>
-<summary>Discuss how service workers can be debugged.</summary>
+<summary>Обсудите how Service Workers can be debugged.</summary>
 
-### Discuss how service workers can be debugged.
+### Обсудите how Service Workers can be debugged.
 
 **Definition:**
 
@@ -776,9 +776,9 @@ FetchEvent — объект, который передают слушателю 
 </details>
 
 <details>
-<summary>What is the 'activate' event in a service worker and what is it used for?</summary>
+<summary>Что такое the 'activate' event in a Service Worker and what is it used for?</summary>
 
-### What is the 'activate' event in a service worker and what is it used for?
+### Что такое the 'activate' event in a Service Worker and what is it used for?
 
 **Definition:**
 
@@ -811,9 +811,9 @@ self.addEventListener("activate", (event) => {
 </details>
 
 <details>
-<summary>Explain the concept of "cache busting" and why it's important for PWAs.</summary>
+<summary>Объясните the concept of "cache busting" and why it's important for PWAs.</summary>
 
-### Explain the concept of "cache busting" and why it's important for PWAs.
+### Объясните the concept of "cache busting" and why it's important for PWAs.
 
 **Definition:**
 
@@ -836,9 +836,9 @@ self.addEventListener("activate", (event) => {
 ### Web App Manifest
 
 <details>
-<summary>What key properties does the Web App Manifest contain?</summary>
+<summary>Какие key properties содержит Web App Manifest?</summary>
 
-### What key properties does the Web App Manifest contain?
+### Какие key properties содержит Web App Manifest?
 
 **Definition:**
 
@@ -858,9 +858,9 @@ self.addEventListener("activate", (event) => {
 </details>
 
 <details>
-<summary>How do you define the start URL in a manifest file?</summary>
+<summary>Как you define the start URL in a manifest file?</summary>
 
-### How do you define the start URL in a manifest file?
+### Как you define the start URL in a manifest file?
 
 **Definition:**
 
@@ -886,9 +886,9 @@ start_url — член манифеста, который браузер заг�
 </details>
 
 <details>
-<summary>What are the guidelines for designing app icons for a PWA?</summary>
+<summary>Что такое the guidelines for designing app icons for a PWA?</summary>
 
-### What are the guidelines for designing app icons for a PWA?
+### Что такое the guidelines for designing app icons for a PWA?
 
 **Definition:**
 
@@ -908,9 +908,9 @@ start_url — член манифеста, который браузер заг�
 </details>
 
 <details>
-<summary>How does the web app manifest affect the appearance of the PWA on a device?</summary>
+<summary>Как the web app manifest affect the appearance of the PWA on a device?</summary>
 
-### How does the web app manifest affect the appearance of the PWA on a device?
+### Как the web app manifest affect the appearance of the PWA on a device?
 
 **Definition:**
 
@@ -930,9 +930,9 @@ start_url — член манифеста, который браузер заг�
 </details>
 
 <details>
-<summary>Can you dynamically generate a web app manifest or must it be static?</summary>
+<summary>Можете ли вы dynamically generate a web app manifest or must it be static?</summary>
 
-### Can you dynamically generate a web app manifest or must it be static?
+### Можете ли вы dynamically generate a web app manifest or must it be static?
 
 **Definition:**
 
@@ -954,9 +954,9 @@ start_url — член манифеста, который браузер заг�
 ### User Engagement & Experience
 
 <details>
-<summary>How do push notifications enhance user engagement in a PWA?</summary>
+<summary>Как push notifications enhance user enGAgement in a PWA?</summary>
 
-### How do push notifications enhance user engagement in a PWA?
+### Как push notifications enhance user enGAgement in a PWA?
 
 **Definition:**
 
@@ -976,9 +976,9 @@ Push позволяет серверу разбудить service worker и по
 </details>
 
 <details>
-<summary>What strategies can you use to prompt the user to install your PWA?</summary>
+<summary>Какие стратегии can you use to prompt the user to install your PWA?</summary>
 
-### What strategies can you use to prompt the user to install your PWA?
+### Какие стратегии can you use to prompt the user to install your PWA?
 
 **Definition:**
 
@@ -1013,9 +1013,9 @@ installButton.onclick = async () => {
 </details>
 
 <details>
-<summary>How would you customize the prompt that asks users to add your PWA to their home screen?</summary>
+<summary>Как бы вы customize the prompt that asks users to add your PWA to their home screen?</summary>
 
-### How would you customize the prompt that asks users to add your PWA to their home screen?
+### Как бы вы customize the prompt that asks users to add your PWA to their home screen?
 
 **Definition:**
 
@@ -1035,9 +1035,9 @@ installButton.onclick = async () => {
 </details>
 
 <details>
-<summary>Can you tailor the UX of a PWA depending on whether it's run in a browser or as an installed app?</summary>
+<summary>Можете ли вы tailor the UX of a PWA depending on whether it's run in a browser or as an installed app?</summary>
 
-### Can you tailor the UX of a PWA depending on whether it's run in a browser or as an installed app?
+### Можете ли вы tailor the UX of a PWA depending on whether it's run in a browser or as an installed app?
 
 **Definition:**
 
@@ -1061,9 +1061,9 @@ installButton.onclick = async () => {
 </details>
 
 <details>
-<summary>What is the significance of having a responsive design in PWAs?</summary>
+<summary>Что такое the significance of having a responsive design in PWAs?</summary>
 
-### What is the significance of having a responsive design in PWAs?
+### Что такое the significance of having a responsive design in PWAs?
 
 **Definition:**
 
@@ -1085,9 +1085,9 @@ installButton.onclick = async () => {
 ### Performance & Optimization
 
 <details>
-<summary>What tools can be used for performance auditing of a PWA?</summary>
+<summary>Какие инструменты can be used for performance auditing of a PWA?</summary>
 
-### What tools can be used for performance auditing of a PWA?
+### Какие инструменты can be used for performance auditing of a PWA?
 
 **Definition:**
 
@@ -1109,9 +1109,9 @@ installButton.onclick = async () => {
 </details>
 
 <details>
-<summary>How do you optimize the loading time of your PWA?</summary>
+<summary>Как you optimize the loading time of your PWA?</summary>
 
-### How do you optimize the loading time of your PWA?
+### Как you optimize the loading time of your PWA?
 
 **Definition:**
 
@@ -1131,9 +1131,9 @@ installButton.onclick = async () => {
 </details>
 
 <details>
-<summary>Discuss the impact of JavaScript bundling and minification on PWAs.</summary>
+<summary>Обсудите the impact of JavaScript bundling and minification on PWAs.</summary>
 
-### Discuss the impact of JavaScript bundling and minification on PWAs.
+### Обсудите the impact of JavaScript bundling and minification on PWAs.
 
 **Definition:**
 
@@ -1154,9 +1154,9 @@ installButton.onclick = async () => {
 </details>
 
 <details>
-<summary>What role does image optimization play in PWAs?</summary>
+<summary>Какую роль does image optimization play in PWAs?</summary>
 
-### What role does image optimization play in PWAs?
+### Какую роль does image optimization play in PWAs?
 
 **Definition:**
 
@@ -1177,9 +1177,9 @@ installButton.onclick = async () => {
 </details>
 
 <details>
-<summary>How do you track and improve the First Contentful Paint (FCP) in PWAs?</summary>
+<summary>Как you track and improve the First Contentful Paint (FCP) in PWAs?</summary>
 
-### How do you track and improve the First Contentful Paint (FCP) in PWAs?
+### Как you track and improve the First Contentful Paint (FCP) in PWAs?
 
 **Definition:**
 
@@ -1200,9 +1200,9 @@ First Contentful Paint — время, когда браузер впервые 
 </details>
 
 <details>
-<summary>What is Time to Interactive (TTI), and how do you optimize it for PWAs?</summary>
+<summary>Что такое Time to Interactive (TTI), and how do you optimize it for PWAs?</summary>
 
-### What is Time to Interactive (TTI), and how do you optimize it for PWAs?
+### Что такое Time to Interactive (TTI), and how do you optimize it for PWAs?
 
 **Definition:**
 
@@ -1223,9 +1223,9 @@ Time to Interactive — нестандартизованная метрика п
 </details>
 
 <details>
-<summary>How do you implement lazy loading in a PWA?</summary>
+<summary>Как you implement lazy loading in a PWA?</summary>
 
-### How do you implement lazy loading in a PWA?
+### Как you implement lazy loading in a PWA?
 
 **Definition:**
 
@@ -1245,9 +1245,9 @@ Time to Interactive — нестандартизованная метрика п
 </details>
 
 <details>
-<summary>Why is it important to prioritize above-the-fold content for PWAs?</summary>
+<summary>Почему is it important to prioritize above-the-fold content for PWAs?</summary>
 
-### Why is it important to prioritize above-the-fold content for PWAs?
+### Почему is it important to prioritize above-the-fold content for PWAs?
 
 **Definition:**
 
@@ -1268,9 +1268,9 @@ Time to Interactive — нестандартизованная метрика п
 </details>
 
 <details>
-<summary>Discuss how to prevent janky animations and achieve smooth performance in a PWA.</summary>
+<summary>Обсудите how to prevent janky animations and achieve smooth performance in a PWA.</summary>
 
-### Discuss how to prevent janky animations and achieve smooth performance in a PWA.
+### Обсудите how to prevent janky animations and achieve smooth performance in a PWA.
 
 **Definition:**
 
@@ -1291,9 +1291,9 @@ Time to Interactive — нестандартизованная метрика п
 </details>
 
 <details>
-<summary>What strategies can be employed to minimize main-thread work in a PWA?</summary>
+<summary>Какие стратегии can be employed to minimize main-thread work in a PWA?</summary>
 
-### What strategies can be employed to minimize main-thread work in a PWA?
+### Какие стратегии can be employed to minimize main-thread work in a PWA?
 
 **Definition:**
 
@@ -1316,9 +1316,9 @@ Time to Interactive — нестандартизованная метрика п
 ### PWA Architecture and Application Structure
 
 <details>
-<summary>What architectural patterns are commonly used in PWAs?</summary>
+<summary>Какие architectural patterns обычно используют в PWAs?</summary>
 
-### What architectural patterns are commonly used in PWAs?
+### Какие architectural patterns обычно используют в PWAs?
 
 **Definition:**
 
@@ -1340,9 +1340,9 @@ Time to Interactive — нестандартизованная метрика п
 </details>
 
 <details>
-<summary>How should you structure your files and directories for a PWA?</summary>
+<summary>Как следует you structure your files and directories for a PWA?</summary>
 
-### How should you structure your files and directories for a PWA?
+### Как следует you structure your files and directories for a PWA?
 
 **Definition:**
 
@@ -1363,9 +1363,9 @@ Time to Interactive — нестандартизованная метрика п
 </details>
 
 <details>
-<summary>Can you explain the Model-View-ViewModel (MVVM) architecture in the context of PWAs?</summary>
+<summary>Можете ли вы explain the Model-View-ViewModel (MVVM) architecture in the context of PWAs?</summary>
 
-### Can you explain the Model-View-ViewModel (MVVM) architecture in the context of PWAs?
+### Можете ли вы explain the Model-View-ViewModel (MVVM) architecture in the context of PWAs?
 
 **Definition:**
 
@@ -1385,9 +1385,9 @@ MVVM — разделение интерфейса: модель держит с
 </details>
 
 <details>
-<summary>How do you manage state in a PWA?</summary>
+<summary>Как you manage state in a PWA?</summary>
 
-### How do you manage state in a PWA?
+### Как you manage state in a PWA?
 
 **Definition:**
 
@@ -1409,9 +1409,9 @@ MVVM — разделение интерфейса: модель держит с
 </details>
 
 <details>
-<summary>Discuss the role of front-end frameworks and libraries in PWA development.</summary>
+<summary>Обсудите the role of front-end frameworks and libraries in PWA development.</summary>
 
-### Discuss the role of front-end frameworks and libraries in PWA development.
+### Обсудите the role of front-end frameworks and libraries in PWA development.
 
 **Definition:**
 
@@ -1433,9 +1433,9 @@ MVVM — разделение интерфейса: модель держит с
 </details>
 
 <details>
-<summary>How does a PWA handle dynamic content and user personalization?</summary>
+<summary>Как a PWA handle dynamic content and user personalization?</summary>
 
-### How does a PWA handle dynamic content and user personalization?
+### Как a PWA handle dynamic content and user personalization?
 
 **Definition:**
 
@@ -1456,9 +1456,9 @@ MVVM — разделение интерфейса: модель держит с
 ### Offline Capabilities
 
 <details>
-<summary>How do you design for offline-first in a PWA?</summary>
+<summary>Как you design for offline-first in a PWA?</summary>
 
-### How do you design for offline-first in a PWA?
+### Как you design for offline-first in a PWA?
 
 **Definition:**
 
@@ -1479,9 +1479,9 @@ Offline-first значит, что оболочка рисуется из кэш
 </details>
 
 <details>
-<summary>What is the role of IndexedDB in PWAs?</summary>
+<summary>Что такое the role of IndexedDB in PWAs?</summary>
 
-### What is the role of IndexedDB in PWAs?
+### Что такое the role of IndexedDB in PWAs?
 
 **Definition:**
 
@@ -1501,9 +1501,9 @@ IndexedDB — клиентское хранилище значительных �
 </details>
 
 <details>
-<summary>How can you synchronize local changes with a server once online?</summary>
+<summary>Как you synchronize local changes with a server once online?</summary>
 
-### How can you synchronize local changes with a server once online?
+### Как you synchronize local changes with a server once online?
 
 **Definition:**
 
@@ -1530,9 +1530,9 @@ await reg.sync.register("send-note");
 </details>
 
 <details>
-<summary>Can you explain how to manage user-generated content in offline mode?</summary>
+<summary>Можете ли вы explain how to manage user-generated content in offline mode?</summary>
 
-### Can you explain how to manage user-generated content in offline mode?
+### Можете ли вы explain how to manage user-generated content in offline mode?
 
 **Definition:**
 
@@ -1553,9 +1553,9 @@ await reg.sync.register("send-note");
 </details>
 
 <details>
-<summary>What are the considerations for storing and retrieving data locally in a PWA?</summary>
+<summary>Что такое the considerations for storing and reTrieving data locally in a PWA?</summary>
 
-### What are the considerations for storing and retrieving data locally in a PWA?
+### Что такое the considerations for storing and reTrieving data locally in a PWA?
 
 **Definition:**
 
@@ -1579,9 +1579,9 @@ await reg.sync.register("send-note");
 ### Push Notifications
 
 <details>
-<summary>How do you register a service worker for push notifications?</summary>
+<summary>Как you register a Service Worker for push notifications?</summary>
 
-### How do you register a service worker for push notifications?
+### Как you register a Service Worker for push notifications?
 
 **Definition:**
 
@@ -1607,9 +1607,9 @@ const sub = await reg.pushManager.subscribe({ userVisibleOnly: true });
 </details>
 
 <details>
-<summary>What is the Web Push Protocol and how is it used in PWAs?</summary>
+<summary>Что такое the Web Push Protocol and how is it used in PWAs?</summary>
 
-### What is the Web Push Protocol and how is it used in PWAs?
+### Что такое the Web Push Protocol and how is it used in PWAs?
 
 **Definition:**
 
@@ -1628,9 +1628,9 @@ Web Push — доставка от сервера к браузеру, кото�
 </details>
 
 <details>
-<summary>Can you explain the notification click event handling in a PWA?</summary>
+<summary>Можете ли вы explain the notification click event handling in a PWA?</summary>
 
-### Can you explain the notification click event handling in a PWA?
+### Можете ли вы explain the notification click event handling in a PWA?
 
 **Definition:**
 
@@ -1650,9 +1650,9 @@ Web Push — доставка от сервера к браузеру, кото�
 </details>
 
 <details>
-<summary>What are the best practices for sending push notifications to users?</summary>
+<summary>Что такое the best practices for sending push notifications to users?</summary>
 
-### What are the best practices for sending push notifications to users?
+### Что такое the best practices for sending push notifications to users?
 
 **Definition:**
 
@@ -1671,9 +1671,9 @@ Web Push — доставка от сервера к браузеру, кото�
 </details>
 
 <details>
-<summary>How do you customize the notification appearance and behavior on different platforms?</summary>
+<summary>Как you customize the notification appearance and behavior on different platforms?</summary>
 
-### How do you customize the notification appearance and behavior on different platforms?
+### Как you customize the notification appearance and behavior on different platforms?
 
 **Definition:**
 
@@ -1695,9 +1695,9 @@ Web Push — доставка от сервера к браузеру, кото�
 ### Scalability and Maintainability
 
 <details>
-<summary>How do you ensure that a PWA remains scalable as features grow?</summary>
+<summary>Как you ensure that a PWA remains Scalable as features grow?</summary>
 
-### How do you ensure that a PWA remains scalable as features grow?
+### Как you ensure that a PWA remains Scalable as features grow?
 
 **Definition:**
 
@@ -1719,9 +1719,9 @@ Web Push — доставка от сервера к браузеру, кото�
 </details>
 
 <details>
-<summary>Discuss the use of module bundlers in PWAs for better maintainability.</summary>
+<summary>Обсудите the use of module bundlers in PWAs for better maintainability.</summary>
 
-### Discuss the use of module bundlers in PWAs for better maintainability.
+### Обсудите the use of module bundlers in PWAs for better maintainability.
 
 **Definition:**
 
@@ -1742,9 +1742,9 @@ Web Push — доставка от сервера к браузеру, кото�
 </details>
 
 <details>
-<summary>What considerations must be taken into account for version control in PWAs?</summary>
+<summary>Какие соображения must be taken into account for version control in PWAs?</summary>
 
-### What considerations must be taken into account for version control in PWAs?
+### Какие соображения must be taken into account for version control in PWAs?
 
 **Definition:**
 
@@ -1765,9 +1765,9 @@ Web Push — доставка от сервера к браузеру, кото�
 </details>
 
 <details>
-<summary>How do you handle data migrations in PWAs?</summary>
+<summary>Как you handle data migrations in PWAs?</summary>
 
-### How do you handle data migrations in PWAs?
+### Как you handle data migrations in PWAs?
 
 **Definition:**
 
@@ -1788,9 +1788,9 @@ Web Push — доставка от сервера к браузеру, кото�
 </details>
 
 <details>
-<summary>Can you implement feature toggles in PWAs?</summary>
+<summary>Можете ли вы implement feature toggles in PWAs?</summary>
 
-### Can you implement feature toggles in PWAs?
+### Можете ли вы implement feature toggles in PWAs?
 
 **Definition:**
 
@@ -1813,9 +1813,9 @@ Web Push — доставка от сервера к браузеру, кото�
 ### PWA and E-commerce
 
 <details>
-<summary>Why are PWAs well-suited for e-commerce platforms?</summary>
+<summary>Почему are PWAs well-suited for e-commerce platforms?</summary>
 
-### Why are PWAs well-suited for e-commerce platforms?
+### Почему are PWAs well-suited for e-commerce platforms?
 
 **Definition:**
 
@@ -1837,9 +1837,9 @@ Web Push — доставка от сервера к браузеру, кото�
 </details>
 
 <details>
-<summary>How can a PWA improve conversion rates for an e-commerce site?</summary>
+<summary>Как a PWA improve conversion rates for an e-commerce site?</summary>
 
-### How can a PWA improve conversion rates for an e-commerce site?
+### Как a PWA improve conversion rates for an e-commerce site?
 
 **Definition:**
 
@@ -1860,9 +1860,9 @@ Web Push — доставка от сервера к браузеру, кото�
 </details>
 
 <details>
-<summary>What are the unique challenges of developing PWAs for e-commerce?</summary>
+<summary>Что такое the unique challenges of developing PWAs for e-commerce?</summary>
 
-### What are the unique challenges of developing PWAs for e-commerce?
+### Что такое the unique challenges of developing PWAs for e-commerce?
 
 **Definition:**
 
@@ -1884,9 +1884,9 @@ Web Push — доставка от сервера к браузеру, кото�
 </details>
 
 <details>
-<summary>How would you handle checkout and payment processing in an e-commerce PWA?</summary>
+<summary>Как бы вы handle checkout and payment processing in an e-commerce PWA?</summary>
 
-### How would you handle checkout and payment processing in an e-commerce PWA?
+### Как бы вы handle checkout and payment processing in an e-commerce PWA?
 
 **Definition:**
 
@@ -1907,9 +1907,9 @@ Payment Request позволяет пользователю выбрать со�
 </details>
 
 <details>
-<summary>Can you discuss strategies for integrating analytics in an e-commerce PWA?</summary>
+<summary>Можете ли вы discuss strategies for integrating analytics in an e-commerce PWA?</summary>
 
-### Can you discuss strategies for integrating analytics in an e-commerce PWA?
+### Можете ли вы discuss strategies for integrating analytics in an e-commerce PWA?
 
 **Definition:**
 
@@ -1933,9 +1933,9 @@ Payment Request позволяет пользователю выбрать со�
 ### APIs and Integration
 
 <details>
-<summary>What are the common APIs used in developing a PWA?</summary>
+<summary>Что такое the common APIs used in developing a PWA?</summary>
 
-### What are the common APIs used in developing a PWA?
+### Что такое the common APIs used in developing a PWA?
 
 **Definition:**
 
@@ -1960,9 +1960,9 @@ API, которые в этих документах определяют PWA, �
 </details>
 
 <details>
-<summary>How do PWAs integrate with native device features?</summary>
+<summary>Как PWAs integrate with native device features?</summary>
 
-### How do PWAs integrate with native device features?
+### Как PWAs integrate with native device features?
 
 **Definition:**
 
@@ -1984,9 +1984,9 @@ API, которые в этих документах определяют PWA, �
 </details>
 
 <details>
-<summary>Discuss how a PWA can access a user's camera or GPS.</summary>
+<summary>Обсудите how a PWA can access a user's camera or GPS.</summary>
 
-### Discuss how a PWA can access a user's camera or GPS.
+### Обсудите how a PWA can access a user's camera or GPS.
 
 **Definition:**
 
@@ -2007,9 +2007,9 @@ API, которые в этих документах определяют PWA, �
 </details>
 
 <details>
-<summary>How do you handle cross-origin requests in a PWA?</summary>
+<summary>Как you handle cross-origin requests in a PWA?</summary>
 
-### How do you handle cross-origin requests in a PWA?
+### Как you handle cross-origin requests in a PWA?
 
 **Definition:**
 
@@ -2029,9 +2029,9 @@ API, которые в этих документах определяют PWA, �
 </details>
 
 <details>
-<summary>How can third-party services be integrated into a PWA?</summary>
+<summary>Как third-party services be integrated into a PWA?</summary>
 
-### How can third-party services be integrated into a PWA?
+### Как third-party services be integrated into a PWA?
 
 **Definition:**
 
@@ -2055,9 +2055,9 @@ API, которые в этих документах определяют PWA, �
 ### Advanced PWA Topics
 
 <details>
-<summary>What are Progressive Enhancement and Graceful Degradation in the context of PWAs?</summary>
+<summary>Что такое Progressive Enhancement and Graceful Degradation in the context of PWAs?</summary>
 
-### What are Progressive Enhancement and Graceful Degradation in the context of PWAs?
+### Что такое Progressive Enhancement and Graceful Degradation in the context of PWAs?
 
 **Definition:**
 
@@ -2078,9 +2078,9 @@ API, которые в этих документах определяют PWA, �
 </details>
 
 <details>
-<summary>How do you implement a periodic background sync in PWA?</summary>
+<summary>Как you implement a periodic background sync in PWA?</summary>
 
-### How do you implement a periodic background sync in PWA?
+### Как you implement a periodic background sync in PWA?
 
 **Definition:**
 
@@ -2107,9 +2107,9 @@ await reg.periodicSync.register("fetch-news", { minInterval: 24 * 60 * 60 * 1000
 </details>
 
 <details>
-<summary>Discuss the concept of Credential Management API in PWAs.</summary>
+<summary>Обсудите the concept of Credential Management API in PWAs.</summary>
 
-### Discuss the concept of Credential Management API in PWAs.
+### Обсудите the concept of Credential Management API in PWAs.
 
 **Definition:**
 
@@ -2129,9 +2129,9 @@ Credential Management API позволяет странице спросить �
 </details>
 
 <details>
-<summary>What is the Payment Request API and how does it simplify transactions in a PWA?</summary>
+<summary>Что такое the Payment Request API and how does it simplify transactions in a PWA?</summary>
 
-### What is the Payment Request API and how does it simplify transactions in a PWA?
+### Что такое the Payment Request API and how does it simplify transactions in a PWA?
 
 **Definition:**
 
@@ -2151,9 +2151,9 @@ Payment Request API позволяет пользователю выбрать �
 </details>
 
 <details>
-<summary>How can a PWA be part of the Internet of Things (IoT)?</summary>
+<summary>Как a PWA be part of the Internet of Things (IoT)?</summary>
 
-### How can a PWA be part of the Internet of Things (IoT)?
+### Как a PWA be part of the Internet of Things (IoT)?
 
 **Definition:**
 
@@ -2177,9 +2177,9 @@ PWA не становится устройством в локальной се�
 ### Platform-Specific Considerations
 
 <details>
-<summary>How do you optimize a PWA for iOS devices?</summary>
+<summary>Как you optimize a PWA for iOS devices?</summary>
 
-### How do you optimize a PWA for iOS devices?
+### Как you optimize a PWA for iOS devices?
 
 **Definition:**
 
@@ -2200,9 +2200,9 @@ PWA не становится устройством в локальной се�
 </details>
 
 <details>
-<summary>What are the current limitations for PWAs on the Apple App Store?</summary>
+<summary>Что такое the current limitations for PWAs on the Apple App Store?</summary>
 
-### What are the current limitations for PWAs on the Apple App Store?
+### Что такое the current limitations for PWAs on the Apple App Store?
 
 **Definition:**
 
@@ -2221,9 +2221,9 @@ PWA не становится устройством в локальной се�
 </details>
 
 <details>
-<summary>Discuss the differences between optimizing PWAs for Android vs. iOS.</summary>
+<summary>Обсудите the differences between optimizing PWAs for Android vs. iOS.</summary>
 
-### Discuss the differences between optimizing PWAs for Android vs. iOS.
+### Обсудите the differences between optimizing PWAs for Android vs. iOS.
 
 **Definition:**
 
@@ -2243,9 +2243,9 @@ Android Chromium может поставить WebAPK и вызвать beforein
 </details>
 
 <details>
-<summary>How does the choice of web browser affect the behavior of a PWA?</summary>
+<summary>Как the choice of web browser affect the behavior of a PWA?</summary>
 
-### How does the choice of web browser affect the behavior of a PWA?
+### Как the choice of web browser affect the behavior of a PWA?
 
 **Definition:**
 
@@ -2267,9 +2267,9 @@ Android Chromium может поставить WebAPK и вызвать beforein
 ### Testing & Debugging PWAs
 
 <details>
-<summary>What strategies do you use for testing the service workers?</summary>
+<summary>Какие стратегии do you use for testing the Service Workers?</summary>
 
-### What strategies do you use for testing the service workers?
+### Какие стратегии do you use for testing the Service Workers?
 
 **Definition:**
 
@@ -2291,9 +2291,9 @@ Android Chromium может поставить WebAPK и вызвать beforein
 </details>
 
 <details>
-<summary>How do you simulate offline testing conditions for your PWA?</summary>
+<summary>Как you simulate offline testing conditions for your PWA?</summary>
 
-### How do you simulate offline testing conditions for your PWA?
+### Как you simulate offline testing conditions for your PWA?
 
 **Definition:**
 
@@ -2314,9 +2314,9 @@ Android Chromium может поставить WebAPK и вызвать beforein
 </details>
 
 <details>
-<summary>What are the main aspects to test before deploying a PWA?</summary>
+<summary>Что такое the main aspects to test before deploying a PWA?</summary>
 
-### What are the main aspects to test before deploying a PWA?
+### Что такое the main aspects to test before deploying a PWA?
 
 **Definition:**
 
@@ -2339,9 +2339,9 @@ Android Chromium может поставить WebAPK и вызвать beforein
 </details>
 
 <details>
-<summary>How can you debug a PWA on a mobile device?</summary>
+<summary>Как you debug a PWA on a mobile device?</summary>
 
-### How can you debug a PWA on a mobile device?
+### Как you debug a PWA on a mobile device?
 
 **Definition:**
 
@@ -2362,9 +2362,9 @@ Android Chromium может поставить WebAPK и вызвать beforein
 </details>
 
 <details>
-<summary>What are common issues encountered when testing push notifications and how do you address them?</summary>
+<summary>Что такое common issues encountered when testing push notifications and how do you address them?</summary>
 
-### What are common issues encountered when testing push notifications and how do you address them?
+### Что такое common issues encountered when testing push notifications and how do you address them?
 
 **Definition:**
 
@@ -2386,9 +2386,9 @@ Android Chromium может поставить WebAPK и вызвать beforein
 ### PWA Case Studies and Real-life Applications
 
 <details>
-<summary>Can you provide examples of successful PWAs?</summary>
+<summary>Можете ли вы provide examples of successful PWAs?</summary>
 
-### Can you provide examples of successful PWAs?
+### Можете ли вы provide examples of successful PWAs?
 
 **Definition:**
 
@@ -2408,9 +2408,9 @@ Android Chromium может поставить WebAPK и вызвать beforein
 </details>
 
 <details>
-<summary>Discuss how PWAs have impacted mobile traffic for major websites.</summary>
+<summary>Обсудите how PWAs have impacted mobile traffic for major websites.</summary>
 
-### Discuss how PWAs have impacted mobile traffic for major websites.
+### Обсудите how PWAs have impacted mobile traffic for major websites.
 
 **Definition:**
 
@@ -2430,9 +2430,9 @@ MDN не публикует цифру трафика до и после для 
 </details>
 
 <details>
-<summary>How has the user engagement changed pre and post PWA implementation for a notable company?</summary>
+<summary>Как the user enGAgement changed pre and post PWA implementation for a notable company?</summary>
 
-### How has the user engagement changed pre and post PWA implementation for a notable company?
+### Как the user enGAgement changed pre and post PWA implementation for a notable company?
 
 **Definition:**
 
@@ -2453,9 +2453,9 @@ MDN не публикует цифру трафика до и после для 
 </details>
 
 <details>
-<summary>What challenges did developers face when transitioning a traditional web app to a PWA?</summary>
+<summary>С какими challenges столкнулись developers при переходе traditional web app в PWA?</summary>
 
-### What challenges did developers face when transitioning a traditional web app to a PWA?
+### С какими challenges столкнулись developers при переходе traditional web app в PWA?
 
 **Definition:**
 
@@ -2479,9 +2479,9 @@ MDN не публикует цифру трафика до и после для 
 ### The Future of PWAs
 
 <details>
-<summary>What future advancements do you anticipate in the field of PWAs?</summary>
+<summary>Какие future advancements вы ожидаете в области PWAs?</summary>
 
-### What future advancements do you anticipate in the field of PWAs?
+### Какие future advancements вы ожидаете в области PWAs?
 
 **Definition:**
 

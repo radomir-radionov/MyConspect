@@ -21,9 +21,9 @@ Questions from [Devinterview.io — CAP Theorem](https://devinterview.io/questio
 ### CAP Theorem Fundamentals
 
 <details>
-<summary>What is CAP Theorem and why it’s important for distributed systems?</summary>
+<summary>Что такое CAP theorem and why it’s important for distributed systems?</summary>
 
-### What is CAP Theorem and why it’s important for distributed systems?
+### Что такое CAP theorem and why it’s important for distributed systems?
 
 **Definition:**
 
@@ -70,9 +70,9 @@ Cassandra и Riak: их выбирают в распределённых сис�
 </details>
 
 <details>
-<summary>How does the CAP Theorem define consistency in the context of a distributed system?</summary>
+<summary>Как the CAP theorem define consistency in the context of a distributed system?</summary>
 
-### How does the CAP Theorem define consistency in the context of a distributed system?
+### Как the CAP theorem define consistency in the context of a distributed system?
 
 **Definition:**
 
@@ -97,9 +97,9 @@ Cassandra и Riak: их выбирают в распределённых сис�
 </details>
 
 <details>
-<summary>What does availability mean in CAP Theorem?</summary>
+<summary>Что означает availability mean in CAP theorem?</summary>
 
-### What does availability mean in CAP Theorem?
+### Что означает availability mean in CAP theorem?
 
 **Definition:**
 
@@ -132,9 +132,9 @@ CAP: системе важно стремиться и к согласованн
 </details>
 
 <details>
-<summary>Explain partition tolerance in a distributed system as stated by the CAP Theorem.</summary>
+<summary>Объясните partition tolerance in a distributed system as stated by the CAP theorem.</summary>
 
-### Explain partition tolerance in a distributed system as stated by the CAP Theorem.
+### Объясните partition tolerance in a distributed system as stated by the CAP theorem.
 
 **Definition:**
 
@@ -222,9 +222,9 @@ DynamoDB.get('name')  # Can return either 'Alice' or 'Bob' based on the last upd
 ### Real-World Implications and Trade-offs
 
 <details>
-<summary>Give an example of a real system that favors consistency over availability.</summary>
+<summary>Приведите an example of a real system that favors consistency over availability.</summary>
 
-### Give an example of a real system that favors consistency over availability.
+### Приведите an example of a real system that favors consistency over availability.
 
 **Definition:**
 
@@ -267,9 +267,9 @@ LIMIT 1;
 </details>
 
 <details>
-<summary>Can you name a system that prefers availability over consistency?</summary>
+<summary>Можете ли вы name a system that prefers availability over consistency?</summary>
 
-### Can you name a system that prefers availability over consistency?
+### Можете ли вы name a system that prefers availability over consistency?
 
 **Definition:**
 
@@ -319,9 +319,9 @@ myEntityMapper.setDefaultSaveOptions(Mapper.Option.consistencyLevel(ConsistencyL
 </details>
 
 <details>
-<summary>What is meant by “eventual consistency” in the context of CAP Theorem?</summary>
+<summary>Что такое meant by “eventual consistency” in the context of CAP theorem?</summary>
 
-### What is meant by “eventual consistency” in the context of CAP Theorem?
+### Что такое meant by “eventual consistency” in the context of CAP theorem?
 
 **Definition:**
 
@@ -393,9 +393,9 @@ class ShoppingCart:
 </details>
 
 <details>
-<summary>What trade-offs you might have to make in a distributed system design due to the CAP Theorem.</summary>
+<summary>Какие trade-offs придётся сделать в distributed system design из-за CAP Theorem.</summary>
 
-### What trade-offs you might have to make in a distributed system design due to the CAP Theorem.
+### Какие trade-offs придётся сделать в distributed system design из-за CAP Theorem.
 
 **Definition:**
 
@@ -454,9 +454,9 @@ class ShoppingCart:
 ### Designing with CAP in Mind
 
 <details>
-<summary>How would you design a system that requires high availability and what trade-offs would you have to make according to the CAP Theorem?</summary>
+<summary>Как бы вы design a system that requires high availability and what trade-offs would you have to make according to the CAP theorem?</summary>
 
-### How would you design a system that requires high availability and what trade-offs would you have to make according to the CAP Theorem?
+### Как бы вы design a system that requires high availability and what trade-offs would you have to make according to the CAP theorem?
 
 **Definition:**
 
@@ -491,9 +491,9 @@ class ShoppingCart:
 </details>
 
 <details>
-<summary>If a system is experiencing a partition (network failure), what strategies can you employ to maintain service?</summary>
+<summary>Если система испытывает partition (network failure), какие стратегии помогут поддержать service?</summary>
 
-### If a system is experiencing a partition (network failure), what strategies can you employ to maintain service?
+### Если система испытывает partition (network failure), какие стратегии помогут поддержать service?
 
 **Definition:**
 
@@ -553,9 +553,9 @@ except UnavailableException:
 </details>
 
 <details>
-<summary>Considering the CAP Theorem, how would you approach building a distributed system that handles sensitive financial transactions?</summary>
+<summary>Учитывая CAP Theorem, как вы подойдёте к построению distributed system для sensitive financial transactions?</summary>
 
-### Considering the CAP Theorem, how would you approach building a distributed system that handles sensitive financial transactions?
+### Учитывая CAP Theorem, как вы подойдёте к построению distributed system для sensitive financial transactions?
 
 **Definition:**
 
@@ -635,9 +635,9 @@ public class QuorumBasedConsistency {
 ### CAP in Practice
 
 <details>
-<summary>Describe a scenario where a system may switch from being CA to AP during its operation due to external factors.</summary>
+<summary>Опишите a scenario where a system may switch from being CA to AP during its operation due to external factors.</summary>
 
-### Describe a scenario where a system may switch from being CA to AP during its operation due to external factors.
+### Опишите a scenario where a system may switch from being CA to AP during its operation due to external factors.
 
 **Definition:**
 
@@ -676,9 +676,9 @@ public class QuorumBasedConsistency {
 </details>
 
 <details>
-<summary>How do quorums help in achieving consistency or availability in distributed systems, and how is this related to CAP Theorem?</summary>
+<summary>Как quorums help in achieving consistency or availability in distributed systems, and how is this related to CAP theorem?</summary>
 
-### How do quorums help in achieving consistency or availability in distributed systems, and how is this related to CAP Theorem?
+### Как quorums help in achieving consistency or availability in distributed systems, and how is this related to CAP theorem?
 
 **Definition:**
 
@@ -752,9 +752,9 @@ class DistributedSet:
 </details>
 
 <details>
-<summary>How do modern databases like Cassandra or DynamoDB address the challenges posed by the CAP Theorem?</summary>
+<summary>Как modern dataBASEs like Cassandra or DynamoDB address the challenges posed by the CAP theorem?</summary>
 
-### How do modern databases like Cassandra or DynamoDB address the challenges posed by the CAP Theorem?
+### Как modern dataBASEs like Cassandra or DynamoDB address the challenges posed by the CAP theorem?
 
 **Definition:**
 
@@ -803,9 +803,9 @@ DynamoDB
 ### Advanced Understanding of CAP
 
 <details>
-<summary>Explain how concepts like idempotency, commutativity, and convergence are important in designs that are influenced by the CAP Theorem.</summary>
+<summary>Объясните how concepts like idempotency, commutativity, and convergence are important in designs that are influenced by the CAP theorem.</summary>
 
-### Explain how concepts like idempotency, commutativity, and convergence are important in designs that are influenced by the CAP Theorem.
+### Объясните how concepts like idempotency, commutativity, and convergence are important in designs that are influenced by the CAP theorem.
 
 **Definition:**
 

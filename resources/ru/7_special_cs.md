@@ -278,12 +278,12 @@ Procedures + shared RAM — the ancestor of modules, not a good default for app 
 Comparison of object-oriented and functional composition styles — objects encapsulate state vs functions transform immutable data.
 
 
-| OOP | FP |
-| --- | ----- |
-| Unit of composition | Object | Function |
-| State | Encapsulated in objects | Avoided or isolated |
-| Extension | Inheritance / interfaces | Composition + HOFs |
-| Best for | Entity-rich domains | Data pipelines, transforms |
+| | OOP | FP |
+| | --- | ----- |
+| | Unit of composition | Object | Function |
+| | State | Encapsulated in objects | Avoided or isolated |
+| | Extension | Inheritance / interfaces | Composition + HOFs |
+| | Best for | Entity-rich domains | Data pipelines, transforms |
 
 **How it works:**
 

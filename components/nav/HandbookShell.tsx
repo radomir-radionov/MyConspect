@@ -8,6 +8,7 @@ import {
   useState,
   type PointerEvent,
 } from "react";
+import { usePathname } from "next/navigation";
 import { SearchQueryContext } from "@/components/search";
 import { HANDBOOK_MAIN_ID, HANDBOOK_NAV_ASIDE_ID } from "@/constants";
 import { ContentBreadcrumbs } from "./ContentBreadcrumbs";
@@ -25,7 +26,7 @@ import { useResetMainScroll } from "./useResetMainScroll";
 import { useSidebarCollapsed } from "./useSidebarCollapsed";
 import { useHandbookShortcuts } from "./useHandbookShortcuts";
 import type { ChromeCopy, NavRootSection } from "@/lib/nav";
-import { allNavGroups } from "@/lib/nav/sections";
+import { allNavGroups, navGroupsForPath } from "@/lib/nav/sections";
 
 const SIDEBAR_MOTION =
   "transition-[width,transform,box-shadow] duration-200 ease-out motion-reduce:transition-none";
@@ -55,7 +56,12 @@ export function HandbookShell({
   lastUpdatedLabel: string;
   children: React.ReactNode;
 }) {
+  const pathname = usePathname() ?? "/";
   const groups = useMemo(() => allNavGroups(sections), [sections]);
+  const sectionGroups = useMemo(
+    () => navGroupsForPath(sections, pathname),
+    [sections, pathname],
+  );
   const { navOpen, closeNav, toggleNav, openNav } = useMobileNav();
   const { collapsed, expandSidebar, toggleSidebar } = useSidebarCollapsed();
   const [searchSheetDismissed, setSearchSheetDismissed] = useState(false);
@@ -76,7 +82,7 @@ export function HandbookShell({
     clearQuery,
     changeMode,
     commitSearchLocation,
-  } = useHandbookSearch(groups, revealSearchNav);
+  } = useHandbookSearch(sectionGroups, revealSearchNav);
   const selectNavResult = useCallback(() => {
     dismissNav();
     commitSearchLocation();

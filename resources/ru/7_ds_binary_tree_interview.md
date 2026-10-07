@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Binary Tree](https://devinterview.io/questio
 ### Fundamental Tree Concepts
 
 <details>
-<summary>What is a Tree Data Structure?</summary>
+<summary>Что такое Tree Data Structure?</summary>
 
-### What is a Tree Data Structure?
+### Что такое Tree Data Structure?
 
 **Definition:**
 
@@ -37,9 +37,9 @@ Questions from [Devinterview.io — Binary Tree](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>What is a Binary Tree?</summary>
+<summary>Что такое binary tree?</summary>
 
-### What is a Binary Tree?
+### Что такое binary tree?
 
 **Definition:**
 
@@ -56,9 +56,9 @@ Questions from [Devinterview.io — Binary Tree](https://devinterview.io/questio
 ### Specific Tree Types and Data Structures
 
 <details>
-<summary>What is Binary Heap?</summary>
+<summary>Что такое Binary heap?</summary>
 
-### What is Binary Heap?
+### Что такое Binary heap?
 
 **Definition:**
 
@@ -73,9 +73,9 @@ Questions from [Devinterview.io — Binary Tree](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>What is a Binary Search Tree?</summary>
+<summary>Что такое Binary Search Tree?</summary>
 
-### What is a Binary Search Tree?
+### Что такое Binary Search Tree?
 
 **Definition:**
 
@@ -94,9 +94,9 @@ Questions from [Devinterview.io — Binary Tree](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>What is AVL Tree? How to Balance it?</summary>
+<summary>Что такое AVL tree? How to Balance it?</summary>
 
-### What is AVL Tree? How to Balance it?
+### Что такое AVL tree? How to Balance it?
 
 **Definition:**
 
@@ -111,9 +111,9 @@ AVL-дерево — двоичное дерево поиска, в которо
 </details>
 
 <details>
-<summary>What is a Red-Black Tree?</summary>
+<summary>Что такое red-black tree?</summary>
 
-### What is a Red-Black Tree?
+### Что такое red-black tree?
 
 **Definition:**
 
@@ -128,9 +128,9 @@ AVL-дерево — двоичное дерево поиска, в которо
 </details>
 
 <details>
-<summary>How is an AVL Tree different from a B-Tree?</summary>
+<summary>Как an AVL tree different from a B-tree?</summary>
 
-### How is an AVL Tree different from a B-Tree?
+### Как an AVL tree different from a B-tree?
 
 **Definition:**
 
@@ -145,9 +145,9 @@ AVL — двоичное дерево поиска, сбалансированн
 </details>
 
 <details>
-<summary>How can a Fenwick Tree (Binary Indexed Tree) be beneficial in algorithm design?</summary>
+<summary>Как дерево Фенвика (бинарное индексированное дерево) может быть полезным при разработке алгоритма?</summary>
 
-### How can a Fenwick Tree (Binary Indexed Tree) be beneficial in algorithm design?
+### Как дерево Фенвика (бинарное индексированное дерево) может быть полезным при разработке алгоритма?
 
 **Definition:**
 
@@ -166,9 +166,9 @@ AVL — двоичное дерево поиска, сбалансированн
 </details>
 
 <details>
-<summary>What is a Segment Tree, and how does it differ from a traditional binary tree in usage and efficiency?</summary>
+<summary>Что такое segment tree, and how does it differ from a traditional binary tree in usage and efficiency?</summary>
 
-### What is a Segment Tree, and how does it differ from a traditional binary tree in usage and efficiency?
+### Что такое segment tree, and how does it differ from a traditional binary tree in usage and efficiency?
 
 **Definition:**
 
@@ -187,9 +187,9 @@ AVL — двоичное дерево поиска, сбалансированн
 </details>
 
 <details>
-<summary>What is a Splay Tree, and how does its splay operation work?</summary>
+<summary>Что такое Splay Tree, and how does its splay operation work?</summary>
 
-### What is a Splay Tree, and how does its splay operation work?
+### Что такое Splay Tree, and how does its splay operation work?
 
 **Definition:**
 
@@ -204,9 +204,9 @@ Splay-дерево — двоичное дерево поиска, которо�
 </details>
 
 <details>
-<summary>Explain the concept and structure of a Ternary Tree.</summary>
+<summary>Объясните концепцию и структуру троичного дерева.</summary>
 
-### Explain the concept and structure of a Ternary Tree.
+### Объясните концепцию и структуру троичного дерева.
 
 **Definition:**
 
@@ -221,9 +221,9 @@ Splay-дерево — двоичное дерево поиска, которо�
 </details>
 
 <details>
-<summary>Describe a Lazy Segment Tree and when it is used over a regular Segment Tree.</summary>
+<summary>Опишите Lazy segment tree AND, когда он используется поверх обычного segment tree.</summary>
 
-### Describe a Lazy Segment Tree and when it is used over a regular Segment Tree.
+### Опишите Lazy segment tree AND, когда он используется поверх обычного segment tree.
 
 **Definition:**
 
@@ -238,9 +238,9 @@ Splay-дерево — двоичное дерево поиска, которо�
 </details>
 
 <details>
-<summary>What is a Treap, and how does it combine the properties of a binary search tree and a heap?</summary>
+<summary>Что такое Treap, and how does it combine the properties of a Binary Search Tree and a heap?</summary>
 
-### What is a Treap, and how does it combine the properties of a binary search tree and a heap?
+### Что такое Treap, and how does it combine the properties of a Binary Search Tree and a heap?
 
 **Definition:**
 
@@ -257,9 +257,9 @@ Splay-дерево — двоичное дерево поиска, которо�
 ### Tree Properties and Operations
 
 <details>
-<summary>What is a Balanced Tree?</summary>
+<summary>Что такое Balanced Tree?</summary>
 
-### What is a Balanced Tree?
+### Что такое Balanced Tree?
 
 **Definition:**
 
@@ -274,9 +274,9 @@ Splay-дерево — двоичное дерево поиска, которо�
 </details>
 
 <details>
-<summary>What are advantages and disadvantages of BST?</summary>
+<summary>Что такое advantages and disadvantages of BST?</summary>
 
-### What are advantages and disadvantages of BST?
+### Что такое advantages and disadvantages of BST?
 
 **Definition:**
 
@@ -291,9 +291,9 @@ BST даёт упорядоченный поиск, преемника и зап
 </details>
 
 <details>
-<summary>How does Inserting or Deleting nodes affect a Red-Black Tree?</summary>
+<summary>Как вставка или удаление узлов влияет на red-black tree?</summary>
 
-### How does Inserting or Deleting nodes affect a Red-Black Tree?
+### Как вставка или удаление узлов влияет на red-black tree?
 
 **Definition:**
 Вставка и удаление могут нарушить правила цвета или равную чёрную высоту. Дерево чинит путь перекраской и поворотами, высота остаётся O(log n), а поиск, вставка и удаление остаются O(log n).
@@ -317,9 +317,9 @@ left 10, right 30
 </details>
 
 <details>
-<summary>What is the time complexity for Insert into Red-Black Tree?</summary>
+<summary>Что такое the time complexity for Insert into red-black tree?</summary>
 
-### What is the time complexity for Insert into Red-Black Tree?
+### Что такое the time complexity for Insert into red-black tree?
 
 **Definition:**
 Вставка в красно-чёрное дерево занимает O(log N) времени. N — число узлов. Спуск — это поиск в BST, а починка на обратном пути не меняет границу.
@@ -349,9 +349,9 @@ def insert(root, key):  # then fix red-red on the path
 </details>
 
 <details>
-<summary>How does tree balancing improve search operation performance in a tree?</summary>
+<summary>Как tree balancing improve search operation performance in a tree?</summary>
 
-### How does tree balancing improve search operation performance in a tree?
+### Как tree balancing improve search operation performance in a tree?
 
 **Definition:**
 Поиск в BST идёт по одному пути от корня к листу и стоит O(h). Баланс держит h равной O(log n). Без него вставки по порядку делают цепочку, и поиск стоит O(n).
@@ -375,9 +375,9 @@ def insert(root, key):  # then fix red-red on the path
 </details>
 
 <details>
-<summary>Discuss the concept of immutable binary trees and its implications in functional programming.</summary>
+<summary>Обсудите концепцию неизменяемого binary trees и ее значение в функциональном программировании.</summary>
 
-### Discuss the concept of immutable binary trees and its implications in functional programming.
+### Обсудите концепцию неизменяемого binary trees и ее значение в функциональном программировании.
 
 **Definition:**
 Неизменяемое двоичное дерево не меняет узел на месте. Обновление строит новый корень. Поддеревья, которых обновление не коснулось, общие со старым корнем, поэтому прежняя версия остаётся верной.
@@ -407,9 +407,9 @@ def insert(node, key):
 ### Comparisons Between Tree Varieties
 
 <details>
-<summary>Explain the difference between Binary Tree and Binary Search Tree.</summary>
+<summary>Объясните разницу между binary tree и binary search tree.</summary>
 
-### Explain the difference between Binary Tree and Binary Search Tree.
+### Объясните разницу между binary tree и binary search tree.
 
 **Definition:**
 У узла двоичного дерева не больше двух детей и нет порядка ключей. BST — двоичное дерево, в левом поддереве которого ключи меньше, в правом больше, и то же правило действует в каждом поддереве.
@@ -433,9 +433,9 @@ def insert(node, key):
 </details>
 
 <details>
-<summary>What is the difference between Heap and Red-Black Tree?</summary>
+<summary>Что такое the difference between heap and red-black tree?</summary>
 
-### What is the difference between Heap and Red-Black Tree?
+### Что такое the difference between heap and red-black tree?
 
 **Definition:**
 Двоичная куча — полное двоичное дерево с порядком кучи: в max-куче родитель не меньше детей, в min-куче не больше. Красно-чёрное дерево — BST с правилами цвета. Куча быстро находит крайний ключ. Красно-чёрное дерево быстро находит произвольный ключ.
@@ -460,9 +460,9 @@ def insert(node, key):
 </details>
 
 <details>
-<summary>Compare Trie vs. Binary Search Trie.</summary>
+<summary>Сравните trie и binary search trie.</summary>
 
-### Compare Trie vs. Binary Search Trie.
+### Сравните trie и binary search trie.
 
 **Definition:**
 Trie хранит по символу на ребре, поэтому слово длины n — это путь из n шагов. Вставка и поиск — O(n) по этой длине. BST хранит целый ключ в узле и ищет за O(h), что становится O(n), если дерево перекошено.
@@ -488,9 +488,9 @@ BST of whole keys compares "cat" and "car" at one node
 </details>
 
 <details>
-<summary>Compare Red-Black Trees and AVL Trees.</summary>
+<summary>Сравните red-black trees AND AVL trees.</summary>
 
-### Compare Red-Black Trees and AVL Trees.
+### Сравните red-black trees AND AVL trees.
 
 **Definition:**
 Оба — BST с высотой O(log n), поэтому поиск, вставка и удаление занимают O(log n). AVL держит высоты двух детей в пределах 1 и поворачивает дерево, как только фактор баланса выходит из {−1, 0, +1}. Красно-чёрное дерево допускает более свободную высоту и чинится цветами.
@@ -516,9 +516,9 @@ BST of whole keys compares "cat" and "car" at one node
 </details>
 
 <details>
-<summary>When standard BSTs might be preferred over AVL Trees?</summary>
+<summary>Когда standard BSTs might be preferred over AVL trees?</summary>
 
-### When standard BSTs might be preferred over AVL Trees?
+### Когда standard BSTs might be preferred over AVL trees?
 
 **Definition:**
 Обычного BST хватает, когда высота и так мала, и лишние повороты AVL не окупаются. Поиск, вставка и удаление в любом случае O(h). AVL тратит повороты, чтобы удержать h равной O(log n).
@@ -543,9 +543,9 @@ BST of whole keys compares "cat" and "car" at one node
 </details>
 
 <details>
-<summary>Compare the performance of a Splay Tree versus a Red-Black Tree under various operations.</summary>
+<summary>Сравните производительность дерева Splay с red-black tree при различных операциях.</summary>
 
-### Compare the performance of a Splay Tree versus a Red-Black Tree under various operations.
+### Сравните производительность дерева Splay с red-black tree при различных операциях.
 
 **Definition:**
 Splay-дерево поднимает запрошенный узел в корень. Одна операция может занять O(n). На последовательности статья указывает среднее O(log n) на операцию. Красно-чёрное дерево ограничивает каждый поиск, вставку и удаление худшим случаем O(log n).
@@ -571,9 +571,9 @@ Splay-дерево поднимает запрошенный узел в кор�
 </details>
 
 <details>
-<summary>How does a B+ Tree differ from a B-Tree and in what situations might it be preferred?</summary>
+<summary>Чем B +-дерево отличается от B-дерева и в каких ситуациях оно может быть предпочтительнее?</summary>
 
-### How does a B+ Tree differ from a B-Tree and in what situations might it be preferred?
+### Чем B +-дерево отличается от B-дерева и в каких ситуациях оно может быть предпочтительнее?
 
 **Definition:**
 B-дерево хранит ключи и данные и во внутренних узлах, и в листьях. B+ дерево хранит данные только в листьях. Внутренние узлы держат ключи для навигации, а листья связаны в список. Просмотры диапазона предпочитают B+ дерево. Точечное обновление, которое может остановиться во внутреннем узле, — случай B-дерева.
@@ -600,9 +600,9 @@ B-дерево хранит ключи и данные и во внутренн�
 ### Tree Implementations and Traversals
 
 <details>
-<summary>Name some ways to implement Priority Queue.</summary>
+<summary>Назовите some ways to implement priority queue.</summary>
 
-### Name some ways to implement Priority Queue.
+### Назовите some ways to implement priority queue.
 
 **Definition:**
 Очередь с приоритетом следующей извлекает наименьший или наибольший ключ. Двоичная куча делает вставку и извлечение за O(log n) и просмотр корня за O(1). Сбалансированное BST, например красно-чёрное дерево, делает вставку, поиск минимума и удаление минимума за O(log n) по границам упорядоченных ключей.
@@ -626,9 +626,9 @@ B-дерево хранит ключи и данные и во внутренн�
 </details>
 
 <details>
-<summary>Classify Tree Traversal Algorithms.</summary>
+<summary>Классифицируйте алгоритмы обхода дерева.</summary>
 
-### Classify Tree Traversal Algorithms.
+### Классифицируйте алгоритмы обхода дерева.
 
 **Definition:**
 Обходы бывают в глубину и в ширину. В глубину: прямой (узел, левый, правый), симметричный (левый, узел, правый) и обратный (левый, правый, узел). В ширину — по уровням, уровень за уровнем через очередь.
@@ -656,9 +656,9 @@ B-дерево хранит ключи и данные и во внутренн�
 </details>
 
 <details>
-<summary>Implement Pre-order Traversal of Binary Tree using Recursion.</summary>
+<summary>Реализуйте pre-order TraveRSAl of binary tree using recursion.</summary>
 
-### Implement Pre-order Traversal of Binary Tree using Recursion.
+### Реализуйте pre-order TraveRSAl of binary tree using recursion.
 
 **Definition:**
 Прямой обход посещает узел, затем левое поддерево, затем правое. Рекурсивная функция записывает узел и делает эти два вызова. Пустой ребёнок сразу возвращается.
@@ -685,9 +685,9 @@ def preorder(node):
 </details>
 
 <details>
-<summary>Implement Iterative Pre-order Traversal of a Binary Tree without Recursion.</summary>
+<summary>Реализуйте Iterative pre-order TraveRSAl of a binary tree without recursion.</summary>
 
-### Implement Iterative Pre-order Traversal of a Binary Tree without Recursion.
+### Реализуйте Iterative pre-order TraveRSAl of a binary tree without recursion.
 
 **Definition:**
 Корень кладётся в стек. Узел снимается и записывается, затем кладутся правый ребёнок и левый. Следующим снимается левый. Обход Морриса убирает стек, временно прошивая узел с его предшественником.
@@ -715,9 +715,9 @@ while st:
 </details>
 
 <details>
-<summary>Convert a Binary Tree into a Doubly Linked List.</summary>
+<summary>Преобразование binary tree в список doubly linked.</summary>
 
-### Convert a Binary Tree into a Doubly Linked List.
+### Преобразование binary tree в список doubly linked.
 
 **Definition:**
 Симметричный обход идёт «левый, узел, правый». Левый указатель каждого узла направляется на предыдущий узел обхода, а правый указатель предыдущего — на текущий. Первый узел обхода — голова списка.
@@ -748,9 +748,9 @@ def join(node):
 </details>
 
 <details>
-<summary>Build a Binary Expression Tree for the given expression.</summary>
+<summary>Постройте binary tree выражений fOR заданное выражение.</summary>
 
-### Build a Binary Expression Tree for the given expression.
+### Постройте binary tree выражений fOR заданное выражение.
 
 **Definition:**
 Дерево выражения хранит оператор во внутреннем узле и операнд в листе. Симметричный обход со скобками печатает выражение. Статья строит дерево проходом по постфиксной записи: операнды становятся листьями, оператор снимает два дерева и становится их родителем.
@@ -774,9 +774,9 @@ def join(node):
 </details>
 
 <details>
-<summary>What is Morris Traversal for a Tree? How to implement one?</summary>
+<summary>Что такое Morris TraveRSAl for a Tree? How to implement one?</summary>
 
-### What is Morris Traversal for a Tree? How to implement one?
+### Что такое Morris TraveRSAl for a Tree? How to implement one?
 
 **Definition:**
 Обход Морриса проходит двоичное дерево без стека и без рекурсии. Пустой правый указатель симметричного предшественника временно направляется на узел. Когда эта нить встречается второй раз, она снимается, и узел обрабатывается. Прошитое дерево — та же связь, только постоянная, а не временная.
@@ -803,9 +803,9 @@ def join(node):
 </details>
 
 <details>
-<summary>Explain how to perform level-order traversal in a binary tree and its applications.</summary>
+<summary>Объясните, как выполнять упорядочивание уровней traversal в binary tree и его приложениях.</summary>
 
-### Explain how to perform level-order traversal in a binary tree and its applications.
+### Объясните, как выполнять упорядочивание уровней traversal в binary tree и его приложениях.
 
 **Definition:**
 Обход по уровням посещает корень, затем обоих детей, затем их детей. Очередь держит следующие узлы. Рекурсивная форма на той же странице группирует узлы по глубине. В обоих случаях каждый узел посещается один раз.
@@ -833,9 +833,9 @@ while q:
 </details>
 
 <details>
-<summary>Describe the use of BFS and DFS in binary trees and how they relate to tree traversals.</summary>
+<summary>Описать использование BFS и DFS в binary trees и то, как они связаны с древовидными traversal.</summary>
 
-### Describe the use of BFS and DFS in binary trees and how they relate to tree traversals.
+### Описать использование BFS и DFS в binary trees и то, как они связаны с древовидными traversal.
 
 **Definition:**
 Поиск в ширину на двоичном дереве — это обход по уровням: очередь раскрывает обоих детей после узла. Поиск в глубину — прямой, симметричный или обратный обход: стек вызовов или явный стек заканчивает одно поддерево раньше другого.
@@ -863,9 +863,9 @@ while q:
 ### Advanced Tree Concepts and Applications
 
 <details>
-<summary>Implement a Map data structure using Binary Search Tree.</summary>
+<summary>Реализуйте a Map data structure using Binary Search Tree.</summary>
 
-### Implement a Map data structure using Binary Search Tree.
+### Реализуйте a Map data structure using Binary Search Tree.
 
 **Definition:**
 Такое отображение хранит ключ и значение в каждом узле BST. Поиск, вставка и обновление идут по одному пути: влево, если ключ меньше, вправо, если больше. Статья о BST указывает этот поиск как O(h) по времени.
@@ -895,9 +895,9 @@ def get(node, key):
 </details>
 
 <details>
-<summary>Explain the process of Tree Rotation and its use cases.</summary>
+<summary>Объясните процесс вращения дерева и варианты его использования.</summary>
 
-### Explain the process of Tree Rotation and its use cases.
+### Объясните процесс вращения дерева и варианты его использования.
 
 **Definition:**
 Поворот переписывает три детских указателя: один узел поднимается, а симметричный порядок BST не меняется. AVL и красно-чёрные деревья делают это после вставки или удаления, если форма стала слишком высокой. Статья об удалении в AVL говорит, что левый или правый поворот занимает постоянное время, потому что меняются лишь несколько указателей.
@@ -926,9 +926,9 @@ def get(node, key):
 </details>
 
 <details>
-<summary>Discuss the concept of Threaded Binary Trees.</summary>
+<summary>Обсудите концепцию Threaded binary trees.</summary>
 
-### Discuss the concept of Threaded Binary Trees.
+### Обсудите концепцию Threaded binary trees.
 
 **Definition:**
 Прошитое двоичное дерево хранит симметричного предшественника или преемника в детском указателе, который иначе был бы пуст. Обход Морриса пользуется такой нитью только пока идёт обход, а потом снимает её. Постоянная нить позволяет следующему шагу симметричного обхода идти по указателю, а не по стеку.
@@ -955,9 +955,9 @@ def get(node, key):
 </details>
 
 <details>
-<summary>In what scenarios would a Recursive Tree Traversal be impractical?</summary>
+<summary>В what scenarios would a Recursive Tree TraveRSAl be impractical?</summary>
 
-### In what scenarios would a Recursive Tree Traversal be impractical?
+### В what scenarios would a Recursive Tree TraveRSAl be impractical?
 
 **Definition:**
 Рекурсивный обход непрактичен, когда глубина может достичь n: каждый вызов держит кадр, а вопросы к собеседованию ограничивают эту дополнительную память как O(n) в худшем случае. Дерево-цепочка — именно этот случай. Стек вызовов переполняется раньше, чем обход кончается.
@@ -983,9 +983,9 @@ def get(node, key):
 </details>
 
 <details>
-<summary>Discuss the Space Complexity for storing a binary tree.</summary>
+<summary>Обсудите space complexity для хранения binary tree.</summary>
 
-### Discuss the Space Complexity for storing a binary tree.
+### Обсудите space complexity для хранения binary tree.
 
 **Definition:**
 Хранение двоичного дерева занимает память, пропорциональную числу узлов. Статья сравнения указывает O(n) для двоичного дерева и O(n) для BST. В узле значение и две детские ссылки. Биты баланса или цвет — постоянный множитель сверху.
@@ -1008,9 +1008,9 @@ def get(node, key):
 </details>
 
 <details>
-<summary>How to determine if a given binary tree is a full binary tree?</summary>
+<summary>Как determine if a given binary tree is a full binary tree?</summary>
 
-### How to determine if a given binary tree is a full binary tree?
+### Как determine if a given binary tree is a full binary tree?
 
 **Definition:**
 В полном двоичном дереве у каждого узла либо ноль детей, либо два. Один ребёнок делает дерево неполным. Проверка обходит каждый узел и отвергает первый, у которого ровно один ребёнок.
@@ -1039,9 +1039,9 @@ def is_full(node):
 </details>
 
 <details>
-<summary>What are the characteristics of a perfect binary tree and how do you identify one?</summary>
+<summary>Что такое the characteristics of a perfect binary tree and how do you identify one?</summary>
 
-### What are the characteristics of a perfect binary tree and how do you identify one?
+### Что такое the characteristics of a perfect binary tree and how do you identify one?
 
 **Definition:**
 Идеальное двоичное дерево заполнено на каждом уровне. У каждого внутреннего узла два ребёнка, и все листья на одном уровне. Статья указывает число листьев 2^h, число внутренних узлов 2^h − 1, общее число 2^(h+1) − 1 и высоту log(n + 1) − 1.
@@ -1070,9 +1070,9 @@ def is_perfect(node, level, leaf_level):
 </details>
 
 <details>
-<summary>How can you serialize and deserialize a binary tree?</summary>
+<summary>Как можно совместить serialize и deserialize с binary tree?</summary>
 
-### How can you serialize and deserialize a binary tree?
+### Как можно совместить serialize и deserialize с binary tree?
 
 **Definition:**
 Сериализация пишет узлы фиксированным обходом и пишет −1 для пустого ребёнка. Десериализация читает эту последовательность и восстанавливает те же связи. Прямой обход делает это рекурсией. Обход по уровням делает это очередью. Оба варианта — O(n) по времени и O(n) по памяти.
@@ -1099,9 +1099,9 @@ def serialize(node, out):
 </details>
 
 <details>
-<summary>How to check if a binary tree is height-balanced?</summary>
+<summary>Как check if a binary tree is height-balanced?</summary>
 
-### How to check if a binary tree is height-balanced?
+### Как check if a binary tree is height-balanced?
 
 **Definition:**
 Дерево сбалансировано по высоте, если в каждом узле высоты левого и правого поддеревьев отличаются не больше чем на единицу и оба поддерева тоже сбалансированы. Проверка за один проход возвращает сразу высоту и флаг баланса.
@@ -1129,9 +1129,9 @@ def check(node):
 </details>
 
 <details>
-<summary>Describe the application of Binary Trees in networking (e.g., routing, addressing).</summary>
+<summary>Опишите применение binary trees в сети (например, маршрутизация, адресация).</summary>
 
-### Describe the application of Binary Trees in networking (e.g., routing, addressing).
+### Опишите применение binary trees в сети (например, маршрутизация, адресация).
 
 **Definition:**
 Поиск маршрута идёт по двоичному trie битов адреса. Налево — 0, направо — 1, и самый длинный префикс, помеченный как маршрут, и есть совпадение. Статья о trie указывает проход по ключу длины n как O(n) по времени.
@@ -1154,9 +1154,9 @@ def check(node):
 </details>
 
 <details>
-<summary>Explain the concept of Path Sum in a binary tree and how it is calculated.</summary>
+<summary>Объясните концепцию суммы пути в binary tree и как она вычисляется.</summary>
 
-### Explain the concept of Path Sum in a binary tree and how it is calculated.
+### Объясните концепцию суммы пути в binary tree и как она вычисляется.
 
 **Definition:**
 Сумма пути от корня к листу складывает значения от корня вниз до листа. Текущее значение вычитается, и рекурсия идёт в каждого ребёнка. Лист подходит, если оставшаяся цель равна значению листа. Форма одного прохода — это проверка баланса: O(n) по времени и O(h) по памяти.
@@ -1185,9 +1185,9 @@ def has_path(node, target):
 </details>
 
 <details>
-<summary>Find the lowest common ancestor (LCA) of two nodes in a binary tree.</summary>
+<summary>Найдите наименьшего общего предка (LCA) двух узлов в binary tree.</summary>
 
-### Find the lowest common ancestor (LCA) of two nodes in a binary tree.
+### Найдите наименьшего общего предка (LCA) двух узлов в binary tree.
 
 **Definition:**
 LCA — самый глубокий узел, для которого обе цели являются потомками; узел считается потомком самого себя. У обычного двоичного дерева нет порядка BST, поэтому поиск смотрит в обе стороны. Ожидаемый один проход возвращает узел, как только стороны расходятся.
@@ -1216,9 +1216,9 @@ def lca(node, a, b):
 </details>
 
 <details>
-<summary>Can a binary tree be reconstructed from its inorder and preorder (or postorder) traversals?</summary>
+<summary>Можно ли восстановить binary tree из его inorder и preorder (или postorder) обходов?</summary>
 
-### Can a binary tree be reconstructed from its inorder and preorder (or postorder) traversals?
+### Можно ли восстановить binary tree из его inorder и preorder (или postorder) обходов?
 
 **Definition:**
 Да, если ключи уникальны. Первое значение прямого обхода — корень. Индекс этого ключа в массиве симметричного обхода отделяет левое поддерево от правого. То же правило собирает каждую сторону. Обратный обход берёт корнем последнее значение, а не первое.
@@ -1243,9 +1243,9 @@ def build(pre, inorder, idx):
 </details>
 
 <details>
-<summary>Implement a function to check if a binary tree is symmetric (a mirror image of itself).</summary>
+<summary>Реализуйте a function to check if a binary tree is symmetric (a mirror image of itself).</summary>
 
-### Implement a function to check if a binary tree is symmetric (a mirror image of itself).
+### Реализуйте a function to check if a binary tree is symmetric (a mirror image of itself).
 
 **Definition:**
 Дерево симметрично, когда левое поддерево — зеркало правого. Два узла зеркальны, если их значения равны, левый ребёнок одного зеркалит правого ребёнка другого, а правый ребёнок одного — левого ребёнка другого. Один DFS в статье об идеальном дереве, рекурсивная проверка каждого узла, занимает O(n) времени и O(h) памяти.
@@ -1272,9 +1272,9 @@ def symmetric(root):
 </details>
 
 <details>
-<summary>Describe how binary trees can be used in decision-making processes (e.g., decision trees in AI).</summary>
+<summary>Опишите, как binary trees можно использовать в процессах принятия решений (например, decision tree в искусственном интеллекте).</summary>
 
-### Describe how binary trees can be used in decision-making processes (e.g., decision trees in AI).
+### Опишите, как binary trees можно использовать в процессах принятия решений (например, decision tree в искусственном интеллекте).
 
 **Definition:**
 Дерево решений — модель обучения с учителем для классификации или регрессии. Внутренние узлы — проверки признаков, ветви — ответы, листья — прогноз. Статья строит его рекурсивными разрезами: выбирается признак с наибольшим приростом информации, затем каждый ребёнок строится на подмножестве, ушедшем по этой ветви.
@@ -1301,9 +1301,9 @@ def symmetric(root):
 </details>
 
 <details>
-<summary>Discuss the role of binary trees in garbage collection algorithms like the mark-and-sweep algorithm.</summary>
+<summary>Обсудите роль binary trees в алгоритмах сбора мусора GAR, таких как алгоритм разметки и зачистки.</summary>
 
-### Discuss the role of binary trees in garbage collection algorithms like the mark-and-sweep algorithm.
+### Обсудите роль binary trees в алгоритмах сбора мусора GAR, таких как алгоритм разметки и зачистки.
 
 **Definition:**
 Пометка и очистка освобождает объекты кучи, до которых программа уже не доходит. Фаза пометки — поиск в глубину от корней по ссылкам объектов, и она ставит бит пометки каждому достижимому объекту. Фаза очистки просматривает кучу и освобождает каждый объект, у которого бит всё ещё ложен. Граф объектов не обязан быть двоичным деревом; двоичное дерево — частный случай, где у объекта две детские ссылки.
@@ -1331,9 +1331,9 @@ def mark(obj):
 </details>
 
 <details>
-<summary>Explain how trie data structures are used in implementing autocomplete features.</summary>
+<summary>Объясните, как структуры данных Trie используются при реализации функций autocomplete.</summary>
 
-### Explain how trie data structures are used in implementing autocomplete features.
+### Объясните, как структуры данных Trie используются при реализации функций autocomplete.
 
 **Definition:**
 Автодополнение вставляет каждое слово в trie, по символу на шаг. Запрос проходит по уже набранным символам. Каждое слово под этим узлом — вариант завершения. Статья об автодополнении указывает время O(N · L), где N — число слов, а L — длина самого длинного слова.
@@ -1358,9 +1358,9 @@ def mark(obj):
 </details>
 
 <details>
-<summary>What is Huffman Coding, and how is a binary tree used in this compression technique?</summary>
+<summary>Что такое Huffman Coding, and how is a binary tree used in this compression technique?</summary>
 
-### What is Huffman Coding, and how is a binary tree used in this compression technique?
+### Что такое Huffman Coding, and how is a binary tree used in this compression technique?
 
 **Definition:**
 Кодирование Хаффмана строит двоичное дерево частот символов. На каждом шаге два самых редких узла соединяются под новым родителем, частота которого — их сумма. Левое ребро — бит 0, правое — бит 1. Путь от корня к листу — код символа. Статья указывает время O(n log n), где n — число различных символов, и память O(n).

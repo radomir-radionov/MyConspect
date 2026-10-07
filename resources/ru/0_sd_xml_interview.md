@@ -21,9 +21,9 @@ Questions from [Devinterview.io — XML](https://devinterview.io/questions/softw
 ### XML Fundamentals
 
 <details>
-<summary>What is XML and what does it stand for?</summary>
+<summary>Что такое XML and what does it stand for?</summary>
 
-### What is XML and what does it stand for?
+### Что такое XML and what does it stand for?
 
 **Definition:**
 
@@ -48,9 +48,9 @@ XML расшифровывается как Extensible Markup Language. Это �
 </details>
 
 <details>
-<summary>What are the key features and benefits of XML?</summary>
+<summary>Что такое the key features and benefits of XML?</summary>
 
-### What are the key features and benefits of XML?
+### Что такое the key features and benefits of XML?
 
 **Definition:**
 
@@ -72,9 +72,9 @@ XML — самоописывающее дерево в простом текст
 </details>
 
 <details>
-<summary>Explain the difference between XML and HTML.</summary>
+<summary>Объясните the difference between XML and HTML.</summary>
 
-### Explain the difference between XML and HTML.
+### Объясните the difference between XML and HTML.
 
 **Definition:**
 
@@ -99,9 +99,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>What is an XML document and what are its main components?</summary>
+<summary>Что такое XML document and what are its main components?</summary>
 
-### What is an XML document and what are its main components?
+### Что такое XML document and what are its main components?
 
 **Definition:**
 
@@ -129,9 +129,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>Describe the structure of an XML element.</summary>
+<summary>Опишите the structure of an XML element.</summary>
 
-### Describe the structure of an XML element.
+### Опишите the structure of an XML element.
 
 **Definition:**
 
@@ -158,9 +158,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>What is the purpose of XML attributes?</summary>
+<summary>Что такое the puRPOse of XML attributes?</summary>
 
-### What is the purpose of XML attributes?
+### Что такое the puRPOse of XML attributes?
 
 **Definition:**
 
@@ -187,9 +187,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>Explain the concept of XML namespaces.</summary>
+<summary>Объясните the concept of XML namespaces.</summary>
 
-### Explain the concept of XML namespaces.
+### Объясните the concept of XML namespaces.
 
 **Definition:**
 
@@ -217,9 +217,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>What is the difference between well-formed and valid XML?</summary>
+<summary>Что такое the difference between well-formed and valid XML?</summary>
 
-### What is the difference between well-formed and valid XML?
+### Что такое the difference between well-formed and valid XML?
 
 **Definition:**
 
@@ -240,9 +240,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>What is the role of XML declaration in an XML document?</summary>
+<summary>Что такое the role of XML declaration in an XML document?</summary>
 
-### What is the role of XML declaration in an XML document?
+### Что такое the role of XML declaration in an XML document?
 
 **Definition:**
 
@@ -268,9 +268,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>Describe the concept of XML entities and their usage.</summary>
+<summary>Опишите the concept of XML entities and their usage.</summary>
 
-### Describe the concept of XML entities and their usage.
+### Опишите the concept of XML entities and their usage.
 
 **Definition:**
 
@@ -297,9 +297,9 @@ XML — набор средств для определения языков р�
 ### XML Syntax and Structure
 
 <details>
-<summary>What are the rules for naming XML elements and attributes?</summary>
+<summary>Что такое the rules for naming XML elements and attributes?</summary>
 
-### What are the rules for naming XML elements and attributes?
+### Что такое the rules for naming XML elements and attributes?
 
 **Definition:**
 
@@ -323,9 +323,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>Explain the difference between XML elements and attributes.</summary>
+<summary>Объясните the difference between XML elements and attributes.</summary>
 
-### Explain the difference between XML elements and attributes.
+### Объясните the difference between XML elements and attributes.
 
 **Definition:**
 
@@ -353,9 +353,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>What is the purpose of XML comments and how are they represented?</summary>
+<summary>Что такое the puRPOse of XML comments and how are they represented?</summary>
 
-### What is the purpose of XML comments and how are they represented?
+### Что такое the puRPOse of XML comments and how are they represented?
 
 **Definition:**
 
@@ -379,9 +379,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>Describe the concept of XML processing instructions.</summary>
+<summary>Опишите the concept of XML processing instructions.</summary>
 
-### Describe the concept of XML processing instructions.
+### Опишите the concept of XML processing instructions.
 
 **Definition:**
 
@@ -407,9 +407,9 @@ XML — набор средств для определения языков р�
 </details>
 
 <details>
-<summary>What is the difference between an empty element and a self-closing element in XML?</summary>
+<summary>Что такое the difference between an empty element and a self-closing element in XML?</summary>
 
-### What is the difference between an empty element and a self-closing element in XML?
+### Что такое the difference between an empty element and a self-closing element in XML?
 
 **Definition:**
 
@@ -435,9 +435,9 @@ XML-парсер в обоих случаях строит один элемен
 </details>
 
 <details>
-<summary>Explain the concept of XML CDATA sections and their usage.</summary>
+<summary>Объясните the concept of XML CDATA sections and their usage.</summary>
 
-### Explain the concept of XML CDATA sections and their usage.
+### Объясните the concept of XML CDATA sections and their usage.
 
 **Definition:**
 
@@ -464,9 +464,9 @@ XML-парсер в обоих случаях строит один элемен
 </details>
 
 <details>
-<summary>What is the purpose of the XML prolog and what does it contain?</summary>
+<summary>Что такое the puRPOse of the XML prolog and what does it contain?</summary>
 
-### What is the purpose of the XML prolog and what does it contain?
+### Что такое the puRPOse of the XML prolog and what does it contain?
 
 **Definition:**
 
@@ -493,9 +493,9 @@ XML-парсер в обоих случаях строит один элемен
 </details>
 
 <details>
-<summary>Describe the concept of XML character references and their usage.</summary>
+<summary>Опишите the concept of XML character references and their usage.</summary>
 
-### Describe the concept of XML character references and their usage.
+### Опишите the concept of XML character references and their usage.
 
 **Definition:**
 
@@ -523,9 +523,9 @@ XML-парсер в обоих случаях строит один элемен
 </details>
 
 <details>
-<summary>What is the difference between an XML document and an XML fragment?</summary>
+<summary>Что такое the difference between an XML document and an XML fragment?</summary>
 
-### What is the difference between an XML document and an XML fragment?
+### Что такое the difference between an XML document and an XML fragment?
 
 **Definition:**
 
@@ -551,9 +551,9 @@ XML-документ соответствует продукции document: н�
 </details>
 
 <details>
-<summary>Explain the concept of XML whitespace handling.</summary>
+<summary>Объясните the concept of XML whitespace handling.</summary>
 
-### Explain the concept of XML whitespace handling.
+### Объясните the concept of XML whitespace handling.
 
 **Definition:**
 
@@ -575,9 +575,9 @@ XML-документ соответствует продукции document: н�
 ### XML Validation and Schemas
 
 <details>
-<summary>What is XML Schema and its purpose?</summary>
+<summary>Что такое XML Schema and its puRPOse?</summary>
 
-### What is XML Schema and its purpose?
+### Что такое XML Schema and its puRPOse?
 
 **Definition:**
 
@@ -600,9 +600,9 @@ XML-документ соответствует продукции document: н�
 </details>
 
 <details>
-<summary>Explain the difference between XML DTD and XML Schema.</summary>
+<summary>Объясните the difference between XML DTD and XML Schema.</summary>
 
-### Explain the difference between XML DTD and XML Schema.
+### Объясните the difference between XML DTD and XML Schema.
 
 **Definition:**
 
@@ -626,9 +626,9 @@ DTD — язык ограничений из объявления типа до�
 </details>
 
 <details>
-<summary>What are the key components of an XML Schema document?</summary>
+<summary>Что такое the key components of an XML Schema document?</summary>
 
-### What are the key components of an XML Schema document?
+### Что такое the key components of an XML Schema document?
 
 **Definition:**
 
@@ -648,9 +648,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 </details>
 
 <details>
-<summary>Describe the concept of XML Schema data types.</summary>
+<summary>Опишите the concept of XML Schema data types.</summary>
 
-### Describe the concept of XML Schema data types.
+### Опишите the concept of XML Schema data types.
 
 **Definition:**
 
@@ -670,9 +670,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 </details>
 
 <details>
-<summary>What is the purpose of XML Schema elements and attributes?</summary>
+<summary>Что такое the puRPOse of XML Schema elements and attributes?</summary>
 
-### What is the purpose of XML Schema elements and attributes?
+### Что такое the puRPOse of XML Schema elements and attributes?
 
 **Definition:**
 
@@ -696,9 +696,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 </details>
 
 <details>
-<summary>Explain the concept of XML Schema complex types and their usage.</summary>
+<summary>Объясните the concept of XML Schema complex types and their usage.</summary>
 
-### Explain the concept of XML Schema complex types and their usage.
+### Объясните the concept of XML Schema complex types and their usage.
 
 **Definition:**
 
@@ -721,9 +721,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 </details>
 
 <details>
-<summary>What is the difference between XML Schema simple types and complex types?</summary>
+<summary>Что такое the difference between XML Schema simple types and complex types?</summary>
 
-### What is the difference between XML Schema simple types and complex types?
+### Что такое the difference between XML Schema simple types and complex types?
 
 **Definition:**
 
@@ -746,9 +746,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 </details>
 
 <details>
-<summary>Describe the concept of XML Schema facets and their usage.</summary>
+<summary>Опишите the concept of XML Schema facets and their usage.</summary>
 
-### Describe the concept of XML Schema facets and their usage.
+### Опишите the concept of XML Schema facets and their usage.
 
 **Definition:**
 
@@ -771,9 +771,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 </details>
 
 <details>
-<summary>What is the purpose of XML Schema namespace declarations?</summary>
+<summary>Что такое the puRPOse of XML Schema namespace declarations?</summary>
 
-### What is the purpose of XML Schema namespace declarations?
+### Что такое the puRPOse of XML Schema namespace declarations?
 
 **Definition:**
 
@@ -793,9 +793,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 </details>
 
 <details>
-<summary>Explain the concept of XML Schema substitution groups.</summary>
+<summary>Объясните the concept of XML Schema substitution groups.</summary>
 
-### Explain the concept of XML Schema substitution groups.
+### Объясните the concept of XML Schema substitution groups.
 
 **Definition:**
 
@@ -820,9 +820,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 ### XML Parsing and Processing
 
 <details>
-<summary>What is XML parsing and why is it important?</summary>
+<summary>Что такое XML parsing and why is it important?</summary>
 
-### What is XML parsing and why is it important?
+### Что такое XML parsing and why is it important?
 
 **Definition:**
 
@@ -842,9 +842,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 </details>
 
 <details>
-<summary>Explain the difference between DOM and SAX parsing.</summary>
+<summary>Объясните the difference between DOM and SAX parsing.</summary>
 
-### Explain the difference between DOM and SAX parsing.
+### Объясните the difference between DOM and SAX parsing.
 
 **Definition:**
 
@@ -868,9 +868,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 </details>
 
 <details>
-<summary>What are the advantages and disadvantages of using DOM parsing?</summary>
+<summary>Что такое the advantages and disadvantages of using DOM parsing?</summary>
 
-### What are the advantages and disadvantages of using DOM parsing?
+### Что такое the advantages and disadvantages of using DOM parsing?
 
 **Definition:**
 
@@ -894,9 +894,9 @@ XML Schema — это набор компонентов схемы. Те, кот
 </details>
 
 <details>
-<summary>Describe the concept of XML XPath and its usage.</summary>
+<summary>Опишите the concept of XML XPath and its usage.</summary>
 
-### Describe the concept of XML XPath and its usage.
+### Опишите the concept of XML XPath and its usage.
 
 **Definition:**
 
@@ -919,9 +919,9 @@ XPath — язык путей XML. MDN говорит, что он исполь�
 </details>
 
 <details>
-<summary>What is the purpose of XML XSLT and how does it work?</summary>
+<summary>Что такое the puRPOse of XML XSLT and how does it work?</summary>
 
-### What is the purpose of XML XSLT and how does it work?
+### Что такое the puRPOse of XML XSLT and how does it work?
 
 **Definition:**
 
@@ -945,9 +945,9 @@ XSLT — язык преобразования XML-документов в др�
 </details>
 
 <details>
-<summary>Explain the concept of XML DOM traversal and manipulation.</summary>
+<summary>Объясните the concept of XML DOM traveRSAl and manipulation.</summary>
 
-### Explain the concept of XML DOM traversal and manipulation.
+### Объясните the concept of XML DOM traveRSAl and manipulation.
 
 **Definition:**
 
@@ -969,9 +969,9 @@ XSLT — язык преобразования XML-документов в др�
 </details>
 
 <details>
-<summary>What is the difference between XML pull parsing and push parsing?</summary>
+<summary>Что такое the difference between XML pull parsing and push parsing?</summary>
 
-### What is the difference between XML pull parsing and push parsing?
+### Что такое the difference between XML pull parsing and push parsing?
 
 **Definition:**
 
@@ -995,9 +995,9 @@ XSLT — язык преобразования XML-документов в др�
 </details>
 
 <details>
-<summary>Describe the concept of XML streaming and its benefits.</summary>
+<summary>Опишите the concept of XML streaming and its benefits.</summary>
 
-### Describe the concept of XML streaming and its benefits.
+### Опишите the concept of XML streaming and its benefits.
 
 **Definition:**
 
@@ -1022,9 +1022,9 @@ XSLT — язык преобразования XML-документов в др�
 </details>
 
 <details>
-<summary>What is the purpose of XML SAX events and how are they handled?</summary>
+<summary>Что такое the puRPOse of XML SAX events and how are they handled?</summary>
 
-### What is the purpose of XML SAX events and how are they handled?
+### Что такое the puRPOse of XML SAX events and how are they handled?
 
 **Definition:**
 
@@ -1044,9 +1044,9 @@ XSLT — язык преобразования XML-документов в др�
 </details>
 
 <details>
-<summary>Explain the concept of XML StAX (Streaming API for XML) and its usage.</summary>
+<summary>Объясните the concept of XML StAX (Streaming API for XML) and its usage.</summary>
 
-### Explain the concept of XML StAX (Streaming API for XML) and its usage.
+### Объясните the concept of XML StAX (Streaming API for XML) and its usage.
 
 **Definition:**
 
@@ -1072,9 +1072,9 @@ StAX — потоковый API с вытягиванием. `XMLStreamReader` �
 ### XML Technologies and APIs
 
 <details>
-<summary>What is XML DOM (Document Object Model) and its purpose?</summary>
+<summary>Что такое XML DOM (Document Object Model) and its puRPOse?</summary>
 
-### What is XML DOM (Document Object Model) and its purpose?
+### Что такое XML DOM (Document Object Model) and its puRPOse?
 
 **Definition:**
 
@@ -1094,9 +1094,9 @@ DOM — дерево узлов, которое представляет док�
 </details>
 
 <details>
-<summary>Explain the concept of XML SAX (Simple API for XML) and its usage.</summary>
+<summary>Объясните the concept of XML SAX (Simple API for XML) and its usage.</summary>
 
-### Explain the concept of XML SAX (Simple API for XML) and its usage.
+### Объясните the concept of XML SAX (Simple API for XML) and its usage.
 
 **Definition:**
 
@@ -1117,9 +1117,9 @@ SAX — событийный API. Разборщик читает докумен
 </details>
 
 <details>
-<summary>What is XML JAXP (Java API for XML Processing) and its key components?</summary>
+<summary>Что такое XML JAXP (Java API for XML Processing) and its key components?</summary>
 
-### What is XML JAXP (Java API for XML Processing) and its key components?
+### Что такое XML JAXP (Java API for XML Processing) and its key components?
 
 **Definition:**
 
@@ -1141,9 +1141,9 @@ JAXP — API Java SE для обработки XML. Части, которые �
 </details>
 
 <details>
-<summary>Describe the concept of XML JAXB (Java Architecture for XML Binding) and its benefits.</summary>
+<summary>Опишите the concept of XML JAXB (Java Architecture for XML Binding) and its benefits.</summary>
 
-### Describe the concept of XML JAXB (Java Architecture for XML Binding) and its benefits.
+### Опишите the concept of XML JAXB (Java Architecture for XML Binding) and its benefits.
 
 **Definition:**
 
@@ -1167,9 +1167,9 @@ Jakarta XML Binding, спецификация, которая продолжае
 </details>
 
 <details>
-<summary>What is the purpose of XML XQuery and how does it differ from XPath?</summary>
+<summary>Что такое the puRPOse of XML XQuery and how does it differ from XPath?</summary>
 
-### What is the purpose of XML XQuery and how does it differ from XPath?
+### Что такое the puRPOse of XML XQuery and how does it differ from XPath?
 
 **Definition:**
 
@@ -1193,9 +1193,9 @@ XQuery — язык запросов к источникам данных XML. X
 </details>
 
 <details>
-<summary>Explain the concept of XML Namespaces and their usage in XML technologies.</summary>
+<summary>Объясните the concept of XML Namespaces and their usage in XML technologies.</summary>
 
-### Explain the concept of XML Namespaces and their usage in XML technologies.
+### Объясните the concept of XML Namespaces and their usage in XML technologies.
 
 **Definition:**
 
@@ -1215,9 +1215,9 @@ XQuery — язык запросов к источникам данных XML. X
 </details>
 
 <details>
-<summary>What is XML Signature and its role in XML security?</summary>
+<summary>Что такое XML Signature and its role in XML security?</summary>
 
-### What is XML Signature and its role in XML security?
+### Что такое XML Signature and its role in XML security?
 
 **Definition:**
 
@@ -1237,9 +1237,9 @@ XML Signature — синтаксис и правила обработки W3C д
 </details>
 
 <details>
-<summary>Describe the concept of XML Encryption and its purpose.</summary>
+<summary>Опишите the concept of XML Encryption and its puRPOse.</summary>
 
-### Describe the concept of XML Encryption and its purpose.
+### Опишите the concept of XML Encryption and its puRPOse.
 
 **Definition:**
 
@@ -1258,9 +1258,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>What is the purpose of XML Canonicalization and its usage?</summary>
+<summary>Что такое the puRPOse of XML Canonicalization and its usage?</summary>
 
-### What is the purpose of XML Canonicalization and its usage?
+### Что такое the puRPOse of XML Canonicalization and its usage?
 
 **Definition:**
 
@@ -1280,9 +1280,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>Explain the concept of XML Catalogs and their benefits.</summary>
+<summary>Объясните the concept of XML Catalogs and their benefits.</summary>
 
-### Explain the concept of XML Catalogs and their benefits.
+### Объясните the concept of XML Catalogs and their benefits.
 
 **Definition:**
 
@@ -1308,9 +1308,9 @@ XML Encryption задаёт процесс шифрования данных и 
 ### XML Best Practices and Design Patterns
 
 <details>
-<summary>What are some best practices for designing XML schemas?</summary>
+<summary>Что такое some best practices for designing XML schemas?</summary>
 
-### What are some best practices for designing XML schemas?
+### Что такое some best practices for designing XML schemas?
 
 **Definition:**
 
@@ -1330,9 +1330,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>Explain the concept of XML modularity and its benefits.</summary>
+<summary>Объясните the concept of XML modularity and its benefits.</summary>
 
-### Explain the concept of XML modularity and its benefits.
+### Объясните the concept of XML modularity and its benefits.
 
 **Definition:**
 
@@ -1357,9 +1357,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>What is the purpose of XML versioning and how is it achieved?</summary>
+<summary>Что такое the puRPOse of XML versioning and how is it achieved?</summary>
 
-### What is the purpose of XML versioning and how is it achieved?
+### Что такое the puRPOse of XML versioning and how is it achieved?
 
 **Definition:**
 
@@ -1383,9 +1383,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>Describe the concept of XML internationalization and localization.</summary>
+<summary>Опишите the concept of XML internationalization and localization.</summary>
 
-### Describe the concept of XML internationalization and localization.
+### Опишите the concept of XML internationalization and localization.
 
 **Definition:**
 
@@ -1413,9 +1413,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>What are some common XML design patterns and their usage?</summary>
+<summary>Что такое some common XML design patterns and their usage?</summary>
 
-### What are some common XML design patterns and their usage?
+### Что такое some common XML design patterns and their usage?
 
 **Definition:**
 
@@ -1437,9 +1437,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>Explain the concept of XML data binding and its advantages.</summary>
+<summary>Объясните the concept of XML data binding and its advantages.</summary>
 
-### Explain the concept of XML data binding and its advantages.
+### Объясните the concept of XML data binding and its advantages.
 
 **Definition:**
 
@@ -1462,9 +1462,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>What is the purpose of XML data validation and how is it performed?</summary>
+<summary>Что такое the puRPOse of XML data validation and how is it performed?</summary>
 
-### What is the purpose of XML data validation and how is it performed?
+### Что такое the puRPOse of XML data validation and how is it performed?
 
 **Definition:**
 
@@ -1486,9 +1486,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>Describe the concept of XML data transformation and its techniques.</summary>
+<summary>Опишите the concept of XML data transformation and its techniques.</summary>
 
-### Describe the concept of XML data transformation and its techniques.
+### Опишите the concept of XML data transformation and its techniques.
 
 **Definition:**
 
@@ -1510,9 +1510,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>What are some best practices for XML performance optimization?</summary>
+<summary>Что такое some best practices for XML performance optimization?</summary>
 
-### What are some best practices for XML performance optimization?
+### Что такое some best practices for XML performance optimization?
 
 **Definition:**
 
@@ -1535,9 +1535,9 @@ XML Encryption задаёт процесс шифрования данных и 
 </details>
 
 <details>
-<summary>Explain the concept of XML security and its key considerations.</summary>
+<summary>Объясните the concept of XML security and its key considerations.</summary>
 
-### Explain the concept of XML security and its key considerations.
+### Объясните the concept of XML security and its key considerations.
 
 **Definition:**
 
@@ -1561,9 +1561,9 @@ XML Encryption задаёт процесс шифрования данных и 
 ### Advanced XML Topics
 
 <details>
-<summary>What is XML Signature and how does it ensure data integrity?</summary>
+<summary>Что такое XML Signature and how does it ensure data integrity?</summary>
 
-### What is XML Signature and how does it ensure data integrity?
+### Что такое XML Signature and how does it ensure data integrity?
 
 **Definition:**
 
@@ -1583,9 +1583,9 @@ XML Signature — структура XML, проверка которой про
 </details>
 
 <details>
-<summary>Explain the concept of XML Encryption and its role in data confidentiality.</summary>
+<summary>Объясните the concept of XML Encryption and its role in data confidentiality.</summary>
 
-### Explain the concept of XML Encryption and its role in data confidentiality.
+### Объясните the concept of XML Encryption and its role in data confidentiality.
 
 **Definition:**
 
@@ -1605,9 +1605,9 @@ XML Signature — структура XML, проверка которой про
 </details>
 
 <details>
-<summary>What is the purpose of XML Digital Signatures and how are they created?</summary>
+<summary>Что такое the puRPOse of XML digital signatures and how are they created?</summary>
 
-### What is the purpose of XML Digital Signatures and how are they created?
+### Что такое the puRPOse of XML digital signatures and how are they created?
 
 **Definition:**
 
@@ -1627,9 +1627,9 @@ XML Signature — структура XML, проверка которой про
 </details>
 
 <details>
-<summary>Describe the concept of XML Key Management and its importance.</summary>
+<summary>Опишите the concept of XML Key Management and its importance.</summary>
 
-### Describe the concept of XML Key Management and its importance.
+### Опишите the concept of XML Key Management and its importance.
 
 **Definition:**
 
@@ -1648,9 +1648,9 @@ XML Signature — структура XML, проверка которой про
 </details>
 
 <details>
-<summary>What is the role of XML in web services and service-oriented architectures (SOA)?</summary>
+<summary>Что такое the role of XML in web services and service-oriented architectures (SOA)?</summary>
 
-### What is the role of XML in web services and service-oriented architectures (SOA)?
+### Что такое the role of XML in web services and service-oriented architectures (SOA)?
 
 **Definition:**
 
@@ -1672,9 +1672,9 @@ XML Signature — структура XML, проверка которой про
 </details>
 
 <details>
-<summary>Explain the concept of XML-based protocols such as SOAP and REST.</summary>
+<summary>Объясните the concept of XML-BASEd protocols such as SOAP and REST.</summary>
 
-### Explain the concept of XML-based protocols such as SOAP and REST.
+### Объясните the concept of XML-BASEd protocols such as SOAP and REST.
 
 **Definition:**
 

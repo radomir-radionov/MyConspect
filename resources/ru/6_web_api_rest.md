@@ -367,13 +367,13 @@ See also: [SOAP](#3-soap) · [REST](#rest-principles-and-contract) · [HTML vs X
 - Standalone **SVG as XML** needs `xmlns="http://www.w3.org/2000/svg"` on the outer `<svg>` or the UA will not treat it as SVG. Inline SVG in HTML serialization does **not** require `xmlns` (namespace is implied).
 
 
-| XML                      | HTML                   | JSON                                      |
-|  -------  |  ------------------------  |  ----------------------  |
-| Tags    | You invent them          | Fixed vocabulary       | No tags — objects/arrays                  |
-| Purpose | Data / documents         | Display in a browser   | Data interchange                          |
-| Errors  | Strict well-formedness   | Browsers recover       | `JSON.parse` throws                       |
-| Types   | Text (+ optional schema) | N/A                    | Number, bool, null, string, object, array |
-| In JS   | Parse to DOM / tree      | Browser already parsed | Native after `JSON.parse`                 |
+| | XML                      | HTML                   | JSON                                      |
+| | -------  |  ------------------------  |  ----------------------  |
+| | Tags    | You invent them          | Fixed vocabulary       | No tags — objects/arrays                  |
+| | Purpose | Data / documents         | Display in a browser   | Data interchange                          |
+| | Errors  | Strict well-formedness   | Browsers recover       | `JSON.parse` throws                       |
+| | Types   | Text (+ optional schema) | N/A                    | Number, bool, null, string, object, array |
+| | In JS   | Parse to DOM / tree      | Browser already parsed | Native after `JSON.parse`                 |
 
 **When to use:**
 
@@ -563,13 +563,13 @@ See also: [REST](#rest-principles-and-contract) · [SOAP](#3-soap) · [XML](#xml
 `"jsonrpc": "2.0"`; `params` optional; omit `id` for a notification. Success has **only** `result`. Error has **only** `error` (`code`, `message`). Never both.
 
 
-| JSON-RPC                            | gRPC                      |
-|  ----------  |  -----------------------------------  |
-| Format     | JSON                                | Protocol Buffers          |
-| Transport  | HTTP, WebSocket, etc.               | HTTP/2                    |
-| Codegen    | Manual                              | Auto from `.proto`        |
-| Streaming  | Limited                             | Bidirectional             |
-| HTTP cache | Usually unused (POST + method name) | Not REST-cacheable either |
+| | JSON-RPC                            | gRPC                      |
+| | ----------  |  -----------------------------------  |
+| | Format     | JSON                                | Protocol Buffers          |
+| | Transport  | HTTP, WebSocket, etc.               | HTTP/2                    |
+| | Codegen    | Manual                              | Auto from `.proto`        |
+| | Streaming  | Limited                             | Bidirectional             |
+| | HTTP cache | Usually unused (POST + method name) | Not REST-cacheable either |
 
 **When to use:**
 
@@ -649,18 +649,18 @@ See also: [REST](#rest-principles-and-contract) · [SOAP](#3-soap) · [XML](#xml
 **How it works:**
 
 
-| REST                                              | SOAP                                      | RPC (JSON-RPC)                              | tRPC                                           |
-|  ---------------------------  |  -------------------------------------------------  |  -----------------------------------------  |  -------------------------------------------  |
-| **Kind**                    | Architectural style                               | Data-exchange format                      | Remote procedure style                      | TS RPC library                                 |
-| **Definition**              | Needed data is in the request (URL + verb + body) | Structured XML envelope                   | Request holds action _and_ data             | Call a typed server procedure as a function    |
-| **How you name the action** | HTTP method + resource path                       | Operation XML in Body (`getOrderDetails`) | `method` string (`orders.get`)              | Router path (`orders.get`)                     |
-| **Typical wire**            | JSON                                              | XML                                       | JSON (or Protobuf for gRPC)                 | JSON over HTTP (JSON-RPC-shaped envelope)      |
-| **Do HTTP verbs matter?**   | Yes (CRUD)                                        | No — transport is not the contract        | Usually one POST                            | Mapped: query → GET, mutation → POST           |
-| **HTTP cache**              | GET can be cached                                 | Weak                                      | Weak / unavailable                          | Query GET _can_ be cached; often batched POST  |
-| **Types**                   | Hand-written / OpenAPI                            | WSDL                                      | Manual or `.proto` (gRPC)                   | Infer from `AppRouter` — no codegen            |
-| **Pros**                    | Common, HTTP-native, readable                     | Transport-agnostic, structured            | Structure, JSON, good batches               | End-to-end TS, autocomplete, batching          |
-| **Cons**                    | Over/under-fetch (BFF helps)                      | Verbose, awkward on the client            | Logic on the client; no HTTP cache          | TS-to-TS; not a public resource API by default |
-| **When to use**             | Public CRUD, web/mobile                           | Legacy enterprise / WSDL                  | Internal procedures, batches, gRPC services | TS fullstack / monorepo                        |
+| | REST                                              | SOAP                                      | RPC (JSON-RPC)                              | tRPC                                           |
+| | ---------------------------  |  -------------------------------------------------  |  -----------------------------------------  |  -------------------------------------------  |
+| | **Kind**                    | Architectural style                               | Data-exchange format                      | Remote procedure style                      | TS RPC library                                 |
+| | **Definition**              | Needed data is in the request (URL + verb + body) | Structured XML envelope                   | Request holds action _and_ data             | Call a typed server procedure as a function    |
+| | **How you name the action** | HTTP method + resource path                       | Operation XML in Body (`getOrderDetails`) | `method` string (`orders.get`)              | Router path (`orders.get`)                     |
+| | **Typical wire**            | JSON                                              | XML                                       | JSON (or Protobuf for gRPC)                 | JSON over HTTP (JSON-RPC-shaped envelope)      |
+| | **Do HTTP verbs matter?**   | Yes (CRUD)                                        | No — transport is not the contract        | Usually one POST                            | Mapped: query → GET, mutation → POST           |
+| | **HTTP cache**              | GET can be cached                                 | Weak                                      | Weak / unavailable                          | Query GET _can_ be cached; often batched POST  |
+| | **Types**                   | Hand-written / OpenAPI                            | WSDL                                      | Manual or `.proto` (gRPC)                   | Infer from `AppRouter` — no codegen            |
+| | **Pros**                    | Common, HTTP-native, readable                     | Transport-agnostic, structured            | Structure, JSON, good batches               | End-to-end TS, autocomplete, batching          |
+| | **Cons**                    | Over/under-fetch (BFF helps)                      | Verbose, awkward on the client            | Logic on the client; no HTTP cache          | TS-to-TS; not a public resource API by default |
+| | **When to use**             | Public CRUD, web/mobile                           | Legacy enterprise / WSDL                  | Internal procedures, batches, gRPC services | TS fullstack / monorepo                        |
 
 ```http
 GET /api/orders/42

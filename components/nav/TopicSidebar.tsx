@@ -30,7 +30,6 @@ import {
   type SearchMode,
 } from "@/lib/nav";
 import {
-  allNavGroups,
   groupNavigateHref,
   inferNavRootSection,
   navGroupsForPath,
@@ -53,6 +52,7 @@ import { BookmarksPanel } from "./BookmarksPanel";
 import { SearchHitList } from "./SearchHitList";
 import {
   pinNavElement,
+  resetNavAsideScroll,
   restoreSidebarPin,
   scrollSidebarHit,
 } from "./sidebarPin";
@@ -86,7 +86,6 @@ export const TopicSidebar = memo(function TopicSidebar({
 }) {
   const { pathname, highlightPathname, hash } = useHandbookLocation();
   const mode = useSearchMode();
-  const allGroups = useMemo(() => allNavGroups(sections), [sections]);
   const pathGroups = useMemo(
     () => navGroupsForPath(sections, highlightPathname),
     [sections, highlightPathname],
@@ -103,13 +102,17 @@ export const TopicSidebar = memo(function TopicSidebar({
     [sections],
   );
   const { groups: filtered, firstHref } = useMemo(
-    () => searchNav(allGroups, query, mode, pathname),
-    [allGroups, query, mode, pathname],
+    () => searchNav(pathGroups, query, mode, pathname),
+    [pathGroups, query, mode, pathname],
   );
   const filteredScoped = useMemo(() => {
-    const visible = new Set(filtered);
-    return scopedGroups.filter((item) => visible.has(item.group));
-  }, [filtered, scopedGroups]);
+    const visibleTrackIds = new Set(filtered.map((group) => group.id));
+    return scopedGroups.filter(
+      (item) =>
+        item.sectionId === activeRootSectionId &&
+        visibleTrackIds.has(item.group.id),
+    );
+  }, [filtered, scopedGroups, activeRootSectionId]);
   const first = useMemo(
     () => (firstHref ? splitHref(firstHref) : null),
     [firstHref],
@@ -145,13 +148,26 @@ export const TopicSidebar = memo(function TopicSidebar({
     },
     [router],
   );
-  const stickyRevision = `${foldRevision(trackFolds, openTrackIds)}|${pathname}|${hash}|${searching}|${query}`;
+  const navRevision = `${foldRevision(trackFolds, openTrackIds)}|${pathname}|${hash}`;
+  const stickyRevision = `${navRevision}|${searching}|${query}`;
+  const wasSearching = useRef(false);
 
   useLayoutEffect(() => {
+    if (searching) {
+      if (!wasSearching.current) {
+        resetNavAsideScroll();
+      }
+      wasSearching.current = true;
+      return;
+    }
+    wasSearching.current = false;
     restoreSidebarPin();
-  }, [stickyRevision, pathname, hash, searching, query]);
+  }, [searching, navRevision, pathname, hash]);
 
   useEffect(() => {
+    if (searching) {
+      return;
+    }
     const frame = window.requestAnimationFrame(() => {
       restoreSidebarPin();
     });
@@ -162,10 +178,10 @@ export const TopicSidebar = memo(function TopicSidebar({
       window.cancelAnimationFrame(frame);
       window.clearTimeout(later);
     };
-  }, [stickyRevision, pathname, hash]);
+  }, [navRevision, pathname, hash, searching]);
 
   useEffect(() => {
-    if (!firstHref) {
+    if (!firstHref || searching) {
       return;
     }
     const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
@@ -173,10 +189,10 @@ export const TopicSidebar = memo(function TopicSidebar({
     if (hit instanceof HTMLElement) {
       scrollSidebarHit(hit);
     }
-  }, [firstHref]);
+  }, [firstHref, searching]);
 
   useEffect(() => {
-    if (!activeConceptId) {
+    if (!activeConceptId || searching) {
       return;
     }
     const frame = window.requestAnimationFrame(() => {
@@ -200,7 +216,7 @@ export const TopicSidebar = memo(function TopicSidebar({
       }
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [activeConceptId, highlightPathname, stickyRevision, searching]);
+  }, [activeConceptId, highlightPathname, navRevision, searching]);
 
   const bookmarks = useSyncExternalStore(
     subscribeBookmarks,
@@ -264,9 +280,7 @@ export const TopicSidebar = memo(function TopicSidebar({
         <div className="mb-3 px-2">
           <SectionSwitcher sections={sections} chrome={chrome} />
         </div>
-        {!searching ? (
-          <BookmarksPanel chrome={chrome} onNavigate={onNavigate} />
-        ) : null}
+        <BookmarksPanel chrome={chrome} onNavigate={onNavigate} />
         {filtered.length === 0 ? (
           <p className="px-2 text-sm text-zinc-500 dark:text-zinc-400">
             {mode === "notes" ? chrome.searchNotesEmpty : chrome.searchEmpty}

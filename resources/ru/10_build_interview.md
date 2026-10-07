@@ -17,9 +17,9 @@
 ## Questions & Answers
 
 <details>
-  <summary>What is CI/CD?</summary>
+  <summary>Что такое CI/CD?</summary>
 
-### What is CI/CD?
+### Что такое CI/CD?
 
 **Definition:** **Непрерывная интеграция/непрерывная доставка** — автоматизируйте сборку, тестирование и публикацию, чтобы каждое изменение можно было интегрировать и отправить с коротким циклом обратной связи. **Непрерывное развертывание** автоматически отправляется в рабочую среду после CI. Полные примечания: [Что такое CI/CD](#what-is-cicd).
 
@@ -92,9 +92,9 @@
 </details>
 
 <details>
-  <summary>What is tree shaking?</summary>
+  <summary>Что такое tree SHAking?</summary>
 
-### What is tree shaking?
+### Что такое tree SHAking?
 
 **Definition:** Устранение мертвого кода — сборщик удаляет неиспользуемые экспорты модулей ES.
 
@@ -166,9 +166,9 @@
 </details>
 
 <details>
-  <summary>package-lock.json purpose?</summary>
+  <summary>Назначение package-lock.json?</summary>
 
-### package-lock.json purpose?
+### Назначение package-lock.json?
 
 **Definition:** Файл блокировки с точным деревом зависимостей для воспроизводимых установок. Использовать `npm ci` в КИ, `npm install` в местном разработке.
 
@@ -182,7 +182,7 @@
 
 ### Task 1 — Minimal GitHub Actions CI
 
-<details><summary>Solution</summary>
+<details><summary>Решение</summary>
 
 ```yaml
 name: CI
@@ -203,7 +203,7 @@ jobs:
 
 ### Task 2 — Multi-stage Dockerfile for Node app
 
-<details><summary>Solution</summary>
+<details><summary>Решение</summary>
 
 ```dockerfile
 FROM node:20-alpine AS builder

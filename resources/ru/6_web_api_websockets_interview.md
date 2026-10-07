@@ -21,9 +21,9 @@
 ### WebSockets Fundamentals
 
 <details>
-<summary>What is WebSocket protocol and how does it differ from HTTP?</summary>
+<summary>Что такое WebSocket protocol and how does it differ from HTTP?</summary>
 
-### What is WebSocket protocol and how does it differ from HTTP?
+### Что такое WebSocket protocol and how does it differ from HTTP?
 
 **Definition:**
 
@@ -67,9 +67,9 @@
 </details>
 
 <details>
-<summary>Explain how the WebSocket handshake works.</summary>
+<summary>Объясните how the WebSocket handSHAke works.</summary>
 
-### Explain how the WebSocket handshake works.
+### Объясните how the WebSocket handSHAke works.
 
 **Definition:**
 
@@ -140,9 +140,9 @@ function computeAcceptHeader(clientKey) {
 </details>
 
 <details>
-<summary>What are some common use cases for WebSockets?</summary>
+<summary>Что такое some common use cases for WebSockets?</summary>
 
-### What are some common use cases for WebSockets?
+### Что такое some common use cases for WebSockets?
 
 **Definition:**
 
@@ -210,9 +210,9 @@ function updateDashboard(data: MarketUpdate): void {
 </details>
 
 <details>
-<summary>What are the limitations of WebSockets?</summary>
+<summary>Что такое the limitations of WebSockets?</summary>
 
-### What are the limitations of WebSockets?
+### Что такое the limitations of WebSockets?
 
 **Definition:**
 
@@ -262,9 +262,9 @@ function updateDashboard(data: MarketUpdate): void {
 </details>
 
 <details>
-<summary>Can you describe the WebSocket API provided by HTML5?</summary>
+<summary>Можете ли вы describe the WebSocket API provided by HTML5?</summary>
 
-### Can you describe the WebSocket API provided by HTML5?
+### Можете ли вы describe the WebSocket API provided by HTML5?
 
 **Definition:**
 
@@ -340,9 +340,9 @@ const client = new SocketClient('wss://api.example.com/v2/stream');
 </details>
 
 <details>
-<summary>Explain the WebSocket frame format.</summary>
+<summary>Объясните the WebSocket frame format.</summary>
 
-### Explain the WebSocket frame format.
+### Объясните the WebSocket frame format.
 
 **Definition:**
 
@@ -413,9 +413,9 @@ const client = new SocketClient('wss://api.example.com/v2/stream');
 </details>
 
 <details>
-<summary>How do WebSockets handle communication through proxies and firewalls?</summary>
+<summary>Как WebSockets handle communication through proxies and firewalls?</summary>
 
-### How do WebSockets handle communication through proxies and firewalls?
+### Как WebSockets handle communication through proxies and firewalls?
 
 **Definition:**
 
@@ -487,9 +487,9 @@ if __name__ == "__main__":
 </details>
 
 <details>
-<summary>What are the security considerations when using WebSockets?</summary>
+<summary>Что такое the security considerations when using WebSockets?</summary>
 
-### What are the security considerations when using WebSockets?
+### Что такое the security considerations when using WebSockets?
 
 **Definition:**
 
@@ -568,9 +568,9 @@ ws.onmessage = (event) => {
 </details>
 
 <details>
-<summary>How would you detect and handle WebSocket connection loss?</summary>
+<summary>Как бы вы detect and handle WebSocket connection loss?</summary>
 
-### How would you detect and handle WebSocket connection loss?
+### Как бы вы detect and handle WebSocket connection loss?
 
 **Definition:**
 
@@ -644,9 +644,9 @@ function useWebSocket(url: string) {
 </details>
 
 <details>
-<summary>Explain the role of ping/pong frames in WebSockets.</summary>
+<summary>Объясните the role of ping/pong frames in WebSockets.</summary>
 
-### Explain the role of ping/pong frames in WebSockets.
+### Объясните the role of ping/pong frames in WebSockets.
 
 **Definition:**
 
@@ -717,9 +717,9 @@ if __name__ == "__main__":
 </details>
 
 <details>
-<summary>How does WebSocket ensure ordered delivery of messages?</summary>
+<summary>Как WebSocket ensure ordered delivery of messages?</summary>
 
-### How does WebSocket ensure ordered delivery of messages?
+### Как WebSocket ensure ordered delivery of messages?
 
 **Definition:**
 
@@ -788,9 +788,9 @@ socket.onmessage = async (event) => {
 </details>
 
 <details>
-<summary>Can WebSockets be used for broadcasting messages to multiple clients? If so, how?</summary>
+<summary>Можно ли WebSockets be used for broadcasting messages to multiple clients? If so, how?</summary>
 
-### Can WebSockets be used for broadcasting messages to multiple clients? If so, how?
+### Можно ли WebSockets be used for broadcasting messages to multiple clients? If so, how?
 
 **Definition:**
 
@@ -850,9 +850,9 @@ if __name__ == "__main__":
 </details>
 
 <details>
-<summary>What is the difference between WebSockets and Server-Sent Events (SSE)?</summary>
+<summary>Что такое the difference between WebSockets and Server-Sent Events (SSE)?</summary>
 
-### What is the difference between WebSockets and Server-Sent Events (SSE)?
+### Что такое the difference between WebSockets and Server-Sent Events (SSE)?
 
 **Definition:**
 
@@ -897,9 +897,9 @@ if __name__ == "__main__":
 </details>
 
 <details>
-<summary>Explain how a WebSocket connection is closed.</summary>
+<summary>Объясните how a WebSocket connection is closed.</summary>
 
-### Explain how a WebSocket connection is closed.
+### Объясните how a WebSocket connection is closed.
 
 **Definition:**
 
@@ -985,9 +985,9 @@ function useWebSocket(url) {
 </details>
 
 <details>
-<summary>What fallback mechanisms can be used if WebSockets are not supported by a browser or server?</summary>
+<summary>Какие fallback mechanisms можно использовать, если WebSockets не поддерживаются browser или server?</summary>
 
-### What fallback mechanisms can be used if WebSockets are not supported by a browser or server?
+### Какие fallback mechanisms можно использовать, если WebSockets не поддерживаются browser или server?
 
 **Definition:**
 
@@ -1077,9 +1077,9 @@ await writer.write(new TextEncoder().encode('Hello, Server!'));
 
 
 <details>
-<summary>How would you implement a chat application using WebSockets?</summary>
+<summary>Как бы вы implement a chat application using WebSockets?</summary>
 
-### How would you implement a chat application using WebSockets?
+### Как бы вы implement a chat application using WebSockets?
 
 **Definition:**
 
@@ -1124,9 +1124,9 @@ wss.on("connection", (socket) => {
 </details>
 
 <details>
-<summary>Explain how pub/sub messaging can be achieved with WebSockets.</summary>
+<summary>Объясните how Pub/Sub messaging can be achieved with WebSockets.</summary>
 
-### Explain how pub/sub messaging can be achieved with WebSockets.
+### Объясните how Pub/Sub messaging can be achieved with WebSockets.
 
 **Definition:**
 
@@ -1164,9 +1164,9 @@ function publish(topic, payload) {
 </details>
 
 <details>
-<summary>What kind of data can be sent over WebSocket connections?</summary>
+<summary>Какие data можно отправлять через WebSocket connections?</summary>
 
-### What kind of data can be sent over WebSocket connections?
+### Какие data можно отправлять через WebSocket connections?
 
 **Definition:**
 
@@ -1192,9 +1192,9 @@ socket.send(new TextEncoder().encode(JSON.stringify({ id: 1 })));
 </details>
 
 <details>
-<summary>How do you handle binary data in WebSockets?</summary>
+<summary>Как you handle binary data in WebSockets?</summary>
 
-### How do you handle binary data in WebSockets?
+### Как you handle binary data in WebSockets?
 
 **Definition:**
 
@@ -1225,9 +1225,9 @@ socket.addEventListener("message", (event) => {
 </details>
 
 <details>
-<summary>Can you describe how WebSockets can be used for real-time gaming?</summary>
+<summary>Можете ли вы describe how WebSockets can be used for real-time GAming?</summary>
 
-### Can you describe how WebSockets can be used for real-time gaming?
+### Можете ли вы describe how WebSockets can be used for real-time GAming?
 
 **Definition:**
 
@@ -1252,9 +1252,9 @@ socket.addEventListener("message", (event) => {
 </details>
 
 <details>
-<summary>What are the common frameworks or libraries for working with WebSockets?</summary>
+<summary>Что такое the common frameworks or libraries for working with WebSockets?</summary>
 
-### What are the common frameworks or libraries for working with WebSockets?
+### Что такое the common frameworks or libraries for working with WebSockets?
 
 **Definition:**
 
@@ -1280,9 +1280,9 @@ socket.addEventListener("message", (event) => {
 </details>
 
 <details>
-<summary>How is flow control managed in WebSocket communication?</summary>
+<summary>Как flow control managed in WebSocket communication?</summary>
 
-### How is flow control managed in WebSocket communication?
+### Как flow control managed in WebSocket communication?
 
 **Definition:**
 
@@ -1309,9 +1309,9 @@ if (socket.bufferedAmount < 64 * 1024) {
 </details>
 
 <details>
-<summary>Describe the process of scaling WebSocket applications.</summary>
+<summary>Опишите the process of scaling WebSocket applications.</summary>
 
-### Describe the process of scaling WebSocket applications.
+### Опишите the process of scaling WebSocket applications.
 
 **Definition:**
 
@@ -1331,9 +1331,9 @@ if (socket.bufferedAmount < 64 * 1024) {
 </details>
 
 <details>
-<summary>How can you send custom headers when initializing a WebSocket connection?</summary>
+<summary>Как you send custom headers when initializing a WebSocket connection?</summary>
 
-### How can you send custom headers when initializing a WebSocket connection?
+### Как you send custom headers when initializing a WebSocket connection?
 
 **Definition:**
 
@@ -1353,9 +1353,9 @@ if (socket.bufferedAmount < 64 * 1024) {
 </details>
 
 <details>
-<summary>Can WebSockets be used together with other web technologies like WebRTC?</summary>
+<summary>Можно ли WebSockets be used together with other web technologies like WebRTC?</summary>
 
-### Can WebSockets be used together with other web technologies like WebRTC?
+### Можно ли WebSockets be used together with other web technologies like WebRTC?
 
 **Definition:**
 
@@ -1382,9 +1382,9 @@ if (socket.bufferedAmount < 64 * 1024) {
 ### WebSockets Protocol Details
 
 <details>
-<summary>What defines a WebSocket message?</summary>
+<summary>Что определяет a WebSocket message?</summary>
 
-### What defines a WebSocket message?
+### Что определяет a WebSocket message?
 
 **Definition:**
 
@@ -1404,9 +1404,9 @@ if (socket.bufferedAmount < 64 * 1024) {
 </details>
 
 <details>
-<summary>How are WebSocket extensions used?</summary>
+<summary>Как WebSocket extensions used?</summary>
 
-### How are WebSocket extensions used?
+### Как WebSocket extensions used?
 
 **Definition:**
 
@@ -1445,9 +1445,9 @@ const wss = new WebSocketServer({
 </details>
 
 <details>
-<summary>What are WebSocket subprotocols and how are they negotiated?</summary>
+<summary>Что такое WebSocket subprotocols and how are they neGotiated?</summary>
 
-### What are WebSocket subprotocols and how are they negotiated?
+### Что такое WebSocket subprotocols and how are they neGotiated?
 
 **Definition:**
 
@@ -1473,9 +1473,9 @@ const socket = new WebSocket("wss://example.com/chat", ["chat.example.com", "jso
 </details>
 
 <details>
-<summary>Explain WebSocket's support for text and binary frames.</summary>
+<summary>Объясните WebSocket's support for text and binary frames.</summary>
 
-### Explain WebSocket's support for text and binary frames.
+### Объясните WebSocket's support for text and binary frames.
 
 **Definition:**
 
@@ -1495,9 +1495,9 @@ const socket = new WebSocket("wss://example.com/chat", ["chat.example.com", "jso
 </details>
 
 <details>
-<summary>How is message fragmentation handled in WebSockets?</summary>
+<summary>Как message fragmentation handled in WebSockets?</summary>
 
-### How is message fragmentation handled in WebSockets?
+### Как message fragmentation handled in WebSockets?
 
 **Definition:**
 
@@ -1516,9 +1516,9 @@ const socket = new WebSocket("wss://example.com/chat", ["chat.example.com", "jso
 </details>
 
 <details>
-<summary>What are the standard status codes for indicating connection closure in WebSockets and what do they mean?</summary>
+<summary>Что такое the standard status codes for indicating connection closure in WebSockets and what do they mean?</summary>
 
-### What are the standard status codes for indicating connection closure in WebSockets and what do they mean?
+### Что такое the standard status codes for indicating connection closure in WebSockets and what do they mean?
 
 **Definition:**
 
@@ -1538,9 +1538,9 @@ const socket = new WebSocket("wss://example.com/chat", ["chat.example.com", "jso
 </details>
 
 <details>
-<summary>How does WebSocket mask data from the client to the server?</summary>
+<summary>Как WebSocket mask data from the client to the server?</summary>
 
-### How does WebSocket mask data from the client to the server?
+### Как WebSocket mask data from the client to the server?
 
 **Definition:**
 
@@ -1570,9 +1570,9 @@ function unmask(encoded, mask) {
 ### WebSockets and JavaScript
 
 <details>
-<summary>How do you create a WebSocket connection in JavaScript?</summary>
+<summary>Как you create a WebSocket connection in JavaScript?</summary>
 
-### How do you create a WebSocket connection in JavaScript?
+### Как you create a WebSocket connection in JavaScript?
 
 **Definition:**
 
@@ -1600,9 +1600,9 @@ socket.addEventListener("open", () => {
 </details>
 
 <details>
-<summary>Explain the different event handlers available on the WebSocket object in JavaScript.</summary>
+<summary>Объясните the different event handlers available on the WebSocket object in JavaScript.</summary>
 
-### Explain the different event handlers available on the WebSocket object in JavaScript.
+### Объясните the different event handlers available on the WebSocket object in JavaScript.
 
 **Definition:**
 
@@ -1623,9 +1623,9 @@ socket.addEventListener("open", () => {
 </details>
 
 <details>
-<summary>How do you send and receive messages in JavaScript using WebSockets?</summary>
+<summary>Как you send and receive messages in JavaScript using WebSockets?</summary>
 
-### How do you send and receive messages in JavaScript using WebSockets?
+### Как you send and receive messages in JavaScript using WebSockets?
 
 **Definition:**
 
@@ -1653,9 +1653,9 @@ socket.addEventListener("message", (event) => {
 </details>
 
 <details>
-<summary>Can you demonstrate how to convert a binary WebSocket message to a JavaScript object?</summary>
+<summary>Можете ли вы demonstrate how to convert a binary WebSocket message to a JavaScript object?</summary>
 
-### Can you demonstrate how to convert a binary WebSocket message to a JavaScript object?
+### Можете ли вы demonstrate how to convert a binary WebSocket message to a JavaScript object?
 
 **Definition:**
 
@@ -1686,9 +1686,9 @@ socket.addEventListener("message", (event) => {
 </details>
 
 <details>
-<summary>Describe error handling with WebSocket connections in JavaScript.</summary>
+<summary>Опишите error handling with WebSocket connections in JavaScript.</summary>
 
-### Describe error handling with WebSocket connections in JavaScript.
+### Опишите error handling with WebSocket connections in JavaScript.
 
 **Definition:**
 
@@ -1723,9 +1723,9 @@ socket.addEventListener("close", (event) => {
 ### WebSockets Server-Side Implementation
 
 <details>
-<summary>How would you implement a WebSocket server in Node.js?</summary>
+<summary>Как бы вы implement a WebSocket server in Node.js?</summary>
 
-### How would you implement a WebSocket server in Node.js?
+### Как бы вы implement a WebSocket server in Node.js?
 
 **Definition:**
 
@@ -1755,9 +1755,9 @@ wss.on("connection", (socket) => {
 </details>
 
 <details>
-<summary>What is the role of WebSocket server libraries, such as ws or Socket.IO?</summary>
+<summary>Что такое the role of WebSocket server libraries, such as ws or Socket.IO?</summary>
 
-### What is the role of WebSocket server libraries, such as ws or Socket.IO?
+### Что такое the role of WebSocket server libraries, such as ws or Socket.IO?
 
 **Definition:**
 
@@ -1781,9 +1781,9 @@ wss.on("connection", (socket) => {
 </details>
 
 <details>
-<summary>How do servers handle WebSocket connection upgrades?</summary>
+<summary>Как servers handle WebSocket connection upgrades?</summary>
 
-### How do servers handle WebSocket connection upgrades?
+### Как servers handle WebSocket connection upgrades?
 
 **Definition:**
 
@@ -1802,9 +1802,9 @@ wss.on("connection", (socket) => {
 </details>
 
 <details>
-<summary>How would you authenticate WebSocket connections on the server side?</summary>
+<summary>Как бы вы authenticate WebSocket connections on the server side?</summary>
 
-### How would you authenticate WebSocket connections on the server side?
+### Как бы вы authenticate WebSocket connections on the server side?
 
 **Definition:**
 
@@ -1840,9 +1840,9 @@ server.on("upgrade", (request, socket, head) => {
 </details>
 
 <details>
-<summary>Explain how you can integrate WebSockets with existing web application frameworks.</summary>
+<summary>Объясните how you can integrate WebSockets with existing web application frameworks.</summary>
 
-### Explain how you can integrate WebSockets with existing web application frameworks.
+### Объясните how you can integrate WebSockets with existing web application frameworks.
 
 **Definition:**
 
@@ -1864,9 +1864,9 @@ server.on("upgrade", (request, socket, head) => {
 ### WebSockets and Security
 
 <details>
-<summary>What is WebSocket Secure (WSS), and when should you use it?</summary>
+<summary>Что такое WebSocket Secure (WSS), and when should you use it?</summary>
 
-### What is WebSocket Secure (WSS), and when should you use it?
+### Что такое WebSocket Secure (WSS), and when should you use it?
 
 **Definition:**
 
@@ -1891,9 +1891,9 @@ server.on("upgrade", (request, socket, head) => {
 </details>
 
 <details>
-<summary>How do you handle session management in WebSocket connections?</summary>
+<summary>Как you handle session management in WebSocket connections?</summary>
 
-### How do you handle session management in WebSocket connections?
+### Как you handle session management in WebSocket connections?
 
 **Definition:**
 
@@ -1912,9 +1912,9 @@ server.on("upgrade", (request, socket, head) => {
 </details>
 
 <details>
-<summary>What measures can be taken to secure WebSocket transmissions?</summary>
+<summary>Какие measures можно предпринять для secure WebSocket transmissions?</summary>
 
-### What measures can be taken to secure WebSocket transmissions?
+### Какие measures можно предпринять для secure WebSocket transmissions?
 
 **Definition:**
 
@@ -1934,9 +1934,9 @@ server.on("upgrade", (request, socket, head) => {
 </details>
 
 <details>
-<summary>How can Cross-Site WebSocket Hijacking (CSWSH) be prevented?</summary>
+<summary>Как Cross-Site WebSocket Hijacking (CSWSH) be prevented?</summary>
 
-### How can Cross-Site WebSocket Hijacking (CSWSH) be prevented?
+### Как Cross-Site WebSocket Hijacking (CSWSH) be prevented?
 
 **Definition:**
 
@@ -1954,9 +1954,9 @@ CSWSH — это страница с другого origin, которая от�
 </details>
 
 <details>
-<summary>Can you use OAuth or tokens with WebSocket connections?</summary>
+<summary>Можете ли вы use OAuth or tokens with WebSocket connections?</summary>
 
-### Can you use OAuth or tokens with WebSocket connections?
+### Можете ли вы use OAuth or tokens with WebSocket connections?
 
 **Definition:**
 
@@ -1978,9 +1978,9 @@ CSWSH — это страница с другого origin, которая от�
 ### WebSockets Testing and Debugging
 
 <details>
-<summary>What tools are available for testing WebSocket connections?</summary>
+<summary>Какие инструменты are available for testing WebSocket connections?</summary>
 
-### What tools are available for testing WebSocket connections?
+### Какие инструменты are available for testing WebSocket connections?
 
 **Definition:**
 
@@ -1999,9 +1999,9 @@ CSWSH — это страница с другого origin, которая от�
 </details>
 
 <details>
-<summary>How do you debug a WebSocket application?</summary>
+<summary>Как you debug a WebSocket application?</summary>
 
-### How do you debug a WebSocket application?
+### Как you debug a WebSocket application?
 
 **Definition:**
 
@@ -2021,9 +2021,9 @@ CSWSH — это страница с другого origin, которая от�
 </details>
 
 <details>
-<summary>What are the challenges when writing automated tests for WebSocket applications?</summary>
+<summary>Что такое the challenges when writing automated tests for WebSocket applications?</summary>
 
-### What are the challenges when writing automated tests for WebSocket applications?
+### Что такое the challenges when writing automated tests for WebSocket applications?
 
 **Definition:**
 
@@ -2045,9 +2045,9 @@ CSWSH — это страница с другого origin, которая от�
 ### Advanced WebSockets Topics
 
 <details>
-<summary>How can WebSockets be used in distributed systems?</summary>
+<summary>Как WebSockets be used in distributed systems?</summary>
 
-### How can WebSockets be used in distributed systems?
+### Как WebSockets be used in distributed systems?
 
 **Definition:**
 
@@ -2066,9 +2066,9 @@ WebSocket остаётся на процессе, который принял TC
 </details>
 
 <details>
-<summary>Explain the role of WebSockets in IoT (Internet of Things).</summary>
+<summary>Объясните the role of WebSockets in IoT (Internet of Things).</summary>
 
-### Explain the role of WebSockets in IoT (Internet of Things).
+### Объясните the role of WebSockets in IoT (Internet of Things).
 
 **Definition:**
 
@@ -2092,9 +2092,9 @@ WebSocket остаётся на процессе, который принял TC
 </details>
 
 <details>
-<summary>How does WebSocket protocol handle backpressure or throttling?</summary>
+<summary>Как WebSocket protocol handle backpressure or throttling?</summary>
 
-### How does WebSocket protocol handle backpressure or throttling?
+### Как WebSocket protocol handle backpressure or throttling?
 
 **Definition:**
 
@@ -2113,9 +2113,9 @@ WebSocket остаётся на процессе, который принял TC
 </details>
 
 <details>
-<summary>What strategies can be employed for WebSocket versioning and backward compatibility?</summary>
+<summary>Какие стратегии can be employed for WebSocket versioning and backward compatibility?</summary>
 
-### What strategies can be employed for WebSocket versioning and backward compatibility?
+### Какие стратегии can be employed for WebSocket versioning and backward compatibility?
 
 **Definition:**
 
@@ -2134,9 +2134,9 @@ WebSocket остаётся на процессе, который принял TC
 </details>
 
 <details>
-<summary>How do you handle reconnection and state sync after a WebSocket reconnects?</summary>
+<summary>Как you handle reconnection and state sync after a WebSocket reconnects?</summary>
 
-### How do you handle reconnection and state sync after a WebSocket reconnects?
+### Как you handle reconnection and state sync after a WebSocket reconnects?
 
 **Definition:**
 
@@ -2165,9 +2165,9 @@ socket.addEventListener("close", (event) => {
 </details>
 
 <details>
-<summary>Discuss the impact of network latency on WebSocket applications and how to mitigate it.</summary>
+<summary>Обсудите the impact of network latency on WebSocket applications and how to mitiGAte it.</summary>
 
-### Discuss the impact of network latency on WebSocket applications and how to mitigate it.
+### Обсудите the impact of network latency on WebSocket applications and how to mitiGAte it.
 
 **Definition:**
 
@@ -2186,9 +2186,9 @@ socket.addEventListener("close", (event) => {
 </details>
 
 <details>
-<summary>What are some patterns for integrating WebSocket communications in microservices architectures?</summary>
+<summary>Что такое some patterns for integrating WebSocket communications in microservices architectures?</summary>
 
-### What are some patterns for integrating WebSocket communications in microservices architectures?
+### Что такое some patterns for integrating WebSocket communications in microservices architectures?
 
 **Definition:**
 
@@ -2207,9 +2207,9 @@ socket.addEventListener("close", (event) => {
 </details>
 
 <details>
-<summary>Can you explain the concept of WebSocket tunneling and when it might be used?</summary>
+<summary>Можете ли вы explain the concept of WebSocket tunneling and when it might be used?</summary>
 
-### Can you explain the concept of WebSocket tunneling and when it might be used?
+### Можете ли вы explain the concept of WebSocket tunneling and when it might be used?
 
 **Definition:**
 
@@ -2233,9 +2233,9 @@ socket.addEventListener("close", (event) => {
 </details>
 
 <details>
-<summary>How do WebSockets fit into the concept of edge computing and serverless architectures?</summary>
+<summary>Как WebSockets fit into the concept of edge computing and serverless architectures?</summary>
 
-### How do WebSockets fit into the concept of edge computing and serverless architectures?
+### Как WebSockets fit into the concept of edge computing and serverless architectures?
 
 **Definition:**
 
@@ -2253,9 +2253,9 @@ WebSocket нужен процесс, который живёт всё время
 </details>
 
 <details>
-<summary>What considerations are there for using WebSockets in mobile applications?</summary>
+<summary>Какие соображения are there for using WebSockets in mobile applications?</summary>
 
-### What considerations are there for using WebSockets in mobile applications?
+### Какие соображения are there for using WebSockets in mobile applications?
 
 **Definition:**
 
@@ -2277,9 +2277,9 @@ WebSocket нужен процесс, который живёт всё время
 ### WebSockets Libraries and Frameworks
 
 <details>
-<summary>Comparatively, what features do WebSocket libraries like ws, WebSocket-Node, and Socket.IO offer?</summary>
+<summary>Сравнительно, какие features предлагают WebSocket libraries вроде ws, WebSocket-Node и Socket.IO?</summary>
 
-### Comparatively, what features do WebSocket libraries like ws, WebSocket-Node, and Socket.IO offer?
+### Сравнительно, какие features предлагают WebSocket libraries вроде ws, WebSocket-Node и Socket.IO?
 
 **Definition:**
 
@@ -2298,9 +2298,9 @@ WebSocket нужен процесс, который живёт всё время
 </details>
 
 <details>
-<summary>How does Socket.IO enhance or differ from the standard WebSocket API?</summary>
+<summary>Как Socket.IO enhance or differ from the standard WebSocket API?</summary>
 
-### How does Socket.IO enhance or differ from the standard WebSocket API?
+### Как Socket.IO enhance or differ from the standard WebSocket API?
 
 **Definition:**
 
@@ -2319,9 +2319,9 @@ Socket.IO держит соединение и именует события. П
 </details>
 
 <details>
-<summary>Discuss the advantages of using a framework like SignalR for real-time communication.</summary>
+<summary>Обсудите the advantages of using a framework like SignalR for real-time communication.</summary>
 
-### Discuss the advantages of using a framework like SignalR for real-time communication.
+### Обсудите the advantages of using a framework like SignalR for real-time communication.
 
 **Definition:**
 
@@ -2345,9 +2345,9 @@ ASP.NET Core SignalR — библиотека вызовов от сервера
 </details>
 
 <details>
-<summary>What are some client-side libraries for working with WebSockets?</summary>
+<summary>Что такое some client-side libraries for working with WebSockets?</summary>
 
-### What are some client-side libraries for working with WebSockets?
+### Что такое some client-side libraries for working with WebSockets?
 
 **Definition:**
 
@@ -2367,9 +2367,9 @@ ASP.NET Core SignalR — библиотека вызовов от сервера
 </details>
 
 <details>
-<summary>How do you choose a WebSocket library or framework for a project?</summary>
+<summary>Как you choose a WebSocket library or framework for a project?</summary>
 
-### How do you choose a WebSocket library or framework for a project?
+### Как you choose a WebSocket library or framework for a project?
 
 **Definition:**
 
@@ -2392,9 +2392,9 @@ ASP.NET Core SignalR — библиотека вызовов от сервера
 ### WebSockets Performance and Scaling
 
 <details>
-<summary>Describe the challenges of scaling WebSocket applications horizontally.</summary>
+<summary>Опишите the challenges of scaling WebSocket applications horizontally.</summary>
 
-### Describe the challenges of scaling WebSocket applications horizontally.
+### Опишите the challenges of scaling WebSocket applications horizontally.
 
 **Definition:**
 
@@ -2413,9 +2413,9 @@ ASP.NET Core SignalR — библиотека вызовов от сервера
 </details>
 
 <details>
-<summary>How can you measure WebSocket application performance?</summary>
+<summary>Как you measure WebSocket application performance?</summary>
 
-### How can you measure WebSocket application performance?
+### Как you measure WebSocket application performance?
 
 **Definition:**
 
@@ -2434,9 +2434,9 @@ ASP.NET Core SignalR — библиотека вызовов от сервера
 </details>
 
 <details>
-<summary>What are the implications of using sticky sessions with WebSockets?</summary>
+<summary>Что такое the implications of using sticky sessions with WebSockets?</summary>
 
-### What are the implications of using sticky sessions with WebSockets?
+### Что такое the implications of using sticky sessions with WebSockets?
 
 **Definition:**
 
@@ -2455,9 +2455,9 @@ ASP.NET Core SignalR — библиотека вызовов от сервера
 </details>
 
 <details>
-<summary>How does load balancing work with WebSocket traffic?</summary>
+<summary>Как load balancing work with WebSocket traffic?</summary>
 
-### How does load balancing work with WebSocket traffic?
+### Как load balancing work with WebSocket traffic?
 
 **Definition:**
 
@@ -2476,9 +2476,9 @@ ASP.NET Core SignalR — библиотека вызовов от сервера
 </details>
 
 <details>
-<summary>What are connection limits and resource usage considerations for WebSocket servers?</summary>
+<summary>Что такое connection limits and resource usage considerations for WebSocket servers?</summary>
 
-### What are connection limits and resource usage considerations for WebSocket servers?
+### Что такое connection limits and resource usage considerations for WebSocket servers?
 
 **Definition:**
 
@@ -2501,9 +2501,9 @@ ASP.NET Core SignalR — библиотека вызовов от сервера
 ### WebSockets Interoperability and Compatibility
 
 <details>
-<summary>How do you ensure compatibility between different WebSocket implementations?</summary>
+<summary>Как you ensure compatibility between different WebSocket implementations?</summary>
 
-### How do you ensure compatibility between different WebSocket implementations?
+### Как you ensure compatibility between different WebSocket implementations?
 
 **Definition:**
 
@@ -2523,9 +2523,9 @@ ASP.NET Core SignalR — библиотека вызовов от сервера
 </details>
 
 <details>
-<summary>Can WebSockets communicate with services using other protocols?</summary>
+<summary>Можно ли WebSockets communicate with services using other protocols?</summary>
 
-### Can WebSockets communicate with services using other protocols?
+### Можно ли WebSockets communicate with services using other protocols?
 
 **Definition:**
 
@@ -2542,9 +2542,9 @@ ASP.NET Core SignalR — библиотека вызовов от сервера
 </details>
 
 <details>
-<summary>How do WebSockets integrate with REST APIs or GraphQL?</summary>
+<summary>Как WebSockets integrate with REST APIs or GraphQL?</summary>
 
-### How do WebSockets integrate with REST APIs or GraphQL?
+### Как WebSockets integrate with REST APIs or GraphQL?
 
 **Definition:**
 
@@ -2568,9 +2568,9 @@ REST или GraphQL отвечают на запрос. WebSocket толкает
 </details>
 
 <details>
-<summary>What are the options for using WebSockets in hybrid applications with web views?</summary>
+<summary>Что такое the options for using WebSockets in hybrid applications with web views?</summary>
 
-### What are the options for using WebSockets in hybrid applications with web views?
+### Что такое the options for using WebSockets in hybrid applications with web views?
 
 **Definition:**
 
@@ -2589,9 +2589,9 @@ REST или GraphQL отвечают на запрос. WebSocket толкает
 </details>
 
 <details>
-<summary>Describe any challenges with using WebSockets in cross-platform environments.</summary>
+<summary>Опишите any challenges with using WebSockets in cross-platform environments.</summary>
 
-### Describe any challenges with using WebSockets in cross-platform environments.
+### Опишите any challenges with using WebSockets in cross-platform environments.
 
 **Definition:**
 
@@ -2614,9 +2614,9 @@ REST или GraphQL отвечают на запрос. WebSocket толкает
 ### WebSockets in Different Languages and Environments
 
 <details>
-<summary>How do you establish a WebSocket connection in Java?</summary>
+<summary>Как you establish a WebSocket connection in Java?</summary>
 
-### How do you establish a WebSocket connection in Java?
+### Как you establish a WebSocket connection in Java?
 
 **Definition:**
 
@@ -2650,9 +2650,9 @@ public class EchoEndpoint extends Endpoint {
 </details>
 
 <details>
-<summary>What support is available for WebSockets in the .NET environment?</summary>
+<summary>Какая support доступна для WebSockets в .NET environment?</summary>
 
-### What support is available for WebSockets in the .NET environment?
+### Какая support доступна для WebSockets в .NET environment?
 
 **Definition:**
 
@@ -2685,9 +2685,9 @@ app.Use(async (context, next) => {
 </details>
 
 <details>
-<summary>Discuss how to implement WebSocket communication in Python.</summary>
+<summary>Обсудите how to implement WebSocket communication in Python.</summary>
 
-### Discuss how to implement WebSocket communication in Python.
+### Обсудите how to implement WebSocket communication in Python.
 
 **Definition:**
 
@@ -2723,9 +2723,9 @@ asyncio.run(main())
 </details>
 
 <details>
-<summary>How can you use WebSockets in a PHP-based application?</summary>
+<summary>Как you use WebSockets in a PHP-BASEd application?</summary>
 
-### How can you use WebSockets in a PHP-based application?
+### Как you use WebSockets in a PHP-BASEd application?
 
 **Definition:**
 
@@ -2743,9 +2743,9 @@ asyncio.run(main())
 </details>
 
 <details>
-<summary>Explain how to create a WebSocket server using Go.</summary>
+<summary>Объясните how to create a WebSocket server using Go.</summary>
 
-### Explain how to create a WebSocket server using Go.
+### Объясните how to create a WebSocket server using Go.
 
 **Definition:**
 
@@ -2778,9 +2778,9 @@ c.Close(websocket.StatusNormalClosure, "")
 ### WebSockets and Cross-Origin Communication
 
 <details>
-<summary>What is the Same-Origin Policy and how does it apply to WebSockets?</summary>
+<summary>Что такое the Same-Origin Policy and how does it apply to WebSockets?</summary>
 
-### What is the Same-Origin Policy and how does it apply to WebSockets?
+### Что такое the Same-Origin Policy and how does it apply to WebSockets?
 
 **Definition:**
 
@@ -2799,9 +2799,9 @@ c.Close(websocket.StatusNormalClosure, "")
 </details>
 
 <details>
-<summary>How can you safely enable cross-origin WebSocket connections?</summary>
+<summary>Как you safely enable cross-origin WebSocket connections?</summary>
 
-### How can you safely enable cross-origin WebSocket connections?
+### Как you safely enable cross-origin WebSocket connections?
 
 **Definition:**
 
@@ -2820,9 +2820,9 @@ c.Close(websocket.StatusNormalClosure, "")
 </details>
 
 <details>
-<summary>What is CORS (Cross-Origin Resource Sharing) and how does it relate to WebSockets?</summary>
+<summary>Что такое CORS (Cross-Origin Resource SHAring) and how does it relate to WebSockets?</summary>
 
-### What is CORS (Cross-Origin Resource Sharing) and how does it relate to WebSockets?
+### Что такое CORS (Cross-Origin Resource SHAring) and how does it relate to WebSockets?
 
 **Definition:**
 
@@ -2840,9 +2840,9 @@ CORS — это как браузеры ослабляют политику од
 </details>
 
 <details>
-<summary>How to handle cross-origin WebSocket connections in Node.js?</summary>
+<summary>Как handle cross-origin WebSocket connections in Node.js?</summary>
 
-### How to handle cross-origin WebSocket connections in Node.js?
+### Как handle cross-origin WebSocket connections in Node.js?
 
 **Definition:**
 
@@ -2880,9 +2880,9 @@ server.on("upgrade", (request, socket, head) => {
 ### WebSockets and Full-Duplex Communication
 
 <details>
-<summary>What does full-duplex communication mean in the context of WebSockets?</summary>
+<summary>Что означает full-duplex communication mean in the context of WebSockets?</summary>
 
-### What does full-duplex communication mean in the context of WebSockets?
+### Что означает full-duplex communication mean in the context of WebSockets?
 
 **Definition:**
 
@@ -2901,9 +2901,9 @@ server.on("upgrade", (request, socket, head) => {
 </details>
 
 <details>
-<summary>Can you provide an example where full-duplex WebSocket communication is essential?</summary>
+<summary>Можете ли вы provide an example where full-duplex WebSocket communication is essential?</summary>
 
-### Can you provide an example where full-duplex WebSocket communication is essential?
+### Можете ли вы provide an example where full-duplex WebSocket communication is essential?
 
 **Definition:**
 
@@ -2921,9 +2921,9 @@ server.on("upgrade", (request, socket, head) => {
 </details>
 
 <details>
-<summary>How does full-duplex communication affect the design of client and server logic?</summary>
+<summary>Как full-duplex communication affect the design of client and server logic?</summary>
 
-### How does full-duplex communication affect the design of client and server logic?
+### Как full-duplex communication affect the design of client and server logic?
 
 **Definition:**
 
@@ -2945,9 +2945,9 @@ server.on("upgrade", (request, socket, head) => {
 ### WebSockets and State Management
 
 <details>
-<summary>How should the state be managed over WebSocket connections?</summary>
+<summary>Как следует the state be managed over WebSocket connections?</summary>
 
-### How should the state be managed over WebSocket connections?
+### Как следует the state be managed over WebSocket connections?
 
 **Definition:**
 
@@ -2965,9 +2965,9 @@ server.on("upgrade", (request, socket, head) => {
 </details>
 
 <details>
-<summary>Discuss the implications of stateful vs stateless WebSocket servers.</summary>
+<summary>Обсудите the implications of stateful vs stateless WebSocket servers.</summary>
 
-### Discuss the implications of stateful vs stateless WebSocket servers.
+### Обсудите the implications of stateful vs stateless WebSocket servers.
 
 **Definition:**
 
@@ -2991,9 +2991,9 @@ TCP-соединение — это всегда состояние. «Бесс�
 </details>
 
 <details>
-<summary>How can you synchronize the state between the client and server over WebSockets?</summary>
+<summary>Как you synchronize the state between the client and server over WebSockets?</summary>
 
-### How can you synchronize the state between the client and server over WebSockets?
+### Как you synchronize the state between the client and server over WebSockets?
 
 **Definition:**
 
@@ -3015,9 +3015,9 @@ TCP-соединение — это всегда состояние. «Бесс�
 ### WebSockets and UI/UX Concerns
 
 <details>
-<summary>How can WebSockets improve user experience in web applications?</summary>
+<summary>Как WebSockets improve user experience in web applications?</summary>
 
-### How can WebSockets improve user experience in web applications?
+### Как WebSockets improve user experience in web applications?
 
 **Definition:**
 
@@ -3036,9 +3036,9 @@ TCP-соединение — это всегда состояние. «Бесс�
 </details>
 
 <details>
-<summary>What are some potential UI/UX pitfalls when using WebSockets for real-time updates?</summary>
+<summary>Что такое some potential UI/UX pitfalls when using WebSockets for real-time updates?</summary>
 
-### What are some potential UI/UX pitfalls when using WebSockets for real-time updates?
+### Что такое some potential UI/UX pitfalls when using WebSockets for real-time updates?
 
 **Definition:**
 
@@ -3057,9 +3057,9 @@ TCP-соединение — это всегда состояние. «Бесс�
 </details>
 
 <details>
-<summary>How do you manage user notifications with WebSockets?</summary>
+<summary>Как you manage user notifications with WebSockets?</summary>
 
-### How do you manage user notifications with WebSockets?
+### Как you manage user notifications with WebSockets?
 
 **Definition:**
 
@@ -3081,9 +3081,9 @@ TCP-соединение — это всегда состояние. «Бесс�
 ### WebSockets Monitoring and Maintenance
 
 <details>
-<summary>What are some effective strategies for monitoring WebSocket traffic?</summary>
+<summary>Что такое some effective strategies for monitoring WebSocket traffic?</summary>
 
-### What are some effective strategies for monitoring WebSocket traffic?
+### Что такое some effective strategies for monitoring WebSocket traffic?
 
 **Definition:**
 
@@ -3103,9 +3103,9 @@ TCP-соединение — это всегда состояние. «Бесс�
 </details>
 
 <details>
-<summary>How do you maintain and update WebSocket-based systems with minimal downtime?</summary>
+<summary>Как you maintain and update WebSocket-BASEd systems with minimal downtime?</summary>
 
-### How do you maintain and update WebSocket-based systems with minimal downtime?
+### Как you maintain and update WebSocket-BASEd systems with minimal downtime?
 
 **Definition:**
 
@@ -3127,9 +3127,9 @@ TCP-соединение — это всегда состояние. «Бесс�
 ### WebSockets Advanced Security Topics
 
 <details>
-<summary>Discuss the use of client certificates with WebSockets for enhanced security.</summary>
+<summary>Обсудите the use of client certificates with WebSockets for enhanced security.</summary>
 
-### Discuss the use of client certificates with WebSockets for enhanced security.
+### Обсудите the use of client certificates with WebSockets for enhanced security.
 
 **Definition:**
 
@@ -3148,9 +3148,9 @@ TCP-соединение — это всегда состояние. «Бесс�
 </details>
 
 <details>
-<summary>Explain how to implement rate limiting for WebSocket connections to prevent abuse.</summary>
+<summary>Объясните how to implement rate limiting for WebSocket connections to prevent abuse.</summary>
 
-### Explain how to implement rate limiting for WebSocket connections to prevent abuse.
+### Объясните how to implement rate limiting for WebSocket connections to prevent abuse.
 
 **Definition:**
 
@@ -3170,9 +3170,9 @@ TCP-соединение — это всегда состояние. «Бесс�
 </details>
 
 <details>
-<summary>What is the role of security tokens in WebSocket communication, and how do you implement token-based authentication?</summary>
+<summary>Что такое the role of security tokens in WebSocket communication, and how do you implement token-BASEd authentication?</summary>
 
-### What is the role of security tokens in WebSocket communication, and how do you implement token-based authentication?
+### Что такое the role of security tokens in WebSocket communication, and how do you implement token-BASEd authentication?
 
 **Definition:**
 
@@ -3194,9 +3194,9 @@ TCP-соединение — это всегда состояние. «Бесс�
 ### WebSockets Compliance and Standards
 
 <details>
-<summary>What are the RFCs (Request for Comments) that define the WebSocket protocol?</summary>
+<summary>Что такое the RFCs (Request for Comments) that define the WebSocket protocol?</summary>
 
-### What are the RFCs (Request for Comments) that define the WebSocket protocol?
+### Что такое the RFCs (Request for Comments) that define the WebSocket protocol?
 
 **Definition:**
 
@@ -3217,9 +3217,9 @@ RFC 6455 — это протокол WebSocket: рукопожатие, кадр
 </details>
 
 <details>
-<summary>How does compliance with WebSocket standards affect interoperability and future-proofing your application?</summary>
+<summary>Как compliance with WebSocket standards affect interoperability and future-proofing your application?</summary>
 
-### How does compliance with WebSocket standards affect interoperability and future-proofing your application?
+### Как compliance with WebSocket standards affect interoperability and future-proofing your application?
 
 **Definition:**
 

@@ -177,29 +177,33 @@ https://highload.tech/blogs/fundament-dlya-javascript-razrabotchika-kak-otvetit-
 
 ### Conspect coverage checklist
 
-| Конспект                                       | Теория                    | Вопросы и ответы                | Задачи                   | Ссылка на хаб    |
-| ---------------------------------------------- | ------------------------- | ------------------------------- | ------------------------ | ---------------- | --- | -------------------------------------- | ------------------ | ------------------------- | -------------------------------------- | ----------- |
-| [1_html.md](1_html.md)                         | Да                        | Да (+конвейер браузера)         | Да                       | HTML             |
-| [2_css.md](2_css.md)                           | Да                        | Да                              | 16+                      | CSS              |
-| [3_js_core.md](3_js_core.md)                   | Да                        | Да                              | язык                     | js               |
-| [3_js_array.md](3_js_array.md)                 | Да                        | Да                              | сгладить, карта, тележка | js               |     | [3_js_functions.md](3_js_functions.md) | Да                 | Да                        | связывание, устранение дребезга, карри | js          |
-| [3_js_async.md](3_js_async.md)                 | Да                        | Да                              | 5+                       | js               |
-| [3_js_oop.md](3_js_oop.md)                     | Да                        | Да                              | 4+                       | js               |
-| [3_js_browser.md](3_js_browser.md)             | Да                        | Да                              | 1+                       | js               |
-| [3_js_events.md](3_js_events.md)               | Да                        | Да                              | 1+                       | js               |
-| [3_js_browser_extra.md](3_js_browser_extra.md) | Да                        | Да                              | 2+                       | js               |     | [5_ts.md](5_ts.md)                     | Справочник         | Да (+ задание на корзину) | Тип задач                              | ТС          |
-| [4_react.md](4_react.md)                       | Да                        | Да (+ крючки, арка, перфорация) | Да                       | реагировать      |
-| [4_nextjs.md](4_nextjs.md)                     | Да                        | Да                              | 3                        | следующий.js     |
-| [4_vue.md](4_vue.md)                           | Да                        | Да (+ composition, SSR)         | Да                       | vue              |
-| [4_nuxt.md](4_nuxt.md)                         | Да                        | Да                              | 3                        | nuxt             |
-| [8_nodejs.md](8_nodejs.md)                     | Реструктуризация + NestJS | Да                              | 2+                       | узел.js          |
-| [6_web_api.md](6_web_api.md)                   | Реструктуризация          | Да (+ GET/POST, контракт)       | 2+                       | веб-API          |     | [9_database.md](9_database.md)         | Да                 | Да                        | 4                                      | база данных |
-| [0_git.md](0_git.md)                           | Да                        | Да                              | 3                        | мерзавец         |
-| [10_build.md](10_build.md)                     | Да                        | Да                              | 2                        | строить          |
-| [15_devops.md](15_devops.md)                   | Да                        | Да                              | 2                        | девопс           |
-| [0_system_design.md](0_system_design.md)       | Да                        | Да                              | 1                        | системный дизайн |
-| [0_mvp.md](0_mvp.md)                           | Да                        | Да                              | —                        | инжиниринг       |
-| [7_special.md](7_special.md)                   | Да                        | Да                              | —                        | системный дизайн |     | [0_ai.md](0_ai.md)                     | Рабочий процесс ИИ | —                         | —                                      | инструменты |
+| Конспект                                       | Теория                    | Вопросы и ответы                | Задачи                              | Ссылка на хаб    |
+| ---------------------------------------------- | ------------------------- | ------------------------------- | ----------------------------------- | ---------------- |
+| [1_html.md](1_html.md)                         | Да                        | Да (+конвейер браузера)         | Да                                  | html             |
+| [2_css.md](2_css.md)                           | Да                        | Да                              | 16+                                 | css              |
+| [3_js_core.md](3_js_core.md)                   | Да                        | Да                              | язык                                | js               |
+| [3_js_array.md](3_js_array.md)                 | Да                        | Да                              | flatten, map, cart                  | js               |
+| [3_js_functions.md](3_js_functions.md)         | Да                        | Да                              | bind, debounce, curry               | js               |
+| [3_js_async.md](3_js_async.md)                 | Да                        | Да                              | 5+                                  | js               |
+| [3_js_oop.md](3_js_oop.md)                     | Да                        | Да                              | 4+                                  | js               |
+| [3_js_browser.md](3_js_browser.md)             | Да                        | Да                              | 1+                                  | js               |
+| [3_js_events.md](3_js_events.md)               | Да                        | Да                              | 1+                                  | js               |
+| [3_js_browser_extra.md](3_js_browser_extra.md) | Да                        | Да                              | 2+                                  | js               |
+| [5_ts.md](5_ts.md)                             | Справочник                | Да (+ задание на корзину)       | Type tasks                          | ts               |
+| [4_react.md](4_react.md)                       | Да                        | Да (+ hooks, arch, perf)        | Да                                  | react            |
+| [4_nextjs.md](4_nextjs.md)                     | Да                        | Да                              | 3                                   | next.js          |
+| [4_vue.md](4_vue.md)                           | Да                        | Да (+ composition, SSR)         | Да                                  | vue              |
+| [4_nuxt.md](4_nuxt.md)                         | Да                        | Да                              | 3                                   | nuxt             |
+| [8_nodejs.md](8_nodejs.md)                     | Реструктуризация + NestJS | Да                              | 2+                                  | node.js          |
+| [6_web_api.md](6_web_api.md)                   | Реструктуризация          | Да (+ GET/POST, контракт)       | 2+                                  | web api          |
+| [9_database.md](9_database.md)                 | Да                        | Да                              | 4                                   | database         |
+| [0_git.md](0_git.md)                           | Да                        | Да                              | 3                                   | git              |
+| [10_build.md](10_build.md)                     | Да                        | Да                              | 2                                   | build            |
+| [15_devops.md](15_devops.md)                   | Да                        | Да                              | 2                                   | devops           |
+| [0_system_design.md](0_system_design.md)       | Да                        | Да                              | 1                                   | system design    |
+| [0_mvp.md](0_mvp.md)                           | Да                        | Да                              | —                                   | engineering      |
+| [7_special.md](7_special.md)                   | Да                        | Да                              | —                                   | system design    |
+| [0_ai.md](0_ai.md)                             | AI workflow               | —                               | —                                   | tools            |
 
 ### tasks
 

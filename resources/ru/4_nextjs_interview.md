@@ -21,9 +21,9 @@
 ### Next.js Fundamentals
 
 <details>
-<summary>What is Next.js and what are its main features?</summary>
+<summary>Что такое Next.js and what are its main features?</summary>
 
-### What is Next.js and what are its main features?
+### Что такое Next.js and what are its main features?
 
 **Definition:**
 
@@ -60,9 +60,9 @@
 </details>
 
 <details>
-<summary>How does Next.js differ from Create React App?</summary>
+<summary>Как Next.js differ from Create React App?</summary>
 
-### How does Next.js differ from Create React App?
+### Как Next.js differ from Create React App?
 
 **Definition:**
 
@@ -117,9 +117,9 @@
 </details>
 
 <details>
-<summary>What command is used to create a new Next.js app?</summary>
+<summary>Какая команда используется для создания нового Next.js app?</summary>
 
-### What command is used to create a new Next.js app?
+### Какая команда используется для создания нового Next.js app?
 
 **Definition:**
 
@@ -149,9 +149,9 @@ create-next-app folder-name
 </details>
 
 <details>
-<summary>How does Next.js handle server-side rendering (SSR)?</summary>
+<summary>Как Next.js handle server-side rendering (SSR)?</summary>
 
-### How does Next.js handle server-side rendering (SSR)?
+### Как Next.js handle server-side rendering (SSR)?
 
 **Definition:**
 
@@ -254,9 +254,9 @@ export default Navigation;
 </details>
 
 <details>
-<summary>Can you explain the purpose of the pages directory in a Next.js project?</summary>
+<summary>Можете ли вы explain the puRPOse of the pages directory in a Next.js project?</summary>
 
-### Can you explain the purpose of the pages directory in a Next.js project?
+### Можете ли вы explain the puRPOse of the pages directory in a Next.js project?
 
 **Definition:**
 
@@ -307,9 +307,9 @@ pages/
 </details>
 
 <details>
-<summary>In Next.js, how do you create a page that is rendered on the server for every request?</summary>
+<summary>В Next.js, how do you create a page that is rendered on the server for every request?</summary>
 
-### In Next.js, how do you create a page that is rendered on the server for every request?
+### В Next.js, how do you create a page that is rendered on the server for every request?
 
 **Definition:**
 
@@ -382,9 +382,9 @@ export default function ParentComponent() {
 </details>
 
 <details>
-<summary>What file extensions does Next.js support for pages?</summary>
+<summary>Какие file extensions Next.js поддерживает для pages?</summary>
 
-### What file extensions does Next.js support for pages?
+### Какие file extensions Next.js поддерживает для pages?
 
 **Definition:**
 
@@ -453,9 +453,9 @@ import './myMDXPageStyles.css';
 </details>
 
 <details>
-<summary>How do environment variables work in Next.js?</summary>
+<summary>Как environment variables work in Next.js?</summary>
 
-### How do environment variables work in Next.js?
+### Как environment variables work in Next.js?
 
 **Definition:**
 
@@ -499,9 +499,9 @@ const dbHost = process.env.DB_HOST || 'localhost';
 </details>
 
 <details>
-<summary>What is Automatic Static Optimization in Next.js?</summary>
+<summary>Что такое Automatic Static Optimization in Next.js?</summary>
 
-### What is Automatic Static Optimization in Next.js?
+### Что такое Automatic Static Optimization in Next.js?
 
 **Definition:**
 
@@ -561,9 +561,9 @@ function Product({ product }) {
 ### Pages and Routing
 
 <details>
-<summary>How does file-based routing work in Next.js?</summary>
+<summary>Как file-BASEd routing work in Next.js?</summary>
 
-### How does file-based routing work in Next.js?
+### Как file-BASEd routing work in Next.js?
 
 **Definition:**
 
@@ -627,9 +627,9 @@ pages/
 </details>
 
 <details>
-<summary>How do you create dynamic routes in Next.js?</summary>
+<summary>Как you create dynamic routes in Next.js?</summary>
 
-### How do you create dynamic routes in Next.js?
+### Как you create dynamic routes in Next.js?
 
 **Definition:**
 
@@ -698,9 +698,9 @@ export default function View() {
 </details>
 
 <details>
-<summary>Explain how to access URL parameters in a dynamic route.</summary>
+<summary>Объясните how to access URL parameters in a dynamic route.</summary>
 
-### Explain how to access URL parameters in a dynamic route.
+### Объясните how to access URL parameters in a dynamic route.
 
 **Definition:**
 
@@ -747,9 +747,9 @@ export default DynamicPost;
 </details>
 
 <details>
-<summary>Describe the functionality of the Link component in Next.js.</summary>
+<summary>Опишите the functionality of the Link component in Next.js.</summary>
 
-### Describe the functionality of the Link component in Next.js.
+### Опишите the functionality of the Link component in Next.js.
 
 **Definition:**
 
@@ -820,9 +820,9 @@ export default AboutUs;
 </details>
 
 <details>
-<summary>How do you handle catch-all routes in Next.js?</summary>
+<summary>Как you handle catch-all routes in Next.js?</summary>
 
-### How do you handle catch-all routes in Next.js?
+### Как you handle catch-all routes in Next.js?
 
 **Definition:**
 
@@ -886,9 +886,9 @@ export default function Fallback({ data }) {
 ### Data Fetching and Rendering
 
 <details>
-<summary>What is getStaticProps and when would you use it?</summary>
+<summary>Что такое getStaticProps and when would you use it?</summary>
 
-### What is getStaticProps and when would you use it?
+### Что такое getStaticProps and when would you use it?
 
 **Definition:**
 
@@ -935,9 +935,9 @@ export default function MyStaticPage({ data }) {
 </details>
 
 <details>
-<summary>What is getServerSideProps and what kind of rendering does it enable?</summary>
+<summary>Что такое getServerSideProps and what kind of rendering does it enable?</summary>
 
-### What is getServerSideProps and what kind of rendering does it enable?
+### Что такое getServerSideProps and what kind of rendering does it enable?
 
 **Definition:**
 
@@ -979,9 +979,9 @@ export default function Page({ repo }) {
 - [Next.js — App Router migration](https://nextjs.org/docs/app/guides/migrating/app-router-migration)
 </details>
 <details>
-<summary>How would you implement Incremental Static Regeneration (ISR) in Next.js?</summary>
+<summary>Как бы вы implement Incremental Static Regeneration (ISR) in Next.js?</summary>
 
-### How would you implement Incremental Static Regeneration (ISR) in Next.js?
+### Как бы вы implement Incremental Static Regeneration (ISR) in Next.js?
 
 **Definition:**
 
@@ -1026,9 +1026,9 @@ export default async function Page() {
 - [Next.js — ISR (App Router)](https://nextjs.org/docs/app/guides/incremental-static-regeneration)
 </details>
 <details>
-<summary>Can you use client-side data fetching in Next.js? If so, how?</summary>
+<summary>Можете ли вы use client-side data fetching in Next.js? If so, how?</summary>
 
-### Can you use client-side data fetching in Next.js? If so, how?
+### Можете ли вы use client-side data fetching in Next.js? If so, how?
 
 **Definition:**
 
@@ -1070,9 +1070,9 @@ export function Profile() {
 - [Next.js — Client-side fetching](https://nextjs.org/docs/pages/building-your-application/data-fetching/client-side)
 </details>
 <details>
-<summary>Explain the 'fallback' key used in the getStaticPaths function.</summary>
+<summary>Объясните the 'fallback' key used in the getStaticPaths function.</summary>
 
-### Explain the 'fallback' key used in the getStaticPaths function.
+### Объясните the 'fallback' key used in the getStaticPaths function.
 
 **Definition:**
 
@@ -1111,9 +1111,9 @@ export async function getStaticPaths() {
 ### API Routes
 
 <details>
-<summary>How do you create an API route in Next.js?</summary>
+<summary>Как you create an API route in Next.js?</summary>
 
-### How do you create an API route in Next.js?
+### Как you create an API route in Next.js?
 
 **Definition:**
 
@@ -1142,9 +1142,9 @@ export default function handler(req, res) {
 - [Next.js — Dynamic Route Handlers](https://nextjs.org/docs/app/api-reference/file-conventions/dynamic-routes)
 </details>
 <details>
-<summary>Can you use middleware within Next.js API routes?</summary>
+<summary>Можете ли вы use middleware within Next.js API routes?</summary>
 
-### Can you use middleware within Next.js API routes?
+### Можете ли вы use middleware within Next.js API routes?
 
 **Definition:**
 
@@ -1180,9 +1180,9 @@ export const config = { matcher: '/api/:path*' }
 - [Next.js — API Routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes)
 </details>
 <details>
-<summary>Explain how to handle query parameters in Next.js API routes.</summary>
+<summary>Объясните how to handle query parameters in Next.js API routes.</summary>
 
-### Explain how to handle query parameters in Next.js API routes.
+### Объясните how to handle query parameters in Next.js API routes.
 
 **Definition:**
 
@@ -1213,9 +1213,9 @@ export default function handler(req, res) {
 ### Styling in Next.js
 
 <details>
-<summary>How can you include CSS modules in your Next.js application?</summary>
+<summary>Как you include CSS modules in your Next.js application?</summary>
 
-### How can you include CSS modules in your Next.js application?
+### Как you include CSS modules in your Next.js application?
 
 **Definition:**
 
@@ -1249,9 +1249,9 @@ export default function Page() {
 - [Next.js — CSS](https://nextjs.org/docs/app/getting-started/css)
 </details>
 <details>
-<summary>Compare and contrast CSS-in-JS and styled-components in the context of Next.js.</summary>
+<summary>Сравните and contrast CSS-in-JS and styled-components in the context of Next.js.</summary>
 
-### Compare and contrast CSS-in-JS and styled-components in the context of Next.js.
+### Сравните and contrast CSS-in-JS and styled-components in the context of Next.js.
 
 **Definition:**
 
@@ -1284,9 +1284,9 @@ module.exports = {
 - [Next.js — compiler](https://nextjs.org/docs/architecture/nextjs-compiler)
 </details>
 <details>
-<summary>Can global styles be used in Next.js? If so, how?</summary>
+<summary>Можно ли global styles be used in Next.js? If so, how?</summary>
 
-### Can global styles be used in Next.js? If so, how?
+### Можно ли global styles be used in Next.js? If so, how?
 
 **Definition:**
 
@@ -1321,9 +1321,9 @@ export default function RootLayout({ children }) {
 ### Performance Optimization
 
 <details>
-<summary>What is the Image component and how does it help optimize performance in Next.js?</summary>
+<summary>Что такое the Image component and how does it help optimize performance in Next.js?</summary>
 
-### What is the Image component and how does it help optimize performance in Next.js?
+### Что такое the Image component and how does it help optimize performance in Next.js?
 
 **Definition:**
 
@@ -1354,9 +1354,9 @@ export default function Page() {
 - [Next.js — Image](https://nextjs.org/docs/app/api-reference/components/image)
 </details>
 <details>
-<summary>How does code splitting work in Next.js?</summary>
+<summary>Как code splitting work in Next.js?</summary>
 
-### How does code splitting work in Next.js?
+### Как code splitting work in Next.js?
 
 **Definition:**
 
@@ -1393,9 +1393,9 @@ export function Dashboard() {
 - [Next.js — Lazy loading](https://nextjs.org/docs/app/guides/lazy-loading)
 </details>
 <details>
-<summary>What are the methods provided by Next.js for prefetching pages?</summary>
+<summary>Что такое the methods provided by Next.js for prefetching pages?</summary>
 
-### What are the methods provided by Next.js for prefetching pages?
+### Что такое the methods provided by Next.js for prefetching pages?
 
 **Definition:**
 
@@ -1428,9 +1428,9 @@ export function Nav() {
 ### Deployment and Hosting
 
 <details>
-<summary>What are the benefits of deploying a Next.js application to Vercel?</summary>
+<summary>Что такое the benefits of deploying a Next.js application to Vercel?</summary>
 
-### What are the benefits of deploying a Next.js application to Vercel?
+### Что такое the benefits of deploying a Next.js application to Vercel?
 
 **Definition:**
 
@@ -1453,9 +1453,9 @@ Vercel — платформа хостинга той же команды, чт�
 - [Next.js — ISR](https://nextjs.org/docs/app/guides/incremental-static-regeneration)
 </details>
 <details>
-<summary>How do you configure custom domain names when deploying a Next.js application?</summary>
+<summary>Как you configure custom domain names when deploying a Next.js application?</summary>
 
-### How do you configure custom domain names when deploying a Next.js application?
+### Как you configure custom domain names when deploying a Next.js application?
 
 **Definition:**
 
@@ -1474,9 +1474,9 @@ Vercel — платформа хостинга той же команды, чт�
 - [Next.js — ISR platform support](https://nextjs.org/docs/app/guides/incremental-static-regeneration)
 </details>
 <details>
-<summary>Explain how to deploy a Next.js app using a different hosting service, such as AWS or Netlify.</summary>
+<summary>Объясните how to deploy a Next.js app using a different hosting service, such as AWS or Netlify.</summary>
 
-### Explain how to deploy a Next.js app using a different hosting service, such as AWS or Netlify.
+### Объясните how to deploy a Next.js app using a different hosting service, such as AWS or Netlify.
 
 **Definition:**
 
@@ -1509,9 +1509,9 @@ Vercel — платформа хостинга той же команды, чт�
 ### Integrations and Plugins
 
 <details>
-<summary>How do you integrate a CSS framework like Tailwind CSS into a Next.js project?</summary>
+<summary>Как you integrate a CSS framework like Tailwind CSS into a Next.js project?</summary>
 
-### How do you integrate a CSS framework like Tailwind CSS into a Next.js project?
+### Как you integrate a CSS framework like Tailwind CSS into a Next.js project?
 
 **Definition:**
 
@@ -1542,9 +1542,9 @@ export default {
 - [Next.js — App Router migration](https://nextjs.org/docs/app/guides/migrating/app-router-migration)
 </details>
 <details>
-<summary>What are some popular plugins for Next.js and what functionalities do they add?</summary>
+<summary>Что такое some popular plugins for Next.js and what functionalities do they add?</summary>
 
-### What are some popular plugins for Next.js and what functionalities do they add?
+### Что такое some popular plugins for Next.js and what functionalities do they add?
 
 **Definition:**
 
@@ -1564,9 +1564,9 @@ export default {
 - [Next.js — TypeScript](https://nextjs.org/docs/app/api-reference/config/typescript)
 </details>
 <details>
-<summary>How do you enable TypeScript support in a Next.js project?</summary>
+<summary>Как you enable TypeScript support in a Next.js project?</summary>
 
-### How do you enable TypeScript support in a Next.js project?
+### Как you enable TypeScript support in a Next.js project?
 
 **Definition:**
 
@@ -1594,9 +1594,9 @@ npm install -D typescript@^7
 ### Advanced Features
 
 <details>
-<summary>How do you implement a custom server in Next.js and why would you do so?</summary>
+<summary>Как you implement a custom server in Next.js and why would you do so?</summary>
 
-### How do you implement a custom server in Next.js and why would you do so?
+### Как you implement a custom server in Next.js and why would you do so?
 
 **Definition:**
 
@@ -1640,9 +1640,9 @@ app.prepare().then(() => {
 - [Next.js — Custom server](https://nextjs.org/docs/pages/guides/custom-server)
 </details>
 <details>
-<summary>What are the considerations when setting up internationalized routing in Next.js?</summary>
+<summary>Что такое the considerations when setting up internationalized routing in Next.js?</summary>
 
-### What are the considerations when setting up internationalized routing in Next.js?
+### Что такое the considerations when setting up internationalized routing in Next.js?
 
 **Definition:**
 
@@ -1678,9 +1678,9 @@ module.exports = {
 - [Next.js — Proxy](https://nextjs.org/docs/app/api-reference/file-conventions/proxy)
 </details>
 <details>
-<summary>How do you handle custom error pages in a Next.js application?</summary>
+<summary>Как you handle custom error pages in a Next.js application?</summary>
 
-### How do you handle custom error pages in a Next.js application?
+### Как you handle custom error pages in a Next.js application?
 
 **Definition:**
 
@@ -1717,9 +1717,9 @@ export default function NotFound() {
 ### Best Practices
 
 <details>
-<summary>What folder structure is recommended for large-scale Next.js applications?</summary>
+<summary>Какая folder structure рекомендуется для large-scale Next.js applications?</summary>
 
-### What folder structure is recommended for large-scale Next.js applications?
+### Какая folder structure рекомендуется для large-scale Next.js applications?
 
 **Definition:**
 
@@ -1749,9 +1749,9 @@ app/
 - [Next.js — Building](https://nextjs.org/docs/app/guides/building)
 </details>
 <details>
-<summary>How should you structure components in a Next.js application for optimal code reusability?</summary>
+<summary>Как следует you structure components in a Next.js application for optimal code reusability?</summary>
 
-### How should you structure components in a Next.js application for optimal code reusability?
+### Как следует you structure components in a Next.js application for optimal code reusability?
 
 **Definition:**
 
@@ -1778,9 +1778,9 @@ export function Price({ cents }) {
 - [Next.js — TypeScript](https://nextjs.org/docs/app/api-reference/config/typescript)
 </details>
 <details>
-<summary>What are some security best practices you should follow in a Next.js app?</summary>
+<summary>Что такое some security best practices you should follow in a Next.js app?</summary>
 
-### What are some security best practices you should follow in a Next.js app?
+### Что такое some security best practices you should follow in a Next.js app?
 
 **Definition:**
 
@@ -1820,9 +1820,9 @@ module.exports = {
 ### State Management in Next.js
 
 <details>
-<summary>How do you manage global state in a Next.js application without using external libraries?</summary>
+<summary>Как you manage global state in a Next.js application without using external libraries?</summary>
 
-### How do you manage global state in a Next.js application without using external libraries?
+### Как you manage global state in a Next.js application without using external libraries?
 
 **Definition:**
 
@@ -1869,9 +1869,9 @@ export function useTheme() {
 - [React — createContext](https://react.dev/reference/react/createContext)
 </details>
 <details>
-<summary>When should you consider using a state management library like Redux in a Next.js project?</summary>
+<summary>Когда should you consider using a state management library like Redux in a Next.js project?</summary>
 
-### When should you consider using a state management library like Redux in a Next.js project?
+### Когда should you consider using a state management library like Redux in a Next.js project?
 
 **Definition:**
 
@@ -1895,9 +1895,9 @@ export function useTheme() {
 - [React — createContext](https://react.dev/reference/react/createContext)
 </details>
 <details>
-<summary>Explain how to persist state between page transitions in a Next.js app.</summary>
+<summary>Объясните how to persist state between page transitions in a Next.js app.</summary>
 
-### Explain how to persist state between page transitions in a Next.js app.
+### Объясните how to persist state between page transitions in a Next.js app.
 
 **Definition:**
 
@@ -1947,9 +1947,9 @@ export function DraftName() {
 ### Next.js and TypeScript
 
 <details>
-<summary>What are the advantages of using TypeScript in a Next.js project?</summary>
+<summary>Что такое the advantages of using TypeScript in a Next.js project?</summary>
 
-### What are the advantages of using TypeScript in a Next.js project?
+### Что такое the advantages of using TypeScript in a Next.js project?
 
 **Definition:**
 
@@ -1968,9 +1968,9 @@ TypeScript проверяет пропсы, параметры маршрута 
 - [Next.js — TypeScript](https://nextjs.org/docs/app/api-reference/config/typescript)
 </details>
 <details>
-<summary>How do you add type definitions for a Next.js page's props?</summary>
+<summary>Как you add type definitions for a Next.js page's props?</summary>
 
-### How do you add type definitions for a Next.js page's props?
+### Как you add type definitions for a Next.js page's props?
 
 **Definition:**
 
@@ -2002,9 +2002,9 @@ export default async function Page({
 - [Next.js — getServerSideProps](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props)
 </details>
 <details>
-<summary>What steps are involved in migrating an existing Next.js project to TypeScript?</summary>
+<summary>Какие шаги нужны для миграции existing Next.js project на TypeScript?</summary>
 
-### What steps are involved in migrating an existing Next.js project to TypeScript?
+### Какие шаги нужны для миграции existing Next.js project на TypeScript?
 
 **Definition:**
 
@@ -2024,9 +2024,9 @@ export default async function Page({
 - [Next.js — TypeScript](https://nextjs.org/docs/app/api-reference/config/typescript)
 </details>
 <details>
-<summary>Can you describe how to use TypeScript for defining API route handlers in Next.js?</summary>
+<summary>Можете ли вы describe how to use TypeScript for defining API route handlers in Next.js?</summary>
 
-### Can you describe how to use TypeScript for defining API route handlers in Next.js?
+### Можете ли вы describe how to use TypeScript for defining API route handlers in Next.js?
 
 **Definition:**
 
@@ -2060,9 +2060,9 @@ export default function handler(
 - [Next.js — Dynamic routes](https://nextjs.org/docs/app/api-reference/file-conventions/dynamic-routes)
 </details>
 <details>
-<summary>How do you enforce type checking for dynamic routes in Next.js using TypeScript?</summary>
+<summary>Как you enforce type checking for dynamic routes in Next.js using TypeScript?</summary>
 
-### How do you enforce type checking for dynamic routes in Next.js using TypeScript?
+### Как you enforce type checking for dynamic routes in Next.js using TypeScript?
 
 **Definition:**
 
@@ -2091,9 +2091,9 @@ export default nextConfig
 - [Next.js — TypeScript](https://nextjs.org/docs/app/api-reference/config/typescript)
 </details>
 <details>
-<summary>How does Next.js handle automatic type generation for pages and API routes when using TypeScript?</summary>
+<summary>Как Next.js handle automatic type generation for pages and API routes when using TypeScript?</summary>
 
-### How does Next.js handle automatic type generation for pages and API routes when using TypeScript?
+### Как Next.js handle automatic type generation for pages and API routes when using TypeScript?
 
 **Definition:**
 
@@ -2112,9 +2112,9 @@ Next.js генерирует типы маршрутов во время `next d
 - [Next.js — TypeScript](https://nextjs.org/docs/app/api-reference/config/typescript)
 </details>
 <details>
-<summary>What is the role of the tsconfig.json file in a Next.js project with TypeScript, and how do you customize it for your specific needs?</summary>
+<summary>Что такое the role of the tsconfig.JSON file in a Next.js project with TypeScript, and how do you customize it for your specific needs?</summary>
 
-### What is the role of the tsconfig.json file in a Next.js project with TypeScript, and how do you customize it for your specific needs?
+### Что такое the role of the tsconfig.JSON file in a Next.js project with TypeScript, and how do you customize it for your specific needs?
 
 **Definition:**
 

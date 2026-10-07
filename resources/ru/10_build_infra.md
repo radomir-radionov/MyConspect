@@ -26,13 +26,13 @@
 **Definition:**
 
 
-| Монолит                         | Микросервисы                          |
-|  -------------------  |  -------------------------------  |
-| **Структура**       | Одиночный развертываемый блок   | Независимые услуги для каждого домена |
-| **Развертывание**   | Все или ничего                  | Развертывание для каждой службы       |
-| **Масштабирование** | Масштабировать все приложение   | Масштаб индивидуальных услуг          |
-| **Данные**          | Общая база данных (обычно)      | База данных на сервис                 |
-| **Команда**         | Одна команда, одна кодовая база | Команды на сервис                     |
+| | Монолит                         | Микросервисы                          |
+| | -------------------  |  -------------------------------  |
+| | **Структура**       | Одиночный развертываемый блок   | Независимые услуги для каждого домена |
+| | **Развертывание**   | Все или ничего                  | Развертывание для каждой службы       |
+| | **Масштабирование** | Масштабировать все приложение   | Масштаб индивидуальных услуг          |
+| | **Данные**          | Общая база данных (обычно)      | База данных на сервис                 |
+| | **Команда**         | Одна команда, одна кодовая база | Команды на сервис                     |
 
 **When to use:**
 
@@ -179,13 +179,13 @@ const cached = await redis.get("user:123");
 **Definition:** Три способа развязать producer и consumer в Node/build-пайплайнах. Выбирайте по **модели доставки**, а не по hype.
 
 
-| RabbitMQ                                        | Kafka                               | BullMQ                                 |
-|  ----------  |  -----------------------------------------------  |  -----------------------------------  |
-| Model      | Queue + exchange (сообщения исчезают после ack) | Append-only log (offset у consumer) | Redis lists/streams как Node job queue |
-| Fan-out    | Exchanges (fanout/topic)                        | Consumer groups + partitions        | Repeatable jobs / queues по имени      |
-| Replay     | Плохо (сообщение удалено)                       | First-class (rewind offset)         | Ограниченно                            |
-| Throughput | Тысячи–десятки k msg/s                          | Сотни k+                            | Достаточно для типичных Node jobs      |
-| Ops        | Erlang broker                                   | Cluster, disk, partition key        | Redis, который уже есть                |
+| | RabbitMQ                                        | Kafka                               | BullMQ                                 |
+| | ----------  |  -----------------------------------------------  |  -----------------------------------  |
+| | Model      | Queue + exchange (сообщения исчезают после ack) | Append-only log (offset у consumer) | Redis lists/streams как Node job queue |
+| | Fan-out    | Exchanges (fanout/topic)                        | Consumer groups + partitions        | Repeatable jobs / queues по имени      |
+| | Replay     | Плохо (сообщение удалено)                       | First-class (rewind offset)         | Ограниченно                            |
+| | Throughput | Тысячи–десятки k msg/s                          | Сотни k+                            | Достаточно для типичных Node jobs      |
+| | Ops        | Erlang broker                                   | Cluster, disk, partition key        | Redis, который уже есть                |
 
 **When to use:** Email/worker jobs → **BullMQ** (этот файл). Сложная маршрутизация + ack → **RabbitMQ**. Event log, который команды читают в своём темпе → **Kafka**. Подробнее: [Message broker](./12_message_broker.md) (Backend). AWS managed: SQS ≈ queue, Kinesis/MSK ≈ log.
 

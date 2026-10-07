@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Hash Tables](https://devinterview.io/questio
 ### Basic Hash Table Concepts
 
 <details>
-<summary>What is a Hash Table?</summary>
+<summary>Что такое hash table?</summary>
 
-### What is a Hash Table?
+### Что такое hash table?
 
 **Definition:**
 
@@ -41,9 +41,9 @@ Questions from [Devinterview.io — Hash Tables](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>What is Hashing?</summary>
+<summary>Что такое hashing?</summary>
 
-### What is Hashing?
+### Что такое hashing?
 
 **Definition:**
 
@@ -58,9 +58,9 @@ Questions from [Devinterview.io — Hash Tables](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>Explain the difference between Hashing and Hash Tables.</summary>
+<summary>Объясните разницу между hashing и Hash Tables.</summary>
 
-### Explain the difference between Hashing and Hash Tables.
+### Объясните разницу между hashing и Hash Tables.
 
 **Definition:**
 
@@ -75,9 +75,9 @@ Questions from [Devinterview.io — Hash Tables](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>Provide a simple example of a Hash Function.</summary>
+<summary>Приведите a simple example of a Hash Function.</summary>
 
-### Provide a simple example of a Hash Function.
+### Приведите a simple example of a Hash Function.
 
 **Definition:**
 
@@ -102,9 +102,9 @@ h = h * 31 + 'b'
 </details>
 
 <details>
-<summary>How do hash tables work under the hood, specifically in languages like Java, Python, and C++?</summary>
+<summary>Как Hash Tables работает под капотом, в частности, на таких языках, как Java, Python и C++?</summary>
 
-### How do hash tables work under the hood, specifically in languages like Java, Python, and C++?
+### Как Hash Tables работает под капотом, в частности, на таких языках, как Java, Python и C++?
 
 **Definition:**
 
@@ -121,9 +121,9 @@ h = h * 31 + 'b'
 ### Hash Functions and Collisions
 
 <details>
-<summary>What are Hash Collisions?</summary>
+<summary>Что такое Hash Collisions?</summary>
 
-### What are Hash Collisions?
+### Что такое Hash Collisions?
 
 **Definition:**
 
@@ -142,9 +142,9 @@ h = h * 31 + 'b'
 </details>
 
 <details>
-<summary>Name some Collision Handling Techniques.</summary>
+<summary>Назовите some Collision Handling Techniques.</summary>
 
-### Name some Collision Handling Techniques.
+### Назовите some Collision Handling Techniques.
 
 **Definition:**
 
@@ -159,9 +159,9 @@ h = h * 31 + 'b'
 </details>
 
 <details>
-<summary>Describe the characteristics of a good hash function.</summary>
+<summary>Опишите характеристики хорошей функции hash.</summary>
 
-### Describe the characteristics of a good hash function.
+### Опишите характеристики хорошей функции hash.
 
 **Definition:**
 
@@ -176,9 +176,9 @@ h = h * 31 + 'b'
 </details>
 
 <details>
-<summary>What is Separate Chaining, and how does it handle collisions?</summary>
+<summary>Что такое Separate chaining, and how does it handle collisions?</summary>
 
-### What is Separate Chaining, and how does it handle collisions?
+### Что такое Separate chaining, and how does it handle collisions?
 
 **Definition:**
 
@@ -197,9 +197,9 @@ h = h * 31 + 'b'
 </details>
 
 <details>
-<summary>Explain Open Addressing and its different probing techniques.</summary>
+<summary>Объясните open addressing и его различные методы тестирования.</summary>
 
-### Explain Open Addressing and its different probing techniques.
+### Объясните open addressing и его различные методы тестирования.
 
 **Definition:**
 
@@ -220,9 +220,9 @@ h = h * 31 + 'b'
 ### Complexity and Performance
 
 <details>
-<summary>Explain the Time and Space Complexity of a Hash Table.</summary>
+<summary>Объясните время и значение space complexity для Hash Table.</summary>
 
-### Explain the Time and Space Complexity of a Hash Table.
+### Объясните время и значение space complexity для Hash Table.
 
 **Definition:**
 
@@ -237,9 +237,9 @@ h = h * 31 + 'b'
 </details>
 
 <details>
-<summary>What is a Load Factor in the context of Hash Tables?</summary>
+<summary>Что такое load factor in the context of hash tables?</summary>
 
-### What is a Load Factor in the context of Hash Tables?
+### Что такое load factor in the context of hash tables?
 
 **Definition:**
 
@@ -254,9 +254,9 @@ h = h * 31 + 'b'
 </details>
 
 <details>
-<summary>How does the load factor affect performance in a hash table?</summary>
+<summary>Как the load factor affect performance in a hash table?</summary>
 
-### How does the load factor affect performance in a hash table?
+### Как the load factor affect performance in a hash table?
 
 **Definition:**
 
@@ -271,9 +271,9 @@ h = h * 31 + 'b'
 </details>
 
 <details>
-<summary>Discuss different ways to resize a hash table. What is the complexity involved?</summary>
+<summary>Обсудите различные способы изменения размера hash table. В чем заключается сложность?</summary>
 
-### Discuss different ways to resize a hash table. What is the complexity involved?
+### Обсудите различные способы изменения размера hash table. В чем заключается сложность?
 
 **Definition:**
 
@@ -288,9 +288,9 @@ h = h * 31 + 'b'
 </details>
 
 <details>
-<summary>How can the choice of a hash function impact the efficiency of a hash table?</summary>
+<summary>Как выбор функции hash может повлиять на эффективность Hash Table?</summary>
 
-### How can the choice of a hash function impact the efficiency of a hash table?
+### Как выбор функции hash может повлиять на эффективность Hash Table?
 
 **Definition:**
 
@@ -311,9 +311,9 @@ h = h * 31 + 'b'
 ### Cryptographic Hashing
 
 <details>
-<summary>What is the difference between a Hash Function and a Cryptographic Hash Function?</summary>
+<summary>Что такое the difference between a Hash Function and a Cryptographic Hash Function?</summary>
 
-### What is the difference between a Hash Function and a Cryptographic Hash Function?
+### Что такое the difference between a Hash Function and a Cryptographic Hash Function?
 
 **Definition:**
 
@@ -337,9 +337,9 @@ https://docs.python.org/3/library/hashlib.html
 </details>
 
 <details>
-<summary>What is the role of a Salt in Cryptographic Hashing?</summary>
+<summary>Что такое the role of a salt in Cryptographic hashing?</summary>
 
-### What is the role of a Salt in Cryptographic Hashing?
+### Что такое the role of a salt in Cryptographic hashing?
 
 **Definition:**
 
@@ -362,9 +362,9 @@ https://docs.python.org/3/library/hashlib.html
 </details>
 
 <details>
-<summary>Explain Types of Resistance in Cryptographic Hash Functions.</summary>
+<summary>Объясните типы устойчивости в функциях CRYPTOgraph и hash.</summary>
 
-### Explain Types of Resistance in Cryptographic Hash Functions.
+### Объясните типы устойчивости в функциях CRYPTOgraph и hash.
 
 **Definition:**
 
@@ -387,9 +387,9 @@ https://docs.python.org/3/library/hashlib.html
 </details>
 
 <details>
-<summary>What is MD5?</summary>
+<summary>Что такое MD5?</summary>
 
-### What is MD5?
+### Что такое MD5?
 
 **Definition:**
 
@@ -414,9 +414,9 @@ https://docs.python.org/3/library/hashlib.html
 </details>
 
 <details>
-<summary>What vulnerabilities exist in Hashing Algorithms like MD5 and SHA1?</summary>
+<summary>Какие уязвимости есть у hashing algorithms вроде MD5 и SHA1?</summary>
 
-### What vulnerabilities exist in Hashing Algorithms like MD5 and SHA1?
+### Какие уязвимости есть у hashing algorithms вроде MD5 и SHA1?
 
 **Definition:**
 
@@ -441,9 +441,9 @@ https://docs.python.org/3/library/hashlib.html
 ### Hash Table Usage and Applications
 
 <details>
-<summary>Detect if a List is Cyclic using a Hash Table.</summary>
+<summary>Определите, является ли список циклическим, используя hash table.</summary>
 
-### Detect if a List is Cyclic using a Hash Table.
+### Определите, является ли список циклическим, используя hash table.
 
 **Definition:**
 
@@ -478,9 +478,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>Remove Duplicates from an Unsorted Linked List using a hash table.</summary>
+<summary>Удалите Duplicates from an Unsorted linked list using a hash table.</summary>
 
-### Remove Duplicates from an Unsorted Linked List using a hash table.
+### Удалите Duplicates from an Unsorted linked list using a hash table.
 
 **Definition:**
 
@@ -514,9 +514,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>Find Common Elements in two given Linked Lists and return them as a new Linked List using a hash table.</summary>
+<summary>Найдите общие элементы в двух заданных linked lists и верните их как новый linked list, используя Hash Table.</summary>
 
-### Find Common Elements in two given Linked Lists and return them as a new Linked List using a hash table.
+### Найдите общие элементы в двух заданных linked lists и верните их как новый linked list, используя Hash Table.
 
 **Definition:**
 
@@ -539,9 +539,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>Pair socks from a pile using a Hash Table.</summary>
+<summary>Сопоставьте носки из кучи с помощью hash table.</summary>
 
-### Pair socks from a pile using a Hash Table.
+### Сопоставьте носки из кучи с помощью hash table.
 
 **Definition:**
 
@@ -571,9 +571,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>How can hash tables be used in caching implementations? Describe a typical use case.</summary>
+<summary>Как можно использовать Hash Tables в реализациях caching? Опишите типичный вариант использования.</summary>
 
-### How can hash tables be used in caching implementations? Describe a typical use case.
+### Как можно использовать Hash Tables в реализациях caching? Опишите типичный вариант использования.
 
 **Definition:**
 
@@ -598,9 +598,9 @@ https://en.wikipedia.org/wiki/Consistent_hashing
 </details>
 
 <details>
-<summary>Write an algorithm using a hash table to check if two strings are anagrams of each other.</summary>
+<summary>Напишите an alGorithm using a hash table to check if two strings are anagrams of each other.</summary>
 
-### Write an algorithm using a hash table to check if two strings are anagrams of each other.
+### Напишите an alGorithm using a hash table to check if two strings are anagrams of each other.
 
 **Definition:**
 
@@ -627,9 +627,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>Implement Autocomplete functionality using Hash Tables.</summary>
+<summary>Реализуйте autocomplete functionality using hash tables.</summary>
 
-### Implement Autocomplete functionality using Hash Tables.
+### Реализуйте autocomplete functionality using hash tables.
 
 **Definition:**
 
@@ -653,9 +653,9 @@ https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
-<summary>Describe how a hash table can be used in the implementation of a CDN.</summary>
+<summary>Опишите, как hash table можно использовать при реализации CDN.</summary>
 
-### Describe how a hash table can be used in the implementation of a CDN.
+### Опишите, как hash table можно использовать при реализации CDN.
 
 **Definition:**
 
@@ -680,9 +680,9 @@ https://en.wikipedia.org/wiki/Consistent_hashing
 ### Hash Table Structures and Variants
 
 <details>
-<summary>What is the difference between HashMaps and HashTables in context of Java’s data structures?</summary>
+<summary>Что такое the difference between HashMaps and HashTables in context of Java’s data structures?</summary>
 
-### What is the difference between HashMaps and HashTables in context of Java’s data structures?
+### Что такое the difference between HashMaps and HashTables in context of Java’s data structures?
 
 **Definition:**
 
@@ -705,9 +705,9 @@ https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.h
 </details>
 
 <details>
-<summary>Explain Cuckoo Hashing and when it is advantageous to use.</summary>
+<summary>Объясните, как работает Cuckoo hashing и когда его выгодно использовать.</summary>
 
-### Explain Cuckoo Hashing and when it is advantageous to use.
+### Объясните, как работает Cuckoo hashing и когда его выгодно использовать.
 
 **Definition:**
 
@@ -730,9 +730,9 @@ https://en.wikipedia.org/wiki/Cuckoo_hashing
 </details>
 
 <details>
-<summary>What are Skip Lists and how do they compare to hash tables?</summary>
+<summary>Что такое skip lists and how do they compare to hash tables?</summary>
 
-### What are Skip Lists and how do they compare to hash tables?
+### Что такое skip lists and how do they compare to hash tables?
 
 **Definition:**
 
@@ -756,9 +756,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>Discuss the concept of a Dynamic Perfect Hash Table.</summary>
+<summary>Обсудите концепцию Dynamic Perfect hash table.</summary>
 
-### Discuss the concept of a Dynamic Perfect Hash Table.
+### Обсудите концепцию Dynamic Perfect hash table.
 
 **Definition:**
 
@@ -781,9 +781,9 @@ https://en.wikipedia.org/wiki/Dynamic_perfect_hashing
 </details>
 
 <details>
-<summary>In what scenarios would you use a Bloom Filter, and how does it relate to hash tables?</summary>
+<summary>В what scenarios would you use a Bloom Filter, and how does it relate to hash tables?</summary>
 
-### In what scenarios would you use a Bloom Filter, and how does it relate to hash tables?
+### В what scenarios would you use a Bloom Filter, and how does it relate to hash tables?
 
 **Definition:**
 
@@ -809,9 +809,9 @@ https://en.wikipedia.org/wiki/Hash_table
 ### Advanced Hash Table Questions
 
 <details>
-<summary>What is the Pigeonhole Principle and how does it relate to hashing?</summary>
+<summary>Что такое the Pigeonhole Principle and how does it relate to hashing?</summary>
 
-### What is the Pigeonhole Principle and how does it relate to hashing?
+### Что такое the Pigeonhole Principle and how does it relate to hashing?
 
 **Definition:**
 
@@ -831,9 +831,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>What are the advantages of Tries over Hash Tables?</summary>
+<summary>Что такое the advantages of tries over hash tables?</summary>
 
-### What are the advantages of Tries over Hash Tables?
+### Что такое the advantages of tries over hash tables?
 
 **Definition:**
 
@@ -857,9 +857,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>Explain Robin Hood Hashing and its impact on performance and collision resolution.</summary>
+<summary>Объясните Robin Hood hashing и его влияние на производительность и разрешение коллизий.</summary>
 
-### Explain Robin Hood Hashing and its impact on performance and collision resolution.
+### Объясните Robin Hood hashing и его влияние на производительность и разрешение коллизий.
 
 **Definition:**
 
@@ -882,9 +882,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>What is Linear Hashing and how can it be used to handle growing datasets?</summary>
+<summary>Что такое Linear hashing and how can it be used to handle growing datasets?</summary>
 
-### What is Linear Hashing and how can it be used to handle growing datasets?
+### Что такое Linear hashing and how can it be used to handle growing datasets?
 
 **Definition:**
 
@@ -908,9 +908,9 @@ https://en.wikipedia.org/wiki/Consistent_hashing
 </details>
 
 <details>
-<summary>How are hash tables applied in distributed systems, for example, in consistent hashing algorithms?</summary>
+<summary>Как Hash Tables применяется в distributed systems, например, в согласованных алгоритмах hashing?</summary>
 
-### How are hash tables applied in distributed systems, for example, in consistent hashing algorithms?
+### Как Hash Tables применяется в distributed systems, например, в согласованных алгоритмах hashing?
 
 **Definition:**
 
@@ -933,9 +933,9 @@ https://en.wikipedia.org/wiki/Consistent_hashing
 </details>
 
 <details>
-<summary>Describe a situation where you would use a hash table over a binary search tree, and why.</summary>
+<summary>Опишите ситуацию, когда вы бы использовали Hash Table поверх binary search tree, AND почему.</summary>
 
-### Describe a situation where you would use a hash table over a binary search tree, and why.
+### Опишите ситуацию, когда вы бы использовали Hash Table поверх binary search tree, AND почему.
 
 **Definition:**
 

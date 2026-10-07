@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Reactive Programming](https://devinterview.i
 ### Reactive Programming Fundamentals
 
 <details>
-<summary>What is Reactive Programming, and how does it differ from Procedural Programming?</summary>
+<summary>Что такое reactive programming, and how does it differ from Procedural Programming?</summary>
 
-### What is Reactive Programming, and how does it differ from Procedural Programming?
+### Что такое reactive programming, and how does it differ from Procedural Programming?
 
 **Definition:**
 
@@ -47,9 +47,9 @@ Questions from [Devinterview.io — Reactive Programming](https://devinterview.i
 </details>
 
 <details>
-<summary>Explain the concept of data streams in Reactive Programming.</summary>
+<summary>Объясните the concept of data streams in reactive programming.</summary>
 
-### Explain the concept of data streams in Reactive Programming.
+### Объясните the concept of data streams in reactive programming.
 
 **Definition:**
 
@@ -64,9 +64,9 @@ Questions from [Devinterview.io — Reactive Programming](https://devinterview.i
 </details>
 
 <details>
-<summary>What is the Observer pattern, and how is it fundamental to Reactive Programming?</summary>
+<summary>Что такое the observer pattern, and how is it fundamental to reactive programming?</summary>
 
-### What is the Observer pattern, and how is it fundamental to Reactive Programming?
+### Что такое the observer pattern, and how is it fundamental to reactive programming?
 
 **Definition:**
 
@@ -85,9 +85,9 @@ Questions from [Devinterview.io — Reactive Programming](https://devinterview.i
 </details>
 
 <details>
-<summary>Describe the role of Observables and Observers in Reactive Programming.</summary>
+<summary>Опишите the role of Observables and observers in reactive programming.</summary>
 
-### Describe the role of Observables and Observers in Reactive Programming.
+### Опишите the role of Observables and observers in reactive programming.
 
 **Definition:**
 
@@ -113,9 +113,9 @@ source.map(lambda n: n * 10).subscribe(
 </details>
 
 <details>
-<summary>How do you create an Observable stream?</summary>
+<summary>Как you create an Observable stream?</summary>
 
-### How do you create an Observable stream?
+### Как you create an Observable stream?
 
 **Definition:**
 
@@ -139,9 +139,9 @@ one_shot = Observable.defer(() -> Observable.just(fetchStatus()))
 </details>
 
 <details>
-<summary>What is backpressure in the context of Reactive Programming?</summary>
+<summary>Что такое backpressure in the context of reactive programming?</summary>
 
-### What is backpressure in the context of Reactive Programming?
+### Что такое backpressure in the context of reactive programming?
 
 **Definition:**
 
@@ -160,9 +160,9 @@ Backpressure — способ медленному подписчику сказ
 </details>
 
 <details>
-<summary>Explain the difference between cold and hot Observables.</summary>
+<summary>Объясните the difference between cold and hot Observables.</summary>
 
-### Explain the difference between cold and hot Observables.
+### Объясните the difference between cold and hot Observables.
 
 **Definition:**
 
@@ -177,9 +177,9 @@ Backpressure — способ медленному подписчику сказ
 </details>
 
 <details>
-<summary>What is the role of the Subscription in Reactive Programming.</summary>
+<summary>Какова роль Subscription в Reactive Programming.</summary>
 
-### What is the role of the Subscription in Reactive Programming.
+### Какова роль Subscription в Reactive Programming.
 
 **Definition:**
 
@@ -202,9 +202,9 @@ d.dispose();
 </details>
 
 <details>
-<summary>How do you unsubscribe from a stream to prevent memory leaks?</summary>
+<summary>Как you unsubscribe from a stream to prevent memory leaks?</summary>
 
-### How do you unsubscribe from a stream to prevent memory leaks?
+### Как you unsubscribe from a stream to prevent memory leaks?
 
 **Definition:**
 
@@ -229,9 +229,9 @@ bag.clear();
 </details>
 
 <details>
-<summary>What are operators in Reactive Programming, and what are they used for?</summary>
+<summary>Что такое operators in reactive programming, and what are they used for?</summary>
 
-### What are operators in Reactive Programming, and what are they used for?
+### Что такое operators in reactive programming, and what are they used for?
 
 **Definition:**
 
@@ -249,9 +249,9 @@ bag.clear();
 ### Reactive Programming with RxJava
 
 <details>
-<summary>What is RxJava, and how does it implement Reactive Programming?</summary>
+<summary>Что такое RxJava, and how does it implement reactive programming?</summary>
 
-### What is RxJava, and how does it implement Reactive Programming?
+### Что такое RxJava, and how does it implement reactive programming?
 
 **Definition:**
 
@@ -274,9 +274,9 @@ Single<User> user = api.user(id)
 </details>
 
 <details>
-<summary>How does RxJava handle multithreading?</summary>
+<summary>Как RxJava handle multithreading?</summary>
 
-### How does RxJava handle multithreading?
+### Как RxJava handle multithreading?
 
 **Definition:**
 
@@ -291,9 +291,9 @@ RxJava сам поток не выбирает. `subscribeOn` задаёт, гд
 </details>
 
 <details>
-<summary>Explain how the `flatMap` operator works in RxJava.</summary>
+<summary>Объясните how the `flatMap` operator works in RxJava.</summary>
 
-### Explain how the `flatMap` operator works in RxJava.
+### Объясните how the `flatMap` operator works in RxJava.
 
 **Definition:**
 
@@ -316,9 +316,9 @@ userIds.flatMap(id -> ordersApi.list(id))
 </details>
 
 <details>
-<summary>What is the purpose of the `zip` operator in RxJava?</summary>
+<summary>Что такое the puRPOse of the `zip` operator in RxJava?</summary>
 
-### What is the purpose of the `zip` operator in RxJava?
+### Что такое the puRPOse of the `zip` operator in RxJava?
 
 **Definition:**
 
@@ -342,9 +342,9 @@ Observable.zip(profileApi.get(id), settingsApi.get(id),
 </details>
 
 <details>
-<summary>How do you handle errors in an RxJava stream?</summary>
+<summary>Как you handle errors in an RxJava stream?</summary>
 
-### How do you handle errors in an RxJava stream?
+### Как you handle errors in an RxJava stream?
 
 **Definition:**
 
@@ -359,9 +359,9 @@ Observable.zip(profileApi.get(id), settingsApi.get(id),
 </details>
 
 <details>
-<summary>Describe the differences between `map` and `flatMap` operators in RxJava.</summary>
+<summary>Опишите the differences between `Map` and `flatMap` operators in RxJava.</summary>
 
-### Describe the differences between `map` and `flatMap` operators in RxJava.
+### Опишите the differences between `Map` and `flatMap` operators in RxJava.
 
 **Definition:**
 
@@ -390,9 +390,9 @@ numbers.flatMap(n -> Observable.just(n * 2, n * 3))
 </details>
 
 <details>
-<summary>What is a `Scheduler` in RxJava?</summary>
+<summary>Что такое `Scheduler` in RxJava?</summary>
 
-### What is a `Scheduler` in RxJava?
+### Что такое `Scheduler` in RxJava?
 
 **Definition:**
 
@@ -426,9 +426,9 @@ Flowable.fromCallable(() -> "Done")
 </details>
 
 <details>
-<summary>Explain the `Subject` class in RxJava.</summary>
+<summary>Объясните the `Subject` class in RxJava.</summary>
 
-### Explain the `Subject` class in RxJava.
+### Объясните the `Subject` class in RxJava.
 
 **Definition:**
 
@@ -461,9 +461,9 @@ ticks.onNext("b");
 </details>
 
 <details>
-<summary>How can you achieve thread-safety in RxJava?</summary>
+<summary>Как you achieve thread-safety in RxJava?</summary>
 
-### How can you achieve thread-safety in RxJava?
+### Как you achieve thread-safety in RxJava?
 
 **Definition:**
 
@@ -493,9 +493,9 @@ safe.onNext(1);
 </details>
 
 <details>
-<summary>What is the `debounce` operator in RxJava?</summary>
+<summary>Что такое the `debounce` operator in RxJava?</summary>
 
-### What is the `debounce` operator in RxJava?
+### Что такое the `debounce` operator in RxJava?
 
 **Definition:**
 
@@ -528,9 +528,9 @@ Observable<Integer> burstyDebounced =
 ### Reactive Programming with ReactiveX / RxJS
 
 <details>
-<summary>What is Reactive Extensions (ReactiveX or Rx) and RxJS?</summary>
+<summary>Что такое Reactive Extensions (ReactiveX or Rx) and RxJS?</summary>
 
-### What is Reactive Extensions (ReactiveX or Rx) and RxJS?
+### Что такое Reactive Extensions (ReactiveX or Rx) and RxJS?
 
 **Definition:**
 
@@ -559,9 +559,9 @@ Observable.fromIterable(java.util.List.of(1, 2, 3))
 </details>
 
 <details>
-<summary>Give an example of how to implement a simple RxJS Observable.</summary>
+<summary>Приведите an example of how to implement a simple RxJS Observable.</summary>
 
-### Give an example of how to implement a simple RxJS Observable.
+### Приведите an example of how to implement a simple RxJS Observable.
 
 **Definition:**
 
@@ -590,9 +590,9 @@ from([1, 2, 3]).pipe(map(n => n * 2)).subscribe(console.log);
 </details>
 
 <details>
-<summary>How does RxJS's `Observable` differ from a Promise?</summary>
+<summary>Как RxJS's `Observable` differ from a promise?</summary>
 
-### How does RxJS's `Observable` differ from a Promise?
+### Как RxJS's `Observable` differ from a promise?
 
 **Definition:**
 
@@ -626,9 +626,9 @@ from([1, 2, 3]).subscribe(console.log);
 </details>
 
 <details>
-<summary>Explain the concept of marble diagrams in RxJS.</summary>
+<summary>Объясните the concept of marble diagrams in RxJS.</summary>
 
-### Explain the concept of marble diagrams in RxJS.
+### Объясните the concept of marble diagrams in RxJS.
 
 **Definition:**
 
@@ -655,9 +655,9 @@ debounce: -----b------c------d--|
 </details>
 
 <details>
-<summary>In RxJS, how would you convert an array to an Observable sequence?</summary>
+<summary>В RxJS, how would you convert an array to an Observable sequence?</summary>
 
-### In RxJS, how would you convert an array to an Observable sequence?
+### В RxJS, how would you convert an array to an Observable sequence?
 
 **Definition:**
 
@@ -685,9 +685,9 @@ from([1, 2, 3]).subscribe({
 </details>
 
 <details>
-<summary>Describe the `switchMap` operator in RxJS.</summary>
+<summary>Опишите the `switchMap` operator in RxJS.</summary>
 
-### Describe the `switchMap` operator in RxJS.
+### Опишите the `switchMap` operator in RxJS.
 
 **Definition:**
 
@@ -717,9 +717,9 @@ source.pipe(switchMap(id => from(load(id))));
 </details>
 
 <details>
-<summary>How do you handle backpressure in RxJS?</summary>
+<summary>Как you handle backpressure in RxJS?</summary>
 
-### How do you handle backpressure in RxJS?
+### Как you handle backpressure in RxJS?
 
 **Definition:**
 
@@ -748,9 +748,9 @@ fromEvent(input, "input").pipe(
 </details>
 
 <details>
-<summary>What is the `BehaviorSubject` in RxJS?</summary>
+<summary>Что такое the `BehaviorSubject` in RxJS?</summary>
 
-### What is the `BehaviorSubject` in RxJS?
+### Что такое the `BehaviorSubject` in RxJS?
 
 **Definition:**
 
@@ -777,9 +777,9 @@ selected.next("row-1");
 </details>
 
 <details>
-<summary>What are the uses of the `scan` operator in RxJS?</summary>
+<summary>Что такое the uses of the `scan` operator in RxJS?</summary>
 
-### What are the uses of the `scan` operator in RxJS?
+### Что такое the uses of the `scan` operator in RxJS?
 
 **Definition:**
 
@@ -807,9 +807,9 @@ from([1, 2, 3]).pipe(
 </details>
 
 <details>
-<summary>How do you do error recovery in RxJS?</summary>
+<summary>Как you do error recovery in RxJS?</summary>
 
-### How do you do error recovery in RxJS?
+### Как you do error recovery in RxJS?
 
 **Definition:**
 
@@ -839,9 +839,9 @@ source.pipe(
 ### Reactive Streams and Project Reactor
 
 <details>
-<summary>What is the Reactive Streams specification?</summary>
+<summary>Что такое the Reactive Streams specification?</summary>
 
-### What is the Reactive Streams specification?
+### Что такое the Reactive Streams specification?
 
 **Definition:**
 
@@ -869,9 +869,9 @@ Publisher<Integer> source = subscriber -> { };
 </details>
 
 <details>
-<summary>Describe the main interfaces of the Reactive Streams API.</summary>
+<summary>Опишите the main interfaces of the Reactive Streams API.</summary>
 
-### Describe the main interfaces of the Reactive Streams API.
+### Опишите the main interfaces of the Reactive Streams API.
 
 **Definition:**
 
@@ -900,9 +900,9 @@ void onComplete();
 </details>
 
 <details>
-<summary>How does backpressure work within the Reactive Streams API?</summary>
+<summary>Как backpressure work within the Reactive Streams API?</summary>
 
-### How does backpressure work within the Reactive Streams API?
+### Как backpressure work within the Reactive Streams API?
 
 **Definition:**
 
@@ -930,9 +930,9 @@ public void onSubscribe(Subscription s) {
 </details>
 
 <details>
-<summary>What is Project Reactor, and how is it related to Reactive Streams?</summary>
+<summary>Что такое Project Reactor, and how is it related to Reactive Streams?</summary>
 
-### What is Project Reactor, and how is it related to Reactive Streams?
+### Что такое Project Reactor, and how is it related to Reactive Streams?
 
 **Definition:**
 
@@ -959,9 +959,9 @@ Flux<Integer> many = Flux.just(1, 2, 3);
 </details>
 
 <details>
-<summary>Compare and contrast Mono and Flux in Project Reactor.</summary>
+<summary>Сравните and contrast Mono and Flux in Project Reactor.</summary>
 
-### Compare and contrast Mono and Flux in Project Reactor.
+### Сравните and contrast Mono and Flux in Project Reactor.
 
 **Definition:**
 
@@ -992,9 +992,9 @@ Flux<String> rows = Flux.just("a", "b");
 </details>
 
 <details>
-<summary>How does Project Reactor enable asynchronous and non-blocking operations?</summary>
+<summary>Как Project Reactor enable asynchronous and non-blocking operations?</summary>
 
-### How does Project Reactor enable asynchronous and non-blocking operations?
+### Как Project Reactor enable asynchronous and non-blocking operations?
 
 **Definition:**
 
@@ -1022,9 +1022,9 @@ Mono<String> blockingWrapper = Mono.fromCallable(this::blockingCall)
 </details>
 
 <details>
-<summary>What are some strategies for testing Reactor flows?</summary>
+<summary>Что такое some strategies for testing Reactor flows?</summary>
 
-### What are some strategies for testing Reactor flows?
+### Что такое some strategies for testing Reactor flows?
 
 **Definition:**
 
@@ -1051,9 +1051,9 @@ StepVerifier.create(Mono.just(1).map(i -> i + 10))
 </details>
 
 <details>
-<summary>How do you convert blocking code to non-blocking reactive code in Reactor?</summary>
+<summary>Как you convert blocking code to non-blocking Reactive code in Reactor?</summary>
 
-### How do you convert blocking code to non-blocking reactive code in Reactor?
+### Как you convert blocking code to non-blocking Reactive code in Reactor?
 
 **Definition:**
 
@@ -1084,9 +1084,9 @@ Mono<String> result = Mono.fromCallable(this::blockingCall)
 </details>
 
 <details>
-<summary>In Reactor, how is `Context` used?</summary>
+<summary>В Reactor, how is `Context` used?</summary>
 
-### In Reactor, how is `Context` used?
+### В Reactor, how is `Context` used?
 
 **Definition:**
 
@@ -1116,9 +1116,9 @@ Mono<String> greeting = Mono.just("Hello")
 </details>
 
 <details>
-<summary>What is the `transform` operator and how do you use it in Reactor?</summary>
+<summary>Что такое the `transform` operator and how do you use it in Reactor?</summary>
 
-### What is the `transform` operator and how do you use it in Reactor?
+### Что такое the `transform` operator and how do you use it in Reactor?
 
 **Definition:**
 
@@ -1153,9 +1153,9 @@ Flux.just("blue", "orange").transform(filterAndMap);
 ### Reactive Systems and Microservices
 
 <details>
-<summary>Define Reactive Systems and how they relate to Reactive Programming.</summary>
+<summary>Определите Reactive Systems and how they relate to reactive programming.</summary>
 
-### Define Reactive Systems and how they relate to Reactive Programming.
+### Определите Reactive Systems and how they relate to reactive programming.
 
 **Definition:**
 
@@ -1182,9 +1182,9 @@ Mono<String> call = Mono.fromCallable(this::remote)
 </details>
 
 <details>
-<summary>What role does Reactive Programming play in building microservices?</summary>
+<summary>Какую роль does reactive programming play in building microservices?</summary>
 
-### What role does Reactive Programming play in building microservices?
+### Какую роль does reactive programming play in building microservices?
 
 **Definition:**
 
@@ -1212,9 +1212,9 @@ Flux<String> pages = Flux.just("/a", "/b")
 </details>
 
 <details>
-<summary>Explain the difference between Reactive Systems and Reactive Programming.</summary>
+<summary>Объясните the difference between Reactive Systems and reactive programming.</summary>
 
-### Explain the difference between Reactive Systems and Reactive Programming.
+### Объясните the difference between Reactive Systems and reactive programming.
 
 **Definition:**
 
@@ -1246,9 +1246,9 @@ Flux.just(1, 2, 3).map(n -> n * 2);
 </details>
 
 <details>
-<summary>How can you ensure that Reactive Systems are resilient?</summary>
+<summary>Как you ensure that Reactive Systems are resilient?</summary>
 
-### How can you ensure that Reactive Systems are resilient?
+### Как you ensure that Reactive Systems are resilient?
 
 **Definition:**
 
@@ -1275,9 +1275,9 @@ source.onErrorResume(error -> Mono.just("fallback"));
 </details>
 
 <details>
-<summary>Describe how you would implement backpressure across microservices.</summary>
+<summary>Опишите how you would implement backpressure across microservices.</summary>
 
-### Describe how you would implement backpressure across microservices.
+### Опишите how you would implement backpressure across microservices.
 
 **Definition:**
 
@@ -1305,9 +1305,9 @@ public void onSubscribe(Subscription s) {
 </details>
 
 <details>
-<summary>In a microservices architecture, how do Reactive Streams help manage resources?</summary>
+<summary>В a microservices architecture, how do Reactive Streams help manage resources?</summary>
 
-### In a microservices architecture, how do Reactive Streams help manage resources?
+### В a microservices architecture, how do Reactive Streams help manage resources?
 
 **Definition:**
 
@@ -1335,9 +1335,9 @@ Observable.zip(left, right, (a, b) -> a + b);
 </details>
 
 <details>
-<summary>Discuss the advantages of using Reactive Programming in microservices communication.</summary>
+<summary>Обсудите the advantages of using reactive programming in microservices communication.</summary>
 
-### Discuss the advantages of using Reactive Programming in microservices communication.
+### Обсудите the advantages of using reactive programming in microservices communication.
 
 **Definition:**
 
@@ -1364,9 +1364,9 @@ Mono.zip(user, orders, (u, o) -> u + ":" + o);
 </details>
 
 <details>
-<summary>What are some challenges you might face when designing Reactive Systems?</summary>
+<summary>Что такое some challenges you might face when designing Reactive Systems?</summary>
 
-### What are some challenges you might face when designing Reactive Systems?
+### Что такое some challenges you might face when designing Reactive Systems?
 
 **Definition:**
 
@@ -1394,9 +1394,9 @@ Mono.fromCallable(this::blockingCall)
 </details>
 
 <details>
-<summary>How does a message-driven system relate to Reactive Microservices?</summary>
+<summary>Как a message-driven system relate to Reactive microservices?</summary>
 
-### How does a message-driven system relate to Reactive Microservices?
+### Как a message-driven system relate to Reactive microservices?
 
 **Definition:**
 
@@ -1424,9 +1424,9 @@ subscriber.onComplete();
 </details>
 
 <details>
-<summary>What are some of the most common Reactive libraries and frameworks for microservices?</summary>
+<summary>Что такое some of the most common Reactive libraries and frameworks for microservices?</summary>
 
-### What are some of the most common Reactive libraries and frameworks for microservices?
+### Что такое some of the most common Reactive libraries and frameworks for microservices?
 
 **Definition:**
 
@@ -1456,9 +1456,9 @@ Observable.just(1).map(n -> n + 1);
 ### Advanced Concepts in Reactive Programming
 
 <details>
-<summary>Explain the concept of higher-order Observables.</summary>
+<summary>Объясните the concept of higher-order Observables.</summary>
 
-### Explain the concept of higher-order Observables.
+### Объясните the concept of higher-order Observables.
 
 **Definition:**
 
@@ -1489,9 +1489,9 @@ queries.switchMap(text -> search(text));
 </details>
 
 <details>
-<summary>How do you implement custom operators in Rx libraries?</summary>
+<summary>Как you implement custom operators in Rx libraries?</summary>
 
-### How do you implement custom operators in Rx libraries?
+### Как you implement custom operators in Rx libraries?
 
 **Definition:**
 
@@ -1520,9 +1520,9 @@ names.transform(upper);
 </details>
 
 <details>
-<summary>What are the implications of unicast vs multicast Observables?</summary>
+<summary>Что такое the implications of unicast vs multicast Observables?</summary>
 
-### What are the implications of unicast vs multicast Observables?
+### Что такое the implications of unicast vs multicast Observables?
 
 **Definition:**
 
@@ -1554,9 +1554,9 @@ PublishSubject<Integer> hot = PublishSubject.create();
 </details>
 
 <details>
-<summary>How do you use `combineLatest`, `withLatestFrom`, and `zip` operators for combining multiple streams?</summary>
+<summary>Как you use `combineLatest`, `withLatestFrom`, and `zip` operators for combining multiple streams?</summary>
 
-### How do you use `combineLatest`, `withLatestFrom`, and `zip` operators for combining multiple streams?
+### Как you use `combineLatest`, `withLatestFrom`, and `zip` operators for combining multiple streams?
 
 **Definition:**
 
@@ -1588,9 +1588,9 @@ Observable.combineLatest(a, b, (x, y) -> x + y);
 </details>
 
 <details>
-<summary>Discuss the concept of side-effects in Reactive Streams and how to avoid them.</summary>
+<summary>Обсудите the concept of side-effects in Reactive Streams and how to avoid them.</summary>
 
-### Discuss the concept of side-effects in Reactive Streams and how to avoid them.
+### Обсудите the concept of side-effects in Reactive Streams and how to avoid them.
 
 **Definition:**
 
@@ -1618,9 +1618,9 @@ flux.map(String::toUpperCase)
 </details>
 
 <details>
-<summary>Explain the difference between `takeUntil` and `takeWhile` operators.</summary>
+<summary>Объясните the difference between `takeUntil` and `takeWhile` operators.</summary>
 
-### Explain the difference between `takeUntil` and `takeWhile` operators.
+### Объясните the difference between `takeUntil` and `takeWhile` operators.
 
 **Definition:**
 
@@ -1651,9 +1651,9 @@ source.takeUntil(cancel);
 </details>
 
 <details>
-<summary>How does concurrency control work in Reactive Programming?</summary>
+<summary>Как concurrency control work in reactive programming?</summary>
 
-### How does concurrency control work in Reactive Programming?
+### Как concurrency control work in reactive programming?
 
 **Definition:**
 
@@ -1682,9 +1682,9 @@ Flux.just(1, 2, 3)
 </details>
 
 <details>
-<summary>What is the role of virtual time in testing Reactive applications?</summary>
+<summary>Что такое the role of virtual time in testing Reactive applications?</summary>
 
-### What is the role of virtual time in testing Reactive applications?
+### Что такое the role of virtual time in testing Reactive applications?
 
 **Definition:**
 
@@ -1713,9 +1713,9 @@ ts.assertValue(1);
 </details>
 
 <details>
-<summary>How do you manage state in Reactive Programming?</summary>
+<summary>Как you manage state in reactive programming?</summary>
 
-### How do you manage state in Reactive Programming?
+### Как you manage state in reactive programming?
 
 **Definition:**
 
@@ -1747,9 +1747,9 @@ BehaviorSubject<String> current = BehaviorSubject.createDefault("none");
 </details>
 
 <details>
-<summary>Describe strategies to handle out-of-order messages in a Reactive system.</summary>
+<summary>Опишите strategies to handle out-of-order messages in a Reactive system.</summary>
 
-### Describe strategies to handle out-of-order messages in a Reactive system.
+### Опишите strategies to handle out-of-order messages in a Reactive system.
 
 **Definition:**
 
@@ -1779,9 +1779,9 @@ latest.switchMap(id -> load(id));
 ### Tools and Frameworks in Reactive Programming
 
 <details>
-<summary>List several popular Reactive Programming frameworks and their primary use cases.</summary>
+<summary>Перечислите several popular reactive programming frameworks and their Primary use cases.</summary>
 
-### List several popular Reactive Programming frameworks and their primary use cases.
+### Перечислите several popular reactive programming frameworks and their Primary use cases.
 
 **Definition:**
 
@@ -1809,9 +1809,9 @@ Mono.just(1).map(n -> n + 1);
 </details>
 
 <details>
-<summary>How does Akka Streams fit into the Reactive Programming paradigm?</summary>
+<summary>Как Akka Streams fit into the reactive programming paradigm?</summary>
 
-### How does Akka Streams fit into the Reactive Programming paradigm?
+### Как Akka Streams fit into the reactive programming paradigm?
 
 **Definition:**
 
@@ -1838,9 +1838,9 @@ subscription.request(16);
 </details>
 
 <details>
-<summary>Discuss the integration of Reactive Programming libraries with traditional web frameworks.</summary>
+<summary>Обсудите the integration of reactive programming libraries with traditional web frameworks.</summary>
 
-### Discuss the integration of Reactive Programming libraries with traditional web frameworks.
+### Обсудите the integration of reactive programming libraries with traditional web frameworks.
 
 **Definition:**
 
@@ -1867,9 +1867,9 @@ Mono<String> body = Mono.fromCallable(this::legacyBlocking)
 </details>
 
 <details>
-<summary>What are some Reactive Programming utilities provided by the Spring WebFlux framework?</summary>
+<summary>Что такое some reactive programming utilities provided by the Spring WebFlux framework?</summary>
 
-### What are some Reactive Programming utilities provided by the Spring WebFlux framework?
+### Что такое some reactive programming utilities provided by the Spring WebFlux framework?
 
 **Definition:**
 
@@ -1897,9 +1897,9 @@ Flux<String> ticks = Flux.just("a", "b");
 </details>
 
 <details>
-<summary>How do you debug a complex Reactive streams pipeline?</summary>
+<summary>Как you debug a complex Reactive Streams pipeline?</summary>
 
-### How do you debug a complex Reactive streams pipeline?
+### Как you debug a complex Reactive Streams pipeline?
 
 **Definition:**
 
@@ -1928,9 +1928,9 @@ StepVerifier.create(flux.map(String::toUpperCase))
 </details>
 
 <details>
-<summary>What are the best tools for monitoring and troubleshooting Reactive applications?</summary>
+<summary>Что такое the best tools for monitoring and troubleshooting Reactive applications?</summary>
 
-### What are the best tools for monitoring and troubleshooting Reactive applications?
+### Что такое the best tools for monitoring and troubleshooting Reactive applications?
 
 **Definition:**
 
@@ -1959,9 +1959,9 @@ StepVerifier.create(mono)
 </details>
 
 <details>
-<summary>Explain how Reactive Programming can be used with Kafka Streams.</summary>
+<summary>Объясните how reactive programming can be used with Kafka Streams.</summary>
 
-### Explain how Reactive Programming can be used with Kafka Streams.
+### Объясните how reactive programming can be used with Kafka Streams.
 
 **Definition:**
 
@@ -1989,9 +1989,9 @@ subscription.request(32);
 </details>
 
 <details>
-<summary>How do you handle load balancing in a Reactive microservices setup?</summary>
+<summary>Как you handle load balancing in a Reactive microservices setup?</summary>
 
-### How do you handle load balancing in a Reactive microservices setup?
+### Как you handle load balancing in a Reactive microservices setup?
 
 **Definition:**
 
@@ -2018,9 +2018,9 @@ source.sample(500, TimeUnit.MILLISECONDS);
 </details>
 
 <details>
-<summary>Discuss how Reactive Programming influences event-driven architecture.</summary>
+<summary>Обсудите how reactive programming influences event-driven architecture.</summary>
 
-### Discuss how Reactive Programming influences event-driven architecture.
+### Обсудите how reactive programming influences event-driven architecture.
 
 **Definition:**
 
@@ -2047,9 +2047,9 @@ events.scan(0, (count, event) -> count + 1);
 </details>
 
 <details>
-<summary>What is RSocket, and how does it support Reactive Programming patterns?</summary>
+<summary>Что такое RSocket, and how does it support reactive programming patterns?</summary>
 
-### What is RSocket, and how does it support Reactive Programming patterns?
+### Что такое RSocket, and how does it support reactive programming patterns?
 
 **Definition:**
 
@@ -2079,9 +2079,9 @@ Mono<String> one = Mono.just("ok");
 ### Design Patterns and Best Practices
 
 <details>
-<summary>What are some common design patterns used in Reactive Programming?</summary>
+<summary>Что такое some common design patterns used in reactive programming?</summary>
 
-### What are some common design patterns used in Reactive Programming?
+### Что такое some common design patterns used in reactive programming?
 
 **Definition:**
 
@@ -2108,9 +2108,9 @@ Observable.fromIterable(List.of(1, 2, 3)).map(n -> n * 2);
 </details>
 
 <details>
-<summary>How do you apply commonly known Gang of Four patterns in Reactive Programming?</summary>
+<summary>Как you apply commonly known GAng of Four patterns in reactive programming?</summary>
 
-### How do you apply commonly known Gang of Four patterns in Reactive Programming?
+### Как you apply commonly known GAng of Four patterns in reactive programming?
 
 **Definition:**
 
@@ -2138,9 +2138,9 @@ bus.map(String::trim).subscribe(System.out::println);
 </details>
 
 <details>
-<summary>What are some best practices for error handling in Reactive streams?</summary>
+<summary>Что такое some best practices for error handling in Reactive Streams?</summary>
 
-### What are some best practices for error handling in Reactive streams?
+### Что такое some best practices for error handling in Reactive Streams?
 
 **Definition:**
 
@@ -2166,9 +2166,9 @@ source.onErrorResume(error -> Mono.just("fallback"));
 </details>
 
 <details>
-<summary>Describe a scenario where Reactive Programming is not the ideal approach. Why?</summary>
+<summary>Опишите a scenario where reactive programming is not the ideal approach. Why?</summary>
 
-### Describe a scenario where Reactive Programming is not the ideal approach. Why?
+### Опишите a scenario where reactive programming is not the ideal approach. Why?
 
 **Definition:**
 
@@ -2198,9 +2198,9 @@ List<Integer> doubled = List.of(1, 2, 3).stream().map(n -> n * 2).toList();
 </details>
 
 <details>
-<summary>Explain the use of backpressure strategies, like buffering and dropping.</summary>
+<summary>Объясните the use of backpressure strategies, like buffering and dropping.</summary>
 
-### Explain the use of backpressure strategies, like buffering and dropping.
+### Объясните the use of backpressure strategies, like buffering and dropping.
 
 **Definition:**
 
@@ -2232,9 +2232,9 @@ bursty.debounce(10, TimeUnit.MILLISECONDS);
 </details>
 
 <details>
-<summary>How can you make your Reactive streams more composable and reusable?</summary>
+<summary>Как you make your Reactive Streams more composable and reusable?</summary>
 
-### How can you make your Reactive streams more composable and reusable?
+### Как you make your Reactive Streams more composable and reusable?
 
 **Definition:**
 
@@ -2262,9 +2262,9 @@ colors.transform(withoutOrange);
 </details>
 
 <details>
-<summary>What are some best practices for scaling Reactive applications?</summary>
+<summary>Что такое some best practices for scaling Reactive applications?</summary>
 
-### What are some best practices for scaling Reactive applications?
+### Что такое some best practices for scaling Reactive applications?
 
 **Definition:**
 
@@ -2293,9 +2293,9 @@ Mono.fromCallable(this::blockingCall)
 </details>
 
 <details>
-<summary>How do you manage configuration changes in a Reactive system?</summary>
+<summary>Как you manage configuration changes in a Reactive system?</summary>
 
-### How do you manage configuration changes in a Reactive system?
+### Как you manage configuration changes in a Reactive system?
 
 **Definition:**
 
@@ -2323,9 +2323,9 @@ configs.switchMap(cfg -> source.takeWhile(n -> n < cfg.limit()));
 </details>
 
 <details>
-<summary>Discuss the CQRS pattern in the context of Reactive Systems.</summary>
+<summary>Обсудите the CQRS pattern in the context of Reactive Systems.</summary>
 
-### Discuss the CQRS pattern in the context of Reactive Systems.
+### Обсудите the CQRS pattern in the context of Reactive Systems.
 
 **Definition:**
 
@@ -2352,9 +2352,9 @@ commands.scan(State.empty(), State::apply);
 </details>
 
 <details>
-<summary>What are the principles of the Reactive Manifesto?</summary>
+<summary>Что такое the principles of the Reactive Manifesto?</summary>
 
-### What are the principles of the Reactive Manifesto?
+### Что такое the principles of the Reactive Manifesto?
 
 **Definition:**
 
@@ -2383,9 +2383,9 @@ commands.scan(State.empty(), State::apply);
 ### Reactive Programming in Different Languages
 
 <details>
-<summary>How is Reactive Programming implemented in languages like JavaScript, Scala, or Java?</summary>
+<summary>Как reactive programming implemented in languages like JavaScript, Scala, or Java?</summary>
 
-### How is Reactive Programming implemented in languages like JavaScript, Scala, or Java?
+### Как reactive programming implemented in languages like JavaScript, Scala, or Java?
 
 **Definition:**
 
@@ -2413,9 +2413,9 @@ Observable<Integer> javaSide = Observable.fromIterable(List.of(1, 2, 3));
 </details>
 
 <details>
-<summary>Compare the Reactor pattern in Java with Reactive Extensions in .NET.</summary>
+<summary>Сравните the Reactor pattern in Java with Reactive Extensions in .NET.</summary>
 
-### Compare the Reactor pattern in Java with Reactive Extensions in .NET.
+### Сравните the Reactor pattern in Java with Reactive Extensions in .NET.
 
 **Definition:**
 
@@ -2442,9 +2442,9 @@ Flux.just(1, 2).publishOn(Schedulers.parallel()).map(n -> n + 1);
 </details>
 
 <details>
-<summary>How do you use Reactive Programming in modern front-end frameworks like React or Angular?</summary>
+<summary>Как you use reactive programming in modern front-end frameworks like React or Angular?</summary>
 
-### How do you use Reactive Programming in modern front-end frameworks like React or Angular?
+### Как you use reactive programming in modern front-end frameworks like React or Angular?
 
 **Definition:**
 
@@ -2472,9 +2472,9 @@ query.pipe(switchMap(text => from(search(text))));
 </details>
 
 <details>
-<summary>What are some considerations for using Reactive Programming in a functional programming language?</summary>
+<summary>Что такое some considerations for using reactive programming in a functional programming language?</summary>
 
-### What are some considerations for using Reactive Programming in a functional programming language?
+### Что такое some considerations for using reactive programming in a functional programming language?
 
 **Definition:**
 
@@ -2501,9 +2501,9 @@ flux.map(n -> n * 2).scan(0, Integer::sum);
 </details>
 
 <details>
-<summary>How does the async-await pattern in modern languages relate to Reactive Programming?</summary>
+<summary>Как the async-await pattern in modern languages relate to reactive programming?</summary>
 
-### How does the async-await pattern in modern languages relate to Reactive Programming?
+### Как the async-await pattern in modern languages relate to reactive programming?
 
 **Definition:**
 
@@ -2536,9 +2536,9 @@ Flux<Integer> many = Flux.just(1, 2, 3);
 ### Industry Case Studies and Analysis
 
 <details>
-<summary>Provide examples of real-world use cases where Reactive Programming is applied.</summary>
+<summary>Приведите examples of real-world use cases where reactive programming is applied.</summary>
 
-### Provide examples of real-world use cases where Reactive Programming is applied.
+### Приведите examples of real-world use cases where reactive programming is applied.
 
 **Definition:**
 
@@ -2566,9 +2566,9 @@ ticks.scan(0, Integer::sum);
 </details>
 
 <details>
-<summary>Analyze the impact of Reactive Programming on cloud-native application design.</summary>
+<summary>Проанализируйте the impact of reactive programming on cloud-native application design.</summary>
 
-### Analyze the impact of Reactive Programming on cloud-native application design.
+### Проанализируйте the impact of reactive programming on cloud-native application design.
 
 **Definition:**
 
@@ -2595,9 +2595,9 @@ Mono.fromCallable(this::cloudCall).subscribeOn(Schedulers.boundedElastic());
 </details>
 
 <details>
-<summary>Discuss how large-scale streaming platforms benefit from Reactive Programming principles.</summary>
+<summary>Обсудите how large-scale streaming platforms benefit from reactive programming principles.</summary>
 
-### Discuss how large-scale streaming platforms benefit from Reactive Programming principles.
+### Обсудите how large-scale streaming platforms benefit from reactive programming principles.
 
 **Definition:**
 
@@ -2624,9 +2624,9 @@ source.sample(500, TimeUnit.MILLISECONDS);
 </details>
 
 <details>
-<summary>How can Reactive Programming enhance the performance of IoT systems?</summary>
+<summary>Как reactive programming enhance the performance of IoT systems?</summary>
 
-### How can Reactive Programming enhance the performance of IoT systems?
+### Как reactive programming enhance the performance of IoT systems?
 
 **Definition:**
 
@@ -2658,9 +2658,9 @@ readings.onBackpressureDrop();
 </details>
 
 <details>
-<summary>Share a case study where the adoption of Reactive Programming solved a scalability issue.</summary>
+<summary>Приведите case study, где Reactive Programming решил проблему scalability.</summary>
 
-### Share a case study where the adoption of Reactive Programming solved a scalability issue.
+### Приведите case study, где Reactive Programming решил проблему scalability.
 
 **Definition:**
 
@@ -2690,9 +2690,9 @@ Mono.fromCallable(this::blockingCall)
 ### Reactive Programming Challenges and Trade-offs
 
 <details>
-<summary>What are the trade-offs of using Reactive Programming over traditional imperative programming models?</summary>
+<summary>Что такое the trade-offs of using reactive programming over traditional imperative programming models?</summary>
 
-### What are the trade-offs of using Reactive Programming over traditional imperative programming models?
+### Что такое the trade-offs of using reactive programming over traditional imperative programming models?
 
 **Definition:**
 
@@ -2722,9 +2722,9 @@ Mono.just(n).map(x -> x * 2);
 </details>
 
 <details>
-<summary>Discuss some of the complexities and pitfalls that come with adopting Reactive Programming.</summary>
+<summary>Обсудите some of the complexities and pitfalls that come with adopting reactive programming.</summary>
 
-### Discuss some of the complexities and pitfalls that come with adopting Reactive Programming.
+### Обсудите some of the complexities and pitfalls that come with adopting reactive programming.
 
 **Definition:**
 
@@ -2754,9 +2754,9 @@ source.onBackpressureDrop();
 </details>
 
 <details>
-<summary>How do you manage thread exhaustion in a Reactive application?</summary>
+<summary>Как you manage thread exhaustion in a Reactive application?</summary>
 
-### How do you manage thread exhaustion in a Reactive application?
+### Как you manage thread exhaustion in a Reactive application?
 
 **Definition:**
 
@@ -2783,9 +2783,9 @@ Mono.fromCallable(this::blockingCall)
 </details>
 
 <details>
-<summary>Address the learning curve associated with Reactive Programming. How do you get a team up to speed?</summary>
+<summary>Как справиться с learning curve Reactive Programming? Как обучить команду?</summary>
 
-### Address the learning curve associated with Reactive Programming. How do you get a team up to speed?
+### Как справиться с learning curve Reactive Programming? Как обучить команду?
 
 **Definition:**
 
@@ -2815,9 +2815,9 @@ StepVerifier.create(Flux.just(1, 2).map(n -> n * 2))
 </details>
 
 <details>
-<summary>What are some known issues with debugging Reactive streams and how do you tackle them?</summary>
+<summary>Что такое some known issues with debugging Reactive Streams and how do you tackle them?</summary>
 
-### What are some known issues with debugging Reactive streams and how do you tackle them?
+### Что такое some known issues with debugging Reactive Streams and how do you tackle them?
 
 **Definition:**
 
@@ -2848,9 +2848,9 @@ StepVerifier.create(mono)
 ### Future of Reactive Programming
 
 <details>
-<summary>Predict how Reactive Programming might evolve in the next few years.</summary>
+<summary>Спрогнозируйте how reactive programming might evolve in the next few years.</summary>
 
-### Predict how Reactive Programming might evolve in the next few years.
+### Спрогнозируйте how reactive programming might evolve in the next few years.
 
 **Definition:**
 
@@ -2879,9 +2879,9 @@ subscription.request(1);
 </details>
 
 <details>
-<summary>How does Reactive Programming interact with AI and machine learning workloads?</summary>
+<summary>Как reactive programming interact with AI and machine learning workloads?</summary>
 
-### How does Reactive Programming interact with AI and machine learning workloads?
+### Как reactive programming interact with AI and machine learning workloads?
 
 **Definition:**
 
@@ -2909,9 +2909,9 @@ Mono.fromCallable(() -> model.predict(features))
 </details>
 
 <details>
-<summary>Discuss the relevance of Reactive Programming in the age of serverless architectures.</summary>
+<summary>Обсудите the relevance of reactive programming in the age of serverless architectures.</summary>
 
-### Discuss the relevance of Reactive Programming in the age of serverless architectures.
+### Обсудите the relevance of reactive programming in the age of serverless architectures.
 
 **Definition:**
 
@@ -2943,9 +2943,9 @@ Mono<String> body = Mono.fromCallable(this::handler)
 </details>
 
 <details>
-<summary>What role might Reactive Programming play in the future of distributed systems and edge computing?</summary>
+<summary>Какую роль might reactive programming play in the future of distributed systems and edge computing?</summary>
 
-### What role might Reactive Programming play in the future of distributed systems and edge computing?
+### Какую роль might reactive programming play in the future of distributed systems and edge computing?
 
 **Definition:**
 
@@ -2973,9 +2973,9 @@ subscription.request(4);
 </details>
 
 <details>
-<summary>How are current advancements in hardware affecting Reactive Programming paradigms?</summary>
+<summary>Как current advancements in hardware affecting reactive programming paradigms?</summary>
 
-### How are current advancements in hardware affecting Reactive Programming paradigms?
+### Как current advancements in hardware affecting reactive programming paradigms?
 
 **Definition:**
 

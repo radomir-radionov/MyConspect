@@ -19,9 +19,9 @@ Questions from [Devinterview.io — Golang](https://devinterview.io/questions/we
 ### Golang Fundamentals
 
 <details>
-<summary>What is Go and why was it created?</summary>
+<summary>Что такое Go and why was it created?</summary>
 
-### What is Go and why was it created?
+### Что такое Go and why was it created?
 
 **Definition:**
 
@@ -87,9 +87,9 @@ Go, также называемый Golang, — это язык программ
 </details>
 
 <details>
-<summary>Explain the workspace architecture in Go.</summary>
+<summary>Объясните the workspace architecture in Go.</summary>
 
-### Explain the workspace architecture in Go.
+### Объясните the workspace architecture in Go.
 
 **Definition:**
 
@@ -183,9 +183,9 @@ $ go get -v github.com/gorilla/mux
 </details>
 
 <details>
-<summary>How is the GOPATH environment variable used?</summary>
+<summary>Как the GoPATH environment variable used?</summary>
 
-### How is the GOPATH environment variable used?
+### Как the GoPATH environment variable used?
 
 **Definition:**
 
@@ -269,9 +269,9 @@ go mod init <module-path>
 </details>
 
 <details>
-<summary>What are Go's key features compared to other programming languages?</summary>
+<summary>Что такое Go's key features compared to other programming languages?</summary>
 
-### What are Go's key features compared to other programming languages?
+### Что такое Go's key features compared to other programming languages?
 
 **Definition:**
 
@@ -325,9 +325,9 @@ Go (Golang) предлагает несколько функций, которы
 </details>
 
 <details>
-<summary>Describe how packages are structured in a Go program.</summary>
+<summary>Опишите how packages are structured in a Go program.</summary>
 
-### Describe how packages are structured in a Go program.
+### Опишите how packages are structured in a Go program.
 
 **Definition:**
 
@@ -383,9 +383,9 @@ func Distance(p1, p2 Point) float64 {
 </details>
 
 <details>
-<summary>What are slices in Go, and how do they differ from arrays?</summary>
+<summary>Что такое SLIces in Go, and how do they differ from arrays?</summary>
 
-### What are slices in Go, and how do they differ from arrays?
+### Что такое SLIces in Go, and how do they differ from arrays?
 
 **Definition:**
 
@@ -468,9 +468,9 @@ func main() {
 </details>
 
 <details>
-<summary>Could you explain what a goroutine is?</summary>
+<summary>Можно ли you explain what a Goroutine is?</summary>
 
-### Could you explain what a goroutine is?
+### Можно ли you explain what a Goroutine is?
 
 **Definition:**
 
@@ -534,9 +534,9 @@ func main() {
 </details>
 
 <details>
-<summary>How does Go handle memory management?</summary>
+<summary>Как Go handle memory management?</summary>
 
-### How does Go handle memory management?
+### Как Go handle memory management?
 
 **Definition:**
 
@@ -593,9 +593,9 @@ func main() {
 </details>
 
 <details>
-<summary>Can you list and explain the basic data types in Go?</summary>
+<summary>Можете ли вы list and explain the basic data types in Go?</summary>
 
-### Can you list and explain the basic data types in Go?
+### Можете ли вы list and explain the basic data types in Go?
 
 **Definition:**
 
@@ -707,9 +707,9 @@ func main() {
 </details>
 
 <details>
-<summary>What is the zero value of a variable in Go?</summary>
+<summary>Что такое the zero value of a variable in Go?</summary>
 
-### What is the zero value of a variable in Go?
+### Что такое the zero value of a variable in Go?
 
 **Definition:**
 
@@ -811,9 +811,9 @@ func main() {
 </details>
 
 <details>
-<summary>How do you manage error handling in Go?</summary>
+<summary>Как you manage error handling in Go?</summary>
 
-### How do you manage error handling in Go?
+### Как you manage error handling in Go?
 
 **Definition:**
 
@@ -841,9 +841,9 @@ Go имеет уникальный подход к обработке ошибо
 </details>
 
 <details>
-<summary>Can you convert between different data types in Go? How?</summary>
+<summary>Можете ли вы convert between different data types in Go? How?</summary>
 
-### Can you convert between different data types in Go? How?
+### Можете ли вы convert between different data types in Go? How?
 
 **Definition:**
 
@@ -921,9 +921,9 @@ func myFunc(i interface{}) {
 </details>
 
 <details>
-<summary>What is a channel in Go, and when would you use one?</summary>
+<summary>Что такое channel in Go, and when would you use one?</summary>
 
-### What is a channel in Go, and when would you use one?
+### Что такое channel in Go, and when would you use one?
 
 **Definition:**
 
@@ -998,9 +998,9 @@ public class BatchDataTransfer {
 </details>
 
 <details>
-<summary>Explain concurrency in Go and how it compares to parallelism.</summary>
+<summary>Объясните concurrency in Go and how it compares to parallelism.</summary>
 
-### Explain concurrency in Go and how it compares to parallelism.
+### Объясните concurrency in Go and how it compares to parallelism.
 
 **Definition:**
 
@@ -1034,9 +1034,9 @@ Go использует ключевое слово go для запуска п�
 </details>
 
 <details>
-<summary>What does the range keyword do?</summary>
+<summary>Что означает the range keyword do?</summary>
 
-### What does the range keyword do?
+### Что означает the range keyword do?
 
 **Definition:**
 
@@ -1107,9 +1107,9 @@ func main() {
 </details>
 
 <details>
-<summary>What is defer and when would you use it?</summary>
+<summary>Что такое defer and when would you use it?</summary>
 
-### What is defer and when would you use it?
+### Что такое defer and when would you use it?
 
 **Definition:** `defer` откладывает вызов функции до возврата из окружающей функции — после `return`, в конце тела или пока горутина паникует.
 
@@ -1152,9 +1152,9 @@ func readFirst(path string) (b []byte, err error) {
 </details>
 
 <details>
-<summary>Describe the select statement in Go.</summary>
+<summary>Опишите the select statement in Go.</summary>
 
-### Describe the select statement in Go.
+### Опишите the select statement in Go.
 
 **Definition:** `select` выбирает одну операцию отправки или получения, которая может выполниться. Это мультиплексор коммуникаций, по форме похожий на `switch`, но с операциями над каналами в ветках.
 
@@ -1198,9 +1198,9 @@ func take(ctx context.Context, ch <-chan int) (int, error) {
 </details>
 
 <details>
-<summary>What are anonymous functions and closures in Go?</summary>
+<summary>Что такое anonymous functions and closures in Go?</summary>
 
-### What are anonymous functions and closures in Go?
+### Что такое anonymous functions and closures in Go?
 
 **Definition:** Функциональный литерал — это анонимная функция. Литералы являются замыканиями: они могут ссылаться на переменные окружающей функции, и эти переменные живут, пока литерал может до них дотянуться.
 
@@ -1249,9 +1249,9 @@ func launch(ids []int) {
 </details>
 
 <details>
-<summary>How do you write a unit test in Go?</summary>
+<summary>Как you write a unit test in Go?</summary>
 
-### How do you write a unit test in Go?
+### Как you write a unit test in Go?
 
 **Definition:** Поместите `func TestXxx(t *testing.T)` в файл с именем, оканчивающимся на `_test.go`, в том же каталоге, что и пакет. `go test` собирает тестовый бинарник и запускает эти функции. `Xxx` не должен начинаться со строчной буквы.
 
@@ -1289,9 +1289,9 @@ func TestReverse(t *testing.T) {
 </details>
 
 <details>
-<summary>Can you explain what pointers are and how Go handles them?</summary>
+<summary>Можете ли вы explain what pointers are and how Go handles them?</summary>
 
-### Can you explain what pointers are and how Go handles them?
+### Можете ли вы explain what pointers are and how Go handles them?
 
 **Definition:** Тип указателя `*T` — это множество указателей на переменные базового типа `T`. Неинициализированный указатель равен `nil`. Go передаёт каждый аргумент по значению, поэтому функция получает копию указателя, а не копию переменной, на которую он указывает.
 
@@ -1338,9 +1338,9 @@ func origin() *Point {
 ### Intermediate Golang Concepts
 
 <details>
-<summary>Explain Go's interface type and how it differs from other types.</summary>
+<summary>Объясните Go's interface type and how it differs from other types.</summary>
 
-### Explain Go's interface type and how it differs from other types.
+### Объясните Go's interface type and how it differs from other types.
 
 **Definition:** Интерфейсный тип задаёт множество типов. Переменная этого интерфейса может хранить значение любого типа из множества. Тип реализует базовый интерфейс автоматически, если его множество методов включает методы интерфейса; объявления `implements` нет.
 
@@ -1380,9 +1380,9 @@ func greet(s Stringer) string { return "hi " + s.String() }
 </details>
 
 <details>
-<summary>What are map and how do you manage them?</summary>
+<summary>Что такое Map and how do you manage them?</summary>
 
-### What are map and how do you manage them?
+### Что такое Map and how do you manage them?
 
 **Definition:** Карта — неупорядоченная группа элементов одного типа, индексируемая уникальными ключами другого типа. Тип ключа должен быть сравнимым; функции, карты и срезы ключами быть не могут. Неинициализированная карта равна `nil`.
 
@@ -1422,9 +1422,9 @@ func counts(words []string) map[string]int {
 </details>
 
 <details>
-<summary>Describe the blank identifier (_) and its use cases in Go.</summary>
+<summary>Опишите the blank identifier (_) and its use cases in Go.</summary>
 
-### Describe the blank identifier (\_) and its use cases in Go.
+### Опишите the blank identifier (_) and its use cases in Go.
 
 **Definition:** Пустой идентификатор `_` — анонимный заполнитель. Он может стоять в объявлении или слева от присваивания, но не вводит связывание.
 
@@ -1461,9 +1461,9 @@ func first(items []string) (string, bool) {
 </details>
 
 <details>
-<summary>How does Go handle method overloading?</summary>
+<summary>Как Go handle method overloading?</summary>
 
-### How does Go handle method overloading?
+### Как Go handle method overloading?
 
 **Definition:** Go не поддерживает перегрузку методов и операторов. Для одного базового типа получателя непустые имена методов должны быть уникальны, а сигнатуры методов должны точно совпадать с интерфейсом.
 
@@ -1497,9 +1497,9 @@ func (b *Buffer) WriteString(s string) (int, error) {
 </details>
 
 <details>
-<summary>What is type embedding in Go, and when would you use it?</summary>
+<summary>Что такое type embedding in Go, and when would you use it?</summary>
 
-### What is type embedding in Go, and when would you use it?
+### Что такое type embedding in Go, and when would you use it?
 
 **Definition:** Поле структуры, объявленное типом без имени, — встроенное поле. Его неквалифицированное имя типа становится именем поля. Продвинутые поля и методы этого поля выбираются так, будто они объявлены во внешней структуре.
 
@@ -1541,9 +1541,9 @@ func (s Server) Start() { s.Info("listen " + s.Addr) }
 </details>
 
 <details>
-<summary>What is the purpose of the init() function?</summary>
+<summary>Что такое the puRPOse of the init() function?</summary>
 
-### What is the purpose of the init() function?
+### Что такое the puRPOse of the init() function?
 
 **Definition:** `init` — функция без аргументов и без результатов, объявленная в блоке пакета. После инициализации переменных пакета Go вызывает каждый `init` в порядке исходного текста. Импортированные пакеты инициализируются раньше, и каждый пакет инициализируется один раз.
 
@@ -1580,9 +1580,9 @@ func init() {
 </details>
 
 <details>
-<summary>How does Go's garbage collector work?</summary>
+<summary>Как Go's GArbage collector work?</summary>
 
-### How does Go's garbage collector work?
+### Как Go's GArbage collector work?
 
 **Definition:** Сборщик мусора Go — конкурентный, параллельный, неперемещающий и непоколенческий mark-sweep. Он освобождает память кучи, до которой программа больше не может дотянуться. Большинство значений может жить на стеке; компилятор кладёт значение в кучу, когда ссылка на него покидает функцию.
 
@@ -1611,9 +1611,9 @@ func live() *int {
 </details>
 
 <details>
-<summary>Can you describe how Go's type assertion works?</summary>
+<summary>Можете ли вы describe how Go's type assertion works?</summary>
 
-### Can you describe how Go's type assertion works?
+### Можете ли вы describe how Go's type assertion works?
 
 **Definition:** Для значения интерфейса `x` (не параметра типа) и типа `T` выражение `x.(T)` утверждает, что `x` не `nil` и что хранимое значение имеет тип `T`. Если `T` — интерфейс, утверждается, что динамический тип реализует `T`.
 
@@ -1648,9 +1648,9 @@ func asString(v any) (string, bool) {
 </details>
 
 <details>
-<summary>What are struct types in Go and how do you use them?</summary>
+<summary>Что такое struct types in Go and how do you use them?</summary>
 
-### What are struct types in Go and how do you use them?
+### Что такое struct types in Go and how do you use them?
 
 **Definition:** Структура — последовательность именованных полей, у каждого есть имя и тип. Поля также могут быть встроенными. У поля может быть строковый тег, который читает рефлексия; теги участвуют в тождестве типа структуры и в остальном языком игнорируются.
 
@@ -1684,9 +1684,9 @@ func moved(p Point, dx int) Point {
 </details>
 
 <details>
-<summary>Describe the concept of package aliasing and when it would be used.</summary>
+<summary>Опишите the concept of package aliasing and when it would be used.</summary>
 
-### Describe the concept of package aliasing and when it would be used.
+### Опишите the concept of package aliasing and when it would be used.
 
 **Definition:** Импорт связывает имя — имя пакета — с путём импорта. Имя по умолчанию — собственное имя пакета. Явное имя в спецификации импорта задаёт псевдоним пакета для этого файла.
 
@@ -1726,9 +1726,9 @@ func seed() int {
 </details>
 
 <details>
-<summary>How do you manage package versioning in Go modules?</summary>
+<summary>Как you manage package versioning in Go modules?</summary>
 
-### How do you manage package versioning in Go modules?
+### Как you manage package versioning in Go modules?
 
 **Definition:** Модуль выпускают с семантической версией. Старший номер означает несовместимые изменения API, младший — обратно совместимые изменения API, патч — изменения, не затрагивающие публичный API. Старшая версия 2 и выше использует суффикс `/vN` в пути модуля.
 
@@ -1758,9 +1758,9 @@ require example.com/widget v1.4.0
 </details>
 
 <details>
-<summary>Explain how to create and import custom packages in Go.</summary>
+<summary>Объясните how to create and import custom packages in Go.</summary>
 
-### Explain how to create and import custom packages in Go.
+### Объясните how to create and import custom packages in Go.
 
 **Definition:** Пакет — один или несколько исходных файлов в одном каталоге, все объявляют одно имя пакета. `go.mod` модуля задаёт префикс пути импорта. Другой пакет импортирует путь каталога и использует только экспортируемые имена.
 
@@ -1794,9 +1794,9 @@ func Save(id string) error { return nil }
 </details>
 
 <details>
-<summary>Describe cross-compiling in Go.</summary>
+<summary>Опишите cross-compiling in Go.</summary>
 
-### Describe cross-compiling in Go.
+### Опишите cross-compiling in Go.
 
 **Definition:** `GOOS` — операционная система, для которой компилируют, а `GOARCH` — архитектура процессора. Их установка для `go build` выбирает эту цель. В документации команды go примеры `GOOS` — `linux`, `darwin` и `windows`, а `GOARCH` — `amd64`, `386`, `arm` и `ppc64`.
 
@@ -1829,9 +1829,9 @@ func Save(id string) error { return nil }
 </details>
 
 <details>
-<summary>What is reflection in Go and why is it useful?</summary>
+<summary>Что такое reflection in Go and why is it useful?</summary>
 
-### What is reflection in Go and why is it useful?
+### Что такое reflection in Go and why is it useful?
 
 **Definition:** Пакет `reflect` изучает тип и представление значения во время выполнения. `reflect.TypeOf` и `reflect.ValueOf` начинают с значения `any`. Рефлексия — то, как `encoding/json` и `fmt` учитывают теги структур и неизвестные конкретные типы.
 
@@ -1865,9 +1865,9 @@ func typeName(v any) string {
 </details>
 
 <details>
-<summary>How does Go handle immutable strings?</summary>
+<summary>Как Go handle immutable strings?</summary>
 
-### How does Go handle immutable strings?
+### Как Go handle immutable strings?
 
 **Definition:** Строка — неизменяемая последовательность байтов. После создания её содержимое нельзя изменить. `len(s)` — число байтов, а `s[i]` — байт. Взять адрес байта строки нельзя.
 
@@ -1900,9 +1900,9 @@ func shout(s string) string {
 </details>
 
 <details>
-<summary>What is the syntax to create a variable that is not exported outside of a package?</summary>
+<summary>Что такое the syntax to create a variable that is not exported outside of a package?</summary>
 
-### What is the syntax to create a variable that is not exported outside of a package?
+### Что такое the syntax to create a variable that is not exported outside of a package?
 
 **Definition:** Идентификатор экспортируется, только если его первый символ — заглавная буква Unicode и он объявлен в блоке пакета либо является именем поля или метода. Любое другое имя, включая начинающееся со строчной буквы, не экспортируется.
 
@@ -1932,9 +1932,9 @@ func (u User) Age() int { return u.age }
 </details>
 
 <details>
-<summary>How do you implement an enum in Go?</summary>
+<summary>Как you implement an enum in Go?</summary>
 
-### How do you implement an enum in Go?
+### Как you implement an enum in Go?
 
 **Definition:** В Go нет типа enum. Обычная форма — набор констант, часто с `iota`, иногда с именованным целочисленным типом, чтобы значения имели отдельный тип.
 
@@ -1972,9 +1972,9 @@ const (
 </details>
 
 <details>
-<summary>What are some ways to manage state in a concurrent Go program?</summary>
+<summary>Что такое some ways to manage state in a concurrent Go program?</summary>
 
-### What are some ways to manage state in a concurrent Go program?
+### Что такое some ways to manage state in a concurrent Go program?
 
 **Definition:** Модель памяти требует, чтобы программы, изменяющие данные, к которым обращаются несколько горутин, сериализовали этот доступ. Документированные средства — операции с каналами и примитивы `sync` и `sync/atomic`.
 
@@ -2016,9 +2016,9 @@ func (c *counter) Add(d int) {
 </details>
 
 <details>
-<summary>How does Go's panic and recover mechanism work?</summary>
+<summary>Как Go's panic and recover mechanism work?</summary>
 
-### How does Go's panic and recover mechanism work?
+### Как Go's panic and recover mechanism work?
 
 **Definition:** `panic` останавливает обычное выполнение горутины и запускает её отложенные вызовы. `recover` останавливает эту панику, только если вызван непосредственно из отложенной функции, и возвращает значение, переданное в `panic`. `recover` в любом другом месте возвращает `nil`.
 
@@ -2059,9 +2059,9 @@ func safely(work func()) (err error) {
 </details>
 
 <details>
-<summary>What is the purpose of the context package in Go?</summary>
+<summary>Что такое the puRPOse of the context package in Go?</summary>
 
-### What is the purpose of the context package in Go?
+### Что такое the puRPOse of the context package in Go?
 
 **Definition:** `context.Context` переносит дедлайн, сигнал отмены и значения области запроса через границы API. Сервер создаёт Context для входящего запроса, а исходящие вызовы принимают этот Context или потомка, полученного через `WithCancel`, `WithDeadline`, `WithTimeout` или `WithValue`.
 
@@ -2108,9 +2108,9 @@ func fetch(ctx context.Context, url string) error {
 ### Advanced Golang Concepts
 
 <details>
-<summary>How does Go implement object-oriented programming concepts?</summary>
+<summary>Как Go implement object-oriented programming concepts?</summary>
 
-### How does Go implement object-oriented programming concepts?
+### Как Go implement object-oriented programming concepts?
 
 **Definition:** В Go есть типы и методы и возможен объектно-ориентированный стиль, без классов и иерархии типов. Методы можно объявлять на любом определённом типе в том же пакете, не только на структурах. Интерфейсы удовлетворяются неявно. Встраивание продвигает поля и методы.
 
@@ -2148,9 +2148,9 @@ func (u upper) Read(p []byte) (int, error) {
 </details>
 
 <details>
-<summary>Explain the difference between concurrency and parallelism in Go, with examples.</summary>
+<summary>Объясните the difference between concurrency and parallelism in Go, with examples.</summary>
 
-### Explain the difference between concurrency and parallelism in Go, with examples.
+### Объясните the difference between concurrency and parallelism in Go, with examples.
 
 **Definition:** Конкурентность — структура программы: независимо выполняемые части, согласованные горутинами и каналами. Параллелизм — это когда эти части действительно выполняются одновременно на разных процессорах. FAQ говорит, что конкурентность даёт параллелизм только когда задачу можно разбить на части, которые выполняются параллельно.
 
@@ -2199,9 +2199,9 @@ func fanIn(ctx context.Context, a, b <-chan int) <-chan int {
 </details>
 
 <details>
-<summary>What is the Go memory model?</summary>
+<summary>Что такое the Go memory model?</summary>
 
-### What is the Go memory model?
+### Что такое the Go memory model?
 
 **Definition:** Модель памяти Go задаёт, когда чтение переменной в одной горутине гарантированно наблюдает запись в ту же переменную в другой горутине. Совет документа: сериализуйте общее изменение операциями каналов или `sync` и `sync/atomic` и не полагайтесь на хитроумный несинхронизированный код.
 
@@ -2235,9 +2235,9 @@ func publish(msg string) string {
 </details>
 
 <details>
-<summary>Can you manually trigger garbage collection in Go?</summary>
+<summary>Можете ли вы manually trigger GArbage collection in Go?</summary>
 
-### Can you manually trigger garbage collection in Go?
+### Можете ли вы manually trigger GArbage collection in Go?
 
 **Definition:** Да. `runtime.GC` запускает сборку мусора и блокирует вызывающего, пока эта сборка не завершится. Она может заблокировать и всю программу. Это инструмент для тестов и диагностики, а не обычный путь запроса.
 
@@ -2271,9 +2271,9 @@ func collectForTest() {
 </details>
 
 <details>
-<summary>Describe the Go race detector and when you would use it.</summary>
+<summary>Опишите the Go race detector and when you would use it.</summary>
 
-### Describe the Go race detector and when you would use it.
+### Опишите the Go race detector and when you would use it.
 
 **Definition:** Детектор гонок инструментирует программу, чтобы сообщать о гонках данных: две горутины обращаются к одной переменной одновременно, и хотя бы один доступ — запись. Включают его флагом `-race` у `go test`, `go run`, `go build` или `go install`.
 
@@ -2317,9 +2317,9 @@ func TestCounter(t *testing.T) {
 </details>
 
 <details>
-<summary>How can you manage dependencies in a Go project?</summary>
+<summary>Как you manage dependencies in a Go project?</summary>
 
-### How can you manage dependencies in a Go project?
+### Как you manage dependencies in a Go project?
 
 **Definition:** Зависимости — это модули. `go mod init` создаёт `go.mod`. `go get` добавляет, обновляет или понижает модуль. `go mod tidy` добавляет недостающие требования и убирает неиспользуемые, чтобы `go.mod` совпадал с импортами сборки.
 
@@ -2346,9 +2346,9 @@ func TestCounter(t *testing.T) {
 </details>
 
 <details>
-<summary>What optimizations does Go employ for its compiler?</summary>
+<summary>Какие optimizations Go использует для своего compiler?</summary>
 
-### What optimizations does Go employ for its compiler?
+### Какие optimizations Go использует для своего compiler?
 
 **Definition:** Компилятор `gc` компилирует заранее в машинный код. Виртуальной машины языка нет. FAQ говорит, что реализация может избежать копий, если это не меняет семантику передачи по значению, и что переменная, адрес которой покидает функцию, выделяется в куче со сборкой мусора.
 
@@ -2376,9 +2376,9 @@ func keeps() *int {
 </details>
 
 <details>
-<summary>How does Go handle JSON encoding and decoding?</summary>
+<summary>Как Go handle JSON encoding and decoding?</summary>
 
-### How does Go handle JSON encoding and decoding?
+### Как Go handle JSON encoding and decoding?
 
 **Definition:** `encoding/json` сопоставляет JSON значениям Go в `Marshal` и `Unmarshal`, как определено для RFC 7159. Экспортируемые поля структуры становятся членами объекта. Тег структуры `json` переименовывает поле или задаёт параметры вроде `omitempty`.
 
@@ -2410,9 +2410,9 @@ func encode(pets []Pet) ([]byte, error) {
 </details>
 
 <details>
-<summary>Explain the use of build tags in Go.</summary>
+<summary>Объясните the use of build tags in Go.</summary>
 
-### Explain the use of build tags in Go.
+### Объясните the use of build tags in Go.
 
 **Definition:** Ограничение сборки, также называемое build tag, решает, входит ли файл в пакет. Это строчный комментарий `//go:build` в начале файла, после только пустых строк и других комментариев и до клаузы `package`.
 
@@ -2448,9 +2448,9 @@ func osName() string { return "linux" }
 </details>
 
 <details>
-<summary>How do you create a custom error type in Go?</summary>
+<summary>Как you create a custom error type in Go?</summary>
 
-### How do you create a custom error type in Go?
+### Как you create a custom error type in Go?
 
 **Definition:** Любой тип с методом `Error() string` реализует встроенный интерфейс `error`. Вызывающие затем могут использовать утверждение типа или `errors.As`, чтобы прочитать поля, которые простая строка не переносит.
 
@@ -2488,9 +2488,9 @@ func (e *PathError) Unwrap() error { return e.Err }
 </details>
 
 <details>
-<summary>Discuss the use of Go routines and thread safety.</summary>
+<summary>Обсудите the use of Go routines and thread safety.</summary>
 
-### Discuss the use of Go routines and thread safety.
+### Обсудите the use of Go routines and thread safety.
 
 **Definition:** Горутина — не поток операционной системы. Планировщик мультиплексирует горутины на потоки. Общие переменные безопасны, только когда каждый конфликтующий доступ синхронизирован. Карты, базовые массивы срезов и обычные поля структур за вас не синхронизируются.
 
@@ -2521,9 +2521,9 @@ func worker(jobs <-chan int, wg *sync.WaitGroup) {
 </details>
 
 <details>
-<summary>Explain how reflection is used to manipulate objects in Go.</summary>
+<summary>Объясните how reflection is used to manipulate objects in Go.</summary>
 
-### Explain how reflection is used to manipulate objects in Go.
+### Объясните how reflection is used to manipulate objects in Go.
 
 **Definition:** `reflect.ValueOf` оборачивает значение. Если этот Value устанавливаемый, `Set` и типизированные сеттеры заменяют его. Устанавливаемый значит, что Value адресует экспортируемое адресуемое место — обычно `ValueOf(&x).Elem()` или экспортируемое поле адресуемой структуры.
 
@@ -2555,9 +2555,9 @@ func setInt(p any, n int64) error {
 </details>
 
 <details>
-<summary>How do you use third-party packages in Go?</summary>
+<summary>Как you use third-party packages in Go?</summary>
 
-### How do you use third-party packages in Go?
+### Как you use third-party packages in Go?
 
 **Definition:** Сторонний пакет — обычный путь импорта, за которым стоит модуль. `go get example.com/mod@v1.2.3` добавляет требование. Импортируйте путь пакета, вызывайте его экспортируемые имена и коммитьте `go.mod` и `go.sum`.
 
@@ -2583,9 +2583,9 @@ func setInt(p any, n int64) error {
 </details>
 
 <details>
-<summary>Discuss the benefits and challenges of using channels for IPC in Go.</summary>
+<summary>Обсудите the benefits and challenges of using channels for IPC in Go.</summary>
 
-### Discuss the benefits and challenges of using channels for IPC in Go.
+### Обсудите the benefits and challenges of using channels for IPC in Go.
 
 **Definition:** Канал позволяет конкурентно выполняющимся функциям отправлять и получать значения одного типа элемента. В Go эта коммуникация — между горутинами одного процесса. Это языковой способ передать владение данными, который codewalk про разделяемую память противопоставляет блокировкам вокруг общей структуры.
 
@@ -2627,9 +2627,9 @@ func gen(n int) <-chan int {
 </details>
 
 <details>
-<summary>How would you avoid deadlocks in concurrent programming in Go?</summary>
+<summary>Как бы вы avoid deadlocks in concurrent programming in Go?</summary>
 
-### How would you avoid deadlocks in concurrent programming in Go?
+### Как бы вы avoid deadlocks in concurrent programming in Go?
 
 **Definition:** Взаимная блокировка здесь значит, что горутины ждут друг друга и ни коммуникация, ни блокировка не могут продолжиться. Спецификация говорит, что `select` только по `nil`-каналам без `default` блокируется навсегда, а небуферизованная отправка выполняется, только когда готово получение.
 
@@ -2662,9 +2662,9 @@ func sendOrDone(ctx context.Context, ch chan<- int, v int) error {
 </details>
 
 <details>
-<summary>What is the Stringer interface and why is it important?</summary>
+<summary>Что такое the Stringer interface and why is it important?</summary>
 
-### What is the Stringer interface and why is it important?
+### Что такое the Stringer interface and why is it important?
 
 **Definition:** `fmt.Stringer` реализует любое значение с методом `String() string`. Этот метод задаёт собственный формат. `fmt` использует его для глаголов, принимающих строку, и для неформатированных принтеров вроде `Print`.
 
@@ -2700,9 +2700,9 @@ func (id UserID) String() string {
 </details>
 
 <details>
-<summary>How do you manage database connections in Go?</summary>
+<summary>Как you manage dataBASE connections in Go?</summary>
 
-### How do you manage database connections in Go?
+### Как you manage dataBASE connections in Go?
 
 **Definition:** `database/sql` — обобщённый интерфейс вокруг баз SQL, и его нужно использовать с драйвером. `sql.Open` готовит `*sql.DB`. Этот дескриптор безопасен для одновременного использования несколькими горутинами и держит собственный пул простаивающих соединений. Сам по себе он не создаёт сетевое соединение, пока запрос его не потребует.
 
@@ -2740,9 +2740,9 @@ func openDB(driver, dsn string) (*sql.DB, error) {
 </details>
 
 <details>
-<summary>Describe the http package in Go for web programming.</summary>
+<summary>Опишите the HTTP package in Go for web programming.</summary>
 
-### Describe the http package in Go for web programming.
+### Опишите the HTTP package in Go for web programming.
 
 **Definition:** `net/http` предоставляет реализации HTTP-клиента и сервера. `Get`, `Head`, `Post` и `PostForm` выполняют запросы. Сервер регистрирует обработчики и обслуживает их через `ListenAndServe` или `ListenAndServeTLS`.
 
@@ -2774,9 +2774,9 @@ func main() {
 </details>
 
 <details>
-<summary>What is cgo and when would you use it?</summary>
+<summary>Что такое cGo and when would you use it?</summary>
 
-### What is cgo and when would you use it?
+### Что такое cGo and when would you use it?
 
 **Definition:** cgo собирает пакеты Go, которые вызывают C. Импорт псевдопакета `C` обращается к типам и функциям C. Комментарий непосредственно над `import "C"` — преамбула, компилируемая как заголовок C. FAQ предупреждает, что связывание C с процессом Go отказывается от безопасности памяти и управления стеком Go.
 
@@ -2817,9 +2817,9 @@ func alloc(n int) {
 </details>
 
 <details>
-<summary>Explain the difference between iota and const in Go.</summary>
+<summary>Объясните the difference between iota and const in Go.</summary>
 
-### Explain the difference between iota and const in Go.
+### Объясните the difference between iota and const in Go.
 
 **Definition:** `const` объявляет константу. `iota` — предопределённый идентификатор, который внутри объявления константы равен индексу текущего ConstSpec, начиная с нуля. `iota` — не отдельный вид объявления.
 
@@ -2851,9 +2851,9 @@ const (
 ### Go Tools, Testing, and Performance
 
 <details>
-<summary>What is go vet and when would you use it?</summary>
+<summary>Что такое Go vet and when would you use it?</summary>
 
-### What is go vet and when would you use it?
+### Что такое Go vet and when would you use it?
 
 **Definition:** `go vet` сообщает о подозрительных конструкциях, например о вызовах `Printf`, чьи аргументы не совпадают со строкой формата. Он использует эвристики: отчёт не гарантированно является настоящей ошибкой, и он не ловит каждую ошибку, которую пропустил компилятор. Код выхода ненулевой, когда проблема сообщена.
 
@@ -2888,9 +2888,9 @@ func announce(name string) {
 </details>
 
 <details>
-<summary>Describe the purpose of Go's benchmarking tools.</summary>
+<summary>Опишите the puRPOse of Go's benchmarking tools.</summary>
 
-### Describe the purpose of Go's benchmarking tools.
+### Опишите the puRPOse of Go's benchmarking tools.
 
 **Definition:** Бенчмарк — это `func BenchmarkXxx(b *testing.B)` в файле `_test.go`. `go test` запускает его достаточно раз, чтобы измерить тело цикла. Тело итерируется `b.N` раз. Результаты печатаются, когда передан `-bench`.
 
@@ -2920,9 +2920,9 @@ func BenchmarkReverse(b *testing.B) {
 </details>
 
 <details>
-<summary>How do you profile Go applications?</summary>
+<summary>Как you profile Go applications?</summary>
 
-### How do you profile Go applications?
+### Как you profile Go applications?
 
 **Definition:** Среда выполнения выдаёт профили в формате, который читает инструмент `pprof`. Их собирают через `go test` или с конечных точек `net/http/pprof`. Руководство по диагностике ставит это рядом с трассировкой, отладкой и статистикой runtime.
 
@@ -2955,9 +2955,9 @@ func debugServer() {
 </details>
 
 <details>
-<summary>Discuss the process of writing unit tests in Go and the use of the testing package.</summary>
+<summary>Обсудите the process of writing unit tests in Go and the use of the testing package.</summary>
 
-### Discuss the process of writing unit tests in Go and the use of the testing package.
+### Обсудите the process of writing unit tests in Go and the use of the testing package.
 
 **Definition:** `testing` поддерживает автоматические тесты, которые запускает `go test`. Тест — это `TestXxx(*testing.T)` в файле `_test.go`. Провал сообщают `Error`, `Errorf`, `Fatal` и родственные методы. Тот же пакет определяет бенчмарки (`BenchmarkXxx`), примеры (`ExampleXxx`) и фазз-тесты (`FuzzXxx`).
 
@@ -2988,9 +2988,9 @@ func TestAdd(t *testing.T) {
 </details>
 
 <details>
-<summary>What is the httptest package in Go, and why is it useful?</summary>
+<summary>Что такое the HTTPtest package in Go, and why is it useful?</summary>
 
-### What is the httptest package in Go, and why is it useful?
+### Что такое the HTTPtest package in Go, and why is it useful?
 
 **Definition:** `net/http/httptest` даёт HTTP-серверы и запросы для тестов. `NewServer` запускает HTTP-сервер на выбранном системой порту интерфейса loopback и возвращает `Server`, чей `URL` — базовый URL.
 
@@ -3028,9 +3028,9 @@ func TestHealth(t *testing.T) {
 </details>
 
 <details>
-<summary>How do you perform static code analysis in Go?</summary>
+<summary>Как you perform static code analysis in Go?</summary>
 
-### How do you perform static code analysis in Go?
+### Как you perform static code analysis in Go?
 
 **Definition:** Статические проверки набора инструментов — компилятор и `go vet`. Компилятор отвергает программы, нарушающие язык. `go vet` сообщает о подозрительных конструкциях эвристиками и ненулевым кодом выхода, когда сообщает о проблеме. `gofmt` навязывает раскладку, которую FAQ считает частью узнаваемого стиля Go.
 
@@ -3057,9 +3057,9 @@ func TestHealth(t *testing.T) {
 </details>
 
 <details>
-<summary>How can you improve the performance of Go code?</summary>
+<summary>Как you improve the performance of Go code?</summary>
 
-### How can you improve the performance of Go code?
+### Как you improve the performance of Go code?
 
 **Definition:** Сначала измеряйте. Бенчмарки (`testing.B`) и профили (`runtime/pprof`, описанные в руководстве по диагностике) показывают, во времени CPU, выделениях или блокировках дело. Руководство по GC затем объясняет компромисс CPU и памяти, которым управляет `GOGC`.
 
@@ -3091,9 +3091,9 @@ func BenchmarkAppend(b *testing.B) {
 </details>
 
 <details>
-<summary>Explain how to use go doc to document Go code.</summary>
+<summary>Объясните how to use Go doc to document Go code.</summary>
 
-### Explain how to use go doc to document Go code.
+### Объясните how to use Go doc to document Go code.
 
 **Definition:** Комментарии документации стоят непосредственно над клаузой пакета или объявлением верхнего уровня. `go doc` печатает комментарий пакета или символа. pkg.go.dev отрисовывает те же комментарии для публичных модулей. Первое предложение комментария пакета начинается с «Package Name».
 
@@ -3122,9 +3122,9 @@ func Hello(name string) string { return "Hello, " + name }
 </details>
 
 <details>
-<summary>What are the best practices for logging in Go?</summary>
+<summary>Что такое the best practices for logging in Go?</summary>
 
-### What are the best practices for logging in Go?
+### Что такое the best practices for logging in Go?
 
 **Definition:** `log/slog` — структурированный журнал стандартной библиотеки. Запись содержит время, уровень, сообщение и атрибуты ключ-значение. `Logger` связан с `Handler`, который решает, как записать запись. Функции верхнего уровня вроде `Info` и `Error` используют журнал по умолчанию.
 
@@ -3158,9 +3158,9 @@ func started(id string) {
 </details>
 
 <details>
-<summary>Describe code coverage in Go and how to measure it.</summary>
+<summary>Опишите code coverage in Go and how to measure it.</summary>
 
-### Describe code coverage in Go and how to measure it.
+### Опишите code coverage in Go and how to measure it.
 
 **Definition:** `go test -coverprofile=cover.out` пишет профиль покрытия для тестов пакета. `go tool cover -func` или `-html` превращает этот файл в отчёт. С Go 1.20 `go build -cover` инструментирует бинарник приложения, чтобы интеграционные тесты тоже собирали покрытие; такие бинарники пишут данные в `GOCOVERDIR`.
 
@@ -3188,9 +3188,9 @@ func started(id string) {
 ### Go Patterns and Best Practices
 
 <details>
-<summary>What design patterns are commonly used in Go?</summary>
+<summary>Какие design patterns обычно используют в Go?</summary>
 
-### What design patterns are commonly used in Go?
+### Какие design patterns обычно используют в Go?
 
 **Definition:** В языке нет библиотеки паттернов. Паттерны, которые видны в стандартной библиотеке и Effective Go, — маленькие интерфейсы, композиция полями структуры или встраиванием, функциональные значения, передаваемые аргументами, и синхронизация каналами или `sync`.
 
@@ -3216,9 +3216,9 @@ type Reader interface{ Read([]byte) (int, error) }
 </details>
 
 <details>
-<summary>Describe a use case for the factory pattern in Go.</summary>
+<summary>Опишите a use case for the factory pattern in Go.</summary>
 
-### Describe a use case for the factory pattern in Go.
+### Опишите a use case for the factory pattern in Go.
 
 **Definition:** Фабрика в Go — обычная функция, которая возвращает интерфейс или структуру, скрывая, какой конкретный тип выбран. `http.NewRequestWithContext` и `sql.Open` — функции стандартной библиотеки такой формы: вызывающий называет, что ему нужно, и получает готовое значение.
 
@@ -3256,9 +3256,9 @@ func (memStore) Get(id string) (string, error) { return id, nil }
 </details>
 
 <details>
-<summary>When would you use the decorator pattern in Go?</summary>
+<summary>Когда would you use the decorator pattern in Go?</summary>
 
-### When would you use the decorator pattern in Go?
+### Когда would you use the decorator pattern in Go?
 
 **Definition:** Используйте его, когда есть интерфейс и нужно добавить поведение, не правя конкретный тип. Обёртка хранит внутреннее значение и реализует тот же интерфейс, вызывая его после или до своей работы. Промежуточный слой `http.Handler` — этот паттерн.
 
@@ -3294,9 +3294,9 @@ func withLog(next http.Handler) http.Handler {
 </details>
 
 <details>
-<summary>Explain the importance of Go's fmt package.</summary>
+<summary>Объясните the importance of Go's fmt package.</summary>
 
-### Explain the importance of Go's fmt package.
+### Объясните the importance of Go's fmt package.
 
 **Definition:** `fmt` реализует форматированный ввод-вывод. `Printf`, `Sprintf` и `Fprintf` форматируют значения. `Print` и `Println` не принимают строку формата. `Stringer`, `GoStringer` и `error` подставляют в это форматирование собственный текст значения.
 
@@ -3323,9 +3323,9 @@ func label(id int, err error) string {
 </details>
 
 <details>
-<summary>What are the recommended practices for error handling in Go?</summary>
+<summary>Что такое the recommended practices for error handling in Go?</summary>
 
-### What are the recommended practices for error handling in Go?
+### Что такое the recommended practices for error handling in Go?
 
 **Definition:** Функции, которые могут завершиться неудачей, возвращают значение `error`, обычно последним. Вызывающий сразу проверяет `err != nil`. Добавляйте контекст через `fmt.Errorf` и `%w`, когда дополнительный текст полезен, и используйте `errors.Is` или `errors.As`, когда вызывающий должен узнать конкретную ошибку. Паника — не этот путь.
 
@@ -3357,9 +3357,9 @@ func read(path string) ([]byte, error) {
 </details>
 
 <details>
-<summary>How do you avoid and detect memory leaks in Go?</summary>
+<summary>Как you avoid and detect memory leaks in Go?</summary>
 
-### How do you avoid and detect memory leaks in Go?
+### Как you avoid and detect memory leaks in Go?
 
 **Definition:** Сборщик освобождает недостижимые объекты кучи. Утечка в Go — память, которая всё ещё достижима и поэтому не собирается: горутина, заблокированная навсегда, растущая глобальная карта или срез, удерживающий большой базовый массив. Профиль кучи из руководства по диагностике показывает эти выделения.
 
@@ -3389,9 +3389,9 @@ func keepPrefix(s []byte, n int) []byte {
 </details>
 
 <details>
-<summary>What is idiomatic Go code and how do you ensure it?</summary>
+<summary>Что такое idiomatic Go code and how do you ensure it?</summary>
 
-### What is idiomatic Go code and how do you ensure it?
+### Что такое idiomatic Go code and how do you ensure it?
 
 **Definition:** FAQ говорит, что отдельного руководства по стилю нет и что узнаваемый стиль задают Effective Go и `gofmt`. Идиоматичный код отформатирован `gofmt`, использует имена mixedCaps, возвращает ошибки вместо паники для обычной неудачи и держит интерфейсы маленькими.
 
@@ -3418,9 +3418,9 @@ func (s *Server) Listen() error { return nil }
 </details>
 
 <details>
-<summary>Discuss the singleton pattern in Go.</summary>
+<summary>Обсудите the singleton pattern in Go.</summary>
 
-### Discuss the singleton pattern in Go.
+### Обсудите the singleton pattern in Go.
 
 **Definition:** `sync.Once` выполняет функцию ровно один раз. Документация говорит, что возврат из `f` синхронизируется-раньше возврата из любого `once.Do(f)`. Переменная уровня пакета, инициализированная в `init` или выражением уровня пакета, — другая форма: она тоже выполняется один раз, во время инициализации пакета.
 
@@ -3462,9 +3462,9 @@ func DB() *sql.DB {
 </details>
 
 <details>
-<summary>What are the best practices for structuring Go projects?</summary>
+<summary>Что такое the best practices for structuring Go projects?</summary>
 
-### What are the best practices for structuring Go projects?
+### Что такое the best practices for structuring Go projects?
 
 **Definition:** Документ о раскладке модуля советует начать с самого простого дерева, которое соответствует программе. Базовый пакет — `go.mod` плюс файлы Go в корне модуля. Команды живут в каталогах с именем пакета `main`. Пакеты, которые не должны импортировать другие модули, кладут в `internal/`.
 
@@ -3492,9 +3492,9 @@ func DB() *sql.DB {
 </details>
 
 <details>
-<summary>How do Go routines affect the design and structure of a Go program?</summary>
+<summary>Как Go routines affect the design and structure of a Go program?</summary>
 
-### How do Go routines affect the design and structure of a Go program?
+### Как Go routines affect the design and structure of a Go program?
 
 **Definition:** Горутины анонимны. FAQ говорит, что у них нет идентификатора, который программа может найти, поэтому сервер не строят как «горутина запроса владеет всем состоянием». Вы передаёте значения и `Context` и позволяете функции запускать ещё горутины, когда работа делится.
 
@@ -3534,9 +3534,9 @@ func serve(ctx context.Context, jobs <-chan int) {
 ### Go Networking and Protocols
 
 <details>
-<summary>How does Go handle HTTP/2?</summary>
+<summary>Как Go handle HTTP/2?</summary>
 
-### How does Go handle HTTP/2?
+### Как Go handle HTTP/2?
 
 **Definition:** Go 1.6 добавил прозрачную поддержку HTTP/2 в `net/http`. Клиенты и серверы автоматически используют HTTP/2 при HTTPS. В `net/http` нет экспортируемого API для деталей HTTP/2, как нет его и для деталей HTTP/1.1.
 
@@ -3563,9 +3563,9 @@ func serveHTTPS() error {
 </details>
 
 <details>
-<summary>Describe TCP/UDP network programming in Go.</summary>
+<summary>Опишите TCP/UDP network programming in Go.</summary>
 
-### Describe TCP/UDP network programming in Go.
+### Опишите TCP/UDP network programming in Go.
 
 **Definition:** Пакет `net` даёт переносимый интерфейс сетевого ввода-вывода, включая TCP/IP и UDP. `Dial` соединяется с именем сети вроде `tcp` или `udp`. `Listen` и `ListenPacket` принимают соединения или пакеты. `net/http` построен на этих типах; используйте `net`, когда вы говорите не на HTTP.
 
@@ -3599,9 +3599,9 @@ func dial(ctx context.Context, addr string) (net.Conn, error) {
 </details>
 
 <details>
-<summary>Explain what RPC is and how Go supports it.</summary>
+<summary>Объясните what RPC is and how Go supports it.</summary>
 
-### Explain what RPC is and how Go supports it.
+### Объясните what RPC is and how Go supports it.
 
 **Definition:** RPC вызывает экспортируемый метод объекта через сеть или другое соединение ввода-вывода. Пакет стандартной библиотеки `net/rpc` делает это и заморожен: новые возможности не принимаются. Сервер регистрирует объект; экспортируемые методы с нужной сигнатурой становятся удалёнными методами.
 
@@ -3637,9 +3637,9 @@ func (t *Arith) Double(arg int, reply *int) error {
 </details>
 
 <details>
-<summary>How do you implement RESTful services in Go?</summary>
+<summary>Как you implement RESTful services in Go?</summary>
 
-### How do you implement RESTful services in Go?
+### Как you implement RESTful services in Go?
 
 **Definition:** Сервис в стиле REST на Go — это `http.Handler`, который сопоставляет методы и пути обработчикам и кодирует ответы, обычно через `encoding/json`. `ServeMux` регистрирует эти шаблоны. Отдельного REST-фреймворка в стандартной библиотеке нет.
 
@@ -3668,9 +3668,9 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 </details>
 
 <details>
-<summary>Discuss Go's support for WebSocket protocols.</summary>
+<summary>Обсудите Go's support for WebSocket protocols.</summary>
 
-### Discuss Go's support for WebSocket protocols.
+### Обсудите Go's support for WebSocket protocols.
 
 **Definition:** Стандартная библиотека не реализует протокол WebSocket. `golang.org/x/net/websocket` реализует клиент и сервер для RFC 6455. Комментарий самого пакета говорит, что ему не хватает возможностей более активно поддерживаемых пакетов, и называет `github.com/gorilla/websocket` и `github.com/coder/websocket`.
 
@@ -3710,9 +3710,9 @@ func register() {
 </details>
 
 <details>
-<summary>What is protobuf and how is it used in Go?</summary>
+<summary>Что такое protobuf and how is it used in Go?</summary>
 
-### What is protobuf and how is it used in Go?
+### Что такое protobuf and how is it used in Go?
 
 **Definition:** Protocol buffers — отдельный проект, а не возможность языка Go. FAQ говорит, что поддержка Go живёт в открытом плагине компилятора и библиотеке, исторически `github.com/golang/protobuf`. Текущий модуль — `google.golang.org/protobuf`. Сгенерированные типы Go — обычные структуры; программа импортирует сгенерированный пакет.
 
@@ -3741,9 +3741,9 @@ func size(m proto.Message) int {
 </details>
 
 <details>
-<summary>Explain how to perform file uploads and downloads using Go.</summary>
+<summary>Объясните how to perform file uploads and downloads using Go.</summary>
 
-### Explain how to perform file uploads and downloads using Go.
+### Объясните how to perform file uploads and downloads using Go.
 
 **Definition:** Загрузки в `net/http` — это данные формы multipart. `Request.ParseMultipartForm` разбирает тело, а `Request.FormFile` возвращает первую файловую часть и `FileHeader`. Скачивания задают заголовки ответа и копируют байты в `ResponseWriter`. `ServeContent` и `ServeFile` отдают файл с обработкой диапазонов.
 
@@ -3778,9 +3778,9 @@ func upload(w http.ResponseWriter, r *http.Request) {
 </details>
 
 <details>
-<summary>How do you secure web applications in Go?</summary>
+<summary>Как you secure web applications in Go?</summary>
 
-### How do you secure web applications in Go?
+### Как you secure web applications in Go?
 
 **Definition:** Обслуживайте HTTPS через `ListenAndServeTLS` или `Server`, чей `TLSConfig` — это `crypto/tls.Config`. HTTP-сервер Go тогда согласует TLS и на этом пути автоматически использует HTTP/2. Проверки приложения — аутентификация, авторизация и ограничение тел запросов — по-прежнему работа ваших обработчиков.
 
@@ -3813,9 +3813,9 @@ func serve() error {
 </details>
 
 <details>
-<summary>What is a middleware in Go's HTTP server and how do you use it?</summary>
+<summary>Что такое middleware in Go's HTTP server and how do you use it?</summary>
 
-### What is a middleware in Go's HTTP server and how do you use it?
+### Что такое middleware in Go's HTTP server and how do you use it?
 
 **Definition:** Middleware — не ключевое слово языка. Это функция, которая принимает `http.Handler` и возвращает `http.Handler`. Возвращённый обработчик делает свою работу и затем вызывает `next.ServeHTTP`. `http.HandlerFunc` адаптирует функцию к этому интерфейсу, как показывает Effective Go.
 
@@ -3848,9 +3848,9 @@ func method(want string, next http.Handler) http.Handler {
 </details>
 
 <details>
-<summary>How can Go be used to build microservices architecture?</summary>
+<summary>Как Go be used to build microservices architecture?</summary>
 
-### How can Go be used to build microservices architecture?
+### Как Go be used to build microservices architecture?
 
 **Definition:** В стандартной библиотеке нет фреймворка микросервисов. Сервис — пакет `main`, который слушает через `net/http` или `net`, вызывает другие сервисы через `http.Client` с контекстами и собирается в один статический бинарник из своего модуля.
 
@@ -3884,9 +3884,9 @@ func call(ctx context.Context, url string) (*http.Response, error) {
 ### Go Frameworks, Libraries, and Interoperability
 
 <details>
-<summary>What are some popular frameworks for web development in Go, and how do you decide which one to use?</summary>
+<summary>Что такое some popular frameworks for web development in Go, and how do you decide which one to use?</summary>
 
-### What are some popular frameworks for web development in Go, and how do you decide which one to use?
+### Что такое some popular frameworks for web development in Go, and how do you decide which one to use?
 
 **Definition:** Сервер стандартной библиотеки — `net/http`. Сторонние фреймворки — обычные модули, которые вы получаете через `go get`; проект Go не поставляет Gin, Echo или Chi как часть набора инструментов. Решайте по тому, выражают ли `ServeMux`, `Handler` и функции middleware ваши маршруты.
 
@@ -3925,9 +3925,9 @@ func newMux() *http.ServeMux {
 </details>
 
 <details>
-<summary>Can Go interact with other programming languages, and if so, how?</summary>
+<summary>Можно ли Go interact with other programming languages, and if so, how?</summary>
 
-### Can Go interact with other programming languages, and if so, how?
+### Можно ли Go interact with other programming languages, and if so, how?
 
 **Definition:** Да, с явной границей. cgo вызывает C из Go через импорт `C`. SWIG расширяет это на C++. FAQ говорит, что `gc` не может вызвать C напрямую из-за соглашения о вызове. Компилятор также целится в WebAssembly для некоторых портов — так код Go выполняется в хосте, который исполняет Wasm.
 
@@ -3957,9 +3957,9 @@ func runEcho() ([]byte, error) {
 </details>
 
 <details>
-<summary>Discuss the use of GraphQL in Go applications.</summary>
+<summary>Обсудите the use of GraphQL in Go applications.</summary>
 
-### Discuss the use of GraphQL in Go applications.
+### Обсудите the use of GraphQL in Go applications.
 
 **Definition:** GraphQL не входит в стандартную библиотеку Go и не является частью языка. HTTP API GraphQL — всё ещё `http.Handler`: он читает запрос из тела и пишет ответ JSON. Движок схемы, если вы его используете, — сторонний модуль, записанный в `go.mod`.
 
@@ -3994,9 +3994,9 @@ func graphql(w http.ResponseWriter, r *http.Request) {
 </details>
 
 <details>
-<summary>What are some use cases for the Go mobile library?</summary>
+<summary>Что такое some use cases for the Go mobile library?</summary>
 
-### What are some use cases for the Go mobile library?
+### Что такое some use cases for the Go mobile library?
 
 **Definition:** `golang.org/x/mobile` содержит пакеты и инструменты сборки для использования Go на мобильных платформах. Репозиторий описывает сборку приложений целиком на Go и сборку библиотек для SDK-приложений через `gobind`. Проект заявляет, что он экспериментальный.
 
@@ -4033,9 +4033,9 @@ func main() {
 </details>
 
 <details>
-<summary>How does Go integrate with cloud services?</summary>
+<summary>Как Go integrate with cloud services?</summary>
 
-### How does Go integrate with cloud services?
+### Как Go integrate with cloud services?
 
 **Definition:** Go интегрируется с облаком так же, как с любым сетевым сервисом: через `http.Client` или модуль поставщика, который вы получаете `go get`. В стандартной библиотеке нет облачного SDK. Официальные библиотеки поставщиков — сторонние модули со своими версиями в `go.mod`.
 
@@ -4072,9 +4072,9 @@ func get(ctx context.Context, url string) error {
 </details>
 
 <details>
-<summary>What libraries are available for building GUI applications in Go?</summary>
+<summary>Какие libraries доступны для GUI applications в Go?</summary>
 
-### What libraries are available for building GUI applications in Go?
+### Какие libraries доступны для GUI applications в Go?
 
 **Definition:** В стандартной библиотеке нет набора GUI и пакета окон. Библиотеки графического интерфейса для рабочего стола — сторонние модули. Собственное дерево проекта Go, близкое к UI, для мобильных устройств — `golang.org/x/mobile`, и этот репозиторий описывает себя как экспериментальный.
 
@@ -4101,9 +4101,9 @@ func uiNote() string {
 </details>
 
 <details>
-<summary>How would you integrate a Go application with a message queue?</summary>
+<summary>Как бы вы integrate a Go application with a message queue?</summary>
 
-### How would you integrate a Go application with a message queue?
+### Как бы вы integrate a Go application with a message queue?
 
 **Definition:** В стандартной библиотеке нет клиента очереди сообщений. Интеграция — сторонний модуль или протокол, на котором вы говорите через `net`, если брокер — простой TCP. Что Go даёт — конкурентность вокруг клиента: горутина, которая получает, `Context`, который отменяет, и логика подтверждения, которую вы пишете обычным кодом.
 
@@ -4138,9 +4138,9 @@ func consume(ctx context.Context, next func(context.Context) error) error {
 </details>
 
 <details>
-<summary>What options are there for ORM in Go?</summary>
+<summary>Какие options есть для ORM в Go?</summary>
 
-### What options are there for ORM in Go?
+### Какие options есть для ORM в Go?
 
 **Definition:** `database/sql` — не ORM. Это обобщённый интерфейс SQL плюс драйвер: вы пишете SQL, а `QueryContext` возвращает `*Rows`, которые вы сканируете в переменные. ORM и генераторы запросов — сторонние модули поверх `database/sql` или собственных драйверов.
 
@@ -4187,9 +4187,9 @@ func names(ctx context.Context, db *sql.DB) ([]string, error) {
 </details>
 
 <details>
-<summary>Discuss how to use Docker with Go applications.</summary>
+<summary>Обсудите how to use Docker with Go applications.</summary>
 
-### Discuss how to use Docker with Go applications.
+### Обсудите how to use Docker with Go applications.
 
 **Definition:** Docker — не инструмент Go. Что даёт Go — бинарник из `go build`. Образ контейнера копирует этот бинарник и запускает его. `CGO_ENABLED=0` собирает без cgo, чтобы бинарник не зависел от библиотеки C машины сборки. Кросс-компилируйте через `GOOS` и `GOARCH`, чтобы совпасть с образом.
 
@@ -4217,9 +4217,9 @@ func listen() error {
 </details>
 
 <details>
-<summary>Explain the role of WebAssembly with Go.</summary>
+<summary>Объясните the role of WebAssembly with Go.</summary>
 
-### Explain the role of WebAssembly with Go.
+### Объясните the role of WebAssembly with Go.
 
 **Definition:** FAQ говорит, что программы Go компилируются заранее в машинный код или, для некоторых реализаций, в JavaScript или WebAssembly. `GOARCH=wasm` — эта архитектура. Заметки команды go о `-buildmode=c-shared` говорят, что на `wasip1` сборка даёт реактор/библиотеку WASI, чьи вызываемые символы — функции, экспортированные через `//go:wasmexport`.
 

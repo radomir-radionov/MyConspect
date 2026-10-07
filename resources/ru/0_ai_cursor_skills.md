@@ -4,7 +4,7 @@
 
 ### Related docs
 
-- [Рабочий процесс AI](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Правила](./0_ai_cursor_rules.md) · [Плагины](./0_ai_cursor_plugins.md) · [Slash-команды](./0_ai_cursor_slash.md) · [Вопросы](./0_ai_cursor_questions.md)
+- [Рабочий процесс AI](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Правила](./0_ai_cursor_rules.md) · [Плагины](./0_ai_cursor_plugins.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Slash-команды](./0_ai_cursor_slash.md) · [Вопросы](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
@@ -59,12 +59,12 @@
 
 **When to use:**
 
-| **Rules**                          | **Skills**                                                         |
-|  -----------  |  ----------------------------------  |
-| Purpose     | Короткие guidelines и ограничения  | Многошаговые workflows и процедуры                                 |
-| Length      | От нескольких строк до сотен       | Часто длиннее, с пошаговыми инструкциями                           |
-| How applied | В каждом (или matching) чате       | Явно: `/skill-name`, `@skill-name`; или auto-pick по `description` |
-| Example     | «TypeScript для всех новых файлов» | «Deploy to staging: tests, build, deploy, verify»                  |
+| | **Rules**   | **Skills**                         |
+| | ----------- | ---------------------------------- | ------------------------------------------------------------------ |
+| | Purpose     | Короткие guidelines и ограничения  | Многошаговые workflows и процедуры                                 |
+| | Length      | От нескольких строк до сотен       | Часто длиннее, с пошаговыми инструкциями                           |
+| | How applied | В каждом (или matching) чате       | Явно: `/skill-name`, `@skill-name`; или auto-pick по `description` |
+| | Example     | «TypeScript для всех новых файлов» | «Deploy to staging: tests, build, deploy, verify»                  |
 
 **Rule** — когда хватает короткой инструкции. **Skill** — когда Agent нужен детальный повторяемый процесс (deploy, audit, conspect, PR).
 
@@ -381,7 +381,7 @@ paths:
 | `/update-cli-config`      | Edit `~/.cursor/cli-config.json`                    |
 | `/update-cursor-settings` | Cursor / VS Code settings                           |
 
-**When to use:** Built-ins для scaffolding (rules, skills, hooks) и reviews — не изобретай prompts. Список slash: [Slash commands](./0_ai_cursor_slash.md).
+**When to use:** Built-ins для scaffolding (rules, skills, hooks) и reviews — не изобретай prompts. Список slash: [Slash commands](./0_ai_cursor_slash.md). Подробнее: [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md).
 
 **Sources:** [Встроенные навыки курсора](https://cursor.com/docs/skills.md#built-in-cursor-skills)
 

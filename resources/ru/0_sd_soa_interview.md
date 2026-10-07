@@ -21,9 +21,9 @@ Questions from [Devinterview.io — SOA](https://devinterview.io/questions/softw
 ### SOA Fundamentals
 
 <details>
-<summary>What are the core principles of Service-Oriented Architecture (SOA)?</summary>
+<summary>Что такое the core principles of service-oriented architecture (SOA)?</summary>
 
-### What are the core principles of Service-Oriented Architecture (SOA)?
+### Что такое the core principles of service-oriented architecture (SOA)?
 
 **Definition:**
 
@@ -48,9 +48,9 @@ SOA делит систему на сервисы: каждый владеет �
 </details>
 
 <details>
-<summary>Can you describe the difference between SOA and a microservices architecture?</summary>
+<summary>Можете ли вы describe the difference between SOA and a microservices architecture?</summary>
 
-### Can you describe the difference between SOA and a microservices architecture?
+### Можете ли вы describe the difference between SOA and a microservices architecture?
 
 **Definition:**
 
@@ -72,9 +72,9 @@ SOA-сервис «Order» может резервировать склад, с�
 </details>
 
 <details>
-<summary>Explain the concept of a service contract in SOA.</summary>
+<summary>Объясните the concept of a service contract in SOA.</summary>
 
-### Explain the concept of a service contract in SOA.
+### Объясните the concept of a service contract in SOA.
 
 **Definition:**
 
@@ -102,9 +102,9 @@ body: { "sku": "A1", "qty": 2 }
 </details>
 
 <details>
-<summary>How does SOA facilitate service reusability?</summary>
+<summary>Как SOA facilitate service reusability?</summary>
 
-### How does SOA facilitate service reusability?
+### Как SOA facilitate service reusability?
 
 **Definition:**
 
@@ -125,9 +125,9 @@ SOA стремится к одной реализации бизнес-функ�
 </details>
 
 <details>
-<summary>What is loose coupling in SOA and why is it important?</summary>
+<summary>Что такое loose coupling in SOA and why is it important?</summary>
 
-### What is loose coupling in SOA and why is it important?
+### Что такое loose coupling in SOA and why is it important?
 
 **Definition:**
 
@@ -148,9 +148,9 @@ Checkout вызывает `POST /prices` и не знает, работает л
 </details>
 
 <details>
-<summary>What do you understand by service orchestration and service choreography in the context of SOA?</summary>
+<summary>Что вы понимаете под service orchestration и service choreography в контексте SOA?</summary>
 
-### What do you understand by service orchestration and service choreography in the context of SOA?
+### Что вы понимаете под service orchestration и service choreography в контексте SOA?
 
 **Definition:**
 
@@ -170,9 +170,9 @@ Checkout вызывает `POST /prices` и не знает, работает л
 </details>
 
 <details>
-<summary>How does SOA differ from traditional monolithic application architectures?</summary>
+<summary>Как SOA differ from traditional monolithic application architectures?</summary>
 
-### How does SOA differ from traditional monolithic application architectures?
+### Как SOA differ from traditional monolithic application architectures?
 
 **Definition:**
 
@@ -193,9 +193,9 @@ Checkout вызывает `POST /prices` и не знает, работает л
 </details>
 
 <details>
-<summary>What role does a service registry play in SOA?</summary>
+<summary>Какую роль does a service registry play in SOA?</summary>
 
-### What role does a service registry play in SOA?
+### Какую роль does a service registry play in SOA?
 
 **Definition:**
 
@@ -218,9 +218,9 @@ Checkout вызывает `POST /prices` и не знает, работает л
 ### Designing SOA-based Systems
 
 <details>
-<summary>What factors do you consider when designing a service interface in SOA?</summary>
+<summary>Какие факторы вы учитываете при проектировании service interface в SOA?</summary>
 
-### What factors do you consider when designing a service interface in SOA?
+### Какие факторы вы учитываете при проектировании service interface в SOA?
 
 **Definition:**
 
@@ -244,9 +244,9 @@ Checkout вызывает `POST /prices` и не знает, работает л
 </details>
 
 <details>
-<summary>Explain how versioning of services is handled in a SOA environment.</summary>
+<summary>Объясните how versioning of services is handled in a SOA environment.</summary>
 
-### Explain how versioning of services is handled in a SOA environment.
+### Объясните how versioning of services is handled in a SOA environment.
 
 **Definition:**
 
@@ -267,9 +267,9 @@ Checkout вызывает `POST /prices` и не знает, работает л
 </details>
 
 <details>
-<summary>Describe a scenario in which you might opt for synchronous communication over asynchronous in SOA.</summary>
+<summary>Опишите a scenario in which you might opt for synchronous communication over asynchronous in SOA.</summary>
 
-### Describe a scenario in which you might opt for synchronous communication over asynchronous in SOA.
+### Опишите a scenario in which you might opt for synchronous communication over asynchronous in SOA.
 
 **Definition:**
 
@@ -296,9 +296,9 @@ POST /checkout
 </details>
 
 <details>
-<summary>What are some of the common data formats used for service communication in SOA?</summary>
+<summary>Что такое some of the common data formats used for service communication in SOA?</summary>
 
-### What are some of the common data formats used for service communication in SOA?
+### Что такое some of the common data formats used for service communication in SOA?
 
 **Definition:**
 
@@ -318,9 +318,9 @@ POST /checkout
 </details>
 
 <details>
-<summary>Provide an example of how you would refactor a monolithic application into a SOA-based architecture.</summary>
+<summary>Приведите an example of how you would refactor a monolithic application into a SOA-BASEd architecture.</summary>
 
-### Provide an example of how you would refactor a monolithic application into a SOA-based architecture.
+### Приведите an example of how you would refactor a monolithic application into a SOA-BASEd architecture.
 
 **Definition:**
 
@@ -344,9 +344,9 @@ POST /checkout
 ### Implementing SOA
 
 <details>
-<summary>What is an Enterprise Service Bus (ESB) and how does it support SOA?</summary>
+<summary>Что такое Enterprise Service Bus (ESB) and how does it support SOA?</summary>
 
-### What is an Enterprise Service Bus (ESB) and how does it support SOA?
+### Что такое Enterprise Service Bus (ESB) and how does it support SOA?
 
 **Definition:**
 
@@ -367,9 +367,9 @@ POST /checkout
 </details>
 
 <details>
-<summary>How would you handle transaction management in a SOA system?</summary>
+<summary>Как бы вы handle transaction management in a SOA system?</summary>
 
-### How would you handle transaction management in a SOA system?
+### Как бы вы handle transaction management in a SOA system?
 
 **Definition:**
 
@@ -390,9 +390,9 @@ POST /checkout
 </details>
 
 <details>
-<summary>What strategies would you use to ensure high availability in a SOA deployment?</summary>
+<summary>Какие стратегии would you use to ensure high availability in a SOA deployment?</summary>
 
-### What strategies would you use to ensure high availability in a SOA deployment?
+### Какие стратегии would you use to ensure high availability in a SOA deployment?
 
 **Definition:**
 
@@ -416,9 +416,9 @@ POST /checkout
 </details>
 
 <details>
-<summary>What is WS-Security and how does it relate to SOA?</summary>
+<summary>Что такое WS-Security and how does it relate to SOA?</summary>
 
-### What is WS-Security and how does it relate to SOA?
+### Что такое WS-Security and how does it relate to SOA?
 
 **Definition:**
 
@@ -441,9 +441,9 @@ WS-Security — стандарт OASIS, который добавляет SOAP-�
 ### SOA Standards and Protocols
 
 <details>
-<summary>What are the benefits of using standard protocols like SOAP or REST in SOA?</summary>
+<summary>Что такое the benefits of using standard protocols like SOAP or REST in SOA?</summary>
 
-### What are the benefits of using standard protocols like SOAP or REST in SOA?
+### Что такое the benefits of using standard protocols like SOAP or REST in SOA?
 
 **Definition:**
 
@@ -465,9 +465,9 @@ WS-Security — стандарт OASIS, который добавляет SOAP-�
 </details>
 
 <details>
-<summary>Explain the role of WSDL in SOA.</summary>
+<summary>Объясните the role of WSDL in SOA.</summary>
 
-### Explain the role of WSDL in SOA.
+### Объясните the role of WSDL in SOA.
 
 **Definition:**
 
@@ -489,9 +489,9 @@ WSDL 2.0 — язык XML для описания веб-сервиса из а�
 </details>
 
 <details>
-<summary>How does UDDI facilitate service discovery in SOA?</summary>
+<summary>Как UDDI facilitate service discovery in SOA?</summary>
 
-### How does UDDI facilitate service discovery in SOA?
+### Как UDDI facilitate service discovery in SOA?
 
 **Definition:**
 
@@ -514,9 +514,9 @@ WSDL 2.0 — язык XML для описания веб-сервиса из а�
 </details>
 
 <details>
-<summary>What is the significance of OASIS in the context of SOA?</summary>
+<summary>Что такое the significance of OASIS in the context of SOA?</summary>
 
-### What is the significance of OASIS in the context of SOA?
+### Что такое the significance of OASIS in the context of SOA?
 
 **Definition:**
 
@@ -540,9 +540,9 @@ OASIS публикует стандарты поверх сообщения SOAP
 ### Securing SOA Applications
 
 <details>
-<summary>What are the main security concerns in a SOA environment?</summary>
+<summary>Что такое the main security concerns in a SOA environment?</summary>
 
-### What are the main security concerns in a SOA environment?
+### Что такое the main security concerns in a SOA environment?
 
 **Definition:**
 
@@ -565,9 +565,9 @@ OASIS публикует стандарты поверх сообщения SOAP
 </details>
 
 <details>
-<summary>How would you approach identity management in SOA?</summary>
+<summary>Как бы вы approach identity management in SOA?</summary>
 
-### How would you approach identity management in SOA?
+### Как бы вы approach identity management in SOA?
 
 **Definition:**
 
@@ -590,9 +590,9 @@ OASIS публикует стандарты поверх сообщения SOAP
 </details>
 
 <details>
-<summary>Can you explain the concept of security tokens in SOA?</summary>
+<summary>Можете ли вы explain the concept of security tokens in SOA?</summary>
 
-### Can you explain the concept of security tokens in SOA?
+### Можете ли вы explain the concept of security tokens in SOA?
 
 **Definition:**
 
@@ -625,9 +625,9 @@ SOAP envelope
 ### SOA Testing
 
 <details>
-<summary>Describe your approach to testing services in SOA.</summary>
+<summary>Опишите your approach to testing services in SOA.</summary>
 
-### Describe your approach to testing services in SOA.
+### Опишите your approach to testing services in SOA.
 
 **Definition:**
 
@@ -650,9 +650,9 @@ SOAP envelope
 </details>
 
 <details>
-<summary>What are the challenges of testing in a SOA-based system compared to a monolithic one?</summary>
+<summary>Что такое the challenges of testing in a SOA-BASEd system compared to a monolithic one?</summary>
 
-### What are the challenges of testing in a SOA-based system compared to a monolithic one?
+### Что такое the challenges of testing in a SOA-BASEd system compared to a monolithic one?
 
 **Definition:**
 
@@ -675,9 +675,9 @@ SOAP envelope
 </details>
 
 <details>
-<summary>How would you perform load testing for an SOA service?</summary>
+<summary>Как бы вы perform load testing for an SOA service?</summary>
 
-### How would you perform load testing for an SOA service?
+### Как бы вы perform load testing for an SOA service?
 
 **Definition:**
 
@@ -703,9 +703,9 @@ SOAP envelope
 ### Performance and Scalability
 
 <details>
-<summary>How would you monitor the performance of services in SOA?</summary>
+<summary>Как бы вы monitor the performance of services in SOA?</summary>
 
-### How would you monitor the performance of services in SOA?
+### Как бы вы monitor the performance of services in SOA?
 
 **Definition:**
 
@@ -729,9 +729,9 @@ SOAP envelope
 </details>
 
 <details>
-<summary>Describe a strategy to scale a service in a SOA system.</summary>
+<summary>Опишите a strategy to scale a service in a SOA system.</summary>
 
-### Describe a strategy to scale a service in a SOA system.
+### Опишите a strategy to scale a service in a SOA system.
 
 **Definition:**
 
@@ -755,9 +755,9 @@ SOAP envelope
 </details>
 
 <details>
-<summary>How do you manage service dependencies to avoid performance bottlenecks in SOA?</summary>
+<summary>Как you manage service dependencies to avoid performance boTTLenecks in SOA?</summary>
 
-### How do you manage service dependencies to avoid performance bottlenecks in SOA?
+### Как you manage service dependencies to avoid performance boTTLenecks in SOA?
 
 **Definition:**
 
@@ -783,9 +783,9 @@ SOAP envelope
 ### SOA Governance
 
 <details>
-<summary>What does governance mean in the context of SOA?</summary>
+<summary>Что означает Governance mean in the context of SOA?</summary>
 
-### What does governance mean in the context of SOA?
+### Что означает Governance mean in the context of SOA?
 
 **Definition:**
 
@@ -808,9 +808,9 @@ SOAP envelope
 </details>
 
 <details>
-<summary>Describe a policy you might enforce as part of SOA governance.</summary>
+<summary>Опишите a policy you might enforce as part of SOA Governance.</summary>
 
-### Describe a policy you might enforce as part of SOA governance.
+### Опишите a policy you might enforce as part of SOA Governance.
 
 **Definition:**
 
@@ -832,9 +832,9 @@ SOAP envelope
 </details>
 
 <details>
-<summary>Can you explain the purpose of a service level agreement (SLA) in a SOA context?</summary>
+<summary>Можете ли вы explain the puRPOse of a service level agreement (SLA) in a SOA context?</summary>
 
-### Can you explain the purpose of a service level agreement (SLA) in a SOA context?
+### Можете ли вы explain the puRPOse of a service level agreement (SLA) in a SOA context?
 
 **Definition:**
 
@@ -859,9 +859,9 @@ SLA называет границу ответа, которую вызываю�
 ### Troubleshooting and Maintenance
 
 <details>
-<summary>What steps would you take to troubleshoot a failing service in a SOA architecture?</summary>
+<summary>Какие шаги вы предпримете для troubleshooting failing service в SOA architecture?</summary>
 
-### What steps would you take to troubleshoot a failing service in a SOA architecture?
+### Какие шаги вы предпримете для troubleshooting failing service в SOA architecture?
 
 **Definition:**
 
@@ -885,9 +885,9 @@ SLA называет границу ответа, которую вызываю�
 </details>
 
 <details>
-<summary>How do you manage and maintain services throughout their lifecycle in a SOA infrastructure?</summary>
+<summary>Как you manage and maintain services throughout their lifecycle in a SOA infrastructure?</summary>
 
-### How do you manage and maintain services throughout their lifecycle in a SOA infrastructure?
+### Как you manage and maintain services throughout their lifecycle in a SOA infrastructure?
 
 **Definition:**
 

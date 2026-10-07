@@ -127,7 +127,6 @@ Both are enabled by `"strict": true` in `tsconfig.json`.
 | Aspect  | Detail                                                   |
 | ------- | -------------------------------------------------------- |
 | Summary | Both are enabled by `"strict": true` in `tsconfig.json`. |
-| ---     |
 
 **`noImplicitAny`** — when TS cannot infer a type, it would default to `any`. This flag makes that an **error**, forcing explicit annotations. Prevents silent loss of type safety in function parameters and untyped variables.
 

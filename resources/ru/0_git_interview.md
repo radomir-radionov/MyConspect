@@ -21,9 +21,9 @@
 ### Git Fundamentals
 
 <details>
-<summary>What is Git and why is it used?</summary>
+<summary>Что такое Git and why is it used?</summary>
 
-### What is Git and why is it used?
+### Что такое Git and why is it used?
 
 **Definition:**
 
@@ -67,9 +67,9 @@ Origin — источник объектов коммитов (хранилищ�
 </details>
 
 <details>
-<summary>How does Git differ from other version control systems (VCS)?</summary>
+<summary>Как Git differ from other version control systems (VCS)?</summary>
 
-### How does Git differ from other version control systems (VCS)?
+### Как Git differ from other version control systems (VCS)?
 
 **Definition:**
 
@@ -110,9 +110,9 @@ Git даёт множество преимуществ перед традици
 </details>
 
 <details>
-<summary>What is the difference between Git and GitHub?</summary>
+<summary>Что такое the difference between Git and GitHub?</summary>
 
-### What is the difference between Git and GitHub?
+### Что такое the difference between Git and GitHub?
 
 **Definition:**
 
@@ -141,9 +141,9 @@ GitHub, со своей стороны, — веб-платформа, кото�
 </details>
 
 <details>
-<summary>What is a repository in Git?</summary>
+<summary>Что такое repository in Git?</summary>
 
-### What is a repository in Git?
+### Что такое repository in Git?
 
 **Definition:**
 
@@ -196,9 +196,9 @@ working_tree = {
 </details>
 
 <details>
-<summary>Explain the concept of a commit in Git.</summary>
+<summary>Объясните the concept of a commit in Git.</summary>
 
-### Explain the concept of a commit in Git.
+### Объясните the concept of a commit in Git.
 
 **Definition:**
 
@@ -250,9 +250,9 @@ git log
 </details>
 
 <details>
-<summary>What is the difference between a working directory, staging area, and repository in Git?</summary>
+<summary>Что такое the difference between a working directory, staging area, and repository in Git?</summary>
 
-### What is the difference between a working directory, staging area, and repository in Git?
+### Что такое the difference between a working directory, staging area, and repository in Git?
 
 **Definition:**
 
@@ -286,9 +286,9 @@ Git отличает трёхъярусная архитектура из так
 </details>
 
 <details>
-<summary>Define branching in Git and its importance.</summary>
+<summary>Определите branching in Git and its importance.</summary>
 
-### Define branching in Git and its importance.
+### Определите branching in Git and its importance.
 
 **Definition:**
 
@@ -319,9 +319,9 @@ Git отличает трёхъярусная архитектура из так
 </details>
 
 <details>
-<summary>What is a HEAD in Git?</summary>
+<summary>Что такое HEAD in Git?</summary>
 
-### What is a HEAD in Git?
+### Что такое HEAD in Git?
 
 **Definition:**
 
@@ -363,9 +363,9 @@ git log --oneline --decorate
 </details>
 
 <details>
-<summary>What does the clone operation in Git do?</summary>
+<summary>Что означает the clone operation in Git do?</summary>
 
-### What does the clone operation in Git do?
+### Что означает the clone operation in Git do?
 
 **Definition:**
 
@@ -417,9 +417,9 @@ git remote -v
 </details>
 
 <details>
-<summary>How does Git store information?</summary>
+<summary>Как Git store information?</summary>
 
-### How does Git store information?
+### Как Git store information?
 
 **Definition:**
 
@@ -466,9 +466,9 @@ Git допускает для объектов механизм «lazy write». 
 ### Basic Git Commands
 
 <details>
-<summary>How do you initialize a new Git repository?</summary>
+<summary>Как you initialize a new Git repository?</summary>
 
-### How do you initialize a new Git repository?
+### Как you initialize a new Git repository?
 
 **Definition:**
 
@@ -541,9 +541,9 @@ credentials.txt
 </details>
 
 <details>
-<summary>Explain the purpose of the git status command.</summary>
+<summary>Объясните the puRPOse of the Git status command.</summary>
 
-### Explain the purpose of the git status command.
+### Объясните the puRPOse of the Git status command.
 
 **Definition:**
 
@@ -622,9 +622,9 @@ and have 4 and 2 different commits each, respectively.
 </details>
 
 <details>
-<summary>What does the git add command do?</summary>
+<summary>Что означает the Git add command do?</summary>
 
-### What does the git add command do?
+### Что означает the Git add command do?
 
 **Definition:**
 
@@ -673,9 +673,9 @@ print("This line will be part of the next commit.")
 </details>
 
 <details>
-<summary>How do you create a commit in Git?</summary>
+<summary>Как you create a commit in Git?</summary>
 
-### How do you create a commit in Git?
+### Как you create a commit in Git?
 
 **Definition:**
 
@@ -770,9 +770,9 @@ touch .gitignore
 </details>
 
 <details>
-<summary>What information is contained in a commit object in Git?</summary>
+<summary>Какая информация содержится в commit object в Git?</summary>
 
-### What information is contained in a commit object in Git?
+### Какая информация содержится в commit object в Git?
 
 **Definition:**
 
@@ -800,9 +800,9 @@ touch .gitignore
 </details>
 
 <details>
-<summary>How does git push differ from git fetch?</summary>
+<summary>Как Git push differ from Git fetch?</summary>
 
-### How does git push differ from git fetch?
+### Как Git push differ from Git fetch?
 
 **Definition:**
 
@@ -831,9 +831,9 @@ git push --set-upstream origin main
 </details>
 
 <details>
-<summary>Explain the purpose of the git pull command.</summary>
+<summary>Объясните the puRPOse of the Git pull command.</summary>
 
-### Explain the purpose of the git pull command.
+### Объясните the puRPOse of the Git pull command.
 
 **Definition:**
 
@@ -862,9 +862,9 @@ git pull --rebase origin main
 </details>
 
 <details>
-<summary>Describe the use of the git branch command.</summary>
+<summary>Опишите the use of the Git branch command.</summary>
 
-### Describe the use of the git branch command.
+### Опишите the use of the Git branch command.
 
 **Definition:**
 
@@ -889,9 +889,9 @@ git branch -u origin/main
 </details>
 
 <details>
-<summary>How do you switch branches using git checkout?</summary>
+<summary>Как you switch branches using Git checkout?</summary>
 
-### How do you switch branches using git checkout?
+### Как you switch branches using Git checkout?
 
 **Definition:**
 
@@ -921,9 +921,9 @@ git switch -c feature/login
 </details>
 
 <details>
-<summary>What is the purpose of git merge?</summary>
+<summary>Что такое the puRPOse of Git merge?</summary>
 
-### What is the purpose of git merge?
+### Что такое the puRPOse of Git merge?
 
 **Definition:**
 
@@ -950,9 +950,9 @@ git merge --abort
 ### Git Branching and Merging
 
 <details>
-<summary>Explain the Git workflow you use most frequently.</summary>
+<summary>Объясните the Git workflow you use most frequently.</summary>
 
-### Explain the Git workflow you use most frequently.
+### Объясните the Git workflow you use most frequently.
 
 **Definition:**
 
@@ -983,9 +983,9 @@ git push --set-upstream origin feature/login
 </details>
 
 <details>
-<summary>Can you describe the process of creating a new branch and merging it back into the main branch?</summary>
+<summary>Можете ли вы describe the process of creating a new branch and merging it back into the main branch?</summary>
 
-### Can you describe the process of creating a new branch and merging it back into the main branch?
+### Можете ли вы describe the process of creating a new branch and merging it back into the main branch?
 
 **Definition:**
 
@@ -1013,9 +1013,9 @@ git merge feature/login
 </details>
 
 <details>
-<summary>What is a merge conflict in Git and how do you resolve it?</summary>
+<summary>Что такое merge conflict in Git and how do you resolve it?</summary>
 
-### What is a merge conflict in Git and how do you resolve it?
+### Что такое merge conflict in Git and how do you resolve it?
 
 **Definition:**
 
@@ -1040,9 +1040,9 @@ git merge --continue
 </details>
 
 <details>
-<summary>What is a fast-forward merge in Git?</summary>
+<summary>Что такое fast-forward merge in Git?</summary>
 
-### What is a fast-forward merge in Git?
+### Что такое fast-forward merge in Git?
 
 **Definition:**
 
@@ -1066,9 +1066,9 @@ git merge --no-ff topic
 </details>
 
 <details>
-<summary>Define a three-way merge.</summary>
+<summary>Определите a three-way merge.</summary>
 
-### Define a three-way merge.
+### Определите a three-way merge.
 
 **Definition:**
 
@@ -1094,9 +1094,9 @@ git show :3:filename
 </details>
 
 <details>
-<summary>How do you rebase a branch in Git?</summary>
+<summary>Как you reBASE a branch in Git?</summary>
 
-### How do you rebase a branch in Git?
+### Как you reBASE a branch in Git?
 
 **Definition:**
 
@@ -1125,9 +1125,9 @@ git rebase --abort
 </details>
 
 <details>
-<summary>Explain the pros and cons of rebasing vs. merging.</summary>
+<summary>Объясните the pros and cons of rebasing vs. merging.</summary>
 
-### Explain the pros and cons of rebasing vs. merging.
+### Объясните the pros and cons of rebasing vs. merging.
 
 **Definition:**
 
@@ -1164,9 +1164,9 @@ git rebase -i HEAD~5
 </details>
 
 <details>
-<summary>What is the purpose of git tag?</summary>
+<summary>Что такое the puRPOse of Git tag?</summary>
 
-### What is the purpose of git tag?
+### Что такое the puRPOse of Git tag?
 
 **Definition:**
 
@@ -1191,9 +1191,9 @@ git tag -d v1.2.0
 </details>
 
 <details>
-<summary>How do you revert a commit that has already been pushed to the remote repository?</summary>
+<summary>Как you revert a commit that has already been pushed to the remote repository?</summary>
 
-### How do you revert a commit that has already been pushed to the remote repository?
+### Как you revert a commit that has already been pushed to the remote repository?
 
 **Definition:**
 
@@ -1222,9 +1222,9 @@ git push origin main
 </details>
 
 <details>
-<summary>What is the significance of the master branch in Git?</summary>
+<summary>Что такое the significance of the master branch in Git?</summary>
 
-### What is the significance of the master branch in Git?
+### Что такое the significance of the master branch in Git?
 
 **Definition:**
 
@@ -1252,9 +1252,9 @@ git config --global init.defaultBranch main
 ### Git Workflows and Patterns
 
 <details>
-<summary>What is a distributed version control system and how does Git function as one?</summary>
+<summary>Что такое distributed version control system and how does Git function as one?</summary>
 
-### What is a distributed version control system and how does Git function as one?
+### Что такое distributed version control system and how does Git function as one?
 
 **Definition:**
 
@@ -1280,9 +1280,9 @@ git push origin main
 </details>
 
 <details>
-<summary>Describe the Git feature branch workflow.</summary>
+<summary>Опишите the Git feature branch workflow.</summary>
 
-### Describe the Git feature branch workflow.
+### Опишите the Git feature branch workflow.
 
 **Definition:**
 
@@ -1309,9 +1309,9 @@ git merge feature/login
 </details>
 
 <details>
-<summary>Explain the Gitflow workflow.</summary>
+<summary>Объясните the Gitflow workflow.</summary>
 
-### Explain the Gitflow workflow.
+### Объясните the Gitflow workflow.
 
 **Definition:**
 
@@ -1343,9 +1343,9 @@ git tag -a v1.2.0 -m "Release 1.2.0"
 </details>
 
 <details>
-<summary>What is a Forking workflow in Git?</summary>
+<summary>Что такое Forking workflow in Git?</summary>
 
-### What is a Forking workflow in Git?
+### Что такое Forking workflow in Git?
 
 **Definition:**
 
@@ -1371,9 +1371,9 @@ git request-pull origin/main <your-public-url>
 </details>
 
 <details>
-<summary>Discuss the Centralized workflow in Git.</summary>
+<summary>Обсудите the Centralized workflow in Git.</summary>
 
-### Discuss the Centralized workflow in Git.
+### Обсудите the Centralized workflow in Git.
 
 **Definition:**
 
@@ -1407,9 +1407,9 @@ git init --bare project.git
 ### Git Repository Management
 
 <details>
-<summary>Explain what a remote repository is in Git.</summary>
+<summary>Объясните what a remote repository is in Git.</summary>
 
-### Explain what a remote repository is in Git.
+### Объясните what a remote repository is in Git.
 
 **Definition:**
 
@@ -1435,9 +1435,9 @@ git push origin main
 </details>
 
 <details>
-<summary>Describe how you would change a Git remote URL.</summary>
+<summary>Опишите how you would change a Git remote URL.</summary>
 
-### Describe how you would change a Git remote URL.
+### Опишите how you would change a Git remote URL.
 
 **Definition:**
 
@@ -1460,9 +1460,9 @@ git remote -v
 </details>
 
 <details>
-<summary>How do you synchronize your local repository with a remote repository?</summary>
+<summary>Как you synchronize your local repository with a remote repository?</summary>
 
-### How do you synchronize your local repository with a remote repository?
+### Как you synchronize your local repository with a remote repository?
 
 **Definition:**
 
@@ -1488,9 +1488,9 @@ git push --set-upstream origin feature/login
 </details>
 
 <details>
-<summary>How do you clean up unused branches in your local and remote repository?</summary>
+<summary>Как you clean up unused branches in your local and remote repository?</summary>
 
-### How do you clean up unused branches in your local and remote repository?
+### Как you clean up unused branches in your local and remote repository?
 
 **Definition:**
 
@@ -1518,9 +1518,9 @@ git remote prune origin
 </details>
 
 <details>
-<summary>Describe the steps to resolve a merge conflict in Git.</summary>
+<summary>Опишите the steps to resolve a merge conflict in Git.</summary>
 
-### Describe the steps to resolve a merge conflict in Git.
+### Опишите the steps to resolve a merge conflict in Git.
 
 **Definition:**
 
@@ -1547,9 +1547,9 @@ git merge --continue
 ### Git Stashing and Cleaning
 
 <details>
-<summary>What is git stash used for?</summary>
+<summary>Что такое Git stash used for?</summary>
 
-### What is git stash used for?
+### Что такое Git stash used for?
 
 **Definition:**
 
@@ -1577,9 +1577,9 @@ git stash pop
 </details>
 
 <details>
-<summary>How do you view stashed changes in Git?</summary>
+<summary>Как you view stashed changes in Git?</summary>
 
-### How do you view stashed changes in Git?
+### Как you view stashed changes in Git?
 
 **Definition:**
 
@@ -1603,9 +1603,9 @@ git stash show -u stash@{1}
 </details>
 
 <details>
-<summary>Can you apply a stash without removing it from the stash list?</summary>
+<summary>Можете ли вы apply a stash without removing it from the stash list?</summary>
 
-### Can you apply a stash without removing it from the stash list?
+### Можете ли вы apply a stash without removing it from the stash list?
 
 **Definition:**
 
@@ -1633,9 +1633,9 @@ git stash pop
 </details>
 
 <details>
-<summary>What does the git clean command do?</summary>
+<summary>Что означает the Git clean command do?</summary>
 
-### What does the git clean command do?
+### Что означает the Git clean command do?
 
 **Definition:**
 
@@ -1662,9 +1662,9 @@ git clean -f -d
 </details>
 
 <details>
-<summary>How do you remove a file from the working directory without deleting it from the repository?</summary>
+<summary>Как you remove a file from the working directory without deleting it from the repository?</summary>
 
-### How do you remove a file from the working directory without deleting it from the repository?
+### Как you remove a file from the working directory without deleting it from the repository?
 
 **Definition:**
 
@@ -1692,9 +1692,9 @@ git restore --worktree --source=HEAD -- file.txt
 ### Git Logging and History
 
 <details>
-<summary>How do you view the commit history in Git?</summary>
+<summary>Как you view the commit history in Git?</summary>
 
-### How do you view the commit history in Git?
+### Как you view the commit history in Git?
 
 **Definition:**
 
@@ -1721,9 +1721,9 @@ git show
 </details>
 
 <details>
-<summary>Explain how to find a commit by a specific author in Git.</summary>
+<summary>Объясните how to find a commit by a specific author in Git.</summary>
 
-### Explain how to find a commit by a specific author in Git.
+### Объясните how to find a commit by a specific author in Git.
 
 **Definition:**
 
@@ -1746,9 +1746,9 @@ git log --committer=<pattern>
 </details>
 
 <details>
-<summary>How do you view the changes introduced in a commit?</summary>
+<summary>Как you view the changes introduced in a commit?</summary>
 
-### How do you view the changes introduced in a commit?
+### Как you view the changes introduced in a commit?
 
 **Definition:**
 
@@ -1773,9 +1773,9 @@ git log -p -1 <commit>
 </details>
 
 <details>
-<summary>Can you list the files changed in a specific commit?</summary>
+<summary>Можете ли вы list the files changed in a specific commit?</summary>
 
-### Can you list the files changed in a specific commit?
+### Можете ли вы list the files changed in a specific commit?
 
 **Definition:**
 
@@ -1799,9 +1799,9 @@ git diff-tree --no-commit-id --name-only -r <commit>
 </details>
 
 <details>
-<summary>What does the git blame command do?</summary>
+<summary>Что означает the Git blame command do?</summary>
 
-### What does the git blame command do?
+### Что означает the Git blame command do?
 
 **Definition:**
 
@@ -1827,9 +1827,9 @@ git blame -L <start>,<end> <file>
 ### Git Tagging and Releases
 
 <details>
-<summary>What are Git tags and how are they different from branches?</summary>
+<summary>Что такое Git tags and how are they different from branches?</summary>
 
-### What are Git tags and how are they different from branches?
+### Что такое Git tags and how are they different from branches?
 
 **Definition:**
 
@@ -1854,9 +1854,9 @@ git switch main
 </details>
 
 <details>
-<summary>How do you create, delete, and push tags?</summary>
+<summary>Как you create, delete, and push tags?</summary>
 
-### How do you create, delete, and push tags?
+### Как you create, delete, and push tags?
 
 **Definition:**
 
@@ -1882,9 +1882,9 @@ git push origin --delete v1.2.0
 </details>
 
 <details>
-<summary>What is semantic versioning in the context of Git tagging?</summary>
+<summary>Что такое semantic versioning in the context of Git tagging?</summary>
 
-### What is semantic versioning in the context of Git tagging?
+### Что такое semantic versioning in the context of Git tagging?
 
 **Definition:**
 
@@ -1909,9 +1909,9 @@ git merge --ff-only v1.2.0
 </details>
 
 <details>
-<summary>How would you checkout to a specific tag?</summary>
+<summary>Как бы вы checkout to a specific tag?</summary>
 
-### How would you checkout to a specific tag?
+### Как бы вы checkout to a specific tag?
 
 **Definition:**
 
@@ -1940,9 +1940,9 @@ git switch -c maint-1.2 v1.2.0
 </details>
 
 <details>
-<summary>Describe how to create a release from a tag.</summary>
+<summary>Опишите how to create a release from a tag.</summary>
 
-### Describe how to create a release from a tag.
+### Опишите how to create a release from a tag.
 
 **Definition:**
 
@@ -1971,9 +1971,9 @@ git show v1.2.0
 ### Advanced Git Operations
 
 <details>
-<summary>What is a git submodule and when would you use one?</summary>
+<summary>Что такое Git submodule and when would you use one?</summary>
 
-### What is a git submodule and when would you use one?
+### Что такое Git submodule and when would you use one?
 
 **Definition:**
 
@@ -2002,9 +2002,9 @@ git submodule update
 </details>
 
 <details>
-<summary>Explain the purpose of a git hook.</summary>
+<summary>Объясните the puRPOse of a Git hook.</summary>
 
-### Explain the purpose of a git hook.
+### Объясните the puRPOse of a Git hook.
 
 **Definition:**
 
@@ -2028,9 +2028,9 @@ git config core.hooksPath .githooks
 </details>
 
 <details>
-<summary>How do you perform a squash commit in Git?</summary>
+<summary>Как you perform a squash commit in Git?</summary>
 
-### How do you perform a squash commit in Git?
+### Как you perform a squash commit in Git?
 
 **Definition:**
 
@@ -2059,9 +2059,9 @@ git commit -m "Add login"
 </details>
 
 <details>
-<summary>What is a git bisect and how do you use it?</summary>
+<summary>Что такое Git bisect and how do you use it?</summary>
 
-### What is a git bisect and how do you use it?
+### Что такое Git bisect and how do you use it?
 
 **Definition:**
 
@@ -2086,9 +2086,9 @@ git bisect reset
 </details>
 
 <details>
-<summary>How do you manually resolve a conflict during a git merge?</summary>
+<summary>Как you manually resolve a conflict during a Git merge?</summary>
 
-### How do you manually resolve a conflict during a git merge?
+### Как you manually resolve a conflict during a Git merge?
 
 **Definition:**
 
@@ -2117,9 +2117,9 @@ git merge --continue
 ### Git Configuration and Customization
 
 <details>
-<summary>How do you set your username and email in Git?</summary>
+<summary>Как you set your username and email in Git?</summary>
 
-### How do you set your username and email in Git?
+### Как you set your username and email in Git?
 
 **Definition:**
 
@@ -2142,9 +2142,9 @@ git config --global user.email "ada@example.com"
 </details>
 
 <details>
-<summary>What is the scope of Git configuration files?</summary>
+<summary>Что такое the scope of Git configuration files?</summary>
 
-### What is the scope of Git configuration files?
+### Что такое the scope of Git configuration files?
 
 **Definition:**
 
@@ -2168,9 +2168,9 @@ git config --local --list
 </details>
 
 <details>
-<summary>How can you create aliases for Git commands?</summary>
+<summary>Как you create aliases for Git commands?</summary>
 
-### How can you create aliases for Git commands?
+### Как you create aliases for Git commands?
 
 **Definition:**
 
@@ -2194,9 +2194,9 @@ git st
 </details>
 
 <details>
-<summary>What is the purpose of a .gitignore file?</summary>
+<summary>Что такое the puRPOse of a .Gitignore file?</summary>
 
-### What is the purpose of a .gitignore file?
+### Что такое the puRPOse of a .Gitignore file?
 
 **Definition:**
 
@@ -2219,9 +2219,9 @@ git status
 </details>
 
 <details>
-<summary>How would you ignore files globally?</summary>
+<summary>Как бы вы ignore files globally?</summary>
 
-### How would you ignore files globally?
+### Как бы вы ignore files globally?
 
 **Definition:**
 
@@ -2247,9 +2247,9 @@ git config --global core.excludesFile ~/.config/git/ignore
 ### Git Security
 
 <details>
-<summary>How do you ensure your commits are signed with your GPG key?</summary>
+<summary>Как you ensure your commits are signed with your GPG key?</summary>
 
-### How do you ensure your commits are signed with your GPG key?
+### Как you ensure your commits are signed with your GPG key?
 
 **Definition:**
 
@@ -2275,9 +2275,9 @@ git commit -S -m "Sign this commit"
 </details>
 
 <details>
-<summary>What are some common security practices for Git repositories?</summary>
+<summary>Что такое some common security practices for Git repositories?</summary>
 
-### What are some common security practices for Git repositories?
+### Что такое some common security practices for Git repositories?
 
 **Definition:**
 
@@ -2304,9 +2304,9 @@ git tag -v v1.2.0
 </details>
 
 <details>
-<summary>How do you encrypt sensitive data in a Git repository?</summary>
+<summary>Как you encrypt sensitive data in a Git repository?</summary>
 
-### How do you encrypt sensitive data in a Git repository?
+### Как you encrypt sensitive data in a Git repository?
 
 **Definition:**
 
@@ -2332,9 +2332,9 @@ git rm --cached .env
 </details>
 
 <details>
-<summary>What are some strategies for credential storage in Git?</summary>
+<summary>Что такое some strategies for credential storage in Git?</summary>
 
-### What are some strategies for credential storage in Git?
+### Что такое some strategies for credential storage in Git?
 
 **Definition:**
 
@@ -2362,9 +2362,9 @@ git config --global credential.helper store
 </details>
 
 <details>
-<summary>How would you revoke access to a Git repository?</summary>
+<summary>Как бы вы revoke access to a Git repository?</summary>
 
-### How would you revoke access to a Git repository?
+### Как бы вы revoke access to a Git repository?
 
 **Definition:**
 
@@ -2391,9 +2391,9 @@ printf '%s\n' protocol=https host=example.com path=foo.git '' | git credential r
 ### Troubleshooting and Recovery
 
 <details>
-<summary>How do you find and restore a deleted file in a Git repository?</summary>
+<summary>Как you find and RESTore a deleted file in a Git repository?</summary>
 
-### How do you find and restore a deleted file in a Git repository?
+### Как you find and RESTore a deleted file in a Git repository?
 
 **Definition:**
 
@@ -2418,9 +2418,9 @@ git restore --source=<commit> -- path/to/file
 </details>
 
 <details>
-<summary>What steps would you take if you accidentally committed sensitive data?</summary>
+<summary>Какие шаги вы предпримете, если случайно закоммитили sensitive data?</summary>
 
-### What steps would you take if you accidentally committed sensitive data?
+### Какие шаги вы предпримете, если случайно закоммитили sensitive data?
 
 **Definition:**
 
@@ -2449,9 +2449,9 @@ git commit -m "Stop tracking secret.txt"
 </details>
 
 <details>
-<summary>How do you handle detached HEAD state in Git?</summary>
+<summary>Как you handle detached HEAD state in Git?</summary>
 
-### How do you handle detached HEAD state in Git?
+### Как you handle detached HEAD state in Git?
 
 **Definition:**
 
@@ -2480,9 +2480,9 @@ git switch -c keep-this
 </details>
 
 <details>
-<summary>Explain how to recover a dropped stash in Git.</summary>
+<summary>Объясните how to recover a dropped stash in Git.</summary>
 
-### Explain how to recover a dropped stash in Git.
+### Объясните how to recover a dropped stash in Git.
 
 **Definition:**
 
@@ -2507,9 +2507,9 @@ xargs git log --merges --no-walk --grep=WIP
 </details>
 
 <details>
-<summary>How do you amend the message of the last commit?</summary>
+<summary>Как you amend the message of the last commit?</summary>
 
-### How do you amend the message of the last commit?
+### Как you amend the message of the last commit?
 
 **Definition:**
 
@@ -2540,9 +2540,9 @@ git commit --amend -m "Corrected message"
 ### Git Collaboration
 
 <details>
-<summary>What is a pull request and how does it work?</summary>
+<summary>Что такое pull request and how does it work?</summary>
 
-### What is a pull request and how does it work?
+### Что такое pull request and how does it work?
 
 **Definition:**
 
@@ -2566,9 +2566,9 @@ git request-pull -p origin/main <URL>
 </details>
 
 <details>
-<summary>How do you update a pull request?</summary>
+<summary>Как you update a pull request?</summary>
 
-### How do you update a pull request?
+### Как you update a pull request?
 
 **Definition:**
 
@@ -2594,9 +2594,9 @@ git request-pull origin/main <URL>
 </details>
 
 <details>
-<summary>What is a code review process in Git?</summary>
+<summary>Что такое code review process in Git?</summary>
 
-### What is a code review process in Git?
+### Что такое code review process in Git?
 
 **Definition:**
 
@@ -2622,9 +2622,9 @@ git merge feature/login
 </details>
 
 <details>
-<summary>How do you handle a pull request conflict?</summary>
+<summary>Как you handle a pull request conflict?</summary>
 
-### How do you handle a pull request conflict?
+### Как you handle a pull request conflict?
 
 **Definition:**
 
@@ -2651,9 +2651,9 @@ git merge --continue
 </details>
 
 <details>
-<summary>What is the difference between git pull and git fetch followed by git merge?</summary>
+<summary>Что такое the difference between Git pull and Git fetch followed by Git merge?</summary>
 
-### What is the difference between git pull and git fetch followed by git merge?
+### Что такое the difference between Git pull and Git fetch followed by Git merge?
 
 **Definition:**
 
@@ -2687,9 +2687,9 @@ git pull --ff-only
 ### Git Performance and Scalability
 
 <details>
-<summary>How do you handle large files in Git?</summary>
+<summary>Как you handle large files in Git?</summary>
 
-### How do you handle large files in Git?
+### Как you handle large files in Git?
 
 **Definition:**
 
@@ -2717,9 +2717,9 @@ git clone --sparse <repository>
 </details>
 
 <details>
-<summary>What are some ways to improve the performance of a large Git repository?</summary>
+<summary>Что такое some ways to improve the performance of a large Git repository?</summary>
 
-### What are some ways to improve the performance of a large Git repository?
+### Что такое some ways to improve the performance of a large Git repository?
 
 **Definition:**
 
@@ -2745,9 +2745,9 @@ git clone --depth=1 <repository>
 </details>
 
 <details>
-<summary>What is a shallow clone in Git and when would you use it?</summary>
+<summary>Что такое SHAllow clone in Git and when would you use it?</summary>
 
-### What is a shallow clone in Git and when would you use it?
+### Что такое SHAllow clone in Git and when would you use it?
 
 **Definition:**
 
@@ -2775,9 +2775,9 @@ git fetch --unshallow
 </details>
 
 <details>
-<summary>How do you reduce the repository size in Git?</summary>
+<summary>Как you reduce the repository size in Git?</summary>
 
-### How do you reduce the repository size in Git?
+### Как you reduce the repository size in Git?
 
 **Definition:**
 
@@ -2802,9 +2802,9 @@ git clone --depth=1 <repository>
 </details>
 
 <details>
-<summary>Explain how Git LFS (Large File Storage) is used.</summary>
+<summary>Объясните how Git LFS (Large File Storage) is used.</summary>
 
-### Explain how Git LFS (Large File Storage) is used.
+### Объясните how Git LFS (Large File Storage) is used.
 
 **Definition:**
 
@@ -2835,9 +2835,9 @@ git lfs track
 ### Git in Continuous Integration/Continuous Deployment (CI/CD)
 
 <details>
-<summary>How does Git integrate with CI/CD pipelines?</summary>
+<summary>Как Git integrate with CI/CD pipelines?</summary>
 
-### How does Git integrate with CI/CD pipelines?
+### Как Git integrate with CI/CD pipelines?
 
 **Definition:**
 
@@ -2861,9 +2861,9 @@ git push --signed origin main
 </details>
 
 <details>
-<summary>Describe the process of automating deployments using Git.</summary>
+<summary>Опишите the process of automating deployments using Git.</summary>
 
-### Describe the process of automating deployments using Git.
+### Опишите the process of automating deployments using Git.
 
 **Definition:**
 
@@ -2886,9 +2886,9 @@ git push origin main
 </details>
 
 <details>
-<summary>How would you configure branch protection rules for a repository in the context of CI/CD?</summary>
+<summary>Как бы вы configure branch protection rules for a repository in the context of CI/CD?</summary>
 
-### How would you configure branch protection rules for a repository in the context of CI/CD?
+### Как бы вы configure branch protection rules for a repository in the context of CI/CD?
 
 **Definition:**
 
@@ -2915,9 +2915,9 @@ git push origin main
 </details>
 
 <details>
-<summary>What role do Git hooks play in automation?</summary>
+<summary>Какую роль do Git hooks play in automation?</summary>
 
-### What role do Git hooks play in automation?
+### Какую роль do Git hooks play in automation?
 
 **Definition:**
 
@@ -2942,9 +2942,9 @@ git commit --no-verify -m "Skip pre-commit"
 </details>
 
 <details>
-<summary>How can Git help in the rollback process of a failed deployment?</summary>
+<summary>Как Git help in the rollback process of a failed deployment?</summary>
 
-### How can Git help in the rollback process of a failed deployment?
+### Как Git help in the rollback process of a failed deployment?
 
 **Definition:**
 
@@ -2977,9 +2977,9 @@ git switch --detach v1.2.0
 ### Git with IDEs and Tools
 
 <details>
-<summary>How do you integrate Git with your preferred IDE?</summary>
+<summary>Как you integrate Git with your preferred IDE?</summary>
 
-### How do you integrate Git with your preferred IDE?
+### Как you integrate Git with your preferred IDE?
 
 **Definition:**
 
@@ -3005,9 +3005,9 @@ git mergetool -t vimdiff
 </details>
 
 <details>
-<summary>Discuss the pros and cons of using a GUI tool for Git versus the command line.</summary>
+<summary>Обсудите the pros and cons of using a GUI tool for Git versus the command line.</summary>
 
-### Discuss the pros and cons of using a GUI tool for Git versus the command line.
+### Обсудите the pros and cons of using a GUI tool for Git versus the command line.
 
 **Definition:**
 
@@ -3039,9 +3039,9 @@ git mergetool
 </details>
 
 <details>
-<summary>What plugins are commonly used with Git in development environments?</summary>
+<summary>Какие плагины обычно используют с Git в средах разработки?</summary>
 
-### What plugins are commonly used with Git in development environments?
+### Какие плагины обычно используют с Git в средах разработки?
 
 **Definition:**
 
@@ -3068,9 +3068,9 @@ git config --global alias.st status
 </details>
 
 <details>
-<summary>How do you resolve merge conflicts using a visual tool?</summary>
+<summary>Как you resolve merge conflicts using a visual tool?</summary>
 
-### How do you resolve merge conflicts using a visual tool?
+### Как you resolve merge conflicts using a visual tool?
 
 **Definition:**
 
@@ -3095,9 +3095,9 @@ git merge --continue
 </details>
 
 <details>
-<summary>What is the purpose of a Git bridge for version control systems?</summary>
+<summary>Что такое the puRPOse of a Git bridge for version control systems?</summary>
 
-### What is the purpose of a Git bridge for version control systems?
+### Что такое the puRPOse of a Git bridge for version control systems?
 
 **Definition:**
 
@@ -3123,9 +3123,9 @@ git svn fetch
 ### Advanced Git Topics
 
 <details>
-<summary>How do you handle large binary files in Git without using Git LFS?</summary>
+<summary>Как you handle large binary files in Git without using Git LFS?</summary>
 
-### How do you handle large binary files in Git without using Git LFS?
+### Как you handle large binary files in Git without using Git LFS?
 
 **Definition:**
 
@@ -3151,9 +3151,9 @@ git clone --filter=blob:limit=1m <repository>
 </details>
 
 <details>
-<summary>What is the purpose of the git rebase -i command?</summary>
+<summary>Что такое the puRPOse of the Git reBASE -i command?</summary>
 
-### What is the purpose of the git rebase -i command?
+### Что такое the puRPOse of the Git reBASE -i command?
 
 **Definition:**
 
@@ -3181,9 +3181,9 @@ git rebase --abort
 </details>
 
 <details>
-<summary>How would you set up a continuous backup process for Git repositories?</summary>
+<summary>Как бы вы set up a continuous backup process for Git repositories?</summary>
 
-### How would you set up a continuous backup process for Git repositories?
+### Как бы вы set up a continuous backup process for Git repositories?
 
 **Definition:**
 
@@ -3211,9 +3211,9 @@ git clone --mirror <repository> backup.git
 </details>
 
 <details>
-<summary>Explain the impact of case sensitivity in Git and how to manage it across different operating systems.</summary>
+<summary>Объясните the impact of case sensitivity in Git and how to manage it across different operating systems.</summary>
 
-### Explain the impact of case sensitivity in Git and how to manage it across different operating systems.
+### Объясните the impact of case sensitivity in Git and how to manage it across different operating systems.
 
 **Definition:**
 
@@ -3240,9 +3240,9 @@ git config core.precomposeUnicode true
 </details>
 
 <details>
-<summary>How do you maintain multiple versions of a product using Git branches for each version?</summary>
+<summary>Как you maintain multiple versions of a product using Git branches for each version?</summary>
 
-### How do you maintain multiple versions of a product using Git branches for each version?
+### Как you maintain multiple versions of a product using Git branches for each version?
 
 **Definition:**
 

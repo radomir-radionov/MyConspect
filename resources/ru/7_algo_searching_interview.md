@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Searching Algorithms](https://devinterview.i
 ### Basics of Searching
 
 <details>
-<summary>What is Linear Search (Sequential Search)?</summary>
+<summary>Что такое linear search (Sequential Search)?</summary>
 
-### What is Linear Search (Sequential Search)?
+### Что такое linear search (Sequential Search)?
 
 **Definition:**
 
@@ -47,9 +47,9 @@ return -1
 </details>
 
 <details>
-<summary>Explain what is Binary Search.</summary>
+<summary>Объясните, что такое binary search.</summary>
 
-### Explain what is Binary Search.
+### Объясните, что такое binary search.
 
 **Definition:**
 
@@ -76,9 +76,9 @@ while lo <= hi:
 </details>
 
 <details>
-<summary>Compare Binary Search vs. Linear Search.</summary>
+<summary>Сравните binary search и linear search.</summary>
 
-### Compare Binary Search vs. Linear Search.
+### Сравните binary search и linear search.
 
 **Definition:**
 
@@ -99,9 +99,9 @@ while lo <= hi:
 </details>
 
 <details>
-<summary>What characteristics of the data determine the choice of a searching algorithm?</summary>
+<summary>Какие характеристики данных определяют выбор searching algorithm?</summary>
 
-### What characteristics of the data determine the choice of a searching algorithm?
+### Какие характеристики данных определяют выбор searching algorithm?
 
 **Definition:**
 
@@ -125,9 +125,9 @@ while lo <= hi:
 ### Linear Search Variants and Complexity
 
 <details>
-<summary>Name some Optimization Techniques for Linear Search.</summary>
+<summary>Назовите some Optimization Techniques for linear search.</summary>
 
-### Name some Optimization Techniques for Linear Search.
+### Назовите some Optimization Techniques for linear search.
 
 **Definition:**
 
@@ -148,9 +148,9 @@ while lo <= hi:
 </details>
 
 <details>
-<summary>What is Sentinel Search?</summary>
+<summary>Что такое Sentinel Search?</summary>
 
-### What is Sentinel Search?
+### Что такое Sentinel Search?
 
 **Definition:**
 
@@ -176,9 +176,9 @@ return -1 if i == n else i
 </details>
 
 <details>
-<summary>What are the Drawbacks of Sentinel Search?</summary>
+<summary>Что такое the Drawbacks of Sentinel Search?</summary>
 
-### What are the Drawbacks of Sentinel Search?
+### Что такое the Drawbacks of Sentinel Search?
 
 **Definition:**
 
@@ -199,9 +199,9 @@ return -1 if i == n else i
 </details>
 
 <details>
-<summary>How does the presence of duplicates affect the performance of Linear Search?</summary>
+<summary>Как the presence of duplicates affect the performance of linear search?</summary>
 
-### How does the presence of duplicates affect the performance of Linear Search?
+### Как the presence of duplicates affect the performance of linear search?
 
 **Definition:**
 
@@ -223,9 +223,9 @@ return -1 if i == n else i
 ### Advanced Linear Search Techniques
 
 <details>
-<summary>Implement an Order-Agnostic Linear Search that works on sorted and unsorted arrays.</summary>
+<summary>Реализуйте an Order-Agnostic linear search that works on sorted and unsorted arrays.</summary>
 
-### Implement an Order-Agnostic Linear Search that works on sorted and unsorted arrays.
+### Реализуйте an Order-Agnostic linear search that works on sorted and unsorted arrays.
 
 **Definition:**
 
@@ -253,9 +253,9 @@ def find(a, target):
 </details>
 
 <details>
-<summary>Modify Linear Search to perform on a multi-dimensional array.</summary>
+<summary>Измените linear search to perform on a multi-dimensional array.</summary>
 
-### Modify Linear Search to perform on a multi-dimensional array.
+### Измените linear search to perform on a multi-dimensional array.
 
 **Definition:**
 
@@ -284,9 +284,9 @@ return None
 ### Binary Search In-depth
 
 <details>
-<summary>Explain why complexity of Binary Search is O(log n).</summary>
+<summary>Объясните, почему сложность binary search равна сложности O(log n).</summary>
 
-### Explain why complexity of Binary Search is O(log n).
+### Объясните, почему сложность binary search равна сложности O(log n).
 
 **Definition:**
 
@@ -306,9 +306,9 @@ return None
 </details>
 
 <details>
-<summary>Compare Recursive vs. Iterative Binary Search.</summary>
+<summary>Сравните рекурсивный и итеративный binary search.</summary>
 
-### Compare Recursive vs. Iterative Binary Search.
+### Сравните рекурсивный и итеративный binary search.
 
 **Definition:**
 
@@ -328,9 +328,9 @@ return None
 </details>
 
 <details>
-<summary>In Binary Search, why Round Down the midpoint instead of Rounding Up?</summary>
+<summary>Почему в Binary Search midpoint округляют вниз, а не вверх?</summary>
 
-### In Binary Search, why Round Down the midpoint instead of Rounding Up?
+### Почему в Binary Search midpoint округляют вниз, а не вверх?
 
 **Definition:**
 
@@ -350,9 +350,9 @@ return None
 </details>
 
 <details>
-<summary>Write a Binary Search algorithm that finds the first occurrence of a given value.</summary>
+<summary>Напишите a binary search alGorithm that finds the first occurrence of a given value.</summary>
 
-### Write a Binary Search algorithm that finds the first occurrence of a given value.
+### Напишите a binary search alGorithm that finds the first occurrence of a given value.
 
 **Definition:**
 
@@ -386,9 +386,9 @@ while lo <= hi:
 ### Binary Search Applications and Variants
 
 <details>
-<summary>How would you apply Binary Search to an array of objects sorted by a specific key?</summary>
+<summary>Как бы вы apply binary search to an array of objects sorted by a specific key?</summary>
 
-### How would you apply Binary Search to an array of objects sorted by a specific key?
+### Как бы вы apply binary search to an array of objects sorted by a specific key?
 
 **Definition:**
 
@@ -417,9 +417,9 @@ while lo <= hi:
 </details>
 
 <details>
-<summary>Perform a Binary Search in a rotated sorted array.</summary>
+<summary>Выполните binary search в rotated sorted array.</summary>
 
-### Perform a Binary Search in a rotated sorted array.
+### Выполните binary search в rotated sorted array.
 
 **Definition:**
 
@@ -454,9 +454,9 @@ while lo <= hi:
 </details>
 
 <details>
-<summary>Provide an algorithm for finding an element in a virtually infinite sorted array.</summary>
+<summary>Приведите an alGorithm for finding an element in a virtually infinite sorted array.</summary>
 
-### Provide an algorithm for finding an element in a virtually infinite sorted array.
+### Приведите an alGorithm for finding an element in a virtually infinite sorted array.
 
 **Definition:**
 
@@ -487,9 +487,9 @@ binary_search(a, lo, hi, target)
 ### Interpolation, Jump, and Exponential Searches
 
 <details>
-<summary>What is Interpolation Search?</summary>
+<summary>Что такое InteRPOlation Search?</summary>
 
-### What is Interpolation Search?
+### Что такое InteRPOlation Search?
 
 **Definition:**
 
@@ -520,9 +520,9 @@ while lo <= hi and a[lo] <= target <= a[hi]:
 </details>
 
 <details>
-<summary>Provide an example where Interpolation Search is less efficient than Binary Search.</summary>
+<summary>Приведите an example where InteRPOlation Search is less efficient than binary search.</summary>
 
-### Provide an example where Interpolation Search is less efficient than Binary Search.
+### Приведите an example where InteRPOlation Search is less efficient than binary search.
 
 **Definition:**
 
@@ -544,9 +544,9 @@ while lo <= hi and a[lo] <= target <= a[hi]:
 </details>
 
 <details>
-<summary>What is Jump Search (Block Search) technique?</summary>
+<summary>Что такое Jump Search (block Search) technique?</summary>
 
-### What is Jump Search (Block Search) technique?
+### Что такое Jump Search (block Search) technique?
 
 **Definition:**
 
@@ -577,9 +577,9 @@ for i in prev .. min(step, n) - 1:
 </details>
 
 <details>
-<summary>Explain the rationale behind choosing the Optimal Block Size for Jump Search.</summary>
+<summary>Объясните, почему выбран оптимальный размер блока для поиска переходов.</summary>
 
-### Explain the rationale behind choosing the Optimal Block Size for Jump Search.
+### Объясните, почему выбран оптимальный размер блока для поиска переходов.
 
 **Definition:**
 
@@ -602,9 +602,9 @@ for i in prev .. min(step, n) - 1:
 </details>
 
 <details>
-<summary>When Jump Search is preferable over Binary Search?</summary>
+<summary>Когда Jump Search is preferable over binary search?</summary>
 
-### When Jump Search is preferable over Binary Search?
+### Когда Jump Search is preferable over binary search?
 
 **Definition:**
 
@@ -627,9 +627,9 @@ for i in prev .. min(step, n) - 1:
 </details>
 
 <details>
-<summary>What is Exponential Search (Doubling/Galloping)?</summary>
+<summary>Что такое Exponential Search (Doubling/GAlloping)?</summary>
 
-### What is Exponential Search (Doubling/Galloping)?
+### Что такое Exponential Search (Doubling/GAlloping)?
 
 **Definition:**
 
@@ -658,9 +658,9 @@ binary_search(a, i // 2, min(i, n - 1), target)
 </details>
 
 <details>
-<summary>Compare Exponential Search to Interpolation Search regarding time complexity and use cases.</summary>
+<summary>Сравните Exponential Search с Interpolation Search с точки зрения time complexity и use cases.</summary>
 
-### Compare Exponential Search to Interpolation Search regarding time complexity and use cases.
+### Сравните Exponential Search с Interpolation Search с точки зрения time complexity и use cases.
 
 **Definition:**
 
@@ -686,9 +686,9 @@ binary_search(a, i // 2, min(i, n - 1), target)
 ### Ternary Search and Other Divide-and-Conquer Methods
 
 <details>
-<summary>What is Ternary Search?</summary>
+<summary>Что такое Ternary Search?</summary>
 
-### What is Ternary Search?
+### Что такое Ternary Search?
 
 **Definition:**
 
@@ -717,9 +717,9 @@ else: lo, hi = mid1 + 1, mid2 - 1
 </details>
 
 <details>
-<summary>What are the advantages of Binary Search over Ternary Search?</summary>
+<summary>Что такое the advantages of binary search over Ternary Search?</summary>
 
-### What are the advantages of Binary Search over Ternary Search?
+### Что такое the advantages of binary search over Ternary Search?
 
 **Definition:**
 
@@ -742,9 +742,9 @@ else: lo, hi = mid1 + 1, mid2 - 1
 </details>
 
 <details>
-<summary>Implement Ternary Search for a finding a local maximum in a unimodal array.</summary>
+<summary>Реализуйте Ternary Search for a finding a local maximum in a unimodal array.</summary>
 
-### Implement Ternary Search for a finding a local maximum in a unimodal array.
+### Реализуйте Ternary Search for a finding a local maximum in a unimodal array.
 
 **Definition:**
 
@@ -777,9 +777,9 @@ return index of max(a[lo..hi])
 </details>
 
 <details>
-<summary>Compare the efficiency of divide-and-conquer searching algorithms on unimodal and bitonic sequences.</summary>
+<summary>Сравните эффективность алгоритмов divide-and-conquer для поиска на унимодальных и битонных последовательностях.</summary>
 
-### Compare the efficiency of divide-and-conquer searching algorithms on unimodal and bitonic sequences.
+### Сравните эффективность алгоритмов divide-and-conquer для поиска на унимодальных и битонных последовательностях.
 
 **Definition:**
 
@@ -805,9 +805,9 @@ return index of max(a[lo..hi])
 ### Search in Data Structures
 
 <details>
-<summary>Explain the rationale behind using Binary Search on a Doubly Linked List.</summary>
+<summary>Объясните, почему стоит использовать binary search на удвоенном linked list.</summary>
 
-### Explain the rationale behind using Binary Search on a Doubly Linked List.
+### Объясните, почему стоит использовать binary search на удвоенном linked list.
 
 **Definition:**
 
@@ -836,9 +836,9 @@ else: last = mid
 </details>
 
 <details>
-<summary>Explain strategies for performing search operations in hash tables.</summary>
+<summary>Объясните стратегии выполнения поисковых операций в Hash Tables.</summary>
 
-### Explain strategies for performing search operations in hash tables.
+### Объясните стратегии выполнения поисковых операций в Hash Tables.
 
 **Definition:**
 
@@ -869,9 +869,9 @@ return miss
 ### Graph Searching Algorithms
 
 <details>
-<summary>Explain the Breadth-First Search (BFS) traversing method.</summary>
+<summary>Объясните метод обхода breadth-first search (BFS).</summary>
 
-### Explain the Breadth-First Search (BFS) traversing method.
+### Объясните метод обхода breadth-first search (BFS).
 
 **Definition:**
 
@@ -903,9 +903,9 @@ while q:
 </details>
 
 <details>
-<summary>Explain the Depth-First Search algorithm.</summary>
+<summary>Объясните алгоритм depth-first search.</summary>
 
-### Explain the Depth-First Search algorithm.
+### Объясните алгоритм depth-first search.
 
 **Definition:**
 
@@ -935,9 +935,9 @@ def dfs(u):
 </details>
 
 <details>
-<summary>Compare the use cases of BFS and DFS in graph search.</summary>
+<summary>Сравните варианты использования BFS AND DFS в поиске graph.</summary>
 
-### Compare the use cases of BFS and DFS in graph search.
+### Сравните варианты использования BFS AND DFS в поиске graph.
 
 **Definition:**
 
@@ -962,9 +962,9 @@ def dfs(u):
 </details>
 
 <details>
-<summary>Implement a solution to detect a cycle in an undirected graph using either BFS or DFS.</summary>
+<summary>Реализуйте a solution to detect a cycle in an Undirected Graph using either BFS or DFS.</summary>
 
-### Implement a solution to detect a cycle in an undirected graph using either BFS or DFS.
+### Реализуйте a solution to detect a cycle in an Undirected Graph using either BFS or DFS.
 
 **Definition:**
 
@@ -1002,9 +1002,9 @@ while q:
 ### Search Optimization and the Decision-Making Process
 
 <details>
-<summary>Choose The Fastest Algorithm for the given scenario.</summary>
+<summary>Выберите The Fastest AlgORZithm fOR по данному сценарию.</summary>
 
-### Choose The Fastest Algorithm for the given scenario.
+### Выберите The Fastest AlgORZithm fOR по данному сценарию.
 
 **Definition:**
 
@@ -1031,9 +1031,9 @@ while q:
 </details>
 
 <details>
-<summary>Discuss how you would balance a search tree to ensure that search operations remain efficient.</summary>
+<summary>Обсудите, как бы вы сбалансировали дерево поиска, чтобы операции поиска оставались эффективными.</summary>
 
-### Discuss how you would balance a search tree to ensure that search operations remain efficient.
+### Обсудите, как бы вы сбалансировали дерево поиска, чтобы операции поиска оставались эффективными.
 
 **Definition:**
 
@@ -1057,9 +1057,9 @@ while q:
 </details>
 
 <details>
-<summary>How can heuristics be used to optimize search queries in a non-sortable dataset?</summary>
+<summary>Как можно использовать эвристику для оптимизации поисковых запросов в несортируемом наборе данных?</summary>
 
-### How can heuristics be used to optimize search queries in a non-sortable dataset?
+### Как можно использовать эвристику для оптимизации поисковых запросов в несортируемом наборе данных?
 
 **Definition:**
 
@@ -1087,9 +1087,9 @@ Id пользователей без порядка: `bucket = hash(id)`. Игр
 ### Searching in Infinite or Unknown Sized Data
 
 <details>
-<summary>Explain how you should perform a search in a stream of infinite or unknown size data.</summary>
+<summary>Объясните, как следует выполнять поиск в потоке данных бесконечного или неизвестного размера.</summary>
 
-### Explain how you should perform a search in a stream of infinite or unknown size data.
+### Объясните, как следует выполнять поиск в потоке данных бесконечного или неизвестного размера.
 
 **Definition:**
 
@@ -1119,9 +1119,9 @@ binary_search(a, lo, hi, target)
 </details>
 
 <details>
-<summary>Implement a technique for backtracking through data when searching for a condition that requires context.</summary>
+<summary>Реализуйте a technique for backtracking through data when searching for a condition that requires context.</summary>
 
-### Implement a technique for backtracking through data when searching for a condition that requires context.
+### Реализуйте a technique for backtracking through data when searching for a condition that requires context.
 
 **Definition:**
 
@@ -1155,9 +1155,9 @@ def dfs(u, context):
 ### Probabilistic and Approximate Searches
 
 <details>
-<summary>Describe Monte Carlo Tree Search and its applications in game AI.</summary>
+<summary>Опишите Monte Carlo Дерево поиска AND его приложения в игровом ИИ.</summary>
 
-### Describe Monte Carlo Tree Search and its applications in game AI.
+### Опишите Monte Carlo Дерево поиска AND его приложения в игровом ИИ.
 
 **Definition:**
 
@@ -1181,9 +1181,9 @@ Monte Carlo tree search оценивает хорошие ходы, разыгр
 </details>
 
 <details>
-<summary>Explain what is Approximate String Matching, and provide an example of where it’s used.</summary>
+<summary>Объясните, что такое приблизительное соответствие строк, и приведите пример того, где оно используется.</summary>
 
-### Explain what is Approximate String Matching, and provide an example of where it’s used.
+### Объясните, что такое приблизительное соответствие строк, и приведите пример того, где оно используется.
 
 **Definition:**
 
@@ -1217,9 +1217,9 @@ for i in 1..m:
 ### Complex Search Scenarios
 
 <details>
-<summary>Implement an algorithm to find the k closest points to a given origin in a multidimensional space.</summary>
+<summary>Реализуйте an alGorithm to find the k closest points to a given origin in a multidimensional space.</summary>
 
-### Implement an algorithm to find the k closest points to a given origin in a multidimensional space.
+### Реализуйте an alGorithm to find the k closest points to a given origin in a multidimensional space.
 
 **Definition:**
 
@@ -1249,9 +1249,9 @@ for p in points:
 </details>
 
 <details>
-<summary>How does Search Engine Indexing work, and explain the role of search algorithms in this process.</summary>
+<summary>Как работает Search Engine Indexing, и объясните роль алгоритмов поиска в этом процессе.</summary>
 
-### How does Search Engine Indexing work, and explain the role of search algorithms in this process.
+### Как работает Search Engine Indexing, и объясните роль алгоритмов поиска в этом процессе.
 
 **Definition:**
 
@@ -1279,9 +1279,9 @@ for p in points:
 ### Constraints and Specific Criteria
 
 <details>
-<summary>How do you find an item with multiple search criteria or constraints?</summary>
+<summary>Как вы находите товар с несколькими критериями поиска или ограничениями?</summary>
 
-### How do you find an item with multiple search criteria or constraints?
+### Как вы находите товар с несколькими критериями поиска или ограничениями?
 
 **Definition:**
 
@@ -1306,9 +1306,9 @@ for p in points:
 </details>
 
 <details>
-<summary>Discuss how to adapt searching algorithms in databases that enforce unique constraints.</summary>
+<summary>Обсудите, как адаптировать алгоритмы поиска в базах данных, обеспечивающие уникальные ограничения.</summary>
 
-### Discuss how to adapt searching algorithms in databases that enforce unique constraints.
+### Обсудите, как адаптировать алгоритмы поиска в базах данных, обеспечивающие уникальные ограничения.
 
 **Definition:**
 
@@ -1338,9 +1338,9 @@ hash_insert(table, key)
 ### Recursion and Iteration in Searches
 
 <details>
-<summary>Identify potential issues in this Recursive Binary Search implementation.</summary>
+<summary>Определите potential issues in this Recursive binary search implementation.</summary>
 
-### Identify potential issues in this Recursive Binary Search implementation.
+### Определите potential issues in this Recursive binary search implementation.
 
 **Definition:**
 
@@ -1371,9 +1371,9 @@ def binary_search(a, lo, hi, x):
 </details>
 
 <details>
-<summary>Provide a side-by-side comparison of recursive versus iterative approaches in search algorithm implementations.</summary>
+<summary>Приведите a side-by-side comparison of Recursive versus iterative approaches in search alGorithm implementations.</summary>
 
-### Provide a side-by-side comparison of recursive versus iterative approaches in search algorithm implementations.
+### Приведите a side-by-side comparison of Recursive versus iterative approaches in search alGorithm implementations.
 
 **Definition:**
 
@@ -1405,9 +1405,9 @@ binary_search(a, lo, mid - 1, x)
 </details>
 
 <details>
-<summary>Discuss scenarios where an iterative approach to searching algorithm might be beneficial over recursive.</summary>
+<summary>Обсудите сценарии, в которых итеративный подход к алгоритму поиска может быть предпочтительнее рекурсивного.</summary>
 
-### Discuss scenarios where an iterative approach to searching algorithm might be beneficial over recursive.
+### Обсудите сценарии, в которых итеративный подход к алгоритму поиска может быть предпочтительнее рекурсивного.
 
 **Definition:**
 
@@ -1434,9 +1434,9 @@ binary_search(a, lo, mid - 1, x)
 ### Edge Cases and Search Algorithm Selection
 
 <details>
-<summary>Illustrate how to choose the appropriate search algorithm when dealing with sparse datasets.</summary>
+<summary>Проиллюстрируйте how to choose the appropriate search alGorithm when dealing with sparse datasets.</summary>
 
-### Illustrate how to choose the appropriate search algorithm when dealing with sparse datasets.
+### Проиллюстрируйте how to choose the appropriate search alGorithm when dealing with sparse datasets.
 
 **Definition:**
 
@@ -1462,9 +1462,9 @@ Id пользователей в `1..10^12` при 50_000 аккаунтов: х
 </details>
 
 <details>
-<summary>Discuss the impact of sorted vs. unsorted data on selecting the appropriate search algorithm.</summary>
+<summary>Обсудите влияние отсортированных и несортированных данных на выбор подходящего алгоритма поиска.</summary>
 
-### Discuss the impact of sorted vs. unsorted data on selecting the appropriate search algorithm.
+### Обсудите влияние отсортированных и несортированных данных на выбор подходящего алгоритма поиска.
 
 **Definition:**
 
@@ -1491,9 +1491,9 @@ Id пользователей в `1..10^12` при 50_000 аккаунтов: х
 </details>
 
 <details>
-<summary>How do you handle searches in datasets with periodic, predictable patterns or anomalies?</summary>
+<summary>Как вы выполняете поиск в наборах данных с периодическими, предсказуемыми закономерностями или аномалиями?</summary>
 
-### How do you handle searches in datasets with periodic, predictable patterns or anomalies?
+### Как вы выполняете поиск в наборах данных с периодическими, предсказуемыми закономерностями или аномалиями?
 
 **Definition:**
 
@@ -1521,9 +1521,9 @@ Id пользователей в `1..10^12` при 50_000 аккаунтов: х
 ### Search Algorithm Modifications and Customization
 
 <details>
-<summary>Describe how to customize a binary search algorithm for finding the closest value to a target in a sorted array.</summary>
+<summary>Опишите, как настроить алгоритм Binary Search для поиска ближайшего значения к целевому значению в отсортированном array.</summary>
 
-### Describe how to customize a binary search algorithm for finding the closest value to a target in a sorted array.
+### Опишите, как настроить алгоритм Binary Search для поиска ближайшего значения к целевому значению в отсортированном array.
 
 **Definition:**
 
@@ -1558,9 +1558,9 @@ while lo <= hi:
 </details>
 
 <details>
-<summary>How can you modify standard search algorithms to support concurrent searches in a multi-threaded environment?</summary>
+<summary>Как вы можете изменить стандартные алгоритмы поиска для поддержки поиска в concurrent в среде multi-threaded?</summary>
 
-### How can you modify standard search algorithms to support concurrent searches in a multi-threaded environment?
+### Как вы можете изменить стандартные алгоритмы поиска для поддержки поиска в concurrent в среде multi-threaded?
 
 **Definition:**
 
@@ -1594,9 +1594,9 @@ while lo <= hi:
 ### Search in Real-world Applications
 
 <details>
-<summary>Explain how search algorithms are used in machine learning model optimization.</summary>
+<summary>Объясните, как алгоритмы поиска используются при оптимизации модели machine learning.</summary>
 
-### Explain how search algorithms are used in machine learning model optimization.
+### Объясните, как алгоритмы поиска используются при оптимизации модели machine learning.
 
 **Definition:**
 
@@ -1622,9 +1622,9 @@ while lo <= hi:
 </details>
 
 <details>
-<summary>Discuss how search algorithms are used in network routing and optimization.</summary>
+<summary>Обсудите, как алгоритмы поиска используются при сетевой маршрутизации и оптимизации.</summary>
 
-### Discuss how search algorithms are used in network routing and optimization.
+### Обсудите, как алгоритмы поиска используются при сетевой маршрутизации и оптимизации.
 
 **Definition:**
 
@@ -1652,9 +1652,9 @@ while lo <= hi:
 ### Optimization Techniques in Searches
 
 <details>
-<summary>Explain how branch and bound can be used to improve the efficiency of search algorithms.</summary>
+<summary>Объясните, как ветвление и привязка могут быть использованы для повышения эффективности алгоритмов поиска.</summary>
 
-### Explain how branch and bound can be used to improve the efficiency of search algorithms.
+### Объясните, как ветвление и привязка могут быть использованы для повышения эффективности алгоритмов поиска.
 
 **Definition:**
 
@@ -1678,9 +1678,9 @@ while lo <= hi:
 </details>
 
 <details>
-<summary>Describe an implementation of an adaptive search algorithm that optimizes based on past accessibility of data.</summary>
+<summary>Опишите реализацию алгоритма адаптивного поиска, который оптимизируется на основе прошлой доступности данных.</summary>
 
-### Describe an implementation of an adaptive search algorithm that optimizes based on past accessibility of data.
+### Опишите реализацию алгоритма адаптивного поиска, который оптимизируется на основе прошлой доступности данных.
 
 **Definition:**
 
@@ -1713,9 +1713,9 @@ binary_search(a, i // 2, min(i, n - 1), target)
 ### Combining Search Algorithms
 
 <details>
-<summary>How can you combine Linear search with other search algorithms for an improved search strategy in some cases?</summary>
+<summary>Как вы можете комбинировать linear search с другими алгоритмами поиска для улучшения стратегии поиска в некоторых случаях?</summary>
 
-### How can you combine Linear search with other search algorithms for an improved search strategy in some cases?
+### Как вы можете комбинировать linear search с другими алгоритмами поиска для улучшения стратегии поиска в некоторых случаях?
 
 **Definition:**
 
@@ -1744,9 +1744,9 @@ scan a[prev .. min(step, n))
 </details>
 
 <details>
-<summary>Discuss strategies to hybridize binary and linear searches when dealing with non-uniformly distributed datasets.</summary>
+<summary>Обсудите стратегии гибридизации двоичных файлов и linear search при работе с неравномерно распределенными наборами данных.</summary>
 
-### Discuss strategies to hybridize binary and linear searches when dealing with non-uniformly distributed datasets.
+### Обсудите стратегии гибридизации двоичных файлов и linear search при работе с неравномерно распределенными наборами данных.
 
 **Definition:**
 

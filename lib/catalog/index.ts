@@ -750,7 +750,8 @@ const SUBJECTS_BASE: readonly Subject[] = [
   {
     slug: "cursor",
     title: "Cursor",
-    blurb: "Core tips, skills, rules, plugins, slash commands, and questions.",
+    blurb:
+      "Core tips, skills, rules, plugins, subagents, hooks, slash commands, and questions.",
     track: "ai",
     clusters: [
       {
@@ -773,6 +774,17 @@ const SUBJECTS_BASE: readonly Subject[] = [
         id: "plugins",
         title: "Plugins",
         blurb: "Cursor and Agent plugin formats and marketplaces.",
+      },
+      {
+        id: "subagents",
+        title: "Subagents",
+        blurb:
+          "Task delegation, built-in explore/shell/browser, custom agents.",
+      },
+      {
+        id: "hooks",
+        title: "Hooks",
+        blurb: "hooks.json lifecycle scripts, matchers, and RTK proxy.",
       },
       {
         id: "slash",
@@ -2684,6 +2696,24 @@ const TOPICS_BASE: Topic[] = [
     "ai",
     "cursor",
     "plugins",
+  ),
+  grouped(
+    "cursor-subagents",
+    "0_ai_cursor_subagents.md",
+    "Subagents",
+    "Task delegation, built-in explore/shell/browser, custom .cursor/agents, parallel and resume.",
+    "ai",
+    "cursor",
+    "subagents",
+  ),
+  grouped(
+    "cursor-hooks",
+    "0_ai_cursor_hooks.md",
+    "Hooks",
+    "hooks.json lifecycle scripts: preToolUse, shell, subagent, Tab, and RTK proxy.",
+    "ai",
+    "cursor",
+    "hooks",
   ),
   grouped(
     "cursor-slash",

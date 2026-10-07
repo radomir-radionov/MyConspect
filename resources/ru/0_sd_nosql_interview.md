@@ -21,9 +21,9 @@ Questions from [Devinterview.io — NoSQL](https://devinterview.io/questions/sof
 ### NoSQL Fundamentals
 
 <details>
-<summary>What are the different types of NoSQL databases, with an example of each?</summary>
+<summary>Что такое the different types of NoSQL dataBASEs, with an example of each?</summary>
 
-### What are the different types of NoSQL databases, with an example of each?
+### Что такое the different types of NoSQL dataBASEs, with an example of each?
 
 **Definition:**
 
@@ -102,9 +102,9 @@ NoSQL-базы разнообразны и предлагают разные м�
 </details>
 
 <details>
-<summary>Explain eventual consistency and its role in NoSQL databases.</summary>
+<summary>Объясните eventual consistency and its role in NoSQL dataBASEs.</summary>
 
-### Explain eventual consistency and its role in NoSQL databases.
+### Объясните eventual consistency and its role in NoSQL dataBASEs.
 
 **Definition:**
 
@@ -141,9 +141,9 @@ NoSQL-базы разнообразны и предлагают разные м�
 </details>
 
 <details>
-<summary>How is data modeling in NoSQL databases distinct from that in relational databases?</summary>
+<summary>Как data modeling in NoSQL dataBASEs distinct from that in relational dataBASEs?</summary>
 
-### How is data modeling in NoSQL databases distinct from that in relational databases?
+### Как data modeling in NoSQL dataBASEs distinct from that in relational dataBASEs?
 
 **Definition:**
 
@@ -242,9 +242,9 @@ NoSQL-базы разнообразны и предлагают разные м�
 </details>
 
 <details>
-<summary>What advantages do NoSQL databases offer for managing large volumes of data?</summary>
+<summary>Какие преимущества NoSQL databases дают для управления large volumes of data?</summary>
 
-### What advantages do NoSQL databases offer for managing large volumes of data?
+### Какие преимущества NoSQL databases дают для управления large volumes of data?
 
 **Definition:**
 
@@ -295,9 +295,9 @@ NoSQL-базы используют модели организации данн
 </details>
 
 <details>
-<summary>When would you choose a NoSQL database over a relational database?</summary>
+<summary>Когда would you choose a NoSQL dataBASE over a relational dataBASE?</summary>
 
-### When would you choose a NoSQL database over a relational database?
+### Когда would you choose a NoSQL dataBASE over a relational dataBASE?
 
 **Definition:**
 
@@ -380,9 +380,9 @@ connection.close()
 </details>
 
 <details>
-<summary>Describe the various consistency models in NoSQL databases and how they handle transactions and conflict resolution.</summary>
+<summary>Опишите the various consistency models in NoSQL dataBASEs and how they handle transactions and conflict resolution.</summary>
 
-### Describe the various consistency models in NoSQL databases and how they handle transactions and conflict resolution.
+### Опишите the various consistency models in NoSQL dataBASEs and how they handle transactions and conflict resolution.
 
 **Definition:**
 
@@ -490,9 +490,9 @@ resolution = repo.resolve_conflicts(conflicting_changes, repo.commits[-2], repo.
 </details>
 
 <details>
-<summary>List some NoSQL databases and the primary use cases they address.</summary>
+<summary>Перечислите some NoSQL dataBASEs and the Primary use cases they address.</summary>
 
-### List some NoSQL databases and the primary use cases they address.
+### Перечислите some NoSQL dataBASEs and the Primary use cases they address.
 
 **Definition:**
 
@@ -554,9 +554,9 @@ InfluxDB: сделана специально для хранения и ана�
 ### Key-Value Stores
 
 <details>
-<summary>How does a key-value store operate, and can you give a use-case example?</summary>
+<summary>Как a key-value store operate, and can you give a use-case example?</summary>
 
-### How does a key-value store operate, and can you give a use-case example?
+### Как a key-value store operate, and can you give a use-case example?
 
 **Definition:**
 
@@ -618,9 +618,9 @@ print(review_details["content"])  # Output: "Great product! Highly recommended."
 </details>
 
 <details>
-<summary>What strategies can be used to scale key-value stores for high demand or large data volumes?</summary>
+<summary>Какие стратегии can be used to scale key-value stores for high demand or large data volumes?</summary>
 
-### What strategies can be used to scale key-value stores for high demand or large data volumes?
+### Какие стратегии can be used to scale key-value stores for high demand or large data volumes?
 
 **Definition:**
 
@@ -700,9 +700,9 @@ print(review_details["content"])  # Output: "Great product! Highly recommended."
 </details>
 
 <details>
-<summary>What are some drawbacks of key-value stores compared to other NoSQL types?</summary>
+<summary>Что такое some drawbacks of key-value stores compared to other NoSQL types?</summary>
 
-### What are some drawbacks of key-value stores compared to other NoSQL types?
+### Что такое some drawbacks of key-value stores compared to other NoSQL types?
 
 **Definition:**
 
@@ -724,9 +724,9 @@ print(review_details["content"])  # Output: "Great product! Highly recommended."
 </details>
 
 <details>
-<summary>Name a scenario where a key-value store might not be the best fit.</summary>
+<summary>Назовите a scenario where a key-value store might not be the best fit.</summary>
 
-### Name a scenario where a key-value store might not be the best fit.
+### Назовите a scenario where a key-value store might not be the best fit.
 
 **Definition:**
 
@@ -763,9 +763,9 @@ print(review_details["content"])  # Output: "Great product! Highly recommended."
 ### Document-Oriented Databases
 
 <details>
-<summary>What makes a document in a NoSQL database different from a row in a relational database?</summary>
+<summary>Чем document в NoSQL database отличается от row в relational database?</summary>
 
-### What makes a document in a NoSQL database different from a row in a relational database?
+### Чем document в NoSQL database отличается от row в relational database?
 
 **Definition:**
 
@@ -799,9 +799,9 @@ print(review_details["content"])  # Output: "Great product! Highly recommended."
 </details>
 
 <details>
-<summary>How does indexing work in document-oriented databases?</summary>
+<summary>Как indexing work in document-oriented dataBASEs?</summary>
 
-### How does indexing work in document-oriented databases?
+### Как indexing work in document-oriented dataBASEs?
 
 **Definition:**
 
@@ -857,9 +857,9 @@ try {
 </details>
 
 <details>
-<summary>Give an example of a query in a document-oriented database.</summary>
+<summary>Приведите an example of a query in a document-oriented dataBASE.</summary>
 
-### Give an example of a query in a document-oriented database.
+### Приведите an example of a query in a document-oriented dataBASE.
 
 **Definition:**
 
@@ -912,9 +912,9 @@ db.people.find(
 </details>
 
 <details>
-<summary>Suggest a typical application for a document-oriented database.</summary>
+<summary>Предложите a typical application for a document-oriented dataBASE.</summary>
 
-### Suggest a typical application for a document-oriented database.
+### Предложите a typical application for a document-oriented dataBASE.
 
 **Definition:**
 
@@ -948,9 +948,9 @@ db.people.find(
 </details>
 
 <details>
-<summary>How do document databases handle schema changes and migration?</summary>
+<summary>Как document dataBASEs handle schema changes and migration?</summary>
 
-### How do document databases handle schema changes and migration?
+### Как document dataBASEs handle schema changes and migration?
 
 **Definition:**
 
@@ -970,9 +970,9 @@ db.people.find(
 ### Column-Family Stores
 
 <details>
-<summary>Describe the data structure in a column-family store and how it supports certain query types.</summary>
+<summary>Опишите the data structure in a column-family store and how it supports certain query types.</summary>
 
-### Describe the data structure in a column-family store and how it supports certain query types.
+### Опишите the data structure in a column-family store and how it supports certain query types.
 
 **Definition:**
 
@@ -989,9 +989,9 @@ db.people.find(
 </details>
 
 <details>
-<summary>Name a popular column-family store and its key features that contribute to its performance.</summary>
+<summary>Назовите a popular column-family store and its key features that contribute to its performance.</summary>
 
-### Name a popular column-family store and its key features that contribute to its performance.
+### Назовите a popular column-family store and its key features that contribute to its performance.
 
 **Definition:**
 
@@ -1008,9 +1008,9 @@ db.people.find(
 </details>
 
 <details>
-<summary>How are data partitioning and distribution handled in column-family stores?</summary>
+<summary>Как data partitioning and distribution handled in column-family stores?</summary>
 
-### How are data partitioning and distribution handled in column-family stores?
+### Как data partitioning and distribution handled in column-family stores?
 
 **Definition:**
 
@@ -1029,9 +1029,9 @@ db.people.find(
 ### Graph Databases
 
 <details>
-<summary>Explain the data representation in a graph database.</summary>
+<summary>Объясните the data representation in a graph database.</summary>
 
-### Explain the data representation in a graph database.
+### Объясните the data representation in a graph database.
 
 **Definition:**
 
@@ -1047,9 +1047,9 @@ db.people.find(
 </details>
 
 <details>
-<summary>Compare querying in graph databases with other NoSQL database types.</summary>
+<summary>Сравните querying in graph databases with other NoSQL dataBASE types.</summary>
 
-### Compare querying in graph databases with other NoSQL database types.
+### Сравните querying in graph databases with other NoSQL dataBASE types.
 
 **Definition:**
 
@@ -1066,9 +1066,9 @@ db.people.find(
 </details>
 
 <details>
-<summary>Suggest a real-world problem that fits a graph database solution.</summary>
+<summary>Предложите a real-world problem that fits a graph database solution.</summary>
 
-### Suggest a real-world problem that fits a graph database solution.
+### Предложите a real-world problem that fits a graph database solution.
 
 **Definition:**
 
@@ -1084,9 +1084,9 @@ db.people.find(
 </details>
 
 <details>
-<summary>Define the role of an edge in a graph database and its relationship with nodes.</summary>
+<summary>Определите the role of an edge in a graph database and its relationship with nodes.</summary>
 
-### Define the role of an edge in a graph database and its relationship with nodes.
+### Определите the role of an edge in a graph database and its relationship with nodes.
 
 **Definition:**
 
@@ -1104,9 +1104,9 @@ db.people.find(
 ### Data Consistency & Replication
 
 <details>
-<summary>What replication strategies are often used in NoSQL databases?</summary>
+<summary>Какие replication strategies часто используют в NoSQL databases?</summary>
 
-### What replication strategies are often used in NoSQL databases?
+### Какие replication strategies часто используют в NoSQL databases?
 
 **Definition:**
 
@@ -1124,9 +1124,9 @@ db.people.find(
 </details>
 
 <details>
-<summary>What are quorum reads/writes and their impact on consistency in NoSQL databases?</summary>
+<summary>Что такое quorum reads/writes and their impact on consistency in NoSQL dataBASEs?</summary>
 
-### What are quorum reads/writes and their impact on consistency in NoSQL databases?
+### Что такое quorum reads/writes and their impact on consistency in NoSQL dataBASEs?
 
 **Definition:**
 
@@ -1152,9 +1152,9 @@ session.startTransaction({
 </details>
 
 <details>
-<summary>Describe how NoSQL databases maintain consistency during network issues.</summary>
+<summary>Опишите how NoSQL dataBASEs maintain consistency during network issues.</summary>
 
-### Describe how NoSQL databases maintain consistency during network issues.
+### Опишите how NoSQL dataBASEs maintain consistency during network issues.
 
 **Definition:**
 
@@ -1173,9 +1173,9 @@ session.startTransaction({
 ### Scalability & Performance
 
 <details>
-<summary>Explain common data sharding strategies in NoSQL databases and their impact on system performance.</summary>
+<summary>Объясните common data sharding strategies in NoSQL dataBASEs and their impact on system performance.</summary>
 
-### Explain common data sharding strategies in NoSQL databases and their impact on system performance.
+### Объясните common data sharding strategies in NoSQL dataBASEs and their impact on system performance.
 
 **Definition:**
 
@@ -1192,9 +1192,9 @@ session.startTransaction({
 </details>
 
 <details>
-<summary>How is load balancing achieved in NoSQL database environments?</summary>
+<summary>Как load balancing achieved in NoSQL dataBASE environments?</summary>
 
-### How is load balancing achieved in NoSQL database environments?
+### Как load balancing achieved in NoSQL dataBASE environments?
 
 **Definition:**
 
@@ -1210,9 +1210,9 @@ session.startTransaction({
 </details>
 
 <details>
-<summary>Discuss the role of caching in NoSQL database performance enhancement.</summary>
+<summary>Обсудите the role of caching in NoSQL dataBASE performance enhancement.</summary>
 
-### Discuss the role of caching in NoSQL database performance enhancement.
+### Обсудите the role of caching in NoSQL dataBASE performance enhancement.
 
 **Definition:**
 
@@ -1228,9 +1228,9 @@ session.startTransaction({
 </details>
 
 <details>
-<summary>What approaches do NoSQL databases use to ensure high availability?</summary>
+<summary>Какие подходы NoSQL databases используют для high availability?</summary>
 
-### What approaches do NoSQL databases use to ensure high availability?
+### Какие подходы NoSQL databases используют для high availability?
 
 **Definition:**
 
@@ -1249,9 +1249,9 @@ session.startTransaction({
 ### Querying and Data Manipulation
 
 <details>
-<summary>How do NoSQL databases manage complex queries, such as those requiring join operations?</summary>
+<summary>Как NoSQL dataBASEs manage complex queries, such as those requiring join operations?</summary>
 
-### How do NoSQL databases manage complex queries, such as those requiring join operations?
+### Как NoSQL dataBASEs manage complex queries, such as those requiring join operations?
 
 **Definition:**
 
@@ -1268,9 +1268,9 @@ Callback вставляет в foo и bar с одним session. Либо with_t
 </details>
 
 <details>
-<summary>What is map-reduce, and how is it utilized within NoSQL databases?</summary>
+<summary>Что такое Map-reduce, and how is it utilized within NoSQL dataBASEs?</summary>
 
-### What is map-reduce, and how is it utilized within NoSQL databases?
+### Что такое Map-reduce, and how is it utilized within NoSQL dataBASEs?
 
 **Definition:**
 
@@ -1286,9 +1286,9 @@ Map-reduce на загруженных страницах MongoDB не опис�
 </details>
 
 <details>
-<summary>Are transactions supported by NoSQL databases, and if so, how are they implemented?</summary>
+<summary>Являются ли transactions supported by NoSQL dataBASEs, and if so, how are they implemented?</summary>
 
-### Are transactions supported by NoSQL databases, and if so, how are they implemented?
+### Являются ли transactions supported by NoSQL dataBASEs, and if so, how are they implemented?
 
 **Definition:**
 
@@ -1318,9 +1318,9 @@ session.endSession();
 ### Indexing and Storage Strategies
 
 <details>
-<summary>Compare indexing strategies between NoSQL and traditional relational databases.</summary>
+<summary>Сравните indexing strategies between NoSQL and traditional relational dataBASEs.</summary>
 
-### Compare indexing strategies between NoSQL and traditional relational databases.
+### Сравните indexing strategies between NoSQL and traditional relational dataBASEs.
 
 **Definition:**
 
@@ -1337,9 +1337,9 @@ session.endSession();
 </details>
 
 <details>
-<summary>How do different storage formats, like JSON, BSON, or binary, affect the performance and flexibility of NoSQL databases?</summary>
+<summary>Как different storage formats, like JSON, BSON, or binary, affect the performance and flexibility of NoSQL dataBASEs?</summary>
 
-### How do different storage formats, like JSON, BSON, or binary, affect the performance and flexibility of NoSQL databases?
+### Как different storage formats, like JSON, BSON, or binary, affect the performance and flexibility of NoSQL dataBASEs?
 
 **Definition:**
 

@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { collectConceptBlocks, parseTopicOutline } from "./parse";
+import {
+  collectConceptBlocks,
+  extractInterviewAnchorTitles,
+  parseTopicOutline,
+} from "./parse";
 
 test("collectConceptBlocks strips duplicate heading after anchor preamble", () => {
   const blocks = collectConceptBlocks(`
@@ -128,4 +132,64 @@ test("interview topic headings group the following questions", () => {
       ["Lists", "What types of lists exist?"],
     ],
   );
+});
+
+test("parseTopicOutline uses English anchors for Russian interview titles", () => {
+  const enMarkdown = `
+## Interview Practice
+
+<details>
+<summary>What does HTML stand for?</summary>
+
+### What does HTML stand for?
+
+**Definition:**
+</details>
+`;
+
+  const ruMarkdown = `
+## Interview Practice
+
+<details>
+<summary>Что означает HTML?</summary>
+
+### Что означает HTML?
+
+**Definition:**
+</details>
+`;
+
+  const outline = parseTopicOutline(ruMarkdown, "ru", {
+    anchorMarkdown: enMarkdown,
+  });
+
+  assert.equal(outline.length, 1);
+  assert.equal(outline[0].title, "Что означает HTML?");
+  assert.equal(outline[0].id, "what-does-html-stand-for");
+  assert.match(outline[0].titleSearchText ?? "", /Что означает HTML/);
+  assert.match(outline[0].titleSearchText ?? "", /What does HTML stand for/);
+});
+
+test("extractInterviewAnchorTitles returns cleaned question titles in order", () => {
+  const titles = extractInterviewAnchorTitles(`
+## Interview Practice
+
+<details>
+<summary>Q1. What is a closure?</summary>
+
+### Q1. What is a closure?
+
+**Definition:**
+</details>
+
+<details>
+<summary>Task 1 — Implement debounce</summary>
+
+### Task 1 — Implement debounce
+
+Short prompt.
+</details>
+`);
+
+  assert.deepEqual(titles, ["What is a closure?", "Implement debounce"]);
 });

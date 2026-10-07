@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Probability](https://devinterview.io/questio
 ### Probability Basics
 
 <details>
-<summary>What is probability, and how is it used in machine learning?</summary>
+<summary>Что такое probability, and how is it used in machine learning?</summary>
 
-### What is probability, and how is it used in machine learning?
+### Что такое probability, and how is it used in machine learning?
 
 **Definition:**
 
@@ -38,9 +38,9 @@ Questions from [Devinterview.io — Probability](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>Define the terms sample space and event in probability.</summary>
+<summary>Определите термины пример пространства AND событие в probability.</summary>
 
-### Define the terms sample space and event in probability.
+### Определите термины пример пространства AND событие в probability.
 
 **Definition:**
 
@@ -59,9 +59,9 @@ Questions from [Devinterview.io — Probability](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>What is the difference between discrete and continuous probability distributions?</summary>
+<summary>Что такое the difference between discrete and continuous probability distributions?</summary>
 
-### What is the difference between discrete and continuous probability distributions?
+### Что такое the difference between discrete and continuous probability distributions?
 
 **Definition:**
 
@@ -80,9 +80,9 @@ Questions from [Devinterview.io — Probability](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>Explain the differences between joint, marginal, and conditional probabilities.</summary>
+<summary>Объясните различия между общей, предельной и условной вероятностями.</summary>
 
-### Explain the differences between joint, marginal, and conditional probabilities.
+### Объясните различия между общей, предельной и условной вероятностями.
 
 **Definition:**
 
@@ -101,9 +101,9 @@ Questions from [Devinterview.io — Probability](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>What does it mean for two events to be independent?</summary>
+<summary>Что означает независимость двух событий?</summary>
 
-### What does it mean for two events to be independent?
+### Что означает независимость двух событий?
 
 **Definition:**
 
@@ -122,9 +122,9 @@ Questions from [Devinterview.io — Probability](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>Describe Bayes' Theorem and provide an example of how it's used.</summary>
+<summary>Опишите Bayes' TheOREM AND предоставляет пример того, как он используется.</summary>
 
-### Describe Bayes' Theorem and provide an example of how it's used.
+### Опишите Bayes' TheOREM AND предоставляет пример того, как он используется.
 
 **Definition:**
 
@@ -143,9 +143,9 @@ Questions from [Devinterview.io — Probability](https://devinterview.io/questio
 </details>
 
 <details>
-<summary>What is a probability density function (PDF)?</summary>
+<summary>Что такое probability density function (PDF)?</summary>
 
-### What is a probability density function (PDF)?
+### Что такое probability density function (PDF)?
 
 **Definition:**
 
@@ -164,9 +164,9 @@ PDF — неотрицательная функция, площадь котор
 </details>
 
 <details>
-<summary>What is the role of the cumulative distribution function (CDF)?</summary>
+<summary>Что такое the role of the cumulative distribution function (CDF)?</summary>
 
-### What is the role of the cumulative distribution function (CDF)?
+### Что такое the role of the cumulative distribution function (CDF)?
 
 **Definition:**
 
@@ -187,9 +187,9 @@ CDF в точке `x` — это `P(X ≤ x)`. Она превращает ра�
 ### Probabilistic Models and Theories
 
 <details>
-<summary>Explain the Central Limit Theorem and its significance in machine learning.</summary>
+<summary>Объясните центральную предельную теорему и ее значение в machine learning.</summary>
 
-### Explain the Central Limit Theorem and its significance in machine learning.
+### Объясните центральную предельную теорему и ее значение в machine learning.
 
 **Definition:**
 
@@ -208,9 +208,9 @@ CDF в точке `x` — это `P(X ≤ x)`. Она превращает ра�
 </details>
 
 <details>
-<summary>What is the Law of Large Numbers?</summary>
+<summary>Что такое the Law of Large Numbers?</summary>
 
-### What is the Law of Large Numbers?
+### Что такое the Law of Large Numbers?
 
 **Definition:**
 
@@ -229,9 +229,9 @@ CDF в точке `x` — это `P(X ≤ x)`. Она превращает ра�
 </details>
 
 <details>
-<summary>Define expectation, variance, and covariance.</summary>
+<summary>Определите ожидание, variance, AND covariance.</summary>
 
-### Define expectation, variance, and covariance.
+### Определите ожидание, variance, AND covariance.
 
 **Definition:**
 
@@ -250,9 +250,9 @@ CDF в точке `x` — это `P(X ≤ x)`. Она превращает ра�
 </details>
 
 <details>
-<summary>What are the characteristics of a Gaussian (Normal) distribution?</summary>
+<summary>Что такое the characteristics of a GAussian (Normal) distribution?</summary>
 
-### What are the characteristics of a Gaussian (Normal) distribution?
+### Что такое the characteristics of a GAussian (Normal) distribution?
 
 **Definition:**
 
@@ -267,9 +267,9 @@ CDF в точке `x` — это `P(X ≤ x)`. Она превращает ра�
 </details>
 
 <details>
-<summary>Explain the utility of the Binomial distribution in machine learning.</summary>
+<summary>Объясните полезность биномиального распределения в machine learning.</summary>
 
-### Explain the utility of the Binomial distribution in machine learning.
+### Объясните полезность биномиального распределения в machine learning.
 
 **Definition:**
 
@@ -288,9 +288,9 @@ CDF в точке `x` — это `P(X ≤ x)`. Она превращает ра�
 </details>
 
 <details>
-<summary>How does the Poisson distribution differ from the Binomial distribution?</summary>
+<summary>Как the Poisson distribution differ from the Binomial distribution?</summary>
 
-### How does the Poisson distribution differ from the Binomial distribution?
+### Как the Poisson distribution differ from the Binomial distribution?
 
 **Definition:**
 
@@ -309,9 +309,9 @@ CDF в точке `x` — это `P(X ≤ x)`. Она превращает ра�
 </details>
 
 <details>
-<summary>What is the relevance of the Bernoulli distribution in machine learning?</summary>
+<summary>Что такое the relevance of the Bernoulli distribution in machine learning?</summary>
 
-### What is the relevance of the Bernoulli distribution in machine learning?
+### Что такое the relevance of the Bernoulli distribution in machine learning?
 
 **Definition:**
 
@@ -332,9 +332,9 @@ CDF в точке `x` — это `P(X ≤ x)`. Она превращает ра�
 ### Applying Probability in Machine Learning
 
 <details>
-<summary>How do probabilistic models cope with uncertainty in predictions?</summary>
+<summary>Как probabilistic models справляется с неопределенностью в прогнозах?</summary>
 
-### How do probabilistic models cope with uncertainty in predictions?
+### Как probabilistic models справляется с неопределенностью в прогнозах?
 
 **Definition:**
 
@@ -355,9 +355,9 @@ https://scikit-learn.org/stable/modules/mixture.html
 </details>
 
 <details>
-<summary>In machine learning, what are Naive Bayes classifiers, and why are they naive?</summary>
+<summary>Что такое Naive Bayes classifiers в machine learning и почему они «naive»?</summary>
 
-### In machine learning, what are Naive Bayes classifiers, and why are they naive?
+### Что такое Naive Bayes classifiers в machine learning и почему они «naive»?
 
 **Definition:**
 
@@ -376,9 +376,9 @@ https://scikit-learn.org/stable/modules/naive_bayes.html
 </details>
 
 <details>
-<summary>How does logistic regression utilize probability?</summary>
+<summary>Как логистическая регрессия использует вероятность?</summary>
 
-### How does logistic regression utilize probability?
+### Как логистическая регрессия использует вероятность?
 
 **Definition:**
 
@@ -397,9 +397,9 @@ https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticR
 </details>
 
 <details>
-<summary>What is the concept of entropy in information theory, and how does it relate to machine learning models?</summary>
+<summary>Что такое the concept of entropy in information theory, and how does it relate to machine learning models?</summary>
 
-### What is the concept of entropy in information theory, and how does it relate to machine learning models?
+### Что такое the concept of entropy in information theory, and how does it relate to machine learning models?
 
 **Definition:**
 
@@ -419,9 +419,9 @@ https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticR
 </details>
 
 <details>
-<summary>Explain the relationship between Maximum Likelihood Estimation (MLE) and probability.</summary>
+<summary>Объясните взаимосвязь между оценкой максимального правдоподобия (MLE) и вероятностью.</summary>
 
-### Explain the relationship between Maximum Likelihood Estimation (MLE) and probability.
+### Объясните взаимосвязь между оценкой максимального правдоподобия (MLE) и вероятностью.
 
 **Definition:**
 
@@ -441,9 +441,9 @@ https://scikit-learn.org/stable/modules/mixture.html
 </details>
 
 <details>
-<summary>How is probability used in Bayesian inference for machine learning?</summary>
+<summary>Как probability used in Bayesian inference for machine learning?</summary>
 
-### How is probability used in Bayesian inference for machine learning?
+### Как probability used in Bayesian inference for machine learning?
 
 **Definition:**
 
@@ -465,9 +465,9 @@ https://scikit-learn.org/stable/modules/mixture.html
 ### Practical Considerations of Probability in Machine Learning
 
 <details>
-<summary>How can assuming independence in probabilistic models lead to inaccuracies?</summary>
+<summary>Как предположение о независимости в probabilistic models может привести к неточностям?</summary>
 
-### How can assuming independence in probabilistic models lead to inaccuracies?
+### Как предположение о независимости в probabilistic models может привести к неточностям?
 
 **Definition:**
 
@@ -487,9 +487,9 @@ https://scikit-learn.org/stable/modules/mixture.html
 </details>
 
 <details>
-<summary>Describe how to update probabilities using the concept of prior, likelihood, and posterior.</summary>
+<summary>Описать, как обновить вероятности, используя концепцию априорного, правдоподобного и апостериорного.</summary>
 
-### Describe how to update probabilities using the concept of prior, likelihood, and posterior.
+### Описать, как обновить вероятности, используя концепцию априорного, правдоподобного и апостериорного.
 
 **Definition:**
 
@@ -509,9 +509,9 @@ https://scikit-learn.org/stable/modules/mixture.html
 </details>
 
 <details>
-<summary>What strategies would you use to handle missing data in probabilistic models?</summary>
+<summary>Какие стратегии вы используете для обработки missing data в probabilistic models?</summary>
 
-### What strategies would you use to handle missing data in probabilistic models?
+### Какие стратегии вы используете для обработки missing data в probabilistic models?
 
 **Definition:**
 
@@ -532,9 +532,9 @@ https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_1samp.htm
 </details>
 
 <details>
-<summary>How do you determine the significance of an observed effect using probability?</summary>
+<summary>Как вы определяете значимость наблюдаемого эффекта, используя вероятность?</summary>
 
-### How do you determine the significance of an observed effect using probability?
+### Как вы определяете значимость наблюдаемого эффекта, используя вероятность?
 
 **Definition:**
 
@@ -553,9 +553,9 @@ https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_1samp.htm
 </details>
 
 <details>
-<summary>What are p-values and confidence intervals, and how are they interpreted?</summary>
+<summary>Что такое p-values and confidence intervals, and how are they interpreted?</summary>
 
-### What are p-values and confidence intervals, and how are they interpreted?
+### Что такое p-values and confidence intervals, and how are they interpreted?
 
 **Definition:**
 
@@ -576,9 +576,9 @@ https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_1samp.htm
 ### Specific Algorithms and Techniques
 
 <details>
-<summary>Describe how a probabilistic graphical model (PGM) works.</summary>
+<summary>Опишите, как работает модель probabilistic graphical (PGM).</summary>
 
-### Describe how a probabilistic graphical model (PGM) works.
+### Опишите, как работает модель probabilistic graphical (PGM).
 
 **Definition:**
 
@@ -599,9 +599,9 @@ https://en.wikipedia.org/wiki/Markov_chain
 </details>
 
 <details>
-<summary>Explain the concepts of Markov Chains and how they apply to machine learning.</summary>
+<summary>Объясните концепцию цепей Маркова и то, как они применимы к machine learning.</summary>
 
-### Explain the concepts of Markov Chains and how they apply to machine learning.
+### Объясните концепцию цепей Маркова и то, как они применимы к machine learning.
 
 **Definition:**
 
@@ -620,9 +620,9 @@ https://en.wikipedia.org/wiki/Markov_chain
 </details>
 
 <details>
-<summary>How do Hidden Markov Models (HMMs) use probability in sequential data modeling?</summary>
+<summary>Как скрытые марковские модели (HMM) используют вероятность при моделировании последовательных данных?</summary>
 
-### How do Hidden Markov Models (HMMs) use probability in sequential data modeling?
+### Как скрытые марковские модели (HMM) используют вероятность при моделировании последовательных данных?
 
 **Definition:**
 
@@ -642,9 +642,9 @@ https://scikit-learn.org/stable/modules/naive_bayes.html
 </details>
 
 <details>
-<summary>What is Expectation-Maximization (EM) algorithm and how does probability play a role in it?</summary>
+<summary>Что такое Expectation-Maximization (EM) alGorithm and how does probability play a role in it?</summary>
 
-### What is Expectation-Maximization (EM) algorithm and how does probability play a role in it?
+### Что такое Expectation-Maximization (EM) alGorithm and how does probability play a role in it?
 
 **Definition:**
 
@@ -665,9 +665,9 @@ https://scikit-learn.org/stable/modules/mixture.html
 ### Coding Challenges
 
 <details>
-<summary>Write a Python function that calculates the probability of rolling a sum of S on two dice.</summary>
+<summary>Напишите a Python function that calculates the probability of rolling a sum of S on two dice.</summary>
 
-### Write a Python function that calculates the probability of rolling a sum of S on two dice.
+### Напишите a Python function that calculates the probability of rolling a sum of S on two dice.
 
 **Definition:**
 
@@ -695,9 +695,9 @@ https://numpy.org/doc/stable/reference/random/index.html
 </details>
 
 <details>
-<summary>Implement a function that simulates a biased coin flip n times and estimates the probability of heads.</summary>
+<summary>Реализуйте a function that simulates a biased coin flip n times and estimates the probability of heads.</summary>
 
-### Implement a function that simulates a biased coin flip n times and estimates the probability of heads.
+### Реализуйте a function that simulates a biased coin flip n times and estimates the probability of heads.
 
 **Definition:**
 
@@ -725,9 +725,9 @@ https://numpy.org/doc/stable/reference/random/index.html
 </details>
 
 <details>
-<summary>Code a Gaussian Naive Bayes classifier from scratch using Python.</summary>
+<summary>С нуля с помощью Python закодируйте классификатор Gaussian Naive Bayes.</summary>
 
-### Code a Gaussian Naive Bayes classifier from scratch using Python.
+### С нуля с помощью Python закодируйте классификатор Gaussian Naive Bayes.
 
 **Definition:**
 
@@ -753,9 +753,9 @@ https://scikit-learn.org/stable/modules/naive_bayes.html
 </details>
 
 <details>
-<summary>Simulate the Law of Large Numbers using Python: verify that as the number of coin tosses increases, the average of the results becomes closer to the expected value.</summary>
+<summary>Смоделируйте the Law of Large Numbers using Python: verify that as the number of coin tosses increases, the average of the results becomes closer to the expected value.</summary>
 
-### Simulate the Law of Large Numbers using Python: verify that as the number of coin tosses increases, the average of the results becomes closer to the expected value.
+### Смоделируйте the Law of Large Numbers using Python: verify that as the number of coin tosses increases, the average of the results becomes closer to the expected value.
 
 **Definition:**
 
@@ -782,9 +782,9 @@ https://numpy.org/doc/stable/reference/random/index.html
 </details>
 
 <details>
-<summary>Write a Python script that estimates the mean and variance of a dataset and plots the corresponding Gaussian distribution.</summary>
+<summary>Напишите a Python script that estimates the mean and variance of a dataset and plots the corresponding GAussian distribution.</summary>
 
-### Write a Python script that estimates the mean and variance of a dataset and plots the corresponding Gaussian distribution.
+### Напишите a Python script that estimates the mean and variance of a dataset and plots the corresponding GAussian distribution.
 
 **Definition:**
 
@@ -806,9 +806,9 @@ https://numpy.org/doc/stable/reference/random/index.html
 ### Scenario-Based Probability Questions
 
 <details>
-<summary>How would you use probability to design a recommendation system model?</summary>
+<summary>Как бы вы use probability to design a recommendation system model?</summary>
 
-### How would you use probability to design a recommendation system model?
+### Как бы вы use probability to design a recommendation system model?
 
 **Definition:**
 
@@ -829,9 +829,9 @@ https://scikit-learn.org/stable/modules/mixture.html
 </details>
 
 <details>
-<summary>Propose a method for predicting customer churn using probabilistic models.</summary>
+<summary>Предложите метод прогнозирования customer churn с помощью probabilistic models.</summary>
 
-### Propose a method for predicting customer churn using probabilistic models.
+### Предложите метод прогнозирования customer churn с помощью probabilistic models.
 
 **Definition:**
 
@@ -851,9 +851,9 @@ https://scikit-learn.org/stable/modules/naive_bayes.html
 </details>
 
 <details>
-<summary>Discuss how you would use probabilities to detect anomalies in transaction data.</summary>
+<summary>Обсудите, как бы вы использовали вероятности для обнаружения аномалий в данных транзакций.</summary>
 
-### Discuss how you would use probabilities to detect anomalies in transaction data.
+### Обсудите, как бы вы использовали вероятности для обнаружения аномалий в данных транзакций.
 
 **Definition:**
 
@@ -872,9 +872,9 @@ https://scikit-learn.org/stable/modules/mixture.html
 </details>
 
 <details>
-<summary>Describe how you might use Bayesian methods to improve the performance of a spam classifier.</summary>
+<summary>Опишите, как можно использовать методы Bayesian для повышения производительности классификатора спама.</summary>
 
-### Describe how you might use Bayesian methods to improve the performance of a spam classifier.
+### Опишите, как можно использовать методы Bayesian для повышения производительности классификатора спама.
 
 **Definition:**
 
@@ -893,9 +893,9 @@ https://scikit-learn.org/stable/modules/naive_bayes.html
 </details>
 
 <details>
-<summary>Explain a situation where you would use Markov Chains for modeling customer behavior on a website.</summary>
+<summary>Объясните ситуацию, в которой вы использовали бы цепи Маркова для моделирования поведения клиентов на веб-сайте.</summary>
 
-### Explain a situation where you would use Markov Chains for modeling customer behavior on a website.
+### Объясните ситуацию, в которой вы использовали бы цепи Маркова для моделирования поведения клиентов на веб-сайте.
 
 **Definition:**
 
@@ -916,9 +916,9 @@ https://en.wikipedia.org/wiki/Markov_chain
 ### Advanced Probability Concepts and Research
 
 <details>
-<summary>How has the advent of Quantum Computing influenced probabilistic algorithms?</summary>
+<summary>Как появление Quantum Computing повлияло на probabilistic algorithms?</summary>
 
-### How has the advent of Quantum Computing influenced probabilistic algorithms?
+### Как появление Quantum Computing повлияло на probabilistic algorithms?
 
 **Definition:**
 
@@ -938,9 +938,9 @@ https://en.wikipedia.org/wiki/Markov_chain
 </details>
 
 <details>
-<summary>What role does probability play in reinforcement learning and decision making?</summary>
+<summary>Какую роль играет probability в reinforcement learning и decision making?</summary>
 
-### What role does probability play in reinforcement learning and decision making?
+### Какую роль играет probability в reinforcement learning и decision making?
 
 **Definition:**
 
@@ -960,9 +960,9 @@ https://numpy.org/doc/stable/reference/random/index.html
 </details>
 
 <details>
-<summary>Describe how Monte Carlo simulations are used in machine learning for approximation of probabilities.</summary>
+<summary>Опишите, как моделирование Monte Carlo используется в machine learning для аппроксимации вероятностей.</summary>
 
-### Describe how Monte Carlo simulations are used in machine learning for approximation of probabilities.
+### Опишите, как моделирование Monte Carlo используется в machine learning для аппроксимации вероятностей.
 
 **Definition:**
 
@@ -982,9 +982,9 @@ https://en.wikipedia.org/wiki/Markov_chain
 </details>
 
 <details>
-<summary>How do GANs (Generative Adversarial Networks) utilize probability theory?</summary>
+<summary>Как GANs (генерирующие сети AdveRSArial) используют теорию вероятностей?</summary>
 
-### How do GANs (Generative Adversarial Networks) utilize probability theory?
+### Как GANs (генерирующие сети AdveRSArial) используют теорию вероятностей?
 
 **Definition:**
 
@@ -1005,9 +1005,9 @@ https://scikit-learn.org/stable/modules/mixture.html
 </details>
 
 <details>
-<summary>What are the probabilistic underpinnings of Active Learning and how might they be utilized in algorithm design?</summary>
+<summary>Что такое the probabilistic underpinnings of Active Learning and how might they be utilized in alGorithm design?</summary>
 
-### What are the probabilistic underpinnings of Active Learning and how might they be utilized in algorithm design?
+### Что такое the probabilistic underpinnings of Active Learning and how might they be utilized in alGorithm design?
 
 **Definition:**
 

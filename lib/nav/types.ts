@@ -124,4 +124,6 @@ export type ChromeCopy = {
   readonly confirmNo: string;
   readonly back: string;
   readonly next: string;
+  readonly interviewQuestions: string;
+  readonly interviewTasks: string;
 };

@@ -1,10 +1,10 @@
 # Cursor — Core
 
-Everyday Agent habits: shortcuts, Run Modes, verification loops, and community configs. Pair with [Skills](./0_ai_cursor_skills.md), [Rules](./0_ai_cursor_rules.md), and [Plugins](./0_ai_cursor_plugins.md) for the deeper feature pages.
+Everyday Agent habits: shortcuts, Run Modes, verification loops, and community configs. Pair with [Skills](./0_ai_cursor_skills.md), [Rules](./0_ai_cursor_rules.md), [Plugins](./0_ai_cursor_plugins.md), [Subagents](./0_ai_cursor_subagents.md), and [Hooks](./0_ai_cursor_hooks.md) for the deeper feature pages.
 
 ### Related docs
 
-- [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
+- [AI workflow](./0_ai.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
@@ -218,3 +218,9 @@ A: Non-trivial tasks rarely one-shot correctly; a suite gives an objective loop 
 
 **Q: What is cursor.directory for?**  
 A: Community discovery of rules, MCP, and plugins — audit before install; official marketplace is still the publish/install path for Cursor Plugins.
+
+**Q: Subagents vs skills — when to use which?**  
+A: Full notes: [Subagents](./0_ai_cursor_subagents.md#subagents-vs-skills).
+
+**Q: What do Cursor hooks do?**  
+A: Full notes: [Hooks](./0_ai_cursor_hooks.md#what-are-hooks).

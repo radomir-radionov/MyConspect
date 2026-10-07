@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Cryptography](https://devinterview.io/questi
 ### Cryptography Fundamentals
 
 <details>
-<summary>What is cryptography, and what are its main goals?</summary>
+<summary>Что такое cryptography, and what are its main Goals?</summary>
 
-### What is cryptography, and what are its main goals?
+### Что такое cryptography, and what are its main Goals?
 
 **Definition:**
 
@@ -45,9 +45,9 @@ Questions from [Devinterview.io — Cryptography](https://devinterview.io/questi
 </details>
 
 <details>
-<summary>Explain the difference between symmetric and asymmetric cryptography.</summary>
+<summary>Объясните the difference between symmetric and asymmetric cryptography.</summary>
 
-### Explain the difference between symmetric and asymmetric cryptography.
+### Объясните the difference between symmetric and asymmetric cryptography.
 
 **Definition:**
 
@@ -68,9 +68,9 @@ Questions from [Devinterview.io — Cryptography](https://devinterview.io/questi
 </details>
 
 <details>
-<summary>What is a cryptographic hash function, and what properties must it have?</summary>
+<summary>Что такое cryptographic hash function, and what properties must it have?</summary>
 
-### What is a cryptographic hash function, and what properties must it have?
+### Что такое cryptographic hash function, and what properties must it have?
 
 **Definition:**
 
@@ -92,9 +92,9 @@ Questions from [Devinterview.io — Cryptography](https://devinterview.io/questi
 </details>
 
 <details>
-<summary>Describe the concept of public key infrastructure (PKI).</summary>
+<summary>Опишите the concept of public key infrastructure (PKI).</summary>
 
-### Describe the concept of public key infrastructure (PKI).
+### Опишите the concept of public key infrastructure (PKI).
 
 **Definition:**
 
@@ -115,9 +115,9 @@ PKI — набор ролей и документов, который позво
 </details>
 
 <details>
-<summary>What is a digital signature, and how does it work?</summary>
+<summary>Что такое digital signature, and how does it work?</summary>
 
-### What is a digital signature, and how does it work?
+### Что такое digital signature, and how does it work?
 
 **Definition:**
 
@@ -138,9 +138,9 @@ PKI — набор ролей и документов, который позво
 </details>
 
 <details>
-<summary>Can you explain what a nonce is and how it’s used in cryptography?</summary>
+<summary>Можете ли вы explain what a nonce is and how it’s used in cryptography?</summary>
 
-### Can you explain what a nonce is and how it’s used in cryptography?
+### Можете ли вы explain what a nonce is and how it’s used in cryptography?
 
 **Definition:**
 
@@ -165,9 +165,9 @@ counter = counter + 1
 </details>
 
 <details>
-<summary>What does it mean for a cryptographic algorithm to be “computationally secure”?</summary>
+<summary>Что означает it mean for a cryptographic alGorithm to be “computationally secure”?</summary>
 
-### What does it mean for a cryptographic algorithm to be “computationally secure”?
+### Что означает it mean for a cryptographic alGorithm to be “computationally secure”?
 
 **Definition:**
 
@@ -188,9 +188,9 @@ AES-128 считают вычислительно стойким: полный �
 </details>
 
 <details>
-<summary>Describe the concept of perfect secrecy and name an encryption system that achieves it.</summary>
+<summary>Опишите the concept of perfect secrecy and name an encryption system that achieves it.</summary>
 
-### Describe the concept of perfect secrecy and name an encryption system that achieves it.
+### Опишите the concept of perfect secrecy and name an encryption system that achieves it.
 
 **Definition:**
 
@@ -213,9 +213,9 @@ AES-128 считают вычислительно стойким: полный �
 ### Encryption Algorithms
 
 <details>
-<summary>What are substitution and permutation in the context of encryption algorithms?</summary>
+<summary>Что такое substitution and permutation in the context of encryption alGorithms?</summary>
 
-### What are substitution and permutation in the context of encryption algorithms?
+### Что такое substitution and permutation in the context of encryption alGorithms?
 
 **Definition:**
 
@@ -240,9 +240,9 @@ Rail fence, 2 rails: cat -> cta          # c then a then t, reordered
 </details>
 
 <details>
-<summary>Explain the basic principle behind the AES encryption algorithm.</summary>
+<summary>Объясните the basic principle behind the AES encryption alGorithm.</summary>
 
-### Explain the basic principle behind the AES encryption algorithm.
+### Объясните the basic principle behind the AES encryption alGorithm.
 
 **Definition:**
 
@@ -263,9 +263,9 @@ AES шифрует 128-битный блок, повторяя раунд под
 </details>
 
 <details>
-<summary>What is the Data Encryption Standard (DES), and why is it considered insecure today?</summary>
+<summary>Что такое the Data Encryption Standard (DES), and why is it considered insecure today?</summary>
 
-### What is the Data Encryption Standard (DES), and why is it considered insecure today?
+### Что такое the Data Encryption Standard (DES), and why is it considered insecure today?
 
 **Definition:**
 
@@ -286,9 +286,9 @@ DES — блочный шифр 1970-х: блоки по 64 бита, ключ 5
 </details>
 
 <details>
-<summary>Describe the differences between RSA and ECC (Elliptic Curve Cryptography).</summary>
+<summary>Опишите the differences between RSA and ECC (Elliptic Curve Cryptography).</summary>
 
-### Describe the differences between RSA and ECC (Elliptic Curve Cryptography).
+### Опишите the differences between RSA and ECC (Elliptic Curve Cryptography).
 
 **Definition:**
 
@@ -309,9 +309,9 @@ TLS-сертификат с ключом P-256 несёт гораздо мен�
 </details>
 
 <details>
-<summary>How does a stream cipher differ from a block cipher?</summary>
+<summary>Как a stream cipher differ from a block cipher?</summary>
 
-### How does a stream cipher differ from a block cipher?
+### Как a stream cipher differ from a block cipher?
 
 **Definition:**
 
@@ -331,9 +331,9 @@ ChaCha20 делает XOR каждого байта открытого текс�
 </details>
 
 <details>
-<summary>Can you describe the Feistel cipher structure?</summary>
+<summary>Можете ли вы describe the Feistel cipher structure?</summary>
 
-### Can you describe the Feistel cipher structure?
+### Можете ли вы describe the Feistel cipher structure?
 
 **Definition:**
 
@@ -360,9 +360,9 @@ L, R = R, L xor F(R, k2)
 </details>
 
 <details>
-<summary>What are the key differences between DES and 3DES?</summary>
+<summary>Что такое the key differences between DES and 3DES?</summary>
 
-### What are the key differences between DES and 3DES?
+### Что такое the key differences between DES and 3DES?
 
 **Definition:**
 
@@ -383,9 +383,9 @@ L, R = R, L xor F(R, k2)
 </details>
 
 <details>
-<summary>Explain the main security features of the RSA algorithm.</summary>
+<summary>Объясните the main security features of the RSA alGorithm.</summary>
 
-### Explain the main security features of the RSA algorithm.
+### Объясните the main security features of the RSA alGorithm.
 
 **Definition:**
 
@@ -409,9 +409,9 @@ RSA — конструкция с открытым ключом. Открыты�
 </details>
 
 <details>
-<summary>What is quantum cryptography, and how might it impact current encryption methods?</summary>
+<summary>Что такое quantum cryptography, and how might it impact current encryption methods?</summary>
 
-### What is quantum cryptography, and how might it impact current encryption methods?
+### Что такое quantum cryptography, and how might it impact current encryption methods?
 
 **Definition:**
 
@@ -437,9 +437,9 @@ RSA — конструкция с открытым ключом. Открыты�
 ### Cryptanalysis
 
 <details>
-<summary>What is cryptanalysis?</summary>
+<summary>Что такое cryptanalysis?</summary>
 
-### What is cryptanalysis?
+### Что такое cryptanalysis?
 
 **Definition:**
 
@@ -458,9 +458,9 @@ RSA — конструкция с открытым ключом. Открыты�
 </details>
 
 <details>
-<summary>What is a brute force attack, and how can systems be protected against it?</summary>
+<summary>Что такое brute force attack, and how can systems be protected aGAinst it?</summary>
 
-### What is a brute force attack, and how can systems be protected against it?
+### Что такое brute force attack, and how can systems be protected aGAinst it?
 
 **Definition:**
 
@@ -483,9 +483,9 @@ RSA — конструкция с открытым ключом. Открыты�
 </details>
 
 <details>
-<summary>Describe a man-in-the-middle attack and how it can be prevented.</summary>
+<summary>Опишите a man-in-the-middle attack and how it can be prevented.</summary>
 
-### Describe a man-in-the-middle attack and how it can be prevented.
+### Опишите a man-in-the-middle attack and how it can be prevented.
 
 **Definition:**
 
@@ -509,9 +509,9 @@ RSA — конструкция с открытым ключом. Открыты�
 </details>
 
 <details>
-<summary>Explain what a side-channel attack is.</summary>
+<summary>Объясните what a side-channel attack is.</summary>
 
-### Explain what a side-channel attack is.
+### Объясните what a side-channel attack is.
 
 **Definition:**
 
@@ -535,9 +535,9 @@ RSA — конструкция с открытым ключом. Открыты�
 </details>
 
 <details>
-<summary>What is a chosen plaintext attack?</summary>
+<summary>Что такое chosen plaintext attack?</summary>
 
-### What is a chosen plaintext attack?
+### Что такое chosen plaintext attack?
 
 **Definition:**
 
@@ -557,9 +557,9 @@ RSA — конструкция с открытым ключом. Открыты�
 </details>
 
 <details>
-<summary>How does a frequency analysis attack work against certain ciphers?</summary>
+<summary>Как a frequency analysis attack work aGAinst certain ciphers?</summary>
 
-### How does a frequency analysis attack work against certain ciphers?
+### Как a frequency analysis attack work aGAinst certain ciphers?
 
 **Definition:**
 
@@ -580,9 +580,9 @@ RSA — конструкция с открытым ключом. Открыты�
 ### Hash Functions and Digital Signatures
 
 <details>
-<summary>What is the difference between HMAC and a simple hash function?</summary>
+<summary>Что такое the difference between HMAC and a simple hash function?</summary>
 
-### What is the difference between HMAC and a simple hash function?
+### Что такое the difference between HMAC and a simple hash function?
 
 **Definition:**
 
@@ -615,9 +615,9 @@ const tag = createHmac('sha256', key).update(message).digest('hex');
 </details>
 
 <details>
-<summary>Explain the concept of a collision in hash functions and why it is significant.</summary>
+<summary>Объясните the concept of a collision in hash functions and why it is significant.</summary>
 
-### Explain the concept of a collision in hash functions and why it is significant.
+### Объясните the concept of a collision in hash functions and why it is significant.
 
 **Definition:**
 
@@ -636,9 +636,9 @@ const tag = createHmac('sha256', key).update(message).digest('hex');
 </details>
 
 <details>
-<summary>Describe the birthday attack and its relevance to hash functions.</summary>
+<summary>Опишите the birthday attack and its relevance to hash functions.</summary>
 
-### Describe the birthday attack and its relevance to hash functions.
+### Опишите the birthday attack and its relevance to hash functions.
 
 **Definition:**
 
@@ -658,9 +658,9 @@ const tag = createHmac('sha256', key).update(message).digest('hex');
 </details>
 
 <details>
-<summary>How does a digital signature guarantee the integrity and authenticity of a message?</summary>
+<summary>Как a digital signature guarantee the integrity and authenticity of a message?</summary>
 
-### How does a digital signature guarantee the integrity and authenticity of a message?
+### Как a digital signature guarantee the integrity and authenticity of a message?
 
 **Definition:**
 
@@ -680,9 +680,9 @@ const tag = createHmac('sha256', key).update(message).digest('hex');
 </details>
 
 <details>
-<summary>What are RSA signatures, and how do they differ from RSA encryption?</summary>
+<summary>Что такое RSA signatures, and how do they differ from RSA encryption?</summary>
 
-### What are RSA signatures, and how do they differ from RSA encryption?
+### Что такое RSA signatures, and how do they differ from RSA encryption?
 
 **Definition:**
 
@@ -707,9 +707,9 @@ const tag = createHmac('sha256', key).update(message).digest('hex');
 </details>
 
 <details>
-<summary>Explain the importance of using a secure hash algorithm for digital signatures.</summary>
+<summary>Объясните the importance of using a secure hash alGorithm for digital signatures.</summary>
 
-### Explain the importance of using a secure hash algorithm for digital signatures.
+### Объясните the importance of using a secure hash alGorithm for digital signatures.
 
 **Definition:**
 
@@ -733,9 +733,9 @@ NIST описывает цифровую подпись как хеш данны
 </details>
 
 <details>
-<summary>What is a Merkle tree, and how is it used in cryptography?</summary>
+<summary>Что такое Merkle tree, and how is it used in cryptography?</summary>
 
-### What is a Merkle tree, and how is it used in cryptography?
+### Что такое Merkle tree, and how is it used in cryptography?
 
 **Definition:**
 
@@ -761,9 +761,9 @@ NIST описывает цифровую подпись как хеш данны
 ### Key Management and Protocols
 
 <details>
-<summary>What is key distribution, and what challenges does it present?</summary>
+<summary>Что такое key distribution, and what challenges does it present?</summary>
 
-### What is key distribution, and what challenges does it present?
+### Что такое key distribution, and what challenges does it present?
 
 **Definition:**
 
@@ -783,9 +783,9 @@ NIST описывает цифровую подпись как хеш данны
 </details>
 
 <details>
-<summary>Describe Diffie-Hellman key exchange and its primary use.</summary>
+<summary>Опишите Diffie-Hellman key exchange and its Primary use.</summary>
 
-### Describe Diffie-Hellman key exchange and its primary use.
+### Опишите Diffie-Hellman key exchange and its Primary use.
 
 **Definition:**
 
@@ -810,9 +810,9 @@ Diffie-Hellman позволяет двум сторонам согласоват
 </details>
 
 <details>
-<summary>Explain what a key escrow is and its purpose in cryptography.</summary>
+<summary>Объясните what a key escrow is and its puRPOse in cryptography.</summary>
 
-### Explain what a key escrow is and its purpose in cryptography.
+### Объясните what a key escrow is and its puRPOse in cryptography.
 
 **Definition:**
 
@@ -836,9 +836,9 @@ Diffie-Hellman позволяет двум сторонам согласоват
 </details>
 
 <details>
-<summary>How do certificate authorities help in securing communications over the internet?</summary>
+<summary>Как certificate authorities help in securing communications over the internet?</summary>
 
-### How do certificate authorities help in securing communications over the internet?
+### Как certificate authorities help in securing communications over the internet?
 
 **Definition:**
 
@@ -859,9 +859,9 @@ Diffie-Hellman позволяет двум сторонам согласоват
 </details>
 
 <details>
-<summary>What is forward secrecy, and what protocols use this property?</summary>
+<summary>Что такое forward secrecy, and what protocols use this property?</summary>
 
-### What is forward secrecy, and what protocols use this property?
+### Что такое forward secrecy, and what protocols use this property?
 
 **Definition:**
 
@@ -887,9 +887,9 @@ Diffie-Hellman позволяет двум сторонам согласоват
 ### Authentication and Access Control
 
 <details>
-<summary>Explain the role of cryptography in user authentication.</summary>
+<summary>Объясните the role of cryptography in user authentication.</summary>
 
-### Explain the role of cryptography in user authentication.
+### Объясните the role of cryptography in user authentication.
 
 **Definition:**
 
@@ -909,9 +909,9 @@ Diffie-Hellman позволяет двум сторонам согласоват
 </details>
 
 <details>
-<summary>What is multi-factor authentication, and how is cryptography involved?</summary>
+<summary>Что такое multi-factor authentication, and how is cryptography involved?</summary>
 
-### What is multi-factor authentication, and how is cryptography involved?
+### Что такое multi-factor authentication, and how is cryptography involved?
 
 **Definition:**
 
@@ -935,9 +935,9 @@ Diffie-Hellman позволяет двум сторонам согласоват
 </details>
 
 <details>
-<summary>Describe the OAuth 2.0 protocol and its use cases in authentication.</summary>
+<summary>Опишите the OAuth 2.0 protocol and its use cases in authentication.</summary>
 
-### Describe the OAuth 2.0 protocol and its use cases in authentication.
+### Опишите the OAuth 2.0 protocol and its use cases in authentication.
 
 **Definition:**
 
@@ -961,9 +961,9 @@ OAuth 2.0 — каркас авторизации. RFC 6749 говорит, чт
 </details>
 
 <details>
-<summary>Explain the concept of role-based access control (RBAC) and its cryptographic requirements.</summary>
+<summary>Объясните the concept of role-BASEd access control (RBAC) and its cryptographic requirements.</summary>
 
-### Explain the concept of role-based access control (RBAC) and its cryptographic requirements.
+### Объясните the concept of role-BASEd access control (RBAC) and its cryptographic requirements.
 
 **Definition:**
 
@@ -989,9 +989,9 @@ OAuth 2.0 — каркас авторизации. RFC 6749 говорит, чт
 ### Cryptography in Software and Applications
 
 <details>
-<summary>How does HTTPS utilize cryptography to secure communications over the web?</summary>
+<summary>Как HTTPS utilize cryptography to secure communications over the web?</summary>
 
-### How does HTTPS utilize cryptography to secure communications over the web?
+### Как HTTPS utilize cryptography to secure communications over the web?
 
 **Definition:**
 
@@ -1013,9 +1013,9 @@ HTTPS — это HTTP поверх TLS. TLS — протокол, который
 </details>
 
 <details>
-<summary>What is a TLS/SSL certificate, and how does it establish a secure session?</summary>
+<summary>Что такое TLS/SSL certificate, and how does it establish a secure session?</summary>
 
-### What is a TLS/SSL certificate, and how does it establish a secure session?
+### Что такое TLS/SSL certificate, and how does it establish a secure session?
 
 **Definition:**
 
@@ -1036,9 +1036,9 @@ TLS-сертификат — это цифровой сертификат, ко�
 </details>
 
 <details>
-<summary>Explain how cryptography is used in blockchain technology.</summary>
+<summary>Объясните how cryptography is used in blockchain technology.</summary>
 
-### Explain how cryptography is used in blockchain technology.
+### Объясните how cryptography is used in blockchain technology.
 
 **Definition:**
 
@@ -1058,9 +1058,9 @@ TLS-сертификат — это цифровой сертификат, ко�
 </details>
 
 <details>
-<summary>Describe the use of cryptographic primitives in password hashing.</summary>
+<summary>Опишите the use of cryptographic Primitives in password hashing.</summary>
 
-### Describe the use of cryptographic primitives in password hashing.
+### Опишите the use of cryptographic Primitives in password hashing.
 
 **Definition:**
 
@@ -1096,9 +1096,9 @@ pbkdf2(password, salt, iterations, 64, 'sha512', (err, derivedKey) => {
 </details>
 
 <details>
-<summary>How do secure cookies work, and what cryptographic measures are involved?</summary>
+<summary>Как secure cookies work, and what cryptographic measures are involved?</summary>
 
-### How do secure cookies work, and what cryptographic measures are involved?
+### Как secure cookies work, and what cryptographic measures are involved?
 
 **Definition:**
 
@@ -1130,9 +1130,9 @@ Set-Cookie: sessionId=38afes7a8; Secure; HttpOnly; SameSite=Lax; Path=/
 ### Advanced Topics
 
 <details>
-<summary>Explain the principles behind homomorphic encryption and its potential applications.</summary>
+<summary>Объясните the principles behind homomorphic encryption and its potential applications.</summary>
 
-### Explain the principles behind homomorphic encryption and its potential applications.
+### Объясните the principles behind homomorphic encryption and its potential applications.
 
 **Definition:**
 
@@ -1155,9 +1155,9 @@ Set-Cookie: sessionId=38afes7a8; Secure; HttpOnly; SameSite=Lax; Path=/
 </details>
 
 <details>
-<summary>What is zero-knowledge proof, and how does it maintain privacy?</summary>
+<summary>Что такое zero-knowledge proof, and how does it maintain privacy?</summary>
 
-### What is zero-knowledge proof, and how does it maintain privacy?
+### Что такое zero-knowledge proof, and how does it maintain privacy?
 
 **Definition:**
 
@@ -1181,9 +1181,9 @@ Set-Cookie: sessionId=38afes7a8; Secure; HttpOnly; SameSite=Lax; Path=/
 </details>
 
 <details>
-<summary>Describe the concept of secure multi-party computation.</summary>
+<summary>Опишите the concept of secure multi-party computation.</summary>
 
-### Describe the concept of secure multi-party computation.
+### Опишите the concept of secure multi-party computation.
 
 **Definition:**
 
@@ -1206,9 +1206,9 @@ Set-Cookie: sessionId=38afes7a8; Secure; HttpOnly; SameSite=Lax; Path=/
 </details>
 
 <details>
-<summary>Explain the purpose of post-quantum cryptography.</summary>
+<summary>Объясните the puRPOse of post-quantum cryptography.</summary>
 
-### Explain the purpose of post-quantum cryptography.
+### Объясните the puRPOse of post-quantum cryptography.
 
 **Definition:**
 
@@ -1234,9 +1234,9 @@ Set-Cookie: sessionId=38afes7a8; Secure; HttpOnly; SameSite=Lax; Path=/
 ### Standards and Protocols
 
 <details>
-<summary>What is the NIST, and what role does it play in cryptography?</summary>
+<summary>Что такое the NIST, and what role does it play in cryptography?</summary>
 
-### What is the NIST, and what role does it play in cryptography?
+### Что такое the NIST, and what role does it play in cryptography?
 
 **Definition:**
 
@@ -1258,9 +1258,9 @@ NIST — Национальный институт стандартов и те�
 </details>
 
 <details>
-<summary>How do cryptographic modules and algorithms get validated (e.g., FIPS 140-2)?</summary>
+<summary>Как cryptographic modules and alGorithms get validated (e.g., FIPS 140-2)?</summary>
 
-### How do cryptographic modules and algorithms get validated (e.g., FIPS 140-2)?
+### Как cryptographic modules and alGorithms get validated (e.g., FIPS 140-2)?
 
 **Definition:**
 
@@ -1284,9 +1284,9 @@ NIST — Национальный институт стандартов и те�
 </details>
 
 <details>
-<summary>Explain the importance and usage of the Common Criteria for Information Technology Security Evaluation.</summary>
+<summary>Объясните the importance and usage of the Common Criteria for Information Technology Security Evaluation.</summary>
 
-### Explain the importance and usage of the Common Criteria for Information Technology Security Evaluation.
+### Объясните the importance and usage of the Common Criteria for Information Technology Security Evaluation.
 
 **Definition:**
 
@@ -1309,9 +1309,9 @@ Common Criteria — руководящий документ, который да
 </details>
 
 <details>
-<summary>Describe the purpose of the Transport Layer Security (TLS) protocol and its predecessor SSL.</summary>
+<summary>Опишите the puRPOse of the Transport Layer Security (TLS) protocol and its predecessor SSL.</summary>
 
-### Describe the purpose of the Transport Layer Security (TLS) protocol and its predecessor SSL.
+### Опишите the puRPOse of the Transport Layer Security (TLS) protocol and its predecessor SSL.
 
 **Definition:**
 
@@ -1335,9 +1335,9 @@ TLS позволяет клиенту и серверу общаться чер�
 </details>
 
 <details>
-<summary>What is the S/MIME standard, and what is it used for?</summary>
+<summary>Что такое the S/MIME standard, and what is it used for?</summary>
 
-### What is the S/MIME standard, and what is it used for?
+### Что такое the S/MIME standard, and what is it used for?
 
 **Definition:**
 
@@ -1363,9 +1363,9 @@ S/MIME — это Secure/Multipurpose Internet Mail Extensions. RFC 8551 опр�
 ### Practical Implementation and Best Practices
 
 <details>
-<summary>When should you use hardware-based cryptographic modules such as HSMs in an application?</summary>
+<summary>Когда should you use hardware-BASEd cryptographic modules such as HSMs in an application?</summary>
 
-### When should you use hardware-based cryptographic modules such as HSMs in an application?
+### Когда should you use hardware-BASEd cryptographic modules such as HSMs in an application?
 
 **Definition:**
 
@@ -1389,9 +1389,9 @@ S/MIME — это Secure/Multipurpose Internet Mail Extensions. RFC 8551 опр�
 </details>
 
 <details>
-<summary>What are the best practices for managing cryptographic keys within an enterprise?</summary>
+<summary>Что такое the best practices for managing cryptographic keys within an enterprise?</summary>
 
-### What are the best practices for managing cryptographic keys within an enterprise?
+### Что такое the best practices for managing cryptographic keys within an enterprise?
 
 **Definition:**
 

@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Recursion](https://devinterview.io/questions
 ### Understanding Recursion
 
 <details>
-<summary>How Dynamic Programming is different from Recursion and Memoization?</summary>
+<summary>Чем Dynamic Programming отличается от рекурсии и memoization?</summary>
 
-### How Dynamic Programming is different from Recursion and Memoization?
+### Чем Dynamic Programming отличается от рекурсии и memoization?
 
 **Definition:**
 
@@ -40,12 +40,13 @@ Questions from [Devinterview.io — Recursion](https://devinterview.io/questions
 **Examples:**
 
 `fib(n)`, который вызывает себя дважды, — рекурсия. Та же функция, которая возвращает сохранённый `fib(n)`, — мемоизация. Цикл `t[i] = t[i-1] + t[i-2]` — DP снизу вверх.
+
 </details>
 
 <details>
-<summary>What are some Common Examples of Recursion in computer science?</summary>
+<summary>Что такое some Common Examples of recursion in computer science?</summary>
 
-### What are some Common Examples of Recursion in computer science?
+### Что такое some Common Examples of recursion in computer science?
 
 **Definition:**
 
@@ -64,12 +65,13 @@ Questions from [Devinterview.io — Recursion](https://devinterview.io/questions
 **Examples:**
 
 `fact(4)` — это `4 * fact(3)`, что разворачивается в `4*3*2*1`. Обход каталога — та же форма со списком детей вместо `n-1`.
+
 </details>
 
 <details>
-<summary>What is the difference between Backtracking and Recursion?</summary>
+<summary>Что такое the difference between backtracking and recursion?</summary>
 
-### What is the difference between Backtracking and Recursion?
+### Что такое the difference between backtracking and recursion?
 
 **Definition:**
 
@@ -87,12 +89,13 @@ Questions from [Devinterview.io — Recursion](https://devinterview.io/questions
 **Examples:**
 
 Перестановки: дописать число, рекурсия, затем снять его. Снятие — это откат. У факториала есть рекурсивный вызов и нечего отменять.
+
 </details>
 
 <details>
-<summary>Define Base Case in the context of recursive functions.</summary>
+<summary>Определите базовый вариант в контексте рекурсивных функций.</summary>
 
-### Define Base Case in the context of recursive functions.
+### Определите базовый вариант в контексте рекурсивных функций.
 
 **Definition:**
 
@@ -113,12 +116,13 @@ fact(n):
   if n == 0: return 1      # база
   return n * fact(n - 1)   # шаг к 0
 ```
+
 </details>
 
 <details>
-<summary>Explain the concept of Recursion Depth and its implications on algorithm complexity.</summary>
+<summary>Объясните концепцию Recursion Depth и ее влияние на сложность алгоритма.</summary>
 
-### Explain the concept of Recursion Depth and its implications on algorithm complexity.
+### Объясните концепцию Recursion Depth и ее влияние на сложность алгоритма.
 
 **Definition:**
 
@@ -135,12 +139,13 @@ fact(n):
 **Examples:**
 
 `fact(100000)` — одна тонкая цепочка из 100000 кадров и часто умирает переполнением стека, хотя математика тривиальна. Цикл использует один кадр.
+
 </details>
 
 <details>
-<summary>How does the Call Stack operate in recursive function calls?</summary>
+<summary>Как выполняется вызов stack при рекурсивных вызовах функций?</summary>
 
-### How does the Call Stack operate in recursive function calls?
+### Как выполняется вызов stack при рекурсивных вызовах функций?
 
 **Definition:**
 
@@ -163,12 +168,13 @@ fact(3) ждёт
   fact(2) возвращает 2
 fact(3) возвращает 6
 ```
+
 </details>
 
 <details>
-<summary>Are there any safety considerations when determining the Recursion Depth? If yes, provide an example.</summary>
+<summary>Существуют ли какие-либо соображения безопасности при удержании mining рекурсионной глубины? Если да, приведите пример.</summary>
 
-### Are there any safety considerations when determining the Recursion Depth? If yes, provide an example.
+### Существуют ли какие-либо соображения безопасности при удержании mining рекурсионной глубины? Если да, приведите пример.
 
 **Definition:**
 
@@ -185,14 +191,15 @@ fact(3) возвращает 6
 **Examples:**
 
 Рекурсивный обход JSON по массиву глубины 100 000 из одноэлементных массивов переполнит стек задолго до конца документа. Явный стек с максимальной глубиной возвращает управляемую ошибку.
+
 </details>
 
 ### Recursive Algorithms
 
 <details>
-<summary>Explain the Depth-First Search algorithm.</summary>
+<summary>Объясните алгоритм depth-first search.</summary>
 
-### Explain the Depth-First Search algorithm.
+### Объясните алгоритм depth-first search.
 
 **Definition:**
 
@@ -216,12 +223,13 @@ def dfs(u):
     if v not in seen:
       dfs(v)
 ```
+
 </details>
 
 <details>
-<summary>Implement a Recursive Algorithm to perform a Binary Search.</summary>
+<summary>Реализуйте a Recursive AlGorithm to perform a binary search.</summary>
 
-### Implement a Recursive Algorithm to perform a Binary Search.
+### Реализуйте a Recursive AlGorithm to perform a binary search.
 
 **Definition:**
 
@@ -245,12 +253,13 @@ def bsearch(a, target, lo, hi):
   if a[mid] < target: return bsearch(a, target, mid + 1, hi)
   return bsearch(a, target, lo, mid - 1)
 ```
+
 </details>
 
 <details>
-<summary>Solve the Tower of Hanoi problem recursively.</summary>
+<summary>Решите the Tower of Hanoi problem Recursively.</summary>
 
-### Solve the Tower of Hanoi problem recursively.
+### Решите the Tower of Hanoi problem Recursively.
 
 **Definition:**
 
@@ -275,12 +284,13 @@ hanoi(n, src, dst, spare):
 ```
 
 Три диска — 7 переносов.
+
 </details>
 
 <details>
-<summary>Recursively Check for Palindromes in a string.</summary>
+<summary>Рекурсивно проверьте palindrome в string.</summary>
 
-### Recursively Check for Palindromes in a string.
+### Рекурсивно проверьте palindrome в string.
 
 **Definition:**
 
@@ -305,12 +315,13 @@ pal(s, i, j):
 ```
 
 `"radar"` совпадает на обоих концах дважды и заканчивает на `"d"`. `"hello"` падает на `h` против `o`.
+
 </details>
 
 <details>
-<summary>Explain the process of performing a recursive In-order Tree Traversal.</summary>
+<summary>Объясните процесс выполнения рекурсивного дерева по порядку traversal.</summary>
 
-### Explain the process of performing a recursive In-order Tree Traversal.
+### Объясните процесс выполнения рекурсивного дерева по порядку traversal.
 
 **Definition:**
 
@@ -335,14 +346,15 @@ inorder(node):
 ```
 
 BST с корнем 2, левым 1 и правым 3 выдаёт `1, 2, 3`.
+
 </details>
 
 ### Tail Recursion
 
 <details>
-<summary>Calculate N-th Fibonacci Number using Tail Recursion.</summary>
+<summary>Рассчитайте N-ое число Fibonacci с помощью tail recursion.</summary>
 
-### Calculate N-th Fibonacci Number using Tail Recursion.
+### Рассчитайте N-ое число Fibonacci с помощью tail recursion.
 
 **Definition:**
 
@@ -364,12 +376,13 @@ def fib(n, a=0, b=1):
 ```
 
 `fib(6)` возвращает 8.
+
 </details>
 
 <details>
-<summary>Discuss how Tail Recursion can be optimized by compilers and its benefits.</summary>
+<summary>Обсудите, как tail recursion можно оптимизировать с помощью компиляторов и ее преимущества.</summary>
 
-### Discuss how Tail Recursion can be optimized by compilers and its benefits.
+### Обсудите, как tail recursion можно оптимизировать с помощью компиляторов и ее преимущества.
 
 **Definition:**
 
@@ -386,12 +399,13 @@ def fib(n, a=0, b=1):
 **Examples:**
 
 `return fact(n-1, acc*n)` — хвостовой вызов. `return n * fact(n-1)` — нет: кадр должен остаться живым, чтобы умножить после возврата вызова.
+
 </details>
 
 <details>
-<summary>What is the difference between Head Recursion and Tail Recursion?</summary>
+<summary>Что такое the difference between head recursion and tail recursion?</summary>
 
-### What is the difference between Head Recursion and Tail Recursion?
+### Что такое the difference between head recursion and tail recursion?
 
 **Definition:**
 
@@ -412,17 +426,19 @@ head(n):                 tail(n, acc):
   if n == 0: return 1     if n == 0: return acc
   return n * head(n-1)    return tail(n-1, acc*n)
 ```
+
 </details>
 
 <details>
-<summary>Use Tail Recursive function to calculate the Factorial of a number.</summary>
+<summary>Используйте tail recursive function для вычисления Factorial числа.</summary>
 
-### Use Tail Recursive function to calculate the Factorial of a number.
+### Используйте tail recursive function для вычисления Factorial числа.
 
 **Definition:**
 n! — это n × (n − 1) × … × 1, а 0! равно 1. Вызов хвостовой, если он — последнее, что делает функция. Обычный факториал умножает уже после возврата, поэтому он не хвостовой.
 
 **How it works:**
+
 - Текущее произведение передаётся вторым аргументом. Когда n падает до 1 или ниже, возвращается это произведение.
 - Рекурсивный вызов и есть возвращаемое значение, так что кадр после него не нужен.
 - Компилятор может не сохранять кадр и перейти к началу функции циклом или goto.
@@ -430,6 +446,7 @@ n! — это n × (n − 1) × … × 1, а 0! равно 1. Вызов хво�
 - **Time:** O(n) умножений. **Space:** O(1) дополнительно, если хвостовой вызов переиспользует кадр; O(n), если каждый вызов держит кадр.
 
 **Examples:**
+
 ```text
 fact(n):
     return fact_tr(n, 1)
@@ -443,32 +460,36 @@ fact(0) → 1
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/tail-recursion/
 - https://www.geeksforgeeks.org/dsa/program-for-factorial-of-a-number/
 
 </details>
 
 <details>
-<summary>Can Tail Recursion be more efficient than non-tail recursion? Explain with an example.</summary>
+<summary>Может ли tail recursion быть более эффективным, чем non-tail recursion? Объясните на примере.</summary>
 
-### Can Tail Recursion be more efficient than non-tail recursion? Explain with an example.
+### Может ли tail recursion быть более эффективным, чем non-tail recursion? Объясните на примере.
 
 **Definition:**
 Да, если компилятор переиспользует текущий кадр. Хвостовой вызов — последнее действие, локальные данные кадра больше не нужны. После нехвостового вызова работа ещё есть, поэтому кадр обязан остаться.
 
 **How it works:**
+
 - `return n * fact(n - 1)` обязан хранить n, пока рекурсивный вызов не вернётся. Глубина n занимает стек O(n). Статья о факториале указывает для этой рекурсии O(n) времени и O(n) памяти.
 - `return fact(n - 1, n * acc)` после вызова ничего не делает. Статья о хвостовой рекурсии говорит, что компилятор может вернуть управление в начало циклом или goto и не сохранять кадр.
 - Число умножений в обоих случаях O(n). Итеративный цикл — O(n) по времени и O(1) по памяти.
 - **Time:** O(n). **Space:** O(n) для нехвостовой формы; оптимизированная хвостовая форма не обязана держать кадр на каждый вызов.
 
 **Examples:**
+
 ```text
 non-tail: fact(3) waits to multiply by 3 after fact(2)
 tail:     fact(3, 1) → fact(2, 3) → fact(1, 6) → 6
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/tail-recursion/
 - https://www.geeksforgeeks.org/dsa/program-for-factorial-of-a-number/
 
@@ -477,20 +498,22 @@ tail:     fact(3, 1) → fact(2, 3) → fact(1, 6) → 6
 ### Converting Recursive to Iterative
 
 <details>
-<summary>Is it always possible to write a Non-Recursive form for every Recursive function?</summary>
+<summary>Всегда ли можно записать non-recursive форму для каждой recursive function?</summary>
 
-### Is it always possible to write a Non-Recursive form for every Recursive function?
+### Всегда ли можно записать non-recursive форму для каждой recursive function?
 
 **Definition:**
 Да. В статье о рекурсии сказано, что любую рекурсивную программу можно записать итеративно, и наоборот. Итеративная форма хранит ту же незавершённую работу в цикле и заводит явный стек, если вызов не последний.
 
 **How it works:**
+
 - В вопросах к собеседованию рекурсию переводят в цикл: находят рекурсивные вызовы, заменяют их циклом и кладут параметры в явный стек, пока он не опустеет.
 - Там же дополнительная память ограничена глубиной: O(n) в худшем случае, потому что каждый кадр лежит на стеке вызовов.
 - Устранение хвостового вызова — частный случай. Один кадр занимает O(1), N кадров — O(N). Повторное использование текущего кадра снижает это до O(1).
 - **Time:** рекуррентность не меняется. **Space:** явный стек заменяет стек вызовов и остаётся пропорционален глубине, O(n) в худшем случае по тем же заметкам.
 
 **Examples:**
+
 ```text
 sum(n):
     acc = 0
@@ -502,26 +525,29 @@ sum(n):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/recursion/
 - https://www.geeksforgeeks.org/dsa/commonly-asked-data-structure-interview-questions-on-recursion/
 - https://www.geeksforgeeks.org/dsa/tail-call-elimination/
 </details>
 
 <details>
-<summary>Convert the given Recursive Function into an Iterative Function.</summary>
+<summary>Преобразование данной рекурсивной функции в итеративную функцию.</summary>
 
-### Convert the given Recursive Function into an Iterative Function.
+### Преобразование данной рекурсивной функции в итеративную функцию.
 
 **Definition:**
 Каждый рекурсивный вызов заменяется циклом. Если после вызова ничего не выполняется, аргументы обновляются на месте. Если работа остаётся, состояние кладётся в явный стек и завершается при извлечении.
 
 **How it works:**
+
 - В вопросах четыре шага: найти вызовы, перейти к циклу, сохранить параметры в стеке (или в очереди, если порядок по уровням) и обрабатывать, пока стек не пуст.
 - Хвостовой факториал становится циклом. Устранение хвостового вызова: N кадров стоят O(N), устранённая форма — O(1).
 - Нехвостовой вызов `n + sum(n - 1)` всё ещё должен помнить `n`. Эти значения держит явный стек. Дополнительная память в худшем случае остаётся O(n) — граница глубины из тех же вопросов.
 - **Time:** O(n) для цепочки из n вызовов с работой O(1), рекуррентность T(n) = T(n−1) + O(1). **Space:** O(1) дополнительно, если хвостовой вызов стал циклом; O(n), если стек хранит каждый кадр.
 
 **Examples:**
+
 ```text
 def sum_iter(n):
     acc = 0
@@ -533,20 +559,22 @@ def sum_iter(n):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/commonly-asked-data-structure-interview-questions-on-recursion/
 - https://www.geeksforgeeks.org/dsa/recursion/
 - https://www.geeksforgeeks.org/dsa/tail-call-elimination/
 </details>
 
 <details>
-<summary>Describe how to simulate the recursive QuickSort algorithm iteratively.</summary>
+<summary>Опишите, как итеративно моделировать рекурсивный алгоритм quicksort.</summary>
 
-### Describe how to simulate the recursive QuickSort algorithm iteratively.
+### Опишите, как итеративно моделировать рекурсивный алгоритм quicksort.
 
 **Definition:**
 Рекурсивная быстрая сортировка делит массив вокруг опорного элемента и сортирует обе части. Итеративная форма кладёт эти диапазоны индексов в явный стек и выполняет разбиение в цикле, пока стек не опустеет.
 
 **How it works:**
+
 - Разбиение Ломуто из статьи о QuickSort занимает O(n) и ставит опорный элемент на окончательное место. Два рекурсивных вызова — `quickSort(low, pi - 1)` и `quickSort(pi + 1, high)`.
 - Итеративная статья хранит пары `(low, high)` в стеке. Диапазон снимается, разбивается, и каждая сторона длиннее одного элемента кладётся обратно.
 - Границы рекурсивной статьи: лучшее время Ω(n log n) при стеке O(log n), среднее θ(n log n), худшее время O(n²) при стеке O(n), если опорный элемент всегда крайний.
@@ -554,6 +582,7 @@ def sum_iter(n):
 - **Time:** Ω(n log n) в лучшем случае, θ(n log n) в среднем, O(n²) в худшем. **Space:** стек O(log n) в лучшем случае и O(n) в худшем.
 
 **Examples:**
+
 ```text
 stack = [(0, n - 1)]
 while stack:
@@ -566,25 +595,28 @@ while stack:
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/quick-sort/
 - https://www.geeksforgeeks.org/dsa/iterative-quick-sort/
 </details>
 
 <details>
-<summary>Convert a recursive Depth-First Search to an iterative approach using a Stack.</summary>
+<summary>Преобразование рекурсивного depth-first search в итеративный подход с использованием stack.</summary>
 
-### Convert a recursive Depth-First Search to an iterative approach using a Stack.
+### Преобразование рекурсивного depth-first search в итеративный подход с использованием stack.
 
 **Definition:**
 Рекурсивный DFS помечает текущую вершину и вызывает себя для каждого непосещённого соседа. Итеративная форма кладёт стартовую вершину в стек, снимает вершину, помечает её при первом снятии и кладёт непосещённых соседей.
 
 **How it works:**
+
 - Итеративная статья сначала кладёт вершину 0. Пока стек не пуст, вершина снимается; если она уже посещена, её пропускают, иначе помечают и добавляют в результат.
 - Соседей кладут с конца списка смежности к началу, чтобы первый сосед снимался первым и порядок совпал с рекурсивным обходом слева направо.
 - В несвязном графе тот же цикл запускается от каждой непосещённой вершины.
 - **Time:** O(V + E). **Space:** O(V). Обе границы даны и для связного, и для несвязного итеративного DFS.
 
 **Examples:**
+
 ```text
 st = [0]
 visited = [False] * n
@@ -599,26 +631,29 @@ while st:
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/iterative-depth-first-traversal/
 </details>
 
 ### Recursive Problems in Data Structures
 
 <details>
-<summary>Convert a Binary Tree into a Doubly Linked List.</summary>
+<summary>Преобразование binary tree в список doubly linked.</summary>
 
-### Convert a Binary Tree into a Doubly Linked List.
+### Преобразование binary tree в список doubly linked.
 
 **Definition:**
 Симметричный обход посещает BST в порядке ключей, а любое двоичное дерево — в порядке «левый, узел, правый». Каждый посещённый узел связывается с предыдущим: `left` как `prev`, `right` как `next`. Узлы становятся двусвязным списком.
 
 **How it works:**
+
 - В статье три перевода через симметричный обход. Поиск предшественника или преемника в каждом узле — O(n) по времени и O(h) по памяти. Один проход с указателем на предыдущий узел — тоже O(n) и O(h).
 - Обход Морриса временно прошивает дерево и делает перевод за O(n) времени и O(1) дополнительной памяти.
 - Голова списка — первый узел обхода, хвост — последний. Детские указатели переписываются в ссылки списка.
 - **Time:** O(n). **Space:** O(h) для рекурсивного прохода, O(1) дополнительно для Морриса.
 
 **Examples:**
+
 ```text
 def to_dll(node, prev):
     if node is None:
@@ -631,24 +666,27 @@ def to_dll(node, prev):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/convert-binary-tree-to-doubly-linked-list-using-inorder-traversal/
 </details>
 
 <details>
-<summary>Reverse a Linked List recursively.</summary>
+<summary>Разверните a linked list Recursively.</summary>
 
-### Reverse a Linked List recursively.
+### Разверните a linked list Recursively.
 
 **Definition:**
 Рекурсия доходит до хвоста. Этот хвост становится новой головой. На обратном пути `next` следующего узла направляется на текущий, а `next` текущего обнуляется.
 
 **How it works:**
+
 - База — пустой список или один узел: вернуть этот узел.
 - После `rev = reverse(head.next)` узел `head.next` — хвост уже перевёрнутого суффикса, поэтому `head.next.next = head` дописывает текущий узел.
 - `head.next = None` рвёт старую прямую ссылку. Каждый узел посещается один раз.
 - **Time:** O(n). **Space:** O(n) на стек рекурсии. Обе цифры указаны в статье о рекурсивном развороте.
 
 **Examples:**
+
 ```text
 def reverse_list(head):
     if head is None or head.next is None:
@@ -661,24 +699,27 @@ def reverse_list(head):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/recursively-reversing-a-linked-list-a-simple-implementation/
 </details>
 
 <details>
-<summary>Sort a Stack using Recursion.</summary>
+<summary>Отсортируйте a stack using recursion.</summary>
 
-### Sort a Stack using Recursion.
+### Отсортируйте a stack using recursion.
 
 **Definition:**
 Стек снимается до пустого, затем каждое значение вставляется обратно в уже отсортированный стек и опускается до первой позиции, под которой лежит меньшее значение. Второй стек не нужен.
 
 **How it works:**
+
 - Рекурсивная статья сортирует двумя процедурами: одна опустошает стек, другая вынимает большие значения, пока новое не ляжет на меньшее, и возвращает вынутые значения обратно.
 - Там же есть сортировка со вспомогательным стеком. Обе указаны как O(n²) по времени и O(n) дополнительной памяти.
 - Каждое вставляемое значение может пройти мимо всех уже отсортированных — отсюда квадратичная граница. Глубина рекурсии следует за числом элементов.
 - **Time:** O(n²). **Space:** O(n) дополнительно.
 
 **Examples:**
+
 ```text
 def insert(st, x):
     if not st or st[-1] <= x:
@@ -697,24 +738,27 @@ def sort_stack(st):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/sort-a-stack-using-recursion/
 </details>
 
 <details>
-<summary>Implement a recursive algorithm to Find the Lowest Common Ancestor in a BST.</summary>
+<summary>Реализуйте a Recursive alGorithm to Find the Lowest Common Ancestor in a BST.</summary>
 
-### Implement a recursive algorithm to Find the Lowest Common Ancestor in a BST.
+### Реализуйте a Recursive alGorithm to Find the Lowest Common Ancestor in a BST.
 
 **Definition:**
 Наименьший общий предок двух узлов — самый глубокий узел, для которого оба являются потомками; узел считается потомком самого себя. В BST идём влево, если оба ключа меньше текущего, вправо, если оба больше, и останавливаемся, когда ключи расходятся.
 
 **How it works:**
+
 - Рекурсивный метод для BST указан как O(h) по времени и O(h) по памяти. Одна пара сравнений выбирает следующего ребёнка, поэтому путь один и его длина h.
 - Если оба ключа меньше, предок в левом поддереве. Если оба больше — в правом. Иначе текущий узел и есть предок, в том числе когда он совпадает с одним из ключей.
 - Итеративная форма того же теста — O(h) по времени и O(1) по памяти. Обычное двоичное дерево без порядка BST требует полного поиска: наивная граница статьи — O(n) времени и O(n) памяти.
 - **Time:** O(h). **Space:** O(h) рекурсивно, O(1) итеративно.
 
 **Examples:**
+
 ```text
 def find_lca(root, n1, n2):
     if root.data > n1 and root.data > n2:
@@ -726,18 +770,20 @@ def find_lca(root, n1, n2):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/lowest-common-ancestor-in-a-binary-search-tree/
 </details>
 
 <details>
-<summary>Solve the problem of recursively Flattening a Multilevel Doubly Linked List.</summary>
+<summary>Решите the problem of Recursively Flattening a Multilevel doubly linked List.</summary>
 
-### Solve the problem of recursively Flattening a Multilevel Doubly Linked List.
+### Решите the problem of Recursively Flattening a Multilevel doubly linked List.
 
 **Definition:**
 У каждого узла есть сосед `next` и дочерний список `child`. Выравнивание вставляет каждый дочерний список в цепочку `next` и обнуляет `child`, остаётся один уровень. Статья про порядок по уровням дописывает дочерний список в текущий хвост.
 
 **How it works:**
+
 - `curr` стоит на просматриваемом узле, `tail` — на последнем узле растущего списка. Если есть `curr.child`, выполняется `tail.next = curr.child`, дочерний список проходится до конца, `tail` переносится туда, `curr.child` обнуляется.
 - Статья указывает O(n) по времени, где n — число узлов, и O(1) дополнительной памяти. Ссылки переписываются на месте.
 - Выравнивание в глубину ушло бы в `child` раньше, чем в `next`. Границы O(n) / O(1) относятся к процедуре по уровням, которую удалось получить.
@@ -745,6 +791,7 @@ def find_lca(root, n1, n2):
 - **Time:** O(n). **Space:** O(1) дополнительно.
 
 **Examples:**
+
 ```text
 tail = head
 while tail.next:
@@ -761,24 +808,27 @@ while curr:
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/flatten-a-linked-list-with-next-and-child-pointers/
 </details>
 
 <details>
-<summary>How would you recursively Serialize and Deserialize a Binary Tree?</summary>
+<summary>Как бы вы Recursively serialize and deserialize a binary tree?</summary>
 
-### How would you recursively Serialize and Deserialize a Binary Tree?
+### Как бы вы Recursively serialize and deserialize a binary tree?
 
 **Definition:**
 Сериализация записывает дерево в массив. Рекурсивный прямой обход пишет значение узла, затем левое поддерево, затем правое, а для пустого ребёнка пишет −1. Десериализация читает массив в том же порядке и создаёт узел, если значение не −1.
 
 **How it works:**
+
 - Статья о прямом обходе указывает O(n) по времени и O(n) по памяти. Каждый узел и каждый пустой ребёнок становятся одним элементом, рекурсия идёт по высоте.
 - Десериализация забирает следующее значение. −1 возвращает null. Иначе создаётся узел, затем рекурсивно читается левый ребёнок и правый.
 - Обход по уровням в той же статье тоже O(n) по времени и O(n) по памяти: −1 для пустых узлов и очередь при сборке. Рекурсивная форма — это прямой обход.
 - **Time:** O(n). **Space:** O(n).
 
 **Examples:**
+
 ```text
 def serialize(root, out):
     if root is None:
@@ -799,26 +849,29 @@ def deserialize(it):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/serialize-deserialize-binary-tree/
 </details>
 
 ### Fundamental Recursive Problems
 
 <details>
-<summary>Calculate the N-th value of the Fibonacci Sequence recursively.</summary>
+<summary>Вычислите N-е значение последовательности Fibonacci рекурсивно.</summary>
 
-### Calculate the N-th value of the Fibonacci Sequence recursively.
+### Вычислите N-е значение последовательности Fibonacci рекурсивно.
 
 **Definition:**
 Статья задаёт fib(0) = 0, fib(1) = 1 и fib(n) = fib(n−1) + fib(n−2) иначе. Прямая рекурсия вызывает обоих предшественников. Мемоизация сохраняет каждый результат, чтобы он считался один раз.
 
 **How it works:**
+
 - Прямая рекурсия указана как O(2ⁿ) по времени, потому что каждое состояние вызывает оба предыдущих, и O(n) дополнительной памяти на стек.
 - Мемоизация считает каждое число Фибоначчи один раз: O(n) по времени и O(n) дополнительной памяти на таблицу.
 - Цикл снизу вверх на той же странице — O(n) по времени и O(1) по памяти. Возведение матрицы в степень — O(log n) по времени и O(log n) по памяти.
 - **Time:** O(2ⁿ) без кэша, O(n) с мемоизацией. **Space:** O(n) и для стека, и для таблицы.
 
 **Examples:**
+
 ```text
 def fib(n):
     if n == 0:
@@ -830,23 +883,26 @@ def fib(n):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/program-for-nth-fibonacci-number/
 </details>
 
 <details>
-<summary>Write a recursive function to calculate Sum of Digits in a number.</summary>
+<summary>Напишите a Recursive function to calculate Sum of DiGits in a number.</summary>
 
-### Write a recursive function to calculate Sum of Digits in a number.
+### Напишите a Recursive function to calculate Sum of DiGits in a number.
 
 **Definition:**
 Сумма цифр — это последняя цифра плюс сумма цифр числа без неё. База — однозначное число: оно уже и есть сумма.
 
 **How it works:**
+
 - `n % 10` — последняя цифра, `n // 10` — оставшееся число. Статья останавливается, когда значение меньше 10, дальнейший вызов не нужен.
 - Каждый вызов убирает одну десятичную цифру. Время O(log₁₀ n), потому что столько цифр, и дополнительная память O(log₁₀ n) на рекурсию.
 - **Time:** O(log₁₀ n). **Space:** O(log₁₀ n).
 
 **Examples:**
+
 ```text
 def sum_digits(n):
     n = abs(n)
@@ -857,24 +913,27 @@ def sum_digits(n):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/sum-digit-number-using-recursion/
 </details>
 
 <details>
-<summary>Implement Merge Sort recursively.</summary>
+<summary>Реализуйте merge sort Recursively.</summary>
 
-### Implement Merge Sort recursively.
+### Реализуйте merge sort Recursively.
 
 **Definition:**
 Сортировка слиянием делит массив на две половины, сортирует каждую той же функцией и сливает две отсортированные половины. Один элемент уже отсортирован — это база.
 
 **How it works:**
+
 - Рекуррентность статьи: T(n) = Θ(1) при n = 1 и T(n) = 2T(n/2) + Θ(n) при n > 1. Слагаемое Θ(n) — это слияние.
 - Лучшее, среднее и худшее время — O(n log n). Для слияния нужен временный массив, дополнительная память O(n).
 - Слияние копирует левую и правую половины и записывает меньшую голову обратно. При равенстве берётся левая половина, поэтому сортировка устойчива.
 - **Time:** O(n log n). **Space:** O(n) дополнительно.
 
 **Examples:**
+
 ```text
 def merge_sort(a, left, right):
     if left >= right:
@@ -887,24 +946,27 @@ def merge_sort(a, left, right):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/merge-sort/
 </details>
 
 <details>
-<summary>Implement a recursive function to Print all Permutations of a given string.</summary>
+<summary>Реализуйте a Recursive function to Print all permutations of a given string.</summary>
 
-### Implement a recursive function to Print all Permutations of a given string.
+### Реализуйте a Recursive function to Print all permutations of a given string.
 
 **Definition:**
 Фиксируется один индекс за раз. Каждый последующий символ меняется с этим индексом, рекурсия идёт на следующий индекс, затем обмен отменяется. Когда индекс доходит до конца, текущая расстановка — одна перестановка.
 
 **How it works:**
+
 - Статья строит перестановки рекурсией и обменами и указывает время O(n! · n). Перестановок n!, а запись или просмотр одной занимает Θ(n).
 - Обмен отменяется после рекурсивного вызова, поэтому буфер один. Глубина вызовов равна длине строки: один фиксированный индекс на кадр.
 - Одинаковые символы повторяют одинаковые строки, если такие обмены не пропускать. Указанная граница считает эту рекурсию обменов.
 - **Time:** O(n! · n).
 
 **Examples:**
+
 ```text
 def permute(s, i):
     if i == len(s):
@@ -918,24 +980,27 @@ def permute(s, i):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/write-a-c-program-to-print-all-permutations-of-a-given-string/
 </details>
 
 <details>
-<summary>Generate all Balanced Parentheses using a recursive approach.</summary>
+<summary>Сгенерируйте все сбалансированные круглые скобки, используя рекурсивный подход.</summary>
 
-### Generate all Balanced Parentheses using a recursive approach.
+### Сгенерируйте все сбалансированные круглые скобки, используя рекурсивный подход.
 
 **Definition:**
 Последовательность из n пар сбалансирована, если закрывающих скобок никогда не больше, чем открывающих, и в конце тех и других по n. Перебор с возвратом ставит открывающую, пока они есть, и закрывающую только если она не превысит число открывающих.
 
 **How it works:**
+
 - Наивный генератор строит все строки из n пар и потом проверяет баланс. Статья указывает O(2ⁿ · n) по времени и O(n) по памяти.
 - Перебор с возвратом строит только допустимые последовательности. Время O(Cₙ · n), где Cₙ — n-е число Каталана (2n)! / ((n+1)! n!). Дополнительная память O(n) на глубину рекурсии и текущую строку.
 - Два аргумента — сколько открывающих ещё можно поставить и сколько закрывающих. Закрывающая допустима, только если поставленных закрывающих меньше, чем открывающих.
 - **Time:** O(Cₙ · n) для перебора с возвратом. **Space:** O(n) дополнительно.
 
 **Examples:**
+
 ```text
 def gen(n, open_left, close_left, cur):
     if open_left == 0 and close_left == 0:
@@ -949,26 +1014,29 @@ def gen(n, open_left, close_left, cur):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/print-all-combinations-of-balanced-parentheses/
 </details>
 
 ### Advanced Recursive Problems
 
 <details>
-<summary>Use recursive approach to solve the Skyline Problem.</summary>
+<summary>Используйте recursive approach для решения Skyline Problem.</summary>
 
-### Use recursive approach to solve the Skyline Problem.
+### Используйте recursive approach для решения Skyline Problem.
 
 **Definition:**
 Силуэт — контур зданий, заданных левой границей, правой и высотой. Ожидаемое решение полученной статьи проходит угловые координаты x и держит активные высоты в max-куче. Рекурсивное деление разбивает здания и сливает два контура так же, как сортировка слиянием сливает отрезки.
 
 **How it works:**
+
 - Наивный проход на той странице — O(n²) по времени и O(n) по памяти: на каждом углу ищется самое высокое здание.
 - Ожидаемый проход с очередью с приоритетом — O(n log n) по времени и O(n) по памяти. Куча даёт текущую максимальную высоту, точка пишется только когда высота меняется.
 - Сортировка слиянием на своей странице — тот же рекурсивный образец: T(n) = 2T(n/2) + Θ(n), то есть O(n log n). Слияние двух отсортированных силуэтов — такое же линейное слияние. Для самой задачи страница силуэта указывает ожидаемую границу O(n log n) по времени и O(n) по памяти.
 - **Time:** O(n log n) в ожидаемом методе, O(n²) в наивном. **Space:** O(n).
 
 **Examples:**
+
 ```text
 # buildings: (left, right, height)
 # sweep events: (x, start, height) and (x, end, height)
@@ -977,19 +1045,21 @@ def gen(n, open_left, close_left, cur):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/the-skyline-problem-using-divide-and-conquer-algorithm/
 - https://www.geeksforgeeks.org/dsa/merge-sort/
 </details>
 
 <details>
-<summary>Implement a recursive backtracking solution for the Sudoku Solver problem.</summary>
+<summary>Реализуйте a Recursive backtracking solution for the Sudoku Solver problem.</summary>
 
-### Implement a recursive backtracking solution for the Sudoku Solver problem.
+### Реализуйте a Recursive backtracking solution for the Sudoku Solver problem.
 
 **Definition:**
 Ищется пустая клетка. Пробуются цифры от 1 до 9, которых нет в этой строке, столбце и квадрате 3×3. Идёт рекурсия. Если вызов не удался, цифра стирается и пробуется следующая. Доска без пустых клеток решена.
 
 **How it works:**
+
 - Статья о переборе с возвратом описывает тот же цикл: выбрать, исследовать, отменить. Судоку — одна из её стандартных задач.
 - Статья о судоку указывает время прямого перебора как O(9^(n·n)): у пустой клетки 9 вариантов. Дополнительная память этой версии — O(1), доска меняется на месте.
 - Версия с битовыми масками на той же странице — O(9^(n·n)) по времени и O(n) по памяти. Бит за O(1) говорит, свободна ли цифра в строке, столбце или квадрате.
@@ -997,6 +1067,7 @@ def gen(n, open_left, close_left, cur):
 - **Time:** O(9^(n·n)). **Space:** O(1) дополнительно для поиска на месте.
 
 **Examples:**
+
 ```text
 def solve(board, n=9):
     cell = find_empty(board)
@@ -1013,19 +1084,21 @@ def solve(board, n=9):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/sudoku-backtracking-7/
 - https://www.geeksforgeeks.org/dsa/introduction-to-backtracking-data-structure-and-algorithm-tutorials/
 </details>
 
 <details>
-<summary>Find the K-th Order Statistic in an unsorted list using a recursive strategy.</summary>
+<summary>Найдите статистику K-го порядка в несортированном списке, используя рекурсивную стратегию.</summary>
 
-### Find the K-th Order Statistic in an unsorted list using a recursive strategy.
+### Найдите статистику K-го порядка в несортированном списке, используя рекурсивную стратегию.
 
 **Definition:**
 k-я порядковая статистика — элемент, который после сортировки стоял бы на индексе k−1. Quickselect разбивает массив как QuickSort и уходит рекурсией только в ту сторону, где лежит этот индекс.
 
 **How it works:**
+
 - Сортировка и чтение индекса k−1 — наивный метод статьи: O(n log n) по времени и O(1) дополнительной памяти.
 - Max-куча размера k — O(n log k) по времени и O(k) по памяти.
 - Рекурсивное разбиение на той же странице — O(n²) в худшем случае и O(n log n) в среднем; статья говорит, что в среднем это лучше кучи. Дополнительная память — O(n) на стек в худшем случае и O(log n) в среднем.
@@ -1033,6 +1106,7 @@ k-я порядковая статистика — элемент, которы�
 - **Time:** O(n²) в худшем случае, O(n log n) в среднем. **Space:** стек O(n) в худшем случае, O(log n) в среднем.
 
 **Examples:**
+
 ```text
 def kth(a, k, low, high):
     pi = partition(a, low, high)  # Lomuto
@@ -1044,25 +1118,28 @@ def kth(a, k, low, high):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/kth-smallest-largest-element-in-unsorted-array/
 - https://www.geeksforgeeks.org/dsa/quick-sort/
 </details>
 
 <details>
-<summary>Use a recursive algorithm to detect a Cycle in an Undirected Graph.</summary>
+<summary>Используйте recursive algorithm для обнаружения cycle в undirected graph.</summary>
 
-### Use a recursive algorithm to detect a Cycle in an Undirected Graph.
+### Используйте recursive algorithm для обнаружения cycle в undirected graph.
 
 **Definition:**
 В неориентированном графе есть цикл, если обход в глубину или в ширину приходит в посещённую вершину, которая не является родителем текущего ребра. Рекурсивный DFS передаёт родителя, чтобы только что пройденное ребро не считалось циклом.
 
 **How it works:**
+
 - Статья о цикле в неориентированном графе находит цикл за O(V + E). Каждая вершина и каждое ребро обрабатываются один раз по списку смежности. Память O(V) на массив посещений; форма BFS ещё держит очередь того же порядка.
 - Рекурсивный DFS использует тот же массив. Стек вызовов повторяет путь. Сосед, который посещён и не является родителем, замыкает цикл.
 - В несвязном графе поиск начинается заново от каждой непосещённой вершины.
 - **Time:** O(V + E). **Space:** O(V) на множество посещённых в полученном алгоритме.
 
 **Examples:**
+
 ```text
 def dfs(u, parent):
     visited[u] = True
@@ -1076,24 +1153,27 @@ def dfs(u, parent):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/detect-cycle-in-an-undirected-graph-using-bfs/
 </details>
 
 <details>
-<summary>Find All Possible Full Binary Trees with N nodes recursively.</summary>
+<summary>Рекурсивно найдите все возможные полные binary trees с N узлами.</summary>
 
-### Find All Possible Full Binary Trees with N nodes recursively.
+### Рекурсивно найдите все возможные полные binary trees с N узлами.
 
 **Definition:**
 В полном двоичном дереве у каждого узла 0 или 2 ребёнка. Число Каталана из статьи о скобках Cₙ = (2n)! / ((n+1)! n!) считает сбалансированные последовательности из n пар, и то же разбиение строит деревья: корень, полное левое дерево и полное правое, в сумме n−1 узлов.
 
 **How it works:**
+
 - n должно быть нечётным. В полном дереве листьев на один больше, чем внутренних узлов, поэтому при чётном n список пуст.
 - Для корня каждый нечётный размер левого дерева `i` от 1 до n−2 оставляет справа n−1−i узлов, тоже нечётное число. Обе стороны строятся рекурсивно и сочетаются.
 - Порождение строк из n пар скобок стоит O(Cₙ · n) времени и O(n) дополнительной памяти. Построитель деревьев следует той же рекуррентности Каталана; у каждого записанного дерева n узлов.
 - **Time:** O(Cₖ · n), где k = (n−1)/2, граница статьи для семейства размера Cₖ. **Space:** глубина O(n) плюс память самих деревьев.
 
 **Examples:**
+
 ```text
 def full_trees(n):
     if n % 2 == 0:
@@ -1111,20 +1191,22 @@ def full_trees(n):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/print-all-combinations-of-balanced-parentheses/
 </details>
 
 ### Recursion in Algorithms Design
 
 <details>
-<summary>Explain how Divide and Conquer is a form of recursion and give examples.</summary>
+<summary>Объясните, как Divide and Conquer является формой рекурсии, и приведите примеры.</summary>
 
-### Explain how Divide and Conquer is a form of recursion and give examples.
+### Объясните, как Divide and Conquer является формой рекурсии, и приведите примеры.
 
 **Definition:**
 «Разделяй и властвуй» делит задачу на меньшие копии, решает копии той же процедурой и объединяет результаты. Рекурсивный вызов — это шаг «властвуй». База — копия, которая уже достаточно мала.
 
 **How it works:**
+
 - Статья о рекурсии относит сюда «разделяй и властвуй» и называет двоичный поиск, сортировку слиянием и быструю сортировку. Статья о методе считает подзадачи одного размера.
 - Рекуррентность сортировки слиянием T(n) = 2T(n/2) + Θ(n) даёт O(n log n) по времени и O(n) дополнительной памяти.
 - Страница метода указывает ближайшую пару точек за O(n log n) против прямого перебора O(n²), обычное произведение матриц O(n³), Штрассена O(n^2.8974) и БПФ Кули–Тьюки O(n log n).
@@ -1132,6 +1214,7 @@ def full_trees(n):
 - **Time:** O(n log n) для сортировки слиянием во всех случаях. **Space:** O(n) дополнительно на слияние.
 
 **Examples:**
+
 ```text
 def merge_sort(a, left, right):
     if left >= right:
@@ -1143,6 +1226,7 @@ def merge_sort(a, left, right):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/recursion/
 - https://www.geeksforgeeks.org/dsa/introduction-to-divide-and-conquer-algorithm/
 - https://www.geeksforgeeks.org/dsa/merge-sort/
@@ -1150,20 +1234,22 @@ def merge_sort(a, left, right):
 </details>
 
 <details>
-<summary>Use recursion to solve the Longest Common Subsequence problem.</summary>
+<summary>Используйте recursion для решения задачи Longest Common Subsequence.</summary>
 
-### Use recursion to solve the Longest Common Subsequence problem.
+### Используйте recursion для решения задачи Longest Common Subsequence.
 
 **Definition:**
 Общая подпоследовательность входит в обе строки по порядку, не обязательно подряд. Если последние символы совпали, ответ — 1 плюс LCS префиксов. Если нет, берётся более длинный из двух результатов, где отброшен последний символ одной из строк.
 
 **How it works:**
+
 - Наивная рекурсия — O(2^min(m, n)) по времени и O(min(m, n)) по памяти. При несовпадении два вызова, стек идёт по более короткой строке.
 - Мемоизация, DP сверху вниз, — O(m · n) по времени и O(m · n) по памяти. Каждая пара префиксов решается один раз.
 - Таблица снизу вверх — те же O(m · n) и O(m · n). Оптимизация с одним массивом на той странице — O(m · n) по времени и O(n) по памяти.
 - **Time:** O(2^min(m, n)) без кэша, O(m · n) с мемоизацией. **Space:** O(min(m, n)) без кэша, O(m · n) для таблицы.
 
 **Examples:**
+
 ```text
 def lcs(a, b, i, j):
     if i == 0 or j == 0:
@@ -1174,18 +1260,20 @@ def lcs(a, b, i, j):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/longest-common-subsequence-dp-4/
 </details>
 
 <details>
-<summary>Define the role of recursion in the design of Greedy Algorithms.</summary>
+<summary>Определить роль рекурсии в проектировании greedy algorithms.</summary>
 
-### Define the role of recursion in the design of Greedy Algorithms.
+### Определить роль рекурсии в проектировании greedy algorithms.
 
 **Definition:**
 Жадный алгоритм фиксирует локально лучший выбор и решает оставшийся экземпляр. Рекурсия — один способ записать этот остаток: вызов получает то, что выбор не забрал. Сам выбор не пересматривается.
 
 **How it works:**
+
 - Статья о рекурсии относит к рекурсивным семействам перебор с возвратом и «разделяй и властвуй». Жадный алгоритм — родственник без ветвления: один выбор и одна меньшая задача.
 - Кодирование Хаффмана — конкретное жадное дерево на полученной странице. На каждом шаге соединяются два самых редких узла. Время O(n log n), где n — число различных символов, память O(n).
 - Рекурсивная форма: `build(forest) = лист`, когда дерево одно, иначе берутся два минимума, становятся детьми нового узла, и вызов повторяется. Итеративная куча делает те же соединения.
@@ -1193,6 +1281,7 @@ def lcs(a, b, i, j):
 - **Time:** O(n log n) для Хаффмана. **Space:** O(n).
 
 **Examples:**
+
 ```text
 def huffman(forest):
     if len(forest) == 1:
@@ -1202,26 +1291,29 @@ def huffman(forest):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/greedy-algorithms/
 - https://www.geeksforgeeks.org/dsa/huffman-coding-greedy-algo-3/
 - https://www.geeksforgeeks.org/dsa/recursion/
 </details>
 
 <details>
-<summary>How is recursion utilized in the Backtracking paradigm for algorithm design?</summary>
+<summary>Как recursion utilized in the backtracking paradigm for alGorithm design?</summary>
 
-### How is recursion utilized in the Backtracking paradigm for algorithm design?
+### Как recursion utilized in the backtracking paradigm for alGorithm design?
 
 **Definition:**
 Перебор с возвратом собирает кандидата по одному выбору. Рекурсия исследует этот выбор. Если частичный кандидат незаконен, выбор отменяется и пробуется следующий. Стек вызовов — это список ещё действующих выборов.
 
 **How it works:**
+
 - Статья о переборе называет цикл: выбрать, исследовать, проверить, отменить. Рекурсия — это шаг исследования. Обходы деревьев и сортировка слиянием приведены там как рекурсия без отмены выбора; N ферзей, судоку и перестановки — примеры с отменой.
 - Поиск судоку на месте — O(9^(n·n)) по времени и O(1) дополнительной памяти. Экспонента — это ветвление. Отмена нужна, чтобы следующая ветвь видела чистую клетку.
 - Перестановки обменом и отменой — O(n! · n). Скобки тем же способом — O(Cₙ · n) по времени и O(n) дополнительной памяти.
 - **Time:** зависит от задачи; судоку O(9^(n·n)), перестановки O(n! · n). **Space:** глубина равна числу открытых выборов; для судоку на месте дополнительно O(1) сверх доски.
 
 **Examples:**
+
 ```text
 def bt(state):
     if rejected(state):
@@ -1236,6 +1328,7 @@ def bt(state):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/introduction-to-backtracking-data-structure-and-algorithm-tutorials/
 - https://www.geeksforgeeks.org/dsa/sudoku-backtracking-7/
 - https://www.geeksforgeeks.org/dsa/write-a-c-program-to-print-all-permutations-of-a-given-string/
@@ -1243,14 +1336,15 @@ def bt(state):
 </details>
 
 <details>
-<summary>Illustrate the use of recursion in Dynamic Programming with an example problem.</summary>
+<summary>Проиллюстрируйте the use of recursion in dynamic programming with an example problem.</summary>
 
-### Illustrate the use of recursion in Dynamic Programming with an example problem.
+### Проиллюстрируйте the use of recursion in dynamic programming with an example problem.
 
 **Definition:**
 Динамическое программирование — это рекурсия, у которой повторные подзадачи сохраняются. Для наибольшей общей подпоследовательности случаи такие: последние символы совпали или один из двух отброшен. Мемоизация заполняет ячейку при первом появлении пары префиксов.
 
 **How it works:**
+
 - Прямая рекурсия LCS — O(2^min(m, n)) по времени и O(min(m, n)) по памяти. Мемоизованная форма сверху вниз на той же странице — O(m · n) и O(m · n).
 - Фибоначчи — меньшая картина. Прямая рекурсия — O(2ⁿ) по времени и стек O(n). Мемоизация — O(n) по времени и O(n) на таблицу, каждый индекс считается один раз.
 - Разрезание стержня на странице мемоизации и табуляции: сверху вниз O(n²) по времени и O(n) по памяти, снизу вверх те же O(n²) и O(n).
@@ -1258,6 +1352,7 @@ def bt(state):
 - **Time:** LCS падает с O(2^min(m, n)) до O(m · n). **Space:** O(m · n) на таблицу.
 
 **Examples:**
+
 ```text
 def lcs(i, j, memo):
     if i == 0 or j == 0:
@@ -1272,6 +1367,7 @@ def lcs(i, j, memo):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/longest-common-subsequence-dp-4/
 - https://www.geeksforgeeks.org/dsa/program-for-nth-fibonacci-number/
 - https://www.geeksforgeeks.org/dsa/tabulation-vs-memoization/
@@ -1280,14 +1376,15 @@ def lcs(i, j, memo):
 ### Optimization in Recursive Functions
 
 <details>
-<summary>Define Memoization and explain how it optimizes recursive solutions.</summary>
+<summary>Определите memoization AND, объясните, как он оптимизирует рекурсивные решения.</summary>
 
-### Define Memoization and explain how it optimizes recursive solutions.
+### Определите memoization AND, объясните, как он оптимизирует рекурсивные решения.
 
 **Definition:**
 Мемоизация сохраняет результат рекурсивного вызова по его аргументам и при следующем таком вызове возвращает сохранённое. Рекурсия остаётся сверху вниз. Повторные ветви исчезают.
 
 **How it works:**
+
 - В вопросах к собеседованию это сохранение решённых подзадач, обычно в массиве или отображении, чтобы не считать их снова.
 - Числа Фибоначчи показывают разницу: прямая рекурсия O(2ⁿ) по времени и стек O(n), мемоизация O(n) по времени и O(n) на таблицу.
 - LCS переходит от O(2^min(m, n)) по времени и O(min(m, n)) по памяти к O(m · n) и O(m · n).
@@ -1295,6 +1392,7 @@ def lcs(i, j, memo):
 - **Time:** одно вычисление на состояние, дальше чтение за O(1). **Space:** таблица, O(n) для Фибоначчи и стержня, O(m · n) для LCS.
 
 **Examples:**
+
 ```text
 memo = {}
 def fib(n):
@@ -1308,6 +1406,7 @@ def fib(n):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/commonly-asked-data-structure-interview-questions-on-recursion/
 - https://www.geeksforgeeks.org/dsa/program-for-nth-fibonacci-number/
 - https://www.geeksforgeeks.org/dsa/longest-common-subsequence-dp-4/
@@ -1315,19 +1414,21 @@ def fib(n):
 </details>
 
 <details>
-<summary>What’s the impact of Stack Overflow in recursive algorithms and how is it avoided?</summary>
+<summary>Каково влияние stack overflow в recursive algorithms и как его избежать?</summary>
 
-### What’s the impact of Stack Overflow in recursive algorithms and how is it avoided?
+### Каково влияние stack overflow в recursive algorithms и как его избежать?
 
 **Definition:**
 Каждый нехвостовой вызов держит кадр, пока более глубокие вызовы не закончатся. Факториал n держит n кадров. Когда эта цепочка длиннее стека вызовов, место в стеке кончается.
 
 **How it works:**
+
 - Рекурсивный факториал — O(n) по времени и O(n) по памяти. Итеративное произведение — те же O(n) по времени и O(1) дополнительной памяти, без кадра на каждое умножение.
 - Хвостовой вызов компилятор может переписать циклом или goto, потому что в текущем кадре больше нечего делать. Цепочка кадров для накопителя факториала исчезает.
 - **Space:** O(n) кадров для `return n * fact(n - 1)`. O(1) дополнительно для цикла.
 
 **Examples:**
+
 ```text
 iterative, O(1) extra:
     acc = 1
@@ -1336,20 +1437,22 @@ iterative, O(1) extra:
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/program-for-factorial-of-a-number/
 - https://www.geeksforgeeks.org/dsa/tail-recursion/
 
 </details>
 
 <details>
-<summary>Discuss Space Complexity and how it relates to iterative vs. recursive solutions.</summary>
+<summary>Обсудите space complexity и его связь с итеративными и рекурсивными решениями.</summary>
 
-### Discuss Space Complexity and how it relates to iterative vs. recursive solutions.
+### Обсудите space complexity и его связь с итеративными и рекурсивными решениями.
 
 **Definition:**
 Рекурсивный факториал хранит по кадру на уровень. Итеративный хранит текущее произведение и индекс цикла.
 
 **How it works:**
+
 - Оба делают Θ(n) умножений, поэтому оба O(n) по времени.
 - Рекурсия: память O(n), по кадру на каждый вызов до базы.
 - Итерация: память O(1). Ответ начинается с 1 и умножается на 2, 3, …, n.
@@ -1357,6 +1460,7 @@ iterative, O(1) extra:
 - **Time:** O(n). **Space:** O(n) у рекурсии, O(1) у итерации.
 
 **Examples:**
+
 ```text
 n = 4
 loop: 1 → 2 → 6 → 24, two variables
@@ -1364,26 +1468,29 @@ recursion: frames for 4, 3, 2, 1, then the multiplies unwind
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/program-for-factorial-of-a-number/
 - https://www.geeksforgeeks.org/dsa/tail-recursion/
 
 </details>
 
 <details>
-<summary>Explain Tail Call Optimization (TCO) and its support in various programming languages.</summary>
+<summary>Объясните оптимизацию конечных вызовов (TCO) и ее поддержку на различных языках программирования.</summary>
 
-### Explain Tail Call Optimization (TCO) and its support in various programming languages.
+### Объясните оптимизацию конечных вызовов (TCO) и ее поддержку на различных языках программирования.
 
 **Definition:**
 Устранение хвостового вызова повторно использует текущий кадр стека, если рекурсивный вызов — последнее действие. Статья говорит: один кадр — это O(1) памяти, N вызовов — O(N), а устранение вызова снижает память рекурсии с O(N) до O(1). Новый кадр не создаётся, функция продолжается в постоянной памяти.
 
 **How it works:**
+
 - Вызов должен быть в хвостовой позиции. `return n * fact(n - 1)` — нет: умножение происходит после вызова, кадр с n обязан остаться. `return fact(n - 1, n * acc)` — да: после вызова кадр никому не нужен.
 - В вопросах к собеседованию сказано, что некоторые компиляторы превращают такой вызов в цикл и этим уменьшают стек. Оптимизация действует только там, где реализация её поддерживает.
 - Статья об устранении не привязывает переход от O(N) к O(1) к одному языку. Если компилятор не переиспользует кадр, хвостовая функция всё ещё занимает кадр на вызов, а постоянную дополнительную память даёт итеративный цикл.
 - **Time:** N шагов остаются. **Space:** O(N) кадров до устранения, O(1) после.
 
 **Examples:**
+
 ```text
 def fact(n, acc=1):
     if n == 0:
@@ -1399,25 +1506,28 @@ def fact_loop(n):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/tail-call-elimination/
 - https://www.geeksforgeeks.org/dsa/commonly-asked-data-structure-interview-questions-on-recursion/
 </details>
 
 <details>
-<summary>Implement a recursive algorithm with an explicit Manual Stack to avoid Stack Overflow.</summary>
+<summary>Реализуйте a Recursive alGorithm with an explicit Manual stack to avoid stack overflow.</summary>
 
-### Implement a recursive algorithm with an explicit Manual Stack to avoid Stack Overflow.
+### Реализуйте a Recursive alGorithm with an explicit Manual stack to avoid stack overflow.
 
 **Definition:**
 Явный стек хранит кадры, которые иначе лежали бы на стеке вызовов. Цикл снимает кадр, выполняет работу и кладёт следующие кадры. Глубина собственных вызовов постоянна, поэтому длинная цепочка не переполняет стек вызовов.
 
 **How it works:**
+
 - В вопросах к собеседованию это и есть способ перевода, и названа польза: уходит риск переполнения стека при глубокой рекурсии. Дополнительная память рекурсивной формы в худшем случае — O(n), то есть глубина.
 - Итеративный DFS — пример на графе. Время O(V + E), память O(V). Явный стек держит вершины, а не машинные кадры.
 - Устранение хвостового вызова — другой выход, и только для хвостового вызова: память падает с O(N) до O(1). Явный стек нужен, когда вызов не хвостовой или язык не переиспользует кадр.
 - **Time:** O(V + E) для DFS. **Space:** O(V) на явный стек и массив посещений.
 
 **Examples:**
+
 ```text
 st = [root]
 while st:
@@ -1430,6 +1540,7 @@ while st:
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/commonly-asked-data-structure-interview-questions-on-recursion/
 - https://www.geeksforgeeks.org/dsa/iterative-depth-first-traversal/
 - https://www.geeksforgeeks.org/dsa/tail-call-elimination/
@@ -1438,20 +1549,22 @@ while st:
 ### Tricky Recursive Cases and Handling
 
 <details>
-<summary>How to handle negative input cases in a recursive Absolute Value function?</summary>
+<summary>Как handle neGAtive input cases in a Recursive Absolute Value function?</summary>
 
-### How to handle negative input cases in a recursive Absolute Value function?
+### Как handle neGAtive input cases in a Recursive Absolute Value function?
 
 **Definition:**
 Модуль — неотрицательная величина. Отрицательный аргумент — это один рекурсивный вызов от числа с обратным знаком. База возвращает неотрицательный аргумент как есть. Статья о сумме цифр так же убирает знак перед рекурсивным проходом по цифрам.
 
 **How it works:**
+
 - `abs(n)` возвращает n при n ≥ 0. При n < 0 возвращает `abs(-n)`. Это один лишний кадр и затем база. В вопросах дополнительная память ограничена глубиной; здесь глубина — один кадр после базы.
 - Нельзя рекурсивно вычитать единицу до нуля, начиная с отрицательного числа. Это заняло бы |n| кадров. Смена знака доходит до базы за один вызов.
 - Самое отрицательное целое фиксированной ширины нельзя обратить в той же ширине. Это значение обрабатывается до рекурсивного вызова либо считается в более широком типе.
 - **Time:** O(1) на смену знака и базу. **Space:** O(1) кадров сверх вызывающего.
 
 **Examples:**
+
 ```text
 def abs_rec(n):
     if n >= 0:
@@ -1461,26 +1574,29 @@ def abs_rec(n):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/recursion/
 - https://www.geeksforgeeks.org/dsa/commonly-asked-data-structure-interview-questions-on-recursion/
 - https://www.geeksforgeeks.org/dsa/sum-digit-number-using-recursion/
 </details>
 
 <details>
-<summary>Solve the problem of computing all possible combinations of well-formed m-n pairs recursively.</summary>
+<summary>Решите the problem of computing all possible combinations of well-formed m-n pairs Recursively.</summary>
 
-### Solve the problem of computing all possible combinations of well-formed m-n pairs recursively.
+### Решите the problem of computing all possible combinations of well-formed m-n pairs Recursively.
 
 **Definition:**
 Правильные пары — это сбалансированные скобочные последовательности. При запасе открывающих и запасе закрывающих рекурсия ставит открывающую, пока они есть, и закрывающую только если открывающих уже поставлено больше, чем закрывающих. Для n пар оба запаса вначале равны n.
 
 **How it works:**
+
 - Перебор с возвратом в статье: время O(Cₙ · n), где Cₙ = (2n)! / ((n+1)! n!), и дополнительная память O(n) на глубину и текущую строку.
 - Наивный фильтр, который сначала строит все строки, — O(2ⁿ · n) по времени и O(n) по памяти. Счётчики отсекают незаконные префиксы.
 - Два вида пар, круглые и квадратные, — та же рекурсия с двумя запасами открывающих. Закрывающая законна только для ещё открытого вида. Полученная граница Каталана — для одного вида и n пар.
 - **Time:** O(Cₙ · n). **Space:** O(n) дополнительно.
 
 **Examples:**
+
 ```text
 def pairs(open_left, close_left, cur):
     if open_left == 0 and close_left == 0:
@@ -1493,18 +1609,20 @@ def pairs(open_left, close_left, cur):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/print-all-combinations-of-balanced-parentheses/
 </details>
 
 <details>
-<summary>Discuss strategies to visually debug recursive functions.</summary>
+<summary>Обсудите стратегии визуальной отладки рекурсивных функций.</summary>
 
-### Discuss strategies to visually debug recursive functions.
+### Обсудите стратегии визуальной отладки рекурсивных функций.
 
 **Definition:**
 Печатайте аргументы при входе в вызов и результат при возврате, с отступом по глубине. `printFun(3)` в статье о рекурсии показывает стек: вывод `3 2 1 1 2 3`, вызовы идут вниз, а работа после вызова — обратно вверх.
 
 **How it works:**
+
 - Отступ задаётся аргументом глубины. В рекурсивный вызов передаётся `depth + 1`. Первая печать — прямой ход, печать после вызова — обратный. Именно это показывает `printFun`.
 - Базу пишите отдельной строкой. Пропущенная база, как говорит статья о рекурсии, ведёт к переполнению стека: база не срабатывает, и каждый вызов занимает новый кадр.
 - В вопросах стек ограничен O(n) в худшем случае, n — максимальная глубина. Трасса, которая растёт без строки базы, — это переполнение в замедленном виде.
@@ -1512,6 +1630,7 @@ def pairs(open_left, close_left, cur):
 - **Space:** сама трасса — строка на вызов. Стек алгоритма по-прежнему O(глубины), O(n) в худшем случае по вопросам к собеседованию.
 
 **Examples:**
+
 ```text
 def fib(n, depth=0):
     print("  " * depth + f"fib({n})")
@@ -1521,26 +1640,29 @@ def fib(n, depth=0):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/recursion/
 - https://www.geeksforgeeks.org/dsa/commonly-asked-data-structure-interview-questions-on-recursion/
 - https://www.geeksforgeeks.org/dsa/program-for-nth-fibonacci-number/
 </details>
 
 <details>
-<summary>Recursively determine if a Graph is Connected.</summary>
+<summary>Рекурсивно определите, является ли graph connected.</summary>
 
-### Recursively determine if a Graph is Connected.
+### Рекурсивно определите, является ли graph connected.
 
 **Definition:**
 Неориентированный граф связен, если обход от любой вершины доходит до всех. Рекурсивный DFS помечает стартовую компоненту. Граф связен, если число помеченных вершин равно V. Статья о компонентах связности находит каждый такой кусок.
 
 **How it works:**
+
 - DFS стартует в вершине 0 или в любой другой. Она помечается, затем рекурсия идёт по каждому непомеченному соседу.
 - DFS по компонентам в статье — O(V + E) по времени: каждая вершина посещается не больше одного раза и каждое ребро проходится не больше одного раза. Дополнительная память O(V + E), включая хранимый граф и стек рекурсии.
 - BFS на той же странице — O(V + E) по времени и O(V) по памяти, по одному поиску на компоненту. Для одной проверки связности хватает одного поиска: непомеченная вершина значит, что граф несвязен.
 - **Time:** O(V + E). **Space:** O(V + E) дополнительно для рекурсивного DFS в этой статье.
 
 **Examples:**
+
 ```text
 def dfs(u):
     visited[u] = True
@@ -1554,18 +1676,20 @@ def connected():
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/connected-components-in-an-undirected-graph/
 </details>
 
 <details>
-<summary>Recursively implement a Regular Expression Matcher.</summary>
+<summary>Рекурсивно реализуйте Regular Expression Matcher.</summary>
 
-### Recursively implement a Regular Expression Matcher.
+### Рекурсивно реализуйте Regular Expression Matcher.
 
 **Definition:**
 Рекурсивный сопоставитель идёт по тексту и по шаблону вместе. Конкретная форма — статья о шаблонах с подстановкой: `?` совпадает с одним символом, `*` — с любой последовательностью, остальные символы шаблона должны равняться символу текста. Если совпадения нет, ветвь возвращает ложь.
 
 **How it works:**
+
 - Наивная рекурсия — O(2^(n+m)) по времени и O(n) по памяти. Ветвь даёт звёздочка: забрать один символ текста и оставить звёздочку либо отбросить звёздочку. n — длина текста, m — длина шаблона.
 - Мемоизация на той странице — O(n · m) по времени и O(n · m) по памяти. DP снизу вверх имеет ту же границу. DP с ужатой памятью — O(n · m) по времени и O(m) по памяти.
 - Точка `.` в регулярном выражении — то же совпадение одного символа, что и `?`. Звёздочка, повторяющая предыдущий атом, — тот же выбор: взять ещё символ или остановиться. Цифры выше взяты из статьи о шаблонах.
@@ -1573,6 +1697,7 @@ def connected():
 - **Time:** O(2^(n+m)) без кэша, O(n · m) с мемоизацией. **Space:** O(n) без кэша, O(n · m) с мемоизацией.
 
 **Examples:**
+
 ```text
 def match(text, pat, i, j):
     if j == len(pat):
@@ -1587,20 +1712,22 @@ def match(text, pat, i, j):
 ```
 
 **Sources:**
+
 - https://www.geeksforgeeks.org/dsa/wildcard-pattern-matching/
 </details>
 
 ### Recursion Theory Questions
 
 <details>
-<summary>Explain the relationship between Recursion and Lambda Calculus.</summary>
+<summary>Объясните взаимосвязь между рекурсией и лямбда-исчислением.</summary>
 
-### Explain the relationship between Recursion and Lambda Calculus.
+### Объясните взаимосвязь между рекурсией и лямбда-исчислением.
 
 **Definition:**
 В чистом лямбда-исчислении нет именованных функций. Рекурсия — это неподвижная точка: функция F, для которой F(x) = x. Комбинатор Y получает такой x из F, поэтому рекурсивный вызов — это применение, а не имя, ссылающееся на себя.
 
 **How it works:**
+
 - Страница о неподвижной точке определяет рекурсивные определения через комбинаторы неподвижной точки и разбирает факториал. Y(F) — значение, которое F возвращает неизменным; это и есть рекурсивная функция.
 - Одно разворачивание даёт следующий вызов: комбинатор факториала получает n, а рекурсивное применение — вызов от n−1. Исчислению не нужна машинная команда стека; стек вызовов — это реализация такого разворачивания.
 - Страница о лямбда-исчислении отмечает, что хорошей меры памяти для редукции пока нет. Из этого замечания нельзя вешать на сам Y границу O.
@@ -1608,6 +1735,7 @@ def match(text, pat, i, j):
 - **Space:** страница о неподвижной точке не даёт границы редукции. Цена кадров относится к реализации: O(N) до устранения хвостового вызова, O(1) после.
 
 **Examples:**
+
 ```text
 # Y(F) = F(Y(F))
 # fact = Y(lambda f: lambda n: 1 if n == 0 else n * f(n - 1))
@@ -1615,6 +1743,7 @@ def match(text, pat, i, j):
 ```
 
 **Sources:**
+
 - https://en.wikipedia.org/wiki/Fixed-point_combinator
 - https://en.wikipedia.org/wiki/Lambda_calculus
 - https://www.geeksforgeeks.org/dsa/tail-call-elimination/

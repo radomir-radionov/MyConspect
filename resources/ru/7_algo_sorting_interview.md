@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Sorting Algorithms](https://devinterview.io/
 ### Understanding Sorting Algorithms
 
 <details>
-<summary>What are Sorting Algorithms?</summary>
+<summary>Что такое Sorting Algorithms?</summary>
 
-### What are Sorting Algorithms?
+### Что такое Sorting Algorithms?
 
 **Definition:**
 
@@ -92,9 +92,9 @@ Questions from [Devinterview.io — Sorting Algorithms](https://devinterview.io/
 </details>
 
 <details>
-<summary>Classify Sorting Algorithms.</summary>
+<summary>Классифицируйте алгоритмы сортировки.</summary>
 
-### Classify Sorting Algorithms.
+### Классифицируйте алгоритмы сортировки.
 
 **Definition:**
 
@@ -180,9 +180,9 @@ Questions from [Devinterview.io — Sorting Algorithms](https://devinterview.io/
 </details>
 
 <details>
-<summary>What would be an Ideal Sorting Algorithm?</summary>
+<summary>Каким был бы идеальный sorting algorithm?</summary>
 
-### What would be an Ideal Sorting Algorithm?
+### Каким был бы идеальный sorting algorithm?
 
 **Definition:**
 
@@ -210,9 +210,9 @@ Questions from [Devinterview.io — Sorting Algorithms](https://devinterview.io/
 </details>
 
 <details>
-<summary>Explain the Divide and Conquer paradigm in the context of Sorting Algorithms.</summary>
+<summary>Объясните парадигму Divide and Conquer в контексте алгоритмов сортировки.</summary>
 
-### Explain the Divide and Conquer paradigm in the context of Sorting Algorithms.
+### Объясните парадигму Divide and Conquer в контексте алгоритмов сортировки.
 
 **Definition:**
 
@@ -298,9 +298,9 @@ T(n) = 2T \left(\dfrac{n}{2}\right) + \Theta(n)
 </details>
 
 <details>
-<summary>How does Comparison-Based sorting differ from Non-Comparison-Based sorting algorithms?</summary>
+<summary>Чем сортировка, основанная на сравнении, отличается от алгоритмов сортировки, не основанных на сравнении?</summary>
 
-### How does Comparison-Based sorting differ from Non-Comparison-Based sorting algorithms?
+### Чем сортировка, основанная на сравнении, отличается от алгоритмов сортировки, не основанных на сравнении?
 
 **Definition:**
 
@@ -341,9 +341,9 @@ T(n) = 2T \left(\dfrac{n}{2}\right) + \Theta(n)
 ### Properties of Sorting Algorithms
 
 <details>
-<summary>What does Sort in Place mean?</summary>
+<summary>Что означает sort in place?</summary>
 
-### What does Sort in Place mean?
+### Что означает sort in place?
 
 **Definition:**
 
@@ -370,9 +370,9 @@ T(n) = 2T \left(\dfrac{n}{2}\right) + \Theta(n)
 </details>
 
 <details>
-<summary>What is Stability in the context of Sorting Algorithms?</summary>
+<summary>Что такое Stability in the context of Sorting Algorithms?</summary>
 
-### What is Stability in the context of Sorting Algorithms?
+### Что такое Stability in the context of Sorting Algorithms?
 
 **Definition:**
 
@@ -428,9 +428,9 @@ T(n) = 2T \left(\dfrac{n}{2}\right) + \Theta(n)
 </details>
 
 <details>
-<summary>What is the difference between External and Internal sorting?</summary>
+<summary>Что такое the difference between External and Internal sorting?</summary>
 
-### What is the difference between External and Internal sorting?
+### Что такое the difference between External and Internal sorting?
 
 **Definition:**
 
@@ -529,9 +529,9 @@ external_merge_sort("large_dataset.txt", "sorted_dataset.txt", 1000000)
 </details>
 
 <details>
-<summary>Define Adaptive Sorting and provide an example of an adaptive sort algorithm.</summary>
+<summary>Define Adaptive SORting AND предоставляет пример адаптивного sORt algORZithm.</summary>
 
-### Define Adaptive Sorting and provide an example of an adaptive sort algorithm.
+### Define Adaptive SORting AND предоставляет пример адаптивного sORt algORZithm.
 
 **Definition:**
 
@@ -579,9 +579,9 @@ def insertion_sort(arr):
 </details>
 
 <details>
-<summary>How does the Time Complexity of sorting algorithms change with respect to Different Types of Input Data?</summary>
+<summary>Как the time complexity of Sorting Algorithms change with respect to Different Types of Input Data?</summary>
 
-### How does the Time Complexity of sorting algorithms change with respect to Different Types of Input Data?
+### Как the time complexity of Sorting Algorithms change with respect to Different Types of Input Data?
 
 **Definition:**
 
@@ -644,9 +644,9 @@ def insertion_sort(arr):
 ### Common Comparison-Based Algorithms
 
 <details>
-<summary>What is Bubble Sort?</summary>
+<summary>Что такое bubble sort?</summary>
 
-### What is Bubble Sort?
+### Что такое bubble sort?
 
 **Definition:**
 
@@ -708,9 +708,9 @@ def bubble_sort(arr):
 </details>
 
 <details>
-<summary>Name some Optimization Techniques for Bubble Sort.</summary>
+<summary>Назовите some Optimization Techniques for bubble sort.</summary>
 
-### Name some Optimization Techniques for Bubble Sort.
+### Назовите some Optimization Techniques for bubble sort.
 
 **Definition:**
 
@@ -782,9 +782,9 @@ def bubble_sort(arr):
 </details>
 
 <details>
-<summary>What is Insertion Sort?</summary>
+<summary>Что такое Insertion Sort?</summary>
 
-### What is Insertion Sort?
+### Что такое Insertion Sort?
 
 **Definition:**
 
@@ -848,9 +848,9 @@ def insertion_sort(arr):
 </details>
 
 <details>
-<summary>What is Merge Sort?</summary>
+<summary>Что такое merge sort?</summary>
 
-### What is Merge Sort?
+### Что такое merge sort?
 
 **Definition:**
 
@@ -933,9 +933,9 @@ def merge_sort(arr):
 </details>
 
 <details>
-<summary>What is QuickSort?</summary>
+<summary>Что такое quicksort?</summary>
 
-### What is QuickSort?
+### Что такое quicksort?
 
 **Definition:**
 
@@ -1000,9 +1000,9 @@ def quick_sort(arr):
 </details>
 
 <details>
-<summary>What is Heap Sort?</summary>
+<summary>Что такое heap sort?</summary>
 
-### What is Heap Sort?
+### Что такое heap sort?
 
 **Definition:**
 
@@ -1048,9 +1048,9 @@ def heap_sort(arr):
 </details>
 
 <details>
-<summary>Provide a real-world analogy for Selection Sort and explain how it works.</summary>
+<summary>Приведите a real-world analogy for Selection Sort and explain how it works.</summary>
 
-### Provide a real-world analogy for Selection Sort and explain how it works.
+### Приведите a real-world analogy for Selection Sort and explain how it works.
 
 **Definition:**
 
@@ -1088,9 +1088,9 @@ def selection_sort(arr):
 </details>
 
 <details>
-<summary>Describe how Shell Sort improves upon Insertion Sort.</summary>
+<summary>Опишите, как сортировка Шелла улучшает сортировку вставками.</summary>
 
-### Describe how Shell Sort improves upon Insertion Sort.
+### Опишите, как сортировка Шелла улучшает сортировку вставками.
 
 **Definition:**
 
@@ -1129,9 +1129,9 @@ def shell_sort(arr):
 </details>
 
 <details>
-<summary>Discuss the process of Tree Sort and its relationship to the binary search tree.</summary>
+<summary>Обсудите процесс сортировки по дереву и его связь с binary search tree.</summary>
 
-### Discuss the process of Tree Sort and its relationship to the binary search tree.
+### Обсудите процесс сортировки по дереву и его связь с binary search tree.
 
 **Definition:**
 
@@ -1187,9 +1187,9 @@ def tree_sort(arr):
 ### Non-Comparison-Based Algorithms
 
 <details>
-<summary>What is Radix Sort?</summary>
+<summary>Что такое Radix Sort?</summary>
 
-### What is Radix Sort?
+### Что такое Radix Sort?
 
 **Definition:**
 
@@ -1235,9 +1235,9 @@ def radix_sort(arr):
 </details>
 
 <details>
-<summary>Explain how Counting Sort works and mention its limitations.</summary>
+<summary>Объясните, как работает счетная сортировка, и укажите ее ограничения.</summary>
 
-### Explain how Counting Sort works and mention its limitations.
+### Объясните, как работает счетная сортировка, и укажите ее ограничения.
 
 **Definition:**
 
@@ -1278,9 +1278,9 @@ def counting_sort(arr):
 </details>
 
 <details>
-<summary>Describe how Bucket Sort works and when it is most effective.</summary>
+<summary>Опишите, как работает сегментированная сортировка и когда она наиболее эффективна.</summary>
 
-### Describe how Bucket Sort works and when it is most effective.
+### Опишите, как работает сегментированная сортировка и когда она наиболее эффективна.
 
 **Definition:**
 
@@ -1324,9 +1324,9 @@ def bucket_sort(arr):
 </details>
 
 <details>
-<summary>What is Flash Sort and in what scenario could it be used?</summary>
+<summary>Что такое Flash Sort and in what scenario could it be used?</summary>
 
-### What is Flash Sort and in what scenario could it be used?
+### Что такое Flash Sort and in what scenario could it be used?
 
 **Definition:**
 
@@ -1386,9 +1386,9 @@ def flash_sort(arr):
 ### Advanced and Hybrid Sorting Algorithms
 
 <details>
-<summary>Discuss the idea behind Timsort and its typical use-cases.</summary>
+<summary>Обсудите идею Timsort и типичные варианты ее использования.</summary>
 
-### Discuss the idea behind Timsort and its typical use-cases.
+### Обсудите идею Timsort и типичные варианты ее использования.
 
 **Definition:**
 
@@ -1424,9 +1424,9 @@ def insertion_run(arr, left, right):
 </details>
 
 <details>
-<summary>What is Introsort, and how does it combine different sorting algorithms?</summary>
+<summary>Что такое Introsort, and how does it combine different Sorting Algorithms?</summary>
 
-### What is Introsort, and how does it combine different sorting algorithms?
+### Что такое Introsort, and how does it combine different Sorting Algorithms?
 
 **Definition:**
 
@@ -1500,9 +1500,9 @@ def introsort(arr):
 </details>
 
 <details>
-<summary>Explain the concept of Bitonic Sort and the context in which it is used.</summary>
+<summary>Объясните концепцию битонической сортировки и контекст, в котором она используется.</summary>
 
-### Explain the concept of Bitonic Sort and the context in which it is used.
+### Объясните концепцию битонической сортировки и контекст, в котором она используется.
 
 **Definition:**
 
@@ -1546,9 +1546,9 @@ def bitonic_sort(arr):
 </details>
 
 <details>
-<summary>Describe Spaghetti Sort and its practical feasibilities.</summary>
+<summary>Опишите спагетти SORt AND его практические возможности.</summary>
 
-### Describe Spaghetti Sort and its practical feasibilities.
+### Опишите спагетти SORt AND его практические возможности.
 
 **Definition:**
 
@@ -1587,9 +1587,9 @@ def spaghetti_sort(values):
 ### Memory, Performance, and Choice of Sorting Algorithms
 
 <details>
-<summary>Which Sort Algorithm works best on Mostly Sorted Data?</summary>
+<summary>Какой Sort AlGorithm works best on Mostly Sorted Data?</summary>
 
-### Which Sort Algorithm works best on Mostly Sorted Data?
+### Какой Sort AlGorithm works best on Mostly Sorted Data?
 
 **Definition:**
 
@@ -1623,9 +1623,9 @@ def insertion_sort(arr):
 </details>
 
 <details>
-<summary>When to use each Sorting Algorithm?</summary>
+<summary>Когда to use each Sorting Algorithm?</summary>
 
-### When to use each Sorting Algorithm?
+### Когда to use each Sorting Algorithm?
 
 **Definition:**
 
@@ -1673,9 +1673,9 @@ def choose(n, nearly_sorted, integer_range, need_stable):
 </details>
 
 <details>
-<summary>Choose The Fastest Algorithm for the given scenario.</summary>
+<summary>Выберите The Fastest AlgORZithm fOR по данному сценарию.</summary>
 
-### Choose The Fastest Algorithm for the given scenario.
+### Выберите The Fastest AlgORZithm fOR по данному сценарию.
 
 **Definition:**
 
@@ -1720,9 +1720,9 @@ def fastest(kind):
 </details>
 
 <details>
-<summary>What role does Auxiliary Space play in the choice of a sorting algorithm?</summary>
+<summary>Какую роль играет auxiliary space при выборе sorting algorithm?</summary>
 
-### What role does Auxiliary Space play in the choice of a sorting algorithm?
+### Какую роль играет auxiliary space при выборе sorting algorithm?
 
 **Definition:**
 
@@ -1752,9 +1752,9 @@ def fits(extra_bytes, limit_bytes):
 </details>
 
 <details>
-<summary>Explain the impact of Recursion on stack memory in sorting algorithms like QuickSort and Merge Sort.</summary>
+<summary>Объясните влияние рекурсии на память stack в алгоритмах сортировки, таких как quicksort и merge sort.</summary>
 
-### Explain the impact of Recursion on stack memory in sorting algorithms like QuickSort and Merge Sort.
+### Объясните влияние рекурсии на память stack в алгоритмах сортировки, таких как quicksort и merge sort.
 
 **Definition:**
 
@@ -1785,9 +1785,9 @@ def depth_limit(n):
 </details>
 
 <details>
-<summary>How does the Initial Order of the input data affect the performance of sorting algorithms?</summary>
+<summary>Как начальный порядок входных данных влияет на производительность алгоритмов сортировки?</summary>
 
-### How does the Initial Order of the input data affect the performance of sorting algorithms?
+### Как начальный порядок входных данных влияет на производительность алгоритмов сортировки?
 
 **Definition:**
 
@@ -1819,9 +1819,9 @@ def insertion_is_linear(arr):
 ### Sorting in Different Contexts
 
 <details>
-<summary>Compare QuickSort vs. Merge Sort. When to use which?</summary>
+<summary>Сравните quicksort и merge sort. Когда использовать какой?</summary>
 
-### Compare QuickSort vs. Merge Sort. When to use which?
+### Сравните quicksort и merge sort. Когда использовать какой?
 
 **Definition:**
 
@@ -1855,9 +1855,9 @@ def quick_vs_merge(need_stable, linked_list, tight_memory):
 </details>
 
 <details>
-<summary>Why is Merge Sort preferred over QuickSort for sorting Linked Lists?</summary>
+<summary>Почему is merge sort preferred over quicksort for sorting linked lists?</summary>
 
-### Why is Merge Sort preferred over QuickSort for sorting Linked Lists?
+### Почему is merge sort preferred over quicksort for sorting linked lists?
 
 **Definition:**
 
@@ -1914,9 +1914,9 @@ def merge_sort_list(head):
 </details>
 
 <details>
-<summary>Pair socks from a pile using a Sorting Algorithm.</summary>
+<summary>Сопоставьте носки из кучи с помощью sorting algorithm.</summary>
 
-### Pair socks from a pile using a Sorting Algorithm.
+### Сопоставьте носки из кучи с помощью sorting algorithm.
 
 **Definition:**
 
@@ -1947,9 +1947,9 @@ def pair_socks(colors):
 </details>
 
 <details>
-<summary>How would you modify a sorting algorithm to be efficient for large datasets that do not fit in memory?</summary>
+<summary>Как бы вы modify a Sorting Algorithm to be efficient for large datasets that do not fit in memory?</summary>
 
-### How would you modify a sorting algorithm to be efficient for large datasets that do not fit in memory?
+### Как бы вы modify a Sorting Algorithm to be efficient for large datasets that do not fit in memory?
 
 **Definition:**
 
@@ -1987,9 +1987,9 @@ def external_runs(records, run_size):
 </details>
 
 <details>
-<summary>Discuss the considerations in choosing a sorting algorithm for a database management system.</summary>
+<summary>Обсудите соображения по выбору алгоритма сортировки для системы управления базами данных.</summary>
 
-### Discuss the considerations in choosing a sorting algorithm for a database management system.
+### Обсудите соображения по выбору алгоритма сортировки для системы управления базами данных.
 
 **Definition:**
 
@@ -2023,9 +2023,9 @@ def order_by(rows, key, memory_rows):
 ### Application in Data Structures
 
 <details>
-<summary>Sort a Stack using Recursion.</summary>
+<summary>Отсортируйте a stack using recursion.</summary>
 
-### Sort a Stack using Recursion.
+### Отсортируйте a stack using recursion.
 
 **Definition:**
 
@@ -2061,9 +2061,9 @@ def sort_stack(st):
 </details>
 
 <details>
-<summary>Sort a Stack using another Stack.</summary>
+<summary>Отсортируйте a stack using another stack.</summary>
 
-### Sort a Stack using another Stack.
+### Отсортируйте a stack using another stack.
 
 **Definition:**
 
@@ -2094,9 +2094,9 @@ def sort_stack(st):
 </details>
 
 <details>
-<summary>Insert an item in a Sorted Linked List, while maintaining order.</summary>
+<summary>Вставьте an item in a Sorted linked list, while maintaining order.</summary>
 
-### Insert an item in a Sorted Linked List, while maintaining order.
+### Вставьте an item in a Sorted linked list, while maintaining order.
 
 **Definition:**
 
@@ -2133,9 +2133,9 @@ def insert_sorted(head, value):
 </details>
 
 <details>
-<summary>Implement a Queue sort using minimum computational resources.</summary>
+<summary>Реализуйте a queue sort using minimum computational resources.</summary>
 
-### Implement a Queue sort using minimum computational resources.
+### Реализуйте a queue sort using minimum computational resources.
 
 **Definition:**
 
@@ -2171,9 +2171,9 @@ def queue_sort(items):
 </details>
 
 <details>
-<summary>How would you apply a sorting algorithm to organize a shuffled Deck of Cards efficiently?</summary>
+<summary>Как бы вы apply a Sorting Algorithm to orGAnize a shuffled Deck of Cards efficiently?</summary>
 
-### How would you apply a sorting algorithm to organize a shuffled Deck of Cards efficiently?
+### Как бы вы apply a Sorting Algorithm to orGAnize a shuffled Deck of Cards efficiently?
 
 **Definition:**
 
@@ -2209,9 +2209,9 @@ def insertion_sort(cards):
 ### Algorithmic Optimization and Trade-offs
 
 <details>
-<summary>Optimize Bubble Sort to stop early if the list is sorted before all passes are done.</summary>
+<summary>Оптимизируйте bubble sort to stop early if the list is sorted before all passes are done.</summary>
 
-### Optimize Bubble Sort to stop early if the list is sorted before all passes are done.
+### Оптимизируйте bubble sort to stop early if the list is sorted before all passes are done.
 
 **Definition:**
 
@@ -2243,9 +2243,9 @@ def bubble_sort(arr):
 </details>
 
 <details>
-<summary>Implement Insertion Sort for a Doubly Linked List.</summary>
+<summary>Реализуйте Insertion Sort for a doubly linked List.</summary>
 
-### Implement Insertion Sort for a Doubly Linked List.
+### Реализуйте Insertion Sort for a doubly linked List.
 
 **Definition:**
 
@@ -2282,9 +2282,9 @@ def insertion_sort_dll(head):
 </details>
 
 <details>
-<summary>Modify Merge Sort to efficiently sort arrays with a large number of duplicate values.</summary>
+<summary>Измените merge sort to efficiently sort arrays with a large number of duplicate values.</summary>
 
-### Modify Merge Sort to efficiently sort arrays with a large number of duplicate values.
+### Измените merge sort to efficiently sort arrays with a large number of duplicate values.
 
 **Definition:**
 
@@ -2321,9 +2321,9 @@ def merge_pair(left, right):
 ### Complex Challenges Involving Sorting
 
 <details>
-<summary>Implement an algorithm for finding the Kth smallest element using sorting principles without fully sorting the list.</summary>
+<summary>Реализуйте an alGorithm for finding the Kth smallest element using sorting principles without fully sorting the list.</summary>
 
-### Implement an algorithm for finding the Kth smallest element using sorting principles without fully sorting the list.
+### Реализуйте an alGorithm for finding the Kth smallest element using sorting principles without fully sorting the list.
 
 **Definition:**
 
@@ -2361,9 +2361,9 @@ def kth_smallest(arr, k):
 </details>
 
 <details>
-<summary>Design a Sorting Network for a given number of inputs and outputs.</summary>
+<summary>Спроектируйте сортировочную сеть для заданного количества входов и выходов.</summary>
 
-### Design a Sorting Network for a given number of inputs and outputs.
+### Спроектируйте сортировочную сеть для заданного количества входов и выходов.
 
 **Definition:**
 
@@ -2407,9 +2407,9 @@ def bitonic_sort(arr):
 </details>
 
 <details>
-<summary>Apply Cycle Sort to solve the minimum swaps required to sort an array.</summary>
+<summary>Примените cycle sort, чтобы найти минимальное число обменов для сортировки array.</summary>
 
-### Apply Cycle Sort to solve the minimum swaps required to sort an array.
+### Примените cycle sort, чтобы найти минимальное число обменов для сортировки array.
 
 **Definition:**
 
@@ -2446,9 +2446,9 @@ def min_swaps_to_sort(arr):
 ### Sorting Algorithm Variations
 
 <details>
-<summary>Implement a variation of QuickSort that uses a Randomized Pivot.</summary>
+<summary>Реализуйте a variation of quicksort that uses a Randomized Pivot.</summary>
 
-### Implement a variation of QuickSort that uses a Randomized Pivot.
+### Реализуйте a variation of quicksort that uses a Randomized Pivot.
 
 **Definition:**
 
@@ -2489,9 +2489,9 @@ def quick_sort(arr, lo=0, hi=None):
 </details>
 
 <details>
-<summary>Design a Deterministic Selection algorithm using the principles of QuickSort.</summary>
+<summary>Разработайте алгоритм выбора deterministic, используя принципы quicksort.</summary>
 
-### Design a Deterministic Selection algorithm using the principles of QuickSort.
+### Разработайте алгоритм выбора deterministic, используя принципы quicksort.
 
 **Definition:**
 
@@ -2522,9 +2522,9 @@ def median_of_three(arr, lo, hi):
 </details>
 
 <details>
-<summary>Discuss the different Pivot Selection strategies in QuickSort and their impact on performance.</summary>
+<summary>Обсудите различные стратегии выбора опорной точки в quicksort и их влияние на производительность.</summary>
 
-### Discuss the different Pivot Selection strategies in QuickSort and their impact on performance.
+### Обсудите различные стратегии выбора опорной точки в quicksort и их влияние на производительность.
 
 **Definition:**
 
@@ -2561,9 +2561,9 @@ def choose_pivot(arr, lo, hi, strategy):
 ### Practical Sorting Problem Scenarios
 
 <details>
-<summary>Find 100 largest numbers in an Array of 1 billion numbers.</summary>
+<summary>Найдите 100 самых больших чисел в array из 1 миллиарда чисел.</summary>
 
-### Find 100 largest numbers in an Array of 1 billion numbers.
+### Найдите 100 самых больших чисел в array из 1 миллиарда чисел.
 
 **Definition:**
 
@@ -2599,9 +2599,9 @@ def largest_k(nums, k=100):
 </details>
 
 <details>
-<summary>Explain how you would sort a list of millions of phone numbers.</summary>
+<summary>Объясните, как бы вы отсортировали список из миллионов телефонных номеров.</summary>
 
-### Explain how you would sort a list of millions of phone numbers.
+### Объясните, как бы вы отсортировали список из миллионов телефонных номеров.
 
 **Definition:**
 
@@ -2630,9 +2630,9 @@ def sort_phones(numbers):
 </details>
 
 <details>
-<summary>Come up with an efficient approach to sort one terabyte of data using a sorting algorithm.</summary>
+<summary>Придумайте эффективный подход к sORt одному терабайту данных с использованием sORting algORZithm.</summary>
 
-### Come up with an efficient approach to sort one terabyte of data using a sorting algorithm.
+### Придумайте эффективный подход к sORt одному терабайту данных с использованием sORting algORZithm.
 
 **Definition:**
 
@@ -2667,9 +2667,9 @@ def spill_runs(path_records, run_size):
 ### Interview-Centric Sorting Challenges
 
 <details>
-<summary>Solve the classical Dutch National Flag problem by sorting an array of 0s, 1s, and 2s.</summary>
+<summary>Решите the classical Dutch National Flag problem by sorting an array of 0s, 1s, and 2s.</summary>
 
-### Solve the classical Dutch National Flag problem by sorting an array of 0s, 1s, and 2s.
+### Решите the classical Dutch National Flag problem by sorting an array of 0s, 1s, and 2s.
 
 **Definition:**
 
@@ -2704,9 +2704,9 @@ def sort012(arr):
 </details>
 
 <details>
-<summary>Implement a Two-Way Merge Sort algorithm for a linked list.</summary>
+<summary>Реализуйте a two-way merge sort alGorithm for a linked list.</summary>
 
-### Implement a Two-Way Merge Sort algorithm for a linked list.
+### Реализуйте a two-way merge sort alGorithm for a linked list.
 
 **Definition:**
 
@@ -2757,9 +2757,9 @@ def merge_sort_list(head):
 </details>
 
 <details>
-<summary>Optimize Heapsort for systems with limited memory.</summary>
+<summary>Оптимизируйте heapsort for systems with limited memory.</summary>
 
-### Optimize Heapsort for systems with limited memory.
+### Оптимизируйте heapsort for systems with limited memory.
 
 **Definition:**
 
@@ -2806,9 +2806,9 @@ def heap_sort(arr):
 ### Understanding Sorting Applications
 
 <details>
-<summary>How do sorting algorithms factor into Search Engine optimization?</summary>
+<summary>Как алгоритмы сортировки влияют на поисковую оптимизацию?</summary>
 
-### How do sorting algorithms factor into Search Engine optimization?
+### Как алгоритмы сортировки влияют на поисковую оптимизацию?
 
 **Definition:**
 
@@ -2837,9 +2837,9 @@ def order_hits(hits):
 </details>
 
 <details>
-<summary>Describe a scenario in which a sorting algorithm is used in a Graphics Rendering pipeline.</summary>
+<summary>Опишите сценарий, в котором алгоритм сортировки используется в пайплайне рендеринга графики.</summary>
 
-### Describe a scenario in which a sorting algorithm is used in a Graphics Rendering pipeline.
+### Опишите сценарий, в котором алгоритм сортировки используется в пайплайне рендеринга графики.
 
 **Definition:**
 

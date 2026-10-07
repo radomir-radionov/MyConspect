@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Tree Data Structure](https://devinterview.io
 ### Introduction to Trees
 
 <details>
-<summary>What is a Tree Data Structure?</summary>
+<summary>Что такое Tree Data Structure?</summary>
 
-### What is a Tree Data Structure?
+### Что такое Tree Data Structure?
 
 **Definition:**
 
@@ -37,9 +37,9 @@ Questions from [Devinterview.io — Tree Data Structure](https://devinterview.io
 </details>
 
 <details>
-<summary>What is a Binary Tree?</summary>
+<summary>Что такое binary tree?</summary>
 
-### What is a Binary Tree?
+### Что такое binary tree?
 
 **Definition:**
 
@@ -54,9 +54,9 @@ Questions from [Devinterview.io — Tree Data Structure](https://devinterview.io
 </details>
 
 <details>
-<summary>Explain Height and Depths in the context of a Tree.</summary>
+<summary>Объясните высоту и глубину в контексте дерева.</summary>
 
-### Explain Height and Depths in the context of a Tree.
+### Объясните высоту и глубину в контексте дерева.
 
 **Definition:**
 
@@ -75,9 +75,9 @@ Questions from [Devinterview.io — Tree Data Structure](https://devinterview.io
 </details>
 
 <details>
-<summary>What is the difference between a Tree and a Graph?</summary>
+<summary>Что такое the difference between a Tree and a graph?</summary>
 
-### What is the difference between a Tree and a Graph?
+### Что такое the difference between a Tree and a graph?
 
 **Definition:**
 
@@ -92,9 +92,9 @@ Questions from [Devinterview.io — Tree Data Structure](https://devinterview.io
 </details>
 
 <details>
-<summary>Define Leaf and Internal nodes in a Tree.</summary>
+<summary>Определите Leaf AND Внутренние узлы в дереве.</summary>
 
-### Define Leaf and Internal nodes in a Tree.
+### Определите Leaf AND Внутренние узлы в дереве.
 
 **Definition:**
 
@@ -109,9 +109,9 @@ Questions from [Devinterview.io — Tree Data Structure](https://devinterview.io
 </details>
 
 <details>
-<summary>What is a Rooted Tree, and how does it differ from an Unrooted Tree?</summary>
+<summary>Что такое Rooted Tree, and how does it differ from an Unrooted Tree?</summary>
 
-### What is a Rooted Tree, and how does it differ from an Unrooted Tree?
+### Что такое Rooted Tree, and how does it differ from an Unrooted Tree?
 
 **Definition:**
 
@@ -126,9 +126,9 @@ Questions from [Devinterview.io — Tree Data Structure](https://devinterview.io
 </details>
 
 <details>
-<summary>What is a N-ary Tree, and how does it generalize a binary tree?</summary>
+<summary>Что такое N-ary Tree, and how does it generalize a binary tree?</summary>
 
-### What is a N-ary Tree, and how does it generalize a binary tree?
+### Что такое N-ary Tree, and how does it generalize a binary tree?
 
 **Definition:**
 
@@ -143,9 +143,9 @@ N-арное дерево позволяет до n детей на узел. Д
 </details>
 
 <details>
-<summary>Discuss the properties of a Full Binary Tree.</summary>
+<summary>Обсудим свойства Full binary tree.</summary>
 
-### Discuss the properties of a Full Binary Tree.
+### Обсудим свойства Full binary tree.
 
 **Definition:**
 
@@ -164,9 +164,9 @@ N-арное дерево позволяет до n детей на узел. Д
 </details>
 
 <details>
-<summary>What is the significance of the degree of a node in a tree?</summary>
+<summary>Что такое the significance of the degree of a node in a tree?</summary>
 
-### What is the significance of the degree of a node in a tree?
+### Что такое the significance of the degree of a node in a tree?
 
 **Definition:**
 
@@ -181,9 +181,9 @@ N-арное дерево позволяет до n детей на узел. Д
 </details>
 
 <details>
-<summary>Explain the concept of a Path in a tree.</summary>
+<summary>Объясните концепцию пути в дереве.</summary>
 
-### Explain the concept of a Path in a tree.
+### Объясните концепцию пути в дереве.
 
 **Definition:**
 
@@ -200,9 +200,9 @@ N-арное дерево позволяет до n детей на узел. Д
 ### Types of Binary Trees
 
 <details>
-<summary>What is a Binary Search Tree (BST)?</summary>
+<summary>Что такое Binary Search Tree (BST)?</summary>
 
-### What is a Binary Search Tree (BST)?
+### Что такое Binary Search Tree (BST)?
 
 **Definition:**
 
@@ -217,9 +217,9 @@ BST — двоичное дерево с порядком поиска: ключ
 </details>
 
 <details>
-<summary>Explain the difference between a Binary Tree and a Binary Search Tree (BST).</summary>
+<summary>Объясните разницу между binary tree и binary search tree (БСТ).</summary>
 
-### Explain the difference between a Binary Tree and a Binary Search Tree (BST).
+### Объясните разницу между binary tree и binary search tree (БСТ).
 
 **Definition:**
 
@@ -238,9 +238,9 @@ BST — двоичное дерево с порядком поиска: ключ
 </details>
 
 <details>
-<summary>What is a Complete Binary Tree?</summary>
+<summary>Что такое Complete binary tree?</summary>
 
-### What is a Complete Binary Tree?
+### Что такое Complete binary tree?
 
 **Definition:**
 
@@ -255,9 +255,9 @@ BST — двоичное дерево с порядком поиска: ключ
 </details>
 
 <details>
-<summary>Define a Perfect Binary Tree and its characteristics.</summary>
+<summary>Определите Perfect binary tree AND его характеристики.</summary>
 
-### Define a Perfect Binary Tree and its characteristics.
+### Определите Perfect binary tree AND его характеристики.
 
 **Definition:**
 
@@ -276,9 +276,9 @@ BST — двоичное дерево с порядком поиска: ключ
 </details>
 
 <details>
-<summary>Explain what a Degenerate (or Pathological) Tree is and its impact on operations.</summary>
+<summary>Объясните, что такое дегенеративное (или патологическое) дерево и его влияние на операции.</summary>
 
-### Explain what a Degenerate (or Pathological) Tree is and its impact on operations.
+### Объясните, что такое дегенеративное (или патологическое) дерево и его влияние на операции.
 
 **Definition:**
 
@@ -297,9 +297,9 @@ BST — двоичное дерево с порядком поиска: ключ
 </details>
 
 <details>
-<summary>Discuss the concept of a Balanced Binary Tree and why it’s important.</summary>
+<summary>Обсудите концепцию сбалансированного binary tree и почему это важно.</summary>
 
-### Discuss the concept of a Balanced Binary Tree and why it’s important.
+### Обсудите концепцию сбалансированного binary tree и почему это важно.
 
 **Definition:**
 
@@ -320,9 +320,9 @@ BST — двоичное дерево с порядком поиска: ключ
 </details>
 
 <details>
-<summary>What is a Balanced Tree?</summary>
+<summary>Что такое Balanced Tree?</summary>
 
-### What is a Balanced Tree?
+### Что такое Balanced Tree?
 
 **Definition:**
 
@@ -345,9 +345,9 @@ BST — двоичное дерево с порядком поиска: ключ
 ### Binary Tree Traversals
 
 <details>
-<summary>Classify Tree Traversal Algorithms.</summary>
+<summary>Классифицируйте алгоритмы обхода дерева.</summary>
 
-### Classify Tree Traversal Algorithms.
+### Классифицируйте алгоритмы обхода дерева.
 
 **Definition:**
 
@@ -367,9 +367,9 @@ BST — двоичное дерево с порядком поиска: ключ
 </details>
 
 <details>
-<summary>How to perform an In-Order Traversal in a Binary Search Tree (BST)?</summary>
+<summary>Как perform an in-order TraveRSAl in a Binary Search Tree (BST)?</summary>
 
-### How to perform an In-Order Traversal in a Binary Search Tree (BST)?
+### Как perform an in-order TraveRSAl in a Binary Search Tree (BST)?
 
 **Definition:**
 
@@ -400,9 +400,9 @@ function inorder(n, out) {
 </details>
 
 <details>
-<summary>Implement a Pre-Order Traversal in a binary tree.</summary>
+<summary>Реализуйте a pre-order TraveRSAl in a binary tree.</summary>
 
-### Implement a Pre-Order Traversal in a binary tree.
+### Реализуйте a pre-order TraveRSAl in a binary tree.
 
 **Definition:**
 
@@ -432,9 +432,9 @@ function preorder(n, out) {
 </details>
 
 <details>
-<summary>Implement a Post-Order Traversal in a binary tree.</summary>
+<summary>Реализуйте a post-order TraveRSAl in a binary tree.</summary>
 
-### Implement a Post-Order Traversal in a binary tree.
+### Реализуйте a post-order TraveRSAl in a binary tree.
 
 **Definition:**
 
@@ -464,9 +464,9 @@ function postorder(n, out) {
 </details>
 
 <details>
-<summary>Discuss the applications of each type of Tree Traversal algorithm.</summary>
+<summary>Обсудите применение каждого типа алгоритма Tree traversal.</summary>
 
-### Discuss the applications of each type of Tree Traversal algorithm.
+### Обсудите применение каждого типа алгоритма Tree traversal.
 
 **Definition:**
 
@@ -491,9 +491,9 @@ function postorder(n, out) {
 </details>
 
 <details>
-<summary>Compare the iterative and recursive implementations of Tree Traversals.</summary>
+<summary>Сравните итеративные AND рекурсивные реализации Tree TraveRSAls.</summary>
 
-### Compare the iterative and recursive implementations of Tree Traversals.
+### Сравните итеративные AND рекурсивные реализации Tree TraveRSAls.
 
 **Definition:**
 
@@ -517,9 +517,9 @@ function postorder(n, out) {
 </details>
 
 <details>
-<summary>How can you traverse a binary tree Without Using Recursion or stack?</summary>
+<summary>Как вы можете пересечь binary tree без использования рекурсии или stack?</summary>
 
-### How can you traverse a binary tree Without Using Recursion or stack?
+### Как вы можете пересечь binary tree без использования рекурсии или stack?
 
 **Definition:**
 
@@ -548,9 +548,9 @@ follow left, later follow the thread, then clear it
 ### BFS and DFS in Trees
 
 <details>
-<summary>Explain the Breadth-First Search (BFS) traversing method.</summary>
+<summary>Объясните метод обхода breadth-first search (BFS).</summary>
 
-### Explain the Breadth-First Search (BFS) traversing method.
+### Объясните метод обхода breadth-first search (BFS).
 
 **Definition:**
 
@@ -578,9 +578,9 @@ order A, B, C, D
 </details>
 
 <details>
-<summary>Explain the Depth-First Search (DFS) algorithm.</summary>
+<summary>Объясните алгоритм depth-first search (DFS).</summary>
 
-### Explain the Depth-First Search (DFS) algorithm.
+### Объясните алгоритм depth-first search (DFS).
 
 **Definition:**
 
@@ -601,9 +601,9 @@ order A, B, C, D
 </details>
 
 <details>
-<summary>What are the key differences between BFS and DFS?</summary>
+<summary>Что такое the key differences between BFS and DFS?</summary>
 
-### What are the key differences between BFS and DFS?
+### Что такое the key differences between BFS and DFS?
 
 **Definition:**
 
@@ -627,9 +627,9 @@ BFS — для расстояния от корня. DFS — для порядк
 </details>
 
 <details>
-<summary>Why does Breadth-First Search use more memory than Depth-First Search?</summary>
+<summary>Почему does breadth-first search use more memory than depth-first search?</summary>
 
-### Why does Breadth-First Search use more memory than Depth-First Search?
+### Почему does breadth-first search use more memory than depth-first search?
 
 **Definition:**
 
@@ -651,9 +651,9 @@ BFS держит каждый узел текущего уровня, а сле�
 </details>
 
 <details>
-<summary>Illustrate the difference in Peak Memory Consumption between DFS and BFS.</summary>
+<summary>Проиллюстрируйте the difference in Peak Memory Consumption between DFS and BFS.</summary>
 
-### Illustrate the difference in Peak Memory Consumption between DFS and BFS.
+### Проиллюстрируйте the difference in Peak Memory Consumption between DFS and BFS.
 
 **Definition:**
 
@@ -675,9 +675,9 @@ BFS держит каждый узел текущего уровня, а сле�
 </details>
 
 <details>
-<summary>Provide some practical examples of using Depth-First Search vs Breadth-First Search.</summary>
+<summary>Приведите some practical examples of using depth-first search vs breadth-first search.</summary>
 
-### Provide some practical examples of using Depth-First Search vs Breadth-First Search.
+### Приведите some practical examples of using depth-first search vs breadth-first search.
 
 **Definition:**
 
@@ -704,9 +704,9 @@ BFS — для расстояния и уровней. DFS — для постф
 ### Binary Search Tree Operations
 
 <details>
-<summary>Implement an Insert Function for a Binary Search Tree (BST).</summary>
+<summary>Реализуйте an Insert Function for a Binary Search Tree (BST).</summary>
 
-### Implement an Insert Function for a Binary Search Tree (BST).
+### Реализуйте an Insert Function for a Binary Search Tree (BST).
 
 **Definition:**
 
@@ -737,9 +737,9 @@ function insert(n, key) {
 </details>
 
 <details>
-<summary>Implement a Delete Function for a Binary Search Tree (BST).</summary>
+<summary>Реализуйте a Delete Function for a Binary Search Tree (BST).</summary>
 
-### Implement a Delete Function for a Binary Search Tree (BST).
+### Реализуйте a Delete Function for a Binary Search Tree (BST).
 
 **Definition:**
 
@@ -765,9 +765,9 @@ successor is 3, which replaces 2
 </details>
 
 <details>
-<summary>How do you Search for a value in a Binary Search Tree (BST)?</summary>
+<summary>Как вы ищете значение, в binary search tree (БСТ)?</summary>
 
-### How do you Search for a value in a Binary Search Tree (BST)?
+### Как вы ищете значение, в binary search tree (БСТ)?
 
 **Definition:**
 
@@ -798,9 +798,9 @@ function search(n, key) {
 </details>
 
 <details>
-<summary>What are the time complexities for Insert, Search, and Delete operations in a BST, and why?</summary>
+<summary>Что такое the time complexities for Insert, Search, and Delete operations in a BST, and why?</summary>
 
-### What are the time complexities for Insert, Search, and Delete operations in a BST, and why?
+### Что такое the time complexities for Insert, Search, and Delete operations in a BST, and why?
 
 **Definition:**
 
@@ -820,9 +820,9 @@ function search(n, key) {
 </details>
 
 <details>
-<summary>What are the advantages and disadvantages of BSTs?</summary>
+<summary>Что такое the advantages and disadvantages of BSTs?</summary>
 
-### What are the advantages and disadvantages of BSTs?
+### Что такое the advantages and disadvantages of BSTs?
 
 **Definition:**
 
@@ -849,9 +849,9 @@ BST даёт упорядоченный поиск по одному пути и
 ### Self-Balancing Trees
 
 <details>
-<summary>What is an AVL Tree? How do you balance it?</summary>
+<summary>Что такое AVL tree? How do you balance it?</summary>
 
-### What is an AVL Tree? How do you balance it?
+### Что такое AVL tree? How do you balance it?
 
 **Definition:**
 
@@ -872,9 +872,9 @@ BST даёт упорядоченный поиск по одному пути и
 </details>
 
 <details>
-<summary>What is a Red-Black Tree?</summary>
+<summary>Что такое red-black tree?</summary>
 
-### What is a Red-Black Tree?
+### Что такое red-black tree?
 
 **Definition:**
 
@@ -894,9 +894,9 @@ BST даёт упорядоченный поиск по одному пути и
 </details>
 
 <details>
-<summary>How does Inserting or Deleting nodes affect a Red-Black Tree?</summary>
+<summary>Как вставка или удаление узлов влияет на red-black tree?</summary>
 
-### How does Inserting or Deleting nodes affect a Red-Black Tree?
+### Как вставка или удаление узлов влияет на red-black tree?
 
 **Definition:**
 
@@ -916,9 +916,9 @@ BST даёт упорядоченный поиск по одному пути и
 </details>
 
 <details>
-<summary>What is the time complexity for Insert into a Red-Black Tree?</summary>
+<summary>Что такое the time complexity for Insert into a red-black tree?</summary>
 
-### What is the time complexity for Insert into a Red-Black Tree?
+### Что такое the time complexity for Insert into a red-black tree?
 
 **Definition:**
 
@@ -939,9 +939,9 @@ BST даёт упорядоченный поиск по одному пути и
 </details>
 
 <details>
-<summary>Compare Red-Black Trees and AVL trees.</summary>
+<summary>Сравните red-black trees AND AVL trees.</summary>
 
-### Compare Red-Black Trees and AVL trees.
+### Сравните red-black trees AND AVL trees.
 
 **Definition:**
 
@@ -966,9 +966,9 @@ AVL — для деревьев с преобладанием поиска. Кр
 </details>
 
 <details>
-<summary>Explain how a Splay Tree works and where it is used.</summary>
+<summary>Объясните, как работает разветвленное дерево и где оно используется.</summary>
 
-### Explain how a Splay Tree works and where it is used.
+### Объясните, как работает разветвленное дерево и где оно используется.
 
 **Definition:**
 
@@ -991,9 +991,9 @@ AVL — для деревьев с преобладанием поиска. Кр
 </details>
 
 <details>
-<summary>What are Scapegoat Trees, and how do they ensure balance?</summary>
+<summary>Что такое SCAPeGoat Trees, and how do they ensure balance?</summary>
 
-### What are Scapegoat Trees, and how do they ensure balance?
+### Что такое SCAPeGoat Trees, and how do they ensure balance?
 
 **Definition:**
 
@@ -1017,9 +1017,9 @@ AVL — для деревьев с преобладанием поиска. Кр
 </details>
 
 <details>
-<summary>Discuss the concept of a Treap and its expected time complexities.</summary>
+<summary>Обсудите концепцию Treap и его ожидаемые временные сложности.</summary>
 
-### Discuss the concept of a Treap and its expected time complexities.
+### Обсудите концепцию Treap и его ожидаемые временные сложности.
 
 **Definition:**
 
@@ -1041,9 +1041,9 @@ AVL — для деревьев с преобладанием поиска. Кр
 ### Specific Tree Data Structures
 
 <details>
-<summary>What is the difference between a Heap and a Red-Black Tree?</summary>
+<summary>Что такое the difference between a heap and a red-black tree?</summary>
 
-### What is the difference between a Heap and a Red-Black Tree?
+### Что такое the difference between a heap and a red-black tree?
 
 **Definition:**
 
@@ -1067,9 +1067,9 @@ AVL — для деревьев с преобладанием поиска. Кр
 </details>
 
 <details>
-<summary>What is a B-Tree?</summary>
+<summary>Что такое B-tree?</summary>
 
-### What is a B-Tree?
+### Что такое B-tree?
 
 **Definition:**
 
@@ -1089,9 +1089,9 @@ B-дерево — сбалансированное дерево поиска с
 </details>
 
 <details>
-<summary>How is an AVL Tree different from a B-Tree?</summary>
+<summary>Как an AVL tree different from a B-tree?</summary>
 
-### How is an AVL Tree different from a B-Tree?
+### Как an AVL tree different from a B-tree?
 
 **Definition:**
 
@@ -1111,9 +1111,9 @@ B-дерево — сбалансированное дерево поиска с
 </details>
 
 <details>
-<summary>What are the differences between B-Trees and B+ Trees?</summary>
+<summary>Что такое the differences between B-trees and B+ Trees?</summary>
 
-### What are the differences between B-Trees and B+ Trees?
+### Что такое the differences between B-trees and B+ Trees?
 
 **Definition:**
 
@@ -1137,9 +1137,9 @@ B+-дерево — когда важны просмотры подряд иду
 </details>
 
 <details>
-<summary>What is a Segment Tree, and what are its applications?</summary>
+<summary>Что такое segment tree, and what are its applications?</summary>
 
-### What is a Segment Tree, and what are its applications?
+### Что такое segment tree, and what are its applications?
 
 **Definition:**
 
@@ -1163,9 +1163,9 @@ B+-дерево — когда важны просмотры подряд иду
 </details>
 
 <details>
-<summary>Explain Trie (Prefix Trees) and their common use-cases.</summary>
+<summary>Объясните Trie (префиксные деревья) и их общие варианты использования.</summary>
 
-### Explain Trie (Prefix Trees) and their common use-cases.
+### Объясните Trie (префиксные деревья) и их общие варианты использования.
 
 **Definition:**
 
@@ -1184,9 +1184,9 @@ B+-дерево — когда важны просмотры подряд иду
 </details>
 
 <details>
-<summary>What is an Interval Tree, and how is it different from a Segment Tree?</summary>
+<summary>Что такое Interval Tree, and how is it different from a segment tree?</summary>
 
-### What is an Interval Tree, and how is it different from a Segment Tree?
+### Что такое Interval Tree, and how is it different from a segment tree?
 
 **Definition:**
 
@@ -1210,9 +1210,9 @@ B+-дерево — когда важны просмотры подряд иду
 </details>
 
 <details>
-<summary>Discuss the properties and uses of a Binary Indexed Tree (Fenwick Tree).</summary>
+<summary>Обсудите свойства и использование двоичного индексированного дерева (дерева Фенвика).</summary>
 
-### Discuss the properties and uses of a Binary Indexed Tree (Fenwick Tree).
+### Обсудите свойства и использование двоичного индексированного дерева (дерева Фенвика).
 
 **Definition:**
 
@@ -1232,9 +1232,9 @@ B+-дерево — когда важны просмотры подряд иду
 </details>
 
 <details>
-<summary>What is a Suffix Tree, and why is it a powerful data structure in string processing?</summary>
+<summary>Что такое suffix tree, and why is it a powerful data structure in string processing?</summary>
 
-### What is a Suffix Tree, and why is it a powerful data structure in string processing?
+### Что такое suffix tree, and why is it a powerful data structure in string processing?
 
 **Definition:**
 
@@ -1255,9 +1255,9 @@ B+-дерево — когда важны просмотры подряд иду
 ### Balanced Trees in Real-World Systems
 
 <details>
-<summary>Why are B-Trees used for Databases and File Systems?</summary>
+<summary>Почему are B-trees used for DataBASEs and File Systems?</summary>
 
-### Why are B-Trees used for Databases and File Systems?
+### Почему are B-trees used for DataBASEs and File Systems?
 
 **Definition:**
 
@@ -1277,9 +1277,9 @@ B-деревья используют для баз данных и файлов
 </details>
 
 <details>
-<summary>When might standard BSTs be preferred over AVL trees?</summary>
+<summary>Когда might standard BSTs be preferred over AVL trees?</summary>
 
-### When might standard BSTs be preferred over AVL trees?
+### Когда might standard BSTs be preferred over AVL trees?
 
 **Definition:**
 
@@ -1303,9 +1303,9 @@ B-деревья используют для баз данных и файлов
 </details>
 
 <details>
-<summary>Why are Hash Tables not used instead of B-Trees to index data within a database?</summary>
+<summary>Почему are hash tables not used instead of B-trees to index data within a dataBASE?</summary>
 
-### Why are Hash Tables not used instead of B-Trees to index data within a database?
+### Почему are hash tables not used instead of B-trees to index data within a dataBASE?
 
 **Definition:**
 
@@ -1330,9 +1330,9 @@ B-деревья используют для баз данных и файлов
 </details>
 
 <details>
-<summary>Explain the importance of Red-Black Trees in the implementation of associative containers in C++ STL.</summary>
+<summary>Объясните важность red-black trees для реализации ассоциативных контейнеров в C++ STL.</summary>
 
-### Explain the importance of Red-Black Trees in the implementation of associative containers in C++ STL.
+### Объясните важность red-black trees для реализации ассоциативных контейнеров в C++ STL.
 
 **Definition:**
 
@@ -1355,9 +1355,9 @@ B-деревья используют для баз данных и файлов
 ### Tree Algorithms
 
 <details>
-<summary>Write an algorithm to generate a Mirror of a Binary Tree.</summary>
+<summary>Напишите an alGorithm to generate a Mirror of a binary tree.</summary>
 
-### Write an algorithm to generate a Mirror of a Binary Tree.
+### Напишите an alGorithm to generate a Mirror of a binary tree.
 
 **Definition:**
 
@@ -1389,9 +1389,9 @@ function mirror(n) {
 </details>
 
 <details>
-<summary>How to determine if two binary trees are Isomorphic?</summary>
+<summary>Как determine if two binary trees are Isomorphic?</summary>
 
-### How to determine if two binary trees are Isomorphic?
+### Как determine if two binary trees are Isomorphic?
 
 **Definition:**
 
@@ -1418,9 +1418,9 @@ function mirror(n) {
 </details>
 
 <details>
-<summary>Implement an algorithm to check if a binary tree is a Valid BST.</summary>
+<summary>Реализуйте an alGorithm to check if a binary tree is a Valid BST.</summary>
 
-### Implement an algorithm to check if a binary tree is a Valid BST.
+### Реализуйте an alGorithm to check if a binary tree is a Valid BST.
 
 **Definition:**
 
@@ -1450,9 +1450,9 @@ function valid(n, low, high) {
 </details>
 
 <details>
-<summary>Solve the Lowest Common Ancestor (LCA) problem in a Binary Tree.</summary>
+<summary>Решите the Lowest Common Ancestor (LCA) problem in a binary tree.</summary>
 
-### Solve the Lowest Common Ancestor (LCA) problem in a Binary Tree.
+### Решите the Lowest Common Ancestor (LCA) problem in a binary tree.
 
 **Definition:**
 
@@ -1472,9 +1472,9 @@ function valid(n, low, high) {
 </details>
 
 <details>
-<summary>Write a code to find the Height of a Binary Tree.</summary>
+<summary>Напишите a code to find the Height of a binary tree.</summary>
 
-### Write a code to find the Height of a Binary Tree.
+### Напишите a code to find the Height of a binary tree.
 
 **Definition:**
 
@@ -1503,9 +1503,9 @@ function height(n) {
 </details>
 
 <details>
-<summary>What is the Diameter of a Tree?</summary>
+<summary>Что такое the Diameter of a Tree?</summary>
 
-### What is the Diameter of a Tree?
+### Что такое the Diameter of a Tree?
 
 **Definition:**
 
@@ -1524,9 +1524,9 @@ function height(n) {
 </details>
 
 <details>
-<summary>How would you find the Maximum Path Sum in a Binary Tree?</summary>
+<summary>Как бы вы find the Maximum Path Sum in a binary tree?</summary>
 
-### How would you find the Maximum Path Sum in a Binary Tree?
+### Как бы вы find the Maximum Path Sum in a binary tree?
 
 **Definition:**
 
@@ -1548,9 +1548,9 @@ function height(n) {
 ### Tree Problems
 
 <details>
-<summary>Discuss the problem of Serializing and Deserializing a Binary Tree.</summary>
+<summary>Обсудите проблему сериализации и десериализации binary tree.</summary>
 
-### Discuss the problem of Serializing and Deserializing a Binary Tree.
+### Обсудите проблему сериализации и десериализации binary tree.
 
 **Definition:**
 
@@ -1570,9 +1570,9 @@ function height(n) {
 </details>
 
 <details>
-<summary>Solve the Vertical Order Traversal of a Binary Tree.</summary>
+<summary>Решите the Vertical Order TraveRSAl of a binary tree.</summary>
 
-### Solve the Vertical Order Traversal of a Binary Tree.
+### Решите the Vertical Order TraveRSAl of a binary tree.
 
 **Definition:**
 
@@ -1592,9 +1592,9 @@ function height(n) {
 </details>
 
 <details>
-<summary>Implement Zigzag (Spiral) Level Order Traversal of a Binary Tree.</summary>
+<summary>Реализуйте Zigzag (Spiral) Level Order TraveRSAl of a binary tree.</summary>
 
-### Implement Zigzag (Spiral) Level Order Traversal of a Binary Tree.
+### Реализуйте Zigzag (Spiral) Level Order TraveRSAl of a binary tree.
 
 **Definition:**
 
@@ -1614,9 +1614,9 @@ function height(n) {
 </details>
 
 <details>
-<summary>How to count the number of Nodes with a given value in a binary tree?</summary>
+<summary>Как count the number of Nodes with a given value in a binary tree?</summary>
 
-### How to count the number of Nodes with a given value in a binary tree?
+### Как count the number of Nodes with a given value in a binary tree?
 
 **Definition:**
 
@@ -1636,9 +1636,9 @@ function height(n) {
 </details>
 
 <details>
-<summary>Solve the problem of finding the Kth Smallest Element in a BST.</summary>
+<summary>Решите the problem of finding the Kth Smallest Element in a BST.</summary>
 
-### Solve the problem of finding the Kth Smallest Element in a BST.
+### Решите the problem of finding the Kth Smallest Element in a BST.
 
 **Definition:**
 
@@ -1661,9 +1661,9 @@ k-й наименьший ключ в BST — это k-й узел симмет�
 ### Tree Challenges
 
 <details>
-<summary>Discuss the Subtree with Maximum Average problem and how to approach it.</summary>
+<summary>Обсудите проблему поддерева с максимальным средним и способы ее решения.</summary>
 
-### Discuss the Subtree with Maximum Average problem and how to approach it.
+### Обсудите проблему поддерева с максимальным средним и способы ее решения.
 
 **Definition:**
 
@@ -1682,9 +1682,9 @@ k-й наименьший ключ в BST — это k-й узел симмет�
 </details>
 
 <details>
-<summary>Convert a Binary Search Tree to a Sorted Doubly Linked List.</summary>
+<summary>Преобразование binary search tree в список SORted doubly linked.</summary>
 
-### Convert a Binary Search Tree to a Sorted Doubly Linked List.
+### Преобразование binary search tree в список SORted doubly linked.
 
 **Definition:**
 
@@ -1711,9 +1711,9 @@ list 1 <-> 2 <-> 3
 </details>
 
 <details>
-<summary>Construct a Binary Tree from Inorder and Preorder traversals?</summary>
+<summary>Постройте binary tree из inorder и preorder обходов.</summary>
 
-### Construct a Binary Tree from Inorder and Preorder traversals?
+### Постройте binary tree из inorder и preorder обходов.
 
 **Definition:**
 
@@ -1732,9 +1732,9 @@ list 1 <-> 2 <-> 3
 </details>
 
 <details>
-<summary>Write a function to Check if a Binary Tree is Full or not.</summary>
+<summary>Напишите a function to Check if a binary tree is Full or not.</summary>
 
-### Write a function to Check if a Binary Tree is Full or not.
+### Напишите a function to Check if a binary tree is Full or not.
 
 **Definition:**
 
@@ -1754,9 +1754,9 @@ list 1 <-> 2 <-> 3
 </details>
 
 <details>
-<summary>Implement a Connect Nodes at the Same Level in a Binary Tree.</summary>
+<summary>Реализуйте a Connect Nodes at the Same Level in a binary tree.</summary>
 
-### Implement a Connect Nodes at the Same Level in a Binary Tree.
+### Реализуйте a Connect Nodes at the Same Level in a binary tree.
 
 **Definition:**
 
@@ -1777,9 +1777,9 @@ list 1 <-> 2 <-> 3
 ### Tree Data Structure Interview Challenges
 
 <details>
-<summary>Solve the problem of finding the number of Islands in a binary matrix.</summary>
+<summary>Решите the problem of finding the number of ISLAnds in a binary matrix.</summary>
 
-### Solve the problem of finding the number of Islands in a binary matrix.
+### Решите the problem of finding the number of ISLAnds in a binary matrix.
 
 **Definition:**
 
@@ -1799,9 +1799,9 @@ list 1 <-> 2 <-> 3
 </details>
 
 <details>
-<summary>Flatten a Binary Tree to a Linked List in place.</summary>
+<summary>Разровняйте binary tree до размеров linked list и in place.</summary>
 
-### Flatten a Binary Tree to a Linked List in place.
+### Разровняйте binary tree до размеров linked list и in place.
 
 **Definition:**
 
@@ -1827,9 +1827,9 @@ list 1 -> 2 -> 3 -> 5
 </details>
 
 <details>
-<summary>Implement a Boundary Traversal of a Binary Tree?</summary>
+<summary>Реализуйте a Boundary TraveRSAl of a binary tree?</summary>
 
-### Implement a Boundary Traversal of a Binary Tree?
+### Реализуйте a Boundary TraveRSAl of a binary tree?
 
 **Definition:**
 
@@ -1849,9 +1849,9 @@ list 1 -> 2 -> 3 -> 5
 </details>
 
 <details>
-<summary>Implement a function to find if a given binary tree is Symmetric or not.</summary>
+<summary>Реализуйте a function to find if a given binary tree is Symmetric or not.</summary>
 
-### Implement a function to find if a given binary tree is Symmetric or not.
+### Реализуйте a function to find if a given binary tree is Symmetric or not.
 
 **Definition:**
 
@@ -1879,9 +1879,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Write a code that describes Locking and Unlocking of nodes in an n-ary tree structure.</summary>
+<summary>Напишите a code that describes Locking and Unlocking of nodes in an n-ary tree structure.</summary>
 
-### Write a code that describes Locking and Unlocking of nodes in an n-ary tree structure.
+### Напишите a code that describes Locking and Unlocking of nodes in an n-ary tree structure.
 
 **Definition:**
 
@@ -1903,9 +1903,9 @@ is symmetric
 ### Advanced Tree Topics
 
 <details>
-<summary>Explain the Morris In-Order Tree Traversal algorithm and its advantages.</summary>
+<summary>Объясните алгоритм Morris In-Order Tree traversal и его преимущества.</summary>
 
-### Explain the Morris In-Order Tree Traversal algorithm and its advantages.
+### Объясните алгоритм Morris In-Order Tree traversal и его преимущества.
 
 **Definition:**
 
@@ -1925,9 +1925,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Discuss the Hardy-Ramanujan Theorem as it pertains to tree data structures.</summary>
+<summary>Обсудите теорему Харди-Рамануджана применительно к древовидным структурам данных.</summary>
 
-### Discuss the Hardy-Ramanujan Theorem as it pertains to tree data structures.
+### Обсудите теорему Харди-Рамануджана применительно к древовидным структурам данных.
 
 **Definition:**
 
@@ -1947,9 +1947,9 @@ is symmetric
 </details>
 
 <details>
-<summary>How can Persistent Data Structures be implemented using Trees?</summary>
+<summary>Как можно реализовать постоянные структуры данных с использованием деревьев?</summary>
 
-### How can Persistent Data Structures be implemented using Trees?
+### Как можно реализовать постоянные структуры данных с использованием деревьев?
 
 **Definition:**
 
@@ -1969,9 +1969,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Explain Heavy-Light Decomposition and its applications.</summary>
+<summary>Объясните декомпозицию "Тяжелый-легкий" и ее применение.</summary>
 
-### Explain Heavy-Light Decomposition and its applications.
+### Объясните декомпозицию "Тяжелый-легкий" и ее применение.
 
 **Definition:**
 
@@ -1992,9 +1992,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Can you describe a Universal Value Tree and its uniqueness in tree structures?</summary>
+<summary>Можете ли вы описать дерево значений UniveRSAl AND его уникальность в древовидных структурах?</summary>
 
-### Can you describe a Universal Value Tree and its uniqueness in tree structures?
+### Можете ли вы описать дерево значений UniveRSAl AND его уникальность в древовидных структурах?
 
 **Definition:**
 
@@ -2014,9 +2014,9 @@ is symmetric
 </details>
 
 <details>
-<summary>What is meant by the invariant of a tree, and how is it maintained in self-balancing trees like AVL trees?</summary>
+<summary>Что такое meant by the invariant of a tree, and how is it maintained in self-balancing trees like AVL trees?</summary>
 
-### What is meant by the invariant of a tree, and how is it maintained in self-balancing trees like AVL trees?
+### Что такое meant by the invariant of a tree, and how is it maintained in self-balancing trees like AVL trees?
 
 **Definition:**
 
@@ -2039,9 +2039,9 @@ is symmetric
 ### Trees and System Design
 
 <details>
-<summary>How do File Systems use trees to manage files and directories?</summary>
+<summary>Как файловые системы используют деревья для управления файлами и каталогами?</summary>
 
-### How do File Systems use trees to manage files and directories?
+### Как файловые системы используют деревья для управления файлами и каталогами?
 
 **Definition:**
 
@@ -2062,9 +2062,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Discuss how trees enable Efficient Undo/Redo Operations in text editors or IDEs.</summary>
+<summary>Обсудите, как деревья обеспечивают эффективные операции отмены/повтора в текстовых редакторах или IDE.</summary>
 
-### Discuss how trees enable Efficient Undo/Redo Operations in text editors or IDEs.
+### Обсудите, как деревья обеспечивают эффективные операции отмены/повтора в текстовых редакторах или IDE.
 
 **Definition:**
 
@@ -2084,9 +2084,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Explain the use of Tree Structures in managing hierarchical data in relational databases.</summary>
+<summary>Объясните использование древовидных структур для управления иерархическими данными в реляционных базах данных.</summary>
 
-### Explain the use of Tree Structures in managing hierarchical data in relational databases.
+### Объясните использование древовидных структур для управления иерархическими данными в реляционных базах данных.
 
 **Definition:**
 
@@ -2107,9 +2107,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Describe a system design that efficiently indexes data using tree structures.</summary>
+<summary>Опишите конструкцию системы, которая эффективно индексирует данные с использованием древовидных структур.</summary>
 
-### Describe a system design that efficiently indexes data using tree structures.
+### Опишите конструкцию системы, которая эффективно индексирует данные с использованием древовидных структур.
 
 **Definition:**
 
@@ -2132,9 +2132,9 @@ is symmetric
 ### Trees in Data Analysis
 
 <details>
-<summary>How are Decision Trees used in Machine Learning for classification and regression tasks?</summary>
+<summary>Как decision trees используются в machine learning для задач классификации и регрессии?</summary>
 
-### How are Decision Trees used in Machine Learning for classification and regression tasks?
+### Как decision trees используются в machine learning для задач классификации и регрессии?
 
 **Definition:**
 
@@ -2153,9 +2153,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Discuss the role of Segment Trees in computational geometry and data analysis.</summary>
+<summary>Обсудите роль segment tree в вычислительной геомеtrieи и анализе данных.</summary>
 
-### Discuss the role of Segment Trees in computational geometry and data analysis.
+### Обсудите роль segment tree в вычислительной геомеtrieи и анализе данных.
 
 **Definition:**
 
@@ -2176,9 +2176,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Explain how Suffix Trees are utilized in sequence alignment algorithms in bioinformatics.</summary>
+<summary>Объясните, как деревья суффиксов используются в алгоритмах выравнивания последовательностей в биоинформатике.</summary>
 
-### Explain how Suffix Trees are utilized in sequence alignment algorithms in bioinformatics.
+### Объясните, как деревья суффиксов используются в алгоритмах выравнивания последовательностей в биоинформатике.
 
 **Definition:**
 
@@ -2197,9 +2197,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Describe the application of trees in Multi-dimensional Searching.</summary>
+<summary>Описать применение деревьев в многомерном поиске.</summary>
 
-### Describe the application of trees in Multi-dimensional Searching.
+### Описать применение деревьев в многомерном поиске.
 
 **Definition:**
 
@@ -2223,9 +2223,9 @@ is symmetric
 ### Performance and Optimization
 
 <details>
-<summary>Discuss Amortized Analysis in the context of splay trees and their operations.</summary>
+<summary>Обсудите amortized analysis в контексте деревьев расширения и их операций.</summary>
 
-### Discuss Amortized Analysis in the context of splay trees and their operations.
+### Обсудите amortized analysis в контексте деревьев расширения и их операций.
 
 **Definition:**
 
@@ -2245,9 +2245,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Explain how to Optimize Space Complexity in tree algorithms.</summary>
+<summary>Объясните, как оптимизировать space complexity в древовидных алгоритмах.</summary>
 
-### Explain how to Optimize Space Complexity in tree algorithms.
+### Объясните, как оптимизировать space complexity в древовидных алгоритмах.
 
 **Definition:**
 
@@ -2270,9 +2270,9 @@ is symmetric
 </details>
 
 <details>
-<summary>How can you measure and improve the Cache Performance of tree operations?</summary>
+<summary>Как вы можете измерить и улучшить производительность кэширования древовидных операций?</summary>
 
-### How can you measure and improve the Cache Performance of tree operations?
+### Как вы можете измерить и улучшить производительность кэширования древовидных операций?
 
 **Definition:**
 
@@ -2294,9 +2294,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Provide strategies for Load Balancing in distributed tree structures.</summary>
+<summary>Приведите strategies for load balancing in distributed tree structures.</summary>
 
-### Provide strategies for Load Balancing in distributed tree structures.
+### Приведите strategies for load balancing in distributed tree structures.
 
 **Definition:**
 
@@ -2318,9 +2318,9 @@ is symmetric
 ### Design Patterns and Best Practices
 
 <details>
-<summary>Discuss the Composite Design Pattern and its relationship with tree data structures.</summary>
+<summary>Обсудите Composite design pattern и его связь с древовидными структурами данных.</summary>
 
-### Discuss the Composite Design Pattern and its relationship with tree data structures.
+### Обсудите Composite design pattern и его связь с древовидными структурами данных.
 
 **Definition:**
 
@@ -2340,9 +2340,9 @@ is symmetric
 </details>
 
 <details>
-<summary>When should one consider using the Decorator Pattern with trees?</summary>
+<summary>Когда should one consider using the decorator Pattern with trees?</summary>
 
-### When should one consider using the Decorator Pattern with trees?
+### Когда should one consider using the decorator Pattern with trees?
 
 **Definition:**
 
@@ -2366,9 +2366,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Explain the importance of Iterator Pattern in tree traversals.</summary>
+<summary>Объясните важность шаблона итератора в дереве traversals.</summary>
 
-### Explain the importance of Iterator Pattern in tree traversals.
+### Объясните важность шаблона итератора в дереве traversals.
 
 **Definition:**
 
@@ -2389,9 +2389,9 @@ is symmetric
 </details>
 
 <details>
-<summary>Discuss Best Practices in implementing tree data structures to avoid common pitfalls.</summary>
+<summary>Обсудите лучшие практики реализации древовидных структур данных, чтобы избежать распространенных ошибок.</summary>
 
-### Discuss Best Practices in implementing tree data structures to avoid common pitfalls.
+### Обсудите лучшие практики реализации древовидных структур данных, чтобы избежать распространенных ошибок.
 
 **Definition:**
 

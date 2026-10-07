@@ -41,6 +41,8 @@ const EN: ChromeCopy = {
   confirmNo: "No",
   back: "Back",
   next: "Next",
+  interviewQuestions: "Questions",
+  interviewTasks: "Tasks",
 };
 
 const RU: ChromeCopy = {
@@ -83,6 +85,8 @@ const RU: ChromeCopy = {
   confirmNo: "Нет",
   back: "Назад",
   next: "Далее",
+  interviewQuestions: "Вопросы",
+  interviewTasks: "Задачи",
 };
 
 const BY_LOCALE: Record<Locale, ChromeCopy> = {

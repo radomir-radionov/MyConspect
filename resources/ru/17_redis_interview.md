@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Redis](https://devinterview.io/questions/web
 ### Redis Fundamentals
 
 <details>
-<summary>What is Redis and what do you use it for?</summary>
+<summary>Что такое Redis and what do you use it for?</summary>
 
-### What is Redis and what do you use it for?
+### Что такое Redis and what do you use it for?
 
 **Definition:**
 
@@ -115,9 +115,9 @@ Redis предлагает такие варианты **persistence**:
 </details>
 
 <details>
-<summary>How does Redis store data?</summary>
+<summary>Как Redis store data?</summary>
 
-### How does Redis store data?
+### Как Redis store data?
 
 **Definition:**
 
@@ -171,9 +171,9 @@ Redis также даёт разумный уровень надёжности �
 </details>
 
 <details>
-<summary>What data types can you store in Redis?</summary>
+<summary>Какие data types можно хранить в Redis?</summary>
 
-### What data types can you store in Redis?
+### Какие data types можно хранить в Redis?
 
 **Definition:**
 
@@ -256,9 +256,9 @@ Redis даёт гибкую систему, которая позволяет н
 </details>
 
 <details>
-<summary>What is a Redis key and how should you structure it for best performance?</summary>
+<summary>Что такое Redis key and how should you structure it for best performance?</summary>
 
-### What is a Redis key and how should you structure it for best performance?
+### Что такое Redis key and how should you structure it for best performance?
 
 **Definition:**
 
@@ -320,9 +320,9 @@ def delete_user_data(user_id):
 </details>
 
 <details>
-<summary>How do you set an expiration on Redis keys?</summary>
+<summary>Как you set an expiration on Redis keys?</summary>
 
-### How do you set an expiration on Redis keys?
+### Как you set an expiration on Redis keys?
 
 **Definition:**
 
@@ -436,9 +436,9 @@ redis> PERSIST mykey  # To remove the key
 </details>
 
 <details>
-<summary>What do the commands `SET` and `GET` do in Redis?</summary>
+<summary>Что делают команды `SET` и `GET` в Redis?</summary>
 
-### What do the commands `SET` and `GET` do in Redis?
+### Что делают команды `SET` и `GET` в Redis?
 
 **Definition:**
 
@@ -513,9 +513,9 @@ redis> PERSIST mykey  # To remove the key
 </details>
 
 <details>
-<summary>How does Redis handle data persistence?</summary>
+<summary>Как Redis handle data persistence?</summary>
 
-### How does Redis handle data persistence?
+### Как Redis handle data persistence?
 
 **Definition:**
 
@@ -573,9 +573,9 @@ redis> PERSIST mykey  # To remove the key
 </details>
 
 <details>
-<summary>Explain the difference between RDB and AOF persistence strategies in Redis.</summary>
+<summary>Объясните the difference between RDB and AOF persistence strategies in Redis.</summary>
 
-### Explain the difference between RDB and AOF persistence strategies in Redis.
+### Объясните the difference between RDB and AOF persistence strategies in Redis.
 
 **Definition:**
 
@@ -611,9 +611,9 @@ Redis позволяет выбрать либо RDB, либо AOF, и такж�
 </details>
 
 <details>
-<summary>How would you implement a simple counter in Redis?</summary>
+<summary>Как бы вы implement a simple counter in Redis?</summary>
 
-### How would you implement a simple counter in Redis?
+### Как бы вы implement a simple counter in Redis?
 
 **Definition:**
 
@@ -696,9 +696,9 @@ print(r.hget('myHash', 'counterKey'))
 </details>
 
 <details>
-<summary>What are hashes in Redis and how do you use them?</summary>
+<summary>Что такое hashes in Redis and how do you use them?</summary>
 
-### What are hashes in Redis and how do you use them?
+### Что такое hashes in Redis and how do you use them?
 
 **Definition:**
 
@@ -786,9 +786,9 @@ print(f"Age field exists: {has_age}")
 </details>
 
 <details>
-<summary>How do you handle atomic operations in Redis?</summary>
+<summary>Как you handle atomic operations in Redis?</summary>
 
-### How do you handle atomic operations in Redis?
+### Как you handle atomic operations in Redis?
 
 **Definition:**
 
@@ -847,9 +847,9 @@ while True:
 </details>
 
 <details>
-<summary>What are lists in Redis and what are some common operations you can perform on them?</summary>
+<summary>Что такое lists in Redis and what are some common operations you can perform on them?</summary>
 
-### What are lists in Redis and what are some common operations you can perform on them?
+### Что такое lists in Redis and what are some common operations you can perform on them?
 
 **Definition:**
 
@@ -918,9 +918,9 @@ while True:
 </details>
 
 <details>
-<summary>Can you describe the Pub/Sub model and how it's implemented in Redis?</summary>
+<summary>Можете ли вы describe the Pub/Sub model and how it's implemented in Redis?</summary>
 
-### Can you describe the Pub/Sub model and how it's implemented in Redis?
+### Можете ли вы describe the Pub/Sub model and how it's implemented in Redis?
 
 **Definition:**
 
@@ -1017,9 +1017,9 @@ Process(target=subscriber).start()
 </details>
 
 <details>
-<summary>What is pipelining in Redis and when would you use it?</summary>
+<summary>Что такое pipelining in Redis and when would you use it?</summary>
 
-### What is pipelining in Redis and when would you use it?
+### Что такое pipelining in Redis and when would you use it?
 
 **Definition:**
 
@@ -1094,9 +1094,9 @@ print(result_set, result_get)
 </details>
 
 <details>
-<summary>What are the different types of Redis databases?</summary>
+<summary>Что такое the different types of Redis dataBASEs?</summary>
 
-### What are the different types of Redis databases?
+### Что такое the different types of Redis dataBASEs?
 
 **Definition:**
 
@@ -1137,9 +1137,9 @@ print(result_set, result_get)
 </details>
 
 <details>
-<summary>What is a Redis transaction and how do you create one?</summary>
+<summary>Что такое Redis transaction and how do you create one?</summary>
 
-### What is a Redis transaction and how do you create one?
+### Что такое Redis transaction and how do you create one?
 
 **Definition:**
 
@@ -1175,9 +1175,9 @@ EXEC
 </details>
 
 <details>
-<summary>Can you explain the blocking operations of Redis lists?</summary>
+<summary>Можете ли вы explain the blocking operations of Redis lists?</summary>
 
-### Can you explain the blocking operations of Redis lists?
+### Можете ли вы explain the blocking operations of Redis lists?
 
 **Definition:**
 
@@ -1211,9 +1211,9 @@ BLMOVE source destination LEFT RIGHT 0
 </details>
 
 <details>
-<summary>What are hyperloglogs in Redis and what problem do they solve?</summary>
+<summary>Что такое hyperloglogs in Redis and what problem do they solve?</summary>
 
-### What are hyperloglogs in Redis and what problem do they solve?
+### Что такое hyperloglogs in Redis and what problem do they solve?
 
 **Definition:**
 
@@ -1248,9 +1248,9 @@ PFMERGE all_bikes bikes commuter_bikes
 ### Redis Advanced Data Structures & Features
 
 <details>
-<summary>How do sets work in Redis and what operations can you perform on them?</summary>
+<summary>Как sets work in Redis and what operations can you perform on them?</summary>
 
-### How do sets work in Redis and what operations can you perform on them?
+### Как sets work in Redis and what operations can you perform on them?
 
 **Definition:**
 
@@ -1285,9 +1285,9 @@ SINTER key1 key2
 </details>
 
 <details>
-<summary>What are sorted sets in Redis and how do they differ from regular sets?</summary>
+<summary>Что такое sorted sets in Redis and how do they differ from regular sets?</summary>
 
-### What are sorted sets in Redis and how do they differ from regular sets?
+### Что такое sorted sets in Redis and how do they differ from regular sets?
 
 **Definition:**
 
@@ -1322,9 +1322,9 @@ ZRANGE zset 0 -1
 </details>
 
 <details>
-<summary>Can you use Redis for geospatial data? If so, explain how.</summary>
+<summary>Можно ли использовать Redis для geospatial data? Если да, объясните как.</summary>
 
-### Can you use Redis for geospatial data? If so, explain how.
+### Можно ли использовать Redis для geospatial data? Если да, объясните как.
 
 **Definition:**
 
@@ -1355,9 +1355,9 @@ GEOSEARCH Sicily FROMLONLAT 15 37 BYRADIUS 200 km ASC
 </details>
 
 <details>
-<summary>What is a bitmap and how can you use it in Redis?</summary>
+<summary>Что такое bitMap and how can you use it in Redis?</summary>
 
-### What is a bitmap and how can you use it in Redis?
+### Что такое bitMap and how can you use it in Redis?
 
 **Definition:**
 
@@ -1391,9 +1391,9 @@ GETBIT pings:2024-01-01-00:00 123
 </details>
 
 <details>
-<summary>Explain the concept of a stream in Redis.</summary>
+<summary>Объясните the concept of a stream in Redis.</summary>
 
-### Explain the concept of a stream in Redis.
+### Объясните the concept of a stream in Redis.
 
 **Definition:**
 
@@ -1427,9 +1427,9 @@ XREAD COUNT 100 BLOCK 300 STREAMS race:france $
 </details>
 
 <details>
-<summary>How do you use Lua scripting in Redis?</summary>
+<summary>Как you use Lua scripting in Redis?</summary>
 
-### How do you use Lua scripting in Redis?
+### Как you use Lua scripting in Redis?
 
 **Definition:**
 
@@ -1463,9 +1463,9 @@ EVALSHA c664a3bf70bd1d45c4284ffebb65a6f2299bfc9f 0
 </details>
 
 <details>
-<summary>What are modules in Redis?</summary>
+<summary>Что такое modules in Redis?</summary>
 
-### What are modules in Redis?
+### Что такое modules in Redis?
 
 **Definition:**
 
@@ -1495,9 +1495,9 @@ MODULE LIST
 </details>
 
 <details>
-<summary>Can you explain Redis's role as a message broker?</summary>
+<summary>Можете ли вы explain Redis's role as a message broker?</summary>
 
-### Can you explain Redis's role as a message broker?
+### Можете ли вы explain Redis's role as a message broker?
 
 **Definition:**
 
@@ -1531,9 +1531,9 @@ XADD race:italy * rider Castilla
 </details>
 
 <details>
-<summary>What are the limitations of Redis transactions?</summary>
+<summary>Что такое the limitations of Redis transactions?</summary>
 
-### What are the limitations of Redis transactions?
+### Что такое the limitations of Redis transactions?
 
 **Definition:**
 
@@ -1570,9 +1570,9 @@ GET foo
 </details>
 
 <details>
-<summary>How do you create and manage indices in Redis?</summary>
+<summary>Как you create and manage indices in Redis?</summary>
 
-### How do you create and manage indices in Redis?
+### Как you create and manage indices in Redis?
 
 **Definition:**
 
@@ -1607,9 +1607,9 @@ SINTER skill:redis skill:python
 </details>
 
 <details>
-<summary>Discuss Redis's role in session caching.</summary>
+<summary>Обсудите Redis's role in session caching.</summary>
 
-### Discuss Redis's role in session caching.
+### Обсудите Redis's role in session caching.
 
 **Definition:**
 
@@ -1642,9 +1642,9 @@ EXPIRE session:abc 3600
 </details>
 
 <details>
-<summary>Can Redis be used as a primary database? Why or why not?</summary>
+<summary>Можно ли Redis be used as a Primary dataBASE? Why or why not?</summary>
 
-### Can Redis be used as a primary database? Why or why not?
+### Можно ли Redis be used as a Primary dataBASE? Why or why not?
 
 **Definition:**
 
@@ -1678,9 +1678,9 @@ CONFIG SET appendonly yes
 ### Redis Configuration & Performance
 
 <details>
-<summary>How do you configure Redis for optimal performance?</summary>
+<summary>Как you configure Redis for optimal performance?</summary>
 
-### How do you configure Redis for optimal performance?
+### Как you configure Redis for optimal performance?
 
 **Definition:**
 
@@ -1713,9 +1713,9 @@ maxmemory-policy allkeys-lru
 </details>
 
 <details>
-<summary>What is Redis replication and how do you set it up?</summary>
+<summary>Что такое Redis replication and how do you set it up?</summary>
 
-### What is Redis replication and how do you set it up?
+### Что такое Redis replication and how do you set it up?
 
 **Definition:**
 
@@ -1748,9 +1748,9 @@ REPLICAOF NO ONE
 </details>
 
 <details>
-<summary>How do you scale Redis?</summary>
+<summary>Как you scale Redis?</summary>
 
-### How do you scale Redis?
+### Как you scale Redis?
 
 **Definition:**
 
@@ -1781,9 +1781,9 @@ redis-cli --cluster add-node 127.0.0.1:7006 127.0.0.1:7000 --cluster-slave
 </details>
 
 <details>
-<summary>Explain how Redis Sentinel works.</summary>
+<summary>Объясните how Redis Sentinel works.</summary>
 
-### Explain how Redis Sentinel works.
+### Объясните how Redis Sentinel works.
 
 **Definition:**
 
@@ -1814,9 +1814,9 @@ SENTINEL get-master-addr-by-name mymaster
 </details>
 
 <details>
-<summary>What is Redis Cluster and how does it improve Redis' scalability and availability?</summary>
+<summary>Что такое Redis Cluster and how does it improve Redis' Scalability and availability?</summary>
 
-### What is Redis Cluster and how does it improve Redis' scalability and availability?
+### Что такое Redis Cluster and how does it improve Redis' Scalability and availability?
 
 **Definition:**
 
@@ -1849,9 +1849,9 @@ CLUSTER FAILOVER
 </details>
 
 <details>
-<summary>How do you monitor performance in Redis?</summary>
+<summary>Как you monitor performance in Redis?</summary>
 
-### How do you monitor performance in Redis?
+### Как you monitor performance in Redis?
 
 **Definition:**
 
@@ -1882,9 +1882,9 @@ SLOWLOG GET 10
 </details>
 
 <details>
-<summary>What strategies can you use to optimize memory usage in Redis?</summary>
+<summary>Какие стратегии can you use to optimize memory usage in Redis?</summary>
 
-### What strategies can you use to optimize memory usage in Redis?
+### Какие стратегии can you use to optimize memory usage in Redis?
 
 **Definition:**
 
@@ -1919,9 +1919,9 @@ MEMORY DOCTOR
 </details>
 
 <details>
-<summary>Can you explain the eviction policies in Redis?</summary>
+<summary>Можете ли вы explain the eviction policies in Redis?</summary>
 
-### Can you explain the eviction policies in Redis?
+### Можете ли вы explain the eviction policies in Redis?
 
 **Definition:**
 
@@ -1954,9 +1954,9 @@ maxmemory-policy allkeys-lru
 </details>
 
 <details>
-<summary>What is the max memory setting in Redis?</summary>
+<summary>Что такое the max memory setting in Redis?</summary>
 
-### What is the max memory setting in Redis?
+### Что такое the max memory setting in Redis?
 
 **Definition:**
 
@@ -1990,9 +1990,9 @@ CONFIG SET maxmemory-policy noeviction
 </details>
 
 <details>
-<summary>How does Redis handle backups?</summary>
+<summary>Как Redis handle backups?</summary>
 
-### How does Redis handle backups?
+### Как Redis handle backups?
 
 **Definition:**
 
@@ -2027,9 +2027,9 @@ SAVE
 ### Redis Security
 
 <details>
-<summary>What security features does Redis offer?</summary>
+<summary>Какие security features предлагает Redis?</summary>
 
-### What security features does Redis offer?
+### Какие security features предлагает Redis?
 
 **Definition:**
 
@@ -2061,9 +2061,9 @@ ACL SETUSER alice on >p1pp0 ~cached:* +get
 </details>
 
 <details>
-<summary>How do you secure Redis deployment?</summary>
+<summary>Как you secure Redis deployment?</summary>
 
-### How do you secure Redis deployment?
+### Как you secure Redis deployment?
 
 **Definition:**
 
@@ -2095,9 +2095,9 @@ ACL SETUSER alice on >p1pp0 ~cached:* +get
 </details>
 
 <details>
-<summary>What are some common best practices for securing Redis?</summary>
+<summary>Что такое some common best practices for securing Redis?</summary>
 
-### What are some common best practices for securing Redis?
+### Что такое some common best practices for securing Redis?
 
 **Definition:**
 
@@ -2133,9 +2133,9 @@ SCAN 0 MATCH user:* COUNT 100
 ### Redis Client and Integration
 
 <details>
-<summary>How do you connect to a Redis server using programming language X (replace X with a language of your choice)?</summary>
+<summary>Как you connect to a Redis server using programming language X (replace X with a language of your choice)?</summary>
 
-### How do you connect to a Redis server using programming language X (replace X with a language of your choice)?
+### Как you connect to a Redis server using programming language X (replace X with a language of your choice)?
 
 **Definition:**
 
@@ -2169,9 +2169,9 @@ await client.set('foo', 'bar');
 </details>
 
 <details>
-<summary>What is the role of a Redis client library?</summary>
+<summary>Что такое the role of a Redis client library?</summary>
 
-### What is the role of a Redis client library?
+### Что такое the role of a Redis client library?
 
 **Definition:**
 
@@ -2200,9 +2200,9 @@ await client.multi().set('shellpath', newPath).exec();
 </details>
 
 <details>
-<summary>Explain how you can integrate Redis with a web application.</summary>
+<summary>Объясните how you can integrate Redis with a web application.</summary>
 
-### Explain how you can integrate Redis with a web application.
+### Объясните how you can integrate Redis with a web application.
 
 **Definition:**
 
@@ -2235,9 +2235,9 @@ await client.set('session:abc', 'user-id=7');
 </details>
 
 <details>
-<summary>How do you handle reconnection logic when the Redis server becomes unavailable?</summary>
+<summary>Как you handle reconnection logic when the Redis server becomes unavailable?</summary>
 
-### How do you handle reconnection logic when the Redis server becomes unavailable?
+### Как you handle reconnection logic when the Redis server becomes unavailable?
 
 **Definition:**
 
@@ -2270,9 +2270,9 @@ const client = createClient({
 </details>
 
 <details>
-<summary>Discuss how Redis can be used in conjunction with a database.</summary>
+<summary>Обсудите how Redis can be used in conjunction with a dataBASE.</summary>
 
-### Discuss how Redis can be used in conjunction with a database.
+### Обсудите how Redis can be used in conjunction with a dataBASE.
 
 **Definition:**
 
@@ -2306,9 +2306,9 @@ EXPIRE user:7 60
 </details>
 
 <details>
-<summary>What are the trade-offs of using Redis vs. traditional databases?</summary>
+<summary>Что такое the trade-offs of using Redis vs. traditional dataBASEs?</summary>
 
-### What are the trade-offs of using Redis vs. traditional databases?
+### Что такое the trade-offs of using Redis vs. traditional dataBASEs?
 
 **Definition:**
 
@@ -2342,9 +2342,9 @@ INCR views:post:1
 </details>
 
 <details>
-<summary>How does Redis interact with other components in a microservices architecture?</summary>
+<summary>Как Redis interact with other components in a microservices architecture?</summary>
 
-### How does Redis interact with other components in a microservices architecture?
+### Как Redis interact with other components in a microservices architecture?
 
 **Definition:**
 
@@ -2381,9 +2381,9 @@ BLPOP jobs 5
 ### Redis Persistence and Durability
 
 <details>
-<summary>What mechanisms does Redis provide for durability?</summary>
+<summary>Какие mechanisms Redis предоставляет для durability?</summary>
 
-### What mechanisms does Redis provide for durability?
+### Какие mechanisms Redis предоставляет для durability?
 
 **Definition:**
 
@@ -2416,9 +2416,9 @@ CONFIG SET appendonly yes
 </details>
 
 <details>
-<summary>How do you control when Redis writes data to disk?</summary>
+<summary>Как you control when Redis writes data to disk?</summary>
 
-### How do you control when Redis writes data to disk?
+### Как you control when Redis writes data to disk?
 
 **Definition:**
 
@@ -2451,9 +2451,9 @@ CONFIG SET appendonly yes
 </details>
 
 <details>
-<summary>Compare the pros and cons of RDB and AOF.</summary>
+<summary>Сравните the pros and cons of RDB and AOF.</summary>
 
-### Compare the pros and cons of RDB and AOF.
+### Сравните the pros and cons of RDB and AOF.
 
 **Definition:**
 
@@ -2486,9 +2486,9 @@ CONFIG SET appendonly yes
 </details>
 
 <details>
-<summary>How do you force a Redis data dump to disk?</summary>
+<summary>Как you force a Redis data dump to disk?</summary>
 
-### How do you force a Redis data dump to disk?
+### Как you force a Redis data dump to disk?
 
 **Definition:**
 
@@ -2517,9 +2517,9 @@ BGSAVE
 </details>
 
 <details>
-<summary>What strategies are involved in ensuring data durability in Redis?</summary>
+<summary>Какие стратегии are involved in ensuring data durability in Redis?</summary>
 
-### What strategies are involved in ensuring data durability in Redis?
+### Какие стратегии are involved in ensuring data durability in Redis?
 
 **Definition:**
 
@@ -2555,9 +2555,9 @@ INFO persistence
 ### Redis Troubleshooting & Best Practices
 
 <details>
-<summary>How do you troubleshoot latency issues in Redis?</summary>
+<summary>Как you troubleshoot latency issues in Redis?</summary>
 
-### How do you troubleshoot latency issues in Redis?
+### Как you troubleshoot latency issues in Redis?
 
 **Definition:**
 
@@ -2588,9 +2588,9 @@ CONFIG SET slowlog-log-slower-than 1000
 </details>
 
 <details>
-<summary>What are some best practices for error handling in Redis clients?</summary>
+<summary>Что такое some best practices for error handling in Redis clients?</summary>
 
-### What are some best practices for error handling in Redis clients?
+### Что такое some best practices for error handling in Redis clients?
 
 **Definition:**
 
@@ -2621,9 +2621,9 @@ const clientSafe = createClient({ disableOfflineQueue: true });
 </details>
 
 <details>
-<summary>How do you recover a Redis instance from a failure?</summary>
+<summary>Как you recover a Redis instance from a failure?</summary>
 
-### How do you recover a Redis instance from a failure?
+### Как you recover a Redis instance from a failure?
 
 **Definition:**
 
@@ -2658,9 +2658,9 @@ SENTINEL get-master-addr-by-name mymaster
 </details>
 
 <details>
-<summary>What is meant by "hot" keys in Redis and how do you deal with them?</summary>
+<summary>Что такое meant by "hot" keys in Redis and how do you deal with them?</summary>
 
-### What is meant by "hot" keys in Redis and how do you deal with them?
+### Что такое meant by "hot" keys in Redis and how do you deal with them?
 
 **Definition:**
 
@@ -2695,9 +2695,9 @@ SLOWLOG GET 16
 </details>
 
 <details>
-<summary>How do you upgrade a Redis instance with minimal downtime?</summary>
+<summary>Как you upgrade a Redis instance with minimal downtime?</summary>
 
-### How do you upgrade a Redis instance with minimal downtime?
+### Как you upgrade a Redis instance with minimal downtime?
 
 **Definition:**
 
@@ -2735,9 +2735,9 @@ REPLICAOF 127.0.0.1 6799
 ### Redis Application Scenarios
 
 <details>
-<summary>How can Redis be used for rate limiting?</summary>
+<summary>Как Redis be used for rate limiting?</summary>
 
-### How can Redis be used for rate limiting?
+### Как Redis be used for rate limiting?
 
 **Definition:**
 
@@ -2770,9 +2770,9 @@ EXPIRE rate_limit:user:42 60
 </details>
 
 <details>
-<summary>What would be an ideal use case for Redis queues?</summary>
+<summary>Что бы вы be an ideal use case for Redis queues?</summary>
 
-### What would be an ideal use case for Redis queues?
+### Что бы вы be an ideal use case for Redis queues?
 
 **Definition:**
 
@@ -2804,9 +2804,9 @@ BLMOVE jobs processing LEFT RIGHT 30
 </details>
 
 <details>
-<summary>How would you use Redis for full-page cache?</summary>
+<summary>Как бы вы use Redis for full-page cache?</summary>
 
-### How would you use Redis for full-page cache?
+### Как бы вы use Redis for full-page cache?
 
 **Definition:**
 
@@ -2839,9 +2839,9 @@ EXPIRE page:/pricing 30
 </details>
 
 <details>
-<summary>Discuss the usage of Redis in machine learning models.</summary>
+<summary>Обсудите the usage of Redis in machine learning models.</summary>
 
-### Discuss the usage of Redis in machine learning models.
+### Обсудите the usage of Redis in machine learning models.
 
 **Definition:**
 
@@ -2874,9 +2874,9 @@ XADD events * user 7 item 9
 </details>
 
 <details>
-<summary>Can Redis be used in a real-time analytics platform? How?</summary>
+<summary>Можно ли Redis be used in a real-time analytics platform? How?</summary>
 
-### Can Redis be used in a real-time analytics platform? How?
+### Можно ли Redis be used in a real-time analytics platform? How?
 
 **Definition:**
 
@@ -2912,9 +2912,9 @@ PFCOUNT uv:page:9
 </details>
 
 <details>
-<summary>How is Redis used in IoT (Internet of Things) applications?</summary>
+<summary>Как Redis used in IoT (Internet of Things) applications?</summary>
 
-### How is Redis used in IoT (Internet of Things) applications?
+### Как Redis used in IoT (Internet of Things) applications?
 
 **Definition:**
 
@@ -2948,9 +2948,9 @@ GEOADD devices -122.4 37.8 sensor-18
 </details>
 
 <details>
-<summary>What role does Redis play in gaming applications?</summary>
+<summary>Какую роль does Redis play in GAming applications?</summary>
 
-### What role does Redis play in gaming applications?
+### Какую роль does Redis play in GAming applications?
 
 **Definition:**
 
@@ -2985,9 +2985,9 @@ ZRANGE board 0 9
 </details>
 
 <details>
-<summary>How would you design a recommendation system using Redis?</summary>
+<summary>Как бы вы design a recommendation system using Redis?</summary>
 
-### How would you design a recommendation system using Redis?
+### Как бы вы design a recommendation system using Redis?
 
 **Definition:**
 
@@ -3024,9 +3024,9 @@ ZRANGE user:7:recs 0 19
 ### Redis and Cloud Infrastructures
 
 <details>
-<summary>What are the benefits of running Redis on cloud platforms?</summary>
+<summary>Что такое the benefits of running Redis on cloud platforms?</summary>
 
-### What are the benefits of running Redis on cloud platforms?
+### Что такое the benefits of running Redis on cloud platforms?
 
 **Definition:**
 
@@ -3060,9 +3060,9 @@ CONFIG SET appendonly yes
 </details>
 
 <details>
-<summary>How is AWS Elasticache different from self-hosted Redis?</summary>
+<summary>Как AWS Elasticache different from self-hosted Redis?</summary>
 
-### How is AWS Elasticache different from self-hosted Redis?
+### Как AWS Elasticache different from self-hosted Redis?
 
 **Definition:**
 
@@ -3096,9 +3096,9 @@ ACL SETUSER alice on >p1pp0 ~cached:* +get
 </details>
 
 <details>
-<summary>Discuss the considerations for using Redis within containerized environments like Kubernetes.</summary>
+<summary>Обсудите the considerations for using Redis within containerized environments like Kubernetes.</summary>
 
-### Discuss the considerations for using Redis within containerized environments like Kubernetes.
+### Обсудите the considerations for using Redis within containerized environments like Kubernetes.
 
 **Definition:**
 
@@ -3132,9 +3132,9 @@ maxmemory-policy allkeys-lru
 </details>
 
 <details>
-<summary>How do you handle Redis persistence in cloud environments?</summary>
+<summary>Как you handle Redis persistence in cloud environments?</summary>
 
-### How do you handle Redis persistence in cloud environments?
+### Как you handle Redis persistence in cloud environments?
 
 **Definition:**
 
@@ -3168,9 +3168,9 @@ INFO persistence
 </details>
 
 <details>
-<summary>What is the impact of cloud networking on Redis performance?</summary>
+<summary>Что такое the impact of cloud networking on Redis performance?</summary>
 
-### What is the impact of cloud networking on Redis performance?
+### Что такое the impact of cloud networking on Redis performance?
 
 **Definition:**
 
@@ -3206,9 +3206,9 @@ MSET a 1 b 2
 ### Redis Cluster Management
 
 <details>
-<summary>How do you add or remove nodes in a Redis Cluster?</summary>
+<summary>Как you add or remove nodes in a Redis Cluster?</summary>
 
-### How do you add or remove nodes in a Redis Cluster?
+### Как you add or remove nodes in a Redis Cluster?
 
 **Definition:**
 
@@ -3240,9 +3240,9 @@ CLUSTER NODES
 </details>
 
 <details>
-<summary>Explain how failover works in a Redis Cluster.</summary>
+<summary>Объясните how failover works in a Redis Cluster.</summary>
 
-### Explain how failover works in a Redis Cluster.
+### Объясните how failover works in a Redis Cluster.
 
 **Definition:**
 
@@ -3275,9 +3275,9 @@ CLUSTER NODES
 </details>
 
 <details>
-<summary>Discuss the challenges of running a Redis Cluster in production.</summary>
+<summary>Обсудите the challenges of running a Redis Cluster in production.</summary>
 
-### Discuss the challenges of running a Redis Cluster in production.
+### Обсудите the challenges of running a Redis Cluster in production.
 
 **Definition:**
 
@@ -3311,9 +3311,9 @@ CLUSTER NODES
 </details>
 
 <details>
-<summary>What maintenance operations are needed for a Redis Cluster?</summary>
+<summary>Какие maintenance operations нужны для Redis Cluster?</summary>
 
-### What maintenance operations are needed for a Redis Cluster?
+### Какие maintenance operations нужны для Redis Cluster?
 
 **Definition:**
 
@@ -3344,9 +3344,9 @@ BGSAVE
 </details>
 
 <details>
-<summary>How do you shard data in a Redis Cluster?</summary>
+<summary>Как you SHArd data in a Redis Cluster?</summary>
 
-### How do you shard data in a Redis Cluster?
+### Как you SHArd data in a Redis Cluster?
 
 **Definition:**
 
@@ -3380,9 +3380,9 @@ CLUSTER NODES
 ### Redis from a Developer's Perspective
 
 <details>
-<summary>What are idiomatic ways to use Redis in software development?</summary>
+<summary>Что такое idiomatic ways to use Redis in software development?</summary>
 
-### What are idiomatic ways to use Redis in software development?
+### Что такое idiomatic ways to use Redis in software development?
 
 **Definition:**
 
@@ -3414,9 +3414,9 @@ SCAN 0 MATCH session:* COUNT 100
 </details>
 
 <details>
-<summary>How do common design patterns apply to Redis usage?</summary>
+<summary>Как common design patterns apply to Redis usage?</summary>
 
-### How do common design patterns apply to Redis usage?
+### Как common design patterns apply to Redis usage?
 
 **Definition:**
 
@@ -3453,9 +3453,9 @@ EXEC
 </details>
 
 <details>
-<summary>How do you test software that relies on Redis?</summary>
+<summary>Как you test software that relies on Redis?</summary>
 
-### How do you test software that relies on Redis?
+### Как you test software that relies on Redis?
 
 **Definition:**
 
@@ -3490,9 +3490,9 @@ const value = await client.get('foo');
 </details>
 
 <details>
-<summary>Explain how to use Redis with asynchronous programming models.</summary>
+<summary>Объясните how to use Redis with asynchronous programming models.</summary>
 
-### Explain how to use Redis with asynchronous programming models.
+### Объясните how to use Redis with asynchronous programming models.
 
 **Definition:**
 
@@ -3527,9 +3527,9 @@ await client.multi().set('shellpath', newPath).exec();
 </details>
 
 <details>
-<summary>Discuss the pros and cons of using Redis as a caching layer.</summary>
+<summary>Обсудите the pros and cons of using Redis as a caching layer.</summary>
 
-### Discuss the pros and cons of using Redis as a caching layer.
+### Обсудите the pros and cons of using Redis as a caching layer.
 
 **Definition:**
 
@@ -3565,9 +3565,9 @@ maxmemory-policy allkeys-lru
 ### Redis Monitoring and Logging
 
 <details>
-<summary>How do you monitor key events in Redis?</summary>
+<summary>Как you monitor key events in Redis?</summary>
 
-### How do you monitor key events in Redis?
+### Как you monitor key events in Redis?
 
 **Definition:**
 
@@ -3600,9 +3600,9 @@ PSUBSCRIBE __key*__:*
 </details>
 
 <details>
-<summary>What are some effective monitoring tools for Redis?</summary>
+<summary>Что такое some effective monitoring tools for Redis?</summary>
 
-### What are some effective monitoring tools for Redis?
+### Что такое some effective monitoring tools for Redis?
 
 **Definition:**
 
@@ -3635,9 +3635,9 @@ MEMORY DOCTOR
 </details>
 
 <details>
-<summary>How do you capture and analyze Redis logs?</summary>
+<summary>Как you CAPture and analyze Redis logs?</summary>
 
-### How do you capture and analyze Redis logs?
+### Как you CAPture and analyze Redis logs?
 
 **Definition:**
 
@@ -3668,9 +3668,9 @@ LATENCY DOCTOR
 </details>
 
 <details>
-<summary>What can you diagnose from Redis slow query logs?</summary>
+<summary>Что можно диагностировать по Redis slow query logs?</summary>
 
-### What can you diagnose from Redis slow query logs?
+### Что можно диагностировать по Redis slow query logs?
 
 **Definition:**
 
@@ -3704,9 +3704,9 @@ CONFIG SET slowlog-log-slower-than 1000
 </details>
 
 <details>
-<summary>How does monitoring differ in a Redis Cluster environment?</summary>
+<summary>Как monitoring differ in a Redis Cluster environment?</summary>
 
-### How does monitoring differ in a Redis Cluster environment?
+### Как monitoring differ in a Redis Cluster environment?
 
 **Definition:**
 
@@ -3743,9 +3743,9 @@ INFO memory
 ### Redis in High Availability Systems
 
 <details>
-<summary>How does Redis maintain high availability?</summary>
+<summary>Как Redis maintain high availability?</summary>
 
-### How does Redis maintain high availability?
+### Как Redis maintain high availability?
 
 **Definition:**
 
@@ -3778,9 +3778,9 @@ SENTINEL get-master-addr-by-name mymaster
 </details>
 
 <details>
-<summary>Discuss the pros and cons of using Redis Sentinel vs. Redis Cluster.</summary>
+<summary>Обсудите the pros and cons of using Redis Sentinel vs. Redis Cluster.</summary>
 
-### Discuss the pros and cons of using Redis Sentinel vs. Redis Cluster.
+### Обсудите the pros and cons of using Redis Sentinel vs. Redis Cluster.
 
 **Definition:**
 
@@ -3814,9 +3814,9 @@ CLUSTER NODES
 </details>
 
 <details>
-<summary>How do you ensure data consistency across Redis replicas?</summary>
+<summary>Как you ensure data consistency across Redis replicas?</summary>
 
-### How do you ensure data consistency across Redis replicas?
+### Как you ensure data consistency across Redis replicas?
 
 **Definition:**
 
@@ -3850,9 +3850,9 @@ REPLICAOF 127.0.0.1 6799
 </details>
 
 <details>
-<summary>What are some strategies for Redis failover management?</summary>
+<summary>Что такое some strategies for Redis failover management?</summary>
 
-### What are some strategies for Redis failover management?
+### Что такое some strategies for Redis failover management?
 
 **Definition:**
 
@@ -3889,9 +3889,9 @@ SENTINEL get-master-addr-by-name mymaster
 ### Redis Evolutions and Ecosystem
 
 <details>
-<summary>How has the Redis ecosystem evolved over the years?</summary>
+<summary>Как the Redis ecosystem evolved over the years?</summary>
 
-### How has the Redis ecosystem evolved over the years?
+### Как the Redis ecosystem evolved over the years?
 
 **Definition:**
 
@@ -3923,9 +3923,9 @@ ACL SETUSER alice on >p1pp0 ~cached:* +get
 </details>
 
 <details>
-<summary>Discuss the impact of in-memory data grid solutions compared to Redis.</summary>
+<summary>Обсудите the impact of in-memory data grid solutions compared to Redis.</summary>
 
-### Discuss the impact of in-memory data grid solutions compared to Redis.
+### Обсудите the impact of in-memory data grid solutions compared to Redis.
 
 **Definition:**
 
@@ -3959,9 +3959,9 @@ EVAL "return 'Hello, scripting!'" 0
 </details>
 
 <details>
-<summary>What new features do you expect from future Redis versions?</summary>
+<summary>Какие new features вы ожидаете в будущих версиях Redis?</summary>
 
-### What new features do you expect from future Redis versions?
+### Какие new features вы ожидаете в будущих версиях Redis?
 
 **Definition:**
 
@@ -3995,9 +3995,9 @@ XADD mystream MAXLEN ~ 1000 * field value
 </details>
 
 <details>
-<summary>How do Redis modules expand its capabilities?</summary>
+<summary>Как Redis modules expand its CAPabilities?</summary>
 
-### How do Redis modules expand its capabilities?
+### Как Redis modules expand its CAPabilities?
 
 **Definition:**
 
@@ -4030,9 +4030,9 @@ MODULE LIST
 </details>
 
 <details>
-<summary>Discuss the role of Redis in the NoSQL movement.</summary>
+<summary>Обсудите the role of Redis in the NoSQL movement.</summary>
 
-### Discuss the role of Redis in the NoSQL movement.
+### Обсудите the role of Redis in the NoSQL movement.
 
 **Definition:**
 
@@ -4069,9 +4069,9 @@ SINTER skill:redis skill:python
 ### Redis Debugging and Data Examination
 
 <details>
-<summary>How do you inspect and debug the contents of a running Redis server?</summary>
+<summary>Как you inspect and debug the contents of a running Redis server?</summary>
 
-### How do you inspect and debug the contents of a running Redis server?
+### Как you inspect and debug the contents of a running Redis server?
 
 **Definition:**
 
@@ -4108,9 +4108,9 @@ MEMORY USAGE user:1
 </details>
 
 <details>
-<summary>What are the implications of using the `KEYS` command in production?</summary>
+<summary>Что такое the implications of using the `KEYS` command in production?</summary>
 
-### What are the implications of using the `KEYS` command in production?
+### Что такое the implications of using the `KEYS` command in production?
 
 **Definition:**
 
@@ -4143,9 +4143,9 @@ SCAN 0 MATCH user:* COUNT 100
 </details>
 
 <details>
-<summary>How do you identify memory leaks in a Redis instance?</summary>
+<summary>Как you identify memory leaks in a Redis instance?</summary>
 
-### How do you identify memory leaks in a Redis instance?
+### Как you identify memory leaks in a Redis instance?
 
 **Definition:**
 

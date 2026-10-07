@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Fibonacci Sequence](https://devinterview.io/
 ### Fibonacci Sequence Basics
 
 <details>
-<summary>What is the Fibonacci sequence?</summary>
+<summary>Что такое the Fibonacci sequence?</summary>
 
-### What is the Fibonacci sequence?
+### Что такое the Fibonacci sequence?
 
 **Definition:**
 
@@ -45,9 +45,9 @@ F(6)=8, потому что 0,1,1,2,3,5,8
 </details>
 
 <details>
-<summary>Write a function to calculate the nth Fibonacci number using a recursive approach.</summary>
+<summary>Напишите a function to calculate the nth Fibonacci number using a Recursive approach.</summary>
 
-### Write a function to calculate the nth Fibonacci number using a recursive approach.
+### Напишите a function to calculate the nth Fibonacci number using a Recursive approach.
 
 **Definition:**
 
@@ -73,9 +73,9 @@ fib(n):
 </details>
 
 <details>
-<summary>Provide a non-recursive implementation for generating the Fibonacci sequence to the nth number.</summary>
+<summary>Приведите a Non-Recursive implementation for generating the Fibonacci sequence to the nth number.</summary>
 
-### Provide a non-recursive implementation for generating the Fibonacci sequence to the nth number.
+### Приведите a Non-Recursive implementation for generating the Fibonacci sequence to the nth number.
 
 **Definition:**
 
@@ -101,9 +101,9 @@ return curr if n > 0 else 0
 </details>
 
 <details>
-<summary>What is the time complexity of the recursive Fibonacci solution, and how can this be improved?</summary>
+<summary>Что такое the time complexity of the Recursive Fibonacci solution, and how can this be improved?</summary>
 
-### What is the time complexity of the recursive Fibonacci solution, and how can this be improved?
+### Что такое the time complexity of the Recursive Fibonacci solution, and how can this be improved?
 
 **Definition:**
 
@@ -123,9 +123,9 @@ return curr if n > 0 else 0
 </details>
 
 <details>
-<summary>Describe the memoization technique as applied to the Fibonacci sequence calculation.</summary>
+<summary>Опишите метод memoization применительно к расчету последовательности Fibonacci.</summary>
 
-### Describe the memoization technique as applied to the Fibonacci sequence calculation.
+### Опишите метод memoization применительно к расчету последовательности Fibonacci.
 
 **Definition:**
 
@@ -154,9 +154,9 @@ fib(n, memo):
 ### Efficient Fibonacci Algorithms
 
 <details>
-<summary>Implement an iterative solution to generate the Fibonacci sequence, discussing its time and space complexity.</summary>
+<summary>Реализуйте an iterative solution to generate the Fibonacci sequence, discussing its time and space complexity.</summary>
 
-### Implement an iterative solution to generate the Fibonacci sequence, discussing its time and space complexity.
+### Реализуйте an iterative solution to generate the Fibonacci sequence, discussing its time and space complexity.
 
 **Definition:**
 
@@ -183,9 +183,9 @@ a, b = 0, 1
 </details>
 
 <details>
-<summary>Explain the concept of dynamic programming as it relates to the Fibonacci sequence.</summary>
+<summary>Объясните концепцию Dynamic Programming, поскольку она соотносится с последовательностью Fibonacci.</summary>
 
-### Explain the concept of dynamic programming as it relates to the Fibonacci sequence.
+### Объясните концепцию Dynamic Programming, поскольку она соотносится с последовательностью Fibonacci.
 
 **Definition:**
 
@@ -205,9 +205,9 @@ a, b = 0, 1
 </details>
 
 <details>
-<summary>Solve the nth Fibonacci number problem using matrix exponentiation and analyze its efficiency.</summary>
+<summary>Решите the nth Fibonacci number problem using matrix exponentiation and analyze its efficiency.</summary>
 
-### Solve the nth Fibonacci number problem using matrix exponentiation and analyze its efficiency.
+### Решите the nth Fibonacci number problem using matrix exponentiation and analyze its efficiency.
 
 **Definition:**
 
@@ -231,9 +231,9 @@ M = [[1, 1], [1, 0]]
 </details>
 
 <details>
-<summary>Can the nth Fibonacci number be found using the golden ratio, and if so, how would you implement this method?</summary>
+<summary>Можно ли найти n-ое число Fibonacci с помощью золотого сечения, AND, если да, то как бы вы реализовали этот метод?</summary>
 
-### Can the nth Fibonacci number be found using the golden ratio, and if so, how would you implement this method?
+### Можно ли найти n-ое число Fibonacci с помощью золотого сечения, AND, если да, то как бы вы реализовали этот метод?
 
 **Definition:**
 
@@ -257,9 +257,9 @@ F(n) = round(phi**n / sqrt(5))
 </details>
 
 <details>
-<summary>Present an approach to precomputing Fibonacci numbers to answer multiple nth Fibonacci queries efficiently.</summary>
+<summary>Предложите подход к предвычислению чисел Fibonacci для эффективного ответа на множество запросов n-го числа Fibonacci.</summary>
 
-### Present an approach to precomputing Fibonacci numbers to answer multiple nth Fibonacci queries efficiently.
+### Предложите подход к предвычислению чисел Fibonacci для эффективного ответа на множество запросов n-го числа Fibonacci.
 
 **Definition:**
 
@@ -286,9 +286,9 @@ answer(n) = table[n]
 ### Fibonacci Variants and Applications
 
 <details>
-<summary>How might the Fibonacci sequence be altered to start with two arbitrary initial values? Provide an algorithm for such a sequence.</summary>
+<summary>Как можно изменить последовательность Fibonacci, чтобы она начиналась с двух произвольных начальных значений? Приведите алгоритм для такой последовательности.</summary>
 
-### How might the Fibonacci sequence be altered to start with two arbitrary initial values? Provide an algorithm for such a sequence.
+### Как можно изменить последовательность Fibonacci, чтобы она начиналась с двух произвольных начальных значений? Приведите алгоритм для такой последовательности.
 
 **Definition:**
 
@@ -316,9 +316,9 @@ nth(a, b, n):
 </details>
 
 <details>
-<summary>Explain an algorithm to compute the sum of the first n Fibonacci numbers without generating the entire sequence.</summary>
+<summary>Объясните алгоритм вычисления суммы первых n чисел Fibonacci без генерации всей последовательности.</summary>
 
-### Explain an algorithm to compute the sum of the first n Fibonacci numbers without generating the entire sequence.
+### Объясните алгоритм вычисления суммы первых n чисел Fibonacci без генерации всей последовательности.
 
 **Definition:**
 
@@ -338,9 +338,9 @@ nth(a, b, n):
 </details>
 
 <details>
-<summary>Define the Lucas sequence and detail how a program can generate it.</summary>
+<summary>Определите последовательность Лукаса AND подробно, как программа может ее сгенерировать.</summary>
 
-### Define the Lucas sequence and detail how a program can generate it.
+### Определите последовательность Лукаса AND подробно, как программа может ее сгенерировать.
 
 **Definition:**
 
@@ -366,9 +366,9 @@ x, y = 2, 1
 </details>
 
 <details>
-<summary>How can the Fibonacci sequence be used to solve the tiling problem, where you need to cover a 2xn rectangle with 2x1 tiles?</summary>
+<summary>Как можно использовать последовательность Fibonacci для решения задачи укладки плитки, когда вам нужно покрыть прямоугольник размером 2xn плитками размером 2x1?</summary>
 
-### How can the Fibonacci sequence be used to solve the tiling problem, where you need to cover a 2xn rectangle with 2x1 tiles?
+### Как можно использовать последовательность Fibonacci для решения задачи укладки плитки, когда вам нужно покрыть прямоугольник размером 2xn плитками размером 2x1?
 
 **Definition:**
 
@@ -389,9 +389,9 @@ x, y = 2, 1
 ### Large Fibonacci Numbers and Modular Arithmetic
 
 <details>
-<summary>How to calculate large Fibonacci numbers without encountering integer overflow issues?</summary>
+<summary>Как calculate large Fibonacci numbers without encountering integer overflow issues?</summary>
 
-### How to calculate large Fibonacci numbers without encountering integer overflow issues?
+### Как calculate large Fibonacci numbers without encountering integer overflow issues?
 
 **Definition:**
 
@@ -417,9 +417,9 @@ a, b = 0, 1          # большие целые языка
 </details>
 
 <details>
-<summary>Implement a function that computes the nth Fibonacci number modulo m.</summary>
+<summary>Реализуйте a function that computes the nth Fibonacci number modulo m.</summary>
 
-### Implement a function that computes the nth Fibonacci number modulo m.
+### Реализуйте a function that computes the nth Fibonacci number modulo m.
 
 **Definition:**
 
@@ -460,9 +460,9 @@ def fib_mod(n, m):
 </details>
 
 <details>
-<summary>Implement an algorithm to find the last k digits of the nth Fibonacci number.</summary>
+<summary>Реализуйте an alGorithm to find the last k diGits of the nth Fibonacci number.</summary>
 
-### Implement an algorithm to find the last k digits of the nth Fibonacci number.
+### Реализуйте an alGorithm to find the last k diGits of the nth Fibonacci number.
 
 **Definition:**
 
@@ -502,9 +502,9 @@ def fib_mod(n, m):
 </details>
 
 <details>
-<summary>Check if a given number is a Fibonacci number.</summary>
+<summary>Проверьте, является ли данное число номером Fibonacci.</summary>
 
-### Check if a given number is a Fibonacci number.
+### Проверьте, является ли данное число номером Fibonacci.
 
 **Definition:**
 
@@ -537,9 +537,9 @@ def is_fib(x):
 </details>
 
 <details>
-<summary>Solve for the nth Fibonacci number using fast doubling.</summary>
+<summary>Решите for the nth Fibonacci number using fast doubling.</summary>
 
-### Solve for the nth Fibonacci number using fast doubling.
+### Решите for the nth Fibonacci number using fast doubling.
 
 **Definition:**
 
@@ -576,9 +576,9 @@ def fib_pair(n):
 ### Fibonacci Sequence in Data Structures
 
 <details>
-<summary>How can a Fibonacci heap data structure benefit from the properties of the Fibonacci sequence?</summary>
+<summary>Как структура данных Fibonacci heap может извлечь выгоду из свойств последовательности Fibonacci?</summary>
 
-### How can a Fibonacci heap data structure benefit from the properties of the Fibonacci sequence?
+### Как структура данных Fibonacci heap может извлечь выгоду из свойств последовательности Fibonacci?
 
 **Definition:**
 
@@ -606,9 +606,9 @@ def fib_pair(n):
 </details>
 
 <details>
-<summary>Implement Fibonacci sequence generation using an array as storage.</summary>
+<summary>Реализуйте Fibonacci sequence generation using an array as storage.</summary>
 
-### Implement Fibonacci sequence generation using an array as storage.
+### Реализуйте Fibonacci sequence generation using an array as storage.
 
 **Definition:**
 
@@ -642,9 +642,9 @@ def fib_array(n):
 </details>
 
 <details>
-<summary>Provide an example of when and why a Fibonacci queue might be preferred over a traditional queue structure.</summary>
+<summary>Приведите an example of when and why a Fibonacci queue might be preferred over a traditional queue structure.</summary>
 
-### Provide an example of when and why a Fibonacci queue might be preferred over a traditional queue structure.
+### Приведите an example of when and why a Fibonacci queue might be preferred over a traditional queue structure.
 
 **Definition:**
 
@@ -675,9 +675,9 @@ def fib_array(n):
 ### Advanced Fibonacci Concepts
 
 <details>
-<summary>Explain the Pisano Period and how it pertains to the calculation of Fibonacci numbers modulo m.</summary>
+<summary>Объясните период Пизано и то, как он соотносится с вычислением чисел Fibonacci по модулю m.</summary>
 
-### Explain the Pisano Period and how it pertains to the calculation of Fibonacci numbers modulo m.
+### Объясните период Пизано и то, как он соотносится с вычислением чисел Fibonacci по модулю m.
 
 **Definition:**
 
@@ -710,9 +710,9 @@ def pisano(m):
 </details>
 
 <details>
-<summary>What is the relationship between Fibonacci numbers and the Euclidean algorithm for finding the greatest common divisor?</summary>
+<summary>Что такое the relationship between Fibonacci numbers and the Euclidean alGorithm for finding the greatest common divisor?</summary>
 
-### What is the relationship between Fibonacci numbers and the Euclidean algorithm for finding the greatest common divisor?
+### Что такое the relationship between Fibonacci numbers and the Euclidean alGorithm for finding the greatest common divisor?
 
 **Definition:**
 
@@ -744,9 +744,9 @@ def egcd_steps(a, b):
 </details>
 
 <details>
-<summary>Can you prove that the sum of n Fibonacci numbers is equivalent to the (n+2)nd Fibonacci number minus 1?</summary>
+<summary>Можете ли вы доказать, что сумма чисел n Fibonacci эквивалентна числу (n+2)nd Fibonacci минус 1?</summary>
 
-### Can you prove that the sum of n Fibonacci numbers is equivalent to the (n+2)nd Fibonacci number minus 1?
+### Можете ли вы доказать, что сумма чисел n Fibonacci эквивалентна числу (n+2)nd Fibonacci минус 1?
 
 **Definition:**
 
@@ -780,9 +780,9 @@ def sum_first(n):
 ### Fibonacci Numbers in Sorting and Searching Algorithms
 
 <details>
-<summary>Describe a scenario where Fibonacci numbers can be applied to optimize a search algorithm.</summary>
+<summary>Опишите сценарий, в котором номера Fibonacci могут быть применены для оптимизации поиска algORZithm.</summary>
 
-### Describe a scenario where Fibonacci numbers can be applied to optimize a search algorithm.
+### Опишите сценарий, в котором номера Fibonacci могут быть применены для оптимизации поиска algORZithm.
 
 **Definition:**
 
@@ -830,9 +830,9 @@ def fib_search(arr, x):
 </details>
 
 <details>
-<summary>Implement a Fibonacci Search algorithm and compare its efficiency with binary search.</summary>
+<summary>Реализуйте a Fibonacci Search alGorithm and compare its efficiency with binary search.</summary>
 
-### Implement a Fibonacci Search algorithm and compare its efficiency with binary search.
+### Реализуйте a Fibonacci Search alGorithm and compare its efficiency with binary search.
 
 **Definition:**
 
@@ -880,9 +880,9 @@ def fib_search(arr, x):
 </details>
 
 <details>
-<summary>Can the Fibonacci sequence optimize the worst-case running time of an algorithm? Provide an example.</summary>
+<summary>Может ли последовательность Fibonacci оптимизировать время работы worst-case алгоритма? Приведите пример.</summary>
 
-### Can the Fibonacci sequence optimize the worst-case running time of an algorithm? Provide an example.
+### Может ли последовательность Fibonacci оптимизировать время работы worst-case алгоритма? Приведите пример.
 
 **Definition:**
 
@@ -916,9 +916,9 @@ def fib_linear(n):
 ### Fibonacci Sequence Mathematical Questions
 
 <details>
-<summary>Prove by induction that the sum of the first n even-indexed Fibonacci numbers is the (n+1)st Fibonacci number minus 1.</summary>
+<summary>Докажите by induction that the sum of the first n even-indexed Fibonacci numbers is the (n+1)st Fibonacci number minus 1.</summary>
 
-### Prove by induction that the sum of the first n even-indexed Fibonacci numbers is the (n+1)st Fibonacci number minus 1.
+### Докажите by induction that the sum of the first n even-indexed Fibonacci numbers is the (n+1)st Fibonacci number minus 1.
 
 **Definition:**
 
@@ -947,9 +947,9 @@ def fib_linear(n):
 </details>
 
 <details>
-<summary>How can Fibonacci numbers be related to the Binet’s formula, and is it practical for computing Fibonacci numbers?</summary>
+<summary>Как числа Fibonacci могут быть связаны с формулой Бине и практично ли это для вычисления чисел Fibonacci?</summary>
 
-### How can Fibonacci numbers be related to the Binet’s formula, and is it practical for computing Fibonacci numbers?
+### Как числа Fibonacci могут быть связаны с формулой Бине и практично ли это для вычисления чисел Fibonacci?
 
 **Definition:**
 
@@ -979,9 +979,9 @@ def binet(n):
 </details>
 
 <details>
-<summary>Do Fibonacci numbers have a connection with Pascal’s Triangle?</summary>
+<summary>Связаны ли числа Fibonacci с треугольником Паскаля?</summary>
 
-### Do Fibonacci numbers have a connection with Pascal’s Triangle?
+### Связаны ли числа Fibonacci с треугольником Паскаля?
 
 **Definition:**
 
@@ -1016,9 +1016,9 @@ def diag(n):
 </details>
 
 <details>
-<summary>Generate the Fibonacci sequence using a two-variable iterative process.</summary>
+<summary>Сгенерируйте последовательность Fibonacci, используя итеративный процесс с двумя переменными.</summary>
 
-### Generate the Fibonacci sequence using a two-variable iterative process.
+### Сгенерируйте последовательность Fibonacci, используя итеративный процесс с двумя переменными.
 
 **Definition:**
 
@@ -1051,9 +1051,9 @@ def fib(n):
 ### Fibonacci Numbers in Theoretical Computer Science
 
 <details>
-<summary>How is the Fibonacci sequence used in the analysis of algorithms, particularly in the derivation of time complexities?</summary>
+<summary>Как the Fibonacci sequence used in the analysis of alGorithms, particularly in the derivation of time complexities?</summary>
 
-### How is the Fibonacci sequence used in the analysis of algorithms, particularly in the derivation of time complexities?
+### Как the Fibonacci sequence used in the analysis of alGorithms, particularly in the derivation of time complexities?
 
 **Definition:**
 
@@ -1083,9 +1083,9 @@ def fib(n):
 </details>
 
 <details>
-<summary>Discuss the significance of the Fibonacci sequence in computational complexity theory and provide an example.</summary>
+<summary>Обсудите значение последовательности Fibonacci в теории сложности вычислений и приведите пример.</summary>
 
-### Discuss the significance of the Fibonacci sequence in computational complexity theory and provide an example.
+### Обсудите значение последовательности Fibonacci в теории сложности вычислений и приведите пример.
 
 **Definition:**
 
@@ -1117,9 +1117,9 @@ def fib(n):
 ### Fibonacci Sequence Interview Challenges
 
 <details>
-<summary>Implement a script that generates a spiral matrix filled in with Fibonacci numbers.</summary>
+<summary>Реализуйте a script that generates a spiral matrix filled in with Fibonacci numbers.</summary>
 
-### Implement a script that generates a spiral matrix filled in with Fibonacci numbers.
+### Реализуйте a script that generates a spiral matrix filled in with Fibonacci numbers.
 
 **Definition:**
 

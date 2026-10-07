@@ -21,9 +21,9 @@
 ### Web Security Fundamentals
 
 <details>
-<summary>What is web security, and why is it important?</summary>
+<summary>Что такое web security, and why is it important?</summary>
 
-### What is web security, and why is it important?
+### Что такое web security, and why is it important?
 
 **Definition:**
 
@@ -104,9 +104,9 @@ if __name__ == '__main__':
 </details>
 
 <details>
-<summary>Can you explain what HTTPS is and how it differs from HTTP?</summary>
+<summary>Можете ли вы explain what HTTPS is and how it differs from HTTP?</summary>
 
-### Can you explain what HTTPS is and how it differs from HTTP?
+### Можете ли вы explain what HTTPS is and how it differs from HTTP?
 
 **Definition:**
 
@@ -197,9 +197,9 @@ httpd.serve_forever()
 </details>
 
 <details>
-<summary>What are SSL and TLS, and what role do they play in web security?</summary>
+<summary>Что такое SSL and TLS, and what role do they play in web security?</summary>
 
-### What are SSL and TLS, and what role do they play in web security?
+### Что такое SSL and TLS, and what role do they play in web security?
 
 **Definition:**
 
@@ -263,9 +263,9 @@ SSL и TLS в браузере
 </details>
 
 <details>
-<summary>How do SSL certificates work, and what is the purpose of a Certificate Authority (CA)?</summary>
+<summary>Как SSL certificates work, and what is the puRPOse of a Certificate Authority (CA)?</summary>
 
-### How do SSL certificates work, and what is the purpose of a Certificate Authority (CA)?
+### Как SSL certificates work, and what is the puRPOse of a Certificate Authority (CA)?
 
 **Definition:**
 
@@ -325,9 +325,9 @@ SSL-сертификаты получают несколькими способ�
 </details>
 
 <details>
-<summary>What is the difference between encryption and hashing?</summary>
+<summary>Что такое the difference between encryption and hashing?</summary>
 
-### What is the difference between encryption and hashing?
+### Что такое the difference between encryption and hashing?
 
 **Definition:**
 
@@ -393,9 +393,9 @@ print(f"Original Text: {original_text.decode()}")
 </details>
 
 <details>
-<summary>Define the concept of a secure session and explain how it is established.</summary>
+<summary>Определите the concept of a secure session and explain how it is established.</summary>
 
-### Define the concept of a secure session and explain how it is established.
+### Определите the concept of a secure session and explain how it is established.
 
 **Definition:**
 
@@ -461,9 +461,9 @@ PFS особенно полезен для долгой безопасности
 </details>
 
 <details>
-<summary>What are some common web security vulnerabilities?</summary>
+<summary>Что такое some common web security vulnerabilities?</summary>
 
-### What are some common web security vulnerabilities?
+### Что такое some common web security vulnerabilities?
 
 **Definition:**
 
@@ -600,9 +600,9 @@ return redirect(redirect_url)
 </details>
 
 <details>
-<summary>Can you explain the Cross-Site Scripting (XSS) attack and how to prevent it?</summary>
+<summary>Можете ли вы explain the Cross-Site Scripting (XSS) attack and how to prevent it?</summary>
 
-### Can you explain the Cross-Site Scripting (XSS) attack and how to prevent it?
+### Можете ли вы explain the Cross-Site Scripting (XSS) attack and how to prevent it?
 
 **Definition:**
 
@@ -699,9 +699,9 @@ example.com?greeting=<script>alert('Hello, world!')</script>
 </details>
 
 <details>
-<summary>What is SQL Injection and how can you defend against it?</summary>
+<summary>Что такое SQL Injection and how can you defend aGAinst it?</summary>
 
-### What is SQL Injection and how can you defend against it?
+### Что такое SQL Injection and how can you defend aGAinst it?
 
 **Definition:**
 
@@ -753,9 +753,9 @@ conn.close()
 </details>
 
 <details>
-<summary>Describe what Cross-Site Request Forgery (CSRF) is and how to prevent it.</summary>
+<summary>Опишите what Cross-Site Request Forgery (CSRF) is and how to prevent it.</summary>
 
-### Describe what Cross-Site Request Forgery (CSRF) is and how to prevent it.
+### Опишите what Cross-Site Request Forgery (CSRF) is and how to prevent it.
 
 **Definition:**
 
@@ -790,9 +790,9 @@ conn.close()
 </details>
 
 <details>
-<summary>Explain the Same-Origin Policy and its importance in web security.</summary>
+<summary>Объясните the Same-Origin Policy and its importance in web security.</summary>
 
-### Explain the Same-Origin Policy and its importance in web security.
+### Объясните the Same-Origin Policy and its importance in web security.
 
 **Definition:**
 
@@ -851,9 +851,9 @@ SOP — сильный и фундаментальный инструмент б
 </details>
 
 <details>
-<summary>What is Clickjacking, and what measures can prevent it?</summary>
+<summary>Что такое Clickjacking, and what measures can prevent it?</summary>
 
-### What is Clickjacking, and what measures can prevent it?
+### Что такое Clickjacking, and what measures can prevent it?
 
 **Definition:**
 
@@ -934,9 +934,9 @@ Content Security Policy (CSP)
 </details>
 
 <details>
-<summary>How can web cookies compromise security, and how do you safeguard against these risks?</summary>
+<summary>Как web cookies compromise security, and how do you safeguard aGAinst these risks?</summary>
 
-### How can web cookies compromise security, and how do you safeguard against these risks?
+### Как web cookies compromise security, and how do you safeguard aGAinst these risks?
 
 **Definition:**
 
@@ -997,9 +997,9 @@ if __name__ == '__main__':
 </details>
 
 <details>
-<summary>What is a Man-in-the-Middle (MitM) attack and how can it be prevented?</summary>
+<summary>Что такое Man-in-the-Middle (MitM) attack and how can it be prevented?</summary>
 
-### What is a Man-in-the-Middle (MitM) attack and how can it be prevented?
+### Что такое Man-in-the-Middle (MitM) attack and how can it be prevented?
 
 **Definition:**
 
@@ -1061,9 +1061,9 @@ https.createServer(options, (req, res) => {
 </details>
 
 <details>
-<summary>Describe the concept of session management in web security.</summary>
+<summary>Опишите the concept of session management in web security.</summary>
 
-### Describe the concept of session management in web security.
+### Опишите the concept of session management in web security.
 
 **Definition:**
 
@@ -1129,9 +1129,9 @@ response.addCookie(sessionCookie);  // Add the cookie to the response
 ### Authentication and Authorization
 
 <details>
-<summary>What is the difference between authentication and authorization?</summary>
+<summary>Что такое the difference between authentication and authorization?</summary>
 
-### What is the difference between authentication and authorization?
+### Что такое the difference between authentication and authorization?
 
 **Definition:**
 
@@ -1163,9 +1163,9 @@ WWW-Authenticate: Basic realm="Access to the staging site"
 </details>
 
 <details>
-<summary>Explain basic authentication and its weaknesses.</summary>
+<summary>Объясните basic authentication and its weaknesses.</summary>
 
-### Explain basic authentication and its weaknesses.
+### Объясните basic authentication and its weaknesses.
 
 **Definition:**
 
@@ -1194,9 +1194,9 @@ Authorization: Basic <base64 user-id:password>
 </details>
 
 <details>
-<summary>What is OAuth, and how does it work?</summary>
+<summary>Что такое OAuth, and how does it work?</summary>
 
-### What is OAuth, and how does it work?
+### Что такое OAuth, and how does it work?
 
 **Definition:**
 
@@ -1224,9 +1224,9 @@ GET /authorize?response_type=code&client_id=app&code_challenge=<S256>&code_chall
 </details>
 
 <details>
-<summary>What is OpenID and how does it relate to web security?</summary>
+<summary>Что такое OpenID and how does it relate to web security?</summary>
 
-### What is OpenID and how does it relate to web security?
+### Что такое OpenID and how does it relate to web security?
 
 **Definition:**
 
@@ -1255,9 +1255,9 @@ GET /authorize?response_type=code&scope=openid&nonce=<transaction-specific>&code
 </details>
 
 <details>
-<summary>Can you describe Multi-Factor Authentication (MFA) and where it's used?</summary>
+<summary>Можете ли вы describe Multi-Factor Authentication (MFA) and where it's used?</summary>
 
-### Can you describe Multi-Factor Authentication (MFA) and where it's used?
+### Можете ли вы describe Multi-Factor Authentication (MFA) and where it's used?
 
 **Definition:**
 
@@ -1287,9 +1287,9 @@ have = totp  # short TTL, single use, attempt limit
 </details>
 
 <details>
-<summary>What is JWT (JSON Web Tokens) and how are they used in authentication?</summary>
+<summary>Что такое JWT (JSON Web Tokens) and how are they used in authentication?</summary>
 
-### What is JWT (JSON Web Tokens) and how are they used in authentication?
+### Что такое JWT (JSON Web Tokens) and how are they used in authentication?
 
 **Definition:**
 
@@ -1320,9 +1320,9 @@ have = totp  # short TTL, single use, attempt limit
 </details>
 
 <details>
-<summary>How do you securely store user passwords?</summary>
+<summary>Как you securely store user passwords?</summary>
 
-### How do you securely store user passwords?
+### Как you securely store user passwords?
 
 **Definition:**
 
@@ -1351,9 +1351,9 @@ String hash = BCrypt.hashpw(password, BCrypt.gensalt(12));
 </details>
 
 <details>
-<summary>What is Single Sign-On (SSO) and what are its benefits?</summary>
+<summary>Что такое Single Sign-On (SSO) and what are its benefits?</summary>
 
-### What is Single Sign-On (SSO) and what are its benefits?
+### Что такое Single Sign-On (SSO) and what are its benefits?
 
 **Definition:**
 
@@ -1383,9 +1383,9 @@ String hash = BCrypt.hashpw(password, BCrypt.gensalt(12));
 </details>
 
 <details>
-<summary>Explain role-based access control (RBAC) and how it is implemented.</summary>
+<summary>Объясните role-BASEd access control (RBAC) and how it is implemented.</summary>
 
-### Explain role-based access control (RBAC) and how it is implemented.
+### Объясните role-BASEd access control (RBAC) and how it is implemented.
 
 **Definition:**
 
@@ -1414,9 +1414,9 @@ if not user.has_role("ACCT_MANAGER"):
 </details>
 
 <details>
-<summary>What are the best practices for handling user session timeouts?</summary>
+<summary>Что такое the best practices for handling user session timeouts?</summary>
 
-### What are the best practices for handling user session timeouts?
+### Что такое the best practices for handling user session timeouts?
 
 **Definition:**
 
@@ -1443,9 +1443,9 @@ Set-Cookie: id=; Expires=Friday, 17-May-03 18:45:00 GMT
 ### Network Security Concerns
 
 <details>
-<summary>What is a firewall, and how does it contribute to web security?</summary>
+<summary>Что такое firewall, and how does it contribute to web security?</summary>
 
-### What is a firewall, and how does it contribute to web security?
+### Что такое firewall, and how does it contribute to web security?
 
 **Definition:**
 
@@ -1472,9 +1472,9 @@ docker run -p 127.0.0.1:8000:8000 myimage
 </details>
 
 <details>
-<summary>Define a Virtual Private Network (VPN) and its significance in enhancing web security.</summary>
+<summary>Определите a Virtual Private Network (VPN) and its significance in enhancing web security.</summary>
 
-### Define a Virtual Private Network (VPN) and its significance in enhancing web security.
+### Определите a Virtual Private Network (VPN) and its significance in enhancing web security.
 
 **Definition:**
 
@@ -1504,9 +1504,9 @@ docker run -p 127.0.0.1:8000:8000 myimage
 </details>
 
 <details>
-<summary>What is an Intrusion Detection System (IDS) vs. an Intrusion Prevention System (IPS)?</summary>
+<summary>Что такое Intrusion Detection System (IDS) vs. an Intrusion Prevention System (IPS)?</summary>
 
-### What is an Intrusion Detection System (IDS) vs. an Intrusion Prevention System (IPS)?
+### Что такое Intrusion Detection System (IDS) vs. an Intrusion Prevention System (IPS)?
 
 **Definition:**
 
@@ -1536,9 +1536,9 @@ docker run -p 127.0.0.1:8000:8000 myimage
 </details>
 
 <details>
-<summary>How does a Distributed Denial-of-Service (DDoS) attack work, and how can websites be protected from it?</summary>
+<summary>Как a Distributed Denial-of-Service (DDoS) attack work, and how can websites be protected from it?</summary>
 
-### How does a Distributed Denial-of-Service (DDoS) attack work, and how can websites be protected from it?
+### Как a Distributed Denial-of-Service (DDoS) attack work, and how can websites be protected from it?
 
 **Definition:**
 
@@ -1564,9 +1564,9 @@ Retry-After: 30
 </details>
 
 <details>
-<summary>Explain the concept of a Content Delivery Network (CDN) and its importance in web security.</summary>
+<summary>Объясните the concept of a Content Delivery Network (CDN) and its importance in web security.</summary>
 
-### Explain the concept of a Content Delivery Network (CDN) and its importance in web security.
+### Объясните the concept of a Content Delivery Network (CDN) and its importance in web security.
 
 **Definition:**
 
@@ -1597,9 +1597,9 @@ SRI проверяет байты. Оно не решает, следует ли
 ### Secure Coding Practices
 
 <details>
-<summary>What are secure coding practices, and why are they needed?</summary>
+<summary>Что такое secure coding practices, and why are they needed?</summary>
 
-### What are secure coding practices, and why are they needed?
+### Что такое secure coding practices, and why are they needed?
 
 **Definition:**
 
@@ -1624,9 +1624,9 @@ cursor.execute("SELECT balance FROM accounts WHERE id = ?", (account_id,))
 </details>
 
 <details>
-<summary>How can input validation prevent web security threats?</summary>
+<summary>Как input validation prevent web security threats?</summary>
 
-### How can input validation prevent web security threats?
+### Как input validation prevent web security threats?
 
 **Definition:**
 
@@ -1652,9 +1652,9 @@ if re.fullmatch(r"[0-9]{1,6}", account_id) is None:
 </details>
 
 <details>
-<summary>What are parameterized queries, and how do they prevent SQL injection?</summary>
+<summary>Что такое parameterized queries, and how do they prevent SQL injection?</summary>
 
-### What are parameterized queries, and how do they prevent SQL injection?
+### Что такое parameterized queries, and how do they prevent SQL injection?
 
 **Definition:**
 
@@ -1681,9 +1681,9 @@ ResultSet results = pstmt.executeQuery();
 </details>
 
 <details>
-<summary>Why should developers avoid security through obscurity?</summary>
+<summary>Почему should developers avoid security through obscurity?</summary>
 
-### Why should developers avoid security through obscurity?
+### Почему should developers avoid security through obscurity?
 
 **Definition:**
 
@@ -1711,9 +1711,9 @@ if not can_read(user, account_id):
 </details>
 
 <details>
-<summary>How do you securely handle file uploads to prevent web security issues?</summary>
+<summary>Как you securely handle file uploads to prevent web security issues?</summary>
 
-### How do you securely handle file uploads to prevent web security issues?
+### Как you securely handle file uploads to prevent web security issues?
 
 **Definition:**
 
@@ -1743,9 +1743,9 @@ X-Content-Type-Options: nosniff
 ### Data Protection and Privacy
 
 <details>
-<summary>Define Personally Identifiable Information (PII) and discuss how it should be protected.</summary>
+<summary>Определите Personally Identifiable Information (PII) and discuss how it should be protected.</summary>
 
-### Define Personally Identifiable Information (PII) and discuss how it should be protected.
+### Определите Personally Identifiable Information (PII) and discuss how it should be protected.
 
 **Definition:**
 
@@ -1771,9 +1771,9 @@ Cache-Control: no-store
 </details>
 
 <details>
-<summary>What is the General Data Protection Regulation (GDPR), and what are its key tenets?</summary>
+<summary>Что такое the General Data Protection Regulation (GDPR), and what are its key tenets?</summary>
 
-### What is the General Data Protection Regulation (GDPR), and what are its key tenets?
+### Что такое the General Data Protection Regulation (GDPR), and what are its key tenets?
 
 **Definition:**
 
@@ -1799,9 +1799,9 @@ MFA для учётных записей, которые достигают пе
 </details>
 
 <details>
-<summary>What are data encryption best practices for sensitive information?</summary>
+<summary>Что такое data encryption best practices for sensitive information?</summary>
 
-### What are data encryption best practices for sensitive information?
+### Что такое data encryption best practices for sensitive information?
 
 **Definition:**
 
@@ -1827,9 +1827,9 @@ const key = crypto.randomBytes(32);
 </details>
 
 <details>
-<summary>Explain data masking and how it can protect sensitive data.</summary>
+<summary>Объясните data masking and how it can protect sensitive data.</summary>
 
-### Explain data masking and how it can protect sensitive data.
+### Объясните data masking and how it can protect sensitive data.
 
 **Definition:**
 
@@ -1855,9 +1855,9 @@ Cache-Control: no-store
 </details>
 
 <details>
-<summary>What steps can organizations take to ensure data privacy?</summary>
+<summary>Какие шаги organizations могут предпринять для data privacy?</summary>
 
-### What steps can organizations take to ensure data privacy?
+### Какие шаги organizations могут предпринять для data privacy?
 
 **Definition:**
 
@@ -1885,9 +1885,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 ### Advanced Web Security Concepts
 
 <details>
-<summary>What are security headers, and why are they important?</summary>
+<summary>Что такое security headers, and why are they important?</summary>
 
-### What are security headers, and why are they important?
+### Что такое security headers, and why are they important?
 
 **Definition:**
 
@@ -1914,9 +1914,9 @@ X-Frame-Options: DENY
 </details>
 
 <details>
-<summary>What is Content Security Policy (CSP) and how does it improve web security?</summary>
+<summary>Что такое Content Security Policy (CSP) and how does it improve web security?</summary>
 
-### What is Content Security Policy (CSP) and how does it improve web security?
+### Что такое Content Security Policy (CSP) and how does it improve web security?
 
 **Definition:**
 
@@ -1941,9 +1941,9 @@ Content-Security-Policy: default-src https:; object-src 'none'
 </details>
 
 <details>
-<summary>Can you explain the role of Subresource Integrity (SRI) in web security?</summary>
+<summary>Можете ли вы explain the role of Subresource Integrity (SRI) in web security?</summary>
 
-### Can you explain the role of Subresource Integrity (SRI) in web security?
+### Можете ли вы explain the role of Subresource Integrity (SRI) in web security?
 
 **Definition:**
 
@@ -1967,9 +1967,9 @@ cat FILENAME.js | openssl dgst -sha384 -binary | openssl base64 -A
 </details>
 
 <details>
-<summary>What is Domain Name System Security Extensions (DNSSEC), and how does it work?</summary>
+<summary>Что такое Domain Name System Security Extensions (DNSSEC), and how does it work?</summary>
 
-### What is Domain Name System Security Extensions (DNSSEC), and how does it work?
+### Что такое Domain Name System Security Extensions (DNSSEC), and how does it work?
 
 **Definition:**
 
@@ -1994,9 +1994,9 @@ cat FILENAME.js | openssl dgst -sha384 -binary | openssl base64 -A
 </details>
 
 <details>
-<summary>What is HTTP Strict Transport Security (HSTS) and how can it be used?</summary>
+<summary>Что такое HTTP Strict Transport Security (HSTS) and how can it be used?</summary>
 
-### What is HTTP Strict Transport Security (HSTS) and how can it be used?
+### Что такое HTTP Strict Transport Security (HSTS) and how can it be used?
 
 **Definition:**
 
@@ -2026,9 +2026,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 ### Security Testing and Audits
 
 <details>
-<summary>What is penetration testing, and how does it differ from vulnerability scanning?</summary>
+<summary>Что такое penetration testing, and how does it differ from vulnerability scanning?</summary>
 
-### What is penetration testing, and how does it differ from vulnerability scanning?
+### Что такое penetration testing, and how does it differ from vulnerability scanning?
 
 **Definition:**
 
@@ -2058,9 +2058,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 </details>
 
 <details>
-<summary>How is fuzzing used in security testing?</summary>
+<summary>Как fuzzing used in security testing?</summary>
 
-### How is fuzzing used in security testing?
+### Как fuzzing used in security testing?
 
 **Definition:**
 
@@ -2086,9 +2086,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 </details>
 
 <details>
-<summary>What are the main objectives of a security audit?</summary>
+<summary>Что такое the main objectives of a security audit?</summary>
 
-### What are the main objectives of a security audit?
+### Что такое the main objectives of a security audit?
 
 **Definition:**
 
@@ -2120,9 +2120,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 </details>
 
 <details>
-<summary>Can you explain the concept of threat modeling?</summary>
+<summary>Можете ли вы explain the concept of threat modeling?</summary>
 
-### Can you explain the concept of threat modeling?
+### Можете ли вы explain the concept of threat modeling?
 
 **Definition:**
 
@@ -2147,9 +2147,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 </details>
 
 <details>
-<summary>What is static code analysis and how it is beneficial in identifying security risks?</summary>
+<summary>Что такое static code analysis and how it is beneficial in identifying security risks?</summary>
 
-### What is static code analysis and how it is beneficial in identifying security risks?
+### Что такое static code analysis and how it is beneficial in identifying security risks?
 
 **Definition:**
 
@@ -2178,9 +2178,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 ### Compliance and Standards
 
 <details>
-<summary>What are some common web security compliance standards?</summary>
+<summary>Что такое some common web security compliance standards?</summary>
 
-### What are some common web security compliance standards?
+### Что такое some common web security compliance standards?
 
 **Definition:**
 
@@ -2207,9 +2207,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 </details>
 
 <details>
-<summary>Explain the purpose and key aspects of ISO/IEC 27001.</summary>
+<summary>Объясните the puRPOse and key aspects of ISO/IEC 27001.</summary>
 
-### Explain the purpose and key aspects of ISO/IEC 27001.
+### Объясните the puRPOse and key aspects of ISO/IEC 27001.
 
 **Definition:**
 
@@ -2235,9 +2235,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 </details>
 
 <details>
-<summary>What is PCI DSS and its relevance to web security?</summary>
+<summary>Что такое PCI DSS and its relevance to web security?</summary>
 
-### What is PCI DSS and its relevance to web security?
+### Что такое PCI DSS and its relevance to web security?
 
 **Definition:**
 
@@ -2264,9 +2264,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 </details>
 
 <details>
-<summary>Can you discuss the importance of HIPAA compliance in web applications?</summary>
+<summary>Можете ли вы discuss the importance of HIPAA compliance in web applications?</summary>
 
-### Can you discuss the importance of HIPAA compliance in web applications?
+### Можете ли вы discuss the importance of HIPAA compliance in web applications?
 
 **Definition:**
 
@@ -2294,9 +2294,9 @@ MFA нужна учётным записям, которые открывают 
 ### Emerging Threats and Trends
 
 <details>
-<summary>How do you stay informed about the latest web security threats?</summary>
+<summary>Как you stay informed about the latest web security threats?</summary>
 
-### How do you stay informed about the latest web security threats?
+### Как you stay informed about the latest web security threats?
 
 **Definition:**
 
@@ -2323,9 +2323,9 @@ MFA нужна учётным записям, которые открывают 
 </details>
 
 <details>
-<summary>Can you discuss the implications of quantum computing on web security?</summary>
+<summary>Можете ли вы discuss the implications of quantum computing on web security?</summary>
 
-### Can you discuss the implications of quantum computing on web security?
+### Можете ли вы discuss the implications of quantum computing on web security?
 
 **Definition:**
 
@@ -2350,9 +2350,9 @@ MFA нужна учётным записям, которые открывают 
 </details>
 
 <details>
-<summary>What role does artificial intelligence play in web security?</summary>
+<summary>Какую роль does artificial intelligence play in web security?</summary>
 
-### What role does artificial intelligence play in web security?
+### Какую роль does artificial intelligence play in web security?
 
 **Definition:**
 
@@ -2377,9 +2377,9 @@ MFA нужна учётным записям, которые открывают 
 </details>
 
 <details>
-<summary>How can Internet of Things (IoT) devices create web security risks?</summary>
+<summary>Как Internet of Things (IoT) devices create web security risks?</summary>
 
-### How can Internet of Things (IoT) devices create web security risks?
+### Как Internet of Things (IoT) devices create web security risks?
 
 **Definition:**
 
@@ -2403,9 +2403,9 @@ MFA нужна учётным записям, которые открывают 
 </details>
 
 <details>
-<summary>What is Zero Trust security architecture?</summary>
+<summary>Что такое Zero Trust security architecture?</summary>
 
-### What is Zero Trust security architecture?
+### Что такое Zero Trust security architecture?
 
 **Definition:**
 
@@ -2432,9 +2432,9 @@ MFA нужна учётным записям, которые открывают 
 ### Incident Response and Handling
 
 <details>
-<summary>What is an incident response plan, and why is it critical?</summary>
+<summary>Что такое incident response plan, and why is it critical?</summary>
 
-### What is an incident response plan, and why is it critical?
+### Что такое incident response plan, and why is it critical?
 
 **Definition:**
 
@@ -2459,9 +2459,9 @@ MFA нужна учётным записям, которые открывают 
 </details>
 
 <details>
-<summary>Explain the steps you would take after discovering a data breach.</summary>
+<summary>Объясните the steps you would take after discovering a data breach.</summary>
 
-### Explain the steps you would take after discovering a data breach.
+### Объясните the steps you would take after discovering a data breach.
 
 **Definition:**
 
@@ -2487,9 +2487,9 @@ MFA нужна учётным записям, которые открывают 
 </details>
 
 <details>
-<summary>How important is user training in preventing web security incidents?</summary>
+<summary>Насколько важен user training для предотвращения web security incidents?</summary>
 
-### How important is user training in preventing web security incidents?
+### Насколько важен user training для предотвращения web security incidents?
 
 **Definition:**
 
@@ -2514,9 +2514,9 @@ MFA нужна учётным записям, которые открывают 
 </details>
 
 <details>
-<summary>Can you discuss the role of a Security Operations Center (SOC)?</summary>
+<summary>Можете ли вы discuss the role of a Security Operations Center (SOC)?</summary>
 
-### Can you discuss the role of a Security Operations Center (SOC)?
+### Можете ли вы discuss the role of a Security Operations Center (SOC)?
 
 **Definition:**
 
@@ -2545,9 +2545,9 @@ OWASP на использованных здесь страницах не за�
 ### Cloud Security
 
 <details>
-<summary>How does web security change when applications are moved to the cloud?</summary>
+<summary>Как web security change when applications are moved to the cloud?</summary>
 
-### How does web security change when applications are moved to the cloud?
+### Как web security change when applications are moved to the cloud?
 
 **Definition:**
 
@@ -2572,9 +2572,9 @@ OWASP на использованных здесь страницах не за�
 </details>
 
 <details>
-<summary>What are the shared responsibility models in cloud security?</summary>
+<summary>Что такое the SHAred responsibility models in cloud security?</summary>
 
-### What are the shared responsibility models in cloud security?
+### Что такое the SHAred responsibility models in cloud security?
 
 **Definition:**
 
@@ -2602,9 +2602,9 @@ IaaS: поставщик держит инфраструктуру; заказч
 </details>
 
 <details>
-<summary>Explain how encryption is handled in the cloud.</summary>
+<summary>Объясните how encryption is handled in the cloud.</summary>
 
-### Explain how encryption is handled in the cloud.
+### Объясните how encryption is handled in the cloud.
 
 **Definition:**
 
@@ -2629,9 +2629,9 @@ IaaS: поставщик держит инфраструктуру; заказч
 </details>
 
 <details>
-<summary>What special considerations are there for web security with cloud storage services?</summary>
+<summary>Какие особые considerations are there for web security with cloud storage services?</summary>
 
-### What special considerations are there for web security with cloud storage services?
+### Какие особые considerations are there for web security with cloud storage services?
 
 **Definition:**
 
@@ -2656,9 +2656,9 @@ IaaS: поставщик держит инфраструктуру; заказч
 </details>
 
 <details>
-<summary>How does a Web Application Firewall (WAF) protect cloud-hosted web applications?</summary>
+<summary>Как a Web Application Firewall (WAF) protect cloud-hosted web applications?</summary>
 
-### How does a Web Application Firewall (WAF) protect cloud-hosted web applications?
+### Как a Web Application Firewall (WAF) protect cloud-hosted web applications?
 
 **Definition:**
 
@@ -2688,9 +2688,9 @@ WAF видит только трафик, который через него п�
 ### Security in Web Application Frameworks
 
 <details>
-<summary>What built-in security features do modern web application frameworks typically include?</summary>
+<summary>Какие built-in security features обычно включают modern web application frameworks?</summary>
 
-### What built-in security features do modern web application frameworks typically include?
+### Какие built-in security features обычно включают modern web application frameworks?
 
 **Definition:**
 
@@ -2717,9 +2717,9 @@ WAF видит только трафик, который через него п�
 </details>
 
 <details>
-<summary>How does Ruby on Rails handle web security, and what are its built-in protection mechanisms?</summary>
+<summary>Как Ruby on Rails handle web security, and what are its built-in protection mechanisms?</summary>
 
-### How does Ruby on Rails handle web security, and what are its built-in protection mechanisms?
+### Как Ruby on Rails handle web security, and what are its built-in protection mechanisms?
 
 **Definition:**
 
@@ -2753,9 +2753,9 @@ end
 </details>
 
 <details>
-<summary>What are the security features provided by Django for Python web applications?</summary>
+<summary>Что такое the security features provided by DjanGo for Python web applications?</summary>
 
-### What are the security features provided by Django for Python web applications?
+### Что такое the security features provided by DjanGo for Python web applications?
 
 **Definition:**
 
@@ -2781,9 +2781,9 @@ DEBUG = False
 </details>
 
 <details>
-<summary>How does ASP.NET Core enforce web security?</summary>
+<summary>Как ASP.NET Core enforce web security?</summary>
 
-### How does ASP.NET Core enforce web security?
+### Как ASP.NET Core enforce web security?
 
 **Definition:**
 
@@ -2814,9 +2814,9 @@ services.ConfigureApplicationCookie(options =>
 </details>
 
 <details>
-<summary>What security considerations must be taken into account when using client-side JavaScript frameworks like Angular, React, or Vue.js?</summary>
+<summary>Какие security considerations учитывать при использовании client-side JavaScript frameworks вроде Angular, React или Vue.js?</summary>
 
-### What security considerations must be taken into account when using client-side JavaScript frameworks like Angular, React, or Vue.js?
+### Какие security considerations учитывать при использовании client-side JavaScript frameworks вроде Angular, React или Vue.js?
 
 **Definition:**
 
@@ -2849,9 +2849,9 @@ elem.textContent = untrusted;
 ### Mobile Web Security
 
 <details>
-<summary>How do mobile web applications pose unique security challenges?</summary>
+<summary>Как mobile web applications pose unique security challenges?</summary>
 
-### How do mobile web applications pose unique security challenges?
+### Как mobile web applications pose unique security challenges?
 
 **Definition:**
 
@@ -2876,9 +2876,9 @@ authenticationPolicy = .requiresLocalDeviceAuthentication
 </details>
 
 <details>
-<summary>What steps can be taken to secure mobile APIs and services?</summary>
+<summary>Какие шаги можно предпринять для secure mobile APIs и services?</summary>
 
-### What steps can be taken to secure mobile APIs and services?
+### Какие шаги можно предпринять для secure mobile APIs и services?
 
 **Definition:**
 
@@ -2903,9 +2903,9 @@ Authorization: Bearer <access-token>
 </details>
 
 <details>
-<summary>Discuss the security implications of third-party libraries in mobile web app development.</summary>
+<summary>Обсудите the security implications of third-party libraries in mobile web app development.</summary>
 
-### Discuss the security implications of third-party libraries in mobile web app development.
+### Обсудите the security implications of third-party libraries in mobile web app development.
 
 **Definition:**
 
@@ -2931,9 +2931,9 @@ Authorization: Bearer <access-token>
 </details>
 
 <details>
-<summary>What are common vulnerabilities found in mobile web applications?</summary>
+<summary>Что такое common vulnerabilities found in mobile web applications?</summary>
 
-### What are common vulnerabilities found in mobile web applications?
+### Что такое common vulnerabilities found in mobile web applications?
 
 **Definition:**
 
@@ -2961,9 +2961,9 @@ Authorization: Bearer <access-token>
 ### Secure Infrastructure
 
 <details>
-<summary>How does server hardening affect web security?</summary>
+<summary>Как server hardening affect web security?</summary>
 
-### How does server hardening affect web security?
+### Как server hardening affect web security?
 
 **Definition:**
 
@@ -2989,9 +2989,9 @@ USER app
 </details>
 
 <details>
-<summary>Explain the importance of patch management in maintaining web security.</summary>
+<summary>Объясните the importance of patch management in maintaining web security.</summary>
 
-### Explain the importance of patch management in maintaining web security.
+### Объясните the importance of patch management in maintaining web security.
 
 **Definition:**
 
@@ -3017,9 +3017,9 @@ USER app
 </details>
 
 <details>
-<summary>What is network segmentation, and how can it improve security for web applications?</summary>
+<summary>Что такое network segmentation, and how can it improve security for web applications?</summary>
 
-### What is network segmentation, and how can it improve security for web applications?
+### Что такое network segmentation, and how can it improve security for web applications?
 
 **Definition:**
 
@@ -3044,9 +3044,9 @@ USER app
 </details>
 
 <details>
-<summary>Describe how load balancers can be configured to improve web application security.</summary>
+<summary>Опишите how load balancers can be configured to improve web application security.</summary>
 
-### Describe how load balancers can be configured to improve web application security.
+### Опишите how load balancers can be configured to improve web application security.
 
 **Definition:**
 
@@ -3075,9 +3075,9 @@ USER app
 ### Cryptography in Web Security
 
 <details>
-<summary>What is the difference between symmetric and asymmetric encryption, and how are they used in web security?</summary>
+<summary>Что такое the difference between symmetric and asymmetric encryption, and how are they used in web security?</summary>
 
-### What is the difference between symmetric and asymmetric encryption, and how are they used in web security?
+### Что такое the difference between symmetric and asymmetric encryption, and how are they used in web security?
 
 **Definition:**
 
@@ -3109,9 +3109,9 @@ var nonce = new byte[12];
 </details>
 
 <details>
-<summary>Explain the role of digital signatures in maintaining web security.</summary>
+<summary>Объясните the role of digital signatures in maintaining web security.</summary>
 
-### Explain the role of digital signatures in maintaining web security.
+### Объясните the role of digital signatures in maintaining web security.
 
 **Definition:**
 
@@ -3138,9 +3138,9 @@ var nonce = new byte[12];
 </details>
 
 <details>
-<summary>What is a cryptographic hash function, and where is it used in web security?</summary>
+<summary>Что такое cryptographic hash function, and where is it used in web security?</summary>
 
-### What is a cryptographic hash function, and where is it used in web security?
+### Что такое cryptographic hash function, and where is it used in web security?
 
 **Definition:**
 
@@ -3171,9 +3171,9 @@ var nonce = new byte[12];
 </details>
 
 <details>
-<summary>How can Public Key Infrastructure (PKI) be used to secure web applications?</summary>
+<summary>Как Public Key Infrastructure (PKI) be used to secure web applications?</summary>
 
-### How can Public Key Infrastructure (PKI) be used to secure web applications?
+### Как Public Key Infrastructure (PKI) be used to secure web applications?
 
 **Definition:**
 
@@ -3202,9 +3202,9 @@ var nonce = new byte[12];
 ### DevSecOps and Web Security
 
 <details>
-<summary>How does DevSecOps integrate security into the web development lifecycle?</summary>
+<summary>Как DevSecOps integrate security into the web development lifecycle?</summary>
 
-### How does DevSecOps integrate security into the web development lifecycle?
+### Как DevSecOps integrate security into the web development lifecycle?
 
 **Definition:**
 
@@ -3230,9 +3230,9 @@ var nonce = new byte[12];
 </details>
 
 <details>
-<summary>What are security Information and Event Management (SIEM) systems and their role in web security?</summary>
+<summary>Что такое security Information and Event Management (SIEM) systems and their role in web security?</summary>
 
-### What are security Information and Event Management (SIEM) systems and their role in web security?
+### Что такое security Information and Event Management (SIEM) systems and their role in web security?
 
 **Definition:**
 
@@ -3257,9 +3257,9 @@ SIEM или сборщик журналов — место, где журнал�
 </details>
 
 <details>
-<summary>How can containerization improve web security?</summary>
+<summary>Как containerization improve web security?</summary>
 
-### How can containerization improve web security?
+### Как containerization improve web security?
 
 **Definition:**
 
@@ -3288,9 +3288,9 @@ USER app
 </details>
 
 <details>
-<summary>Discuss the role of automated security pipelines in web application deployments.</summary>
+<summary>Обсудите the role of automated security pipelines in web application deployments.</summary>
 
-### Discuss the role of automated security pipelines in web application deployments.
+### Обсудите the role of automated security pipelines in web application deployments.
 
 **Definition:**
 
@@ -3319,9 +3319,9 @@ USER app
 ### API and Web Service Security
 
 <details>
-<summary>What are the primary concerns for REST API security?</summary>
+<summary>Что такое the Primary concerns for REST API security?</summary>
 
-### What are the primary concerns for REST API security?
+### Что такое the Primary concerns for REST API security?
 
 **Definition:**
 
@@ -3347,9 +3347,9 @@ X-Content-Type-Options: nosniff
 </details>
 
 <details>
-<summary>How does OAuth 2.0 provide secure delegated access?</summary>
+<summary>Как OAuth 2.0 provide secure deleGAted access?</summary>
 
-### How does OAuth 2.0 provide secure delegated access?
+### Как OAuth 2.0 provide secure deleGAted access?
 
 **Definition:**
 
@@ -3378,9 +3378,9 @@ GET /authorize?response_type=code&code_challenge=<S256>&code_challenge_method=S2
 </details>
 
 <details>
-<summary>What are best practices for securing GraphQL APIs?</summary>
+<summary>Что такое best practices for securing GraphQL APIs?</summary>
 
-### What are best practices for securing GraphQL APIs?
+### Что такое best practices for securing GraphQL APIs?
 
 **Definition:**
 
@@ -3408,9 +3408,9 @@ app.use('/graphql', graphqlHTTP({
 </details>
 
 <details>
-<summary>How can webhooks be secured to ensure they are not exploited?</summary>
+<summary>Как webhooks be secured to ensure they are not exploited?</summary>
 
-### How can webhooks be secured to ensure they are not exploited?
+### Как webhooks be secured to ensure they are not exploited?
 
 **Definition:**
 
@@ -3436,9 +3436,9 @@ Webhook — это обратный вызов от сервера к серве
 </details>
 
 <details>
-<summary>Explain the significance of rate limiting in API security.</summary>
+<summary>Объясните the significance of rate limiting in API security.</summary>
 
-### Explain the significance of rate limiting in API security.
+### Объясните the significance of rate limiting in API security.
 
 **Definition:**
 
@@ -3471,9 +3471,9 @@ Retry-After: 30
 ### Web Security Culture and Policy
 
 <details>
-<summary>How do you foster a culture of security within a web development team?</summary>
+<summary>Как you foster a culture of security within a web development team?</summary>
 
-### How do you foster a culture of security within a web development team?
+### Как you foster a culture of security within a web development team?
 
 **Definition:**
 
@@ -3498,9 +3498,9 @@ Retry-After: 30
 </details>
 
 <details>
-<summary>What should a web security policy include?</summary>
+<summary>Что должна включать web security policy?</summary>
 
-### What should a web security policy include?
+### Что должна включать web security policy?
 
 **Definition:**
 
@@ -3525,9 +3525,9 @@ Retry-After: 30
 </details>
 
 <details>
-<summary>Discuss the process of conducting a security risk assessment for web applications.</summary>
+<summary>Обсудите the process of conducting a security risk assessment for web applications.</summary>
 
-### Discuss the process of conducting a security risk assessment for web applications.
+### Обсудите the process of conducting a security risk assessment for web applications.
 
 **Definition:**
 
@@ -3555,9 +3555,9 @@ Retry-After: 30
 </details>
 
 <details>
-<summary>How does change management impact web security?</summary>
+<summary>Как change management impact web security?</summary>
 
-### How does change management impact web security?
+### Как change management impact web security?
 
 **Definition:**
 
@@ -3583,9 +3583,9 @@ Retry-After: 30
 </details>
 
 <details>
-<summary>Why should a company have an established data breach response protocol?</summary>
+<summary>Почему should a company have an established data breach response protocol?</summary>
 
-### Why should a company have an established data breach response protocol?
+### Почему should a company have an established data breach response protocol?
 
 **Definition:**
 
@@ -3614,9 +3614,9 @@ Retry-After: 30
 ### Miscellaneous Web Security
 
 <details>
-<summary>What is the Secure Development Lifecycle (SDL) and its relevance to web security?</summary>
+<summary>Что такое the Secure Development Lifecycle (SDL) and its relevance to web security?</summary>
 
-### What is the Secure Development Lifecycle (SDL) and its relevance to web security?
+### Что такое the Secure Development Lifecycle (SDL) and its relevance to web security?
 
 **Definition:**
 

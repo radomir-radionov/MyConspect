@@ -4,6 +4,7 @@ import {
   useCallback,
   useDeferredValue,
   useEffect,
+  useMemo,
   useRef,
   useSyncExternalStore,
   startTransition,
@@ -43,7 +44,13 @@ export function useHandbookSearch(
   const query = stored.query;
   const mode = stored.mode;
   const notesCorpus = useSearchCorpus(mode === "notes");
-  const searchGroups = notesCorpus ?? groups;
+  const searchGroups = useMemo(() => {
+    if (!notesCorpus) {
+      return groups;
+    }
+    const inSection = new Set(groups);
+    return notesCorpus.filter((group) => inSection.has(group));
+  }, [groups, notesCorpus]);
   const groupsRef = useRef(searchGroups);
   const deferredQuery = useDeferredValue(query);
   const modeRef = useRef(mode);

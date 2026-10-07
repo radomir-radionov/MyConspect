@@ -31,14 +31,14 @@ Jest, Vitest, React Testing Library, MSW, and code coverage.
 
 **How it works:**
 
-| **Jest**                                | **Vitest**                                      |
-|  ----------------  |  ---------------------------------------  |
-| Runtime          | Own transformer (often Babel)           | Reuses Vite pipeline                            |
-| ESM / TypeScript | Works; config-heavy in some repos       | Native in Vite projects                         |
-| API              | `jest.fn`, `jest.mock`, `jest.spyOn`    | `vi.fn`, `vi.mock`, `vi.spyOn`                  |
-| DOM env          | `jest-environment-jsdom` (separate pkg) | `environment: 'jsdom'` or `happy-dom` in config |
-| Watch            | `--watch`, `-o` (changed files)         | Fast HMR-style watch                            |
-| Coverage         | `--coverage`, `coverageThreshold`       | `vitest run --coverage` (v8 or istanbul)        |
+| | **Jest**                                | **Vitest**                                      |
+| | ----------------  |  ---------------------------------------  |
+| | Runtime          | Own transformer (often Babel)           | Reuses Vite pipeline                            |
+| | ESM / TypeScript | Works; config-heavy in some repos       | Native in Vite projects                         |
+| | API              | `jest.fn`, `jest.mock`, `jest.spyOn`    | `vi.fn`, `vi.mock`, `vi.spyOn`                  |
+| | DOM env          | `jest-environment-jsdom` (separate pkg) | `environment: 'jsdom'` or `happy-dom` in config |
+| | Watch            | `--watch`, `-o` (changed files)         | Fast HMR-style watch                            |
+| | Coverage         | `--coverage`, `coverageThreshold`       | `vitest run --coverage` (v8 or istanbul)        |
 
 Pick **Vitest** for Vite, Next.js (modern), Nuxt, and greenfield ESM repos. Pick **Jest** when the team already standardized on it or tooling (Create React App legacy, some monorepos) assumes Jest. Both pair with [React Testing Library](#react-testing-library) and [MSW](#msw-mock-service-worker).
 

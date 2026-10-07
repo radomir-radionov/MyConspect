@@ -21,9 +21,9 @@ Questions from [Devinterview.io — API Design](https://devinterview.io/question
 ### API Design Fundamentals
 
 <details>
-<summary>What is an API and what are its main purposes?</summary>
+<summary>Что такое API and what are its main puRPOses?</summary>
 
-### What is an API and what are its main purposes?
+### Что такое API and what are its main puRPOses?
 
 **Definition:**
 
@@ -51,9 +51,9 @@ Application Programming Interface (API) — это набор определен
 </details>
 
 <details>
-<summary>Can you explain the difference between an API and a Web service?</summary>
+<summary>Можете ли вы explain the difference between an API and a Web service?</summary>
 
-### Can you explain the difference between an API and a Web service?
+### Можете ли вы explain the difference between an API and a Web service?
 
 **Definition:**
 
@@ -131,9 +131,9 @@ print(response.text)
 </details>
 
 <details>
-<summary>What are the principles of a RESTful API?</summary>
+<summary>Что такое the principles of a RESTful API?</summary>
 
-### What are the principles of a RESTful API?
+### Что такое the principles of a RESTful API?
 
 **Definition:**
 
@@ -176,9 +176,9 @@ REST и RESTful
 </details>
 
 <details>
-<summary>How does a SOAP API differ from a REST API?</summary>
+<summary>Как a SOAP API differ from a REST API?</summary>
 
-### How does a SOAP API differ from a REST API?
+### Как a SOAP API differ from a REST API?
 
 **Definition:**
 
@@ -304,9 +304,9 @@ else:
 </details>
 
 <details>
-<summary>What is an API endpoint?</summary>
+<summary>Что такое API endpoint?</summary>
 
-### What is an API endpoint?
+### Что такое API endpoint?
 
 **Definition:**
 
@@ -391,9 +391,9 @@ class Program
 </details>
 
 <details>
-<summary>What are the common methods (HTTP verbs) used in a REST API, and what does each method do?</summary>
+<summary>Что такое the common methods (HTTP verbs) used in a REST API, and what does each method do?</summary>
 
-### What are the common methods (HTTP verbs) used in a REST API, and what does each method do?
+### Что такое the common methods (HTTP verbs) used in a REST API, and what does each method do?
 
 **Definition:**
 
@@ -475,9 +475,9 @@ public class BookResource {
 </details>
 
 <details>
-<summary>How do you version an API?</summary>
+<summary>Как you version an API?</summary>
 
-### How do you version an API?
+### Как you version an API?
 
 **Definition:**
 
@@ -583,9 +583,9 @@ app.listen(3000, () => {
 </details>
 
 <details>
-<summary>What is idempotence in the context of API design, and why is it important?</summary>
+<summary>Что такое idempotence in the context of API design, and why is it important?</summary>
 
-### What is idempotence in the context of API design, and why is it important?
+### Что такое idempotence in the context of API design, and why is it important?
 
 **Definition:**
 
@@ -727,9 +727,9 @@ public class IdempotentAPI {
 </details>
 
 <details>
-<summary>Can you explain what API rate limiting is and give an example of why it might be used?</summary>
+<summary>Можете ли вы explain what API rate limiting is and give an example of why it might be used?</summary>
 
-### Can you explain what API rate limiting is and give an example of why it might be used?
+### Можете ли вы explain what API rate limiting is and give an example of why it might be used?
 
 **Definition:**
 
@@ -788,9 +788,9 @@ app.listen(3000, () => console.log('Server started on port 3000'));
 </details>
 
 <details>
-<summary>Describe the concept of OAuth in relation to API security.</summary>
+<summary>Опишите the concept of OAuth in relation to API security.</summary>
 
-### Describe the concept of OAuth in relation to API security.
+### Опишите the concept of OAuth in relation to API security.
 
 **Definition:**
 
@@ -843,9 +843,9 @@ Resource server проверяет токен и, если он действит
 ### API Design Best Practices
 
 <details>
-<summary>What strategies would you use to ensure the backward compatibility of an API?</summary>
+<summary>Какие стратегии would you use to ensure the backward compatibility of an API?</summary>
 
-### What strategies would you use to ensure the backward compatibility of an API?
+### Какие стратегии would you use to ensure the backward compatibility of an API?
 
 **Definition:**
 
@@ -899,9 +899,9 @@ if __name__ == "__main__":
 </details>
 
 <details>
-<summary>What are some common response codes that an API might return, and what do they signify?</summary>
+<summary>Что такое some common response codes that an API might return, and what do they signify?</summary>
 
-### What are some common response codes that an API might return, and what do they signify?
+### Что такое some common response codes that an API might return, and what do they signify?
 
 **Definition:**
 
@@ -985,9 +985,9 @@ HTTP, основа обмена API, использует коды состоя�
 </details>
 
 <details>
-<summary>How can you design an API to be easily consumable by clients?</summary>
+<summary>Как you design an API to be easily consumable by clients?</summary>
 
-### How can you design an API to be easily consumable by clients?
+### Как you design an API to be easily consumable by clients?
 
 **Definition:**
 
@@ -1113,9 +1113,9 @@ if __name__ == '__main__':
 </details>
 
 <details>
-<summary>When designing an API, how would you document it for end-users?</summary>
+<summary>Когда designing an API, how would you document it for end-users?</summary>
 
-### When designing an API, how would you document it for end-users?
+### Когда designing an API, how would you document it for end-users?
 
 **Definition:**
 
@@ -1203,9 +1203,9 @@ class Student:
 </details>
 
 <details>
-<summary>What considerations might influence how you paginate API responses?</summary>
+<summary>Какие соображения might influence how you paginate API responses?</summary>
 
-### What considerations might influence how you paginate API responses?
+### Какие соображения might influence how you paginate API responses?
 
 **Definition:**
 
@@ -1309,9 +1309,9 @@ def paginate_using_range(start, end, limit):
 </details>
 
 <details>
-<summary>What is HATEOAS, and how does it relate to API design?</summary>
+<summary>Что такое HATEOAS, and how does it relate to API design?</summary>
 
-### What is HATEOAS, and how does it relate to API design?
+### Что такое HATEOAS, and how does it relate to API design?
 
 **Definition:**
 
@@ -1336,9 +1336,9 @@ GET отдела может вернуть ссылки с href, rel и type, н
 </details>
 
 <details>
-<summary>How would you handle localization and internationalization in APIs?</summary>
+<summary>Как бы вы handle localization and internationalization in APIs?</summary>
 
-### How would you handle localization and internationalization in APIs?
+### Как бы вы handle localization and internationalization in APIs?
 
 **Definition:**
 
@@ -1355,9 +1355,9 @@ hreflang описывает язык цели ссылки. Accept-Language — 
 </details>
 
 <details>
-<summary>What are some best practices for designing error responses in an API?</summary>
+<summary>Что такое some best practices for designing error responses in an API?</summary>
 
-### What are some best practices for designing error responses in an API?
+### Что такое some best practices for designing error responses in an API?
 
 **Definition:**
 
@@ -1374,9 +1374,9 @@ hreflang описывает язык цели ссылки. Accept-Language — 
 </details>
 
 <details>
-<summary>What are the benefits of using API Gateways?</summary>
+<summary>Что такое the benefits of using API Gateways?</summary>
 
-### What are the benefits of using API Gateways?
+### Что такое the benefits of using API Gateways?
 
 **Definition:**
 
@@ -1393,9 +1393,9 @@ API-шлюз ни на одной из страниц не описан.
 </details>
 
 <details>
-<summary>How would you approach handling file uploads in an API design?</summary>
+<summary>Как бы вы approach handling file uploads in an API design?</summary>
 
-### How would you approach handling file uploads in an API design?
+### Как бы вы approach handling file uploads in an API design?
 
 **Definition:**
 
@@ -1413,9 +1413,9 @@ API-шлюз ни на одной из страниц не описан.
 ### API Performance and Scalability
 
 <details>
-<summary>How can caching be incorporated into API design to improve performance?</summary>
+<summary>Как caching be incoRPOrated into API design to improve performance?</summary>
 
-### How can caching be incorporated into API design to improve performance?
+### Как caching be incoRPOrated into API design to improve performance?
 
 **Definition:**
 
@@ -1432,9 +1432,9 @@ API-шлюз ни на одной из страниц не описан.
 </details>
 
 <details>
-<summary>What are some strategies for dealing with high traffic volumes in a scalable API?</summary>
+<summary>Что такое some strategies for dealing with high traffic volumes in a Scalable API?</summary>
 
-### What are some strategies for dealing with high traffic volumes in a scalable API?
+### Что такое some strategies for dealing with high traffic volumes in a Scalable API?
 
 **Definition:**
 
@@ -1451,9 +1451,9 @@ API-шлюз ни на одной из страниц не описан.
 </details>
 
 <details>
-<summary>How does connection pooling work and how can it benefit API performance?</summary>
+<summary>Как connection pooling work and how can it benefit API performance?</summary>
 
-### How does connection pooling work and how can it benefit API performance?
+### Как connection pooling work and how can it benefit API performance?
 
 **Definition:**
 
@@ -1469,9 +1469,9 @@ API-шлюз ни на одной из страниц не описан.
 </details>
 
 <details>
-<summary>When is it appropriate to use synchronous vs asynchronous processing in an API?</summary>
+<summary>Когда is it appropriate to use synchronous vs asynchronous processing in an API?</summary>
 
-### When is it appropriate to use synchronous vs asynchronous processing in an API?
+### Когда is it appropriate to use synchronous vs asynchronous processing in an API?
 
 **Definition:**
 
@@ -1663,9 +1663,9 @@ API-шлюз ни на одной из страниц не описан.
 </details>
 
 <details>
-<summary>What are some challenges of maintaining an API at scale?</summary>
+<summary>Что такое some challenges of maintaining an API at scale?</summary>
 
-### What are some challenges of maintaining an API at scale?
+### Что такое some challenges of maintaining an API at scale?
 
 **Definition:**
 
@@ -1684,9 +1684,9 @@ API-шлюз ни на одной из страниц не описан.
 ### API Security Considerations
 
 <details>
-<summary>What are common security concerns when designing an API?</summary>
+<summary>Что такое common security concerns when designing an API?</summary>
 
-### What are common security concerns when designing an API?
+### Что такое common security concerns when designing an API?
 
 **Definition:**
 
@@ -1702,9 +1702,9 @@ API-шлюз ни на одной из страниц не описан.
 </details>
 
 <details>
-<summary>How do you prevent injection attacks in API design?</summary>
+<summary>Как you prevent injection attacks in API design?</summary>
 
-### How do you prevent injection attacks in API design?
+### Как you prevent injection attacks in API design?
 
 **Definition:**
 
@@ -1720,9 +1720,9 @@ API-шлюз ни на одной из страниц не описан.
 </details>
 
 <details>
-<summary>Can you explain what CORS is and why it’s important in API design?</summary>
+<summary>Можете ли вы explain what CORS is and why it’s important in API design?</summary>
 
-### Can you explain what CORS is and why it’s important in API design?
+### Можете ли вы explain what CORS is and why it’s important in API design?
 
 **Definition:**
 
@@ -1744,9 +1744,9 @@ fetch("https://bar.other").then((response) => response.json());
 </details>
 
 <details>
-<summary>What is the purpose of an API key?</summary>
+<summary>Что такое the puRPOse of an API key?</summary>
 
-### What is the purpose of an API key?
+### Что такое the puRPOse of an API key?
 
 **Definition:**
 
@@ -1762,9 +1762,9 @@ fetch("https://bar.other").then((response) => response.json());
 </details>
 
 <details>
-<summary>How would you implement authentication and authorization in APIs?</summary>
+<summary>Как бы вы implement authentication and authorization in APIs?</summary>
 
-### How would you implement authentication and authorization in APIs?
+### Как бы вы implement authentication and authorization in APIs?
 
 **Definition:**
 
@@ -1783,9 +1783,9 @@ fetch("https://bar.other").then((response) => response.json());
 ### Advanced API Design Concepts
 
 <details>
-<summary>What is the role of an API Gateway in microservices architecture?</summary>
+<summary>Что такое the role of an API Gateway in microservices architecture?</summary>
 
-### What is the role of an API Gateway in microservices architecture?
+### Что такое the role of an API Gateway in microservices architecture?
 
 **Definition:**
 
@@ -1802,9 +1802,9 @@ HATEOAS держит клиента на ссылках, которые дал �
 </details>
 
 <details>
-<summary>Can you explain the concept of a headless API?</summary>
+<summary>Можете ли вы explain the concept of a headless API?</summary>
 
-### Can you explain the concept of a headless API?
+### Можете ли вы explain the concept of a headless API?
 
 **Definition:**
 
@@ -1820,9 +1820,9 @@ Headless — не термин этих страниц. Клиент HATEOAS п�
 </details>
 
 <details>
-<summary>How do GraphQL APIs differ from traditional RESTful APIs?</summary>
+<summary>Как GraphQL APIs differ from traditional RESTful APIs?</summary>
 
-### How do GraphQL APIs differ from traditional RESTful APIs?
+### Как GraphQL APIs differ from traditional RESTful APIs?
 
 **Definition:**
 
@@ -1838,9 +1838,9 @@ GraphQL ни на одной странице нет. HATEOAS — огранич
 </details>
 
 <details>
-<summary>What is gRPC and how might it be used in API design?</summary>
+<summary>Что такое gRPC and how might it be used in API design?</summary>
 
-### What is gRPC and how might it be used in API design?
+### Что такое gRPC and how might it be used in API design?
 
 **Definition:**
 
@@ -1857,9 +1857,9 @@ gRPC ни на одной странице нет.
 </details>
 
 <details>
-<summary>How can WebSockets enhance API functionalities?</summary>
+<summary>Как WebSockets enhance API functionalities?</summary>
 
-### How can WebSockets enhance API functionalities?
+### Как WebSockets enhance API functionalities?
 
 **Definition:**
 
@@ -1878,9 +1878,9 @@ WebSockets ни на одной странице нет.
 ### API Development and Testing
 
 <details>
-<summary>What tools or frameworks do you use to develop and test APIs?</summary>
+<summary>Какие инструменты or frameworks do you use to develop and test APIs?</summary>
 
-### What tools or frameworks do you use to develop and test APIs?
+### Какие инструменты or frameworks do you use to develop and test APIs?
 
 **Definition:**
 
@@ -1897,9 +1897,9 @@ WebSockets ни на одной странице нет.
 </details>
 
 <details>
-<summary>How would you test for API performance and what metrics would you track?</summary>
+<summary>Как бы вы test for API performance and what metrics would you track?</summary>
 
-### How would you test for API performance and what metrics would you track?
+### Как бы вы test for API performance and what metrics would you track?
 
 **Definition:**
 
@@ -1916,9 +1916,9 @@ WebSockets ни на одной странице нет.
 </details>
 
 <details>
-<summary>What is contract testing in the context of API development?</summary>
+<summary>Что такое contract testing in the context of API development?</summary>
 
-### What is contract testing in the context of API development?
+### Что такое contract testing in the context of API development?
 
 **Definition:**
 
@@ -1934,9 +1934,9 @@ WebSockets ни на одной странице нет.
 </details>
 
 <details>
-<summary>Describe the mocking of APIs for development and testing purposes.</summary>
+<summary>Опишите the mocking of APIs for development and testing puRPOses.</summary>
 
-### Describe the mocking of APIs for development and testing purposes.
+### Опишите the mocking of APIs for development and testing puRPOses.
 
 **Definition:**
 
@@ -1953,9 +1953,9 @@ WebSockets ни на одной странице нет.
 </details>
 
 <details>
-<summary>How can automated API testing improve the software development lifecycle?</summary>
+<summary>Как automated API testing improve the software development lifecycle?</summary>
 
-### How can automated API testing improve the software development lifecycle?
+### Как automated API testing improve the software development lifecycle?
 
 **Definition:**
 
@@ -1974,9 +1974,9 @@ WebSockets ни на одной странице нет.
 ### API Data Management
 
 <details>
-<summary>How do you handle large volumes of data in API responses?</summary>
+<summary>Как you handle large volumes of data in API responses?</summary>
 
-### How do you handle large volumes of data in API responses?
+### Как you handle large volumes of data in API responses?
 
 **Definition:**
 
@@ -1993,9 +1993,9 @@ WebSockets ни на одной странице нет.
 </details>
 
 <details>
-<summary>How can an API be designed to support multiple data formats?</summary>
+<summary>Как an API be designed to support multiple data formats?</summary>
 
-### How can an API be designed to support multiple data formats?
+### Как an API be designed to support multiple data formats?
 
 **Definition:**
 
@@ -2016,9 +2016,9 @@ HAL — когда тело должно нести href, rel и type в JSON и
 </details>
 
 <details>
-<summary>What are best practices for managing sensitive data through an API?</summary>
+<summary>Что такое best practices for managing sensitive data through an API?</summary>
 
-### What are best practices for managing sensitive data through an API?
+### Что такое best practices for managing sensitive data through an API?
 
 **Definition:**
 
@@ -2034,9 +2034,9 @@ HAL — когда тело должно нести href, rel и type в JSON и
 </details>
 
 <details>
-<summary>In an API, how do you approach filtering and sorting of data?</summary>
+<summary>В an API, how do you approach filtering and sorting of data?</summary>
 
-### In an API, how do you approach filtering and sorting of data?
+### В an API, how do you approach filtering and sorting of data?
 
 **Definition:**
 
@@ -2052,9 +2052,9 @@ HAL — когда тело должно нести href, rel и type в JSON и
 </details>
 
 <details>
-<summary>Can you discuss strategies for transaction management within API endpoints?</summary>
+<summary>Можете ли вы discuss strategies for transaction management within API endpoints?</summary>
 
-### Can you discuss strategies for transaction management within API endpoints?
+### Можете ли вы discuss strategies for transaction management within API endpoints?
 
 **Definition:**
 
@@ -2073,9 +2073,9 @@ HATEOAS меняет состояние приложения ссылкой, п�
 ### API Specification and Standards
 
 <details>
-<summary>Are you familiar with any API specification formats and what benefits do they provide?</summary>
+<summary>Являются ли you familiar with any API specification formats and what benefits do they provide?</summary>
 
-### Are you familiar with any API specification formats and what benefits do they provide?
+### Являются ли you familiar with any API specification formats and what benefits do they provide?
 
 **Definition:**
 
@@ -2091,9 +2091,9 @@ HATEOAS меняет состояние приложения ссылкой, п�
 </details>
 
 <details>
-<summary>How do you approach the design of an API to comply with industry standards?</summary>
+<summary>Как you approach the design of an API to comply with industry standards?</summary>
 
-### How do you approach the design of an API to comply with industry standards?
+### Как you approach the design of an API to comply with industry standards?
 
 **Definition:**
 
@@ -2110,9 +2110,9 @@ HATEOAS меняет состояние приложения ссылкой, п�
 </details>
 
 <details>
-<summary>How do you foresee OpenAPI/Swagger specifications evolving, and how do they impact API design?</summary>
+<summary>Как you foresee OpenAPI/Swagger specifications evolving, and how do they impact API design?</summary>
 
-### How do you foresee OpenAPI/Swagger specifications evolving, and how do they impact API design?
+### Как you foresee OpenAPI/Swagger specifications evolving, and how do they impact API design?
 
 **Definition:**
 
@@ -2128,9 +2128,9 @@ OpenAPI и Swagger не обсуждаются, и ни одна страниц�
 </details>
 
 <details>
-<summary>How can APIs be designed with interoperability in mind?</summary>
+<summary>Как APIs be designed with interoperability in mind?</summary>
 
-### How can APIs be designed with interoperability in mind?
+### Как APIs be designed with interoperability in mind?
 
 **Definition:**
 
@@ -2147,9 +2147,9 @@ RFC 5988 — каркас веб-ссылок, который цитирует �
 </details>
 
 <details>
-<summary>How does a standard like JSON:API influence the way you structure response payloads?</summary>
+<summary>Как a standard like JSON:API influence the way you structure response payloads?</summary>
 
-### How does a standard like JSON:API influence the way you structure response payloads?
+### Как a standard like JSON:API influence the way you structure response payloads?
 
 **Definition:**
 

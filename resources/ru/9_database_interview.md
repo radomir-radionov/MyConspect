@@ -21,9 +21,9 @@
 ### SQL Fundamentals
 
 <details>
-<summary>What is SQL and what is it used for?</summary>
+<summary>Что такое SQL and what is it used for?</summary>
 
-### What is SQL and what is it used for?
+### Что такое SQL and what is it used for?
 
 **Definition:**
 
@@ -74,9 +74,9 @@ WHERE ds.emp_count > 0;
 </details>
 
 <details>
-<summary>Describe the difference between SQL and NoSQL databases.</summary>
+<summary>Опишите the difference between SQL and NoSQL dataBASEs.</summary>
 
-### Describe the difference between SQL and NoSQL databases.
+### Опишите the difference between SQL and NoSQL dataBASEs.
 
 **Definition:**
 
@@ -108,9 +108,9 @@ SQL — для целостности. NoSQL — для высокой скор�
 </details>
 
 <details>
-<summary>What are the different types of SQL commands?</summary>
+<summary>Что такое the different types of SQL commands?</summary>
 
-### What are the different types of SQL commands?
+### Что такое the different types of SQL commands?
 
 **Definition:**
 
@@ -134,9 +134,9 @@ SQL — для целостности. NoSQL — для высокой скор�
 </details>
 
 <details>
-<summary>Explain the purpose of the SELECT statement.</summary>
+<summary>Объясните the puRPOse of the SELECT statement.</summary>
 
-### Explain the purpose of the SELECT statement.
+### Объясните the puRPOse of the SELECT statement.
 
 **Definition:**
 
@@ -179,9 +179,9 @@ LIMIT 100;
 </details>
 
 <details>
-<summary>What is the difference between WHERE and HAVING clauses?</summary>
+<summary>Что такое the difference between WHERE and HAVING clauses?</summary>
 
-### What is the difference between WHERE and HAVING clauses?
+### Что такое the difference between WHERE and HAVING clauses?
 
 **Definition:**
 
@@ -203,9 +203,9 @@ LIMIT 100;
 </details>
 
 <details>
-<summary>Define what a JOIN is in SQL and list its types.</summary>
+<summary>Определите what a JOIN is in SQL and list its types.</summary>
 
-### Define what a JOIN is in SQL and list its types.
+### Определите what a JOIN is in SQL and list its types.
 
 **Definition:**
 
@@ -259,9 +259,9 @@ SELECT E.Name AS Employee, M.Name AS Manager FROM Employee E LEFT JOIN Employee 
 </details>
 
 <details>
-<summary>What is a primary key in a database?</summary>
+<summary>Что такое Primary key in a dataBASE?</summary>
 
-### What is a primary key in a database?
+### Что такое Primary key in a dataBASE?
 
 **Definition:**
 
@@ -289,9 +289,9 @@ CREATE UNIQUE INDEX students_uuid_uidx ON Students (student_uuid);
 </details>
 
 <details>
-<summary>Explain what a foreign key is and how it is used.</summary>
+<summary>Объясните what a foreign key is and how it is used.</summary>
 
-### Explain what a foreign key is and how it is used.
+### Объясните what a foreign key is and how it is used.
 
 **Definition:**
 
@@ -329,9 +329,9 @@ CREATE INDEX employees_dept_id_idx ON employees (dept_id);
 </details>
 
 <details>
-<summary>How can you prevent SQL injections?</summary>
+<summary>Как you prevent SQL injections?</summary>
 
-### How can you prevent SQL injections?
+### Как you prevent SQL injections?
 
 **Definition:**
 
@@ -369,9 +369,9 @@ class UserQuery(BaseModel):
 </details>
 
 <details>
-<summary>What is normalization? Explain with examples.</summary>
+<summary>Что такое normalization? Объясните с примерами.</summary>
 
-### What is normalization? Explain with examples.
+### Что такое normalization? Объясните с примерами.
 
 **Definition:**
 
@@ -419,9 +419,9 @@ CREATE TABLE Invoice_Items (
 </details>
 
 <details>
-<summary>Describe the concept of denormalization and when you would use it.</summary>
+<summary>Опишите the concept of denormalization and when you would use it.</summary>
 
-### Describe the concept of denormalization and when you would use it.
+### Опишите the concept of denormalization and when you would use it.
 
 **Definition:**
 
@@ -445,9 +445,9 @@ CREATE TABLE Invoice_Items (
 </details>
 
 <details>
-<summary>What are indexes and how can they improve query performance?</summary>
+<summary>Что такое indexes and how can they improve query performance?</summary>
 
-### What are indexes and how can they improve query performance?
+### Что такое indexes and how can they improve query performance?
 
 **Definition:**
 
@@ -469,9 +469,9 @@ CREATE TABLE Invoice_Items (
 </details>
 
 <details>
-<summary>Explain the purpose of the GROUP BY clause.</summary>
+<summary>Объясните the puRPOse of the GROUP BY clause.</summary>
 
-### Explain the purpose of the GROUP BY clause.
+### Объясните the puRPOse of the GROUP BY clause.
 
 **Definition:**
 
@@ -511,9 +511,9 @@ FROM Sales;
 </details>
 
 <details>
-<summary>What is a subquery, and when would you use one?</summary>
+<summary>Что такое subquery, and when would you use one?</summary>
 
-### What is a subquery, and when would you use one?
+### Что такое subquery, and when would you use one?
 
 **Definition:**
 
@@ -557,9 +557,9 @@ CROSS JOIN LATERAL (
 </details>
 
 <details>
-<summary>Describe the functions of the ORDER BY clause.</summary>
+<summary>Опишите the functions of the ORDER BY clause.</summary>
 
-### Describe the functions of the ORDER BY clause.
+### Опишите the functions of the ORDER BY clause.
 
 **Definition:**
 
@@ -599,9 +599,9 @@ WHERE rnk <= 10;
 </details>
 
 <details>
-<summary>What are aggregate functions in SQL?</summary>
+<summary>Что такое aggregate functions in SQL?</summary>
 
-### What are aggregate functions in SQL?
+### Что такое aggregate functions in SQL?
 
 **Definition:**
 
@@ -629,9 +629,9 @@ GROUP BY dept_id;
 </details>
 
 <details>
-<summary>Explain the differences between INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL JOIN.</summary>
+<summary>Объясните the differences between INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL JOIN.</summary>
 
-### Explain the differences between INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL JOIN.
+### Объясните the differences between INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL JOIN.
 
 **Definition:**
 
@@ -660,9 +660,9 @@ LEFT JOIN t2 ON t1.num = t2.num;
 </details>
 
 <details>
-<summary>How do you insert a new row into a database table?</summary>
+<summary>Как you insert a new row into a dataBASE table?</summary>
 
-### How do you insert a new row into a database table?
+### Как you insert a new row into a dataBASE table?
 
 **Definition:**
 
@@ -686,9 +686,9 @@ RETURNING code, title;
 </details>
 
 <details>
-<summary>Explain how to update records in a database table.</summary>
+<summary>Объясните how to update records in a dataBASE table.</summary>
 
-### Explain how to update records in a database table.
+### Объясните how to update records in a dataBASE table.
 
 **Definition:**
 
@@ -713,9 +713,9 @@ RETURNING code, kind, OLD.kind AS old_kind;
 </details>
 
 <details>
-<summary>What is a SQL View and what are its advantages?</summary>
+<summary>Что такое SQL View and what are its advantages?</summary>
 
-### What is a SQL View and what are its advantages?
+### Что такое SQL View and what are its advantages?
 
 **Definition:**
 
@@ -747,9 +747,9 @@ CREATE VIEW comedies AS
 ### SQL Data Types and Operators
 
 <details>
-<summary>List the different data types available in SQL.</summary>
+<summary>Перечислите the different data types available in SQL.</summary>
 
-### List the different data types available in SQL.
+### Перечислите the different data types available in SQL.
 
 **Definition:**
 
@@ -783,9 +783,9 @@ CREATE TABLE ledger (
 </details>
 
 <details>
-<summary>What are the differences between CHAR, VARCHAR, and TEXT data types?</summary>
+<summary>Что такое the differences between CHAR, VARCHAR, and TEXT data types?</summary>
 
-### What are the differences between CHAR, VARCHAR, and TEXT data types?
+### Что такое the differences between CHAR, VARCHAR, and TEXT data types?
 
 **Definition:**
 
@@ -813,9 +813,9 @@ SELECT a, char_length(a) FROM test1;
 </details>
 
 <details>
-<summary>How do you use the BETWEEN operator in SQL?</summary>
+<summary>Как you use the BETWEEN operator in SQL?</summary>
 
-### How do you use the BETWEEN operator in SQL?
+### Как you use the BETWEEN operator in SQL?
 
 **Definition:**
 
@@ -839,9 +839,9 @@ WHERE temp_lo BETWEEN 40 AND 50;
 </details>
 
 <details>
-<summary>Describe the use of the IN operator.</summary>
+<summary>Опишите the use of the IN operator.</summary>
 
-### Describe the use of the IN operator.
+### Опишите the use of the IN operator.
 
 **Definition:**
 
@@ -865,9 +865,9 @@ WHERE kind IN ('Comedy', 'Drama');
 </details>
 
 <details>
-<summary>Explain the use of wildcard characters in SQL.</summary>
+<summary>Объясните the use of wildcard characters in SQL.</summary>
 
-### Explain the use of wildcard characters in SQL.
+### Объясните the use of wildcard characters in SQL.
 
 **Definition:**
 
@@ -892,9 +892,9 @@ WHERE name LIKE 'San%';
 </details>
 
 <details>
-<summary>What is the purpose of the LIKE operator?</summary>
+<summary>Что такое the puRPOse of the LIKE operator?</summary>
 
-### What is the purpose of the LIKE operator?
+### Что такое the puRPOse of the LIKE operator?
 
 **Definition:**
 
@@ -922,9 +922,9 @@ WHERE name ILIKE 'ann%';
 </details>
 
 <details>
-<summary>How do you handle NULL values in SQL?</summary>
+<summary>Как you handle NULL values in SQL?</summary>
 
-### How do you handle NULL values in SQL?
+### Как you handle NULL values in SQL?
 
 **Definition:**
 
@@ -950,9 +950,9 @@ WHERE email IS NULL
 </details>
 
 <details>
-<summary>What does the COALESCE function do?</summary>
+<summary>Что означает the COALESCE function do?</summary>
 
-### What does the COALESCE function do?
+### Что означает the COALESCE function do?
 
 **Definition:**
 
@@ -975,9 +975,9 @@ FROM products;
 </details>
 
 <details>
-<summary>What is the difference between UNION and UNION ALL?</summary>
+<summary>Что такое the difference between UNION and UNION ALL?</summary>
 
-### What is the difference between UNION and UNION ALL?
+### Что такое the difference between UNION and UNION ALL?
 
 **Definition:**
 
@@ -1006,9 +1006,9 @@ ORDER BY 1;
 </details>
 
 <details>
-<summary>Describe the use of arithmetic operators in SQL queries.</summary>
+<summary>Опишите the use of arithmetic operators in SQL queries.</summary>
 
-### Describe the use of arithmetic operators in SQL queries.
+### Опишите the use of arithmetic operators in SQL queries.
 
 **Definition:**
 
@@ -1037,9 +1037,9 @@ FROM invoices;
 ### SQL Advanced Queries
 
 <details>
-<summary>Explain how to use the CASE statement in SQL.</summary>
+<summary>Объясните how to use the CASE statement in SQL.</summary>
 
-### Explain how to use the CASE statement in SQL.
+### Объясните how to use the CASE statement in SQL.
 
 **Definition:**
 
@@ -1066,9 +1066,9 @@ FROM test;
 </details>
 
 <details>
-<summary>How would you perform a self JOIN?</summary>
+<summary>Как бы вы perform a self JOIN?</summary>
 
-### How would you perform a self JOIN?
+### Как бы вы perform a self JOIN?
 
 **Definition:**
 
@@ -1092,9 +1092,9 @@ LEFT JOIN employee AS m ON e.manager_id = m.emp_id;
 </details>
 
 <details>
-<summary>What is a cross JOIN and when would you use it?</summary>
+<summary>Что такое cross JOIN and when would you use it?</summary>
 
-### What is a cross JOIN and when would you use it?
+### Что такое cross JOIN and when would you use it?
 
 **Definition:**
 
@@ -1122,9 +1122,9 @@ CROSS JOIN t2;
 </details>
 
 <details>
-<summary>How to implement pagination in SQL queries?</summary>
+<summary>Как implement pagination in SQL queries?</summary>
 
-### How to implement pagination in SQL queries?
+### Как implement pagination in SQL queries?
 
 **Definition:**
 
@@ -1161,9 +1161,9 @@ LIMIT 20;
 </details>
 
 <details>
-<summary>Explain the concept of Common Table Expressions (CTEs) and recursive CTEs.</summary>
+<summary>Объясните the concept of Common Table Expressions (CTEs) and Recursive CTEs.</summary>
 
-### Explain the concept of Common Table Expressions (CTEs) and recursive CTEs.
+### Объясните the concept of Common Table Expressions (CTEs) and Recursive CTEs.
 
 **Definition:**
 
@@ -1194,9 +1194,9 @@ SELECT sum(n) FROM t;
 </details>
 
 <details>
-<summary>What are window functions and how are they used?</summary>
+<summary>Что такое window functions and how are they used?</summary>
 
-### What are window functions and how are they used?
+### Что такое window functions and how are they used?
 
 **Definition:**
 
@@ -1224,9 +1224,9 @@ FROM empsalary;
 </details>
 
 <details>
-<summary>How can you concatenate column values in SQL?</summary>
+<summary>Как you concatenate column values in SQL?</summary>
 
-### How can you concatenate column values in SQL?
+### Как you concatenate column values in SQL?
 
 **Definition:**
 
@@ -1250,9 +1250,9 @@ FROM customers;
 </details>
 
 <details>
-<summary>What is the PIVOT operation and how would you apply it?</summary>
+<summary>Что такое the PIVOT operation and how would you apply it?</summary>
 
-### What is the PIVOT operation and how would you apply it?
+### Что такое the PIVOT operation and how would you apply it?
 
 **Definition:**
 
@@ -1283,9 +1283,9 @@ GROUP BY dept_id;
 </details>
 
 <details>
-<summary>Explain the process of combining a query that uses a GROUP BY with one that uses ORDER BY.</summary>
+<summary>Объясните the process of combining a query that uses a GROUP BY with one that uses ORDER BY.</summary>
 
-### Explain the process of combining a query that uses a GROUP BY with one that uses ORDER BY.
+### Объясните the process of combining a query that uses a GROUP BY with one that uses ORDER BY.
 
 **Definition:**
 
@@ -1313,9 +1313,9 @@ ORDER BY total_amount DESC;
 </details>
 
 <details>
-<summary>How would you find duplicate records in a table?</summary>
+<summary>Как бы вы find duplicate records in a table?</summary>
 
-### How would you find duplicate records in a table?
+### Как бы вы find duplicate records in a table?
 
 **Definition:**
 
@@ -1344,9 +1344,9 @@ HAVING count(*) > 1;
 ### Database Design & Architecture
 
 <details>
-<summary>What is the Entity-Relationship Model?</summary>
+<summary>Что такое the Entity-Relationship Model?</summary>
 
-### What is the Entity-Relationship Model?
+### Что такое the Entity-Relationship Model?
 
 **Definition:**
 
@@ -1378,9 +1378,9 @@ CREATE TABLE employee (
 </details>
 
 <details>
-<summary>Explain the different types of database schema.</summary>
+<summary>Объясните the different types of dataBASE schema.</summary>
 
-### Explain the different types of database schema.
+### Объясните the different types of dataBASE schema.
 
 **Definition:**
 
@@ -1410,9 +1410,9 @@ CREATE TABLE sales.orders (
 </details>
 
 <details>
-<summary>What are Stored Procedures and how are they beneficial?</summary>
+<summary>Что такое Stored Procedures and how are they beneficial?</summary>
 
-### What are Stored Procedures and how are they beneficial?
+### Что такое Stored Procedures and how are they beneficial?
 
 **Definition:**
 
@@ -1446,9 +1446,9 @@ CALL insert_data(1, 2);
 </details>
 
 <details>
-<summary>What is a trigger in SQL and when should it be used?</summary>
+<summary>Что такое trigger in SQL and when should it be used?</summary>
 
-### What is a trigger in SQL and when should it be used?
+### Что такое trigger in SQL and when should it be used?
 
 **Definition:**
 
@@ -1478,9 +1478,9 @@ EXECUTE FUNCTION emp_stamp();
 </details>
 
 <details>
-<summary>Describe the concept of ACID in databases.</summary>
+<summary>Опишите the concept of ACID in dataBASEs.</summary>
 
-### Describe the concept of ACID in databases.
+### Опишите the concept of ACID in dataBASEs.
 
 **Definition:**
 
@@ -1507,9 +1507,9 @@ COMMIT;
 </details>
 
 <details>
-<summary>What is database sharding?</summary>
+<summary>Что такое dataBASE sharding?</summary>
 
-### What is database sharding?
+### Что такое dataBASE sharding?
 
 **Definition:**
 
@@ -1541,9 +1541,9 @@ CREATE TABLE measurement (
 </details>
 
 <details>
-<summary>How do database indexes work and what types are there?</summary>
+<summary>Как dataBASE indexes work and what types are there?</summary>
 
-### How do database indexes work and what types are there?
+### Как dataBASE indexes work and what types are there?
 
 **Definition:**
 
@@ -1567,9 +1567,9 @@ CREATE INDEX name ON places USING HASH (code);
 </details>
 
 <details>
-<summary>Describe the process of data warehousing.</summary>
+<summary>Опишите the process of data warehousing.</summary>
 
-### Describe the process of data warehousing.
+### Опишите the process of data warehousing.
 
 **Definition:**
 
@@ -1596,9 +1596,9 @@ GROUP BY region;
 </details>
 
 <details>
-<summary>Explain the difference between OLTP and OLAP systems.</summary>
+<summary>Объясните the difference between OLTP and OLAP systems.</summary>
 
-### Explain the difference between OLTP and OLAP systems.
+### Объясните the difference between OLTP and OLAP systems.
 
 **Definition:**
 
@@ -1628,9 +1628,9 @@ GROUP BY region;
 </details>
 
 <details>
-<summary>What are materialized views and how do they differ from standard views?</summary>
+<summary>Что такое materialized views and how do they differ from standard views?</summary>
 
-### What are materialized views and how do they differ from standard views?
+### Что такое materialized views and how do they differ from standard views?
 
 **Definition:**
 
@@ -1663,9 +1663,9 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY wrd;
 ### SQL Optimization and Performance
 
 <details>
-<summary>How do you identify and optimize slow-running queries?</summary>
+<summary>Как you identify and optimize SLOw-running queries?</summary>
 
-### How do you identify and optimize slow-running queries?
+### Как you identify and optimize SLOw-running queries?
 
 **Definition:**
 
@@ -1690,9 +1690,9 @@ SELECT * FROM films WHERE kind = 'Comedy';
 </details>
 
 <details>
-<summary>What is query execution plan in SQL?</summary>
+<summary>Что такое query execution plan in SQL?</summary>
 
-### What is query execution plan in SQL?
+### Что такое query execution plan in SQL?
 
 **Definition:**
 
@@ -1715,9 +1715,9 @@ EXPLAIN SELECT * FROM films WHERE kind = 'Comedy';
 </details>
 
 <details>
-<summary>Explain how to use EXPLAIN or EXPLAIN ANALYZE.</summary>
+<summary>Объясните how to use EXPLAIN or EXPLAIN ANALYZE.</summary>
 
-### Explain how to use EXPLAIN or EXPLAIN ANALYZE.
+### Объясните how to use EXPLAIN or EXPLAIN ANALYZE.
 
 **Definition:**
 
@@ -1745,9 +1745,9 @@ SELECT * FROM tenk1 WHERE unique1 < 100;
 </details>
 
 <details>
-<summary>How can indexing affect performance both positively and negatively?</summary>
+<summary>Как indexing affect performance both positively and neGAtively?</summary>
 
-### How can indexing affect performance both positively and negatively?
+### Как indexing affect performance both positively and neGAtively?
 
 **Definition:**
 
@@ -1777,9 +1777,9 @@ CREATE INDEX films_unreleased_idx
 </details>
 
 <details>
-<summary>Describe how to measure the performance of SQL queries.</summary>
+<summary>Опишите how to measure the performance of SQL queries.</summary>
 
-### Describe how to measure the performance of SQL queries.
+### Опишите how to measure the performance of SQL queries.
 
 **Definition:**
 
@@ -1804,9 +1804,9 @@ SELECT sum(amount) FROM sales WHERE region = 'EMEA';
 </details>
 
 <details>
-<summary>How would you rewrite a query to improve its performance?</summary>
+<summary>Как бы вы rewrite a query to improve its performance?</summary>
 
-### How would you rewrite a query to improve its performance?
+### Как бы вы rewrite a query to improve its performance?
 
 **Definition:**
 
@@ -1832,9 +1832,9 @@ WHERE kind = 'Comedy';
 </details>
 
 <details>
-<summary>What are partitioned tables and how can they optimize performance?</summary>
+<summary>Что такое partitioned tables and how can they optimize performance?</summary>
 
-### What are partitioned tables and how can they optimize performance?
+### Что такое partitioned tables and how can they optimize performance?
 
 **Definition:**
 
@@ -1870,9 +1870,9 @@ CREATE TABLE measurement_y2026m01 PARTITION OF measurement
 ### SQL Security
 
 <details>
-<summary>How do you implement database encryption in SQL?</summary>
+<summary>Как you implement dataBASE encryption in SQL?</summary>
 
-### How do you implement database encryption in SQL?
+### Как you implement dataBASE encryption in SQL?
 
 **Definition:**
 
@@ -1902,9 +1902,9 @@ SELECT pgp_sym_encrypt('sensitive', 'key');
 </details>
 
 <details>
-<summary>What are roles and how do they manage database access?</summary>
+<summary>Что такое roles and how do they manage dataBASE access?</summary>
 
-### What are roles and how do they manage database access?
+### Что такое roles and how do they manage dataBASE access?
 
 **Definition:**
 
@@ -1930,9 +1930,9 @@ GRANT SELECT ON sales.orders TO analyst;
 </details>
 
 <details>
-<summary>Explain the concept of row-level security.</summary>
+<summary>Объясните the concept of row-level security.</summary>
 
-### Explain the concept of row-level security.
+### Объясните the concept of row-level security.
 
 **Definition:**
 
@@ -1960,9 +1960,9 @@ WITH CHECK (current_user = user_name);
 </details>
 
 <details>
-<summary>Describe how to create and use user-defined functions (UDFs).</summary>
+<summary>Опишите how to create and use user-defined functions (UDFS).</summary>
 
-### Describe how to create and use user-defined functions (UDFs).
+### Опишите how to create and use user-defined functions (UDFS).
 
 **Definition:**
 
@@ -1991,9 +1991,9 @@ IMMUTABLE;
 ### SQL Functions and Expressions
 
 <details>
-<summary>Describe scalar-valued and table-valued functions.</summary>
+<summary>Опишите scalar-valued and table-valued functions.</summary>
 
-### Describe scalar-valued and table-valued functions.
+### Опишите scalar-valued and table-valued functions.
 
 **Definition:**
 
@@ -2024,9 +2024,9 @@ $$;
 </details>
 
 <details>
-<summary>How would you define a stored procedure with input and output parameters?</summary>
+<summary>Как бы вы define a stored procedure with input and output parameters?</summary>
 
-### How would you define a stored procedure with input and output parameters?
+### Как бы вы define a stored procedure with input and output parameters?
 
 **Definition:**
 
@@ -2057,9 +2057,9 @@ CALL sales_tax(100.00, NULL);
 </details>
 
 <details>
-<summary>What is the difference between a function and a stored procedure?</summary>
+<summary>Что такое the difference between a function and a stored procedure?</summary>
 
-### What is the difference between a function and a stored procedure?
+### Что такое the difference between a function and a stored procedure?
 
 **Definition:**
 
@@ -2088,9 +2088,9 @@ CALL insert_data(1, 2);
 </details>
 
 <details>
-<summary>How do you use the CAST and CONVERT functions?</summary>
+<summary>Как you use the CAST and CONVERT functions?</summary>
 
-### How do you use the CAST and CONVERT functions?
+### Как you use the CAST and CONVERT functions?
 
 **Definition:**
 
@@ -2119,9 +2119,9 @@ SELECT convert_from('\x4869'::bytea, 'UTF8');
 ### Transaction Control and Locking
 
 <details>
-<summary>What is a database transaction?</summary>
+<summary>Что такое dataBASE transaction?</summary>
 
-### What is a database transaction?
+### Что такое dataBASE transaction?
 
 **Definition:**
 
@@ -2147,9 +2147,9 @@ COMMIT;
 </details>
 
 <details>
-<summary>Explain the concept of locking and its types in SQL databases.</summary>
+<summary>Объясните the concept of locking and its types in SQL dataBASEs.</summary>
 
-### Explain the concept of locking and its types in SQL databases.
+### Объясните the concept of locking and its types in SQL dataBASEs.
 
 **Definition:**
 
@@ -2178,9 +2178,9 @@ COMMIT;
 </details>
 
 <details>
-<summary>What are the properties of transactions?</summary>
+<summary>Что такое the properties of transactions?</summary>
 
-### What are the properties of transactions?
+### Что такое the properties of transactions?
 
 **Definition:**
 
@@ -2206,9 +2206,9 @@ COMMIT;
 </details>
 
 <details>
-<summary>How do you manage transaction isolation levels?</summary>
+<summary>Как you manage transaction isolation levels?</summary>
 
-### How do you manage transaction isolation levels?
+### Как you manage transaction isolation levels?
 
 **Definition:**
 
@@ -2238,9 +2238,9 @@ COMMIT;
 </details>
 
 <details>
-<summary>What does it mean to commit or roll back a transaction?</summary>
+<summary>Что означает it mean to commit or roll back a transaction?</summary>
 
-### What does it mean to commit or roll back a transaction?
+### Что означает it mean to commit or roll back a transaction?
 
 **Definition:**
 
@@ -2272,9 +2272,9 @@ COMMIT;
 ### SQL and Modern Data Ecosystems
 
 <details>
-<summary>How can SQL be integrated with big data technologies?</summary>
+<summary>Как SQL be integrated with big data technologies?</summary>
 
-### How can SQL be integrated with big data technologies?
+### Как SQL be integrated with big data technologies?
 
 **Definition:**
 
@@ -2306,9 +2306,9 @@ CREATE FOREIGN TABLE words (word text NOT NULL)
 </details>
 
 <details>
-<summary>Discuss the interoperability of SQL with cloud-based data stores.</summary>
+<summary>Обсудите the interoperability of SQL with cloud-BASEd data stores.</summary>
 
-### Discuss the interoperability of SQL with cloud-based data stores.
+### Обсудите the interoperability of SQL with cloud-BASEd data stores.
 
 **Definition:**
 
@@ -2337,9 +2337,9 @@ CREATE SERVER cloud_pg FOREIGN DATA WRAPPER postgres_fdw
 </details>
 
 <details>
-<summary>What is Data Lake and how can SQL interact with it?</summary>
+<summary>Что такое Data Lake and how can SQL interact with it?</summary>
 
-### What is Data Lake and how can SQL interact with it?
+### Что такое Data Lake and how can SQL interact with it?
 
 **Definition:**
 
@@ -2368,9 +2368,9 @@ WITH (FORMAT csv, HEADER true);
 </details>
 
 <details>
-<summary>Explain the interaction between SQL and NoSQL within the same application.</summary>
+<summary>Объясните the interaction between SQL and NoSQL within the same application.</summary>
 
-### Explain the interaction between SQL and NoSQL within the same application.
+### Объясните the interaction between SQL and NoSQL within the same application.
 
 **Definition:**
 
@@ -2399,9 +2399,9 @@ WHERE doc @> '{"active": true}';
 </details>
 
 <details>
-<summary>How does SQL work within a microservices architecture?</summary>
+<summary>Как SQL work within a microservices architecture?</summary>
 
-### How does SQL work within a microservices architecture?
+### Как SQL work within a microservices architecture?
 
 **Definition:**
 
@@ -2435,9 +2435,9 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA billing TO billing_
 ### SQL Best Practices and Standards
 
 <details>
-<summary>What are some common SQL coding practices you follow?</summary>
+<summary>Что такое some common SQL coding practices you follow?</summary>
 
-### What are some common SQL coding practices you follow?
+### Что такое some common SQL coding practices you follow?
 
 **Definition:**
 
@@ -2462,9 +2462,9 @@ VALUES ('UA502', 'Bananas');
 </details>
 
 <details>
-<summary>How can you ensure the portability of SQL scripts across different database systems?</summary>
+<summary>Как you ensure the portability of SQL scripts across different dataBASE systems?</summary>
 
-### How can you ensure the portability of SQL scripts across different database systems?
+### Как you ensure the portability of SQL scripts across different dataBASE systems?
 
 **Definition:**
 
@@ -2496,9 +2496,9 @@ FETCH FIRST 10 ROWS ONLY;
 </details>
 
 <details>
-<summary>What methods do you use for version controlling SQL scripts?</summary>
+<summary>Какие методы do you use for version controlling SQL scripts?</summary>
 
-### What methods do you use for version controlling SQL scripts?
+### Какие методы do you use for version controlling SQL scripts?
 
 **Definition:**
 
@@ -2522,9 +2522,9 @@ ALTER TABLE films
 </details>
 
 <details>
-<summary>What are the benefits of using stored procedures instead of embedding SQL queries in code?</summary>
+<summary>Что такое the benefits of using stored procedures instead of embedding SQL queries in code?</summary>
 
-### What are the benefits of using stored procedures instead of embedding SQL queries in code?
+### Что такое the benefits of using stored procedures instead of embedding SQL queries in code?
 
 **Definition:**
 
@@ -2552,9 +2552,9 @@ CALL insert_data(1, 2);
 </details>
 
 <details>
-<summary>How do you document SQL code effectively?</summary>
+<summary>Как you document SQL code effectively?</summary>
 
-### How do you document SQL code effectively?
+### Как you document SQL code effectively?
 
 **Definition:**
 
@@ -2580,9 +2580,9 @@ COMMENT ON COLUMN films.kind IS 'Genre label such as Comedy or Drama.';
 ### Analytical SQL Questions
 
 <details>
-<summary>How would you find the Nth highest salary from a table?</summary>
+<summary>Как бы вы find the Nth highest salary from a table?</summary>
 
-### How would you find the Nth highest salary from a table?
+### Как бы вы find the Nth highest salary from a table?
 
 **Definition:**
 
@@ -2611,9 +2611,9 @@ WHERE rk = 3;
 </details>
 
 <details>
-<summary>How do you count the number of occurrences of a specific value in a column?</summary>
+<summary>Как you count the number of occurrences of a specific value in a column?</summary>
 
-### How do you count the number of occurrences of a specific value in a column?
+### Как you count the number of occurrences of a specific value in a column?
 
 **Definition:**
 
@@ -2636,9 +2636,9 @@ FROM tickets;
 </details>
 
 <details>
-<summary>How can you calculate running totals in SQL?</summary>
+<summary>Как you calculate running totals in SQL?</summary>
 
-### How can you calculate running totals in SQL?
+### Как you calculate running totals in SQL?
 
 **Definition:**
 
@@ -2664,9 +2664,9 @@ FROM payments;
 </details>
 
 <details>
-<summary>Explain how to reverse the contents of a column without using a reverse function.</summary>
+<summary>Объясните how to reverse the contents of a column without using a reverse function.</summary>
 
-### Explain how to reverse the contents of a column without using a reverse function.
+### Объясните how to reverse the contents of a column without using a reverse function.
 
 **Definition:**
 
@@ -2701,9 +2701,9 @@ WHERE rest = '';
 </details>
 
 <details>
-<summary>What approach do you use for creating a calendar table, and what are its uses?</summary>
+<summary>Какой approach вы используете для создания calendar table и для чего она нужна?</summary>
 
-### What approach do you use for creating a calendar table, and what are its uses?
+### Какой approach вы используете для создания calendar table и для чего она нужна?
 
 **Definition:**
 
@@ -2734,9 +2734,9 @@ FROM generate_series(0, 364) AS s(n);
 ### Data Manipulation and ETL
 
 <details>
-<summary>What is the process of Extract, Transform, Load (ETL)?</summary>
+<summary>Что такое the process of Extract, Transform, Load (ETL)?</summary>
 
-### What is the process of Extract, Transform, Load (ETL)?
+### Что такое the process of Extract, Transform, Load (ETL)?
 
 **Definition:**
 
@@ -2762,9 +2762,9 @@ GROUP BY region;
 </details>
 
 <details>
-<summary>How do you import/export data from/to a flat file using SQL?</summary>
+<summary>Как you import/export data from/to a flat file using SQL?</summary>
 
-### How do you import/export data from/to a flat file using SQL?
+### Как you import/export data from/to a flat file using SQL?
 
 **Definition:**
 
@@ -2787,9 +2787,9 @@ FROM STDIN WITH (FORMAT csv, HEADER true);
 </details>
 
 <details>
-<summary>Explain the steps for a basic ETL process in a data warehousing environment.</summary>
+<summary>Объясните the steps for a basic ETL process in a data warehousing environment.</summary>
 
-### Explain the steps for a basic ETL process in a data warehousing environment.
+### Объясните the steps for a basic ETL process in a data warehousing environment.
 
 **Definition:**
 
@@ -2818,9 +2818,9 @@ COMMIT;
 </details>
 
 <details>
-<summary>How do you cleanse and format data using SQL queries?</summary>
+<summary>Как you cleanse and format data using SQL queries?</summary>
 
-### How do you cleanse and format data using SQL queries?
+### Как you cleanse and format data using SQL queries?
 
 **Definition:**
 
@@ -2845,9 +2845,9 @@ FROM import_customers;
 </details>
 
 <details>
-<summary>What tools do you use for automating data import/export routines?</summary>
+<summary>Какие инструменты do you use for automating data import/export routines?</summary>
 
-### What tools do you use for automating data import/export routines?
+### Какие инструменты do you use for automating data import/export routines?
 
 **Definition:**
 
@@ -2874,9 +2874,9 @@ COPY orders TO STDOUT WITH (FORMAT csv, HEADER true);
 ### Domain-Specific SQL Scenarios
 
 <details>
-<summary>How would you model a many-to-many relationship in SQL?</summary>
+<summary>Как бы вы model a many-to-many relationship in SQL?</summary>
 
-### How would you model a many-to-many relationship in SQL?
+### Как бы вы model a many-to-many relationship in SQL?
 
 **Definition:**
 
@@ -2903,9 +2903,9 @@ CREATE TABLE enrollment (
 </details>
 
 <details>
-<summary>Describe how to manage hierarchical data in SQL.</summary>
+<summary>Опишите how to manage hierarchical data in SQL.</summary>
 
-### Describe how to manage hierarchical data in SQL.
+### Опишите how to manage hierarchical data in SQL.
 
 **Definition:**
 
@@ -2938,9 +2938,9 @@ FROM subtrees;
 </details>
 
 <details>
-<summary>How would you approach writing SQL queries for a reporting application?</summary>
+<summary>Как бы вы approach writing SQL queries for a reporting application?</summary>
 
-### How would you approach writing SQL queries for a reporting application?
+### Как бы вы approach writing SQL queries for a reporting application?
 
 **Definition:**
 
@@ -2969,9 +2969,9 @@ ORDER BY c.day;
 </details>
 
 <details>
-<summary>Explain how to handle temporal data and time zones in SQL.</summary>
+<summary>Объясните how to handle temporal data and time zones in SQL.</summary>
 
-### Explain how to handle temporal data and time zones in SQL.
+### Объясните how to handle temporal data and time zones in SQL.
 
 **Definition:**
 
@@ -2998,9 +2998,9 @@ FROM orders;
 </details>
 
 <details>
-<summary>How do you use SQL in financial applications for risk and portfolio analysis?</summary>
+<summary>Как you use SQL in financial applications for risk and portfolio analysis?</summary>
 
-### How do you use SQL in financial applications for risk and portfolio analysis?
+### Как you use SQL in financial applications for risk and portfolio analysis?
 
 **Definition:**
 
@@ -3030,9 +3030,9 @@ GROUP BY portfolio_id;
 ### Troubleshooting and Debugging
 
 <details>
-<summary>What steps do you take to troubleshoot a failed SQL query?</summary>
+<summary>Какие шаги вы предпринимаете для troubleshooting failed SQL query?</summary>
 
-### What steps do you take to troubleshoot a failed SQL query?
+### Какие шаги вы предпринимаете для troubleshooting failed SQL query?
 
 **Definition:**
 
@@ -3056,9 +3056,9 @@ VALUES (1, 'Ada', 999);
 </details>
 
 <details>
-<summary>How can you recover data from a corrupt SQL database?</summary>
+<summary>Как you recover data from a corrupt SQL dataBASE?</summary>
 
-### How can you recover data from a corrupt SQL database?
+### Как you recover data from a corrupt SQL dataBASE?
 
 **Definition:**
 
@@ -3082,9 +3082,9 @@ REINDEX INDEX films_kind_idx;
 </details>
 
 <details>
-<summary>What methods do you employ to ensure data integrity?</summary>
+<summary>Какие методы do you employ to ensure data integrity?</summary>
 
-### What methods do you employ to ensure data integrity?
+### Какие методы do you employ to ensure data integrity?
 
 **Definition:**
 
@@ -3111,9 +3111,9 @@ CREATE TABLE orders (
 </details>
 
 <details>
-<summary>How do you decipher and resolve deadlocks in SQL?</summary>
+<summary>Как you decipher and resolve deadlocks in SQL?</summary>
 
-### How do you decipher and resolve deadlocks in SQL?
+### Как you decipher and resolve deadlocks in SQL?
 
 **Definition:**
 
@@ -3142,9 +3142,9 @@ COMMIT;
 ### Advanced Data Analysis in SQL
 
 <details>
-<summary>Explain how to use SQL for predictive analysis and machine learning purposes.</summary>
+<summary>Объясните how to use SQL for predictive analysis and machine learning puRPOses.</summary>
 
-### Explain how to use SQL for predictive analysis and machine learning purposes.
+### Объясните how to use SQL for predictive analysis and machine learning puRPOses.
 
 **Definition:**
 

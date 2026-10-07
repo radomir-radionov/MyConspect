@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Backtracking](https://devinterview.io/questi
 ### Fundamental Concepts and Techniques
 
 <details>
-<summary>What is Backtracking?</summary>
+<summary>Что такое backtracking?</summary>
 
-### What is Backtracking?
+### Что такое backtracking?
 
 **Definition:**
 
@@ -46,9 +46,9 @@ Questions from [Devinterview.io — Backtracking](https://devinterview.io/questi
 </details>
 
 <details>
-<summary>How does backtracking differ from brute force methods?</summary>
+<summary>Чем методы backtracking отличаются от методов brute force?</summary>
 
-### How does backtracking differ from brute force methods?
+### Чем методы backtracking отличаются от методов brute force?
 
 **Definition:**
 
@@ -63,9 +63,9 @@ Questions from [Devinterview.io — Backtracking](https://devinterview.io/questi
 </details>
 
 <details>
-<summary>Explain the concept of a decision tree in backtracking algorithms.</summary>
+<summary>Объясните концепцию decision tree в алгоритмах backtracking.</summary>
 
-### Explain the concept of a decision tree in backtracking algorithms.
+### Объясните концепцию decision tree в алгоритмах backtracking.
 
 **Definition:**
 
@@ -84,9 +84,9 @@ Questions from [Devinterview.io — Backtracking](https://devinterview.io/questi
 </details>
 
 <details>
-<summary>Discuss common optimizations in backtracking to improve efficiency.</summary>
+<summary>Обсудите общие оптимизации в backtracking для повышения эффективности.</summary>
 
-### Discuss common optimizations in backtracking to improve efficiency.
+### Обсудите общие оптимизации в backtracking для повышения эффективности.
 
 **Definition:**
 
@@ -101,9 +101,9 @@ Questions from [Devinterview.io — Backtracking](https://devinterview.io/questi
 </details>
 
 <details>
-<summary>How does backtracking relate to other algorithmic paradigms like divide and conquer?</summary>
+<summary>Как backtracking соотносится с другими алгоритмическими парадигмами, такими как Divide and Conquer?</summary>
 
-### How does backtracking relate to other algorithmic paradigms like divide and conquer?
+### Как backtracking соотносится с другими алгоритмическими парадигмами, такими как Divide and Conquer?
 
 **Definition:**
 
@@ -118,9 +118,9 @@ Questions from [Devinterview.io — Backtracking](https://devinterview.io/questi
 </details>
 
 <details>
-<summary>Describe the role of state space tree in understanding backtracking algorithms.</summary>
+<summary>Опишите роль state space tree в понимании алгоритмов backtracking.</summary>
 
-### Describe the role of state space tree in understanding backtracking algorithms.
+### Опишите роль state space tree в понимании алгоритмов backtracking.
 
 **Definition:**
 
@@ -135,9 +135,9 @@ Questions from [Devinterview.io — Backtracking](https://devinterview.io/questi
 </details>
 
 <details>
-<summary>Explain the concept of constraint satisfaction in backtracking.</summary>
+<summary>Объясните концепцию constraint satisfaction в backtracking.</summary>
 
-### Explain the concept of constraint satisfaction in backtracking.
+### Объясните концепцию constraint satisfaction в backtracking.
 
 **Definition:**
 
@@ -154,9 +154,9 @@ Questions from [Devinterview.io — Backtracking](https://devinterview.io/questi
 ### Implementing Backtracking
 
 <details>
-<summary>Outline a method to implement backtracking iteratively.</summary>
+<summary>Опишите a method to implement backtracking iteratively.</summary>
 
-### Outline a method to implement backtracking iteratively.
+### Опишите a method to implement backtracking iteratively.
 
 **Definition:**
 
@@ -179,9 +179,9 @@ stack: [(col=0, next_row=0)]
 </details>
 
 <details>
-<summary>What are the considerations for choosing candidates at each step in a backtracking algorithm?</summary>
+<summary>Что такое the considerations for choosing candidates at each step in a backtracking alGorithm?</summary>
 
-### What are the considerations for choosing candidates at each step in a backtracking algorithm?
+### Что такое the considerations for choosing candidates at each step in a backtracking alGorithm?
 
 **Definition:**
 
@@ -196,9 +196,9 @@ stack: [(col=0, next_row=0)]
 </details>
 
 <details>
-<summary>Describe the role of pruning in backtracking algorithms.</summary>
+<summary>Описать роль сокращения в алгоритмах backtracking.</summary>
 
-### Describe the role of pruning in backtracking algorithms.
+### Описать роль сокращения в алгоритмах backtracking.
 
 **Definition:**
 
@@ -213,9 +213,9 @@ stack: [(col=0, next_row=0)]
 </details>
 
 <details>
-<summary>How can memoization be integrated with backtracking?</summary>
+<summary>Как можно интегрировать memoization с backtracking?</summary>
 
-### How can memoization be integrated with backtracking?
+### Как можно интегрировать memoization с backtracking?
 
 **Definition:**
 
@@ -234,9 +234,9 @@ stack: [(col=0, next_row=0)]
 </details>
 
 <details>
-<summary>Explain the importance of backtracking in recursive algorithm design.</summary>
+<summary>Объясните важность backtracking при разработке рекурсивного алгоритма.</summary>
 
-### Explain the importance of backtracking in recursive algorithm design.
+### Объясните важность backtracking при разработке рекурсивного алгоритма.
 
 **Definition:**
 
@@ -251,9 +251,9 @@ stack: [(col=0, next_row=0)]
 </details>
 
 <details>
-<summary>Explain the impact of variable ordering on the performance of backtracking algorithms.</summary>
+<summary>Объясните влияние упорядочения переменных на производительность алгоритмов backtracking.</summary>
 
-### Explain the impact of variable ordering on the performance of backtracking algorithms.
+### Объясните влияние упорядочения переменных на производительность алгоритмов backtracking.
 
 **Definition:**
 
@@ -274,9 +274,9 @@ stack: [(col=0, next_row=0)]
 ### Complexity Analysis
 
 <details>
-<summary>Explain the time and space complexity of a typical backtracking algorithm.</summary>
+<summary>Объясните время и space complexity типичного алгоритма backtracking.</summary>
 
-### Explain the time and space complexity of a typical backtracking algorithm.
+### Объясните время и space complexity типичного алгоритма backtracking.
 
 **Definition:**
 
@@ -291,9 +291,9 @@ stack: [(col=0, next_row=0)]
 </details>
 
 <details>
-<summary>How do worst-case scenarios in backtracking compare to other algorithms?</summary>
+<summary>Как сценарии worst-case в backtracking соотносятся с другими алгоритмами?</summary>
 
-### How do worst-case scenarios in backtracking compare to other algorithms?
+### Как сценарии worst-case в backtracking соотносятся с другими алгоритмами?
 
 **Definition:**
 
@@ -310,9 +310,9 @@ stack: [(col=0, next_row=0)]
 ### Classic Backtracking Problems and Challenges
 
 <details>
-<summary>Provide a backtracking solution for the N-Queens problem.</summary>
+<summary>Приведите a backtracking solution for the N-Queens problem.</summary>
 
-### Provide a backtracking solution for the N-Queens problem.
+### Приведите a backtracking solution for the N-Queens problem.
 
 **Definition:**
 
@@ -353,9 +353,9 @@ def solve_nqueens(n):
 </details>
 
 <details>
-<summary>Solve a Sudoku puzzle with backtracking.</summary>
+<summary>Решите a Sudoku puzzle with backtracking.</summary>
 
-### Solve a Sudoku puzzle with backtracking.
+### Решите a Sudoku puzzle with backtracking.
 
 **Definition:**
 
@@ -404,9 +404,9 @@ def solve_sudoku(board):
 </details>
 
 <details>
-<summary>Solve the rat in a maze problem with backtracking.</summary>
+<summary>Решите the rat in a maze problem with backtracking.</summary>
 
-### Solve the rat in a maze problem with backtracking.
+### Решите the rat in a maze problem with backtracking.
 
 **Definition:**
 
@@ -450,9 +450,9 @@ def maze_paths(maze):
 </details>
 
 <details>
-<summary>Write a backtracking algorithm to generate all permutations of a string.</summary>
+<summary>Напишите a backtracking alGorithm to generate all permutations of a string.</summary>
 
-### Write a backtracking algorithm to generate all permutations of a string.
+### Напишите a backtracking alGorithm to generate all permutations of a string.
 
 **Definition:**
 
@@ -494,9 +494,9 @@ def permutations(s):
 </details>
 
 <details>
-<summary>Implement a backtracking solution for the subset sum problem.</summary>
+<summary>Реализуйте a backtracking solution for the subset sum problem.</summary>
 
-### Implement a backtracking solution for the subset sum problem.
+### Реализуйте a backtracking solution for the subset sum problem.
 
 **Definition:**
 
@@ -537,9 +537,9 @@ def subset_sums(arr, target):
 </details>
 
 <details>
-<summary>Develop a backtracking solution to the Crossword Puzzle problem.</summary>
+<summary>Разработайте решение backtracking для проблемы Crossword Puzzle.</summary>
 
-### Develop a backtracking solution to the Crossword Puzzle problem.
+### Разработайте решение backtracking для проблемы Crossword Puzzle.
 
 **Definition:**
 
@@ -572,9 +572,9 @@ def fits(grid, slot, word):
 </details>
 
 <details>
-<summary>Create a backtracking solution for the Word Search puzzle.</summary>
+<summary>Создайте решение Backtracking fOR пазл word search.</summary>
 
-### Create a backtracking solution for the Word Search puzzle.
+### Создайте решение Backtracking fOR пазл word search.
 
 **Definition:**
 
@@ -614,9 +614,9 @@ def exist(board, word):
 ### Advanced Problem Solving with Backtracking
 
 <details>
-<summary>Solve the graph coloring problem backtracking.</summary>
+<summary>Решите the graph coloring problem backtracking.</summary>
 
-### Solve the graph coloring problem backtracking.
+### Решите the graph coloring problem backtracking.
 
 **Definition:**
 
@@ -659,9 +659,9 @@ def colorable(n, edges, m):
 </details>
 
 <details>
-<summary>Implement a backtracking solution for the Knight's Tour problem.</summary>
+<summary>Реализуйте a backtracking solution for the Knight's Tour problem.</summary>
 
-### Implement a backtracking solution for the Knight's Tour problem.
+### Реализуйте a backtracking solution for the Knight's Tour problem.
 
 **Definition:**
 
@@ -701,9 +701,9 @@ def knight_tour(n=5):
 </details>
 
 <details>
-<summary>Use backtracking approach to solve cryptarithmetic puzzles.</summary>
+<summary>Используйте backtracking для решения cryptarithmetic-головоломок.</summary>
 
-### Use backtracking approach to solve cryptarithmetic puzzles.
+### Используйте backtracking для решения cryptarithmetic-головоломок.
 
 **Definition:**
 
@@ -752,9 +752,9 @@ def solve_send_more():
 </details>
 
 <details>
-<summary>Solve the Hamiltonian path problem using backtracking.</summary>
+<summary>Решите the Hamiltonian path problem using backtracking.</summary>
 
-### Solve the Hamiltonian path problem using backtracking.
+### Решите the Hamiltonian path problem using backtracking.
 
 **Definition:**
 
@@ -802,9 +802,9 @@ def ham_path(n, edges):
 </details>
 
 <details>
-<summary>Solve Word Break problem using backtracking.</summary>
+<summary>Решите Word Break problem using backtracking.</summary>
 
-### Solve Word Break problem using backtracking.
+### Решите Word Break problem using backtracking.
 
 **Definition:**
 
@@ -843,9 +843,9 @@ def word_break_bt(s, words):
 </details>
 
 <details>
-<summary>Write a backtracking algorithm for palindrome partitioning of a string.</summary>
+<summary>Напишите a backtracking alGorithm for palindrome partitioning of a string.</summary>
 
-### Write a backtracking algorithm for palindrome partitioning of a string.
+### Напишите a backtracking alGorithm for palindrome partitioning of a string.
 
 **Definition:**
 
@@ -885,9 +885,9 @@ def pal_parts(s):
 </details>
 
 <details>
-<summary>Solve the combination sum problem using a backtracking approach.</summary>
+<summary>Решите the combination sum problem using a backtracking approach.</summary>
 
-### Solve the combination sum problem using a backtracking approach.
+### Решите the combination sum problem using a backtracking approach.
 
 **Definition:**
 
@@ -928,9 +928,9 @@ def combination_sum(candidates, target):
 </details>
 
 <details>
-<summary>Implement a backtracking algorithm to find all valid IP addresses from a string of numbers.</summary>
+<summary>Реализуйте a backtracking alGorithm to find all valid IP addresses from a string of numbers.</summary>
 
-### Implement a backtracking algorithm to find all valid IP addresses from a string of numbers.
+### Реализуйте a backtracking alGorithm to find all valid IP addresses from a string of numbers.
 
 **Definition:**
 
@@ -974,9 +974,9 @@ def restore_ip(s):
 </details>
 
 <details>
-<summary>Develop a backtracking solution to the "All Paths From Source to Target" problem in a directed graph.</summary>
+<summary>Разработайте решение backtracking для проблемы «Все пути от источника к цели» в направленном graph.</summary>
 
-### Develop a backtracking solution to the "All Paths From Source to Target" problem in a directed graph.
+### Разработайте решение backtracking для проблемы «Все пути от источника к цели» в направленном graph.
 
 **Definition:**
 
@@ -1016,9 +1016,9 @@ def all_paths(graph, target):
 ### Real-World Applications of Backtracking
 
 <details>
-<summary>How is backtracking used in artificial intelligence for games?</summary>
+<summary>Как backtracking used in artificial intelligence for GAmes?</summary>
 
-### How is backtracking used in artificial intelligence for games?
+### Как backtracking used in artificial intelligence for GAmes?
 
 **Definition:**
 
@@ -1053,9 +1053,9 @@ def negamax(board, depth, generate, apply, undo, evaluate):
 </details>
 
 <details>
-<summary>Explain the role of backtracking in network routing optimization.</summary>
+<summary>Объясните роль backtracking в оптимизации сетевой маршрутизации.</summary>
 
-### Explain the role of backtracking in network routing optimization.
+### Объясните роль backtracking в оптимизации сетевой маршрутизации.
 
 **Definition:**
 
@@ -1100,9 +1100,9 @@ def cheapest(n, edges, src, dst):
 </details>
 
 <details>
-<summary>How can backtracking be used in optimizing database query solutions?</summary>
+<summary>Как можно использовать backtracking для оптимизации запросов к базе данных?</summary>
 
-### How can backtracking be used in optimizing database query solutions?
+### Как можно использовать backtracking для оптимизации запросов к базе данных?
 
 **Definition:**
 
@@ -1144,9 +1144,9 @@ def best_join(tables, cost):
 </details>
 
 <details>
-<summary>Discuss the use of backtracking in scheduling and planning problems.</summary>
+<summary>Обсудите использование backtracking в планировании и задачах планирования.</summary>
 
-### Discuss the use of backtracking in scheduling and planning problems.
+### Обсудите использование backtracking в планировании и задачах планирования.
 
 **Definition:**
 

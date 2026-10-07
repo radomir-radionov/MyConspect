@@ -1,4 +1,8 @@
-import { HANDBOOK_NAV_ASIDE_ID, HANDBOOK_SIDEBAR_ID, SIDEBAR_PIN_HOLD_MS } from "@/constants";
+import {
+  HANDBOOK_NAV_ASIDE_ID,
+  HANDBOOK_SIDEBAR_ID,
+  SIDEBAR_PIN_HOLD_MS,
+} from "@/constants";
 
 type SidebarPin = {
   element: HTMLElement;
@@ -35,6 +39,14 @@ export function scrollSidebarHit(hit: HTMLElement) {
   const hitBox = hit.getBoundingClientRect();
   if (hitBox.top < scrollerBox.top || hitBox.bottom > scrollerBox.bottom) {
     hit.scrollIntoView({ block: "nearest" });
+  }
+}
+
+export function resetNavAsideScroll() {
+  pinCleanup?.();
+  const scroller = navAside();
+  if (scroller) {
+    scroller.scrollTop = 0;
   }
 }
 

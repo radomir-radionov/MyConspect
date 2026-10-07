@@ -17,54 +17,54 @@ Interview Q&A for system design.
 ## Questions & Answers
 
 <details>
-  <summary>Why does a web app need a backend?</summary>
+  <summary>Почему does a web app need a backend?</summary>
 
-### Why does a web app need a backend?
+### Почему does a web app need a backend?
 
 The browser only paints HTML/CSS/JS. User data must be stored, authorized, and processed under **business rules** — that is the server. The client names the action; the server talks to the DB and may run jobs (index, email). Architecture name: **client–server**. See [Client–server architecture](./0_system_design_core.md#clientserver-architecture-why-a-backend).
 
 </details>
 
 <details>
-  <summary>CAP theorem?</summary>
+  <summary>Что такое Saga pattern?</summary>
 
-### CAP theorem?
+### Что такое Saga pattern?
 
 Distributed system can guarantee at most **two** of: **C**onsistency, **A**vailability, **P**artition tolerance. Under network partition, choose CP (strong consistency) or AP (availability + eventual consistency).
 
 </details>
 
 <details>
-  <summary>Load balancing strategies?</summary>
+  <summary>Что такое Mediator pattern?</summary>
 
-### Load balancing strategies?
+### Что такое Mediator pattern?
 
 Round-robin, least connections, consistent hashing (sticky sessions). L7 (HTTP path/host) vs L4 (TCP). Health checks remove bad nodes.
 
 </details>
 
 <details>
-  <summary>Caching layers?</summary>
+  <summary>Слои caching?</summary>
 
-### Caching layers?
+### Слои caching?
 
 Browser → CDN → API gateway → app memory (Redis) → DB query cache. Cache invalidation: TTL, write-through, write-behind, cache-aside. Stale-while-revalidate for UX.
 
 </details>
 
 <details>
-  <summary>When message queue?</summary>
+  <summary>Когда message queue?</summary>
 
-### When message queue?
+### Когда message queue?
 
 Decouple producers/consumers, absorb traffic spikes, async jobs (email, exports), event-driven microservices. Trade-off: complexity, eventual consistency, ordering guarantees.
 
 </details>
 
 <details>
-  <summary>Event-driven architecture — what and where?</summary>
+  <summary>Event-driven architecture — что и где?</summary>
 
-### Event-driven architecture — what and where?
+### Event-driven architecture — что и где?
 
 **Definition:** Services communicate by **publishing and consuming events** asynchronously instead of synchronous HTTP chains.
 
@@ -194,9 +194,9 @@ See [Rendering strategies](./0_system_design_architecture.md#rendering-strategie
 </details>
 
 <details>
-  <summary>Is edge rendering dead?</summary>
+  <summary>Является ли edge rendering dead?</summary>
 
-### Is edge rendering dead?
+### Является ли edge rendering dead?
 
 No — the **default** changed. Vercel deprecated standalone Edge Functions; Next.js `runtime = 'edge'` is deprecated. Put **Node compute next to the database**. Edge still wins for **static shells**, geo/auth middleware, and apps whose **data is global** (e.g. Cloudflare Workers + distributed storage). PPR: shell from the edge, dynamic from regional compute.
 
@@ -205,9 +205,9 @@ See [Edge rendering vs data locality](./0_system_design_architecture.md#edge-ren
 </details>
 
 <details>
-  <summary>When micro-frontends?</summary>
+  <summary>Когда micro-frontends?</summary>
 
-### When micro-frontends?
+### Когда micro-frontends?
 
 When **team deploy coordination** is the bottleneck, typically 50+ engineers with clear domains — not because the SPA is "complex." Under ~15: modular monolith. 15–50: BFF + modular monolith is usually enough. Real failure mode: **two React versions on one page** (dependency drift), not mixing frameworks.
 
@@ -233,9 +233,9 @@ See [Microservices architecture](./0_system_design_architecture.md#microservices
 </details>
 
 <details>
-  <summary>Architecture vs design patterns?</summary>
+  <summary>Архитектура против design patterns?</summary>
 
-### Architecture vs design patterns?
+### Архитектура против design patterns?
 
 **Architecture** = decisions about how *the whole system* is cut and how modules talk (MVC roles, layers vs infra, Flux/Redux one-way flow, monolith vs many apps). **Patterns** = named fixes for *local* problems (Adapter maps `{ some_data: ["Name", "Lastname"] }` → `{ someData: "Name Lastname" }`; Factory hides `new`; Strategy swaps `format.usd` / `format.eur`; Observer `subscribe`/`notify`). Same photo app: `applySepia` is domain, `readCamera` is infra, `dispatch(setFilter)` is one-way state — that is architecture; the Adapter is a pattern inside it. Neither is the goal — skip ceremony on a prototype.
 
@@ -276,9 +276,9 @@ See [Behavioral patterns — cheat sheet](./7_special_patterns.md#behavioral-pat
 </details>
 
 <details>
-  <summary>What are classes? Constructor injection?</summary>
+  <summary>Что такое Classes? constructor injection?</summary>
 
-### What are classes? Constructor injection?
+### Что такое Classes? constructor injection?
 
 A **class** is a blueprint: fields, methods, `constructor`. In JS it is prototype sugar. **Constructor injection** passes collaborators in (`new DailyAmount(budget, history)`) so the high-level type does not `new` its tools — tests swap fakes, UML arrows stay one-way.
 

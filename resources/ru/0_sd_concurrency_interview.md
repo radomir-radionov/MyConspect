@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Concurrency](https://devinterview.io/questio
 ### Concurrency Fundamentals
 
 <details>
-<summary>What is concurrency in programming and how does it differ from parallelism?</summary>
+<summary>Что такое concurrency in programming and how does it differ from parallelism?</summary>
 
-### What is concurrency in programming and how does it differ from parallelism?
+### Что такое concurrency in programming and how does it differ from parallelism?
 
 **Definition:**
 
@@ -109,9 +109,9 @@ executor.shutdown()
 </details>
 
 <details>
-<summary>Can you explain race conditions and provide an example where one might occur?</summary>
+<summary>Можете ли вы explain race conditions and provide an example where one might occur?</summary>
 
-### Can you explain race conditions and provide an example where one might occur?
+### Можете ли вы explain race conditions and provide an example where one might occur?
 
 **Definition:**
 
@@ -179,9 +179,9 @@ print(f"Expected: 2000000, Actual: {counter}")
 </details>
 
 <details>
-<summary>What is a critical section in the context of concurrent programming?</summary>
+<summary>Что такое critical section in the context of concurrent programming?</summary>
 
-### What is a critical section in the context of concurrent programming?
+### Что такое critical section in the context of concurrent programming?
 
 **Definition:**
 
@@ -221,9 +221,9 @@ print(f"Expected: 2000000, Actual: {counter}")
 </details>
 
 <details>
-<summary>How does an operating system ensure mutual exclusion in concurrent processes?</summary>
+<summary>Как an operating system ensure mutual exclusion in concurrent processes?</summary>
 
-### How does an operating system ensure mutual exclusion in concurrent processes?
+### Как an operating system ensure mutual exclusion in concurrent processes?
 
 **Definition:**
 
@@ -281,9 +281,9 @@ int main() {
 </details>
 
 <details>
-<summary>Can you describe the concept of atomicity in relation to concurrency?</summary>
+<summary>Можете ли вы describe the concept of atomicity in relation to concurrency?</summary>
 
-### Can you describe the concept of atomicity in relation to concurrency?
+### Можете ли вы describe the concept of atomicity in relation to concurrency?
 
 **Definition:**
 
@@ -325,9 +325,9 @@ int main() {
 </details>
 
 <details>
-<summary>How does a deadlock occur and what are common strategies to prevent it?</summary>
+<summary>Как a deadlock occur and what are common strategies to prevent it?</summary>
 
-### How does a deadlock occur and what are common strategies to prevent it?
+### Как a deadlock occur and what are common strategies to prevent it?
 
 **Definition:**
 
@@ -426,9 +426,9 @@ public class DeadlockExample {
 </details>
 
 <details>
-<summary>What is a livelock and how is it different from a deadlock?</summary>
+<summary>Что такое livelock and how is it different from a deadlock?</summary>
 
-### What is a livelock and how is it different from a deadlock?
+### Что такое livelock and how is it different from a deadlock?
 
 **Definition:**
 
@@ -496,9 +496,9 @@ t2.start()
 </details>
 
 <details>
-<summary>Can you explain the producer-consumer problem and how can it be addressed using concurrency mechanisms?</summary>
+<summary>Можете ли вы explain the producer-consumer problem and how can it be addressed using concurrency mechanisms?</summary>
 
-### Can you explain the producer-consumer problem and how can it be addressed using concurrency mechanisms?
+### Можете ли вы explain the producer-consumer problem and how can it be addressed using concurrency mechanisms?
 
 **Definition:**
 
@@ -601,9 +601,9 @@ consumer.start()
 ### Thread Management
 
 <details>
-<summary>What is the difference between a process and a thread?</summary>
+<summary>Что такое the difference between a process and a thread?</summary>
 
-### What is the difference between a process and a thread?
+### Что такое the difference between a process and a thread?
 
 **Definition:**
 
@@ -631,9 +631,9 @@ consumer.start()
 </details>
 
 <details>
-<summary>How are threads typically created and managed in modern operating systems?</summary>
+<summary>Как threads typically created and managed in modern operating systems?</summary>
 
-### How are threads typically created and managed in modern operating systems?
+### Как threads typically created and managed in modern operating systems?
 
 **Definition:**
 
@@ -699,9 +699,9 @@ thread2.start()
 </details>
 
 <details>
-<summary>What is a thread pool and why might you use one?</summary>
+<summary>Что такое thread pool and why might you use one?</summary>
 
-### What is a thread pool and why might you use one?
+### Что такое thread pool and why might you use one?
 
 **Definition:**
 
@@ -761,9 +761,9 @@ public class ThreadPoolExample {
 </details>
 
 <details>
-<summary>Can you explain the concept of a context switch and how it affects concurrency?</summary>
+<summary>Можете ли вы explain the concept of a context switch and how it affects concurrency?</summary>
 
-### Can you explain the concept of a context switch and how it affects concurrency?
+### Можете ли вы explain the concept of a context switch and how it affects concurrency?
 
 **Definition:**
 
@@ -838,9 +838,9 @@ class MyTask implements Runnable {
 </details>
 
 <details>
-<summary>What are the benefits and disadvantages of using many small threads vs. a few large threads?</summary>
+<summary>Что такое the benefits and disadvantages of using many small threads vs. a few large threads?</summary>
 
-### What are the benefits and disadvantages of using many small threads vs. a few large threads?
+### Что такое the benefits and disadvantages of using many small threads vs. a few large threads?
 
 **Definition:**
 
@@ -890,9 +890,9 @@ class MyTask implements Runnable {
 ### Synchronization Mechanisms
 
 <details>
-<summary>What is a mutex and how does it work?</summary>
+<summary>Что такое mutex and how does it work?</summary>
 
-### What is a mutex and how does it work?
+### Что такое mutex and how does it work?
 
 **Definition:**
 
@@ -934,9 +934,9 @@ class MyTask implements Runnable {
 </details>
 
 <details>
-<summary>What are semaphores and how do they differ from mutexes?</summary>
+<summary>Что такое semaphores and how do they differ from mutexes?</summary>
 
-### What are semaphores and how do they differ from mutexes?
+### Что такое semaphores and how do they differ from mutexes?
 
 **Definition:**
 
@@ -1070,9 +1070,9 @@ iterations: 10, x = 2000000
 </details>
 
 <details>
-<summary>Can you explain what a monitor is in the context of concurrency?</summary>
+<summary>Можете ли вы explain what a monitor is in the context of concurrency?</summary>
 
-### Can you explain what a monitor is in the context of concurrency?
+### Можете ли вы explain what a monitor is in the context of concurrency?
 
 **Definition:**
 
@@ -1090,9 +1090,9 @@ iterations: 10, x = 2000000
 </details>
 
 <details>
-<summary>How do condition variables contribute to thread synchronization?</summary>
+<summary>Как condition variables contribute to thread synchronization?</summary>
 
-### How do condition variables contribute to thread synchronization?
+### Как condition variables contribute to thread synchronization?
 
 **Definition:**
 
@@ -1121,9 +1121,9 @@ public synchronized void guardedJoy() {
 </details>
 
 <details>
-<summary>What is a read-write lock and when is it advantageous to use one?</summary>
+<summary>Что такое read-write lock and when is it advantageous to use one?</summary>
 
-### What is a read-write lock and when is it advantageous to use one?
+### Что такое read-write lock and when is it advantageous to use one?
 
 **Definition:**
 
@@ -1142,9 +1142,9 @@ public synchronized void guardedJoy() {
 ### Concurrency Patterns
 
 <details>
-<summary>Can you describe the fork/join parallelism pattern and its use cases?</summary>
+<summary>Можете ли вы describe the fork/join parallelism pattern and its use cases?</summary>
 
-### Can you describe the fork/join parallelism pattern and its use cases?
+### Можете ли вы describe the fork/join parallelism pattern and its use cases?
 
 **Definition:**
 
@@ -1161,9 +1161,9 @@ public synchronized void guardedJoy() {
 </details>
 
 <details>
-<summary>What is a barrier and how is it used in concurrent programming?</summary>
+<summary>Что такое barrier and how is it used in concurrent programming?</summary>
 
-### What is a barrier and how is it used in concurrent programming?
+### Что такое barrier and how is it used in concurrent programming?
 
 **Definition:**
 
@@ -1179,9 +1179,9 @@ public synchronized void guardedJoy() {
 </details>
 
 <details>
-<summary>Describe an instance where a message queue might be used in a concurrent system.</summary>
+<summary>Опишите an instance where a message queue might be used in a concurrent system.</summary>
 
-### Describe an instance where a message queue might be used in a concurrent system.
+### Опишите an instance where a message queue might be used in a concurrent system.
 
 **Definition:**
 
@@ -1210,9 +1210,9 @@ public synchronized void put(String message) {
 </details>
 
 <details>
-<summary>How might event-driven programming help in handling concurrency?</summary>
+<summary>Как event-driven programming help in handling concurrency?</summary>
 
-### How might event-driven programming help in handling concurrency?
+### Как event-driven programming help in handling concurrency?
 
 **Definition:**
 
@@ -1228,9 +1228,9 @@ public synchronized void put(String message) {
 </details>
 
 <details>
-<summary>Can you illustrate usage of the publish-subscribe pattern in a concurrent system?</summary>
+<summary>Можете ли вы illustrate usage of the publish-subscribe pattern in a concurrent system?</summary>
 
-### Can you illustrate usage of the publish-subscribe pattern in a concurrent system?
+### Можете ли вы illustrate usage of the publish-subscribe pattern in a concurrent system?
 
 **Definition:**
 
@@ -1252,9 +1252,9 @@ public synchronized void put(String message) {
 ### Concurrency in Practice
 
 <details>
-<summary>How does one typically handle exceptions in a concurrently executing thread?</summary>
+<summary>Как one typically handle exceptions in a concurrently executing thread?</summary>
 
-### How does one typically handle exceptions in a concurrently executing thread?
+### Как one typically handle exceptions in a concurrently executing thread?
 
 **Definition:**
 
@@ -1278,9 +1278,9 @@ try {
 </details>
 
 <details>
-<summary>What is the advantage of using non-blocking algorithms in a multi-threaded application?</summary>
+<summary>Что такое the advantage of using non-blocking alGorithms in a multi-threaded application?</summary>
 
-### What is the advantage of using non-blocking algorithms in a multi-threaded application?
+### Что такое the advantage of using non-blocking alGorithms in a multi-threaded application?
 
 **Definition:**
 
@@ -1307,9 +1307,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>Can you describe a scenario where you would use atomic operations?</summary>
+<summary>Можете ли вы describe a scenario where you would use atomic operations?</summary>
 
-### Can you describe a scenario where you would use atomic operations?
+### Можете ли вы describe a scenario where you would use atomic operations?
 
 **Definition:**
 
@@ -1326,9 +1326,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>How would you go about debugging a concurrency issue like a deadlock in a system?</summary>
+<summary>Как бы вы Go about debugging a concurrency issue like a deadlock in a system?</summary>
 
-### How would you go about debugging a concurrency issue like a deadlock in a system?
+### Как бы вы Go about debugging a concurrency issue like a deadlock in a system?
 
 **Definition:**
 
@@ -1344,9 +1344,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>What measures would you take to ensure thread-safety in a method that mutates shared data?</summary>
+<summary>Какие меры вы предпримете для thread-safety в методе, изменяющем shared data?</summary>
 
-### What measures would you take to ensure thread-safety in a method that mutates shared data?
+### Какие меры вы предпримете для thread-safety в методе, изменяющем shared data?
 
 **Definition:**
 
@@ -1365,9 +1365,9 @@ if (!(myLock && yourLock)) {
 ### Performance and Scalability
 
 <details>
-<summary>How can the use of concurrency affect the scalability of an application?</summary>
+<summary>Как the use of concurrency affect the Scalability of an application?</summary>
 
-### How can the use of concurrency affect the scalability of an application?
+### Как the use of concurrency affect the Scalability of an application?
 
 **Definition:**
 
@@ -1383,9 +1383,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>What approaches can be taken to balance load effectively between threads?</summary>
+<summary>Какие подходы помогают эффективно balance load между threads?</summary>
 
-### What approaches can be taken to balance load effectively between threads?
+### Какие подходы помогают эффективно balance load между threads?
 
 **Definition:**
 
@@ -1401,9 +1401,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>Can you discuss strategies to reduce contention for shared resources in a concurrent program?</summary>
+<summary>Можете ли вы discuss strategies to reduce contention for SHAred resources in a concurrent program?</summary>
 
-### Can you discuss strategies to reduce contention for shared resources in a concurrent program?
+### Можете ли вы discuss strategies to reduce contention for SHAred resources in a concurrent program?
 
 **Definition:**
 
@@ -1420,9 +1420,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>How does the concept of concurrency relate to application throughput and latency?</summary>
+<summary>Как the concept of concurrency relate to application throughput and latency?</summary>
 
-### How does the concept of concurrency relate to application throughput and latency?
+### Как the concept of concurrency relate to application throughput and latency?
 
 **Definition:**
 
@@ -1440,9 +1440,9 @@ if (!(myLock && yourLock)) {
 ### Advanced Topics
 
 <details>
-<summary>What is software transactional memory (STM) and how can it be used to manage concurrency?</summary>
+<summary>Что такое software transactional memory (STM) and how can it be used to manage concurrency?</summary>
 
-### What is software transactional memory (STM) and how can it be used to manage concurrency?
+### Что такое software transactional memory (STM) and how can it be used to manage concurrency?
 
 **Definition:**
 
@@ -1459,9 +1459,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>Explain the role of lock-free and wait-free algorithms in concurrent programming.</summary>
+<summary>Объясните the role of lock-free and wait-free alGorithms in concurrent programming.</summary>
 
-### Explain the role of lock-free and wait-free algorithms in concurrent programming.
+### Объясните the role of lock-free and wait-free alGorithms in concurrent programming.
 
 **Definition:**
 
@@ -1477,9 +1477,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>How does the actor model address concurrency, and what are its benefits?</summary>
+<summary>Как the actor model address concurrency, and what are its benefits?</summary>
 
-### How does the actor model address concurrency, and what are its benefits?
+### Как the actor model address concurrency, and what are its benefits?
 
 **Definition:**
 
@@ -1495,9 +1495,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>What are some challenges in testing concurrent applications, and how can they be mitigated?</summary>
+<summary>Что такое some challenges in testing concurrent applications, and how can they be mitiGAted?</summary>
 
-### What are some challenges in testing concurrent applications, and how can they be mitigated?
+### Что такое some challenges in testing concurrent applications, and how can they be mitiGAted?
 
 **Definition:**
 
@@ -1516,9 +1516,9 @@ if (!(myLock && yourLock)) {
 ### Hardware and Concurrency
 
 <details>
-<summary>How does the hardware architecture of a CPU relate to the way concurrency is implemented in software?</summary>
+<summary>Как the hardware architecture of a CPU relate to the way concurrency is implemented in software?</summary>
 
-### How does the hardware architecture of a CPU relate to the way concurrency is implemented in software?
+### Как the hardware architecture of a CPU relate to the way concurrency is implemented in software?
 
 **Definition:**
 
@@ -1535,9 +1535,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>Can you explain the role of cache coherency in multi-processor or multi-core systems in the context of concurrency?</summary>
+<summary>Можете ли вы explain the role of cache coherency in multi-processor or multi-core systems in the context of concurrency?</summary>
 
-### Can you explain the role of cache coherency in multi-processor or multi-core systems in the context of concurrency?
+### Можете ли вы explain the role of cache coherency in multi-processor or multi-core systems in the context of concurrency?
 
 **Definition:**
 
@@ -1553,9 +1553,9 @@ if (!(myLock && yourLock)) {
 </details>
 
 <details>
-<summary>What are the potential impacts of hardware-level parallelism on software concurrency models?</summary>
+<summary>Что такое the potential impacts of hardware-level parallelism on software concurrency models?</summary>
 
-### What are the potential impacts of hardware-level parallelism on software concurrency models?
+### Что такое the potential impacts of hardware-level parallelism on software concurrency models?
 
 **Definition:**
 
@@ -1573,9 +1573,9 @@ if (!(myLock && yourLock)) {
 ### Modern Trends and Best Practices
 
 <details>
-<summary>In the context of modern multi-core processors, how have high-level concurrency abstractions evolved to simplify concurrent programming?</summary>
+<summary>В the context of modern multi-core processors, how have high-level concurrency abstractions evolved to simplify concurrent programming?</summary>
 
-### In the context of modern multi-core processors, how have high-level concurrency abstractions evolved to simplify concurrent programming?
+### В the context of modern multi-core processors, how have high-level concurrency abstractions evolved to simplify concurrent programming?
 
 **Definition:**
 

@@ -41,11 +41,11 @@
 ## Questions & Answers
 
 <details>
-  <summary>SSR vs SSG vs CSR vs hybrid rendering?</summary>
+  <summary>Interview Practice</summary>
 
 <a name="ssr-vs-ssg-vs-csr-vs-hybrid-rendering"></a>
 
-### SSR vs SSG vs CSR vs hybrid rendering?
+### Interview Practice
 
 **Definition:** Четыре способа доставки HTML в браузер — на интервью проверяют, знаете ли вы **когда** каждый выполняется и какой Nuxt API его запускает.
 
@@ -90,22 +90,22 @@ export default defineNuxtConfig({
 </details>
 
 <details>
-  <summary>useFetch vs useAsyncData vs $fetch?</summary>
+  <summary>Question index</summary>
 
 <a name="usefetch-vs-useasyncdata-vs-fetch"></a>
 
-### useFetch vs useAsyncData vs $fetch?
+### Question index
 
 **Definition:** Три data API — ответ на интервью должен указать SSR payload behavior и когда каждый уместен.
 
 
-| `$fetch` | `useFetch` | `useAsyncData` |
-| --- | ---------- | ------------ |
-| **Wrapper** | ofetch directly | `useAsyncData` + `$fetch` | Generic async handler |
-| **SSR payload** | No (alone) | Yes | Yes |
-| **Typical use** | Event handlers, server/api | REST в `setup` | CMS, DB, parallel custom logic |
-| **Key** | N/A | URL-based (override with `key`) | Explicit string/computed key |
-| **Returns** | Promise | `{ data, status, error, refresh }` | Same |
+| | `$fetch` | `useFetch` | `useAsyncData` |
+| | --- | ---------- | ------------ |
+| | **Wrapper** | ofetch directly | `useAsyncData` + `$fetch` | Generic async handler |
+| | **SSR payload** | No (alone) | Yes | Yes |
+| | **Typical use** | Event handlers, server/api | REST в `setup` | CMS, DB, parallel custom logic |
+| | **Key** | N/A | URL-based (override with `key`) | Explicit string/computed key |
+| | **Returns** | Promise | `{ data, status, error, refresh }` | Same |
 
 | Pros | Cons |
 |------|------|
@@ -139,21 +139,21 @@ async function submit() {
 </details>
 
 <details>
-  <summary>Server Actions vs Nitro routes?</summary>
+  <summary>SSR vs SSG vs CSR vs hybrid rendering?</summary>
 
 <a name="server-actions-vs-nitro-routes"></a>
 
-### Server Actions vs Nitro routes?
+### SSR vs SSG vs CSR vs hybrid rendering?
 
 **Answer:** В Nuxt **нет** React-style **Server Actions** (`"use server"` colocated в components). Mutations используют **`server/api`** Nitro handlers + **`$fetch`** с клиента, или form posts на API routes.
 
 
-| Next.js Server Actions | Nuxt pattern |
-| --- | ------------------------ |
-| **Definition** | RPC-like functions в React components | HTTP handlers в `server/api/` |
-| **Colocation** | Same file as UI | Separate `server/` tree |
-| **Client call** | `action()` prop или `useActionState` | `$fetch('/api/todos', { method: 'POST', body })` |
-| **SSR data** | RSC + Server Actions | `useFetch` / `useAsyncData` + payload |
+| | Next.js Server Actions | Nuxt pattern |
+| | --- | ------------------------ |
+| | **Definition** | RPC-like functions в React components | HTTP handlers в `server/api/` |
+| | **Colocation** | Same file as UI | Separate `server/` tree |
+| | **Client call** | `action()` prop или `useActionState` | `$fetch('/api/todos', { method: 'POST', body })` |
+| | **SSR data** | RSC + Server Actions | `useFetch` / `useAsyncData` + payload |
 
 **When to use Nitro routes:** CRUD APIs, webhooks, DB access, всё, что не должно попасть в client bundle. Refresh UI через `refreshNuxtData()` или mutate local state после успешного `$fetch`.
 
@@ -164,23 +164,23 @@ async function submit() {
 </details>
 
 <details>
-  <summary>Route middleware vs server middleware?</summary>
+  <summary>useFetch vs useAsyncData vs $fetch?</summary>
 
 <a name="route-middleware-vs-server-middleware"></a>
 
-### Route middleware vs server middleware?
+### useFetch vs useAsyncData vs $fetch?
 
 **Definition:** Две middleware-системы с похожими именами — выполняются в разных runtime для разных целей.
 
 
-| Route middleware | Server middleware |
-| --- | ------------------ |
-| **Path** | `app/middleware/` | `server/middleware/` |
-| **Runtime** | Vue app (SSR + client nav) | Nitro only |
-| **Runs on `/api/*`** | No | Yes |
-| **API** | `defineNuxtRouteMiddleware` | `defineEventHandler` |
-| **Redirect** | `return navigateTo('/login')` | `sendRedirect(event, '/login')` |
-| **Typical use** | UX auth gate | API JWT, logging, CORS |
+| | Route middleware | Server middleware |
+| | --- | ------------------ |
+| | **Path** | `app/middleware/` | `server/middleware/` |
+| | **Runtime** | Vue app (SSR + client nav) | Nitro only |
+| | **Runs on `/api/*`** | No | Yes |
+| | **API** | `defineNuxtRouteMiddleware` | `defineEventHandler` |
+| | **Redirect** | `return navigateTo('/login')` | `sendRedirect(event, '/login')` |
+| | **Typical use** | UX auth gate | API JWT, logging, CORS |
 
 | Pros | Cons |
 |------|------|
@@ -212,11 +212,11 @@ export default defineEventHandler((event) => {
 </details>
 
 <details>
-  <summary>routeRules and prerendering?</summary>
+  <summary>Server Actions vs Nitro routes?</summary>
 
 <a name="routerules-and-prerendering"></a>
 
-### routeRules and prerendering?
+### Server Actions vs Nitro routes?
 
 **Definition:** Declarative per-route rendering и caching в `nuxt.config.ts`, скомпилированные Nitro.
 
@@ -256,9 +256,9 @@ export default defineNuxtConfig({
 </details>
 
 <details>
-  <summary>useSeoMeta and SEO in Nuxt?</summary>
+  <summary>Route middleware vs server middleware?</summary>
 
-### useSeoMeta and SEO in Nuxt?
+### Route middleware vs server middleware?
 
 **Definition:** Type-safe SEO composable (Unhead) для title, description, Open Graph и Twitter tags — reactive и SSR-friendly.
 
@@ -291,9 +291,9 @@ useSeoMeta({
 </details>
 
 <details>
-  <summary>Nitro and deployment presets?</summary>
+  <summary>routeRules и prerendering?</summary>
 
-### Nitro and deployment presets?
+### routeRules и prerendering?
 
 **Definition:** Nitro собирает `.output/` для Node, static или serverless/edge presets.
 
@@ -324,9 +324,9 @@ NITRO_PRESET=vercel nuxt build
 ## Coding tasks
 
 <details>
-  <summary>Task 1 — Fix double fetch on hydration</summary>
+  <summary>useSeoMeta и SEO в Nuxt?</summary>
 
-### Task 1 — Fix double fetch on hydration
+### useSeoMeta и SEO в Nuxt?
 
 **Definition:** Practice scenario — product page fetches twice (network tab показывает duplicate `/api/products` on load).
 
@@ -355,7 +355,7 @@ const { data: products } = await useFetch('/api/products')
 ```
 
 <details>
-  <summary>Answer</summary>
+  <summary>Ответ</summary>
 
 **Root cause:** `$fetch` не сериализует results в Nuxt **payload**, поэтому client повторяет request during hydration.
 
@@ -370,9 +370,9 @@ const { data: products } = await useFetch('/api/products')
 </details>
 
 <details>
-  <summary>Task 2 — Protected dashboard route</summary>
+  <summary>Nitro и deployment presets?</summary>
 
-### Task 2 — Protected dashboard route
+### Nitro и deployment presets?
 
 **Definition:** Practice scenario — `/dashboard` must redirect unauthenticated users to `/login` on both SSR and client navigation; `/api/dashboard` must reject missing tokens.
 
@@ -411,7 +411,7 @@ export default defineEventHandler((event) => {
 ```
 
 <details>
-  <summary>Answer</summary>
+  <summary>Ответ</summary>
 
 Route middleware handles **UX redirects** для page navigations. API routes need **server-side** checks — middleware alone is insufficient because `/api/dashboard` is callable directly.
 
@@ -426,9 +426,9 @@ Populate `useUser()` from composable, который reads session via `useFetch
 </details>
 
 <details>
-  <summary>Task 3 — Prerender blog with dynamic slugs</summary>
+  <summary>routeRules и prerendering?</summary>
 
-### Task 3 — Prerender blog with dynamic slugs
+### routeRules и prerendering?
 
 **Definition:** Practice scenario — blog posts live at `/blog/[slug]` from CMS. `nuxt generate` only prerenders `/blog` because slugs are not linked yet.
 
@@ -457,7 +457,7 @@ export default defineNuxtConfig({
 ```
 
 <details>
-  <summary>Answer</summary>
+  <summary>Ответ</summary>
 
 Nitro crawler cannot invent CMS slugs — register them в **`prerender:routes`** hook (or static `nitro.prerender.routes` list). Ensure `/blog` page links to posts for crawl-based discovery as backup.
 

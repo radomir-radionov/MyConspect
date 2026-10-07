@@ -19,9 +19,9 @@ Questions from [Devinterview.io — Scala](https://devinterview.io/questions/mac
 ### Scala Fundamentals
 
 <details>
-<summary>What is Scala and why is it important for machine learning?</summary>
+<summary>Что такое Scala and why is it important for machine learning?</summary>
 
-### What is Scala and why is it important for machine learning?
+### Что такое Scala and why is it important for machine learning?
 
 **Definition:**
 
@@ -49,9 +49,9 @@ val score = features.dot(weights)
 </details>
 
 <details>
-<summary>Explain the difference between `var` and `val` in Scala.</summary>
+<summary>Объясните the difference between `var` and `val` in Scala.</summary>
 
-### Explain the difference between `var` and `val` in Scala.
+### Объясните the difference between `var` and `val` in Scala.
 
 **Definition:**
 
@@ -78,9 +78,9 @@ val userId = 42
 </details>
 
 <details>
-<summary>What are the main features of Scala that make it amenable for data science and machine learning tasks?</summary>
+<summary>Что такое the main features of Scala that make it amenable for data science and machine learning tasks?</summary>
 
-### What are the main features of Scala that make it amenable for data science and machine learning tasks?
+### Что такое the main features of Scala that make it amenable for data science and machine learning tasks?
 
 **Definition:**
 
@@ -102,9 +102,9 @@ Scala удобна для анализа данных: статическая с
 </details>
 
 <details>
-<summary>Can you describe the type hierarchy in Scala?</summary>
+<summary>Можете ли вы describe the type hierarchy in Scala?</summary>
 
-### Can you describe the type hierarchy in Scala?
+### Можете ли вы describe the type hierarchy in Scala?
 
 **Definition:**
 
@@ -130,9 +130,9 @@ val id: String | Int = 7
 </details>
 
 <details>
-<summary>How is Scala interoperable with Java?</summary>
+<summary>Как Scala interoperable with Java?</summary>
 
-### How is Scala interoperable with Java?
+### Как Scala interoperable with Java?
 
 **Definition:**
 
@@ -158,9 +158,9 @@ val missing = Option(System.getProperty("absent.key")) // None
 </details>
 
 <details>
-<summary>What are case classes in Scala and how do they benefit pattern matching?</summary>
+<summary>Что такое case Classes in Scala and how do they benefit pattern matching?</summary>
 
-### What are case classes in Scala and how do they benefit pattern matching?
+### Что такое case Classes in Scala and how do they benefit pattern matching?
 
 **Definition:**
 
@@ -189,9 +189,9 @@ val adjusted = current.copy(value = 19.0)
 </details>
 
 <details>
-<summary>Explain the concept of `object` in Scala and its usage.</summary>
+<summary>Объясните the concept of `object` in Scala and its usage.</summary>
 
-### Explain the concept of `object` in Scala and its usage.
+### Объясните the concept of `object` in Scala and its usage.
 
 **Definition:**
 
@@ -218,9 +218,9 @@ Temperature.celsiusToF(20)
 </details>
 
 <details>
-<summary>How do you implement traits in Scala?</summary>
+<summary>Как you implement traits in Scala?</summary>
 
-### How do you implement traits in Scala?
+### Как you implement traits in Scala?
 
 **Definition:**
 
@@ -249,9 +249,9 @@ new Report("Q1").label  // [Q1]
 </details>
 
 <details>
-<summary>Discuss the importance of immutability and how Scala supports it.</summary>
+<summary>Обсудите the importance of immutability and how Scala supports it.</summary>
 
-### Discuss the importance of immutability and how Scala supports it.
+### Обсудите the importance of immutability and how Scala supports it.
 
 **Definition:**
 
@@ -278,9 +278,9 @@ val next = scores :+ 4
 </details>
 
 <details>
-<summary>Explain the difference between a sequence and a list in Scala.</summary>
+<summary>Объясните the difference between a sequence and a list in Scala.</summary>
 
-### Explain the difference between a sequence and a list in Scala.
+### Объясните the difference between a sequence and a list in Scala.
 
 **Definition:**
 
@@ -309,9 +309,9 @@ indexed(2)    // прямой индекс
 </details>
 
 <details>
-<summary>What are the advantages of using Option in Scala?</summary>
+<summary>Что такое the advantages of using Option in Scala?</summary>
 
-### What are the advantages of using Option in Scala?
+### Что такое the advantages of using Option in Scala?
 
 **Definition:**
 
@@ -335,9 +335,9 @@ parsePort("8080").getOrElse(80)
 </details>
 
 <details>
-<summary>Discuss the role of implicit parameters in Scala.</summary>
+<summary>Обсудите the role of implicit parameters in Scala.</summary>
 
-### Discuss the role of implicit parameters in Scala.
+### Обсудите the role of implicit parameters in Scala.
 
 **Definition:**
 
@@ -364,9 +364,9 @@ shout("disk full")  // "note: disk full"
 </details>
 
 <details>
-<summary>How do for-comprehensions work in Scala?</summary>
+<summary>Как for-comprehensions work in Scala?</summary>
 
-### How do for-comprehensions work in Scala?
+### Как for-comprehensions work in Scala?
 
 **Definition:**
 
@@ -398,9 +398,9 @@ val squares =
 ### Functional Programming in Scala
 
 <details>
-<summary>What is functional programming and how does Scala support it?</summary>
+<summary>Что такое functional programming and how does Scala support it?</summary>
 
-### What is functional programming and how does Scala support it?
+### Что такое functional programming and how does Scala support it?
 
 **Definition:**
 
@@ -426,9 +426,9 @@ def total(xs: List[Int]): Int = xs.foldLeft(0)(_ + _)
 </details>
 
 <details>
-<summary>Explain higher-order functions in Scala.</summary>
+<summary>Объясните higher-order functions in Scala.</summary>
 
-### Explain higher-order functions in Scala.
+### Объясните higher-order functions in Scala.
 
 **Definition:**
 
@@ -457,9 +457,9 @@ prefix("id:")("42")
 </details>
 
 <details>
-<summary>What are pure functions and why are they important in Scala?</summary>
+<summary>Что такое pure functions and why are they important in Scala?</summary>
 
-### What are pure functions and why are they important in Scala?
+### Что такое pure functions and why are they important in Scala?
 
 **Definition:**
 
@@ -492,9 +492,9 @@ def sum(list: List[Int]): Int = list match {
 </details>
 
 <details>
-<summary>Discuss the use of partial functions in Scala.</summary>
+<summary>Обсудите the use of partial functions in Scala.</summary>
 
-### Discuss the use of partial functions in Scala.
+### Обсудите the use of partial functions in Scala.
 
 **Definition:**
 
@@ -530,9 +530,9 @@ doubledOdds.applyOrElse(4, _ + 1) // 5
 </details>
 
 <details>
-<summary>How do you work with closures in Scala?</summary>
+<summary>Как you work with closures in Scala?</summary>
 
-### How do you work with closures in Scala?
+### Как you work with closures in Scala?
 
 **Definition:**
 
@@ -564,9 +564,9 @@ prefix("id:")("42") // id:42
 </details>
 
 <details>
-<summary>What is tail recursion and how does Scala optimize it?</summary>
+<summary>Что такое tail recursion and how does Scala optimize it?</summary>
 
-### What is tail recursion and how does Scala optimize it?
+### Что такое tail recursion and how does Scala optimize it?
 
 **Definition:**
 
@@ -602,9 +602,9 @@ def factorial(x: Int): Int =
 </details>
 
 <details>
-<summary>Explain the use of `map`, `flatMap`, and `filter` in Scala collections.</summary>
+<summary>Объясните the use of `Map`, `flatMap`, and `filter` in Scala collections.</summary>
 
-### Explain the use of `map`, `flatMap`, and `filter` in Scala collections.
+### Объясните the use of `Map`, `flatMap`, and `filter` in Scala collections.
 
 **Definition:**
 
@@ -639,9 +639,9 @@ List("apple", "pear").flatMap(_.toUpperCase)
 </details>
 
 <details>
-<summary>How does Scala provide support for lazy evaluation?</summary>
+<summary>Как Scala provide support for lazy evaluation?</summary>
 
-### How does Scala provide support for lazy evaluation?
+### Как Scala provide support for lazy evaluation?
 
 **Definition:**
 
@@ -677,9 +677,9 @@ huge.take(3).toList // List(1, 2, 3)
 ### Scala Collection API
 
 <details>
-<summary>What is the difference between mutable and immutable collections in Scala?</summary>
+<summary>Что такое the difference between mutable and immutable collections in Scala?</summary>
 
-### What is the difference between mutable and immutable collections in Scala?
+### Что такое the difference between mutable and immutable collections in Scala?
 
 **Definition:**
 
@@ -715,9 +715,9 @@ buf.toList
 </details>
 
 <details>
-<summary>How do you use tuples in Scala?</summary>
+<summary>Как you use tuples in Scala?</summary>
 
-### How do you use tuples in Scala?
+### Как you use tuples in Scala?
 
 **Definition:**
 
@@ -747,9 +747,9 @@ ingredient._1
 </details>
 
 <details>
-<summary>Explain the role of iterators in Scala.</summary>
+<summary>Объясните the role of iterators in Scala.</summary>
 
-### Explain the role of iterators in Scala.
+### Объясните the role of iterators in Scala.
 
 **Definition:**
 
@@ -781,9 +781,9 @@ labels.result()
 </details>
 
 <details>
-<summary>Discuss the difference between fold and reduce operations in Scala.</summary>
+<summary>Обсудите the difference between fold and reduce operations in Scala.</summary>
 
-### Discuss the difference between fold and reduce operations in Scala.
+### Обсудите the difference between fold and reduce operations in Scala.
 
 **Definition:**
 
@@ -818,9 +818,9 @@ List.empty[Int].foldLeft(0)(_ + _) // 0
 </details>
 
 <details>
-<summary>How do parallel collections work in Scala and what are their benefits?</summary>
+<summary>Как parallel collections work in Scala and what are their benefits?</summary>
 
-### How do parallel collections work in Scala and what are their benefits?
+### Как parallel collections work in Scala and what are their benefits?
 
 **Definition:**
 
@@ -855,9 +855,9 @@ val total = (1 to 10000).toArray.par.fold(0)(_ + _)
 ### Concurrency in Scala
 
 <details>
-<summary>What are Futures in Scala and how do you use them for asynchronous computation?</summary>
+<summary>Что такое Futures in Scala and how do you use them for asynchronous computation?</summary>
 
-### What are Futures in Scala and how do you use them for asynchronous computation?
+### Что такое Futures in Scala and how do you use them for asynchronous computation?
 
 **Definition:**
 
@@ -897,9 +897,9 @@ def combined(using ExecutionContext): Future[Int] =
 </details>
 
 <details>
-<summary>Explain the difference between an Actor and a Thread in Scala concurrency.</summary>
+<summary>Объясните the difference between an Actor and a Thread in Scala concurrency.</summary>
 
-### Explain the difference between an Actor and a Thread in Scala concurrency.
+### Объясните the difference between an Actor and a Thread in Scala concurrency.
 
 **Definition:**
 
@@ -934,9 +934,9 @@ def offThisThread()(using ExecutionContext): Future[Int] =
 </details>
 
 <details>
-<summary>How does Scala handle synchronization and concurrency control?</summary>
+<summary>Как Scala handle synchronization and concurrency control?</summary>
 
-### How does Scala handle synchronization and concurrency control?
+### Как Scala handle synchronization and concurrency control?
 
 **Definition:**
 
@@ -973,9 +973,9 @@ def exclusive(lock: AnyRef, balance: Int): Int =
 </details>
 
 <details>
-<summary>What is the Akka framework and how does it relate to Scala?</summary>
+<summary>Что такое the Akka framework and how does it relate to Scala?</summary>
 
-### What is the Akka framework and how does it relate to Scala?
+### Что такое the Akka framework and how does it relate to Scala?
 
 **Definition:**
 
@@ -1010,9 +1010,9 @@ oneShot()
 ### Scala and Machine Learning Libraries
 
 <details>
-<summary>Name some popular machine learning libraries that support Scala.</summary>
+<summary>Назовите some popular machine learning libraries that support Scala.</summary>
 
-### Name some popular machine learning libraries that support Scala.
+### Назовите some popular machine learning libraries that support Scala.
 
 **Definition:**
 
@@ -1043,9 +1043,9 @@ def dot(xs: Seq[Double], ys: Seq[Double]): Double =
 </details>
 
 <details>
-<summary>How does the Breeze library facilitate scientific computing in Scala?</summary>
+<summary>Как the Breeze library facilitate scientific computing in Scala?</summary>
 
-### How does the Breeze library facilitate scientific computing in Scala?
+### Как the Breeze library facilitate scientific computing in Scala?
 
 **Definition:**
 
@@ -1076,9 +1076,9 @@ def dot(xs: Seq[Double], ys: Seq[Double]): Double =
 </details>
 
 <details>
-<summary>What are Saddle and Algebird, and how do they contribute to machine learning operations in Scala?</summary>
+<summary>Что такое Saddle and Algebird, and how do they contribute to machine learning operations in Scala?</summary>
 
-### What are Saddle and Algebird, and how do they contribute to machine learning operations in Scala?
+### Что такое Saddle and Algebird, and how do they contribute to machine learning operations in Scala?
 
 **Definition:**
 
@@ -1113,9 +1113,9 @@ def mergeCounts(a: Map[String, Int], b: Map[String, Int]): Map[String, Int] =
 ### Object-Oriented Programming in Scala
 
 <details>
-<summary>Explain the concept of inheritance in Scala.</summary>
+<summary>Объясните the concept of inheritance in Scala.</summary>
 
-### Explain the concept of inheritance in Scala.
+### Объясните the concept of inheritance in Scala.
 
 **Definition:**
 
@@ -1149,9 +1149,9 @@ render(Document("notes"))
 </details>
 
 <details>
-<summary>How do abstract classes work in Scala?</summary>
+<summary>Как abstract classes work in Scala?</summary>
 
-### How do abstract classes work in Scala?
+### Как abstract classes work in Scala?
 
 **Definition:**
 
@@ -1186,9 +1186,9 @@ class Square(side: Double) extends Shape("square"):
 </details>
 
 <details>
-<summary>What are companion objects in Scala?</summary>
+<summary>Что такое companion objects in Scala?</summary>
 
-### What are companion objects in Scala?
+### Что такое companion objects in Scala?
 
 **Definition:**
 
@@ -1221,9 +1221,9 @@ val user = User(7)
 </details>
 
 <details>
-<summary>Describe the use of mixins and trait composition.</summary>
+<summary>Опишите the use of mixins and trait composition.</summary>
 
-### Describe the use of mixins and trait composition.
+### Опишите the use of mixins and trait composition.
 
 **Definition:**
 
@@ -1260,9 +1260,9 @@ Greeter().sayHello
 ### Scala Coding Challenges
 
 <details>
-<summary>Write a Scala function to compute the factorial of a number using tail recursion.</summary>
+<summary>Напишите a Scala function to compute the Factorial of a number using tail recursion.</summary>
 
-### Write a Scala function to compute the factorial of a number using tail recursion.
+### Напишите a Scala function to compute the Factorial of a number using tail recursion.
 
 **Definition:**
 
@@ -1294,9 +1294,9 @@ def factorial(x: Int): Int =
 </details>
 
 <details>
-<summary>Implement a function in Scala that verifies if a list of integers is sorted.</summary>
+<summary>Реализуйте a function in Scala that verifies if a list of integers is sorted.</summary>
 
-### Implement a function in Scala that verifies if a list of integers is sorted.
+### Реализуйте a function in Scala that verifies if a list of integers is sorted.
 
 **Definition:**
 
@@ -1326,9 +1326,9 @@ isSorted(Nil)
 </details>
 
 <details>
-<summary>Create a Scala class that represents a Matrix and a method to multiply two matrices.</summary>
+<summary>Создайте a Scala class that represents a matrix and a method to multiply two matrices.</summary>
 
-### Create a Scala class that represents a Matrix and a method to multiply two matrices.
+### Создайте a Scala class that represents a matrix and a method to multiply two matrices.
 
 **Definition:**
 
@@ -1361,9 +1361,9 @@ final case class Matrix(rows: Vector[Vector[Double]]):
 </details>
 
 <details>
-<summary>Write a Scala program to read a CSV file and calculate the average value of a numeric column.</summary>
+<summary>Напишите a Scala program to read a CSV file and calculate the average value of a numeric column.</summary>
 
-### Write a Scala program to read a CSV file and calculate the average value of a numeric column.
+### Напишите a Scala program to read a CSV file and calculate the average value of a numeric column.
 
 **Definition:**
 
@@ -1400,9 +1400,9 @@ def averageColumn(path: String, column: Int): Double =
 </details>
 
 <details>
-<summary>Implement a simple decision tree algorithm in Scala.</summary>
+<summary>Реализуйте a simple decision tree alGorithm in Scala.</summary>
 
-### Implement a simple decision tree algorithm in Scala.
+### Реализуйте a simple decision tree alGorithm in Scala.
 
 **Definition:**
 
@@ -1438,9 +1438,9 @@ def predict(tree: Tree, features: Vector[Double]): String =
 </details>
 
 <details>
-<summary>Use Scala to perform text preprocessing for natural language processing (e.g., tokenization, normalization).</summary>
+<summary>Используйте Scala to perform text preprocessing for natural language processing (e.g., tokenization, normalization).</summary>
 
-### Use Scala to perform text preprocessing for natural language processing (e.g., tokenization, normalization).
+### Используйте Scala to perform text preprocessing for natural language processing (e.g., tokenization, normalization).
 
 **Definition:**
 
@@ -1474,9 +1474,9 @@ def tokenize(lines: List[String]): List[String] =
 </details>
 
 <details>
-<summary>Write a Scala function that performs element-wise addition of two vectors.</summary>
+<summary>Напишите a Scala function that performs element-wise addition of two vectors.</summary>
 
-### Write a Scala function that performs element-wise addition of two vectors.
+### Напишите a Scala function that performs element-wise addition of two vectors.
 
 **Definition:**
 
@@ -1506,9 +1506,9 @@ def add(xs: Vector[Double], ys: Vector[Double]): Vector[Double] =
 ### Advanced Scala Concepts
 
 <details>
-<summary>Discuss implicits in Scala and how they can be used in type conversion.</summary>
+<summary>Обсудите implicits in Scala and how they can be used in type conversion.</summary>
 
-### Discuss implicits in Scala and how they can be used in type conversion.
+### Обсудите implicits in Scala and how they can be used in type conversion.
 
 **Definition:**
 
@@ -1547,9 +1547,9 @@ findUserById(UserId(7))
 </details>
 
 <details>
-<summary>Explain the concept of path-dependent types in Scala.</summary>
+<summary>Объясните the concept of path-dependent types in Scala.</summary>
 
-### Explain the concept of path-dependent types in Scala.
+### Объясните the concept of path-dependent types in Scala.
 
 **Definition:**
 
@@ -1585,9 +1585,9 @@ a.connectTo(b)
 </details>
 
 <details>
-<summary>What is Type Erasure in Scala and how can it be addressed?</summary>
+<summary>Что такое Type Erasure in Scala and how can it be addressed?</summary>
 
-### What is Type Erasure in Scala and how can it be addressed?
+### Что такое Type Erasure in Scala and how can it be addressed?
 
 **Definition:**
 
@@ -1618,9 +1618,9 @@ arrayOf("a", "b")
 </details>
 
 <details>
-<summary>Describe Type Bounds in Scala and provide an example of their usage.</summary>
+<summary>Опишите Type Bounds in Scala and provide an example of their usage.</summary>
 
-### Describe Type Bounds in Scala and provide an example of their usage.
+### Опишите Type Bounds in Scala and provide an example of their usage.
 
 **Definition:**
 
@@ -1655,9 +1655,9 @@ PetContainer(Cat()).label
 </details>
 
 <details>
-<summary>How are variance annotations (covariant and contravariant) used in Scala?</summary>
+<summary>Как variance annotations (covariant and contravariant) used in Scala?</summary>
 
-### How are variance annotations (covariant and contravariant) used in Scala?
+### Как variance annotations (covariant and contravariant) used in Scala?
 
 **Definition:**
 
@@ -1691,9 +1691,9 @@ val pets: Producer[AnyRef] = Producer("cat")
 </details>
 
 <details>
-<summary>Discuss the use and implications of macros in Scala.</summary>
+<summary>Обсудите the use and implications of macros in Scala.</summary>
 
-### Discuss the use and implications of macros in Scala.
+### Обсудите the use and implications of macros in Scala.
 
 **Definition:**
 
@@ -1731,9 +1731,9 @@ inline def inspect(inline x: Any): Any = ${ inspectCode('x) }
 ### Machine Learning Algorithms in Scala
 
 <details>
-<summary>Demonstrate how to implement a k-means clustering algorithm in Scala.</summary>
+<summary>Продемонстрируйте how to implement a k-means clustering alGorithm in Scala.</summary>
 
-### Demonstrate how to implement a k-means clustering algorithm in Scala.
+### Продемонстрируйте how to implement a k-means clustering alGorithm in Scala.
 
 **Definition:**
 
@@ -1772,9 +1772,9 @@ def kMeans(points: Vector[Vector[Double]], centers: Vector[Vector[Double]]): Vec
 </details>
 
 <details>
-<summary>Write a Scala implementation for logistic regression.</summary>
+<summary>Напишите a Scala implementation for logistic regression.</summary>
 
-### Write a Scala implementation for logistic regression.
+### Напишите a Scala implementation for logistic regression.
 
 **Definition:**
 
@@ -1811,9 +1811,9 @@ def step(
 </details>
 
 <details>
-<summary>How would you implement a recommendation system using alternating least squares (ALS) in Scala?</summary>
+<summary>Как бы вы implement a recommendation system using alternating least squares (ALS) in Scala?</summary>
 
-### How would you implement a recommendation system using alternating least squares (ALS) in Scala?
+### Как бы вы implement a recommendation system using alternating least squares (ALS) in Scala?
 
 **Definition:**
 
@@ -1847,9 +1847,9 @@ def predict(user: Vector[Double], item: Vector[Double]): Double =
 </details>
 
 <details>
-<summary>Explain how you would utilize random forests for classification in Scala.</summary>
+<summary>Объясните how you would utilize random foRESTs for classification in Scala.</summary>
 
-### Explain how you would utilize random forests for classification in Scala.
+### Объясните how you would utilize random foRESTs for classification in Scala.
 
 **Definition:**
 
@@ -1881,9 +1881,9 @@ def forestPredict(trees: Vector[Vector[Double] => String], row: Vector[Double]):
 ### Scala for Big Data Processing
 
 <details>
-<summary>How does Apache Spark integrate with Scala for machine learning tasks?</summary>
+<summary>Как Apache Spark integrate with Scala for machine learning tasks?</summary>
 
-### How does Apache Spark integrate with Scala for machine learning tasks?
+### Как Apache Spark integrate with Scala for machine learning tasks?
 
 **Definition:**
 
@@ -1912,9 +1912,9 @@ val counts = labels.groupBy(identity).view.mapValues(_.size).toMap
 </details>
 
 <details>
-<summary>What are resilient distributed datasets (RDDs) and how do they work in Scala?</summary>
+<summary>Что такое resilient distributed datasets (RDDs) and how do they work in Scala?</summary>
 
-### What are resilient distributed datasets (RDDs) and how do they work in Scala?
+### Что такое resilient distributed datasets (RDDs) and how do they work in Scala?
 
 **Definition:**
 
@@ -1944,9 +1944,9 @@ doubled
 </details>
 
 <details>
-<summary>Explain the DataFrame API in Spark and its usage with Scala.</summary>
+<summary>Объясните the DataFrame API in Spark and its usage with Scala.</summary>
 
-### Explain the DataFrame API in Spark and its usage with Scala.
+### Объясните the DataFrame API in Spark and its usage with Scala.
 
 **Definition:**
 
@@ -1976,9 +1976,9 @@ people.filter(_._2 >= 13).map(_._1)
 </details>
 
 <details>
-<summary>How can you leverage Spark's MLlib library for machine learning in Scala?</summary>
+<summary>Как you leverage Spark's MLlib library for machine learning in Scala?</summary>
 
-### How can you leverage Spark's MLlib library for machine learning in Scala?
+### Как you leverage Spark's MLlib library for machine learning in Scala?
 
 **Definition:**
 
@@ -2012,9 +2012,9 @@ def majorityLabel(votes: List[String]): String =
 ### Performance Optimization in Scala
 
 <details>
-<summary>Discuss techniques for optimizing Scala code performance.</summary>
+<summary>Обсудите techniques for optimizing Scala code performance.</summary>
 
-### Discuss techniques for optimizing Scala code performance.
+### Обсудите techniques for optimizing Scala code performance.
 
 **Definition:**
 
@@ -2049,9 +2049,9 @@ def sum(xs: List[Int]): Int =
 </details>
 
 <details>
-<summary>What is the role of JVM in Scala's performance?</summary>
+<summary>Что такое the role of JVM in Scala's performance?</summary>
 
-### What is the role of JVM in Scala's performance?
+### Что такое the role of JVM in Scala's performance?
 
 **Definition:**
 
@@ -2083,9 +2083,9 @@ val scheduled =
 </details>
 
 <details>
-<summary>How can you manage memory effectively in Scala applications?</summary>
+<summary>Как you manage memory effectively in Scala applications?</summary>
 
-### How can you manage memory effectively in Scala applications?
+### Как you manage memory effectively in Scala applications?
 
 **Definition:**
 
@@ -2119,9 +2119,9 @@ def streamSum(xs: Iterator[Int]): Int =
 ### Scala Testing and Debugging
 
 <details>
-<summary>What frameworks are commonly used for testing Scala applications?</summary>
+<summary>Какие frameworks обычно используют для testing Scala applications?</summary>
 
-### What frameworks are commonly used for testing Scala applications?
+### Какие frameworks обычно используют для testing Scala applications?
 
 **Definition:**
 
@@ -2154,9 +2154,9 @@ def check(): Unit =
 </details>
 
 <details>
-<summary>Describe the process of unit testing in Scala.</summary>
+<summary>Опишите the process of unit testing in Scala.</summary>
 
-### Describe the process of unit testing in Scala.
+### Опишите the process of unit testing in Scala.
 
 **Definition:**
 
@@ -2188,9 +2188,9 @@ def specs(): Unit =
 </details>
 
 <details>
-<summary>How would you debug an application in Scala that is not performing as expected?</summary>
+<summary>Как бы вы debug an application in Scala that is not performing as expected?</summary>
 
-### How would you debug an application in Scala that is not performing as expected?
+### Как бы вы debug an application in Scala that is not performing as expected?
 
 **Definition:**
 
@@ -2225,9 +2225,9 @@ def length[A](xs: List[A], acc: Int = 0): Int = xs match
 ### Real-World Applications and Case Studies
 
 <details>
-<summary>Present a case study where Scala is used in a machine learning pipeline.</summary>
+<summary>Представьте a case study where Scala is used in a machine learning pipeline.</summary>
 
-### Present a case study where Scala is used in a machine learning pipeline.
+### Представьте a case study where Scala is used in a machine learning pipeline.
 
 **Definition:**
 
@@ -2260,9 +2260,9 @@ docs.map(_.length)
 </details>
 
 <details>
-<summary>How can Scala be used for processing large-scale graph data in machine learning?</summary>
+<summary>Как Scala be used for processing large-scale graph data in machine learning?</summary>
 
-### How can Scala be used for processing large-scale graph data in machine learning?
+### Как Scala be used for processing large-scale graph data in machine learning?
 
 **Definition:**
 
@@ -2296,9 +2296,9 @@ g.link(a, b)
 </details>
 
 <details>
-<summary>Describe an application of Scala in natural language processing.</summary>
+<summary>Опишите an application of Scala in natural language processing.</summary>
 
-### Describe an application of Scala in natural language processing.
+### Опишите an application of Scala in natural language processing.
 
 **Definition:**
 
@@ -2327,9 +2327,9 @@ def termCounts(lines: List[String]): Map[String, Int] =
 </details>
 
 <details>
-<summary>Discuss the use of Scala in finance for algorithmic trading systems.</summary>
+<summary>Обсудите the use of Scala in finance for alGorithmic trading systems.</summary>
 
-### Discuss the use of Scala in finance for algorithmic trading systems.
+### Обсудите the use of Scala in finance for alGorithmic trading systems.
 
 **Definition:**
 
@@ -2363,9 +2363,9 @@ def decision(bid: Future[Double], ask: Future[Double], fair: Double)(using Execu
 ### Scalability with Scala
 
 <details>
-<summary>How does Scala address scalability in large machine learning systems?</summary>
+<summary>Как Scala address Scalability in large machine learning systems?</summary>
 
-### How does Scala address scalability in large machine learning systems?
+### Как Scala address Scalability in large machine learning systems?
 
 **Definition:**
 
@@ -2395,9 +2395,9 @@ parallelSum
 </details>
 
 <details>
-<summary>Discuss the implementation of a distributed machine learning system using Scala.</summary>
+<summary>Обсудите the implementation of a distributed machine learning system using Scala.</summary>
 
-### Discuss the implementation of a distributed machine learning system using Scala.
+### Обсудите the implementation of a distributed machine learning system using Scala.
 
 **Definition:**
 

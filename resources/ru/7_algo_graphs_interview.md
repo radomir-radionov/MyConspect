@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Graph Theory](https://devinterview.io/questi
 ### Introduction to Graphs
 
 <details>
-<summary>What is a Graph?</summary>
+<summary>Что такое graph?</summary>
 
-### What is a Graph?
+### Что такое graph?
 
 **Definition:**
 
@@ -94,9 +94,9 @@ graph = [(0, 1), (0, 2), (1, 2)]
 </details>
 
 <details>
-<summary>What are some common Types and Categories of Graphs?</summary>
+<summary>Что такое some common Types and CateGories of graphs?</summary>
 
-### What are some common Types and Categories of Graphs?
+### Что такое some common Types and CateGories of graphs?
 
 **Definition:**
 
@@ -146,9 +146,9 @@ graph = [(0, 1), (0, 2), (1, 2)]
 </details>
 
 <details>
-<summary>What is the difference between a Tree and a Graph?</summary>
+<summary>Что такое the difference between a Tree and a graph?</summary>
 
-### What is the difference between a Tree and a Graph?
+### Что такое the difference between a Tree and a graph?
 
 **Definition:**
 
@@ -186,9 +186,9 @@ graph = [(0, 1), (0, 2), (1, 2)]
 </details>
 
 <details>
-<summary>How can you determine the Minimum number of edges for a graph to remain connected?</summary>
+<summary>Как вы можете определить минимальное количество ребер, чтобы graph оставался подключенным?</summary>
 
-### How can you determine the Minimum number of edges for a graph to remain connected?
+### Как вы можете определить минимальное количество ребер, чтобы graph оставался подключенным?
 
 **Definition:**
 
@@ -218,9 +218,9 @@ graph = [(0, 1), (0, 2), (1, 2)]
 </details>
 
 <details>
-<summary>Define Euler Path and Euler Circuit in the context of graph theory.</summary>
+<summary>Определите траекторию Эйлера AND Цепь Эйлера в контексте graph theORy.</summary>
 
-### Define Euler Path and Euler Circuit in the context of graph theory.
+### Определите траекторию Эйлера AND Цепь Эйлера в контексте graph theORy.
 
 **Definition:**
 
@@ -254,9 +254,9 @@ graph = [(0, 1), (0, 2), (1, 2)]
 ### Graph Representations
 
 <details>
-<summary>Compare Adjacency Lists and Adjacency Matrices for graph representation.</summary>
+<summary>Сравните представление adjacency lists AND Маtrieцы смежности fORZ graph.</summary>
 
-### Compare Adjacency Lists and Adjacency Matrices for graph representation.
+### Сравните представление adjacency lists AND Маtrieцы смежности fORZ graph.
 
 **Definition:**
 
@@ -324,9 +324,9 @@ adj_list = [
 </details>
 
 <details>
-<summary>What is an Incidence Matrix, and when would you use it?</summary>
+<summary>Что такое Incidence matrix, and when would you use it?</summary>
 
-### What is an Incidence Matrix, and when would you use it?
+### Что такое Incidence matrix, and when would you use it?
 
 **Definition:**
 
@@ -364,9 +364,9 @@ Uniderected Graph
 </details>
 
 <details>
-<summary>Discuss Edge List as a graph representation and its use cases.</summary>
+<summary>Обсудите Edge List как представление graph и варианты его использования.</summary>
 
-### Discuss Edge List as a graph representation and its use cases.
+### Обсудите Edge List как представление graph и варианты его использования.
 
 **Definition:**
 
@@ -414,9 +414,9 @@ print(edges)  # Updated set: {('A', 'C'), ('B', 'D'), ('C', 'D'), ('A', 'B'), ('
 </details>
 
 <details>
-<summary>Explain how to save space while storing a graph using Compressed Sparse Row (CSR).</summary>
+<summary>Объясните, как сэкономить место при хранении файла graph, используя сжатую разреженную строку (CSR).</summary>
 
-### Explain how to save space while storing a graph using Compressed Sparse Row (CSR).
+### Объясните, как сэкономить место при хранении файла graph, используя сжатую разреженную строку (CSR).
 
 **Definition:**
 
@@ -476,9 +476,9 @@ for i in range(len(indptr) - 1):
 ### Graph Traversal Algorithms
 
 <details>
-<summary>Explain the Breadth-First Search (BFS) traversing method.</summary>
+<summary>Объясните метод обхода breadth-first search (BFS).</summary>
 
-### Explain the Breadth-First Search (BFS) traversing method.
+### Объясните метод обхода breadth-first search (BFS).
 
 **Definition:**
 
@@ -549,9 +549,9 @@ bfs(graph, 'A')
 </details>
 
 <details>
-<summary>Explain the Depth-First Search (DFS) algorithm.</summary>
+<summary>Объясните алгоритм depth-first search (DFS).</summary>
 
-### Explain the Depth-First Search (DFS) algorithm.
+### Объясните алгоритм depth-first search (DFS).
 
 **Definition:**
 
@@ -612,9 +612,9 @@ print(dfs(graph, 'A'))  # Output: {'A', 'B', 'C', 'D', 'E', 'F', 'G'}
 </details>
 
 <details>
-<summary>What are the key differences between BFS and DFS?</summary>
+<summary>Что такое the key differences between BFS and DFS?</summary>
 
-### What are the key differences between BFS and DFS?
+### Что такое the key differences between BFS and DFS?
 
 **Definition:**
 
@@ -671,9 +671,9 @@ def dfs(graph, start, visited=None):
 </details>
 
 <details>
-<summary>Implement a method to check if there is a Path between two vertices in a graph.</summary>
+<summary>Реализуйте a method to check if there is a Path between two vertices in a graph.</summary>
 
-### Implement a method to check if there is a Path between two vertices in a graph.
+### Реализуйте a method to check if there is a Path between two vertices in a graph.
 
 **Definition:**
 
@@ -753,9 +753,9 @@ print(f"There is a path between {source} and {destination}: {g.has_path(source, 
 </details>
 
 <details>
-<summary>Solve the problem of printing all Paths from a source to destination in a Directed Graph with BFS or DFS.</summary>
+<summary>Решите the problem of printing all Paths from a source to destination in a Directed graph with BFS or DFS.</summary>
 
-### Solve the problem of printing all Paths from a source to destination in a Directed Graph with BFS or DFS.
+### Решите the problem of printing all Paths from a source to destination in a Directed graph with BFS or DFS.
 
 **Definition:**
 
@@ -856,9 +856,9 @@ g.printAllPaths(s, d)
 ### Graph Properties and Types
 
 <details>
-<summary>What is a Bipartite Graph? How to detect one?</summary>
+<summary>Что такое Bipartite graph? How to detect one?</summary>
 
-### What is a Bipartite Graph? How to detect one?
+### Что такое Bipartite graph? How to detect one?
 
 **Definition:**
 
@@ -917,9 +917,9 @@ print(is_bipartite_bfs(graph, 'A'))  # Output: True
 </details>
 
 <details>
-<summary>Define Cyclic and Acyclic graphs and explain how to identify them.</summary>
+<summary>Определите Cyclic AND Acyclic graphs AND объясните, как их идентифицировать.</summary>
 
-### Define Cyclic and Acyclic graphs and explain how to identify them.
+### Определите Cyclic AND Acyclic graphs AND объясните, как их идентифицировать.
 
 **Definition:**
 
@@ -961,9 +961,9 @@ def is_cyclic_directed(V, edges):
 </details>
 
 <details>
-<summary>Explain Planar graphs and the conditions that make a graph planar.</summary>
+<summary>Объясните Planar graphs и условия, при которых graph становится плоским.</summary>
 
-### Explain Planar graphs and the conditions that make a graph planar.
+### Объясните Planar graphs и условия, при которых graph становится плоским.
 
 **Definition:**
 
@@ -979,9 +979,9 @@ def is_cyclic_directed(V, edges):
 </details>
 
 <details>
-<summary>What are Dense and Sparse graphs? Discuss their density measures and typical use cases.</summary>
+<summary>Что такое dense и sparse graphs? Обсудите меры плотности и типичные use cases.</summary>
 
-### What are Dense and Sparse graphs? Discuss their density measures and typical use cases.
+### Что такое dense и sparse graphs? Обсудите меры плотности и типичные use cases.
 
 **Definition:**
 
@@ -1005,9 +1005,9 @@ def is_cyclic_directed(V, edges):
 ### Graph Algorithms and Complexity
 
 <details>
-<summary>Why the complexity of DFS is O(V+E)?</summary>
+<summary>Почему the complexity of DFS is O(V+E)?</summary>
 
-### Why the complexity of DFS is O(V+E)?
+### Почему the complexity of DFS is O(V+E)?
 
 **Definition:**
 
@@ -1023,9 +1023,9 @@ GeeksforGeeks прямо даёт оценку: каждую вершину по
 </details>
 
 <details>
-<summary>Provide an implementation for Topological Sort in a Directed Acyclic Graph (DAG).</summary>
+<summary>Приведите an implementation for topological sort in a Directed Acyclic graph (DAG).</summary>
 
-### Provide an implementation for Topological Sort in a Directed Acyclic Graph (DAG).
+### Приведите an implementation for topological sort in a Directed Acyclic graph (DAG).
 
 **Definition:**
 
@@ -1065,9 +1065,9 @@ def topo_sort(V, edges):
 </details>
 
 <details>
-<summary>Write an algorithm to detect a Cycle in an undirected graph.</summary>
+<summary>Напишите an alGorithm to detect a Cycle in an Undirected Graph.</summary>
 
-### Write an algorithm to detect a Cycle in an undirected graph.
+### Напишите an alGorithm to detect a Cycle in an Undirected Graph.
 
 **Definition:**
 
@@ -1109,9 +1109,9 @@ def has_undirected_cycle(V, edges):
 </details>
 
 <details>
-<summary>Discuss the complexity of finding All Pair Shortest Paths in a weighted graph.</summary>
+<summary>Обсудите сложность поиска всех пар shortest path во взвешенном graph.</summary>
 
-### Discuss the complexity of finding All Pair Shortest Paths in a weighted graph.
+### Обсудите сложность поиска всех пар shortest path во взвешенном graph.
 
 **Definition:**
 
@@ -1130,9 +1130,9 @@ def has_undirected_cycle(V, edges):
 ### Memory and Performance in Graph Operations
 
 <details>
-<summary>Why does Breadth-First Search use more memory than Depth-First Search?</summary>
+<summary>Почему does breadth-first search use more memory than depth-first search?</summary>
 
-### Why does Breadth-First Search use more memory than Depth-First Search?
+### Почему does breadth-first search use more memory than depth-first search?
 
 **Definition:**
 
@@ -1149,9 +1149,9 @@ def has_undirected_cycle(V, edges):
 </details>
 
 <details>
-<summary>Illustrate the difference in Peak Memory Consumption between DFS and BFS.</summary>
+<summary>Проиллюстрируйте the difference in Peak Memory Consumption between DFS and BFS.</summary>
 
-### Illustrate the difference in Peak Memory Consumption between DFS and BFS.
+### Проиллюстрируйте the difference in Peak Memory Consumption between DFS and BFS.
 
 **Definition:**
 
@@ -1168,9 +1168,9 @@ def has_undirected_cycle(V, edges):
 </details>
 
 <details>
-<summary>How can Graph Data Structures be optimized for better Cache Locality?</summary>
+<summary>Как можно оптимизировать структуры данных graph для лучшей локализации кэша?</summary>
 
-### How can Graph Data Structures be optimized for better Cache Locality?
+### Как можно оптимизировать структуры данных graph для лучшей локализации кэша?
 
 **Definition:**
 
@@ -1188,9 +1188,9 @@ def has_undirected_cycle(V, edges):
 </details>
 
 <details>
-<summary>Discuss methods to Reduce Memory Usage in graph representations.</summary>
+<summary>Обсудите методы сокращения использования памяти в представлениях graph.</summary>
 
-### Discuss methods to Reduce Memory Usage in graph representations.
+### Обсудите методы сокращения использования памяти в представлениях graph.
 
 **Definition:**
 
@@ -1211,9 +1211,9 @@ def has_undirected_cycle(V, edges):
 ### Shortest Path Algorithms
 
 <details>
-<summary>What is the difference between BFS and Dijkstra’s algorithms when looking for the shortest path?</summary>
+<summary>Что такое the difference between BFS and Dijkstra’s alGorithms when looking for the shortest path?</summary>
 
-### What is the difference between BFS and Dijkstra’s algorithms when looking for the shortest path?
+### Что такое the difference between BFS and Dijkstra’s alGorithms when looking for the shortest path?
 
 **Definition:**
 
@@ -1234,9 +1234,9 @@ BFS берут для числа рёбер. Дейкстру — когда в�
 </details>
 
 <details>
-<summary>Implement Dijkstra’s Algorithm for finding the shortest path in a graph with non-negative edge weights.</summary>
+<summary>Реализуйте Dijkstra’s AlGorithm for finding the shortest path in a graph with non-neGAtive edge weights.</summary>
 
-### Implement Dijkstra’s Algorithm for finding the shortest path in a graph with non-negative edge weights.
+### Реализуйте Dijkstra’s AlGorithm for finding the shortest path in a graph with non-neGAtive edge weights.
 
 **Definition:**
 
@@ -1272,9 +1272,9 @@ def dijkstra(adj, src):
 </details>
 
 <details>
-<summary>How does Bellman-Ford Algorithm differ from Dijkstra’s and where would you use it?</summary>
+<summary>Чем алгоритм Bellman-Ford отличается от алгоритма Dijkstra и где бы вы его использовали?</summary>
 
-### How does Bellman-Ford Algorithm differ from Dijkstra’s and where would you use it?
+### Чем алгоритм Bellman-Ford отличается от алгоритма Dijkstra и где бы вы его использовали?
 
 **Definition:**
 
@@ -1291,9 +1291,9 @@ def dijkstra(adj, src):
 </details>
 
 <details>
-<summary>Explain the concept of Floyd-Warshall Algorithm and its usage.</summary>
+<summary>Объясните концепцию Floyd-Warshall algorithm и ее использование.</summary>
 
-### Explain the concept of Floyd-Warshall Algorithm and its usage.
+### Объясните концепцию Floyd-Warshall algorithm и ее использование.
 
 **Definition:**
 
@@ -1311,9 +1311,9 @@ dist[i][j] вначале — прямой вес, INF если ребра не�
 ### Heuristic-Based Graph Search Algorithms
 
 <details>
-<summary>What is `A*` Search?</summary>
+<summary>Что такое `A*` Search?</summary>
 
-### What is `A*` Search?
+### Что такое `A*` Search?
 
 **Definition:**
 
@@ -1331,9 +1331,9 @@ GeeksforGeeks показывает его на сетке с препятств�
 </details>
 
 <details>
-<summary>What is the heuristic cost function in `A*` Search?</summary>
+<summary>Что такое the heuristic cost function in `A*` Search?</summary>
 
-### What is the heuristic cost function in `A*` Search?
+### Что такое the heuristic cost function in `A*` Search?
 
 **Definition:**
 
@@ -1351,9 +1351,9 @@ GeeksforGeeks показывает его на сетке с препятств�
 </details>
 
 <details>
-<summary>Explain the difference between Best-First Search and `A*` Search.</summary>
+<summary>Объясните the difference between Best-First Search and `A*` Search.</summary>
 
-### Explain the difference between Best-First Search and `A*` Search.
+### Объясните the difference between Best-First Search and `A*` Search.
 
 **Definition:**
 
@@ -1378,9 +1378,9 @@ A* key:         g(n) + h(n)
 </details>
 
 <details>
-<summary>Provide an implementation of the Greedy Best-First Search and compare it to `A*`.</summary>
+<summary>Приведите an implementation of the greedy Best-First Search and compare it to `A*`.</summary>
 
-### Provide an implementation of the Greedy Best-First Search and compare it to `A*`.
+### Приведите an implementation of the greedy Best-First Search and compare it to `A*`.
 
 **Definition:**
 
@@ -1420,9 +1420,9 @@ def greedy_best_first(start, goal, neighbors, h):
 </details>
 
 <details>
-<summary>How can you adapt `A*` Search to work on a puzzle game like Sudoku?</summary>
+<summary>Как you adapt `A*` Search to work on a puzzle GAme like Sudoku?</summary>
 
-### How can you adapt `A*` Search to work on a puzzle game like Sudoku?
+### Как you adapt `A*` Search to work on a puzzle GAme like Sudoku?
 
 **Definition:**
 
@@ -1442,9 +1442,9 @@ g(n) — цена уже сделанных ходов, например чис�
 ### Real-World Applications of Graphs
 
 <details>
-<summary>What are some real-world Applications of Graphs?</summary>
+<summary>Что такое some real-world Applications of graphs?</summary>
 
-### What are some real-world Applications of Graphs?
+### Что такое some real-world Applications of graphs?
 
 **Definition:**
 
@@ -1466,9 +1466,9 @@ BFS применяют для кратчайших путей в невзвеш�
 </details>
 
 <details>
-<summary>Provide some practical examples of using Depth-First Search vs Breadth-First Search.</summary>
+<summary>Приведите some practical examples of using depth-first search vs breadth-first search.</summary>
 
-### Provide some practical examples of using Depth-First Search vs Breadth-First Search.
+### Приведите some practical examples of using depth-first search vs breadth-first search.
 
 **Definition:**
 
@@ -1485,9 +1485,9 @@ DFS берут, чтобы обойти каждую вершину компон
 </details>
 
 <details>
-<summary>How do social networks use graphs for recommendations and features like friend suggestions?</summary>
+<summary>Как социальные сети используют graphs для получения рекомендаций и функций, таких как предложения в друзья?</summary>
 
-### How do social networks use graphs for recommendations and features like friend suggestions?
+### Как социальные сети используют graphs для получения рекомендаций и функций, таких как предложения в друзья?
 
 **Definition:**
 
@@ -1503,9 +1503,9 @@ BFS от человека посещает друзей, затем друзей
 </details>
 
 <details>
-<summary>Explain how a GPS navigation system might use graph data structures and algorithms.</summary>
+<summary>Объясните, как навигационная система GPS NAVIGA может использовать структуры данных и алгоритмы graph.</summary>
 
-### Explain how a GPS navigation system might use graph data structures and algorithms.
+### Объясните, как навигационная система GPS NAVIGA может использовать структуры данных и алгоритмы graph.
 
 **Definition:**
 
@@ -1527,9 +1527,9 @@ BFS от человека посещает друзей, затем друзей
 ### Advanced Graph Topics
 
 <details>
-<summary>What is a Graph Embedding, and how is it applicable in machine learning?</summary>
+<summary>Что такое graph Embedding, and how is it applicable in machine learning?</summary>
 
-### What is a Graph Embedding, and how is it applicable in machine learning?
+### Что такое graph Embedding, and how is it applicable in machine learning?
 
 **Definition:**
 
@@ -1545,9 +1545,9 @@ BFS от человека посещает друзей, затем друзей
 </details>
 
 <details>
-<summary>Describe the Min-Cut Max-Flow Theorem and its significance in network flow problems.</summary>
+<summary>Описать теорему о минимальном сокращении и максимальном потоке и ее значение в задачах сетевых потоков.</summary>
 
-### Describe the Min-Cut Max-Flow Theorem and its significance in network flow problems.
+### Описать теорему о минимальном сокращении и максимальном потоке и ее значение в задачах сетевых потоков.
 
 **Definition:**
 
@@ -1564,9 +1564,9 @@ BFS от человека посещает друзей, затем друзей
 </details>
 
 <details>
-<summary>Discuss the concept of Edge Coloring and its applications.</summary>
+<summary>Обсудите концепцию раскраски краев и ее применение.</summary>
 
-### Discuss the concept of Edge Coloring and its applications.
+### Обсудите концепцию раскраски краев и ее применение.
 
 **Definition:**
 
@@ -1582,9 +1582,9 @@ BFS от человека посещает друзей, затем друзей
 </details>
 
 <details>
-<summary>Implement an algorithm that finds the Minimum Spanning Tree of a graph.</summary>
+<summary>Реализуйте an alGorithm that finds the minimum spanning tree of a graph.</summary>
 
-### Implement an algorithm that finds the Minimum Spanning Tree of a graph.
+### Реализуйте an alGorithm that finds the minimum spanning tree of a graph.
 
 **Definition:**
 
@@ -1624,9 +1624,9 @@ def kruskal(V, edges):
 </details>
 
 <details>
-<summary>Explain the importance of Graph Databases and how they differ from traditional relational databases.</summary>
+<summary>Объясните важность баз данных graph и их отличие от традиционных реляционных баз данных.</summary>
 
-### Explain the importance of Graph Databases and how they differ from traditional relational databases.
+### Объясните важность баз данных graph и их отличие от традиционных реляционных баз данных.
 
 **Definition:**
 
@@ -1647,9 +1647,9 @@ def kruskal(V, edges):
 ### Algorithms for Specific Graph Classes
 
 <details>
-<summary>Discuss how algorithms might vary when dealing with Weighted vs Unweighted Graphs.</summary>
+<summary>Обсудите, как могут различаться алгоритмы при работе с взвешенным и невзвешенным graphs.</summary>
 
-### Discuss how algorithms might vary when dealing with Weighted vs Unweighted Graphs.
+### Обсудите, как могут различаться алгоритмы при работе с взвешенным и невзвешенным graphs.
 
 **Definition:**
 
@@ -1669,9 +1669,9 @@ BFS верен при равной цене рёбер и работает за 
 </details>
 
 <details>
-<summary>What special considerations are needed when implementing algorithms for Directed vs Undirected Graphs?</summary>
+<summary>Какие особые соображения нужны при реализации алгоритмов для directed vs undirected graphs?</summary>
 
-### What special considerations are needed when implementing algorithms for Directed vs Undirected Graphs?
+### Какие особые соображения нужны при реализации алгоритмов для directed vs undirected graphs?
 
 **Definition:**
 
@@ -1690,9 +1690,9 @@ DFS говорит, что неориентированное ребро про�
 </details>
 
 <details>
-<summary>Provide an efficient algorithm for finding Articulation Points in a graph.</summary>
+<summary>Приведите an efficient alGorithm for finding Articulation Points in a graph.</summary>
 
-### Provide an efficient algorithm for finding Articulation Points in a graph.
+### Приведите an efficient alGorithm for finding Articulation Points in a graph.
 
 **Definition:**
 
@@ -1710,9 +1710,9 @@ DFS Таржана записывает время открытия disc[u] и �
 ### Graph Challenges and Problem-Solving
 
 <details>
-<summary>Solve the Knight’s tour problem using graph traversal techniques.</summary>
+<summary>Решите the Knight’s tour problem using graph traveRSAl techniques.</summary>
 
-### Solve the Knight’s tour problem using graph traversal techniques.
+### Решите the Knight’s tour problem using graph traveRSAl techniques.
 
 **Definition:**
 
@@ -1730,9 +1730,9 @@ DFS Таржана записывает время открытия disc[u] и �
 </details>
 
 <details>
-<summary>How would you design an algorithm to evaluate the connected components of an undirected graph?</summary>
+<summary>Как бы вы design an alGorithm to evaluate the connected components of an Undirected Graph?</summary>
 
-### How would you design an algorithm to evaluate the connected components of an undirected graph?
+### Как бы вы design an alGorithm to evaluate the connected components of an Undirected Graph?
 
 **Definition:**
 
@@ -1772,9 +1772,9 @@ def components(adj):
 </details>
 
 <details>
-<summary>Implement a graph solution for the River Crossing Problem.</summary>
+<summary>Реализуйте a graph solution for the River Crossing Problem.</summary>
 
-### Implement a graph solution for the River Crossing Problem.
+### Реализуйте a graph solution for the River Crossing Problem.
 
 **Definition:**
 

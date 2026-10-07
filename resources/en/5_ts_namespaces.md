@@ -42,7 +42,7 @@ Utils.isEmpty(Utils.SECRET); // false
 | Aspect                                | Detail                                     |
 | ------------------------------------- | ------------------------------------------ |
 | Summary                               | Utils.getPass("Yauhen", 31); // "Yauhen31" |
-| Utils.isEmpty(Utils.SECRET); // false |
+|                                       | Utils.isEmpty(Utils.SECRET); // false      |
 
 ## **Ambient namespaces** (`declare namespace D3 { ... }`) describe global libraries loaded via `<script>`.
 

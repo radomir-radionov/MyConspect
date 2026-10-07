@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Docker](https://devinterview.io/questions/so
 ### Docker Fundamentals
 
 <details>
-<summary>What is Docker, and how is it different from virtual machines?</summary>
+<summary>Что такое Docker, and how is it different from virtual machines?</summary>
 
-### What is Docker, and how is it different from virtual machines?
+### Что такое Docker, and how is it different from virtual machines?
 
 **Definition:**
 
@@ -103,9 +103,9 @@ CMD ["python", "app.py"]
 </details>
 
 <details>
-<summary>Can you explain what a Docker image is?</summary>
+<summary>Можете ли вы explain what a Docker image is?</summary>
 
-### Can you explain what a Docker image is?
+### Можете ли вы explain what a Docker image is?
 
 **Definition:**
 
@@ -178,9 +178,9 @@ CMD ["/bin/bash"]
 </details>
 
 <details>
-<summary>How does a Docker container differ from a Docker image?</summary>
+<summary>Как a Docker container differ from a Docker image?</summary>
 
-### How does a Docker container differ from a Docker image?
+### Как a Docker container differ from a Docker image?
 
 **Definition:**
 
@@ -269,9 +269,9 @@ docker rm mycontainer
 </details>
 
 <details>
-<summary>What is the Docker Hub, and what is it used for?</summary>
+<summary>Что такое the Docker Hub, and what is it used for?</summary>
 
-### What is the Docker Hub, and what is it used for?
+### Что такое the Docker Hub, and what is it used for?
 
 **Definition:**
 
@@ -332,9 +332,9 @@ Docker Hub - это публичный облачный реестр для Dock
 </details>
 
 <details>
-<summary>Explain the Dockerfile and its significance in Docker.</summary>
+<summary>Объясните the Dockerfile and its significance in Docker.</summary>
 
-### Explain the Dockerfile and its significance in Docker.
+### Объясните the Dockerfile and its significance in Docker.
 
 **Definition:**
 
@@ -406,9 +406,9 @@ CMD ["node", "app.js"]
 </details>
 
 <details>
-<summary>How does Docker use layers to build images?</summary>
+<summary>Как Docker use layers to build images?</summary>
 
-### How does Docker use layers to build images?
+### Как Docker use layers to build images?
 
 **Definition:**
 
@@ -464,9 +464,9 @@ COPY app.py /app
 </details>
 
 <details>
-<summary>What’s the difference between the `COPY` and `ADD` commands in a Dockerfile?</summary>
+<summary>В чём разница между командами `COPY` и `ADD` в Dockerfile?</summary>
 
-### What’s the difference between the `COPY` and `ADD` commands in a Dockerfile?
+### В чём разница между командами `COPY` и `ADD` в Dockerfile?
 
 **Definition:**
 
@@ -499,9 +499,9 @@ COPY app.py /app
 </details>
 
 <details>
-<summary>What’s the purpose of the `.dockerignore` file?</summary>
+<summary>Какова цель файла `.dockerignore`?</summary>
 
-### What’s the purpose of the `.dockerignore` file?
+### Какова цель файла `.dockerignore`?
 
 **Definition:**
 
@@ -517,9 +517,9 @@ COPY app.py /app
 </details>
 
 <details>
-<summary>How would you go about creating a Docker image from an existing container?</summary>
+<summary>Как бы вы Go about creating a Docker image from an existing container?</summary>
 
-### How would you go about creating a Docker image from an existing container?
+### Как бы вы Go about creating a Docker image from an existing container?
 
 **Definition:**
 
@@ -619,9 +619,9 @@ docker build -t my-ubuntu:with-neofetch .
 </details>
 
 <details>
-<summary>In practice, how do you reduce the size of Docker images?</summary>
+<summary>В practice, how do you reduce the size of Docker images?</summary>
 
-### In practice, how do you reduce the size of Docker images?
+### В practice, how do you reduce the size of Docker images?
 
 **Definition:**
 
@@ -740,9 +740,9 @@ COPY ["*.json", "*.sh", "config/", "./"]
 </details>
 
 <details>
-<summary>What command is used to run a Docker container from an image?</summary>
+<summary>Какая команда используется для запуска Docker container из image?</summary>
 
-### What command is used to run a Docker container from an image?
+### Какая команда используется для запуска Docker container из image?
 
 **Definition:**
 
@@ -804,9 +804,9 @@ This:
 </details>
 
 <details>
-<summary>Can you explain what a Docker namespace is and its benefits?</summary>
+<summary>Можете ли вы explain what a Docker namespace is and its benefits?</summary>
 
-### Can you explain what a Docker namespace is and its benefits?
+### Можете ли вы explain what a Docker namespace is and its benefits?
 
 **Definition:**
 
@@ -872,9 +872,9 @@ client.volumes.create('my-named-volume')
 </details>
 
 <details>
-<summary>What is a Docker volume, and when would you use it?</summary>
+<summary>Что такое Docker volume, and when would you use it?</summary>
 
-### What is a Docker volume, and when would you use it?
+### Что такое Docker volume, and when would you use it?
 
 **Definition:**
 
@@ -910,9 +910,9 @@ client.volumes.create('my-named-volume')
 </details>
 
 <details>
-<summary>Explain the use and significance of the `docker-compose` tool.</summary>
+<summary>Объясните the use and significance of the `Docker-compose` tool.</summary>
 
-### Explain the use and significance of the `docker-compose` tool.
+### Объясните the use and significance of the `Docker-compose` tool.
 
 **Definition:**
 
@@ -978,9 +978,9 @@ networks:
 </details>
 
 <details>
-<summary>Can Docker containers running on the same host communicate with each other by default? If so, how?</summary>
+<summary>Можно ли Docker containers running on the same host communicate with each other by default? If so, how?</summary>
 
-### Can Docker containers running on the same host communicate with each other by default? If so, how?
+### Можно ли Docker containers running on the same host communicate with each other by default? If so, how?
 
 **Definition:**
 
@@ -1024,9 +1024,9 @@ docker inspect -f '{{.NetworkSettings.IPAddress}}' <container_id>
 </details>
 
 <details>
-<summary>Describe the different types of networks in Docker.</summary>
+<summary>Опишите the different types of networks in Docker.</summary>
 
-### Describe the different types of networks in Docker.
+### Опишите the different types of networks in Docker.
 
 **Definition:**
 
@@ -1062,9 +1062,9 @@ docker network create -d overlay --attachable my-attachable-overlay
 - [Docker — Overlay driver](https://docs.docker.com/engine/network/drivers/overlay/)
 </details>
 <details>
-<summary>How do you create a Docker network?</summary>
+<summary>Как you create a Docker network?</summary>
 
-### How do you create a Docker network?
+### Как you create a Docker network?
 
 **Definition:**
 
@@ -1090,9 +1090,9 @@ docker network create --driver overlay my-network
 - [Docker — Bridge network driver](https://docs.docker.com/engine/network/drivers/bridge/)
 </details>
 <details>
-<summary>How could you connect a container to a specific network?</summary>
+<summary>Как можно you connect a container to a specific network?</summary>
 
-### How could you connect a container to a specific network?
+### Как можно you connect a container to a specific network?
 
 **Definition:**
 
@@ -1121,9 +1121,9 @@ docker run -itd --network=multi-host-network busybox
 - [Docker — Bridge network driver](https://docs.docker.com/engine/network/drivers/bridge/)
 </details>
 <details>
-<summary>Can you explain how Docker’s default bridge network differs from a user-defined bridge network?</summary>
+<summary>Можете ли вы explain how Docker’s default bridge network differs from a user-defined bridge network?</summary>
 
-### Can you explain how Docker’s default bridge network differs from a user-defined bridge network?
+### Можете ли вы explain how Docker’s default bridge network differs from a user-defined bridge network?
 
 **Definition:**
 
@@ -1148,9 +1148,9 @@ docker run -itd --network=multi-host-network busybox
 - [Docker — Bridge network driver](https://docs.docker.com/engine/network/drivers/bridge/)
 </details>
 <details>
-<summary>How would you enable communication between Docker containers on different hosts?</summary>
+<summary>Как бы вы enable communication between Docker containers on different hosts?</summary>
 
-### How would you enable communication between Docker containers on different hosts?
+### Как бы вы enable communication between Docker containers on different hosts?
 
 **Definition:**
 
@@ -1184,9 +1184,9 @@ docker network create --driver overlay my-network
 ### Docker Performance & Security
 
 <details>
-<summary>How can resource constraints be applied to containers in Docker?</summary>
+<summary>Как resource constraints be applied to containers in Docker?</summary>
 
-### How can resource constraints be applied to containers in Docker?
+### Как resource constraints be applied to containers in Docker?
 
 **Definition:**
 
@@ -1213,9 +1213,9 @@ docker run -it --cpus=".5" --memory="300m" ubuntu /bin/bash
 - [Docker — Compose deploy](https://docs.docker.com/reference/compose-file/deploy/)
 </details>
 <details>
-<summary>What are Docker security profiles, and how do they work?</summary>
+<summary>Что такое Docker security profiles, and how do they work?</summary>
 
-### What are Docker security profiles, and how do they work?
+### Что такое Docker security profiles, and how do they work?
 
 **Definition:**
 
@@ -1246,9 +1246,9 @@ docker run --rm -it --security-opt seccomp=/path/to/seccomp/profile.json hello-w
 - [Docker — Seccomp security profiles](https://docs.docker.com/engine/security/seccomp/)
 </details>
 <details>
-<summary>Explain how you would scan a Docker image for vulnerabilities.</summary>
+<summary>Объясните how you would scan a Docker image for vulnerabilities.</summary>
 
-### Explain how you would scan a Docker image for vulnerabilities.
+### Объясните how you would scan a Docker image for vulnerabilities.
 
 **Definition:**
 
@@ -1271,9 +1271,9 @@ docker scout cves --only-package express
 - [Docker Scout quickstart](https://docs.docker.com/scout/quickstart/)
 </details>
 <details>
-<summary>What is the purpose of a Docker Healthcheck?</summary>
+<summary>Что такое the puRPOse of a Docker Healthcheck?</summary>
 
-### What is the purpose of a Docker Healthcheck?
+### Что такое the puRPOse of a Docker Healthcheck?
 
 **Definition:**
 
@@ -1298,9 +1298,9 @@ HEALTHCHECK --interval=5m --timeout=3s \
 - [Docker — Dockerfile HEALTHCHECK](https://docs.docker.com/reference/dockerfile/#healthcheck)
 </details>
 <details>
-<summary>Describe how you would handle sensitive data with Docker.</summary>
+<summary>Опишите how you would handle sensitive data with Docker.</summary>
 
-### Describe how you would handle sensitive data with Docker.
+### Опишите how you would handle sensitive data with Docker.
 
 **Definition:**
 
@@ -1328,9 +1328,9 @@ HEALTHCHECK --interval=5m --timeout=3s \
 ### Docker Orchestration
 
 <details>
-<summary>What is Docker Swarm, and when would you use it?</summary>
+<summary>Что такое Docker Swarm, and when would you use it?</summary>
 
-### What is Docker Swarm, and when would you use it?
+### Что такое Docker Swarm, and when would you use it?
 
 **Definition:**
 
@@ -1361,9 +1361,9 @@ docker stack deploy --compose-file compose.yaml stackdemo
 - [Docker — Deploy a stack to a swarm](https://docs.docker.com/engine/swarm/stack-deploy/)
 </details>
 <details>
-<summary>Can you explain the difference between Docker Swarm and Kubernetes?</summary>
+<summary>Можете ли вы explain the difference between Docker Swarm and Kubernetes?</summary>
 
-### Can you explain the difference between Docker Swarm and Kubernetes?
+### Можете ли вы explain the difference between Docker Swarm and Kubernetes?
 
 **Definition:**
 
@@ -1382,9 +1382,9 @@ Swarm mode — часть Docker Engine. Kubernetes — отдельный ор�
 - [Kubernetes — Overview](https://kubernetes.io/docs/concepts/overview/)
 </details>
 <details>
-<summary>What is a Docker Stack?</summary>
+<summary>Что такое Docker stack?</summary>
 
-### What is a Docker Stack?
+### Что такое Docker stack?
 
 **Definition:**
 
@@ -1402,9 +1402,9 @@ Swarm mode — часть Docker Engine. Kubernetes — отдельный ор�
 - [Docker — Deploy a stack to a swarm](https://docs.docker.com/engine/swarm/stack-deploy/)
 </details>
 <details>
-<summary>How do you deploy an application stack in Docker Swarm?</summary>
+<summary>Как you deploy an application stack in Docker Swarm?</summary>
 
-### How do you deploy an application stack in Docker Swarm?
+### Как you deploy an application stack in Docker Swarm?
 
 **Definition:**
 
@@ -1430,9 +1430,9 @@ docker stack deploy --compose-file compose.yaml stackdemo
 - [Docker — Deploy a stack to a swarm](https://docs.docker.com/engine/swarm/stack-deploy/)
 </details>
 <details>
-<summary>How does Docker manage service replication and load balancing?</summary>
+<summary>Как Docker manage service replication and load balancing?</summary>
 
-### How does Docker manage service replication and load balancing?
+### Как Docker manage service replication and load balancing?
 
 **Definition:**
 
@@ -1467,9 +1467,9 @@ services:
 ### Docker CLI & API
 
 <details>
-<summary>What command would you use to list all running containers?</summary>
+<summary>Какую команду вы используете для списка всех running containers?</summary>
 
-### What command would you use to list all running containers?
+### Какую команду вы используете для списка всех running containers?
 
 **Definition:**
 
@@ -1492,9 +1492,9 @@ docker ps
 - [Docker — docker container ls](https://docs.docker.com/reference/cli/docker/container/ls/)
 </details>
 <details>
-<summary>How can you stop all containers running on a host using a single command?</summary>
+<summary>Как you stop all containers running on a host using a single command?</summary>
 
-### How can you stop all containers running on a host using a single command?
+### Как you stop all containers running on a host using a single command?
 
 **Definition:**
 
@@ -1518,9 +1518,9 @@ docker stop $(docker ps -q)
 - [Docker — docker container stop](https://docs.docker.com/reference/cli/docker/container/stop/)
 </details>
 <details>
-<summary>Can you describe how you would execute a command inside a running container?</summary>
+<summary>Можете ли вы describe how you would execute a command inside a running container?</summary>
 
-### Can you describe how you would execute a command inside a running container?
+### Можете ли вы describe how you would execute a command inside a running container?
 
 **Definition:**
 
@@ -1545,9 +1545,9 @@ docker exec -it mycontainer sh
 - [Docker — docker container exec](https://docs.docker.com/reference/cli/docker/container/exec/)
 </details>
 <details>
-<summary>What command would you use to display the logs of a container?</summary>
+<summary>Какую команду вы используете для вывода logs container?</summary>
 
-### What command would you use to display the logs of a container?
+### Какую команду вы используете для вывода logs container?
 
 **Definition:**
 
@@ -1570,9 +1570,9 @@ docker logs CONTAINER
 - [Docker — View container logs](https://docs.docker.com/engine/logging/)
 </details>
 <details>
-<summary>Explain how to copy files from a container to the local file system.</summary>
+<summary>Объясните how to copy files from a container to the local file system.</summary>
 
-### Explain how to copy files from a container to the local file system.
+### Объясните how to copy files from a container to the local file system.
 
 **Definition:**
 
@@ -1597,9 +1597,9 @@ docker cp mycontainer:/var/log/app.log ./app.log
 - [Docker — Volumes](https://docs.docker.com/engine/storage/volumes/)
 </details>
 <details>
-<summary>How can you inspect the details of a specific container via the CLI?</summary>
+<summary>Как you inspect the details of a specific container via the CLI?</summary>
 
-### How can you inspect the details of a specific container via the CLI?
+### Как you inspect the details of a specific container via the CLI?
 
 **Definition:**
 
@@ -1623,9 +1623,9 @@ docker inspect mycontainer
 - [Docker — Dockerfile HEALTHCHECK](https://docs.docker.com/reference/dockerfile/#healthcheck)
 </details>
 <details>
-<summary>Describe how to use Docker’s REST API to start a container.</summary>
+<summary>Опишите how to use Docker’s REST API to start a container.</summary>
 
-### Describe how to use Docker’s REST API to start a container.
+### Опишите how to use Docker’s REST API to start a container.
 
 **Definition:**
 
@@ -1653,9 +1653,9 @@ curl --unix-socket /var/run/docker.sock \
 ### Docker Best Practices
 
 <details>
-<summary>Explain the importance of minimizing the number of layers in a Dockerfile.</summary>
+<summary>Объясните the importance of minimizing the number of layers in a Dockerfile.</summary>
 
-### Explain the importance of minimizing the number of layers in a Dockerfile.
+### Объясните the importance of minimizing the number of layers in a Dockerfile.
 
 **Definition:**
 
@@ -1681,9 +1681,9 @@ RUN apt-get update && apt-get install -y curl \
 - [Docker — Building best practices](https://docs.docker.com/build/building/best-practices/)
 </details>
 <details>
-<summary>Discuss the best practices for tagging Docker images.</summary>
+<summary>Обсудите the best practices for tagging Docker images.</summary>
 
-### Discuss the best practices for tagging Docker images.
+### Обсудите the best practices for tagging Docker images.
 
 **Definition:**
 
@@ -1707,9 +1707,9 @@ docker compose push
 - [Docker — Deploy a stack to a swarm](https://docs.docker.com/engine/swarm/stack-deploy/)
 </details>
 <details>
-<summary>When should you use a `.dockerignore` file?</summary>
+<summary>Когда should you use a `.Dockerignore` file?</summary>
 
-### When should you use a `.dockerignore` file?
+### Когда should you use a `.Dockerignore` file?
 
 **Definition:**
 
@@ -1740,9 +1740,9 @@ npm-debug.log
 - [Docker — Building best practices](https://docs.docker.com/build/building/best-practices/)
 </details>
 <details>
-<summary>Why is it advised to run only one process per container?</summary>
+<summary>Почему is it advised to run only one process per container?</summary>
 
-### Why is it advised to run only one process per container?
+### Почему is it advised to run only one process per container?
 
 **Definition:**
 
@@ -1763,9 +1763,9 @@ npm-debug.log
 - [Docker — Deploy a stack to a swarm](https://docs.docker.com/engine/swarm/stack-deploy/)
 </details>
 <details>
-<summary>How should you handle logging in Docker containers?</summary>
+<summary>Как следует you handle logging in Docker containers?</summary>
 
-### How should you handle logging in Docker containers?
+### Как следует you handle logging in Docker containers?
 
 **Definition:**
 
@@ -1792,9 +1792,9 @@ docker service logs SERVICE
 ### Docker Troubleshooting & Optimization
 
 <details>
-<summary>How would you diagnose high CPU or memory usage in a container?</summary>
+<summary>Как бы вы diagnose high CPU or memory usage in a container?</summary>
 
-### How would you diagnose high CPU or memory usage in a container?
+### Как бы вы diagnose high CPU or memory usage in a container?
 
 **Definition:**
 
@@ -1821,9 +1821,9 @@ docker run -it --cpus=".5" --memory="300m" ubuntu /bin/bash
 - [Docker — docker container stats](https://docs.docker.com/reference/cli/docker/container/stats/)
 </details>
 <details>
-<summary>What steps would you take if a container consistently fails shortly after starting?</summary>
+<summary>Какие шаги вы предпримете, если container постоянно падает сразу после запуска?</summary>
 
-### What steps would you take if a container consistently fails shortly after starting?
+### Какие шаги вы предпримете, если container постоянно падает сразу после запуска?
 
 **Definition:**
 
@@ -1851,9 +1851,9 @@ docker inspect CONTAINER
 - [Docker — Dockerfile HEALTHCHECK](https://docs.docker.com/reference/dockerfile/#healthcheck)
 </details>
 <details>
-<summary>In what scenarios would you prune Docker objects, and how?</summary>
+<summary>В what scenarios would you prune Docker objects, and how?</summary>
 
-### In what scenarios would you prune Docker objects, and how?
+### В what scenarios would you prune Docker objects, and how?
 
 **Definition:**
 
@@ -1880,9 +1880,9 @@ docker system prune
 - [Docker — Volumes](https://docs.docker.com/engine/storage/volumes/)
 </details>
 <details>
-<summary>How can you monitor the performance of Docker containers?</summary>
+<summary>Как you monitor the performance of Docker containers?</summary>
 
-### How can you monitor the performance of Docker containers?
+### Как you monitor the performance of Docker containers?
 
 **Definition:**
 
@@ -1908,9 +1908,9 @@ docker stats
 - [Docker — Dockerfile HEALTHCHECK](https://docs.docker.com/reference/dockerfile/#healthcheck)
 </details>
 <details>
-<summary>What common issues might arise when working with Docker in a CI/CD pipeline?</summary>
+<summary>Какие типичные проблемы возникают при работе с Docker в CI/CD pipeline?</summary>
 
-### What common issues might arise when working with Docker in a CI/CD pipeline?
+### Какие типичные проблемы возникают при работе с Docker в CI/CD pipeline?
 
 **Definition:**
 
@@ -1934,9 +1934,9 @@ CI собирает образ и пушит его. Типичные сбои �
 ### Docker Deployment & Integration
 
 <details>
-<summary>How do you define a multi-container application with `docker-compose`?</summary>
+<summary>Как you define a multi-container application with `Docker-compose`?</summary>
 
-### How do you define a multi-container application with `docker-compose`?
+### Как you define a multi-container application with `Docker-compose`?
 
 **Definition:**
 
@@ -1968,9 +1968,9 @@ services:
 - [Docker — Compose deploy](https://docs.docker.com/reference/compose-file/deploy/)
 </details>
 <details>
-<summary>What considerations must be made when deploying Docker containers in a production environment?</summary>
+<summary>Какие соображения must be made when deploying Docker containers in a production environment?</summary>
 
-### What considerations must be made when deploying Docker containers in a production environment?
+### Какие соображения must be made when deploying Docker containers in a production environment?
 
 **Definition:**
 
@@ -1993,9 +1993,9 @@ Production — это реестр, закреплённые образы, ли�
 - [Docker — Deploy a stack to a swarm](https://docs.docker.com/engine/swarm/stack-deploy/)
 </details>
 <details>
-<summary>Explain the process of integrating Docker with a continuous integration system.</summary>
+<summary>Объясните the process of integrating Docker with a continuous integration system.</summary>
 
-### Explain the process of integrating Docker with a continuous integration system.
+### Объясните the process of integrating Docker with a continuous integration system.
 
 **Definition:**
 
@@ -2015,9 +2015,9 @@ Production — это реестр, закреплённые образы, ли�
 - [Docker — Building best practices](https://docs.docker.com/build/building/best-practices/)
 </details>
 <details>
-<summary>How would you migrate a traditional on-premise application to a Dockerized environment?</summary>
+<summary>Как бы вы migrate a traditional on-premise application to a Dockerized environment?</summary>
 
-### How would you migrate a traditional on-premise application to a Dockerized environment?
+### Как бы вы migrate a traditional on-premise application to a Dockerized environment?
 
 **Definition:**
 
@@ -2038,9 +2038,9 @@ Production — это реестр, закреплённые образы, ли�
 - [Docker — Secrets](https://docs.docker.com/engine/swarm/secrets/)
 </details>
 <details>
-<summary>Describe how to automate the deployment of Docker containers using a CI/CD pipeline.</summary>
+<summary>Опишите how to automate the deployment of Docker containers using a CI/CD pipeline.</summary>
 
-### Describe how to automate the deployment of Docker containers using a CI/CD pipeline.
+### Опишите how to automate the deployment of Docker containers using a CI/CD pipeline.
 
 **Definition:**
 
@@ -2069,9 +2069,9 @@ docker stack deploy --compose-file compose.yaml stackdemo
 ### Docker Storage & Persistence
 
 <details>
-<summary>When would you use a bind mount over a volume?</summary>
+<summary>Когда would you use a bind mount over a volume?</summary>
 
-### When would you use a bind mount over a volume?
+### Когда would you use a bind mount over a volume?
 
 **Definition:**
 
@@ -2094,9 +2094,9 @@ docker stack deploy --compose-file compose.yaml stackdemo
 - [Docker — Volumes](https://docs.docker.com/engine/storage/volumes/)
 </details>
 <details>
-<summary>How do you create a Docker volume, and what is its lifecycle?</summary>
+<summary>Как you create a Docker volume, and what is its lifecycle?</summary>
 
-### How do you create a Docker volume, and what is its lifecycle?
+### Как you create a Docker volume, and what is its lifecycle?
 
 **Definition:**
 
@@ -2122,9 +2122,9 @@ docker volume create app-data
 - [Docker — docker system prune](https://docs.docker.com/reference/cli/docker/system/prune/)
 </details>
 <details>
-<summary>What strategies would you use for data persistence in Docker clusters?</summary>
+<summary>Какие стратегии would you use for data persistence in Docker clusters?</summary>
 
-### What strategies would you use for data persistence in Docker clusters?
+### Какие стратегии would you use for data persistence in Docker clusters?
 
 **Definition:**
 

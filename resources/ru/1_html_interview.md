@@ -6,7 +6,7 @@
 
 ### Related docs
 
-* [HTML — Структура](./1_html_structure.md) · [HTML — Семантика](./1_html_semantics.md) · [HTML — Формы](./1_html_forms.md) · [HTML — Медиа](./1_html_media.md) · [HTML — Рендеринг](./1_html_rendering.md) · [HTML — Производительность](./1_html_performance.md) · [HTML — Доступность](./1_html_a11y.md) · [HTML — SEO](./1_html_seo.md) · [HTML — Расширенный](./1_html_advanced.md) · [HTML — Интервью](./1_html_interview.md)
+- [HTML — Структура](./1_html_structure.md) · [HTML — Семантика](./1_html_semantics.md) · [HTML — Формы](./1_html_forms.md) · [HTML — Медиа](./1_html_media.md) · [HTML — Рендеринг](./1_html_rendering.md) · [HTML — Производительность](./1_html_performance.md) · [HTML — Доступность](./1_html_a11y.md) · [HTML — SEO](./1_html_seo.md) · [HTML — Расширенный](./1_html_advanced.md) · [HTML — Интервью](./1_html_interview.md)
 
 ### Sections
 
@@ -21,9 +21,9 @@
 ### HTML Basics
 
 <details>
-<summary>What does HTML stand for and what is its purpose?</summary>
+<summary>Что означает HTML и для чего он используется?</summary>
 
-### What does HTML stand for and what is its purpose?
+### Что означает HTML и для чего он используется?
 
 **Definition:**
 
@@ -68,9 +68,9 @@ HTML5 сделан так, чтобы давать больше гибкости
 </details>
 
 <details>
-<summary>Describe the basic structure of an HTML document.</summary>
+<summary>Опишите the basic structure of an HTML document.</summary>
 
-### Describe the basic structure of an HTML document.
+### Опишите the basic structure of an HTML document.
 
 **Definition:**
 
@@ -98,7 +98,7 @@ HTML-документ состоит из двух главных секций: 
 
 ```html
 <html>
-    <!-- Head and Body Sections Are Nested Inside -->
+  <!-- Head and Body Sections Are Nested Inside -->
 </html>
 ```
 
@@ -108,7 +108,7 @@ HTML-документ состоит из двух главных секций: 
 
 ```html
 <head>
-    <!-- Title and Meta-Tags, Styles, Scripts, etc. -->
+  <!-- Title and Meta-Tags, Styles, Scripts, etc. -->
 </head>
 ```
 
@@ -126,7 +126,7 @@ HTML-документ состоит из двух главных секций: 
 
 ```html
 <body>
-    <!-- Content Visible to Users: Headings, Paragraphs, Images, etc. -->
+  <!-- Content Visible to Users: Headings, Paragraphs, Images, etc. -->
 </body>
 ```
 
@@ -138,9 +138,9 @@ HTML-документ состоит из двух главных секций: 
 </details>
 
 <details>
-<summary>What do DOCTYPE and html lang attributes do?</summary>
+<summary>Что делают DOCTYPE и атрибут html lang?</summary>
 
-### What do DOCTYPE and html lang attributes do?
+### Что делают DOCTYPE и атрибут html lang?
 
 **Definition:**
 
@@ -151,6 +151,7 @@ HTML-документ состоит из двух главных секций: 
 #### DOCTYPE: тип документа и режим проверки
 
 ##### Назначение
+
 - Указывает версию HTML или XHTML, которая используется в документе.
 - Определяет метод и алгоритм разбора для браузера и тем самым влияет на согласованность.
 
@@ -197,9 +198,9 @@ HTML-документ состоит из двух главных секций: 
 </details>
 
 <details>
-<summary>What is the difference between head and body tags?</summary>
+<summary>Что такое the difference between head and body tags?</summary>
 
-### What is the difference between head and body tags?
+### Что такое the difference between head and body tags?
 
 **Definition:**
 
@@ -232,8 +233,8 @@ HTML-документ состоит из двух главных секций: 
   <!DOCTYPE html>
   <html>
     <head>
-      <meta charset="UTF-8">
-      <link rel="stylesheet" type="text/css" href="styles.css">
+      <meta charset="UTF-8" />
+      <link rel="stylesheet" type="text/css" href="styles.css" />
     </head>
     <body>
       <!-- Content Here -->
@@ -247,8 +248,8 @@ HTML-документ состоит из двух главных секций: 
   <!DOCTYPE html>
   <html>
     <head>
-      <meta charset="UTF-8">
-      <link rel="stylesheet" type="text/css" href="styles.css">
+      <meta charset="UTF-8" />
+      <link rel="stylesheet" type="text/css" href="styles.css" />
     </head>
     <body>
       <header>
@@ -273,7 +274,6 @@ HTML-документ состоит из двух главных секций: 
       <footer>
         <p>&copy; 2023 MySite</p>
       </footer>
-
     </body>
   </html>
   ```
@@ -286,9 +286,9 @@ HTML-документ состоит из двух главных секций: 
 </details>
 
 <details>
-<summary>Can you explain the purpose of meta tags in HTML?</summary>
+<summary>Можете ли вы explain the puRPOse of meta tags in HTML?</summary>
 
-### Can you explain the purpose of meta tags in HTML?
+### Можете ли вы explain the puRPOse of meta tags in HTML?
 
 **Definition:**
 
@@ -323,17 +323,20 @@ HTML-документ состоит из двух главных секций: 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="This is a sample web page with a concise description.">
-    <meta name="keywords" content="HTML, meta tags, web design, SEO">
-    <meta name="author" content="John Doe">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="This is a sample web page with a concise description."
+    />
+    <meta name="keywords" content="HTML, meta tags, web design, SEO" />
+    <meta name="author" content="John Doe" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sample Web Page</title>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Page content goes here -->
-</body>
+  </body>
 </html>
 ```
 
@@ -355,9 +358,9 @@ HTML-документ состоит из двух главных секций: 
 </details>
 
 <details>
-<summary>How do you link a CSS file to an HTML document?</summary>
+<summary>Как you link a CSS file to an HTML document?</summary>
 
-### How do you link a CSS file to an HTML document?
+### Как you link a CSS file to an HTML document?
 
 **Definition:**
 
@@ -372,7 +375,7 @@ HTML использует тег `<link>`, чтобы **подключать в�
 ##### Синтаксис
 
 ```html
-<link rel="stylesheet" href="path/to/style.css">
+<link rel="stylesheet" href="path/to/style.css" />
 ```
 
 - **rel**: Задаёт тип связи между текущим документом и подключаемым файлом. Для CSS его ставят в «stylesheet».
@@ -388,12 +391,12 @@ HTML использует тег `<link>`, чтобы **подключать в�
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="path/to/style.css">
-</head>
-<body>
+  <head>
+    <link rel="stylesheet" href="path/to/style.css" />
+  </head>
+  <body>
     <!-- Body content -->
-</body>
+  </body>
 </html>
 ```
 
@@ -404,9 +407,9 @@ HTML использует тег `<link>`, чтобы **подключать в�
 </details>
 
 <details>
-<summary>How do you link a JavaScript file to an HTML document?</summary>
+<summary>Как you link a JavaScript file to an HTML document?</summary>
 
-### How do you link a JavaScript file to an HTML document?
+### Как you link a JavaScript file to an HTML document?
 
 **Definition:**
 
@@ -425,11 +428,11 @@ HTML использует тег `<link>`, чтобы **подключать в�
 
 2. **Подключите файл JavaScript к HTML-документу**: Добавьте следующий код внутри `<head>` или в конце секции `<body>` вашего HTML-файла.
 
-    ```html
-    <script src="path-to-your-js-file.js"></script>
-    ```
+   ```html
+   <script src="path-to-your-js-file.js"></script>
+   ```
 
-    Замените `path-to-your-js-file.js` на фактический путь к вашему файлу JavaScript.
+   Замените `path-to-your-js-file.js` на фактический путь к вашему файлу JavaScript.
 
 ##### Практические рекомендации
 
@@ -441,11 +444,11 @@ HTML использует тег `<link>`, чтобы **подключать в�
 
 JavaScript можно включить и прямо в HTML-файл. Это называют «встроенным скриптом». Для этого заключите код JavaScript в теги `<script>`, вот так:
 
-  ```html
-  <script>
-      // Your JavaScript code goes here
-  </script>
-  ```
+```html
+<script>
+  // Your JavaScript code goes here
+</script>
+```
 
 ##### Практические рекомендации
 
@@ -464,18 +467,18 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="path-to-your-js-file.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Your content here -->
     <script>
-        // Inline JavaScript code here.
+      // Inline JavaScript code here.
     </script>
-</body>
+  </body>
 </html>
 ```
 
@@ -486,9 +489,9 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 </details>
 
 <details>
-<summary>How do you add a comment in HTML and why would you use them?</summary>
+<summary>Как you add a comment in HTML and why would you use them?</summary>
 
-### How do you add a comment in HTML and why would you use them?
+### Как you add a comment in HTML and why would you use them?
 
 **Definition:**
 
@@ -531,9 +534,9 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 </details>
 
 <details>
-<summary>How do you serve your page in multiple languages?</summary>
+<summary>Как you serve your page in multiple languages?</summary>
 
-### How do you serve your page in multiple languages?
+### Как you serve your page in multiple languages?
 
 **Definition:**
 
@@ -548,8 +551,8 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 ```html
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Website</title>
   </head>
   <body>
@@ -573,9 +576,10 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 
 #### Соображения SEO
 
-Отдача контента на нескольких языках накладывает обязанности по SEO. Одна обычная практика — назначить *языковой* URL каждой версии контента. Кроме того, используйте человекочитаемые URL, чтобы понятно сообщать язык и тему или оформление контента.
+Отдача контента на нескольких языках накладывает обязанности по SEO. Одна обычная практика — назначить _языковой_ URL каждой версии контента. Кроме того, используйте человекочитаемые URL, чтобы понятно сообщать язык и тему или оформление контента.
 
 Например:
+
 - `example.com/en-US/about` для страниц на американском английском.
 - `example.com/es-MX/sobre` для страниц на мексиканском испанском.
 
@@ -590,9 +594,9 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 </details>
 
 <details>
-<summary>What are data-* attributes and when should they be used?</summary>
+<summary>Что такое data-* attributes and when should they be used?</summary>
 
-### What are data-* attributes and when should they be used?
+### Что такое data-\* attributes and when should they be used?
 
 **Definition:**
 
@@ -616,9 +620,9 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 <div id="user" data-name="John Doe" data-age="25"></div>
 
 <script>
-  const userDiv = document.getElementById('user');
-  console.log(userDiv.dataset.name);  // Output: "John Doe"
-  console.log(userDiv.dataset.age);   // Output: "25"
+  const userDiv = document.getElementById("user");
+  console.log(userDiv.dataset.name); // Output: "John Doe"
+  console.log(userDiv.dataset.age); // Output: "25"
 </script>
 ```
 
@@ -643,9 +647,9 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 ### Text Formatting in HTML
 
 <details>
-<summary>What is the difference between b and strong tags?</summary>
+<summary>Что такое the difference between b and strong tags?</summary>
 
-### What is the difference between b and strong tags?
+### Что такое the difference between b and strong tags?
 
 **Definition:**
 
@@ -669,7 +673,7 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 ```html
 <p>
   <b>Caution</b>: This action cannot be undone.
-  <br>
+  <br />
   <strong>Urgent Notice!</strong> Please save your work before proceeding.
 </p>
 ```
@@ -687,9 +691,9 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 </details>
 
 <details>
-<summary>When would you use em over i, and vice versa?</summary>
+<summary>Когда would you use em over i, and vice veRSA?</summary>
 
-### When would you use em over i, and vice versa?
+### Когда would you use em over i, and vice veRSA?
 
 **Definition:**
 
@@ -714,7 +718,9 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 Вот пример `<em>` вместе с CSS, чтобы добавить ещё немного «свечения».
 
 ```html
-<p>His <em style="background-color: yellow; color: red;">anger</em> was palpable.</p>
+<p>
+  His <em style="background-color: yellow; color: red;">anger</em> was palpable.
+</p>
 ```
 
 **Sources:**
@@ -725,9 +731,9 @@ JavaScript можно включить и прямо в HTML-файл. Это н
 </details>
 
 <details>
-<summary>What is the purpose of small, s, and mark tags?</summary>
+<summary>Что такое the puRPOse of small, s, and mark tags?</summary>
 
-### What is the purpose of small, s, and mark tags?
+### Что такое the puRPOse of small, s, and mark tags?
 
 **Definition:**
 
@@ -770,7 +776,10 @@ HTML5-теги `small`, `s` и `mark` используют, чтобы **мен�
 ##### Сценарий
 
 ```html
-<p>Important: Please <mark>schedule your appointment</mark> at least 48 hours in advance.</p>
+<p>
+  Important: Please <mark>schedule your appointment</mark> at least 48 hours in
+  advance.
+</p>
 ```
 
 **Sources:**
@@ -782,9 +791,9 @@ HTML5-теги `small`, `s` и `mark` используют, чтобы **мен�
 </details>
 
 <details>
-<summary>What are semantic HTML tags and why are they important?</summary>
+<summary>Что такое semantic HTML tags and why are they important?</summary>
 
-### What are semantic HTML tags and why are they important?
+### Что такое semantic HTML tags and why are they important?
 
 **Definition:**
 
@@ -826,26 +835,26 @@ HTML5-теги `small`, `s` и `mark` используют, чтобы **мен�
 
 ```html
 <div class="nav">
-    <div class="logo">
-        <a href="#">Logo</a>
-    </div>
-    <div class="nav-links">
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-    </div>
+  <div class="logo">
+    <a href="#">Logo</a>
+  </div>
+  <div class="nav-links">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
 </div>
 <div class="main-wrapper">
-    <div class="image">
-        <img src="image.jpg" alt="A beautiful landscape">
-    </div>
-    <div class="content">
-        <h3>Welcome</h3>
-        <p>Some welcome text here.</p>
-    </div>
+  <div class="image">
+    <img src="image.jpg" alt="A beautiful landscape" />
+  </div>
+  <div class="content">
+    <h3>Welcome</h3>
+    <p>Some welcome text here.</p>
+  </div>
 </div>
 <div class="footer">
-    <p>© 2022 Company Name</p>
+  <p>© 2022 Company Name</p>
 </div>
 ```
 
@@ -853,29 +862,29 @@ HTML5-теги `small`, `s` и `mark` используют, чтобы **мен�
 
 ```html
 <header>
-    <div class="logo">
-        <a href="#">Logo</a>
-    </div>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-    </nav>
+  <div class="logo">
+    <a href="#">Logo</a>
+  </div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </nav>
 </header>
 
 <main>
-    <figure>
-        <img src="image.jpg" alt="A beautiful landscape">
-        <figcaption>A beautiful landscape</figcaption>
-    </figure>
-    <section>
-        <h1>Welcome</h1>
-        <p>Some welcome text here.</p>
-    </section>
+  <figure>
+    <img src="image.jpg" alt="A beautiful landscape" />
+    <figcaption>A beautiful landscape</figcaption>
+  </figure>
+  <section>
+    <h1>Welcome</h1>
+    <p>Some welcome text here.</p>
+  </section>
 </main>
 
 <footer>
-    <p>© 2022 Company Name</p>
+  <p>© 2022 Company Name</p>
 </footer>
 ```
 
@@ -887,9 +896,9 @@ HTML5-теги `small`, `s` и `mark` используют, чтобы **мен�
 </details>
 
 <details>
-<summary>How do you create a paragraph or a line break in HTML?</summary>
+<summary>Как you create a paragraph or a line break in HTML?</summary>
 
-### How do you create a paragraph or a line break in HTML?
+### Как you create a paragraph or a line break in HTML?
 
 **Definition:**
 
@@ -905,7 +914,8 @@ HTML5-теги `small`, `s` и `mark` используют, чтобы **мен�
 
 ```html
 <p>
-    This is an example of a paragraph. The text enclosed within the &lt;p&gt; tags represents a single paragraph.
+  This is an example of a paragraph. The text enclosed within the &lt;p&gt; tags
+  represents a single paragraph.
 </p>
 ```
 
@@ -922,13 +932,12 @@ HTML5-теги `small`, `s` и `mark` используют, чтобы **мен�
 ##### Синтаксис
 
 ```html
-First Line<br>Second Line
+First Line<br />Second Line
 ```
 
 ##### Как это выглядит
 
 First Line<br> Second Line (Этот текст не рисует разрыв строки; он только показывает сырой HTML.)
-
 
 #### Многострочные текстовые элементы
 
@@ -964,9 +973,9 @@ Text wraps based on dimensions supplied.
 ### Links and Navigation
 
 <details>
-<summary>How do you create a hyperlink in HTML?</summary>
+<summary>Как you create a hyperlink in HTML?</summary>
 
-### How do you create a hyperlink in HTML?
+### Как you create a hyperlink in HTML?
 
 **Definition:**
 
@@ -1001,9 +1010,9 @@ Text wraps based on dimensions supplied.
 </details>
 
 <details>
-<summary>What is the difference between relative and absolute URLs?</summary>
+<summary>Что такое the difference between relative and absolute URLs?</summary>
 
-### What is the difference between relative and absolute URLs?
+### Что такое the difference between relative and absolute URLs?
 
 **Definition:**
 
@@ -1045,9 +1054,9 @@ Text wraps based on dimensions supplied.
 </details>
 
 <details>
-<summary>How can you open a link in a new tab?</summary>
+<summary>Как you open a link in a new tab?</summary>
 
-### How can you open a link in a new tab?
+### Как you open a link in a new tab?
 
 **Definition:**
 
@@ -1086,9 +1095,9 @@ Text wraps based on dimensions supplied.
 </details>
 
 <details>
-<summary>How do you create an anchor to jump to a specific part of the page?</summary>
+<summary>Как you create an anchor to jump to a specific part of the page?</summary>
 
-### How do you create an anchor to jump to a specific part of the page?
+### Как you create an anchor to jump to a specific part of the page?
 
 **Definition:**
 
@@ -1122,9 +1131,9 @@ Text wraps based on dimensions supplied.
 </details>
 
 <details>
-<summary>How do you link to a downloadable file in HTML?</summary>
+<summary>Как you link to a downloadable file in HTML?</summary>
 
-### How do you link to a downloadable file in HTML?
+### Как you link to a downloadable file in HTML?
 
 **Definition:**
 
@@ -1160,9 +1169,9 @@ Text wraps based on dimensions supplied.
 ### Images and Objects
 
 <details>
-<summary>How do you embed images in an HTML page?</summary>
+<summary>Как you embed images in an HTML page?</summary>
 
-### How do you embed images in an HTML page?
+### Как you embed images in an HTML page?
 
 **Definition:**
 
@@ -1188,7 +1197,8 @@ Text wraps based on dimensions supplied.
   src="images/dinosaur.jpg"
   alt="The head and torso of a dinosaur skeleton; it has a large head with long sharp teeth"
   width="400"
-  height="341" />
+  height="341"
+/>
 ```
 
 **Sources:**
@@ -1197,9 +1207,9 @@ Text wraps based on dimensions supplied.
 </details>
 
 <details>
-<summary>What is the importance of the alt attribute for images?</summary>
+<summary>Что такое the importance of the alt attribute for images?</summary>
 
-### What is the importance of the alt attribute for images?
+### Что такое the importance of the alt attribute for images?
 
 **Definition:**
 
@@ -1225,7 +1235,8 @@ Text wraps based on dimensions supplied.
 ```html
 <img
   src="/shared-assets/images/examples/grapefruit-slice.jpg"
-  alt="Grapefruit slice atop a pile of other slices" />
+  alt="Grapefruit slice atop a pile of other slices"
+/>
 ```
 
 **Sources:**
@@ -1234,9 +1245,9 @@ Text wraps based on dimensions supplied.
 </details>
 
 <details>
-<summary>What image formats are supported by web browsers?</summary>
+<summary>Какие image formats поддерживают web browsers?</summary>
 
-### What image formats are supported by web browsers?
+### Какие image formats поддерживают web browsers?
 
 **Definition:**
 
@@ -1281,9 +1292,9 @@ Text wraps based on dimensions supplied.
 </details>
 
 <details>
-<summary>How do you create image maps in HTML?</summary>
+<summary>Как you create image Maps in HTML?</summary>
 
-### How do you create image maps in HTML?
+### Как you create image Maps in HTML?
 
 **Definition:**
 
@@ -1314,14 +1325,20 @@ Text wraps based on dimensions supplied.
     shape="circle"
     coords="75,75,75"
     href="https://developer.mozilla.org/docs/Web/JavaScript"
-    alt="JavaScript" />
+    alt="JavaScript"
+  />
   <area
     shape="circle"
     coords="275,75,75"
     href="https://developer.mozilla.org/docs/Web/CSS"
-    alt="CSS" />
+    alt="CSS"
+  />
 </map>
-<img usemap="#primary" src="parrots.jpg" alt="350 x 150 picture of two parrots" />
+<img
+  usemap="#primary"
+  src="parrots.jpg"
+  alt="350 x 150 picture of two parrots"
+/>
 ```
 
 **Sources:**
@@ -1331,9 +1348,9 @@ Text wraps based on dimensions supplied.
 </details>
 
 <details>
-<summary>What is the difference between svg and canvas elements?</summary>
+<summary>Что такое the difference between svg and canvas elements?</summary>
 
-### What is the difference between svg and canvas elements?
+### Что такое the difference between svg and canvas elements?
 
 **Definition:**
 
@@ -1382,9 +1399,9 @@ SVG — это XML-разметка векторных фигур, котора�
 ### Lists
 
 <details>
-<summary>What are the different types of lists available in HTML?</summary>
+<summary>Что такое the different types of lists available in HTML?</summary>
 
-### What are the different types of lists available in HTML?
+### Что такое the different types of lists available in HTML?
 
 **Definition:**
 
@@ -1420,9 +1437,9 @@ SVG — это XML-разметка векторных фигур, котора�
 </details>
 
 <details>
-<summary>How do you create ordered, unordered, and description lists in HTML?</summary>
+<summary>Как you create ordered, unordered, and description lists in HTML?</summary>
 
-### How do you create ordered, unordered, and description lists in HTML?
+### Как you create ordered, unordered, and description lists in HTML?
 
 **Definition:**
 
@@ -1462,9 +1479,9 @@ SVG — это XML-разметка векторных фигур, котора�
 </details>
 
 <details>
-<summary>Can lists be nested in HTML? If so, how?</summary>
+<summary>Можно ли lists be nested in HTML? If so, how?</summary>
 
-### Can lists be nested in HTML? If so, how?
+### Можно ли lists be nested in HTML? If so, how?
 
 **Definition:**
 
@@ -1505,9 +1522,9 @@ SVG — это XML-разметка векторных фигур, котора�
 </details>
 
 <details>
-<summary>What attributes can you use with lists to modify their appearance or behavior?</summary>
+<summary>Какие attributes можно использовать с lists для изменения appearance или behavior?</summary>
 
-### What attributes can you use with lists to modify their appearance or behavior?
+### Какие attributes можно использовать с lists для изменения appearance или behavior?
 
 **Definition:**
 
@@ -1555,9 +1572,9 @@ SVG — это XML-разметка векторных фигур, котора�
 ### Forms and Input Elements
 
 <details>
-<summary>What are HTML forms and how do you create one?</summary>
+<summary>Что такое HTML forms and how do you create one?</summary>
 
-### What are HTML forms and how do you create one?
+### Что такое HTML forms and how do you create one?
 
 **Definition:**
 
@@ -1594,9 +1611,9 @@ SVG — это XML-разметка векторных фигур, котора�
 </details>
 
 <details>
-<summary>Describe the different form input types in HTML5.</summary>
+<summary>Опишите the different form input types in HTML5.</summary>
 
-### Describe the different form input types in HTML5.
+### Опишите the different form input types in HTML5.
 
 **Definition:**
 
@@ -1647,9 +1664,9 @@ SVG — это XML-разметка векторных фигур, котора�
 </details>
 
 <details>
-<summary>How do you make form inputs required?</summary>
+<summary>Как you make form inputs required?</summary>
 
-### How do you make form inputs required?
+### Как you make form inputs required?
 
 **Definition:**
 
@@ -1687,9 +1704,9 @@ SVG — это XML-разметка векторных фигур, котора�
 </details>
 
 <details>
-<summary>What is the purpose of the label element in forms?</summary>
+<summary>Что такое the puRPOse of the label element in forms?</summary>
 
-### What is the purpose of the label element in forms?
+### Что такое the puRPOse of the label element in forms?
 
 **Definition:**
 
@@ -1723,9 +1740,9 @@ SVG — это XML-разметка векторных фигур, котора�
 </details>
 
 <details>
-<summary>How do you group form inputs and why would you do this?</summary>
+<summary>Как you group form inputs and why would you do this?</summary>
 
-### How do you group form inputs and why would you do this?
+### Как you group form inputs and why would you do this?
 
 **Definition:**
 
@@ -1767,9 +1784,9 @@ SVG — это XML-разметка векторных фигур, котора�
 ### HTML5 Features
 
 <details>
-<summary>What is new in HTML5 compared to previous versions?</summary>
+<summary>Что такое new in HTML5 compared to previous versions?</summary>
 
-### What is new in HTML5 compared to previous versions?
+### Что такое new in HTML5 compared to previous versions?
 
 **Definition:**
 
@@ -1813,9 +1830,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 </details>
 
 <details>
-<summary>How do you create a section on a webpage using HTML5 semantic elements?</summary>
+<summary>Как you create a section on a webpage using HTML5 semantic elements?</summary>
 
-### How do you create a section on a webpage using HTML5 semantic elements?
+### Как you create a section on a webpage using HTML5 semantic elements?
 
 **Definition:**
 
@@ -1856,9 +1873,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 </details>
 
 <details>
-<summary>What is the role of the article element in HTML5?</summary>
+<summary>Что такое the role of the article element in HTML5?</summary>
 
-### What is the role of the article element in HTML5?
+### Что такое the role of the article element in HTML5?
 
 **Definition:**
 
@@ -1896,9 +1913,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 </details>
 
 <details>
-<summary>Can you explain the use of the nav and aside elements in HTML5?</summary>
+<summary>Можете ли вы explain the use of the nav and aside elements in HTML5?</summary>
 
-### Can you explain the use of the nav and aside elements in HTML5?
+### Можете ли вы explain the use of the nav and aside elements in HTML5?
 
 **Definition:**
 
@@ -1945,9 +1962,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 </details>
 
 <details>
-<summary>How do you use the figure and figcaption elements?</summary>
+<summary>Как you use the figure and figCAPtion elements?</summary>
 
-### How do you use the figure and figcaption elements?
+### Как you use the figure and figCAPtion elements?
 
 **Definition:**
 
@@ -1972,7 +1989,8 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 <figure>
   <img
     src="/shared-assets/images/examples/elephant.jpg"
-    alt="Elephant at sunset" />
+    alt="Elephant at sunset"
+  />
   <figcaption>An elephant at sunset</figcaption>
 </figure>
 ```
@@ -1985,9 +2003,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 ### Tables
 
 <details>
-<summary>How do you create a table in HTML?</summary>
+<summary>Как you create a table in HTML?</summary>
 
-### How do you create a table in HTML?
+### Как you create a table in HTML?
 
 **Definition:**
 
@@ -2010,7 +2028,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 
 ```html
 <table>
-  <caption>Alien football stars</caption>
+  <caption>
+    Alien football stars
+  </caption>
   <thead>
     <tr>
       <th scope="col">Player</th>
@@ -2033,9 +2053,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 </details>
 
 <details>
-<summary>What are thead, tbody, and tfoot in a table?</summary>
+<summary>Что такое thead, tbody, and tfoot in a table?</summary>
 
-### What are thead, tbody, and tfoot in a table?
+### Что такое thead, tbody, and tfoot in a table?
 
 **Definition:**
 
@@ -2088,9 +2108,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 </details>
 
 <details>
-<summary>What is a colspan and rowspan?</summary>
+<summary>Что такое colspan and rowspan?</summary>
 
-### What is a colspan and rowspan?
+### Что такое colspan and rowspan?
 
 **Definition:**
 
@@ -2129,9 +2149,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 </details>
 
 <details>
-<summary>How do you make a table accessible?</summary>
+<summary>Как you make a table accessible?</summary>
 
-### How do you make a table accessible?
+### Как you make a table accessible?
 
 **Definition:**
 
@@ -2155,7 +2175,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 
 ```html
 <table>
-  <caption>Dinosaurs in the Jurassic period</caption>
+  <caption>
+    Dinosaurs in the Jurassic period
+  </caption>
   <tr>
     <th scope="col">Symbol</th>
     <th scope="col">Code word</th>
@@ -2174,9 +2196,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 </details>
 
 <details>
-<summary>How can tables be made responsive?</summary>
+<summary>Как tables be made responsive?</summary>
 
-### How can tables be made responsive?
+### Как tables be made responsive?
 
 **Definition:**
 
@@ -2200,7 +2222,9 @@ HTML5 пришёл после HTML 4.01 и добавил элементы и в
 
 ```html
 <table>
-  <caption>A summary of the UK's most famous punk bands</caption>
+  <caption>
+    A summary of the UK's most famous punk bands
+  </caption>
   <thead>
     <tr>
       <th scope="col">Band</th>
@@ -2234,9 +2258,9 @@ table {
 ### Media in HTML
 
 <details>
-<summary>How do you add audio and video to an HTML document?</summary>
+<summary>Как you add audio and video to an HTML document?</summary>
 
-### How do you add audio and video to an HTML document?
+### Как you add audio and video to an HTML document?
 
 **Definition:**
 
@@ -2275,9 +2299,9 @@ table {
 </details>
 
 <details>
-<summary>What are the attributes of the video and audio elements?</summary>
+<summary>Что такое the attributes of the video and audio elements?</summary>
 
-### What are the attributes of the video and audio elements?
+### Что такое the attributes of the video and audio elements?
 
 **Definition:**
 
@@ -2323,9 +2347,9 @@ table {
 </details>
 
 <details>
-<summary>How do you provide subtitles or captions for video content in HTML?</summary>
+<summary>Как you provide subtitles or CAPtions for video content in HTML?</summary>
 
-### How do you provide subtitles or captions for video content in HTML?
+### Как you provide subtitles or CAPtions for video content in HTML?
 
 **Definition:**
 
@@ -2356,7 +2380,8 @@ table {
     kind="captions"
     srclang="en"
     label="English"
-    src="/shared-assets/misc/friday.vtt" />
+    src="/shared-assets/misc/friday.vtt"
+  />
 </video>
 ```
 
@@ -2367,9 +2392,9 @@ table {
 </details>
 
 <details>
-<summary>What’s the difference between embedding and linking media?</summary>
+<summary>В чём разница между embedding и linking media?</summary>
 
-### What’s the difference between embedding and linking media?
+### В чём разница между embedding и linking media?
 
 **Definition:**
 
@@ -2410,9 +2435,9 @@ table {
 ### Responsive Design and Media Queries
 
 <details>
-<summary>What is a viewport and how can you set it?</summary>
+<summary>Что такое viewport and how can you set it?</summary>
 
-### What is a viewport and how can you set it?
+### Что такое viewport and how can you set it?
 
 **Definition:**
 
@@ -2443,9 +2468,9 @@ Viewport — это область окна, где видна страница.
 </details>
 
 <details>
-<summary>Can you describe the use of media queries in HTML?</summary>
+<summary>Можете ли вы describe the use of media queries in HTML?</summary>
 
-### Can you describe the use of media queries in HTML?
+### Можете ли вы describe the use of media queries in HTML?
 
 **Definition:**
 
@@ -2493,9 +2518,9 @@ Viewport — это область окна, где видна страница.
 </details>
 
 <details>
-<summary>How do you create responsive images with different resolutions for different devices?</summary>
+<summary>Как you create responsive images with different resolutions for different devices?</summary>
 
-### How do you create responsive images with different resolutions for different devices?
+### Как you create responsive images with different resolutions for different devices?
 
 **Definition:**
 
@@ -2526,7 +2551,8 @@ Viewport — это область окна, где видна страница.
   src="logo.png"
   width="320"
   height="320"
-  alt="MDN Web Docs logo" />
+  alt="MDN Web Docs logo"
+/>
 
 <picture>
   <source srcset="photo.avif" type="image/avif" />
@@ -2543,9 +2569,9 @@ Viewport — это область окна, где видна страница.
 </details>
 
 <details>
-<summary>What is responsive web design?</summary>
+<summary>Что такое responsive web design?</summary>
 
-### What is responsive web design?
+### Что такое responsive web design?
 
 **Definition:**
 
@@ -2581,9 +2607,9 @@ video {
 </details>
 
 <details>
-<summary>How do flexbox and grids help in creating responsive layouts?</summary>
+<summary>Как flexbox and grids help in creating responsive layouts?</summary>
 
-### How do flexbox and grids help in creating responsive layouts?
+### Как flexbox and grids help in creating responsive layouts?
 
 **Definition:**
 
@@ -2627,9 +2653,9 @@ Flexbox и Grid делят свободное место между элемен
 ### Accessibility
 
 <details>
-<summary>What is accessibility and why is it important in web development?</summary>
+<summary>Что такое accessibility and why is it important in web development?</summary>
 
-### What is accessibility and why is it important in web development?
+### Что такое accessibility and why is it important in web development?
 
 **Definition:**
 
@@ -2666,9 +2692,9 @@ Flexbox и Grid делят свободное место между элемен
 </details>
 
 <details>
-<summary>How do you make a website accessible?</summary>
+<summary>Как you make a website accessible?</summary>
 
-### How do you make a website accessible?
+### Как you make a website accessible?
 
 **Definition:**
 
@@ -2707,9 +2733,9 @@ Flexbox и Grid делят свободное место между элемен
 </details>
 
 <details>
-<summary>What are ARIA roles and how do you use them?</summary>
+<summary>Что такое ARIA roles and how do you use them?</summary>
 
-### What are ARIA roles and how do you use them?
+### Что такое ARIA roles and how do you use them?
 
 **Definition:**
 
@@ -2747,9 +2773,9 @@ Flexbox и Grid делят свободное место между элемен
 </details>
 
 <details>
-<summary>Explain how to use the tabindex attribute.</summary>
+<summary>Объясните how to use the tabindex attribute.</summary>
 
-### Explain how to use the tabindex attribute.
+### Объясните how to use the tabindex attribute.
 
 **Definition:**
 
@@ -2783,9 +2809,9 @@ Flexbox и Grid делят свободное место между элемен
 </details>
 
 <details>
-<summary>How do you ensure your images are accessible?</summary>
+<summary>Как you ensure your images are accessible?</summary>
 
-### How do you ensure your images are accessible?
+### Как you ensure your images are accessible?
 
 **Definition:**
 
@@ -2811,7 +2837,8 @@ Flexbox и Grid делят свободное место между элемен
 ```html
 <img
   src="/shared-assets/images/examples/elephant.jpg"
-  alt="Elephant at sunset" />
+  alt="Elephant at sunset"
+/>
 
 <img src="divider.png" alt="" />
 ```
@@ -2825,9 +2852,9 @@ Flexbox и Grid делят свободное место между элемен
 ### Linking and Navigation Techniques
 
 <details>
-<summary>How do you make a navigation bar in HTML?</summary>
+<summary>Как you make a naviGAtion bar in HTML?</summary>
 
-### How do you make a navigation bar in HTML?
+### Как you make a naviGAtion bar in HTML?
 
 **Definition:**
 
@@ -2864,9 +2891,9 @@ Flexbox и Grid делят свободное место между элемен
 </details>
 
 <details>
-<summary>What’s the significance of breadcrumb navigation?</summary>
+<summary>Каково значение breadcrumb navigation?</summary>
 
-### What’s the significance of breadcrumb navigation?
+### Каково значение breadcrumb navigation?
 
 **Definition:**
 
@@ -2904,9 +2931,9 @@ Flexbox и Grid делят свободное место между элемен
 </details>
 
 <details>
-<summary>How do you create a dropdown menu in HTML?</summary>
+<summary>Как you create a dropdown menu in HTML?</summary>
 
-### How do you create a dropdown menu in HTML?
+### Как you create a dropdown menu in HTML?
 
 **Definition:**
 
@@ -2944,9 +2971,9 @@ Flexbox и Grid делят свободное место между элемен
 </details>
 
 <details>
-<summary>Explain the use of the target attribute in a link.</summary>
+<summary>Объясните использование атрибута target в ссылке.</summary>
 
-### Explain the use of the target attribute in a link.
+### Объясните использование атрибута target в ссылке.
 
 **Definition:**
 
@@ -2981,9 +3008,9 @@ Flexbox и Grid делят свободное место между элемен
 </details>
 
 <details>
-<summary>How do you create a slidedown menu?</summary>
+<summary>Объясните the use of the target attribute in a link.</summary>
 
-### How do you create a slidedown menu?
+### Объясните the use of the target attribute in a link.
 
 **Definition:**
 
@@ -3023,9 +3050,9 @@ Flexbox и Grid делят свободное место между элемен
 ### Advanced HTML Technologies
 
 <details>
-<summary>What are Web Components and how are they used?</summary>
+<summary>Как you create a SLIdedown menu?</summary>
 
-### What are Web Components and how are they used?
+### Как you create a SLIdedown menu?
 
 **Definition:**
 
@@ -3059,9 +3086,9 @@ Web Components — это три возможности платформы дл�
 </details>
 
 <details>
-<summary>What is Shadow DOM and how do you use it?</summary>
+<summary>Что такое Shadow DOM и как его использовать?</summary>
 
-### What is Shadow DOM and how do you use it?
+### Что такое Shadow DOM и как его использовать?
 
 **Definition:**
 
@@ -3098,9 +3125,9 @@ Shadow DOM — это дерево DOM, прикреплённое к элеме
 </details>
 
 <details>
-<summary>How do you create a custom HTML element?</summary>
+<summary>Что такое Web Components and how are they used?</summary>
 
-### How do you create a custom HTML element?
+### Что такое Web Components and how are they used?
 
 **Definition:**
 
@@ -3146,9 +3173,9 @@ customElements.define("filled-circle", FilledCircle);
 </details>
 
 <details>
-<summary>Explain HTML templates and their use cases.</summary>
+<summary>Что такое SHAdow DOM and how do you use it?</summary>
 
-### Explain HTML templates and their use cases.
+### Что такое SHAdow DOM and how do you use it?
 
 **Definition:**
 
@@ -3183,9 +3210,9 @@ customElements.define("filled-circle", FilledCircle);
 </details>
 
 <details>
-<summary>How do you use server-sent events?</summary>
+<summary>Как you create a custom HTML element?</summary>
 
-### How do you use server-sent events?
+### Как you create a custom HTML element?
 
 **Definition:**
 
@@ -3232,9 +3259,9 @@ customElements.define("filled-circle", FilledCircle);
 ### SEO and HTML
 
 <details>
-<summary>How do you optimize HTML for search engines?</summary>
+<summary>Объясните HTML templates and their use cases.</summary>
 
-### How do you optimize HTML for search engines?
+### Объясните HTML templates and their use cases.
 
 **Definition:**
 
@@ -3262,7 +3289,8 @@ customElements.define("filled-circle", FilledCircle);
   <title>My test page</title>
   <meta
     name="description"
-    content="A short summary of what this page is about." />
+    content="A short summary of what this page is about."
+  />
 </head>
 ```
 
@@ -3273,9 +3301,9 @@ customElements.define("filled-circle", FilledCircle);
 </details>
 
 <details>
-<summary>What is semantic HTML and how does it relate to SEO?</summary>
+<summary>Как you use server-sent events?</summary>
 
-### What is semantic HTML and how does it relate to SEO?
+### Как you use server-sent events?
 
 **Definition:**
 
@@ -3312,9 +3340,9 @@ customElements.define("filled-circle", FilledCircle);
 </details>
 
 <details>
-<summary>Explain the significance of heading tags for SEO.</summary>
+<summary>Как you optimize HTML for search engines?</summary>
 
-### Explain the significance of heading tags for SEO.
+### Как you optimize HTML for search engines?
 
 **Definition:**
 
@@ -3350,9 +3378,9 @@ customElements.define("filled-circle", FilledCircle);
 </details>
 
 <details>
-<summary>How do structured data and schemas enhance SEO?</summary>
+<summary>Что такое semantic HTML and how does it relate to SEO?</summary>
 
-### How do structured data and schemas enhance SEO?
+### Что такое semantic HTML and how does it relate to SEO?
 
 **Definition:**
 
@@ -3391,9 +3419,9 @@ customElements.define("filled-circle", FilledCircle);
 </details>
 
 <details>
-<summary>What are the best practices for using HTML with SEO?</summary>
+<summary>Объясните the significance of heading tags for SEO.</summary>
 
-### What are the best practices for using HTML with SEO?
+### Объясните the significance of heading tags for SEO.
 
 **Definition:**
 
@@ -3422,7 +3450,10 @@ customElements.define("filled-circle", FilledCircle);
   <head>
     <meta charset="utf-8" />
     <title>Beetles</title>
-    <meta name="description" content="What a beetle is, and how its body is divided." />
+    <meta
+      name="description"
+      content="What a beetle is, and how its body is divided."
+    />
   </head>
   <body>
     <h1>Beetles</h1>
@@ -3442,9 +3473,9 @@ customElements.define("filled-circle", FilledCircle);
 ### HTML APIs
 
 <details>
-<summary>What is the Geolocation API and how is it used?</summary>
+<summary>Как structured data and schemas enhance SEO?</summary>
 
-### What is the Geolocation API and how is it used?
+### Как structured data and schemas enhance SEO?
 
 **Definition:**
 
@@ -3481,9 +3512,9 @@ customElements.define("filled-circle", FilledCircle);
 </details>
 
 <details>
-<summary>How do you utilize local storage and session storage in HTML?</summary>
+<summary>Что такое the best practices for using HTML with SEO?</summary>
 
-### How do you utilize local storage and session storage in HTML?
+### Что такое the best practices for using HTML with SEO?
 
 **Definition:**
 
@@ -3519,9 +3550,9 @@ customElements.define("filled-circle", FilledCircle);
 </details>
 
 <details>
-<summary>Can you describe the use of the Drag and Drop API?</summary>
+<summary>Что такое the Geolocation API and how is it used?</summary>
 
-### Can you describe the use of the Drag and Drop API?
+### Что такое the Geolocation API and how is it used?
 
 **Definition:**
 
@@ -3564,9 +3595,9 @@ HTML Drag and Drop API позволяет перетащить элемент н
 </details>
 
 <details>
-<summary>What is the Fullscreen API and why would you use it?</summary>
+<summary>Как you utilize local storage and session storage in HTML?</summary>
 
-### What is the Fullscreen API and why would you use it?
+### Как you utilize local storage and session storage in HTML?
 
 **Definition:**
 
@@ -3608,9 +3639,9 @@ HTML Drag and Drop API позволяет перетащить элемент н
 ### Internationalization
 
 <details>
-<summary>How do you handle character encoding in HTML?</summary>
+<summary>Можете ли вы describe the use of the Drag and Drop API?</summary>
 
-### How do you handle character encoding in HTML?
+### Можете ли вы describe the use of the Drag and Drop API?
 
 **Definition:**
 
@@ -3644,9 +3675,9 @@ HTML Drag and Drop API позволяет перетащить элемент н
 </details>
 
 <details>
-<summary>What is the lang attribute and its importance in HTML?</summary>
+<summary>Что такое the Fullscreen API and why would you use it?</summary>
 
-### What is the lang attribute and its importance in HTML?
+### Что такое the Fullscreen API and why would you use it?
 
 **Definition:**
 
@@ -3683,9 +3714,9 @@ HTML Drag and Drop API позволяет перетащить элемент н
 </details>
 
 <details>
-<summary>How do you accommodate left-to-right and right-to-left language support in HTML?</summary>
+<summary>Как you handle character encoding in HTML?</summary>
 
-### How do you accommodate left-to-right and right-to-left language support in HTML?
+### Как you handle character encoding in HTML?
 
 **Definition:**
 
@@ -3729,9 +3760,9 @@ HTML Drag and Drop API позволяет перетащить элемент н
 ### HTML and Web Development Tools
 
 <details>
-<summary>How do you validate HTML?</summary>
+<summary>Что такое the lang attribute and its importance in HTML?</summary>
 
-### How do you validate HTML?
+### Что такое the lang attribute and its importance in HTML?
 
 **Definition:**
 
@@ -3763,9 +3794,9 @@ HTML Drag and Drop API позволяет перетащить элемент н
 </details>
 
 <details>
-<summary>What are the benefits of using an HTML preprocessor like Pug (Jade)?</summary>
+<summary>Как you accommodate left-to-right and right-to-left language support in HTML?</summary>
 
-### What are the benefits of using an HTML preprocessor like Pug (Jade)?
+### Как you accommodate left-to-right and right-to-left language support in HTML?
 
 **Definition:**
 
@@ -3802,9 +3833,9 @@ compiledFunction({ name: "Timothy" });
 </details>
 
 <details>
-<summary>How does a templating engine work with HTML?</summary>
+<summary>Как you validate HTML?</summary>
 
-### How does a templating engine work with HTML?
+### Как you validate HTML?
 
 **Definition:**
 
@@ -3837,9 +3868,9 @@ pug.renderFile("template.pug", { name: "Timothy" });
 </details>
 
 <details>
-<summary>What are browser developer tools, and how do you use them with HTML?</summary>
+<summary>Что такое the benefits of using an HTML preprocessor like Pug (Jade)?</summary>
 
-### What are browser developer tools, and how do you use them with HTML?
+### Что такое the benefits of using an HTML preprocessor like Pug (Jade)?
 
 **Definition:**
 
@@ -3873,9 +3904,9 @@ document.querySelector("html").style.backgroundColor = "purple";
 ### HTML Best Practices
 
 <details>
-<summary>What are some common bad practices in HTML?</summary>
+<summary>Как a templating engine work with HTML?</summary>
 
-### What are some common bad practices in HTML?
+### Как a templating engine work with HTML?
 
 **Definition:**
 
@@ -3909,9 +3940,9 @@ document.querySelector("html").style.backgroundColor = "purple";
 </details>
 
 <details>
-<summary>How can you ensure that your HTML code follows best practices?</summary>
+<summary>Что такое browser developer tools, and how do you use them with HTML?</summary>
 
-### How can you ensure that your HTML code follows best practices?
+### Что такое browser developer tools, and how do you use them with HTML?
 
 **Definition:**
 
@@ -3953,9 +3984,9 @@ document.querySelector("html").style.backgroundColor = "purple";
 </details>
 
 <details>
-<summary>What are the benefits of minifying HTML documents?</summary>
+<summary>Что такое some common bad practices in HTML?</summary>
 
-### What are the benefits of minifying HTML documents?
+### Что такое some common bad practices in HTML?
 
 **Definition:**
 
@@ -3977,7 +4008,8 @@ document.querySelector("html").style.backgroundColor = "purple";
 **Examples:**
 
 ```html
-<h1>HTML debugging examples</h1><p>What causes errors in HTML?</p>
+<h1>HTML debugging examples</h1>
+<p>What causes errors in HTML?</p>
 ```
 
 **Sources:**
@@ -3986,9 +4018,9 @@ document.querySelector("html").style.backgroundColor = "purple";
 </details>
 
 <details>
-<summary>How do you optimize the loading time of an HTML page?</summary>
+<summary>Как you ensure that your HTML code follows best practices?</summary>
 
-### How do you optimize the loading time of an HTML page?
+### Как you ensure that your HTML code follows best practices?
 
 **Definition:**
 
@@ -4026,9 +4058,9 @@ document.querySelector("html").style.backgroundColor = "purple";
 ### HTML Frameworks and Libraries
 
 <details>
-<summary>What are some popular CSS frameworks that can be integrated with HTML?</summary>
+<summary>Что такое the benefits of minifying HTML documents?</summary>
 
-### What are some popular CSS frameworks that can be integrated with HTML?
+### Что такое the benefits of minifying HTML documents?
 
 **Definition:**
 
@@ -4060,7 +4092,8 @@ CSS-фреймворк — это таблица стилей, которую в
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous" />
+      crossorigin="anonymous"
+    />
   </head>
   <body>
     <h1>Hello, world!</h1>
@@ -4074,9 +4107,9 @@ CSS-фреймворк — это таблица стилей, которую в
 </details>
 
 <details>
-<summary>How do frameworks like Bootstrap simplify HTML development?</summary>
+<summary>Как you optimize the loading time of an HTML page?</summary>
 
-### How do frameworks like Bootstrap simplify HTML development?
+### Как you optimize the loading time of an HTML page?
 
 **Definition:**
 
@@ -4101,7 +4134,8 @@ Bootstrap поставляет готовый файл CSS и пакет JavaScr
 <script
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-  crossorigin="anonymous"></script>
+  crossorigin="anonymous"
+></script>
 ```
 
 **Sources:**
@@ -4110,9 +4144,9 @@ Bootstrap поставляет готовый файл CSS и пакет JavaScr
 </details>
 
 <details>
-<summary>Can you name some JavaScript libraries that enhance HTML interactivity?</summary>
+<summary>Что такое some popular CSS frameworks that can be integrated with HTML?</summary>
 
-### Can you name some JavaScript libraries that enhance HTML interactivity?
+### Что такое some popular CSS frameworks that can be integrated with HTML?
 
 **Definition:**
 
@@ -4147,9 +4181,9 @@ Bootstrap поставляет готовый файл CSS и пакет JavaScr
 ### Advanced HTML Topics
 
 <details>
-<summary>What are data visualizations in HTML and how can they be implemented?</summary>
+<summary>Как frameworks like Bootstrap simplify HTML development?</summary>
 
-### What are data visualizations in HTML and how can they be implemented?
+### Как frameworks like Bootstrap simplify HTML development?
 
 **Definition:**
 
@@ -4186,9 +4220,9 @@ Bootstrap поставляет готовый файл CSS и пакет JavaScr
 </details>
 
 <details>
-<summary>Can you explain how progressive enhancement is applied in HTML?</summary>
+<summary>Можете ли вы name some JavaScript libraries that enhance HTML interactivity?</summary>
 
-### Can you explain how progressive enhancement is applied in HTML?
+### Можете ли вы name some JavaScript libraries that enhance HTML interactivity?
 
 **Definition:**
 
@@ -4224,9 +4258,9 @@ Bootstrap поставляет готовый файл CSS и пакет JavaScr
 </details>
 
 <details>
-<summary>How are HTML, CSS, and JavaScript interconnected in web development?</summary>
+<summary>Что такое data visualizations in HTML and how can they be implemented?</summary>
 
-### How are HTML, CSS, and JavaScript interconnected in web development?
+### Что такое data visualizations in HTML and how can they be implemented?
 
 **Definition:**
 
@@ -4264,9 +4298,9 @@ HTML размечает структуру и смысл, CSS задаёт пр�
 </details>
 
 <details>
-<summary>Discuss the importance of documentation in HTML.</summary>
+<summary>Можете ли вы explain how progressive enhancement is applied in HTML?</summary>
 
-### Discuss the importance of documentation in HTML.
+### Можете ли вы explain how progressive enhancement is applied in HTML?
 
 **Definition:**
 
@@ -4305,9 +4339,9 @@ HTML размечает структуру и смысл, CSS задаёт пр�
 ### HTML 5.1, 5.2, and Beyond
 
 <details>
-<summary>What updates were introduced in HTML 5.1 and 5.2?</summary>
+<summary>Как HTML, CSS, and JavaScript interconnected in web development?</summary>
 
-### What updates were introduced in HTML 5.1 and 5.2?
+### Как HTML, CSS, and JavaScript interconnected in web development?
 
 **Definition:**
 
@@ -4353,9 +4387,9 @@ HTML 5.1 (рекомендация W3C от 1 ноября 2016) и HTML 5.2 (14
 </details>
 
 <details>
-<summary>What future updates do you see coming for HTML?</summary>
+<summary>Обсудите the importance of documentation in HTML.</summary>
 
-### What future updates do you see coming for HTML?
+### Обсудите the importance of documentation in HTML.
 
 **Definition:**
 
@@ -4393,9 +4427,9 @@ HTML 5.1 (рекомендация W3C от 1 ноября 2016) и HTML 5.2 (14
 </details>
 
 <details>
-<summary>How does HTML continue to evolve with web standards?</summary>
+<summary>Какие updates были введены в HTML 5.1 и 5.2?</summary>
 
-### How does HTML continue to evolve with web standards?
+### Какие updates были введены в HTML 5.1 и 5.2?
 
 **Definition:**
 
@@ -4438,9 +4472,9 @@ HTML ведётся как один Living Standard в WHATWG, и с 2019 год
 </details>
 
 <details>
-<summary>What is the Living Standard and how does HTML adhere to it?</summary>
+<summary>Что такое Living Standard и как HTML ему следует?</summary>
 
-### What is the Living Standard and how does HTML adhere to it?
+### Что такое Living Standard и как HTML ему следует?
 
 **Definition:**
 
@@ -4484,9 +4518,9 @@ Living Standard — это спецификация HTML, которую неп�
 ### HTML Challenges and Real-world Scenarios
 
 <details>
-<summary>How do you handle multiple browser support and compatibility issues with HTML?</summary>
+<summary>Какие future updates вы видите для HTML?</summary>
 
-### How do you handle multiple browser support and compatibility issues with HTML?
+### Какие future updates вы видите для HTML?
 
 **Definition:**
 

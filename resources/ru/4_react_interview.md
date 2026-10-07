@@ -21,9 +21,9 @@
 ### React Basics
 
 <details>
-<summary>What is React and why is it used?</summary>
+<summary>Что такое React and why is it used?</summary>
 
-### What is React and why is it used?
+### Что такое React and why is it used?
 
 **Definition:**
 
@@ -106,9 +106,9 @@ export default function Counter() {
 </details>
 
 <details>
-<summary>How is React different from Angular or Vue?</summary>
+<summary>Как React different from Angular or Vue?</summary>
 
-### How is React different from Angular or Vue?
+### Как React different from Angular or Vue?
 
 **Definition:**
 
@@ -168,9 +168,9 @@ export default function Counter() {
 </details>
 
 <details>
-<summary>What is a React component?</summary>
+<summary>Что такое React component?</summary>
 
-### What is a React component?
+### Что такое React component?
 
 **Definition:**
 
@@ -222,9 +222,9 @@ React обеспечивает однонаправленный поток да�
 </details>
 
 <details>
-<summary>How do you create a component in React?</summary>
+<summary>Как you create a component in React?</summary>
 
-### How do you create a component in React?
+### Как you create a component in React?
 
 **Definition:**
 
@@ -295,9 +295,9 @@ export default Greeting;
 </details>
 
 <details>
-<summary>What is JSX and why do we use it in React?</summary>
+<summary>Что такое JSX and why do we use it in React?</summary>
 
-### What is JSX and why do we use it in React?
+### Что такое JSX and why do we use it in React?
 
 **Definition:**
 
@@ -369,9 +369,9 @@ const element = _jsx("h1", { className: "title", children: "Hello, World!" });
 </details>
 
 <details>
-<summary>Can you explain the virtual DOM in React?</summary>
+<summary>Можете ли вы explain the virtual DOM in React?</summary>
 
-### Can you explain the virtual DOM in React?
+### Можете ли вы explain the virtual DOM in React?
 
 **Definition:**
 
@@ -413,9 +413,9 @@ Virtual DOM (VDOM) остается фундаментальным архите�
 </details>
 
 <details>
-<summary>What are the differences between a class component and a functional component?</summary>
+<summary>Что такое the differences between a class component and a functional component?</summary>
 
-### What are the differences between a class component and a functional component?
+### Что такое the differences between a class component and a functional component?
 
 **Definition:**
 
@@ -505,9 +505,9 @@ Virtual DOM (VDOM) остается фундаментальным архите�
 </details>
 
 <details>
-<summary>How do you handle events in React?</summary>
+<summary>Как you handle events in React?</summary>
 
-### How do you handle events in React?
+### Как you handle events in React?
 
 **Definition:**
 
@@ -585,9 +585,9 @@ export default function Form() {
 </details>
 
 <details>
-<summary>What are state and props in React?</summary>
+<summary>Что такое state and props in React?</summary>
 
-### What are state and props in React?
+### Что такое state and props in React?
 
 **Definition:**
 
@@ -672,9 +672,9 @@ export default ColorPicker;
 </details>
 
 <details>
-<summary>How do you pass data between components in React?</summary>
+<summary>Как you pass data between components in React?</summary>
 
-### How do you pass data between components in React?
+### Как you pass data between components in React?
 
 **Definition:**
 
@@ -773,9 +773,9 @@ export default function App() {
 ### React State Management
 
 <details>
-<summary>What is a stateful component?</summary>
+<summary>Что такое stateful component?</summary>
 
-### What is a stateful component?
+### Что такое stateful component?
 
 **Definition:**
 
@@ -840,9 +840,9 @@ export default ClickCounter;
 </details>
 
 <details>
-<summary>Can you explain how useState works?</summary>
+<summary>Можете ли вы explain how useState works?</summary>
 
-### Can you explain how useState works?
+### Можете ли вы explain how useState works?
 
 **Definition:**
 
@@ -895,9 +895,9 @@ const Counter = () => {
 </details>
 
 <details>
-<summary>How do you update the state of a parent component from a child component?</summary>
+<summary>Как you update the state of a parent component from a child component?</summary>
 
-### How do you update the state of a parent component from a child component?
+### Как you update the state of a parent component from a child component?
 
 **Definition:**
 
@@ -962,9 +962,9 @@ export const Child = memo(({ onUpdate }) => {
 </details>
 
 <details>
-<summary>What is lifting state up in React?</summary>
+<summary>Что такое lifting state up in React?</summary>
 
-### What is lifting state up in React?
+### Что такое lifting state up in React?
 
 **Definition:**
 
@@ -1060,9 +1060,9 @@ const ShapeInput = ({ name, value, onChange }) => (
 </details>
 
 <details>
-<summary>When do you use Redux or Context API for state management?</summary>
+<summary>Когда do you use Redux or Context API for state management?</summary>
 
-### When do you use Redux or Context API for state management?
+### Когда do you use Redux or Context API for state management?
 
 **Definition:**
 
@@ -1132,9 +1132,9 @@ Context API — это механизм внедрения зависимост�
 ### React Lifecycle & Hooks
 
 <details>
-<summary>Explain the lifecycle methods of a React class component.</summary>
+<summary>Объясните the lifecycle methods of a React class component.</summary>
 
-### Explain the lifecycle methods of a React class component.
+### Объясните the lifecycle methods of a React class component.
 
 **Definition:**
 
@@ -1189,9 +1189,9 @@ class ChatRoom extends Component {
 </details>
 
 <details>
-<summary>How do hooks work in React?</summary>
+<summary>Как hooks work in React?</summary>
 
-### How do hooks work in React?
+### Как hooks work in React?
 
 **Definition:**
 
@@ -1231,9 +1231,9 @@ function Counter() {
 </details>
 
 <details>
-<summary>Can you describe the useEffect hook and its purpose?</summary>
+<summary>Можете ли вы describe the useEffect hook and its puRPOse?</summary>
 
-### Can you describe the useEffect hook and its purpose?
+### Можете ли вы describe the useEffect hook and its puRPOse?
 
 **Definition:**
 
@@ -1274,9 +1274,9 @@ function ChatRoom({ roomId }) {
 </details>
 
 <details>
-<summary>How do you fetch data with hooks in React?</summary>
+<summary>Как you fetch data with hooks in React?</summary>
 
-### How do you fetch data with hooks in React?
+### Как you fetch data with hooks in React?
 
 **Definition:**
 
@@ -1320,9 +1320,9 @@ useEffect(() => {
 </details>
 
 <details>
-<summary>What rules do you have to follow when using hooks?</summary>
+<summary>Какие rules нужно соблюдать при использовании hooks?</summary>
 
-### What rules do you have to follow when using hooks?
+### Какие rules нужно соблюдать при использовании hooks?
 
 **Definition:**
 
@@ -1366,9 +1366,9 @@ function FeedbackForm() {
 ### Component Communication
 
 <details>
-<summary>How do props work in React?</summary>
+<summary>Как props work in React?</summary>
 
-### How do props work in React?
+### Как props work in React?
 
 **Definition:**
 
@@ -1413,9 +1413,9 @@ function Avatar({ person, size }) {
 </details>
 
 <details>
-<summary>What is prop drilling and how can you avoid it?</summary>
+<summary>Что такое prop drilling and how can you avoid it?</summary>
 
-### What is prop drilling and how can you avoid it?
+### Что такое prop drilling and how can you avoid it?
 
 **Definition:**
 
@@ -1452,9 +1452,9 @@ function Section({ level, children }) {
 </details>
 
 <details>
-<summary>Explain the Context API and its use cases.</summary>
+<summary>Объясните the Context API and its use cases.</summary>
 
-### Explain the Context API and its use cases.
+### Объясните the Context API and its use cases.
 
 **Definition:**
 
@@ -1493,9 +1493,9 @@ return (
 </details>
 
 <details>
-<summary>How do you use render props?</summary>
+<summary>Как you use render props?</summary>
 
-### How do you use render props?
+### Как you use render props?
 
 **Definition:**
 
@@ -1531,9 +1531,9 @@ Render prop — это prop, значение которого является 
 </details>
 
 <details>
-<summary>What is the children prop?</summary>
+<summary>Что такое the children prop?</summary>
 
-### What is the children prop?
+### Что такое the children prop?
 
 **Definition:**
 
@@ -1570,9 +1570,9 @@ function Card({ children }) {
 ### Performance Optimization
 
 <details>
-<summary>Why is performance optimization important in React?</summary>
+<summary>Почему is performance optimization important in React?</summary>
 
-### Why is performance optimization important in React?
+### Почему is performance optimization important in React?
 
 **Definition:**
 
@@ -1613,9 +1613,9 @@ const List = memo(function List({ items }) {
 </details>
 
 <details>
-<summary>What is React.memo and when would you use it?</summary>
+<summary>Что такое React.memo and when would you use it?</summary>
 
-### What is React.memo and when would you use it?
+### Что такое React.memo and when would you use it?
 
 **Definition:**
 
@@ -1651,9 +1651,9 @@ const Profile = memo(function Profile({ person }) {
 </details>
 
 <details>
-<summary>How does PureComponent differ from Component in React?</summary>
+<summary>Как PureComponent differ from Component in React?</summary>
 
-### How does PureComponent differ from Component in React?
+### Как PureComponent differ from Component in React?
 
 **Definition:**
 
@@ -1694,9 +1694,9 @@ class Greeting extends PureComponent {
 </details>
 
 <details>
-<summary>Can you explain the concept of reconciliation in React?</summary>
+<summary>Можете ли вы explain the concept of reconciliation in React?</summary>
 
-### Can you explain the concept of reconciliation in React?
+### Можете ли вы explain the concept of reconciliation in React?
 
 **Definition:**
 
@@ -1729,9 +1729,9 @@ class Greeting extends PureComponent {
 </details>
 
 <details>
-<summary>How can you prevent unnecessary re-renders in React?</summary>
+<summary>Как you prevent unnecessary re-renders in React?</summary>
 
-### How can you prevent unnecessary re-renders in React?
+### Как you prevent unnecessary re-renders in React?
 
 **Definition:**
 
@@ -1767,9 +1767,9 @@ return <List items={visibleTodos} />;
 ### Styling in React
 
 <details>
-<summary>How do you apply styles in a React application?</summary>
+<summary>Как you apply styles in a React application?</summary>
 
-### How do you apply styles in a React application?
+### Как you apply styles in a React application?
 
 **Definition:**
 
@@ -1807,9 +1807,9 @@ DOM-узел стилизуют строкой `className`, которая со�
 </details>
 
 <details>
-<summary>What is CSS-in-JS and how do you implement it in React?</summary>
+<summary>Что такое CSS-in-JS and how do you implement it in React?</summary>
 
-### What is CSS-in-JS and how do you implement it in React?
+### Что такое CSS-in-JS and how do you implement it in React?
 
 **Definition:**
 
@@ -1845,9 +1845,9 @@ function useCSS(rule) {
 </details>
 
 <details>
-<summary>Can you describe how Styled-Components work?</summary>
+<summary>Можете ли вы describe how Styled-Components work?</summary>
 
-### Can you describe how Styled-Components work?
+### Можете ли вы describe how Styled-Components work?
 
 **Definition:**
 
@@ -1884,9 +1884,9 @@ const Wrapper = styled.section`
 </details>
 
 <details>
-<summary>What are the advantages of using Sass or LESS in a React project?</summary>
+<summary>Что такое the advantages of using Sass or LESS in a React project?</summary>
 
-### What are the advantages of using Sass or LESS in a React project?
+### Что такое the advantages of using Sass or LESS in a React project?
 
 **Definition:**
 
@@ -1924,9 +1924,9 @@ $border-dark: rgba($base-color, 0.88);
 </details>
 
 <details>
-<summary>How do you use inline styles in React?</summary>
+<summary>Как you use inline styles in React?</summary>
 
-### How do you use inline styles in React?
+### Как you use inline styles in React?
 
 **Definition:**
 
@@ -1967,9 +1967,9 @@ Prop `style` принимает объект JavaScript. Имена свойст
 ### React Routing
 
 <details>
-<summary>What is React Router?</summary>
+<summary>Что такое React Router?</summary>
 
-### What is React Router?
+### Что такое React Router?
 
 **Definition:**
 
@@ -2004,9 +2004,9 @@ React Router сопоставляет сегменты URL с элементам
 </details>
 
 <details>
-<summary>How do you create dynamic routes in React?</summary>
+<summary>Как you create dynamic routes in React?</summary>
 
-### How do you create dynamic routes in React?
+### Как you create dynamic routes in React?
 
 **Definition:**
 
@@ -2038,9 +2038,9 @@ function Team() {
 </details>
 
 <details>
-<summary>How would you pass data to routes in React Router v5+?</summary>
+<summary>Как бы вы pass data to routes in React Router v5+?</summary>
 
-### How would you pass data to routes in React Router v5+?
+### Как бы вы pass data to routes in React Router v5+?
 
 **Definition:**
 
@@ -2077,9 +2077,9 @@ export default function Invoices() {
 </details>
 
 <details>
-<summary>How do you programmatically navigate using React Router?</summary>
+<summary>Как you programmatically naviGAte using React Router?</summary>
 
-### How do you programmatically navigate using React Router?
+### Как you programmatically naviGAte using React Router?
 
 **Definition:**
 
@@ -2117,9 +2117,9 @@ function BackButton() {
 </details>
 
 <details>
-<summary>What are route guards and how can you implement them in React?</summary>
+<summary>Что такое route guards and how can you implement them in React?</summary>
 
-### What are route guards and how can you implement them in React?
+### Что такое route guards and how can you implement them in React?
 
 **Definition:**
 
@@ -2162,9 +2162,9 @@ export async function loader() {
 ### React Patterns
 
 <details>
-<summary>What are higher-order components (HOCs)?</summary>
+<summary>Что такое higher-order components (HOCs)?</summary>
 
-### What are higher-order components (HOCs)?
+### Что такое higher-order components (HOCs)?
 
 **Definition:**
 
@@ -2199,9 +2199,9 @@ export function useFormInput(initialValue) {
 </details>
 
 <details>
-<summary>Explain the container/presenter (smart/dumb) component pattern.</summary>
+<summary>Объясните the container/presenter (smart/dumb) component pattern.</summary>
 
-### Explain the container/presenter (smart/dumb) component pattern.
+### Объясните the container/presenter (smart/dumb) component pattern.
 
 **Definition:**
 
@@ -2244,9 +2244,9 @@ function TaskRow({ task, onToggle }) {
 </details>
 
 <details>
-<summary>How would you implement a compound component pattern in React?</summary>
+<summary>Как бы вы implement a compound component pattern in React?</summary>
 
-### How would you implement a compound component pattern in React?
+### Как бы вы implement a compound component pattern in React?
 
 **Definition:**
 
@@ -2281,9 +2281,9 @@ export default function TaskApp() {
 </details>
 
 <details>
-<summary>Explain the use of custom hooks in React.</summary>
+<summary>Объясните the use of custom hooks in React.</summary>
 
-### Explain the use of custom hooks in React.
+### Объясните the use of custom hooks in React.
 
 **Definition:**
 
@@ -2313,9 +2313,9 @@ function StatusBar() {
 </details>
 
 <details>
-<summary>What is a render prop pattern?</summary>
+<summary>Что такое render prop pattern?</summary>
 
-### What is a render prop pattern?
+### Что такое render prop pattern?
 
 **Definition:**
 
@@ -2352,9 +2352,9 @@ function RowList({ items, renderRow }) {
 ### Form Handling
 
 <details>
-<summary>How do you handle forms in React?</summary>
+<summary>Как you handle forms in React?</summary>
 
-### How do you handle forms in React?
+### Как you handle forms in React?
 
 **Definition:**
 
@@ -2395,9 +2395,9 @@ export default function MyForm() {
 </details>
 
 <details>
-<summary>What is controlled and uncontrolled components?</summary>
+<summary>Что такое controlled and uncontrolled components?</summary>
 
-### What is controlled and uncontrolled components?
+### Что такое controlled and uncontrolled components?
 
 **Definition:**
 
@@ -2432,9 +2432,9 @@ const [firstName, setFirstName] = useState("");
 </details>
 
 <details>
-<summary>How do you validate forms in React?</summary>
+<summary>Как you validate forms in React?</summary>
 
-### How do you validate forms in React?
+### Как you validate forms in React?
 
 **Definition:**
 
@@ -2467,9 +2467,9 @@ const [firstName, setFirstName] = useState("");
 </details>
 
 <details>
-<summary>What is Formik and how is it used in React forms?</summary>
+<summary>Что такое Formik and how is it used in React forms?</summary>
 
-### What is Formik and how is it used in React forms?
+### Что такое Formik and how is it used in React forms?
 
 **Definition:**
 
@@ -2506,9 +2506,9 @@ const formik = useFormik({
 </details>
 
 <details>
-<summary>How do you handle file uploads in React?</summary>
+<summary>Как you handle file uploads in React?</summary>
 
-### How do you handle file uploads in React?
+### Как you handle file uploads in React?
 
 **Definition:**
 
@@ -2550,9 +2550,9 @@ function UploadForm() {
 ### React with TypeScript
 
 <details>
-<summary>What are the benefits of using TypeScript with React?</summary>
+<summary>Что такое the benefits of using TypeScript with React?</summary>
 
-### What are the benefits of using TypeScript with React?
+### Что такое the benefits of using TypeScript with React?
 
 **Definition:**
 
@@ -2581,9 +2581,9 @@ function MyButton({ title }: { title: string }) {
 </details>
 
 <details>
-<summary>How do you define types for props and state in TypeScript with React?</summary>
+<summary>Как you define types for props and state in TypeScript with React?</summary>
 
-### How do you define types for props and state in TypeScript with React?
+### Как you define types for props and state in TypeScript with React?
 
 **Definition:**
 
@@ -2617,9 +2617,9 @@ const [status, setStatus] = useState<Status>("idle");
 </details>
 
 <details>
-<summary>Explain how to use interfaces with React components and TypeScript.</summary>
+<summary>Объясните how to use interfaces with React components and TypeScript.</summary>
 
-### Explain how to use interfaces with React components and TypeScript.
+### Объясните how to use interfaces with React components and TypeScript.
 
 **Definition:**
 
@@ -2653,9 +2653,9 @@ function MyButton({ title, disabled }: MyButtonProps) {
 </details>
 
 <details>
-<summary>How do TypeScript generics enhance React components?</summary>
+<summary>Как TypeScript generics enhance React components?</summary>
 
-### How do TypeScript generics enhance React components?
+### Как TypeScript generics enhance React components?
 
 **Definition:**
 
@@ -2702,9 +2702,9 @@ function List<Item extends { id: string }>({
 ### Testing in React
 
 <details>
-<summary>Why is testing important in React?</summary>
+<summary>Почему is testing important in React?</summary>
 
-### Why is testing important in React?
+### Почему is testing important in React?
 
 **Definition:**
 
@@ -2734,9 +2734,9 @@ test("has correct welcome text", () => {
 </details>
 
 <details>
-<summary>What are some common testing libraries for React?</summary>
+<summary>Что такое some common testing libraries for React?</summary>
 
-### What are some common testing libraries for React?
+### Что такое some common testing libraries for React?
 
 **Definition:**
 
@@ -2767,9 +2767,9 @@ import "@testing-library/jest-dom";
 </details>
 
 <details>
-<summary>How do you test a React component with Jest?</summary>
+<summary>Как you test a React component with Jest?</summary>
 
-### How do you test a React component with Jest?
+### Как you test a React component with Jest?
 
 **Definition:**
 
@@ -2802,9 +2802,9 @@ test("loads and displays greeting", async () => {
 </details>
 
 <details>
-<summary>Can you explain the difference between shallow rendering and mount rendering in Enzyme?</summary>
+<summary>Можете ли вы explain the difference between SHAllow rendering and mount rendering in Enzyme?</summary>
 
-### Can you explain the difference between shallow rendering and mount rendering in Enzyme?
+### Можете ли вы explain the difference between SHAllow rendering and mount rendering in Enzyme?
 
 **Definition:**
 
@@ -2836,9 +2836,9 @@ expect(wrapper.find("h1").text()).toEqual("Welcome, John Doe");
 </details>
 
 <details>
-<summary>What is react-testing-library and how is it different from Enzyme?</summary>
+<summary>Что такое React-testing-library and how is it different from Enzyme?</summary>
 
-### What is react-testing-library and how is it different from Enzyme?
+### Что такое React-testing-library and how is it different from Enzyme?
 
 **Definition:**
 
@@ -2872,9 +2872,9 @@ expect(screen.getByRole("heading")).toHaveTextContent("Welcome, John Doe");
 ### Advanced React Topics
 
 <details>
-<summary>What are React fragments and why are they useful?</summary>
+<summary>Что такое React fragments and why are they useful?</summary>
 
-### What are React fragments and why are they useful?
+### Что такое React fragments and why are they useful?
 
 **Definition:**
 
@@ -2911,9 +2911,9 @@ function AboutPage() {
 </details>
 
 <details>
-<summary>What is React portal and when would you use it?</summary>
+<summary>Что такое React portal and when would you use it?</summary>
 
-### What is React portal and when would you use it?
+### Что такое React portal and when would you use it?
 
 **Definition:**
 
@@ -2948,9 +2948,9 @@ import { createPortal } from "react-dom";
 </details>
 
 <details>
-<summary>How does error boundary work in React?</summary>
+<summary>Как error boundary work in React?</summary>
 
-### How does error boundary work in React?
+### Как error boundary work in React?
 
 **Definition:**
 
@@ -2992,9 +2992,9 @@ class ErrorBoundary extends React.Component {
 </details>
 
 <details>
-<summary>What is server-side rendering and how is it done with React?</summary>
+<summary>Что такое server-side rendering and how is it done with React?</summary>
 
-### What is server-side rendering and how is it done with React?
+### Что такое server-side rendering and how is it done with React?
 
 **Definition:**
 
@@ -3027,9 +3027,9 @@ app.use("/", (request, response) => {
 </details>
 
 <details>
-<summary>Can you explain the concept of suspense and lazy loading in React?</summary>
+<summary>Можете ли вы explain the concept of suspense and lazy loading in React?</summary>
 
-### Can you explain the concept of suspense and lazy loading in React?
+### Можете ли вы explain the concept of suspense and lazy loading in React?
 
 **Definition:**
 
@@ -3075,9 +3075,9 @@ export default function Editor() {
 ### React and SEO
 
 <details>
-<summary>How does React affect SEO?</summary>
+<summary>Как React affect SEO?</summary>
 
-### How does React affect SEO?
+### Как React affect SEO?
 
 **Definition:**
 
@@ -3099,9 +3099,9 @@ export default function Editor() {
 </details>
 
 <details>
-<summary>What strategies would you use to make a React application SEO-friendly?</summary>
+<summary>Какие стратегии would you use to make a React application SEO-friendly?</summary>
 
-### What strategies would you use to make a React application SEO-friendly?
+### Какие стратегии would you use to make a React application SEO-friendly?
 
 **Definition:**
 
@@ -3127,9 +3127,9 @@ export default function Editor() {
 </details>
 
 <details>
-<summary>How can server-side rendering improve SEO with React applications?</summary>
+<summary>Как server-side rendering improve SEO with React applications?</summary>
 
-### How can server-side rendering improve SEO with React applications?
+### Как server-side rendering improve SEO with React applications?
 
 **Definition:**
 
@@ -3162,9 +3162,9 @@ response.send(html);
 ### React Native
 
 <details>
-<summary>What is React Native and how is it different from React?</summary>
+<summary>Что такое React Native and how is it different from React?</summary>
 
-### What is React Native and how is it different from React?
+### Что такое React Native and how is it different from React?
 
 **Definition:**
 
@@ -3185,9 +3185,9 @@ React Native запускает компонентную модель React на
 </details>
 
 <details>
-<summary>How do you bridge native modules in React Native?</summary>
+<summary>Как you bridge native modules in React Native?</summary>
 
-### How do you bridge native modules in React Native?
+### Как you bridge native modules in React Native?
 
 **Definition:**
 
@@ -3216,9 +3216,9 @@ const reversed = SampleTurboModule.reverseString(value);
 </details>
 
 <details>
-<summary>Can you describe the layout system in React Native?</summary>
+<summary>Можете ли вы describe the layout system in React Native?</summary>
 
-### Can you describe the layout system in React Native?
+### Можете ли вы describe the layout system in React Native?
 
 **Definition:**
 
@@ -3252,9 +3252,9 @@ const styles = StyleSheet.create({
 ### State Management Libraries & GraphQL
 
 <details>
-<summary>What is Apollo Client and how does it integrate with React?</summary>
+<summary>Что такое Apollo Client and how does it integrate with React?</summary>
 
-### What is Apollo Client and how does it integrate with React?
+### Что такое Apollo Client and how does it integrate with React?
 
 **Definition:**
 
@@ -3293,9 +3293,9 @@ root.render(
 </details>
 
 <details>
-<summary>How do you manage local state in Apollo Client?</summary>
+<summary>Как you manage local state in Apollo Client?</summary>
 
-### How do you manage local state in Apollo Client?
+### Как you manage local state in Apollo Client?
 
 **Definition:**
 
@@ -3336,9 +3336,9 @@ const client = new ApolloClient({
 </details>
 
 <details>
-<summary>What is Redux and how does it contrast with the Context API?</summary>
+<summary>Что такое Redux and how does it contrast with the Context API?</summary>
 
-### What is Redux and how does it contrast with the Context API?
+### Что такое Redux and how does it contrast with the Context API?
 
 **Definition:**
 
@@ -3379,9 +3379,9 @@ export const counterSlice = createSlice({
 </details>
 
 <details>
-<summary>Can you detail the Redux workflow?</summary>
+<summary>Можете ли вы detail the Redux workflow?</summary>
 
-### Can you detail the Redux workflow?
+### Можете ли вы detail the Redux workflow?
 
 **Definition:**
 
@@ -3412,9 +3412,9 @@ return <button onClick={() => dispatch(increment())}>{value}</button>;
 </details>
 
 <details>
-<summary>How do you handle side effects in Redux applications?</summary>
+<summary>Как you handle side effects in Redux applications?</summary>
 
-### How do you handle side effects in Redux applications?
+### Как you handle side effects in Redux applications?
 
 **Definition:**
 
@@ -3454,9 +3454,9 @@ const todoSaved = createAsyncThunk(
 ### React Development Environment & Tooling
 
 <details>
-<summary>How do you set up a React project from scratch?</summary>
+<summary>Как you set up a React project from scratch?</summary>
 
-### How do you set up a React project from scratch?
+### Как you set up a React project from scratch?
 
 **Definition:**
 
@@ -3484,9 +3484,9 @@ npm create vite@latest my-app -- --template react-ts
 </details>
 
 <details>
-<summary>What is Babel and why do we use it with React?</summary>
+<summary>Что такое Babel and why do we use it with React?</summary>
 
-### What is Babel and why do we use it with React?
+### Что такое Babel and why do we use it with React?
 
 **Definition:**
 
@@ -3517,9 +3517,9 @@ react({
 </details>
 
 <details>
-<summary>What is Webpack and what role does it play in React development?</summary>
+<summary>Что такое Webpack and what role does it play in React development?</summary>
 
-### What is Webpack and what role does it play in React development?
+### Что такое Webpack and what role does it play in React development?
 
 **Definition:**
 
@@ -3540,9 +3540,9 @@ Webpack — сборщик модулей. Текущее руководство
 </details>
 
 <details>
-<summary>How does hot module replacement work in React?</summary>
+<summary>Как hot module replacement work in React?</summary>
 
-### How does hot module replacement work in React?
+### Как hot module replacement work in React?
 
 **Definition:**
 
@@ -3564,9 +3564,9 @@ Hot module replacement подменяет изменённый модуль в �
 </details>
 
 <details>
-<summary>What are the features of create-react-app and how do you eject from it?</summary>
+<summary>Что такое the features of create-React-app and how do you eject from it?</summary>
 
-### What are the features of create-react-app and how do you eject from it?
+### Что такое the features of create-React-app and how do you eject from it?
 
 **Definition:**
 
@@ -3595,9 +3595,9 @@ Create React App устарел для новых приложений с 14 ф�
 ### Integrations and API Handling
 
 <details>
-<summary>How do you handle API calls in React?</summary>
+<summary>Как you handle API calls in React?</summary>
 
-### How do you handle API calls in React?
+### Как you handle API calls in React?
 
 **Definition:**
 
@@ -3654,9 +3654,9 @@ function Albums() {
 </details>
 
 <details>
-<summary>What is Axios and how is it used over fetch in React applications?</summary>
+<summary>Что такое Axios and how is it used over fetch in React applications?</summary>
 
-### What is Axios and how is it used over fetch in React applications?
+### Что такое Axios and how is it used over fetch in React applications?
 
 **Definition:**
 
@@ -3694,9 +3694,9 @@ console.log(response.data);
 </details>
 
 <details>
-<summary>How would you handle WebSocket connections in a React application?</summary>
+<summary>Как бы вы handle WebSocket connections in a React application?</summary>
 
-### How would you handle WebSocket connections in a React application?
+### Как бы вы handle WebSocket connections in a React application?
 
 **Definition:**
 
@@ -3740,9 +3740,9 @@ function Ticker() {
 </details>
 
 <details>
-<summary>What are some strategies used to connect a React front end to a backend server?</summary>
+<summary>Что такое some strategies used to connect a React front end to a backend server?</summary>
 
-### What are some strategies used to connect a React front end to a backend server?
+### Что такое some strategies used to connect a React front end to a backend server?
 
 **Definition:**
 
@@ -3771,9 +3771,9 @@ function Ticker() {
 ### Deployment and Optimization
 
 <details>
-<summary>How would you deploy a React application?</summary>
+<summary>Как бы вы deploy a React application?</summary>
 
-### How would you deploy a React application?
+### Как бы вы deploy a React application?
 
 **Definition:**
 
@@ -3795,9 +3795,9 @@ function Ticker() {
 </details>
 
 <details>
-<summary>How do you optimize the performance of a React application for production?</summary>
+<summary>Как you optimize the performance of a React application for production?</summary>
 
-### How do you optimize the performance of a React application for production?
+### Как you optimize the performance of a React application for production?
 
 **Definition:**
 
@@ -3835,9 +3835,9 @@ export function Preview() {
 </details>
 
 <details>
-<summary>What are service workers and how can they benefit a React application?</summary>
+<summary>Что такое Service Workers and how can they benefit a React application?</summary>
 
-### What are service workers and how can they benefit a React application?
+### Что такое Service Workers and how can they benefit a React application?
 
 **Definition:**
 
@@ -3866,9 +3866,9 @@ if ("serviceWorker" in navigator) {
 </details>
 
 <details>
-<summary>How do you configure HTTPS in a React app?</summary>
+<summary>Как you configure HTTPS in a React app?</summary>
 
-### How do you configure HTTPS in a React app?
+### Как you configure HTTPS in a React app?
 
 **Definition:**
 
@@ -3891,9 +3891,9 @@ Production HTTPS — это TLS-сертификат хоста перед со�
 ### Accessibility in React
 
 <details>
-<summary>Why is accessibility important in web development?</summary>
+<summary>Почему is accessibility important in web development?</summary>
 
-### Why is accessibility important in web development?
+### Почему is accessibility important in web development?
 
 **Definition:**
 
@@ -3913,9 +3913,9 @@ Production HTTPS — это TLS-сертификат хоста перед со�
 </details>
 
 <details>
-<summary>How can you make a React application accessible?</summary>
+<summary>Как you make a React application accessible?</summary>
 
-### How can you make a React application accessible?
+### Как you make a React application accessible?
 
 **Definition:**
 
@@ -3957,9 +3957,9 @@ function PasswordField() {
 </details>
 
 <details>
-<summary>What is ARIA and how it is used in React?</summary>
+<summary>Что такое ARIA and how it is used in React?</summary>
 
-### What is ARIA and how it is used in React?
+### Что такое ARIA and how it is used in React?
 
 **Definition:**
 
@@ -3995,9 +3995,9 @@ ARIA — набор ролей и атрибутов, которые описы�
 ### Internationalization and Localization
 
 <details>
-<summary>What is internationalization (i18n) in React?</summary>
+<summary>Что такое internationalization (i18n) in React?</summary>
 
-### What is internationalization (i18n) in React?
+### Что такое internationalization (i18n) in React?
 
 **Definition:**
 
@@ -4024,9 +4024,9 @@ const formatted = new Intl.NumberFormat(navigator.language).format(26254.39);
 </details>
 
 <details>
-<summary>How do you implement localization (l10n) in a React app?</summary>
+<summary>Как you implement localization (l10n) in a React app?</summary>
 
-### How do you implement localization (l10n) in a React app?
+### Как you implement localization (l10n) in a React app?
 
 **Definition:**
 
@@ -4056,9 +4056,9 @@ const label = new Intl.DateTimeFormat("de-DE").format(date);
 ### React Code Structure & Best Practices
 
 <details>
-<summary>How do you structure large React applications?</summary>
+<summary>Как you structure large React applications?</summary>
 
-### How do you structure large React applications?
+### Как you structure large React applications?
 
 **Definition:**
 
@@ -4079,9 +4079,9 @@ React не требует раскладки папок. Приложение с
 </details>
 
 <details>
-<summary>What are some best practices when writing React code?</summary>
+<summary>Что такое some best practices when writing React code?</summary>
 
-### What are some best practices when writing React code?
+### Что такое some best practices when writing React code?
 
 **Definition:**
 
@@ -4103,9 +4103,9 @@ React не требует раскладки папок. Приложение с
 </details>
 
 <details>
-<summary>How do you ensure code quality and maintainability in a React project?</summary>
+<summary>Как you ensure code quality and maintainability in a React project?</summary>
 
-### How do you ensure code quality and maintainability in a React project?
+### Как you ensure code quality and maintainability in a React project?
 
 **Definition:**
 
@@ -4128,9 +4128,9 @@ React не требует раскладки папок. Приложение с
 ### React and Git Workflows
 
 <details>
-<summary>How do you manage feature branches in React development with Git?</summary>
+<summary>Как you manage feature branches in React development with Git?</summary>
 
-### How do you manage feature branches in React development with Git?
+### Как you manage feature branches in React development with Git?
 
 **Definition:**
 
@@ -4161,9 +4161,9 @@ git branch -d iss53
 </details>
 
 <details>
-<summary>What are your strategies for resolving merge conflicts in React projects?</summary>
+<summary>Что такое your strategies for resolving merge conflicts in React projects?</summary>
 
-### What are your strategies for resolving merge conflicts in React projects?
+### Что такое your strategies for resolving merge conflicts in React projects?
 
 **Definition:**
 
@@ -4197,9 +4197,9 @@ return <button type="submit">Save changes</button>;
 ### React Interviews Problem Solving and Scenarios
 
 <details>
-<summary>How would you handle a feature request or bug report in an ongoing React project?</summary>
+<summary>Как бы вы handle a feature request or bug report in an onGoing React project?</summary>
 
-### How would you handle a feature request or bug report in an ongoing React project?
+### Как бы вы handle a feature request or bug report in an onGoing React project?
 
 **Definition:**
 
@@ -4221,9 +4221,9 @@ return <button type="submit">Save changes</button>;
 </details>
 
 <details>
-<summary>Describe your process for optimizing a component that has complex state logic and several child components.</summary>
+<summary>Опишите your process for optimizing a component that has complex state logic and several child components.</summary>
 
-### Describe your process for optimizing a component that has complex state logic and several child components.
+### Опишите your process for optimizing a component that has complex state logic and several child components.
 
 **Definition:**
 

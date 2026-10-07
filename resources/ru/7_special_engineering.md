@@ -359,10 +359,10 @@ video.play();
 - Duplicate "spent today" logic in three files is low cohesion spread thin — a rule change misses a copy.
 
 
-| High (good / bad)                         | Low                                                      |
-|  ------------  |  -----------------------------------------  |
-| **Cohesion** | Good — related code in one module         | Bad — a class does budget _and_ HTTP _and_ UI            |
-| **Coupling** | Bad — many modules break when one changes | Good — swap History storage without touching DailyAmount |
+| | High (good / bad)                         | Low                                                      |
+| | ------------  |  -----------------------------------------  |
+| | **Cohesion** | Good — related code in one module         | Bad — a class does budget _and_ HTTP _and_ UI            |
+| | **Coupling** | Bad — many modules break when one changes | Good — swap History storage without touching DailyAmount |
 
 Связность — близкие задачи в одном модуле. Сцепление / зацепление — сколько модули знают друг о друге. Цель: высокая связность, низкое сцепление. High coupling → many mocks just to boot a unit test; see [Making tests easy](./7_special_testing_practices.md#making-tests-easy).
 

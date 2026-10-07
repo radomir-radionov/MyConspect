@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Availability & Reliability](https://devinter
 ### Availability & Reliability Fundamentals
 
 <details>
-<summary>What is the difference between availability and reliability in the context of a software system?</summary>
+<summary>Что такое the difference between availability and reliability in the context of a software system?</summary>
 
-### What is the difference between availability and reliability in the context of a software system?
+### Что такое the difference between availability and reliability in the context of a software system?
 
 **Definition:**
 
@@ -42,9 +42,9 @@ Questions from [Devinterview.io — Availability & Reliability](https://devinter
 </details>
 
 <details>
-<summary>How do you define system availability and what are the key components to measure it?</summary>
+<summary>Как you define system availability and what are the key components to measure it?</summary>
 
-### How do you define system availability and what are the key components to measure it?
+### Как you define system availability and what are the key components to measure it?
 
 **Definition:**
 
@@ -63,9 +63,9 @@ MTBF 100 часов и MTTR 2 часа дают 100 / 102 ≈ 98,0% доступ
 </details>
 
 <details>
-<summary>Can you explain the concept of “Five Nines” and how it relates to system availability?</summary>
+<summary>Можете ли вы explain the concept of “Five Nines” and how it relates to system availability?</summary>
 
-### Can you explain the concept of “Five Nines” and how it relates to system availability?
+### Можете ли вы explain the concept of “Five Nines” and how it relates to system availability?
 
 **Definition:**
 
@@ -81,9 +81,9 @@ MTBF 100 часов и MTTR 2 часа дают 100 / 102 ≈ 98,0% доступ
 </details>
 
 <details>
-<summary>How does redundancy contribute to the reliability of a system?</summary>
+<summary>Как redundancy contribute to the reliability of a system?</summary>
 
-### How does redundancy contribute to the reliability of a system?
+### Как redundancy contribute to the reliability of a system?
 
 **Definition:**
 
@@ -103,9 +103,9 @@ MTBF 100 часов и MTTR 2 часа дают 100 / 102 ≈ 98,0% доступ
 </details>
 
 <details>
-<summary>What is a single point of failure (SPOF), and how can it be mitigated?</summary>
+<summary>Что такое single point of failure (SPOF), and how can it be mitiGAted?</summary>
 
-### What is a single point of failure (SPOF), and how can it be mitigated?
+### Что такое single point of failure (SPOF), and how can it be mitiGAted?
 
 **Definition:**
 
@@ -125,9 +125,9 @@ MTBF 100 часов и MTTR 2 часа дают 100 / 102 ≈ 98,0% доступ
 </details>
 
 <details>
-<summary>Discuss the significance of Mean Time Between Failures (MTBF) in reliability engineering.</summary>
+<summary>Обсудите the significance of Mean Time Between Failures (MTBF) in reliability engineering.</summary>
 
-### Discuss the significance of Mean Time Between Failures (MTBF) in reliability engineering.
+### Обсудите the significance of Mean Time Between Failures (MTBF) in reliability engineering.
 
 **Definition:**
 
@@ -147,9 +147,9 @@ MTBF — среднее время работы между сбоями. Бол�
 </details>
 
 <details>
-<summary>What is the role of Mean Time to Repair (MTTR) in maintaining system availability?</summary>
+<summary>Что такое the role of Mean Time to Repair (MTTR) in maintaining system availability?</summary>
 
-### What is the role of Mean Time to Repair (MTTR) in maintaining system availability?
+### Что такое the role of Mean Time to Repair (MTTR) in maintaining system availability?
 
 **Definition:**
 
@@ -168,9 +168,9 @@ MTTR — среднее время от обнаружения сбоя до в�
 </details>
 
 <details>
-<summary>Can you differentiate between high availability (HA) and fault tolerance (FT)?</summary>
+<summary>Можете ли вы differentiate between high availability (HA) and fault tolerance (FT)?</summary>
 
-### Can you differentiate between high availability (HA) and fault tolerance (FT)?
+### Можете ли вы differentiate between high availability (HA) and fault tolerance (FT)?
 
 **Definition:**
 
@@ -192,9 +192,9 @@ MTTR — среднее время от обнаружения сбоя до в�
 ### Designing for Availability
 
 <details>
-<summary>How would you architect a system for high availability?</summary>
+<summary>Как бы вы architect a system for high availability?</summary>
 
-### How would you architect a system for high availability?
+### Как бы вы architect a system for high availability?
 
 **Definition:**
 
@@ -220,9 +220,9 @@ MTTR — среднее время от обнаружения сбоя до в�
 </details>
 
 <details>
-<summary>What design patterns are commonly used to improve system availability?</summary>
+<summary>Какие design patterns обычно используют для улучшения system availability?</summary>
 
-### What design patterns are commonly used to improve system availability?
+### Какие design patterns обычно используют для улучшения system availability?
 
 **Definition:**
 
@@ -239,9 +239,9 @@ MTTR — среднее время от обнаружения сбоя до в�
 </details>
 
 <details>
-<summary>How can load balancing improve system availability, and what are some of its potential pitfalls?</summary>
+<summary>Как load balancing improve system availability, and what are some of its potential pitfalls?</summary>
 
-### How can load balancing improve system availability, and what are some of its potential pitfalls?
+### Как load balancing improve system availability, and what are some of its potential pitfalls?
 
 **Definition:**
 
@@ -267,9 +267,9 @@ app-b не проходит health -> следующие запросы обхо
 </details>
 
 <details>
-<summary>Explain the role of health checks in maintaining an available system.</summary>
+<summary>Объясните the role of health checks in maintaining an available system.</summary>
 
-### Explain the role of health checks in maintaining an available system.
+### Объясните the role of health checks in maintaining an available system.
 
 **Definition:**
 
@@ -289,9 +289,9 @@ GET /health возвращает 200, только если процесс мо�
 </details>
 
 <details>
-<summary>What is the purpose of a circuit breaker pattern in a distributed system?</summary>
+<summary>Что такое the puRPOse of a circuit breaker pattern in a distributed system?</summary>
 
-### What is the purpose of a circuit breaker pattern in a distributed system?
+### Что такое the puRPOse of a circuit breaker pattern in a distributed system?
 
 **Definition:**
 
@@ -313,9 +313,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 ### Monitoring & Incident Response
 
 <details>
-<summary>What are some key indicators you would monitor to ensure system reliability?</summary>
+<summary>Что такое some key indicators you would monitor to ensure system reliability?</summary>
 
-### What are some key indicators you would monitor to ensure system reliability?
+### Что такое some key indicators you would monitor to ensure system reliability?
 
 **Definition:**
 
@@ -337,9 +337,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>How do you implement a monitoring system that accurately reflects system availability?</summary>
+<summary>Как you implement a monitoring system that accurately reflects system availability?</summary>
 
-### How do you implement a monitoring system that accurately reflects system availability?
+### Как you implement a monitoring system that accurately reflects system availability?
 
 **Definition:**
 
@@ -359,9 +359,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>Discuss the importance of alerting and on-call rotations in maintaining system reliability.</summary>
+<summary>Обсудите the importance of alerting and on-call rotations in maintaining system reliability.</summary>
 
-### Discuss the importance of alerting and on-call rotations in maintaining system reliability.
+### Обсудите the importance of alerting and on-call rotations in maintaining system reliability.
 
 **Definition:**
 
@@ -383,9 +383,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>What steps would you take to respond to an incident that reduces system availability?</summary>
+<summary>Какие шаги вы предпримете при инциденте, снижающем system availability?</summary>
 
-### What steps would you take to respond to an incident that reduces system availability?
+### Какие шаги вы предпримете при инциденте, снижающем system availability?
 
 **Definition:**
 
@@ -407,9 +407,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>How can post-mortem analysis improve future system reliability and availability?</summary>
+<summary>Как post-mortem analysis improve future system reliability and availability?</summary>
 
-### How can post-mortem analysis improve future system reliability and availability?
+### Как post-mortem analysis improve future system reliability and availability?
 
 **Definition:**
 
@@ -434,9 +434,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 ### Scaling & Performance
 
 <details>
-<summary>How does system scalability impact availability?</summary>
+<summary>Как system Scalability impact availability?</summary>
 
-### How does system scalability impact availability?
+### Как system Scalability impact availability?
 
 **Definition:**
 
@@ -458,9 +458,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>What strategies can be employed to scale a system while maintaining or improving reliability?</summary>
+<summary>Какие стратегии can be employed to scale a system while maintaining or improving reliability?</summary>
 
-### What strategies can be employed to scale a system while maintaining or improving reliability?
+### Какие стратегии can be employed to scale a system while maintaining or improving reliability?
 
 **Definition:**
 
@@ -484,9 +484,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>Describe how caching can affect system reliability and what are some trade-offs.</summary>
+<summary>Опишите how caching can affect system reliability and what are some trade-offs.</summary>
 
-### Describe how caching can affect system reliability and what are some trade-offs.
+### Опишите how caching can affect system reliability and what are some trade-offs.
 
 **Definition:**
 
@@ -512,9 +512,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>Explain the role of rate limiting in preserving system availability.</summary>
+<summary>Объясните the role of rate limiting in preserving system availability.</summary>
 
-### Explain the role of rate limiting in preserving system availability.
+### Объясните the role of rate limiting in preserving system availability.
 
 **Definition:**
 
@@ -540,9 +540,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 ### Reliability in Distributed Systems
 
 <details>
-<summary>How do eventual consistency and strong consistency differ and what are the reliability implications?</summary>
+<summary>Как eventual consistency and strong consistency differ and what are the reliability implications?</summary>
 
-### How do eventual consistency and strong consistency differ and what are the reliability implications?
+### Как eventual consistency and strong consistency differ and what are the reliability implications?
 
 **Definition:**
 
@@ -563,9 +563,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>Describe the CAP theorem and its relevance to system availability.</summary>
+<summary>Опишите the CAP theorem and its relevance to system availability.</summary>
 
-### Describe the CAP theorem and its relevance to system availability.
+### Опишите the CAP theorem and its relevance to system availability.
 
 **Definition:**
 
@@ -585,9 +585,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>Can you discuss how quorum-based decision making in distributed systems affects reliability?</summary>
+<summary>Можете ли вы discuss how quorum-BASEd decision making in distributed systems affects reliability?</summary>
 
-### Can you discuss how quorum-based decision making in distributed systems affects reliability?
+### Можете ли вы discuss how quorum-BASEd decision making in distributed systems affects reliability?
 
 **Definition:**
 
@@ -609,9 +609,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>What is the role of distributed transactions in reliability, and what are the challenges associated with them?</summary>
+<summary>Что такое the role of distributed transactions in reliability, and what are the challenges associated with them?</summary>
 
-### What is the role of distributed transactions in reliability, and what are the challenges associated with them?
+### Что такое the role of distributed transactions in reliability, and what are the challenges associated with them?
 
 **Definition:**
 
@@ -634,9 +634,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 ### Recovery Strategies
 
 <details>
-<summary>What is a disaster recovery plan and how does it relate to reliability?</summary>
+<summary>Что такое disaster recovery plan and how does it relate to reliability?</summary>
 
-### What is a disaster recovery plan and how does it relate to reliability?
+### Что такое disaster recovery plan and how does it relate to reliability?
 
 **Definition:**
 
@@ -660,9 +660,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>How do backup and restore operations impact system availability?</summary>
+<summary>Как backup and RESTore operations impact system availability?</summary>
 
-### How do backup and restore operations impact system availability?
+### Как backup and RESTore operations impact system availability?
 
 **Definition:**
 
@@ -685,9 +685,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>Discuss the importance and challenges of data replication in a highly available system.</summary>
+<summary>Обсудите the importance and challenges of data replication in a highly available system.</summary>
 
-### Discuss the importance and challenges of data replication in a highly available system.
+### Обсудите the importance and challenges of data replication in a highly available system.
 
 **Definition:**
 
@@ -710,9 +710,9 @@ Circuit breaker бережёт доступность, отказываясь ж
 </details>
 
 <details>
-<summary>Explain how you would plan for a failover strategy in a multi-region deployment to ensure reliability.</summary>
+<summary>Объясните how you would plan for a failover strategy in a multi-region deployment to ensure reliability.</summary>
 
-### Explain how you would plan for a failover strategy in a multi-region deployment to ensure reliability.
+### Объясните how you would plan for a failover strategy in a multi-region deployment to ensure reliability.
 
 **Definition:**
 

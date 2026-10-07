@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Stacks](https://devinterview.io/questions/da
 ### Stack Fundamentals
 
 <details>
-<summary>What is a Stack?</summary>
+<summary>Что такое stack?</summary>
 
-### What is a Stack?
+### Что такое stack?
 
 **Definition:**
 
@@ -100,9 +100,9 @@ class Stack:
 </details>
 
 <details>
-<summary>Why Stack is considered a Recursive data structure?</summary>
+<summary>Почему stack is considered a Recursive data structure?</summary>
 
-### Why Stack is considered a Recursive data structure?
+### Почему stack is considered a Recursive data structure?
 
 **Definition:**
 
@@ -117,9 +117,9 @@ class Stack:
 </details>
 
 <details>
-<summary>What are the primary operations performed on a Stack and their time complexities?</summary>
+<summary>Что такое the Primary operations performed on a stack and their time complexities?</summary>
 
-### What are the primary operations performed on a Stack and their time complexities?
+### Что такое the Primary operations performed on a stack and their time complexities?
 
 **Definition:**
 
@@ -160,9 +160,9 @@ print(not stack)  # Outputs False; checks if the stack is empty
 ### Stack Usage and Applications
 
 <details>
-<summary>When should I use Stack or Queue data structures instead of Arrays/Lists?</summary>
+<summary>Когда should I use stack or queue data structures instead of arrays/Lists?</summary>
 
-### When should I use Stack or Queue data structures instead of Arrays/Lists?
+### Когда should I use stack or queue data structures instead of arrays/Lists?
 
 **Definition:**
 
@@ -194,9 +194,9 @@ print(not stack)  # Outputs False; checks if the stack is empty
 </details>
 
 <details>
-<summary>What are Infix, Prefix, and Postfix notations?</summary>
+<summary>Что такое Infix, Prefix, and Postfix notations?</summary>
 
-### What are Infix, Prefix, and Postfix notations?
+### Что такое Infix, Prefix, and Postfix notations?
 
 **Definition:**
 
@@ -274,9 +274,9 @@ print(evaluate_postfix('1 2 + 3 4 * -'))  # Output: -7
 </details>
 
 <details>
-<summary>Explain how Stacks are used in Function Call management in programming languages.</summary>
+<summary>Объясните, как stacks используются в управлении вызовами функций на языках программирования.</summary>
 
-### Explain how Stacks are used in Function Call management in programming languages.
+### Объясните, как stacks используются в управлении вызовами функций на языках программирования.
 
 **Definition:**
 
@@ -347,9 +347,9 @@ print(result)  # Output: 14
 </details>
 
 <details>
-<summary>Describe an application where Stacks are naturally suited over other data structures.</summary>
+<summary>Опишите приложение, в котором stacks естественно подходит для других структур данных.</summary>
 
-### Describe an application where Stacks are naturally suited over other data structures.
+### Опишите приложение, в котором stacks естественно подходит для других структур данных.
 
 **Definition:**
 
@@ -403,9 +403,9 @@ class UndoRedoStack:
 ### Stack Implementation Details
 
 <details>
-<summary>Compare Array-based vs Linked List stack implementations.</summary>
+<summary>Сравните реализацию array с реализацией linked listZ stack.</summary>
 
-### Compare Array-based vs Linked List stack implementations.
+### Сравните реализацию array с реализацией linked listZ stack.
 
 **Definition:**
 
@@ -482,9 +482,9 @@ class LinkedListStack:
 </details>
 
 <details>
-<summary>Implement a Dynamic Stack that automatically resizes itself.</summary>
+<summary>Реализуйте a Dynamic stack that automatically resizes itself.</summary>
 
-### Implement a Dynamic Stack that automatically resizes itself.
+### Реализуйте a Dynamic stack that automatically resizes itself.
 
 **Definition:**
 
@@ -587,9 +587,9 @@ class DynamicStack:
 </details>
 
 <details>
-<summary>What are the performance implications of a Fixed-size Array Stack Implementation?</summary>
+<summary>Что такое the performance implications of a Fixed-size array stack Implementation?</summary>
 
-### What are the performance implications of a Fixed-size Array Stack Implementation?
+### Что такое the performance implications of a Fixed-size array stack Implementation?
 
 **Definition:**
 
@@ -672,9 +672,9 @@ class FixedSizeStack:
 ### Stack Design Challenges
 
 <details>
-<summary>Design a Stack that supports Retrieving the min element in O(1).</summary>
+<summary>Разработайте stack, который поддерживает ReTrie с использованием элемента min в O(1).</summary>
 
-### Design a Stack that supports Retrieving the min element in O(1).
+### Разработайте stack, который поддерживает ReTrie с использованием элемента min в O(1).
 
 **Definition:**
 
@@ -742,9 +742,9 @@ class MinStack:
 </details>
 
 <details>
-<summary>How can you design a Stack to be thread-safe?</summary>
+<summary>Как вы можете спроектировать stack таким образом, чтобы он был потокобезопасным?</summary>
 
-### How can you design a Stack to be thread-safe?
+### Как вы можете спроектировать stack таким образом, чтобы он был потокобезопасным?
 
 **Definition:**
 
@@ -856,9 +856,9 @@ print(q.get())
 </details>
 
 <details>
-<summary>Implement a Stack with a Find-Middle operation in O(1) time.</summary>
+<summary>Реализуйте a stack with a Find-Middle operation in O(1) time.</summary>
 
-### Implement a Stack with a Find-Middle operation in O(1) time.
+### Реализуйте a stack with a Find-Middle operation in O(1) time.
 
 **Definition:**
 
@@ -968,9 +968,9 @@ class MyStack:
 ### Stack and Other Data Structures
 
 <details>
-<summary>Implement a Linked List using Stack.</summary>
+<summary>Реализуйте a linked list using stack.</summary>
 
-### Implement a Linked List using Stack.
+### Реализуйте a linked list using stack.
 
 **Definition:**
 
@@ -1060,9 +1060,9 @@ ll_stack.display()
 </details>
 
 <details>
-<summary>Implement Doubly Linked List using Stacks with min complexity.</summary>
+<summary>Реализуйте doubly linked List using stacks with min complexity.</summary>
 
-### Implement Doubly Linked List using Stacks with min complexity.
+### Реализуйте doubly linked List using stacks with min complexity.
 
 **Definition:**
 
@@ -1195,9 +1195,9 @@ class DoubleLinkedList {
 </details>
 
 <details>
-<summary>Implement a Queue using Two Stacks.</summary>
+<summary>Реализуйте a queue using Two stacks.</summary>
 
-### Implement a Queue using Two Stacks.
+### Реализуйте a queue using Two stacks.
 
 **Definition:**
 
@@ -1232,9 +1232,9 @@ class Queue:
 </details>
 
 <details>
-<summary>Implement a Queue using only One Stack.</summary>
+<summary>Реализуйте a queue using only One stack.</summary>
 
-### Implement a Queue using only One Stack.
+### Реализуйте a queue using only One stack.
 
 **Definition:**
 
@@ -1271,9 +1271,9 @@ class Queue:
 </details>
 
 <details>
-<summary>Implement Stack using Two Queues with efficient push.</summary>
+<summary>Реализуйте stack using Two queues with efficient push.</summary>
 
-### Implement Stack using Two Queues with efficient push.
+### Реализуйте stack using Two queues with efficient push.
 
 **Definition:**
 
@@ -1315,9 +1315,9 @@ class Stack:
 </details>
 
 <details>
-<summary>Implement Three Stacks with One Array.</summary>
+<summary>Реализуйте Three stacks with One array.</summary>
 
-### Implement Three Stacks with One Array.
+### Реализуйте Three stacks with One array.
 
 **Definition:**
 
@@ -1352,9 +1352,9 @@ class ThreeStacks:
 ### Stack Manipulation and Variation
 
 <details>
-<summary>Reverse a String using Stack.</summary>
+<summary>Разверните a String using stack.</summary>
 
-### Reverse a String using Stack.
+### Разверните a String using stack.
 
 **Definition:**
 
@@ -1383,9 +1383,9 @@ def reverse_string(s):
 </details>
 
 <details>
-<summary>Reverse a Stack without using any additional data structure.</summary>
+<summary>Разверните a stack without using any additional data structure.</summary>
 
-### Reverse a Stack without using any additional data structure.
+### Разверните a stack without using any additional data structure.
 
 **Definition:**
 
@@ -1420,9 +1420,9 @@ def reverse_stack(st):
 </details>
 
 <details>
-<summary>Sort a Stack using Recursion.</summary>
+<summary>Отсортируйте a stack using recursion.</summary>
 
-### Sort a Stack using Recursion.
+### Отсортируйте a stack using recursion.
 
 **Definition:**
 
@@ -1457,9 +1457,9 @@ def sort_stack(st):
 </details>
 
 <details>
-<summary>Sort a Stack using another Stack.</summary>
+<summary>Отсортируйте a stack using another stack.</summary>
 
-### Sort a Stack using another Stack.
+### Отсортируйте a stack using another stack.
 
 **Definition:**
 
@@ -1489,9 +1489,9 @@ def sort_stack(st):
 </details>
 
 <details>
-<summary>Implement a Shuffling Algorithm using a Stack.</summary>
+<summary>Реализуйте a Shuffling AlGorithm using a stack.</summary>
 
-### Implement a Shuffling Algorithm using a Stack.
+### Реализуйте a Shuffling AlGorithm using a stack.
 
 **Definition:**
 
@@ -1510,9 +1510,9 @@ def sort_stack(st):
 ### Stack in Parsing and Expression Evaluation
 
 <details>
-<summary>Check if parentheses are Balanced using Stack.</summary>
+<summary>Проверьте, сбалансированы ли скобки с помощью stack.</summary>
 
-### Check if parentheses are Balanced using Stack.
+### Проверьте, сбалансированы ли скобки с помощью stack.
 
 **Definition:**
 
@@ -1544,9 +1544,9 @@ def is_balanced(s):
 </details>
 
 <details>
-<summary>Find Duplicate Parenthesis in an expression.</summary>
+<summary>Найдите повторяющиеся круглые скобки в выражении.</summary>
 
-### Find Duplicate Parenthesis in an expression.
+### Найдите повторяющиеся круглые скобки в выражении.
 
 **Definition:**
 
@@ -1583,9 +1583,9 @@ def has_duplicate(expr):
 </details>
 
 <details>
-<summary>How can a Stack be used to evaluate Postfix expressions?</summary>
+<summary>Как можно использовать stack для вычисления постфиксных выражений?</summary>
 
-### How can a Stack be used to evaluate Postfix expressions?
+### Как можно использовать stack для вычисления постфиксных выражений?
 
 **Definition:**
 
@@ -1623,9 +1623,9 @@ def eval_postfix(tokens):
 </details>
 
 <details>
-<summary>Convert an Infix expression to Postfix using a Stack.</summary>
+<summary>Преобразование выражения Infix в Postfix с помощью stack.</summary>
 
-### Convert an Infix expression to Postfix using a Stack.
+### Преобразование выражения Infix в Postfix с помощью stack.
 
 **Definition:**
 
@@ -1667,9 +1667,9 @@ def infix_to_postfix(s):
 </details>
 
 <details>
-<summary>Build a Binary Expression Tree for the given expression.</summary>
+<summary>Постройте binary tree выражений fOR заданное выражение.</summary>
 
-### Build a Binary Expression Tree for the given expression.
+### Постройте binary tree выражений fOR заданное выражение.
 
 **Definition:**
 
@@ -1705,9 +1705,9 @@ def tree_from_postfix(postfix):
 ### Handling Large Datasets with Stack
 
 <details>
-<summary>Given an Extremely Large File that doesn’t fit into memory, check if the parentheses are Balanced.</summary>
+<summary>Учитывая чрезвычайно большой файл, который не помещается в память, проверьте, правильно ли расставлены круглые скобки.</summary>
 
-### Given an Extremely Large File that doesn’t fit into memory, check if the parentheses are Balanced.
+### Учитывая чрезвычайно большой файл, который не помещается в память, проверьте, правильно ли расставлены круглые скобки.
 
 **Definition:**
 
@@ -1723,9 +1723,9 @@ def tree_from_postfix(postfix):
 </details>
 
 <details>
-<summary>Check for Braces Balance in a really large (1T) file in Parallel.</summary>
+<summary>Проверьте баланс фиксаторов fOR в очень большом (1T) файле в parallel.</summary>
 
-### Check for Braces Balance in a really large (1T) file in Parallel.
+### Проверьте баланс фиксаторов fOR в очень большом (1T) файле в parallel.
 
 **Definition:**
 
@@ -1741,9 +1741,9 @@ def tree_from_postfix(postfix):
 </details>
 
 <details>
-<summary>Design a script to process large-scale, real-time Undo Operations using Stacks.</summary>
+<summary>Разработайте сценарий для обработки крупномасштабных операций отмены в реальном времени с помощью stacks.</summary>
 
-### Design a script to process large-scale, real-time Undo Operations using Stacks.
+### Разработайте сценарий для обработки крупномасштабных операций отмены в реальном времени с помощью stacks.
 
 **Definition:**
 
@@ -1774,9 +1774,9 @@ def undo():
 </details>
 
 <details>
-<summary>How would a Stack handle Memory Allocation in large data scenarios?</summary>
+<summary>Как stack обрабатывает memory allocation в сценариях с большими данными?</summary>
 
-### How would a Stack handle Memory Allocation in large data scenarios?
+### Как stack обрабатывает memory allocation в сценариях с большими данными?
 
 **Definition:**
 
@@ -1797,9 +1797,9 @@ def undo():
 ### Advanced Stack Problems
 
 <details>
-<summary>Solve the Stock Span Problem using a Stack.</summary>
+<summary>Решите the Stock Span Problem using a stack.</summary>
 
-### Solve the Stock Span Problem using a Stack.
+### Решите the Stock Span Problem using a stack.
 
 **Definition:**
 
@@ -1829,9 +1829,9 @@ def calculate_span(arr):
 </details>
 
 <details>
-<summary>Design an algorithm to Calculate Rainwater Trapped between towers using a Stack.</summary>
+<summary>Разработайте алгоритм для расчета дождевой воды, скапливающейся между башнями, с помощью stack.</summary>
 
-### Design an algorithm to Calculate Rainwater Trapped between towers using a Stack.
+### Разработайте алгоритм для расчета дождевой воды, скапливающейся между башнями, с помощью stack.
 
 **Definition:**
 
@@ -1849,9 +1849,9 @@ def calculate_span(arr):
 ### Stack Performance Optimization
 
 <details>
-<summary>Explain how to minimize Stack Overflow in programming with limited memory.</summary>
+<summary>Объясните, как минимизировать stack overflow при программировании с ограниченной памятью.</summary>
 
-### Explain how to minimize Stack Overflow in programming with limited memory.
+### Объясните, как минимизировать stack overflow при программировании с ограниченной памятью.
 
 **Definition:**
 
@@ -1872,9 +1872,9 @@ def calculate_span(arr):
 </details>
 
 <details>
-<summary>What techniques can be used to improve the Locality of reference for a Stack?</summary>
+<summary>Какие техники улучшают locality of reference для stack?</summary>
 
-### What techniques can be used to improve the Locality of reference for a Stack?
+### Какие техники улучшают locality of reference для stack?
 
 **Definition:**
 
@@ -1893,9 +1893,9 @@ Push в этих фрагментах пишет в следующую ячей�
 ### Stacks in Multithreading and Concurrency
 
 <details>
-<summary>Describe a Lock-free Stack and where it may be used.</summary>
+<summary>Опишите stack AND, где его можно использовать.</summary>
 
-### Describe a Lock-free Stack and where it may be used.
+### Опишите stack AND, где его можно использовать.
 
 **Definition:**
 
@@ -1912,9 +1912,9 @@ Push в этих фрагментах пишет в следующую ячей�
 </details>
 
 <details>
-<summary>Illustrate how a Stack can be used in implementing Producer-Consumer scenarios.</summary>
+<summary>Проиллюстрируйте how a stack can be used in implementing Producer-Consumer scenarios.</summary>
 
-### Illustrate how a Stack can be used in implementing Producer-Consumer scenarios.
+### Проиллюстрируйте how a stack can be used in implementing Producer-Consumer scenarios.
 
 **Definition:**
 
@@ -1936,9 +1936,9 @@ Push в этих фрагментах пишет в следующую ячей�
 ### Stack Invariants and Monitoring
 
 <details>
-<summary>Propose a method to maintain a History of Operations on a Stack.</summary>
+<summary>Предложите a method to maintain a History of Operations on a stack.</summary>
 
-### Propose a method to maintain a History of Operations on a Stack.
+### Предложите a method to maintain a History of Operations on a stack.
 
 **Definition:**
 
@@ -1969,9 +1969,9 @@ def undo():
 </details>
 
 <details>
-<summary>How might you design a monitoring system for Capacity Thresholds of a Stack?</summary>
+<summary>Как спроектировать monitoring system для capacity thresholds stack?</summary>
 
-### How might you design a monitoring system for Capacity Thresholds of a Stack?
+### Как спроектировать monitoring system для capacity thresholds stack?
 
 **Definition:**
 
@@ -1999,9 +1999,9 @@ def push_checked(st, x, capacity):
 ### Stack Error Handling and Exceptions
 
 <details>
-<summary>Explain how a Stack Trace is used in debugging and exception handling.</summary>
+<summary>Объясните, как трассировка stack используется при отладке и обработке исключений.</summary>
 
-### Explain how a Stack Trace is used in debugging and exception handling.
+### Объясните, как трассировка stack используется при отладке и обработке исключений.
 
 **Definition:**
 
@@ -2028,9 +2028,9 @@ except ZeroDivisionError:
 </details>
 
 <details>
-<summary>What methods exist to handle Stack Overflow Exceptions in memory-constrained environments?</summary>
+<summary>Какие методы обрабатывают stack overflow exceptions в средах с ограниченной памятью?</summary>
 
-### What methods exist to handle Stack Overflow Exceptions in memory-constrained environments?
+### Какие методы обрабатывают stack overflow exceptions в средах с ограниченной памятью?
 
 **Definition:**
 
@@ -2049,9 +2049,9 @@ except ZeroDivisionError:
 ### Stack Algorithm Challenges
 
 <details>
-<summary>Create an algorithm to Normalize Pathnames using a Stack.</summary>
+<summary>Создайте algORithm в NORmalize Pathnames с помощью stack.</summary>
 
-### Create an algorithm to Normalize Pathnames using a Stack.
+### Создайте algORithm в NORmalize Pathnames с помощью stack.
 
 **Definition:**
 
@@ -2083,9 +2083,9 @@ def normalize(path):
 </details>
 
 <details>
-<summary>Implement a function that finds the Next Greater Element using a Stack.</summary>
+<summary>Реализуйте a function that finds the Next Greater Element using a stack.</summary>
 
-### Implement a function that finds the Next Greater Element using a Stack.
+### Реализуйте a function that finds the Next Greater Element using a stack.
 
 **Definition:**
 
@@ -2116,9 +2116,9 @@ def next_greater(arr):
 </details>
 
 <details>
-<summary>Develop an algorithm to check for Cycles in a Directed Graph using Stack-based DFS.</summary>
+<summary>Разработайте алгоритм проверки циклов в Directed graph с использованием DFS на основе stack.</summary>
 
-### Develop an algorithm to check for Cycles in a Directed Graph using Stack-based DFS.
+### Разработайте алгоритм проверки циклов в Directed graph с использованием DFS на основе stack.
 
 **Definition:**
 

@@ -60,13 +60,13 @@ NoSQL fundamentals, store selection, and Elasticsearch for search.
 **Definition:** Three common NoSQL picks in Node backends — different jobs, not interchangeable.
 
 
-| MongoDB | Redis | ClickHouse |
-|  ---  |  ---  |  ---  |
-| **Model** | Document (BSON JSON) | Key-value + structures in RAM | Column-oriented OLAP |
-| **Primary job** | App data with flexible fields | Cache, sessions, fast lookups | Analytics, dashboards, logs |
-| **Durability** | Primary database for documents | Ephemeral or optional persistence | Durable analytics store |
-| **Query** | Rich aggregation pipeline | Simple commands per key | SQL-like, huge scans fast |
-| **Typical stack role** | Main DB (when documents win) | Side cache next to Postgres | Read replica for reports |
+| | MongoDB | Redis | ClickHouse |
+| | ---  |  ---  |  ---  |
+| | **Model** | Document (BSON JSON) | Key-value + structures in RAM | Column-oriented OLAP |
+| | **Primary job** | App data with flexible fields | Cache, sessions, fast lookups | Analytics, dashboards, logs |
+| | **Durability** | Primary database for documents | Ephemeral or optional persistence | Durable analytics store |
+| | **Query** | Rich aggregation pipeline | Simple commands per key | SQL-like, huge scans fast |
+| | **Typical stack role** | Main DB (when documents win) | Side cache next to Postgres | Read replica for reports |
 
 **When to use:**
 

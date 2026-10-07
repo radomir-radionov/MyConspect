@@ -226,12 +226,12 @@ export default defineNuxtConfig({
 **Definition:**
 
 
-| Route middleware                    | Server middleware         |
-|  ---------------  |  -----------------------------------  |
-| **Location**    | `app/middleware/`                   | `server/middleware/`      |
-| **Runs on**     | Vue navigations + SSR page requests | All Nitro server requests |
-| **API routes**  | No                                  | Yes                       |
-| **Typical use** | Auth redirect, analytics            | JWT на `/api/*`, logging  |
+| | Route middleware                    | Server middleware         |
+| | ---------------  |  -----------------------------------  |
+| | **Location**    | `app/middleware/`                   | `server/middleware/`      |
+| | **Runs on**     | Vue navigations + SSR page requests | All Nitro server requests |
+| | **API routes**  | No                                  | Yes                       |
+| | **Typical use** | Auth redirect, analytics            | JWT на `/api/*`, logging  |
 
 **Thoughts:** Полная детализация → [Routing §11](./4_nuxt_routing.md#route-middleware) и [Data §9](./4_nuxt_data.md#server-middleware).
 

@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Caching](https://devinterview.io/questions/s
 ### Caching Fundamentals
 
 <details>
-<summary>Define caching in the context of computer programming.</summary>
+<summary>Определите caching in the context of computer programming.</summary>
 
-### Define caching in the context of computer programming.
+### Определите caching in the context of computer programming.
 
 **Definition:**
 
@@ -45,9 +45,9 @@ Questions from [Devinterview.io — Caching](https://devinterview.io/questions/s
 </details>
 
 <details>
-<summary>What are the main purposes of using a cache in a software application?</summary>
+<summary>Что такое the main puRPOses of using a cache in a software application?</summary>
 
-### What are the main purposes of using a cache in a software application?
+### Что такое the main puRPOses of using a cache in a software application?
 
 **Definition:**
 
@@ -70,9 +70,9 @@ fib(n): если n в кэше — вернуть
 </details>
 
 <details>
-<summary>Can you explain the concept of cache hit and cache miss?</summary>
+<summary>Можете ли вы explain the concept of cache hit and cache miss?</summary>
 
-### Can you explain the concept of cache hit and cache miss?
+### Можете ли вы explain the concept of cache hit and cache miss?
 
 **Definition:**
 
@@ -92,9 +92,9 @@ fib(n): если n в кэше — вернуть
 </details>
 
 <details>
-<summary>Describe the impact of cache size on performance.</summary>
+<summary>Опишите the impact of cache size on performance.</summary>
 
-### Describe the impact of cache size on performance.
+### Опишите the impact of cache size on performance.
 
 **Definition:**
 
@@ -114,9 +114,9 @@ fib(n): если n в кэше — вернуть
 </details>
 
 <details>
-<summary>How does a cache improve data retrieval times?</summary>
+<summary>Как a cache improve data reTrieval times?</summary>
 
-### How does a cache improve data retrieval times?
+### Как a cache improve data reTrieval times?
 
 **Definition:**
 
@@ -132,9 +132,9 @@ fib(n): если n в кэше — вернуть
 </details>
 
 <details>
-<summary>What is the difference between local caching and distributed caching?</summary>
+<summary>Что такое the difference between local caching and distributed caching?</summary>
 
-### What is the difference between local caching and distributed caching?
+### Что такое the difference between local caching and distributed caching?
 
 **Definition:**
 
@@ -153,9 +153,9 @@ fib(n): если n в кэше — вернуть
 </details>
 
 <details>
-<summary>Explain the concept of cache eviction and mention common strategies.</summary>
+<summary>Объясните the concept of cache eviction and mention common strategies.</summary>
 
-### Explain the concept of cache eviction and mention common strategies.
+### Объясните the concept of cache eviction and mention common strategies.
 
 **Definition:**
 
@@ -175,9 +175,9 @@ fib(n): если n в кэше — вернуть
 </details>
 
 <details>
-<summary>What is a cache key and how is it used?</summary>
+<summary>Что такое cache key and how is it used?</summary>
 
-### What is a cache key and how is it used?
+### Что такое cache key and how is it used?
 
 **Definition:**
 
@@ -200,9 +200,9 @@ GET catalog:eu:lamp
 </details>
 
 <details>
-<summary>Explain the importance of cache expiration and how it is managed.</summary>
+<summary>Объясните the importance of cache expiration and how it is managed.</summary>
 
-### Explain the importance of cache expiration and how it is managed.
+### Объясните the importance of cache expiration and how it is managed.
 
 **Definition:**
 
@@ -221,9 +221,9 @@ GET catalog:eu:lamp
 </details>
 
 <details>
-<summary>How does cache invalidation work and why is it necessary?</summary>
+<summary>Как cache invalidation work and why is it necessary?</summary>
 
-### How does cache invalidation work and why is it necessary?
+### Как cache invalidation work and why is it necessary?
 
 **Definition:**
 
@@ -245,9 +245,9 @@ GET catalog:eu:lamp
 ### Cache Implementation and Design
 
 <details>
-<summary>Describe the steps involved in implementing a basic cache system.</summary>
+<summary>Опишите the steps involved in implementing a basic cache system.</summary>
 
-### Describe the steps involved in implementing a basic cache system.
+### Опишите the steps involved in implementing a basic cache system.
 
 **Definition:**
 
@@ -274,9 +274,9 @@ get(key):
 </details>
 
 <details>
-<summary>How would you handle cache synchronization in a distributed environment?</summary>
+<summary>Как бы вы handle cache synchronization in a distributed environment?</summary>
 
-### How would you handle cache synchronization in a distributed environment?
+### Как бы вы handle cache synchronization in a distributed environment?
 
 **Definition:**
 
@@ -296,9 +296,9 @@ get(key):
 </details>
 
 <details>
-<summary>Explain the use of hash maps in cache implementation.</summary>
+<summary>Объясните the use of hash Maps in cache implementation.</summary>
 
-### Explain the use of hash maps in cache implementation.
+### Объясните the use of hash Maps in cache implementation.
 
 **Definition:**
 
@@ -320,9 +320,9 @@ get: хеш, найти узел, вернуть значение
 </details>
 
 <details>
-<summary>What are some common caching algorithms, and how do they differ?</summary>
+<summary>Что такое some common caching alGorithms, and how do they differ?</summary>
 
-### What are some common caching algorithms, and how do they differ?
+### Что такое some common caching alGorithms, and how do they differ?
 
 **Definition:**
 
@@ -339,9 +339,9 @@ get: хеш, найти узел, вернуть значение
 </details>
 
 <details>
-<summary>Explain the design considerations for a cache that supports high concurrency.</summary>
+<summary>Объясните the design considerations for a cache that supports high concurrency.</summary>
 
-### Explain the design considerations for a cache that supports high concurrency.
+### Объясните the design considerations for a cache that supports high concurrency.
 
 **Definition:**
 
@@ -366,9 +366,9 @@ lock only shard
 </details>
 
 <details>
-<summary>How would you prevent cache stampede in a high-load application?</summary>
+<summary>Как бы вы prevent cache stampede in a high-load application?</summary>
 
-### How would you prevent cache stampede in a high-load application?
+### Как бы вы prevent cache stampede in a high-load application?
 
 **Definition:**
 
@@ -401,9 +401,9 @@ SET lock:price:lamp token NX PX 5000
 </details>
 
 <details>
-<summary>What are the trade-offs between read-heavy and write-heavy caching strategies?</summary>
+<summary>Что такое the trade-offs between read-heavy and write-heavy caching strategies?</summary>
 
-### What are the trade-offs between read-heavy and write-heavy caching strategies?
+### Что такое the trade-offs between read-heavy and write-heavy caching strategies?
 
 **Definition:**
 
@@ -428,9 +428,9 @@ SET lock:price:lamp token NX PX 5000
 </details>
 
 <details>
-<summary>Describe the role of a cache manifest in web applications.</summary>
+<summary>Опишите the role of a cache manifest in web applications.</summary>
 
-### Describe the role of a cache manifest in web applications.
+### Опишите the role of a cache manifest in web applications.
 
 **Definition:**
 
@@ -459,9 +459,9 @@ await cache.addAll(["/index.html", "/app.js"]);
 </details>
 
 <details>
-<summary>How do you ensure consistency between cache and primary data storage?</summary>
+<summary>Как you ensure consistency between cache and Primary data storage?</summary>
 
-### How do you ensure consistency between cache and primary data storage?
+### Как you ensure consistency between cache and Primary data storage?
 
 **Definition:**
 
@@ -484,9 +484,9 @@ await cache.addAll(["/index.html", "/app.js"]);
 </details>
 
 <details>
-<summary>Explain the use of cache tagging and its benefits.</summary>
+<summary>Объясните the use of cache tagging and its benefits.</summary>
 
-### Explain the use of cache tagging and its benefits.
+### Объясните the use of cache tagging and its benefits.
 
 **Definition:**
 
@@ -510,9 +510,9 @@ HTTP не задаёт тег, по которому можно сделать p
 ### Caching in Distributed Systems
 
 <details>
-<summary>Explain distributed caching and its advantages over local caching.</summary>
+<summary>Объясните distributed caching and its advantages over local caching.</summary>
 
-### Explain distributed caching and its advantages over local caching.
+### Объясните distributed caching and its advantages over local caching.
 
 **Definition:**
 
@@ -534,9 +534,9 @@ HTTP не задаёт тег, по которому можно сделать p
 </details>
 
 <details>
-<summary>How do you handle cache partitioning in distributed systems?</summary>
+<summary>Как you handle cache partitioning in distributed systems?</summary>
 
-### How do you handle cache partitioning in distributed systems?
+### Как you handle cache partitioning in distributed systems?
 
 **Definition:**
 
@@ -557,9 +557,9 @@ HTTP не задаёт тег, по которому можно сделать p
 </details>
 
 <details>
-<summary>Describe consistency models in distributed caching (e.g., eventual consistency).</summary>
+<summary>Опишите consistency models in distributed caching (e.g., eventual consistency).</summary>
 
-### Describe consistency models in distributed caching (e.g., eventual consistency).
+### Опишите consistency models in distributed caching (e.g., eventual consistency).
 
 **Definition:**
 
@@ -581,9 +581,9 @@ HTTP не задаёт тег, по которому можно сделать p
 </details>
 
 <details>
-<summary>What is cache replication and how is it typically implemented?</summary>
+<summary>Что такое cache replication and how is it typically implemented?</summary>
 
-### What is cache replication and how is it typically implemented?
+### Что такое cache replication and how is it typically implemented?
 
 **Definition:**
 
@@ -606,9 +606,9 @@ HTTP не задаёт тег, по которому можно сделать p
 </details>
 
 <details>
-<summary>Name some strategies to avoid cache coherence issues in distributed systems.</summary>
+<summary>Назовите some strategies to avoid cache coherence issues in distributed systems.</summary>
 
-### Name some strategies to avoid cache coherence issues in distributed systems.
+### Назовите some strategies to avoid cache coherence issues in distributed systems.
 
 **Definition:**
 
@@ -631,9 +631,9 @@ HTTP не задаёт тег, по которому можно сделать p
 </details>
 
 <details>
-<summary>How do you handle network latency in distributed caching?</summary>
+<summary>Как you handle network latency in distributed caching?</summary>
 
-### How do you handle network latency in distributed caching?
+### Как you handle network latency in distributed caching?
 
 **Definition:**
 
@@ -655,9 +655,9 @@ HTTP не задаёт тег, по которому можно сделать p
 </details>
 
 <details>
-<summary>What are the challenges in maintaining a distributed cache?</summary>
+<summary>Что такое the challenges in maintaining a distributed cache?</summary>
 
-### What are the challenges in maintaining a distributed cache?
+### Что такое the challenges in maintaining a distributed cache?
 
 **Definition:**
 
@@ -679,9 +679,9 @@ HTTP не задаёт тег, по которому можно сделать p
 </details>
 
 <details>
-<summary>Explain the concept of a write-through cache in a distributed environment.</summary>
+<summary>Объясните the concept of a write-through cache in a distributed environment.</summary>
 
-### Explain the concept of a write-through cache in a distributed environment.
+### Объясните the concept of a write-through cache in a distributed environment.
 
 **Definition:**
 
@@ -703,9 +703,9 @@ HTTP не задаёт тег, по которому можно сделать p
 </details>
 
 <details>
-<summary>How does a distributed cache handle node failures?</summary>
+<summary>Как a distributed cache handle node failures?</summary>
 
-### How does a distributed cache handle node failures?
+### Как a distributed cache handle node failures?
 
 **Definition:**
 
@@ -728,9 +728,9 @@ HTTP не задаёт тег, по которому можно сделать p
 </details>
 
 <details>
-<summary>What is a shared cache, and how does it differ from a distributed cache?</summary>
+<summary>Что такое SHAred cache, and how does it differ from a distributed cache?</summary>
 
-### What is a shared cache, and how does it differ from a distributed cache?
+### Что такое SHAred cache, and how does it differ from a distributed cache?
 
 **Definition:**
 
@@ -753,9 +753,9 @@ HTTP не задаёт тег, по которому можно сделать p
 ### Advanced Caching Concepts
 
 <details>
-<summary>Explain the concept of a content delivery network (CDN) and its relation to caching.</summary>
+<summary>Объясните the concept of a content delivery network (CDN) and its relation to caching.</summary>
 
-### Explain the concept of a content delivery network (CDN) and its relation to caching.
+### Объясните the concept of a content delivery network (CDN) and its relation to caching.
 
 **Definition:**
 
@@ -775,9 +775,9 @@ CDN — это управляемый кэш: сервис разворачив�
 </details>
 
 <details>
-<summary>Explain edge caching and its use cases.</summary>
+<summary>Объясните edge caching and its use cases.</summary>
 
-### Explain edge caching and its use cases.
+### Объясните edge caching and its use cases.
 
 **Definition:**
 
@@ -799,9 +799,9 @@ CDN — это управляемый кэш: сервис разворачив�
 </details>
 
 <details>
-<summary>What is cache warming and when is it used?</summary>
+<summary>Что такое cache warming and when is it used?</summary>
 
-### What is cache warming and when is it used?
+### Что такое cache warming and when is it used?
 
 **Definition:**
 
@@ -825,9 +825,9 @@ CDN — это управляемый кэш: сервис разворачив�
 </details>
 
 <details>
-<summary>How does query result caching work in database systems?</summary>
+<summary>Как query result caching work in dataBASE systems?</summary>
 
-### How does query result caching work in database systems?
+### Как query result caching work in dataBASE systems?
 
 **Definition:**
 
@@ -848,9 +848,9 @@ CDN — это управляемый кэш: сервис разворачив�
 </details>
 
 <details>
-<summary>Describe object caching and its advantages in object-oriented programming.</summary>
+<summary>Опишите object caching and its advantages in object-oriented programming.</summary>
 
-### Describe object caching and its advantages in object-oriented programming.
+### Опишите object caching and its advantages in object-oriented programming.
 
 **Definition:**
 
@@ -872,9 +872,9 @@ CDN — это управляемый кэш: сервис разворачив�
 </details>
 
 <details>
-<summary>Discuss the impact of caching on microservices architecture.</summary>
+<summary>Обсудите the impact of caching on microservices architecture.</summary>
 
-### Discuss the impact of caching on microservices architecture.
+### Обсудите the impact of caching on microservices architecture.
 
 **Definition:**
 
@@ -896,9 +896,9 @@ CDN — это управляемый кэш: сервис разворачив�
 </details>
 
 <details>
-<summary>Explain how caching interacts with serverless computing models.</summary>
+<summary>Объясните how caching interacts with serverless computing models.</summary>
 
-### Explain how caching interacts with serverless computing models.
+### Объясните how caching interacts with serverless computing models.
 
 **Definition:**
 
@@ -921,9 +921,9 @@ CDN — это управляемый кэш: сервис разворачив�
 </details>
 
 <details>
-<summary>Describe cache compression techniques and their trade-offs.</summary>
+<summary>Опишите cache compression techniques and their trade-offs.</summary>
 
-### Describe cache compression techniques and their trade-offs.
+### Опишите cache compression techniques and their trade-offs.
 
 **Definition:**
 
@@ -945,9 +945,9 @@ CDN — это управляемый кэш: сервис разворачив�
 </details>
 
 <details>
-<summary>How does machine learning influence caching strategies?</summary>
+<summary>Как machine learning influence caching strategies?</summary>
 
-### How does machine learning influence caching strategies?
+### Как machine learning influence caching strategies?
 
 **Definition:**
 
@@ -967,9 +967,9 @@ LFU в Redis хранит маленькую оценку, как часто и�
 </details>
 
 <details>
-<summary>Discuss the role of caching in IoT (Internet of Things) applications.</summary>
+<summary>Обсудите the role of caching in IoT (Internet of Things) applications.</summary>
 
-### Discuss the role of caching in IoT (Internet of Things) applications.
+### Обсудите the role of caching in IoT (Internet of Things) applications.
 
 **Definition:**
 
@@ -994,9 +994,9 @@ LFU в Redis хранит маленькую оценку, как часто и�
 ### Caching Tools and Technologies
 
 <details>
-<summary>What are some popular caching systems and their key features?</summary>
+<summary>Что такое some popular caching systems and their key features?</summary>
 
-### What are some popular caching systems and their key features?
+### Что такое some popular caching systems and their key features?
 
 **Definition:**
 
@@ -1020,9 +1020,9 @@ LFU в Redis хранит маленькую оценку, как часто и�
 </details>
 
 <details>
-<summary>How do you configure cache settings in a web server (e.g., Nginx, Apache)?</summary>
+<summary>Как you configure cache settings in a web server (e.g., Nginx, Apache)?</summary>
 
-### How do you configure cache settings in a web server (e.g., Nginx, Apache)?
+### Как you configure cache settings in a web server (e.g., Nginx, Apache)?
 
 **Definition:**
 
@@ -1052,9 +1052,9 @@ ETag: "33a64df5"
 </details>
 
 <details>
-<summary>Explain the role of HTTP headers in web caching.</summary>
+<summary>Объясните the role of HTTP headers in web caching.</summary>
 
-### Explain the role of HTTP headers in web caching.
+### Объясните the role of HTTP headers in web caching.
 
 **Definition:**
 
@@ -1082,9 +1082,9 @@ Vary: Accept-Language
 </details>
 
 <details>
-<summary>How do caching mechanisms differ across various programming languages?</summary>
+<summary>Как caching mechanisms differ across various programming languages?</summary>
 
-### How do caching mechanisms differ across various programming languages?
+### Как caching mechanisms differ across various programming languages?
 
 **Definition:**
 
@@ -1107,9 +1107,9 @@ Vary: Accept-Language
 </details>
 
 <details>
-<summary>Describe the use of caching in mobile application development.</summary>
+<summary>Опишите the use of caching in mobile application development.</summary>
 
-### Describe the use of caching in mobile application development.
+### Опишите the use of caching in mobile application development.
 
 **Definition:**
 
@@ -1131,9 +1131,9 @@ Vary: Accept-Language
 </details>
 
 <details>
-<summary>What tools are available for monitoring and analyzing cache performance?</summary>
+<summary>Какие инструменты are available for monitoring and analyzing cache performance?</summary>
 
-### What tools are available for monitoring and analyzing cache performance?
+### Какие инструменты are available for monitoring and analyzing cache performance?
 
 **Definition:**
 
@@ -1155,9 +1155,9 @@ Redis показывает счётчики попаданий, промахов
 </details>
 
 <details>
-<summary>Explain the integration of caching in cloud computing services.</summary>
+<summary>Объясните the integration of caching in cloud computing services.</summary>
 
-### Explain the integration of caching in cloud computing services.
+### Объясните the integration of caching in cloud computing services.
 
 **Definition:**
 
@@ -1180,9 +1180,9 @@ Redis показывает счётчики попаданий, промахов
 </details>
 
 <details>
-<summary>How does caching work in content management systems (CMS)?</summary>
+<summary>Как caching work in content management systems (CMS)?</summary>
 
-### How does caching work in content management systems (CMS)?
+### Как caching work in content management systems (CMS)?
 
 **Definition:**
 
@@ -1202,9 +1202,9 @@ Redis показывает счётчики попаданий, промахов
 </details>
 
 <details>
-<summary>What are the considerations for caching in a serverless architecture?</summary>
+<summary>Что такое the considerations for caching in a serverless architecture?</summary>
 
-### What are the considerations for caching in a serverless architecture?
+### Что такое the considerations for caching in a serverless architecture?
 
 **Definition:**
 
@@ -1226,9 +1226,9 @@ Redis показывает счётчики попаданий, промахов
 </details>
 
 <details>
-<summary>Name some caching strategies in big data processing and analytics.</summary>
+<summary>Назовите some caching strategies in big data processing and analytics.</summary>
 
-### Name some caching strategies in big data processing and analytics.
+### Назовите some caching strategies in big data processing and analytics.
 
 **Definition:**
 

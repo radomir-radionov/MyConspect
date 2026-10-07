@@ -16,8 +16,6 @@ Interview answers in this file are filled.
 
 ## Interview Practice
 
-Questions from [Devinterview.io — Software Architecture](https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/).
-
 ### Software Architecture Fundamentals
 
 <details>
@@ -77,9 +75,6 @@ A well-architected system might limit the degree of flexibility, ensuring consis
 
 - **Design**: Allows for regular, more localized updates, with changes mainly affecting components or modules.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -136,9 +131,6 @@ class Admin(User):
         print(f"Admin User: {self.name}")
 ```
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -156,21 +148,13 @@ Developers aim to ensure these attributes right from the conceptual stages, thus
 
 #### Importance of Quality Attributes
 
-#### Holistic User Experience
+- **Holistic User Experience:** While functional requirements capture what the system should do, quality attributes capture how well it should do it. Together, these define a user's complete experience with the system.
 
-While functional requirements capture what the system should do, quality attributes capture how well it should do it. Together, these define a user's complete experience with the system.
+- **Design Focus:** Quality attributes help guide the system design, ensuring that not only the main features but also the system's overall environment, security, and utility are optimized and secure.
 
-#### Design Focus
+- **Balanced Decisions:** Engineering decisions must often balance competing objectives. Quality attributes help communicate these objectives, making it easier for architects and developers to make informed decisions.
 
-Quality attributes help guide the system design, ensuring that not only the main features but also the system's overall environment, security, and utility are optimized and secure.
-
-#### Balanced Decisions
-
-Engineering decisions must often balance competing objectives. Quality attributes help communicate these objectives, making it easier for architects and developers to make informed decisions.
-
-#### Technical Compatibility
-
-Different quality attributes can complement or contradict each other, and it's important to balance them to ensure a cohesive, efficient system.
+- **Technical Compatibility:** Different quality attributes can complement or contradict each other, and it's important to balance them to ensure a cohesive, efficient system.
 
 #### Common System Quality Attributes
 
@@ -212,13 +196,10 @@ Each quality attribute can measure its adherence, typically using quantitative m
 
 Architectural patterns and styles, as well as design strategies, are thoroughly informed by quality attributes, ensuring that the completed software system best meets its operational goals.
 
-For instance, a system focusing on high availability like a cloud-based ERP might adopt a microservices architecture and utilize load balancers and auto-scaling clusters.
+- **High availability:** A system focusing on high availability like a cloud-based ERP might adopt a microservices architecture and utilize load balancers and auto-scaling clusters.
 
-In contrast, a system that requires high reliability, such as a medical equipment monitoring system, might employ a modular architecture with strict data consistency mechanisms and undergo stringent testing procedures.
+- **High reliability:** A system that requires high reliability, such as a medical equipment monitoring system, might employ a modular architecture with strict data consistency mechanisms and undergo stringent testing procedures.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -290,9 +271,6 @@ A Software Architectural Pattern is a proven, structured solution to a recurring
 
 - **DDD**: Many enterprise-level applications, CRM systems, and portfolio management tools leverage this model for a more domain-focused design approach.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -334,17 +312,11 @@ The Layered Architecture Pattern is characterized by the hierarchical organizati
 
 #### Layers
 
-#### Presentation Layer:
+- **Presentation Layer:** This layer is responsible for displaying information to users and handling user interactions. In a web application, it might correspond to the View. In a Windows Forms app, it is the form itself.
 
-This layer is responsible for displaying information to users and handling user interactions. In a web application, it might correspond to the View. In a Windows Forms app, it is the form itself.
+- **Business Logic Layer:** This layer implements the business rules and processes. It acts as an intermediary between the presentation and data layers.
 
-#### Business Logic Layer:
-
-This layer implements the business rules and processes. It acts as an intermediary between the presentation and data layers.
-
-#### Data Layer:
-
-This layer is responsible for data storage and access, such as a database, file system, or web service.
+- **Data Layer:** This layer is responsible for data storage and access, such as a database, file system, or web service.
 
 #### Wiring the Layers
 
@@ -420,9 +392,6 @@ var userController = new UserController(userService);
 
 In many modern systems, this wiring could be handled by an IoC container.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -488,9 +457,6 @@ Robust software architecture makes systems sustainable and manageable. Here are 
 
 - **Evolution**: Facilities for gradual, controlled system enhancements to accommodate emerging or altered requirements.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -538,9 +504,6 @@ Modularity in software architecture refers to the degree to which a software sys
 
 - **Web Development**: Frameworks like Angular or React structure applications as modular components, each handling a particular piece of the user interface or corresponding functionality.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -566,9 +529,6 @@ Consider a form where email and phone number are mandatory.
 
 This approach can lead to redundant and error-prone code, especially as the form grows more complex. Instead, one could use a ValidateEmail and ValidatePhoneNumber module, enforcing responsibility and independence.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -594,11 +554,9 @@ The Law of Demeter distills the following key principles:
 
 The Law of Demeter has been formulated using several verbal expressions, offering different perspectives on its core tenets:
 
-"Don't talk to strangers"
-This phrase is an analogue for the principle that objects or methods should have limited access to other entities.
+- **"Don't talk to strangers":** This phrase is an analogue for the principle that objects or methods should have limited access to other entities.
 
-"Only talk to your immediate friends"
-This expression emphasizes that a module should interact with its closely related modules and avoid extensive collaboration, mitigating the risk of creating tightly coupled systems.
+- **"Only talk to your immediate friends":** This expression emphasizes that a module should interact with its closely related modules and avoid extensive collaboration, mitigating the risk of creating tightly coupled systems.
 
 **Examples:**
 
@@ -678,9 +636,6 @@ public class Engine {
 
 In this improved structure, the Owner class directly communicates with the Car class, maintaining a more logical and appropriate communication pattern.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -718,9 +673,6 @@ Cross-cutting concerns in software development represent aspects that span multi
 
 - **Data Management Platforms**: Modern no-code or low-code platforms such as Airtable integrate data management directly into application design, reducing the need to handle data consistency and integrity across multiple components.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 ### Design Patterns and Principles
@@ -790,9 +742,6 @@ Model-View-Controller (MVC) is an architectural pattern known for its clear sepa
 
 - **Two-Way Communication**: While primarily unidirectional, MVC can support bi-directional data flow, which can lead to additional complexity.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -836,9 +785,6 @@ The Publish-Subscribe pattern is a messaging pattern where senders, also known a
 
 - **Database Synchronization and Data Distribution**: Distributed data systems like Apache Kafka use the Pub-Sub pattern to synchronize data across nodes, ensuring consistency and fault-tolerance.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -854,7 +800,7 @@ Microservices and Monolithic architectures represent distinct approaches to soft
 
 #### Monolithic Architecture
 
-In the monolithic architecture, all components of a system are interconnected and work together as a single unit. For instance, web servers, application servers, and databases are often integrated into one platform.
+- **Monolithic architecture:** All components of a system are interconnected and work together as a single unit. For instance, web servers, application servers, and databases are often integrated into one platform.
 
 #### Key Characteristics
 
@@ -882,7 +828,7 @@ In the monolithic architecture, all components of a system are interconnected an
 
 #### Microservices Architecture
 
-In microservices, the system is broken down into small, independent services, each with a specific business function and its dedicated data store. These services communicate through well-defined APIs.
+- **Microservices architecture:** The system is broken down into small, independent services, each with a specific business function and its dedicated data store. These services communicate through well-defined APIs.
 
 #### Key Characteristics
 
@@ -906,9 +852,6 @@ In microservices, the system is broken down into small, independent services, ea
 
 - **Operational Overhead**: Managing multiple services, each with its stack, adds operational complexity.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -924,15 +867,15 @@ SOLID is an acronym that represents the five basic principles of object-oriented
 
 #### The SOLID Principles
 
-Single Responsibility Principle (SRP) A class should have only one reason to change. In other words, it should have only one responsibility.
+- **Single Responsibility Principle (SRP):** A class should have only one reason to change. In other words, it should have only one responsibility.
 
-Open/Closed Principle (OCP) A module (i.e., a function or a class) should be open for extension, but closed for modification.
+- **Open/Closed Principle (OCP):** A module (i.e., a function or a class) should be open for extension, but closed for modification.
 
-Liskov Substitution Principle (LSP) Derived classes should be substitutable for their base classes, meaning that they should share the same interface and be used interchangeably with objects of the base class.
+- **Liskov Substitution Principle (LSP):** Derived classes should be substitutable for their base classes, meaning that they should share the same interface and be used interchangeably with objects of the base class.
 
-Interface Segregation Principle (ISP) Many client-specific interfaces are better than one general-purpose interface.
+- **Interface Segregation Principle (ISP):** Many client-specific interfaces are better than one general-purpose interface.
 
-Dependency Inversion Principle (DIP) High-level modules should not depend on low-level modules. Both should depend on abstractions. Additionally, abstractions should not depend on details; details should depend on abstractions.
+- **Dependency Inversion Principle (DIP):** High-level modules should not depend on low-level modules. Both should depend on abstractions. Additionally, abstractions should not depend on details; details should depend on abstractions.
 
 #### What the SOLID Principles Mean
 
@@ -946,9 +889,6 @@ Dependency Inversion Principle (DIP) High-level modules should not depend on low
 
 - **DIP**: A high-level class should not care about the details of its dependencies. This means that interfaces or abstractions should be used instead of concrete implementations.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -966,7 +906,7 @@ While the Singleton pattern offers benefits such as a single point of access and
 
 #### Scope of Singleton Behavior
 
-The Singleton pattern isn't always the most suitable for enabling unique global access. Classes managed by dependency injection (DI) frameworks, for instance, often provide more adaptable and testable mechanisms for context-driven singletons.
+- **Singleton scope:** The Singleton pattern isn't always the most suitable for enabling unique global access. Classes managed by dependency injection (DI) frameworks, for instance, often provide more adaptable and testable mechanisms for context-driven singletons.
 
 #### Drawbacks of the Singleton Pattern
 
@@ -1000,9 +940,6 @@ Considering the potential drawbacks, it's good to adhere to these best practices
 
 - **Use DI for Wider Flexibility**: Combine the benefits of DI with the clarity and convenience of singleton where it makes sense.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
@@ -1202,15 +1139,15 @@ class SquarePegAdapter(RoundPeg):
 
 **Definition:**
 
-The Scale Cube, from *The Art of Scalability* as summarized by Chris Richardson, describes three ways to scale an application: X-axis cloning, Y-axis functional decomposition, and Z-axis data partitioning.
+The Scale Cube, from _The Art of Scalability_ as summarized by Chris Richardson, describes three ways to scale an application: X-axis cloning, Y-axis functional decomposition, and Z-axis data partitioning.
 
 **How it works:**
 
-X-axis scaling runs multiple identical copies behind a load balancer. If there are N copies, each handles 1/N of the load. Each copy can still access all of the data, so caches need more memory, and this axis does not reduce development or application complexity.
+- **X-axis scaling:** Runs multiple identical copies behind a load balancer. If there are N copies, each handles 1/N of the load. Each copy can still access all of the data, so caches need more memory, and this axis does not reduce development or application complexity.
 
-Y-axis scaling splits the application into different services. Each service owns one or more closely related functions. Decomposition can be verb-based (a service for one use case, such as checkout) or noun-based (a service for one entity, such as customer management). An application can combine both. Richardson describes the microservice architecture as an application of Y-axis scaling.
+- **Y-axis scaling:** Splits the application into different services. Each service owns one or more closely related functions. Decomposition can be verb-based (a service for one use case, such as checkout) or noun-based (a service for one entity, such as customer management). An application can combine both. Richardson describes the microservice architecture as an application of Y-axis scaling.
 
-Z-axis scaling also runs identical code, but each server owns only a subset of the data. A router sends each request to the right server, often by a primary key or by customer type. Databases are commonly sharded this way. A query may go to every partition and then be aggregated. Each server uses less memory and I/O, transactions spread across servers, and a failure hides only part of the data. Partitioning and repartitioning add complexity, and Z-axis scaling still does not by itself reduce development complexity.
+- **Z-axis scaling:** Also runs identical code, but each server owns only a subset of the data. A router sends each request to the right server, often by a primary key or by customer type. Databases are commonly sharded this way. A query may go to every partition and then be aggregated. Each server uses less memory and I/O, transactions spread across servers, and a failure hides only part of the data. Partitioning and repartitioning add complexity, and Z-axis scaling still does not by itself reduce development complexity.
 
 **When to use:**
 
@@ -1327,9 +1264,17 @@ PostgreSQL describes high availability as database servers working together so a
 
 **How it works:**
 
-Read-only servers are relatively easy to combine. Read/write servers are harder: a write on any server must reach the others or later reads disagree. Some designs allow only one primary to modify data. Standbys track the primary. A warm standby cannot be connected to until it is promoted. A hot standby accepts connections and serves read-only queries.
+- **Read-only servers:** Relatively easy to combine.
 
-Synchronous replication does not treat a modifying transaction as committed until all servers have committed it. Failover then loses no data, and load-balanced servers return consistent results. Asynchronous replication allows delay, so a switch to a backup can lose transactions and load-balanced reads can be slightly stale. Asynchronous mode is used when synchronous mode would be too slow. A fully synchronous solution over a slow network might cut performance by more than half.
+- **Read/write servers:** Harder — a write on any server must reach the others or later reads disagree. Some designs allow only one primary to modify data. Standbys track the primary.
+
+- **Warm standby:** Cannot be connected to until it is promoted.
+
+- **Hot standby:** Accepts connections and serves read-only queries.
+
+- **Synchronous replication:** Does not treat a modifying transaction as committed until all servers have committed it. Failover then loses no data, and load-balanced servers return consistent results.
+
+- **Asynchronous replication:** Allows delay, so a switch to a backup can lose transactions and load-balanced reads can be slightly stale. Asynchronous mode is used when synchronous mode would be too slow. A fully synchronous solution over a slow network might cut performance by more than half.
 
 NGINX improves fault tolerance by spreading HTTP traffic across a group and by keeping a backup server. Kubernetes removes a failed Pod from a Service's endpoints and replaces a failed Pod in a Deployment so the replica count holds.
 
@@ -1355,7 +1300,17 @@ IBM states Brewer's theorem: a distributed system can deliver only two of consis
 
 **How it works:**
 
-Consistency here means every client sees the same data at the same time, so a write is successful only after it has been replicated. Availability means every working node returns a valid response. A partition is a lost or delayed link between nodes; partition tolerance means the cluster keeps working anyway. During a partition a CP system refuses the inconsistent node, an AP system stays up and may serve older data, and a CA system cannot keep both consistency and availability once a partition exists. IBM says partitions cannot be avoided in a distributed system, so a CA distributed database is not a practical choice. MongoDB's replica set is described as CP: one primary takes writes, and clients cannot write while a new primary is elected. Cassandra is described as AP: any node accepts writes, and inconsistencies are repaired afterward.
+- **Consistency:** Every client sees the same data at the same time, so a write is successful only after it has been replicated.
+
+- **Availability:** Every working node returns a valid response.
+
+- **Partition tolerance:** A partition is a lost or delayed link between nodes; the cluster keeps working anyway.
+
+- **CP system:** During a partition it refuses the inconsistent node. MongoDB's replica set is described as CP: one primary takes writes, and clients cannot write while a new primary is elected.
+
+- **AP system:** During a partition it stays up and may serve older data. Cassandra is described as AP: any node accepts writes, and inconsistencies are repaired afterward.
+
+- **CA system:** Cannot keep both consistency and availability once a partition exists. IBM says partitions cannot be avoided in a distributed system, so a CA distributed database is not a practical choice.
 
 **When to use:**
 
@@ -1609,9 +1564,9 @@ Continuous delivery, in Pete Hodgson's feature-toggle article, separates feature
 
 Docker's delivery loop is: develop in containers, push the image to a test environment, run automated and manual tests, and push the updated image to production when testing is done. The container is the unit that moves through that path.
 
-Release toggles let incomplete code sit on the trunk and still be deployed. The toggle point chooses the old or new path at runtime. Hodgson treats release toggles as short-lived, often a week or two, with a mostly static on/off decision.
+- **Release toggles:** Let incomplete code sit on the trunk and still be deployed. The toggle point chooses the old or new path at runtime. Hodgson treats release toggles as short-lived, often a week or two, with a mostly static on/off decision.
 
-A canary release then routes a small subset of users to the new version before the rest of the infrastructure. Sato's rollout grows that share, or starts with internal users, a region, or a brand. Rollback is routing users back to the old version. The database has to support both versions during the rollout, which Sato handles with a parallel change. Facebook's first canary is internal, with feature flags on, so problems show up early.
+- **Canary release:** Routes a small subset of users to the new version before the rest of the infrastructure. Sato's rollout grows that share, or starts with internal users, a region, or a brand. Rollback is routing users back to the old version. The database has to support both versions during the rollout, which Sato handles with a parallel change. Facebook's first canary is internal, with feature flags on, so problems show up early.
 
 **When to use:**
 
@@ -1635,9 +1590,11 @@ AWS Lambda is a serverless compute service. You run code without provisioning or
 
 **How it works:**
 
-Lambda offers two primitives. A Lambda function runs a handler in response to an event or an API call. You connect a trigger such as API Gateway, S3, SQS, or EventBridge. Each invocation is independent, with no shared state, and Lambda scales it horizontally to match demand. One execution environment handles one request at a time. Environments can be reused as warm starts, but state might not persist across invocations. A single invocation lasts up to 15 minutes. Longer workflows use Lambda Durable Functions, up to a year. You pay per request plus GB-seconds. Isolation uses Firecracker microVMs.
+Lambda offers two primitives:
 
-Lambda MicroVMs are a separate primitive: an isolated environment with a total lifespan of up to 8 hours, for a dedicated environment per user or job. You create, suspend, resume, and terminate them. Memory and disk state are preserved across suspend and resume. That is a different model from the stateless function handler.
+- **Lambda function:** Runs a handler in response to an event or an API call. You connect a trigger such as API Gateway, S3, SQS, or EventBridge. Each invocation is independent, with no shared state, and Lambda scales it horizontally to match demand. One execution environment handles one request at a time. Environments can be reused as warm starts, but state might not persist across invocations. A single invocation lasts up to 15 minutes. Longer workflows use Lambda Durable Functions, up to a year. You pay per request plus GB-seconds. Isolation uses Firecracker microVMs.
+
+- **Lambda MicroVMs:** A separate primitive — an isolated environment with a total lifespan of up to 8 hours, for a dedicated environment per user or job. You create, suspend, resume, and terminate them. Memory and disk state are preserved across suspend and resume. That is a different model from the stateless function handler.
 
 **When to use:**
 
@@ -1659,11 +1616,17 @@ Pete Hodgson defines feature toggles, also called feature flags, as a technique 
 
 **How it works:**
 
-A toggle point chooses between code paths at runtime. A toggle router answers whether a feature is on. The decision can be a static on/off value, or it can depend on the user. Hodgson groups toggles by how long they live and how dynamic the decision is.
+- **Toggle point:** Chooses between code paths at runtime.
 
-Release toggles ship incomplete code on the trunk as latent code so the branch can still be deployed. They support the continuous-delivery idea of separating feature release from code deployment. They are transitional, often removed within a week or two, and the decision is usually static.
+- **Toggle router:** Answers whether a feature is on. The decision can be a static on/off value, or it can depend on the user. Hodgson groups toggles by how long they live and how dynamic the decision is.
 
-Experiment toggles place each user in a cohort for A/B or multivariate tests and must stay stable long enough for a significant result. Ops toggles let operators disable or degrade a feature in production, including long-lived kill switches that turn off non-critical work under load. Permissioning toggles change what a specific set of users sees, such as premium, alpha, or beta features.
+- **Release toggles:** Ship incomplete code on the trunk as latent code so the branch can still be deployed. They support the continuous-delivery idea of separating feature release from code deployment. They are transitional, often removed within a week or two, and the decision is usually static.
+
+- **Experiment toggles:** Place each user in a cohort for A/B or multivariate tests and must stay stable long enough for a significant result.
+
+- **Ops toggles:** Let operators disable or degrade a feature in production, including long-lived kill switches that turn off non-critical work under load.
+
+- **Permissioning toggles:** Change what a specific set of users sees, such as premium, alpha, or beta features.
 
 Toggles add validation complexity. Hodgson's guidance is to constrain how many exist and to remove transient ones.
 
@@ -1674,10 +1637,10 @@ Use a release toggle to keep unfinished work on the deployable trunk. Use an exp
 **Examples:**
 
 ```javascript
-function reticulateSplines(){
-  if( featureIsEnabled("use-new-SR-algorithm") ){
+function reticulateSplines() {
+  if (featureIsEnabled("use-new-SR-algorithm")) {
     return enhancedSplineReticulation();
-  }else{
+  } else {
     return oldFashionedSplineReticulation();
   }
 }
@@ -1860,7 +1823,15 @@ A message broker carries messages between services so the sender and the consume
 
 In RabbitMQ a queue is FIFO: messages are enqueued at the tail and dequeued from the head. Priorities and consumer requeueing can change the order a consumer observes. Queues can be durable, replicated, temporary, or exclusive. Streams are a separate RabbitMQ structure. For topic-based protocols such as STOMP and MQTT, queues still accumulate messages for consumers.
 
-Richardson's styles on that channel are request/response, notifications with no reply, request/asynchronous response, publish/subscribe to zero or more recipients, and publish/asynchronous response. The example `OrderService` publishes an `Order Created` event after it saves the order. Benefits are loose runtime coupling, because the sender is decoupled from the consumer, and higher availability, because the broker buffers until the consumer can process. The broker itself must be highly available. Request/reply over messages is more complex than a direct call.
+Richardson's styles on that channel:
+
+- **Request/response**
+- **Notifications** with no reply
+- **Request/asynchronous response**
+- **Publish/subscribe** to zero or more recipients
+- **Publish/asynchronous response**
+
+The example `OrderService` publishes an `Order Created` event after it saves the order. Benefits are loose runtime coupling, because the sender is decoupled from the consumer, and higher availability, because the broker buffers until the consumer can process. The broker itself must be highly available. Request/reply over messages is more complex than a direct call.
 
 **When to use:**
 
@@ -2011,7 +1982,13 @@ IBM contrasts vertically scalable SQL (relational) databases with NoSQL database
 
 **How it works:**
 
-IBM classifies NoSQL stores by the CAP pair they deliver. A CP database keeps consistency and partition tolerance and gives up availability: during a partition it shuts down the non-consistent node. IBM places MongoDB here. MongoDB is a single-primary system; secondaries replicate the primary's operation log. If the primary is unavailable, the secondary with the newest log is elected, and clients cannot write until the others catch up, so the data stays consistent. An AP database keeps availability and partition tolerance and gives up consistency for a time. IBM places Cassandra here: there is no primary, clients can write to any node, and repair closes the gaps. A CA pair is not practical once partitions are possible. IBM says many relational databases, including PostgreSQL, deliver consistency and availability and can be placed on multiple nodes with replication.
+IBM classifies NoSQL stores by the CAP pair they deliver.
+
+- **CP database:** Keeps consistency and partition tolerance and gives up availability — during a partition it shuts down the non-consistent node. IBM places MongoDB here. MongoDB is a single-primary system; secondaries replicate the primary's operation log. If the primary is unavailable, the secondary with the newest log is elected, and clients cannot write until the others catch up, so the data stays consistent.
+
+- **AP database:** Keeps availability and partition tolerance and gives up consistency for a time. IBM places Cassandra here: there is no primary, clients can write to any node, and repair closes the gaps.
+
+- **CA pair:** Not practical once partitions are possible. IBM says many relational databases, including PostgreSQL, deliver consistency and availability and can be placed on multiple nodes with replication.
 
 IBM also names a product reason: if you must iterate the data model quickly and scale horizontally, and you can tolerate eventual consistency, an AP database such as Cassandra or Apache CouchDB fits. If the application depends on consistency, as in e-commerce or payments, IBM points to a relational database such as PostgreSQL.
 
@@ -2167,7 +2144,11 @@ Test a service in isolation when end-to-end runs are too slow to be the only che
 
 **Definition:**
 
-Martin Fowler gives two definitions. As a noun, refactoring is a change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior. As a verb, it is to restructure software by applying a series of refactorings without changing its observable behavior.
+Martin Fowler gives two definitions:
+
+- **As a noun:** Refactoring is a change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior.
+
+- **As a verb:** To restructure software by applying a series of refactorings without changing its observable behavior.
 
 **How it works:**
 
@@ -2524,7 +2505,7 @@ Cache at the edge when the same content is fetched from far away. Collapse chatt
 
 **Definition:**
 
-The SEI's Architecture Tradeoff Analysis Method evaluates an architecture against quality-attribute goals before the system is built, and shows how those goals trade off. A fitness function, as Thoughtworks cites *Building Evolutionary Architectures*, is an objective check that some characteristic still holds as the system changes.
+The SEI's Architecture Tradeoff Analysis Method evaluates an architecture against quality-attribute goals before the system is built, and shows how those goals trade off. A fitness function, as Thoughtworks cites _Building Evolutionary Architectures_, is an objective check that some characteristic still holds as the system changes.
 
 **How it works:**
 
@@ -2569,7 +2550,7 @@ Use ATAM when a system must be modifiable, fast, secure, or reliable and you nee
 
 **Definition:**
 
-Thoughtworks, citing *Building Evolutionary Architectures*, defines an architectural fitness function as an objective integrity assessment of some architectural characteristic. The term is borrowed from evolutionary computing, where a fitness function says how close a candidate is to the aims, and thus what "better" means.
+Thoughtworks, citing _Building Evolutionary Architectures_, defines an architectural fitness function as an objective integrity assessment of some architectural characteristic. The term is borrowed from evolutionary computing, where a fitness function says how close a candidate is to the aims, and thus what "better" means.
 
 **How it works:**
 

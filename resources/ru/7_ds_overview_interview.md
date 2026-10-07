@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Data Structures](https://devinterview.io/que
 ### Arrays and Strings
 
 <details>
-<summary>Explain how you would reverse an array in place.</summary>
+<summary>Объясните, как бы вы перевернули array на in place.</summary>
 
-### Explain how you would reverse an array in place.
+### Объясните, как бы вы перевернули array на in place.
 
 **Definition:**
 
@@ -55,9 +55,9 @@ print("Reversed Array:", my_array)
 </details>
 
 <details>
-<summary>What is the difference between an array and a linked list?</summary>
+<summary>Что такое the difference between an array and a linked list?</summary>
 
-### What is the difference between an array and a linked list?
+### Что такое the difference between an array and a linked list?
 
 **Definition:**
 
@@ -160,9 +160,9 @@ new_node1.next = new_node3
 </details>
 
 <details>
-<summary>How would you check for duplicates in an array without using extra space?</summary>
+<summary>Как бы вы check for duplicates in an array without using extra space?</summary>
 
-### How would you check for duplicates in an array without using extra space?
+### Как бы вы check for duplicates in an array without using extra space?
 
 **Definition:**
 
@@ -256,9 +256,9 @@ print(has_duplicates_math(arr))  # Output: True
 </details>
 
 <details>
-<summary>Can you explain how to perform a binary search on a sorted array?</summary>
+<summary>Можете ли вы объяснить, как выполнить binary search на отсортированном array?</summary>
 
-### Can you explain how to perform a binary search on a sorted array?
+### Можете ли вы объяснить, как выполнить binary search на отсортированном array?
 
 **Definition:**
 
@@ -317,9 +317,9 @@ Low   High
 </details>
 
 <details>
-<summary>How would you rotate a two-dimensional array by 90 degrees?</summary>
+<summary>Как бы вы rotate a two-dimensional array by 90 degrees?</summary>
 
-### How would you rotate a two-dimensional array by 90 degrees?
+### Как бы вы rotate a two-dimensional array by 90 degrees?
 
 **Definition:**
 
@@ -383,9 +383,9 @@ print(rotate_2d_clockwise(matrix))
 </details>
 
 <details>
-<summary>Describe an algorithm to compress a string such as “aabbccc” to “a2b2c3”.</summary>
+<summary>Опишите алгоритм для сжатия строки, такой как «aabbccc», в «a2b2c3».</summary>
 
-### Describe an algorithm to compress a string such as “aabbccc” to “a2b2c3”.
+### Опишите алгоритм для сжатия строки, такой как «aabbccc», в «a2b2c3».
 
 **Definition:**
 
@@ -443,9 +443,9 @@ def compress_string(input_string):
 </details>
 
 <details>
-<summary>What is an array slice and how is it implemented in programming languages?</summary>
+<summary>Что такое array SLIce and how is it implemented in programming languages?</summary>
 
-### What is an array slice and how is it implemented in programming languages?
+### Что такое array SLIce and how is it implemented in programming languages?
 
 **Definition:**
 
@@ -518,9 +518,9 @@ mySlice := originalArray[1:4]  // References the originalArray from index 1 to 3
 </details>
 
 <details>
-<summary>Can you discuss the time complexity of array insertion and deletion?</summary>
+<summary>Можете ли вы обсудить удаление time complexity array вставки AND?</summary>
 
-### Can you discuss the time complexity of array insertion and deletion?
+### Можете ли вы обсудить удаление time complexity array вставки AND?
 
 **Definition:**
 
@@ -546,9 +546,9 @@ mySlice := originalArray[1:4]  // References the originalArray from index 1 to 3
 </details>
 
 <details>
-<summary>What are some ways to merge two sorted arrays into one sorted array?</summary>
+<summary>Что такое some ways to merge two sorted arrays into one sorted array?</summary>
 
-### What are some ways to merge two sorted arrays into one sorted array?
+### Что такое some ways to merge two sorted arrays into one sorted array?
 
 **Definition:**
 
@@ -596,9 +596,9 @@ mySlice := originalArray[1:4]  // References the originalArray from index 1 to 3
 </details>
 
 <details>
-<summary>How do you find the kth largest element in an unsorted array?</summary>
+<summary>Как найти k-й по величине элемент в несортированном array?</summary>
 
-### How do you find the kth largest element in an unsorted array?
+### Как найти k-й по величине элемент в несортированном array?
 
 **Definition:**
 
@@ -672,9 +672,9 @@ def kth_largest_heap(arr, k):
 ### Linked Lists
 
 <details>
-<summary>Explain how a singly linked list differs from a doubly linked list.</summary>
+<summary>Объясните, чем одиночный linked list отличается от двойного linked list.</summary>
 
-### Explain how a singly linked list differs from a doubly linked list.
+### Объясните, чем одиночный linked list отличается от двойного linked list.
 
 **Definition:**
 
@@ -803,9 +803,9 @@ public class DoublyLinkedList {
 </details>
 
 <details>
-<summary>How would you detect a cycle in a linked list?</summary>
+<summary>Как бы вы detect a cycle in a linked list?</summary>
 
-### How would you detect a cycle in a linked list?
+### Как бы вы detect a cycle in a linked list?
 
 **Definition:**
 
@@ -870,9 +870,9 @@ def has_cycle(head):
 </details>
 
 <details>
-<summary>What are the major operations you can perform on a linked list, and their time complexities?</summary>
+<summary>Что такое the major operations you can perform on a linked list, and their time complexities?</summary>
 
-### What are the major operations you can perform on a linked list, and their time complexities?
+### Что такое the major operations you can perform on a linked list, and their time complexities?
 
 **Definition:**
 
@@ -993,9 +993,9 @@ class SinglyLinkedList:
 </details>
 
 <details>
-<summary>Can you describe an in-place algorithm to reverse a linked list?</summary>
+<summary>Можете ли вы описать in-place алгоритм для реверса linked list?</summary>
 
-### Can you describe an in-place algorithm to reverse a linked list?
+### Можете ли вы описать in-place алгоритм для реверса linked list?
 
 **Definition:**
 
@@ -1085,9 +1085,9 @@ llist.display()
 </details>
 
 <details>
-<summary>Explain how you would find the middle element of a linked list in one pass.</summary>
+<summary>Объясните, как бы вы нашли средний элемент linked list за один проход.</summary>
 
-### Explain how you would find the middle element of a linked list in one pass.
+### Объясните, как бы вы нашли средний элемент linked list за один проход.
 
 **Definition:**
 
@@ -1142,9 +1142,9 @@ def find_middle_node(head):
 </details>
 
 <details>
-<summary>What are the advantages and disadvantages of using a linked list over an array?</summary>
+<summary>Что такое the advantages and disadvantages of using a linked list over an array?</summary>
 
-### What are the advantages and disadvantages of using a linked list over an array?
+### Что такое the advantages and disadvantages of using a linked list over an array?
 
 **Definition:**
 
@@ -1173,9 +1173,9 @@ node = head.next.next
 </details>
 
 <details>
-<summary>How can you implement a queue using linked lists?</summary>
+<summary>Как вы можете реализовать queue с помощью linked lists?</summary>
 
-### How can you implement a queue using linked lists?
+### Как вы можете реализовать queue с помощью linked lists?
 
 **Definition:**
 
@@ -1212,9 +1212,9 @@ def dequeue(self):
 </details>
 
 <details>
-<summary>Discuss how a linked list can be used to implement a stack.</summary>
+<summary>Обсудите, как можно использовать linked list для реализации stack.</summary>
 
-### Discuss how a linked list can be used to implement a stack.
+### Обсудите, как можно использовать linked list для реализации stack.
 
 **Definition:**
 
@@ -1244,9 +1244,9 @@ def pop(self):
 </details>
 
 <details>
-<summary>How would you remove a given node from a linked list without head pointer?</summary>
+<summary>Как бы вы remove a given node from a linked list without head pointer?</summary>
 
-### How would you remove a given node from a linked list without head pointer?
+### Как бы вы remove a given node from a linked list without head pointer?
 
 **Definition:**
 
@@ -1272,9 +1272,9 @@ def delete_node(node):
 </details>
 
 <details>
-<summary>Can you explain the concept of a sentinel node in a linked list?</summary>
+<summary>Можете ли вы объяснить концепцию дозорного узла в linked list?</summary>
 
-### Can you explain the concept of a sentinel node in a linked list?
+### Можете ли вы объяснить концепцию дозорного узла в linked list?
 
 **Definition:**
 
@@ -1308,9 +1308,9 @@ class List:
 ### Stacks and Queues
 
 <details>
-<summary>What operations are performed by a stack data structure?</summary>
+<summary>Какие операции выполняет stack data structure?</summary>
 
-### What operations are performed by a stack data structure?
+### Какие операции выполняет stack data structure?
 
 **Definition:**
 
@@ -1334,9 +1334,9 @@ value = stack.pop()
 </details>
 
 <details>
-<summary>How would you evaluate an arithmetic expression using stacks?</summary>
+<summary>Как бы вы evaluate an arithmetic Expression using stacks?</summary>
 
-### How would you evaluate an arithmetic expression using stacks?
+### Как бы вы evaluate an arithmetic Expression using stacks?
 
 **Definition:**
 
@@ -1366,9 +1366,9 @@ def eval_postfix(tokens):
 </details>
 
 <details>
-<summary>Can you create a queue using two stacks? If so, describe how.</summary>
+<summary>Можно ли создать queue с помощью двух stacks? Если да, опишите, как.</summary>
 
-### Can you create a queue using two stacks? If so, describe how.
+### Можно ли создать queue с помощью двух stacks? Если да, опишите, как.
 
 **Definition:**
 
@@ -1396,9 +1396,9 @@ def dequeue(self):
 </details>
 
 <details>
-<summary>Describe how you would implement a stack using queues.</summary>
+<summary>Опишите, как реализовать stack с помощью queues.</summary>
 
-### Describe how you would implement a stack using queues.
+### Опишите, как реализовать stack с помощью queues.
 
 **Definition:**
 
@@ -1427,9 +1427,9 @@ def push(self, value):
 </details>
 
 <details>
-<summary>How would you distinguish a stack overflow from an underflow?</summary>
+<summary>Как бы вы distinguish a stack overflow from an underflow?</summary>
 
-### How would you distinguish a stack overflow from an underflow?
+### Как бы вы distinguish a stack overflow from an underflow?
 
 **Definition:**
 
@@ -1456,9 +1456,9 @@ def push(self, value):
 </details>
 
 <details>
-<summary>What is a priority queue and how can it be implemented?</summary>
+<summary>Что такое priority queue and how can it be implemented?</summary>
 
-### What is a priority queue and how can it be implemented?
+### Что такое priority queue and how can it be implemented?
 
 **Definition:**
 
@@ -1489,9 +1489,9 @@ print(heapq.heappop(heap))  # (1, "a")
 </details>
 
 <details>
-<summary>Explain the difference between a LIFO and a FIFO data structure.</summary>
+<summary>Объясните разницу между структурой данных LIFO и FIFO.</summary>
 
-### Explain the difference between a LIFO and a FIFO data structure.
+### Объясните разницу между структурой данных LIFO и FIFO.
 
 **Definition:**
 
@@ -1520,9 +1520,9 @@ q.popleft()  # "a", FIFO
 </details>
 
 <details>
-<summary>Can you describe a scenario in which a circular queue would be useful?</summary>
+<summary>Можете ли вы описать сценарий, в котором циркуляр queue будет полезен?</summary>
 
-### Can you describe a scenario in which a circular queue would be useful?
+### Можете ли вы описать сценарий, в котором циркуляр queue будет полезен?
 
 **Definition:**
 
@@ -1553,9 +1553,9 @@ def enqueue(self, value):
 </details>
 
 <details>
-<summary>How would you design a stack that supports a special operation that retrieves the minimum element in constant time?</summary>
+<summary>Как бы вы design a stack that supports a special operation that reTrieves the minimum element in constant time?</summary>
 
-### How would you design a stack that supports a special operation that retrieves the minimum element in constant time?
+### Как бы вы design a stack that supports a special operation that reTrieves the minimum element in constant time?
 
 **Definition:**
 
@@ -1583,9 +1583,9 @@ def get_min(self):
 </details>
 
 <details>
-<summary>Discuss the potential problems you might encounter when using dynamic arrays for stacks.</summary>
+<summary>Обсудите потенциальные проблемы, с которыми вы можете столкнуться при использовании динамического arrays для stacks.</summary>
 
-### Discuss the potential problems you might encounter when using dynamic arrays for stacks.
+### Обсудите потенциальные проблемы, с которыми вы можете столкнуться при использовании динамического arrays для stacks.
 
 **Definition:**
 
@@ -1615,9 +1615,9 @@ def push(self, value):
 ### Trees
 
 <details>
-<summary>Describe a binary tree and its properties.</summary>
+<summary>Опишите binary tree AND его свойства.</summary>
 
-### Describe a binary tree and its properties.
+### Опишите binary tree AND его свойства.
 
 **Definition:**
 
@@ -1643,9 +1643,9 @@ class Node:
 </details>
 
 <details>
-<summary>How do you perform an in-order tree traversal recursively?</summary>
+<summary>Как вы выполняете рекурсивное построение дерева по порядку traversal?</summary>
 
-### How do you perform an in-order tree traversal recursively?
+### Как вы выполняете рекурсивное построение дерева по порядку traversal?
 
 **Definition:**
 
@@ -1672,9 +1672,9 @@ def inorder(node, out):
 </details>
 
 <details>
-<summary>Can you write an algorithm for a non-recursive post-order traversal?</summary>
+<summary>Можете ли вы написать алгоритм для нерекурсивного post-order обхода?</summary>
 
-### Can you write an algorithm for a non-recursive post-order traversal?
+### Можете ли вы написать алгоритм для нерекурсивного post-order обхода?
 
 **Definition:**
 
@@ -1709,9 +1709,9 @@ def postorder(root):
 </details>
 
 <details>
-<summary>What are the advantages of a balanced binary tree over an unbalanced one?</summary>
+<summary>Что такое the advantages of a balanced binary tree over an unbalanced one?</summary>
 
-### What are the advantages of a balanced binary tree over an unbalanced one?
+### Что такое the advantages of a balanced binary tree over an unbalanced one?
 
 **Definition:**
 
@@ -1739,9 +1739,9 @@ AVL и красно-чёрные деревья восстанавливают �
 </details>
 
 <details>
-<summary>Explain what a binary search tree (BST) is and how it’s different from other trees.</summary>
+<summary>Объяснять, что такое binary search tree (БСТ) и как это отличается от других деревьев.</summary>
 
-### Explain what a binary search tree (BST) is and how it’s different from other trees.
+### Объяснять, что такое binary search tree (БСТ) и как это отличается от других деревьев.
 
 **Definition:**
 
@@ -1768,9 +1768,9 @@ def search(node, key):
 </details>
 
 <details>
-<summary>How would you check if a binary tree is a BST?</summary>
+<summary>Как бы вы check if a binary tree is a BST?</summary>
 
-### How would you check if a binary tree is a BST?
+### Как бы вы check if a binary tree is a BST?
 
 **Definition:**
 
@@ -1797,9 +1797,9 @@ def is_bst(node, low=float("-inf"), high=float("inf")):
 </details>
 
 <details>
-<summary>Discuss the method for finding the lowest common ancestor (LCA) in a BST.</summary>
+<summary>Обсудите метод поиска наименьшего общего предка (LCA) в BST.</summary>
 
-### Discuss the method for finding the lowest common ancestor (LCA) in a BST.
+### Обсудите метод поиска наименьшего общего предка (LCA) в BST.
 
 **Definition:**
 
@@ -1828,9 +1828,9 @@ def lca(node, a, b):
 </details>
 
 <details>
-<summary>What are the use cases for a depth-first search versus a breadth-first search in a tree structure?</summary>
+<summary>Что такое the use cases for a depth-first search versus a breadth-first search in a tree structure?</summary>
 
-### What are the use cases for a depth-first search versus a breadth-first search in a tree structure?
+### Что такое the use cases for a depth-first search versus a breadth-first search in a tree structure?
 
 **Definition:**
 
@@ -1865,9 +1865,9 @@ def bfs(root):
 </details>
 
 <details>
-<summary>Describe how you would convert a binary tree into a doubly linked list.</summary>
+<summary>Опишите, как можно преобразовать binary tree в двойной linked list.</summary>
 
-### Describe how you would convert a binary tree into a doubly linked list.
+### Опишите, как можно преобразовать binary tree в двойной linked list.
 
 **Definition:**
 
@@ -1899,9 +1899,9 @@ def to_dll(node, state):
 </details>
 
 <details>
-<summary>How can you serialize and deserialize a binary tree?</summary>
+<summary>Как можно совместить serialize и deserialize с binary tree?</summary>
 
-### How can you serialize and deserialize a binary tree?
+### Как можно совместить serialize и deserialize с binary tree?
 
 **Definition:**
 
@@ -1928,9 +1928,9 @@ def serialize(node):
 ### Hash Tables
 
 <details>
-<summary>What is a hash table and how does it work internally?</summary>
+<summary>Что такое hash table and how does it work internally?</summary>
 
-### What is a hash table and how does it work internally?
+### Что такое hash table and how does it work internally?
 
 **Definition:**
 
@@ -1953,9 +1953,9 @@ buckets[index].append((key, value))
 </details>
 
 <details>
-<summary>Can you explain collision resolution in hash tables?</summary>
+<summary>Можете ли вы объяснить разрешение столкновений в hash tables?</summary>
 
-### Can you explain collision resolution in hash tables?
+### Можете ли вы объяснить разрешение столкновений в hash tables?
 
 **Definition:**
 
@@ -1985,9 +1985,9 @@ for stored, value in slot:
 </details>
 
 <details>
-<summary>What is a hash function and what makes a good hash function?</summary>
+<summary>Что такое hash function and what makes a Good hash function?</summary>
 
-### What is a hash function and what makes a good hash function?
+### Что такое hash function and what makes a Good hash function?
 
 **Definition:**
 
@@ -2013,9 +2013,9 @@ def hash_string(text, m):
 </details>
 
 <details>
-<summary>How would you design a data structure for an LRU cache?</summary>
+<summary>Как бы вы design a data structure for an LRU cache?</summary>
 
-### How would you design a data structure for an LRU cache?
+### Как бы вы design a data structure for an LRU cache?
 
 **Definition:**
 
@@ -2042,9 +2042,9 @@ def get(self, key):
 </details>
 
 <details>
-<summary>Discuss the trade-offs between using an array versus a hash table.</summary>
+<summary>Обсудите компромиссы между использованием array и Hash Table.</summary>
 
-### Discuss the trade-offs between using an array versus a hash table.
+### Обсудите компромиссы между использованием array и Hash Table.
 
 **Definition:**
 
@@ -2072,9 +2072,9 @@ present = set()                # sparse ids
 </details>
 
 <details>
-<summary>What are some common uses for a hash set data structure?</summary>
+<summary>Что такое some common uses for a hash set data structure?</summary>
 
-### What are some common uses for a hash set data structure?
+### Что такое some common uses for a hash set data structure?
 
 **Definition:**
 
@@ -2098,9 +2098,9 @@ if x not in seen:
 </details>
 
 <details>
-<summary>How can you count the frequency of words in a long piece of text efficiently?</summary>
+<summary>Как вы можете эффективно подсчитать частоту встречаемости слов в длинном фрагменте текста?</summary>
 
-### How can you count the frequency of words in a long piece of text efficiently?
+### Как вы можете эффективно подсчитать частоту встречаемости слов в длинном фрагменте текста?
 
 **Definition:**
 
@@ -2124,9 +2124,9 @@ for word in text.split():
 </details>
 
 <details>
-<summary>What are the implications of a high load factor in a hash table?</summary>
+<summary>Что такое the implications of a high load factor in a hash table?</summary>
 
-### What are the implications of a high load factor in a hash table?
+### Что такое the implications of a high load factor in a hash table?
 
 **Definition:**
 
@@ -2150,9 +2150,9 @@ if len(keys) / len(buckets) > 0.75:
 </details>
 
 <details>
-<summary>Explain how rehashing works and when it should be performed.</summary>
+<summary>Объясните, как работает rehashing и когда его следует выполнять.</summary>
 
-### Explain how rehashing works and when it should be performed.
+### Объясните, как работает rehashing и когда его следует выполнять.
 
 **Definition:**
 
@@ -2179,9 +2179,9 @@ def rehash(self):
 </details>
 
 <details>
-<summary>Discuss the performance differences between hash tables and balanced trees.</summary>
+<summary>Обсудите разницу в производительности между Hash Tables и сбалансированными деревьями.</summary>
 
-### Discuss the performance differences between hash tables and balanced trees.
+### Обсудите разницу в производительности между Hash Tables и сбалансированными деревьями.
 
 **Definition:**
 
@@ -2211,9 +2211,9 @@ ordered_names.add(user.name)   # tree, O(log n), sorted walk
 ### Graphs
 
 <details>
-<summary>Define a graph and its representation in a computer’s memory.</summary>
+<summary>Определите graph и его представление в памяти компьютера.</summary>
 
-### Define a graph and its representation in a computer’s memory.
+### Определите graph и его представление в памяти компьютера.
 
 **Definition:**
 
@@ -2241,9 +2241,9 @@ adj[1].append(2)
 </details>
 
 <details>
-<summary>Explain how you would implement both depth-first search (DFS) and breadth-first search (BFS) on a graph.</summary>
+<summary>Объясните, как вы могли бы реализовать depth-first search (DFS) и breadth-first search (BFS) на graph.</summary>
 
-### Explain how you would implement both depth-first search (DFS) and breadth-first search (BFS) on a graph.
+### Объясните, как вы могли бы реализовать depth-first search (DFS) и breadth-first search (BFS) на graph.
 
 **Definition:**
 
@@ -2276,9 +2276,9 @@ def bfs(adj, src):
 </details>
 
 <details>
-<summary>What is the shortest path problem in a graph, and how is it commonly solved?</summary>
+<summary>Что такое the shortest path problem in a graph, and how is it commonly solved?</summary>
 
-### What is the shortest path problem in a graph, and how is it commonly solved?
+### Что такое the shortest path problem in a graph, and how is it commonly solved?
 
 **Definition:**
 
@@ -2308,9 +2308,9 @@ dist = bellman_ford(V, edges, src)    # negatives allowed
 </details>
 
 <details>
-<summary>Discuss Dijkstra’s algorithm for finding the shortest path.</summary>
+<summary>Обсудите алгоритм Dijkstra для поиска shortest path.</summary>
 
-### Discuss Dijkstra’s algorithm for finding the shortest path.
+### Обсудите алгоритм Dijkstra для поиска shortest path.
 
 **Definition:**
 
@@ -2345,9 +2345,9 @@ def dijkstra(adj, src):
 </details>
 
 <details>
-<summary>Explain what a directed acyclic graph (DAG) is and give an example of where it might be used.</summary>
+<summary>Объясните, что такое направленный ациклический graph (DAG), и приведите пример того, где он может быть использован.</summary>
 
-### Explain what a directed acyclic graph (DAG) is and give an example of where it might be used.
+### Объясните, что такое направленный ациклический graph (DAG), и приведите пример того, где он может быть использован.
 
 **Definition:**
 
@@ -2372,9 +2372,9 @@ prereq = {0: [1, 2], 1: [3], 2: [3], 3: []}
 </details>
 
 <details>
-<summary>How would you detect a cycle in a directed graph?</summary>
+<summary>Как бы вы detect a cycle in a directed graph?</summary>
 
-### How would you detect a cycle in a directed graph?
+### Как бы вы detect a cycle in a directed graph?
 
 **Definition:**
 
@@ -2402,9 +2402,9 @@ def dfs(u):
 </details>
 
 <details>
-<summary>Discuss the differences between a graph and a tree.</summary>
+<summary>Обсудите различия между graph и деревом.</summary>
 
-### Discuss the differences between a graph and a tree.
+### Обсудите различия между graph и деревом.
 
 **Definition:**
 
@@ -2426,9 +2426,9 @@ is_tree = connected and len(edges) == len(vertices) - 1 and not directed
 </details>
 
 <details>
-<summary>What is topological sorting and where is it used?</summary>
+<summary>Что такое topological sorting and where is it used?</summary>
 
-### What is topological sorting and where is it used?
+### Что такое topological sorting and where is it used?
 
 **Definition:**
 
@@ -2459,9 +2459,9 @@ while queue:
 </details>
 
 <details>
-<summary>Can you explain Bellman-Ford’s algorithm and its time complexity?</summary>
+<summary>Можете ли вы объяснить Bellman-Ford algORZithm AND its time complexity?</summary>
 
-### Can you explain Bellman-Ford’s algorithm and its time complexity?
+### Можете ли вы объяснить Bellman-Ford algORZithm AND its time complexity?
 
 **Definition:**
 
@@ -2492,9 +2492,9 @@ def bellman_ford(V, edges, src):
 </details>
 
 <details>
-<summary>How do you determine if a graph is bipartite?</summary>
+<summary>Как вы определяете, является ли graph двудольным?</summary>
 
-### How do you determine if a graph is bipartite?
+### Как вы определяете, является ли graph двудольным?
 
 **Definition:**
 
@@ -2535,9 +2535,9 @@ def is_bipartite(adj):
 ### Sorting and Searching
 
 <details>
-<summary>Describe the quicksort algorithm and its average case time complexity.</summary>
+<summary>Опишите алгоритм quicksort и его средний случай time complexity.</summary>
 
-### Describe the quicksort algorithm and its average case time complexity.
+### Опишите алгоритм quicksort и его средний случай time complexity.
 
 **Definition:**
 
@@ -2569,9 +2569,9 @@ def quick_sort(arr, low, high):
 </details>
 
 <details>
-<summary>Explain the difference between a depth-first search and a breadth-first search in a binary tree.</summary>
+<summary>Объясните разницу между depth-first search и breadth-first search в binary tree.</summary>
 
-### Explain the difference between a depth-first search and a breadth-first search in a binary tree.
+### Объясните разницу между depth-first search и breadth-first search в binary tree.
 
 **Definition:**
 
@@ -2598,9 +2598,9 @@ def dfs(node):
 </details>
 
 <details>
-<summary>How would you use a binary search on a rotated sorted array?</summary>
+<summary>Как бы вы use a binary search on a rotated sorted array?</summary>
 
-### How would you use a binary search on a rotated sorted array?
+### Как бы вы use a binary search on a rotated sorted array?
 
 **Definition:**
 
@@ -2637,9 +2637,9 @@ def search(arr, key):
 </details>
 
 <details>
-<summary>What is the difference between merge sort and heap sort?</summary>
+<summary>Что такое the difference between merge sort and heap sort?</summary>
 
-### What is the difference between merge sort and heap sort?
+### Что такое the difference between merge sort and heap sort?
 
 **Definition:**
 
@@ -2667,9 +2667,9 @@ def search(arr, key):
 </details>
 
 <details>
-<summary>Can you describe bucket sort and give an example of its use case?</summary>
+<summary>Можете ли вы описать bucket sort и привести пример его использования?</summary>
 
-### Can you describe bucket sort and give an example of its use case?
+### Можете ли вы описать bucket sort и привести пример его использования?
 
 **Definition:**
 
@@ -2702,9 +2702,9 @@ def bucket_sort(values, k=10):
 </details>
 
 <details>
-<summary>Discuss the advantages of quicksort over other sorting algorithms.</summary>
+<summary>Обсудите преимущества quicksort перед другими алгоритмами сортировки.</summary>
 
-### Discuss the advantages of quicksort over other sorting algorithms.
+### Обсудите преимущества quicksort перед другими алгоритмами сортировки.
 
 **Definition:**
 
@@ -2731,9 +2731,9 @@ pivot_index = random.randrange(low, high + 1)
 </details>
 
 <details>
-<summary>How does the insertion sort work and what is its time complexity?</summary>
+<summary>Как the insertion sort work and what is its time complexity?</summary>
 
-### How does the insertion sort work and what is its time complexity?
+### Как the insertion sort work and what is its time complexity?
 
 **Definition:**
 
@@ -2762,9 +2762,9 @@ def insertion_sort(arr):
 </details>
 
 <details>
-<summary>What is a stable sort and why might it be important in certain scenarios?</summary>
+<summary>Что такое stable sort and why might it be important in certain scenarios?</summary>
 
-### What is a stable sort and why might it be important in certain scenarios?
+### Что такое stable sort and why might it be important in certain scenarios?
 
 **Definition:**
 
@@ -2788,9 +2788,9 @@ records.sort(key=lambda row: row[0])  # Python's sort is stable
 </details>
 
 <details>
-<summary>Can you explain the counting sort algorithm?</summary>
+<summary>Можете ли вы объяснить подсчет sORt algORZithm?</summary>
 
-### Can you explain the counting sort algorithm?
+### Можете ли вы объяснить подсчет sORt algORZithm?
 
 **Definition:**
 
@@ -2819,9 +2819,9 @@ def counting_sort(arr, k):
 </details>
 
 <details>
-<summary>How would you sort a linked list?</summary>
+<summary>Как бы вы sort a linked list?</summary>
 
-### How would you sort a linked list?
+### Как бы вы sort a linked list?
 
 **Definition:**
 
@@ -2854,9 +2854,9 @@ def merge(a, b):
 ### Advanced Data Structures
 
 <details>
-<summary>Describe a red-black tree and its properties.</summary>
+<summary>Опишите red-black tree AND его свойства.</summary>
 
-### Describe a red-black tree and its properties.
+### Опишите red-black tree AND его свойства.
 
 **Definition:**
 
@@ -2879,9 +2879,9 @@ def merge(a, b):
 </details>
 
 <details>
-<summary>Explain what a B-tree is and where it might be used.</summary>
+<summary>Объясните, что такое B-дерево и где оно может быть использовано.</summary>
 
-### Explain what a B-tree is and where it might be used.
+### Объясните, что такое B-дерево и где оно может быть использовано.
 
 **Definition:**
 
@@ -2907,9 +2907,9 @@ B-дерево — когда данные лежат на страницах д
 </details>
 
 <details>
-<summary>Discuss the concept of a segment tree and one of its practical applications.</summary>
+<summary>Обсудите концепцию segment tree и одно из ее практических применений.</summary>
 
-### Discuss the concept of a segment tree and one of its practical applications.
+### Обсудите концепцию segment tree и одно из ее практических применений.
 
 **Definition:**
 
@@ -2937,9 +2937,9 @@ def query(node, start, end, left, right):
 </details>
 
 <details>
-<summary>What is a suffix tree and how is it used in substring search?</summary>
+<summary>Что такое suffix tree and how is it used in substring search?</summary>
 
-### What is a suffix tree and how is it used in substring search?
+### Что такое suffix tree and how is it used in substring search?
 
 **Definition:**
 
@@ -2962,9 +2962,9 @@ GeeksforGeeks описывает построение как взятие каж
 </details>
 
 <details>
-<summary>Can you explain what a trie is and when you might use one?</summary>
+<summary>Можете ли вы объяснить, что такое trie AND, когда вы можете его использовать?</summary>
 
-### Can you explain what a trie is and when you might use one?
+### Можете ли вы объяснить, что такое trie AND, когда вы можете его использовать?
 
 **Definition:**
 
@@ -2994,9 +2994,9 @@ def insert(root, word):
 </details>
 
 <details>
-<summary>Discuss the use of a bloom filter and its advantages over a traditional hash table.</summary>
+<summary>Обсудите использование фильтра bloom и его преимущества перед традиционным Hash Table.</summary>
 
-### Discuss the use of a bloom filter and its advantages over a traditional hash table.
+### Обсудите использование фильтра bloom и его преимущества перед традиционным Hash Table.
 
 **Definition:**
 
@@ -3024,9 +3024,9 @@ def add(bits, key, hashes):
 </details>
 
 <details>
-<summary>Explain the concept of a disjoint-set and its use in network connectivity.</summary>
+<summary>Объясните концепцию непересекающегося множества и ее использование при подключении к сети.</summary>
 
-### Explain the concept of a disjoint-set and its use in network connectivity.
+### Объясните концепцию непересекающегося множества и ее использование при подключении к сети.
 
 **Definition:**
 
@@ -3051,9 +3051,9 @@ def find(parent, x):
 </details>
 
 <details>
-<summary>What is a Fenwick tree (or binary indexed tree) and when might it be used?</summary>
+<summary>Что такое fenwick tree (or binary indexed tree) and when might it be used?</summary>
 
-### What is a Fenwick tree (or binary indexed tree) and when might it be used?
+### Что такое fenwick tree (or binary indexed tree) and when might it be used?
 
 **Definition:**
 
@@ -3082,9 +3082,9 @@ def add(bit, i, delta):
 </details>
 
 <details>
-<summary>Discuss the differences between AVL trees and red-black trees.</summary>
+<summary>Обсудите различия между AVL trees и red-black trees.</summary>
 
-### Discuss the differences between AVL trees and red-black trees.
+### Обсудите различия между AVL trees и red-black trees.
 
 **Definition:**
 
@@ -3111,9 +3111,9 @@ balance = height(node.left) - height(node.right)  # AVL keeps this in {-1, 0, 1}
 </details>
 
 <details>
-<summary>How would you implement a rope data structure and what is its use case?</summary>
+<summary>Как бы вы implement a rope data structure and what is its use case?</summary>
 
-### How would you implement a rope data structure and what is its use case?
+### Как бы вы implement a rope data structure and what is its use case?
 
 **Definition:**
 
@@ -3143,9 +3143,9 @@ def concat(left, right):
 ### Design Questions
 
 <details>
-<summary>How would you design a system that requires efficient frequent updates and retrieval of data?</summary>
+<summary>Как бы вы design a system that requires efficient frequent updates and reTrieval of data?</summary>
 
-### How would you design a system that requires efficient frequent updates and retrieval of data?
+### Как бы вы design a system that requires efficient frequent updates and reTrieval of data?
 
 **Definition:**
 
@@ -3174,9 +3174,9 @@ index_by_time.add(stamp)    # ordered scan
 </details>
 
 <details>
-<summary>Discuss how you might implement autocomplete functionality.</summary>
+<summary>Обсудите, как вы можете реализовать функциональность autocomplete.</summary>
 
-### Discuss how you might implement autocomplete functionality.
+### Обсудите, как вы можете реализовать функциональность autocomplete.
 
 **Definition:**
 
@@ -3204,9 +3204,9 @@ if node:
 </details>
 
 <details>
-<summary>Can you design a data structure that supports insert, delete, get random element operations in constant time?</summary>
+<summary>Можете ли вы спроектировать структуру данных, которую suppORts вставляет, удаляет, получает операции элемента rANDom в постоянном времени?</summary>
 
-### Can you design a data structure that supports insert, delete, get random element operations in constant time?
+### Можете ли вы спроектировать структуру данных, которую suppORts вставляет, удаляет, получает операции элемента rANDom в постоянном времени?
 
 **Definition:**
 
@@ -3234,9 +3234,9 @@ def remove(self, value):
 </details>
 
 <details>
-<summary>Explain how to design a parking lot using object-oriented principles.</summary>
+<summary>Объясните, как спроектировать парковку с использованием объектно-ориентированных принципов.</summary>
 
-### Explain how to design a parking lot using object-oriented principles.
+### Объясните, как спроектировать парковку с использованием объектно-ориентированных принципов.
 
 **Definition:**
 
@@ -3259,9 +3259,9 @@ tickets[vehicle.id] = Ticket(spot_id, now)
 </details>
 
 <details>
-<summary>Describe a data structure that could efficiently store a sparse matrix.</summary>
+<summary>Опишите структуру данных, которая может эффективно хранить разреженную matrix.</summary>
 
-### Describe a data structure that could efficiently store a sparse matrix.
+### Опишите структуру данных, которая может эффективно хранить разреженную matrix.
 
 **Definition:**
 
@@ -3288,9 +3288,9 @@ value = cells.get((i, j), 0)
 </details>
 
 <details>
-<summary>How would you implement a file system directory structure in terms of data structures?</summary>
+<summary>Как бы вы implement a file system directory structure in terms of data structures?</summary>
 
-### How would you implement a file system directory structure in terms of data structures?
+### Как бы вы implement a file system directory structure in terms of data structures?
 
 **Definition:**
 
@@ -3316,9 +3316,9 @@ root.children["docs"] = Dir()
 </details>
 
 <details>
-<summary>Discuss the implementation of a phone book which needs to be efficient for look-up, insert, delete, and modification operations.</summary>
+<summary>Обсудите реализацию телефонной книги, которая должна быть эффективной для операций поиска, вставки, удаления и изменения.</summary>
 
-### Discuss the implementation of a phone book which needs to be efficient for look-up, insert, delete, and modification operations.
+### Обсудите реализацию телефонной книги, которая должна быть эффективной для операций поиска, вставки, удаления и изменения.
 
 **Definition:**
 
@@ -3347,9 +3347,9 @@ del book["Ada Lovelace"]
 </details>
 
 <details>
-<summary>Explain the necessary data structures for a text editor which supports insertion, deletion, and character retrieval operations efficiently.</summary>
+<summary>Объясните необходимые структуры данных для текстового редактора, который эффективно поддерживает операции вставки, удаления и преобразования символов в keep279xval.</summary>
 
-### Explain the necessary data structures for a text editor which supports insertion, deletion, and character retrieval operations efficiently.
+### Объясните необходимые структуры данных для текстового редактора, который эффективно поддерживает операции вставки, удаления и преобразования символов в keep279xval.
 
 **Definition:**
 
@@ -3377,9 +3377,9 @@ gap_left += 1
 </details>
 
 <details>
-<summary>How would you store a large dataset that allows for efficient range queries and updates?</summary>
+<summary>Как бы вы store a large dataset that allows for efficient range queries and updates?</summary>
 
-### How would you store a large dataset that allows for efficient range queries and updates?
+### Как бы вы store a large dataset that allows for efficient range queries and updates?
 
 **Definition:**
 
@@ -3407,9 +3407,9 @@ total = prefix(right) - prefix(left - 1)  # Fenwick, O(log n)
 </details>
 
 <details>
-<summary>Suggest the appropriate data structure for developing a shared document editor that multiple users can edit simultaneously.</summary>
+<summary>Предложите подходящую структуру данных для shared document editor с одновременным редактированием несколькими пользователями.</summary>
 
-### Suggest the appropriate data structure for developing a shared document editor that multiple users can edit simultaneously.
+### Предложите подходящую структуру данных для shared document editor с одновременным редактированием несколькими пользователями.
 
 **Definition:**
 
@@ -3435,9 +3435,9 @@ text.insert_after(after_id, "x")
 ### Real-world Applications and Miscellaneous
 
 <details>
-<summary>What data structure would you use for a web browser’s back and forward button implementation?</summary>
+<summary>Какую data structure вы используете для кнопок «назад» и «вперёд» в web browser?</summary>
 
-### What data structure would you use for a web browser’s back and forward button implementation?
+### Какую data structure вы используете для кнопок «назад» и «вперёд» в web browser?
 
 **Definition:**
 
@@ -3461,9 +3461,9 @@ def go_back(self):
 </details>
 
 <details>
-<summary>Can you create a data structure that dynamically adjusts to user load such that it expands and contracts based on activity?</summary>
+<summary>Можете ли вы создать структуру данных, которая динамически подстраивается под нагрузку пользователя, расширяясь и сжимаясь в зависимости от активности?</summary>
 
-### Can you create a data structure that dynamically adjusts to user load such that it expands and contracts based on activity?
+### Можете ли вы создать структуру данных, которая динамически подстраивается под нагрузку пользователя, расширяясь и сжимаясь в зависимости от активности?
 
 **Definition:**
 
@@ -3489,9 +3489,9 @@ elif self.capacity > 8 and self.size * 4 < self.capacity:
 </details>
 
 <details>
-<summary>Discuss how a data structure can influence database indexing.</summary>
+<summary>Обсудите, как структура данных может влиять на database indexing.</summary>
 
-### Discuss how a data structure can influence database indexing.
+### Обсудите, как структура данных может влиять на database indexing.
 
 **Definition:**
 
@@ -3519,9 +3519,9 @@ B-дерево — для диапазонов и порядка. Хеш-инд�
 </details>
 
 <details>
-<summary>Explain the choice of data structure for implementing a search engine index.</summary>
+<summary>Объясните выбор структуры данных для реализации индекса поисковой системы.</summary>
 
-### Explain the choice of data structure for implementing a search engine index.
+### Объясните выбор структуры данных для реализации индекса поисковой системы.
 
 **Definition:**
 
@@ -3545,9 +3545,9 @@ hits = posting[term]  # sorted document ids
 </details>
 
 <details>
-<summary>How would you store and retrieve high-frequency data with minimal latency?</summary>
+<summary>Как бы вы store and reTrieve high-frequency data with minimal latency?</summary>
 
-### How would you store and retrieve high-frequency data with minimal latency?
+### Как бы вы store and reTrieve high-frequency data with minimal latency?
 
 **Definition:**
 
@@ -3573,9 +3573,9 @@ if value is None:
 </details>
 
 <details>
-<summary>Discuss the data structures you would use to implement a social network feed.</summary>
+<summary>Обсудите структуры данных, которые вы бы использовали для реализации ленты социальных сетей.</summary>
 
-### Discuss the data structures you would use to implement a social network feed.
+### Обсудите структуры данных, которые вы бы использовали для реализации ленты социальных сетей.
 
 **Definition:**
 
@@ -3600,9 +3600,9 @@ for friend in adj[user]:
 </details>
 
 <details>
-<summary>How can a leaderboard system in a gaming platform be implemented with regard to data structures?</summary>
+<summary>Как можно реализовать систему таблиц лидеров на платформе GAming с помощью reGArd для структур данных?</summary>
 
-### How can a leaderboard system in a gaming platform be implemented with regard to data structures?
+### Как можно реализовать систему таблиц лидеров на платформе GAming с помощью reGArd для структур данных?
 
 **Definition:**
 
@@ -3632,9 +3632,9 @@ scores[player] = new_score
 </details>
 
 <details>
-<summary>Discuss how GPS systems use data structures to find the shortest path effectively.</summary>
+<summary>Обсудите, как системы GPS используют структуры данных для эффективного поиска shortest path.</summary>
 
-### Discuss how GPS systems use data structures to find the shortest path effectively.
+### Обсудите, как системы GPS используют структуры данных для эффективного поиска shortest path.
 
 **Definition:**
 
@@ -3658,9 +3658,9 @@ path = restore(parent, goal)
 </details>
 
 <details>
-<summary>What data structures are involved in the implementation of ride-sharing applications like Uber or Lyft?</summary>
+<summary>Какие структуры данных используются в ride-sharing приложениях вроде Uber или Lyft?</summary>
 
-### What data structures are involved in the implementation of ride-sharing applications like Uber or Lyft?
+### Какие структуры данных используются в ride-sharing приложениях вроде Uber или Lyft?
 
 **Definition:**
 
@@ -3686,9 +3686,9 @@ route = dijkstra(roads, rider_cell, driver_cell)
 </details>
 
 <details>
-<summary>How would a recommendation system benefit from specific data structures to personalize content for users?</summary>
+<summary>Как recommendation system выигрывает от конкретных структур данных для персонализации контента?</summary>
 
-### How would a recommendation system benefit from specific data structures to personalize content for users?
+### Как recommendation system выигрывает от конкретных структур данных для персонализации контента?
 
 **Definition:**
 

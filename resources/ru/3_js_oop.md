@@ -50,11 +50,11 @@ Topics also covered: **Proxy/Reflect**, **factory & module patterns**, **constru
 **Class inheritance** uses `class extends` syntax; **prototype inheritance** links objects via `[[Prototype]]` — `Object.create`, `Object.setPrototypeOf`.
 
 
-| Class syntax                     | Prototype chain                     |
-|  -------------------  |  --------------------------------  |
-| Readability         | Familiar to OOP devs             | Lower-level, flexible               |
-| Under the hood (JS) | Desugars to prototypes           | Native mechanism                    |
-| Constructors        | `constructor()` required pattern | Factory functions + `Object.create` |
+| | Class syntax                     | Prototype chain                     |
+| | -------------------  |  --------------------------------  |
+| | Readability         | Familiar to OOP devs             | Lower-level, flexible               |
+| | Under the hood (JS) | Desugars to prototypes           | Native mechanism                    |
+| | Constructors        | `constructor()` required pattern | Factory functions + `Object.create` |
 
 **When to use:** `class` for most app code; prototypes for libraries, mixins, or understanding JS internals.
 

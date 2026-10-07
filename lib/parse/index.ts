@@ -13,6 +13,7 @@ export {
 } from "./load";
 export {
   collectConceptBlocks,
+  extractInterviewAnchorTitles,
   parseTopicMarkdown,
   parseTopicOutline,
   type Concept,

@@ -4,15 +4,15 @@ Distributable bundles that package skills, rules, agents, commands, hooks, and M
 
 ### Related docs
 
-* [AI workflow](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
+- [AI workflow](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
-| Area | Topics |
-|------|--------|
-| **Formats** | [Two plugin formats](#two-plugin-formats), [Manifest](#cursor-plugin-manifest) |
+| Area         | Topics                                                                             |
+| ------------ | ---------------------------------------------------------------------------------- |
+| **Formats**  | [Two plugin formats](#two-plugin-formats), [Manifest](#cursor-plugin-manifest)     |
 | **Contents** | [Component discovery](#component-discovery), [MCP & variables](#mcp-and-variables) |
-| **Share** | [Marketplace & install](#marketplace-and-install) |
+| **Share**    | [Marketplace & install](#marketplace-and-install)                                  |
 
 ### Sections
 
@@ -34,9 +34,9 @@ Distributable bundles that package skills, rules, agents, commands, hooks, and M
 
 **How it works:**
 
-| Format | Manifest | Components |
-| --- | --- | --- |
-| Agent Plugins | `plugin.json` at plugin root | Skills, MCP servers |
+| Format         | Manifest                     | Components                                             |
+| -------------- | ---------------------------- | ------------------------------------------------------ |
+| Agent Plugins  | `plugin.json` at plugin root | Skills, MCP servers                                    |
 | Cursor Plugins | `.cursor-plugin/plugin.json` | Skills, MCP, rules, agents, commands, hooks, variables |
 
 **When to use:** Agent Plugin when you only need portable skills/MCP. Cursor Plugin when you also ship rules, hooks, or slash commands.
@@ -84,14 +84,14 @@ Distributable bundles that package skills, rules, agents, commands, hooks, and M
 
 **How it works:**
 
-| Component | Default | Discovery |
-| --- | --- | --- |
-| Skills | `skills/` | Subdirs with `SKILL.md` |
-| Rules | `rules/` | `.md` / `.mdc` / `.markdown` |
-| Agents | `agents/` | markdown / mdc |
-| Commands | `commands/` | markdown / text |
-| Hooks | `hooks/hooks.json` | Hook event names |
-| MCP | `mcp.json` | Server entries |
+| Component  | Default            | Discovery                                     |
+| ---------- | ------------------ | --------------------------------------------- |
+| Skills     | `skills/`          | Subdirs with `SKILL.md`                       |
+| Rules      | `rules/`           | `.md` / `.mdc` / `.markdown`                  |
+| Agents     | `agents/`          | markdown / mdc                                |
+| Commands   | `commands/`        | markdown / text                               |
+| Hooks      | `hooks/hooks.json` | Hook event names                              |
+| MCP        | `mcp.json`         | Server entries                                |
 | Root skill | `SKILL.md` at root | Only if no `skills/` and no manifest `skills` |
 
 - An explicit manifest field (e.g. `"skills": "./my-skills/"`) **replaces** default discovery for that type.

@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Load Balancing](https://devinterview.io/ques
 ### Load Balancing Fundamentals
 
 <details>
-<summary>Define load balancing in the context of modern web services.</summary>
+<summary>Определите load balancing in the context of modern web services.</summary>
 
-### Define load balancing in the context of modern web services.
+### Определите load balancing in the context of modern web services.
 
 **Definition:**
 
@@ -105,9 +105,9 @@ Health Monitoring and Adaptive Routing
 </details>
 
 <details>
-<summary>What are the primary objectives of implementing load balancing?</summary>
+<summary>Что такое the Primary objectives of implementing load balancing?</summary>
 
-### What are the primary objectives of implementing load balancing?
+### Что такое the Primary objectives of implementing load balancing?
 
 **Definition:**
 
@@ -152,9 +152,9 @@ Health Monitoring and Adaptive Routing
 </details>
 
 <details>
-<summary>Explain the difference between hardware and software load balancers.</summary>
+<summary>Объясните the difference between hardware and software load balancers.</summary>
 
-### Explain the difference between hardware and software load balancers.
+### Объясните the difference between hardware and software load balancers.
 
 **Definition:**
 
@@ -194,9 +194,9 @@ Health Monitoring and Adaptive Routing
 </details>
 
 <details>
-<summary>Can you list some common load balancing algorithms and briefly describe how they work?</summary>
+<summary>Можете ли вы list some common load balancing alGorithms and briefly describe how they work?</summary>
 
-### Can you list some common load balancing algorithms and briefly describe how they work?
+### Можете ли вы list some common load balancing alGorithms and briefly describe how they work?
 
 **Definition:**
 
@@ -329,9 +329,9 @@ class RoundRobinBalancer:
 </details>
 
 <details>
-<summary>Describe the term “sticky session” in load balancing.</summary>
+<summary>Опишите the term “sticky session” in load balancing.</summary>
 
-### Describe the term “sticky session” in load balancing.
+### Опишите the term “sticky session” in load balancing.
 
 **Definition:**
 
@@ -383,9 +383,9 @@ server {
 </details>
 
 <details>
-<summary>How does load balancing improve application reliability?</summary>
+<summary>Как load balancing improve application reliability?</summary>
 
-### How does load balancing improve application reliability?
+### Как load balancing improve application reliability?
 
 **Definition:**
 
@@ -422,9 +422,9 @@ server {
 </details>
 
 <details>
-<summary>How do load balancers perform health checks on backend servers?</summary>
+<summary>Как load balancers perform health checks on backend servers?</summary>
 
-### How do load balancers perform health checks on backend servers?
+### Как load balancers perform health checks on backend servers?
 
 **Definition:**
 
@@ -496,9 +496,9 @@ process.on('SIGINT', () => {
 </details>
 
 <details>
-<summary>What are the advantages and disadvantages of round-robin load balancing?</summary>
+<summary>Что такое the advantages and disadvantages of round-robin load balancing?</summary>
 
-### What are the advantages and disadvantages of round-robin load balancing?
+### Что такое the advantages and disadvantages of round-robin load balancing?
 
 **Definition:**
 
@@ -525,9 +525,9 @@ process.on('SIGINT', () => {
 </details>
 
 <details>
-<summary>In load balancing, what is the significance of the least connections method?</summary>
+<summary>В load balancing, what is the significance of the least connections method?</summary>
 
-### In load balancing, what is the significance of the least connections method?
+### В load balancing, what is the significance of the least connections method?
 
 **Definition:**
 
@@ -572,9 +572,9 @@ def least_connections_server(servers):
 </details>
 
 <details>
-<summary>Explain how a load balancer might handle failure in one of the servers it manages.</summary>
+<summary>Объясните how a load balancer might handle failure in one of the servers it manages.</summary>
 
-### Explain how a load balancer might handle failure in one of the servers it manages.
+### Объясните how a load balancer might handle failure in one of the servers it manages.
 
 **Definition:**
 
@@ -655,9 +655,9 @@ http {
 ### Load Balancing Strategies
 
 <details>
-<summary>How does a load balancer distribute traffic in a stateless vs stateful scenario?</summary>
+<summary>Как a load balancer distribute traffic in a stateless vs stateful scenario?</summary>
 
-### How does a load balancer distribute traffic in a stateless vs stateful scenario?
+### Как a load balancer distribute traffic in a stateless vs stateful scenario?
 
 **Definition:**
 
@@ -690,9 +690,9 @@ Stateful-поведение
 </details>
 
 <details>
-<summary>What is the concept of session persistence, and why is it important?</summary>
+<summary>Что такое the concept of session persistence, and why is it important?</summary>
 
-### What is the concept of session persistence, and why is it important?
+### Что такое the concept of session persistence, and why is it important?
 
 **Definition:**
 
@@ -742,9 +742,9 @@ Stateful-поведение
 </details>
 
 <details>
-<summary>Discuss the role of DNS in load balancing.</summary>
+<summary>Обсудите the role of DNS in load balancing.</summary>
 
-### Discuss the role of DNS in load balancing.
+### Обсудите the role of DNS in load balancing.
 
 **Definition:**
 
@@ -797,9 +797,9 @@ for _ in range(6):
 </details>
 
 <details>
-<summary>In what scenarios would you use weighted load balancing?</summary>
+<summary>В what scenarios would you use weighted load balancing?</summary>
 
-### In what scenarios would you use weighted load balancing?
+### В what scenarios would you use weighted load balancing?
 
 **Definition:**
 
@@ -873,9 +873,9 @@ for server, count in results.items():
 </details>
 
 <details>
-<summary>How can load balancers help mitigate DDoS attacks?</summary>
+<summary>Как load balancers help mitiGAte DDoS attacks?</summary>
 
-### How can load balancers help mitigate DDoS attacks?
+### Как load balancers help mitiGAte DDoS attacks?
 
 **Definition:**
 
@@ -910,9 +910,9 @@ sudo iptables -A INPUT -p tcp --syn -m limit --limit 1/s --limit-burst 3 -j ACCE
 </details>
 
 <details>
-<summary>Explain the difference between horizontal and vertical scaling, and how load balancing applies to each.</summary>
+<summary>Объясните the difference between horizontal and vertical scaling, and how load balancing applies to each.</summary>
 
-### Explain the difference between horizontal and vertical scaling, and how load balancing applies to each.
+### Объясните the difference between horizontal and vertical scaling, and how load balancing applies to each.
 
 **Definition:**
 
@@ -928,9 +928,9 @@ sudo iptables -A INPUT -p tcp --syn -m limit --limit 1/s --limit-burst 3 -j ACCE
 </details>
 
 <details>
-<summary>What factors should you consider when choosing a load balancing method for a particular application?</summary>
+<summary>Какие факторы учитывать при выборе load balancing method для конкретного application?</summary>
 
-### What factors should you consider when choosing a load balancing method for a particular application?
+### Какие факторы учитывать при выборе load balancing method для конкретного application?
 
 **Definition:**
 
@@ -950,9 +950,9 @@ Application Load Balancer — когда есть правила слушате�
 </details>
 
 <details>
-<summary>Discuss how global server load balancing differs from local server load balancing.</summary>
+<summary>Обсудите how global server load balancing differs from local server load balancing.</summary>
 
-### Discuss how global server load balancing differs from local server load balancing.
+### Обсудите how global server load balancing differs from local server load balancing.
 
 **Definition:**
 
@@ -970,9 +970,9 @@ Route 53, по странице, отвечает IP узла. TTL DNS — 60 с
 ### Load Balancer Configuration & Performance
 
 <details>
-<summary>What metrics would you monitor to assess the performance of a load balancer?</summary>
+<summary>Какие metrics вы мониторите для оценки performance load balancer?</summary>
 
-### What metrics would you monitor to assess the performance of a load balancer?
+### Какие metrics вы мониторите для оценки performance load balancer?
 
 **Definition:**
 
@@ -988,9 +988,9 @@ Route 53, по странице, отвечает IP узла. TTL DNS — 60 с
 </details>
 
 <details>
-<summary>Describe one method to handle SSL/TLS traffic in load balancing.</summary>
+<summary>Опишите one method to handle SSL/TLS traffic in load balancing.</summary>
 
-### Describe one method to handle SSL/TLS traffic in load balancing.
+### Опишите one method to handle SSL/TLS traffic in load balancing.
 
 **Definition:**
 
@@ -1006,9 +1006,9 @@ Application Load Balancer поддерживает HTTP/2 спереди тол�
 </details>
 
 <details>
-<summary>Explain the concept of direct server return and its significance in load balancing.</summary>
+<summary>Объясните the concept of direct server return and its significance in load balancing.</summary>
 
-### Explain the concept of direct server return and its significance in load balancing.
+### Объясните the concept of direct server return and its significance in load balancing.
 
 **Definition:**
 
@@ -1024,9 +1024,9 @@ Application Load Balancer поддерживает HTTP/2 спереди тол�
 </details>
 
 <details>
-<summary>How can caching be integrated with load balancing to improve performance?</summary>
+<summary>Как caching be integrated with load balancing to improve performance?</summary>
 
-### How can caching be integrated with load balancing to improve performance?
+### Как caching be integrated with load balancing to improve performance?
 
 **Definition:**
 
@@ -1042,9 +1042,9 @@ Application и Classic Load Balancer могут слать запросы со �
 </details>
 
 <details>
-<summary>Discuss the challenges of load balancing microservice architectures.</summary>
+<summary>Обсудите the challenges of load balancing microservice architectures.</summary>
 
-### Discuss the challenges of load balancing microservice architectures.
+### Обсудите the challenges of load balancing microservice architectures.
 
 **Definition:**
 
@@ -1060,9 +1060,9 @@ Application и Classic Load Balancer могут слать запросы со �
 </details>
 
 <details>
-<summary>How do you configure a health check on a load balancer?</summary>
+<summary>Как you configure a health check on a load balancer?</summary>
 
-### How do you configure a health check on a load balancer?
+### Как you configure a health check on a load balancer?
 
 **Definition:**
 
@@ -1078,9 +1078,9 @@ Application и Classic Load Balancer могут слать запросы со �
 </details>
 
 <details>
-<summary>What is connection draining, and why is it used in load balancing?</summary>
+<summary>Что такое connection draining, and why is it used in load balancing?</summary>
 
-### What is connection draining, and why is it used in load balancing?
+### Что такое connection draining, and why is it used in load balancing?
 
 **Definition:**
 
@@ -1098,9 +1098,9 @@ Application и Classic Load Balancer могут слать запросы со �
 ### Load Balancing in Cloud and Hybrid Environments
 
 <details>
-<summary>How do cloud provider load balancers (e.g., AWS ELB, Azure Load Balancer) differ from on-premise solutions?</summary>
+<summary>Как cloud provider load balancers (e.g., AWS ELB, Azure load balancer) differ from on-premise solutions?</summary>
 
-### How do cloud provider load balancers (e.g., AWS ELB, Azure Load Balancer) differ from on-premise solutions?
+### Как cloud provider load balancers (e.g., AWS ELB, Azure load balancer) differ from on-premise solutions?
 
 **Definition:**
 
@@ -1116,9 +1116,9 @@ Application и Classic Load Balancer могут слать запросы со �
 </details>
 
 <details>
-<summary>Can you explain the role of load balancing in auto-scaling groups/clusters?</summary>
+<summary>Можете ли вы explain the role of load balancing in auto-scaling groups/clusters?</summary>
 
-### Can you explain the role of load balancing in auto-scaling groups/clusters?
+### Можете ли вы explain the role of load balancing in auto-scaling groups/clusters?
 
 **Definition:**
 
@@ -1134,9 +1134,9 @@ TTL DNS — 60 секунд, чтобы адреса узлов можно бы�
 </details>
 
 <details>
-<summary>Describe the process of load balancing in a multi-cloud environment.</summary>
+<summary>Опишите the process of load balancing in a multi-cloud environment.</summary>
 
-### Describe the process of load balancing in a multi-cloud environment.
+### Опишите the process of load balancing in a multi-cloud environment.
 
 **Definition:**
 
@@ -1152,9 +1152,9 @@ TTL DNS — 60 секунд, чтобы адреса узлов можно бы�
 </details>
 
 <details>
-<summary>Discuss how load balancing might work in a hybrid cloud scenario with both private and public resources.</summary>
+<summary>Обсудите how load balancing might work in a hybrid cloud scenario with both private and public resources.</summary>
 
-### Discuss how load balancing might work in a hybrid cloud scenario with both private and public resources.
+### Обсудите how load balancing might work in a hybrid cloud scenario with both private and public resources.
 
 **Definition:**
 
@@ -1172,9 +1172,9 @@ TTL DNS — 60 секунд, чтобы адреса узлов можно бы�
 ### Advanced Load Balancing Topics
 
 <details>
-<summary>What is cross-region load balancing, and in what scenario would it be necessary?</summary>
+<summary>Что такое cross-region load balancing, and in what scenario would it be necessary?</summary>
 
-### What is cross-region load balancing, and in what scenario would it be necessary?
+### Что такое cross-region load balancing, and in what scenario would it be necessary?
 
 **Definition:**
 
@@ -1190,9 +1190,9 @@ TTL DNS — 60 секунд, чтобы адреса узлов можно бы�
 </details>
 
 <details>
-<summary>Explain how a load balancer can make routing decisions based on content type.</summary>
+<summary>Объясните how a load balancer can make routing decisions BASEd on content type.</summary>
 
-### Explain how a load balancer can make routing decisions based on content type.
+### Объясните how a load balancer can make routing decisions BASEd on content type.
 
 **Definition:**
 
@@ -1208,9 +1208,9 @@ TTL DNS — 60 секунд, чтобы адреса узлов можно бы�
 </details>
 
 <details>
-<summary>How would you enable graceful shutdown of servers in a load-balanced environment?</summary>
+<summary>Как бы вы enable graceful shutdown of servers in a load-balanced environment?</summary>
 
-### How would you enable graceful shutdown of servers in a load-balanced environment?
+### Как бы вы enable graceful shutdown of servers in a load-balanced environment?
 
 **Definition:**
 
@@ -1226,9 +1226,9 @@ Zonal shift останавливает новый трафик в поврежд
 </details>
 
 <details>
-<summary>Discuss the role of API gateways in conjunction with load balancers.</summary>
+<summary>Обсудите the role of API Gateways in conjunction with load balancers.</summary>
 
-### Discuss the role of API gateways in conjunction with load balancers.
+### Обсудите the role of API Gateways in conjunction with load balancers.
 
 **Definition:**
 
@@ -1244,9 +1244,9 @@ API-шлюз на этой странице не описан.
 </details>
 
 <details>
-<summary>What is load balancer affinity, and when might you enforce it?</summary>
+<summary>Что такое load balancer affinity, and when might you enforce it?</summary>
 
-### What is load balancer affinity, and when might you enforce it?
+### Что такое load balancer affinity, and when might you enforce it?
 
 **Definition:**
 
@@ -1266,9 +1266,9 @@ API-шлюз на этой странице не описан.
 </details>
 
 <details>
-<summary>How does load balancing work in a containerized environment, such as with Docker and Kubernetes?</summary>
+<summary>Как load balancing work in a containerized environment, such as with Docker and Kubernetes?</summary>
 
-### How does load balancing work in a containerized environment, such as with Docker and Kubernetes?
+### Как load balancing work in a containerized environment, such as with Docker and Kubernetes?
 
 **Definition:**
 
@@ -1284,9 +1284,9 @@ API-шлюз на этой странице не описан.
 </details>
 
 <details>
-<summary>What is a reverse proxy, and how does it relate to load balancing?</summary>
+<summary>Что такое reverse proxy, and how does it relate to load balancing?</summary>
 
-### What is a reverse proxy, and how does it relate to load balancing?
+### Что такое reverse proxy, and how does it relate to load balancing?
 
 **Definition:**
 
@@ -1302,9 +1302,9 @@ Application и Classic Load Balancer добавляют X-Forwarded-For, X-Forwa
 </details>
 
 <details>
-<summary>Can you explain how load balancing works with websockets or other persistent connection protocols?</summary>
+<summary>Можете ли вы explain how load balancing works with WebSockets or other persistent connection protocols?</summary>
 
-### Can you explain how load balancing works with websockets or other persistent connection protocols?
+### Можете ли вы explain how load balancing works with WebSockets or other persistent connection protocols?
 
 **Definition:**
 
@@ -1320,9 +1320,9 @@ Network Load Balancer и так закрепляет каждое TCP-соеди
 </details>
 
 <details>
-<summary>Discuss how machine learning can be applied to improve load balancing decisions.</summary>
+<summary>Обсудите how machine learning can be applied to improve load balancing decisions.</summary>
 
-### Discuss how machine learning can be applied to improve load balancing decisions.
+### Обсудите how machine learning can be applied to improve load balancing decisions.
 
 **Definition:**
 
@@ -1338,9 +1338,9 @@ Network Load Balancer и так закрепляет каждое TCP-соеди
 </details>
 
 <details>
-<summary>What strategies might you employ to handle sudden spikes in traffic using load balancing?</summary>
+<summary>Какие стратегии might you employ to handle sudden spikes in traffic using load balancing?</summary>
 
-### What strategies might you employ to handle sudden spikes in traffic using load balancing?
+### Какие стратегии might you employ to handle sudden spikes in traffic using load balancing?
 
 **Definition:**
 
@@ -1358,9 +1358,9 @@ Network Load Balancer и так закрепляет каждое TCP-соеди
 ### Load Balancing and Security
 
 <details>
-<summary>How do load balancers contribute to a system’s security posture?</summary>
+<summary>Как load balancers contribute to a system’s security posture?</summary>
 
-### How do load balancers contribute to a system’s security posture?
+### Как load balancers contribute to a system’s security posture?
 
 **Definition:**
 
@@ -1376,9 +1376,9 @@ Network Load Balancer и так закрепляет каждое TCP-соеди
 </details>
 
 <details>
-<summary>Can load balancers protect against SQL injection or XSS attacks? If so, how?</summary>
+<summary>Можно ли load balancers protect aGAinst SQL injection or XSS attacks? If so, how?</summary>
 
-### Can load balancers protect against SQL injection or XSS attacks? If so, how?
+### Можно ли load balancers protect aGAinst SQL injection or XSS attacks? If so, how?
 
 **Definition:**
 
@@ -1394,9 +1394,9 @@ Network Load Balancer и так закрепляет каждое TCP-соеди
 </details>
 
 <details>
-<summary>How does a Web Application Firewall (WAF) integrate with load balancing solutions?</summary>
+<summary>Как a Web Application Firewall (WAF) integrate with load balancing solutions?</summary>
 
-### How does a Web Application Firewall (WAF) integrate with load balancing solutions?
+### Как a Web Application Firewall (WAF) integrate with load balancing solutions?
 
 **Definition:**
 
@@ -1412,9 +1412,9 @@ AWS WAF интегрирован с Application Load Balancer, пока соед
 </details>
 
 <details>
-<summary>Describe the importance of properly configuring HTTPS certificates on load balancers.</summary>
+<summary>Опишите the importance of properly configuring HTTPS certificates on load balancers.</summary>
 
-### Describe the importance of properly configuring HTTPS certificates on load balancers.
+### Опишите the importance of properly configuring HTTPS certificates on load balancers.
 
 **Definition:**
 
@@ -1430,9 +1430,9 @@ AWS WAF интегрирован с Application Load Balancer, пока соед
 </details>
 
 <details>
-<summary>Discuss the security implications of SSL termination at the load balancer.</summary>
+<summary>Обсудите the security implications of SSL termination at the load balancer.</summary>
 
-### Discuss the security implications of SSL termination at the load balancer.
+### Обсудите the security implications of SSL termination at the load balancer.
 
 **Definition:**
 
@@ -1448,9 +1448,9 @@ AWS WAF интегрирован с Application Load Balancer, пока соед
 </details>
 
 <details>
-<summary>Explain how rate limiting works in the context of load balancing.</summary>
+<summary>Объясните how rate limiting works in the context of load balancing.</summary>
 
-### Explain how rate limiting works in the context of load balancing.
+### Объясните how rate limiting works in the context of load balancing.
 
 **Definition:**
 
@@ -1468,9 +1468,9 @@ AWS WAF интегрирован с Application Load Balancer, пока соед
 ### Load Balancing Troubleshooting and Problem Solving
 
 <details>
-<summary>How would you troubleshoot a situation where a load balancer is incorrectly routing traffic?</summary>
+<summary>Как бы вы troubleshoot a situation where a load balancer is incorrectly routing traffic?</summary>
 
-### How would you troubleshoot a situation where a load balancer is incorrectly routing traffic?
+### Как бы вы troubleshoot a situation where a load balancer is incorrectly routing traffic?
 
 **Definition:**
 
@@ -1486,9 +1486,9 @@ Application Load Balancer применяет первое подошедшее �
 </details>
 
 <details>
-<summary>What steps would you take if a backend server is reported down by the load balancer but is actually running?</summary>
+<summary>Какие шаги вы предпримете, если load balancer сообщает, что backend server down, но он работает?</summary>
 
-### What steps would you take if a backend server is reported down by the load balancer but is actually running?
+### Какие шаги вы предпримете, если load balancer сообщает, что backend server down, но он работает?
 
 **Definition:**
 
@@ -1504,9 +1504,9 @@ Application Load Balancer применяет первое подошедшее �
 </details>
 
 <details>
-<summary>Describe how you might identify and resolve performance bottlenecks in a load-balanced system.</summary>
+<summary>Опишите how you might identify and resolve performance boTTLenecks in a load-balanced system.</summary>
 
-### Describe how you might identify and resolve performance bottlenecks in a load-balanced system.
+### Опишите how you might identify and resolve performance boTTLenecks in a load-balanced system.
 
 **Definition:**
 
@@ -1522,9 +1522,9 @@ Application Load Balancer применяет первое подошедшее �
 </details>
 
 <details>
-<summary>How would you handle a situation where the load balancer becomes the performance bottleneck?</summary>
+<summary>Как бы вы handle a situation where the load balancer becomes the performance boTTLeneck?</summary>
 
-### How would you handle a situation where the load balancer becomes the performance bottleneck?
+### Как бы вы handle a situation where the load balancer becomes the performance boTTLeneck?
 
 **Definition:**
 
@@ -1540,9 +1540,9 @@ Application Load Balancer применяет первое подошедшее �
 </details>
 
 <details>
-<summary>Suppose a load balancer is causing increased latency—what potential root causes would you investigate?</summary>
+<summary>Допустим, load balancer вызывает increased latency — какие root causes вы проверите?</summary>
 
-### Suppose a load balancer is causing increased latency—what potential root causes would you investigate?
+### Допустим, load balancer вызывает increased latency — какие root causes вы проверите?
 
 **Definition:**
 

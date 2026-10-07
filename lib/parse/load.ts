@@ -14,6 +14,7 @@ import {
   parseTopicMarkdown,
   parseTopicOutline,
   type ConceptOutline,
+  type ParseOptions,
   type ParsedTopic,
 } from "./parse";
 
@@ -34,7 +35,7 @@ type ParsedEntry = {
   readonly promise: Promise<ParsedTopic>;
 };
 
-const PARSE_LOGIC_REVISION = 5;
+const PARSE_LOGIC_REVISION = 6;
 
 type ParseCache = {
   markdown: Map<string, StoredRead>;
@@ -156,6 +157,27 @@ export function topicFileExists(file: string, locale: Locale): boolean {
   return fs.existsSync(resolveInside(locale, file));
 }
 
+function anchorMarkdownFor(file: string, locale: Locale): string | undefined {
+  if (locale === DEFAULT_LOCALE) {
+    return undefined;
+  }
+  const enPath = resolveInside(DEFAULT_LOCALE, file);
+  if (!fs.existsSync(enPath)) {
+    return undefined;
+  }
+  return fs.readFileSync(enPath, "utf8");
+}
+
+function parseOptionsForFile(file: string, locale: Locale): ParseOptions {
+  const topic = topicForFile(file);
+  const anchorMarkdown = anchorMarkdownFor(file, locale);
+  return {
+    ...(topic?.hideAnswers ? { hideAnswers: true as const } : {}),
+    locale,
+    ...(anchorMarkdown ? { anchorMarkdown } : {}),
+  };
+}
+
 export function loadTopicOutline(
   topic: Topic,
   locale: Locale = DEFAULT_LOCALE,
@@ -168,7 +190,11 @@ export function loadTopicOutline(
   if (hit?.stamp === outlineStamp) {
     return hit.value;
   }
-  const value = parseTopicOutline(result.markdown, locale);
+  const value = parseTopicOutline(
+    result.markdown,
+    locale,
+    parseOptionsForFile(topic.file, locale),
+  );
   store.set(key, { stamp: outlineStamp, value });
   return value;
 }
@@ -185,7 +211,11 @@ export function loadFileOutline(
   if (hit?.stamp === outlineStamp) {
     return hit.value;
   }
-  const value = parseTopicOutline(result.markdown, locale);
+  const value = parseTopicOutline(
+    result.markdown,
+    locale,
+    parseOptionsForFile(file, locale),
+  );
   store.set(key, { stamp: outlineStamp, value });
   return value;
 }
@@ -229,14 +259,6 @@ function loadParsedFromFile(
     parsed,
     usedFallback: result.usedFallback,
   }));
-}
-
-function parseOptionsForFile(file: string, locale: Locale) {
-  const topic = topicForFile(file);
-  return {
-    ...(topic?.hideAnswers ? { hideAnswers: true as const } : {}),
-    locale,
-  };
 }
 
 function parsedCacheStamp(fileStamp: string, file: string): string {

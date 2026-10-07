@@ -1,4 +1,4 @@
-а# Vue — Интервью
+# Vue — Интервью
 
 Вопросы и ответы для интервью и задачи по коду.
 
@@ -21,9 +21,9 @@
 What is Vue?
 
 <details>
-  <summary>What is Vue?</summary>
+  <summary>Что такое Vue?</summary>
 
-### What is Vue?
+### Что такое Vue?
 
 **Answer:** Vue — это прогрессивный JavaScript **фреймворк** для создания пользовательских интерфейсов с компонентной моделью, шаблонами или render-функциями и системой реактивности на основе Proxy. Vue 3 использует Composition API (`ref`, `computed`, `watch`) и компилирует SFC на этапе сборки. Официальные спутники: Vue Router, Pinia, Vite.
 
@@ -34,9 +34,9 @@ Vue library or framework?
 </details>
 
 <details>
-  <summary>Vue library or framework?</summary>
+  <summary>В чём разница между computed и watch?</summary>
 
-### Vue library or framework?
+### В чём разница между computed и watch?
 
 **Answer:** Ядро Vue — это прогрессивная UI-библиотека, которую вы монтируете через `createApp`. С Vue Router + Pinia + Vite она ведёт себя как стек фреймворка. **Nuxt** — полноценный full-stack фреймворк поверх Vue. На интервью: «Vue прогрессивен — библиотека в ядре, экосистема дополняет стек».
 
@@ -47,9 +47,9 @@ State vs props?
 </details>
 
 <details>
-  <summary>State vs props?</summary>
+  <summary>В чём разница между state и props?</summary>
 
-### State vs props?
+### В чём разница между state и props?
 
 **Answer:** **Props** — это read-only входы от родителя. **State** (`ref`/`reactive`) принадлежит компоненту. Дочерний компонент эмитит события; родитель обновляет состояние → новые props текут вниз. Соседи делят состояние через подъём state, provide/inject или Pinia.
 
@@ -60,9 +60,9 @@ ref vs reactive?
 </details>
 
 <details>
-  <summary>ref vs reactive?</summary>
+  <summary>В чём разница между ref и reactive?</summary>
 
-### ref vs reactive?
+### В чём разница между ref и reactive?
 
 **Answer:** `ref` оборачивает любое значение — в script обращайтесь через `.value`, в template авто-разворачивается. `reactive` оборачивает только объекты — свойства меняются напрямую. Деструктуризация `reactive` теряет отслеживание — используйте `toRefs`. По умолчанию для примитивов и замены целого значения берите `ref`.
 
@@ -73,9 +73,9 @@ computed vs watch?
 </details>
 
 <details>
-  <summary>computed vs watch?</summary>
+  <summary>В чём разница между computed и watch?</summary>
 
-### computed vs watch?
+### В чём разница между computed и watch?
 
 **Answer:** `computed` = **кэшированное производное значение** для template (без побочных эффектов). `watch` / `watchEffect` = **побочные эффекты** при изменении источников (API-вызовы, логирование). Если синхронизируете UI из state — `computed`; если реагируете на изменения с async-работой — `watch`.
 
@@ -86,9 +86,9 @@ What is script setup?
 </details>
 
 <details>
-  <summary>What is script setup?</summary>
+  <summary>Что такое script setup?</summary>
 
-### What is script setup?
+### Что такое script setup?
 
 **Answer:** `<script setup>` — compile-time sugar: top-level bindings автоматически доступны в template. Макросы `defineProps`, `defineEmits`, `defineModel`, `defineExpose` не требуют import. Выполняется один раз на инстанс до рендера — эквивалент `setup()` с return.
 
@@ -99,9 +99,9 @@ What is defineModel?
 </details>
 
 <details>
-  <summary>What is defineModel?</summary>
+  <summary>Что такое defineModel?</summary>
 
-### What is defineModel?
+### Что такое defineModel?
 
 **Answer:** Макрос (3.4+), возвращающий ref для `v-model`. Компилятор разворачивает в prop `modelValue` + emit `update:modelValue`. Именованный: `defineModel('title')` для `v-model:title`. Заменяет ручной prop + emit.
 
@@ -112,9 +112,9 @@ Composition API vs Options API?
 </details>
 
 <details>
-  <summary>Composition API vs Options API?</summary>
+  <summary>В чём разница между Composition API и Options API?</summary>
 
-### Composition API vs Options API?
+### В чём разница между Composition API и Options API?
 
 **Answer:** **Options API** делит логику по `data`, `methods`, `computed`, `watch`. **Composition API** группирует логику фичи в `setup` / `<script setup>` и выносит composables. Vue 3 рекомендует Composition для нового кода; Options остаётся для поддержки и знакомства с Vue 2.
 
@@ -125,9 +125,9 @@ What is a composable?
 </details>
 
 <details>
-  <summary>What is a composable?</summary>
+  <summary>Что такое composable?</summary>
 
-### What is a composable?
+### Что такое composable?
 
 **Answer:** Функция `use*`, инкапсулирующая stateful-логику через Composition API. Каждый вызов в компоненте получает своё состояние. Как custom hooks в React — вынос fetch, форм, media queries. Для реактивных props передавайте геттеры: `useUser(() => props.id)`.
 
@@ -151,9 +151,9 @@ Why list keys? Index as key?
 </details>
 
 <details>
-  <summary>Why list keys? Index as key?</summary>
+  <summary>Почему list keys? Index as key?</summary>
 
-### Why list keys? Index as key?
+### Почему list keys? Index as key?
 
 **Answer:** `:key` даёт VNode стабильную идентичность между рендерами. Индекс допустим только для **статических** списков. Reorder/filter + index → неверное переиспользование DOM и устаревшее состояние input. Используйте уникальные id (`item.id`).
 
@@ -164,9 +164,9 @@ How does Vue reactivity work?
 </details>
 
 <details>
-  <summary>How does Vue reactivity work?</summary>
+  <summary>Как Vue Reactivity work?</summary>
 
-### How does Vue reactivity work?
+### Как Vue Reactivity work?
 
 **Answer:** Vue 3 использует `Proxy` для **отслеживания** чтений свойств (`get`) и **триггера** подписчиков при записи (`set`). Render effects перезапускаются, когда меняются отслеженные reactive-данные. `ref` оборачивает `.value`; `reactive` глубоко отслеживает объекты. Scheduler батчит обновления в microtask.
 
@@ -203,9 +203,9 @@ SPA vs SSR in Vue?
 </details>
 
 <details>
-  <summary>SPA vs SSR in Vue?</summary>
+  <summary>SPA vs SSR в Vue?</summary>
 
-### SPA vs SSR in Vue?
+### SPA vs SSR в Vue?
 
 **Answer:** SPA: пустая оболочка + клиентский `createApp().mount()`. SSR: сервер `renderToString(createSSRApp)` → HTML; клиент гидратирует через `createSSRApp().mount()`. SSR требует совпадения server/client разметки. Nuxt автоматизирует SSR — см. доки Nuxt, не глубину core Vue на интервью.
 
@@ -216,9 +216,9 @@ What is hydration mismatch?
 </details>
 
 <details>
-  <summary>What is hydration mismatch?</summary>
+  <summary>Что такое hydration mismatch?</summary>
 
-### What is hydration mismatch?
+### Что такое hydration mismatch?
 
 **Answer:** HTML сервера ≠ первый клиентский рендер → Vue предупреждает и может отбросить server DOM. Причины: `Date.now()`, `Math.random()`, browser-only API в setup, невалидная вложенность HTML. Исправление: guard через `onMounted`, `ClientOnly` (Nuxt) или `data-allow-mismatch` для намеренных отличий.
 
@@ -229,9 +229,9 @@ Vue 2 vs Vue 3 main differences?
 </details>
 
 <details>
-  <summary>Vue 2 vs Vue 3 main differences?</summary>
+  <summary>Vue 2 vs Vue 3 — основные различия?</summary>
 
-### Vue 2 vs Vue 3 main differences?
+### Vue 2 vs Vue 3 — основные различия?
 
 **Answer:** Proxy-реактивность (vs `defineProperty`), Composition API, `createApp` (vs `new Vue`), fragments, Teleport, удалённые filters, новая конвенция `v-model`, Vue Router 4, Pinia вместо Vuex, Vite вместо Vue CLI. Vue 2 EOL — декабрь 2023.
 
@@ -242,9 +242,9 @@ Teleport — what and why?
 </details>
 
 <details>
-  <summary>Teleport — what and why?</summary>
+  <summary>Teleport — что и зачем?</summary>
 
-### Teleport — what and why?
+### Teleport — что и зачем?
 
 **Answer:** Рендерит детей в другой DOM-узел (например `body`), сохраняя то же дерево компонентов — события и provide/inject работают. Исправляет модалки, застрявшие в `overflow: hidden` или z-index контекстах.
 
@@ -268,9 +268,9 @@ How to optimize Vue performance?
 </details>
 
 <details>
-  <summary>How to optimize Vue performance?</summary>
+  <summary>Как optimize Vue performance?</summary>
 
-### How to optimize Vue performance?
+### Как optimize Vue performance?
 
 **Answer:** Сначала профилируйте. Lazy routes/components, `v-memo` на тяжёлых списках, `shallowRef` для больших immutable-данных, виртуализация длинных списков, SSR/SSG для LCP. Компилятор уже поднимает статические узлы — не размазывайте `computed` везде преждевременно.
 
@@ -285,9 +285,9 @@ How to optimize Vue performance?
 Task 1 — Lost reactivity on destructure
 
 <details>
-  <summary>Task 1 — Lost reactivity on destructure</summary>
+  <summary>Task 1 — Lost reactivity при destructure</summary>
 
-### Task 1 — Lost reactivity on destructure
+### Task 1 — Lost reactivity при destructure
 
 **Problem:** Счётчик перестаёт обновляться в template после деструктуризации.
 
@@ -323,9 +323,9 @@ const state = reactive({ count: 0 });
 Task 2 — v-for without key
 
 <details>
-  <summary>Task 2 — v-for without key</summary>
+  <summary>Task 2 — v-for без key</summary>
 
-### Task 2 — v-for without key
+### Task 2 — v-for без key
 
 **Problem:** Список todo теряет состояние редактирования после reorder.
 
@@ -350,9 +350,9 @@ Task 2 — v-for without key
 Task 3 — watch without getter on prop
 
 <details>
-  <summary>Task 3 — watch without getter on prop</summary>
+  <summary>Task 3 — watch без getter на prop</summary>
 
-### Task 3 — watch without getter on prop
+### Task 3 — watch без getter на prop
 
 **Problem:** Watcher не срабатывает при изменении prop (Vue 3.5+).
 
@@ -410,9 +410,9 @@ const model = defineModel<string>({ default: "" });
 Task 5 — Fetch on route param change
 
 <details>
-  <summary>Task 5 — Fetch on route param change</summary>
+  <summary>Task 5 — Fetch при изменении route param</summary>
 
-### Task 5 — Fetch on route param change
+### Task 5 — Fetch при изменении route param
 
 **Problem:** Загружайте пользователя при смене `/users/:id` без remount родителя.
 
@@ -443,7 +443,7 @@ watch(() => route.params.id, (id) => load(id as string), { immediate: true })
 ## Sources
 
 <details>
-  <summary>Sources</summary>
+  <summary>Источники</summary>
 
 **Definition:** Внешние списки вопросов для интервью, флешкарты и практические материалы по Vue.js.
 

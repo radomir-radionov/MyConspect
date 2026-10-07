@@ -554,12 +554,12 @@ TanStack Query vs RTK Query
 
 Оба кэшируют JSON в памяти (не HTTP `Cache-Control`). TanStack Query v5: `useQuery({ queryKey, queryFn, staleTime })`. По умолчанию `staleTime` — **0**; `gcTime` — **5 минут**. RTK Query: `createApi` + `keepUnusedDataFor` (по умолчанию **60 с**); хуки из endpoints.
 
-| TanStack Query | RTK Query                                     |
-| -------------- | --------------------------------------------- | ------------------------------ |
-| Store          | Свой `QueryClient`                            | Redux store                    |
-| Boilerplate    | Низкий                                        | Выше (`createApi`, slices)     |
-| Лучше с        | Zustand / Context для UI state                | Существующее Redux Toolkit app |
-| Invalidation   | `queryClient.invalidateQueries({ queryKey })` | `invalidatesTags` на mutations |
+| | TanStack Query | RTK Query                                     |
+| | -------------- | --------------------------------------------- | ------------------------------ |
+| | Store          | Свой `QueryClient`                            | Redux store                    |
+| | Boilerplate    | Низкий                                        | Выше (`createApi`, slices)     |
+| | Лучше с        | Zustand / Context для UI state                | Существующее Redux Toolkit app |
+| | Invalidation   | `queryClient.invalidateQueries({ queryKey })` | `invalidatesTags` на mutations |
 
 **When to use:**
 

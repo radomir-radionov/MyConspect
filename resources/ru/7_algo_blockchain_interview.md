@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Blockchain](https://devinterview.io/question
 ### Blockchain Fundamentals
 
 <details>
-<summary>Can you explain what a blockchain is and how it works?</summary>
+<summary>Можете ли вы объяснить, что такое blockchain и как это работает?</summary>
 
-### Can you explain what a blockchain is and how it works?
+### Можете ли вы объяснить, что такое blockchain и как это работает?
 
 **Definition:**
 
@@ -43,9 +43,9 @@ Questions from [Devinterview.io — Blockchain](https://devinterview.io/question
 </details>
 
 <details>
-<summary>What is the difference between a public blockchain and a private blockchain?</summary>
+<summary>Что такое the difference between a public blockchain and a private blockchain?</summary>
 
-### What is the difference between a public blockchain and a private blockchain?
+### Что такое the difference between a public blockchain and a private blockchain?
 
 **Definition:**
 
@@ -65,9 +65,9 @@ Bitcoin публичен: кто угодно может переслать тр
 </details>
 
 <details>
-<summary>What are the key features of a blockchain that make it secure?</summary>
+<summary>Что такое the key features of a blockchain that make it secure?</summary>
 
-### What are the key features of a blockchain that make it secure?
+### Что такое the key features of a blockchain that make it secure?
 
 **Definition:**
 
@@ -88,9 +88,9 @@ Bitcoin публичен: кто угодно может переслать тр
 </details>
 
 <details>
-<summary>How does a blockchain ensure data integrity and prevent tampering?</summary>
+<summary>Как blockchain обеспечивает целостность данных и предотвращает их несанкционированный доступ?</summary>
 
-### How does a blockchain ensure data integrity and prevent tampering?
+### Как blockchain обеспечивает целостность данных и предотвращает их несанкционированный доступ?
 
 **Definition:**
 
@@ -110,9 +110,9 @@ Bitcoin публичен: кто угодно может переслать тр
 </details>
 
 <details>
-<summary>Can you explain the concept of decentralization in blockchain?</summary>
+<summary>Можете ли вы объяснить концепцию децентрализации в Blockchain?</summary>
 
-### Can you explain the concept of decentralization in blockchain?
+### Можете ли вы объяснить концепцию децентрализации в Blockchain?
 
 **Definition:**
 
@@ -132,9 +132,9 @@ Bitcoin публичен: кто угодно может переслать тр
 </details>
 
 <details>
-<summary>What is a consensus mechanism, and why is it important in blockchain technology?</summary>
+<summary>Что такое consensus mechanism, and why is it important in blockchain technology?</summary>
 
-### What is a consensus mechanism, and why is it important in blockchain technology?
+### Что такое consensus mechanism, and why is it important in blockchain technology?
 
 **Definition:**
 
@@ -154,9 +154,9 @@ Bitcoin публичен: кто угодно может переслать тр
 </details>
 
 <details>
-<summary>Describe the most common types of consensus algorithms and how they differ.</summary>
+<summary>Описать наиболее распространенные типы алгоритмов консенсуса и их различия.</summary>
 
-### Describe the most common types of consensus algorithms and how they differ.
+### Описать наиболее распространенные типы алгоритмов консенсуса и их различия.
 
 **Definition:**
 
@@ -176,9 +176,9 @@ Bitcoin финализирует глубиной: шесть дальнейши
 </details>
 
 <details>
-<summary>How does a blockchain achieve consensus in a distributed environment?</summary>
+<summary>Как blockchain достигает консенсуса в распределенной среде?</summary>
 
-### How does a blockchain achieve consensus in a distributed environment?
+### Как blockchain достигает консенсуса в распределенной среде?
 
 **Definition:**
 
@@ -198,9 +198,9 @@ Bitcoin финализирует глубиной: шесть дальнейши
 </details>
 
 <details>
-<summary>What is a node in the blockchain context, and what role does it play?</summary>
+<summary>Что такое node in the blockchain context, and what role does it play?</summary>
 
-### What is a node in the blockchain context, and what role does it play?
+### Что такое node in the blockchain context, and what role does it play?
 
 **Definition:**
 
@@ -220,9 +220,9 @@ Bitcoin финализирует глубиной: шесть дальнейши
 </details>
 
 <details>
-<summary>Can you explain what a blockchain fork is and why it might occur?</summary>
+<summary>Можете ли вы объяснить, что Blockchain fORk является AND, почему это может произойти?</summary>
 
-### Can you explain what a blockchain fork is and why it might occur?
+### Можете ли вы объяснить, что Blockchain fORk является AND, почему это может произойти?
 
 **Definition:**
 
@@ -244,9 +244,9 @@ Bitcoin финализирует глубиной: шесть дальнейши
 ### Cryptography in Blockchain
 
 <details>
-<summary>How does cryptography secure transactions and blocks in a blockchain?</summary>
+<summary>Как cryptography обеспечивает безопасность транзакций и блокировок в blockchain?</summary>
 
-### How does cryptography secure transactions and blocks in a blockchain?
+### Как cryptography обеспечивает безопасность транзакций и блокировок в blockchain?
 
 **Definition:**
 
@@ -266,9 +266,9 @@ Bitcoin финализирует глубиной: шесть дальнейши
 </details>
 
 <details>
-<summary>What is a hash function, and why is it crucial to blockchain technology?</summary>
+<summary>Что такое hash function, and why is it crucial to blockchain technology?</summary>
 
-### What is a hash function, and why is it crucial to blockchain technology?
+### Что такое hash function, and why is it crucial to blockchain technology?
 
 **Definition:**
 
@@ -288,9 +288,9 @@ Bitcoin финализирует глубиной: шесть дальнейши
 </details>
 
 <details>
-<summary>Can you explain asymmetric encryption and how it’s used in blockchains?</summary>
+<summary>Можете ли вы объяснить асиммеtrieчное шифрование AND, как оно используется в Blockchain?</summary>
 
-### Can you explain asymmetric encryption and how it’s used in blockchains?
+### Можете ли вы объяснить асиммеtrieчное шифрование AND, как оно используется в Blockchain?
 
 **Definition:**
 
@@ -310,9 +310,9 @@ Bitcoin финализирует глубиной: шесть дальнейши
 </details>
 
 <details>
-<summary>What is a digital signature, and how does it provide authenticity in transactions?</summary>
+<summary>Что такое digital signature, and how does it provide authenticity in transactions?</summary>
 
-### What is a digital signature, and how does it provide authenticity in transactions?
+### Что такое digital signature, and how does it provide authenticity in transactions?
 
 **Definition:**
 
@@ -337,9 +337,9 @@ ok = verify(public_key, hash(tx), sig)
 </details>
 
 <details>
-<summary>How do public and private keys work within blockchain?</summary>
+<summary>Как работают открытый и закрытый ключи в blockchain?</summary>
 
-### How do public and private keys work within blockchain?
+### Как работают открытый и закрытый ключи в blockchain?
 
 **Definition:**
 
@@ -362,9 +362,9 @@ ok = verify(public_key, hash(tx), sig)
 ### Smart Contracts
 
 <details>
-<summary>Define smart contracts and how they operate within a blockchain.</summary>
+<summary>Определите smart contract AND, как они работают в Blockchain.</summary>
 
-### Define smart contracts and how they operate within a blockchain.
+### Определите smart contract AND, как они работают в Blockchain.
 
 **Definition:**
 
@@ -384,9 +384,9 @@ https://ethereum.org/developers/docs/evm/
 </details>
 
 <details>
-<summary>What platforms can you use to deploy smart contracts, and what are their differences?</summary>
+<summary>Какие платформы можно использовать для развёртывания smart contracts и в чём их различия?</summary>
 
-### What platforms can you use to deploy smart contracts, and what are their differences?
+### Какие платформы можно использовать для развёртывания smart contracts и в чём их различия?
 
 **Definition:**
 
@@ -406,9 +406,9 @@ https://ethereum.org/developers/docs/transactions/
 </details>
 
 <details>
-<summary>How can smart contracts access off-chain data?</summary>
+<summary>Как smart contracts может получить доступ к автономным данным?</summary>
 
-### How can smart contracts access off-chain data?
+### Как smart contracts может получить доступ к автономным данным?
 
 **Definition:**
 
@@ -429,9 +429,9 @@ https://ethereum.org/developers/docs/scaling/
 </details>
 
 <details>
-<summary>Explain how smart contracts handle exceptions or errors.</summary>
+<summary>Объясните, как smart contracts обрабатывает исключения или ошибки.</summary>
 
-### Explain how smart contracts handle exceptions or errors.
+### Объясните, как smart contracts обрабатывает исключения или ошибки.
 
 **Definition:**
 
@@ -452,9 +452,9 @@ https://ethereum.org/developers/docs/evm/
 </details>
 
 <details>
-<summary>Can you describe a potential security vulnerability in a smart contract?</summary>
+<summary>Можете ли вы описать потенциальную уязвимость в smart contract?</summary>
 
-### Can you describe a potential security vulnerability in a smart contract?
+### Можете ли вы описать потенциальную уязвимость в smart contract?
 
 **Definition:**
 
@@ -476,9 +476,9 @@ https://ethereum.org/developers/docs/standards/tokens/erc-721/
 ### Ethereum Basics
 
 <details>
-<summary>What is Ethereum, and how does it differ from Bitcoin?</summary>
+<summary>Что такое Ethereum, and how does it differ from Bitcoin?</summary>
 
-### What is Ethereum, and how does it differ from Bitcoin?
+### Что такое Ethereum, and how does it differ from Bitcoin?
 
 **Definition:**
 
@@ -497,9 +497,9 @@ https://ethereum.org/developers/docs/intro-to-ethereum/
 </details>
 
 <details>
-<summary>Can you describe what Gas is in the context of Ethereum?</summary>
+<summary>Можете ли вы описать, что такое газ в контексте Эфириума?</summary>
 
-### Can you describe what Gas is in the context of Ethereum?
+### Можете ли вы описать, что такое газ в контексте Эфириума?
 
 **Definition:**
 
@@ -519,9 +519,9 @@ https://ethereum.org/developers/docs/transactions/
 </details>
 
 <details>
-<summary>What is the Ethereum Virtual Machine (EVM), and what is its role?</summary>
+<summary>Что такое the Ethereum Virtual Machine (EVM), and what is its role?</summary>
 
-### What is the Ethereum Virtual Machine (EVM), and what is its role?
+### Что такое the Ethereum Virtual Machine (EVM), and what is its role?
 
 **Definition:**
 
@@ -541,9 +541,9 @@ https://ethereum.org/developers/docs/gas/
 </details>
 
 <details>
-<summary>How is the state of the Ethereum blockchain maintained?</summary>
+<summary>Как the state of the Ethereum blockchain maintained?</summary>
 
-### How is the state of the Ethereum blockchain maintained?
+### Как the state of the Ethereum blockchain maintained?
 
 **Definition:**
 
@@ -563,9 +563,9 @@ https://ethereum.org/developers/docs/intro-to-ethereum/
 </details>
 
 <details>
-<summary>Explain what ERC-20 and ERC-721 tokens are.</summary>
+<summary>Объясните, что такое токены ERC-20 и ERC-721.</summary>
 
-### Explain what ERC-20 and ERC-721 tokens are.
+### Объясните, что такое токены ERC-20 и ERC-721.
 
 **Definition:**
 
@@ -587,9 +587,9 @@ https://ethereum.org/developers/docs/standards/tokens/erc-721/
 ### Blockchain Data Structures & Design
 
 <details>
-<summary>Explain the structure of a blockchain block and its contents.</summary>
+<summary>Объясните структуру блока blockchain и его содержимое.</summary>
 
-### Explain the structure of a blockchain block and its contents.
+### Объясните структуру блока blockchain и его содержимое.
 
 **Definition:**
 
@@ -610,9 +610,9 @@ https://ethereum.org/developers/docs/evm/
 </details>
 
 <details>
-<summary>What is a Merkle tree, and why is it important in blockchain?</summary>
+<summary>Что такое Merkle tree, and why is it important in blockchain?</summary>
 
-### What is a Merkle tree, and why is it important in blockchain?
+### Что такое Merkle tree, and why is it important in blockchain?
 
 **Definition:**
 
@@ -632,9 +632,9 @@ https://ethereum.org/developers/docs/intro-to-ethereum/
 </details>
 
 <details>
-<summary>How can blockchain systems ensure scalability and performance?</summary>
+<summary>Как системы blockchain могут обеспечить масштабируемость и производительность?</summary>
 
-### How can blockchain systems ensure scalability and performance?
+### Как системы blockchain могут обеспечить масштабируемость и производительность?
 
 **Definition:**
 
@@ -654,9 +654,9 @@ https://ethereum.org/developers/docs/gas/
 </details>
 
 <details>
-<summary>Describe the process of adding a new block to a blockchain.</summary>
+<summary>Опишите процесс добавления нового блока в blockchain.</summary>
 
-### Describe the process of adding a new block to a blockchain.
+### Опишите процесс добавления нового блока в blockchain.
 
 **Definition:**
 
@@ -676,9 +676,9 @@ https://ethereum.org/developers/docs/transactions/
 </details>
 
 <details>
-<summary>What considerations are involved in designing a blockchain architecture?</summary>
+<summary>Какие соображения важны при проектировании blockchain architecture?</summary>
 
-### What considerations are involved in designing a blockchain architecture?
+### Какие соображения важны при проектировании blockchain architecture?
 
 **Definition:**
 
@@ -701,9 +701,9 @@ https://ethereum.org/developers/docs/gas/
 ### Transactions and UTXOs
 
 <details>
-<summary>Explain the concept of transactions within a blockchain.</summary>
+<summary>Объясните концепцию транзакций в blockchain.</summary>
 
-### Explain the concept of transactions within a blockchain.
+### Объясните концепцию транзакций в blockchain.
 
 **Definition:**
 
@@ -722,9 +722,9 @@ https://ethereum.org/developers/docs/transactions/
 </details>
 
 <details>
-<summary>What is a UTXO, and how is it different from an account/balance model?</summary>
+<summary>Что такое UTXO, and how is it different from an account/balance model?</summary>
 
-### What is a UTXO, and how is it different from an account/balance model?
+### Что такое UTXO, and how is it different from an account/balance model?
 
 **Definition:**
 
@@ -745,9 +745,9 @@ https://ethereum.org/developers/docs/evm/
 </details>
 
 <details>
-<summary>How are fees determined in a blockchain transaction?</summary>
+<summary>Как определяются комиссионные за транзакцию blockchain?</summary>
 
-### How are fees determined in a blockchain transaction?
+### Как определяются комиссионные за транзакцию blockchain?
 
 **Definition:**
 
@@ -767,9 +767,9 @@ https://ethereum.org/developers/docs/transactions/
 </details>
 
 <details>
-<summary>Describe the lifecycle of a blockchain transaction from creation to confirmation.</summary>
+<summary>Опишите жизненный цикл транзакции blockchain от создания до подтверждения.</summary>
 
-### Describe the lifecycle of a blockchain transaction from creation to confirmation.
+### Опишите жизненный цикл транзакции blockchain от создания до подтверждения.
 
 **Definition:**
 
@@ -789,9 +789,9 @@ https://ethereum.org/developers/docs/gas/
 </details>
 
 <details>
-<summary>What is a mempool in the context of blockchain?</summary>
+<summary>Что такое mempool in the context of blockchain?</summary>
 
-### What is a mempool in the context of blockchain?
+### Что такое mempool in the context of blockchain?
 
 **Definition:**
 
@@ -813,9 +813,9 @@ https://ethereum.org/developers/docs/gas/
 ### Blockchain Security
 
 <details>
-<summary>Discuss the concept of the 51% attack and its implications.</summary>
+<summary>Обсудите концепцию атаки 51% и ее последствия.</summary>
 
-### Discuss the concept of the 51% attack and its implications.
+### Обсудите концепцию атаки 51% и ее последствия.
 
 **Definition:**
 
@@ -835,9 +835,9 @@ https://ethereum.org/developers/docs/transactions/
 </details>
 
 <details>
-<summary>How can a blockchain prevent double-spending?</summary>
+<summary>Как blockchain может предотвратить двойные траты?</summary>
 
-### How can a blockchain prevent double-spending?
+### Как blockchain может предотвратить двойные траты?
 
 **Definition:**
 
@@ -858,9 +858,9 @@ https://ethereum.org/developers/docs/standards/tokens/erc-20/
 </details>
 
 <details>
-<summary>What are some common security threats to blockchain systems?</summary>
+<summary>Что такое some common security threats to blockchain systems?</summary>
 
-### What are some common security threats to blockchain systems?
+### Что такое some common security threats to blockchain systems?
 
 **Definition:**
 
@@ -881,9 +881,9 @@ https://ethereum.org/developers/docs/standards/tokens/erc-20/
 </details>
 
 <details>
-<summary>Can you explain how blockchain immutability is maintained?</summary>
+<summary>Можете ли вы объяснить, как поддерживается неизменность Blockchain?</summary>
 
-### Can you explain how blockchain immutability is maintained?
+### Можете ли вы объяснить, как поддерживается неизменность Blockchain?
 
 **Definition:**
 
@@ -904,9 +904,9 @@ https://ethereum.org/developers/docs/evm/
 </details>
 
 <details>
-<summary>How does a blockchain network defend against Sybil attacks?</summary>
+<summary>Как сеть blockchain защищает AGA от атак Sybil?</summary>
 
-### How does a blockchain network defend against Sybil attacks?
+### Как сеть blockchain защищает AGA от атак Sybil?
 
 **Definition:**
 
@@ -929,9 +929,9 @@ https://ethereum.org/developers/docs/scaling/
 ### Interoperability and Scalability
 
 <details>
-<summary>What strategies exist to improve blockchain scalability?</summary>
+<summary>Какие стратегии существуют для улучшения blockchain scalability?</summary>
 
-### What strategies exist to improve blockchain scalability?
+### Какие стратегии существуют для улучшения blockchain scalability?
 
 **Definition:**
 
@@ -952,9 +952,9 @@ https://ethereum.org/developers/docs/gas/
 </details>
 
 <details>
-<summary>How can different blockchain networks achieve interoperability?</summary>
+<summary>Как различные сети blockchain могут обеспечить совместимость?</summary>
 
-### How can different blockchain networks achieve interoperability?
+### Как различные сети blockchain могут обеспечить совместимость?
 
 **Definition:**
 
@@ -974,9 +974,9 @@ https://ethereum.org/developers/docs/transactions/
 </details>
 
 <details>
-<summary>Explain the concept of sidechains and how they work.</summary>
+<summary>Объясните концепцию боковых цепей и то, как они работают.</summary>
 
-### Explain the concept of sidechains and how they work.
+### Объясните концепцию боковых цепей и то, как они работают.
 
 **Definition:**
 
@@ -996,9 +996,9 @@ https://ethereum.org/developers/docs/gas/
 </details>
 
 <details>
-<summary>What role do layer 2 protocols play in blockchain?</summary>
+<summary>Какую роль играют layer 2 protocols в blockchain?</summary>
 
-### What role do layer 2 protocols play in blockchain?
+### Какую роль играют layer 2 protocols в blockchain?
 
 **Definition:**
 
@@ -1019,9 +1019,9 @@ https://ethereum.org/developers/docs/transactions/
 </details>
 
 <details>
-<summary>Discuss the trade-offs between scalability, security, and decentralization.</summary>
+<summary>Обсудите компромиссы между масштабируемостью, безопасностью и децентрализацией.</summary>
 
-### Discuss the trade-offs between scalability, security, and decentralization.
+### Обсудите компромиссы между масштабируемостью, безопасностью и децентрализацией.
 
 **Definition:**
 
@@ -1044,9 +1044,9 @@ https://ethereum.org/developers/docs/gas/
 ### Blockchain Development and Testing
 
 <details>
-<summary>What tools and environments are available for blockchain development?</summary>
+<summary>Какие инструменты и среды доступны для blockchain development?</summary>
 
-### What tools and environments are available for blockchain development?
+### Какие инструменты и среды доступны для blockchain development?
 
 **Definition:**
 
@@ -1067,9 +1067,9 @@ https://ethereum.org/developers/docs/evm/
 </details>
 
 <details>
-<summary>How would you approach testing smart contracts?</summary>
+<summary>Как бы вы approach testing smart contracts?</summary>
 
-### How would you approach testing smart contracts?
+### Как бы вы approach testing smart contracts?
 
 **Definition:**
 
@@ -1091,9 +1091,9 @@ https://ethereum.org/developers/docs/standards/tokens/erc-721/
 </details>
 
 <details>
-<summary>What is a testnet, and why is it important for blockchain developers?</summary>
+<summary>Что такое testnet, and why is it important for blockchain developers?</summary>
 
-### What is a testnet, and why is it important for blockchain developers?
+### Что такое testnet, and why is it important for blockchain developers?
 
 **Definition:**
 
@@ -1113,9 +1113,9 @@ https://ethereum.org/developers/docs/transactions/
 </details>
 
 <details>
-<summary>Can you explain the difference between on-chain and off-chain coding?</summary>
+<summary>Можете ли вы объяснить разницу между внуtrieцепочечным кодированием AND off-chain?</summary>
 
-### Can you explain the difference between on-chain and off-chain coding?
+### Можете ли вы объяснить разницу между внуtrieцепочечным кодированием AND off-chain?
 
 **Definition:**
 
@@ -1136,9 +1136,9 @@ https://ethereum.org/developers/docs/scaling/
 </details>
 
 <details>
-<summary>How can you ensure that a blockchain application is GDPR compliant, considering the immutability of data?</summary>
+<summary>Как вы можете гарантировать, что приложение blockchain совместимо с GDPR, учитывая неизменность данных?</summary>
 
-### How can you ensure that a blockchain application is GDPR compliant, considering the immutability of data?
+### Как вы можете гарантировать, что приложение blockchain совместимо с GDPR, учитывая неизменность данных?
 
 **Definition:**
 

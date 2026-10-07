@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Hadoop](https://devinterview.io/questions/ma
 ### Hadoop Fundamentals
 
 <details>
-<summary>What is Hadoop and what are its core components?</summary>
+<summary>Что такое Hadoop and what are its core components?</summary>
 
-### What is Hadoop and what are its core components?
+### Что такое Hadoop and what are its core components?
 
 **Definition:**
 
@@ -38,9 +38,9 @@ Hadoop — открытый набор для хранения очень бол
 </details>
 
 <details>
-<summary>Explain the concept of a Hadoop Distributed File System (HDFS) and its architecture.</summary>
+<summary>Объясните the concept of a Hadoop Distributed File System (HDFS) and its architecture.</summary>
 
-### Explain the concept of a Hadoop Distributed File System (HDFS) and its architecture.
+### Объясните the concept of a Hadoop Distributed File System (HDFS) and its architecture.
 
 **Definition:**
 
@@ -60,9 +60,9 @@ HDFS — распределённая файловая система для о�
 </details>
 
 <details>
-<summary>How does MapReduce programming model work in Hadoop?</summary>
+<summary>Как MapReduce programming model work in Hadoop?</summary>
 
-### How does MapReduce programming model work in Hadoop?
+### Как MapReduce programming model work in Hadoop?
 
 **Definition:**
 
@@ -85,9 +85,9 @@ reduce(fish, [1, 1]) -> (fish, 2)
 </details>
 
 <details>
-<summary>What is YARN, and how does it improve Hadoop's resource management?</summary>
+<summary>Что такое YARN, and how does it improve Hadoop's resource management?</summary>
 
-### What is YARN, and how does it improve Hadoop's resource management?
+### Что такое YARN, and how does it improve Hadoop's resource management?
 
 **Definition:**
 
@@ -102,9 +102,9 @@ YARN отделяет планирование кластера от модел�
 </details>
 
 <details>
-<summary>Explain the role of the Namenode and Datanode in HDFS.</summary>
+<summary>Объясните the role of the Namenode and Datanode in HDFS.</summary>
 
-### Explain the role of the Namenode and Datanode in HDFS.
+### Объясните the role of the Namenode and Datanode in HDFS.
 
 **Definition:**
 
@@ -119,9 +119,9 @@ NameNode — хозяин метаданных. DataNode — рабочие уз
 </details>
 
 <details>
-<summary>What is a Rack Awareness algorithm in HDFS, and why is it important?</summary>
+<summary>Что такое Rack Awareness alGorithm in HDFS, and why is it important?</summary>
 
-### What is a Rack Awareness algorithm in HDFS, and why is it important?
+### Что такое Rack Awareness alGorithm in HDFS, and why is it important?
 
 **Definition:**
 
@@ -136,9 +136,9 @@ Rack awareness — это карта NameNode «DataNode → стойка». О�
 </details>
 
 <details>
-<summary>What are some of the characteristics that differentiate Hadoop from traditional RDBMS?</summary>
+<summary>Что такое some of the characteristics that differentiate Hadoop from traditional RDBMS?</summary>
 
-### What are some of the characteristics that differentiate Hadoop from traditional RDBMS?
+### Что такое some of the characteristics that differentiate Hadoop from traditional RDBMS?
 
 **Definition:**
 
@@ -154,9 +154,9 @@ Hadoop — платформа файлов и пакетов. Реляционн
 </details>
 
 <details>
-<summary>How can you secure a Hadoop cluster? Name some of the security mechanisms available.</summary>
+<summary>Как защитить Hadoop cluster? Назовите доступные security mechanisms.</summary>
 
-### How can you secure a Hadoop cluster? Name some of the security mechanisms available.
+### Как защитить Hadoop cluster? Назовите доступные security mechanisms.
 
 **Definition:**
 
@@ -173,9 +173,9 @@ Hadoop — платформа файлов и пакетов. Реляционн
 ### Hadoop Ecosystem and Tools
 
 <details>
-<summary>Describe the role of HBase in Hadoop ecosystem.</summary>
+<summary>Опишите the role of HBASE in Hadoop ecosystem.</summary>
 
-### Describe the role of HBase in Hadoop ecosystem.
+### Опишите the role of HBASE in Hadoop ecosystem.
 
 **Definition:**
 
@@ -190,9 +190,9 @@ HBase — колоночное хранилище поверх HDFS для бо�
 </details>
 
 <details>
-<summary>What is Apache Hive and what types of problems does it solve?</summary>
+<summary>Что такое Apache Hive and what types of problems does it solve?</summary>
 
-### What is Apache Hive and what types of problems does it solve?
+### Что такое Apache Hive and what types of problems does it solve?
 
 **Definition:**
 
@@ -207,9 +207,9 @@ Hive — слой хранилища: аналитик пишет HiveQL, а Hiv
 </details>
 
 <details>
-<summary>How does Apache Pig fit into the Hadoop ecosystem?</summary>
+<summary>Как Apache Pig fit into the Hadoop ecosystem?</summary>
 
-### How does Apache Pig fit into the Hadoop ecosystem?
+### Как Apache Pig fit into the Hadoop ecosystem?
 
 **Definition:**
 
@@ -235,9 +235,9 @@ STORE per_user INTO '/out/home-users';
 </details>
 
 <details>
-<summary>Explain how Apache Flume helps with log and event data collection for Hadoop.</summary>
+<summary>Объясните how Apache Flume helps with log and event data collection for Hadoop.</summary>
 
-### Explain how Apache Flume helps with log and event data collection for Hadoop.
+### Объясните how Apache Flume helps with log and event data collection for Hadoop.
 
 **Definition:**
 
@@ -259,9 +259,9 @@ Flume переносит потоки событий, обычно логи, о�
 </details>
 
 <details>
-<summary>What is Apache Sqoop and how does it interact with Hadoop?</summary>
+<summary>Что такое Apache SqOOP and how does it interact with Hadoop?</summary>
 
-### What is Apache Sqoop and how does it interact with Hadoop?
+### Что такое Apache SqOOP and how does it interact with Hadoop?
 
 **Definition:**
 
@@ -284,9 +284,9 @@ sqoop import --table orders --split-by id --target-dir /warehouse/orders
 </details>
 
 <details>
-<summary>How does Apache Oozie help in workflow scheduling in Hadoop?</summary>
+<summary>Как Apache Oozie help in workflow scheduling in Hadoop?</summary>
 
-### How does Apache Oozie help in workflow scheduling in Hadoop?
+### Как Apache Oozie help in workflow scheduling in Hadoop?
 
 **Definition:**
 
@@ -305,9 +305,9 @@ Oozie выполняет ориентированный граф действи�
 </details>
 
 <details>
-<summary>What is Apache ZooKeeper and why is it important for Hadoop?</summary>
+<summary>Что такое Apache Zookeeper and why is it important for Hadoop?</summary>
 
-### What is Apache ZooKeeper and why is it important for Hadoop?
+### Что такое Apache Zookeeper and why is it important for Hadoop?
 
 **Definition:**
 
@@ -322,9 +322,9 @@ ZooKeeper — небольшое реплицированное хранилищ
 </details>
 
 <details>
-<summary>Discuss the role of Apache Spark in the Hadoop ecosystem.</summary>
+<summary>Обсудите the role of Apache Spark in the Hadoop ecosystem.</summary>
 
-### Discuss the role of Apache Spark in the Hadoop ecosystem.
+### Обсудите the role of Apache Spark in the Hadoop ecosystem.
 
 **Definition:**
 
@@ -352,9 +352,9 @@ Spark на YARN — когда байты уже лежат в HDFS и нужн�
 ### Data Management and Processing
 
 <details>
-<summary>How does Hadoop handle the failure of a datanode?</summary>
+<summary>Как Hadoop handle the failure of a datanode?</summary>
 
-### How does Hadoop handle the failure of a datanode?
+### Как Hadoop handle the failure of a datanode?
 
 **Definition:**
 
@@ -374,9 +374,9 @@ HDFS ожидает отказ DataNode. NameNode замечает пропав�
 </details>
 
 <details>
-<summary>Explain the process of data replication in HDFS.</summary>
+<summary>Объясните the process of data replication in HDFS.</summary>
 
-### Explain the process of data replication in HDFS.
+### Объясните the process of data replication in HDFS.
 
 **Definition:**
 
@@ -403,9 +403,9 @@ replication factor 3, block typically 128 MB
 </details>
 
 <details>
-<summary>What is speculative execution in Hadoop, and why is it used?</summary>
+<summary>Что такое speculative execution in Hadoop, and why is it used?</summary>
 
-### What is speculative execution in Hadoop, and why is it used?
+### Что такое speculative execution in Hadoop, and why is it used?
 
 **Definition:**
 
@@ -426,9 +426,9 @@ replication factor 3, block typically 128 MB
 </details>
 
 <details>
-<summary>How are large datasets processed in Hadoop?</summary>
+<summary>Как large datasets processed in Hadoop?</summary>
 
-### How are large datasets processed in Hadoop?
+### Как large datasets processed in Hadoop?
 
 **Definition:**
 
@@ -450,9 +450,9 @@ HDFS хранит файл большими реплицированными б�
 </details>
 
 <details>
-<summary>What is the significance of the input split in MapReduce jobs?</summary>
+<summary>Что такое the significance of the input split in MapReduce jobs?</summary>
 
-### What is the significance of the input split in MapReduce jobs?
+### Что такое the significance of the input split in MapReduce jobs?
 
 **Definition:**
 
@@ -473,9 +473,9 @@ InputSplit — данные, которые обрабатывает один Ma
 </details>
 
 <details>
-<summary>How does partitioning work in Hadoop, and when is it used?</summary>
+<summary>Как partitioning work in Hadoop, and when is it used?</summary>
 
-### How does partitioning work in Hadoop, and when is it used?
+### Как partitioning work in Hadoop, and when is it used?
 
 **Definition:**
 
@@ -495,9 +495,9 @@ Partitioner назначает промежуточные ключи reduce-за
 </details>
 
 <details>
-<summary>Explain how reducers work in MapReduce and their interaction with shufflers.</summary>
+<summary>Объясните how reducers work in MapReduce and their interaction with shufflers.</summary>
 
-### Explain how reducers work in MapReduce and their interaction with shufflers.
+### Объясните how reducers work in MapReduce and their interaction with shufflers.
 
 **Definition:**
 
@@ -525,9 +525,9 @@ job.setReducerClass(IntSumReducer.class);
 </details>
 
 <details>
-<summary>What are SequenceFiles in Hadoop?</summary>
+<summary>Что такое SequenceFiles in Hadoop?</summary>
 
-### What are SequenceFiles in Hadoop?
+### Что такое SequenceFiles in Hadoop?
 
 **Definition:**
 
@@ -551,9 +551,9 @@ job.setReducerClass(IntSumReducer.class);
 ### Performance Tuning and Optimization
 
 <details>
-<summary>Describe the ways to optimize a MapReduce job.</summary>
+<summary>Опишите the ways to optimize a MapReduce job.</summary>
 
-### Describe the ways to optimize a MapReduce job.
+### Опишите the ways to optimize a MapReduce job.
 
 **Definition:**
 
@@ -574,9 +574,9 @@ job.setReducerClass(IntSumReducer.class);
 </details>
 
 <details>
-<summary>How can you diagnose and troubleshoot Hadoop performance issues?</summary>
+<summary>Как you diagnose and troubleshoot Hadoop performance issues?</summary>
 
-### How can you diagnose and troubleshoot Hadoop performance issues?
+### Как you diagnose and troubleshoot Hadoop performance issues?
 
 **Definition:**
 
@@ -598,9 +598,9 @@ job.setReducerClass(IntSumReducer.class);
 </details>
 
 <details>
-<summary>What is the significance of combiner in the Hadoop MapReduce framework?</summary>
+<summary>Что такое the significance of combiner in the Hadoop MapReduce framework?</summary>
 
-### What is the significance of combiner in the Hadoop MapReduce framework?
+### Что такое the significance of combiner in the Hadoop MapReduce framework?
 
 **Definition:**
 
@@ -620,9 +620,9 @@ Combiner агрегирует выход map локально, до shuffle, ч�
 </details>
 
 <details>
-<summary>Explain what you can do to optimize the performance of HDFS.</summary>
+<summary>Объясните what you can do to optimize the performance of HDFS.</summary>
 
-### Explain what you can do to optimize the performance of HDFS.
+### Объясните what you can do to optimize the performance of HDFS.
 
 **Definition:**
 
@@ -642,9 +642,9 @@ Combiner агрегирует выход map локально, до shuffle, ч�
 </details>
 
 <details>
-<summary>How can job scheduling be optimized in Hadoop?</summary>
+<summary>Как job scheduling be optimized in Hadoop?</summary>
 
-### How can job scheduling be optimized in Hadoop?
+### Как job scheduling be optimized in Hadoop?
 
 **Definition:**
 
@@ -665,9 +665,9 @@ Combiner агрегирует выход map локально, до shuffle, ч�
 </details>
 
 <details>
-<summary>What are the best practices for managing memory and CPU resources in a Hadoop cluster?</summary>
+<summary>Что такое the best practices for managing memory and CPU resources in a Hadoop cluster?</summary>
 
-### What are the best practices for managing memory and CPU resources in a Hadoop cluster?
+### Что такое the best practices for managing memory and CPU resources in a Hadoop cluster?
 
 **Definition:**
 
@@ -691,9 +691,9 @@ Combiner агрегирует выход map локально, до shuffle, ч�
 ### Coding Challenges
 
 <details>
-<summary>Write a MapReduce job in Java that counts the number of words in a text file.</summary>
+<summary>Напишите a MapReduce job in Java that counts the number of words in a text file.</summary>
 
-### Write a MapReduce job in Java that counts the number of words in a text file.
+### Напишите a MapReduce job in Java that counts the number of words in a text file.
 
 **Definition:**
 
@@ -728,9 +728,9 @@ System.exit(job.waitForCompletion(true) ? 0 : 1);
 </details>
 
 <details>
-<summary>Create an HDFS command script that copies files from a local file system to HDFS.</summary>
+<summary>Создайте an HDFS command script that copies files from a local file system to HDFS.</summary>
 
-### Create an HDFS command script that copies files from a local file system to HDFS.
+### Создайте an HDFS command script that copies files from a local file system to HDFS.
 
 **Definition:**
 
@@ -759,9 +759,9 @@ hadoop fs -put -f ./events/part-0 /data/events/part-0
 </details>
 
 <details>
-<summary>Implement a simple Hive query to summarize data from a Hive table.</summary>
+<summary>Реализуйте a simple Hive query to summarize data from a Hive table.</summary>
 
-### Implement a simple Hive query to summarize data from a Hive table.
+### Реализуйте a simple Hive query to summarize data from a Hive table.
 
 **Definition:**
 
@@ -791,9 +791,9 @@ GROUP BY region
 </details>
 
 <details>
-<summary>Code a Pig Latin script to process and transform a dataset into a desired format.</summary>
+<summary>Напишите код: a Pig Latin script to process and transform a dataset into a desired format.</summary>
 
-### Code a Pig Latin script to process and transform a dataset into a desired format.
+### Напишите код: a Pig Latin script to process and transform a dataset into a desired format.
 
 **Definition:**
 
@@ -816,9 +816,9 @@ GROUP BY region
 </details>
 
 <details>
-<summary>Automate a process to import data from a MySQL database into HDFS using Sqoop.</summary>
+<summary>Автоматизируйте импорт данных из MySQL database в HDFS с помощью Sqoop.</summary>
 
-### Automate a process to import data from a MySQL database into HDFS using Sqoop.
+### Автоматизируйте импорт данных из MySQL database в HDFS с помощью Sqoop.
 
 **Definition:**
 
@@ -840,9 +840,9 @@ GROUP BY region
 </details>
 
 <details>
-<summary>Implement a Spark job in Scala or Python to perform a join operation on two datasets.</summary>
+<summary>Реализуйте a Spark job in Scala or Python to perform a join operation on two datasets.</summary>
 
-### Implement a Spark job in Scala or Python to perform a join operation on two datasets.
+### Реализуйте a Spark job in Scala or Python to perform a join operation on two datasets.
 
 **Definition:**
 
@@ -871,9 +871,9 @@ val joined = left.join(right)
 </details>
 
 <details>
-<summary>Develop an Oozie workflow that schedules and runs a set of MapReduce and Hive jobs.</summary>
+<summary>Разработайте an Oozie workflow that schedules and runs a set of MapReduce and Hive jobs.</summary>
 
-### Develop an Oozie workflow that schedules and runs a set of MapReduce and Hive jobs.
+### Разработайте an Oozie workflow that schedules and runs a set of MapReduce and Hive jobs.
 
 **Definition:**
 
@@ -896,9 +896,9 @@ val joined = left.join(right)
 </details>
 
 <details>
-<summary>Write a Java program to implement custom input and output format classes in Hadoop.</summary>
+<summary>Напишите a Java program to implement custom input and output format Classes in Hadoop.</summary>
 
-### Write a Java program to implement custom input and output format classes in Hadoop.
+### Напишите a Java program to implement custom input and output format Classes in Hadoop.
 
 **Definition:**
 
@@ -921,9 +921,9 @@ val joined = left.join(right)
 ### Advanced Hadoop Features and Architecture
 
 <details>
-<summary>What is the concept of erasure coding in HDFS, and how does it differ from replication?</summary>
+<summary>Что такое the concept of erasure coding in HDFS, and how does it differ from replication?</summary>
 
-### What is the concept of erasure coding in HDFS, and how does it differ from replication?
+### Что такое the concept of erasure coding in HDFS, and how does it differ from replication?
 
 **Definition:**
 
@@ -943,9 +943,9 @@ val joined = left.join(right)
 </details>
 
 <details>
-<summary>Explain how Hadoop uses data locality to improve performance.</summary>
+<summary>Объясните how Hadoop uses data locality to improve performance.</summary>
 
-### Explain how Hadoop uses data locality to improve performance.
+### Объясните how Hadoop uses data locality to improve performance.
 
 **Definition:**
 
@@ -967,9 +967,9 @@ HDFS кладёт блоки на DataNode и ожидает, что вычис�
 </details>
 
 <details>
-<summary>How does Hadoop support different file formats, and what are some of them?</summary>
+<summary>Как Hadoop support different file formats, and what are some of them?</summary>
 
-### How does Hadoop support different file formats, and what are some of them?
+### Как Hadoop support different file formats, and what are some of them?
 
 **Definition:**
 
@@ -992,9 +992,9 @@ HDFS хранит байты в блоках. Раскладку записей 
 </details>
 
 <details>
-<summary>What is Hadoop federation, and how can it scale a Hadoop cluster?</summary>
+<summary>Что такое Hadoop federation, and how can it scale a Hadoop cluster?</summary>
 
-### What is Hadoop federation, and how can it scale a Hadoop cluster?
+### Что такое Hadoop federation, and how can it scale a Hadoop cluster?
 
 **Definition:**
 
@@ -1015,9 +1015,9 @@ HDFS хранит байты в блоках. Раскладку записей 
 </details>
 
 <details>
-<summary>Discuss the concept and benefits of a journal node in HDFS HA configuration.</summary>
+<summary>Обсудите the concept and benefits of a journal node in HDFS HA configuration.</summary>
 
-### Discuss the concept and benefits of a journal node in HDFS HA configuration.
+### Обсудите the concept and benefits of a journal node in HDFS HA configuration.
 
 **Definition:**
 
@@ -1037,9 +1037,9 @@ Journal — рекомендуемый распределённый журнал
 </details>
 
 <details>
-<summary>What are the implications of small files on HDFS performance and how can this be mitigated?</summary>
+<summary>Что такое the implications of small files on HDFS performance and how can this be mitiGAted?</summary>
 
-### What are the implications of small files on HDFS performance and how can this be mitigated?
+### Что такое the implications of small files on HDFS performance and how can this be mitiGAted?
 
 **Definition:**
 
@@ -1063,9 +1063,9 @@ HDFS настроен на большие файлы. Типичный блок 
 ### Troubleshooting and Maintenance
 
 <details>
-<summary>How would you recover a Hadoop cluster from a Namenode failure?</summary>
+<summary>Как бы вы recover a Hadoop cluster from a Namenode failure?</summary>
 
-### How would you recover a Hadoop cluster from a Namenode failure?
+### Как бы вы recover a Hadoop cluster from a Namenode failure?
 
 **Definition:**
 
@@ -1085,9 +1085,9 @@ HDFS настроен на большие файлы. Типичный блок 
 </details>
 
 <details>
-<summary>What considerations should be made for Hadoop cluster backup and disaster recovery?</summary>
+<summary>Какие соображения should be made for Hadoop cluster backup and disaster recovery?</summary>
 
-### What considerations should be made for Hadoop cluster backup and disaster recovery?
+### Какие соображения should be made for Hadoop cluster backup and disaster recovery?
 
 **Definition:**
 
@@ -1109,9 +1109,9 @@ HDFS настроен на большие файлы. Типичный блок 
 </details>
 
 <details>
-<summary>How would you monitor the health of a Hadoop cluster, and what tools would you use?</summary>
+<summary>Как бы вы monitor the health of a Hadoop cluster, and what tools would you use?</summary>
 
-### How would you monitor the health of a Hadoop cluster, and what tools would you use?
+### Как бы вы monitor the health of a Hadoop cluster, and what tools would you use?
 
 **Definition:**
 
@@ -1133,9 +1133,9 @@ HDFS настроен на большие файлы. Типичный блок 
 </details>
 
 <details>
-<summary>Discuss a strategy for Hadoop cluster capacity planning and scaling.</summary>
+<summary>Обсудите a strategy for Hadoop cluster CAPacity planning and scaling.</summary>
 
-### Discuss a strategy for Hadoop cluster capacity planning and scaling.
+### Обсудите a strategy for Hadoop cluster CAPacity planning and scaling.
 
 **Definition:**
 
@@ -1159,9 +1159,9 @@ HDFS настроен на большие файлы. Типичный блок 
 ### Scenario-Based Questions and Use Case Discussions
 
 <details>
-<summary>A company wants to process clickstream data in real-time. How would you integrate Hadoop and Spark to meet this requirement?</summary>
+<summary>Компания хочет обрабатывать clickstream data в real-time. Как интегрировать Hadoop и Spark?</summary>
 
-### A company wants to process clickstream data in real-time. How would you integrate Hadoop and Spark to meet this requirement?
+### Компания хочет обрабатывать clickstream data в real-time. Как интегрировать Hadoop и Spark?
 
 **Definition:**
 
@@ -1184,9 +1184,9 @@ HDFS настроен на большие файлы. Типичный блок 
 </details>
 
 <details>
-<summary>Propose a data pipeline using Hadoop components to manage and analyze sensor data from IoT devices.</summary>
+<summary>Предложите a data pipeline using Hadoop components to manage and analyze sensor data from IoT devices.</summary>
 
-### Propose a data pipeline using Hadoop components to manage and analyze sensor data from IoT devices.
+### Предложите a data pipeline using Hadoop components to manage and analyze sensor data from IoT devices.
 
 **Definition:**
 

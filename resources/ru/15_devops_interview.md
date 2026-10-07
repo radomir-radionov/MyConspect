@@ -21,9 +21,9 @@ Questions from [Devinterview.io — DevOps](https://devinterview.io/questions/we
 ### DevOps Fundamentals
 
 <details>
-<summary>What is DevOps and how does it enhance software delivery?</summary>
+<summary>Что такое DevOps and how does it enhance software delivery?</summary>
 
-### What is DevOps and how does it enhance software delivery?
+### Что такое DevOps and how does it enhance software delivery?
 
 **Definition:**
 
@@ -56,9 +56,9 @@ DevOps — совместный и итеративный подход, кото
 </details>
 
 <details>
-<summary>Can you describe the key principles of DevOps?</summary>
+<summary>Можете ли вы describe the key principles of DevOps?</summary>
 
-### Can you describe the key principles of DevOps?
+### Можете ли вы describe the key principles of DevOps?
 
 **Definition:**
 
@@ -88,9 +88,9 @@ DevOps — набор практик, которые упрощают и сое�
 </details>
 
 <details>
-<summary>How do continuous integration and continuous deployment (CI/CD) relate to DevOps?</summary>
+<summary>Как continuous integration and continuous deployment (CI/CD) relate to DevOps?</summary>
 
-### How do continuous integration and continuous deployment (CI/CD) relate to DevOps?
+### Как continuous integration and continuous deployment (CI/CD) relate to DevOps?
 
 **Definition:**
 
@@ -188,9 +188,9 @@ pipeline {
 </details>
 
 <details>
-<summary>What are the benefits of DevOps in software development and operations?</summary>
+<summary>Что такое the benefits of DevOps in software development and operations?</summary>
 
-### What are the benefits of DevOps in software development and operations?
+### Что такое the benefits of DevOps in software development and operations?
 
 **Definition:**
 
@@ -220,9 +220,9 @@ DevOps (Development + Operations) — совместный подход, кот�
 </details>
 
 <details>
-<summary>Can you explain the concept of “Infrastructure as Code” (IaC)?</summary>
+<summary>Можете ли вы explain the concept of “Infrastructure as Code” (IaC)?</summary>
 
-### Can you explain the concept of “Infrastructure as Code” (IaC)?
+### Можете ли вы explain the concept of “Infrastructure as Code” (IaC)?
 
 **Definition:**
 
@@ -306,9 +306,9 @@ IaC и Kubernetes
 </details>
 
 <details>
-<summary>What is meant by “Shift Left” in DevOps?</summary>
+<summary>Что такое meant by “Shift Left” in DevOps?</summary>
 
-### What is meant by “Shift Left” in DevOps?
+### Что такое meant by “Shift Left” in DevOps?
 
 **Definition:**
 
@@ -358,9 +358,9 @@ public class Calculator {
 </details>
 
 <details>
-<summary>How does version control support DevOps practices?</summary>
+<summary>Как version control support DevOps practices?</summary>
 
-### How does version control support DevOps practices?
+### Как version control support DevOps practices?
 
 **Definition:**
 
@@ -398,9 +398,9 @@ public class Calculator {
 </details>
 
 <details>
-<summary>What role does automation play in DevOps?</summary>
+<summary>Какую роль does automation play in DevOps?</summary>
 
-### What role does automation play in DevOps?
+### Какую роль does automation play in DevOps?
 
 **Definition:**
 
@@ -460,9 +460,9 @@ public class Calculator {
 </details>
 
 <details>
-<summary>What are the common metrics used to measure DevOps success?</summary>
+<summary>Что такое the common metrics used to measure DevOps success?</summary>
 
-### What are the common metrics used to measure DevOps success?
+### Что такое the common metrics used to measure DevOps success?
 
 **Definition:**
 
@@ -491,9 +491,9 @@ public class Calculator {
 </details>
 
 <details>
-<summary>How does DevOps differ from the Agile methodology?</summary>
+<summary>Как DevOps differ from the Agile methodology?</summary>
 
-### How does DevOps differ from the Agile methodology?
+### Как DevOps differ from the Agile methodology?
 
 **Definition:**
 
@@ -540,9 +540,9 @@ public class Calculator {
 ### Tools and Technologies
 
 <details>
-<summary>What are some popular tools used in the DevOps ecosystem for version control?</summary>
+<summary>Что такое some popular tools used in the DevOps ecosystem for version control?</summary>
 
-### What are some popular tools used in the DevOps ecosystem for version control?
+### Что такое some popular tools used in the DevOps ecosystem for version control?
 
 **Definition:**
 
@@ -587,9 +587,9 @@ Git сыграл ключевую роль в том, как изменилос�
 </details>
 
 <details>
-<summary>Can you list some CI/CD tools commonly used in DevOps?</summary>
+<summary>Можете ли вы list some CI/CD tools commonly used in DevOps?</summary>
 
-### Can you list some CI/CD tools commonly used in DevOps?
+### Можете ли вы list some CI/CD tools commonly used in DevOps?
 
 **Definition:**
 
@@ -712,9 +712,9 @@ Microsoft Azure
 </details>
 
 <details>
-<summary>What containerization technologies are commonly used in DevOps?</summary>
+<summary>Какие containerization technologies обычно используют в DevOps?</summary>
 
-### What containerization technologies are commonly used in DevOps?
+### Какие containerization technologies обычно используют в DevOps?
 
 **Definition:**
 
@@ -769,9 +769,9 @@ AKS — упрощённый сервис Kubernetes от Microsoft; он сты
 </details>
 
 <details>
-<summary>Name some configuration management tools used in DevOps.</summary>
+<summary>Назовите some configuration management tools used in DevOps.</summary>
 
-### Name some configuration management tools used in DevOps.
+### Назовите some configuration management tools used in DevOps.
 
 **Definition:**
 
@@ -830,9 +830,9 @@ resource "aws_instance" "example" {
 </details>
 
 <details>
-<summary>What monitoring tools are popular in DevOps?</summary>
+<summary>Какие monitoring tools популярны в DevOps?</summary>
 
-### What monitoring tools are popular in DevOps?
+### Какие monitoring tools популярны в DevOps?
 
 **Definition:**
 
@@ -884,9 +884,9 @@ resource "aws_instance" "example" {
 </details>
 
 <details>
-<summary>Describe the role of a tool like Docker in a DevOps environment.</summary>
+<summary>Опишите the role of a tool like Docker in a DevOps environment.</summary>
 
-### Describe the role of a tool like Docker in a DevOps environment.
+### Опишите the role of a tool like Docker in a DevOps environment.
 
 **Definition:**
 
@@ -929,9 +929,9 @@ docker run --detach --name welcome --publish 8080:80 docker/welcome-to-docker
 </details>
 
 <details>
-<summary>What are orchestration tools and can you give examples?</summary>
+<summary>Что такое orchestration tools and can you give examples?</summary>
 
-### What are orchestration tools and can you give examples?
+### Что такое orchestration tools and can you give examples?
 
 **Definition:**
 
@@ -978,9 +978,9 @@ docker service scale my_web=5
 </details>
 
 <details>
-<summary>Are there any cloud platforms that align well with DevOps, and can you name them?</summary>
+<summary>Есть ли any cloud platforms that align well with DevOps, and can you name them?</summary>
 
-### Are there any cloud platforms that align well with DevOps, and can you name them?
+### Есть ли any cloud platforms that align well with DevOps, and can you name them?
 
 **Definition:**
 
@@ -1007,9 +1007,9 @@ Amazon Web Services, Microsoft Azure и Google Cloud подходят для Dev
 </details>
 
 <details>
-<summary>How do you manage logging in a DevOps environment?</summary>
+<summary>Как you manage logging in a DevOps environment?</summary>
 
-### How do you manage logging in a DevOps environment?
+### Как you manage logging in a DevOps environment?
 
 **Definition:**
 
@@ -1040,9 +1040,9 @@ kubectl logs counter --previous
 </details>
 
 <details>
-<summary>Explain the use of a tool like Jenkins or GitLab CI in the CI/CD pipeline.</summary>
+<summary>Объясните the use of a tool like Jenkins or GitLab CI in the CI/CD pipeline.</summary>
 
-### Explain the use of a tool like Jenkins or GitLab CI in the CI/CD pipeline.
+### Объясните the use of a tool like Jenkins or GitLab CI in the CI/CD pipeline.
 
 **Definition:**
 
@@ -1113,9 +1113,9 @@ test_job:
 ### Continuous Integration and Continuous Deployment (CI/CD)
 
 <details>
-<summary>Can you describe the CI/CD pipeline and its stages?</summary>
+<summary>Можете ли вы describe the CI/CD pipeline and its stages?</summary>
 
-### Can you describe the CI/CD pipeline and its stages?
+### Можете ли вы describe the CI/CD pipeline and its stages?
 
 **Definition:**
 
@@ -1164,9 +1164,9 @@ deploy_prod:
 </details>
 
 <details>
-<summary>How do you manage branching strategies for CI/CD?</summary>
+<summary>Как you manage branching strategies for CI/CD?</summary>
 
-### How do you manage branching strategies for CI/CD?
+### Как you manage branching strategies for CI/CD?
 
 **Definition:**
 
@@ -1190,9 +1190,9 @@ Topic branches плюс защищённая стабильная ветка п�
 </details>
 
 <details>
-<summary>What is blue-green deployment?</summary>
+<summary>Что такое blue-green deployment?</summary>
 
-### What is blue-green deployment?
+### Что такое blue-green deployment?
 
 **Definition:**
 
@@ -1219,9 +1219,9 @@ Blue-green — когда можно оплатить две полные сре
 </details>
 
 <details>
-<summary>How does a canary release differ from blue-green deployment?</summary>
+<summary>Как a canary release differ from blue-green deployment?</summary>
 
-### How does a canary release differ from blue-green deployment?
+### Как a canary release differ from blue-green deployment?
 
 **Definition:**
 
@@ -1246,9 +1246,9 @@ Canary — когда ошибка дорога и новую версию мо�
 </details>
 
 <details>
-<summary>What are the best practices for setting up a CI/CD pipeline?</summary>
+<summary>Что такое the best practices for setting up a CI/CD pipeline?</summary>
 
-### What are the best practices for setting up a CI/CD pipeline?
+### Что такое the best practices for setting up a CI/CD pipeline?
 
 **Definition:**
 
@@ -1272,9 +1272,9 @@ Canary — когда ошибка дорога и новую версию мо�
 </details>
 
 <details>
-<summary>What challenges might you face in implementing CI/CD and how would you overcome them?</summary>
+<summary>С какими challenges вы столкнётесь при внедрении CI/CD и как их преодолеть?</summary>
 
-### What challenges might you face in implementing CI/CD and how would you overcome them?
+### С какими challenges вы столкнётесь при внедрении CI/CD и как их преодолеть?
 
 **Definition:**
 
@@ -1296,9 +1296,9 @@ CI/CD ломается, когда pipeline медленный, нестабил
 </details>
 
 <details>
-<summary>How do you ensure CI/CD pipelines are secure?</summary>
+<summary>Как you ensure CI/CD pipelines are secure?</summary>
 
-### How do you ensure CI/CD pipelines are secure?
+### Как you ensure CI/CD pipelines are secure?
 
 **Definition:**
 
@@ -1321,9 +1321,9 @@ Pipeline — привилегированный путь в production. Его �
 </details>
 
 <details>
-<summary>Discuss the role of automated testing in CI/CD.</summary>
+<summary>Обсудите the role of automated testing in CI/CD.</summary>
 
-### Discuss the role of automated testing in CI/CD.
+### Обсудите the role of automated testing in CI/CD.
 
 **Definition:**
 
@@ -1356,9 +1356,9 @@ stage('Test') {
 </details>
 
 <details>
-<summary>How can containerization be leveraged in a CI/CD pipeline?</summary>
+<summary>Как containerization be leveraged in a CI/CD pipeline?</summary>
 
-### How can containerization be leveraged in a CI/CD pipeline?
+### Как containerization be leveraged in a CI/CD pipeline?
 
 **Definition:**
 
@@ -1387,9 +1387,9 @@ docker push registry.example.com/app:${CI_COMMIT_SHA}
 </details>
 
 <details>
-<summary>How do you roll back a deployment in a CI/CD process?</summary>
+<summary>Как you roll back a deployment in a CI/CD process?</summary>
 
-### How do you roll back a deployment in a CI/CD process?
+### Как you roll back a deployment in a CI/CD process?
 
 **Definition:**
 
@@ -1416,9 +1416,9 @@ docker push registry.example.com/app:${CI_COMMIT_SHA}
 ### Infrastructure as Code (IaC)
 
 <details>
-<summary>What is Terraform and how is it used in IaC?</summary>
+<summary>Что такое Terraform and how is it used in IaC?</summary>
 
-### What is Terraform and how is it used in IaC?
+### Что такое Terraform and how is it used in IaC?
 
 **Definition:**
 
@@ -1453,9 +1453,9 @@ resource "aws_instance" "app_server" {
 </details>
 
 <details>
-<summary>Can you describe the functionality of AWS CloudFormation?</summary>
+<summary>Можете ли вы describe the functionality of AWS CloudFormation?</summary>
 
-### Can you describe the functionality of AWS CloudFormation?
+### Можете ли вы describe the functionality of AWS CloudFormation?
 
 **Definition:**
 
@@ -1488,9 +1488,9 @@ Resources:
 </details>
 
 <details>
-<summary>Explain the differences between declarative and imperative approaches in IaC.</summary>
+<summary>Объясните the differences between declarative and imperative approaches in IaC.</summary>
 
-### Explain the differences between declarative and imperative approaches in IaC.
+### Объясните the differences between declarative and imperative approaches in IaC.
 
 **Definition:**
 
@@ -1515,9 +1515,9 @@ Resources:
 </details>
 
 <details>
-<summary>What are the benefits of using IaC in a cloud environment?</summary>
+<summary>Что такое the benefits of using IaC in a cloud environment?</summary>
 
-### What are the benefits of using IaC in a cloud environment?
+### Что такое the benefits of using IaC in a cloud environment?
 
 **Definition:**
 
@@ -1539,9 +1539,9 @@ Infrastructure as code делает облачные ресурсы доступ
 </details>
 
 <details>
-<summary>What is a “stack” in the context of IaC, as seen in tools like Terraform?</summary>
+<summary>Что такое “stack” in the context of IaC, as seen in tools like Terraform?</summary>
 
-### What is a “stack” in the context of IaC, as seen in tools like Terraform?
+### Что такое “stack” in the context of IaC, as seen in tools like Terraform?
 
 **Definition:**
 
@@ -1565,9 +1565,9 @@ Stack — одна развёрнутая копия шаблона: ресур�
 </details>
 
 <details>
-<summary>How do you handle configuration drift?</summary>
+<summary>Как you handle configuration drift?</summary>
 
-### How do you handle configuration drift?
+### Как you handle configuration drift?
 
 **Definition:**
 
@@ -1588,9 +1588,9 @@ Stack — одна развёрнутая копия шаблона: ресур�
 </details>
 
 <details>
-<summary>Describe idempotence in the context of IaC and its importance.</summary>
+<summary>Опишите idempotence in the context of IaC and its importance.</summary>
 
-### Describe idempotence in the context of IaC and its importance.
+### Опишите idempotence in the context of IaC and its importance.
 
 **Definition:**
 
@@ -1611,9 +1611,9 @@ Stack — одна развёрнутая копия шаблона: ресур�
 </details>
 
 <details>
-<summary>What are some security best practices for IaC?</summary>
+<summary>Что такое some security best practices for IaC?</summary>
 
-### What are some security best practices for IaC?
+### Что такое some security best practices for IaC?
 
 **Definition:**
 
@@ -1636,9 +1636,9 @@ Stack — одна развёрнутая копия шаблона: ресур�
 </details>
 
 <details>
-<summary>How do you test infrastructure code?</summary>
+<summary>Как you test infrastructure code?</summary>
 
-### How do you test infrastructure code?
+### Как you test infrastructure code?
 
 **Definition:**
 
@@ -1659,9 +1659,9 @@ Stack — одна развёрнутая копия шаблона: ресур�
 </details>
 
 <details>
-<summary>What is the significance of using modules in IaC tools?</summary>
+<summary>Что такое the significance of using modules in IaC tools?</summary>
 
-### What is the significance of using modules in IaC tools?
+### Что такое the significance of using modules in IaC tools?
 
 **Definition:**
 
@@ -1688,9 +1688,9 @@ Stack — одна развёрнутая копия шаблона: ресур�
 ### DevOps Testing
 
 <details>
-<summary>What is test automation and how does it fit into DevOps?</summary>
+<summary>Что такое test automation and how does it fit into DevOps?</summary>
 
-### What is test automation and how does it fit into DevOps?
+### Что такое test automation and how does it fit into DevOps?
 
 **Definition:**
 
@@ -1722,9 +1722,9 @@ stage('Test') {
 </details>
 
 <details>
-<summary>Can you name some methods or practices for ensuring code quality?</summary>
+<summary>Можете ли вы name some methods or practices for ensuring code quality?</summary>
 
-### Can you name some methods or practices for ensuring code quality?
+### Можете ли вы name some methods or practices for ensuring code quality?
 
 **Definition:**
 
@@ -1747,9 +1747,9 @@ stage('Test') {
 </details>
 
 <details>
-<summary>How does DevOps influence Quality Assurance (QA) practices?</summary>
+<summary>Как DevOps influence Quality Assurance (QA) practices?</summary>
 
-### How does DevOps influence Quality Assurance (QA) practices?
+### Как DevOps influence Quality Assurance (QA) practices?
 
 **Definition:**
 
@@ -1771,9 +1771,9 @@ DevOps переносит QA из фазы после «код готов» в �
 </details>
 
 <details>
-<summary>Explain the concept of “test-driven development (TDD)” within DevOps.</summary>
+<summary>Объясните the concept of “test-driven development (TDD)” within DevOps.</summary>
 
-### Explain the concept of “test-driven development (TDD)” within DevOps.
+### Объясните the concept of “test-driven development (TDD)” within DevOps.
 
 **Definition:**
 
@@ -1800,9 +1800,9 @@ TDD — для логики с ясными входами и выходами (
 </details>
 
 <details>
-<summary>What are service virtualization and its relevance to DevOps?</summary>
+<summary>Что такое service virtualization and its relevance to DevOps?</summary>
 
-### What are service virtualization and its relevance to DevOps?
+### Что такое service virtualization and its relevance to DevOps?
 
 **Definition:**
 
@@ -1829,9 +1829,9 @@ TDD — для логики с ясными входами и выходами (
 ### DevOps Monitoring and Logging
 
 <details>
-<summary>What is Application Performance Monitoring (APM)?</summary>
+<summary>Что такое Application Performance Monitoring (APM)?</summary>
 
-### What is Application Performance Monitoring (APM)?
+### Что такое Application Performance Monitoring (APM)?
 
 **Definition:**
 
@@ -1856,9 +1856,9 @@ TDD — для логики с ясными входами и выходами (
 </details>
 
 <details>
-<summary>How do you ensure effective log management in a DevOps setup?</summary>
+<summary>Как you ensure effective log management in a DevOps setup?</summary>
 
-### How do you ensure effective log management in a DevOps setup?
+### Как you ensure effective log management in a DevOps setup?
 
 **Definition:**
 
@@ -1886,9 +1886,9 @@ kubectl logs counter -c count
 </details>
 
 <details>
-<summary>What is the significance of time-series databases in monitoring?</summary>
+<summary>Что такое the significance of time-series dataBASEs in monitoring?</summary>
 
-### What is the significance of time-series databases in monitoring?
+### Что такое the significance of time-series dataBASEs in monitoring?
 
 **Definition:**
 
@@ -1916,9 +1916,9 @@ http_requests_total{job="apiserver", handler="/api/comments"}
 </details>
 
 <details>
-<summary>How would you set up an alerting system for your applications?</summary>
+<summary>Как бы вы set up an alerting system for your applications?</summary>
 
-### How would you set up an alerting system for your applications?
+### Как бы вы set up an alerting system for your applications?
 
 **Definition:**
 
@@ -1954,9 +1954,9 @@ groups:
 </details>
 
 <details>
-<summary>Discuss the role of dashboards in DevOps monitoring.</summary>
+<summary>Обсудите the role of dashboards in DevOps monitoring.</summary>
 
-### Discuss the role of dashboards in DevOps monitoring.
+### Обсудите the role of dashboards in DevOps monitoring.
 
 **Definition:**
 
@@ -1979,9 +1979,9 @@ groups:
 ### DevOps Security (DevSecOps)
 
 <details>
-<summary>What is DevSecOps and how does it integrate with DevOps?</summary>
+<summary>Что такое DevSecOps and how does it integrate with DevOps?</summary>
 
-### What is DevSecOps and how does it integrate with DevOps?
+### Что такое DevSecOps and how does it integrate with DevOps?
 
 **Definition:**
 
@@ -2004,9 +2004,9 @@ DevSecOps — это DevOps, в котором проверки безопасн
 </details>
 
 <details>
-<summary>How can you implement security scanning within CI/CD pipelines?</summary>
+<summary>Как you implement security scanning within CI/CD pipelines?</summary>
 
-### How can you implement security scanning within CI/CD pipelines?
+### Как you implement security scanning within CI/CD pipelines?
 
 **Definition:**
 
@@ -2029,9 +2029,9 @@ DevSecOps — это DevOps, в котором проверки безопасн
 </details>
 
 <details>
-<summary>What are security considerations when working with Docker and Kubernetes?</summary>
+<summary>Что такое security considerations when working with Docker and Kubernetes?</summary>
 
-### What are security considerations when working with Docker and Kubernetes?
+### Что такое security considerations when working with Docker and Kubernetes?
 
 **Definition:**
 
@@ -2061,9 +2061,9 @@ kubectl label --overwrite ns example \
 </details>
 
 <details>
-<summary>How do you manage secrets in a DevOps workflow?</summary>
+<summary>Как you manage secrets in a DevOps workflow?</summary>
 
-### How do you manage secrets in a DevOps workflow?
+### Как you manage secrets in a DevOps workflow?
 
 **Definition:**
 
@@ -2093,9 +2093,9 @@ curl \
 </details>
 
 <details>
-<summary>What is the importance of compliance and governance in DevOps?</summary>
+<summary>Что такое the importance of compliance and Governance in DevOps?</summary>
 
-### What is the importance of compliance and governance in DevOps?
+### Что такое the importance of compliance and Governance in DevOps?
 
 **Definition:**
 
@@ -2120,9 +2120,9 @@ Governance — правила, кто может менять production и ка
 ### Cloud Services and DevOps
 
 <details>
-<summary>How do cloud services facilitate DevOps practices?</summary>
+<summary>Как cloud services facilitate DevOps practices?</summary>
 
-### How do cloud services facilitate DevOps practices?
+### Как cloud services facilitate DevOps practices?
 
 **Definition:**
 
@@ -2144,9 +2144,9 @@ Governance — правила, кто может менять production и ка
 </details>
 
 <details>
-<summary>What are some of the DevOps-friendly features of AWS?</summary>
+<summary>Что такое some of the DevOps-friendly features of AWS?</summary>
 
-### What are some of the DevOps-friendly features of AWS?
+### Что такое some of the DevOps-friendly features of AWS?
 
 **Definition:**
 
@@ -2168,9 +2168,9 @@ Governance — правила, кто может менять production и ка
 </details>
 
 <details>
-<summary>Can you describe the use of managed Kubernetes services such as EKS, AKS, or GKE?</summary>
+<summary>Можете ли вы describe the use of managed Kubernetes services such as EKS, AKS, or GKE?</summary>
 
-### Can you describe the use of managed Kubernetes services such as EKS, AKS, or GKE?
+### Можете ли вы describe the use of managed Kubernetes services such as EKS, AKS, or GKE?
 
 **Definition:**
 
@@ -2197,9 +2197,9 @@ EKS, AKS и GKE ведут control plane Kubernetes за вас. Workload вы �
 </details>
 
 <details>
-<summary>How do serverless architectures fit into DevOps?</summary>
+<summary>Как serverless architectures fit into DevOps?</summary>
 
-### How do serverless architectures fit into DevOps?
+### Как serverless architectures fit into DevOps?
 
 **Definition:**
 
@@ -2225,9 +2225,9 @@ Lambda — для работы в форме событий (сообщение 
 </details>
 
 <details>
-<summary>Explain how you would use cloud storage services within DevOps.</summary>
+<summary>Объясните how you would use cloud storage services within DevOps.</summary>
 
-### Explain how you would use cloud storage services within DevOps.
+### Объясните how you would use cloud storage services within DevOps.
 
 **Definition:**
 
@@ -2255,9 +2255,9 @@ Lambda — для работы в форме событий (сообщение 
 ### Containerization and Orchestration
 
 <details>
-<summary>What is Kubernetes and what problem does it solve?</summary>
+<summary>Что такое Kubernetes and what problem does it solve?</summary>
 
-### What is Kubernetes and what problem does it solve?
+### Что такое Kubernetes and what problem does it solve?
 
 **Definition:**
 
@@ -2280,9 +2280,9 @@ Kubernetes — переносимая расширяемая open-source пла�
 </details>
 
 <details>
-<summary>How does a container differ from a virtual machine?</summary>
+<summary>Как a container differ from a virtual machine?</summary>
 
-### How does a container differ from a virtual machine?
+### Как a container differ from a virtual machine?
 
 **Definition:**
 
@@ -2307,9 +2307,9 @@ Kubernetes — переносимая расширяемая open-source пла�
 </details>
 
 <details>
-<summary>What is the purpose of a Kubernetes pod?</summary>
+<summary>Что такое the puRPOse of a Kubernetes pod?</summary>
 
-### What is the purpose of a Kubernetes pod?
+### Что такое the puRPOse of a Kubernetes pod?
 
 **Definition:**
 
@@ -2343,9 +2343,9 @@ spec:
 </details>
 
 <details>
-<summary>Explain the role of service discovery in container orchestration.</summary>
+<summary>Объясните the role of service discovery in container orchestration.</summary>
 
-### Explain the role of service discovery in container orchestration.
+### Объясните the role of service discovery in container orchestration.
 
 **Definition:**
 
@@ -2368,9 +2368,9 @@ Service discovery позволяет клиенту найти workload посл
 </details>
 
 <details>
-<summary>How can you scale containers using Docker Swarm or Kubernetes?</summary>
+<summary>Как you scale containers using Docker Swarm or Kubernetes?</summary>
 
-### How can you scale containers using Docker Swarm or Kubernetes?
+### Как you scale containers using Docker Swarm or Kubernetes?
 
 **Definition:**
 
@@ -2404,9 +2404,9 @@ kubectl autoscale deployment/my-nginx --min=1 --max=3
 ### DevOps Practices and Methodologies
 
 <details>
-<summary>How does pair programming fit into DevOps culture?</summary>
+<summary>Как pair programming fit into DevOps culture?</summary>
 
-### How does pair programming fit into DevOps culture?
+### Как pair programming fit into DevOps culture?
 
 **Definition:**
 
@@ -2431,9 +2431,9 @@ kubectl autoscale deployment/my-nginx --min=1 --max=3
 </details>
 
 <details>
-<summary>Can you describe the concept of a blameless postmortem?</summary>
+<summary>Можете ли вы describe the concept of a blameless postmortem?</summary>
 
-### Can you describe the concept of a blameless postmortem?
+### Можете ли вы describe the concept of a blameless postmortem?
 
 **Definition:**
 
@@ -2454,9 +2454,9 @@ Blameless postmortem — письменный разбор после инцид
 </details>
 
 <details>
-<summary>What is meant by “systems thinking” in the context of DevOps?</summary>
+<summary>Что такое meant by “systems thinking” in the context of DevOps?</summary>
 
-### What is meant by “systems thinking” in the context of DevOps?
+### Что такое meant by “systems thinking” in the context of DevOps?
 
 **Definition:**
 
@@ -2478,9 +2478,9 @@ Blameless postmortem — письменный разбор после инцид
 </details>
 
 <details>
-<summary>How can DevOps practices reduce technical debt?</summary>
+<summary>Как DevOps practices reduce technical debt?</summary>
 
-### How can DevOps practices reduce technical debt?
+### Как DevOps practices reduce technical debt?
 
 **Definition:**
 
@@ -2503,9 +2503,9 @@ Blameless postmortem — письменный разбор после инцид
 </details>
 
 <details>
-<summary>What is ChatOps and how can it support DevOps initiatives?</summary>
+<summary>Что такое ChatOps and how can it support DevOps initiatives?</summary>
 
-### What is ChatOps and how can it support DevOps initiatives?
+### Что такое ChatOps and how can it support DevOps initiatives?
 
 **Definition:**
 
@@ -2533,9 +2533,9 @@ ChatOps помещает операционные уведомления и уз
 ### Advanced DevOps Concepts
 
 <details>
-<summary>What are microservices and how do they influence DevOps?</summary>
+<summary>Что такое microservices and how do they influence DevOps?</summary>
 
-### What are microservices and how do they influence DevOps?
+### Что такое microservices and how do they influence DevOps?
 
 **Definition:**
 
@@ -2558,9 +2558,9 @@ ChatOps помещает операционные уведомления и уз
 </details>
 
 <details>
-<summary>Can you outline the benefits and challenges of a microservices architecture?</summary>
+<summary>Можете ли вы outline the benefits and challenges of a microservices architecture?</summary>
 
-### Can you outline the benefits and challenges of a microservices architecture?
+### Можете ли вы outline the benefits and challenges of a microservices architecture?
 
 **Definition:**
 
@@ -2594,9 +2594,9 @@ ChatOps помещает операционные уведомления и уз
 </details>
 
 <details>
-<summary>How does feature flagging work and why is it useful in DevOps?</summary>
+<summary>Как feature flagging work and why is it useful in DevOps?</summary>
 
-### How does feature flagging work and why is it useful in DevOps?
+### Как feature flagging work and why is it useful in DevOps?
 
 **Definition:**
 
@@ -2623,9 +2623,9 @@ Feature flag — проверка во время выполнения, кото
 </details>
 
 <details>
-<summary>What is a service mesh and how does it fit into a DevOps environment?</summary>
+<summary>Что такое service mesh and how does it fit into a DevOps environment?</summary>
 
-### What is a service mesh and how does it fit into a DevOps environment?
+### Что такое service mesh and how does it fit into a DevOps environment?
 
 **Definition:**
 
@@ -2651,9 +2651,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>Describe the concept of immutable infrastructure.</summary>
+<summary>Опишите the concept of immutable infrastructure.</summary>
 
-### Describe the concept of immutable infrastructure.
+### Опишите the concept of immutable infrastructure.
 
 **Definition:**
 
@@ -2682,9 +2682,9 @@ Mesh — для безопасности между сервисами и пол
 ### Soft Skills and Culture
 
 <details>
-<summary>How would you foster a DevOps culture in a traditionally siloed organization?</summary>
+<summary>Как бы вы foster a DevOps culture in a traditionally siloed orGAnization?</summary>
 
-### How would you foster a DevOps culture in a traditionally siloed organization?
+### Как бы вы foster a DevOps culture in a traditionally siloed orGAnization?
 
 **Definition:**
 
@@ -2707,9 +2707,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>What soft skills are important for a DevOps engineer?</summary>
+<summary>Какие soft skills важны для DevOps engineer?</summary>
 
-### What soft skills are important for a DevOps engineer?
+### Какие soft skills важны для DevOps engineer?
 
 **Definition:**
 
@@ -2731,9 +2731,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>How do you communicate and collaborate effectively within a DevOps team?</summary>
+<summary>Как you communicate and collaborate effectively within a DevOps team?</summary>
 
-### How do you communicate and collaborate effectively within a DevOps team?
+### Как you communicate and collaborate effectively within a DevOps team?
 
 **Definition:**
 
@@ -2756,9 +2756,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>Can you explain the importance of empathy in a DevOps context?</summary>
+<summary>Можете ли вы explain the importance of empathy in a DevOps context?</summary>
 
-### Can you explain the importance of empathy in a DevOps context?
+### Можете ли вы explain the importance of empathy in a DevOps context?
 
 **Definition:**
 
@@ -2780,9 +2780,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>How do you stay up-to-date with DevOps practices and tools?</summary>
+<summary>Как you stay up-to-date with DevOps practices and tools?</summary>
 
-### How do you stay up-to-date with DevOps practices and tools?
+### Как you stay up-to-date with DevOps practices and tools?
 
 **Definition:**
 
@@ -2807,9 +2807,9 @@ Mesh — для безопасности между сервисами и пол
 ### DevOps Challenges and Problem-Solving
 
 <details>
-<summary>How do you address resistance to DevOps transformation within a team or organization?</summary>
+<summary>Как you address resistance to DevOps transformation within a team or orGAnization?</summary>
 
-### How do you address resistance to DevOps transformation within a team or organization?
+### Как you address resistance to DevOps transformation within a team or orGAnization?
 
 **Definition:**
 
@@ -2832,9 +2832,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>What steps would you take to resolve a conflict between development and operations teams?</summary>
+<summary>Какие шаги вы предпримете для разрешения конфликта между development и operations teams?</summary>
 
-### What steps would you take to resolve a conflict between development and operations teams?
+### Какие шаги вы предпримете для разрешения конфликта между development и operations teams?
 
 **Definition:**
 
@@ -2857,9 +2857,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>How would you deal with a failed deployment?</summary>
+<summary>Как бы вы deal with a failed deployment?</summary>
 
-### How would you deal with a failed deployment?
+### Как бы вы deal with a failed deployment?
 
 **Definition:**
 
@@ -2882,9 +2882,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>Describe how you would handle a significant system outage.</summary>
+<summary>Опишите how you would handle a significant system outage.</summary>
 
-### Describe how you would handle a significant system outage.
+### Опишите how you would handle a significant system outage.
 
 **Definition:**
 
@@ -2907,9 +2907,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>What is your approach to root cause analysis in a DevOps context?</summary>
+<summary>Что такое your approach to root cause analysis in a DevOps context?</summary>
 
-### What is your approach to root cause analysis in a DevOps context?
+### Что такое your approach to root cause analysis in a DevOps context?
 
 **Definition:**
 
@@ -2934,9 +2934,9 @@ Mesh — для безопасности между сервисами и пол
 ### DevOps Case Studies and Experience
 
 <details>
-<summary>Can you share an example where DevOps helped to improve software delivery?</summary>
+<summary>Можете ли вы SHAre an example where DevOps helped to improve software delivery?</summary>
 
-### Can you share an example where DevOps helped to improve software delivery?
+### Можете ли вы SHAre an example where DevOps helped to improve software delivery?
 
 **Definition:**
 
@@ -2960,9 +2960,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>Describe a DevOps project you worked on and the value it added.</summary>
+<summary>Опишите a DevOps project you worked on and the value it added.</summary>
 
-### Describe a DevOps project you worked on and the value it added.
+### Опишите a DevOps project you worked on and the value it added.
 
 **Definition:**
 
@@ -2983,9 +2983,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>What lessons have you learned from a DevOps implementation that didn’t go as planned?</summary>
+<summary>Какие lessons вы извлекли из DevOps implementation, которая пошла не по плану?</summary>
 
-### What lessons have you learned from a DevOps implementation that didn’t go as planned?
+### Какие lessons вы извлекли из DevOps implementation, которая пошла не по плану?
 
 **Definition:**
 
@@ -3008,9 +3008,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>How have you contributed to reducing release times or improving release quality?</summary>
+<summary>Как вы способствовали сокращению release times или улучшению release quality?</summary>
 
-### How have you contributed to reducing release times or improving release quality?
+### Как вы способствовали сокращению release times или улучшению release quality?
 
 **Definition:**
 
@@ -3035,9 +3035,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>Share an experience where you automated a significant manual process.</summary>
+<summary>Поделитесь опытом автоматизации значительного manual process.</summary>
 
-### Share an experience where you automated a significant manual process.
+### Поделитесь опытом автоматизации значительного manual process.
 
 **Definition:**
 
@@ -3061,9 +3061,9 @@ Mesh — для безопасности между сервисами и пол
 ### DevOps Trends and Innovation
 
 <details>
-<summary>Where do you see the DevOps movement heading in the next few years?</summary>
+<summary>Где do you see the DevOps movement heading in the next few years?</summary>
 
-### Where do you see the DevOps movement heading in the next few years?
+### Где do you see the DevOps movement heading in the next few years?
 
 **Definition:**
 
@@ -3085,9 +3085,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>How do you think AI and machine learning will impact DevOps?</summary>
+<summary>Как you think AI and machine learning will impact DevOps?</summary>
 
-### How do you think AI and machine learning will impact DevOps?
+### Как you think AI and machine learning will impact DevOps?
 
 **Definition:**
 
@@ -3110,9 +3110,9 @@ Mesh — для безопасности между сервисами и пол
 </details>
 
 <details>
-<summary>What is GitOps and how might it shape future DevOps practices?</summary>
+<summary>Что такое GitOps and how might it SHApe future DevOps practices?</summary>
 
-### What is GitOps and how might it shape future DevOps practices?
+### Что такое GitOps and how might it SHApe future DevOps practices?
 
 **Definition:**
 
@@ -3134,9 +3134,9 @@ GitOps использует репозиторий Git как источник �
 </details>
 
 <details>
-<summary>Can you discuss the emerging concept of NoOps?</summary>
+<summary>Можете ли вы discuss the emerging concept of NOOPs?</summary>
 
-### Can you discuss the emerging concept of NoOps?
+### Можете ли вы discuss the emerging concept of NOOPs?
 
 **Definition:**
 
@@ -3161,9 +3161,9 @@ NoOps — лозунг «платформа ведёт серверы». Это 
 </details>
 
 <details>
-<summary>How could blockchain technology potentially be used in DevOps?</summary>
+<summary>Как можно blockchain technology potentially be used in DevOps?</summary>
 
-### How could blockchain technology potentially be used in DevOps?
+### Как можно blockchain technology potentially be used in DevOps?
 
 **Definition:**
 
@@ -3187,9 +3187,9 @@ Docker, Kubernetes, Jenkins, GitLab CI и Terraform не используют bl
 ### DevOps for Databases
 
 <details>
-<summary>How do you apply DevOps practices to database management?</summary>
+<summary>Как you apply DevOps practices to dataBASE management?</summary>
 
-### How do you apply DevOps practices to database management?
+### Как you apply DevOps practices to dataBASE management?
 
 **Definition:**
 
@@ -3210,9 +3210,9 @@ DevOps для базы значит, что изменения схемы рев
 </details>
 
 <details>
-<summary>What are the considerations for database version control?</summary>
+<summary>Что такое the considerations for dataBASE version control?</summary>
 
-### What are the considerations for database version control?
+### Что такое the considerations for dataBASE version control?
 
 **Definition:**
 
@@ -3246,9 +3246,9 @@ create table person (
 </details>
 
 <details>
-<summary>Can you discuss the tools and strategies for database CI/CD?</summary>
+<summary>Можете ли вы discuss the tools and strategies for dataBASE CI/CD?</summary>
 
-### Can you discuss the tools and strategies for database CI/CD?
+### Можете ли вы discuss the tools and strategies for dataBASE CI/CD?
 
 **Definition:**
 
@@ -3275,9 +3275,9 @@ liquibase update --changelog-file=changelog.sql
 </details>
 
 <details>
-<summary>How does database schema change management fit into DevOps?</summary>
+<summary>Как dataBASE schema change management fit into DevOps?</summary>
 
-### How does database schema change management fit into DevOps?
+### Как dataBASE schema change management fit into DevOps?
 
 **Definition:**
 
@@ -3298,9 +3298,9 @@ liquibase update --changelog-file=changelog.sql
 </details>
 
 <details>
-<summary>What is the significance of database release automation?</summary>
+<summary>Что такое the significance of dataBASE release automation?</summary>
 
-### What is the significance of database release automation?
+### Что такое the significance of dataBASE release automation?
 
 **Definition:**
 

@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Reactive Systems](https://devinterview.io/qu
 ### Reactive Systems Fundamentals
 
 <details>
-<summary>What are the defining characteristics of a Reactive System according to the Reactive Manifesto?</summary>
+<summary>Что такое the defining characteristics of a Reactive System according to the Reactive Manifesto?</summary>
 
-### What are the defining characteristics of a Reactive System according to the Reactive Manifesto?
+### Что такое the defining characteristics of a Reactive System according to the Reactive Manifesto?
 
 **Definition:**
 
@@ -43,9 +43,9 @@ Checkout публикует OrderPlaced и возвращается. Оплат�
 </details>
 
 <details>
-<summary>How is back-pressure implemented in Reactive Systems to manage data flow?</summary>
+<summary>Как back-pressure implemented in Reactive Systems to manage data flow?</summary>
 
-### How is back-pressure implemented in Reactive Systems to manage data flow?
+### Как back-pressure implemented in Reactive Systems to manage data flow?
 
 **Definition:**
 
@@ -69,9 +69,9 @@ Checkout публикует OrderPlaced и возвращается. Оплат�
 </details>
 
 <details>
-<summary>Contrast Elasticity with Scalability with specific examples as they pertain to Reactive Systems.</summary>
+<summary>Сравните Elasticity и Scalability с примерами в контексте Reactive Systems.</summary>
 
-### Contrast Elasticity with Scalability with specific examples as they pertain to Reactive Systems.
+### Сравните Elasticity и Scalability с примерами в контексте Reactive Systems.
 
 **Definition:**
 
@@ -90,9 +90,9 @@ Checkout публикует OrderPlaced и возвращается. Оплат�
 </details>
 
 <details>
-<summary>Describe a strategy a Reactive System might use to maintain responsiveness during a component failure.</summary>
+<summary>Опишите a strategy a Reactive System might use to maintain responsiveness during a component failure.</summary>
 
-### Describe a strategy a Reactive System might use to maintain responsiveness during a component failure.
+### Опишите a strategy a Reactive System might use to maintain responsiveness during a component failure.
 
 **Definition:**
 
@@ -112,9 +112,9 @@ Checkout публикует OrderPlaced и возвращается. Оплат�
 </details>
 
 <details>
-<summary>How does message-driven architecture contribute to the resilience of Reactive Systems?</summary>
+<summary>Как message-driven architecture contribute to the resilience of Reactive Systems?</summary>
 
-### How does message-driven architecture contribute to the resilience of Reactive Systems?
+### Как message-driven architecture contribute to the resilience of Reactive Systems?
 
 **Definition:**
 
@@ -134,9 +134,9 @@ Checkout пишет OrderPlaced и возвращает «принято». Ес
 </details>
 
 <details>
-<summary>Identify a resiliency strategy in Reactive Systems and explain how it minimizes the impact of failures.</summary>
+<summary>Определите a resiliency strategy in Reactive Systems and explain how it minimizes the impact of failures.</summary>
 
-### Identify a resiliency strategy in Reactive Systems and explain how it minimizes the impact of failures.
+### Определите a resiliency strategy in Reactive Systems and explain how it minimizes the impact of failures.
 
 **Definition:**
 
@@ -158,9 +158,9 @@ Event sourcing держит журнал фактов только на доба
 ### Design Principles of Reactive Systems
 
 <details>
-<summary>Why are non-blocking I/O operations a necessity in Reactive Programming, and what problems do they solve?</summary>
+<summary>Почему are non-blocking I/O operations a necessity in reactive programming, and what problems do they solve?</summary>
 
-### Why are non-blocking I/O operations a necessity in Reactive Programming, and what problems do they solve?
+### Почему are non-blocking I/O operations a necessity in reactive programming, and what problems do they solve?
 
 **Definition:**
 
@@ -183,9 +183,9 @@ Event sourcing держит журнал фактов только на доба
 </details>
 
 <details>
-<summary>In what ways can Domain-Driven Design (DDD) principles enhance the design of a Reactive System?</summary>
+<summary>В what ways can domain-driven design (DDD) principles enhance the design of a Reactive System?</summary>
 
-### In what ways can Domain-Driven Design (DDD) principles enhance the design of a Reactive System?
+### В what ways can domain-driven design (DDD) principles enhance the design of a Reactive System?
 
 **Definition:**
 
@@ -205,9 +205,9 @@ DDD решает, что значат сообщения и где модель 
 </details>
 
 <details>
-<summary>Provide an example of a system that is reactive without fulfilling all the Reactive Manifesto traits. Why does it qualify?</summary>
+<summary>Приведите an example of a system that is Reactive without fulfilling all the Reactive Manifesto traits. Why does it qualify?</summary>
 
-### Provide an example of a system that is reactive without fulfilling all the Reactive Manifesto traits. Why does it qualify?
+### Приведите an example of a system that is Reactive without fulfilling all the Reactive Manifesto traits. Why does it qualify?
 
 **Definition:**
 
@@ -226,9 +226,9 @@ DDD решает, что значат сообщения и где модель 
 </details>
 
 <details>
-<summary>Describe how a Reactive System would differently address a transient failure versus a network partition.</summary>
+<summary>Опишите how a Reactive System would differently address a transient failure versus a network partition.</summary>
 
-### Describe how a Reactive System would differently address a transient failure versus a network partition.
+### Опишите how a Reactive System would differently address a transient failure versus a network partition.
 
 **Definition:**
 
@@ -252,9 +252,9 @@ breaker размыкается после повторных таймаутов:
 </details>
 
 <details>
-<summary>Discuss a particular transport layer technology you would recommend for Reactive Systems’ asynchronous communication and why.</summary>
+<summary>Обсудите a particular transport layer technology you would recommend for Reactive Systems’ asynchronous communication and why.</summary>
 
-### Discuss a particular transport layer technology you would recommend for Reactive Systems’ asynchronous communication and why.
+### Обсудите a particular transport layer technology you would recommend for Reactive Systems’ asynchronous communication and why.
 
 **Definition:**
 
@@ -275,9 +275,9 @@ Checkout дописывает OrderPlaced в топик `orders` и возвра
 </details>
 
 <details>
-<summary>Explain the role of Reactive Systems in processing continuous data streams, providing industry use cases.</summary>
+<summary>Объясните the role of Reactive Systems in processing continuous data streams, providing industry use cases.</summary>
 
-### Explain the role of Reactive Systems in processing continuous data streams, providing industry use cases.
+### Объясните the role of Reactive Systems in processing continuous data streams, providing industry use cases.
 
 **Definition:**
 
@@ -299,9 +299,9 @@ Checkout дописывает OrderPlaced в топик `orders` и возвра
 ### Implementing Reactive Systems
 
 <details>
-<summary>What is Event Sourcing, and how does it benefit Reactive Systems?</summary>
+<summary>Что такое event sourcing, and how does it benefit Reactive Systems?</summary>
 
-### What is Event Sourcing, and how does it benefit Reactive Systems?
+### Что такое event sourcing, and how does it benefit Reactive Systems?
 
 **Definition:**
 
@@ -325,9 +325,9 @@ append StockReleased {sku:lamp, qty:1}
 </details>
 
 <details>
-<summary>Differentiate between hot and cold reactive streams with examples of use cases.</summary>
+<summary>Различите between hot and cold Reactive Streams with examples of use cases.</summary>
 
-### Differentiate between hot and cold reactive streams with examples of use cases.
+### Различите between hot and cold Reactive Streams with examples of use cases.
 
 **Definition:**
 
@@ -346,9 +346,9 @@ append StockReleased {sku:lamp, qty:1}
 </details>
 
 <details>
-<summary>Compare synchronous request-response communication with reactive message-driven communication in terms of scalability.</summary>
+<summary>Сравните synchronous request-response communication with Reactive message-driven communication in terms of Scalability.</summary>
 
-### Compare synchronous request-response communication with reactive message-driven communication in terms of scalability.
+### Сравните synchronous request-response communication with Reactive message-driven communication in terms of Scalability.
 
 **Definition:**
 
@@ -371,9 +371,9 @@ sync:      клиент ждёт, пока checkout зовёт склад, ск�
 </details>
 
 <details>
-<summary>Describe a design pattern uniquely suited for Reactive Systems and why it’s effective.</summary>
+<summary>Опишите a design pattern uniquely suited for Reactive Systems and why it’s effective.</summary>
 
-### Describe a design pattern uniquely suited for Reactive Systems and why it’s effective.
+### Опишите a design pattern uniquely suited for Reactive Systems and why it’s effective.
 
 **Definition:**
 
@@ -393,9 +393,9 @@ sync:      клиент ждёт, пока checkout зовёт склад, ск�
 </details>
 
 <details>
-<summary>Recommend a framework for developing Reactive Systems and discuss its core features.</summary>
+<summary>Рекомендуйте framework для Reactive Systems и обсудите его core features.</summary>
 
-### Recommend a framework for developing Reactive Systems and discuss its core features.
+### Рекомендуйте framework для Reactive Systems и обсудите его core features.
 
 **Definition:**
 
@@ -430,9 +430,9 @@ Flowable.fromCallable(this::blockingRead)
 </details>
 
 <details>
-<summary>Explain how statefulness is managed in Reactive microservices while ensuring consistency.</summary>
+<summary>Объясните how statefulness is managed in Reactive microservices while ensuring consistency.</summary>
 
-### Explain how statefulness is managed in Reactive microservices while ensuring consistency.
+### Объясните how statefulness is managed in Reactive microservices while ensuring consistency.
 
 **Definition:**
 
@@ -455,9 +455,9 @@ Flowable.fromCallable(this::blockingRead)
 ### Reactive Programming Paradigms
 
 <details>
-<summary>Discuss how functional programming principles can be leveraged in Reactive Systems to enhance resiliency.</summary>
+<summary>Обсудите how functional programming principles can be leveraged in Reactive Systems to enhance resiliency.</summary>
 
-### Discuss how functional programming principles can be leveraged in Reactive Systems to enhance resiliency.
+### Обсудите how functional programming principles can be leveraged in Reactive Systems to enhance resiliency.
 
 **Definition:**
 
@@ -478,9 +478,9 @@ Flowable.fromCallable(this::blockingRead)
 </details>
 
 <details>
-<summary>Contrast the Observer pattern with the Publish-Subscribe pattern, providing use cases in Reactive Programming.</summary>
+<summary>Сравните Observer pattern и Publish-Subscribe pattern с use cases в Reactive Programming.</summary>
 
-### Contrast the Observer pattern with the Publish-Subscribe pattern, providing use cases in Reactive Programming.
+### Сравните Observer pattern и Publish-Subscribe pattern с use cases в Reactive Programming.
 
 **Definition:**
 
@@ -505,9 +505,9 @@ Flowable.fromCallable(this::blockingRead)
 </details>
 
 <details>
-<summary>Provide a use case where Reactive Programming offers significant benefits over an imperative approach.</summary>
+<summary>Приведите a use case where reactive programming offers significant benefits over an imperative approach.</summary>
 
-### Provide a use case where Reactive Programming offers significant benefits over an imperative approach.
+### Приведите a use case where reactive programming offers significant benefits over an imperative approach.
 
 **Definition:**
 
@@ -533,9 +533,9 @@ ids.flatMap(id -> fetch(id), 8)
 </details>
 
 <details>
-<summary>Define a “stream” in Reactive Programming, demonstrating its advantages over traditional collections like arrays or lists.</summary>
+<summary>Определите a “stream” in reactive programming, demonstrating its advantages over traditional collections like arrays or lists.</summary>
 
-### Define a “stream” in Reactive Programming, demonstrating its advantages over traditional collections like arrays or lists.
+### Определите a “stream” in reactive programming, demonstrating its advantages over traditional collections like arrays or lists.
 
 **Definition:**
 
@@ -558,9 +558,9 @@ ids.flatMap(id -> fetch(id), 8)
 ### Fault-tolerance and Reliability
 
 <details>
-<summary>How can the circuit breaker pattern prevent cascading failures in a Reactive System?</summary>
+<summary>Как the circuit breaker pattern prevent cascading failures in a Reactive System?</summary>
 
-### How can the circuit breaker pattern prevent cascading failures in a Reactive System?
+### Как the circuit breaker pattern prevent cascading failures in a Reactive System?
 
 **Definition:**
 
@@ -583,9 +583,9 @@ ids.flatMap(id -> fetch(id), 8)
 </details>
 
 <details>
-<summary>Outline an effective back-pressure strategy for a Reactive System experiencing high load.</summary>
+<summary>Опишите an effective back-pressure strategy for a Reactive System experiencing high load.</summary>
 
-### Outline an effective back-pressure strategy for a Reactive System experiencing high load.
+### Опишите an effective back-pressure strategy for a Reactive System experiencing high load.
 
 **Definition:**
 
@@ -608,9 +608,9 @@ ids.flatMap(id -> fetch(id), 8)
 </details>
 
 <details>
-<summary>Describe a supervision strategy in Reactive Systems and its role in managing failures.</summary>
+<summary>Опишите a supervision strategy in Reactive Systems and its role in managing failures.</summary>
 
-### Describe a supervision strategy in Reactive Systems and its role in managing failures.
+### Опишите a supervision strategy in Reactive Systems and its role in managing failures.
 
 **Definition:**
 
@@ -634,9 +634,9 @@ ids.flatMap(id -> fetch(id), 8)
 ### Performance and Scalability
 
 <details>
-<summary>Explain how Reactive Systems exploit multicore and distributed resources to improve performance.</summary>
+<summary>Объясните how Reactive Systems exploit multicore and distributed resources to improve performance.</summary>
 
-### Explain how Reactive Systems exploit multicore and distributed resources to improve performance.
+### Объясните how Reactive Systems exploit multicore and distributed resources to improve performance.
 
 **Definition:**
 
@@ -658,9 +658,9 @@ ids.flatMap(id -> fetch(id), 8)
 </details>
 
 <details>
-<summary>What does “location transparency” mean in Reactive Systems, and how does this concept apply to a distributed data store?</summary>
+<summary>Что означает “location transparency” mean in Reactive Systems, and how does this concept apply to a distributed data store?</summary>
 
-### What does “location transparency” mean in Reactive Systems, and how does this concept apply to a distributed data store?
+### Что означает “location transparency” mean in Reactive Systems, and how does this concept apply to a distributed data store?
 
 **Definition:**
 
@@ -681,9 +681,9 @@ ids.flatMap(id -> fetch(id), 8)
 </details>
 
 <details>
-<summary>Identify potential performance bottlenecks in a streaming Reactive System and suggest monitoring strategies.</summary>
+<summary>Определите potential performance boTTLenecks in a streaming Reactive System and suggest monitoring strategies.</summary>
 
-### Identify potential performance bottlenecks in a streaming Reactive System and suggest monitoring strategies.
+### Определите potential performance boTTLenecks in a streaming Reactive System and suggest monitoring strategies.
 
 **Definition:**
 
@@ -707,9 +707,9 @@ ids.flatMap(id -> fetch(id), 8)
 </details>
 
 <details>
-<summary>Describe a method or tools you would use to test and ensure a Reactive System’s scalability under a simulated load.</summary>
+<summary>Опишите a method or tools you would use to test and ensure a Reactive System’s Scalability under a simulated load.</summary>
 
-### Describe a method or tools you would use to test and ensure a Reactive System’s scalability under a simulated load.
+### Опишите a method or tools you would use to test and ensure a Reactive System’s Scalability under a simulated load.
 
 **Definition:**
 
@@ -733,9 +733,9 @@ ids.flatMap(id -> fetch(id), 8)
 ### Tools and Technologies
 
 <details>
-<summary>List some key Reactive programming libraries and provide a brief overview of one framework’s core feature set.</summary>
+<summary>Перечислите some key reactive programming libraries and provide a brief overview of one framework’s core feature set.</summary>
 
-### List some key Reactive programming libraries and provide a brief overview of one framework’s core feature set.
+### Перечислите some key reactive programming libraries and provide a brief overview of one framework’s core feature set.
 
 **Definition:**
 
@@ -757,9 +757,9 @@ Reactive Streams — маленькая спецификация совмест�
 </details>
 
 <details>
-<summary>What role do message queues play in Reactive Systems, and what characteristics are most important for them to have?</summary>
+<summary>Какую роль do message queues play in Reactive Systems, and what characteristics are most important for them to have?</summary>
 
-### What role do message queues play in Reactive Systems, and what characteristics are most important for them to have?
+### Какую роль do message queues play in Reactive Systems, and what characteristics are most important for them to have?
 
 **Definition:**
 
@@ -781,9 +781,9 @@ Reactive Streams — маленькая спецификация совмест�
 </details>
 
 <details>
-<summary>What are some common challenges faced when integrating Reactive Systems with non-reactive legacy systems, and how can they be mitigated?</summary>
+<summary>Что такое some common challenges faced when integrating Reactive Systems with non-Reactive leGAcy systems, and how can they be mitiGAted?</summary>
 
-### What are some common challenges faced when integrating Reactive Systems with non-reactive legacy systems, and how can they be mitigated?
+### Что такое some common challenges faced when integrating Reactive Systems with non-Reactive leGAcy systems, and how can they be mitiGAted?
 
 **Definition:**
 

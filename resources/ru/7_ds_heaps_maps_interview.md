@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Heaps And Maps](https://devinterview.io/ques
 ### Basic Heap Concepts
 
 <details>
-<summary>What is a Heap?</summary>
+<summary>Что такое heap?</summary>
 
-### What is a Heap?
+### Что такое heap?
 
 **Definition:**
 
@@ -41,9 +41,9 @@ Questions from [Devinterview.io — Heaps And Maps](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>What is a Priority Queue?</summary>
+<summary>Что такое priority queue?</summary>
 
-### What is a Priority Queue?
+### Что такое priority queue?
 
 **Definition:**
 
@@ -58,9 +58,9 @@ Questions from [Devinterview.io — Heaps And Maps](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>How does the Binary Heap property differ between a max heap and a min heap?</summary>
+<summary>Чем двоичное свойство heap отличается для значений max heap и min heap?</summary>
 
-### How does the Binary Heap property differ between a max heap and a min heap?
+### Чем двоичное свойство heap отличается для значений max heap и min heap?
 
 **Definition:**
 
@@ -75,9 +75,9 @@ Questions from [Devinterview.io — Heaps And Maps](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>Can you explain heap property maintenance after an Insert operation and a Delete operation?</summary>
+<summary>Можете ли вы объяснить обслуживание heap после операции вставки AND операции удаления?</summary>
 
-### Can you explain heap property maintenance after an Insert operation and a Delete operation?
+### Можете ли вы объяснить обслуживание heap после операции вставки AND операции удаления?
 
 **Definition:**
 
@@ -96,9 +96,9 @@ Questions from [Devinterview.io — Heaps And Maps](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>Insert an item into the Heap. Explain your actions.</summary>
+<summary>Вставьте an item into the heap. Explain your actions.</summary>
 
-### Insert an item into the Heap. Explain your actions.
+### Вставьте an item into the heap. Explain your actions.
 
 **Definition:**
 
@@ -119,9 +119,9 @@ Questions from [Devinterview.io — Heaps And Maps](https://devinterview.io/ques
 ### Heaps Implementation and Optimization
 
 <details>
-<summary>Compare Heaps-Based vs. Arrays-Based priority queue implementations.</summary>
+<summary>Сравните реализации heaps-Based и arrays-Based priority queue.</summary>
 
-### Compare Heaps-Based vs. Arrays-Based priority queue implementations.
+### Сравните реализации heaps-Based и arrays-Based priority queue.
 
 **Definition:**
 
@@ -136,9 +136,9 @@ Questions from [Devinterview.io — Heaps And Maps](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>How can you implement a heap efficiently using Dynamic Arrays?</summary>
+<summary>Как можно эффективно реализовать heap, используя динамический arrays?</summary>
 
-### How can you implement a heap efficiently using Dynamic Arrays?
+### Как можно эффективно реализовать heap, используя динамический arrays?
 
 **Definition:**
 
@@ -153,9 +153,9 @@ Questions from [Devinterview.io — Heaps And Maps](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>Name some ways to implement Priority Queue.</summary>
+<summary>Назовите some ways to implement priority queue.</summary>
 
-### Name some ways to implement Priority Queue.
+### Назовите some ways to implement priority queue.
 
 **Definition:**
 
@@ -170,9 +170,9 @@ Questions from [Devinterview.io — Heaps And Maps](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>How does the Lazy deletion technique work in a heap and what is its purpose?</summary>
+<summary>Как the Lazy deletion technique work in a heap and what is its puRPOse?</summary>
 
-### How does the Lazy deletion technique work in a heap and what is its purpose?
+### Как the Lazy deletion technique work in a heap and what is its puRPOse?
 
 **Definition:**
 
@@ -187,9 +187,9 @@ Questions from [Devinterview.io — Heaps And Maps](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>Explain Heapify and where it is used in heap operations.</summary>
+<summary>Объясните heapify и где он используется в операциях heap.</summary>
 
-### Explain Heapify and where it is used in heap operations.
+### Объясните heapify и где он используется в операциях heap.
 
 **Definition:**
 
@@ -206,9 +206,9 @@ Heapify восстанавливает порядок кучи в одном п�
 ### Heaps Sorting and Algorithms
 
 <details>
-<summary>What is Heap Sort?</summary>
+<summary>Что такое heap sort?</summary>
 
-### What is Heap Sort?
+### Что такое heap sort?
 
 **Definition:**
 
@@ -227,9 +227,9 @@ Heapsort строит макс-кучу и затем раз за разом м�
 </details>
 
 <details>
-<summary>How does Heap Sort compare to Quick Sort in terms of speed and memory usage?</summary>
+<summary>Как heap sort соотносится с Quick Sort с точки зрения скорости и использования памяти?</summary>
 
-### How does Heap Sort compare to Quick Sort in terms of speed and memory usage?
+### Как heap sort соотносится с Quick Sort с точки зрения скорости и использования памяти?
 
 **Definition:**
 
@@ -244,9 +244,9 @@ Heapsort гарантирует время O(n log n) и дополнитель�
 </details>
 
 <details>
-<summary>Describe the algorithm for Merging k Sorted Arrays using a heap.</summary>
+<summary>Опишите алгоритм объединения k отсортированных arrays с использованием heap.</summary>
 
-### Describe the algorithm for Merging k Sorted Arrays using a heap.
+### Опишите алгоритм объединения k отсортированных arrays с использованием heap.
 
 **Definition:**
 
@@ -265,9 +265,9 @@ Heapsort гарантирует время O(n log n) и дополнитель�
 </details>
 
 <details>
-<summary>Implement a heap that efficiently supports Find-Max and Find-Min operations.</summary>
+<summary>Реализуйте a heap that efficiently supports Find-Max and Find-Min operations.</summary>
 
-### Implement a heap that efficiently supports Find-Max and Find-Min operations.
+### Реализуйте a heap that efficiently supports Find-Max and Find-Min operations.
 
 **Definition:**
 
@@ -284,9 +284,9 @@ Heapsort гарантирует время O(n log n) и дополнитель�
 ### Heap Applications
 
 <details>
-<summary>What are some Practical Applications of Heaps?</summary>
+<summary>Что такое some Practical Applications of heaps?</summary>
 
-### What are some Practical Applications of Heaps?
+### Что такое some Practical Applications of heaps?
 
 **Definition:**
 
@@ -301,9 +301,9 @@ Heapsort гарантирует время O(n log n) и дополнитель�
 </details>
 
 <details>
-<summary>How is a heap used in the Huffman Coding algorithm?</summary>
+<summary>Как a heap used in the Huffman Coding alGorithm?</summary>
 
-### How is a heap used in the Huffman Coding algorithm?
+### Как a heap used in the Huffman Coding alGorithm?
 
 **Definition:**
 
@@ -323,9 +323,9 @@ https://docs.python.org/3/library/heapq.html
 </details>
 
 <details>
-<summary>Explain how heaps are used in Real-Time Scheduling systems.</summary>
+<summary>Объясните, как heaps используются в системах планирования в реальном времени.</summary>
 
-### Explain how heaps are used in Real-Time Scheduling systems.
+### Объясните, как heaps используются в системах планирования в реальном времени.
 
 **Definition:**
 
@@ -349,9 +349,9 @@ https://en.wikipedia.org/wiki/Binary_heap
 </details>
 
 <details>
-<summary>Discuss how heaps can manage efficiently Data Stream Median Finding.</summary>
+<summary>Обсудите, как heaps может эффективно управлять поиском медианы потока данных.</summary>
 
-### Discuss how heaps can manage efficiently Data Stream Median Finding.
+### Обсудите, как heaps может эффективно управлять поиском медианы потока данных.
 
 **Definition:**
 
@@ -379,9 +379,9 @@ https://docs.python.org/3/library/heapq.html
 ### Heaps Comparison and Choice
 
 <details>
-<summary>What are the advantages of Heaps over Sorted Arrays?</summary>
+<summary>Что такое the advantages of heaps over Sorted arrays?</summary>
 
-### What are the advantages of Heaps over Sorted Arrays?
+### Что такое the advantages of heaps over Sorted arrays?
 
 **Definition:**
 
@@ -405,9 +405,9 @@ https://docs.python.org/3/library/heapq.html
 </details>
 
 <details>
-<summary>What is the difference between Heap and Red-Black Tree?</summary>
+<summary>Что такое the difference between heap and red-black tree?</summary>
 
-### What is the difference between Heap and Red-Black Tree?
+### Что такое the difference between heap and red-black tree?
 
 **Definition:**
 
@@ -431,9 +431,9 @@ https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeMap.h
 </details>
 
 <details>
-<summary>When would you choose a Fibonacci Heap over a Binary Heap?</summary>
+<summary>Когда would you choose a Fibonacci heap over a Binary heap?</summary>
 
-### When would you choose a Fibonacci Heap over a Binary Heap?
+### Когда would you choose a Fibonacci heap over a Binary heap?
 
 **Definition:**
 
@@ -457,9 +457,9 @@ https://en.wikipedia.org/wiki/Binary_heap
 </details>
 
 <details>
-<summary>What situations might call for using a Binomial Heap?</summary>
+<summary>В каких ситуациях уместно использовать binomial heap?</summary>
 
-### What situations might call for using a Binomial Heap?
+### В каких ситуациях уместно использовать binomial heap?
 
 **Definition:**
 
@@ -483,9 +483,9 @@ https://en.wikipedia.org/wiki/Binary_heap
 </details>
 
 <details>
-<summary>Compare and contrast the use cases of Min-Heaps vs. Max-Heaps.</summary>
+<summary>Сравните AND с вариантами использования min-heap и max-heap.</summary>
 
-### Compare and contrast the use cases of Min-Heaps vs. Max-Heaps.
+### Сравните AND с вариантами использования min-heap и max-heap.
 
 **Definition:**
 
@@ -511,9 +511,9 @@ https://en.wikipedia.org/wiki/Binary_heap
 ### Heap Operations and Challenges
 
 <details>
-<summary>Find 100 largest numbers in an Array of 1 billion numbers.</summary>
+<summary>Найдите 100 самых больших чисел в array из 1 миллиарда чисел.</summary>
 
-### Find 100 largest numbers in an Array of 1 billion numbers.
+### Найдите 100 самых больших чисел в array из 1 миллиарда чисел.
 
 **Definition:**
 
@@ -543,9 +543,9 @@ https://docs.python.org/3/library/heapq.html
 </details>
 
 <details>
-<summary>Implement the operation Decrease-Key in a Binary Heap, and discuss its complexity.</summary>
+<summary>Реализуйте the operation Decrease-Key in a Binary heap, and discuss its complexity.</summary>
 
-### Implement the operation Decrease-Key in a Binary Heap, and discuss its complexity.
+### Реализуйте the operation Decrease-Key in a Binary heap, and discuss its complexity.
 
 **Definition:**
 
@@ -566,9 +566,9 @@ https://en.wikipedia.org/wiki/Fibonacci_heap
 </details>
 
 <details>
-<summary>Solve the Kth Smallest Element in a Min Heap without modifying the heap.</summary>
+<summary>Решите the Kth Smallest Element in a Min heap without modifying the heap.</summary>
 
-### Solve the Kth Smallest Element in a Min Heap without modifying the heap.
+### Решите the Kth Smallest Element in a Min heap without modifying the heap.
 
 **Definition:**
 
@@ -600,9 +600,9 @@ https://en.wikipedia.org/wiki/Binary_heap
 </details>
 
 <details>
-<summary>How could you implement a heap which supports the operation of Deleting any element (not only the root)?</summary>
+<summary>Как вы могли бы реализовать heap, который поддерживает операцию удаления любого элемента (не только корневого)?</summary>
 
-### How could you implement a heap which supports the operation of Deleting any element (not only the root)?
+### Как вы могли бы реализовать heap, который поддерживает операцию удаления любого элемента (не только корневого)?
 
 **Definition:**
 
@@ -624,9 +624,9 @@ https://en.wikipedia.org/wiki/Binary_heap
 ### Map Data Structures Basics
 
 <details>
-<summary>Define a Map data structure and explain how it differs from a Heap.</summary>
+<summary>Определите структуру данных Map AND, объясните, чем она отличается от heap.</summary>
 
-### Define a Map data structure and explain how it differs from a Heap.
+### Определите структуру данных Map AND, объясните, чем она отличается от heap.
 
 **Definition:**
 
@@ -651,9 +651,9 @@ https://docs.python.org/3/library/heapq.html
 </details>
 
 <details>
-<summary>What is a Hash Map, and how does it work internally?</summary>
+<summary>Что такое Hash Map, and how does it work internally?</summary>
 
-### What is a Hash Map, and how does it work internally?
+### Что такое Hash Map, and how does it work internally?
 
 **Definition:**
 
@@ -673,9 +673,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>Discuss various collision resolution strategies in a Hash Map.</summary>
+<summary>Обсудите различные стратегии разрешения коллизий в hash и Map.</summary>
 
-### Discuss various collision resolution strategies in a Hash Map.
+### Обсудите различные стратегии разрешения коллизий в hash и Map.
 
 **Definition:**
 
@@ -697,9 +697,9 @@ https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.h
 ### Map Data Structures Implementation
 
 <details>
-<summary>Implement a simple Hash Map with Chaining for collision resolution.</summary>
+<summary>Реализуйте a simple Hash Map with chaining for collision resolution.</summary>
 
-### Implement a simple Hash Map with Chaining for collision resolution.
+### Реализуйте a simple Hash Map with chaining for collision resolution.
 
 **Definition:**
 
@@ -731,9 +731,9 @@ https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.h
 </details>
 
 <details>
-<summary>How does a Tree Map work, and when would you use it over a hash map?</summary>
+<summary>Как работает Tree Map и когда бы вы использовали его вместо hash Map?</summary>
 
-### How does a Tree Map work, and when would you use it over a hash map?
+### Как работает Tree Map и когда бы вы использовали его вместо hash Map?
 
 **Definition:**
 
@@ -753,9 +753,9 @@ https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.h
 </details>
 
 <details>
-<summary>Could you implement a map using an Array? If so, what would be the limitations?</summary>
+<summary>Можете ли вы реализовать Map с помощью array? Если да, то каковы будут ограничения?</summary>
 
-### Could you implement a map using an Array? If so, what would be the limitations?
+### Можете ли вы реализовать Map с помощью array? Если да, то каковы будут ограничения?
 
 **Definition:**
 
@@ -781,9 +781,9 @@ https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.h
 ### Maps Operations and Complexities
 
 <details>
-<summary>What is the average-case and worst-case Time Complexity for operations in a Hash Map?</summary>
+<summary>Что такое the average-case and worst-case time complexity for operations in a Hash Map?</summary>
 
-### What is the average-case and worst-case Time Complexity for operations in a Hash Map?
+### Что такое the average-case and worst-case time complexity for operations in a Hash Map?
 
 **Definition:**
 
@@ -804,9 +804,9 @@ https://en.wikipedia.org/wiki/Cuckoo_hashing
 </details>
 
 <details>
-<summary>How do Cuckoo Hashing and Linear Probing improve Hash Map performance?</summary>
+<summary>Как Cuckoo hashing и линейное зондирование улучшают производительность hash и Map?</summary>
 
-### How do Cuckoo Hashing and Linear Probing improve Hash Map performance?
+### Как Cuckoo hashing и линейное зондирование улучшают производительность hash и Map?
 
 **Definition:**
 
@@ -830,9 +830,9 @@ https://en.wikipedia.org/wiki/Hash_table
 </details>
 
 <details>
-<summary>Explain the impact of the Load Factor on a Hash Map’s performance.</summary>
+<summary>Объясните, как load factor влияет на производительность hash и Map.</summary>
 
-### Explain the impact of the Load Factor on a Hash Map’s performance.
+### Объясните, как load factor влияет на производительность hash и Map.
 
 **Definition:**
 
@@ -855,9 +855,9 @@ https://en.wikipedia.org/wiki/Cuckoo_hashing
 ### Maps in Algorithms and Applications
 
 <details>
-<summary>Describe a scenario where a Map is used in a Caching System (like LRUCache).</summary>
+<summary>Опишите сценарий, в котором Map используется в системе caching (например, LRUcache).</summary>
 
-### Describe a scenario where a Map is used in a Caching System (like LRUCache).
+### Опишите сценарий, в котором Map используется в системе caching (например, LRUcache).
 
 **Definition:**
 
@@ -878,9 +878,9 @@ https://en.wikipedia.org/wiki/Consistent_hashing
 </details>
 
 <details>
-<summary>How are maps used in the implementation of Graph Data Structures like adjacency lists?</summary>
+<summary>Как Maps используются при реализации структур данных graph, таких как списки смежности?</summary>
 
-### How are maps used in the implementation of Graph Data Structures like adjacency lists?
+### Как Maps используются при реализации структур данных graph, таких как списки смежности?
 
 **Definition:**
 
@@ -900,9 +900,9 @@ https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeMap.h
 </details>
 
 <details>
-<summary>Discuss the role of maps in constructing an efficient Word Dictionary or Inverted Index.</summary>
+<summary>Обсудите роль Maps в создании эффективного словаря слов или инвертированного индекса.</summary>
 
-### Discuss the role of maps in constructing an efficient Word Dictionary or Inverted Index.
+### Обсудите роль Maps в создании эффективного словаря слов или инвертированного индекса.
 
 **Definition:**
 
@@ -925,9 +925,9 @@ https://docs.python.org/3/library/heapq.html
 ### Maps and Heaps Coding Challenges
 
 <details>
-<summary>Design a data structure that supports the following operations: Insertion, Deletion, Get-Random Element, where all operations have equal probability using both Heaps and Maps.</summary>
+<summary>Разработайте структуру данных, которая поддерживает следующие операции: вставка, удаление, получение случайного элемента, где все операции имеют равную вероятность, используя как heaps, так и Map.</summary>
 
-### Design a data structure that supports the following operations: Insertion, Deletion, Get-Random Element, where all operations have equal probability using both Heaps and Maps.
+### Разработайте структуру данных, которая поддерживает следующие операции: вставка, удаление, получение случайного элемента, где все операции имеют равную вероятность, используя как heaps, так и Map.
 
 **Definition:**
 
@@ -951,9 +951,9 @@ https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.h
 </details>
 
 <details>
-<summary>Implement a Counter Map to find and list the k most frequent elements in an array.</summary>
+<summary>Реализуйте a Counter Map to find and list the k most frequent elements in an array.</summary>
 
-### Implement a Counter Map to find and list the k most frequent elements in an array.
+### Реализуйте a Counter Map to find and list the k most frequent elements in an array.
 
 **Definition:**
 
@@ -982,9 +982,9 @@ https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.h
 </details>
 
 <details>
-<summary>Write a solution for the Sliding Window Maximum problem using Heaps.</summary>
+<summary>Напишите a solution for the sliding window Maximum problem using heaps.</summary>
 
-### Write a solution for the Sliding Window Maximum problem using Heaps.
+### Напишите a solution for the sliding window Maximum problem using heaps.
 
 **Definition:**
 
@@ -1015,9 +1015,9 @@ https://docs.python.org/3/library/heapq.html
 </details>
 
 <details>
-<summary>Solve the Top K Frequent Words problem with a combination of Heap and Map data structures.</summary>
+<summary>Решите the Top K Frequent Words problem with a combination of heap and Map data structures.</summary>
 
-### Solve the Top K Frequent Words problem with a combination of Heap and Map data structures.
+### Решите the Top K Frequent Words problem with a combination of heap and Map data structures.
 
 **Definition:**
 
@@ -1037,9 +1037,9 @@ https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.h
 </details>
 
 <details>
-<summary>Design a Leaderboard system that supports fast player score updates and rank retrieval using both Heaps and Maps.</summary>
+<summary>Разработайте систему лидеров, которая поддерживает быстрое обновление очков игроков и ранжирование reTrieval, используя как heaps, так и Map.</summary>
 
-### Design a Leaderboard system that supports fast player score updates and rank retrieval using both Heaps and Maps.
+### Разработайте систему лидеров, которая поддерживает быстрое обновление очков игроков и ранжирование reTrieval, используя как heaps, так и Map.
 
 **Definition:**
 

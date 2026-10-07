@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Trie Data Structure](https://devinterview.io
 ### Understanding Tries
 
 <details>
-<summary>What is a Trie?</summary>
+<summary>Что такое Trie?</summary>
 
-### What is a Trie?
+### Что такое Trie?
 
 **Definition:**
 
@@ -41,9 +41,9 @@ Trie — дерево символов. Каждое ребро — один с�
 </details>
 
 <details>
-<summary>What are the advantages of Tries over Hash Tables?</summary>
+<summary>Что такое the advantages of tries over hash tables?</summary>
 
-### What are the advantages of Tries over Hash Tables?
+### Что такое the advantages of tries over hash tables?
 
 **Definition:**
 
@@ -58,9 +58,9 @@ Trie находит каждый ключ с заданным префиксом
 </details>
 
 <details>
-<summary>What are Advantages and Disadvantages of a Trie?</summary>
+<summary>Что такое Advantages and Disadvantages of a Trie?</summary>
 
-### What are Advantages and Disadvantages of a Trie?
+### Что такое Advantages and Disadvantages of a Trie?
 
 **Definition:**
 
@@ -75,9 +75,9 @@ Trie сильны на префиксах и общей структуре. Он
 </details>
 
 <details>
-<summary>How do you handle the case sensitivity problem in Tries?</summary>
+<summary>Как вы решаете проблему с case sensitivity в Tries?</summary>
 
-### How do you handle the case sensitivity problem in Tries?
+### Как вы решаете проблему с case sensitivity в Tries?
 
 **Definition:**
 
@@ -94,9 +94,9 @@ Trie сильны на префиксах и общей структуре. Он
 ### Applications and Use Cases of Tries
 
 <details>
-<summary>What are some Practical Applications of a Trie?</summary>
+<summary>Что такое some Practical Applications of a Trie?</summary>
 
-### What are some Practical Applications of a Trie?
+### Что такое some Practical Applications of a Trie?
 
 **Definition:**
 
@@ -111,9 +111,9 @@ Trie используют там, где следующий символ суж�
 </details>
 
 <details>
-<summary>Describe how a Trie can be used for implementing autocomplete functionality.</summary>
+<summary>Опишите, как можно использовать Trie для реализации функций autocomplete.</summary>
 
-### Describe how a Trie can be used for implementing autocomplete functionality.
+### Опишите, как можно использовать Trie для реализации функций autocomplete.
 
 **Definition:**
 
@@ -132,9 +132,9 @@ Trie используют там, где следующий символ суж�
 </details>
 
 <details>
-<summary>Explain the use of a Trie in IP Routing to match IP prefixes.</summary>
+<summary>Объясните, как использовать Trie в IP Routing для сопоставления IP-префиксов.</summary>
 
-### Explain the use of a Trie in IP Routing to match IP prefixes.
+### Объясните, как использовать Trie в IP Routing для сопоставления IP-префиксов.
 
 **Definition:**
 
@@ -153,9 +153,9 @@ Trie маршрутизации идёт по битам адреса назна
 </details>
 
 <details>
-<summary>How is a Trie used in text spell-checking and correction systems?</summary>
+<summary>Как a Trie used in text spell-checking and correction systems?</summary>
 
-### How is a Trie used in text spell-checking and correction systems?
+### Как a Trie used in text spell-checking and correction systems?
 
 **Definition:**
 
@@ -172,9 +172,9 @@ Trie маршрутизации идёт по битам адреса назна
 ### Implementation and Operations in Tries
 
 <details>
-<summary>Name some Trie Implementation strategies.</summary>
+<summary>Назовите some Trie Implementation strategies.</summary>
 
-### Name some Trie Implementation strategies.
+### Назовите some Trie Implementation strategies.
 
 **Definition:**
 
@@ -189,9 +189,9 @@ Trie маршрутизации идёт по битам адреса назна
 </details>
 
 <details>
-<summary>Write the code to insert a word into a Trie.</summary>
+<summary>Напишите the code to insert a word into a Trie.</summary>
 
-### Write the code to insert a word into a Trie.
+### Напишите the code to insert a word into a Trie.
 
 **Definition:**
 
@@ -216,9 +216,9 @@ def insert(root, word):
 </details>
 
 <details>
-<summary>Implement a Search function to determine if a word is included in a Trie.</summary>
+<summary>Реализуйте a Search function to determine if a word is included in a Trie.</summary>
 
-### Implement a Search function to determine if a word is included in a Trie.
+### Реализуйте a Search function to determine if a word is included in a Trie.
 
 **Definition:**
 
@@ -247,9 +247,9 @@ def search(root, word):
 </details>
 
 <details>
-<summary>Write a script to Delete a word from a Trie.</summary>
+<summary>Напишите a script to Delete a word from a Trie.</summary>
 
-### Write a script to Delete a word from a Trie.
+### Напишите a script to Delete a word from a Trie.
 
 **Definition:**
 
@@ -283,9 +283,9 @@ def delete(node, word, i=0):
 ### Trie Variants and Comparison with Other Data Structures
 
 <details>
-<summary>Compare Trie vs. Binary Search Tree.</summary>
+<summary>Сравните trie и binary search tree.</summary>
 
-### Compare Trie vs. Binary Search Tree.
+### Сравните trie и binary search tree.
 
 **Definition:**
 
@@ -300,9 +300,9 @@ Trie ветвится по следующему символу. BST ветвит
 </details>
 
 <details>
-<summary>How to choose between a Hash Table and a Trie?</summary>
+<summary>Как choose between a hash table and a Trie?</summary>
 
-### How to choose between a Hash Table and a Trie?
+### Как choose between a hash table and a Trie?
 
 **Definition:**
 
@@ -317,9 +317,9 @@ Trie ветвится по следующему символу. BST ветвит
 </details>
 
 <details>
-<summary>What is a Suffix Trie, and how does it differ from a standard Trie?</summary>
+<summary>Что такое Suffix Trie, and how does it differ from a standard Trie?</summary>
 
-### What is a Suffix Trie, and how does it differ from a standard Trie?
+### Что такое Suffix Trie, and how does it differ from a standard Trie?
 
 **Definition:**
 
@@ -338,9 +338,9 @@ Trie ветвится по следующему символу. BST ветвит
 </details>
 
 <details>
-<summary>How does a Compressed Trie or Radix Tree improve on a standard Trie structure?</summary>
+<summary>Чем Compressed Trie или Radix Tree улучшают стандартную конструкцию Trie?</summary>
 
-### How does a Compressed Trie or Radix Tree improve on a standard Trie structure?
+### Чем Compressed Trie или Radix Tree улучшают стандартную конструкцию Trie?
 
 **Definition:**
 
@@ -369,9 +369,9 @@ https://en.wikipedia.org/wiki/Trie
 ### Advanced Operations in Tries
 
 <details>
-<summary>Find the longest common prefix among a set of strings using a Trie.</summary>
+<summary>Найдите самый длинный общий префикс среди набора строк, используя Trie.</summary>
 
-### Find the longest common prefix among a set of strings using a Trie.
+### Найдите самый длинный общий префикс среди набора строк, используя Trie.
 
 **Definition:**
 
@@ -398,9 +398,9 @@ https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
-<summary>Implement an algorithm to count the total number of words stored in a Trie.</summary>
+<summary>Реализуйте an alGorithm to count the total number of words stored in a Trie.</summary>
 
-### Implement an algorithm to count the total number of words stored in a Trie.
+### Реализуйте an alGorithm to count the total number of words stored in a Trie.
 
 **Definition:**
 
@@ -429,9 +429,9 @@ https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
-<summary>List all words with a given prefix stored in a Trie.</summary>
+<summary>Перечислите all words with a given prefix stored in a Trie.</summary>
 
-### List all words with a given prefix stored in a Trie.
+### Перечислите all words with a given prefix stored in a Trie.
 
 **Definition:**
 
@@ -472,9 +472,9 @@ https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
-<summary>Write an algorithm for the word search in a matrix grid using a Trie.</summary>
+<summary>Напишите an alGorithm for the word search in a matrix grid using a Trie.</summary>
 
-### Write an algorithm for the word search in a matrix grid using a Trie.
+### Напишите an alGorithm for the word search in a matrix grid using a Trie.
 
 **Definition:**
 
@@ -504,9 +504,9 @@ https://en.wikipedia.org/wiki/Trie
 ### Optimization and Efficiency
 
 <details>
-<summary>How can using a Trie reduce the time complexity of searching for a word in a dataset?</summary>
+<summary>Как с помощью Trie можно сократить время поиска слова в наборе данных с помощью time complexity?</summary>
 
-### How can using a Trie reduce the time complexity of searching for a word in a dataset?
+### Как с помощью Trie можно сократить время поиска слова в наборе данных с помощью time complexity?
 
 **Definition:**
 
@@ -529,9 +529,9 @@ https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
-<summary>Discuss the space optimizations that can be made in a Trie.</summary>
+<summary>Обсудите оптимизацию пространства, которая может быть произведена в Trie.</summary>
 
-### Discuss the space optimizations that can be made in a Trie.
+### Обсудите оптимизацию пространства, которая может быть произведена в Trie.
 
 **Definition:**
 
@@ -554,9 +554,9 @@ https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
-<summary>What is Memory Pooling, and how can it make Trie operations more efficient?</summary>
+<summary>Что такое Memory Pooling, and how can it make Trie operations more efficient?</summary>
 
-### What is Memory Pooling, and how can it make Trie operations more efficient?
+### Что такое Memory Pooling, and how can it make Trie operations more efficient?
 
 **Definition:**
 
@@ -581,9 +581,9 @@ https://en.wikipedia.org/wiki/Trie
 ### Implementation Challenges
 
 <details>
-<summary>How would you serialize and deserialize a trie?</summary>
+<summary>Как бы вы serialize and deserialize a Trie?</summary>
 
-### How would you serialize and deserialize a trie?
+### Как бы вы serialize and deserialize a Trie?
 
 **Definition:**
 
@@ -612,9 +612,9 @@ https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
-<summary>Implement a Trie that supports wildcard characters ‘?’ and ‘*’ for pattern matching.</summary>
+<summary>Реализуйте a Trie that supports wildcard characters ‘?’ and ‘*’ for pattern matching.</summary>
 
-### Implement a Trie that supports wildcard characters ‘?’ and ‘*’ for pattern matching.
+### Реализуйте a Trie that supports wildcard characters ‘?’ and ‘*’ for pattern matching.
 
 **Definition:**
 
@@ -661,9 +661,9 @@ https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
-<summary>Implement a Trie backed Subsequence Indexing system for a rapid text searching.</summary>
+<summary>Реализуйте a Trie backed Subsequence Indexing system for a rAPId text searching.</summary>
 
-### Implement a Trie backed Subsequence Indexing system for a rapid text searching.
+### Реализуйте a Trie backed Subsequence Indexing system for a rAPId text searching.
 
 **Definition:**
 
@@ -686,9 +686,9 @@ https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
-<summary>Design a Trie that supports insert, search, and startsWith operations efficiently.</summary>
+<summary>Разработайте Trie, который эффективно поддерживает операции вставки, поиска и startsWith.</summary>
 
-### Design a Trie that supports insert, search, and startsWith operations efficiently.
+### Разработайте Trie, который эффективно поддерживает операции вставки, поиска и startsWith.
 
 **Definition:**
 
@@ -724,9 +724,9 @@ https://en.wikipedia.org/wiki/Trie
 </details>
 
 <details>
-<summary>How can a Balanced Trie be achieved, and what are the factors affecting the balance?</summary>
+<summary>Как можно достичь Balanced Trie и какие факторы влияют на баланс?</summary>
 
-### How can a Balanced Trie be achieved, and what are the factors affecting the balance?
+### Как можно достичь Balanced Trie и какие факторы влияют на баланс?
 
 **Definition:**
 

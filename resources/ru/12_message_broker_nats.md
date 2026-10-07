@@ -38,12 +38,12 @@ NATS: subjects, pub/sub, request-reply и JetStream persistence.
 **Core NATS vs JetStream:**
 
 
-| Core NATS                         | JetStream                                       |
-|  --------  |  ---------------------------------  |
-| Delivery | Fire-and-forget pub/sub           | Persistent streams с ack                        |
-| Replay   | Нет                               | Да — stream retention                           |
-| Latency  | Sub-millisecond, миллионы msg/s   | Durability trade-off                            |
-| Use      | Service mesh, telemetry, commands | Work queues с persistence без полного Kafka ops |
+| | Core NATS                         | JetStream                                       |
+| | --------  |  ---------------------------------  |
+| | Delivery | Fire-and-forget pub/sub           | Persistent streams с ack                        |
+| | Replay   | Нет                               | Да — stream retention                           |
+| | Latency  | Sub-millisecond, миллионы msg/s   | Durability trade-off                            |
+| | Use      | Service mesh, telemetry, commands | Work queues с persistence без полного Kafka ops |
 
 **When to use:**
 

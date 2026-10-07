@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Apache Spark](https://devinterview.io/questi
 ### Spark Fundamentals
 
 <details>
-<summary>What is Apache Spark and what are its main components?</summary>
+<summary>Что такое Apache Spark and what are its main components?</summary>
 
-### What is Apache Spark and what are its main components?
+### Что такое Apache Spark and what are its main components?
 
 **Definition:**
 
@@ -47,9 +47,9 @@ SparkSession
 </details>
 
 <details>
-<summary>Explain how Apache Spark differs from Hadoop MapReduce.</summary>
+<summary>Объясните how Apache Spark differs from Hadoop MapReduce.</summary>
 
-### Explain how Apache Spark differs from Hadoop MapReduce.
+### Объясните how Apache Spark differs from Hadoop MapReduce.
 
 **Definition:**
 
@@ -65,9 +65,9 @@ SparkSession
 </details>
 
 <details>
-<summary>Describe the concept of RDDs (Resilient Distributed Datasets) in Spark.</summary>
+<summary>Опишите the concept of RDDs (Resilient Distributed Datasets) in Spark.</summary>
 
-### Describe the concept of RDDs (Resilient Distributed Datasets) in Spark.
+### Опишите the concept of RDDs (Resilient Distributed Datasets) in Spark.
 
 **Definition:**
 
@@ -82,9 +82,9 @@ RDD — неизменяемая коллекция, разрезанная на
 </details>
 
 <details>
-<summary>What are DataFrames in Spark and how do they compare to RDDs?</summary>
+<summary>Что такое DataFrames in Spark and how do they compare to RDDs?</summary>
 
-### What are DataFrames in Spark and how do they compare to RDDs?
+### Что такое DataFrames in Spark and how do they compare to RDDs?
 
 **Definition:**
 
@@ -107,9 +107,9 @@ events.filter(col("day") == "2026-10-04").groupBy("path").count()
 </details>
 
 <details>
-<summary>What is lazy evaluation and how does it benefit Spark computations?</summary>
+<summary>Что такое lazy evaluation and how does it benefit Spark computations?</summary>
 
-### What is lazy evaluation and how does it benefit Spark computations?
+### Что такое lazy evaluation and how does it benefit Spark computations?
 
 **Definition:**
 
@@ -132,9 +132,9 @@ df2.count()                                # одна задача: чтение
 </details>
 
 <details>
-<summary>How does Spark achieve fault tolerance?</summary>
+<summary>Как Spark achieve fault tolerance?</summary>
 
-### How does Spark achieve fault tolerance?
+### Как Spark achieve fault tolerance?
 
 **Definition:**
 
@@ -150,9 +150,9 @@ Spark считает потерянную партицию тем, что нуж
 </details>
 
 <details>
-<summary>What is the role of Spark Driver and Executors?</summary>
+<summary>Что такое the role of Spark Driver and Executors?</summary>
 
-### What is the role of Spark Driver and Executors?
+### Что такое the role of Spark Driver and Executors?
 
 **Definition:**
 
@@ -167,9 +167,9 @@ Spark считает потерянную партицию тем, что нуж
 </details>
 
 <details>
-<summary>How does Spark's DAG (Directed Acyclic Graph) Scheduler work?</summary>
+<summary>Как Spark's DAG (Directed Acyclic graph) Scheduler work?</summary>
 
-### How does Spark's DAG (Directed Acyclic Graph) Scheduler work?
+### Как Spark's DAG (Directed Acyclic graph) Scheduler work?
 
 **Definition:**
 
@@ -194,9 +194,9 @@ count                          стадия 2
 ### Spark Architecture and Ecosystem
 
 <details>
-<summary>Explain the concept of a Spark Session and its purpose.</summary>
+<summary>Объясните the concept of a Spark Session and its puRPOse.</summary>
 
-### Explain the concept of a Spark Session and its purpose.
+### Объясните the concept of a Spark Session and its puRPOse.
 
 **Definition:**
 
@@ -219,9 +219,9 @@ spark.sql("SELECT path, count(*) FROM events GROUP BY path")
 </details>
 
 <details>
-<summary>How does Spark integrate with Hadoop components like HDFS and YARN?</summary>
+<summary>Как Spark integrate with Hadoop components like HDFS and YARN?</summary>
 
-### How does Spark integrate with Hadoop components like HDFS and YARN?
+### Как Spark integrate with Hadoop components like HDFS and YARN?
 
 **Definition:**
 
@@ -236,9 +236,9 @@ Spark читает и пишет HDFS через файловые API Hadoop и 
 </details>
 
 <details>
-<summary>Describe the various ways to run Spark applications (cluster, client, local modes).</summary>
+<summary>Опишите the various ways to run Spark applications (cluster, client, local modes).</summary>
 
-### Describe the various ways to run Spark applications (cluster, client, local modes).
+### Опишите the various ways to run Spark applications (cluster, client, local modes).
 
 **Definition:**
 
@@ -261,9 +261,9 @@ spark-submit --master yarn --deploy-mode cluster app.py
 </details>
 
 <details>
-<summary>What are Spark's data source APIs and how do you use them?</summary>
+<summary>Что такое Spark's data source APIs and how do you use them?</summary>
 
-### What are Spark's data source APIs and how do you use them?
+### Что такое Spark's data source APIs and how do you use them?
 
 **Definition:**
 
@@ -285,9 +285,9 @@ df.write.mode("overwrite").partitionBy("day").parquet("/out")
 </details>
 
 <details>
-<summary>Discuss the role of accumulators and broadcast variables in Spark.</summary>
+<summary>Обсудите the role of accumulators and broadcast variables in Spark.</summary>
 
-### Discuss the role of accumulators and broadcast variables in Spark.
+### Обсудите the role of accumulators and broadcast variables in Spark.
 
 **Definition:**
 
@@ -317,9 +317,9 @@ amount_usd = lambda row: row.amount / rates.value[row.currency]
 </details>
 
 <details>
-<summary>What is the significance of the Catalyst optimizer in Spark SQL?</summary>
+<summary>Что такое the significance of the Catalyst optimizer in Spark SQL?</summary>
 
-### What is the significance of the Catalyst optimizer in Spark SQL?
+### Что такое the significance of the Catalyst optimizer in Spark SQL?
 
 **Definition:**
 
@@ -342,9 +342,9 @@ SELECT path FROM events WHERE day = '2026-10-04'
 </details>
 
 <details>
-<summary>How does Tungsten contribute to Spark's performance?</summary>
+<summary>Как Tungsten contribute to Spark's performance?</summary>
 
-### How does Tungsten contribute to Spark's performance?
+### Как Tungsten contribute to Spark's performance?
 
 **Definition:**
 
@@ -365,9 +365,9 @@ Tungsten — слой выполнения Spark. Он хранит строки
 ### Spark Programming and APIs
 
 <details>
-<summary>Briefly describe the Spark Core API and its features.</summary>
+<summary>Кратко опишите Spark Core API и его features.</summary>
 
-### Briefly describe the Spark Core API and its features.
+### Кратко опишите Spark Core API и его features.
 
 **Definition:**
 
@@ -394,9 +394,9 @@ val sc = new SparkContext(conf)
 </details>
 
 <details>
-<summary>What are the transformations and actions in Spark RDDs?</summary>
+<summary>Что такое the transformations and actions in Spark RDDs?</summary>
 
-### What are the transformations and actions in Spark RDDs?
+### Что такое the transformations and actions in Spark RDDs?
 
 **Definition:**
 
@@ -424,9 +424,9 @@ totalLength = lineLengths.reduce(lambda a, b: a + b)
 </details>
 
 <details>
-<summary>How do you handle partitioning in Spark to optimize performance?</summary>
+<summary>Как you handle partitioning in Spark to optimize performance?</summary>
 
-### How do you handle partitioning in Spark to optimize performance?
+### Как you handle partitioning in Spark to optimize performance?
 
 **Definition:**
 
@@ -446,9 +446,9 @@ totalLength = lineLengths.reduce(lambda a, b: a + b)
 </details>
 
 <details>
-<summary>Illustrate the differences between map and flatMap functions in Spark.</summary>
+<summary>Проиллюстрируйте the differences between Map and flatMap functions in Spark.</summary>
 
-### Illustrate the differences between map and flatMap functions in Spark.
+### Проиллюстрируйте the differences between Map and flatMap functions in Spark.
 
 **Definition:**
 
@@ -476,9 +476,9 @@ words = lines.flatMap(lambda s: s.split(" "))  # zero or more words per line
 </details>
 
 <details>
-<summary>What are Key-Value pair RDDs, and when would you use them?</summary>
+<summary>Что такое Key-Value pair RDDs, and when would you use them?</summary>
 
-### What are Key-Value pair RDDs, and when would you use them?
+### Что такое Key-Value pair RDDs, and when would you use them?
 
 **Definition:**
 
@@ -509,9 +509,9 @@ counts = pairs.reduceByKey(lambda a, b: a + b)
 </details>
 
 <details>
-<summary>Explain how to perform a join operation in Spark.</summary>
+<summary>Объясните how to perform a join operation in Spark.</summary>
 
-### Explain how to perform a join operation in Spark.
+### Объясните how to perform a join operation in Spark.
 
 **Definition:**
 
@@ -537,9 +537,9 @@ joined = left.join(right)  # (K, V) join (K, W) -> (K, (V, W))
 </details>
 
 <details>
-<summary>Detail how window functions work in Spark SQL.</summary>
+<summary>Подробно опишите, как работают window functions в Spark SQL.</summary>
 
-### Detail how window functions work in Spark SQL.
+### Подробно опишите, как работают window functions в Spark SQL.
 
 **Definition:**
 
@@ -563,9 +563,9 @@ joined = left.join(right)  # (K, V) join (K, W) -> (K, (V, W))
 ### Spark Streaming and Real-Time Processing
 
 <details>
-<summary>Describe the concept of discretized streams (DStreams) in Spark.</summary>
+<summary>Опишите the concept of discretized streams (DStreams) in Spark.</summary>
 
-### Describe the concept of discretized streams (DStreams) in Spark.
+### Опишите the concept of discretized streams (DStreams) in Spark.
 
 **Definition:**
 
@@ -586,9 +586,9 @@ joined = left.join(right)  # (K, V) join (K, W) -> (K, (V, W))
 </details>
 
 <details>
-<summary>How does Structured Streaming differ from DStream-based streaming?</summary>
+<summary>Как Structured Streaming differ from DStream-BASEd streaming?</summary>
 
-### How does Structured Streaming differ from DStream-based streaming?
+### Как Structured Streaming differ from DStream-BASEd streaming?
 
 **Definition:**
 
@@ -610,9 +610,9 @@ Structured Streaming выполняет запрос пакетной формы
 </details>
 
 <details>
-<summary>What are the fault-tolerance mechanisms in Spark Streaming?</summary>
+<summary>Что такое the fault-tolerance mechanisms in Spark Streaming?</summary>
 
-### What are the fault-tolerance mechanisms in Spark Streaming?
+### Что такое the fault-tolerance mechanisms in Spark Streaming?
 
 **Definition:**
 
@@ -635,9 +635,9 @@ Structured Streaming записывает диапазон смещений ка
 </details>
 
 <details>
-<summary>How do you handle late data and stateful processing in Spark Streaming?</summary>
+<summary>Как you handle late data and stateful processing in Spark Streaming?</summary>
 
-### How do you handle late data and stateful processing in Spark Streaming?
+### Как you handle late data and stateful processing in Spark Streaming?
 
 **Definition:**
 
@@ -659,9 +659,9 @@ Structured Streaming записывает диапазон смещений ка
 </details>
 
 <details>
-<summary>Explain watermarks and windowing operations in Structured Streaming.</summary>
+<summary>Объясните watermarks and windowing operations in Structured Streaming.</summary>
 
-### Explain watermarks and windowing operations in Structured Streaming.
+### Объясните watermarks and windowing operations in Structured Streaming.
 
 **Definition:**
 
@@ -695,9 +695,9 @@ query = (df
 ### Performance Tuning and Optimization
 
 <details>
-<summary>What are some common Spark performance issues and how do you resolve them?</summary>
+<summary>Что такое some common Spark performance issues and how do you resolve them?</summary>
 
-### What are some common Spark performance issues and how do you resolve them?
+### Что такое some common Spark performance issues and how do you resolve them?
 
 **Definition:**
 
@@ -717,9 +717,9 @@ query = (df
 </details>
 
 <details>
-<summary>How can you minimize data shuffling in Spark?</summary>
+<summary>Как you minimize data shuffling in Spark?</summary>
 
-### How can you minimize data shuffling in Spark?
+### Как you minimize data shuffling in Spark?
 
 **Definition:**
 
@@ -739,9 +739,9 @@ query = (df
 </details>
 
 <details>
-<summary>Discuss the importance and methods of caching/persistence in Spark.</summary>
+<summary>Обсудите the importance and methods of caching/persistence in Spark.</summary>
 
-### Discuss the importance and methods of caching/persistence in Spark.
+### Обсудите the importance and methods of caching/persistence in Spark.
 
 **Definition:**
 
@@ -767,9 +767,9 @@ lineLengths.persist()
 </details>
 
 <details>
-<summary>Explain how you would monitor and log a Spark application.</summary>
+<summary>Объясните how you would monitor and log a Spark application.</summary>
 
-### Explain how you would monitor and log a Spark application.
+### Объясните how you would monitor and log a Spark application.
 
 **Definition:**
 
@@ -791,9 +791,9 @@ lineLengths.persist()
 </details>
 
 <details>
-<summary>What is the role of partitioner objects in Spark and how do they affect performance?</summary>
+<summary>Что такое the role of partitioner objects in Spark and how do they affect performance?</summary>
 
-### What is the role of partitioner objects in Spark and how do they affect performance?
+### Что такое the role of partitioner objects in Spark and how do they affect performance?
 
 **Definition:**
 
@@ -815,9 +815,9 @@ Partitioner решает, какой ключ попадает в какую п�
 ### Spark MLlib (Machine Learning Library)
 
 <details>
-<summary>What are the main features of Spark MLlib?</summary>
+<summary>Что такое the main features of Spark MLlib?</summary>
 
-### What are the main features of Spark MLlib?
+### Что такое the main features of Spark MLlib?
 
 **Definition:**
 
@@ -837,9 +837,9 @@ MLlib — библиотека машинного обучения Spark. Осн
 </details>
 
 <details>
-<summary>How does Spark MLlib handle machine learning pipelines?</summary>
+<summary>Как Spark MLlib handle machine learning pipelines?</summary>
 
-### How does Spark MLlib handle machine learning pipelines?
+### Как Spark MLlib handle machine learning pipelines?
 
 **Definition:**
 
@@ -860,9 +860,9 @@ MLlib — библиотека машинного обучения Spark. Осн
 </details>
 
 <details>
-<summary>Describe a use case for MLlib's collaborative filtering algorithms.</summary>
+<summary>Опишите a use case for MLlib's collaborative filtering alGorithms.</summary>
 
-### Describe a use case for MLlib's collaborative filtering algorithms.
+### Опишите a use case for MLlib's collaborative filtering alGorithms.
 
 **Definition:**
 
@@ -887,9 +887,9 @@ MLlib перечисляет коллаборативную фильтрацию
 </details>
 
 <details>
-<summary>Explain the difference between Spark MLlib and external machine learning libraries.</summary>
+<summary>Объясните the difference between Spark MLlib and external machine learning libraries.</summary>
 
-### Explain the difference between Spark MLlib and external machine learning libraries.
+### Объясните the difference between Spark MLlib and external machine learning libraries.
 
 **Definition:**
 
@@ -912,9 +912,9 @@ MLlib перечисляет коллаборативную фильтрацию
 ### Coding Challenges
 
 <details>
-<summary>Write a Scala/Python Spark code snippet that reads a CSV file and calculates the average of a column.</summary>
+<summary>Напишите a Scala/Python Spark code snippet that reads a CSV file and calculates the average of a column.</summary>
 
-### Write a Scala/Python Spark code snippet that reads a CSV file and calculates the average of a column.
+### Напишите a Scala/Python Spark code snippet that reads a CSV file and calculates the average of a column.
 
 **Definition:**
 
@@ -943,9 +943,9 @@ spark.sql("SELECT avg(age) AS avg_age FROM people")
 </details>
 
 <details>
-<summary>Implement a Spark streaming application that counts words in text data received from a socket.</summary>
+<summary>Реализуйте a Spark streaming application that counts words in text data received from a socket.</summary>
 
-### Implement a Spark streaming application that counts words in text data received from a socket.
+### Реализуйте a Spark streaming application that counts words in text data received from a socket.
 
 **Definition:**
 
@@ -973,9 +973,9 @@ query = words.groupBy("word").count().writeStream.outputMode("complete").format(
 </details>
 
 <details>
-<summary>Code a Spark SQL query that finds the top 3 most occurring words in a DataFrame.</summary>
+<summary>Напишите код: a Spark SQL query that finds the top 3 most occurring words in a DataFrame.</summary>
 
-### Code a Spark SQL query that finds the top 3 most occurring words in a DataFrame.
+### Напишите код: a Spark SQL query that finds the top 3 most occurring words in a DataFrame.
 
 **Definition:**
 
@@ -1003,9 +1003,9 @@ top3 = counts.takeOrdered(3, key=lambda kv: -kv[1])
 </details>
 
 <details>
-<summary>Create a Spark job that joins two datasets on a key and summarizes data.</summary>
+<summary>Создайте a Spark job that joins two datasets on a key and summarizes data.</summary>
 
-### Create a Spark job that joins two datasets on a key and summarizes data.
+### Создайте a Spark job that joins two datasets on a key and summarizes data.
 
 **Definition:**
 
@@ -1033,9 +1033,9 @@ totals = joined.map(lambda kv: (kv[0], kv[1][0])).reduceByKey(lambda a, b: a + b
 </details>
 
 <details>
-<summary>Write a Python function using PySpark to filter out records with null values in a specific column.</summary>
+<summary>Напишите a Python function using PySpark to filter out records with null values in a specific column.</summary>
 
-### Write a Python function using PySpark to filter out records with null values in a specific column.
+### Напишите a Python function using PySpark to filter out records with null values in a specific column.
 
 **Definition:**
 
@@ -1064,9 +1064,9 @@ def without_null_age(df):
 </details>
 
 <details>
-<summary>Implement a logistic regression model in Spark MLlib.</summary>
+<summary>Реализуйте a logistic regression model in Spark MLlib.</summary>
 
-### Implement a logistic regression model in Spark MLlib.
+### Реализуйте a logistic regression model in Spark MLlib.
 
 **Definition:**
 
@@ -1096,9 +1096,9 @@ prediction = model.transform(test)
 </details>
 
 <details>
-<summary>Create a Spark Streaming application to aggregate event data by time windows.</summary>
+<summary>Создайте a Spark Streaming application to aggregate event data by time windows.</summary>
 
-### Create a Spark Streaming application to aggregate event data by time windows.
+### Создайте a Spark Streaming application to aggregate event data by time windows.
 
 **Definition:**
 
@@ -1130,9 +1130,9 @@ counts = (events
 </details>
 
 <details>
-<summary>Write Spark code to calculate the PageRank of a simple website link graph.</summary>
+<summary>Напишите Spark code to calculate the PageRank of a simple website link graph.</summary>
 
-### Write Spark code to calculate the PageRank of a simple website link graph.
+### Напишите Spark code to calculate the PageRank of a simple website link graph.
 
 **Definition:**
 
@@ -1162,9 +1162,9 @@ nextRanks = contribs.reduceByKey(lambda a, b: a + b)
 ### Case Studies and Scenario-Based Questions
 
 <details>
-<summary>How would you build a recommender system in Spark?</summary>
+<summary>Как бы вы build a recommender system in Spark?</summary>
 
-### How would you build a recommender system in Spark?
+### Как бы вы build a recommender system in Spark?
 
 **Definition:**
 
@@ -1186,9 +1186,9 @@ MLlib называет коллаборативную фильтрацию од�
 </details>
 
 <details>
-<summary>Discuss a strategy to perform real-time sentiment analysis using Spark Streaming.</summary>
+<summary>Обсудите a strategy to perform real-time sentiment analysis using Spark Streaming.</summary>
 
-### Discuss a strategy to perform real-time sentiment analysis using Spark Streaming.
+### Обсудите a strategy to perform real-time sentiment analysis using Spark Streaming.
 
 **Definition:**
 
@@ -1211,9 +1211,9 @@ MLlib называет коллаборативную фильтрацию од�
 </details>
 
 <details>
-<summary>Propose an ETL pipeline design using Spark to process large datasets.</summary>
+<summary>Предложите an ETL pipeline design using Spark to process large datasets.</summary>
 
-### Propose an ETL pipeline design using Spark to process large datasets.
+### Предложите an ETL pipeline design using Spark to process large datasets.
 
 **Definition:**
 
@@ -1236,9 +1236,9 @@ MLlib называет коллаборативную фильтрацию од�
 </details>
 
 <details>
-<summary>How would you use Spark to detect fraudulent behavior in financial transactions?</summary>
+<summary>Как бы вы use Spark to detect fraudulent behavior in financial transactions?</summary>
 
-### How would you use Spark to detect fraudulent behavior in financial transactions?
+### Как бы вы use Spark to detect fraudulent behavior in financial transactions?
 
 **Definition:**
 
@@ -1261,9 +1261,9 @@ MLlib называет коллаборативную фильтрацию од�
 </details>
 
 <details>
-<summary>Illustrate how you would use Spark to optimize marketing strategies based on customer behavior data.</summary>
+<summary>Проиллюстрируйте how you would use Spark to optimize marketing strategies BASEd on customer behavior data.</summary>
 
-### Illustrate how you would use Spark to optimize marketing strategies based on customer behavior data.
+### Проиллюстрируйте how you would use Spark to optimize marketing strategies BASEd on customer behavior data.
 
 **Definition:**
 
@@ -1287,9 +1287,9 @@ MLlib называет коллаборативную фильтрацию од�
 </details>
 
 <details>
-<summary>Explain a big data analytics project where Spark would be a better choice than other big data technologies and why.</summary>
+<summary>Объясните a big data analytics project where Spark would be a better choice than other big data technologies and why.</summary>
 
-### Explain a big data analytics project where Spark would be a better choice than other big data technologies and why.
+### Объясните a big data analytics project where Spark would be a better choice than other big data technologies and why.
 
 **Definition:**
 
@@ -1318,9 +1318,9 @@ Spark подходит, когда один и тот же набор в пам�
 ### Advanced Topics and Research
 
 <details>
-<summary>Discuss the advancements in Spark 3.x and their impact on big data processing.</summary>
+<summary>Обсудите the advancements in Spark 3.x and their impact on big data processing.</summary>
 
-### Discuss the advancements in Spark 3.x and their impact on big data processing.
+### Обсудите the advancements in Spark 3.x and their impact on big data processing.
 
 **Definition:**
 
@@ -1341,9 +1341,9 @@ Spark подходит, когда один и тот же набор в пам�
 </details>
 
 <details>
-<summary>Explain how Dynamic Resource Allocation works in Spark.</summary>
+<summary>Объясните how Dynamic Resource Allocation works in Spark.</summary>
 
-### Explain how Dynamic Resource Allocation works in Spark.
+### Объясните how Dynamic Resource Allocation works in Spark.
 
 **Definition:**
 
@@ -1367,9 +1367,9 @@ Spark подходит, когда один и тот же набор в пам�
 </details>
 
 <details>
-<summary>How do you implement custom aggregations in Spark?</summary>
+<summary>Как you implement custom aggreGAtions in Spark?</summary>
 
-### How do you implement custom aggregations in Spark?
+### Как you implement custom aggreGAtions in Spark?
 
 **Definition:**
 
@@ -1399,9 +1399,9 @@ agg = pairs.aggregateByKey((0, 0))(
 </details>
 
 <details>
-<summary>What are the current research areas or challenges in the Apache Spark ecosystem?</summary>
+<summary>Что такое the current research areas or challenges in the Apache Spark ecosystem?</summary>
 
-### What are the current research areas or challenges in the Apache Spark ecosystem?
+### Что такое the current research areas or challenges in the Apache Spark ecosystem?
 
 **Definition:**
 
@@ -1427,9 +1427,9 @@ agg = pairs.aggregateByKey((0, 0))(
 </details>
 
 <details>
-<summary>How does Spark support deep learning workloads and integration with popular deep learning frameworks?</summary>
+<summary>Как Spark support deep learning workloads and integration with popular deep learning frameworks?</summary>
 
-### How does Spark support deep learning workloads and integration with popular deep learning frameworks?
+### Как Spark support deep learning workloads and integration with popular deep learning frameworks?
 
 **Definition:**
 

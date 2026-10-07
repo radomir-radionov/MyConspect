@@ -22,9 +22,9 @@
 ### JavaScript Fundamentals
 
 <details>
-<summary>What are the data types present in JavaScript?</summary>
+<summary>Что такое the data types present in JavaScript?</summary>
 
-### What are the data types present in JavaScript?
+### Что такое the data types present in JavaScript?
 
 **Definition:**
 
@@ -66,9 +66,9 @@ JavaScript имеет динамическую типизацию, что озн
 </details>
 
 <details>
-<summary>What is the difference between null and undefined?</summary>
+<summary>Что такое the difference between null and undefined?</summary>
 
-### What is the difference between null and undefined?
+### Что такое the difference between null and undefined?
 
 **Definition:**
 
@@ -167,9 +167,9 @@ console.log(object.b); // undefined: Property 'b' was removed, not set to null
 </details>
 
 <details>
-<summary>How does JavaScript handle type coercion?</summary>
+<summary>Как JavaScript handle type coercion?</summary>
 
-### How does JavaScript handle type coercion?
+### Как JavaScript handle type coercion?
 
 **Definition:**
 
@@ -207,9 +207,9 @@ console.log(object.b); // undefined: Property 'b' was removed, not set to null
 </details>
 
 <details>
-<summary>Explain the concept of hoisting in JavaScript.</summary>
+<summary>Объясните the concept of hoisting in JavaScript.</summary>
 
-### Explain the concept of hoisting in JavaScript.
+### Объясните the concept of hoisting in JavaScript.
 
 **Definition:**
 
@@ -328,9 +328,9 @@ let myLetVar = 5;
 </details>
 
 <details>
-<summary>What is the scope in JavaScript?</summary>
+<summary>Что такое the scope in JavaScript?</summary>
 
-### What is the scope in JavaScript?
+### Что такое the scope in JavaScript?
 
 **Definition:**
 
@@ -405,9 +405,9 @@ testScope();
 </details>
 
 <details>
-<summary>What is the difference between == and ===?</summary>
+<summary>Что такое the difference between == and ===?</summary>
 
-### What is the difference between == and ===?
+### Что такое the difference between == and ===?
 
 **Definition:**
 
@@ -467,9 +467,9 @@ console.log(0 === false);   // false
 </details>
 
 <details>
-<summary>Describe closure in JavaScript. Can you give an example?</summary>
+<summary>Опишите closure in JavaScript. Can you give an example?</summary>
 
-### Describe closure in JavaScript. Can you give an example?
+### Опишите closure in JavaScript. Can you give an example?
 
 **Definition:**
 
@@ -544,9 +544,9 @@ console.log(getPassword()); // Outputs the generated password.
 </details>
 
 <details>
-<summary>What is the 'this' keyword and how does its context change?</summary>
+<summary>Что такое the 'this' keyword and how does its context change?</summary>
 
-### What is the 'this' keyword and how does its context change?
+### Что такое the 'this' keyword and how does its context change?
 
 **Definition:**
 
@@ -598,9 +598,9 @@ function globalFunction() {
 </details>
 
 <details>
-<summary>What are arrow functions and how do they differ from regular functions?</summary>
+<summary>Что такое arrow functions and how do they differ from regular functions?</summary>
 
-### What are arrow functions and how do they differ from regular functions?
+### Что такое arrow functions and how do they differ from regular functions?
 
 **Definition:**
 
@@ -675,9 +675,9 @@ document.getElementById('myButton').onclick = () => {
 </details>
 
 <details>
-<summary>What are template literals in JavaScript?</summary>
+<summary>Что такое template literals in JavaScript?</summary>
 
-### What are template literals in JavaScript?
+### Что такое template literals in JavaScript?
 
 **Definition:**
 
@@ -741,9 +741,9 @@ let poemTemplate = `
 ### JavaScript Functions and Higher-Order Functions
 
 <details>
-<summary>What is a higher-order function in JavaScript?</summary>
+<summary>Что такое higher-order function in JavaScript?</summary>
 
-### What is a higher-order function in JavaScript?
+### Что такое higher-order function in JavaScript?
 
 **Definition:**
 
@@ -801,9 +801,9 @@ const tripled = numbers.map(multiplier(3));  // [3, 6, 9, 12, 15]
 </details>
 
 <details>
-<summary>Can functions be assigned as values to variables in JavaScript?</summary>
+<summary>Можно ли functions be assigned as values to variables in JavaScript?</summary>
 
-### Can functions be assigned as values to variables in JavaScript?
+### Можно ли functions be assigned as values to variables in JavaScript?
 
 **Definition:**
 
@@ -860,9 +860,9 @@ sayHello = function() {
 </details>
 
 <details>
-<summary>How do functional programming concepts apply in JavaScript?</summary>
+<summary>Как functional programming concepts apply in JavaScript?</summary>
 
-### How do functional programming concepts apply in JavaScript?
+### Как functional programming concepts apply in JavaScript?
 
 **Definition:**
 
@@ -895,9 +895,9 @@ runFunction (сказать Привет);  // Вывод: «Привет!»
 </details>
 
 <details>
-<summary>What are IIFEs (Immediately Invoked Function Expressions)?</summary>
+<summary>Что такое IIFEs (Immediately Invoked Function Expressions)?</summary>
 
-### What are IIFEs (Immediately Invoked Function Expressions)?
+### Что такое IIFEs (Immediately Invoked Function Expressions)?
 
 **Definition:**
 
@@ -977,9 +977,9 @@ runFunction (сказать Привет);  // Вывод: «Привет!»
 </details>
 
 <details>
-<summary>How do you create private variables in JavaScript?</summary>
+<summary>Как you create private variables in JavaScript?</summary>
 
-### How do you create private variables in JavaScript?
+### Как you create private variables in JavaScript?
 
 **Definition:**
 
@@ -1083,9 +1083,9 @@ console.log(myModule.getPrivateVariable());  // 'I am private'
 ### JavaScript Objects and Prototypes
 
 <details>
-<summary>How do you create an object in JavaScript?</summary>
+<summary>Как you create an object in JavaScript?</summary>
 
-### How do you create an object in JavaScript?
+### Как you create an object in JavaScript?
 
 **Definition:**
 
@@ -1121,9 +1121,9 @@ const box = new Box(4);
 </details>
 
 <details>
-<summary>What are prototypes in JavaScript?</summary>
+<summary>Что такое prototypes in JavaScript?</summary>
 
-### What are prototypes in JavaScript?
+### Что такое prototypes in JavaScript?
 
 **Definition:**
 
@@ -1154,9 +1154,9 @@ child.kind; // "parent"
 </details>
 
 <details>
-<summary>Explain prototypal inheritance.</summary>
+<summary>Объясните prototypal inheritance.</summary>
 
-### Explain prototypal inheritance.
+### Объясните prototypal inheritance.
 
 **Definition:**
 
@@ -1191,9 +1191,9 @@ child.method(); // 11
 </details>
 
 <details>
-<summary>What is the difference between object literals and constructor functions?</summary>
+<summary>Что такое the difference between object literals and constructor functions?</summary>
 
-### What is the difference between object literals and constructor functions?
+### Что такое the difference between object literals and constructor functions?
 
 **Definition:**
 
@@ -1236,9 +1236,9 @@ ada.greet(); // "Hi, Ada"
 </details>
 
 <details>
-<summary>How do you add or remove properties from an object?</summary>
+<summary>Как you add or remove properties from an object?</summary>
 
-### How do you add or remove properties from an object?
+### Как you add or remove properties from an object?
 
 **Definition:**
 
@@ -1279,9 +1279,9 @@ user.city; // "London"
 ### Asynchronous JavaScript
 
 <details>
-<summary>What is the event loop in JavaScript?</summary>
+<summary>Что такое the event loop in JavaScript?</summary>
 
-### What is the event loop in JavaScript?
+### Что такое the event loop in JavaScript?
 
 **Definition:**
 
@@ -1312,9 +1312,9 @@ Promise.resolve().then(() => console.log("microtask"));
 </details>
 
 <details>
-<summary>Explain how callbacks work in JavaScript.</summary>
+<summary>Объясните how callbacks work in JavaScript.</summary>
 
-### Explain how callbacks work in JavaScript.
+### Объясните how callbacks work in JavaScript.
 
 **Definition:**
 
@@ -1348,9 +1348,9 @@ load("/notes", (error, body) => {
 </details>
 
 <details>
-<summary>What are promises and how do they manage asynchronous code?</summary>
+<summary>Что такое promises and how do they manage asynchronous code?</summary>
 
-### What are promises and how do they manage asynchronous code?
+### Что такое promises and how do they manage asynchronous code?
 
 **Definition:**
 
@@ -1384,9 +1384,9 @@ delay(10)
 </details>
 
 <details>
-<summary>Explain async/await in JavaScript and how it differs from Promises.</summary>
+<summary>Объясните async/await in JavaScript and how it differs from promises.</summary>
 
-### Explain async/await in JavaScript and how it differs from Promises.
+### Объясните async/await in JavaScript and how it differs from promises.
 
 **Definition:**
 
@@ -1422,9 +1422,9 @@ async function loadUser(id) {
 </details>
 
 <details>
-<summary>What is the Job Queue (or Microtask Queue)?</summary>
+<summary>Что такое the Job queue (or Microtask queue)?</summary>
 
-### What is the Job Queue (or Microtask Queue)?
+### Что такое the Job queue (or Microtask queue)?
 
 **Definition:**
 
@@ -1456,9 +1456,9 @@ console.log("sync");
 ### DOM Manipulation and Browser APIs
 
 <details>
-<summary>How do you select DOM elements using JavaScript?</summary>
+<summary>Как you select DOM elements using JavaScript?</summary>
 
-### How do you select DOM elements using JavaScript?
+### Как you select DOM elements using JavaScript?
 
 **Definition:**
 
@@ -1489,9 +1489,9 @@ const title = document.getElementById("title");
 </details>
 
 <details>
-<summary>Explain event propagation in the DOM.</summary>
+<summary>Объясните event propaGAtion in the DOM.</summary>
 
-### Explain event propagation in the DOM.
+### Объясните event propaGAtion in the DOM.
 
 **Definition:**
 
@@ -1522,9 +1522,9 @@ parent.addEventListener("click", () => console.log("bubble"));
 </details>
 
 <details>
-<summary>How do you prevent a form from submitting using JavaScript?</summary>
+<summary>Как you prevent a form from submitting using JavaScript?</summary>
 
-### How do you prevent a form from submitting using JavaScript?
+### Как you prevent a form from submitting using JavaScript?
 
 **Definition:**
 
@@ -1556,9 +1556,9 @@ form.addEventListener("submit", (event) => {
 </details>
 
 <details>
-<summary>What are Web APIs in the context of JavaScript?</summary>
+<summary>Что такое Web APIs in the context of JavaScript?</summary>
 
-### What are Web APIs in the context of JavaScript?
+### Что такое Web APIs in the context of JavaScript?
 
 **Definition:**
 
@@ -1589,9 +1589,9 @@ const notes = await response.json();
 </details>
 
 <details>
-<summary>How can you manipulate the browser history using JavaScript?</summary>
+<summary>Как you manipulate the browser history using JavaScript?</summary>
 
-### How can you manipulate the browser history using JavaScript?
+### Как you manipulate the browser history using JavaScript?
 
 **Definition:**
 
@@ -1625,9 +1625,9 @@ window.addEventListener("popstate", (event) => {
 ### ES2015+ and Modern JavaScript Features
 
 <details>
-<summary>What are the new features introduced in ES6?</summary>
+<summary>Что такое the new features introduced in ES6?</summary>
 
-### What are the new features introduced in ES6?
+### Что такое the new features introduced in ES6?
 
 **Definition:**
 
@@ -1660,9 +1660,9 @@ const greet = (who) => `Hello, ${who}`;
 </details>
 
 <details>
-<summary>How do you use destructuring assignments in ES6?</summary>
+<summary>Как you use destructuring assignments in ES6?</summary>
 
-### How do you use destructuring assignments in ES6?
+### Как you use destructuring assignments in ES6?
 
 **Definition:**
 
@@ -1691,9 +1691,9 @@ const [first, ...rest] = ["a", "b", "c"];
 </details>
 
 <details>
-<summary>Explain the use of const and let keywords.</summary>
+<summary>Объясните the use of const and let keywords.</summary>
 
-### Explain the use of const and let keywords.
+### Объясните the use of const and let keywords.
 
 **Definition:**
 
@@ -1729,9 +1729,9 @@ step += 1;
 </details>
 
 <details>
-<summary>What are default parameters in JavaScript functions?</summary>
+<summary>Что такое default parameters in JavaScript functions?</summary>
 
-### What are default parameters in JavaScript functions?
+### Что такое default parameters in JavaScript functions?
 
 **Definition:**
 
@@ -1762,9 +1762,9 @@ greet(null); // "Hello, null"
 </details>
 
 <details>
-<summary>Explain the concept of modules in ES6.</summary>
+<summary>Объясните the concept of modules in ES6.</summary>
 
-### Explain the concept of modules in ES6.
+### Объясните the concept of modules in ES6.
 
 **Definition:**
 
@@ -1806,9 +1806,9 @@ area(4); // 16
 ### Event Handling
 
 <details>
-<summary>How do you handle events in JavaScript?</summary>
+<summary>Как you handle events in JavaScript?</summary>
 
-### How do you handle events in JavaScript?
+### Как you handle events in JavaScript?
 
 **Definition:**
 
@@ -1841,9 +1841,9 @@ button.addEventListener("click", onClick);
 </details>
 
 <details>
-<summary>What is event delegation and why is it useful?</summary>
+<summary>Что такое event deleGAtion and why is it useful?</summary>
 
-### What is event delegation and why is it useful?
+### Что такое event deleGAtion and why is it useful?
 
 **Definition:**
 
@@ -1881,9 +1881,9 @@ list.addEventListener("click", (event) => {
 </details>
 
 <details>
-<summary>How do you add and remove an event listener from an element?</summary>
+<summary>Как you add and remove an event listener from an element?</summary>
 
-### How do you add and remove an event listener from an element?
+### Как you add and remove an event listener from an element?
 
 **Definition:**
 
@@ -1917,9 +1917,9 @@ button.addEventListener("click", onClick);
 </details>
 
 <details>
-<summary>Can you explain how "this" works in event handlers?</summary>
+<summary>Можете ли вы explain how "this" works in event handlers?</summary>
 
-### Can you explain how "this" works in event handlers?
+### Можете ли вы explain how "this" works in event handlers?
 
 **Definition:**
 
@@ -1957,9 +1957,9 @@ button.addEventListener("click", (event) => {
 </details>
 
 <details>
-<summary>What is the difference between event.preventDefault() and event.stopPropagation()?</summary>
+<summary>Что такое the difference between event.preventDefault() and event.stopPropaGAtion()?</summary>
 
-### What is the difference between event.preventDefault() and event.stopPropagation()?
+### Что такое the difference between event.preventDefault() and event.stopPropaGAtion()?
 
 **Definition:**
 
@@ -2000,9 +2000,9 @@ row.addEventListener("click", (event) => {
 ### Web Storage and Security
 
 <details>
-<summary>What is the difference between localStorage, sessionStorage, and cookies?</summary>
+<summary>Что такое the difference between localStorage, sessionStorage, and cookies?</summary>
 
-### What is the difference between localStorage, sessionStorage, and cookies?
+### Что такое the difference between localStorage, sessionStorage, and cookies?
 
 **Definition:**
 
@@ -2039,9 +2039,9 @@ document.cookie = "lang=en; Max-Age=86400; Secure; SameSite=Lax";
 </details>
 
 <details>
-<summary>Can you explain Cross-Site Scripting (XSS) and how to prevent it?</summary>
+<summary>Можете ли вы explain Cross-Site Scripting (XSS) and how to prevent it?</summary>
 
-### Can you explain Cross-Site Scripting (XSS) and how to prevent it?
+### Можете ли вы explain Cross-Site Scripting (XSS) and how to prevent it?
 
 **Definition:**
 
@@ -2073,9 +2073,9 @@ label.textContent = name;
 </details>
 
 <details>
-<summary>What is Cross-Origin Resource Sharing (CORS) and how does it work?</summary>
+<summary>Что такое Cross-Origin Resource SHAring (CORS) and how does it work?</summary>
 
-### What is Cross-Origin Resource Sharing (CORS) and how does it work?
+### Что такое Cross-Origin Resource SHAring (CORS) and how does it work?
 
 **Definition:**
 
@@ -2104,9 +2104,9 @@ const data = await response.json();
 </details>
 
 <details>
-<summary>How does content security policy (CSP) help in preventing security attacks?</summary>
+<summary>Как content security policy (CSP) help in preventing security attacks?</summary>
 
-### How does content security policy (CSP) help in preventing security attacks?
+### Как content security policy (CSP) help in preventing security attacks?
 
 **Definition:**
 
@@ -2135,9 +2135,9 @@ Content-Security-Policy: default-src 'self'; img-src 'self' example.com
 ### JavaScript Debugging
 
 <details>
-<summary>What tools and techniques do you use for debugging JavaScript code?</summary>
+<summary>Какие инструменты and techniques do you use for debugging JavaScript code?</summary>
 
-### What tools and techniques do you use for debugging JavaScript code?
+### Какие инструменты and techniques do you use for debugging JavaScript code?
 
 **Definition:**
 
@@ -2171,9 +2171,9 @@ function parseCount(text) {
 </details>
 
 <details>
-<summary>How do you debug a JavaScript application in the browser?</summary>
+<summary>Как you debug a JavaScript application in the browser?</summary>
 
-### How do you debug a JavaScript application in the browser?
+### Как you debug a JavaScript application in the browser?
 
 **Definition:**
 
@@ -2204,9 +2204,9 @@ button.addEventListener("click", () => {
 </details>
 
 <details>
-<summary>Explain the concept and use of breakpoints.</summary>
+<summary>Объясните the concept and use of breakpoints.</summary>
 
-### Explain the concept and use of breakpoints.
+### Объясните the concept and use of breakpoints.
 
 **Definition:**
 
@@ -2237,9 +2237,9 @@ for (const item of items) {
 </details>
 
 <details>
-<summary>How do you handle exceptions in JavaScript?</summary>
+<summary>Как you handle exceptions in JavaScript?</summary>
 
-### How do you handle exceptions in JavaScript?
+### Как you handle exceptions in JavaScript?
 
 **Definition:**
 
@@ -2275,9 +2275,9 @@ function readJson(text) {
 ### Performance and Optimization
 
 <details>
-<summary>What techniques can be used to improve JavaScript performance?</summary>
+<summary>Какие техники can be used to improve JavaScript performance?</summary>
 
-### What techniques can be used to improve JavaScript performance?
+### Какие техники can be used to improve JavaScript performance?
 
 **Definition:**
 
@@ -2309,9 +2309,9 @@ button.addEventListener("click", async () => {
 </details>
 
 <details>
-<summary>How does JavaScript minification and bundling contribute to performance?</summary>
+<summary>Как JavaScript minification and bundling contribute to performance?</summary>
 
-### How does JavaScript minification and bundling contribute to performance?
+### Как JavaScript minification and bundling contribute to performance?
 
 **Definition:**
 
@@ -2343,9 +2343,9 @@ editor.mount(document.querySelector("#editor"));
 </details>
 
 <details>
-<summary>Discuss the importance of web page loading time and performance.</summary>
+<summary>Обсудите the importance of web page loading time and performance.</summary>
 
-### Discuss the importance of web page loading time and performance.
+### Обсудите the importance of web page loading time and performance.
 
 **Definition:**
 
@@ -2377,9 +2377,9 @@ img.alt = "Notes";
 </details>
 
 <details>
-<summary>Explain how lazy loading works in JavaScript.</summary>
+<summary>Объясните how lazy loading works in JavaScript.</summary>
 
-### Explain how lazy loading works in JavaScript.
+### Объясните how lazy loading works in JavaScript.
 
 **Definition:**
 
@@ -2420,9 +2420,9 @@ async function showChart() {
 ### JavaScript Testing
 
 <details>
-<summary>What are some JavaScript testing frameworks you know?</summary>
+<summary>Что такое some JavaScript testing frameworks you know?</summary>
 
-### What are some JavaScript testing frameworks you know?
+### Что такое some JavaScript testing frameworks you know?
 
 **Definition:**
 
@@ -2454,9 +2454,9 @@ test("adds", () => {
 </details>
 
 <details>
-<summary>How can you write unit tests for JavaScript code?</summary>
+<summary>Как you write unit tests for JavaScript code?</summary>
 
-### How can you write unit tests for JavaScript code?
+### Как you write unit tests for JavaScript code?
 
 **Definition:**
 
@@ -2489,9 +2489,9 @@ assert.equal(fullName({ first: "Ada", last: "Lovelace" }), "Ada Lovelace");
 </details>
 
 <details>
-<summary>What is Test-Driven Development (TDD) in JavaScript?</summary>
+<summary>Что такое Test-Driven Development (TDD) in JavaScript?</summary>
 
-### What is Test-Driven Development (TDD) in JavaScript?
+### Что такое Test-Driven Development (TDD) in JavaScript?
 
 **Definition:**
 
@@ -2523,9 +2523,9 @@ test("sums prices", () => {
 </details>
 
 <details>
-<summary>Can you explain the difference between unit and integration testing?</summary>
+<summary>Можете ли вы explain the difference between unit and integration testing?</summary>
 
-### Can you explain the difference between unit and integration testing?
+### Можете ли вы explain the difference between unit and integration testing?
 
 **Definition:**
 
@@ -2565,9 +2565,9 @@ export async function loadCents(url) {
 ### Networking with JavaScript
 
 <details>
-<summary>How do you make HTTP requests in JavaScript?</summary>
+<summary>Как you make HTTP requests in JavaScript?</summary>
 
-### How do you make HTTP requests in JavaScript?
+### Как you make HTTP requests in JavaScript?
 
 **Definition:**
 
@@ -2600,9 +2600,9 @@ async function getNotes() {
 </details>
 
 <details>
-<summary>What is the difference between XMLHttpRequest and Fetch API?</summary>
+<summary>Что такое the difference between XMLHTTPRequest and Fetch API?</summary>
 
-### What is the difference between XMLHttpRequest and Fetch API?
+### Что такое the difference between XMLHTTPRequest and Fetch API?
 
 **Definition:**
 
@@ -2638,9 +2638,9 @@ xhr.send();
 </details>
 
 <details>
-<summary>What is AJAX, and how does it work?</summary>
+<summary>Что такое AJAX, and how does it work?</summary>
 
-### What is AJAX, and how does it work?
+### Что такое AJAX, and how does it work?
 
 **Definition:**
 
@@ -2672,9 +2672,9 @@ async function refreshCount() {
 </details>
 
 <details>
-<summary>How do you use WebSockets in a web application?</summary>
+<summary>Как you use WebSockets in a web application?</summary>
 
-### How do you use WebSockets in a web application?
+### Как you use WebSockets in a web application?
 
 **Definition:**
 
@@ -2716,9 +2716,9 @@ socket.addEventListener("message", (event) => {
 ### JavaScript Patterns and Best Practices
 
 <details>
-<summary>What is a design pattern in JavaScript?</summary>
+<summary>Что такое design pattern in JavaScript?</summary>
 
-### What is a design pattern in JavaScript?
+### Что такое design pattern in JavaScript?
 
 **Definition:**
 
@@ -2753,9 +2753,9 @@ function createCounter() {
 </details>
 
 <details>
-<summary>Can you explain the module pattern?</summary>
+<summary>Можете ли вы explain the module pattern?</summary>
 
-### Can you explain the module pattern?
+### Можете ли вы explain the module pattern?
 
 **Definition:**
 
@@ -2796,9 +2796,9 @@ counter.inc();
 </details>
 
 <details>
-<summary>What is the Singleton pattern in JavaScript?</summary>
+<summary>Что такое the singleton pattern in JavaScript?</summary>
 
-### What is the Singleton pattern in JavaScript?
+### Что такое the singleton pattern in JavaScript?
 
 **Definition:**
 
@@ -2832,9 +2832,9 @@ export function getSettings() {
 </details>
 
 <details>
-<summary>Explain the Revealing Module pattern.</summary>
+<summary>Объясните the Revealing Module pattern.</summary>
 
-### Explain the Revealing Module pattern.
+### Объясните the Revealing Module pattern.
 
 **Definition:**
 
@@ -2868,9 +2868,9 @@ const counter = (function () {
 </details>
 
 <details>
-<summary>What are some best practices for coding in JavaScript?</summary>
+<summary>Что такое some best practices for coding in JavaScript?</summary>
 
-### What are some best practices for coding in JavaScript?
+### Что такое some best practices for coding in JavaScript?
 
 **Definition:**
 
@@ -2905,9 +2905,9 @@ if (count === 0) {
 ### JavaScript Algorithms and Data Structures
 
 <details>
-<summary>How do you implement a stack and a queue in JavaScript?</summary>
+<summary>Как you implement a stack and a queue in JavaScript?</summary>
 
-### How do you implement a stack and a queue in JavaScript?
+### Как you implement a stack and a queue in JavaScript?
 
 **Definition:**
 
@@ -2944,9 +2944,9 @@ queue.shift();
 </details>
 
 <details>
-<summary>Explain how to sort an array in JavaScript.</summary>
+<summary>Объясните how to sort an array in JavaScript.</summary>
 
-### Explain how to sort an array in JavaScript.
+### Объясните how to sort an array in JavaScript.
 
 **Definition:**
 
@@ -2979,9 +2979,9 @@ const copy = [...numbers].sort((a, b) => b - a);
 </details>
 
 <details>
-<summary>How do you check if a string is a palindrome?</summary>
+<summary>Как you check if a string is a palindrome?</summary>
 
-### How do you check if a string is a palindrome?
+### Как you check if a string is a palindrome?
 
 **Definition:**
 
@@ -3012,9 +3012,9 @@ function isPalindrome(text) {
 </details>
 
 <details>
-<summary>Describe a recursive function and provide an example.</summary>
+<summary>Опишите a Recursive function and provide an example.</summary>
 
-### Describe a recursive function and provide an example.
+### Опишите a Recursive function and provide an example.
 
 **Definition:**
 
@@ -3043,9 +3043,9 @@ function factorial(n) {
 </details>
 
 <details>
-<summary>What is the time complexity of JavaScript operations?</summary>
+<summary>Что такое the time complexity of JavaScript operations?</summary>
 
-### What is the time complexity of JavaScript operations?
+### Что такое the time complexity of JavaScript operations?
 
 **Definition:**
 
@@ -3077,9 +3077,9 @@ values.sort((a, b) => a - b);
 ### JavaScript Libraries and Frameworks
 
 <details>
-<summary>What is the difference between a library and a framework in JavaScript?</summary>
+<summary>Что такое the difference between a library and a framework in JavaScript?</summary>
 
-### What is the difference between a library and a framework in JavaScript?
+### Что такое the difference between a library and a framework in JavaScript?
 
 **Definition:**
 
@@ -3109,9 +3109,9 @@ document.querySelector("#count").textContent = String(count);
 </details>
 
 <details>
-<summary>Explain the Virtual DOM in React.</summary>
+<summary>Объясните the Virtual DOM in React.</summary>
 
-### Explain the Virtual DOM in React.
+### Объясните the Virtual DOM in React.
 
 **Definition:**
 
@@ -3143,9 +3143,9 @@ createRoot(document.getElementById("root")).render(<Greeting name="Ada" />);
 </details>
 
 <details>
-<summary>How does data binding work in Angular?</summary>
+<summary>Как data binding work in Angular?</summary>
 
-### How does data binding work in Angular?
+### Как data binding work in Angular?
 
 **Definition:**
 
@@ -3177,9 +3177,9 @@ export class Hello {
 </details>
 
 <details>
-<summary>What is Vue.js and what sets it apart from other frameworks?</summary>
+<summary>Что такое Vue.js and what sets it apart from other frameworks?</summary>
 
-### What is Vue.js and what sets it apart from other frameworks?
+### Что такое Vue.js and what sets it apart from other frameworks?
 
 **Definition:**
 
@@ -3212,9 +3212,9 @@ createApp({
 </details>
 
 <details>
-<summary>Can you describe the jQuery library and its applications?</summary>
+<summary>Можете ли вы describe the jQuery library and its applications?</summary>
 
-### Can you describe the jQuery library and its applications?
+### Можете ли вы describe the jQuery library and its applications?
 
 **Definition:**
 
@@ -3247,9 +3247,9 @@ title.addEventListener("click", () => {
 ### JavaScript ES2017+ and Beyond
 
 <details>
-<summary>What are async iterators and generators?</summary>
+<summary>Что такое async iterators and generators?</summary>
 
-### What are async iterators and generators?
+### Что такое async iterators and generators?
 
 **Definition:**
 
@@ -3282,9 +3282,9 @@ for await (const n of count()) {
 </details>
 
 <details>
-<summary>What is the purpose of the async keyword?</summary>
+<summary>Что такое the puRPOse of the async keyword?</summary>
 
-### What is the purpose of the async keyword?
+### Что такое the puRPOse of the async keyword?
 
 **Definition:**
 
@@ -3315,9 +3315,9 @@ async function load() {
 </details>
 
 <details>
-<summary>Can you explain the use of Object.entries() and Object.values()?</summary>
+<summary>Можете ли вы explain the use of Object.entries() and Object.values()?</summary>
 
-### Can you explain the use of Object.entries() and Object.values()?
+### Можете ли вы explain the use of Object.entries() and Object.values()?
 
 **Definition:**
 
@@ -3350,9 +3350,9 @@ new Map(Object.entries(user));
 </details>
 
 <details>
-<summary>How does JavaScript handle big integers (BigInt)?</summary>
+<summary>Как JavaScript handle big integers (BigInt)?</summary>
 
-### How does JavaScript handle big integers (BigInt)?
+### Как JavaScript handle big integers (BigInt)?
 
 **Definition:**
 
@@ -3384,9 +3384,9 @@ next === max + 1n;
 </details>
 
 <details>
-<summary>What are dynamic imports in JavaScript?</summary>
+<summary>Что такое dynamic imports in JavaScript?</summary>
 
-### What are dynamic imports in JavaScript?
+### Что такое dynamic imports in JavaScript?
 
 **Definition:**
 
@@ -3422,9 +3422,9 @@ async function openEditor() {
 ### Browser Compatibility and Transpilation
 
 <details>
-<summary>How do you ensure your JavaScript code is cross-browser compatible?</summary>
+<summary>Как you ensure your JavaScript code is cross-browser compatible?</summary>
 
-### How do you ensure your JavaScript code is cross-browser compatible?
+### Как you ensure your JavaScript code is cross-browser compatible?
 
 **Definition:**
 
@@ -3458,9 +3458,9 @@ async function load(url) {
 </details>
 
 <details>
-<summary>What is Babel and how is it used in JavaScript development?</summary>
+<summary>Что такое Babel and how is it used in JavaScript development?</summary>
 
-### What is Babel and how is it used in JavaScript development?
+### Что такое Babel and how is it used in JavaScript development?
 
 **Definition:**
 
@@ -3491,9 +3491,9 @@ const greet = (name) => `Hello, ${name}`;
 </details>
 
 <details>
-<summary>What are polyfills, and when would you use them?</summary>
+<summary>Что такое Polyfills, and when would you use them?</summary>
 
-### What are polyfills, and when would you use them?
+### Что такое Polyfills, and when would you use them?
 
 **Definition:**
 
@@ -3529,9 +3529,9 @@ if (!Array.prototype.toSorted) {
 ### JavaScript and the DOM
 
 <details>
-<summary>What is the Document Object Model (DOM)?</summary>
+<summary>Что такое the Document Object Model (DOM)?</summary>
 
-### What is the Document Object Model (DOM)?
+### Что такое the Document Object Model (DOM)?
 
 **Definition:**
 
@@ -3560,9 +3560,9 @@ title.textContent = "Notes";
 </details>
 
 <details>
-<summary>How do you create, append, or remove an element from the DOM?</summary>
+<summary>Как you create, append, or remove an element from the DOM?</summary>
 
-### How do you create, append, or remove an element from the DOM?
+### Как you create, append, or remove an element from the DOM?
 
 **Definition:**
 
@@ -3592,9 +3592,9 @@ item.remove();
 </details>
 
 <details>
-<summary>Describe different ways to find or access HTML elements in the DOM.</summary>
+<summary>Опишите different ways to find or access HTML elements in the DOM.</summary>
 
-### Describe different ways to find or access HTML elements in the DOM.
+### Опишите different ways to find or access HTML elements in the DOM.
 
 **Definition:**
 
@@ -3624,9 +3624,9 @@ const title = document.getElementById("title");
 </details>
 
 <details>
-<summary>Explain the difference between innerHTML and textContent.</summary>
+<summary>Объясните the difference between innerHTML and textContent.</summary>
 
-### Explain the difference between innerHTML and textContent.
+### Объясните the difference between innerHTML and textContent.
 
 **Definition:**
 
@@ -3659,9 +3659,9 @@ title.textContent = userName;
 </details>
 
 <details>
-<summary>How do you handle DOM events in a memory-efficient way?</summary>
+<summary>Как you handle DOM events in a memory-efficient way?</summary>
 
-### How do you handle DOM events in a memory-efficient way?
+### Как you handle DOM events in a memory-efficient way?
 
 **Definition:**
 
@@ -3698,9 +3698,9 @@ list.addEventListener("click", onClick);
 ### Tooling and Build Systems
 
 <details>
-<summary>What is npm, and how do you use it?</summary>
+<summary>Что такое npm, and how do you use it?</summary>
 
-### What is npm, and how do you use it?
+### Что такое npm, and how do you use it?
 
 **Definition:**
 
@@ -3730,9 +3730,9 @@ npm — менеджер пакетов, который поставляется
 </details>
 
 <details>
-<summary>Discuss the role of Webpack in modern JavaScript development.</summary>
+<summary>Обсудите the role of Webpack in modern JavaScript development.</summary>
 
-### Discuss the role of Webpack in modern JavaScript development.
+### Обсудите the role of Webpack in modern JavaScript development.
 
 **Definition:**
 
@@ -3763,9 +3763,9 @@ area(4);
 </details>
 
 <details>
-<summary>What is a source map?</summary>
+<summary>Что такое source Map?</summary>
 
-### What is a source map?
+### Что такое source Map?
 
 **Definition:**
 
@@ -3791,9 +3791,9 @@ const greet = (name) => `Hello, ${name}`;
 </details>
 
 <details>
-<summary>How do you use ESLint for maintaining JavaScript code quality?</summary>
+<summary>Как you use ESLInt for maintaining JavaScript code quality?</summary>
 
-### How do you use ESLint for maintaining JavaScript code quality?
+### Как you use ESLInt for maintaining JavaScript code quality?
 
 **Definition:**
 
@@ -3820,9 +3820,9 @@ console.log(count);
 </details>
 
 <details>
-<summary>What is continuous integration/continuous deployment (CI/CD) in the context of JS development?</summary>
+<summary>Что такое continuous integration/continuous deployment (CI/CD) in the context of JS development?</summary>
 
-### What is continuous integration/continuous deployment (CI/CD) in the context of JS development?
+### Что такое continuous integration/continuous deployment (CI/CD) in the context of JS development?
 
 **Definition:**
 
@@ -3856,9 +3856,9 @@ console.log(count);
 ### JavaScript and the Web Platform
 
 <details>
-<summary>What is the Window object and its significance?</summary>
+<summary>Что такое the Window object and its significance?</summary>
 
-### What is the Window object and its significance?
+### Что такое the Window object and its significance?
 
 **Definition:**
 
@@ -3886,9 +3886,9 @@ window.addEventListener("popstate", (event) => {
 </details>
 
 <details>
-<summary>Explain the Document object.</summary>
+<summary>Объясните the Document object.</summary>
 
-### Explain the Document object.
+### Объясните the Document object.
 
 **Definition:**
 
@@ -3918,9 +3918,9 @@ document.querySelector("ul").appendChild(item);
 </details>
 
 <details>
-<summary>What new features does HTML5 bring to JavaScript development?</summary>
+<summary>Какие new features HTML5 приносит в JavaScript development?</summary>
 
-### What new features does HTML5 bring to JavaScript development?
+### Какие new features HTML5 приносит в JavaScript development?
 
 **Definition:**
 
@@ -3951,9 +3951,9 @@ localStorage.setItem("theme", "dark");
 </details>
 
 <details>
-<summary>Discuss the role of JavaScript in Progressive Web Apps (PWAs).</summary>
+<summary>Обсудите the role of JavaScript in Progressive Web Apps (PWAs).</summary>
 
-### Discuss the role of JavaScript in Progressive Web Apps (PWAs).
+### Обсудите the role of JavaScript in Progressive Web Apps (PWAs).
 
 **Definition:**
 
@@ -3982,9 +3982,9 @@ if ("serviceWorker" in navigator) {
 ### JavaScript and Mobile Development
 
 <details>
-<summary>Explain how to use JavaScript for mobile development.</summary>
+<summary>Объясните how to use JavaScript for mobile development.</summary>
 
-### Explain how to use JavaScript for mobile development.
+### Объясните how to use JavaScript for mobile development.
 
 **Definition:**
 
@@ -4017,9 +4017,9 @@ button.addEventListener("click", () => {
 </details>
 
 <details>
-<summary>What is React Native and how does it differ from traditional web apps?</summary>
+<summary>Что такое React Native and how does it differ from traditional web apps?</summary>
 
-### What is React Native and how does it differ from traditional web apps?
+### Что такое React Native and how does it differ from traditional web apps?
 
 **Definition:**
 
@@ -4048,9 +4048,9 @@ createRoot(document.getElementById("root")).render(<h1>Web</h1>);
 </details>
 
 <details>
-<summary>How does JavaScript interact with native mobile components?</summary>
+<summary>Как JavaScript interact with native mobile components?</summary>
 
-### How does JavaScript interact with native mobile components?
+### Как JavaScript interact with native mobile components?
 
 **Definition:**
 

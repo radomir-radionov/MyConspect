@@ -107,14 +107,14 @@ const { data: posts } = await useFetch('/api/posts')
 Vue рендерит UI; Nuxt оркестрирует, как и где этот UI строится, кэшируется и доставляется.
 
 
-| Vue (Vite SPA) | Nuxt |
-| --- | --- |
-| **Role** | UI library | Full-stack framework |
-| **Routing** | Vue Router (ручная настройка) | File-based `app/pages/` |
-| **Data fetching** | Client hooks / ручной SSR | `useFetch`, `useAsyncData`, payload |
-| **Rendering** | CSR по умолчанию | SSR, SSG, hybrid через `routeRules` |
-| **API** | Отдельный backend | Nitro routes `server/api/` |
-| **Deployment** | Static CDN или custom | Nitro presets (Node, Vercel, Cloudflare, static) |
+| | Vue (Vite SPA) | Nuxt |
+| | --- | --- |
+| | **Role** | UI library | Full-stack framework |
+| | **Routing** | Vue Router (ручная настройка) | File-based `app/pages/` |
+| | **Data fetching** | Client hooks / ручной SSR | `useFetch`, `useAsyncData`, payload |
+| | **Rendering** | CSR по умолчанию | SSR, SSG, hybrid через `routeRules` |
+| | **API** | Отдельный backend | Nitro routes `server/api/` |
+| | **Deployment** | Static CDN или custom | Nitro presets (Node, Vercel, Cloudflare, static) |
 
 **Thoughts:** Для общего Vue SSR, гидрации и механики реактивности см. [Vue — SSR](./4_vue_ssr.md). Этот документ охватывает **Nuxt-специфичные** API и семантику Nitro.
 

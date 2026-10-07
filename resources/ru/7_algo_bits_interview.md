@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Bit Manipulation](https://devinterview.io/qu
 ### Bit Manipulation Fundamentals
 
 <details>
-<summary>What is a Bit?</summary>
+<summary>Что такое Bit?</summary>
 
-### What is a Bit?
+### Что такое Bit?
 
 **Definition:**
 
@@ -45,9 +45,9 @@ Questions from [Devinterview.io — Bit Manipulation](https://devinterview.io/qu
 </details>
 
 <details>
-<summary>What is a Byte?</summary>
+<summary>Что такое Byte?</summary>
 
-### What is a Byte?
+### Что такое Byte?
 
 **Definition:**
 
@@ -73,9 +73,9 @@ for bit in [1, 0, 1, 1, 0, 0, 0, 0]:  # сначала старший бит
 </details>
 
 <details>
-<summary>Explain what is a Bitwise Operation.</summary>
+<summary>Объясните, что такое операция bitwise.</summary>
 
-### Explain what is a Bitwise Operation.
+### Объясните, что такое операция bitwise.
 
 **Definition:**
 
@@ -104,9 +104,9 @@ perms ^= EXEC                 # переключить execute -> 0b111
 </details>
 
 <details>
-<summary>What are some real-world applications of Bitwise Operators?</summary>
+<summary>Что такое some real-world applications of bitwise Operators?</summary>
 
-### What are some real-world applications of Bitwise Operators?
+### Что такое some real-world applications of bitwise Operators?
 
 **Definition:**
 
@@ -133,9 +133,9 @@ state ^= (1 << 3)             # переключить флаг шифрован
 </details>
 
 <details>
-<summary>What is a bitwise AND operation and how can it be used to check if a number is odd or even?</summary>
+<summary>Что такое bitwise AND operation and how can it be used to check if a number is odd or even?</summary>
 
-### What is a bitwise AND operation and how can it be used to check if a number is odd or even?
+### Что такое bitwise AND operation and how can it be used to check if a number is odd or even?
 
 **Definition:**
 
@@ -160,9 +160,9 @@ is_even = (n & 1) == 0
 </details>
 
 <details>
-<summary>Explain the bitwise OR operation with an example.</summary>
+<summary>Объясните работу bitwise OR на примере.</summary>
 
-### Explain the bitwise OR operation with an example.
+### Объясните работу bitwise OR на примере.
 
 **Definition:**
 
@@ -181,9 +181,9 @@ is_even = (n & 1) == 0
 </details>
 
 <details>
-<summary>How does the bitwise XOR operation work, and what is it commonly used for?</summary>
+<summary>Как the bitwise XOR operation work, and what is it commonly used for?</summary>
 
-### How does the bitwise XOR operation work, and what is it commonly used for?
+### Как the bitwise XOR operation work, and what is it commonly used for?
 
 **Definition:**
 
@@ -205,9 +205,9 @@ XOR пишет 1 там, где два бита различаются, и 0 т�
 </details>
 
 <details>
-<summary>Demonstrate how to set, toggle, and clear a specific bit in a number using bitwise operators.</summary>
+<summary>Продемонсtrieруйте, как установить, переключить AND очистить конкретный бит в числе с помощью bitwise operatORs.</summary>
 
-### Demonstrate how to set, toggle, and clear a specific bit in a number using bitwise operators.
+### Продемонсtrieруйте, как установить, переключить AND очистить конкретный бит в числе с помощью bitwise operatORs.
 
 **Definition:**
 
@@ -234,9 +234,9 @@ clear  = set & ~mask   # 0b1001
 </details>
 
 <details>
-<summary>What is bit masking, and how would you create a mask to isolate the nth bit?</summary>
+<summary>Что такое bit masking, and how would you create a mask to isolate the nth bit?</summary>
 
-### What is bit masking, and how would you create a mask to isolate the nth bit?
+### Что такое bit masking, and how would you create a mask to isolate the nth bit?
 
 **Definition:**
 
@@ -282,9 +282,9 @@ clear  = set & ~mask   # 0b1001
 </details>
 
 <details>
-<summary>What is the difference between `>>` and `>>>` operators?</summary>
+<summary>Что такое the difference between `>>` and `>>>` operators?</summary>
 
-### What is the difference between `>>` and `>>>` operators?
+### Что такое the difference between `>>` and `>>>` operators?
 
 **Definition:**
 
@@ -304,9 +304,9 @@ clear  = set & ~mask   # 0b1001
 </details>
 
 <details>
-<summary>Explain how to perform left and right bit rotations.</summary>
+<summary>Объясните how to perform left and right bit rotations.</summary>
 
-### Explain how to perform left and right bit rotations.
+### Объясните how to perform left and right bit rotations.
 
 **Definition:**
 
@@ -335,9 +335,9 @@ def rotl(n, k, w=8):
 ### Bitwise Problem Solving and Algorithms
 
 <details>
-<summary>Write a function that counts the number of set bits (1s) in an integer.</summary>
+<summary>Объясните, как выполнять повороты бит влево и вправо.</summary>
 
-### Write a function that counts the number of set bits (1s) in an integer.
+### Объясните, как выполнять повороты бит влево и вправо.
 
 **Definition:**
 
@@ -366,9 +366,9 @@ def popcount(n):
 </details>
 
 <details>
-<summary>Determine if a number is a power of two using bit manipulation.</summary>
+<summary>Определите if a number is a power of two using bit manipulation.</summary>
 
-### Determine if a number is a power of two using bit manipulation.
+### Определите if a number is a power of two using bit manipulation.
 
 **Definition:**
 
@@ -393,9 +393,9 @@ def is_pow2(n):
 </details>
 
 <details>
-<summary>Design a function that adds two numbers without using the ‘+’ operator.</summary>
+<summary>Определите, является ли число степенью двойки, используя bit manipulation.</summary>
 
-### Design a function that adds two numbers without using the ‘+’ operator.
+### Определите, является ли число степенью двойки, используя bit manipulation.
 
 **Definition:**
 
@@ -425,9 +425,9 @@ def add(a, b):
 </details>
 
 <details>
-<summary>Implement a function that swaps the values of two variables without using extra space.</summary>
+<summary>Разработайте функцию, которая складывает два числа без использования оператора «+».</summary>
 
-### Implement a function that swaps the values of two variables without using extra space.
+### Разработайте функцию, которая складывает два числа без использования оператора «+».
 
 **Definition:**
 
@@ -459,9 +459,9 @@ def xor_swap(a, b):
 </details>
 
 <details>
-<summary>Find the only non-repeating element in an array where each element repeats twice, using bitwise operations.</summary>
+<summary>Найдите the only non-repeating element in an array where each element repeats twice, using bitwise operations.</summary>
 
-### Find the only non-repeating element in an array where each element repeats twice, using bitwise operations.
+### Найдите the only non-repeating element in an array where each element repeats twice, using bitwise operations.
 
 **Definition:**
 
@@ -492,9 +492,9 @@ def find_unique(arr):
 </details>
 
 <details>
-<summary>Given a list of numbers where every number appears three times except for one, find the single non-repeated number.</summary>
+<summary>Найдите единственный неповторяющийся элемент в array, где каждый элемент повторяется дважды, используя операции bitwise.</summary>
 
-### Given a list of numbers where every number appears three times except for one, find the single non-repeated number.
+### Найдите единственный неповторяющийся элемент в array, где каждый элемент повторяется дважды, используя операции bitwise.
 
 **Definition:**
 
@@ -529,9 +529,9 @@ def single_number(arr):
 </details>
 
 <details>
-<summary>Implement a bit manipulation algorithm to find and clear the lowest set bit in a number.</summary>
+<summary>Получив список чисел, в котором каждое число встречается trieжды, за исключением одного, найдите единственное неповторяющееся число.</summary>
 
-### Implement a bit manipulation algorithm to find and clear the lowest set bit in a number.
+### Получив список чисел, в котором каждое число встречается trieжды, за исключением одного, найдите единственное неповторяющееся число.
 
 **Definition:**
 
@@ -562,9 +562,9 @@ def clear_lowest(n):
 </details>
 
 <details>
-<summary>Write a function that would generate the next higher number with the same number of set bits as the given positive integer.</summary>
+<summary>Напишите a function that would generate the next higher number with the same number of set bits as the given positive integer.</summary>
 
-### Write a function that would generate the next higher number with the same number of set bits as the given positive integer.
+### Напишите a function that would generate the next higher number with the same number of set bits as the given positive integer.
 
 **Definition:**
 
@@ -599,9 +599,9 @@ def next_same_popcount(x):
 </details>
 
 <details>
-<summary>Reverse the bits of an unsigned integer.</summary>
+<summary>Разверните the bits of an unsigned integer.</summary>
 
-### Reverse the bits of an unsigned integer.
+### Разверните the bits of an unsigned integer.
 
 **Definition:**
 
@@ -633,9 +633,9 @@ def reverse_bits(num, width=32):
 </details>
 
 <details>
-<summary>Calculate the absolute value of an integer using bit manipulation.</summary>
+<summary>Вычислите the absolute value of an integer using bit manipulation.</summary>
 
-### Calculate the absolute value of an integer using bit manipulation.
+### Вычислите the absolute value of an integer using bit manipulation.
 
 **Definition:**
 
@@ -668,9 +668,9 @@ def abs32(n):
 </details>
 
 <details>
-<summary>Multiply and divide a number by two using bit manipulation.</summary>
+<summary>Рассчитайте абсолютное значение целого числа с помощью bit manipulation.</summary>
 
-### Multiply and divide a number by two using bit manipulation.
+### Рассчитайте абсолютное значение целого числа с помощью bit manipulation.
 
 **Definition:**
 
@@ -701,9 +701,9 @@ def div2(x):
 </details>
 
 <details>
-<summary>Determine the log base 2 of an integer using bitwise operations.</summary>
+<summary>Определите the log BASE 2 of an integer using bitwise operations.</summary>
 
-### Determine the log base 2 of an integer using bitwise operations.
+### Определите the log BASE 2 of an integer using bitwise operations.
 
 **Definition:**
 
@@ -738,9 +738,9 @@ def floor_log2(x):
 ### Advanced Bit Manipulation Techniques
 
 <details>
-<summary>How can you detect and handle integer overflow and underflow while using bit manipulation for arithmetic operations?</summary>
+<summary>Определите логарифмическую базу 2 целого числа с помощью операций bitwise.</summary>
 
-### How can you detect and handle integer overflow and underflow while using bit manipulation for arithmetic operations?
+### Определите логарифмическую базу 2 целого числа с помощью операций bitwise.
 
 **Definition:**
 
@@ -772,9 +772,9 @@ def signed_add_overflows(a, b, width=32):
 </details>
 
 <details>
-<summary>Explain the significance of setting flags and checking bits in the implementation of a bitmap or bitset.</summary>
+<summary>Как вы можете обнаружить и обработать переполнение целых чисел и их недостаточный расход при использовании bit manipulation для арифметических операций?</summary>
 
-### Explain the significance of setting flags and checking bits in the implementation of a bitmap or bitset.
+### Как вы можете обнаружить и обработать переполнение целых чисел и их недостаточный расход при использовании bit manipulation для арифметических операций?
 
 **Definition:**
 
@@ -809,9 +809,9 @@ def test_bit(n, k):
 </details>
 
 <details>
-<summary>How can bit manipulation be used to perform efficient matrix multiplication of binary matrices?</summary>
+<summary>Объясните важность установки флагов и проверки битов при реализации bitMap или bitset.</summary>
 
-### How can bit manipulation be used to perform efficient matrix multiplication of binary matrices?
+### Объясните важность установки флагов и проверки битов при реализации bitMap или bitset.
 
 **Definition:**
 
@@ -847,9 +847,9 @@ def bool_mul(a, b):
 </details>
 
 <details>
-<summary>Design an algorithm to perform endian conversion (big endian to little endian and vice versa) using bit manipulation.</summary>
+<summary>Как можно использовать bit manipulation для эффективного маtrieчного умножения двоичных маtrieц?</summary>
 
-### Design an algorithm to perform endian conversion (big endian to little endian and vice versa) using bit manipulation.
+### Как можно использовать bit manipulation для эффективного маtrieчного умножения двоичных маtrieц?
 
 **Definition:**
 
@@ -882,9 +882,9 @@ def bswap32(n):
 ### Bit Manipulation in Computing and Data Processing
 
 <details>
-<summary>Give an example of how to use bitwise operations to implement a simple compression algorithm.</summary>
+<summary>Разработайте алгоритм для выполнения преобразования с порядком байтов (с обратным порядком байтов в veRSA) с помощью bit manipulation.</summary>
 
-### Give an example of how to use bitwise operations to implement a simple compression algorithm.
+### Разработайте алгоритм для выполнения преобразования с порядком байтов (с обратным порядком байтов в veRSA) с помощью bit manipulation.
 
 **Definition:**
 
@@ -919,9 +919,9 @@ def unpack8(word):
 </details>
 
 <details>
-<summary>Can bitwise operations be used to efficiently encode and decode data? Illustrate with an example.</summary>
+<summary>Приведите пример того, как использовать операции bitwise для реализации простого алгоритма сжатия.</summary>
 
-### Can bitwise operations be used to efficiently encode and decode data? Illustrate with an example.
+### Приведите пример того, как использовать операции bitwise для реализации простого алгоритма сжатия.
 
 **Definition:**
 
@@ -954,9 +954,9 @@ def unpack_fields(word):
 </details>
 
 <details>
-<summary>How are bitwise operations used in Huffman coding or other compression algorithms?</summary>
+<summary>Можно ли использовать операции bitwise для эффективного кодирования данных декодирования AND? Приведите пример.</summary>
 
-### How are bitwise operations used in Huffman coding or other compression algorithms?
+### Можно ли использовать операции bitwise для эффективного кодирования данных декодирования AND? Приведите пример.
 
 **Definition:**
 
@@ -995,9 +995,9 @@ def to_bytes(bits):
 </details>
 
 <details>
-<summary>Explain the role of bit manipulation in encoding and decoding data, like Base64.</summary>
+<summary>Как операции bitwise используются в кодировании Хаффмана или других алгоритмах сжатия?</summary>
 
-### Explain the role of bit manipulation in encoding and decoding data, like Base64.
+### Как операции bitwise используются в кодировании Хаффмана или других алгоритмах сжатия?
 
 **Definition:**
 
@@ -1029,9 +1029,9 @@ def b64_triplet(b0, b1, b2):
 </details>
 
 <details>
-<summary>Discuss how bitmasking can manage the state of multiple boolean flags in a single byte.</summary>
+<summary>Объясните роль bit manipulation в кодировании и декодировании данных, таких как Base64.</summary>
 
-### Discuss how bitmasking can manage the state of multiple boolean flags in a single byte.
+### Объясните роль bit manipulation в кодировании и декодировании данных, таких как Base64.
 
 **Definition:**
 
@@ -1065,9 +1065,9 @@ def allows(flags, perm):
 </details>
 
 <details>
-<summary>Explain the use of bit manipulation in network programming, specifically in creating and interpreting network packets.</summary>
+<summary>Обсудите, как с помощью битовой маски можно управлять состоянием нескольких логических флагов в одном байте.</summary>
 
-### Explain the use of bit manipulation in network programming, specifically in creating and interpreting network packets.
+### Обсудите, как с помощью битовой маски можно управлять состоянием нескольких логических флагов в одном байте.
 
 **Definition:**
 
@@ -1101,9 +1101,9 @@ def load_u16_be(buf):
 ### Bit Manipulation Challenges and Creative Use Cases
 
 <details>
-<summary>Implement a modular exponentiation algorithm using bit manipulation.</summary>
+<summary>Объясните, как использовать bit manipulation в сетевом программировании, в частности, при создании и интерпретации сетевых пакетов.</summary>
 
-### Implement a modular exponentiation algorithm using bit manipulation.
+### Объясните, как использовать bit manipulation в сетевом программировании, в частности, при создании и интерпретации сетевых пакетов.
 
 **Definition:**
 
@@ -1139,9 +1139,9 @@ def modpow(a, n, m):
 </details>
 
 <details>
-<summary>Find the XOR of all numbers within a given range.</summary>
+<summary>Найдите the XOR of all numbers within a given range.</summary>
 
-### Find the XOR of all numbers within a given range.
+### Найдите the XOR of all numbers within a given range.
 
 **Definition:**
 
@@ -1173,9 +1173,9 @@ def range_xor(left, right):
 </details>
 
 <details>
-<summary>Generate all possible subsets of a set using bit manipulation.</summary>
+<summary>Найдите исключающее значение для всех чисел в заданном диапазоне.</summary>
 
-### Generate all possible subsets of a set using bit manipulation.
+### Найдите исключающее значение для всех чисел в заданном диапазоне.
 
 **Definition:**
 
@@ -1207,9 +1207,9 @@ def subsets(items):
 </details>
 
 <details>
-<summary>Determine if a binary representation of an integer is a palindrome.</summary>
+<summary>Сгенерируйте все возможные subset из набора, используя bit manipulation.</summary>
 
-### Determine if a binary representation of an integer is a palindrome.
+### Сгенерируйте все возможные subset из набора, используя bit manipulation.
 
 **Definition:**
 
@@ -1246,9 +1246,9 @@ def is_binary_palindrome(x):
 </details>
 
 <details>
-<summary>Find the minimum and maximum of two integers without using comparisons.</summary>
+<summary>Определите, является ли двоичное представление целого числа Palindrome.</summary>
 
-### Find the minimum and maximum of two integers without using comparisons.
+### Определите, является ли двоичное представление целого числа Palindrome.
 
 **Definition:**
 
@@ -1282,9 +1282,9 @@ def vmax(x, y):
 </details>
 
 <details>
-<summary>Check if two integers have opposite signs using bit manipulation.</summary>
+<summary>Найдите минимальное и максимальное значение из двух целых чисел без использования сравнений.</summary>
 
-### Check if two integers have opposite signs using bit manipulation.
+### Найдите минимальное и максимальное значение из двух целых чисел без использования сравнений.
 
 **Definition:**
 

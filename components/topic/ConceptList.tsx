@@ -28,23 +28,21 @@ import { useCodeCopyButtons } from "./useCodeCopyButtons";
 import { useConceptKeyboardNav } from "./useConceptKeyboardNav";
 import { useHandbookTopicNav } from "./useHandbookTopicNav";
 
-const SECTION_LABELS: Record<InterviewSection, string> = {
-  questions: "Questions",
-  tasks: "Tasks",
-};
-
 type ConceptGroup = {
   readonly key: string;
   readonly label: string | null;
   readonly concepts: Concept[];
 };
 
-function groupLabel(concept: Concept): string | null {
+function groupLabel(concept: Concept, chrome: ChromeCopy): string | null {
   if (concept.group) {
     return concept.group;
   }
-  if (concept.interviewSection) {
-    return SECTION_LABELS[concept.interviewSection];
+  if (concept.interviewSection === "tasks") {
+    return chrome.interviewTasks;
+  }
+  if (concept.interviewSection === "questions") {
+    return chrome.interviewQuestions;
   }
   return null;
 }
@@ -52,6 +50,7 @@ function groupLabel(concept: Concept): string | null {
 function groupConcepts(
   concepts: readonly Concept[],
   groupInterviewSections: boolean,
+  chrome: ChromeCopy,
 ): ConceptGroup[] {
   if (!groupInterviewSections) {
     return [{ key: "default", label: null, concepts: [...concepts] }];
@@ -61,7 +60,7 @@ function groupConcepts(
   let current: ConceptGroup | null = null;
 
   for (const concept of concepts) {
-    const label = groupLabel(concept);
+    const label = groupLabel(concept, chrome);
     const key = concept.group
       ? `topic:${concept.group}`
       : `section:${concept.interviewSection ?? "default"}`;
@@ -112,8 +111,8 @@ export function ConceptList({
   );
   useConceptKeyboardNav(conceptIds);
   const groups = useMemo(
-    () => groupConcepts(concepts, groupInterviewSections),
-    [concepts, groupInterviewSections],
+    () => groupConcepts(concepts, groupInterviewSections, chrome),
+    [chrome, concepts, groupInterviewSections],
   );
   const notesQuery = mode === "notes" ? query : "";
 

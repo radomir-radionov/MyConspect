@@ -93,9 +93,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>LAN vs Internet — how do computers exchange data?</summary>
+  <summary>LAN vs Internet — как computers обмениваются data?</summary>
 
-### LAN vs Internet — how do computers exchange data?
+### LAN vs Internet — как computers обмениваются data?
 
 **Definition:** Одни и те же пакеты TCP/IP в домашней локальной сети и в общедоступном Интернете. В локальной сети используются частные адреса и локальный шлюз; Интернет — это общедоступные IP-адреса с глобальной маршрутизацией. DNS сопоставляет имя с IP-адресом; TCP/TLS, а затем HTTP говорят с этим IP.
 
@@ -163,9 +163,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>What is an API? REST vs SOAP vs RPC?</summary>
+  <summary>Что такое API? REST vs SOAP vs RPC?</summary>
 
-### What is an API? REST vs SOAP vs RPC?
+### Что такое API? REST vs SOAP vs RPC?
 
 **Definition:** API — это набор функций, которые одна программа предоставляет другим. В веб-серверах обычными стилями являются REST, SOAP и RPC. tRPC — это TypeScript RPC.
 
@@ -206,9 +206,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>HTTP methods and idempotency?</summary>
+  <summary>HTTP methods и idempotency?</summary>
 
-### HTTP methods and idempotency?
+### HTTP methods и idempotency?
 
 **Definition:** Методы HTTP выражают намерение. **Безопасные** методы не меняют состояние сервера; **идемпотентные** методы при повторении дают тот же эффект.
 
@@ -235,9 +235,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>What is a web server?</summary>
+  <summary>Что такое web server?</summary>
 
-### What is a web server?
+### Что такое web server?
 
 **Definition:** Программа, которая принимает HTTP-запросы, обрабатывает их (файл, кэш, прокси или приложение) и возвращает HTTP-ответы.
 
@@ -254,9 +254,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>Common HTTP status codes?</summary>
+  <summary>Распространённые HTTP status codes?</summary>
 
-### Common HTTP status codes?
+### Распространённые HTTP status codes?
 
 **Definition:** Трехзначные коды сообщают клиенту класс результата и порядок действий.
 
@@ -287,9 +287,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>REST versioning & pagination?</summary>
+  <summary>REST versioning и pagination?</summary>
 
-### REST versioning & pagination?
+### REST versioning и pagination?
 
 Полные примечания см. в разделе **REST → Управление версиями и нумерацией страниц**.
 
@@ -302,9 +302,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>Cache-Control headers?</summary>
+  <summary>CORS — как это работает?</summary>
 
-### Cache-Control headers?
+### CORS — как это работает?
 
 **Definition:** `Cache-Control` и валидаторы (`ETag`, `Last-Modified`) управлять браузером и кешированием CDN.
 
@@ -332,9 +332,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>CORS — how does it work?</summary>
+  <summary>CORS — как это работает?</summary>
 
-### CORS — how does it work?
+### CORS — как это работает?
 
 **Definition:** Браузеры применяют **Политику одного и того же происхождения** — JS не может читать ответы из разных источников, если сервер не разрешит это через заголовки CORS.
 
@@ -361,9 +361,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>OAuth2 vs OIDC?</summary>
+  <summary>JWT vs session cookie?</summary>
 
-### OAuth2 vs OIDC?
+### JWT vs session cookie?
 
 **Definition:** OAuth2 делегирует **авторизацию** (доступ к ресурсам). OIDC добавляет **аутентификацию** (кто вошел в систему) через `id_token`.
 
@@ -378,19 +378,19 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>JWT vs session cookie?</summary>
+  <summary>CSRF — как смягчить?</summary>
 
-### JWT vs session cookie?
+### CSRF — как смягчить?
 
 **Definition:** Сессии сохраняют состояние на сервере; JWT — это автономные подписанные токены, проверенные без поиска.
 
 
-| Сессия                      | ДЖВТ                                        |
-|  --------  |  ---------------------------  |
-| Хранение | Сервер (Redis/БД)           | Клиент (cookie/заголовок)                   |
-| Отзыв    | Удаление сеанса — мгновенно | Черный список или короткий TTL + обновление |
-| Масштаб | Требуется хранилище общих сессий | Проверка без гражданства |
-| XSS-риск | HttpOnly cookie безопаснее  | localStorage опасен                         |
+| | Сессия                      | ДЖВТ                                        |
+| | --------  |  ---------------------------  |
+| | Хранение | Сервер (Redis/БД)           | Клиент (cookie/заголовок)                   |
+| | Отзыв    | Удаление сеанса — мгновенно | Черный список или короткий TTL + обновление |
+| | Масштаб | Требуется хранилище общих сессий | Проверка без гражданства |
+| | XSS-риск | HttpOnly cookie безопаснее  | localStorage опасен                         |
 
 **How it works:** Сеанс — файл cookie содержит непрозрачный идентификатор; сервер загружает пользователя. JWT — сервер проверяет подпись и `exp` по каждому запросу.
 
@@ -403,9 +403,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>CSRF — how to mitigate?</summary>
+  <summary>Clickjacking — как смягчить?</summary>
 
-### CSRF — how to mitigate?
+### Clickjacking — как смягчить?
 
 **Definition:** CSRF подделывает аутентифицированные запросы, используя файлы cookie жертвы. AuthN (действительный сеанс) — это не то же самое, что авторизация этой мутации.
 
@@ -420,9 +420,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>Clickjacking — how to mitigate?</summary>
+  <summary>Rate limiting — что такое 429?</summary>
 
-### Clickjacking — how to mitigate?
+### Rate limiting — что такое 429?
 
 **Definition:** Пользователь нажимает на приманку, в то время как копия вашего сайта в рамке получает клик.
 
@@ -435,9 +435,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>Rate limiting — what is 429?</summary>
+  <summary>AbortController с fetch?</summary>
 
-### Rate limiting — what is 429?
+### AbortController с fetch?
 
 **Definition:** **429 Слишком много запросов**, когда клиент превышает допустимую скорость. Сервер должен отправить `**Retry-After`\*\*.
 
@@ -450,9 +450,9 @@ HTTP находится на **прикладном уровне** — он пр
 </details>
 
 <details>
-  <summary>AbortController with fetch?</summary>
+  <summary>AbortController с fetch?</summary>
 
-### AbortController with fetch?
+### AbortController с fetch?
 
 **Definition:** `AbortController` отменяет полет `fetch` — полезно для таймаутов, устранения дребезга поиска и очистки React.
 
@@ -471,21 +471,21 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>GET vs POST?</summary>
+  <summary>What happens when the frontend calls fetch?</summary>
 
-### GET vs POST?
+### What happens when the frontend calls fetch?
 
 **Definition:** Методы HTTP выражают намерение — GET считывает ресурсы; POST создает или запускает действия.
 
 
-| ПОЛУЧИТЬ                     | ПОСТ                                            |
-|  --------------  |  ----------------------------  |
-| **Цель**       | Получить данные              | Создать ресурс/отправить действие |
-| **Безопасно** | Да (без изменения состояния сервера) | Нет |
-| **Идемпотент** | Да                           | Нет (при повторении могут возникнуть дубликаты) |
-| **Тело**       | Обычно нет (параметры в URL) | Часто JSON/тело формы                           |
-| **Кэшируемый** | Да (по умолчанию)            | Нет                                             |
-| **Пример**     | `GET /api/users/1`           | `POST /api/users`                               |
+| | ПОЛУЧИТЬ                     | ПОСТ                                            |
+| | --------------  |  ----------------------------  |
+| | **Цель**       | Получить данные              | Создать ресурс/отправить действие |
+| | **Безопасно** | Да (без изменения состояния сервера) | Нет |
+| | **Идемпотент** | Да                           | Нет (при повторении могут возникнуть дубликаты) |
+| | **Тело**       | Обычно нет (параметры в URL) | Часто JSON/тело формы                           |
+| | **Кэшируемый** | Да (по умолчанию)            | Нет                                             |
+| | **Пример**     | `GET /api/users/1`           | `POST /api/users`                               |
 
 **Thoughts:** _GET = чтение (с возможностью закладки, кэширования); POST = запись/действие (по умолчанию не идемпотентно)._
 
@@ -498,9 +498,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>What happens when the frontend calls `fetch`?</summary>
+  <summary>Что происходит, когда frontend вызывает `fetch`?</summary>
 
-### What happens when the frontend calls `fetch`?
+### Что происходит, когда frontend вызывает `fetch`?
 
 **Definition:** `fetch(url, options)` инициирует HTTP-запрос от браузера и возвращает `Promise<Response>`.
 
@@ -529,9 +529,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>WebSocket vs polling?</summary>
+  <summary>Client–server — зачем backend?</summary>
 
-### WebSocket vs polling?
+### Client–server — зачем backend?
 
 **Definition:** Различные шаблоны для сервер-клиент или двунаправленных обновлений.
 
@@ -551,9 +551,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>Client–server — why a backend?</summary>
+  <summary>Типы web apps (MPA vs SPA vs CSR/SSR/SSG)?</summary>
 
-### Client–server — why a backend?
+### Типы web apps (MPA vs SPA vs CSR/SSR/SSG)?
 
 **Definition:** Клиентские (браузерные) запросы; сервер применяет бизнес-логику и использует БД. Пользовательский интерфейс — HTML/CSS/JS; для общих долговременных данных требуется серверная часть.
 
@@ -568,20 +568,20 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>Types of web apps (MPA vs SPA vs CSR/SSR/SSG)?</summary>
+  <summary>Типы web apps (MPA vs SPA vs CSR/SSR/SSG)?</summary>
 
-### Types of web apps (MPA vs SPA vs CSR/SSR/SSG)?
+### Типы web apps (MPA vs SPA vs CSR/SSR/SSG)?
 
 **Definition:** MPA = множество HTML-страниц, полная перезагрузка ссылок. SPA = одна страница, экраны принадлежат JS. CSR/SSR/SSG = **когда** создается первый HTML. PWA добавляет установку/офлайн (манифест + сервисный работник).
 
 
-| Когда существует HTML        | Навигация                        |
-|  ---------------  |  ----------------------------  |
-| МПА статический | Файлы на диске               | Полная перезагрузка |
-| МПА динамический | Шаблон сервера по запросу | Полная перезагрузка |
-| КСО             | После JS в браузере          | Мгновенный                       |
-| ССР             | Серверный HTML, затем гидрат | Мгновенно после загрузки         |
-| ССГ             | Время сборки                 | Перезагрузка или увлажненное СПА |
+| | Когда существует HTML        | Навигация                        |
+| | ---------------  |  ----------------------------  |
+| | МПА статический | Файлы на диске               | Полная перезагрузка |
+| | МПА динамический | Шаблон сервера по запросу | Полная перезагрузка |
+| | КСО             | После JS в браузере          | Мгновенный                       |
+| | ССР             | Серверный HTML, затем гидрат | Мгновенно после загрузки         |
+| | ССГ             | Время сборки                 | Перезагрузка или увлажненное СПА |
 
 **Thoughts:** Не рассматривайте PWA как отдельную архитектуру. Установка или оффлайн: [PWA](./6_web_api_apps.md#pwa-progressive-web-app). Таксономия: [Типы веб-приложений](./6_web_api_apps.md#12-types-of-web-apps).
 
@@ -592,9 +592,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>What is a PWA?</summary>
+  <summary>Что такое PWA?</summary>
 
-### What is a PWA?
+### Что такое PWA?
 
 **Definition:** Три ответа: (1) **Каждый день** — устанавливаемый сайт, который работает автономно, как нативное приложение. (2) **Официально** — прогрессивное улучшение веб-API для обеспечения пользовательского опыта собственного класса. (3) **Технический** — соответствует правилам установки данного браузера (они различаются).
 
@@ -613,9 +613,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>What is FCP?</summary>
+  <summary>Что такое FCP?</summary>
 
-### What is FCP?
+### Что такое FCP?
 
 **Definition:** Первая отрисовка контента — время до появления первого текста, изображения, SVG или непустого холста. Пустой экран закончился, а не «готов».
 
@@ -630,9 +630,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>What is LCP?</summary>
+  <summary>Что такое LCP?</summary>
 
-### What is LCP?
+### Что такое LCP?
 
 **Definition:** Наибольшая отрисовка контента — время, пока не будет отрисовано самое большое содержимое области просмотра (обычно главное изображение или большой текст). Браузер выбирает элемент.
 
@@ -647,9 +647,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>INP vs FID?</summary>
+  <summary>Как принять payment без хранения card numbers?</summary>
 
-### INP vs FID?
+### Как принять payment без хранения card numbers?
 
 **Definition:** **INP** — это основной веб-важный показатель оперативности реагирования (с **12 марта 2024 г.**). **FID** измерял только время ожидания **первого** взаимодействия до _запуска_ обработчика (а не работы обработчика или следующей отрисовки).
 
@@ -664,9 +664,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>How do you take a payment without storing card numbers?</summary>
+  <summary>Как you take a payment without storing card numbers?</summary>
 
-### How do you take a payment without storing card numbers?
+### Как you take a payment without storing card numbers?
 
 **Definition:** Поставщик (Stripe) токенизирует карту в своем iframe. Ваш сервер никогда не видит PAN. На самом деле это **подписанный вебхук**, а не обратный вызов браузера.
 
@@ -681,9 +681,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>Lab Lighthouse is green, Search Console is red — why?</summary>
+  <summary>Lab Lighthouse зелёный, Search Console красный — почему?</summary>
 
-### Lab Lighthouse is green, Search Console is red — why?
+### Lab Lighthouse зелёный, Search Console красный — почему?
 
 **Definition:** Маяк **лаборатория** (один синтетический заход). Search Console Core Web Vitals – это **поле** CrUX на **p75** в течение **28 дней**. В рейтинге используется поле, а не Lighthouse.
 
@@ -698,9 +698,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>What is TTFB and why does it matter?</summary>
+  <summary>Что такое TTFB and why does it matter?</summary>
 
-### What is TTFB and why does it matter?
+### Что такое TTFB and why does it matter?
 
 **Definition:** Время от начала навигации до первого байта ответа. Диагностика, а не Core Web Vital. Хорошо ≤ 0,8 с; плохое > 1,8 с.
 
@@ -715,9 +715,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>How do you optimize API and client performance?</summary>
+  <summary>Как you optimize API and client performance?</summary>
 
-### How do you optimize API and client performance?
+### Как you optimize API and client performance?
 
 **Answer:** Сначала измерения (RUM, APM/traces, Lighthouse, `Server-Timing`), затем самое медленное звено на пользовательском пути. **API:** pagination, индексы, убрать N+1, кэш (HTTP/Redis/CDN), compression, async для тяжёлых задач, меньше round trip (BFF/batch). **Клиент:** меньше бандл (split/lazy), меньше работы main thread (memo, virtualization, отложить third-party), Core Web Vitals (LCP images, INP long tasks, CLS layout). После каждого изменения — p95/p99 и field vitals.
 
@@ -728,16 +728,16 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>Tasks</summary>
+  <summary>Task 1 — Спроектируйте REST API для books</summary>
 
-### Tasks
+### Task 1 — Спроектируйте REST API для books
 
 </details>
 
 <details>
-  <summary>Task 1 — Design REST API for books</summary>
+  <summary>Task 2 — Разберите Cache-Control scenario</summary>
 
-### Task 1 — Design REST API for books
+### Task 2 — Разберите Cache-Control scenario
 
 Получение списка конечных точек для CRUD на `/books` с методами и кодами состояния.
 
@@ -750,9 +750,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>Task 2 — Read Cache-Control scenario</summary>
+  <summary>Общие</summary>
 
-### Task 2 — Read Cache-Control scenario
+### Общие
 
 Ответ имеет `Cache-Control: max-age=3600, public`. Когда произойдет повторная загрузка браузера?
 
@@ -765,9 +765,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>Coding tasks (legacy)</summary>
+  <summary>Junior — General (HTTP / REST)</summary>
 
-### Coding tasks (legacy)
+### Junior — General (HTTP / REST)
 
 // 12 Что такое ОТДЫХ? Какие методы запроса у нас есть? Что такое коды состояния?
 
@@ -776,9 +776,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>Junior — General (HTTP / REST)</summary>
+  <summary>Middle — Общие</summary>
 
-### Junior — General (HTTP / REST)
+### Middle — Общие
 
 1. Опишите пирамиду тестирования.
 2. Какие типы автоматизированных тестов вы написали? Какие библиотеки и инструменты вы предпочитаете?
@@ -792,9 +792,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>Middle — General</summary>
+  <summary>Общие</summary>
 
-### Middle — General
+### Общие
 
 1. Опишите пирамиду тестирования.
 2. Какие типы автоматизированных тестов вы написали? Какие библиотеки и инструменты вы предпочитаете?
@@ -811,9 +811,9 @@ ac.abort(); // throws AbortError in catch
 </details>
 
 <details>
-  <summary>General</summary>
+  <summary>Общие вопросы</summary>
 
-### General
+### Общие вопросы
 
 1. Объяснить концепции функционального программирования.
 2. Что такое TDD/BDD?

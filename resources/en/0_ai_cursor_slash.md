@@ -4,13 +4,13 @@ Type `/` in Agent chat to run built-in skills, custom commands, and migrated ski
 
 ### Related docs
 
-* [AI workflow](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Questions](./0_ai_cursor_questions.md)
+- [AI workflow](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
-| Area | Topics |
-|------|--------|
-| **Mechanics** | [How `/` works](#how--works), [Custom commands](#custom-commands) |
+| Area            | Topics                                                                        |
+| --------------- | ----------------------------------------------------------------------------- |
+| **Mechanics**   | [How `/` works](#how--works), [Custom commands](#custom-commands)             |
 | **Cheat sheet** | [Most-used built-ins](#most-used-built-ins), [Migration](#commands-to-skills) |
 
 ### Sections
@@ -60,10 +60,11 @@ Type `/` in Agent chat to run built-in skills, custom commands, and migrated ski
 **Examples:**
 
 ```markdown
-<!-- .cursor/commands/pr-ready.md -->
----
+## <!-- .cursor/commands/pr-ready.md -->
+
 name: pr-ready
 description: Prep this branch for review
+
 ---
 
 1. Run the test suite and fix failures
@@ -86,23 +87,23 @@ description: Prep this branch for review
 
 **How it works:**
 
-| Command | What it does |
-| --- | --- |
-| `/create-rule` | Scaffold a project rule (`.mdc`) with the right frontmatter |
-| `/create-skill` | Scaffold an Agent Skill (`SKILL.md` + folder) |
-| `/create-hook` | Create hooks and update `hooks.json` |
-| `/create-subagent` | Define a focused custom subagent |
-| `/review` | Pick and run the appropriate code-review agent |
-| `/review-bugbot` | Bug/regression-oriented review (Bugbot) |
-| `/review-security` | Security-focused review |
-| `/canvas` | Interactive React artifact beside the chat |
-| `/loop` | Re-run a prompt or skill on an interval |
-| `/split-to-prs` | Split a large change into smaller PRs |
-| `/migrate-to-skills` | Convert eligible rules/commands into skills |
-| `/shell` | Run the following text as a literal shell command |
-| `/automate` | Create Automations (schedule, Slack, GitHub events, …) |
-| `/autopilot` | Watch a PR and handle feedback / CI / follow-ups |
-| `/summarize` | Compress the current chat context on demand |
+| Command              | What it does                                                |
+| -------------------- | ----------------------------------------------------------- |
+| `/create-rule`       | Scaffold a project rule (`.mdc`) with the right frontmatter |
+| `/create-skill`      | Scaffold an Agent Skill (`SKILL.md` + folder)               |
+| `/create-hook`       | Create hooks and update `hooks.json`                        |
+| `/create-subagent`   | Define a focused custom subagent                            |
+| `/review`            | Pick and run the appropriate code-review agent              |
+| `/review-bugbot`     | Bug/regression-oriented review (Bugbot)                     |
+| `/review-security`   | Security-focused review                                     |
+| `/canvas`            | Interactive React artifact beside the chat                  |
+| `/loop`              | Re-run a prompt or skill on an interval                     |
+| `/split-to-prs`      | Split a large change into smaller PRs                       |
+| `/migrate-to-skills` | Convert eligible rules/commands into skills                 |
+| `/shell`             | Run the following text as a literal shell command           |
+| `/automate`          | Create Automations (schedule, Slack, GitHub events, …)      |
+| `/autopilot`         | Watch a PR and handle feedback / CI / follow-ups            |
+| `/summarize`         | Compress the current chat context on demand                 |
 
 **When to use:** Reach for `/create-*` when authoring Cursor config; `/review*` before merge; `/loop` for polling; `/summarize` when the thread is huge but you want to keep it.
 

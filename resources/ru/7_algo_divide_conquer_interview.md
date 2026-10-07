@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Divide & Conquer](https://devinterview.io/qu
 ### Basic Concepts of Divide & Conquer Algorithms
 
 <details>
-<summary>Define Divide & Conquer algorithms and their main characteristics.</summary>
+<summary>Определите алгоритмы Divide & Conquer и их основные характеристики.</summary>
 
-### Define Divide & Conquer algorithms and their main characteristics.
+### Определите алгоритмы Divide & Conquer и их основные характеристики.
 
 **Definition:**
 
@@ -42,9 +42,9 @@ Questions from [Devinterview.io — Divide & Conquer](https://devinterview.io/qu
 </details>
 
 <details>
-<summary>Explain the difference between Divide & Conquer and Dynamic Programming.</summary>
+<summary>Объясните разницу между Divide & Conquer и Dynamic Programming.</summary>
 
-### Explain the difference between Divide & Conquer and Dynamic Programming.
+### Объясните разницу между Divide & Conquer и Dynamic Programming.
 
 **Definition:**
 
@@ -59,9 +59,9 @@ Questions from [Devinterview.io — Divide & Conquer](https://devinterview.io/qu
 </details>
 
 <details>
-<summary>What is the role of recursion in Divide & Conquer algorithms?</summary>
+<summary>Что такое the role of recursion in Divide & Conquer alGorithms?</summary>
 
-### What is the role of recursion in Divide & Conquer algorithms?
+### Что такое the role of recursion in Divide & Conquer alGorithms?
 
 **Definition:**
 
@@ -76,9 +76,9 @@ Questions from [Devinterview.io — Divide & Conquer](https://devinterview.io/qu
 </details>
 
 <details>
-<summary>What are the three main steps in a typical Divide & Conquer algorithm?</summary>
+<summary>Что такое the three main steps in a typical Divide & Conquer alGorithm?</summary>
 
-### What are the three main steps in a typical Divide & Conquer algorithm?
+### Что такое the three main steps in a typical Divide & Conquer alGorithm?
 
 **Definition:**
 
@@ -99,9 +99,9 @@ Mergesort: режем массив пополам, сортируем кажду
 ### Mathematical Foundations
 
 <details>
-<summary>Give an example of a recurrence relation that can describe the time complexity of a Divide & Conquer algorithm.</summary>
+<summary>Приведите пример рекуррентного соотношения, которое может описать time complexity алгоритма Divide & Conquer.</summary>
 
-### Give an example of a recurrence relation that can describe the time complexity of a Divide & Conquer algorithm.
+### Приведите пример рекуррентного соотношения, которое может описать time complexity алгоритма Divide & Conquer.
 
 **Definition:**
 
@@ -120,9 +120,9 @@ Mergesort: режем массив пополам, сортируем кажду
 </details>
 
 <details>
-<summary>Explain the Master Theorem and its importance in analyzing Divide & Conquer algorithms.</summary>
+<summary>Объясните основную теорему и ее важность для анализа алгоритмов Divide & Conquer.</summary>
 
-### Explain the Master Theorem and its importance in analyzing Divide & Conquer algorithms.
+### Объясните основную теорему и ее важность для анализа алгоритмов Divide & Conquer.
 
 **Definition:**
 
@@ -141,9 +141,9 @@ Mergesort: режем массив пополам, сортируем кажду
 </details>
 
 <details>
-<summary>How can the Master Theorem be applied to find the time complexity of a binary search algorithm?</summary>
+<summary>Как можно применить основную теорему для нахождения time complexity алгоритма binary search?</summary>
 
-### How can the Master Theorem be applied to find the time complexity of a binary search algorithm?
+### Как можно применить основную теорему для нахождения time complexity алгоритма binary search?
 
 **Definition:**
 
@@ -160,9 +160,9 @@ Mergesort: режем массив пополам, сортируем кажду
 ### Algorithms Design and Implementation
 
 <details>
-<summary>Describe how you would use Divide & Conquer to find the maximum and minimum of an array.</summary>
+<summary>Опишите, как вы будете использовать Divide & Conquer для нахождения максимума и минимума array.</summary>
 
-### Describe how you would use Divide & Conquer to find the maximum and minimum of an array.
+### Опишите, как вы будете использовать Divide & Conquer для нахождения максимума и минимума array.
 
 **Definition:**
 
@@ -181,9 +181,9 @@ Mergesort: режем массив пополам, сортируем кажду
 </details>
 
 <details>
-<summary>Illustrate how the Merge Sort algorithm exemplifies the Divide & Conquer technique.</summary>
+<summary>Проиллюстрируйте how the merge sort alGorithm exemplifies the Divide & Conquer technique.</summary>
 
-### Illustrate how the Merge Sort algorithm exemplifies the Divide & Conquer technique.
+### Проиллюстрируйте how the merge sort alGorithm exemplifies the Divide & Conquer technique.
 
 **Definition:**
 
@@ -207,9 +207,9 @@ Mergesort рекурсивно сортирует каждую половину 
 </details>
 
 <details>
-<summary>Explain how Quicksort works and how it adopts the Divide & Conquer strategy.</summary>
+<summary>Объясните, как работает quicksort и как он использует стратегию Divide & Conquer.</summary>
 
-### Explain how Quicksort works and how it adopts the Divide & Conquer strategy.
+### Объясните, как работает quicksort и как он использует стратегию Divide & Conquer.
 
 **Definition:**
 
@@ -228,9 +228,9 @@ Quicksort разбивает массив вокруг опоры, затем с
 </details>
 
 <details>
-<summary>How does the Karatsuba algorithm for multiplying large numbers employ Divide & Conquer?</summary>
+<summary>Как the Karatsuba alGorithm for multiplying large numbers employ Divide & Conquer?</summary>
 
-### How does the Karatsuba algorithm for multiplying large numbers employ Divide & Conquer?
+### Как the Karatsuba alGorithm for multiplying large numbers employ Divide & Conquer?
 
 **Definition:**
 
@@ -245,9 +245,9 @@ Quicksort разбивает массив вокруг опоры, затем с
 </details>
 
 <details>
-<summary>Describe the Strassen’s algorithm for matrix multiplication using Divide & Conquer.</summary>
+<summary>Опишите алгоритм Штрассена для умножения маtrieц с использованием Divide & Conquer.</summary>
 
-### Describe the Strassen’s algorithm for matrix multiplication using Divide & Conquer.
+### Опишите алгоритм Штрассена для умножения маtrieц с использованием Divide & Conquer.
 
 **Definition:**
 
@@ -264,9 +264,9 @@ Quicksort разбивает массив вокруг опоры, затем с
 ### Problem Solving with Divide & Conquer
 
 <details>
-<summary>How would you use a Divide & Conquer approach to calculate the power of a number?</summary>
+<summary>Как бы вы use a Divide & Conquer approach to calculate the power of a number?</summary>
 
-### How would you use a Divide & Conquer approach to calculate the power of a number?
+### Как бы вы use a Divide & Conquer approach to calculate the power of a number?
 
 **Definition:**
 
@@ -285,9 +285,9 @@ Quicksort разбивает массив вокруг опоры, затем с
 </details>
 
 <details>
-<summary>Solve the Tower of Hanoi problem using Divide & Conquer techniques.</summary>
+<summary>Решите the Tower of Hanoi problem using Divide & Conquer techniques.</summary>
 
-### Solve the Tower of Hanoi problem using Divide & Conquer techniques.
+### Решите the Tower of Hanoi problem using Divide & Conquer techniques.
 
 **Definition:**
 
@@ -306,9 +306,9 @@ Quicksort разбивает массив вокруг опоры, затем с
 </details>
 
 <details>
-<summary>Solve the Closest Pair of Points problem using Divide & Conquer.</summary>
+<summary>Решите the Closest Pair of Points problem using Divide & Conquer.</summary>
 
-### Solve the Closest Pair of Points problem using Divide & Conquer.
+### Решите the Closest Pair of Points problem using Divide & Conquer.
 
 **Definition:**
 
@@ -327,9 +327,9 @@ Quicksort разбивает массив вокруг опоры, затем с
 </details>
 
 <details>
-<summary>Use Divide & Conquer to solve the Majority Element problem in an array.</summary>
+<summary>Используйте Divide & Conquer для решения задачи Majority Element в array.</summary>
 
-### Use Divide & Conquer to solve the Majority Element problem in an array.
+### Используйте Divide & Conquer для решения задачи Majority Element в array.
 
 **Definition:**
 Массив делится пополам, в каждой половине ищется кандидат в большинство, и он остаётся только если встречается больше n/2 раз на всём отрезке. Это рекурсивное разбиение. Голосование Бойера–Мура — другой алгоритм.
@@ -362,9 +362,9 @@ majority(a, lo, hi):
 </details>
 
 <details>
-<summary>Implement an algorithm to efficiently find the Median of Two Sorted Arrays.</summary>
+<summary>Реализуйте an alGorithm to efficiently find the Median of Two Sorted arrays.</summary>
 
-### Implement an algorithm to efficiently find the Median of Two Sorted Arrays.
+### Реализуйте an alGorithm to efficiently find the Median of Two Sorted arrays.
 
 **Definition:**
 Медиана — средний элемент объединённых отсортированных массивов (или среднее двух средних, если общая длина чётная). Двоичный поиск по меньшему массиву находит разрез, который делит оба массива на равные половины.
@@ -402,9 +402,9 @@ median(a, b):  // a is the shorter array
 ### Advanced Divide & Conquer Applications
 
 <details>
-<summary>Explain the key differences when Divide & Conquer is applied to External Sorting vs In-memory Sorting.</summary>
+<summary>Объясните ключевые различия при применении Divide & Conquer к внешней сортировке по сравнению с сортировкой в памяти.</summary>
 
-### Explain the key differences when Divide & Conquer is applied to External Sorting vs In-memory Sorting.
+### Объясните ключевые различия при применении Divide & Conquer к внешней сортировке по сравнению с сортировкой в памяти.
 
 **Definition:**
 Оба подхода имеют форму сортировки слиянием: независимые серии сортируются, затем сливаются. Внешняя сортировка нужна, когда данные не помещаются в RAM. Внутренняя держит весь массив в RAM.
@@ -430,9 +430,9 @@ external:
 </details>
 
 <details>
-<summary>How is Divide & Conquer utilized in the Cooley-Tukey FFT algorithm?</summary>
+<summary>Как Divide & Conquer utilized in the Cooley-Tukey FFT alGorithm?</summary>
 
-### How is Divide & Conquer utilized in the Cooley-Tukey FFT algorithm?
+### Как Divide & Conquer utilized in the Cooley-Tukey FFT alGorithm?
 
 **Definition:**
 FFT по основанию 2 с прореживанием по времени переписывает ДПФ длины N как два ДПФ длины N/2 (чётные и нечётные индексы) плюс этап из N/2 «бабочек» размера 2. Это лемма Дэниелсона–Ланцоша.
@@ -463,9 +463,9 @@ ditfft2(x, N, s):
 </details>
 
 <details>
-<summary>Solve the Skyline Problem using Divide & Conquer.</summary>
+<summary>Решите the Skyline Problem using Divide & Conquer.</summary>
 
-### Solve the Skyline Problem using Divide & Conquer.
+### Решите the Skyline Problem using Divide & Conquer.
 
 **Definition:**
 Силуэт — последовательность точек (x, высота), где меняется видимый контур зданий. Ожидаемое опубликованное решение проходит эти углы слева направо.
@@ -491,9 +491,9 @@ skyline = [[1, 11], [5, 0]]
 ### Optimization and Improvement
 
 <details>
-<summary>What strategies can be employed to reduce the overhead in recursive calls of Divide & Conquer algorithms?</summary>
+<summary>Какие стратегии помогают снизить overhead рекурсивных вызовов в Divide & Conquer algorithms?</summary>
 
-### What strategies can be employed to reduce the overhead in recursive calls of Divide & Conquer algorithms?
+### Какие стратегии помогают снизить overhead рекурсивных вызовов в Divide & Conquer algorithms?
 
 **Definition:**
 Рекурсия — это дерево разбиения. Накладные расходы — стек вызовов и работа на крошечных отрезках. Их срезают более крупной базой, заменой одного рекурсивного вызова циклом или полным отказом от рекурсии, если шаг объединения это позволяет.
@@ -525,9 +525,9 @@ quicksort(a, lo, hi):
 </details>
 
 <details>
-<summary>Discuss how tail recursion optimization could be beneficial for Divide & Conquer algorithms.</summary>
+<summary>Обсудите, как оптимизация tail recursion может быть полезна для алгоритмов Divide & Conquer.</summary>
 
-### Discuss how tail recursion optimization could be beneficial for Divide & Conquer algorithms.
+### Обсудите, как оптимизация tail recursion может быть полезна для алгоритмов Divide & Conquer.
 
 **Definition:**
 Вызов находится в хвостовой позиции, если после его возврата делать нечего. Устранение хвостового вызова переиспользует текущий кадр вместо нового.
@@ -551,9 +551,9 @@ quicksort(a, lo, hi):
 </details>
 
 <details>
-<summary>Explain how memoization or caching can affect the performance of Divide & Conquer algorithms.</summary>
+<summary>Объясните, как memoization или caching могут повлиять на производительность алгоритмов Divide & Conquer.</summary>
 
-### Explain how memoization or caching can affect the performance of Divide & Conquer algorithms.
+### Объясните, как memoization или caching могут повлиять на производительность алгоритмов Divide & Conquer.
 
 **Definition:**
 Мемоизация хранит результат подзадачи, чтобы повторный такой же вызов его взял. Стоимость меняется только если дерево разбиения повторяет работу.
@@ -578,9 +578,9 @@ those two ranges never appear again, so a map keyed by range is never hit
 ### Complexity Analysis
 
 <details>
-<summary>Compare the worst-case time complexities of Merge Sort, Quicksort, and Heapsort.</summary>
+<summary>Сравните временные сложности worst-case merge sort, quicksort, AND heapsORT.</summary>
 
-### Compare the worst-case time complexities of Merge Sort, Quicksort, and Heapsort.
+### Сравните временные сложности worst-case merge sort, quicksort, AND heapsORT.
 
 **Definition:**
 Все три сортируют, многократно уменьшая задачу, но худшие оценки не совпадают.
@@ -606,9 +606,9 @@ sorted input, pivot = last element:
 </details>
 
 <details>
-<summary>How do you determine the space complexity of a Divide & Conquer algorithm?</summary>
+<summary>Как вы определяете значение space complexity для алгоритма Divide & Conquer?</summary>
 
-### How do you determine the space complexity of a Divide & Conquer algorithm?
+### Как вы определяете значение space complexity для алгоритма Divide & Conquer?
 
 **Definition:**
 К дополнительной памяти одного шага объединения прибавляется самая глубокая цепочка кадров. Обе половины одновременно живы только вдоль этой цепочки.
@@ -633,9 +633,9 @@ quicksort stack: one frame per pivot → O(log n) balanced, O(n) skewed
 </details>
 
 <details>
-<summary>Why do some Divide & Conquer algorithms have a high space complexity, and how can this be mitigated?</summary>
+<summary>Почему do some Divide & Conquer alGorithms have a high space complexity, and how can this be mitiGAted?</summary>
 
-### Why do some Divide & Conquer algorithms have a high space complexity, and how can this be mitigated?
+### Почему do some Divide & Conquer alGorithms have a high space complexity, and how can this be mitiGAted?
 
 **Definition:**
 Дополнительная память велика, когда каждый уровень хранит копию своего отрезка или когда плохое разбиение превращает рекурсию в цепочку из n кадров.
@@ -664,9 +664,9 @@ mitigations that the articles actually use:
 ### Parallelization and Distributed Computing
 
 <details>
-<summary>Discuss how Divide & Conquer algorithms can be parallelized.</summary>
+<summary>Обсудите, как можно распараллелить алгоритмы Divide & Conquer.</summary>
 
-### Discuss how Divide & Conquer algorithms can be parallelized.
+### Обсудите, как можно распараллелить алгоритмы Divide & Conquer.
 
 **Definition:**
 Два рекурсивных вызова не читают результат друг друга, поэтому могут идти одновременно. Слияние ждёт, пока обе половины готовы.
@@ -694,9 +694,9 @@ parallel_merge_sort(a, lo, hi):
 </details>
 
 <details>
-<summary>Provide an example of a Divide & Conquer algorithm that could benefit from a distributed computing environment.</summary>
+<summary>Приведите an example of a Divide & Conquer alGorithm that could benefit from a distributed computing environment.</summary>
 
-### Provide an example of a Divide & Conquer algorithm that could benefit from a distributed computing environment.
+### Приведите an example of a Divide & Conquer alGorithm that could benefit from a distributed computing environment.
 
 **Definition:**
 Внешняя сортировка слиянием — случай, который статья о сортировке слиянием называет для данных, не помещающихся в память. Каждая машина сортирует свою серию, затем слияние соединяет серии.
@@ -723,9 +723,9 @@ coordinator:
 ### Miscellaneous
 
 <details>
-<summary>How does the use of randomization in Quicksort improve its performance on average?</summary>
+<summary>Как the use of randomization in quicksort improve its performance on average?</summary>
 
-### How does the use of randomization in Quicksort improve its performance on average?
+### Как the use of randomization in quicksort improve its performance on average?
 
 **Definition:**
 Случайный опорный элемент не имеет фиксированного входа, который всегда оказывается крайним. Худший случай всё ещё существует, но это уже не отсортированный массив.
@@ -749,9 +749,9 @@ partition(a, lo, hi):
 </details>
 
 <details>
-<summary>Describe an instance where a Divide & Conquer algorithm is not the best choice.</summary>
+<summary>Опишите случай, когда алгоритм Divide & Conquer — не лучший выбор.</summary>
 
-### Describe an instance where a Divide & Conquer algorithm is not the best choice.
+### Опишите случай, когда алгоритм Divide & Conquer — не лучший выбор.
 
 **Definition:**
 Разделяй-и-властвуй для максимального подмассива корректен и быстрее перебора всех подмассивов, но проход Кадане всё равно быстрее.
@@ -775,9 +775,9 @@ Kadane does it in one forward pass
 </details>
 
 <details>
-<summary>Discuss the application of Divide & Conquer in non-computer-science fields.</summary>
+<summary>Обсудите применение Divide & Conquer в областях, не связанных с информатикой.</summary>
 
-### Discuss the application of Divide & Conquer in non-computer-science fields.
+### Обсудите применение Divide & Conquer в областях, не связанных с информатикой.
 
 **Definition:**
 Выпуклая оболочка — наименьший выпуклый многоугольник, содержащий набор точек. Построение «разделяй и властвуй» применяется и вне программирования, везде, где форма или зона столкновения — внешняя граница точек.
@@ -802,9 +802,9 @@ hull: the outer polygon used as the collision shape
 ### Practical Applications and Coding Challenges
 
 <details>
-<summary>Develop a Divide & Conquer algorithm to count inversions in an array.</summary>
+<summary>Разработайте алгоритм Divide & Conquer для подсчета инверсий в array.</summary>
 
-### Develop a Divide & Conquer algorithm to count inversions in an array.
+### Разработайте алгоритм Divide & Conquer для подсчета инверсий в array.
 
 **Definition:**
 Инверсия — пара i < j с arr[i] > arr[j]. У отсортированного массива 0 инверсий. У обратного — максимум.
@@ -835,9 +835,9 @@ merge_count: if left[i] <= right[j]: take left
 </details>
 
 <details>
-<summary>Write an efficient algorithm for the Convex Hull problem using Divide & Conquer.</summary>
+<summary>Напишите an efficient alGorithm for the Convex Hull problem using Divide & Conquer.</summary>
 
-### Write an efficient algorithm for the Convex Hull problem using Divide & Conquer.
+### Напишите an efficient alGorithm for the Convex Hull problem using Divide & Conquer.
 
 **Definition:**
 Нужен наименьший выпуклый многоугольник, содержащий все точки. Если известны оболочки левой и правой половин, полная оболочка — их верхняя и нижняя касательные плюс внешние цепи.
@@ -863,9 +863,9 @@ hull(points sorted by x):
 </details>
 
 <details>
-<summary>Provide an example of a real-world application where Divide & Conquer algorithms significantly improve performance.</summary>
+<summary>Приведите an example of a real-world application where Divide & Conquer alGorithms significantly improve performance.</summary>
 
-### Provide an example of a real-world application where Divide & Conquer algorithms significantly improve performance.
+### Приведите an example of a real-world application where Divide & Conquer alGorithms significantly improve performance.
 
 **Definition:**
 Дискретное преобразование Фурье длины N, записанное как два преобразования длины N/2, — это шаг Кули–Тьюки по основанию 2. Переиспользование половин делает спектральную работу практической.
@@ -890,9 +890,9 @@ audio frame of N samples:
 </details>
 
 <details>
-<summary>Implement a Divide & Conquer algorithm to solve the Maximum Subarray Problem.</summary>
+<summary>Реализуйте a Divide & Conquer alGorithm to solve the Maximum Subarray Problem.</summary>
 
-### Implement a Divide & Conquer algorithm to solve the Maximum Subarray Problem.
+### Реализуйте a Divide & Conquer alGorithm to solve the Maximum Subarray Problem.
 
 **Definition:**
 Ответ — лучший из трёх кусков: лучший подмассив целиком слева от середины, целиком справа или лучшая сумма, которая пересекает середину.
@@ -923,9 +923,9 @@ max_sum(a, l, h):
 ### Coding Challenges on Divide & Conquer Algorithms
 
 <details>
-<summary>Implement an algorithm to find the Median of Two Sorted Arrays using Divide & Conquer.</summary>
+<summary>Реализуйте an alGorithm to find the Median of Two Sorted arrays using Divide & Conquer.</summary>
 
-### Implement an algorithm to find the Median of Two Sorted Arrays using Divide & Conquer.
+### Реализуйте an alGorithm to find the Median of Two Sorted arrays using Divide & Conquer.
 
 **Definition:**
 Тот же поиск разреза, что и в эффективном алгоритме медианы: на каждом сравнении двух разрезов отбрасывается половина более короткого массива, пока левая и правая стороны объединённой последовательности не уравняются.
@@ -947,9 +947,9 @@ max_sum(a, l, h):
 </details>
 
 <details>
-<summary>Code a Divide & Conquer solution to Merge k Sorted Lists into one sorted list.</summary>
+<summary>Напишите решение Divide & Conquer для слияния k отсортированных списков в один отсортированный список.</summary>
 
-### Code a Divide & Conquer solution to Merge k Sorted Lists into one sorted list.
+### Напишите решение Divide & Conquer для слияния k отсортированных списков в один отсортированный список.
 
 **Definition:**
 k списков делятся на две группы, каждая группа сливается рекурсивно, затем два получившихся отсортированных списка сливаются обычным слиянием двух указателей.
@@ -977,9 +977,9 @@ merge_k(lists, lo, hi):
 </details>
 
 <details>
-<summary>Develop a Divide & Conquer algorithm to solve the Maximum Subarray Problem and find the contiguous subarray with the maximum sum.</summary>
+<summary>Разработайте алгоритм Divide & Conquer для решения задачи о максимальном Subarray и найдите смежный subarray с максимальной суммой.</summary>
 
-### Develop a Divide & Conquer algorithm to solve the Maximum Subarray Problem and find the contiguous subarray with the maximum sum.
+### Разработайте алгоритм Divide & Conquer для решения задачи о максимальном Subarray и найдите смежный subarray с максимальной суммой.
 
 **Definition:**
 То же тройное разбиение, что и в задаче максимального подмассива. Возвращается сумма; проход через середину находит подмассив, лежащий по обе стороны разреза.
@@ -1002,9 +1002,9 @@ a = [5, 4, 1, 7, 8] → 25
 </details>
 
 <details>
-<summary>Construct a Binary Tree from given Preorder and Inorder traversal arrays using Divide & Conquer.</summary>
+<summary>Постройте binary tree из заданных preorder и inorder обходов с помощью Divide & Conquer.</summary>
 
-### Construct a Binary Tree from given Preorder and Inorder traversal arrays using Divide & Conquer.
+### Постройте binary tree из заданных preorder и inorder обходов с помощью Divide & Conquer.
 
 **Definition:**
 Следующее значение предпорядка — корень. Его индекс в симметричном обходе делит остальные значения на левое и правое поддеревья.
@@ -1031,9 +1031,9 @@ build(inL, inR):
 </details>
 
 <details>
-<summary>Construct a Binary Tree from given Inorder and Postorder traversal arrays employing a Divide & Conquer approach.</summary>
+<summary>Постройте binary tree из данного InORder AND PostORder traveZRSAZl arraysZ, используя подход «divide and conquer».</summary>
 
-### Construct a Binary Tree from given Inorder and Postorder traversal arrays employing a Divide & Conquer approach.
+### Постройте binary tree из данного InORder AND PostORder traveZRSAZl arraysZ, используя подход «divide and conquer».
 
 **Definition:**
 Следующее неиспользованное значение постпорядка, читая с конца, — корень. Постпорядок обходит левое, затем правое, затем корень, поэтому правое поддерево строится раньше левого.
@@ -1060,9 +1060,9 @@ build(inL, inR):
 </details>
 
 <details>
-<summary>Convert a Sorted Array into a height-balanced Binary Search Tree using Divide & Conquer.</summary>
+<summary>Преобразуйте отсортированный array в сбалансированный по высоте binary search tree с помощью Divide & Conquer.</summary>
 
-### Convert a Sorted Array into a height-balanced Binary Search Tree using Divide & Conquer.
+### Преобразуйте отсортированный array в сбалансированный по высоте binary search tree с помощью Divide & Conquer.
 
 **Definition:**
 Средний элемент становится корнем. Левая половина — левое поддерево, правая — правое, поэтому стороны отличаются не больше чем на один узел.
@@ -1092,9 +1092,9 @@ build(a, lo, hi):
 </details>
 
 <details>
-<summary>Convert a Sorted Linked List into a height-balanced Binary Search Tree with a Divide & Conquer method.</summary>
+<summary>Преобразуйте отсортированный linked list в сбалансированный по высоте binary search tree с помощью метода Divide & Conquer.</summary>
 
-### Convert a Sorted Linked List into a height-balanced Binary Search Tree with a Divide & Conquer method.
+### Преобразуйте отсортированный linked list в сбалансированный по высоте binary search tree с помощью метода Divide & Conquer.
 
 **Definition:**
 Список уже отсортирован, поэтому симметричный обход дерева — это сам список. Сначала строится левая половина, следующий узел списка становится корнем, затем строится правая половина.
@@ -1117,9 +1117,9 @@ preorder: 4 2 1 3 6 5 7
 </details>
 
 <details>
-<summary>Create a Divide & Conquer algorithm to Sort a linked list.</summary>
+<summary>Создайте алгоритм Divide & Conquer для сортировки linked list.</summary>
 
-### Create a Divide & Conquer algorithm to Sort a linked list.
+### Создайте алгоритм Divide & Conquer для сортировки linked list.
 
 **Definition:**
 Сортировка слиянием — та, которую статья предпочитает для связного списка. Цепочка делится пополам, половины сортируются, затем узлы сшиваются заново.
@@ -1143,9 +1143,9 @@ sort(head):
 </details>
 
 <details>
-<summary>Implement an efficient algorithm to Search a 2D Matrix II with a Divide & Conquer approach.</summary>
+<summary>Реализуйте an efficient alGorithm to Search a 2D matrix II with a Divide & Conquer approach.</summary>
 
-### Implement an efficient algorithm to Search a 2D Matrix II with a Divide & Conquer approach.
+### Реализуйте an efficient alGorithm to Search a 2D matrix II with a Divide & Conquer approach.
 
 **Definition:**
 Каждая строка и каждый столбец отсортированы. Средняя ячейка сравнивается с ключом, затем ищутся только четверти, где он ещё может лежать.
@@ -1175,9 +1175,9 @@ search(mat, r1, r2, c1, c2, key):
 </details>
 
 <details>
-<summary>Code a Divide & Conquer solution for Count of Smaller Numbers After Self in an array.</summary>
+<summary>Код решения Divide & Conquer fOR Количество меньших чисел после себя в array.</summary>
 
-### Code a Divide & Conquer solution for Count of Smaller Numbers After Self in an array.
+### Код решения Divide & Conquer fOR Количество меньших чисел после себя в array.
 
 **Definition:**
 Для каждого индекса считается, сколько более поздних элементов меньше. Эти пары — инверсии. Слияние, которое считает инверсии, может записать их по индексу, а не только общей суммой.
@@ -1206,9 +1206,9 @@ result [2, 1, 1, 0]
 </details>
 
 <details>
-<summary>Use Divide & Conquer to calculate the Count of Range Sum in an array for given lower and upper bounds.</summary>
+<summary>Используйте Divide & Conquer для вычисления Count of Range Sum в array для заданных нижней и верхней границ.</summary>
 
-### Use Divide & Conquer to calculate the Count of Range Sum in an array for given lower and upper bounds.
+### Используйте Divide & Conquer для вычисления Count of Range Sum в array для заданных нижней и верхней границ.
 
 **Definition:**
 Считаются непрерывные подмассивы, сумма которых лежит в [l, r]. Префиксные суммы превращают это в пары: более поздний префикс минус более ранний попадает в [l, r].
@@ -1232,9 +1232,9 @@ subarrays in range: [2, 3], [2, 3, 5], [3, 5], [5], [5, 8], [8] → 6
 </details>
 
 <details>
-<summary>Find the Top K Frequent Elements in an array using a Divide & Conquer strategy.</summary>
+<summary>Найдите K наиболее часто встречающихся элементов в array, используя стратегию Divide & Conquer.</summary>
 
-### Find the Top K Frequent Elements in an array using a Divide & Conquer strategy.
+### Найдите K наиболее часто встречающихся элементов в array, используя стратегию Divide & Conquer.
 
 **Definition:**
 Считается, как часто встречается каждое значение, затем выбираются k наибольших частот. Выбор — Quickselect: разбиение вокруг опорного элемента и рекурсия только в ту сторону, где ещё лежит разрез.
@@ -1259,9 +1259,9 @@ partition by count; the cut at k - 1 keeps 1 and 2
 </details>
 
 <details>
-<summary>Determine the Kth Largest Element in an unsorted array with a Divide & Conquer technique.</summary>
+<summary>Определите K-й наибольший элемент в несортированном array с помощью метода Divide & Conquer.</summary>
 
-### Determine the Kth Largest Element in an unsorted array with a Divide & Conquer technique.
+### Определите K-й наибольший элемент в несортированном array с помощью метода Divide & Conquer.
 
 **Definition:**
 Quickselect делит массив так, что элементы больше опорного стоят слева. Индекс опорного сравнивается с k − 1, и ищется только сторона, где лежит k-й наибольший.
@@ -1286,9 +1286,9 @@ stop when the pivot index is 3
 </details>
 
 <details>
-<summary>Implement a Divide & Conquer algorithm to compute the Number of Ships in a Rectangle on a 2D plane, given top-right and bottom-left coordinates of rectangles.</summary>
+<summary>Реализуйте a Divide & Conquer alGorithm to compute the Number of Ships in a Rectangle on a 2D plane, given top-right and bottom-left coordinates of rectangles.</summary>
 
-### Implement a Divide & Conquer algorithm to compute the Number of Ships in a Rectangle on a 2D plane, given top-right and bottom-left coordinates of rectangles.
+### Реализуйте a Divide & Conquer alGorithm to compute the Number of Ships in a Rectangle on a 2D plane, given top-right and bottom-left coordinates of rectangles.
 
 **Definition:**
 `hasShips(topRight, bottomLeft)` говорит, есть ли в прямоугольнике, включая границу, хотя бы один корабль. В целой точке не больше одного корабля. В прямоугольнике не больше 10 кораблей.
@@ -1319,9 +1319,9 @@ count(topRight, bottomLeft):
 </details>
 
 <details>
-<summary>Balance a given Binary Search Tree into a balanced BST using Divide & Conquer.</summary>
+<summary>Сбалансируйте данный binary search tree в сбалансированный BST, используя Divide & Conquer.</summary>
 
-### Balance a given Binary Search Tree into a balanced BST using Divide & Conquer.
+### Сбалансируйте данный binary search tree в сбалансированный BST, используя Divide & Conquer.
 
 **Definition:**
 Симметричный обход BST — отсортированная последовательность. Среднее значение этой последовательности становится новым корнем, а две половины — двумя поддеревьями.
@@ -1345,9 +1345,9 @@ left subtree built from [1, 2, 3], right from [5, 6, 7]
 </details>
 
 <details>
-<summary>Create a Sorted Array through a series of Instructions using a Divide & Conquer and Binary Indexed Tree.</summary>
+<summary>Создайте SORted array с помощью серии инструкций, используя двоичное индексированное дерево Divide & Conquer AND.</summary>
 
-### Create a Sorted Array through a series of Instructions using a Divide & Conquer and Binary Indexed Tree.
+### Создайте SORted array с помощью серии инструкций, используя двоичное индексированное дерево Divide & Conquer AND.
 
 **Definition:**
 `instructions[i]` вставляются слева направо. Цена вставки — минимум из того, сколько уже вставленных значений строго меньше и сколько строго больше. Сумма цен возвращается по модулю 10^9 + 7.
@@ -1375,9 +1375,9 @@ total 1
 </details>
 
 <details>
-<summary>Use a Divide & Conquer approach to Sort an Array.</summary>
+<summary>Используйте подход Divide & Conquer для сортировки array.</summary>
 
-### Use a Divide & Conquer approach to Sort an Array.
+### Используйте подход Divide & Conquer для сортировки array.
 
 **Definition:**
 Сортировка слиянием делит массив, пока каждый кусок не станет одним элементом, затем сливает эти отсортированные куски.
@@ -1401,9 +1401,9 @@ total 1
 </details>
 
 <details>
-<summary>Design and implement a Divide & Conquer solution to generate a Beautiful Array.</summary>
+<summary>Разработайте и внедрите решение Divide & Conquer для создания красивого array.</summary>
 
-### Design and implement a Divide & Conquer solution to generate a Beautiful Array.
+### Разработайте и внедрите решение Divide & Conquer для создания красивого array.
 
 **Definition:**
 Красивый массив длины n — перестановка 1..n, в которой ни одно значение не стоит строго между двумя другими, для которых оно является средним: нет i < k < j с 2 * nums[k] = nums[i] + nums[j].
@@ -1434,9 +1434,9 @@ beautiful(n):
 </details>
 
 <details>
-<summary>Solve the Longest Increasing Subsequence II problem where updates and queries happen in real-time, using a Divide & Conquer strategy combined with advanced data structures.</summary>
+<summary>Решите the longest increasing subsequence II problem where updates and queries happen in real-time, using a Divide & Conquer strategy combined with advanced data structures.</summary>
 
-### Solve the Longest Increasing Subsequence II problem where updates and queries happen in real-time, using a Divide & Conquer strategy combined with advanced data structures.
+### Решите the longest increasing subsequence II problem where updates and queries happen in real-time, using a Divide & Conquer strategy combined with advanced data structures.
 
 **Definition:**
 Длину наибольшей строго возрастающей подпоследовательности можно вести онлайн. Каждое новое значение спрашивает лучшую длину среди меньших значений и затем публикует свою.

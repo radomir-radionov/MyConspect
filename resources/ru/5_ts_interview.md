@@ -21,9 +21,9 @@
 ### TypeScript Fundamentals
 
 <details>
-<summary>What is TypeScript and how does it differ from JavaScript?</summary>
+<summary>Что такое TypeScript and how does it differ from JavaScript?</summary>
 
-### What is TypeScript and how does it differ from JavaScript?
+### Что такое TypeScript and how does it differ from JavaScript?
 
 **Definition:**
 
@@ -58,9 +58,9 @@ TypeScript — статически типизированное надмнож�
 </details>
 
 <details>
-<summary>Can you explain what is meant by "TypeScript is a superset of JavaScript"?</summary>
+<summary>Можете ли вы explain what is meant by "TypeScript is a superset of JavaScript"?</summary>
 
-### Can you explain what is meant by "TypeScript is a superset of JavaScript"?
+### Можете ли вы explain what is meant by "TypeScript is a superset of JavaScript"?
 
 **Definition:**
 
@@ -92,9 +92,9 @@ num = "this will raise a type error";
 </details>
 
 <details>
-<summary>What are the basic types available in TypeScript?</summary>
+<summary>Что такое the basic types available in TypeScript?</summary>
 
-### What are the basic types available in TypeScript?
+### Что такое the basic types available in TypeScript?
 
 **Definition:**
 
@@ -179,9 +179,9 @@ calculate = function (x: number, y: number): number {
 </details>
 
 <details>
-<summary>How do you declare variables in TypeScript?</summary>
+<summary>Как you declare variables in TypeScript?</summary>
 
-### How do you declare variables in TypeScript?
+### Как you declare variables in TypeScript?
 
 **Definition:**
 
@@ -262,9 +262,9 @@ let word = "hello!";  // TypeScript infers the type as 'string' because of the i
 </details>
 
 <details>
-<summary>What are Interfaces in TypeScript and how do they work?</summary>
+<summary>Что такое interfaces in TypeScript and how do they work?</summary>
 
-### What are Interfaces in TypeScript and how do they work?
+### Что такое interfaces in TypeScript and how do they work?
 
 **Definition:**
 
@@ -314,9 +314,9 @@ printPoint(pointB); // Compile-time error due to incorrect structure
 </details>
 
 <details>
-<summary>Describe the Enum type and when you might use it.</summary>
+<summary>Опишите the Enum type and when you might use it.</summary>
 
-### Describe the Enum type and when you might use it.
+### Опишите the Enum type and when you might use it.
 
 **Definition:**
 
@@ -401,9 +401,9 @@ Enum помогает гарантировать нужный тип данны�
 </details>
 
 <details>
-<summary>How do you define and use a function in TypeScript?</summary>
+<summary>Как you define and use a function in TypeScript?</summary>
 
-### How do you define and use a function in TypeScript?
+### Как you define and use a function in TypeScript?
 
 **Definition:**
 
@@ -526,9 +526,9 @@ welcome = function(name: string): void {
 </details>
 
 <details>
-<summary>What does "type inference" mean in the context of TypeScript?</summary>
+<summary>Что означает "type inference" mean in the context of TypeScript?</summary>
 
-### What does "type inference" mean in the context of TypeScript?
+### Что означает "type inference" mean in the context of TypeScript?
 
 **Definition:**
 
@@ -573,9 +573,9 @@ let sum = add(5, 7); // Type 'number' inferred
 </details>
 
 <details>
-<summary>Explain the use of 'let' and 'const' in TypeScript.</summary>
+<summary>Объясните the use of 'let' and 'const' in TypeScript.</summary>
 
-### Explain the use of 'let' and 'const' in TypeScript.
+### Объясните the use of 'let' and 'const' in TypeScript.
 
 **Definition:**
 
@@ -633,9 +633,9 @@ console.log(vehicleType);  // Output: Car
 </details>
 
 <details>
-<summary>How do you compile TypeScript files into JavaScript?</summary>
+<summary>Как you compile TypeScript files into JavaScript?</summary>
 
-### How do you compile TypeScript files into JavaScript?
+### Как you compile TypeScript files into JavaScript?
 
 **Definition:**
 
@@ -748,9 +748,9 @@ console.log(vehicleType);  // Output: Car
 ### TypeScript Classes and Objects
 
 <details>
-<summary>Explain classes in TypeScript. How are they different from ES6 classes?</summary>
+<summary>Объясните Classes in TypeScript. How are they different from ES6 Classes?</summary>
 
-### Explain classes in TypeScript. How are they different from ES6 classes?
+### Объясните Classes in TypeScript. How are they different from ES6 Classes?
 
 **Definition:**
 
@@ -892,9 +892,9 @@ class IterableExample implements Iterable<string> {
 </details>
 
 <details>
-<summary>How do you implement Inheritance in TypeScript?</summary>
+<summary>Как you implement inheritance in TypeScript?</summary>
 
-### How do you implement Inheritance in TypeScript?
+### Как you implement inheritance in TypeScript?
 
 **Definition:**
 
@@ -1009,9 +1009,9 @@ Snake.prototype.move = function(distanceInMeters = 5) {
 </details>
 
 <details>
-<summary>What are access modifiers and how do they work in TypeScript?</summary>
+<summary>Что такое access modifiers and how do they work in TypeScript?</summary>
 
-### What are access modifiers and how do they work in TypeScript?
+### Что такое access modifiers and how do they work in TypeScript?
 
 **Definition:**
 
@@ -1075,9 +1075,9 @@ employee.contact = "3456789";  // ERROR: 'contact' is protected
 </details>
 
 <details>
-<summary>Discuss Abstract classes and their purposes in TypeScript.</summary>
+<summary>Обсудите abstract classes and their puRPOses in TypeScript.</summary>
 
-### Discuss Abstract classes and their purposes in TypeScript.
+### Обсудите abstract classes and their puRPOses in TypeScript.
 
 **Definition:**
 
@@ -1161,9 +1161,9 @@ console.log(Shape.defaultColor); // Outputs: red
 </details>
 
 <details>
-<summary>Can you describe the use of Constructors within TypeScript classes?</summary>
+<summary>Можете ли вы describe the use of constructors within TypeScript Classes?</summary>
 
-### Can you describe the use of Constructors within TypeScript classes?
+### Можете ли вы describe the use of constructors within TypeScript Classes?
 
 **Definition:**
 
@@ -1212,9 +1212,9 @@ TypeScript поддерживает модификаторы доступа у �
 </details>
 
 <details>
-<summary>What are Property Decorators and how do you use them?</summary>
+<summary>Что такое Property decorators and how do you use them?</summary>
 
-### What are Property Decorators and how do you use them?
+### Что такое Property decorators and how do you use them?
 
 **Definition:**
 
@@ -1255,9 +1255,9 @@ console.log(User[Symbol.metadata]);
 </details>
 
 <details>
-<summary>How do getters and setters work in TypeScript?</summary>
+<summary>Как getters and setters work in TypeScript?</summary>
 
-### How do getters and setters work in TypeScript?
+### Как getters and setters work in TypeScript?
 
 **Definition:**
 
@@ -1304,9 +1304,9 @@ const reading: number = thing.size;
 </details>
 
 <details>
-<summary>Explain Method Overloading in TypeScript.</summary>
+<summary>Объясните Method Overloading in TypeScript.</summary>
 
-### Explain Method Overloading in TypeScript.
+### Объясните Method Overloading in TypeScript.
 
 **Definition:**
 
@@ -1347,9 +1347,9 @@ const fromParts = makeDate(4, 10, 2026);
 </details>
 
 <details>
-<summary>What is the purpose of the 'static' keyword in TypeScript Class?</summary>
+<summary>Что такое the puRPOse of the 'static' keyword in TypeScript Class?</summary>
 
-### What is the purpose of the 'static' keyword in TypeScript Class?
+### Что такое the puRPOse of the 'static' keyword in TypeScript Class?
 
 **Definition:**
 
@@ -1396,9 +1396,9 @@ console.log(Counter.next());
 ### TypeScript Types and Type Assertions
 
 <details>
-<summary>How do you define custom types with Type Aliases?</summary>
+<summary>Как you define custom types with Type Aliases?</summary>
 
-### How do you define custom types with Type Aliases?
+### Как you define custom types with Type Aliases?
 
 **Definition:**
 
@@ -1441,9 +1441,9 @@ printCoord({ x: 100, y: 100 });
 </details>
 
 <details>
-<summary>Can you explain Union types and provide an example?</summary>
+<summary>Можете ли вы explain Union types and provide an example?</summary>
 
-### Can you explain Union types and provide an example?
+### Можете ли вы explain Union types and provide an example?
 
 **Definition:**
 
@@ -1483,9 +1483,9 @@ printId("202");
 </details>
 
 <details>
-<summary>How do Intersection types work in TypeScript?</summary>
+<summary>Как Intersection types work in TypeScript?</summary>
 
-### How do Intersection types work in TypeScript?
+### Как Intersection types work in TypeScript?
 
 **Definition:**
 
@@ -1531,9 +1531,9 @@ draw({ color: "blue", radius: 42 });
 </details>
 
 <details>
-<summary>What are Tuple types and when should they be used?</summary>
+<summary>Что такое Tuple types and when should they be used?</summary>
 
-### What are Tuple types and when should they be used?
+### Что такое Tuple types and when should they be used?
 
 **Definition:**
 
@@ -1572,9 +1572,9 @@ logPair(["hello", 42]);
 </details>
 
 <details>
-<summary>Explain Type Assertions and why they are useful.</summary>
+<summary>Объясните Type Assertions and why they are useful.</summary>
 
-### Explain Type Assertions and why they are useful.
+### Объясните Type Assertions and why they are useful.
 
 **Definition:**
 
@@ -1608,9 +1608,9 @@ const context = myCanvas.getContext("2d");
 </details>
 
 <details>
-<summary>How do you use the 'typeof' type guard in TypeScript?</summary>
+<summary>Как you use the 'typeof' type guard in TypeScript?</summary>
 
-### How do you use the 'typeof' type guard in TypeScript?
+### Как you use the 'typeof' type guard in TypeScript?
 
 **Definition:**
 
@@ -1647,9 +1647,9 @@ function formatCommandline(input: string | string[]) {
 </details>
 
 <details>
-<summary>Can you create types from existing data using Type Inference?</summary>
+<summary>Можете ли вы create types from existing data using Type Inference?</summary>
 
-### Can you create types from existing data using Type Inference?
+### Можете ли вы create types from existing data using Type Inference?
 
 **Definition:**
 
@@ -1690,9 +1690,9 @@ type Point = typeof point;
 ### TypeScript Generics
 
 <details>
-<summary>What are Generics in TypeScript and why are they used?</summary>
+<summary>Что такое Generics in TypeScript and why are they used?</summary>
 
-### What are Generics in TypeScript and why are they used?
+### Что такое Generics in TypeScript and why are they used?
 
 **Definition:**
 
@@ -1728,9 +1728,9 @@ const explicit = identity<string>("myString");
 </details>
 
 <details>
-<summary>How do you create a generic function?</summary>
+<summary>Как you create a generic function?</summary>
 
-### How do you create a generic function?
+### Как you create a generic function?
 
 **Definition:**
 
@@ -1766,9 +1766,9 @@ const name = first(["Ada", "Grace"]);
 </details>
 
 <details>
-<summary>Discuss how Generic Interfaces can be defined.</summary>
+<summary>Обсудите how Generic interfaces can be defined.</summary>
 
-### Discuss how Generic Interfaces can be defined.
+### Обсудите how Generic interfaces can be defined.
 
 **Definition:**
 
@@ -1808,9 +1808,9 @@ interface IdentityFn {
 </details>
 
 <details>
-<summary>Explain how Generics work with Classes.</summary>
+<summary>Объясните how Generics work with Classes.</summary>
 
-### Explain how Generics work with Classes.
+### Объясните how Generics work with Classes.
 
 **Definition:**
 
@@ -1850,9 +1850,9 @@ const value: string = box.get();
 </details>
 
 <details>
-<summary>Can you provide an example of a generic constraint?</summary>
+<summary>Можете ли вы provide an example of a generic constraint?</summary>
 
-### Can you provide an example of a generic constraint?
+### Можете ли вы provide an example of a generic constraint?
 
 **Definition:**
 
@@ -1895,9 +1895,9 @@ loggingIdentity({ length: 10, value: 3 });
 ### TypeScript Advanced Types and Techniques
 
 <details>
-<summary>What is a Discriminated Union in TypeScript?</summary>
+<summary>Что такое Discriminated Union in TypeScript?</summary>
 
-### What is a Discriminated Union in TypeScript?
+### Что такое Discriminated Union in TypeScript?
 
 **Definition:**
 
@@ -1947,9 +1947,9 @@ function area(shape: Shape): number {
 </details>
 
 <details>
-<summary>How do you declare a Readonly type?</summary>
+<summary>Как you declare a Readonly type?</summary>
 
-### How do you declare a Readonly type?
+### Как you declare a Readonly type?
 
 **Definition:**
 
@@ -1989,9 +1989,9 @@ function visit(home: { readonly resident: { name: string; age: number } }) {
 </details>
 
 <details>
-<summary>Can you describe the use of Mapped types?</summary>
+<summary>Можете ли вы describe the use of Mapped types?</summary>
 
-### Can you describe the use of Mapped types?
+### Можете ли вы describe the use of Mapped types?
 
 **Definition:**
 
@@ -2031,9 +2031,9 @@ type FeatureOptions = OptionsFlags<Features>;
 </details>
 
 <details>
-<summary>Explain Conditional types in TypeScript.</summary>
+<summary>Объясните Conditional types in TypeScript.</summary>
 
-### Explain Conditional types in TypeScript.
+### Объясните Conditional types in TypeScript.
 
 **Definition:**
 
@@ -2067,9 +2067,9 @@ type Num = Flatten<number>;
 </details>
 
 <details>
-<summary>What are Index types and how do you use the keyof keyword?</summary>
+<summary>Что такое Index types and how do you use the keyof keyword?</summary>
 
-### What are Index types and how do you use the keyof keyword?
+### Что такое Index types and how do you use the keyof keyword?
 
 **Definition:**
 
@@ -2106,9 +2106,9 @@ const name: string = getProperty(user, "name");
 </details>
 
 <details>
-<summary>How does Type Casting differ from Type Assertions?</summary>
+<summary>Как Type Casting differ from Type Assertions?</summary>
 
-### How does Type Casting differ from Type Assertions?
+### Как Type Casting differ from Type Assertions?
 
 **Definition:**
 
@@ -2149,9 +2149,9 @@ function upper(value: unknown): string {
 </details>
 
 <details>
-<summary>Discuss the Partial, Required, Readonly, and Pick utility types.</summary>
+<summary>Обсудите the Partial, Required, Readonly, and Pick utility types.</summary>
 
-### Discuss the Partial, Required, Readonly, and Pick utility types.
+### Обсудите the Partial, Required, Readonly, and Pick utility types.
 
 **Definition:**
 
@@ -2192,9 +2192,9 @@ const patch: TodoPatch = { completed: true };
 </details>
 
 <details>
-<summary>What is the 'never' type and when would it be used?</summary>
+<summary>Что такое the 'never' type and when would it be used?</summary>
 
-### What is the 'never' type and when would it be used?
+### Что такое the 'never' type and when would it be used?
 
 **Definition:**
 
@@ -2241,9 +2241,9 @@ function area(shape: { kind: "square"; size: number } | { kind: "circle"; radius
 ### TypeScript Modules and Namespaces
 
 <details>
-<summary>How do you organize code with Modules in TypeScript?</summary>
+<summary>Как you orGAnize code with Modules in TypeScript?</summary>
 
-### How do you organize code with Modules in TypeScript?
+### Как you orGAnize code with Modules in TypeScript?
 
 **Definition:**
 
@@ -2282,9 +2282,9 @@ helloWorld();
 </details>
 
 <details>
-<summary>When would you use Namespaces?</summary>
+<summary>Когда would you use Namespaces?</summary>
 
-### When would you use Namespaces?
+### Когда would you use Namespaces?
 
 **Definition:**
 
@@ -2322,9 +2322,9 @@ export class Square {
 </details>
 
 <details>
-<summary>What is the difference between Internal and External modules?</summary>
+<summary>Что такое the difference between Internal and External modules?</summary>
 
-### What is the difference between Internal and External modules?
+### Что такое the difference between Internal and External modules?
 
 **Definition:**
 
@@ -2358,9 +2358,9 @@ export function area(radius: number): number {
 </details>
 
 <details>
-<summary>How do you export and import modules?</summary>
+<summary>Как you export and import modules?</summary>
 
-### How do you export and import modules?
+### Как you export and import modules?
 
 **Definition:**
 
@@ -2400,9 +2400,9 @@ console.log(twice(pi));
 </details>
 
 <details>
-<summary>Can you describe module resolution and its strategies?</summary>
+<summary>Можете ли вы describe module resolution and its strategies?</summary>
 
-### Can you describe module resolution and its strategies?
+### Можете ли вы describe module resolution and its strategies?
 
 **Definition:**
 
@@ -2440,9 +2440,9 @@ console.log(twice(pi));
 </details>
 
 <details>
-<summary>Discuss the compatibility of TypeScript modules with ES6 modules.</summary>
+<summary>Обсудите the compatibility of TypeScript modules with ES6 modules.</summary>
 
-### Discuss the compatibility of TypeScript modules with ES6 modules.
+### Обсудите the compatibility of TypeScript modules with ES6 modules.
 
 **Definition:**
 
@@ -2478,9 +2478,9 @@ export const twoPi = valueOfPi * 2;
 ### TypeScript Decorators and Metadata
 
 <details>
-<summary>What are Decorators and how do you use them?</summary>
+<summary>Что такое decorators and how do you use them?</summary>
 
-### What are Decorators and how do you use them?
+### Что такое decorators and how do you use them?
 
 **Definition:**
 
@@ -2529,9 +2529,9 @@ class Person {
 </details>
 
 <details>
-<summary>Can you define Class Decorators and how they can alter Class behavior?</summary>
+<summary>Можете ли вы define Class decorators and how they can alter Class behavior?</summary>
 
-### Can you define Class Decorators and how they can alter Class behavior?
+### Можете ли вы define Class decorators and how they can alter Class behavior?
 
 **Definition:**
 
@@ -2571,9 +2571,9 @@ class User {
 </details>
 
 <details>
-<summary>How do you use Method Decorators in TypeScript?</summary>
+<summary>Как you use Method decorators in TypeScript?</summary>
 
-### How do you use Method Decorators in TypeScript?
+### Как you use Method decorators in TypeScript?
 
 **Definition:**
 
@@ -2611,9 +2611,9 @@ function loggedMethod(originalMethod: any, context: ClassMethodDecoratorContext)
 </details>
 
 <details>
-<summary>What are Accessor Decorators?</summary>
+<summary>Что такое Accessor decorators?</summary>
 
-### What are Accessor Decorators?
+### Что такое Accessor decorators?
 
 **Definition:**
 
@@ -2652,9 +2652,9 @@ class Person {
 </details>
 
 <details>
-<summary>Explain how to use Property Decorators.</summary>
+<summary>Объясните how to use Property decorators.</summary>
 
-### Explain how to use Property Decorators.
+### Объясните how to use Property decorators.
 
 **Definition:**
 
@@ -2695,9 +2695,9 @@ class User {
 </details>
 
 <details>
-<summary>How do Decorators compose in TypeScript?</summary>
+<summary>Как decorators compose in TypeScript?</summary>
 
-### How do Decorators compose in TypeScript?
+### Как decorators compose in TypeScript?
 
 **Definition:**
 
@@ -2753,9 +2753,9 @@ class Person {
 </details>
 
 <details>
-<summary>Discuss Reflection and how it works with Decorators.</summary>
+<summary>Обсудите Reflection and how it works with decorators.</summary>
 
-### Discuss Reflection and how it works with Decorators.
+### Обсудите Reflection and how it works with decorators.
 
 **Definition:**
 
@@ -2799,9 +2799,9 @@ console.log(User[Symbol.metadata]);
 ### TypeScript Configuration and Compilation
 
 <details>
-<summary>Explain the purpose of 'tsconfig.json'.</summary>
+<summary>Объясните the puRPOse of 'tsconfig.JSON'.</summary>
 
-### Explain the purpose of 'tsconfig.json'.
+### Объясните the puRPOse of 'tsconfig.JSON'.
 
 **Definition:**
 
@@ -2841,9 +2841,9 @@ console.log(User[Symbol.metadata]);
 </details>
 
 <details>
-<summary>How do you include and exclude files in compilation using 'tsconfig.json'?</summary>
+<summary>Как you include and exclude files in compilation using 'tsconfig.JSON'?</summary>
 
-### How do you include and exclude files in compilation using 'tsconfig.json'?
+### Как you include and exclude files in compilation using 'tsconfig.JSON'?
 
 **Definition:**
 
@@ -2882,9 +2882,9 @@ console.log(User[Symbol.metadata]);
 </details>
 
 <details>
-<summary>What are some common compiler options in TypeScript?</summary>
+<summary>Что такое some common compiler options in TypeScript?</summary>
 
-### What are some common compiler options in TypeScript?
+### Что такое some common compiler options in TypeScript?
 
 **Definition:**
 
@@ -2926,9 +2926,9 @@ console.log(User[Symbol.metadata]);
 </details>
 
 <details>
-<summary>How does TypeScript support source maps?</summary>
+<summary>Как TypeScript support source Maps?</summary>
 
-### How does TypeScript support source maps?
+### Как TypeScript support source Maps?
 
 **Definition:**
 
@@ -2966,9 +2966,9 @@ console.log(User[Symbol.metadata]);
 </details>
 
 <details>
-<summary>Discuss incremental build support in TypeScript.</summary>
+<summary>Обсудите incremental build support in TypeScript.</summary>
 
-### Discuss incremental build support in TypeScript.
+### Обсудите incremental build support in TypeScript.
 
 **Definition:**
 
@@ -3004,9 +3004,9 @@ console.log(User[Symbol.metadata]);
 </details>
 
 <details>
-<summary>Explain how the "noImplicitAny" compiler option works.</summary>
+<summary>Объясните how the "noImplicitAny" compiler option works.</summary>
 
-### Explain how the "noImplicitAny" compiler option works.
+### Объясните how the "noImplicitAny" compiler option works.
 
 **Definition:**
 
@@ -3043,9 +3043,9 @@ greet(myName);
 </details>
 
 <details>
-<summary>How do you enable strict null checks in TypeScript?</summary>
+<summary>Как you enable strict null checks in TypeScript?</summary>
 
-### How do you enable strict null checks in TypeScript?
+### Как you enable strict null checks in TypeScript?
 
 **Definition:**
 
@@ -3092,9 +3092,9 @@ function hello(name: string | null) {
 ### TypeScript Typings and @types
 
 <details>
-<summary>How do you manage type definitions for external libraries in TypeScript?</summary>
+<summary>Как you manage type definitions for external libraries in TypeScript?</summary>
 
-### How do you manage type definitions for external libraries in TypeScript?
+### Как you manage type definitions for external libraries in TypeScript?
 
 **Definition:**
 
@@ -3131,9 +3131,9 @@ function hello(name: string | null) {
 </details>
 
 <details>
-<summary>What is DefinitelyTyped and how is it related to TypeScript?</summary>
+<summary>Что такое DefinitelyTyped and how is it related to TypeScript?</summary>
 
-### What is DefinitelyTyped and how is it related to TypeScript?
+### Что такое DefinitelyTyped and how is it related to TypeScript?
 
 **Definition:**
 
@@ -3164,9 +3164,9 @@ npm install --save-dev @types/lodash
 </details>
 
 <details>
-<summary>Explain how to use typing files from npm.</summary>
+<summary>Объясните how to use typing files from npm.</summary>
 
-### Explain how to use typing files from npm.
+### Объясните how to use typing files from npm.
 
 **Definition:**
 
@@ -3205,9 +3205,9 @@ npm install --save-dev @types/lodash
 ### Integrating TypeScript with Frameworks
 
 <details>
-<summary>How do you integrate TypeScript with Angular?</summary>
+<summary>Как you integrate TypeScript with Angular?</summary>
 
-### How do you integrate TypeScript with Angular?
+### Как you integrate TypeScript with Angular?
 
 **Definition:**
 
@@ -3243,9 +3243,9 @@ export class ProfilePhoto {}
 </details>
 
 <details>
-<summary>Explain integrating TypeScript with React.</summary>
+<summary>Объясните integrating TypeScript with React.</summary>
 
-### Explain integrating TypeScript with React.
+### Объясните integrating TypeScript with React.
 
 **Definition:**
 
@@ -3287,9 +3287,9 @@ export const el = <div>foo</div>;
 </details>
 
 <details>
-<summary>How do you use TypeScript with Vue.js?</summary>
+<summary>Как you use TypeScript with Vue.js?</summary>
 
-### How do you use TypeScript with Vue.js?
+### Как you use TypeScript with Vue.js?
 
 **Definition:**
 
@@ -3332,9 +3332,9 @@ const emit = defineEmits<{
 </details>
 
 <details>
-<summary>Discuss using TypeScript in a Node.js application.</summary>
+<summary>Обсудите using TypeScript in a Node.js application.</summary>
 
-### Discuss using TypeScript in a Node.js application.
+### Обсудите using TypeScript in a Node.js application.
 
 **Definition:**
 
@@ -3376,9 +3376,9 @@ const emit = defineEmits<{
 ### TypeScript Tooling and Ecosystem
 
 <details>
-<summary>What are the benefits of using tools like TSLint?</summary>
+<summary>Что такое the benefits of using tools like TSLInt?</summary>
 
-### What are the benefits of using tools like TSLint?
+### Что такое the benefits of using tools like TSLInt?
 
 **Definition:**
 
@@ -3417,9 +3417,9 @@ export default tseslint.config(
 </details>
 
 <details>
-<summary>Can you describe how to set up a build process with TypeScript and Webpack?</summary>
+<summary>Можете ли вы describe how to set up a build process with TypeScript and Webpack?</summary>
 
-### Can you describe how to set up a build process with TypeScript and Webpack?
+### Можете ли вы describe how to set up a build process with TypeScript and Webpack?
 
 **Definition:**
 
@@ -3469,9 +3469,9 @@ export default {
 </details>
 
 <details>
-<summary>How does TypeScript work with Babel?</summary>
+<summary>Как TypeScript work with Babel?</summary>
 
-### How does TypeScript work with Babel?
+### Как TypeScript work with Babel?
 
 **Definition:**
 
@@ -3509,9 +3509,9 @@ export default {
 </details>
 
 <details>
-<summary>Explain using TypeScript with Visual Studio Code or other IDEs.</summary>
+<summary>Объясните using TypeScript with Visual Studio Code or other IDEs.</summary>
 
-### Explain using TypeScript with Visual Studio Code or other IDEs.
+### Объясните using TypeScript with Visual Studio Code or other IDEs.
 
 **Definition:**
 
@@ -3553,9 +3553,9 @@ export default {
 ### TypeScript Best Practices and Patterns
 
 <details>
-<summary>What are the best practices for structuring a TypeScript application?</summary>
+<summary>Что такое the best practices for structuring a TypeScript application?</summary>
 
-### What are the best practices for structuring a TypeScript application?
+### Что такое the best practices for structuring a TypeScript application?
 
 **Definition:**
 
@@ -3596,9 +3596,9 @@ export default {
 </details>
 
 <details>
-<summary>How do you handle async/await in TypeScript?</summary>
+<summary>Как you handle async/await in TypeScript?</summary>
 
-### How do you handle async/await in TypeScript?
+### Как you handle async/await in TypeScript?
 
 **Definition:**
 
@@ -3633,9 +3633,9 @@ async function addOne(value: Promise<number>): Promise<number> {
 </details>
 
 <details>
-<summary>Discuss how you manage state in TypeScript-based applications.</summary>
+<summary>Обсудите how you manage state in TypeScript-BASEd applications.</summary>
 
-### Discuss how you manage state in TypeScript-based applications.
+### Обсудите how you manage state in TypeScript-BASEd applications.
 
 **Definition:**
 
@@ -3688,9 +3688,9 @@ function label<T>(state: RequestState<T>): string {
 </details>
 
 <details>
-<summary>What are some common design patterns used in TypeScript?</summary>
+<summary>Что такое some common design patterns used in TypeScript?</summary>
 
-### What are some common design patterns used in TypeScript?
+### Что такое some common design patterns used in TypeScript?
 
 **Definition:**
 
@@ -3726,9 +3726,9 @@ function render(value: number, format: Format): string {
 </details>
 
 <details>
-<summary>How do you debug a TypeScript application?</summary>
+<summary>Как you debug a TypeScript application?</summary>
 
-### How do you debug a TypeScript application?
+### Как you debug a TypeScript application?
 
 **Definition:**
 
@@ -3767,9 +3767,9 @@ function render(value: number, format: Format): string {
 ### TypeScript Testing and Quality Assurance
 
 <details>
-<summary>How do you write unit tests for TypeScript code?</summary>
+<summary>Как you write unit tests for TypeScript code?</summary>
 
-### How do you write unit tests for TypeScript code?
+### Как you write unit tests for TypeScript code?
 
 **Definition:**
 
@@ -3807,9 +3807,9 @@ describe("sum module", () => {
 </details>
 
 <details>
-<summary>What testing frameworks are commonly used with TypeScript?</summary>
+<summary>Какие testing frameworks обычно используют с TypeScript?</summary>
 
-### What testing frameworks are commonly used with TypeScript?
+### Какие testing frameworks обычно используют с TypeScript?
 
 **Definition:**
 
@@ -3846,9 +3846,9 @@ test("has title", async ({ page }) => {
 </details>
 
 <details>
-<summary>Discuss how to perform end-to-end testing in TypeScript applications.</summary>
+<summary>Обсудите how to perform end-to-end testing in TypeScript applications.</summary>
 
-### Discuss how to perform end-to-end testing in TypeScript applications.
+### Обсудите how to perform end-to-end testing in TypeScript applications.
 
 **Definition:**
 
@@ -3889,9 +3889,9 @@ export default defineConfig({
 ### TypeScript for Backend Development
 
 <details>
-<summary>How do you use TypeScript with Express.js?</summary>
+<summary>Как you use TypeScript with Express.js?</summary>
 
-### How do you use TypeScript with Express.js?
+### Как you use TypeScript with Express.js?
 
 **Definition:**
 
@@ -3931,9 +3931,9 @@ app.listen(3000);
 </details>
 
 <details>
-<summary>Discuss creating RESTful services with TypeScript.</summary>
+<summary>Обсудите creating RESTful services with TypeScript.</summary>
 
-### Discuss creating RESTful services with TypeScript.
+### Обсудите creating RESTful services with TypeScript.
 
 **Definition:**
 
@@ -3980,9 +3980,9 @@ app.route("/book")
 </details>
 
 <details>
-<summary>Explain how to handle data modeling in a TypeScript backend.</summary>
+<summary>Объясните how to handle data modeling in a TypeScript backend.</summary>
 
-### Explain how to handle data modeling in a TypeScript backend.
+### Объясните how to handle data modeling in a TypeScript backend.
 
 **Definition:**
 
@@ -4022,9 +4022,9 @@ function titleOf(book: Book): string {
 </details>
 
 <details>
-<summary>How do you manage database interactions in TypeScript?</summary>
+<summary>Как you manage dataBASE interactions in TypeScript?</summary>
 
-### How do you manage database interactions in TypeScript?
+### Как you manage dataBASE interactions in TypeScript?
 
 **Definition:**
 
@@ -4063,9 +4063,9 @@ function toUser(row: UserRow): UserRow {
 </details>
 
 <details>
-<summary>Discuss authentication and authorization strategies in TypeScript APIs.</summary>
+<summary>Обсудите authentication and authorization strategies in TypeScript APIs.</summary>
 
-### Discuss authentication and authorization strategies in TypeScript APIs.
+### Обсудите authentication and authorization strategies in TypeScript APIs.
 
 **Definition:**
 
@@ -4105,9 +4105,9 @@ function canEdit(caller: Caller): boolean {
 ### TypeScript Advanced Practices
 
 <details>
-<summary>Discuss using TypeScript for Domain-driven Design (DDD).</summary>
+<summary>Обсудите using TypeScript for domain-driven design (DDD).</summary>
 
-### Discuss using TypeScript for Domain-driven Design (DDD).
+### Обсудите using TypeScript for domain-driven design (DDD).
 
 **Definition:**
 
@@ -4146,9 +4146,9 @@ function place(order: Order): Order {
 </details>
 
 <details>
-<summary>How do you implement Event Sourcing in TypeScript?</summary>
+<summary>Как you implement event sourcing in TypeScript?</summary>
 
-### How do you implement Event Sourcing in TypeScript?
+### Как you implement event sourcing in TypeScript?
 
 **Definition:**
 
@@ -4197,9 +4197,9 @@ function balance(events: readonly AccountEvent[]): number {
 </details>
 
 <details>
-<summary>Explain the concept of Isomorphic apps with TypeScript.</summary>
+<summary>Объясните the concept of Isomorphic apps with TypeScript.</summary>
 
-### Explain the concept of Isomorphic apps with TypeScript.
+### Объясните the concept of Isomorphic apps with TypeScript.
 
 **Definition:**
 
@@ -4237,9 +4237,9 @@ export function canEdit(role: Role): boolean {
 ### TypeScript Types and ECMAScript Standards
 
 <details>
-<summary>How does TypeScript align with the latest ECMAScript standards?</summary>
+<summary>Как TypeScript align with the latest ECMAScript standards?</summary>
 
-### How does TypeScript align with the latest ECMAScript standards?
+### Как TypeScript align with the latest ECMAScript standards?
 
 **Definition:**
 
@@ -4277,9 +4277,9 @@ TypeScript проверяет синтаксис JavaScript и выпускае�
 </details>
 
 <details>
-<summary>What enhancements has TypeScript brought to match ES6 and beyond?</summary>
+<summary>Какие enhancements TypeScript принёс для соответствия ES6 и далее?</summary>
 
-### What enhancements has TypeScript brought to match ES6 and beyond?
+### Какие enhancements TypeScript принёс для соответствия ES6 и далее?
 
 **Definition:**
 
@@ -4313,9 +4313,9 @@ export async function readCount(load: () => Promise<number>): Promise<number> {
 </details>
 
 <details>
-<summary>Discuss how TypeScript handles async iterators.</summary>
+<summary>Обсудите how TypeScript handles async iterators.</summary>
 
-### Discuss how TypeScript handles async iterators.
+### Обсудите how TypeScript handles async iterators.
 
 **Definition:**
 
@@ -4357,9 +4357,9 @@ async function log(): Promise<void> {
 ### TypeScript Performance Optimization
 
 <details>
-<summary>How do you optimize the performance of a TypeScript application?</summary>
+<summary>Как you optimize the performance of a TypeScript application?</summary>
 
-### How do you optimize the performance of a TypeScript application?
+### Как you optimize the performance of a TypeScript application?
 
 **Definition:**
 
@@ -4391,9 +4391,9 @@ npx tsc --checkers 4 --noEmit
 </details>
 
 <details>
-<summary>Discuss tree shaking in TypeScript.</summary>
+<summary>Обсудите tree SHAking in TypeScript.</summary>
 
-### Discuss tree shaking in TypeScript.
+### Обсудите tree SHAking in TypeScript.
 
 **Definition:**
 
@@ -4430,9 +4430,9 @@ export function label(user: User): string {
 </details>
 
 <details>
-<summary>Explain how to optimize bundle size with TypeScript.</summary>
+<summary>Объясните how to optimize bundle size with TypeScript.</summary>
 
-### Explain how to optimize bundle size with TypeScript.
+### Объясните how to optimize bundle size with TypeScript.
 
 **Definition:**
 
@@ -4474,9 +4474,9 @@ export function label(user: User): string {
 ### TypeScript 4.x Features and Updates
 
 <details>
-<summary>What are the new features included in the latest TypeScript release?</summary>
+<summary>Что такое the new features included in the latest TypeScript release?</summary>
 
-### What are the new features included in the latest TypeScript release?
+### Что такое the new features included in the latest TypeScript release?
 
 **Definition:**
 
@@ -4513,9 +4513,9 @@ TypeScript 7.0 — нативный порт компилятора, напис�
 </details>
 
 <details>
-<summary>How do you use Template Literal Types?</summary>
+<summary>Как you use Template Literal Types?</summary>
 
-### How do you use Template Literal Types?
+### Как you use Template Literal Types?
 
 **Definition:**
 
@@ -4552,9 +4552,9 @@ type PropEventSource<T> = {
 </details>
 
 <details>
-<summary>Discuss the improvements to Inference in Conditional Types.</summary>
+<summary>Обсудите the improvements to Inference in Conditional Types.</summary>
 
-### Discuss the improvements to Inference in Conditional Types.
+### Обсудите the improvements to Inference in Conditional Types.
 
 **Definition:**
 
@@ -4586,9 +4586,9 @@ type SomeNum = "100" extends `${infer U extends number}` ? U : never;
 </details>
 
 <details>
-<summary>What is the use of labeled tuple elements?</summary>
+<summary>Что такое the use of labeled tuple elements?</summary>
 
-### What is the use of labeled tuple elements?
+### Что такое the use of labeled tuple elements?
 
 **Definition:**
 
@@ -4627,9 +4627,9 @@ function span(range: Range): number {
 ### TypeScript Community and Development
 
 <details>
-<summary>How can you contribute to the TypeScript community or TypeScript itself?</summary>
+<summary>Как you contribute to the TypeScript community or TypeScript itself?</summary>
 
-### How can you contribute to the TypeScript community or TypeScript itself?
+### Как you contribute to the TypeScript community or TypeScript itself?
 
 **Definition:**
 
@@ -4661,9 +4661,9 @@ npm install -D typescript@next
 </details>
 
 <details>
-<summary>Discuss the role of TypeScript in open-source development.</summary>
+<summary>Обсудите the role of TypeScript in open-source development.</summary>
 
-### Discuss the role of TypeScript in open-source development.
+### Обсудите the role of TypeScript in open-source development.
 
 **Definition:**
 
@@ -4699,9 +4699,9 @@ npm install -D typescript@next
 </details>
 
 <details>
-<summary>Explain how to stay updated with TypeScript's changes and best practices.</summary>
+<summary>Объясните how to stay updated with TypeScript's changes and best practices.</summary>
 
-### Explain how to stay updated with TypeScript's changes and best practices.
+### Объясните how to stay updated with TypeScript's changes and best practices.
 
 **Definition:**
 
@@ -4736,9 +4736,9 @@ npx tsc --noEmit
 ### Transitioning from JavaScript to TypeScript
 
 <details>
-<summary>What steps should a JavaScript developer take to start using TypeScript effectively?</summary>
+<summary>Какие шаги JavaScript developer должен предпринять для эффективного использования TypeScript?</summary>
 
-### What steps should a JavaScript developer take to start using TypeScript effectively?
+### Какие шаги JavaScript developer должен предпринять для эффективного использования TypeScript?
 
 **Definition:**
 

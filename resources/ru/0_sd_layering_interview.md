@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Layering & Middleware](https://devinterview.
 ### Layering & Middleware Fundamentals
 
 <details>
-<summary>Can you explain what is meant by layering in the context of software architecture and its benefits?</summary>
+<summary>Можете ли вы explain what is meant by layering in the context of software architecture and its benefits?</summary>
 
-### Can you explain what is meant by layering in the context of software architecture and its benefits?
+### Можете ли вы explain what is meant by layering in the context of software architecture and its benefits?
 
 **Definition:**
 
@@ -48,9 +48,9 @@ OrderController  ->  OrderService  ->  OrderRepository  ->  database
 </details>
 
 <details>
-<summary>Describe the three typical layers you might find in a three-tiered application architecture and their responsibilities.</summary>
+<summary>Опишите the three typical layers you might find in a three-tiered application architecture and their responsibilities.</summary>
 
-### Describe the three typical layers you might find in a three-tiered application architecture and their responsibilities.
+### Опишите the three typical layers you might find in a three-tiered application architecture and their responsibilities.
 
 **Definition:**
 
@@ -70,9 +70,9 @@ OrderController  ->  OrderService  ->  OrderRepository  ->  database
 </details>
 
 <details>
-<summary>How does middleware facilitate decoupling of components in a system?</summary>
+<summary>Как middleware facilitate decoupling of components in a system?</summary>
 
-### How does middleware facilitate decoupling of components in a system?
+### Как middleware facilitate decoupling of components in a system?
 
 **Definition:**
 
@@ -96,9 +96,9 @@ Middleware стоит между компонентами и берёт на с�
 ### Middleware Functions and Implementations
 
 <details>
-<summary>What are some common functionalities provided by middleware in a layered architecture?</summary>
+<summary>Что такое some common functionalities provided by middleware in a layered architecture?</summary>
 
-### What are some common functionalities provided by middleware in a layered architecture?
+### Что такое some common functionalities provided by middleware in a layered architecture?
 
 **Definition:**
 
@@ -119,9 +119,9 @@ Middleware — общая машинерия слоистой системы, к
 </details>
 
 <details>
-<summary>Give an example of a middleware solution that provides service orchestration.</summary>
+<summary>Приведите an example of a middleware solution that provides service orchestration.</summary>
 
-### Give an example of a middleware solution that provides service orchestration.
+### Приведите an example of a middleware solution that provides service orchestration.
 
 **Definition:**
 
@@ -149,9 +149,9 @@ async function placeOrder(req, res, next) {
 </details>
 
 <details>
-<summary>Explain the concept of a service layer and its purpose in a layered architecture.</summary>
+<summary>Объясните the concept of a service layer and its puRPOse in a layered architecture.</summary>
 
-### Explain the concept of a service layer and its purpose in a layered architecture.
+### Объясните the concept of a service layer and its puRPOse in a layered architecture.
 
 **Definition:**
 
@@ -176,9 +176,9 @@ POST /orders  ->  OrderController  ->  OrderService.place(cart)
 </details>
 
 <details>
-<summary>Describe how middleware can support both synchronous and asynchronous communication patterns.</summary>
+<summary>Опишите how middleware can support both synchronous and asynchronous communication patterns.</summary>
 
-### Describe how middleware can support both synchronous and asynchronous communication patterns.
+### Опишите how middleware can support both synchronous and asynchronous communication patterns.
 
 **Definition:**
 
@@ -200,9 +200,9 @@ POST /orders  ->  OrderController  ->  OrderService.place(cart)
 ### Middleware Types and Use Cases
 
 <details>
-<summary>How do Object Request Brokers (ORBs) differ from Message Oriented Middleware (MOM)?</summary>
+<summary>Как Object Request Brokers (ORBs) differ from Message Oriented Middleware (MOM)?</summary>
 
-### How do Object Request Brokers (ORBs) differ from Message Oriented Middleware (MOM)?
+### Как Object Request Brokers (ORBs) differ from Message Oriented Middleware (MOM)?
 
 **Definition:**
 
@@ -222,9 +222,9 @@ POST /orders  ->  OrderController  ->  OrderService.place(cart)
 </details>
 
 <details>
-<summary>In what scenario would you choose an Enterprise Service Bus (ESB)?</summary>
+<summary>В what scenario would you choose an Enterprise Service Bus (ESB)?</summary>
 
-### In what scenario would you choose an Enterprise Service Bus (ESB)?
+### В what scenario would you choose an Enterprise Service Bus (ESB)?
 
 **Definition:**
 
@@ -244,9 +244,9 @@ POST /orders  ->  OrderController  ->  OrderService.place(cart)
 </details>
 
 <details>
-<summary>When would you use Remote Procedure Call (RPC) middleware, and what advantages does it offer?</summary>
+<summary>Когда would you use Remote Procedure Call (RPC) middleware, and what advantages does it offer?</summary>
 
-### When would you use Remote Procedure Call (RPC) middleware, and what advantages does it offer?
+### Когда would you use Remote Procedure Call (RPC) middleware, and what advantages does it offer?
 
 **Definition:**
 
@@ -273,9 +273,9 @@ if quote is None: reject()
 ### Middleware Integration and Communication
 
 <details>
-<summary>Explain how middleware systems support data format transformations between disparate technologies.</summary>
+<summary>Объясните how middleware systems support data format transformations between disparate technologies.</summary>
 
-### Explain how middleware systems support data format transformations between disparate technologies.
+### Объясните how middleware systems support data format transformations between disparate technologies.
 
 **Definition:**
 
@@ -296,9 +296,9 @@ Middleware преобразования переписывает сообщен�
 </details>
 
 <details>
-<summary>Describe how middleware handles load balancing among multiple server instances.</summary>
+<summary>Опишите how middleware handles load balancing among multiple server instances.</summary>
 
-### Describe how middleware handles load balancing among multiple server instances.
+### Опишите how middleware handles load balancing among multiple server instances.
 
 **Definition:**
 
@@ -326,9 +326,9 @@ upstream orders {
 </details>
 
 <details>
-<summary>Can you discuss strategies for scaling middleware solutions in response to increasing load?</summary>
+<summary>Можете ли вы discuss strategies for scaling middleware solutions in response to increasing load?</summary>
 
-### Can you discuss strategies for scaling middleware solutions in response to increasing load?
+### Можете ли вы discuss strategies for scaling middleware solutions in response to increasing load?
 
 **Definition:**
 
@@ -351,9 +351,9 @@ upstream orders {
 ### Middleware Configuration and Optimization
 
 <details>
-<summary>How can you configure middleware to ensure secure data transmission?</summary>
+<summary>Как you configure middleware to ensure secure data transmission?</summary>
 
-### How can you configure middleware to ensure secure data transmission?
+### Как you configure middleware to ensure secure data transmission?
 
 **Definition:**
 
@@ -373,9 +373,9 @@ upstream orders {
 </details>
 
 <details>
-<summary>Explain how middleware caching can improve the performance of a multi-layered application.</summary>
+<summary>Объясните how middleware caching can improve the performance of a multi-layered application.</summary>
 
-### Explain how middleware caching can improve the performance of a multi-layered application.
+### Объясните how middleware caching can improve the performance of a multi-layered application.
 
 **Definition:**
 
@@ -405,9 +405,9 @@ function cacheProduct(req, res, next) {
 </details>
 
 <details>
-<summary>What are some common performance concerns when integrating middleware in a layered architecture?</summary>
+<summary>Что такое some common performance concerns when integrating middleware in a layered architecture?</summary>
 
-### What are some common performance concerns when integrating middleware in a layered architecture?
+### Что такое some common performance concerns when integrating middleware in a layered architecture?
 
 **Definition:**
 
@@ -433,9 +433,9 @@ function cacheProduct(req, res, next) {
 ### Middleware Technologies and Standards
 
 <details>
-<summary>Name and discuss several prominent middleware technologies currently used in the industry and their typical use cases.</summary>
+<summary>Назовите and discuss several prominent middleware technologies currently used in the industry and their typical use cases.</summary>
 
-### Name and discuss several prominent middleware technologies currently used in the industry and their typical use cases.
+### Назовите and discuss several prominent middleware technologies currently used in the industry and their typical use cases.
 
 **Definition:**
 
@@ -463,9 +463,9 @@ AMQP — когда два процесса обмениваются делов�
 </details>
 
 <details>
-<summary>How have web services evolved to serve middleware functions in modern applications?</summary>
+<summary>Как web services эволюционировали для middleware functions в modern applications?</summary>
 
-### How have web services evolved to serve middleware functions in modern applications?
+### Как web services эволюционировали для middleware functions в modern applications?
 
 **Definition:**
 
@@ -489,9 +489,9 @@ AMQP — когда два процесса обмениваются делов�
 </details>
 
 <details>
-<summary>What is the significance of using middleware that adheres to standards like AMQP (Advanced Message Queuing Protocol)?</summary>
+<summary>Что такое the significance of using middleware that adheres to standards like AMQP (Advanced Message Queuing Protocol)?</summary>
 
-### What is the significance of using middleware that adheres to standards like AMQP (Advanced Message Queuing Protocol)?
+### Что такое the significance of using middleware that adheres to standards like AMQP (Advanced Message Queuing Protocol)?
 
 **Definition:**
 
@@ -515,9 +515,9 @@ AMQP — открытый протокол надёжного обмена де�
 ### Middleware Security and Reliability
 
 <details>
-<summary>How does middleware support authentication and authorization across different layers?</summary>
+<summary>Как middleware support authentication and authorization across different layers?</summary>
 
-### How does middleware support authentication and authorization across different layers?
+### Как middleware support authentication and authorization across different layers?
 
 **Definition:**
 
@@ -539,9 +539,9 @@ AMQP — открытый протокол надёжного обмена де�
 </details>
 
 <details>
-<summary>Describe how middleware can assist with data encryption during transit between application layers.</summary>
+<summary>Опишите how middleware can assist with data encryption during transit between application layers.</summary>
 
-### Describe how middleware can assist with data encryption during transit between application layers.
+### Опишите how middleware can assist with data encryption during transit between application layers.
 
 **Definition:**
 
@@ -563,9 +563,9 @@ AMQP — открытый протокол надёжного обмена де�
 </details>
 
 <details>
-<summary>Discuss how middleware can provide reliable message delivery and fault tolerance in the case of network failures.</summary>
+<summary>Обсудите how middleware can provide reliable message delivery and fault tolerance in the case of network failures.</summary>
 
-### Discuss how middleware can provide reliable message delivery and fault tolerance in the case of network failures.
+### Обсудите how middleware can provide reliable message delivery and fault tolerance in the case of network failures.
 
 **Definition:**
 
@@ -590,9 +590,9 @@ AMQP — открытый протокол надёжного обмена де�
 ### Middleware Testing and Debugging
 
 <details>
-<summary>What are effective strategies for testing middleware integration within a system?</summary>
+<summary>Что такое effective strategies for testing middleware integration within a system?</summary>
 
-### What are effective strategies for testing middleware integration within a system?
+### Что такое effective strategies for testing middleware integration within a system?
 
 **Definition:**
 
@@ -616,9 +616,9 @@ AMQP — открытый протокол надёжного обмена де�
 </details>
 
 <details>
-<summary>Explain how you would approach debugging a performance bottleneck at the middleware layer.</summary>
+<summary>Объясните how you would approach debugging a performance boTTLeneck at the middleware layer.</summary>
 
-### Explain how you would approach debugging a performance bottleneck at the middleware layer.
+### Объясните how you would approach debugging a performance boTTLeneck at the middleware layer.
 
 **Definition:**
 
@@ -641,9 +641,9 @@ AMQP — открытый протокол надёжного обмена де�
 </details>
 
 <details>
-<summary>Describe an approach to simulating high loads for middleware during the testing phase.</summary>
+<summary>Опишите an approach to simulating high loads for middleware during the testing phase.</summary>
 
-### Describe an approach to simulating high loads for middleware during the testing phase.
+### Опишите an approach to simulating high loads for middleware during the testing phase.
 
 **Definition:**
 
@@ -669,9 +669,9 @@ AMQP — открытый протокол надёжного обмена де�
 ### Middleware Design Patterns and Best Practices
 
 <details>
-<summary>Describe the Chain of Responsibility pattern and its role in middleware layer design.</summary>
+<summary>Опишите the chain of responsibility pattern and its role in middleware layer design.</summary>
 
-### Describe the Chain of Responsibility pattern and its role in middleware layer design.
+### Опишите the chain of responsibility pattern and its role in middleware layer design.
 
 **Definition:**
 
@@ -695,9 +695,9 @@ AMQP — открытый протокол надёжного обмена де�
 </details>
 
 <details>
-<summary>Can you name and describe one or two middleware-related design patterns that enhance scalability or maintainability?</summary>
+<summary>Можете ли вы name and describe one or two middleware-related design patterns that enhance Scalability or maintainability?</summary>
 
-### Can you name and describe one or two middleware-related design patterns that enhance scalability or maintainability?
+### Можете ли вы name and describe one or two middleware-related design patterns that enhance Scalability or maintainability?
 
 **Definition:**
 
@@ -720,9 +720,9 @@ AMQP — открытый протокол надёжного обмена де�
 </details>
 
 <details>
-<summary>What best practices would you recommend for designing an effective middleware layer in a modern application?</summary>
+<summary>Какие best practices вы рекомендуете для effective middleware layer в modern application?</summary>
 
-### What best practices would you recommend for designing an effective middleware layer in a modern application?
+### Какие best practices вы рекомендуете для effective middleware layer в modern application?
 
 **Definition:**
 
@@ -749,9 +749,9 @@ AMQP — открытый протокол надёжного обмена де�
 ### Middleware Specifics and Advanced Concepts
 
 <details>
-<summary>How does middleware support orchestration and choreography in microservices architectures?</summary>
+<summary>Как middleware support orchestration and choreography in microservices architectures?</summary>
 
-### How does middleware support orchestration and choreography in microservices architectures?
+### Как middleware support orchestration and choreography in microservices architectures?
 
 **Definition:**
 
@@ -775,9 +775,9 @@ AMQP — открытый протокол надёжного обмена де�
 </details>
 
 <details>
-<summary>Describe the role of API Gateways as a form of middleware in a microservices environment.</summary>
+<summary>Опишите the role of API Gateways as a form of middleware in a microservices environment.</summary>
 
-### Describe the role of API Gateways as a form of middleware in a microservices environment.
+### Опишите the role of API Gateways as a form of middleware in a microservices environment.
 
 **Definition:**
 
@@ -801,9 +801,9 @@ AMQP — открытый протокол надёжного обмена де�
 </details>
 
 <details>
-<summary>Explain the concept of middleware as a Service (MaaS) and how it can be leveraged in cloud architectures.</summary>
+<summary>Объясните the concept of middleware as a Service (MaaS) and how it can be leveraged in cloud architectures.</summary>
 
-### Explain the concept of middleware as a Service (MaaS) and how it can be leveraged in cloud architectures.
+### Объясните the concept of middleware as a Service (MaaS) and how it can be leveraged in cloud architectures.
 
 **Definition:**
 
@@ -829,9 +829,9 @@ AMQP — открытый протокол надёжного обмена де�
 ### Middleware in Enterprise Context
 
 <details>
-<summary>How do enterprise service buses differ from more lightweight middleware solutions?</summary>
+<summary>Как enterprise service buses differ from more lightweight middleware solutions?</summary>
 
-### How do enterprise service buses differ from more lightweight middleware solutions?
+### Как enterprise service buses differ from more lightweight middleware solutions?
 
 **Definition:**
 
@@ -855,9 +855,9 @@ AMQP — открытый протокол надёжного обмена де�
 </details>
 
 <details>
-<summary>Describe a scenario where middleware plays a critical role in enterprise application integration (EAI).</summary>
+<summary>Опишите a scenario where middleware plays a critical role in enterprise application integration (EAI).</summary>
 
-### Describe a scenario where middleware plays a critical role in enterprise application integration (EAI).
+### Опишите a scenario where middleware plays a critical role in enterprise application integration (EAI).
 
 **Definition:**
 
@@ -884,9 +884,9 @@ AMQP — открытый протокол надёжного обмена де�
 ### Middleware and Big Data
 
 <details>
-<summary>How can middleware solutions facilitate Big Data processing and integration with traditional enterprise systems?</summary>
+<summary>Как middleware solutions facilitate Big Data processing and integration with traditional enterprise systems?</summary>
 
-### How can middleware solutions facilitate Big Data processing and integration with traditional enterprise systems?
+### Как middleware solutions facilitate Big Data processing and integration with traditional enterprise systems?
 
 **Definition:**
 
@@ -910,9 +910,9 @@ AMQP — открытый протокол надёжного обмена де�
 </details>
 
 <details>
-<summary>Discuss the role of middleware in streamlining data flows between IoT devices and backend systems.</summary>
+<summary>Обсудите the role of middleware in streamlining data flows between IoT devices and backend systems.</summary>
 
-### Discuss the role of middleware in streamlining data flows between IoT devices and backend systems.
+### Обсудите the role of middleware in streamlining data flows between IoT devices and backend systems.
 
 **Definition:**
 

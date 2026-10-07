@@ -9,11 +9,11 @@ SQL, NoSQL, ORM и шаблоны производственных данных.
 ### Navigation
 
 | Тема                                       | Обложки                                                                                                                                                                           |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --------------------------------------------- | ------------------------------------------------------------- |
+| --- | --- |
 | [DB — Foundations](./9_database_core.md)   | ACID, CAP, Transactions, Normalization.                                                                                                                                           |
 | [БД — SQL](./9_database_sql.md)            | Язык SQL, схема, соединения, объекты, индексы и PostgreSQL.                                                                                                                       |
 | [NoSQL hub](./9_database_nosql.md)         | MongoDB, Redis, ClickHouse — [Core](./9_database_nosql_core.md) · [MongoDB](./9_database_mongodb.md) · [Redis](./9_database_redis.md) · [ClickHouse](./9_database_clickhouse.md). |
-| [DB — ORM](./9_database_orm.md)            | Prisma, Sequelize, Knex, Drizzle и сборщики запросов.                                                                                                                             |     | [DB — Production](./9_database_production.md) | Репликация, шардирование, кэширование и масштабирование OLTP. |
+| [DB — ORM](./9_database_orm.md) | Prisma, Sequelize, Knex, Drizzle и сборщики запросов. |
 | [БД — Интервью](./9_database_interview.md) | Вопросы по SQL, ответы не заполнены.                                                                                                                                              |
 
 ### Interview practice

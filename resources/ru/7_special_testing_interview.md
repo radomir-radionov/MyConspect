@@ -21,9 +21,9 @@
 ### Testing Fundamentals
 
 <details>
-<summary>What is software testing, and why is it important?</summary>
+<summary>Что такое software testing, and why is it important?</summary>
 
-### What is software testing, and why is it important?
+### Что такое software testing, and why is it important?
 
 **Definition:**
 
@@ -78,9 +78,9 @@
 </details>
 
 <details>
-<summary>Define the difference between verification and validation in software testing.</summary>
+<summary>Определите the difference between verification and validation in software testing.</summary>
 
-### Define the difference between verification and validation in software testing.
+### Определите the difference between verification and validation in software testing.
 
 **Definition:**
 
@@ -105,9 +105,9 @@
 </details>
 
 <details>
-<summary>Explain the software development life cycle and the role testing plays in each phase.</summary>
+<summary>Объясните the software development life cycle and the role testing plays in each phase.</summary>
 
-### Explain the software development life cycle and the role testing plays in each phase.
+### Объясните the software development life cycle and the role testing plays in each phase.
 
 **Definition:**
 
@@ -173,9 +173,9 @@ assert result == (8, 2)
 </details>
 
 <details>
-<summary>What are the different levels of software testing?</summary>
+<summary>Что такое the different levels of software testing?</summary>
 
-### What are the different levels of software testing?
+### Что такое the different levels of software testing?
 
 **Definition:**
 
@@ -245,9 +245,9 @@ assert result == (8, 2)
 </details>
 
 <details>
-<summary>Describe the difference between static and dynamic testing.</summary>
+<summary>Опишите the difference between static and dynamic testing.</summary>
 
-### Describe the difference between static and dynamic testing.
+### Опишите the difference between static and dynamic testing.
 
 **Definition:**
 
@@ -295,9 +295,9 @@ assert result == (8, 2)
 </details>
 
 <details>
-<summary>What is a test case, and what elements should it contain?</summary>
+<summary>Что такое test case, and what elements should it contain?</summary>
 
-### What is a test case, and what elements should it contain?
+### Что такое test case, and what elements should it contain?
 
 **Definition:**
 
@@ -346,9 +346,9 @@ public class TestCase {
 </details>
 
 <details>
-<summary>Explain the concept of coverage in testing and the main types of coverage (e.g., line, branch, path, statement).</summary>
+<summary>Объясните the concept of coverage in testing and the main types of coverage (e.g., line, branch, path, statement).</summary>
 
-### Explain the concept of coverage in testing and the main types of coverage (e.g., line, branch, path, statement).
+### Объясните the concept of coverage in testing and the main types of coverage (e.g., line, branch, path, statement).
 
 **Definition:**
 
@@ -369,9 +369,9 @@ public class TestCase {
 </details>
 
 <details>
-<summary>What is the difference between white-box, black-box, and grey-box testing?</summary>
+<summary>Что такое the difference between white-box, black-box, and grey-box testing?</summary>
 
-### What is the difference between white-box, black-box, and grey-box testing?
+### Что такое the difference between white-box, black-box, and grey-box testing?
 
 **Definition:**
 
@@ -407,9 +407,9 @@ public class TestCase {
 </details>
 
 <details>
-<summary>What is regression testing, and why is it performed?</summary>
+<summary>Что такое regression testing, and why is it performed?</summary>
 
-### What is regression testing, and why is it performed?
+### Что такое regression testing, and why is it performed?
 
 **Definition:**
 
@@ -460,9 +460,9 @@ public class TestCase {
 </details>
 
 <details>
-<summary>Explain unit testing and which tools you might use for it.</summary>
+<summary>Объясните unit testing and which tools you might use for it.</summary>
 
-### Explain unit testing and which tools you might use for it.
+### Объясните unit testing and which tools you might use for it.
 
 **Definition:**
 
@@ -556,9 +556,9 @@ class MathFunctionsTest {
 </details>
 
 <details>
-<summary>What is integration testing and what are its types?</summary>
+<summary>Что такое integration testing and what are its types?</summary>
 
-### What is integration testing and what are its types?
+### Что такое integration testing and what are its types?
 
 **Definition:**
 
@@ -638,9 +638,9 @@ public class CashierServiceTest {
 </details>
 
 <details>
-<summary>What is system testing, and how does it differ from other types of testing?</summary>
+<summary>Что такое system testing, and how does it differ from other types of testing?</summary>
 
-### What is system testing, and how does it differ from other types of testing?
+### Что такое system testing, and how does it differ from other types of testing?
 
 **Definition:**
 
@@ -710,9 +710,9 @@ public class CashierServiceTest {
 </details>
 
 <details>
-<summary>Define acceptance testing and describe its types.</summary>
+<summary>Определите acceptance testing and describe its types.</summary>
 
-### Define acceptance testing and describe its types.
+### Определите acceptance testing and describe its types.
 
 **Definition:**
 
@@ -764,9 +764,9 @@ public class CashierServiceTest {
 </details>
 
 <details>
-<summary>What are the benefits of test automation?</summary>
+<summary>Что такое the benefits of test automation?</summary>
 
-### What are the benefits of test automation?
+### Что такое the benefits of test automation?
 
 **Definition:**
 
@@ -818,9 +818,9 @@ public class CashierServiceTest {
 </details>
 
 <details>
-<summary>When would you choose not to automate test cases?</summary>
+<summary>Когда would you choose not to automate test cases?</summary>
 
-### When would you choose not to automate test cases?
+### Когда would you choose not to automate test cases?
 
 **Definition:**
 
@@ -852,9 +852,9 @@ public class CashierServiceTest {
 ### Test Design Techniques
 
 <details>
-<summary>What is equivalence partitioning in software testing?</summary>
+<summary>Что такое equivalence partitioning in software testing?</summary>
 
-### What is equivalence partitioning in software testing?
+### Что такое equivalence partitioning in software testing?
 
 **Definition:**
 
@@ -881,9 +881,9 @@ public class CashierServiceTest {
 </details>
 
 <details>
-<summary>Explain boundary value analysis with an example.</summary>
+<summary>Объясните boundary value analysis with an example.</summary>
 
-### Explain boundary value analysis with an example.
+### Объясните boundary value analysis with an example.
 
 **Definition:**
 
@@ -911,9 +911,9 @@ public class CashierServiceTest {
 </details>
 
 <details>
-<summary>What is state transition testing, and where is it useful?</summary>
+<summary>Что такое state transition testing, and where is it useful?</summary>
 
-### What is state transition testing, and where is it useful?
+### Что такое state transition testing, and where is it useful?
 
 **Definition:**
 
@@ -941,9 +941,9 @@ public class CashierServiceTest {
 </details>
 
 <details>
-<summary>Describe the concept of decision table testing.</summary>
+<summary>Опишите the concept of decision table testing.</summary>
 
-### Describe the concept of decision table testing.
+### Опишите the concept of decision table testing.
 
 **Definition:**
 
@@ -971,9 +971,9 @@ public class CashierServiceTest {
 </details>
 
 <details>
-<summary>What is pairwise testing, and what tools support this technique?</summary>
+<summary>Что такое pairwise testing, and what tools support this technique?</summary>
 
-### What is pairwise testing, and what tools support this technique?
+### Что такое pairwise testing, and what tools support this technique?
 
 **Definition:**
 
@@ -1001,9 +1001,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>How do you prioritize test cases in a test suite?</summary>
+<summary>Как you prioritize test cases in a test suite?</summary>
 
-### How do you prioritize test cases in a test suite?
+### Как you prioritize test cases in a test suite?
 
 **Definition:**
 
@@ -1032,9 +1032,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>Explain error guessing and its effectiveness.</summary>
+<summary>Объясните error guessing and its effectiveness.</summary>
 
-### Explain error guessing and its effectiveness.
+### Объясните error guessing and its effectiveness.
 
 **Definition:**
 
@@ -1061,9 +1061,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>What is exploratory testing, and how is it structured?</summary>
+<summary>Что такое exploratory testing, and how is it structured?</summary>
 
-### What is exploratory testing, and how is it structured?
+### Что такое exploratory testing, and how is it structured?
 
 **Definition:**
 
@@ -1092,9 +1092,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>Describe the use-cases for model-based testing.</summary>
+<summary>Опишите the use-cases for model-BASEd testing.</summary>
 
-### Describe the use-cases for model-based testing.
+### Опишите the use-cases for model-BASEd testing.
 
 **Definition:**
 
@@ -1125,9 +1125,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 ### Test Management
 
 <details>
-<summary>What is a test plan, and what should it typically include?</summary>
+<summary>Что такое test plan, and what should it typically include?</summary>
 
-### What is a test plan, and what should it typically include?
+### Что такое test plan, and what should it typically include?
 
 **Definition:**
 
@@ -1152,9 +1152,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>Describe test strategy and its importance.</summary>
+<summary>Опишите test strategy and its importance.</summary>
 
-### Describe test strategy and its importance.
+### Опишите test strategy and its importance.
 
 **Definition:**
 
@@ -1183,9 +1183,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>Explain the concept of a test charter in exploratory testing.</summary>
+<summary>Объясните the concept of a test charter in exploratory testing.</summary>
 
-### Explain the concept of a test charter in exploratory testing.
+### Объясните the concept of a test charter in exploratory testing.
 
 **Definition:**
 
@@ -1213,9 +1213,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>What is a test data management process?</summary>
+<summary>Что такое test data management process?</summary>
 
-### What is a test data management process?
+### Что такое test data management process?
 
 **Definition:**
 
@@ -1243,9 +1243,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>Define risk-based testing and its benefits.</summary>
+<summary>Определите risk-BASEd testing and its benefits.</summary>
 
-### Define risk-based testing and its benefits.
+### Определите risk-BASEd testing and its benefits.
 
 **Definition:**
 
@@ -1273,9 +1273,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>How do you track and manage defects in software testing?</summary>
+<summary>Как you track and manage defects in software testing?</summary>
 
-### How do you track and manage defects in software testing?
+### Как you track and manage defects in software testing?
 
 **Definition:**
 
@@ -1300,9 +1300,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>What is the role of a test lead or test manager in a testing team?</summary>
+<summary>Что такое the role of a test lead or test manager in a testing team?</summary>
 
-### What is the role of a test lead or test manager in a testing team?
+### Что такое the role of a test lead or test manager in a testing team?
 
 **Definition:**
 
@@ -1330,9 +1330,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>Describe the challenges in test environment management.</summary>
+<summary>Опишите the challenges in test environment management.</summary>
 
-### Describe the challenges in test environment management.
+### Опишите the challenges in test environment management.
 
 **Definition:**
 
@@ -1361,9 +1361,9 @@ Type: Single, Span, Stripe, Mirror, RAID-5. Format method: Quick, Slow. File sys
 </details>
 
 <details>
-<summary>What tools are available for test management, and how do they differ?</summary>
+<summary>Какие инструменты are available for test management, and how do they differ?</summary>
 
-### What tools are available for test management, and how do they differ?
+### Какие инструменты are available for test management, and how do they differ?
 
 **Definition:**
 
@@ -1398,9 +1398,9 @@ export default defineConfig({
 </details>
 
 <details>
-<summary>Explain what a traceability matrix is and how it is used in testing.</summary>
+<summary>Объясните what a traceability matrix is and how it is used in testing.</summary>
 
-### Explain what a traceability matrix is and how it is used in testing.
+### Объясните what a traceability matrix is and how it is used in testing.
 
 **Definition:**
 
@@ -1428,9 +1428,9 @@ R1 «пользователь может оплатить действитель
 </details>
 
 <details>
-<summary>What are the key metrics used to measure test progress and coverage?</summary>
+<summary>Что такое the key metrics used to measure test progress and coverage?</summary>
 
-### What are the key metrics used to measure test progress and coverage?
+### Что такое the key metrics used to measure test progress and coverage?
 
 **Definition:**
 
@@ -1462,9 +1462,9 @@ R1 «пользователь может оплатить действитель
 ### Automation Testing
 
 <details>
-<summary>What are the criteria to decide whether a test should be automated?</summary>
+<summary>Что такое the criteria to decide whether a test should be automated?</summary>
 
-### What are the criteria to decide whether a test should be automated?
+### Что такое the criteria to decide whether a test should be automated?
 
 **Definition:**
 
@@ -1498,9 +1498,9 @@ test('two plus two is four', () => {
 </details>
 
 <details>
-<summary>Describe the Page Object Model in automated testing.</summary>
+<summary>Опишите the Page Object Model in automated testing.</summary>
 
-### Describe the Page Object Model in automated testing.
+### Опишите the Page Object Model in automated testing.
 
 **Definition:**
 
@@ -1543,9 +1543,9 @@ export class PlaywrightDevPage {
 </details>
 
 <details>
-<summary>Explain the advantages and disadvantages of record and playback in test automation.</summary>
+<summary>Объясните the advantages and disadvantages of record and playback in test automation.</summary>
 
-### Explain the advantages and disadvantages of record and playback in test automation.
+### Объясните the advantages and disadvantages of record and playback in test automation.
 
 **Definition:**
 
@@ -1574,9 +1574,9 @@ npx playwright codegen demo.playwright.dev/todomvc
 </details>
 
 <details>
-<summary>What is continuous integration, and how does it relate to test automation?</summary>
+<summary>Что такое continuous integration, and how does it relate to test automation?</summary>
 
-### What is continuous integration, and how does it relate to test automation?
+### Что такое continuous integration, and how does it relate to test automation?
 
 **Definition:**
 
@@ -1615,9 +1615,9 @@ jobs:
 </details>
 
 <details>
-<summary>Which automation testing tools are you familiar with, and what are their strengths?</summary>
+<summary>Какой automation testing tools are you familiar with, and what are their strengths?</summary>
 
-### Which automation testing tools are you familiar with, and what are their strengths?
+### Какой automation testing tools are you familiar with, and what are their strengths?
 
 **Definition:**
 
@@ -1654,9 +1654,9 @@ test.each([
 </details>
 
 <details>
-<summary>What is keyword-driven testing, and how does it work?</summary>
+<summary>Что такое keyword-driven testing, and how does it work?</summary>
 
-### What is keyword-driven testing, and how does it work?
+### Что такое keyword-driven testing, and how does it work?
 
 **Definition:**
 
@@ -1684,9 +1684,9 @@ test.each([
 </details>
 
 <details>
-<summary>How does test automation fit into a DevOps environment?</summary>
+<summary>Как test automation fit into a DevOps environment?</summary>
 
-### How does test automation fit into a DevOps environment?
+### Как test automation fit into a DevOps environment?
 
 **Definition:**
 
@@ -1715,9 +1715,9 @@ test.each([
 </details>
 
 <details>
-<summary>What are the main challenges you have faced in test automation?</summary>
+<summary>Что такое the main challenges you have faced in test automation?</summary>
 
-### What are the main challenges you have faced in test automation?
+### Что такое the main challenges you have faced in test automation?
 
 **Definition:**
 
@@ -1747,9 +1747,9 @@ test.each([
 </details>
 
 <details>
-<summary>Explain the use of assertions in automated tests.</summary>
+<summary>Объясните the use of assertions in automated tests.</summary>
 
-### Explain the use of assertions in automated tests.
+### Объясните the use of assertions in automated tests.
 
 **Definition:**
 
@@ -1785,9 +1785,9 @@ test('status becomes submitted', async ({ page }) => {
 </details>
 
 <details>
-<summary>What is data-driven testing, and how can it be implemented?</summary>
+<summary>Что такое data-driven testing, and how can it be implemented?</summary>
 
-### What is data-driven testing, and how can it be implemented?
+### Что такое data-driven testing, and how can it be implemented?
 
 **Definition:**
 
@@ -1825,9 +1825,9 @@ def test_eval(test_input, expected):
 ### Performance Testing
 
 <details>
-<summary>What is performance testing, and how does it differ from functional testing?</summary>
+<summary>Что такое performance testing, and how does it differ from functional testing?</summary>
 
-### What is performance testing, and how does it differ from functional testing?
+### Что такое performance testing, and how does it differ from functional testing?
 
 **Definition:**
 
@@ -1856,9 +1856,9 @@ k6 записывает `http_req_duration` (задержка) и `http_req_fail
 </details>
 
 <details>
-<summary>Describe the subtypes of performance testing (e.g., load, stress, capacity).</summary>
+<summary>Опишите the subtypes of performance testing (e.g., load, stress, CAPacity).</summary>
 
-### Describe the subtypes of performance testing (e.g., load, stress, capacity).
+### Опишите the subtypes of performance testing (e.g., load, stress, CAPacity).
 
 **Definition:**
 
@@ -1890,9 +1890,9 @@ API оформления получает прогон average-load для об�
 </details>
 
 <details>
-<summary>What are the key performance testing metrics?</summary>
+<summary>Что такое the key performance testing metrics?</summary>
 
-### What are the key performance testing metrics?
+### Что такое the key performance testing metrics?
 
 **Definition:**
 
@@ -1931,9 +1931,9 @@ export default function () {
 </details>
 
 <details>
-<summary>Explain how to set up a performance test.</summary>
+<summary>Объясните how to set up a performance test.</summary>
 
-### Explain how to set up a performance test.
+### Объясните how to set up a performance test.
 
 **Definition:**
 
@@ -1984,9 +1984,9 @@ export default function () {
 </details>
 
 <details>
-<summary>What tools can be used for performance testing, and what factors influence their selection?</summary>
+<summary>Какие инструменты can be used for performance testing, and what factors influence their selection?</summary>
 
-### What tools can be used for performance testing, and what factors influence their selection?
+### Какие инструменты can be used for performance testing, and what factors influence their selection?
 
 **Definition:**
 
@@ -2015,9 +2015,9 @@ k6 — для скриптовой HTTP-нагрузки или небольшо
 </details>
 
 <details>
-<summary>What is a performance bottleneck, and how is it identified and addressed?</summary>
+<summary>Что такое performance boTTLeneck, and how is it identified and addressed?</summary>
 
-### What is a performance bottleneck, and how is it identified and addressed?
+### Что такое performance boTTLeneck, and how is it identified and addressed?
 
 **Definition:**
 
@@ -2043,9 +2043,9 @@ p(95) у `http_req_duration` пересекает 200 мс только в ст�
 </details>
 
 <details>
-<summary>Explain the performance testing lifecycle.</summary>
+<summary>Объясните the performance testing lifecycle.</summary>
 
-### Explain the performance testing lifecycle.
+### Объясните the performance testing lifecycle.
 
 **Definition:**
 
@@ -2074,9 +2074,9 @@ p(95) у `http_req_duration` пересекает 200 мс только в ст�
 ### Security Testing
 
 <details>
-<summary>What is security testing and why is it important?</summary>
+<summary>Что такое security testing and why is it important?</summary>
 
-### What is security testing and why is it important?
+### Что такое security testing and why is it important?
 
 **Definition:**
 
@@ -2102,9 +2102,9 @@ p(95) у `http_req_duration` пересекает 200 мс только в ст�
 </details>
 
 <details>
-<summary>Describe common security threats that testing should address.</summary>
+<summary>Опишите common security threats that testing should address.</summary>
 
-### Describe common security threats that testing should address.
+### Опишите common security threats that testing should address.
 
 **Definition:**
 
@@ -2131,9 +2131,9 @@ OWASP Top 10:2025 — документ осведомлённости о шир�
 </details>
 
 <details>
-<summary>What is OWASP, and why is it significant in security testing?</summary>
+<summary>Что такое OWASP, and why is it significant in security testing?</summary>
 
-### What is OWASP, and why is it significant in security testing?
+### Что такое OWASP, and why is it significant in security testing?
 
 **Definition:**
 
@@ -2158,9 +2158,9 @@ OWASP (Open Worldwide Application Security Project) — некоммерческ
 </details>
 
 <details>
-<summary>Explain SQL injection and how you test for it.</summary>
+<summary>Объясните SQL injection and how you test for it.</summary>
 
-### Explain SQL injection and how you test for it.
+### Объясните SQL injection and how you test for it.
 
 **Definition:**
 
@@ -2190,9 +2190,9 @@ ResultSet results = pstmt.executeQuery();
 </details>
 
 <details>
-<summary>How do you perform authentication and authorization checks in security testing?</summary>
+<summary>Как you perform authentication and authorization checks in security testing?</summary>
 
-### How do you perform authentication and authorization checks in security testing?
+### Как you perform authentication and authorization checks in security testing?
 
 **Definition:**
 
@@ -2221,9 +2221,9 @@ ResultSet results = pstmt.executeQuery();
 </details>
 
 <details>
-<summary>What tools can be used for security testing?</summary>
+<summary>Какие инструменты can be used for security testing?</summary>
 
-### What tools can be used for security testing?
+### Какие инструменты can be used for security testing?
 
 **Definition:**
 
@@ -2252,9 +2252,9 @@ Testing Guide от OWASP называет динамическое тестир�
 </details>
 
 <details>
-<summary>What is penetration testing, and how is it executed?</summary>
+<summary>Что такое penetration testing, and how is it executed?</summary>
 
-### What is penetration testing, and how is it executed?
+### Что такое penetration testing, and how is it executed?
 
 **Definition:**
 
@@ -2283,9 +2283,9 @@ Testing Guide от OWASP называет динамическое тестир�
 </details>
 
 <details>
-<summary>What is the role of encryption and secure communication in testing?</summary>
+<summary>Что такое the role of encryption and secure communication in testing?</summary>
 
-### What is the role of encryption and secure communication in testing?
+### Что такое the role of encryption and secure communication in testing?
 
 **Definition:**
 
@@ -2318,9 +2318,9 @@ Cryptographic Failures — это A04:2025. Тестирование безоп�
 ### Mobile and Web Application Testing
 
 <details>
-<summary>How does mobile application testing differ from desktop application testing?</summary>
+<summary>Как mobile application testing differ from desktop application testing?</summary>
 
-### How does mobile application testing differ from desktop application testing?
+### Как mobile application testing differ from desktop application testing?
 
 **Definition:**
 
@@ -2357,9 +2357,9 @@ export default defineConfig({
 </details>
 
 <details>
-<summary>Explain different types of mobile application testing, such as native, web, and hybrid.</summary>
+<summary>Объясните different types of mobile application testing, such as native, web, and hybrid.</summary>
 
-### Explain different types of mobile application testing, such as native, web, and hybrid.
+### Объясните different types of mobile application testing, such as native, web, and hybrid.
 
 **Definition:**
 
@@ -2387,9 +2387,9 @@ export default defineConfig({
 </details>
 
 <details>
-<summary>What emulators are available for mobile testing, and when would you use real devices?</summary>
+<summary>Какие emulators доступны для mobile testing и когда использовать real devices?</summary>
 
-### What emulators are available for mobile testing, and when would you use real devices?
+### Какие emulators доступны для mobile testing и когда использовать real devices?
 
 **Definition:**
 
@@ -2420,9 +2420,9 @@ npx playwright codegen --device="iPhone 13" playwright.dev
 </details>
 
 <details>
-<summary>What is responsive testing, and how is it conducted?</summary>
+<summary>Что такое responsive testing, and how is it conducted?</summary>
 
-### What is responsive testing, and how is it conducted?
+### Что такое responsive testing, and how is it conducted?
 
 **Definition:**
 
@@ -2455,9 +2455,9 @@ test('my test', async ({ page }) => {
 </details>
 
 <details>
-<summary>Describe challenges unique to mobile application testing.</summary>
+<summary>Опишите challenges unique to mobile application testing.</summary>
 
-### Describe challenges unique to mobile application testing.
+### Опишите challenges unique to mobile application testing.
 
 **Definition:**
 
@@ -2488,9 +2488,9 @@ const context = await browser.newContext({
 </details>
 
 <details>
-<summary>What is cross-browser testing?</summary>
+<summary>Что такое cross-browser testing?</summary>
 
-### What is cross-browser testing?
+### Что такое cross-browser testing?
 
 **Definition:**
 
@@ -2524,9 +2524,9 @@ projects: [
 </details>
 
 <details>
-<summary>What are the key areas to focus on in web application testing?</summary>
+<summary>Что такое the key areas to focus on in web application testing?</summary>
 
-### What are the key areas to focus on in web application testing?
+### Что такое the key areas to focus on in web application testing?
 
 **Definition:**
 
@@ -2555,9 +2555,9 @@ projects: [
 ### Test Automation Frameworks
 
 <details>
-<summary>What is a test automation framework?</summary>
+<summary>Что такое test automation framework?</summary>
 
-### What is a test automation framework?
+### Что такое test automation framework?
 
 **Definition:**
 
@@ -2589,9 +2589,9 @@ export default defineConfig({
 </details>
 
 <details>
-<summary>Describe different types of test automation frameworks (e.g., data-driven, keyword-driven, hybrid, modular).</summary>
+<summary>Опишите different types of test automation frameworks (e.g., data-driven, keyword-driven, hybrid, modular).</summary>
 
-### Describe different types of test automation frameworks (e.g., data-driven, keyword-driven, hybrid, modular).
+### Опишите different types of test automation frameworks (e.g., data-driven, keyword-driven, hybrid, modular).
 
 **Definition:**
 
@@ -2622,9 +2622,9 @@ export default defineConfig({
 </details>
 
 <details>
-<summary>What considerations are involved in choosing a test automation framework?</summary>
+<summary>Какие соображения are involved in choosing a test automation framework?</summary>
 
-### What considerations are involved in choosing a test automation framework?
+### Какие соображения are involved in choosing a test automation framework?
 
 **Definition:**
 
@@ -2655,9 +2655,9 @@ export default defineConfig({
 </details>
 
 <details>
-<summary>How can you ensure maintainability of an automation framework?</summary>
+<summary>Как you ensure maintainability of an automation framework?</summary>
 
-### How can you ensure maintainability of an automation framework?
+### Как you ensure maintainability of an automation framework?
 
 **Definition:**
 
@@ -2683,9 +2683,9 @@ export default defineConfig({
 </details>
 
 <details>
-<summary>How is reporting implemented in automation frameworks?</summary>
+<summary>Как reporting implemented in automation frameworks?</summary>
 
-### How is reporting implemented in automation frameworks?
+### Как reporting implemented in automation frameworks?
 
 **Definition:**
 
@@ -2718,9 +2718,9 @@ export default defineConfig({
 ### API Testing
 
 <details>
-<summary>What is API testing, and why is it important?</summary>
+<summary>Что такое API testing, and why is it important?</summary>
 
-### What is API testing, and why is it important?
+### Что такое API testing, and why is it important?
 
 **Definition:**
 
@@ -2746,9 +2746,9 @@ export default defineConfig({
 </details>
 
 <details>
-<summary>How do you approach testing RESTful APIs?</summary>
+<summary>Как you approach testing RESTful APIs?</summary>
 
-### How do you approach testing RESTful APIs?
+### Как you approach testing RESTful APIs?
 
 **Definition:**
 
@@ -2781,9 +2781,9 @@ check(res, {
 </details>
 
 <details>
-<summary>Explain how to test SOAP-based web services.</summary>
+<summary>Объясните how to test SOAP-BASEd web services.</summary>
 
-### Explain how to test SOAP-based web services.
+### Объясните how to test SOAP-BASEd web services.
 
 **Definition:**
 
@@ -2812,9 +2812,9 @@ Postman — когда нужно осмотреть одну операцию S
 </details>
 
 <details>
-<summary>What kind of tests would you write for an API?</summary>
+<summary>Какие tests вы написали бы для API?</summary>
 
-### What kind of tests would you write for an API?
+### Какие tests вы написали бы для API?
 
 **Definition:**
 
@@ -2841,9 +2841,9 @@ Postman — когда нужно осмотреть одну операцию S
 </details>
 
 <details>
-<summary>Describe how to use Postman for API testing.</summary>
+<summary>Опишите how to use Postman for API testing.</summary>
 
-### Describe how to use Postman for API testing.
+### Опишите how to use Postman for API testing.
 
 **Definition:**
 
@@ -2869,9 +2869,9 @@ Postman отправляет запрос и показывает ответ, ч
 </details>
 
 <details>
-<summary>What is contract testing, and which tools support this type of API testing?</summary>
+<summary>Что такое contract testing, and which tools support this type of API testing?</summary>
 
-### What is contract testing, and which tools support this type of API testing?
+### Что такое contract testing, and which tools support this type of API testing?
 
 **Definition:**
 
@@ -2903,9 +2903,9 @@ Postman отправляет запрос и показывает ответ, ч
 ### Quality Assurance Processes
 
 <details>
-<summary>What is quality assurance, and how does it differ from testing?</summary>
+<summary>Что такое quality assurance, and how does it differ from testing?</summary>
 
-### What is quality assurance, and how does it differ from testing?
+### Что такое quality assurance, and how does it differ from testing?
 
 **Definition:**
 
@@ -2929,9 +2929,9 @@ Postman отправляет запрос и показывает ответ, ч
 </details>
 
 <details>
-<summary>Describe the QA process in agile development.</summary>
+<summary>Опишите the QA process in agile development.</summary>
 
-### Describe the QA process in agile development.
+### Опишите the QA process in agile development.
 
 **Definition:**
 
@@ -2956,9 +2956,9 @@ Definition of Done для элемента бэклога включает пр�
 </details>
 
 <details>
-<summary>Explain the role of a QA engineer in a scrum team.</summary>
+<summary>Объясните the role of a QA engineer in a scrum team.</summary>
 
-### Explain the role of a QA engineer in a scrum team.
+### Объясните the role of a QA engineer in a scrum team.
 
 **Definition:**
 
@@ -2988,9 +2988,9 @@ Scrum Guide не определяет роль QA. Он определяет р�
 </details>
 
 <details>
-<summary>What quality metrics are important for a software project?</summary>
+<summary>Какие quality metrics важны для software project?</summary>
 
-### What quality metrics are important for a software project?
+### Какие quality metrics важны для software project?
 
 **Definition:**
 
@@ -3017,9 +3017,9 @@ Scrum Guide не определяет роль QA. Он определяет р�
 </details>
 
 <details>
-<summary>How do you establish a QA process in an organization that has none?</summary>
+<summary>Как you establish a QA process in an orGAnization that has none?</summary>
 
-### How do you establish a QA process in an organization that has none?
+### Как you establish a QA process in an orGAnization that has none?
 
 **Definition:**
 
@@ -3050,9 +3050,9 @@ Scrum Guide не определяет роль QA. Он определяет р�
 ### Advanced Testing Topics
 
 <details>
-<summary>What are the emerging trends in software testing, such as AI and ML applications?</summary>
+<summary>Что такое the emerging trends in software testing, such as AI and ML applications?</summary>
 
-### What are the emerging trends in software testing, such as AI and ML applications?
+### Что такое the emerging trends in software testing, such as AI and ML applications?
 
 **Definition:**
 
@@ -3078,9 +3078,9 @@ Scrum Guide не определяет роль QA. Он определяет р�
 </details>
 
 <details>
-<summary>How do you handle testing in a continuous delivery environment?</summary>
+<summary>Как you handle testing in a continuous delivery environment?</summary>
 
-### How do you handle testing in a continuous delivery environment?
+### Как you handle testing in a continuous delivery environment?
 
 **Definition:**
 
@@ -3110,9 +3110,9 @@ Pull request не сливают, пока задание Playwright красн�
 </details>
 
 <details>
-<summary>Describe the concept of shift-left testing.</summary>
+<summary>Опишите the concept of shift-left testing.</summary>
 
-### Describe the concept of shift-left testing.
+### Опишите the concept of shift-left testing.
 
 **Definition:**
 
@@ -3141,9 +3141,9 @@ Shift-left — когда дефекты дешевле найти на изме
 </details>
 
 <details>
-<summary>What is chaos engineering, and how do you apply it?</summary>
+<summary>Что такое chaos engineering, and how do you apply it?</summary>
 
-### What is chaos engineering, and how do you apply it?
+### Что такое chaos engineering, and how do you apply it?
 
 **Definition:**
 
@@ -3172,9 +3172,9 @@ Principles of Chaos определяют хаос-инжиниринг как д
 </details>
 
 <details>
-<summary>Explain the role of virtualization in software testing.</summary>
+<summary>Объясните the role of virtualization in software testing.</summary>
 
-### Explain the role of virtualization in software testing.
+### Объясните the role of virtualization in software testing.
 
 **Definition:**
 
@@ -3206,9 +3206,9 @@ Principles of Chaos определяют хаос-инжиниринг как д
 ### Behavioral Testing Questions
 
 <details>
-<summary>How do you stay updated about new testing technologies and practices?</summary>
+<summary>Как you stay updated about new testing technologies and practices?</summary>
 
-### How do you stay updated about new testing technologies and practices?
+### Как you stay updated about new testing technologies and practices?
 
 **Definition:**
 
@@ -3234,9 +3234,9 @@ Principles of Chaos определяют хаос-инжиниринг как д
 </details>
 
 <details>
-<summary>Describe a situation where you had to meet a tight deadline for testing. How did you handle it?</summary>
+<summary>Опишите a situation where you had to meet a tight deadline for testing. How did you handle it?</summary>
 
-### Describe a situation where you had to meet a tight deadline for testing. How did you handle it?
+### Опишите a situation where you had to meet a tight deadline for testing. How did you handle it?
 
 **Definition:**
 
@@ -3261,9 +3261,9 @@ Principles of Chaos определяют хаос-инжиниринг как д
 </details>
 
 <details>
-<summary>How do you handle disagreements with developers regarding bugs or software issues?</summary>
+<summary>Как you handle disagreements with developers reGArding bugs or software issues?</summary>
 
-### How do you handle disagreements with developers regarding bugs or software issues?
+### Как you handle disagreements with developers reGArding bugs or software issues?
 
 **Definition:**
 
@@ -3288,9 +3288,9 @@ Principles of Chaos определяют хаос-инжиниринг как д
 </details>
 
 <details>
-<summary>Can you explain your approach to testing a feature with unclear requirements?</summary>
+<summary>Можете ли вы explain your approach to testing a feature with unclear requirements?</summary>
 
-### Can you explain your approach to testing a feature with unclear requirements?
+### Можете ли вы explain your approach to testing a feature with unclear requirements?
 
 **Definition:**
 
@@ -3316,9 +3316,9 @@ Principles of Chaos определяют хаос-инжиниринг как д
 </details>
 
 <details>
-<summary>Describe a particularly challenging bug or issue you've had to deal with.</summary>
+<summary>Опишите a particularly challenging bug or issue you've had to deal with.</summary>
 
-### Describe a particularly challenging bug or issue you've had to deal with.
+### Опишите a particularly challenging bug or issue you've had to deal with.
 
 **Definition:**
 
@@ -3348,9 +3348,9 @@ Principles of Chaos определяют хаос-инжиниринг как д
 ### Situation-based Testing Questions
 
 <details>
-<summary>How would you test an ATM machine as an end-user?</summary>
+<summary>Как бы вы test an ATM machine as an end-user?</summary>
 
-### How would you test an ATM machine as an end-user?
+### Как бы вы test an ATM machine as an end-user?
 
 **Definition:**
 
@@ -3374,9 +3374,9 @@ Principles of Chaos определяют хаос-инжиниринг как д
 </details>
 
 <details>
-<summary>Imagine you have a website that is experiencing performance issues. How would you test to find the cause?</summary>
+<summary>Представьте, что website испытывает performance issues. Как бы вы тестировали, чтобы найти причину?</summary>
 
-### Imagine you have a website that is experiencing performance issues. How would you test to find the cause?
+### Представьте, что website испытывает performance issues. Как бы вы тестировали, чтобы найти причину?
 
 **Definition:**
 
@@ -3402,9 +3402,9 @@ p(95) HTTP остаётся ниже 200 мс, а p(95) `browser_web_vital_lcp` 
 </details>
 
 <details>
-<summary>Given an e-commerce application, how would you carry out security testing?</summary>
+<summary>Дано: an e-commerce application, how would you carry out security testing?</summary>
 
-### Given an e-commerce application, how would you carry out security testing?
+### Дано: an e-commerce application, how would you carry out security testing?
 
 **Definition:**
 
@@ -3430,9 +3430,9 @@ p(95) HTTP остаётся ниже 200 мс, а p(95) `browser_web_vital_lcp` 
 </details>
 
 <details>
-<summary>How would you approach testing a new software application with no documentation available?</summary>
+<summary>Как бы вы approach testing a new software application with no documentation available?</summary>
 
-### How would you approach testing a new software application with no documentation available?
+### Как бы вы approach testing a new software application with no documentation available?
 
 **Definition:**
 
@@ -3457,9 +3457,9 @@ p(95) HTTP остаётся ниже 200 мс, а p(95) `browser_web_vital_lcp` 
 </details>
 
 <details>
-<summary>Describe how you would test a new feature that interacts with multiple systems.</summary>
+<summary>Опишите how you would test a new feature that interacts with multiple systems.</summary>
 
-### Describe how you would test a new feature that interacts with multiple systems.
+### Опишите how you would test a new feature that interacts with multiple systems.
 
 **Definition:**
 
@@ -3489,9 +3489,9 @@ p(95) HTTP остаётся ниже 200 мс, а p(95) `browser_web_vital_lcp` 
 ### Technical Testing Questions
 
 <details>
-<summary>Write a basic SQL query to fetch records from a customer table where the customer's age is more than 30 years.</summary>
+<summary>Напишите a basic SQL query to fetch records from a customer table where the customer's age is more than 30 years.</summary>
 
-### Write a basic SQL query to fetch records from a customer table where the customer's age is more than 30 years.
+### Напишите a basic SQL query to fetch records from a customer table where the customer's age is more than 30 years.
 
 **Definition:**
 
@@ -3519,9 +3519,9 @@ SELECT * FROM customer WHERE age > 30;
 </details>
 
 <details>
-<summary>Given a function that calculates the nth Fibonacci number, how would you test it?</summary>
+<summary>Дано: a function that calculates the nth Fibonacci number, how would you test it?</summary>
 
-### Given a function that calculates the nth Fibonacci number, how would you test it?
+### Дано: a function that calculates the nth Fibonacci number, how would you test it?
 
 **Definition:**
 

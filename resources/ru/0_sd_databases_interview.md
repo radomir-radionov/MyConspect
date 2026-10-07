@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Databases](https://devinterview.io/questions
 ### Database Fundamentals
 
 <details>
-<summary>What is a database management system (DBMS), and can you name some examples?</summary>
+<summary>Что такое dataBASE management system (DBMS), and can you name some examples?</summary>
 
-### What is a database management system (DBMS), and can you name some examples?
+### Что такое dataBASE management system (DBMS), and can you name some examples?
 
 **Definition:**
 
@@ -71,9 +71,9 @@ Questions from [Devinterview.io — Databases](https://devinterview.io/questions
 </details>
 
 <details>
-<summary>Explain the ACID properties in the context of databases.</summary>
+<summary>Объясните the ACID properties in the context of dataBASEs.</summary>
 
-### Explain the ACID properties in the context of databases.
+### Объясните the ACID properties in the context of dataBASEs.
 
 **Definition:**
 
@@ -123,9 +123,9 @@ Questions from [Devinterview.io — Databases](https://devinterview.io/questions
 </details>
 
 <details>
-<summary>What are the differences between SQL and NoSQL databases?</summary>
+<summary>Что такое the differences between SQL and NoSQL dataBASEs?</summary>
 
-### What are the differences between SQL and NoSQL databases?
+### Что такое the differences between SQL and NoSQL dataBASEs?
 
 **Definition:**
 
@@ -167,9 +167,9 @@ Questions from [Devinterview.io — Databases](https://devinterview.io/questions
 </details>
 
 <details>
-<summary>Describe a relational database schema.</summary>
+<summary>Опишите a relational dataBASE schema.</summary>
 
-### Describe a relational database schema.
+### Опишите a relational dataBASE schema.
 
 **Definition:**
 
@@ -264,9 +264,9 @@ CREATE TABLE Majors (
 </details>
 
 <details>
-<summary>What is a primary key, and why is it important?</summary>
+<summary>Что такое Primary key, and why is it important?</summary>
 
-### What is a primary key, and why is it important?
+### Что такое Primary key, and why is it important?
 
 **Definition:**
 
@@ -334,9 +334,9 @@ CREATE TABLE Majors (
 </details>
 
 <details>
-<summary>Can you explain what a foreign key is and its role in the database?</summary>
+<summary>Можете ли вы explain what a foreign key is and its role in the dataBASE?</summary>
 
-### Can you explain what a foreign key is and its role in the database?
+### Можете ли вы explain what a foreign key is and its role in the dataBASE?
 
 **Definition:**
 
@@ -418,9 +418,9 @@ WHERE
 </details>
 
 <details>
-<summary>What is database normalization, and why do we use it?</summary>
+<summary>Что такое dataBASE normalization, and why do we use it?</summary>
 
-### What is database normalization, and why do we use it?
+### Что такое dataBASE normalization, and why do we use it?
 
 **Definition:**
 
@@ -484,9 +484,9 @@ WHERE
 </details>
 
 <details>
-<summary>What is denormalization and when would you consider it?</summary>
+<summary>Что такое denormalization and when would you consider it?</summary>
 
-### What is denormalization and when would you consider it?
+### Что такое denormalization and when would you consider it?
 
 **Definition:**
 
@@ -554,9 +554,9 @@ SELECT Name, Status FROM Customer;
 </details>
 
 <details>
-<summary>Compare and contrast the DROP, DELETE, and TRUNCATE commands.</summary>
+<summary>Сравните and contrast the DROP, DELETE, and TRUNCATE commands.</summary>
 
-### Compare and contrast the DROP, DELETE, and TRUNCATE commands.
+### Сравните and contrast the DROP, DELETE, and TRUNCATE commands.
 
 **Definition:**
 
@@ -674,9 +674,9 @@ SELECT * FROM employees;
 </details>
 
 <details>
-<summary>What is the difference between a full join and an inner join?</summary>
+<summary>Что такое the difference between a full join and an inner join?</summary>
 
-### What is the difference between a full join and an inner join?
+### Что такое the difference between a full join and an inner join?
 
 **Definition:**
 
@@ -722,9 +722,9 @@ FULL OUTER JOIN table2 ON table1.column_name = table2.column_name;
 ### SQL and Query Optimization
 
 <details>
-<summary>How would you write an SQL query to fetch duplicate records from a table?</summary>
+<summary>Как бы вы write an SQL query to fetch duplicate records from a table?</summary>
 
-### How would you write an SQL query to fetch duplicate records from a table?
+### Как бы вы write an SQL query to fetch duplicate records from a table?
 
 **Definition:**
 
@@ -792,9 +792,9 @@ WHERE rnum > 1;
 </details>
 
 <details>
-<summary>What is a prepared statement, and why would you use one?</summary>
+<summary>Что такое prepared statement, and why would you use one?</summary>
 
-### What is a prepared statement, and why would you use one?
+### Что такое prepared statement, and why would you use one?
 
 **Definition:**
 
@@ -824,9 +824,9 @@ Prepared Statements снижают риск SQL-инъекции, разделя
 </details>
 
 <details>
-<summary>What is the N+1 query problem and how can you solve it?</summary>
+<summary>Что такое the N+1 query problem and how can you solve it?</summary>
 
-### What is the N+1 query problem and how can you solve it?
+### Что такое the N+1 query problem and how can you solve it?
 
 **Definition:**
 
@@ -919,9 +919,9 @@ FETCH NEXT 5 ROWS ONLY;
 </details>
 
 <details>
-<summary>Explain the function of GROUP BY and HAVING clauses in SQL.</summary>
+<summary>Объясните the function of GROUP BY and HAVING clauses in SQL.</summary>
 
-### Explain the function of GROUP BY and HAVING clauses in SQL.
+### Объясните the function of GROUP BY and HAVING clauses in SQL.
 
 **Definition:**
 
@@ -974,9 +974,9 @@ HAVING AVG(Salary) > 50000;
 </details>
 
 <details>
-<summary>What are indexes and how do they work in databases?</summary>
+<summary>Что такое indexes and how do they work in dataBASEs?</summary>
 
-### What are indexes and how do they work in databases?
+### Что такое indexes and how do they work in dataBASEs?
 
 **Definition:**
 
@@ -1030,9 +1030,9 @@ CREATE INDEX idx_hash ON table_name USING HASH (column_name);
 </details>
 
 <details>
-<summary>What impact do JOIN operations have on database performance?</summary>
+<summary>Какое влияние JOIN operations оказывают на database performance?</summary>
 
-### What impact do JOIN operations have on database performance?
+### Какое влияние JOIN operations оказывают на database performance?
 
 **Definition:**
 
@@ -1049,9 +1049,9 @@ PostgreSQL строит соединение двух входов за раз, 
 </details>
 
 <details>
-<summary>Define what a subquery is and provide a use case for it.</summary>
+<summary>Определите what a subquery is and provide a use case for it.</summary>
 
-### Define what a subquery is and provide a use case for it.
+### Определите what a subquery is and provide a use case for it.
 
 **Definition:**
 
@@ -1078,9 +1078,9 @@ WHERE somethingelse;
 </details>
 
 <details>
-<summary>What is a correlated subquery?</summary>
+<summary>Что такое correlated subquery?</summary>
 
-### What is a correlated subquery?
+### Что такое correlated subquery?
 
 **Definition:**
 
@@ -1096,9 +1096,9 @@ WHERE somethingelse;
 </details>
 
 <details>
-<summary>Describe how you would optimize a slow SQL query.</summary>
+<summary>Опишите how you would optimize a SLOw SQL query.</summary>
 
-### Describe how you would optimize a slow SQL query.
+### Опишите how you would optimize a SLOw SQL query.
 
 **Definition:**
 
@@ -1116,9 +1116,9 @@ WHERE somethingelse;
 </details>
 
 <details>
-<summary>Explain the EXPLAIN statement and how you use it in query optimization.</summary>
+<summary>Объясните the EXPLAIN statement and how you use it in query optimization.</summary>
 
-### Explain the EXPLAIN statement and how you use it in query optimization.
+### Объясните the EXPLAIN statement and how you use it in query optimization.
 
 **Definition:**
 
@@ -1136,9 +1136,9 @@ WHERE somethingelse;
 ### Data Modeling and Design
 
 <details>
-<summary>What is an Entity-Relationship (ER) model, and why is it useful?</summary>
+<summary>Что такое Entity-Relationship (ER) model, and why is it useful?</summary>
 
-### What is an Entity-Relationship (ER) model, and why is it useful?
+### Что такое Entity-Relationship (ER) model, and why is it useful?
 
 **Definition:**
 
@@ -1171,9 +1171,9 @@ CREATE TABLE weather (
 </details>
 
 <details>
-<summary>Describe the process of converting an ER model into a relational database schema.</summary>
+<summary>Опишите the process of converting an ER model into a relational dataBASE schema.</summary>
 
-### Describe the process of converting an ER model into a relational database schema.
+### Опишите the process of converting an ER model into a relational dataBASE schema.
 
 **Definition:**
 
@@ -1190,9 +1190,9 @@ CREATE TABLE weather (
 </details>
 
 <details>
-<summary>How do you design a scalable database schema for a high-traffic application?</summary>
+<summary>Как you design a Scalable dataBASE schema for a high-traffic application?</summary>
 
-### How do you design a scalable database schema for a high-traffic application?
+### Как you design a Scalable dataBASE schema for a high-traffic application?
 
 **Definition:**
 
@@ -1209,9 +1209,9 @@ CREATE TABLE weather (
 </details>
 
 <details>
-<summary>What is database sharding, and what are its benefits and drawbacks?</summary>
+<summary>Что такое dataBASE sharding, and what are its benefits and drawbacks?</summary>
 
-### What is database sharding, and what are its benefits and drawbacks?
+### Что такое dataBASE sharding, and what are its benefits and drawbacks?
 
 **Definition:**
 
@@ -1231,9 +1231,9 @@ CREATE TABLE weather (
 </details>
 
 <details>
-<summary>Explain the term “data integrity” and how it’s enforced in databases.</summary>
+<summary>Объясните the term “data integrity” and how it’s enforced in dataBASEs.</summary>
 
-### Explain the term “data integrity” and how it’s enforced in databases.
+### Объясните the term “data integrity” and how it’s enforced in dataBASEs.
 
 **Definition:**
 
@@ -1252,9 +1252,9 @@ CREATE TABLE weather (
 ### Transactions and Concurrency Control
 
 <details>
-<summary>Can you explain the concept of transaction isolation levels?</summary>
+<summary>Можете ли вы explain the concept of transaction isolation levels?</summary>
 
-### Can you explain the concept of transaction isolation levels?
+### Можете ли вы explain the concept of transaction isolation levels?
 
 **Definition:**
 
@@ -1270,9 +1270,9 @@ CREATE TABLE weather (
 </details>
 
 <details>
-<summary>What is a deadlock in databases, and how can it be resolved?</summary>
+<summary>Что такое deadlock in dataBASEs, and how can it be resolved?</summary>
 
-### What is a deadlock in databases, and how can it be resolved?
+### Что такое deadlock in dataBASEs, and how can it be resolved?
 
 **Definition:**
 
@@ -1289,9 +1289,9 @@ CREATE TABLE weather (
 </details>
 
 <details>
-<summary>Describe optimistic vs. pessimistic locking.</summary>
+<summary>Опишите optimistic vs. pessimistic locking.</summary>
 
-### Describe optimistic vs. pessimistic locking.
+### Опишите optimistic vs. pessimistic locking.
 
 **Definition:**
 
@@ -1313,9 +1313,9 @@ CREATE TABLE weather (
 </details>
 
 <details>
-<summary>How does a database ensure consistency during concurrent transactions?</summary>
+<summary>Как a dataBASE ensure consistency during concurrent transactions?</summary>
 
-### How does a database ensure consistency during concurrent transactions?
+### Как a dataBASE ensure consistency during concurrent transactions?
 
 **Definition:**
 
@@ -1332,9 +1332,9 @@ PostgreSQL сочетает уровни изоляции и замки. Изо�
 </details>
 
 <details>
-<summary>What is a savepoint in a database transaction?</summary>
+<summary>Что такое savepoint in a dataBASE transaction?</summary>
 
-### What is a savepoint in a database transaction?
+### Что такое savepoint in a dataBASE transaction?
 
 **Definition:**
 
@@ -1363,9 +1363,9 @@ ROLLBACK TO s;
 ### Database Security
 
 <details>
-<summary>What is SQL injection, and how do you prevent it?</summary>
+<summary>Что такое SQL injection, and how do you prevent it?</summary>
 
-### What is SQL injection, and how do you prevent it?
+### Что такое SQL injection, and how do you prevent it?
 
 **Definition:**
 
@@ -1389,9 +1389,9 @@ EXECUTE fooplan(1, 'Hunter Valley', 't', 200.00);
 </details>
 
 <details>
-<summary>Explain the role of access control in database security.</summary>
+<summary>Объясните the role of access control in dataBASE security.</summary>
 
-### Explain the role of access control in database security.
+### Объясните the role of access control in dataBASE security.
 
 **Definition:**
 
@@ -1407,9 +1407,9 @@ EXECUTE fooplan(1, 'Hunter Valley', 't', 200.00);
 </details>
 
 <details>
-<summary>What are the best practices for storing passwords in a database?</summary>
+<summary>Что такое the best practices for storing passwords in a dataBASE?</summary>
 
-### What are the best practices for storing passwords in a database?
+### Что такое the best practices for storing passwords in a dataBASE?
 
 **Definition:**
 
@@ -1432,9 +1432,9 @@ UPDATE users SET pswhash = crypt('new password', gen_salt('md5'));
 </details>
 
 <details>
-<summary>How do you secure data transmission to and from a database?</summary>
+<summary>Как you secure data transmission to and from a dataBASE?</summary>
 
-### How do you secure data transmission to and from a database?
+### Как you secure data transmission to and from a dataBASE?
 
 **Definition:**
 
@@ -1450,9 +1450,9 @@ SSL-соединение шифрует пароль, запросы и возв
 </details>
 
 <details>
-<summary>Describe the use of encryption within databases for data at rest.</summary>
+<summary>Опишите the use of encryption within dataBASEs for data at REST.</summary>
 
-### Describe the use of encryption within databases for data at rest.
+### Опишите the use of encryption within dataBASEs for data at REST.
 
 **Definition:**
 
@@ -1471,9 +1471,9 @@ pgcrypto шифрует выбранные столбцы. Ключ даёт к�
 ### Backup and Recovery
 
 <details>
-<summary>What is a database snapshot, and when would you use one?</summary>
+<summary>Что такое dataBASE snapshot, and when would you use one?</summary>
 
-### What is a database snapshot, and when would you use one?
+### Что такое dataBASE snapshot, and when would you use one?
 
 **Definition:**
 
@@ -1495,9 +1495,9 @@ pgcrypto шифрует выбранные столбцы. Ключ даёт к�
 </details>
 
 <details>
-<summary>Explain the difference between logical and physical backups.</summary>
+<summary>Объясните the difference between logical and physical backups.</summary>
 
-### Explain the difference between logical and physical backups.
+### Объясните the difference between logical and physical backups.
 
 **Definition:**
 
@@ -1515,9 +1515,9 @@ pgcrypto шифрует выбранные столбцы. Ключ даёт к�
 </details>
 
 <details>
-<summary>How would you restore a database from a backup file?</summary>
+<summary>Как бы вы RESTore a dataBASE from a backup file?</summary>
 
-### How would you restore a database from a backup file?
+### Как бы вы RESTore a dataBASE from a backup file?
 
 **Definition:**
 
@@ -1541,9 +1541,9 @@ pg_dump dbname > dumpfile
 </details>
 
 <details>
-<summary>What are the common strategies for database disaster recovery?</summary>
+<summary>Что такое the common strategies for dataBASE disaster recovery?</summary>
 
-### What are the common strategies for database disaster recovery?
+### Что такое the common strategies for dataBASE disaster recovery?
 
 **Definition:**
 
@@ -1561,9 +1561,9 @@ PostgreSQL документирует две стратегии. `pg_dump` да�
 </details>
 
 <details>
-<summary>How does point-in-time recovery work in databases?</summary>
+<summary>Как point-in-time recovery work in dataBASEs?</summary>
 
-### How does point-in-time recovery work in databases?
+### Как point-in-time recovery work in dataBASEs?
 
 **Definition:**
 
@@ -1583,9 +1583,9 @@ PostgreSQL документирует две стратегии. `pg_dump` да�
 ### Performance Tuning and Scaling
 
 <details>
-<summary>How would you handle a scenario where your database’s read load significantly increases?</summary>
+<summary>Как бы вы handle a scenario where your dataBASE’s read load significantly increases?</summary>
 
-### How would you handle a scenario where your database’s read load significantly increases?
+### Как бы вы handle a scenario where your dataBASE’s read load significantly increases?
 
 **Definition:**
 
@@ -1602,9 +1602,9 @@ PostgreSQL документирует две стратегии. `pg_dump` да�
 </details>
 
 <details>
-<summary>What strategies exist for scaling writes in a high-volume database system?</summary>
+<summary>Какие стратегии exist for scaling writes in a high-volume dataBASE system?</summary>
 
-### What strategies exist for scaling writes in a high-volume database system?
+### Какие стратегии exist for scaling writes in a high-volume dataBASE system?
 
 **Definition:**
 
@@ -1622,9 +1622,9 @@ PostgreSQL документирует две стратегии. `pg_dump` да�
 </details>
 
 <details>
-<summary>Describe how connection pooling benefits database performance.</summary>
+<summary>Опишите how connection pooling benefits dataBASE performance.</summary>
 
-### Describe how connection pooling benefits database performance.
+### Опишите how connection pooling benefits dataBASE performance.
 
 **Definition:**
 
@@ -1641,9 +1641,9 @@ PostgreSQL документирует две стратегии. `pg_dump` да�
 </details>
 
 <details>
-<summary>How do you monitor and identify database performance bottlenecks?</summary>
+<summary>Как you monitor and identify dataBASE performance boTTLenecks?</summary>
 
-### How do you monitor and identify database performance bottlenecks?
+### Как you monitor and identify dataBASE performance boTTLenecks?
 
 **Definition:**
 
@@ -1661,9 +1661,9 @@ PostgreSQL документирует две стратегии. `pg_dump` да�
 </details>
 
 <details>
-<summary>What is horizontal and vertical scaling in databases?</summary>
+<summary>Что такое horizontal and vertical scaling in dataBASEs?</summary>
 
-### What is horizontal and vertical scaling in databases?
+### Что такое horizontal and vertical scaling in dataBASEs?
 
 **Definition:**
 
@@ -1681,9 +1681,9 @@ PostgreSQL документирует две стратегии. `pg_dump` да�
 ### NoSQL Databases
 
 <details>
-<summary>Explain what a document store is and give an example of where it’s appropriate to use.</summary>
+<summary>Объясните what a document store is and give an example of where it’s appropriate to use.</summary>
 
-### Explain what a document store is and give an example of where it’s appropriate to use.
+### Объясните what a document store is and give an example of where it’s appropriate to use.
 
 **Definition:**
 
@@ -1706,9 +1706,9 @@ SELECT '{"product": "PostgreSQL", "version": 9.4, "jsonb": true}'::jsonb
 </details>
 
 <details>
-<summary>What is a graph database, and what are its typical use cases?</summary>
+<summary>Что такое graph database, and what are its typical use cases?</summary>
 
-### What is a graph database, and what are its typical use cases?
+### Что такое graph database, and what are its typical use cases?
 
 **Definition:**
 
@@ -1725,9 +1725,9 @@ SELECT '{"product": "PostgreSQL", "version": 9.4, "jsonb": true}'::jsonb
 </details>
 
 <details>
-<summary>Describe the key-value store model and its typical applications.</summary>
+<summary>Опишите the key-value store model and its typical applications.</summary>
 
-### Describe the key-value store model and its typical applications.
+### Опишите the key-value store model and its typical applications.
 
 **Definition:**
 
@@ -1744,9 +1744,9 @@ SELECT '{"product": "PostgreSQL", "version": 9.4, "jsonb": true}'::jsonb
 </details>
 
 <details>
-<summary>How do you choose between consistency and availability in a NoSQL database, referencing the CAP theorem?</summary>
+<summary>Как you choose between consistency and availability in a NoSQL dataBASE, referencing the CAP theorem?</summary>
 
-### How do you choose between consistency and availability in a NoSQL database, referencing the CAP theorem?
+### Как you choose between consistency and availability in a NoSQL dataBASE, referencing the CAP theorem?
 
 **Definition:**
 
@@ -1762,9 +1762,9 @@ SELECT '{"product": "PostgreSQL", "version": 9.4, "jsonb": true}'::jsonb
 </details>
 
 <details>
-<summary>What is eventual consistency, and in what scenarios is it used?</summary>
+<summary>Что такое eventual consistency, and in what scenarios is it used?</summary>
 
-### What is eventual consistency, and in what scenarios is it used?
+### Что такое eventual consistency, and in what scenarios is it used?
 
 **Definition:**
 

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { handbookNavSections } from "./handbook";
+import { searchNav } from "./search";
 import {
   clusterNavigateHref,
   groupNavigateHref,
@@ -325,6 +326,33 @@ describe("handbookNavSections layout", () => {
     assert.equal(
       sectionSwitchHref(sections, "/en/behavior", "conspect"),
       findGroup("frontend", "conspect")?.href,
+    );
+  });
+
+  it("keeps conspect and interview search corpora separate", () => {
+    const sections = handbookNavSections("en");
+    const conspectGroups = navGroupsForRootSection(sections, "conspect");
+    const interviewGroups = navGroupsForRootSection(sections, "interviews");
+
+    assert.ok(conspectGroups.length > 0);
+    assert.ok(interviewGroups.length > 0);
+    assert.notEqual(conspectGroups[0], interviewGroups[0]);
+
+    const conspectSolid = searchNav(conspectGroups, "solid", "titles");
+    assert.ok(conspectSolid.groups.length > 0);
+    assert.ok(conspectSolid.firstHref);
+    assert.equal(inferNavRootSection(conspectSolid.firstHref!), "conspect");
+
+    const conspectCompiler = searchNav(
+      conspectGroups,
+      "compiler fundamentals",
+      "titles",
+    );
+    assert.ok(conspectCompiler.groups.length > 0);
+    assert.equal(
+      searchNav(interviewGroups, "compiler fundamentals", "titles").groups
+        .length,
+      0,
     );
   });
 });

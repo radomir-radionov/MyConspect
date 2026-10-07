@@ -4,7 +4,7 @@ Reusable multi-step workflows that teach Agent how to handle a specific task. Mo
 
 ### Related docs
 
-- [AI workflow](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
+- [AI workflow](./0_ai.md) · [Core](./0_ai_cursor_core.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md)
 
 ### Main concepts
 
@@ -381,7 +381,7 @@ paths:
 | `/update-cli-config`      | Edit `~/.cursor/cli-config.json`                   |
 | `/update-cursor-settings` | Find/update Cursor or VS Code settings             |
 
-**When to use:** Prefer built-ins for scaffolding (rules, skills, hooks) and reviews — don’t reinvent prompts. Everyday slash list: [Slash commands](./0_ai_cursor_slash.md).
+**When to use:** Prefer built-ins for scaffolding (rules, skills, hooks) and reviews — don’t reinvent prompts. Everyday slash list: [Slash commands](./0_ai_cursor_slash.md). Deeper notes: [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md).
 
 **Sources:** [Built-in Cursor skills](https://cursor.com/docs/skills.md#built-in-cursor-skills)
 

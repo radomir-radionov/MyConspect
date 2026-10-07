@@ -21,9 +21,9 @@
 ### Redux Fundamentals
 
 <details>
-<summary>What is Redux and how is it used in web development?</summary>
+<summary>Что такое Redux and how is it used in web development?</summary>
 
-### What is Redux and how is it used in web development?
+### Что такое Redux and how is it used in web development?
 
 **Definition:**
 
@@ -92,9 +92,9 @@ Redux следует простому циклу, однонаправленно
 </details>
 
 <details>
-<summary>Can you describe the three principles that Redux is based upon?</summary>
+<summary>Можете ли вы describe the three principles that Redux is BASEd upon?</summary>
 
-### Can you describe the three principles that Redux is based upon?
+### Можете ли вы describe the three principles that Redux is BASEd upon?
 
 **Definition:**
 
@@ -137,9 +137,9 @@ Redux следует простому циклу, однонаправленно
 </details>
 
 <details>
-<summary>What is an action in Redux?</summary>
+<summary>Что такое action in Redux?</summary>
 
-### What is an action in Redux?
+### Что такое action in Redux?
 
 **Definition:**
 
@@ -204,9 +204,9 @@ const addTodoAction: AddTodoAction = {
 </details>
 
 <details>
-<summary>How are actions used to change the state in a Redux application?</summary>
+<summary>Как actions used to change the state in a Redux application?</summary>
 
-### How are actions used to change the state in a Redux application?
+### Как actions used to change the state in a Redux application?
 
 **Definition:**
 
@@ -261,9 +261,9 @@ store.dispatch(increment());
 </details>
 
 <details>
-<summary>What is a reducer in Redux and what role does it play?</summary>
+<summary>Что такое reducer in Redux and what role does it play?</summary>
 
-### What is a reducer in Redux and what role does it play?
+### Что такое reducer in Redux and what role does it play?
 
 **Definition:**
 
@@ -315,9 +315,9 @@ const counterReducer = (state = { count: 0 }, action) => {
 </details>
 
 <details>
-<summary>How does Redux differ from local component state in React?</summary>
+<summary>Как Redux differ from local component state in React?</summary>
 
-### How does Redux differ from local component state in React?
+### Как Redux differ from local component state in React?
 
 **Definition:**
 
@@ -373,9 +373,9 @@ const counterReducer = (state = { count: 0 }, action) => {
 </details>
 
 <details>
-<summary>Define "store" in the context of Redux.</summary>
+<summary>Определите "store" in the context of Redux.</summary>
 
-### Define "store" in the context of Redux.
+### Определите "store" in the context of Redux.
 
 **Definition:**
 
@@ -422,9 +422,9 @@ replaceReducer(nextReducer): переданный reducer используют, 
 </details>
 
 <details>
-<summary>Can you describe the concept of "single source of truth" in Redux?</summary>
+<summary>Можете ли вы describe the concept of "single source of truth" in Redux?</summary>
 
-### Can you describe the concept of "single source of truth" in Redux?
+### Можете ли вы describe the concept of "single source of truth" in Redux?
 
 **Definition:**
 
@@ -452,9 +452,9 @@ Redux, предсказуемый контейнер состояния, при�
 </details>
 
 <details>
-<summary>How do you create a Redux store?</summary>
+<summary>Как you create a Redux store?</summary>
 
-### How do you create a Redux store?
+### Как you create a Redux store?
 
 **Definition:**
 
@@ -610,9 +610,9 @@ export default store;
 </details>
 
 <details>
-<summary>What is meant by "immutable state," and why is it important in Redux?</summary>
+<summary>Что такое meant by "immutable state," and why is it important in Redux?</summary>
 
-### What is meant by "immutable state," and why is it important in Redux?
+### Что такое meant by "immutable state," and why is it important in Redux?
 
 **Definition:**
 
@@ -654,9 +654,9 @@ export default store;
 </details>
 
 <details>
-<summary>Explain the significance of the combineReducers function.</summary>
+<summary>Объясните the significance of the combineReducers function.</summary>
 
-### Explain the significance of the combineReducers function.
+### Объясните the significance of the combineReducers function.
 
 **Definition:**
 
@@ -705,9 +705,9 @@ export default rootReducer;
 </details>
 
 <details>
-<summary>What are pure functions and side effects in the context of Redux?</summary>
+<summary>Что такое pure functions and side effects in the context of Redux?</summary>
 
-### What are pure functions and side effects in the context of Redux?
+### Что такое pure functions and side effects in the context of Redux?
 
 **Definition:**
 
@@ -821,9 +821,9 @@ export default function* formSaga() {
 ### Redux Core Concepts
 
 <details>
-<summary>How do you handle asynchronous actions in Redux?</summary>
+<summary>Как you handle asynchronous actions in Redux?</summary>
 
-### How do you handle asynchronous actions in Redux?
+### Как you handle asynchronous actions in Redux?
 
 **Definition:**
 
@@ -892,9 +892,9 @@ const reducer = (state = initialState, action) => {
 </details>
 
 <details>
-<summary>What is a "selector" in Redux and what is its purpose?</summary>
+<summary>Что такое "selector" in Redux and what is its puRPOse?</summary>
 
-### What is a "selector" in Redux and what is its purpose?
+### Что такое "selector" in Redux and what is its puRPOse?
 
 **Definition:**
 
@@ -985,9 +985,9 @@ console.log(memoizedElectronicsSelector(appState));
 </details>
 
 <details>
-<summary>How does Redux handle the flow of data and actions?</summary>
+<summary>Как Redux handle the flow of data and actions?</summary>
 
-### How does Redux handle the flow of data and actions?
+### Как Redux handle the flow of data and actions?
 
 **Definition:**
 
@@ -1023,9 +1023,9 @@ console.log(memoizedElectronicsSelector(appState));
 </details>
 
 <details>
-<summary>Can you explain the difference between a Container and Presentational component in Redux?</summary>
+<summary>Можете ли вы explain the difference between a container and Presentational component in Redux?</summary>
 
-### Can you explain the difference between a Container and Presentational component in Redux?
+### Можете ли вы explain the difference between a container and Presentational component in Redux?
 
 **Definition:**
 
@@ -1060,9 +1060,9 @@ function TodoRow({ id }) {
 </details>
 
 <details>
-<summary>What is middleware in Redux and when would you use it?</summary>
+<summary>Что такое middleware in Redux and when would you use it?</summary>
 
-### What is middleware in Redux and when would you use it?
+### Что такое middleware in Redux and when would you use it?
 
 **Definition:**
 
@@ -1096,9 +1096,9 @@ const store = configureStore({
 </details>
 
 <details>
-<summary>How do you access the Redux store in a React component?</summary>
+<summary>Как you access the Redux store in a React component?</summary>
 
-### How do you access the Redux store in a React component?
+### Как you access the Redux store in a React component?
 
 **Definition:**
 
@@ -1125,9 +1125,9 @@ const dispatch = useDispatch();
 </details>
 
 <details>
-<summary>What is the purpose of the dispatch function in Redux?</summary>
+<summary>Что такое the puRPOse of the dispatch function in Redux?</summary>
 
-### What is the purpose of the dispatch function in Redux?
+### Что такое the puRPOse of the dispatch function in Redux?
 
 **Definition:**
 
@@ -1153,9 +1153,9 @@ dispatch(fetchUserById(123));
 </details>
 
 <details>
-<summary>What arguments does createStore receive in Redux?</summary>
+<summary>Какие arguments получает createStore в Redux?</summary>
 
-### What arguments does createStore receive in Redux?
+### Какие arguments получает createStore в Redux?
 
 **Definition:**
 
@@ -1183,9 +1183,9 @@ const store = configureStore({
 </details>
 
 <details>
-<summary>Describe the subscribe function in Redux.</summary>
+<summary>Опишите the subscribe function in Redux.</summary>
 
-### Describe the subscribe function in Redux.
+### Опишите the subscribe function in Redux.
 
 **Definition:**
 
@@ -1207,9 +1207,9 @@ const store = configureStore({
 ### Working with Redux Actions
 
 <details>
-<summary>How do you structure action creators in Redux?</summary>
+<summary>Как you structure action creators in Redux?</summary>
 
-### How do you structure action creators in Redux?
+### Как you structure action creators in Redux?
 
 **Definition:**
 
@@ -1244,9 +1244,9 @@ export const { todoToggled } = todosSlice.actions;
 </details>
 
 <details>
-<summary>What is an action type and how is it used in Redux?</summary>
+<summary>Что такое action type and how is it used in Redux?</summary>
 
-### What is an action type and how is it used in Redux?
+### Что такое action type and how is it used in Redux?
 
 **Definition:**
 
@@ -1265,9 +1265,9 @@ export const { todoToggled } = todosSlice.actions;
 </details>
 
 <details>
-<summary>Can you give an example of a synchronous action creator?</summary>
+<summary>Можете ли вы give an example of a synchronous action creator?</summary>
 
-### Can you give an example of a synchronous action creator?
+### Можете ли вы give an example of a synchronous action creator?
 
 **Definition:**
 
@@ -1291,9 +1291,9 @@ dispatch(todoToggled(id));
 </details>
 
 <details>
-<summary>How do you handle complex state logic in actions?</summary>
+<summary>Как you handle complex state logic in actions?</summary>
 
-### How do you handle complex state logic in actions?
+### Как you handle complex state logic in actions?
 
 **Definition:**
 
@@ -1320,9 +1320,9 @@ todoToggled(state, action) {
 </details>
 
 <details>
-<summary>Explain the concept of action creators returning a function for asynchronous operations.</summary>
+<summary>Объясните the concept of action creators returning a function for asynchronous operations.</summary>
 
-### Explain the concept of action creators returning a function for asynchronous operations.
+### Объясните the concept of action creators returning a function for asynchronous operations.
 
 **Definition:**
 
@@ -1355,9 +1355,9 @@ dispatch(fetchUserById(123));
 ### Reducers and State Management
 
 <details>
-<summary>How do reducers handle state changes in response to different action types?</summary>
+<summary>Как reducers handle state changes in response to different action types?</summary>
 
-### How do reducers handle state changes in response to different action types?
+### Как reducers handle state changes in response to different action types?
 
 **Definition:**
 
@@ -1386,9 +1386,9 @@ extraReducers: (builder) => {
 </details>
 
 <details>
-<summary>What is meant by a "slice reducer"?</summary>
+<summary>Что такое meant by a "SLIce reducer"?</summary>
 
-### What is meant by a "slice reducer"?
+### Что такое meant by a "SLIce reducer"?
 
 **Definition:**
 
@@ -1407,9 +1407,9 @@ extraReducers: (builder) => {
 </details>
 
 <details>
-<summary>Describe how to properly update the state based on an action.</summary>
+<summary>Опишите how to properly update the state BASEd on an action.</summary>
 
-### Describe how to properly update the state based on an action.
+### Опишите how to properly update the state BASEd on an action.
 
 **Definition:**
 
@@ -1427,9 +1427,9 @@ extraReducers: (builder) => {
 </details>
 
 <details>
-<summary>How would you reset the state of a Redux store?</summary>
+<summary>Как бы вы reset the state of a Redux store?</summary>
 
-### How would you reset the state of a Redux store?
+### Как бы вы reset the state of a Redux store?
 
 **Definition:**
 
@@ -1457,9 +1457,9 @@ function rootReducer(state, action) {
 </details>
 
 <details>
-<summary>Can you discuss reducer composition and its benefits?</summary>
+<summary>Можете ли вы discuss reducer composition and its benefits?</summary>
 
-### Can you discuss reducer composition and its benefits?
+### Можете ли вы discuss reducer composition and its benefits?
 
 **Definition:**
 
@@ -1489,9 +1489,9 @@ const store = configureStore({
 </details>
 
 <details>
-<summary>What is the significance of immutability in reducer functions?</summary>
+<summary>Что такое the significance of immutability in reducer functions?</summary>
 
-### What is the significance of immutability in reducer functions?
+### Что такое the significance of immutability in reducer functions?
 
 **Definition:**
 
@@ -1509,9 +1509,9 @@ const store = configureStore({
 </details>
 
 <details>
-<summary>How do you handle initial state in Redux reducers?</summary>
+<summary>Как you handle initial state in Redux reducers?</summary>
 
-### How do you handle initial state in Redux reducers?
+### Как you handle initial state in Redux reducers?
 
 **Definition:**
 
@@ -1541,9 +1541,9 @@ const usersSlice = createSlice({
 </details>
 
 <details>
-<summary>What are common pitfalls when writing reducers?</summary>
+<summary>Что такое common pitfalls when writing reducers?</summary>
 
-### What are common pitfalls when writing reducers?
+### Что такое common pitfalls when writing reducers?
 
 **Definition:**
 
@@ -1564,9 +1564,9 @@ const usersSlice = createSlice({
 ### Redux Middleware and Side Effects
 
 <details>
-<summary>What is redux-thunk and how does it work?</summary>
+<summary>Что такое Redux-thunk and how does it work?</summary>
 
-### What is redux-thunk and how does it work?
+### Что такое Redux-thunk and how does it work?
 
 **Definition:**
 
@@ -1591,9 +1591,9 @@ dispatch(fetchUserById(123));
 </details>
 
 <details>
-<summary>Can you explain the purpose of redux-saga and how it compares to redux-thunk?</summary>
+<summary>Можете ли вы explain the puRPOse of Redux-Saga and how it compares to Redux-thunk?</summary>
 
-### Can you explain the purpose of redux-saga and how it compares to redux-thunk?
+### Можете ли вы explain the puRPOse of Redux-Saga and how it compares to Redux-thunk?
 
 **Definition:**
 
@@ -1628,9 +1628,9 @@ sagaMiddleware.run(mySaga);
 </details>
 
 <details>
-<summary>What is a "side effect" and how do middlewares handle them in Redux?</summary>
+<summary>Что такое "side effect" and how do middlewares handle them in Redux?</summary>
 
-### What is a "side effect" and how do middlewares handle them in Redux?
+### Что такое "side effect" and how do middlewares handle them in Redux?
 
 **Definition:**
 
@@ -1650,9 +1650,9 @@ sagaMiddleware.run(mySaga);
 </details>
 
 <details>
-<summary>How do you write a custom middleware for Redux?</summary>
+<summary>Как you write a custom middleware for Redux?</summary>
 
-### How do you write a custom middleware for Redux?
+### Как you write a custom middleware for Redux?
 
 **Definition:**
 
@@ -1683,9 +1683,9 @@ function logger({ getState }) {
 </details>
 
 <details>
-<summary>Discuss how middlewares can enhance the capabilities of a Redux store.</summary>
+<summary>Обсудите how middlewares can enhance the CAPabilities of a Redux store.</summary>
 
-### Discuss how middlewares can enhance the capabilities of a Redux store.
+### Обсудите how middlewares can enhance the CAPabilities of a Redux store.
 
 **Definition:**
 
@@ -1708,9 +1708,9 @@ function logger({ getState }) {
 ### Redux and UI Integration
 
 <details>
-<summary>How do you connect a React component to a Redux store?</summary>
+<summary>Как you connect a React component to a Redux store?</summary>
 
-### How do you connect a React component to a Redux store?
+### Как you connect a React component to a Redux store?
 
 **Definition:**
 
@@ -1740,9 +1740,9 @@ export function Counter() {
 </details>
 
 <details>
-<summary>What are the advantages of using React-Redux's connect function?</summary>
+<summary>Что такое the advantages of using React-Redux's connect function?</summary>
 
-### What are the advantages of using React-Redux's connect function?
+### Что такое the advantages of using React-Redux's connect function?
 
 **Definition:**
 
@@ -1766,9 +1766,9 @@ connect подписывает обёртку и передаёт данные �
 </details>
 
 <details>
-<summary>Can you describe the mapStateToProps and mapDispatchToProps functions?</summary>
+<summary>Можете ли вы describe the MapStateToProps and MapDispatchToProps functions?</summary>
 
-### Can you describe the mapStateToProps and mapDispatchToProps functions?
+### Можете ли вы describe the MapStateToProps and MapDispatchToProps functions?
 
 **Definition:**
 
@@ -1796,9 +1796,9 @@ connect(
 </details>
 
 <details>
-<summary>Explain the Provider component from React-Redux.</summary>
+<summary>Объясните the Provider component from React-Redux.</summary>
 
-### Explain the Provider component from React-Redux.
+### Объясните the Provider component from React-Redux.
 
 **Definition:**
 
@@ -1828,9 +1828,9 @@ root.render(
 </details>
 
 <details>
-<summary>How do you use hooks like useDispatch and useSelector in React functional components?</summary>
+<summary>Как you use hooks like useDispatch and useSelector in React functional components?</summary>
 
-### How do you use hooks like useDispatch and useSelector in React functional components?
+### Как you use hooks like useDispatch and useSelector in React functional components?
 
 **Definition:**
 
@@ -1857,9 +1857,9 @@ dispatch(increment());
 </details>
 
 <details>
-<summary>What performance considerations should be taken into account when connecting components to Redux?</summary>
+<summary>Какие performance considerations учитывать при connecting components к Redux?</summary>
 
-### What performance considerations should be taken into account when connecting components to Redux?
+### Какие performance considerations учитывать при connecting components к Redux?
 
 **Definition:**
 
@@ -1879,9 +1879,9 @@ dispatch(increment());
 </details>
 
 <details>
-<summary>How can you optimize the performance of Redux-connected components?</summary>
+<summary>Как you optimize the performance of Redux-connected components?</summary>
 
-### How can you optimize the performance of Redux-connected components?
+### Как you optimize the performance of Redux-connected components?
 
 **Definition:**
 
@@ -1909,9 +1909,9 @@ const selected = useSelector(selectorReturningObject, shallowEqual);
 ### Advanced Redux Patterns
 
 <details>
-<summary>What are Higher Order Reducers (HORs) and how are they used?</summary>
+<summary>Что такое Higher Order Reducers (HORs) and how are they used?</summary>
 
-### What are Higher Order Reducers (HORs) and how are they used?
+### Что такое Higher Order Reducers (HORs) and how are they used?
 
 **Definition:**
 
@@ -1941,9 +1941,9 @@ function makeCounterSlice(name) {
 </details>
 
 <details>
-<summary>Can you implement a feature toggle mechanism using Redux?</summary>
+<summary>Можете ли вы implement a feature toggle mechanism using Redux?</summary>
 
-### Can you implement a feature toggle mechanism using Redux?
+### Можете ли вы implement a feature toggle mechanism using Redux?
 
 **Definition:**
 
@@ -1971,9 +1971,9 @@ flagToggled(state, action) {
 </details>
 
 <details>
-<summary>How do you normalize a state shape in Redux?</summary>
+<summary>Как you normalize a state SHApe in Redux?</summary>
 
-### How do you normalize a state shape in Redux?
+### Как you normalize a state SHApe in Redux?
 
 **Definition:**
 
@@ -2001,9 +2001,9 @@ bookAdded: booksAdapter.addOne,
 </details>
 
 <details>
-<summary>What is a Redux "slice" and how is it used?</summary>
+<summary>Что такое Redux "SLIce" and how is it used?</summary>
 
-### What is a Redux "slice" and how is it used?
+### Что такое Redux "SLIce" and how is it used?
 
 **Definition:**
 
@@ -2022,9 +2022,9 @@ bookAdded: booksAdapter.addOne,
 </details>
 
 <details>
-<summary>Explain the "Ducks" pattern in Redux.</summary>
+<summary>Объясните the "Ducks" pattern in Redux.</summary>
 
-### Explain the "Ducks" pattern in Redux.
+### Объясните the "Ducks" pattern in Redux.
 
 **Definition:**
 
@@ -2045,9 +2045,9 @@ Ducks значит, что один модуль владеет типами д�
 ### Redux State Normalization
 
 <details>
-<summary>Why is state normalization recommended in Redux?</summary>
+<summary>Почему is state normalization recommended in Redux?</summary>
 
-### Why is state normalization recommended in Redux?
+### Почему is state normalization recommended in Redux?
 
 **Definition:**
 
@@ -2065,9 +2065,9 @@ Ducks значит, что один модуль владеет типами д�
 </details>
 
 <details>
-<summary>How do you structure a normalized state?</summary>
+<summary>Как you structure a normalized state?</summary>
 
-### How do you structure a normalized state?
+### Как you structure a normalized state?
 
 **Definition:**
 
@@ -2086,9 +2086,9 @@ Ducks значит, что один модуль владеет типами д�
 </details>
 
 <details>
-<summary>What are the benefits of state denormalization?</summary>
+<summary>Что такое the benefits of state denormalization?</summary>
 
-### What are the benefits of state denormalization?
+### Что такое the benefits of state denormalization?
 
 **Definition:**
 
@@ -2107,9 +2107,9 @@ Ducks значит, что один модуль владеет типами д�
 </details>
 
 <details>
-<summary>Can you explain how to manage entity relations in a normalized Redux state?</summary>
+<summary>Можете ли вы explain how to manage entity relations in a normalized Redux state?</summary>
 
-### Can you explain how to manage entity relations in a normalized Redux state?
+### Можете ли вы explain how to manage entity relations in a normalized Redux state?
 
 **Definition:**
 
@@ -2130,9 +2130,9 @@ Ducks значит, что один модуль владеет типами д�
 ### Redux Ecosystem and Utilities
 
 <details>
-<summary>What is Immutable.js and how can it be used with Redux?</summary>
+<summary>Что такое immutable.js and how can it be used with Redux?</summary>
 
-### What is Immutable.js and how can it be used with Redux?
+### Что такое immutable.js and how can it be used with Redux?
 
 **Definition:**
 
@@ -2150,9 +2150,9 @@ Immutable.js — библиотека устойчивых коллекций. �
 </details>
 
 <details>
-<summary>Discuss the Redux DevTools extension and its features.</summary>
+<summary>Обсудите the Redux DevTools extension and its features.</summary>
 
-### Discuss the Redux DevTools extension and its features.
+### Обсудите the Redux DevTools extension and its features.
 
 **Definition:**
 
@@ -2171,9 +2171,9 @@ DevTools записывает действия и состояние, чтобы
 </details>
 
 <details>
-<summary>How do reselect and memoized selectors work in Redux?</summary>
+<summary>Как reselect and memoized selectors work in Redux?</summary>
 
-### How do reselect and memoized selectors work in Redux?
+### Как reselect and memoized selectors work in Redux?
 
 **Definition:**
 
@@ -2192,9 +2192,9 @@ DevTools записывает действия и состояние, чтобы
 </details>
 
 <details>
-<summary>What are common utilities and libraries used in conjunction with Redux?</summary>
+<summary>Что такое common utilities and libraries used in conjunction with Redux?</summary>
 
-### What are common utilities and libraries used in conjunction with Redux?
+### Что такое common utilities and libraries used in conjunction with Redux?
 
 **Definition:**
 
@@ -2214,9 +2214,9 @@ Redux Toolkit — набор, который руководство по сти�
 </details>
 
 <details>
-<summary>Describe the significance of the Redux Toolkit and how it helps Redux development.</summary>
+<summary>Опишите the significance of the Redux Toolkit and how it helps Redux development.</summary>
 
-### Describe the significance of the Redux Toolkit and how it helps Redux development.
+### Опишите the significance of the Redux Toolkit and how it helps Redux development.
 
 **Definition:**
 
@@ -2246,9 +2246,9 @@ const store = configureStore({
 ### Testing Redux Applications
 
 <details>
-<summary>How do you test Redux reducers?</summary>
+<summary>Как you test Redux reducers?</summary>
 
-### How do you test Redux reducers?
+### Как you test Redux reducers?
 
 **Definition:**
 
@@ -2273,9 +2273,9 @@ expect(next.entities["1"].completed).toBe(true);
 </details>
 
 <details>
-<summary>What is the recommended approach to test Redux actions?</summary>
+<summary>Что такое the recommended approach to test Redux actions?</summary>
 
-### What is the recommended approach to test Redux actions?
+### Что такое the recommended approach to test Redux actions?
 
 **Definition:**
 
@@ -2294,9 +2294,9 @@ expect(next.entities["1"].completed).toBe(true);
 </details>
 
 <details>
-<summary>How can you test a Redux-connected React component?</summary>
+<summary>Как you test a Redux-connected React component?</summary>
 
-### How can you test a Redux-connected React component?
+### Как you test a Redux-connected React component?
 
 **Definition:**
 
@@ -2326,9 +2326,9 @@ render(
 </details>
 
 <details>
-<summary>Describe the process of testing asynchronous action creators.</summary>
+<summary>Опишите the process of testing asynchronous action creators.</summary>
 
-### Describe the process of testing asynchronous action creators.
+### Опишите the process of testing asynchronous action creators.
 
 **Definition:**
 
@@ -2347,9 +2347,9 @@ render(
 </details>
 
 <details>
-<summary>What tools can you use to facilitate testing in Redux applications?</summary>
+<summary>Какие инструменты can you use to facilitate testing in Redux applications?</summary>
 
-### What tools can you use to facilitate testing in Redux applications?
+### Какие инструменты can you use to facilitate testing in Redux applications?
 
 **Definition:**
 
@@ -2371,9 +2371,9 @@ render(
 ### Redux with Other Frameworks and Libraries
 
 <details>
-<summary>How do you integrate Redux with a framework other than React, like Angular or Vue?</summary>
+<summary>Как you integrate Redux with a framework other than React, like Angular or Vue?</summary>
 
-### How do you integrate Redux with a framework other than React, like Angular or Vue?
+### Как you integrate Redux with a framework other than React, like Angular or Vue?
 
 **Definition:**
 
@@ -2393,9 +2393,9 @@ render(
 </details>
 
 <details>
-<summary>Can Redux be used with server-side rendering frameworks like Next.js?</summary>
+<summary>Можно ли Redux be used with server-side rendering frameworks like Next.js?</summary>
 
-### Can Redux be used with server-side rendering frameworks like Next.js?
+### Можно ли Redux be used with server-side rendering frameworks like Next.js?
 
 **Definition:**
 
@@ -2420,9 +2420,9 @@ const store = configureStore({ reducer, preloadedState });
 </details>
 
 <details>
-<summary>Discuss the use of Redux with React Native.</summary>
+<summary>Обсудите the use of Redux with React Native.</summary>
 
-### Discuss the use of Redux with React Native.
+### Обсудите the use of Redux with React Native.
 
 **Definition:**
 
@@ -2442,9 +2442,9 @@ React Native рисует через React, поэтому те же `Provider`,
 </details>
 
 <details>
-<summary>What adaptations are needed to use Redux outside of a UI environment (e.g., in a Node.js backend)?</summary>
+<summary>Какие adaptations нужны для использования Redux вне UI environment (например, в Node.js backend)?</summary>
 
-### What adaptations are needed to use Redux outside of a UI environment (e.g., in a Node.js backend)?
+### Какие adaptations нужны для использования Redux вне UI environment (например, в Node.js backend)?
 
 **Definition:**
 
@@ -2466,9 +2466,9 @@ React Native рисует через React, поэтому те же `Provider`,
 ### Scaling Redux for Large Applications
 
 <details>
-<summary>How do you organize your files and folders in a large Redux application?</summary>
+<summary>Как you orGAnize your files and folders in a large Redux application?</summary>
 
-### How do you organize your files and folders in a large Redux application?
+### Как you orGAnize your files and folders in a large Redux application?
 
 **Definition:**
 
@@ -2486,9 +2486,9 @@ React Native рисует через React, поэтому те же `Provider`,
 </details>
 
 <details>
-<summary>What strategies can be used to scale Redux actions and reducers?</summary>
+<summary>Какие стратегии can be used to scale Redux actions and reducers?</summary>
 
-### What strategies can be used to scale Redux actions and reducers?
+### Какие стратегии can be used to scale Redux actions and reducers?
 
 **Definition:**
 
@@ -2507,9 +2507,9 @@ React Native рисует через React, поэтому те же `Provider`,
 </details>
 
 <details>
-<summary>Can you explain the concept of "domain-driven design" in the context of a Redux state tree?</summary>
+<summary>Можете ли вы explain the concept of "domain-driven design" in the context of a Redux state tree?</summary>
 
-### Can you explain the concept of "domain-driven design" in the context of a Redux state tree?
+### Можете ли вы explain the concept of "domain-driven design" in the context of a Redux state tree?
 
 **Definition:**
 
@@ -2528,9 +2528,9 @@ React Native рисует через React, поэтому те же `Provider`,
 </details>
 
 <details>
-<summary>How do feature modules and code splitting affect Redux state management?</summary>
+<summary>Как feature modules and code splitting affect Redux state management?</summary>
 
-### How do feature modules and code splitting affect Redux state management?
+### Как feature modules and code splitting affect Redux state management?
 
 **Definition:**
 
@@ -2549,9 +2549,9 @@ React Native рисует через React, поэтому те же `Provider`,
 </details>
 
 <details>
-<summary>Discuss strategies for managing complex application state with Redux.</summary>
+<summary>Обсудите strategies for managing complex application state with Redux.</summary>
 
-### Discuss strategies for managing complex application state with Redux.
+### Обсудите strategies for managing complex application state with Redux.
 
 **Definition:**
 
@@ -2574,9 +2574,9 @@ React Native рисует через React, поэтому те же `Provider`,
 ### Redux Performance Optimization
 
 <details>
-<summary>How do you prevent unnecessary renders in Redux-connected components?</summary>
+<summary>Как you prevent unnecessary renders in Redux-connected components?</summary>
 
-### How do you prevent unnecessary renders in Redux-connected components?
+### Как you prevent unnecessary renders in Redux-connected components?
 
 **Definition:**
 
@@ -2602,9 +2602,9 @@ const todo = useSelector((state) => state.todos.entities[id]);
 </details>
 
 <details>
-<summary>What techniques are available to reduce the size of the Redux store?</summary>
+<summary>Какие техники are available to reduce the size of the Redux store?</summary>
 
-### What techniques are available to reduce the size of the Redux store?
+### Какие техники are available to reduce the size of the Redux store?
 
 **Definition:**
 
@@ -2624,9 +2624,9 @@ const todo = useSelector((state) => state.todos.entities[id]);
 </details>
 
 <details>
-<summary>How do you optimize Redux action dispatch and payload size?</summary>
+<summary>Как you optimize Redux action dispatch and payload size?</summary>
 
-### How do you optimize Redux action dispatch and payload size?
+### Как you optimize Redux action dispatch and payload size?
 
 **Definition:**
 
@@ -2644,9 +2644,9 @@ const todo = useSelector((state) => state.todos.entities[id]);
 </details>
 
 <details>
-<summary>What are best practices for ensuring a scalable Redux state management with large datasets or frequent updates?</summary>
+<summary>Что такое best practices for ensuring a Scalable Redux state management with large datasets or frequent updates?</summary>
 
-### What are best practices for ensuring a scalable Redux state management with large datasets or frequent updates?
+### Что такое best practices for ensuring a Scalable Redux state management with large datasets or frequent updates?
 
 **Definition:**
 
@@ -2669,9 +2669,9 @@ const todo = useSelector((state) => state.todos.entities[id]);
 ### Redux and Forms
 
 <details>
-<summary>How do you manage form state with Redux?</summary>
+<summary>Как you manage form state with Redux?</summary>
 
-### How do you manage form state with Redux?
+### Как you manage form state with Redux?
 
 **Definition:**
 
@@ -2694,9 +2694,9 @@ const todo = useSelector((state) => state.todos.entities[id]);
 </details>
 
 <details>
-<summary>Discuss the use of libraries like Redux Form or React Final Form with Redux.</summary>
+<summary>Обсудите the use of libraries like Redux Form or React Final Form with Redux.</summary>
 
-### Discuss the use of libraries like Redux Form or React Final Form with Redux.
+### Обсудите the use of libraries like Redux Form or React Final Form with Redux.
 
 **Definition:**
 
@@ -2715,9 +2715,9 @@ const todo = useSelector((state) => state.todos.entities[id]);
 </details>
 
 <details>
-<summary>What are the trade-offs of keeping form state in the Redux store?</summary>
+<summary>Что такое the trade-offs of keeping form state in the Redux store?</summary>
 
-### What are the trade-offs of keeping form state in the Redux store?
+### Что такое the trade-offs of keeping form state in the Redux store?
 
 **Definition:**
 
@@ -2738,9 +2738,9 @@ const todo = useSelector((state) => state.todos.entities[id]);
 ### Redux and Authentication
 
 <details>
-<summary>How do you manage user authentication and session state in Redux?</summary>
+<summary>Как you manage user authentication and session state in Redux?</summary>
 
-### How do you manage user authentication and session state in Redux?
+### Как you manage user authentication and session state in Redux?
 
 **Definition:**
 
@@ -2759,9 +2759,9 @@ const todo = useSelector((state) => state.todos.entities[id]);
 </details>
 
 <details>
-<summary>What considerations should be made for security when storing tokens or sensitive information in Redux?</summary>
+<summary>Какие соображения should be made for security when storing tokens or sensitive information in Redux?</summary>
 
-### What considerations should be made for security when storing tokens or sensitive information in Redux?
+### Какие соображения should be made for security when storing tokens or sensitive information in Redux?
 
 **Definition:**
 
@@ -2780,9 +2780,9 @@ const todo = useSelector((state) => state.todos.entities[id]);
 </details>
 
 <details>
-<summary>How do you manage login and logout workflows with Redux actions and reducers?</summary>
+<summary>Как you manage login and loGout workflows with Redux actions and reducers?</summary>
 
-### How do you manage login and logout workflows with Redux actions and reducers?
+### Как you manage login and loGout workflows with Redux actions and reducers?
 
 **Definition:**
 
@@ -2812,9 +2812,9 @@ builder.addCase(login.fulfilled, (state, action) => {
 ### Migrating to Redux and State Hydration
 
 <details>
-<summary>How do you approach migrating a legacy application state management to Redux?</summary>
+<summary>Как you approach migrating a leGAcy application state management to Redux?</summary>
 
-### How do you approach migrating a legacy application state management to Redux?
+### Как you approach migrating a leGAcy application state management to Redux?
 
 **Definition:**
 
@@ -2833,9 +2833,9 @@ builder.addCase(login.fulfilled, (state, action) => {
 </details>
 
 <details>
-<summary>Can you explain the concept of "state hydration" in the context of SSR and Redux?</summary>
+<summary>Можете ли вы explain the concept of "state hydration" in the context of SSR and Redux?</summary>
 
-### Can you explain the concept of "state hydration" in the context of SSR and Redux?
+### Можете ли вы explain the concept of "state hydration" in the context of SSR and Redux?
 
 **Definition:**
 
@@ -2854,9 +2854,9 @@ builder.addCase(login.fulfilled, (state, action) => {
 </details>
 
 <details>
-<summary>What challenges might arise when integrating Redux into an existing application and how would you address them?</summary>
+<summary>Какие challenges могут возникнуть при интеграции Redux в existing application и как их решить?</summary>
 
-### What challenges might arise when integrating Redux into an existing application and how would you address them?
+### Какие challenges могут возникнуть при интеграции Redux в existing application и как их решить?
 
 **Definition:**
 
@@ -2878,9 +2878,9 @@ builder.addCase(login.fulfilled, (state, action) => {
 ### Redux Future and Community
 
 <details>
-<summary>Describe the current trends and community practices around Redux.</summary>
+<summary>Опишите the current trends and community practices around Redux.</summary>
 
-### Describe the current trends and community practices around Redux.
+### Опишите the current trends and community practices around Redux.
 
 **Definition:**
 
@@ -2900,9 +2900,9 @@ builder.addCase(login.fulfilled, (state, action) => {
 </details>
 
 <details>
-<summary>How has Redux evolved to fit into the modern React ecosystem with hooks?</summary>
+<summary>Как Redux evolved to fit into the modern React ecosystem with hooks?</summary>
 
-### How has Redux evolved to fit into the modern React ecosystem with hooks?
+### Как Redux evolved to fit into the modern React ecosystem with hooks?
 
 **Definition:**
 
@@ -2922,9 +2922,9 @@ React-Redux добавил `useSelector` и `useDispatch`, которые чит
 </details>
 
 <details>
-<summary>What do you believe is the future of Redux given the context of emerging state management libraries?</summary>
+<summary>Каково, по вашему мнению, будущее Redux в контексте emerging state management libraries?</summary>
 
-### What do you believe is the future of Redux given the context of emerging state management libraries?
+### Каково, по вашему мнению, будущее Redux в контексте emerging state management libraries?
 
 **Definition:**
 
@@ -2947,9 +2947,9 @@ Redux остаётся предсказуемым хранилищем клие�
 ### Advanced State Modeling in Redux
 
 <details>
-<summary>How do you model complex state dependencies and computations in Redux?</summary>
+<summary>Как you model complex state dependencies and computations in Redux?</summary>
 
-### How do you model complex state dependencies and computations in Redux?
+### Как you model complex state dependencies and computations in Redux?
 
 **Definition:**
 
@@ -2968,9 +2968,9 @@ Redux остаётся предсказуемым хранилищем клие�
 </details>
 
 <details>
-<summary>Discuss your approach to type checking and ensuring state consistency.</summary>
+<summary>Обсудите your approach to type checking and ensuring state consistency.</summary>
 
-### Discuss your approach to type checking and ensuring state consistency.
+### Обсудите your approach to type checking and ensuring state consistency.
 
 **Definition:**
 
@@ -2999,9 +2999,9 @@ type UserState =
 </details>
 
 <details>
-<summary>How do you tackle transactional updates in Redux?</summary>
+<summary>Как you tackle transactional updates in Redux?</summary>
 
-### How do you tackle transactional updates in Redux?
+### Как you tackle transactional updates in Redux?
 
 **Definition:**
 
@@ -3019,9 +3019,9 @@ type UserState =
 </details>
 
 <details>
-<summary>What strategies would you use for undo/redo functionality in a Redux application?</summary>
+<summary>Какие стратегии would you use for undo/redo functionality in a Redux application?</summary>
 
-### What strategies would you use for undo/redo functionality in a Redux application?
+### Какие стратегии would you use for undo/redo functionality in a Redux application?
 
 **Definition:**
 
@@ -3042,9 +3042,9 @@ type UserState =
 ### Redux Interoperability
 
 <details>
-<summary>How does Redux interact with WebSockets or external data sources?</summary>
+<summary>Как Redux interact with WebSockets or external data sources?</summary>
 
-### How does Redux interact with WebSockets or external data sources?
+### Как Redux interact with WebSockets or external data sources?
 
 **Definition:**
 
@@ -3064,9 +3064,9 @@ type UserState =
 </details>
 
 <details>
-<summary>Discuss the integration of GraphQL in a Redux-managed application.</summary>
+<summary>Обсудите the integration of GraphQL in a Redux-managed application.</summary>
 
-### Discuss the integration of GraphQL in a Redux-managed application.
+### Обсудите the integration of GraphQL in a Redux-managed application.
 
 **Definition:**
 
@@ -3084,9 +3084,9 @@ type UserState =
 </details>
 
 <details>
-<summary>How would you manage local vs. server state in a Redux application?</summary>
+<summary>Как бы вы manage local vs. server state in a Redux application?</summary>
 
-### How would you manage local vs. server state in a Redux application?
+### Как бы вы manage local vs. server state in a Redux application?
 
 **Definition:**
 
@@ -3108,9 +3108,9 @@ type UserState =
 ### Redux API Requests and Caching
 
 <details>
-<summary>How do you structure API requests in Redux actions?</summary>
+<summary>Как you structure API requests in Redux actions?</summary>
 
-### How do you structure API requests in Redux actions?
+### Как you structure API requests in Redux actions?
 
 **Definition:**
 
@@ -3141,9 +3141,9 @@ export const pokemonApi = createApi({
 </details>
 
 <details>
-<summary>Discuss methods for caching API responses in the Redux store.</summary>
+<summary>Обсудите methods for caching API responses in the Redux store.</summary>
 
-### Discuss methods for caching API responses in the Redux store.
+### Обсудите methods for caching API responses in the Redux store.
 
 **Definition:**
 
@@ -3169,9 +3169,9 @@ middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(pokemonApi.m
 </details>
 
 <details>
-<summary>What patterns or libraries do you use to manage RESTful or GraphQL API interactions with Redux?</summary>
+<summary>Какие patterns или libraries вы используете для RESTful или GraphQL API interactions с Redux?</summary>
 
-### What patterns or libraries do you use to manage RESTful or GraphQL API interactions with Redux?
+### Какие patterns или libraries вы используете для RESTful или GraphQL API interactions с Redux?
 
 **Definition:**
 

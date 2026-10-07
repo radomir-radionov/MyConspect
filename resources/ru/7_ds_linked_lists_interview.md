@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Linked Lists](https://devinterview.io/questi
 ### Basics of Linked Lists
 
 <details>
-<summary>What is a Linked List?</summary>
+<summary>Что такое linked list?</summary>
 
-### What is a Linked List?
+### Что такое linked list?
 
 **Definition:**
 
@@ -118,9 +118,9 @@ my_list.display()
 </details>
 
 <details>
-<summary>What are some pros and cons of Linked List compared to Arrays?</summary>
+<summary>Что такое some pros and cons of linked list compared to arrays?</summary>
 
-### What are some pros and cons of Linked List compared to Arrays?
+### Что такое some pros and cons of linked list compared to arrays?
 
 **Definition:**
 
@@ -160,9 +160,9 @@ my_list.display()
 </details>
 
 <details>
-<summary>Explain the difference between Singly Linked Lists and Doubly Linked Lists.</summary>
+<summary>Объясните разницу между одиночным linked lists и двойным linked lists.</summary>
 
-### Explain the difference between Singly Linked Lists and Doubly Linked Lists.
+### Объясните разницу между одиночным linked lists и двойным linked lists.
 
 **Definition:**
 
@@ -264,9 +264,9 @@ dll.add_node(3)
 </details>
 
 <details>
-<summary>How does a Linked List manage memory allocation differently from an Array?</summary>
+<summary>Как linked list управляет распределением памяти иначе, чем array?</summary>
 
-### How does a Linked List manage memory allocation differently from an Array?
+### Как linked list управляет распределением памяти иначе, чем array?
 
 **Definition:**
 
@@ -321,9 +321,9 @@ dll.add_node(3)
 </details>
 
 <details>
-<summary>What are the basic operations that can be performed on a Linked List?</summary>
+<summary>Что такое the basic operations that can be performed on a linked list?</summary>
 
-### What are the basic operations that can be performed on a Linked List?
+### Что такое the basic operations that can be performed on a linked list?
 
 **Definition:**
 
@@ -396,9 +396,9 @@ def delete_at_start(self):
 ### Advantages and Use Cases of Linked Lists
 
 <details>
-<summary>What are some real-life Use Cases of Linked Lists?</summary>
+<summary>Что такое some real-life Use Cases of linked lists?</summary>
 
-### What are some real-life Use Cases of Linked Lists?
+### Что такое some real-life Use Cases of linked lists?
 
 **Definition:**
 
@@ -455,9 +455,9 @@ def delete_at_start(self):
 </details>
 
 <details>
-<summary>When is a Circular Linked List useful?</summary>
+<summary>Когда is a Circular linked list useful?</summary>
 
-### When is a Circular Linked List useful?
+### Когда is a Circular linked list useful?
 
 **Definition:**
 
@@ -515,9 +515,9 @@ print(cq.dequeue(), cq.dequeue(), cq.dequeue(), cq.dequeue())
 </details>
 
 <details>
-<summary>When is Doubly Linked List more efficient than Singly Linked List?</summary>
+<summary>Когда is doubly linked List more efficient than singly linked List?</summary>
 
-### When is Doubly Linked List more efficient than Singly Linked List?
+### Когда is doubly linked List more efficient than singly linked List?
 
 **Definition:**
 
@@ -543,9 +543,9 @@ print(cq.dequeue(), cq.dequeue(), cq.dequeue(), cq.dequeue())
 </details>
 
 <details>
-<summary>Describe a scenario where the use of a Linked List is more suitable than a Dynamic Array.</summary>
+<summary>Опишите сценарий, в котором linked list подходит больше, чем dynamic array.</summary>
 
-### Describe a scenario where the use of a Linked List is more suitable than a Dynamic Array.
+### Опишите сценарий, в котором linked list подходит больше, чем dynamic array.
 
 **Definition:**
 
@@ -576,9 +576,9 @@ print(cq.dequeue(), cq.dequeue(), cq.dequeue(), cq.dequeue())
 ### Linked Lists vs. Other Data Structures
 
 <details>
-<summary>Compare Array-based vs Linked List stack implementations.</summary>
+<summary>Сравните реализацию array с реализацией linked listZ stack.</summary>
 
-### Compare Array-based vs Linked List stack implementations.
+### Сравните реализацию array с реализацией linked listZ stack.
 
 **Definition:**
 
@@ -652,9 +652,9 @@ class LinkedListStack:
 </details>
 
 <details>
-<summary>How do Linked Lists perform in comparison with Trees for various operations?</summary>
+<summary>Как работает linked lists по сравнению с деревьями для различных операций?</summary>
 
-### How do Linked Lists perform in comparison with Trees for various operations?
+### Как работает linked lists по сравнению с деревьями для различных операций?
 
 **Definition:**
 
@@ -708,9 +708,9 @@ class LinkedListStack:
 </details>
 
 <details>
-<summary>When would you use a Linked List over a Hash Table?</summary>
+<summary>Когда would you use a linked list over a hash table?</summary>
 
-### When would you use a Linked List over a Hash Table?
+### Когда would you use a linked list over a hash table?
 
 **Definition:**
 
@@ -755,9 +755,9 @@ class LinkedListStack:
 ### Traversal and Search in Linked Lists
 
 <details>
-<summary>Is it possible to Traverse a Linked List in O(n1/2)? (Jump Pointers).</summary>
+<summary>Возможно ли обойти linked list за O(n^1/2)? (Jump Pointers).</summary>
 
-### Is it possible to Traverse a Linked List in O(n1/2)? (Jump Pointers).
+### Возможно ли обойти linked list за O(n^1/2)? (Jump Pointers).
 
 **Definition:**
 
@@ -826,9 +826,9 @@ llist.jump_traverse(int(10**0.5))
 </details>
 
 <details>
-<summary>How to apply Binary Search in O(log n) on a Sorted Linked List? (Skip Lists).</summary>
+<summary>Как применить binary search за O(log n) к sorted linked list? (Skip Lists).</summary>
 
-### How to apply Binary Search in O(log n) on a Sorted Linked List? (Skip Lists).
+### Как применить binary search за O(log n) к sorted linked list? (Skip Lists).
 
 **Definition:**
 
@@ -872,9 +872,9 @@ class SkipList:
 </details>
 
 <details>
-<summary>Is it possible to do Binary Search on a Doubly Linked List in O(n) time?</summary>
+<summary>Является ли possible to do binary search on a doubly linked List in O(n) time?</summary>
 
-### Is it possible to do Binary Search on a Doubly Linked List in O(n) time?
+### Является ли possible to do binary search on a doubly linked List in O(n) time?
 
 **Definition:**
 
@@ -935,9 +935,9 @@ def interpolation_search(head, target):
 </details>
 
 <details>
-<summary>Implement a method to find the middle element of a Linked List.</summary>
+<summary>Реализуйте a method to find the middle element of a linked list.</summary>
 
-### Implement a method to find the middle element of a Linked List.
+### Реализуйте a method to find the middle element of a linked list.
 
 **Definition:**
 
@@ -966,9 +966,9 @@ def middle(head):
 ### Implementations and Conversions
 
 <details>
-<summary>Implement a Linked List using Stack.</summary>
+<summary>Реализуйте a linked list using stack.</summary>
 
-### Implement a Linked List using Stack.
+### Реализуйте a linked list using stack.
 
 **Definition:**
 
@@ -984,9 +984,9 @@ def middle(head):
 </details>
 
 <details>
-<summary>Reverse a Singly Linked List using only Two Pointers.</summary>
+<summary>Разверните a singly linked List using only two pointers.</summary>
 
-### Reverse a Singly Linked List using only Two Pointers.
+### Разверните a singly linked List using only two pointers.
 
 **Definition:**
 
@@ -1016,9 +1016,9 @@ def reverse(head):
 </details>
 
 <details>
-<summary>Convert a Singly Linked List to a Circular Linked List.</summary>
+<summary>Преобразование списка singly linked в циркуляр linked list.</summary>
 
-### Convert a Singly Linked List to a Circular Linked List.
+### Преобразование списка singly linked в циркуляр linked list.
 
 **Definition:**
 
@@ -1034,9 +1034,9 @@ def reverse(head):
 </details>
 
 <details>
-<summary>Convert a Singly Linked List to a Doubly Linked List.</summary>
+<summary>Преобразование списка singly linked в список doubly linked.</summary>
 
-### Convert a Singly Linked List to a Doubly Linked List.
+### Преобразование списка singly linked в список doubly linked.
 
 **Definition:**
 
@@ -1052,9 +1052,9 @@ def reverse(head):
 </details>
 
 <details>
-<summary>Implement a Doubly Linked List using Stacks with minimal complexity.</summary>
+<summary>Реализуйте a doubly linked List using stacks with minimal complexity.</summary>
 
-### Implement a Doubly Linked List using Stacks with minimal complexity.
+### Реализуйте a doubly linked List using stacks with minimal complexity.
 
 **Definition:**
 
@@ -1070,9 +1070,9 @@ def reverse(head):
 </details>
 
 <details>
-<summary>Convert a Binary Tree into a Doubly Linked List.</summary>
+<summary>Преобразование binary tree в список doubly linked.</summary>
 
-### Convert a Binary Tree into a Doubly Linked List.
+### Преобразование binary tree в список doubly linked.
 
 **Definition:**
 
@@ -1090,9 +1090,9 @@ def reverse(head):
 ### Insertion and Deletion
 
 <details>
-<summary>Implement a method to Insert a node at a specific position in a Linked List.</summary>
+<summary>Реализуйте a method to Insert a node at a specific position in a linked list.</summary>
 
-### Implement a method to Insert a node at a specific position in a Linked List.
+### Реализуйте a method to Insert a node at a specific position in a linked list.
 
 **Definition:**
 
@@ -1117,9 +1117,9 @@ def insert_after(node, value):
 </details>
 
 <details>
-<summary>Describe how to Delete a node in a Linked List without having a head pointer.</summary>
+<summary>Опишите, как удалить узел в linked list без указателя заголовка.</summary>
 
-### Describe how to Delete a node in a Linked List without having a head pointer.
+### Опишите, как удалить узел в linked list без указателя заголовка.
 
 **Definition:**
 
@@ -1135,9 +1135,9 @@ def insert_after(node, value):
 </details>
 
 <details>
-<summary>Implement an efficient function to Append a node to the end of a Linked List.</summary>
+<summary>Реализуйте an efficient function to Append a node to the end of a linked list.</summary>
 
-### Implement an efficient function to Append a node to the end of a Linked List.
+### Реализуйте an efficient function to Append a node to the end of a linked list.
 
 **Definition:**
 
@@ -1163,9 +1163,9 @@ def append(head, value):
 </details>
 
 <details>
-<summary>Insert an item in a Sorted Linked List, while maintaining order.</summary>
+<summary>Вставьте an item in a Sorted linked list, while maintaining order.</summary>
 
-### Insert an item in a Sorted Linked List, while maintaining order.
+### Вставьте an item in a Sorted linked list, while maintaining order.
 
 **Definition:**
 
@@ -1183,9 +1183,9 @@ def append(head, value):
 ### Algorithms on Linked Lists
 
 <details>
-<summary>Explain Floyd’s Cycle Detection Algorithm.</summary>
+<summary>Объясните алгоритм cycle detection от Floyd.</summary>
 
-### Explain Floyd’s Cycle Detection Algorithm.
+### Объясните алгоритм cycle detection от Floyd.
 
 **Definition:**
 
@@ -1214,9 +1214,9 @@ def has_loop(head):
 </details>
 
 <details>
-<summary>Is there an algorithm Better Than Floyd’s for Cycle Detection in linked lists?</summary>
+<summary>Существует ли an alGorithm Better Than Floyd’s for cycle detection in linked lists?</summary>
 
-### Is there an algorithm Better Than Floyd’s for Cycle Detection in linked lists?
+### Существует ли an alGorithm Better Than Floyd’s for cycle detection in linked lists?
 
 **Definition:**
 
@@ -1232,9 +1232,9 @@ def has_loop(head):
 </details>
 
 <details>
-<summary>Write an algorithm to Shuffle a Linked List.</summary>
+<summary>Напишите an alGorithm to Shuffle a linked list.</summary>
 
-### Write an algorithm to Shuffle a Linked List.
+### Напишите an alGorithm to Shuffle a linked list.
 
 **Definition:**
 
@@ -1250,9 +1250,9 @@ def has_loop(head):
 </details>
 
 <details>
-<summary>Detect if a List is Cyclic using a Hash Table.</summary>
+<summary>Определите, является ли список циклическим, используя hash table.</summary>
 
-### Detect if a List is Cyclic using a Hash Table.
+### Определите, является ли список циклическим, используя hash table.
 
 **Definition:**
 
@@ -1268,9 +1268,9 @@ def has_loop(head):
 </details>
 
 <details>
-<summary>Implement an algorithm to Sort a Linked List.</summary>
+<summary>Реализуйте an alGorithm to Sort a linked list.</summary>
 
-### Implement an algorithm to Sort a Linked List.
+### Реализуйте an alGorithm to Sort a linked list.
 
 **Definition:**
 
@@ -1288,9 +1288,9 @@ def has_loop(head):
 ### Merging and Reversing
 
 <details>
-<summary>Merge two sorted Singly Linked Lists without creating new nodes.</summary>
+<summary>Объедините two sorted singly linked Lists without creating new nodes.</summary>
 
-### Merge two sorted Singly Linked Lists without creating new nodes.
+### Объедините two sorted singly linked Lists without creating new nodes.
 
 **Definition:**
 
@@ -1306,9 +1306,9 @@ def has_loop(head):
 </details>
 
 <details>
-<summary>Reverse a Linked List recursively.</summary>
+<summary>Разверните a linked list Recursively.</summary>
 
-### Reverse a Linked List recursively.
+### Разверните a linked list Recursively.
 
 **Definition:**
 
@@ -1338,9 +1338,9 @@ def reverse(head):
 </details>
 
 <details>
-<summary>Write a function that Reverse K nodes of the Linked List at a time.</summary>
+<summary>Напишите a function that Reverse K nodes of the linked list at a time.</summary>
 
-### Write a function that Reverse K nodes of the Linked List at a time.
+### Напишите a function that Reverse K nodes of the linked list at a time.
 
 **Definition:**
 
@@ -1358,9 +1358,9 @@ def reverse(head):
 ### Advanced Manipulations
 
 <details>
-<summary>Find the N-th element from the end of a Singly Linked List.</summary>
+<summary>Найдите N-й элемент с конца одиночного linked list.</summary>
 
-### Find the N-th element from the end of a Singly Linked List.
+### Найдите N-й элемент с конца одиночного linked list.
 
 **Definition:**
 
@@ -1391,9 +1391,9 @@ def nth_from_end(head, n):
 </details>
 
 <details>
-<summary>Remove Duplicates from an Unsorted Linked List.</summary>
+<summary>Удалите Duplicates from an Unsorted linked list.</summary>
 
-### Remove Duplicates from an Unsorted Linked List.
+### Удалите Duplicates from an Unsorted linked list.
 
 **Definition:**
 
@@ -1409,9 +1409,9 @@ def nth_from_end(head, n):
 </details>
 
 <details>
-<summary>Find Common Elements in two given Linked Lists and return them as a new Linked List.</summary>
+<summary>Найдите общие элементы в двух заданных linked lists и верните их в виде нового linked list.</summary>
 
-### Find Common Elements in two given Linked Lists and return them as a new Linked List.
+### Найдите общие элементы в двух заданных linked lists и верните их в виде нового linked list.
 
 **Definition:**
 
@@ -1427,9 +1427,9 @@ p начинает на первой голове, q на второй. Кажд
 </details>
 
 <details>
-<summary>Split the Linked List into k consecutive parts.</summary>
+<summary>Разделите linked list на k последовательных частей.</summary>
 
-### Split the Linked List into k consecutive parts.
+### Разделите linked list на k последовательных частей.
 
 **Definition:**
 
@@ -1445,9 +1445,9 @@ p начинает на первой голове, q на второй. Кажд
 </details>
 
 <details>
-<summary>Sum two numbers represented as Linked Lists.</summary>
+<summary>Сложите два числа, представленных как linked lists.</summary>
 
-### Sum two numbers represented as Linked Lists.
+### Сложите два числа, представленных как linked lists.
 
 **Definition:**
 
@@ -1465,9 +1465,9 @@ p начинает на первой голове, q на второй. Кажд
 ### Special Cases and Challenges
 
 <details>
-<summary>Find a Merge Point (Intersection) of two Linked Lists.</summary>
+<summary>Найдите точку слияния (пересечения) двух linked lists.</summary>
 
-### Find a Merge Point (Intersection) of two Linked Lists.
+### Найдите точку слияния (пересечения) двух linked lists.
 
 **Definition:**
 
@@ -1494,9 +1494,9 @@ def intersection(a, b):
 </details>
 
 <details>
-<summary>Given a Singly Linked List, determine if it is a Palindrome.</summary>
+<summary>Учитывая только один linked list, определите, является ли он Palindrome.</summary>
 
-### Given a Singly Linked List, determine if it is a Palindrome.
+### Учитывая только один linked list, определите, является ли он Palindrome.
 
 **Definition:**
 
@@ -1512,9 +1512,9 @@ def intersection(a, b):
 </details>
 
 <details>
-<summary>Find the length of a Linked List that contains a Cycle.</summary>
+<summary>Найдите длину linked list, содержащего цикл.</summary>
 
-### Find the length of a Linked List that contains a Cycle.
+### Найдите длину linked list, содержащего цикл.
 
 **Definition:**
 
@@ -1530,9 +1530,9 @@ def intersection(a, b):
 </details>
 
 <details>
-<summary>Duplicate a Linked List with Random Pointers using O(1) space.</summary>
+<summary>Дублируйте linked list на Random Pointers, используя пробел O(1).</summary>
 
-### Duplicate a Linked List with Random Pointers using O(1) space.
+### Дублируйте linked list на Random Pointers, используя пробел O(1).
 
 **Definition:**
 
@@ -1548,9 +1548,9 @@ def intersection(a, b):
 </details>
 
 <details>
-<summary>Implement a function to check if two Singly Linked Lists intersect without using extra space.</summary>
+<summary>Реализуйте a function to check if two singly linked Lists intersect without using extra space.</summary>
 
-### Implement a function to check if two Singly Linked Lists intersect without using extra space.
+### Реализуйте a function to check if two singly linked Lists intersect without using extra space.
 
 **Definition:**
 
@@ -1577,9 +1577,9 @@ def intersects(a, b):
 </details>
 
 <details>
-<summary>How would you rotate a Linked List by k places?</summary>
+<summary>Как бы вы rotate a linked list by k places?</summary>
 
-### How would you rotate a Linked List by k places?
+### Как бы вы rotate a linked list by k places?
 
 **Definition:**
 
@@ -1597,9 +1597,9 @@ def intersects(a, b):
 ### Complexity and Analysis
 
 <details>
-<summary>Discuss the Time Complexity of various operations in Linked Lists.</summary>
+<summary>Обсудите time complexity различных операций в linked lists.</summary>
 
-### Discuss the Time Complexity of various operations in Linked Lists.
+### Обсудите time complexity различных операций в linked lists.
 
 **Definition:**
 
@@ -1615,9 +1615,9 @@ def intersects(a, b):
 </details>
 
 <details>
-<summary>Assess the Space Complexity of a Linked List with auxiliary pointers, such as in a Skip List.</summary>
+<summary>Оцените space complexity linked list с помощью вспомогательных указателей, например, в skip list.</summary>
 
-### Assess the Space Complexity of a Linked List with auxiliary pointers, such as in a Skip List.
+### Оцените space complexity linked list с помощью вспомогательных указателей, например, в skip list.
 
 **Definition:**
 
@@ -1633,9 +1633,9 @@ def intersects(a, b):
 </details>
 
 <details>
-<summary>Explain how Recursion affects time and space complexity in Linked List operations.</summary>
+<summary>Объясните, как recursion влияет на время и space complexity в операциях linked list.</summary>
 
-### Explain how Recursion affects time and space complexity in Linked List operations.
+### Объясните, как recursion влияет на время и space complexity в операциях linked list.
 
 **Definition:**
 
@@ -1653,9 +1653,9 @@ def intersects(a, b):
 ### Linked List Problems and Solutions
 
 <details>
-<summary>Solve the problem of finding the Intersection Point of a Y-shaped Linked List.</summary>
+<summary>Решите the problem of finding the Intersection Point of a Y-SHAped linked list.</summary>
 
-### Solve the problem of finding the Intersection Point of a Y-shaped Linked List.
+### Решите the problem of finding the Intersection Point of a Y-SHAped linked list.
 
 **Definition:**
 
@@ -1682,9 +1682,9 @@ def y_intersection(a, b):
 </details>
 
 <details>
-<summary>Write an algorithm to segregate even and odd nodes in a Singly Linked List.</summary>
+<summary>Напишите an alGorithm to segreGAte even and odd nodes in a singly linked List.</summary>
 
-### Write an algorithm to segregate even and odd nodes in a Singly Linked List.
+### Напишите an alGorithm to segreGAte even and odd nodes in a singly linked List.
 
 **Definition:**
 
@@ -1700,9 +1700,9 @@ def y_intersection(a, b):
 </details>
 
 <details>
-<summary>How can you sort a Linked List that is sorted alternating between ascending and descending orders?</summary>
+<summary>Как вы можете отсортировать linked list, который сортируется по возрастанию и убыванию?</summary>
 
-### How can you sort a Linked List that is sorted alternating between ascending and descending orders?
+### Как вы можете отсортировать linked list, который сортируется по возрастанию и убыванию?
 
 **Definition:**
 
@@ -1718,9 +1718,9 @@ def y_intersection(a, b):
 </details>
 
 <details>
-<summary>Develop a method to swap pairs of nodes in a Linked List.</summary>
+<summary>Разработайте метод замены пар узлов в linked list.</summary>
 
-### Develop a method to swap pairs of nodes in a Linked List.
+### Разработайте метод замены пар узлов в linked list.
 
 **Definition:**
 
@@ -1736,9 +1736,9 @@ def y_intersection(a, b):
 </details>
 
 <details>
-<summary>Implement an algorithm to remove all Odd-Indexed Nodes from a Linked List.</summary>
+<summary>Реализуйте an alGorithm to remove all Odd-Indexed Nodes from a linked list.</summary>
 
-### Implement an algorithm to remove all Odd-Indexed Nodes from a Linked List.
+### Реализуйте an alGorithm to remove all Odd-Indexed Nodes from a linked list.
 
 **Definition:**
 
@@ -1754,9 +1754,9 @@ def y_intersection(a, b):
 </details>
 
 <details>
-<summary>Describe a technique to randomly select a node from a Linked List with a uniform distribution.</summary>
+<summary>Опишите методику случайного выбора узла из linked list с равномерным распределением.</summary>
 
-### Describe a technique to randomly select a node from a Linked List with a uniform distribution.
+### Опишите методику случайного выбора узла из linked list с равномерным распределением.
 
 **Definition:**
 
@@ -1772,9 +1772,9 @@ def y_intersection(a, b):
 </details>
 
 <details>
-<summary>Implement a version of a Linked List where each node has an additional arbitrary pointer to within the list.</summary>
+<summary>Реализуйте a version of a linked list where each node has an additional arbitrary pointer to within the list.</summary>
 
-### Implement a version of a Linked List where each node has an additional arbitrary pointer to within the list.
+### Реализуйте a version of a linked list where each node has an additional arbitrary pointer to within the list.
 
 **Definition:**
 

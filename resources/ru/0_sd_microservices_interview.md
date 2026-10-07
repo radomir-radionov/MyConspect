@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Microservices](https://devinterview.io/quest
 ### Microservices Fundamentals
 
 <details>
-<summary>What is a microservice and how does it differ from a monolithic architecture?</summary>
+<summary>Что такое microservice and how does it differ from a monolithic architecture?</summary>
 
-### What is a microservice and how does it differ from a monolithic architecture?
+### Что такое microservice and how does it differ from a monolithic architecture?
 
 **Definition:**
 
@@ -71,9 +71,9 @@ Questions from [Devinterview.io — Microservices](https://devinterview.io/quest
 </details>
 
 <details>
-<summary>Can you describe the principles behind the microservices architecture?</summary>
+<summary>Можете ли вы describe the principles behind the microservices architecture?</summary>
 
-### Can you describe the principles behind the microservices architecture?
+### Можете ли вы describe the principles behind the microservices architecture?
 
 **Definition:**
 
@@ -164,9 +164,9 @@ public class LoanService {
 </details>
 
 <details>
-<summary>What are the main benefits of using microservices?</summary>
+<summary>Что такое the main benefits of using microservices?</summary>
 
-### What are the main benefits of using microservices?
+### Что такое the main benefits of using microservices?
 
 **Definition:**
 
@@ -214,9 +214,9 @@ public class LoanService {
 </details>
 
 <details>
-<summary>What are some of the challenges you might face when designing a microservices architecture?</summary>
+<summary>Что такое some of the challenges you might face when designing a microservices architecture?</summary>
 
-### What are some of the challenges you might face when designing a microservices architecture?
+### Что такое some of the challenges you might face when designing a microservices architecture?
 
 **Definition:**
 
@@ -288,9 +288,9 @@ public class LoanService {
 </details>
 
 <details>
-<summary>How do microservices communicate with each other?</summary>
+<summary>Как microservices communicate with each other?</summary>
 
-### How do microservices communicate with each other?
+### Как microservices communicate with each other?
 
 **Definition:**
 
@@ -368,9 +368,9 @@ response = stub.GetUsers(users_pb2.UserRequest())
 </details>
 
 <details>
-<summary>What is Domain-Driven Design (DDD) and how is it related to microservices?</summary>
+<summary>Что такое domain-driven design (DDD) and how is it related to microservices?</summary>
 
-### What is Domain-Driven Design (DDD) and how is it related to microservices?
+### Что такое domain-driven design (DDD) and how is it related to microservices?
 
 **Definition:**
 
@@ -441,9 +441,9 @@ public class OrderDetail {
 </details>
 
 <details>
-<summary>How would you decompose a monolithic application into microservices?</summary>
+<summary>Как бы вы decompose a monolithic application into microservices?</summary>
 
-### How would you decompose a monolithic application into microservices?
+### Как бы вы decompose a monolithic application into microservices?
 
 **Definition:**
 
@@ -523,9 +523,9 @@ public class OrderController {
 </details>
 
 <details>
-<summary>What strategies can be employed to manage transactions across multiple microservices?</summary>
+<summary>Какие стратегии can be employed to manage transactions across multiple microservices?</summary>
 
-### What strategies can be employed to manage transactions across multiple microservices?
+### Какие стратегии can be employed to manage transactions across multiple microservices?
 
 **Definition:**
 
@@ -586,9 +586,9 @@ public class OrderController {
 </details>
 
 <details>
-<summary>Explain the concept of ‘Bounded Context’ in the microservices architecture.</summary>
+<summary>Объясните the concept of ‘bounded context’ in the microservices architecture.</summary>
 
-### Explain the concept of ‘Bounded Context’ in the microservices architecture.
+### Объясните the concept of ‘bounded context’ in the microservices architecture.
 
 **Definition:**
 
@@ -658,9 +658,9 @@ public class GameWonEvent {
 </details>
 
 <details>
-<summary>How do you handle failure in a microservice?</summary>
+<summary>Как you handle failure in a microservice?</summary>
 
-### How do you handle failure in a microservice?
+### Как you handle failure in a microservice?
 
 **Definition:**
 
@@ -729,9 +729,9 @@ public class GameWonEvent {
 ### Design Patterns and Best Practices
 
 <details>
-<summary>What design patterns are commonly used in microservices architectures?</summary>
+<summary>Какие design patterns обычно используют в microservices architectures?</summary>
 
-### What design patterns are commonly used in microservices architectures?
+### Какие design patterns обычно используют в microservices architectures?
 
 **Definition:**
 
@@ -792,9 +792,9 @@ public String fallback(Throwable t) {
 </details>
 
 <details>
-<summary>Can you describe the API Gateway pattern and its benefits?</summary>
+<summary>Можете ли вы describe the API Gateway pattern and its benefits?</summary>
 
-### Can you describe the API Gateway pattern and its benefits?
+### Можете ли вы describe the API Gateway pattern and its benefits?
 
 **Definition:**
 
@@ -860,9 +860,9 @@ def api_gateway():
 </details>
 
 <details>
-<summary>Explain the ‘Circuit Breaker’ pattern. Why is it important in a microservices ecosystem?</summary>
+<summary>Объясните the ‘circuit breaker’ pattern. Why is it important in a microservices ecosystem?</summary>
 
-### Explain the ‘Circuit Breaker’ pattern. Why is it important in a microservices ecosystem?
+### Объясните the ‘circuit breaker’ pattern. Why is it important in a microservices ecosystem?
 
 **Definition:**
 
@@ -934,9 +934,9 @@ var circuitBreakerPolicy = Policy
 </details>
 
 <details>
-<summary>What is a ‘Service Mesh’? How does it aid in managing microservices?</summary>
+<summary>Что такое ‘service mesh’? How does it aid in managing microservices?</summary>
 
-### What is a ‘Service Mesh’? How does it aid in managing microservices?
+### Что такое ‘service mesh’? How does it aid in managing microservices?
 
 **Definition:**
 
@@ -1040,9 +1040,9 @@ spec:
 </details>
 
 <details>
-<summary>How do you ensure data consistency across microservices?</summary>
+<summary>Как you ensure data consistency across microservices?</summary>
 
-### How do you ensure data consistency across microservices?
+### Как you ensure data consistency across microservices?
 
 **Definition:**
 
@@ -1160,9 +1160,9 @@ public class OrderService {
 </details>
 
 <details>
-<summary>Discuss the strategies you would use for testing microservices.</summary>
+<summary>Обсудите the strategies you would use for testing microservices.</summary>
 
-### Discuss the strategies you would use for testing microservices.
+### Обсудите the strategies you would use for testing microservices.
 
 **Definition:**
 
@@ -1193,9 +1193,9 @@ end-to-end: several real services; slow and brittle
 </details>
 
 <details>
-<summary>How can you prevent configuration drift in a microservices environment?</summary>
+<summary>Как you prevent configuration drift in a microservices environment?</summary>
 
-### How can you prevent configuration drift in a microservices environment?
+### Как you prevent configuration drift in a microservices environment?
 
 **Definition:**
 
@@ -1218,9 +1218,9 @@ Twelve-factor определяет config как всё, что меняется
 </details>
 
 <details>
-<summary>When should you use synchronous vs. asynchronous communication in microservices?</summary>
+<summary>Когда should you use synchronous vs. asynchronous communication in microservices?</summary>
 
-### When should you use synchronous vs. asynchronous communication in microservices?
+### Когда should you use synchronous vs. asynchronous communication in microservices?
 
 **Definition:**
 
@@ -1241,9 +1241,9 @@ Twelve-factor определяет config как всё, что меняется
 </details>
 
 <details>
-<summary>What role does containerization play in microservices?</summary>
+<summary>Какую роль does containerization play in microservices?</summary>
 
-### What role does containerization play in microservices?
+### Какую роль does containerization play in microservices?
 
 **Definition:**
 
@@ -1266,9 +1266,9 @@ Docker упаковывает сервис в контейнер: слабо и�
 ### Deployment and Operations
 
 <details>
-<summary>What are the challenges of deploying microservices?</summary>
+<summary>Что такое the challenges of deploying microservices?</summary>
 
-### What are the challenges of deploying microservices?
+### Что такое the challenges of deploying microservices?
 
 **Definition:**
 
@@ -1293,9 +1293,9 @@ Canary планируют, когда плохая версия не должн�
 </details>
 
 <details>
-<summary>Describe blue-green deployment and how it applies to microservices.</summary>
+<summary>Опишите blue-green deployment and how it applies to microservices.</summary>
 
-### Describe blue-green deployment and how it applies to microservices.
+### Опишите blue-green deployment and how it applies to microservices.
 
 **Definition:**
 
@@ -1324,9 +1324,9 @@ router to order-service flips to green
 </details>
 
 <details>
-<summary>How does canary releasing work, and how is it beneficial for microservices deployments?</summary>
+<summary>Как canary releasing work, and how is it beneficial for microservices deployments?</summary>
 
-### How does canary releasing work, and how is it beneficial for microservices deployments?
+### Как canary releasing work, and how is it beneficial for microservices deployments?
 
 **Definition:**
 
@@ -1347,9 +1347,9 @@ Canary используют, когда микросервис может раб
 </details>
 
 <details>
-<summary>Explain the concept of ‘Infrastructure as Code’ and how it benefits microservices management.</summary>
+<summary>Объясните the concept of ‘Infrastructure as Code’ and how it benefits microservices management.</summary>
 
-### Explain the concept of ‘Infrastructure as Code’ and how it benefits microservices management.
+### Объясните the concept of ‘Infrastructure as Code’ and how it benefits microservices management.
 
 **Definition:**
 
@@ -1370,9 +1370,9 @@ Terraform используют, когда сеть, среда выполнен
 </details>
 
 <details>
-<summary>Describe what Continuous Integration/Continuous Deployment (CI/CD) pipelines look like for microservices.</summary>
+<summary>Опишите what Continuous Integration/Continuous Deployment (CI/CD) pipelines look like for microservices.</summary>
 
-### Describe what Continuous Integration/Continuous Deployment (CI/CD) pipelines look like for microservices.
+### Опишите what Continuous Integration/Continuous Deployment (CI/CD) pipelines look like for microservices.
 
 **Definition:**
 
@@ -1395,9 +1395,9 @@ Docker описывает путь непрерывной интеграции �
 </details>
 
 <details>
-<summary>How do you monitor health and performance of microservices?</summary>
+<summary>Как you monitor health and performance of microservices?</summary>
 
-### How do you monitor health and performance of microservices?
+### Как you monitor health and performance of microservices?
 
 **Definition:**
 
@@ -1422,9 +1422,9 @@ Docker описывает путь непрерывной интеграции �
 ### Microservices and Data Management
 
 <details>
-<summary>How do you handle database schema changes in a microservice architecture?</summary>
+<summary>Как you handle dataBASE schema changes in a microservice architecture?</summary>
 
-### How do you handle database schema changes in a microservice architecture?
+### Как you handle dataBASE schema changes in a microservice architecture?
 
 **Definition:**
 
@@ -1445,9 +1445,9 @@ Docker описывает путь непрерывной интеграции �
 </details>
 
 <details>
-<summary>Discuss the pros and cons of using a shared database vs. a database-per-service.</summary>
+<summary>Обсудите the pros and cons of using a SHAred dataBASE vs. a dataBASE-per-service.</summary>
 
-### Discuss the pros and cons of using a shared database vs. a database-per-service.
+### Обсудите the pros and cons of using a SHAred dataBASE vs. a dataBASE-per-service.
 
 **Definition:**
 
@@ -1476,9 +1476,9 @@ Customer Service -> customers schema (user customer_svc)
 </details>
 
 <details>
-<summary>Explain the concept of ‘Event Sourcing’ in the context of microservices.</summary>
+<summary>Объясните the concept of ‘event sourcing’ in the context of microservices.</summary>
 
-### Explain the concept of ‘Event Sourcing’ in the context of microservices.
+### Объясните the concept of ‘event sourcing’ in the context of microservices.
 
 **Definition:**
 
@@ -1509,9 +1509,9 @@ Order History service updates its read model
 </details>
 
 <details>
-<summary>What is Command Query Responsibility Segregation (CQRS) and how can it be applied to microservices?</summary>
+<summary>Что такое command Query Responsibility SegreGAtion (CQRS) and how can it be applied to microservices?</summary>
 
-### What is Command Query Responsibility Segregation (CQRS) and how can it be applied to microservices?
+### Что такое command Query Responsibility SegreGAtion (CQRS) and how can it be applied to microservices?
 
 **Definition:**
 
@@ -1540,9 +1540,9 @@ Order History service updates a read model for "customers in a region and their 
 </details>
 
 <details>
-<summary>Can you discuss strategies for dealing with data consistency without using distributed transactions?</summary>
+<summary>Можете ли вы discuss strategies for dealing with data consistency without using distributed transactions?</summary>
 
-### Can you discuss strategies for dealing with data consistency without using distributed transactions?
+### Можете ли вы discuss strategies for dealing with data consistency without using distributed transactions?
 
 **Definition:**
 
@@ -1574,9 +1574,9 @@ saga: each participant runs its own local transaction
 ### Security
 
 <details>
-<summary>How do you implement authentication and authorization in microservices?</summary>
+<summary>Как you implement authentication and authorization in microservices?</summary>
 
-### How do you implement authentication and authorization in microservices?
+### Как you implement authentication and authorization in microservices?
 
 **Definition:**
 
@@ -1599,9 +1599,9 @@ OAuth не отдаёт третьей стороне пароль владел�
 </details>
 
 <details>
-<summary>What are some common security concerns when handling inter-service communication?</summary>
+<summary>Что такое some common security concerns when handling inter-service communication?</summary>
 
-### What are some common security concerns when handling inter-service communication?
+### Что такое some common security concerns when handling inter-service communication?
 
 **Definition:**
 
@@ -1625,9 +1625,9 @@ OAuth заменяет общий пароль на access token огранич�
 </details>
 
 <details>
-<summary>Describe how you would use OAuth2 or JWT in a microservices architecture.</summary>
+<summary>Опишите how you would use OAuth2 or JWT in a microservices architecture.</summary>
 
-### Describe how you would use OAuth2 or JWT in a microservices architecture.
+### Опишите how you would use OAuth2 or JWT in a microservices architecture.
 
 **Definition:**
 
@@ -1656,9 +1656,9 @@ Authorization: Bearer <token>
 </details>
 
 <details>
-<summary>What mechanisms would you implement to prevent or detect security breaches at the microservices level?</summary>
+<summary>Какие mechanisms вы внедрите для предотвращения или обнаружения security breaches на уровне microservices?</summary>
 
-### What mechanisms would you implement to prevent or detect security breaches at the microservices level?
+### Какие mechanisms вы внедрите для предотвращения или обнаружения security breaches на уровне microservices?
 
 **Definition:**
 
@@ -1682,9 +1682,9 @@ RFC 6749 предотвращает один класс взлома тем, ч�
 </details>
 
 <details>
-<summary>How do you ensure that sensitive data is protected when using microservices?</summary>
+<summary>Как you ensure that sensitive data is protected when using microservices?</summary>
 
-### How do you ensure that sensitive data is protected when using microservices?
+### Как you ensure that sensitive data is protected when using microservices?
 
 **Definition:**
 
@@ -1710,9 +1710,9 @@ Twelve-factor хранит учётные данные баз и внешних 
 ### Scalability and Performance
 
 <details>
-<summary>How do you ensure that a microservice is scalable?</summary>
+<summary>Как you ensure that a microservice is Scalable?</summary>
 
-### How do you ensure that a microservice is scalable?
+### Как you ensure that a microservice is Scalable?
 
 **Definition:**
 
@@ -1735,9 +1735,9 @@ Pod или копии по оси X добавляют, когда сервис 
 </details>
 
 <details>
-<summary>What metrics would you monitor to assess a microservice’s performance?</summary>
+<summary>Какие metrics вы мониторите для оценки performance microservice?</summary>
 
-### What metrics would you monitor to assess a microservice’s performance?
+### Какие metrics вы мониторите для оценки performance microservice?
 
 **Definition:**
 
@@ -1759,9 +1759,9 @@ Pod или копии по оси X добавляют, когда сервис 
 </details>
 
 <details>
-<summary>Discuss strategies to handle high-load or peak traffic in a microservices architecture.</summary>
+<summary>Обсудите strategies to handle high-load or peak traffic in a microservices architecture.</summary>
 
-### Discuss strategies to handle high-load or peak traffic in a microservices architecture.
+### Обсудите strategies to handle high-load or peak traffic in a microservices architecture.
 
 **Definition:**
 
@@ -1786,9 +1786,9 @@ Pod или копии по оси X добавляют, когда сервис 
 </details>
 
 <details>
-<summary>How do Microservices handle load balancing?</summary>
+<summary>Как microservices handle load balancing?</summary>
 
-### How do Microservices handle load balancing?
+### Как microservices handle load balancing?
 
 **Definition:**
 
@@ -1827,9 +1827,9 @@ spec:
 </details>
 
 <details>
-<summary>In terms of performance, what would influence your decision to use a message broker vs direct service-to-service communication?</summary>
+<summary>В terms of performance, what would influence your decision to use a message broker vs direct service-to-service communication?</summary>
 
-### In terms of performance, what would influence your decision to use a message broker vs direct service-to-service communication?
+### В terms of performance, what would influence your decision to use a message broker vs direct service-to-service communication?
 
 **Definition:**
 
@@ -1853,9 +1853,9 @@ spec:
 ### Inter-Process Communication
 
 <details>
-<summary>What are the advantages and drawbacks of using REST over gRPC in microservice communication?</summary>
+<summary>Что такое the advantages and drawbacks of using REST over gRPC in microservice communication?</summary>
 
-### What are the advantages and drawbacks of using REST over gRPC in microservice communication?
+### Что такое the advantages and drawbacks of using REST over gRPC in microservice communication?
 
 **Definition:**
 
@@ -1879,9 +1879,9 @@ HTTP API, которые следуют ресурсным ограничени�
 </details>
 
 <details>
-<summary>How would you implement versioning in microservices API?</summary>
+<summary>Как бы вы implement versioning in microservices API?</summary>
 
-### How would you implement versioning in microservices API?
+### Как бы вы implement versioning in microservices API?
 
 **Definition:**
 
@@ -1902,9 +1902,9 @@ Canary запускает новую версию для подмножеств�
 </details>
 
 <details>
-<summary>What are the challenges of network latency in microservices and how can they be mitigated?</summary>
+<summary>Что такое the challenges of network latency in microservices and how can they be mitiGAted?</summary>
 
-### What are the challenges of network latency in microservices and how can they be mitigated?
+### Что такое the challenges of network latency in microservices and how can they be mitiGAted?
 
 **Definition:**
 
@@ -1928,9 +1928,9 @@ Canary запускает новую версию для подмножеств�
 </details>
 
 <details>
-<summary>Explain the difference between message queues and event buses. In which scenarios would you use each?</summary>
+<summary>Объясните the difference between message queues and event buses. In which scenarios would you use each?</summary>
 
-### Explain the difference between message queues and event buses. In which scenarios would you use each?
+### Объясните the difference between message queues and event buses. In which scenarios would you use each?
 
 **Definition:**
 
@@ -1951,9 +1951,9 @@ RabbitMQ определяет очередь как упорядоченный �
 </details>
 
 <details>
-<summary>How can transactional outbox patterns be used in microservices?</summary>
+<summary>Как transactional outbox patterns be used in microservices?</summary>
 
-### How can transactional outbox patterns be used in microservices?
+### Как transactional outbox patterns be used in microservices?
 
 **Definition:**
 
@@ -1987,9 +1987,9 @@ COMMIT
 ### Resiliency and Reliability
 
 <details>
-<summary>How would you design a microservice to be fault-tolerant?</summary>
+<summary>Как бы вы design a microservice to be fault-tolerant?</summary>
 
-### How would you design a microservice to be fault-tolerant?
+### Как бы вы design a microservice to be fault-tolerant?
 
 **Definition:**
 
@@ -2014,9 +2014,9 @@ Kubernetes перезапускает упавший контейнер по `re
 </details>
 
 <details>
-<summary>Discuss the importance of timeouts and retry logic in a microservices architecture.</summary>
+<summary>Обсудите the importance of timeouts and retry logic in a microservices architecture.</summary>
 
-### Discuss the importance of timeouts and retry logic in a microservices architecture.
+### Обсудите the importance of timeouts and retry logic in a microservices architecture.
 
 **Definition:**
 
@@ -2050,9 +2050,9 @@ Java-клиент задаёт границу через `withDeadlineAfter`. У
 </details>
 
 <details>
-<summary>What strategies can be used to achieve high availability in microservices?</summary>
+<summary>Какие стратегии can be used to achieve high availability in microservices?</summary>
 
-### What strategies can be used to achieve high availability in microservices?
+### Какие стратегии can be used to achieve high availability in microservices?
 
 **Definition:**
 
@@ -2076,9 +2076,9 @@ PostgreSQL держит standby, который может принять раб
 </details>
 
 <details>
-<summary>How do you approach disaster recovery in a microservices-based system?</summary>
+<summary>Как you approach disaster recovery in a microservices-BASEd system?</summary>
 
-### How do you approach disaster recovery in a microservices-based system?
+### Как you approach disaster recovery in a microservices-BASEd system?
 
 **Definition:**
 
@@ -2101,9 +2101,9 @@ Standby повышают, когда отказал именно primary. Син
 </details>
 
 <details>
-<summary>Explain how you would handle a cascading failure in a microservice ecosystem.</summary>
+<summary>Объясните how you would handle a cascading failure in a microservice ecosystem.</summary>
 
-### Explain how you would handle a cascading failure in a microservice ecosystem.
+### Объясните how you would handle a cascading failure in a microservice ecosystem.
 
 **Definition:**
 
@@ -2129,9 +2129,9 @@ Standby повышают, когда отказал именно primary. Син
 ### Observability and Monitoring
 
 <details>
-<summary>What tools or practices would you recommend for logging in a distributed microservices system?</summary>
+<summary>Какие инструменты or practices would you recommend for logging in a distributed microservices system?</summary>
 
-### What tools or practices would you recommend for logging in a distributed microservices system?
+### Какие инструменты or practices would you recommend for logging in a distributed microservices system?
 
 **Definition:**
 
@@ -2152,9 +2152,9 @@ Id запроса ставят на каждую строку лога, как �
 </details>
 
 <details>
-<summary>How do you trace requests across boundaries of different microservices?</summary>
+<summary>Как you trace requests across boundaries of different microservices?</summary>
 
-### How do you trace requests across boundaries of different microservices?
+### Как you trace requests across boundaries of different microservices?
 
 **Definition:**
 
@@ -2174,9 +2174,9 @@ Id входит в каждое сообщение лога. Время нача
 </details>
 
 <details>
-<summary>Discuss the importance of metrics and alerts in maintaining a microservices architecture.</summary>
+<summary>Обсудите the importance of metrics and alerts in maintaining a microservices architecture.</summary>
 
-### Discuss the importance of metrics and alerts in maintaining a microservices architecture.
+### Обсудите the importance of metrics and alerts in maintaining a microservices architecture.
 
 **Definition:**
 
@@ -2198,9 +2198,9 @@ Id входит в каждое сообщение лога. Время нача
 </details>
 
 <details>
-<summary>How do you handle performance bottlenecks in microservices?</summary>
+<summary>Как you handle performance boTTLenecks in microservices?</summary>
 
-### How do you handle performance bottlenecks in microservices?
+### Как you handle performance boTTLenecks in microservices?
 
 **Definition:**
 
@@ -2225,9 +2225,9 @@ Id входит в каждое сообщение лога. Время нача
 </details>
 
 <details>
-<summary>What is distributed tracing and which tools help you accomplish it in a microservices setup?</summary>
+<summary>Что такое distributed tracing and which tools help you accomplish it in a microservices setup?</summary>
 
-### What is distributed tracing and which tools help you accomplish it in a microservices setup?
+### Что такое distributed tracing and which tools help you accomplish it in a microservices setup?
 
 **Definition:**
 
@@ -2258,9 +2258,9 @@ Zipkin stores the spans
 ### Containers and Orchestration
 
 <details>
-<summary>Explain the role of Docker in developing and deploying microservices.</summary>
+<summary>Объясните the role of Docker in developing and deploying microservices.</summary>
 
-### Explain the role of Docker in developing and deploying microservices.
+### Объясните the role of Docker in developing and deploying microservices.
 
 **Definition:**
 
@@ -2290,9 +2290,9 @@ docker run    -> container (the service process + its files)
 </details>
 
 <details>
-<summary>How do container orchestration tools like Kubernetes help with microservice deployment?</summary>
+<summary>Как container orchestration tools like Kubernetes help with microservice deployment?</summary>
 
-### How do container orchestration tools like Kubernetes help with microservice deployment?
+### Как container orchestration tools like Kubernetes help with microservice deployment?
 
 **Definition:**
 
@@ -2314,9 +2314,9 @@ Deployment и Service используют, когда должно работа
 </details>
 
 <details>
-<summary>Describe the lifecycle of a container within a microservices architecture.</summary>
+<summary>Опишите the lifecycle of a container within a microservices architecture.</summary>
 
-### Describe the lifecycle of a container within a microservices architecture.
+### Опишите the lifecycle of a container within a microservices architecture.
 
 **Definition:**
 
@@ -2344,9 +2344,9 @@ $ docker run -i -t ubuntu /bin/bash
 </details>
 
 <details>
-<summary>How do you ensure that containers are secure and up-to-date?</summary>
+<summary>Как you ensure that containers are secure and up-to-date?</summary>
 
-### How do you ensure that containers are secure and up-to-date?
+### Как you ensure that containers are secure and up-to-date?
 
 **Definition:**
 
@@ -2369,9 +2369,9 @@ $ docker run -i -t ubuntu /bin/bash
 </details>
 
 <details>
-<summary>What are the best practices for container networking in the context of microservices?</summary>
+<summary>Что такое the best practices for container networking in the context of microservices?</summary>
 
-### What are the best practices for container networking in the context of microservices?
+### Что такое the best practices for container networking in the context of microservices?
 
 **Definition:**
 

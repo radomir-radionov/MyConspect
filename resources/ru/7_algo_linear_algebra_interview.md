@@ -21,9 +21,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 ### Linear Algebra Fundamentals
 
 <details>
-<summary>What is a vector and how is it used in machine learning?</summary>
+<summary>Что такое vector and how is it used in machine learning?</summary>
 
-### What is a vector and how is it used in machine learning?
+### Что такое vector and how is it used in machine learning?
 
 **Definition:**
 
@@ -42,9 +42,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>Explain the difference between a scalar and a vector.</summary>
+<summary>Объясните разницу между скаляром и вектором.</summary>
 
-### Explain the difference between a scalar and a vector.
+### Объясните разницу между скаляром и вектором.
 
 **Definition:**
 
@@ -63,9 +63,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>What is a matrix and why is it central to linear algebra?</summary>
+<summary>Что такое matrix and why is it central to linear algebra?</summary>
 
-### What is a matrix and why is it central to linear algebra?
+### Что такое matrix and why is it central to linear algebra?
 
 **Definition:**
 
@@ -84,9 +84,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>Explain the concept of a tensor in the context of machine learning.</summary>
+<summary>Объясните концепцию тензора в контексте machine learning.</summary>
 
-### Explain the concept of a tensor in the context of machine learning.
+### Объясните концепцию тензора в контексте machine learning.
 
 **Definition:**
 
@@ -105,9 +105,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>How do you perform matrix addition and subtraction?</summary>
+<summary>Как вы выполняете сложение и вычитание маtrieц?</summary>
 
-### How do you perform matrix addition and subtraction?
+### Как вы выполняете сложение и вычитание маtrieц?
 
 **Definition:**
 
@@ -129,9 +129,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>What are the properties of matrix multiplication?</summary>
+<summary>Что такое the properties of matrix multiplication?</summary>
 
-### What are the properties of matrix multiplication?
+### Что такое the properties of matrix multiplication?
 
 **Definition:**
 
@@ -153,9 +153,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>Define the transpose of a matrix.</summary>
+<summary>Определите transpose matrix.</summary>
 
-### Define the transpose of a matrix.
+### Определите transpose matrix.
 
 **Definition:**
 
@@ -180,9 +180,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 ### Vector and Matrix Operations
 
 <details>
-<summary>Explain the dot product of two vectors and its significance in machine learning.</summary>
+<summary>Объясните скалярное произведение двух векторов и его значение в machine learning.</summary>
 
-### Explain the dot product of two vectors and its significance in machine learning.
+### Объясните скалярное произведение двух векторов и его значение в machine learning.
 
 **Definition:**
 
@@ -201,9 +201,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>What is the cross product of vectors and when is it used?</summary>
+<summary>Что такое the cross product of vectors and when is it used?</summary>
 
-### What is the cross product of vectors and when is it used?
+### Что такое the cross product of vectors and when is it used?
 
 **Definition:**
 
@@ -222,9 +222,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>How do you calculate the norm of a vector and what does it represent?</summary>
+<summary>Как вы вычисляете норму вектора и что она собой представляет?</summary>
 
-### How do you calculate the norm of a vector and what does it represent?
+### Как вы вычисляете норму вектора и что она собой представляет?
 
 **Definition:**
 
@@ -243,9 +243,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>Define the concept of orthogonality in linear algebra.</summary>
+<summary>Определить понятие ORthogonality в линейной алгебре.</summary>
 
-### Define the concept of orthogonality in linear algebra.
+### Определить понятие ORthogonality в линейной алгебре.
 
 **Definition:**
 
@@ -264,9 +264,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>What is the determinant of a matrix and what information does it provide?</summary>
+<summary>Что такое the determinant of a matrix and what information does it provide?</summary>
 
-### What is the determinant of a matrix and what information does it provide?
+### Что такое the determinant of a matrix and what information does it provide?
 
 **Definition:**
 
@@ -285,9 +285,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>Can you explain what an eigenvector and eigenvalue are?</summary>
+<summary>Можете ли вы объяснить, что такое eigenvector AND eigenvalue?</summary>
 
-### Can you explain what an eigenvector and eigenvalue are?
+### Можете ли вы объяснить, что такое eigenvector AND eigenvalue?
 
 **Definition:**
 
@@ -306,9 +306,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>How is the trace of a matrix defined and what is its relevance?</summary>
+<summary>Как the trace of a matrix defined and what is its relevance?</summary>
 
-### How is the trace of a matrix defined and what is its relevance?
+### Как the trace of a matrix defined and what is its relevance?
 
 **Definition:**
 
@@ -329,9 +329,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 ### Special Matrices and Their Properties
 
 <details>
-<summary>What is a diagonal matrix and how is it used in linear algebra?</summary>
+<summary>Что такое diaGonal matrix and how is it used in linear algebra?</summary>
 
-### What is a diagonal matrix and how is it used in linear algebra?
+### Что такое diaGonal matrix and how is it used in linear algebra?
 
 **Definition:**
 
@@ -353,9 +353,9 @@ Questions from [Devinterview.io — Linear Algebra](https://devinterview.io/ques
 </details>
 
 <details>
-<summary>Explain the properties of an identity matrix.</summary>
+<summary>Объясните свойства единичной маtrieцы.</summary>
 
-### Explain the properties of an identity matrix.
+### Объясните свойства единичной маtrieцы.
 
 **Definition:**
 
@@ -375,9 +375,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 </details>
 
 <details>
-<summary>Define what a symmetric matrix is.</summary>
+<summary>Определите, что такое симмеtrieчный matrix.</summary>
 
-### Define what a symmetric matrix is.
+### Определите, что такое симмеtrieчный matrix.
 
 **Definition:**
 
@@ -397,9 +397,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 </details>
 
 <details>
-<summary>What is a unit vector and how do you find it?</summary>
+<summary>Что такое unit vector and how do you find it?</summary>
 
-### What is a unit vector and how do you find it?
+### Что такое unit vector and how do you find it?
 
 **Definition:**
 
@@ -418,9 +418,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 </details>
 
 <details>
-<summary>Explain the concept of an orthogonal matrix.</summary>
+<summary>Объясните понятие ортогональной маtrieцы.</summary>
 
-### Explain the concept of an orthogonal matrix.
+### Объясните понятие ортогональной маtrieцы.
 
 **Definition:**
 
@@ -439,9 +439,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 </details>
 
 <details>
-<summary>Define positive definiteness of a matrix.</summary>
+<summary>Определите положительную определенность matrix.</summary>
 
-### Define positive definiteness of a matrix.
+### Определите положительную определенность matrix.
 
 **Definition:**
 
@@ -461,9 +461,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 </details>
 
 <details>
-<summary>What is the rank of a matrix and why is it important?</summary>
+<summary>Что такое the rank of a matrix and why is it important?</summary>
 
-### What is the rank of a matrix and why is it important?
+### Что такое the rank of a matrix and why is it important?
 
 **Definition:**
 
@@ -485,9 +485,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 ### Systems of Linear Equations
 
 <details>
-<summary>How do you represent a system of linear equations using matrices?</summary>
+<summary>Как вы представляете систему линейных уравнений с помощью маtrieц?</summary>
 
-### How do you represent a system of linear equations using matrices?
+### Как вы представляете систему линейных уравнений с помощью маtrieц?
 
 **Definition:**
 
@@ -506,9 +506,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 </details>
 
 <details>
-<summary>What is the method of Gaussian elimination?</summary>
+<summary>Что такое the method of GAussian elimination?</summary>
 
-### What is the method of Gaussian elimination?
+### Что такое the method of GAussian elimination?
 
 **Definition:**
 
@@ -528,9 +528,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 </details>
 
 <details>
-<summary>Explain the concept of linear dependence and independence.</summary>
+<summary>Объясните концепцию линейной зависимости и независимости.</summary>
 
-### Explain the concept of linear dependence and independence.
+### Объясните концепцию линейной зависимости и независимости.
 
 **Definition:**
 
@@ -549,9 +549,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 </details>
 
 <details>
-<summary>What is the meaning of the solution space of a system of linear equations?</summary>
+<summary>Что такое the meaning of the solution space of a system of linear equations?</summary>
 
-### What is the meaning of the solution space of a system of linear equations?
+### Что такое the meaning of the solution space of a system of linear equations?
 
 **Definition:**
 
@@ -570,9 +570,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 </details>
 
 <details>
-<summary>Describe the conditions for consistency in linear equations.</summary>
+<summary>Опишите условия совместности линейных уравнений.</summary>
 
-### Describe the conditions for consistency in linear equations.
+### Опишите условия совместности линейных уравнений.
 
 **Definition:**
 
@@ -592,9 +592,9 @@ https://scikit-learn.org/stable/modules/linear_model.html
 </details>
 
 <details>
-<summary>Define and differentiate between homogenous and non-homogenous systems.</summary>
+<summary>Определите AND дифференцируйте однородные неоднородные системы AND.</summary>
 
-### Define and differentiate between homogenous and non-homogenous systems.
+### Определите AND дифференцируйте однородные неоднородные системы AND.
 
 **Definition:**
 
@@ -615,9 +615,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 ### Advanced Matrix Operations
 
 <details>
-<summary>How do you compute the inverse of a matrix and when is it possible?</summary>
+<summary>Как вы вычисляете обратную маtrieцу и когда это возможно?</summary>
 
-### How do you compute the inverse of a matrix and when is it possible?
+### Как вы вычисляете обратную маtrieцу и когда это возможно?
 
 **Definition:**
 
@@ -636,9 +636,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 </details>
 
 <details>
-<summary>Explain the LU decomposition of a matrix.</summary>
+<summary>Объясните LU-разложение маtrieцы.</summary>
 
-### Explain the LU decomposition of a matrix.
+### Объясните LU-разложение маtrieцы.
 
 **Definition:**
 
@@ -657,9 +657,9 @@ https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.lu.html
 </details>
 
 <details>
-<summary>What are singular or ill-conditioned matrices?</summary>
+<summary>Что такое singular or ill-conditioned matrices?</summary>
 
-### What are singular or ill-conditioned matrices?
+### Что такое singular or ill-conditioned matrices?
 
 **Definition:**
 
@@ -679,9 +679,9 @@ https://scikit-learn.org/stable/modules/linear_model.html
 </details>
 
 <details>
-<summary>How do you perform QR decomposition?</summary>
+<summary>Как вы выполняете QR-декомпозицию?</summary>
 
-### How do you perform QR decomposition?
+### Как вы выполняете QR-декомпозицию?
 
 **Definition:**
 
@@ -700,9 +700,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 </details>
 
 <details>
-<summary>What is the Singular Value Decomposition (SVD) and its applications in machine learning?</summary>
+<summary>Что такое the Singular Value Decomposition (SVD) and its applications in machine learning?</summary>
 
-### What is the Singular Value Decomposition (SVD) and its applications in machine learning?
+### Что такое the Singular Value Decomposition (SVD) and its applications in machine learning?
 
 **Definition:**
 
@@ -722,9 +722,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 </details>
 
 <details>
-<summary>Explain the concept of matrix factorization.</summary>
+<summary>Объясните концепцию маtrieчной факторизации.</summary>
 
-### Explain the concept of matrix factorization.
+### Объясните концепцию маtrieчной факторизации.
 
 **Definition:**
 
@@ -747,9 +747,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 ### Linear Transformations and Mapping
 
 <details>
-<summary>What is a linear transformation in linear algebra?</summary>
+<summary>Что такое linear transformation in linear algebra?</summary>
 
-### What is a linear transformation in linear algebra?
+### Что такое linear transformation in linear algebra?
 
 **Definition:**
 
@@ -769,9 +769,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.eye.html
 </details>
 
 <details>
-<summary>How can you represent linear transformation using a matrix?</summary>
+<summary>Как вы можете представить линейное преобразование с помощью маtrieцы?</summary>
 
-### How can you represent linear transformation using a matrix?
+### Как вы можете представить линейное преобразование с помощью маtrieцы?
 
 **Definition:**
 
@@ -791,9 +791,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.eye.html
 </details>
 
 <details>
-<summary>Describe the kernel and image of a linear transformation.</summary>
+<summary>Опишите ядро ​​и образ линейного преобразования.</summary>
 
-### Describe the kernel and image of a linear transformation.
+### Опишите ядро ​​и образ линейного преобразования.
 
 **Definition:**
 
@@ -823,9 +823,9 @@ https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.orth.html
 </details>
 
 <details>
-<summary>How does change of basis affect matrix representation of linear transformations?</summary>
+<summary>Как изменение базиса влияет на маtrieчное представление линейных преобразований?</summary>
 
-### How does change of basis affect matrix representation of linear transformations?
+### Как изменение базиса влияет на маtrieчное представление линейных преобразований?
 
 **Definition:**
 
@@ -855,9 +855,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html
 ### Coding Challenges
 
 <details>
-<summary>Write code to add, subtract, and multiply two matrices without using external libraries.</summary>
+<summary>Напишите code to add, subtract, and multiply two matrices without using external libraries.</summary>
 
-### Write code to add, subtract, and multiply two matrices without using external libraries.
+### Напишите code to add, subtract, and multiply two matrices without using external libraries.
 
 **Definition:**
 
@@ -898,9 +898,9 @@ https://numpy.org/doc/stable/reference/routines.linalg.html
 </details>
 
 <details>
-<summary>Implement a function to calculate the transpose of a given matrix.</summary>
+<summary>Реализуйте a function to calculate the transpose of a given matrix.</summary>
 
-### Implement a function to calculate the transpose of a given matrix.
+### Реализуйте a function to calculate the transpose of a given matrix.
 
 **Definition:**
 
@@ -928,9 +928,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html
 </details>
 
 <details>
-<summary>Code to find the determinant of a matrix using recursion.</summary>
+<summary>Код для поиска определителя matrix с помощью рекурсии.</summary>
 
-### Code to find the determinant of a matrix using recursion.
+### Код для поиска определителя matrix с помощью рекурсии.
 
 **Definition:**
 
@@ -967,9 +967,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.det.html
 </details>
 
 <details>
-<summary>Develop a Python function to compute the inverse of a matrix.</summary>
+<summary>Разработайте функцию Python для вычисления обратной маtrieцы.</summary>
 
-### Develop a Python function to compute the inverse of a matrix.
+### Разработайте функцию Python для вычисления обратной маtrieцы.
 
 **Definition:**
 
@@ -1002,9 +1002,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.det.html
 </details>
 
 <details>
-<summary>Write an algorithm to perform eigenvalue and eigenvector decomposition.</summary>
+<summary>Напишите an alGorithm to perform eigenvalue and eigenvector decomposition.</summary>
 
-### Write an algorithm to perform eigenvalue and eigenvector decomposition.
+### Напишите an alGorithm to perform eigenvalue and eigenvector decomposition.
 
 **Definition:**
 
@@ -1033,9 +1033,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html
 </details>
 
 <details>
-<summary>Create a Python script to solve a system of linear equations using NumPy.</summary>
+<summary>Создайте скрипт Python для решения системы линейных уравнений с помощью NumPy.</summary>
 
-### Create a Python script to solve a system of linear equations using NumPy.
+### Создайте скрипт Python для решения системы линейных уравнений с помощью NumPy.
 
 **Definition:**
 
@@ -1065,9 +1065,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html
 </details>
 
 <details>
-<summary>Implement a function to calculate the L2 norm of a vector.</summary>
+<summary>Реализуйте a function to calculate the L2 norm of a vector.</summary>
 
-### Implement a function to calculate the L2 norm of a vector.
+### Реализуйте a function to calculate the L2 norm of a vector.
 
 **Definition:**
 
@@ -1096,9 +1096,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html
 </details>
 
 <details>
-<summary>Write a program to verify if a given square matrix is orthogonal.</summary>
+<summary>Напишите a program to verify if a given square matrix is orthoGonal.</summary>
 
-### Write a program to verify if a given square matrix is orthogonal.
+### Напишите a program to verify if a given square matrix is orthoGonal.
 
 **Definition:**
 
@@ -1135,9 +1135,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.eye.html
 ### Applications of Linear Algebra in Machine Learning
 
 <details>
-<summary>How is linear regression related to linear algebra?</summary>
+<summary>Как linear regression related to linear algebra?</summary>
 
-### How is linear regression related to linear algebra?
+### Как linear regression related to linear algebra?
 
 **Definition:**
 
@@ -1166,9 +1166,9 @@ https://scikit-learn.org/stable/modules/linear_model.html
 </details>
 
 <details>
-<summary>Describe the role of linear algebra in neural network computations.</summary>
+<summary>Опишите роль linear algebra в вычислениях нейронных сетей.</summary>
 
-### Describe the role of linear algebra in neural network computations.
+### Опишите роль linear algebra в вычислениях нейронных сетей.
 
 **Definition:**
 
@@ -1198,9 +1198,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.tensordot.html
 </details>
 
 <details>
-<summary>How do eigenvalues and eigenvectors apply to Principal Component Analysis (PCA)?</summary>
+<summary>Как собственные значения и векторы применимы к анализу главных компонент (PCA)?</summary>
 
-### How do eigenvalues and eigenvectors apply to Principal Component Analysis (PCA)?
+### Как собственные значения и векторы применимы к анализу главных компонент (PCA)?
 
 **Definition:**
 
@@ -1229,9 +1229,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html
 </details>
 
 <details>
-<summary>Explain how the SVD is used in recommendation systems.</summary>
+<summary>Объясните, как SVD используется в recommendation systems.</summary>
 
-### Explain how the SVD is used in recommendation systems.
+### Объясните, как SVD используется в recommendation systems.
 
 **Definition:**
 
@@ -1262,9 +1262,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 </details>
 
 <details>
-<summary>Discuss the importance of linear algebra in optimization problems, such as gradient descent.</summary>
+<summary>Обсудите важность linear algebra в задачах оптимизации, таких как градиентный спуск.</summary>
 
-### Discuss the importance of linear algebra in optimization problems, such as gradient descent.
+### Обсудите важность linear algebra в задачах оптимизации, таких как градиентный спуск.
 
 **Definition:**
 
@@ -1296,9 +1296,9 @@ https://scikit-learn.org/stable/modules/linear_model.html
 ### Practical Implementation and Problem Solving
 
 <details>
-<summary>How would you handle large-scale matrix operations efficiently in terms of memory and computation?</summary>
+<summary>Как бы вы handle large-scale matrix operations efficiently in terms of memory and computation?</summary>
 
-### How would you handle large-scale matrix operations efficiently in terms of memory and computation?
+### Как бы вы handle large-scale matrix operations efficiently in terms of memory and computation?
 
 **Definition:**
 
@@ -1319,9 +1319,9 @@ https://docs.scipy.org/doc/scipy/reference/sparse.html
 </details>
 
 <details>
-<summary>Explain how you would preprocess data to be used in linear algebra computations.</summary>
+<summary>Объясните, как вы будете предварительно обрабатывать данные, которые будут использоваться в вычислениях linear algebra.</summary>
 
-### Explain how you would preprocess data to be used in linear algebra computations.
+### Объясните, как вы будете предварительно обрабатывать данные, которые будут использоваться в вычислениях linear algebra.
 
 **Definition:**
 
@@ -1351,9 +1351,9 @@ https://scikit-learn.org/stable/modules/linear_model.html
 </details>
 
 <details>
-<summary>Describe ways to find the rank of a matrix effectively.</summary>
+<summary>Описать способы эффективного нахождения ранга маtrieцы.</summary>
 
-### Describe ways to find the rank of a matrix effectively.
+### Описать способы эффективного нахождения ранга маtrieцы.
 
 **Definition:**
 
@@ -1383,9 +1383,9 @@ https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.null_space.htm
 </details>
 
 <details>
-<summary>What would you consider when choosing a library for linear algebra operations?</summary>
+<summary>Что вы учитываете при выборе библиотеки для linear algebra operations?</summary>
 
-### What would you consider when choosing a library for linear algebra operations?
+### Что вы учитываете при выборе библиотеки для linear algebra operations?
 
 **Definition:**
 
@@ -1407,9 +1407,9 @@ https://docs.scipy.org/doc/scipy/reference/sparse.html
 </details>
 
 <details>
-<summary>How do you ensure numerical stability when performing matrix computations?</summary>
+<summary>Как вы обеспечиваете численную стабильность при выполнении маtrieчных вычислений?</summary>
 
-### How do you ensure numerical stability when performing matrix computations?
+### Как вы обеспечиваете численную стабильность при выполнении маtrieчных вычислений?
 
 **Definition:**
 
@@ -1443,9 +1443,9 @@ https://scikit-learn.org/stable/modules/linear_model.html
 ### Real-world Scenarios and Data Handling
 
 <details>
-<summary>Propose a method for dimensionality reduction using linear algebra techniques.</summary>
+<summary>Предложите метод dimensionality reduction с использованием linear algebra.</summary>
 
-### Propose a method for dimensionality reduction using linear algebra techniques.
+### Предложите метод dimensionality reduction с использованием linear algebra.
 
 **Definition:**
 
@@ -1473,9 +1473,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 </details>
 
 <details>
-<summary>Explain how you would use linear algebra to clean and preprocess a dataset.</summary>
+<summary>Объясните, как бы вы использовали linear algebra для очистки и предварительной обработки набора данных.</summary>
 
-### Explain how you would use linear algebra to clean and preprocess a dataset.
+### Объясните, как бы вы использовали linear algebra для очистки и предварительной обработки набора данных.
 
 **Definition:**
 
@@ -1506,9 +1506,9 @@ https://scikit-learn.org/stable/modules/linear_model.html
 </details>
 
 <details>
-<summary>Describe a scenario where linear algebra could be used to improve model accuracy.</summary>
+<summary>Опишите сценарий, в котором линейная алгебра может быть использована для повышения точности модели.</summary>
 
-### Describe a scenario where linear algebra could be used to improve model accuracy.
+### Опишите сценарий, в котором линейная алгебра может быть использована для повышения точности модели.
 
 **Definition:**
 
@@ -1538,9 +1538,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 </details>
 
 <details>
-<summary>How would you use matrices to model relational data in databases?</summary>
+<summary>Как бы вы use matrices to model relational data in dataBASEs?</summary>
 
-### How would you use matrices to model relational data in databases?
+### Как бы вы use matrices to model relational data in dataBASEs?
 
 **Definition:**
 
@@ -1569,9 +1569,9 @@ https://docs.scipy.org/doc/scipy/reference/sparse.html
 </details>
 
 <details>
-<summary>Discuss how to apply linear algebra to image processing tasks.</summary>
+<summary>Обсудите, как применять linear algebra для задач обработки изображений.</summary>
 
-### Discuss how to apply linear algebra to image processing tasks.
+### Обсудите, как применять linear algebra для задач обработки изображений.
 
 **Definition:**
 
@@ -1603,9 +1603,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 ### Advanced Topics and Research
 
 <details>
-<summary>What are sparse matrices and how are they efficiently represented and used?</summary>
+<summary>Что такое sparse matrices and how are they efficiently represented and used?</summary>
 
-### What are sparse matrices and how are they efficiently represented and used?
+### Что такое sparse matrices and how are they efficiently represented and used?
 
 **Definition:**
 
@@ -1633,9 +1633,9 @@ https://docs.scipy.org/doc/scipy/reference/sparse.html
 </details>
 
 <details>
-<summary>Discuss the role of linear algebra in deep learning, specifically in training convolutional neural networks.</summary>
+<summary>Обсудите роль linear algebra в глубоком обучении, в частности, в обучении сверточных нейронных сетей.</summary>
 
-### Discuss the role of linear algebra in deep learning, specifically in training convolutional neural networks.
+### Обсудите роль linear algebra в глубоком обучении, в частности, в обучении сверточных нейронных сетей.
 
 **Definition:**
 
@@ -1667,9 +1667,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 </details>
 
 <details>
-<summary>Explain how tensor operations are vital in algorithms working with higher-dimensional data.</summary>
+<summary>Объясните, почему тензорные операции жизненно важны в алгоритмах, работающих с данными большой размерности.</summary>
 
-### Explain how tensor operations are vital in algorithms working with higher-dimensional data.
+### Объясните, почему тензорные операции жизненно важны в алгоритмах, работающих с данными большой размерности.
 
 **Definition:**
 
@@ -1697,9 +1697,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html
 </details>
 
 <details>
-<summary>What is the role of linear algebra in time series analysis?</summary>
+<summary>Что такое the role of linear algebra in time series analysis?</summary>
 
-### What is the role of linear algebra in time series analysis?
+### Что такое the role of linear algebra in time series analysis?
 
 **Definition:**
 
@@ -1728,9 +1728,9 @@ https://scikit-learn.org/stable/modules/linear_model.html
 </details>
 
 <details>
-<summary>How do graph theory and linear algebra intersect in machine learning?</summary>
+<summary>Как теория graph и linear algebra пересекаются в machine learning?</summary>
 
-### How do graph theory and linear algebra intersect in machine learning?
+### Как теория graph и linear algebra пересекаются в machine learning?
 
 **Definition:**
 
@@ -1760,9 +1760,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html
 ### Case Studies and Scenario-Based Challenges
 
 <details>
-<summary>Given a dataset, determine if PCA would be beneficial and justify your approach.</summary>
+<summary>Получив набор данных, определите, будет ли полезен PCA, и обоснуйте свой подход.</summary>
 
-### Given a dataset, determine if PCA would be beneficial and justify your approach.
+### Получив набор данных, определите, будет ли полезен PCA, и обоснуйте свой подход.
 
 **Definition:**
 
@@ -1790,9 +1790,9 @@ https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_rank.html
 </details>
 
 <details>
-<summary>How would you implement a linear algebra-based algorithm to classify text documents?</summary>
+<summary>Как бы вы implement a linear algebra-BASEd alGorithm to classify text documents?</summary>
 
-### How would you implement a linear algebra-based algorithm to classify text documents?
+### Как бы вы implement a linear algebra-BASEd alGorithm to classify text documents?
 
 **Definition:**
 
@@ -1821,9 +1821,9 @@ https://docs.scipy.org/doc/scipy/reference/sparse.html
 </details>
 
 <details>
-<summary>Design a linear algebra solution for a collaborative filtering problem in a movie recommendation system.</summary>
+<summary>Разработайте решение linear algebra для проблемы совместной фильтрации в фильме recommendation system.</summary>
 
-### Design a linear algebra solution for a collaborative filtering problem in a movie recommendation system.
+### Разработайте решение linear algebra для проблемы совместной фильтрации в фильме recommendation system.
 
 **Definition:**
 
@@ -1854,9 +1854,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 </details>
 
 <details>
-<summary>Propose strategies to visualize high-dimensional data using linear algebra techniques.</summary>
+<summary>Предложите стратегии визуализации многомерных данных с помощью linear algebra.</summary>
 
-### Propose strategies to visualize high-dimensional data using linear algebra techniques.
+### Предложите стратегии визуализации многомерных данных с помощью linear algebra.
 
 **Definition:**
 
@@ -1883,9 +1883,9 @@ https://scikit-learn.org/stable/modules/decomposition.html
 </details>
 
 <details>
-<summary>Discuss an approach for optimizing memory usage in matrix computations for a large-scale machine learning application.</summary>
+<summary>Обсудите подход к оптимизации использования памяти при маtrieчных вычислениях для крупномасштабного приложения machine learning.</summary>
 
-### Discuss an approach for optimizing memory usage in matrix computations for a large-scale machine learning application.
+### Обсудите подход к оптимизации использования памяти при маtrieчных вычислениях для крупномасштабного приложения machine learning.
 
 **Definition:**
 

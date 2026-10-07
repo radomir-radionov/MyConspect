@@ -20,9 +20,9 @@ Questions from [Devinterview.io — Arrays](https://devinterview.io/questions/da
 ### Fundamental Array Concepts
 
 <details>
-<summary>What is an Array?</summary>
+<summary>Что такое array?</summary>
 
-### What is an Array?
+### Что такое array?
 
 **Definition:**
 
@@ -45,9 +45,9 @@ base = 1000, размер элемента = 4
 </details>
 
 <details>
-<summary>What are Dynamic Arrays?</summary>
+<summary>Что такое Dynamic arrays?</summary>
 
-### What are Dynamic Arrays?
+### Что такое Dynamic arrays?
 
 **Definition:**
 
@@ -69,9 +69,9 @@ base = 1000, размер элемента = 4
 </details>
 
 <details>
-<summary>What is an Associative Array (Dictionary)?</summary>
+<summary>Что такое Associative array (Dictionary)?</summary>
 
-### What is an Associative Array (Dictionary)?
+### Что такое Associative array (Dictionary)?
 
 **Definition:**
 
@@ -90,9 +90,9 @@ base = 1000, размер элемента = 4
 </details>
 
 <details>
-<summary>What defines the Dimensionality of an array?</summary>
+<summary>Что определяет dimensionality array?</summary>
 
-### What defines the Dimensionality of an array?
+### Что определяет dimensionality array?
 
 **Definition:**
 
@@ -113,9 +113,9 @@ base = 1000, размер элемента = 4
 ### Array Types and Properties
 
 <details>
-<summary>Name some Advantages and Disadvantages of arrays.</summary>
+<summary>Назовите some Advantages and Disadvantages of arrays.</summary>
 
-### Name some Advantages and Disadvantages of arrays.
+### Назовите some Advantages and Disadvantages of arrays.
 
 **Definition:**
 
@@ -130,9 +130,9 @@ base = 1000, размер элемента = 4
 </details>
 
 <details>
-<summary>Explain Sparse and Dense arrays.</summary>
+<summary>Объясните разреженный и плотный arrays.</summary>
 
-### Explain Sparse and Dense arrays.
+### Объясните разреженный и плотный arrays.
 
 **Definition:**
 
@@ -147,9 +147,9 @@ base = 1000, размер элемента = 4
 </details>
 
 <details>
-<summary>What are advantages and disadvantages of Sorted Arrays?</summary>
+<summary>Что такое advantages and disadvantages of Sorted arrays?</summary>
 
-### What are advantages and disadvantages of Sorted Arrays?
+### Что такое advantages and disadvantages of Sorted arrays?
 
 **Definition:**
 
@@ -164,9 +164,9 @@ base = 1000, размер элемента = 4
 </details>
 
 <details>
-<summary>What are the advantages of Heaps over Sorted Arrays?</summary>
+<summary>Что такое the advantages of heaps over Sorted arrays?</summary>
 
-### What are the advantages of Heaps over Sorted Arrays?
+### Что такое the advantages of heaps over Sorted arrays?
 
 **Definition:**
 
@@ -183,9 +183,9 @@ base = 1000, размер элемента = 4
 ### Array Operations and Management
 
 <details>
-<summary>How does Indexing work in arrays?</summary>
+<summary>Как работает индексация в arrays?</summary>
 
-### How does Indexing work in arrays?
+### Как работает индексация в arrays?
 
 **Definition:**
 
@@ -204,9 +204,9 @@ base = 1000, размер элемента = 4
 </details>
 
 <details>
-<summary>Merge two Sorted Arrays into one Sorted Array.</summary>
+<summary>Объедините two Sorted arrays into one Sorted array.</summary>
 
-### Merge two Sorted Arrays into one Sorted Array.
+### Объедините two Sorted arrays into one Sorted array.
 
 **Definition:**
 
@@ -228,9 +228,9 @@ base = 1000, размер элемента = 4
 </details>
 
 <details>
-<summary>Implement three Stacks with one Array.</summary>
+<summary>Реализуйте three stacks with one array.</summary>
 
-### Implement three Stacks with one Array.
+### Реализуйте three stacks with one array.
 
 **Definition:**
 
@@ -254,9 +254,9 @@ push stack0 -> взять слот 2, prev=0
 </details>
 
 <details>
-<summary>How do you perform Array Rotation and what are its applications?</summary>
+<summary>Как вы выполняете вращение array и каковы его возможности?</summary>
 
-### How do you perform Array Rotation and what are its applications?
+### Как вы выполняете вращение array и каковы его возможности?
 
 **Definition:**
 
@@ -280,9 +280,9 @@ push stack0 -> взять слот 2, prev=0
 </details>
 
 <details>
-<summary>Reverse an Array in place.</summary>
+<summary>Разверните an array in place.</summary>
 
-### Reverse an Array in place.
+### Разверните an array in place.
 
 **Definition:**
 
@@ -305,9 +305,9 @@ push stack0 -> взять слот 2, prev=0
 </details>
 
 <details>
-<summary>Remove Duplicates from a sorted array without using extra space.</summary>
+<summary>Удалите Duplicates from a sorted array without using extra space.</summary>
 
-### Remove Duplicates from a sorted array without using extra space.
+### Удалите Duplicates from a sorted array without using extra space.
 
 **Definition:**
 
@@ -330,9 +330,9 @@ write остаётся на первой 1, затем копирует 2, за�
 </details>
 
 <details>
-<summary>Implement a Queue using an array.</summary>
+<summary>Реализуйте a queue using an array.</summary>
 
-### Implement a Queue using an array.
+### Реализуйте a queue using an array.
 
 **Definition:**
 
@@ -357,9 +357,9 @@ enqueue 4, 5 -> [5, 2, 3, 4]
 ### Array-based Algorithms
 
 <details>
-<summary>Check the String for Balanced Parentheses, using linear time and constant space.</summary>
+<summary>Проверьте сбалансированные скобки String fOR, используя постоянное пространство линейного времени AND.</summary>
 
-### Check the String for Balanced Parentheses, using linear time and constant space.
+### Проверьте сбалансированные скобки String fOR, используя постоянное пространство линейного времени AND.
 
 **Definition:**
 
@@ -394,9 +394,9 @@ function balanced(s) {
 </details>
 
 <details>
-<summary>Explain an algorithm to find the Longest Consecutive Sequence in an unsorted array.</summary>
+<summary>Объясните алгоритм поиска самой длинной последовательной последовательности в несортированном файле array.</summary>
 
-### Explain an algorithm to find the Longest Consecutive Sequence in an unsorted array.
+### Объясните алгоритм поиска самой длинной последовательной последовательности в несортированном файле array.
 
 **Definition:**
 
@@ -422,9 +422,9 @@ function balanced(s) {
 </details>
 
 <details>
-<summary>Find the “Kth” Largest Element in an Array.</summary>
+<summary>Найдите “K-й” по величине элемент в array.</summary>
 
-### Find the “Kth” Largest Element in an Array.
+### Найдите “K-й” по величине элемент в array.
 
 **Definition:**
 
@@ -451,9 +451,9 @@ partition until index n - 2 holds 5
 </details>
 
 <details>
-<summary>Explain how to do Binary Search in a Sorted Array.</summary>
+<summary>Объясните, как сделать binary search в отсортированном array.</summary>
 
-### Explain how to do Binary Search in a Sorted Array.
+### Объясните, как сделать binary search в отсортированном array.
 
 **Definition:**
 
@@ -480,9 +480,9 @@ mid 7 -> found
 </details>
 
 <details>
-<summary>Implement Heap Sort using an Array.</summary>
+<summary>Реализуйте heap sort using an array.</summary>
 
-### Implement Heap Sort using an Array.
+### Реализуйте heap sort using an array.
 
 **Definition:**
 
@@ -512,9 +512,9 @@ swap 2 -> [1, 2, 3]
 ### Array Comparison
 
 <details>
-<summary>What are some pros and cons of Linked List compared to Arrays?</summary>
+<summary>Что такое some pros and cons of linked list compared to arrays?</summary>
 
-### What are some pros and cons of Linked List compared to Arrays?
+### Что такое some pros and cons of linked list compared to arrays?
 
 **Definition:**
 
@@ -539,9 +539,9 @@ swap 2 -> [1, 2, 3]
 </details>
 
 <details>
-<summary>Compare Array-based vs Linked List stack implementations.</summary>
+<summary>Сравните реализацию array с реализацией linked listZ stack.</summary>
 
-### Compare Array-based vs Linked List stack implementations.
+### Сравните реализацию array с реализацией linked listZ stack.
 
 **Definition:**
 
@@ -565,9 +565,9 @@ swap 2 -> [1, 2, 3]
 </details>
 
 <details>
-<summary>Compare Dynamic Arrays with Linked Lists.</summary>
+<summary>Сравните Dynamic arrays с linked lists.</summary>
 
-### Compare Dynamic Arrays with Linked Lists.
+### Сравните Dynamic arrays с linked lists.
 
 **Definition:**
 
@@ -594,9 +594,9 @@ swap 2 -> [1, 2, 3]
 ### Advanced Array Topics and Techniques
 
 <details>
-<summary>Shuffle an array, ensuring that each element has an equal probability of being in any position.</summary>
+<summary>Перемешайте array, обеспечив равную вероятность каждого элемента в любой позиции.</summary>
 
-### Shuffle an array, ensuring that each element has an equal probability of being in any position.
+### Перемешайте array, обеспечив равную вероятность каждого элемента в любой позиции.
 
 **Definition:**
 
@@ -627,9 +627,9 @@ function shuffle(a) {
 </details>
 
 <details>
-<summary>Solve the Rain Water Trapping problem using arrays.</summary>
+<summary>Решите the Rain Water Trapping problem using arrays.</summary>
 
-### Solve the Rain Water Trapping problem using arrays.
+### Решите the Rain Water Trapping problem using arrays.
 
 **Definition:**
 
@@ -655,9 +655,9 @@ water between the 1 and the 3 sums to 5
 </details>
 
 <details>
-<summary>Explain the two-pointer technique and give examples of its use in array problems.</summary>
+<summary>Объясните технику работы с двумя указателями и приведите примеры ее использования в задачах array.</summary>
 
-### Explain the two-pointer technique and give examples of its use in array problems.
+### Объясните технику работы с двумя указателями и приведите примеры ее использования в задачах array.
 
 **Definition:**
 
@@ -690,9 +690,9 @@ sorted [1, 2, 4, 7], sum 6
 </details>
 
 <details>
-<summary>What are the typical use cases for using an array in a Sliding Window Algorithm?</summary>
+<summary>Что такое the typical use cases for using an array in a sliding window AlGorithm?</summary>
 
-### What are the typical use cases for using an array in a Sliding Window Algorithm?
+### Что такое the typical use cases for using an array in a sliding window AlGorithm?
 
 **Definition:**
 
@@ -716,9 +716,9 @@ sorted [1, 2, 4, 7], sum 6
 </details>
 
 <details>
-<summary>Find all pairs in an Array with a given sum.</summary>
+<summary>Найдите все пары в array с заданной суммой.</summary>
 
-### Find all pairs in an Array with a given sum.
+### Найдите все пары в array с заданной суммой.
 
 **Definition:**
 
@@ -747,9 +747,9 @@ sorted [1, 2, 4, 7], sum 6
 ### Array Optimization and Use Cases
 
 <details>
-<summary>Explain the difference between Column-major Order and Row-major Order in multidimensional arrays.</summary>
+<summary>Объясните разницу между порядком следования столбцов и строк в многомерном arrays.</summary>
 
-### Explain the difference between Column-major Order and Row-major Order in multidimensional arrays.
+### Объясните разницу между порядком следования столбцов и строк в многомерном arrays.
 
 **Definition:**
 
@@ -773,9 +773,9 @@ sorted [1, 2, 4, 7], sum 6
 </details>
 
 <details>
-<summary>How is a Circular Array useful, and how would you implement one?</summary>
+<summary>Как a Circular array useful, and how would you implement one?</summary>
 
-### How is a Circular Array useful, and how would you implement one?
+### Как a Circular array useful, and how would you implement one?
 
 **Definition:**
 
@@ -804,9 +804,9 @@ enqueue 3, 4, 5 -> [5, 2, 3, 4]
 </details>
 
 <details>
-<summary>How to optimize operations in a Very Large Array that has many zero elements (i.e., a Sparse Array).</summary>
+<summary>Как оптимизировать операции в very large array с множеством нулевых элементов (sparse array)?</summary>
 
-### How to optimize operations in a Very Large Array that has many zero elements (i.e., a Sparse Array).
+### Как оптимизировать операции в very large array с множеством нулевых элементов (sparse array)?
 
 **Definition:**
 
@@ -829,9 +829,9 @@ enqueue 3, 4, 5 -> [5, 2, 3, 4]
 </details>
 
 <details>
-<summary>How would you create and work with a Multi-Dimensional Array?</summary>
+<summary>Как бы вы create and work with a Multi-Dimensional array?</summary>
 
-### How would you create and work with a Multi-Dimensional Array?
+### Как бы вы create and work with a Multi-Dimensional array?
 
 **Definition:**
 
@@ -859,9 +859,9 @@ const at = (i, j) => i * cols + j;
 </details>
 
 <details>
-<summary>Explain the methodology for Resizing a Dynamic Array and its impact on time complexity.</summary>
+<summary>Объясните методологию изменения размера динамического array и ее влияние на time complexity.</summary>
 
-### Explain the methodology for Resizing a Dynamic Array and its impact on time complexity.
+### Объясните методологию изменения размера динамического array и ее влияние на time complexity.
 
 **Definition:**
 
@@ -886,9 +886,9 @@ const at = (i, j) => i * cols + j;
 ### Array Techniques and Optimization
 
 <details>
-<summary>Implement Binary Search in a circularly sorted array.</summary>
+<summary>Реализуйте binary search in a circularly sorted array.</summary>
 
-### Implement Binary Search in a circularly sorted array.
+### Реализуйте binary search in a circularly sorted array.
 
 **Definition:**
 
@@ -914,9 +914,9 @@ mid is 6, right half 1,2,3 is ordered and contains 2
 </details>
 
 <details>
-<summary>Describe an algorithm for Dutch National Flag sorting problem.</summary>
+<summary>Опишите алгоритм для задачи Dutch National Flag sort.</summary>
 
-### Describe an algorithm for Dutch National Flag sorting problem.
+### Опишите алгоритм для задачи Dutch National Flag sort.
 
 **Definition:**
 
@@ -943,9 +943,9 @@ mid is 6, right half 1,2,3 is ordered and contains 2
 </details>
 
 <details>
-<summary>How would you multiply two large numbers represented as integer arrays?</summary>
+<summary>Как бы вы multiply two large numbers represented as integer arrays?</summary>
 
-### How would you multiply two large numbers represented as integer arrays?
+### Как бы вы multiply two large numbers represented as integer arrays?
 
 **Definition:**
 
@@ -972,9 +972,9 @@ after carry -> [1, 8, 0, 9] which is 9801
 </details>
 
 <details>
-<summary>Explain how to implement an Efficient Range Sum Query using arrays.</summary>
+<summary>Объясните, как реализовать эффективный запрос суммы диапазона с помощью arrays.</summary>
 
-### Explain how to implement an Efficient Range Sum Query using arrays.
+### Объясните, как реализовать эффективный запрос суммы диапазона с помощью arrays.
 
 **Definition:**
 
@@ -998,9 +998,9 @@ after carry -> [1, 8, 0, 9] which is 9801
 </details>
 
 <details>
-<summary>Describe a Space-Efficient Data Structure for sparse arrays.</summary>
+<summary>Опишите компактную структуру данных fOR разреженную arrays.</summary>
 
-### Describe a Space-Efficient Data Structure for sparse arrays.
+### Опишите компактную структуру данных fOR разреженную arrays.
 
 **Definition:**
 
@@ -1026,9 +1026,9 @@ after carry -> [1, 8, 0, 9] which is 9801
 ### Searching and Sorting Challenges
 
 <details>
-<summary>Explain the Quickselect algorithm and its relation to arrays.</summary>
+<summary>Объясните алгоритм быстрого выбора и его связь с arrays.</summary>
 
-### Explain the Quickselect algorithm and its relation to arrays.
+### Объясните алгоритм быстрого выбора и его связь с arrays.
 
 **Definition:**
 
@@ -1054,9 +1054,9 @@ partition until index 1 is the 2nd smallest
 </details>
 
 <details>
-<summary>How can Quicksort be optimized for arrays with many duplicate elements?</summary>
+<summary>Как можно оптимизировать quicksort для arrays с большим количеством повторяющихся элементов?</summary>
 
-### How can Quicksort be optimized for arrays with many duplicate elements?
+### Как можно оптимизировать quicksort для arrays с большим количеством повторяющихся элементов?
 
 **Definition:**
 
@@ -1080,9 +1080,9 @@ partition until index 1 is the 2nd smallest
 </details>
 
 <details>
-<summary>Describe an algorithm to perform Inversion Count in an array.</summary>
+<summary>Опишите алгоритм подсчёта инверсий в array.</summary>
 
-### Describe an algorithm to perform Inversion Count in an array.
+### Опишите алгоритм подсчёта инверсий в array.
 
 **Definition:**
 
@@ -1112,9 +1112,9 @@ total 3
 </details>
 
 <details>
-<summary>Explain the application of Binary Indexed Trees or Fenwick Trees in the context of arrays.</summary>
+<summary>Объясните применение бинарных индексированных деревьев или деревьев Фенвика в контексте arrays.</summary>
 
-### Explain the application of Binary Indexed Trees or Fenwick Trees in the context of arrays.
+### Объясните применение бинарных индексированных деревьев или деревьев Фенвика в контексте arrays.
 
 **Definition:**
 
@@ -1138,9 +1138,9 @@ total 3
 </details>
 
 <details>
-<summary>Design an algorithm for the Skyline Problem using arrays.</summary>
+<summary>Разработайте алгоритм для Skyline Problem, используя arrays.</summary>
 
-### Design an algorithm for the Skyline Problem using arrays.
+### Разработайте алгоритм для Skyline Problem, используя arrays.
 
 **Definition:**
 
@@ -1169,9 +1169,9 @@ outline heights: 2 at x=1, 3 at x=2, 0 at x=4
 ### Multidimensional Arrays and Matrices
 
 <details>
-<summary>How would you implement an efficient matrix transpose operation?</summary>
+<summary>Как бы вы implement an efficient matrix transpose operation?</summary>
 
-### How would you implement an efficient matrix transpose operation?
+### Как бы вы implement an efficient matrix transpose operation?
 
 **Definition:**
 
@@ -1202,9 +1202,9 @@ outline heights: 2 at x=1, 3 at x=2, 0 at x=4
 </details>
 
 <details>
-<summary>What are some efficient methods for performing matrix multiplication using arrays?</summary>
+<summary>Что такое some efficient methods for performing matrix multiplication using arrays?</summary>
 
-### What are some efficient methods for performing matrix multiplication using arrays?
+### Что такое some efficient methods for performing matrix multiplication using arrays?
 
 **Definition:**
 
@@ -1229,9 +1229,9 @@ outline heights: 2 at x=1, 3 at x=2, 0 at x=4
 </details>
 
 <details>
-<summary>Solve the Sudoku Solver problem using arrays.</summary>
+<summary>Решите the Sudoku Solver problem using arrays.</summary>
 
-### Solve the Sudoku Solver problem using arrays.
+### Решите the Sudoku Solver problem using arrays.
 
 **Definition:**
 
@@ -1257,9 +1257,9 @@ a digit already in row 4, column 5, or that box is illegal
 </details>
 
 <details>
-<summary>Flatten a 2D Matrix into a 1D Array without extra space.</summary>
+<summary>Сведите 2D-маtrieцу в 1D array без дополнительного пространства.</summary>
 
-### Flatten a 2D Matrix into a 1D Array without extra space.
+### Сведите 2D-маtrieцу в 1D array без дополнительного пространства.
 
 **Definition:**
 
@@ -1285,9 +1285,9 @@ a digit already in row 4, column 5, or that box is illegal
 </details>
 
 <details>
-<summary>Implement an algorithm to search in a Row-wise and Column-wise Sorted 2D Array.</summary>
+<summary>Реализуйте an alGorithm to search in a Row-wise and Column-wise Sorted 2D array.</summary>
 
-### Implement an algorithm to search in a Row-wise and Column-wise Sorted 2D Array.
+### Реализуйте an alGorithm to search in a Row-wise and Column-wise Sorted 2D array.
 
 **Definition:**
 
@@ -1318,9 +1318,9 @@ target 6 starts at 7, moves left to 4, down to 5, down to 6
 ### Specific Data Structures Using Arrays
 
 <details>
-<summary>Explain how a Priority Queue can be implemented using an array.</summary>
+<summary>Объясните, как priority queue может быть реализован с помощью array.</summary>
 
-### Explain how a Priority Queue can be implemented using an array.
+### Объясните, как priority queue может быть реализован с помощью array.
 
 **Definition:**
 
@@ -1344,9 +1344,9 @@ target 6 starts at 7, moves left to 4, down to 5, down to 6
 </details>
 
 <details>
-<summary>How can we use arrays to implement a Suffix Array and what is its usefulness?</summary>
+<summary>Как мы можем использовать arrays для реализации суффикса array и в чем его полезность?</summary>
 
-### How can we use arrays to implement a Suffix Array and what is its usefulness?
+### Как мы можем использовать arrays для реализации суффикса array и в чем его полезность?
 
 **Definition:**
 
@@ -1375,9 +1375,9 @@ a pattern "na" falls between the na/nana entries
 </details>
 
 <details>
-<summary>Design a Double-ended Queue (Deque) using arrays.</summary>
+<summary>Спроектируйте двусторонний queue (deque) с помощью arrays.</summary>
 
-### Design a Double-ended Queue (Deque) using arrays.
+### Спроектируйте двусторонний queue (deque) с помощью arrays.
 
 **Definition:**
 
@@ -1408,9 +1408,9 @@ function pushFront(q, x) {
 </details>
 
 <details>
-<summary>Provide the implementation of a Trie data structure using an array-based representation.</summary>
+<summary>Приведите the implementation of a Trie data structure using an array-BASEd representation.</summary>
 
-### Provide the implementation of a Trie data structure using an array-based representation.
+### Приведите the implementation of a Trie data structure using an array-BASEd representation.
 
 **Definition:**
 
@@ -1439,9 +1439,9 @@ search "car" dies at the missing 'r' slot
 ### Advanced Algorithmic Problems
 
 <details>
-<summary>Develop an algorithm to solve the Kadane’s Algorithm (Maximum Subarray Problem).</summary>
+<summary>Разработайте алгоритм решения алгоритма Кадане (максимальная проблема Subarray).</summary>
 
-### Develop an algorithm to solve the Kadane’s Algorithm (Maximum Subarray Problem).
+### Разработайте алгоритм решения алгоритма Кадане (максимальная проблема Subarray).
 
 **Definition:**
 
@@ -1474,9 +1474,9 @@ function maxSubarray(a) {
 </details>
 
 <details>
-<summary>Solve the Minimum Jumps to Reach End problem with arrays.</summary>
+<summary>Решите the Minimum Jumps to Reach End problem with arrays.</summary>
 
-### Solve the Minimum Jumps to Reach End problem with arrays.
+### Решите the Minimum Jumps to Reach End problem with arrays.
 
 **Definition:**
 
@@ -1504,9 +1504,9 @@ two jumps
 </details>
 
 <details>
-<summary>Design a data structure that supports adding new elements, removing specific elements, and finding random elements efficiently.</summary>
+<summary>Спроектируйте структуру данных, которая поддерживает добавление новых элементов, удаление определенных элементов и эффективный поиск случайных элементов.</summary>
 
-### Design a data structure that supports adding new elements, removing specific elements, and finding random elements efficiently.
+### Спроектируйте структуру данных, которая поддерживает добавление новых элементов, удаление определенных элементов и эффективный поиск случайных элементов.
 
 **Definition:**
 
@@ -1533,9 +1533,9 @@ remove b -> swap with c -> [a, c], pop not needed if b was swapped to the end an
 </details>
 
 <details>
-<summary>Solve the 0/1 Knapsack Problem using a dynamic programming approach based on arrays.</summary>
+<summary>Решите the 0/1 Knapsack Problem using a dynamic programming approach BASEd on arrays.</summary>
 
-### Solve the 0/1 Knapsack Problem using a dynamic programming approach based on arrays.
+### Решите the 0/1 Knapsack Problem using a dynamic programming approach BASEd on arrays.
 
 **Definition:**
 
@@ -1561,9 +1561,9 @@ best is the second item alone, value 3
 </details>
 
 <details>
-<summary>Develop an algorithm to find the Median of Two Sorted Arrays of different sizes.</summary>
+<summary>Разработайте алгоритм для поиска медианы двух отсортированных arrays разных размеров.</summary>
 
-### Develop an algorithm to find the Median of Two Sorted Arrays of different sizes.
+### Разработайте алгоритм для поиска медианы двух отсортированных arrays разных размеров.
 
 **Definition:**
 
@@ -1591,9 +1591,9 @@ merged middle is 2
 ### Performance and Memory Considerations
 
 <details>
-<summary>Provide strategies for handling Integer Overflow while working with numeric arrays.</summary>
+<summary>Приведите strategies for handling Integer Overflow while working with numeric arrays.</summary>
 
-### Provide strategies for handling Integer Overflow while working with numeric arrays.
+### Приведите strategies for handling Integer Overflow while working with numeric arrays.
 
 **Definition:**
 
@@ -1618,9 +1618,9 @@ merged middle is 2
 </details>
 
 <details>
-<summary>What are the implications of Data Caching and Locality of Reference in array operations?</summary>
+<summary>Что такое the implications of Data caching and Locality of Reference in array operations?</summary>
 
-### What are the implications of Data Caching and Locality of Reference in array operations?
+### Что такое the implications of Data caching and Locality of Reference in array operations?
 
 **Definition:**
 
@@ -1645,9 +1645,9 @@ merged middle is 2
 </details>
 
 <details>
-<summary>How to minimize Page Faults while accessing large arrays in memory-constrained environments?</summary>
+<summary>Как minimize Page Faults while accessing large arrays in memory-constrained environments?</summary>
 
-### How to minimize Page Faults while accessing large arrays in memory-constrained environments?
+### Как minimize Page Faults while accessing large arrays in memory-constrained environments?
 
 **Definition:**
 

@@ -4,15 +4,15 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 
 ### Related docs
 
-* [Cursor — Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) · [Interview hub](./0_interview.md) · [MVP & judgment](./0_mvp.md) · [TypeScript](./5_ts.md) · [Next.js](./4_nextjs.md)
+- [Cursor — Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) · [Interview hub](./0_interview.md) · [MVP & judgment](./0_mvp.md) · [TypeScript](./5_ts.md) · [Next.js](./4_nextjs.md)
 
 ### Main concepts
 
-| Area | Topics |
-|------|--------|
-| **Product** | [AI-first approach](#ai-first-approach) vs AI-enabled vs AI-augmented |
-| **Workflow** | [AI-assisted editors](#ai-assisted-workflow-cursor-copilot-claude-code), [Context7 / Ref](#context7-and-reftools), [RTK](#rtk-rust-token-killer) |
-| **Cursor** | [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) |
+| Area         | Topics                                                                                                                                                                                                                                                                                                     |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Product**  | [AI-first approach](#ai-first-approach) vs AI-enabled vs AI-augmented                                                                                                                                                                                                                                      |
+| **Workflow** | [AI-assisted editors](#ai-assisted-workflow-cursor-copilot-claude-code), [Context7 / Ref](#context7-and-reftools), [RTK](#rtk-rust-token-killer)                                                                                                                                                           |
+| **Cursor**   | [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) |
 
 ### Sections
 
@@ -29,22 +29,22 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 <details>
 <summary>AI-first approach</summary>
 
-**Definition:** An **AI-first** product is designed around a model from the start — remove the model and there is no product. **AI-enabled** means the base product still works and AI is a feature. **AI-augmented** means the *team* uses AI to ship faster; the product itself may not contain a model.
+**Definition:** An **AI-first** product is designed around a model from the start — remove the model and there is no product. **AI-enabled** means the base product still works and AI is a feature. **AI-augmented** means the _team_ uses AI to ship faster; the product itself may not contain a model.
 
 **How it works:**
 
 - **AI-first (product):** the core loop is a model (search ranking, assistant, codegen). Google used this phrasing for the shift after mobile-first (Pichai, 2016 Founders’ Letter: “We will move from mobile first to an AI first world”).
 - **AI-enabled (product):** CRUD/UI still works offline from the model; chat, summaries, or suggestions are add-ons.
-- **AI-augmented (team):** Cursor, Copilot, Claude Code, Context7/Ref, RTK — the handbook you are reading is this bucket unless the *product* is itself a model.
+- **AI-augmented (team):** Cursor, Copilot, Claude Code, Context7/Ref, RTK — the handbook you are reading is this bucket unless the _product_ is itself a model.
 
 **When to use:** Product interviews (“is this AI-first?”), architecture reviews, and when deciding whether to wrap an LLM as the product vs as a coding aid. Skip the slogan when you only mean “we use ChatGPT at work.”
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
+| +                                                              | −                                                              |
+| -------------------------------------------------------------- | -------------------------------------------------------------- |
 | Forces a clear product thesis: what dies if the model is down? | Easy to confuse team tooling with the customer-facing product. |
-| Matches how large platforms talk about assistants vs screens. | “AI-first” is marketing unless the model *is* the loop. |
+| Matches how large platforms talk about assistants vs screens.  | “AI-first” is marketing unless the model _is_ the loop.        |
 
 **Thoughts:** In this repo, most of the AI track is **AI-augmented development**. Call a note **AI-first** only when the shipped product cannot exist without the model.
 
@@ -71,10 +71,10 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
+| +                                              | −                                                                                       |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------- |
 | Agent can grep, patch, and verify in the repo. | Training data hallucinates APIs; always fetch docs (Context7/Ref) before writing facts. |
-| CLI agents automate CI and remote boxes. | CLI does not give editor diffs, Tab, or the same GUI approvals. |
+| CLI agents automate CI and remote boxes.       | CLI does not give editor diffs, Tab, or the same GUI approvals.                         |
 
 **Examples:**
 
@@ -86,7 +86,7 @@ agent -p "Fix the failing lint on this branch"
 claude -p "Explain why parseTopicMarkdown returns 0 concepts"
 ```
 
-**Thoughts:** For MyConspect day to day, stay in this Agent panel. Treat Copilot/Claude Code as the same *pattern* (completions vs tools), not as extra magic.
+**Thoughts:** For MyConspect day to day, stay in this Agent panel. Treat Copilot/Claude Code as the same _pattern_ (completions vs tools), not as extra magic.
 
 **Sources:** [Cursor rules](https://cursor.com/docs/rules) · [GitHub Copilot Chat in IDEs](https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide) · [Claude Code tools](https://code.claude.com/docs/en/glossary)
 
@@ -111,10 +111,10 @@ claude -p "Explain why parseTopicMarkdown returns 0 concepts"
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| Version-specific snippets beat memorized APIs. | Quota/auth failures — then Ref or official URLs. |
-| Ref is token-cheap search → targeted read. | Context7 is the wrong tool for “rewrite this file.” |
+| +                                              | −                                                   |
+| ---------------------------------------------- | --------------------------------------------------- |
+| Version-specific snippets beat memorized APIs. | Quota/auth failures — then Ref or official URLs.    |
+| Ref is token-cheap search → targeted read.     | Context7 is the wrong tool for “rewrite this file.” |
 
 **Thoughts:** “MCP synced” on the public site would be a lie. Truthful signal is `**Sources:**` plus a weekly `npm run check-conspect` URL audit.
 
@@ -142,10 +142,10 @@ claude -p "Explain why parseTopicMarkdown returns 0 concepts"
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
+| +                                         | −                                                                              |
+| ----------------------------------------- | ------------------------------------------------------------------------------ |
 | More room in context for the actual task. | Hook bugs can silently pass through (treat non-zero `rtk rewrite` as failure). |
-| One binary, many ecosystems. | Built-in editor search tools are not rewritten. |
+| One binary, many ecosystems.              | Built-in editor search tools are not rewritten.                                |
 
 **Examples:**
 
@@ -165,7 +165,7 @@ RTK_DISABLED=1 git diff
 
 **Q: What is an AI-first approach?**
 
-Design the product around a model from the start. **AI-first** = remove the model and there is no product. **AI-enabled** = base product still works (AI is a feature). **AI-augmented** = the *team* uses AI to build faster. Google used “AI-first” for the shift after mobile-first (Pichai, 2016).
+Design the product around a model from the start. **AI-first** = remove the model and there is no product. **AI-enabled** = base product still works (AI is a feature). **AI-augmented** = the _team_ uses AI to build faster. Google used “AI-first” for the shift after mobile-first (Pichai, 2016).
 
 **Q: Why fetch docs instead of trusting the model?**
 

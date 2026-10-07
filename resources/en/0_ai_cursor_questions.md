@@ -4,7 +4,7 @@ Q&A for Cursor skills, rules, plugins, and slash commands.
 
 ### Related docs
 
-* [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Slash commands](./0_ai_cursor_slash.md) · [AI workflow](./0_ai.md)
+- [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Slash commands](./0_ai_cursor_slash.md) · [AI workflow](./0_ai.md)
 
 ### Sections
 
@@ -21,12 +21,12 @@ Q&A for Cursor skills, rules, plugins, and slash commands.
 
 **How it works:**
 
-| | **Rules** | **Skills** |
-| --- | --- | --- |
-| **Purpose** | Coding constraints and conventions | Repeatable procedures |
-| **Shape** | `.mdc` / User / Team / `AGENTS.md` | Folder + `SKILL.md` (+ scripts/references) |
+|                 | **Rules**                                 | **Skills**                                             |
+| --------------- | ----------------------------------------- | ------------------------------------------------------ |
+| **Purpose**     | Coding constraints and conventions        | Repeatable procedures                                  |
+| **Shape**       | `.mdc` / User / Team / `AGENTS.md`        | Folder + `SKILL.md` (+ scripts/references)             |
 | **How applied** | Always / globs / intelligent / `@mention` | Auto by `description`, `/skill-name`, `@`, Custom Mode |
-| **Example** | “Use TypeScript for all new files” | “Deploy to staging: test → build → deploy → verify” |
+| **Example**     | “Use TypeScript for all new files”        | “Deploy to staging: test → build → deploy → verify”    |
 
 **When to use:**
 

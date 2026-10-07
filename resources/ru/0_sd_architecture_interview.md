@@ -16,14 +16,12 @@
 
 ## Interview Practice
 
-Questions from [Devinterview.io — Software Architecture](https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/).
-
 ### Software Architecture Fundamentals
 
 <details>
-<summary>What is the difference between software architecture and software design?</summary>
+<summary>Что такое the difference between software architecture and software design?</summary>
 
-### What is the difference between software architecture and software design?
+### Что такое the difference between software architecture and software design?
 
 **Definition:**
 
@@ -77,15 +75,12 @@ Questions from [Devinterview.io — Software Architecture](https://devinterview.
 
 - **Design**: Позволяет регулярные, более локальные обновления, которые в основном затрагивают компоненты или модули.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>Explain separation of concerns in software architecture.</summary>
+<summary>Объясните separation of concerns in software architecture.</summary>
 
-### Explain separation of concerns in software architecture.
+### Объясните separation of concerns in software architecture.
 
 **Definition:**
 
@@ -136,15 +131,12 @@ class Admin(User):
         print(f"Admin User: {self.name}")
 ```
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>Define a system quality attribute and its importance in software architecture.</summary>
+<summary>Определите a system quality attribute and its importance in software architecture.</summary>
 
-### Define a system quality attribute and its importance in software architecture.
+### Определите a system quality attribute and its importance in software architecture.
 
 **Definition:**
 
@@ -156,21 +148,13 @@ class Admin(User):
 
 #### Важность атрибутов качества
 
-#### Целостный опыт пользователя
+- **Целостный опыт пользователя:** Функциональные требования фиксируют, что система должна делать, а атрибуты качества — насколько хорошо она должна это делать. Вместе они задают полный опыт пользователя с системой.
 
-Функциональные требования фиксируют, что система должна делать, а атрибуты качества — насколько хорошо она должна это делать. Вместе они задают полный опыт пользователя с системой.
+- **Фокус проектирования:** Атрибуты качества помогают направлять проектирование системы, чтобы были оптимизированы и защищены не только главные функции, но и общая среда, безопасность и полезность системы.
 
-#### Фокус проектирования
+- **Взвешенные решения:** Инженерные решения часто должны балансировать конкурирующие цели. Атрибуты качества помогают сообщить эти цели, и архитекторам и разработчикам легче принимать обоснованные решения.
 
-Атрибуты качества помогают направлять проектирование системы, чтобы были оптимизированы и защищены не только главные функции, но и общая среда, безопасность и полезность системы.
-
-#### Взвешенные решения
-
-Инженерные решения часто должны балансировать конкурирующие цели. Атрибуты качества помогают сообщить эти цели, и архитекторам и разработчикам легче принимать обоснованные решения.
-
-#### Техническая совместимость
-
-Разные атрибуты качества могут дополнять или противоречить друг другу, и важно их уравновесить, чтобы система была цельной и эффективной.
+- **Техническая совместимость:** Разные атрибуты качества могут дополнять или противоречить друг другу, и важно их уравновесить, чтобы система была цельной и эффективной.
 
 #### Обычные атрибуты качества системы
 
@@ -212,19 +196,16 @@ class Admin(User):
 
 Архитектурные шаблоны и стили, а также стратегии проектирования, глубоко опираются на атрибуты качества, чтобы готовая система лучше отвечала операционным целям.
 
-Например, система с упором на высокую доступность, вроде облачной ERP, может принять архитектуру микросервисов и использовать балансировщики нагрузки и кластеры с автомасштабированием.
+- **High availability:** Система с упором на высокую доступность, вроде облачной ERP, может принять архитектуру микросервисов и использовать балансировщики нагрузки и кластеры с автомасштабированием.
 
-Напротив, система, которой нужна высокая надёжность, например мониторинг медицинского оборудования, может использовать модульную архитектуру со строгими механизмами согласованности данных и проходить жёсткие процедуры тестирования.
+- **High reliability:** Система, которой нужна высокая надёжность, например мониторинг медицинского оборудования, может использовать модульную архитектуру со строгими механизмами согласованности данных и проходить жёсткие процедуры тестирования.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>Describe the concept of a software architectural pattern.</summary>
+<summary>Опишите the concept of a software architectural pattern.</summary>
 
-### Describe the concept of a software architectural pattern.
+### Опишите the concept of a software architectural pattern.
 
 **Definition:**
 
@@ -290,15 +271,12 @@ class Admin(User):
 
 - **DDD**: Многие приложения уровня предприятия, CRM и инструменты управления портфелем опираются на эту модель ради более предметного проектирования.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>What is the layered architectural pattern?</summary>
+<summary>Что такое the layered architectural pattern?</summary>
 
-### What is the layered architectural pattern?
+### Что такое the layered architectural pattern?
 
 **Definition:**
 
@@ -334,17 +312,11 @@ class Admin(User):
 
 #### Слои
 
-#### Слой представления:
+- **Слой представления:** Этот слой отвечает за показ информации пользователям и обработку их действий. В веб-приложении он может соответствовать View. В приложении Windows Forms это сама форма.
 
-Этот слой отвечает за показ информации пользователям и обработку их действий. В веб-приложении он может соответствовать View. В приложении Windows Forms это сама форма.
+- **Слой бизнес-логики:** Этот слой реализует бизнес-правила и процессы. Он посредник между слоем представления и слоем данных.
 
-#### Слой бизнес-логики:
-
-Этот слой реализует бизнес-правила и процессы. Он посредник между слоем представления и слоем данных.
-
-#### Слой данных:
-
-Этот слой отвечает за хранение данных и доступ к ним, например база, файловая система или веб-сервис.
+- **Слой данных:** Этот слой отвечает за хранение данных и доступ к ним, например база, файловая система или веб-сервис.
 
 #### Соединение слоёв
 
@@ -420,15 +392,12 @@ var userController = new UserController(userService);
 
 Во многих современных системах это соединение может взять на себя IoC-контейнер.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>What are the elements of a good software architecture?</summary>
+<summary>Что такое the elements of a Good software architecture?</summary>
 
-### What are the elements of a good software architecture?
+### Что такое the elements of a Good software architecture?
 
 **Definition:**
 
@@ -488,15 +457,12 @@ var userController = new UserController(userService);
 
 - **Evolution**: Средства постепенных управляемых улучшений системы, чтобы принять новые или изменившиеся требования.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>Define “modularity” in software architecture.</summary>
+<summary>Определите “modularity” in software architecture.</summary>
 
-### Define “modularity” in software architecture.
+### Определите “modularity” in software architecture.
 
 **Definition:**
 
@@ -538,15 +504,12 @@ var userController = new UserController(userService);
 
 - **Web Development**: Фреймворки вроде Angular или React строят приложения из модульных компонентов, и каждый отвечает за свою часть интерфейса или соответствующую функциональность.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>Discuss the concepts of coupling and cohesion.</summary>
+<summary>Обсудите the concepts of coupling and cohesion.</summary>
 
-### Discuss the concepts of coupling and cohesion.
+### Обсудите the concepts of coupling and cohesion.
 
 **Definition:**
 
@@ -566,15 +529,12 @@ var userController = new UserController(userService);
 
 Такой подход может дать избыточный и подверженный ошибкам код, особенно когда форма усложняется. Вместо этого можно использовать модули ValidateEmail и ValidatePhoneNumber, закрепляя ответственность и независимость.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>What is the principle of least knowledge (Law of Demeter) in architecture?</summary>
+<summary>Что такое the principle of least knowledge (Law of Demeter) in architecture?</summary>
 
-### What is the principle of least knowledge (Law of Demeter) in architecture?
+### Что такое the principle of least knowledge (Law of Demeter) in architecture?
 
 **Definition:**
 
@@ -594,11 +554,9 @@ var userController = new UserController(userService);
 
 Закон Деметры формулировали несколькими словесными выражениями, и они дают разные взгляды на его основные положения:
 
-«Don't talk to strangers»
-Эта фраза — аналог принципа, что объекты или методы должны иметь ограниченный доступ к другим сущностям.
+- **"Don't talk to strangers":** Эта фраза — аналог принципа, что объекты или методы должны иметь ограниченный доступ к другим сущностям.
 
-«Only talk to your immediate friends»
-Это выражение подчёркивает, что модуль должен взаимодействовать с близко связанными модулями и избегать обширного сотрудничества, снижая риск жёстко связанных систем.
+- **"Only talk to your immediate friends":** Это выражение подчёркивает, что модуль должен взаимодействовать с близко связанными модулями и избегать обширного сотрудничества, снижая риск жёстко связанных систем.
 
 **Examples:**
 
@@ -678,15 +636,12 @@ public class Engine {
 
 В этой улучшенной структуре класс Owner напрямую общается с классом Car и держит более логичный и уместный образец общения.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>How are cross-cutting concerns addressed in software architecture?</summary>
+<summary>Как cross-cutting concerns addressed in software architecture?</summary>
 
-### How are cross-cutting concerns addressed in software architecture?
+### Как cross-cutting concerns addressed in software architecture?
 
 **Definition:**
 
@@ -718,17 +673,14 @@ public class Engine {
 
 - **Data Management Platforms**: Современные no-code или low-code платформы вроде Airtable встраивают управление данными прямо в проектирование приложения и уменьшают нужду следить за согласованностью и целостностью данных во многих компонентах.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 ### Design Patterns and Principles
 
 <details>
-<summary>Describe the Model-View-Controller (MVC) architectural pattern.</summary>
+<summary>Опишите the Model-View-Controller (MVC) architectural pattern.</summary>
 
-### Describe the Model-View-Controller (MVC) architectural pattern.
+### Опишите the Model-View-Controller (MVC) architectural pattern.
 
 **Definition:**
 
@@ -790,15 +742,12 @@ Model-View-Controller (MVC) — архитектурный шаблон, изв�
 
 - **Two-Way Communication**: Хотя поток в основном односторонний, MVC может поддерживать двусторонний поток данных, и это может добавить сложности.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>Explain the Publish-Subscribe pattern and its applications.</summary>
+<summary>Объясните the Publish-Subscribe pattern and its applications.</summary>
 
-### Explain the Publish-Subscribe pattern and its applications.
+### Объясните the Publish-Subscribe pattern and its applications.
 
 **Definition:**
 
@@ -836,15 +785,12 @@ Model-View-Controller (MVC) — архитектурный шаблон, изв�
 
 - **Database Synchronization and Data Distribution**: Распределённые системы данных вроде Apache Kafka используют шаблон Pub-Sub, чтобы синхронизировать данные между узлами, обеспечивая согласованность и отказоустойчивость.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>Define Microservices architecture and contrast it with Monolithic architecture.</summary>
+<summary>Определите microservices architecture and contrast it with monolithic architecture.</summary>
 
-### Define Microservices architecture and contrast it with Monolithic architecture.
+### Определите microservices architecture and contrast it with monolithic architecture.
 
 **Definition:**
 
@@ -854,7 +800,7 @@ Model-View-Controller (MVC) — архитектурный шаблон, изв�
 
 #### Монолитная архитектура
 
-В монолитной архитектуре все компоненты системы связаны и работают вместе как одна единица. Например, веб-серверы, серверы приложений и базы часто собраны в одну платформу.
+- **Monolithic architecture:** Все компоненты системы связаны и работают вместе как одна единица. Например, веб-серверы, серверы приложений и базы часто собраны в одну платформу.
 
 #### Ключевые характеристики
 
@@ -882,7 +828,7 @@ Model-View-Controller (MVC) — архитектурный шаблон, изв�
 
 #### Архитектура микросервисов
 
-В микросервисах система разложена на небольшие независимые сервисы, у каждого своя бизнес-функция и своё хранилище данных. Эти сервисы общаются через хорошо заданные API.
+- **Microservices architecture:** Система разложена на небольшие независимые сервисы, у каждого своя бизнес-функция и своё хранилище данных. Эти сервисы общаются через хорошо заданные API.
 
 #### Ключевые характеристики
 
@@ -906,15 +852,12 @@ Model-View-Controller (MVC) — архитектурный шаблон, изв�
 
 - **Operational Overhead**: Управление многими сервисами, у каждого свой стек, добавляет операционную нагрузку.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>What are the SOLID principles of object-oriented design?</summary>
+<summary>Что такое the SOLID principles of object-oriented design?</summary>
 
-### What are the SOLID principles of object-oriented design?
+### Что такое the SOLID principles of object-oriented design?
 
 **Definition:**
 
@@ -924,15 +867,15 @@ SOLID — это аббревиатура пяти базовых принцип
 
 #### Принципы SOLID
 
-Single Responsibility Principle (SRP). У класса должна быть только одна причина меняться. Иными словами, у него должна быть только одна обязанность.
+- **Single Responsibility Principle (SRP):** У класса должна быть только одна причина меняться. Иными словами, у него должна быть только одна обязанность.
 
-Open/Closed Principle (OCP). Модуль (то есть функция или класс) должен быть открыт для расширения, но закрыт для модификации.
+- **Open/Closed Principle (OCP):** Модуль (то есть функция или класс) должен быть открыт для расширения, но закрыт для модификации.
 
-Liskov Substitution Principle (LSP). Производные классы должны быть заменяемы своими базовыми классами: они должны делить тот же интерфейс и использоваться взаимозаменяемо с объектами базового класса.
+- **Liskov Substitution Principle (LSP):** Производные классы должны быть заменяемы своими базовыми классами: они должны делить тот же интерфейс и использоваться взаимозаменяемо с объектами базового класса.
 
-Interface Segregation Principle (ISP). Много интерфейсов под конкретного клиента лучше, чем один интерфейс общего назначения.
+- **Interface Segregation Principle (ISP):** Много интерфейсов под конкретного клиента лучше, чем один интерфейс общего назначения.
 
-Dependency Inversion Principle (DIP). Модули высокого уровня не должны зависеть от модулей низкого уровня. Оба должны зависеть от абстракций. Кроме того, абстракции не должны зависеть от деталей; детали должны зависеть от абстракций.
+- **Dependency Inversion Principle (DIP):** Модули высокого уровня не должны зависеть от модулей низкого уровня. Оба должны зависеть от абстракций. Кроме того, абстракции не должны зависеть от деталей; детали должны зависеть от абстракций.
 
 #### Что означают принципы SOLID
 
@@ -946,15 +889,12 @@ Dependency Inversion Principle (DIP). Модули высокого уровня
 
 - **DIP**: Класс высокого уровня не должен заботиться о деталях своих зависимостей. Это значит, что следует использовать интерфейсы или абстракции вместо конкретных реализаций.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>When should the Singleton pattern be applied and what are its drawbacks?</summary>
+<summary>Когда should the singleton pattern be applied and what are its drawbacks?</summary>
 
-### When should the Singleton pattern be applied and what are its drawbacks?
+### Когда should the singleton pattern be applied and what are its drawbacks?
 
 **Definition:**
 
@@ -966,7 +906,7 @@ Dependency Inversion Principle (DIP). Модули высокого уровня
 
 #### Область поведения Singleton
 
-Шаблон Singleton не всегда самый подходящий, чтобы дать уникальный глобальный доступ. Классы, которыми управляют фреймворки внедрения зависимостей (DI), например, часто дают более приспособляемые и тестируемые механизмы для одиночек, зависящих от контекста.
+- **Singleton scope:** Шаблон Singleton не всегда самый подходящий, чтобы дать уникальный глобальный доступ. Классы, которыми управляют фреймворки внедрения зависимостей (DI), например, часто дают более приспособляемые и тестируемые механизмы для одиночек, зависящих от контекста.
 
 #### Недостатки шаблона Singleton
 
@@ -1000,15 +940,12 @@ Dependency Inversion Principle (DIP). Модули высокого уровня
 
 - **Use DI for Wider Flexibility**: Соединяйте выгоды DI с ясностью и удобством одиночки там, где это имеет смысл.
 
-**Sources:**
-
-- https://devinterview.io/questions/software-architecture-and-system-design/software-architecture-interview-questions/
 </details>
 
 <details>
-<summary>Define the Repository pattern and its use cases.</summary>
+<summary>Определите the Repository pattern and its use cases.</summary>
 
-### Define the Repository pattern and its use cases.
+### Определите the Repository pattern and its use cases.
 
 **Definition:**
 
@@ -1046,9 +983,9 @@ class OrderRepository:
 </details>
 
 <details>
-<summary>Describe the Service-Oriented Architecture (SOA) pattern and its components.</summary>
+<summary>Опишите the service-oriented architecture (SOA) pattern and its components.</summary>
 
-### Describe the Service-Oriented Architecture (SOA) pattern and its components.
+### Опишите the service-oriented architecture (SOA) pattern and its components.
 
 **Definition:**
 
@@ -1077,9 +1014,9 @@ caller --SOAP or HTTP/JSON--> service contract (WSDL) --> implementation
 </details>
 
 <details>
-<summary>Explain the Decorator pattern with an example.</summary>
+<summary>Объясните the decorator pattern with an example.</summary>
 
-### Explain the Decorator pattern with an example.
+### Объясните the decorator pattern with an example.
 
 **Definition:**
 
@@ -1119,9 +1056,9 @@ class Encryption(DataSource):
 </details>
 
 <details>
-<summary>What is the Command pattern and its implementation?</summary>
+<summary>Что такое the command pattern and its implementation?</summary>
 
-### What is the Command pattern and its implementation?
+### Что такое the command pattern and its implementation?
 
 **Definition:**
 
@@ -1158,9 +1095,9 @@ class Paste(Command):
 </details>
 
 <details>
-<summary>When would you use the Adapter pattern?</summary>
+<summary>Когда бы вы использовали шаблон адаптера?</summary>
 
-### When would you use the Adapter pattern?
+### Когда бы вы использовали шаблон адаптера?
 
 **Definition:**
 
@@ -1196,21 +1133,21 @@ class SquarePegAdapter(RoundPeg):
 ### Scalability and Performance Considerations
 
 <details>
-<summary>What strategies can be used to scale a software application?</summary>
+<summary>Какие стратегии can be used to scale a software application?</summary>
 
-### What strategies can be used to scale a software application?
+### Какие стратегии can be used to scale a software application?
 
 **Definition:**
 
-Scale Cube из *The Art of Scalability*, в изложении Криса Ричардсона, описывает три способа масштабирования приложения: клонирование по оси X, функциональное разбиение по оси Y и разделение данных по оси Z.
+Scale Cube из _The Art of Scalability_, в изложении Криса Ричардсона, описывает три способа масштабирования приложения: клонирование по оси X, функциональное разбиение по оси Y и разделение данных по оси Z.
 
 **How it works:**
 
-По оси X запускают несколько одинаковых копий за балансировщиком нагрузки. Если копий N, каждая обрабатывает 1/N нагрузки. Каждая копия по-прежнему может обращаться ко всем данным, поэтому кэшу нужно больше памяти, и эта ось не снижает сложность разработки и самого приложения.
+- **X-axis scaling:** Запускают несколько одинаковых копий за балансировщиком нагрузки. Если копий N, каждая обрабатывает 1/N нагрузки. Каждая копия по-прежнему может обращаться ко всем данным, поэтому кэшу нужно больше памяти, и эта ось не снижает сложность разработки и самого приложения.
 
-По оси Y приложение делят на разные сервисы. Каждый сервис отвечает за одну или несколько тесно связанных функций. Разбиение бывает по глаголу (сервис одного сценария, например оформления заказа) или по существительному (сервис одной сущности, например управления клиентом). Оба способа можно сочетать. Ричардсон описывает микросервисную архитектуру как применение масштабирования по оси Y.
+- **Y-axis scaling:** Приложение делят на разные сервисы. Каждый сервис отвечает за одну или несколько тесно связанных функций. Разбиение бывает по глаголу (сервис одного сценария, например оформления заказа) или по существительному (сервис одной сущности, например управления клиентом). Оба способа можно сочетать. Ричардсон описывает микросервисную архитектуру как применение масштабирования по оси Y.
 
-По оси Z тоже работает одинаковый код, но каждый сервер владеет только подмножеством данных. Маршрутизатор отправляет запрос на нужный сервер, часто по первичному ключу или типу клиента. Так обычно шардируют базы. Запрос может уйти во все разделы, после чего результаты объединяют. Каждый сервер тратит меньше памяти и ввода-вывода, транзакции распределяются, а сбой скрывает только часть данных. Схема разбиения и переразбиение усложняют систему, и ось Z сама по себе не снижает сложность разработки.
+- **Z-axis scaling:** Тоже работает одинаковый код, но каждый сервер владеет только подмножеством данных. Маршрутизатор отправляет запрос на нужный сервер, часто по первичному ключу или типу клиента. Так обычно шардируют базы. Запрос может уйти во все разделы, после чего результаты объединяют. Каждый сервер тратит меньше памяти и ввода-вывода, транзакции распределяются, а сбой скрывает только часть данных. Схема разбиения и переразбиение усложняют систему, и ось Z сама по себе не снижает сложность разработки.
 
 **When to use:**
 
@@ -1222,9 +1159,9 @@ Scale Cube из *The Art of Scalability*, в изложении Криса Ри�
 </details>
 
 <details>
-<summary>Describe load balancing and its significance in software architecture.</summary>
+<summary>Опишите load balancing and its significance in software architecture.</summary>
 
-### Describe load balancing and its significance in software architecture.
+### Опишите load balancing and its significance in software architecture.
 
 **Definition:**
 
@@ -1265,9 +1202,9 @@ http {
 </details>
 
 <details>
-<summary>Explain the concept of a stateless architecture.</summary>
+<summary>Объясните the concept of a stateless architecture.</summary>
 
-### Explain the concept of a stateless architecture.
+### Объясните the concept of a stateless architecture.
 
 **Definition:**
 
@@ -1289,9 +1226,9 @@ Sticky sessions, когда сессия пользователя кэшируе
 </details>
 
 <details>
-<summary>How does caching improve system performance?</summary>
+<summary>Как caching improve system performance?</summary>
 
-### How does caching improve system performance?
+### Как caching improve system performance?
 
 **Definition:**
 
@@ -1317,9 +1254,9 @@ CloudFront направляет запрос в edge location с наимень�
 </details>
 
 <details>
-<summary>What practices are vital for designing high availability systems?</summary>
+<summary>Какие практики важны при проектировании high availability systems?</summary>
 
-### What practices are vital for designing high availability systems?
+### Какие практики важны при проектировании high availability systems?
 
 **Definition:**
 
@@ -1327,9 +1264,17 @@ PostgreSQL описывает высокую доступность как со�
 
 **How it works:**
 
-Серверы только для чтения объединять относительно легко. Серверы чтения и записи сложнее: запись на любом сервере должна дойти до остальных, иначе последующие чтения разойдутся. В части схем данные меняет только один primary. Standby следят за ним. К warm standby нельзя подключиться, пока его не повысят. Hot standby принимает соединения и обслуживает запросы только на чтение.
+- **Read-only servers:** Объединять относительно легко.
 
-При синхронной репликации изменяющая транзакция не считается зафиксированной, пока её не зафиксировали все серверы. Тогда failover не теряет данные, а серверы за балансировщиком возвращают согласованные результаты. Асинхронная репликация допускает задержку, поэтому переход на резерв может потерять транзакции, а чтения за балансировщиком могут быть слегка устаревшими. Асинхронный режим берут, когда синхронный был бы слишком медленным. Полностью синхронное решение на медленной сети может срезать производительность больше чем вдвое.
+- **Read/write servers:** Сложнее — запись на любом сервере должна дойти до остальных, иначе последующие чтения разойдутся. В части схем данные меняет только один primary. Standby следят за ним.
+
+- **Warm standby:** К нему нельзя подключиться, пока его не повысят.
+
+- **Hot standby:** Принимает соединения и обслуживает запросы только на чтение.
+
+- **Synchronous replication:** Изменяющая транзакция не считается зафиксированной, пока её не зафиксировали все серверы. Тогда failover не теряет данные, а серверы за балансировщиком возвращают согласованные результаты.
+
+- **Asynchronous replication:** Допускает задержку, поэтому переход на резерв может потерять транзакции, а чтения за балансировщиком могут быть слегка устаревшими. Асинхронный режим берут, когда синхронный был бы слишком медленным. Полностью синхронное решение на медленной сети может срезать производительность больше чем вдвое.
 
 NGINX повышает отказоустойчивость, распределяя HTTP-трафик по группе и держа backup-сервер. Kubernetes убирает упавший Pod из endpoints Service и заменяет упавший Pod в Deployment, чтобы число реплик сохранилось.
 
@@ -1345,9 +1290,9 @@ NGINX повышает отказоустойчивость, распредел�
 </details>
 
 <details>
-<summary>Detail the trade-offs in the CAP theorem.</summary>
+<summary>Опишите компромиссы в CAP theorem.</summary>
 
-### Detail the trade-offs in the CAP theorem.
+### Опишите компромиссы в CAP theorem.
 
 **Definition:**
 
@@ -1355,7 +1300,17 @@ IBM формулирует теорему Брюера: распределённ
 
 **How it works:**
 
-Согласованность здесь значит, что каждый клиент видит одни и те же данные в один момент, поэтому запись успешна только после репликации. Доступность значит, что каждый работающий узел возвращает годный ответ. Разделение — потерянная или задержанная связь между узлами; устойчивость к нему значит, что кластер всё равно работает. При разделении CP-система отказывает несогласованному узлу, AP-система остаётся доступной и может отдать старые данные, а CA-система не удерживает и согласованность, и доступность, как только разделение появилось. IBM пишет, что в распределённой системе разделений не избежать, поэтому CA-база как распределённая система практически не выбор. Набор реплик MongoDB описан как CP: пишет один primary, и клиенты не могут писать, пока выбирается новый. Cassandra описана как AP: любой узел принимает запись, а расхождения чинятся потом.
+- **Consistency:** Каждый клиент видит одни и те же данные в один момент, поэтому запись успешна только после репликации.
+
+- **Availability:** Каждый работающий узел возвращает годный ответ.
+
+- **Partition tolerance:** Разделение — потерянная или задержанная связь между узлами; кластер всё равно работает.
+
+- **CP system:** При разделении отказывает несогласованному узлу. Набор реплик MongoDB описан как CP: пишет один primary, и клиенты не могут писать, пока выбирается новый.
+
+- **AP system:** При разделении остаётся доступной и может отдать старые данные. Cassandra описана как AP: любой узел принимает запись, а расхождения чинятся потом.
+
+- **CA system:** Не удерживает и согласованность, и доступность, как только разделение появилось. IBM пишет, что в распределённой системе разделений не избежать, поэтому CA-база как распределённая система практически не выбор.
 
 **When to use:**
 
@@ -1376,9 +1331,9 @@ partition happens
 </details>
 
 <details>
-<summary>How would you prevent single points of failure in software architecture?</summary>
+<summary>Как бы вы prevent single points of failure in software architecture?</summary>
 
-### How would you prevent single points of failure in software architecture?
+### Как бы вы prevent single points of failure in software architecture?
 
 **Definition:**
 
@@ -1407,9 +1362,9 @@ Standby нужен, когда база должна пережить потер
 </details>
 
 <details>
-<summary>Describe the role of a Content Delivery Network (CDN) in an architecture.</summary>
+<summary>Опишите the role of a Content Delivery Network (CDN) in an architecture.</summary>
 
-### Describe the role of a Content Delivery Network (CDN) in an architecture.
+### Опишите the role of a Content Delivery Network (CDN) in an architecture.
 
 **Definition:**
 
@@ -1431,9 +1386,9 @@ CDN ставят перед контентом, который пользова�
 </details>
 
 <details>
-<summary>Discuss techniques for optimizing database performance architecturally.</summary>
+<summary>Обсудите techniques for optimizing dataBASE performance architecturally.</summary>
 
-### Discuss techniques for optimizing database performance architecturally.
+### Обсудите techniques for optimizing dataBASE performance architecturally.
 
 **Definition:**
 
@@ -1458,9 +1413,9 @@ PostgreSQL считает синхронизацию главной ценой �
 </details>
 
 <details>
-<summary>Explain database replication and failover in your architecture.</summary>
+<summary>Объясните dataBASE replication and failover in your architecture.</summary>
 
-### Explain database replication and failover in your architecture.
+### Объясните dataBASE replication and failover in your architecture.
 
 **Definition:**
 
@@ -1486,9 +1441,9 @@ PostgreSQL считает синхронизацию главной ценой �
 ### Cloud Computing and DevOps
 
 <details>
-<summary>How does cloud computing influence software architecture design?</summary>
+<summary>Как cloud computing influence software architecture design?</summary>
 
-### How does cloud computing influence software architecture design?
+### Как cloud computing influence software architecture design?
 
 **Definition:**
 
@@ -1515,9 +1470,9 @@ Scale Cube по-прежнему применим: клоны по оси X, с�
 </details>
 
 <details>
-<summary>Define Infrastructure as Code (IaC) and its relationship to architecture.</summary>
+<summary>Определите Infrastructure as Code (IaC) and its relationship to architecture.</summary>
 
-### Define Infrastructure as Code (IaC) and its relationship to architecture.
+### Определите Infrastructure as Code (IaC) and its relationship to architecture.
 
 **Definition:**
 
@@ -1540,9 +1495,9 @@ IaC используют, когда compute, сеть и DNS входят в а
 </details>
 
 <details>
-<summary>Describe microservices in cloud-native design.</summary>
+<summary>Опишите microservices in cloud-native design.</summary>
 
-### Describe microservices in cloud-native design.
+### Опишите microservices in cloud-native design.
 
 **Definition:**
 
@@ -1567,9 +1522,9 @@ Docker упаковывает каждый сервис в контейнер, �
 </details>
 
 <details>
-<summary>Explain containerization and its architectural benefits.</summary>
+<summary>Объясните containerization and its architectural benefits.</summary>
 
-### Explain containerization and its architectural benefits.
+### Объясните containerization and its architectural benefits.
 
 **Definition:**
 
@@ -1597,9 +1552,9 @@ $ docker run -i -t ubuntu /bin/bash
 </details>
 
 <details>
-<summary>Discuss the role of CI/CD in architectural design.</summary>
+<summary>Обсудите the role of CI/CD in architectural design.</summary>
 
-### Discuss the role of CI/CD in architectural design.
+### Обсудите the role of CI/CD in architectural design.
 
 **Definition:**
 
@@ -1609,9 +1564,9 @@ $ docker run -i -t ubuntu /bin/bash
 
 Цикл поставки Docker: разработка в контейнерах, отправка образа в тестовую среду, автоматические и ручные тесты, затем отправка обновлённого образа в продакшен. Контейнер — единица, которая проходит этот путь.
 
-Release toggle позволяют незаконченному коду лежать в trunk и всё равно выкладываться. Toggle point во время выполнения выбирает старый или новый путь. Ходжсон считает release toggle короткоживущими, часто на неделю или две, с в основном статическим решением вкл/выкл.
+- **Release toggles:** Позволяют незаконченному коду лежать в trunk и всё равно выкладываться. Toggle point во время выполнения выбирает старый или новый путь. Ходжсон считает release toggle короткоживущими, часто на неделю или две, с в основном статическим решением вкл/выкл.
 
-Canary release затем направляет новую версию небольшому подмножеству пользователей, прежде чем на всю инфраструктуру. Раскатка Сато увеличивает эту долю или начинает с внутренних пользователей, региона или бренда. Откат — это возврат пользователей на старую версию. База во время раскатки должна поддерживать обе версии; Сато закрывает это параллельным изменением. Первый канареечный контур Facebook внутренний, с включёнными feature flags, чтобы проблемы всплыли рано.
+- **Canary release:** Направляет новую версию небольшому подмножеству пользователей, прежде чем на всю инфраструктуру. Раскатка Сато увеличивает эту долю или начинает с внутренних пользователей, региона или бренда. Откат — это возврат пользователей на старую версию. База во время раскатки должна поддерживать обе версии; Сато закрывает это параллельным изменением. Первый канареечный контур Facebook внутренний, с включёнными feature flags, чтобы проблемы всплыли рано.
 
 **When to use:**
 
@@ -1625,9 +1580,9 @@ Release toggle — когда незаконченная работа должн
 </details>
 
 <details>
-<summary>How do serverless architectures operate and their benefits?</summary>
+<summary>Как serverless architectures operate and their benefits?</summary>
 
-### How do serverless architectures operate and their benefits?
+### Как serverless architectures operate and their benefits?
 
 **Definition:**
 
@@ -1635,9 +1590,11 @@ AWS Lambda — бессерверный сервис вычислений. Ко�
 
 **How it works:**
 
-У Lambda два примитива. Функция Lambda запускает обработчик в ответ на событие или вызов API. Триггер подключают, например, к API Gateway, S3, SQS или EventBridge. Каждый вызов независим, без общего состояния, и Lambda масштабирует его горизонтально под спрос. Одна среда выполнения обслуживает один запрос за раз. Среды могут переиспользовать как warm start, но состояние может не сохраниться между вызовами. Один вызов длится до 15 минут. Более длинные процессы идут через Lambda Durable Functions, до года. Оплата — за запрос плюс GB-seconds. Изоляция — микроВМ Firecracker.
+У Lambda два примитива:
 
-Lambda MicroVM — отдельный примитив: изолированная среда с общим сроком жизни до 8 часов, своя среда на пользователя или задачу. Их создают, приостанавливают, возобновляют и завершают. Память и диск сохраняются между suspend и resume. Это другая модель, не обработчик без состояния.
+- **Lambda function:** Запускает обработчик в ответ на событие или вызов API. Триггер подключают, например, к API Gateway, S3, SQS или EventBridge. Каждый вызов независим, без общего состояния, и Lambda масштабирует его горизонтально под спрос. Одна среда выполнения обслуживает один запрос за раз. Среды могут переиспользовать как warm start, но состояние может не сохраниться между вызовами. Один вызов длится до 15 минут. Более длинные процессы идут через Lambda Durable Functions, до года. Оплата — за запрос плюс GB-seconds. Изоляция — микроВМ Firecracker.
+
+- **Lambda MicroVMs:** Отдельный примитив — изолированная среда с общим сроком жизни до 8 часов, своя среда на пользователя или задачу. Их создают, приостанавливают, возобновляют и завершают. Память и диск сохраняются между suspend и resume. Это другая модель, не обработчик без состояния.
 
 **When to use:**
 
@@ -1649,9 +1606,9 @@ Lambda MicroVM — отдельный примитив: изолированна
 </details>
 
 <details>
-<summary>What is feature toggling and how does it support DevOps practices?</summary>
+<summary>Что такое feature toggling and how does it support DevOps practices?</summary>
 
-### What is feature toggling and how does it support DevOps practices?
+### Что такое feature toggling and how does it support DevOps practices?
 
 **Definition:**
 
@@ -1659,11 +1616,17 @@ Lambda MicroVM — отдельный примитив: изолированна
 
 **How it works:**
 
-Toggle point во время выполнения выбирает путь в коде. Toggle router отвечает, включена ли функция. Решение может быть статическим вкл/выкл или зависеть от пользователя. Ходжсон группирует переключатели по тому, как долго они живут и насколько динамично решение.
+- **Toggle point:** Во время выполнения выбирает путь в коде.
 
-Release toggles выкладывают незаконченный код в trunk как скрытый код, чтобы ветку всё равно можно было развернуть. Они поддерживают идею непрерывной поставки: отделить выпуск функции от выкладки кода. Они переходные, часто их снимают за неделю или две, и решение обычно статическое.
+- **Toggle router:** Отвечает, включена ли функция. Решение может быть статическим вкл/выкл или зависеть от пользователя. Ходжсон группирует переключатели по тому, как долго они живут и насколько динамично решение.
 
-Experiment toggles помещают каждого пользователя в когорту для A/B или многовариантных тестов и должны оставаться стабильными, пока результат не станет значимым. Ops toggles дают операторам выключить или упростить функцию в продакшене, включая долгоживущие kill switch, которые при нагрузке отключают некритичную работу. Permissioning toggles меняют то, что видит конкретный набор пользователей: premium, alpha или beta.
+- **Release toggles:** Выкладывают незаконченный код в trunk как скрытый код, чтобы ветку всё равно можно было развернуть. Они поддерживают идею непрерывной поставки: отделить выпуск функции от выкладки кода. Они переходные, часто их снимают за неделю или две, и решение обычно статическое.
+
+- **Experiment toggles:** Помещают каждого пользователя в когорту для A/B или многовариантных тестов и должны оставаться стабильными, пока результат не станет значимым.
+
+- **Ops toggles:** Дают операторам выключить или упростить функцию в продакшене, включая долгоживущие kill switch, которые при нагрузке отключают некритичную работу.
+
+- **Permissioning toggles:** Меняют то, что видит конкретный набор пользователей: premium, alpha или beta.
 
 Переключатели усложняют проверку. Совет Ходжсона — ограничивать их число и снимать переходные.
 
@@ -1674,10 +1637,10 @@ Release toggle — чтобы незаконченная работа остав
 **Examples:**
 
 ```javascript
-function reticulateSplines(){
-  if( featureIsEnabled("use-new-SR-algorithm") ){
+function reticulateSplines() {
+  if (featureIsEnabled("use-new-SR-algorithm")) {
     return enhancedSplineReticulation();
-  }else{
+  } else {
     return oldFashionedSplineReticulation();
   }
 }
@@ -1689,9 +1652,9 @@ function reticulateSplines(){
 </details>
 
 <details>
-<summary>How would you incorporate monitoring and logging in a cloud-based architecture?</summary>
+<summary>Как бы вы incoRPOrate monitoring and logging in a cloud-BASEd architecture?</summary>
 
-### How would you incorporate monitoring and logging in a cloud-based architecture?
+### Как бы вы incoRPOrate monitoring and logging in a cloud-BASEd architecture?
 
 **Definition:**
 
@@ -1714,9 +1677,9 @@ function reticulateSplines(){
 </details>
 
 <details>
-<summary>What is blue-green deployment and its role in minimizing downtime?</summary>
+<summary>Что такое blue-green deployment and its role in minimizing downtime?</summary>
 
-### What is blue-green deployment and its role in minimizing downtime?
+### Что такое blue-green deployment and its role in minimizing downtime?
 
 **Definition:**
 
@@ -1745,9 +1708,9 @@ router -> green (live); blue is the rollback
 </details>
 
 <details>
-<summary>Describe approaches for achieving multi-tenancy in the cloud.</summary>
+<summary>Опишите approaches for achieving multi-tenancy in the cloud.</summary>
 
-### Describe approaches for achieving multi-tenancy in the cloud.
+### Опишите approaches for achieving multi-tenancy in the cloud.
 
 **Definition:**
 
@@ -1772,9 +1735,9 @@ Multi-tenant distribution CloudFront через CloudFront SaaS Manager пред
 ### Data Management and Integration
 
 <details>
-<summary>Discuss the concept and role of a data lake.</summary>
+<summary>Обсудите the concept and role of a data lake.</summary>
 
-### Discuss the concept and role of a data lake.
+### Обсудите the concept and role of a data lake.
 
 **Definition:**
 
@@ -1798,9 +1761,9 @@ Data warehouse устроен иначе. Его схему задают зар�
 </details>
 
 <details>
-<summary>Compare ETL and ELT processes.</summary>
+<summary>Сравните ETL and ELT processes.</summary>
 
-### Compare ETL and ELT processes.
+### Сравните ETL and ELT processes.
 
 **Definition:**
 
@@ -1820,9 +1783,9 @@ ETL — когда схему хранилища нужно решить до з
 </details>
 
 <details>
-<summary>How is big data processing handled in software architecture?</summary>
+<summary>Как big data processing handled in software architecture?</summary>
 
-### How is big data processing handled in software architecture?
+### Как big data processing handled in software architecture?
 
 **Definition:**
 
@@ -1848,9 +1811,9 @@ AWS обрабатывает большие и разнородные данны
 </details>
 
 <details>
-<summary>Describe the role of message brokers in system integration.</summary>
+<summary>Опишите the role of message brokers in system integration.</summary>
 
-### Describe the role of message brokers in system integration.
+### Опишите the role of message brokers in system integration.
 
 **Definition:**
 
@@ -1860,7 +1823,15 @@ AWS обрабатывает большие и разнородные данны
 
 В RabbitMQ очередь работает как FIFO: сообщения ставят в хвост и забирают с головы. Приоритеты и повторная постановка потребителем могут изменить порядок, который видит потребитель. Очереди бывают устойчивыми, реплицированными, временными или эксклюзивными. Streams — отдельная структура RabbitMQ. Для протоколов на темах, таких как STOMP и MQTT, очереди всё равно копят сообщения для потребителей.
 
-Стили Ричардсона на этом канале: request/response, уведомления без ответа, request/asynchronous response, publish/subscribe на ноль или больше получателей и publish/asynchronous response. В примере `OrderService` публикует событие `Order Created` после сохранения заказа. Польза — слабая связность во время выполнения, потому что отправитель отделён от потребителя, и более высокая доступность, потому что брокер буферизует сообщения, пока потребитель не сможет их обработать. Сам брокер должен быть высокодоступным. Request/reply поверх сообщений сложнее прямого вызова.
+Стили Ричардсона на этом канале:
+
+- **Request/response**
+- **Notifications** без ответа
+- **Request/asynchronous response**
+- **Publish/subscribe** на ноль или больше получателей
+- **Publish/asynchronous response**
+
+В примере `OrderService` публикует событие `Order Created` после сохранения заказа. Польза — слабая связность во время выполнения, потому что отправитель отделён от потребителя, и более высокая доступность, потому что брокер буферизует сообщения, пока потребитель не сможет их обработать. Сам брокер должен быть высокодоступным. Request/reply поверх сообщений сложнее прямого вызова.
 
 **When to use:**
 
@@ -1873,9 +1844,9 @@ AWS обрабатывает большие и разнородные данны
 </details>
 
 <details>
-<summary>Explain the significance of an API Gateway.</summary>
+<summary>Объясните the significance of an API Gateway.</summary>
 
-### Explain the significance of an API Gateway.
+### Объясните the significance of an API Gateway.
 
 **Definition:**
 
@@ -1897,9 +1868,9 @@ API gateway Криса Ричардсона — единственная точ�
 </details>
 
 <details>
-<summary>How is Event Sourcing applied in architecture?</summary>
+<summary>Как event sourcing applied in architecture?</summary>
 
-### How is Event Sourcing applied in architecture?
+### Как event sourcing applied in architecture?
 
 **Definition:**
 
@@ -1927,9 +1898,9 @@ arrive(King Roy, Hong Kong)     -> event stored, then location updated
 </details>
 
 <details>
-<summary>Discuss strategies for managing database schema migrations.</summary>
+<summary>Обсудите strategies for managing dataBASE schema migrations.</summary>
 
-### Discuss strategies for managing database schema migrations.
+### Обсудите strategies for managing dataBASE schema migrations.
 
 **Definition:**
 
@@ -1949,9 +1920,9 @@ Canary направляет часть пользователей на нову�
 </details>
 
 <details>
-<summary>Best practices for data consistency in distributed systems?</summary>
+<summary>Лучшие практики для data consistency в distributed systems?</summary>
 
-### Best practices for data consistency in distributed systems?
+### Лучшие практики для data consistency в distributed systems?
 
 **Definition:**
 
@@ -1974,9 +1945,9 @@ CP-хранилище или синхронную репликацию выби�
 </details>
 
 <details>
-<summary>How to integrate third-party services securely into your architecture?</summary>
+<summary>Как integrate third-party services securely into your architecture?</summary>
 
-### How to integrate third-party services securely into your architecture?
+### Как integrate third-party services securely into your architecture?
 
 **Definition:**
 
@@ -2001,9 +1972,9 @@ OAuth — когда третьей стороне нужен ограничен
 </details>
 
 <details>
-<summary>When choosing between SQL and NoSQL databases, what are the considerations?</summary>
+<summary>Когда choosing between SQL and NoSQL dataBASEs, what are the considerations?</summary>
 
-### When choosing between SQL and NoSQL databases, what are the considerations?
+### Когда choosing between SQL and NoSQL dataBASEs, what are the considerations?
 
 **Definition:**
 
@@ -2011,7 +1982,13 @@ IBM противопоставляет вертикально масштабир
 
 **How it works:**
 
-IBM классифицирует NoSQL по паре CAP, которую они дают. CP-база сохраняет согласованность и устойчивость к разделению и отдаёт доступность: во время разделения она выключает несогласованный узел. Сюда IBM помещает MongoDB. MongoDB — система с одним primary; вторичные узлы реплицируют журнал операций primary. Если primary недоступен, выбирают вторичный узел с самым новым журналом, и клиенты не могут писать, пока остальные не догонят, так что данные остаются согласованными. AP-база сохраняет доступность и устойчивость к разделению и на время отдаёт согласованность. Сюда IBM помещает Cassandra: primary нет, клиенты могут писать на любой узел, а repair закрывает расхождения. Пара CA непрактична, когда разделения возможны. IBM пишет, что многие реляционные базы, включая PostgreSQL, дают согласованность и доступность и могут стоять на нескольких узлах с репликацией.
+IBM классифицирует NoSQL по паре CAP, которую они дают.
+
+- **CP database:** Сохраняет согласованность и устойчивость к разделению и отдаёт доступность — во время разделения выключает несогласованный узел. Сюда IBM помещает MongoDB. MongoDB — система с одним primary; вторичные узлы реплицируют журнал операций primary. Если primary недоступен, выбирают вторичный узел с самым новым журналом, и клиенты не могут писать, пока остальные не догонят, так что данные остаются согласованными.
+
+- **AP database:** Сохраняет доступность и устойчивость к разделению и на время отдаёт согласованность. Сюда IBM помещает Cassandra: primary нет, клиенты могут писать на любой узел, а repair закрывает расхождения.
+
+- **CA pair:** Непрактична, когда разделения возможны. IBM пишет, что многие реляционные базы, включая PostgreSQL, дают согласованность и доступность и могут стоять на нескольких узлах с репликацией.
 
 IBM называет и продуктовую причину: если модель данных нужно быстро менять и масштабировать горизонтально, и допустима итоговая согласованность, подходит AP-база вроде Cassandra или Apache CouchDB. Если приложению нужна согласованность, как в электронной коммерции или платежах, IBM указывает на реляционную базу вроде PostgreSQL.
 
@@ -2028,9 +2005,9 @@ IBM называет и продуктовую причину: если моде
 ### Reliability, Maintenance, and Evolution
 
 <details>
-<summary>Explain fault tolerance and its incorporation into software architecture.</summary>
+<summary>Объясните fault tolerance and its incoRPOration into software architecture.</summary>
 
-### Explain fault tolerance and its incorporation into software architecture.
+### Объясните fault tolerance and its incoRPOration into software architecture.
 
 **Definition:**
 
@@ -2056,9 +2033,9 @@ NGINX распределяет трафик HTTP и HTTPS по группе upst
 </details>
 
 <details>
-<summary>What architectural practices facilitate maintainability and evolution?</summary>
+<summary>Какие architectural practices способствуют maintainability и evolution?</summary>
 
-### What architectural practices facilitate maintainability and evolution?
+### Какие architectural practices способствуют maintainability и evolution?
 
 **Definition:**
 
@@ -2083,9 +2060,9 @@ Release toggle Ходжсона позволяют незаконченному 
 </details>
 
 <details>
-<summary>Why is documentation crucial for software architecture maintenance?</summary>
+<summary>Почему is documentation crucial for software architecture maintenance?</summary>
 
-### Why is documentation crucial for software architecture maintenance?
+### Почему is documentation crucial for software architecture maintenance?
 
 **Definition:**
 
@@ -2106,9 +2083,9 @@ ADR пишут, когда решение влияет на структуру, 
 </details>
 
 <details>
-<summary>How do you manage technical debt within a software architecture?</summary>
+<summary>Как you manage technical debt within a software architecture?</summary>
 
-### How do you manage technical debt within a software architecture?
+### Как you manage technical debt within a software architecture?
 
 **Definition:**
 
@@ -2137,9 +2114,9 @@ pay down on the next change in that area, not on a module nobody edits
 </details>
 
 <details>
-<summary>Discuss the importance of automated testing for architectural resilience.</summary>
+<summary>Обсудите the importance of automated testing for architectural resilience.</summary>
 
-### Discuss the importance of automated testing for architectural resilience.
+### Обсудите the importance of automated testing for architectural resilience.
 
 **Definition:**
 
@@ -2161,13 +2138,17 @@ Service component test Криса Ричардсона — автоматиче�
 </details>
 
 <details>
-<summary>Define “refactoring” in the context of software architecture.</summary>
+<summary>Определите “refactoring” in the context of software architecture.</summary>
 
-### Define “refactoring” in the context of software architecture.
+### Определите “refactoring” in the context of software architecture.
 
 **Definition:**
 
-Мартин Фаулер даёт два определения. Как существительное, рефакторинг — изменение внутренней структуры программы, чтобы её было легче понимать и дешевле модифицировать, без изменения наблюдаемого поведения. Как глагол — перестроить программу серией рефакторингов без изменения наблюдаемого поведения.
+Мартин Фаулер даёт два определения:
+
+- **As a noun:** Рефакторинг — изменение внутренней структуры программы, чтобы её было легче понимать и дешевле модифицировать, без изменения наблюдаемого поведения.
+
+- **As a verb:** Перестроить программу серией рефакторингов без изменения наблюдаемого поведения.
 
 **How it works:**
 
@@ -2184,9 +2165,9 @@ Service component test Криса Ричардсона — автоматиче�
 </details>
 
 <details>
-<summary>What is graceful degradation in system design?</summary>
+<summary>Что такое graceful degradation in system design?</summary>
 
-### What is graceful degradation in system design?
+### Что такое graceful degradation in system design?
 
 **Definition:**
 
@@ -2206,9 +2187,9 @@ Kill switch добавляют для функции, чью цену можно
 </details>
 
 <details>
-<summary>How do you plan for backward compatibility when evolving architecture?</summary>
+<summary>Как you plan for backward compatibility when evolving architecture?</summary>
 
-### How do you plan for backward compatibility when evolving architecture?
+### Как you plan for backward compatibility when evolving architecture?
 
 **Definition:**
 
@@ -2230,9 +2211,9 @@ Canary направляет на новую версию только подмн
 </details>
 
 <details>
-<summary>Define feature deprecation and its architectural considerations.</summary>
+<summary>Определите feature deprecation and its architectural considerations.</summary>
 
-### Define feature deprecation and its architectural considerations.
+### Определите feature deprecation and its architectural considerations.
 
 **Definition:**
 
@@ -2254,9 +2235,9 @@ Canary направляет на новую версию только подмн
 </details>
 
 <details>
-<summary>Discuss architectural strategies for effective debugging.</summary>
+<summary>Обсудите architectural strategies for effective debugging.</summary>
 
-### Discuss architectural strategies for effective debugging.
+### Обсудите architectural strategies for effective debugging.
 
 **Definition:**
 
@@ -2279,9 +2260,9 @@ Id запроса передают на каждый вызов, как толь
 ### Mobile and IoT Architecture
 
 <details>
-<summary>Discuss considerations for mobile application architecture.</summary>
+<summary>Обсудите considerations for mobile application architecture.</summary>
 
-### Discuss considerations for mobile application architecture.
+### Обсудите considerations for mobile application architecture.
 
 **Definition:**
 
@@ -2304,9 +2285,9 @@ API gateway Ричардсона считает мобильного клиен�
 </details>
 
 <details>
-<summary>How does IoT architecture differ from traditional architectures?</summary>
+<summary>Как IoT architecture differ from traditional architectures?</summary>
 
-### How does IoT architecture differ from traditional architectures?
+### Как IoT architecture differ from traditional architectures?
 
 **Definition:**
 
@@ -2327,9 +2308,9 @@ Edge computing переносит хранение и вычисления бл�
 </details>
 
 <details>
-<summary>Define edge computing in the context of IoT.</summary>
+<summary>Определите edge computing in the context of IoT.</summary>
 
-### Define edge computing in the context of IoT.
+### Определите edge computing in the context of IoT.
 
 **Definition:**
 
@@ -2349,9 +2330,9 @@ AWS определяет edge computing как перенос хранения �
 </details>
 
 <details>
-<summary>How do you manage data synchronization between mobile devices and servers?</summary>
+<summary>Как you manage data synchronization between mobile devices and servers?</summary>
 
-### How do you manage data synchronization between mobile devices and servers?
+### Как you manage data synchronization between mobile devices and servers?
 
 **Definition:**
 
@@ -2373,9 +2354,9 @@ Edge computing AWS управляет тем, что едет с устройс�
 </details>
 
 <details>
-<summary>Address battery life and resource constraints in mobile/IoT architectures.</summary>
+<summary>Учтите battery life и resource constraints в mobile/IoT architectures.</summary>
 
-### Address battery life and resource constraints in mobile/IoT architectures.
+### Учтите battery life и resource constraints в mobile/IoT architectures.
 
 **Definition:**
 
@@ -2399,9 +2380,9 @@ AWS формулирует предел ресурсов как полосу, з
 ### Communication and Networking
 
 <details>
-<summary>Explain RESTful API design principles.</summary>
+<summary>Объясните RESTful API design principles.</summary>
 
-### Explain RESTful API design principles.
+### Объясните RESTful API design principles.
 
 **Definition:**
 
@@ -2423,9 +2404,9 @@ HTTP API называют REST, когда он действительно сл�
 </details>
 
 <details>
-<summary>Considerations for designing a GraphQL API?</summary>
+<summary>Соображения при проектировании GraphQL API?</summary>
 
-### Considerations for designing a GraphQL API?
+### Соображения при проектировании GraphQL API?
 
 **Definition:**
 
@@ -2445,9 +2426,9 @@ Authentication middleware работает до проверки GraphQL, что
 </details>
 
 <details>
-<summary>Describe WebSocket communication and when it’s preferred.</summary>
+<summary>Опишите WebSocket communication and when it’s preferred.</summary>
 
-### Describe WebSocket communication and when it’s preferred.
+### Опишите WebSocket communication and when it’s preferred.
 
 **Definition:**
 
@@ -2467,9 +2448,9 @@ WebSocket предпочитают опросу, когда сервер дол�
 </details>
 
 <details>
-<summary>What is long-polling and how is it supported architecturally?</summary>
+<summary>Что такое long-polling and how is it supported architecturally?</summary>
 
-### What is long-polling and how is it supported architecturally?
+### Что такое long-polling and how is it supported architecturally?
 
 **Definition:**
 
@@ -2489,9 +2470,9 @@ WebSocket открывает двусторонний сеанс. Браузер
 </details>
 
 <details>
-<summary>How can network latency impact architecture and how is it mitigated?</summary>
+<summary>Как network latency impact architecture and how is it mitiGAted?</summary>
 
-### How can network latency impact architecture and how is it mitigated?
+### Как network latency impact architecture and how is it mitiGAted?
 
 **Definition:**
 
@@ -2518,13 +2499,13 @@ CloudFront направляет запрос в edge location с наимень�
 ### Architecture Analysis and Evaluation
 
 <details>
-<summary>How do you assess the quality of a software architecture?</summary>
+<summary>Как you assess the quality of a software architecture?</summary>
 
-### How do you assess the quality of a software architecture?
+### Как you assess the quality of a software architecture?
 
 **Definition:**
 
-Architecture Tradeoff Analysis Method SEI оценивает архитектуру относительно целей по атрибутам качества до того, как система построена, и показывает, как эти цели друг другу уступают. Fitness function, как Thoughtworks цитирует *Building Evolutionary Architectures*, — объективная проверка, что некоторая характеристика всё ещё выполняется, пока система меняется.
+Architecture Tradeoff Analysis Method SEI оценивает архитектуру относительно целей по атрибутам качества до того, как система построена, и показывает, как эти цели друг другу уступают. Fitness function, как Thoughtworks цитирует _Building Evolutionary Architectures_, — объективная проверка, что некоторая характеристика всё ещё выполняется, пока система меняется.
 
 **How it works:**
 
@@ -2541,9 +2522,9 @@ ATAM проводят, когда заинтересованные лица до
 </details>
 
 <details>
-<summary>Describe the Architecture Tradeoff Analysis Method (ATAM).</summary>
+<summary>Опишите the Architecture Tradeoff Analysis Method (ATAM).</summary>
 
-### Describe the Architecture Tradeoff Analysis Method (ATAM).
+### Опишите the Architecture Tradeoff Analysis Method (ATAM).
 
 **Definition:**
 
@@ -2563,13 +2544,13 @@ ATAM используют, когда система должна быть мо�
 </details>
 
 <details>
-<summary>What are architectural fitness functions?</summary>
+<summary>Что такое architectural fitness functions?</summary>
 
-### What are architectural fitness functions?
+### Что такое architectural fitness functions?
 
 **Definition:**
 
-Thoughtworks, цитируя *Building Evolutionary Architectures*, определяет архитектурную fitness function как объективную оценку целостности некоторой архитектурной характеристики. Термин взят из эволюционных вычислений, где fitness function говорит, насколько кандидат близок к целям, и тем самым что значит «лучше».
+Thoughtworks, цитируя _Building Evolutionary Architectures_, определяет архитектурную fitness function как объективную оценку целостности некоторой архитектурной характеристики. Термин взят из эволюционных вычислений, где fitness function говорит, насколько кандидат близок к целям, и тем самым что значит «лучше».
 
 **How it works:**
 
@@ -2586,9 +2567,9 @@ Fitness function добавляют, когда характеристику, н
 </details>
 
 <details>
-<summary>Conducting performance analysis on software architectures: methodologies?</summary>
+<summary>Проведение performance analysis для software architectures: методологии?</summary>
 
-### Conducting performance analysis on software architectures: methodologies?
+### Проведение performance analysis для software architectures: методологии?
 
 **Definition:**
 
@@ -2612,9 +2593,9 @@ Fitness function добавляют, когда характеристику, н
 </details>
 
 <details>
-<summary>Define a risk-driven architectural approach and its application.</summary>
+<summary>Определите a risk-driven architectural approach and its application.</summary>
 
-### Define a risk-driven architectural approach and its application.
+### Определите a risk-driven architectural approach and its application.
 
 **Definition:**
 
@@ -2637,9 +2618,9 @@ ATAM применяют, когда цель качества вроде про�
 ### Emerging Technologies and Future Trends
 
 <details>
-<summary>What role does AI play in modern software architecture?</summary>
+<summary>Какую роль does AI play in modern software architecture?</summary>
 
-### What role does AI play in modern software architecture?
+### Какую роль does AI play in modern software architecture?
 
 **Definition:**
 
@@ -2661,9 +2642,9 @@ ATAM применяют, когда цель качества вроде про�
 </details>
 
 <details>
-<summary>How can blockchain technology be integrated into software architectures?</summary>
+<summary>Как blockchain technology be integrated into software architectures?</summary>
 
-### How can blockchain technology be integrated into software architectures?
+### Как blockchain technology be integrated into software architectures?
 
 **Definition:**
 
@@ -2683,9 +2664,9 @@ AWS противопоставляет это тому, что каждая ст
 </details>
 
 <details>
-<summary>Potential impact of quantum computing on future architectures?</summary>
+<summary>Потенциальное влияние quantum computing на будущие architectures?</summary>
 
-### Potential impact of quantum computing on future architectures?
+### Потенциальное влияние quantum computing на будущие architectures?
 
 **Definition:**
 
@@ -2705,9 +2686,9 @@ IBM определяет квантовые вычисления как возн
 </details>
 
 <details>
-<summary>Architectural changes to support AR and VR applications?</summary>
+<summary>Architectural changes для поддержки AR и VR applications?</summary>
 
-### Architectural changes to support AR and VR applications?
+### Architectural changes для поддержки AR и VR applications?
 
 **Definition:**
 
@@ -2728,9 +2709,9 @@ AWS помещает виртуальную реальность в нисход
 </details>
 
 <details>
-<summary>Discuss 5G technology and its effect on software architectures.</summary>
+<summary>Обсудите 5G technology and its effect on software architectures.</summary>
 
-### Discuss 5G technology and its effect on software architectures.
+### Обсудите 5G technology and its effect on software architectures.
 
 **Definition:**
 
@@ -2752,9 +2733,9 @@ AWS описывает 5G как инфраструктуру для mobile edge
 ### Collaboration and Team Dynamics
 
 <details>
-<summary>How do you communicate architecture decisions to non-technical stakeholders?</summary>
+<summary>Как you communicate architecture decisions to non-technical stakeholders?</summary>
 
-### How do you communicate architecture decisions to non-technical stakeholders?
+### Как you communicate architecture decisions to non-technical stakeholders?
 
 **Definition:**
 
@@ -2775,9 +2756,9 @@ ADR пишут предложениями, которые заинтересов
 </details>
 
 <details>
-<summary>How do you define the architect’s role within an agile development team?</summary>
+<summary>Как you define the architect’s role within an agile development team?</summary>
 
-### How do you define the architect’s role within an agile development team?
+### Как you define the architect’s role within an agile development team?
 
 **Definition:**
 
@@ -2798,9 +2779,9 @@ ADR пишут предложениями, которые заинтересов
 </details>
 
 <details>
-<summary>How do you handle conflicting architectural decisions among team members?</summary>
+<summary>Как you handle conflicting architectural decisions among team members?</summary>
 
-### How do you handle conflicting architectural decisions among team members?
+### Как you handle conflicting architectural decisions among team members?
 
 **Definition:**
 
@@ -2821,9 +2802,9 @@ ADR пишут предложениями, которые заинтересов
 </details>
 
 <details>
-<summary>What is the importance and usage of architecture decision records (ADRs)?</summary>
+<summary>Что такое the importance and usage of architecture decision records (ADRs)?</summary>
 
-### What is the importance and usage of architecture decision records (ADRs)?
+### Что такое the importance and usage of architecture decision records (ADRs)?
 
 **Definition:**
 
@@ -2858,9 +2839,9 @@ We will ...
 </details>
 
 <details>
-<summary>How do you ensure team-wide comprehension and adherence to the defined software architecture?</summary>
+<summary>Как you ensure team-wide comprehension and adherence to the defined software architecture?</summary>
 
-### How do you ensure team-wide comprehension and adherence to the defined software architecture?
+### Как you ensure team-wide comprehension and adherence to the defined software architecture?
 
 **Definition:**
 
