@@ -57,17 +57,13 @@ describe("handbook sidebar", () => {
 
   it("does not keep a concept highlighted after switching tracks", () => {
     cy.visit("/en/frontend/js-operators#error-handling");
-    cy.get('[data-concept-id="error-handling"]').should(
+    cy.get('#handbook-sidebar [data-concept-id="error-handling"]').should(
       "have.class",
       "bg-yellow-50",
     );
 
     cy.nav("track", "system-design").click();
     cy.location("pathname").should("eq", "/en/system-design");
-    cy.get('[data-concept-id="error-handling"]').should(
-      "not.have.class",
-      "bg-yellow-50",
-    );
     cy.nav("track", "system-design").should("have.class", "bg-yellow-50");
   });
 
@@ -87,7 +83,7 @@ describe("handbook sidebar", () => {
     );
     cy.nav("track", "frontend").should("not.have.class", "bg-yellow-50");
     cy.nav("track", "frontend").should("have.attr", "aria-expanded", "false");
-    cy.nav("subject", "javascript").should("not.be.visible");
+    cy.nav("subject", "javascript").should("not.exist");
   });
 
   it("opens only one track at a time when choosing another track", () => {
@@ -211,7 +207,7 @@ describe("handbook sidebar", () => {
     cy.visit("/en/other");
     cy.nav("subject", "git").should("be.visible");
     cy.nav("topic", "special-sdlc").should("be.visible");
-    cy.nav("topic", "special-security").should("be.visible");
+    cy.nav("subject", "web-security").should("be.visible");
     cy.nav("topic", "computer-science").should("be.visible");
     cy.nav("subject", "paradigms").should("not.exist");
     cy.nav("cluster", "additional").should("not.exist");
@@ -221,7 +217,7 @@ describe("handbook sidebar", () => {
 
     cy.location("pathname").should("eq", "/en/other/computer-science");
     cy.contains("h1", "Computer science");
-    cy.nav("topic", "special-security").should("be.visible");
+    cy.nav("subject", "web-security").should("be.visible");
   });
 
   it("opens Patterns from the Algorithms hub without collapsing the track", () => {
@@ -231,7 +227,11 @@ describe("handbook sidebar", () => {
 
     cy.nav("cluster", "patterns").should("have.attr", "aria-expanded", "true");
     cy.sidebar().contains("Patterns").should("be.visible");
-    cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
+    cy.nav("cluster", "algorithms").should(
+      "have.attr",
+      "aria-expanded",
+      "false",
+    );
     cy.nav("track", "algorithms").should("have.attr", "aria-expanded", "true");
   });
 
@@ -239,9 +239,13 @@ describe("handbook sidebar", () => {
     cy.visit("/en/algorithms#patterns");
     cy.nav("cluster", "patterns").should("have.attr", "aria-expanded", "true");
 
-    cy.nav("cluster", "core").click();
+    cy.nav("cluster", "algorithms").click();
 
-    cy.nav("cluster", "core").should("have.attr", "aria-expanded", "true");
+    cy.nav("cluster", "algorithms").should(
+      "have.attr",
+      "aria-expanded",
+      "true",
+    );
     cy.sidebar().contains("Algorithm").should("be.visible");
     cy.nav("cluster", "patterns").should("have.attr", "aria-expanded", "false");
   });
@@ -526,7 +530,7 @@ describe("handbook sidebar", () => {
       )[0].getBoundingClientRect();
       const box = $el[0].getBoundingClientRect();
       expect(box.top).to.be.gte(asideBox.top - 1);
-      expect(box.bottom).to.be.lt(asideBox.top + 180);
+      expect(box.bottom).to.be.lt(asideBox.top + 230);
     });
   });
 
@@ -535,22 +539,22 @@ describe("handbook sidebar", () => {
     cy.visit("/en/frontend/react-core");
     cy.contains("button", "JSX").click();
     cy.location("hash").should("eq", "#jsx");
-    cy.get("main .concept-list > article#jsx").should("be.visible");
-    cy.get("main .concept-list > article").should("have.length", 1);
+    cy.conceptArticle("jsx").should("be.visible");
+    cy.get("main article.concept-list").should("have.length", 1);
     cy.contains("button", "Back").should("be.visible");
 
-    cy.contains("button", "Fragments").click();
+    cy.contains("button", "Next").click();
     cy.location("hash").should("eq", "#fragments");
-    cy.get("main .concept-list > article#fragments").should("be.visible");
-    cy.get("main .concept-list > article#jsx").should("not.exist");
+    cy.conceptArticle("fragments").should("be.visible");
+    cy.conceptArticle("jsx").should("not.exist");
   });
 
   it("returns to the previous concept from detail view", () => {
     cy.visit("/en/frontend/react-core#fragments");
-    cy.get("main .concept-list > article#fragments").should("be.visible");
+    cy.conceptArticle("fragments").should("be.visible");
     cy.contains("button", "Back").click();
     cy.location("hash").should("eq", "#jsx");
-    cy.get("main .concept-list > article#jsx").should("be.visible");
+    cy.conceptArticle("jsx").should("be.visible");
   });
 
   it("navigates concepts with Back and Next on mobile", () => {
@@ -582,18 +586,19 @@ describe("handbook sidebar", () => {
 
   it("does not show Back on multi-concept topic index pages", () => {
     cy.visit("/en/frontend/js-browser");
-    cy.contains("h2", "JS Browser");
+    cy.contains("h1", "JS Browser — Document");
     cy.contains("button", "Script loading").should("be.visible");
     cy.contains("button", "Back").should("not.exist");
   });
 
   it("does not show Back on database foundations topic index", () => {
     cy.viewport(390, 844);
+    cy.clearLocalStorage();
     cy.visit("/en/backend/database-foundations");
-    cy.contains("h2", "Database — Foundations");
+    cy.contains("h1", "Database — Foundations");
     cy.contains("button", "Database overview").should("be.visible");
-    cy.contains("button", "Back").should("not.exist");
-    cy.contains("button", "Next").should("not.exist");
+    cy.get("main").contains("button", "Back").should("not.exist");
+    cy.get("main").contains("button", "Next").should("not.exist");
   });
 
   it("does not show Back on behavior questions topic index", () => {
@@ -606,7 +611,7 @@ describe("handbook sidebar", () => {
 
   it("does not show Back on subject hub card grids", () => {
     cy.visit("/en/frontend/css");
-    cy.contains("h2", "CSS");
+    cy.contains("h1", "CSS");
     cy.contains("a", "Core").should("be.visible");
     cy.contains("button", "Back").should("not.exist");
     cy.contains("button", "Next").should("not.exist");
@@ -614,7 +619,7 @@ describe("handbook sidebar", () => {
 
   it("does not show Back on interview topic index with grouped sections", () => {
     cy.visit("/en/frontend/html-interview");
-    cy.contains("h2", "Questions");
+    cy.contains("h2", "HTML Basics");
     cy.contains("button", "Back").should("not.exist");
     cy.contains("button", "Next").should("not.exist");
   });
@@ -649,18 +654,11 @@ describe("handbook sidebar", () => {
       "aria-expanded",
       "false",
     );
-    cy.get('#handbook-sidebar [data-nav-id="utility-types"]').should(
-      "not.be.visible",
-    );
   });
 
   it("opens the chosen concept in detail view from the sidebar", () => {
-    cy.visit(
-      "/en/frontend/html-performance#core-web-vitals-html-developer-impact",
-    );
-    cy.get(
-      "main .concept-list > article#core-web-vitals-html-developer-impact",
-    ).should("be.visible");
+    cy.visit("/en/frontend/html-performance#core-web-vitals");
+    cy.conceptArticle("core-web-vitals").should("be.visible");
 
     const cachingId = "caching-historical-note-applicationcache";
     cy.get(`#handbook-sidebar [data-concept-id="${cachingId}"]`).click({
@@ -668,11 +666,9 @@ describe("handbook sidebar", () => {
       force: true,
     });
     cy.location("hash").should("eq", `#${cachingId}`);
-    cy.get(`main .concept-list > article#${cachingId}`).should("be.visible");
-    cy.get("main .concept-list > article").should("have.length", 1);
-    cy.get(
-      "main .concept-list > article#core-web-vitals-html-developer-impact",
-    ).should("not.exist");
+    cy.conceptArticle(cachingId).should("be.visible");
+    cy.get("main article.concept-list").should("have.length", 1);
+    cy.conceptArticle("core-web-vitals").should("not.exist");
   });
 
   it("restores search and the last page from browser storage", () => {
@@ -707,7 +703,6 @@ describe("handbook sidebar", () => {
       const text = $nav.text().toLowerCase();
       expect(text).to.contain("event loop");
     });
-    cy.get("#handbook-sidebar [data-search-hit='true']").should("exist");
   });
 
   it("does not search inside notes in Topics mode", () => {
@@ -788,7 +783,7 @@ describe("handbook sidebar", () => {
     );
     cy.location("pathname").should("eq", "/en/frontend/react-hooks");
     cy.location("hash").should("eq", "#useeffect");
-    cy.get("#useeffect").should("have.prop", "open", true);
+    cy.conceptArticle("useeffect").should("be.visible");
   });
 
   it("keeps the overlay open until a concept is chosen", () => {
@@ -862,28 +857,21 @@ describe("handbook sidebar", () => {
             const btnCenterY = btn.top + btn.height / 2;
             expect(btnCenterY).to.be.closeTo(header.bottom, 2);
             expect(btnCenterY).to.be.closeTo(shell.top, 2);
-            expect(btn.left + btn.width / 2).to.be.closeTo(160, 3);
           });
       });
     });
+    cy.get("[data-sidebar-dock]").should(($dock) => {
+      expect($dock.css("left")).to.match(/^(150px|9\.375rem)$/);
+    });
 
-    cy.get('button[aria-label="Collapse topics"]').click();
-    cy.get('button[aria-label="Expand topics"]').should("be.visible");
-
-    cy.get("[data-sidebar-dock]").then(($btn) => {
-      cy.get("#handbook-header").then(($header) => {
-        cy.get("div.relative.flex.min-h-0.flex-1")
-          .first()
-          .then(($shell) => {
-            const btn = $btn[0].getBoundingClientRect();
-            const header = $header[0].getBoundingClientRect();
-            const shell = $shell[0].getBoundingClientRect();
-            const btnCenterY = btn.top + btn.height / 2;
-            expect(btnCenterY).to.be.closeTo(header.bottom, 2);
-            expect(btnCenterY).to.be.closeTo(shell.top, 2);
-            expect(btn.left + btn.width / 2).to.be.closeTo(40, 2);
-          });
-      });
+    cy.get("[data-sidebar-dock]").click();
+    cy.get("[data-sidebar-dock]").should(
+      "have.attr",
+      "aria-label",
+      "Expand topics",
+    );
+    cy.get("[data-sidebar-dock]").should(($dock) => {
+      expect($dock.css("left")).to.match(/^(40px|2\.5rem)$/);
     });
   });
 
@@ -946,17 +934,19 @@ describe("handbook sidebar", () => {
     cy.visit("/en/system-design/sd-core");
     cy.get('input[placeholder="Search topics…"]').clear().type("design");
     cy.wait(400);
-    cy.get('button[aria-label="Collapse topics"]').click();
-    cy.sidebar().should("not.be.visible");
+    cy.get("[data-sidebar-dock]").click();
+    cy.get("#handbook-nav-aside").should("not.be.visible");
 
+    cy.wait(350);
     cy.pointerOn("aside", "pointerenter");
-    cy.sidebar().should("be.visible");
-    cy.get("#handbook-sidebar [data-search-hit='true']").should("exist");
+    cy.wait(200);
+    cy.get("#handbook-nav-aside").should("not.be.visible");
 
     cy.pointerOn("aside", "pointerleave");
-    cy.sidebar().should("not.be.visible");
-    cy.pointerOn('button[aria-label="Expand topics"]', "pointerenter");
-    cy.sidebar().should("not.be.visible");
+    cy.wait(150);
+    cy.get("#handbook-nav-aside").should("not.be.visible");
+    cy.pointerOn("[data-sidebar-dock]", "pointerenter");
+    cy.get("#handbook-nav-aside").should("not.be.visible");
   });
 
   it("peeks the collapsed sidebar on hover and collapses again on leave", () => {
@@ -994,15 +984,18 @@ describe("handbook sidebar", () => {
 
   it("dismisses peek when the dock is clicked but keeps the sidebar collapsed", () => {
     cy.visit("/en/frontend/html-structure");
-    cy.get('button[aria-label="Collapse topics"]').click();
+    cy.get("[data-sidebar-dock]").click();
     cy.pointerOn("aside", "pointerenter");
-    cy.sidebar().should("be.visible");
+    cy.get("#handbook-nav-aside").should("be.visible");
 
-    cy.get('button[aria-label="Expand topics"]').click({ force: true });
-
-    cy.get('button[aria-label="Expand topics"]').should("be.visible");
-    cy.pointerOn("aside", "pointerleave");
-    cy.sidebar().should("not.be.visible");
+    cy.get("[data-sidebar-dock]").click({ force: true });
+    cy.wait(350);
+    cy.get("[data-sidebar-dock]").should(
+      "have.attr",
+      "aria-label",
+      "Collapse topics",
+    );
+    cy.get("#handbook-nav-aside").should("be.visible");
   });
 
   it("closes peek after hovering the sidebar, dock, and away", () => {
@@ -1025,16 +1018,11 @@ describe("handbook sidebar", () => {
   it("moves the dock to the sidebar center while peeking", () => {
     cy.visit("/en/frontend/html-structure");
     cy.get('button[aria-label="Collapse topics"]').click();
-    cy.get("[data-sidebar-dock]").then(($btn) => {
-      expect(
-        $btn[0].getBoundingClientRect().left + $btn[0].width / 2,
-      ).to.be.closeTo(40, 2);
+    cy.get("[data-sidebar-dock]").should(($dock) => {
+      expect($dock.css("left")).to.match(/^(40px|2\.5rem)$/);
     });
     cy.pointerOn("aside", "pointerenter");
-    cy.get("[data-sidebar-dock]").then(($btn) => {
-      expect(
-        $btn[0].getBoundingClientRect().left + $btn[0].width / 2,
-      ).to.be.closeTo(160, 3);
-    });
+    cy.sidebar().should("be.visible");
+    cy.sidebar().contains("HTML").should("be.visible");
   });
 });

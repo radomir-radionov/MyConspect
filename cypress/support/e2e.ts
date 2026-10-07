@@ -1,7 +1,14 @@
-function nav(kind: "track" | "subject" | "cluster" | "topic", id: string) {
+function nav(
+  kind: "track" | "subject" | "cluster" | "topic" | "section",
+  id: string,
+) {
   return cy.get(
     `#handbook-sidebar a[data-nav="${kind}"][data-nav-id="${id}"], #handbook-sidebar button[data-nav="${kind}"][data-nav-id="${id}"]`,
   );
+}
+
+function conceptArticle(id: string) {
+  return cy.get(`main article#${id}`);
 }
 
 function sidebar() {
@@ -41,9 +48,10 @@ declare global {
   namespace Cypress {
     interface Chainable {
       nav(
-        kind: "track" | "subject" | "cluster" | "topic",
+        kind: "track" | "subject" | "cluster" | "topic" | "section",
         id: string,
       ): Chainable<JQuery<HTMLElement>>;
+      conceptArticle(id: string): Chainable<JQuery<HTMLElement>>;
       sidebar(): Chainable<JQuery<HTMLElement>>;
       pointerOn(
         selector: string,
@@ -55,6 +63,7 @@ declare global {
 }
 
 Cypress.Commands.add("nav", nav);
+Cypress.Commands.add("conceptArticle", conceptArticle);
 Cypress.Commands.add("sidebar", sidebar);
 Cypress.Commands.add("pointerOn", pointerOn);
 Cypress.Commands.add("mainScroller", mainScroller);
