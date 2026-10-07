@@ -1,10 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  measureNavChromeInset,
   resolveStickyTopPx,
   stickyVarsEqual,
   writeStickyVars,
 } from "./sidebarSticky";
+
+test("measureNavChromeInset returns 0 when chrome is missing", () => {
+  assert.equal(measureNavChromeInset(null), 0);
+});
 
 test("stickyVarsEqual is true for the same keys and values", () => {
   assert.equal(

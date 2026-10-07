@@ -205,7 +205,7 @@ Interview: name the three eras. Prefer JSON when multiple clients share one API;
 
 **Sources:**
 
-[Doka — How web apps work](https://doka.guide/tools/web-app-works/) · Types: [MPA vs SPA](./6_web_api_apps.md#12-types-of-web-apps) · AJAX: [3_js_async.md](./3_js_async.md)
+[Doka — How web apps work](https://doka.guide/tools/web-app-works/) · Types: [MPA vs SPA](./6_web_api_apps.md#12-types-of-web-apps) · AJAX: [JS Async](./3_js_async_await.md)
 
 ---
 

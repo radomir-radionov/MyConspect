@@ -470,7 +470,7 @@ if (age >= 18) {
 | `for...in` | Ключи объекта (с `hasOwn`) |
 | `switch` | Многие дискретные равные значения |
 
-**When to use:** Массивы → `for...of` or `map`; объекты → `Object.entries` + `for...of`; перечисления → `switch`; обычай/`function*` последовательности → [Итераторы](#итераторы); асинхронные циклы → см. [3_js_async.md](./3_js_async.md).
+**When to use:** Массивы → `for...of` or `map`; объекты → `Object.entries` + `for...of`; перечисления → `switch`; обычай/`function*` последовательности → [Итераторы](#итераторы); асинхронные циклы → см. [JS Async](./3_js_async_await.md).
 
 **Pluses and minuses:**
 

@@ -329,7 +329,7 @@ Split deploy with `needs: [test]` on another job. Secrets: `${{ secrets.* }}`, n
 - Anchors `&name` mark a node; aliases `*name` reuse it (like a named copy / JS spread of a value). Merge key `<<: *name` copies mapping keys; later keys override. `<<` is a **YAML 1.1** feature (dropped in 1.2); GitHub Actions, Compose, and many parsers still support it.
 - A document root may be a mapping, sequence, or scalar.
 
-YAML allows comments; JSON does not. YAML strings may be unquoted; JSON strings must use double quotes. JSON (RFC 8259) also allows a scalar root; YAML is still preferred for human-edited configs. JSON is the interchange format for APIs (`JSON.parse` / `stringify`) — see [JSON](./3_js_async.md#json).
+YAML allows comments; JSON does not. YAML strings may be unquoted; JSON strings must use double quotes. JSON (RFC 8259) also allows a scalar root; YAML is still preferred for human-edited configs. JSON is the interchange format for APIs (`JSON.parse` / `stringify`) — see [JSON](./3_js_variables.md#json).
 
 **When to use:**
 

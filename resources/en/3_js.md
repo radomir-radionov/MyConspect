@@ -68,7 +68,7 @@ Covers the ECMAScript language, object model, browser runtime (DOM/BOM/events), 
 | **Functions**              | Declarations, arrows, `this`, HOF, `call`/`apply`/`bind` → [functions](./3_js_functions.md)                                                                                                                                                           |
 | **OOP**                    | Prototypes, classes, descriptors, GC, `this` → [oop](./3_js_oop.md); design & SOLID → [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop)                                                                                       |
 | **Browser**                | [Document](./3_js_browser.md), [Events](./3_js_events.md), storage / CORS / [`URL` / `URLSearchParams`](./3_js_browser_extra.md#url--urlsearchparams) → [additional](./3_js_browser_extra.md) · anatomy → [Web API](./6_web_api_core.md#uri-url--urn) |
-| **Async**                  | Event loop, promises, `async/await` → [async](./3_js_async.md)                                                                                                                                                                                        |
+| **Async**                  | [Event loop](./3_js_async_event_loop.md), [callbacks](./3_js_async_callbacks.md), [promises](./3_js_async_promises.md), [`async/await`](./3_js_async_await.md), [APIs](./3_js_async_apis.md) · [hub](./3_js_async.md)                                 |
 | **Additional**             | `Intl`, RegExp, Signals (TC39), `eval` → [additional](./3_js_extra.md)                                                                                                                                                                                |
 
 ### Navigation
@@ -79,7 +79,9 @@ Covers the ECMAScript language, object model, browser runtime (DOM/BOM/events), 
 | [Core — operators & loops](./3_js_operators.md) | [Core — array](./3_js_array.md)                      |
 | [Core — functions](./3_js_functions.md)         | [Core — classes & objects](./3_js_oop.md)            |
 | [Browser — Document](./3_js_browser.md)         | [Browser — Events](./3_js_events.md)                 |
-| [Browser — Additional](./3_js_browser_extra.md) | [Async — promises & fetch](./3_js_async.md)          |
+| [Browser — Additional](./3_js_browser_extra.md) | [Async — event loop](./3_js_async_event_loop.md)     |
+| [Async — callbacks](./3_js_async_callbacks.md)  | [Async — promises](./3_js_async_promises.md)         |
+| [Async — await](./3_js_async_await.md)          | [Async — APIs](./3_js_async_apis.md)                 |
 | [Additional](./3_js_extra.md)                   | [Interview — questions](./3_js_interview.md)         |
 | [Interview hub](./0_interview.md)               |                                                      |
 

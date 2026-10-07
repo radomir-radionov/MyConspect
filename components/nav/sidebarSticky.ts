@@ -105,6 +105,21 @@ export function writeStickyVars(
   return next;
 }
 
+export function measureNavChromeInset(navElement?: HTMLElement | null): number {
+  if (navElement === null) {
+    return 0;
+  }
+  const nav = navElement ?? document.getElementById(HANDBOOK_SIDEBAR_ID);
+  if (!nav) {
+    return 0;
+  }
+  const chrome = nav.querySelector<HTMLElement>("[data-nav-chrome]");
+  if (!chrome) {
+    return 0;
+  }
+  return Math.max(0, Math.round(chrome.offsetHeight));
+}
+
 export function measureStickyPathVars(
   navElement?: HTMLElement | null,
 ): StickyVars {
@@ -112,8 +127,9 @@ export function measureStickyPathVars(
   if (!nav) {
     return {};
   }
-  const { inset, gap } = stickySpacing(nav);
-  const vars: Record<string, string> = {};
+  const inset = measureNavChromeInset(nav);
+  const { gap } = stickySpacing(nav);
+  const vars: Record<string, string> = { "--nav-sticky-inset": `${inset}px` };
   let top = inset;
   for (const element of pathElements(nav)) {
     vars[topVarName(element)] = `${top}px`;

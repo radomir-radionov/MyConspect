@@ -265,7 +265,7 @@ module.exports = {
 #### Common pitfalls
 
 - **Need to `export` only for tests** — either the function should already be public, or it should not be unit-tested (test through the public API).
-- **Import side effects** — modules that touch DOM/globals on load are hard to test; prefer pure functions, effects at the edge ([Side effects](./3_js_async.md#side-effects)).
+- **Import side effects** — modules that touch DOM/globals on load are hard to test; prefer pure functions, effects at the edge ([Side effects](./3_js_async_callbacks.md#side-effects)).
 - **`fetch` polyfill vs mock** — real requests are integration tests; unit tests should not require the network.
 - **jsdom ≠ Chrome** — no real layout, incomplete Web APIs; full pages → [E2E](./7_special_testing_layers.md#e2e-testing). Real `fetch` → [integration](./7_special_testing_layers.md#integration-testing), not a unit test.
 - **`jest.mock` path** must match the module the SUT imports.

@@ -187,7 +187,8 @@ const SUBJECTS_BASE: readonly Subject[] = [
       {
         id: "async",
         title: "Async",
-        blurb: "Event loop, promises, and fetch.",
+        blurb:
+          "Event loop, callbacks, promises, async/await, and browser APIs.",
       },
       {
         id: "additional",
@@ -802,6 +803,7 @@ const SUBJECTS_BASE: readonly Subject[] = [
 
 const HUB_HREFS: Readonly<Record<string, string>> = {
   "3_js.md": "/frontend/javascript",
+  "3_js_async.md": "/frontend/javascript",
   "1_html.md": "/frontend/html",
   "2_css.md": "/frontend/css",
   "4_react.md": "/frontend/react",
@@ -1102,10 +1104,42 @@ const TOPICS_BASE: Topic[] = [
     grouping: { subject: "javascript", cluster: "browser" },
   },
   {
-    slug: "js-async",
-    file: "3_js_async.md",
-    title: "Async",
-    blurb: "Event loop, promises, and fetch.",
+    slug: "js-async-event-loop",
+    file: "3_js_async_event_loop.md",
+    title: "Event Loop",
+    blurb: "Call stack, microtasks, macrotasks, and execution order.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "async" },
+  },
+  {
+    slug: "js-async-callbacks",
+    file: "3_js_async_callbacks.md",
+    title: "Callbacks",
+    blurb: "Sync vs async, callbacks, AJAX, and side effects.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "async" },
+  },
+  {
+    slug: "js-async-promises",
+    file: "3_js_async_promises.md",
+    title: "Promises",
+    blurb: "States, chaining, static methods, and error handling.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "async" },
+  },
+  {
+    slug: "js-async-await",
+    file: "3_js_async_await.md",
+    title: "Async / Await",
+    blurb: "Sequential and parallel flows, iterators, and top-level await.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "async" },
+  },
+  {
+    slug: "js-async-apis",
+    file: "3_js_async_apis.md",
+    title: "Async APIs",
+    blurb: "Timers, fetch, AbortController, and requestIdleCallback.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "async" },
   },
@@ -3119,10 +3153,17 @@ export function subjectClusterCards(subject: Subject): readonly {
   });
 }
 
-function clustersWithTopics(subject: Subject): readonly TopicCluster[] {
-  return subject.clusters.filter(
-    (cluster) => topicsForCluster(subject, cluster.id).length > 0,
-  );
+function clustersWithTopics(
+  subject: Subject,
+  options?: { readonly includeQuestionClusters?: boolean },
+): readonly TopicCluster[] {
+  const includeQuestionClusters = options?.includeQuestionClusters ?? false;
+  return subject.clusters.filter((cluster) => {
+    if (!includeQuestionClusters && isTrackQuestionCluster(cluster.id)) {
+      return false;
+    }
+    return topicsForCluster(subject, cluster.id).length > 0;
+  });
 }
 
 function isSubjectRootCluster(cluster: TopicCluster): boolean {

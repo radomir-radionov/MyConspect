@@ -6,7 +6,7 @@
 
 ### Related docs
 
-- [Типы данных и переменные JS](./3_js_variables.md) · [Стек и куча](./3_js_variables.md#memory-stack-heap) · [globalThis](./3_js_variables.md#globalthis) · [Операторы и циклы JS](./3_js_operators.md) · [Ошибка обработка](./3_js_operators.md#error-handling) · [Итераторы](./3_js_operators.md#iterators) · [JS-массивы](./3_js_array.md) · [JS Дополнительно](./3_js_extra.md) · [JS-функции](./3_js_functions.md) · [JS ООП](./3_js_oop.md); [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md) · [Стек вызовов](./3_js_async.md#call-stack)- [TypeScript](./5_ts.md) · [Веб-API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Процесс и потоки](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [Vue](./4_vue.md) · [ООП и SOLID](./7_special_engineering.md#объектно-ориентированное-программирование-oop) · [Информатика](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
+- [Типы данных и переменные JS](./3_js_variables.md) · [Стек и куча](./3_js_variables.md#memory-stack-heap) · [globalThis](./3_js_variables.md#globalthis) · [Операторы и циклы JS](./3_js_operators.md) · [Ошибка обработка](./3_js_operators.md#error-handling) · [Итераторы](./3_js_operators.md#iterators) · [JS-массивы](./3_js_array.md) · [JS Дополнительно](./3_js_extra.md) · [JS-функции](./3_js_functions.md) · [JS ООП](./3_js_oop.md); [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md) · [Стек вызовов](./3_js_async_event_loop.md#call-stack)- [TypeScript](./5_ts.md) · [Веб-API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Процесс и потоки](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [Vue](./4_vue.md) · [ООП и SOLID](./7_special_engineering.md#объектно-ориентированное-программирование-oop) · [Информатика](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
 
 ### Main concepts
 
@@ -26,7 +26,7 @@
 
 Стек и куча → [Типы данных и переменные](./3_js_variables.md#memory-stack-heap). Обработка ошибок → [Операторы и циклы](./3_js_operators.md#error-handling). Итераторы и генераторы → [Операторы и циклы](./3_js_operators.md#iterators).Родственные основные темы: [Типы данных и переменные](./3_js_variables.md) · [Операторы и циклы](./3_js_operators.md) · [Массив](./3_js_array.md) · [Функции](./3_js_functions.md) · [Классы и объекты](./3_js_oop.md).
 
-Также обсуждались темы: **JIT**, **строгий режим**, **ESM**. Типы/stack-heap/переменные/область действия/ `globalThis` / замыкания → [3_js_variables.md](./3_js_variables.md); Операторы/циклы/ошибки → [3_js_operators.md](./3_js_operators.md); Массивы → [3_js_array.md](./3_js_array.md); Intl/RegExp/Сигналы → [3_js_extra.md](./3_js_extra.md); цикл событий → [3_js_async.md](./3_js_async.md); GC/Прокси/глубокое копирование → [3_js_oop.md](./3_js_oop.md); парадигмы → [7_special_cs.md](./7_special_cs.md).
+Также обсуждались темы: **JIT**, **строгий режим**, **ESM**. Типы/stack-heap/переменные/область действия/ `globalThis` / замыкания → [3_js_variables.md](./3_js_variables.md); Операторы/циклы/ошибки → [3_js_operators.md](./3_js_operators.md); Массивы → [3_js_array.md](./3_js_array.md); Intl/RegExp/Сигналы → [3_js_extra.md](./3_js_extra.md); цикл событий → [JS Async](./3_js_async_await.md); GC/Прокси/глубокое копирование → [3_js_oop.md](./3_js_oop.md); парадигмы → [7_special_cs.md](./7_special_cs.md).
 
 <a name="core"></a>
 

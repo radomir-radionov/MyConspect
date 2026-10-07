@@ -24,6 +24,21 @@ test("subjectClusterCards includes cluster blurb for single-topic clusters", () 
   }
 });
 
+test("subjectClusterCards omits interview and tasks clusters from conspect hubs", () => {
+  const html = SUBJECTS.find((subject) => subject.slug === "html");
+  assert.ok(html);
+  const cards = subjectClusterCards(html);
+  assert.equal(
+    cards.some((entry) => entry.cluster.id === "interview"),
+    false,
+  );
+  assert.equal(
+    cards.some((entry) => entry.cluster.id === "tasks"),
+    false,
+  );
+  assert.ok(cards.some((entry) => entry.cluster.id === "additional"));
+});
+
 test("trackBrowseCards includes subject and topic blurbs", () => {
   const cards = trackBrowseCards("frontend");
   assert.ok(cards.length > 0);

@@ -276,11 +276,16 @@ export const TopicSidebar = memo(function TopicSidebar({
         aria-label={chrome.topicsNav}
         className="relative isolate px-2 py-3"
       >
-        <div data-nav-sticky-cover="" aria-hidden="true" />
-        <div className="mb-3 px-2">
-          <SectionSwitcher sections={sections} chrome={chrome} />
+        <div
+          data-nav-chrome=""
+          className="-mx-2 -mt-3 mb-3 bg-(--chrome-surface) px-2 pt-3"
+        >
+          <div className="mb-3 px-2">
+            <SectionSwitcher sections={sections} chrome={chrome} />
+          </div>
+          <BookmarksPanel chrome={chrome} onNavigate={onNavigate} />
         </div>
-        <BookmarksPanel chrome={chrome} onNavigate={onNavigate} />
+        <div data-nav-sticky-cover="" aria-hidden="true" />
         {filtered.length === 0 ? (
           <p className="px-2 text-sm text-zinc-500 dark:text-zinc-400">
             {mode === "notes" ? chrome.searchNotesEmpty : chrome.searchEmpty}
@@ -367,6 +372,15 @@ function StickyPathStyles({ revision }: { revision: string }) {
 
   useEffect(() => {
     const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
+    const chrome = document.querySelector<HTMLElement>(
+      `#${HANDBOOK_SIDEBAR_ID} [data-nav-chrome]`,
+    );
+    const resizeObserver =
+      chrome &&
+      new ResizeObserver(() => {
+        syncPath();
+      });
+    resizeObserver?.observe(chrome);
     let frame = 0;
     const onScroll = () => {
       if (frame !== 0) {
@@ -392,6 +406,7 @@ function StickyPathStyles({ revision }: { revision: string }) {
     scroller?.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", syncPath);
     return () => {
+      resizeObserver?.disconnect();
       scroller?.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", syncPath);
       window.cancelAnimationFrame(frame);

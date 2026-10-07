@@ -650,13 +650,25 @@ body {
   cursor: pointer;
 }
 
-#handbook-nav-aside [data-nav-sticky-cover] {
+#handbook-nav-aside [data-nav-chrome] {
   position: sticky;
   top: 0;
+  z-index: 30;
+  background: var(--chrome-surface);
+}
+
+#handbook-nav-aside [data-nav-sticky-cover] {
+  /* --nav-sticky-cover is the scroller-bottom edge; subtract inset for height. */
+  --nav-sticky-cover-height: max(
+    0px,
+    calc(var(--nav-sticky-cover) - var(--nav-sticky-inset))
+  );
+  position: sticky;
+  top: var(--nav-sticky-inset);
   z-index: 18;
-  height: var(--nav-sticky-cover);
+  height: var(--nav-sticky-cover-height);
   width: calc(100% + 1rem);
-  margin: 0 -0.5rem calc(-1 * var(--nav-sticky-cover));
+  margin: 0 -0.5rem calc(-1 * var(--nav-sticky-cover-height));
   /* Match path chrome so gaps between pinned rows never show scrolled concept text. */
   background: var(--path-bg);
   pointer-events: none;

@@ -110,9 +110,9 @@ const groups: readonly NavGroup[] = [
               href: "/frontend/javascript#async",
               topics: [
                 {
-                  slug: "js-async",
-                  href: "/frontend/js-async",
-                  title: "Async",
+                  slug: "js-async-promises",
+                  href: "/frontend/js-async-promises",
+                  title: "Promises",
                   blurb: "",
                   concepts: [],
                 },
@@ -427,11 +427,12 @@ test("multi-topic clusters stay in the trail", () => {
 });
 
 test("JavaScript Async does not nest under Additional", () => {
-  assert.deepEqual(trail("/frontend/js-async"), [
+  assert.deepEqual(trail("/frontend/js-async-promises"), [
     "Home",
     "Frontend",
     "JavaScript",
     "Async",
+    "Promises",
   ]);
 });
 

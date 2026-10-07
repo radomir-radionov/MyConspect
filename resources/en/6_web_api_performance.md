@@ -657,7 +657,7 @@ Search, cart, checkout, filters, autocomplete. Measure field first (`web-vitals`
 Other techniques:
 
 - Debounce `input`; throttle `scroll`/`resize`.
-- Abort stale `fetch` with `AbortController` — [3_js_async.md](./3_js_async.md#abortcontroller).
+- Abort stale `fetch` with `AbortController` — [AbortController](./3_js_async_apis.md#abortcontroller).
 - Prefer one-shot `setTimeout` over leftover `setInterval`; move heavy timer work to a Worker.
 - Animate `transform`/`opacity` in CSS; JS on `width`/`top`/`box-shadow` forces layout — [2_css.md](./2_css.md).
 - Batch DOM: **all reads, then all writes**.

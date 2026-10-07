@@ -561,7 +561,7 @@ async function runJobs(jobQueue, deadline = 50) {
 Другие методы:
 
 - Отказ от дребезга `input`; дроссель `scroll`/`resize`.
-- Прервать устаревание `fetch` с `AbortController` — [3_js_async.md](./3_js_async.md#abortcontroller).
+- Прервать устаревание `fetch` с `AbortController` — [AbortController](./3_js_async_apis.md#abortcontroller).
 - Предпочитаю одноразовый `setTimeout` сверх остатков `setInterval`; перенести тяжелую работу по таймеру на работника.
 - Анимировать `transform`/`opacity` в CSS; JS включен `width`/`top`/`box-shadow` Расположение сил — [2_css.md](./2_css.md).
 - Пакетный DOM: **все читает, затем все записывает**.

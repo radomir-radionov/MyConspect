@@ -66,7 +66,7 @@
 | **Функции**                  | Декларации, стрелы, `this`, ХОФ, `call`/`apply`/`bind` → [функции](./3_js_functions.md)                                                                                                                                                                   |
 | **ООП**                      | Прототипы, классы, дескрипторы, GC, `this` → [oop](./3_js_oop.md); дизайн и SOLID → [ООП и SOLID](./7_special_engineering.md#объектно-ориентированное-программирование-oop)                                                                               |
 | **Браузер**                  | [Документ](./3_js_browser.md), [События](./3_js_events.md), хранилище /CORS/[`URL` / `URLSearchParams`](./3_js_browser_extra.md#url--urlsearchparams) → [дополнительно](./3_js_browser_extra.md) · анатомия → [Веб-API](./6_web_api_core.md#uri-url--urn) |
-| **Асинхронный**              | Цикл событий, обещания, `async/await` → [async](./3_js_async.md)                                                                                                                                                                                          |
+| **Асинхронный**              | [Event loop](./3_js_async_event_loop.md), [callbacks](./3_js_async_callbacks.md), [promises](./3_js_async_promises.md), [`async/await`](./3_js_async_await.md), [APIs](./3_js_async_apis.md) · [hub](./3_js_async.md)                                     |
 | **Дополнительно**            | `Intl`, RegExp, Сигналы (TC39), `eval` → [дополнительно](./3_js_extra.md)                                                                                                                                                                                 |
 
 ### Navigation
@@ -77,7 +77,9 @@
 | [Ядро — операторы и циклы](./3_js_operators.md)    | [Ядро — массив](./3_js_array.md)                       |
 | [Ядро — функции](./3_js_functions.md)              | [Ядро — классы и объекты](./3_js_oop.md)               |
 | [Браузер — Документ](./3_js_browser.md)            | [Браузер — События](./3_js_events.md)                  |
-| [Браузер — Дополнительно](./3_js_browser_extra.md) | [Async — обещания и выборка](./3_js_async.md)          |
+| [Браузер — Дополнительно](./3_js_browser_extra.md) | [Async — event loop](./3_js_async_event_loop.md)       |
+| [Async — callbacks](./3_js_async_callbacks.md)     | [Async — promises](./3_js_async_promises.md)           |
+| [Async — await](./3_js_async_await.md)             | [Async — APIs](./3_js_async_apis.md)                   |
 | [Дополнительно](./3_js_extra.md)                   | [Интервью — вопросы](./3_js_interview.md)              |
 | [Центр интервью](./0_interview.md)                 |                                                        |
 

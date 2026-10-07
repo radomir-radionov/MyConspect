@@ -469,7 +469,7 @@ if (age >= 18) {
 | `for...in` | Object keys (with `hasOwn`) |
 | `switch` | Many discrete equal values |
 
-**When to use:** Arrays → `for...of` or `map`; objects → `Object.entries` + `for...of`; enums → `switch`; custom/`function*` sequences → [Iterators](#iterators); async loops → see [3_js_async.md](./3_js_async.md).
+**When to use:** Arrays → `for...of` or `map`; objects → `Object.entries` + `for...of`; enums → `switch`; custom/`function*` sequences → [Iterators](#iterators); async loops → see [JS Async](./3_js_async_await.md).
 
 **Pluses and minuses:**
 

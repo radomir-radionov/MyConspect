@@ -210,7 +210,7 @@ const obj = {
 | Async callback | `setTimeout`, event handlers   |
 | Error-first    | Node-style `(err, data)`       |
 
-**When to use:** Array methods, event APIs, legacy Node APIs. Prefer `async/await` for new async chains (see [3_js_async.md](./3_js_async.md)).
+**When to use:** Array methods, event APIs, legacy Node APIs. Prefer `async/await` for new async chains (see [JS Async](./3_js_async_await.md)).
 
 **Pluses and minuses:**
 
@@ -828,7 +828,7 @@ sayHi.counter; // 1
 
 **Definition:** `function*` returns an iterator; `yield` pauses and `.next()` resumes.
 
-Full essay (iterable protocol, custom iterators, `for...of`): [Iterators and generators](./3_js_operators.md#iterators). Async generators: [Async iterators](./3_js_async.md).
+Full essay (iterable protocol, custom iterators, `for...of`): [Iterators and generators](./3_js_operators.md#iterators). Async generators: [Async iterators](./3_js_async_await.md).
 
 **Sources:** [javascript.info/generators](https://javascript.info/generators)
 

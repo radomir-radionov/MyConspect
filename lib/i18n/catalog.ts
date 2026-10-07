@@ -135,6 +135,18 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Editor and browser developer tools.":
     "Редактор и инструменты разработчика в браузере.",
   "Event loop, promises, and fetch.": "Event loop, промисы и fetch.",
+  "Event loop, callbacks, promises, async/await, and browser APIs.":
+    "Event loop, колбэки, промисы, async/await и браузерные API.",
+  "Call stack, microtasks, macrotasks, and execution order.":
+    "Стек вызовов, microtasks, macrotasks и порядок выполнения.",
+  "Sync vs async, callbacks, AJAX, and side effects.":
+    "Sync vs async, колбэки, AJAX и побочные эффекты.",
+  "States, chaining, static methods, and error handling.":
+    "Состояния, цепочки, статические методы и обработка ошибок.",
+  "Sequential and parallel flows, iterators, and top-level await.":
+    "Последовательные и параллельные потоки, итераторы и top-level await.",
+  "Timers, fetch, AbortController, and requestIdleCallback.":
+    "Таймеры, fetch, AbortController и requestIdleCallback.",
   "Express, auth, validation, Koa, NestJS, and runtime choice.":
     "Express, auth, валидация, Koa, NestJS и выбор рантайма.",
   "Express, NestJS, auth, and validation.":
