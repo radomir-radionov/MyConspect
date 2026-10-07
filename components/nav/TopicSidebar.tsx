@@ -383,12 +383,13 @@ function StickyPathStyles({ revision }: { revision: string }) {
     const chrome = document.querySelector<HTMLElement>(
       `#${HANDBOOK_SIDEBAR_ID} [data-nav-chrome]`,
     );
-    const resizeObserver =
-      chrome &&
-      new ResizeObserver(() => {
+    let resizeObserver: ResizeObserver | null = null;
+    if (chrome) {
+      resizeObserver = new ResizeObserver(() => {
         syncPath();
       });
-    resizeObserver?.observe(chrome);
+      resizeObserver.observe(chrome);
+    }
     let frame = 0;
     const onScroll = () => {
       if (frame !== 0) {
