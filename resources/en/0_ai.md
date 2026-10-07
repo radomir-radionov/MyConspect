@@ -11,13 +11,14 @@ How to use Cursor, Copilot, Claude Code, and doc tools without shipping hallucin
 | Area         | Topics                                                                                                                                                                                                                                                                                                     |
 | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Product**  | [AI-first approach](#ai-first-approach) vs AI-enabled vs AI-augmented                                                                                                                                                                                                                                      |
-| **Workflow** | [AI-assisted editors](#ai-assisted-workflow-cursor-copilot-claude-code), [Context7 / Ref](#context7-and-reftools), [RTK](#rtk-rust-token-killer)                                                                                                                                                           |
+| **Workflow** | [AI-assisted editors](#ai-assisted-workflow-cursor-copilot-claude-code), [Context window](#context-window-llm-context), [Context7 / Ref](#context7-and-reftools), [RTK](#rtk-rust-token-killer)                                                                                                            |
 | **Cursor**   | [Core](./0_ai_cursor_core.md) · [Skills](./0_ai_cursor_skills.md) · [Rules](./0_ai_cursor_rules.md) · [Plugins](./0_ai_cursor_plugins.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Slash commands](./0_ai_cursor_slash.md) · [Questions](./0_ai_cursor_questions.md) |
 
 ### Sections
 
 - [AI-first approach](#ai-first-approach)
 - [AI-assisted workflow](#ai-assisted-workflow-cursor-copilot-claude-code)
+- [Context window (LLM context)](#context-window-llm-context)
 - [Context7 and Ref.tools](#context7-and-reftools)
 - [RTK](#rtk-rust-token-killer)
 - [Interview Practice](#interview-practice)
@@ -89,6 +90,75 @@ claude -p "Explain why parseTopicMarkdown returns 0 concepts"
 **Thoughts:** For MyConspect day to day, stay in this Agent panel. Treat Copilot/Claude Code as the same _pattern_ (completions vs tools), not as extra magic.
 
 **Sources:** [Cursor rules](https://cursor.com/docs/rules) · [GitHub Copilot Chat in IDEs](https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide) · [Claude Code tools](https://code.claude.com/docs/en/glossary)
+
+</details>
+
+## Context window (LLM context)
+
+<details>
+<summary>Context window (LLM context)</summary>
+
+**Definition:** In an LLM or coding agent, **context** is everything the model can read in the current conversation: system instructions, your messages, attached files, tool definitions, and tool results. It is measured in **tokens** and capped by the model’s **context window**. When the window fills, older material is summarized or dropped — the model does not have perfect memory of the whole thread.
+
+**How it works:**
+
+- **Fixed budget:** each chat shares one context window with the chosen model. Bigger windows cost more and are not infinite.
+- **Context types (context ring):** Cursor splits the budget into categories. Open the ring beside the prompt to see which ones are heavy.
+
+| Category                    | What it is                                                              | Loads when                                                                 |
+| --------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **System prompt**           | Cursor’s base Agent instructions                                        | Every Agent chat                                                           |
+| **Tools**                   | Schemas for Read, Edit, shell, search, Task, …                          | Every Agent chat                                                           |
+| **Rules**                   | Project / user / team `.mdc` constraints                                | Matching rules each turn ([precedence](./0_ai_cursor_rules.md#precedence)) |
+| **Skills**                  | `SKILL.md` playbooks (description in system context; body when invoked) | Relevant skills per turn, or pinned in a Custom Mode                       |
+| **MCP**                     | Connected MCP server catalogs + tool docs                               | When MCP servers are enabled                                               |
+| **Subagents**               | Built-in + custom subagent type docs for Task                           | When subagents are available                                               |
+| **Conversation**            | Your messages, agent replies, tool results                              | Grows every turn                                                           |
+| **Summarized conversation** | Compressed older turns                                                  | After the window nears capacity                                            |
+
+- **`@` attachments (per message, on top of the table):** `@Files` / `@Folders`, `@Terminals`, `@Chats`, `@Commit` / `@Branch` (git diff), `@Browser`. Agent search can replace `@` when you do not know the path yet.
+- **MyConspect repo (project context):**
+
+| Layer           | What you have                                                                                                                | Typical load                                                   |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **Rules**       | `handbook-app`, `study-notes-structure`, `locale-sync`, `resources-official-docs` in `.cursor/rules/`                        | Intelligent — matched by prompt (app vs conspect vs RU sync)   |
+| **Skills**      | `update-conspect`, `sync-locales`, `develop-handbook`, `check-order`, `check-conspect` in `.cursor/skills/`                  | Intelligent — conspect edit, locale sync, handbook app, audits |
+| **Agent files** | `AGENTS.md` / `CLAUDE.md` (Next.js bundled agent rules from `next dev`)                                                      | When the agent reads project instructions                      |
+| **MCP**         | Not committed in-repo — usually Context7, Ref, GitHub, Vercel, browser, … from installed [plugins](./0_ai_cursor_plugins.md) | Per your Cursor settings                                       |
+| **User Rules**  | Personal Cursor settings (e.g. TypeScript style, commit policy)                                                              | Every Agent chat — keep short                                  |
+
+Full rules-vs-skills sizing: [Context optimization](./0_ai_cursor_rules.md#context-optimization).
+
+- **Visibility:** the context ring beside the prompt shows how full the window is. Open it for a per-category breakdown (rules vs conversation vs tools, etc.).
+- **Near the limit:** Cursor compresses older turns into summaries so new work can continue. Details from early in a long chat may be lossy.
+- **Attach on purpose:** `@file`, `@folder`, `@Branch`, `@Terminals`, `@Chats` add specific material. If you are unsure which files matter, skip `@` — the agent can search the repo.
+- **Isolate heavy work:** [subagents](./0_ai_cursor_subagents.md) run in their own window and return a summary; [RTK](#rtk-rust-token-killer) shrinks noisy shell output before the model sees it.
+- **Do not confuse with Context7:** Context7 is an MCP doc-fetch tool named “context”; this section is about the model’s token budget.
+
+**When to use:** Explaining why long Agent chats “forget” earlier decisions, why subagents/RTK exist, or interview questions on LLM limits. Start a **new chat** for unrelated tasks; use `@Chats` to pull selective history instead of pasting whole threads.
+
+**Pluses and minuses:**
+
+| +                                                             | −                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------- |
+| On-demand search means you rarely need to `@` the whole repo. | Tool output and big diffs burn tokens fast.                       |
+| Summarization keeps very long sessions usable.                | Summaries can drop nuance — re-attach key files if quality drops. |
+| Subagents isolate exploration from the main thread.           | Parallel subagents multiply token spend.                          |
+
+**Examples:**
+
+```text
+# Cursor — attach only what you know matters
+@lib/parse/load.ts fix the slugify edge case for Cyrillic
+
+# Heavy grep/log work — delegate or compress
+Task explore subagent: map all search-index callers
+# or: rtk git diff   (see RTK section)
+```
+
+**Thoughts:** Treat context like RAM: keep always-on material ([rules](./0_ai_cursor_rules.md)) short, load playbooks ([skills](./0_ai_cursor_skills.md)) when relevant, and offload noisy work to subagents or RTK. If answers get vague late in a chat, restore a checkpoint or start fresh with `@Chats` + the files that matter.
+
+**Sources:** [Cursor — prompting & context usage](https://cursor.com/docs/agent/prompting) · [Subagents](https://cursor.com/docs/context/subagents) · [Agent best practices](https://cursor.com/blog/agent-best-practices)
 
 </details>
 
@@ -166,6 +236,10 @@ RTK_DISABLED=1 git diff
 **Q: What is an AI-first approach?**
 
 Design the product around a model from the start. **AI-first** = remove the model and there is no product. **AI-enabled** = base product still works (AI is a feature). **AI-augmented** = the _team_ uses AI to build faster. Google used “AI-first” for the shift after mobile-first (Pichai, 2016).
+
+**Q: What is “context” in a coding agent?**
+
+Everything the model sees in one conversation — system instructions, messages, attached files, tool definitions, and tool results — measured in **tokens** inside a fixed **context window**. Cursor’s context ring splits spend into **System prompt**, **Tools**, **Rules**, **Skills**, **MCP**, **Subagents**, **Conversation**, and **Summarized conversation**. In MyConspect, project rules are four `.mdc` files and skills are five playbooks under `.cursor/`. Manage budget with targeted `@` mentions, [subagents](./0_ai_cursor_subagents.md), [RTK](#rtk-rust-token-killer), short rules, and new chats for unrelated work.
 
 **Q: Why fetch docs instead of trusting the model?**
 

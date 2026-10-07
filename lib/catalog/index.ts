@@ -2692,7 +2692,8 @@ const TOPICS_BASE: Topic[] = [
     slug: "ai",
     file: "0_ai.md",
     title: "Workflow",
-    blurb: "AI-first vs augmented, editors, Context7/Ref, and RTK.",
+    blurb:
+      "AI-first vs augmented, editors, context window, Context7/Ref, and RTK.",
     track: "ai",
   },
   grouped(

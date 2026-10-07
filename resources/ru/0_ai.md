@@ -11,13 +11,14 @@
 | Площадь             | Темы                                                                                                                                                                                                                                                                                                     |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Продукт**         | [подход на основе искусственного интеллекта](#ai-first-approach) против использования искусственного интеллекта против расширенного искусственного интеллекта                                                                                                                                            |
-| **Рабочий процесс** | [Редакторы с помощью ИИ](#ai-assisted-workflow-cursor-copilot-claude-code), [Context7 / Ref](#context7-and-reftools), [RTK](#rtk-rust-token-killer)                                                                                                                                                      |
+| **Рабочий процесс** | [Редакторы с помощью ИИ](#ai-assisted-workflow-cursor-copilot-claude-code), [Context window](#context-window-llm-context), [Context7 / Ref](#context7-and-reftools), [RTK](#rtk-rust-token-killer)                                                                                                       |
 | **Курсор**          | [Core](./0_ai_cursor_core.md) · [Навыки](./0_ai_cursor_skills.md) · [Правила](./0_ai_cursor_rules.md) · [Плагины](./0_ai_cursor_plugins.md) · [Subagents](./0_ai_cursor_subagents.md) · [Hooks](./0_ai_cursor_hooks.md) · [Слэш-команды](./0_ai_cursor_slash.md) · [Вопросы](./0_ai_cursor_questions.md) |
 
 ### Sections
 
 - [AI-first approach](#ai-first-approach)
 - [AI-assisted workflow](#ai-assisted-workflow-cursor-copilot-claude-code)
+- [Context window (LLM context)](#context-window-llm-context)
 - [Context7 and Ref.tools](#context7-and-reftools)
 - [RTK](#rtk-rust-token-killer)
 - [Interview Practice](#interview-practice)
@@ -88,6 +89,75 @@ claude -p "Explain why parseTopicMarkdown returns 0 concepts"
 **Thoughts:** Для повседневной работы MyConspect оставайтесь на этой панели агента. Относитесь к коду Copilot/Claude как к одному и тому же _паттерну_ (дополнения и инструменты), а не как к дополнительной магии.
 
 **Sources:** [Правила курсора](https://cursor.com/docs/rules) · [Чат GitHub Copilot в IDE](https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide) · [Инструменты Claude Code](https://code.claude.com/docs/en/glossary)
+
+</details>
+
+## Context window (LLM context)
+
+<details>
+<summary>Context window (LLM context)</summary>
+
+**Definition:** В LLM или coding agent **context** — это всё, что модель видит в текущем разговоре: системные инструкции, ваши сообщения, прикреплённые файлы, определения инструментов и результаты их вызовов. Объём считается в **токенах** и ограничен **context window** модели. Когда окно заполняется, старый материал сжимается или отбрасывается — у модели нет идеальной памяти обо всей ветке чата.
+
+**How it works:**
+
+- **Фиксированный бюджет:** один чат делит одно context window с выбранной моделью. Большие окна дороже и не бесконечны.
+- **Типы context (context ring):** Cursor делит бюджет по категориям. Откройте кольцо рядом с полем ввода, чтобы увидеть, что занимает больше всего.
+
+| Категория                   | Что это                                                           | Когда грузится                                                                    |
+| --------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| **System prompt**           | Базовые инструкции Cursor для Agent                               | Каждый Agent-чат                                                                  |
+| **Tools**                   | Схемы Read, Edit, shell, search, Task, …                          | Каждый Agent-чат                                                                  |
+| **Rules**                   | Ограничения project / user / team в `.mdc`                        | Подходящие rules на каждом ходу ([precedence](./0_ai_cursor_rules.md#precedence)) |
+| **Skills**                  | Playbooks `SKILL.md` (описание в system context; тело при вызове) | Релевантные skills на ходу или закреплены в Custom Mode                           |
+| **MCP**                     | Каталоги и доки инструментов подключённых MCP-серверов            | Когда MCP включены                                                                |
+| **Subagents**               | Доки встроенных и кастомных типов subagent для Task               | Когда subagents доступны                                                          |
+| **Conversation**            | Ваши сообщения, ответы агента, результаты инструментов            | Растёт каждый ход                                                                 |
+| **Summarized conversation** | Сжатые ранние реплики                                             | Когда окно близко к лимиту                                                        |
+
+- **`@` вложения (на сообщение, поверх таблицы):** `@Files` / `@Folders`, `@Terminals`, `@Chats`, `@Commit` / `@Branch` (git diff), `@Browser`. Поиск агента может заменить `@`, если путь неизвестен.
+- **Репозиторий MyConspect (project context):**
+
+| Слой            | Что есть                                                                                                                 | Типичная загрузка                                                |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| **Rules**       | `handbook-app`, `study-notes-structure`, `locale-sync`, `resources-official-docs` в `.cursor/rules/`                     | Intelligent — по промпту (app vs conspect vs RU sync)            |
+| **Skills**      | `update-conspect`, `sync-locales`, `develop-handbook`, `check-order`, `check-conspect` в `.cursor/skills/`               | Intelligent — правки conspect, locale sync, handbook app, аудиты |
+| **Agent files** | `AGENTS.md` / `CLAUDE.md` (правила Next.js от `next dev`)                                                                | Когда агент читает инструкции проекта                            |
+| **MCP**         | Не в репозитории — обычно Context7, Ref, GitHub, Vercel, browser, … из установленных [plugins](./0_ai_cursor_plugins.md) | По настройкам Cursor                                             |
+| **User Rules**  | Личные настройки Cursor (стиль TS, политика коммитов, …)                                                                 | Каждый Agent-чат — держите короткими                             |
+
+Размер rules vs skills: [Context optimization](./0_ai_cursor_rules.md#context-optimization).
+
+- **Видимость:** кольцо context рядом с полем ввода показывает, насколько заполнено окно. Откройте его для разбивки по категориям (rules vs conversation vs tools и т.д.).
+- **У предела:** Cursor сжимает ранние реплики в summary, чтобы можно было продолжать работу. Детали из начала длинного чата могут потеряться.
+- **Прикрепляйте осознанно:** `@file`, `@folder`, `@Branch`, `@Terminals`, `@Chats` добавляют конкретный материал. Если не уверены, какие файлы важны — не `@` весь репозиторий; агент может искать сам.
+- **Изолируйте тяжёлую работу:** [subagents](./0_ai_cursor_subagents.md) работают в своём окне и возвращают summary; [RTK](#rtk-rust-token-killer) сжимает шумный вывод shell до того, как его увидит модель.
+- **Не путать с Context7:** Context7 — MCP-инструмент для документации с именем «context»; этот блок — про токенный бюджет модели.
+
+**When to use:** Объяснить, почему длинный Agent-чат «забывает» ранние решения, зачем нужны subagents/RTK, или на интервью про лимиты LLM. Для **новой задачи** — новый чат; для переноса истории — `@Chats`, а не вставка всего треда.
+
+**Pluses and minuses:**
+
+| +                                                     | −                                                                              |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Поиск по demand редко требует `@` всего репозитория.  | Вывод инструментов и большие diff быстро сжигают токены.                       |
+| Summarization делает очень длинные сессии пригодными. | Summary теряет нюансы — снова прикрепите ключевые файлы, если качество падает. |
+| Subagents изолируют исследование от основного треда.  | Параллельные subagents умножают расход токенов.                                |
+
+**Examples:**
+
+```text
+# Cursor — только то, что точно нужно
+@lib/parse/load.ts fix the slugify edge case for Cyrillic
+
+# Тяжёлый grep/логи — делегировать или сжать
+Task explore subagent: map all search-index callers
+# или: rtk git diff   (см. раздел RTK)
+```
+
+**Thoughts:** Относитесь к context как к RAM: держите always-on материал ([rules](./0_ai_cursor_rules.md)) коротким, подгружайте playbooks ([skills](./0_ai_cursor_skills.md)) по необходимости, шумную работу отдавайте subagents или RTK. Если к концу чата ответы становятся размытыми — checkpoint или новый чат с `@Chats` и нужными файлами.
+
+**Sources:** [Cursor — prompting & context usage](https://cursor.com/docs/agent/prompting) · [Subagents](https://cursor.com/docs/context/subagents) · [Agent best practices](https://cursor.com/blog/agent-best-practices)
 
 </details>
 
@@ -165,6 +235,10 @@ RTK_DISABLED=1 git diff
 **Вопрос: Что такое подход, основанный на искусственном интеллекте?**
 
 С самого начала проектируйте продукт на основе модели. **Сначала искусственный интеллект** = удалите модель, а товара нет. **С поддержкой ИИ** = базовый продукт по-прежнему работает (ИИ — это функция). **дополненный искусственным интеллектом** = _команда_ использует искусственный интеллект для ускорения строительства. Google использовал принцип «сначала искусственный интеллект» для перехода от «сначала мобильных устройств» (Pichai, 2016).
+
+**Вопрос: Что такое «context» в coding agent?**
+
+Всё, что модель видит в одном разговоре — системные инструкции, сообщения, прикреплённые файлы, определения инструментов и их результаты — измеряется в **токенах** внутри фиксированного **context window**. Context ring в Cursor делит расход на **System prompt**, **Tools**, **Rules**, **Skills**, **MCP**, **Subagents**, **Conversation** и **Summarized conversation**. В MyConspect в проекте четыре rules `.mdc` и пять skills в `.cursor/`. Управляйте бюджетом через точечные `@`, [subagents](./0_ai_cursor_subagents.md), [RTK](#rtk-rust-token-killer), короткие rules и новый чат для другой задачи.
 
 **Вопрос: Зачем получать документы вместо того, чтобы доверять модели?**
 
