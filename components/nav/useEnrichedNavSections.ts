@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { isTrackId, type TrackId } from "@/lib/catalog";
 import { isLocale } from "@/lib/i18n/locales";
@@ -37,11 +37,9 @@ export function useEnrichedNavSections(
   const [loadedByTrack, setLoadedByTrack] = useState<
     ReadonlyMap<string, readonly NavGroup[]>
   >(() => new Map());
-  const loadedRef = useRef(loadedByTrack);
-  loadedRef.current = loadedByTrack;
 
   useEffect(() => {
-    if (!activeTrackId || loadedRef.current.has(activeTrackId)) {
+    if (!activeTrackId || loadedByTrack.has(activeTrackId)) {
       return;
     }
     let cancelled = false;
@@ -58,11 +56,11 @@ export function useEnrichedNavSections(
     return () => {
       cancelled = true;
     };
-  }, [activeTrackId, locale]);
+  }, [activeTrackId, locale, loadedByTrack]);
 
   useEffect(() => {
     const preload = () => {
-      const seen = loadedRef.current;
+      const seen = loadedByTrack;
       for (const section of structure) {
         for (const group of section.groups) {
           const trackId = group.id;
@@ -89,7 +87,7 @@ export function useEnrichedNavSections(
     return () => {
       window.cancelIdleCallback?.(handle);
     };
-  }, [structure, locale]);
+  }, [structure, locale, loadedByTrack]);
 
   return useMemo(
     () => enrichNavSections(structure, loadedByTrack),

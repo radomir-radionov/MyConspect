@@ -380,12 +380,10 @@ function SectionClusterList({
 function TopicConceptNav({
   topic,
   concepts,
-  searching = false,
   indentClass = "pl-4",
 }: {
   topic: NavTopic;
   concepts: readonly NavConcept[];
-  searching?: boolean;
   indentClass?: string;
 }) {
   return (
@@ -513,7 +511,6 @@ export function TopicRow({
           <TopicConceptNav
             topic={topic}
             concepts={sidebarConcepts}
-            searching={searching}
             indentClass={conceptIndent}
           />
         </ul>

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  useLayoutEffect,
   useRef,
   useState,
   useSyncExternalStore,
@@ -66,13 +65,6 @@ export function NavFold({
     setPrevOpen(open);
     setExpanded(open || skipMotion);
   }
-
-  useLayoutEffect(() => {
-    if (!open || unbox || skipMotion || expanded) {
-      return;
-    }
-    setExpanded(true);
-  }, [open, unbox, skipMotion, expanded]);
 
   if (!open) {
     return null;

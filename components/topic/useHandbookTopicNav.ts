@@ -26,7 +26,7 @@ import {
   subscribeBookmarks,
 } from "@/lib/nav/bookmarks";
 import { chromeFor } from "@/lib/i18n/chrome";
-import { homeHref, localeFromPathname } from "@/lib/i18n/paths";
+import { localeFromPathname } from "@/lib/i18n/paths";
 import { splitHref } from "@/lib/nav";
 
 export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
@@ -43,7 +43,6 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
   const navGroups = shellNavGroups ?? searchNavGroups;
   const locale = localeFromPathname(pathname);
   const chrome = useMemo(() => chromeFor(locale), [locale]);
-  const home = useMemo(() => homeHref(locale), [locale]);
 
   const bookmarkNavMode = useSyncExternalStore(
     subscribeBookmarkNavMode,
@@ -90,7 +89,6 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
       location.pathname,
       location.hash,
       -1,
-      home,
     );
   }, [
     inBookmarks,
@@ -100,7 +98,6 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
     activeConceptId,
     navGroups,
     inChain,
-    home,
   ]);
 
   const nextHref = useMemo(() => {
@@ -120,7 +117,6 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
       location.pathname,
       location.hash,
       1,
-      home,
     );
   }, [
     inBookmarks,
@@ -130,7 +126,6 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
     activeConceptId,
     navGroups,
     inChain,
-    home,
   ]);
 
   const parentHref = useMemo(() => {

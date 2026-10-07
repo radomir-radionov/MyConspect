@@ -1,9 +1,7 @@
 import {
   INSTRUCTIONS_HREF,
   type Crumb,
-  type NavCluster,
   type NavConcept,
-  type NavEntry,
   type NavGroup,
   type NavTopic,
 } from "@/lib/nav";

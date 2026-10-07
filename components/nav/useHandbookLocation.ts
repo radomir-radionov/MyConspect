@@ -24,7 +24,7 @@ export function useHandbookLocation() {
   const highlightPathname = pendingPathname || pathname;
   const location = useMemo(
     () => handbookLocation(pathname, hash),
-    [pathname, hash, pendingPathname],
+    [pathname, hash],
   );
   const activeConceptId = hashIdFrom(location.hash);
 

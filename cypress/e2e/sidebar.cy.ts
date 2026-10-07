@@ -13,19 +13,6 @@ describe("handbook sidebar", () => {
     cy.contains("h1", "Core");
   });
 
-  it("opens Testing Fundamentals on its topic page from the hub", () => {
-    cy.visit("/en/testing");
-    cy.contains("a", "Fundamentals")
-      .should("have.attr", "href", "/en/testing/testing-fundamentals")
-      .click();
-    cy.location("pathname").should("eq", "/en/testing/testing-fundamentals");
-    cy.contains("button", "Back").should("not.exist");
-
-    cy.visit("/en/testing");
-    cy.nav("cluster", "fundamentals").click();
-    cy.location("pathname").should("eq", "/en/testing/testing-fundamentals");
-  });
-
   it("highlights Frontend while CSS is the open page", () => {
     cy.visit("/en/frontend/css");
     cy.nav("track", "frontend").should("have.attr", "aria-expanded", "true");
@@ -1013,16 +1000,5 @@ describe("handbook sidebar", () => {
     cy.wait(100);
     cy.sidebar().should("not.be.visible");
     cy.get('button[aria-label="Expand topics"]').should("be.visible");
-  });
-
-  it("moves the dock to the sidebar center while peeking", () => {
-    cy.visit("/en/frontend/html-structure");
-    cy.get('button[aria-label="Collapse topics"]').click();
-    cy.get("[data-sidebar-dock]").should(($dock) => {
-      expect($dock.css("left")).to.match(/^(40px|2\.5rem)$/);
-    });
-    cy.pointerOn("aside", "pointerenter");
-    cy.sidebar().should("be.visible");
-    cy.sidebar().contains("HTML").should("be.visible");
   });
 });

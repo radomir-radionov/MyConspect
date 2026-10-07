@@ -441,7 +441,6 @@ export function siblingNavHrefForPath(
   pathname: string,
   hash: string,
   delta: -1 | 1,
-  homeHref: string,
 ): string | null {
   const chain = navChainForPath(groups, pathname, hash);
   if (!chain || chain.length === 0) {

@@ -21,7 +21,7 @@ import { chromeFor } from "@/lib/i18n/chrome";
 import { localeFromPathname } from "@/lib/i18n/paths";
 import { conceptMatchesQuery } from "@/lib/nav";
 import type { ChromeCopy } from "@/lib/nav";
-import type { Concept, InterviewSection } from "@/lib/parse";
+import type { Concept } from "@/lib/parse";
 import { ConceptTitleHeader } from "./ConceptTitleHeader";
 import { PageTitleHeader } from "./PageTitleHeader";
 import { useCodeCopyButtons } from "./useCodeCopyButtons";

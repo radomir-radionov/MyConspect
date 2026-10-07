@@ -302,7 +302,6 @@ describe("handbookNavSections layout", () => {
   });
 
   it("keeps interview sidebar links on interview topics", () => {
-    const sections = handbookNavSections("en");
     const frontend = findGroup("frontend", "interviews");
     assert.ok(frontend);
     assert.equal(

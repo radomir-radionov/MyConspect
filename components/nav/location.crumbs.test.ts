@@ -194,14 +194,14 @@ test("leaf track hub skips duplicate topic index in nav chain", () => {
 
 test("leaf track next from hub opens the first concept", () => {
   assert.equal(
-    siblingNavHrefForPath([leafTrackGroup], "/behavior", "", 1, "/en"),
+    siblingNavHrefForPath([leafTrackGroup], "/behavior", "", 1),
     "/behavior#prep",
   );
 });
 
 test("leaf track next from last concept returns to the topic menu", () => {
   assert.equal(
-    siblingNavHrefForPath([leafTrackGroup], "/behavior", "#tell-me", 1, "/en"),
+    siblingNavHrefForPath([leafTrackGroup], "/behavior", "#tell-me", 1),
     "/behavior",
   );
 });
@@ -225,35 +225,33 @@ test("navChainForPath includes the cluster hub for multi-topic clusters", () => 
 });
 
 test("siblingNavHrefForPath moves within the scoped cluster and wraps next at the end", () => {
-  const home = "/en";
   assert.equal(
-    siblingNavHrefForPath(groups, "/backend/nodejs-core", "", -1, home),
+    siblingNavHrefForPath(groups, "/backend/nodejs-core", "", -1),
     null,
   );
   assert.equal(
-    siblingNavHrefForPath(groups, "/backend/nodejs-core", "", 1, home),
+    siblingNavHrefForPath(groups, "/backend/nodejs-core", "", 1),
     null,
   );
   assert.equal(
-    siblingNavHrefForPath(groups, "/backend/nodejs-http", "", -1, home),
+    siblingNavHrefForPath(groups, "/backend/nodejs-http", "", -1),
     null,
   );
   assert.equal(
-    siblingNavHrefForPath(groups, "/backend/nodejs-http", "", 1, home),
+    siblingNavHrefForPath(groups, "/backend/nodejs-http", "", 1),
     null,
   );
   assert.equal(
-    siblingNavHrefForPath(groups, "/frontend/html-structure", "", 1, home),
+    siblingNavHrefForPath(groups, "/frontend/html-structure", "", 1),
     "/frontend/html-forms",
   );
   assert.equal(
-    siblingNavHrefForPath(groups, "/frontend/html-forms", "", 1, home),
+    siblingNavHrefForPath(groups, "/frontend/html-forms", "", 1),
     "/frontend/html#core",
   );
 });
 
 test("last concept in a topic returns to the topic list before leaving the cluster", () => {
-  const home = "/en";
   const databaseGroups: readonly NavGroup[] = [
     {
       id: "backend",
@@ -322,7 +320,6 @@ test("last concept in a topic returns to the topic list before leaving the clust
       "/backend/database-sql",
       "#postgres",
       1,
-      home,
     ),
     "/backend/database-sql",
   );
