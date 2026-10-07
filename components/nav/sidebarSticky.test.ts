@@ -3,12 +3,19 @@ import test from "node:test";
 import {
   measureNavChromeInset,
   resolveStickyTopPx,
+  shouldReleaseStickyScope,
   stickyVarsEqual,
   writeStickyVars,
 } from "./sidebarSticky";
 
 test("measureNavChromeInset returns 0 when chrome is missing", () => {
   assert.equal(measureNavChromeInset(null), 0);
+});
+
+test("shouldReleaseStickyScope is true when the next track reaches the stack", () => {
+  assert.equal(shouldReleaseStickyScope(270, 277), true);
+  assert.equal(shouldReleaseStickyScope(225, 225), true);
+  assert.equal(shouldReleaseStickyScope(280, 277), false);
 });
 
 test("stickyVarsEqual is true for the same keys and values", () => {

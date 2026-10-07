@@ -6,15 +6,15 @@
 
 ### Related docs
 
-* [Node.js — Core](./8_nodejs_core.md) · [Node.js — Модули](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Дополнительно](./8_nodejs_process.md) · [Node.js — Интервью](./8_nodejs_interview.md)
+- [Node.js — Core](./8_nodejs_core.md) · [Node.js — Модули](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Дополнительно](./8_nodejs_process.md) · [Node.js — Интервью](./8_nodejs_interview.md)
 
 ### Main concepts
 
-| Площадь | Темы |
-| --- | --- |
-| **Пакеты** | npm, пряжа, pnpm, package.json, структура проекта |
-| **Модульные системы** | CommonJS `require`, ЕСМ `import`/`export` |
-| **Встроенные** | libuv, fs, путь, os, http, URL, кластер, Winston |
+| Площадь               | Темы                                              |
+| --------------------- | ------------------------------------------------- |
+| **Пакеты**            | npm, пряжа, pnpm, package.json, структура проекта |
+| **Модульные системы** | CommonJS `require`, ЕСМ `import`/`export`         |
+| **Встроенные**        | libuv, fs, путь, os, http, URL, кластер, Winston  |
 
 ### Sections
 
@@ -34,11 +34,11 @@
 
 Инструменты для установки пакетов, запуска двоичных файлов и управления версиями Node.
 
-| Инструмент | Цель |
-|------|---------|
-| `npm` | менеджер пакетов — установка, публикация, скрипты |
-| `npx` | запускать двоичные файлы пакетов без глобальной установки |
-| `nvm` | переключаться между версиями Node.js для каждого проекта |
+| Инструмент | Цель                                                      |
+| ---------- | --------------------------------------------------------- |
+| `npm`      | менеджер пакетов — установка, публикация, скрипты         |
+| `npx`      | запускать двоичные файлы пакетов без глобальной установки |
+| `nvm`      | переключаться между версиями Node.js для каждого проекта  |
 
 **How it works:** `MAJOR.MINOR.PATCH` — поломка/особенность/исправление.
 
@@ -63,7 +63,6 @@ nvm install 20 && nvm use 20
 
 Менеджеры пакетов для JavaScript. Все используют реестр npm; различаются форматом файла блокировки, скоростью установки и расположением зависимостей.
 
-
 | | НПМ | Пряжа | пнпм |
 | | --- | ----- | ------ |
 | | Заблокировать файл | пакет-lock.json | пряжа.замок | pnpm-lock.yaml |
@@ -86,12 +85,12 @@ nvm install 20 && nvm use 20
 
 `package.json` описывает проект; `node_modules` хранит установленные пакеты; `package-lock.json` точные версии контактов для воспроизводимых установок.
 
-| Поле/файл | Роль |
-|--------------|------|
-| `dependencies` | требуется во время выполнения |
-| `devDependencies` | сборка, тестирование, только проверка |
-| `node_modules` | установленное дерево пакетов |
-| `package-lock.json` | заблокированный график зависимостей |
+| Поле/файл           | Роль                                  |
+| ------------------- | ------------------------------------- |
+| `dependencies`      | требуется во время выполнения         |
+| `devDependencies`   | сборка, тестирование, только проверка |
+| `node_modules`      | установленное дерево пакетов          |
+| `package-lock.json` | заблокированный график зависимостей   |
 
 **Examples:**
 
@@ -113,21 +112,23 @@ npm install -D jest         # devDependencies
 
 Пакет — это распространяемая единица кода (библиотека, модуль или приложение). `require()` (CommonJS) или `import` (ESM) загружает модули; метаданные живут в `package.json`.
 
-| Система | Синтаксис | Заметки |
-|--------|--------|-------|
+| Система  | Синтаксис                  | Заметки                               |
+| -------- | -------------------------- | ------------------------------------- |
 | CommonJS | `const fs = require('fs')` | синхронная нагрузка, `module.exports` |
-| ЕСМ | `import fs from 'fs'` | статический анализ, `export` |
+| ЕСМ      | `import fs from 'fs'`      | статический анализ, `export`          |
 
 **Examples:**
 
 ```js
 // CommonJS
-const express = require('express');
+const express = require("express");
 module.exports = { createApp: () => express() };
 
 // ESM
-import express from 'express';
-export function createApp() { return express(); }
+import express from "express";
+export function createApp() {
+  return express();
+}
 ```
 
 **Sources:** [модули nodejs.org](https://nodejs.org/api/modules.html) · [nodejs.org esm](https://nodejs.org/api/esm.html)
@@ -143,16 +144,16 @@ export function createApp() { return express(); }
 
 **How it works:**
 
-| Аспект | CommonJS | ЕСМ |
-|--------|----------|-----|
-| Синтаксис | `require()`, `module.exports` | `import`, `export` |
-| Загрузка | Синхронный, среда выполнения | Асинхронный, анализируется перед запуском |
-| `this` на высшем уровне | `module.exports` | `undefined` (строгий) |
-| `__dirname` / `__filename` | Доступно | Использовать `import.meta.url` |
-| Импорт JSON | `require('./x.json')` | `import x from './x.json' with { type: 'json' }` |
-| Динамический импорт | `require(dynamic)` | `await import(dynamic)` |
-| Дерево-тряска | Ограниченная | Лучше (статический импорт) |
-| Взаимодействие | ЕСМ может `import` CJS по умолчанию | ЗАО `require()` ESM, только если ESM является асинхронным |
+| Аспект                     | CommonJS                            | ЕСМ                                                       |
+| -------------------------- | ----------------------------------- | --------------------------------------------------------- |
+| Синтаксис                  | `require()`, `module.exports`       | `import`, `export`                                        |
+| Загрузка                   | Синхронный, среда выполнения        | Асинхронный, анализируется перед запуском                 |
+| `this` на высшем уровне    | `module.exports`                    | `undefined` (строгий)                                     |
+| `__dirname` / `__filename` | Доступно                            | Использовать `import.meta.url`                            |
+| Импорт JSON                | `require('./x.json')`               | `import x from './x.json' with { type: 'json' }`          |
+| Динамический импорт        | `require(dynamic)`                  | `await import(dynamic)`                                   |
+| Дерево-тряска              | Ограниченная                        | Лучше (статический импорт)                                |
+| Взаимодействие             | ЕСМ может `import` CJS по умолчанию | ЗАО `require()` ESM, только если ESM является асинхронным |
 
 ```json
 { "type": "module" }
@@ -166,23 +167,23 @@ or `.mjs` расширение. `.cjs` заставляет CommonJS `"type": "m
 
 **Pluses and minuses:**
 
-| + (ЕСМ) | − (ЭСМ) |
-|------------|------------|
-| Стандарт в браузерах и современном Node | Экосистема все еще мигрирует |
-| Верхний уровень `await` | `__dirname` необходим обходной путь |
-| Статический анализ, встряхивание деревьев | Некоторые инструменты ожидают CJS |
+| + (ЕСМ)                                   | − (ЭСМ)                             |
+| ----------------------------------------- | ----------------------------------- |
+| Стандарт в браузерах и современном Node   | Экосистема все еще мигрирует        |
+| Верхний уровень `await`                   | `__dirname` необходим обходной путь |
+| Статический анализ, встряхивание деревьев | Некоторые инструменты ожидают CJS   |
 
 **Examples:**
 
 ```js
 // ESM — dirname equivalent
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Dynamic import in CJS
-const { createServer } = await import('node:http');
+const { createServer } = await import("node:http");
 ```
 
 **Thoughts:** `require` не определен в собственном ESM. Использовать `createRequire(import.meta.url)` от `node:module` для наследия `require` в файлах ESM.
@@ -200,19 +201,19 @@ const { createServer } = await import('node:http');
 
 Общие команды оболочки и npm для разработки Node.js.
 
-| Команда | Цель |
-|---------|---------|
-| `npm i` | установить зависимости из package.json |
-| `npm install -S pkg` | добавить зависимость времени выполнения |
-| `npm install -D pkg` | добавить зависимость от разработчиков |
-| `npm publish` | опубликовать пакет в реестре |
-| `ls` / `ls -la` | список файлов (включая скрытые с помощью `-a`) |
-| `cat file` | распечатать содержимое файла |
-| `touch file` | создать пустой файл |
-| `rm` | удалить файлы/каталоги |
-| `pwd` | распечатать рабочий каталог |
-| `chmod +x file` | сделать файл исполняемым |
-| `history` | список предыдущих команд оболочки |
+| Команда              | Цель                                           |
+| -------------------- | ---------------------------------------------- |
+| `npm i`              | установить зависимости из package.json         |
+| `npm install -S pkg` | добавить зависимость времени выполнения        |
+| `npm install -D pkg` | добавить зависимость от разработчиков          |
+| `npm publish`        | опубликовать пакет в реестре                   |
+| `ls` / `ls -la`      | список файлов (включая скрытые с помощью `-a`) |
+| `cat file`           | распечатать содержимое файла                   |
+| `touch file`         | создать пустой файл                            |
+| `rm`                 | удалить файлы/каталоги                         |
+| `pwd`                | распечатать рабочий каталог                    |
+| `chmod +x file`      | сделать файл исполняемым                       |
+| `history`            | список предыдущих команд оболочки              |
 
 **Examples:**
 
@@ -234,10 +235,10 @@ npm run build
 
 **How it works:**
 
-| Узор | Структура |
-|---------|-----------|
-| МВК | `routes/` → `controllers/` → `models/` |
-| На основе функций | `features/users/`, `features/auth/` |
+| Узор               | Структура                                                                                                                     |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| МВК                | `routes/` → `controllers/` → `models/`                                                                                        |
+| На основе функций  | `features/users/`, `features/auth/`                                                                                           |
 | Чистая архитектура | `domain/`, `use-cases/`, `infrastructure/` — [трехслойные заметки](./7_special_architecture.md#three-layer-architecture-doka) |
 
 **Examples:**
@@ -267,41 +268,11 @@ src/
 
 ### libuv
 
-**Definition:** Кроссплатформенная библиотека C, обеспечивающая асинхронный ввод-вывод Node, цикл событий, пул потоков, сетевые операции и операции с файловой системой.
+**Definition:** Кроссплатформенная C-библиотека под Node — не модуль `node:`, который можно импортировать.
 
-**How it works:**
+Полный разбор: [libuv](./8_nodejs_core.md#libuv) в **Node.js — Core** (цикл событий, пул потоков, `UV_THREADPOOL_SIZE`, сеть vs файловый I/O).
 
-1. JavaScript вызывает асинхронный API (например. `fs.readFile`).
-2. Привязка узла руками работает к libuv.
-3. **Пул потоков** (4 потока по умолчанию) выполняет блокировку вызовов ОС — файловый ввод-вывод, DNS, шифрование, сжатие.
-4. Сетевой ввод-вывод использует примитивы ОС (`epoll`, `kqueue`, `IOCP`) — нет потока на соединение.
-5. Завершенный обратный вызов ставится в очередь; **цикл событий** запускает его в основном потоке JS.
-
-| Особенность | Описание |
-|---------|-------------|
-| Цикл событий | Планирует таймеры, обратные вызовы ввода-вывода, обратные вызовы проверки и закрытия |
-| Пул потоков | Разгружает блокировку работы(`UV_THREADPOOL_SIZE` настроить) |
-| Сеть | Абстракции TCP/UDP |
-| Файловая система | Асинхронные операции файловой системы через пул потоков |
-
-**When to use:** Увеличивать `UV_THREADPOOL_SIZE` для тяжелых рабочих нагрузок шифрования/FS. JS с привязкой к процессору → `worker_threads`, а не только больший пул потоков.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Однопоточный JS + эффективный ввод-вывод | Нагружающий процессор JS по-прежнему блокирует цикл |
-| Кроссплатформенная абстракция | Размер пула потоков ограничивает параллельную fs/crypto |
-
-**Examples:**
-
-```bash
-UV_THREADPOOL_SIZE=8 node server.js
-```
-
-**Thoughts:** Именно libuv является причиной того, что Node быстр для серверов, связанных с вводом-выводом, но плох для работы с одним потоком, связанной с процессором.
-
-**Sources:** [документация libuv](http://docs.libuv.org/en/v1.x/) · [цикл событий nodejs.org](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick)
+**Sources:** [libuv design](https://docs.libuv.org/en/v1.x/design.html) · [Node.js — Core: libuv](./8_nodejs_core.md#libuv)
 
 </details>
 
@@ -320,11 +291,11 @@ UV_THREADPOOL_SIZE=8 node server.js
 - Типичные API-интерфейсы ОС: `open`, `close`, `read`/`write` (относительно курсора), `seek`, `delete`, `rename`, атрибуты чтения/записи.
 - **Unix:** устройства, каталоги и каналы представляют собой специальные файлы; программы используют одни и те же файловые API. Mount присоединяет другой том к одному дереву (`mount` / `umount`).
 
-| Модель | Идея | Где |
-|-------|------|--------|
-| Квартира (один уровень) | Уникальные имена в одном пространстве имен | Миниатюрные устройства (прошивка бытовой техники) |
-| Фиксированная глубина | Несколько жестко запрограммированных уровней | Маршрутизаторы, телевизоры |
-| Иерархический | Дерево: **корневой каталог**, каталоги, **файлы как листья** | Настольные компьютеры, серверы, телефоны |
+| Модель                  | Идея                                                         | Где                                               |
+| ----------------------- | ------------------------------------------------------------ | ------------------------------------------------- |
+| Квартира (один уровень) | Уникальные имена в одном пространстве имен                   | Миниатюрные устройства (прошивка бытовой техники) |
+| Фиксированная глубина   | Несколько жестко запрограммированных уровней                 | Маршрутизаторы, телевизоры                        |
+| Иерархический           | Дерево: **корневой каталог**, каталоги, **файлы как листья** | Настольные компьютеры, серверы, телефоны          |
 
 Стратегия коллизий: запретить повторяющиеся имена **в одном и том же каталоге**.Одно и то же базовое имя в разных каталогах уникально благодаря **полному пути**. Сепараторы: `/` (Unix) против `\` (Окна). Относительные имена объединяются в текущий (или домашний) каталог.
 
@@ -336,19 +307,19 @@ UV_THREADPOOL_SIZE=8 node server.js
 - Окна зарезервированы в именах: `\ / : * ? " < > |`. Пробелы нуждаются в кавычках. Устаревшая версия **MAX_PATH ≈ 260**; Windows 10+ может снять эту проблему, но старые клиенты все равно могут выйти из строя.
 - **Расширение** (`.png`, `.exe`) — это подсказка для пользователей и приложений по умолчанию. Настоящий тип живет в атрибутах/магических байтах. Двоичные файлы Unix часто не имеют расширения **no**; `.sh` / `.conf` являются условностью.
 
-| Режиссёр | Роль |
-|-----|------|
-| `/bin`, `/sbin` | Основные двоичные файлы пользователя/системы |
-| `/boot` | Загрузчик + образы ядра |
-| `/dev` | Файлы устройств |
-| `/etc` | Конфигурация для конкретного хоста |
-| `/home`, `/root` | Дома пользователей; дом корня |
-| `/lib` | Общие библиотеки, модули ядра |
-| `/mnt`, `/opt` | Временные крепления; дополнительные пакеты |
-| `/proc`, `/sys` | Виртуальные файлы ядра/sysfs |
-| `/tmp` | Временное |
-| `/usr` | Иерархия второго уровня (разделяемая) |
-| `/var` | Переменные данные (логи, катушка) |
+| Режиссёр         | Роль                                         |
+| ---------------- | -------------------------------------------- |
+| `/bin`, `/sbin`  | Основные двоичные файлы пользователя/системы |
+| `/boot`          | Загрузчик + образы ядра                      |
+| `/dev`           | Файлы устройств                              |
+| `/etc`           | Конфигурация для конкретного хоста           |
+| `/home`, `/root` | Дома пользователей; дом корня                |
+| `/lib`           | Общие библиотеки, модули ядра                |
+| `/mnt`, `/opt`   | Временные крепления; дополнительные пакеты   |
+| `/proc`, `/sys`  | Виртуальные файлы ядра/sysfs                 |
+| `/tmp`           | Временное                                    |
+| `/usr`           | Иерархия второго уровня (разделяемая)        |
+| `/var`           | Переменные данные (логи, катушка)            |
 
 **When to use:**
 
@@ -357,13 +328,13 @@ UV_THREADPOOL_SIZE=8 node server.js
 **Пример** (Узел — открыть/стат/закрыть; предпочитают `FileHandle` так что fd не утек):
 
 ```js
-import { open } from 'node:fs/promises';
-import path from 'node:path';
+import { open } from "node:fs/promises";
+import path from "node:path";
 
-const abs = path.resolve('notes', 'todo.txt'); // OS-correct join
+const abs = path.resolve("notes", "todo.txt"); // OS-correct join
 let file;
 try {
-  file = await open(abs, 'r');
+  file = await open(abs, "r");
   const stat = await file.stat(); // size, mtime, mode, …
   console.log(stat.size);
 } finally {
@@ -377,11 +348,11 @@ try {
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| Иерархия + путь = уникальные имена | Разделители путей и регистр различаются в зависимости от ОС |
-| Unix «все есть файл» объединяет API | Должен закрыть fds или вызвать утечку до сбоя |
-| Относительные деревья проектов легко перемещаются | Буферизация может задержать длительную запись |
+| +                                                 | −                                                           |
+| ------------------------------------------------- | ----------------------------------------------------------- |
+| Иерархия + путь = уникальные имена                | Разделители путей и регистр различаются в зависимости от ОС |
+| Unix «все есть файл» объединяет API               | Должен закрыть fds или вызвать утечку до сбоя               |
+| Относительные деревья проектов легко перемещаются | Буферизация может задержать длительную запись               |
 
 **Thoughts:** Файл представляет собой именованный поток байтов + метаданные; файловая система — это дерево (и API), которые делают этот поток переносимым между дисками.
 
@@ -398,20 +369,20 @@ try {
 
 Встроенный модуль для чтения, записи и управления файлами и каталогами. Модель ОС (пути, атрибуты, буферизация, fds): [Файлы и файловые системы](#files--file-systems).
 
-| Стиль API | Методы |
-|-----------|---------|
-| Обратный звонок | `fs.readFile`, `fs.writeFile`, `fs.mkdir` |
-| Обещание | `fs.promises.readFile` |
-| Синхронизировать | `fs.readFileSync` (блокирует цикл событий) |
-| Поток | `fs.createReadStream`, `fs.createWriteStream` |
+| Стиль API        | Методы                                        |
+| ---------------- | --------------------------------------------- |
+| Обратный звонок  | `fs.readFile`, `fs.writeFile`, `fs.mkdir`     |
+| Обещание         | `fs.promises.readFile`                        |
+| Синхронизировать | `fs.readFileSync` (блокирует цикл событий)    |
+| Поток            | `fs.createReadStream`, `fs.createWriteStream` |
 
 **Examples:**
 
 ```js
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from "node:fs/promises";
 
-const data = await readFile('./config.json', 'utf8');
-await writeFile('./out.txt', data);
+const data = await readFile("./config.json", "utf8");
+await writeFile("./out.txt", data);
 ```
 
 **Sources:** [nodejs.org fs](https://nodejs.org/api/fs.html)
@@ -427,18 +398,18 @@ await writeFile('./out.txt', data);
 
 Служебный модуль операционной системы — информация о платформе, памяти, процессорах, сетевых интерфейсах.
 
-| Метод | Возврат |
-|--------|---------|
-| `os.platform()` | `'darwin'`, `'linux'`, `'win32'` |
-| `os.arch()` | `'x64'`, `'arm64'` |
-| `os.totalmem()` / `os.freemem()` | память в байтах |
-| `os.cpus()` | Информация о ядре процессора |
-| `os.networkInterfaces()` | IP/MAC-адреса |
+| Метод                            | Возврат                          |
+| -------------------------------- | -------------------------------- |
+| `os.platform()`                  | `'darwin'`, `'linux'`, `'win32'` |
+| `os.arch()`                      | `'x64'`, `'arm64'`               |
+| `os.totalmem()` / `os.freemem()` | память в байтах                  |
+| `os.cpus()`                      | Информация о ядре процессора     |
+| `os.networkInterfaces()`         | IP/MAC-адреса                    |
 
 **Examples:**
 
 ```js
-import os from 'node:os';
+import os from "node:os";
 console.log(os.hostname(), os.freemem());
 ```
 
@@ -455,20 +426,20 @@ console.log(os.hostname(), os.freemem());
 
 Кроссплатформенные утилиты для манипулирования путями к файлам и каталогам. Абсолютное против относительного, `/` vs `\`: [Файлы и файловые системы](#files--file-systems).
 
-| Метод | Цель |
-|--------|---------|
-| `path.join(...)` | объединить сегменты |
-| `path.resolve(...)` | абсолютный путь |
-| `path.dirname(p)` | родительский каталог |
-| `path.basename(p)` | имя файла |
-| `path.extname(p)` | расширение |
+| Метод               | Цель                 |
+| ------------------- | -------------------- |
+| `path.join(...)`    | объединить сегменты  |
+| `path.resolve(...)` | абсолютный путь      |
+| `path.dirname(p)`   | родительский каталог |
+| `path.basename(p)`  | имя файла            |
+| `path.extname(p)`   | расширение           |
 
 **Examples:**
 
 ```js
-import path from 'node:path';
+import path from "node:path";
 
-const file = path.join(__dirname, 'data', 'users.json');
+const file = path.join(__dirname, "data", "users.json");
 const ext = path.extname(file); // '.json'
 ```
 
@@ -485,19 +456,19 @@ const ext = path.extname(file); // '.json'
 
 Основной модуль для создания HTTP-серверов и клиентов без фреймворка.
 
-| Возможность | API |
-|------------|-----|
-| Сервер | `http.createServer((req, res) => {})` |
-| Запрос | `http.request(options, callback)` |
-| Ответ | `res.writeHead`, `res.write`, `res.end` |
+| Возможность | API                                     |
+| ----------- | --------------------------------------- |
+| Сервер      | `http.createServer((req, res) => {})`   |
+| Запрос      | `http.request(options, callback)`       |
+| Ответ       | `res.writeHead`, `res.write`, `res.end` |
 
 **Examples:**
 
 ```js
-import { createServer } from 'node:http';
+import { createServer } from "node:http";
 
 createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.writeHead(200, { "Content-Type": "application/json" });
   res.end(JSON.stringify({ ok: true }));
 }).listen(8080);
 ```
@@ -515,18 +486,18 @@ createServer((req, res) => {
 
 `URL` class (WHATWG) анализирует и создает URL-адреса. Наследие `url` модуль еще доступен; предпочитать `new URL()` для современного кода. Части адреса (схема, полномочия, запрос, хеш): [URI, URL и URN](./6_web_api_core.md#uri-url--urn). Помощники браузера: [URL / URLSearchParams](./3_js_browser_extra.md#url--urlsearchparams).
 
-| Метод/API | Цель |
-|--------------|---------|
-| `new URL(str, base)` | разобрать URL на компоненты |
-| `url.pathname`, `.searchParams` | части доступа |
-| `url.href` | полная строка URL |
+| Метод/API                       | Цель                        |
+| ------------------------------- | --------------------------- |
+| `new URL(str, base)`            | разобрать URL на компоненты |
+| `url.pathname`, `.searchParams` | части доступа               |
+| `url.href`                      | полная строка URL           |
 
 **Examples:**
 
 ```js
-const url = new URL('https://api.example.com/users?page=1');
-console.log(url.hostname);              // api.example.com
-console.log(url.searchParams.get('page')); // '1'
+const url = new URL("https://api.example.com/users?page=1");
+console.log(url.hostname); // api.example.com
+console.log(url.searchParams.get("page")); // '1'
 ```
 
 **Sources:** [URL-адрес nodejs.org](https://nodejs.org/api/url.html)
@@ -542,22 +513,22 @@ console.log(url.searchParams.get('page')); // '1'
 
 Популярная библиотека журналирования с несколькими транспортами, уровнями и пользовательскими форматами.
 
-| Особенность | Описание |
-|---------|-------------|
-| Уровни | ошибка, предупреждение, информация, подробный, отладка |
-| Транспорт | консоль, файл, база данных |
-| Форматы | временные метки, JSON, пользовательские |
+| Особенность | Описание                                               |
+| ----------- | ------------------------------------------------------ |
+| Уровни      | ошибка, предупреждение, информация, подробный, отладка |
+| Транспорт   | консоль, файл, база данных                             |
+| Форматы     | временные метки, JSON, пользовательские                |
 
 **Examples:**
 
 ```js
-import winston from 'winston';
+import winston from "winston";
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   transports: [new winston.transports.Console()],
 });
-logger.info('Server started');
+logger.info("Server started");
 ```
 
 **Sources:** [github.com/winstonjs/winston](https://github.com/winstonjs/winston)
@@ -573,25 +544,24 @@ logger.info('Server started');
 
 Создает несколько рабочих процессов Node, использующих один и тот же порт сервера — задействует все ядра ЦП.
 
-| Роль | Описание |
-|------|-------------|
-| Мастер | разъединяет рабочих, распределяет соединения |
-| Рабочий | обрабатывает запросы на общий порт |
+| Роль    | Описание                                     |
+| ------- | -------------------------------------------- |
+| Мастер  | разъединяет рабочих, распределяет соединения |
+| Рабочий | обрабатывает запросы на общий порт           |
 
 **Examples:**
 
 ```js
-import cluster from 'node:cluster';
-import { createServer } from 'node:http';
+import cluster from "node:cluster";
+import { createServer } from "node:http";
 
 if (cluster.isPrimary) {
   for (let i = 0; i < 4; i++) cluster.fork();
 } else {
-  createServer((req, res) => res.end('ok')).listen(3000);
+  createServer((req, res) => res.end("ok")).listen(3000);
 }
 ```
 
 **Sources:** [кластер nodejs.org](https://nodejs.org/api/cluster.html)
 
 </details>
-

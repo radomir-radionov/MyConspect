@@ -130,7 +130,8 @@ export function measureStickyPathVars(
   const inset = measureNavChromeInset(nav);
   const { gap } = stickySpacing(nav);
   const vars: Record<string, string> = { "--nav-sticky-inset": `${inset}px` };
-  let top = inset;
+  // Same gap as between pinned rows, so the first item does not sit on the chrome.
+  let top = inset + gap;
   for (const element of pathElements(nav)) {
     vars[topVarName(element)] = `${top}px`;
     top += element.offsetHeight + gap;
@@ -151,8 +152,7 @@ export function measureStickyPathVars(
 /**
  * The cover masks rows scrolling under the pinned path. It may only be as tall
  * as the rows that are pinned right now, otherwise it blanks out rows that are
- * still sitting in normal flow. It ends one gap below the lowest pinned row so
- * scrolling rows never touch it.
+ * still sitting in normal flow. It ends one gap below the lowest pinned row.
  */
 export function resolveStickyTopPx(
   varName: string,
@@ -174,6 +174,80 @@ function stickyTopPx(
   return resolveStickyTopPx(topVarName(element), vars, scrollerStyle);
 }
 
+/**
+ * Viewport Y where the pinned path ends: last path row's sticky top, its height,
+ * and the same gap used between pinned rows.
+ */
+export function stickyStackBottomPx(
+  nav: HTMLElement,
+  scroller: HTMLElement,
+): number {
+  const paths = pathElements(nav);
+  const last = paths[paths.length - 1];
+  if (!last) {
+    return scroller.getBoundingClientRect().top;
+  }
+  const top = resolveStickyTopPx(
+    topVarName(last),
+    undefined,
+    getComputedStyle(scroller),
+  );
+  const { gap } = stickySpacing(nav);
+  return scroller.getBoundingClientRect().top + top + last.offsetHeight + gap;
+}
+
+/** True when the next track would scroll into the pinned path stack. */
+export function shouldReleaseStickyScope(
+  nextTrackTop: number,
+  stickyBottom: number,
+): boolean {
+  return nextTrackTop <= stickyBottom + 2;
+}
+
+/**
+ * Slide the pinned path up with the scroll once the next first-tier track
+ * reaches it, so Frontend/HTML/Core leave with their track instead of vanishing
+ * or staying on top of Backend.
+ */
+export function syncStickyScopeRelease(
+  navElement?: HTMLElement | null,
+): number {
+  const nav = navElement ?? document.getElementById(HANDBOOK_SIDEBAR_ID);
+  const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
+  if (!nav || !scroller) {
+    return 0;
+  }
+  const scope = nav.querySelector<HTMLElement>("[data-nav-sticky-scope]");
+  const nextHeader = scope?.nextElementSibling?.querySelector<HTMLElement>(
+    '[data-nav="track"], [data-nav="root-section"]',
+  );
+  const overflow =
+    scope && nextHeader
+      ? Math.max(
+          0,
+          stickyStackBottomPx(nav, scroller) -
+            nextHeader.getBoundingClientRect().top,
+        )
+      : 0;
+  const shift = overflow > 0 ? `translateY(-${overflow}px)` : "";
+  for (const element of pathElements(nav)) {
+    if (element.style.transform !== shift) {
+      element.style.transform = shift;
+    }
+  }
+  for (const guide of nav.querySelectorAll<HTMLElement>("[data-nav-guide]")) {
+    if (guide.style.transform !== shift) {
+      guide.style.transform = shift;
+    }
+  }
+  if (overflow > 0) {
+    scroller.setAttribute("data-nav-sticky-sliding", "");
+  } else {
+    scroller.removeAttribute("data-nav-sticky-sliding");
+  }
+  return overflow;
+}
+
 export function measureStickyCover(
   navElement?: HTMLElement,
   vars?: StickyVars,
@@ -184,17 +258,24 @@ export function measureStickyCover(
     return 0;
   }
   const scrollerStyle = getComputedStyle(scroller);
-  const { gap } = stickySpacing(nav);
   const scrollerTop = scroller.getBoundingClientRect().top;
+  const { gap } = stickySpacing(nav);
   let cover = 0;
   for (const element of pathElements(nav)) {
     const rect = element.getBoundingClientRect();
     const relativeTop = rect.top - scrollerTop;
-    const pinned =
-      relativeTop <= stickyTopPx(element, scrollerStyle, vars) + 0.5;
+    const stickyTop = stickyTopPx(element, scrollerStyle, vars);
+    const pinned = relativeTop <= stickyTop + 0.5;
     if (pinned) {
-      cover = Math.max(cover, relativeTop + rect.height + gap);
+      const shifted = element.style.transform.includes("translateY");
+      const bottom = shifted
+        ? relativeTop + rect.height
+        : Math.max(relativeTop + rect.height, stickyTop + rect.height);
+      cover = Math.max(cover, bottom);
     }
+  }
+  if (cover > 0) {
+    cover += gap;
   }
   return Math.max(0, Math.round(cover));
 }

@@ -187,10 +187,10 @@ The event loop is the libuv cycle that runs timers, I/O callbacks, and close cal
 
 **How it works:**
 
-- Each turn walks libuv phases, in order: timers (`setTimeout`, `setInterval`), pending callbacks, idle/prepare (internal), poll (wait for and run I/O), check (`setImmediate`), then close callbacks such as a socket `close`.
+- Each turn (Node.js 20+ / libuv 1.45) walks: pending callbacks, idle/prepare (internal), poll, check (`setImmediate`), close callbacks, then timers. Due timers can also run once before the first iteration. Full picture: [Event loop](./8_nodejs_core.md#event-loop).
 - Poll is the phase that blocks when nothing else is ready, up to the next timer. It is not a single “callback queue” that every API shares.
 - `process.nextTick` is not a phase. Its queue is drained after the current operation, before the loop continues. A nextTick callback that schedules another nextTick can starve I/O.
-- Promise reactions and `queueMicrotask` use the microtask queue. In CommonJS, nextTick callbacks run before those microtasks. The microtask queue is drained again after the nextTick queue.
+- Promise reactions and `queueMicrotask` use the microtask queue. Node drains it immediately after the nextTick queue. In CommonJS, nextTick runs first. During ESM evaluation the module body is already a microtask, so `queueMicrotask` runs before `nextTick`.
 - `setTimeout(fn, 0)` is a timer. `setImmediate(fn)` is the check phase. Their order against each other is not fixed when both are scheduled from the main module, because the timer may or may not be due before the first poll.
 - A long synchronous loop blocks every phase, including new connections. The loop is per thread: a worker has its own loop and does not share the parent’s queues.
 - Browser words such as “macrotask” do not name Node’s phases. Timers, poll callbacks, and `setImmediate` are separate libuv queues.
@@ -1743,16 +1743,18 @@ it("GET / returns ok", async () => {
   try {
     const { port } = server.address();
     const { statusCode, body } = await new Promise((resolve, reject) => {
-      http.get({ hostname: "127.0.0.1", port, path: "/" }, (res) => {
-        const chunks = [];
-        res.on("data", (chunk) => chunks.push(chunk));
-        res.on("end", () => {
-          resolve({
-            statusCode: res.statusCode,
-            body: Buffer.concat(chunks).toString("utf8"),
+      http
+        .get({ hostname: "127.0.0.1", port, path: "/" }, (res) => {
+          const chunks = [];
+          res.on("data", (chunk) => chunks.push(chunk));
+          res.on("end", () => {
+            resolve({
+              statusCode: res.statusCode,
+              body: Buffer.concat(chunks).toString("utf8"),
+            });
           });
-        });
-      }).on("error", reject);
+        })
+        .on("error", reject);
     });
     assert.equal(statusCode, 200);
     assert.equal(body, "ok");
@@ -1807,9 +1809,10 @@ const pool = mysql.createPool({
   database: process.env.MYSQL_DATABASE,
 });
 
-const [rows] = await pool.execute("SELECT id, title FROM notes WHERE id = ?", [
-  1,
-]);
+const [rows] = await pool.execute(
+  "SELECT id, title FROM notes WHERE id = ?",
+  [1],
+);
 console.log(rows);
 ```
 
@@ -4653,7 +4656,10 @@ function send(res, status, body) {
 const server = http.createServer((req, res) => {
   const url = new URL(req.url ?? "/", "http://localhost");
   if (req.method === "GET" && url.pathname === "/notes") {
-    send(res, 200, { items: [], limit: Number(url.searchParams.get("limit") ?? 20) });
+    send(res, 200, {
+      items: [],
+      limit: Number(url.searchParams.get("limit") ?? 20),
+    });
     return;
   }
   send(res, 404, { error: "not found" });

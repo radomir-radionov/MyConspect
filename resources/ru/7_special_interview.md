@@ -294,9 +294,9 @@ const bus = {
 </details>
 
 <details>
-  <summary>Architecture vs design patterns?</summary>
+  <summary>Архитектура против design patterns?</summary>
 
-### Architecture vs design patterns?
+### Архитектура против design patterns?
 
 **Architecture** = whole-system rules for how modules talk (MVC roles, domain vs infra layers, Flux/Redux one-way flow, monolith vs many apps). **Patterns** = named local recipes (Adapter, Strategy, Observer). House plan vs how you pour concrete. Not a goal — skip on a prototype; add when change, tests, and onboarding hurt.
 
@@ -360,9 +360,9 @@ Redux cycle — view reads store → user event → `dispatch(action)` → reduc
 </details>
 
 <details>
-  <summary>DRY, KISS, YAGNI?</summary>
+  <summary>СУХОЙ, ПОЦЕЛУЙ, ЯГНИ?</summary>
 
-### DRY, KISS, YAGNI?
+### СУХОЙ, ПОЦЕЛУЙ, ЯГНИ?
 
 **Definition:**
 
@@ -414,9 +414,9 @@ function charge(amount) {
 </details>
 
 <details>
-  <summary>Creational patterns — factory vs AF vs builder vs singleton?</summary>
+  <summary>Шаблоны создания — factory против AF против builder против singleton?</summary>
 
-### Creational patterns — factory vs AF vs builder vs singleton?
+### Шаблоны создания — factory против AF против builder против singleton?
 
 **Definition:** Creational patterns hide object construction. The four you will name in interviews: **Factory** (recipe), **Abstract Factory** (family), **Builder** (steps), **Singleton** (one instance). See [Creational cheat sheet](./7_special_patterns.md#creational-patterns--cheat-sheet).
 

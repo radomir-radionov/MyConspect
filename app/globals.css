@@ -628,18 +628,19 @@ body {
 }
 
 #handbook-nav-aside {
-  --nav-sticky-inset: 0px;
+  --nav-chrome-h: 0px;
+  --nav-sticky-inset: var(--nav-chrome-h);
   --nav-sticky-gap: 6px;
   --nav-sticky-track: 28px;
   --nav-sticky-row: 40px;
   --nav-sticky-cover: 0px;
 }
 
-/* Room to scroll trailing topics clear of the sticky path at the bottom. */
-#handbook-nav-aside #handbook-sidebar {
-  padding-bottom: calc(
-    var(--nav-sticky-inset) + var(--nav-sticky-track) +
-      (6 * var(--nav-sticky-row)) + (7 * var(--nav-sticky-gap)) + 1.5rem
+/* While the path slides off with its track, don't let the mask cover the next track. */
+#handbook-nav-aside[data-nav-sticky-sliding] [data-nav-sticky-cover] {
+  --nav-sticky-cover-height: max(
+    0px,
+    calc(var(--nav-sticky-cover) - var(--nav-sticky-inset))
   );
 }
 
@@ -658,7 +659,7 @@ body {
 }
 
 #handbook-nav-aside [data-nav-sticky-cover] {
-  /* --nav-sticky-cover is the scroller-bottom edge; subtract inset for height. */
+  /* --nav-sticky-cover is the bottom edge of the last pinned row. */
   --nav-sticky-cover-height: max(
     0px,
     calc(var(--nav-sticky-cover) - var(--nav-sticky-inset))
@@ -692,6 +693,22 @@ body {
   --nav-guide-top: var(--nav-guide-track, var(--nav-sticky-cover));
   width: 2px;
   margin-left: -10px;
+}
+
+/* The active track list is display:contents so the pinned path can slide.
+   Put the indent back on the nested rows. The track header stays full width. */
+#handbook-nav-aside li[data-nav-sticky-scope] > ul > li a,
+#handbook-nav-aside li[data-nav-sticky-scope] > ul > li button {
+  margin-left: 0.875rem;
+  width: calc(100% - 0.875rem);
+}
+
+#handbook-nav-aside li[data-nav-sticky-scope] > ul > [data-nav-guide="track"] {
+  margin-left: 0.375rem;
+}
+
+#handbook-nav-aside li[data-nav-sticky-scope] [data-nav-guide="subject"] {
+  margin-left: 1.125rem;
 }
 
 #handbook-nav-aside [data-nav-guide="subject"] {
@@ -782,6 +799,12 @@ body {
     )
   );
   z-index: 21;
+}
+
+/* Rows that are not the pinned path scroll under the sticky stack. */
+#handbook-nav-aside [data-nav]:not([data-nav-path="true"]) {
+  position: relative;
+  z-index: 1;
 }
 
 /* Concepts put data-nav-path on the <a>, not the display:contents <li>. */

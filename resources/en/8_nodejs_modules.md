@@ -6,15 +6,15 @@ Package managers, CommonJS/ESM, and built-in modules (`fs`, `path`, `http`, and 
 
 ### Related docs
 
-* [Node.js — Core](./8_nodejs_core.md) · [Node.js — Modules](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Additional](./8_nodejs_process.md) · [Node.js — Interview](./8_nodejs_interview.md)
+- [Node.js — Core](./8_nodejs_core.md) · [Node.js — Modules](./8_nodejs_modules.md) · [Node.js — HTTP](./8_nodejs_http.md) · [Node.js — Additional](./8_nodejs_process.md) · [Node.js — Interview](./8_nodejs_interview.md)
 
 ### Main concepts
 
-| Area | Topics |
-| --- | --- |
-| **Packages** | npm, yarn, pnpm, package.json, project structure |
-| **Module systems** | CommonJS `require`, ESM `import`/`export` |
-| **Built-ins** | libuv, fs, path, os, http, URL, cluster, winston |
+| Area               | Topics                                           |
+| ------------------ | ------------------------------------------------ |
+| **Packages**       | npm, yarn, pnpm, package.json, project structure |
+| **Module systems** | CommonJS `require`, ESM `import`/`export`        |
+| **Built-ins**      | libuv, fs, path, os, http, URL, cluster, winston |
 
 ### Sections
 
@@ -34,8 +34,8 @@ Package managers, CommonJS/ESM, and built-in modules (`fs`, `path`, `http`, and 
 
 Tooling for installing packages, running binaries, and managing Node versions.
 
-| Tool | Purpose |
-|------|---------|
+| Tool  | Purpose                                     |
+| ----- | ------------------------------------------- |
 | `npm` | package manager — install, publish, scripts |
 | `npx` | run package binaries without global install |
 | `nvm` | switch between Node.js versions per project |
@@ -63,12 +63,12 @@ nvm install 20 && nvm use 20
 
 Package managers for JavaScript. All use the npm registry; differ in lockfile format, install speed, and dependency layout.
 
-| | npm | Yarn | pnpm |
-|---|-----|------|------|
-| Lock file | package-lock.json | yarn.lock | pnpm-lock.yaml |
-| Install speed | good | fast (parallel) | very fast (content-addressable store) |
-| Disk usage | per-project copies | per-project copies | shared store, hard links |
-| Default with Node | yes | no | no |
+|                   | npm                | Yarn               | pnpm                                  |
+| ----------------- | ------------------ | ------------------ | ------------------------------------- |
+| Lock file         | package-lock.json  | yarn.lock          | pnpm-lock.yaml                        |
+| Install speed     | good               | fast (parallel)    | very fast (content-addressable store) |
+| Disk usage        | per-project copies | per-project copies | shared store, hard links              |
+| Default with Node | yes                | no                 | no                                    |
 
 **When to use:** stick with team/project convention; pnpm for monorepos and disk efficiency.
 
@@ -85,11 +85,11 @@ Package managers for JavaScript. All use the npm registry; differ in lockfile fo
 
 `package.json` describes the project; `node_modules` holds installed packages; `package-lock.json` pins exact versions for reproducible installs.
 
-| Field / file | Role |
-|--------------|------|
-| `dependencies` | required at runtime |
-| `devDependencies` | build, test, lint only |
-| `node_modules` | installed package tree |
+| Field / file        | Role                    |
+| ------------------- | ----------------------- |
+| `dependencies`      | required at runtime     |
+| `devDependencies`   | build, test, lint only  |
+| `node_modules`      | installed package tree  |
 | `package-lock.json` | locked dependency graph |
 
 **Examples:**
@@ -112,21 +112,23 @@ npm install -D jest         # devDependencies
 
 A package is a distributable unit of code (library, module, or app). `require()` (CommonJS) or `import` (ESM) loads modules; metadata lives in `package.json`.
 
-| System | Syntax | Notes |
-|--------|--------|-------|
+| System   | Syntax                     | Notes                              |
+| -------- | -------------------------- | ---------------------------------- |
 | CommonJS | `const fs = require('fs')` | synchronous load, `module.exports` |
-| ESM | `import fs from 'fs'` | static analysis, `export` |
+| ESM      | `import fs from 'fs'`      | static analysis, `export`          |
 
 **Examples:**
 
 ```js
 // CommonJS
-const express = require('express');
+const express = require("express");
 module.exports = { createApp: () => express() };
 
 // ESM
-import express from 'express';
-export function createApp() { return express(); }
+import express from "express";
+export function createApp() {
+  return express();
+}
 ```
 
 **Sources:** [nodejs.org modules](https://nodejs.org/api/modules.html) · [nodejs.org esm](https://nodejs.org/api/esm.html)
@@ -142,16 +144,16 @@ export function createApp() { return express(); }
 
 **How it works:**
 
-| Aspect | CommonJS | ESM |
-|--------|----------|-----|
-| Syntax | `require()`, `module.exports` | `import`, `export` |
-| Loading | Synchronous, runtime | Asynchronous, parsed before run |
-| `this` at top level | `module.exports` | `undefined` (strict) |
-| `__dirname` / `__filename` | Available | Use `import.meta.url` |
-| JSON import | `require('./x.json')` | `import x from './x.json' with { type: 'json' }` |
-| Dynamic import | `require(dynamic)` | `await import(dynamic)` |
-| Tree-shaking | Limited | Better (static imports) |
-| Interop | ESM can `import` CJS default | CJS `require()` of ESM only if ESM is async |
+| Aspect                     | CommonJS                      | ESM                                              |
+| -------------------------- | ----------------------------- | ------------------------------------------------ |
+| Syntax                     | `require()`, `module.exports` | `import`, `export`                               |
+| Loading                    | Synchronous, runtime          | Asynchronous, parsed before run                  |
+| `this` at top level        | `module.exports`              | `undefined` (strict)                             |
+| `__dirname` / `__filename` | Available                     | Use `import.meta.url`                            |
+| JSON import                | `require('./x.json')`         | `import x from './x.json' with { type: 'json' }` |
+| Dynamic import             | `require(dynamic)`            | `await import(dynamic)`                          |
+| Tree-shaking               | Limited                       | Better (static imports)                          |
+| Interop                    | ESM can `import` CJS default  | CJS `require()` of ESM only if ESM is async      |
 
 ```json
 { "type": "module" }
@@ -165,23 +167,23 @@ or `.mjs` extension. `.cjs` forces CommonJS in `"type": "module"` projects.
 
 **Pluses and minuses:**
 
-| + (ESM) | − (ESM) |
-|------------|------------|
-| Standard in browsers and modern Node | Ecosystem still migrating |
-| Top-level `await` | `__dirname` workaround needed |
-| Static analysis, tree-shaking | Some tools expect CJS |
+| + (ESM)                              | − (ESM)                       |
+| ------------------------------------ | ----------------------------- |
+| Standard in browsers and modern Node | Ecosystem still migrating     |
+| Top-level `await`                    | `__dirname` workaround needed |
+| Static analysis, tree-shaking        | Some tools expect CJS         |
 
 **Examples:**
 
 ```js
 // ESM — dirname equivalent
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Dynamic import in CJS
-const { createServer } = await import('node:http');
+const { createServer } = await import("node:http");
 ```
 
 **Thoughts:** `require` is not defined in native ESM. Use `createRequire(import.meta.url)` from `node:module` for legacy `require` in ESM files.
@@ -199,19 +201,19 @@ const { createServer } = await import('node:http');
 
 Common shell and npm commands for Node.js development.
 
-| Command | Purpose |
-|---------|---------|
-| `npm i` | install dependencies from package.json |
-| `npm install -S pkg` | add runtime dependency |
-| `npm install -D pkg` | add dev dependency |
-| `npm publish` | publish package to registry |
-| `ls` / `ls -la` | list files (include hidden with `-a`) |
-| `cat file` | print file contents |
-| `touch file` | create empty file |
-| `rm` | remove files/directories |
-| `pwd` | print working directory |
-| `chmod +x file` | make file executable |
-| `history` | list previous shell commands |
+| Command              | Purpose                                |
+| -------------------- | -------------------------------------- |
+| `npm i`              | install dependencies from package.json |
+| `npm install -S pkg` | add runtime dependency                 |
+| `npm install -D pkg` | add dev dependency                     |
+| `npm publish`        | publish package to registry            |
+| `ls` / `ls -la`      | list files (include hidden with `-a`)  |
+| `cat file`           | print file contents                    |
+| `touch file`         | create empty file                      |
+| `rm`                 | remove files/directories               |
+| `pwd`                | print working directory                |
+| `chmod +x file`      | make file executable                   |
+| `history`            | list previous shell commands           |
 
 **Examples:**
 
@@ -233,10 +235,10 @@ npm run build
 
 **How it works:**
 
-| Pattern | Structure |
-|---------|-----------|
-| MVC | `routes/` → `controllers/` → `models/` |
-| Feature-based | `features/users/`, `features/auth/` |
+| Pattern            | Structure                                                                                                                   |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| MVC                | `routes/` → `controllers/` → `models/`                                                                                      |
+| Feature-based      | `features/users/`, `features/auth/`                                                                                         |
 | Clean architecture | `domain/`, `use-cases/`, `infrastructure/` — [three-layer notes](./7_special_architecture.md#three-layer-architecture-doka) |
 
 **Examples:**
@@ -266,41 +268,11 @@ src/
 
 ### libuv
 
-**Definition:** Cross-platform C library powering Node's async I/O, event loop, thread pool, networking, and file system operations.
+**Definition:** Cross-platform C I/O library under Node — not a `node:` module you import.
 
-**How it works:**
+Canonical write-up: [libuv](./8_nodejs_core.md#libuv) in **Node.js — Core** (event loop, thread pool, `UV_THREADPOOL_SIZE`, network vs file I/O).
 
-1. JavaScript calls async API (e.g. `fs.readFile`).
-2. Node binding hands work to libuv.
-3. **Thread pool** (default 4 threads) runs blocking OS calls — file I/O, DNS, crypto, compression.
-4. Network I/O uses OS primitives (`epoll`, `kqueue`, `IOCP`) — no thread per connection.
-5. Completed callback is queued; **event loop** runs it on the main JS thread.
-
-| Feature | Description |
-|---------|-------------|
-| Event loop | Schedules timers, I/O callbacks, check, close callbacks |
-| Thread pool | Offloads blocking work (`UV_THREADPOOL_SIZE` to tune) |
-| Networking | TCP/UDP abstractions |
-| File system | Async fs operations via thread pool |
-
-**When to use:** Increase `UV_THREADPOOL_SIZE` for heavy crypto/fs workloads. CPU-bound JS → `worker_threads`, not bigger thread pool alone.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Single-threaded JS + efficient I/O | CPU-heavy JS still blocks the loop |
-| Cross-platform abstraction | Thread pool size limits parallel fs/crypto |
-
-**Examples:**
-
-```bash
-UV_THREADPOOL_SIZE=8 node server.js
-```
-
-**Thoughts:** libuv is why Node is fast for I/O-bound servers but poor for CPU-bound work on one thread.
-
-**Sources:** [libuv docs](http://docs.libuv.org/en/v1.x/) · [nodejs.org event loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick)
+**Sources:** [libuv design](https://docs.libuv.org/en/v1.x/design.html) · [Node.js — Core: libuv](./8_nodejs_core.md#libuv)
 
 </details>
 
@@ -319,11 +291,11 @@ UV_THREADPOOL_SIZE=8 node server.js
 - Typical OS APIs: `open`, `close`, `read`/`write` (relative to a cursor), `seek`, `delete`, `rename`, read/write attributes.
 - **Unix:** devices, directories, and pipes are special files; programs use the same file APIs. Mount attaches another volume into one tree (`mount` / `umount`).
 
-| Model | Idea | Where |
-|-------|------|--------|
-| Flat (one level) | Unique names in a single namespace | Tiny devices (appliance firmware) |
-| Fixed depth | A few hardcoded levels | Routers, TVs |
-| Hierarchical | Tree: **root dir**, dirs, **files as leaves** | Desktops, servers, phones |
+| Model            | Idea                                          | Where                             |
+| ---------------- | --------------------------------------------- | --------------------------------- |
+| Flat (one level) | Unique names in a single namespace            | Tiny devices (appliance firmware) |
+| Fixed depth      | A few hardcoded levels                        | Routers, TVs                      |
+| Hierarchical     | Tree: **root dir**, dirs, **files as leaves** | Desktops, servers, phones         |
 
 Collision strategy: forbid duplicate names **in the same directory**. Same basename in different dirs is unique via the **full path**. Separators: `/` (Unix) vs `\` (Windows). Relative names concatenate onto the current (or home) directory.
 
@@ -335,19 +307,19 @@ Unix FS strengths: simple permission model, symbolic links, dirs and devices as 
 - Windows reserved in names: `\ / : * ? " < > |`. Spaces need quotes. Legacy **MAX_PATH ≈ 260**; Windows 10+ can lift it, older clients may still fail.
 - **Extension** (`.png`, `.exe`) is a hint for users and default apps. The real type lives in attributes / magic bytes. Unix binaries often have **no** extension; `.sh` / `.conf` are convention.
 
-| Dir | Role |
-|-----|------|
-| `/bin`, `/sbin` | Essential user / system binaries |
-| `/boot` | Bootloader + kernel images |
-| `/dev` | Device files |
-| `/etc` | Host-specific config |
-| `/home`, `/root` | User homes; root’s home |
-| `/lib` | Shared libs, kernel modules |
-| `/mnt`, `/opt` | Temp mounts; extra packages |
-| `/proc`, `/sys` | Kernel / sysfs virtual files |
-| `/tmp` | Temporary |
-| `/usr` | Second-level hierarchy (shareable) |
-| `/var` | Variable data (logs, spool) |
+| Dir              | Role                               |
+| ---------------- | ---------------------------------- |
+| `/bin`, `/sbin`  | Essential user / system binaries   |
+| `/boot`          | Bootloader + kernel images         |
+| `/dev`           | Device files                       |
+| `/etc`           | Host-specific config               |
+| `/home`, `/root` | User homes; root’s home            |
+| `/lib`           | Shared libs, kernel modules        |
+| `/mnt`, `/opt`   | Temp mounts; extra packages        |
+| `/proc`, `/sys`  | Kernel / sysfs virtual files       |
+| `/tmp`           | Temporary                          |
+| `/usr`           | Second-level hierarchy (shareable) |
+| `/var`           | Variable data (logs, spool)        |
 
 **When to use:**
 
@@ -356,13 +328,13 @@ Node `fs` / `path`; Docker [bind mounts](./10_build_docker.md#bind-mounts); SPA 
 **Example** (Node — open / stat / close; prefer `FileHandle` so the fd is not leaked):
 
 ```js
-import { open } from 'node:fs/promises';
-import path from 'node:path';
+import { open } from "node:fs/promises";
+import path from "node:path";
 
-const abs = path.resolve('notes', 'todo.txt'); // OS-correct join
+const abs = path.resolve("notes", "todo.txt"); // OS-correct join
 let file;
 try {
-  file = await open(abs, 'r');
+  file = await open(abs, "r");
   const stat = await file.stat(); // size, mtime, mode, …
   console.log(stat.size);
 } finally {
@@ -376,11 +348,11 @@ Mixing `/` and `\` by hand instead of `path.join`; assuming case-insensitive nam
 
 **Pluses and minuses:**
 
-| + | − |
-| - | - |
-| Hierarchy + path = unique names | Path separators and case differ by OS |
-| Unix “everything is a file” unifies APIs | Must close fds or leak until crash |
-| Relative project trees move easily | Buffering can delay durable write |
+| +                                        | −                                     |
+| ---------------------------------------- | ------------------------------------- |
+| Hierarchy + path = unique names          | Path separators and case differ by OS |
+| Unix “everything is a file” unifies APIs | Must close fds or leak until crash    |
+| Relative project trees move easily       | Buffering can delay durable write     |
 
 **Thoughts:** A file is a named byte stream + metadata; the file system is the tree (and APIs) that make that stream portable across disks.
 
@@ -397,20 +369,20 @@ Mixing `/` and `\` by hand instead of `path.join`; assuming case-insensitive nam
 
 Built-in module for reading, writing, and managing files and directories. OS model (paths, attributes, buffering, fds): [Files & file systems](#files--file-systems).
 
-| API style | Methods |
-|-----------|---------|
-| Callback | `fs.readFile`, `fs.writeFile`, `fs.mkdir` |
-| Promise | `fs.promises.readFile` |
-| Sync | `fs.readFileSync` (blocks event loop) |
-| Stream | `fs.createReadStream`, `fs.createWriteStream` |
+| API style | Methods                                       |
+| --------- | --------------------------------------------- |
+| Callback  | `fs.readFile`, `fs.writeFile`, `fs.mkdir`     |
+| Promise   | `fs.promises.readFile`                        |
+| Sync      | `fs.readFileSync` (blocks event loop)         |
+| Stream    | `fs.createReadStream`, `fs.createWriteStream` |
 
 **Examples:**
 
 ```js
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from "node:fs/promises";
 
-const data = await readFile('./config.json', 'utf8');
-await writeFile('./out.txt', data);
+const data = await readFile("./config.json", "utf8");
+await writeFile("./out.txt", data);
 ```
 
 **Sources:** [nodejs.org fs](https://nodejs.org/api/fs.html)
@@ -426,18 +398,18 @@ await writeFile('./out.txt', data);
 
 Operating system utility module — platform info, memory, CPUs, network interfaces.
 
-| Method | Returns |
-|--------|---------|
-| `os.platform()` | `'darwin'`, `'linux'`, `'win32'` |
-| `os.arch()` | `'x64'`, `'arm64'` |
-| `os.totalmem()` / `os.freemem()` | memory in bytes |
-| `os.cpus()` | CPU core info |
-| `os.networkInterfaces()` | IP/MAC addresses |
+| Method                           | Returns                          |
+| -------------------------------- | -------------------------------- |
+| `os.platform()`                  | `'darwin'`, `'linux'`, `'win32'` |
+| `os.arch()`                      | `'x64'`, `'arm64'`               |
+| `os.totalmem()` / `os.freemem()` | memory in bytes                  |
+| `os.cpus()`                      | CPU core info                    |
+| `os.networkInterfaces()`         | IP/MAC addresses                 |
 
 **Examples:**
 
 ```js
-import os from 'node:os';
+import os from "node:os";
 console.log(os.hostname(), os.freemem());
 ```
 
@@ -454,20 +426,20 @@ console.log(os.hostname(), os.freemem());
 
 Cross-platform utilities for file and directory path manipulation. Absolute vs relative, `/` vs `\`: [Files & file systems](#files--file-systems).
 
-| Method | Purpose |
-|--------|---------|
-| `path.join(...)` | join segments |
-| `path.resolve(...)` | absolute path |
-| `path.dirname(p)` | parent directory |
-| `path.basename(p)` | filename |
-| `path.extname(p)` | extension |
+| Method              | Purpose          |
+| ------------------- | ---------------- |
+| `path.join(...)`    | join segments    |
+| `path.resolve(...)` | absolute path    |
+| `path.dirname(p)`   | parent directory |
+| `path.basename(p)`  | filename         |
+| `path.extname(p)`   | extension        |
 
 **Examples:**
 
 ```js
-import path from 'node:path';
+import path from "node:path";
 
-const file = path.join(__dirname, 'data', 'users.json');
+const file = path.join(__dirname, "data", "users.json");
 const ext = path.extname(file); // '.json'
 ```
 
@@ -484,19 +456,19 @@ const ext = path.extname(file); // '.json'
 
 Core module for creating HTTP servers and clients without a framework.
 
-| Capability | API |
-|------------|-----|
-| Server | `http.createServer((req, res) => {})` |
-| Request | `http.request(options, callback)` |
-| Response | `res.writeHead`, `res.write`, `res.end` |
+| Capability | API                                     |
+| ---------- | --------------------------------------- |
+| Server     | `http.createServer((req, res) => {})`   |
+| Request    | `http.request(options, callback)`       |
+| Response   | `res.writeHead`, `res.write`, `res.end` |
 
 **Examples:**
 
 ```js
-import { createServer } from 'node:http';
+import { createServer } from "node:http";
 
 createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.writeHead(200, { "Content-Type": "application/json" });
   res.end(JSON.stringify({ ok: true }));
 }).listen(8080);
 ```
@@ -514,18 +486,18 @@ createServer((req, res) => {
 
 `URL` class (WHATWG) parses and builds URLs. Legacy `url` module still available; prefer `new URL()` for modern code. Address parts (scheme, authority, query, hash): [URI, URL & URN](./6_web_api_core.md#uri-url--urn). Browser helpers: [URL / URLSearchParams](./3_js_browser_extra.md#url--urlsearchparams).
 
-| Method / API | Purpose |
-|--------------|---------|
-| `new URL(str, base)` | parse URL into components |
-| `url.pathname`, `.searchParams` | access parts |
-| `url.href` | full URL string |
+| Method / API                    | Purpose                   |
+| ------------------------------- | ------------------------- |
+| `new URL(str, base)`            | parse URL into components |
+| `url.pathname`, `.searchParams` | access parts              |
+| `url.href`                      | full URL string           |
 
 **Examples:**
 
 ```js
-const url = new URL('https://api.example.com/users?page=1');
-console.log(url.hostname);              // api.example.com
-console.log(url.searchParams.get('page')); // '1'
+const url = new URL("https://api.example.com/users?page=1");
+console.log(url.hostname); // api.example.com
+console.log(url.searchParams.get("page")); // '1'
 ```
 
 **Sources:** [nodejs.org url](https://nodejs.org/api/url.html)
@@ -541,22 +513,22 @@ console.log(url.searchParams.get('page')); // '1'
 
 Popular logging library with multiple transports, levels, and custom formats.
 
-| Feature | Description |
-|---------|-------------|
-| Levels | error, warn, info, verbose, debug |
-| Transports | console, file, database |
-| Formats | timestamps, JSON, custom |
+| Feature    | Description                       |
+| ---------- | --------------------------------- |
+| Levels     | error, warn, info, verbose, debug |
+| Transports | console, file, database           |
+| Formats    | timestamps, JSON, custom          |
 
 **Examples:**
 
 ```js
-import winston from 'winston';
+import winston from "winston";
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   transports: [new winston.transports.Console()],
 });
-logger.info('Server started');
+logger.info("Server started");
 ```
 
 **Sources:** [github.com/winstonjs/winston](https://github.com/winstonjs/winston)
@@ -572,25 +544,24 @@ logger.info('Server started');
 
 Spawns multiple Node worker processes sharing the same server port — utilizes all CPU cores.
 
-| Role | Description |
-|------|-------------|
+| Role   | Description                            |
+| ------ | -------------------------------------- |
 | Master | forks workers, distributes connections |
-| Worker | handles requests on shared port |
+| Worker | handles requests on shared port        |
 
 **Examples:**
 
 ```js
-import cluster from 'node:cluster';
-import { createServer } from 'node:http';
+import cluster from "node:cluster";
+import { createServer } from "node:http";
 
 if (cluster.isPrimary) {
   for (let i = 0; i < 4; i++) cluster.fork();
 } else {
-  createServer((req, res) => res.end('ok')).listen(3000);
+  createServer((req, res) => res.end("ok")).listen(3000);
 }
 ```
 
 **Sources:** [nodejs.org cluster](https://nodejs.org/api/cluster.html)
 
 </details>
-

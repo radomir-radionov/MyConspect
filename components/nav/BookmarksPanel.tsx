@@ -15,11 +15,7 @@ import {
 } from "@/lib/nav/bookmarks";
 import type { ChromeCopy } from "@/lib/nav";
 import { hashIdFrom } from "@/lib/nav/navUtils";
-import {
-  followHandbookHref,
-  queueHandbookHref,
-  setHashOnPath,
-} from "./hash";
+import { followHandbookHref, queueHandbookHref, setHashOnPath } from "./hash";
 import { setBookmarkNavMode } from "./bookmarkNavMode";
 import { useHandbookLocation } from "./useHandbookLocation";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -58,7 +54,7 @@ export function BookmarksPanel({
   const hasActiveBookmark = bookmarks.some(isActive);
 
   return (
-    <section className="mb-3 border-b border-zinc-200 pb-3 dark:border-zinc-800">
+    <section className="border-b border-zinc-200 pb-3 dark:border-zinc-800">
       <div className={`group ${trackHeaderClass(hasActiveBookmark)}`}>
         <button
           type="button"

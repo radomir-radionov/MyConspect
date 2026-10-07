@@ -572,6 +572,7 @@ export function ClusterRow({
         scroll={false}
         data-nav="cluster"
         data-nav-id={cluster.id}
+        data-nav-path={onPath ? "true" : undefined}
         data-nav-pin={onPath ? "cluster" : undefined}
         onClick={(event) => {
           pinNav(event.currentTarget);
@@ -703,6 +704,7 @@ export function SectionRow({
         scroll={false}
         data-nav="section"
         data-nav-id={section.id}
+        data-nav-path={onPath ? "true" : undefined}
         data-nav-pin={onPath ? "section" : undefined}
         onClick={(event) => {
           pinNav(event.currentTarget);

@@ -187,10 +187,10 @@ emitter.emit("event-name", "Some Payload");
 
 **How it works:**
 
-- Каждый оборот идёт по фазам libuv: таймеры (`setTimeout`, `setInterval`), отложенные callback, idle/prepare (внутренние), poll (ждать и выполнить ввод-вывод), check (`setImmediate`), затем callback закрытия, например `close` сокета.
+- Каждый оборот (Node.js 20+ / libuv 1.45) идёт так: отложенные callback, idle/prepare (внутренние), poll, check (`setImmediate`), callback закрытия, затем таймеры. Просроченные таймеры могут выполниться ещё один раз до первой итерации. Полная картина: [Event loop](./8_nodejs_core.md#event-loop).
 - Poll — фаза, которая блокируется, когда больше ничего не готово, до следующего таймера. Это не одна «очередь callback», общая для всех API.
 - `process.nextTick` — не фаза. Его очередь осушается после текущей операции, до продолжения цикла. Callback nextTick, который ставит ещё один nextTick, может заморить ввод-вывод.
-- Реакции промисов и `queueMicrotask` используют очередь микрозадач. В CommonJS callback nextTick идут раньше этих микрозадач. Очередь микрозадач осушается снова после очереди nextTick.
+- Реакции промисов и `queueMicrotask` используют очередь микрозадач. Node осушает её сразу после очереди nextTick. В CommonJS сначала nextTick. При вычислении ESM тело модуля уже микрозадача, поэтому `queueMicrotask` идёт раньше `nextTick`.
 - `setTimeout(fn, 0)` — таймер. `setImmediate(fn)` — фаза check. Их порядок друг относительно друга не фиксирован, если оба запланированы из главного модуля: таймер может успеть или не успеть до первого poll.
 - Долгий синхронный цикл блокирует все фазы, включая новые соединения. Цикл живёт на поток: у воркера свой цикл, и он не делит очереди родителя.
 - Браузерное слово «macrotask» не называет фазы Node. Таймеры, callback poll и `setImmediate` — отдельные очереди libuv.
@@ -1743,16 +1743,18 @@ it("GET / returns ok", async () => {
   try {
     const { port } = server.address();
     const { statusCode, body } = await new Promise((resolve, reject) => {
-      http.get({ hostname: "127.0.0.1", port, path: "/" }, (res) => {
-        const chunks = [];
-        res.on("data", (chunk) => chunks.push(chunk));
-        res.on("end", () => {
-          resolve({
-            statusCode: res.statusCode,
-            body: Buffer.concat(chunks).toString("utf8"),
+      http
+        .get({ hostname: "127.0.0.1", port, path: "/" }, (res) => {
+          const chunks = [];
+          res.on("data", (chunk) => chunks.push(chunk));
+          res.on("end", () => {
+            resolve({
+              statusCode: res.statusCode,
+              body: Buffer.concat(chunks).toString("utf8"),
+            });
           });
-        });
-      }).on("error", reject);
+        })
+        .on("error", reject);
     });
     assert.equal(statusCode, 200);
     assert.equal(body, "ok");
@@ -1807,9 +1809,10 @@ const pool = mysql.createPool({
   database: process.env.MYSQL_DATABASE,
 });
 
-const [rows] = await pool.execute("SELECT id, title FROM notes WHERE id = ?", [
-  1,
-]);
+const [rows] = await pool.execute(
+  "SELECT id, title FROM notes WHERE id = ?",
+  [1],
+);
 console.log(rows);
 ```
 
@@ -4653,7 +4656,10 @@ function send(res, status, body) {
 const server = http.createServer((req, res) => {
   const url = new URL(req.url ?? "/", "http://localhost");
   if (req.method === "GET" && url.pathname === "/notes") {
-    send(res, 200, { items: [], limit: Number(url.searchParams.get("limit") ?? 20) });
+    send(res, 200, {
+      items: [],
+      limit: Number(url.searchParams.get("limit") ?? 20),
+    });
     return;
   }
   send(res, 404, { error: "not found" });

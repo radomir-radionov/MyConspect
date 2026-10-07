@@ -57,8 +57,10 @@ import {
   scrollSidebarHit,
 } from "./sidebarPin";
 import {
+  measureNavChromeInset,
   measureStickyCover,
   measureStickyPathVars,
+  syncStickyScopeRelease,
   writeStickyVars,
   type StickyVars,
 } from "./sidebarSticky";
@@ -278,7 +280,7 @@ export const TopicSidebar = memo(function TopicSidebar({
       >
         <div
           data-nav-chrome=""
-          className="-mx-2 -mt-3 mb-3 bg-(--chrome-surface) px-2 pt-3"
+          className="-mx-2 -mt-3 bg-(--chrome-surface) px-2 pt-3"
         >
           <div className="mb-3 px-2">
             <SectionSwitcher sections={sections} chrome={chrome} />
@@ -352,14 +354,20 @@ function StickyPathStyles({ revision }: { revision: string }) {
 
   const applyVars = useCallback(() => {
     const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
+    const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
     if (!scroller) {
       return;
+    }
+    const chromeH = measureNavChromeInset();
+    if (chromeH > 0) {
+      scroller.style.setProperty("--nav-chrome-h", `${chromeH}px`);
     }
     previousRef.current = writeStickyVars(
       scroller.style,
       measureStickyPathVars(),
       previousRef.current,
     );
+    syncStickyScopeRelease(nav);
   }, []);
 
   const syncPath = useCallback(() => {
@@ -391,16 +399,17 @@ function StickyPathStyles({ revision }: { revision: string }) {
         if (!scroller) {
           return;
         }
+        const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
+        syncStickyScopeRelease(nav);
         const current = previousRef.current;
         const cover = `${measureStickyCover(undefined, current)}px`;
-        if (current["--nav-sticky-cover"] === cover) {
-          return;
+        if (current["--nav-sticky-cover"] !== cover) {
+          previousRef.current = writeStickyVars(
+            scroller.style,
+            { ...current, "--nav-sticky-cover": cover },
+            current,
+          );
         }
-        previousRef.current = writeStickyVars(
-          scroller.style,
-          { ...current, "--nav-sticky-cover": cover },
-          current,
-        );
       });
     };
     scroller?.addEventListener("scroll", onScroll, { passive: true });
@@ -486,8 +495,8 @@ const TrackGroup = memo(function TrackGroup({
       ? groupNavigateHref(group, rootSectionId)
       : group.href;
 
-  return (
-    <li>
+  const trackBody = (
+    <>
       {asButton ? (
         <button
           type="button"
@@ -543,7 +552,13 @@ const TrackGroup = memo(function TrackGroup({
         </Link>
       )}
       <NavFold open={hasSidebarChildren && trackOpen} instant={searching} unbox>
-        <ul className="mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2 dark:border-yellow-800">
+        <ul
+          className={
+            onPath
+              ? "contents"
+              : "mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2 dark:border-yellow-800"
+          }
+        >
           {searching ? (
             <SearchHitList hits={searchHits} />
           ) : (
@@ -571,6 +586,15 @@ const TrackGroup = memo(function TrackGroup({
           )}
         </ul>
       </NavFold>
+    </>
+  );
+
+  return (
+    <li
+      className={onPath ? "contents" : undefined}
+      {...(onPath ? { "data-nav-sticky-scope": "" } : {})}
+    >
+      {trackBody}
     </li>
   );
 });

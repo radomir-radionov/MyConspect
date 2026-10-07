@@ -5,7 +5,7 @@ Call stack, microtasks vs macrotasks, execution order, and `queueMicrotask` / `p
 ### Related docs
 
 - [JS Callbacks](./3_js_async_callbacks.md) · [JS Promises](./3_js_async_promises.md) · [JS Async/Await](./3_js_async_await.md) · [JS Async APIs](./3_js_async_apis.md)
-- [JS Language](./3_js_core.md) · [Memory: stack and heap](./3_js_variables.md#memory-stack-heap) · [Node.js](./8_nodejs.md) · [JS Interview](./3_js_interview.md)
+- [JS Language](./3_js_core.md) · [Memory: stack and heap](./3_js_variables.md#memory-stack-heap) · [Node.js](./8_nodejs.md) · [Node.js event loop](./8_nodejs_core.md#event-loop) · [JS Interview](./3_js_interview.md)
 
 [← Back to JS hub](./3_js.md) · [Async hub](./3_js_async.md)
 
