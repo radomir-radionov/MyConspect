@@ -130,7 +130,7 @@ export function measureStickyPathVars(
   const inset = measureNavChromeInset(nav);
   const { gap } = stickySpacing(nav);
   const vars: Record<string, string> = { "--nav-sticky-inset": `${inset}px` };
-  // Same gap as between pinned rows, so the first item does not sit on the chrome.
+  // Border edge of the active first row stays one gap below the chrome while stuck.
   let top = inset + gap;
   for (const element of pathElements(nav)) {
     vars[topVarName(element)] = `${top}px`;
@@ -175,8 +175,8 @@ function stickyTopPx(
 }
 
 /**
- * Viewport Y where the pinned path ends: last path row's sticky top, its height,
- * and the same gap used between pinned rows.
+ * Viewport Y where the pinned path ends: last path row's sticky top plus its height.
+ * The cover's bottom gap is not included, so a collapsed track is not shifted up.
  */
 export function stickyStackBottomPx(
   nav: HTMLElement,
@@ -192,8 +192,7 @@ export function stickyStackBottomPx(
     undefined,
     getComputedStyle(scroller),
   );
-  const { gap } = stickySpacing(nav);
-  return scroller.getBoundingClientRect().top + top + last.offsetHeight + gap;
+  return scroller.getBoundingClientRect().top + top + last.offsetHeight;
 }
 
 /** True when the next track would scroll into the pinned path stack. */

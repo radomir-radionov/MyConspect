@@ -724,6 +724,11 @@ body {
   background-color: var(--path-bg);
 }
 
+/* Only the active track's first row gets the top gap, so its border stays visible. */
+#handbook-nav-aside li[data-nav-sticky-scope] > [data-nav-path="true"] {
+  margin-top: var(--nav-sticky-gap);
+}
+
 #handbook-nav-aside li[data-nav-path="true"] {
   background-color: var(--path-bg);
 }
