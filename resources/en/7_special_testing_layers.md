@@ -10,6 +10,7 @@ Integration, system, E2E, visual, performance, and security testing.
 
 ### Sections
 
+- [Test layers](#test-layers)
 - [Integration testing](#integration-testing)
 - [System testing](#system-testing)
 - [E2E testing](#e2e-testing)
@@ -113,9 +114,9 @@ Automate and run in CI — usually a **separate job** (slow, browsers, secrets).
 
 **Pluses and minuses:**
 
-| +                                     | −                                            |
-| ------------------------------------- | -------------------------------------------- |
-| Highest confidence the product works  | Slow, flaky, expensive to maintain           |
+| +                                     | −                                                                               |
+| ------------------------------------- | ------------------------------------------------------------------------------- |
+| Highest confidence the product works  | Slow, flaky, expensive to maintain                                              |
 | Finds env/config bugs units never see | Overuse inverts the [pyramid](./7_special_testing_fundamentals.md#test-pyramid) |
 
 **Thoughts:** System tests answer “the app as a whole” — pick the subtype that matches the risk (flow, look, speed, attack).

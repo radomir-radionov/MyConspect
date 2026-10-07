@@ -10,6 +10,7 @@ Arrays, objects, linked lists, stacks, queues, sets, and maps.
 
 ### Sections
 
+- [Linear structures](#linear-structures)
 - [Array](#array)
 - [Object (plain object)](#object-plain-object)
 - [Linked list](#linked-list)

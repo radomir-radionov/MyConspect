@@ -8,6 +8,7 @@ Soft-skill and HR interview questions with answer frameworks, traps, and sample 
 
 ### Sections
 
+- [Behavior questions](#behavior-questions)
 - [Interview preparation](#interview-preparation)
 - [Tell me about yourself](#tell-me-about-yourself)
 - [What are your greatest strengths?](#what-are-your-greatest-strengths)

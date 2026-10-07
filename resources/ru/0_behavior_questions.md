@@ -8,6 +8,7 @@
 
 ### Sections
 
+- [Behavior questions](#behavior-questions)
 - [Interview preparation](#interview-preparation)
 - [Tell me about yourself](#tell-me-about-yourself)
 - [What are your greatest strengths?](#what-are-your-greatest-strengths)
@@ -2083,7 +2084,6 @@ Yes, I would. Winning the lottery would give me more freedom, but I genuinely en
 Признайте прошлые достижения — лучшая работа ещё впереди.
 
 **TRAPS:** «Абсолютно» — пик позади. «Нет, лучшее впереди» — как будто не отдались полностью.
-
 
 **BEST ANSWER:** To cover both possible paths this question can take, your answer  
 should state that you always try to do your best, and the best of your career is right now.  

@@ -10,6 +10,7 @@ Jest, Vitest, React Testing Library, MSW, and code coverage.
 
 ### Sections
 
+- [Tooling](#tooling)
 - [Vitest vs Jest](#vitest-vs-jest)
 - [React Testing Library](#react-testing-library)
 - [MSW (Mock Service Worker)](#msw-mock-service-worker)

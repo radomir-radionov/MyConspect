@@ -10,6 +10,7 @@ AAA, the test pyramid, and why tests pay off.
 
 ### Sections
 
+- [Fundamentals](#fundamentals)
 - [Tests and AAA](#tests-and-aaa)
 - [Test pyramid](#test-pyramid)
 
@@ -50,13 +51,13 @@ Default for production code. Skip or defer for throwaway prototypes and projects
 
 **Pluses and minuses:**
 
-| +                                                         | −                                                                                         |
-| --------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Forces edge cases, not only the happy path                | More time on a young project                                                              |
+| +                                                         | −                                                                                                                         |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Forces edge cases, not only the happy path                | More time on a young project                                                                                              |
 | Fewer regressions when adding features or sharing helpers | Need structure for fixtures and doubles ([Test doubles](./7_special_testing_practices.md#test-doubles-stubs-mocks-spies)) |
-| Confidence to refactor (including `==` vs `=` bugs)       | CI must run the suite and block bad merges                                                |
-| Catch breaking dependency upgrades                        | Designing fakes is an architecture skill                                                  |
-| Living docs that cannot silently rot (unlike comments)    |                                                                                           |
+| Confidence to refactor (including `==` vs `=` bugs)       | CI must run the suite and block bad merges                                                                                |
+| Catch breaking dependency upgrades                        | Designing fakes is an architecture skill                                                                                  |
+| Living docs that cannot silently rot (unlike comments)    |                                                                                                                           |
 
 **Examples:**
 

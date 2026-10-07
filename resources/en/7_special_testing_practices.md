@@ -10,6 +10,7 @@ TDD, BDD, test doubles, and making tests easy to write.
 
 ### Sections
 
+- [Practices](#practices)
 - [TDD (Test-Driven Development)](#tdd-test-driven-development)
 - [BDD (Behavior-Driven Development)](#bdd-behavior-driven-development)
 - [Test doubles (stubs, mocks, spies)](#test-doubles-stubs-mocks-spies)

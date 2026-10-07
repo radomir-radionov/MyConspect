@@ -10,6 +10,7 @@ Arrays, objects, linked lists, stacks, queues, sets, and maps.
 
 ### Sections
 
+- [Linear structures](#linear-structures)
 - [Array](#array)
 - [Object (plain object)](#object-plain-object)
 - [Linked list](#linked-list)
@@ -95,7 +96,7 @@ const user = { name: "Ada", role: "admin" };
 | O(1) insert/delete at known node | O(n) access by index |
 | No reindexing on insert          | Extra pointer memory |
 
-| Poor cache locality  |
+| Poor cache locality |
 
 **Examples:**
 

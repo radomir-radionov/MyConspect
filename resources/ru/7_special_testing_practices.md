@@ -10,6 +10,7 @@ TDD, BDD, test doubles, and making tests easy to write.
 
 ### Sections
 
+- [Practices](#practices)
 - [TDD (Test-Driven Development)](#tdd-test-driven-development)
 - [BDD (Behavior-Driven Development)](#bdd-behavior-driven-development)
 - [Test doubles (stubs, mocks, spies)](#test-doubles-stubs-mocks-spies)
@@ -141,12 +142,11 @@ Scenario: Successful login
   Then they see the dashboard
 ```
 
-
-| | TDD              | BDD                    |
-| | --------  |  ----------------  |
-| | Focus    | Code correctness | Behavior / user value  |
-| | Language | Code tests       | Often natural language |
-| | Audience | Developers       | Devs + PM + QA         |
+| | TDD | BDD |
+| | -------- | ---------------- |
+| | Focus | Code correctness | Behavior / user value |
+| | Language | Code tests | Often natural language |
+| | Audience | Developers | Devs + PM + QA |
 
 **Mocha-style `describe` / `it` (tutorial / classic BDD runners):**
 

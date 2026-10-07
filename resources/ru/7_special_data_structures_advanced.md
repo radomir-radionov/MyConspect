@@ -10,6 +10,7 @@ Hash tables, heaps, and how the DOM maps to classic structures.
 
 ### Sections
 
+- [Hash and heap](#hash-and-heap)
 - [Hash table](#hash-table)
 - [Heap (priority queue)](#heap-priority-queue)
 - [DOM and data structures](#dom-and-data-structures)
