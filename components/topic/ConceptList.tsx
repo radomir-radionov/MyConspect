@@ -134,7 +134,7 @@ export function ConceptList({
 
   useEffect(() => {
     scrollMainToTop();
-  }, [activeId]);
+  }, [pathname, activeId]);
 
   if (concepts.length === 0) {
     return <p className="text-zinc-600 dark:text-zinc-400">{emptyMessage}</p>;

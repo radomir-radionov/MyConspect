@@ -42,6 +42,19 @@ export function scrollSidebarHit(hit: HTMLElement) {
   }
 }
 
+/** Scroll the deepest active path row into view after route or fold changes. */
+export function scrollSidebarActivePath() {
+  const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
+  if (!nav) {
+    return;
+  }
+  const pathRows = nav.querySelectorAll<HTMLElement>('[data-nav-path="true"]');
+  const target = pathRows.item(pathRows.length - 1);
+  if (target) {
+    scrollSidebarHit(target);
+  }
+}
+
 export function resetNavAsideScroll() {
   pinCleanup?.();
   const scroller = navAside();

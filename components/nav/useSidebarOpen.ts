@@ -390,11 +390,21 @@ function syncOpenState({
         pathname === snapshot.pathname &&
         snapshot.hash !== "" &&
         hash === "";
+      const trackChanged =
+        !leftSearch &&
+        activeTrackId !== snapshot.activeTrackId &&
+        snapshot.activeTrackId !== null;
       setTrackFolds((previous) => {
         const next = new Map(previous);
         next.set(
           activeTrackScope,
-          foldFromSync(location, previous.get(activeTrackScope), clearingHash),
+          trackChanged
+            ? location
+            : foldFromSync(
+                location,
+                previous.get(activeTrackScope),
+                clearingHash,
+              ),
         );
         return next;
       });
