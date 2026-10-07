@@ -10,6 +10,7 @@ export const BOOKMARKS_MAX = 50;
 export const SEARCH_QUERY_MAX_LENGTH = 200;
 export const SEARCH_NAV_DELAY_MS = 280;
 export const SEARCH_INDEX_HREF = "/search-index";
+export const SEARCH_INDEX_STATIC_BASE = "/search-index";
 export const NAV_FOLD_OPEN_MS = 220;
 export const SIDEBAR_PIN_HOLD_MS = NAV_FOLD_OPEN_MS + 200;
 export const SIDEBAR_COLLAPSE_ALL_EVENT = "myconspect:sidebar-collapse-all";

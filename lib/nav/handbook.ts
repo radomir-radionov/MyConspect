@@ -470,3 +470,12 @@ export function handbookNav(
 ): readonly NavGroup[] {
   return allNavGroups(handbookNavSections(locale));
 }
+
+export function handbookNavForTrack(
+  locale: Locale,
+  trackId: TrackId,
+): readonly NavGroup[] {
+  return allNavGroups(handbookNavSections(locale)).filter(
+    (group) => group.id === trackId,
+  );
+}

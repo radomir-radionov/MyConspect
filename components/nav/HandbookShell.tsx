@@ -25,6 +25,7 @@ import { ScrollToTopButton } from "./ScrollToTopButton";
 import { useResetMainScroll } from "./useResetMainScroll";
 import { useSidebarCollapsed } from "./useSidebarCollapsed";
 import { useHandbookShortcuts } from "./useHandbookShortcuts";
+import { useEnrichedNavSections } from "./useEnrichedNavSections";
 import type { ChromeCopy, NavRootSection } from "@/lib/nav";
 import { allNavGroups, navGroupsForPath } from "@/lib/nav/sections";
 
@@ -57,10 +58,14 @@ export function HandbookShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname() ?? "/";
-  const groups = useMemo(() => allNavGroups(sections), [sections]);
+  const enrichedSections = useEnrichedNavSections(sections);
+  const groups = useMemo(
+    () => allNavGroups(enrichedSections),
+    [enrichedSections],
+  );
   const sectionGroups = useMemo(
-    () => navGroupsForPath(sections, pathname),
-    [sections, pathname],
+    () => navGroupsForPath(enrichedSections, pathname),
+    [enrichedSections, pathname],
   );
   const { navOpen, closeNav, toggleNav, openNav } = useMobileNav();
   const { collapsed, expandSidebar, toggleSidebar } = useSidebarCollapsed();
@@ -219,7 +224,7 @@ export function HandbookShell({
                   style={{ overscrollBehavior: "contain" }}
                 >
                   <TopicSidebar
-                    sections={sections}
+                    sections={enrichedSections}
                     query={sidebarQuery}
                     chrome={chrome}
                     onNavigate={selectNavResult}

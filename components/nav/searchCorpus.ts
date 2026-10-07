@@ -2,48 +2,85 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { SEARCH_INDEX_HREF } from "@/constants";
+import { SEARCH_INDEX_STATIC_BASE } from "@/constants";
+import { TRACKS, type TrackId } from "@/lib/catalog";
 import { DEFAULT_LOCALE, isLocale } from "@/lib/i18n/locales";
 import type { NavGroup } from "@/lib/nav";
 
-const cached = new Map<string, readonly NavGroup[]>();
-const inflight = new Map<string, Promise<readonly NavGroup[]>>();
+const trackCache = new Map<string, readonly NavGroup[]>();
+const trackInflight = new Map<string, Promise<readonly NavGroup[]>>();
+const corpusCache = new Map<string, readonly NavGroup[]>();
+const corpusInflight = new Map<string, Promise<readonly NavGroup[]>>();
+
+function cacheKey(locale: string, trackId: TrackId): string {
+  return `${locale}\0${trackId}`;
+}
 
 export function localeFromPath(pathname: string): string {
   const segment = pathname.split("/").filter(Boolean)[0] ?? "";
   return isLocale(segment) ? segment : DEFAULT_LOCALE;
 }
 
-export function searchIndexHref(locale: string): string {
-  return `/${locale}${SEARCH_INDEX_HREF}`;
+export function trackSearchIndexHref(locale: string, trackId: TrackId): string {
+  return `${SEARCH_INDEX_STATIC_BASE}/${locale}/${trackId}.json`;
 }
 
-export function loadSearchCorpus(locale: string): Promise<readonly NavGroup[]> {
-  const hit = cached.get(locale);
+export function loadTrackSearchIndex(
+  locale: string,
+  trackId: TrackId,
+): Promise<readonly NavGroup[]> {
+  const key = cacheKey(locale, trackId);
+  const hit = trackCache.get(key);
   if (hit) {
     return Promise.resolve(hit);
   }
-  const pending = inflight.get(locale);
+  const pending = trackInflight.get(key);
   if (pending) {
     return pending;
   }
-  const request = fetch(searchIndexHref(locale))
+  const request = fetch(trackSearchIndexHref(locale, trackId))
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`Search index ${response.status}`);
+        throw new Error(`Search index ${trackId} ${response.status}`);
       }
       return response.json() as Promise<NavGroup[]>;
     })
     .then((groups) => {
-      cached.set(locale, groups);
-      inflight.delete(locale);
+      trackCache.set(key, groups);
+      trackInflight.delete(key);
       return groups;
     })
     .catch((error: unknown) => {
-      inflight.delete(locale);
+      trackInflight.delete(key);
       throw error;
     });
-  inflight.set(locale, request);
+  trackInflight.set(key, request);
+  return request;
+}
+
+export function loadSearchCorpus(locale: string): Promise<readonly NavGroup[]> {
+  const hit = corpusCache.get(locale);
+  if (hit) {
+    return Promise.resolve(hit);
+  }
+  const pending = corpusInflight.get(locale);
+  if (pending) {
+    return pending;
+  }
+  const request = Promise.all(
+    TRACKS.map((track) => loadTrackSearchIndex(locale, track.id)),
+  )
+    .then((chunks) => {
+      const groups = chunks.flat();
+      corpusCache.set(locale, groups);
+      corpusInflight.delete(locale);
+      return groups;
+    })
+    .catch((error: unknown) => {
+      corpusInflight.delete(locale);
+      throw error;
+    });
+  corpusInflight.set(locale, request);
   return request;
 }
 
@@ -51,13 +88,13 @@ export function useSearchCorpus(enabled: boolean): readonly NavGroup[] | null {
   const pathname = usePathname() ?? "/";
   const locale = localeFromPath(pathname);
   const [groups, setGroups] = useState<readonly NavGroup[] | null>(
-    () => cached.get(locale) ?? null,
+    () => corpusCache.get(locale) ?? null,
   );
   const [loadedLocale, setLoadedLocale] = useState(locale);
 
   if (loadedLocale !== locale) {
     setLoadedLocale(locale);
-    setGroups(cached.get(locale) ?? null);
+    setGroups(corpusCache.get(locale) ?? null);
   }
 
   useEffect(() => {
