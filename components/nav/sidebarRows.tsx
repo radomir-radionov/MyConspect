@@ -442,7 +442,6 @@ export function TopicRow({
       <TopicConceptNav
         topic={topic}
         concepts={sidebarConcepts}
-        searching={searching}
         indentClass={conceptIndent}
       />
     );
