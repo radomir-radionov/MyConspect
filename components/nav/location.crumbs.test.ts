@@ -517,6 +517,115 @@ test("isHomePath matches locale home routes only", async () => {
   assert.equal(isHomePath("/en/instructions"), false);
 });
 
+test("siblingNavHrefForPath walks flat appendix sections as one chain", () => {
+  const flatSectionGroups: readonly NavGroup[] = [
+    {
+      id: "frontend",
+      title: "Frontend",
+      href: "/frontend",
+      entries: [
+        {
+          kind: "subject",
+          subject: {
+            slug: "typescript",
+            href: "/frontend/typescript",
+            title: "TypeScript",
+            blurb: "",
+            clusters: [
+              {
+                id: "modules",
+                title: "Modules",
+                href: "/frontend/typescript#modules",
+                topics: [
+                  {
+                    slug: "ts-modules",
+                    href: "/frontend/ts-modules",
+                    title: "Modules",
+                    blurb: "",
+                    concepts: [{ id: "overview", title: "Overview" }],
+                  },
+                ],
+              },
+            ],
+            sections: [
+              {
+                id: "utility-types",
+                title: "Utility Types",
+                flatNav: true,
+                clusters: [
+                  {
+                    id: "utility-object",
+                    title: "Object utilities",
+                    href: "/frontend/typescript#utility-object",
+                    topics: [
+                      {
+                        slug: "ts-utility-object",
+                        href: "/frontend/ts-utility-object",
+                        title: "Object utilities",
+                        blurb: "",
+                        concepts: [{ id: "partial", title: "Partial" }],
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                id: "reference",
+                title: "Reference",
+                flatNav: true,
+                clusters: [
+                  {
+                    id: "cheat-sheets",
+                    title: "Cheat Sheets",
+                    href: "/frontend/typescript#cheat-sheets",
+                    topics: [
+                      {
+                        slug: "ts-cheat-sheets",
+                        href: "/frontend/ts-cheat-sheets",
+                        title: "Cheat Sheets",
+                        blurb: "",
+                        concepts: [{ id: "cheats", title: "Cheat Sheets" }],
+                      },
+                    ],
+                  },
+                  {
+                    id: "decorators",
+                    title: "Decorators",
+                    href: "/frontend/typescript#decorators",
+                    topics: [
+                      {
+                        slug: "ts-decorators",
+                        href: "/frontend/ts-decorators",
+                        title: "Decorators",
+                        blurb: "",
+                        concepts: [{ id: "overview", title: "Overview" }],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+  ];
+
+  const cheatSheets = "/frontend/ts-cheat-sheets";
+  const chain = navChainForPath(flatSectionGroups, cheatSheets, "");
+  assert.ok(chain);
+  assert.equal(chain?.length, 2);
+
+  assert.equal(
+    siblingNavHrefForPath(flatSectionGroups, cheatSheets, "", -1),
+    "/frontend/ts-utility-object",
+  );
+  assert.equal(
+    siblingNavHrefForPath(flatSectionGroups, cheatSheets, "", 1),
+    "/frontend/ts-decorators",
+  );
+});
+
 test("bookmarkMatchesPage matches topic and concept bookmarks", async () => {
   const { bookmarkMatchesPage } = await import("@/lib/nav/bookmarks");
   const topic = "/en/backend/nodejs-core";

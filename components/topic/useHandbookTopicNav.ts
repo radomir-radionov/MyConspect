@@ -239,14 +239,16 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
     navigate(parentHref);
   }, [navigate, parentHref]);
 
+  const onTopicIndex = !hashIdFrom(location.hash);
+
   return {
     inChain: inBookmarks || inChain,
     showBack: inBookmarks
       ? prevHref !== null
-      : prevHref !== null && conceptOpen,
+      : prevHref !== null && (conceptOpen || onTopicIndex),
     showNext: inBookmarks
       ? nextHref !== null
-      : nextHref !== null && conceptOpen,
+      : nextHref !== null && (conceptOpen || onTopicIndex),
     goBack,
     goNext,
     goToParent,

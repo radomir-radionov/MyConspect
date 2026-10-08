@@ -6,12 +6,11 @@
 
 ### Related docs
 
-- [TypeScript — hub](./5_ts.md) · [Interview](./5_ts_interview.md)
+- [TypeScript — hub](./5_ts.md) · [The Basics — Modern TypeScript](./5_ts_basics.md#modern-typescript) · [Interview](./5_ts_interview.md)
 
 ### Sections
 
 - [Variable Declaration](#variable-declaration)
-- [Advanced topics](#advanced-topics)
 
 ---
 
@@ -139,53 +138,5 @@ let [n, s] = tuple; // n: number, s: string
 ```
 
 **Sources:** [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-### Quick list — checklist
-
-1. **`const` type parameters** — literal inference in generics (TS 5.0+)
-2. **`using` / `Disposable`** — scoped resource cleanup (TS 5.2+)
-3. **`override` keyword** — explicit, checked method overrides
-4. **Stricter compiler flags** — `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`
-5. **ESM/CJS** — `moduleResolution: node16` / `nodenext`, `verbatimModuleSyntax`
-6. **Project references** — split monorepos, incremental `tsc --build`
-7. **Publishing typed packages** — `declaration`, `types` field, bundling `.d.ts`
-8. **Recursive types** — `Json`, trees, deep `Partial`
-9. **Variance** — covariant returns, contravariant params, bivariance pitfalls
-10. **Runtime validation** — TS types ≠ runtime; use Zod/io-ts for external data
-
-</details>
-
-</details>
-
-## Advanced topics
-
-<details>
-  <summary>Modern TypeScript</summary>
-
-### `const` Type Parameters (TS 5.0+)
-
-**Definition:**
-
-Generic parameter modifier that preserves literal types in inference.
-
-| When to use                                                                                               | Notes                                                                                             |
-| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `function routes<const T extends readonly string[]>(paths: T)` — keeps tuple of literals, not `string[]`. | recursion must have a **base case** (`T extends object` guard) or the compiler hits depth limits. |
-
-**Sources:** [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-### Variance (functions and assignability)
-
-**Definition:**
-
-How subtyping works for function params (contravariant) and returns (covariant).
-
-| Aspect  | Detail                                                                           |
-| ------- | -------------------------------------------------------------------------------- |
-| Summary | How subtyping works for function params (contravariant) and returns (covariant). |
-
-**Sources:** [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-</details>
 
 </details>

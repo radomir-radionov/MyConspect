@@ -37,4 +37,66 @@ describe("enrichNavSections", () => {
       "/en/frontend/css-interview",
     );
   });
+
+  it("appends shell outline concepts missing from a stale search index", () => {
+    const structure = handbookNavSections("en");
+    const basicsHref = "/en/frontend/ts-basics";
+    const shell = structure.flatMap((section) => section.groups);
+    const basicsTopic = shell
+      .flatMap((group) => group.entries)
+      .find(
+        (entry) =>
+          entry.kind === "subject" &&
+          entry.subject.clusters.some((cluster) =>
+            cluster.topics.some((topic) => topic.href === basicsHref),
+          ),
+      );
+    assert.ok(basicsTopic?.kind === "subject");
+
+    const topicInShell = basicsTopic.subject.clusters
+      .flatMap((cluster) => cluster.topics)
+      .find((topic) => topic.href === basicsHref);
+    assert.ok(topicInShell);
+    const modern = topicInShell.concepts.find(
+      (concept) => concept.id === "modern-typescript",
+    );
+    assert.ok(modern);
+
+    const staleRich = {
+      ...topicInShell,
+      concepts: topicInShell.concepts.filter(
+        (concept) => concept.id !== "modern-typescript",
+      ),
+    };
+    const loaded = new Map([
+      [
+        "frontend",
+        [
+          {
+            id: "frontend" as const,
+            title: "Frontend",
+            href: "/en/frontend",
+            entries: [{ kind: "topic" as const, topic: staleRich }],
+          },
+        ],
+      ],
+    ]);
+
+    const enriched = enrichNavSections(structure, loaded);
+    const enrichedBasics = enriched
+      .flatMap((section) => section.groups)
+      .flatMap((group) => group.entries)
+      .flatMap((entry) =>
+        entry.kind === "subject"
+          ? entry.subject.clusters.flatMap((cluster) => cluster.topics)
+          : entry.kind === "topic"
+            ? [entry.topic]
+            : [],
+      )
+      .find((topic) => topic.href === basicsHref);
+
+    assert.ok(
+      enrichedBasics?.concepts.some((c) => c.id === "modern-typescript"),
+    );
+  });
 });

@@ -55,7 +55,7 @@ type ParsedEntry = {
   readonly promise: Promise<ParsedTopic>;
 };
 
-const PARSE_LOGIC_REVISION = 15;
+const PARSE_LOGIC_REVISION = 19;
 
 type ParseCache = {
   markdown: Map<string, StoredRead>;
@@ -202,11 +202,25 @@ function loadTypesHubOutline(
   topic: Topic,
   locale: Locale,
 ): readonly ConceptOutline[] {
+  return loadGroupedHubOutline(
+    topic,
+    locale,
+    TYPES_HUB_REFERENCE_GROUP,
+    TYPES_HUB_SECTIONS,
+  );
+}
+
+function loadGroupedHubOutline(
+  topic: Topic,
+  locale: Locale,
+  referenceGroup: string,
+  sections: readonly { readonly slug: string; readonly group: string }[],
+): readonly ConceptOutline[] {
   const merged: ConceptOutline[] = withConceptGroup(
     loadTopicOutlineSingle(topic, locale),
-    TYPES_HUB_REFERENCE_GROUP,
+    referenceGroup,
   );
-  for (const section of TYPES_HUB_SECTIONS) {
+  for (const section of sections) {
     const child = getTopic(topic.track, section.slug);
     if (!child) {
       continue;
@@ -432,24 +446,40 @@ export const loadTypesHubConcepts = cache(
     track: string,
     locale: Locale = DEFAULT_LOCALE,
   ): Promise<readonly Concept[] | undefined> => {
-    const hub = await loadTopicPage(track, TYPES_HUB_SLUG, locale);
-    if (!hub) {
-      return undefined;
-    }
-    const merged: Concept[] = withConceptGroup(
-      hub.parsed.concepts,
+    return loadGroupedHubConcepts(
+      track,
+      locale,
+      TYPES_HUB_SLUG,
       TYPES_HUB_REFERENCE_GROUP,
+      TYPES_HUB_SECTIONS,
     );
-    for (const section of TYPES_HUB_SECTIONS) {
-      const child = await loadTopicPage(track, section.slug, locale);
-      if (!child) {
-        continue;
-      }
-      merged.push(...withConceptGroup(child.parsed.concepts, section.group));
-    }
-    return merged;
   },
 );
+
+async function loadGroupedHubConcepts(
+  track: string,
+  locale: Locale,
+  hubSlug: string,
+  referenceGroup: string,
+  sections: readonly { readonly slug: string; readonly group: string }[],
+): Promise<readonly Concept[] | undefined> {
+  const hub = await loadTopicPage(track, hubSlug, locale);
+  if (!hub) {
+    return undefined;
+  }
+  const merged: Concept[] = withConceptGroup(
+    hub.parsed.concepts,
+    referenceGroup,
+  );
+  for (const section of sections) {
+    const child = await loadTopicPage(track, section.slug, locale);
+    if (!child) {
+      continue;
+    }
+    merged.push(...withConceptGroup(child.parsed.concepts, section.group));
+  }
+  return merged;
+}
 
 export function topicUsesGroupedConceptIndex(
   topic: Pick<Topic, "slug">,

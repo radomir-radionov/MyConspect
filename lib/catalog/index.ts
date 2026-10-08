@@ -207,6 +207,13 @@ const SUBJECTS_BASE: readonly Subject[] = [
     track: "frontend",
     sections: [
       {
+        id: "utility-types",
+        title: "Utility Types",
+        defaultOpen: false,
+        collapsible: true,
+        flatNav: true,
+      },
+      {
         id: "reference",
         title: "Reference",
         defaultOpen: false,
@@ -291,10 +298,23 @@ const SUBJECTS_BASE: readonly Subject[] = [
       },
       {
         id: "utility-types",
-        title: "Utility Types",
+        title: "Catalog",
         blurb:
-          "Partial, Pick, Omit, Record, ReturnType, and built-in utilities.",
-        section: "reference",
+          "Built-in type operators — index hub with links to section topics.",
+        section: "utility-types",
+      },
+      {
+        id: "utility-object",
+        title: "Object utilities",
+        blurb: "Partial, Required, Readonly, Record, Pick, and Omit.",
+        section: "utility-types",
+      },
+      {
+        id: "utility-union-function",
+        title: "Unions & functions",
+        blurb:
+          "Exclude, Extract, function types, Awaited, and string literal operators.",
+        section: "utility-types",
       },
       {
         id: "cheat-sheets",
@@ -1264,10 +1284,28 @@ const TOPICS_BASE: Topic[] = [
     "ts-utility-types",
     "5_ts_utility_types.md",
     "Utility Types",
-    "Partial, Pick, Omit, Record, ReturnType, and built-in utilities.",
+    "Built-in utility types — catalog hub with sectioned topics.",
     "frontend",
     "typescript",
     "utility-types",
+  ),
+  grouped(
+    "ts-utility-object",
+    "5_ts_utility_object.md",
+    "Object utilities",
+    "Partial, Required, Readonly, Record, Pick, and Omit.",
+    "frontend",
+    "typescript",
+    "utility-object",
+  ),
+  grouped(
+    "ts-utility-union-function",
+    "5_ts_utility_union_function.md",
+    "Unions & functions",
+    "Exclude, Extract, ReturnType, Awaited, and string operators.",
+    "frontend",
+    "typescript",
+    "utility-union-function",
   ),
   grouped(
     "ts-classes",

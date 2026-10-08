@@ -5,6 +5,11 @@ import {
   TYPES_HUB_SLUG,
 } from "@/lib/catalog/typesHub";
 import {
+  isUtilityTypesHubSectionSlug,
+  isUtilityTypesHubSlug,
+  UTILITY_TYPES_HUB_SLUG,
+} from "@/lib/catalog/utilityTypesHub";
+import {
   INSTRUCTIONS_HREF,
   type Crumb,
   type NavConcept,
@@ -156,15 +161,26 @@ export function crumbsForPath(
               continue;
             }
             const typesHub = findTypesHubTopic(entry.subject);
-            const sectionTrail = typesHubSectionTrail(
+            const typesTrail = typesHubSectionTrail(
               topic,
               typesHub,
               entry.subject,
               group,
               cluster,
             );
-            if (sectionTrail) {
-              return withConcept(home, sectionTrail, topic, hashId);
+            if (typesTrail) {
+              return withConcept(home, typesTrail, topic, hashId);
+            }
+            const utilityHub = findUtilityTypesHubTopic(entry.subject);
+            const utilityTrail = utilityTypesHubSectionTrail(
+              topic,
+              utilityHub,
+              entry.subject,
+              group,
+              cluster,
+            );
+            if (utilityTrail) {
+              return withConcept(home, utilityTrail, topic, hashId);
             }
             return withConcept(
               home,
@@ -231,8 +247,19 @@ export function crumbsForPath(
 }
 
 function findTypesHubTopic(subject: NavSubject): NavTopic | undefined {
+  return findHubTopic(subject, TYPES_HUB_SLUG);
+}
+
+function findUtilityTypesHubTopic(subject: NavSubject): NavTopic | undefined {
+  return findHubTopic(subject, UTILITY_TYPES_HUB_SLUG);
+}
+
+function findHubTopic(
+  subject: NavSubject,
+  hubSlug: string,
+): NavTopic | undefined {
   for (const cluster of navSubjectClusters(subject)) {
-    const hub = cluster.topics.find((item) => item.slug === TYPES_HUB_SLUG);
+    const hub = cluster.topics.find((item) => item.slug === hubSlug);
     if (hub) {
       return hub;
     }
@@ -266,6 +293,30 @@ function typesHubSectionTrail(
   }
   const section = typesHubSectionGroup(topic.slug);
   return section ? [...base, { label: section }] : base;
+}
+
+function utilityTypesHubSectionTrail(
+  topic: NavTopic,
+  utilityHub: NavTopic | undefined,
+  subject: NavSubject,
+  group: NavGroup,
+  _cluster: NavCluster,
+): readonly Crumb[] | undefined {
+  if (!utilityHub) {
+    return undefined;
+  }
+  const base: Crumb[] = [
+    { label: group.title, href: group.href },
+    { label: subject.title, href: subject.href },
+    { label: utilityHub.title, href: utilityHub.href },
+  ];
+  if (topic.slug === UTILITY_TYPES_HUB_SLUG) {
+    return base;
+  }
+  if (!isUtilityTypesHubSectionSlug(topic.slug)) {
+    return undefined;
+  }
+  return [...base, { label: topic.title, href: topic.href }];
 }
 
 function withConcept(

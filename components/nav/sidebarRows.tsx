@@ -712,21 +712,19 @@ export function SectionRow({
             pathname,
             `${subjectPath}#${section.id}`,
           );
-          if (onHub) {
+          const closed = closedSectionKey(subjectPath, section.id);
+          if (!searching && (onHub || hasActiveChild)) {
             event.preventDefault();
             const next = `#${section.id}`;
-            const sameHash = window.location.hash === next;
-            if (!searching) {
-              const closed = closedSectionKey(subjectPath, section.id);
-              if (sameHash) {
-                patchFold(trackId, {
-                  sectionKey: sectionOpen ? closed : key,
-                });
-              } else {
-                patchFold(trackId, { sectionKey: key });
-              }
+            const sameHash = onHub && window.location.hash === next;
+            if (sameHash || hasActiveChild) {
+              patchFold(trackId, {
+                sectionKey: sectionOpen ? closed : key,
+              });
+            } else {
+              patchFold(trackId, { sectionKey: key });
             }
-            if (!sameHash) {
+            if (onHub && !sameHash) {
               replacePathHash(pathname, next);
             }
             return;

@@ -6,12 +6,11 @@
 
 ### Related docs
 
-- [TypeScript — hub](./5_ts.md) · [Interview](./5_ts_interview.md)
+- [TypeScript — hub](./5_ts.md) · [Основы — Modern TypeScript](./5_ts_basics.md#modern-typescript) · [Interview](./5_ts_interview.md)
 
 ### Sections
 
 - [Variable Declaration](#variable-declaration)
-- [Advanced topics](#advanced-topics)
 
 ---
 
@@ -139,53 +138,5 @@ let [n, s] = tuple; // n: number, s: string
 ```
 
 **Sources:** [Справочник по TypeScript — введение](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-### Quick list — checklist
-
-1. **`const` параметры типа** — буквальный вывод в дженериках (TS 5.0+)
-2. **`using` / `Disposable`** — очистка ресурсов по заданной области (TS 5.2+)
-3. **`override` ключевое слово** — явные, проверенные переопределения метода
-4. **Более строгие флаги компилятора** — `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`
-5. **ESM/ЗАП** — `moduleResolution: node16` / `nodenext`, `verbatimModuleSyntax`
-6. **Ссылки на проекты** — разделение монорепозиториев, инкрементальное `tsc --build`
-7. **Публикация типизированных пакетов** — `declaration`, `types` поле, связка `.d.ts`
-8. **Рекурсивные типы** — `Json`, деревья, глубоко `Partial`
-9. **Дисперсия** — ковариантная доходность, контравариантные параметры, подводные камни бивариантности.
-10. **Проверка времени выполнения** — типы TS ≠ время выполнения; используйте Zod/io-ts для внешних данных
-
-</details>
-
-## Advanced topics
-
-</details>
-
-## Advanced topics
-
-<details>
-  <summary>Modern TypeScript</summary>
-
-Универсальный модификатор параметра, сохраняющий литеральные типы при выводе.
-
-| Когда использовать                                                                                      | Заметки                                                                                                        |
-| ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `function routes<const T extends readonly string[]>(paths: T)` — keeps tuple of literals, not `нить[]`. | recursion must have a **base case** (`T расширяет защиту объекта), иначе компилятор достигает предела глубины. |
-
-**Sources:** [Справочник по TypeScript — введение](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-### Variance (functions and assignability)
-
-**Definition:**
-
-Как подтипирование работает для параметров функции (контравариантно) и возвращаемых значений (ковариантно).
-
-| Аспект | Деталь                                                                                                      |
-| ------ | ----------------------------------------------------------------------------------------------------------- |
-| Резюме | Как подтипирование работает для параметров функции (контравариантно) и возвращаемых значений (ковариантно). |
-
-**Sources:** [Справочник по TypeScript — введение](https://www.typescriptlang.org/docs/handbook/intro.html)
-
-</details>
-
-<a name="interview-practice"></a>
 
 </details>

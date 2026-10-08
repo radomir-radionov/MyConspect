@@ -18,6 +18,7 @@ import {
   topicRouteParams,
   type Topic,
 } from "@/lib/catalog";
+import { isTypesHubSlug } from "@/lib/catalog/typesHub";
 import { catalogBlurb } from "@/lib/i18n/catalog";
 import { FALLBACK_NOTE_BADGE } from "@/lib/i18n/chrome";
 import { isLocale, localeStaticParams, type Locale } from "@/lib/i18n/locales";
@@ -177,18 +178,18 @@ export default async function TopicPage({
     notFound();
   }
 
-  const typesHubConcepts = topicUsesGroupedConceptIndex(loaded.topic)
+  const groupedHubConcepts = topicUsesGroupedConceptIndex(loaded.topic)
     ? await loadTypesHubConcepts(trackId, locale)
     : undefined;
   const pageConcepts = conceptsForInterviewTopic(
     loaded.topic,
-    typesHubConcepts ?? loaded.parsed.concepts,
+    groupedHubConcepts ?? loaded.parsed.concepts,
   );
   const pageTitle = isInterviewTasksTopic(loaded.topic)
     ? loaded.topic.title
     : loaded.parsed.title;
   const groupConceptSections =
-    typesHubConcepts !== undefined ||
+    groupedHubConcepts !== undefined ||
     pageConcepts.some((concept) => Boolean(concept.group)) ||
     (isInterviewTopic(loaded.topic) && !isInterviewTasksTopic(loaded.topic));
 

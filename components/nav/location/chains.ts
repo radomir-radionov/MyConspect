@@ -2,6 +2,7 @@ import type {
   NavCluster,
   NavEntry,
   NavGroup,
+  NavSection,
   NavSubject,
   NavTopic,
 } from "@/lib/nav";
@@ -203,6 +204,118 @@ function buildClusterChain(
   return chain;
 }
 
+type FlatSectionScope = {
+  readonly subject: NavSubject;
+  readonly section: NavSection;
+  readonly sectionIndex: number;
+};
+
+function findFlatSectionScope(
+  subject: NavSubject,
+  pathname: string,
+): FlatSectionScope | null {
+  if (!subject.sections?.length) {
+    return null;
+  }
+  for (let index = 0; index < subject.sections.length; index += 1) {
+    const section = subject.sections[index];
+    if (!section?.flatNav) {
+      continue;
+    }
+    for (const cluster of section.clusters) {
+      if (cluster.topics.some((topic) => topic.href === pathname)) {
+        return { subject, section, sectionIndex: index };
+      }
+    }
+  }
+  return null;
+}
+
+function buildFlatSectionChain(section: NavSection): NavStep[] {
+  const chain: NavStep[] = [];
+  for (const cluster of section.clusters) {
+    for (const topic of cluster.topics) {
+      appendTopicSteps(chain, topic);
+    }
+  }
+  return chain;
+}
+
+function lastTopicStep(topic: NavTopic): NavStep {
+  if (topic.concepts.length <= 1) {
+    return { pathname: topic.href, hash: "" };
+  }
+  const lastConcept = topic.concepts[topic.concepts.length - 1];
+  return { pathname: topic.href, hash: lastConcept?.id ?? "" };
+}
+
+function lastTopicStepInSection(section: NavSection): NavStep | null {
+  const lastCluster = section.clusters[section.clusters.length - 1];
+  const lastTopic = lastCluster?.topics[lastCluster.topics.length - 1];
+  if (!lastTopic) {
+    return null;
+  }
+  return lastTopicStep(lastTopic);
+}
+
+function firstTopicStepInSection(section: NavSection): NavStep | null {
+  const firstTopic = section.clusters[0]?.topics[0];
+  if (!firstTopic) {
+    return null;
+  }
+  return firstTopicStep(firstTopic);
+}
+
+function lastTopicStepInClusters(
+  clusters: readonly NavCluster[],
+): NavStep | null {
+  const lastCluster = clusters[clusters.length - 1];
+  const lastTopic = lastCluster?.topics[lastCluster.topics.length - 1];
+  if (!lastTopic) {
+    return null;
+  }
+  return lastTopicStep(lastTopic);
+}
+
+function flatSectionPrevBoundary(scope: FlatSectionScope): NavStep | null {
+  const sections = scope.subject.sections ?? [];
+  for (let index = scope.sectionIndex - 1; index >= 0; index -= 1) {
+    const section = sections[index];
+    if (!section) {
+      continue;
+    }
+    const step = lastTopicStepInSection(section);
+    if (step) {
+      return step;
+    }
+  }
+  return lastTopicStepInClusters(scope.subject.clusters);
+}
+
+function flatSectionNextBoundary(scope: FlatSectionScope): NavStep | null {
+  const sections = scope.subject.sections ?? [];
+  for (
+    let index = scope.sectionIndex + 1;
+    index < sections.length;
+    index += 1
+  ) {
+    const section = sections[index];
+    if (!section) {
+      continue;
+    }
+    const step = firstTopicStepInSection(section);
+    if (step) {
+      return step;
+    }
+  }
+  const after = scope.subject.clustersAfterSections;
+  if (after?.length) {
+    const firstTopic = after[0]?.topics[0];
+    return firstTopic ? firstTopicStep(firstTopic) : null;
+  }
+  return null;
+}
+
 function buildFullTrackChain(group: NavGroup): NavStep[] {
   const chain: NavStep[] = [{ pathname: group.href, hash: "" }];
   for (const topic of collectTopicsForGroup(group)) {
@@ -281,6 +394,12 @@ export function navChainForPath(
 
   const clusterMatch = findClusterForPath(group, pathname);
   if (clusterMatch && findTopicInGroup(group, pathname)) {
+    const scopedSubject = resolveSubjectForClusterNav(group, pathname);
+    const flatScope =
+      scopedSubject && findFlatSectionScope(scopedSubject, pathname);
+    if (flatScope) {
+      return buildFlatSectionChain(flatScope.section);
+    }
     return buildClusterChain(clusterMatch.subjectHref, clusterMatch.cluster);
   }
 
@@ -506,8 +625,20 @@ export function siblingNavHrefForPath(
   const clusterScope = group ? findClusterForPath(group, pathname) : null;
   const cluster = clusterScope?.cluster ?? null;
 
+  const scopedSubject = group
+    ? resolveSubjectForClusterNav(group, pathname)
+    : null;
+  const flatScope =
+    scopedSubject && findFlatSectionScope(scopedSubject, pathname);
+
   const nextIndex = index + delta;
   if (nextIndex < 0) {
+    if (flatScope && index === 0) {
+      const boundary = flatSectionPrevBoundary(flatScope);
+      if (boundary) {
+        return stepHref(boundary);
+      }
+    }
     if (delta < 0 && cluster && !shouldWrapClusterAtBoundary(cluster)) {
       const step = crossClusterStep(groups, pathname, cluster, -1);
       return step ? stepHref(step) : null;
@@ -519,6 +650,12 @@ export function siblingNavHrefForPath(
       const current = chain[index];
       if (current?.hash) {
         return stepHref({ pathname: current.pathname, hash: "" });
+      }
+      if (flatScope && index === chain.length - 1) {
+        const boundary = flatSectionNextBoundary(flatScope);
+        if (boundary) {
+          return stepHref(boundary);
+        }
       }
       if (cluster && !shouldWrapClusterAtBoundary(cluster)) {
         const step = crossClusterStep(groups, pathname, cluster, 1);

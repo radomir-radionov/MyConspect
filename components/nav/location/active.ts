@@ -69,13 +69,13 @@ export function isNavSectionOpen(
   foldSectionKey: string | null,
   forceOpen: boolean,
 ): boolean {
-  if (forceOpen) {
-    return true;
-  }
   const key = sectionKey(subjectHref, section.id);
   const closed = closedSectionKey(subjectHref, section.id);
   if (foldSectionKey === closed) {
     return false;
+  }
+  if (forceOpen) {
+    return true;
   }
   if (foldSectionKey === key) {
     return true;

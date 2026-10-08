@@ -97,6 +97,39 @@ describe("handbookNavSections layout", () => {
     assert.equal(reference?.collapsible, true);
   });
 
+  it("places Utility Types in its own section between handbook and Reference", () => {
+    const typescript = findSubject("typescript");
+    const sectionIds = typescript.sections?.map((section) => section.id);
+    assert.deepEqual(sectionIds, ["utility-types", "reference"]);
+    const utility = typescript.sections?.find(
+      (section) => section.id === "utility-types",
+    );
+    assert.equal(utility?.collapsible, true);
+    assert.equal(utility?.flatNav, true);
+    const utilitySection = typescript.sections?.find(
+      (section) => section.id === "utility-types",
+    );
+    assert.ok(utilitySection);
+    assert.ok(
+      utilitySection?.clusters.some(
+        (cluster) => cluster.id === "utility-types",
+      ),
+    );
+    assert.ok(
+      utilitySection?.clusters.some(
+        (cluster) => cluster.id === "utility-object",
+      ),
+    );
+    const referenceSection = typescript.sections?.find(
+      (section) => section.id === "reference",
+    );
+    assert.ok(
+      referenceSection?.clusters.every(
+        (cluster) => cluster.id !== "utility-types",
+      ),
+    );
+  });
+
   it("keeps Vue and Nuxt sections as expandable cluster rows", () => {
     const vueNuxt = findSubject("vue-nuxt");
     for (const section of vueNuxt.sections ?? []) {

@@ -15,6 +15,7 @@
 - [tsconfig.json](#tsconfig-json)
 - [Declaration files (.d.ts)](#declaration-files-dts)
 - [Design principles](#design-principles)
+- [Modern TypeScript](#modern-typescript)
 
 ---
 
@@ -710,6 +711,54 @@ function placeOrder(orderId: string, logger: Logger) {
 **Thoughts:** TypeScript делает **I**, **L** и **D** видимыми на compile time — но types стираются в runtime; behavioral contracts всё равно важны. Классы: [Classes](./5_ts_classes.md). JS: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
 **Sources:** [TypeScript handbook — Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html) · [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions)
+
+</details>
+
+---
+
+<a name="modern-typescript"></a>
+
+## Modern TypeScript
+
+<details>
+  <summary>Modern TypeScript</summary>
+
+### Quick list — checklist
+
+1. **`const` параметры типа** — буквальный вывод в дженериках (TS 5.0+)
+2. **`using` / `Disposable`** — очистка ресурсов по заданной области (TS 5.2+)
+3. **`override` ключевое слово** — явные, проверенные переопределения метода
+4. **Более строгие флаги компилятора** — `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`
+5. **ESM/CJS** — `moduleResolution: node16` / `nodenext`, `verbatimModuleSyntax`
+6. **Ссылки на проекты** — разделение монорепозиториев, инкрементальное `tsc --build`
+7. **Публикация типизированных пакетов** — `declaration`, `types` field, bundling `.d.ts`
+8. **Рекурсивные типы** — `Json`, trees, deep `Partial`
+9. **Дисперсия** — ковариантные возвраты, контравариантные параметры, подводные камни бивариантности
+10. **Проверка времени выполнения** — типы TS ≠ runtime; используйте Zod/io-ts для внешних данных
+
+### `const` Type Parameters (TS 5.0+)
+
+**Definition:**
+
+Модификатор generic-параметра, сохраняющий литеральные типы при выводе.
+
+| Когда использовать                                                                               | Заметки                                                                                              |
+| ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `function routes<const T extends readonly string[]>(paths: T)` — tuple литералов, не `string[]`. | recursion needs a **base case** (`T extends object` guard) или компилятор упирается в лимит глубины. |
+
+**Sources:** [Справочник по TypeScript — введение](https://www.typescriptlang.org/docs/handbook/intro.html)
+
+### Variance (functions and assignability)
+
+**Definition:**
+
+Как подтипирование работает для параметров функции (контравариантно) и возвращаемых значений (ковариантно).
+
+| Аспект | Деталь                                                                                                      |
+| ------ | ----------------------------------------------------------------------------------------------------------- |
+| Резюме | Как подтипирование работает для параметров функции (контравариантно) и возвращаемых значений (ковариантно). |
+
+**Sources:** [Справочник по TypeScript — введение](https://www.typescriptlang.org/docs/handbook/intro.html)
 
 </details>
 

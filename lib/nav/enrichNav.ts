@@ -8,6 +8,26 @@ import type {
   NavTopic,
 } from "./types";
 
+function mergeTopicConcepts(
+  baseConcepts: readonly NavTopic["concepts"],
+  richConcepts: readonly NavTopic["concepts"],
+): NavTopic["concepts"] {
+  if (richConcepts.length === 0) {
+    return baseConcepts;
+  }
+  if (baseConcepts.length === 0) {
+    return richConcepts;
+  }
+  const richIds = new Set(richConcepts.map((concept) => concept.id));
+  const missingFromRich = baseConcepts.filter(
+    (concept) => !richIds.has(concept.id),
+  );
+  if (missingFromRich.length === 0) {
+    return richConcepts;
+  }
+  return [...richConcepts, ...missingFromRich];
+}
+
 function enrichTopic(
   base: NavTopic,
   richByTopicHref: ReadonlyMap<string, NavTopic>,
@@ -16,10 +36,11 @@ function enrichTopic(
   if (!rich || rich.concepts.length === 0) {
     return base;
   }
-  if (base.concepts.length >= rich.concepts.length) {
+  const concepts = mergeTopicConcepts(base.concepts, rich.concepts);
+  if (concepts === base.concepts) {
     return base;
   }
-  return { ...base, concepts: rich.concepts };
+  return { ...base, concepts };
 }
 
 function enrichCluster(

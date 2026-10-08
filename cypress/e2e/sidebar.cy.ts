@@ -587,18 +587,36 @@ describe("handbook sidebar", () => {
     );
     cy.nav("section", "reference").click();
     cy.nav("section", "reference").should("have.attr", "aria-expanded", "true");
-    cy.get('#handbook-sidebar [data-nav-id="utility-types"]').should(
+    cy.get('#handbook-sidebar [data-nav-id="cheat-sheets"]').should(
       "be.visible",
     );
-    cy.get('#handbook-sidebar [data-nav-id="utility-types"]')
-      .should("have.class", "text-sm")
-      .and("not.contain", "+");
 
     cy.nav("section", "reference").click();
     cy.nav("section", "reference").should(
       "have.attr",
       "aria-expanded",
       "false",
+    );
+  });
+
+  it("toggles Utility Types closed while a utility topic is open", () => {
+    cy.visit("/en/frontend/ts-utility-object");
+    cy.nav("section", "utility-types").should(
+      "have.attr",
+      "aria-expanded",
+      "true",
+    );
+    cy.nav("section", "utility-types").click();
+    cy.nav("section", "utility-types").should(
+      "have.attr",
+      "aria-expanded",
+      "false",
+    );
+    cy.nav("section", "utility-types").click();
+    cy.nav("section", "utility-types").should(
+      "have.attr",
+      "aria-expanded",
+      "true",
     );
   });
 

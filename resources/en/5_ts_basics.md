@@ -6,7 +6,7 @@ tsconfig, declaration files, and a short intro for JavaScript programmers.
 
 ### Related docs
 
-- [TypeScript — hub](./5_ts.md) · [Compiler fundamentals](./5_ts_compiler_fundamentals.md) · [Interview](./5_ts_interview.md)
+- [TypeScript — hub](./5_ts.md) · [Compiler fundamentals](./5_ts_compiler_fundamentals.md) · [Variable Declaration](./5_ts_variable_declaration.md) · [Interview](./5_ts_interview.md)
 
 ### Sections
 
@@ -16,6 +16,7 @@ tsconfig, declaration files, and a short intro for JavaScript programmers.
 - [Declaration files (.d.ts)](#declaration-files-dts)
 - [TypeScript for JavaScript programmers](#typescript-for-javascript-programmers)
 - [Design principles](#design-principles)
+- [Modern TypeScript](#modern-typescript)
 
 ---
 
@@ -526,5 +527,53 @@ function placeOrder(orderId: string, logger: Logger) {
 **Thoughts:** TypeScript makes **I**, **L**, and **D** visible at compile time — but types erase at runtime; behavior contracts still matter. Class syntax: [Classes](./5_ts_classes.md). JS fundamentals: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Framework mapping: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Full reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
 **Sources:** [TypeScript handbook — Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html) · [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions)
+
+</details>
+
+---
+
+<a name="modern-typescript"></a>
+
+## Modern TypeScript
+
+<details>
+  <summary>Modern TypeScript</summary>
+
+### Quick list — checklist
+
+1. **`const` type parameters** — literal inference in generics (TS 5.0+)
+2. **`using` / `Disposable`** — scoped resource cleanup (TS 5.2+)
+3. **`override` keyword** — explicit, checked method overrides
+4. **Stricter compiler flags** — `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`
+5. **ESM/CJS** — `moduleResolution: node16` / `nodenext`, `verbatimModuleSyntax`
+6. **Project references** — split monorepos, incremental `tsc --build`
+7. **Publishing typed packages** — `declaration`, `types` field, bundling `.d.ts`
+8. **Recursive types** — `Json`, trees, deep `Partial`
+9. **Variance** — covariant returns, contravariant params, bivariance pitfalls
+10. **Runtime validation** — TS types ≠ runtime; use Zod/io-ts for external data
+
+### `const` Type Parameters (TS 5.0+)
+
+**Definition:**
+
+Generic parameter modifier that preserves literal types in inference.
+
+| When to use                                                                                               | Notes                                                                                             |
+| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `function routes<const T extends readonly string[]>(paths: T)` — keeps tuple of literals, not `string[]`. | recursion must have a **base case** (`T extends object` guard) or the compiler hits depth limits. |
+
+**Sources:** [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
+
+### Variance (functions and assignability)
+
+**Definition:**
+
+How subtyping works for function params (contravariant) and returns (covariant).
+
+| Aspect  | Detail                                                                           |
+| ------- | -------------------------------------------------------------------------------- |
+| Summary | How subtyping works for function params (contravariant) and returns (covariant). |
+
+**Sources:** [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
 
 </details>
