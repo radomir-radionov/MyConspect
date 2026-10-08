@@ -6,7 +6,7 @@ Prisma, Sequelize, Knex, Drizzle, and query builders.
 
 ### Related docs
 
-* [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
+- [DB — Core](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
 
 ### Sections
 
@@ -30,7 +30,7 @@ Prisma, Sequelize, Knex, Drizzle, and query builders.
 
 **Pluses and minuses:**
 
-| +                             | −                                            |
+| +                                | −                                               |
 | -------------------------------- | ----------------------------------------------- |
 | Less boilerplate SQL             | Abstraction leaks — must know SQL anyway        |
 | Type-safe models (with TS)       | N+1 queries, inefficient generated SQL          |
@@ -68,7 +68,7 @@ const user = await prisma.user.create({
 
 **Pluses and minuses:**
 
-| +                                     | −                                         |
+| +                                        | −                                            |
 | ---------------------------------------- | -------------------------------------------- |
 | Excellent TypeScript inference           | Raw SQL escape hatches needed for edge cases |
 | Declarative schema, clean migrations     | Cold start / bundle size in serverless       |
@@ -128,7 +128,7 @@ const users = await prisma.user.findMany({
 
 **Pluses and minuses:**
 
-| +                      | −                                  |
+| +                         | −                                     |
 | ------------------------- | ------------------------------------- |
 | Mature, wide DB support   | Verbose API vs Prisma                 |
 | CLI for migrations/seeds  | TypeScript support weaker than Prisma |
@@ -243,7 +243,7 @@ Three ways to talk to the database from application code.
 
 **Pluses and minuses:**
 
-| + (of fixing it)       | −                              |
+| + (of fixing it)          | −                                 |
 | ------------------------- | --------------------------------- |
 | Massive latency reduction | Eager loading can over-fetch data |
 | Fewer DB connections used | JOIN queries can be complex       |
@@ -285,7 +285,7 @@ const users = await prisma.user.findMany({ include: { posts: true } });
 
 **Pluses and minuses:**
 
-| +                                | −                                         |
+| +                                   | −                                            |
 | ----------------------------------- | -------------------------------------------- |
 | Lower latency, fewer DB connections | Pool misconfiguration = timeouts             |
 | Protects DB from connection storms  | Serverless needs external pooler (PgBouncer) |
@@ -330,7 +330,7 @@ const pool = new Pool({ max: 20, connectionString: process.env.DATABASE_URL });
 
 **Pluses and minuses:**
 
-| +                               | −                                  |
+| +                                  | −                                     |
 | ---------------------------------- | ------------------------------------- |
 | Control over generated SQL         | No automatic relation mapping         |
 | Database-agnostic queries (mostly) | Migrations less ergonomic than Prisma |

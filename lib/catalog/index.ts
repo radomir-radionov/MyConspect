@@ -588,7 +588,16 @@ const SUBJECTS_BASE: readonly Subject[] = [
     blurb: "SQL, NoSQL, ORMs, and production data patterns.",
     track: "backend",
     clusters: [
-      { id: "core", title: "Core", blurb: "Foundations and SQL." },
+      {
+        id: "core",
+        title: "Core",
+        blurb: "ACID, CAP, transactions, and normalization.",
+      },
+      {
+        id: "sql",
+        title: "SQL",
+        blurb: "SQL language, schema, joins, objects, indexes, and PostgreSQL.",
+      },
       { id: "nosql", title: "NoSQL", blurb: "MongoDB, Redis, and ClickHouse." },
       {
         id: "orm",
@@ -1899,7 +1908,7 @@ const TOPICS_BASE: Topic[] = [
   grouped(
     "database-foundations",
     "9_database_core.md",
-    "Foundations",
+    "Core",
     "ACID, CAP, transactions, and normalization.",
     "backend",
     "database",
@@ -1912,7 +1921,7 @@ const TOPICS_BASE: Topic[] = [
     "SQL language, schema, joins, objects, indexes, and PostgreSQL.",
     "backend",
     "database",
-    "core",
+    "sql",
   ),
   grouped(
     "database-nosql-core",

@@ -6,7 +6,7 @@ Answers are filled for every question in this file.
 
 ### Related docs
 
-- [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
+- [DB — Core](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
 
 ### Sections
 
@@ -213,7 +213,7 @@ Optimizers may rewrite an aggregate-free `HAVING` into `WHERE`.
 
 **How it works:**
 
-Nested loop is O(n*m). Hash and sort-merge are O(n+m) on average.
+Nested loop is O(n\*m). Hash and sort-merge are O(n+m) on average.
 
 Types: `INNER`, `LEFT`, `RIGHT`, `FULL`, `CROSS`, `SELF`.
 
@@ -743,7 +743,6 @@ CREATE VIEW comedies AS
 - https://www.postgresql.org/docs/current/sql-createview.html
 </details>
 
-
 ### SQL Data Types and Operators
 
 <details>
@@ -1031,7 +1030,6 @@ FROM invoices;
 
 - https://www.postgresql.org/docs/current/functions-math.html
 </details>
-
 
 ### SQL Advanced Queries
 
@@ -1338,7 +1336,6 @@ HAVING count(*) > 1;
 - https://www.postgresql.org/docs/current/queries-table-expressions.html
 - https://www.postgresql.org/docs/current/tutorial-window.html
 </details>
-
 
 ### Database Design & Architecture
 
@@ -1657,7 +1654,6 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY wrd;
 - https://www.postgresql.org/docs/current/rules-materializedviews.html
 </details>
 
-
 ### SQL Optimization and Performance
 
 <details>
@@ -1864,7 +1860,6 @@ CREATE TABLE measurement_y2026m01 PARTITION OF measurement
 - https://www.postgresql.org/docs/current/ddl-partitioning.html
 </details>
 
-
 ### SQL Security
 
 <details>
@@ -1984,7 +1979,6 @@ IMMUTABLE;
 - https://www.postgresql.org/docs/current/sql-createfunction.html
 - https://www.postgresql.org/docs/current/xfunc-sql.html
 </details>
-
 
 ### SQL Functions and Expressions
 
@@ -2112,7 +2106,6 @@ SELECT convert_from('\x4869'::bytea, 'UTF8');
 - https://www.postgresql.org/docs/current/functions-string.html
 - https://www.postgresql.org/docs/current/typeconv.html
 </details>
-
 
 ### Transaction Control and Locking
 
@@ -2264,7 +2257,6 @@ COMMIT;
 - https://www.postgresql.org/docs/current/sql-commit.html
 - https://www.postgresql.org/docs/current/sql-rollback.html
 </details>
-
 
 ### SQL and Modern Data Ecosystems
 
@@ -2428,7 +2420,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA billing TO billing_
 - https://www.postgresql.org/docs/current/postgres-fdw.html
 </details>
 
-
 ### SQL Best Practices and Standards
 
 <details>
@@ -2572,7 +2563,6 @@ COMMENT ON COLUMN films.kind IS 'Genre label such as Comedy or Drama.';
 
 - https://www.postgresql.org/docs/current/sql-comment.html
 </details>
-
 
 ### Analytical SQL Questions
 
@@ -2727,7 +2717,6 @@ FROM generate_series(0, 364) AS s(n);
 - https://www.postgresql.org/docs/current/functions-srf.html
 </details>
 
-
 ### Data Manipulation and ETL
 
 <details>
@@ -2866,7 +2855,6 @@ COPY orders TO STDOUT WITH (FORMAT csv, HEADER true);
 - https://www.postgresql.org/docs/current/app-pgdump.html
 - https://www.postgresql.org/docs/current/app-pgrestore.html
 </details>
-
 
 ### Domain-Specific SQL Scenarios
 
@@ -3023,7 +3011,6 @@ GROUP BY portfolio_id;
 - https://www.postgresql.org/docs/current/functions-aggregate.html
 </details>
 
-
 ### Troubleshooting and Debugging
 
 <details>
@@ -3134,7 +3121,6 @@ COMMIT;
 - https://www.postgresql.org/docs/current/explicit-locking.html
 - https://www.postgresql.org/docs/current/runtime-config-locks.html
 </details>
-
 
 ### Advanced Data Analysis in SQL
 

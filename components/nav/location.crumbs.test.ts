@@ -269,17 +269,24 @@ test("last concept in a topic returns to the topic list before leaving the clust
               {
                 id: "core",
                 title: "Core",
-                href: "/backend/database#core",
+                href: "/backend/database-foundations",
                 topics: [
                   {
-                    slug: "foundations",
+                    slug: "database-foundations",
                     href: "/backend/database-foundations",
-                    title: "Foundations",
+                    title: "Core",
                     blurb: "",
                     concepts: [],
                   },
+                ],
+              },
+              {
+                id: "sql",
+                title: "SQL",
+                href: "/backend/database-sql",
+                topics: [
                   {
-                    slug: "sql",
+                    slug: "database-sql",
                     href: "/backend/database-sql",
                     title: "SQL",
                     blurb: "",

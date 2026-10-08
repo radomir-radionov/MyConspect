@@ -1,4 +1,4 @@
-# Database — Foundations
+# Database — Core
 
 ACID, CAP, transactions, and normalization.
 
@@ -6,7 +6,7 @@ ACID, CAP, transactions, and normalization.
 
 ### Related docs
 
-- [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
+- [DB — Core](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md)
 
 ### Sections
 
@@ -552,102 +552,3 @@ module.exports = {
 ---
 
 </details>
-
-<a name="sql"></a>
-
-### Topic template
-
-Every major topic in `<details>` sections follows:
-
-**Definition** → **How it works** → **When to use** → **Pluses and minuses** → **Examples** → **Thoughts** → **Sources**
-
-### SQL (relational queries)
-
-**Definition:** Structured Query Language — declarative language for defining schemas and querying relational data. You describe _what_ you want; the optimizer decides _how_.
-
-**When to use:**
-
-Structured data with relationships, reporting, financial transactions, ad-hoc analytics.
-
-Unbounded nested documents with no joins — consider document stores or Postgres JSONB.
-
-**Pluses and minuses:**
-
-| +                                  | −                                          |
-| ---------------------------------- | ------------------------------------------ |
-| Declarative, portable across RDBMS | Dialect differences (Postgres vs MySQL)    |
-| Mature ecosystem, strong joins     | Complex queries need careful indexing      |
-| ACID transactions                  | Single-node write ceiling without sharding |
-
-**Examples:**
-
-```sql
-SELECT u.email, COUNT(o.id) AS order_count
-FROM users u
-LEFT JOIN orders o ON o.user_id = u.id
-GROUP BY u.id, u.email
-HAVING COUNT(o.id) > 5;
-```
-
-**Sources:** [PostgreSQL — SQL commands](https://www.postgresql.org/docs/current/sql-commands.html)
-
-### ORM (application layer)
-
-**Definition:** Object-Relational Mapping maps database tables to application objects and generates SQL from method calls — Prisma, Sequelize, TypeORM, Drizzle.
-
-**When to use:**
-
-Standard REST/GraphQL APIs, teams wanting schema-as-code, TypeScript backends.
-
-Heavy analytics, bulk ETL, performance-critical batch jobs — use raw SQL or a query builder.
-
-**Pluses and minuses:**
-
-| +                                  | −                                        |
-| ---------------------------------- | ---------------------------------------- |
-| Less boilerplate, type-safe models | Abstraction leaks — know SQL anyway      |
-| Integrated migrations              | N+1 queries if relations are lazy-loaded |
-| Rapid CRUD development             | Complex reports may need raw SQL         |
-
-**Examples:**
-
-```ts
-const users = await prisma.user.findMany({
-  where: { email: { contains: "@acme.com" } },
-  include: { posts: { take: 5, orderBy: { createdAt: "desc" } } },
-});
-```
-
-**Sources:** [Prisma documentation](https://www.prisma.io/docs)
-
-### NoSQL (document & key-value)
-
-**Definition:** Non-relational databases optimized for flexible schemas, horizontal scale, or specialized access patterns — document (MongoDB), key-value (Redis), column, graph.
-
-**When to use:** Caching (Redis), flexible catalogs (MongoDB), sessions, rate limits — usually **alongside** Postgres, not instead of it.
-
-**Pluses and minuses:**
-
-| +                                  | −                                      |
-| ---------------------------------- | -------------------------------------- |
-| Schema flexibility, fast iteration | Weaker default consistency             |
-| Horizontal scaling built-in        | No universal query language            |
-| Great for cache and nested docs    | Cross-document transactions are harder |
-
-**Examples:**
-
-```js
-// Redis cache-aside
-const cached = await redis.get(`user:${id}`);
-if (cached) return JSON.parse(cached);
-const user = await prisma.user.findUnique({ where: { id } });
-await redis.setex(`user:${id}`, 3600, JSON.stringify(user));
-```
-
-**Sources:**
-
-[MongoDB — Data modeling](https://www.mongodb.com/docs/manual/core/data-modeling-introduction/) · [Redis docs](https://redis.io/docs/)
-
----
-
-<a name="core"></a>

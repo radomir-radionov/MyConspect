@@ -6,7 +6,7 @@ PostgreSQL, SQL Server (T-SQL), joins, indexes, and execution plans.
 
 ### Related docs
 
-- [DB — Foundations](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md) · [Web security](./7_special_security.md)
+- [DB — Core](./9_database_core.md) · [DB — SQL](./9_database_sql.md) · [DB — NoSQL](./9_database_nosql.md) · [DB — ORM](./9_database_orm.md) · [DB — Production](./9_database_production.md) · [DB — Interview](./9_database_interview.md) · [Web security](./7_special_security.md)
 
 ### Main concepts
 
@@ -16,7 +16,7 @@ PostgreSQL, SQL Server (T-SQL), joins, indexes, and execution plans.
 | 11–20 | ACID, triggers, VIEW, LIKE, aggregates, UNION, procedures, EXPLAIN (Postgres + SQL Server), constraints, SQL injection            |
 | 21–30 | Relational DB, INNER vs OUTER, NULL, CASE, COMMIT/ROLLBACK, CHAR vs VARCHAR, temp tables, windows, CTE, DROP TABLE                |
 | 31–40 | ALTER TABLE, correlated subquery, DELETE/TRUNCATE/DROP, self-join, backup, many-to-many, GRANT/REVOKE, hashing, how triggers work |
-| 41–42 | T-SQL dialect (SQL Server), SQL Server indexes (clustered / nonclustered)                                                          |
+| 41–42 | T-SQL dialect (SQL Server), SQL Server indexes (clustered / nonclustered)                                                         |
 
 ### Sections
 
@@ -1004,11 +1004,11 @@ EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
 SELECT * FROM orders WHERE user_id = 42 AND status = 'pending';
 ```
 
-| Operator (bad → good) | Meaning                                      |
-| --------------------- | -------------------------------------------- |
-| `Seq Scan`            | Full table read — OK on tiny tables only     |
-| `Index Scan`          | Index lookup + heap fetch                    |
-| `Index Only Scan`     | Covered by index — best when columns match   |
+| Operator (bad → good) | Meaning                                              |
+| --------------------- | ---------------------------------------------------- |
+| `Seq Scan`            | Full table read — OK on tiny tables only             |
+| `Index Scan`          | Index lookup + heap fetch                            |
+| `Index Only Scan`     | Covered by index — best when columns match           |
 | `Nested Loop`         | Inner probe per outer row — OK when inner is indexed |
 
 Refresh stats: `ANALYZE orders;`. Find unused indexes: `pg_stat_user_indexes`.
@@ -1017,13 +1017,13 @@ Refresh stats: `ANALYZE orders;`. Find unused indexes: `pg_stat_user_indexes`.
 
 Enable **Include Actual Execution Plan** in SSMS or Azure Data Studio (or `SET STATISTICS IO ON` for I/O). Green = SELECT; yellow = warnings (missing index, implicit conversion).
 
-| Operator (bad → good) | Meaning                                           |
-| --------------------- | ------------------------------------------------- |
-| **Table Scan**        | Full table read                                   |
-| **Clustered Index Scan** | Full clustered index read                      |
-| **Index Seek**        | Efficient lookup on nonclustered index            |
+| Operator (bad → good)                  | Meaning                                                                   |
+| -------------------------------------- | ------------------------------------------------------------------------- |
+| **Table Scan**                         | Full table read                                                           |
+| **Clustered Index Scan**               | Full clustered index read                                                 |
+| **Index Seek**                         | Efficient lookup on nonclustered index                                    |
 | **Key Lookup** (RID / bookmark lookup) | Extra hop to fetch non-indexed columns — add `INCLUDE` or narrow `SELECT` |
-| **Hash Match** / **Sort** | Build/probe hash or sort — watch spills to tempdb |
+| **Hash Match** / **Sort**              | Build/probe hash or sort — watch spills to tempdb                         |
 
 Refresh stats: `UPDATE STATISTICS orders;`. Missing-index hints: `sys.dm_db_missing_index_details` (suggestions only — validate with a plan).
 
@@ -1033,9 +1033,9 @@ Refresh stats: `UPDATE STATISTICS orders;`. Missing-index hints: `sys.dm_db_miss
 
 **Pluses and minuses:**
 
-| +                                   | −                                          |
-| ----------------------------------- | ------------------------------------------ |
-| Finds missing indexes and bad plans | Output requires practice to read           |
+| +                                   | −                                                                |
+| ----------------------------------- | ---------------------------------------------------------------- |
+| Finds missing indexes and bad plans | Output requires practice to read                                 |
 | Cheaper than guessing in production | `ANALYZE` / `UPDATE STATISTICS` adds load — use on staging first |
 
 **Examples:**
@@ -1449,7 +1449,7 @@ DELETE FROM orders WHERE order_date < DATE '2022-01-01';
 ROLLBACK;
 ```
 
-**Thoughts:** ACID is the guarantee; these are the verbs. Isolation levels: [Foundations](./9_database_core.md#transactions-isolation-levels).
+**Thoughts:** ACID is the guarantee; these are the verbs. Isolation levels: [Core](./9_database_core.md#transactions-isolation-levels).
 
 **Sources:** [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html) · [PostgreSQL — BEGIN](https://www.postgresql.org/docs/current/sql-begin.html) · [PostgreSQL — COMMIT](https://www.postgresql.org/docs/current/sql-commit.html) · [PostgreSQL — ROLLBACK](https://www.postgresql.org/docs/current/sql-rollback.html) · [SQL Academy — ACID](https://sql-academy.org/ru/blog/sql-acid)
 
@@ -2182,26 +2182,26 @@ await prisma.$queryRaw`SELECT * FROM users WHERE email = ${email}`;
 
 Core SQL transfers: joins, subqueries, CTEs, window functions, `BEGIN` / `COMMIT` / `ROLLBACK`. Watch dialect traps in interviews and migrations:
 
-| Task              | PostgreSQL                         | SQL Server (T-SQL)                                      |
-| ----------------- | ---------------------------------- | ------------------------------------------------------- |
-| Limit rows        | `LIMIT 10` / `OFFSET 20`         | `TOP (10)` or `ORDER BY … OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY` |
-| Auto-increment PK | `SERIAL` / `GENERATED … AS IDENTITY` | `IDENTITY(1,1)` on column                            |
-| Upsert            | `INSERT … ON CONFLICT DO UPDATE`   | `MERGE` (or separate try/update)                        |
-| Current time      | `now()` / `CURRENT_TIMESTAMP`      | `GETDATE()` / `SYSDATETIME()`                           |
-| Null substitute   | `COALESCE(a, b)` (portable)        | `ISNULL(a, b)` (two args only)                          |
-| String concat     | `\|\|` or `concat()`               | `+` (NULL poisons result — use `CONCAT()`)              |
-| Temp table        | `CREATE TEMP TABLE …`              | `#local` (session) / `##global` (shared)               |
-| Boolean           | native `BOOLEAN`                   | `BIT` (0/1)                                             |
-| Identifier quotes | double quotes `"col"`              | square brackets `[col]` or `"col"` in quoted mode       |
+| Task              | PostgreSQL                           | SQL Server (T-SQL)                                                |
+| ----------------- | ------------------------------------ | ----------------------------------------------------------------- |
+| Limit rows        | `LIMIT 10` / `OFFSET 20`             | `TOP (10)` or `ORDER BY … OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY` |
+| Auto-increment PK | `SERIAL` / `GENERATED … AS IDENTITY` | `IDENTITY(1,1)` on column                                         |
+| Upsert            | `INSERT … ON CONFLICT DO UPDATE`     | `MERGE` (or separate try/update)                                  |
+| Current time      | `now()` / `CURRENT_TIMESTAMP`        | `GETDATE()` / `SYSDATETIME()`                                     |
+| Null substitute   | `COALESCE(a, b)` (portable)          | `ISNULL(a, b)` (two args only)                                    |
+| String concat     | `\|\|` or `concat()`                 | `+` (NULL poisons result — use `CONCAT()`)                        |
+| Temp table        | `CREATE TEMP TABLE …`                | `#local` (session) / `##global` (shared)                          |
+| Boolean           | native `BOOLEAN`                     | `BIT` (0/1)                                                       |
+| Identifier quotes | double quotes `"col"`                | square brackets `[col]` or `"col"` in quoted mode                 |
 
 **When to use:** Enterprise .NET stacks, Azure SQL, legacy on-prem SQL Server. Postgres-first teams still need T-SQL literacy for interviews and brownfield integrations.
 
 **Pluses and minuses:**
 
-| +                                      | −                                           |
-| -------------------------------------- | ------------------------------------------- |
-| Rich tooling (SSMS, Actual Plan)       | `MERGE` has edge-case bugs — test carefully |
-| Strong window-function / CTE support   | Licensing / cloud lock-in on Azure tiers    |
+| +                                      | −                                            |
+| -------------------------------------- | -------------------------------------------- |
+| Rich tooling (SSMS, Actual Plan)       | `MERGE` has edge-case bugs — test carefully  |
+| Strong window-function / CTE support   | Licensing / cloud lock-in on Azure tiers     |
 | Portable SQL core with Microsoft stack | Dialect differences trip ORMs and migrations |
 
 **Examples:**
@@ -2244,12 +2244,12 @@ WHEN NOT MATCHED THEN INSERT (email, name, updated_at)
 
 **How it works:**
 
-| Type            | What it is                                      | Typical use                          |
-| --------------- | ----------------------------------------------- | ------------------------------------ |
-| **Clustered**   | Table data stored in index key order            | Primary key — range scans, `ORDER BY` on PK |
-| **Nonclustered**| B-tree of key + pointer to row (or clustered key) | `WHERE` / `JOIN` on non-PK columns   |
-| **Included cols** | Non-key columns stored in leaf (`INCLUDE`)    | Covering index — avoids key lookup   |
-| **Columnstore** | Compressed column batches                       | Analytics / large aggregations       |
+| Type              | What it is                                        | Typical use                                 |
+| ----------------- | ------------------------------------------------- | ------------------------------------------- |
+| **Clustered**     | Table data stored in index key order              | Primary key — range scans, `ORDER BY` on PK |
+| **Nonclustered**  | B-tree of key + pointer to row (or clustered key) | `WHERE` / `JOIN` on non-PK columns          |
+| **Included cols** | Non-key columns stored in leaf (`INCLUDE`)        | Covering index — avoids key lookup          |
+| **Columnstore**   | Compressed column batches                         | Analytics / large aggregations              |
 
 Rules that differ from Postgres:
 
@@ -2262,11 +2262,11 @@ Rules that differ from Postgres:
 
 **Pluses and minuses:**
 
-| +                                   | −                                              |
-| ----------------------------------- | ---------------------------------------------- |
-| `INCLUDE` reduces key lookups       | Wrong clustered key hurts inserts / hot splits |
-| Filtered indexes shrink maintenance | Too many nonclustered indexes slow writes      |
-| Columnstore for scan-heavy analytics| Columnstore wrong for point lookups            |
+| +                                    | −                                              |
+| ------------------------------------ | ---------------------------------------------- |
+| `INCLUDE` reduces key lookups        | Wrong clustered key hurts inserts / hot splits |
+| Filtered indexes shrink maintenance  | Too many nonclustered indexes slow writes      |
+| Columnstore for scan-heavy analytics | Columnstore wrong for point lookups            |
 
 **Examples:**
 

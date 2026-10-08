@@ -541,7 +541,7 @@ describe("handbook sidebar", () => {
     cy.viewport(390, 844);
     cy.clearLocalStorage();
     cy.visit("/en/backend/database-foundations");
-    cy.contains("h1", "Database — Foundations");
+    cy.contains("h1", "Database — Core");
     cy.contains("button", "Database overview").should("be.visible");
     cy.get("main").contains("button", "Back").should("not.exist");
     cy.get("main").contains("button", "Next").should("not.exist");
