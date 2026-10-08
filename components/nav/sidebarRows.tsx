@@ -27,6 +27,7 @@ import {
   replacePathHash,
   setHashOnPath,
 } from "./hash";
+import { pinNavForHref } from "./sidebarPin";
 import { localeFromPathname } from "@/lib/i18n/paths";
 import {
   subjectCautionLabel,
@@ -125,7 +126,7 @@ function conceptRowClass(
 ): string {
   const highlight = active
     ? "block w-full cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800"
-    : "block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800 dark:text-zinc-300 dark:hover:bg-yellow-950/60 dark:hover:text-zinc-50";
+    : "block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm font-normal text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800 dark:text-zinc-300 dark:hover:bg-yellow-950/60 dark:hover:text-zinc-50";
   return `${highlight} ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}${onPath ? " sticky" : ""}`;
 }
 
@@ -406,7 +407,7 @@ export function TopicRow({
   navKind?: "cluster" | "topic";
   navId?: string;
 }) {
-  const { query, mode, pathname, searching, first, pinNav, onNavigate } =
+  const { query, mode, pathname, searching, first, onNavigate } =
     useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
   const { fold, patchFold } = useScopedSidebarFold();
@@ -457,7 +458,7 @@ export function TopicRow({
         data-nav-id={navId ?? topic.slug}
         data-nav-path={onPath ? "true" : undefined}
         onClick={(event) => {
-          pinNav(event.currentTarget);
+          pinNavForHref(event.currentTarget, pathname, topic.href);
           if (pathname === topic.href) {
             event.preventDefault();
             if (window.location.hash) {
@@ -527,7 +528,7 @@ export function ClusterRow({
   subjectHref: string;
   cluster: NavCluster;
 }) {
-  const { query, pathname, searching, first, pinNav, goToPath, onNavigate } =
+  const { query, pathname, searching, first, goToPath, onNavigate } =
     useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
   const { fold, patchFold } = useScopedSidebarFold();
@@ -571,7 +572,7 @@ export function ClusterRow({
         data-nav-path={onPath ? "true" : undefined}
         data-nav-pin={onPath ? "cluster" : undefined}
         onClick={(event) => {
-          pinNav(event.currentTarget);
+          pinNavForHref(event.currentTarget, pathname, navigateHref);
           if (onHub) {
             event.preventDefault();
             if (sectionId === "interviews" && cluster.topics[0]) {
@@ -647,7 +648,7 @@ export function SectionRow({
   subjectHref: string;
   section: NavSection;
 }) {
-  const { query, pathname, searching, first, pinNav } = useSidebarChrome();
+  const { query, pathname, searching, first } = useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
   const { fold, patchFold } = useScopedSidebarFold();
   const { activeConceptId } = useSidebarActive();
@@ -703,7 +704,11 @@ export function SectionRow({
         data-nav-path={onPath ? "true" : undefined}
         data-nav-pin={onPath ? "section" : undefined}
         onClick={(event) => {
-          pinNav(event.currentTarget);
+          pinNavForHref(
+            event.currentTarget,
+            pathname,
+            `${subjectPath}#${section.id}`,
+          );
           if (onHub) {
             event.preventDefault();
             const next = `#${section.id}`;
@@ -759,7 +764,7 @@ export function SubjectRow({
   trackId: TrackId;
   subject: NavSubject;
 }) {
-  const { query, pathname, searching, first, pinNav } = useSidebarChrome();
+  const { query, pathname, searching, first } = useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
   const { fold, patchFold } = useScopedSidebarFold();
   const { subjectHref: openSubjectHref } = fold(trackId);
@@ -779,7 +784,7 @@ export function SubjectRow({
         data-nav-id={subject.slug}
         data-nav-path={onPath ? "true" : undefined}
         onClick={(event) => {
-          pinNav(event.currentTarget);
+          pinNavForHref(event.currentTarget, pathname, subject.href);
           if (pathname === subject.href) {
             event.preventDefault();
             if (!searching) {

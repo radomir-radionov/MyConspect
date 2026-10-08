@@ -631,7 +631,7 @@ body {
   --nav-chrome-h: 0px;
   --nav-sticky-inset: var(--nav-chrome-h);
   --nav-sticky-gap: 6px;
-  --nav-sticky-track: 28px;
+  --nav-sticky-track: var(--nav-sticky-row);
   --nav-sticky-row: 40px;
   --nav-sticky-cover: 0px;
 }
@@ -728,9 +728,17 @@ body {
   background-color: var(--path-bg);
 }
 
-/* Only the active track's first row gets the top gap, so its border stays visible. */
-#handbook-nav-aside li[data-nav-sticky-scope] > [data-nav-path="true"] {
+/* Gap below bookmarks / section chrome on the first main track (e.g. Frontend). */
+#handbook-nav-aside nav > ul > li:first-child > [data-nav="track"] {
   margin-top: var(--nav-sticky-gap);
+}
+
+#handbook-nav-aside button[data-nav="track"] {
+  appearance: none;
+  border: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 #handbook-nav-aside li[data-nav-path="true"] {

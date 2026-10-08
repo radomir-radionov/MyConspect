@@ -56,6 +56,7 @@ import { BookmarksPanel } from "./BookmarksPanel";
 import { SearchHitList } from "./SearchHitList";
 import {
   pinNavElement,
+  pinNavForHref,
   resetNavAsideScroll,
   restoreSidebarPin,
   scrollSidebarActivePath,
@@ -146,9 +147,6 @@ export const TopicSidebar = memo(function TopicSidebar({
     activeRootSectionId,
   });
   const router = useRouter();
-  const pinNav = useCallback((element: HTMLElement) => {
-    pinNavElement(element);
-  }, []);
   const goToPath = useCallback(
     (path: string) => {
       router.push(path, { scroll: false });
@@ -270,11 +268,10 @@ export const TopicSidebar = memo(function TopicSidebar({
       pathname,
       searching,
       first,
-      pinNav,
       goToPath,
       onNavigate,
     }),
-    [query, mode, pathname, searching, first, pinNav, goToPath, onNavigate],
+    [query, mode, pathname, searching, first, goToPath, onNavigate],
   );
   const foldValue = useMemo(
     () => ({
@@ -491,7 +488,7 @@ const TrackGroup = memo(function TrackGroup({
   const trackHighlighted = searching
     ? needle.length > 0 && matchesQuery(group.title, needle)
     : onPath;
-  const headerClass = trackHeaderClass(trackHighlighted, onPath);
+  const headerClass = trackHeaderClass(trackHighlighted);
   const searchHits = useMemo(
     () => (searching ? collectGroupSearchHits(group, query, mode) : []),
     [group, mode, query, searching],
@@ -545,7 +542,7 @@ const TrackGroup = memo(function TrackGroup({
           data-nav-id={group.id}
           data-nav-path={onPath ? "true" : undefined}
           onClick={(event) => {
-            pinNavElement(event.currentTarget);
+            pinNavForHref(event.currentTarget, pathname, navigateHref);
             if (!hasSidebarChildren) {
               onNavigate?.();
             }

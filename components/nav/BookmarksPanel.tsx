@@ -118,7 +118,7 @@ export function BookmarksPanel({
                       className={
                         active
                           ? "min-w-0 flex-1 py-1.5 pl-1 text-sm font-medium text-zinc-900 dark:text-zinc-50"
-                          : "min-w-0 flex-1 py-1.5 pl-1 text-sm text-zinc-700 group-hover:text-zinc-800 dark:text-zinc-300 dark:group-hover:text-zinc-50"
+                          : "min-w-0 flex-1 py-1.5 pl-1 text-sm font-normal text-zinc-700 group-hover:text-zinc-800 dark:text-zinc-300 dark:group-hover:text-zinc-50"
                       }
                       onClick={(event) => {
                         event.preventDefault();

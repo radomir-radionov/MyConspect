@@ -3,6 +3,13 @@ import {
   HANDBOOK_SIDEBAR_ID,
   SIDEBAR_PIN_HOLD_MS,
 } from "@/constants";
+import { splitHref } from "@/lib/nav";
+
+export type PinNavOptions = {
+  scrollIntoView?: boolean;
+  /** Track scroll position while folds animate; skip when the route will reset aside scroll. */
+  hold?: boolean;
+};
 
 type SidebarPin = {
   element: HTMLElement;
@@ -92,7 +99,18 @@ export function restoreSidebarPin() {
   restoringPin = false;
 }
 
-export function pinNavElement(element: HTMLElement) {
+export function pinNavForHref(
+  element: HTMLElement,
+  currentPathname: string,
+  href: string,
+) {
+  const samePath = splitHref(href).pathname === currentPathname;
+  pinNavElement(element, { scrollIntoView: samePath, hold: samePath });
+}
+
+export function pinNavElement(element: HTMLElement, options?: PinNavOptions) {
+  const scrollIntoView = options?.scrollIntoView ?? true;
+  const hold = options?.hold ?? true;
   const nav = element.getAttribute("data-nav");
   const id = element.getAttribute("data-nav-id");
   const scroller = navAside() ?? element.closest(`#${HANDBOOK_NAV_ASIDE_ID}`);
@@ -100,9 +118,15 @@ export function pinNavElement(element: HTMLElement) {
     return;
   }
   pinCleanup?.();
+  if (!hold) {
+    return;
+  }
   const scrollerBox = scroller.getBoundingClientRect();
   const box = element.getBoundingClientRect();
-  if (box.top < scrollerBox.top || box.bottom > scrollerBox.bottom) {
+  if (
+    scrollIntoView &&
+    (box.top < scrollerBox.top || box.bottom > scrollerBox.bottom)
+  ) {
     element.scrollIntoView({ block: "nearest" });
   }
   sidebarPin = {
