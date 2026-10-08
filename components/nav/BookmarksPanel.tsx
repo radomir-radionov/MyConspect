@@ -19,7 +19,7 @@ import { followHandbookHref, queueHandbookHref, setHashOnPath } from "./hash";
 import { setBookmarkNavMode } from "./bookmarkNavMode";
 import { useHandbookLocation } from "./useHandbookLocation";
 import { ConfirmDialog } from "./ConfirmDialog";
-import { NavChevron, NavFold } from "./NavFold";
+import { NavFold } from "./NavFold";
 import { trackHeaderClass } from "./sidebarContext";
 
 export function BookmarksPanel({
@@ -58,11 +58,11 @@ export function BookmarksPanel({
       <div className={`group ${trackHeaderClass(hasActiveBookmark)}`}>
         <button
           type="button"
+          data-nav="bookmarks"
           aria-expanded={open}
           onClick={() => setOpen((current) => !current)}
-          className="-my-1 -ml-2 flex min-w-0 flex-1 items-center gap-1.5 rounded-md py-1 pl-2 text-left"
+          className="min-w-0 flex-1 text-left"
         >
-          <NavChevron open={open} />
           {chrome.bookmarksNav}
         </button>
         <div className="relative size-7 shrink-0">

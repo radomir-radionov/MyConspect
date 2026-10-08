@@ -126,7 +126,7 @@ function conceptRowClass(
 ): string {
   const highlight = active
     ? "block w-full cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800"
-    : "block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm font-normal text-zinc-700 hover:bg-yellow-50 hover:text-zinc-800 dark:text-zinc-300 dark:hover:bg-yellow-950/60 dark:hover:text-zinc-50";
+    : "block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm font-normal text-zinc-600 hover:bg-yellow-50 dark:text-zinc-400 dark:hover:bg-yellow-950/60";
   return `${highlight} ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}${onPath ? " sticky" : ""}`;
 }
 
