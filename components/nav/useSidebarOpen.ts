@@ -187,7 +187,7 @@ export function useSidebarOpen({
         pathname: nav.pathname,
         hash: nav.hash,
         activeConceptId,
-        location,
+        location: nav.location,
         setOpenTrackIds,
         setTrackFolds,
         setOpenRootSectionIds,
@@ -208,7 +208,6 @@ export function useSidebarOpen({
     nav.pathname,
     nav.hash,
     activeConceptId,
-    location,
   ]);
 
   const getTrackFold = useCallback(

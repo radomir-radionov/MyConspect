@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 import type { TrackId } from "@/lib/catalog";
 import type { NavRootSectionId, SearchMode } from "@/lib/nav";
 import type { NavLocation } from "./location";
@@ -42,6 +42,12 @@ export type SidebarActiveValue = {
   activeConceptId: string;
 };
 
+export type SidebarTrackOpenValue = {
+  toggleTrackId: (sectionId: NavRootSectionId, trackId: TrackId) => void;
+  ensureTrackOpen: (sectionId: NavRootSectionId, trackId: TrackId) => void;
+  isTrackOpen: (sectionId: NavRootSectionId, trackId: TrackId) => boolean;
+};
+
 const SidebarChromeContext = createContext<SidebarChromeValue | null>(null);
 const SidebarHighlightContext = createContext<SidebarHighlightValue | null>(
   null,
@@ -52,6 +58,9 @@ const SidebarBookmarksContext = createContext<SidebarBookmarksValue | null>(
 const SidebarFoldContext = createContext<SidebarFoldValue | null>(null);
 const SidebarFoldScopeContext = createContext<NavRootSectionId | null>(null);
 const SidebarActiveContext = createContext<SidebarActiveValue | null>(null);
+const SidebarTrackOpenContext = createContext<SidebarTrackOpenValue | null>(
+  null,
+);
 
 export function SidebarNavProvider({
   chrome,
@@ -59,6 +68,7 @@ export function SidebarNavProvider({
   bookmarks,
   fold,
   active,
+  trackOpen,
   children,
 }: {
   chrome: SidebarChromeValue;
@@ -66,6 +76,7 @@ export function SidebarNavProvider({
   bookmarks: SidebarBookmarksValue;
   fold: SidebarFoldValue;
   active: SidebarActiveValue;
+  trackOpen: SidebarTrackOpenValue;
   children: ReactNode;
 }) {
   return (
@@ -73,9 +84,11 @@ export function SidebarNavProvider({
       <SidebarHighlightContext.Provider value={highlight}>
         <SidebarBookmarksContext.Provider value={bookmarks}>
           <SidebarFoldContext.Provider value={fold}>
-            <SidebarActiveContext.Provider value={active}>
-              {children}
-            </SidebarActiveContext.Provider>
+            <SidebarTrackOpenContext.Provider value={trackOpen}>
+              <SidebarActiveContext.Provider value={active}>
+                {children}
+              </SidebarActiveContext.Provider>
+            </SidebarTrackOpenContext.Provider>
           </SidebarFoldContext.Provider>
         </SidebarBookmarksContext.Provider>
       </SidebarHighlightContext.Provider>
@@ -148,6 +161,29 @@ export function useScopedSidebarFold() {
     patchFold: (trackId: TrackId, patch: Partial<NavLocation>) =>
       patchTrackFold(sectionId, trackId, patch),
   };
+}
+
+function useSidebarTrackOpen() {
+  const value = useContext(SidebarTrackOpenContext);
+  if (!value) {
+    throw new Error("useSidebarTrackOpen must be used within TopicSidebar");
+  }
+  return value;
+}
+
+/** Stable per-scope track open/toggle handlers for memoized track rows. */
+export function useScopedTrackOpen() {
+  const sectionId = useSidebarFoldScope();
+  const { toggleTrackId, ensureTrackOpen, isTrackOpen } = useSidebarTrackOpen();
+  return useMemo(
+    () => ({
+      toggleTrackId: (trackId: TrackId) => toggleTrackId(sectionId, trackId),
+      ensureTrackOpen: (trackId: TrackId) =>
+        ensureTrackOpen(sectionId, trackId),
+      isTrackOpen: (trackId: TrackId) => isTrackOpen(sectionId, trackId),
+    }),
+    [sectionId, toggleTrackId, ensureTrackOpen, isTrackOpen],
+  );
 }
 
 export function useSidebarActive() {

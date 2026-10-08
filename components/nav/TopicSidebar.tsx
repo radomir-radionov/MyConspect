@@ -17,6 +17,7 @@ import {
   HANDBOOK_SIDEBAR_ID,
   NAV_FOLD_OPEN_MS,
 } from "@/constants";
+import { useSidebarAsideScroll } from "./useSidebarAsideScroll";
 import {
   collectGroupSearchHits,
   matchesQuery,
@@ -54,14 +55,7 @@ import { useHandbookLocation } from "./useHandbookLocation";
 import { isActiveHref, isActiveTrack } from "./location";
 import { BookmarksPanel } from "./BookmarksPanel";
 import { SearchHitList } from "./SearchHitList";
-import {
-  pinNavElement,
-  pinNavForHref,
-  resetNavAsideScroll,
-  restoreSidebarPin,
-  scrollSidebarActivePath,
-  scrollSidebarHit,
-} from "./sidebarPin";
+import { pinNavElement, pinNavForHref } from "./sidebarPin";
 import {
   measureNavChromeInset,
   measureStickyCover,
@@ -77,6 +71,7 @@ import {
   useSidebarChrome,
   useSidebarHighlight,
   useScopedSidebarFold,
+  useScopedTrackOpen,
 } from "./sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
 import { SectionSwitcher } from "./SectionSwitcher";
@@ -154,89 +149,16 @@ export const TopicSidebar = memo(function TopicSidebar({
     [router],
   );
   const navRevision = `${foldRevision(trackFolds, openTrackIds)}|${pathname}|${hash}`;
-  const stickyRevision = `${navRevision}|${searching}|${query}`;
-  const wasSearching = useRef(false);
-  const prevPathnameRef = useRef(pathname);
-  const skipPinRestoreRef = useRef(false);
-
-  useLayoutEffect(() => {
-    if (searching) {
-      if (!wasSearching.current) {
-        resetNavAsideScroll();
-      }
-      wasSearching.current = true;
-      return;
-    }
-    wasSearching.current = false;
-    if (prevPathnameRef.current !== pathname) {
-      prevPathnameRef.current = pathname;
-      skipPinRestoreRef.current = true;
-      resetNavAsideScroll();
-      return;
-    }
-    restoreSidebarPin();
-  }, [searching, navRevision, pathname, hash]);
-
-  useEffect(() => {
-    if (searching) {
-      return;
-    }
-    const frame = window.requestAnimationFrame(() => {
-      if (!skipPinRestoreRef.current) {
-        restoreSidebarPin();
-      }
-    });
-    const later = window.setTimeout(() => {
-      if (skipPinRestoreRef.current) {
-        scrollSidebarActivePath();
-        skipPinRestoreRef.current = false;
-        return;
-      }
-      restoreSidebarPin();
-    }, NAV_FOLD_OPEN_MS + 20);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.clearTimeout(later);
-    };
-  }, [navRevision, pathname, hash, searching]);
-
-  useEffect(() => {
-    if (!firstHref || searching) {
-      return;
-    }
-    const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
-    const hit = nav?.querySelector("[data-search-hit='true']");
-    if (hit instanceof HTMLElement) {
-      scrollSidebarHit(hit);
-    }
-  }, [firstHref, searching]);
-
-  useEffect(() => {
-    if (!activeConceptId || searching) {
-      return;
-    }
-    const frame = window.requestAnimationFrame(() => {
-      const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
-      const hits = nav?.querySelectorAll(
-        `[data-concept-id="${CSS.escape(activeConceptId)}"]`,
-      );
-      if (!hits) {
-        return;
-      }
-      for (const hit of hits) {
-        if (!(hit instanceof HTMLElement)) {
-          continue;
-        }
-        const href = hit.getAttribute("href");
-        if (!href || splitHref(href).pathname !== highlightPathname) {
-          continue;
-        }
-        scrollSidebarHit(hit);
-        break;
-      }
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [activeConceptId, highlightPathname, navRevision, searching]);
+  const stickyRevision = `${navRevision}|${searching}`;
+  useSidebarAsideScroll({
+    searching,
+    pathname,
+    hash,
+    navRevision,
+    firstHref,
+    activeConceptId,
+    highlightPathname,
+  });
 
   const bookmarks = useSyncExternalStore(
     subscribeBookmarks,
@@ -281,6 +203,14 @@ export const TopicSidebar = memo(function TopicSidebar({
     [getTrackFold, patchTrackFold],
   );
   const activeValue = useMemo(() => ({ activeConceptId }), [activeConceptId]);
+  const trackOpenValue = useMemo(
+    () => ({
+      toggleTrackId,
+      ensureTrackOpen,
+      isTrackOpen,
+    }),
+    [toggleTrackId, ensureTrackOpen, isTrackOpen],
+  );
 
   return (
     <SidebarNavProvider
@@ -289,6 +219,7 @@ export const TopicSidebar = memo(function TopicSidebar({
       bookmarks={bookmarksValue}
       fold={foldValue}
       active={activeValue}
+      trackOpen={trackOpenValue}
     >
       <nav
         id={HANDBOOK_SIDEBAR_ID}
@@ -325,11 +256,6 @@ export const TopicSidebar = memo(function TopicSidebar({
                   pathname={pathname}
                   searching={searching}
                   first={first}
-                  isTrackOpen={isTrackOpen(sectionId, group.id)}
-                  toggleTrackId={(trackId) => toggleTrackId(sectionId, trackId)}
-                  ensureTrackOpen={(trackId) =>
-                    ensureTrackOpen(sectionId, trackId)
-                  }
                 />
               </SidebarFoldScopeProvider>
             ))}
@@ -348,13 +274,6 @@ export const TopicSidebar = memo(function TopicSidebar({
                   pathname={pathname}
                   searching={false}
                   first={first}
-                  isTrackOpen={isTrackOpen(activeRootSectionId, group.id)}
-                  toggleTrackId={(trackId) =>
-                    toggleTrackId(activeRootSectionId, trackId)
-                  }
-                  ensureTrackOpen={(trackId) =>
-                    ensureTrackOpen(activeRootSectionId, trackId)
-                  }
                 />
               ))}
             </ul>
@@ -457,9 +376,6 @@ const TrackGroup = memo(function TrackGroup({
   pathname,
   searching,
   first,
-  isTrackOpen,
-  toggleTrackId,
-  ensureTrackOpen,
 }: {
   rootSectionId: NavRootSectionId;
   activeRootSectionId: NavRootSectionId;
@@ -469,10 +385,8 @@ const TrackGroup = memo(function TrackGroup({
   pathname: string;
   searching: boolean;
   first: { pathname: string; hash: string } | null;
-  isTrackOpen: boolean;
-  toggleTrackId: (trackId: TrackId) => void;
-  ensureTrackOpen: (trackId: TrackId) => void;
 }) {
+  const { isTrackOpen, toggleTrackId, ensureTrackOpen } = useScopedTrackOpen();
   const isLeafTrack = Boolean(group.leafTopic) && group.entries.length === 0;
   const showLeafConcepts = isLeafTrack && !group.leafTopic?.hideSidebarConcepts;
   const hasSidebarChildren =
@@ -481,7 +395,7 @@ const TrackGroup = memo(function TrackGroup({
   const { patchFold } = useScopedSidebarFold();
   const trackActive = isActiveHref(pathname, group.href);
   const onThisTrack = isActiveTrack(pathname, group.href);
-  const trackOpen = searching || (hasSidebarChildren && isTrackOpen);
+  const trackOpen = searching || (hasSidebarChildren && isTrackOpen(group.id));
   const onPath =
     !searching && rootSectionId === activeRootSectionId && onThisTrack;
   const needle = query.trim().toLowerCase();
