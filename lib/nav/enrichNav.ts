@@ -9,8 +9,8 @@ import type {
 } from "./types";
 
 function mergeTopicConcepts(
-  baseConcepts: readonly NavTopic["concepts"],
-  richConcepts: readonly NavTopic["concepts"],
+  baseConcepts: NavTopic["concepts"],
+  richConcepts: NavTopic["concepts"],
 ): NavTopic["concepts"] {
   if (richConcepts.length === 0) {
     return baseConcepts;
