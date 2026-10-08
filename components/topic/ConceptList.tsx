@@ -58,14 +58,20 @@ function groupConcepts(
 
   const groups: ConceptGroup[] = [];
   let current: ConceptGroup | null = null;
+  let currentSectionKey: string | null = null;
 
   for (const concept of concepts) {
     const label = groupLabel(concept, chrome);
-    const key = concept.group
+    const sectionKey = concept.group
       ? `topic:${concept.group}`
       : `section:${concept.interviewSection ?? "default"}`;
-    if (!current || current.key !== key) {
-      current = { key, label, concepts: [] };
+    if (!current || currentSectionKey !== sectionKey) {
+      currentSectionKey = sectionKey;
+      current = {
+        key: `${sectionKey}:${groups.length}`,
+        label,
+        concepts: [],
+      };
       groups.push(current);
     }
     current.concepts.push(concept);
@@ -165,9 +171,11 @@ export function ConceptList({
     );
   }
 
+  const firstUngroupedIndex = groups.findIndex((group) => group.label === null);
+
   return (
     <div className="space-y-8">
-      {groups.map((group) => (
+      {groups.map((group, index) => (
         <section key={group.key}>
           {group.label ? (
             <h2 className="mb-3 text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -179,7 +187,11 @@ export function ConceptList({
             query={query}
             chrome={chrome}
             pathname={pathname}
-            topicTitle={group.label === null ? topicTitle : undefined}
+            topicTitle={
+              group.label === null && index === firstUngroupedIndex
+                ? topicTitle
+                : undefined
+            }
           />
         </section>
       ))}

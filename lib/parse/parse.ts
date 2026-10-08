@@ -276,6 +276,7 @@ async function collectConcepts(
         title: block.title,
         html,
         searchText,
+        ...(block.group ? { group: block.group } : {}),
       }),
     );
   });

@@ -1,195 +1,92 @@
 # TypeScript — Types
 
-Basic value types from the [TypeScript handbook](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html) — `string`, `number`, `boolean`, arrays, `any`, and absence types.
+Hub for everyday TypeScript types. The index below is grouped by **section** (Reference, Values, Object shapes, …). Open any row to read it here, or use the section topics in the sidebar for a shorter list.
 
 [← Back to hub](./5_ts.md)
 
 ### Related docs
 
-[TypeScript — hub](./5_ts.md) · [Narrowing](./5_ts_narrowing.md) · [Functions](./5_ts_functions.md) · [Object Types](./5_ts_objects.md) · [Type Manipulation](./5_ts_type_manipulation.md) · [Interview](./5_ts_interview.md)
+[TypeScript — hub](./5_ts.md) · [Types — Values](./5_ts_types_values.md) · [Types — Object shapes](./5_ts_types_shapes.md) · [Types — Combining](./5_ts_types_combining.md) · [Types — Safety](./5_ts_types_safety.md) · [Types in code](./5_ts_types_code.md) · [Narrowing](./5_ts_narrowing.md) · [Functions](./5_ts_functions.md) · [Object Types](./5_ts_objects.md)
 
 ### Main concepts
 
-| Type         | Examples                      |
-| ------------ | ----------------------------- |
-| Primitives   | `string`, `number`, `boolean` |
-| Collections  | `number[]`, `Array<string>`   |
-| Escape hatch | `any`                         |
-| Absence      | `null`, `undefined`           |
+| Section         | Topic page                                      |
+| --------------- | ----------------------------------------------- |
+| Reference       | Type catalog (this page)                        |
+| Values          | [Types — Values](./5_ts_types_values.md)        |
+| Object shapes   | [Types — Object shapes](./5_ts_types_shapes.md) |
+| Combining types | [Types — Combining](./5_ts_types_combining.md)  |
+| Type safety     | [Types — Safety](./5_ts_types_safety.md)        |
+| In your code    | [Types in code](./5_ts_types_code.md)           |
 
 ### Sections
 
-- [Primitives](#primitives)
-- [Arrays](#arrays)
-- [any](#any)
-- [Type annotations](#type-annotations)
-- [null and undefined](#null-and-undefined)
+- [Type catalog](#type-catalog)
 
 ---
 
-## Primitives
+## Type catalog
 
 <details>
-  <summary>Primitives</summary>
+  <summary>Type catalog</summary>
 
 **Definition:**
 
-The most common JavaScript value types — `string`, `number`, and `boolean` — with matching lowercase TypeScript types (same names as `typeof`).
+A single index of **type forms** in TypeScript — primitives, composites, escape hatches, and type-level constructs — with links to where each is explained in this handbook.
 
 **How it works:**
 
-- `string` — text like `"Hello, world"`.
-- `number` — all numeric values; JavaScript has no separate `int` / `float`.
-- `boolean` — `true` or `false`.
-- `String`, `Number`, and `Boolean` (capitalized) are rare wrapper types; almost always use lowercase primitives.
+Types are erased at runtime; the compiler uses them for checking only. Each row is **one type or one type form** — not mixed keywords. Deeper syntax (optional fields, assertions, assignability) is linked under **See also**.
+
+#### Value types
+
+| Type                                              | Where to read                                                                                                                                                                          |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `string`, `number`, `boolean`, `bigint`, `symbol` | [Primitives](./5_ts_types_values.md#primitives) · [handbook — primitives](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#the-primitives-string-number-and-boolean) |
+| `null`                                            | [null and undefined](./5_ts_types_values.md#null-and-undefined)                                                                                                                        |
+| `undefined`                                       | [null and undefined](./5_ts_types_values.md#null-and-undefined)                                                                                                                        |
+| Literal (`"open"`, `42`, `true`)                  | [Literal types](./5_ts_types_combining.md#literal-types) · [handbook — literals](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types)                     |
+| Array (`T[]`, `Array<T>`)                         | [Arrays](./5_ts_types_values.md#arrays) · [Object Types — Array](./5_ts_objects.md#the-array-type)                                                                                     |
+| Tuple (`[string, number]`, …)                     | [Object Types — Tuple](./5_ts_objects.md#tuple-types)                                                                                                                                  |
+| Object shape (`{ x: number }`)                    | [Object types](./5_ts_types_shapes.md#object-types) · [Object Types](./5_ts_objects.md)                                                                                                |
+| `any`                                             | [any](./5_ts_types_safety.md#any) · [any, unknown, never](./5_ts_top_types.md)                                                                                                         |
+| `unknown`                                         | [unknown](./5_ts_types_safety.md#unknown) · [any, unknown, never](./5_ts_top_types.md)                                                                                                 |
+| `never`                                           | [Functions — other types](./5_ts_functions.md#other-types-to-know-about) · [Narrowing](./5_ts_narrowing.md) · [any, unknown, never](./5_ts_top_types.md)                               |
+| `void`                                            | [Functions — other types](./5_ts_functions.md#other-types-to-know-about)                                                                                                               |
+| `object`                                          | [Functions — other types](./5_ts_functions.md#other-types-to-know-about)                                                                                                               |
+
+#### Named and combined types
+
+| Type                          | Where to read                                                                                                                                                    |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `interface`                   | [Interfaces](./5_ts_types_shapes.md#interfaces) · [handbook — interfaces](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#interfaces)         |
+| `type` (alias)                | [Type aliases](./5_ts_types_shapes.md#type-aliases) · [handbook — type aliases](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-aliases) |
+| Union (`A \| B`)              | [Union types](./5_ts_types_combining.md#union-types) · [Narrowing](./5_ts_narrowing.md)                                                                          |
+| Intersection (`A & B`)        | [Object Types — Intersection](./5_ts_objects.md#intersection-types)                                                                                              |
+| Function type (`(a: T) => R`) | [Functions](./5_ts_types_code.md#functions) · [Functions](./5_ts_functions.md)                                                                                   |
+| `class`                       | [Classes](./5_ts_classes.md)                                                                                                                                     |
+| `enum`                        | [Enums](./5_ts_types_combining.md#enums) · [Enums (deep dive)](./5_ts_enums.md)                                                                                  |
+| Generic (`<T>`, `extends`)    | [Generic functions](./5_ts_functions.md#generic-functions) · [Type Manipulation](./5_ts_type_manipulation.md)                                                    |
+
+#### Type-level forms (build types from types)
+
+| Form                                 | Where to read                                                                               |
+| ------------------------------------ | ------------------------------------------------------------------------------------------- |
+| `typeof`                             | [Type Manipulation](./5_ts_type_manipulation.md)                                            |
+| `keyof`                              | [Type Manipulation](./5_ts_type_manipulation.md)                                            |
+| Indexed access (`T["prop"]`)         | [Type Manipulation](./5_ts_type_manipulation.md)                                            |
+| Mapped type                          | [Type Manipulation](./5_ts_type_manipulation.md) · [Utility Types](./5_ts_utility_types.md) |
+| Conditional type                     | [Type Manipulation](./5_ts_type_manipulation.md)                                            |
+| Template literal type                | [Type Manipulation](./5_ts_type_manipulation.md)                                            |
+| Utility types (`Partial`, `Pick`, …) | [Utility Types](./5_ts_utility_types.md)                                                    |
+
+**See also (not standalone types):** [optional / readonly fields](./5_ts_objects.md#optional-properties) · [index signatures](./5_ts_objects.md#index-signatures) · [type assertions](./5_ts_types_code.md#type-assertions) · [Type vs Interface](./5_ts_types_shapes.md#type-vs-interface) · [Type Compatibility](./5_ts_type_compatibility.md)
 
 **When to use:**
 
-Annotate when inference is wrong; otherwise let TypeScript infer (`let city = "Berlin"` → `string`).
+- Interview recap or “what exists in TS?” before diving into one topic.
+- Pick a row, open the linked page, then return here for the next gap.
 
-**Examples:**
-
-```typescript
-let name: string = "Alice";
-let age: number = 42;
-let active: boolean = true;
-
-const hex: number = 0xf00d;
-const binary: number = 0b1010;
-
-let city = "Berlin"; // inferred: string
-```
-
-**Sources:** [TypeScript handbook — Everyday Types: primitives](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#the-primitives-string-number-and-boolean)
-
-</details>
-
----
-
-## Arrays
-
-<details>
-  <summary>Arrays</summary>
-
-**Definition:**
-
-An ordered list where every element shares one type — written `number[]` or `Array<number>`.
-
-**How it works:**
-
-`T[]` and `Array<T>` mean the same thing. `[number]` is a **tuple** (fixed length), not a growable array.
-
-**When to use:**
-
-`const ids: number[] = [1, 2, 3]` for homogeneous lists.
-
-**Examples:**
-
-```typescript
-const scores: number[] = [95, 87, 72];
-const tags: Array<string> = ["typescript", "javascript"];
-```
-
-**Sources:** [TypeScript handbook — Everyday Types: arrays](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#arrays)
-
-</details>
-
----
-
-## any
-
-<details>
-  <summary>any</summary>
-
-**Definition:**
-
-A special type that disables type-checking for a value — TypeScript assumes you know better than the compiler.
-
-**How it works:**
-
-With `any`, you can call anything, assign to/from any type, and access any property (all become `any`). When TypeScript cannot infer a type and `noImplicitAny` is off, it may default to `any`.
-
-**When to use:**
-
-Rare escape hatch for gradual migration or untyped third-party code. Prefer `unknown` at boundaries — see [Narrowing](./5_ts_narrowing.md). Enable `noImplicitAny` to flag implicit `any`.
-
-**Examples:**
-
-```typescript
-let obj: any = { x: 0 };
-obj.foo();
-obj = "hello";
-const n: number = obj; // allowed — dangerous
-```
-
-**Sources:** [TypeScript handbook — Everyday Types: any](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
-
-</details>
-
----
-
-## Type annotations
-
-<details>
-  <summary>Type annotations</summary>
-
-**Definition:**
-
-An explicit type label after a variable name: `let myName: string = "Alice"`.
-
-**How it works:**
-
-TypeScript puts annotations **after** the name (`let x: number`), not C-style `int x`. Inference usually makes annotations unnecessary — TS reads the initializer.
-
-**When to use:**
-
-Add when inference is too narrow or too wide. Omit when the value makes the type obvious.
-
-**Examples:**
-
-```typescript
-let myName: string = "Alice";
-let myNameInferred = "Alice"; // string
-let count: number = 0;
-```
-
-**Sources:** [TypeScript handbook — Everyday Types: type annotations on variables](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-annotations-on-variables)
-
-</details>
-
----
-
-## null and undefined
-
-<details>
-  <summary>null and undefined</summary>
-
-**Definition:**
-
-Types for JavaScript's absent values — `null` (intentional empty) and `undefined` (unset).
-
-**How it works:**
-
-With **`strictNullChecks` on**, `null` and `undefined` are not assignable to `string`, `number`, etc. unless you include them in the type. Narrow before use (`=== null`, `?.`, `??`).
-
-With **`strictNullChecks` off**, `null`/`undefined` flow everywhere — a common source of bugs.
-
-**When to use:**
-
-Keep `strictNullChecks` enabled. Annotate when a value may be missing: `string | null`.
-
-**Examples:**
-
-```typescript
-let title: string | null = null;
-let config: string | undefined;
-
-function greet(name: string | null) {
-  if (name === null) return;
-  console.log(name.toUpperCase());
-}
-```
-
-**Sources:** [TypeScript handbook — Everyday Types: null and undefined](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#null-and-undefined)
+**Sources:** [TypeScript handbook — Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html) · [TypeScript handbook — intro](https://www.typescriptlang.org/docs/handbook/intro.html)
 
 </details>

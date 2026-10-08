@@ -11,11 +11,14 @@ import {
   subscribeBookmarkNavMode,
 } from "@/components/nav/bookmarkNavMode";
 import {
+  adjacentConceptId,
   navChainForPath,
   navChainIndex,
   parentHrefForPath,
   siblingNavHrefForPath,
 } from "@/components/nav/location";
+import { useTopicNavConcepts } from "@/components/topic/TopicNavConceptsContext";
+import { hashIdFrom } from "@/lib/nav/navUtils";
 import { useHandbookNavGroups } from "@/components/nav/handbookNavContext";
 import { useSearchCorpus } from "@/components/nav/searchCorpus";
 import {
@@ -29,6 +32,28 @@ import { chromeFor } from "@/lib/i18n/chrome";
 import { localeFromPathname } from "@/lib/i18n/paths";
 import { splitHref } from "@/lib/nav";
 
+function siblingHrefFromConceptIds(
+  concepts: readonly { readonly id: string }[],
+  pathname: string,
+  hash: string,
+  delta: -1 | 1,
+): string | null {
+  const conceptId = hashIdFrom(hash);
+  if (!conceptId || concepts.length <= 1) {
+    return null;
+  }
+  const ids = concepts.map((concept) => concept.id);
+  const adjacentId = adjacentConceptId(ids, conceptId, delta);
+  if (adjacentId) {
+    return `${pathname}#${adjacentId}`;
+  }
+  if (delta < 0) {
+    return ids.indexOf(conceptId) === 0 ? pathname : null;
+  }
+  const lastId = ids[ids.length - 1];
+  return conceptId === lastId ? pathname : null;
+}
+
 export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
   const { pathname, location, activeConceptId } = useHandbookLocation();
   const conceptOpen = options?.conceptOpen ?? activeConceptId.length > 0;
@@ -41,6 +66,7 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
   const shellNavGroups = useHandbookNavGroups();
   const searchNavGroups = useSearchCorpus(shellNavGroups === null);
   const navGroups = shellNavGroups ?? searchNavGroups;
+  const topicNavConcepts = useTopicNavConcepts();
   const locale = localeFromPathname(pathname);
   const chrome = useMemo(() => chromeFor(locale), [locale]);
 
@@ -72,6 +98,32 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
 
   const inChain = chainIndex >= 0;
 
+  const topicScopedSibling = useMemo(() => {
+    if (!conceptOpen || !activeConceptId || !topicNavConcepts) {
+      return null;
+    }
+    return {
+      prev: siblingHrefFromConceptIds(
+        topicNavConcepts,
+        location.pathname,
+        location.hash,
+        -1,
+      ),
+      next: siblingHrefFromConceptIds(
+        topicNavConcepts,
+        location.pathname,
+        location.hash,
+        1,
+      ),
+    };
+  }, [
+    activeConceptId,
+    conceptOpen,
+    location.hash,
+    location.pathname,
+    topicNavConcepts,
+  ]);
+
   const prevHref = useMemo(() => {
     if (inBookmarks) {
       return siblingBookmarkHref(
@@ -81,7 +133,10 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
         -1,
       );
     }
-    if (!navGroups || !inChain) {
+    if (topicScopedSibling) {
+      return topicScopedSibling.prev;
+    }
+    if (!navGroups) {
       return null;
     }
     return siblingNavHrefForPath(
@@ -97,7 +152,7 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
     location.hash,
     activeConceptId,
     navGroups,
-    inChain,
+    topicScopedSibling,
   ]);
 
   const nextHref = useMemo(() => {
@@ -109,7 +164,10 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
         1,
       );
     }
-    if (!navGroups || !inChain) {
+    if (topicScopedSibling) {
+      return topicScopedSibling.next;
+    }
+    if (!navGroups) {
       return null;
     }
     return siblingNavHrefForPath(
@@ -125,7 +183,7 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
     location.hash,
     activeConceptId,
     navGroups,
-    inChain,
+    topicScopedSibling,
   ]);
 
   const parentHref = useMemo(() => {
@@ -185,10 +243,10 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
     inChain: inBookmarks || inChain,
     showBack: inBookmarks
       ? prevHref !== null
-      : inChain && prevHref !== null && conceptOpen,
+      : prevHref !== null && conceptOpen,
     showNext: inBookmarks
       ? nextHref !== null
-      : inChain && nextHref !== null && conceptOpen,
+      : nextHref !== null && conceptOpen,
     goBack,
     goNext,
     goToParent,

@@ -436,12 +436,62 @@ function isLastConceptStepInTopic(
   return lastConcept?.hash === current.hash;
 }
 
+function findTopicInGroups(
+  groups: readonly NavGroup[],
+  pathname: string,
+): NavTopic | null {
+  for (const group of groups) {
+    const topic = findTopicInGroup(group, pathname);
+    if (topic) {
+      return topic;
+    }
+  }
+  return null;
+}
+
+/** Prev/next within one topic's concept list (handbook topic page). */
+export function siblingConceptHrefForPath(
+  groups: readonly NavGroup[],
+  pathname: string,
+  hash: string,
+  delta: -1 | 1,
+): string | null {
+  const conceptId = hashIdFrom(hash);
+  if (!conceptId) {
+    return null;
+  }
+  const topic = findTopicInGroups(groups, pathname);
+  if (!topic || topic.concepts.length <= 1) {
+    return null;
+  }
+  const ids = topic.concepts.map((concept) => concept.id);
+  const adjacentId = adjacentConceptId(ids, conceptId, delta);
+  if (adjacentId) {
+    return `${pathname}#${adjacentId}`;
+  }
+  if (delta < 0) {
+    return ids.indexOf(conceptId) === 0 ? pathname : null;
+  }
+  const lastId = ids[ids.length - 1];
+  return conceptId === lastId ? pathname : null;
+}
+
 export function siblingNavHrefForPath(
   groups: readonly NavGroup[],
   pathname: string,
   hash: string,
   delta: -1 | 1,
 ): string | null {
+  if (hashIdFrom(hash)) {
+    const topic = findTopicInGroups(groups, pathname);
+    if (topic && topic.concepts.length > 1) {
+      const scoped = siblingConceptHrefForPath(groups, pathname, hash, delta);
+      if (scoped !== null) {
+        return scoped;
+      }
+    }
+  }
+
   const chain = navChainForPath(groups, pathname, hash);
   if (!chain || chain.length === 0) {
     return null;

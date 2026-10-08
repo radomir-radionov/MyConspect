@@ -15,6 +15,7 @@
 | [Overview](#overview)                                                            | Handbook topic map and three module concerns      |
 | [How JavaScript Modules are Defined](#how-javascript-modules-are-defined)        | Top-level `import`/`export` makes a file a module |
 | [Non-modules](#non-modules)                                                      | Scripts, global scope, `export {}`                |
+| [Modules in TypeScript](#modules-in-typescript)                                  | Syntax, resolution, and emit — three concerns     |
 | [ES Module Syntax](#es-module-syntax)                                            | `export default`, named exports, imports          |
 | [Additional Import Syntax](#additional-import-syntax)                            | Renames, namespaces, side effects, `import type`  |
 | [CommonJS Syntax](#commonjs-syntax)                                              | `module.exports`, `require`                       |
@@ -28,6 +29,7 @@
 - [Overview](#overview)
 - [How JavaScript Modules are Defined](#how-javascript-modules-are-defined)
 - [Non-modules](#non-modules)
+- [Modules in TypeScript](#modules-in-typescript)
 - [ES Module Syntax](#es-module-syntax)
 - [Additional Import Syntax](#additional-import-syntax)
 - [CommonJS Syntax](#commonjs-syntax)
@@ -35,6 +37,15 @@
 - [TypeScript's Module Resolution Options](#typescripts-module-resolution-options)
 - [TypeScript's Module Output Options](#typescripts-module-output-options)
 - [TypeScript namespaces](#typescript-namespaces)
+
+### Topic groups
+
+Handbook sections shown as grouped index on the topic page and in the sidebar:
+
+- **How JavaScript Modules are Defined** — How JavaScript Modules are Defined, Non-modules
+- **Modules in TypeScript** — Modules in TypeScript, ES Module Syntax, Additional Import Syntax, CommonJS Syntax, CommonJS and ES Modules interop, TypeScript's Module Resolution Options, TypeScript's Module Output Options, TypeScript namespaces
+
+Top-level (no section header): Modules (overview).
 
 ---
 
@@ -99,6 +110,31 @@ export {};
 **When to use:** Almost never in modern apps — prefer real `import`/`export`. `export {}` is useful when a file must be isolated but has nothing to export yet.
 
 **Sources:** [TypeScript handbook — Non-modules](https://www.typescriptlang.org/docs/handbook/2/modules.html#non-modules)
+
+</details>
+
+---
+
+## Modules in TypeScript
+
+<details>
+<summary>Modules in TypeScript</summary>
+
+**Definition:** Module-based TypeScript code is organized around three handbook concerns — **syntax** (how you `import`/`export`), **resolution** (how import paths map to files), and **output** (what JS `tsc` emits).
+
+**How it works:**
+
+| Concern        | Question                              | Section in this file                                                        |
+| -------------- | ------------------------------------- | --------------------------------------------------------------------------- |
+| **Syntax**     | How do I import and export?           | [ES Module Syntax](#es-module-syntax) · [CommonJS Syntax](#commonjs-syntax) |
+| **Resolution** | How does `"./math.js"` map to a file? | [Module Resolution](#typescripts-module-resolution-options)                 |
+| **Output**     | What JS does `tsc` emit?              | [Module Output](#typescripts-module-output-options)                         |
+
+TypeScript extends ES modules with **type-only** imports (`import type`, inline `type` in imports) and **`import = require`** for CommonJS-aligned emit. Legacy **`namespace`** is covered at the end — prefer ES modules for app code.
+
+**Prerequisites:** [The Basics](./5_ts_basics.md) (`tsconfig`, `module`, `moduleResolution`). Deep `namespace` topics: [Namespaces](./5_ts_namespaces.md) · [Namespaces and Modules](./5_ts_namespaces_modules.md).
+
+**Sources:** [TypeScript handbook — Modules in TypeScript](https://www.typescriptlang.org/docs/handbook/2/modules.html#modules-in-typescript)
 
 </details>
 

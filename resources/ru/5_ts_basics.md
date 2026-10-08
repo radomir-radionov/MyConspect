@@ -14,6 +14,7 @@
 - [Compiler & tsconfig](#compiler-tsconfig)
 - [tsconfig.json](#tsconfig-json)
 - [Declaration files (.d.ts)](#declaration-files-dts)
+- [Design principles](#design-principles)
 
 ---
 
@@ -608,6 +609,107 @@ _.padStart("Hello TypeScript!", 20, " ");
 ```
 
 **Sources:** [Declaration files — introduction](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) · [Consuming declarations](https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html) · [The role of declaration files](https://www.typescriptlang.org/docs/handbook/modules/theory.html#the-role-of-declaration-files)
+
+</details>
+
+---
+
+<a name="design-principles"></a>
+
+## Design principles
+
+<details>
+  <summary>SOLID in TypeScript</summary>
+
+### SOLID in TypeScript
+
+**Definition:** Пять принципов **SOLID** для **TypeScript interfaces, classes и modules** — compile-time контракты через `interface`, `implements` и constructor injection.
+
+| Principle                     | Meaning                         | TypeScript example                                                                    |
+| ----------------------------- | ------------------------------- | ------------------------------------------------------------------------------------- |
+| **S** — Single Responsibility | One reason to change per module | `UserRepository` reads data · `UserFormatter` shapes labels — not one god class       |
+| **O** — Open/Closed           | Extend via new code, not edits  | New `StripeProcessor implements PaymentProcessor` — don't edit `CheckoutService`      |
+| **L** — Liskov Substitution   | Subtypes honor parent contract  | Every `UserStore` passed to `loadProfile()` must return the same `{ id, name }` shape |
+| **I** — Interface Segregation | Small focused interfaces        | `ReadableLedger` for reports — not a fat `Ledger` with `write()` / `delete()`         |
+| **D** — Dependency Inversion  | Depend on abstractions          | `placeOrder(id, logger: Logger)` — inject `Logger`, not a concrete console adapter    |
+
+**How it works:**
+
+Каждая буква соответствует **Examples** ниже — ищите `// good` и `// bad`:
+
+1. **S** — разделите repository и formatter отдельными `interface` — не одним service class.
+2. **O** — новый provider = новый class с interface — не растущий `if/else` в одном классе.
+3. **L** — `implements UserStore` должен соблюдать return type — `tsc` ловит сломанные замены.
+4. **I** — передавайте `ReadableLedger`, где хватает чтения — не требуйте лишние write API.
+5. **D** — domain-функции принимают типы `Logger` / `DbClient` — wiring выбирает реализации.
+
+**When to use:** Domain models, services, DI graphs, public module APIs. Skip heavy interfaces on a one-off script.
+
+**Examples:**
+
+```typescript
+type DbClient = { query(id: string): Promise<{ id: string; name: string }> };
+
+interface UserRepository {
+  findById(id: string): Promise<{ id: string; name: string }>;
+}
+
+interface UserFormatter {
+  label(user: { name: string; email: string }): string;
+}
+
+class DbUserRepository implements UserRepository {
+  constructor(private db: DbClient) {}
+  findById(id: string) {
+    return this.db.query(id);
+  }
+}
+
+interface PaymentProcessor {
+  charge(amount: number): Promise<{ ok: true }>;
+}
+
+class StripeProcessor implements PaymentProcessor {
+  charge(amount: number) {
+    return Promise.resolve({ ok: true as const });
+  }
+}
+
+class CheckoutService {
+  constructor(private payments: PaymentProcessor) {}
+  checkout(amount: number) {
+    return this.payments.charge(amount);
+  }
+}
+
+interface UserStore {
+  get(id: string): Promise<{ id: string; name: string }>;
+}
+
+async function loadProfile(id: string, store: UserStore) {
+  return store.get(id);
+}
+
+interface ReadableLedger {
+  read(id: string): Promise<{ id: string; total: number }>;
+}
+
+function buildReport(ledger: ReadableLedger) {
+  return ledger.read("summary");
+}
+
+interface Logger {
+  info(message: string): void;
+}
+
+function placeOrder(orderId: string, logger: Logger) {
+  logger.info(`Processing ${orderId}`);
+}
+```
+
+**Thoughts:** TypeScript делает **I**, **L** и **D** видимыми на compile time — но types стираются в runtime; behavioral contracts всё равно важны. Классы: [Classes](./5_ts_classes.md). JS: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Полный справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+
+**Sources:** [TypeScript handbook — Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html) · [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions)
 
 </details>
 

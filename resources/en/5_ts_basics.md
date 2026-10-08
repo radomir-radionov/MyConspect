@@ -1,339 +1,40 @@
 # TypeScript — The Basics
 
-Static type-checking, compiler fundamentals, tsconfig, and a short intro for JavaScript programmers.
+tsconfig, declaration files, and a short intro for JavaScript programmers.
 
 [← Back to hub](./5_ts.md)
 
 ### Related docs
 
-- [TypeScript — hub](./5_ts.md) · [Interview](./5_ts_interview.md)
+- [TypeScript — hub](./5_ts.md) · [Compiler fundamentals](./5_ts_compiler_fundamentals.md) · [Interview](./5_ts_interview.md)
 
 ### Sections
 
-- [Static typing & basics](#static-typing-basics)
+- [TypeScript overview](#typescript-overview)
 - [Compiler & tsconfig](#compiler-tsconfig)
 - [tsconfig.json](#tsconfig-json)
 - [Declaration files (.d.ts)](#declaration-files-dts)
 - [TypeScript for JavaScript programmers](#typescript-for-javascript-programmers)
+- [Design principles](#design-principles)
 
 ---
 
-## Static typing & basics
+## TypeScript overview
 
 <details>
-  <summary>Compiler fundamentals</summary>
+  <summary>TypeScript overview</summary>
 
-### Static Type-Checking
+**Definition:** JavaScript is dynamically typed; TypeScript is a **superset** with optional static types checked at compile time, then erased.
 
-**Definition:**
+**Compiler fundamentals:** [Compiler fundamentals](./5_ts_compiler_fundamentals.md) — static type-checking, `tsc`, emit, explicit types, downleveling (handbook order on that page).
 
-Analysis of code at compile time without running it — TS checks types and reports errors before deploy.
-
-| When to use                                                                                                 | Notes                                                                                                                                                                                                    |
-| ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Run `tsc` or rely on IDE diagnostics. Fix errors before shipping; use `--noEmit` in CI for type-check only. | TypeScript doesn't stop your JS from running by default. It reports errors but still emits JavaScript unless you opt into stricter emit rules. Think of it as a linter with superpowers, not a runtime e |
-
-**Examples:**
-
-```typescript
-const message = "hello!";
-message(); // Error: Type 'string' has no call signatures
-// Caught before you ever run the code
-```
-
-**Sources:** [TypeScript handbook — typescript-from-scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
-### Non-Exception Failures
-
-**Definition:**
-
-Type errors that are not thrown exceptions — TS reports them at compile time.
-
-| When to use                                                                               | Notes                                                                                                                                                                                                    |
-| ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Read IDE squiggles and `tsc` output. Fix before merge; they won't appear in runtime logs. | TS sometimes rejects _valid_ JavaScript that wouldn't crash immediately (e.g. accessing `user.location` when it's not on the type). That's intentional — the goal is catching real bugs, not mirroring e |
-
-**Examples:**
-
-```typescript
-const user = { name: "Daniel", age: 26 };
-user.location; // Error in TS — undefined in plain JS
-```
-
-```typescript
-const announcement = "Hello World!";
-announcement.toLocaleLowercase(); // Error — typo caught
-announcement.toLocalLowerCase(); // Error — typo caught
-announcement.toLocaleLowerCase(); // OK
-```
-
-```typescript
-function flipCoin() {
-  return Math.random < 0.5; // Error — forgot () on Math.random
-  // return Math.random() < 0.5; // OK
-}
-```
-
-**Sources:** [TypeScript handbook — typescript-from-scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
-### Types for Tooling
-
-**Definition:**
-
-Types exist primarily to power editor features — autocomplete, refactor, go-to-def.
-
-| When to use                                                                     | Notes                                                                                                                                                                  |
-| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Hover for types, use rename-symbol and find references; good types = better DX. | You get tooling benefits even before your code is fully typed. Partial typing still helps autocomplete and navigation. The more you type, the smarter the editor gets. |
-
-**Examples:**
-
-```typescript
-import express from "express";
-
-const app = express();
-
-app.get("/", function (req, res) {
-  res.send; // editor suggests: send, sendDate, sendFile, sendStatus...
-});
-
-app.listen(3000);
-```
-
-**Sources:** [TypeScript handbook — typescript-from-scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
-### `tsc` — The TypeScript Compiler
-
-**Definition:**
-
-The CLI that type-checks TypeScript and emits JavaScript (`typescript` package).
-
-| When to use                                                                                                                             | Notes                                                                                                                                                                                                    |
-| --------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Run `tsc` with `tsconfig.json`, or `tsc --noEmit` to check only. Bundlers (Vite, esbuild) often transpile; `tsc` still validates types. | `tsc` does two jobs at once: type-checking AND compiling TS → JS. Many modern setups use `tsc --noEmit` for checking only and let Vite/esbuild/SWC handle the actual bundling. Know which tool does what |
-
-**Examples:**
-
-```typescript
-// hello.ts
-console.log("Hello world!");
-```
-
-```bash
-tsc hello.ts
-# No console output = no type errors
-# Creates hello.js alongside hello.ts
-```
-
-```typescript
-function greet(person, date) {
-  console.log(`Hello ${person}, today is ${date}!`);
-}
-
-greet("Brendan"); // Error: Expected 2 arguments, but got 1
-```
-
-**Sources:** [TypeScript handbook — typescript-from-scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
-### Emitting with Errors
-
-**Definition:**
-
-By default `tsc` emits JS even when type errors exist.
-
-| When to use                                                                       | Notes                                                                                                                                                                                                    |
-| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Set `"noEmitOnError": true` in CI/production builds so broken types block output. | You can have a broken `.ts` file and a freshly updated `.js` file side by side. Use `--noEmitOnError` or `"noEmitOnError": true` in `tsconfig.json` when you want the compiler to refuse output until er |
-
-**Examples:**
-
-```bash
-# Default: emits JS despite errors
-tsc hello.ts
-
-# Strict emit: no JS file if errors exist
-tsc --noEmitOnError hello.ts
-```
-
-**Sources:** [TypeScript handbook — typescript-from-scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
-### Explicit Types
-
-**Definition:**
-
-Type annotations you write yourself instead of relying on inference.
-
-| When to use                                                                     | Notes                                                                                                                                                                |
-| ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Annotate function params at public API boundaries; let inference handle locals. | `Date()` (without `new`) returns a **string** in JavaScript, not a `Date` object. TypeScript catches `greet("Maddison", Date())` as an error. You need `new Date()`. |
-
-**Examples:**
-
-```typescript
-function greet(person: string, date: Date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
-}
-
-greet("Maddison", new Date()); // OK
-
-// greet("Maddison", Date());     // Error: string not assignable to Date
-// greet("Maddison");             // Error: expected 2 arguments
-```
-
-```typescript
-let msg = "hello there!";
-// TS infers: string — same as writing `let msg: string`
-```
-
-**Sources:** [TypeScript handbook — typescript-from-scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
-### Erased Types
-
-**Definition:**
-
-All type information is removed when TS compiles to JS — zero runtime footprint.
-
-| When to use                                                                                              | Notes                                                                                                                                                                            |
-| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Don't expect `typeof` or runtime `instanceof` on interfaces; use validation libraries for external data. | Type annotations never change runtime behavior. If TS says it's fine but your types are wrong (e.g. bad assertion), you get a runtime crash anyway. Types are compile-time only. |
-
-**Examples:**
-
-```typescript
-// TypeScript source
-function greet(person: string, date: Date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
-}
-greet("Maddison", new Date());
-```
-
-```javascript
-// Emitted JavaScript — types gone
-"use strict";
-function greet(person, date) {
-  console.log(
-    "Hello ".concat(person, ", today is ").concat(date.toDateString(), "!"),
-  );
-}
-greet("Maddison", new Date());
-```
-
-**Sources:** [TypeScript handbook — typescript-from-scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
-### Downleveling
-
-**Definition:**
-
-Rewriting newer JS syntax to older targets (e.g. ES2020 → ES5).
-
-| When to use                                                                                           | Notes                                                                                                                                                                                                    |
-| ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Set `"target"` in `tsconfig`. Let TS rewrite async/await, optional chaining, etc. for older browsers. | Default target is **ES5** (very old). Most browsers today support ES2015+. Set `"target": "ES2015"` (or higher) in `tsconfig.json` unless you need ancient browser support. Wrong target = bloated or tr |
-
-**Examples:**
-
-```typescript
-// Source (ES2015+ syntax)
-`Hello ${person}, today is ${date.toDateString()}!`;
-```
-
-```javascript
-// Emitted with target ES5
-"Hello ".concat(person, ", today is ").concat(date.toDateString(), "!");
-```
-
-```javascript
-// Emitted with target ES2015 — template literal preserved
-`Hello ${person}, today is ${date.toDateString()}!`;
-```
-
-**Sources:** [TypeScript handbook — typescript-from-scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-
-</details>
-
-<a name="compiler-config"></a>
-
-### Type system
-
-**Definition:** Structural types built from primitives, unions, intersections, generics, and mapped/conditional types.
-
-**When to use:** API boundaries, shared models, library typings.
-
-**Pluses and minuses:**
-
-| +                                         | −                                      |
-| ----------------------------------------- | -------------------------------------- |
-| Expressive contracts without runtime cost | Advanced types have a learning curve   |
-| Utility types reduce duplication          | Over-engineered types hurt readability |
-
-**Examples:**
-
-```typescript
-type Result<T> = { ok: true; data: T } | { ok: false; error: string };
-type UserPreview = Pick<User, "id" | "name">;
-```
-
-**Sources:** [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
-
-### Compiler & config
-
-**Definition:** `tsc` type-checks and transpiles via `tsconfig.json` — `target`, `module`, `strict`, paths, and project references.
-
-**When to use:** Every TS project; tighten `strict` flags over time.
-
-**Pluses and minuses:**
-
-| +                               | −                                          |
-| ------------------------------- | ------------------------------------------ |
-| One config for whole repo       | `moduleResolution` can confuse newcomers   |
-| Incremental builds in monorepos | Misconfigured paths break imports silently |
-
-**Examples:**
-
-```json
-{
-  "compilerOptions": {
-    "strict": true,
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "noEmit": true
-  }
-}
-```
-
-**Sources:**
-
-[tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
-
----
-
-### TypeScript vs JavaScript
-
-**Definition:** JavaScript is dynamically typed; TypeScript is a **superset** that adds optional static types checked at compile time, then erased.
-
-**When to use:** Long-lived codebases, teams, libraries with public APIs.
-
-**Pluses and minuses:**
-
-| +                              | −                                |
-| ------------------------------ | -------------------------------- |
-| Fewer production bugs          | Extra compile step               |
-| Safer refactors across modules | Discipline needed to avoid `any` |
-
-**Examples:**
-
-```typescript
-const user = { name: "Ada" };
-// user.age; // Error: Property 'age' does not exist
-```
+**Type system (everyday types):** [Types hub](./5_ts_types.md).
 
 **Sources:** [TypeScript from scratch](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
 
 </details>
 
-<details>
-  <summary>Compiler pipeline</summary>
+---
 
 ## Compiler & tsconfig
 
@@ -672,7 +373,7 @@ const user: User = { name: "Hayes", id: 0 };
 
 **Definition:**
 
-Combine types with unions (`A | B`) and generic parameters (`<T>`) — see [Unions & Literals](./5_ts_unions_literals.md) and [Type Manipulation](./5_ts_type_manipulation.md) for full coverage.
+Combine types with unions (`A | B`) and generic parameters (`<T>`) — see [Types — Combining](./5_ts_types_combining.md) and [Type Manipulation](./5_ts_type_manipulation.md).
 
 **Examples:**
 
@@ -719,5 +420,111 @@ logPoint(point); // OK — same shape
 ```
 
 **Sources:** [TypeScript for JavaScript Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
+
+</details>
+
+---
+
+<a name="design-principles"></a>
+
+## Design principles
+
+<details>
+  <summary>SOLID in TypeScript</summary>
+
+### SOLID in TypeScript
+
+**Definition:** The five **SOLID** principles applied to **TypeScript interfaces, classes, and modules** — compile-time contracts via `interface`, `implements`, and constructor injection.
+
+| Principle                     | Meaning                         | TypeScript example                                                                    |
+| ----------------------------- | ------------------------------- | ------------------------------------------------------------------------------------- |
+| **S** — Single Responsibility | One reason to change per module | `UserRepository` reads data · `UserFormatter` shapes labels — not one god class       |
+| **O** — Open/Closed           | Extend via new code, not edits  | New `StripeProcessor implements PaymentProcessor` — don't edit `CheckoutService`      |
+| **L** — Liskov Substitution   | Subtypes honor parent contract  | Every `UserStore` passed to `loadProfile()` must return the same `{ id, name }` shape |
+| **I** — Interface Segregation | Small focused interfaces        | `ReadableLedger` for reports — not a fat `Ledger` with `write()` / `delete()`         |
+| **D** — Dependency Inversion  | Depend on abstractions          | `placeOrder(id, logger: Logger)` — inject `Logger`, not a concrete console adapter    |
+
+**How it works:**
+
+Each letter matches the **Examples** below — look for `// good` and `// bad`:
+
+1. **S** — split repository vs formatter with separate `interface`s — not one service class.
+2. **O** — new provider = new class implementing the interface — not a growing `if/else` in one class.
+3. **L** — `implements UserStore` must satisfy the return type — `tsc` catches broken substitutes.
+4. **I** — pass `ReadableLedger` where reads are enough — don't require unused write APIs.
+5. **D** — domain functions take `Logger` / `DbClient` types — wiring layer picks concrete implementations.
+
+**When to use:** Domain models, services, DI graphs, public module APIs. Skip heavy interfaces on a one-off script.
+
+**Examples:**
+
+```typescript
+type DbClient = { query(id: string): Promise<{ id: string; name: string }> };
+
+// S — good: repository vs formatter — separate interfaces
+interface UserRepository {
+  findById(id: string): Promise<{ id: string; name: string }>;
+}
+
+interface UserFormatter {
+  label(user: { name: string; email: string }): string;
+}
+
+class DbUserRepository implements UserRepository {
+  constructor(private db: DbClient) {}
+  findById(id: string) {
+    return this.db.query(id);
+  }
+}
+
+// O — good: new processor = new class implementing PaymentProcessor
+interface PaymentProcessor {
+  charge(amount: number): Promise<{ ok: true }>;
+}
+
+class StripeProcessor implements PaymentProcessor {
+  charge(amount: number) {
+    return Promise.resolve({ ok: true as const });
+  }
+}
+
+class CheckoutService {
+  constructor(private payments: PaymentProcessor) {}
+  checkout(amount: number) {
+    return this.payments.charge(amount);
+  }
+}
+
+// L — good: any UserStore works in loadProfile
+interface UserStore {
+  get(id: string): Promise<{ id: string; name: string }>;
+}
+
+async function loadProfile(id: string, store: UserStore) {
+  return store.get(id);
+}
+
+// I — good: report needs only ReadableLedger
+interface ReadableLedger {
+  read(id: string): Promise<{ id: string; total: number }>;
+}
+
+function buildReport(ledger: ReadableLedger) {
+  return ledger.read("summary");
+}
+
+// D — good: inject Logger abstraction
+interface Logger {
+  info(message: string): void;
+}
+
+function placeOrder(orderId: string, logger: Logger) {
+  logger.info(`Processing ${orderId}`);
+}
+```
+
+**Thoughts:** TypeScript makes **I**, **L**, and **D** visible at compile time — but types erase at runtime; behavior contracts still matter. Class syntax: [Classes](./5_ts_classes.md). JS fundamentals: [SOLID in Classes](./3_js_core.md#solid-in-classes) · [SOLID in Functions](./3_js_core.md#solid-in-functions). Framework mapping: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express). Full reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+
+**Sources:** [TypeScript handbook — Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html) · [TypeScript handbook — Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions)
 
 </details>

@@ -1,8 +1,16 @@
 import {
+  isTypesHubSectionSlug,
+  isTypesHubSlug,
+  typesHubSectionGroup,
+  TYPES_HUB_SLUG,
+} from "@/lib/catalog/typesHub";
+import {
   INSTRUCTIONS_HREF,
   type Crumb,
   type NavConcept,
+  type NavCluster,
   type NavGroup,
+  type NavSubject,
   type NavTopic,
 } from "@/lib/nav";
 import { navSubjectClusters } from "@/lib/nav/subjectClusters";
@@ -147,6 +155,17 @@ export function crumbsForPath(
             if (!topic) {
               continue;
             }
+            const typesHub = findTypesHubTopic(entry.subject);
+            const sectionTrail = typesHubSectionTrail(
+              topic,
+              typesHub,
+              entry.subject,
+              group,
+              cluster,
+            );
+            if (sectionTrail) {
+              return withConcept(home, sectionTrail, topic, hashId);
+            }
             return withConcept(
               home,
               [
@@ -211,6 +230,44 @@ export function crumbsForPath(
   return [home];
 }
 
+function findTypesHubTopic(subject: NavSubject): NavTopic | undefined {
+  for (const cluster of navSubjectClusters(subject)) {
+    const hub = cluster.topics.find((item) => item.slug === TYPES_HUB_SLUG);
+    if (hub) {
+      return hub;
+    }
+  }
+  return undefined;
+}
+
+function typesHubSectionTrail(
+  topic: NavTopic,
+  typesHub: NavTopic | undefined,
+  subject: NavSubject,
+  group: NavGroup,
+  cluster: NavCluster,
+): readonly Crumb[] | undefined {
+  if (!typesHub) {
+    return undefined;
+  }
+  const base: Crumb[] = [
+    { label: group.title, href: group.href },
+    { label: subject.title, href: subject.href },
+    ...(isTopicAliasCluster(cluster)
+      ? []
+      : [{ label: cluster.title, href: cluster.href }]),
+    { label: typesHub.title, href: typesHub.href },
+  ];
+  if (topic.slug === TYPES_HUB_SLUG) {
+    return base;
+  }
+  if (!isTypesHubSectionSlug(topic.slug)) {
+    return undefined;
+  }
+  const section = typesHubSectionGroup(topic.slug);
+  return section ? [...base, { label: section }] : base;
+}
+
 function withConcept(
   home: Crumb,
   trail: readonly Crumb[],
@@ -220,7 +277,12 @@ function withConcept(
   const concept = conceptById(topic.concepts, hashId);
   const crumbs = [home, ...trail];
   if (concept) {
-    return [...crumbs, { label: concept.title }];
+    const tail: Crumb[] = [];
+    if (concept.group && concept.group !== concept.title) {
+      tail.push({ label: concept.group });
+    }
+    tail.push({ label: concept.title });
+    return [...crumbs, ...tail];
   }
   const last = crumbs[crumbs.length - 1];
   if (!last) {

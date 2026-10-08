@@ -124,9 +124,11 @@ function conceptRowClass(
   rowGapClass: string,
   onPath: boolean,
 ): string {
+  const shared =
+    "block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm font-medium ring-1 transition-[color,background-color,box-shadow] duration-150 ease-out motion-reduce:transition-none";
   const highlight = active
-    ? "block w-full cursor-pointer rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-zinc-900 ring-1 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800"
-    : "block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm font-normal text-zinc-600 hover:bg-yellow-50 dark:text-zinc-400 dark:hover:bg-yellow-950/60";
+    ? `${shared} text-zinc-900 bg-yellow-50 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800`
+    : `${shared} text-zinc-600 bg-transparent ring-transparent hover:bg-yellow-50 dark:text-zinc-400 dark:hover:bg-yellow-950/60`;
   return `${highlight} ${indentClass}${rowGapClass ? ` ${rowGapClass}` : ""}${onPath ? " sticky" : ""}`;
 }
 
@@ -422,12 +424,12 @@ export function TopicRow({
     : filterInterviewConcepts(topic, concepts);
   const showConceptNav =
     !topic.hideSidebarConcepts && sidebarConcepts.length > 0;
+  const onPath = !searching && active;
   const topicOpen = hideTitle
     ? showConceptNav
     : searching
       ? !topic.hideSidebarConcepts && hasConcepts
       : showConceptNav && openTopicHref === topic.href;
-  const onPath = !searching && active;
   const { isBookmarked } = useSidebarBookmarks();
   const topicBookmarked = isBookmarked(topic.href);
   // Flatten sticky headers into the track list so nested containing blocks cannot

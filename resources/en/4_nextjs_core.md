@@ -632,8 +632,8 @@ export default async function CheckoutPage() {
 }
 ```
 
-**Thoughts:** SOLID is a **guide**, not a law — a one-off marketing page does not need five interfaces. Apply when change pain or test pain appears. React mapping: [SOLID in React](./4_react_core.md#solid-in-react). Express mapping: [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_classes.md#solid-in-typescript). Full reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+**Thoughts:** SOLID is a **guide**, not a law — a one-off marketing page does not need five interfaces. Apply when change pain or test pain appears. React mapping: [SOLID in React](./4_react_core.md#solid-in-react). Express mapping: [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_basics.md#solid-in-typescript). Full reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
-**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_classes.md#solid-in-typescript)
+**Sources:** [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [JS — SOLID in Classes](./3_js_core.md#solid-in-classes) · [JS — SOLID in Functions](./3_js_core.md#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_basics.md#solid-in-typescript)
 
 </details>

@@ -6,6 +6,8 @@ export {
   loadParsedTopic,
   loadTopicOutline,
   loadTopicPage,
+  loadTypesHubConcepts,
+  topicUsesGroupedConceptIndex,
   readTopicFile,
   readTopicFileDetailed,
   resourcesDir,

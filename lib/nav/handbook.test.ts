@@ -328,6 +328,24 @@ describe("handbookNavSections layout", () => {
     );
   });
 
+  it("lists compiler fundamentals concepts on one topic like The Basics", () => {
+    const frontend = findGroup("frontend", "conspect");
+    assert.ok(frontend);
+    const ts = frontend.entries.find(
+      (entry) =>
+        entry.kind === "subject" && entry.subject.slug === "typescript",
+    );
+    assert.ok(ts && ts.kind === "subject");
+    const cluster = ts.subject.clusters.find(
+      (item) => item.id === "compiler-fundamentals",
+    );
+    const basics = ts.subject.clusters.find((item) => item.id === "basics");
+    assert.ok(cluster && basics);
+    assert.equal(cluster.topics.length, 1);
+    assert.equal(basics.topics.length, 1);
+    assert.equal(cluster.topics[0].concepts.length, 8);
+  });
+
   it("keeps conspect and interview search corpora separate", () => {
     const sections = handbookNavSections("en");
     const conspectGroups = navGroupsForRootSection(sections, "conspect");

@@ -55,13 +55,66 @@ Control-flow analysis and type guards — from the [TypeScript handbook](https:/
 
 **How it works:**
 
-1. You declare a value with a union or optional type, e.g. `padding: number | string`.
-2. Before the check, only operations valid for **every** member of the union are allowed (`" ".repeat(padding)` fails because `string` is not a `number`).
-3. Inside `if (typeof padding === "number")`, TypeScript follows that **control-flow path** and treats `padding` as `number` in the true branch and `string` in the false branch.
-4. Early `return` / `throw` removes variants from the rest of the function without an `else`.
-5. The **declared type** (what you may assign later) stays the same; the **observed type** (what the compiler sees right now) narrows until the next assignment.
+| Technique                                               | Summary                                                           | Example                                    |
+| ------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------ |
+| [typeof type guards](#typeof-type-guards)               | Narrow primitive unions with runtime `typeof`                     | `if (typeof x === "string")`               |
+| [Truthiness narrowing](#truthiness-narrowing)           | Drop falsy values (`null`, `undefined`, `""`, `0`, …) in `if (x)` | `if (value) { … }`                         |
+| [Equality narrowing](#equality-narrowing)               | Compare to literals or another value with `===` / `== null`       | `if (x === "ok")` · `if (v != null)`       |
+| [The in operator narrowing](#the-in-operator-narrowing) | Pick an object-union member by property name                      | `if ("swim" in pet)`                       |
+| [instanceof narrowing](#instanceof-narrowing)           | Narrow class instances via the prototype chain                    | `if (x instanceof Date)`                   |
+| [Assignments](#assignments)                             | Observed type follows the last assignment on `let`                | `data = 100` then `data.toFixed()`         |
+| [Control flow analysis](#control-flow-analysis)         | `return` / `throw` / branches refine types per path               | `if (…) return;` — rest is narrowed        |
+| [Using type predicates](#using-type-predicates)         | Custom guard: `param is Type`                                     | `function isFish(p): p is Fish`            |
+| [Assertion functions](#assertion-functions)             | Throw if check fails; caller scope narrows                        | `asserts val is number`                    |
+| [Discriminated unions](#discriminated-unions)           | Shared literal field (`kind`) selects the variant                 | `switch (shape.kind) { case "circle": … }` |
+| [The never type](#the-never-type)                       | No values left after all variants handled                         | `const _: never = value`                   |
+| [Exhaustiveness checking](#exhaustiveness-checking)     | `default: never` errors when a union grows                        | `default: { const _: never = shape }`      |
 
-Narrowing is **compile-time only** — no runtime wrapper, no validation beyond what your JavaScript already does. It is the opposite of a type assertion (`as`): assertions tell the compiler to trust you; narrowing is the compiler inferring from code you wrote.
+Walk through one function — `padLeft(padding: number | string, …)`:
+
+1. **Start wide.** `padding` is typed as `number | string`. TypeScript must assume it could be either until you prove otherwise.
+2. **Before any check**, you may only use APIs that work on **both** types. `" ".repeat(padding)` is an error here: `repeat` needs a `number`, but `padding` might still be a `string`.
+3. **After a check**, TypeScript remembers the result **for that branch only**:
+   - In `if (typeof padding === "number") { … }`, `padding` is treated as `number` inside the `{ … }` block.
+   - After the `if` (or in the `else`), it is treated as `string` — the other possibility.
+4. **Early exit** works the same way: if you `return` or `throw` when `padding` is a `number`, the code below no longer has to consider `number` — only what is left (here, `string`). You do not need an `else` for that.
+5. **Two names for the same variable:**
+   - **Declared type** — what you wrote in the annotation (`number | string`). You still cannot assign `true` to `padding` later.
+   - **Observed type** — what TypeScript thinks `padding` is **on this line** after checks and assignments. It can be narrower (`number` or `string`) until you assign again.
+
+```typescript
+// Steps 1–2: padding is `number | string` — too wide for `.repeat()`
+function padLeft(padding: number | string, input: string): string {
+  // return " ".repeat(padding) + input; // error: repeat expects number
+
+  // Step 3: each branch gets a narrower observed type
+  if (typeof padding === "number") {
+    return " ".repeat(padding) + input; // padding: number
+  }
+  return padding + input; // padding: string
+}
+
+// Step 4: early return — no `else` needed; code below is only `string`
+function padLeftEarly(padding: number | string, input: string): string {
+  if (typeof padding === "number") {
+    return " ".repeat(padding) + input;
+  }
+  return padding + input; // padding: string
+}
+
+// Step 5: declared type vs observed type on `let`
+function declaredVsObserved() {
+  let padding: number | string = 4;
+  padding.toFixed(0); // observed: number
+
+  padding = "  ";
+  padding.trim(); // observed: string
+
+  // padding = true; // error — declared type is still number | string
+}
+```
+
+Narrowing happens only in the type checker — your JavaScript runs unchanged. Unlike `as`, you do not tell the compiler to trust you; it infers from the checks you already wrote.
 
 **When to use:**
 

@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ClusterCardSections } from "@/components/catalog";
-import { ConceptList, PageTitleHeader } from "@/components/topic";
+import {
+  ConceptList,
+  PageTitleHeader,
+  TopicNavConceptsProvider,
+} from "@/components/topic";
 import {
   getSubject,
   getTrack,
@@ -18,7 +22,12 @@ import { catalogBlurb } from "@/lib/i18n/catalog";
 import { FALLBACK_NOTE_BADGE } from "@/lib/i18n/chrome";
 import { isLocale, localeStaticParams, type Locale } from "@/lib/i18n/locales";
 import { withLocale } from "@/lib/i18n/paths";
-import { loadTopicPage, type Concept } from "@/lib/parse";
+import {
+  loadTopicPage,
+  loadTypesHubConcepts,
+  topicUsesGroupedConceptIndex,
+  type Concept,
+} from "@/lib/parse";
 
 function conceptsForInterviewTopic(
   topic: Topic,
@@ -168,13 +177,20 @@ export default async function TopicPage({
     notFound();
   }
 
+  const typesHubConcepts = topicUsesGroupedConceptIndex(loaded.topic)
+    ? await loadTypesHubConcepts(trackId, locale)
+    : undefined;
   const pageConcepts = conceptsForInterviewTopic(
     loaded.topic,
-    loaded.parsed.concepts,
+    typesHubConcepts ?? loaded.parsed.concepts,
   );
   const pageTitle = isInterviewTasksTopic(loaded.topic)
     ? loaded.topic.title
     : loaded.parsed.title;
+  const groupConceptSections =
+    typesHubConcepts !== undefined ||
+    pageConcepts.some((concept) => Boolean(concept.group)) ||
+    (isInterviewTopic(loaded.topic) && !isInterviewTasksTopic(loaded.topic));
 
   return (
     <main className="w-full max-w-3xl px-4 pt-5 pb-10 sm:px-6">
@@ -183,16 +199,14 @@ export default async function TopicPage({
           {FALLBACK_NOTE_BADGE[locale]}
         </p>
       ) : null}
-      <ConceptList
-        concepts={pageConcepts}
-        topicTitle={pageTitle}
-        emptyMessage="No concepts were parsed from this topic."
-        groupInterviewSections={
-          pageConcepts.some((concept) => Boolean(concept.group)) ||
-          (isInterviewTopic(loaded.topic) &&
-            !isInterviewTasksTopic(loaded.topic))
-        }
-      />
+      <TopicNavConceptsProvider concepts={pageConcepts}>
+        <ConceptList
+          concepts={pageConcepts}
+          topicTitle={pageTitle}
+          emptyMessage="No concepts were parsed from this topic."
+          groupInterviewSections={groupConceptSections}
+        />
+      </TopicNavConceptsProvider>
     </main>
   );
 }

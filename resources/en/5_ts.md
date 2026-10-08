@@ -10,18 +10,19 @@ Handbook, common types, language reference, compiler, and interview practice. St
 
 Matches the [official TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html).
 
-| Topic                                            | Covers                                                              |
-| ------------------------------------------------ | ------------------------------------------------------------------- |
-| [The Basics](./5_ts_basics.md)                   | Static type-checking, compiler, tsconfig, intro for JS programmers. |
-| [Types](./5_ts_types.md)                         | Basic value types — `string`, `number`, `boolean`, arrays, `any`.   |
-| [Narrowing types](./5_ts_narrowing.md)           | Control-flow analysis and type guards.                              |
-| [Functions](./5_ts_functions.md)                 | Function types, generics, parameters, overloads, and `this`.        |
-| [Object Types](./5_ts_objects.md)                | Object shapes, optional properties, tuples.                         |
-| [Type Manipulation](./5_ts_type_manipulation.md) | Generics, keyof, typeof, mapped and conditional types.              |
-| [Classes](./5_ts_classes.md)                     | Fields, visibility, inheritance, `implements`, abstract classes.    |
-| [Modules](./5_ts_modules.md)                     | ES modules, CommonJS, resolution, and emit targets.                 |
-| [Interview](./5_ts_interview.md)                 | TypeScript interview questions, answers not filled in.              |
-| [Tasks](/frontend/typescript/ts-interview-tasks) | Type-level coding challenges.                                       |
+| Topic                                                    | Covers                                                                                                                                                                                                  |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [The Basics](./5_ts_basics.md)                           | tsconfig, declaration files, and intro for JavaScript programmers.                                                                                                                                      |
+| [Compiler fundamentals](./5_ts_compiler_fundamentals.md) | Static type-checking, `tsc`, emit behavior, explicit types, and downleveling.                                                                                                                           |
+| [Types](./5_ts_types.md)                                 | Hub + catalog; sections: [Values](./5_ts_types_values.md), [Shapes](./5_ts_types_shapes.md), [Combining](./5_ts_types_combining.md), [Safety](./5_ts_types_safety.md), [In code](./5_ts_types_code.md). |
+| [Narrowing types](./5_ts_narrowing.md)                   | Control-flow analysis and type guards.                                                                                                                                                                  |
+| [Functions](./5_ts_functions.md)                         | Function types, generics, parameters, overloads, and `this`.                                                                                                                                            |
+| [Object Types](./5_ts_objects.md)                        | Object shapes, optional properties, tuples.                                                                                                                                                             |
+| [Type Manipulation](./5_ts_type_manipulation.md)         | Generics, keyof, typeof, mapped and conditional types.                                                                                                                                                  |
+| [Classes](./5_ts_classes.md)                             | Fields, visibility, inheritance, `implements`, abstract classes.                                                                                                                                        |
+| [Modules](./5_ts_modules.md)                             | ES modules, CommonJS, resolution, and emit targets.                                                                                                                                                     |
+| [Interview](./5_ts_interview.md)                         | TypeScript interview questions, answers not filled in.                                                                                                                                                  |
+| [Tasks](/frontend/typescript/ts-interview-tasks)         | Type-level coding challenges.                                                                                                                                                                           |
 
 ### Navigation — Old (Common)
 

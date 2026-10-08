@@ -547,6 +547,10 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "SQL, NoSQL, ORM и продакшен-паттерны работы с данными.",
   "Stage 2 and stage 3 decorators for classes and members.":
     "Stage 2 и stage 3 decorators для классов и членов.",
+  "Static type-checking, tsc, emit behavior, explicit types, and downleveling.":
+    "Статическая проверка типов, tsc, emit, явные типы и downleveling.",
+  "tsconfig, declaration files, and intro for JavaScript programmers.":
+    "tsconfig, declaration files и введение для JavaScript-разработчиков.",
   "Static type-checking, compiler, tsconfig, and intro for JS programmers.":
     "Статическая проверка типов, компилятор, tsconfig и введение для JS-разработчиков.",
   "Static typing, tsconfig, and everyday types.":

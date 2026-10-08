@@ -521,11 +521,11 @@ describe("handbook sidebar", () => {
 
   it("returns to the topic index from the last concept via Next", () => {
     cy.viewport(390, 844);
-    cy.visit("/en/frontend/ts-classes#solid-in-typescript");
+    cy.visit("/en/frontend/ts-basics#solid-in-typescript");
     cy.contains("button", "Next").click();
-    cy.location("pathname").should("eq", "/en/frontend/ts-classes");
+    cy.location("pathname").should("eq", "/en/frontend/ts-basics");
     cy.location("hash").should("eq", "");
-    cy.contains("button", "Class Members").should("be.visible");
+    cy.contains("button", "Compiler fundamentals").should("be.visible");
     cy.contains("button", "Back").should("not.exist");
     cy.contains("button", "Next").should("not.exist");
   });

@@ -10,25 +10,27 @@ Object shapes, property modifiers, index signatures, extending and combining typ
 
 ### Main concepts
 
-| Topic                                                                        | Covers                                                |
-| ---------------------------------------------------------------------------- | ----------------------------------------------------- |
-| [Object types](#object-types)                                                | Inline shapes, `interface`, `type`, structural typing |
-| [Optional Properties](#optional-properties)                                  | `?`, defaults, optional vs `undefined`                |
-| [`readonly` Properties](#readonly-properties)                                | Shallow immutability on object fields                 |
-| [Index Signatures](#index-signatures)                                        | Dynamic string/number keys                            |
-| [Excess Property Checks](#excess-property-checks)                            | Fresh literal typos                                   |
-| [Extending Types](#extending-types)                                          | `interface` `extends`                                 |
-| [Intersection Types](#intersection-types)                                    | Combine shapes with `&`                               |
-| [Interface Extension vs. Intersection](#interface-extension-vs-intersection) | Conflicts: merge vs `never`                           |
-| [Generic Object Types](#generic-object-types)                                | `Box<T>` and reusable object generics                 |
-| [The `Array` Type](#the-array-type)                                          | `T[]` and `Array<T>`                                  |
-| [The `ReadonlyArray` Type](#the-readonlyarray-type)                          | `readonly T[]` / `ReadonlyArray<T>`                   |
-| [Tuple Types](#tuple-types)                                                  | Fixed-length, typed positions                         |
-| [`readonly` Tuple Types](#readonly-tuple-types)                              | Immutable tuple elements                              |
+| Topic                                                                        | Covers                                        |
+| ---------------------------------------------------------------------------- | --------------------------------------------- |
+| [Quick Reference](#quick-reference)                                          | Index of object-type topics in handbook order |
+| [Property Modifiers](#property-modifiers)                                    | `?` and `readonly` on properties              |
+| [Optional Properties](#optional-properties)                                  | Keys that may be absent                       |
+| [`readonly` Properties](#readonly-properties)                                | Shallow immutability on fields                |
+| [Index Signatures](#index-signatures)                                        | Dynamic string/number keys                    |
+| [Excess Property Checks](#excess-property-checks)                            | Fresh literal typos                           |
+| [Extending Types](#extending-types)                                          | `interface` `extends`                         |
+| [Intersection Types](#intersection-types)                                    | Combine shapes with `&`                       |
+| [Interface Extension vs. Intersection](#interface-extension-vs-intersection) | Merge vs `never` on conflicts                 |
+| [Generic Object Types](#generic-object-types)                                | `Box<T>` and object generics                  |
+| [The `Array` Type](#the-array-type)                                          | `T[]` and `Array<T>`                          |
+| [The `ReadonlyArray` Type](#the-readonlyarray-type)                          | `readonly T[]` / `ReadonlyArray<T>`           |
+| [Tuple Types](#tuple-types)                                                  | Fixed-length, typed positions                 |
+| [`readonly` Tuple Types](#readonly-tuple-types)                              | Immutable tuple elements                      |
 
 ### Sections
 
-- [Object types](#object-types)
+- [Quick Reference](#quick-reference)
+- [Property Modifiers](#property-modifiers)
 - [Optional Properties](#optional-properties)
 - [`readonly` Properties](#readonly-properties)
 - [Index Signatures](#index-signatures)
@@ -42,48 +44,72 @@ Object shapes, property modifiers, index signatures, extending and combining typ
 - [Tuple Types](#tuple-types)
 - [`readonly` Tuple Types](#readonly-tuple-types)
 
+### Topic groups
+
+- **Property Modifiers** — Property Modifiers, Optional Properties, `readonly` Properties, Index Signatures
+- **Generic Object Types** — Generic Object Types, The `Array` Type, The `ReadonlyArray` Type, Tuple Types, `readonly` Tuple Types
+
+Top-level (no section header): Quick Reference, Excess Property Checks, Extending Types, Intersection Types, Interface Extension vs. Intersection.
+
 ---
 
-## Object types
+## Quick Reference
 
 <details>
-<summary>Object types</summary>
+<summary>Quick Reference</summary>
 
-**Definition:** Ways to describe object shapes in TypeScript — inline `{ }`, `interface`, or `type` alias. TypeScript uses **structural typing**: only the shape matters, not the declared name.
+**Definition:** One-page map of the [TypeScript handbook — Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html) topics in this file.
 
 **How it works:**
 
-- Inline `{ name: string; age: number }` — fine for one-off parameters.
-- `interface Person { ... }` — extendable, good for public object contracts.
-- `type Person = { ... }` — same expressiveness for object shapes; can also express unions and mapped types.
-- Extract shared shapes once instead of repeating inline types.
+| Topic                                                                        | Summary                                 |
+| ---------------------------------------------------------------------------- | --------------------------------------- |
+| [Property Modifiers](#property-modifiers)                                    | `?` optional keys and `readonly` fields |
+| [Optional Properties](#optional-properties)                                  | `nick?: string` — key may be missing    |
+| [`readonly` Properties](#readonly-properties)                                | Cannot reassign the property            |
+| [Index Signatures](#index-signatures)                                        | `[key: string]: T` dynamic keys         |
+| [Excess Property Checks](#excess-property-checks)                            | Extra keys on object literals           |
+| [Extending Types](#extending-types)                                          | `interface B extends A`                 |
+| [Intersection Types](#intersection-types)                                    | `A & B` — must satisfy both             |
+| [Interface Extension vs. Intersection](#interface-extension-vs-intersection) | How conflicts are reported              |
+| [Generic Object Types](#generic-object-types)                                | `interface Box<T> { contents: T }`      |
+| [The `Array` Type](#the-array-type)                                          | `T[]` / `Array<T>`                      |
+| [The `ReadonlyArray` Type](#the-readonlyarray-type)                          | `readonly T[]`                          |
+| [Tuple Types](#tuple-types)                                                  | `[string, number]` fixed slots          |
+| [`readonly` Tuple Types](#readonly-tuple-types)                              | `readonly` tuple elements               |
+
+For inline shapes, `interface`, and `type` aliases on everyday objects, see [Types — Object shapes](./5_ts_types_shapes.md).
+
+**Sources:** [TypeScript handbook — Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html)
+
+</details>
+
+---
+
+## Property Modifiers
+
+<details>
+<summary>Property Modifiers</summary>
+
+**Definition:** Keywords that change how **properties** behave on object types — mainly **`?` (optional)** and **`readonly` (assign-once)**.
+
+**How it works:**
+
+- **Optional (`?`)** — the key may be omitted; under `strictNullChecks`, reads are `T | undefined`. See [Optional Properties](#optional-properties).
+- **`readonly`** — the property cannot be reassigned after initialization; nested objects may still mutate. See [`readonly` Properties](#readonly-properties).
+- Modifiers apply per property on `interface` and `type` object shapes; they do not change runtime behavior.
 
 **Examples:**
 
 ```typescript
-function greet(person: { name: string; age: number }) {
-  return "Hello " + person.name;
+interface PaintOptions {
+  shape: Shape;
+  xPos?: number;
+  readonly id: string;
 }
-
-interface Person {
-  name: string;
-  age: number;
-}
-
-type PersonAlias = {
-  name: string;
-  age: number;
-};
-
-type PersonWithExtras = {
-  name: string;
-  age: number;
-  nickName?: string;
-  getPass?: () => string;
-};
 ```
 
-**Sources:** [TypeScript handbook — Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html)
+**Sources:** [TypeScript handbook — Property Modifiers](https://www.typescriptlang.org/docs/handbook/2/objects.html#property-modifiers)
 
 </details>
 

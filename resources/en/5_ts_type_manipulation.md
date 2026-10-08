@@ -51,15 +51,15 @@ Creating types from types — generics, type operators, conditional and mapped t
 
 **How it works:**
 
-| Topic                                             | Covers                                                | Handbook                                                                                       |
-| ------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [Generics](#generics)                             | Type parameters on functions, interfaces, and classes | [generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)                       |
-| [Keyof Type Operator](#keyof-type-operator)       | Union of an object's keys — `keyof T`                 | [keyof](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html)                       |
-| [`typeof` Type Operator](#typeof-type-operator)   | Type of a value in type position                      | [typeof](https://www.typescriptlang.org/docs/handbook/2/typeof-types.html)                     |
-| [Indexed Access Types](#indexed-access-types)     | Look up a property type — `T["key"]`                  | [indexed access](https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html)     |
-| [Conditional Types](#conditional-types)           | Type-level if/else — `T extends U ? X : Y`            | [conditional](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)           |
-| [Mapped Types](#mapped-types)                     | Transform every property — `{ [K in keyof T]: ... }`  | [mapped](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html)                     |
-| [Template Literal Types](#template-literal-types) | String types from unions and literals                 | [template literal](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) |
+| Topic                                             | Covers                                            | Example                           |
+| ------------------------------------------------- | ------------------------------------------------- | --------------------------------- |
+| [Generics](#generics)                             | Type parameters on functions, interfaces, classes | `function id<T>(x: T): T`         |
+| [Keyof Type Operator](#keyof-type-operator)       | Union of keys — `keyof T`                         | `type K = keyof { a: 1 }` → `"a"` |
+| [`typeof` Type Operator](#typeof-type-operator)   | Type of a value in type position                  | `type S = typeof myString`        |
+| [Indexed Access Types](#indexed-access-types)     | Property type lookup                              | `type Age = Person["age"]`        |
+| [Conditional Types](#conditional-types)           | Type-level if/else                                | `T extends U ? X : Y`             |
+| [Mapped Types](#mapped-types)                     | Transform each property                           | `{ [K in keyof T]: boolean }`     |
+| [Template Literal Types](#template-literal-types) | String types from unions                          | `` `${"a" \| "b"}_id` ``          |
 
 **Prerequisites:** Everyday types ([Types](./5_ts_types.md)), object shapes ([Object Types](./5_ts_objects.md)), and function generics basics ([Functions — Generic Functions](./5_ts_functions.md#generic-functions)). Built-in helpers built on these patterns: [Utility Types](./5_ts_utility_types.md).
 
@@ -89,6 +89,14 @@ Creating types from types — generics, type operators, conditional and mapped t
 
 **When to use:** When a runtime value or base interface already encodes the shape you need, derive types instead of maintaining parallel definitions.
 
+**Examples:**
+
+```typescript
+type Box<T> = { value: T };
+type Keys = keyof Box<{ id: number }>; // "value"
+type Id = Box<{ id: number }>["value"]; // number
+```
+
 **Thoughts:** Start with generics and `keyof`/`typeof`; add conditionals and mapped types when utility types or API wrappers need them. See also [Utility Types](./5_ts_utility_types.md) for built-ins built on these patterns.
 
 **Sources:** [TypeScript handbook — Creating Types from Types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)
@@ -106,109 +114,97 @@ Creating types from types — generics, type operators, conditional and mapped t
 
 **How it works:**
 
+| Topic                 | Example                                             |
+| --------------------- | --------------------------------------------------- |
+| Identity function     | `function identity<T>(arg: T): T { return arg; }`   |
+| Inference             | `identity("hi")` → `string`                         |
+| Generic arrays        | `function first<T>(arr: T[]): T { return arr[0]; }` |
+| Generic function type | `let fn: <T>(x: T) => T`                            |
+| Generic interface     | `interface Fn<T> { (x: T): T }`                     |
+| Generic class         | `class Box<T> { value: T }`                         |
+| `extends` constraint  | `<T extends { length: number }>(x: T)`              |
+| `keyof` constraint    | `<T, K extends keyof T>(obj: T, key: K)`            |
+| Class factory         | `function create<T>(c: new () => T): T`             |
+| Default type param    | `<T = HTMLDivElement>(el?: T)`                      |
+
 ### Hello World — the identity function
 
 - `function identity<Type>(arg: Type): Type` captures the argument type and returns the same type.
 - Call with explicit type arg: `identity<string>("myString")`.
 - Or rely on **type argument inference**: `identity("myString")` → `string`.
-- Pass explicit type args when inference fails on complex calls.
+
+```typescript
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
+const a = identity("myString"); // string
+```
 
 ### Working with generic type variables
 
 - `T` stands for any type — you cannot assume `.length` unless constrained.
-- `loggingIdentity<Type>(arg: Type[]): Type[]` or `Array<Type>` fixes the array case.
+- Use `T[]` or `Array<T>` when the argument is an array.
+
+```typescript
+function firstElement<T>(arr: T[]): T {
+  return arr[0];
+}
+```
 
 ### Generic types (function types and interfaces)
 
-- Function type: `let fn: <T>(arg: T) => T = identity`.
-- Object call signature: `let fn: { <T>(arg: T): T } = identity`.
-- Generic interface with type param on the interface: `interface GenericIdentityFn<Type> { (arg: Type): Type }` — then `GenericIdentityFn<number>`.
-
-### Generic classes
-
-- `class GenericNumber<NumType> { zeroValue: NumType; add: (x: NumType, y: NumType) => NumType }`.
-- Type parameter on the class applies to **instance** members, not static members.
-
-### Generic constraints
-
-- `function loggingIdentity<Type extends Lengthwise>(arg: Type)` — `Type` must have `.length`.
-- `function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key)` — key must exist on `obj`.
-
-### Using class types in generics
-
-- Factory pattern: `function create<Type>(c: { new (): Type }): Type { return new c(); }`.
-- `function createInstance<A extends Animal>(c: new () => A): A`.
-
-### Generic parameter defaults
-
-- `function create<T extends HTMLElement = HTMLDivElement, U extends HTMLElement[] = T[]>(element?: T, children?: U)` — omitted type args use defaults.
-- Required type parameters must come before optional ones.
-
-**When to use:** Reusable containers, API wrappers, React hooks/components, and any API where input and output types should stay linked. Function-level basics: [Generic Functions](./5_ts_functions.md#generic-functions). Object-level: [Generic Object Types](./5_ts_objects.md#generic-object-types).
-
-**Examples:**
+- Function type: `let fn: <T>(arg: T) => T`.
+- Generic interface: `interface GenericIdentityFn<Type> { (arg: Type): Type }`.
 
 ```typescript
-// identity — preserve type (not any)
-function identity<Type>(arg: Type): Type {
-  return arg;
-}
-
-let a = identity("myString"); // string
-let b = identity<string>("myString");
-
-function getFirstElement<T>(arr: T[]): T {
-  return arr[0];
-}
-
-interface Lengthwise {
-  length: number;
-}
-
-function loggingIdentity<Type extends Lengthwise>(arg: Type): Type {
-  console.log(arg.length);
-  return arg;
-}
-
-function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key) {
-  return obj[key];
-}
-
-let x = { a: 1, b: 2, c: 3 };
-getProperty(x, "a"); // OK
-// getProperty(x, "m"); // Error
-
 interface GenericIdentityFn<Type> {
   (arg: Type): Type;
 }
+let fn: GenericIdentityFn<number> = (n) => n;
+```
 
+### Generic classes
+
+- Type parameter on the class applies to **instance** members, not static members.
+
+```typescript
 class GenericNumber<NumType> {
-  zeroValue: NumType;
-  add: (x: NumType, y: NumType) => NumType;
+  zeroValue!: NumType;
+  add!: (x: NumType, y: NumType) => NumType;
 }
+```
 
+### Generic constraints
+
+- `extends` limits what `T` may be; combine with `keyof` for safe property access.
+
+```typescript
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+  return obj[key];
+}
+```
+
+### Using class types in generics
+
+- Pass a constructor type to build instances in a factory.
+
+```typescript
 function create<Type>(c: { new (): Type }): Type {
   return new c();
 }
-
-declare function createElement<T extends HTMLElement = HTMLDivElement>(
-  element?: T,
-): T;
 ```
+
+### Generic parameter defaults
+
+- Omitted type arguments fall back to defaults; required params come first.
 
 ```typescript
-// Interview — generic API wrapper
-type ApiResponse<T> =
-  | { success: true; data: T }
-  | { success: false; error: string };
-
-async function fetchJson<T>(url: string): Promise<ApiResponse<T>> {
-  const res = await fetch(url);
-  if (!res.ok) return { success: false, error: res.statusText };
-  const data = (await res.json()) as T;
-  return { success: true, data };
-}
+declare function tag<T extends HTMLElement = HTMLDivElement>(el?: T): T;
 ```
+
+**When to use:** Reusable containers, API wrappers, React hooks/components, and any API where input and output types should stay linked. Function-level basics: [Generic Functions](./5_ts_functions.md#generic-functions). Object-level: [Generic Object Types](./5_ts_objects.md#generic-object-types).
+
+**Thoughts:** Interview pattern — generic API wrapper: `async function fetchJson<T>(url: string): Promise<ApiResponse<T>>` with `ApiResponse<T> = { success: true; data: T } | { success: false; error: string }`.
 
 **Sources:** [TypeScript handbook — Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)
 

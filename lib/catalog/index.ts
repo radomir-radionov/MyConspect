@@ -31,6 +31,8 @@ export type Topic = {
   readonly track: TrackId;
   readonly grouping?: TopicGrouping;
   readonly hideSidebarConcepts?: boolean;
+  /** Still routable + in search; omitted from subject sidebar clusters. */
+  readonly hideFromSubjectNav?: boolean;
   readonly hideAnswers?: boolean;
 };
 
@@ -217,13 +219,43 @@ const SUBJECTS_BASE: readonly Subject[] = [
         id: "basics",
         title: "The Basics",
         blurb:
-          "Static type-checking, compiler, tsconfig, and intro for JS programmers.",
+          "tsconfig, declaration files, and intro for JavaScript programmers.",
+      },
+      {
+        id: "compiler-fundamentals",
+        title: "Compiler fundamentals",
+        blurb:
+          "Static type-checking, tsc, emit behavior, explicit types, and downleveling.",
       },
       {
         id: "types",
         title: "Types",
-        blurb:
-          "Basic value types — string, number, boolean, arrays, any, null, undefined.",
+        blurb: "Everyday types — catalog hub with sectioned topics.",
+      },
+      {
+        id: "types-values",
+        title: "Values",
+        blurb: "Primitives, arrays, null, and undefined.",
+      },
+      {
+        id: "types-shapes",
+        title: "Object shapes",
+        blurb: "Inline objects, interfaces, type aliases, type vs interface.",
+      },
+      {
+        id: "types-combining",
+        title: "Combining types",
+        blurb: "Unions, literal types, and enums.",
+      },
+      {
+        id: "types-safety",
+        title: "Type safety",
+        blurb: "any and unknown.",
+      },
+      {
+        id: "types-code",
+        title: "Types in code",
+        blurb: "Annotations, type assertions, and function types.",
       },
       {
         id: "narrowing-types",
@@ -843,6 +875,10 @@ export function hubHrefForTrack(trackId: TrackId): string | undefined {
   return HUB_HREFS[file.toLowerCase()];
 }
 
+type GroupedTopicOptions = {
+  readonly hideFromSubjectNav?: boolean;
+};
+
 function grouped(
   slug: string,
   file: string,
@@ -851,8 +887,17 @@ function grouped(
   track: TrackId,
   subject: string,
   cluster: string,
+  options?: GroupedTopicOptions,
 ): Topic {
-  return { slug, file, title, blurb, track, grouping: { subject, cluster } };
+  return {
+    slug,
+    file,
+    title,
+    blurb,
+    track,
+    grouping: { subject, cluster },
+    ...(options?.hideFromSubjectNav ? { hideFromSubjectNav: true } : {}),
+  };
 }
 
 const TOPICS_BASE: Topic[] = [
@@ -1165,10 +1210,19 @@ const TOPICS_BASE: Topic[] = [
     "ts-basics",
     "5_ts_basics.md",
     "The Basics",
-    "Static type-checking, compiler, tsconfig, and intro for JS programmers.",
+    "tsconfig, declaration files, and intro for JavaScript programmers.",
     "frontend",
     "typescript",
     "basics",
+  ),
+  grouped(
+    "ts-compiler-fundamentals",
+    "5_ts_compiler_fundamentals.md",
+    "Compiler fundamentals",
+    "Static type-checking, tsc, emit behavior, explicit types, and downleveling.",
+    "frontend",
+    "typescript",
+    "compiler-fundamentals",
   ),
   grouped(
     "ts-narrowing",
@@ -1237,10 +1291,60 @@ const TOPICS_BASE: Topic[] = [
     "ts-types",
     "5_ts_types.md",
     "Types",
-    "Basic value types — string, number, boolean, arrays, any, null, undefined.",
+    "Type catalog hub — index of all everyday type forms.",
     "frontend",
     "typescript",
     "types",
+  ),
+  grouped(
+    "ts-types-values",
+    "5_ts_types_values.md",
+    "Types — Values",
+    "Primitives, arrays, null, and undefined.",
+    "frontend",
+    "typescript",
+    "types-values",
+    { hideFromSubjectNav: true },
+  ),
+  grouped(
+    "ts-types-shapes",
+    "5_ts_types_shapes.md",
+    "Types — Object shapes",
+    "Inline objects, interfaces, type aliases, and type vs interface.",
+    "frontend",
+    "typescript",
+    "types-shapes",
+    { hideFromSubjectNav: true },
+  ),
+  grouped(
+    "ts-types-combining",
+    "5_ts_types_combining.md",
+    "Types — Combining types",
+    "Union types, literal types, and enums.",
+    "frontend",
+    "typescript",
+    "types-combining",
+    { hideFromSubjectNav: true },
+  ),
+  grouped(
+    "ts-types-safety",
+    "5_ts_types_safety.md",
+    "Types — Safety",
+    "any and unknown.",
+    "frontend",
+    "typescript",
+    "types-safety",
+    { hideFromSubjectNav: true },
+  ),
+  grouped(
+    "ts-types-code",
+    "5_ts_types_code.md",
+    "Types in code",
+    "Type annotations, assertions, and everyday function types.",
+    "frontend",
+    "typescript",
+    "types-code",
+    { hideFromSubjectNav: true },
   ),
   grouped(
     "ts-cheat-sheets",
@@ -2968,12 +3072,15 @@ export function getCluster(
 export function topicsForCluster(
   subject: Subject,
   clusterId: string,
+  options?: { readonly includeHiddenNav?: boolean },
 ): readonly Topic[] {
+  const includeHidden = options?.includeHiddenNav ?? false;
   return TOPICS.filter(
     (topic) =>
       topic.track === subject.track &&
       topic.grouping?.subject === subject.slug &&
-      topic.grouping.cluster === clusterId,
+      topic.grouping.cluster === clusterId &&
+      (includeHidden || !topic.hideFromSubjectNav),
   );
 }
 

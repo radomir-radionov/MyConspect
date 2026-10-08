@@ -1,6 +1,6 @@
 # TypeScript — Assertions & satisfies
 
-Type assertions (`as`) — see the handbook [Everyday Types — type assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions).
+Type assertions (`as`, `!`) — [Types in code](./5_ts_types_code.md#type-assertions). This page covers **`satisfies`**.
 
 [← Back to hub](./5_ts.md)
 

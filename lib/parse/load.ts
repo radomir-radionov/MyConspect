@@ -11,8 +11,28 @@ import {
   type TrackId,
 } from "@/lib/catalog";
 import {
+  isFunctionsTopicSlug,
+  withFunctionsConceptGroups,
+} from "@/lib/catalog/functionsHub";
+import {
+  isModulesTopicSlug,
+  withModulesConceptGroups,
+} from "@/lib/catalog/modulesHub";
+import {
+  isObjectsTopicSlug,
+  withObjectsConceptGroups,
+} from "@/lib/catalog/objectsHub";
+import {
+  TYPES_HUB_REFERENCE_GROUP,
+  TYPES_HUB_SECTIONS,
+  TYPES_HUB_SLUG,
+  isTypesHubSlug,
+  withConceptGroup,
+} from "@/lib/catalog/typesHub";
+import {
   parseTopicMarkdown,
   parseTopicOutline,
+  type Concept,
   type ConceptOutline,
   type ParseOptions,
   type ParsedTopic,
@@ -35,7 +55,7 @@ type ParsedEntry = {
   readonly promise: Promise<ParsedTopic>;
 };
 
-const PARSE_LOGIC_REVISION = 6;
+const PARSE_LOGIC_REVISION = 15;
 
 type ParseCache = {
   markdown: Map<string, StoredRead>;
@@ -178,7 +198,27 @@ function parseOptionsForFile(file: string, locale: Locale): ParseOptions {
   };
 }
 
-export function loadTopicOutline(
+function loadTypesHubOutline(
+  topic: Topic,
+  locale: Locale,
+): readonly ConceptOutline[] {
+  const merged: ConceptOutline[] = withConceptGroup(
+    loadTopicOutlineSingle(topic, locale),
+    TYPES_HUB_REFERENCE_GROUP,
+  );
+  for (const section of TYPES_HUB_SECTIONS) {
+    const child = getTopic(topic.track, section.slug);
+    if (!child) {
+      continue;
+    }
+    merged.push(
+      ...withConceptGroup(loadTopicOutlineSingle(child, locale), section.group),
+    );
+  }
+  return merged;
+}
+
+function loadTopicOutlineSingle(
   topic: Topic,
   locale: Locale = DEFAULT_LOCALE,
 ): readonly ConceptOutline[] {
@@ -190,13 +230,64 @@ export function loadTopicOutline(
   if (hit?.stamp === outlineStamp) {
     return hit.value;
   }
-  const value = parseTopicOutline(
-    result.markdown,
-    locale,
-    parseOptionsForFile(topic.file, locale),
+  const value = outlineForTopic(
+    topic,
+    parseTopicOutline(
+      result.markdown,
+      locale,
+      parseOptionsForFile(topic.file, locale),
+    ),
   );
   store.set(key, { stamp: outlineStamp, value });
   return value;
+}
+
+function outlineForTopic(
+  topic: Topic,
+  outline: readonly ConceptOutline[],
+): readonly ConceptOutline[] {
+  if (isFunctionsTopicSlug(topic.slug)) {
+    return withFunctionsConceptGroups(outline);
+  }
+  if (isObjectsTopicSlug(topic.slug)) {
+    return withObjectsConceptGroups(outline);
+  }
+  if (isModulesTopicSlug(topic.slug)) {
+    return withModulesConceptGroups(outline);
+  }
+  return outline;
+}
+
+function parsedForTopic(topic: Topic, parsed: ParsedTopic): ParsedTopic {
+  if (isFunctionsTopicSlug(topic.slug)) {
+    return {
+      ...parsed,
+      concepts: withFunctionsConceptGroups(parsed.concepts),
+    };
+  }
+  if (isObjectsTopicSlug(topic.slug)) {
+    return {
+      ...parsed,
+      concepts: withObjectsConceptGroups(parsed.concepts),
+    };
+  }
+  if (isModulesTopicSlug(topic.slug)) {
+    return {
+      ...parsed,
+      concepts: withModulesConceptGroups(parsed.concepts),
+    };
+  }
+  return parsed;
+}
+
+export function loadTopicOutline(
+  topic: Topic,
+  locale: Locale = DEFAULT_LOCALE,
+): readonly ConceptOutline[] {
+  if (isTypesHubSlug(topic.slug)) {
+    return loadTypesHubOutline(topic, locale);
+  }
+  return loadTopicOutlineSingle(topic, locale);
 }
 
 export function loadFileOutline(
@@ -255,8 +346,9 @@ function loadParsedFromFile(
     hit?.stamp === parsedStamp
       ? hit.promise
       : startParsed(store, key, parsedStamp, result.markdown, locale, file);
+  const topic = topicForFile(file);
   return pending.then((parsed) => ({
-    parsed,
+    parsed: topic ? parsedForTopic(topic, parsed) : parsed,
     usedFallback: result.usedFallback,
   }));
 }
@@ -334,6 +426,36 @@ export const loadTopicPage = cache(
     };
   },
 );
+
+export const loadTypesHubConcepts = cache(
+  async (
+    track: string,
+    locale: Locale = DEFAULT_LOCALE,
+  ): Promise<readonly Concept[] | undefined> => {
+    const hub = await loadTopicPage(track, TYPES_HUB_SLUG, locale);
+    if (!hub) {
+      return undefined;
+    }
+    const merged: Concept[] = withConceptGroup(
+      hub.parsed.concepts,
+      TYPES_HUB_REFERENCE_GROUP,
+    );
+    for (const section of TYPES_HUB_SECTIONS) {
+      const child = await loadTopicPage(track, section.slug, locale);
+      if (!child) {
+        continue;
+      }
+      merged.push(...withConceptGroup(child.parsed.concepts, section.group));
+    }
+    return merged;
+  },
+);
+
+export function topicUsesGroupedConceptIndex(
+  topic: Pick<Topic, "slug">,
+): boolean {
+  return isTypesHubSlug(topic.slug);
+}
 
 export function assertCatalogFilesExist(locale: Locale = DEFAULT_LOCALE): void {
   for (const topic of TOPICS) {

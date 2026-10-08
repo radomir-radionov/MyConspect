@@ -334,6 +334,82 @@ test("navChainIndex matches pathname and concept hash", () => {
   );
 });
 
+test("siblingNavHrefForPath steps through concepts on the same topic only", () => {
+  const frontendFunctions: readonly NavGroup[] = [
+    {
+      id: "frontend",
+      title: "Frontend",
+      href: "/frontend",
+      entries: [
+        {
+          kind: "subject",
+          subject: {
+            slug: "typescript",
+            href: "/frontend/typescript",
+            title: "TypeScript",
+            blurb: "",
+            clusters: [
+              {
+                id: "functions",
+                title: "Functions",
+                href: "/frontend/typescript#functions",
+                topics: [
+                  {
+                    slug: "ts-functions",
+                    href: "/frontend/ts-functions",
+                    title: "Functions",
+                    blurb: "",
+                    concepts: [
+                      { id: "call-signatures", title: "Call Signatures" },
+                      { id: "generic-functions", title: "Generic Functions" },
+                      { id: "inference", title: "Inference" },
+                    ],
+                  },
+                  {
+                    slug: "ts-objects",
+                    href: "/frontend/ts-objects",
+                    title: "Object Types",
+                    blurb: "",
+                    concepts: [{ id: "shapes", title: "Shapes" }],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+  ];
+
+  assert.equal(
+    siblingNavHrefForPath(
+      frontendFunctions,
+      "/frontend/ts-functions",
+      "#generic-functions",
+      -1,
+    ),
+    "/frontend/ts-functions#call-signatures",
+  );
+  assert.equal(
+    siblingNavHrefForPath(
+      frontendFunctions,
+      "/frontend/ts-functions",
+      "#generic-functions",
+      1,
+    ),
+    "/frontend/ts-functions#inference",
+  );
+  assert.equal(
+    siblingNavHrefForPath(
+      frontendFunctions,
+      "/frontend/ts-functions",
+      "#inference",
+      1,
+    ),
+    "/frontend/ts-functions",
+  );
+});
+
 test("adjacentConceptId returns the next and previous concept id", () => {
   const ids = ["alpha", "beta", "gamma"];
   assert.equal(adjacentConceptId(ids, "beta", 1), "gamma");
