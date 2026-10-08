@@ -125,7 +125,7 @@ function conceptRowClass(
   onPath: boolean,
 ): string {
   const shared =
-    "block w-full cursor-pointer rounded-md px-2 py-1.5 text-sm font-medium ring-1 transition-[color,background-color,box-shadow] duration-150 ease-out motion-reduce:transition-none";
+    "block min-h-8 w-full cursor-pointer rounded-md px-2 py-1.5 text-sm font-medium ring-1 ring-inset transition-[color,background-color,box-shadow] duration-150 ease-out motion-reduce:transition-none";
   const highlight = active
     ? `${shared} text-zinc-900 bg-yellow-50 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800`
     : `${shared} text-zinc-600 bg-transparent ring-transparent hover:bg-yellow-50 dark:text-zinc-400 dark:hover:bg-yellow-950/60`;
@@ -286,6 +286,7 @@ const SectionTopicLink = memo(function SectionTopicLink({
       data-nav-path={onPath ? "true" : undefined}
       data-search-hit={isFirstTopic ? "true" : undefined}
       onClick={(event) => {
+        pinNavForHref(event.currentTarget, pathname, topic.href);
         if (pathname === topic.href) {
           event.preventDefault();
           if (window.location.hash) {

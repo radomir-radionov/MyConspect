@@ -202,7 +202,7 @@ export function closeNavSoon(onNavigate?: () => void) {
 export const NAV_ROW_GAP = "mt-1.5";
 
 const NAV_ROW_SURFACE =
-  "ring-1 transition-[color,background-color,box-shadow] duration-150 ease-out motion-reduce:transition-none";
+  "ring-1 ring-inset transition-[color,background-color,box-shadow] duration-150 ease-out motion-reduce:transition-none";
 
 export function rowClass(active: boolean, sticky = false, indentClass = "") {
   // Indent with padding (not margin) so `w-full` rows keep one shared right edge.

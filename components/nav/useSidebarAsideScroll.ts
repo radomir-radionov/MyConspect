@@ -8,6 +8,7 @@ import {
   restoreSidebarPin,
   scrollSidebarActivePath,
   scrollSidebarHit,
+  shouldResetNavAsideScroll,
 } from "./sidebarPin";
 
 /** Keeps aside scroll, pin restore, and active-row scrolling in one place. */
@@ -42,9 +43,12 @@ export function useSidebarAsideScroll({
     }
     wasSearching.current = false;
     if (prevPathnameRef.current !== pathname) {
+      const previous = prevPathnameRef.current;
       prevPathnameRef.current = pathname;
-      skipPinRestoreRef.current = true;
-      resetNavAsideScroll();
+      if (shouldResetNavAsideScroll(previous, pathname)) {
+        skipPinRestoreRef.current = true;
+        resetNavAsideScroll();
+      }
       return;
     }
     restoreSidebarPin();

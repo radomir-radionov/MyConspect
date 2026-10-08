@@ -3,7 +3,21 @@ import {
   HANDBOOK_SIDEBAR_ID,
   SIDEBAR_PIN_HOLD_MS,
 } from "@/constants";
+import { stripLocalePrefix } from "@/lib/i18n/paths";
 import { splitHref } from "@/lib/nav";
+
+/** Reset aside scroll when leaving a track; keep position for sibling topics in the same track. */
+export function shouldResetNavAsideScroll(
+  previousPathname: string,
+  nextPathname: string,
+): boolean {
+  const prevTrack =
+    stripLocalePrefix(previousPathname).path.split("/").filter(Boolean)[0] ??
+    "";
+  const nextTrack =
+    stripLocalePrefix(nextPathname).path.split("/").filter(Boolean)[0] ?? "";
+  return prevTrack !== nextTrack;
+}
 
 export type PinNavOptions = {
   scrollIntoView?: boolean;
