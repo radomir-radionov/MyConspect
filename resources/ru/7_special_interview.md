@@ -223,7 +223,7 @@ const history = new History();
 history.addRecord({ amount: 100, dateTime: Date.now() });
 ```
 
-**Interview tip:** Pair with "class vs constructor function" and "composition vs inheritance". Mention JS has no interfaces — TypeScript supplies contracts. Full answer: [3_js_oop.md](./3_js_oop.md#interview-practice).
+**Interview tip:** Pair with "class vs constructor function" and "composition vs inheritance". Mention JS has no interfaces — TypeScript supplies contracts. Full answer: [JS interview](./3_js_interview.md).
 
 **See also:** [Object-Oriented Programming](./7_special_engineering.md#object-oriented-programming-oop) · [Entities, relations & design](./7_special_engineering.md#object-oriented-programming-oop)
 
@@ -249,12 +249,11 @@ history.addRecord({ amount: 100, dateTime: Date.now() });
 
 Both are one-to-many notification patterns, but differ in **coupling** and **topology**.
 
-
-| | Observer                                                       | Pub/Sub                                                   |
-| | ------------  |  --------------------------------------------------------------  |
-| | **Coupling** | Subject **knows** observers directly                           | Publishers and subscribers **don't know** each other      |
-| | **Mediator** | None — direct registration                                     | **Broker / event bus** in between                         |
-| | **Delivery** | Synchronous callback list                                      | Often async (message queue)                               |
+| | Observer | Pub/Sub |
+| | ------------ | -------------------------------------------------------------- |
+| | **Coupling** | Subject **knows** observers directly | Publishers and subscribers **don't know** each other |
+| | **Mediator** | None — direct registration | **Broker / event bus** in between |
+| | **Delivery** | Synchronous callback list | Often async (message queue) |
 | | **Examples** | DOM `addEventListener`, Redux `subscribe`, Node `EventEmitter` | Redis pub/sub, RabbitMQ, MQTT, browser `BroadcastChannel` |
 
 **How it works:**

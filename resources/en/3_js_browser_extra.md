@@ -1,23 +1,21 @@
-# JS Browser — Additional
+# JS Browser — Additional APIs
 
-Browser APIs beyond the document tree: storage, CORS, observers, History, URL, files, and UI timing.
+Storage, CORS, observers, History, URL helpers, and UI timing. Windows, files, network, animation, and Web Components have dedicated topic pages.
 
-[← Back to JS hub](./3_js.md)
+[← Back to JS hub](./3_js.md) · [Browser hub](./3_js_browser_hub.md)
 
 ### Related docs
 
-* [Document](./3_js_browser.md) · [Events](./3_js_events.md) · [JS Interview](./3_js_interview.md)
-* [JS Core](./3_js_core.md) · [JSON](./3_js_variables.md#json) · [JS Array](./3_js_array.md) · [JS Async](./3_js_async.md)
-* [HTML browser & rendering](./1_html.md) · [Web API](./6_web_api.md) · [HTTP cookies](./6_web_api_http.md#http-cookies) · [URI / URL anatomy](./6_web_api_core.md#uri-url--urn) · [CORS](./6_web_api_security.md#cors) · [PWA](./6_web_api_apps.md#pwa-progressive-web-app)
-* [OS files & file systems](./8_nodejs_modules.md#files--file-systems)
+- [Document](./3_js_browser.md) · [Events](./3_js_events.md) · [Windows](./3_js_browser_windows.md) · [Files](./3_js_browser_files.md) · [Network](./3_js_browser_network.md) · [Animation](./3_js_browser_animation.md) · [Web Components](./3_js_web_components.md)
+- [JS Core](./3_js_core.md) · [JSON](./3_js_data_structures.md#json) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md)
+- [HTML browser & rendering](./1_html.md) · [Web API](./6_web_api.md) · [HTTP cookies](./6_web_api_http.md#http-cookies) · [CORS](./6_web_api_security.md#cors)
 
 ### Main concepts
 
-| Area | Topics |
-|------|--------|
-| **UI** | Dimensions, scroll, coordinates, debounce, throttle, `rAF`, idle callbacks |
-| **APIs** | Storage, CORS, observers, History API, `URL` / `URLSearchParams`, Web Components, File / Blob / binary |
-| **Windows** | Popups, `postMessage`, iframes |
+| Area     | Topics                                                                                                                                    |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **UI**   | Debounce, throttle, idle callbacks (size/scroll → [Document](./3_js_browser.md#document); rAF → [Animation](./3_js_browser_animation.md)) |
+| **APIs** | Storage, CORS, observers, History API, `URL` / `URLSearchParams`                                                                          |
 
 ### Sections
 
@@ -25,162 +23,13 @@ Browser APIs beyond the document tree: storage, CORS, observers, History, URL, f
 
 - [Media queries](#media-queries-in-javascript)
 - [Browser APIs & UI patterns](#browser-apis--ui-patterns)
-- [Debounce](#debounce) · [Throttle](#throttle)
-- [FormData / File / Blob](#formdata-file-api-filereader) · [createObjectURL](#url-createobjecturl)
-- [Cross-tab / windows](#cross-tab-communication) · [Clickjacking](#clickjacking-pointer)
+- [Debounce](#debounce) · [Throttle](#throttle) · [requestIdleCallback](#request-idle-callback)
 - [Browser storage](#browser-storage) · [CORS](#cors-same-origin) · [Observers](#intersection-resize-observer) · [History API](#history-api) · [URL / URLSearchParams](#url--urlsearchparams)
 - [Interview](./3_js_interview.md)
 
 ---
 
 ## Browser APIs & UI patterns
-
-<a name="formdata-file-api-filereader"></a>
-
-<details>
-  <summary>FormData, File API, FileReader</summary>
-
-### FormData, File API, FileReader
-
-**Definition:** APIs for reading user files and sending form data to a server. Disk paths, attributes, and OS file APIs live in [Files & file systems](./8_nodejs_modules.md#files--file-systems) — the browser only sees a `File` the user picked, not the host tree.
-
-**How it works:**
-
-- `FormData` wraps form fields or manual append; multipart body for `fetch`/`XHR`. `set` replaces same-name fields; `append` can add duplicates. File field: `append(name, blob, fileName)`.
-- `File` extends `Blob` with `name` / `lastModified`. From `<input type="file">` → `input.files[0]`, or drag-drop `dataTransfer.files`.
-- `Blob` = immutable binary + optional MIME `type`. Build with `new Blob(parts, { type })`; slice with `blob.slice`. Download/preview via `URL.createObjectURL` (revoke when done) or `FileReader.readAsDataURL`.
-- `FileReader` async reads Blob/File as text, data URL, or `ArrayBuffer` (`load` / `error` events). Prefer `blob.arrayBuffer()` / `blob.text()` when available.
-- **Binary core:** `ArrayBuffer` = fixed raw bytes (not a JS `Array`). Views: TypedArrays (`Uint8Array`, …) or `DataView` for mixed formats. `TextDecoder` / `TextEncoder` convert UTF-8 ↔ bytes.
-
-**When to use:** Avatar upload; CSV import; canvas → `toBlob` then FormData; decode fetched binary as text.
-
-#### Common pitfalls
-
-Setting `Content-Type` manually on FormData (breaks boundary); never revoking object URLs; treating `ArrayBuffer` like `Array`; expecting `fetch` upload progress (use XHR — [HTTP in JS](./6_web_api_http.md#http-in-javascript)).
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| `FormData` easy multipart | Large files → memory if fully buffered |
-| `Blob` + object URL for preview | Must `revokeObjectURL` |
-| Typed arrays for binary ops | Fixed length — no `splice` |
-
-**Examples:**
-
-```js
-const data = new FormData(form);
-data.append('image', canvasBlob, 'shot.png');
-await fetch('/upload', { method: 'POST', body: data });
-
-const buf = await file.arrayBuffer();
-const text = new TextDecoder().decode(new Uint8Array(buf));
-```
-
-**Sources:** [javascript.info/formdata](https://javascript.info/formdata) · [javascript.info/file](https://javascript.info/file) · [javascript.info/blob](https://javascript.info/blob) · [javascript.info/arraybuffer-binary-arrays](https://javascript.info/arraybuffer-binary-arrays) · [javascript.info/text-decoder](https://javascript.info/text-decoder) · [MDN FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader)
-
-</details>
-
-<a name="url-createobjecturl"></a>
-
-<details>
-  <summary>URL: createObjectURL()</summary>
-
-### URL.createObjectURL()
-
-**Definition:** Creates a temporary blob URL for a `File` or `Blob` — useful for previewing uploads. Parsing `https://` URLs: [URL / URLSearchParams](#url--urlsearchparams).
-
-**How it works:**
-
-- `URL.createObjectURL(blob)` creates `blob:` URL referencing in-memory blob until revoked.
-- Document owns URLs — revoke when done to free memory.
-
-URL lifetime is tied to the document — revoke when no longer needed.
-
-**When to use:**
-
-Image preview before upload; download link for generated PDF blob.
-
-#### Common pitfalls
-
-Never calling `revokeObjectURL`; storing blob URL in localStorage; using after blob garbage collected without revoke semantics understood.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Instant preview of uploads | Memory leak if not revoked |
-| No base64 overhead | URL invalid after revoke |
-| Works with video/audio src | Blob URLs not persistent across sessions |
-
-**Examples:**
-
-```js
-const file = input.files[0];
-const url = URL.createObjectURL(file);
-img.src = url;
-
-// cleanup when done
-URL.revokeObjectURL(url);
-```
-
-**Sources:** [javascript.info/blob](https://javascript.info/blob) · [MDN — URL.createObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static)
-
-</details>
-
-<details>
-  <summary>Web components</summary>
-
-### Web Components
-
-**Definition:** Browser-native APIs for creating reusable, encapsulated custom HTML elements.
-
-**How it works:**
-
-- `customElements.define('my-el', Class)` registers custom tag; `connectedCallback` when inserted.
-- `attachShadow({ mode: 'open' })` creates encapsulated DOM; styles scoped inside shadow root.
-- `<template>` holds inert markup cloned into shadow root.
-
-| API | Purpose |
-|-----|---------|
-| Custom Elements | Define new tags (`<my-button>`) |
-| Shadow DOM | Encapsulated DOM & styles |
-| HTML Templates | `<template>` for inert markup |
-| ES Modules | `import` in `<script type="module">` |
-
-**When to use:**
-
-Design system primitives; embeddable widget; cross-framework component.
-
-design systems, embeddable widgets, framework-agnostic components.
-
-#### Common pitfalls
-
-Expecting global CSS to pierce shadow (need `::part` or CSS variables); forgetting `customElements.define` once guard; form association with shadow inputs.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Native encapsulation | Framework ecosystem still dominant |
-| Reusable across stacks | SSR/styling tooling more complex |
-| Standard in modern browsers | Closed shadow harder to debug |
-
-**Examples:**
-
-```js
-class MyButton extends HTMLElement {
-  connectedCallback() {
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `<button><slot></slot></button>`;
-  }
-}
-customElements.define('my-button', MyButton);
-```
-
-**Sources:** [MDN Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
-
-</details>
 
 <details>
   <summary>Debounce</summary>
@@ -201,10 +50,10 @@ customElements.define('my-button', MyButton);
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Cuts noisy `input` down to one request | Feels laggy if `ms` is too large |
-| Simple: `setTimeout` + `clearTimeout` | Continuous events may **never** fire |
+| +                                      | −                                    |
+| -------------------------------------- | ------------------------------------ |
+| Cuts noisy `input` down to one request | Feels laggy if `ms` is too large     |
+| Simple: `setTimeout` + `clearTimeout`  | Continuous events may **never** fire |
 
 **Examples:**
 
@@ -249,10 +98,10 @@ input.addEventListener("input", (e) => search(e.target.value));
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                              | −                                       |
+| ------------------------------ | --------------------------------------- |
 | UI stays updated during motion | May skip the last sample (leading-only) |
-| Caps expensive handlers | Easy to confuse with debounce |
+| Caps expensive handlers        | Easy to confuse with debounce           |
 
 **Examples:**
 
@@ -269,9 +118,12 @@ function throttle(fn, ms) {
   };
 }
 
-window.addEventListener("scroll", throttle(() => {
-  console.log(window.scrollY);
-}, 100));
+window.addEventListener(
+  "scroll",
+  throttle(() => {
+    console.log(window.scrollY);
+  }, 100),
+);
 
 // MDN-style: at most every 20ms, always with latest scrollY
 let lastY = 0;
@@ -289,65 +141,9 @@ document.addEventListener("scroll", () => {
 
 **Thoughts:** Interview line: “still runs during the storm, but not more often than N ms.”
 
-**See also:** [Debounce](#debounce) · [requestAnimationFrame](#request-animation-frame)
+**See also:** [Debounce](#debounce) · [requestAnimationFrame](./3_js_browser_animation.md#requestanimationframe)
 
 **Sources:** [MDN Glossary — Throttle](https://developer.mozilla.org/en-US/docs/Glossary/Throttle) · [MDN Document scroll event](https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event) · [MDN Window.setTimeout](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout)
-
-</details>
-
-<a name="request-animation-frame"></a>
-
-<details>
-  <summary>requestAnimationFrame</summary>
-
-### requestAnimationFrame
-
-**Definition:** Schedules a callback before the next browser repaint (~60fps). Paused when tab is hidden.
-
-**How it works:**
-
-- Browser calls callback before next repaint (~60Hz); chained calls create animation loop.
-- Paused when tab hidden; synced with display refresh unlike `setTimeout`/`setInterval`.
-- Receives timestamp argument for delta time calculations.
-- `setInterval(fn, 1000/60)` is not tied to paint: jank between frames, and after a hidden tab the timer may **catch up** (many callbacks at once).
-- Pipeline / dirty layout → [1_html.md](./1_html_rendering.md#browser--rendering).
-
-**When to use:**
-
-JS animations; measure layout before paint; game loop; scroll-linked effects.
-
-Visual animations — always prefer over `setInterval`/`setTimeout`.
-
-#### Common pitfalls
-
-Doing heavy logic inside rAF callback; using rAF for one-shot delay (use `queueMicrotask` or `setTimeout`); not cancelling loop on unmount.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Smooth animations | Still main-thread — heavy work janks |
-| Auto-pauses in background | Not for non-visual delays |
-| Better than `setInterval` for visuals | One frame budget ~16ms |
-
-**Examples:**
-
-```js
-function animate() {
-  element.style.transform = `translateX(${position}px)`;
-  position += 2;
-  if (position < 500) requestAnimationFrame(animate);
-}
-requestAnimationFrame(animate);
-```
-
-| | rAF | setTimeout |
-|---|-----|------------|
-| Sync with display | yes | no |
-| Paused in background tab | yes | no |
-| Use for | animations | delayed one-off tasks |
-
-**Sources:** [MDN requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
 
 </details>
 
@@ -366,14 +162,14 @@ requestAnimationFrame(animate);
 - Optional `{ timeout }` forces a run if idle never comes.
 - Cooperative: do a slice of work, return, schedule again.
 
-| | rAF | requestIdleCallback | Microtasks |
-|---|-----|---------------------|------------|
+|      | rAF          | requestIdleCallback    | Microtasks                    |
+| ---- | ------------ | ---------------------- | ----------------------------- |
 | When | Before paint | When idle (or timeout) | After sync, before next macro |
-| Use | Animations | Analytics, prefetch | Promise reactions |
+| Use  | Animations   | Analytics, prefetch    | Promise reactions             |
 
 **When to use:** Non-urgent work. Do **not** use for drag/scroll animation.
 
-**Thoughts:** *rAF = this frame’s pixels; idle = leftover time; microtask storms never leave leftover time.*
+**Thoughts:** _rAF = this frame’s pixels; idle = leftover time; microtask storms never leave leftover time._
 
 **Sources:** [MDN requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
 
@@ -384,126 +180,18 @@ requestAnimationFrame(animate);
 <details>
   <summary>Element and window dimensions & scroll</summary>
 
-### Element and window dimensions & scroll
+**Definition:** Element and window size, scroll position, and `scrollIntoView` live in [Document](./3_js_browser.md#element-size-and-scroll).
 
-**Definition:** DOM elements expose `offsetWidth`, `clientWidth`, `scrollWidth`, etc.; the window has `innerHeight`, `scrollY`.
-
-**How it works:**
-
-- `offset*` includes border; `client*` content + padding, no border/scrollbar; `scroll*` full scrollable size.
-- `getBoundingClientRect()` viewport-relative box; add `scrollY` for document coords.
-- `scrollIntoView()` scrolls ancestors to reveal element.
-
-**When to use:**
-
-Sticky header offset; infinite scroll near bottom; tooltip positioning.
-
-Layout calculations, infinite scroll, sticky headers, scroll-to-element.
-
-anchor navigation, "scroll to error", highlighting search results.
-
-#### Common pitfalls
-
-Reading layout in write loop (thrashing); `offsetHeight` includes border, `clientHeight` not; rect changes on scroll without re-read.
-
-| Property family | Includes border | Includes scrollbar | Content only |
-|-----------------|-----------------|--------------------|--------------|
-| `offset*` | yes | no | no |
-| `client*` | no | no | no |
-| `scroll*` | — | — | full scrollable area |
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| `getBoundingClientRect` precise | Forces layout if called in loop |
-| Many properties for different needs | Easy to confuse offset vs client |
-| `scrollIntoView` built-in | Smooth scroll not instant for tests |
-
-**Examples:**
-
-```js
-const el = document.querySelector('.panel');
-const rect = el.getBoundingClientRect();
-const belowFold = rect.top > window.innerHeight;
-
-el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-```
-
-#### scrollIntoView()
-
-Scrolls the element into the visible area of the browser window.
-
-```js
-document.querySelector('#section-3').scrollIntoView({
-  behavior: 'smooth',
-  block: 'start',   // 'start' | 'center' | 'end' | 'nearest'
-  inline: 'nearest',
-});
-```
-
-**Thoughts:** `getBoundingClientRect()` is relative to viewport; add `scrollY` for document coordinates.
-
-**Window size / page scroll:** Prefer `document.documentElement.clientWidth/Height` for the content area (excludes scrollbar). `window.innerWidth` includes scrollbar. Full document height is unreliable on one property — use `Math.max(body/documentElement scroll/offset/client heights)`. Read scroll with `window.scrollY` / `scrollX` (aliases `pageYOffset` / `pageXOffset`). Scroll with `scrollTo` / `scrollBy` / `elem.scrollIntoView`.
-
-**Sources:** [javascript.info/size-and-scroll](https://javascript.info/size-and-scroll) · [javascript.info/size-and-scroll-window](https://javascript.info/size-and-scroll-window)
-
----
+**See also:** [Element size and scroll](./3_js_browser.md#element-size-and-scroll) · [Window size and scroll](./3_js_browser.md#window-size-and-scroll)
 
 </details>
 
 <details>
   <summary>Coordinates</summary>
 
-### Coordinates
+**Definition:** Viewport vs document coordinates live in [Document](./3_js_browser.md#coordinates).
 
-**Definition:** Element position can be read via `getBoundingClientRect()` (viewport-relative) or computed from `offsetTop` chain (document-relative).
-
-**How it works:**
-
-- Mouse events: `clientX/Y` viewport; `pageX/Y` = client + scroll offset.
-- `getBoundingClientRect()` gives element box vs viewport.
-- Drag math often converts between coordinate systems.
-
-**When to use:**
-
-Drag-drop; canvas hit testing; tooltip at cursor.
-
-Drag-and-drop, tooltips, click targets on canvas/SVG.
-
-#### Common pitfalls
-
-Using client coords for document-positioned elements without scroll; ignoring `transform` on parent; touch `touches[0]` vs `changedTouches`.
-
-| Method | Coordinate system |
-|--------|-------------------|
-| `getBoundingClientRect()` | Viewport (changes on scroll) |
-| `clientX` / `clientY` (events) | Viewport |
-| `pageX` / `pageY` | Document (includes scroll) |
-| `document.elementFromPoint(x, y)` | Topmost element at viewport point (`null` if outside window) |
-
-Convert viewport → document: add `window.scrollY` / `scrollX` to `getBoundingClientRect()` edges.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Standard event coordinates | Touch has multiple touches |
-| `getBoundingClientRect` for element hits | Zoom/transform affect rect |
-| `pageX` includes scroll | Legacy IE differences mostly gone |
-
-**Examples:**
-
-```js
-document.addEventListener('click', (e) => {
-  console.log('viewport:', e.clientX, e.clientY);
-  console.log('document:', e.pageX, e.pageY);
-});
-```
-
-**Sources:** [javascript.info/coordinates](https://javascript.info/coordinates)
-
----
+**See also:** [Coordinates](./3_js_browser.md#coordinates)
 
 </details>
 
@@ -531,23 +219,23 @@ Selection cleared on DOM mutation; conflating selection with input `selectionSta
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                               | −                                  |
+| ------------------------------- | ---------------------------------- |
 | Rich text editor building block | Cross-browser quirks in edge cases |
-| Programmatic copy/highlight | Complex nested text nodes |
-| Inspect user selection | Mobile selection API limited |
+| Programmatic copy/highlight     | Complex nested text nodes          |
+| Inspect user selection          | Mobile selection API limited       |
 
-| + | − |
-|------|------|
+| +                        | −                                     |
+| ------------------------ | ------------------------------------- |
 | Rich text editor support | Browser inconsistencies in edge cases |
-| Programmatic selection | Complex API surface |
+| Programmatic selection   | Complex API surface                   |
 
 **Examples:**
 
 ```js
 const selection = window.getSelection();
 const range = document.createRange();
-range.selectNodeContents(document.querySelector('article'));
+range.selectNodeContents(document.querySelector("article"));
 selection.removeAllRanges();
 selection.addRange(range);
 ```
@@ -555,114 +243,6 @@ selection.addRange(range);
 **Sources:** [javascript.info/selection-range](https://javascript.info/selection-range)
 
 ---
-
-</details>
-
-<a name="cross-tab-communication"></a>
-
-<details>
-  <summary>Cross-tab & cross-window communication</summary>
-
-### Cross-tab & cross-window communication
-
-**Definition:**
-
-Tabs/windows exchange data through several APIs. Pick by **origin**, **1:1 vs broadcast**, and **message vs shared state**.
-
-**Sequence** (decide → send → receive):
-
-```
-1. Origin    same-origin? BroadcastChannel / storage / opener
-             cross-origin? postMessage only — never otherWindow.document
-2. Send      postMessage / channel.postMessage / localStorage.setItem
-3. Receive   message | storage — check event.origin; storage skips the writer
-```
-
-Same-origin = protocol + host + port. `sessionStorage` is **per tab** (shared with same-origin iframes), not a cross-tab bus.
-
-| Method | Same-origin only | Cross-origin | Pattern | Best for |
-|--------|------------------|--------------|---------|----------|
-| `window.postMessage` | no | yes | point-to-point | iframes, OAuth popups, micro-frontends |
-| `BroadcastChannel` | yes | no | pub/sub (all tabs) | same-app tab sync, logout broadcast |
-| `localStorage` + `storage` event | yes | no | write in one tab, notify others | simple shared flags / last-write-wins state |
-| `window.opener` / `window.open` ref | yes | no* | parent ↔ popup | same-origin popup workflows |
-| `SharedWorker` | yes | no | shared background thread | shared socket, shared cache logic |
-| Service Worker + `clients` | yes | no | SW → all controlled tabs | PWA push, background sync |
-
-\*Cross-origin popups still use `postMessage`; direct `opener` property access is blocked.
-
-**How it works:**
-
-SOP blocks direct JS across origins. `postMessage` delivers a `MessageEvent`; the receiver **must** check `event.origin` and prefer a concrete `targetOrigin` (avoid `*`). The `storage` event fires on **other** documents that share that storage area — not on the writer.
-
-- **Popups:** `window.open(url, name, params)` — browsers block unless called from a user gesture (`onclick`). With size params → popup window; otherwise often a tab. Returns a window ref; popup uses `window.opener`. Call `win.close()` / check `win.closed`. Focus/move/resize are heavily limited.
-- **`postMessage`:** `win.postMessage(data, targetOrigin)`; listen with `addEventListener('message', …)` (not `onmessage` alone for reliability). Event: `data`, `origin`, `source`.
-- **iframes:** `iframe.contentWindow` / `contentDocument` (document only if same-origin). Hierarchy: `window.frames`, `parent`, `top`. `sandbox` adds restrictions (scripts/forms/top-nav/same-origin) unless allowlisted.
-- **`localStorage` + `storage`:** `setItem` in A; `storage` in B/C (`e.key`, `e.newValue`). Strings only; races — not a message bus.
-- **`window.open` / `opener`:** same origin may call `opener.fn()`; otherwise `opener.postMessage`.
-- **`SharedWorker`:** each tab `new SharedWorker(url)` + `port`; worker `onconnect` fans out. Same origin; weaker support than `BroadcastChannel`.
-- **Service Worker:** `clients.matchAll({ type: 'window' })` then `client.postMessage`. PWA fan-out.
-
-```
-Cross-origin?                         → postMessage
-Same origin, fire-and-forget?         → BroadcastChannel
-Persist + notify?                     → localStorage + storage
-Popup result?                         → opener or postMessage (safer default)
-Shared background work?               → SharedWorker
-PWA fan-out?                          → Service Worker clients
-```
-
-**When to use:**
-
-Logout all tabs; OAuth popup; theme sync; iframe widgets.
-
-#### Common pitfalls
-
-Skipping `event.origin`; expecting `storage` in the writing tab; using `sessionStorage` for cross-tab sync.
-
-**Pluses and minuses:**
-
-| + | − |
-| --- | --- |
-| Right API per constraint | Easy to treat `localStorage` as a bus |
-| `postMessage` is the cross-origin path | Must validate `event.origin` |
-
-**Examples:**
-
-```js
-parent.postMessage({ type: 'READY' }, 'https://parent.example.com');
-
-window.addEventListener('message', (e) => {
-  if (e.origin !== 'https://child.example.com') return;
-  console.log(e.data);
-});
-```
-
-```js
-const channel = new BroadcastChannel('app-events');
-channel.postMessage({ type: 'LOGOUT' });
-channel.onmessage = (e) => { if (e.data.type === 'LOGOUT') redirectToLogin(); };
-channel.close();
-```
-
-**Thoughts:** Cross-origin → `postMessage` + origin check. Same-origin broadcast → `BroadcastChannel`. Popups need a user gesture.
-
-**Sources:** [javascript.info/popup-windows](https://javascript.info/popup-windows) · [javascript.info/cross-window-communication](https://javascript.info/cross-window-communication) · [MDN postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) · [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel) · [storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event)
-
-</details>
-
-<a name="clickjacking-pointer"></a>
-
-<details>
-  <summary>Clickjacking (pointer)</summary>
-
-### Clickjacking
-
-**Definition:** Transparent iframe overlays your authenticated UI so a click on a decoy page hits your controls — full essay in [Clickjacking](./7_special_security.md#clickjacking).
-
-**How it works:** Prefer CSP `frame-ancestors`; fallback `X-Frame-Options` (HTTP header only, not `<meta>`). `SameSite` cookies reduce cookie-based framed sessions but do **not** replace framing controls. Frame-busting JS alone is weak.
-
-**Sources:** [javascript.info/clickjacking](https://javascript.info/clickjacking) · [7_special_security — Clickjacking](./7_special_security.md#clickjacking)
 
 </details>
 
@@ -678,17 +258,17 @@ channel.close();
 **How it works:**
 
 - **Cookies** — HTTP, not a general store. Server sets `Set-Cookie`; browser sends a `Cookie` header on later requests. Default is a **session cookie** (no `Max-Age`/`Expires` → gone when the browser session ends). Flags: `Path`, `Domain`, `Secure`, `HttpOnly`, `SameSite`. ~4 KB per cookie; encode values (`encodeURIComponent`). Awkward `document.cookie` string → libraries are common. Tracking cookies vs privacy: browsers restrict this; prefer Web Storage / IndexedDB for client-only data. Full HTTP flags: [HTTP cookies](./6_web_api_http.md#http-cookies).
-- **Web Storage** — `localStorage` and `sessionStorage`: same sync string KV API (`setItem`/`getItem`/`removeItem`/`clear`/`key`/`length`), different lifetime. Prefer methods over property access (avoids colliding with built-ins; `storage` event only fires for method writes). `sessionStorage` is per tab and dies when the tab closes. `localStorage` is origin-scoped and *intended* to last until cleared, but browsers still evict. MDN: **5 MiB local + 5 MiB session** per origin; over quota → `QuotaExceededError` (`try/catch`). Writes block the main thread — avoid frequent/large writes. Any same-origin script (including a malicious extension) can read it — **not for tokens**. Private/incognito: `localStorage` behaves like session storage and is wiped when the private session ends. Third-party iframes may be denied storage if third-party cookies are off.
+- **Web Storage** — `localStorage` and `sessionStorage`: same sync string KV API (`setItem`/`getItem`/`removeItem`/`clear`/`key`/`length`), different lifetime. Prefer methods over property access (avoids colliding with built-ins; `storage` event only fires for method writes). `sessionStorage` is per tab and dies when the tab closes. `localStorage` is origin-scoped and _intended_ to last until cleared, but browsers still evict. MDN: **5 MiB local + 5 MiB session** per origin; over quota → `QuotaExceededError` (`try/catch`). Writes block the main thread — avoid frequent/large writes. Any same-origin script (including a malicious extension) can read it — **not for tokens**. Private/incognito: `localStorage` behaves like session storage and is wiped when the private session ends. Third-party iframes may be denied storage if third-party cookies are off.
 - **IndexedDB** — async transactional object DB (also in workers). `indexedDB.open(name, version)` → `onupgradeneeded` to create stores/indexes. Stores structured-cloneable values (objects, blobs), key ranges, much larger quotas (disk-based, browser-specific). Same-origin. Overkill for a theme flag; right for offline caches, drafts, large datasets. Raw API is event/`IDBRequest`-heavy — wrappers (`idb`, localForage) are common.
 - **localForage** — `localStorage`-like API that is **async**. Default driver: IndexedDB (WebSQL as a legacy option); falls back to `localStorage`. Can store JS objects/blobs; JSON stringify/parse is automatic on the localStorage backend.
 
-| | Cookies | sessionStorage | localStorage | IndexedDB |
-|---|---------|----------------|--------------|-----------|
-| Lifetime | `Expires` / `Max-Age` / session | tab | until clear / eviction | until clear / eviction |
-| Scope | domain + path | origin + tab | origin (all tabs) | origin |
-| Sent to server | yes (every matching request) | no | no | no |
-| Capacity | ~4 KB / cookie | ~5 MiB | ~5 MiB | large (quota) |
-| API | HTTP + `document.cookie` | sync string KV | sync string KV | async transactions |
+|                | Cookies                         | sessionStorage | localStorage           | IndexedDB              |
+| -------------- | ------------------------------- | -------------- | ---------------------- | ---------------------- |
+| Lifetime       | `Expires` / `Max-Age` / session | tab            | until clear / eviction | until clear / eviction |
+| Scope          | domain + path                   | origin + tab   | origin (all tabs)      | origin                 |
+| Sent to server | yes (every matching request)    | no             | no                     | no                     |
+| Capacity       | ~4 KB / cookie                  | ~5 MiB         | ~5 MiB                 | large (quota)          |
+| API            | HTTP + `document.cookie`        | sync string KV | sync string KV         | async transactions     |
 
 Safari / WebKit ITP (when tracking prevention is on): **script-writable** data (JS cookies, Web Storage, IndexedDB, SW cache, …) can be deleted if the origin had **no user interaction** (click/tap) in the last **7 days of browser use**. Server-set cookies are exempt from that proactive eviction. Home-screen web apps skip the 7-day cap.
 
@@ -698,42 +278,42 @@ Auth session the **server** must see → `HttpOnly` + `Secure` + `SameSite` cook
 
 #### Common pitfalls
 
-JWT / tokens in Web Storage (XSS, extensions). Assuming overflow *wipes* Web Storage — it **throws**, it does not auto-clear. Cookie table “sent unless HttpOnly” is wrong: HttpOnly is still sent to the server, just not readable from JS. `storage` event does not fire in the writing tab. Safari 7-day rule is **no interaction**, not “did not call `getItem`”. Do not treat localStorage as durable forever.
+JWT / tokens in Web Storage (XSS, extensions). Assuming overflow _wipes_ Web Storage — it **throws**, it does not auto-clear. Cookie table “sent unless HttpOnly” is wrong: HttpOnly is still sent to the server, just not readable from JS. `storage` event does not fire in the writing tab. Safari 7-day rule is **no interaction**, not “did not call `getItem`”. Do not treat localStorage as durable forever.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                                              | −                                       |
+| ---------------------------------------------- | --------------------------------------- |
 | Cookies: server round-trip, `HttpOnly` for XSS | Size; sent every request; clumsy JS API |
-| Web Storage: tiny API | Sync; strings; XSS-readable; ~5 MiB |
-| IndexedDB: async, structured, large | Verbose API |
-| localForage: one API, driver fallback | Extra dependency |
+| Web Storage: tiny API                          | Sync; strings; XSS-readable; ~5 MiB     |
+| IndexedDB: async, structured, large            | Verbose API                             |
+| localForage: one API, driver fallback          | Extra dependency                        |
 
 **Examples:**
 
 ```js
 try {
-  localStorage.setItem('user', JSON.stringify({ id: 1 }));
-  const user = JSON.parse(localStorage.getItem('user') ?? 'null');
-  sessionStorage.setItem('draft', formText);
+  localStorage.setItem("user", JSON.stringify({ id: 1 }));
+  const user = JSON.parse(localStorage.getItem("user") ?? "null");
+  sessionStorage.setItem("draft", formText);
 } catch (e) {
   // QuotaExceededError, disabled storage, or private-mode quirks
 }
 
-document.cookie = 'pref=dark; Path=/; Max-Age=31536000; SameSite=Lax';
+document.cookie = "pref=dark; Path=/; Max-Age=31536000; SameSite=Lax";
 
-const req = indexedDB.open('notes', 1);
+const req = indexedDB.open("notes", 1);
 req.onupgradeneeded = (e) => {
-  e.target.result.createObjectStore('notes', { autoIncrement: true });
+  e.target.result.createObjectStore("notes", { autoIncrement: true });
 };
 req.onsuccess = (e) => {
   const db = e.target.result;
-  const tx = db.transaction('notes', 'readwrite');
-  tx.objectStore('notes').add({ text: 'read storage notes', ts: Date.now() });
+  const tx = db.transaction("notes", "readwrite");
+  tx.objectStore("notes").add({ text: "read storage notes", ts: Date.now() });
 };
 
-await localforage.setItem('user', { id: 1 });
-const fromForage = await localforage.getItem('user');
+await localforage.setItem("user", { id: 1 });
+const fromForage = await localforage.getItem("user");
 ```
 
 **Thoughts:** Cookies for what the **server** needs on the next request; Web Storage for small client prefs; IndexedDB (or localForage) for large/async data.
@@ -757,8 +337,8 @@ const fromForage = await localforage.getItem('user');
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                               | −                                               |
+| ------------------------------- | ----------------------------------------------- |
 | Isolates tabs/iframes by origin | Easy to confuse SOP (DOM) with CORS (HTTP read) |
 
 **Examples:** see [Web API — CORS](./6_web_api_security.md#cors).
@@ -784,11 +364,11 @@ const fromForage = await localforage.getItem('user');
 - **ResizeObserver** — callback when observed element's size changes; fires before paint (layout already computed).
 - Both use `observe(el)` / `unobserve(el)` / `disconnect()`.
 
-| | IntersectionObserver | ResizeObserver |
-|---|---------------------|----------------|
-| Watches | visibility / intersection ratio | width / height changes |
+|         | IntersectionObserver                        | ResizeObserver                |
+| ------- | ------------------------------------------- | ----------------------------- |
+| Watches | visibility / intersection ratio             | width / height changes        |
 | Use for | lazy load, infinite scroll, ads viewability | responsive components, charts |
-| Root | viewport or custom element | element itself |
+| Root    | viewport or custom element                  | element itself                |
 
 **When to use:**
 
@@ -800,31 +380,34 @@ Not `unobserve` after lazy load; ResizeObserver callback changing size infinitel
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Better perf than scroll listeners | Callback timing async — not synchronous with DOM |
-| Lazy loading standard pattern | ResizeObserver loop limit errors if callback mutates layout |
-| Fine-grained thresholds | Older browsers need polyfill for IO |
+| +                                 | −                                                           |
+| --------------------------------- | ----------------------------------------------------------- |
+| Better perf than scroll listeners | Callback timing async — not synchronous with DOM            |
+| Lazy loading standard pattern     | ResizeObserver loop limit errors if callback mutates layout |
+| Fine-grained thresholds           | Older browsers need polyfill for IO                         |
 
 **Examples:**
 
 ```js
-const io = new IntersectionObserver((entries) => {
-  for (const e of entries) {
-    if (e.isIntersecting) {
-      e.target.src = e.target.dataset.src;
-      io.unobserve(e.target);
+const io = new IntersectionObserver(
+  (entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) {
+        e.target.src = e.target.dataset.src;
+        io.unobserve(e.target);
+      }
     }
-  }
-}, { rootMargin: '100px' });
-document.querySelectorAll('img[data-src]').forEach((img) => io.observe(img));
+  },
+  { rootMargin: "100px" },
+);
+document.querySelectorAll("img[data-src]").forEach((img) => io.observe(img));
 
 const ro = new ResizeObserver((entries) => {
   for (const { contentRect, target } of entries) {
-    target.style.setProperty('--w', `${contentRect.width}px`);
+    target.style.setProperty("--w", `${contentRect.width}px`);
   }
 });
-ro.observe(document.querySelector('.panel'));
+ro.observe(document.querySelector(".panel"));
 ```
 
 **Sources:** [MDN IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) · [MDN ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
@@ -858,21 +441,21 @@ Forgetting `popstate` listener — back button breaks; pushing same URL duplicat
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| SPA URLs without reload | Must sync app state with history manually |
-| State object for restore | `state` structured-clone limits (no DOM nodes) |
-| Works with router libs (React Router) | User expects back button to undo app state |
+| +                                     | −                                              |
+| ------------------------------------- | ---------------------------------------------- |
+| SPA URLs without reload               | Must sync app state with history manually      |
+| State object for restore              | `state` structured-clone limits (no DOM nodes) |
+| Works with router libs (React Router) | User expects back button to undo app state     |
 
 **Examples:**
 
 ```js
 function navigate(path) {
-  history.pushState({ route: path }, '', path);
+  history.pushState({ route: path }, "", path);
   renderRoute(path);
 }
 
-window.addEventListener('popstate', (e) => {
+window.addEventListener("popstate", (e) => {
   renderRoute(e.state?.route ?? location.pathname);
 });
 
@@ -891,7 +474,7 @@ renderRoute(location.pathname);
 
 ### URL and URLSearchParams
 
-**Definition:** `URL` parses/builds a full address; `URLSearchParams` reads and writes the query string (`application/x-www-form-urlencoded`: space → `+`). URL *shape* (scheme, host, fragment): [URI, URL & URN](./6_web_api_core.md#uri-url--urn). Blob URLs: [createObjectURL](#url-createobjecturl).
+**Definition:** `URL` parses/builds a full address; `URLSearchParams` reads and writes the query string (`application/x-www-form-urlencoded`: space → `+`). URL _shape_ (scheme, host, fragment): [URI, URL & URN](./6_web_api_core.md#uri-url--urn). Blob URLs: [createObjectURL](#url-createobjecturl).
 
 **How it works:**
 
@@ -911,15 +494,15 @@ Build search links; read `location.search`; Node/Next `new URL(request.url)`.
 **Examples:**
 
 ```js
-const url = new URL('/search', 'https://doka.guide');
-url.searchParams.set('query', 'привет');
-url.searchParams.append('category', 'html');
-url.searchParams.append('category', 'js');
-url.hash = 'results';
+const url = new URL("/search", "https://doka.guide");
+url.searchParams.set("query", "привет");
+url.searchParams.append("category", "html");
+url.searchParams.append("category", "js");
+url.hash = "results";
 url.href;
 // https://doka.guide/search?query=%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82&category=html&category=js#results
 
-url.searchParams.getAll('category'); // ['html', 'js']
+url.searchParams.getAll("category"); // ['html', 'js']
 ```
 
 **Thoughts:** Parse with `URL`; mutate query with `searchParams`, never with string concat.
@@ -933,10 +516,8 @@ url.searchParams.getAll('category'); // ['html', 'js']
 
 ### Related
 
-* HTTP, Fetch, storage → [6_web_api.md](./6_web_api.md)
-* HTML rendering pipeline → [1_html.md](./1_html.md)
-* Document (DOM/BOM) → [3_js_browser.md](./3_js_browser.md)
-* Events → [3_js_events.md](./3_js_events.md)
+- [Browser hub](./3_js_browser_hub.md) · [Windows](./3_js_browser_windows.md) · [Files](./3_js_browser_files.md) · [Network](./3_js_browser_network.md)
+- HTTP, Fetch → [6_web_api.md](./6_web_api.md) · Document → [3_js_browser.md](./3_js_browser.md) · Events → [3_js_events.md](./3_js_events.md)
 
 </details>
 

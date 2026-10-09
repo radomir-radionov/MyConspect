@@ -4,17 +4,17 @@ Timers, `fetch` helpers, `AbortController`, `requestIdleCallback`, and JSON resp
 
 ### Related docs
 
-- [JS Event Loop](./3_js_async_event_loop.md) · [JS Async/Await](./3_js_async_await.md) · [JSON](./3_js_variables.md#json)
+- [JS Event Loop](./3_js_async_event_loop.md) · [JS Async/Await](./3_js_async_await.md) · [JSON](./3_js_data_structures.md#json)
 - [HTTP — Fetch & AbortController](./6_web_api_http.md#fetch-api-abortcontroller-and-formdata) · [JS Interview](./3_js_interview.md)
 
 [← Back to JS hub](./3_js.md) · [Async hub](./3_js_async.md)
 
 ### Main concepts
 
-| Area | Topics |
-| ---- | ------ |
+| Area        | Topics                                           |
+| ----------- | ------------------------------------------------ |
 | **Browser** | Timers, `AbortController`, `requestIdleCallback` |
-| **Data** | `res.json()` and JSON pointers |
+| **Data**    | `res.json()` and JSON pointers                   |
 
 ### Sections
 
@@ -22,10 +22,10 @@ Timers, `fetch` helpers, `AbortController`, `requestIdleCallback`, and JSON resp
 - [Related APIs](#related-apis)
 - [Interview](./3_js_interview.md)
 
-
 Each topic: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**.
 
 ---
+
 <a name="abortcontroller"></a>
 
 ## AbortController
@@ -217,15 +217,45 @@ requestIdleCallback(
 
 ### JSON
 
-**Definition:** Syntax, `stringify`/`parse`, and pitfalls: [JSON](./3_js_variables.md#json). Config comments → [YAML](./10_build_ci.md#yaml).
+**Definition:** In async browser/Node code, JSON is almost always moved as **text** over the wire, then parsed into JS values with `JSON.parse` or `Response.json()`.
 
-**How it works:** `await res.json()` parses the fetch body (same as `JSON.parse` on the text). Send with `JSON.stringify(body)` and `Content-Type: application/json`.
+**How it works:**
 
-**Thoughts:** _Fetch delivers JSON text; Core JSON APIs turn it into values._
+- **Fetch response:** `const data = await res.json()` — reads body text and parses (throws on invalid JSON).
+- **Request body:** `fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })`.
+- `JSON.stringify` drops `undefined`, functions, and `Symbol` keys; `Date` becomes ISO strings — not round-tripped as `Date` without reviver.
+- `JSON.parse(text, reviver)` can revive dates or filter keys; still no comments or trailing commas in strict JSON.
+- Full syntax, `structuredClone`, and pitfalls → [JSON (Data Structures)](./3_js_data_structures.md#json). Config files with comments → [YAML](./10_build_ci.md#yaml).
+
+**When to use:** REST APIs, `localStorage` snapshots, WebSocket text frames. Use `FormData` or binary for uploads.
+
+**Examples:**
+
+```js
+const res = await fetch("/api/user");
+if (!res.ok) throw new Error(res.statusText);
+const user = await res.json();
+
+await fetch("/api/user", {
+  method: "PUT",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ name: "Ann" }),
+});
+```
+
+**Pluses and minuses:**
+
+| +                      | −                                      |
+| ---------------------- | -------------------------------------- |
+| Universal wire format  | No types, no `undefined`, no functions |
+| Built into all engines | Parse throws on any invalid syntax     |
+
+**Thoughts:** Fetch delivers JSON **text**; parsing is a separate step — handle `res.ok` and parse errors explicitly.
+
+**Sources:** [MDN Response.json()](https://developer.mozilla.org/en-US/docs/Web/API/Response/json) · [JSON (Data Structures)](./3_js_data_structures.md#json)
 
 </details>
 
 ---
 
 Interview Q&A and coding tasks live in [JS — Interview](./3_js_interview.md).
-

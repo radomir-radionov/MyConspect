@@ -1,62 +1,59 @@
 # JS Browser — Events
 
-События браузера: обработчики, фазы, делегирование и пользовательские события.
+События браузера: handlers, phases, delegation, UI input, forms, and loading.
 
 [ ← Назад в JS-хаб](./3_js.md)
 
 ### Related docs
 
-* [Документ](./3_js_browser.md) · [Дополнительный браузер](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
-* [JS Core](./3_js_core.md) · [JS-функции](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Async](./3_js_async.md)
-* [HTML](./1_html.md) · [Веб-API](./6_web_api.md)
+- [Document](./3_js_browser.md) · [Browser additional](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
+- [JS Core](./3_js_core.md) · [JS Functions](./3_js_functions.md) · [Objects](./3_js_objects.md) · [Classes](./3_js_classes.md) · [JS Async](./3_js_async.md)
+- [HTML](./1_html.md) · [Web API](./6_web_api.md)
 
 ### Main concepts
 
-| Площадь | Темы |
-|------|--------|
-| **События** | Всплывание, захват, делегирование, действия по умолчанию |
-| **Интерфейс** | Мышь, указатель, клавиатура, прокрутка |
-| **Формы** | Фокус, ввод/изменение, отправка |
-| **Пользовательский** | `CustomEvent` и `detail` полезная нагрузка |
+| Area       | Topics                                                        |
+| ---------- | ------------------------------------------------------------- |
+| **Basics** | Intro, bubbling, delegation, defaults, custom events          |
+| **UI**     | Mouse, pointer, keyboard, scroll                              |
+| **Forms**  | Properties, focus, input/change, submit                       |
+| **Load**   | Page lifecycle, script timing, resource `load` / `error`        |
 
 ### Sections
 
-> Теория `<details>` блоки следуют: **Определение** · **Как это работает** · **Когда использовать** · **Плюсы и минусы** · **Примеры** · **Мысли** · **Источники**. **Определение** обязательно; другие разделы являются необязательными.
+> Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
-- [Events](#events)
-- [Default actions](#default-actions)
-- [Event phases](#event-phases)
-- [Event handlers & delegation](#event-handlers-and-delegation)
-- [Custom events](#custom-events)
-- [UI events (mouse, pointer, keyboard)](#ui-events-mouse-pointer-keyboard)
-- [Интервью](./3_js_interview.md)
+- [Events](#events) — **Event basics** · **UI events** · **Forms** · **Document loading**
+- [Interview](./3_js_interview.md)
 
 ---
+
+<a name="events"></a>
 
 ## Events
 
 <details>
-  <summary>Events</summary>
+  <summary>Introduction to browser events</summary>
 
-### Events
+### Introduction to browser events
 
-**Definition:** Пользовательский интерфейс браузера управляется событиями. Ан `EventTarget` (`Element`, `document`, `window`) получает именованные события; вы подписываетесь на `addEventListener` и отписаться с помощью `removeEventListener` используя **ту же ссылку на функцию**.
+**Definition:** Browser UI is event-driven. An `EventTarget` (`Element`, `document`, `window`) receives named events; you subscribe with `addEventListener` and unsubscribe with `removeEventListener` using the **same function reference**.
 
 **How it works:**
 
-- `addEventListener(type, listener, options?)` — `type` чувствителен к регистру (`"click"`). Третий аргумент может быть `{ capture, once, passive }` или логическое значение (`true` = захват).
-- `once: true` удаляет прослушиватель после первого вызова. `passive: true` обещает, что слушатель не позвонит `preventDefault()` (используется для прокрутки/касания).
-- Предпочитать `addEventListener` над `elem.onclick = ...` — присваивание сохраняет только один обработчик и перезаписывает предыдущий.
-- `this` внутри прослушивателя классической функции — это элемент, к которому прикреплен прослушиватель (`currentTarget`). Стрелочные функции не перепривязываются `this`.
+- `addEventListener(type, listener, options?)` — `type` is case-sensitive (`"click"`). The third argument may be `{ capture, once, passive }` or a boolean (`true` = capture).
+- `once: true` removes the listener after the first call. `passive: true` promises the listener will not call `preventDefault()` (used for scroll/touch performance).
+- Prefer `addEventListener` over `elem.onclick = ...` — assignment keeps only one handler and overwrites the previous one.
+- `this` inside a classic-function listener is the element the listener is attached to (`currentTarget`). Arrow functions do not rebind `this`.
 
-**When to use:** Клики, ввод, отправка, клавиатура, загрузка. Пропустить обработчики свойств (`onclick`), когда вам нужно более одного слушателя или `{ once, capture, passive }`.
+**When to use:** Clicks, input, submit, keyboard, load. Skip property handlers (`onclick`) when you need more than one listener or `{ once, capture, passive }`.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Множество слушателей каждого типа; объект опций | Необходимо сохранить ту же функцию для удаления |
-| Работает на любом `EventTarget` | Забывчивость `removeEventListener` может протечь |
+| +                                       | −                                         |
+| --------------------------------------- | ----------------------------------------- |
+| Many listeners per type; options object | Must keep the same function to remove     |
+| Works on any `EventTarget`              | Forgetting `removeEventListener` can leak |
 
 **Examples:**
 
@@ -70,118 +67,76 @@ button.addEventListener("click", onSave, { once: true });
 button.removeEventListener("click", onSave);
 ```
 
-**Thoughts:** Одна именованная функция + `addEventListener`/`removeEventListener` это шаблон, безопасный для интервью.
+**Thoughts:** One named function + `addEventListener`/`removeEventListener` is the interview-safe pattern.
 
 **Sources:** [MDN EventTarget.addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) · [javascript.info/introduction-browser-events](https://javascript.info/introduction-browser-events)
 
 </details>
 
 <details>
-  <summary>Default actions</summary>
+  <summary>Bubbling and capturing</summary>
 
-### Default actions
+### Bubbling and capturing
 
-**Definition:** Многие события вызывают встроенные действия браузера (навигация по ссылке, отправка формы, выбор текста, контекстное меню). Отмените это с помощью `event.preventDefault()` — or `return false` только из `on*` обработчики свойств/атрибутов.
-
-**How it works:**
-
-- `preventDefault()` работает, если событие `cancelable` а слушатель нет `{ passive: true }`.
-- `event.defaultPrevented` is `true` после отмены — лучше проверить это еще раз `stopPropagation()` поэтому внешние обработчики (аналитика, меню документов) по-прежнему видят событие.
-- `passive: true` сообщает браузеру, что вы не будете отменять (более плавная прокрутка/прикосновение); по умолчанию часто является пассивным для `touchstart`/`touchmove` в Хроме/Файрфоксе.
-- Предотвращение раннего события может подавить последующее действие (например, отменить `mousedown` → нет фокуса).
-
-**When to use:** Пользовательские ссылки SPA, проверка формы перед отправкой, настраиваемые контекстные меню, перетаскивание без перетаскивания собственного изображения.
-
-**Examples:**
-
-```js
-menu.addEventListener("click", (e) => {
-  const a = e.target.closest("a");
-  if (!a) return;
-  e.preventDefault();
-  route(a.getAttribute("href"));
-});
-
-document.addEventListener("contextmenu", (e) => {
-  if (e.defaultPrevented) return; // child already handled
-  e.preventDefault();
-  showDocMenu(e);
-});
-```
-
-**Thoughts:** `stopPropagation` ≠ `preventDefault`. Отмените значение по умолчанию; позвольте событию всплыть, если у вас нет веских причин не делать этого.
-
-**Sources:** [javascript.info/default-browser-action](https://javascript.info/default-browser-action)
-
-</details>
-
-<details>
-  <summary>Event phases</summary>
-
-### Event phases
-
-**Definition:** Событие DOM проходит в три этапа: **захват** (корневой → целевой), **на целевом объекте**, затем **всплывающий** (цель → корневой), когда `event.bubbles` это правда. `event.eventPhase` is `CAPTURING_PHASE` (1), `AT_TARGET` (2), or `BUBBLING_PHASE` (3).
+**Definition:** A DOM event travels in three phases: **capturing** (root → target), **at target**, then **bubbling** (target → root) when `event.bubbles` is true. `event.eventPhase` is `CAPTURING_PHASE` (1), `AT_TARGET` (2), or `BUBBLING_PHASE` (3).
 
 **How it works:**
 
-- Захватите слушателей, бегущих по пути **вниз** (`addEventListener(type, fn, true)` or `{ capture: true }`). Обработчики пузырьков работают по пути **вверх** (по умолчанию).
-- `event.target` — это узел, где началось событие. `event.currentTarget` — это узел, прослушиватель которого работает сейчас.
-- `stopPropagation()` останавливает дальнейший захват/пузырение. Он **не** отменяет действия по умолчанию — используйте `preventDefault()` (и слушатель не должен быть `{ passive: true }`).
-- `stopImmediatePropagation()` также пропускает оставшиеся прослушиватели на **том же** узле.
-- Если `bubbles` имеет значение false, поток завершается после целевой фазы.
+- Capture listeners run on the way **down** (`addEventListener(type, fn, true)` or `{ capture: true }`). Bubble listeners run on the way **up** (default).
+- `event.target` is the node where the event started. `event.currentTarget` is the node whose listener is running now.
+- `stopPropagation()` stops further capturing/bubbling. It does **not** cancel default actions — use `preventDefault()` (and the listener must not be `{ passive: true }`).
+- `stopImmediatePropagation()` also skips remaining listeners on the **same** node.
+- If `bubbles` is false, the flow ends after the target phase.
 
-**When to use:** Захват для «бега перед детьми» (например, фокусировка). `preventDefault()` on `submit`/`click` чтобы переопределить собственное поведение. Избегать `stopPropagation()` если только вам не нужно изолировать виджет.
+**When to use:** Capture for “run before children” (e.g. focus). `preventDefault()` on `submit`/`click` to override native behavior. Avoid `stopPropagation()` unless you must isolate a widget.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Одна модель для вложенного пользовательского интерфейса | `stopPropagation` скрывает ошибки и ломает другие слушатели |
-| `target` vs `currentTarget` является явным | Захват + пузырь на одном узле может удивить |
+| +                                       | −                                                       |
+| --------------------------------------- | ------------------------------------------------------- |
+| One model for nested UI                 | `stopPropagation` hides bugs and breaks other listeners |
+| `target` vs `currentTarget` is explicit | Capture + bubble on the same node can surprise          |
 
 **Examples:**
 
 ```js
 parent.addEventListener("click", (e) => {
-  // click child → target is child, currentTarget is parent
   console.log(e.target.id, e.currentTarget.id, e.eventPhase);
 });
 
 link.addEventListener("click", (e) => {
-  e.preventDefault(); // stay on the page
+  e.preventDefault();
 });
-
-inner.addEventListener("click", (e) => e.stopPropagation());
 ```
 
-**Thoughts:** По умолчанию — пузырь. Capture — это исключение, которое вы указываете в третьем аргументе.
+**Thoughts:** Default is bubble. Capture is the exception you name in the third argument.
 
-**Sources:** [MDN Event.eventPhase](https://developer.mozilla.org/en-US/docs/Web/API/Event/eventPhase) · [MDN Event.stopPropagation](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation) · [javascript.info/bubbling-and-capturing](https://javascript.info/bubbling-and-capturing)
+**Sources:** [MDN Event.eventPhase](https://developer.mozilla.org/en-US/docs/Web/API/Event/eventPhase) · [javascript.info/bubbling-and-capturing](https://javascript.info/bubbling-and-capturing)
 
 </details>
 
 <details>
-  <summary>Event handlers & delegation</summary>
+  <summary>Event delegation</summary>
 
-### Event handlers & delegation
+### Event delegation
 
-**Definition:** **Делегирование** присоединяет **одного** слушателя к общему предку. Внутри обработчика `event.target` — исходный узел; `event.currentTarget` является предком. Использовать `closest(selector)` поэтому щелчки по внутреннему тексту/значкам по-прежнему соответствуют предполагаемому элементу управления.
+**Definition:** **Delegation** attaches **one** listener to a common ancestor. Inside the handler, `event.target` is the origin node; `event.currentTarget` is the ancestor. Use `closest(selector)` so clicks on inner text/icons still match the intended control.
 
 **How it works:**
 
-- Всплывание доставляет дочерние события родительскому элементу, поэтому динамически добавляемые дочерние элементы обрабатываются без повторной привязки.
-- Проверьте реальный контроль: `const item = e.target.closest("li[data-id]")`. If `!item` or `!e.currentTarget.contains(item)`, игнорируй.
-- Не стилизовать `e.target` вслепую — это может быть вложенный `<span>`, а не `<li>`.
-- Сопряжение с `data-*` атрибуты для идентификаторов вместо встроенных `onclick`.
+- Bubbling delivers child events to the parent, so dynamically added children are handled without re-binding.
+- Check the real control: `const item = e.target.closest("li[data-id]")`. If `!item` or `!e.currentTarget.contains(item)`, ignore.
+- Do not style `e.target` blindly — it may be a nested `<span>`, not the `<li>`.
+- Pair with `data-*` attributes for ids instead of inline `onclick`.
 
-**When to use:** Списки, таблицы, меню и любой пользовательский интерфейс, который добавляет/удаляет строки. Прямые прослушиватели в каждой строке, когда набор небольшой и статический.
+**When to use:** Lists, tables, menus, any UI that adds/removes rows. Direct listeners on each row when the set is small and static.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Один слушатель; работает для будущих узлов | Нуждаться `closest` / игнорировать несовпадающие клики |
-| Меньше памяти, чем прослушиватели N строк | Вложенным виджетам может потребоваться `stopPropagation` |
+| +                                    | −                                         |
+| ------------------------------------ | ----------------------------------------- |
+| One listener; works for future nodes | Need `closest` / ignore unmatched clicks  |
+| Less memory than N row listeners     | Nested widgets may need `stopPropagation` |
 
 **Examples:**
 
@@ -193,36 +148,62 @@ list.addEventListener("click", (e) => {
 });
 ```
 
-**Thoughts:** Ответ на собеседовании: «Послушайте родителя, определите ребенка с `closest`.”
+**Thoughts:** Interview answer: “listen on the parent, identify the child with `closest`.”
 
-**See also:** [Навигация по DOM — `closest`](./3_js_browser.md#dom-navigation)
+**See also:** [DOM navigation — `closest`](./3_js_browser.md#dom-navigation)
 
-**Sources:** [MDN Event.target](https://developer.mozilla.org/en-US/docs/Web/API/Event/target) · [MDN Event.currentTarget](https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget) · [javascript.info/event-delegation](https://javascript.info/event-delegation)
+**Sources:** [javascript.info/event-delegation](https://javascript.info/event-delegation)
 
 </details>
 
 <details>
-  <summary>Custom events</summary>
+  <summary>Browser default actions</summary>
 
-### Custom events
+### Browser default actions
 
-**Definition:** `CustomEvent` это `Event` ты создаешь и `dispatchEvent` сам. Необязательный `detail` полезная нагрузка — это любое значение (часто объект), читаемое как `event.detail`.
+**Definition:** Many events trigger a built-in browser action (link navigation, form submit, text selection, context menu). Cancel it with `event.preventDefault()` — or `return false` only from `on*` property/attribute handlers.
 
 **How it works:**
 
-- `new CustomEvent(type, { detail, bubbles, cancelable, composed })`. Имена событий чувствительны к регистру.
-- `dispatchEvent` запускает прослушиватели **синхронно** с теми же правилами захвата/всплытия, что и собственные события.
-- По умолчанию `bubbles` is `false` — предки не услышат, если вы не установите `bubbles: true`.
-- `composed: true` позволяет событию пересекать теневой DOM (веб-компоненты).
+- `preventDefault()` works if the event is `cancelable` and the listener is not `{ passive: true }`.
+- `event.defaultPrevented` is `true` after cancel — prefer checking this over `stopPropagation()` so outer handlers (analytics, document menus) still see the event.
+- `passive: true` tells the browser you will not cancel (smoother scroll/touch); default is often passive for `touchstart`/`touchmove` in Chrome/Firefox.
+- Preventing an early event can suppress a follow-up (e.g. cancel `mousedown` → no focus).
 
-**When to use:** Отделить виджеты (`"cart:add"`, `"modal:close"`) без глобальной шины событий. Пропустите состояние всего приложения — хранилище или обратный вызов становятся более понятными.
+**When to use:** Custom SPA links, form validation before submit, custom context menus, drag without native image drag.
 
-**Pluses and minuses:**
+**Examples:**
 
-| + | − |
-|------|------|
-| То же оборудование для проведения мероприятий DOM | Тихий, если `bubbles` неверно, и вы слушаете родительского |
-| `detail` переносит структурированные данные | Легкость злоупотребления против явных вызовов функций |
+```js
+menu.addEventListener("click", (e) => {
+  const a = e.target.closest("a");
+  if (!a) return;
+  e.preventDefault();
+  route(a.getAttribute("href"));
+});
+```
+
+**Thoughts:** `stopPropagation` ≠ `preventDefault`. Cancel the default; let the event bubble unless you have a strong reason not to.
+
+**Sources:** [javascript.info/default-browser-action](https://javascript.info/default-browser-action)
+
+</details>
+
+<details>
+  <summary>Dispatching custom events</summary>
+
+### Dispatching custom events
+
+**Definition:** `CustomEvent` is an `Event` you create and `dispatchEvent` yourself. The optional `detail` payload is any value (often an object) read as `event.detail`.
+
+**How it works:**
+
+- `new CustomEvent(type, { detail, bubbles, cancelable, composed })`. Event names are case-sensitive.
+- `dispatchEvent` runs listeners **synchronously** with the same capturing/bubbling rules as native events.
+- Default `bubbles` is `false` — ancestors will not hear it unless you set `bubbles: true`.
+- `composed: true` lets the event cross shadow DOM (web components).
+
+**When to use:** Decouple widgets (`"cart:add"`, `"modal:close"`) without a global event bus. Skip for app-wide state — a store or callback is clearer.
 
 **Examples:**
 
@@ -239,44 +220,137 @@ item.dispatchEvent(
 );
 ```
 
-**Thoughts:** Пользовательские события предназначены для **компонентов DOM** и не заменяют состояние приложения.
-
-**Sources:** [MDN CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent) · [MDN sendEvent](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent) · [javascript.info/dispatch-events](https://javascript.info/dispatch-events)
+**Sources:** [javascript.info/dispatch-events](https://javascript.info/dispatch-events)
 
 </details>
 
-<a name="ui-events-mouse-pointer-keyboard"></a>
-
 <details>
-  <summary>UI events (mouse, pointer, keyboard)</summary>
+  <summary>Mouse events</summary>
 
-### UI events (mouse, pointer, keyboard)
+### Mouse events
 
-**Definition:** Для ввода данных в виде указателя и горячих клавиш клавиатуры используются специальные семейства событий. Предпочитайте **События указателя** для нового пользовательского интерфейса, который должен работать с мышью, касанием и пером; используйте события клавиатуры для сочетаний клавиш (не для отслеживания текста поля — используйте `input`).
+**Definition:** Mouse input uses a small family of events: press/release, click, movement, and context menu.
 
 **How it works:**
 
-**Mouse (basics):** `mousedown` → `mouseup` → `click` (левый). Также `dblclick`, `contextmenu`, `mousemove`, `mouseover`/`mouseout` (пузырь, связанная цель), `mouseenter`/`mouseleave` (без пузырьков, без входа/выхода детей). Модификаторы: `ctrlKey` / `metaKey` (команда Mac) / `shiftKey` / `altKey`. Координаты: `clientX/Y` (окно просмотра), `pageX/Y` (документ). `event.button`: 0 слева, 1 посередине, 2 справа.
+- Typical sequence: `mousedown` → `mouseup` → `click` (primary button). Also `dblclick`, `contextmenu`, `mousemove`.
+- Modifiers: `ctrlKey` / `metaKey` (Mac Cmd) / `shiftKey` / `altKey`.
+- Coordinates: `clientX/Y` (viewport), `pageX/Y` (document). `event.button`: 0 left, 1 middle, 2 right.
 
-**mouseover vs mouseenter:** `mouseover`/`mouseout` пожар при пересечении дочерней границы (много шума). `mouseenter`/`mouseleave` активируйте один раз для элемента в целом — лучше для «наведите курсор на эту карту».
+**When to use:** Buttons and links (`click`); drawing (`mousemove`); right-click menus (`contextmenu`).
 
-**Drag with mouse/pointer:** `pointerdown` → документ `pointermove` → `pointerup`; помнить `shiftX/Y` от указателя до угла элемента; отменить перетаскивание собственного изображения (`ondragstart = () => false`) и установите `touch-action: none` избегать `pointercancel`. Найдите дропблы с помощью `document.elementFromPoint` (сначала скройте перетаскиваемый элемент). Предпочитать `setPointerCapture(pointerId)` поэтому ходы остаются на месте без прослушивателей документов.
+**Examples:**
 
-**Pointer extras:** `pointerId`, `pointerType` (`"mouse"|"pen"|"touch"`), `isPrimary` (первый палец). Те же имена, что и мышь (`pointerdown` …).
+```js
+box.addEventListener("click", (e) => {
+  console.log(e.button, e.clientX, e.clientY);
+});
+```
 
-**Keyboard:** `keydown` / `keyup`. `event.key` = символ/значение (`"z"`, `"Enter"`); `event.code` = физический ключ (`"KeyZ"`) — не зависит от раскладки горячих клавиш. Автоповторяющиеся наборы `event.repeat`. Фильтрация горячих клавиш с помощью `code` + `ctrlKey || metaKey`. **Не** используйте только клавиатуру для проверки текстовых полей — клавиши пропуска/вставки речи; использовать `input`.
+**See also:** [Mouseover and mouseenter](#mouseover-and-mouseenter) · [Mouse drag and drop](#mouse-drag-and-drop)
 
-**Scroll:** `scroll` срабатывает *после* прокрутки — невозможно `preventDefault` там; заморозить с помощью CSS `overflow: hidden` или отменить вызывающий ключ (`PageDown`). Помощники по геометрии: [Размеры элементов и окон и прокрутка](./3_js_browser_extra.md#element-and-window-dimensions--scroll).
+**Sources:** [javascript.info/mouse-events-basics](https://javascript.info/mouse-events-basics)
 
-**When to use:** Горячие клавиши → `keydown` + `code`. Подсказки при наведении → `mouseenter`/`mouseleave` или эквиваленты указателей. Ползунки/перетаскивание → указатель + захват. Значение поля → `input` (см. [формы](./3_js_browser.md#text-forms-and-dialogs)).
+</details>
 
-**Pluses and minuses:**
+<details>
+  <summary>Mouseover and mouseenter</summary>
 
-| + | − |
-|------|------|
-| Указатель объединяет мышь, сенсорный экран и перо | Должен справиться `pointercancel` / родное сопротивление |
-| Делегирование работает для динамических списков | `mouseover` наводнения с дочерними событиями |
-| `code` стабильно для ярлыков | Мобильный IME может сообщить `key = "Unidentified"` |
+### Mouseover and mouseenter
+
+**Definition:** Hover detection can use bubbling `mouseover`/`mouseout` or non-bubbling `mouseenter`/`mouseleave`.
+
+**How it works:**
+
+- `mouseover` / `mouseout` bubble and fire when the pointer crosses **child** boundaries (noisy on nested markup).
+- `mouseenter` / `mouseleave` fire when entering/leaving the element as a whole — better for “hover this card”.
+- `relatedTarget` on `mouseover`/`mouseout` is the other element involved in the transition.
+
+**When to use:** Tooltips and highlight on a container → `mouseenter`/`mouseleave`. Tracking every nested hit → `mouseover` (rare).
+
+**Examples:**
+
+```js
+card.addEventListener("mouseenter", () => card.classList.add("hover"));
+card.addEventListener("mouseleave", () => card.classList.remove("hover"));
+```
+
+**Sources:** [javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave](https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave)
+
+</details>
+
+<details>
+  <summary>Mouse drag and drop</summary>
+
+### Mouse drag and drop
+
+**Definition:** Custom drag UIs listen for pointer/mouse down, move, and up — often with capture — instead of the HTML5 drag-and-drop API alone.
+
+**How it works:**
+
+- `pointerdown` → track `pointermove` → `pointerup` (or the mouse equivalents).
+- Store offset from pointer to element corner (`shiftX`/`shiftY`).
+- Cancel native image drag (`ondragstart = () => false`); use `touch-action: none` to reduce `pointercancel`.
+- Hit-test drop targets with `document.elementFromPoint` (hide the dragged ghost first if needed).
+- `setPointerCapture(pointerId)` keeps receiving moves even if the pointer leaves the element.
+
+**When to use:** Sliders, kanban cards, custom DnD. Native `draggable` when you need OS-level file drops.
+
+**Examples:**
+
+```js
+thumb.onpointerdown = (e) => {
+  thumb.setPointerCapture(e.pointerId);
+  const startX = e.clientX;
+  thumb.onpointermove = (ev) => {
+    thumb.style.left = `${ev.clientX - startX}px`;
+  };
+  thumb.onpointerup = () => {
+    thumb.onpointermove = null;
+  };
+};
+```
+
+**Sources:** [javascript.info/mouse-drag-and-drop](https://javascript.info/mouse-drag-and-drop)
+
+</details>
+
+<details>
+  <summary>Pointer events</summary>
+
+### Pointer events
+
+**Definition:** **Pointer Events** unify mouse, touch, and pen under `pointerdown`, `pointermove`, `pointerup`, `pointercancel`.
+
+**How it works:**
+
+- `pointerId` identifies the contact; `pointerType` is `"mouse"`, `"pen"`, or `"touch"`.
+- `isPrimary` marks the first touch in a multi-touch gesture.
+- Same coordinate and button fields as mouse events; prefer pointer APIs for new cross-device UI.
+
+**When to use:** Any control that must work on touch and desktop with one code path.
+
+**See also:** [Mouse drag and drop](#mouse-drag-and-drop)
+
+**Sources:** [javascript.info/pointer-events](https://javascript.info/pointer-events)
+
+</details>
+
+<details>
+  <summary>Keyboard events</summary>
+
+### Keyboard events
+
+**Definition:** `keydown` and `keyup` report physical keys and modifiers; use them for shortcuts, not for reading field text.
+
+**How it works:**
+
+- `event.key` = character/meaning (`"z"`, `"Enter"`); `event.code` = physical key (`"KeyZ"`) — layout-independent for hotkeys.
+- Auto-repeat sets `event.repeat` on held keys.
+- Filter shortcuts with `code` + `ctrlKey || metaKey`. Call `preventDefault()` when overriding browser shortcuts.
+- Do **not** validate typed text with keyboard alone — paste and speech skip keys; use `input` on fields.
+
+**When to use:** Undo/redo, save, modal Escape. Field value → [change, input, and clipboard events](#change-input-and-clipboard-events).
 
 **Examples:**
 
@@ -287,24 +361,213 @@ document.addEventListener("keydown", (e) => {
     undo();
   }
 });
-
-thumb.onpointerdown = (e) => {
-  thumb.setPointerCapture(e.pointerId);
-  thumb.onpointermove = (ev) => {
-    thumb.style.left = `${ev.clientX - slider.getBoundingClientRect().left}px`;
-  };
-  thumb.onpointerup = () => {
-    thumb.onpointermove = null;
-  };
-};
 ```
 
-**Thoughts:** Путь интервью: всплывание → делегирование → захват указателя для перетаскивания → `preventDefault` для значений по умолчанию.
+**Sources:** [javascript.info/keyboard-events](https://javascript.info/keyboard-events)
 
-**Sources:** [javascript.info/mouse-events-basics](https://javascript.info/mouse-events-basics) · [javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave](https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave) · [javascript.info/mouse-drag-and-drop](https://javascript.info/mouse-drag-and-drop) · [javascript.info/pointer-events](https://javascript.info/pointer-events) · [javascript.info/keyboard-events](https://javascript.info/keyboard-events) · [javascript.info/onscroll](https://javascript.info/onscroll)
+</details>
+
+<details>
+  <summary>Scrolling</summary>
+
+### Scrolling
+
+**Definition:** The `scroll` event fires on scrollable elements and the document **after** the scroll position changes.
+
+**How it works:**
+
+- You cannot `preventDefault()` on `scroll` — block scrolling with CSS (`overflow: hidden`) or cancel the causing key/gesture earlier.
+- Read position with `element.scrollTop` / `window.scrollY`. Geometry: [Element size and scroll](./3_js_browser.md#element-size-and-scroll).
+- Throttle heavy scroll handlers; consider `IntersectionObserver` instead of scroll listeners for visibility.
+
+**When to use:** Sticky headers, infinite scroll, scroll progress. Not for blocking scroll at the last moment.
+
+**Sources:** [javascript.info/onscroll](https://javascript.info/onscroll)
+
+</details>
+
+<details>
+  <summary>Form properties and methods</summary>
+
+### Form properties and methods
+
+**Definition:** Forms expose collections and methods for navigating controls and submitting without a full page reload.
+
+**How it works:**
+
+- `document.forms[name]` / `form.elements[name]` — live collections; each control has `.form` back to its `<form>`.
+- Use `.value` on inputs and `<textarea>` — **not** `innerHTML` (especially for textarea).
+- `<select>`: `value`, `selectedIndex`, `option.selected`; create options with `new Option(text, value, defaultSelected, selected)`.
+- `.submit()` sends the form **without** firing `submit` or running constraint validation; `.requestSubmit()` does both.
+
+**When to use:** Read/write control state; programmatic submit with validation → `requestSubmit`.
+
+**See also:** [Form submit](#form-submit) · [Searching elements — `.forms`](./3_js_browser.md#searching-elements)
+
+**Sources:** [javascript.info/form-elements](https://javascript.info/form-elements)
+
+</details>
+
+<details>
+  <summary>Focus and blur</summary>
+
+### Focus and blur
+
+**Definition:** Focus moves between focusable elements; `focus` / `blur` do not bubble, but `focusin` / `focusout` do.
+
+**How it works:**
+
+- `element.focus()` / `element.blur()` — programmatic focus.
+- `tabindex="0"` — tab order; `tabindex="-1"` — programmatic only.
+- `document.activeElement` — currently focused node.
+- Listen on a container with `focusin`/`focusout` for delegation-style focus tracking.
+
+**When to use:** Trap focus in modals; highlight focused row; restore focus after closing a dialog.
+
+**Sources:** [javascript.info/focus-blur](https://javascript.info/focus-blur)
+
+</details>
+
+<details>
+  <summary>change, input, and clipboard events</summary>
+
+### change, input, and clipboard events
+
+**Definition:** Field value changes fire `input` and `change`; clipboard actions fire `cut`, `copy`, and `paste`.
+
+**How it works:**
+
+- `input` — every value change (typing, paste, speech, drag text in).
+- `change` — when editing **finishes** (blur for text fields; immediately for checkbox/radio/select).
+- `cut` / `copy` / `paste` — `ClipboardEvent`; `preventDefault()` can block the action.
+
+**When to use:** Live search/filter → `input`. Submit-on-blur validation → `change`. Custom paste handling → `paste`.
+
+**Examples:**
+
+```js
+input.addEventListener("input", () => filterList(input.value));
+select.addEventListener("change", () => loadChart(select.value));
+```
+
+**Sources:** [javascript.info/events-change-input](https://javascript.info/events-change-input)
+
+</details>
+
+<details>
+  <summary>Form submit</summary>
+
+### Form submit
+
+**Definition:** Submitting a form fires a cancelable `submit` event on the `<form>` before navigation.
+
+**How it works:**
+
+- Activate via submit button, `Enter` in a field, or `form.requestSubmit()`.
+- `form.addEventListener("submit", (e) => { e.preventDefault(); … })` for SPA / `fetch` submit.
+- `form.submit()` bypasses the `submit` event and HTML5 validation — prefer `requestSubmit()`.
+
+**When to use:** Always intercept `submit` for client-side apps; call `preventDefault()` then send with `fetch` or a router.
+
+**Examples:**
+
+```js
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  await fetch("/api/save", { method: "POST", body: new FormData(form) });
+});
+```
+
+**Sources:** [javascript.info/forms-submit](https://javascript.info/forms-submit)
+
+</details>
+
+<details>
+  <summary>Page lifecycle events</summary>
+
+### Page lifecycle events
+
+**Definition:** The browser fires lifecycle events as HTML is parsed, resources finish loading, and the user leaves the page.
+
+| Event              | Fires when                                     | Target     |
+| ------------------ | ---------------------------------------------- | ---------- |
+| `DOMContentLoaded` | HTML parsed, DOM ready (images may still load) | `document` |
+| `load`             | All resources loaded (images, styles, scripts) | `window`   |
+| `beforeunload`     | User is leaving the page                       | `window`   |
+| `unload`           | Page is being unloaded                         | `window`   |
+
+**How it works:**
+
+- `DOMContentLoaded` waits for classic/deferred scripts; `async` scripts do not block it. See [Script async and defer](#script-async-and-defer).
+- `document.readyState`: `"loading"` → `"interactive"` → `"complete"`.
+- `beforeunload`: set `event.returnValue = ""` for a leave confirm — custom message text is ignored by browsers.
+- `unload`: only fire-and-forget work (`navigator.sendBeacon`).
+
+**Examples:**
+
+```js
+document.addEventListener("DOMContentLoaded", () => initApp());
+window.addEventListener("load", () => hideLoader());
+window.addEventListener("beforeunload", (e) => {
+  if (formDirty) e.returnValue = "";
+});
+```
+
+**Sources:** [javascript.info/onload-ondomcontentloaded](https://javascript.info/onload-ondomcontentloaded)
+
+</details>
+
+<details>
+  <summary>Script async and defer</summary>
+
+### Script async and defer
+
+**Definition:** `async` and `defer` on `<script>` change **when** external scripts run relative to HTML parsing and `DOMContentLoaded`.
+
+**How it works:**
+
+| Attribute       | Blocks parse? | Order              | vs `DOMContentLoaded`      |
+| --------------- | ------------- | ------------------ | -------------------------- |
+| _(none)_        | yes           | document order     | inline blocks parse        |
+| `defer`         | no (fetch)    | document order     | runs before DCL            |
+| `async`         | no (fetch)    | first-ready-first  | may run before or after    |
+| `type="module"` | no            | defer-like default | typically before DCL       |
+
+- Dynamically inserted `<script>` behaves like `async` unless `script.async = false`.
+
+**When to use:** App bundle → `defer`; independent tags → `async`. Full tag rules → [Script loading](./3_js_browser.md#script-loading).
+
+**Sources:** [javascript.info/script-async-defer](https://javascript.info/script-async-defer)
+
+</details>
+
+<details>
+  <summary>Resource onload and onerror</summary>
+
+### Resource onload and onerror
+
+**Definition:** Individual elements (`<img>`, `<script>`, `<link>`, …) fire `load` or `error` when that **resource** finishes or fails — separate from `window.load`.
+
+**How it works:**
+
+- Assign `img.onload` / `img.onerror` or use `addEventListener` on the element.
+- `new Image()` — set handlers before `src` to avoid missing a cached load.
+- Script parse errors inside a loaded file need `window.onerror` / `error` event — not `script.onerror` alone for inline exceptions.
+- Cross-origin script errors stay opaque unless `crossorigin` + CORS headers.
+
+**Examples:**
+
+```js
+const img = new Image();
+img.onload = () => console.log(img.width);
+img.onerror = () => console.log("failed");
+img.src = "/hero.png";
+```
+
+**Sources:** [javascript.info/onload-onerror](https://javascript.info/onload-onerror)
 
 </details>
 
 ---
 
-Вопросы и ответы на собеседовании, а также задачи по написанию кода находятся в [JS — Interview](./3_js_interview.md).
+Interview Q&A and coding tasks live in [JS — Interview](./3_js_interview.md).

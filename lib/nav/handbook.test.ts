@@ -361,6 +361,156 @@ describe("handbookNavSections layout", () => {
     );
   });
 
+  it("lists operators and loops in core between language and arrays", () => {
+    const js = findSubject("javascript");
+    const core = allSubjectClusters(js).find((item) => item.id === "core");
+    assert.ok(core);
+    const slugs = core.topics.map((topic) => topic.slug);
+    assert.ok(slugs.includes("js-operators"));
+    assert.ok(slugs.includes("js-loops"));
+    const languageIndex = slugs.indexOf("js-core");
+    const operatorsIndex = slugs.indexOf("js-operators");
+    const loopsIndex = slugs.indexOf("js-loops");
+    const arraysIndex = slugs.indexOf("js-array");
+    assert.ok(languageIndex >= 0 && operatorsIndex > languageIndex);
+    assert.ok(loopsIndex > operatorsIndex && arraysIndex > loopsIndex);
+    assert.ok(
+      !allSubjectClusters(js).some((item) => item.id === "fundamentals"),
+    );
+  });
+
+  it("nests module topics under Modules inside Additional", () => {
+    const js = findSubject("javascript");
+    const additional = allSubjectClusters(js).find(
+      (item) => item.id === "additional",
+    );
+    assert.ok(additional);
+    assert.deepEqual(
+      additional.topics.map((topic) => topic.slug),
+      ["js-modules", "js-extra"],
+    );
+    const modules = additional.topics.find(
+      (topic) => topic.slug === "js-modules",
+    );
+    assert.ok(modules?.nestedTopics);
+    assert.deepEqual(
+      modules.nestedTopics!.map((topic) => topic.slug),
+      ["js-modules-overview", "js-import-export", "js-dynamic-import"],
+    );
+    const extra = additional.topics.find((topic) => topic.slug === "js-extra");
+    assert.ok(extra);
+    assert.equal(extra.title, "Intl API");
+  });
+
+  it("lists objects and classes as separate core topics", () => {
+    const js = findSubject("javascript");
+    const core = allSubjectClusters(js).find((item) => item.id === "core");
+    assert.ok(core);
+    const slugs = core.topics.map((topic) => topic.slug);
+    assert.ok(slugs.includes("js-objects"));
+    assert.ok(slugs.includes("js-classes"));
+    const objectsIndex = slugs.indexOf("js-objects");
+    const classesIndex = slugs.indexOf("js-classes");
+    assert.ok(objectsIndex >= 0 && classesIndex > objectsIndex);
+  });
+
+  it("lists closures on the functions topic page", () => {
+    const js = findSubject("javascript");
+    const core = allSubjectClusters(js).find((item) => item.id === "core");
+    assert.ok(core);
+    const functions = core.topics.find(
+      (topic) => topic.slug === "js-functions",
+    );
+    assert.ok(functions);
+    assert.ok(functions.concepts.some((concept) => concept.id === "closures"));
+    assert.ok(!core.topics.some((topic) => topic.slug === "js-closures"));
+  });
+
+  it("groups javascript functions concepts by section", () => {
+    const js = findSubject("javascript");
+    const core = allSubjectClusters(js).find((item) => item.id === "core");
+    assert.ok(core);
+    const functions = core.topics.find(
+      (topic) => topic.slug === "js-functions",
+    );
+    assert.ok(functions);
+    const byId = new Map(functions.concepts.map((c) => [c.id, c.group]));
+    assert.equal(
+      byId.get("rest-parameters-and-spread-syntax"),
+      "Parameters & scope",
+    );
+    assert.equal(
+      byId.get("scheduling-settimeout-and-setinterval"),
+      "Recursion & scheduling",
+    );
+    assert.equal(byId.get("call-apply-and-bind"), "this & binding");
+  });
+
+  it("groups javascript classes concepts by section", () => {
+    const js = findSubject("javascript");
+    const core = allSubjectClusters(js).find((item) => item.id === "core");
+    assert.ok(core);
+    const classes = core.topics.find((topic) => topic.slug === "js-classes");
+    assert.ok(classes);
+    const byId = new Map(classes.concepts.map((c) => [c.id, c.group]));
+    assert.equal(byId.get("class-syntax"), "Class basics");
+    assert.equal(byId.get("inheritance-and-super"), "Class inheritance");
+    assert.equal(
+      byId.get("private-and-protected-properties-and-methods"),
+      "Encapsulation",
+    );
+    assert.equal(byId.get("mixins"), "Composition patterns");
+  });
+
+  it("groups javascript loops concepts by section", () => {
+    const js = findSubject("javascript");
+    const core = allSubjectClusters(js).find((item) => item.id === "core");
+    assert.ok(core);
+    const loops = core.topics.find((topic) => topic.slug === "js-loops");
+    assert.ok(loops);
+    const byId = new Map(loops.concepts.map((c) => [c.id, c.group]));
+    assert.equal(byId.get("try-catch"), "Errors and exceptions");
+    assert.equal(byId.get("generators"), "Iteration protocols");
+    assert.equal(byId.get("advanced-iteration"), "Iteration protocols");
+  });
+
+  it("groups browser document concepts by section", () => {
+    const js = findSubject("javascript");
+    const browser = allSubjectClusters(js).find(
+      (item) => item.id === "browser",
+    );
+    assert.ok(browser);
+    const hub = browser.topics.find((topic) => topic.slug === "js-browser");
+    assert.ok(hub?.nestedTopics);
+    const document = hub.nestedTopics.find(
+      (topic) => topic.slug === "js-browser-document",
+    );
+    assert.ok(document);
+    const byId = new Map(document.concepts.map((c) => [c.id, c.group]));
+    assert.equal(byId.get("script-loading"), "Environment");
+    assert.equal(byId.get("browser-environment"), "Environment");
+    assert.equal(byId.get("dom-tree"), "DOM tree");
+    assert.equal(byId.get("changing-the-dom"), "Modifying the DOM");
+    assert.equal(
+      byId.get("element-size-and-scroll"),
+      "Size, scroll & coordinates",
+    );
+    assert.equal(byId.get("bom"), "BOM, forms & observers");
+  });
+
+  it("lists destructuring on the variables topic page", () => {
+    const js = findSubject("javascript");
+    const core = allSubjectClusters(js).find((item) => item.id === "core");
+    assert.ok(core);
+    const variables = core.topics.find(
+      (topic) => topic.slug === "js-variables",
+    );
+    assert.ok(variables);
+    for (const id of ["rest", "spread", "destructuring"]) {
+      assert.ok(variables.concepts.some((concept) => concept.id === id));
+    }
+  });
+
   it("lists compiler fundamentals concepts on one topic like The Basics", () => {
     const frontend = findGroup("frontend", "conspect");
     assert.ok(frontend);

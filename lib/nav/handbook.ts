@@ -81,6 +81,31 @@ function toNavTopic(topic: Topic, locale: Locale): NavTopic {
   };
 }
 
+function navTopicsForCluster(
+  subject: (typeof SUBJECTS)[number],
+  clusterId: string,
+  locale: Locale,
+): NavTopic[] {
+  const visible = topicsForCluster(subject, clusterId);
+  const nestedByParent = new Map<string, NavTopic[]>();
+  for (const topic of topicsForCluster(subject, clusterId, {
+    includeHiddenNav: true,
+  })) {
+    if (!topic.navParentSlug) {
+      continue;
+    }
+    const nested = toNavTopic(topic, locale);
+    const list = nestedByParent.get(topic.navParentSlug) ?? [];
+    list.push(nested);
+    nestedByParent.set(topic.navParentSlug, list);
+  }
+  return visible.map((topic) => {
+    const nav = toNavTopic(topic, locale);
+    const nestedTopics = nestedByParent.get(topic.slug);
+    return nestedTopics?.length ? { ...nav, nestedTopics } : nav;
+  });
+}
+
 function entriesForTrack(
   trackId: (typeof TRACKS)[number]["id"],
   locale: Locale,
@@ -106,9 +131,7 @@ function entriesForTrack(
           id: cluster.id,
           title: cluster.title,
           href: localizeHref(locale, clusterTargetHref(subject, cluster)),
-          topics: topicsForCluster(subject, cluster.id).map((item) =>
-            toNavTopic(item, locale),
-          ),
+          topics: navTopicsForCluster(subject, cluster.id, locale),
         }))
         .filter((cluster) => cluster.topics.length > 0);
       if (clusters.length === 0) {

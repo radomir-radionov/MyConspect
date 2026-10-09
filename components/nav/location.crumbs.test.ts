@@ -633,6 +633,88 @@ test("siblingNavHrefForPath walks flat appendix sections as one chain", () => {
   );
 });
 
+test("siblingNavHrefForPath steps through nested topics inside a cluster", () => {
+  const nestedGroups: readonly NavGroup[] = [
+    {
+      id: "frontend",
+      title: "Frontend",
+      href: "/frontend",
+      entries: [
+        {
+          kind: "subject",
+          subject: {
+            slug: "javascript",
+            href: "/frontend/javascript",
+            title: "JavaScript",
+            blurb: "",
+            clusters: [
+              {
+                id: "additional",
+                title: "Additional",
+                href: "/frontend/javascript#additional",
+                topics: [
+                  {
+                    slug: "parent",
+                    href: "/frontend/parent",
+                    title: "Parent",
+                    blurb: "",
+                    concepts: [],
+                    nestedTopics: [
+                      {
+                        slug: "child-a",
+                        href: "/frontend/child-a",
+                        title: "Child A",
+                        blurb: "",
+                        concepts: [],
+                      },
+                      {
+                        slug: "child-b",
+                        href: "/frontend/child-b",
+                        title: "Child B",
+                        blurb: "",
+                        concepts: [],
+                      },
+                    ],
+                  },
+                  {
+                    slug: "sibling",
+                    href: "/frontend/sibling",
+                    title: "Sibling",
+                    blurb: "",
+                    concepts: [],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+  ];
+
+  const chain = navChainForPath(nestedGroups, "/frontend/child-b", "");
+  assert.deepEqual(chain, [
+    { pathname: "/frontend/javascript", hash: "additional" },
+    { pathname: "/frontend/parent", hash: "" },
+    { pathname: "/frontend/child-a", hash: "" },
+    { pathname: "/frontend/child-b", hash: "" },
+    { pathname: "/frontend/sibling", hash: "" },
+  ]);
+
+  assert.equal(
+    siblingNavHrefForPath(nestedGroups, "/frontend/child-b", "", -1),
+    "/frontend/child-a",
+  );
+  assert.equal(
+    siblingNavHrefForPath(nestedGroups, "/frontend/child-b", "", 1),
+    "/frontend/sibling",
+  );
+  assert.equal(
+    siblingNavHrefForPath(nestedGroups, "/frontend/parent", "", 1),
+    "/frontend/child-a",
+  );
+});
+
 test("bookmarkMatchesPage matches topic and concept bookmarks", async () => {
   const { bookmarkMatchesPage } = await import("@/lib/nav/bookmarks");
   const topic = "/en/backend/nodejs-core";

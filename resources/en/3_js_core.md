@@ -1,35 +1,33 @@
 # JS Core — Language
 
-Covers ECMAScript runtime fundamentals: engines and modules. Types, memory (stack/heap), bindings, scope, and `globalThis` live in [Data Types & Variables](./3_js_variables.md). Operators, control flow (including `try`/`catch`), and loops live in [Operators & Loops](./3_js_operators.md). Arrays and function APIs live in sibling Core topics.
+Covers ECMAScript runtime fundamentals: engines and the language runtime. ES modules live in [Modules](./3_js_modules.md). Bindings, types, operators, and structures live in sibling Core topics ([Variables](./3_js_variables.md), [Data Types](./3_js_data_types.md), [Data Structures](./3_js_data_structures.md), [Operators](./3_js_operators.md) · [Loops](./3_js_loops.md) · [Arrays](./3_js_array.md) · [Functions](./3_js_functions.md)).
 
 [← Back to JS hub](./3_js.md)
 
 ### Related docs
 
-- [JS Data Types & Variables](./3_js_variables.md) · [Stack & heap](./3_js_variables.md#memory-stack-heap) · [globalThis](./3_js_variables.md#globalthis) · [JS Operators & Loops](./3_js_operators.md) · [Error handling](./3_js_operators.md#error-handling) · [Iterators](./3_js_operators.md#iterators) · [JS Arrays](./3_js_array.md) · [JS Additional](./3_js_extra.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [CORS / same-origin](./3_js_browser_extra.md#cors-same-origin) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md) · [Call stack](./3_js_async_event_loop.md#call-stack)
-- [TypeScript](./5_ts.md) · [Web API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [Vue](./4_vue.md) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Computer science](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
+- [Variables](./3_js_variables.md) · [Data Types](./3_js_data_types.md) · [Data Structures](./3_js_data_structures.md) · [Stack & heap](./3_js_data_types.md#memory-stack-heap) · [globalThis](./3_js_variables.md#globalthis) · [Operators](./3_js_operators.md) · [Loops](./3_js_loops.md) · [Error handling](./3_js_loops.md#error-handling) · [Iterators](./3_js_loops.md#iterators) · [JS Arrays](./3_js_array.md) · [Modules](./3_js_modules.md) · [Export and Import](./3_js_import_export.md) · [Dynamic imports](./3_js_dynamic_import.md) · [JS Additional](./3_js_extra.md) · [JS Functions](./3_js_functions.md) · [Objects](./3_js_objects.md) · [Classes](./3_js_classes.md) · [JS Document](./3_js_browser.md) · [JS Events](./3_js_events.md) · [JS Browser APIs](./3_js_browser_extra.md) · [CORS / same-origin](./3_js_browser_extra.md#cors-same-origin) · [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md) · [Call stack](./3_js_async_event_loop.md#call-stack)
+- [TypeScript](./5_ts.md) · [Web API](./6_web_api.md) · [Build — polyfills & transpilers](./10_build_bundlers.md#polyfills-vs-transpilers) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Process & threads](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [Vue](./4_vue.md) · [OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop) · [Computer science](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
 
 ### Main concepts
 
-| Area        | Topics                                                  |
-| ----------- | ------------------------------------------------------- |
-| **Runtime** | JS vs ECMAScript, JIT, strict mode, console, code style |
-| **Modern**  | ESM                                                     |
+| Area        | Topics                                                                           |
+| ----------- | -------------------------------------------------------------------------------- |
+| **Runtime** | JS vs ECMAScript, JIT, polyfills & transpilers, strict mode, console, code style |
 
 ### Sections
 
 > Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
 - [Core](#core)
-- [Modules](#modules)
 - [Design principles](#design-principles)
 - [Interview](./3_js_interview.md)
 
-Stack & heap → [Data Types & Variables](./3_js_variables.md#memory-stack-heap). Error handling → [Operators & Loops](./3_js_operators.md#error-handling). Iterators & generators → [Operators & Loops](./3_js_operators.md#iterators).
+Stack & heap → [Data Types](./3_js_data_types.md#memory-stack-heap). Error handling → [Loops](./3_js_loops.md#error-handling). Iterators & generators → [Loops](./3_js_loops.md#iterators).
 
-Sibling Core topics: [Data Types & Variables](./3_js_variables.md) · [Operators & Loops](./3_js_operators.md) · [Array](./3_js_array.md) · [Functions](./3_js_functions.md) · [Classes & Objects](./3_js_oop.md).
+Sibling Core topics: [Variables](./3_js_variables.md) · [Data Types](./3_js_data_types.md) · [Data Structures](./3_js_data_structures.md) · [Operators](./3_js_operators.md) · [Loops](./3_js_loops.md) · [Array](./3_js_array.md) · [Functions](./3_js_functions.md) · [Objects](./3_js_objects.md) · [Classes](./3_js_classes.md).
 
-Topics also covered: **JIT**, **strict mode**, **ESM**. Types / stack-heap / variables / scope / `globalThis` / closures → [3_js_variables.md](./3_js_variables.md); Operators / loops / errors → [3_js_operators.md](./3_js_operators.md); Arrays → [3_js_array.md](./3_js_array.md); Intl / RegExp / Signals → [3_js_extra.md](./3_js_extra.md); event loop → [JS Async](./3_js_async_await.md); GC / Proxy / deep copy → [3_js_oop.md](./3_js_oop.md); paradigms → [7_special_cs.md](./7_special_cs.md).
+Topics also covered: **JIT**, **polyfills / transpilers**, **strict mode**. **ESM** → [Modules](./3_js_modules.md) · [Export and Import](./3_js_import_export.md) · [Dynamic imports](./3_js_dynamic_import.md). Types / stack-heap → [3_js_data_types.md](./3_js_data_types.md); objects / JSON → [3_js_data_structures.md](./3_js_data_structures.md); variables / scope / `globalThis` / closures → [3_js_variables.md](./3_js_variables.md); Operators → [3_js_operators.md](./3_js_operators.md); loops / errors / iterators → [3_js_loops.md](./3_js_loops.md); Arrays → [3_js_array.md](./3_js_array.md); Intl / RegExp / Signals → [3_js_extra.md](./3_js_extra.md); event loop → [JS Async](./3_js_async_await.md); GC / Proxy / deep copy → [Objects](./3_js_objects.md) · [Classes](./3_js_classes.md); paradigms → [7_special_cs.md](./7_special_cs.md).
 
 <a name="core"></a>
 
@@ -198,7 +196,7 @@ function praise(name) {
 
 **Thoughts:**
 
-JIT combines fast startup (interpreter) with peak performance (compiler). Babel transpiles modern syntax to older ECMAScript for older runtimes — it is not the same as the engine JIT.
+JIT combines fast startup (interpreter) with peak performance (compiler). Transpilers and polyfills run **before** or **alongside** the engine — see [Polyfills and transpilers](#polyfills-and-transpilers); they are not engine JIT.
 
 | Engine         | Host               |
 | -------------- | ------------------ |
@@ -207,6 +205,49 @@ JIT combines fast startup (interpreter) with peak performance (compiler). Babel 
 | JavaScriptCore | Safari             |
 
 **Sources:** [javascript.info/intro](https://javascript.info/intro) · [MDN — interpreted vs compiled](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [MDN JIT](https://developer.mozilla.org/en-US/docs/Glossary/Just_in_time_compilation) · [V8 blog](https://v8.dev/blog)
+
+</details>
+
+<details>
+  <summary>Polyfills and transpilers</summary>
+
+### Polyfills and transpilers
+
+**Definition:** A **transpiler** (source-to-source compiler) rewrites **ECMAScript syntax** a target engine cannot parse into older syntax it understands. A **polyfill** is runtime JavaScript that **implements a missing API** (methods, constructors, globals) so call sites stay unchanged. Neither replaces the **engine** (V8, SpiderMonkey, …) and neither is **JIT** — see [Engine and runtime](#engine-and-runtime). Bundler and Babel preset detail → [Polyfills vs transpilers](./10_build_bundlers.md#polyfills-vs-transpilers).
+
+**How it works:**
+
+- **Syntax gap:** `class`, `async`/`await`, optional chaining (`?.`), nullish coalescing (`??`) — an old parser throws `SyntaxError` before any line runs. Fix with **transpile** (Babel, TypeScript emit, esbuild, SWC), not a polyfill.
+- **API gap:** `Promise`, `Array.prototype.at`, `Object.hasOwn` — the engine parses your file but the method is missing. Fix with a **polyfill** (`core-js`, or `if (!globalThis.X) { … }`) or avoid that API on the target.
+- **Typical pipeline:** author modern source → transpile to the ECMAScript version your Browserslist (or Node `engines` field) needs → add polyfills only where the runtime lacks an API. Vite/esbuild transpile by default; polyfills are deliberate (`core-js`, `@babel/preset-env` `useBuiltIns`).
+- **Bundlers** (webpack, Rollup, Vite) merge modules; they may invoke a transpiler but are not transpilers themselves.
+
+**When to use:** You support browsers or Node versions that lack a language feature or built-in you rely on. Check the gap (MDN compatibility tables, [caniuse.com](https://caniuse.com/), [compat-table](https://compat-table.github.io/compat-table/es6/)). Prefer native implementations when they exist — MDN notes polyfills are slower and may not replicate every native behavior.
+
+**Pluses and minuses:**
+
+| +                                        | −                                              |
+| ---------------------------------------- | ---------------------------------------------- |
+| One codebase for mixed runtimes          | `core-js` and careless presets inflate bundles |
+| Polyfills keep call sites readable       | Syntax cannot be polyfilled — only APIs        |
+| Transpilers unlock new syntax on old VMs | Stack traces often show emitted JS, not source |
+
+**Examples:**
+
+```js
+// API gap — polyfill (feature-detect first)
+if (!Math.trunc) {
+  Math.trunc = (n) => (n < 0 ? Math.ceil(n) : Math.floor(n));
+}
+
+// Syntax gap — transpile before the engine runs the file
+// const size = config?.width ?? 100;
+// → older JS with explicit null/undefined checks
+```
+
+**Thoughts:** Interview: “Babel vs polyfill?” — transpiler rewrites **grammar**; polyfill supplies **runtime objects/functions**. “Polyfill `async`?” — not as a one-liner; transpile to generators/Promises (or don’t support that engine). TypeScript → JavaScript is transpilation; types are erased and are never polyfilled. jQuery v1 was an early **API** polyfill story (one surface over divergent browsers) — see MDN glossary.
+
+**Sources:** [MDN — Polyfill](https://developer.mozilla.org/en-US/docs/Glossary/Polyfill) · [javascript.info — Polyfills](https://javascript.info/polyfills) · [core-js](https://github.com/zloirock/core-js)
 
 </details>
 
@@ -302,73 +343,6 @@ Common terms used throughout JS core documentation.
 | Minification  | Remove whitespace/comments to shrink bundle size |
 
 **Sources:** [MDN Glossary](https://developer.mozilla.org/en-US/docs/Glossary)
-
-</details>
-
-<a name="modules"></a>
-
-## Modules
-
-<details>
-  <summary>ES Modules (ESM)</summary>
-
-### ES Modules (ESM)
-
-**Definition:** Native module system with `import` / `export`. Each file is its own module scope (strict mode by default). Static `import` statements are resolved at parse time; `import()` is dynamic.
-
-**How it works:**
-
-- **Named exports:** `export const x = 1;` → `import { x } from './mod.js'`
-- **Default export:** one per file → `import name from './mod.js'` (no curly braces)
-- **Re-export:** `export { x } from './mod.js'` / `export { default as User } from './user.js'`
-- **Live bindings:** imported `let`/`const` bindings update when the exporter mutates (read-only on import side).
-- **Dynamic `import(path)`:** returns a Promise of the module namespace; works anywhere (including classic scripts); path may be computed. Default export is `.default`.
-- **Top-level `await`:** allowed in ES modules.
-- Module code runs once on first import; further imports share the same exports.
-- Browser: `<script type="module">` (deferred, CORS for cross-origin); no bare specifiers without a resolver/bundler.
-
-**When to use:**
-
-| ESM                                | CommonJS (`require`)          |
-| ---------------------------------- | ----------------------------- |
-| New browser and Node apps          | Legacy Node-only codebases    |
-| Bundled front-end                  | Some tooling still CJS-only   |
-| Dynamic `import()` for lazy routes | Sync config loads in old Node |
-
-#### Common pitfalls
-
-```js
-// import must be at top level (not inside if) — use import() for conditional
-// import { x } from './mod.js'; // x is live binding, not a copy
-```
-
-**Pluses and minuses:**
-
-| +                                    | −                                             |
-| ------------------------------------ | --------------------------------------------- |
-| Tree-shaking (dead code elimination) | Needs bundler or `type="module"` in browser   |
-| Clear static dependency graph        | CORS on cross-origin scripts                  |
-| No accidental globals                | No synchronous `require` in browser           |
-| `import()` for code splitting        | Slightly different semantics than CJS in Node |
-
-**Examples:**
-
-```js
-// math.js
-export const PI = 3.14;
-export function add(a, b) {
-  return a + b;
-}
-export default function multiply(a, b) {
-  return a * b;
-}
-
-// app.js
-import multiply, { PI, add } from "./math.js";
-const heavy = await import("./heavy.js"); // dynamic — returns Promise
-```
-
-**Sources:** [javascript.info/modules-intro](https://javascript.info/modules-intro) · [javascript.info/import-export](https://javascript.info/import-export) · [javascript.info/modules-dynamic-imports](https://javascript.info/modules-dynamic-imports)
 
 </details>
 
@@ -560,7 +534,7 @@ new OrderService(new SmsService());
 // }
 ```
 
-**Thoughts:** SOLID is a **guide**, not a law — a 10-line script does not need five classes. Apply when change pain appears. Plain functions and modules: [SOLID in Functions](#solid-in-functions). Class syntax details: [Classes & Objects](./3_js_oop.md#classes-full). Framework mapping: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_basics.md#solid-in-typescript). Full OOP reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+**Thoughts:** SOLID is a **guide**, not a law — a 10-line script does not need five classes. Apply when change pain appears. Plain functions and modules: [SOLID in Functions](#solid-in-functions). Class syntax details: [Classes](./3_js_classes.md#classes-full). Framework mapping: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_basics.md#solid-in-typescript). Full OOP reference: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
 **Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Functions](#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_basics.md#solid-in-typescript)
 

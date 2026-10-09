@@ -6,7 +6,7 @@ Transpilers, bundling concepts, bundlers, and code quality.
 
 ### Related docs
 
-* [Build — CI](./10_build_ci.md) · [Build — Bundlers](./10_build_bundlers.md) · [Build — Docker](./10_build_docker.md) · [Build — Infra](./10_build_infra.md) · [Build — Interview](./10_build_interview.md)
+- [Build — CI](./10_build_ci.md) · [Build — Bundlers](./10_build_bundlers.md) · [Build — Docker](./10_build_docker.md) · [Build — Infra](./10_build_infra.md) · [Build — Interview](./10_build_interview.md)
 
 ### Sections
 
@@ -26,10 +26,10 @@ Transpilers, bundling concepts, bundlers, and code quality.
 
 **Definition:**
 
-| Tool type | Input | Output | Role |
-|-----------|-------|--------|------|
-| **Compiler / transpiler** | Source code | Transformed source code | Syntax downleveling, type stripping |
-| **Bundler** | Many modules | Few optimized files | Dependency graph, code splitting, minification |
+| Tool type                 | Input        | Output                  | Role                                           |
+| ------------------------- | ------------ | ----------------------- | ---------------------------------------------- |
+| **Compiler / transpiler** | Source code  | Transformed source code | Syntax downleveling, type stripping            |
+| **Bundler**               | Many modules | Few optimized files     | Dependency graph, code splitting, minification |
 
 **Thoughts:** Modern stacks combine both — TypeScript (type-check) + esbuild (emit) + Rollup (bundle). Don't conflate "Babel" with "Webpack."
 
@@ -42,7 +42,7 @@ Transpilers, bundling concepts, bundlers, and code quality.
 
 ### Polyfills vs transpilers
 
-**Definition:** A **transpiler** rewrites **syntax** the old engine cannot parse. A **polyfill** is a script that **adds missing APIs** (functions/methods) at runtime. Most modern apps need both ideas, even if Vite/esbuild do the heavy lifting.
+**Definition:** A **transpiler** rewrites **syntax** the old engine cannot parse. A **polyfill** is a script that **adds missing APIs** (functions/methods) at runtime. Most modern apps need both ideas, even if Vite/esbuild do the heavy lifting. Language/runtime framing → [JS Core — Polyfills and transpilers](./3_js_core.md#polyfills-and-transpilers).
 
 **How it works:**
 
@@ -79,11 +79,11 @@ if (!Math.trunc) {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Massive plugin ecosystem | Slower than esbuild/swc |
-| `@babel/preset-env` targets browserslist | Config complexity |
-| JSX transform for non-ESBuild setups | Polyfill confusion (use `core-js` deliberately) |
+| +                                        | −                                               |
+| ---------------------------------------- | ----------------------------------------------- |
+| Massive plugin ecosystem                 | Slower than esbuild/swc                         |
+| `@babel/preset-env` targets browserslist | Config complexity                               |
+| JSX transform for non-ESBuild setups     | Polyfill confusion (use `core-js` deliberately) |
 
 **Examples:**
 
@@ -91,8 +91,8 @@ if (!Math.trunc) {
 // babel.config.js
 module.exports = {
   presets: [
-    ['@babel/preset-env', { targets: 'defaults' }],
-    ['@babel/preset-react', { runtime: 'automatic' }],
+    ["@babel/preset-env", { targets: "defaults" }],
+    ["@babel/preset-react", { runtime: "automatic" }],
   ],
 };
 ```
@@ -114,10 +114,10 @@ module.exports = {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Static type safety at scale | Slower emit than esbuild |
-| `.d.ts` generation for libraries | Config (`tsconfig.json`) has many options |
+| +                                | −                                                |
+| -------------------------------- | ------------------------------------------------ |
+| Static type safety at scale      | Slower emit than esbuild                         |
+| `.d.ts` generation for libraries | Config (`tsconfig.json`) has many options        |
 | Project references for monorepos | `tsc --noEmit` still needed even when Vite emits |
 
 **Examples:**
@@ -165,10 +165,10 @@ module.exports = {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Fewer HTTP requests | Initial bundle can grow large |
-| Enables minification, tree shaking | Build step adds complexity |
+| +                                      | −                                                    |
+| -------------------------------------- | ---------------------------------------------------- |
+| Fewer HTTP requests                    | Initial bundle can grow large                        |
+| Enables minification, tree shaking     | Build step adds complexity                           |
 | Transforms non-JS assets (CSS, images) | Cache invalidation on any change (without splitting) |
 
 **Thoughts:** Native ESM in browsers reduces bundling need for dev (Vite), but production still bundles for optimization.
@@ -188,11 +188,11 @@ module.exports = {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Fast navigation after initial load | Large initial JS payload |
-| Rich client interactivity | SEO requires extra work (SSR/SSG) |
-| Simpler deployment (static files) | Time-to-interactive on slow devices |
+| +                                  | −                                   |
+| ---------------------------------- | ----------------------------------- |
+| Fast navigation after initial load | Large initial JS payload            |
+| Rich client interactivity          | SEO requires extra work (SSR/SSG)   |
+| Simpler deployment (static files)  | Time-to-interactive on slow devices |
 
 **Sources:** [MDN — SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA)
 
@@ -213,18 +213,18 @@ HTTP **cache** already skips the network for repeat images (and often JS/CSS). S
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Faster initial load | More HTTP requests (mitigated by HTTP/2) |
-| Route-based lazy loading | Loading states / Suspense needed |
-| Parallel chunk downloads | Complexity in cache strategy |
+| +                        | −                                        |
+| ------------------------ | ---------------------------------------- |
+| Faster initial load      | More HTTP requests (mitigated by HTTP/2) |
+| Route-based lazy loading | Loading states / Suspense needed         |
+| Parallel chunk downloads | Complexity in cache strategy             |
 
 **Examples:**
 
 ```tsx
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense } from "react";
 
-const AdminPanel = lazy(() => import('./AdminPanel'));
+const AdminPanel = lazy(() => import("./AdminPanel"));
 
 function App() {
   return (
@@ -237,7 +237,7 @@ function App() {
 
 ```js
 // Webpack / Vite — dynamic import creates a separate chunk automatically
-const module = await import('./heavy-lib');
+const module = await import("./heavy-lib");
 ```
 
 **Thoughts:** Split at route boundaries first, then heavy libraries. Analyze with `rollup-plugin-visualizer` or Webpack Bundle Analyzer. Avoid splitting tiny modules — overhead exceeds savings. Smaller initial JS also improves **INP** — [6_web_api.md](./6_web_api_security.md#inp-interaction-to-next-paint).
@@ -257,10 +257,10 @@ const module = await import('./heavy-lib');
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Smaller production bundles | Broken by side-effectful modules |
-| No runtime cost | CommonJS modules shake poorly |
+| +                                        | −                                                  |
+| ---------------------------------------- | -------------------------------------------------- |
+| Smaller production bundles               | Broken by side-effectful modules                   |
+| No runtime cost                          | CommonJS modules shake poorly                      |
 | Works automatically with modern bundlers | Barrel files (`index.ts` re-exports) can defeat it |
 
 **Examples:**
@@ -275,11 +275,11 @@ const module = await import('./heavy-lib');
 
 ```js
 // Bad — imports entire library
-import _ from 'lodash';
+import _ from "lodash";
 _.debounce(fn, 300);
 
 // Good — imports only debounce
-import debounce from 'lodash/debounce';
+import debounce from "lodash/debounce";
 ```
 
 **Thoughts:** `sideEffects: false` tells bundlers they can drop unused modules entirely. CSS imports are side effects — list them explicitly. Barrel `export *` files can defeat shaking and bloat the client bundle (hurts **INP**) — [6_web_api.md — INP](./6_web_api_security.md#inp-interaction-to-next-paint).
@@ -295,18 +295,18 @@ import debounce from 'lodash/debounce';
 
 **When to use:**
 
-| Environment | Recommended |
-|-------------|-------------|
-| Development | `eval-source-map` or Vite default (fast) |
+| Environment                  | Recommended                                    |
+| ---------------------------- | ---------------------------------------------- |
+| Development                  | `eval-source-map` or Vite default (fast)       |
 | Production (with monitoring) | `hidden-source-map` (not referenced in bundle) |
-| Production (no monitoring) | `false` |
+| Production (no monitoring)   | `false`                                        |
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Debug production issues with real line numbers | Increase build time and artifact size |
-| Error monitoring (Sentry) uses them | Expose source code if published publicly |
+| +                                              | −                                        |
+| ---------------------------------------------- | ---------------------------------------- |
+| Debug production issues with real line numbers | Increase build time and artifact size    |
+| Error monitoring (Sentry) uses them            | Expose source code if published publicly |
 
 **Examples:**
 
@@ -314,7 +314,7 @@ import debounce from 'lodash/debounce';
 // vite.config.ts
 export default defineConfig({
   build: {
-    sourcemap: 'hidden', // generate but don't expose in JS
+    sourcemap: "hidden", // generate but don't expose in JS
   },
 });
 ```
@@ -330,10 +330,10 @@ export default defineConfig({
 
 **Definition:**
 
-| Type | When resolved | Visible in browser? | Example |
-|------|---------------|---------------------|---------|
-| **Build-time** | At `vite build` / `webpack` | Yes, if prefixed (`VITE_`, `NEXT_PUBLIC_`) | `VITE_API_URL` |
-| **Runtime** | At server/container start | Injected by server, not in JS bundle | Docker `ENV`, K8s ConfigMap |
+| Type           | When resolved               | Visible in browser?                        | Example                     |
+| -------------- | --------------------------- | ------------------------------------------ | --------------------------- |
+| **Build-time** | At `vite build` / `webpack` | Yes, if prefixed (`VITE_`, `NEXT_PUBLIC_`) | `VITE_API_URL`              |
+| **Runtime**    | At server/container start   | Injected by server, not in JS bundle       | Docker `ENV`, K8s ConfigMap |
 
 **Thoughts:**
 
@@ -360,36 +360,36 @@ Never put secrets in `VITE_*` or `NEXT_PUBLIC_*` — they are embedded in the cl
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Largest plugin/loader ecosystem | Slow dev server vs Vite |
-| Module Federation for micro-frontends | Complex configuration |
-| Handles any asset type | Steep learning curve |
+| +                                     | −                       |
+| ------------------------------------- | ----------------------- |
+| Largest plugin/loader ecosystem       | Slow dev server vs Vite |
+| Module Federation for micro-frontends | Complex configuration   |
+| Handles any asset type                | Steep learning curve    |
 
 **Examples:**
 
 ```js
 // webpack.config.js (minimal)
 module.exports = {
-  entry: './src/index.tsx',
-  output: { filename: 'bundle.[contenthash].js', clean: true },
+  entry: "./src/index.tsx",
+  output: { filename: "bundle.[contenthash].js", clean: true },
   module: {
     rules: [
-      { test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/ },
-      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      { test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/ },
+      { test: /\.css$/, use: ["style-loader", "css-loader"] },
     ],
   },
   plugins: [new HtmlWebpackPlugin()],
-  optimization: { splitChunks: { chunks: 'all' } },
+  optimization: { splitChunks: { chunks: "all" } },
 };
 ```
 
 **Thoughts:**
 
-| Concept | Role |
-|---------|------|
-| **Loaders** | Transform files (TS → JS, SCSS → CSS) |
-| **Plugins** | Bundle-level tasks (HTML generation, minification) |
+| Concept               | Role                                                           |
+| --------------------- | -------------------------------------------------------------- |
+| **Loaders**           | Transform files (TS → JS, SCSS → CSS)                          |
+| **Plugins**           | Bundle-level tasks (HTML generation, minification)             |
 | **Module Federation** | Runtime sharing of modules between independently deployed apps |
 
 CRA used Webpack internally (deprecated). Prefer Vite for new React apps.
@@ -409,26 +409,26 @@ CRA used Webpack internally (deprecated). Prefer Vite for new React apps.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Best-in-class library output | Less suited for complex app dev servers |
-| Native ESM support | Plugin ecosystem smaller than Webpack |
+| +                                      | −                                           |
+| -------------------------------------- | ------------------------------------------- |
+| Best-in-class library output           | Less suited for complex app dev servers     |
+| Native ESM support                     | Plugin ecosystem smaller than Webpack       |
 | Used internally by Vite for production | No HMR (used as build step, not dev server) |
 
 **Examples:**
 
 ```js
 // rollup.config.js
-import typescript from '@rollup/plugin-typescript';
+import typescript from "@rollup/plugin-typescript";
 
 export default {
-  input: 'src/index.ts',
+  input: "src/index.ts",
   output: [
-    { file: 'dist/index.esm.js', format: 'esm' },
-    { file: 'dist/index.cjs.js', format: 'cjs' },
+    { file: "dist/index.esm.js", format: "esm" },
+    { file: "dist/index.cjs.js", format: "cjs" },
   ],
   plugins: [typescript()],
-  external: ['react', 'react-dom'],
+  external: ["react", "react-dom"],
 };
 ```
 
@@ -449,25 +449,25 @@ export default {
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| 10–100× faster than Webpack/Babel | Limited plugin API |
-| Built-in TS/JSX transform | No type checking (pair with `tsc`) |
-| Built-in minification | Some edge-case incompatibilities |
+| +                                 | −                                  |
+| --------------------------------- | ---------------------------------- |
+| 10–100× faster than Webpack/Babel | Limited plugin API                 |
+| Built-in TS/JSX transform         | No type checking (pair with `tsc`) |
+| Built-in minification             | Some edge-case incompatibilities   |
 
 **Examples:**
 
 ```js
 // build.mjs
-import * as esbuild from 'esbuild';
+import * as esbuild from "esbuild";
 
 await esbuild.build({
-  entryPoints: ['src/index.ts'],
+  entryPoints: ["src/index.ts"],
   bundle: true,
-  outfile: 'dist/bundle.js',
+  outfile: "dist/bundle.js",
   minify: true,
   sourcemap: true,
-  target: 'es2020',
+  target: "es2020",
 });
 ```
 
@@ -488,33 +488,33 @@ await esbuild.build({
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Instant cold start, fast HMR | Plugin ecosystem smaller than Webpack for exotic loaders |
-| Sensible defaults | Legacy CJS-heavy deps may need `optimizeDeps` tuning |
-| First-class TypeScript support | Different mental model from Webpack |
+| +                              | −                                                        |
+| ------------------------------ | -------------------------------------------------------- |
+| Instant cold start, fast HMR   | Plugin ecosystem smaller than Webpack for exotic loaders |
+| Sensible defaults              | Legacy CJS-heavy deps may need `optimizeDeps` tuning     |
+| First-class TypeScript support | Different mental model from Webpack                      |
 
 **Examples:**
 
 ```ts
 // vite.config.ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
 
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: '0.0.0.0', // required inside Docker
+    host: "0.0.0.0", // required inside Docker
     port: 3000,
   },
   resolve: {
-    alias: { '@': path.resolve(__dirname, 'src') },
+    alias: { "@": path.resolve(__dirname, "src") },
   },
   build: {
-    sourcemap: 'hidden',
+    sourcemap: "hidden",
     rollupOptions: {
-      output: { manualChunks: { vendor: ['react', 'react-dom'] } },
+      output: { manualChunks: { vendor: ["react", "react-dom"] } },
     },
   },
 });
@@ -541,11 +541,11 @@ export default defineConfig({
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                               | −                                           |
+| ------------------------------- | ------------------------------------------- |
 | Very fast dev builds in Next.js | Next.js-only (not a standalone app bundler) |
-| Incremental computation | Still maturing vs Webpack feature parity |
-| Integrated with Next dev server | Less relevant outside Next.js |
+| Incremental computation         | Still maturing vs Webpack feature parity    |
+| Integrated with Next dev server | Less relevant outside Next.js               |
 
 **Examples:**
 
@@ -568,13 +568,13 @@ next dev --turbopack
 
 Side-by-side comparison of the two most common frontend bundlers in production today.
 
-| Aspect | Webpack | Vite |
-|--------|---------|------|
-| Dev server | Bundles entire app | Native ESM + on-demand |
-| HMR speed | Slower on large apps | Near-instant |
-| Production | Webpack | Rollup (via Vite) |
-| Config | High | Low |
-| Module Federation | Yes | Limited |
+| Aspect            | Webpack              | Vite                   |
+| ----------------- | -------------------- | ---------------------- |
+| Dev server        | Bundles entire app   | Native ESM + on-demand |
+| HMR speed         | Slower on large apps | Near-instant           |
+| Production        | Webpack              | Rollup (via Vite)      |
+| Config            | High                 | Low                    |
+| Module Federation | Yes                  | Limited                |
 
 **How it works:** Legacy apps, Module Federation. **Vite:** New SPAs, CRA migration.
 
@@ -583,13 +583,13 @@ Side-by-side comparison of the two most common frontend bundlers in production t
 ```js
 // Webpack
 module.exports = {
-  entry: './src/index.tsx',
-  module: { rules: [{ test: /\.tsx?$/, use: 'ts-loader' }] },
+  entry: "./src/index.tsx",
+  module: { rules: [{ test: /\.tsx?$/, use: "ts-loader" }] },
 };
 
 // Vite
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 export default defineConfig({ plugins: [react()] });
 ```
 
@@ -602,12 +602,12 @@ export default defineConfig({ plugins: [react()] });
 
 ### Bundler comparison
 
-| | Webpack | Rollup | esbuild | Vite | Turbopack |
-|---|---------|--------|---------|------|-----------|
-| **Best for** | Legacy apps, MF | Libraries | Scripts, speed | Modern SPAs | Next.js dev |
-| **Dev HMR** | Slow | No | No | Fast | Fast |
-| **Config** | High | Medium | Low | Low | None (Next) |
-| **Ecosystem** | Largest | Medium | Growing | Large | Next-only |
+|               | Webpack         | Rollup    | esbuild        | Vite        | Turbopack   |
+| ------------- | --------------- | --------- | -------------- | ----------- | ----------- |
+| **Best for**  | Legacy apps, MF | Libraries | Scripts, speed | Modern SPAs | Next.js dev |
+| **Dev HMR**   | Slow            | No        | No             | Fast        | Fast        |
+| **Config**    | High            | Medium    | Low            | Low         | None (Next) |
+| **Ecosystem** | Largest         | Medium    | Growing        | Large       | Next-only   |
 
 ---
 
@@ -626,11 +626,11 @@ export default defineConfig({ plugins: [react()] });
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Remote caching speeds CI | Monorepo-specific |
-| Simple `turbo.json` pipeline | Requires workspace setup |
-| Works with Vite/Next per package | Not a bundler |
+| +                                | −                        |
+| -------------------------------- | ------------------------ |
+| Remote caching speeds CI         | Monorepo-specific        |
+| Simple `turbo.json` pipeline     | Requires workspace setup |
+| Works with Vite/Next per package | Not a bundler            |
 
 **Examples:**
 
@@ -662,20 +662,20 @@ Why write tests and AAA: [7_special.md — Why write tests](./7_special_testing_
 
 **Definition:**
 
-| Tool | Purpose | Configurable? | Examples |
-|------|---------|---------------|----------|
+| Tool          | Purpose                                    | Configurable?        | Examples         |
+| ------------- | ------------------------------------------ | -------------------- | ---------------- |
 | **Formatter** | Visual layout (indent, quotes, line width) | Opinionated, minimal | Prettier, dprint |
-| **Linter** | Logic errors, bad patterns, best practices | Highly configurable | ESLint, Biome |
+| **Linter**    | Logic errors, bad patterns, best practices | Highly configurable  | ESLint, Biome    |
 
 **When to use:** Every project. Run formatter first, then linter. Disable ESLint formatting rules that conflict with Prettier via `eslint-config-prettier`.
 
 **Pluses and minuses:**
 
-| + (using both) | − |
-|-------------------|------|
-| Consistent style + fewer bugs | Rule overlap causes conflicts |
-| Automatable in CI and pre-commit | Initial setup time |
-| Onboarding — no style debates | False positives without tuning |
+| + (using both)                   | −                              |
+| -------------------------------- | ------------------------------ |
+| Consistent style + fewer bugs    | Rule overlap causes conflicts  |
+| Automatable in CI and pre-commit | Initial setup time             |
+| Onboarding — no style debates    | False positives without tuning |
 
 **Examples:**
 
@@ -700,27 +700,27 @@ eslint . --fix
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Huge plugin ecosystem (React, import, a11y) | Configuration can be overwhelming |
-| Autofix for many rules | False positives without rule tuning |
-| Flat config (ESLint 9+) simplifies setup | Migration from `.eslintrc` ongoing |
+| +                                           | −                                   |
+| ------------------------------------------- | ----------------------------------- |
+| Huge plugin ecosystem (React, import, a11y) | Configuration can be overwhelming   |
+| Autofix for many rules                      | False positives without rule tuning |
+| Flat config (ESLint 9+) simplifies setup    | Migration from `.eslintrc` ongoing  |
 
 **Examples:**
 
 ```js
 // eslint.config.js (flat config, ESLint 9+)
-import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import reactHooks from 'eslint-plugin-react-hooks';
-import prettier from 'eslint-config-prettier';
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import reactHooks from "eslint-plugin-react-hooks";
+import prettier from "eslint-config-prettier";
 
 export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.strict,
-  reactHooks.configs['recommended-latest'],
+  reactHooks.configs["recommended-latest"],
   prettier,
-  { rules: { 'no-console': 'warn' } },
+  { rules: { "no-console": "warn" } },
 );
 ```
 
@@ -745,11 +745,11 @@ export default tseslint.config(
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Zero config, team-wide consistency | Cannot customize much (by design) |
+| +                                    | −                                                  |
+| ------------------------------------ | -------------------------------------------------- |
+| Zero config, team-wide consistency   | Cannot customize much (by design)                  |
 | Supports JS, TS, CSS, HTML, JSON, MD | May format generated files (use `.prettierignore`) |
-| Editor integration | Long lines in JSX can be ugly |
+| Editor integration                   | Long lines in JSX can be ugly                      |
 
 **Examples:**
 
@@ -765,7 +765,12 @@ export default tseslint.config(
 
 ```json
 // package.json
-{ "scripts": { "format": "prettier --write .", "format:check": "prettier --check ." } }
+{
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  }
+}
 ```
 
 **Thoughts:** Add `format:check` to CI (don't write in CI). Use `.prettierignore` for `dist/`, `coverage/`, generated GraphQL types.

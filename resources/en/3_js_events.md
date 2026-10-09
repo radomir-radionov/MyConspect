@@ -1,44 +1,41 @@
 # JS Browser — Events
 
-Browser events: handlers, phases, delegation, and custom events.
+Browser events: handlers, phases, delegation, UI input, forms, and loading.
 
 [← Back to JS hub](./3_js.md)
 
 ### Related docs
 
-* [Document](./3_js_browser.md) · [Browser additional](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
-* [JS Core](./3_js_core.md) · [JS Functions](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Async](./3_js_async.md)
-* [HTML](./1_html.md) · [Web API](./6_web_api.md)
+- [Document](./3_js_browser.md) · [Browser additional](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
+- [JS Core](./3_js_core.md) · [JS Functions](./3_js_functions.md) · [Objects](./3_js_objects.md) · [Classes](./3_js_classes.md) · [JS Async](./3_js_async.md)
+- [HTML](./1_html.md) · [Web API](./6_web_api.md)
 
 ### Main concepts
 
-| Area | Topics |
-|------|--------|
-| **Events** | Bubbling, capturing, delegation, default actions |
-| **UI** | Mouse, pointer, keyboard, scroll |
-| **Forms** | Focus, input/change, submit |
-| **Custom** | `CustomEvent` and `detail` payloads |
+| Area       | Topics                                                   |
+| ---------- | -------------------------------------------------------- |
+| **Basics** | Intro, bubbling, delegation, defaults, custom events     |
+| **UI**     | Mouse, pointer, keyboard, scroll                         |
+| **Forms**  | Properties, focus, input/change, submit                  |
+| **Load**   | Page lifecycle, script timing, resource `load` / `error` |
 
 ### Sections
 
 > Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
-- [Events](#events)
-- [Default actions](#default-actions)
-- [Event phases](#event-phases)
-- [Event handlers & delegation](#event-handlers-and-delegation)
-- [Custom events](#custom-events)
-- [UI events (mouse, pointer, keyboard)](#ui-events-mouse-pointer-keyboard)
+- [Events](#events) — **Event basics** · **UI events** · **Forms** · **Document loading**
 - [Interview](./3_js_interview.md)
 
 ---
 
+<a name="events"></a>
+
 ## Events
 
 <details>
-  <summary>Events</summary>
+  <summary>Introduction to browser events</summary>
 
-### Events
+### Introduction to browser events
 
 **Definition:** Browser UI is event-driven. An `EventTarget` (`Element`, `document`, `window`) receives named events; you subscribe with `addEventListener` and unsubscribe with `removeEventListener` using the **same function reference**.
 
@@ -53,10 +50,10 @@ Browser events: handlers, phases, delegation, and custom events.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Many listeners per type; options object | Must keep the same function to remove |
-| Works on any `EventTarget` | Forgetting `removeEventListener` can leak |
+| +                                       | −                                         |
+| --------------------------------------- | ----------------------------------------- |
+| Many listeners per type; options object | Must keep the same function to remove     |
+| Works on any `EventTarget`              | Forgetting `removeEventListener` can leak |
 
 **Examples:**
 
@@ -77,9 +74,92 @@ button.removeEventListener("click", onSave);
 </details>
 
 <details>
-  <summary>Default actions</summary>
+  <summary>Bubbling and capturing</summary>
 
-### Default actions
+### Bubbling and capturing
+
+**Definition:** A DOM event travels in three phases: **capturing** (root → target), **at target**, then **bubbling** (target → root) when `event.bubbles` is true. `event.eventPhase` is `CAPTURING_PHASE` (1), `AT_TARGET` (2), or `BUBBLING_PHASE` (3).
+
+**How it works:**
+
+- Capture listeners run on the way **down** (`addEventListener(type, fn, true)` or `{ capture: true }`). Bubble listeners run on the way **up** (default).
+- `event.target` is the node where the event started. `event.currentTarget` is the node whose listener is running now.
+- `stopPropagation()` stops further capturing/bubbling. It does **not** cancel default actions — use `preventDefault()` (and the listener must not be `{ passive: true }`).
+- `stopImmediatePropagation()` also skips remaining listeners on the **same** node.
+- If `bubbles` is false, the flow ends after the target phase.
+
+**When to use:** Capture for “run before children” (e.g. focus). `preventDefault()` on `submit`/`click` to override native behavior. Avoid `stopPropagation()` unless you must isolate a widget.
+
+**Pluses and minuses:**
+
+| +                                       | −                                                       |
+| --------------------------------------- | ------------------------------------------------------- |
+| One model for nested UI                 | `stopPropagation` hides bugs and breaks other listeners |
+| `target` vs `currentTarget` is explicit | Capture + bubble on the same node can surprise          |
+
+**Examples:**
+
+```js
+parent.addEventListener("click", (e) => {
+  console.log(e.target.id, e.currentTarget.id, e.eventPhase);
+});
+
+link.addEventListener("click", (e) => {
+  e.preventDefault();
+});
+```
+
+**Thoughts:** Default is bubble. Capture is the exception you name in the third argument.
+
+**Sources:** [MDN Event.eventPhase](https://developer.mozilla.org/en-US/docs/Web/API/Event/eventPhase) · [javascript.info/bubbling-and-capturing](https://javascript.info/bubbling-and-capturing)
+
+</details>
+
+<details>
+  <summary>Event delegation</summary>
+
+### Event delegation
+
+**Definition:** **Delegation** attaches **one** listener to a common ancestor. Inside the handler, `event.target` is the origin node; `event.currentTarget` is the ancestor. Use `closest(selector)` so clicks on inner text/icons still match the intended control.
+
+**How it works:**
+
+- Bubbling delivers child events to the parent, so dynamically added children are handled without re-binding.
+- Check the real control: `const item = e.target.closest("li[data-id]")`. If `!item` or `!e.currentTarget.contains(item)`, ignore.
+- Do not style `e.target` blindly — it may be a nested `<span>`, not the `<li>`.
+- Pair with `data-*` attributes for ids instead of inline `onclick`.
+
+**When to use:** Lists, tables, menus, any UI that adds/removes rows. Direct listeners on each row when the set is small and static.
+
+**Pluses and minuses:**
+
+| +                                    | −                                         |
+| ------------------------------------ | ----------------------------------------- |
+| One listener; works for future nodes | Need `closest` / ignore unmatched clicks  |
+| Less memory than N row listeners     | Nested widgets may need `stopPropagation` |
+
+**Examples:**
+
+```js
+list.addEventListener("click", (e) => {
+  const item = e.target.closest("li[data-id]");
+  if (!item || !list.contains(item)) return;
+  item.remove();
+});
+```
+
+**Thoughts:** Interview answer: “listen on the parent, identify the child with `closest`.”
+
+**See also:** [DOM navigation — `closest`](./3_js_browser.md#dom-navigation)
+
+**Sources:** [javascript.info/event-delegation](https://javascript.info/event-delegation)
+
+</details>
+
+<details>
+  <summary>Browser default actions</summary>
+
+### Browser default actions
 
 **Definition:** Many events trigger a built-in browser action (link navigation, form submit, text selection, context menu). Cancel it with `event.preventDefault()` — or `return false` only from `on*` property/attribute handlers.
 
@@ -101,12 +181,6 @@ menu.addEventListener("click", (e) => {
   e.preventDefault();
   route(a.getAttribute("href"));
 });
-
-document.addEventListener("contextmenu", (e) => {
-  if (e.defaultPrevented) return; // child already handled
-  e.preventDefault();
-  showDocMenu(e);
-});
 ```
 
 **Thoughts:** `stopPropagation` ≠ `preventDefault`. Cancel the default; let the event bubble unless you have a strong reason not to.
@@ -116,95 +190,9 @@ document.addEventListener("contextmenu", (e) => {
 </details>
 
 <details>
-  <summary>Event phases</summary>
+  <summary>Dispatching custom events</summary>
 
-### Event phases
-
-**Definition:** A DOM event travels in three phases: **capturing** (root → target), **at target**, then **bubbling** (target → root) when `event.bubbles` is true. `event.eventPhase` is `CAPTURING_PHASE` (1), `AT_TARGET` (2), or `BUBBLING_PHASE` (3).
-
-**How it works:**
-
-- Capture listeners run on the way **down** (`addEventListener(type, fn, true)` or `{ capture: true }`). Bubble listeners run on the way **up** (default).
-- `event.target` is the node where the event started. `event.currentTarget` is the node whose listener is running now.
-- `stopPropagation()` stops further capturing/bubbling. It does **not** cancel default actions — use `preventDefault()` (and the listener must not be `{ passive: true }`).
-- `stopImmediatePropagation()` also skips remaining listeners on the **same** node.
-- If `bubbles` is false, the flow ends after the target phase.
-
-**When to use:** Capture for “run before children” (e.g. focus). `preventDefault()` on `submit`/`click` to override native behavior. Avoid `stopPropagation()` unless you must isolate a widget.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| One model for nested UI | `stopPropagation` hides bugs and breaks other listeners |
-| `target` vs `currentTarget` is explicit | Capture + bubble on the same node can surprise |
-
-**Examples:**
-
-```js
-parent.addEventListener("click", (e) => {
-  // click child → target is child, currentTarget is parent
-  console.log(e.target.id, e.currentTarget.id, e.eventPhase);
-});
-
-link.addEventListener("click", (e) => {
-  e.preventDefault(); // stay on the page
-});
-
-inner.addEventListener("click", (e) => e.stopPropagation());
-```
-
-**Thoughts:** Default is bubble. Capture is the exception you name in the third argument.
-
-**Sources:** [MDN Event.eventPhase](https://developer.mozilla.org/en-US/docs/Web/API/Event/eventPhase) · [MDN Event.stopPropagation](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation) · [javascript.info/bubbling-and-capturing](https://javascript.info/bubbling-and-capturing)
-
-</details>
-
-<details>
-  <summary>Event handlers & delegation</summary>
-
-### Event handlers & delegation
-
-**Definition:** **Delegation** attaches **one** listener to a common ancestor. Inside the handler, `event.target` is the origin node; `event.currentTarget` is the ancestor. Use `closest(selector)` so clicks on inner text/icons still match the intended control.
-
-**How it works:**
-
-- Bubbling delivers child events to the parent, so dynamically added children are handled without re-binding.
-- Check the real control: `const item = e.target.closest("li[data-id]")`. If `!item` or `!e.currentTarget.contains(item)`, ignore.
-- Do not style `e.target` blindly — it may be a nested `<span>`, not the `<li>`.
-- Pair with `data-*` attributes for ids instead of inline `onclick`.
-
-**When to use:** Lists, tables, menus, any UI that adds/removes rows. Direct listeners on each row when the set is small and static.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| One listener; works for future nodes | Need `closest` / ignore unmatched clicks |
-| Less memory than N row listeners | Nested widgets may need `stopPropagation` |
-
-**Examples:**
-
-```js
-list.addEventListener("click", (e) => {
-  const item = e.target.closest("li[data-id]");
-  if (!item || !list.contains(item)) return;
-  item.remove();
-});
-```
-
-**Thoughts:** Interview answer: “listen on the parent, identify the child with `closest`.”
-
-**See also:** [DOM navigation — `closest`](./3_js_browser.md#dom-navigation)
-
-**Sources:** [MDN Event.target](https://developer.mozilla.org/en-US/docs/Web/API/Event/target) · [MDN Event.currentTarget](https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget) · [javascript.info/event-delegation](https://javascript.info/event-delegation)
-
-</details>
-
-<details>
-  <summary>Custom events</summary>
-
-### Custom events
+### Dispatching custom events
 
 **Definition:** `CustomEvent` is an `Event` you create and `dispatchEvent` yourself. The optional `detail` payload is any value (often an object) read as `event.detail`.
 
@@ -216,13 +204,6 @@ list.addEventListener("click", (e) => {
 - `composed: true` lets the event cross shadow DOM (web components).
 
 **When to use:** Decouple widgets (`"cart:add"`, `"modal:close"`) without a global event bus. Skip for app-wide state — a store or callback is clearer.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Same DOM event machinery | Silent if `bubbles` is false and you listen on a parent |
-| `detail` carries structured data | Easy to overuse vs explicit function calls |
 
 **Examples:**
 
@@ -239,44 +220,137 @@ item.dispatchEvent(
 );
 ```
 
-**Thoughts:** Custom events are for **DOM components**, not a replacement for application state.
-
-**Sources:** [MDN CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent) · [MDN dispatchEvent](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent) · [javascript.info/dispatch-events](https://javascript.info/dispatch-events)
+**Sources:** [javascript.info/dispatch-events](https://javascript.info/dispatch-events)
 
 </details>
 
-<a name="ui-events-mouse-pointer-keyboard"></a>
-
 <details>
-  <summary>UI events (mouse, pointer, keyboard)</summary>
+  <summary>Mouse events</summary>
 
-### UI events (mouse, pointer, keyboard)
+### Mouse events
 
-**Definition:** Pointer-like input and keyboard hotkeys use dedicated event families. Prefer **Pointer Events** for new UI that must work with mouse, touch, and pen; use keyboard events for shortcuts (not for tracking field text — use `input`).
+**Definition:** Mouse input uses a small family of events: press/release, click, movement, and context menu.
 
 **How it works:**
 
-**Mouse (basics):** `mousedown` → `mouseup` → `click` (left). Also `dblclick`, `contextmenu`, `mousemove`, `mouseover`/`mouseout` (bubble, relatedTarget), `mouseenter`/`mouseleave` (no bubble, no enter/leave for children). Modifiers: `ctrlKey` / `metaKey` (Mac Cmd) / `shiftKey` / `altKey`. Coords: `clientX/Y` (viewport), `pageX/Y` (document). `event.button`: 0 left, 1 middle, 2 right.
+- Typical sequence: `mousedown` → `mouseup` → `click` (primary button). Also `dblclick`, `contextmenu`, `mousemove`.
+- Modifiers: `ctrlKey` / `metaKey` (Mac Cmd) / `shiftKey` / `altKey`.
+- Coordinates: `clientX/Y` (viewport), `pageX/Y` (document). `event.button`: 0 left, 1 middle, 2 right.
 
-**mouseover vs mouseenter:** `mouseover`/`mouseout` fire when crossing child boundaries (lots of noise). `mouseenter`/`mouseleave` fire once for the element as a whole — better for “hover this card”.
+**When to use:** Buttons and links (`click`); drawing (`mousemove`); right-click menus (`contextmenu`).
 
-**Drag with mouse/pointer:** `pointerdown` → document `pointermove` → `pointerup`; remember `shiftX/Y` from pointer to element corner; cancel native image drag (`ondragstart = () => false`) and set `touch-action: none` to avoid `pointercancel`. Find droppables with `document.elementFromPoint` (hide the dragged element first). Prefer `setPointerCapture(pointerId)` so moves stay on the thumb without document listeners.
+**Examples:**
 
-**Pointer extras:** `pointerId`, `pointerType` (`"mouse"|"pen"|"touch"`), `isPrimary` (first finger). Same names as mouse (`pointerdown` …).
+```js
+box.addEventListener("click", (e) => {
+  console.log(e.button, e.clientX, e.clientY);
+});
+```
 
-**Keyboard:** `keydown` / `keyup`. `event.key` = character/meaning (`"z"`, `"Enter"`); `event.code` = physical key (`"KeyZ"`) — layout-independent for hotkeys. Auto-repeat sets `event.repeat`. Filter hotkeys with `code` + `ctrlKey || metaKey`. Do **not** use keyboard alone to validate text fields — paste/speech skip keys; use `input`.
+**See also:** [Mouseover and mouseenter](#mouseover-and-mouseenter) · [Mouse drag and drop](#mouse-drag-and-drop)
 
-**Scroll:** `scroll` fires *after* scrolling — cannot `preventDefault` there; freeze with CSS `overflow: hidden` or cancel the causing key (`PageDown`). Geometry helpers: [Element and window dimensions & scroll](./3_js_browser_extra.md#element-and-window-dimensions--scroll).
+**Sources:** [javascript.info/mouse-events-basics](https://javascript.info/mouse-events-basics)
 
-**When to use:** Hotkeys → `keydown` + `code`. Hover tooltips → `mouseenter`/`mouseleave` or pointer equivalents. Sliders/drag → pointer + capture. Field value → `input` (see [forms](./3_js_browser.md#text-forms-and-dialogs)).
+</details>
 
-**Pluses and minuses:**
+<details>
+  <summary>Mouseover and mouseenter</summary>
 
-| + | − |
-|------|------|
-| Pointer unifies mouse/touch/pen | Must handle `pointercancel` / native drag |
-| Delegation works for dynamic lists | `mouseover` floods with child events |
-| `code` stable for shortcuts | Mobile IME may report `key = "Unidentified"` |
+### Mouseover and mouseenter
+
+**Definition:** Hover detection can use bubbling `mouseover`/`mouseout` or non-bubbling `mouseenter`/`mouseleave`.
+
+**How it works:**
+
+- `mouseover` / `mouseout` bubble and fire when the pointer crosses **child** boundaries (noisy on nested markup).
+- `mouseenter` / `mouseleave` fire when entering/leaving the element as a whole — better for “hover this card”.
+- `relatedTarget` on `mouseover`/`mouseout` is the other element involved in the transition.
+
+**When to use:** Tooltips and highlight on a container → `mouseenter`/`mouseleave`. Tracking every nested hit → `mouseover` (rare).
+
+**Examples:**
+
+```js
+card.addEventListener("mouseenter", () => card.classList.add("hover"));
+card.addEventListener("mouseleave", () => card.classList.remove("hover"));
+```
+
+**Sources:** [javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave](https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave)
+
+</details>
+
+<details>
+  <summary>Mouse drag and drop</summary>
+
+### Mouse drag and drop
+
+**Definition:** Custom drag UIs listen for pointer/mouse down, move, and up — often with capture — instead of the HTML5 drag-and-drop API alone.
+
+**How it works:**
+
+- `pointerdown` → track `pointermove` → `pointerup` (or the mouse equivalents).
+- Store offset from pointer to element corner (`shiftX`/`shiftY`).
+- Cancel native image drag (`ondragstart = () => false`); use `touch-action: none` to reduce `pointercancel`.
+- Hit-test drop targets with `document.elementFromPoint` (hide the dragged ghost first if needed).
+- `setPointerCapture(pointerId)` keeps receiving moves even if the pointer leaves the element.
+
+**When to use:** Sliders, kanban cards, custom DnD. Native `draggable` when you need OS-level file drops.
+
+**Examples:**
+
+```js
+thumb.onpointerdown = (e) => {
+  thumb.setPointerCapture(e.pointerId);
+  const startX = e.clientX;
+  thumb.onpointermove = (ev) => {
+    thumb.style.left = `${ev.clientX - startX}px`;
+  };
+  thumb.onpointerup = () => {
+    thumb.onpointermove = null;
+  };
+};
+```
+
+**Sources:** [javascript.info/mouse-drag-and-drop](https://javascript.info/mouse-drag-and-drop)
+
+</details>
+
+<details>
+  <summary>Pointer events</summary>
+
+### Pointer events
+
+**Definition:** **Pointer Events** unify mouse, touch, and pen under `pointerdown`, `pointermove`, `pointerup`, `pointercancel`.
+
+**How it works:**
+
+- `pointerId` identifies the contact; `pointerType` is `"mouse"`, `"pen"`, or `"touch"`.
+- `isPrimary` marks the first touch in a multi-touch gesture.
+- Same coordinate and button fields as mouse events; prefer pointer APIs for new cross-device UI.
+
+**When to use:** Any control that must work on touch and desktop with one code path.
+
+**See also:** [Mouse drag and drop](#mouse-drag-and-drop)
+
+**Sources:** [javascript.info/pointer-events](https://javascript.info/pointer-events)
+
+</details>
+
+<details>
+  <summary>Keyboard events</summary>
+
+### Keyboard events
+
+**Definition:** `keydown` and `keyup` report physical keys and modifiers; use them for shortcuts, not for reading field text.
+
+**How it works:**
+
+- `event.key` = character/meaning (`"z"`, `"Enter"`); `event.code` = physical key (`"KeyZ"`) — layout-independent for hotkeys.
+- Auto-repeat sets `event.repeat` on held keys.
+- Filter shortcuts with `code` + `ctrlKey || metaKey`. Call `preventDefault()` when overriding browser shortcuts.
+- Do **not** validate typed text with keyboard alone — paste and speech skip keys; use `input` on fields.
+
+**When to use:** Undo/redo, save, modal Escape. Field value → [change, input, and clipboard events](#change-input-and-clipboard-events).
 
 **Examples:**
 
@@ -287,21 +361,210 @@ document.addEventListener("keydown", (e) => {
     undo();
   }
 });
-
-thumb.onpointerdown = (e) => {
-  thumb.setPointerCapture(e.pointerId);
-  thumb.onpointermove = (ev) => {
-    thumb.style.left = `${ev.clientX - slider.getBoundingClientRect().left}px`;
-  };
-  thumb.onpointerup = () => {
-    thumb.onpointermove = null;
-  };
-};
 ```
 
-**Thoughts:** Interview path: bubbling → delegation → pointer capture for drag → `preventDefault` for defaults.
+**Sources:** [javascript.info/keyboard-events](https://javascript.info/keyboard-events)
 
-**Sources:** [javascript.info/mouse-events-basics](https://javascript.info/mouse-events-basics) · [javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave](https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave) · [javascript.info/mouse-drag-and-drop](https://javascript.info/mouse-drag-and-drop) · [javascript.info/pointer-events](https://javascript.info/pointer-events) · [javascript.info/keyboard-events](https://javascript.info/keyboard-events) · [javascript.info/onscroll](https://javascript.info/onscroll)
+</details>
+
+<details>
+  <summary>Scrolling</summary>
+
+### Scrolling
+
+**Definition:** The `scroll` event fires on scrollable elements and the document **after** the scroll position changes.
+
+**How it works:**
+
+- You cannot `preventDefault()` on `scroll` — block scrolling with CSS (`overflow: hidden`) or cancel the causing key/gesture earlier.
+- Read position with `element.scrollTop` / `window.scrollY`. Geometry: [Element size and scroll](./3_js_browser.md#element-size-and-scroll).
+- Throttle heavy scroll handlers; consider `IntersectionObserver` instead of scroll listeners for visibility.
+
+**When to use:** Sticky headers, infinite scroll, scroll progress. Not for blocking scroll at the last moment.
+
+**Sources:** [javascript.info/onscroll](https://javascript.info/onscroll)
+
+</details>
+
+<details>
+  <summary>Form properties and methods</summary>
+
+### Form properties and methods
+
+**Definition:** Forms expose collections and methods for navigating controls and submitting without a full page reload.
+
+**How it works:**
+
+- `document.forms[name]` / `form.elements[name]` — live collections; each control has `.form` back to its `<form>`.
+- Use `.value` on inputs and `<textarea>` — **not** `innerHTML` (especially for textarea).
+- `<select>`: `value`, `selectedIndex`, `option.selected`; create options with `new Option(text, value, defaultSelected, selected)`.
+- `.submit()` sends the form **without** firing `submit` or running constraint validation; `.requestSubmit()` does both.
+
+**When to use:** Read/write control state; programmatic submit with validation → `requestSubmit`.
+
+**See also:** [Form submit](#form-submit) · [Searching elements — `.forms`](./3_js_browser.md#searching-elements)
+
+**Sources:** [javascript.info/form-elements](https://javascript.info/form-elements)
+
+</details>
+
+<details>
+  <summary>Focus and blur</summary>
+
+### Focus and blur
+
+**Definition:** Focus moves between focusable elements; `focus` / `blur` do not bubble, but `focusin` / `focusout` do.
+
+**How it works:**
+
+- `element.focus()` / `element.blur()` — programmatic focus.
+- `tabindex="0"` — tab order; `tabindex="-1"` — programmatic only.
+- `document.activeElement` — currently focused node.
+- Listen on a container with `focusin`/`focusout` for delegation-style focus tracking.
+
+**When to use:** Trap focus in modals; highlight focused row; restore focus after closing a dialog.
+
+**Sources:** [javascript.info/focus-blur](https://javascript.info/focus-blur)
+
+</details>
+
+<details>
+  <summary>change, input, and clipboard events</summary>
+
+### change, input, and clipboard events
+
+**Definition:** Field value changes fire `input` and `change`; clipboard actions fire `cut`, `copy`, and `paste`.
+
+**How it works:**
+
+- `input` — every value change (typing, paste, speech, drag text in).
+- `change` — when editing **finishes** (blur for text fields; immediately for checkbox/radio/select).
+- `cut` / `copy` / `paste` — `ClipboardEvent`; `preventDefault()` can block the action.
+
+**When to use:** Live search/filter → `input`. Submit-on-blur validation → `change`. Custom paste handling → `paste`.
+
+**Examples:**
+
+```js
+input.addEventListener("input", () => filterList(input.value));
+select.addEventListener("change", () => loadChart(select.value));
+```
+
+**Sources:** [javascript.info/events-change-input](https://javascript.info/events-change-input)
+
+</details>
+
+<details>
+  <summary>Form submit</summary>
+
+### Form submit
+
+**Definition:** Submitting a form fires a cancelable `submit` event on the `<form>` before navigation.
+
+**How it works:**
+
+- Activate via submit button, `Enter` in a field, or `form.requestSubmit()`.
+- `form.addEventListener("submit", (e) => { e.preventDefault(); … })` for SPA / `fetch` submit.
+- `form.submit()` bypasses the `submit` event and HTML5 validation — prefer `requestSubmit()`.
+
+**When to use:** Always intercept `submit` for client-side apps; call `preventDefault()` then send with `fetch` or a router.
+
+**Examples:**
+
+```js
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  await fetch("/api/save", { method: "POST", body: new FormData(form) });
+});
+```
+
+**Sources:** [javascript.info/forms-submit](https://javascript.info/forms-submit)
+
+</details>
+
+<details>
+  <summary>Page lifecycle events</summary>
+
+### Page lifecycle events
+
+**Definition:** The browser fires lifecycle events as HTML is parsed, resources finish loading, and the user leaves the page.
+
+| Event              | Fires when                                     | Target     |
+| ------------------ | ---------------------------------------------- | ---------- |
+| `DOMContentLoaded` | HTML parsed, DOM ready (images may still load) | `document` |
+| `load`             | All resources loaded (images, styles, scripts) | `window`   |
+| `beforeunload`     | User is leaving the page                       | `window`   |
+| `unload`           | Page is being unloaded                         | `window`   |
+
+**How it works:**
+
+- `DOMContentLoaded` waits for classic/deferred scripts; `async` scripts do not block it. See [Script async and defer](#script-async-and-defer).
+- `document.readyState`: `"loading"` → `"interactive"` → `"complete"`.
+- `beforeunload`: set `event.returnValue = ""` for a leave confirm — custom message text is ignored by browsers.
+- `unload`: only fire-and-forget work (`navigator.sendBeacon`).
+
+**Examples:**
+
+```js
+document.addEventListener("DOMContentLoaded", () => initApp());
+window.addEventListener("load", () => hideLoader());
+window.addEventListener("beforeunload", (e) => {
+  if (formDirty) e.returnValue = "";
+});
+```
+
+**Sources:** [javascript.info/onload-ondomcontentloaded](https://javascript.info/onload-ondomcontentloaded)
+
+</details>
+
+<details>
+  <summary>Script async and defer</summary>
+
+### Script async and defer
+
+**Definition:** `async` and `defer` on `<script>` change **when** external scripts run relative to HTML parsing and `DOMContentLoaded`.
+
+**How it works:**
+
+| Attribute       | Blocks parse? | Order              | vs `DOMContentLoaded`   |
+| --------------- | ------------- | ------------------ | ----------------------- |
+| _(none)_        | yes           | document order     | inline blocks parse     |
+| `defer`         | no (fetch)    | document order     | runs before DCL         |
+| `async`         | no (fetch)    | first-ready-first  | may run before or after |
+| `type="module"` | no            | defer-like default | typically before DCL    |
+
+- Dynamically inserted `<script>` behaves like `async` unless `script.async = false`.
+
+**When to use:** App bundle → `defer`; independent tags → `async`. Full tag rules → [Script loading](./3_js_browser.md#script-loading).
+
+**Sources:** [javascript.info/script-async-defer](https://javascript.info/script-async-defer)
+
+</details>
+
+<details>
+  <summary>Resource onload and onerror</summary>
+
+### Resource onload and onerror
+
+**Definition:** Individual elements (`<img>`, `<script>`, `<link>`, …) fire `load` or `error` when that **resource** finishes or fails — separate from `window.load`.
+
+**How it works:**
+
+- Assign `img.onload` / `img.onerror` or use `addEventListener` on the element.
+- `new Image()` — set handlers before `src` to avoid missing a cached load.
+- Script parse errors inside a loaded file need `window.onerror` / `error` event — not `script.onerror` alone for inline exceptions.
+- Cross-origin script errors stay opaque unless `crossorigin` + CORS headers.
+
+**Examples:**
+
+```js
+const img = new Image();
+img.onload = () => console.log(img.width);
+img.onerror = () => console.log("failed");
+img.src = "/hero.png";
+```
+
+**Sources:** [javascript.info/onload-onerror](https://javascript.info/onload-onerror)
 
 </details>
 

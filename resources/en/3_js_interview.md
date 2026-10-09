@@ -6,7 +6,7 @@ JavaScript interview questions. Answers are filled for the full list.
 
 ### Related docs
 
-- [Language](./3_js_core.md) · [Operators & Loops](./3_js_operators.md) · [Arrays](./3_js_array.md) · [Functions](./3_js_functions.md) · [Classes & Objects](./3_js_oop.md)
+- [Language](./3_js_core.md) · [Operators](./3_js_operators.md) · [Loops](./3_js_loops.md) · [Arrays](./3_js_array.md) · [Functions](./3_js_functions.md) · [Objects](./3_js_objects.md) · [Classes](./3_js_classes.md)
 - [Document](./3_js_browser.md) · [Events](./3_js_events.md) · [Browser APIs](./3_js_browser_extra.md) · [Async](./3_js_async.md)
 
 ### Sections

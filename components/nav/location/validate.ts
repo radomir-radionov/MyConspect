@@ -1,5 +1,6 @@
 import { INSTRUCTIONS_HREF, splitHref, type NavGroup } from "@/lib/nav";
 import { navSubjectClusters } from "@/lib/nav/subjectClusters";
+import { navTopicTreeContainsHref } from "@/lib/nav/topicTree";
 import { stripLocalePrefix } from "@/lib/i18n/paths";
 
 export function hrefInHandbook(
@@ -21,7 +22,7 @@ export function hrefInHandbook(
     for (const entry of group.entries) {
       switch (entry.kind) {
         case "topic":
-          if (entry.topic.href === pathname) {
+          if (navTopicTreeContainsHref(entry.topic, pathname)) {
             return true;
           }
           break;
@@ -31,7 +32,9 @@ export function hrefInHandbook(
           }
           if (
             navSubjectClusters(entry.subject).some((cluster) =>
-              cluster.topics.some((topic) => topic.href === pathname),
+              cluster.topics.some((topic) =>
+                navTopicTreeContainsHref(topic, pathname),
+              ),
             )
           ) {
             return true;
@@ -41,7 +44,11 @@ export function hrefInHandbook(
           if (entry.subjectHref === pathname) {
             return true;
           }
-          if (entry.cluster.topics.some((topic) => topic.href === pathname)) {
+          if (
+            entry.cluster.topics.some((topic) =>
+              navTopicTreeContainsHref(topic, pathname),
+            )
+          ) {
             return true;
           }
           break;

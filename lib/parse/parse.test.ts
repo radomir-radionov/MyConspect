@@ -170,6 +170,27 @@ test("parseTopicOutline uses English anchors for Russian interview titles", () =
   assert.match(outline[0].titleSearchText ?? "", /What does HTML stand for/);
 });
 
+test("parseTopicOutline keeps content after horizontal rules in the body", () => {
+  const outline = parseTopicOutline(`
+# Topic
+
+<details>
+  <summary>First</summary>
+
+**Definition:** Alpha.
+
+---
+
+**How it works:** Beta.
+</details>
+`);
+
+  assert.deepEqual(
+    outline.map((item) => item.title),
+    ["First"],
+  );
+});
+
 test("extractInterviewAnchorTitles returns cleaned question titles in order", () => {
   const titles = extractInterviewAnchorTitles(`
 ## Interview Practice

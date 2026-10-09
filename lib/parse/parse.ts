@@ -586,12 +586,17 @@ function dropDuplicateHeadingStubs(
 
 function studyMarkdown(markdown: string): string {
   const lines = markdown.split("\n");
-  const index = lines.findIndex((line) => /^---\s*$/.test(line));
-  if (index === -1) {
+  if (!/^---\s*$/.test(lines[0] ?? "")) {
+    return markdown;
+  }
+  const close = lines.findIndex(
+    (line, index) => index > 0 && /^---\s*$/.test(line),
+  );
+  if (close === -1) {
     return markdown;
   }
   return lines
-    .slice(index + 1)
+    .slice(close + 1)
     .join("\n")
     .trimStart();
 }

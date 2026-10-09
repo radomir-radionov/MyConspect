@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ClusterCardSections } from "@/components/catalog";
+import { CardGrid, SubjectClusterHub } from "@/components/catalog";
 import {
   ConceptList,
   PageTitleHeader,
@@ -11,6 +11,8 @@ import {
   getTrack,
   isInterviewTasksTopic,
   isInterviewTopic,
+  isNavHubTopic,
+  navChildBrowseCards,
   subjectAfterSectionClusterCards,
   subjectClusterCards,
   subjectRootClusterCards,
@@ -163,7 +165,7 @@ export default async function TopicPage({
     return (
       <main className="w-full max-w-5xl px-4 pt-5 pb-10 sm:px-6">
         <PageTitleHeader title={subject.title} />
-        <ClusterCardSections
+        <SubjectClusterHub
           sections={sections}
           rootSections={rootSections}
           groupedSections={groupedSections}
@@ -176,6 +178,29 @@ export default async function TopicPage({
   const loaded = await loadTopicPage(trackId, slug, locale);
   if (!loaded || !track) {
     notFound();
+  }
+
+  if (isNavHubTopic(loaded.topic)) {
+    const pageTitle = loaded.parsed.title;
+    const hubCards = localizeCards(locale, navChildBrowseCards(loaded.topic));
+    return (
+      <main className="w-full max-w-5xl px-4 pt-5 pb-10 sm:px-6">
+        {loaded.usedFallback ? (
+          <p className="mb-4 text-sm text-amber-700 dark:text-amber-300">
+            {FALLBACK_NOTE_BADGE[locale]}
+          </p>
+        ) : null}
+        <PageTitleHeader title={pageTitle} />
+        {loaded.parsed.description ? (
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+            {loaded.parsed.description}
+          </p>
+        ) : null}
+        <div className="mt-8">
+          <CardGrid items={hubCards} />
+        </div>
+      </main>
+    );
   }
 
   const groupedHubConcepts = topicUsesGroupedConceptIndex(loaded.topic)

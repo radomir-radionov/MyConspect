@@ -7,6 +7,11 @@ import type {
   NavTopic,
 } from "@/lib/nav";
 import { navSubjectClusters } from "@/lib/nav/subjectClusters";
+import {
+  flattenNavTopics,
+  navTopicAtPath,
+  navTopicTreeContainsHref,
+} from "@/lib/nav/topicTree";
 import { hashIdFrom } from "@/lib/nav/navUtils";
 import { isActiveTrack } from "./active";
 import { crumbsForPath } from "./crumbs";
@@ -20,13 +25,13 @@ export type NavStep = {
 function topicsFromEntry(entry: NavEntry): readonly NavTopic[] {
   switch (entry.kind) {
     case "topic":
-      return [entry.topic];
+      return flattenNavTopics(entry.topic);
     case "subject":
-      return navSubjectClusters(entry.subject).flatMap(
-        (cluster) => cluster.topics,
+      return navSubjectClusters(entry.subject).flatMap((cluster) =>
+        cluster.topics.flatMap((topic) => flattenNavTopics(topic)),
       );
     case "cluster":
-      return entry.cluster.topics;
+      return entry.cluster.topics.flatMap((topic) => flattenNavTopics(topic));
     default: {
       const _never: never = entry;
       return _never;
@@ -68,10 +73,21 @@ function appendTopicSteps(chain: NavStep[], topic: NavTopic): void {
   }
 }
 
+function flattenedClusterTopics(cluster: NavCluster): readonly NavTopic[] {
+  return cluster.topics.flatMap((topic) => flattenNavTopics(topic));
+}
+
+function appendTopicTreeSteps(chain: NavStep[], topic: NavTopic): void {
+  for (const flat of flattenNavTopics(topic)) {
+    appendTopicSteps(chain, flat);
+  }
+}
+
 function findTopicInGroup(group: NavGroup, pathname: string): NavTopic | null {
   for (const topic of collectTopicsForGroup(group)) {
-    if (topic.href === pathname) {
-      return topic;
+    const hit = navTopicAtPath(topic, pathname);
+    if (hit) {
+      return hit;
     }
   }
   return null;
@@ -89,7 +105,11 @@ function findSubjectForPath(
       return entry.subject;
     }
     for (const cluster of navSubjectClusters(entry.subject)) {
-      if (cluster.topics.some((topic) => topic.href === pathname)) {
+      if (
+        cluster.topics.some((topic) =>
+          navTopicTreeContainsHref(topic, pathname),
+        )
+      ) {
         return entry.subject;
       }
     }
@@ -109,13 +129,21 @@ function findClusterForPath(
   for (const entry of group.entries) {
     switch (entry.kind) {
       case "cluster":
-        if (entry.cluster.topics.some((topic) => topic.href === pathname)) {
+        if (
+          entry.cluster.topics.some((topic) =>
+            navTopicTreeContainsHref(topic, pathname),
+          )
+        ) {
           return { subjectHref: entry.subjectHref, cluster: entry.cluster };
         }
         break;
       case "subject":
         for (const cluster of navSubjectClusters(entry.subject)) {
-          if (cluster.topics.some((topic) => topic.href === pathname)) {
+          if (
+            cluster.topics.some((topic) =>
+              navTopicTreeContainsHref(topic, pathname),
+            )
+          ) {
             return { subjectHref: entry.subject.href, cluster };
           }
         }
@@ -184,7 +212,7 @@ function buildSubjectChain(subject: NavSubject): NavStep[] {
   const chain: NavStep[] = [{ pathname: subject.href, hash: "" }];
   for (const cluster of navSubjectClusters(subject)) {
     for (const topic of cluster.topics) {
-      appendTopicSteps(chain, topic);
+      appendTopicTreeSteps(chain, topic);
     }
   }
   return chain;
@@ -199,7 +227,7 @@ function buildClusterChain(
     chain.push({ pathname: subjectHref, hash: cluster.id });
   }
   for (const topic of cluster.topics) {
-    appendTopicSteps(chain, topic);
+    appendTopicTreeSteps(chain, topic);
   }
   return chain;
 }
@@ -223,7 +251,11 @@ function findFlatSectionScope(
       continue;
     }
     for (const cluster of section.clusters) {
-      if (cluster.topics.some((topic) => topic.href === pathname)) {
+      if (
+        cluster.topics.some((topic) =>
+          navTopicTreeContainsHref(topic, pathname),
+        )
+      ) {
         return { subject, section, sectionIndex: index };
       }
     }
@@ -235,7 +267,7 @@ function buildFlatSectionChain(section: NavSection): NavStep[] {
   const chain: NavStep[] = [];
   for (const cluster of section.clusters) {
     for (const topic of cluster.topics) {
-      appendTopicSteps(chain, topic);
+      appendTopicTreeSteps(chain, topic);
     }
   }
   return chain;
@@ -251,7 +283,11 @@ function lastTopicStep(topic: NavTopic): NavStep {
 
 function lastTopicStepInSection(section: NavSection): NavStep | null {
   const lastCluster = section.clusters[section.clusters.length - 1];
-  const lastTopic = lastCluster?.topics[lastCluster.topics.length - 1];
+  if (!lastCluster) {
+    return null;
+  }
+  const flat = flattenedClusterTopics(lastCluster);
+  const lastTopic = flat[flat.length - 1];
   if (!lastTopic) {
     return null;
   }
@@ -259,7 +295,12 @@ function lastTopicStepInSection(section: NavSection): NavStep | null {
 }
 
 function firstTopicStepInSection(section: NavSection): NavStep | null {
-  const firstTopic = section.clusters[0]?.topics[0];
+  const firstCluster = section.clusters[0];
+  if (!firstCluster) {
+    return null;
+  }
+  const flat = flattenedClusterTopics(firstCluster);
+  const firstTopic = flat[0];
   if (!firstTopic) {
     return null;
   }
@@ -270,7 +311,11 @@ function lastTopicStepInClusters(
   clusters: readonly NavCluster[],
 ): NavStep | null {
   const lastCluster = clusters[clusters.length - 1];
-  const lastTopic = lastCluster?.topics[lastCluster.topics.length - 1];
+  if (!lastCluster) {
+    return null;
+  }
+  const flat = flattenedClusterTopics(lastCluster);
+  const lastTopic = flat[flat.length - 1];
   if (!lastTopic) {
     return null;
   }
@@ -456,7 +501,8 @@ function firstTopicStep(topic: NavTopic): NavStep {
 }
 
 function firstClusterStep(cluster: NavCluster): NavStep | null {
-  const firstTopic = cluster.topics[0];
+  const flat = flattenedClusterTopics(cluster);
+  const firstTopic = flat[0];
   if (!firstTopic) {
     return null;
   }
@@ -464,7 +510,8 @@ function firstClusterStep(cluster: NavCluster): NavStep | null {
 }
 
 function lastClusterStep(cluster: NavCluster): NavStep | null {
-  const lastTopic = cluster.topics[cluster.topics.length - 1];
+  const flat = flattenedClusterTopics(cluster);
+  const lastTopic = flat[flat.length - 1];
   if (!lastTopic) {
     return null;
   }

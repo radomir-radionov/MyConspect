@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   SUBJECTS,
+  clusterTargetHref,
+  getTopic,
+  isNavHubTopic,
+  navChildBrowseCards,
   subjectClusterCards,
   trackBrowseCards,
   trackQuestionSections,
@@ -22,6 +26,52 @@ test("subjectClusterCards includes cluster blurb for single-topic clusters", () 
       assert.equal(items[0].description, cluster.blurb);
     }
   }
+});
+
+test("navChildBrowseCards lists browser hub children for the hub topic page", () => {
+  const hub = getTopic("frontend", "js-browser");
+  assert.ok(hub);
+  assert.equal(isNavHubTopic(hub), true);
+  const cards = navChildBrowseCards(hub);
+  assert.equal(cards.length, 8);
+  assert.ok(cards.some((card) => card.href === "/frontend/js-events"));
+});
+
+test("subjectClusterCards expands nav hub children for the additional cluster", () => {
+  const js = SUBJECTS.find((subject) => subject.slug === "javascript");
+  assert.ok(js);
+  const additional = subjectClusterCards(js).find(
+    (entry) => entry.cluster.id === "additional",
+  );
+  assert.ok(additional);
+  assert.equal(additional.items.length, 4);
+  assert.ok(
+    additional.items.some((item) => item.href === "/frontend/js-import-export"),
+  );
+  assert.ok(
+    additional.items.some((item) => item.href === "/frontend/js-extra"),
+  );
+  assert.equal(
+    clusterTargetHref(js, js.clusters.find((c) => c.id === "additional")!),
+    "/frontend/javascript#additional",
+  );
+});
+
+test("subjectClusterCards expands nav hub children for the browser cluster", () => {
+  const js = SUBJECTS.find((subject) => subject.slug === "javascript");
+  assert.ok(js);
+  const browser = subjectClusterCards(js).find(
+    (entry) => entry.cluster.id === "browser",
+  );
+  assert.ok(browser);
+  assert.equal(browser.items.length, 8);
+  assert.ok(
+    browser.items.some((item) => item.href === "/frontend/js-browser-document"),
+  );
+  assert.equal(
+    clusterTargetHref(js, js.clusters.find((c) => c.id === "browser")!),
+    "/frontend/javascript#browser",
+  );
 });
 
 test("subjectClusterCards omits interview and tasks clusters from conspect hubs", () => {

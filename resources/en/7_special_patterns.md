@@ -203,7 +203,7 @@ new Sun() === new Sun(); // true
 // Idiomatic: export const sun = Object.freeze({ mass: 1.989e30 });
 ```
 
-**See also:** [Factory](#factory--factory-method) · [Abstract Factory](#abstract-factory) · [Builder](#builder) · [Singleton](#singleton-caution) · [GOF catalog](#gof-design-patterns--catalog) · [JS OOP factory](./3_js_oop.md)
+**See also:** [Factory](#factory--factory-method) · [Abstract Factory](#abstract-factory) · [Builder](#builder) · [Singleton](#singleton-caution) · [GOF catalog](#gof-design-patterns--catalog) · [JS factory](./3_js_objects.md#factory-and-module-patterns)
 
 **Sources:**
 
@@ -296,7 +296,7 @@ gate.secret; // undefined
 
 **Thoughts:** Adapter **translates**. Facade **simplifies**. Decorator **adds**. Proxy **gates**.
 
-**See also:** [Adapter](#adapter) · [Facade](#facade) · [Decorator](#decorator) · [Proxy](#proxy) · [JS `Proxy`](./3_js_oop.md#proxy-and-reflect) · [Hexagonal adapters](./7_special_architecture.md#clean-architecture--hexagonal)
+**See also:** [Adapter](#adapter) · [Facade](#facade) · [Decorator](#decorator) · [Proxy](#proxy) · [JS `Proxy`](./3_js_objects.md#proxy-and-reflect) · [Hexagonal adapters](./7_special_architecture.md#clean-architecture--hexagonal)
 
 **Sources:**
 
@@ -563,7 +563,7 @@ new AccountingDepartment().hire(2).role; // 'accountant'
 
 **Thoughts:**
 
-Factories are enough for small objects. Grow into a `class` when you need `this` or methods that must stay on the entity. See [3_js_oop.md — factory](./3_js_oop.md).
+Factories are enough for small objects. Grow into a `class` when you need `this` or methods that must stay on the entity. See [Factory patterns](./3_js_objects.md#factory-and-module-patterns).
 
 Knowledge of _how_ to build lives in one function.
 

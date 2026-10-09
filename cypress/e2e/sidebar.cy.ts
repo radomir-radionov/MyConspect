@@ -43,7 +43,7 @@ describe("handbook sidebar", () => {
   });
 
   it("does not keep a concept highlighted after switching tracks", () => {
-    cy.visit("/en/frontend/js-operators#error-handling");
+    cy.visit("/en/frontend/js-loops#error-handling");
     cy.get('#handbook-sidebar [data-concept-id="error-handling"]').should(
       "have.class",
       "bg-yellow-50",
@@ -596,6 +596,19 @@ describe("handbook sidebar", () => {
       "have.attr",
       "aria-expanded",
       "false",
+    );
+  });
+
+  it("closes handbook clusters when Utility Types section expands", () => {
+    cy.visit("/en/frontend/typescript");
+    cy.nav("cluster", "modules").click();
+    cy.nav("cluster", "modules").should("have.attr", "aria-expanded", "true");
+    cy.nav("section", "utility-types").click();
+    cy.nav("cluster", "modules").should("have.attr", "aria-expanded", "false");
+    cy.nav("section", "utility-types").should(
+      "have.attr",
+      "aria-expanded",
+      "true",
     );
   });
 

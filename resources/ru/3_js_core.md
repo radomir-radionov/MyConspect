@@ -1,32 +1,32 @@
 # JS Core — Language
 
-Охватывает основы среды выполнения ECMAScript: механизмы и модули. Типы, память (стек/куча), привязки, область действия и `globalThis` жить в [Типы данных и переменные](./3_js_variables.md). Операторы, поток управления (включая `try`/`catch`), а циклы находятся в [Операторы и циклы](./3_js_operators.md). Массивы и API-функции находятся в родственных основных темах.
+Охватывает основы среды выполнения ECMAScript: движки и рантайм. ES-модули — в [Modules](./3_js_modules.md). Привязки, типы, операторы и структуры — в соседних темах Core ([Переменные](./3_js_variables.md), [Типы данных](./3_js_data_types.md), [Структуры данных](./3_js_data_structures.md), [Операторы](./3_js_operators.md) · [Циклы](./3_js_loops.md) · [Массив](./3_js_array.md) · [Функции](./3_js_functions.md)).
 
 [ ← Назад в JS-хаб](./3_js.md)
 
 ### Related docs
 
-- [Типы данных и переменные JS](./3_js_variables.md) · [Стек и куча](./3_js_variables.md#memory-stack-heap) · [globalThis](./3_js_variables.md#globalthis) · [Операторы и циклы JS](./3_js_operators.md) · [Ошибка обработка](./3_js_operators.md#error-handling) · [Итераторы](./3_js_operators.md#iterators) · [JS-массивы](./3_js_array.md) · [JS Дополнительно](./3_js_extra.md) · [JS-функции](./3_js_functions.md) · [JS ООП](./3_js_oop.md); [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md) · [Стек вызовов](./3_js_async_event_loop.md#call-stack)- [TypeScript](./5_ts.md) · [Веб-API](./6_web_api.md) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Процесс и потоки](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [Vue](./4_vue.md) · [ООП и SOLID](./7_special_engineering.md#объектно-ориентированное-программирование-oop) · [Информатика](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
+- [Переменные](./3_js_variables.md) · [Типы данных](./3_js_data_types.md) · [Структуры данных](./3_js_data_structures.md) · [Стек и куча](./3_js_data_types.md#memory-stack-heap) · [globalThis](./3_js_variables.md#globalthis) · [Операторы](./3_js_operators.md) · [Циклы](./3_js_loops.md) · [Ошибка обработка](./3_js_loops.md#error-handling) · [Итераторы](./3_js_loops.md#iterators) · [JS-массивы](./3_js_array.md) · [Modules](./3_js_modules.md) · [Export and Import](./3_js_import_export.md) · [Dynamic imports](./3_js_dynamic_import.md) · [JS Дополнительно](./3_js_extra.md) · [JS-функции](./3_js_functions.md) · [Объекты](./3_js_objects.md) · [Классы](./3_js_classes.md); [JS Async](./3_js_async.md) · [JS Interview](./3_js_interview.md) · [Стек вызовов](./3_js_async_event_loop.md#call-stack) · [TypeScript](./5_ts.md) · [Веб-API](./6_web_api.md) · [Build — polyfills & transpilers](./10_build_bundlers.md#polyfills-vs-transpilers) · [YAML](./10_build_ci.md#yaml) · [Node.js](./8_nodejs.md) · [Процесс и потоки](./8_nodejs_process.md#process--threads) · [React](./4_react.md) · [Vue](./4_vue.md) · [ООП и SOLID](./7_special_engineering.md#объектно-ориентированное-программирование-oop) · [Информатика](./7_special_cs.md) · [SDLC](./7_special_sdlc.md#software-design-methodology)
 
 ### Main concepts
 
-| Площадь              | Темы                                                          |
-| -------------------- | ------------------------------------------------------------- |
-| **Время выполнения** | JS против ECMAScript, JIT, строгий режим, консоль, стиль кода |
-| **Современный**      | ЕСМ                                                           |
+| Площадь              | Темы                                                                                   |
+| -------------------- | -------------------------------------------------------------------------------------- |
+| **Время выполнения** | JS против ECMAScript, JIT, polyfills и transpilers, строгий режим, консоль, стиль кода |
 
 ### Sections
 
 > Теория `<details>` блоки следуют: **Определение** · **Как это работает** · **Когда использовать** · **Плюсы и минусы** · **Примеры** · **Мысли** · **Источники**. **Определение** обязательно; другие разделы являются необязательными.
 
 - [Core](#core)
-- [Modules](#modules)
 - [Design principles](#design-principles)
 - [Интервью](./3_js_interview.md)
 
-Стек и куча → [Типы данных и переменные](./3_js_variables.md#memory-stack-heap). Обработка ошибок → [Операторы и циклы](./3_js_operators.md#error-handling). Итераторы и генераторы → [Операторы и циклы](./3_js_operators.md#iterators).Родственные основные темы: [Типы данных и переменные](./3_js_variables.md) · [Операторы и циклы](./3_js_operators.md) · [Массив](./3_js_array.md) · [Функции](./3_js_functions.md) · [Классы и объекты](./3_js_oop.md).
+Стек и куча → [Типы данных](./3_js_data_types.md#memory-stack-heap). Обработка ошибок → [Циклы](./3_js_loops.md#error-handling). Итераторы и генераторы → [Циклы](./3_js_loops.md#iterators).
 
-Также обсуждались темы: **JIT**, **строгий режим**, **ESM**. Типы/stack-heap/переменные/область действия/ `globalThis` / замыкания → [3_js_variables.md](./3_js_variables.md); Операторы/циклы/ошибки → [3_js_operators.md](./3_js_operators.md); Массивы → [3_js_array.md](./3_js_array.md); Intl/RegExp/Сигналы → [3_js_extra.md](./3_js_extra.md); цикл событий → [JS Async](./3_js_async_await.md); GC/Прокси/глубокое копирование → [3_js_oop.md](./3_js_oop.md); парадигмы → [7_special_cs.md](./7_special_cs.md).
+Родственные темы Core: [Переменные](./3_js_variables.md) · [Типы данных](./3_js_data_types.md) · [Структуры данных](./3_js_data_structures.md) · [Операторы](./3_js_operators.md) · [Циклы](./3_js_loops.md) · [Массив](./3_js_array.md) · [Функции](./3_js_functions.md) · [Объекты](./3_js_objects.md) · [Классы](./3_js_classes.md).
+
+Также обсуждались темы: **JIT**, **polyfills / transpilers**, **строгий режим**. **ESM** → [Modules](./3_js_modules.md) · [Export and Import](./3_js_import_export.md) · [Dynamic imports](./3_js_dynamic_import.md). Типы/stack-heap → [3_js_data_types.md](./3_js_data_types.md); объекты/JSON → [3_js_data_structures.md](./3_js_data_structures.md); переменные/область/`globalThis`/замыкания → [3_js_variables.md](./3_js_variables.md); операторы → [3_js_operators.md](./3_js_operators.md); циклы/ошибки/итераторы → [3_js_loops.md](./3_js_loops.md); массивы → [3_js_array.md](./3_js_array.md); Intl/RegExp/Сигналы → [3_js_extra.md](./3_js_extra.md); цикл событий → [JS Async](./3_js_async_await.md); GC/Прокси/глубокое копирование → [Объекты](./3_js_objects.md) · [Классы](./3_js_classes.md); парадигмы → [7_special_cs.md](./7_special_cs.md).
 
 <a name="core"></a>
 
@@ -195,7 +195,7 @@ function praise(name) {
 
 **Thoughts:**
 
-JIT сочетает в себе быстрый запуск (интерпретатор) с максимальной производительностью (компилятор). Babel переносит современный синтаксис в более старый ECMAScript для более старых сред выполнения — это не то же самое, что JIT движка.
+JIT сочетает в себе быстрый запуск (интерпретатор) с пиковой производительностью (компилятор). Transpilers и polyfills работают **до** или **рядом** с движком — см. [Polyfills and transpilers](#polyfills-and-transpilers); это не JIT движка.
 
 | Двигатель      | Хозяин          |
 | -------------- | --------------- |
@@ -204,6 +204,49 @@ JIT сочетает в себе быстрый запуск (интерпрет
 | JavaScriptCore | Сафари          |
 
 **Sources:** [javascript.info/intro](https://javascript.info/intro) · [MDN — интерпретируемый или скомпилированный](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript) · [MDN JIT](https://developer.mozilla.org/en-US/docs/Glossary/Just_in_time_compilation) · [блог V8](https://v8.dev/blog)
+
+</details>
+
+<details>
+  <summary>Polyfills and transpilers</summary>
+
+### Polyfills and transpilers
+
+**Definition:** **Transpiler** (компилятор «исходник → исходник») переписывает **синтаксис ECMAScript**, который целевой движок не умеет разбирать, в более старый синтаксис. **Polyfill** — это JavaScript во время выполнения, который **реализует отсутствующий API** (методы, конструкторы, глобалы), чтобы вызовы в коде не менялись. Ни то ни другое не заменяет **движок** (V8, SpiderMonkey, …) и не является **JIT** — см. [Engine and runtime](#engine-and-runtime). Детали сборки и Babel → [Polyfills vs transpilers](./10_build_bundlers.md#polyfills-vs-transpilers).
+
+**How it works:**
+
+- **Разрыв синтаксиса:** `class`, `async`/`await`, optional chaining (`?.`), nullish coalescing (`??`) — старый парсер бросает `SyntaxError` до выполнения строк. Лечится **транспиляцией** (Babel, emit TypeScript, esbuild, SWC), а не polyfill.
+- **Разрыв API:** `Promise`, `Array.prototype.at`, `Object.hasOwn` — файл парсится, но метода нет. Лечится **polyfill** (`core-js`, или `if (!globalThis.X) { … }`) либо отказом от API на этой цели.
+- **Типичный pipeline:** пишете современный код → транспилируете до версии ECMAScript под Browserslist (или поле `engines` в Node) → подключаете polyfills только там, где в рантайме нет API. Vite/esbuild транспилируют по умолчанию; polyfills — осознанный выбор (`core-js`, `useBuiltIns` в `@babel/preset-env`).
+- **Бандлеры** (webpack, Rollup, Vite) собирают модули; могут вызывать transpiler, но сами transpiler не являются.
+
+**When to use:** Вы поддерживаете браузеры или Node без нужной языковой фичи или встроенного API. Проверяйте разрыв (таблицы совместимости MDN, [caniuse.com](https://caniuse.com/), [compat-table](https://compat-table.github.io/compat-table/es6/)). Предпочитайте нативную реализацию — MDN отмечает, что polyfill медленнее и может не повторить всё поведение нативного кода.
+
+**Pluses and minuses:**
+
+| +                                             | −                                                     |
+| --------------------------------------------- | ----------------------------------------------------- |
+| Один код для разных сред выполнения           | `core-js` и неаккуратные пресеты раздувают бандл      |
+| Polyfills сохраняют читаемые вызовы           | Синтаксис не «заполняется» polyfill — только API      |
+| Transpilers дают новый синтаксис на старых VM | В стеке часто виден сгенерированный JS, а не исходник |
+
+**Examples:**
+
+```js
+// Разрыв API — polyfill (сначала feature detect)
+if (!Math.trunc) {
+  Math.trunc = (n) => (n < 0 ? Math.ceil(n) : Math.floor(n));
+}
+
+// Разрыв синтаксиса — транспиляция до запуска движком
+// const size = config?.width ?? 100;
+// → старый JS с явными проверками null/undefined
+```
+
+**Thoughts:** На интервью: «Babel vs polyfill?» — transpiler меняет **грамматику**; polyfill добавляет **объекты/функции в рантайме**. «Polyfill для `async`?» — не одной строкой; транспиляция в generators/Promises (или отказ от движка). TypeScript → JavaScript — транспиляция; типы стираются и не polyfill’ятся. jQuery v1 — ранний пример **API**-polyfill (один интерфейс поверх разных браузеров), см. глоссарий MDN.
+
+**Sources:** [MDN — Polyfill](https://developer.mozilla.org/en-US/docs/Glossary/Polyfill) · [javascript.info — Polyfills](https://javascript.info/polyfills) · [core-js](https://github.com/zloirock/core-js)
 
 </details>
 
@@ -299,73 +342,6 @@ function documentedPow(x, n) {
 | Минимизация   | Удалите пробелы/комментарии, чтобы уменьшить размер пакета                 |
 
 **Sources:** [Глоссарий MDN](https://developer.mozilla.org/en-US/docs/Glossary)
-
-</details>
-
-<a name="modules"></a>
-
-## Modules
-
-<details>
-  <summary>ES Modules (ESM)</summary>
-
-### ES Modules (ESM)
-
-**Definition:** Родная модульная система с `import` / `export`. Каждый файл представляет собой собственную область действия модуля (по умолчанию строгий режим). Статический `import` операторы разрешаются во время синтаксического анализа; `import()` является динамичным.
-
-**How it works:**
-
-- **Именованный экспорт:** `export const x = 1;` → `import { x } from './mod.js'`
-- **Экспорт по умолчанию:** по одному на файл → `import name from './mod.js'` (без фигурных скобок)
-- **Реэкспорт:** `export { x } from './mod.js'` / `export { default as User } from './user.js'`
-- **Живые привязки:** импортировано. `let`/`const` привязки обновляются при изменении экспортера (только для чтения на стороне импорта).
-- **Динамический `import(path)`:** возвращает обещание пространства имен модуля; работает где угодно (включая классические скрипты); путь может быть вычислен. Экспорт по умолчанию `.default`.
-- **Высший уровень `await`:** разрешено в модулях ES.
-- Код модуля запускается один раз при первом импорте; дальнейший импорт разделяет тот же экспорт.
-- Браузер: `<script type="module">` (отложенный, CORS для перекрестного происхождения); никаких голых спецификаторов без преобразователя/объединителя.
-
-**When to use:**
-
-| ЕСМ                                           | CommonJS (`require`)                                  |
-| --------------------------------------------- | ----------------------------------------------------- |
-| Новый браузер и приложения Node               | Устаревшие кодовые базы только для узлов              |
-| В комплекте интерфейс                         | Некоторые инструменты все еще доступны только для CJS |
-| Динамический `import()` для ленивых маршрутов | Конфигурация синхронизации загружается в старом Node  |
-
-#### Common pitfalls
-
-```js
-// import must be at top level (not inside if) — use import() for conditional
-// import { x } from './mod.js'; // x is live binding, not a copy
-```
-
-**Pluses and minuses:**
-
-| +                                              | −                                                |
-| ---------------------------------------------- | ------------------------------------------------ |
-| Встряхивание дерева (устранение мертвого кода) | Нужен упаковщик или `type="module"` в браузере   |
-| Очистить статический график зависимостей       | CORS для сценариев с перекрестным происхождением |
-| Никаких случайных глобальных переменных        | Нет синхронности `require` в браузере            |
-| `import()` для разделения кода                 | Немного другая семантика, чем CJS в Node         |
-
-**Examples:**
-
-```js
-// math.js
-export const PI = 3.14;
-export function add(a, b) {
-  return a + b;
-}
-export default function multiply(a, b) {
-  return a * b;
-}
-
-// app.js
-import multiply, { PI, add } from "./math.js";
-const heavy = await import("./heavy.js"); // dynamic — returns Promise
-```
-
-**Sources:** [javascript.info/modules-intro](https://javascript.info/modules-intro) · [javascript.info/import-export](https://javascript.info/import-export) · [javascript.info/modules-dynamic-imports](https://javascript.info/modules-dynamic-imports)
 
 </details>
 
@@ -557,7 +533,7 @@ new OrderService(new SmsService());
 // }
 ```
 
-**Thoughts:** SOLID — **ориентир**, не закон: для 10-строчного скрипта пять классов не нужны. Применять, когда больно менять код. Функции и модули: [SOLID in Functions](#solid-in-functions). Синтаксис классов: [Classes & Objects](./3_js_oop.md#classes-full). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_basics.md#solid-in-typescript). Полный OOP-справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
+**Thoughts:** SOLID — **ориентир**, не закон: для 10-строчного скрипта пять классов не нужны. Применять, когда больно менять код. Функции и модули: [SOLID in Functions](#solid-in-functions). Синтаксис классов: [Классы](./3_js_classes.md#classes-full). Фреймворки: [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_basics.md#solid-in-typescript). Полный OOP-справочник: [OOP & SOLID](./7_special_engineering.md#solid-overview).
 
 **Sources:** [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [freecodecamp — SOLID](https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/) · [SOLID (overview)](./7_special_engineering.md#solid-overview) · [SOLID in Functions](#solid-in-functions) · [SOLID in React](./4_react_core.md#solid-in-react) · [SOLID in Next.js](./4_nextjs_core.md#solid-in-nextjs) · [SOLID in Express](./8_nodejs_http.md#solid-in-express) · [SOLID in TypeScript](./5_ts_basics.md#solid-in-typescript)
 

@@ -4,7 +4,7 @@ import {
   conceptMatchesQuery,
   matchesQuery,
 } from "./search";
-import { sameTitle } from "./navUtils";
+import { isRedundantTopicConceptTitle, sameTitle } from "./navUtils";
 import { navSubjectClusters } from "./subjectClusters";
 import type {
   NavCluster,
@@ -25,19 +25,6 @@ export type SearchSidebarHit = {
   readonly snippet: string | null;
 };
 
-function isDuplicateConceptTitle(
-  topicTitle: string,
-  conceptTitle: string,
-): boolean {
-  const topic = topicTitle.trim().toLowerCase();
-  const concept = conceptTitle.trim().toLowerCase();
-  return (
-    topic === concept ||
-    concept.startsWith(`${topic} `) ||
-    topic.startsWith(`${concept} `)
-  );
-}
-
 function visibleConcepts(
   topic: NavTopic,
   query: string,
@@ -51,11 +38,17 @@ function visibleConcepts(
           conceptMatchesQuery(concept, needle, mode),
         );
   const only = matched.length === 1 ? matched[0] : undefined;
-  if (only && isDuplicateConceptTitle(topic.title, only.title)) {
+  if (only && isRedundantTopicConceptTitle(topic.title, only.title)) {
     if (
       mode === "notes" &&
       needle.length > 0 &&
       conceptBodySnippet(only, query, mode)
+    ) {
+      return matched;
+    }
+    if (
+      matchesQuery(topic.title, needle) ||
+      matchesQuery(topic.blurb, needle)
     ) {
       return matched;
     }
@@ -86,7 +79,16 @@ function pushTopicHits(
   query: string,
   mode: SearchMode,
 ) {
-  const concepts = visibleConcepts(topic, query, mode);
+  const needle = query.trim().toLowerCase();
+  let concepts = visibleConcepts(topic, query, mode);
+  if (
+    concepts.length === 0 &&
+    needle.length > 0 &&
+    (matchesQuery(topic.title, needle) || matchesQuery(topic.blurb, needle))
+  ) {
+    const first = topic.concepts[0];
+    concepts = first ? [first] : [];
+  }
   const context = contextLabel(contextParts);
   for (const concept of concepts) {
     hits.push({
@@ -97,6 +99,15 @@ function pushTopicHits(
       context,
       snippet: conceptBodySnippet(concept, query, mode),
     });
+  }
+  for (const nested of topic.nestedTopics ?? []) {
+    pushTopicHits(
+      hits,
+      nested,
+      [...contextParts, topic.title, nested.title],
+      query,
+      mode,
+    );
   }
 }
 
@@ -187,6 +198,8 @@ export function collectGroupSearchHits(
 
   return hits.filter(
     (hit) =>
+      matchesQuery(hit.topic.title, needle) ||
+      matchesQuery(hit.topic.blurb, needle) ||
       matchesQuery(hit.concept.title, needle) ||
       matchesQuery(hit.concept.titleSearchText ?? "", needle) ||
       hit.snippet !== null,

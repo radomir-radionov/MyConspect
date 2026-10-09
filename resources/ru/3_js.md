@@ -57,31 +57,27 @@
 
 ### Main concepts
 
-| Площадь                      | Темы                                                                                                                                                                                                                                                      |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Язык**                     | [JIT](./3_js_core.md), модули → [core](./3_js_core.md)                                                                                                                                                                                                    |
-| **Типы данных и переменные** | Примитивы, приведение, [stack/heap](./3_js_variables.md#memory-stack-heap), [JSON](./3_js_variables.md#json), `let`/`const`/`var`, объем, [`globalThis`](./3_js_variables.md#globalthis), замыкания → [переменные](./3_js_variables.md)                   |
-| **Операторы и циклы**        | Выражения, операторы, сравнения, `Object.is`, `if` /петли/ `switch`, [обработка ошибок](./3_js_operators.md#error-handling) → [operators](./3_js_operators.md)                                                                                            |
-| **Массив**                   | Индексированные коллекции, мутирующие и немутирующие методы, `map`/`filter`/`reduce` → [массив](./3_js_array.md)                                                                                                                                          |
-| **Функции**                  | Декларации, стрелы, `this`, ХОФ, `call`/`apply`/`bind` → [функции](./3_js_functions.md)                                                                                                                                                                   |
-| **ООП**                      | Прототипы, классы, дескрипторы, GC, `this` → [oop](./3_js_oop.md); дизайн и SOLID → [ООП и SOLID](./7_special_engineering.md#объектно-ориентированное-программирование-oop)                                                                               |
-| **Браузер**                  | [Документ](./3_js_browser.md), [События](./3_js_events.md), хранилище /CORS/[`URL` / `URLSearchParams`](./3_js_browser_extra.md#url--urlsearchparams) → [дополнительно](./3_js_browser_extra.md) · анатомия → [Веб-API](./6_web_api_core.md#uri-url--urn) |
-| **Асинхронный**              | [Event loop](./3_js_async_event_loop.md), [callbacks](./3_js_async_callbacks.md), [promises](./3_js_async_promises.md), [`async/await`](./3_js_async_await.md), [APIs](./3_js_async_apis.md) · [hub](./3_js_async.md)                                     |
-| **Дополнительно**            | `Intl`, RegExp, Сигналы (TC39), `eval` → [дополнительно](./3_js_extra.md)                                                                                                                                                                                 |
+| Площадь           | Темы                                                                                                                                                                                                                                                                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Core**          | [Язык](./3_js_core.md) · [Переменные](./3_js_variables.md) · [Типы данных](./3_js_data_types.md) · [Структуры данных](./3_js_data_structures.md) · [Операторы](./3_js_operators.md) · [Циклы](./3_js_loops.md) · [Массив](./3_js_array.md) · [Функции](./3_js_functions.md) · [Объекты](./3_js_objects.md) · [Классы](./3_js_classes.md)                                 |
+| **Modules**       | [Modules](./3_js_modules.md), [export / import](./3_js_import_export.md), [dynamic `import()`](./3_js_dynamic_import.md) → [additional](./3_js_extra.md)                                                                                                                                                                                                                 |
+| **Браузер**       | [Hub](./3_js_browser_hub.md) — [Документ](./3_js_browser.md), [События](./3_js_events.md), [Окна](./3_js_browser_windows.md), [Файлы](./3_js_browser_files.md), [Сеть](./3_js_browser_network.md), [Анимация](./3_js_browser_animation.md), [Web Components](./3_js_web_components.md), [Ещё API](./3_js_browser_extra.md) · [Web API](./6_web_api_core.md#uri-url--urn) |
+| **Асинхронный**   | [Event loop](./3_js_async_event_loop.md), [callbacks](./3_js_async_callbacks.md), [promises](./3_js_async_promises.md), [`async/await`](./3_js_async_await.md), [APIs](./3_js_async_apis.md) · [hub](./3_js_async.md)                                                                                                                                                    |
+| **Дополнительно** | `Intl`, RegExp, Сигналы (TC39), `eval` → [дополнительно](./3_js_extra.md)                                                                                                                                                                                                                                                                                                |
 
 ### Navigation
 
-| Часть 1                                            | Часть 2                                                |
-| -------------------------------------------------- | ------------------------------------------------------ |
-| [Ядро — язык](./3_js_core.md)                      | [Ядро — типы данных и переменные](./3_js_variables.md) |
-| [Ядро — операторы и циклы](./3_js_operators.md)    | [Ядро — массив](./3_js_array.md)                       |
-| [Ядро — функции](./3_js_functions.md)              | [Ядро — классы и объекты](./3_js_oop.md)               |
-| [Браузер — Документ](./3_js_browser.md)            | [Браузер — События](./3_js_events.md)                  |
-| [Браузер — Дополнительно](./3_js_browser_extra.md) | [Async — event loop](./3_js_async_event_loop.md)       |
-| [Async — callbacks](./3_js_async_callbacks.md)     | [Async — promises](./3_js_async_promises.md)           |
-| [Async — await](./3_js_async_await.md)             | [Async — APIs](./3_js_async_apis.md)                   |
-| [Дополнительно](./3_js_extra.md)                   | [Интервью — вопросы](./3_js_interview.md)              |
-| [Центр интервью](./0_interview.md)                 |                                                        |
+| Часть 1                                                                                                                | Часть 2                                                                                                                   |
+| ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| [Core — язык](./3_js_core.md) · [переменные](./3_js_variables.md) · [типы данных](./3_js_data_types.md)                | [Core — структуры данных](./3_js_data_structures.md) · [операторы](./3_js_operators.md) · [циклы](./3_js_loops.md)        |
+| [Core — массив](./3_js_array.md) · [функции](./3_js_functions.md) (вкл. [closures](./3_js_functions.md#closures))      | [Core — объекты](./3_js_objects.md) · [классы](./3_js_classes.md)                                                         |
+| [Modules](./3_js_modules.md) · [export / import](./3_js_import_export.md) · [dynamic import](./3_js_dynamic_import.md) | [Браузер — hub](./3_js_browser_hub.md) · [Документ](./3_js_browser.md) · [События](./3_js_events.md)                      |
+| [Браузер — Окна](./3_js_browser_windows.md) · [Файлы](./3_js_browser_files.md) · [Сеть](./3_js_browser_network.md)     | [Анимация](./3_js_browser_animation.md) · [Web Components](./3_js_web_components.md) · [Ещё API](./3_js_browser_extra.md) |
+| [Async — event loop](./3_js_async_event_loop.md)                                                                       |                                                                                                                           |
+| [Async — callbacks](./3_js_async_callbacks.md)                                                                         | [Async — promises](./3_js_async_promises.md)                                                                              |
+| [Async — await](./3_js_async_await.md)                                                                                 | [Async — APIs](./3_js_async_apis.md)                                                                                      |
+| [Дополнительно](./3_js_extra.md)                                                                                       | [Интервью — вопросы](./3_js_interview.md)                                                                                 |
+| [Центр интервью](./0_interview.md)                                                                                     |                                                                                                                           |
 
 ### Topic template
 

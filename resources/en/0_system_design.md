@@ -76,7 +76,7 @@ Q&A lives in the Interview topic for this subject.
 ### Related repo docs
 
 - [Interview questions](./0_interview.md) — OOP, SOLID, DRY, KISS, YAGNI · [Interview Practice](./0_system_design_interview.md#interview-practice)
-- [JS OOP](./3_js_oop.md) · [Special — OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop)
+- [Objects](./3_js_objects.md) · [Classes](./3_js_classes.md) · [Special — OOP & SOLID](./7_special_engineering.md#object-oriented-programming-oop)
 - [React — Ecosystem & architecture](./4_react.md)
 - [Next.js — SSR, SSG, ISR, PPR, runtimes](./4_nextjs.md)
 - [Build & deploy — monolith, nginx, RabbitMQ, Docker](./10_build.md)

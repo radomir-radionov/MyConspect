@@ -115,6 +115,9 @@ function chromeTopic(topic: NavTopic): NavTopic {
   return {
     ...topic,
     concepts: topic.concepts.map(chromeConcept),
+    ...(topic.nestedTopics
+      ? { nestedTopics: topic.nestedTopics.map(chromeTopic) }
+      : {}),
   };
 }
 
@@ -126,6 +129,9 @@ function chromeTopicShell(topic: NavTopic): NavTopic {
     blurb: topic.blurb,
     concepts: [],
     ...(topic.hideSidebarConcepts ? { hideSidebarConcepts: true } : {}),
+    ...(topic.nestedTopics
+      ? { nestedTopics: topic.nestedTopics.map(chromeTopicShell) }
+      : {}),
   };
 }
 
@@ -146,6 +152,9 @@ function chromeTopicSidebarOutline(topic: NavTopic): NavTopic {
     blurb: topic.blurb,
     concepts: topic.concepts.map(chromeConceptOutline),
     ...(topic.hideSidebarConcepts ? { hideSidebarConcepts: true } : {}),
+    ...(topic.nestedTopics
+      ? { nestedTopics: topic.nestedTopics.map(chromeTopicSidebarOutline) }
+      : {}),
   };
 }
 

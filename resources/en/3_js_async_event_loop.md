@@ -5,7 +5,7 @@ Call stack, microtasks vs macrotasks, execution order, and `queueMicrotask` / `p
 ### Related docs
 
 - [JS Callbacks](./3_js_async_callbacks.md) · [JS Promises](./3_js_async_promises.md) · [JS Async/Await](./3_js_async_await.md) · [JS Async APIs](./3_js_async_apis.md)
-- [JS Language](./3_js_core.md) · [Memory: stack and heap](./3_js_variables.md#memory-stack-heap) · [Node.js](./8_nodejs.md) · [Node.js event loop](./8_nodejs_core.md#event-loop) · [JS Interview](./3_js_interview.md)
+- [JS Language](./3_js_core.md) · [Memory: stack and heap](./3_js_data_types.md#memory-stack-heap) · [Node.js](./8_nodejs.md) · [Node.js event loop](./8_nodejs_core.md#event-loop) · [JS Interview](./3_js_interview.md)
 
 [← Back to JS hub](./3_js.md) · [Async hub](./3_js_async.md)
 
@@ -98,7 +98,7 @@ Promise.resolve().then(() => console.log("microtask"));
 - When a function **returns**, its context is **popped** off.
 - Nested calls build a stack: `main()` → `foo()` → `bar()`.
 - Each context has: variable environment, scope chain, `this` binding, and (for generators) state.
-- Stack overflow (`Maximum call stack size exceeded`) happens when recursion never returns or depth exceeds engine limit (~10k–50k frames). OS/process memory model (virtual pages, heap vs stack): [Memory: stack and heap](./3_js_variables.md#memory-stack-heap).
+- Stack overflow (`Maximum call stack size exceeded`) happens when recursion never returns or depth exceeds engine limit (~10k–50k frames). OS/process memory model (virtual pages, heap vs stack): [Memory: stack and heap](./3_js_data_types.md#memory-stack-heap).
 
 | Stage         | What happens                                    |
 | ------------- | ----------------------------------------------- |

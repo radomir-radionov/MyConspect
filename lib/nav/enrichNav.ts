@@ -18,14 +18,28 @@ function mergeTopicConcepts(
   if (baseConcepts.length === 0) {
     return richConcepts;
   }
-  const richIds = new Set(richConcepts.map((concept) => concept.id));
-  const missingFromRich = baseConcepts.filter(
-    (concept) => !richIds.has(concept.id),
+  const richById = new Map(
+    richConcepts.map((concept) => [concept.id, concept]),
   );
-  if (missingFromRich.length === 0) {
-    return richConcepts;
-  }
-  return [...richConcepts, ...missingFromRich];
+  return baseConcepts.map((concept) => {
+    const rich = richById.get(concept.id);
+    if (!rich) {
+      return concept;
+    }
+    if (
+      rich.searchText === concept.searchText &&
+      rich.titleSearchText === concept.titleSearchText
+    ) {
+      return concept;
+    }
+    return {
+      ...concept,
+      ...(rich.searchText ? { searchText: rich.searchText } : {}),
+      ...(rich.titleSearchText
+        ? { titleSearchText: rich.titleSearchText }
+        : {}),
+    };
+  });
 }
 
 function enrichTopic(

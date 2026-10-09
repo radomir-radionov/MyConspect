@@ -16,7 +16,12 @@ import {
   type NavTopic,
   type SearchMode,
 } from "@/lib/nav";
-import { filterInterviewConcepts, sameTitle } from "@/lib/nav/navUtils";
+import {
+  filterInterviewConcepts,
+  isRedundantTopicConceptTitle,
+  sameTitle,
+} from "@/lib/nav/navUtils";
+import { navTopicTreeContainsHref } from "@/lib/nav/topicTree";
 import { BookmarkStar } from "./BookmarkButton";
 import { NavChevron, NavFold } from "./NavFold";
 import { NavGuide } from "./NavGuide";
@@ -83,19 +88,6 @@ function RowTitle({
   );
 }
 
-function isDuplicateConceptTitle(
-  topicTitle: string,
-  conceptTitle: string,
-): boolean {
-  const topic = topicTitle.trim().toLowerCase();
-  const concept = conceptTitle.trim().toLowerCase();
-  return (
-    topic === concept ||
-    concept.startsWith(`${topic} `) ||
-    topic.startsWith(`${concept} `)
-  );
-}
-
 function visibleConcepts(topic: NavTopic, query: string, mode: SearchMode) {
   const needle = query.trim().toLowerCase();
   const matched =
@@ -105,7 +97,7 @@ function visibleConcepts(topic: NavTopic, query: string, mode: SearchMode) {
           conceptMatchesQuery(concept, needle, mode),
         );
   const only = matched.length === 1 ? matched[0] : undefined;
-  if (only && isDuplicateConceptTitle(topic.title, only.title)) {
+  if (only && isRedundantTopicConceptTitle(topic.title, only.title)) {
     if (
       mode === "notes" &&
       needle.length > 0 &&
@@ -255,67 +247,112 @@ function ConceptItems({
   );
 }
 
-const SECTION_TOPIC_INDENT = "pl-8";
+const SECTION_TOPIC_INDENT = "pl-6";
+const SECTION_TOPIC_CONCEPT_INDENT = "pl-8";
 
 const SectionTopicLink = memo(function SectionTopicLink({
+  trackId,
   topic,
   title,
   navId,
   rowGapClass = "",
 }: {
+  trackId: TrackId;
   topic: NavTopic;
   title: string;
   navId: string;
   rowGapClass?: string;
 }) {
-  const { query, pathname, searching, first, onNavigate, goToPath } =
+  const { query, mode, pathname, searching, first, onNavigate, goToPath } =
     useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
+  const { fold, patchFold } = useScopedSidebarFold();
+  const { topicHref: openTopicHref } = fold(trackId);
   const { isBookmarked } = useSidebarBookmarks();
   const active = isActiveHref(highlightPathname, topic.href);
-  const isFirstTopic = first?.pathname === topic.href && first.hash === "";
+  const isHitTopic = first?.pathname === topic.href;
+  const isFirstTopic = isHitTopic && first.hash === "";
   const onPath = !searching && active;
   const bookmarked = isBookmarked(topic.href);
+  const concepts = visibleConcepts(topic, query, mode);
+  const sidebarConcepts = searching
+    ? concepts
+    : filterInterviewConcepts(topic, concepts);
+  const showConceptNav =
+    !topic.hideSidebarConcepts && sidebarConcepts.length > 0;
+  const showTopicFold = showConceptNav;
+  const topicFoldOpen = openTopicHref === topic.href;
+  const topicOpen = searching ? showConceptNav : showTopicFold && topicFoldOpen;
+
+  const linkClass = `${rowClass(
+    isHitTopic || active,
+    onPath,
+    SECTION_TOPIC_INDENT,
+  )}${rowGapClass ? ` ${rowGapClass}` : ""}`;
 
   return (
-    <Link
-      href={topic.href}
-      prefetch={false}
-      data-nav="topic"
-      data-nav-id={navId}
-      data-nav-path={onPath ? "true" : undefined}
-      data-search-hit={isFirstTopic ? "true" : undefined}
-      onClick={(event) => {
-        pinNavForHref(event.currentTarget, pathname, topic.href);
-        if (pathname === topic.href) {
-          event.preventDefault();
-          if (window.location.hash) {
-            applySameDocumentHref(pathname, "", pathname);
+    <>
+      <Link
+        href={topic.href}
+        prefetch={false}
+        scroll={false}
+        data-nav="topic"
+        data-nav-id={navId}
+        data-nav-path={onPath ? "true" : undefined}
+        data-search-hit={isFirstTopic ? "true" : undefined}
+        aria-current={active ? "page" : undefined}
+        aria-expanded={showTopicFold ? topicOpen : undefined}
+        onClick={(event) => {
+          pinNavForHref(event.currentTarget, pathname, topic.href);
+          if (pathname === topic.href) {
+            event.preventDefault();
+            if (window.location.hash) {
+              applySameDocumentHref(pathname, "", pathname);
+            }
+            if (!searching && showTopicFold) {
+              patchFold(trackId, {
+                topicHref: openTopicHref === topic.href ? null : topic.href,
+              });
+            }
+            if (!showTopicFold) {
+              closeNavSoon(onNavigate);
+            }
+            return;
           }
-          closeNavSoon(onNavigate);
-          return;
-        }
-        closeNavSoon(onNavigate);
-        followHandbookHref(topic.href, pathname, goToPath);
-      }}
-      className={conceptRowClass(
-        active,
-        SECTION_TOPIC_INDENT,
-        rowGapClass,
-        onPath,
-      )}
-    >
-      <span className="flex items-baseline justify-between gap-2">
-        <span className="min-w-0">
-          <HighlightedText text={title} query={query} />
+          queueHandbookHref(topic.href);
+          patchFold(trackId, {
+            topicHref: showTopicFold ? topic.href : null,
+          });
+          if (!showTopicFold) {
+            closeNavSoon(onNavigate);
+            followHandbookHref(topic.href, pathname, goToPath);
+          }
+        }}
+        className={linkClass}
+      >
+        <span className="flex min-w-0 flex-1 items-center gap-1.5">
+          <RowTitle
+            text={title}
+            query={query}
+            marker={showTopicFold}
+            open={topicOpen}
+          />
         </span>
-        {bookmarked ? (
-          <span className="shrink-0">
-            <BookmarkStar />
-          </span>
-        ) : null}
-      </span>
-    </Link>
+        {bookmarked ? <BookmarkStar /> : null}
+        {showTopicFold ? <NavChevron open={topicOpen} /> : null}
+      </Link>
+      <NavFold open={topicOpen && showTopicFold} instant={searching} unbox>
+        <ul className="contents">
+          {showConceptNav ? (
+            <TopicConceptNav
+              topic={topic}
+              concepts={sidebarConcepts}
+              indentClass={SECTION_TOPIC_CONCEPT_INDENT}
+            />
+          ) : null}
+        </ul>
+      </NavFold>
+    </>
   );
 });
 
@@ -338,6 +375,7 @@ function SectionClusterNav({
         {cluster.topics.map((topic, index) => (
           <li key={topic.slug} className="contents">
             <SectionTopicLink
+              trackId={trackId}
               topic={topic}
               title={cluster.topics.length === 1 ? cluster.title : topic.title}
               navId={cluster.topics.length === 1 ? cluster.id : topic.slug}
@@ -415,6 +453,14 @@ export function TopicRow({
   const { highlightPathname } = useSidebarHighlight();
   const { fold, patchFold } = useScopedSidebarFold();
   const { topicHref: openTopicHref } = fold(trackId);
+  const nestedTopics = topic.nestedTopics ?? [];
+  const hasNestedTopics = nestedTopics.length > 0;
+  const nestedOnPath =
+    !searching &&
+    nestedTopics.some((nested) => isActiveHref(highlightPathname, nested.href));
+  const nestedOpen =
+    hasNestedTopics &&
+    nestedTopics.some((nested) => openTopicHref === nested.href);
   const active = isActiveHref(highlightPathname, topic.href);
   const isHitTopic = first?.pathname === topic.href;
   const isFirstTopic = isHitTopic && first.hash === "";
@@ -424,13 +470,18 @@ export function TopicRow({
     ? concepts
     : filterInterviewConcepts(topic, concepts);
   const showConceptNav =
-    !topic.hideSidebarConcepts && sidebarConcepts.length > 0;
-  const onPath = !searching && active;
+    !topic.hideSidebarConcepts &&
+    sidebarConcepts.length > 0 &&
+    !hasNestedTopics;
+  const showTopicFold = showConceptNav || hasNestedTopics;
+  const onPath = !searching && (active || nestedOnPath);
+  const topicFoldOpen =
+    openTopicHref === topic.href || nestedOpen || nestedOnPath;
   const topicOpen = hideTitle
     ? showConceptNav
     : searching
-      ? !topic.hideSidebarConcepts && hasConcepts
-      : showConceptNav && openTopicHref === topic.href;
+      ? !topic.hideSidebarConcepts && (hasConcepts || hasNestedTopics)
+      : showTopicFold && topicFoldOpen;
   const { isBookmarked } = useSidebarBookmarks();
   const topicBookmarked = isBookmarked(topic.href);
   // Flatten sticky headers into the track list so nested containing blocks cannot
@@ -467,39 +518,39 @@ export function TopicRow({
             if (window.location.hash) {
               applySameDocumentHref(pathname, "", pathname);
             }
-            if (!searching && showConceptNav) {
+            if (!searching && showTopicFold) {
               patchFold(trackId, {
                 topicHref: openTopicHref === topic.href ? null : topic.href,
               });
             }
-            if (!showConceptNav) {
+            if (!showTopicFold) {
               closeNavSoon(onNavigate);
             }
             return;
           }
           queueHandbookHref(topic.href);
           patchFold(trackId, {
-            topicHref: showConceptNav ? topic.href : null,
+            topicHref: showTopicFold ? topic.href : null,
           });
-          if (!showConceptNav) {
+          if (!showTopicFold) {
             closeNavSoon(onNavigate);
           }
         }}
         data-search-hit={isFirstTopic ? "true" : undefined}
         aria-current={active ? "page" : undefined}
-        aria-expanded={showConceptNav ? topicOpen : undefined}
+        aria-expanded={showTopicFold ? topicOpen : undefined}
         className={`${rowClass(isHitTopic || active, onPath, indent)} ${NAV_ROW_GAP}`}
       >
         <span className="flex min-w-0 flex-1 items-center gap-1.5">
           <RowTitle
             text={topic.title}
             query={query}
-            marker={compact && showConceptNav}
+            marker={compact && showTopicFold}
             open={topicOpen}
           />
         </span>
         {topicBookmarked ? <BookmarkStar /> : null}
-        {showConceptNav ? (
+        {showTopicFold ? (
           compact ? (
             topicOpen ? (
               <NavChevron open />
@@ -509,13 +560,26 @@ export function TopicRow({
           )
         ) : null}
       </Link>
-      <NavFold open={topicOpen && showConceptNav} instant={searching} unbox>
+      <NavFold open={topicOpen && showTopicFold} instant={searching} unbox>
         <ul className="contents">
-          <TopicConceptNav
-            topic={topic}
-            concepts={sidebarConcepts}
-            indentClass={conceptIndent}
-          />
+          {showConceptNav ? (
+            <TopicConceptNav
+              topic={topic}
+              concepts={sidebarConcepts}
+              indentClass={conceptIndent}
+            />
+          ) : null}
+          {nestedTopics.map((nested, index) => (
+            <li key={nested.slug} className="contents">
+              <SectionTopicLink
+                trackId={trackId}
+                topic={nested}
+                title={nested.title}
+                navId={nested.slug}
+                rowGapClass={index === 0 ? NAV_ROW_GAP : "mt-0.5"}
+              />
+            </li>
+          ))}
         </ul>
       </NavFold>
     </li>
@@ -526,10 +590,13 @@ export function ClusterRow({
   trackId,
   subjectHref: subjectPath,
   cluster,
+  hubFoldExclusive = false,
 }: {
   trackId: TrackId;
   subjectHref: string;
   cluster: NavCluster;
+  /** Handbook clusters that share the subject hub with collapsible sections. */
+  hubFoldExclusive?: boolean;
 }) {
   const { query, pathname, searching, first, goToPath, onNavigate } =
     useSidebarChrome();
@@ -562,7 +629,9 @@ export function ClusterRow({
   const onPath =
     !searching &&
     (active ||
-      cluster.topics.some((topic) => topic.href === highlightPathname));
+      cluster.topics.some((topic) =>
+        navTopicTreeContainsHref(topic, highlightPathname),
+      ));
 
   return (
     <li className="contents">
@@ -595,12 +664,17 @@ export function ClusterRow({
             const next = `#${cluster.id}`;
             const sameHash = window.location.hash === next;
             if (!searching) {
+              const opening = openClusterKey !== key;
               if (sameHash) {
                 patchFold(trackId, {
-                  clusterKey: openClusterKey === key ? null : key,
+                  clusterKey: opening ? key : null,
+                  ...(hubFoldExclusive && opening ? { sectionKey: null } : {}),
                 });
               } else {
-                patchFold(trackId, { clusterKey: key });
+                patchFold(trackId, {
+                  clusterKey: key,
+                  ...(hubFoldExclusive ? { sectionKey: null } : {}),
+                });
               }
             }
             if (!sameHash) {
@@ -684,7 +758,9 @@ export function SectionRow({
   const hasActiveChild = section.clusters.some(
     (cluster) =>
       activeConceptId === cluster.id ||
-      cluster.topics.some((topic) => topic.href === highlightPathname),
+      cluster.topics.some((topic) =>
+        navTopicTreeContainsHref(topic, highlightPathname),
+      ),
   );
   const sectionOpen = isNavSectionOpen(
     section,
@@ -718,18 +794,20 @@ export function SectionRow({
             const next = `#${section.id}`;
             const sameHash = onHub && window.location.hash === next;
             if (sameHash || hasActiveChild) {
+              const opening = !sectionOpen;
               patchFold(trackId, {
                 sectionKey: sectionOpen ? closed : key,
+                ...(opening ? { clusterKey: null } : {}),
               });
             } else {
-              patchFold(trackId, { sectionKey: key });
+              patchFold(trackId, { sectionKey: key, clusterKey: null });
             }
             if (onHub && !sameHash) {
               replacePathHash(pathname, next);
             }
             return;
           }
-          patchFold(trackId, { sectionKey: key });
+          patchFold(trackId, { sectionKey: key, clusterKey: null });
           queueHandbookHref(`${subjectPath}#${section.id}`);
         }}
         data-search-hit={isHitSection ? "true" : undefined}
@@ -775,6 +853,9 @@ export function SubjectRow({
   const onPath = !searching && isOnSubjectPath(highlightPathname, subject);
   const locale = localeFromPathname(pathname);
   const cautionTip = subjectCautionTooltip(locale, subject.slug);
+  const hubFoldExclusive =
+    subject.sections?.some((section) => isNavSectionCollapsible(section)) ??
+    false;
 
   return (
     <li className="contents">
@@ -824,6 +905,7 @@ export function SubjectRow({
                   trackId={trackId}
                   subjectHref={subject.href}
                   cluster={cluster}
+                  hubFoldExclusive={hubFoldExclusive}
                 />
               ))}
               {subject.sections.map((section) => (
@@ -840,6 +922,7 @@ export function SubjectRow({
                   trackId={trackId}
                   subjectHref={subject.href}
                   cluster={cluster}
+                  hubFoldExclusive={hubFoldExclusive}
                 />
               ))}
             </>

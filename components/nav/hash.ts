@@ -157,7 +157,7 @@ export function setHashIfChanged(id: string, scroll = true) {
 
 export function replacePathHash(pathname: string, hash: string) {
   window.history.replaceState(window.history.state, "", `${pathname}${hash}`);
-  dispatchHashChange();
+  dispatchHashChange(true);
 }
 
 export function clearConceptHash(scroll = false) {

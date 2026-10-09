@@ -6,7 +6,7 @@
 
 ### Related docs
 
-- [Язык](./3_js_core.md) · [Операторы и циклы](./3_js_operators.md) · [Массивы](./3_js_array.md) · [Функции](./3_js_functions.md) · [Классы и объекты](./3_js_oop.md)
+- [Язык](./3_js_core.md) · [Операторы](./3_js_operators.md) · [Циклы](./3_js_loops.md) · [Массивы](./3_js_array.md) · [Функции](./3_js_functions.md) · [Объекты](./3_js_objects.md) · [Классы](./3_js_classes.md)
 - [Документ](./3_js_browser.md) · [События](./3_js_events.md) · [API браузера](./3_js_browser_extra.md) · [Async](./3_js_async.md)
 
 ### Sections

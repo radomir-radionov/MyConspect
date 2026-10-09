@@ -73,7 +73,7 @@
 ### Related repo docs
 
 - [Вопросы для собеседования](./0_interview.md) — ООП, SOLID, DRY, KISS, YAGNI · [Практика собеседования](./0_system_design_interview.md#interview-practice)
-- [JS ООП](./3_js_oop.md) · [Специальные — ООП и SOLID](./7_special_engineering.md#объектно-ориентированное-программирование-oop)
+- [Объекты](./3_js_objects.md) · [Классы](./3_js_classes.md) · [Специальные — ООП и SOLID](./7_special_engineering.md#объектно-ориентированное-программирование-oop)
 - [React — экосистема и архитектура](./4_react.md)
 - [Next.js — SSR, SSG, ISR, PPR, среда выполнения](./4_nextjs.md)\* [Сборка и развертывание — monolith, nginx, RabbitMQ, Docker](./10_build.md)
 - [Система решения проблем](./0_problem.md)

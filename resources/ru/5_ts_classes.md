@@ -6,7 +6,7 @@
 
 ### Related docs
 
-[TypeScript — hub](./5_ts.md) · [Object Types](./5_ts_objects.md) · [Functions](./5_ts_functions.md) · [Type Manipulation](./5_ts_type_manipulation.md) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript) · [Interview](./5_ts_interview.md)
+[TypeScript — hub](./5_ts.md) · [Object Types](./5_ts_objects.md) · [Functions](./5_ts_functions.md) · [Type Manipulation](./5_ts_type_manipulation.md) · [OOP in JavaScript](./3_js_objects.md#oop-in-javascript) · [Interview](./5_ts_interview.md)
 
 ### Main concepts
 

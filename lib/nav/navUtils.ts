@@ -9,6 +9,14 @@ export function sameTitle(left: string, right: string): boolean {
   return left.trim().toLowerCase() === right.trim().toLowerCase();
 }
 
+/** Lone sidebar/search row that only repeats the topic title (not "Topic — section"). */
+export function isRedundantTopicConceptTitle(
+  topicTitle: string,
+  conceptTitle: string,
+): boolean {
+  return sameTitle(topicTitle, conceptTitle);
+}
+
 export function hashIdFrom(hash: string): string {
   return decodeURIComponent(hash.replace(/^#/, ""));
 }

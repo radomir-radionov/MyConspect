@@ -6,7 +6,7 @@ Interview Q&A for system design.
 
 ### Related docs
 
-* [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
+- [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md)
 
 ### Sections
 
@@ -82,11 +82,11 @@ Sync HTTP when user waits for result; events when work can happen later or fan-o
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Loose coupling, independent scaling | Eventual consistency |
-| Natural audit trail (event log) | Harder debugging (distributed traces needed) |
-| Buffers traffic spikes in queue | Schema evolution / versioning required |
+| +                                   | −                                            |
+| ----------------------------------- | -------------------------------------------- |
+| Loose coupling, independent scaling | Eventual consistency                         |
+| Natural audit trail (event log)     | Harder debugging (distributed traces needed) |
+| Buffers traffic spikes in queue     | Schema evolution / versioning required       |
 
 **Examples:**
 
@@ -132,10 +132,10 @@ Compensations are business logic (`refund` ≠ undo `ship`). Not all steps are r
 
 **Pluses and minuses:**
 
-| Style | How | + | − |
-|-------|-----|------|------|
-| **Orchestration** | Central coordinator calls each service | Clear flow, easy to trace | Coordinator = SPOF if not HA |
-| **Choreography** | Services react to events, no central boss | Decoupled | Hard to see full picture |
+| Style             | How                                       | +                         | −                            |
+| ----------------- | ----------------------------------------- | ------------------------- | ---------------------------- |
+| **Orchestration** | Central coordinator calls each service    | Clear flow, easy to trace | Coordinator = SPOF if not HA |
+| **Choreography**  | Services react to events, no central boss | Decoupled                 | Hard to see full picture     |
 
 </details>
 
@@ -187,7 +187,7 @@ See [API Gateway](./7_special_architecture.md#api-gateway) · [BFF](./7_special_
 
 ### SSR vs SSG vs ISR?
 
-**SSR** — HTML per request (personalized, live). **SSG** — HTML at build, CDN (fastest, frozen until deploy). **ISR** — SSG + rebuild after `revalidate` (stale-while-revalidate). RSC/islands: only interactive leaves ship JS. The variable is *when HTML is built*.
+**SSR** — HTML per request (personalized, live). **SSG** — HTML at build, CDN (fastest, frozen until deploy). **ISR** — SSG + rebuild after `revalidate` (stale-while-revalidate). RSC/islands: only interactive leaves ship JS. The variable is _when HTML is built_.
 
 See [Rendering strategies](./0_system_design_architecture.md#rendering-strategies-when-html-is-built) · [4_nextjs.md](./4_nextjs.md).
 
@@ -237,7 +237,7 @@ See [Microservices architecture](./0_system_design_architecture.md#microservices
 
 ### Архитектура против design patterns?
 
-**Architecture** = decisions about how *the whole system* is cut and how modules talk (MVC roles, layers vs infra, Flux/Redux one-way flow, monolith vs many apps). **Patterns** = named fixes for *local* problems (Adapter maps `{ some_data: ["Name", "Lastname"] }` → `{ someData: "Name Lastname" }`; Factory hides `new`; Strategy swaps `format.usd` / `format.eur`; Observer `subscribe`/`notify`). Same photo app: `applySepia` is domain, `readCamera` is infra, `dispatch(setFilter)` is one-way state — that is architecture; the Adapter is a pattern inside it. Neither is the goal — skip ceremony on a prototype.
+**Architecture** = decisions about how _the whole system_ is cut and how modules talk (MVC roles, layers vs infra, Flux/Redux one-way flow, monolith vs many apps). **Patterns** = named fixes for _local_ problems (Adapter maps `{ some_data: ["Name", "Lastname"] }` → `{ someData: "Name Lastname" }`; Factory hides `new`; Strategy swaps `format.usd` / `format.eur`; Observer `subscribe`/`notify`). Same photo app: `applySepia` is domain, `readCamera` is infra, `dispatch(setFilter)` is one-way state — that is architecture; the Adapter is a pattern inside it. Neither is the goal — skip ceremony on a prototype.
 
 See [Architecture vs design patterns](./7_special_architecture.md#architecture-vs-design-patterns).
 
@@ -248,13 +248,13 @@ See [Architecture vs design patterns](./7_special_architecture.md#architecture-v
 
 ### Three-layer / Clean Architecture?
 
-**Three layers (Doka):** **domain** (pure business data + transforms), **application** (use cases + port *interfaces*), **ports & adapters** (UI, HTTP, DB glue). **Clean / Hexagonal / Onion** are the same family: Uncle Bob adds a fourth outer ring (frameworks & drivers).
+**Three layers (Doka):** **domain** (pure business data + transforms), **application** (use cases + port _interfaces_), **ports & adapters** (UI, HTTP, DB glue). **Clean / Hexagonal / Onion** are the same family: Uncle Bob adds a fourth outer ring (frameworks & drivers).
 
 **Dependency rule:** source dependencies only point **inward**. Domain knows nothing outer. Application never calls Stripe/`fetch` directly — it calls a port; the adapter implements it.
 
-**Port vs adapter:** port = the API *we* want (`saveProduct`); adapter = make a real service look like that. A rename wrapper is not an adapter until you can swap the vendor without changing application code.
+**Port vs adapter:** port = the API _we_ want (`saveProduct`); adapter = make a real service look like that. A rename wrapper is not an adapter until you can swap the vendor without changing application code.
 
-**Driving vs driven:** UI/HTTP/CLI *drive* the app; storage/email/payments are *driven* by the app.
+**Driving vs driven:** UI/HTTP/CLI _drive_ the app; storage/email/payments are _driven_ by the app.
 
 **Start cheap:** extract the domain first; full layers when multiple UIs or replaceable I/O actually hurt.
 
@@ -269,7 +269,7 @@ See [Three-layer architecture](./7_special_architecture.md#three-layer-architect
 
 ### Behavioral patterns — Strategy, CoR, Command, Observer?
 
-**Strategy** — same interface, swap the algorithm (even at runtime). **Chain of Responsibility** — request walks handlers until one handles it; dispatcher need not know the full set (`switch` is fine when it does). **Command** — action + data as an object (queue/undo); Redux actions are the data half. **Observer** — subscribe/notify when you don’t know how many listeners. Don’t mix CoR with middleware: middleware usually lets *every* layer run.
+**Strategy** — same interface, swap the algorithm (even at runtime). **Chain of Responsibility** — request walks handlers until one handles it; dispatcher need not know the full set (`switch` is fine when it does). **Command** — action + data as an object (queue/undo); Redux actions are the data half. **Observer** — subscribe/notify when you don’t know how many listeners. Don’t mix CoR with middleware: middleware usually lets _every_ layer run.
 
 See [Behavioral patterns — cheat sheet](./7_special_patterns.md#behavioral-patterns--cheat-sheet).
 
@@ -282,7 +282,7 @@ See [Behavioral patterns — cheat sheet](./7_special_patterns.md#behavioral-pat
 
 A **class** is a blueprint: fields, methods, `constructor`. In JS it is prototype sugar. **Constructor injection** passes collaborators in (`new DailyAmount(budget, history)`) so the high-level type does not `new` its tools — tests swap fakes, UML arrows stay one-way.
 
-See [Entities, relations & design](./0_system_design_grasp.md#entities-relations--design) · [3_js_oop.md](./3_js_oop.md) · [7_special.md — What are classes?](./7_special_interview.md#interview-practice)
+See [Entities, relations & design](./0_system_design_grasp.md#entities-relations--design) · [Объекты](./3_js_objects.md) · [Классы](./3_js_classes.md) · [7_special.md — What are classes?](./7_special_interview.md#interview-practice)
 
 </details>
 
@@ -325,5 +325,3 @@ API (redirect + create), hash/id generator, SQL/NoSQL store mapping short→long
 </details>
 
 </details>
-
-

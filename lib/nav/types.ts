@@ -20,6 +20,7 @@ export type NavTopic = {
   readonly blurb: string;
   readonly concepts: readonly NavConcept[];
   readonly hideSidebarConcepts?: boolean;
+  readonly nestedTopics?: readonly NavTopic[];
 };
 
 export type NavCluster = {

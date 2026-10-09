@@ -49,12 +49,16 @@ function foldFromSync(
     clusterKey = location.clusterKey;
   } else if (!location.subjectHref) {
     clusterKey = null;
+  } else if (location.sectionKey) {
+    clusterKey = null;
   }
 
   let sectionKey: string | null = previous?.sectionKey ?? null;
   if (location.sectionKey) {
     sectionKey = location.sectionKey;
   } else if (!location.subjectHref) {
+    sectionKey = null;
+  } else if (location.clusterKey) {
     sectionKey = null;
   }
 

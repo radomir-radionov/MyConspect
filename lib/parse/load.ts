@@ -19,6 +19,14 @@ import {
   withModulesConceptGroups,
 } from "@/lib/catalog/modulesHub";
 import {
+  isBrowserDocumentTopicSlug,
+  withBrowserDocumentConceptGroups,
+} from "@/lib/catalog/browserDocumentHub";
+import {
+  isEventsTopicSlug,
+  withEventsConceptGroups,
+} from "@/lib/catalog/eventsHub";
+import {
   isObjectsTopicSlug,
   withObjectsConceptGroups,
 } from "@/lib/catalog/objectsHub";
@@ -55,7 +63,7 @@ type ParsedEntry = {
   readonly promise: Promise<ParsedTopic>;
 };
 
-const PARSE_LOGIC_REVISION = 19;
+const PARSE_LOGIC_REVISION = 24;
 
 type ParseCache = {
   markdown: Map<string, StoredRead>;
@@ -269,6 +277,12 @@ function outlineForTopic(
   if (isModulesTopicSlug(topic.slug)) {
     return withModulesConceptGroups(outline);
   }
+  if (isBrowserDocumentTopicSlug(topic.slug)) {
+    return withBrowserDocumentConceptGroups(outline);
+  }
+  if (isEventsTopicSlug(topic.slug)) {
+    return withEventsConceptGroups(outline);
+  }
   return outline;
 }
 
@@ -289,6 +303,18 @@ function parsedForTopic(topic: Topic, parsed: ParsedTopic): ParsedTopic {
     return {
       ...parsed,
       concepts: withModulesConceptGroups(parsed.concepts),
+    };
+  }
+  if (isBrowserDocumentTopicSlug(topic.slug)) {
+    return {
+      ...parsed,
+      concepts: withBrowserDocumentConceptGroups(parsed.concepts),
+    };
+  }
+  if (isEventsTopicSlug(topic.slug)) {
+    return {
+      ...parsed,
+      concepts: withEventsConceptGroups(parsed.concepts),
     };
   }
   return parsed;

@@ -128,6 +128,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "EC2, S3, RDS, Lambda, SQS и типовые сервисы AWS.",
   "ES modules, CommonJS, resolution, and module emit targets.":
     "ES modules, CommonJS, resolution и цели emit модулей.",
+  "ES modules, import/export, and dynamic import().":
+    "ES modules, import/export и dynamic import().",
   "ES modules, import/export, and module resolution.":
     "ES modules, import/export и module resolution.",
   "Don't Repeat Yourself, Keep It Simple, You Aren't Gonna Need It.":
@@ -151,6 +153,10 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Express, auth, валидация, Koa, NestJS и выбор рантайма.",
   "Express, NestJS, auth, and validation.":
     "Express, NestJS, auth и валидация.",
+  "Expressions, operators, comparisons, optional chaining, and nullish coalescing.":
+    "Выражения, операторы, сравнения, optional chaining и nullish coalescing.",
+  "Control flow, loops, switch, try/catch, iterators, and generators.":
+    "Control flow, циклы, switch, try/catch, итераторы и генераторы.",
   "Expressions, operators, comparisons, control flow, try/catch, and iterators.":
     "Выражения, операторы, сравнения, control flow, try/catch и итераторы.",
   "Fetching, caching, and Server Actions.":
@@ -405,6 +411,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Jest, Vitest, RTL, MSW, and code coverage.":
     "Jest, Vitest, RTL, MSW и code coverage.",
   "Jest, Vitest, RTL, MSW, and coverage.": "Jest, Vitest, RTL, MSW и coverage.",
+  "ES modules, import/export, dynamic import(), Intl, RegExp, Signals, and eval.":
+    "ES modules, import/export, dynamic import(), Intl, RegExp, Signals и eval.",
   "Intl, RegExp, Signals, and other extras.":
     "Intl, RegExp, Signals и другие дополнения.",
   "Kafka, RabbitMQ, NATS, and async messaging patterns.":
@@ -421,8 +429,30 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Language reference.": "Справочник по языку.",
   "Language, browser APIs, and extra runtime topics.":
     "Язык, браузерные API и дополнительные темы рантайма.",
-  "Language, data types & variables, operators, arrays, functions, and classes.":
-    "Язык, типы данных и переменные, операторы, массивы, функции и классы.",
+  "Language, operators, arrays, functions, destructuring, closures, and classes.":
+    "Язык, операторы, массивы, функции, деструктуризация, замыкания и классы.",
+  "Variables (incl. destructuring), types, data structures, operators, and loops.":
+    "Переменные (в т.ч. деструктуризация), типы, структуры данных, операторы и циклы.",
+  "Variables (incl. destructuring), types, data structures, and operators.":
+    "Переменные (в т.ч. деструктуризация), типы, структуры данных и операторы.",
+  "Language, arrays, functions, objects, and classes.":
+    "Язык, массивы, функции, объекты и классы.",
+  "Language, variables, types, data structures, operators, loops, arrays, functions, objects, and classes.":
+    "Язык, переменные, типы, структуры данных, операторы, циклы, массивы, функции, объекты и классы.",
+  "Language, arrays, functions, closures, and classes.":
+    "Язык, массивы, функции, замыкания и классы.",
+  "let/const/var, scope, hoisting, globalThis, and destructuring patterns.":
+    "let/const/var, область, hoisting, globalThis и деструктуризация.",
+  "let/const/var, lexical scope, hoisting, and globalThis.":
+    "let/const/var, лексическая область, hoisting и globalThis.",
+  "Rest parameters, spread syntax, and destructuring patterns.":
+    "Rest-параметры, spread и паттерны деструктуризации.",
+  "Lexical environments, factories, and closure pitfalls.":
+    "Лексическое окружение, фабрики и подводные камни замыканий.",
+  "Primitives, coercion, and the stack/heap memory model.":
+    "Примитивы, приведение типов и модель памяти (стек и куча).",
+  "Objects, Map/Set, trees/graphs, Date, and JSON.":
+    "Объекты, Map/Set, деревья/графы, Date и JSON.",
   "Library model, rendering, JSX, and state.":
     "Модель библиотеки, рендеринг, JSX и state.",
   "Library model, rendering, JSX, state, and hooks.":
@@ -522,8 +552,18 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "REST, XML, SOAP, RPC, tRPC, and how they differ.":
     "REST, XML, SOAP, RPC, tRPC и чем они отличаются.",
   "Routing and platform.": "Маршрутизация и платформа.",
+  "Runtime and language basics — variables, types, operators, loops, and arrays in sibling Core topics.":
+    "Рантайм и основы языка — переменные, типы, операторы, циклы и массивы в соседних темах Core.",
   "Runtime and modules — types, bindings, and control flow live in sibling Core topics.":
     "Рантайм и модули — типы, bindings и control flow в соседних темах Core.",
+  "ES modules — scope, import/export, and dynamic import().":
+    "ES modules — область модуля, import/export и dynamic import().",
+  "Module scope, ESM vs CommonJS, and module scripts in the browser.":
+    "Область модуля, ESM vs CommonJS и module-скрипты в браузере.",
+  "Named and default export/import, re-exports, and live bindings.":
+    "Named/default export и import, re-export и live bindings.",
+  "Lazy loading with import(), code splitting, and conditional paths.":
+    "Ленивая загрузка через import(), code splitting и условные пути.",
   "Runtime, HTTP servers, and process management.":
     "Рантайм, HTTP-серверы и управление процессами.",
   "Script loading, resource hints, Core Web Vitals, and FOUC.":

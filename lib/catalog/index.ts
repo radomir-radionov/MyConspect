@@ -33,6 +33,8 @@ export type Topic = {
   readonly hideSidebarConcepts?: boolean;
   /** Still routable + in search; omitted from subject sidebar clusters. */
   readonly hideFromSubjectNav?: boolean;
+  /** Nested under this topic slug in the subject sidebar (requires hideFromSubjectNav). */
+  readonly navParentSlug?: string;
   readonly hideAnswers?: boolean;
 };
 
@@ -179,7 +181,7 @@ const SUBJECTS_BASE: readonly Subject[] = [
         id: "core",
         title: "Core",
         blurb:
-          "Language, data types & variables, operators, arrays, functions, and classes.",
+          "Language, variables, types, data structures, operators, loops, arrays, functions, objects, and classes.",
       },
       {
         id: "browser",
@@ -195,7 +197,8 @@ const SUBJECTS_BASE: readonly Subject[] = [
       {
         id: "additional",
         title: "Additional",
-        blurb: "Intl, RegExp, Signals, and other extras.",
+        blurb:
+          "ES modules, import/export, dynamic import(), Intl, RegExp, Signals, and eval.",
       },
       { id: "interview", title: "Interview", blurb: "Q&A and coding tasks." },
     ],
@@ -906,6 +909,7 @@ export function hubHrefForTrack(trackId: TrackId): string | undefined {
 
 type GroupedTopicOptions = {
   readonly hideFromSubjectNav?: boolean;
+  readonly navParentSlug?: string;
 };
 
 function grouped(
@@ -926,6 +930,7 @@ function grouped(
     track,
     grouping: { subject, cluster },
     ...(options?.hideFromSubjectNav ? { hideFromSubjectNav: true } : {}),
+    ...(options?.navParentSlug ? { navParentSlug: options.navParentSlug } : {}),
   };
 }
 
@@ -1107,27 +1112,60 @@ const TOPICS_BASE: Topic[] = [
     file: "3_js_core.md",
     title: "Language",
     blurb:
-      "Runtime and modules — types, bindings, and control flow live in sibling Core topics.",
+      "Runtime and language basics — variables, types, operators, loops, and arrays in sibling Core topics.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
   },
   {
     slug: "js-variables",
     file: "3_js_variables.md",
-    title: "Data Types & Variables",
+    title: "Variables",
     blurb:
-      "Primitives, coercion, stack/heap, collections, JSON, bindings, scope, and closures.",
+      "let/const/var, scope, hoisting, globalThis, and destructuring patterns.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "core" },
+  },
+  {
+    slug: "js-data-types",
+    file: "3_js_data_types.md",
+    title: "Data Types",
+    blurb: "Primitives, coercion, and the stack/heap memory model.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "core" },
+  },
+  {
+    slug: "js-data-structures",
+    file: "3_js_data_structures.md",
+    title: "Data Structures",
+    blurb: "Objects, Map/Set, trees/graphs, Date, and JSON.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
   },
   {
     slug: "js-operators",
     file: "3_js_operators.md",
-    title: "Operators & Loops",
+    title: "Operators",
     blurb:
-      "Expressions, operators, comparisons, control flow, try/catch, and iterators.",
+      "Expressions, operators, comparisons, optional chaining, and nullish coalescing.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+  },
+  {
+    slug: "js-loops",
+    file: "3_js_loops.md",
+    title: "Loops",
+    blurb: "Control flow, loops, switch, try/catch, iterators, and generators.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "core" },
+  },
+  {
+    slug: "js-destructuring",
+    file: "3_js_destructuring.md",
+    title: "Destructuring",
+    blurb: "Rest parameters, spread syntax, and destructuring patterns.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
   },
   {
     slug: "js-array",
@@ -1141,25 +1179,54 @@ const TOPICS_BASE: Topic[] = [
     slug: "js-functions",
     file: "3_js_functions.md",
     title: "Functions",
-    blurb: "Declarations, arrows, this, higher-order functions, and bind.",
+    blurb:
+      "Declarations, scope, closures, arrows, this, HOF, recursion, and timers.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
   },
   {
-    slug: "js-oop",
-    file: "3_js_oop.md",
-    title: "Classes & Objects",
-    blurb: "Prototypes, classes, and object patterns.",
+    slug: "js-closures",
+    file: "3_js_closures.md",
+    title: "Closures",
+    blurb: "Lexical environments, factories, and closure pitfalls.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+  },
+  {
+    slug: "js-objects",
+    file: "3_js_objects.md",
+    title: "Objects",
+    blurb: "Prototypes, `this`, descriptors, Proxy/Reflect, and GC.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "core" },
+  },
+  {
+    slug: "js-classes",
+    file: "3_js_classes.md",
+    title: "Classes",
+    blurb: "Class syntax, inheritance, static members, and private fields.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
   },
   {
     slug: "js-browser",
+    file: "3_js_browser_hub.md",
+    title: "Browser",
+    blurb:
+      "DOM, events, windows, files, network, animation, and Web Components.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "browser" },
+  },
+  {
+    slug: "js-browser-document",
     file: "3_js_browser.md",
     title: "Document",
     blurb: "DOM tree, querying, mutation, BOM, and script loading.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "browser" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-browser",
   },
   {
     slug: "js-events",
@@ -1168,14 +1235,68 @@ const TOPICS_BASE: Topic[] = [
     blurb: "Handlers, bubbling, capturing, delegation, and custom events.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "browser" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-browser",
+  },
+  {
+    slug: "js-browser-windows",
+    file: "3_js_browser_windows.md",
+    title: "Windows & frames",
+    blurb: "iframes, popups, postMessage, and clickjacking defenses.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "browser" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-browser",
+  },
+  {
+    slug: "js-browser-files",
+    file: "3_js_browser_files.md",
+    title: "Files & binary",
+    blurb: "Blob, ArrayBuffer, FormData, FileReader, and object URLs.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "browser" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-browser",
+  },
+  {
+    slug: "js-browser-network",
+    file: "3_js_browser_network.md",
+    title: "Network",
+    blurb: "fetch, XHR, progress, CORS, WebSocket, SSE, and long polling.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "browser" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-browser",
+  },
+  {
+    slug: "js-browser-animation",
+    file: "3_js_browser_animation.md",
+    title: "Animation",
+    blurb: "requestAnimationFrame, easing, CSS vs JavaScript animation.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "browser" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-browser",
+  },
+  {
+    slug: "js-web-components",
+    file: "3_js_web_components.md",
+    title: "Web Components",
+    blurb: "Custom elements, shadow DOM, slots, styling, and events.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "browser" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-browser",
   },
   {
     slug: "js-browser-extra",
     file: "3_js_browser_extra.md",
-    title: "Browser APIs",
-    blurb: "Storage, CORS, observers, History, URL, files, and UI timing.",
+    title: "More browser APIs",
+    blurb: "Storage, CORS, observers, History, URL helpers, and UI timing.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "browser" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-browser",
   },
   {
     slug: "js-async-event-loop",
@@ -1218,9 +1339,47 @@ const TOPICS_BASE: Topic[] = [
     grouping: { subject: "javascript", cluster: "async" },
   },
   {
+    slug: "js-modules",
+    file: "3_js_modules_hub.md",
+    title: "Modules",
+    blurb: "ES modules — scope, import/export, and dynamic import().",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "additional" },
+  },
+  {
+    slug: "js-modules-overview",
+    file: "3_js_modules.md",
+    title: "Modules",
+    blurb: "Module scope, ESM vs CommonJS, and module scripts in the browser.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "additional" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-modules",
+  },
+  {
+    slug: "js-import-export",
+    file: "3_js_import_export.md",
+    title: "Export and Import",
+    blurb: "Named and default export/import, re-exports, and live bindings.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "additional" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-modules",
+  },
+  {
+    slug: "js-dynamic-import",
+    file: "3_js_dynamic_import.md",
+    title: "Dynamic imports",
+    blurb: "Lazy loading with import(), code splitting, and conditional paths.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "additional" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-modules",
+  },
+  {
     slug: "js-extra",
     file: "3_js_extra.md",
-    title: "Additional",
+    title: "Intl API",
     blurb: "Intl, RegExp, Signals (TC39), and eval.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "additional" },
@@ -3161,10 +3320,66 @@ export function clusterHref(subject: Subject, cluster: TopicCluster): string {
   return `${subjectHref(subject)}#${cluster.id}`;
 }
 
+function navChildTopicsForParent(
+  subject: Subject,
+  clusterId: string,
+  parentSlug: string,
+): readonly Topic[] {
+  return TOPICS.filter(
+    (topic) =>
+      topic.track === subject.track &&
+      topic.grouping?.subject === subject.slug &&
+      topic.grouping.cluster === clusterId &&
+      topic.navParentSlug === parentSlug,
+  );
+}
+
+/** Child topics nested under a nav hub (e.g. Browser → Document, Events, …). */
+export function navChildBrowseCards(topic: Topic): readonly BrowseCard[] {
+  if (!topic.grouping) {
+    return [];
+  }
+  const subject = getSubject(topic.track, topic.grouping.subject);
+  if (!subject) {
+    return [];
+  }
+  return navChildTopicsForParent(
+    subject,
+    topic.grouping.cluster,
+    topic.slug,
+  ).map((child) => ({
+    href: topicHref(child),
+    title: child.title,
+    description: child.blurb,
+  }));
+}
+
+export function isNavHubTopic(topic: Topic): boolean {
+  return navChildBrowseCards(topic).length > 0;
+}
+
+function clusterHubWithNavChildren(
+  subject: Subject,
+  clusterId: string,
+): Topic | undefined {
+  const visible = topicsForCluster(subject, clusterId);
+  if (visible.length !== 1) {
+    return undefined;
+  }
+  const hub = visible[0];
+  if (navChildTopicsForParent(subject, clusterId, hub.slug).length === 0) {
+    return undefined;
+  }
+  return hub;
+}
+
 export function clusterTargetHref(
   subject: Subject,
   cluster: TopicCluster,
 ): string {
+  if (clusterHubWithNavChildren(subject, cluster.id)) {
+    return clusterHref(subject, cluster);
+  }
   const topics = topicsForCluster(subject, cluster.id);
   if (topics.length === 1) {
     return topicHref(topics[0]);
@@ -3281,29 +3496,54 @@ export function trackQuestionSections(track: TrackId): readonly {
   return sections;
 }
 
+function clusterBrowseItems(
+  subject: Subject,
+  cluster: TopicCluster,
+): readonly BrowseCard[] {
+  const topics = topicsForCluster(subject, cluster.id);
+  if (topics.length === 0) {
+    return [];
+  }
+  const items: BrowseCard[] = [];
+  for (const topic of topics) {
+    const children = navChildTopicsForParent(subject, cluster.id, topic.slug);
+    if (children.length > 0) {
+      for (const child of children) {
+        items.push({
+          href: topicHref(child),
+          title: child.title,
+          description: child.blurb,
+        });
+      }
+      continue;
+    }
+    items.push({
+      href: topicHref(topic),
+      title: topic.title,
+      description: topic.blurb,
+    });
+  }
+  if (topics.length === 1 && items.length === 1) {
+    return [
+      {
+        href: items[0].href,
+        title: cluster.title,
+        description: cluster.blurb || items[0].description,
+      },
+    ];
+  }
+  return items;
+}
+
 export function subjectClusterCards(subject: Subject): readonly {
   readonly cluster: TopicCluster;
   readonly items: readonly BrowseCard[];
 }[] {
   return clustersWithTopics(subject).flatMap((cluster) => {
-    const topics = topicsForCluster(subject, cluster.id);
-    if (topics.length === 0) {
+    const items = clusterBrowseItems(subject, cluster);
+    if (items.length === 0) {
       return [];
     }
-    const items =
-      topics.length === 1
-        ? [
-            {
-              href: topicHref(topics[0]),
-              title: cluster.title,
-              description: cluster.blurb || topics[0].blurb,
-            },
-          ]
-        : topics.map((topic) => ({
-            href: topicHref(topic),
-            title: topic.title,
-            description: topic.blurb,
-          }));
     return [{ cluster, items }];
   });
 }

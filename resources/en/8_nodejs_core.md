@@ -154,13 +154,13 @@ UV_THREADPOOL_SIZE=8 node server.js
 3. Then one libuv iteration runs. Since **Node.js 20** (libuv 1.45) the order is below. Due timers can also run **once before the first iteration**, which is why older write-ups list timers first on every turn.
 
 | Order | Phase             | What runs                                                                                                                                    |
-| ----- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| ----- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1     | pending callbacks | I/O deferred to the next turn, such as some TCP errors (`ECONNREFUSED`)                                                                      |
 | 2     | idle, prepare     | Internal only                                                                                                                                |
 | 3     | poll              | New I/O events and almost all I/O callbacks. This is where the thread **sleeps** when nothing else is ready                                  |
 | 4     | check             | `setImmediate` callbacks, in the order they were scheduled                                                                                   |
 | 5     | close callbacks   | Abrupt close, for example `socket.destroy()` emits `'close'` here. A normal close may be queued with `process.nextTick` instead              |
-| 6     | timers            | `setTimeout` / `setInterval` whose delay has elapsed. The delay is a **minimum**, not a deadline. `setTimeout(fn, 0)` is clamped to **1 ms** |     |
+| 6     | timers            | `setTimeout` / `setInterval` whose delay has elapsed. The delay is a **minimum**, not a deadline. `setTimeout(fn, 0)` is clamped to **1 ms** |
 
 Each phase has its own FIFO queue. The loop runs that queue until it is empty or libuv's callback limit is hit, then moves on. Poll in detail:
 

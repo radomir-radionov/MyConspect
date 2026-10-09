@@ -1,4 +1,5 @@
 import { navSubjectClusters } from "./subjectClusters";
+import { flattenNavTopics } from "./topicTree";
 import type {
   NavConcept,
   NavEntry,
@@ -155,13 +156,13 @@ export function navTopics(groups: readonly NavGroup[]): readonly NavTopic[] {
 function topicsInEntry(entry: NavEntry): readonly NavTopic[] {
   switch (entry.kind) {
     case "topic":
-      return [entry.topic];
+      return flattenNavTopics(entry.topic);
     case "subject":
-      return navSubjectClusters(entry.subject).flatMap(
-        (cluster) => cluster.topics,
+      return navSubjectClusters(entry.subject).flatMap((cluster) =>
+        cluster.topics.flatMap((topic) => flattenNavTopics(topic)),
       );
     case "cluster":
-      return entry.cluster.topics;
+      return entry.cluster.topics.flatMap((topic) => flattenNavTopics(topic));
     default: {
       const _never: never = entry;
       return _never;

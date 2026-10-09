@@ -6,24 +6,23 @@
 
 ### Related docs
 
-* [JS Core](./3_js_core.md) · [JS Array](./3_js_array.md) · [JS-функции](./3_js_functions.md) · [JS OOP](./3_js_oop.md) · [JS Async](./3_js_async.md)
-* [События](./3_js_events.md) · [Дополнительный браузер](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
-* [HTML-браузер и рендеринг](./1_html.md) · [Веб-API](./6_web_api.md) · [файлы и файловые системы ОС](./8_nodejs_modules.md#files--file-systems)* [Jest DOM-тесты (`jsdom`)](./7_special_testing_tooling.md#jest--first-tests-node-vs-jsdom)
+- [JS Core](./3_js_core.md) · [JS Array](./3_js_array.md) · [JS-функции](./3_js_functions.md) · [Objects](./3_js_objects.md) · [Classes](./3_js_classes.md) · [JS Async](./3_js_async.md)
+- [События](./3_js_events.md) · [Дополнительный браузер](./3_js_browser_extra.md) · [JS Interview](./3_js_interview.md)
+- [HTML-браузер и рендеринг](./1_html.md) · [Веб-API](./6_web_api.md) · [файлы и файловые системы ОС](./8_nodejs_modules.md#files--file-systems)\* [Jest DOM-тесты (`jsdom`)](./7_special_testing_tooling.md#jest--first-tests-node-vs-jsdom)
 
 ### Main concepts
 
-| Площадь | Темы |
-|------|--------|
-| **Окружающая среда** | `window`, характеристики, загрузка скриптов |
-| **ДОМ** | Дерево, запросы, атрибуты и свойства, модификация |
-| **СПЕЦИФИКАЦИЯ** | `location`, `navigator`, `history` |
+| Area            | Topics                                                          |
+| --------------- | --------------------------------------------------------------- |
+| **Environment** | Browser host, specs, script loading, BOM                        |
+| **DOM**         | Tree, navigation, search, node/attribute APIs, mutation, styles |
+| **Geometry**    | Element/window size, scroll, coordinates                        |
 
 ### Sections
 
-> Теория `<details>` блоки следуют: **Определение** · **Как это работает** · **Когда использовать** · **Плюсы и минусы** · **Примеры** · **Мысли** · **Источники**. **Определение** обязательно; другие разделы являются необязательными.
+> Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
-- [Script loading](#script-loading)
-- [DOM & BOM](#dom-bom-events)
+- [Document](#document) — **Environment** · **DOM tree** · **Modifying the DOM** · **Size, scroll & coordinates** · **BOM, forms & observers**
 - [События](./3_js_events.md)
 - [Интервью](./3_js_interview.md)
 
@@ -58,11 +57,11 @@
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| `defer` сохраняет порядок, неблокируется | Все еще выполняется в основном потоке |
-| `async` для независимых скриптов | Заказать непредсказуемо |
-| Модули древовидные, строгие | Старым браузерам требуется резервный вариант nomodule |
+| +                                        | −                                                     |
+| ---------------------------------------- | ----------------------------------------------------- |
+| `defer` сохраняет порядок, неблокируется | Все еще выполняется в основном потоке                 |
+| `async` для независимых скриптов         | Заказать непредсказуемо                               |
+| Модули древовидные, строгие              | Старым браузерам требуется резервный вариант nomodule |
 
 **Examples:**
 
@@ -86,12 +85,12 @@
 
 ### async & defer
 
-| Атрибут | Скачать | Порядок выполнения | Лучшее для |
-|-----------|----------|-----------------|----------|
-| *(нет)* | разбор блоков | заказ документов | устаревшие встроенные скрипты |
-| `defer` | параллель | порядок документов, прежде `DOMContentLoaded` | пакеты приложений, которым требуется полный DOM |
-| `async` | параллель | первый готовый первый запуск | реклама, аналитика, независимые скрипты |
-| `type="module"` | параллель | отложенный, строгий режим по умолчанию | ES-модули |
+| Атрибут         | Скачать       | Порядок выполнения                            | Лучшее для                                      |
+| --------------- | ------------- | --------------------------------------------- | ----------------------------------------------- |
+| _(нет)_         | разбор блоков | заказ документов                              | устаревшие встроенные скрипты                   |
+| `defer`         | параллель     | порядок документов, прежде `DOMContentLoaded` | пакеты приложений, которым требуется полный DOM |
+| `async`         | параллель     | первый готовый первый запуск                  | реклама, аналитика, независимые скрипты         |
+| `type="module"` | параллель     | отложенный, строгий режим по умолчанию        | ES-модули                                       |
 
 **Examples:**
 
@@ -105,210 +104,174 @@
 
 </details>
 
-<a name="dom-bom-events"></a>
+<a name="document"></a>
 
-## DOM & BOM
+## Document
 
 <details>
-  <summary>DOM</summary>
+  <summary>Browser environment</summary>
 
-### DOM
+### Browser environment
 
-**Definition:**
-
-DOM — это живое **дерево узлов**, которое браузер строит на основе HTML/XML. JS читает и изменяет его через `document` — это не исходный файл.
-
-**Последовательность** (анализ → изменение):
-
-```
-1. Parse    HTML → node tree (`document` root)
-2. Access   documentElement / head / body → getElementById / querySelector
-3. Read     nodeType; children vs childNodes; attributes vs properties
-4. Mutate   createElement / append / property write → later layout/paint
-```
-
-`window` → `document` → `<html>` (`document.documentElement`). Теги, текст и комментарии — это узлы.
-
-| Узел | `nodeType` | Пример |
-|------|------------|---------|
-| Документ | `DOCUMENT_NODE` (9) | `document` |
-| Элемент | `ELEMENT_NODE` (1) | `<div>` |
-| Текст | `TEXT_NODE` (3) | `"Hello"` |
-| Комментарий | `COMMENT_NODE` (8) | `<!-- note -->` |
-
-| API | Возврат |
-|-----|---------|
-| `children` / `nextElementSibling` | только элементы |
-| `childNodes` / `nextSibling` | все узлы (часто текст с пробелами) |
-| `getElementById` / `querySelector` / `querySelectorAll` | id/первое совпадение CSS/все совпадения |
-| `matches(sel)` / `closest(sel)` / `contains(node)` | логическое совпадение/проверка ближайшего предка/потомка |
+**Definition:** In the browser, JavaScript runs inside a **host environment**: the `window` global, web platform specs (HTML, DOM, CSSOM), and browser-only APIs — separate from the ECMAScript language itself.
 
 **How it works:**
 
-Пишет обновить живое дерево сразу; смешанные циклы чтения/записи могут привести к сбоям в макете. Живые коллекции меняются вместе с изменением дерева.
+- **ECMAScript** — language (`Array`, `Promise`, syntax).
+- **Web platform** — page APIs (`document`, `fetch`, `localStorage`) defined by HTML/DOM/CSSOM specs.
+- **`window`** — global object in browsers; `document`, `location`, `history`, `navigator` are properties of `window`.
+- **`globalThis`** — same global in any realm (browser `window`, Node `global`, workers).
 
-**Node identity:** `nodeType` (число), `nodeName` (всегда в верхнем регистре для элементов HTML, например `"DIV"`), `tagName` (только элементы, то же, что и `nodeName` для HTML). Предпочитать `tagName`/`nodeName` чрезмерная структуризация узла.
-
-**Attributes vs properties:** Стандартные атрибуты HTML становятся свойствами JS, но сопоставление не происходит 1:1.
-
-
-| | Атрибут (`getAttribute`) | Собственность (напр. `el.id`) |
-| | --|----------------------------|-------------------------|
-| | Тип | всегда строка | набрал (`checked` → логическое значение, `style` → объект) |
-| | Имя | нечувствителен к регистру | с учетом регистра |
-| | Синхронизировать | самые стандартные атрибуты ↔ реквизит | исключения: `input.value` обновляет свойство из атрибута, а не атрибут из свойства |
-
-- Нестандартные атрибуты → нет свойств; использовать `getAttribute` / `setAttribute`или безопаснее `data-*` → `elem.dataset`.
-- `href` атрибут = как написано; `.href` = абсолютный URL.
-- Предпочитать свойства DOM для нормальной работы; атрибуты, когда вам нужно значение в формате HTML или `data-*`.
+| Spec layer | Examples                                   |
+| ---------- | ------------------------------------------ |
+| ECMAScript | `Map`, `async/await`                       |
+| DOM        | `document`, `querySelector`, events        |
+| HTML       | `<script>`, `<form>`, `history`            |
+| CSSOM      | `document.styleSheets`, `getComputedStyle` |
 
 **When to use:**
 
-Монтировать пользовательский интерфейс; читать/обновлять атрибуты и свойства; строить списки.
+Know which APIs are language vs browser; feature-detect host APIs before calling them in shared isomorphic code.
 
 #### Common pitfalls
 
-`innerHTML` + пользовательский ввод (XSS); `checked`/`value` атрибут против свойства; предполагая `firstChild` является элементом.
+Assuming every global exists in Node; treating BOM objects as part of ECMAScript; mixing up `window` vs `document` entry points.
 
 **Pluses and minuses:**
 
-| + | − |
-| --- | --- |
-| Стандартное живое дерево, селекторы CSS | Многословие против VDOM; живые списки-сюрприз |
+| +                                      | −                                           |
+| -------------------------------------- | ------------------------------------------- |
+| One `window` entry for browser APIs    | Not portable to non-browser hosts           |
+| Specs document cross-browser contracts | Vendor prefixes / legacy quirks still exist |
 
 **Examples:**
 
 ```js
-document.title = 'My App';
-const app = document.getElementById('app');
-app.children[0].tagName; // "P"
-app.firstChild;          // often a whitespace text node
-
-const box = document.querySelector('input[type=checkbox]');
-box.checked = false;
-box.getAttribute('checked'); // still "checked" if it was in HTML
+globalThis === window; // true in a browser page
+window.document === document;
+typeof fetch; // "function" in modern browsers, undefined in older Node without polyfill
 ```
 
-**Thoughts:** Измените **дерево среды выполнения**, а не HTML-файл.
+**See also:** [BOM](#bom) · [Script loading](#script-loading)
 
-**See also:** [Навигация по DOM](#dom-navigation) · [Методы и реквизиты DOM](#dom-methods--props) · [HTMLCollection vs NodeList](#htmlcollection-vs-nodelist) · [innerHTML vs externalHTML](#innerhtml-vs-outerhtml)
+**Sources:** [javascript.info/browser-environment](https://javascript.info/browser-environment) · [MDN Window](https://developer.mozilla.org/en-US/docs/Web/API/Window)
 
-**Sources:** [javascript.info/dom-nodes](https://javascript.info/dom-nodes) · [javascript.info/basic-dom-node-properties](https://javascript.info/basic-dom-node-properties) · [javascript.info/dom-attributes-and-properties](https://javascript.info/dom-attributes-and-properties) · [MDN DOM](https://developer.mozilla.org/en-US/docs/Glossary/DOM)
+</details>
 
-### shadow dom
+<details>
+  <summary>DOM tree</summary>
 
-**Definition:** Частное изолированное поддерево DOM, прикрепленное к основному элементу, отдельное от обычного (облегченного) DOM страницы.
-
-**How it works:**
-
-Без него все компоненты имеют одну глобальную область DOM и CSS — утечки стилей, конфликты селекторов и раскрытие внутренних компонентов. Shadow DOM обеспечивает **инкапсуляцию**: стили с ограниченной областью действия, скрытую разметку и безопасное повторное использование на разных страницах.
-
-- **Light Tree** — обычное поддерево DOM из дочерних элементов HTML.
-- **Теневое дерево** — скрытое поддерево, не отраженное в исходном HTML.
-
-```js
-const shadowRoot = elem.attachShadow({ mode: 'open' | 'closed' });
-// mode: 'open' → accessible via elem.shadowRoot
-```
-
-Теневые элементы DOM:
-
-- Иметь собственную область идентификатора
-- Невидимый для `querySelector` из основного документа
-- Стилизовано только стилями внутри теневого дерева.
-
-**When to use:**
-
-Веб-компоненты, встраиваемые виджеты, сторонний интерфейс на неизвестных страницах.
-
-Приложения React/Vue (они по-разному обрабатывают инкапсуляцию); если вы хотите, чтобы глобальные стили страницы влияли на компонент.
-
-**Sources:** [javascript.info/shadow-dom](https://javascript.info/shadow-dom)
-
-### Page lifecycle events
+### DOM tree
 
 **Definition:**
 
-Браузер генерирует события при загрузке и выгрузке страницы. Используйте их для инициализации пользовательского интерфейса или предупреждения пользователей о несохраненных данных.
+The DOM is a live **node tree** the browser builds from HTML/XML. JS reads and mutates it through `document` — it is not the source file.
 
-| Событие | Срабатывает, когда | Цель |
-|-------|-----------|--------|
-| `DOMContentLoaded` | HTML проанализирован, DOM готов (изображения все еще могут загружаться) | `document` |
-| `load` | Все ресурсы загружены (изображения, стили, скрипты) | `window` |
-| `beforeunload` | Пользователь покидает страницу | `window` |
-| `unload` | Страница выгружается | `window` |
+**Sequence** (parse → mutate):
+
+```
+1. Parse    HTML → node tree (`document` root)
+2. Traverse parent/child/sibling links or search APIs
+3. Read     node type, tag, contents
+4. Mutate   createElement / append / writes → layout/paint
+```
+
+`window` → `document` → `<html>` (`document.documentElement`). Tags, text, and comments are all nodes.
+
+| Node     | `nodeType`          | Example         |
+| -------- | ------------------- | --------------- |
+| Document | `DOCUMENT_NODE` (9) | `document`      |
+| Element  | `ELEMENT_NODE` (1)  | `<div>`         |
+| Text     | `TEXT_NODE` (3)     | `"Hello"`       |
+| Comment  | `COMMENT_NODE` (8)  | `<!-- note -->` |
 
 **How it works:**
 
-- `DOMContentLoaded` ждет классических/отложенных скриптов; `async` скрипты и динамически вставляемые скрипты не блокируют его. Таблицы стилей перед сценарием могут задержать этот сценарий (и, следовательно, `DOMContentLoaded`).
-- `document.readyState`: `"loading"` → `"interactive"` (≈ до `DOMContentLoaded`) → `"complete"` (≈ `window.load`).
-- `beforeunload`: набор `event.returnValue = ""` (или вернуть строку из `onbeforeunload`), чтобы отобразить подтверждение выхода — браузеры игнорируют пользовательский текст сообщения.
-- `unload`: работает только по принципу "выстрелил и забыл"(`navigator.sendBeacon`); не ждите асинхронных ответов.
-- Ресурс `load` / `error` on `<img>`, `<script>`и т. д. отслеживать только этот ресурс, а не анализировать ошибки внутри успешно загруженного скрипта (`window.onerror` для тех). Ошибки сценариев перекрестного происхождения остаются непрозрачными, если только `crossorigin` + CORS-заголовки.
+Writes update the live tree immediately; mixed read/write loops can layout-thrash. Live collections change as the tree changes.
+
+**When to use:**
+
+Mount UI; understand document structure before querying or mutating.
+
+#### Common pitfalls
+
+`innerHTML` + user input (XSS); assuming `firstChild` is an element; confusing the HTML file with the live tree.
+
+**Pluses and minuses:**
+
+| +                  | −                                    |
+| ------------------ | ------------------------------------ |
+| Standard live tree | Verbose vs VDOM; live lists surprise |
 
 **Examples:**
 
 ```js
-document.addEventListener('DOMContentLoaded', () => {
-  initApp(); // DOM is ready
-});
-
-window.addEventListener('load', () => {
-  hideLoader(); // images loaded too
-});
-
-window.addEventListener('beforeunload', (e) => {
-  if (formDirty) e.returnValue = '';
-});
-
-const img = new Image();
-img.onload = () => console.log(img.width);
-img.onerror = () => console.log('failed');
-img.src = '/hero.png';
+document.title = "My App";
+document.documentElement === document.querySelector("html");
+document.body.append(document.createElement("p"));
 ```
 
-**Sources:** [javascript.info/onload-ondomcontentloaded](https://javascript.info/onload-ondomcontentloaded) · [javascript.info/onload-onerror](https://javascript.info/onload-onerror)
+**Thoughts:** Mutate the **runtime tree**, not the HTML file.
+
+**See also:** [DOM navigation](#dom-navigation) · [Searching elements](#searching-elements) · [Node properties](#node-properties) · [HTMLCollection vs NodeList](#htmlcollection-vs-nodelist) · [innerHTML vs outerHTML](#innerhtml-vs-outerhtml)
+
+**Sources:** [javascript.info/dom-nodes](https://javascript.info/dom-nodes) · [MDN DOM](https://developer.mozilla.org/en-US/docs/Glossary/DOM)
+
+### shadow dom
+
+**Definition:** A private, isolated DOM subtree attached to a host element — separate from the page's normal (light) DOM.
+
+**How it works:** `elem.attachShadow({ mode: "open" | "closed" })` creates a shadow root; global `querySelector` does not see inside. Full coverage: slots, styling, events, and custom elements → [Web Components](./3_js_web_components.md).
+
+**When to use:** Web Components and embeddable widgets (framework apps usually encapsulate differently).
+
+**Sources:** [javascript.info/shadow-dom](https://javascript.info/shadow-dom) · [JS — Web Components](./3_js_web_components.md)
+
+### Page lifecycle events
+
+**Definition:** `DOMContentLoaded`, `load`, `beforeunload`, and per-resource `load`/`error` are covered in [Events](./3_js_events.md#page-lifecycle-events).
+
+**See also:** [Page lifecycle events](./3_js_events.md#page-lifecycle-events) · [Script async and defer](./3_js_events.md#script-async-and-defer) · [Resource onload and onerror](./3_js_events.md#resource-onload-and-onerror)
 
 ### Creating & appending elements
 
 **Examples:**
 
 ```js
-const li = document.createElement('li');
-li.textContent = 'New item';
-li.classList.add('active');
-document.querySelector('ul').append(li);
+const li = document.createElement("li");
+li.textContent = "New item";
+li.classList.add("active");
+document.querySelector("ul").append(li);
 ```
 
 ### HTMLCollection vs NodeList
 
-
-| | HTMLКоллекция | Список узлов |
-| | --- | ---------------- |
-| | **В прямом эфире?** | да (автообновления) | обычно статично(`querySelectorAll`) |
-| | **Содержит** | только элементы | любой тип узла |
-| | **Доступ** | индекс, имя, идентификатор | только индекс |
-| | **От** | `getElementsBy*` | `querySelectorAll`, `childNodes` |
+|              | HTMLCollection     | NodeList                            |
+| ------------ | ------------------ | ----------------------------------- |
+| **Live?**    | yes (auto-updates) | usually static (`querySelectorAll`) |
+| **Contains** | elements only      | any node type                       |
+| **Access**   | index, name, id    | index only                          |
+| **From**     | `getElementsBy*`   | `querySelectorAll`, `childNodes`    |
 
 **Examples:**
 
 ```js
-const live = document.getElementsByClassName('item');   // live
-const snap = document.querySelectorAll('.item');      // static snapshot
+const live = document.getElementsByClassName("item"); // live
+const snap = document.querySelectorAll(".item"); // static snapshot
 
-document.querySelector('.item').remove();
-live.length;  // decreased
-snap.length;  // unchanged
+document.querySelector(".item").remove();
+live.length; // decreased
+snap.length; // unchanged
 ```
 
-**Note:** Ни один из них не является настоящим массивом — используйте `Array.from()` или распространите для итерации с помощью методов массива.
+**Note:** Neither is a real array — use `Array.from()` or spread to iterate with array methods.
 
 ### innerHTML vs outerHTML
 
-| Недвижимость | Возврат/комплекты |
-|----------|----------------|
-| `innerHTML` | HTML **внутри** элемента (только дочерние элементы) |
-| `outerHTML` | HTML **включая** сам элемент |
+| Property    | Returns / sets                              |
+| ----------- | ------------------------------------------- |
+| `innerHTML` | HTML **inside** the element (children only) |
+| `outerHTML` | HTML **including** the element itself       |
 
 **Examples:**
 
@@ -317,26 +280,25 @@ snap.length;  // unchanged
 ```
 
 ```js
-box.innerHTML;  // '<span>Hi</span>'
-box.outerHTML;  // '<div id="box"><span>Hi</span></div>'
+box.innerHTML; // '<span>Hi</span>'
+box.outerHTML; // '<div id="box"><span>Hi</span></div>'
 ```
 
-**Warning:** `innerHTML` анализирует строки HTML — очищает ввод пользователя для предотвращения XSS. Типы и кодировка: [Special — XSS](./7_special_security.md#xss-cross-site-scripting).
+**Warning:** `innerHTML` parses HTML strings — sanitize user input to prevent XSS. Types and encoding: [Special — XSS](./7_special_security.md#xss-cross-site-scripting).
 
 ### window vs document
 
-
-| | `window` | `document` |
-| | --- | ---------- |
-| | **Роль** | Глобальный объект браузера | Точка входа в DOM (дочерний элемент `window`) |
-| | **Доступ** | неявный глобальный | `document` or `window.document` |
-| | **API** | `alert()`, `location`, `setTimeout` | `getElementById`, `createElement`, `querySelector` |
+|            | `window`                            | `document`                                         |
+| ---------- | ----------------------------------- | -------------------------------------------------- |
+| **Role**   | Browser global object               | DOM entry point (child of `window`)                |
+| **Access** | implicit global                     | `document` or `window.document`                    |
+| **APIs**   | `alert()`, `location`, `setTimeout` | `getElementById`, `createElement`, `querySelector` |
 
 **Examples:**
 
 ```js
-window.innerWidth;              // viewport size
-document.querySelector('h1');   // DOM query
+window.innerWidth; // viewport size
+document.querySelector("h1"); // DOM query
 ```
 
 </details>
@@ -346,80 +308,82 @@ document.querySelector('h1');   // DOM query
 
 ### DOM navigation
 
-**Definition:** Пройдите по дереву DOM, используя родительские/дочерние/родственные свойства и методы запроса.
+**Definition:** Traverse the DOM tree using parent/child/sibling properties and query methods.
 
 **How it works:**
 
-- Ссылки на дерево: `parentNode`, `childNodes`, `nextSibling`, и т. д.; варианты, содержащие только элементы, пропускают текстовые узлы.
-- `querySelector(All)` запускает механизм селектора на поддереве; `getElementsBy*` возвращает живую HTMLCollection.
+- Tree links: `parentNode`, `childNodes`, `nextSibling`, etc.; element-only variants skip text nodes.
+- `querySelector(All)` runs selector engine on subtree; `getElementsBy*` returns live HTMLCollection.
 
-| Направление | Все узлы | Только элементы |
-|-----------|-----------|---------------|
-| Родитель | `parentNode` | `parentElement` |
-| Дети | `childNodes` | `children` |
-| Первый ребенок | `firstChild` | `firstElementChild` |
-| Последний ребенок | `lastChild` | `lastElementChild` |
-| Предыдущий | `previousSibling` | `previousElementSibling` |
-| Следующий | `nextSibling` | `nextElementSibling` |
-
-| Метод | Область применения | Возврат | Жить? |
-|--------|-------|---------|-------|
-| `getElementById(id)` | документ | элемент или `null` | — |
-| `getElementsByClassName(cls)` | элемент | HTMLКоллекция | да |
-| `getElementsByTagName(tag)` | элемент | HTMLКоллекция | да |
-| `querySelector(sel)` | элемент | первый матч или `null` | — |
-| `querySelectorAll(sel)` | элемент | Список узлов | статический |
+| Direction   | All nodes         | Elements only            |
+| ----------- | ----------------- | ------------------------ |
+| Parent      | `parentNode`      | `parentElement`          |
+| Children    | `childNodes`      | `children`               |
+| First child | `firstChild`      | `firstElementChild`      |
+| Last child  | `lastChild`       | `lastElementChild`       |
+| Previous    | `previousSibling` | `previousElementSibling` |
+| Next        | `nextSibling`     | `nextElementSibling`     |
 
 **When to use:**
 
-Перейти к родительской форме; найти следующий родственный элемент; ограниченный `el.querySelector('.title')`.
+Walk to parent form; find next sibling element; scoped `el.querySelector('.title')`.
 
 #### Common pitfalls
 
-`firstChild` vs `firstElementChild`; изменение живой коллекции во время цикла; предполагая `children[0]` существует.
+`firstChild` vs `firstElementChild`; modifying live collection while looping; assuming `children[0]` exists.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Быстрый прямой обход известной структуры | `childNodes` включает текстовые узлы |
-| `querySelector` гибкий | Обновление живых коллекций во время итерации |
-| `closest()` для целей делегирования | Глубокие ходы ручные и ломкие |
+| +                                         | −                                        |
+| ----------------------------------------- | ---------------------------------------- |
+| Direct traversal fast for known structure | `childNodes` includes text nodes         |
+| `querySelector` flexible                  | Live collections update during iteration |
+| `closest()` for delegation targets        | Deep walks manual and brittle            |
 
 **Examples:**
 
 ```js
-const list = document.querySelector('.list');
-list.children;                        // element children only
-list.querySelectorAll('li.active');   // static NodeList
-list.getElementsByTagName('li');      // live HTMLCollection
+const list = document.querySelector(".list");
+list.children; // element children only
+list.querySelectorAll("li.active"); // static NodeList
+list.getElementsByTagName("li"); // live HTMLCollection
 ```
 
-**Thoughts:** `getElementsBy*` возвращает **живые** коллекции; `querySelectorAll` возвращает **снимок**.
+**Thoughts:** Prefer **element-only** properties (`children`, `firstElementChild`) when you do not need text nodes.
 
-**Also:** `elem.matches(css)` — соответствует ли этот элемент? `elem.closest(css)` — ближайший предок (в т.ч. сам). `elemA.contains(elemB)` — is `elemB` внутри `elemA`?
+**Also:** `elem.matches(css)` — does this element match? `elem.closest(css)` — nearest ancestor (incl. self). `elemA.contains(elemB)` — is `elemB` inside `elemA`?
 
-**Sources:** [javascript.info/dom-navigation](https://javascript.info/dom-navigation) · [javascript.info/searching-elements-dom](https://javascript.info/searching-elements-dom)
+**See also:** [Searching elements](#searching-elements)
+
+**Sources:** [javascript.info/dom-navigation](https://javascript.info/dom-navigation)
 
 </details>
 
 <details>
-  <summary>DOM methods</summary>
+  <summary>Searching elements</summary>
 
-### DOM methods
-**Definition:** Общие API для поиска элементов, работы с формами и чтения пользовательских данных.
+### Searching elements
+
+**Definition:** Find elements in the document or a subtree with `getElement*` and `querySelector*` APIs (plus related helpers on elements).
 
 **How it works:**
 
-- `document` методы поиска из корня документа или элемента.
-- `dataset` карты `data-*` атрибуты свойств CamelCase JS.
-- `forms` индексы коллекций `<form>` элементы; `requestSubmit()` пожары отправляют событие + проверку.
+| Method                        | Scope    | Returns               | Live?  |
+| ----------------------------- | -------- | --------------------- | ------ |
+| `getElementById(id)`          | document | element or `null`     | —      |
+| `getElementsByClassName(cls)` | element  | HTMLCollection        | yes    |
+| `getElementsByTagName(tag)`   | element  | HTMLCollection        | yes    |
+| `querySelector(sel)`          | element  | first match or `null` | —      |
+| `querySelectorAll(sel)`       | element  | NodeList              | static |
 
-`parentNode`, `childNodes`, `firstChild`, `lastChild`, `previousSibling`, `nextSibling`.
+- `querySelector(All)` runs the CSS selector engine on a subtree.
+- `getElementsBy*` only matches descendants and returns **live** `HTMLCollection`s.
+- `dataset` maps `data-*` attributes to camelCase JS properties.
+- `forms` collection indexes `<form>` elements; `requestSubmit()` fires submit event + validation.
 
 #### `.forms` property
 
-Возвращает `HTMLCollection` из всех `<form>` элементы в документе.
+Returns an `HTMLCollection` of all `<form>` elements in the document.
 
 ```js
 document.forms[0].submit();
@@ -427,10 +391,10 @@ document.forms[0].submit();
 
 #### `.submit()` vs `.requestSubmit()`
 
-| Метод | Пожары `submit` событие | Запускает проверку |
-|--------|---------------------|-----------------|
-| `.submit()` | нет | нет |
-| `.requestSubmit()` | да | да |
+| Method             | Fires `submit` event | Runs validation |
+| ------------------ | -------------------- | --------------- |
+| `.submit()`        | no                   | no              |
+| `.requestSubmit()` | yes                  | yes             |
 
 ```js
 form.requestSubmit(); // preferred — triggers validation & handlers
@@ -438,105 +402,134 @@ form.requestSubmit(); // preferred — triggers validation & handlers
 
 #### `.dataset` property
 
-Читает `data-*` атрибуты как объект CamelCase.
+Reads `data-*` attributes as a camelCase object.
 
 ```html
 <div data-user-id="42" data-role="admin"></div>
 ```
 
 ```js
-el.dataset.userId;  // "42"
-el.dataset.role;    // "admin"
-el.dataset.score = '100'; // sets data-score="100"
+el.dataset.userId; // "42"
+el.dataset.role; // "admin"
+el.dataset.score = "100"; // sets data-score="100"
 ```
 
 **When to use:**
 
-Читать `data-id` для делегирования; отправка программной формы с проверкой; найти первого подходящего ребенка.
+Read `data-id` for delegation; programmatic form submit with validation; find first matching child.
 
 #### Common pitfalls
 
-`dataset` устанавливает только строку; `getAttribute('value')` vs `input.value` отличаться; несколько форм — `document.forms[name]`.
+`dataset` sets string only; `getAttribute('value')` vs `input.value` differ; multiple forms — `document.forms[name]`.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| `dataset` очистить API пользовательских данных | Все `data-*` значения являются строками |
-| `requestSubmit()` уважает ограничения | `submit()` обходит обработчики |
-| Ограниченный запрос по элементам | `getElementsBy*` живые коллекции сбивают с толку |
+| +                                      | −                                         |
+| -------------------------------------- | ----------------------------------------- |
+| `dataset` clean custom data API        | All `data-*` values are strings           |
+| `requestSubmit()` respects constraints | `submit()` bypasses handlers              |
+| Scoped query on elements               | `getElementsBy*` live collections confuse |
 
 **Examples:**
 
 ```js
-document.getElementById('app');
-document.getElementsByClassName('card');
-document.querySelector('.card.active');
-document.querySelectorAll('li');
+document.getElementById("app");
+document.getElementsByClassName("card");
+document.querySelector(".card.active");
+document.querySelectorAll("li");
 ```
 
-**`querySelector` vs `getElementsBy*`:** `querySelector(All)` работает с любым элементом и принимает полные селекторы CSS; `getElementsBy*` только ищет потомков и возвращает живые коллекции.
+**`querySelector` vs `getElementsBy*`:** `querySelector(All)` works on any element and accepts full CSS selectors; `getElementsBy*` only searches descendants and returns live collections.
+
+**Sources:** [javascript.info/searching-elements-dom](https://javascript.info/searching-elements-dom)
 
 </details>
-	
 
 <details>
-  <summary>BOM</summary>
+  <summary>Node properties</summary>
 
-### BOM
+### Node properties
 
-**Definition:** Объектная модель браузера — объекты, предоставляемые браузером **вне** документа: `window`, `location`, `navigator`, `history`, `screen`, таймеры.
+**Definition:** Every DOM node exposes **type**, **name/tag**, and **contents** through standard properties — how you read what a node is without serializing it.
 
 **How it works:**
 
-- `window` является глобальным объектом в браузерах; `document`, `location`, `history`, `navigator` являются свойствами.
-- API-интерфейсы BOM зависят от браузера (не входят в спецификацию ECMAScript); DOM является отдельным, но доступ к нему осуществляется через `window.document`.
+| Property                  | Role                                                                       |
+| ------------------------- | -------------------------------------------------------------------------- |
+| `nodeType`                | Numeric kind (`1` element, `3` text, `9` document, …)                      |
+| `nodeName`                | Tag name for elements (HTML: uppercase, e.g. `"DIV"`)                      |
+| `tagName`                 | Same as `nodeName` for elements only                                       |
+| `textContent`             | Concatenated text of node + descendants                                    |
+| `innerHTML` / `outerHTML` | HTML serialization (see [innerHTML vs outerHTML](#innerhtml-vs-outerhtml)) |
 
-| Объект | Цель |
-|--------|---------|
-| `window` | Глобальная область видимости, диалоговые окна, размер области просмотра |
-| `location` | Текущий URL, перенаправление |
-| `navigator` | Информация о браузере/ОС (`userAgent`) |
-| `history` | Навигация назад/вперед |
-| `screen` | Размеры экрана |
+| API                               | Returns                           |
+| --------------------------------- | --------------------------------- |
+| `children` / `nextElementSibling` | elements only                     |
+| `childNodes` / `nextSibling`      | all nodes (often whitespace text) |
 
 **When to use:**
 
-Перенаправление через `location.href`; читать `navigator.userAgent` (функция лучше обнаруживает); `history.pushState` для СПА.
+Branch on `nodeType`; read tag via `tagName`; set plain text with `textContent` (not `innerHTML` for user strings).
 
 #### Common pitfalls
 
-Рассматривать спецификацию как часть ECMAScript; `window.open` заблокирован блокировщиками всплывающих окон; `navigator` поля можно подделать.
-
-**Pluses and minuses:**
-
-| + | − |
-|------|------|
-| Единый `window` точка входа | Недоступно в узле (различные глобальные переменные) |
-| `location` для навигации | Прямой `location` задание полная перезагрузка страницы |
-| `history` для маршрутизации SPA | Ограничения по размеру государства в истории |
+Using `node.toString()` instead of `tagName`; `childNodes` includes whitespace; `innerHTML` on user input (XSS).
 
 **Examples:**
 
 ```js
-location.href = 'https://example.com';
-navigator.userAgent;
-history.back();
+const app = document.getElementById("app");
+app.children[0].tagName; // "P"
+app.firstChild?.nodeType === Node.TEXT_NODE;
+app.textContent = "Safe label";
 ```
 
-**Sources:** [javascript.info/browser-environment](https://javascript.info/browser-environment)
+**See also:** [Attributes and properties](#attributes-and-properties) · [DOM tree](#dom-tree)
 
-<a name="dom-vs-bom"></a>
+**Sources:** [javascript.info/basic-dom-node-properties](https://javascript.info/basic-dom-node-properties)
 
-### DOM vs BOM
+</details>
 
+<details>
+  <summary>Attributes and properties</summary>
 
-| | ДОМ | спецификация |
-| | --- | ----- |
-| | **Объем** | Содержание документа (страница) | Среда браузера |
-| | **Точка входа** | `document` | `window` |
-| | **Примеры** | `querySelector`, `createElement` | `location`, `navigator`, `alert()` |
-| | **Спецификация** | Спецификация DOM (работает и вне браузеров) | Спецификация HTML (только для браузера) |
+### Attributes and properties
+
+**Definition:** HTML **attributes** (markup) and JS **properties** (object fields) usually mirror each other for standard elements, but they are not always the same value or type.
+
+**How it works:**
+
+|      | Attribute (`getAttribute`)  | Property (e.g. `el.id`)                                                      |
+| ---- | --------------------------- | ---------------------------------------------------------------------------- |
+| Type | always string               | typed (`checked` → boolean, `style` → object)                                |
+| Name | case-insensitive            | case-sensitive                                                               |
+| Sync | most standard attrs ↔ props | exceptions: `input.value` updates property from attr, not attr from property |
+
+- Non-standard attrs → no property; use `getAttribute` / `setAttribute`, or `data-*` → `elem.dataset`.
+- `href` attribute = as written; `.href` = absolute URL.
+- Prefer DOM properties for normal work; attributes when you need the HTML-as-written value or `data-*`.
+
+**When to use:**
+
+Toggle `checked` / read `value` via properties; persist custom metadata with `data-*` / `dataset`; reflect ARIA in attributes when needed.
+
+#### Common pitfalls
+
+`getAttribute('checked')` vs `input.checked`; expecting attribute write after changing `.value`; `dataset` values are always strings.
+
+**Examples:**
+
+```js
+const box = document.querySelector("input[type=checkbox]");
+box.checked = false;
+box.getAttribute("checked"); // still "checked" if it was in HTML
+
+el.dataset.userId = "42"; // data-user-id="42"
+```
+
+**See also:** [Searching elements](#searching-elements) · [Changing the DOM](#changing-the-dom)
+
+**Sources:** [javascript.info/dom-attributes-and-properties](https://javascript.info/dom-attributes-and-properties)
 
 </details>
 
@@ -545,77 +538,57 @@ history.back();
 
 ### Changing the DOM
 
-**Definition:** Создавайте, вставляйте, изменяйте и удаляйте узлы для динамического обновления страницы.
+**Definition:** Create, insert, modify, and remove nodes to update the page dynamically.
 
 **How it works:**
 
-- `createElement` / `createTextNode` строить узлы; вставить через `append`, `before`, `after`, `replaceWith`.
-- При перемещении существующего узла он удаляется из старого родительского правила — правила единственного родителя.
-- `innerHTML` анализирует HTML-строку; `textContent` экранируется и безопасен для текста.
+- `createElement` / `createTextNode` build nodes; insert via `append`, `before`, `after`, `replaceWith`.
+- Moving existing node removes it from old parent — single parent rule.
+- `innerHTML` parses HTML string; `textContent` escapes and is safe for text.
 
-добавление существующего узла **перемещает** его (не копирует).
+appending an existing node **moves** it (doesn't copy).
 
 #### Legacy methods (old code)
 
-`appendChild`, `removeChild`, `insertBefore`, `replaceChild` — все еще работают, но предпочитают современные методы, описанные выше.
+`appendChild`, `removeChild`, `insertBefore`, `replaceChild` — still work but prefer modern methods above.
 
-#### Changing appearance (styles & classes)
-
-Предпочитайте **классы CSS** встроенным стилям. Использовать `style` только для значений, вычисленных во время выполнения (например, координат).
-
-| API | Роль |
-|-----|------|
-| `className` | весь `class` строка (заменяет все) |
-| `classList.add/remove/toggle/contains` | по одному занятию |
-| `elem.style.prop` | только встроенный стиль (camelCase: `backgroundColor`) |
-| `elem.style.cssText` | переписать всю строку встроенного стиля |
-| `getComputedStyle(elem)` | разрешенные стили после каскада (только для чтения; геометрия обычно в `px`) |
-
-```js
-el.classList.add('active');
-el.classList.toggle('hidden');
-el.style.left = `${x}px`;          // need units
-el.style.display = '';             // clear inline → CSS classes apply again
-getComputedStyle(el).marginTop;    // not available via el.style if set in CSS
-```
-
-`hasAttribute`, `getAttribute`, `setAttribute`, `removeAttribute`.
+`hasAttribute`, `getAttribute`, `setAttribute`, `removeAttribute` — see [Attributes and properties](#attributes-and-properties).
 
 **When to use:**
 
-Создание элементов списка; заменить баннер; продезинфицировать тогда `textContent` для пользовательского текста.
+Build list items; replace banner; sanitize then `textContent` for user text.
 
 #### Common pitfalls
 
-`innerHTML` с пользовательскими строками; добавление в цикл вызывает N перекомпоновок (используйте `DocumentFragment`); `appendChild` то же самое, что перемещать, а не копировать.
+`innerHTML` with user strings; appending in loop causes N reflows (use `DocumentFragment`); `appendChild` same as move not copy.
 
 #### Creating nodes
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Современные методы вставки читаемы | Много перекомпоновок при вставке по одному |
-| `replaceWith` атомный своп | `innerHTML` XSS, если ему не доверяют |
-| `cloneNode(true)` глубокая копия | Перемещенные узлы оставляют старые ссылки устаревшими |
+| +                              | −                                      |
+| ------------------------------ | -------------------------------------- |
+| Modern insert methods readable | Many reflows if inserting one-by-one   |
+| `replaceWith` atomic swap      | `innerHTML` XSS if untrusted           |
+| `cloneNode(true)` deep copy    | Moved nodes leave old references stale |
 
 **Examples:**
 
 ```js
-const div = document.createElement('div');
-const text = document.createTextNode('Hello');
-const comment = document.createComment('note');
+const div = document.createElement("div");
+const text = document.createTextNode("Hello");
+const comment = document.createComment("note");
 ```
 
 #### Inserting nodes
 
-| Метод | Вставки |
-|--------|---------|
-| `append(...nodes)` | после последнего ребенка |
-| `prepend(...nodes)` | до появления первого ребенка |
-| `before(...nodes)` | перед элементом |
-| `after(...nodes)` | после элемента |
-| `replaceWith(...nodes)` | заменяет элемент |
+| Method                  | Inserts              |
+| ----------------------- | -------------------- |
+| `append(...nodes)`      | after last child     |
+| `prepend(...nodes)`     | before first child   |
+| `before(...nodes)`      | before the element   |
+| `after(...nodes)`       | after the element    |
+| `replaceWith(...nodes)` | replaces the element |
 
 ```js
 parent.append(newLi);
@@ -626,26 +599,248 @@ item.after(footer);
 
 #### Inserting HTML
 
-| Метод | Разбирает HTML? | XSS-риск |
-|--------|-------------|----------|
-| `textContent` | нет (безопасный текст) | низкий |
-| `innerHTML` | да | высокий — очистка пользовательского ввода |
-| `insertAdjacentHTML(where, html)` | да | высокий |
+| Method                            | Parses HTML?   | XSS risk                   |
+| --------------------------------- | -------------- | -------------------------- |
+| `textContent`                     | no (safe text) | low                        |
+| `innerHTML`                       | yes            | high — sanitize user input |
+| `insertAdjacentHTML(where, html)` | yes            | high                       |
 
 ```js
-el.textContent = 'Safe text';
-el.innerHTML = '<strong>Bold</strong>'; // only trusted HTML
-el.insertAdjacentHTML('beforeend', '<li>Item</li>');
+el.textContent = "Safe text";
+el.innerHTML = "<strong>Bold</strong>"; // only trusted HTML
+el.insertAdjacentHTML("beforeend", "<li>Item</li>");
 ```
 
 #### Removing & cloning
 
 ```js
-node.remove();              // remove from DOM
-node.cloneNode(true);       // deep clone (with children)
+node.remove(); // remove from DOM
+node.cloneNode(true); // deep clone (with children)
 ```
 
-**Sources:** [javascript.info/modifying-document](https://javascript.info/modifying-document) · [javascript.info/styles-and-classes](https://javascript.info/styles-and-classes)
+**Sources:** [javascript.info/modifying-document](https://javascript.info/modifying-document)
+
+</details>
+
+<details>
+  <summary>Styles and classes</summary>
+
+### Styles and classes
+
+**Definition:** Change how elements look via **CSS classes** (preferred) or **inline** `style`, and read resolved styles with `getComputedStyle`.
+
+**How it works:**
+
+Prefer **CSS classes** over inline styles. Use `style` only for values computed at runtime (e.g. coordinates).
+
+| API                                    | Role                                                                |
+| -------------------------------------- | ------------------------------------------------------------------- |
+| `className`                            | whole `class` string (replaces all)                                 |
+| `classList.add/remove/toggle/contains` | one class at a time                                                 |
+| `elem.style.prop`                      | inline style only (camelCase: `backgroundColor`)                    |
+| `elem.style.cssText`                   | rewrite entire inline style string                                  |
+| `getComputedStyle(elem)`               | resolved styles after cascade (read-only; geometry usually in `px`) |
+
+**When to use:**
+
+Toggle UI state with `classList`; position overlays with inline `left`/`top`; read computed margin/size when CSS sets the value.
+
+#### Common pitfalls
+
+Setting `style.display` and forgetting to clear it; reading geometry from `el.style` when the rule lives in a stylesheet.
+
+**Examples:**
+
+```js
+el.classList.add("active");
+el.classList.toggle("hidden");
+el.style.left = `${x}px`;
+el.style.display = "";
+getComputedStyle(el).marginTop;
+```
+
+**See also:** [Element size and scroll](#element-size-and-scroll) · [Coordinates](#coordinates)
+
+**Sources:** [javascript.info/styles-and-classes](https://javascript.info/styles-and-classes)
+
+</details>
+
+<details>
+  <summary>Element size and scroll</summary>
+
+### Element size and scroll
+
+**Definition:** DOM elements expose `offsetWidth`, `clientWidth`, `scrollWidth`, and related properties for layout size and scrollable overflow.
+
+**How it works:**
+
+- `offset*` includes border; `client*` content + padding, no border/scrollbar; `scroll*` full scrollable size.
+- `getBoundingClientRect()` returns a viewport-relative box; add `scrollY` for document coordinates.
+- `scrollIntoView()` scrolls ancestors to reveal the element.
+
+| Property family | Includes border | Includes scrollbar | Content only         |
+| --------------- | --------------- | ------------------ | -------------------- |
+| `offset*`       | yes             | no                 | no                   |
+| `client*`       | no              | no                 | no                   |
+| `scroll*`       | —               | —                  | full scrollable area |
+
+**When to use:**
+
+Sticky header offset; infinite scroll near bottom; tooltip positioning; scroll-to-section.
+
+#### Common pitfalls
+
+Reading layout in a write loop (thrashing); `offsetHeight` includes border, `clientHeight` does not; rect changes on scroll without re-read.
+
+**Examples:**
+
+```js
+const el = document.querySelector(".panel");
+const rect = el.getBoundingClientRect();
+const belowFold = rect.top > window.innerHeight;
+el.scrollIntoView({ behavior: "smooth", block: "start" });
+```
+
+**See also:** [Window size and scroll](#window-size-and-scroll) · [Coordinates](#coordinates)
+
+**Sources:** [javascript.info/size-and-scroll](https://javascript.info/size-and-scroll)
+
+</details>
+
+<details>
+  <summary>Window size and scroll</summary>
+
+### Window size and scroll
+
+**Definition:** The viewport and document expose sizes and scroll position via `window` and `document.documentElement` / `document.body`.
+
+**How it works:**
+
+- Prefer `document.documentElement.clientWidth/Height` for the content area (excludes scrollbar). `window.innerWidth` includes the scrollbar.
+- Full document height is unreliable on one property — use `Math.max` of `body` / `documentElement` scroll/offset/client heights.
+- Read scroll with `window.scrollY` / `scrollX` (aliases `pageYOffset` / `pageXOffset`).
+- Scroll with `scrollTo` / `scrollBy` / `elem.scrollIntoView`.
+
+**When to use:**
+
+Parallax, scroll restoration, “back to top”, detecting scroll past a threshold.
+
+#### Common pitfalls
+
+Using `window.innerHeight` vs `clientHeight` interchangeably; assuming `document.height` exists.
+
+**Examples:**
+
+```js
+const scrolled = window.scrollY;
+window.scrollTo({ top: 0, behavior: "smooth" });
+const viewportH = document.documentElement.clientHeight;
+```
+
+**See also:** [Element size and scroll](#element-size-and-scroll) · [Coordinates](#coordinates)
+
+**Sources:** [javascript.info/size-and-scroll-window](https://javascript.info/size-and-scroll-window)
+
+</details>
+
+<details>
+  <summary>Coordinates</summary>
+
+### Coordinates
+
+**Definition:** Pointer and element positions use **viewport** coords (`clientX`, `getBoundingClientRect`) or **document** coords (`pageX`, scroll-adjusted rects).
+
+**How it works:**
+
+- Mouse events: `clientX/Y` viewport; `pageX/Y` = client + scroll offset.
+- `getBoundingClientRect()` gives element box vs viewport.
+- `document.elementFromPoint(x, y)` — topmost element at a viewport point.
+
+| Method                         | Coordinate system            |
+| ------------------------------ | ---------------------------- |
+| `getBoundingClientRect()`      | Viewport (changes on scroll) |
+| `clientX` / `clientY` (events) | Viewport                     |
+| `pageX` / `pageY`              | Document (includes scroll)   |
+
+Convert viewport → document: add `window.scrollY` / `scrollX` to `getBoundingClientRect()` edges.
+
+**When to use:**
+
+Drag-drop; canvas hit testing; tooltips at the cursor.
+
+#### Common pitfalls
+
+Using client coords for document-positioned elements without scroll; ignoring `transform` on parent; touch `touches[0]` vs `changedTouches`.
+
+**Examples:**
+
+```js
+document.addEventListener("click", (e) => {
+  console.log("viewport:", e.clientX, e.clientY);
+  console.log("document:", e.pageX, e.pageY);
+});
+```
+
+**Sources:** [javascript.info/coordinates](https://javascript.info/coordinates)
+
+</details>
+
+<details>
+  <summary>BOM</summary>
+
+### BOM
+
+**Definition:** Browser Object Model — browser-provided objects **outside** the document: `window`, `location`, `navigator`, `history`, `screen`, timers.
+
+**How it works:**
+
+- `window` is global object in browsers; `document`, `location`, `history`, `navigator` are properties.
+- BOM APIs are browser-specific (not in ECMAScript spec); DOM is separate but accessed via `window.document`.
+
+| Object      | Purpose                              |
+| ----------- | ------------------------------------ |
+| `window`    | Global scope, dialogs, viewport size |
+| `location`  | Current URL, redirect                |
+| `navigator` | Browser/OS info (`userAgent`)        |
+| `history`   | Back/forward navigation              |
+| `screen`    | Screen dimensions                    |
+
+**When to use:**
+
+Redirect via `location.href`; read `navigator.userAgent` (feature detect better); `history.pushState` for SPA.
+
+#### Common pitfalls
+
+Treating BOM as part of ECMAScript; `window.open` blocked by pop-up blockers; `navigator` fields spoofable.
+
+**Pluses and minuses:**
+
+| +                            | −                                             |
+| ---------------------------- | --------------------------------------------- |
+| Unified `window` entry point | Not available in Node (different globals)     |
+| `location` for navigation    | Direct `location` assignment full page reload |
+| `history` for SPA routing    | History state size limits                     |
+
+**Examples:**
+
+```js
+location.href = "https://example.com";
+navigator.userAgent;
+history.back();
+```
+
+**See also:** [Browser environment](#browser-environment)
+
+<a name="dom-vs-bom"></a>
+
+### DOM vs BOM
+
+|                 | DOM                                   | BOM                                |
+| --------------- | ------------------------------------- | ---------------------------------- |
+| **Scope**       | Document content (page)               | Browser environment                |
+| **Entry point** | `document`                            | `window`                           |
+| **Examples**    | `querySelector`, `createElement`      | `location`, `navigator`, `alert()` |
+| **Spec**        | DOM spec (works outside browsers too) | HTML spec (browser-only)           |
 
 </details>
 
@@ -662,7 +857,6 @@ node.cloneNode(true);       // deep clone (with children)
 - Использование элементов управления формой `.value` имущество (живое состояние), не `innerHTML`.
 - `requestSubmit()` запускает событие отправки и запускает проверку; `submit()` нет.
 
-
 | | `textContent` | `innerText` |
 | | --- | --------------- |
 | | **Возврат** | Весь текст (в т.ч. скрытый) | Только видимый текст |
@@ -674,45 +868,32 @@ node.cloneNode(true);       // deep clone (with children)
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| `textContent` быстро и предсказуемо | `innerText` медленнее |
-| `.value` исправить входные данные | Блокировка диалогов замораживает пользовательский интерфейс |
-| `requestSubmit()` правильная проверка | `alert` не стилизован |
+| +                                     | −                                                           |
+| ------------------------------------- | ----------------------------------------------------------- |
+| `textContent` быстро и предсказуемо   | `innerText` медленнее                                       |
+| `.value` исправить входные данные     | Блокировка диалогов замораживает пользовательский интерфейс |
+| `requestSubmit()` правильная проверка | `alert` не стилизован                                       |
 
 **Examples:**
 
 ```js
-el.textContent = 'Hello'; // preferred for setting text
+el.textContent = "Hello"; // preferred for setting text
 ```
 
 ### Forms
 
-Использовать `.value` для входов — **нет** `innerHTML` (особенно `<textarea>`). Перейдите через `document.forms[name]` и `form.elements[name]`; каждый элемент управления имеет `.form` вернемся к форме.
+Form controls, focus, value events, and submit are covered in [Events — Forms](./3_js_events.md#form-properties-and-methods).
 
-```js
-const form = document.forms.my;     // or document.forms[0]
-form.elements.login.value;
-input.value;       // current value (property)
-textarea.value;    // not textarea.innerHTML
-form.requestSubmit(); // triggers validation + submit event
-form.submit();        // sends without submit event / validation
-```
+**See also:** [Form properties and methods](./3_js_events.md#form-properties-and-methods) · [Focus and blur](./3_js_events.md#focus-and-blur) · [change, input, and clipboard events](./3_js_events.md#change-input-and-clipboard-events) · [Form submit](./3_js_events.md#form-submit)
 
-`<select>`: `select.value`, `select.selectedIndex`, or `option.selected`. Создавайте варианты с `new Option(text, value, defaultSelected, selected)`.
-
-**Focus:** `focus` / `blur` не всплывать — используйте захват или всплеск `focusin` / `focusout`. Большинству элементов требуется `tabindex` быть сосредоточенным (`0` = естественный порядок табуляции, `-1` = только программные). Текущий фокус: `document.activeElement`.
-
-**Value events:** `input` срабатывает при каждом изменении (набор текста, вставка, речь); `change` срабатывает при завершении редактирования (размытие текста; немедленно для флажка/выбора). `cut` / `copy` / `paste` являются `ClipboardEvent`с - может `preventDefault()`.
-
-**Sources:** [javascript.info/alert-prompt-confirm](https://javascript.info/alert-prompt-confirm) · [javascript.info/form-elements](https://javascript.info/form-elements) · [javascript.info/focus-blur](https://javascript.info/focus-blur) · [javascript.info/events-change-input](https://javascript.info/events-change-input) · [javascript.info/forms-submit](https://javascript.info/forms-submit)
+**Sources:** [javascript.info/alert-prompt-confirm](https://javascript.info/alert-prompt-confirm)
 
 ### Dialog popups
 
-| Метод | Возврат |
-|--------|---------|
-| `alert(msg)` | `undefined` |
-| `confirm(msg)` | `true` / `false` |
+| Метод                  | Возврат           |
+| ---------------------- | ----------------- |
+| `alert(msg)`           | `undefined`       |
+| `confirm(msg)`         | `true` / `false`  |
 | `prompt(msg, default)` | строка или `null` |
 
 Все три являются **модальными**: они приостанавливают выполнение скрипта и блокируют остальную часть страницы до тех пор, пока она не будет закрыта. Внешний вид и положение контролируются браузером.
@@ -744,7 +925,6 @@ form.submit();        // sends without submit event / validation
 
 #### MutationObserver vs ResizeObserver
 
-
 | | Мутационный наблюдатель | Изменить размерObserver |
 | | --- | ------------------ |
 | | **Часы** | Изменения в дереве DOM (узлы, атрибуты, текст) | Изменение размера элемента |
@@ -759,11 +939,11 @@ form.submit();        // sends without submit event / validation
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Реакция на изменения DOM сторонних разработчиков | Может стрелять очень часто |
-| Асинхронная пакетная обработка — не синхронная | Узкие возможности или страдает производительность |
-| Опрос не требуется | Не для изменения размера — используйте ResizeObserver |
+| +                                                | −                                                     |
+| ------------------------------------------------ | ----------------------------------------------------- |
+| Реакция на изменения DOM сторонних разработчиков | Может стрелять очень часто                            |
+| Асинхронная пакетная обработка — не синхронная   | Узкие возможности или страдает производительность     |
+| Опрос не требуется                               | Не для изменения размера — используйте ResizeObserver |
 
 **Examples:**
 
@@ -774,7 +954,7 @@ const observer = new MutationObserver((mutations) => {
   }
 });
 
-observer.observe(document.querySelector('#app'), {
+observer.observe(document.querySelector("#app"), {
   childList: true,
   attributes: true,
   subtree: true,
@@ -799,7 +979,6 @@ observer.disconnect(); // cleanup when done
 - Формы используют собственные элементы управления + API проверки; submit перемещается или перехватывается с помощью `preventDefault` + принести.
 - Модальные окна ловят фокус, блокируют фоновое взаимодействие; родной `<dialog>.showModal()` или собственный шаблон наложения.
 
-
 | | Форма | Модальный |
 | | --- | ------ |
 | | **Цель** | Собрать и отправить данные | Прерывание рабочего процесса для действия/информации |
@@ -816,25 +995,25 @@ observer.disconnect(); // cleanup when done
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Семантический HTML, доступный | Чрезмерное использование модальных окон вредит UX |
-| Собственная проверка | Пользовательские модальные окна требуют тщательной работы |
-| Подходит для многопольных рабочих процессов | Формы тяжелые для одиноких да/нет |
+| +                                           | −                                                         |
+| ------------------------------------------- | --------------------------------------------------------- |
+| Семантический HTML, доступный               | Чрезмерное использование модальных окон вредит UX         |
+| Собственная проверка                        | Пользовательские модальные окна требуют тщательной работы |
+| Подходит для многопольных рабочих процессов | Формы тяжелые для одиноких да/нет                         |
 
 **Examples:**
 
 ```js
 // Form submit via fetch
-form.addEventListener('submit', async (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  await fetch('/api/signup', { method: 'POST', body: new FormData(form) });
+  await fetch("/api/signup", { method: "POST", body: new FormData(form) });
 });
 
 // Native dialog
-const dlg = document.querySelector('dialog');
+const dlg = document.querySelector("dialog");
 dlg.showModal();
-dlg.close('confirmed');
+dlg.close("confirmed");
 ```
 
 **Sources:** [форма против модального](https://thecontentauthority.com/blog/form-vs-modal)

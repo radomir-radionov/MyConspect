@@ -6,7 +6,7 @@ OOP pillars and the five SOLID principles for modules and APIs.
 
 ### Related docs
 
-- [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md) · [JS OOP](./3_js_oop.md)
+- [System design — Core](./0_system_design_core.md) · [System design — Architecture](./0_system_design_architecture.md) · [Architecture patterns](./7_special_architecture.md) · [System design — Data](./0_system_design_data.md) · [SOLID](./7_special_engineering.md) · [DRY, KISS, YAGNI](./0_system_design_principles.md) · [GRASP](./0_system_design_grasp.md) · [Design patterns](./7_special_patterns.md) · [System design — Interview](./0_system_design_interview.md) · [Objects](./3_js_objects.md) · [Classes](./3_js_classes.md)
 
 ### Sections
 
@@ -19,7 +19,7 @@ OOP pillars and the five SOLID principles for modules and APIs.
 
 ### Object-Oriented Programming (OOP)
 
-**Definition:** OOP is a programming paradigm that models programs as **objects** — live instances built from a **class** (blueprint). Each object bundles **state** (fields) and **behavior** (methods). OOP is based on four key concepts — encapsulation, inheritance, polymorphism, abstraction. In JavaScript, `class` is syntactic sugar over prototypes — see [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+**Definition:** OOP is a programming paradigm that models programs as **objects** — live instances built from a **class** (blueprint). Each object bundles **state** (fields) and **behavior** (methods). OOP is based on four key concepts — encapsulation, inheritance, polymorphism, abstraction. In JavaScript, `class` is syntactic sugar over prototypes — see [OOP in JavaScript](./3_js_objects.md#oop-in-javascript).
 
 **How it works:**
 
@@ -40,7 +40,7 @@ Four **pillars** explain how objects cooperate:
 
 Focused essays: [Encapsulation](#encapsulation) · [Inheritance](#inheritance) · [Polymorphism](#polymorphism) · [Abstraction](#abstraction).
 
-JS code (`#` fields, `extends`/`super()`, `speak()` polymorphism, `video.play()`): [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+JS code (`#` fields, `extends`/`super()`, `speak()` polymorphism, `video.play()`): [OOP in JavaScript](./3_js_objects.md#oop-in-javascript).
 
 **Composition vs inheritance:** a smart kettle with a timer is **has-a** (`this.kettle`, `this.timer`), not **is-a** teapot _and_ timer. JavaScript allows only single `extends` — when “both parent types” apply, compose objects instead.
 
@@ -54,9 +54,9 @@ JS code (`#` fields, `extends`/`super()`, `speak()` polymorphism, `video.play()`
 | UML, ER, DFD grew around object thinking                | Shallow “is-a” trees rarely match real “has both” objects                               |
 | Well-studied patterns and failure modes                 | Deep hierarchies become hard to change (fragile base class)                             |
 
-**Thoughts:** This page covers **what** OOP is and **when** to use it; JS syntax and pillar code examples live in [OOP in JavaScript](./3_js_oop.md#oop-in-javascript). Encapsulation does not fix concurrent edits (two users, one doc) — you still need OT/CRDT or locks. Good code is a **map of the territory**; OOP helps when entities and messages stay aligned with that map.
+**Thoughts:** This page covers **what** OOP is and **when** to use it; JS syntax and pillar code examples live in [OOP in JavaScript](./3_js_objects.md#oop-in-javascript). Encapsulation does not fix concurrent edits (two users, one doc) — you still need OT/CRDT or locks. Good code is a **map of the territory**; OOP helps when entities and messages stay aligned with that map.
 
-**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/) · [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript) · [Classes (TypeScript)](./5_ts_classes.md)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [Doka — programming paradigms](https://doka.guide/tools/programming-paradigms/) · [MDN — Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [OOP in JavaScript](./3_js_objects.md#oop-in-javascript) · [Classes (TypeScript)](./5_ts_classes.md)
 
 ---
 
@@ -73,7 +73,7 @@ JS code (`#` fields, `extends`/`super()`, `speak()` polymorphism, `video.play()`
 
 - **Object level:** data and the only legal ways to change it live inside one object — callers call `deposit()`, not `account.balance = -100`.
 - **Module level:** a `History` class hides how records are stored; callers use `addRecord()`, not `history.records.push(...)`. Change storage later without rewriting every caller.
-- **In JS:** `#` creates fully private fields; closures and ES modules also hide internals. See [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+- **In JS:** `#` creates fully private fields; closures and ES modules also hide internals. See [OOP in JavaScript](./3_js_objects.md#oop-in-javascript).
 
 **When to use:** Domain objects with invariants (balance, permissions, cart totals). Any type with more than one instance — prefer methods over public arrays/maps.
 
@@ -120,7 +120,7 @@ console.log(account.getBalance()); // 100
 
 **Thoughts:** `public` fields in TS/JS are convention-only unless `#` or closures enforce privacy. Chrome DevTools can read `#` in the console for debugging — that is **not** app-code access.
 
-**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [MDN — Private elements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements) · [OOP in JavaScript](./3_js_objects.md#oop-in-javascript)
 
 ---
 
@@ -137,7 +137,7 @@ console.log(account.getBalance()); // 100
 
 - Inheritance is **is-a**: every `Manager` _is_ an `Employee`.
 - If something is both a kettle and a timer — prefer **has-a** (composition), not two parents.
-- In JavaScript: `extends` links prototypes; `super()` calls the parent constructor or method. See [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+- In JavaScript: `extends` links prototypes; `super()` calls the parent constructor or method. See [OOP in JavaScript](./3_js_objects.md#oop-in-javascript).
 
 **When to use:** True **is-a** relationships with stable base behavior. Prefer shallow hierarchies (≤2 levels).
 
@@ -193,11 +193,11 @@ console.log(bob.name); // inherited from Employee
 console.log(bob.department); // Manager-only field
 ```
 
-Polymorphism (`staff.map(e => e.getRole())`) — see [Polymorphism](#polymorphism). JS `Dog extends Animal` with `super()`: [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+Polymorphism (`staff.map(e => e.getRole())`) — see [Polymorphism](#polymorphism). JS `Dog extends Animal` with `super()`: [OOP in JavaScript](./3_js_objects.md#oop-in-javascript).
 
 **Thoughts:** Favor composition when behavior varies by combination, not taxonomy. "Prefer composition over inheritance" — Gang of Four.
 
-**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [OOP in JavaScript](./3_js_objects.md#oop-in-javascript)
 
 ---
 
@@ -221,7 +221,7 @@ Polymorphism (`staff.map(e => e.getRole())`) — see [Polymorphism](#polymorphis
 
 - One call site — different behavior per object: `animals.forEach(a => a.speak())`.
 - Code against a **shared contract** (`speak()`, `send()`, `render()`), not `if (type === "dog")`.
-- **In JS:** no `interface` at runtime — duck typing, JSDoc, or TypeScript. Full examples: [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+- **In JS:** no `interface` at runtime — duck typing, JSDoc, or TypeScript. Full examples: [OOP in JavaScript](./3_js_objects.md#oop-in-javascript).
 
 **When to use:** Strategy-like swaps; plugin/notifier lists; rendering different component types from one array; any time a `switch` on type keeps growing.
 
@@ -277,7 +277,7 @@ animals.forEach((animal) => animal.speak());
 
 **Thoughts:** Prefer a real `interface` in TS when variants diverge in behavior. Subtype polymorphism needs a sensible parent — see [Inheritance](#inheritance). Composition + contract is often safer than deep trees.
 
-**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [OOP in JavaScript](./3_js_objects.md#oop-in-javascript)
 
 ---
 
@@ -295,7 +295,7 @@ animals.forEach((animal) => animal.speak());
 - Callers use a **small, stable API** — they ask _what_ (`play()`, `charge()`, `getUser()`), not _how_ (decode stream, Stripe HTTP, SQL queries).
 - Internals can change (PayPal instead of Stripe, IndexedDB instead of `localStorage`) while the public API stays the same.
 - Too **few** layers leak complexity; too **many** obscure the flow — both hurt.
-- **In JS:** no built-in `interface` at runtime — classes, modules, or functions hide details. See [OOP in JavaScript](./3_js_oop.md#oop-in-javascript).
+- **In JS:** no built-in `interface` at runtime — classes, modules, or functions hide details. See [OOP in JavaScript](./3_js_objects.md#oop-in-javascript).
 
 **When to use:** APIs, repositories, storage adapters, payment providers, any boundary where callers should not depend on implementation.
 
@@ -339,7 +339,7 @@ video.play();
 
 **Thoughts:** `interface` in TS is compile-time abstraction. In JS, document contracts via JSDoc or tests. Do not confuse abstraction with encapsulation — encapsulation hides _state_; abstraction hides _how work is done_.
 
-**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [OOP in JavaScript](./3_js_oop.md#oop-in-javascript)
+**Sources:** [Doka — OOP](https://doka.guide/tools/oop/) · [OOP in JavaScript](./3_js_objects.md#oop-in-javascript)
 
 ---
 
@@ -420,7 +420,7 @@ const human = { ...cardio, ...immune };
 const worm = { ...cardio, ...immune }; // same features, no shared parent class
 ```
 
-**Thoughts:** React favors composition (`children`, render props, hooks). SOLID: OCP via composition; LSP applies to inheritance. Mixins/spread work but stay untyped without TS interfaces. See [Mixins](./3_js_oop.md).
+**Thoughts:** React favors composition (`children`, render props, hooks). SOLID: OCP via composition; LSP applies to inheritance. Mixins/spread work but stay untyped without TS interfaces. See [Mixins](./3_js_classes.md#mixins).
 
 **Sources:**
 
