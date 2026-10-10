@@ -141,6 +141,11 @@ const SUBJECTS_BASE: readonly Subject[] = [
       {
         id: "core",
         title: "Core",
+        blurb: "What HTML is, markup model, and the HTML/CSS/JS stack.",
+      },
+      {
+        id: "document",
+        title: "Document",
         blurb: "Structure, semantics, forms, and media.",
       },
       {
@@ -980,13 +985,22 @@ function grouped(
 
 const TOPICS_BASE: Topic[] = [
   grouped(
+    "html-core",
+    "1_html_core.md",
+    "Core",
+    "What HTML is, markup model, semantics principles, and the HTML/CSS/JS stack.",
+    "frontend",
+    "html",
+    "core",
+  ),
+  grouped(
     "html-structure",
     "1_html_structure.md",
     "Structure",
     "Document skeleton, metadata, elements, and attributes.",
     "frontend",
     "html",
-    "core",
+    "document",
   ),
   grouped(
     "html-semantics",
@@ -995,7 +1009,7 @@ const TOPICS_BASE: Topic[] = [
     "Landmarks, headings, lists, and phrasing elements that carry meaning.",
     "frontend",
     "html",
-    "core",
+    "document",
   ),
   grouped(
     "html-forms",
@@ -1004,7 +1018,7 @@ const TOPICS_BASE: Topic[] = [
     "Form controls, validation, dialog, and accessible form patterns.",
     "frontend",
     "html",
-    "core",
+    "document",
   ),
   grouped(
     "html-media",
@@ -1013,7 +1027,7 @@ const TOPICS_BASE: Topic[] = [
     "Images, picture, audio, video, canvas, and SVG.",
     "frontend",
     "html",
-    "core",
+    "document",
   ),
   grouped(
     "html-rendering",

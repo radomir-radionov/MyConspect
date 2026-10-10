@@ -97,6 +97,29 @@ describe("handbookNavSections layout", () => {
     assert.equal(reference?.collapsible, true);
   });
 
+  it("splits HTML Core principles from Document topics in the sidebar", () => {
+    const html = findSubject("html");
+    const rootClusterIds = html.clusters.map((cluster) => cluster.id);
+    assert.deepEqual(rootClusterIds.slice(0, 3), [
+      "core",
+      "document",
+      "browser",
+    ]);
+    const coreTopics = html.clusters
+      .find((cluster) => cluster.id === "core")
+      ?.topics.map((topic) => topic.slug);
+    const documentTopics = html.clusters
+      .find((cluster) => cluster.id === "document")
+      ?.topics.map((topic) => topic.slug);
+    assert.deepEqual(coreTopics, ["html-core"]);
+    assert.deepEqual(documentTopics, [
+      "html-structure",
+      "html-semantics",
+      "html-forms",
+      "html-media",
+    ]);
+  });
+
   it("marks HTML Reference as flat appendix nav", () => {
     const html = findSubject("html");
     const reference = html.sections?.find(
@@ -329,7 +352,7 @@ describe("handbookNavSections layout", () => {
     );
     assert.equal(
       sectionSwitchHref(sections, "/en/frontend/html-interview", "conspect"),
-      "/en/frontend/html-structure",
+      "/en/frontend/html-core",
     );
     assert.equal(
       sectionSwitchHref(sections, "/en/frontend", "interviews"),
@@ -345,7 +368,7 @@ describe("handbookNavSections layout", () => {
         "/en/frontend/html-interview-tasks",
         "conspect",
       ),
-      "/en/frontend/html-structure",
+      "/en/frontend/html-core",
     );
     assert.equal(
       sectionSwitchHref(sections, "/en/frontend/react-redux", "interviews"),

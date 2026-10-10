@@ -4,12 +4,13 @@ Document structure, browser rendering, forms, media, accessibility, UX/UI princi
 
 ### Related docs
 
-[HTML — Structure](./1_html_structure.md) · [HTML — Semantics](./1_html_semantics.md) · [HTML — Forms](./1_html_forms.md) · [HTML — Media](./1_html_media.md) · [HTML — Rendering](./1_html_rendering.md) · [HTML — Performance](./1_html_performance.md) · [HTML — Accessibility](./1_html_a11y.md) · [UX laws](./7_special_ux.md) · [UI principles](./7_special_ui.md) · [HTML — SEO](./1_html_seo.md) · [HTML — Advanced](./1_html_advanced.md) · [HTML — Interview](./1_html_interview.md)
+[HTML — Core](./1_html_core.md) · [HTML — Structure](./1_html_structure.md) · [HTML — Semantics](./1_html_semantics.md) · [HTML — Forms](./1_html_forms.md) · [HTML — Media](./1_html_media.md) · [HTML — Rendering](./1_html_rendering.md) · [HTML — Performance](./1_html_performance.md) · [HTML — Accessibility](./1_html_a11y.md) · [UX laws](./7_special_ux.md) · [UI principles](./7_special_ui.md) · [HTML — SEO](./1_html_seo.md) · [HTML — Advanced](./1_html_advanced.md) · [HTML — Interview](./1_html_interview.md)
 
 ### Navigation
 
 | Topic                                                             | Covers                                                                |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [HTML — Core](./1_html_core.md)                                   | What HTML is, markup model, semantics principles, HTML/CSS/JS layers. |
 | [HTML — Structure](./1_html_structure.md)                         | Document skeleton, metadata, elements, and attributes.                |
 | [HTML — Semantics](./1_html_semantics.md)                         | Landmarks, headings, lists, and phrasing elements that carry meaning. |
 | [HTML — Forms](./1_html_forms.md)                                 | Form controls, validation, dialog, and accessible form patterns.      |

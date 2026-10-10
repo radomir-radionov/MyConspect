@@ -6,7 +6,7 @@ Document skeleton, metadata, elements, and attributes.
 
 ### Related docs
 
-* [HTML — Structure](./1_html_structure.md) · [HTML — Semantics](./1_html_semantics.md) · [HTML — Forms](./1_html_forms.md) · [HTML — Media](./1_html_media.md) · [HTML — Rendering](./1_html_rendering.md) · [HTML — Performance](./1_html_performance.md) · [HTML — Accessibility](./1_html_a11y.md) · [HTML — SEO](./1_html_seo.md) · [HTML — Advanced](./1_html_advanced.md) · [HTML — Interview](./1_html_interview.md)
+- [HTML — Core](./1_html_core.md) · [HTML — Structure](./1_html_structure.md) · [HTML — Semantics](./1_html_semantics.md) · [HTML — Forms](./1_html_forms.md) · [HTML — Media](./1_html_media.md) · [HTML — Rendering](./1_html_rendering.md) · [HTML — Performance](./1_html_performance.md) · [HTML — Accessibility](./1_html_a11y.md) · [HTML — SEO](./1_html_seo.md) · [HTML — Advanced](./1_html_advanced.md) · [HTML — Interview](./1_html_interview.md)
 
 ### Sections
 
@@ -27,12 +27,12 @@ Document skeleton, metadata, elements, and attributes.
 
 A valid HTML5 document has a DOCTYPE, root `<html>` with `lang`, a `<head>` for metadata, and a `<body>` for visible content.
 
-| Part | Role |
-|------|------|
-| `<!DOCTYPE html>` | Triggers standards mode |
-| `<html lang>` | Root element; language for a11y/SEO |
-| `<head>` | Metadata, links — not page content |
-| `<body>` | Visible content |
+| Part              | Role                                |
+| ----------------- | ----------------------------------- |
+| `<!DOCTYPE html>` | Triggers standards mode             |
+| `<html lang>`     | Root element; language for a11y/SEO |
+| `<head>`          | Metadata, links — not page content  |
+| `<body>`          | Visible content                     |
 
 **How it works:**
 
@@ -53,10 +53,10 @@ Static site · SPA shell (`<div id="app">`) · AMP-like minimal docs.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
+| +                            | −                                    |
+| ---------------------------- | ------------------------------------ |
 | Valid skeleton aids a11y/SEO | Boilerplate easy to omit in snippets |
-| `lang` helps screen readers | Wrong `lang` hurts pronunciation |
+| `lang` helps screen readers  | Wrong `lang` hurts pronunciation     |
 
 **Examples:**
 
@@ -86,10 +86,10 @@ Static site · SPA shell (`<div id="app">`) · AMP-like minimal docs.
 
 The `<!DOCTYPE html>` declaration tells the browser to use HTML5 standards mode. Without it, browsers may enter quirks mode with inconsistent layout behavior.
 
-| Mode | Trigger | Effect |
-|------|---------|--------|
-| Standards | `<!DOCTYPE html>` | Spec-compliant layout |
-| Quirks | Missing/invalid DOCTYPE | Legacy IE emulation |
+| Mode      | Trigger                 | Effect                |
+| --------- | ----------------------- | --------------------- |
+| Standards | `<!DOCTYPE html>`       | Spec-compliant layout |
+| Quirks    | Missing/invalid DOCTYPE | Legacy IE emulation   |
 
 **How it works:**
 
@@ -97,10 +97,10 @@ The `<!DOCTYPE html>` declaration tells the browser to use HTML5 standards mode.
 - Triggers **standards mode** (no quirks).
 - Must be first line; no attributes.
 
-| Mode | Trigger | Effect |
-|------|---------|--------|
-| Standards | `<!DOCTYPE html>` | Spec-compliant layout |
-| Quirks | Missing/invalid DOCTYPE | Legacy box model bugs |
+| Mode      | Trigger                 | Effect                |
+| --------- | ----------------------- | --------------------- |
+| Standards | `<!DOCTYPE html>`       | Spec-compliant layout |
+| Quirks    | Missing/invalid DOCTYPE | Legacy box model bugs |
 
 **When to use:**
 
@@ -116,7 +116,9 @@ New HTML5 pages · legacy pages missing DOCTYPE (quirks).
 
 ```html
 <!DOCTYPE html>
-<html lang="en"><body></body></html>
+<html lang="en">
+  <body></body>
+</html>
 ```
 
 **Sources:** [MDN — DOCTYPE](https://developer.mozilla.org/en-US/docs/Glossary/Doctype)
@@ -128,15 +130,11 @@ New HTML5 pages · legacy pages missing DOCTYPE (quirks).
 
 ### HTML vs XML
 
-**Definition:** HTML is a **fixed** tag set for pages in a browser. XML is the same *kind* of markup, but **you name the tags** — it is a data/document syntax, not a UI language.
+**Definition:** HTML is a fixed web vocabulary; XML is a custom-tag syntax for data and documents.
 
-**How it works:** XML is strict (one root, closed tags, quoted attributes). HTML5 parsers recover from errors. `DOCTYPE` is HTML’s mode switch; XML’s optional `<?xml …?>` is encoding/version meta. Full syntax, namespaces, SVG `xmlns`: [6_web_api.md — XML](./6_web_api_rest.md#xml).
+**Key idea:** Full comparison and interview framing live in [HTML — Core](./1_html_core.md#html-vs-xml). XML syntax and namespaces: [Web API — XML](./6_web_api_rest.md#xml).
 
-**When to use:** Interview “how is XML not HTML?” · why a `.svg` file needs `xmlns` but inline SVG in HTML often does not.
-
-**Thoughts:** HTML displays; XML (and JSON) carry data.
-
-**Sources:** [MDN — XML introduction](https://developer.mozilla.org/en-US/docs/Web/XML/Guides/XML_introduction)
+**Sources:** [HTML — Core — HTML vs XML](./1_html_core.md#html-vs-xml)
 
 </details>
 
@@ -149,12 +147,12 @@ New HTML5 pages · legacy pages missing DOCTYPE (quirks).
 
 Meta elements live in `<head>` and provide document metadata — charset, viewport, description, and robots directives.
 
-| Meta | Purpose |
-|------|---------|
-| `charset` | Character encoding |
-| `viewport` | Mobile responsive scaling |
-| `description` | Search snippet text |
-| `robots` | Crawl/index directives |
+| Meta          | Purpose                   |
+| ------------- | ------------------------- |
+| `charset`     | Character encoding        |
+| `viewport`    | Mobile responsive scaling |
+| `description` | Search snippet text       |
+| `robots`      | Crawl/index directives    |
 
 **How it works:**
 
@@ -163,12 +161,12 @@ Meta elements live in `<head>` and provide document metadata — charset, viewpo
 - `viewport` required for mobile responsive layout.
 - `description`/`robots` affect search snippets and crawling.
 
-| Meta | Purpose |
-|------|--------|
-| `charset` | Character encoding |
-| `viewport` | Mobile scaling |
-| `description` | Search snippet |
-| `robots` | Crawl directives |
+| Meta          | Purpose            |
+| ------------- | ------------------ |
+| `charset`     | Character encoding |
+| `viewport`    | Mobile scaling     |
+| `description` | Search snippet     |
+| `robots`      | Crawl directives   |
 
 **When to use:**
 
@@ -206,23 +204,23 @@ Public pages (SEO meta) · `noindex` staging · `theme-color` PWA.
 - `canonical` — preferred URL for duplicate content (SEO).
 - `preconnect` — early DNS+TCP+TLS; `preload` — high-priority current-page fetch; `prefetch` — low-priority next navigation.
 
-| `rel` value | Purpose |
-|-------------|---------|
-| `stylesheet` | CSS |
-| `canonical` | Preferred URL for SEO |
-| `preconnect` | Early connection (DNS+TCP+TLS) |
-| `preload` | High-priority fetch for current page |
-| `prefetch` | Low-priority fetch for next navigation |
+| `rel` value  | Purpose                                |
+| ------------ | -------------------------------------- |
+| `stylesheet` | CSS                                    |
+| `canonical`  | Preferred URL for SEO                  |
+| `preconnect` | Early connection (DNS+TCP+TLS)         |
+| `preload`    | High-priority fetch for current page   |
+| `prefetch`   | Low-priority fetch for next navigation |
 
 **When to use:**
 
 Critical font preload · CDN preconnect · next-page prefetch.
 
-| `rel` | When |
-|------|------|
-| `stylesheet` | App CSS |
+| `rel`        | When               |
+| ------------ | ------------------ |
+| `stylesheet` | App CSS            |
 | `preconnect` | Third-party origin |
-| `preload` | LCP image/font |
+| `preload`    | LCP image/font     |
 
 #### Common pitfalls
 
@@ -236,8 +234,18 @@ Critical font preload · CDN preconnect · next-page prefetch.
 <link rel="stylesheet" href="/app.css" />
 <link rel="canonical" href="https://example.com/page" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preload" href="/hero.woff2" as="font" type="font/woff2" crossorigin />
-<script src="https://cdn.example.com/lib.js" integrity="sha384-..." crossorigin="anonymous"></script>
+<link
+  rel="preload"
+  href="/hero.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<script
+  src="https://cdn.example.com/lib.js"
+  integrity="sha384-..."
+  crossorigin="anonymous"
+></script>
 ```
 
 **Thoughts:** Why `preconnect` exists (TCP+TLS RTT) → [TCP vs UDP](./6_web_api_interview.md#tcp-vs-udp).
@@ -259,11 +267,11 @@ Critical font preload · CDN preconnect · next-page prefetch.
 - Provide PNG/SVG sizes; `apple-touch-icon` for iOS; manifest `icons` for PWA install prompts.
 - SVG favicons scale; PNG needs multiple sizes for retina.
 
-| `rel` | Purpose |
-|------|--------|
-| `icon` | Standard favicon |
-| `apple-touch-icon` | iOS home screen |
-| `mask-icon` | Safari pinned tab |
+| `rel`              | Purpose           |
+| ------------------ | ----------------- |
+| `icon`             | Standard favicon  |
+| `apple-touch-icon` | iOS home screen   |
+| `mask-icon`        | Safari pinned tab |
 
 **When to use:**
 
@@ -277,10 +285,10 @@ Browser tab branding · PWA install · dark/light favicon via `media` attribute 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Professional polish in tabs/bookmarks | Many sizes to maintain |
-| SVG one file scales | Older IE ignored SVG favicons |
+| +                                     | −                             |
+| ------------------------------------- | ----------------------------- |
+| Professional polish in tabs/bookmarks | Many sizes to maintain        |
+| SVG one file scales                   | Older IE ignored SVG favicons |
 
 **Examples:**
 
@@ -307,11 +315,11 @@ Browser tab branding · PWA install · dark/light favicon via `media` attribute 
 - `preconnect` — DNS + TCP + TLS (use for fonts/CDN you will definitely use).
 - `modulepreload` — fetch + parse ES module early; use for entry `.mjs` files.
 
-| Hint | Cost | Use when |
-|------|------|----------|
-| `dns-prefetch` | DNS only | Many third-party origins |
-| `preconnect` | Full connection | Critical CDN/fonts |
-| `modulepreload` | Module fetch | ESM entry point |
+| Hint            | Cost            | Use when                 |
+| --------------- | --------------- | ------------------------ |
+| `dns-prefetch`  | DNS only        | Many third-party origins |
+| `preconnect`    | Full connection | Critical CDN/fonts       |
+| `modulepreload` | Module fetch    | ESM entry point          |
 
 **When to use:**
 
@@ -325,10 +333,10 @@ Analytics domain dns-prefetch · Google Fonts preconnect · `modulepreload` for 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Cuts connection latency | Over-hinting wastes bandwidth |
-| Faster ESM startup | `modulepreload` needs `crossorigin` if CORS |
+| +                       | −                                           |
+| ----------------------- | ------------------------------------------- |
+| Cuts connection latency | Over-hinting wastes bandwidth               |
+| Faster ESM startup      | `modulepreload` needs `crossorigin` if CORS |
 
 **Examples:**
 
@@ -351,10 +359,10 @@ Analytics domain dns-prefetch · Google Fonts preconnect · `modulepreload` for 
 
 The `<base>` element sets the default URL and target for all relative links on the page. Use sparingly — one per document, must be in `<head>`.
 
-| Attribute | Effect |
-|-----------|--------|
-| `href` | Base URL for relative links |
-| `target` | Default `target` for links |
+| Attribute | Effect                      |
+| --------- | --------------------------- |
+| `href`    | Base URL for relative links |
+| `target`  | Default `target` for links  |
 
 **How it works:**
 
@@ -374,10 +382,10 @@ Email HTML templates · embedded docs in iframe · mirror sites.
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Portable relative paths | Breaks fragment-only links if mis-set |
-| One place to change base URL | Hard to debug unexpected resolves |
+| +                            | −                                     |
+| ---------------------------- | ------------------------------------- |
+| Portable relative paths      | Breaks fragment-only links if mis-set |
+| One place to change base URL | Hard to debug unexpected resolves     |
 
 **Examples:**
 
@@ -398,11 +406,11 @@ Email HTML templates · embedded docs in iframe · mirror sites.
 
 URLs in HTML can be relative to the current document or absolute. Relative paths are portable; absolute URLs are required for external resources.
 
-| Type | Example | Use case |
-|------|---------|----------|
-| Relative | `/images/logo.png` | Same site |
-| Relative parent | `../css/app.css` | Sibling directories |
-| Absolute URL | `https://cdn.example.com/app.js` | External CDN |
+| Type            | Example                          | Use case            |
+| --------------- | -------------------------------- | ------------------- |
+| Relative        | `/images/logo.png`               | Same site           |
+| Relative parent | `../css/app.css`                 | Sibling directories |
+| Absolute URL    | `https://cdn.example.com/app.js` | External CDN        |
 
 **How it works:**
 
@@ -410,11 +418,11 @@ URLs in HTML can be relative to the current document or absolute. Relative paths
 - **Root-relative** (`/assets/x`) — from site root.
 - **Absolute** (`https://...`) — full URL, required for cross-origin.
 
-| Type | Example | Use |
-|------|---------|-----|
-| Root-relative | `/img/logo.png` | Same site |
-| Relative | `../css/app.css` | Nested paths |
-| Absolute | `https://cdn.../x.js` | External CDN |
+| Type          | Example               | Use          |
+| ------------- | --------------------- | ------------ |
+| Root-relative | `/img/logo.png`       | Same site    |
+| Relative      | `../css/app.css`      | Nested paths |
+| Absolute      | `https://cdn.../x.js` | External CDN |
 
 **When to use:**
 
@@ -447,12 +455,12 @@ Same-repo assets (`/css/app.css`) · sibling dir (`../img/x`) · CDN (`https://c
 
 HTML comments are not rendered. Entities represent special characters that would otherwise break markup or are not on the keyboard.
 
-| Entity | Character |
-|--------|-----------|
-| `&amp;` | `&` |
-| `&lt;` / `&gt;` | `<` / `>` |
-| `&copy;` | © |
-| `&nbsp;` | non-breaking space |
+| Entity          | Character          |
+| --------------- | ------------------ |
+| `&amp;`         | `&`                |
+| `&lt;` / `&gt;` | `<` / `>`          |
+| `&copy;`        | ©                  |
+| `&nbsp;`        | non-breaking space |
 
 **How it works:**
 
@@ -460,11 +468,11 @@ HTML comments are not rendered. Entities represent special characters that would
 - Entities encode reserved/special chars: `&lt;`, `&amp;`, `&copy;`.
 - Numeric entities `&#169;` / `&#xA9;` for any Unicode code point.
 
-| Entity | Character |
-|--------|----------|
-| `&amp;` | `&` |
-| `&lt;` / `&gt;` | `<` / `>` |
-| `&nbsp;` | non-breaking space |
+| Entity          | Character          |
+| --------------- | ------------------ |
+| `&amp;`         | `&`                |
+| `&lt;` / `&gt;` | `<` / `>`          |
+| `&nbsp;`        | non-breaking space |
 
 **When to use:**
 
@@ -501,11 +509,11 @@ Template notes in source · displaying `<` in code samples · copyright symbols.
 - Browser parser builds a live DOM tree from the markup.
 - CSS and JS attach to that tree for presentation and behavior.
 
-| Term | Role |
-|------|------|
-| **Tag** | Markup syntax (`<p>`, `</p>`) in source code |
-| **Element** | Live DOM node — opening tag + content + closing tag (or void tag) |
-| **Attribute** | Key/value metadata on an element (`href`, `class`, `alt`) |
+| Term          | Role                                                              |
+| ------------- | ----------------------------------------------------------------- |
+| **Tag**       | Markup syntax (`<p>`, `</p>`) in source code                      |
+| **Element**   | Live DOM node — opening tag + content + closing tag (or void tag) |
+| **Attribute** | Key/value metadata on an element (`href`, `class`, `alt`)         |
 
 **When to use:**
 
@@ -521,9 +529,9 @@ Every web page starts with HTML — it is the structural foundation for CSS and 
 
 **Pluses and minuses:**
 
-| + | − |
-|------|------|
-| Universal web foundation | Not Turing-complete alone |
+| +                              | −                                       |
+| ------------------------------ | --------------------------------------- |
+| Universal web foundation       | Not Turing-complete alone               |
 | Semantic elements aid a11y/SEO | Invalid markup relies on error recovery |
 
 **Examples:**
@@ -560,10 +568,10 @@ Browser rendering (parse → layout → paint → composite) lives in [HTML — 
 
 Block-level elements stack vertically and accept full box model sizing. Inline elements flow with text and typically contain only phrasing content.
 
-| Type | Behavior | Examples |
-|------|----------|----------|
-| Block | Full width, stacks | `div`, `p`, `section`, `table` |
-| Inline | Flows with text | `span`, `a`, `strong`, `em` |
+| Type   | Behavior           | Examples                       |
+| ------ | ------------------ | ------------------------------ |
+| Block  | Full width, stacks | `div`, `p`, `section`, `table` |
+| Inline | Flows with text    | `span`, `a`, `strong`, `em`    |
 
 **How it works:**
 
@@ -571,10 +579,10 @@ Block-level elements stack vertically and accept full box model sizing. Inline e
 - **Inline** — flows in text line; width/height ignored (mostly).
 - HTML5 content categories refine nesting rules.
 
-| Type | Behavior | Examples |
-|------|----------|----------|
-| Block | Stacks vertically | `div`, `p`, `section` |
-| Inline | Flows with text | `span`, `a`, `em` |
+| Type   | Behavior          | Examples              |
+| ------ | ----------------- | --------------------- |
+| Block  | Stacks vertically | `div`, `p`, `section` |
+| Inline | Flows with text   | `span`, `a`, `em`     |
 
 **When to use:**
 
@@ -606,12 +614,12 @@ Paragraphs (`p`) · inline emphasis (`span`, `a`) · `display` CSS can change pr
 
 The `<a>` element creates hyperlinks for navigation. Use `<button>` for in-page actions, not links.
 
-| Attribute | Purpose |
-|-----------|---------|
-| `href` | URL or fragment |
-| `target` | `_self`, `_blank`, etc. |
-| `rel` | `noopener noreferrer` with `_blank` |
-| `download` | Suggest file download |
+| Attribute  | Purpose                             |
+| ---------- | ----------------------------------- |
+| `href`     | URL or fragment                     |
+| `target`   | `_self`, `_blank`, etc.             |
+| `rel`      | `noopener noreferrer` with `_blank` |
+| `download` | Suggest file download               |
 
 **How it works:**
 
@@ -620,11 +628,11 @@ The `<a>` element creates hyperlinks for navigation. Use `<button>` for in-page 
 - `target="_blank"` needs `rel="noopener noreferrer"`.
 - `download` suggests file download for same-origin URLs.
 
-| Attribute | Purpose |
-|-----------|--------|
-| `href` | Destination |
-| `rel` | `noopener` for `_blank` |
-| `download` | Save as file |
+| Attribute  | Purpose                 |
+| ---------- | ----------------------- |
+| `href`     | Destination             |
+| `rel`      | `noopener` for `_blank` |
+| `download` | Save as file            |
 
 **When to use:**
 
@@ -656,12 +664,12 @@ Internal routes · external docs · skip links (`href="#main"`).
 
 Tables present tabular data with header and body row groups. Use `scope` on `<th>` for accessibility.
 
-| Element | Role |
-|---------|------|
-| `<caption>` | Table title |
-| `<thead>` / `<tbody>` | Row groups |
-| `<th scope>` | Header cell |
-| `<td>` | Data cell |
+| Element               | Role        |
+| --------------------- | ----------- |
+| `<caption>`           | Table title |
+| `<thead>` / `<tbody>` | Row groups  |
+| `<th scope>`          | Header cell |
+| `<td>`                | Data cell   |
 
 **How it works:**
 
@@ -669,11 +677,11 @@ Tables present tabular data with header and body row groups. Use `scope` on `<th
 - `<caption>`, `<thead>`, `<tbody>`, `<th scope>` aid structure.
 - `scope="col"` / `scope="row"` for screen readers.
 
-| Element | Role |
-|---------|------|
-| `<caption>` | Table title |
+| Element      | Role        |
+| ------------ | ----------- |
+| `<caption>`  | Table title |
 | `<th scope>` | Header cell |
-| `<td>` | Data cell |
+| `<td>`       | Data cell   |
 
 **When to use:**
 
@@ -689,9 +697,21 @@ Financial reports · comparison matrices · data grids (consider ARIA for comple
 
 ```html
 <table>
-  <caption>Q4 sales by region</caption>
-  <thead><tr><th scope="col">Region</th><th scope="col">Revenue</th></tr></thead>
-  <tbody><tr><th scope="row">EMEA</th><td>$1.2M</td></tr></tbody>
+  <caption>
+    Q4 sales by region
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Region</th>
+      <th scope="col">Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">EMEA</th>
+      <td>$1.2M</td>
+    </tr>
+  </tbody>
 </table>
 ```
 
@@ -708,11 +728,11 @@ Financial reports · comparison matrices · data grids (consider ARIA for comple
 
 The `<iframe>` embeds another document. Restrict capabilities with `sandbox`, set `title` for accessibility, and control referrer with `referrerpolicy`.
 
-| Attribute | Purpose |
-|-----------|---------|
-| `sandbox` | Restrict scripts, forms, etc. |
-| `referrerpolicy` | Control Referer header |
-| `title` | Required for screen readers |
+| Attribute        | Purpose                       |
+| ---------------- | ----------------------------- |
+| `sandbox`        | Restrict scripts, forms, etc. |
+| `referrerpolicy` | Control Referer header        |
+| `title`          | Required for screen readers   |
 
 **How it works:**
 
@@ -720,11 +740,11 @@ The `<iframe>` embeds another document. Restrict capabilities with `sandbox`, se
 - `sandbox` attribute restricts scripts, forms, popups.
 - Always set `title` for accessibility.
 
-| Attribute | Purpose |
-|-----------|--------|
-| `sandbox` | Capability restrictions |
-| `referrerpolicy` | Referer control |
-| `title` | Accessible name |
+| Attribute        | Purpose                 |
+| ---------------- | ----------------------- |
+| `sandbox`        | Capability restrictions |
+| `referrerpolicy` | Referer control         |
+| `title`          | Accessible name         |
 
 **When to use:**
 
@@ -760,12 +780,12 @@ Payment widgets · video embeds · isolated third-party content.
 
 HTML includes specialized elements for suggestions, progress, output, and no-JS fallbacks.
 
-| Element | Purpose |
-|---------|---------|
+| Element      | Purpose                        |
+| ------------ | ------------------------------ |
 | `<datalist>` | Suggestions for `<input list>` |
-| `<meter>` | Scalar value in known range |
-| `<progress>` | Task completion |
-| `<noscript>` | Fallback when JS disabled |
+| `<meter>`    | Scalar value in known range    |
+| `<progress>` | Task completion                |
+| `<noscript>` | Fallback when JS disabled      |
 
 **How it works:**
 
@@ -774,11 +794,11 @@ HTML includes specialized elements for suggestions, progress, output, and no-JS 
 - `<progress>` — task completion.
 - `<noscript>` — fallback when JS disabled.
 
-| Element | Purpose |
-|---------|--------|
-| `<datalist>` | Input suggestions |
+| Element      | Purpose              |
+| ------------ | -------------------- |
+| `<datalist>` | Input suggestions    |
 | `<progress>` | Completion indicator |
-| `<noscript>` | No-JS fallback |
+| `<noscript>` | No-JS fallback       |
 
 **When to use:**
 
@@ -820,23 +840,23 @@ Autocomplete suggestions · upload progress · critical content fallback.
 
 Attributes provide metadata and behavior on HTML elements — global attributes work on any element; others are element-specific.
 
-| Attribute | Element(s) | Purpose |
-|-----------|-----------|---------|
-| `src` | img, script, iframe | Resource URL |
-| `href` | a, link | Link target |
-| `class` | Global | CSS hook |
-| `id` | Global | Unique identifier |
-| `name` | form controls | Key in submitted data |
+| Attribute | Element(s)          | Purpose               |
+| --------- | ------------------- | --------------------- |
+| `src`     | img, script, iframe | Resource URL          |
+| `href`    | a, link             | Link target           |
+| `class`   | Global              | CSS hook              |
+| `id`      | Global              | Unique identifier     |
+| `name`    | form controls       | Key in submitted data |
 
 **How it works:**
 
 - Element-specific and global attributes modify behavior.
 - `src`/`href` locate resources; `name` keys form data; `class`/`id` hook CSS/JS.
 
-| Attribute | Purpose |
-|-----------|--------|
-| `src` | Resource URL |
-| `name` | Form field key |
+| Attribute | Purpose        |
+| --------- | -------------- |
+| `src`     | Resource URL   |
+| `name`    | Form field key |
 
 **When to use:**
 
@@ -869,11 +889,11 @@ Image `src`+`alt` · link `href` · form control `name`.
 
 `class` can appear on many elements for shared styling. `id` must be unique per page — used for anchors, label association, and unique targets.
 
-| | `class` | `id` |
-|---|---------|------|
-| Cardinality | Many elements | One per page |
-| CSS selector | `.my-class` | `#my-id` |
-| Use for | Shared patterns | Unique anchor/target |
+|              | `class`         | `id`                 |
+| ------------ | --------------- | -------------------- |
+| Cardinality  | Many elements   | One per page         |
+| CSS selector | `.my-class`     | `#my-id`             |
+| Use for      | Shared patterns | Unique anchor/target |
 
 **How it works:**
 
@@ -881,9 +901,9 @@ Image `src`+`alt` · link `href` · form control `name`.
 - `id` — unique per document, `#id` selector, fragment targets.
 - `label for` and ARIA reference `id`.
 
-| | `class` | `id` |
-|---|---------|------|
-| Count | Many | One per page |
+|       | `class` | `id`         |
+| ----- | ------- | ------------ |
+| Count | Many    | One per page |
 
 **When to use:**
 
@@ -916,21 +936,21 @@ Shared card style (`class`) · skip link target (`id="main"`).
 
 Global attributes can be used on any HTML element — `class`, `id`, `hidden`, `inert`, `tabindex`, `data-*`, and all `aria-*` attributes.
 
-| Attribute | Purpose |
-|-----------|---------|
-| `data-*` | Custom data for JS/CSS |
-| `aria-*` | Accessibility semantics |
-| `tabindex` | Focus order (`0` or `-1`) |
+| Attribute          | Purpose                    |
+| ------------------ | -------------------------- |
+| `data-*`           | Custom data for JS/CSS     |
+| `aria-*`           | Accessibility semantics    |
+| `tabindex`         | Focus order (`0` or `-1`)  |
 | `hidden` / `inert` | Visibility and interaction |
 
 **How it works:**
 
 - Valid on any element: `class`, `id`, `hidden`, `inert`, `tabindex`, `data-*`, `aria-*`, `lang`, `title`.
 
-| Attribute | Purpose |
-|-----------|--------|
-| `data-*` | Custom data |
-| `aria-*` | Accessibility |
+| Attribute | Purpose       |
+| --------- | ------------- |
+| `data-*`  | Custom data   |
+| `aria-*`  | Accessibility |
 
 **When to use:**
 

@@ -30,7 +30,7 @@ describe("enrichNavSections", () => {
 
     assert.equal(
       sectionSwitchHref(enriched, "/en/frontend/html-interview", "conspect"),
-      "/en/frontend/html-structure",
+      "/en/frontend/html-core",
     );
     assert.equal(
       sectionSwitchHref(enriched, "/en/frontend/css", "interviews"),
