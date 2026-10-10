@@ -114,6 +114,46 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/:locale(en|ru)/frontend/react-native",
+        destination: "/:locale/frontend/react-native-interview",
+        permanent: true,
+      },
+      {
+        source: "/frontend/react-native",
+        destination: "/en/frontend/react-native-interview",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|ru)/backend/go",
+        destination: "/:locale/backend/go-interview",
+        permanent: true,
+      },
+      {
+        source: "/backend/go",
+        destination: "/en/backend/go-interview",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|ru)/backend/scala",
+        destination: "/:locale/backend/scala-interview",
+        permanent: true,
+      },
+      {
+        source: "/backend/scala",
+        destination: "/en/backend/scala-interview",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|ru)/backend/redis",
+        destination: "/:locale/backend/redis-interview",
+        permanent: true,
+      },
+      {
+        source: "/backend/redis",
+        destination: "/en/backend/redis-interview",
+        permanent: true,
+      },
+      {
         source: "/system-design/sd-foundations",
         destination: "/en/system-design/sd-core",
         permanent: true,
