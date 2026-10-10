@@ -74,6 +74,25 @@ test("subjectClusterCards expands nav hub children for the browser cluster", () 
   );
 });
 
+test("subjectClusterCards expands nav hub children for the core cluster", () => {
+  const js = SUBJECTS.find((subject) => subject.slug === "javascript");
+  assert.ok(js);
+  const core = subjectClusterCards(js).find(
+    (entry) => entry.cluster.id === "core",
+  );
+  assert.ok(core);
+  assert.equal(core.items.length, 10);
+  assert.ok(core.items.some((item) => item.href === "/frontend/js-core"));
+  assert.ok(core.items.some((item) => item.href === "/frontend/js-classes"));
+  const hub = getTopic("frontend", "js-core-hub");
+  assert.ok(hub);
+  assert.equal(isNavHubTopic(hub), true);
+  assert.equal(
+    clusterTargetHref(js, js.clusters.find((c) => c.id === "core")!),
+    "/frontend/javascript#core",
+  );
+});
+
 test("subjectClusterCards omits interview and tasks clusters from conspect hubs", () => {
   const html = SUBJECTS.find((subject) => subject.slug === "html");
   assert.ok(html);

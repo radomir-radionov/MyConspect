@@ -1108,6 +1108,15 @@ const TOPICS_BASE: Topic[] = [
   ),
 
   {
+    slug: "js-core-hub",
+    file: "3_js_core_hub.md",
+    title: "Core",
+    blurb:
+      "Language, variables, types, data structures, operators, loops, arrays, functions, objects, and classes.",
+    track: "frontend",
+    grouping: { subject: "javascript", cluster: "core" },
+  },
+  {
     slug: "js-core",
     file: "3_js_core.md",
     title: "Language",
@@ -1115,6 +1124,8 @@ const TOPICS_BASE: Topic[] = [
       "Runtime and language basics — variables, types, operators, loops, and arrays in sibling Core topics.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-core-hub",
   },
   {
     slug: "js-variables",
@@ -1124,6 +1135,8 @@ const TOPICS_BASE: Topic[] = [
       "let/const/var, scope, hoisting, globalThis, and destructuring patterns.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-core-hub",
   },
   {
     slug: "js-data-types",
@@ -1132,6 +1145,8 @@ const TOPICS_BASE: Topic[] = [
     blurb: "Primitives, coercion, and the stack/heap memory model.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-core-hub",
   },
   {
     slug: "js-data-structures",
@@ -1140,6 +1155,8 @@ const TOPICS_BASE: Topic[] = [
     blurb: "Objects, Map/Set, trees/graphs, Date, and JSON.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-core-hub",
   },
   {
     slug: "js-operators",
@@ -1149,6 +1166,8 @@ const TOPICS_BASE: Topic[] = [
       "Expressions, operators, comparisons, optional chaining, and nullish coalescing.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-core-hub",
   },
   {
     slug: "js-loops",
@@ -1157,6 +1176,8 @@ const TOPICS_BASE: Topic[] = [
     blurb: "Control flow, loops, switch, try/catch, iterators, and generators.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-core-hub",
   },
   {
     slug: "js-destructuring",
@@ -1174,6 +1195,8 @@ const TOPICS_BASE: Topic[] = [
     blurb: "Indexed collections and array methods — map, filter, reduce.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-core-hub",
   },
   {
     slug: "js-functions",
@@ -1183,6 +1206,8 @@ const TOPICS_BASE: Topic[] = [
       "Declarations, scope, closures, arrows, this, HOF, recursion, and timers.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-core-hub",
   },
   {
     slug: "js-closures",
@@ -1200,6 +1225,8 @@ const TOPICS_BASE: Topic[] = [
     blurb: "Prototypes, `this`, descriptors, Proxy/Reflect, and GC.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-core-hub",
   },
   {
     slug: "js-classes",
@@ -1208,6 +1235,8 @@ const TOPICS_BASE: Topic[] = [
     blurb: "Class syntax, inheritance, static members, and private fields.",
     track: "frontend",
     grouping: { subject: "javascript", cluster: "core" },
+    hideFromSubjectNav: true,
+    navParentSlug: "js-core-hub",
   },
   {
     slug: "js-browser",

@@ -280,7 +280,7 @@ const SectionTopicLink = memo(function SectionTopicLink({
     : filterInterviewConcepts(topic, concepts);
   const showConceptNav =
     !topic.hideSidebarConcepts && sidebarConcepts.length > 0;
-  const showTopicFold = showConceptNav;
+  const showTopicFold = showConceptNav && sidebarConcepts.length > 1;
   const topicFoldOpen = openTopicHref === topic.href;
   const topicOpen = searching ? showConceptNav : showTopicFold && topicFoldOpen;
 
@@ -473,7 +473,11 @@ export function TopicRow({
     !topic.hideSidebarConcepts &&
     sidebarConcepts.length > 0 &&
     !hasNestedTopics;
-  const showTopicFold = showConceptNav || hasNestedTopics;
+  const showTopicFold =
+    (showConceptNav && sidebarConcepts.length > 1) ||
+    (hasNestedTopics && nestedTopics.length > 1);
+  const showLoneNested =
+    hasNestedTopics && nestedTopics.length === 1 && !showConceptNav;
   const onPath = !searching && (active || nestedOnPath);
   const topicFoldOpen =
     openTopicHref === topic.href || nestedOpen || nestedOnPath;
@@ -560,7 +564,11 @@ export function TopicRow({
           )
         ) : null}
       </Link>
-      <NavFold open={topicOpen && showTopicFold} instant={searching} unbox>
+      <NavFold
+        open={showLoneNested || (topicOpen && showTopicFold)}
+        instant={searching}
+        unbox
+      >
         <ul className="contents">
           {showConceptNav ? (
             <TopicConceptNav

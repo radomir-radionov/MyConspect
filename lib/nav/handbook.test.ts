@@ -365,7 +365,13 @@ describe("handbookNavSections layout", () => {
     const js = findSubject("javascript");
     const core = allSubjectClusters(js).find((item) => item.id === "core");
     assert.ok(core);
-    const slugs = core.topics.map((topic) => topic.slug);
+    assert.deepEqual(
+      core.topics.map((topic) => topic.slug),
+      ["js-core-hub"],
+    );
+    const hub = core.topics[0];
+    assert.ok(hub?.nestedTopics);
+    const slugs = hub.nestedTopics!.map((topic) => topic.slug);
     assert.ok(slugs.includes("js-operators"));
     assert.ok(slugs.includes("js-loops"));
     const languageIndex = slugs.indexOf("js-core");
@@ -406,7 +412,9 @@ describe("handbookNavSections layout", () => {
     const js = findSubject("javascript");
     const core = allSubjectClusters(js).find((item) => item.id === "core");
     assert.ok(core);
-    const slugs = core.topics.map((topic) => topic.slug);
+    const hub = core.topics.find((topic) => topic.slug === "js-core-hub");
+    assert.ok(hub?.nestedTopics);
+    const slugs = hub.nestedTopics!.map((topic) => topic.slug);
     assert.ok(slugs.includes("js-objects"));
     assert.ok(slugs.includes("js-classes"));
     const objectsIndex = slugs.indexOf("js-objects");
@@ -418,7 +426,9 @@ describe("handbookNavSections layout", () => {
     const js = findSubject("javascript");
     const core = allSubjectClusters(js).find((item) => item.id === "core");
     assert.ok(core);
-    const functions = core.topics.find(
+    const hub = core.topics.find((topic) => topic.slug === "js-core-hub");
+    assert.ok(hub?.nestedTopics);
+    const functions = hub.nestedTopics!.find(
       (topic) => topic.slug === "js-functions",
     );
     assert.ok(functions);
@@ -430,7 +440,9 @@ describe("handbookNavSections layout", () => {
     const js = findSubject("javascript");
     const core = allSubjectClusters(js).find((item) => item.id === "core");
     assert.ok(core);
-    const functions = core.topics.find(
+    const hub = core.topics.find((topic) => topic.slug === "js-core-hub");
+    assert.ok(hub?.nestedTopics);
+    const functions = hub.nestedTopics!.find(
       (topic) => topic.slug === "js-functions",
     );
     assert.ok(functions);
@@ -450,7 +462,11 @@ describe("handbookNavSections layout", () => {
     const js = findSubject("javascript");
     const core = allSubjectClusters(js).find((item) => item.id === "core");
     assert.ok(core);
-    const classes = core.topics.find((topic) => topic.slug === "js-classes");
+    const hub = core.topics.find((topic) => topic.slug === "js-core-hub");
+    assert.ok(hub?.nestedTopics);
+    const classes = hub.nestedTopics!.find(
+      (topic) => topic.slug === "js-classes",
+    );
     assert.ok(classes);
     const byId = new Map(classes.concepts.map((c) => [c.id, c.group]));
     assert.equal(byId.get("class-syntax"), "Class basics");
@@ -466,7 +482,9 @@ describe("handbookNavSections layout", () => {
     const js = findSubject("javascript");
     const core = allSubjectClusters(js).find((item) => item.id === "core");
     assert.ok(core);
-    const loops = core.topics.find((topic) => topic.slug === "js-loops");
+    const hub = core.topics.find((topic) => topic.slug === "js-core-hub");
+    assert.ok(hub?.nestedTopics);
+    const loops = hub.nestedTopics!.find((topic) => topic.slug === "js-loops");
     assert.ok(loops);
     const byId = new Map(loops.concepts.map((c) => [c.id, c.group]));
     assert.equal(byId.get("try-catch"), "Errors and exceptions");
@@ -502,7 +520,9 @@ describe("handbookNavSections layout", () => {
     const js = findSubject("javascript");
     const core = allSubjectClusters(js).find((item) => item.id === "core");
     assert.ok(core);
-    const variables = core.topics.find(
+    const hub = core.topics.find((topic) => topic.slug === "js-core-hub");
+    assert.ok(hub?.nestedTopics);
+    const variables = hub.nestedTopics!.find(
       (topic) => topic.slug === "js-variables",
     );
     assert.ok(variables);
