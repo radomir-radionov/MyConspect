@@ -15,12 +15,16 @@ import {
 } from "@/lib/nav/bookmarks";
 import type { ChromeCopy } from "@/lib/nav";
 import { hashIdFrom } from "@/lib/nav/navUtils";
-import { followHandbookHref, queueHandbookHref, setHashOnPath } from "./hash";
-import { setBookmarkNavMode } from "./bookmarkNavMode";
-import { useHandbookLocation } from "./useHandbookLocation";
-import { ConfirmDialog } from "./ConfirmDialog";
-import { NavFold } from "./NavFold";
-import { trackHeaderClass } from "./sidebarContext";
+import {
+  followHandbookHref,
+  queueHandbookHref,
+  setHashOnPath,
+} from "../utils/hash";
+import { setBookmarkNavMode } from "../utils/bookmarkNavMode";
+import { useHandbookLocation } from "../hooks/useHandbookLocation";
+import { trackHeaderClass } from "../context/sidebarContext";
+import { ConfirmDialog } from "../ui/ConfirmDialog";
+import { NavFold } from "../ui/NavFold";
 
 export function BookmarksPanel({
   chrome,

@@ -17,14 +17,14 @@ import {
   type NavGroup,
   type SearchMode,
 } from "@/lib/nav";
-import { applySameDocumentHref, followHandbookHref } from "./hash";
-import { useSearchCorpus } from "./searchCorpus";
+import { applySameDocumentHref, followHandbookHref } from "../utils/hash";
+import { useSearchCorpus } from "../utils/searchCorpus";
 import {
   getServerSearchUi,
   readSearchUi,
   subscribeUi,
   writeUi,
-} from "./uiStorage";
+} from "../utils/uiStorage";
 
 export function useHandbookSearch(
   groups: readonly NavGroup[],

@@ -2,11 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import { Breadcrumbs } from "@/components/catalog/Breadcrumbs";
-import { HANDBOOK_STICKY_INSET_VAR } from "@/components/topic/conceptScroll";
+import { HANDBOOK_STICKY_INSET_VAR } from "@/components/topic/utils/conceptScroll";
 import { HANDBOOK_MAIN_ID } from "@/constants";
 import type { ChromeCopy, NavGroup } from "@/lib/nav";
-import { crumbsForPath } from "./location";
-import { useHandbookLocation } from "./useHandbookLocation";
+import { useHandbookLocation } from "../hooks/useHandbookLocation";
+import { crumbsForPath } from "../utils/location";
 
 export function ContentBreadcrumbs({
   groups,

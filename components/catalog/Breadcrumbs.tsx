@@ -9,7 +9,7 @@ import {
   getServerHash,
   hashIdFrom,
   subscribeHash,
-} from "@/components/nav/hash";
+} from "@/components/nav/utils/hash";
 import {
   CHROME,
   crumbsWithActive,

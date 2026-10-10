@@ -2,21 +2,21 @@
 
 import { memo, useEffect, useMemo, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { useHandbookLocation } from "@/components/nav/useHandbookLocation";
+import { useHandbookLocation } from "@/components/nav/hooks/useHandbookLocation";
 import {
   HighlightedText,
   useSearchMode,
   useSearchQuery,
 } from "@/components/search";
-import { highlightQueryInHtml } from "@/components/search/highlightQueryInHtml";
 import {
   BookmarkButton,
   useIsBookmarked,
-} from "@/components/nav/BookmarkButton";
-import { setHashIfChanged } from "@/components/nav/hash";
+} from "@/components/nav/ui/BookmarkButton";
+import { highlightQueryInHtml } from "@/components/search/utils/highlightQueryInHtml";
+import { setHashIfChanged } from "@/components/nav/utils/hash";
 import { hashIdFrom } from "@/lib/nav/navUtils";
 import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
-import { handbookMain } from "@/components/topic/conceptScroll";
+import { handbookMain } from "@/components/topic/utils/conceptScroll";
 import { chromeFor } from "@/lib/i18n/chrome";
 import { localeFromPathname } from "@/lib/i18n/paths";
 import { conceptMatchesQuery } from "@/lib/nav";
@@ -24,9 +24,9 @@ import type { ChromeCopy } from "@/lib/nav";
 import type { Concept } from "@/lib/parse";
 import { ConceptTitleHeader } from "./ConceptTitleHeader";
 import { PageTitleHeader } from "./PageTitleHeader";
-import { useCodeCopyButtons } from "./useCodeCopyButtons";
-import { useConceptKeyboardNav } from "./useConceptKeyboardNav";
-import { useHandbookTopicNav } from "./useHandbookTopicNav";
+import { useCodeCopyButtons } from "./hooks/useCodeCopyButtons";
+import { useConceptKeyboardNav } from "./hooks/useConceptKeyboardNav";
+import { useHandbookTopicNav } from "./hooks/useHandbookTopicNav";
 
 type ConceptGroup = {
   readonly key: string;

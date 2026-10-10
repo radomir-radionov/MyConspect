@@ -1,3 +1,3 @@
-export { HandbookShell } from "./HandbookShell";
-export { SiteHeader } from "./SiteHeader";
-export { TopicSidebar } from "./TopicSidebar";
+export { HandbookShell } from "./shell/HandbookShell";
+export { SiteHeader } from "./header/SiteHeader";
+export { TopicSidebar } from "./sidebar/TopicSidebar";

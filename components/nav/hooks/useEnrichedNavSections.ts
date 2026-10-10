@@ -6,7 +6,7 @@ import { isTrackId, type TrackId } from "@/lib/catalog";
 import { isLocale } from "@/lib/i18n/locales";
 import { enrichNavSections } from "@/lib/nav/enrichNav";
 import type { NavGroup, NavRootSection } from "@/lib/nav";
-import { loadTrackSearchIndex, localeFromPath } from "./searchCorpus";
+import { loadTrackSearchIndex, localeFromPath } from "../utils/searchCorpus";
 
 function trackIdFromPathname(pathname: string): TrackId | null {
   const segments = pathname.split("/").filter(Boolean);

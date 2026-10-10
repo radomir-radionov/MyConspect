@@ -6,7 +6,7 @@ import {
   subscribeUi,
   writeTheme,
   type ThemePreference,
-} from "./uiStorage";
+} from "../utils/uiStorage";
 
 function useResolvedTheme(): ThemePreference {
   return useSyncExternalStore(subscribeUi, resolveTheme, () => "light");
@@ -15,7 +15,8 @@ function useResolvedTheme(): ThemePreference {
 export function ThemeToggle() {
   const theme = useResolvedTheme();
   const next: ThemePreference = theme === "dark" ? "light" : "dark";
-  const label = next === "dark" ? "Switch to dark mode" : "Switch to light mode";
+  const label =
+    next === "dark" ? "Switch to dark mode" : "Switch to light mode";
 
   return (
     <button
@@ -54,4 +55,3 @@ function SunIcon() {
     </svg>
   );
 }
-

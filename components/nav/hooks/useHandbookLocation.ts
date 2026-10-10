@@ -11,7 +11,7 @@ import {
   handbookLocation,
   subscribeHash,
   subscribePendingPath,
-} from "./hash";
+} from "../utils/hash";
 
 export function useHandbookLocation() {
   const pathname = usePathname() ?? "/";

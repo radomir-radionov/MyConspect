@@ -1,4 +1,4 @@
-import { isMdUp } from "@/components/nav/useMdUp";
+import { isMdUp } from "@/components/nav/hooks/useMdUp";
 import { HANDBOOK_MAIN_ID } from "@/constants";
 
 export const HANDBOOK_STICKY_INSET_VAR = "--handbook-sticky-inset";

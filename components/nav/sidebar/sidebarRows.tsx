@@ -22,17 +22,17 @@ import {
   sameTitle,
 } from "@/lib/nav/navUtils";
 import { navTopicTreeContainsHref } from "@/lib/nav/topicTree";
-import { BookmarkStar } from "./BookmarkButton";
-import { NavChevron, NavFold } from "./NavFold";
-import { NavGuide } from "./NavGuide";
+import { BookmarkStar } from "../ui/BookmarkButton";
+import { NavChevron, NavFold } from "../ui/NavFold";
+import { NavGuide } from "../ui/NavGuide";
 import {
   applySameDocumentHref,
   followHandbookHref,
   queueHandbookHref,
   replacePathHash,
   setHashOnPath,
-} from "./hash";
-import { pinNavForHref } from "./sidebarPin";
+} from "../utils/hash";
+import { pinNavForHref } from "../utils/sidebarPin";
 import { localeFromPathname } from "@/lib/i18n/paths";
 import {
   subjectCautionLabel,
@@ -47,8 +47,8 @@ import {
   isActiveHref,
   isConceptActiveOnPage,
   isOnSubjectPath,
-} from "./location";
-import { NavCautionBadge } from "./NavCautionBadge";
+} from "../utils/location";
+import { NavCautionBadge } from "../ui/NavCautionBadge";
 import { clusterNavigateHref } from "@/lib/nav/sections";
 import {
   closeNavSoon,
@@ -60,7 +60,7 @@ import {
   useSidebarChrome,
   useSidebarFoldScope,
   useSidebarHighlight,
-} from "./sidebarContext";
+} from "../context/sidebarContext";
 
 function RowTitle({
   text,

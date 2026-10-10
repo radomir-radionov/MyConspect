@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useMemo } from "react";
 import { HANDBOOK_MAIN_ID } from "@/constants";
-import { useHandbookLocation } from "@/components/nav/useHandbookLocation";
+import { useHandbookLocation } from "@/components/nav/hooks/useHandbookLocation";
 import { hashIdFrom } from "@/lib/nav/navUtils";
 import { ClusterCardSections } from "./ClusterCardSections";
 import type { BrowseCard } from "@/lib/catalog";

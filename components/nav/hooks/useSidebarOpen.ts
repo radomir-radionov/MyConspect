@@ -21,8 +21,12 @@ import {
   type NavTrackScope,
 } from "@/lib/nav/sections";
 import { hashIdFrom } from "@/lib/nav/navUtils";
-import { handbookLocation } from "./hash";
-import { isHomePath, locationForPath, type NavLocation } from "./location";
+import { handbookLocation } from "../utils/hash";
+import {
+  isHomePath,
+  locationForPath,
+  type NavLocation,
+} from "../utils/location";
 
 type NavSnapshot = {
   searching: boolean;

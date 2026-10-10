@@ -3,7 +3,7 @@
 import { createContext, useContext, useMemo, type ReactNode } from "react";
 import type { TrackId } from "@/lib/catalog";
 import type { NavRootSectionId, SearchMode } from "@/lib/nav";
-import type { NavLocation } from "./location";
+import type { NavLocation } from "../utils/location";
 
 export type SearchHit = {
   pathname: string;

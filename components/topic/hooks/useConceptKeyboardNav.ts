@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { hashIdFrom, setHashIfChanged } from "@/components/nav/hash";
+import { hashIdFrom, setHashIfChanged } from "@/components/nav/utils/hash";
 
 function isEditableTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) {

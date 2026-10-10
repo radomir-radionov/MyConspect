@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { HandbookShell } from "@/components/nav";
-import { LocaleHtmlLang } from "@/components/nav/LocaleHtmlLang";
+import { LocaleHtmlLang } from "@/components/nav/ui/LocaleHtmlLang";
 import { chromeFor } from "@/lib/i18n/chrome";
 import { isLocale, localeStaticParams, type Locale } from "@/lib/i18n/locales";
 import { withSidebarConceptOutlinesSections } from "@/lib/nav/chromeNav";

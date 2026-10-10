@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { BookmarkButton } from "@/components/nav/BookmarkButton";
+import { BookmarkButton } from "@/components/nav/ui/BookmarkButton";
 import type { ChromeCopy } from "@/lib/nav";
 
 export function TopicBookmarkButton({

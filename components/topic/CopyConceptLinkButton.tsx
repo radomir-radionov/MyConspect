@@ -4,7 +4,7 @@ import { useCallback, useState, type MouseEvent } from "react";
 import { usePathname } from "next/navigation";
 import { copyText } from "@/lib/clipboard";
 import type { ChromeCopy } from "@/lib/nav";
-import { conceptShareUrl, pageShareUrl } from "./conceptLink";
+import { conceptShareUrl, pageShareUrl } from "./utils/conceptLink";
 
 const COPIED_MS = 2000;
 

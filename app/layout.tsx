@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { ResourcesAutoRefresh } from "@/components/dev/ResourcesAutoRefresh";
-import { themeBootScript } from "@/components/nav/uiStorage";
+import { themeBootScript } from "@/components/nav/utils/uiStorage";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
 import "./globals.css";
 

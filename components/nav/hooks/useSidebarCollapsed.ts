@@ -7,7 +7,7 @@ import {
   readUi,
   subscribeUi,
   writeUi,
-} from "./uiStorage";
+} from "../utils/uiStorage";
 
 export function useSidebarCollapsed() {
   const collapsed = useSyncExternalStore(

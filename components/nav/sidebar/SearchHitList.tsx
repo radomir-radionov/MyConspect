@@ -4,8 +4,12 @@ import { memo } from "react";
 import Link from "next/link";
 import { HighlightedText } from "@/components/search";
 import { CHROME, splitHref, type SearchSidebarHit } from "@/lib/nav";
-import { followHandbookHref, setHashOnPath } from "./hash";
-import { closeNavSoon, NAV_ROW_GAP, useSidebarChrome } from "./sidebarContext";
+import {
+  closeNavSoon,
+  NAV_ROW_GAP,
+  useSidebarChrome,
+} from "../context/sidebarContext";
+import { followHandbookHref, setHashOnPath } from "../utils/hash";
 
 export const SearchHitList = memo(function SearchHitList({
   hits,

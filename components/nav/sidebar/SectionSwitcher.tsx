@@ -8,7 +8,7 @@ import {
   type NavRootSection,
   type NavRootSectionId,
 } from "@/lib/nav";
-import { dispatchSidebarCollapseTracks } from "./useSidebarOpen";
+import { dispatchSidebarCollapseTracks } from "../hooks/useSidebarOpen";
 
 export function SectionSwitcher({
   sections,

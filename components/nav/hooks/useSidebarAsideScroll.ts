@@ -9,7 +9,7 @@ import {
   scrollSidebarActivePath,
   scrollSidebarHit,
   shouldResetNavAsideScroll,
-} from "./sidebarPin";
+} from "../utils/sidebarPin";
 
 /** Keeps aside scroll, pin restore, and active-row scrolling in one place. */
 export function useSidebarAsideScroll({

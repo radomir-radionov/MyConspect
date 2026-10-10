@@ -2,25 +2,28 @@
 
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
-import { followHandbookHref, clearConceptHash } from "@/components/nav/hash";
-import { useHandbookLocation } from "@/components/nav/useHandbookLocation";
+import {
+  followHandbookHref,
+  clearConceptHash,
+} from "@/components/nav/utils/hash";
+import { useHandbookLocation } from "@/components/nav/hooks/useHandbookLocation";
 import {
   getBookmarkNavMode,
   getServerBookmarkNavMode,
   setBookmarkNavMode,
   subscribeBookmarkNavMode,
-} from "@/components/nav/bookmarkNavMode";
+} from "@/components/nav/utils/bookmarkNavMode";
 import {
   adjacentConceptId,
   navChainForPath,
   navChainIndex,
   parentHrefForPath,
   siblingNavHrefForPath,
-} from "@/components/nav/location";
-import { useTopicNavConcepts } from "@/components/topic/TopicNavConceptsContext";
+} from "@/components/nav/utils/location";
+import { useTopicNavConcepts } from "@/components/topic/context/TopicNavConceptsContext";
 import { hashIdFrom } from "@/lib/nav/navUtils";
-import { useHandbookNavGroups } from "@/components/nav/handbookNavContext";
-import { useSearchCorpus } from "@/components/nav/searchCorpus";
+import { useHandbookNavGroups } from "@/components/nav/context/handbookNavContext";
+import { useSearchCorpus } from "@/components/nav/utils/searchCorpus";
 import {
   activeBookmarkIndex,
   getServerBookmarks,

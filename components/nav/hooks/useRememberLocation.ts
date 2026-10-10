@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import type { NavGroup } from "@/lib/nav";
-import { hrefInHandbook } from "./location";
-import { readUi, writeUi } from "./uiStorage";
+import { hrefInHandbook } from "../utils/location";
+import { readUi, writeUi } from "../utils/uiStorage";
 
 export function useRememberLocation(groups: readonly NavGroup[]) {
   const pathname = usePathname() ?? "/";

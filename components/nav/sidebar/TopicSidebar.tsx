@@ -17,7 +17,7 @@ import {
   HANDBOOK_SIDEBAR_ID,
   NAV_FOLD_OPEN_MS,
 } from "@/constants";
-import { useSidebarAsideScroll } from "./useSidebarAsideScroll";
+import { useSidebarAsideScroll } from "../hooks/useSidebarAsideScroll";
 import {
   collectGroupSearchHits,
   matchesQuery,
@@ -44,18 +44,18 @@ import {
   subscribeBookmarks,
 } from "@/lib/nav/bookmarks";
 import type { TrackId } from "@/lib/catalog";
-import { NavChevron, NavFold } from "./NavFold";
-import { NavGuide } from "./NavGuide";
+import { NavChevron, NavFold } from "../ui/NavFold";
+import { NavGuide } from "../ui/NavGuide";
 import {
   applySameDocumentHref,
   followHandbookHref,
   queueHandbookHref,
-} from "./hash";
-import { useHandbookLocation } from "./useHandbookLocation";
-import { isActiveHref, isActiveTrack } from "./location";
+} from "../utils/hash";
+import { useHandbookLocation } from "../hooks/useHandbookLocation";
+import { isActiveHref, isActiveTrack } from "../utils/location";
 import { BookmarksPanel } from "./BookmarksPanel";
 import { SearchHitList } from "./SearchHitList";
-import { pinNavElement, pinNavForHref } from "./sidebarPin";
+import { pinNavElement, pinNavForHref } from "../utils/sidebarPin";
 import {
   measureNavChromeInset,
   measureStickyCover,
@@ -63,7 +63,7 @@ import {
   syncStickyScopeRelease,
   writeStickyVars,
   type StickyVars,
-} from "./sidebarSticky";
+} from "../utils/sidebarSticky";
 import {
   SidebarFoldScopeProvider,
   SidebarNavProvider,
@@ -72,10 +72,10 @@ import {
   useSidebarHighlight,
   useScopedSidebarFold,
   useScopedTrackOpen,
-} from "./sidebarContext";
+} from "../context/sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
 import { SectionSwitcher } from "./SectionSwitcher";
-import { foldRevision, useSidebarOpen } from "./useSidebarOpen";
+import { foldRevision, useSidebarOpen } from "../hooks/useSidebarOpen";
 
 export const TopicSidebar = memo(function TopicSidebar({
   sections,

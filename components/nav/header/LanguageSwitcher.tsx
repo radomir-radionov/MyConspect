@@ -11,7 +11,7 @@ import {
   getServerHash,
   queueHandbookHref,
   subscribeHash,
-} from "./hash";
+} from "../utils/hash";
 
 const LABELS: Record<Locale, string> = {
   en: "EN",

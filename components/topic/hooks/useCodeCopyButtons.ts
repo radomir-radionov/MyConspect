@@ -3,7 +3,7 @@
 import { useEffect, type RefObject } from "react";
 import { copyText } from "@/lib/clipboard";
 import type { ChromeCopy } from "@/lib/nav";
-import { preTextContent } from "./codeText";
+import { preTextContent } from "../utils/codeText";
 
 const COPIED_MS = 2000;
 

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { NavRootSection } from "@/lib/nav";
-import { queueHandbookHref, takePendingHashForPath } from "./hash";
+import { queueHandbookHref, takePendingHashForPath } from "../utils/hash";
 import { sidebarNavLocation } from "./useSidebarOpen";
 
 const sections: readonly NavRootSection[] = [
