@@ -543,7 +543,7 @@ export function TopicRow({
         data-search-hit={isFirstTopic ? "true" : undefined}
         aria-current={active ? "page" : undefined}
         aria-expanded={showTopicFold ? topicOpen : undefined}
-        className={`${rowClass(isHitTopic || active, onPath, indent)} ${NAV_ROW_GAP}`}
+        className={`${rowClass(isHitTopic || active || onPath, onPath, indent)} ${NAV_ROW_GAP}`}
       >
         <span className="flex min-w-0 flex-1 items-center gap-1.5">
           <RowTitle
