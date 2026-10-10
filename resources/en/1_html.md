@@ -8,20 +8,25 @@ Document structure, browser rendering, forms, media, accessibility, UX/UI princi
 
 ### Navigation
 
-| Topic                                         | Covers                                                                |
-| --------------------------------------------- | --------------------------------------------------------------------- |
-| [HTML — Structure](./1_html_structure.md)     | Document skeleton, metadata, elements, and attributes.                |
-| [HTML — Semantics](./1_html_semantics.md)     | Landmarks, headings, lists, and phrasing elements that carry meaning. |
-| [HTML — Forms](./1_html_forms.md)             | Form controls, validation, dialog, and accessible form patterns.      |
-| [HTML — Media](./1_html_media.md)             | Images, picture, audio, video, canvas, and SVG.                       |
-| [HTML — Rendering](./1_html_rendering.md)     | URL to pixels: parse, CSSOM, render tree, layout, paint, composite.   |
-| [HTML — Performance](./1_html_performance.md) | Script loading, resource hints, Core Web Vitals, and FOUC.            |
-| [HTML — Accessibility](./1_html_a11y.md)      | POUR, names, landmarks, forms, and images.                            |
-| [UX laws](./7_special_ux.md)                  | Jakob, Fitts, Hick, Miller, Postel, and related effects.              |
-| [UI principles](./7_special_ui.md)            | Visual hierarchy, spacing, feedback, and a11y.                        |
-| [HTML — SEO](./1_html_seo.md)                 | Crawlability, metadata, and structured data.                          |
-| [HTML — Advanced](./1_html_advanced.md)       | Web components, shadow DOM, and newer HTML APIs.                      |
-| [HTML — Interview](./1_html_interview.md)     | HTML interview questions, answers not filled in.                      |
+| Topic                                                             | Covers                                                                |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [HTML — Structure](./1_html_structure.md)                         | Document skeleton, metadata, elements, and attributes.                |
+| [HTML — Semantics](./1_html_semantics.md)                         | Landmarks, headings, lists, and phrasing elements that carry meaning. |
+| [HTML — Forms](./1_html_forms.md)                                 | Form controls, validation, dialog, and accessible form patterns.      |
+| [HTML — Media](./1_html_media.md)                                 | Images, picture, audio, video, canvas, and SVG.                       |
+| [HTML — Rendering](./1_html_rendering.md)                         | URL to pixels: parse, CSSOM, render tree, layout, paint, composite.   |
+| [HTML — Performance](./1_html_performance.md)                     | Script loading, resource hints, Core Web Vitals, and FOUC.            |
+| [HTML — Accessibility](./1_html_a11y.md)                          | POUR, names, landmarks, forms, and images.                            |
+| [UX laws](./7_special_ux.md)                                      | Jakob, Fitts, Hick, Miller, Postel, and related effects.              |
+| [UI principles](./7_special_ui.md)                                | Visual hierarchy, spacing, feedback, and a11y.                        |
+| [HTML — SEO](./1_html_seo.md)                                     | Crawlability, metadata, and structured data.                          |
+| [HTML — Advanced](./1_html_advanced.md)                           | Web components, shadow DOM, and newer HTML APIs.                      |
+| [HTML — Elements](./1_html_elements.md)                           | MDN-style element reference (in progress).                            |
+| [HTML — Attributes](./1_html_attributes.md)                       | MDN-style attribute reference (in progress).                          |
+| [HTML — Global attributes](./1_html_global_attributes.md)         | Attributes on any element (in progress).                              |
+| [HTML — Attributes by element](./1_html_attributes_by_element.md) | Per-element attribute lists (in progress).                            |
+| [HTML — Attribute values](./1_html_attribute_values.md)           | Enumerated and typed values (in progress).                            |
+| [HTML — Interview](./1_html_interview.md)                         | HTML interview questions, answers not filled in.                      |
 
 ### Interview practice
 

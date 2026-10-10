@@ -97,6 +97,25 @@ describe("handbookNavSections layout", () => {
     assert.equal(reference?.collapsible, true);
   });
 
+  it("marks HTML Reference as flat appendix nav", () => {
+    const html = findSubject("html");
+    const reference = html.sections?.find(
+      (section) => section.id === "reference",
+    );
+    assert.equal(reference?.flatNav, true);
+    assert.equal(reference?.collapsible, true);
+    assert.deepEqual(
+      reference?.clusters.map((cluster) => cluster.id),
+      [
+        "ref-elements",
+        "ref-attributes",
+        "ref-global-attributes",
+        "ref-attributes-by-element",
+        "ref-attribute-values",
+      ],
+    );
+  });
+
   it("places Utility Types in its own section between handbook and Reference", () => {
     const typescript = findSubject("typescript");
     const sectionIds = typescript.sections?.map((section) => section.id);
