@@ -6,7 +6,7 @@
 
 ### Related docs
 
-- [React — Algorithms](./4_react_algorithms.md) · [`useTransition`](./4_react_apis.md#starttransition) · [Suspense](./4_react_components.md#suspense) · [React 19](./4_react_server.md)
+- [React — Patterns](./4_react_patterns.md) · [React — Algorithms](./4_react_algorithms.md) · [React — Performance](./4_react_perf.md) · [React — Resilience](./4_react_resilience.md) · [`useTransition`](./4_react_apis.md#starttransition) · [Suspense](./4_react_components.md#suspense) · [React 19](./4_react_server.md)
 
 ### Main concepts
 
@@ -23,7 +23,7 @@
 
 - [Overview](#overview)
 - [Transitions](#transitions)
-- [Suspense UX](#suspense-ux)
+- [Suspense UX](#suspense-ux) — includes [Nested Suspense](#nested-suspense)
 
 ---
 
@@ -39,6 +39,17 @@
 **How it works:** Mark slow updates with `startTransition` or suspend with `use`/data libraries; show fallbacks only around the slow subtree.
 
 **When to use:** Tabbed apps, client-side “routing”, heavy filters, streaming RSC/SSR pages.
+
+**Concurrent vs sync (mental model):**
+
+| API                   | Urgent?       | User sees                            |
+| --------------------- | ------------- | ------------------------------------ |
+| `setState` in handler | Yes           | Update as soon as possible           |
+| `startTransition`     | No            | May keep previous UI while preparing |
+| `useDeferredValue`    | Defer display | Input instant, list lags             |
+| `Suspense` + async    | Stream        | Fallback in boundary only            |
+
+**See also:** [Performance](./4_react_perf.md) · [useTransition for slow UI](./4_react_algorithms.md#usetransition-for-slow-ui)
 
 **Sources:**
 
@@ -71,6 +82,19 @@ Use `isPending` for subtle chrome (dim header, disable tab) — not for blocking
 
 **When to use:** Client tab switch, route state in SPA, applying heavy filter state.
 
+**Common pitfalls:**
+
+- Putting **urgent** state updates inside the same `startTransition` as slow work — keep typing outside
+- Expecting transitions to **swallow** errors — use error boundaries
+- One top-level Suspense — full layout flash on nav ([Navigation without layout flash](#navigation-without-layout-flash))
+
+**Pluses and minuses:**
+
+| +                  | −                         |
+| ------------------ | ------------------------- |
+| Responsive input   | Harder debugging timeline |
+| Interruptible work | Must design pending UI    |
+
 **See also:** [useTransition for slow UI](./4_react_algorithms.md#usetransition-for-slow-ui)
 
 **Sources:**
@@ -92,11 +116,74 @@ useDeferredValue
 
 **When to use:** Large client filter where debounce feels laggy on the input itself.
 
-**See also:** [Debounced search](./4_react_algorithms.md#debounced-search)
+**Examples:**
+
+```tsx
+function SearchPage({ items }: { items: Item[] }) {
+  const [query, setQuery] = useState("");
+  const deferredQuery = useDeferredValue(query);
+  const isStale = query !== deferredQuery;
+
+  return (
+    <>
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
+      <Results query={deferredQuery} items={items} dimmed={isStale} />
+    </>
+  );
+}
+```
+
+**vs debounce:** Debounce delays **logic** by a timer; deferred value delays **render** of expensive subtree while React stays responsive — combine both only if you have network + heavy list.
+
+**Pluses and minuses:**
+
+| +                          | −                                     |
+| -------------------------- | ------------------------------------- |
+| No arbitrary timer         | List can show slightly stale filter   |
+| Built into React scheduler | Still O(n) work — just lower priority |
+
+**See also:** [Debounced search](./4_react_algorithms.md#debounced-search) · [Transitions](#transitions)
 
 **Sources:**
 
 [react.dev/reference/react/useDeferredValue](https://react.dev/reference/react/useDeferredValue)
+
+Nested Suspense
+
+</details>
+
+<details>
+  <summary>Nested Suspense</summary>
+
+### Nested Suspense
+
+**Definition:** Multiple **`<Suspense>`** boundaries at different depths so fast regions paint while slow regions show **local** skeletons — not one full-page spinner.
+
+**How it works:**
+
+```tsx
+<Layout>
+  <Header /> {/* sync */}
+  <Suspense fallback={<SidebarSkeleton />}>
+    <Sidebar />
+  </Suspense>
+  <Suspense fallback={<MainSkeleton />}>
+    <Main />
+  </Suspense>
+</Layout>
+```
+
+RSC: each `async` child can suspend independently when wrapped. Client: pair with `lazy` per panel.
+
+**When to use:** Dashboards, artist pages (bio vs albums), settings with heavy plugin panel.
+
+**Pitfalls:** Single boundary around `{children}` outlet → every navigation flashes entire content.
+
+**See also:** [Suspense boundaries](#suspense-boundaries) · [Navigation without layout flash](#navigation-without-layout-flash)
+
+**Sources:**
+
+[react.dev/reference/react/Suspense](https://react.dev/reference/react/Suspense)
 
 Suspense UX
 
@@ -151,6 +238,31 @@ Navigation without layout flash
 
 **When to use:** Music-browser style demos; any SPA replacing content under fixed header.
 
+**Examples:**
+
+```tsx
+function AppShell() {
+  const [page, setPage] = useState("home");
+  const [isPending, startTransition] = useTransition();
+
+  return (
+    <div className={isPending ? "shell-pending" : ""}>
+      <Nav
+        onSelect={(id) => startTransition(() => setPage(id))}
+        pending={isPending}
+      />
+      <Suspense fallback={<PanelSkeleton />}>
+        <Page page={page} />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+**Thoughts:** `isPending` on **chrome** (opacity, pointer-events) beats blocking the whole viewport.
+
+**See also:** [Nested Suspense](#nested-suspense) · [Resilience — Errors in transitions](./4_react_resilience.md#error-boundaries)
+
 **Sources:**
 
 [react.dev/reference/react/Suspense](https://react.dev/reference/react/Suspense)
@@ -170,7 +282,17 @@ Errors in transitions
 
 **When to use:** Mutation buttons using transitions; lazy-loaded panels.
 
-**See also:** [Resilience](./4_react_resilience.md)
+**Examples:**
+
+```tsx
+<ErrorBoundary fallback={<p>Tab failed to load.</p>}>
+  <TabPanel id={tab} />
+</ErrorBoundary>
+```
+
+Event handlers that throw still need `try/catch` — boundaries only cover render/lifecycle below them.
+
+**See also:** [Resilience](./4_react_resilience.md) · [What boundaries cannot catch](./4_react_resilience.md#what-boundaries-cannot-catch)
 
 **Sources:**
 

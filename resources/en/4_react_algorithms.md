@@ -6,20 +6,29 @@ Step-by-step **UI logic** in React — filtering, debouncing, mutations, paginat
 
 ### Related docs
 
-- [React — Patterns](./4_react_patterns.md) · [React — Hooks](./4_react_hooks.md) · [TanStack](./4_react_tanstack.md) · [React — Core](./4_react_core.md)
+- [React — Patterns](./4_react_patterns.md) · [React — Performance](./4_react_perf.md) · [React — Concurrent UI](./4_react_concurrent.md) · [React — Resilience](./4_react_resilience.md) · [Hooks](./4_react_hooks.md) · [TanStack](./4_react_tanstack.md) · [Core](./4_react_core.md)
 
 ### Main concepts
 
-| Concept                          | Covers                                  |
-| -------------------------------- | --------------------------------------- |
-| **Client filter & sort**         | Derive rows in render; stable sort keys |
-| **Debounced search**             | Pause before network or heavy filter    |
-| **Throttle vs debounce**         | Rate-limit scroll/resize vs input       |
-| **Fetch with abort**             | Cancel stale requests                   |
-| **Optimistic updates**           | Patch UI first, rollback on error       |
-| **Pagination & infinite scroll** | Offset, cursor, `fetchNext`             |
-| **useTransition for slow UI**    | Keep input responsive during heavy work |
-| **List rendering algorithm**     | Keys, virtualization, context split     |
+| Concept                          | Covers                                   |
+| -------------------------------- | ---------------------------------------- |
+| **Client filter & sort**         | Derive rows in render; stable sort keys  |
+| **Debounced search**             | Pause before network or heavy filter     |
+| **Throttle vs debounce**         | Rate-limit scroll/resize vs input        |
+| **Fetch with abort**             | Cancel stale requests                    |
+| **Optimistic updates**           | Patch UI first, rollback on error        |
+| **Pagination & infinite scroll** | Offset, cursor, `fetchNext`              |
+| **useTransition for slow UI**    | Keep input responsive during heavy work  |
+| **List rendering algorithm**     | Keys, virtualization, context split      |
+| **Tree flatten algorithm**       | Visible rows from nested expand/collapse |
+| **Race-safe request id**         | Ignore stale async results               |
+| **Immutable nested update**      | Copy-on-write state patches              |
+| **Reorder list algorithm**       | Drag-and-drop array move                 |
+| **Wizard step algorithm**        | Multi-step flows with validation         |
+| **Functional setState**          | Avoid stale closures                     |
+| **Batch updates**                | React 18 automatic batching              |
+| **Group-by aggregation**         | Reduce rows for dashboards               |
+| **Merge paginated pages**        | Append API pages without duplicates      |
 
 ### Sections
 
@@ -27,6 +36,7 @@ Step-by-step **UI logic** in React — filtering, debouncing, mutations, paginat
 - [Data & filter algorithms](#data-filter-algorithms)
 - [Async UI algorithms](#async-ui-algorithms)
 - [List algorithms](#list-algorithms)
+- [State update algorithms](#state-update-algorithms)
 
 ---
 
@@ -42,6 +52,19 @@ Step-by-step **UI logic** in React — filtering, debouncing, mutations, paginat
 **How it works:** Pair each algorithm with clear **inputs**, **outputs**, and **failure modes** (stale requests, rollback, empty pages). Structural patterns (lifting, composition) live in [Patterns](./4_react_patterns.md).
 
 **When to use:** Autocomplete, feeds, admin tables, optimistic toggles, interview “implement infinite scroll / debounce” tasks.
+
+**Algorithm picker (quick map):**
+
+| User story                       | Start here                                                                                                    |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Typeahead / search API           | [Debounced search](#debounced-search) + [Fetch with abort](#fetch-with-abort)                                 |
+| Like / toggle / reorder          | [Optimistic updates](#optimistic-updates)                                                                     |
+| Feed or “Load more”              | [Pagination & infinite scroll](#pagination-infinite-scroll) · [Merge paginated pages](#merge-paginated-pages) |
+| Huge table on client             | [Client filter & sort](#client-filter-sort) + [useTransition](#usetransition-for-slow-ui)                     |
+| Wrong data after fast tab switch | [Race-safe request id](#race-safe-request-id)                                                                 |
+| Nested folders in virtual table  | [Tree flatten algorithm](#tree-flatten-algorithm)                                                             |
+
+**Thoughts:** Algorithms answer **when** and **in what order**; [Patterns](./4_react_patterns.md) answer **how to structure components**.
 
 **Sources:**
 
@@ -68,6 +91,15 @@ Client filter & sort
 4. Sort with **stable** tie-breaker (e.g. `id`) when keys compare equal
 
 **When to use:** < few thousand rows client-side; move to server pagination when latency or memory hurts.
+
+**Sorting detail:** Use `localeCompare` for strings; for numbers sort `(a, b) => a - b`. When sorting objects, **copy** before `.sort()` — `Array.prototype.sort` mutates in place.
+
+**Pluses and minuses:**
+
+| +                               | −                                     |
+| ------------------------------- | ------------------------------------- |
+| Instant feedback, no round-trip | Main-thread cost grows with `n`       |
+| Simple mental model             | Wrong for huge datasets or PII in URL |
 
 **Examples:**
 
@@ -108,6 +140,36 @@ Throttle vs debounce
 Do not debounce every keystroke display — only the **expensive** side (API). Keep controlled input instant.
 
 **When to use:** Interview “difference debounce/throttle”; infinite scroll load-more often uses throttle or intersection, not debounce.
+
+**Examples:**
+
+```tsx
+// Debounce — only run search after 300 ms quiet
+function useDebouncedValue<T>(value: T, ms: number) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const id = setTimeout(() => setDebounced(value), ms);
+    return () => clearTimeout(id);
+  }, [value, ms]);
+  return debounced;
+}
+
+// Throttle — at most once per 100 ms while scrolling
+function useThrottledCallback(fn: () => void, ms: number) {
+  const last = useRef(0);
+  return useCallback(() => {
+    const now = Date.now();
+    if (now - last.current >= ms) {
+      last.current = now;
+      fn();
+    }
+  }, [fn, ms]);
+}
+```
+
+**Interview angle:** Debounce = “wait until they stop”; throttle = “sample while they keep going”. Leading vs trailing debounce is a product choice (fire on first key vs last).
+
+**See also:** [Debounced search](#debounced-search) · [Performance — Render discipline](./4_react_perf.md#render-discipline)
 
 **Sources:**
 
@@ -166,9 +228,6 @@ Debounced search
 <details>
   <summary>Debounced search</summary>
 
-<details>
-  <summary>Debounced search</summary>
-
 ### Debounced search
 
 **Definition:** Wait until the user **pauses typing** before firing an expensive filter or network search — reduces work and avoids racey partial queries.
@@ -180,6 +239,16 @@ Debounced search
 3. Cancel or ignore stale responses (`AbortController`, query keys in TanStack Query)
 
 **When to use:** Autocomplete, admin tables, any keystroke-triggered API.
+
+**Failure modes:**
+
+| Risk              | Mitigation                                   |
+| ----------------- | -------------------------------------------- |
+| Stale response    | AbortController or request id                |
+| Empty flash       | Keep previous results until new data arrives |
+| Slow network feel | Show subtle pending on results, not on input |
+
+**Typical timings:** 200–400 ms debounce for search APIs; 300–500 ms for autosave drafts (product-dependent).
 
 **Examples:**
 
@@ -219,6 +288,20 @@ Optimistic updates
 4. On failure: restore snapshot + show error; on success: reconcile with server response
 
 **When to use:** Likes, toggles, reorder lists — not for irreversible actions without confirmation.
+
+**Edge cases:**
+
+- **Double submit** — disable button while mutation pending
+- **Partial failure** — rollback single item, not whole list
+- **Server rejects** — show error toast; restore snapshot; optional retry
+- **React 19** — consider [`useOptimistic`](./4_react_hooks.md) for built-in pending UI
+
+**Pluses and minuses:**
+
+| +                   | −                                     |
+| ------------------- | ------------------------------------- |
+| Snappy UX           | Harder debugging if rollback missed   |
+| Works offline-first | Needs idempotent server when possible |
 
 **Examples:**
 
@@ -262,6 +345,37 @@ Pagination & infinite scroll
 Use `IntersectionObserver` or library helpers; pair large lists with [virtualization](./4_react_tanstack.md).
 
 **When to use:** Feeds, tables with thousands of rows, mobile lists.
+
+**Examples (infinite scroll sentinel):**
+
+```tsx
+const sentinelRef = useRef<HTMLDivElement>(null);
+useEffect(() => {
+  const el = sentinelRef.current;
+  if (!el || !hasMore) return;
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting && !isFetching) fetchNextPage();
+    },
+    { rootMargin: "200px" },
+  );
+  io.observe(el);
+  return () => io.disconnect();
+}, [hasMore, isFetching, fetchNextPage]);
+
+return (
+  <>
+    {rows.map((row) => (
+      <Row key={row.id} row={row} />
+    ))}
+    <div ref={sentinelRef} aria-hidden />
+  </>
+);
+```
+
+**Pitfalls:** Fetching page 2 twice (guard with `isFetching`); not resetting when `filter` changes; appending without [dedupe](#merge-paginated-pages).
+
+**See also:** [Merge paginated pages](#merge-paginated-pages) · [TanStack Query](./4_react_tanstack.md)
 
 **Sources:**
 
@@ -324,7 +438,24 @@ Prefer schema libs (Zod) for sync rules; async layer for server checks.
 
 **When to use:** Sign-up, checkout, admin forms with server-side uniqueness.
 
-**See also:** [Actions](./4_react_server.md#actions) · [Controlled vs uncontrolled](./4_react_patterns.md#controlled-vs-uncontrolled)
+**Examples:**
+
+```tsx
+const checkId = useRef(0);
+async function validateUsername(name: string) {
+  const id = ++checkId.current;
+  setValidating(true);
+  try {
+    const ok = await api.isUsernameAvailable(name);
+    if (id !== checkId.current) return; // newer check started
+    setFieldError("username", ok ? undefined : "Taken");
+  } finally {
+    if (id === checkId.current) setValidating(false);
+  }
+}
+```
+
+**See also:** [Race-safe request id](#race-safe-request-id) · [Controlled forms pattern](./4_react_patterns.md#controlled-forms-pattern) · [Actions](./4_react_server.md#actions)
 
 **Sources:**
 
@@ -352,6 +483,20 @@ List rendering algorithm
 
 **When to use:** Tables, feeds, nested trees; common interview “optimize this list”.
 
+**Key rules (interview):**
+
+- **`key` must be stable** across renders for the same row — use entity `id`, not random `uuid()` per render
+- **Avoid `key={index}`** when list reorders, inserts, or filters — causes wrong state reuse
+- **Do not compute heavy filter inside each row** — derive `visibleRows` once above the map
+- **Split contexts** so row does not subscribe to unrelated global state
+
+**Pluses and minuses:**
+
+| +                          | −                            |
+| -------------------------- | ---------------------------- |
+| Straightforward map        | O(n) every parent re-render  |
+| Virtualization fixes scale | More complex row measurement |
+
 **See also:** [Reconciliation](./4_react_core.md#reconciliation) · [When to memoize](./4_react_patterns.md#when-to-memoize)
 
 **Sources:**
@@ -378,10 +523,292 @@ Tree flatten algorithm
 
 **When to use:** File trees, threaded comments, nested admin menus with thousands of nodes.
 
+**Examples:**
+
+```tsx
+type FlatRow = { id: string; depth: number; label: string };
+
+function flattenVisible(
+  nodes: TreeNode[],
+  expanded: Set<string>,
+  depth = 0,
+): FlatRow[] {
+  const out: FlatRow[] = [];
+  for (const node of nodes) {
+    out.push({ id: node.id, depth, label: node.label });
+    if (expanded.has(node.id) && node.children?.length) {
+      out.push(...flattenVisible(node.children, expanded, depth + 1));
+    }
+  }
+  return out;
+}
+```
+
+**Thoughts:** Memoize `flattenVisible` on `[nodes, expanded]`; toggle expand only updates `expanded` Set copy.
+
 **See also:** [List rendering algorithm](#list-rendering-algorithm) · [TanStack Table](./4_react_tanstack.md)
 
 **Sources:**
 
 [react.dev/learn/rendering-lists](https://react.dev/learn/rendering-lists)
+
+</details>
+
+### State update algorithms
+
+<details>
+  <summary>Race-safe request id</summary>
+
+### Race-safe request id
+
+**Definition:** Increment a **request id** (or generation counter) when starting async work; apply results only if the id still matches when the Promise resolves.
+
+**How it works:**
+
+```tsx
+useEffect(() => {
+  let requestId = ++latestId;
+  fetch(url).then((data) => {
+    if (requestId !== latestId) return; // stale
+    setData(data);
+  });
+}, [url]);
+```
+
+Complements [Fetch with abort](#fetch-with-abort) — use both for manual fetches without Query.
+
+**When to use:** Typeahead without AbortController support; rapid filter changes.
+
+**Pluses and minuses:**
+
+| +                              | −                                   |
+| ------------------------------ | ----------------------------------- |
+| Works without abortable fetch  | Must remember to bump id in cleanup |
+| Simple mental model in effects | Easy to forget in event handlers    |
+
+**Thoughts:** Prefer **AbortController** when the API supports it; request id is a good fallback for legacy endpoints.
+
+**See also:** [Fetch with abort](#fetch-with-abort) · [Debounced search](#debounced-search)
+
+**Sources:**
+
+[react.dev/learn/you-might-not-need-an-effect](https://react.dev/learn/you-might-not-need-an-effect)
+
+Immutable nested update
+
+</details>
+
+<details>
+  <summary>Immutable nested update</summary>
+
+### Immutable nested update
+
+**Definition:** Update nested state (object in array, map by id) by **copying** each level — never mutate `state[i].field` in place.
+
+**How it works:**
+
+```tsx
+setItems((items) =>
+  items.map((item) => (item.id === id ? { ...item, done: !item.done } : item)),
+);
+```
+
+For deep trees prefer normalized maps `Record<id, Entity>` or Immer inside reducers.
+
+**When to use:** Todo lists, table inline edit, Redux reducers.
+
+**See also:** [State reducer pattern](./4_react_patterns.md#state-reducer-pattern)
+
+**Sources:**
+
+[react.dev/learn/updating-objects-in-state](https://react.dev/learn/updating-objects-in-state)
+
+Reorder list algorithm
+
+</details>
+
+<details>
+  <summary>Reorder list algorithm</summary>
+
+### Reorder list algorithm
+
+**Definition:** Move one element from index **`from`** to **`to`** in an array for drag-and-drop UIs.
+
+**How it works:**
+
+```tsx
+function reorder<T>(list: T[], from: number, to: number): T[] {
+  const next = list.slice();
+  const [moved] = next.splice(from, 1);
+  next.splice(to, 0, moved);
+  return next;
+}
+```
+
+Persist order to server after drop; optimistic UI optional.
+
+**When to use:** Kanban columns, sortable tables, playlist editors.
+
+**Sources:**
+
+[react.dev/learn/updating-arrays-in-state](https://react.dev/learn/updating-arrays-in-state)
+
+Wizard step algorithm
+
+</details>
+
+<details>
+  <summary>Wizard step algorithm</summary>
+
+### Wizard step algorithm
+
+**Definition:** Model a multi-step flow with **`step` index** or **finite state** (`"details" | "payment" | "done"`), validating before `next`.
+
+**How it works:**
+
+1. `const [step, setStep] = useState(0)`
+2. `canNext = validate(stepData)` — block advance
+3. Back decreases step without losing draft (keep single form state object)
+4. Submit only on final step; use [Reset keys](./4_react_resilience.md#reset-keys) to restart
+
+**When to use:** Checkout, onboarding, admin wizards.
+
+**See also:** [State reducer pattern](./4_react_patterns.md#state-reducer-pattern)
+
+**Sources:**
+
+[react.dev/learn/managing-state](https://react.dev/learn/managing-state)
+
+Functional setState
+
+</details>
+
+<details>
+  <summary>Functional setState</summary>
+
+### Functional setState
+
+**Definition:** Pass **`setState(prev => ...)`** so updates use the latest state — fixes **stale closures** in timeouts, intervals, and rapid clicks.
+
+**How it works:**
+
+```tsx
+// ❌ stale count in async callback
+setCount(count + 1);
+
+// ✅ always latest
+setCount((c) => c + 1);
+```
+
+Same for functional updates in `useReducer` dispatches.
+
+**When to use:** Interview bug with `setCount(count + 1)` inside `setInterval`; batching multiple increments.
+
+**Common pitfalls:**
+
+- Closing over `items` in `setItems([...items, newItem])` after async gap — use `setItems((prev) => [...prev, newItem])`
+- Multiple `setCount(count + 1)` in one async handler — only last wins without functional form
+
+**See also:** [Batch updates](#batch-updates) · [Immutable nested update](#immutable-nested-update)
+
+**Sources:**
+
+[react.dev/reference/react/useState#setstate](https://react.dev/reference/react/useState)
+
+Batch updates
+
+</details>
+
+<details>
+  <summary>Batch updates</summary>
+
+### Batch updates
+
+**Definition:** React **batches** multiple `setState` calls in the same event handler into **one re-render** (React 18+ batches in promises/timeouts too in many cases).
+
+**How it works:** Do not rely on seeing intermediate state between two `setX` in one handler — read computed values in variables if needed before setting.
+
+**When to use:** Explaining “why only one render” in interviews; avoid unnecessary `flushSync` unless measuring.
+
+**Examples:**
+
+```tsx
+function handleClick() {
+  setCount((c) => c + 1);
+  setFlag(true);
+  // React 18+: typically one re-render with both updates applied
+}
+```
+
+**Escape hatch:** `flushSync` forces synchronous DOM update — use only when integrating non-React widgets or measuring; hurts concurrent scheduling.
+
+**See also:** [Functional setState](#functional-setstate) · [Concurrent UI](./4_react_concurrent.md)
+
+**Sources:**
+
+[react.dev/blog/2022/03/29/react-v18#new-feature-automatic-batching](https://react.dev/blog/2022/03/29/react-v18#new-feature-automatic-batching)
+
+Group-by aggregation
+
+</details>
+
+<details>
+  <summary>Group-by aggregation</summary>
+
+### Group-by aggregation
+
+**Definition:** Turn a flat list into **buckets** (by status, category, date) for sectioned UI — single pass O(n) with a `Map` or object accumulator.
+
+**How it works:**
+
+```tsx
+function groupBy<T>(items: T[], key: (item: T) => string): Map<string, T[]> {
+  const map = new Map<string, T[]>();
+  for (const item of items) {
+    const k = key(item);
+    const bucket = map.get(k);
+    if (bucket) bucket.push(item);
+    else map.set(k, [item]);
+  }
+  return map;
+}
+```
+
+Render: `Array.from(map, ([label, rows]) => <Section key={label} title={label} rows={rows} />)`.
+
+**When to use:** Kanban columns, order lists by status, analytics tables.
+
+**See also:** [Client filter & sort](#client-filter-sort)
+
+**Sources:**
+
+[MDN — Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+
+Merge paginated pages
+
+</details>
+
+<details>
+  <summary>Merge paginated pages</summary>
+
+### Merge paginated pages
+
+**Definition:** When loading **page 2+** of an API, **append** to existing rows while **deduplicating by `id`** in case of overlapping cursors or refetch.
+
+**How it works:**
+
+1. Store `pages: Item[][]` or flat `items` + `pageMeta`
+2. On `fetchNextPage`, `setItems((prev) => dedupeById([...prev, ...nextPage]))`
+3. TanStack Query: `getNextPageParam` + `useInfiniteQuery` handles merge; set `queryKey` when filters change to reset
+
+**When to use:** Infinite scroll, “Load more” buttons, cursor APIs that can shift after edits.
+
+**Thoughts:** Reset list when **filter** changes — do not merge unrelated queries.
+
+**See also:** [Pagination & infinite scroll](#pagination-infinite-scroll) · [TanStack Query](./4_react_tanstack.md)
+
+**Sources:**
+
+[react.dev/learn/synchronizing-with-effects](https://react.dev/learn/synchronizing-with-effects)
 
 </details>

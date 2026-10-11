@@ -6,7 +6,7 @@
 
 ### Related docs
 
-- [React — Concurrent UI](./4_react_concurrent.md) · [Error boundaries in Core](./4_react_core.md) · [Next.js `error.tsx`](./4_nextjs_routing.md) · [Testing](./7_special_testing.md)
+- [React — Patterns](./4_react_patterns.md) · [React — Algorithms](./4_react_algorithms.md) · [React — Concurrent UI](./4_react_concurrent.md) · [React — Performance](./4_react_perf.md) · [Error boundaries in Core](./4_react_core.md) · [Next.js `error.tsx`](./4_nextjs_routing.md) · [Testing](./7_special_testing.md)
 
 ### Main concepts
 
@@ -40,6 +40,19 @@
 
 **When to use:** Any production feature with async data and third-party widgets.
 
+**Resilience stack (layered):**
+
+| Layer         | Tool                               | Catches                     |
+| ------------- | ---------------------------------- | --------------------------- |
+| Widget        | Error boundary                     | Render throw in embed/chart |
+| Data fetch    | Query `error` + retry UI           | Network / 5xx               |
+| Route segment | `error.tsx` / error boundary route | Page-level RSC failure      |
+| Global        | `window.onerror` / monitoring      | Uncaught non-React errors   |
+
+**Thoughts:** Users need **action** (retry, go home, contact support) — not only “Something went wrong”.
+
+**See also:** [Concurrent — Errors in transitions](./4_react_concurrent.md#errors-in-transitions)
+
 **Sources:**
 
 [react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary)
@@ -64,6 +77,21 @@ Error boundaries
 - Does **not** catch event handlers, async code, or Server Component errors on server (use route `error.js`)
 
 **When to use:** Isolate third-party SDK crashes from whole app shell.
+
+**Where to place boundaries:**
+
+| Layer              | Catches                        |
+| ------------------ | ------------------------------ |
+| Around chart/embed | SDK render throw               |
+| Route segment      | Page-level failure (framework) |
+| Root (sparingly)   | Last resort white-screen guard |
+
+**Pluses and minuses:**
+
+| +                     | −                               |
+| --------------------- | ------------------------------- |
+| Isolates blast radius | Class API or extra dependency   |
+| Better UX than blank  | Does not fix event/async errors |
 
 **Examples:**
 
@@ -111,6 +139,28 @@ What boundaries cannot catch
 
 **When to use:** Debugging “boundary did not fire” — check if throw was in effect/event.
 
+**Interview angle:** “Boundaries are like `try/catch` for **render** — not for events or async. For fetch errors use error state or Query.”
+
+**Examples (event handler — boundary useless):**
+
+```tsx
+function BadButton() {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        throw new Error("click"); // not caught by boundary
+      }}
+    >
+      Save
+    </button>
+  );
+}
+// Fix: try/catch in handler → setLocalError(...)
+```
+
+**See also:** [Retry UI pattern](#retry-ui-pattern)
+
 **Sources:**
 
 [react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary)
@@ -135,6 +185,35 @@ Recovery patterns
 3. Optionally exponential backoff for API retries (not for render retries)
 
 **When to use:** Transient network failures; flaky embeds.
+
+**Examples (react-error-boundary style):**
+
+```tsx
+function DataPanel() {
+  const { data, error, refetch, isFetching } = useQuery({
+    queryKey: ["stats"],
+    queryFn: fetchStats,
+  });
+  if (error) {
+    return (
+      <div role="alert">
+        <p>Could not load stats.</p>
+        <button type="button" onClick={() => refetch()} disabled={isFetching}>
+          Try again
+        </button>
+      </div>
+    );
+  }
+  return <Chart data={data} />;
+}
+```
+
+**Pluses and minuses:**
+
+| +                   | −                            |
+| ------------------- | ---------------------------- |
+| Clear recovery path | Retry storms without backoff |
+| Works with Query    | Render errors need boundary  |
 
 **See also:** [Fetch with abort](./4_react_algorithms.md#fetch-with-abort) · [TanStack Query retry](./4_react_tanstack.md)
 
@@ -163,7 +242,23 @@ Increment `attemptId` on “Reset form”. Same pattern as resetting uncontrolle
 
 **When to use:** Multi-step wizard corrupted state; failed file upload widget.
 
-**See also:** [Preserving state](https://react.dev/learn/preserving-and-resetting-state)
+**How it works with boundaries:** Combine `key={resetKey}` on subtree with boundary `resetKeys={[resetKey]}` (library) so both internal state and error flag clear on “Start over”.
+
+**Examples:**
+
+```tsx
+const [attempt, setAttempt] = useState(0);
+return (
+  <>
+    <CheckoutWizard key={attempt} />
+    <button type="button" onClick={() => setAttempt((a) => a + 1)}>
+      Start over
+    </button>
+  </>
+);
+```
+
+**See also:** [Wizard step algorithm](./4_react_algorithms.md#wizard-step-algorithm) · [Preserving state](https://react.dev/learn/preserving-and-resetting-state)
 
 **Sources:**
 
@@ -184,7 +279,32 @@ Route-level errors
 
 **When to use:** Server Components throw, data loader fails for one page — keep nav shell.
 
-**See also:** [Next.js — Routing](./4_nextjs_routing.md)
+**Examples (App Router pattern):**
+
+```tsx
+"use client";
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
+  return (
+    <div>
+      <h2>Something went wrong</h2>
+      <button type="button" onClick={() => reset()}>
+        Try again
+      </button>
+    </div>
+  );
+}
+```
+
+**Thoughts:** Log `error.digest` / monitoring in production; `reset()` re-renders the segment — pair with refetch if data was the cause.
+
+**See also:** [Next.js — Routing](./4_nextjs_routing.md) · [Retry UI pattern](#retry-ui-pattern)
 
 **Sources:**
 
@@ -205,7 +325,30 @@ Offline & fallback
 
 **When to use:** Mobile PWA-ish apps, field tools with spotty network.
 
-**See also:** [Custom hooks pattern](./4_react_patterns.md#custom-hooks-pattern)
+**How it works:**
+
+1. `useOnlineStatus()` + banner when `!online`
+2. Query `networkMode: 'offlineFirst'` or show last cached page from persistence
+3. Disable mutations that cannot sync; queue with background sync only when product requires it
+
+**Pluses and minuses:**
+
+| +                      | −                             |
+| ---------------------- | ----------------------------- |
+| Honest UX vs spinner   | Stale data must be labeled    |
+| Works with Query cache | `online` events are imperfect |
+
+**Examples:**
+
+```tsx
+function OfflineBanner() {
+  const online = useOnlineStatus();
+  if (online) return null;
+  return <p role="status">You are offline — showing saved data.</p>;
+}
+```
+
+**See also:** [Custom hooks pattern](./4_react_patterns.md#custom-hooks-pattern) · [Optimistic updates](./4_react_algorithms.md#optimistic-updates)
 
 **Sources:**
 
