@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { CardGrid } from "./CardGrid";
 import type { BrowseCard } from "@/lib/catalog";
 
@@ -24,27 +25,52 @@ function compactSectionItems(sections: readonly ClusterSection[]) {
   }));
 }
 
+function multiItemSection({ cluster, items }: ClusterSection) {
+  return (
+    <section key={cluster.id} id={cluster.id} className="scroll-mt-24">
+      <h2 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+        {cluster.title}
+      </h2>
+      <div className="mt-4">
+        <CardGrid items={items} />
+      </div>
+    </section>
+  );
+}
+
 function ClusterBlocks({ sections }: { sections: readonly ClusterSection[] }) {
   if (isCompactSectionList(sections)) {
     return <CardGrid items={compactSectionItems(sections)} />;
   }
 
-  return (
-    <>
-      {sections.map(({ cluster, items }) => (
-        <section key={cluster.id} id={cluster.id} className="scroll-mt-24">
-          {items.length === 1 ? null : (
-            <h2 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-              {cluster.title}
-            </h2>
-          )}
-          <div className={items.length === 1 ? undefined : "mt-4"}>
-            <CardGrid items={items} />
-          </div>
-        </section>
-      ))}
-    </>
-  );
+  const blocks: ReactNode[] = [];
+  let singleBatch: ClusterSection[] = [];
+
+  const flushSingleBatch = () => {
+    if (singleBatch.length === 0) {
+      return;
+    }
+    const batchKey = singleBatch.map((section) => section.cluster.id).join("-");
+    blocks.push(
+      <CardGrid
+        key={`singles-${batchKey}`}
+        items={compactSectionItems(singleBatch)}
+      />,
+    );
+    singleBatch = [];
+  };
+
+  for (const section of sections) {
+    if (section.items.length === 1) {
+      singleBatch.push(section);
+      continue;
+    }
+    flushSingleBatch();
+    blocks.push(multiItemSection(section));
+  }
+  flushSingleBatch();
+
+  return <>{blocks}</>;
 }
 
 export function ClusterCardSections({
