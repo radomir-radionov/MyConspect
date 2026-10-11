@@ -538,6 +538,18 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "API React 19, SSR и React Server Components.",
   "Server Components, Server Functions, and RSC directives ('use client', 'use server').":
     "Server Components, Server Functions и директивы RSC ('use client', 'use server').",
+  "React UI patterns, rendering-minded algorithms, and applying them in real features.":
+    "Паттерны React, алгоритмы с учётом рендеринга и применение на практике.",
+  "Composition, state placement, compound components, and memoization habits.":
+    "Композиция, размещение state, compound components и привычки memoization.",
+  "Debouncing, optimistic updates, pagination, and list rendering in practice.":
+    "Debounce, optimistic updates, пагинация и рендер списков на практике.",
+  "Profiling, waterfalls, code splitting, and render discipline.":
+    "Профилирование, waterfalls, code splitting и дисциплина рендера.",
+  "Transitions, deferred values, and Suspense navigation UX.":
+    "Transitions, deferred values и Suspense при навигации.",
+  "Error boundaries, retries, reset keys, and route-level recovery.":
+    "Error boundaries, retry, reset keys и восстановление на уровне роутов.",
   "Redux Toolkit, global client state, and RTK Query.":
     "Redux Toolkit, глобальный client state и RTK Query.",
   "Routing, libraries, performance, and legacy.":
