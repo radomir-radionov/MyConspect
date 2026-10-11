@@ -6,7 +6,7 @@
 
 ### Related docs
 
-- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Интервью](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Интервью](./4_react_interview.md)
 
 ### Sections
 
@@ -19,7 +19,7 @@
 
 ## 1. Library overview
 
-Реагировать
+### Library overview
 
 <details>
   <summary>React overview</summary>
@@ -75,13 +75,13 @@ createRoot(document.getElementById("root")!).render(<Counter />);
 
 Веб-установка — это **два** пакета, **три** `react-dom` пути импорта (не три пакета npm):
 
-| | Роль               |
+| | Роль |
 | | ------------------ | ------------------------------------------------------------ |
-| | `react`            | Платформо-независимый пользовательский интерфейс             |
-| | `react-dom`        | Веб-рендерер (заменяет `react-native` на мобильном телефоне) |
-| | `react-dom/client` | `createRoot`, `hydrateRoot`                                  |
-| | `react-dom`        | `createPortal`, `flushSync`, `useFormStatus`                 |
-| | `react-dom/server` | `renderToString` / потоковое ССР                             |
+| | `react` | Платформо-независимый пользовательский интерфейс |
+| | `react-dom` | Веб-рендерер (заменяет `react-native` на мобильном телефоне) |
+| | `react-dom/client` | `createRoot`, `hydrateRoot` |
+| | `react-dom` | `createPortal`, `flushSync`, `useFormStatus` |
+| | `react-dom/server` | `renderToString` / потоковое ССР |
 
 `react-dom` запускает **первый** рендеринг и **фиксацию**; `react` запускает **рендеринг** + `setState`. Браузер рисует.
 
@@ -123,11 +123,11 @@ createPortal(<Modal />, document.body);
 
 **Библиотека** решает конкретную проблему (рендеринг пользовательского интерфейса); вы управляете архитектурой. **Структура** меняет управление — она определяет структуру проекта, маршрутизацию и шаблоны данных.
 
-| | Библиотека (React) | Фреймворк (Next.js)        |
+| | Библиотека (React) | Фреймворк (Next.js) |
 | | ------------------ | -------------------------- | ----------------------------------------- |
-| | Контроль           | Вы составляете стопку      | Структура предписывает соглашения         |
-| | Маршрутизация      | Принесите свой собственный | Встроенная файловая маршрутизация         |
-| | Получение данных   | Принесите свой собственный | Серверные компоненты, `fetch` кэширование |
+| | Контроль | Вы составляете стопку | Структура предписывает соглашения |
+| | Маршрутизация | Принесите свой собственный | Встроенная файловая маршрутизация |
+| | Получение данных | Принесите свой собственный | Серверные компоненты, `fetch` кэширование |
 
 **Examples:**
 
@@ -193,40 +193,85 @@ function LikeButton({
 
 **See also:**
 
-[Правила React](#rules-of-react) · [SOLID в React](#solid-in-react) · [Шаблоны композиции](#composition-patterns)
+[Rules of React](#rules-of-react-catalog) · [SOLID in React](#solid-in-react) · [Composition patterns](#composition-patterns)
 
-Правила реагирования
+Rules of React catalog
 
 **Sources:** [react.dev/blog/2024/12/05/react-19](https://react.dev/blog/2024/12/05/react-19)
 
 </details>
 
-<details>
-  <summary>Rules of React</summary>
-
 ### Rules of React
 
-**Definition:** Идиомы React предполагает, что вы следуете **правилам, а не стилю**. Разбейте их → ошибки, и компилятор/параллельный подход не смогут помочь.
+Rules of React catalog
+
+<details>
+  <summary>Rules of React catalog</summary>
+
+### Rules of React catalog
+
+**Definition:** **Rules of React** — идиомы, которые React считает **правилами, а не стилем**. Нарушение → баги; Compiler и Concurrent не исправят нарушения за вас.
 
 **How it works:**
 
-Три ведра. Применить с помощью [`<StrictMode>`](#строгий-режим) + `eslint-plugin-react-hooks`.
+| Rule                                                                    |
+| ----------------------------------------------------------------------- |
+| [Components and Hooks must be pure](#components-and-hooks-must-be-pure) |
+| [React calls Components and Hooks](#react-calls-components-and-hooks)   |
+| [Rules of Hooks](#rules-of-hooks)                                       |
 
-| Ведро                                                  | Правило                                                                                                                                                                                               |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **[Чистота](#чистота)**                                | Те же реквизиты/состояние/контекст → тот же JSX. Нет `fetch` / `new Date()` / мутировать при рендеринге. Скопируйте, затем `setState`. Не изменяйте аргументы или значения хука, уже имеющиеся в JSX. |
-| **React звонит вам**                                   | `<Article />`, никогда `Article()`. Не передавайте хуки в качестве реквизитов и не заключайте их в HOF.                                                                                               |
-| **[Правила хуков](./4_react_hooks.md#rules-of-hooks)** | Только верхний уровень (без циклов/условий/раннего возврата). Только в компонентах или `use*` крючки.                                                                                                 |
+Поддержка: [`<StrictMode>`](./4_react_components.md#strictmode) и `eslint-plugin-react-hooks`. Подробнее о рендере: [Purity](#purity).
 
-Локальные объекты, созданные **этим рендерингом**, могут видоизменяться **до** JSX. Изменение свойств, состояния, массивов модулей или DOM во время рендеринга не допускается.
+**When to use:** Всегда — в каждом компоненте и custom hook.
 
-**When to use:**
+**Sources:**
 
-Всегда.
+[react.dev/reference/rules](https://react.dev/reference/rules)
 
-#### Common pitfalls
+Components and Hooks must be pure
 
-Рассматривать правила как необязательные; побочные эффекты при рендере; внедрение хука через реквизит; `if (loggedIn) useX()`.
+</details>
+
+<details>
+  <summary>Components and Hooks must be pure</summary>
+
+### Components and Hooks must be pure
+
+**Definition:** Компоненты и хуки должны быть **чистыми** относительно входов одного рендера — предсказуемый UI, отладка и безопасная автоматическая оптимизация.
+
+**How it works:**
+
+| Принцип                      | Смысл                                                     |
+| ---------------------------- | --------------------------------------------------------- |
+| **Идемпотентность**          | Те же props, state, context → тот же JSX                  |
+| **Эффекты вне render**       | Нет `fetch` и подписок в теле render — handlers и effects |
+| **Неизменяемые props/state** | Не мутировать; копия и `setState`                         |
+| **Аргументы хуков**          | Не менять значения после передачи в Hook                  |
+| **После JSX**                | Не мутировать значение, уже попавшее в JSX                |
+
+**When to use:** Каждый путь рендера в компонентах и `use*`.
+
+**Sources:**
+
+[react.dev/reference/rules/components-and-hooks-must-be-pure](https://react.dev/reference/rules/components-and-hooks-must-be-pure)
+
+React calls Components and Hooks
+
+</details>
+
+<details>
+  <summary>React calls Components and Hooks</summary>
+
+### React calls Components and Hooks
+
+**Definition:** **React** решает, когда рендерить компоненты и хуки — вы описываете UI в JSX.
+
+**How it works:**
+
+| Правило                               | Смысл                                          |
+| ------------------------------------- | ---------------------------------------------- |
+| **Не вызывать компонент как функцию** | `<Article />`, не `Article()`                  |
+| **Не передавать хуки как значения**   | Не прокидывать `useState` или hook через props |
 
 **Examples:**
 
@@ -236,21 +281,38 @@ return (
     <Article />
   </Layout>
 ); // ✅
-return <Layout>{Article()}</Layout>; // 🔴 React never owns that instance
-
-if (!id) return null;
-const user = useUser(id); // 🔴 hook after return — call it first
+return <Layout>{Article()}</Layout>; // 🔴
 ```
-
-**Thoughts:** _Рендеринг — это чистая формула; React вызывает вас — вы не вызываете компоненты и не передаете хуки._
-
-**See also:** [Чистота](#purity) · [Правила перехватчиков](./4_react_hooks.md#rules-of-hooks) · [Строгий режим](#strict-mode) · [Элемент против компонента](#element-vs-comComponent) · [Компилятор React](./4_react_server.md#react-compiler) · [Мыслить Реагировать](https://react.dev/learn/thinking-in-react)
 
 **Sources:**
 
-[react.dev/reference/rules](https://react.dev/reference/rules)
+[react.dev/reference/rules/react-calls-components-and-hooks](https://react.dev/reference/rules/react-calls-components-and-hooks)
 
-ТВЕРДЫЙ в React
+Rules of Hooks
+
+</details>
+
+<details>
+  <summary>Rules of Hooks</summary>
+
+### Rules of Hooks
+
+**Definition:** Хуки — функции с жёсткими правилами места вызова; нарушение ломает связанный список хуков компонента.
+
+**How it works:**
+
+| Правило                     | Смысл                                                         |
+| --------------------------- | ------------------------------------------------------------- |
+| **Только верхний уровень**  | Не в циклах, условиях, вложенных функциях — до early `return` |
+| **Только из React-функций** | Компоненты и custom `use*`                                    |
+
+Каталог хуков: [React — Hooks](./4_react_hooks.md).
+
+**Sources:**
+
+[react.dev/reference/rules/rules-of-hooks](https://react.dev/reference/rules/rules-of-hooks)
+
+SOLID in React
 
 </details>
 
@@ -409,7 +471,7 @@ function UsersPanel({ client }: { client: UserClient }) {
 
 **Thoughts:** _Небольшие специализированные подразделения, расширяемые за счет состава, вводящие данные — React создан для S, O и D._
 
-**See also:** [Философия](#philosophy) · [Шаблоны композиции](#composition-patterns) · [Пользовательские крючки](./4_react_hooks.md#custom-hooks) · [SOLID (overview)](./7_special_engineering.md#solid-overview)
+**See also:** [Философия](#philosophy) · [Шаблоны композиции](#composition-patterns) · [SOLID (overview)](./7_special_engineering.md#solid-overview)
 
 **Sources:**
 
@@ -419,44 +481,9 @@ function UsersPanel({ client }: { client: UserClient }) {
 
 </details>
 
-### Components & JSX
-
-Функции возвращают JSX. Реквизит стекает вниз; события текут вверх. Полные примечания: [Компоненты](#comComponents) · [JSX](#jsx).
-
-### Hooks
-
-Состояние, эффекты, контекст, ссылки в функциональных компонентах. Обычай `use*` извлекает логику. Полные примечания: [Справочник по хукам](./4_react_hooks.md#5-hooks-reference) · [Правила хуков](./4_react_hooks.md#rules-of-hooks).
-
----
-
-### Primary references
-
-**Definition:** Официальные ссылки и ссылки сообщества на React 19, компилятор, шаблоны TypeScript и архитектуру.
-
-**Examples:** Начните с [react.dev Learn](https://react.dev/learn) для интерактивных руководств, затем используйте Reference для API-интерфейсов ловушек.
-
-**Sources:**
-
-тщательно подобранный список ниже
-
-- [react.dev](https://react.dev/) — официальная документация (Обучение + Справочник)
-- [Выпуск React 19](https://react.dev/blog/2024/12/05/react-19)
-- [Компилятор React](https://react.dev/learn/react-compiler)
-- [Шпаргалка по React TypeScript](https://react-typescript-cheatsheet.netlify.app/)
-- [patterns.dev/react](https://www.patterns.dev/react/)
-- [Функциональный дизайн](https://feature-sliced.design/)- [TanStack Router](https://tanstack.com/router) · [TanStack Query](https://tanstack.com/query)
-- [nuqs](https://nuqs.dev/)
-- [CASL](https://casl.js.org/) · [orval](https://orval.dev/) · [shadcn/ui](https://ui.shadcn.com/)
-- [next-intl](https://next-intl.dev/)
-
-Связанные документы в этом репозитории
-
-</details>
-
-<details>
-  <summary>Related notes</summary>
-
 ## 2. Rendering model
+
+### Rendering model
 
 <details>
   <summary>Render pipeline</summary>
@@ -512,7 +539,7 @@ function Tooltip({ text }: { text: string }) {
 
 **Thoughts:** _Расписания триггеров → вычисления рендеринга (могут повторяться) → фиксация изменений один раз → рисование →_ `useEffect`_._
 
-**See also:** [React vs ReactDOM](#react-vs-reactdom) · [useLayoutEffect](./4_react_hooks.md#uselayouteffect) · [Виртуальный DOM и согласование](#virtual-dom--reconciliation) · [Параллельный рендеринг](#concurrent-rendering) · [Пакетная обработка](#пакетная обработка)
+**See also:** [React vs ReactDOM](#react-vs-reactdom) · [Виртуальный DOM и согласование](#virtual-dom--reconciliation) · [Параллельный рендеринг](#concurrent-rendering) · [Пакетная обработка](#batching)
 
 **Sources:**
 
@@ -643,7 +670,7 @@ App
                                  └─ child → ItemA ── sibling → ItemB
 ```
 
-Пройдите: Приложение → Заголовок → Главное → ItemA → ItemB, затем `completeWork` резервное копирование. Крючки живут `memoizedState` на волокне → [Правила перехватчиков](./4_react_hooks.md#rules-of-hooks).
+Пройдите: Приложение → Заголовок → Главное → ItemA → ItemB, затем `completeWork` резервное копирование. Состояние хуков живёт в `memoizedState` на волокне (один и тот же порядок вызовов на каждом рендере).
 
 Одно волокно (или короткий пакет), обработанное ранее `shouldYield()`. React **завершает текущую функцию**, а затем завершает выполнение — никогда в середине компонента. Типичный срез ~5 мс; следующий кадр возобновляется на следующем волокне. **Коммит никогда не приводит к результату.**
 
@@ -691,7 +718,7 @@ startTransition(() => setTab('analytics')); // transition lane
 
 **Thoughts:** _Рендер готовит работу по частям; commit применяет его за один атомарный проход._
 
-**See also:** [Конвейер рендеринга](#render-pipeline) · [Виртуальный DOM и согласование](#virtual-dom--reconciliation) · [Параллельный рендеринг](#concurrent-rendering) · [Пакетная обработка](#batching) · [Правила перехватчиков](./4_react_hooks.md#rules-of-hooks)
+**See also:** [Конвейер рендеринга](#render-pipeline) · [Виртуальный DOM и согласование](#virtual-dom--reconciliation) · [Параллельный рендеринг](#concurrent-rendering) · [Пакетная обработка](#batching)
 
 **Sources:**
 
@@ -745,7 +772,7 @@ function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 
 **Thoughts:** _Подготовьте пользовательский интерфейс в фоновом режиме, сначала выполните срочную работу; устаревший пользовательский интерфейс на короткое время — это компромисс._
 
-**See also:** [React Fiber](#react-fiber) · [useTransition / useDeferredValue](./4_react_hooks.md#usetransition--usedeferredvalue) · [Конвейер рендеринга](#render-pipeline)
+**See also:** [React Fiber](#react-fiber) · [Конвейер рендеринга](#render-pipeline) · [Пакетная обработка](#batching)
 
 **Sources:**
 
@@ -886,7 +913,7 @@ setCount(count + 1); // still +1 total — use c => c + 1
 #### Common pitfalls
 
 - Отключение строгого режима, поскольку эффекты запускаются дважды — из-за ошибки отсутствует очистка, а не строгий режим.
-- Размещение побочных эффектов в теле рендеринга — двойной рендеринг отображает их → [Правила React](#rules-of-react)
+- Размещение побочных эффектов в теле рендеринга — двойной рендеринг отображает их → [Правила React](#rules-of-react-catalog)
 - Предполагая, что производство ведет себя как разработка - проверки строгого режима удалены в сборках продукта.
 
 **Examples:**
@@ -899,7 +926,7 @@ setCount(count + 1); // still +1 total — use c => c + 1
 
 **Thoughts:** _Строгий режим проводит стресс-тестирование ваших компонентов — если он сломается в процессе разработки, значит, он уже хрупкий._
 
-**See also:** [Правила React](#rules-of-react) · [Чистота](#purity) · [useEffect](./4_react_hooks.md#useeffect) · [Конвейер рендеринга](#render-pipeline)
+**See also:** [Правила React](#rules-of-react-catalog) · [Чистота](#purity) · [Конвейер рендеринга](#render-pipeline)
 
 **Sources:**
 
@@ -924,12 +951,12 @@ setCount(count + 1); // still +1 total — use c => c + 1
 4. Компонент возвращает больше элементов (например. `<h1>`) → рекурсия продолжается до тех пор, пока не будут размещены элементы DOM.
 5. Новое дерево элементов при каждом рендеринге; **экземпляры** компонента (волокно + состояние) сохраняются
 
-| | Элемент     | Компонент                      |
+| | Элемент | Компонент |
 | | ----------- | ------------------------------ | --------------------------------- |
-| | Что         | Неизменяемое описание (снимок) | Многоразовая функция/класс        |
-| | Создано     | `createElement` / JSX          | Вы определяете это                |
-| | За рендер   | Новый объект каждый раз        | Та же функция, вызванная повторно |
-| | Государство | Нет                            | Крючки живут на оптоволокне       |
+| | Что | Неизменяемое описание (снимок) | Многоразовая функция/класс |
+| | Создано | `createElement` / JSX | Вы определяете это |
+| | За рендер | Новый объект каждый раз | Та же функция, вызванная повторно |
+| | Государство | Нет | Крючки живут на оптоволокне |
 
 **When to use:**
 
@@ -938,7 +965,7 @@ setCount(count + 1); // still +1 total — use c => c + 1
 #### Common pitfalls
 
 - Сбивает с толку `<Welcome />` с узлом DOM — это инструкция для вызова `Welcome`
-- Вызов `Welcome()` как функция — [Правила React](#rules-of-react): только JSX, поэтому React владеет вызовом
+- Вызов `Welcome()` как функция — [Правила React](#rules-of-react-catalog): только JSX, поэтому React владеет вызовом
 - Строчные JSX (`<welcome />`) — React рассматривает его как неизвестный HTML-тег, а не ваш компонент.
 - Мутирующие объекты элементов — всегда создавайте новые элементы через JSX при каждом рендеринге.
 
@@ -957,7 +984,7 @@ const element = <Welcome name="Ada" />;
 
 **Thoughts:** _Компоненты являются функциями; элементы — это их выходные снимки — при сверке сравниваются элементы._
 
-**See also:** [Правила React](#rules-of-react) · [Виртуальный DOM и согласование](#virtual-dom--reconciliation) · [Компоненты](#comComponents)
+**See also:** [Правила React](#rules-of-react-catalog) · [Виртуальный DOM и согласование](#virtual-dom--reconciliation) · [Компоненты](#comComponents)
 
 **Sources:**
 
@@ -969,7 +996,7 @@ const element = <Welcome name="Ada" />;
 
 ## 3. Describing the UI
 
-Компоненты
+### Describing the UI
 
 <details>
   <summary>Components</summary>
@@ -1190,7 +1217,7 @@ function Button({ label, onClick, ...rest }: ButtonProps) {
 
 **Definition:**
 
-Компоненты React должны быть **чистыми** во время рендеринга: те же входные данные → тот же вывод; нет мутирующего внешнего состояния или реквизита. Полный контракт (идемпотентность, неизменяемость, «React вызывает вас»): [Правила React](#rules-of-react).
+Компоненты React должны быть **чистыми** во время рендеринга: те же входные данные → тот же вывод. Полный контракт: [Components and Hooks must be pure](#components-and-hooks-must-be-pure) · [Rules of React catalog](#rules-of-react-catalog).
 
 | Разрешено                          | Запрещено во время рендеринга                              |
 | ---------------------------------- | ---------------------------------------------------------- |
@@ -1240,7 +1267,7 @@ function FriendList({ friends }: { friends: string[] }) {
 
 **Thoughts:** _Рендеринг — это чистая функция реквизита, состояния и контекста._
 
-**See also:** [Правила React](#rules-of-react) · [Конвейер рендеринга](#render-pipeline) · [Вам может не понадобиться эффект](./4_react_hooks.md#вам-может-не-нужен-эффект)
+**See also:** [Правила React](#rules-of-react-catalog) · [Конвейер рендеринга](#render-pipeline)
 
 **Sources:**
 
@@ -1421,7 +1448,7 @@ function Card({
 
 **Thoughts:** _Составляйте пользовательский интерфейс по принципу вложенного HTML — слоты важнее наследования._
 
-**See also:** [SOLID в React](#solid-in-react) · [Props](#props) · [Контекст](#context)
+**See also:** [SOLID в React](#solid-in-react) · [Props](#props) · [Подъём состояния](#lifting-state-up)
 
 **Sources:**
 
@@ -1433,7 +1460,7 @@ function Card({
 
 ## 4. State & interactivity
 
-Состояние
+### State & interactivity
 
 <details>
   <summary>State</summary>
@@ -1498,12 +1525,12 @@ setCount((c) => c + 1);
 
 Родитель удерживает состояние → передает **снимок** в качестве реквизита → дочерний элемент отображает и вызывает обратный вызов → родительский элемент обновляет состояние → дочерний элемент повторно визуализируется с новыми реквизитами. Ребенок никогда не мутирует реквизит напрямую.
 
-| | Реквизит      | Государство                          |
+| | Реквизит | Государство |
 | | ------------- | ------------------------------------ | -------------------------------------------------------- |
-| | Источник      | Родитель                             | Местный (`useState`) или глобальный (контекст/хранилище) |
-| | Мутабельность | Только чтение для детей              | Обновлено через установщик                               |
-| | Изменения     | Родитель повторно отображает ребенка | Я или ребенок запускает обновление                       |
-| | Вопрос        | «Какие данные я получу?»             | «Что я помню?»                                           |
+| | Источник | Родитель | Местный (`useState`) или глобальный (контекст/хранилище) |
+| | Мутабельность | Только чтение для детей | Обновлено через установщик |
+| | Изменения | Родитель повторно отображает ребенка | Я или ребенок запускает обновление |
+| | Вопрос | «Какие данные я получу?» | «Что я помню?» |
 
 **When to use:** Реквизит для конфигурации и потока данных. Состояние интерактивного пользовательского интерфейса, которое меняется со временем. Если это нужно двум братьям и сестрам → поднимите состояние.
 
@@ -1610,7 +1637,7 @@ const fullName = `${firstName} ${lastName}`;
 
 **Thoughts:** _Минимизируйте поверхность состояния — по возможности извлекайте ее во время рендеринга._
 
-**See also:** [Состояние](#состояние) · [Возможно, вам не понадобится эффект](./4_react_hooks.md#вам-может-не-нужен-эффект)
+**See also:** [Состояние](#state) · [Чистота](#purity)
 
 **Sources:**
 
@@ -1634,7 +1661,7 @@ const fullName = `${firstName} ${lastName}`;
 3. Двигайтесь `useState` этому родителю
 4. Пройти `value` + `onChange` (или производные данные) в качестве реквизита
 
-Состояние используется только одним компонентом — сохраняйте локальное. Глубокое изучение → [Контекст](#context) или государственная библиотека.
+Состояние используется только одним компонентом — сохраняйте локальное. Prop drilling → композиция (`children`), внешнее хранилище или context в [React — Hooks](./4_react_hooks.md).
 
 **When to use:** Два или более брата и сестры обмениваются данными или должны оставаться синхронизированными.
 
@@ -1654,7 +1681,7 @@ function Page() {
 
 **Thoughts:** _Общее состояние живет у наименьшего общего предка._
 
-**See also:** [Состояние vs реквизит](#state-vs-props) · [Контекст](#context)
+**See also:** [Состояние vs реквизит](#state-vs-props) · [Принципы структуры состояния](#principles-for-structuring-state)
 
 **Sources:**
 
@@ -1673,11 +1700,11 @@ function Page() {
 
 **Управляемые** входы получают `value` из состояния React; **неконтролируемые** входы сохраняют значение в DOM и считываются через ссылки.
 
-| | Контролируется    | Неконтролируемый                          |
+| | Контролируется | Неконтролируемый |
 | | ----------------- | ----------------------------------------- | ---------------------------------------------------- |
-| | Источник значения | Состояние реакции                         | ДОМ (`ref.current.value`)                            |
-| | Когда             | По умолчанию для форм в приложениях React | Ввод файлов, интеграция библиотек, отличных от React |
-| | API               | `value` + `onChange`                      | `ref` + `defaultValue`                               |
+| | Источник значения | Состояние реакции | ДОМ (`ref.current.value`) |
+| | Когда | По умолчанию для форм в приложениях React | Ввод файлов, интеграция библиотек, отличных от React |
+| | API | `value` + `onChange` | `ref` + `defaultValue` |
 
 **Examples:**
 
@@ -1695,99 +1722,7 @@ function Page() {
 
 [react.dev/reference/react-dom/comComponents/input](https://react.dev/reference/react-dom/comComponents/input)
 
-Контекст
-
-</details>
-
-<details>
-  <summary>Context</summary>
-
-### Context
-
-**Definition:** `createContext` + `useContext` передавать данные через дерево без сверления опор.
-
-**How it works:**
-
-1. Передавайте реквизиты явно
-2. Извлечение компонентов; передать JSX как `children`
-3. Используйте специальную библиотеку состояний для частых обновлений.
-
-**When to use:** Тематика, локаль, сеанс аутентификации, маршрутизатор — стабильные или запомненные значения.
-
-**Pluses and minuses:**
-
-| +                                               | −                                                                    |
-| ----------------------------------------------- | -------------------------------------------------------------------- |
-| Избегает детализации темы, локали, авторизации  | Все потребители выполняют повторный рендеринг при изменении значения |
-| Подходит для редких изменений глобальных данных | Легко использовать в качестве глобального хранилища                  |
-
-**Examples:**
-
-```tsx
-const ThemeContext = createContext<"light" | "dark">("light");
-
-function App() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-  return (
-    <ThemeContext value={theme}>
-      <Toolbar />
-    </ThemeContext>
-  );
-}
-
-function Toolbar() {
-  const theme = useContext(ThemeContext);
-  return <div className={theme}>...</div>;
-}
-```
-
-**Thoughts:** Разделение контекстов по частоте обновления. Запомнить `value` объект или потребители повторно визуализируются при каждом родительском рендеринге.
-
-**Sources:**
-
-[react.dev/learn/passing-data-deeply-with-context](https://react.dev/learn/passing-data-deeply-with-context)
-
-useReducer
-
-</details>
-
-<details>
-  <summary>useReducer</summary>
-
-### useReducer
-
-**Definition:** `useReducer(reducer, initialArg)` управляет сложным состоянием с помощью действия → функции перехода состояния (локально похоже на Redux).
-
-**When to use:** Многополевые формы, шаги мастера, конечные автоматы — когда `useState` имеет слишком много `setX` звонки.
-
-**Pluses and minuses:**
-
-| +                                          | −                                          |
-| ------------------------------------------ | ------------------------------------------ |
-| Предсказуемые переходы состояний           | Больше шаблонов для простых переключателей |
-| Проще тестировать редуктор изолированно    |                                            |
-| Совместное размещение связанных обновлений |                                            |
-
-**Examples:**
-
-```tsx
-type Action = { type: "increment" } | { type: "decrement" };
-function reducer(state: number, action: Action) {
-  switch (action.type) {
-    case "increment":
-      return state + 1;
-    case "decrement":
-      return state - 1;
-  }
-}
-const [count, dispatch] = useReducer(reducer, 0);
-```
-
-**Sources:**
-
-[react.dev/reference/react/useReducer](https://react.dev/reference/react/useReducer)
-
-Государственная нормализация
+State normalization
 
 </details>
 

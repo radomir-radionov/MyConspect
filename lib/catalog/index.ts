@@ -470,7 +470,24 @@ const SUBJECTS_BASE: readonly Subject[] = [
       {
         id: "core",
         title: "Core",
-        blurb: "Library model, rendering, JSX, state, and hooks.",
+        blurb: "Library model, rendering, JSX, and state.",
+      },
+      {
+        id: "hooks",
+        title: "Hooks",
+        blurb: "Hooks reference and escape hatches.",
+      },
+      {
+        id: "components",
+        title: "Components",
+        blurb:
+          "Built-in Fragment, Profiler, StrictMode, Suspense, Activity, ViewTransition.",
+      },
+      {
+        id: "apis",
+        title: "APIs",
+        blurb:
+          "createContext, lazy, memo, transitions, cache, act, and related APIs.",
       },
       {
         id: "react-19",
@@ -1835,7 +1852,7 @@ const TOPICS_BASE: Topic[] = [
   grouped(
     "react-core",
     "4_react_core.md",
-    "Basics",
+    "Core",
     "Library model, rendering, JSX, and state.",
     "frontend",
     "react",
@@ -1848,7 +1865,25 @@ const TOPICS_BASE: Topic[] = [
     "Hooks reference and escape hatches.",
     "frontend",
     "react",
-    "core",
+    "hooks",
+  ),
+  grouped(
+    "react-components",
+    "4_react_components.md",
+    "Components",
+    "Built-in Fragment, Profiler, StrictMode, Suspense, Activity, ViewTransition.",
+    "frontend",
+    "react",
+    "components",
+  ),
+  grouped(
+    "react-apis",
+    "4_react_apis.md",
+    "APIs",
+    "React APIs plus react-dom Client, Server, and Static entry points.",
+    "frontend",
+    "react",
+    "apis",
   ),
   grouped(
     "react-server",
@@ -1862,7 +1897,7 @@ const TOPICS_BASE: Topic[] = [
   grouped(
     "react-ecosystem",
     "4_react_ecosystem.md",
-    "Core",
+    "Ecosystem",
     "Routing, libraries, performance, and legacy.",
     "frontend",
     "react",

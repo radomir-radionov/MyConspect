@@ -41,6 +41,8 @@ const EN: ChromeCopy = {
   confirmNo: "No",
   back: "Back",
   next: "Next",
+  expandConceptTitle: "Show full title",
+  collapseConceptTitle: "Show less",
   interviewQuestions: "Questions",
   interviewTasks: "Tasks",
 };
@@ -85,6 +87,8 @@ const RU: ChromeCopy = {
   confirmNo: "Нет",
   back: "Назад",
   next: "Далее",
+  expandConceptTitle: "Показать полное название",
+  collapseConceptTitle: "Свернуть",
   interviewQuestions: "Вопросы",
   interviewTasks: "Задачи",
 };

@@ -6,7 +6,7 @@ Redux Toolkit, глобальное состояние клиента и RTK Que
 
 ### Related docs
 
-- [React — Basics](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Core](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Интервью](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Интервью](./4_react_interview.md)
 
 ### Sections
 
@@ -114,14 +114,13 @@ Flux vs Redux
 
 Оба описывают обновления plain **action** объектами и держат логику мутаций вне UI. Поток один: событие → action → обновление state → re-render.
 
-
-| | Flux                                            | Redux                                                            |
-| | ----------------  |  -----------------------------------------------  |
-| | **Stores**       | Несколько stores (по домену)                    | **Один** глобальный store                                        |
-| | **Dispatcher**   | Центральный хаб маршрутизирует actions в stores | **Без dispatcher** — `store.dispatch` вызывает reducers напрямую |
-| | **Update logic** | Stores могут обновлять себя сами                | **Только чистые reducers** — `(state, action) => newState`       |
-| | **Data shape**   | Часто мутирующие обновления                     | **Обязательная иммутабельность** (копия, не мутация)             |
-| | **Composition**  | Event emitters + много слушателей               | Чистые функции — легко тестировать и композировать               |
+| | Flux | Redux |
+| | ---------------- | ----------------------------------------------- |
+| | **Stores** | Несколько stores (по домену) | **Один** глобальный store |
+| | **Dispatcher** | Центральный хаб маршрутизирует actions в stores | **Без dispatcher** — `store.dispatch` вызывает reducers напрямую |
+| | **Update logic** | Stores могут обновлять себя сами | **Только чистые reducers** — `(state, action) => newState` |
+| | **Data shape** | Часто мутирующие обновления | **Обязательная иммутабельность** (копия, не мутация) |
+| | **Composition** | Event emitters + много слушателей | Чистые функции — легко тестировать и композировать |
 
 Модель Flux: `(state, action) => state`. Redux сохраняет форму, но убирает слой Dispatcher — reducers это функции, а не event emitters.
 
@@ -806,12 +805,11 @@ State management libraries
 | **RTK Query**            | Server cache внутри Redux store                                         |
 | **Context + useReducer** | Маленькие apps, theme/locale                                            |
 
-
-| | Flux                        | Redux                    |
-| | -------  |  ---------------------------  |
-| | Stores  | Несколько                   | Одно хранилище           |
-| | Updates | Stores обновляют себя       | Только чистые reducers   |
-| | Flow    | Action → Dispatcher → Store | Action → Reducer → Store |
+| | Flux | Redux |
+| | ------- | --------------------------- |
+| | Stores | Несколько | Одно хранилище |
+| | Updates | Stores обновляют себя | Только чистые reducers |
+| | Flow | Action → Dispatcher → Store | Action → Reducer → Store |
 
 **When to use:** Полный гайд — [When to use Redux](#when-to-use-redux).
 

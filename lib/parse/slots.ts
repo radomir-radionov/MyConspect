@@ -1,5 +1,5 @@
 import { escapeHtml, slotLabelHtml } from "./slot-icons";
-import { transformProsConsTables } from "./pros-cons";
+import { transformMarkdownTables } from "./table-scroll";
 import { behaviorSlotLabel } from "@/lib/i18n/behaviorQuestions";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -481,7 +481,7 @@ async function renderSections(
 ): Promise<string> {
   const rendered = await Promise.all(
     sections.map(async (section) => {
-      const bodyHtml = transformProsConsTables(
+      const bodyHtml = transformMarkdownTables(
         await renderFragment(section.body),
       );
       return wrapSlot(section.kind, section.rawLabel, bodyHtml, locale);

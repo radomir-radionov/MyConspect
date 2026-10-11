@@ -203,7 +203,7 @@ const CONCEPT_LIST_CARD =
   "concept-list overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900";
 
 const CONCEPT_DETAIL_CARD =
-  "concept-list group relative rounded-xl border border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950";
+  "concept-list group relative -mx-4 rounded-xl border border-yellow-200 bg-yellow-50 max-sm:rounded-none max-sm:border-x-0 sm:mx-0 dark:border-yellow-800 dark:bg-yellow-950";
 
 function ConceptIndexList({
   concepts,

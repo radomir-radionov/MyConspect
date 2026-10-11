@@ -6,7 +6,7 @@ Hooks reference and escape hatches.
 
 ### Related docs
 
-- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
 
 ### Sections
 
@@ -16,6 +16,8 @@ Hooks reference and escape hatches.
 ---
 
 ## 5. Hooks reference
+
+### Overview
 
 Built-in hooks catalog
 
@@ -35,15 +37,14 @@ Built-in hooks catalog
 5. **Defer expensive render?** → `useTransition` / `useDeferredValue`
 6. **Cache calc or stable callback?** → `useMemo` / `useCallback` (profile first)
 
-| Category        | Hooks                                                                                |
-| --------------- | ------------------------------------------------------------------------------------ |
-| **State**       | `useState`, `useReducer`, `useActionState` (R19)                                     |
-| **Context**     | `useContext`                                                                         |
-| **Ref**         | `useRef`, `useImperativeHandle`                                                      |
-| **Effect**      | `useEffect`, `useLayoutEffect`, `useInsertionEffect`, `useEffectEvent` (R19.2)       |
-| **Performance** | `useMemo`, `useCallback`, `useTransition`, `useDeferredValue`                        |
-| **Other**       | `useId`, `useSyncExternalStore`, `useDebugValue`, `use` (R19), `useOptimistic` (R19) |
-| **DOM**         | `useFormStatus` (react-dom)                                                          |
+| Category        | Hooks                                                                       |
+| --------------- | --------------------------------------------------------------------------- |
+| **State**       | `useState`, `useReducer`, `useActionState - 19`, `useOptimistic - 19`       |
+| **Context**     | `useContext`, `use() - 19`                                                  |
+| **Ref**         | `useRef`, `useImperativeHandle`, `ref as prop - 19`                         |
+| **Effect**      | `useEffect`, `useLayoutEffect`, `useInsertionEffect`, `useEffectEvent - 19` |
+| **Performance** | `useMemo`, `useCallback`, `useTransition`, `useDeferredValue`               |
+| **Other**       | `useId`, `useSyncExternalStore`, `useDebugValue`, `useFormStatus - 19`      |
 
 **Examples:**
 
@@ -68,7 +69,7 @@ Rules of Hooks
 
 ### Rules of Hooks
 
-**Definition:** Two invariant rules that keep React's hook linked-list state consistent across renders. One of the three [Rules of React](./4_react_core.md#rules-of-react) buckets.
+**Definition:** Two invariant rules that keep React's hook linked-list state consistent across renders. Part of [Rules of Hooks](./4_react_core.md#rules-of-hooks) on Core (see also [Rules of React catalog](./4_react_core.md#rules-of-react-catalog)).
 
 **How it works:**
 
@@ -93,7 +94,7 @@ useEffect(() => {
 
 **Thoughts:** _Same hooks, same order, every render._
 
-**See also:** [Rules of React](./4_react_core.md#rules-of-react) · [Custom hooks](#custom-hooks) · [React Fiber](./4_react_core.md#react-fiber)
+**See also:** [Rules of Hooks (Core)](./4_react_core.md#rules-of-hooks) · [Custom hooks](#custom-hooks) · [React Fiber](./4_react_core.md#react-fiber)
 
 **Sources:**
 
@@ -102,6 +103,8 @@ useEffect(() => {
 useState
 
 </details>
+
+### State
 
 <details>
   <summary>useState</summary>
@@ -219,9 +222,86 @@ dispatch({ type: "increment" });
 
 [react.dev/reference/react/useReducer](https://react.dev/reference/react/useReducer)
 
+useActionState - 19
+
+</details>
+
+<details>
+  <summary>useActionState - 19</summary>
+
+### useActionState - 19
+
+**Definition:** Wraps an action function; returns `[state, formAction, isPending]`. React 19 replacement for the old `useFormState` name.
+
+**How it works:** Action signature `(previousState, payload) => nextState | Promise<nextState>`. For forms, payload is `FormData`. `isPending` is true while the Promise resolves. Pass `formAction` to `<form action={formAction}>`.
+
+**When to use:** Forms and mutations where you need result state (error message, success text) + pending flag without manual `useState`.
+
+**Examples:**
+
+```tsx
+const [message, formAction, isPending] = useActionState(
+  async (_prev, formData: FormData) => {
+    const err = await updateUser(formData);
+    return err ?? "Saved";
+  },
+  null,
+);
+
+return (
+  <form action={formAction}>
+    <button disabled={isPending}>Save</button>
+    {message && <p>{message}</p>}
+  </form>
+);
+```
+
+**See also:** [Actions](./4_react_server.md#actions) · [useFormStatus - 19](#useformstatus-19)
+
+**Sources:**
+
+[react.dev/reference/react/useActionState](https://react.dev/reference/react/useActionState)
+
+useOptimistic - 19
+
+</details>
+
+<details>
+  <summary>useOptimistic - 19</summary>
+
+### useOptimistic - 19
+
+**Definition:** Shows **optimistic UI** immediately while an async action is in flight; **reverts** to real state when the action completes or fails.
+
+**How it works:** `useOptimistic(realState, updateFn)` returns `[optimisticState, addOptimistic]`. Call `addOptimistic` inside an action before `await` — UI updates instantly. When the action finishes and real state updates, optimistic layer discards.
+
+**When to use:** Like counts, cart quantity, message "sent" status, reordering lists before server confirms.
+
+**Examples:**
+
+```tsx
+const [optimisticCount, addOptimistic] = useOptimistic(
+  count,
+  (c, delta: number) => c + delta,
+);
+
+async function handleLike() {
+  addOptimistic(1);
+  await saveLike();
+}
+```
+
+**See also:** [Actions](./4_react_server.md#actions) · [useActionState - 19](#useactionstate-19)
+
+**Sources:**
+
+[react.dev/reference/react/useOptimistic](https://react.dev/reference/react/useOptimistic)
+
 useContext
 
 </details>
+
+### Context
 
 <details>
   <summary>useContext</summary>
@@ -232,7 +312,7 @@ useContext
 
 **How it works:**
 
-`createContext(default)` — default is used only if **no** Provider exists. `useContext(Ctx)` walks fibers upward. React 19: `<ThemeContext value={theme}>` (no `.Provider` required). Context is **not** a high-frequency store: every consumer re-renders on value change.
+[`createContext`](./4_react_apis.md#createcontext) defines the context object — default is used only if **no** Provider exists. `useContext(Ctx)` walks fibers upward. React 19: `<ThemeContext value={theme}>` (no `.Provider` required). Context is **not** a high-frequency store: every consumer re-renders on value change.
 
 _“Context for rare, tree-wide values. If many components re-render on every keystroke, the value is too hot — split or use a store.”_
 
@@ -266,15 +346,51 @@ function ThemedButton() {
 </ThemeContext>;
 ```
 
-**See also:** [Context](./4_react_core.md#context) · [Props](./4_react_core.md#props)
+**See also:** [Props](./4_react_core.md#props) · [Lifting state up](./4_react_core.md#lifting-state-up)
 
 **Sources:**
 
 [react.dev/reference/react/useContext](https://react.dev/reference/react/useContext)
 
+use() - 19
+
+</details>
+
+<details>
+  <summary>use() - 19</summary>
+
+### use() - 19
+
+**Definition:** Reads a **Promise** or **Context** value during render. For Promises, **suspends** (throws to Suspense) until resolved.
+
+**How it works:**
+
+- `use(promise)` — if pending, component suspends → nearest `<Suspense>` shows fallback; on resolve, retries render with value
+- `use(context)` — React 19 reads context without `useContext` in some cases (check docs)
+- Cache the Promise **outside** render — don't `use(fetch())` inline every render
+
+**When to use:** Server-passed promises, async RSC boundaries, reading context in loops (React 19).
+
+**Examples:**
+
+```tsx
+function Message({ messagePromise }: { messagePromise: Promise<Message> }) {
+  const message = use(messagePromise);
+  return <p>{message.text}</p>;
+}
+```
+
+**See also:** [Streaming & Suspense](./4_react_server.md#streaming--suspense) · [useContext](#usecontext)
+
+**Sources:**
+
+[react.dev/reference/react/use](https://react.dev/reference/react/use)
+
 useEffect
 
 </details>
+
+### Effects
 
 <details>
   <summary>useEffect</summary>
@@ -442,49 +558,38 @@ useInsertionEffect(() => {
 
 [react.dev/reference/react/useInsertionEffect](https://react.dev/reference/react/useInsertionEffect)
 
-useEffectEvent (React 19.2)
+useEffectEvent - 19
 
 </details>
 
 <details>
-  <summary>useEffectEvent (React 19.2)</summary>
+  <summary>useEffectEvent - 19</summary>
 
-### useEffectEvent (React 19.2)
+### useEffectEvent - 19
 
 **Definition:** `useEffectEvent(fn)` creates a stable function that always sees the latest props/state without being an effect dependency.
 
 **How it works:** Put _reactive_ values (`roomId`) in the effect deps so the effect re-subscribes when they change. Put _event_ logic (`muted`, `theme`) inside `useEffectEvent` so those values stay fresh without reconnecting.
 
-**When to use:**
-
-Chat reconnect on `roomId` only; analytics that read latest user without re-binding listeners.
+**When to use:** Chat reconnect on `roomId` only; analytics that read latest user without re-binding listeners.
 
 #### Common pitfalls
 
 Putting the connection identity (`roomId`) inside the Effect Event so the effect never re-runs. Calling `useEffectEvent` conditionally (Rules of Hooks still apply).
 
-**Pluses and minuses:**
-
-| +                                        | −                                                       |
-| ---------------------------------------- | ------------------------------------------------------- |
-| Fixes stale closures without dep churn   | Still experimental in spirit — team must know the split |
-| Separates reactive vs non-reactive logic | Do not call Effect Events from render                   |
-
 **Examples:**
 
 ```tsx
 const onConnected = useEffectEvent(() => {
-  showNotification("Connected!", theme); // always latest theme
+  showNotification("Connected!", theme);
 });
 
 useEffect(() => {
   const conn = createConnection(roomId);
   conn.on("connected", onConnected);
   return () => conn.disconnect();
-}, [roomId]); // theme not needed in deps
+}, [roomId]);
 ```
-
-**Thoughts:** Effect deps = “when to re-subscribe.” Effect Events = “what to do with latest values.”
 
 **Sources:**
 
@@ -493,6 +598,8 @@ useEffect(() => {
 useRef
 
 </details>
+
+### Ref
 
 <details>
   <summary>useRef</summary>
@@ -540,173 +647,208 @@ useEffect(() => {
 }, [count]);
 ```
 
-**See also:** [Refs (React 19: ref as prop)](#refs-react-19-ref-as-prop) · [useRef](#useref)
+**See also:** [ref as prop - 19](#ref-as-prop-19) · [useRef](#useref)
 
 **Sources:**
 
 [react.dev/reference/react/useRef](https://react.dev/reference/react/useRef)
 
-useMemo / useCallback
+useImperativeHandle
 
 </details>
 
 <details>
-  <summary>useMemo / useCallback</summary>
+  <summary>useImperativeHandle</summary>
 
-### useMemo / useCallback
+### useImperativeHandle
 
-**Definition:** Cache a **computed value** (`useMemo`) or a **function identity** (`useCallback`) between renders. `useCallback(fn, deps)` is `useMemo(() => fn, deps)` — React does **not** call `fn`.
+**Definition:** Customizes the **instance value** a parent receives when it attaches a `ref` to your component — instead of the DOM node, you expose a curated API object.
 
-**How it works:**
+**How it works:** Pair with `ref` (React 19 prop or `forwardRef`). On commit, React calls your factory `() => ({ focus, scroll, ... })` and assigns the result to `ref.current`. The optional dependency array controls when the handle is recreated. Internal DOM refs stay private via `useRef` inside the child.
 
-Deps compared with `Object.is`. If unchanged, return the previous cached value/function. If you omit the deps array, you get a **new** function/value every render. Cache can be discarded (HMR, suspend on first mount) — treat as a **hint**, not a store.
-
-1. Prop to a child wrapped in `memo` — skip re-render if the prop is the same reference.
-2. Dependency of another hook (`useEffect`, nested `useCallback`).
-3. Expensive calculate-during-render (profile first).
-
-Wrapping every handler “just in case.” Prefer: children as JSX, don’t lift state too high, keep render pure, **move functions inside effects** instead of memoizing them as effect deps. React Compiler can make much of this automatic.
-
-_“I don’t wrap everything. I memoize when a measured child wrapped in `memo` re-renders because of a new function, or when a calculation is expensive. `useCallback(fn, deps)` is memoizing the function, not running it.”_
-
-**When to use:**
-
-Sorted/filtered lists that are proven slow; stable `onSubmit` for a memoized form; functions **returned from custom hooks** (so callers can memoize).
-
-#### Common pitfalls
-
-`useCallback` in a `.map` loop (Rules of Hooks — extract a child). Forgetting the deps array. Memoizing a callback but passing a new `style={{}}` beside it — child still re-renders.
+**When to use:** Focus an input inside a composite field component, expose `play()`/`pause()` on a video wrapper, integrate non-React widgets. **Prefer** declarative props (`isOpen`, `onSubmit`) and `autoFocus` first.
 
 **Pluses and minuses:**
 
-| +                                         | −                                       |
-| ----------------------------------------- | --------------------------------------- |
-| Skip expensive work / keep `memo` working | Manual deps are easy to get wrong       |
-| Stabilize identities for child `memo`     | Compiler / children-as-JSX often enough |
+| +                                                   | −                                                   |
+| --------------------------------------------------- | --------------------------------------------------- |
+| Encapsulates imperative DOM ops behind a stable API | Breaks declarative React model                      |
+| Useful for focus traps, media players, map widgets  | Harder to test and reason about than props          |
+| Limits what parent can call (vs raw DOM ref)        | Overused when `autoFocus` or callback props suffice |
 
 **Examples:**
 
 ```tsx
-const sorted = useMemo(() => items.slice().sort(compare), [items]);
-const onSave = useCallback(() => save(user), [user]);
+type InputHandle = { focus: () => void; clear: () => void };
 
-// Fewer deps — updater instead of closing over `todos`
-const add = useCallback((text: string) => {
-  setTodos((todos) => [...todos, { id: nextId++, text }]);
-}, []);
-```
-
-**Thoughts:** _`useMemo` caches a result; `useCallback` caches the function. Profile first; Compiler may replace both._
-
-**See also:** [React Compiler](./4_react_server.md#react-compiler) · [useEffect](#useeffect)
-
-**Sources:**
-
-[react.dev/reference/react/useMemo](https://react.dev/reference/react/useMemo) · [useCallback](https://react.dev/reference/react/useCallback)
-
-useTransition / useDeferredValue
-
-</details>
-
-<details>
-  <summary>useTransition / useDeferredValue</summary>
-
-### useTransition / useDeferredValue
-
-**Definition:** Concurrent APIs to mark updates or values as **non-urgent** so typing and clicks stay responsive during heavy renders.
-
-**How it works:**
-
-| Hook               | You control                   | Defers                                    |
-| ------------------ | ----------------------------- | ----------------------------------------- |
-| `useTransition`    | The state update itself       | `startTransition(() => setState(...))`    |
-| `useDeferredValue` | Only a prop/value you receive | Re-render of children using deferred copy |
-
-**When to use:**
-
-`useTransition` when you own the expensive `setState`. `useDeferredValue` when parent passes fast-changing prop and child is expensive (pair with `memo`).
-
-#### Common pitfalls
-
-`useDeferredValue` alone without `memo` on child — child may still re-render every parent render. Requires `createRoot`.
-
-**Examples:**
-
-```tsx
-const [query, setQuery] = useState("");
-const deferredQuery = useDeferredValue(query);
-const [isPending, startTransition] = useTransition();
-
-function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-  setQuery(e.target.value); // urgent
-  startTransition(() => setResults(filter(e.target.value))); // deferred
+function TextField({ ref, label }: { ref?: Ref<InputHandle>; label: string }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  useImperativeHandle(
+    ref,
+    () => ({
+      focus: () => inputRef.current?.focus(),
+      clear: () => {
+        if (inputRef.current) inputRef.current.value = "";
+      },
+    }),
+    [],
+  );
+  return (
+    <>
+      <label>{label}</label>
+      <input ref={inputRef} />
+    </>
+  );
 }
-
-// Child receives deferredQuery — lags behind query during fast typing
-<SearchResults query={deferredQuery} />;
 ```
-
-**Thoughts:** _Transition defers work you schedule; deferred value lags a value you pass._
-
-**See also:** [Concurrent rendering](./4_react_core.md#concurrent-rendering) · [React Fiber](./4_react_core.md#react-fiber)
 
 **Sources:**
 
-[react.dev/reference/react/useTransition](https://react.dev/reference/react/useTransition) · [useDeferredValue](https://react.dev/reference/react/useDeferredValue)
+[react.dev/reference/react/useImperativeHandle](https://react.dev/reference/react/useImperativeHandle)
 
-React 19 hooks
+ref as prop - 19
 
 </details>
 
 <details>
-  <summary>React 19 hooks</summary>
+  <summary>ref as prop - 19</summary>
 
-### React 19 hooks
+### ref as prop - 19
 
-**Definition:** New hooks in React 19 for async mutations, optimistic UI, reading promises/context in render, and form pending state.
+**Definition:** In React 19, function components accept `ref` as a **regular prop** — no `forwardRef` wrapper required.
 
-**How it works:**
+**How it works:** Pass `ref` to a native element or to a child that forwards it. `forwardRef` still works for backward compatibility.
 
-| Need                                 | Hook             |
-| ------------------------------------ | ---------------- |
-| Form submit with loading/error state | `useActionState` |
-| Instant UI while async action runs   | `useOptimistic`  |
-| Disable submit from nested button    | `useFormStatus`  |
-| Read Promise or Context in render    | `use()`          |
-
-| Hook             | Section                                                          |
-| ---------------- | ---------------------------------------------------------------- |
-| `useActionState` | [Section 7 — useActionState](./4_react_server.md#useactionstate) |
-| `useOptimistic`  | [Section 7 — useOptimistic](./4_react_server.md#useoptimistic)   |
-| `use()`          | [Section 7 — use()](./4_react_server.md#use)                     |
-| `useFormStatus`  | [Section 7 — useFormStatus](./4_react_server.md#useformstatus)   |
+**When to use:** Composite inputs, focusable wrappers, libraries that need imperative handles.
 
 **Examples:**
 
 ```tsx
-const [error, submitAction, isPending] = useActionState(updateName, null);
-return (
-  <form action={submitAction}>
-    <input name="name" />
-    <button disabled={isPending}>Save</button>
-    {error && <p role="alert">{error}</p>}
-  </form>
-);
+function MyInput({
+  ref,
+  ...props
+}: { ref?: Ref<HTMLInputElement> } & InputHTMLAttributes<HTMLInputElement>) {
+  return <input ref={ref} {...props} />;
+}
 ```
 
-`action` receives `(prevState, formData)` — not `formData` first.
-
-**Thoughts:** _Actions pattern — React tracks async form/mutation lifecycle so you don't._
-
-**See also:** [Actions](./4_react_server.md#actions) · [Overview](./4_react_server.md#overview)
+**See also:** [useRef](#useref) · [useImperativeHandle](#useimperativehandle)
 
 **Sources:**
 
 [react.dev/blog/2024/12/05/react-19](https://react.dev/blog/2024/12/05/react-19)
 
+useMemo
+
+</details>
+
+### Performance
+
+<details>
+  <summary>useMemo</summary>
+
+### useMemo
+
+**Definition:** Caches a **computed value** between renders when dependencies are unchanged.
+
+**How it works:** Deps compared with `Object.is`. Treat the cache as a **hint**, not a store — React may discard it (HMR, suspend). Profile before memoizing expensive calculations.
+
+**When to use:** Proven-slow derived lists; stable object props for `memo` children.
+
+**Examples:**
+
+```tsx
+const sorted = useMemo(() => items.slice().sort(compare), [items]);
+```
+
+**See also:** [useCallback](#usecallback) · [React Compiler](./4_react_server.md#react-compiler)
+
+**Sources:**
+
+[react.dev/reference/react/useMemo](https://react.dev/reference/react/useMemo)
+
+useCallback
+
+</details>
+
+<details>
+  <summary>useCallback</summary>
+
+### useCallback
+
+**Definition:** Caches a **function identity** between renders. `useCallback(fn, deps)` is `useMemo(() => fn, deps)` — React does **not** call `fn`.
+
+**When to use:** Stable handlers for `memo` children; functions returned from custom hooks.
+
+**Examples:**
+
+```tsx
+const onSave = useCallback(() => save(user), [user]);
+```
+
+**See also:** [useMemo](#usememo) · [useEffect](#useeffect)
+
+**Sources:**
+
+[react.dev/reference/react/useCallback](https://react.dev/reference/react/useCallback)
+
+useTransition
+
+</details>
+
+<details>
+  <summary>useTransition</summary>
+
+### useTransition
+
+**Definition:** Marks a state update as **non-urgent** so urgent updates (typing, clicks) stay responsive.
+
+**How it works:** `const [isPending, startTransition] = useTransition()` — wrap expensive `setState` in `startTransition(() => ...)`.
+
+**Examples:**
+
+```tsx
+const [isPending, startTransition] = useTransition();
+startTransition(() => setResults(filter(query)));
+```
+
+**See also:** [useDeferredValue](#usedeferredvalue) · [Concurrent rendering](./4_react_core.md#concurrent-rendering)
+
+**Sources:**
+
+[react.dev/reference/react/useTransition](https://react.dev/reference/react/useTransition)
+
+useDeferredValue
+
+</details>
+
+<details>
+  <summary>useDeferredValue</summary>
+
+### useDeferredValue
+
+**Definition:** Returns a **lagging copy** of a value so heavy child renders can defer behind fast parent updates.
+
+**How it works:** Pair with `memo` on the child. Requires `createRoot`.
+
+**Examples:**
+
+```tsx
+const deferredQuery = useDeferredValue(query);
+<SearchResults query={deferredQuery} />;
+```
+
+**See also:** [useTransition](#usetransition)
+
+**Sources:**
+
+[react.dev/reference/react/useDeferredValue](https://react.dev/reference/react/useDeferredValue)
+
 useId
 
 </details>
+
+### Other
 
 <details>
   <summary>useId</summary>
@@ -795,59 +937,6 @@ function useWindowWidth() {
 
 [react.dev/reference/react/useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore)
 
-useImperativeHandle
-
-</details>
-
-<details>
-  <summary>useImperativeHandle</summary>
-
-### useImperativeHandle
-
-**Definition:** Customizes the **instance value** a parent receives when it attaches a `ref` to your component — instead of the DOM node, you expose a curated API object.
-
-**How it works:** Pair with `ref` (React 19 prop or `forwardRef`). On commit, React calls your factory `() => ({ focus, scroll, ... })` and assigns the result to `ref.current`. The optional dependency array controls when the handle is recreated. Internal DOM refs stay private via `useRef` inside the child.
-
-**When to use:** Focus an input inside a composite field component, expose `play()`/`pause()` on a video wrapper, integrate non-React widgets. **Prefer** declarative props (`isOpen`, `onSubmit`) and `autoFocus` first.
-
-**Pluses and minuses:**
-
-| +                                                   | −                                                   |
-| --------------------------------------------------- | --------------------------------------------------- |
-| Encapsulates imperative DOM ops behind a stable API | Breaks declarative React model                      |
-| Useful for focus traps, media players, map widgets  | Harder to test and reason about than props          |
-| Limits what parent can call (vs raw DOM ref)        | Overused when `autoFocus` or callback props suffice |
-
-**Examples:**
-
-```tsx
-type InputHandle = { focus: () => void; clear: () => void };
-
-function TextField({ ref, label }: { ref?: Ref<InputHandle>; label: string }) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  useImperativeHandle(
-    ref,
-    () => ({
-      focus: () => inputRef.current?.focus(),
-      clear: () => {
-        if (inputRef.current) inputRef.current.value = "";
-      },
-    }),
-    [],
-  );
-  return (
-    <>
-      <label>{label}</label>
-      <input ref={inputRef} />
-    </>
-  );
-}
-```
-
-**Sources:**
-
-[react.dev/reference/react/useImperativeHandle](https://react.dev/reference/react/useImperativeHandle)
-
 useDebugValue
 
 </details>
@@ -895,9 +984,45 @@ function useFriendStatus(friendId: string) {
 
 [react.dev/reference/react/useDebugValue](https://react.dev/reference/react/useDebugValue)
 
+useFormStatus - 19
+
+</details>
+
+<details>
+  <summary>useFormStatus - 19</summary>
+
+### useFormStatus - 19
+
+**Definition:** `react-dom` hook — read **pending** state of the nearest parent `<form>` from a **child** component.
+
+**How it works:** Must be called inside a descendant of `<form>`. Returns `{ pending, data, method, action }`. `pending` is true while the form's action Promise is in flight.
+
+**When to use:** Reusable `SubmitButton` without prop drilling `isPending`.
+
+**Examples:**
+
+```tsx
+function SubmitButton({ children }: { children: React.ReactNode }) {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending}>
+      {children}
+    </button>
+  );
+}
+```
+
+**See also:** [useActionState - 19](#useactionstate-19) · [Actions](./4_react_server.md#actions)
+
+**Sources:**
+
+[react.dev/reference/react-dom/hooks/useFormStatus](https://react.dev/reference/react-dom/hooks/useFormStatus)
+
 Custom hooks
 
 </details>
+
+### Reuse & guidance
 
 <details>
   <summary>Custom hooks</summary>
@@ -998,59 +1123,9 @@ const fullName = `${first} ${last}`;
 
 ## 6. Escape hatches
 
-Refs (React 19: ref as prop)
-
-<details>
-  <summary>Refs (React 19: ref as prop)</summary>
-
-### Refs (React 19: ref as prop)
-
-**Definition:** A **ref** holds a mutable reference to a DOM node or imperative handle. In React 19, function components accept `ref` as a **regular prop** — no `forwardRef` wrapper required.
-
-**How it works:** `useRef(initial)` returns `{ current }` that persists across renders; updating `.current` does not trigger re-render. Pass `ref` to a native element (`<input ref={ref} />`) or to a child component that forwards it. React 19 treats `ref` like any other prop on function components. `createRef()` creates a new ref each render in function components — use only in class components.
-
-**When to use:** Focus input on mount, integrate jQuery/D3/chart libs, measure element size (prefer `useLayoutEffect` + ref). **Avoid** refs for data that should drive UI — use state.
-
-**Pluses and minuses:**
-
-| +                                                       | −                                                                      |
-| ------------------------------------------------------- | ---------------------------------------------------------------------- |
-| Imperative focus, scroll, measure, third-party DOM libs | Escapes declarative model — harder to test                             |
-| React 19 simplifies ref forwarding                      | Reading/writing `ref.current` during render is forbidden (except init) |
-| `useRef` also stores timers, previous values            | Not a substitute for state when UI must update                         |
-
-**Examples:**
-
-```tsx
-function MyInput({
-  ref,
-  ...props
-}: { ref?: Ref<HTMLInputElement> } & InputHTMLAttributes<HTMLInputElement>) {
-  return <input ref={ref} {...props} />;
-}
-
-function Form() {
-  const inputRef = useRef<HTMLInputElement>(null);
-  return (
-    <>
-      <MyInput ref={inputRef} />
-      <button type="button" onClick={() => inputRef.current?.focus()}>
-        Focus
-      </button>
-    </>
-  );
-}
-```
-
-**Thoughts:** `forwardRef` still works for backward compatibility. Do not read `ref.current` during render except lazy initialization.
-
-**Sources:**
-
-[react.dev/reference/react/useRef](https://react.dev/reference/react/useRef) · [React 19 ref as prop](https://react.dev/blog/2024/12/05/react-19)
+### Escape hatches
 
 Portals
-
-</details>
 
 <details>
   <summary>Portals</summary>

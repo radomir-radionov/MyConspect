@@ -2,6 +2,8 @@ import { isMdUp } from "@/components/nav/hooks/useMdUp";
 import { HANDBOOK_MAIN_ID } from "@/constants";
 
 export const HANDBOOK_STICKY_INSET_VAR = "--handbook-sticky-inset";
+/** Matches SiteHeader `h-14` — main scrolls under the fixed header. */
+const HANDBOOK_HEADER_INSET_PX = 56;
 const PIN_SCROLL_GAP_PX = 0;
 const PIN_FLASH_MS = 550;
 
@@ -42,7 +44,8 @@ export function mainScrollInset(scroller: HTMLElement): number {
     .getPropertyValue(HANDBOOK_STICKY_INSET_VAR)
     .trim();
   const px = Number.parseFloat(raw);
-  return Number.isFinite(px) ? px : 0;
+  const crumbs = Number.isFinite(px) ? px : 0;
+  return HANDBOOK_HEADER_INSET_PX + crumbs;
 }
 
 export function closeSiblingAccordions(opened: HTMLDetailsElement) {

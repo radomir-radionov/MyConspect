@@ -6,7 +6,7 @@ TanStack Query, Router, Table, Virtual, Form и связанные инстру�
 
 ### Related docs
 
-- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Core](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Интервью](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Интервью](./4_react_interview.md)
 
 ### Sections
 
@@ -252,7 +252,7 @@ Optimistic updates
 5. **`onError`** — `queryClient.setQueryData(['todos'], context.previousTodos)`
 6. **`onSettled`** — `invalidateQueries`, чтобы после success/failure победили данные сервера
 
-Для простых toggles подойдёт React 19 [`useOptimistic`](./4_react_server.md#useoptimistic) без правки кэша Query — optimistic flow Query нужен, когда UI читает данные из `useQuery`.
+Для простых toggles подойдёт React 19 [`useOptimistic - 19`](./4_react_hooks.md#useoptimistic-19) без правки кэша Query — optimistic flow Query нужен, когда UI читает данные из `useQuery`.
 
 **When to use:** Like/unlike, чекбоксы todo, reorder списков, inline edit, где заметна задержка сети.
 
@@ -322,7 +322,7 @@ function TodoList() {
 
 **Thoughts:** _Optimistic UI — это запись в кэш, не второй store; в `onSettled` всегда сверяйтесь с сервером._
 
-**See also:** [Working with TanStack Query](#working-with-tanstack-query) · [useOptimistic (React 19)](./4_react_server.md#useoptimistic)
+**See also:** [Working with TanStack Query](#working-with-tanstack-query) · [useOptimistic - 19](./4_react_hooks.md#useoptimistic-19)
 
 **Sources:**
 
@@ -554,12 +554,12 @@ TanStack Query vs RTK Query
 
 Оба кэшируют JSON в памяти (не HTTP `Cache-Control`). TanStack Query v5: `useQuery({ queryKey, queryFn, staleTime })`. По умолчанию `staleTime` — **0**; `gcTime` — **5 минут**. RTK Query: `createApi` + `keepUnusedDataFor` (по умолчанию **60 с**); хуки из endpoints.
 
-| | TanStack Query | RTK Query                                     |
+| | TanStack Query | RTK Query |
 | | -------------- | --------------------------------------------- | ------------------------------ |
-| | Store          | Свой `QueryClient`                            | Redux store                    |
-| | Boilerplate    | Низкий                                        | Выше (`createApi`, slices)     |
-| | Лучше с        | Zustand / Context для UI state                | Существующее Redux Toolkit app |
-| | Invalidation   | `queryClient.invalidateQueries({ queryKey })` | `invalidatesTags` на mutations |
+| | Store | Свой `QueryClient` | Redux store |
+| | Boilerplate | Низкий | Выше (`createApi`, slices) |
+| | Лучше с | Zustand / Context для UI state | Существующее Redux Toolkit app |
+| | Invalidation | `queryClient.invalidateQueries({ queryKey })` | `invalidatesTags` на mutations |
 
 **When to use:**
 

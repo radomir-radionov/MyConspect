@@ -13,6 +13,7 @@ export function SidebarDockButton({
   expandLabel,
   onToggle,
   onPointerLeave,
+  className = "",
 }: {
   collapsed: boolean;
   peeking: boolean;
@@ -20,6 +21,7 @@ export function SidebarDockButton({
   expandLabel: string;
   onToggle: () => void;
   onPointerLeave?: (event: PointerEvent<HTMLElement>) => void;
+  className?: string;
 }) {
   const label = collapsed ? expandLabel : collapseLabel;
   const centered = !collapsed || peeking;
@@ -28,7 +30,7 @@ export function SidebarDockButton({
     <button
       type="button"
       data-sidebar-dock=""
-      className="group absolute bottom-0 z-[100] hidden size-9 -translate-x-1/2 translate-y-1/2 cursor-pointer items-center justify-center transition-[left] duration-200 ease-out motion-reduce:transition-none md:inline-flex"
+      className={`group absolute bottom-0 z-[100] hidden size-9 -translate-x-1/2 translate-y-1/2 cursor-pointer items-center justify-center transition-[left] duration-200 ease-out motion-reduce:transition-none md:inline-flex ${className}`}
       style={{ left: centered ? OPEN_CENTER : RAIL_EDGE }}
       aria-expanded={!collapsed}
       aria-controls={HANDBOOK_SIDEBAR_ID}

@@ -125,6 +125,8 @@ export type ChromeCopy = {
   readonly confirmNo: string;
   readonly back: string;
   readonly next: string;
+  readonly expandConceptTitle: string;
+  readonly collapseConceptTitle: string;
   readonly interviewQuestions: string;
   readonly interviewTasks: string;
 };

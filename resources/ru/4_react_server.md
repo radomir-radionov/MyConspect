@@ -6,7 +6,7 @@ API-интерфейсы React 19, SSR и серверные компонент�
 
 ### Related docs
 
-- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Интервью](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Интервью](./4_react_interview.md)
 
 ### Sections
 
@@ -24,41 +24,30 @@ API-интерфейсы React 19, SSR и серверные компонент�
 
 ### Overview
 
-**Definition:** В React 19 (декабрь 2024 г.) добавлены первоклассные **Действия** для асинхронных мутаций, интеграции форм, оптимистичного пользовательского интерфейса, `use()` API, **React Compiler** для автоматического запоминания и `ref` **как обычный реквизит**.
+**Definition:** В React 19 (декабрь 2024 г.) добавлены первоклассные **Действия** для асинхронных мутаций и форм, **React Compiler** для автоматического запоминания и **метаданные документа**, которые React поднимает из компонентов в `<head>`.
 
 **How it works:**
 
-| Площадь                           | Особенность                                 | Крючок/API                        |
-| --------------------------------- | ------------------------------------------- | --------------------------------- |
-| Формы и мутации                   | Действия со встроенным ожиданием/ошибкой    | `useActionState`, `<form action>` |
-| Оптимистичный интерфейс           | Показать результат до подтверждения сервера | `useOptimistic`                   |
-| Асинхронность при рендеринге      | Читайте обещания с помощью Suspense         | `use()`                           |
-| Форма ожидает ответа от дочернего | Без сверления `isPending`                   | `useFormStatus`                   |
-| Производительность                | Автоматическое запоминание                  | Реагирующий компилятор            |
-| DX                                | Переадресация ссылок упрощена               | `ref` как опора                   |
+| Площадь            | Особенность                              | Где читать                              |
+| ------------------ | ---------------------------------------- | --------------------------------------- |
+| Формы и мутации    | Действия со встроенным ожиданием/ошибкой | [Actions](#actions)                     |
+| Производительность | Автоматическое запоминание               | [React Compiler](#react-compiler)       |
+| DX                 | Метаданные в компонентах                 | [Document metadata](#document-metadata) |
 
 Заменить руководство `isLoading` + `try/catch` + `e.preventDefault()` в формах с декларативным `action` функции React треки.
 
-Новые проекты на React 19; переносите формы и переадресацию ссылок постепенно. Включите компилятор, если конвейер сборки его поддерживает.
+Новые проекты на React 19; переносите формы постепенно. Включите компилятор, если конвейер сборки его поддерживает.
 
 **Examples:**
 
 ```tsx
-// ref is a normal prop (no forwardRef)
-function Input({
-  ref,
-  ...props
-}: Props & { ref?: React.Ref<HTMLInputElement> }) {
-  return <input ref={ref} {...props} />;
-}
-
 // Action — pending comes from React
-<form action={submitAction}>...</form>;
+<form action={submitAction}>...</form>
 ```
 
-**Thoughts:** _Меньше шаблонного шаблона для асинхронного пользовательского интерфейса — действия, оптимистическое состояние и компилятор обрабатывают то, что вы использовали для подключения вручную._
+**Thoughts:** _Меньше шаблонного кода для асинхронного UI — действия и компилятор заменяют ручную обвязку._
 
-**See also:** [Действия](#actions) · [Компилятор React](#react-compiler) · [ref as prop](#ref-as-prop)
+**See also:** [Действия](#actions) · [Компилятор React](#react-compiler) · [Document metadata](#document-metadata)
 
 **Sources:**
 
@@ -81,13 +70,13 @@ function Input({
 2. Пока обещание находится на рассмотрении → `isPending` правда, пользовательский интерфейс может отключать кнопки
 3. В случае успеха → возвращаемое значение действия становится новым состоянием; форма может быть сброшена
 4. При ошибке → вернуть сообщение об ошибке или перейти к границе ошибки.
-5. Соединитесь с `useOptimistic` для мгновенного пользовательского интерфейса до ответа сервера
+5. При необходимости мгновенного отклика — оптимистичный UI до ответа сервера
 
 **When to use:**
 
 Отправка форм, мутации без руководства `isLoading` + `try/catch` состояние.
 
-Сложные потоки проверки только для клиента, где RHF более понятен; неформальные мутации (используйте `useTransition` напрямую).
+Сложные потоки проверки только для клиента, где RHF более понятен; неформальные мутации (оберните обновление в `startTransition`).
 
 **Pluses and minuses:**
 
@@ -121,186 +110,9 @@ function ChangeName() {
 
 **Sources:**
 
-[react.dev/reference/react/useActionState](https://react.dev/reference/react/useActionState)
+[react.dev/reference/react/useActionState](https://react.dev/reference/react/useActionState) · [react.dev/reference/react-dom/components/form](https://react.dev/reference/react-dom/components/form)
 
-использоватьActionState
-
-</details>
-
-<details>
-  <summary>useActionState</summary>
-
-### useActionState
-
-**Definition:** Обертывает функцию действия; возвращает `[state, formAction, isPending]`. Заменяет старый `useFormState` имя из canary builds.
-
-**How it works:** Подпись действия `(previousState, payload) => nextState | Promise<nextState>`. Для форм полезная нагрузка `FormData`. `isPending` истинно, пока выполняется Обещание. Проходить `formAction` to `<form action={formAction}>`.
-
-**When to use:** Формы и мутации, где вам нужно состояние результата (сообщение об ошибке, текст успеха) + ожидающий флаг без руководства `useState`.
-
-**Examples:**
-
-```tsx
-const [message, formAction, isPending] = useActionState(
-  async (_prev, formData: FormData) => {
-    const err = await updateUser(formData);
-    return err ?? "Saved";
-  },
-  null,
-);
-
-return (
-  <form action={formAction}>
-    <button disabled={isPending}>Save</button>
-    {message && <p>{message}</p>}
-  </form>
-);
-```
-
-**Thoughts:** _Один крючок для результата действия + ожидание — отдельного нет_ `isLoading` _состояние._
-
-**See also:** [Действия](#actions) · [useFormStatus](#useformstatus)
-
-**Sources:**
-
-[react.dev/reference/react/useActionState](https://react.dev/reference/react/useActionState)
-
-использоватьOptimistic
-
-</details>
-
-<details>
-  <summary>useOptimistic</summary>
-
-### useOptimistic
-
-**Definition:** Показывает **оптимистичный пользовательский интерфейс** сразу же, пока выполняется асинхронное действие; **возвращается** в реальное состояние, когда действие завершается или завершается неудачно.
-
-**How it works:** `useOptimistic(realState, updateFn)` возвращает `[optimisticState, addOptimistic]`. Вызов `addOptimistic` внутри действия перед `await` — Пользовательский интерфейс обновляется мгновенно. Когда действие завершается и реальное состояние обновляется, оптимистический слой отбрасывается.
-
-**When to use:**
-
-Например, количество, количество корзины, статус «отправлено» сообщения, изменение порядка списков до подтверждения сервера.
-
-Критические данные, неправильное оптимистическое состояние которых сбивает пользователей с толку (финансовые балансы), без четкого пользовательского интерфейса отката.
-
-**Examples:**
-
-```tsx
-const [optimisticCount, addOptimistic] = useOptimistic(
-  count,
-  (c, delta: number) => c + delta,
-);
-
-async function handleLike() {
-  addOptimistic(1);
-  await saveLike(); // on failure, count reverts when real state refreshes
-}
-```
-
-**Thoughts:** _Покажите будущее сейчас; реальное состояние выигрывает, когда сервер отвечает._
-
-**See also:** [Действия](#actions) · [useActionState](#useactionstate)
-
-**Sources:**
-
-[react.dev/reference/react/useOptimistic](https://react.dev/reference/react/useOptimistic)
-
-использоватьформстатус
-
-</details>
-
-<details>
-  <summary>useFormStatus</summary>
-
-### useFormStatus
-
-**Definition:** `react-dom` перехватчик — прочитать состояние **ожидания** ближайшего родителя `<form>` из **дочернего** компонента (например, кнопки отправки в дизайн-системе).
-
-**How it works:** Должен вызываться внутри компонента, который является **потомком** `<form>`. Возврат `{ pending, data, method, action }`. `pending` имеет значение true, пока действие Promise формы находится в процессе выполнения. Не работает, если вызывается в том же компоненте, который отображает `<form>`.
-
-**When to use:** Многоразовый `SubmitButton` без винтового бурения `isPending` от родителя.
-
-**Examples:**
-
-```tsx
-function SubmitButton({ children }: { children: React.ReactNode }) {
-  const { pending } = useFormStatus();
-  return (
-    <button type="submit" disabled={pending}>
-      {children}
-    </button>
-  );
-}
-
-function Form() {
-  return (
-    <form action={saveAction}>
-      <input name="email" />
-      <SubmitButton>Save</SubmitButton>
-    </form>
-  );
-}
-```
-
-**Thoughts:** _Ребенок читает статус родительской формы — нет_ `isPending` _подпирает дерево._
-
-**See also:** [useActionState](#useactionstate) · [Действия](#actions)
-
-**Sources:**
-
-[react.dev/reference/react-dom/hooks/useFormStatus](https://react.dev/reference/react-dom/hooks/useFormStatus)
-
-использовать()
-
-</details>
-
-<details>
-  <summary>use()</summary>
-
-### use()
-
-**Definition:** Считывает значение **Promise** или **Context** во время рендеринга. Для обещаний: **приостанавливает** (переводит в режим ожидания) до тех пор, пока не будет решено.
-
-**How it works:**
-
-- `use(promise)` — если ожидается, компонент приостанавливается → ближайший `<Suspense>` показывает запасной вариант; при разрешении повторные попытки рендеринга со значением
-- `use(context)` — React 19+ читает контекст без `useContext` (в некоторых случаях может быть условным — см. документацию)
-- Обещание должно быть **кэшировано** вне рендеринга, если оно создается для каждого вызова — не делайте этого. `use(fetch())` инлайнить каждый рендер
-
-**When to use:** Промисы, передаваемые сервером, асинхронные границы RSC, чтение контекста в циклах (React 19).
-
-**Pluses and minuses:**
-
-| +                                                         | −                                                      |
-| --------------------------------------------------------- | ------------------------------------------------------ |
-| Упрощенный код асинхронного компонента с помощью Suspense | Обещание должно быть стабильной ссылкой на все рендеры |
-| Работает с `use(context)`                                 | Обработка ошибок через ближайшую границу ошибок        |
-
-**Examples:**
-
-```tsx
-function Message({ messagePromise }: { messagePromise: Promise<Message> }) {
-  const message = use(messagePromise);
-  return <p>{message.text}</p>;
-}
-
-// Parent — create/cache promise once
-const promise = fetchMessage();
-<Suspense fallback={<p>Loading...</p>}>
-  <Message messagePromise={promise} />
-</Suspense>;
-```
-
-**Thoughts:** `use(promise)` _+ Приостановка заменяет шаблон состояния загрузки для асинхронного рендеринга._
-
-**See also:** [Потоковая передача и приостановка](#streaming--susense) · [React 19 крючков](./4_react_hooks.md#react-19-hooks)
-
-**Sources:**
-
-[react.dev/reference/react/use](https://react.dev/reference/react/use)
-
-Реагирующий компилятор
+React Compiler
 
 </details>
 
@@ -354,13 +166,13 @@ function TodoList({ todos }) {
 
 Напишите правильный React; пусть компилятор запомнит. Профиль перед добавлением руководства `useMemo`.
 
-Компилятор предполагает [Правила React](./4_react_core.md#rules-of-react) — чистый рендеринг, вызовы компонентов, принадлежащих React, правильное использование перехватчиков. По-прежнему профилируйте с помощью DevTools.
+Compiler assumes [Rules of React](./4_react_core.md#rules-of-react-catalog) — pure render, React-owned component calls, proper hook usage. Still profile with DevTools.
 
 **Sources:**
 
 [react.dev/learn/react-compiler](https://react.dev/learn/react-compiler)
 
-Метаданные документа
+Document metadata
 
 </details>
 
@@ -393,51 +205,7 @@ function BlogPost({ post }: { post: Post }) {
 
 **Sources:**
 
-[react.dev/reference/react-dom/comComponents/title](https://react.dev/reference/react-dom/comComponents/title)
-
-ссылка как опора
-
-</details>
-
-<details>
-  <summary>ref as prop</summary>
-
-### ref as prop
-
-**Definition:** React 19 позволяет функциональным компонентам принимать `ref` **как обычный реквизит** — `forwardRef` больше не требуется для новых компонентов.
-
-**How it works:** Объявить `ref` в типе реквизита и передайте его элементу DOM или дочернему элементу. Реакция угощает `ref` особенно внутри, но API компонента представляет собой простую опору. Существующий `forwardRef` компоненты продолжают работать — постепенно мигрируйте при касании кода. Машинопись: `ref?: Ref<HTMLInputElement>` or `ComponentPropsWithRef<'input'>`.
-
-**When to use:** Новые входные данные системы дизайна, оболочки вокруг собственных элементов, любой компонент, который пересылает ссылку DOM родительскому элементу.
-
-**Pluses and minuses:**
-
-| +                                  | −                                                 |
-| ---------------------------------- | ------------------------------------------------- |
-| Упрощенные подписи компонентов     | Смешанные кодовые базы во время миграции          |
-| В соответствии с другим реквизитом | Типы библиотек все еще могут ожидать `forwardRef` |
-| Меньше шаблона HOC/обертки         |                                                   |
-
-**Examples:**
-
-```tsx
-function TextInput({
-  ref,
-  ...props
-}: { ref?: Ref<HTMLInputElement> } & ComponentProps<"input">) {
-  return <input ref={ref} {...props} />;
-}
-
-// Parent
-const ref = useRef<HTMLInputElement>(null);
-<TextInput ref={ref} placeholder="Email" />;
-```
-
-**Thoughts:** `forwardRef` все еще работает для обратной совместимости. Для императивных API за пределами узлов DOM комбинируйте с `useImperativeHandle`.
-
-**Sources:**
-
-[react.dev/blog/2024/12/05/react-19](https://react.dev/blog/2024/12/05/react-19)
+[react.dev/reference/react-dom/components/title](https://react.dev/reference/react-dom/components/title)
 
 ---
 
@@ -455,7 +223,6 @@ SPA против SSR против RSC
 **Definition:**
 
 Три модели доставки для приложений React — SPA только для клиента, HTML с гидратацией, отображаемый на сервере, и серверные компоненты React, которые передают потоковый пользовательский интерфейс с минимальным клиентским JS.
-
 
 | | СПА | ССР | РСК |
 | | ----------------- | ---------------------- | ----------------------- |
@@ -619,7 +386,7 @@ export function LikeButton({ postId }: { postId: string }) {
 #### Common pitfalls
 
 - `typeof window` ветки, которые меняют сервер разметки по сравнению с клиентом
-- `Date.now()`, `Math.random()` для идентификаторов — используйте `[useId](./4_react_hooks.md#useid)`
+- `Date.now()`, `Math.random()` для идентификаторов — стабильные ID (`useId` на клиенте)
 - Расширения браузера изменяют DOM до гидратации React.
 - Разные локаль/часовой пояс на сервере и клиенте.
 
@@ -645,7 +412,7 @@ _Серверный HTML — это контракт: первый рендер�
 
 `suppressHydrationWarning` только для известных незначительных несоответствий (временных меток). Устраните первопричину, не подавляйте ее широко.
 
-**See also:** [Конвейер рендеринга](./4_react_core.md#render-pipeline) · [Компоненты сервера](#server-comComponents) · [useId](./4_react_hooks.md#useid)
+**See also:** [Конвейер рендеринга](./4_react_core.md#render-pipeline) · [Компоненты сервера](#server-comComponents)
 
 **Sources:**
 
@@ -669,10 +436,10 @@ _Серверный HTML — это контракт: первый рендер�
 **Pluses and minuses:**
 
 | +                                                         | −                                                                     |
-|  ---------------------------------------------------------  |  ---------------------------------------------------------------------  |
+| --------------------------------------------------------- | --------------------------------------------------------------------- |
 | Более быстрый FCP/LCP — пользователи видят контент раньше | Более сложная ментальная модель по сравнению с одиночным объектом SSR |
-| Прогрессивное улучшение разделов страницы                 | Запасной дизайн и смена макета требуют осторожности |
-| Сочетается с асинхронными компонентами RSC | API-интерфейсы, специфичные для платформы (Next.js, RR v7) |
+| Прогрессивное улучшение разделов страницы                 | Запасной дизайн и смена макета требуют осторожности                   |
+| Сочетается с асинхронными компонентами RSC                | API-интерфейсы, специфичные для платформы (Next.js, RR v7)            |
 
 **Examples:**
 
@@ -710,11 +477,11 @@ export default function Page() {
 
 Вы устанавливаете `react` + `react-dom`, но производственным приложениям нужна платформа для файловых маршрутов, серверного рендеринга, загрузчиков данных и объединения. Каркасные провода `react-dom/server`, протокол полета RSC и политики кэширования.
 
-| Рамочная                               | поддержка РСК                                    |
-|  --------------------------------------  |  ------------------------------------------------  |
-| **Next.js** (маршрутизатор приложений) | Полный RSC, действия сервера, потоковая передача |
-| **React Router v7**                    | Рамочный режим с RSC |
-| **Vite + Реагировать** | Только SPA — без RSC без плагина/экспериментальной настройки |
+| Рамочная                               | поддержка РСК                                                |
+| -------------------------------------- | ------------------------------------------------------------ |
+| **Next.js** (маршрутизатор приложений) | Полный RSC, действия сервера, потоковая передача             |
+| **React Router v7**                    | Рамочный режим с RSC                                         |
+| **Vite + Реагировать**                 | Только SPA — без RSC без плагина/экспериментальной настройки |
 
 **When to use:** Next.js для полнофункционального React; Вите для СПА; Режим платформы React Router v7 как золотая середина.
 

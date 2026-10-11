@@ -1,4 +1,4 @@
-# React — Core
+# React — Ecosystem
 
 Routing, libraries, performance, and legacy.
 
@@ -6,7 +6,7 @@ Routing, libraries, performance, and legacy.
 
 ### Related docs
 
-- [React — Basics](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Core](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — Interview](./4_react_interview.md) · [Architecture patterns](./7_special_architecture.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — Interview](./4_react_interview.md) · [Architecture patterns](./7_special_architecture.md)
 
 ### Sections
 
@@ -254,7 +254,7 @@ const { register, handleSubmit } = useForm({ resolver: zodResolver(schema) });
 
 **Thoughts:** _Simple forms → Actions; complex validation → RHF + Zod._
 
-**See also:** [Controlled vs uncontrolled inputs](./4_react_core.md#controlled-vs-uncontrolled-inputs) · [Actions](./4_react_server.md#actions) · [useActionState](./4_react_server.md#useactionstate)
+**See also:** [Controlled vs uncontrolled inputs](./4_react_core.md#controlled-vs-uncontrolled-inputs) · [Actions](./4_react_server.md#actions) · [useActionState - 19](./4_react_hooks.md#useactionstate-19)
 
 **Sources:**
 
@@ -787,7 +787,7 @@ const Row = React.memo(function Row({ item }: { item: Item }) {
 
 **Thoughts:** _Compiler replaces manual memo for most apps — profile, don't guess._
 
-**See also:** [React Compiler](./4_react_server.md#react-compiler) · [useMemo / useCallback](./4_react_hooks.md#usememo--usecallback)
+**See also:** [React Compiler](./4_react_server.md#react-compiler) · [useMemo](./4_react_hooks.md#usememo) · [useCallback](./4_react_hooks.md#usecallback)
 
 **Sources:**
 
@@ -1166,7 +1166,7 @@ function Input({ ref, ...props }: Props & { ref?: Ref<HTMLInputElement> }) {
 
 **Thoughts:** `ref` _is just a prop now — no HOC wrapper._
 
-**See also:** [ref as prop](./4_react_server.md#ref-as-prop) · [Refs (React 19)](./4_react_hooks.md#refs-react-19-ref-as-prop)
+**See also:** [ref as prop - 19](./4_react_hooks.md#ref-as-prop-19)
 
 **Sources:**
 

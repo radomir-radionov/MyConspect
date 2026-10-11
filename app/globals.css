@@ -578,11 +578,39 @@ body {
   line-height: 1.6;
 }
 
-.concept-body table {
+.concept-body .table-scroll,
+.concept-slot__body .table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+.concept-body .table-scroll {
+  margin: 0.75rem 0;
+}
+
+.concept-slot__body .table-scroll {
+  margin: 0.5rem 0;
+}
+
+.concept-body .table-scroll > table,
+.concept-slot__body .table-scroll > table {
+  margin: 0;
+}
+
+.concept-body table,
+.concept-slot__body table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
   background: var(--surface);
+}
+
+.concept-body .table-scroll > table,
+.concept-slot__body .table-scroll > table {
+  width: max-content;
+  min-width: 100%;
 }
 
 .concept-body th,

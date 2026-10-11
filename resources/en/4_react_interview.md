@@ -6,7 +6,7 @@ React interview questions. Answers are filled for the full list.
 
 ### Related docs
 
-- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Interview](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Interview](./4_react_interview.md)
 
 ### Sections
 
@@ -57,7 +57,7 @@ Data remains strictly one-way (parent-to-child). However, Server Actions have re
 
 #### JSX: Transpilation to React Elements
 
-JSX remains the syntax extension for JavaScript. In modern build tools (e.g., Vite, Rspack), JSX is transformed into _jsx runtime calls, optimized for the specific rendering target (Client vs. Server).
+JSX remains the syntax extension for JavaScript. In modern build tools (e.g., Vite, Rspack), JSX is transformed into \_jsx runtime calls, optimized for the specific rendering target (Client vs. Server).
 
 **When to use:**
 
@@ -78,9 +78,9 @@ JSX remains the syntax extension for JavaScript. In modern build tools (e.g., Vi
 The following snippet demonstrates the shift toward useActionState and modern functional patterns, replacing legacy class-based state management.
 
 ```tsx
-'use client'; // Required for interactivity in RSC environments
+"use client"; // Required for interactivity in RSC environments
 
-import { useActionState } from 'react';
+import { useActionState } from "react";
 
 // Modern approach: Server Actions integration
 async function incrementCounter(previousState, formData) {
@@ -266,12 +266,12 @@ Modern ecosystems rely on ESLint (Flat Config) and Biome or Prettier to enforce 
 
 #### Technical Audit Summary
 
-| Feature | Legacy Status | 2026 Standard |
-| --- | --- | --- |
-| Component Type | Class-based | Functional (Hooks) |
-| Type Checking | PropTypes | TypeScript (Interface/Types) |
-| Data Fetching | componentDidMount | use API / TanStack Query |
-| Rendering | Client-Side (CSR) | Server Components (RSC) / Streaming |
+| Feature        | Legacy Status     | 2026 Standard                       |
+| -------------- | ----------------- | ----------------------------------- |
+| Component Type | Class-based       | Functional (Hooks)                  |
+| Type Checking  | PropTypes         | TypeScript (Interface/Types)        |
+| Data Fetching  | componentDidMount | use API / TanStack Query            |
+| Rendering      | Client-Side (CSR) | Server Components (RSC) / Streaming |
 
 #### Key Takeaways
 
@@ -548,29 +548,32 @@ In 2026, state is managed via useState. Binding in constructors is unnecessary, 
 #### Code Example: Functional Component Pattern (React 19)
 
 ```tsx
-import { useState, useCallback, FormEvent, ChangeEvent } from 'react';
+import { useState, useCallback, FormEvent, ChangeEvent } from "react";
 
 export default function Form() {
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>("");
 
   // useCallback optimizes performance by memoizing the handler reference
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   }, []);
 
-  const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Submitted:', value);
-  }, [value]);
+  const handleSubmit = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      console.log("Submitted:", value);
+    },
+    [value],
+  );
 
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="name-input">Name:</label>
-      <input 
+      <input
         id="name-input"
-        type="text" 
-        value={value} 
-        onChange={handleChange} 
+        type="text"
+        value={value}
+        onChange={handleChange}
       />
       <button type="submit">Submit</button>
     </form>
@@ -635,9 +638,9 @@ In modern React (v19+), props and state remain the fundamental primitives for da
 #### Code Example: Modernized State and Props
 
 ```tsx
-'use client';
+"use client";
 
-import React, { useState, memo } from 'react';
+import React, { useState, memo } from "react";
 
 // Use memo to prevent unnecessary re-renders of stable children
 const Button = memo(({ text, color, onClick }) => {
@@ -649,15 +652,15 @@ const Button = memo(({ text, color, onClick }) => {
 });
 
 const ColorPicker = () => {
-  const [color, setColor] = useState('blue');
+  const [color, setColor] = useState("blue");
 
-  // useCallback is omitted here for brevity, 
+  // useCallback is omitted here for brevity,
   // but recommended for complex prop-drilling scenarios.
   return (
     <div>
       <p>Current Color: {color}</p>
-      <Button text="Red" color="red" onClick={() => setColor('red')} />
-      <Button text="Blue" color="blue" onClick={() => setColor('blue')} />
+      <Button text="Red" color="red" onClick={() => setColor("red")} />
+      <Button text="Blue" color="blue" onClick={() => setColor("blue")} />
     </div>
   );
 };
@@ -731,8 +734,8 @@ export function DropDown({ options, onSelect, selected }: DropDownProps) {
     <nav>
       <p>Current: {selected}</p>
       {options.map((opt) => (
-        <button 
-          key={opt} 
+        <button
+          key={opt}
           onClick={() => onSelect(opt)}
           aria-pressed={selected === opt}
         >
@@ -744,19 +747,19 @@ export function DropDown({ options, onSelect, selected }: DropDownProps) {
 }
 
 // src/App.tsx
-import { useState } from 'react';
-import { DropDown } from './components/DropDown';
+import { useState } from "react";
+import { DropDown } from "./components/DropDown";
 
 export default function App() {
-  const [selection, setSelection] = useState<string>('Apple');
-  const options = ['Apple', 'Banana', 'Cherry'];
+  const [selection, setSelection] = useState<string>("Apple");
+  const options = ["Apple", "Banana", "Cherry"];
 
   return (
     <main>
-      <DropDown 
-        options={options} 
-        onSelect={setSelection} 
-        selected={selection} 
+      <DropDown
+        options={options}
+        onSelect={setSelection}
+        selected={selection}
       />
       <section>You selected: {selection}</section>
     </main>
@@ -811,7 +814,7 @@ Stateful components in React are components that manage internal data that persi
 In React 19, use the useState hook. This approach eliminates this binding issues and reduces boilerplate code.
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ClickCounter = () => {
   // useState returns the current value and a setter function
@@ -874,20 +877,18 @@ Updating state triggers a Reconciliation process. React compares the new state w
 **Examples:**
 
 ```js
-Lazy Initialization: Passing a function to useState (e.g., useState(() => expensiveCalculation())) ensures the function executes only during the initial mount. This prevents unnecessary overhead during subsequent render cycles, which occur with 
+Lazy Initialization: Passing a function to useState (e.g., useState(() => expensiveCalculation())) ensures the function executes only during the initial mount. This prevents unnecessary overhead during subsequent render cycles, which occur with
 ```
 
 ```tsx
-import { useState } from 'react';
+import { useState } from "react";
 
 const Counter = () => {
   // 2026 Best Practice: Using an arrow function for atomic updates
   const [count, setCount] = useState(0);
 
   return (
-    <button onClick={() => setCount((prev) => prev + 1)}>
-      Count: {count}
-    </button>
+    <button onClick={() => setCount((prev) => prev + 1)}>Count: {count}</button>
   );
 };
 ```
@@ -934,11 +935,11 @@ When updating parent state, ensure the state is placed as low as possible in the
 
 ```tsx
 // Parent.jsx
-import { useState, useCallback } from 'react';
-import { Child } from './Child';
+import { useState, useCallback } from "react";
+import { Child } from "./Child";
 
 export const Parent = () => {
-  const [data, setData] = useState('');
+  const [data, setData] = useState("");
 
   // useCallback prevents unnecessary re-renders of the child
   const handleUpdate = useCallback((newValue) => {
@@ -949,12 +950,12 @@ export const Parent = () => {
 };
 
 // Child.jsx
-import { memo } from 'react';
+import { memo } from "react";
 
 // memo ensures the child only re-renders if props change
 export const Child = memo(({ onUpdate }) => {
   return (
-    <button onClick={() => onUpdate('Updated via memoized callback')}>
+    <button onClick={() => onUpdate("Updated via memoized callback")}>
       Update Parent
     </button>
   );
@@ -1018,20 +1019,28 @@ In modern React (19+), functional components and hooks have superseded class-bas
 #### Parent Component: RectangleAreaCalculator
 
 ```tsx
-import { useState } from 'react';
+import { useState } from "react";
 
 const RectangleAreaCalculator = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setDimensions(prev => ({ ...prev, [name]: Number(value) }));
+    setDimensions((prev) => ({ ...prev, [name]: Number(value) }));
   };
 
   return (
     <section>
-      <ShapeInput name="width" value={dimensions.width} onChange={handleChange} />
-      <ShapeInput name="height" value={dimensions.height} onChange={handleChange} />
+      <ShapeInput
+        name="width"
+        value={dimensions.width}
+        onChange={handleChange}
+      />
+      <ShapeInput
+        name="height"
+        value={dimensions.height}
+        onChange={handleChange}
+      />
       <ShapeArea area={dimensions.width * dimensions.height} />
     </section>
   );
@@ -1042,13 +1051,13 @@ const RectangleAreaCalculator = () => {
 
 ```html
 const ShapeInput = ({ name, value, onChange }) => (
-  <div>
-    <label>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
-    <input name={name} type="number" value={value} onChange={onChange} />
-  </div>
-);
-
-const ShapeArea = ({ area }) => <div>Area: {area}</div>;
+<div>
+  <label>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
+  <input name="{name}" type="number" value="{value}" onChange="{onChange}" />
+</div>
+); const ShapeArea = ({ area }) =>
+<div>Area: {area}</div>
+;
 ```
 
 **Sources:**
@@ -1093,13 +1102,13 @@ Context API is a dependency injection mechanism, not a state management solution
 
 #### Technical Comparison Summary
 
-| Feature | Redux Toolkit | Context API |
-| --- | --- | --- |
-| Primary Use | Complex, high-frequency state | Configuration, Dependency Injection |
-| Performance | Selective rendering (selectors) | Full subtree re-render (default) |
-| Boilerplate | Moderate (standardized via RTK) | Minimal |
-| DevTools | Native Time-Travel | Limited (React DevTools only) |
-| Complexity | O(1) to O(log n) scaling | O(n) rendering behavior |
+| Feature     | Redux Toolkit                   | Context API                         |
+| ----------- | ------------------------------- | ----------------------------------- |
+| Primary Use | Complex, high-frequency state   | Configuration, Dependency Injection |
+| Performance | Selective rendering (selectors) | Full subtree re-render (default)    |
+| Boilerplate | Moderate (standardized via RTK) | Minimal                             |
+| DevTools    | Native Time-Travel              | Limited (React DevTools only)       |
+| Complexity  | O(1) to O(log n) scaling        | O(n) rendering behavior             |
 
 - **Audit Conclusion**: Favor Context API for global UI configurations and Redux Toolkit for application business logic, form state, and server-cache synchronization. Abandon the use of legacy class-based connect patterns in favor of the current Hook-based API.
 
@@ -1349,7 +1358,9 @@ function FeedbackForm() {
     return <h1>Thank you!</h1>;
   }
 
-  return <textarea value={message} onChange={(e) => setMessage(e.target.value)} />;
+  return (
+    <textarea value={message} onChange={(e) => setMessage(e.target.value)} />
+  );
 }
 ```
 
@@ -1396,7 +1407,10 @@ function Avatar({ person, size }) {
   );
 }
 
-<Avatar size={100} person={{ name: "Katsuko Saruhashi", imageId: "YfeOqp2" }} />
+<Avatar
+  size={100}
+  person={{ name: "Katsuko Saruhashi", imageId: "YfeOqp2" }}
+/>;
 ```
 
 **Sources:**
@@ -1547,8 +1561,11 @@ function Card({ children }) {
 }
 
 <Card>
-  <Avatar size={100} person={{ name: "Katsuko Saruhashi", imageId: "YfeOqp2" }} />
-</Card>
+  <Avatar
+    size={100}
+    person={{ name: "Katsuko Saruhashi", imageId: "YfeOqp2" }}
+  />
+</Card>;
 ```
 
 **Sources:**
@@ -1666,7 +1683,12 @@ const Profile = memo(function Profile({ person }) {
 ```jsx
 class Greeting extends PureComponent {
   render() {
-    return <h3>Hello{this.props.name && ", "}{this.props.name}!</h3>;
+    return (
+      <h3>
+        Hello{this.props.name && ", "}
+        {this.props.name}!
+      </h3>
+    );
   }
 }
 ```
@@ -1701,9 +1723,9 @@ Reconciliation is how React matches the UI you just rendered with the UI already
 **Examples:**
 
 ```jsx
-{people.map((person) => (
-  <li key={person.id}>{person.name}</li>
-))}
+{
+  people.map((person) => <li key={person.id}>{person.name}</li>);
+}
 ```
 
 **Sources:**
@@ -1737,10 +1759,7 @@ Keep state close to the UI that reads it, and skip a child render only when that
 **Examples:**
 
 ```jsx
-const visibleTodos = useMemo(
-  () => filterTodos(todos, tab),
-  [todos, tab]
-);
+const visibleTodos = useMemo(() => filterTodos(todos, tab), [todos, tab]);
 
 return <List items={visibleTodos} />;
 ```
@@ -1782,7 +1801,7 @@ Style a DOM node with the `className` string, which maps to the HTML `class` att
   className="avatar"
   style={{
     width: user.imageSize,
-    height: user.imageSize
+    height: user.imageSize,
   }}
 />
 ```
@@ -1938,7 +1957,7 @@ The `style` prop takes a JavaScript object. Property names are camelCase, and th
 <ul
   style={{
     backgroundColor: "black",
-    color: "pink"
+    color: "pink",
   }}
 >
   <li>Improve the videophone</li>
@@ -2409,10 +2428,7 @@ A controlled input’s displayed value is React state: you pass `value` and `onC
 ```jsx
 const [firstName, setFirstName] = useState("");
 
-<input
-  value={firstName}
-  onChange={(e) => setFirstName(e.target.value)}
-/>
+<input value={firstName} onChange={(e) => setFirstName(e.target.value)} />;
 ```
 
 **Sources:**
@@ -2442,12 +2458,12 @@ Validate a React form by checking the values before submit and by showing the er
 **Examples:**
 
 ```jsx
-<button
-  disabled={answer.length === 0 || status === "submitting"}
->
+<button disabled={answer.length === 0 || status === "submitting"}>
   Submit
-</button>
-{error !== null && <p className="Error">{error.message}</p>}
+</button>;
+{
+  error !== null && <p className="Error">{error.message}</p>;
+}
 ```
 
 **Sources:**
@@ -2885,7 +2901,11 @@ function AboutPage() {
   return (
     <>
       <h1>About</h1>
-      <p>Hello there.<br />How do you do?</p>
+      <p>
+        Hello there.
+        <br />
+        How do you do?
+      </p>
     </>
   );
 }
@@ -2923,9 +2943,9 @@ import { createPortal } from "react-dom";
   <p>This child is placed in the parent div.</p>
   {createPortal(
     <p>This child is placed in the document body.</p>,
-    document.body
+    document.body,
   )}
-</div>
+</div>;
 ```
 
 **Sources:**
@@ -3268,7 +3288,7 @@ const client = new ApolloClient({
 root.render(
   <ApolloProvider client={client}>
     <App />
-  </ApolloProvider>
+  </ApolloProvider>,
 );
 ```
 

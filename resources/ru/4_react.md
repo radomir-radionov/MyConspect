@@ -4,7 +4,7 @@
 
 ### Related docs
 
-[React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Экосистема](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Интервью](./4_react_interview.md)
+[React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Экосистема](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Интервью](./4_react_interview.md)
 
 ### Navigation
 
@@ -12,8 +12,10 @@
 | ------------------------------------------------------- | ---------------------------------------------------------- |
 | [React — Core](./4_react_core.md)                       | Модель библиотеки, рендеринг, JSX и состояние.             |
 | [React — Хуки](./4_react_hooks.md)                      | Крюки опорные и аварийные люки.                            |
+| [React — Components](./4_react_components.md)           | Fragment, Profiler, StrictMode, Suspense, Activity.        |
+| [React — APIs](./4_react_apis.md)                       | createContext, lazy, memo, cache, act, transitions.        |
 | [React — React 19](./4_react_server.md)                 | API-интерфейсы React 19, SSR и серверные компоненты React. |
-| [React — Core](./4_react_ecosystem.md)                  | Маршрутизация, библиотеки, производительность и наследие.  |
+| [React — Ecosystem](./4_react_ecosystem.md)             | Маршрутизация, библиотеки, производительность и наследие.  |
 | [React — Redux](./4_react_redux.md)                     | Redux Toolkit, глобальное состояние клиента и RTK Query.   |
 | [React — TanStack](./4_react_tanstack.md)               | TanStack Query, Router, Table, Virtual и Form.             |
 | [React — Интервью](./4_react_interview.md)              | Вопросы по React, ответы не заполнены.                     |

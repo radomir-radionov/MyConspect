@@ -6,7 +6,7 @@ React 19 APIs, SSR, and React Server Components.
 
 ### Related docs
 
-- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
 
 ### Sections
 
@@ -24,41 +24,30 @@ Overview
 
 ### Overview
 
-**Definition:** React 19 (Dec 2024) adds first-class **Actions** for async mutations, form integration, optimistic UI, the `use()` API, **React Compiler** for automatic memoization, and `ref` **as a regular prop**.
+**Definition:** React 19 (Dec 2024) adds first-class **Actions** for async mutations and forms, **React Compiler** for automatic memoization, and **document metadata** hoisted from components to `<head>`.
 
 **How it works:**
 
-| Area                    | Feature                             | Hook / API                        |
-| ----------------------- | ----------------------------------- | --------------------------------- |
-| Forms & mutations       | Actions with built-in pending/error | `useActionState`, `<form action>` |
-| Optimistic UI           | Show result before server confirms  | `useOptimistic`                   |
-| Async in render         | Read promises with Suspense         | `use()`                           |
-| Form pending from child | No drilling `isPending`             | `useFormStatus`                   |
-| Performance             | Auto memoization                    | React Compiler                    |
-| DX                      | Ref forwarding simplified           | `ref` as prop                     |
+| Area              | Feature                             | Where to read                           |
+| ----------------- | ----------------------------------- | --------------------------------------- |
+| Forms & mutations | Actions with built-in pending/error | [Actions](#actions)                     |
+| Performance       | Auto memoization                    | [React Compiler](#react-compiler)       |
+| DX                | Metadata in components              | [Document metadata](#document-metadata) |
 
 Replace manual `isLoading` + `try/catch` + `e.preventDefault()` in forms with declarative `action` functions React tracks.
 
-New projects on React 19; migrate forms and ref-forwarding incrementally. Enable Compiler when build pipeline supports it.
+New projects on React 19; migrate forms incrementally. Enable Compiler when the build pipeline supports it.
 
 **Examples:**
 
 ```tsx
-// ref is a normal prop (no forwardRef)
-function Input({
-  ref,
-  ...props
-}: Props & { ref?: React.Ref<HTMLInputElement> }) {
-  return <input ref={ref} {...props} />;
-}
-
 // Action — pending comes from React
-<form action={submitAction}>...</form>;
+<form action={submitAction}>...</form>
 ```
 
-**Thoughts:** _Less boilerplate for async UI — Actions, optimistic state, and Compiler handle what you used to wire manually._
+**Thoughts:** _Less boilerplate for async UI — Actions and Compiler handle what you used to wire manually._
 
-**See also:** [Actions](#actions) · [React Compiler](#react-compiler) · [ref as prop](#ref-as-prop)
+**See also:** [Actions](#actions) · [React Compiler](#react-compiler) · [Document metadata](#document-metadata)
 
 **Sources:**
 
@@ -81,13 +70,13 @@ Actions
 2. While Promise pending → `isPending` true, UI can disable buttons
 3. On success → action return value becomes new state; form may reset
 4. On error → return error message or throw to error boundary
-5. Pair with `useOptimistic` for instant UI before server responds
+5. Pair with optimistic UI before the server responds when the UX needs instant feedback
 
 **When to use:**
 
 Form submissions, mutations without manual `isLoading` + `try/catch` state.
 
-Complex client-only validation flows where RHF is clearer; non-form mutations (use `useTransition` directly).
+Complex client-only validation flows where RHF is clearer; non-form mutations (wrap the update in `startTransition`).
 
 **Pluses and minuses:**
 
@@ -121,184 +110,7 @@ function ChangeName() {
 
 **Sources:**
 
-[react.dev/reference/react/useActionState](https://react.dev/reference/react/useActionState)
-
-useActionState
-
-</details>
-
-<details>
-  <summary>useActionState</summary>
-
-### useActionState
-
-**Definition:** Wraps an action function; returns `[state, formAction, isPending]`. Replaces the old `useFormState` name from canary builds.
-
-**How it works:** Action signature `(previousState, payload) => nextState | Promise<nextState>`. For forms, payload is `FormData`. `isPending` is true while the Promise resolves. Pass `formAction` to `<form action={formAction}>`.
-
-**When to use:** Forms and mutations where you need result state (error message, success text) + pending flag without manual `useState`.
-
-**Examples:**
-
-```tsx
-const [message, formAction, isPending] = useActionState(
-  async (_prev, formData: FormData) => {
-    const err = await updateUser(formData);
-    return err ?? "Saved";
-  },
-  null,
-);
-
-return (
-  <form action={formAction}>
-    <button disabled={isPending}>Save</button>
-    {message && <p>{message}</p>}
-  </form>
-);
-```
-
-**Thoughts:** _One hook for action result + pending — no separate_ `isLoading` _state._
-
-**See also:** [Actions](#actions) · [useFormStatus](#useformstatus)
-
-**Sources:**
-
-[react.dev/reference/react/useActionState](https://react.dev/reference/react/useActionState)
-
-useOptimistic
-
-</details>
-
-<details>
-  <summary>useOptimistic</summary>
-
-### useOptimistic
-
-**Definition:** Shows **optimistic UI** immediately while an async action is in flight; **reverts** to real state when the action completes or fails.
-
-**How it works:** `useOptimistic(realState, updateFn)` returns `[optimisticState, addOptimistic]`. Call `addOptimistic` inside an action before `await` — UI updates instantly. When the action finishes and real state updates, optimistic layer discards.
-
-**When to use:**
-
-Like counts, cart quantity, message "sent" status, reordering lists before server confirms.
-
-Critical data where wrong optimistic state confuses users (financial balances) without clear rollback UI.
-
-**Examples:**
-
-```tsx
-const [optimisticCount, addOptimistic] = useOptimistic(
-  count,
-  (c, delta: number) => c + delta,
-);
-
-async function handleLike() {
-  addOptimistic(1);
-  await saveLike(); // on failure, count reverts when real state refreshes
-}
-```
-
-**Thoughts:** _Show the future now; real state wins when the server responds._
-
-**See also:** [Actions](#actions) · [useActionState](#useactionstate)
-
-**Sources:**
-
-[react.dev/reference/react/useOptimistic](https://react.dev/reference/react/useOptimistic)
-
-useFormStatus
-
-</details>
-
-<details>
-  <summary>useFormStatus</summary>
-
-### useFormStatus
-
-**Definition:** `react-dom` hook — read **pending** state of the nearest parent `<form>` from a **child** component (e.g. submit button in a design system).
-
-**How it works:** Must be called inside a component that is a **descendant** of `<form>`. Returns `{ pending, data, method, action }`. `pending` is true while the form's action Promise is in flight. Does not work if called in the same component that renders `<form>`.
-
-**When to use:** Reusable `SubmitButton` without prop drilling `isPending` from parent.
-
-**Examples:**
-
-```tsx
-function SubmitButton({ children }: { children: React.ReactNode }) {
-  const { pending } = useFormStatus();
-  return (
-    <button type="submit" disabled={pending}>
-      {children}
-    </button>
-  );
-}
-
-function Form() {
-  return (
-    <form action={saveAction}>
-      <input name="email" />
-      <SubmitButton>Save</SubmitButton>
-    </form>
-  );
-}
-```
-
-**Thoughts:** _Child reads parent form status — no_ `isPending` _prop through the tree._
-
-**See also:** [useActionState](#useactionstate) · [Actions](#actions)
-
-**Sources:**
-
-[react.dev/reference/react-dom/hooks/useFormStatus](https://react.dev/reference/react-dom/hooks/useFormStatus)
-
-use()
-
-</details>
-
-<details>
-  <summary>use()</summary>
-
-### use()
-
-**Definition:** Reads a **Promise** or **Context** value during render. For Promises, **suspends** (throws to Suspense) until resolved.
-
-**How it works:**
-
-- `use(promise)` — if pending, component suspends → nearest `<Suspense>` shows fallback; on resolve, retries render with value
-- `use(context)` — React 19+ reads context without `useContext` (can be conditional in some cases — check docs)
-- Promise must be **cached** outside render if created per call — don't `use(fetch())` inline every render
-
-**When to use:** Server-passed promises, async RSC boundaries, reading context in loops (React 19).
-
-**Pluses and minuses:**
-
-| +                                          | −                                               |
-| ------------------------------------------ | ----------------------------------------------- |
-| Simpler async component code with Suspense | Promise must be stable reference across renders |
-| Works with `use(context)`                  | Error handling via nearest Error Boundary       |
-
-**Examples:**
-
-```tsx
-function Message({ messagePromise }: { messagePromise: Promise<Message> }) {
-  const message = use(messagePromise);
-  return <p>{message.text}</p>;
-}
-
-// Parent — create/cache promise once
-const promise = fetchMessage();
-<Suspense fallback={<p>Loading...</p>}>
-  <Message messagePromise={promise} />
-</Suspense>;
-```
-
-**Thoughts:** `use(promise)` _+ Suspense replaces loading state boilerplate for async render._
-
-**See also:** [Streaming & Suspense](#streaming--suspense) · [React 19 hooks](./4_react_hooks.md#react-19-hooks)
-
-**Sources:**
-
-[react.dev/reference/react/use](https://react.dev/reference/react/use)
+[react.dev/reference/react/useActionState](https://react.dev/reference/react/useActionState) · [react.dev/reference/react-dom/components/form](https://react.dev/reference/react-dom/components/form)
 
 React Compiler
 
@@ -354,7 +166,7 @@ function TodoList({ todos }) {
 
 Write correct React; let the compiler memoize. Profile before adding manual `useMemo`.
 
-Compiler assumes [Rules of React](./4_react_core.md#rules-of-react) — pure render, React-owned component calls, proper hook usage. Still profile with DevTools.
+Compiler assumes [Rules of React](./4_react_core.md#rules-of-react-catalog) — pure render, React-owned component calls, proper hook usage. Still profile with DevTools.
 
 **Sources:**
 
@@ -394,50 +206,6 @@ function BlogPost({ post }: { post: Post }) {
 **Sources:**
 
 [react.dev/reference/react-dom/components/title](https://react.dev/reference/react-dom/components/title)
-
-ref as prop
-
-</details>
-
-<details>
-  <summary>ref as prop</summary>
-
-### ref as prop
-
-**Definition:** React 19 allows function components to accept `ref` **as a normal prop** — `forwardRef` is no longer required for new components.
-
-**How it works:** Declare `ref` in your props type and pass it to a DOM element or child. React treats `ref` specially internally but the component API is a plain prop. Existing `forwardRef` components continue to work — migrate gradually when touching code. TypeScript: `ref?: Ref<HTMLInputElement>` or `ComponentPropsWithRef<'input'>`.
-
-**When to use:** New design-system inputs, wrappers around native elements, any component that forwards a DOM ref to parent.
-
-**Pluses and minuses:**
-
-| +                            | −                                           |
-| ---------------------------- | ------------------------------------------- |
-| Simpler component signatures | Mixed codebases during migration            |
-| Consistent with other props  | Library types may still expect `forwardRef` |
-| Less HOC/wrapper boilerplate |                                             |
-
-**Examples:**
-
-```tsx
-function TextInput({
-  ref,
-  ...props
-}: { ref?: Ref<HTMLInputElement> } & ComponentProps<"input">) {
-  return <input ref={ref} {...props} />;
-}
-
-// Parent
-const ref = useRef<HTMLInputElement>(null);
-<TextInput ref={ref} placeholder="Email" />;
-```
-
-**Thoughts:** `forwardRef` still works for backward compatibility. For imperative APIs beyond DOM nodes, combine with `useImperativeHandle`.
-
-**Sources:**
-
-[react.dev/blog/2024/12/05/react-19](https://react.dev/blog/2024/12/05/react-19)
 
 ---
 
@@ -618,7 +386,7 @@ Any SSR/RSC app. Entry: `hydrateRoot` (React 18+), not legacy `hydrate`.
 #### Common pitfalls
 
 - `typeof window` branches that change markup server vs client
-- `Date.now()`, `Math.random()` for IDs — use `[useId](./4_react_hooks.md#useid)`
+- `Date.now()`, `Math.random()` for IDs — use stable IDs (`useId` on the client)
 - Browser extensions modifying DOM before React hydrates
 - Different locale/timezone on server vs client
 
@@ -644,7 +412,7 @@ _Server HTML is the contract — client first render must match byte-for-byte in
 
 `suppressHydrationWarning` only for known benign mismatches (timestamps). Fix root cause, don't suppress broadly.
 
-**See also:** [Render pipeline](./4_react_core.md#render-pipeline) · [Server Components](#server-components) · [useId](./4_react_hooks.md#useid)
+**See also:** [Render pipeline](./4_react_core.md#render-pipeline) · [Server Components](#server-components)
 
 **Sources:**
 
@@ -689,6 +457,8 @@ export default function Page() {
 ```
 
 **Thoughts:** Avoid a single Suspense boundary around the entire page — split by independent data sources. Match skeleton dimensions to final content to reduce CLS.
+
+**See also:** [Suspense (Components)](./4_react_components.md#suspense)
 
 **Sources:**
 

@@ -4,20 +4,22 @@ Components, hooks, rendering, RSC, and ecosystem patterns. Theory lives in the t
 
 ### Related docs
 
-[React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Interview](./4_react_interview.md)
+[React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Redux](./4_react_redux.md) · [React — TanStack](./4_react_tanstack.md) · [React — Interview](./4_react_interview.md)
 
 ### Navigation
 
-| Topic                                                   | Covers                                             |
-| ------------------------------------------------------- | -------------------------------------------------- |
-| [React — Core](./4_react_core.md)                       | Library model, rendering, JSX, and state.          |
-| [React — Hooks](./4_react_hooks.md)                     | Hooks reference and escape hatches.                |
-| [React — React 19](./4_react_server.md)                 | React 19 APIs, SSR, and React Server Components.   |
-| [React — Core](./4_react_ecosystem.md)                  | Routing, libraries, performance, and legacy.       |
-| [React — Redux](./4_react_redux.md)                     | Redux Toolkit, global client state, and RTK Query. |
-| [React — TanStack](./4_react_tanstack.md)               | TanStack Query, Router, Table, Virtual, and Form.  |
-| [React — Interview](./4_react_interview.md)             | React interview questions, answers not filled in.  |
-| [React — Redux interview](./4_react_redux_interview.md) | Redux interview questions, answers not filled in.  |
+| Topic                                                   | Covers                                              |
+| ------------------------------------------------------- | --------------------------------------------------- |
+| [React — Core](./4_react_core.md)                       | Library model, rendering, JSX, and state.           |
+| [React — Hooks](./4_react_hooks.md)                     | Hooks reference and escape hatches.                 |
+| [React — Components](./4_react_components.md)           | Fragment, Profiler, StrictMode, Suspense, Activity. |
+| [React — APIs](./4_react_apis.md)                       | createContext, lazy, memo, cache, act, transitions. |
+| [React — React 19](./4_react_server.md)                 | React 19 APIs, SSR, and React Server Components.    |
+| [React — Ecosystem](./4_react_ecosystem.md)             | Routing, libraries, performance, and legacy.        |
+| [React — Redux](./4_react_redux.md)                     | Redux Toolkit, global client state, and RTK Query.  |
+| [React — TanStack](./4_react_tanstack.md)               | TanStack Query, Router, Table, Virtual, and Form.   |
+| [React — Interview](./4_react_interview.md)             | React interview questions, answers not filled in.   |
+| [React — Redux interview](./4_react_redux_interview.md) | Redux interview questions, answers not filled in.   |
 
 ### Interview practice
 

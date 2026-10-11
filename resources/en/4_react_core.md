@@ -6,7 +6,7 @@ Library model, rendering, JSX, and state.
 
 ### Related docs
 
-- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
+- [React — Core](./4_react_core.md) · [React — Hooks](./4_react_hooks.md) · [React — Components](./4_react_components.md) · [React — APIs](./4_react_apis.md) · [React — React 19](./4_react_server.md) · [React — Ecosystem](./4_react_ecosystem.md) · [React — Interview](./4_react_interview.md)
 
 ### Sections
 
@@ -19,7 +19,7 @@ Library model, rendering, JSX, and state.
 
 ## 1. Library overview
 
-React
+### Library overview
 
 <details>
   <summary>React overview</summary>
@@ -193,40 +193,127 @@ Props down, event up — parent owns `liked`.
 
 **See also:**
 
-[Rules of React](#rules-of-react) · [SOLID in React](#solid-in-react) · [Composition patterns](#composition-patterns)
+[Rules of React](#rules-of-react-catalog) · [SOLID in React](#solid-in-react) · [Composition patterns](#composition-patterns)
 
-Rules of React
+Rules of React catalog
 
 **Sources:** [react.dev/blog/2024/12/05/react-19](https://react.dev/blog/2024/12/05/react-19)
 
 </details>
 
-<details>
-  <summary>Rules of React</summary>
-
 ### Rules of React
 
-**Definition:** Idioms React assumes you follow — **rules, not style**. Break them → bugs, and Compiler/Concurrent cannot help.
+Rules of React catalog
+
+<details>
+  <summary>Rules of React catalog</summary>
+
+### Rules of React catalog
+
+**Definition:** **Rules of React** are idioms React assumes you follow — **rules, not style**. Break them → bugs; Compiler and Concurrent features cannot fix violations.
 
 **How it works:**
 
-Three buckets. Enforce with [`<StrictMode>`](#strict-mode) + `eslint-plugin-react-hooks`.
+| Rule                                                                    |
+| ----------------------------------------------------------------------- |
+| [Components and Hooks must be pure](#components-and-hooks-must-be-pure) |
+| [React calls Components and Hooks](#react-calls-components-and-hooks)   |
+| [Rules of Hooks](#rules-of-hooks)                                       |
 
-| Bucket                                                  | Rule                                                                                                                                                       |
-| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **[Purity](#purity)**                                   | Same props/state/context → same JSX. No `fetch` / `new Date()` / mutate-in-render. Copy, then `setState`. Don't mutate Hook args or values already in JSX. |
-| **React calls you**                                     | `<Article />`, never `Article()`. Don't pass Hooks as props or wrap them in HOFs.                                                                          |
-| **[Rules of Hooks](./4_react_hooks.md#rules-of-hooks)** | Top level only (no loops/conditions/early return). Only in components or `use*` hooks.                                                                     |
+Enforce with [`<StrictMode>`](./4_react_components.md#strictmode) and [`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks). Deeper render examples: [Purity](#purity) · [Element vs component](#element-vs-component).
 
-Local objects created **this render** may mutate **before** JSX. Mutating props, state, module arrays, or the DOM during render is not allowed.
+**When to use:** Always — every component and custom hook.
 
-**When to use:**
+**Sources:**
 
-Always.
+[react.dev/reference/rules](https://react.dev/reference/rules)
+
+Components and Hooks must be pure
+
+</details>
+
+<details>
+  <summary>Components and Hooks must be pure</summary>
+
+### Components and Hooks must be pure
+
+**Definition:** Components and Hooks must be **pure** with respect to their inputs for a single render — predictable UI, easier debugging, and safe automatic optimization.
+
+**How it works:**
+
+| Principle                       | Meaning                                                                                     |
+| ------------------------------- | ------------------------------------------------------------------------------------------- |
+| **Idempotent components**       | Same props, state, and context → same JSX output for that render                            |
+| **Side effects outside render** | No `fetch`, subscriptions, or DOM writes in the render body — use event handlers or effects |
+| **Immutable props & state**     | Never mutate props, state, or context; copy then `setState`                                 |
+| **Immutable Hook inputs**       | Do not change values after they are passed into a Hook                                      |
+| **Immutable after JSX**         | Do not mutate a value after it appears in JSX — mutate earlier in the function              |
+
+Local objects created **during this render** may be mutated **before** they are passed to JSX. Mutating props, parent state, module-level data, or the DOM during render is not allowed.
+
+**When to use:** Every render path in every component and custom `use*` function.
 
 #### Common pitfalls
 
-Treating rules as optional; side effects in render; injecting a Hook via props; `if (loggedIn) useX()`.
+`new Date()` or `Math.random()` in render without state; mutating arrays from props; `fetch` in render; changing Hook arguments after the call.
+
+**Examples:**
+
+```tsx
+// Bad — impure render
+function Greeting({ name }: { name: string }) {
+  const now = new Date();
+  return (
+    <h1>
+      {name} — {now.toISOString()}
+    </h1>
+  );
+}
+
+// Good — local copy before JSX
+function FriendList({ friends }: { friends: string[] }) {
+  const sorted = [...friends].sort();
+  return (
+    <ul>
+      {sorted.map((f) => (
+        <li key={f}>{f}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**See also:** [Purity](#purity) · [Render pipeline](#render-pipeline) · [StrictMode](./4_react_components.md#strictmode)
+
+**Sources:**
+
+[react.dev/reference/rules/components-and-hooks-must-be-pure](https://react.dev/reference/rules/components-and-hooks-must-be-pure)
+
+React calls Components and Hooks
+
+</details>
+
+<details>
+  <summary>React calls Components and Hooks</summary>
+
+### React calls Components and Hooks
+
+**Definition:** **React** decides when to render components and Hooks — you declare UI in JSX; React schedules work for the best user experience.
+
+**How it works:**
+
+| Rule                                        | Meaning                                                                                                    |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Never call component functions directly** | Use `<Article />`, not `Article()` — only JSX lets React own the instance, state, and effects              |
+| **Never pass Hooks as regular values**      | Do not pass `useState` or a custom hook function through props or store hooks in variables for later calls |
+
+Calling `Welcome()` yourself skips React's reconciliation, breaks state, and violates the mental model Compiler relies on.
+
+**When to use:** Always in application code.
+
+#### Common pitfalls
+
+`{items.map((i) => Row(i))}` instead of `<Row key={i.id} item={i} />`; wrapping a hook in a callback prop.
 
 **Examples:**
 
@@ -237,18 +324,56 @@ return (
   </Layout>
 ); // ✅
 return <Layout>{Article()}</Layout>; // 🔴 React never owns that instance
-
-if (!id) return null;
-const user = useUser(id); // 🔴 hook after return — call it first
 ```
 
-**Thoughts:** _Render is a pure formula; React calls you — you don't call components or pass Hooks around._
-
-**See also:** [Purity](#purity) · [Rules of Hooks](./4_react_hooks.md#rules-of-hooks) · [Strict Mode](#strict-mode) · [Element vs component](#element-vs-component) · [React Compiler](./4_react_server.md#react-compiler) · [Thinking in React](https://react.dev/learn/thinking-in-react)
+**See also:** [Element vs component](#element-vs-component) · [Components and Hooks must be pure](#components-and-hooks-must-be-pure)
 
 **Sources:**
 
-[react.dev/reference/rules](https://react.dev/reference/rules)
+[react.dev/reference/rules/react-calls-components-and-hooks](https://react.dev/reference/rules/react-calls-components-and-hooks)
+
+Rules of Hooks
+
+</details>
+
+<details>
+  <summary>Rules of Hooks</summary>
+
+### Rules of Hooks
+
+**Definition:** Hooks are JavaScript functions that represent **reusable UI logic** with strict call-site rules — breaking them corrupts React's hook list for that component.
+
+**How it works:**
+
+| Rule                                     | Meaning                                                                            |
+| ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| **Only call Hooks at the top level**     | Not inside loops, conditions, or nested functions — call before any early `return` |
+| **Only call Hooks from React functions** | Components or custom hooks (`use*`); not from plain utilities or event handlers    |
+
+Full hook reference: [React — Hooks](./4_react_hooks.md).
+
+**When to use:** Whenever you use `useState`, `useEffect`, or any `use*` API.
+
+#### Common pitfalls
+
+`if (loggedIn) useAuth()`; `for` loop with `useState`; calling `useQuery` inside `onClick`.
+
+**Examples:**
+
+```tsx
+function Profile({ id }: { id: string | null }) {
+  const userId = id ?? "";
+  const user = useUser(userId);
+  if (!id) return null;
+  return <Card user={user} />;
+}
+```
+
+**See also:** [Rules of React catalog](#rules-of-react-catalog) · [Custom hooks](./4_react_hooks.md#custom-hooks)
+
+**Sources:**
+
+[react.dev/reference/rules/rules-of-hooks](https://react.dev/reference/rules/rules-of-hooks)
 
 SOLID in React
 
@@ -409,7 +534,7 @@ function UsersPanel({ client }: { client: UserClient }) {
 
 **Thoughts:** _Small focused units, extend by composition, inject data — React is built for S, O, and D._
 
-**See also:** [Philosophy](#philosophy) · [Composition patterns](#composition-patterns) · [Custom hooks](./4_react_hooks.md#custom-hooks) · [SOLID (overview)](./7_special_engineering.md#solid-overview)
+**See also:** [Philosophy](#philosophy) · [Composition patterns](#composition-patterns) · [SOLID (overview)](./7_special_engineering.md#solid-overview)
 
 **Sources:**
 
@@ -419,45 +544,9 @@ function UsersPanel({ client }: { client: UserClient }) {
 
 </details>
 
-### Components & JSX
-
-Functions return JSX. Props flow down; events flow up. Full notes: [Components](#components) · [JSX](#jsx).
-
-### Hooks
-
-State, effects, context, refs in function components. Custom `use*` extracts logic. Full notes: [Hooks reference](./4_react_hooks.md#5-hooks-reference) · [Rules of Hooks](./4_react_hooks.md#rules-of-hooks).
-
----
-
-### Primary references
-
-**Definition:** Official and community references for React 19, the Compiler, TypeScript patterns, and architecture.
-
-**Examples:** Start with [react.dev Learn](https://react.dev/learn) for interactive tutorials, then use Reference for hook APIs.
-
-**Sources:**
-
-curated list below
-
-- [react.dev](https://react.dev/) — official docs (Learn + Reference)
-- [React 19 release](https://react.dev/blog/2024/12/05/react-19)
-- [React Compiler](https://react.dev/learn/react-compiler)
-- [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/)
-- [patterns.dev/react](https://www.patterns.dev/react/)
-- [Feature-Sliced Design](https://feature-sliced.design/)
-- [TanStack Router](https://tanstack.com/router) · [TanStack Query](https://tanstack.com/query)
-- [nuqs](https://nuqs.dev/)
-- [CASL](https://casl.js.org/) · [orval](https://orval.dev/) · [shadcn/ui](https://ui.shadcn.com/)
-- [next-intl](https://next-intl.dev/)
-
-Related docs in this repo
-
-</details>
-
-<details>
-  <summary>Related notes</summary>
-
 ## 2. Rendering model
+
+### Rendering model
 
 <details>
   <summary>Render pipeline</summary>
@@ -513,7 +602,7 @@ function Tooltip({ text }: { text: string }) {
 
 **Thoughts:** _Trigger schedules → render computes (may repeat) → commit mutates once → paint →_ `useEffect`_._
 
-**See also:** [React vs ReactDOM](#react-vs-reactdom) · [useLayoutEffect](./4_react_hooks.md#uselayouteffect) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Concurrent rendering](#concurrent-rendering) · [Batching](#batching)
+**See also:** [React vs ReactDOM](#react-vs-reactdom) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Concurrent rendering](#concurrent-rendering) · [Batching](#batching)
 
 **Sources:**
 
@@ -644,7 +733,7 @@ App
                                  └─ child → ItemA ── sibling → ItemB
 ```
 
-Walk: App → Header → Main → ItemA → ItemB, then `completeWork` back up. Hooks live on `memoizedState` on the fiber → [Rules of Hooks](./4_react_hooks.md#rules-of-hooks).
+Walk: App → Header → Main → ItemA → ItemB, then `completeWork` back up. Hook state lives on `memoizedState` on the fiber (same call order every render).
 
 One fiber (or a short burst) processed before `shouldYield()`. React **finishes the current function**, then yields — never mid-component. Typical slice ~5ms; the next frame resumes at the next fiber. **Commit never yields.**
 
@@ -692,7 +781,7 @@ startTransition(() => setTab('analytics')); // transition lane
 
 **Thoughts:** _Render prepares work in chunks; commit applies it in one atomic pass._
 
-**See also:** [Render pipeline](#render-pipeline) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Concurrent rendering](#concurrent-rendering) · [Batching](#batching) · [Rules of Hooks](./4_react_hooks.md#rules-of-hooks)
+**See also:** [Render pipeline](#render-pipeline) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Concurrent rendering](#concurrent-rendering) · [Batching](#batching)
 
 **Sources:**
 
@@ -746,7 +835,7 @@ function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 
 **Thoughts:** _Prepare UI in the background, commit urgent work first — stale UI briefly is the tradeoff._
 
-**See also:** [React Fiber](#react-fiber) · [useTransition / useDeferredValue](./4_react_hooks.md#usetransition--usedeferredvalue) · [Render pipeline](#render-pipeline)
+**See also:** [React Fiber](#react-fiber) · [Render pipeline](#render-pipeline) · [Batching](#batching)
 
 **Sources:**
 
@@ -887,7 +976,7 @@ As a fix for double-fetch — fix effect cleanup or dedupe logic instead of remo
 #### Common pitfalls
 
 - Disabling Strict Mode because effects run twice — the bug is missing cleanup, not Strict Mode
-- Putting side effects in render body — double render exposes them → [Rules of React](#rules-of-react)
+- Putting side effects in render body — double render exposes them → [Rules of React](#rules-of-react-catalog)
 - Assuming production behaves like dev — Strict Mode checks are stripped in prod builds
 
 **Examples:**
@@ -900,7 +989,7 @@ As a fix for double-fetch — fix effect cleanup or dedupe logic instead of remo
 
 **Thoughts:** _Strict Mode stress-tests your components — if it breaks in dev, it was already fragile._
 
-**See also:** [Rules of React](#rules-of-react) · [Purity](#purity) · [useEffect](./4_react_hooks.md#useeffect) · [Render pipeline](#render-pipeline)
+**See also:** [Rules of React](#rules-of-react-catalog) · [Purity](#purity) · [Render pipeline](#render-pipeline) · [StrictMode (Components)](./4_react_components.md#strictmode)
 
 **Sources:**
 
@@ -939,7 +1028,7 @@ Elements are what reconciliation diffs. Components are how you organize logic. C
 #### Common pitfalls
 
 - Confusing `<Welcome />` with a DOM node — it's an instruction to call `Welcome`
-- Calling `Welcome()` as a function — [Rules of React](#rules-of-react): only JSX so React owns the call
+- Calling `Welcome()` as a function — [Rules of React](#rules-of-react-catalog): only JSX so React owns the call
 - Lowercase JSX (`<welcome />`) — React treats it as unknown HTML tag, not your component
 - Mutating element objects — always create new elements via JSX each render
 
@@ -958,7 +1047,7 @@ const element = <Welcome name="Ada" />;
 
 **Thoughts:** _Components are functions; elements are their output snapshots — reconciliation compares elements._
 
-**See also:** [Rules of React](#rules-of-react) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Components](#components)
+**See also:** [Rules of React](#rules-of-react-catalog) · [Virtual DOM & reconciliation](#virtual-dom--reconciliation) · [Components](#components)
 
 **Sources:**
 
@@ -970,7 +1059,7 @@ const element = <Welcome name="Ada" />;
 
 ## 3. Describing the UI
 
-Components
+### Describing the UI
 
 <details>
   <summary>Components</summary>
@@ -1128,6 +1217,8 @@ items.map((item) => (
 ));
 ```
 
+**See also:** [Fragment (Components)](./4_react_components.md#fragment)
+
 **Sources:**
 
 [react.dev/reference/react/Fragment](https://react.dev/reference/react/Fragment)
@@ -1191,7 +1282,7 @@ Purity
 
 **Definition:**
 
-React components must be **pure** during render: same inputs → same output; no mutating external state or props. Full contract (idempotency, immutability, “React calls you”): [Rules of React](#rules-of-react).
+React components must be **pure** during render: same inputs → same output; no mutating external state or props. Full contract: [Components and Hooks must be pure](#components-and-hooks-must-be-pure) · [Rules of React catalog](#rules-of-react-catalog).
 
 | Allowed                         | Forbidden during render                                     |
 | ------------------------------- | ----------------------------------------------------------- |
@@ -1241,7 +1332,7 @@ function FriendList({ friends }: { friends: string[] }) {
 
 **Thoughts:** _Render is a pure function of props, state, and context._
 
-**See also:** [Rules of React](#rules-of-react) · [Render pipeline](#render-pipeline) · [You might not need an effect](./4_react_hooks.md#you-might-not-need-an-effect)
+**See also:** [Components and Hooks must be pure](#components-and-hooks-must-be-pure) · [Render pipeline](#render-pipeline)
 
 **Sources:**
 
@@ -1422,7 +1513,7 @@ function Card({
 
 **Thoughts:** _Compose UI like nesting HTML — slots over inheritance._
 
-**See also:** [SOLID in React](#solid-in-react) · [Props](#props) · [Context](#context)
+**See also:** [SOLID in React](#solid-in-react) · [Props](#props) · [Lifting state up](#lifting-state-up)
 
 **Sources:**
 
@@ -1434,7 +1525,7 @@ function Card({
 
 ## 4. State & interactivity
 
-State
+### State & interactivity
 
 <details>
   <summary>State</summary>
@@ -1611,7 +1702,7 @@ const fullName = `${firstName} ${lastName}`;
 
 **Thoughts:** _Minimize state surface — derive during render when possible._
 
-**See also:** [State](#state) · [You might not need an effect](./4_react_hooks.md#you-might-not-need-an-effect)
+**See also:** [State](#state) · [Purity](#purity)
 
 **Sources:**
 
@@ -1635,7 +1726,7 @@ Lifting state up
 3. Move `useState` to that parent
 4. Pass `value` + `onChange` (or derived data) down as props
 
-State used by one component only — keep local. Deep drilling → [Context](#context) or state library.
+State used by one component only — keep local. Deep drilling → composition (`children`), a state library, or context via [React — Hooks](./4_react_hooks.md).
 
 **When to use:** Two or more siblings share data or must stay in sync.
 
@@ -1655,7 +1746,7 @@ function Page() {
 
 **Thoughts:** _Shared state lives in the lowest common ancestor._
 
-**See also:** [State vs props](#state-vs-props) · [Context](#context)
+**See also:** [State vs props](#state-vs-props) · [Principles for structuring state](#principles-for-structuring-state)
 
 **Sources:**
 
@@ -1695,98 +1786,6 @@ Controlled vs uncontrolled inputs
 **Sources:**
 
 [react.dev/reference/react-dom/components/input](https://react.dev/reference/react-dom/components/input)
-
-Context
-
-</details>
-
-<details>
-  <summary>Context</summary>
-
-### Context
-
-**Definition:** `createContext` + `useContext` pass data through the tree without prop drilling.
-
-**How it works:**
-
-1. Pass props explicitly
-2. Extract components; pass JSX as `children`
-3. Use a dedicated state library for frequent updates
-
-**When to use:** Theming, locale, auth session, router — stable or memoized values.
-
-**Pluses and minuses:**
-
-| +                                    | −                                          |
-| ------------------------------------ | ------------------------------------------ |
-| Avoids drilling theme, locale, auth  | All consumers re-render when value changes |
-| Good for rarely changing global data | Easy to overuse as global store            |
-
-**Examples:**
-
-```tsx
-const ThemeContext = createContext<"light" | "dark">("light");
-
-function App() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-  return (
-    <ThemeContext value={theme}>
-      <Toolbar />
-    </ThemeContext>
-  );
-}
-
-function Toolbar() {
-  const theme = useContext(ThemeContext);
-  return <div className={theme}>...</div>;
-}
-```
-
-**Thoughts:** Split contexts by update frequency. Memoize `value` object or consumers re-render on every parent render.
-
-**Sources:**
-
-[react.dev/learn/passing-data-deeply-with-context](https://react.dev/learn/passing-data-deeply-with-context)
-
-useReducer
-
-</details>
-
-<details>
-  <summary>useReducer</summary>
-
-### useReducer
-
-**Definition:** `useReducer(reducer, initialArg)` manages complex state with an action → state transition function (Redux-like locally).
-
-**When to use:** Multi-field forms, wizard steps, state machines — when `useState` has too many `setX` calls.
-
-**Pluses and minuses:**
-
-| +                                   | −                                   |
-| ----------------------------------- | ----------------------------------- |
-| Predictable state transitions       | More boilerplate for simple toggles |
-| Easier to test reducer in isolation |                                     |
-| Co-locate related updates           |                                     |
-
-**Examples:**
-
-```tsx
-type Action = { type: "increment" } | { type: "decrement" };
-function reducer(state: number, action: Action) {
-  switch (action.type) {
-    case "increment":
-      return state + 1;
-    case "decrement":
-      return state - 1;
-  }
-}
-const [count, dispatch] = useReducer(reducer, 0);
-```
-
-**Sources:**
-
-[react.dev/reference/react/useReducer](https://react.dev/reference/react/useReducer)
 
 State normalization
 
