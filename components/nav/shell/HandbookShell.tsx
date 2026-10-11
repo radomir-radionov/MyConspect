@@ -187,7 +187,7 @@ export function HandbookShell({
             className={
               navOpen && !searching
                 ? "fixed inset-x-0 top-14 z-20 h-[calc(100dvh-3.5rem)] bg-zinc-900/30 opacity-100 transition-opacity duration-200 ease-out motion-reduce:transition-none md:hidden"
-                : "pointer-events-none fixed inset-x-0 top-14 z-20 h-[calc(100dvh-3.5rem)] bg-zinc-900/30 opacity-0 transition-opacity duration-200 ease-out motion-reduce:transition-none md:hidden"
+                : "max-md:hidden fixed inset-x-0 top-14 z-20 h-[calc(100dvh-3.5rem)] bg-zinc-900/30 md:hidden"
             }
             tabIndex={navOpen && !searching ? 0 : -1}
             aria-hidden={!navOpen || searching}
@@ -199,11 +199,9 @@ export function HandbookShell({
           ) : null}
           <aside
             className={
-              searchSheet
-                ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
-                : navOpen
-                  ? `${SIDEBAR_MOBILE_FRAME} translate-x-0 border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
-                  : `pointer-events-none max-md:invisible ${SIDEBAR_MOBILE_FRAME} -translate-x-full border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
+              menuOpen
+                ? `${SIDEBAR_MOBILE_FRAME} max-md:translate-x-0 border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
+                : `max-md:hidden ${SIDEBAR_MOBILE_FRAME} border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 ${SIDEBAR_MOTION} ${desktopClass}`
             }
             onPointerEnter={onAsidePointerEnter}
             onPointerLeave={onAsidePointerLeave}
@@ -246,6 +244,7 @@ export function HandbookShell({
               minHeight: 0,
               overflow: "auto",
               overscrollBehavior: "contain",
+              touchAction: "manipulation",
             }}
           >
             <ContentBreadcrumbs groups={groups} chrome={chrome} />
