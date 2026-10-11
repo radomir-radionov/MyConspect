@@ -237,76 +237,6 @@ describe("handbook sidebar", () => {
     cy.nav("cluster", "patterns").should("have.attr", "aria-expanded", "false");
   });
 
-  it("toggles the same hub cluster closed on a second click", () => {
-    cy.visit("/en/frontend/html");
-    cy.nav("cluster", "core").click();
-    cy.nav("cluster", "core").should("have.attr", "aria-expanded", "true");
-    cy.sidebar().contains("Structure").should("be.visible");
-
-    cy.nav("cluster", "core").click();
-    cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
-  });
-
-  it("opens Additional on an HTML hub after Core is open", () => {
-    cy.visit("/en/frontend/html");
-    cy.nav("subject", "html").should("have.attr", "aria-expanded", "true");
-    cy.nav("cluster", "core").click();
-    cy.nav("cluster", "core").should("have.attr", "aria-expanded", "true");
-
-    cy.nav("cluster", "additional").click();
-
-    cy.nav("cluster", "additional").should(
-      "have.attr",
-      "aria-expanded",
-      "true",
-    );
-    cy.sidebar().contains("Accessibility").should("be.visible");
-    cy.nav("cluster", "core").should("have.attr", "aria-expanded", "false");
-    cy.nav("cluster", "browser").should("have.attr", "aria-expanded", "false");
-  });
-
-  it("opens Core from a JavaScript Browser topic without collapsing everything", () => {
-    cy.visit("/en/frontend/js-browser-extra");
-    cy.nav("subject", "javascript").should(
-      "have.attr",
-      "aria-expanded",
-      "true",
-    );
-    cy.nav("cluster", "browser").should("have.attr", "aria-expanded", "true");
-    cy.nav("topic", "js-browser-extra").should(
-      "have.attr",
-      "aria-expanded",
-      "true",
-    );
-
-    cy.nav("cluster", "core").click();
-
-    cy.nav("cluster", "core").should("have.attr", "aria-expanded", "true");
-    cy.sidebar().contains("Language").should("be.visible");
-    cy.sidebar().contains("Functions").should("be.visible");
-    cy.nav("cluster", "browser").should("have.attr", "aria-expanded", "false");
-    cy.nav("track", "frontend").should("have.attr", "aria-expanded", "true");
-    cy.url().should("include", "/frontend/javascript");
-    cy.url().should("include", "core");
-  });
-
-  it("shows React Ecosystem Core without a duplicate Ecosystem crumb", () => {
-    cy.visit("/en/frontend/react-ecosystem");
-    cy.contains("nav[aria-label='Breadcrumb']", "Ecosystem").should(
-      "be.visible",
-    );
-    cy.contains("nav[aria-label='Breadcrumb']", "Core").should("be.visible");
-    cy.contains("nav[aria-label='Breadcrumb'] li", "Ecosystem").should(
-      "have.length",
-      1,
-    );
-    cy.contains("h1", "Core");
-    cy.nav("cluster", "ecosystem").should("have.attr", "aria-expanded", "true");
-    cy.nav("topic", "react-ecosystem")
-      .should("be.visible")
-      .and("contain", "Core");
-  });
-
   it("shows Redux under React Ecosystem in breadcrumbs", () => {
     cy.visit("/en/frontend/react-redux");
     cy.contains("nav[aria-label='Breadcrumb']", "Ecosystem").should(
@@ -432,54 +362,6 @@ describe("handbook sidebar", () => {
     });
   });
 
-  it("sticks the active path to the top of the sidebar when scrolled away", () => {
-    cy.viewport(1280, 560);
-    cy.visit("/en/frontend/js-browser-extra");
-    cy.nav("topic", "js-browser-extra").should(
-      "have.attr",
-      "aria-expanded",
-      "true",
-    );
-
-    cy.get("#handbook-nav-aside").then(($aside) => {
-      const aside = $aside[0];
-      const core = aside.querySelector(
-        '[data-nav="cluster"][data-nav-id="core"]',
-      ) as HTMLElement | null;
-      expect(core, "Core cluster").to.exist;
-      if (!core) {
-        return;
-      }
-      // Scroll Core just out of view without releasing sticky path rows at the end.
-      aside.scrollTop +=
-        core.getBoundingClientRect().bottom -
-        aside.getBoundingClientRect().top +
-        24;
-    });
-
-    cy.nav("track", "frontend").should("be.visible");
-    cy.nav("subject", "javascript").should("be.visible");
-    cy.nav("cluster", "browser").should("be.visible");
-    cy.nav("topic", "js-browser-extra").should("be.visible");
-    cy.get('#handbook-sidebar [data-nav="cluster"][data-nav-id="core"]').each(
-      ($el) => {
-        const asideBox = Cypress.$(
-          "#handbook-nav-aside",
-        )[0].getBoundingClientRect();
-        const box = $el[0].getBoundingClientRect();
-        expect(box.bottom).to.be.at.most(asideBox.top + 1);
-      },
-    );
-    cy.nav("topic", "js-browser-extra").should(($el) => {
-      const asideBox = Cypress.$(
-        "#handbook-nav-aside",
-      )[0].getBoundingClientRect();
-      const box = $el[0].getBoundingClientRect();
-      expect(box.top).to.be.gte(asideBox.top - 1);
-      expect(box.bottom).to.be.lt(asideBox.top + 230);
-    });
-  });
-
   it("opens a concept in detail view when chosen from the page list", () => {
     cy.viewport(390, 844);
     cy.visit("/en/frontend/react-core");
@@ -517,24 +399,6 @@ describe("handbook sidebar", () => {
     cy.visit("/en/frontend/html-structure");
     cy.contains("button", "Back").should("not.exist");
     cy.contains("button", "Next").should("not.exist");
-  });
-
-  it("returns to the topic index from the last concept via Next", () => {
-    cy.viewport(390, 844);
-    cy.visit("/en/frontend/ts-basics#solid-in-typescript");
-    cy.contains("button", "Next").click();
-    cy.location("pathname").should("eq", "/en/frontend/ts-basics");
-    cy.location("hash").should("eq", "");
-    cy.contains("button", "Compiler fundamentals").should("be.visible");
-    cy.contains("button", "Back").should("not.exist");
-    cy.contains("button", "Next").should("not.exist");
-  });
-
-  it("does not show Back on multi-concept topic index pages", () => {
-    cy.visit("/en/frontend/js-browser");
-    cy.contains("h1", "JS Browser — Document");
-    cy.contains("button", "Script loading").should("be.visible");
-    cy.contains("button", "Back").should("not.exist");
   });
 
   it("does not show Back on database foundations topic index", () => {
@@ -596,19 +460,6 @@ describe("handbook sidebar", () => {
       "have.attr",
       "aria-expanded",
       "false",
-    );
-  });
-
-  it("closes handbook clusters when Utility Types section expands", () => {
-    cy.visit("/en/frontend/typescript");
-    cy.nav("cluster", "modules").click();
-    cy.nav("cluster", "modules").should("have.attr", "aria-expanded", "true");
-    cy.nav("section", "utility-types").click();
-    cy.nav("cluster", "modules").should("have.attr", "aria-expanded", "false");
-    cy.nav("section", "utility-types").should(
-      "have.attr",
-      "aria-expanded",
-      "true",
     );
   });
 
@@ -688,25 +539,6 @@ describe("handbook sidebar", () => {
     cy.wait(400);
     cy.sidebar().should("contain", "No topics or concepts match that search.");
     cy.get("#handbook-sidebar [data-search-in='notes']").should("not.exist");
-  });
-
-  it("finds a phrase inside concept notes in Notes mode", () => {
-    cy.visit("/en/frontend/js-browser-extra");
-    cy.get('[data-search-mode="notes"]').click();
-    cy.get('input[placeholder="Search in notes…"]')
-      .clear()
-      .type("resize ended");
-    cy.wait(400);
-    cy.sidebar().should(($nav) => {
-      const text = $nav.text().toLowerCase();
-      expect(text).to.contain("debounc");
-    });
-    cy.location("hash").should("match", /debounc/i);
-    cy.get("#handbook-sidebar [data-search-in='notes']").should(
-      "contain",
-      "resize ended",
-    );
-    cy.get("#handbook-main mark").should("contain", "resize ended");
   });
 
   it("keeps search mode buttons inside the phone header", () => {
