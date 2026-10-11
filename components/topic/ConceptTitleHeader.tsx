@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import type { ChromeCopy } from "@/lib/nav";
 import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
 import { TopicBookmarkButton } from "./TopicBookmarkButton";
@@ -119,12 +119,9 @@ function ConceptTitleHeading({
   level: "h1" | "h2";
 }) {
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const [expanded, setExpanded] = useState(false);
+  const [expandedTitle, setExpandedTitle] = useState<string | null>(null);
+  const expanded = expandedTitle === title;
   const [truncated, setTruncated] = useState(false);
-
-  useEffect(() => {
-    setExpanded(false);
-  }, [title]);
 
   useLayoutEffect(() => {
     const el = titleRef.current;
@@ -165,7 +162,9 @@ function ConceptTitleHeading({
       className={TITLE_TOGGLE_CLASS}
       aria-expanded={expanded}
       aria-label={`${title}. ${toggleLabel}`}
-      onClick={() => setExpanded((value) => !value)}
+      onClick={() =>
+        setExpandedTitle((current) => (current === title ? null : title))
+      }
     >
       {title}
     </button>
