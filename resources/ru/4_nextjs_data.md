@@ -25,9 +25,21 @@ _Темы следующие: Определение → Плюсы и мину�
 
 ### Server Component fetching
 
-**Definition:** Серверные компоненты извлекают данные напрямую — `async` функции, `fetch()`или клиенты баз данных. Нет `useEffect` водопады на клиенте.
+**Definition:** Серверные компоненты извлекают данные напрямую — `async` функции, `fetch()` или клиенты баз данных. Нет `useEffect`-водопадов на клиенте.
 
-**When to use:** По умолчанию для всех операций чтения в App Router.
+**How it works:**
+
+- `page.tsx` / `layout.tsx` помечают как `async` и `await` данных **до** возврата JSX. Код выполняется на сервере раз на запрос (или на сборке для static routes).
+- **Мемоизация `fetch`** в одном render pass убирает дубли (один URL + опции).
+- В RSC payload уходит только нужный минимум; в Client Components (`"use client"`) передаются сериализуемые props.
+- Ошибки fetch часто попадают в `error.tsx` сегмента, если не обработать их в компоненте.
+- **Чтение** — здесь по умолчанию; **мутации** — Server Actions или Route Handlers, не в render.
+
+**When to use:**
+
+- По умолчанию для всех **read** в App Router.
+- Данные для **SEO**, первого кадра или auth до показа UI.
+- Любые секреты (ключи API, URL БД) не должны попадать в браузер.
 
 **Pluses and minuses:**
 
@@ -60,7 +72,225 @@ export default async function ProductsPage() {
 }
 ```
 
+**Thoughts:** Сначала **источник** (SaaS, БД в приложении, отдельный сервис), затем **слой**. См. [Choosing a data fetch path](#choosing-a-data-fetch-path) · [Fetching from a remote API](#fetching-from-a-remote-api) · [Colocated backend in Next.js](#colocated-backend-in-nextjs) · [Fetching from a separate backend](#fetching-from-a-separate-backend).
+
 **Sources:** [nextjs.org/docs/app/getting-started/fetching-data](https://nextjs.org/docs/app/getting-started/fetching-data)
+
+</details>
+
+<details>
+  <summary>Choosing a data fetch path</summary>
+
+### Choosing a data fetch path
+
+**Definition:** Как выбрать **где лежат данные** и **какой слой Next.js** их загружает — до выбора SWR, Prisma или Route Handler.
+
+**How it works:**
+
+| Вопрос                                  | Если да →          | Паттерн                                                     |
+| --------------------------------------- | ------------------ | ----------------------------------------------------------- |
+| Данные у **вендора** (CMS, Stripe)?     | Удалённый HTTP API | `fetch`/SDK в **Server Component**, секреты в env           |
+| Данные в **вашей БД** в том же деплое?  | Colocated backend  | `lib/` + ORM в RSC, без self-`fetch` на `/api`              |
+| Данные за **другим вашим сервисом**?    | Отдельный backend  | `fetch(API_URL)` на сервере; браузер — **Route Handler**    |
+| UI **часто обновляется** без навигации? | Клиентское чтение  | `fetch('/api/...')`, SWR, TanStack Query в Client Component |
+| Это **мутация** (форма)?                | Запись на сервер   | **Server Action** или `POST` Route Handler                  |
+
+**Layer rules:** RSC — read при render; Route Handler — HTTP для браузера/webhook; Server Action — мутации, не read API; Client fetch — после hydration.
+
+**When to use:** Новая страница, миграция с `getServerSideProps`, разделение monolith на Next + API.
+
+**Thoughts:** Антипаттерн: RSC `fetch('http://localhost:3000/api/...')` на static build. Антипаттерн: `DATABASE_URL` в Client Component.
+
+**Sources:** [nextjs.org/docs/app/guides/backend-for-frontend](https://nextjs.org/docs/app/guides/backend-for-frontend) · [nextjs.org/docs/app/getting-started/fetching-data](https://nextjs.org/docs/app/getting-started/fetching-data)
+
+</details>
+
+<details>
+  <summary>Fetching from a remote API</summary>
+
+### Fetching from a remote API
+
+**Definition:** Чтение данных из **стороннего HTTP API** (headless CMS, платежи, публичный REST/GraphQL) в Server Components, Server Actions или Route Handlers — через `fetch` или SDK с ключом только на сервере.
+
+**How it works:**
+
+- Вызов на **сервере** при рендере; секреты в `process.env`, не в клиентском бандле.
+- Нужен **абсолютный URL**; к GET через `fetch` применяется кэш Next.js (`cache`, `next.revalidate`, `next.tags`).
+- При **SSG** удалённый API должен быть доступен на этапе сборки, иначе нужен dynamic rendering.
+- Server Components **не** должны читать данные через свой `app/api/...` — лишний HTTP и проблемы на build ([Backend for Frontend](https://nextjs.org/docs/app/guides/backend-for-frontend)).
+
+**When to use:**
+
+- Headless **CMS** (Sanity, Contentful, Strapi).
+- **Платежи**, доставка, каталоги (Stripe и т.д.) — ключи только на сервере.
+- **Карты, валидация, ML** — когда канонические данные не у вас.
+- Публичные **REST/GraphQL** без своего backend.
+
+**Pluses and minuses:**
+
+| +                                | −                                      |
+| -------------------------------- | -------------------------------------- |
+| Не нужен свой backend для чтения | Задержка и лимиты вендора              |
+| Теги кэша для vendor GET         | Падение вендора ломает рендер страницы |
+| Ключи API только на сервере      | Версии и схема API меняются снаружи    |
+
+**Common pitfalls:**
+
+- Вызов вендора из **браузера** — утечка ключей; только server proxy.
+- Обёртка vendor GET в Route Handler **только** для RSC — лишний hop; вызывайте вендора из RSC.
+- SSG при недоступном CMS — `force-dynamic`, `no-store` или ISR с fallback.
+- Нет проверки `!res.ok` — Next не бросает на 404/500.
+
+**Examples:**
+
+```tsx
+async function getPosts() {
+  const res = await fetch("https://cms.example.com/api/posts", {
+    headers: { Authorization: `Bearer ${process.env.CMS_TOKEN}` },
+    next: { tags: ["cms-posts"], revalidate: 60 },
+  });
+  if (!res.ok) throw new Error("CMS unavailable");
+  return res.json();
+}
+```
+
+**Thoughts:** Связывайте `next.tags` с webhook CMS и `revalidateTag`, чтобы публикации без полного redeploy.
+
+**Sources:** [nextjs.org/docs/app/getting-started/fetching-data](https://nextjs.org/docs/app/getting-started/fetching-data) · [nextjs.org/docs/app/guides/backend-for-frontend](https://nextjs.org/docs/app/guides/backend-for-frontend)
+
+</details>
+
+<details>
+  <summary>Colocated backend in Next.js</summary>
+
+### Colocated backend in Next.js
+
+**Definition:** Данные в **том же приложении Next.js** — Postgres через Prisma/Drizzle, Redis, `lib/`. Server Components вызывают БД или доменные функции **напрямую**, без `fetch("http://localhost:3000/api/...")`.
+
+**How it works:**
+
+- Запросы в `lib/data.ts` или репозиториях; импорт в `async` Server Components.
+- **Route Handlers** — для HTTP-клиентов (браузер, webhook), не для чтения Server Component через HTTP к самому себе.
+- **Server Actions** — для **мутаций**, не как API чтения (очередь, последовательность).
+- На serverless — пул соединений (pooler, serverless driver).
+
+**When to use:**
+
+- **Full-stack Next** — один репозиторий и деплой.
+- **Postgres/SQLite** с Prisma, Drizzle, Kysely.
+- **Сессия/auth** в layout до children.
+- Внутренние админки в одном приложении.
+
+**Pluses and minuses:**
+
+| +                                                                 | −                                                 |
+| ----------------------------------------------------------------- | ------------------------------------------------- |
+| Быстрее — без self-HTTP                                           | Связка с runtime Next                             |
+| ORM и транзакции в одном процессе                                 | server-only код нельзя тащить в Client Components |
+| Для БД — `use cache` / `unstable_noStore`, не обязательно `fetch` | Позже API могут вынести в отдельный сервис        |
+
+**Common pitfalls:**
+
+- Импорт `lib/db` в Client Component.
+- Новое соединение с БД на каждый запрос без pooler на serverless.
+- Route Handlers как единственный слой данных + RSC fetch на `/api` — медленно и ломает SSG.
+- Неверный кэш ORM — `use cache`, `unstable_noStore`, не `fetch` cache.
+
+**Examples:**
+
+```tsx
+// lib/products.ts
+import { db } from "@/lib/db";
+
+export async function listProducts() {
+  return db.product.findMany({ orderBy: { createdAt: "desc" } });
+}
+
+// app/products/page.tsx
+import { listProducts } from "@/lib/products";
+
+export default async function ProductsPage() {
+  const products = await listProducts();
+  return (
+    <ul>
+      {products.map((p) => (
+        <li key={p.id}>{p.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**Thoughts:** Доменные модули (`lib/orders.ts`) упростят будущий вынос API. Polling после hydration — [Client-side fetching](#client-side-fetching) и [Route Handlers](#route-handlers).
+
+**Sources:** [nextjs.org/docs/app/guides/backend-for-frontend](https://nextjs.org/docs/app/guides/backend-for-frontend) · [nextjs.org/docs/app/guides/data-security](https://nextjs.org/docs/app/guides/data-security)
+
+</details>
+
+<details>
+  <summary>Fetching from a separate backend</summary>
+
+### Fetching from a separate backend
+
+**Definition:** UI в Next.js, а **данные** — с **другого вашего сервиса** (Express, Nest, Go, legacy) по HTTP.
+
+**How it works:**
+
+- Server Components или Route Handlers делают `fetch` на `API_URL` с серверной авторизацией (service token, JWT).
+- Те же правила абсолютных URL, таймаутов и кэша, что для внешних API.
+- **Client Components** — через Next Route Handler или публичный API, без service token в браузере.
+- CORS важен для браузера; server-to-server `fetch` CORS не ограничивает.
+
+**When to use:**
+
+- **Legacy REST** уже в проде; Next — новый frontend.
+- **Микросервисы** с отдельным деплоем.
+- **Mobile + web** на одном backend.
+- **Polyglot** (Go/Java API + Next UI).
+
+**Pluses and minuses:**
+
+| +                            | −                                     |
+| ---------------------------- | ------------------------------------- |
+| Независимые деплой и масштаб | Сеть и отказы                         |
+| Чёткая граница сервиса       | Мост сессии/auth                      |
+| Next как UI + BFF            | Нужны контракты и версионирование API |
+
+**Common pitfalls:**
+
+- Service token в Client Component или `NEXT_PUBLIC_*`.
+- Вызов internal API из браузера без BFF — CORS и утечки.
+- Нет timeout/retry на server `fetch` — зависший render.
+- Ожидание, что cookie Next автоматически auth на backend — обычно нужен обмен токеном.
+
+**Examples:**
+
+```tsx
+async function getOrders(userId: string) {
+  const res = await fetch(`${process.env.API_URL}/v1/users/${userId}/orders`, {
+    headers: { Authorization: `Bearer ${process.env.API_SERVICE_TOKEN}` },
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Orders API error");
+  return res.json();
+}
+```
+
+```tsx
+// app/api/orders/route.ts
+import { auth } from "@/lib/auth";
+
+export async function GET() {
+  const session = await auth();
+  if (!session) return new Response("Unauthorized", { status: 401 });
+  const orders = await getOrders(session.user.id);
+  return Response.json(orders);
+}
+```
+
+**Thoughts:** Next часто играет **BFF**: сессия, service auth, DTO для UI. Сравните с [Colocated backend in Next.js](#colocated-backend-in-nextjs). Мутации — один вызов из Server Action, без лишних hop client → Next → backend.
+
+**Sources:** [nextjs.org/docs/app/guides/backend-for-frontend](https://nextjs.org/docs/app/guides/backend-for-frontend) · [nextjs.org/docs/app/api-reference/file-conventions/route](https://nextjs.org/docs/app/api-reference/file-conventions/route)
 
 </details>
 
@@ -637,12 +867,12 @@ export async function POST(request: NextRequest) {
 
 Матрица решений для выбора действий сервера или обработчиков маршрутов на основе модели вызова и потребителей.
 
-| | Действия сервера           | Обработчики маршрутов     |
+| | Действия сервера | Обработчики маршрутов |
 | | -------------------------- | ------------------------- | ------------------------------------------------- |
-| | **Призыв**                 | РПК / `<form action>`     | HTTP к URL                                        |
-| | **Протокол**               | ПОСТ (завернутый)         | ПОЛУЧИТЬ, ОТПРАВИТЬ, ПОЛОЖИТЬ, ИСПРАВИТЬ, УДАЛИТЬ |
-| | **Потребители**            | Только приложение Next.js | Любой HTTP-клиент                                 |
-| | **Сценарий использования** | Мутации, формы            | Вебхуки, общедоступные API                        |
+| | **Призыв** | РПК / `<form action>` | HTTP к URL |
+| | **Протокол** | ПОСТ (завернутый) | ПОЛУЧИТЬ, ОТПРАВИТЬ, ПОЛОЖИТЬ, ИСПРАВИТЬ, УДАЛИТЬ |
+| | **Потребители** | Только приложение Next.js | Любой HTTP-клиент |
+| | **Сценарий использования** | Мутации, формы | Вебхуки, общедоступные API |
 
 **Thoughts:** Обработчики маршрутов присутствуют **только** в `app/`. Внешние системы используют обработчики маршрутов, а не действия сервера.
 

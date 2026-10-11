@@ -33,6 +33,12 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "App Router, файловые маршруты, навигация и metadata.",
   "App Router, file-based routes, navigation, metadata, and SEO.":
     "App Router, файловые маршруты, навигация, metadata и SEO.",
+  "App Router, file-based routes, and navigation.":
+    "App Router, файловые маршруты и навигация.",
+  "App Router, data, routing, accessibility, SEO, metadata, and the Next.js platform.":
+    "App Router, данные, маршрутизация, доступность, SEO, metadata и платформа Next.js.",
+  "Metadata API, sitemaps, robots, structured data, and accessible pages.":
+    "Metadata API, sitemap, robots, structured data и доступные страницы.",
   "AWS, GCP, Azure, and managed infrastructure.":
     "AWS, GCP, Azure и managed-инфраструктура.",
   "AWS, GCP, and Azure.": "AWS, GCP и Azure.",

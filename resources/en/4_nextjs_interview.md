@@ -6,7 +6,7 @@ Next.js interview questions.
 
 ### Related docs
 
-- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Optimizations](./4_nextjs_optimizations.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
+- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Accessibility, SEO & metadata](./4_nextjs_a11y_seo.md) · [Next.js — Optimizations](./4_nextjs_optimizations.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
 
 ### Sections
 
@@ -193,7 +193,7 @@ After the initial server-side rendering, the client-side JavaScript takes over. 
 Here's the typical structure of a **Next.js** page:
 
 ```jsx
-import Head from 'next/head';
+import Head from "next/head";
 
 const SamplePage = ({ data }) => {
   return (
@@ -209,7 +209,7 @@ const SamplePage = ({ data }) => {
 
 export async function getServerSideProps() {
   // Perform necessary data fetching
-  let data = 'Some server-rendered data';
+  let data = "Some server-rendered data";
   return { props: { data } };
 }
 
@@ -225,7 +225,7 @@ In this example:
 Here is the code:
 
 ```jsx
-import Link from 'next/link';
+import Link from "next/link";
 
 const Navigation = () => {
   return (
@@ -362,7 +362,7 @@ This code provides a `time` prop that updates on each request, showcasing server
 2. **Linking in Your Application**: ParentComponent.js
 
 ```javascript
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function ParentComponent() {
   return (
@@ -424,8 +424,8 @@ Users see the updated time each time they access the "Live Time Page."
 
 ```jsx
 // myPage.jsx
-import React from 'react';
-import styles from './myPage.module.scss';
+import React from "react";
+import styles from "./myPage.module.scss";
 
 const MyPage = () => {
   return <div className={styles.myPage}>Hello, SCSS!</div>;
@@ -489,7 +489,7 @@ console.log(process.env.DB_HOST);
 ```
 
 ```javascript
-const dbHost = process.env.DB_HOST || 'localhost';
+const dbHost = process.env.DB_HOST || "localhost";
 ```
 
 **Sources:**
@@ -664,7 +664,7 @@ Here is the Next.js and React code:
 
 ```jsx
 // pages/post/[id].js
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 export default function Post() {
   const router = useRouter();
@@ -678,12 +678,12 @@ Here is the Next.js and React code:
 
 ```jsx
 // pages/view.js
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function View() {
   return (
     <div>
-      <Link href={{ pathname: '/view', query: { user: 10 } }} shallow>
+      <Link href={{ pathname: "/view", query: { user: 10 } }} shallow>
         <a>User 10</a>
       </Link>
     </div>
@@ -783,7 +783,7 @@ However, it's not the ideal choice for:
 **Examples:**
 
 ```tsx
-import Link from 'next/link';
+import Link from "next/link";
 
 const Home = () => {
   return (
@@ -808,7 +808,7 @@ const AboutUs = () => {
       {/* About Us content */}
     </div>
   );
-}
+};
 
 export default AboutUs;
 ```
@@ -911,7 +911,7 @@ Here is the JavaScript code:
 ```javascript
 export async function getStaticProps() {
   // Fetch data from an API
-  const res = await fetch('https://example.com/data');
+  const res = await fetch("https://example.com/data");
   const data = await res.json();
 
   // Pass data to the page via props
@@ -962,13 +962,13 @@ export default function MyStaticPage({ data }) {
 
 ```jsx
 export async function getServerSideProps() {
-  const res = await fetch('https://api.github.com/repos/vercel/next.js')
-  const repo = await res.json()
-  return { props: { repo } }
+  const res = await fetch("https://api.github.com/repos/vercel/next.js");
+  const repo = await res.json();
+  return { props: { repo } };
 }
 
 export default function Page({ repo }) {
-  return <p>{repo.stargazers_count}</p>
+  return <p>{repo.stargazers_count}</p>;
 }
 ```
 
@@ -1007,19 +1007,23 @@ ISR updates a prerendered page without rebuilding the whole site. Most requests 
 
 ```jsx
 export async function getStaticProps() {
-  const post = await fetch('https://api.vercel.app/blog/1').then((res) => res.json())
-  return { props: { post }, revalidate: 60 }
+  const post = await fetch("https://api.vercel.app/blog/1").then((res) =>
+    res.json(),
+  );
+  return { props: { post }, revalidate: 60 };
 }
 ```
 
 App Router equivalent:
 
 ```jsx
-export const revalidate = 60
+export const revalidate = 60;
 
 export default async function Page() {
-  const posts = await fetch('https://api.vercel.app/blog').then((res) => res.json())
-  return <p>{posts.length}</p>
+  const posts = await fetch("https://api.vercel.app/blog").then((res) =>
+    res.json(),
+  );
+  return <p>{posts.length}</p>;
 }
 ```
 
@@ -1054,19 +1058,19 @@ Yes. Client-side fetching loads data in the browser after the component mounts. 
 **Examples:**
 
 ```jsx
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
 export function Profile() {
-  const [data, setData] = useState(null)
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch('/api/profile-data')
+    fetch("/api/profile-data")
       .then((res) => res.json())
-      .then(setData)
-  }, [])
+      .then(setData);
+  }, []);
 
-  if (!data) return <p>Loading...</p>
-  return <h1>{data.name}</h1>
+  if (!data) return <p>Loading...</p>;
+  return <h1>{data.name}</h1>;
 }
 ```
 
@@ -1103,9 +1107,9 @@ export function Profile() {
 ```jsx
 export async function getStaticPaths() {
   return {
-    paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
-    fallback: 'blocking',
-  }
+    paths: [{ params: { id: "1" } }, { params: { id: "2" } }],
+    fallback: "blocking",
+  };
 }
 ```
 
@@ -1140,7 +1144,7 @@ In the Pages Router, a file under `pages/api` becomes an endpoint at `/api/*`. T
 
 ```js
 export default function handler(req, res) {
-  res.status(200).json({ message: 'Hello from Next.js!' })
+  res.status(200).json({ message: "Hello from Next.js!" });
 }
 ```
 
@@ -1175,13 +1179,13 @@ A Pages API route is one handler function, not an Express stack. You can call pl
 **Examples:**
 
 ```js
-import { NextResponse } from 'next/server'
+import { NextResponse } from "next/server";
 
 export function proxy(request) {
-  return NextResponse.redirect(new URL('/home', request.url))
+  return NextResponse.redirect(new URL("/home", request.url));
 }
 
-export const config = { matcher: '/api/:path*' }
+export const config = { matcher: "/api/:path*" };
 ```
 
 **Sources:**
@@ -1212,8 +1216,8 @@ In a Pages API route, `req.query` is the parsed query string. It defaults to `{}
 
 ```js
 export default function handler(req, res) {
-  const { pid } = req.query
-  res.status(200).send(`Post: ${pid}`)
+  const { pid } = req.query;
+  res.status(200).send(`Post: ${pid}`);
 }
 ```
 
@@ -1250,10 +1254,10 @@ CSS Modules are files named `*.module.css`. Next.js turns each class into a uniq
 ```
 
 ```jsx
-import styles from './blog.module.css'
+import styles from "./blog.module.css";
 
 export default function Page() {
-  return <main className={styles.blog} />
+  return <main className={styles.blog} />;
 }
 ```
 
@@ -1290,7 +1294,7 @@ module.exports = {
   compiler: {
     styledComponents: { ssr: true },
   },
-}
+};
 ```
 
 **Sources:**
@@ -1319,14 +1323,14 @@ Yes. Global CSS applies to the whole app. In the App Router you import it from t
 **Examples:**
 
 ```jsx
-import './global.css'
+import "./global.css";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>{children}</body>
     </html>
-  )
+  );
 }
 ```
 
@@ -1358,12 +1362,17 @@ export default function RootLayout({ children }) {
 **Examples:**
 
 ```jsx
-import Image from 'next/image'
+import Image from "next/image";
 
 export default function Page() {
   return (
-    <Image src="/profile.png" width={500} height={500} alt="Picture of the author" />
-  )
+    <Image
+      src="/profile.png"
+      width={500}
+      height={500}
+      alt="Picture of the author"
+    />
+  );
 }
 ```
 
@@ -1397,14 +1406,14 @@ Next.js splits the client JavaScript by route so a visit downloads the code for 
 **Examples:**
 
 ```jsx
-'use client'
+"use client";
 
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 
-const Chart = dynamic(() => import('../components/Chart'), { ssr: false })
+const Chart = dynamic(() => import("../components/Chart"), { ssr: false });
 
 export function Dashboard() {
-  return <Chart />
+  return <Chart />;
 }
 ```
 
@@ -1435,10 +1444,14 @@ export function Dashboard() {
 **Examples:**
 
 ```jsx
-import Link from 'next/link'
+import Link from "next/link";
 
 export function Nav() {
-  return <Link href="/dashboard" prefetch={false}>Dashboard</Link>
+  return (
+    <Link href="/dashboard" prefetch={false}>
+      Dashboard
+    </Link>
+  );
 }
 ```
 
@@ -1559,9 +1572,9 @@ The current Next.js CSS guide installs Tailwind CSS v4 with the PostCSS plugin `
 ```js
 export default {
   plugins: {
-    '@tailwindcss/postcss': {},
+    "@tailwindcss/postcss": {},
   },
-}
+};
 ```
 
 **Sources:**
@@ -1653,19 +1666,19 @@ npm install -D typescript@^7
 **Examples:**
 
 ```js
-import { createServer } from 'http'
-import next from 'next'
+import { createServer } from "http";
+import next from "next";
 
-const port = parseInt(process.env.PORT || '3000', 10)
-const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
-const handle = app.getRequestHandler()
+const port = parseInt(process.env.PORT || "3000", 10);
+const dev = process.env.NODE_ENV !== "production";
+const app = next({ dev });
+const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
   createServer((req, res) => {
-    handle(req, res)
-  }).listen(port)
-})
+    handle(req, res);
+  }).listen(port);
+});
 ```
 
 **Sources:**
@@ -1701,10 +1714,10 @@ Pages Router `i18n` in `next.config` declares `locales` and `defaultLocale`. Nex
 ```js
 module.exports = {
   i18n: {
-    locales: ['en', 'fr', 'de'],
-    defaultLocale: 'en',
+    locales: ["en", "fr", "de"],
+    defaultLocale: "en",
   },
-}
+};
 ```
 
 **Sources:**
@@ -1733,7 +1746,7 @@ The App Router uses `not-found.js` for a missing resource. Call `notFound()` fro
 **Examples:**
 
 ```jsx
-import Link from 'next/link'
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -1741,7 +1754,7 @@ export default function NotFound() {
       <h2>Not Found</h2>
       <Link href="/">Return Home</Link>
     </div>
-  )
+  );
 }
 ```
 
@@ -1808,7 +1821,7 @@ Server Components are the default in `app`. They can be async and can fetch. A c
 
 ```jsx
 export function Price({ cents }) {
-  return <p>{(cents / 100).toFixed(2)}</p>
+  return <p>{(cents / 100).toFixed(2)}</p>;
 }
 ```
 
@@ -1844,12 +1857,12 @@ module.exports = {
   async headers() {
     return [
       {
-        source: '/(.*)',
-        headers: [{ key: 'X-Content-Type-Options', value: 'nosniff' }],
+        source: "/(.*)",
+        headers: [{ key: "X-Content-Type-Options", value: "nosniff" }],
       },
-    ]
+    ];
   },
-}
+};
 ```
 
 **Sources:**
@@ -1886,23 +1899,23 @@ React context and `useState` are enough for client state that many components re
 **Examples:**
 
 ```jsx
-'use client'
+"use client";
 
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState } from "react";
 
-const ThemeContext = createContext('light')
+const ThemeContext = createContext("light");
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState("light");
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
-  )
+  );
 }
 
 export function useTheme() {
-  return useContext(ThemeContext)
+  return useContext(ThemeContext);
 }
 ```
 
@@ -1961,27 +1974,27 @@ Client navigations with `next/link` do not reload the document. React state in a
 **Examples:**
 
 ```jsx
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
 export function DraftName() {
-  const [name, setName] = useState('')
+  const [name, setName] = useState("");
 
   useEffect(() => {
-    const saved = localStorage.getItem('draft-name')
-    if (saved) setName(saved)
-  }, [])
+    const saved = localStorage.getItem("draft-name");
+    if (saved) setName(saved);
+  }, []);
 
   return (
     <input
       value={name}
       onChange={(event) => {
-        setName(event.target.value)
-        localStorage.setItem('draft-name', event.target.value)
+        setName(event.target.value);
+        localStorage.setItem("draft-name", event.target.value);
       }}
     />
-  )
+  );
 }
 ```
 
@@ -2039,10 +2052,10 @@ In the App Router, type the page with the generated `PageProps` helper, or with 
 export default async function Page({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params
-  return <p>{id}</p>
+  const { id } = await params;
+  return <p>{id}</p>;
 }
 ```
 
@@ -2096,15 +2109,15 @@ Pages API routes type the handler with `NextApiRequest` and `NextApiResponse<Dat
 **Examples:**
 
 ```ts
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from "next";
 
-type ResponseData = { message: string }
+type ResponseData = { message: string };
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse<ResponseData>,
 ) {
-  res.status(200).json({ message: 'Hello from Next.js!' })
+  res.status(200).json({ message: "Hello from Next.js!" });
 }
 ```
 
@@ -2135,11 +2148,11 @@ export default function handler(
 **Examples:**
 
 ```ts
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = { typedRoutes: true }
+const nextConfig: NextConfig = { typedRoutes: true };
 
-export default nextConfig
+export default nextConfig;
 ```
 
 **Sources:**
@@ -2193,12 +2206,7 @@ Next.js generates route types while `next dev`, `next build`, or `next typegen` 
 
 ```json
 {
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
 ```

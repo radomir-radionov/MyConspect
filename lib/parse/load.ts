@@ -31,6 +31,14 @@ import {
   withObjectsConceptGroups,
 } from "@/lib/catalog/objectsHub";
 import {
+  isNextjsA11ySeoTopicSlug,
+  withNextjsA11ySeoConceptGroups,
+} from "@/lib/catalog/nextjsA11ySeoHub";
+import {
+  isNextjsDataTopicSlug,
+  withNextjsDataConceptGroups,
+} from "@/lib/catalog/nextjsDataHub";
+import {
   TYPES_HUB_REFERENCE_GROUP,
   TYPES_HUB_SECTIONS,
   TYPES_HUB_SLUG,
@@ -283,6 +291,12 @@ function outlineForTopic(
   if (isEventsTopicSlug(topic.slug)) {
     return withEventsConceptGroups(outline);
   }
+  if (isNextjsA11ySeoTopicSlug(topic.slug)) {
+    return withNextjsA11ySeoConceptGroups(outline);
+  }
+  if (isNextjsDataTopicSlug(topic.slug)) {
+    return withNextjsDataConceptGroups(outline);
+  }
   return outline;
 }
 
@@ -315,6 +329,18 @@ function parsedForTopic(topic: Topic, parsed: ParsedTopic): ParsedTopic {
     return {
       ...parsed,
       concepts: withEventsConceptGroups(parsed.concepts),
+    };
+  }
+  if (isNextjsA11ySeoTopicSlug(topic.slug)) {
+    return {
+      ...parsed,
+      concepts: withNextjsA11ySeoConceptGroups(parsed.concepts),
+    };
+  }
+  if (isNextjsDataTopicSlug(topic.slug)) {
+    return {
+      ...parsed,
+      concepts: withNextjsDataConceptGroups(parsed.concepts),
     };
   }
   return parsed;

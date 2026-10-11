@@ -1,12 +1,12 @@
 # Next.js — Routing
 
-App Router, file-based routes, navigation, metadata, and SEO.
+App Router, file-based routes, and navigation.
 
 [← Back to hub](./4_nextjs.md)
 
 ### Related docs
 
-- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
+- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Accessibility, SEO & metadata](./4_nextjs_a11y_seo.md) · [Next.js — Optimizations](./4_nextjs_optimizations.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
 
 ### Sections
 
@@ -15,7 +15,6 @@ App Router, file-based routes, navigation, metadata, and SEO.
 - [3. File-based routing](#3-file-based-routing)
 - [4. Special files](#4-special-files)
 - [5. Navigation](#5-navigation)
-- [6. Metadata & SEO](#6-metadata-seo)
 
 ---
 
@@ -913,159 +912,6 @@ Be consistent — mixed links (`/about` vs `/about/`) cause duplicate content an
 
 </details>
 
-<a name="6-metadata-seo"></a>
-
-## 6. Metadata & SEO
-
-_Topics follow: Definition → Pros / Cons → When to use → Example → Notes → Source ([template](./4_nextjs_core.md#topic-template))._
-
-<details>
-  <summary>Static metadata</summary>
-
-### Static metadata
-
-**Definition:** Export a `metadata` object from `layout.tsx` or `page.tsx` for `<title>`, description, Open Graph, Twitter cards.
-
-**Examples:**
-
-```tsx
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "My App",
-  description: "Full-stack React on Next.js",
-  openGraph: {
-    title: "My App",
-    description: "Full-stack React on Next.js",
-    url: "https://myapp.com",
-    siteName: "My App",
-    images: [{ url: "https://myapp.com/og.png", width: 1200, height: 630 }],
-    locale: "en_US",
-    type: "website",
-  },
-};
-```
-
-**Sources:** [nextjs.org/docs/app/getting-started/metadata-and-og-images](https://nextjs.org/docs/app/getting-started/metadata-and-og-images)
-
-</details>
-
-<details>
-  <summary>generateMetadata</summary>
-
-### generateMetadata
-
-**Definition:** Async function for dynamic metadata based on route params or fetched data.
-
-**Pluses and minuses:**
-
-| +                                                    | −                                    |
-| ---------------------------------------------------- | ------------------------------------ |
-| Per-page SEO from CMS data                           | Runs on server — watch fetch caching |
-| Deduplicates with page data fetch if structured well | Errors need handling                 |
-
-**Examples:**
-
-```tsx
-import type { Metadata } from "next";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const post = await getPost(slug);
-  return {
-    title: post.title,
-    description: post.excerpt,
-    openGraph: { images: [post.coverImage] },
-  };
-}
-```
-
-**Sources:** [nextjs.org/docs/app/api-reference/functions/generate-metadata](https://nextjs.org/docs/app/api-reference/functions/generate-metadata)
-
-</details>
-
-<details>
-  <summary>File-based metadata</summary>
-
-### File-based metadata
-
-**Definition:**
-
-Convention files (`icon.png`, `opengraph-image.tsx`, `sitemap.ts`) that Next.js auto-discovers for SEO metadata.
-
-| File                          | Purpose                     |
-| ----------------------------- | --------------------------- |
-| `favicon.ico`                 | Favicon                     |
-| `icon.png` / `apple-icon.png` | App icons                   |
-| `opengraph-image.tsx`         | Dynamic OG image generation |
-| `twitter-image.tsx`           | Twitter card image          |
-| `robots.txt`                  | Crawler rules               |
-| `sitemap.ts`                  | Dynamic sitemap             |
-
-**Examples:**
-
-```tsx
-// app/opengraph-image.tsx
-import { ImageResponse } from "next/og";
-
-export default function Image() {
-  return new ImageResponse(
-    <div
-      style={{ fontSize: 64, background: "#000", color: "#fff", padding: 40 }}
-    >
-      My App
-    </div>,
-    { width: 1200, height: 630 },
-  );
-}
-```
-
-**Sources:** [nextjs.org/docs/app/api-reference/file-conventions/metadata](https://nextjs.org/docs/app/api-reference/file-conventions/metadata)
-
-</details>
-
-<details>
-  <summary>JSON-LD</summary>
-
-### JSON-LD
-
-**Definition:** Structured data for rich search results. Inject via `<script type="application/ld+json">` in Server Components.
-
-**Examples:**
-
-```tsx
-export default function ProductPage({ product }: { product: Product }) {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    offers: { "@type": "Offer", price: product.price },
-  };
-
-  return (
-    <section>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <h1>{product.name}</h1>
-    </section>
-  );
-}
-```
-
-**Thoughts:**
-
-SSR apps get SEO from server-rendered HTML + metadata. Client-only SPAs need extra work — Next.js handles this by default in App Router.
-
----
-
-**Sources:** [nextjs.org/docs/app/guides/json-ld](https://nextjs.org/docs/app/guides/json-ld)
-
-</details>
+**See also:** Metadata API, sitemaps, robots, JSON-LD, and accessibility → [Next.js — Accessibility, SEO & metadata](./4_nextjs_a11y_seo.md).
 
 <a name="14-built-in-optimizations"></a>

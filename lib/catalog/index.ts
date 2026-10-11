@@ -517,7 +517,8 @@ const SUBJECTS_BASE: readonly Subject[] = [
   {
     slug: "nextjs",
     title: "Next.js",
-    blurb: "App Router, data, routing, and the Next.js platform.",
+    blurb:
+      "App Router, data, routing, accessibility, SEO, metadata, and the Next.js platform.",
     track: "frontend",
     clusters: [
       {
@@ -538,7 +539,13 @@ const SUBJECTS_BASE: readonly Subject[] = [
       {
         id: "routing",
         title: "Routing",
-        blurb: "App Router, file-based routes, navigation, and metadata.",
+        blurb: "App Router, file-based routes, and navigation.",
+      },
+      {
+        id: "a11y-seo",
+        title: "Accessibility, SEO & metadata",
+        blurb:
+          "Metadata API, sitemaps, robots, structured data, and accessible pages.",
       },
       {
         id: "optimizations",
@@ -2045,10 +2052,19 @@ const TOPICS_BASE: Topic[] = [
     "nextjs-routing",
     "4_nextjs_routing.md",
     "Routing",
-    "App Router, file-based routes, navigation, metadata, and SEO.",
+    "App Router, file-based routes, and navigation.",
     "frontend",
     "nextjs",
     "routing",
+  ),
+  grouped(
+    "nextjs-a11y-seo",
+    "4_nextjs_a11y_seo.md",
+    "Accessibility, SEO & metadata",
+    "Metadata API, sitemaps, robots, structured data, and accessible pages.",
+    "frontend",
+    "nextjs",
+    "a11y-seo",
   ),
   grouped(
     "nextjs-optimizations",

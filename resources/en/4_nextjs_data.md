@@ -6,7 +6,7 @@ Fetching, caching, revalidation, Server Actions, and Route Handlers.
 
 ### Related docs
 
-- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
+- [Next.js — Core](./4_nextjs_core.md) · [Next.js — Rendering](./4_nextjs_rendering.md) · [Next.js — Data](./4_nextjs_data.md) · [Next.js — Routing](./4_nextjs_routing.md) · [Next.js — Accessibility, SEO & metadata](./4_nextjs_a11y_seo.md) · [Next.js — Optimizations](./4_nextjs_optimizations.md) · [Next.js — Platform](./4_nextjs_platform.md) · [Next.js — Interview](./4_nextjs_interview.md)
 
 ### Sections
 
@@ -27,7 +27,19 @@ _Topics follow: Definition → Pros / Cons → When to use → Example → Notes
 
 **Definition:** Server Components fetch data directly — `async` functions, `fetch()`, or database clients. No `useEffect` waterfalls on the client.
 
-**When to use:** Default for all read operations in App Router.
+**How it works:**
+
+- Mark `page.tsx` / `layout.tsx` as `async` and `await` data **before** returning JSX. The server runs this code once per request (or at build time for static routes).
+- **React request memoization** deduplicates identical `fetch` calls in the same render pass (same URL + options).
+- Results are serialized into the RSC payload; only the **minimum** props cross into Client Components (`"use client"` children).
+- Errors during fetch typically surface as the segment `error.tsx` boundary unless you handle them in the component.
+- Reads belong here by default; **mutations** belong in Server Actions or Route Handlers, not in render.
+
+**When to use:**
+
+- Default for all **read** operations in App Router (lists, detail pages, layout shells).
+- Any data needed for **SEO**, first paint, or auth gates before showing UI.
+- Whenever secrets (API keys, DB URLs) must never reach the browser.
 
 **Pluses and minuses:**
 
@@ -60,7 +72,230 @@ export default async function ProductsPage() {
 }
 ```
 
+**Thoughts:** Pick the **source** first (remote SaaS, DB in the same app, or another service you run), then the **layer** (Server Component vs Client Component vs Route Handler). Walkthrough: [Choosing a data fetch path](#choosing-a-data-fetch-path) · [Fetching from a remote API](#fetching-from-a-remote-api) · [Colocated backend in Next.js](#colocated-backend-in-nextjs) · [Fetching from a separate backend](#fetching-from-a-separate-backend).
+
 **Sources:** [nextjs.org/docs/app/getting-started/fetching-data](https://nextjs.org/docs/app/getting-started/fetching-data)
+
+</details>
+
+<details>
+  <summary>Choosing a data fetch path</summary>
+
+### Choosing a data fetch path
+
+**Definition:** A decision guide for **where data lives** and **which Next.js surface** should load it — before you pick SWR, Prisma, or a Route Handler.
+
+**How it works:**
+
+| Question                                                     | If yes →          | Typical pattern                                                     |
+| ------------------------------------------------------------ | ----------------- | ------------------------------------------------------------------- |
+| Is the data owned by a **vendor** (CMS, Stripe, maps)?       | Remote HTTP API   | `fetch` or SDK in **Server Component** with env secrets             |
+| Is the data in **your DB** in the same repo/deploy?          | Colocated backend | `lib/` + ORM in **Server Component** — no self-`fetch` to `/api`    |
+| Is the data behind **another team’s service** you host?      | Separate backend  | Server `fetch(API_URL)`; browser uses **Route Handler** proxy       |
+| Must the UI **update every few seconds** without navigation? | Client read       | `fetch('/api/...')`, SWR, or TanStack Query in **Client Component** |
+| Is it a **form submit / mutation**?                          | Server write      | **Server Action** or `POST` Route Handler — not `useEffect` fetch   |
+
+**Layer rules (App Router):**
+
+- **Server Component** → read at render from source (DB, remote URL, your API URL). Fastest path; best for HTML and SEO.
+- **Route Handler** → HTTP contract for browser, mobile, webhooks, third parties. Optional BFF that hides service tokens.
+- **Server Action** → mutations from the UI; do not use as a general **read** API (queued execution).
+- **Client fetch** → after hydration; polling, personalization, browser-only APIs.
+
+**When to use:** Greenfield page design, refactors from Pages Router `getServerSideProps`, or splitting a monolith into Next + API.
+
+**Thoughts:** Wrong pattern: Server Component `fetch('http://localhost:3000/api/users')` during static build — no server is listening. Wrong pattern: putting `DATABASE_URL` in a Client Component. Right pattern: one obvious owner per dataset (see the three source-specific topics below).
+
+**Sources:** [nextjs.org/docs/app/guides/backend-for-frontend](https://nextjs.org/docs/app/guides/backend-for-frontend) · [nextjs.org/docs/app/getting-started/fetching-data](https://nextjs.org/docs/app/getting-started/fetching-data)
+
+</details>
+
+<details>
+  <summary>Fetching from a remote API</summary>
+
+### Fetching from a remote API
+
+**Definition:** Read data from a **third-party or vendor HTTP API** (headless CMS, payments, analytics, public REST/GraphQL) inside Server Components, Server Actions, or Route Handlers — using `fetch` or an SDK with a server-only API key.
+
+**How it works:**
+
+- Call happens on the **server** during render (or in a handler/action), so secrets stay in env vars (`process.env.CMS_TOKEN`), not in the browser bundle.
+- Use an **absolute URL** (`https://api.vendor.com/...`). Next.js `fetch` caching (`cache`, `next.revalidate`, `next.tags`) applies to these GETs when you use `fetch`.
+- At **build time** (static generation), the remote API must be reachable; otherwise the build fails or you must mark the route dynamic.
+- Do **not** route Server Component reads through your own `app/api/...` Route Handler unless the client needs that endpoint — extra HTTP hop and build-time pitfalls ([Backend for Frontend](https://nextjs.org/docs/app/guides/backend-for-frontend)).
+
+**When to use:**
+
+- Headless **CMS** (Sanity, Contentful, Strapi) for marketing and docs.
+- **Payments** catalog, tax, shipping quotes (Stripe, etc.) — server-only keys.
+- **Maps, email validation, ML** APIs where you do not store the canonical data.
+- Public **REST/GraphQL** feeds (GitHub, open data) with no custom backend.
+
+**Pluses and minuses:**
+
+| +                                    | −                                       |
+| ------------------------------------ | --------------------------------------- |
+| No duplicate backend to maintain     | Latency and rate limits from vendor     |
+| Next cache tags can wrap vendor GETs | Vendor downtime breaks your page render |
+| Clear security boundary for API keys | Schema/version drift on external APIs   |
+
+**Common pitfalls:**
+
+- Calling the vendor from the **browser** and leaking API keys — always proxy on the server.
+- Wrapping vendor GETs in your own Route Handler **only** for Server Components — extra latency; call vendor directly from RSC instead.
+- Static page at build time when the CMS is down — use `dynamic = 'force-dynamic'`, `cache: 'no-store'`, or ISR with sane fallbacks.
+- Forgetting `if (!res.ok)` — Next does not throw on 404/500 from `fetch`.
+
+**Examples:**
+
+```tsx
+async function getPosts() {
+  const res = await fetch("https://cms.example.com/api/posts", {
+    headers: { Authorization: `Bearer ${process.env.CMS_TOKEN}` },
+    next: { tags: ["cms-posts"], revalidate: 60 },
+  });
+  if (!res.ok) throw new Error("CMS unavailable");
+  return res.json();
+}
+```
+
+**Thoughts:** Pair `next.tags` with CMS webhooks that call `revalidateTag('cms-posts')` so publishes appear without full redeploy. GraphQL SDKs follow the same rule: run on the server in RSC, not in client bundles.
+
+**Sources:** [nextjs.org/docs/app/getting-started/fetching-data](https://nextjs.org/docs/app/getting-started/fetching-data) · [nextjs.org/docs/app/guides/backend-for-frontend](https://nextjs.org/docs/app/guides/backend-for-frontend)
+
+</details>
+
+<details>
+  <summary>Colocated backend in Next.js</summary>
+
+### Colocated backend in Next.js
+
+**Definition:** Data lives in the **same Next.js app** — Postgres via Prisma/Drizzle, Redis, file system, or internal `lib/` modules. Server Components call the database or domain functions **directly**, without `fetch("http://localhost:3000/api/...")`.
+
+**How it works:**
+
+- Put queries in `lib/data.ts`, repositories, or Server Actions; import them from `async` Server Components.
+- **Route Handlers** (`app/api/.../route.ts`) are for **HTTP clients** (browser, mobile app, webhook, partner) — not for Server Components to read their own app over HTTP.
+- **Server Actions** — primary path for **mutations** from forms; avoid using them as a read/query API (queued, sequential).
+- Connection pooling matters on serverless — use a pooler (e.g. Vercel Postgres, PgBouncer) or serverless-friendly driver.
+
+**When to use:**
+
+- **Full-stack Next** on Vercel or Node — one git repo, one deploy.
+- **Postgres/SQLite/MySQL** with Prisma, Drizzle, or Kysely.
+- **Auth + session** read in layout (e.g. `getServerSession`) before rendering children.
+- Internal admin tools where every screen is served by the same app.
+
+**Pluses and minuses:**
+
+| +                                                                                                       | −                                                       |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Fastest reads — no self-HTTP                                                                            | Ties data layer to Next runtime                         |
+| Transactions and ORM in one process                                                                     | Must not import server-only code into Client Components |
+| Same cache/revalidate story for `fetch` to external URLs only; DB uses `use cache` / `unstable_noStore` | Large teams may split API to a separate service later   |
+
+**Common pitfalls:**
+
+- Importing `lib/db` into a Client Component — bundles secrets or breaks the build; keep DB behind Server Components / Actions.
+- Opening a **new DB connection per request** without pooling on serverless — exhausts connections; use a pooler.
+- Using Route Handlers as the **only** data layer and fetching them from RSC — slower and breaks static generation.
+- Caching ORM results incorrectly — use [`use cache`](#use-cache-directive), `unstable_noStore()`, or explicit revalidation, not `fetch` cache.
+
+**Examples:**
+
+```tsx
+// lib/products.ts
+import { db } from "@/lib/db";
+
+export async function listProducts() {
+  return db.product.findMany({ orderBy: { createdAt: "desc" } });
+}
+
+// app/products/page.tsx
+import { listProducts } from "@/lib/products";
+
+export default async function ProductsPage() {
+  const products = await listProducts();
+  return (
+    <ul>
+      {products.map((p) => (
+        <li key={p.id}>{p.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**Thoughts:** Structure as **domain modules** (`lib/orders.ts`, `lib/users.ts`) so a future split to a separate API only changes the implementation, not every page. Client widgets that poll after hydration can call **your** Route Handlers (`fetch("/api/metrics")`) — see [Client-side fetching](#client-side-fetching) and [Route Handlers](#route-handlers).
+
+**Sources:** [nextjs.org/docs/app/guides/backend-for-frontend](https://nextjs.org/docs/app/guides/backend-for-frontend) · [nextjs.org/docs/app/guides/data-security](https://nextjs.org/docs/app/guides/data-security)
+
+</details>
+
+<details>
+  <summary>Fetching from a separate backend</summary>
+
+### Fetching from a separate backend
+
+**Definition:** UI in Next.js, but **business data** comes from **another service you operate** — Express, NestJS, Go API, legacy monolith, or microservice — via HTTP (REST/GraphQL/gRPC gateway).
+
+**How it works:**
+
+- Server Components (or Route Handlers) `fetch` the service **base URL** from env (`API_URL`), with server-side auth (service token, mTLS, signed JWT).
+- Same absolute-URL rules as remote APIs; treat your API as an external dependency for caching, timeouts, and retries.
+- **Client Components** should usually call a **Next Route Handler** or **public** backend route — not embed service tokens in the browser. The handler forwards cookies or exchanges a session for a service token.
+- Split deploys: Next on Vercel, API on another host — CORS matters only for **browser** calls; server-to-server `fetch` is not CORS-limited.
+
+**When to use:**
+
+- **Legacy REST API** already in production; Next is a new frontend.
+- **Microservices** (orders service, catalog service) with separate deploy cadence.
+- **Mobile + web** share the same backend; Next is one consumer among many.
+- **Polyglot** stack (Go/Rust/Java API + React UI on Next).
+
+**Pluses and minuses:**
+
+| +                                     | −                                      |
+| ------------------------------------- | -------------------------------------- |
+| Independent scaling and deploys       | Extra network hop + failure modes      |
+| Clear service boundary                | Duplicated auth/session bridging       |
+| Next stays a presentation + BFF layer | Versioning and contract tests required |
+
+**Common pitfalls:**
+
+- Exposing **service tokens** in Client Components or `NEXT_PUBLIC_*` env vars.
+- Calling the internal API from the browser without a **BFF** — CORS pain and credential leakage.
+- No **timeouts/retries** on server `fetch` — hung renders block the whole page; use `AbortSignal` or a small wrapper.
+- Assuming session cookies from Next automatically authenticate the backend — you usually need token exchange or shared auth (JWT, OAuth introspection).
+
+**Examples:**
+
+```tsx
+async function getOrders(userId: string) {
+  const res = await fetch(`${process.env.API_URL}/v1/users/${userId}/orders`, {
+    headers: { Authorization: `Bearer ${process.env.API_SERVICE_TOKEN}` },
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Orders API error");
+  return res.json();
+}
+```
+
+```tsx
+// app/api/orders/route.ts — browser-safe proxy
+import { auth } from "@/lib/auth";
+
+export async function GET() {
+  const session = await auth();
+  if (!session) return new Response("Unauthorized", { status: 401 });
+  const orders = await getOrders(session.user.id);
+  return Response.json(orders);
+}
+```
+
+**Thoughts:** Next is often the **BFF**: validate the user session, attach service auth, shape DTOs for the UI, and cache short-lived responses in Route Handlers. Compare with [Colocated backend in Next.js](#colocated-backend-in-nextjs) when deciding to merge vs keep a separate API. For mutations, prefer Server Actions that call the backend once, or `POST` from actions — avoid `client → Next API → backend → Next API` chains unless you need a documented public HTTP contract for third parties.
+
+**Sources:** [nextjs.org/docs/app/guides/backend-for-frontend](https://nextjs.org/docs/app/guides/backend-for-frontend) · [nextjs.org/docs/app/api-reference/file-conventions/route](https://nextjs.org/docs/app/api-reference/file-conventions/route)
 
 </details>
 
