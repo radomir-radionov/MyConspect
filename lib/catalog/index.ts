@@ -490,6 +490,12 @@ const SUBJECTS_BASE: readonly Subject[] = [
           "createContext, lazy, memo, transitions, cache, act, and related APIs.",
       },
       {
+        id: "rsc",
+        title: "React Server Components",
+        blurb:
+          "Server Components, Server Functions, and RSC directives ('use client', 'use server').",
+      },
+      {
         id: "react-19",
         title: "React 19",
         blurb: "React 19, SSR, and React Server Components.",
@@ -1884,6 +1890,15 @@ const TOPICS_BASE: Topic[] = [
     "frontend",
     "react",
     "apis",
+  ),
+  grouped(
+    "react-rsc",
+    "4_react_rsc.md",
+    "React Server Components",
+    "Server Components, Server Functions, and RSC directives ('use client', 'use server').",
+    "frontend",
+    "react",
+    "rsc",
   ),
   grouped(
     "react-server",

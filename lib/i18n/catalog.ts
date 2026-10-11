@@ -536,6 +536,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Q&A for system design.": "Вопросы/ответы по system design.",
   "React 19 APIs, SSR, and React Server Components.":
     "API React 19, SSR и React Server Components.",
+  "Server Components, Server Functions, and RSC directives ('use client', 'use server').":
+    "Server Components, Server Functions и директивы RSC ('use client', 'use server').",
   "Redux Toolkit, global client state, and RTK Query.":
     "Redux Toolkit, глобальный client state и RTK Query.",
   "Routing, libraries, performance, and legacy.":
