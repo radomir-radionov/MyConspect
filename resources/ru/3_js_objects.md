@@ -19,10 +19,15 @@
 | **Продвинутое** | Proxy/Reflect, factory/module patterns                 |
 | **Память**      | GC, mark-and-sweep, утечки, `WeakRef`                  |
 
-### Разделы
+### Sections
 
 > Теория в блоках `<details>`: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** обязателен.
 
+- [Objects](#objects)
+- [`this`](#this)
+- [Prototypes](#prototypes)
+- [Object property configuration](#object-property-configuration)
+- [Advanced topics](#advanced-topics)
 - **Objects:** [Class vs prototype inheritance](#class-vs-prototype-inheritance) · [OOP in JavaScript](#oop-in-javascript) · [Object types](#objects) · [Ways to create objects](#ways-to-create-objects) · [Objects to primitives](#objects-to-primitives) · [Objects & references](#objects-and-references)
 - **`this`:** [`this` binding](#this-binding-four-rules) · [`this` and call context](#this-and-call-context) · [call, apply, bind](#call-apply-bind)
 - **Prototypes:** [Prototypal inheritance](#prototypal-inheritance) · [F.prototype](#f-prototype) · [Native prototypes](#native-prototypes) · [Prototype methods, objects without `__proto__`](#prototype-methods-objects-without-proto) · [`instanceof`](#instanceof) · [Extending built-in classes](#extending-built-in-classes)

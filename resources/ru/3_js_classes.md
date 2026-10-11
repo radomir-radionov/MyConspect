@@ -18,10 +18,14 @@
 | **Encapsulation** | Private `#`, getters / setters               |
 | **Patterns**      | Mixins, constructor injection                |
 
-### Разделы
+### Sections
 
 > Теория в блоках `<details>`: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** обязателен.
 
+- [Class basics](#class-basics)
+- [Inheritance](#inheritance)
+- [Encapsulation](#encapsulation)
+- [Patterns](#patterns)
 - **Class basics:** [Class syntax](#class-syntax) · [Static methods and properties](#static-methods-and-properties)
 - **Inheritance:** [Inheritance and `super`](#inheritance-and-super) · [Extending built-in classes](#extending-built-in-classes) · [Class checking: `instanceof`](#class-checking-instanceof)
 - **Encapsulation:** [Private and protected properties and methods](#private-and-protected-properties-and-methods) · [Getters and setters](#getters-and-setters)

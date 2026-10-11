@@ -19,6 +19,8 @@
 
 ### Sections
 
+- [Bindings & scope](#bindings-and-scope)
+- [Rest, spread & destructuring](#rest-spread-and-destructuring)
 - **Bindings & scope:** [globalThis](#globalthis) · [Variables](#variables) · [Scope](#scope) · [Hoisting](#hoisting)
 - **Rest, spread & destructuring:** [Rest](#rest) · [Spread](#spread) · [Destructuring](#destructuring)
 - [Интервью](./3_js_interview.md)

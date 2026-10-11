@@ -19,6 +19,10 @@ Objects, keyed collections, classic trees/graphs, dates, and JSON. Primitives an
 
 ### Sections
 
+- [Objects](#objects)
+- [Collections](#collections)
+- [Classic structures](#classic-structures)
+- [Interop](#interop)
 - [Objects and Object utilities](#objects-and-object-utilities)
 - [Collections in short](#collections-in-short) · [Map](#map) · [Set](#set) · [WeakMap](#weakmap) · [WeakSet](#weakset)
 - [Classic structures in short](#classic-structures-in-short) · [Trees](#trees) · [Graphs](#graphs) · [Linked lists](#linked-lists) · [Stack and queue](#stack-and-queue)

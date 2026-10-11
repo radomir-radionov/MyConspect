@@ -21,6 +21,9 @@
 
 > Теория `<details>` блоки следуют: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** обязательно; остальные разделы по необходимости.
 
+- [Control flow](#control-flow)
+- [Error handling](#error-handling)
+- [Iterators](#iterators)
 - **Control flow:** [Conditional branching](#conditional-branching) · [Loops, break, continue & switch](#loops-break-continue-switch) · [for...in vs for...of](#for-in-vs-for-of-extended) · [switch — extended notes](#switch-fall-through-types)
 - **Error handling:** [Error handling](#error-handling) · [try...catch](#try-catch) · [Custom errors, extending Error](#custom-errors-extending-error)
 - **Iterators:** [Advanced iteration](#advanced-iteration) · [Generators](#generators)

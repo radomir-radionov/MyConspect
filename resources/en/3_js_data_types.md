@@ -21,6 +21,9 @@ Primitives, coercion, and the memory model (stack vs heap). Bindings and structu
 
 > Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**.
 
+- [Types](#types)
+- [Common](#common)
+- [Advanced](#advanced)
 - [Each type in short](#each-type-in-short) · [undefined](#undefined) · [null](#null) · [boolean](#boolean) · [Numbers](#numbers) · [BigInt](#bigint) · [Strings](#strings) · [Symbol](#symbol) · [object](#object)
 - [Stack and heap](#memory-stack-heap) · [typeof](#typeof) · [Falsy values](#falsy-values) · [Object keys](#object-keys) · [Type conversions](#type-conversions) · [Template literals](#template-literals)
 - [Object.is & SameValueZero](#object-is-and-samevaluezero) · [ToPrimitive & abstract conversions](#toprimitive-and-abstract-conversions) · [Primitive wrappers](#primitive-wrappers) · [JSON vs structuredClone](#json-vs-structuredclone)

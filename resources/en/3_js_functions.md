@@ -24,6 +24,12 @@ Function forms, `this`, higher-order functions, `call`/`apply`/`bind`, debounce,
 
 > Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
+- [Function basics](#function-basics)
+- [Parameters & scope](#parameters-and-scope)
+- [Arrows & callbacks](#arrows-and-callbacks)
+- [`this` & binding](#this-and-binding)
+- [Recursion & scheduling](#recursion-and-scheduling)
+- [Functional programming](#functional-programming)
 - **Function basics:** [Functions](#functions) · [NFE](#named-function-expression-nfe) · [IIFE](#iife) · [Constructor & `new`](#constructor-and-new) · [`new Function`](#new-function-avoid)
 - **Parameters & scope:** [Rest & spread](#rest-parameters-and-spread-syntax) · [Variable scope](#variable-scope) · [The old `var`](#the-old-var) · [Global object](#global-object) · [Closures](#closures)
 - **Arrows & callbacks:** [Arrow functions](#arrow-functions-revisited) · [Callbacks](#callbacks)

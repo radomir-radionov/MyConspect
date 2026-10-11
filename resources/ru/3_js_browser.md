@@ -22,6 +22,7 @@
 
 > Theory `<details>` blocks follow: **Definition** · **How it works** · **When to use** · **Pluses and minuses** · **Examples** · **Thoughts** · **Sources**. **Definition** is required; other sections are optional.
 
+- [Script loading](#script-loading)
 - [Document](#document) — **Environment** · **DOM tree** · **Modifying the DOM** · **Size, scroll & coordinates** · **BOM, forms & observers**
 - [События](./3_js_events.md)
 - [Интервью](./3_js_interview.md)
