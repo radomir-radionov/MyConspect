@@ -234,12 +234,6 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Git, tooling, and adjacent topics.": "Git, тулинг и смежные темы.",
   "Go, Scala, and other backend language interview prep.":
     "Подготовка к собеседованиям по Go, Scala и другим backend-языкам.",
-  "Java interview questions, answers not filled in.":
-    "Вопросы на собеседование по Java, ответы не заполнены.",
-  "JDK, language fundamentals, JVM, and ecosystem.":
-    "JDK, основы языка, JVM и экосистема.",
-  "Syntax, OOP, collections, and concurrency basics.":
-    "Синтаксис, ООП, коллекции и основы concurrency.",
   "Handbook, language reference, and typing JavaScript.":
     "Справочник, language reference и типизация JavaScript.",
   "HTML attribute reference.": "Справочник HTML-атрибутов.",
