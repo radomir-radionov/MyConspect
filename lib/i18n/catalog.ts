@@ -198,6 +198,12 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
   "Generics, keyof, typeof, conditional and mapped types.":
     "Дженерики, keyof, typeof, conditional и mapped types.",
   "Git, tooling, and adjacent topics.": "Git, тулинг и смежные темы.",
+  "Java interview questions, answers not filled in.":
+    "Вопросы на собеседование по Java, ответы не заполнены.",
+  "JDK, language fundamentals, JVM, and ecosystem.":
+    "JDK, основы языка, JVM и экосистема.",
+  "Syntax, OOP, collections, and concurrency basics.":
+    "Синтаксис, ООП, коллекции и основы concurrency.",
   "Handbook, language reference, and typing JavaScript.":
     "Справочник, language reference и типизация JavaScript.",
   "IaaS/PaaS/SaaS, regions, shared responsibility, and provider comparison.":

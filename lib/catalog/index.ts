@@ -8,6 +8,7 @@ export const TRACK_IDS = [
   "ai",
   "behavior",
   "other",
+  "java",
 ] as const;
 
 export type TrackId = (typeof TRACK_IDS)[number];
@@ -118,6 +119,11 @@ export const TRACKS: readonly Track[] = [
     id: "other",
     title: "Other",
     description: "Git, tooling, and adjacent topics.",
+  },
+  {
+    id: "java",
+    title: "Java",
+    description: "JDK, language fundamentals, JVM, and ecosystem.",
   },
 ];
 
@@ -961,6 +967,24 @@ const SUBJECTS_BASE: readonly Subject[] = [
       },
     ],
   },
+  {
+    slug: "java",
+    title: "Java",
+    blurb: "JDK, language fundamentals, JVM, and ecosystem.",
+    track: "java",
+    clusters: [
+      {
+        id: "core",
+        title: "Core",
+        blurb: "Syntax, OOP, collections, and concurrency basics.",
+      },
+      {
+        id: "interview",
+        title: "Interview",
+        blurb: "Java interview questions, answers not filled in.",
+      },
+    ],
+  },
 ];
 
 const HUB_HREFS: Readonly<Record<string, string>> = {
@@ -987,6 +1011,7 @@ const HUB_HREFS: Readonly<Record<string, string>> = {
   "7_special_testing.md": "/testing",
   "7_special.md": "/other/computer-science",
   "10_build.md": "/other/build",
+  "18_java.md": "/java",
 };
 
 const TRACK_HUB_FILES: Partial<Record<TrackId, string>> = {
@@ -3368,6 +3393,15 @@ const TOPICS_BASE: Topic[] = [
     blurb: "Python language notes.",
     track: "other",
   },
+  grouped(
+    "java-core",
+    "18_java_core.md",
+    "Core",
+    "Syntax, OOP, collections, and concurrency basics.",
+    "java",
+    "java",
+    "core",
+  ),
 ];
 
 function isInterviewClusterId(clusterId: string): boolean {
