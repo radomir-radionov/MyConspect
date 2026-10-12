@@ -1,0 +1,59 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+/cypress/videos
+/cypress/screenshots
+/cypress/downloads
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+/public/search-index
+
+# misc
+.DS_Store
+*.pem
+/tmp
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# agent config (not published on GitHub)
+/.cursor
+/.rtk
+/AGENTS.md
+/CLAUDE.md
+
+# Study markdown — not in the public repo; Vercel/CI fetch via scripts/ensure-resources.ts
+/resources
+
+# generated source audits
+/reports
+/scripts/audit.ts
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

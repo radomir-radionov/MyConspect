@@ -1,0 +1,576 @@
+"use client";
+
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useSyncExternalStore,
+} from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { HighlightedText, useSearchMode } from "@/components/search";
+import {
+  HANDBOOK_NAV_ASIDE_ID,
+  HANDBOOK_SIDEBAR_ID,
+  NAV_FOLD_OPEN_MS,
+} from "@/constants";
+import { useSidebarAsideScroll } from "../hooks/useSidebarAsideScroll";
+import {
+  collectGroupSearchHits,
+  matchesQuery,
+  searchNav,
+  splitHref,
+  type ChromeCopy,
+  type NavEntry,
+  type NavGroup,
+  type NavRootSection,
+  type NavRootSectionId,
+  type SearchMode,
+} from "@/lib/nav";
+import {
+  groupNavigateHref,
+  inferNavRootSection,
+  navGroupsForPath,
+  navTrackScope,
+} from "@/lib/nav/sections";
+import {
+  bookmarkLookupKey,
+  bookmarkStorageKey,
+  getServerBookmarks,
+  readBookmarks,
+  subscribeBookmarks,
+} from "@/lib/nav/bookmarks";
+import type { TrackId } from "@/lib/catalog";
+import { NavChevron, NavFold } from "../ui/NavFold";
+import { NavGuide } from "../ui/NavGuide";
+import {
+  applySameDocumentHref,
+  followHandbookHref,
+  queueHandbookHref,
+} from "../utils/hash";
+import { useHandbookLocation } from "../hooks/useHandbookLocation";
+import { isActiveHref, isActiveTrack } from "../utils/location";
+import { BookmarksPanel } from "./BookmarksPanel";
+import { SearchHitList } from "./SearchHitList";
+import { pinNavElement, pinNavForHref } from "../utils/sidebarPin";
+import {
+  measureNavChromeInset,
+  measureStickyCover,
+  measureStickyPathVars,
+  syncStickyScopeRelease,
+  writeStickyVars,
+  type StickyVars,
+} from "../utils/sidebarSticky";
+import {
+  SidebarFoldScopeProvider,
+  SidebarNavProvider,
+  trackHeaderClass,
+  useSidebarChrome,
+  useSidebarHighlight,
+  useScopedSidebarFold,
+  useScopedTrackOpen,
+} from "../context/sidebarContext";
+import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
+import { SectionSwitcher } from "./SectionSwitcher";
+import { foldRevision, useSidebarOpen } from "../hooks/useSidebarOpen";
+
+export const TopicSidebar = memo(function TopicSidebar({
+  sections,
+  query,
+  chrome,
+  onNavigate,
+}: {
+  sections: readonly NavRootSection[];
+  query: string;
+  chrome: ChromeCopy;
+  onNavigate?: () => void;
+}) {
+  const { pathname, highlightPathname, hash } = useHandbookLocation();
+  const mode = useSearchMode();
+  const pathGroups = useMemo(
+    () => navGroupsForPath(sections, pathname),
+    [sections, pathname],
+  );
+  const activeRootSectionId = inferNavRootSection(pathname);
+  const scopedGroups = useMemo(
+    () =>
+      sections.flatMap((section) =>
+        section.groups.map((group) => ({
+          sectionId: section.id,
+          group,
+        })),
+      ),
+    [sections],
+  );
+  const { groups: filtered, firstHref } = useMemo(
+    () => searchNav(pathGroups, query, mode, pathname),
+    [pathGroups, query, mode, pathname],
+  );
+  const filteredScoped = useMemo(() => {
+    const visibleTrackIds = new Set(filtered.map((group) => group.id));
+    return scopedGroups.filter(
+      (item) =>
+        item.sectionId === activeRootSectionId &&
+        visibleTrackIds.has(item.group.id),
+    );
+  }, [filtered, scopedGroups, activeRootSectionId]);
+  const first = useMemo(
+    () => (firstHref ? splitHref(firstHref) : null),
+    [firstHref],
+  );
+  const activeTrackId =
+    pathGroups.find((group) => isActiveTrack(pathname, group.href))?.id ?? null;
+  const searching = query.trim().length > 0;
+  const {
+    activeConceptId,
+    isTrackOpen,
+    toggleTrackId,
+    ensureTrackOpen,
+    trackFolds,
+    openTrackIds,
+    getTrackFold,
+    patchTrackFold,
+  } = useSidebarOpen({
+    sections,
+    pathname,
+    hash,
+    searching,
+    activeTrackId,
+    activeRootSectionId,
+  });
+  const router = useRouter();
+  const goToPath = useCallback(
+    (path: string) => {
+      router.push(path, { scroll: false });
+    },
+    [router],
+  );
+  const navRevision = `${foldRevision(trackFolds, openTrackIds)}|${pathname}|${hash}`;
+  const stickyRevision = `${navRevision}|${searching}`;
+  useSidebarAsideScroll({
+    searching,
+    pathname,
+    hash,
+    navRevision,
+    firstHref,
+    activeConceptId,
+    highlightPathname,
+  });
+
+  const bookmarks = useSyncExternalStore(
+    subscribeBookmarks,
+    readBookmarks,
+    getServerBookmarks,
+  );
+  const bookmarkKeys = useMemo(() => {
+    const keys = new Set<string>();
+    for (const bookmark of bookmarks) {
+      keys.add(bookmarkStorageKey(bookmark));
+    }
+    return keys;
+  }, [bookmarks]);
+  const bookmarksValue = useMemo(
+    () => ({
+      isBookmarked: (bookmarkPath: string, conceptId?: string) =>
+        bookmarkKeys.has(bookmarkLookupKey(bookmarkPath, conceptId)),
+    }),
+    [bookmarkKeys],
+  );
+  const highlightValue = useMemo(
+    () => ({ highlightPathname }),
+    [highlightPathname],
+  );
+  const chromeValue = useMemo(
+    () => ({
+      query,
+      mode,
+      pathname,
+      searching,
+      first,
+      goToPath,
+      onNavigate,
+    }),
+    [query, mode, pathname, searching, first, goToPath, onNavigate],
+  );
+  const foldValue = useMemo(
+    () => ({
+      getTrackFold,
+      patchTrackFold,
+    }),
+    [getTrackFold, patchTrackFold],
+  );
+  const activeValue = useMemo(() => ({ activeConceptId }), [activeConceptId]);
+  const trackOpenValue = useMemo(
+    () => ({
+      toggleTrackId,
+      ensureTrackOpen,
+      isTrackOpen,
+    }),
+    [toggleTrackId, ensureTrackOpen, isTrackOpen],
+  );
+
+  return (
+    <SidebarNavProvider
+      chrome={chromeValue}
+      highlight={highlightValue}
+      bookmarks={bookmarksValue}
+      fold={foldValue}
+      active={activeValue}
+      trackOpen={trackOpenValue}
+    >
+      <nav
+        id={HANDBOOK_SIDEBAR_ID}
+        aria-label={chrome.topicsNav}
+        className="relative isolate px-2 py-3"
+      >
+        <div
+          data-nav-chrome=""
+          className="-mx-2 -mt-3 bg-(--chrome-surface) px-2 pt-3"
+        >
+          <div className="mb-3 px-2">
+            <SectionSwitcher sections={sections} chrome={chrome} />
+          </div>
+          <BookmarksPanel chrome={chrome} onNavigate={onNavigate} />
+        </div>
+        <div data-nav-sticky-cover="" aria-hidden="true" />
+        {filtered.length === 0 ? (
+          <p className="px-2 text-sm text-zinc-500 dark:text-zinc-400">
+            {mode === "notes" ? chrome.searchNotesEmpty : chrome.searchEmpty}
+          </p>
+        ) : searching ? (
+          <ul className="space-y-0.5">
+            {filteredScoped.map(({ sectionId, group }) => (
+              <SidebarFoldScopeProvider
+                key={navTrackScope(sectionId, group.id)}
+                sectionId={sectionId}
+              >
+                <TrackGroup
+                  rootSectionId={sectionId}
+                  activeRootSectionId={activeRootSectionId}
+                  group={group}
+                  query={query}
+                  mode={mode}
+                  pathname={pathname}
+                  searching={searching}
+                  first={first}
+                />
+              </SidebarFoldScopeProvider>
+            ))}
+          </ul>
+        ) : (
+          <SidebarFoldScopeProvider sectionId={activeRootSectionId}>
+            <ul className="space-y-0.5">
+              {pathGroups.map((group) => (
+                <TrackGroup
+                  key={group.id}
+                  rootSectionId={activeRootSectionId}
+                  activeRootSectionId={activeRootSectionId}
+                  group={group}
+                  query={query}
+                  mode={mode}
+                  pathname={pathname}
+                  searching={false}
+                  first={first}
+                />
+              ))}
+            </ul>
+          </SidebarFoldScopeProvider>
+        )}
+      </nav>
+      <StickyPathStyles revision={stickyRevision} />
+    </SidebarNavProvider>
+  );
+});
+
+function StickyPathStyles({ revision }: { revision: string }) {
+  const previousRef = useRef<StickyVars>({});
+
+  const applyVars = useCallback(() => {
+    const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
+    const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
+    if (!scroller) {
+      return;
+    }
+    const chromeH = measureNavChromeInset();
+    if (chromeH > 0) {
+      scroller.style.setProperty("--nav-chrome-h", `${chromeH}px`);
+    }
+    previousRef.current = writeStickyVars(
+      scroller.style,
+      measureStickyPathVars(),
+      previousRef.current,
+    );
+    syncStickyScopeRelease(nav);
+  }, []);
+
+  const syncPath = useCallback(() => {
+    applyVars();
+  }, [applyVars]);
+
+  useLayoutEffect(() => {
+    syncPath();
+  }, [syncPath, revision]);
+
+  useEffect(() => {
+    const scroller = document.getElementById(HANDBOOK_NAV_ASIDE_ID);
+    const chrome = document.querySelector<HTMLElement>(
+      `#${HANDBOOK_SIDEBAR_ID} [data-nav-chrome]`,
+    );
+    let resizeObserver: ResizeObserver | null = null;
+    if (chrome) {
+      resizeObserver = new ResizeObserver(() => {
+        syncPath();
+      });
+      resizeObserver.observe(chrome);
+    }
+    let frame = 0;
+    const onScroll = () => {
+      if (frame !== 0) {
+        return;
+      }
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        if (!scroller) {
+          return;
+        }
+        const nav = document.getElementById(HANDBOOK_SIDEBAR_ID);
+        syncStickyScopeRelease(nav);
+        const current = previousRef.current;
+        const cover = `${measureStickyCover(undefined, current)}px`;
+        if (current["--nav-sticky-cover"] !== cover) {
+          previousRef.current = writeStickyVars(
+            scroller.style,
+            { ...current, "--nav-sticky-cover": cover },
+            current,
+          );
+        }
+      });
+    };
+    scroller?.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", syncPath);
+    return () => {
+      resizeObserver?.disconnect();
+      scroller?.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", syncPath);
+      window.cancelAnimationFrame(frame);
+    };
+  }, [applyVars, syncPath]);
+
+  useEffect(() => {
+    const later = window.setTimeout(syncPath, NAV_FOLD_OPEN_MS + 20);
+    return () => window.clearTimeout(later);
+  }, [syncPath, revision]);
+
+  return null;
+}
+
+const TrackGroup = memo(function TrackGroup({
+  rootSectionId,
+  activeRootSectionId,
+  group,
+  query,
+  mode,
+  pathname,
+  searching,
+  first,
+}: {
+  rootSectionId: NavRootSectionId;
+  activeRootSectionId: NavRootSectionId;
+  group: NavGroup;
+  query: string;
+  mode: SearchMode;
+  pathname: string;
+  searching: boolean;
+  first: { pathname: string; hash: string } | null;
+}) {
+  const { isTrackOpen, toggleTrackId, ensureTrackOpen } = useScopedTrackOpen();
+  const isLeafTrack = Boolean(group.leafTopic) && group.entries.length === 0;
+  const showLeafConcepts = isLeafTrack && !group.leafTopic?.hideSidebarConcepts;
+  const hasSidebarChildren =
+    group.entries.length > 0 || Boolean(group.hubTopic) || showLeafConcepts;
+  const { onNavigate, goToPath } = useSidebarChrome();
+  const { patchFold } = useScopedSidebarFold();
+  const trackActive = isActiveHref(pathname, group.href);
+  const onThisTrack = isActiveTrack(pathname, group.href);
+  const trackOpen = searching || (hasSidebarChildren && isTrackOpen(group.id));
+  const onPath =
+    !searching && rootSectionId === activeRootSectionId && onThisTrack;
+  const needle = query.trim().toLowerCase();
+  const trackHighlighted = searching
+    ? needle.length > 0 && matchesQuery(group.title, needle)
+    : onPath;
+  const headerClass = trackHeaderClass(trackHighlighted);
+  const searchHits = useMemo(
+    () => (searching ? collectGroupSearchHits(group, query, mode) : []),
+    [group, mode, query, searching],
+  );
+
+  if (searching && searchHits.length === 0) {
+    return null;
+  }
+
+  const title = (
+    <HighlightedText
+      text={group.title}
+      query={query}
+      className="min-w-0 flex-1"
+    />
+  );
+  const chevron = hasSidebarChildren ? <NavChevron open={trackOpen} /> : null;
+  const asButton =
+    hasSidebarChildren && (showLeafConcepts ? trackActive : onThisTrack);
+  const navigateHref =
+    rootSectionId === "interviews"
+      ? groupNavigateHref(group, rootSectionId)
+      : group.href;
+
+  const trackBody = (
+    <>
+      {asButton ? (
+        <button
+          type="button"
+          aria-expanded={trackOpen}
+          data-nav="track"
+          data-nav-id={group.id}
+          data-nav-path={onPath ? "true" : undefined}
+          onClick={(event) => {
+            pinNavElement(event.currentTarget);
+            if (!searching) {
+              toggleTrackId(group.id);
+            }
+          }}
+          aria-current={isLeafTrack ? undefined : "true"}
+          className={headerClass}
+        >
+          {title}
+          {chevron}
+        </button>
+      ) : (
+        <Link
+          href={navigateHref}
+          prefetch={false}
+          data-nav="track"
+          data-nav-id={group.id}
+          data-nav-path={onPath ? "true" : undefined}
+          onClick={(event) => {
+            pinNavForHref(event.currentTarget, pathname, navigateHref);
+            if (!hasSidebarChildren) {
+              onNavigate?.();
+            }
+            if (pathname === navigateHref && window.location.hash) {
+              event.preventDefault();
+              applySameDocumentHref(pathname, "", pathname);
+              queueHandbookHref(navigateHref);
+              return;
+            }
+            if (!onThisTrack) {
+              patchFold(group.id, {
+                topicHref: null,
+                subjectHref: null,
+                clusterKey: null,
+                sectionKey: null,
+              });
+            }
+            followHandbookHref(navigateHref, pathname, goToPath);
+            if (hasSidebarChildren) {
+              ensureTrackOpen(group.id);
+            }
+          }}
+          data-search-hit={
+            isLeafTrack && first?.pathname === navigateHref && first.hash === ""
+              ? "true"
+              : undefined
+          }
+          aria-expanded={isLeafTrack ? undefined : trackOpen}
+          className={headerClass}
+        >
+          {title}
+          {chevron}
+        </Link>
+      )}
+      <NavFold open={hasSidebarChildren && trackOpen} instant={searching} unbox>
+        <ul
+          className={
+            onPath
+              ? "contents"
+              : "mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2 dark:border-yellow-800"
+          }
+        >
+          {searching ? (
+            <SearchHitList hits={searchHits} />
+          ) : (
+            <>
+              <NavGuide level="track" />
+              {group.hubTopic ? (
+                <TopicRow trackId={group.id} topic={group.hubTopic} hideTitle />
+              ) : null}
+              {showLeafConcepts && group.leafTopic ? (
+                <TopicRow
+                  trackId={group.id}
+                  topic={group.leafTopic}
+                  hideTitle
+                />
+              ) : (
+                group.entries.map((entry) => (
+                  <TrackEntry
+                    key={entryKey(entry)}
+                    entry={entry}
+                    trackId={group.id}
+                  />
+                ))
+              )}
+            </>
+          )}
+        </ul>
+      </NavFold>
+    </>
+  );
+
+  return (
+    <li
+      className={onPath ? "contents" : undefined}
+      {...(onPath ? { "data-nav-sticky-scope": "" } : {})}
+    >
+      {trackBody}
+    </li>
+  );
+});
+
+function entryKey(entry: NavEntry) {
+  switch (entry.kind) {
+    case "topic":
+      return entry.topic.slug;
+    case "subject":
+      return entry.subject.slug;
+    case "cluster":
+      return entry.cluster.id;
+    default: {
+      const _never: never = entry;
+      return _never;
+    }
+  }
+}
+
+function TrackEntry({ entry, trackId }: { entry: NavEntry; trackId: TrackId }) {
+  switch (entry.kind) {
+    case "topic":
+      return <TopicRow trackId={trackId} topic={entry.topic} />;
+    case "subject":
+      return <SubjectRow trackId={trackId} subject={entry.subject} />;
+    case "cluster":
+      return (
+        <ClusterRow
+          trackId={trackId}
+          subjectHref={entry.subjectHref}
+          cluster={entry.cluster}
+        />
+      );
+    default: {
+      const _never: never = entry;
+      return _never;
+    }
+  }
+}

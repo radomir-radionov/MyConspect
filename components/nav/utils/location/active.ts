@@ -1,0 +1,262 @@
+import type { NavGroup, NavSubject } from "@/lib/nav";
+import { navSubjectClusters } from "@/lib/nav/subjectClusters";
+import { navTopicTreeContainsHref } from "@/lib/nav/topicTree";
+import { hashIdFrom } from "@/lib/nav/navUtils";
+import { stripLocalePrefix } from "@/lib/i18n/paths";
+import { aliasTopicForCluster } from "./shared";
+
+export type NavLocation = {
+  topicHref: string | null;
+  subjectHref: string | null;
+  clusterKey: string | null;
+  sectionKey: string | null;
+};
+
+export function isHomePath(pathname: string): boolean {
+  return stripLocalePrefix(pathname).path === "/";
+}
+
+export function isActiveHref(pathname: string, href: string): boolean {
+  return pathname === href;
+}
+
+export function isActiveTrack(pathname: string, href: string): boolean {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+export function isConceptActiveOnPage(
+  pathname: string,
+  topicHref: string,
+  conceptId: string,
+  activeConceptId: string,
+): boolean {
+  return (
+    activeConceptId.length > 0 &&
+    pathname === topicHref &&
+    conceptId === activeConceptId
+  );
+}
+
+export function isOnSubjectPath(
+  pathname: string,
+  subject: NavSubject,
+): boolean {
+  if (pathname === subject.href) {
+    return true;
+  }
+  for (const cluster of navSubjectClusters(subject)) {
+    if (
+      cluster.topics.some((topic) => navTopicTreeContainsHref(topic, pathname))
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function clusterKey(subjectHref: string, clusterId: string) {
+  return `${subjectHref}#${clusterId}`;
+}
+
+export function sectionKey(subjectHref: string, sectionId: string) {
+  return `${subjectHref}#${sectionId}`;
+}
+
+export function closedSectionKey(subjectHref: string, sectionId: string) {
+  return `!${sectionKey(subjectHref, sectionId)}`;
+}
+
+export function isNavSectionOpen(
+  section: { readonly id: string; readonly defaultOpen?: boolean },
+  subjectHref: string,
+  foldSectionKey: string | null,
+  forceOpen: boolean,
+): boolean {
+  const key = sectionKey(subjectHref, section.id);
+  const closed = closedSectionKey(subjectHref, section.id);
+  if (foldSectionKey === closed) {
+    return false;
+  }
+  if (forceOpen) {
+    return true;
+  }
+  if (foldSectionKey === key) {
+    return true;
+  }
+  return section.defaultOpen ?? true;
+}
+
+export function isNavSectionCollapsible(section: {
+  readonly defaultOpen?: boolean;
+  readonly collapsible?: boolean;
+}): boolean {
+  return section.collapsible ?? section.defaultOpen !== undefined;
+}
+
+export function locationForPath(
+  groups: readonly NavGroup[],
+  pathname: string,
+  hash: string,
+): NavLocation {
+  const clusterId = hashIdFrom(hash);
+  let hubSubjectHref: string | null = null;
+  for (const group of groups) {
+    if (group.hubTopic && pathname === group.href) {
+      return {
+        topicHref: group.href,
+        subjectHref: null,
+        clusterKey: null,
+        sectionKey: null,
+      };
+    }
+    if (
+      group.leafTopic &&
+      (pathname === group.href || pathname === group.leafTopic.href)
+    ) {
+      return {
+        topicHref: group.leafTopic.href,
+        subjectHref: null,
+        clusterKey: null,
+        sectionKey: null,
+      };
+    }
+    for (const entry of group.entries) {
+      switch (entry.kind) {
+        case "topic":
+          if (entry.topic.href === pathname) {
+            return {
+              topicHref: pathname,
+              subjectHref: null,
+              clusterKey: null,
+              sectionKey: null,
+            };
+          }
+          break;
+        case "cluster":
+          if (clusterId === entry.cluster.id) {
+            const onSubject =
+              pathname === entry.subjectHref ||
+              pathname.startsWith(`${entry.subjectHref}/`);
+            if (onSubject) {
+              const onThisTopic = entry.cluster.topics.some((topic) =>
+                navTopicTreeContainsHref(topic, pathname),
+              );
+              const aliasTopic =
+                !onThisTopic && pathname === entry.subjectHref
+                  ? aliasTopicForCluster(entry.cluster)
+                  : undefined;
+              return {
+                topicHref: onThisTopic ? pathname : (aliasTopic?.href ?? null),
+                subjectHref: entry.subjectHref,
+                clusterKey: clusterKey(entry.subjectHref, entry.cluster.id),
+                sectionKey: null,
+              };
+            }
+          }
+          if (pathname === entry.subjectHref) {
+            hubSubjectHref = entry.subjectHref;
+          }
+          if (
+            entry.cluster.topics.some((topic) =>
+              navTopicTreeContainsHref(topic, pathname),
+            )
+          ) {
+            return {
+              topicHref: pathname,
+              subjectHref: entry.subjectHref,
+              clusterKey: clusterKey(entry.subjectHref, entry.cluster.id),
+              sectionKey: null,
+            };
+          }
+          break;
+        case "subject":
+          if (entry.subject.href === pathname) {
+            const navSection = entry.subject.sections?.find(
+              (section) =>
+                isNavSectionCollapsible(section) && section.id === clusterId,
+            );
+            if (navSection) {
+              return {
+                topicHref: null,
+                subjectHref: entry.subject.href,
+                clusterKey: null,
+                sectionKey: sectionKey(entry.subject.href, navSection.id),
+              };
+            }
+            const cluster = navSubjectClusters(entry.subject).find(
+              (item) => item.id === clusterId,
+            );
+            const aliasTopic = cluster
+              ? aliasTopicForCluster(cluster)
+              : undefined;
+            const parentSection = cluster
+              ? collapsibleSectionForCluster(entry.subject, cluster.id)
+              : undefined;
+            if (cluster) {
+              return {
+                topicHref: aliasTopic?.href ?? null,
+                subjectHref: entry.subject.href,
+                clusterKey: clusterKey(entry.subject.href, cluster.id),
+                sectionKey: parentSection
+                  ? sectionKey(entry.subject.href, parentSection.id)
+                  : null,
+              };
+            }
+            return {
+              topicHref: null,
+              subjectHref: entry.subject.href,
+              clusterKey: null,
+              sectionKey: null,
+            };
+          }
+          for (const cluster of navSubjectClusters(entry.subject)) {
+            if (
+              cluster.topics.some((topic) =>
+                navTopicTreeContainsHref(topic, pathname),
+              )
+            ) {
+              const parentSection = collapsibleSectionForCluster(
+                entry.subject,
+                cluster.id,
+              );
+              return {
+                topicHref: pathname,
+                subjectHref: entry.subject.href,
+                clusterKey: clusterKey(entry.subject.href, cluster.id),
+                sectionKey: parentSection
+                  ? sectionKey(entry.subject.href, parentSection.id)
+                  : null,
+              };
+            }
+          }
+          break;
+        default: {
+          const _never: never = entry;
+          return _never;
+        }
+      }
+    }
+  }
+  if (hubSubjectHref) {
+    return {
+      topicHref: null,
+      subjectHref: hubSubjectHref,
+      clusterKey: null,
+      sectionKey: null,
+    };
+  }
+  return {
+    topicHref: null,
+    subjectHref: null,
+    clusterKey: null,
+    sectionKey: null,
+  };
+}
+
+function collapsibleSectionForCluster(subject: NavSubject, clusterId: string) {
+  return subject.sections?.find(
+    (section) =>
+      isNavSectionCollapsible(section) &&
+      section.clusters.some((cluster) => cluster.id === clusterId),
+  );
+}

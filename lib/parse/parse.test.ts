@@ -1,0 +1,216 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import {
+  collectConceptBlocks,
+  extractInterviewAnchorTitles,
+  parseTopicOutline,
+} from "./parse";
+
+test("collectConceptBlocks strips duplicate heading after anchor preamble", () => {
+  const blocks = collectConceptBlocks(`
+<details>
+  <summary>Observer</summary>
+
+<a name="observer"></a>
+
+### Observer
+
+**Definition:** One-to-many notification.
+</details>
+`);
+
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0].title, "Observer");
+  assert.match(blocks[0].body, /<a name="observer"><\/a>/);
+  assert.doesNotMatch(blocks[0].body, /^#{1,3}\s+Observer/m);
+  assert.match(blocks[0].body, /\*\*Definition:\*\*/);
+});
+
+test("collectConceptBlocks keeps non-matching heading after anchor preamble", () => {
+  const blocks = collectConceptBlocks(`
+<details>
+  <summary>Observer</summary>
+
+<a name="observer"></a>
+
+### Implementation notes
+
+**Definition:** One-to-many notification.
+</details>
+`);
+
+  assert.equal(blocks.length, 1);
+  assert.match(blocks[0].body, /### Implementation notes/);
+});
+
+test("collectConceptBlocks still strips duplicate heading without anchor preamble", () => {
+  const blocks = collectConceptBlocks(`
+<details>
+  <summary>Factory</summary>
+
+### Factory
+
+**Definition:** Creates objects.
+</details>
+`);
+
+  assert.equal(blocks.length, 1);
+  assert.doesNotMatch(blocks[0].body, /^#{1,3}\s+Factory/m);
+});
+
+test("collectConceptBlocks ignores preamble before first horizontal rule", () => {
+  const blocks = collectConceptBlocks(`
+# Data Structures — hub
+
+### Navigation
+
+| Topic | Covers |
+| --- | --- |
+| [Linear](./7_special_data_structures_linear.md) | Arrays. |
+
+---
+
+<details>
+  <summary>Choosing a data structure</summary>
+
+### Choosing a data structure
+
+**Definition:** Lookup table.
+</details>
+`);
+
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0].title, "Choosing a data structure");
+});
+
+test("collectConceptBlocks keeps short interview task bodies", () => {
+  const blocks = collectConceptBlocks(`
+## Coding tasks
+
+<details>
+<summary>Task 1 — Short prompt</summary>
+
+Implement \`Pick\` without the built-in utility.
+</details>
+`);
+
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0].title, "Task 1 — Short prompt");
+});
+
+test("interview topic headings group the following questions", () => {
+  const outline = parseTopicOutline(`
+## Interview Practice
+
+### HTML Basics
+
+<details>
+<summary>What does HTML stand for?</summary>
+
+### What does HTML stand for?
+
+**Definition:**
+
+</details>
+
+### Lists
+
+<details>
+<summary>What types of lists exist?</summary>
+
+### What types of lists exist?
+
+**Definition:**
+
+</details>
+`);
+
+  assert.deepEqual(
+    outline.map((item) => [item.group, item.title]),
+    [
+      ["HTML Basics", "What does HTML stand for?"],
+      ["Lists", "What types of lists exist?"],
+    ],
+  );
+});
+
+test("parseTopicOutline uses English anchors for Russian interview titles", () => {
+  const enMarkdown = `
+## Interview Practice
+
+<details>
+<summary>What does HTML stand for?</summary>
+
+### What does HTML stand for?
+
+**Definition:**
+</details>
+`;
+
+  const ruMarkdown = `
+## Interview Practice
+
+<details>
+<summary>Что означает HTML?</summary>
+
+### Что означает HTML?
+
+**Definition:**
+</details>
+`;
+
+  const outline = parseTopicOutline(ruMarkdown, "ru", {
+    anchorMarkdown: enMarkdown,
+  });
+
+  assert.equal(outline.length, 1);
+  assert.equal(outline[0].title, "Что означает HTML?");
+  assert.equal(outline[0].id, "what-does-html-stand-for");
+  assert.match(outline[0].titleSearchText ?? "", /Что означает HTML/);
+  assert.match(outline[0].titleSearchText ?? "", /What does HTML stand for/);
+});
+
+test("parseTopicOutline keeps content after horizontal rules in the body", () => {
+  const outline = parseTopicOutline(`
+# Topic
+
+<details>
+  <summary>First</summary>
+
+**Definition:** Alpha.
+
+---
+
+**How it works:** Beta.
+</details>
+`);
+
+  assert.deepEqual(
+    outline.map((item) => item.title),
+    ["First"],
+  );
+});
+
+test("extractInterviewAnchorTitles returns cleaned question titles in order", () => {
+  const titles = extractInterviewAnchorTitles(`
+## Interview Practice
+
+<details>
+<summary>Q1. What is a closure?</summary>
+
+### Q1. What is a closure?
+
+**Definition:**
+</details>
+
+<details>
+<summary>Task 1 — Implement debounce</summary>
+
+### Task 1 — Implement debounce
+
+Short prompt.
+</details>
+`);
+
+  assert.deepEqual(titles, ["What is a closure?", "Implement debounce"]);
+});

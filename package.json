@@ -1,0 +1,45 @@
+{
+  "name": "myconspect",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "tsx scripts/ensure-resources.ts && tsx scripts/generate-search-index.ts && tsx scripts/audit-sidebar-outlines.ts",
+    "dev": "next dev",
+    "prebuild": "tsx scripts/ensure-resources.ts && tsx scripts/generate-search-index.ts && tsx scripts/audit-sidebar-outlines.ts",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "tsx --test",
+    "check-conspect": "tsx scripts/audit.ts",
+    "check-order": "tsx scripts/order-audit.ts",
+    "check-sidebar": "tsx scripts/audit-sidebar-outlines.ts",
+    "reorder-concepts": "tsx scripts/reorder-concepts.ts",
+    "start:e2e": "next start -p 3456",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:e2e": "start-server-and-test start:e2e http://127.0.0.1:3456 cypress:run"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "marked": "^18.0.13",
+    "next": "16.3.5",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "sanitize-html": "^2.17.7",
+    "shiki": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/sanitize-html": "^2.16.1",
+    "cypress": "^16.1.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.5",
+    "start-server-and-test": "^3.0.12",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.13",
+    "typescript": "^5"
+  }
+}
