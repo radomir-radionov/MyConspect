@@ -1,6 +1,6 @@
 # MyConspect
 
-Browse-only study handbook. Conspect markdown lives in `resources/en` and `resources/ru` (same basenames — see `.cursor/rules/locale-sync.mdc`) and is turned into static pages at build time. Edit notes there; the Next.js app stays at the repo root. Those files are in git so Vercel and CI can build.
+Browse-only study handbook. Conspect markdown lives in `resources/en` and `resources/ru` (same basenames — see `.cursor/rules/locale-sync.mdc`) and is turned into static pages at build time. Edit notes there; the Next.js app stays at the repo root. On the **public** GitHub repo, `resources/` is gitignored; Vercel and CI clone it from a **private** notes repo at build time (`scripts/ensure-resources.ts`).
 
 Live site: [https://myconspect.vercel.app](https://myconspect.vercel.app).
 
@@ -56,8 +56,23 @@ Set `NEXT_PUBLIC_SITE_URL` (no trailing slash) for absolute sitemap and robots U
 
 ## CI/CD
 
+### Study notes on deploy (public app repo + private notes repo)
+
+1. Create a **private** Git repository whose tree is either `en/` + `ru/` at the root, or `resources/en/` + `resources/ru/` (same layout as this project).
+2. Push your local `resources/` content there (one-time mirror; update that repo when you change notes).
+3. Set these **environment variables** on [Vercel](https://vercel.com/docs/projects/environment-variables) (Production + Preview) and as [GitHub Actions secrets](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions) on the public repo:
+
+| Variable              | Required             | Purpose                                                             |
+| --------------------- | -------------------- | ------------------------------------------------------------------- |
+| `RESOURCES_GIT_URL`   | Yes                  | HTTPS clone URL, e.g. `https://github.com/you/myconspect-notes.git` |
+| `RESOURCES_GIT_TOKEN` | Yes for private repo | PAT or fine-grained token with read access to the notes repo        |
+| `RESOURCES_GIT_REF`   | No                   | Branch or tag (default `main`)                                      |
+
+`prebuild` / `predev` run `tsx scripts/ensure-resources.ts`: if `resources/en/` already has markdown (your machine), nothing is downloaded; otherwise the script shallow-clones the notes repo.
+
 GitHub Actions:
 
-- `.github/workflows/ci.yml` — `npm ci`, lint, production build, and Cypress sidebar E2E (Chrome) on push and pull requests to `main`
+- `.github/workflows/ci.yml` — `npm ci`, lint, tests, `check-order`, production build, and Cypress sidebar E2E (Chrome) on push and PRs to `main` / `dev` (needs the secrets above)
+- `.github/workflows/check-conspect.yml` — scheduled source URL audit (same secrets)
 
 Production and preview deploys run automatically through the [Vercel GitHub integration](https://vercel.com/docs/git/vercel-for-github): push to `main` ships production; pull requests get preview URLs. Install the [Vercel GitHub App](https://github.com/apps/vercel) on `radomir-radionov/MyConspect` if the project is not already connected.

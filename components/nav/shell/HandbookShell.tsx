@@ -232,7 +232,6 @@ export function HandbookShell({
                   chrome={chrome}
                   lastUpdatedIso={lastUpdatedIso}
                   lastUpdatedLabel={lastUpdatedLabel}
-                  onNavigate={selectNavResult}
                 />
               </div>
             </div>

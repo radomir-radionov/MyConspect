@@ -47,8 +47,7 @@ yarn-error.log*
 /AGENTS.md
 /CLAUDE.md
 
-# not published on GitHub (keep locally; Vercel/CI need these paths on disk)
-/.github
+# Study markdown — not in the public repo; Vercel/CI fetch via scripts/ensure-resources.ts
 /resources
 
 # generated source audits

@@ -149,17 +149,14 @@ export function SiteHeader({
               </div>
             </div>
           </div>
-          <div className="sticky right-0 z-10 hidden shrink-0 items-center gap-0.5 bg-white pr-(--chrome-inline) pl-2 md:flex dark:bg-zinc-950">
-            <LanguageSwitcher locale={locale} />
-            <ThemeToggle />
-          </div>
-          <div className="sticky right-0 z-10 flex shrink-0 items-center bg-white pr-(--chrome-inline) pl-1 sm:pl-2 md:hidden dark:bg-zinc-950">
+          <div className="sticky right-0 z-10 flex shrink-0 items-center gap-0.5 bg-white pr-(--chrome-inline) pl-1 sm:pl-2 dark:bg-zinc-950">
+            <HeaderChromeActions chrome={chrome} locale={locale} />
             <button
               type="button"
               className={
                 navOpen
-                  ? "inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
-                  : "inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-300 bg-zinc-50 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-100 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-800"
+                  ? "inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-900 bg-zinc-900 text-white md:hidden dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
+                  : "inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-300 bg-zinc-50 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-100 md:hidden dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-800"
               }
               aria-expanded={navOpen}
               aria-controls={HANDBOOK_SIDEBAR_ID}
@@ -177,46 +174,53 @@ export function SiteHeader({
   );
 }
 
-export function DrawerFooter({
+function HeaderChromeActions({
   chrome,
-  lastUpdatedIso,
-  lastUpdatedLabel,
-  onNavigate,
+  locale,
 }: {
   chrome: ChromeCopy;
-  lastUpdatedIso: string;
-  lastUpdatedLabel: string;
-  onNavigate: () => void;
+  locale: ReturnType<typeof localeFromPathname>;
 }) {
   const pathname = usePathname() ?? "/en";
-  const locale = localeFromPathname(pathname);
   const instructionsPath = instructionsHref(locale);
   const onInstructions = pathname === instructionsPath;
 
   return (
+    <>
+      <Link
+        href={instructionsPath}
+        aria-label={chrome.instructions}
+        title={chrome.instructions}
+        aria-current={onInstructions ? "page" : undefined}
+        className={
+          onInstructions
+            ? "inline-flex size-9 items-center justify-center rounded-md text-zinc-900 dark:text-zinc-50"
+            : "inline-flex size-9 items-center justify-center rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+        }
+      >
+        <InstructionsIcon />
+      </Link>
+      <LanguageSwitcher locale={locale} />
+      <ThemeToggle />
+    </>
+  );
+}
+
+export function DrawerFooter({
+  chrome,
+  lastUpdatedIso,
+  lastUpdatedLabel,
+}: {
+  chrome: ChromeCopy;
+  lastUpdatedIso: string;
+  lastUpdatedLabel: string;
+}) {
+  return (
     <div className="flex shrink-0 items-center justify-between gap-2 border-t border-zinc-200 px-2 py-1.5 dark:border-zinc-800">
       <div className="flex min-w-0 items-center gap-1">
         <ContactLinks />
-        <Link
-          href={instructionsPath}
-          onClick={onNavigate}
-          aria-label={chrome.instructions}
-          title={chrome.instructions}
-          aria-current={onInstructions ? "page" : undefined}
-          className={
-            onInstructions
-              ? "inline-flex size-9 items-center justify-center rounded-md text-zinc-900 dark:text-zinc-50"
-              : "inline-flex size-9 items-center justify-center rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
-          }
-        >
-          <InstructionsIcon />
-        </Link>
       </div>
       <div className="flex shrink-0 items-center gap-1.5">
-        <div className="flex items-center gap-1 md:hidden">
-          <LanguageSwitcher locale={locale} variant="select" />
-          <ThemeToggle />
-        </div>
         <time
           dateTime={lastUpdatedIso}
           className="pr-1 text-right text-[11px] leading-tight text-zinc-500 dark:text-zinc-400"
@@ -233,10 +237,13 @@ export function DrawerFooter({
 
 function InstructionsIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="none">
       <path
-        fill="currentColor"
-        d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm.75 14.25a.75.75 0 0 1-1.5 0v-5.5a.75.75 0 0 1 1.5 0v5.5ZM12 8.4a1.05 1.05 0 1 1 0-2.1 1.05 1.05 0 0 1 0 2.1Z"
+        d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
