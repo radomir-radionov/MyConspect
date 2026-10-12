@@ -49,6 +49,7 @@ yarn-error.log*
 
 # Study markdown — not in the public repo; Vercel/CI fetch via scripts/ensure-resources.ts
 /resources
+/notes
 
 # generated source audits
 /reports
