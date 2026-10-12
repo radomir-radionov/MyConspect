@@ -13,8 +13,7 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "AMQP exchanges, очереди, маршрутизация и task queues.",
   "Accessibility, SEO, and advanced APIs.":
     "Доступность, SEO и продвинутые API.",
-  "Attributes valid on any element.":
-    "Атрибуты, допустимые на любом элементе.",
+  "Attributes valid on any element.": "Атрибуты, допустимые на любом элементе.",
   "ACID, CAP, transactions, and normalization.":
     "ACID, CAP, транзакции и нормализация.",
   "Agent Skills: SKILL.md, auto vs slash, and built-ins.":
@@ -720,8 +719,7 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Уникальные примитивные ключи и unique symbol types.",
   "Union types, literal types, and enums.":
     "Union types, literal types и enums.",
-  "Unions, literal types, and enums.":
-    "Unions, literal types и enums.",
+  "Unions, literal types, and enums.": "Unions, literal types и enums.",
   "VMs, Blob Storage, Azure SQL, Functions, and Service Bus.":
     "VMs, Blob Storage, Azure SQL, Functions и Service Bus.",
   "Visual hierarchy, consistency, spacing, feedback, and accessibility.":
