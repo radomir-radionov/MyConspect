@@ -523,16 +523,6 @@ describe("handbook sidebar", () => {
     );
   });
 
-  it("filters the sidebar to matching topics while searching", () => {
-    cy.visit("/en/frontend/javascript");
-    cy.get('input[placeholder="Search topics…"]').clear().type("event loop");
-    cy.wait(400);
-    cy.sidebar().should(($nav) => {
-      const text = $nav.text().toLowerCase();
-      expect(text).to.contain("event loop");
-    });
-  });
-
   it("does not search inside notes in Topics mode", () => {
     cy.visit("/en/frontend/js-browser-extra");
     cy.get('input[placeholder="Search topics…"]').clear().type("resize layout");

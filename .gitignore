@@ -27,6 +27,7 @@
 # misc
 .DS_Store
 *.pem
+/tmp
 
 # debug
 npm-debug.log*
@@ -43,9 +44,12 @@ yarn-error.log*
 # agent config (not published on GitHub)
 /.cursor
 /.rtk
+/AGENTS.md
+/CLAUDE.md
 
-# personal notes only — catalog markdown must be in git for Vercel builds
-/resources/0_me.md
+# not published on GitHub (keep locally; Vercel/CI need these paths on disk)
+/.github
+/resources
 
 # generated source audits
 /reports
