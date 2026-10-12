@@ -1,6 +1,7 @@
 describe("handbook sidebar", () => {
   beforeEach(() => {
     cy.viewport(1280, 800);
+    cy.clearLocalStorage();
   });
 
   it("shows CSS Core as a single row instead of nested Fundamentals", () => {
@@ -525,7 +526,14 @@ describe("handbook sidebar", () => {
 
   it("does not search inside notes in Topics mode", () => {
     cy.visit("/en/frontend/js-browser-extra");
-    cy.get('input[placeholder="Search topics…"]').clear().type("resize layout");
+    cy.get('[data-search-mode="titles"]').should(
+      "have.attr",
+      "aria-checked",
+      "true",
+    );
+    cy.get('input[placeholder="Search topics…"]').should("be.visible");
+    cy.get('input[placeholder="Search topics…"]').clear();
+    cy.get('input[placeholder="Search topics…"]').type("resize layout");
     cy.wait(400);
     cy.sidebar().should("contain", "No topics or concepts match that search.");
     cy.get("#handbook-sidebar [data-search-in='notes']").should("not.exist");
