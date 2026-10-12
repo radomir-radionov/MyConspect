@@ -22,6 +22,8 @@ jobs:
           node-version: "20"
           cache: npm
       - run: npm ci
+      - name: Fetch study notes
+        run: npm run ensure-resources
       - run: npm run lint
       - run: npm test
       - run: npm run check-order -- --strict
@@ -37,8 +39,16 @@ jobs:
       RESOURCES_GIT_REF: ${{ secrets.RESOURCES_GIT_REF }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - name: Fetch study notes
+        run: npm run ensure-resources
       - uses: cypress-io/github-action@v6
         with:
+          install: false
           browser: chrome
           build: npm run build
           start: npm run start:e2e
