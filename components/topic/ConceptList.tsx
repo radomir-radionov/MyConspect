@@ -264,7 +264,7 @@ function ConceptIndexRow({
       <button
         type="button"
         onClick={() => setHashOnPath(pathname, concept.id, false)}
-        className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 text-left text-base font-medium text-zinc-900 dark:text-zinc-50"
+        className="flex w-full touch-manipulation cursor-pointer items-center gap-2 px-4 py-3 text-left text-base font-medium text-zinc-900 dark:text-zinc-50"
       >
         <HighlightedText text={concept.title} query={query} />
       </button>

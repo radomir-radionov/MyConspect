@@ -71,7 +71,7 @@ export function HandbookShell({
   );
   const { navOpen, closeNav, toggleNav, openNav } = useMobileNav();
   const { collapsed, expandSidebar, toggleSidebar } = useSidebarCollapsed();
-  const [searchSheetDismissed, setSearchSheetDismissed] = useState(false);
+  const [searchSheetDismissed, setSearchSheetDismissed] = useState(true);
   const revealSearchNav = useCallback(() => {
     expandSidebar();
     setSearchSheetDismissed(false);
@@ -116,8 +116,8 @@ export function HandbookShell({
   const searching = query.trim().length > 0;
   const sidebarQuery =
     searching && deferredQuery.trim().length === 0 ? query : deferredQuery;
-  const searchSheet = searching && !searchSheetDismissed;
-  const menuOpen = navOpen || searchSheet;
+  const searchSheet = searching && !searchSheetDismissed && navOpen;
+  const menuOpen = navOpen;
   const onToggleNav = useCallback(() => {
     if (searchSheet) {
       dismissNav();
