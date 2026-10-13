@@ -4,9 +4,21 @@ import { setBookmarkNavMode } from "./bookmarkNavMode";
 
 export { hashIdFrom };
 
+const hashListeners = new Set<() => void>();
+
+function notifyHashListeners() {
+  for (const listener of hashListeners) {
+    listener();
+  }
+}
+
 export function subscribeHash(onStoreChange: () => void) {
+  hashListeners.add(onStoreChange);
   window.addEventListener("hashchange", onStoreChange);
-  return () => window.removeEventListener("hashchange", onStoreChange);
+  return () => {
+    hashListeners.delete(onStoreChange);
+    window.removeEventListener("hashchange", onStoreChange);
+  };
 }
 
 export function getHash() {
@@ -18,6 +30,7 @@ export function getServerHash() {
 }
 
 export function dispatchHashChange(scroll?: boolean) {
+  notifyHashListeners();
   if (scroll === undefined) {
     window.dispatchEvent(new Event("hashchange"));
     return;
@@ -37,6 +50,14 @@ function notifyPendingPathListeners() {
   for (const listener of pendingPathListeners) {
     listener();
   }
+}
+
+function clearPendingPathHash() {
+  if (!pendingPathHash) {
+    return;
+  }
+  pendingPathHash = null;
+  notifyPendingPathListeners();
 }
 
 export function subscribePendingPath(onStoreChange: () => void) {
@@ -80,6 +101,7 @@ export function applySameDocumentHref(
 ): boolean {
   const currentHash = window.location.hash;
   if (nextPath === currentPath && nextHash === currentHash) {
+    clearPendingPathHash();
     dispatchHashChange();
     return true;
   }
@@ -89,6 +111,7 @@ export function applySameDocumentHref(
       "",
       `${nextPath}${nextHash}`,
     );
+    clearPendingPathHash();
     dispatchHashChange();
     return true;
   }
@@ -97,6 +120,13 @@ export function applySameDocumentHref(
 
 export function queueHandbookHref(href: string): void {
   const { pathname, hash } = splitHref(href);
+  if (
+    pendingPathHash?.pathname === pathname &&
+    hash === "" &&
+    pendingPathHash.hash !== ""
+  ) {
+    return;
+  }
   pendingPathHash = { pathname, hash };
   notifyPendingPathListeners();
 }
@@ -135,9 +165,14 @@ export function takePendingHashForPath(pathname: string): string | null {
 
 export function setHashOnPath(pathname: string, id: string, scroll = true) {
   const next = `#${id}`;
-  if (window.location.hash !== next) {
-    window.history.replaceState(window.history.state, "", `${pathname}${next}`);
+  const url = `${pathname}${window.location.search}${next}`;
+  if (
+    `${window.location.pathname}${window.location.search}${window.location.hash}` !==
+    url
+  ) {
+    window.history.replaceState(window.history.state, "", url);
   }
+  clearPendingPathHash();
   dispatchHashChange(scroll);
 }
 
@@ -146,12 +181,7 @@ export function setHashIfChanged(id: string, scroll = true) {
   if (window.location.hash === next) {
     return false;
   }
-  window.history.replaceState(
-    window.history.state,
-    "",
-    `${window.location.pathname}${window.location.search}${next}`,
-  );
-  dispatchHashChange(scroll);
+  setHashOnPath(window.location.pathname, id, scroll);
   return true;
 }
 
@@ -165,6 +195,7 @@ export function clearConceptHash(scroll = false) {
   if (`${next}${window.location.hash}` !== next) {
     window.history.replaceState(window.history.state, "", next);
   }
+  clearPendingPathHash();
   dispatchHashChange(scroll);
 }
 

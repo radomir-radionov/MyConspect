@@ -125,6 +125,12 @@ body {
   scroll-margin-top: var(--handbook-sticky-inset, 0px);
 }
 
+@media (max-width: 767px) {
+  #handbook-main[data-concept-mobile-actions] .handbook-scroll-top {
+    bottom: calc(3.25rem + 1rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 .catalog-sections > details > summary::-webkit-details-marker,
 .concept-list > details > summary::-webkit-details-marker {
   display: none;

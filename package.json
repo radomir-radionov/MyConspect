@@ -16,9 +16,13 @@
     "check-sidebar": "tsx scripts/audit-sidebar-outlines.ts",
     "reorder-concepts": "tsx scripts/reorder-concepts.ts",
     "start:e2e": "next start -p 3456",
+    "dev:e2e": "next dev -p 3001",
     "cypress:open": "cypress open",
+    "cypress:open:dev": "CYPRESS_BASE_URL=http://localhost:3001 cypress open",
     "cypress:run": "cypress run",
-    "test:e2e": "start-server-and-test start:e2e http://127.0.0.1:3456 cypress:run"
+    "cypress:run:dev": "CYPRESS_BASE_URL=http://localhost:3001 cypress run",
+    "test:e2e": "start-server-and-test start:e2e http://127.0.0.1:3456 cypress:run",
+    "test:e2e:dev": "start-server-and-test dev:e2e http://localhost:3001 cypress:run"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

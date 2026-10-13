@@ -13,7 +13,7 @@ import {
   useIsBookmarked,
 } from "@/components/nav/ui/BookmarkButton";
 import { highlightQueryInHtml } from "@/components/search/utils/highlightQueryInHtml";
-import { setHashIfChanged } from "@/components/nav/utils/hash";
+import { setHashIfChanged, setHashOnPath } from "@/components/nav/utils/hash";
 import { hashIdFrom } from "@/lib/nav/navUtils";
 import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
 import { handbookMain } from "@/components/topic/utils/conceptScroll";
@@ -22,7 +22,10 @@ import { localeFromPathname } from "@/lib/i18n/paths";
 import { conceptMatchesQuery } from "@/lib/nav";
 import type { ChromeCopy } from "@/lib/nav";
 import type { Concept } from "@/lib/parse";
-import { ConceptTitleHeader } from "./ConceptTitleHeader";
+import {
+  ConceptMobileActionsFooter,
+  ConceptTitleHeader,
+} from "./ConceptTitleHeader";
 import { PageTitleHeader } from "./PageTitleHeader";
 import { useCodeCopyButtons } from "./hooks/useCodeCopyButtons";
 import { useConceptKeyboardNav } from "./hooks/useConceptKeyboardNav";
@@ -143,7 +146,11 @@ export function ConceptList({
   }, [pathname, activeId]);
 
   if (concepts.length === 0) {
-    return <p className="text-zinc-600 dark:text-zinc-400">{emptyMessage}</p>;
+    return (
+      <p className="max-sm:pt-5 text-zinc-600 dark:text-zinc-400">
+        {emptyMessage}
+      </p>
+    );
   }
 
   if (flat) {
@@ -174,7 +181,7 @@ export function ConceptList({
   const firstUngroupedIndex = groups.findIndex((group) => group.label === null);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-sm:pt-5">
       {groups.map((group, index) => (
         <section key={group.key}>
           {group.label ? (
@@ -203,7 +210,10 @@ const CONCEPT_LIST_CARD =
   "concept-list overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900";
 
 const CONCEPT_DETAIL_CARD =
-  "concept-list group relative -mx-4 rounded-xl border border-yellow-200 bg-yellow-50 max-sm:rounded-none max-sm:border-x-0 sm:mx-0 dark:border-yellow-800 dark:bg-yellow-950";
+  "concept-list group relative -mx-4 rounded-xl border border-yellow-200 bg-yellow-50 max-sm:rounded-none max-sm:border-x-0 max-sm:border-t-0 sm:mx-0 dark:border-yellow-800 dark:bg-yellow-950";
+
+const CONCEPT_DETAIL_CARD_MOBILE_PAD =
+  "max-sm:pb-[calc(3.25rem+env(safe-area-inset-bottom,0px))]";
 
 function ConceptIndexList({
   concepts,
@@ -253,7 +263,7 @@ function ConceptIndexRow({
     <li className="group relative transition-colors hover:bg-yellow-50 dark:hover:bg-yellow-950/60">
       <button
         type="button"
-        onClick={() => setHashIfChanged(concept.id, false)}
+        onClick={() => setHashOnPath(pathname, concept.id, false)}
         className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 text-left text-base font-medium text-zinc-900 dark:text-zinc-50"
       >
         <HighlightedText text={concept.title} query={query} />
@@ -289,30 +299,47 @@ function ConceptDetail({
   chrome: ChromeCopy;
   asPageTitle?: boolean;
 }) {
-  const { showBack, showNext, goBack, goNext } = useHandbookTopicNav({
-    conceptOpen: true,
-  });
+  const { showBack, showNext, goBack, goNext, prevHref, nextHref } =
+    useHandbookTopicNav({
+      conceptOpen: true,
+      conceptId: concept.id,
+    });
+
+  const headerVariant = asPageTitle ? "index" : "detail";
+  const mobileActionsFooter =
+    headerVariant === "detail" || showBack || showNext;
+  const actionProps = {
+    title: concept.title,
+    chrome,
+    variant: headerVariant,
+    showBack,
+    backHref: prevHref,
+    onBack: goBack,
+    showNext,
+    nextHref,
+    onNext: goNext,
+    showBookmark: true,
+    showShare: true,
+    conceptId: concept.id,
+  };
 
   return (
-    <article id={concept.id} className={CONCEPT_DETAIL_CARD}>
-      <ConceptTitleHeader
-        title={concept.title}
-        chrome={chrome}
-        variant={asPageTitle ? "index" : "detail"}
-        showBack={showBack}
-        onBack={goBack}
-        showNext={showNext}
-        onNext={goNext}
-        showBookmark
-        showShare
-        conceptId={concept.id}
-      />
+    <article
+      id={concept.id}
+      className={
+        mobileActionsFooter
+          ? `${CONCEPT_DETAIL_CARD} ${CONCEPT_DETAIL_CARD_MOBILE_PAD}`
+          : CONCEPT_DETAIL_CARD
+      }
+    >
+      <ConceptTitleHeader {...actionProps} />
       <ConceptBody
         html={concept.html}
         query={notesQuery}
         chrome={chrome}
         compactTop
       />
+      <ConceptMobileActionsFooter {...actionProps} />
     </article>
   );
 }

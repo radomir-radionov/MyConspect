@@ -22,15 +22,6 @@ export function ContactLinks() {
 
 function ContactIcon({ id }: { readonly id: SiteContactId }) {
   switch (id) {
-    case "telegram":
-      return (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">
-          <path
-            fill="currentColor"
-            d="M21.5 3.4 18.2 20c-.25 1.1-.9 1.37-1.82.85l-5.05-3.72-2.44 2.35c-.27.27-.5.5-1.03.5l.37-5.2 9.47-8.55c.41-.37-.09-.57-.64-.2l-11.7 7.37-5.04-1.58c-1.1-.34-1.12-1.1.24-1.63L20.1 2.2c.91-.34 1.7.2 1.4 1.2Z"
-          />
-        </svg>
-      );
     case "linkedin":
       return (
         <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">

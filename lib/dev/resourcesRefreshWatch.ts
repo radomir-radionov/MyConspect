@@ -1,6 +1,7 @@
 import { watch } from "node:fs";
 import path from "node:path";
 import { DEV_RESOURCES_REFRESH_MESSAGE } from "@/lib/dev/shared";
+import { resourcesRoot } from "@/lib/resourcesRoot";
 import { clearTopicParseCache } from "@/lib/parse/load";
 
 const DEBOUNCE_MS = 80;
@@ -34,7 +35,7 @@ export function ensureResourcesRefreshWatcher(): WatchState {
     return state;
   }
 
-  const dir = path.join(process.cwd(), "resources");
+  const dir = resourcesRoot();
   state.watcher = watch(dir, { recursive: true }, () => {
     clearTimeout(state.timer);
     state.timer = setTimeout(() => {

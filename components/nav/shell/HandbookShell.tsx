@@ -23,6 +23,7 @@ import { dispatchSidebarCollapseAll } from "../hooks/useSidebarOpen";
 import { useSidebarCollapsed } from "../hooks/useSidebarCollapsed";
 import { SidebarDockButton } from "../header/SidebarDockButton";
 import { DrawerFooter, SiteHeader } from "../header/SiteHeader";
+import { localeFromPathname } from "@/lib/i18n/paths";
 import { TopicSidebar } from "../sidebar/TopicSidebar";
 import { ContentBreadcrumbs } from "../ui/ContentBreadcrumbs";
 import { ScrollToTopButton } from "../ui/ScrollToTopButton";
@@ -58,6 +59,7 @@ export function HandbookShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname() ?? "/";
+  const locale = localeFromPathname(pathname);
   const enrichedSections = useEnrichedNavSections(sections);
   const groups = useMemo(
     () => allNavGroups(enrichedSections),
@@ -230,6 +232,9 @@ export function HandbookShell({
                 </div>
                 <DrawerFooter
                   chrome={chrome}
+                  locale={locale}
+                  onNavigate={selectNavResult}
+                  searching={searching}
                   lastUpdatedIso={lastUpdatedIso}
                   lastUpdatedLabel={lastUpdatedLabel}
                 />

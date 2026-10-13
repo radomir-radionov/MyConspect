@@ -40,7 +40,7 @@ describe("handbook breadcrumbs", () => {
     cy.contains("h1", "Core");
     cy.get("nav[aria-label='Breadcrumb']").then(($nav) => {
       const labels = [...$nav.find("li")].map((li) =>
-        li.innerText.replaceAll("/", "").trim(),
+        li.innerText.replace(/\//g, "").trim(),
       );
       expect(labels.filter((label) => label === "Core")).to.have.length(1);
       expect(labels).to.deep.equal(["Home", "Backend", "Node.js", "Core"]);
@@ -52,7 +52,7 @@ describe("handbook breadcrumbs", () => {
     cy.contains("h1", "React 19");
     cy.get("nav[aria-label='Breadcrumb']").then(($nav) => {
       const labels = [...$nav.find("li")].map((li) =>
-        li.innerText.replaceAll("/", "").trim(),
+        li.innerText.replace(/\//g, "").trim(),
       );
       expect(labels.filter((label) => label === "React 19")).to.have.length(1);
       expect(labels).to.deep.equal(["Home", "Frontend", "React", "React 19"]);
