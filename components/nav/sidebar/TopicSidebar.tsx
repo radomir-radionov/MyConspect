@@ -53,7 +53,6 @@ import {
 } from "../utils/hash";
 import { useHandbookLocation } from "../hooks/useHandbookLocation";
 import { isActiveHref, isActiveTrack } from "../utils/location";
-import { BookmarksPanel } from "./BookmarksPanel";
 import { SearchHitList } from "./SearchHitList";
 import { pinNavElement, pinNavForHref } from "../utils/sidebarPin";
 import {
@@ -74,7 +73,7 @@ import {
   useScopedTrackOpen,
 } from "../context/sidebarContext";
 import { ClusterRow, SubjectRow, TopicRow } from "./sidebarRows";
-import { SectionSwitcher } from "./SectionSwitcher";
+import { SidebarNavChrome } from "./SidebarNavChrome";
 import { foldRevision, useSidebarOpen } from "../hooks/useSidebarOpen";
 
 export const TopicSidebar = memo(function TopicSidebar({
@@ -82,11 +81,15 @@ export const TopicSidebar = memo(function TopicSidebar({
   query,
   chrome,
   onNavigate,
+  searchLoading = false,
+  hideNavChromeOnMobile = false,
 }: {
   sections: readonly NavRootSection[];
   query: string;
   chrome: ChromeCopy;
   onNavigate?: () => void;
+  searchLoading?: boolean;
+  hideNavChromeOnMobile?: boolean;
 }) {
   const { pathname, highlightPathname, hash } = useHandbookLocation();
   const mode = useSearchMode();
@@ -226,19 +229,26 @@ export const TopicSidebar = memo(function TopicSidebar({
         aria-label={chrome.topicsNav}
         className="relative isolate px-2 py-3"
       >
-        <div
-          data-nav-chrome=""
-          className="-mx-2 -mt-3 bg-(--chrome-surface) px-2 pt-3"
-        >
-          <div className="mb-3 px-2">
-            <SectionSwitcher sections={sections} chrome={chrome} />
-          </div>
-          <BookmarksPanel chrome={chrome} onNavigate={onNavigate} />
-        </div>
+        <SidebarNavChrome
+          sections={sections}
+          chrome={chrome}
+          onNavigate={onNavigate}
+          className={
+            hideNavChromeOnMobile ? "-mx-2 -mt-3 max-md:hidden" : "-mx-2 -mt-3"
+          }
+        />
         <div data-nav-sticky-cover="" aria-hidden="true" />
         {filtered.length === 0 ? (
-          <p className="px-2 text-sm text-zinc-500 dark:text-zinc-400">
-            {mode === "notes" ? chrome.searchNotesEmpty : chrome.searchEmpty}
+          <p
+            className="px-2 text-sm text-zinc-500 dark:text-zinc-400"
+            role={searchLoading ? "status" : undefined}
+            aria-live={searchLoading ? "polite" : undefined}
+          >
+            {searchLoading
+              ? chrome.searchLoading
+              : mode === "notes"
+                ? chrome.searchNotesEmpty
+                : chrome.searchEmpty}
           </p>
         ) : searching ? (
           <ul className="space-y-0.5">

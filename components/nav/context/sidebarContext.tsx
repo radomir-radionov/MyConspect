@@ -207,7 +207,7 @@ const NAV_ROW_SURFACE =
 export function rowClass(active: boolean, sticky = false, indentClass = "") {
   // Indent with padding (not margin) so `w-full` rows keep one shared right edge.
   // Inactive rows keep a transparent ring so active highlight does not shift layout.
-  const shared = `flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 text-left text-base font-medium ${NAV_ROW_SURFACE}`;
+  const shared = `flex min-h-11 w-full touch-manipulation cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 text-left text-base font-medium max-md:min-h-11 ${NAV_ROW_SURFACE}`;
   const highlight = active
     ? `${shared} text-zinc-900 bg-yellow-50 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800`
     : `${shared} text-zinc-600 bg-transparent ring-transparent hover:bg-yellow-50 dark:text-zinc-400 dark:hover:bg-yellow-950/60`;
@@ -217,7 +217,7 @@ export function rowClass(active: boolean, sticky = false, indentClass = "") {
 }
 
 export function trackHeaderClass(highlighted: boolean) {
-  const shared = `flex min-h-[var(--nav-sticky-row)] w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 text-left text-base font-medium ${NAV_ROW_SURFACE}`;
+  const shared = `flex min-h-[var(--nav-sticky-row)] w-full touch-manipulation cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 text-left text-base font-medium max-md:min-h-11 ${NAV_ROW_SURFACE}`;
   return highlighted
     ? `${shared} text-zinc-900 bg-yellow-50 ring-yellow-200 dark:bg-yellow-950 dark:text-zinc-50 dark:ring-yellow-800`
     : `${shared} text-zinc-500 bg-transparent ring-transparent hover:bg-yellow-50/80 dark:text-zinc-400 dark:hover:bg-yellow-950/40`;

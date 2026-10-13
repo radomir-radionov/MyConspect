@@ -23,7 +23,7 @@ import { conceptMatchesQuery } from "@/lib/nav";
 import type { ChromeCopy } from "@/lib/nav";
 import type { Concept } from "@/lib/parse";
 import {
-  ConceptMobileActionsFooter,
+  ConceptDetailActionsFooter,
   ConceptTitleHeader,
 } from "./ConceptTitleHeader";
 import { PageTitleHeader } from "./PageTitleHeader";
@@ -212,9 +212,6 @@ const CONCEPT_LIST_CARD =
 const CONCEPT_DETAIL_CARD =
   "concept-list group relative -mx-4 rounded-xl border border-yellow-200 bg-yellow-50 max-sm:rounded-none max-sm:border-x-0 max-sm:border-t-0 sm:mx-0 dark:border-yellow-800 dark:bg-yellow-950";
 
-const CONCEPT_DETAIL_CARD_MOBILE_PAD =
-  "max-sm:pb-[calc(3.25rem+env(safe-area-inset-bottom,0px))]";
-
 function ConceptIndexList({
   concepts,
   query,
@@ -264,15 +261,15 @@ function ConceptIndexRow({
       <button
         type="button"
         onClick={() => setHashOnPath(pathname, concept.id, false)}
-        className="flex w-full touch-manipulation cursor-pointer items-center gap-2 px-4 py-3 text-left text-base font-medium text-zinc-900 dark:text-zinc-50"
+        className="flex min-h-11 w-full touch-manipulation cursor-pointer items-center gap-2 px-4 py-3 text-left text-base font-medium text-zinc-900 dark:text-zinc-50"
       >
         <HighlightedText text={concept.title} query={query} />
       </button>
       <div
         className={
           saved
-            ? "absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-0.5"
-            : "pointer-events-none absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-0.5 group-hover:pointer-events-auto group-focus-within:pointer-events-auto"
+            ? "absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-0.5 max-sm:pointer-events-auto"
+            : "pointer-events-none absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-0.5 max-sm:pointer-events-auto group-hover:pointer-events-auto group-focus-within:pointer-events-auto"
         }
       >
         <CopyConceptLinkButton conceptId={concept.id} chrome={chrome} />
@@ -306,8 +303,6 @@ function ConceptDetail({
     });
 
   const headerVariant: "index" | "detail" = asPageTitle ? "index" : "detail";
-  const mobileActionsFooter =
-    headerVariant === "detail" || showBack || showNext;
   const actionProps = {
     title: concept.title,
     chrome,
@@ -324,22 +319,15 @@ function ConceptDetail({
   };
 
   return (
-    <article
-      id={concept.id}
-      className={
-        mobileActionsFooter
-          ? `${CONCEPT_DETAIL_CARD} ${CONCEPT_DETAIL_CARD_MOBILE_PAD}`
-          : CONCEPT_DETAIL_CARD
-      }
-    >
-      <ConceptTitleHeader {...actionProps} />
+    <article id={concept.id} className={CONCEPT_DETAIL_CARD}>
+      <ConceptTitleHeader {...actionProps} hideActionsOnMobile />
       <ConceptBody
         html={concept.html}
         query={notesQuery}
         chrome={chrome}
         compactTop
       />
-      <ConceptMobileActionsFooter {...actionProps} />
+      <ConceptDetailActionsFooter {...actionProps} />
     </article>
   );
 }

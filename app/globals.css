@@ -111,6 +111,26 @@ body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+@keyframes handbook-busy-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.handbook-busy-bar {
+  animation: handbook-busy-slide 1.1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .handbook-busy-bar {
+    animation: none;
+    width: 100%;
+  }
+}
+
 .catalog-sections > details > summary,
 .concept-list > details > summary {
   list-style: none;
@@ -126,8 +146,8 @@ body {
 }
 
 @media (max-width: 767px) {
-  #handbook-main[data-concept-mobile-actions] .handbook-scroll-top {
-    bottom: calc(3.25rem + 1rem + env(safe-area-inset-bottom, 0px));
+  .handbook-scroll-top {
+    bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -693,6 +713,12 @@ body {
   top: 0;
   z-index: 30;
   background: var(--chrome-surface);
+}
+
+@media (max-width: 767px) {
+  #handbook-nav-aside [data-nav-chrome] {
+    position: static;
+  }
 }
 
 #handbook-nav-aside [data-nav-sticky-cover] {

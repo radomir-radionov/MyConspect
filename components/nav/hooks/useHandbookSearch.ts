@@ -177,11 +177,16 @@ export function useHandbookSearch(
     applySearch(query);
   }, [applySearch, notesCorpus, mode, query]);
 
+  const notesCorpusLoading = mode === "notes" && notesCorpus === null;
+  const searchPending = query.trim().length > 0 && query !== deferredQuery;
+
   return {
     query,
     deferredQuery,
     mode,
     searchGroups,
+    notesCorpusLoading,
+    searchPending,
     changeQuery,
     clearQuery,
     commitSearchLocation,
