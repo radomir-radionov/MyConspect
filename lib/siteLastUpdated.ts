@@ -1,7 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { resourcesRoot } from "@/lib/resourcesRoot";
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -41,14 +40,15 @@ function resourcesHaveLocalChanges(): boolean {
 
 function resourcesMtimeIso(): string | null {
   try {
-    const root = resourcesRoot();
     let max = 0;
     for (const locale of ["en", "ru"] as const) {
-      const dir = join(root, locale);
+      const dir = join(process.cwd(), "resources", locale);
       if (!existsSync(dir)) continue;
       for (const name of readdirSync(dir)) {
         if (!name.endsWith(".md")) continue;
-        const mtime = statSync(join(dir, name)).mtimeMs;
+        const mtime = statSync(
+          join(process.cwd(), "resources", locale, name),
+        ).mtimeMs;
         if (mtime > max) max = mtime;
       }
     }
@@ -77,7 +77,10 @@ export function maxIsoDate(
 export function siteLastUpdatedIso(): string {
   const notesCommit = gitIsoDate(["resources"]);
   const repoCommit = gitIsoDate([]);
-  const localNotes = resourcesHaveLocalChanges() ? resourcesMtimeIso() : null;
+  const localNotes =
+    process.env.NODE_ENV === "development" && resourcesHaveLocalChanges()
+      ? resourcesMtimeIso()
+      : null;
   return (
     maxIsoDate([notesCommit, repoCommit, localNotes]) ??
     new Date().toISOString().slice(0, 10)
