@@ -57,9 +57,16 @@ function siblingHrefFromConceptIds(
   return conceptId === lastId ? pathname : null;
 }
 
-export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
+export function useHandbookTopicNav(options?: {
+  conceptOpen?: boolean;
+  conceptId?: string;
+}) {
   const { pathname, location, activeConceptId } = useHandbookLocation();
-  const conceptOpen = options?.conceptOpen ?? activeConceptId.length > 0;
+  const resolvedConceptId = activeConceptId || options?.conceptId || "";
+  const navHash =
+    location.hash ||
+    (options?.conceptId ? `#${options.conceptId}` : location.hash);
+  const conceptOpen = options?.conceptOpen ?? resolvedConceptId.length > 0;
   const router = useRouter();
   const bookmarks = useSyncExternalStore(
     subscribeBookmarks,
@@ -102,28 +109,30 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
   const inChain = chainIndex >= 0;
 
   const topicScopedSibling = useMemo(() => {
-    if (!conceptOpen || !activeConceptId || !topicNavConcepts) {
+    if (!conceptOpen || !resolvedConceptId || !topicNavConcepts) {
       return null;
     }
-    return {
-      prev: siblingHrefFromConceptIds(
-        topicNavConcepts,
-        location.pathname,
-        location.hash,
-        -1,
-      ),
-      next: siblingHrefFromConceptIds(
-        topicNavConcepts,
-        location.pathname,
-        location.hash,
-        1,
-      ),
-    };
+    const prev = siblingHrefFromConceptIds(
+      topicNavConcepts,
+      location.pathname,
+      navHash,
+      -1,
+    );
+    const next = siblingHrefFromConceptIds(
+      topicNavConcepts,
+      location.pathname,
+      navHash,
+      1,
+    );
+    if (prev === null && next === null) {
+      return null;
+    }
+    return { prev, next };
   }, [
-    activeConceptId,
     conceptOpen,
-    location.hash,
     location.pathname,
+    navHash,
+    resolvedConceptId,
     topicNavConcepts,
   ]);
 
@@ -136,23 +145,18 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
         -1,
       );
     }
-    if (topicScopedSibling) {
+    if (topicScopedSibling?.prev != null) {
       return topicScopedSibling.prev;
     }
     if (!navGroups) {
       return null;
     }
-    return siblingNavHrefForPath(
-      navGroups,
-      location.pathname,
-      location.hash,
-      -1,
-    );
+    return siblingNavHrefForPath(navGroups, location.pathname, navHash, -1);
   }, [
     inBookmarks,
     bookmarks,
     location.pathname,
-    location.hash,
+    navHash,
     activeConceptId,
     navGroups,
     topicScopedSibling,
@@ -167,23 +171,18 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
         1,
       );
     }
-    if (topicScopedSibling) {
+    if (topicScopedSibling?.next != null) {
       return topicScopedSibling.next;
     }
     if (!navGroups) {
       return null;
     }
-    return siblingNavHrefForPath(
-      navGroups,
-      location.pathname,
-      location.hash,
-      1,
-    );
+    return siblingNavHrefForPath(navGroups, location.pathname, navHash, 1);
   }, [
     inBookmarks,
     bookmarks,
     location.pathname,
-    location.hash,
+    navHash,
     activeConceptId,
     navGroups,
     topicScopedSibling,
@@ -193,17 +192,11 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
     if (!navGroups) {
       return null;
     }
-    return parentHrefForPath(navGroups, location.pathname, location.hash, {
+    return parentHrefForPath(navGroups, location.pathname, navHash, {
       home: chrome.home,
       instructions: chrome.instructions,
     });
-  }, [
-    navGroups,
-    location.pathname,
-    location.hash,
-    chrome.home,
-    chrome.instructions,
-  ]);
+  }, [navGroups, location.pathname, navHash, chrome.home, chrome.instructions]);
 
   const navigate = useCallback(
     (href: string | null) => {
@@ -211,7 +204,7 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
         return;
       }
       const { pathname: targetPath, hash: targetHash } = splitHref(href);
-      if (targetPath === pathname && !targetHash && activeConceptId) {
+      if (targetPath === pathname && !targetHash && resolvedConceptId) {
         if (!bookmarkNavMode) {
           setBookmarkNavMode(false);
         }
@@ -227,7 +220,7 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
         { bookmarkNav: bookmarkNavMode },
       );
     },
-    [pathname, router, bookmarkNavMode, activeConceptId],
+    [pathname, router, bookmarkNavMode, resolvedConceptId],
   );
 
   const goBack = useCallback(() => {
@@ -242,7 +235,7 @@ export function useHandbookTopicNav(options?: { conceptOpen?: boolean }) {
     navigate(parentHref);
   }, [navigate, parentHref]);
 
-  const onTopicIndex = !hashIdFrom(location.hash);
+  const onTopicIndex = !hashIdFrom(navHash);
 
   return {
     inChain: inBookmarks || inChain,

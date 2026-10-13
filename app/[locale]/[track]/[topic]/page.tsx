@@ -219,7 +219,7 @@ export default async function TopicPage({
     (isInterviewTopic(loaded.topic) && !isInterviewTasksTopic(loaded.topic));
 
   return (
-    <main className="w-full max-w-3xl px-4 pt-5 pb-10 sm:px-6">
+    <main className="w-full max-w-3xl px-4 pb-10 max-sm:pt-0 sm:px-6 sm:pt-5">
       {loaded.usedFallback ? (
         <p className="mb-4 text-sm text-amber-700 dark:text-amber-300">
           {FALLBACK_NOTE_BADGE[locale]}

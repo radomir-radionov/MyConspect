@@ -150,7 +150,9 @@ export function SiteHeader({
             </div>
           </div>
           <div className="sticky right-0 z-10 flex shrink-0 items-center gap-0.5 bg-white pr-(--chrome-inline) pl-1 sm:pl-2 dark:bg-zinc-950">
-            <HeaderChromeActions chrome={chrome} locale={locale} />
+            <div className="hidden items-center gap-0.5 md:flex">
+              <HeaderChromeActions chrome={chrome} locale={locale} />
+            </div>
             <button
               type="button"
               className={
@@ -177,9 +179,11 @@ export function SiteHeader({
 function HeaderChromeActions({
   chrome,
   locale,
+  onInstructionsClick,
 }: {
   chrome: ChromeCopy;
   locale: ReturnType<typeof localeFromPathname>;
+  onInstructionsClick?: () => void;
 }) {
   const pathname = usePathname() ?? "/en";
   const instructionsPath = instructionsHref(locale);
@@ -189,6 +193,7 @@ function HeaderChromeActions({
     <>
       <Link
         href={instructionsPath}
+        onClick={onInstructionsClick}
         aria-label={chrome.instructions}
         title={chrome.instructions}
         aria-current={onInstructions ? "page" : undefined}
@@ -206,30 +211,55 @@ function HeaderChromeActions({
   );
 }
 
+const DRAWER_FOOTER_DEFAULT =
+  "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950";
+
+const DRAWER_FOOTER_SEARCH =
+  "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950";
+
 export function DrawerFooter({
   chrome,
+  locale,
+  onNavigate,
+  searching = false,
   lastUpdatedIso,
   lastUpdatedLabel,
 }: {
   chrome: ChromeCopy;
+  locale: ReturnType<typeof localeFromPathname>;
+  onNavigate?: () => void;
+  searching?: boolean;
   lastUpdatedIso: string;
   lastUpdatedLabel: string;
 }) {
+  const surface = searching ? DRAWER_FOOTER_SEARCH : DRAWER_FOOTER_DEFAULT;
+
   return (
-    <div className="flex shrink-0 items-center justify-between gap-2 border-t border-zinc-200 px-2 py-1.5 dark:border-zinc-800">
-      <div className="flex min-w-0 items-center gap-1">
-        <ContactLinks />
+    <div className={`flex shrink-0 flex-col border-t ${surface}`}>
+      <div
+        className={`flex items-center gap-0.5 border-b px-2 py-1 md:hidden ${surface}`}
+      >
+        <HeaderChromeActions
+          chrome={chrome}
+          locale={locale}
+          onInstructionsClick={onNavigate}
+        />
       </div>
-      <div className="flex shrink-0 items-center gap-1.5">
-        <time
-          dateTime={lastUpdatedIso}
-          className="pr-1 text-right text-[11px] leading-tight text-zinc-500 dark:text-zinc-400"
-        >
-          <span className="block">{chrome.lastUpdated}</span>
-          <span className="tabular-nums text-zinc-600 dark:text-zinc-300">
-            {lastUpdatedLabel}
-          </span>
-        </time>
+      <div className="flex items-center justify-between gap-2 px-2 py-1.5">
+        <div className="flex min-w-0 items-center gap-1">
+          <ContactLinks />
+        </div>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <time
+            dateTime={lastUpdatedIso}
+            className="pr-1 text-right text-[11px] leading-tight text-zinc-500 dark:text-zinc-400"
+          >
+            <span className="block">{chrome.lastUpdated}</span>
+            <span className="tabular-nums text-zinc-600 dark:text-zinc-300">
+              {lastUpdatedLabel}
+            </span>
+          </time>
+        </div>
       </div>
     </div>
   );
