@@ -305,7 +305,7 @@ function ConceptDetail({
       conceptId: concept.id,
     });
 
-  const headerVariant = asPageTitle ? "index" : "detail";
+  const headerVariant: "index" | "detail" = asPageTitle ? "index" : "detail";
   const mobileActionsFooter =
     headerVariant === "detail" || showBack || showNext;
   const actionProps = {
