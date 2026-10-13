@@ -86,8 +86,8 @@ export function useHandbookTopicNav(options?: {
     getServerBookmarkNavMode,
   );
   const bookmarkIndex = useMemo(
-    () => activeBookmarkIndex(bookmarks, location.pathname, activeConceptId),
-    [bookmarks, location.pathname, activeConceptId],
+    () => activeBookmarkIndex(bookmarks, location.pathname, resolvedConceptId),
+    [bookmarks, location.pathname, resolvedConceptId],
   );
   const inBookmarks =
     bookmarkNavMode && bookmarkIndex >= 0 && bookmarks.length > 1;
@@ -141,7 +141,7 @@ export function useHandbookTopicNav(options?: {
       return siblingBookmarkHref(
         bookmarks,
         location.pathname,
-        activeConceptId,
+        resolvedConceptId,
         -1,
       );
     }
@@ -157,7 +157,7 @@ export function useHandbookTopicNav(options?: {
     bookmarks,
     location.pathname,
     navHash,
-    activeConceptId,
+    resolvedConceptId,
     navGroups,
     topicScopedSibling,
   ]);
@@ -167,7 +167,7 @@ export function useHandbookTopicNav(options?: {
       return siblingBookmarkHref(
         bookmarks,
         location.pathname,
-        activeConceptId,
+        resolvedConceptId,
         1,
       );
     }
@@ -183,7 +183,7 @@ export function useHandbookTopicNav(options?: {
     bookmarks,
     location.pathname,
     navHash,
-    activeConceptId,
+    resolvedConceptId,
     navGroups,
     topicScopedSibling,
   ]);

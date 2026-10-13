@@ -5,7 +5,6 @@ export type CardItem = {
   readonly title: string;
   readonly description: string;
   readonly id?: string;
-  sdffdsfs;
 };
 
 export function CardGrid({ items }: { items: readonly CardItem[] }) {
