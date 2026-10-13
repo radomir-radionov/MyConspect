@@ -65,22 +65,19 @@ function ConceptNavControl({
   className: string;
   children: ReactNode;
 }) {
-  if (!href) {
+  if (!href || !onActivate) {
     return null;
   }
 
   return (
-    <a
-      href={href}
+    <button
+      type="button"
       aria-label={label}
       className={className}
-      onClick={(event) => {
-        event.preventDefault();
-        onActivate?.();
-      }}
+      onClick={() => onActivate?.()}
     >
       {children}
-    </a>
+    </button>
   );
 }
 
