@@ -29,10 +29,12 @@ export function useHandbookLocation() {
     getServerPendingHash,
   );
   const highlightPathname = pendingPathname || pathname;
-  const location = useMemo(
-    () => handbookLocation(pathname, hash),
-    [pathname, hash, pendingPathname, pendingHash],
-  );
+  const location = useMemo(() => {
+    if (pendingPathname) {
+      return { pathname: pendingPathname, hash: pendingHash };
+    }
+    return handbookLocation(pathname, hash);
+  }, [pathname, hash, pendingPathname, pendingHash]);
   const activeConceptId = hashIdFrom(location.hash);
 
   return {
