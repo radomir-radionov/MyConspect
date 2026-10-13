@@ -2,14 +2,22 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { loadEnvConfig } from "@next/env";
+import { resourcesRoot } from "../lib/resourcesRoot";
 
-const RESOURCES_DIR = path.join(process.cwd(), "resources");
-const EN_DIR = path.join(RESOURCES_DIR, "en");
+loadEnvConfig(process.cwd());
+
+const DEFAULT_RESOURCES_DIR = path.join(process.cwd(), "resources");
+
+function enDir(): string {
+  return path.join(resourcesRoot(), "en");
+}
 
 function enHasCatalogMarkdown(): boolean {
-  if (!fs.existsSync(EN_DIR)) return false;
+  const dir = enDir();
+  if (!fs.existsSync(dir)) return false;
   return fs
-    .readdirSync(EN_DIR)
+    .readdirSync(dir)
     .some((name) => name.endsWith(".md") && name !== "0_me.md");
 }
 
@@ -26,7 +34,7 @@ function authenticatedCloneUrl(url: string, token: string | undefined): string {
   }
 }
 
-function resolveResourcesRoot(cloneRoot: string): string {
+function resolveCloneLayout(cloneRoot: string): string {
   const nested = path.join(cloneRoot, "resources", "en");
   if (fs.existsSync(nested)) return path.join(cloneRoot, "resources");
   const atRoot = path.join(cloneRoot, "en");
@@ -40,8 +48,9 @@ function fetchFromGit(): void {
   const url = process.env.RESOURCES_GIT_URL?.trim();
   if (!url) {
     throw new Error(
-      "Missing study notes: resources/en/ is empty and RESOURCES_GIT_URL is not set.\n" +
-        "For local dev, keep resources/ on disk (gitignored on the public repo).\n" +
+      "Missing study notes: notes en/ is empty and RESOURCES_GIT_URL is not set.\n" +
+        "For local dev, set MYCONSPECT_NOTES_ROOT=../MyConspect-dev/notes in handbook/.env.local " +
+        "or keep resources/ on disk.\n" +
         "For Vercel/CI, set RESOURCES_GIT_URL (+ RESOURCES_GIT_TOKEN for a private repo). See README § CI/CD.",
     );
   }
@@ -57,9 +66,9 @@ function fetchFromGit(): void {
       ["clone", "--depth", "1", "--branch", ref, cloneUrl, tmp],
       { stdio: "inherit" },
     );
-    const sourceRoot = resolveResourcesRoot(tmp);
-    fs.rmSync(RESOURCES_DIR, { recursive: true, force: true });
-    fs.cpSync(sourceRoot, RESOURCES_DIR, { recursive: true });
+    const sourceRoot = resolveCloneLayout(tmp);
+    fs.rmSync(DEFAULT_RESOURCES_DIR, { recursive: true, force: true });
+    fs.cpSync(sourceRoot, DEFAULT_RESOURCES_DIR, { recursive: true });
     console.log(`ensure-resources: fetched ${ref} from ${url}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
@@ -67,16 +76,29 @@ function fetchFromGit(): void {
 
   if (!enHasCatalogMarkdown()) {
     throw new Error(
-      `Fetched repository did not produce catalog markdown under resources/en/.`,
+      `Fetched repository did not produce catalog markdown under en/.`,
     );
   }
 }
 
 function main(): void {
   if (enHasCatalogMarkdown()) {
-    console.log("ensure-resources: using local resources/");
+    const root = resourcesRoot();
+    const viaEnv = Boolean(process.env.MYCONSPECT_NOTES_ROOT?.trim());
+    console.log(
+      viaEnv
+        ? `ensure-resources: using MYCONSPECT_NOTES_ROOT (${root})`
+        : `ensure-resources: using local resources/ (${root})`,
+    );
     return;
   }
+
+  if (process.env.MYCONSPECT_NOTES_ROOT?.trim()) {
+    throw new Error(
+      `MYCONSPECT_NOTES_ROOT points to ${resourcesRoot()} but en/ has no catalog markdown.`,
+    );
+  }
+
   fetchFromGit();
 }
 

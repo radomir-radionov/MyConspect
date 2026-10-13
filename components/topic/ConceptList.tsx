@@ -13,7 +13,7 @@ import {
   useIsBookmarked,
 } from "@/components/nav/ui/BookmarkButton";
 import { highlightQueryInHtml } from "@/components/search/utils/highlightQueryInHtml";
-import { setHashIfChanged } from "@/components/nav/utils/hash";
+import { setHashIfChanged, setHashOnPath } from "@/components/nav/utils/hash";
 import { hashIdFrom } from "@/lib/nav/navUtils";
 import { CopyConceptLinkButton } from "./CopyConceptLinkButton";
 import { handbookMain } from "@/components/topic/utils/conceptScroll";
@@ -253,7 +253,7 @@ function ConceptIndexRow({
     <li className="group relative transition-colors hover:bg-yellow-50 dark:hover:bg-yellow-950/60">
       <button
         type="button"
-        onClick={() => setHashIfChanged(concept.id, false)}
+        onClick={() => setHashOnPath(pathname, concept.id, false)}
         className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 text-left text-base font-medium text-zinc-900 dark:text-zinc-50"
       >
         <HighlightedText text={concept.title} query={query} />

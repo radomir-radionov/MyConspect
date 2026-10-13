@@ -76,7 +76,11 @@ function asQuery(value: unknown): string {
 }
 
 function asHref(value: unknown): string {
-  if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) {
+  if (
+    typeof value !== "string" ||
+    !value.startsWith("/") ||
+    value.startsWith("//")
+  ) {
     return "/";
   }
   return value;
@@ -94,9 +98,6 @@ function asTheme(value: unknown): StoredTheme {
 }
 
 export function readUi(): StoredUi {
-  if (cache) {
-    return cache;
-  }
   try {
     const raw = window.localStorage.getItem(UI_STORAGE_KEY);
     if (!raw) {
@@ -140,10 +141,14 @@ export function getServerTheme(): StoredTheme {
 }
 
 export function systemTheme(): ThemePreference {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
-export function resolveTheme(stored: StoredTheme = readTheme()): ThemePreference {
+export function resolveTheme(
+  stored: StoredTheme = readTheme(),
+): ThemePreference {
   return stored ?? systemTheme();
 }
 

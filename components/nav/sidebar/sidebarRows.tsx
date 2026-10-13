@@ -448,7 +448,7 @@ export function TopicRow({
   navKind?: "cluster" | "topic";
   navId?: string;
 }) {
-  const { query, mode, pathname, searching, first, onNavigate } =
+  const { query, mode, pathname, searching, first, onNavigate, goToPath } =
     useSidebarChrome();
   const { highlightPathname } = useSidebarHighlight();
   const { fold, patchFold } = useScopedSidebarFold();
@@ -532,13 +532,12 @@ export function TopicRow({
             }
             return;
           }
-          queueHandbookHref(topic.href);
+          event.preventDefault();
           patchFold(trackId, {
             topicHref: showTopicFold ? topic.href : null,
           });
-          if (!showTopicFold) {
-            closeNavSoon(onNavigate);
-          }
+          closeNavSoon(onNavigate);
+          followHandbookHref(topic.href, pathname, goToPath);
         }}
         data-search-hit={isFirstTopic ? "true" : undefined}
         aria-current={active ? "page" : undefined}

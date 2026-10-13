@@ -45,6 +45,7 @@ import {
   isTypesHubSlug,
   withConceptGroup,
 } from "@/lib/catalog/typesHub";
+import { resourcesRoot } from "@/lib/resourcesRoot";
 import {
   parseTopicMarkdown,
   parseTopicOutline,
@@ -53,8 +54,6 @@ import {
   type ParseOptions,
   type ParsedTopic,
 } from "./parse";
-
-const RESOURCES_ROOT = path.join(process.cwd(), "resources");
 
 type StoredRead = {
   readonly stamp: string;
@@ -93,7 +92,7 @@ function parseCache(): ParseCache {
 }
 
 export function resourcesDir(locale: Locale = DEFAULT_LOCALE): string {
-  return path.join(RESOURCES_ROOT, locale);
+  return path.join(resourcesRoot(), locale);
 }
 
 export type ReadTopicResult = {

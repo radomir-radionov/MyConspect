@@ -14,7 +14,7 @@ export const SITE_NAME = "MyConspect";
 export const SITE_DESCRIPTION =
   "A browse-only study handbook of frontend, backend, system design, algorithms, data structures, AI, and related concepts.";
 
-export type SiteContactId = "telegram" | "linkedin" | "github";
+export type SiteContactId = "linkedin" | "github";
 
 export type SiteContact = {
   readonly id: SiteContactId;
@@ -32,10 +32,5 @@ export const SITE_CONTACTS: readonly SiteContact[] = [
     id: "linkedin",
     href: "https://www.linkedin.com/in/radomir-radionov/",
     label: "LinkedIn",
-  },
-  {
-    id: "telegram",
-    href: "https://t.me/Radomir_01",
-    label: "Telegram",
   },
 ];

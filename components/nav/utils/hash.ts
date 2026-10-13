@@ -97,6 +97,13 @@ export function applySameDocumentHref(
 
 export function queueHandbookHref(href: string): void {
   const { pathname, hash } = splitHref(href);
+  if (
+    pendingPathHash?.pathname === pathname &&
+    hash === "" &&
+    pendingPathHash.hash !== ""
+  ) {
+    return;
+  }
   pendingPathHash = { pathname, hash };
   notifyPendingPathListeners();
 }
@@ -135,8 +142,14 @@ export function takePendingHashForPath(pathname: string): string | null {
 
 export function setHashOnPath(pathname: string, id: string, scroll = true) {
   const next = `#${id}`;
-  if (window.location.hash !== next) {
-    window.history.replaceState(window.history.state, "", `${pathname}${next}`);
+  pendingPathHash = { pathname, hash: next };
+  notifyPendingPathListeners();
+  const url = `${pathname}${window.location.search}${next}`;
+  if (
+    `${window.location.pathname}${window.location.search}${window.location.hash}` !==
+    url
+  ) {
+    window.history.replaceState(window.history.state, "", url);
   }
   dispatchHashChange(scroll);
 }
@@ -146,12 +159,7 @@ export function setHashIfChanged(id: string, scroll = true) {
   if (window.location.hash === next) {
     return false;
   }
-  window.history.replaceState(
-    window.history.state,
-    "",
-    `${window.location.pathname}${window.location.search}${next}`,
-  );
-  dispatchHashChange(scroll);
+  setHashOnPath(window.location.pathname, id, scroll);
   return true;
 }
 

@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
-import { readdirSync, statSync } from "node:fs";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { resourcesRoot } from "@/lib/resourcesRoot";
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -40,12 +41,16 @@ function resourcesHaveLocalChanges(): boolean {
 
 function resourcesMtimeIso(): string | null {
   try {
-    const dir = join(process.cwd(), "resources");
+    const root = resourcesRoot();
     let max = 0;
-    for (const name of readdirSync(dir)) {
-      if (!name.endsWith(".md")) continue;
-      const mtime = statSync(join(dir, name)).mtimeMs;
-      if (mtime > max) max = mtime;
+    for (const locale of ["en", "ru"] as const) {
+      const dir = join(root, locale);
+      if (!existsSync(dir)) continue;
+      for (const name of readdirSync(dir)) {
+        if (!name.endsWith(".md")) continue;
+        const mtime = statSync(join(dir, name)).mtimeMs;
+        if (mtime > max) max = mtime;
+      }
     }
     if (!max) return null;
     const date = new Date(max);
@@ -58,7 +63,9 @@ function resourcesMtimeIso(): string | null {
   }
 }
 
-export function maxIsoDate(dates: readonly (string | null | undefined)[]): string | null {
+export function maxIsoDate(
+  dates: readonly (string | null | undefined)[],
+): string | null {
   let max: string | null = null;
   for (const date of dates) {
     if (!date || !ISO_DATE.test(date)) continue;

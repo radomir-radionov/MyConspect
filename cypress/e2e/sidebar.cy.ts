@@ -366,7 +366,7 @@ describe("handbook sidebar", () => {
   it("opens a concept in detail view when chosen from the page list", () => {
     cy.viewport(390, 844);
     cy.visit("/en/frontend/react-core");
-    cy.contains("button", "JSX").click();
+    cy.get("main nav.concept-list").contains("button", "JSX").click();
     cy.location("hash").should("eq", "#jsx");
     cy.conceptArticle("jsx").should("be.visible");
     cy.get("main article.concept-list").should("have.length", 1);
