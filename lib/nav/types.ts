@@ -90,6 +90,8 @@ export type ChromeCopy = {
   readonly searchNotesPlaceholder: string;
   readonly searchEmpty: string;
   readonly searchNotesEmpty: string;
+  readonly searchLoading: string;
+  readonly pageLoading: string;
   readonly searchMode: string;
   readonly searchModeTitles: string;
   readonly searchModeNotes: string;

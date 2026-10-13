@@ -8,16 +8,12 @@ import {
   HANDBOOK_SIDEBAR_ID,
 } from "@/constants";
 import { type ChromeCopy, type SearchMode } from "@/lib/nav";
-import {
-  homeHref,
-  instructionsHref,
-  localeFromPathname,
-} from "@/lib/i18n/paths";
+import { homeHref, localeFromPathname } from "@/lib/i18n/paths";
 import { SITE_NAME } from "@/lib/site";
+import { MobileHandbookFooter } from "../ui/MobileHandbookFooter";
 import { ContactLinks } from "./ContactLinks";
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import { HeaderChromeActions } from "./HeaderChromeActions";
 import { SiteMark } from "./SiteMark";
-import { ThemeToggle } from "./ThemeToggle";
 
 export function SiteHeader({
   query,
@@ -44,8 +40,8 @@ export function SiteHeader({
   return (
     <div id={HANDBOOK_HEADER_ID} className="relative z-40 shrink-0">
       <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-        <div className="flex h-14 min-w-0 items-stretch overflow-hidden">
-          <div className="sticky left-0 z-10 flex shrink-0 items-center bg-white pl-(--chrome-inline) pr-1 sm:pr-2 dark:bg-zinc-950">
+        <div className="flex h-14 min-w-0 items-center overflow-hidden">
+          <div className="flex shrink-0 items-center bg-white pl-(--chrome-inline) pr-1 sm:pr-2 max-md:relative md:sticky md:left-0 md:z-10 dark:bg-zinc-950">
             <Link
               href={homeHref(locale)}
               onClick={onHomeClick}
@@ -99,8 +95,8 @@ export function SiteHeader({
                   }
                   className={
                     query.length > 0
-                      ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[6.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[9.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
-                      : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-[4.25rem] pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white sm:pr-[7.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
+                      ? "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-9 pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white max-sm:pr-[4.25rem] sm:pr-[6.25rem] md:pr-[9.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
+                      : "h-9 w-full appearance-none rounded-md border border-zinc-200 bg-zinc-50 py-1.5 pr-3 pl-9 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white max-sm:pr-9 sm:pr-[4.25rem] md:pr-[7.75rem] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500 dark:focus:bg-zinc-900 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
                   }
                 />
               </label>
@@ -128,10 +124,17 @@ export function SiteHeader({
                     </svg>
                   </button>
                 ) : null}
+                <SearchModeMobileToggle
+                  mode={mode}
+                  searchModeLabel={chrome.searchMode}
+                  titlesLabel={chrome.searchModeTitles}
+                  notesLabel={chrome.searchModeNotes}
+                  onModeChange={onModeChange}
+                />
                 <div
                   role="radiogroup"
                   aria-label={chrome.searchMode}
-                  className="flex h-7 shrink-0 rounded-md bg-zinc-100 p-0.5 dark:bg-zinc-800"
+                  className="hidden h-7 shrink-0 rounded-md bg-zinc-100 p-0.5 sm:flex dark:bg-zinc-800"
                 >
                   <SearchModeButton
                     checked={mode === "titles"}
@@ -149,7 +152,7 @@ export function SiteHeader({
               </div>
             </div>
           </div>
-          <div className="sticky right-0 z-10 flex shrink-0 items-center gap-0.5 bg-white pr-(--chrome-inline) pl-1 sm:pl-2 dark:bg-zinc-950">
+          <div className="flex h-9 shrink-0 items-center gap-1 bg-white pr-(--chrome-inline) pl-1 max-md:relative sm:pl-2 md:sticky md:right-0 md:z-10 dark:bg-zinc-950">
             <div className="hidden items-center gap-0.5 md:flex">
               <HeaderChromeActions chrome={chrome} locale={locale} />
             </div>
@@ -157,8 +160,8 @@ export function SiteHeader({
               type="button"
               className={
                 navOpen
-                  ? "inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-900 bg-zinc-900 text-white md:hidden dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
-                  : "inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-zinc-300 bg-zinc-50 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-100 md:hidden dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-800"
+                  ? "inline-flex size-9 shrink-0 touch-manipulation cursor-pointer items-center justify-center self-center rounded-md border border-zinc-900 bg-zinc-900 text-white md:hidden dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
+                  : "inline-flex size-9 shrink-0 touch-manipulation cursor-pointer items-center justify-center self-center rounded-md border border-zinc-300 bg-zinc-50 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-100 md:hidden dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-800"
               }
               aria-expanded={navOpen}
               aria-controls={HANDBOOK_SIDEBAR_ID}
@@ -173,41 +176,6 @@ export function SiteHeader({
         </div>
       </header>
     </div>
-  );
-}
-
-function HeaderChromeActions({
-  chrome,
-  locale,
-  onInstructionsClick,
-}: {
-  chrome: ChromeCopy;
-  locale: ReturnType<typeof localeFromPathname>;
-  onInstructionsClick?: () => void;
-}) {
-  const pathname = usePathname() ?? "/en";
-  const instructionsPath = instructionsHref(locale);
-  const onInstructions = pathname === instructionsPath;
-
-  return (
-    <>
-      <Link
-        href={instructionsPath}
-        onClick={onInstructionsClick}
-        aria-label={chrome.instructions}
-        title={chrome.instructions}
-        aria-current={onInstructions ? "page" : undefined}
-        className={
-          onInstructions
-            ? "inline-flex size-9 items-center justify-center rounded-md text-zinc-900 dark:text-zinc-50"
-            : "inline-flex size-9 items-center justify-center rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
-        }
-      >
-        <InstructionsIcon />
-      </Link>
-      <LanguageSwitcher locale={locale} />
-      <ThemeToggle />
-    </>
   );
 }
 
@@ -235,17 +203,16 @@ export function DrawerFooter({
   const surface = searching ? DRAWER_FOOTER_SEARCH : DRAWER_FOOTER_DEFAULT;
 
   return (
-    <div className={`flex shrink-0 flex-col border-t ${surface}`}>
-      <div
-        className={`flex items-center gap-0.5 border-b px-2 py-1 md:hidden ${surface}`}
-      >
-        <HeaderChromeActions
-          chrome={chrome}
-          locale={locale}
-          onInstructionsClick={onNavigate}
-        />
-      </div>
-      <div className="flex items-center justify-between gap-2 px-2 py-1.5">
+    <div className={`flex shrink-0 flex-col max-md:border-t ${surface}`}>
+      <MobileHandbookFooter
+        chrome={chrome}
+        locale={locale}
+        onNavigate={onNavigate}
+        searching={searching}
+        lastUpdatedIso={lastUpdatedIso}
+        lastUpdatedLabel={lastUpdatedLabel}
+      />
+      <div className="hidden items-center justify-between gap-2 px-2 py-1.5 md:flex">
         <div className="flex min-w-0 items-center gap-1">
           <ContactLinks />
         </div>
@@ -262,20 +229,6 @@ export function DrawerFooter({
         </div>
       </div>
     </div>
-  );
-}
-
-function InstructionsIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="none">
-      <path
-        d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }
 
@@ -303,6 +256,38 @@ function MenuGlyph({ open }: { open: boolean }) {
   );
 }
 
+function SearchModeMobileToggle({
+  mode,
+  searchModeLabel,
+  titlesLabel,
+  notesLabel,
+  onModeChange,
+}: {
+  mode: SearchMode;
+  searchModeLabel: string;
+  titlesLabel: string;
+  notesLabel: string;
+  onModeChange: (mode: SearchMode) => void;
+}) {
+  const activeLabel = mode === "titles" ? titlesLabel : notesLabel;
+  const nextMode: SearchMode = mode === "titles" ? "notes" : "titles";
+  const nextLabel = nextMode === "titles" ? titlesLabel : notesLabel;
+
+  return (
+    <button
+      type="button"
+      aria-pressed={mode === "notes"}
+      aria-label={`${searchModeLabel}: ${activeLabel}. Switch to ${nextLabel}.`}
+      title={`${activeLabel} — tap for ${nextLabel}`}
+      data-search-mode={mode}
+      onClick={() => onModeChange(nextMode)}
+      className="inline-flex size-7 shrink-0 touch-manipulation cursor-pointer items-center justify-center rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 sm:hidden dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+    >
+      <SearchModeIcon mode={mode} className="size-4" />
+    </button>
+  );
+}
+
 function SearchModeButton({
   checked,
   label,
@@ -325,8 +310,8 @@ function SearchModeButton({
       onClick={() => onSelect(value)}
       className={
         checked
-          ? "inline-flex size-6 cursor-pointer items-center justify-center rounded bg-white text-zinc-900 shadow-sm sm:h-auto sm:w-auto sm:px-1.5 dark:bg-zinc-700 dark:text-zinc-50"
-          : "inline-flex size-6 cursor-pointer items-center justify-center rounded text-zinc-500 hover:text-zinc-800 sm:h-auto sm:w-auto sm:px-1.5 dark:text-zinc-400 dark:hover:text-zinc-100"
+          ? "inline-flex size-9 touch-manipulation cursor-pointer items-center justify-center rounded bg-white text-zinc-900 shadow-sm sm:size-6 sm:h-auto sm:w-auto sm:px-1.5 dark:bg-zinc-700 dark:text-zinc-50"
+          : "inline-flex size-9 touch-manipulation cursor-pointer items-center justify-center rounded text-zinc-500 hover:text-zinc-800 sm:size-6 sm:h-auto sm:w-auto sm:px-1.5 dark:text-zinc-400 dark:hover:text-zinc-100"
       }
     >
       <SearchModeIcon mode={value} />
@@ -335,15 +320,17 @@ function SearchModeButton({
   );
 }
 
-function SearchModeIcon({ mode }: { mode: SearchMode }) {
+function SearchModeIcon({
+  mode,
+  className = "size-3.5 sm:hidden",
+}: {
+  mode: SearchMode;
+  className?: string;
+}) {
   switch (mode) {
     case "titles":
       return (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          className="size-3.5 sm:hidden"
-        >
+        <svg aria-hidden="true" viewBox="0 0 24 24" className={className}>
           <path
             d="M5 7h14M5 12h14M5 17h9"
             fill="none"
@@ -355,11 +342,7 @@ function SearchModeIcon({ mode }: { mode: SearchMode }) {
       );
     case "notes":
       return (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          className="size-3.5 sm:hidden"
-        >
+        <svg aria-hidden="true" viewBox="0 0 24 24" className={className}>
           <path
             d="M7 4.5h7.5L18 8v11.5H7z"
             fill="none"
