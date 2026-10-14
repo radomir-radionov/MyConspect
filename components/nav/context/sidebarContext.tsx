@@ -23,7 +23,30 @@ export type SidebarChromeValue = {
 export type SidebarHighlightValue = {
   /** Path used for sidebar active highlights; includes optimistic nav targets. */
   highlightPathname: string;
+  /** When false (mobile), only the current leaf row is pinned/highlighted. */
+  stackPathPins: boolean;
 };
+
+/** Pin this row in the sticky path stack (ancestors only on desktop). */
+export function navPathPinned(
+  onPath: boolean,
+  pinLeaf: boolean,
+  stackPathPins: boolean,
+): boolean {
+  if (!onPath) {
+    return false;
+  }
+  return stackPathPins || pinLeaf;
+}
+
+/** Yellow active surface for every row on the current path (mobile and desktop). */
+export function navPathHighlighted(
+  highlighted: boolean,
+  onPath: boolean,
+  _stackPathPins: boolean,
+): boolean {
+  return highlighted || onPath;
+}
 
 export type SidebarBookmarksValue = {
   isBookmarked: (pathname: string, conceptId?: string) => boolean;

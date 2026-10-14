@@ -47,11 +47,14 @@ import {
   isActiveHref,
   isConceptActiveOnPage,
   isOnSubjectPath,
+  topicIsMobileNavLeaf,
 } from "../utils/location";
 import { NavCautionBadge } from "../ui/NavCautionBadge";
 import { clusterNavigateHref } from "@/lib/nav/sections";
 import {
   closeNavSoon,
+  navPathHighlighted,
+  navPathPinned,
   NAV_ROW_GAP,
   rowClass,
   useScopedSidebarFold,
@@ -205,7 +208,7 @@ function ConceptItems({
   indentClass?: string;
 }) {
   const { first, searching } = useSidebarChrome();
-  const { highlightPathname } = useSidebarHighlight();
+  const { highlightPathname, stackPathPins } = useSidebarHighlight();
   const { activeConceptId } = useSidebarActive();
   return (
     <>
@@ -219,6 +222,7 @@ function ConceptItems({
         const isFirstConcept =
           first?.pathname === topic.href && first.hash === `#${concept.id}`;
         const onPath = conceptActive && !searching;
+        const pinPath = navPathPinned(onPath, true, stackPathPins);
         const showGroup =
           Boolean(concept.group) &&
           concept.group !== concepts[index - 1]?.group;
@@ -236,7 +240,7 @@ function ConceptItems({
               concept={concept}
               isFirstConcept={isFirstConcept}
               conceptActive={conceptActive}
-              onPath={onPath}
+              onPath={pinPath}
               indentClass={indentClass}
               rowGapClass={index === 0 ? NAV_ROW_GAP : "mt-0.5"}
             />
@@ -265,7 +269,8 @@ const SectionTopicLink = memo(function SectionTopicLink({
 }) {
   const { query, mode, pathname, searching, first, onNavigate, goToPath } =
     useSidebarChrome();
-  const { highlightPathname } = useSidebarHighlight();
+  const { highlightPathname, stackPathPins } = useSidebarHighlight();
+  const { activeConceptId } = useSidebarActive();
   const { fold, patchFold } = useScopedSidebarFold();
   const { topicHref: openTopicHref } = fold(trackId);
   const { isBookmarked } = useSidebarBookmarks();
@@ -273,6 +278,14 @@ const SectionTopicLink = memo(function SectionTopicLink({
   const isHitTopic = first?.pathname === topic.href;
   const isFirstTopic = isHitTopic && first.hash === "";
   const onPath = !searching && active;
+  const mobileLeaf = topicIsMobileNavLeaf(
+    active,
+    highlightPathname,
+    topic.href,
+    activeConceptId,
+    false,
+  );
+  const pinPath = navPathPinned(onPath, mobileLeaf, stackPathPins);
   const bookmarked = isBookmarked(topic.href);
   const concepts = visibleConcepts(topic, query, mode);
   const sidebarConcepts = searching
@@ -285,8 +298,8 @@ const SectionTopicLink = memo(function SectionTopicLink({
   const topicOpen = searching ? showConceptNav : showTopicFold && topicFoldOpen;
 
   const linkClass = `${rowClass(
-    isHitTopic || active,
-    onPath,
+    navPathHighlighted(isHitTopic || active, onPath, stackPathPins),
+    pinPath,
     SECTION_TOPIC_INDENT,
   )}${rowGapClass ? ` ${rowGapClass}` : ""}`;
 
@@ -298,7 +311,7 @@ const SectionTopicLink = memo(function SectionTopicLink({
         scroll={false}
         data-nav="topic"
         data-nav-id={navId}
-        data-nav-path={onPath ? "true" : undefined}
+        data-nav-path={pinPath ? "true" : undefined}
         data-search-hit={isFirstTopic ? "true" : undefined}
         aria-current={active ? "page" : undefined}
         aria-expanded={showTopicFold ? topicOpen : undefined}
@@ -450,7 +463,8 @@ export function TopicRow({
 }) {
   const { query, mode, pathname, searching, first, onNavigate, goToPath } =
     useSidebarChrome();
-  const { highlightPathname } = useSidebarHighlight();
+  const { highlightPathname, stackPathPins } = useSidebarHighlight();
+  const { activeConceptId } = useSidebarActive();
   const { fold, patchFold } = useScopedSidebarFold();
   const { topicHref: openTopicHref } = fold(trackId);
   const nestedTopics = topic.nestedTopics ?? [];
@@ -479,6 +493,14 @@ export function TopicRow({
   const showLoneNested =
     hasNestedTopics && nestedTopics.length === 1 && !showConceptNav;
   const onPath = !searching && (active || nestedOnPath);
+  const mobileLeaf = topicIsMobileNavLeaf(
+    active,
+    highlightPathname,
+    topic.href,
+    activeConceptId,
+    nestedOnPath,
+  );
+  const pinPath = navPathPinned(onPath, mobileLeaf, stackPathPins);
   const topicFoldOpen =
     openTopicHref === topic.href || nestedOpen || nestedOnPath;
   const topicOpen = hideTitle
@@ -514,7 +536,7 @@ export function TopicRow({
         scroll={false}
         data-nav={navKind}
         data-nav-id={navId ?? topic.slug}
-        data-nav-path={onPath ? "true" : undefined}
+        data-nav-path={pinPath ? "true" : undefined}
         onClick={(event) => {
           pinNavForHref(event.currentTarget, pathname, topic.href);
           if (pathname === topic.href) {
@@ -542,7 +564,11 @@ export function TopicRow({
         data-search-hit={isFirstTopic ? "true" : undefined}
         aria-current={active ? "page" : undefined}
         aria-expanded={showTopicFold ? topicOpen : undefined}
-        className={`${rowClass(isHitTopic || active || onPath, onPath, indent)} ${NAV_ROW_GAP}`}
+        className={`${rowClass(
+          navPathHighlighted(isHitTopic || active, onPath, stackPathPins),
+          pinPath,
+          indent,
+        )} ${NAV_ROW_GAP}`}
       >
         <span className="flex min-w-0 flex-1 items-center gap-1.5">
           <RowTitle
@@ -607,7 +633,7 @@ export function ClusterRow({
 }) {
   const { query, pathname, searching, first, goToPath, onNavigate } =
     useSidebarChrome();
-  const { highlightPathname } = useSidebarHighlight();
+  const { highlightPathname, stackPathPins } = useSidebarHighlight();
   const { fold, patchFold } = useScopedSidebarFold();
   const sectionId = useSidebarFoldScope();
   const { clusterKey: openClusterKey } = fold(trackId);
@@ -639,6 +665,7 @@ export function ClusterRow({
       cluster.topics.some((topic) =>
         navTopicTreeContainsHref(topic, highlightPathname),
       ));
+  const pinPath = navPathPinned(onPath, active, stackPathPins);
 
   return (
     <li className="contents">
@@ -648,8 +675,8 @@ export function ClusterRow({
         scroll={false}
         data-nav="cluster"
         data-nav-id={cluster.id}
-        data-nav-path={onPath ? "true" : undefined}
-        data-nav-pin={onPath ? "cluster" : undefined}
+        data-nav-path={pinPath ? "true" : undefined}
+        data-nav-pin={pinPath ? "cluster" : undefined}
         onClick={(event) => {
           pinNavForHref(event.currentTarget, pathname, navigateHref);
           if (onHub) {
@@ -695,7 +722,11 @@ export function ClusterRow({
         data-search-hit={isHitCluster ? "true" : undefined}
         aria-current={active ? "location" : undefined}
         aria-expanded={clusterOpen}
-        className={`${rowClass(isHitCluster || active || onPath, onPath, "pl-4")} ${NAV_ROW_GAP}`}
+        className={`${rowClass(
+          navPathHighlighted(isHitCluster || active, onPath, stackPathPins),
+          pinPath,
+          "pl-4",
+        )} ${NAV_ROW_GAP}`}
       >
         <RowTitle
           text={cluster.title}
@@ -733,7 +764,7 @@ export function SectionRow({
   section: NavSection;
 }) {
   const { query, pathname, searching, first } = useSidebarChrome();
-  const { highlightPathname } = useSidebarHighlight();
+  const { highlightPathname, stackPathPins } = useSidebarHighlight();
   const { fold, patchFold } = useScopedSidebarFold();
   const { activeConceptId } = useSidebarActive();
   const collapsible = isNavSectionCollapsible(section);
@@ -778,6 +809,7 @@ export function SectionRow({
   const isHitSection =
     first?.pathname === subjectPath && first.hash === `#${section.id}`;
   const onPath = !searching && (hashMatchesSection || hasActiveChild);
+  const pinPath = navPathPinned(onPath, hashMatchesSection, stackPathPins);
 
   return (
     <li className="contents">
@@ -787,8 +819,8 @@ export function SectionRow({
         scroll={false}
         data-nav="section"
         data-nav-id={section.id}
-        data-nav-path={onPath ? "true" : undefined}
-        data-nav-pin={onPath ? "section" : undefined}
+        data-nav-path={pinPath ? "true" : undefined}
+        data-nav-pin={pinPath ? "section" : undefined}
         onClick={(event) => {
           pinNavForHref(
             event.currentTarget,
@@ -819,7 +851,15 @@ export function SectionRow({
         }}
         data-search-hit={isHitSection ? "true" : undefined}
         aria-expanded={sectionOpen}
-        className={`${rowClass(isHitSection || onPath, onPath, "pl-4")} ${NAV_ROW_GAP}`}
+        className={`${rowClass(
+          navPathHighlighted(
+            isHitSection || hashMatchesSection,
+            onPath,
+            stackPathPins,
+          ),
+          pinPath,
+          "pl-4",
+        )} ${NAV_ROW_GAP}`}
       >
         <RowTitle
           text={section.title}
@@ -851,13 +891,14 @@ export function SubjectRow({
   subject: NavSubject;
 }) {
   const { query, pathname, searching, first } = useSidebarChrome();
-  const { highlightPathname } = useSidebarHighlight();
+  const { highlightPathname, stackPathPins } = useSidebarHighlight();
   const { fold, patchFold } = useScopedSidebarFold();
   const { subjectHref: openSubjectHref } = fold(trackId);
   const active = isActiveHref(highlightPathname, subject.href);
   const subjectOpen = searching || openSubjectHref === subject.href;
   const isHitSubject = first?.pathname === subject.href && first.hash === "";
   const onPath = !searching && isOnSubjectPath(highlightPathname, subject);
+  const pinPath = navPathPinned(onPath, active, stackPathPins);
   const locale = localeFromPathname(pathname);
   const cautionTip = subjectCautionTooltip(locale, subject.slug);
   const hubFoldExclusive =
@@ -871,7 +912,7 @@ export function SubjectRow({
         prefetch={false}
         data-nav="subject"
         data-nav-id={subject.slug}
-        data-nav-path={onPath ? "true" : undefined}
+        data-nav-path={pinPath ? "true" : undefined}
         onClick={(event) => {
           pinNavForHref(event.currentTarget, pathname, subject.href);
           if (pathname === subject.href) {
@@ -890,7 +931,10 @@ export function SubjectRow({
         data-search-hit={isHitSubject ? "true" : undefined}
         aria-current={active ? "page" : undefined}
         aria-expanded={subjectOpen}
-        className={`${rowClass(isHitSubject || onPath, onPath)} ${NAV_ROW_GAP}`}
+        className={`${rowClass(
+          navPathHighlighted(isHitSubject || active, onPath, stackPathPins),
+          pinPath,
+        )} ${NAV_ROW_GAP}`}
       >
         <RowTitle text={subject.title} query={query} />
         {cautionTip ? (

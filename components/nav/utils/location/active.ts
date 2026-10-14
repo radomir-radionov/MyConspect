@@ -37,6 +37,38 @@ export function isConceptActiveOnPage(
   );
 }
 
+/** True when a nested topic or concept row is the current target, not this topic link. */
+export function topicHasDeeperNavSelection(
+  pathname: string,
+  topicHref: string,
+  activeConceptId: string,
+  nestedOnPath: boolean,
+): boolean {
+  if (nestedOnPath) {
+    return true;
+  }
+  return activeConceptId.length > 0 && pathname === topicHref;
+}
+
+/** On mobile, only the deepest row in the path is pinned/highlighted as active. */
+export function topicIsMobileNavLeaf(
+  active: boolean,
+  pathname: string,
+  topicHref: string,
+  activeConceptId: string,
+  nestedOnPath: boolean,
+): boolean {
+  return (
+    active &&
+    !topicHasDeeperNavSelection(
+      pathname,
+      topicHref,
+      activeConceptId,
+      nestedOnPath,
+    )
+  );
+}
+
 export function isOnSubjectPath(
   pathname: string,
   subject: NavSubject,
