@@ -13,6 +13,7 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "AMQP exchanges, очереди, маршрутизация и task queues.",
   "Accessibility, SEO, and advanced APIs.":
     "Доступность, SEO и продвинутые API.",
+  "SEO and advanced APIs.": "SEO и продвинутые API.",
   "Attributes valid on any element.": "Атрибуты, допустимые на любом элементе.",
   "ACID, CAP, transactions, and normalization.":
     "ACID, CAP, транзакции и нормализация.",
@@ -47,6 +48,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "AWS, GCP, Azure и managed-инфраструктура.",
   "AWS, GCP, and Azure.": "AWS, GCP и Azure.",
   "App types and security.": "Типы приложений и безопасность.",
+  "App types and real-time transports.":
+    "Типы приложений и realtime-транспорты.",
   "Architecture, libraries, performance, and legacy.":
     "Архитектура, библиотеки, производительность и legacy.",
   "Architecture, patterns, and scaling.":
@@ -145,6 +148,8 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Структура документа, семантика, рендеринг, формы, a11y и SEO.",
   "Document structure, semantics, rendering, forms, a11y, UX/UI, and SEO.":
     "Структура документа, семантика, рендеринг, формы, a11y, UX/UI и SEO.",
+  "Document structure, semantics, rendering, forms, UX/UI, and SEO.":
+    "Структура документа, семантика, рендеринг, формы, UX/UI и SEO.",
   "Documents, aggregation, and Mongoose.": "Документы, агрегации и Mongoose.",
   "Document, events, and extra browser APIs.":
     "Document, события и дополнительные браузерные API.",
@@ -298,6 +303,7 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "HTTP, HTTPS, TLS, кэширование, CORS и устройство URL.",
   "HTTP, REST, auth, real-time, and browser security.":
     "HTTP, REST, auth, realtime и безопасность в браузере.",
+  "HTTP, REST, auth, and real-time.": "HTTP, REST, auth и realtime.",
   "Images, containers, Compose, and container lifecycle.":
     "Образы, контейнеры, Compose и жизненный цикл контейнера.",
   "Images, picture, audio, video, canvas, and SVG.":
@@ -646,6 +652,12 @@ const RU_BLURBS: Readonly<Record<string, string>> = {
     "Загрузка скриптов, resource hints, Core Web Vitals и FOUC.",
   "Security model and common web attacks.":
     "Модель безопасности и типичные веб-атаки.",
+  "Security model, browser security, and common web attacks.":
+    "Модель безопасности, браузерная безопасность и типичные веб-атаки.",
+  "POUR, WCAG, landmarks, forms, ARIA, and assistive tech.":
+    "POUR, WCAG, ориентиры, формы, ARIA и вспомогательные технологии.",
+  "Web accessibility and security fundamentals.":
+    "Основы веб-доступности и безопасности.",
   "Skills, rules, plugins, slash commands, and questions.":
     "Skills, rules, плагины, slash-команды и вопросы.",
   "Skills, rules, plugins, slash commands, and Cursor Q&A.":
