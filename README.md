@@ -76,6 +76,3 @@ GitHub Actions:
 - `.github/workflows/check-conspect.yml` — scheduled source URL audit (same secrets)
 
 Production and preview deploys run automatically through the [Vercel GitHub integration](https://vercel.com/docs/git/vercel-for-github): push to `main` ships production; pull requests get preview URLs. Install the [Vercel GitHub App](https://github.com/apps/vercel) on `radomir-radionov/MyConspect` if the project is not already connected.
-
-
-test word

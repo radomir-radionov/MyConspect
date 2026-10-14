@@ -123,10 +123,32 @@ export const TRACKS: readonly Track[] = [
 
 const SUBJECTS_BASE: readonly Subject[] = [
   {
+    slug: "core",
+    title: "Core",
+    blurb: "Web accessibility and security fundamentals.",
+    track: "frontend",
+    clusters: [
+      {
+        id: "accessibility",
+        title: "Accessibility",
+        blurb: "POUR, WCAG, landmarks, forms, ARIA, and assistive tech.",
+      },
+      {
+        id: "security",
+        title: "Security",
+        blurb: "Security model, browser security, and common web attacks.",
+      },
+      {
+        id: "interview",
+        title: "Interview",
+        blurb: "Web security interview questions, answers not filled in.",
+      },
+    ],
+  },
+  {
     slug: "html",
     title: "HTML",
-    blurb:
-      "Document structure, semantics, rendering, forms, a11y, UX/UI, and SEO.",
+    blurb: "Document structure, semantics, rendering, forms, UX/UI, and SEO.",
     track: "frontend",
     sections: [
       {
@@ -156,7 +178,7 @@ const SUBJECTS_BASE: readonly Subject[] = [
       {
         id: "additional",
         title: "Additional",
-        blurb: "Accessibility, SEO, and advanced APIs.",
+        blurb: "SEO and advanced APIs.",
       },
       {
         id: "ref-elements",
@@ -563,7 +585,7 @@ const SUBJECTS_BASE: readonly Subject[] = [
   {
     slug: "web-api",
     title: "Web APIs",
-    blurb: "HTTP, REST, auth, real-time, and browser security.",
+    blurb: "HTTP, REST, auth, and real-time.",
     track: "frontend",
     clusters: [
       { id: "core", title: "Core", blurb: "Internet stack and HTTP." },
@@ -573,9 +595,9 @@ const SUBJECTS_BASE: readonly Subject[] = [
         blurb: "REST, RPC, auth, and storage.",
       },
       {
-        id: "additional",
-        title: "Additional",
-        blurb: "App types and security.",
+        id: "apps",
+        title: "Apps",
+        blurb: "Protocols, real-time, and types of web apps.",
       },
       {
         id: "interview",
@@ -762,24 +784,6 @@ const SUBJECTS_BASE: readonly Subject[] = [
         blurb: "Branches, remotes, and team practices.",
       },
       { id: "interview", title: "Interview", blurb: "Q&A and shell appendix." },
-    ],
-  },
-  {
-    slug: "web-security",
-    title: "Web security",
-    blurb: "Security model and common web attacks.",
-    track: "other",
-    clusters: [
-      {
-        id: "core",
-        title: "Core",
-        blurb: "Security model and common web attacks.",
-      },
-      {
-        id: "interview",
-        title: "Interview",
-        blurb: "Web security interview questions, answers not filled in.",
-      },
     ],
   },
   {
@@ -1034,6 +1038,42 @@ function grouped(
 
 const TOPICS_BASE: Topic[] = [
   grouped(
+    "html-a11y",
+    "1_html_a11y.md",
+    "Accessibility",
+    "POUR, names, landmarks, forms, and images.",
+    "frontend",
+    "core",
+    "accessibility",
+  ),
+  grouped(
+    "special-security",
+    "7_special_security.md",
+    "Web security",
+    "Security model and common web attacks.",
+    "frontend",
+    "core",
+    "security",
+  ),
+  grouped(
+    "web-api-security",
+    "6_web_api_security.md",
+    "Browser security",
+    "Browser security and third-party integrations.",
+    "frontend",
+    "core",
+    "security",
+  ),
+  grouped(
+    "web-security-questions",
+    "7_special_security_interview.md",
+    "Interview",
+    "Web security interview questions, answers not filled in.",
+    "frontend",
+    "core",
+    "interview",
+  ),
+  grouped(
     "html-core",
     "1_html_core.md",
     "Core",
@@ -1095,15 +1135,6 @@ const TOPICS_BASE: Topic[] = [
     "frontend",
     "html",
     "browser",
-  ),
-  grouped(
-    "html-a11y",
-    "1_html_a11y.md",
-    "Accessibility",
-    "POUR, names, landmarks, forms, and images.",
-    "frontend",
-    "html",
-    "additional",
   ),
   grouped(
     "html-ux-laws",
@@ -2145,16 +2176,7 @@ const TOPICS_BASE: Topic[] = [
     "Protocols, real-time, and types of web apps.",
     "frontend",
     "web-api",
-    "additional",
-  ),
-  grouped(
-    "web-api-security",
-    "6_web_api_security.md",
-    "Security",
-    "Browser security and third-party integrations.",
-    "frontend",
-    "web-api",
-    "additional",
+    "apps",
   ),
   grouped(
     "web-api-interview",
@@ -2550,24 +2572,6 @@ const TOPICS_BASE: Topic[] = [
     blurb: "Waterfall, Agile, Scrum, and Kanban.",
     track: "other",
   },
-  grouped(
-    "special-security",
-    "7_special_security.md",
-    "Core",
-    "Security model and common web attacks.",
-    "other",
-    "web-security",
-    "core",
-  ),
-  grouped(
-    "web-security-questions",
-    "7_special_security_interview.md",
-    "Interview",
-    "Web security interview questions, answers not filled in.",
-    "other",
-    "web-security",
-    "interview",
-  ),
   {
     slug: "computer-science",
     file: "7_special_cs.md",

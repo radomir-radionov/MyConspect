@@ -79,6 +79,26 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/:locale(en|ru)/other/special-security",
+        destination: "/:locale/frontend/special-security",
+        permanent: true,
+      },
+      {
+        source: "/other/special-security",
+        destination: "/en/frontend/special-security",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|ru)/other/web-security-questions",
+        destination: "/:locale/frontend/web-security-questions",
+        permanent: true,
+      },
+      {
+        source: "/other/web-security-questions",
+        destination: "/en/frontend/web-security-questions",
+        permanent: true,
+      },
+      {
         source: "/data-structures/data-structures-choosing",
         destination: "/en/data-structures#choosing-a-data-structure",
         permanent: true,

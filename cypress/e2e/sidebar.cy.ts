@@ -195,7 +195,7 @@ describe("handbook sidebar", () => {
     cy.visit("/en/other");
     cy.nav("subject", "git").should("be.visible");
     cy.nav("topic", "special-sdlc").should("be.visible");
-    cy.nav("subject", "web-security").should("be.visible");
+    cy.nav("subject", "web-security").should("not.exist");
     cy.nav("topic", "computer-science").should("be.visible");
     cy.nav("subject", "paradigms").should("not.exist");
     cy.nav("cluster", "additional").should("not.exist");
@@ -205,7 +205,7 @@ describe("handbook sidebar", () => {
 
     cy.location("pathname").should("eq", "/en/other/computer-science");
     cy.contains("h1", "Computer science");
-    cy.nav("subject", "web-security").should("be.visible");
+    cy.nav("subject", "web-security").should("not.exist");
   });
 
   it("opens Patterns from the Algorithms hub without collapsing the track", () => {

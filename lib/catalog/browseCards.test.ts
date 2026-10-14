@@ -152,3 +152,12 @@ test("trackQuestionSections lifts interview and tasks onto the track", () => {
     false,
   );
 });
+
+test("trackBrowseCards lists Core before HTML on frontend", () => {
+  const cards = trackBrowseCards("frontend");
+  const coreIndex = cards.findIndex((card) => card.title === "Core");
+  const htmlIndex = cards.findIndex((card) => card.title === "HTML");
+  assert.ok(coreIndex >= 0, "missing Core subject card");
+  assert.ok(htmlIndex >= 0, "missing HTML subject card");
+  assert.ok(coreIndex < htmlIndex);
+});
