@@ -52,6 +52,7 @@ import {
   queueHandbookHref,
 } from "../utils/hash";
 import { useHandbookLocation } from "../hooks/useHandbookLocation";
+import { useMdUp } from "../hooks/useMdUp";
 import { isActiveHref, isActiveTrack } from "../utils/location";
 import { SearchHitList } from "./SearchHitList";
 import { pinNavElement, pinNavForHref } from "../utils/sidebarPin";
@@ -66,6 +67,7 @@ import {
 import {
   SidebarFoldScopeProvider,
   SidebarNavProvider,
+  navPathPinned,
   trackHeaderClass,
   useSidebarChrome,
   useSidebarHighlight,
@@ -182,9 +184,10 @@ export const TopicSidebar = memo(function TopicSidebar({
     }),
     [bookmarkKeys],
   );
+  const stackPathPins = useMdUp();
   const highlightValue = useMemo(
-    () => ({ highlightPathname }),
-    [highlightPathname],
+    () => ({ highlightPathname, stackPathPins }),
+    [highlightPathname, stackPathPins],
   );
   const chromeValue = useMemo(
     () => ({
@@ -402,17 +405,20 @@ const TrackGroup = memo(function TrackGroup({
   const hasSidebarChildren =
     group.entries.length > 0 || Boolean(group.hubTopic) || showLeafConcepts;
   const { onNavigate, goToPath } = useSidebarChrome();
+  const { stackPathPins } = useSidebarHighlight();
   const { patchFold } = useScopedSidebarFold();
   const trackActive = isActiveHref(pathname, group.href);
   const onThisTrack = isActiveTrack(pathname, group.href);
   const trackOpen = searching || (hasSidebarChildren && isTrackOpen(group.id));
   const onPath =
     !searching && rootSectionId === activeRootSectionId && onThisTrack;
+  const pinPath = navPathPinned(onPath, trackActive, stackPathPins);
   const needle = query.trim().toLowerCase();
   const trackHighlighted = searching
     ? needle.length > 0 && matchesQuery(group.title, needle)
     : onPath;
   const headerClass = trackHeaderClass(trackHighlighted);
+  const stickyScope = onPath && stackPathPins;
   const searchHits = useMemo(
     () => (searching ? collectGroupSearchHits(group, query, mode) : []),
     [group, mode, query, searching],
@@ -445,7 +451,7 @@ const TrackGroup = memo(function TrackGroup({
           aria-expanded={trackOpen}
           data-nav="track"
           data-nav-id={group.id}
-          data-nav-path={onPath ? "true" : undefined}
+          data-nav-path={pinPath ? "true" : undefined}
           onClick={(event) => {
             pinNavElement(event.currentTarget);
             if (!searching) {
@@ -464,7 +470,7 @@ const TrackGroup = memo(function TrackGroup({
           prefetch={false}
           data-nav="track"
           data-nav-id={group.id}
-          data-nav-path={onPath ? "true" : undefined}
+          data-nav-path={pinPath ? "true" : undefined}
           onClick={(event) => {
             pinNavForHref(event.currentTarget, pathname, navigateHref);
             if (!hasSidebarChildren) {
@@ -504,7 +510,7 @@ const TrackGroup = memo(function TrackGroup({
       <NavFold open={hasSidebarChildren && trackOpen} instant={searching} unbox>
         <ul
           className={
-            onPath
+            stickyScope
               ? "contents"
               : "mt-1.5 ml-1.5 space-y-0.5 border-l-2 border-yellow-200 pl-2 dark:border-yellow-800"
           }
@@ -541,8 +547,8 @@ const TrackGroup = memo(function TrackGroup({
 
   return (
     <li
-      className={onPath ? "contents" : undefined}
-      {...(onPath ? { "data-nav-sticky-scope": "" } : {})}
+      className={stickyScope ? "contents" : undefined}
+      {...(stickyScope ? { "data-nav-sticky-scope": "" } : {})}
     >
       {trackBody}
     </li>
