@@ -25,7 +25,7 @@ export type SiteContact = {
 export const SITE_CONTACTS: readonly SiteContact[] = [
   {
     id: "github",
-    href: "https://github.com/radomir-radionov/MyConspect",
+    href: "https://github.com/radomir-radionov/mc-app",
     label: "GitHub",
   },
   {

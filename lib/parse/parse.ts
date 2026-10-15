@@ -716,6 +716,9 @@ function looksLikeConcept(body: string, title: string): boolean {
   if (isInterviewTaskTitle(title)) {
     return body.trim().length > 0;
   }
+  if (body.includes("**Answer:**") || body.includes("**Problem:**")) {
+    return true;
+  }
   return (
     CONCEPT_MARKERS.some((marker) => body.includes(marker)) || body.length > 400
   );
