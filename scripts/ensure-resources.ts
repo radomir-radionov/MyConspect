@@ -49,7 +49,7 @@ function fetchFromGit(): void {
   if (!url) {
     throw new Error(
       "Missing study notes: notes en/ is empty and RESOURCES_GIT_URL is not set.\n" +
-        "For local dev, set MYCONSPECT_NOTES_ROOT=../MyConspect-dev/notes in handbook/.env.local " +
+        "For local dev, set MYCONSPECT_NOTES_ROOT=../mc-content in mc-app/.env.local " +
         "or keep resources/ on disk.\n" +
         "For Vercel/CI, set RESOURCES_GIT_URL (+ RESOURCES_GIT_TOKEN for a private repo). See README § CI/CD.",
     );

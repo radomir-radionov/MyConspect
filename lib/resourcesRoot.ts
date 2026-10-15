@@ -7,11 +7,11 @@ export function bundledResourcesRoot(): string {
 
 /**
  * Study notes root: directory containing `en/` and `ru/` (or legacy flat `*.md`).
- * Default: `<app>/resources` (CI/Vercel clone). Dev workspace: `MYCONSPECT_NOTES_ROOT=../MyConspect-dev/notes`.
+ * Default: `<app>/resources` (CI/Vercel clone). Dev workspace: `MYCONSPECT_NOTES_ROOT=../mc-content`.
  */
 export function resourcesRoot(): string {
   const raw = process.env.MYCONSPECT_NOTES_ROOT?.trim();
-  if (process.env.NODE_ENV === "development" && raw) {
+  if (raw) {
     return path.resolve(/* turbopackIgnore: true */ process.cwd(), raw);
   }
   return bundledResourcesRoot();
